@@ -881,7 +881,7 @@ public class GT_Utility {
     	if (aFluid == null || aFluid.getFluid() == null) return null;
     	int tmp = 0;
     	try{
-    		tmp = aFluid.getFluidID();
+    		tmp = aFluid.getFluid().getID();
     	}catch(Exception e){
     		System.err.println(e);
     	}

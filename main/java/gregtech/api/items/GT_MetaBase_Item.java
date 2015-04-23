@@ -449,11 +449,11 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
 		}
 		
 		Long[] tStats = getFluidContainerStats(aStack);
-		if (tStats == null || tStats[0] <= 0 || aFluid == null || aFluid.getFluidID() <= 0 || aFluid.amount <= 0) return 0;
+		if (tStats == null || tStats[0] <= 0 || aFluid == null || aFluid.getFluid().getID() <= 0 || aFluid.amount <= 0) return 0;
 		
 		FluidStack tFluid = getFluidContent(aStack);
 		
-		if (tFluid == null || tFluid.getFluidID() <= 0) {
+		if (tFluid == null || tFluid.getFluid().getID() <= 0) {
 			if (aFluid.amount <= tStats[0]) {
 				if (doFill) {
 					setFluidContent(aStack, aFluid);

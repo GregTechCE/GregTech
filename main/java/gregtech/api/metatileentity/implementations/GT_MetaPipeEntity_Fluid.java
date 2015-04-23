@@ -262,9 +262,9 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
 	
 	@Override
 	public final int fill_default(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
-		if (aFluid == null || aFluid.getFluidID() <= 0) return 0;
+		if (aFluid == null || aFluid.getFluid().getID() <= 0) return 0;
 		
-		if (mFluid == null || mFluid.getFluidID() <= 0) {
+		if (mFluid == null || mFluid.getFluid().getID() <= 0) {
 			if(aFluid.amount <= getCapacity()) {
 				if (doFill) {
 					mFluid = aFluid.copy();

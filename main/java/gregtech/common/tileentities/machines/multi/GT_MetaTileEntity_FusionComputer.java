@@ -233,9 +233,9 @@ public boolean isCorrectMachinePart(ItemStack aStack) {return true;}
 public boolean checkRecipe(ItemStack aStack) {
 	if(this.mLastRecipe!=null){;
 		for(GT_MetaTileEntity_Hatch_Input tInput : this.mInputHatches){
-			if(tInput.mFluid!=null&& tInput.mFluid!=null&&tInput.mFluid.getFluidID()==this.mLastRecipe.mFluidInputs[0].getFluidID()&&tInput.mFluid.amount>=this.mLastRecipe.mFluidInputs[0].amount){
+			if(tInput.mFluid!=null&& tInput.mFluid!=null&&tInput.mFluid.getFluid().getID()==this.mLastRecipe.mFluidInputs[0].getFluid().getID()&&tInput.mFluid.amount>=this.mLastRecipe.mFluidInputs[0].amount){
 				for(GT_MetaTileEntity_Hatch_Input tInput2 : this.mInputHatches){
-					if(tInput2.mFluid!=null&& tInput2.mFluid!=null&&tInput2.mFluid.getFluidID()==this.mLastRecipe.mFluidInputs[1].getFluidID()&&tInput2.mFluid.amount>=this.mLastRecipe.mFluidInputs[1].amount&&getMaxInputVoltage()>=this.mLastRecipe.mEUt){
+					if(tInput2.mFluid!=null&& tInput2.mFluid!=null&&tInput2.mFluid.getFluid().getID()==this.mLastRecipe.mFluidInputs[1].getFluid().getID()&&tInput2.mFluid.amount>=this.mLastRecipe.mFluidInputs[1].amount&&getMaxInputVoltage()>=this.mLastRecipe.mEUt){
 						tInput.drain(this.mLastRecipe.mFluidInputs[0].amount, true);
 						tInput2.drain(this.mLastRecipe.mFluidInputs[1].amount, true);
 						this.mEUt = -(this.mLastRecipe.mEUt*tierOverclock());
@@ -255,11 +255,11 @@ public boolean checkRecipe(ItemStack aStack) {
 		FluidStack tFluid = tRecipe.mFluidInputs[0];
 		if(tFluid!=null){
 			for(GT_MetaTileEntity_Hatch_Input tInput : this.mInputHatches){
-				if(tFluid.fluid !=null&& tInput.getFluid()!=null && tFluid.fluid.getID()==tInput.getFluid().getFluidID()&&tFluid.amount<=tInput.getFluid().amount){
+				if(tFluid.fluid !=null&& tInput.getFluid()!=null && tFluid.fluid.getID()==tInput.getFluid().getFluid().getID()&&tFluid.amount<=tInput.getFluid().amount){
 					FluidStack tFluid2 = tRecipe.mFluidInputs[1];
 						if(tFluid2!=null){
 							for(GT_MetaTileEntity_Hatch_Input tInput2 : this.mInputHatches){
-								if(tFluid2.fluid !=null&& tInput2.getFluid()!=null&&tFluid2.fluid.getID()==tInput2.getFluid().getFluidID()&&tFluid2.amount<=tInput2.getFluid().amount&&getMaxInputVoltage()>=tRecipe.mEUt&&this.mEUStore>=tRecipe.mSpecialValue){
+								if(tFluid2.fluid !=null&& tInput2.getFluid()!=null&&tFluid2.fluid.getID()==tInput2.getFluid().getFluid().getID()&&tFluid2.amount<=tInput2.getFluid().amount&&getMaxInputVoltage()>=tRecipe.mEUt&&this.mEUStore>=tRecipe.mSpecialValue){
 									tInput.drain(tFluid.amount, true);
 									tInput2.drain(tFluid2.amount, true);
 									this.mLastRecipe=tRecipe;
