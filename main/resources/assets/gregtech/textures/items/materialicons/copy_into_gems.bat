@@ -1,0 +1,10 @@
+pause
+COPY \\?\%1 "DIAMOND\"
+COPY \\?\%1 "EMERALD\"
+COPY \\?\%1 "GEM_HORIZONTAL\"
+COPY \\?\%1 "GEM_VERTICAL\"
+COPY \\?\%1 "GLASS\"
+COPY \\?\%1 "NETHERSTAR\"
+COPY \\?\%1 "OPAL\"
+COPY \\?\%1 "RUBY\"
+COPY \\?\%1 "SHARDS\"
