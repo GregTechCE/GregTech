@@ -29,18 +29,18 @@ public class GT_FluidStack extends FluidStack {
     }
     
     public static void fixAllThoseFuckingFluidIDs() {
-    	//for (GT_FluidStack tFluid : sAllFluidStacks) tFluid.fixFluidIDForFucksSake();
-    	//for (Map<Fluid, ?> tMap : GregTech_API.sFluidMappings) try {GT_Utility.reMap(tMap);} catch(Throwable e) {e.printStackTrace(GT_Log.err);}
+    	for (GT_FluidStack tFluid : sAllFluidStacks) tFluid.fixFluidIDForFucksSake();
+    	for (Map<Fluid, ?> tMap : GregTech_API.sFluidMappings) try {GT_Utility.reMap(tMap);} catch(Throwable e) {e.printStackTrace(GT_Log.err);}
 	}
     
     public void fixFluidIDForFucksSake() {
-    	//int fluidID = this.getFluidID();
-    	//try {fluidID = mFluid.getID();} catch(Throwable e) {fluidID = -1;}
+    	int fluidID = this.getFluid().getID();
+    	try {fluidID = mFluid.getID();} catch(Throwable e) {fluidID = -1;}
     }
     
     @Override
 	public FluidStack copy() {
-    	//fixFluidIDForFucksSake();
+    	fixFluidIDForFucksSake();
         return new GT_FluidStack(this);
     }
 }

@@ -1,31 +1,26 @@
-/*  1:   */ package gregtech.loaders.oreprocessing;
-/*  2:   */ 
-/*  3:   */ import gregtech.api.enums.GT_Values;
-/*  4:   */ import gregtech.api.enums.Materials;
-/*  5:   */ import gregtech.api.enums.OrePrefixes;
-/*  6:   */ import gregtech.api.interfaces.IOreRecipeRegistrator;
-/*  7:   */ import gregtech.api.interfaces.internal.IGT_RecipeAdder;
-/*  8:   */ import gregtech.api.util.GT_Utility;
-/*  9:   */ import net.minecraft.item.ItemStack;
-/* 10:   */ 
-/* 11:   */ public class ProcessingWax
-/* 12:   */   implements IOreRecipeRegistrator
-/* 13:   */ {
-/* 14:   */   public ProcessingWax()
-/* 15:   */   {
-/* 16:13 */     OrePrefixes.wax.add(this);
-/* 17:   */   }
-/* 18:   */   
-/* 19:   */   public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack)
-/* 20:   */   {
-/* 21:18 */     if (aOreDictName.equals("waxMagical")) {
-/* 22:18 */       GT_Values.RA.addFuel(GT_Utility.copyAmount(1L, new Object[] { aStack }), null, 6, 5);
-/* 23:   */     }
-/* 24:   */   }
-/* 25:   */ }
+/*    */ package gregtech.loaders.oreprocessing;
+/*    */ 
+/*    */ import gregtech.api.enums.GT_Values;
+/*    */ import gregtech.api.enums.Materials;
+/*    */ import gregtech.api.enums.OrePrefixes;
+/*    */ import gregtech.api.util.GT_Utility;
+/*    */ import net.minecraft.item.ItemStack;
+/*    */ 
+/*    */ public class ProcessingWax implements gregtech.api.interfaces.IOreRecipeRegistrator
+/*    */ {
+/*    */   public ProcessingWax()
+/*    */   {
+/* 13 */     OrePrefixes.wax.add(this);
+/*    */   }
+/*    */   
+/*    */   public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack)
+/*    */   {
+/* 18 */     if (aOreDictName.equals("waxMagical")) GT_Values.RA.addFuel(GT_Utility.copyAmount(1L, new Object[] { aStack }), null, 6, 5);
+/*    */   }
+/*    */ }
 
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.loaders.oreprocessing.ProcessingWax
- * JD-Core Version:    0.7.0.1
+
+/* Location:              F:\Torrent\minecraft\jdgui test\gregtech_1.7.10-5.07.07-dev.jar!\gregtech\loaders\oreprocessing\ProcessingWax.class
+ * Java compiler version: 6 (50.0)
+ * JD-Core Version:       0.7.1-SNAPSHOT-20140817
  */

@@ -1,32 +1,29 @@
-/*  1:   */ package gregtech.loaders.oreprocessing;
-/*  2:   */ 
-/*  3:   */ import gregtech.api.enums.GT_Values;
-/*  4:   */ import gregtech.api.enums.ItemList;
-/*  5:   */ import gregtech.api.enums.Materials;
-/*  6:   */ import gregtech.api.enums.OrePrefixes;
-/*  7:   */ import gregtech.api.interfaces.IOreRecipeRegistrator;
-/*  8:   */ import gregtech.api.interfaces.internal.IGT_RecipeAdder;
-/*  9:   */ import gregtech.api.util.GT_Utility;
-/* 10:   */ import net.minecraft.item.ItemStack;
-/* 11:   */ 
-/* 12:   */ public class ProcessingSlab
-/* 13:   */   implements IOreRecipeRegistrator
-/* 14:   */ {
-/* 15:   */   public ProcessingSlab()
-/* 16:   */   {
-/* 17:14 */     OrePrefixes.slab.add(this);
-/* 18:   */   }
-/* 19:   */   
-/* 20:   */   public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack)
-/* 21:   */   {
-/* 22:19 */     if (aOreDictName.startsWith("slabWood")) {
-/* 23:20 */       GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(3L, new Object[] { aStack }), Materials.Creosote.getFluid(1000L), ItemList.RC_Tie_Wood.get(1L, new Object[0]), null, null, null, 200, 4);
-/* 24:   */     }
-/* 25:   */   }
-/* 26:   */ }
+/*    */ package gregtech.loaders.oreprocessing;
+/*    */ 
+/*    */ import gregtech.api.enums.GT_Values;
+/*    */ import gregtech.api.enums.ItemList;
+/*    */ import gregtech.api.enums.Materials;
+/*    */ import gregtech.api.enums.OrePrefixes;
+/*    */ import gregtech.api.util.GT_Utility;
+/*    */ import net.minecraft.item.ItemStack;
+/*    */ 
+/*    */ public class ProcessingSlab implements gregtech.api.interfaces.IOreRecipeRegistrator
+/*    */ {
+/*    */   public ProcessingSlab()
+/*    */   {
+/* 14 */     OrePrefixes.slab.add(this);
+/*    */   }
+/*    */   
+/*    */   public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack)
+/*    */   {
+/* 19 */     if (aOreDictName.startsWith("slabWood")) {
+/* 20 */       GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(3L, new Object[] { aStack }), Materials.Creosote.getFluid(1000L), ItemList.RC_Tie_Wood.get(1L, new Object[0]), null, null, null, 200, 4);
+/*    */     }
+/*    */   }
+/*    */ }
 
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.loaders.oreprocessing.ProcessingSlab
- * JD-Core Version:    0.7.0.1
+
+/* Location:              F:\Torrent\minecraft\jdgui test\gregtech_1.7.10-5.07.07-dev.jar!\gregtech\loaders\oreprocessing\ProcessingSlab.class
+ * Java compiler version: 6 (50.0)
+ * JD-Core Version:       0.7.1-SNAPSHOT-20140817
  */

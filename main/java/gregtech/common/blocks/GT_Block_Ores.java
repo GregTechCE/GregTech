@@ -96,35 +96,15 @@
 /*  96: 83 */     FUCKING_LOCK = false;
 /*  97:    */   }
 /*  98:    */   
-/*  99:    */   public String getLocalizedName(Materials aMaterial)
-/* 100:    */   {
-/* 101: 87 */     switch (aMaterial.ordinal())
-/* 102:    */     {
-/* 103:    */     case 1: 
-/* 104:    */     case 2: 
-/* 105:    */     case 3: 
-/* 106:    */     case 4: 
-/* 107:    */     case 5: 
-/* 108:    */     case 6: 
-/* 109:    */     case 7: 
-/* 110:    */     case 8: 
-/* 111: 89 */       return aMaterial.mDefaultLocalName + " Infused Stone";
-/* 112:    */     case 9: 
-/* 113:    */     case 10: 
-/* 114:    */     case 11: 
-/* 115:    */     case 12: 
-/* 116:    */     case 13: 
-/* 117:    */     case 14: 
-/* 118:    */     case 15: 
-/* 119:    */     case 16: 
-/* 120:    */     case 17: 
-/* 121:    */     case 18: 
-/* 122:    */     case 19: 
-/* 123:    */     case 20: 
-/* 124: 91 */       return aMaterial.mDefaultLocalName;
-/* 125:    */     }
-/* 126: 93 */     return aMaterial.mDefaultLocalName + OrePrefixes.ore.mLocalizedMaterialPost;
-/* 127:    */   }
+/*  99:    */  public String getLocalizedName(Materials aMaterial) {
+	/*  87 */     switch (aMaterial) {
+	/*     */     case InfusedAir: case InfusedDull: case InfusedEarth: case InfusedEntropy: case InfusedFire: case InfusedOrder: case InfusedVis: case InfusedWater: 
+	/*  89 */       return aMaterial.mDefaultLocalName + " Infused Stone";
+	/*     */     case Vermiculite: case Bentonite: case Kaolinite: case Talc: case BasalticMineralSand: case GraniticMineralSand: case GlauconiteSand: case CassiteriteSand: case GarnetSand: case QuartzSand: case Pitchblende: case FullersEarth: 
+	/*  91 */       return aMaterial.mDefaultLocalName;
+	/*     */     }
+	/*  93 */     return aMaterial.mDefaultLocalName + OrePrefixes.ore.mLocalizedMaterialPost;
+	/*     */   }
 /* 128:    */   
 /* 129:    */   public boolean onBlockEventReceived(World p_149696_1_, int p_149696_2_, int p_149696_3_, int p_149696_4_, int p_149696_5_, int p_149696_6_)
 /* 130:    */   {

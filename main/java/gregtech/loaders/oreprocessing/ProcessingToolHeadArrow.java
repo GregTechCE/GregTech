@@ -1,32 +1,28 @@
-/*  1:   */ package gregtech.loaders.oreprocessing;
-/*  2:   */ 
-/*  3:   */ import gregtech.api.enums.GT_Values;
-/*  4:   */ import gregtech.api.enums.ItemList;
-/*  5:   */ import gregtech.api.enums.Materials;
-/*  6:   */ import gregtech.api.enums.OrePrefixes;
-/*  7:   */ import gregtech.api.interfaces.IOreRecipeRegistrator;
-/*  8:   */ import gregtech.api.interfaces.internal.IGT_RecipeAdder;
-/*  9:   */ import gregtech.api.util.GT_Utility;
-/* 10:   */ import net.minecraft.item.ItemStack;
-/* 11:   */ 
-/* 12:   */ public class ProcessingToolHeadArrow
-/* 13:   */   implements IOreRecipeRegistrator
-/* 14:   */ {
-/* 15:   */   public ProcessingToolHeadArrow()
-/* 16:   */   {
-/* 17:15 */     OrePrefixes.toolHeadArrow.add(this);
-/* 18:   */   }
-/* 19:   */   
-/* 20:   */   public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack)
-/* 21:   */   {
-/* 22:20 */     if (aMaterial.mStandardMoltenFluid != null) {
-/* 23:20 */       GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Arrow.get(0L, new Object[0]), aMaterial.getMolten(36L), GT_Utility.copyAmount(1L, new Object[] { aStack }), 16, 4);
-/* 24:   */     }
-/* 25:   */   }
-/* 26:   */ }
+/*    */ package gregtech.loaders.oreprocessing;
+/*    */ 
+/*    */ import gregtech.api.enums.GT_Values;
+/*    */ import gregtech.api.enums.ItemList;
+/*    */ import gregtech.api.enums.Materials;
+/*    */ import gregtech.api.enums.OrePrefixes;
+/*    */ import gregtech.api.interfaces.internal.IGT_RecipeAdder;
+/*    */ import gregtech.api.util.GT_Utility;
+/*    */ import net.minecraft.item.ItemStack;
+/*    */ 
+/*    */ public class ProcessingToolHeadArrow implements gregtech.api.interfaces.IOreRecipeRegistrator
+/*    */ {
+/*    */   public ProcessingToolHeadArrow()
+/*    */   {
+/* 15 */     OrePrefixes.toolHeadArrow.add(this);
+/*    */   }
+/*    */   
+/*    */   public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack)
+/*    */   {
+/* 20 */     if (aMaterial.mStandardMoltenFluid != null) GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Arrow.get(0L, new Object[0]), aMaterial.getMolten(36L), GT_Utility.copyAmount(1L, new Object[] { aStack }), 16, 4);
+/*    */   }
+/*    */ }
 
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.loaders.oreprocessing.ProcessingToolHeadArrow
- * JD-Core Version:    0.7.0.1
+
+/* Location:              F:\Torrent\minecraft\jdgui test\gregtech_1.7.10-5.07.07-dev.jar!\gregtech\loaders\oreprocessing\ProcessingToolHeadArrow.class
+ * Java compiler version: 6 (50.0)
+ * JD-Core Version:       0.7.1-SNAPSHOT-20140817
  */

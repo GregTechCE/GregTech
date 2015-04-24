@@ -229,6 +229,12 @@ import net.minecraftforge.fluids.FluidStack;
 @Override
 public boolean isCorrectMachinePart(ItemStack aStack) {return true;}
 
+public int overclock(int mEUt){
+	if(tierOverclock()==1){return 1;}
+	if(tierOverclock()==2){return mEUt<32768? 2 : 1;}
+	return mEUt<32768?4:mEUt<65536?2:1;
+}
+
 @Override
 public boolean checkRecipe(ItemStack aStack) {
 	if(this.mLastRecipe!=null){;
@@ -238,8 +244,10 @@ public boolean checkRecipe(ItemStack aStack) {
 					if(tInput2.mFluid!=null&& tInput2.mFluid!=null&&tInput2.mFluid.getFluid().getID()==this.mLastRecipe.mFluidInputs[1].getFluid().getID()&&tInput2.mFluid.amount>=this.mLastRecipe.mFluidInputs[1].amount&&getMaxInputVoltage()>=this.mLastRecipe.mEUt){
 						tInput.drain(this.mLastRecipe.mFluidInputs[0].amount, true);
 						tInput2.drain(this.mLastRecipe.mFluidInputs[1].amount, true);
-						this.mEUt = -(this.mLastRecipe.mEUt*tierOverclock());
-						this.mMaxProgresstime = this.mLastRecipe.mDuration/tierOverclock();
+						
+						this.mEUt = -(this.mLastRecipe.mEUt*overclock(this.mLastRecipe.mEUt));
+						this.mMaxProgresstime = this.mLastRecipe.mDuration/overclock(this.mLastRecipe.mEUt);
+						
 						this.mEfficiencyIncrease = 10000;
 						this.mOutputFluids = this.mLastRecipe.mFluidOutputs;
 						turnCasingActive(true);
@@ -263,8 +271,10 @@ public boolean checkRecipe(ItemStack aStack) {
 									tInput.drain(tFluid.amount, true);
 									tInput2.drain(tFluid2.amount, true);
 									this.mLastRecipe=tRecipe;
-									this.mEUt = -(tRecipe.mEUt*tierOverclock());
-									this.mMaxProgresstime = tRecipe.mDuration/tierOverclock();
+									
+									this.mEUt = -(tRecipe.mEUt*overclock(this.mLastRecipe.mEUt));
+									this.mMaxProgresstime = tRecipe.mDuration/overclock(this.mLastRecipe.mEUt);
+									
 									this.mEfficiencyIncrease = 10000;
 									this.mOutputFluids = tRecipe.mFluidOutputs;
 									turnCasingActive(true);

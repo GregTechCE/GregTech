@@ -1,32 +1,25 @@
-/*  1:   */ package gregtech.loaders.oreprocessing;
-/*  2:   */ 
-/*  3:   */ import gregtech.api.enums.Materials;
-/*  4:   */ import gregtech.api.enums.OrePrefixes;
-/*  5:   */ import gregtech.api.interfaces.IOreRecipeRegistrator;
-/*  6:   */ import net.minecraft.item.Item;
-/*  7:   */ import net.minecraft.item.ItemBlock;
-/*  8:   */ import net.minecraft.item.ItemStack;
-/*  9:   */ 
-/* 10:   */ public class ProcessingAll
-/* 11:   */   implements IOreRecipeRegistrator
-/* 12:   */ {
-/* 13:   */   public ProcessingAll()
-/* 14:   */   {
-/* 15:12 */     for (OrePrefixes tPrefix : OrePrefixes.values()) {
-/* 16:12 */       tPrefix.add(this);
-/* 17:   */     }
-/* 18:   */   }
-/* 19:   */   
-/* 20:   */   public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack)
-/* 21:   */   {
-/* 22:17 */     if (((aStack.getItem() instanceof ItemBlock)) && (aPrefix.mDefaultStackSize < aStack.getItem().getItemStackLimit(aStack))) {
-/* 23:17 */       aStack.getItem().setMaxStackSize(aPrefix.mDefaultStackSize);
-/* 24:   */     }
-/* 25:   */   }
-/* 26:   */ }
+/*    */ package gregtech.loaders.oreprocessing;
+/*    */ 
+/*    */ import gregtech.api.enums.Materials;
+/*    */ import gregtech.api.enums.OrePrefixes;
+/*    */ import net.minecraft.item.Item;
+/*    */ import net.minecraft.item.ItemStack;
+/*    */ 
+/*    */ public class ProcessingAll implements gregtech.api.interfaces.IOreRecipeRegistrator
+/*    */ {
+/*    */   public ProcessingAll()
+/*    */   {
+/* 12 */     for (OrePrefixes tPrefix : OrePrefixes.values()) tPrefix.add(this);
+/*    */   }
+/*    */   
+/*    */   public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack)
+/*    */   {
+/* 17 */     if (((aStack.getItem() instanceof net.minecraft.item.ItemBlock)) && (aPrefix.mDefaultStackSize < aStack.getItem().getItemStackLimit(aStack))) aStack.getItem().setMaxStackSize(aPrefix.mDefaultStackSize);
+/*    */   }
+/*    */ }
 
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.loaders.oreprocessing.ProcessingAll
- * JD-Core Version:    0.7.0.1
+
+/* Location:              F:\Torrent\minecraft\jdgui test\gregtech_1.7.10-5.07.07-dev.jar!\gregtech\loaders\oreprocessing\ProcessingAll.class
+ * Java compiler version: 6 (50.0)
+ * JD-Core Version:       0.7.1-SNAPSHOT-20140817
  */

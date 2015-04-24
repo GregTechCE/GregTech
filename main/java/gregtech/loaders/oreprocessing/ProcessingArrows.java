@@ -1,55 +1,49 @@
-/*  1:   */ package gregtech.loaders.oreprocessing;
-/*  2:   */ 
-/*  3:   */ import gregtech.api.enchants.Enchantment_EnderDamage;
-/*  4:   */ import gregtech.api.enums.GT_Values;
-/*  5:   */ import gregtech.api.enums.Materials;
-/*  6:   */ import gregtech.api.enums.OrePrefixes;
-/*  7:   */ import gregtech.api.interfaces.IOreRecipeRegistrator;
-/*  8:   */ import gregtech.api.interfaces.internal.IGT_RecipeAdder;
-/*  9:   */ import gregtech.api.util.GT_Utility;
-/* 10:   */ import gregtech.api.util.GT_Utility.ItemNBT;
-/* 11:   */ import net.minecraft.enchantment.Enchantment;
-/* 12:   */ import net.minecraft.enchantment.EnchantmentHelper;
-/* 13:   */ import net.minecraft.item.ItemStack;
-/* 14:   */ 
-/* 15:   */ public class ProcessingArrows
-/* 16:   */   implements IOreRecipeRegistrator
-/* 17:   */ {
-/* 18:   */   public ProcessingArrows()
-/* 19:   */   {
-/* 20:17 */     for (OrePrefixes tPrefix : OrePrefixes.values()) {
-/* 21:17 */       if (tPrefix.name().startsWith("arrowGt")) {
-/* 22:17 */         tPrefix.add(this);
-/* 23:   */       }
-/* 24:   */     }
-/* 25:   */   }
-/* 26:   */   
-/* 27:   */   public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack)
-/* 28:   */   {
-/* 29:23 */     ItemStack tOutput = GT_Utility.copyAmount(1L, new Object[] { aStack });GT_Utility.updateItemStack(tOutput);
-/* 30:24 */     GT_Utility.ItemNBT.addEnchantment(tOutput, Enchantment.smite, EnchantmentHelper.getEnchantmentLevel(Enchantment.smite.effectId, tOutput) + 3);
-/* 31:25 */     GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1L, new Object[] { aStack }), Materials.HolyWater.getFluid(25L), tOutput, null, null, null, 100, 2);
-/* 32:   */     
-/* 33:27 */     tOutput = GT_Utility.copyAmount(1L, new Object[] { aStack });GT_Utility.updateItemStack(tOutput);
-/* 34:28 */     GT_Utility.ItemNBT.addEnchantment(tOutput, Enchantment.fireAspect, EnchantmentHelper.getEnchantmentLevel(Enchantment.fireAspect.effectId, tOutput) + 3);
-/* 35:29 */     GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1L, new Object[] { aStack }), Materials.FierySteel.getFluid(25L), tOutput, null, null, null, 100, 2);
-/* 36:   */     
-/* 37:31 */     tOutput = GT_Utility.copyAmount(1L, new Object[] { aStack });GT_Utility.updateItemStack(tOutput);
-/* 38:32 */     GT_Utility.ItemNBT.addEnchantment(tOutput, Enchantment.fireAspect, EnchantmentHelper.getEnchantmentLevel(Enchantment.fireAspect.effectId, tOutput) + 1);
-/* 39:33 */     GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1L, new Object[] { aStack }), Materials.Blaze.getMolten(18L), tOutput, null, null, null, 100, 2);
-/* 40:   */     
-/* 41:35 */     tOutput = GT_Utility.copyAmount(1L, new Object[] { aStack });GT_Utility.updateItemStack(tOutput);
-/* 42:36 */     GT_Utility.ItemNBT.addEnchantment(tOutput, Enchantment.knockback, EnchantmentHelper.getEnchantmentLevel(Enchantment.knockback.effectId, tOutput) + 1);
-/* 43:37 */     GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1L, new Object[] { aStack }), Materials.Rubber.getMolten(18L), tOutput, null, null, null, 100, 2);
-/* 44:   */     
-/* 45:39 */     tOutput = GT_Utility.copyAmount(1L, new Object[] { aStack });GT_Utility.updateItemStack(tOutput);
-/* 46:40 */     GT_Utility.ItemNBT.addEnchantment(tOutput, Enchantment_EnderDamage.INSTANCE, EnchantmentHelper.getEnchantmentLevel(Enchantment_EnderDamage.INSTANCE.effectId, tOutput) + 1);
-/* 47:41 */     GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1L, new Object[] { aStack }), Materials.Mercury.getFluid(25L), tOutput, null, null, null, 100, 2);
-/* 48:   */   }
-/* 49:   */ }
+/*    */ package gregtech.loaders.oreprocessing;
+/*    */ 
+/*    */ import gregtech.api.enums.GT_Values;
+/*    */ import gregtech.api.enums.Materials;
+/*    */ import gregtech.api.enums.OrePrefixes;
+/*    */ import gregtech.api.interfaces.internal.IGT_RecipeAdder;
+/*    */ import gregtech.api.util.GT_Utility;
+/*    */ import gregtech.api.util.GT_Utility.ItemNBT;
+/*    */ import net.minecraft.enchantment.Enchantment;
+/*    */ import net.minecraft.enchantment.EnchantmentHelper;
+/*    */ import net.minecraft.item.ItemStack;
+/*    */ 
+/*    */ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegistrator
+/*    */ {
+/*    */   public ProcessingArrows()
+/*    */   {
+/* 17 */     for (OrePrefixes tPrefix : OrePrefixes.values()) if (tPrefix.name().startsWith("arrowGt")) { tPrefix.add(this);
+/*    */       }
+/*    */   }
+/*    */   
+/*    */   public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack)
+/*    */   {
+/* 23 */     ItemStack tOutput = GT_Utility.copyAmount(1L, new Object[] { aStack });GT_Utility.updateItemStack(tOutput);
+/* 24 */     GT_Utility.ItemNBT.addEnchantment(tOutput, Enchantment.smite, EnchantmentHelper.getEnchantmentLevel(Enchantment.smite.effectId, tOutput) + 3);
+/* 25 */     GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1L, new Object[] { aStack }), Materials.HolyWater.getFluid(25L), tOutput, null, null, null, 100, 2);
+/*    */     
+/* 27 */     tOutput = GT_Utility.copyAmount(1L, new Object[] { aStack });GT_Utility.updateItemStack(tOutput);
+/* 28 */     GT_Utility.ItemNBT.addEnchantment(tOutput, Enchantment.fireAspect, EnchantmentHelper.getEnchantmentLevel(Enchantment.fireAspect.effectId, tOutput) + 3);
+/* 29 */     GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1L, new Object[] { aStack }), Materials.FierySteel.getFluid(25L), tOutput, null, null, null, 100, 2);
+/*    */     
+/* 31 */     tOutput = GT_Utility.copyAmount(1L, new Object[] { aStack });GT_Utility.updateItemStack(tOutput);
+/* 32 */     GT_Utility.ItemNBT.addEnchantment(tOutput, Enchantment.fireAspect, EnchantmentHelper.getEnchantmentLevel(Enchantment.fireAspect.effectId, tOutput) + 1);
+/* 33 */     GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1L, new Object[] { aStack }), Materials.Blaze.getMolten(18L), tOutput, null, null, null, 100, 2);
+/*    */     
+/* 35 */     tOutput = GT_Utility.copyAmount(1L, new Object[] { aStack });GT_Utility.updateItemStack(tOutput);
+/* 36 */     GT_Utility.ItemNBT.addEnchantment(tOutput, Enchantment.knockback, EnchantmentHelper.getEnchantmentLevel(Enchantment.knockback.effectId, tOutput) + 1);
+/* 37 */     GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1L, new Object[] { aStack }), Materials.Rubber.getMolten(18L), tOutput, null, null, null, 100, 2);
+/*    */     
+/* 39 */     tOutput = GT_Utility.copyAmount(1L, new Object[] { aStack });GT_Utility.updateItemStack(tOutput);
+/* 40 */     GT_Utility.ItemNBT.addEnchantment(tOutput, gregtech.api.enchants.Enchantment_EnderDamage.INSTANCE, EnchantmentHelper.getEnchantmentLevel(gregtech.api.enchants.Enchantment_EnderDamage.INSTANCE.effectId, tOutput) + 1);
+/* 41 */     GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1L, new Object[] { aStack }), Materials.Mercury.getFluid(25L), tOutput, null, null, null, 100, 2);
+/*    */   }
+/*    */ }
 
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.loaders.oreprocessing.ProcessingArrows
- * JD-Core Version:    0.7.0.1
+
+/* Location:              F:\Torrent\minecraft\jdgui test\gregtech_1.7.10-5.07.07-dev.jar!\gregtech\loaders\oreprocessing\ProcessingArrows.class
+ * Java compiler version: 6 (50.0)
+ * JD-Core Version:       0.7.1-SNAPSHOT-20140817
  */

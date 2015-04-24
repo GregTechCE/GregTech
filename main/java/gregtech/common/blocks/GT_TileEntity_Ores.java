@@ -240,7 +240,7 @@ import gregtech.api.enums.Textures;
 /* 237:    */   {
 /* 238:210 */     Materials aMaterial = GregTech_API.sGeneratedMaterials[(this.mMetaData % 1000)];
 /* 239:211 */     if ((aMaterial != null) && (this.mMetaData < 32000)) {
-/* 240:211 */       return new ITexture[] { mStoneTextures[(this.mMetaData / 1000 % 16)], new GT_RenderedTexture(aMaterial.mIconSet.mTextures[OrePrefixes.oreSmall.mTextureIndex], aMaterial.mRGBa) };
+/* 240:211 */       return new ITexture[] { mStoneTextures[(this.mMetaData / 1000 % 16)], new GT_RenderedTexture(aMaterial.mIconSet.mTextures[this.mMetaData/16000 ==0 ? OrePrefixes.ore.mTextureIndex:OrePrefixes.oreSmall.mTextureIndex], aMaterial.mRGBa) };
 /* 241:    */     }
 /* 242:212 */     return new ITexture[] { mStoneTextures[0], new GT_RenderedTexture(gregtech.api.enums.TextureSet.SET_NONE.mTextures[OrePrefixes.ore.mTextureIndex]) };
 /* 243:    */   }

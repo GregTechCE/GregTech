@@ -65,7 +65,7 @@ import gregtech.api.enums.Textures;
 /*  62:    */   
 /*  63:    */   public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack)
 /*  64:    */   {
-/*  65: 59 */     if (super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack)) {}
+    if (!super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack)) {return false;}
 /*  66: 59 */     return GT_ModHandler.getMaceratorOutput(GT_Utility.copyAmount(64L, new Object[] { aStack }), false, null) != null;
 /*  67:    */   }
 /*  68:    */   
