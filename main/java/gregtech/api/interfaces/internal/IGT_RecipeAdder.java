@@ -241,6 +241,25 @@ public interface IGT_RecipeAdder {
 	
 	/**
 	 * Adds a Distillation Tower Recipe
+	 * @param aInput1 must be != null
+	 * @param aOutputs must be != null 1-5 Fluids
+	 * @param aOutput2 can be null
+	 */
+	public boolean addDistillationTowerRecipe(FluidStack aInput, FluidStack[] aOutputs, ItemStack aOutput2, int aDuration, int aEUt);
+		
+	
+	public boolean addSimpleArcFurnaceRecipe(ItemStack aInput, FluidStack aFluidInput, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt);
+	
+	public boolean addPlasmaArcFurnaceRecipe(ItemStack aInput, FluidStack aFluidInput, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt);
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * Adds a Distillation Tower Recipe
 	 */
 	public boolean addDistillationRecipe(ItemStack aInput1, int aInput2, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, int aDuration, int aEUt);
 	

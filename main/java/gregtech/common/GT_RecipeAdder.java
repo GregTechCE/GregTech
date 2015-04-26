@@ -280,18 +280,28 @@
 /* 278:198 */     new GT_Recipe(aInput1, aInput2, aOutput1, aOutput2);
 /* 279:199 */     return true;
 /* 280:    */   }
-/* 281:    */   
+/* 281:    */   @Deprecated
 /* 282:    */   public boolean addDistillationRecipe(ItemStack aInput1, int aInput2, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, int aDuration, int aEUt)
 /* 283:    */   {
-/* 284:204 */     if ((aInput1 == null) || (aOutput1 == null)) {
-/* 285:204 */       return false;
-/* 286:    */     }
-/* 287:205 */     if ((aDuration = GregTech_API.sRecipeFile.get("distillation", aInput1, aDuration)) <= 0) {
-/* 288:205 */       return false;
-/* 289:    */     }
-/* 290:206 */     new GT_Recipe(aInput1, aInput2, aOutput1, aOutput2, aOutput3, aOutput4, aDuration, aEUt);
-/* 291:207 */     return true;
+///* 284:204 */     if ((aInput1 == null) || (aOutput1 == null)) {
+///* 285:204 */       return false;
+///* 286:    */     }
+///* 287:205 */     if ((aDuration = GregTech_API.sRecipeFile.get("distillation", aInput1, aDuration)) <= 0) {
+///* 288:205 */       return false;
+///* 289:    */     }
+///* 290:206 */     new GT_Recipe(aInput1, aInput2, aOutput1, aOutput2, aOutput3, aOutput4, aDuration, aEUt);
+///* 291:207 */     return true;
+	return false;
 /* 292:    */   }
+
+				public boolean addDistillationTowerRecipe(FluidStack aInput, FluidStack[] aOutputs, ItemStack aOutput2, int aDuration, int aEUt){
+					if(aInput==null||aOutputs==null||aOutputs.length<1||aOutputs.length>5){return false;}
+					if((aDuration = GregTech_API.sRecipeFile.get("distillation", aInput.getUnlocalizedName(), aDuration))<=0){
+						return false;
+					}
+					GT_Recipe.GT_Recipe_Map.sDistillationRecipes.addRecipe(true, null,new ItemStack[]{ aOutput2}, null, new FluidStack[]{ aInput}, aOutputs, Math.min(aDuration,16), Math.max(1, aEUt), 0);
+					return false;
+				}
 /* 293:    */   
 /* 294:    */   public boolean addVacuumFreezerRecipe(ItemStack aInput1, ItemStack aOutput1, int aDuration)
 /* 295:    */   {
@@ -620,7 +630,43 @@
 /* 618:    */     }
 /* 619:423 */     return false;
 /* 620:    */   }
-/* 621:    */   
+
+/* 621:    */   public boolean addSimpleArcFurnaceRecipe(ItemStack aInput, FluidStack aFluidInput, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt)
+/* 598:    */   {
+/* 599:413 */     if ((aInput == null) || (aOutputs == null)||aFluidInput==null) {
+/* 600:413 */       return false;
+/* 601:    */     }
+/* 602:414 */     for (ItemStack tStack : aOutputs) {
+/* 603:414 */       if (tStack != null)
+/* 604:    */       {
+/* 605:415 */         if ((aDuration = GregTech_API.sRecipeFile.get("arcfurnace", aInput, aDuration)) <= 0) {
+/* 606:415 */           return false;
+/* 607:    */         }
+/* 608:416 */         GT_Recipe.GT_Recipe_Map.sArcFurnaceRecipes.addRecipe(true, new ItemStack[] { aInput }, aOutputs, null, aChances, new FluidStack[] { aFluidInput }, null, Math.max(1, aDuration), Math.max(1, aEUt), 0);
+/* 609:417 */         return true;
+/* 617:    */       }
+/* 618:    */     }
+/* 619:423 */     return false;
+/* 620:    */   }
+
+/* 621:    */   public boolean addPlasmaArcFurnaceRecipe(ItemStack aInput, FluidStack aFluidInput, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt)
+/* 598:    */   {
+/* 599:413 */     if ((aInput == null) || (aOutputs == null)||aFluidInput==null) {
+/* 600:413 */       return false;
+/* 601:    */     }
+/* 602:414 */     for (ItemStack tStack : aOutputs) {
+/* 603:414 */       if (tStack != null)
+/* 604:    */       {
+/* 605:415 */         if ((aDuration = GregTech_API.sRecipeFile.get("arcfurnace", aInput, aDuration)) <= 0) {
+/* 606:415 */           return false;
+/* 607:    */         }
+/* 608:416 */         GT_Recipe.GT_Recipe_Map.sPlasmaArcFurnaceRecipes.addRecipe(true, new ItemStack[] { aInput }, aOutputs, null, aChances, new FluidStack[] { aFluidInput }, null, Math.max(1, aDuration), Math.max(1, aEUt), 0);
+/* 609:417 */         return true;
+/* 617:    */       }
+/* 618:    */     }
+/* 619:423 */     return false;
+/* 620:    */   }
+
 /* 622:    */   public boolean addPulveriserRecipe(ItemStack aInput, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt)
 /* 623:    */   {
 /* 624:428 */     if ((aInput == null) || (aOutputs == null)) {

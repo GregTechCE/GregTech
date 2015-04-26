@@ -33,7 +33,7 @@ public class GT_MetaTileEntity_FusionComputer1 extends GT_MetaTileEntity_FusionC
 	public int getFusionCoilMeta() {return 15;}
 	
 	public String[] getDescription()
-	 {return new String[] { "It's over 9000!!!","LuV Casings around Superconducting Coils","2-16 Input Hatches","1-16 Output Hatches","1-16 Energy Hatches","All Hatches must be LuV or better" };}
+	 {return new String[] { "It's over 9000!!!","LuV Casings around Superconducting Coils","2-16 Input Hatches","1-16 Output Hatches","1-16 Energy Hatches","All Hatches must be LuV or better","2048EU/t and 10mio EU Cap per Energy Hatch" };}
 
 	@Override
 	public int tierOverclock() {return 1;}

@@ -7,6 +7,7 @@ import gregtech.api.enums.Textures;
 /*   6:    */ import gregtech.api.interfaces.ITexture;
 /*   7:    */ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 /*   8:    */ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 /*   9:    */ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 /*  10:    */ import gregtech.api.objects.GT_RenderedTexture;
 /*  11:    */ import gregtech.api.util.GT_Recipe;
@@ -19,6 +20,7 @@ import net.minecraft.block.Block;
 /*  15:    */ import net.minecraft.entity.player.InventoryPlayer;
 /*  16:    */ import net.minecraft.item.ItemStack;
 /*  17:    */ import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 /*  18:    */ 
 /*  19:    */ public class GT_MetaTileEntity_DistillationTower
 /*  20:    */   extends GT_MetaTileEntity_MultiBlockBase
@@ -40,7 +42,7 @@ import net.minecraft.block.Block;
 /*  36:    */   
 /*  37:    */   public String[] getDescription()
 /*  38:    */   {
-/*  39: 38 */     return new String[] { "Controller Block for the Distillation Tower", "Size: 3x6x3 (Hollow)", "Controller (front bottom)", "1x Input Hatch (anywhere)", "6x Output Hatch (anywhere)", "1x Energy Hatch (anywhere)", "1x Maintenance Hatch (anywhere)", "Clean Stainless Steel Casings for the rest (26 at least!)" };
+/*  39: 38 */     return new String[] { "Controller Block for the Distillation Tower", "Size: 3x6x3 (Hollow)", "Controller (front bottom)", "1x Input Hatch (bottom)", "5x Output Hatch (one each height level besides botton)","1x Output Bus (Botton)", "1x Energy Hatch (anywhere)", "1x Maintenance Hatch (anywhere)", "Clean Stainless Steel Casings for the rest (26 at least!)" };
 /*  40:    */   }
 /*  41:    */   
 /*  42:    */   public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone)
@@ -73,15 +75,13 @@ import net.minecraft.block.Block;
 /*  69:    */   
 /*  70:    */   public boolean checkRecipe(ItemStack aStack)
 /*  71:    */   {
-/*  72: 66 */     ArrayList<ItemStack> tInputList = getStoredInputs();
-/*  73: 68 */     for (ItemStack tInput : tInputList)
-/*  74:    */     {
+/*  72: 66 */     
 /*  75: 69 */       long tVoltage = getMaxInputVoltage();
 /*  76: 70 */       byte tTier = (byte)Math.max(1, GT_Utility.getTier(tVoltage));
-/*  77:    */       
-/*  78: 72 */       GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sDistillationRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], null, new ItemStack[] { tInput });
+/*  77:    */       if(this.mInputHatches.size()>0&&this.mInputHatches.get(0)!=null&&this.mInputHatches.get(0).mFluid!=null&&this.mInputHatches.get(0).mFluid.amount>0){
+/*  78: 72 */       GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sDistillationRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], new FluidStack[]{this.mInputHatches.get(0).mFluid}, new ItemStack[] {});
 /*  79: 73 */       if (tRecipe != null) {
-/*  80: 73 */         if (tRecipe.isRecipeInputEqual(true, null, new ItemStack[] { tInput }))
+/*  80: 73 */         if (tRecipe.isRecipeInputEqual(true, new FluidStack[]{this.mInputHatches.get(0).mFluid}, new ItemStack[] {}))
 /*  81:    */         {
 /*  82: 74 */           this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
 /*  83: 75 */           this.mEfficiencyIncrease = 10000;
@@ -105,11 +105,12 @@ import net.minecraft.block.Block;
 /* 101:    */           }
 /* 102: 90 */           this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
 /* 103: 91 */           this.mOutputItems = new ItemStack[] { tRecipe.getOutput(0) };
+						this.mOutputFluids = tRecipe.mFluidOutputs;
 /* 104: 92 */           updateSlots();
 /* 105: 93 */           return true;
 /* 106:    */         }
-/* 107:    */       }
-/* 108:    */     }
+/* 107:    */       }}
+/* 108:    */     
 /* 109: 96 */     return false;
 /* 110:    */   }
 /* 111:    */   private static boolean controller;
@@ -141,6 +142,16 @@ import net.minecraft.block.Block;
 /* 136:    */         }
 /* 137:    */       }
 /* 138:    */     }
+					if(this.mInputHatches.size()!=1||this.mOutputBusses.size()!=1||this.mInputBusses.size()!=0||this.mOutputHatches.size()!=5){return false;}
+					int height = this.getBaseMetaTileEntity().getYCoord();
+					if(this.mInputHatches.get(0).getBaseMetaTileEntity().getYCoord()!=height||this.mOutputBusses.get(0).getBaseMetaTileEntity().getYCoord()!=height){return false;}
+					GT_MetaTileEntity_Hatch_Output[] tmpHatches = new GT_MetaTileEntity_Hatch_Output[5];
+					for(int i=0;i< this.mOutputHatches.size();i++){
+						int hatchNumber = this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()-1-height;
+						if(tmpHatches[hatchNumber]==null){
+							tmpHatches[hatchNumber]=this.mOutputHatches.get(i);
+						}else{return false;}
+					}
 /* 139:116 */     return tAmount >= 26;
 /* 140:    */   }
 

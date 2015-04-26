@@ -563,7 +563,23 @@
 						this.mInputs.add(new FixedPositionedStack( GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[1], true), 30, 52));
 					}
 /* 562:    */       }
-/* 563:265 */       if ((aRecipe.mFluidOutputs.length > 0) && (aRecipe.mFluidOutputs[0] != null) && (aRecipe.mFluidOutputs[0].getFluid() != null)) {
+					if(aRecipe.mFluidOutputs.length>1){
+						if(aRecipe.mFluidOutputs[0]!=null && (aRecipe.mFluidOutputs[0].getFluid() != null)){
+							 this.mOutputs.add(new FixedPositionedStack( GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true), 120, 5));
+						}
+						if(aRecipe.mFluidOutputs[1]!=null && (aRecipe.mFluidOutputs[1].getFluid() != null)){
+							 this.mOutputs.add(new FixedPositionedStack( GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[1], true), 138, 5));
+						}
+						if(aRecipe.mFluidOutputs.length>2&&aRecipe.mFluidOutputs[2]!=null && (aRecipe.mFluidOutputs[2].getFluid() != null)){
+							 this.mOutputs.add(new FixedPositionedStack( GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[2], true), 102, 23));
+						}
+						if(aRecipe.mFluidOutputs.length>3&&aRecipe.mFluidOutputs[3]!=null && (aRecipe.mFluidOutputs[3].getFluid() != null)){
+							 this.mOutputs.add(new FixedPositionedStack( GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[3], true), 120, 23));
+						}
+						if(aRecipe.mFluidOutputs.length>4&&aRecipe.mFluidOutputs[4]!=null && (aRecipe.mFluidOutputs[4].getFluid() != null)){
+							 this.mOutputs.add(new FixedPositionedStack( GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[4], true), 138, 23));
+						}
+					}else if ((aRecipe.mFluidOutputs.length > 0) && (aRecipe.mFluidOutputs[0] != null) && (aRecipe.mFluidOutputs[0].getFluid() != null)) {
 /* 564:265 */         this.mOutputs.add(new FixedPositionedStack( GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true), 102, 52));
 /* 565:    */       }
 /* 566:    */     }

@@ -14,6 +14,10 @@ public class GT_Container_MultiMachine extends GT_ContainerMetaTile_Machine {
 		super(aInventoryPlayer, aTileEntity);
 	}
 	
+	public GT_Container_MultiMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, boolean bindInventory) {
+		super(aInventoryPlayer, aTileEntity, bindInventory);
+	}
+	
     @Override
 	public void addSlots(InventoryPlayer aInventoryPlayer) {
         addSlotToContainer(new Slot(mTileEntity,  1, 152,   5));

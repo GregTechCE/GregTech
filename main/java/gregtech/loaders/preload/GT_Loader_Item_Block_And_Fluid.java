@@ -29,6 +29,7 @@ import gregtech.api.items.GT_RadioactiveCellIC_Item;
 /*  28:    */ import gregtech.common.blocks.GT_Block_Machines;
 /*  29:    */ import gregtech.common.blocks.GT_Block_Ores;
 /*  30:    */ import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.items.GT_DepletetCell_Item;
 /*  31:    */ import gregtech.common.items.GT_FluidDisplayItem;
 /*  32:    */ import gregtech.common.items.GT_IntegratedCircuit_Item;
 /*  33:    */ import gregtech.common.items.GT_MetaGenerated_Item_01;
@@ -37,6 +38,7 @@ import gregtech.api.items.GT_RadioactiveCellIC_Item;
 /*  36:    */ import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.GT_NeutronReflector_Item;
 import ic2.core.Ic2Items;
+import ic2.core.item.ItemRadioactive;
 
 /*  37:    */ import java.io.PrintStream;
 
@@ -141,6 +143,15 @@ import ic2.core.Ic2Items;
 					ItemList.ThoriumCell_4.set(new GT_RadioactiveCellIC_Item("Quad_Thoriumcell", "Quad Fuel Rod (Thorium)", 4, 50000, 0.2D,0));
 					GT_ModHandler.addCraftingRecipe(ItemList.ThoriumCell_4.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE , new Object[] { "RPR", "CPC", "RPR",'R', ItemList.ThoriumCell_1 ,'P', OrePrefixes.plate.get(Materials.Iron),'C', OrePrefixes.plate.get(Materials.Copper) });    
 				
+					ItemList.Depleted_Thorium_1.set(new GT_DepletetCell_Item("ThoriumcellDep","Fuel Rod (Depleted Thorium)",1));
+					ItemList.Depleted_Thorium_2.set(new GT_DepletetCell_Item("Double_ThoriumcellDep","Dual Fuel Rod (Depleted Thorium)",2));
+					ItemList.Depleted_Thorium_4.set(new GT_DepletetCell_Item("Quad_ThoriumcellDep","Quad Fuel Rod (Depleted Thorium)",4));
+
+					GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_1.get(1, new Object[0]), 5000, new Object[]{ GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lutetium, 1L),GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Thorium, 2L),GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L)});
+					GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_2.get(1, new Object[0]), 5000, new Object[]{ GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lutetium, 2L),GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Thorium, 4L),GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 3L)});
+					GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_4.get(1, new Object[0]), 5000, new Object[]{ GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lutetium, 4L),GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Thorium, 8L),GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 6L)});
+
+					
 /* 108:    */     
 /* 109:110 */     GT_Log.out.println("GT_Mod: Adding Blocks.");
 /* 110:111 */     GregTech_API.sBlockMachines = new GT_Block_Machines();

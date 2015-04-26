@@ -486,7 +486,7 @@ import gregtech.api.util.GT_Utility;
 /* 474:442 */     setElectricStats(32000 + tLastID, 1000000000L, GT_Values.V[6], 6L, -3L, true);
 /* 475:    */     
 /* 476:444 */     ItemList.ZPM2.set(addItem(tLastID = 605, "Ultimate Battery", "Fill this to win minecraft", new Object[] { new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L) }));
-/* 477:445 */     setElectricStats(32000 + tLastID, Long.MAX_VALUE, GT_Values.V[9], 9L, -3L, true);
+/* 477:445 */     setElectricStats(32000 + tLastID, Long.MAX_VALUE, GT_Values.V[8], 8L, -3L, true);
 /* 478:    */     
 /* 479:447 */     ItemList.Electric_Motor_LV.set(addItem(tLastID = 600, "Electric Motor (LV)", "", new Object[] { new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 1L) }));
 /* 480:448 */     ItemList.Electric_Motor_MV.set(addItem(tLastID = 601, "Electric Motor (MV)", "", new Object[] { new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 2L) }));
@@ -636,18 +636,6 @@ import gregtech.api.util.GT_Utility;
 /* 624:592 */     GT_ModHandler.addCraftingRecipe(ItemList.Sensor_EV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[] { "P Q", "PS ", "CPP", Character.valueOf('Q'), OrePrefixes.gem.get(Materials.EnderPearl), Character.valueOf('S'), OrePrefixes.stick.get(Materials.Platinum), Character.valueOf('P'), OrePrefixes.plate.get(Materials.Titanium), Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Elite) });
 /* 625:593 */     GT_ModHandler.addCraftingRecipe(ItemList.Sensor_IV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[] { "P Q", "PS ", "CPP", Character.valueOf('Q'), OrePrefixes.gem.get(Materials.EnderEye), Character.valueOf('S'), OrePrefixes.stick.get(Materials.Osmium), Character.valueOf('P'), OrePrefixes.plate.get(Materials.TungstenSteel), Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Master) });
 /* 626:    */     
-
-ItemList.Depleted_Thorium_1.set(addItem(tLastID = 695, "Fuel Rod (Depleted Thorium)", "Burned out", new Object[0]));
-ItemList.Depleted_Thorium_2.set(addItem(tLastID = 696, "Dual Fuel Rod (Depleted Thorium)", "Burned out", new Object[0]));
-ItemList.Depleted_Thorium_4.set(addItem(tLastID = 697, "Quad Fuel Rod (Depleted Thorium)", "Burned out", new Object[0]));
-
-GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_1.get(1, new Object[0]), 5000, new Object[]{ GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lutetium, 1L),GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Thorium, 2L),GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L)});
-GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_2.get(1, new Object[0]), 5000, new Object[]{ GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lutetium, 2L),GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Thorium, 4L),GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 3L)});
-GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_4.get(1, new Object[0]), 5000, new Object[]{ GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lutetium, 4L),GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Thorium, 8L),GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 6L)});
-
-
-
-
 /* 627:595 */     ItemList.Circuit_Primitive.set(addItem(tLastID = 700, "NAND Chip", "A very simple Circuit", new Object[] { OrePrefixes.circuit.get(Materials.Primitive) }));
 /* 628:596 */     ItemList.Circuit_Basic.set(addItem(tLastID = 701, "Basic Electronic Circuit", "A basic Circuit", new Object[] { OrePrefixes.circuit.get(Materials.Basic) }));
 /* 629:597 */     ItemList.Circuit_Good.set(addItem(tLastID = 702, "Good Electronic Circuit", "A good Circuit", new Object[] { OrePrefixes.circuit.get(Materials.Good) }));

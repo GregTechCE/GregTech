@@ -169,7 +169,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 					    		
 						    	if (mMaxProgresstime > 0 && ++mProgresstime>=mMaxProgresstime) {
 						    		if (mOutputItems != null) for (ItemStack tStack : mOutputItems) if (tStack != null) addOutput(tStack);
-						    		if (mOutputFluids != null) for (FluidStack tStack : mOutputFluids) if (tStack != null) addOutput(tStack);
+						    		if (mOutputFluids != null&&mOutputFluids.length==1) {for (FluidStack tStack : mOutputFluids) if (tStack != null) addOutput(tStack);}
+						    		else if(mOutputFluids!=null&&mOutputFluids.length>1){
+						    			System.out.println("addfluids");
+						    			addFluidOutputs(mOutputFluids);}
 						    		mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
 						    		mOutputItems = null;
 						    		mProgresstime = 0;
@@ -197,7 +200,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 			aBaseMetaTileEntity.setActive(mMaxProgresstime>0);
 		}
 	}
-	
+
 	public boolean polluteEnvironment(int aPollutionLevel) {
 		mPollution += aPollutionLevel;
 		for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
@@ -376,6 +379,15 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 			}
 		}
 		return false;
+	}
+	
+	private void addFluidOutputs(FluidStack[] mOutputFluids2) {
+		for(int i=0;i<mOutputFluids2.length;i++){
+			if(mOutputHatches.size()>=i&&mOutputHatches.get(i)!=null&&mOutputFluids2[i]!=null&&isValidMetaTileEntity(mOutputHatches.get(i))){
+				mOutputHatches.get(i).fill(mOutputFluids2[i], true);
+			}
+		}
+		
 	}
 	
 	public boolean depleteInput(FluidStack aLiquid) {

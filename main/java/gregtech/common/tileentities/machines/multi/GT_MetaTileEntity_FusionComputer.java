@@ -20,6 +20,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.metatileentity.implementations.*;
+import gregtech.common.gui.GT_GUIContainer_FusionReactor;
 import net.minecraft.block.Block;
 /*   8:    */ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -47,11 +48,15 @@ import net.minecraftforge.fluids.FluidStack;
 /*  40:    */   
 /*  41:    */   public abstract long maxEUStore();
 /*  50:    */   
-/*  51:    */   public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer)
-/*  52:    */   {
-/*  53: 31 */     getBaseMetaTileEntity().openGUI(aPlayer, 143);
-/*  54: 32 */     return true;
-/*  55:    */   }
+				@Override
+				public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+					return new GT_Container_MultiMachine(aPlayerInventory, aBaseMetaTileEntity);
+				}
+
+				@Override
+				public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+					return new GT_GUIContainer_FusionReactor(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "FusionComputer.png");
+				}
 /*  56:    */   
 /*  57:    */   public abstract MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity);
 /*  61:    */   

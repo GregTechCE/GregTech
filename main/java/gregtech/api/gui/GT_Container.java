@@ -3,6 +3,7 @@ package gregtech.api.gui;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer;
 
 import java.util.List;
 

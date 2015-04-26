@@ -29,6 +29,19 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
     		aInventoryPlayer.player.openContainer = aInventoryPlayer.player.inventoryContainer;
     	}
     }
+    public GT_ContainerMetaTile_Machine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, boolean doesBindInventory){
+    	super(aInventoryPlayer, aTileEntity);
+    	mTileEntity = aTileEntity;
+        
+    	if (mTileEntity != null && mTileEntity.getMetaTileEntity() != null) {
+            addSlots(aInventoryPlayer);
+            if (doesBindPlayerInventory()&&doesBindInventory) bindPlayerInventory(aInventoryPlayer);
+            detectAndSendChanges();
+    	} else {
+    		aInventoryPlayer.player.openContainer = aInventoryPlayer.player.inventoryContainer;
+    	}
+    }
+    
     
     public  int mActive = 0, mMaxProgressTime = 0, mProgressTime = 0, mEnergy = 0, mSteam = 0, mSteamStorage = 0, mStorage = 0, mOutput = 0, mInput = 0, mID = 0, mDisplayErrorCode = 0;
     private int oActive = 0, oMaxProgressTime = 0, oProgressTime = 0, oEnergy = 0, oSteam = 0, oSteamStorage = 0, oStorage = 0, oOutput = 0, oInput = 0, oID = 0, oDisplayErrorCode = 0, mTimer = 0;
