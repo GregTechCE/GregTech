@@ -111,8 +111,7 @@ import gregtech.api.enums.Textures;
 /* 108:    */     {
 /* 109: 99 */       for (Iterator i$ = GT_MetaGenerated_Tool_01.INSTANCE.mToolStats.values().iterator(); i$.hasNext(); i$.next())
 /* 110:    */       {
-/* 111: 99 */         IToolStats tStat = (IToolStats)i$;
-/* 112: 99 */         if (((tStat instanceof GT_Tool_Crowbar)) || (!tStat.isMinableBlock(aBlock, aMetaData))) {}
+/* 112: 99 */         if (((i$ instanceof GT_Tool_Crowbar)) || (!((IToolStats)i$).isMinableBlock(aBlock, aMetaData))) {return false;}
 /* 113:    */       }
 /* 114:100 */       return true;
 /* 115:    */     }

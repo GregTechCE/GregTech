@@ -41,6 +41,7 @@ import gregtech.api.enums.ConfigCategories;
 /* 40:   */ import gregtech.common.tools.GT_Tool_Sense;
 /* 41:   */ import gregtech.common.tools.GT_Tool_Shovel;
 /* 42:   */ import gregtech.common.tools.GT_Tool_SoftHammer;
+import gregtech.common.tools.GT_Tool_Soldering_Iron;
 /* 43:   */ import gregtech.common.tools.GT_Tool_Sword;
 /* 44:   */ import gregtech.common.tools.GT_Tool_UniversalSpade;
 /* 45:   */ import gregtech.common.tools.GT_Tool_WireCutter;
@@ -92,6 +93,7 @@ import gregtech.api.enums.ConfigCategories;
 /* 91:   */   public static final short JACKHAMMER = 130;
 /* 92:   */   public static final short BUZZSAW = 140;
 /* 93:   */   public static final short SCREWDRIVER_LV = 150;
+			  public static final short SOLDERING_IRON_LV = 160;
 /* 94:   */   
 /* 95:   */   public GT_MetaGenerated_Tool_01()
 /* 96:   */   {
@@ -134,7 +136,8 @@ import gregtech.api.enums.ConfigCategories;
 /* =3:56 */     addTool(130, "JackHammer (HV)", "Breaks Rocks into pieces", new GT_Tool_JackHammer(), new Object[] { ToolDictNames.craftingToolJackHammer, new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERFODIO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERDITIO, 2L) });
 /* =4:57 */     addTool(140, "Buzzsaw (LV)", "Not suitable for harvesting Blocks", new GT_Tool_BuzzSaw(), new Object[] { ToolDictNames.craftingToolSaw, new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 2L) });
 /* =5:58 */     GregTech_API.registerTool(addTool(150, "Screwdriver (LV)", "Adjusts Covers and Machines", new GT_Tool_Screwdriver_LV(), new Object[] { ToolDictNames.craftingToolScrewdriver, new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L) }), GregTech_API.sScrewdriverList);
-/* =6:   */     
+/* =6:   */     GregTech_API.registerTool(addTool(SOLDERING_IRON_LV, "Soldering Iron (LV)", "Fixes burned out Circuits. Needs soldering materials in inventory", new GT_Tool_Soldering_Iron(), new Object[] { ToolDictNames.craftingToolSolderingIron, new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L) }),  GregTech_API.sSolderingToolList);
+
 /* =7:60 */     GT_ModHandler.addCraftingRecipe(INSTANCE.getToolWithStats(24, 1, Materials.Flint, Materials.Stone, null), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { " I ", "SIS", "SSS", Character.valueOf('I'), new ItemStack(Items.flint, 1), Character.valueOf('S'), OrePrefixes.stone });
 /* =8:61 */     GT_ModHandler.addCraftingRecipe(INSTANCE.getToolWithStats(24, 1, Materials.Bronze, Materials.Stone, null), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { " I ", "SIS", "SSS", Character.valueOf('I'), OrePrefixes.ingot.get(Materials.Bronze), Character.valueOf('S'), OrePrefixes.stone });
 /* =9:62 */     GT_ModHandler.addCraftingRecipe(INSTANCE.getToolWithStats(24, 1, Materials.Iron, Materials.Stone, null), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { " I ", "SIS", "SSS", Character.valueOf('I'), OrePrefixes.ingot.get(Materials.Iron), Character.valueOf('S'), OrePrefixes.stone });

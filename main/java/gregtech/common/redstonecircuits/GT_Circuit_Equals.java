@@ -35,14 +35,8 @@
 /* 35:   */   
 /* 36:   */   public void onTick(int[] aCircuitData, IRedstoneCircuitBlock aRedstoneCircuitBlock)
 /* 37:   */   {
-///* 38:28 */     if (getStrongestRedstone(aRedstoneCircuitBlock) == aCircuitData[0]) {
-///* 39:28 */       if (getStrongestRedstone(aRedstoneCircuitBlock) != (aCircuitData[1] == 0 ? aRedstoneCircuitBlock : aCircuitData[0]))
-///* 40:   */       {
-///* 41:28 */         tmpTernaryOp = 15;
-///* 42:   */         break label36;
-///* 43:   */       }
-///* 44:   */     }
-/* 45:   */   }
+    aRedstoneCircuitBlock.setRedstone(((byte)((aCircuitData[1] != 0 ? getStrongestRedstone(aRedstoneCircuitBlock) == aCircuitData[0] : getStrongestRedstone(aRedstoneCircuitBlock) != aCircuitData[0]) ? 0 : 15)), aRedstoneCircuitBlock.getOutputFacing());
+}
 /* 46:   */   
 /* 47:   */   public String getName()
 /* 48:   */   {

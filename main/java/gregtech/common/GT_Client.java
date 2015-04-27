@@ -192,6 +192,16 @@ label0:
                 e.printStackTrace(GT_Log.err);
             }
 
+        
+//        super.onPostLoad();
+//        /*     */     
+//        /*  83 */     for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
+//        /*     */       try {
+//        /*  85 */         for (; i < GregTech_API.METATILEENTITIES.length; i++) if (GregTech_API.METATILEENTITIES[i] != null) GregTech_API.METATILEENTITIES[i].getStackForm(1L).getTooltip(null, true);
+//        /*     */       } catch (Throwable e) {
+//        /*  87 */         e.printStackTrace(GT_Log.err);
+//        /*     */       }
+//        /*     */     }
     }
 
   public void run()

@@ -1,6 +1,8 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.V;
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.ConfigCategories;
 import gregtech.api.gui.GT_Container_MultiMachine;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -25,6 +27,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 	public int mPollution = 0, mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mEfficiencyIncrease = 0, mUpdate = 0, mStartUpCheck = 100, mRuntime = 0, mEfficiency = 0;
 	public ItemStack[] mOutputItems = null;
 	public FluidStack[] mOutputFluids = null;
+	public static boolean disableMaintenance;
 	
 	public ArrayList<GT_MetaTileEntity_Hatch_Input> mInputHatches = new ArrayList<GT_MetaTileEntity_Hatch_Input>();
 	public ArrayList<GT_MetaTileEntity_Hatch_Output> mOutputHatches = new ArrayList<GT_MetaTileEntity_Hatch_Output>();
@@ -37,10 +40,12 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 	
 	public GT_MetaTileEntity_MultiBlockBase(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional, 2);
+		this.disableMaintenance = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "MultiBlockMachines.disableMaintenance", false);
 	}
 	
 	public GT_MetaTileEntity_MultiBlockBase(String aName) {
 		super(aName, 2);
+		this.disableMaintenance = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "MultiBlockMachines.disableMaintenance", false);
 	}
 	
 	@Override
@@ -145,12 +150,20 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 				if (mMachine) {
 					for (GT_MetaTileEntity_Hatch_Maintenance tHatch : mMaintenanceHatches) {
 						if (isValidMetaTileEntity(tHatch)) {
+							if(!this.disableMaintenance){
 							if (tHatch.mWrench) mWrench = true;
 							if (tHatch.mScrewdriver) mScrewdriver = true;
 							if (tHatch.mSoftHammer) mSoftHammer = true;
 							if (tHatch.mHardHammer) mHardHammer = true;
 							if (tHatch.mSolderingTool) mSolderingTool = true;
-							if (tHatch.mCrowbar) mCrowbar = true;
+							if (tHatch.mCrowbar) mCrowbar = true;}else{
+									mWrench = true;
+									mScrewdriver = true;
+									mSoftHammer = true;
+									mHardHammer = true;
+									mSolderingTool = true;
+									mCrowbar = true;
+							}
 							
 							tHatch.mWrench = false;
 							tHatch.mScrewdriver = false;

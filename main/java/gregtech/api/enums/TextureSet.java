@@ -101,7 +101,7 @@ public class TextureSet {
 		mTextures[ 46] = new Textures.ItemIcons .CustomIcon("materialicons/"+mSetName+"/toolHeadArrow");
 		mTextures[ 47] = new Textures.ItemIcons .CustomIcon("materialicons/"+mSetName+"/toolHeadScrewdriver");
 		mTextures[ 48] = new Textures.ItemIcons .CustomIcon("materialicons/"+mSetName+"/toolHeadBuzzSaw");
-		mTextures[ 49] = new Textures.ItemIcons .CustomIcon("materialicons/"+mSetName+"/void");
+		mTextures[ 49] = new Textures.ItemIcons .CustomIcon("materialicons/"+mSetName+"/toolHeadSoldering");
 		mTextures[ 50] = new Textures.ItemIcons .CustomIcon("materialicons/"+mSetName+"/void");
 		mTextures[ 51] = new Textures.ItemIcons .CustomIcon("materialicons/"+mSetName+"/wireFine");
 		mTextures[ 52] = new Textures.ItemIcons .CustomIcon("materialicons/"+mSetName+"/gearGtSmall");

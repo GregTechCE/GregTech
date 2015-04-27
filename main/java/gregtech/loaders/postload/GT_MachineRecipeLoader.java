@@ -669,9 +669,11 @@ public class GT_MachineRecipeLoader
     GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 1L), GT_Values.NI, Materials.Oxygen.getGas(1000L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.AnnealedCopper, 1L), GT_Values.NI, 500, 120, 1200);
     GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Copper, 1L), GT_Values.NI, Materials.Oxygen.getGas(1000L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.AnnealedCopper, 1L), GT_Values.NI, 500, 120, 1200);
     
-    GT_Values.RA.addFusionReactorRecipe(Materials.Deuterium.getGas(125), Materials.Tritium.getGas(125), FluidRegistry.getFluidStack("heliumplasma", 125), 16, 4096, 40000000);
-    GT_Values.RA.addFusionReactorRecipe(Materials.Deuterium.getGas(125), Materials.Helium_3.getGas(125), FluidRegistry.getFluidStack("heliumplasma", 125), 16, 2048, 60000000);
-    //GT_Values.RA.addFusionReactorRecipe(Materials.Lithium.getMolten(9), Materials.Tungsten.getMolten(9), Materials.Iridium.getMolten(9), 32, 32768, 150000000);
+//    GT_Values.RA.addFusionReactorRecipe(Materials.Deuterium.getGas(125), Materials.Tritium.getGas(125), FluidRegistry.getFluidStack("heliumplasma", 125), 16, 4096, 40000000);
+//    GT_Values.RA.addFusionReactorRecipe(Materials.Deuterium.getGas(125), Materials.Helium_3.getGas(125), FluidRegistry.getFluidStack("heliumplasma", 125), 16, 2048, 60000000);
+//    GT_Values.RA.addFusionReactorRecipe(Materials.Lithium.getMolten(9), Materials.Tungsten.getMolten(9), Materials.Iridium.getMolten(9), 32, 32768, 150000000);
+    GT_Values.RA.addFusionReactorRecipe(Materials.Deuterium.getGas(125), Materials.Tritium.getGas(125), Materials.Helium.getPlasma(125), 16, 4096, 40000000);
+    GT_Values.RA.addFusionReactorRecipe(Materials.Deuterium.getGas(125), Materials.Helium_3.getGas(125), Materials.Helium.getPlasma(125), 16, 2048, 60000000);
     GT_Values.RA.addFusionReactorRecipe(Materials.Beryllium.getMolten(9), Materials.Tungsten.getMolten(9), Materials.Platinum.getMolten(9), 32, 32768, 300000000);
     GT_Values.RA.addFusionReactorRecipe(Materials.Neodymium.getMolten(9), Materials.Hydrogen.getGas(27), Materials.Europium.getMolten(9), 64, 24576, 150000000);
     GT_Values.RA.addFusionReactorRecipe(Materials.Lutetium.getMolten(9), Materials.Chrome.getMolten(9), Materials.Americium.getMolten(9), 96, 49152, 200000000);

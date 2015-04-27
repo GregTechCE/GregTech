@@ -633,6 +633,10 @@ public enum ItemList implements IItemContainer {
 	MagicEnergyConverter_LV, 
 	MagicEnergyConverter_MV, 
 	MagicEnergyConverter_HV,
+	MagicEnergyAbsorber_LV,
+	MagicEnergyAbsorber_MV,
+	MagicEnergyAbsorber_HV,
+	MagicEnergyAbsorber_EV,
 	Depleted_Thorium_1,
 	Depleted_Thorium_2,
 	Depleted_Thorium_4,
@@ -640,7 +644,6 @@ public enum ItemList implements IItemContainer {
 	Distillation_Tower,
 	Energy_LapotronicOrb2, 
 	ZPM2,
-	
 	NULL;
 	
 	public static final ItemList[]

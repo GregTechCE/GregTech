@@ -37,6 +37,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.event.FMLInterModComms;
@@ -1457,7 +1458,7 @@ public class GT_ModHandler {
 	 * Uses an Item. Tries to discharge in case of Electric Items
 	 */
 	public static boolean damageOrDechargeItem(ItemStack aStack, int aDamage, int aDecharge, EntityLivingBase aPlayer) {
-		if (GT_Utility.isStackInvalid(aStack) || (aStack.getMaxStackSize() <= 1 && aStack.stackSize > 1)) return F;
+		if (GT_Utility.isStackInvalid(aStack) || (aStack.getMaxStackSize() <= 1 && aStack.stackSize > 1)) return F;	
 		if (aPlayer != null && aPlayer instanceof EntityPlayer && ((EntityPlayer)aPlayer).capabilities.isCreativeMode) return T;
 		if (aStack.getItem() instanceof IDamagableItem) {
 			return ((IDamagableItem)aStack.getItem()).doDamageToItem(aStack, aDamage);
@@ -1500,13 +1501,10 @@ public class GT_ModHandler {
 				if (tPlayer.capabilities.isCreativeMode) return T;
 				for (int i = 0; i < tPlayer.inventory.mainInventory.length; i++) {
 					if (GT_Utility.isStackInList(tPlayer.inventory.mainInventory[i], GregTech_API.sSolderingMetalList)) {
-						if (damageOrDechargeItem(aStack, 1, 1000, tPlayer)) {
-							if (tPlayer.inventory.mainInventory[i].getItemDamage() >= tPlayer.inventory.mainInventory[i].getMaxDamage()) tPlayer.inventory.mainInventory[i] = null;
-						    if (damageOrDechargeItem(tPlayer.inventory.mainInventory[i], 1, 1000, tPlayer)) {
-								if (tPlayer.inventory.mainInventory[i].getItemDamage() >= tPlayer.inventory.mainInventory[i].getMaxDamage()) tPlayer.inventory.mainInventory[i] = null;
-							    if (tPlayer.inventoryContainer != null) tPlayer.inventoryContainer.detectAndSendChanges();
-								return T;
-							}
+						tPlayer.inventory.mainInventory[i].stackSize--;
+						if (tPlayer.inventoryContainer != null) tPlayer.inventoryContainer.detectAndSendChanges();
+						if (canUseElectricItem(aStack, 10000)) {
+							return GT_ModHandler.useElectricItem(aStack, 10000, (EntityPlayer)aPlayer);
 						}
 					}
 				}

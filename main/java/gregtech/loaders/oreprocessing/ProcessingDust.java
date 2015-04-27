@@ -36,25 +36,31 @@
 /*     */     }
 /*     */     
 /*     */     ItemStack tStack;
-/*  39 */     if ((null != (tStack = GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L))) && (!aMaterial.contains(SubTag.NO_SMELTING))) {
-/*  40 */       if (aMaterial.mBlastFurnaceRequired) {
-/*  41 */         GT_ModHandler.removeFurnaceSmelting(aStack);
-/*  42 */         GT_Values.RA.addBlastRecipe(GT_Utility.copyAmount(1L, new Object[] { aStack }), null, null, null, aMaterial.mBlastFurnaceTemp > 1750 ? GT_OreDictUnificator.get(OrePrefixes.ingotHot, aMaterial.mSmeltInto, tStack, 1L) : GT_Utility.copyAmount(1L, new Object[] { tStack }), null, (int)Math.max(aMaterial.getMass() / 40L, 1L) * aMaterial.mBlastFurnaceTemp, 120, aMaterial.mBlastFurnaceTemp);
-/*  43 */         if (aMaterial.mBlastFurnaceTemp <= 1000) GT_ModHandler.addRCBlastFurnaceRecipe(GT_Utility.copyAmount(1L, new Object[] { aStack }), GT_Utility.copyAmount(1L, new Object[] { tStack }), aMaterial.mBlastFurnaceTemp);
-/*     */       } else {
-/*  45 */         GT_ModHandler.addSmeltingRecipe(aStack, tStack);
-/*     */       }
-/*     */     }
-/*  48 */     else if (!aMaterial.contains(SubTag.NO_WORKING)) {
-/*  49 */       if (OrePrefixes.block.isIgnored(aMaterial)) {
-/*  50 */         if ((null == GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L)) && (aMaterial != Materials.GraniteRed) && (aMaterial != Materials.GraniteBlack) && (aMaterial != Materials.Glass) && (aMaterial != Materials.Obsidian) && (aMaterial != Materials.Glowstone) && (aMaterial != Materials.Paper) && (aMaterial != Materials.Wood)) {
-/*  51 */           GT_ModHandler.addCompressionRecipe(GT_Utility.copyAmount(1L, new Object[] { aStack }), GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L));
-/*     */         }
-/*     */       }
-/*  54 */       else if (null == GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L)) {
-/*  55 */         GT_ModHandler.addCompressionRecipe(GT_Utility.copyAmount(9L, new Object[] { aStack }), GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L));
-/*     */       }
-/*     */     }
+if ((null != (tStack = GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L))) && (!aMaterial.contains(SubTag.NO_SMELTING)))
+{
+  if (aMaterial.mBlastFurnaceRequired)
+  {
+    GT_ModHandler.removeFurnaceSmelting(aStack);
+    GT_Values.RA.addBlastRecipe(GT_Utility.copyAmount(1L, new Object[] { aStack }), null, null, null, aMaterial.mBlastFurnaceTemp > 1750 ? GT_OreDictUnificator.get(OrePrefixes.ingotHot, aMaterial.mSmeltInto, tStack, 1L) : GT_Utility.copyAmount(1L, new Object[] { tStack }), null, (int)Math.max(aMaterial.getMass() / 40L, 1L) * aMaterial.mBlastFurnaceTemp, 120, aMaterial.mBlastFurnaceTemp);
+    if (aMaterial.mBlastFurnaceTemp <= 1000) {
+      GT_ModHandler.addRCBlastFurnaceRecipe(GT_Utility.copyAmount(1L, new Object[] { aStack }), GT_Utility.copyAmount(1L, new Object[] { tStack }), aMaterial.mBlastFurnaceTemp);
+    }
+  }
+  else
+  {
+    GT_ModHandler.addSmeltingRecipe(aStack, tStack);
+  }
+}
+else if (!aMaterial.contains(SubTag.NO_WORKING))
+{
+  if ((!OrePrefixes.block.isIgnored(aMaterial)) && 
+    (null == GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L))) {
+    GT_ModHandler.addCompressionRecipe(GT_Utility.copyAmount(9L, new Object[] { aStack }), GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L));
+  }
+  if (((OrePrefixes.block.isIgnored(aMaterial)) || (null == GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))) && (aMaterial != Materials.GraniteRed) && (aMaterial != Materials.GraniteBlack) && (aMaterial != Materials.Glass) && (aMaterial != Materials.Obsidian) && (aMaterial != Materials.Glowstone) && (aMaterial != Materials.Paper)) {
+    GT_ModHandler.addCompressionRecipe(GT_Utility.copyAmount(1L, new Object[] { aStack }), GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L));
+  }
+}
 /*     */     
 /*     */ 
 /*     */ 

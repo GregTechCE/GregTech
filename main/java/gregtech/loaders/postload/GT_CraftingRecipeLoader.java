@@ -509,6 +509,8 @@ public class GT_CraftingRecipeLoader
     GT_ModHandler.removeRecipe(new ItemStack[] { tStack = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1L), tStack, tStack, tStack, new ItemStack(Items.coal, 1, 1), tStack, tStack, tStack, tStack });
     GT_ModHandler.removeRecipe(new ItemStack[] { null, tStack = new ItemStack(Items.coal, 1), null, tStack, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L), tStack, null, tStack, null });
     
+    GT_ModHandler.removeFurnaceSmelting(new ItemStack(Blocks.hopper));
+    
     GT_Log.out.println("GT_Mod: Applying harder Recipes for several Blocks.");
     if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "blockbreaker", false)) {
       GT_ModHandler.addCraftingRecipe(GT_ModHandler.removeRecipe(new ItemStack[] { new ItemStack(Blocks.cobblestone, 1), new ItemStack(Items.iron_pickaxe, 1), new ItemStack(Blocks.cobblestone, 1), new ItemStack(Blocks.cobblestone, 1), new ItemStack(Blocks.piston, 1), new ItemStack(Blocks.cobblestone, 1), new ItemStack(Blocks.cobblestone, 1), new ItemStack(Items.redstone, 1), new ItemStack(Blocks.cobblestone, 1) }), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { "RGR", "RPR", "RCR", Character.valueOf('G'), OreDictNames.craftingGrinder, Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Advanced), Character.valueOf('R'), OrePrefixes.plate.get(Materials.Steel), Character.valueOf('P'), OreDictNames.craftingPiston });

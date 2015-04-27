@@ -42,7 +42,8 @@ public abstract class GT_MetaTileEntity_Boiler
   
   public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone)
   {
-	  ITexture[] tmp = mTextures[(aSide==aFacing?(aActive?4:3):aSide==GT_Utility.getOppositeSide(aFacing)?2:aSide==0?0:aSide==1?1:2)][aColorIndex+1];
+	  ITexture[] tmp = mTextures[aSide >= 2 ? aSide != aFacing ? 2 : ((byte)(aActive ? 4 : 3)) : aSide][aColorIndex + 1];
+			  //mTextures[(aSide==aFacing?(aActive?4:3):aSide==GT_Utility.getOppositeSide(aFacing)?2:aSide==0?0:aSide==1?1:2)][aColorIndex+1];
 	  if(aSide!=aFacing&&tmp.length==2){
 			  tmp = new ITexture[]{tmp[0]};
 	  }

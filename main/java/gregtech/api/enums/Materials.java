@@ -198,6 +198,8 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 	Fairy				(  -1, TextureSet.SET_NONE				,   1.0F,      0,  2, 1|2                                   , 255, 255, 255,   0,	"Fairy"							,    0,       0,         -1,    0, F, F,   3,   1,   1, Dyes._NULL			),
 	Ludicrite			(  -1, TextureSet.SET_NONE				,   1.0F,      0,  2, 1|2                                   , 255, 255, 255,   0,	"Ludicrite"						,    0,       0,         -1,    0, F, F,   3,   1,   1, Dyes._NULL			),
 	Pokefennium			(  -1, TextureSet.SET_NONE				,   1.0F,      0,  2, 1|2                                   , 255, 255, 255,   0,	"Pokefennium"					,    0,       0,         -1,    0, F, F,   3,   1,   1, Dyes._NULL			),
+	Draconium			(  -1, TextureSet.SET_NONE				,   1.0F,      0,  2, 1|2                                   , 255, 255, 255,   0,	"Draconium"					,    0,       0,         -1,    0, F, F,   3,   1,   1, Dyes._NULL			),
+	DraconiumAwakened	(  -1, TextureSet.SET_NONE				,   1.0F,      0,  2, 1|2                                   , 255, 255, 255,   0,	"Awakened Draconium"					,    0,       0,         -1,    0, F, F,   3,   1,   1, Dyes._NULL			),
 	
 	/**
 	 * Unknown Material Components. Dead End Section.

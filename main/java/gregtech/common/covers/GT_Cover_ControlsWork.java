@@ -12,21 +12,16 @@
 /* 12:   */ {
 /* 13:   */   public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer)
 /* 14:   */   {
-/* 15:13 */     if ((aTileEntity instanceof IMachineProgress))
-/* 16:   */     {
-/* 17:14 */       if ((aInputRedstone > 0 ? 1 : 0) == (aCoverVariable == 0 ? 1 : 0)) {
-/* 18:14 */         if (aCoverVariable != 2)
-/* 19:   */         {
-/* 20:14 */           ((IMachineProgress)aTileEntity).enableWorking();
-/* 21:   */           //break label59;
-/* 22:   */         }
-/* 23:   */       }
-/* 24:14 */       ((IMachineProgress)aTileEntity).disableWorking();
-/* 25:   */       //label59:
-/* 26:15 */       ((IMachineProgress)aTileEntity).setWorkDataValue(aInputRedstone);
-/* 27:   */     }
-/* 28:17 */     return aCoverVariable;
-/* 29:   */   }
+    if(aTileEntity instanceof IMachineProgress)
+    {
+        if((aInputRedstone > 0) == (aCoverVariable == 0) && aCoverVariable != 2)
+            ((IMachineProgress)aTileEntity).enableWorking();
+        else
+            ((IMachineProgress)aTileEntity).disableWorking();
+        ((IMachineProgress)aTileEntity).setWorkDataValue(aInputRedstone);
+    }
+    return aCoverVariable;
+}
 /* 30:   */   
 /* 31:   */   public boolean letsEnergyIn(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity)
 /* 32:   */   {

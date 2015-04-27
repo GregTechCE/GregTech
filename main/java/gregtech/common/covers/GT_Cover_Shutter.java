@@ -1,6 +1,7 @@
 /*  1:   */ package gregtech.common.covers;
 /*  2:   */ 
 /*  3:   */ import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.interfaces.tileentity.IMachineProgress;
 /*  4:   */ import gregtech.api.util.GT_CoverBehavior;
 /*  5:   */ import gregtech.api.util.GT_Utility;
 /*  6:   */ import net.minecraft.entity.player.EntityPlayer;
@@ -32,45 +33,45 @@
 /* 32:23 */     return aCoverVariable;
 /* 33:   */   }
 /* 34:   */   
-/* 35:   */   public boolean letsRedstoneGoIn(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity)
-/* 36:   */   {
-/* 37:28 */     return aCoverVariable % 2 == 0;
-/* 38:   */   }
-/* 39:   */   
-/* 40:   */   public boolean letsRedstoneGoOut(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity)
-/* 41:   */   {
-/* 42:33 */     return aCoverVariable % 2 == 0;
-/* 43:   */   }
-/* 44:   */   
-/* 45:   */   public boolean letsEnergyIn(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity)
-/* 46:   */   {
-/* 47:38 */     return aCoverVariable % 2 == 0;
-/* 48:   */   }
-/* 49:   */   
-/* 50:   */   public boolean letsEnergyOut(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity)
-/* 51:   */   {
-/* 52:43 */     return aCoverVariable % 2 == 0;
-/* 53:   */   }
-/* 54:   */   
-/* 55:   */   public boolean letsFluidIn(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity)
-/* 56:   */   {
-/* 57:48 */     return aCoverVariable % 2 == 0;
-/* 58:   */   }
-/* 59:   */   
-/* 60:   */   public boolean letsFluidOut(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity)
-/* 61:   */   {
-/* 62:53 */     return aCoverVariable % 2 == 0;
-/* 63:   */   }
-/* 64:   */   
-/* 65:   */   public boolean letsItemsIn(byte aSide, int aCoverID, int aCoverVariable, int aSlot, ICoverable aTileEntity)
-/* 66:   */   {
-/* 67:58 */     return aCoverVariable % 2 == 0;
-/* 68:   */   }
-/* 69:   */   
-/* 70:   */   public boolean letsItemsOut(byte aSide, int aCoverID, int aCoverVariable, int aSlot, ICoverable aTileEntity)
-/* 71:   */   {
-/* 72:63 */     return aCoverVariable % 2 == 0;
-/* 73:   */   }
+/* 35:   */  public boolean letsRedstoneGoIn(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity)
+{
+    return aCoverVariable >= 2 ? aCoverVariable == 3 : (aTileEntity instanceof IMachineProgress) ? ((IMachineProgress)aTileEntity).isAllowedToWork() ? aCoverVariable % 2 == 0 : aCoverVariable % 2 != 0 : true;
+}
+
+public boolean letsRedstoneGoOut(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity)
+{
+    return aCoverVariable >= 2 ? aCoverVariable == 2 : (aTileEntity instanceof IMachineProgress) ? ((IMachineProgress)aTileEntity).isAllowedToWork() ? aCoverVariable % 2 == 0 : aCoverVariable % 2 != 0 : true;
+}
+
+public boolean letsEnergyIn(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity)
+{
+    return aCoverVariable >= 2 ? aCoverVariable == 3 : (aTileEntity instanceof IMachineProgress) ? ((IMachineProgress)aTileEntity).isAllowedToWork() ? aCoverVariable % 2 == 0 : aCoverVariable % 2 != 0 : true;
+}
+
+public boolean letsEnergyOut(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity)
+{
+    return aCoverVariable >= 2 ? aCoverVariable == 2 : (aTileEntity instanceof IMachineProgress) ? ((IMachineProgress)aTileEntity).isAllowedToWork() ? aCoverVariable % 2 == 0 : aCoverVariable % 2 != 0 : true;
+}
+
+public boolean letsFluidIn(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity)
+{
+    return aCoverVariable >= 2 ? aCoverVariable == 3 : (aTileEntity instanceof IMachineProgress) ? ((IMachineProgress)aTileEntity).isAllowedToWork() ? aCoverVariable % 2 == 0 : aCoverVariable % 2 != 0 : true;
+}
+
+public boolean letsFluidOut(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity)
+{
+    return aCoverVariable >= 2 ? aCoverVariable == 2 : (aTileEntity instanceof IMachineProgress) ? ((IMachineProgress)aTileEntity).isAllowedToWork() ? aCoverVariable % 2 == 0 : aCoverVariable % 2 != 0 : true;
+}
+
+public boolean letsItemsIn(byte aSide, int aCoverID, int aCoverVariable, int aSlot, ICoverable aTileEntity)
+{
+    return aCoverVariable >= 2 ? aCoverVariable == 3 : (aTileEntity instanceof IMachineProgress) ? ((IMachineProgress)aTileEntity).isAllowedToWork() ? aCoverVariable % 2 == 0 : aCoverVariable % 2 != 0 : true;
+}
+
+public boolean letsItemsOut(byte aSide, int aCoverID, int aCoverVariable, int aSlot, ICoverable aTileEntity)
+{
+    return aCoverVariable >= 2 ? aCoverVariable == 2 : (aTileEntity instanceof IMachineProgress) ? ((IMachineProgress)aTileEntity).isAllowedToWork() ? aCoverVariable % 2 == 0 : aCoverVariable % 2 != 0 : true;
+}
 /* 74:   */   
 /* 75:   */   public boolean alwaysLookConnected(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity)
 /* 76:   */   {

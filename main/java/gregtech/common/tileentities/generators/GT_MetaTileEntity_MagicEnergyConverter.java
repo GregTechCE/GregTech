@@ -87,26 +87,26 @@ public void onConfigLoad()
 /* 73:   */   
 /* 74:   */   public ITexture[] getFrontActive(byte aColor)
 /* 75:   */   {
-/* 76:47 */     return new ITexture[] { super.getFrontActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_MAGIC), Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
+/* 76:47 */     return new ITexture[] { super.getFrontActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_MAGIC_ACTIVE), Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
 /* 77:   */   }
 /* 78:   */   
 /* 79:   */   public ITexture[] getBackActive(byte aColor)
 /* 80:   */   {
-/* 81:48 */     return new ITexture[] { super.getBackActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_MAGIC_FRONT) };
+/* 81:48 */     return new ITexture[] { super.getBackActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_MAGIC_FRONT_ACTIVE) };
 /* 82:   */   }
 /* 83:   */   
 /* 84:   */   public ITexture[] getBottomActive(byte aColor)
 /* 85:   */   {
-/* 86:49 */     return new ITexture[] { super.getBottomActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_MAGIC) };
+/* 86:49 */     return new ITexture[] { super.getBottomActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_MAGIC_ACTIVE) };
 /* 87:   */   }
 /* 88:   */   
 /* 89:   */   public ITexture[] getTopActive(byte aColor)
 /* 90:   */   {
-/* 91:50 */     return new ITexture[] { super.getTopActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_MAGIC) };
+/* 91:50 */     return new ITexture[] { super.getTopActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_MAGIC_ACTIVE) };
 /* 92:   */   }
 /* 93:   */   
 /* 94:   */   public ITexture[] getSidesActive(byte aColor)
 /* 95:   */   {
-/* 96:51 */     return new ITexture[] { super.getSidesActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_MAGIC) };
+/* 96:51 */     return new ITexture[] { super.getSidesActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_MAGIC_ACTIVE) };
 /* 97:   */   }
 /* 98:   */ }

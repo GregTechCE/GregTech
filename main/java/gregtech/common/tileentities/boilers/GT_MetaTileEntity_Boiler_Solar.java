@@ -8,6 +8,7 @@ import gregtech.api.enums.Textures;
 /*   7:    */ import gregtech.api.metatileentity.MetaTileEntity;
 /*   8:    */ import gregtech.api.objects.GT_RenderedTexture;
 /*   9:    */ import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Utility;
 /*  10:    */ import gregtech.common.gui.GT_Container_Boiler;
 /*  11:    */ import gregtech.common.gui.GT_GUIContainer_Boiler;
 /*  12:    */ import net.minecraft.entity.player.InventoryPlayer;
@@ -37,18 +38,18 @@ import gregtech.api.enums.Textures;
 /*  36:    */     {ITexture[] tmp0 ={ new GT_RenderedTexture(Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM, Dyes.getModulation(i, Dyes._NULL.mRGBa)) };
 /*  37: 30 */       rTextures[0][(i + 1)] = tmp0;
 /*  38: 31 */       ITexture[] tmp1 ={ new GT_RenderedTexture(Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP, Dyes.getModulation(i, Dyes._NULL.mRGBa)), new GT_RenderedTexture(Textures.BlockIcons.BOILER_SOLAR) };
-rTextures[1][(i + 1)] = tmp1;
+					rTextures[1][(i + 1)] = tmp1;
 /*  39: 32 */       ITexture[] tmp2 ={ new GT_RenderedTexture(Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE, Dyes.getModulation(i, Dyes._NULL.mRGBa)) };
-rTextures[2][(i + 1)] = tmp2;
+					rTextures[2][(i + 1)] = tmp2;
 /*  40: 33 */       ITexture[] tmp3 ={ new GT_RenderedTexture(Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE, Dyes.getModulation(i, Dyes._NULL.mRGBa)), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE) };
-rTextures[3][(i + 1)] = tmp3;
+					rTextures[3][(i + 1)] = tmp3;
 /*  41:    */     }
 /*  42: 35 */     return rTextures;
 /*  43:    */   }
 /*  44:    */   
 /*  45:    */   public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone)
 /*  46:    */   {
-/*  47: 40 */     return this.mTextures[2][(aColorIndex + 1)];
+					return mTextures[aSide >= 2 ? ((byte)(aSide != aFacing ? 2 : 3)) : aSide][aColorIndex + 1];
 /*  48:    */   }
 /*  49:    */   
 /*  50:    */   public int maxProgresstime()
