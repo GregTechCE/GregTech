@@ -42,6 +42,10 @@ import gregtech.api.util.GT_Utility;
 /*  38:    */ import gregtech.common.covers.GT_Cover_ItemMeter;
 /*  39:    */ import gregtech.common.covers.GT_Cover_LiquidMeter;
 /*  40:    */ import gregtech.common.covers.GT_Cover_Pump;
+import gregtech.common.covers.GT_Cover_RedstoneReceiverExternal;
+import gregtech.common.covers.GT_Cover_RedstoneReceiverInternal;
+import gregtech.common.covers.GT_Cover_RedstoneTransmitterExternal;
+import gregtech.common.covers.GT_Cover_RedstoneTransmitterInternal;
 /*  41:    */ import gregtech.common.covers.GT_Cover_Screen;
 /*  42:    */ import gregtech.common.covers.GT_Cover_Shutter;
 /*  43:    */ import gregtech.common.covers.GT_Cover_SolarPanel;
@@ -754,7 +758,25 @@ import gregtech.api.util.GT_Utility;
 /* 741:    */     
 /* 742:710 */     GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 4L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 2L), ItemList.Schematic.get(1L, new Object[0]), 3200, 4);
 /* 743:711 */     GT_Values.RA.addAssemblerRecipe(ItemList.Sensor_LV.get(1L, new Object[0]), ItemList.Emitter_LV.get(1L, new Object[0]), ItemList.NC_SensorKit.get(1L, new Object[0]), 1600, 2);
-/* 744:    */   }
+/* 744:    */   
+				  ItemList.Cover_RedstoneTransmitterExternal.set(addItem(tLastID = 741, "Redstone Transmitter (Out)", "Transfers Redstonesignals wireless", new Object[] { new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L) }));
+/* 676:644 */     ItemList.Cover_RedstoneTransmitterInternal.set(addItem(tLastID = 742, "Redstone Transmitter (In)", "Transfers Redstonesignals wireless", new Object[] { new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L) }));
+/* 676:644 */     ItemList.Cover_RedstoneReceiverExternal.set(addItem(tLastID = 746, "Redstone Receiver (Out)", "Transfers Redstonesignals wireless", new Object[] { new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L) }));
+/* 676:644 */     ItemList.Cover_RedstoneReceiverInternal.set(addItem(tLastID = 747, "Redstone Receiver (In)", "Transfers Redstonesignals wireless", new Object[] { new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L) }));
+/* 676:644 */     
+				  GregTech_API.registerCover(ItemList.Cover_RedstoneTransmitterExternal.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR) }), new GT_Cover_RedstoneTransmitterExternal());
+/* 706:674 */     GregTech_API.registerCover(ItemList.Cover_RedstoneTransmitterInternal.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR) }), new GT_Cover_RedstoneTransmitterInternal());
+/* 706:674 */     GregTech_API.registerCover(ItemList.Cover_RedstoneReceiverExternal.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FLUIDDETECTOR) }), new GT_Cover_RedstoneReceiverExternal());
+/* 706:674 */     GregTech_API.registerCover(ItemList.Cover_RedstoneReceiverInternal.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FLUIDDETECTOR) }), new GT_Cover_RedstoneReceiverInternal());
+/* 706:674 */    
+				  GT_Values.RA.addAssemblerRecipe(ItemList.Emitter_EV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 1L),ItemList.Cover_RedstoneTransmitterExternal.get(1L, new Object[0]) , 3200, 128);
+/* 743:711 */     GT_Values.RA.addAssemblerRecipe( ItemList.Sensor_EV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 1L),ItemList.Cover_RedstoneReceiverExternal.get(1L, new Object[0]), 3200, 128);
+/* 743:711 */     GT_ModHandler.addShapelessCraftingRecipe(ItemList.Cover_RedstoneTransmitterInternal.get(1L, new Object[0]), new Object[]{ItemList.Cover_RedstoneTransmitterExternal.get(1L, new Object[0])});
+                  GT_ModHandler.addShapelessCraftingRecipe(ItemList.Cover_RedstoneReceiverInternal.get(1L, new Object[0]), new Object[]{ItemList.Cover_RedstoneReceiverExternal.get(1L, new Object[0])});
+                  GT_ModHandler.addShapelessCraftingRecipe(ItemList.Cover_RedstoneTransmitterExternal.get(1L, new Object[0]), new Object[]{ItemList.Cover_RedstoneTransmitterInternal.get(1L, new Object[0])});
+                  GT_ModHandler.addShapelessCraftingRecipe(ItemList.Cover_RedstoneReceiverExternal.get(1L, new Object[0]), new Object[]{ItemList.Cover_RedstoneReceiverInternal.get(1L, new Object[0])});
+
+}
 /* 745:    */   
 /* 746:    */   public boolean onEntityItemUpdate(EntityItem aItemEntity)
 /* 747:    */   {

@@ -76,6 +76,8 @@ import gregtech.common.tileentities.machines.multi.*;
 /*   79:     */ import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_Macerator_Bronze;
 /*   80:     */ import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_Macerator_Steel;
 /*   81:     */ import gregtech.common.tileentities.storage.GT_MetaTileEntity_Locker;
+import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumChest;
+import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumTank;
 
 /*   82:     */ import java.io.PrintStream;
 /*   83:     */ import java.util.Map;
@@ -84,6 +86,7 @@ import gregtech.common.tileentities.machines.multi.*;
 import net.minecraft.item.Item;
 /*   85:     */ import net.minecraft.item.ItemStack;
 /*   86:     */ import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.oredict.OreDictionary;
 /*   87:     */ 
 /*   88:     */ public class GT_Loader_MetaTileEntities
 /*   89:     */   implements Runnable
@@ -272,7 +275,7 @@ import net.minecraft.item.Item;
 /*  343: 284 */     GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Input_ZPM.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "G", "M", Character.valueOf('M'), ItemList.Hull_ZPM, Character.valueOf('G'), new ItemStack(Blocks.glass, 1) });
 /*  344: 285 */     GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Input_UV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "G", "M", Character.valueOf('M'), ItemList.Hull_UV, Character.valueOf('G'), new ItemStack(Blocks.glass, 1) });
 /*  345: 286 */     GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Input_MAX.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "G", "M", Character.valueOf('M'), ItemList.Hull_MAX, Character.valueOf('G'), new ItemStack(Blocks.glass, 1) });
-/*  346:     */     
+/*  346:     */
 /*  347: 288 */     ItemList.Hatch_Output_ULV.set(new GT_MetaTileEntity_Hatch_Output(60, "hatch.output.tier.00", "Output Hatch", 0).getStackForm(1L));
 /*  348: 289 */     ItemList.Hatch_Output_LV.set(new GT_MetaTileEntity_Hatch_Output(61, "hatch.output.tier.01", "Output Hatch", 1).getStackForm(1L));
 /*  349: 290 */     ItemList.Hatch_Output_MV.set(new GT_MetaTileEntity_Hatch_Output(62, "hatch.output.tier.02", "Output Hatch", 2).getStackForm(1L));
@@ -284,6 +287,30 @@ import net.minecraft.item.Item;
 /*  355: 296 */     ItemList.Hatch_Output_UV.set(new GT_MetaTileEntity_Hatch_Output(68, "hatch.output.tier.08", "Output Hatch", 8).getStackForm(1L));
 /*  356: 297 */     ItemList.Hatch_Output_MAX.set(new GT_MetaTileEntity_Hatch_Output(69, "hatch.output.tier.09", "Output Hatch", 9).getStackForm(1L));
 /*  357:     */     
+					ItemList.Quantum_Tank_LV.set(new GT_MetaTileEntity_QuantumTank(120, "quantum.tank.tier.01", "Quantum Tank I", 1).getStackForm(1L));
+/*  326: 267 */     ItemList.Quantum_Tank_MV.set(new GT_MetaTileEntity_QuantumTank(121, "quantum.tank.tier.02", "Quantum Tank II", 2).getStackForm(1L));
+/*  326: 267 */     ItemList.Quantum_Tank_HV.set(new GT_MetaTileEntity_QuantumTank(122, "quantum.tank.tier.03", "Quantum Tank III", 3).getStackForm(1L));
+/*  326: 267 */     ItemList.Quantum_Tank_EV.set(new GT_MetaTileEntity_QuantumTank(123, "quantum.tank.tier.04", "Quantum Tank IV", 4).getStackForm(1L));
+/*  326: 267 */     ItemList.Quantum_Tank_IV.set(new GT_MetaTileEntity_QuantumTank(124, "quantum.tank.tier.05", "Quantum Tank V", 5).getStackForm(1L));
+/*  326: 267 */     
+					GT_ModHandler.addCraftingRecipe(ItemList.Quantum_Tank_LV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "DGD", "PMP","DPD", 'M', ItemList.Hull_LV, 'G', ItemList.Field_Generator_LV ,'D',ItemList.Circuit_Parts_Crystal_Chip_Elite,'P',OrePrefixes.plate.get(Materials.StainlessSteel)});
+/*  337: 278 */     GT_ModHandler.addCraftingRecipe(ItemList.Quantum_Tank_MV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "DGD", "PMP","DPD", 'M', ItemList.Hull_MV, 'G', ItemList.Field_Generator_MV ,'D',ItemList.Circuit_Data,'P',OrePrefixes.plate.get(Materials.Titanium)});
+/*  337: 278 */     GT_ModHandler.addCraftingRecipe(ItemList.Quantum_Tank_HV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "DGD", "PMP","DPD", 'M', ItemList.Hull_HV, 'G', ItemList.Field_Generator_HV ,'D',ItemList.Circuit_Elite,'P',OrePrefixes.plate.get(Materials.TungstenSteel)});
+/*  337: 278 */     GT_ModHandler.addCraftingRecipe(ItemList.Quantum_Tank_EV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "DGD", "PMP","DPD", 'M', ItemList.Hull_EV, 'G', ItemList.Field_Generator_EV ,'D',ItemList.Circuit_Master,'P',OrePrefixes.plate.get(Materials.Europium)});
+/*  337: 278 */     GT_ModHandler.addCraftingRecipe(ItemList.Quantum_Tank_IV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "DGD", "PMP","DPD", 'M', ItemList.Hull_IV, 'G', ItemList.Field_Generator_IV ,'D',ItemList.Circuit_Master,'P',OrePrefixes.plate.get(Materials.Americium)});
+/*  337: 278 */     
+					ItemList.Quantum_Chest_LV.set(new GT_MetaTileEntity_QuantumChest(125, "quantum.chest.tier.01", "Quantum Chest I", 1).getStackForm(1L));
+/*  326: 267 */     ItemList.Quantum_Chest_MV.set(new GT_MetaTileEntity_QuantumChest(126, "quantum.chest.tier.02", "Quantum Chest II", 2).getStackForm(1L));
+/*  326: 267 */     ItemList.Quantum_Chest_HV.set(new GT_MetaTileEntity_QuantumChest(127, "quantum.chest.tier.03", "Quantum Chest III", 3).getStackForm(1L));
+/*  326: 267 */     ItemList.Quantum_Chest_EV.set(new GT_MetaTileEntity_QuantumChest(128, "quantum.chest.tier.04", "Quantum Chest IV", 4).getStackForm(1L));
+/*  326: 267 */     ItemList.Quantum_Chest_IV.set(new GT_MetaTileEntity_QuantumChest(129, "quantum.chest.tier.05", "Quantum Chest V", 5).getStackForm(1L));
+/*  326: 267 */     
+					GT_ModHandler.addCraftingRecipe(ItemList.Quantum_Chest_LV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "DPD", "PMP","DGD", 'M', ItemList.Hull_LV, 'G', ItemList.Field_Generator_LV ,'D',ItemList.Circuit_Parts_Crystal_Chip_Elite,'P',OrePrefixes.plate.get(Materials.StainlessSteel)});
+/*  337: 278 */     GT_ModHandler.addCraftingRecipe(ItemList.Quantum_Chest_MV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "DPD", "PMP","DGD", 'M', ItemList.Hull_MV, 'G', ItemList.Field_Generator_MV ,'D',ItemList.Circuit_Data,'P',OrePrefixes.plate.get(Materials.Titanium)});
+/*  337: 278 */     GT_ModHandler.addCraftingRecipe(ItemList.Quantum_Chest_HV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "DPD", "PMP","DGD", 'M', ItemList.Hull_HV, 'G', ItemList.Field_Generator_HV ,'D',ItemList.Circuit_Elite,'P',OrePrefixes.plate.get(Materials.TungstenSteel)});
+/*  337: 278 */     GT_ModHandler.addCraftingRecipe(ItemList.Quantum_Chest_EV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "DPD", "PMP","DGD", 'M', ItemList.Hull_EV, 'G', ItemList.Field_Generator_EV ,'D',ItemList.Circuit_Master,'P',OrePrefixes.plate.get(Materials.Europium)});
+/*  337: 278 */     GT_ModHandler.addCraftingRecipe(ItemList.Quantum_Chest_IV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "DPD", "PMP","DGD", 'M', ItemList.Hull_IV, 'G', ItemList.Field_Generator_IV ,'D',ItemList.Circuit_Master,'P',OrePrefixes.plate.get(Materials.Americium)});
+/*  337: 278 */     
 /*  358: 299 */     GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Output_ULV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "M", "G", Character.valueOf('M'), ItemList.Hull_ULV, Character.valueOf('G'), new ItemStack(Blocks.glass, 1) });
 /*  359: 300 */     GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Output_LV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "M", "G", Character.valueOf('M'), ItemList.Hull_LV, Character.valueOf('G'), new ItemStack(Blocks.glass, 1) });
 /*  360: 301 */     GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Output_MV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "M", "G", Character.valueOf('M'), ItemList.Hull_MV, Character.valueOf('G'), new ItemStack(Blocks.glass, 1) });

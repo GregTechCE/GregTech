@@ -1,8 +1,4 @@
-package gregtech.api.gui;
-
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
-import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumChest;
+package gregtech.common.gui;
 
 import java.util.Iterator;
 
@@ -11,15 +7,16 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.gui.GT_ContainerMetaTile_Machine;
+import gregtech.api.gui.GT_Slot_Output;
+import gregtech.api.gui.GT_Slot_Render;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
+import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumChest;
 
-/**
- * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
- * 
- * The Container I use for all my Basic Tanks
- */
-public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
+public class GT_Container_QuantumChest extends GT_ContainerMetaTile_Machine  {
 
-	public GT_Container_BasicTank(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
+	public GT_Container_QuantumChest(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
 		super(aInventoryPlayer, aTileEntity);
 	}
 	
@@ -35,11 +32,13 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
     @Override
 	public void detectAndSendChanges() {
         super.detectAndSendChanges();
+        
     	if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) return;
-    	if (((GT_MetaTileEntity_BasicTank)mTileEntity.getMetaTileEntity()).mFluid != null)
-    		mContent = ((GT_MetaTileEntity_BasicTank)mTileEntity.getMetaTileEntity()).mFluid.amount;
-    	else
-    		mContent = 0;
+    	if (mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_QuantumChest){
+    		mContent = ((GT_MetaTileEntity_QuantumChest)mTileEntity.getMetaTileEntity()).mItemCount;
+    	}else{
+    		mContent = 0;}
+    	
         Iterator var2 = this.crafters.iterator();
         while (var2.hasNext()) {
             ICrafting var1 = (ICrafting)var2.next();

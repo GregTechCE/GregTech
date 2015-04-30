@@ -184,7 +184,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 						    		if (mOutputItems != null) for (ItemStack tStack : mOutputItems) if (tStack != null) addOutput(tStack);
 						    		if (mOutputFluids != null&&mOutputFluids.length==1) {for (FluidStack tStack : mOutputFluids) if (tStack != null) addOutput(tStack);}
 						    		else if(mOutputFluids!=null&&mOutputFluids.length>1){
-						    			System.out.println("addfluids");
 						    			addFluidOutputs(mOutputFluids);}
 						    		mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
 						    		mOutputItems = null;

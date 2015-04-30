@@ -1,126 +1,105 @@
 package gregtech.common.tileentities.storage;
 
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class GT_MetaTileEntity_QuantumTank
   extends GT_MetaTileEntity_BasicTank
 {
-  public GT_MetaTileEntity_QuantumTank(int aID, String aName, String aNameRegional)
-  {
-    super(aID, aName, aNameRegional, aID, aID, aNameRegional, null);
-  }
-  
-  public boolean unbreakable()
-  {
-    return true;
-  }
-  
-  public boolean isSimpleMachine()
-  {
-    return false;
-  }
-  
-  public boolean isValidSlot(int aIndex)
-  {
-    return aIndex < 2;
-  }
-  
-  public boolean isFacingValid(byte aFacing)
-  {
-    return false;
-  }
-  
-  public void onRightclick(EntityPlayer aPlayer)
-  {
-    getBaseMetaTileEntity().openGUI(aPlayer, 114);
-  }
-  
-  public boolean isAccessAllowed(EntityPlayer aPlayer)
-  {
-    return true;
-  }
-  
-  public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity)
-  {
-    return new GT_MetaTileEntity_QuantumTank(mTier, mDescription, mDescription);
-  }
-  
-  public boolean doesFillContainers()
-  {
-    return true;
-  }
-  
-  public boolean doesEmptyContainers()
-  {
-    return true;
-  }
-  
-  public boolean canTankBeFilled()
-  {
-    return true;
-  }
-  
-  public boolean canTankBeEmptied()
-  {
-    return true;
-  }
-  
-  public boolean displaysItemStack()
-  {
-    return true;
-  }
-  
-  public boolean displaysStackSize()
-  {
-    return false;
-  }
-  
-  public boolean isFluidChangingAllowed()
-  {
-    return getBaseMetaTileEntity().isAllowedToWork();
-  }
-  
-  public int getTextureIndex(byte aSide, byte aFacing, boolean aActive, boolean aRedstone)
-  {
-    if (aSide == 0) {
-      return 38;
-    }
-    if (aSide == 1) {
-      return 37;
-    }
-    return 36;
-  }
-  
-  public String[] getDescription()
-  {
-    return new String[]{"With a capacity of 488.28125 Chunks!"};
-  }
-  
-  public int getCapacity()
-  {
-    return 2000000000;
-  }
-  
-  public int getTankPressure()
-  {
-    return 100;
-  }
+	public GT_MetaTileEntity_QuantumTank(int aID, String aName, String aNameRegional, int aTier) {
+		super(aID, aName, aNameRegional, aTier, 3, "Stores "+((int)(Math.pow(6, aTier)*270000))+"L of fluid");
+	}
+	
+	public GT_MetaTileEntity_QuantumTank(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+		super(aName, aTier, 3, aDescription, aTextures);
+	}
+	
+	@Override
+	public ITexture[][][] getTextureSet(ITexture[] aTextures) {
+		return new ITexture[0][0][0];
+	}
 
-@Override
-public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity,
-		byte aSide, byte aFacing, byte aColorIndex, boolean aActive,
-		boolean aRedstone) {
-	// TODO Auto-generated method stub
-	return null;
-}
+	@Override
+	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+		return aSide ==1 ? new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex+1],new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SCREEN)} :new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex+1]};//aSide != aFacing ? mMachineBlock != 0 ? new ITexture[] {Textures.BlockIcons.CASING_BLOCKS[mMachineBlock]} : new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex+1]} : mMachineBlock != 0 ? aActive ? getTexturesActive(Textures.BlockIcons.CASING_BLOCKS[mMachineBlock]) : getTexturesInactive(Textures.BlockIcons.CASING_BLOCKS[mMachineBlock]) : aActive ? getTexturesActive(Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex+1]) : getTexturesInactive(Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex+1]);
+	}
+	
+	@Override
+	public void saveNBTData(NBTTagCompound aNBT) {
+		super.saveNBTData(aNBT);
+	}
+	
+	@Override
+	public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+		if (aBaseMetaTileEntity.isClientSide()) return true;
+		aBaseMetaTileEntity.openGUI(aPlayer);
+		return true;
+	}
+	
+	@Override public boolean isSimpleMachine()						{return true;}
+	@Override public boolean isFacingValid(byte aFacing)			{return true;}
+	@Override public boolean isAccessAllowed(EntityPlayer aPlayer)	{return true;}
+	
+	@Override
+	public void loadNBTData(NBTTagCompound aNBT) {
+		super.loadNBTData(aNBT);
+	}
+	
+	@Override
+	public final byte getUpdateData() {
+		return 0x00;
+	}
+	
+	@Override
+	public boolean doesFillContainers() {
+		return true;
+	}
+	
+	@Override
+	public boolean doesEmptyContainers() {
+		return true;
+	}
+	
+	@Override
+	public boolean canTankBeFilled() {
+		return true;
+	}
+	
+	@Override
+	public boolean canTankBeEmptied() {
+		return true;
+	}
+	
+	@Override
+	public boolean displaysItemStack() {
+		return false;
+	}
+	
+	@Override
+	public boolean displaysStackSize() {
+		return false;
+	}
 
-@Override
-public ITexture[][][] getTextureSet(ITexture[] aTextures) {
-	// TODO Auto-generated method stub
-	return null;
-}
+	@Override
+	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+		return new GT_MetaTileEntity_QuantumTank(mName, mTier, mDescription, mTextures);
+	}
+  
+	@Override
+	public int getCapacity() {
+		return (int) (Math.pow(6, mTier)*270000);
+	}
+	
+	@Override
+	public int getTankPressure() {
+		return 100;
+	}
+	
 }
