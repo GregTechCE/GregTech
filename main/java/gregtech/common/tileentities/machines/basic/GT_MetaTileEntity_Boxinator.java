@@ -1,6 +1,7 @@
 /*  1:   */ package gregtech.common.tileentities.machines.basic;
 /*  2:   */ 
-/*  3:   */ import gregtech.api.enums.ItemList;
+/*  3:   */ import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 /*  4:   */ import gregtech.api.enums.Textures.BlockIcons;
 /*  5:   */ import gregtech.api.interfaces.ITexture;
@@ -91,15 +92,17 @@ import gregtech.api.util.GT_Recipe;
 /* 89:71 */     return 0;
 /* 90:   */   }
 /* 91:   */   
-/* 92:   */   public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack)
-/* 93:   */   {
-/* 94:76 */     if (super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack))
-/* 95:   */     {
-/* 96:76 */       if (((getInputSlot() == aIndex) || (!ItemList.Crate_Empty.isStackEqual(aStack))) && (!ItemList.Schematic_1by1.isStackEqual(getInputAt(1))) && (!ItemList.Schematic_2by2.isStackEqual(getInputAt(1))) && (!ItemList.Schematic_3by3.isStackEqual(getInputAt(1)))) {}
-/* 97:76 */       return GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes.findRecipe(getBaseMetaTileEntity(), true, gregtech.api.enums.GT_Values.V[this.mTier], null, new ItemStack[] { GT_Utility.copyAmount(64L, new Object[] { aStack }), getInputAt(1) }) != null;
-/* 98:   */     }
-/* 99:77 */     return false;
-/* :0:   */   }
+public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack)
+{
+    if(super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack))
+        return getInputSlot() != aIndex && ItemList.Crate_Empty.isStackEqual(aStack) || ItemList.Schematic_1by1.isStackEqual(getInputAt(1)) || ItemList.Schematic_2by2.isStackEqual(getInputAt(1)) || ItemList.Schematic_3by3.isStackEqual(getInputAt(1)) || gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes.findRecipe(getBaseMetaTileEntity(), true, GT_Values.V[mTier], null, new ItemStack[] {
+            GT_Utility.copyAmount(64L, new Object[] {
+                aStack
+            }), getInputAt(1)
+        }) != null;
+    else
+        return false;
+}
 /* :1:   */ }
 
 

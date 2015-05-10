@@ -117,9 +117,9 @@ public class GT_MetaTileEntity_QuantumChest extends GT_MetaTileEntity_TieredMach
 	      }
 	      if (this.mItemStack == null&&this.mInventory[0]!=null)
 	      {
-	        this.mItemStack = new ItemStack(mInventory[0].getItem());
+	        this.mItemStack = mInventory[0].copy();
 	      }
-	      if ((this.mInventory[0]!=null)&&(this.mItemCount < getMaxItemCount()) && (this.mInventory[0].getItem() == this.mItemStack.getItem()))
+	      if ((this.mInventory[0]!=null)&&(this.mItemCount < getMaxItemCount()) && GT_Utility.areStacksEqual(this.mInventory[0],this.mItemStack))
 	      {
 	        this.mItemCount += this.mInventory[0].stackSize;
 	        if (this.mItemCount > getMaxItemCount())
@@ -134,17 +134,18 @@ public class GT_MetaTileEntity_QuantumChest extends GT_MetaTileEntity_TieredMach
 	      }
 	      if (this.mInventory[1] == null)
 	      {
-	        this.mInventory[1] = new ItemStack(mItemStack.getItem(),Math.min(mItemStack.getMaxStackSize(), this.mItemCount));
+	        this.mInventory[1] = mItemStack.copy();
+	        this.mInventory[1].stackSize = Math.min(mItemStack.getMaxStackSize(), this.mItemCount);
 	        this.mItemCount -= this.mInventory[1].stackSize;
 	      }
-	      else if ((this.mItemCount > 0) && (this.mInventory[1].getItem() == this.mItemStack.getItem())&&this.mInventory[1].getMaxStackSize()>this.mInventory[1].stackSize)
+	      else if ((this.mItemCount > 0) && GT_Utility.areStacksEqual(this.mInventory[1],this.mItemStack)&&this.mInventory[1].getMaxStackSize()>this.mInventory[1].stackSize)
 	      {
 	    	  int tmp = Math.min(this.mItemCount, this.mInventory[1].getMaxStackSize()-this.mInventory[1].stackSize);
 	    	  this.mInventory[1].stackSize += tmp;
 	    	  this.mItemCount -= tmp;
 	      }
 	      if(this.mItemStack!=null){
-	    	  this.mInventory[2]= new ItemStack(this.mItemStack.getItem());
+	    	  this.mInventory[2]= this.mItemStack.copy();
 	      }else{this.mInventory[2]=null;}
 	    }
 	}

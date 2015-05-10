@@ -1,5 +1,4 @@
 /*   1:    */ package gregtech;
-/*   2:    */ 
 /*   3:    */ import cpw.mods.fml.common.FMLLog;
 /*   4:    */ import cpw.mods.fml.common.LoadController;
 /*   5:    */ import cpw.mods.fml.common.Loader;
@@ -106,6 +105,7 @@ import gregtech.api.enums.*;
 /* 110:    */ import net.minecraft.world.World;
 /* 111:    */ import net.minecraft.world.biome.BiomeGenBase;
 /* 112:    */ import net.minecraftforge.common.ChestGenHooks;
+import net.minecraftforge.common.ForgeVersion;
 /* 113:    */ import net.minecraftforge.common.config.Configuration;
 /* 114:    */ import net.minecraftforge.common.config.Property;
 /* 115:    */ import net.minecraftforge.fluids.FluidContainerRegistry;

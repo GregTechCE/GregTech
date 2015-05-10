@@ -51,7 +51,7 @@
 /*    */     
 /* 52 */     if (aMaterial.mFuelPower > 0) GT_Values.RA.addFuel(GT_Utility.copyAmount(1L, new Object[] { aStack }), null, aMaterial.mFuelPower, aMaterial.mFuelType);
 /* 53 */     GT_Utility.removeSimpleIC2MachineRecipe(GT_Utility.copyAmount(9L, new Object[] { aStack }), GT_ModHandler.getCompressorRecipeList(), GT_OreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L));
-/* 54 */     GT_ModHandler.addCompressionRecipe(GT_Utility.copyAmount(1L, new Object[] { aStack }), GT_OreDictUnificator.get(OrePrefixes.compressed, aMaterial, 1L));
+/* 54 */     GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(2L, new Object[] { aStack }), 2 , GT_OreDictUnificator.get(OrePrefixes.compressed, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny,Materials.DarkAsh,1L));
 /* 55 */     if (!aMaterial.contains(gregtech.api.enums.SubTag.NO_WORKING)) { GT_Values.RA.addLatheRecipe(GT_Utility.copyAmount(1L, new Object[] { aStack }), GT_OreDictUnificator.get(OrePrefixes.lens, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 1L), (int)Math.max(aMaterial.getMass() / 2L, 1L), 16);
 /*    */     }
 /* 57 */     if (aMaterial == Materials.Paper) GT_ModHandler.addCraftingRecipe(GT_Utility.copyAmount(GregTech_API.sRecipeFile.get(gregtech.api.enums.ConfigCategories.Recipes.harderrecipes, aStack, true) ? 2L : 3L, new Object[] { aStack }), new Object[] { "XXX", Character.valueOf('X'), new ItemStack(net.minecraft.init.Items.reeds, 1, 32767) });

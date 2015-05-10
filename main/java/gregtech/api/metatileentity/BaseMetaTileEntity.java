@@ -393,7 +393,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     				        	    mRunningThroughTick = false;
     				        		return;
     				        	}
-    				    	    if (GregTech_API.sMachineThunderExplosions && worldObj.isThundering() && getRandomNumber(3) == 0) {
+    				    	    if (GregTech_API.sMachineThunderExplosions && worldObj.isThundering() && getBiome().rainfall > 0 && getRandomNumber(3) == 0) {
     				        	    doEnergyExplosion();
     				    	    }
     			            }
@@ -651,7 +651,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 	@Override public boolean isActive() {return mActive;}
     @Override public void setActive(boolean aActive) {mActive = aActive;}
 	@Override public long getTimer() {return mTickTimer;}
-	@Override public boolean decreaseStoredEnergyUnits(long aEnergy, boolean aIgnoreTooLessEnergy) {if (!canAccessData()) return false; return mHasEnoughEnergy = decreaseStoredSteam(aEnergy, false) || decreaseStoredEU(aEnergy, aIgnoreTooLessEnergy) || (aIgnoreTooLessEnergy && (decreaseStoredSteam(aEnergy, true)));}
+	@Override public boolean decreaseStoredEnergyUnits(long aEnergy, boolean aIgnoreTooLessEnergy) {if (!canAccessData()) return false; return mHasEnoughEnergy = decreaseStoredEU(aEnergy, aIgnoreTooLessEnergy) || decreaseStoredSteam(aEnergy, false) || (aIgnoreTooLessEnergy && (decreaseStoredSteam(aEnergy, true)));}
 	@Override public boolean increaseStoredEnergyUnits(long aEnergy, boolean aIgnoreTooMuchEnergy) {if (!canAccessData()) return false; if (getStoredEU() < getEUCapacity() || aIgnoreTooMuchEnergy) {setStoredEU(mMetaTileEntity.getEUVar() + aEnergy); return true;} return false;}
 	@Override public boolean inputEnergyFrom(byte aSide) {if (aSide == 6) return true; if (isServerSide()) return (aSide>=0&&aSide<6?mActiveEUInputs [aSide]:false)&&!mReleaseEnergy; return isEnergyInputSide (aSide);}
 	@Override public boolean outputsEnergyTo(byte aSide) {if (aSide == 6) return true; if (isServerSide()) return (aSide>=0&&aSide<6?mActiveEUOutputs[aSide]:false)|| mReleaseEnergy; return isEnergyOutputSide(aSide);}
@@ -678,7 +678,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     
     public boolean setStoredEU			(long aEnergy) {if (!canAccessData()) return false; if (aEnergy < 0) aEnergy = 0; mMetaTileEntity.setEUVar		(aEnergy); return true;}
     public boolean setStoredSteam		(long aEnergy) {if (!canAccessData()) return false; if (aEnergy < 0) aEnergy = 0; mMetaTileEntity.setSteamVar	(aEnergy); return true;}
-    public boolean decreaseStoredEU		(long aEnergy, boolean aIgnoreTooLessEnergy) {if (!canAccessData()) return false; if (mMetaTileEntity.getEUVar()    - aEnergy >= 0 || aIgnoreTooLessEnergy) {setStoredEU(mMetaTileEntity.getEUVar()       - aEnergy); if (mMetaTileEntity.getEUVar()    < 0) {setStoredEU   (0); return false;} return true;} return false;}
+    public boolean decreaseStoredEU		(long aEnergy, boolean aIgnoreTooLessEnergy) {if (!canAccessData()) {return false;} if (mMetaTileEntity.getEUVar()    - aEnergy >= 0 || aIgnoreTooLessEnergy) {setStoredEU(mMetaTileEntity.getEUVar()       - aEnergy); if (mMetaTileEntity.getEUVar()    < 0) {setStoredEU   (0); return false;} return true;} return false;}
     public boolean decreaseStoredSteam	(long aEnergy, boolean aIgnoreTooLessEnergy) {if (!canAccessData()) return false; if (mMetaTileEntity.getSteamVar() - aEnergy >= 0 || aIgnoreTooLessEnergy) {setStoredSteam(mMetaTileEntity.getSteamVar() - aEnergy); if (mMetaTileEntity.getSteamVar() < 0) {setStoredSteam(0); return false;} return true;} return false;}
 	
     public boolean playerOwnsThis(EntityPlayer aPlayer, boolean aCheckPrecicely) {if (!canAccessData()) return false; if (aCheckPrecicely || privateAccess() || mOwnerName.equals("")) if (mOwnerName.equals("")&&isServerSide()) setOwnerName(aPlayer.getDisplayName()); else if (privateAccess() && !aPlayer.getDisplayName().equals("Player") && !mOwnerName.equals("Player") && !mOwnerName.equals(aPlayer.getDisplayName())) return false; return true;}

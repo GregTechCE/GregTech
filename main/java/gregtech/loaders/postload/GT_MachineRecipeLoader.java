@@ -407,6 +407,15 @@ public class GT_MachineRecipeLoader
     GT_Values.RA.addDistilleryRecipe(ItemList.Circuit_Integrated.getWithDamage(0L, 3L, new Object[0]), Materials.Oil.getFluid(16L), Materials.Methane.getGas(15L), 32, 16, false);
     GT_Values.RA.addDistilleryRecipe(ItemList.Circuit_Integrated.getWithDamage(0L, 4L, new Object[0]), Materials.Oil.getFluid(16L), Materials.Lubricant.getFluid(16L), 32, 16, false);
     GT_Values.RA.addDistilleryRecipe(ItemList.Circuit_Integrated.getWithDamage(0L, 6L, new Object[0]), Materials.Oil.getFluid(16L), Materials.SulfuricAcid.getFluid(16L), 32, 16, false);
+    if(FluidRegistry.getFluid("oilgc") != null){
+    GT_Values.RA.addDistilleryRecipe(ItemList.Circuit_Integrated.getWithDamage(0L, 1L, new Object[0]), new FluidStack(FluidRegistry.getFluid("oilgc"), 16), Materials.Fuel.getFluid(16L), 32, 16, false);
+    GT_Values.RA.addDistilleryRecipe(ItemList.Circuit_Integrated.getWithDamage(0L, 2L, new Object[0]), new FluidStack(FluidRegistry.getFluid("oilgc"), 16), Materials.Glyceryl.getFluid(1L), 32, 16, false);
+    GT_Values.RA.addDistilleryRecipe(ItemList.Circuit_Integrated.getWithDamage(0L, 3L, new Object[0]), new FluidStack(FluidRegistry.getFluid("oilgc"), 16), Materials.Methane.getGas(15L), 32, 16, false);
+    GT_Values.RA.addDistilleryRecipe(ItemList.Circuit_Integrated.getWithDamage(0L, 4L, new Object[0]), new FluidStack(FluidRegistry.getFluid("oilgc"), 16), Materials.Lubricant.getFluid(16L), 32, 16, false);
+    GT_Values.RA.addDistilleryRecipe(ItemList.Circuit_Integrated.getWithDamage(0L, 6L, new Object[0]), new FluidStack(FluidRegistry.getFluid("oilgc"), 16), Materials.SulfuricAcid.getFluid(16L), 32, 16, false);
+    GT_Values.RA.addDistillationTowerRecipe(new FluidStack(FluidRegistry.getFluid("oilgc"), 64), new FluidStack[]{Materials.Lubricant.getFluid(16L) , Materials.Fuel.getFluid(64L), Materials.SulfuricAcid.getFluid(64L), Materials.Glyceryl.getFluid(4L), Materials.Methane.getGas(60L)},null, 16, 64);
+    }
+    
     GT_Values.RA.addDistilleryRecipe(ItemList.Circuit_Integrated.getWithDamage(0L, 1L, new Object[0]), new FluidStack(ItemList.sOilLight, 32), Materials.Fuel.getFluid(16L), 32, 16, false);
     GT_Values.RA.addDistilleryRecipe(ItemList.Circuit_Integrated.getWithDamage(0L, 2L, new Object[0]), new FluidStack(ItemList.sOilLight, 32), Materials.Glyceryl.getFluid(1L), 32, 16, false);
     GT_Values.RA.addDistilleryRecipe(ItemList.Circuit_Integrated.getWithDamage(0L, 3L, new Object[0]), new FluidStack(ItemList.sOilLight, 32), Materials.Methane.getGas(15L), 32, 16, false);
@@ -680,7 +689,7 @@ public class GT_MachineRecipeLoader
     GT_Values.RA.addFusionReactorRecipe(Materials.Plutonium.getMolten(9), Materials.Thorium.getMolten(9), Materials.Naquadah.getMolten(9), 64, 32768, 300000000);
     GT_Values.RA.addFusionReactorRecipe(Materials.Americium.getMolten(16), Materials.Naquadria.getMolten(16), Materials.Neutronium.getMolten(1), 1200, 98304, 600000000);
     GT_Values.RA.addFusionReactorRecipe(Materials.Beryllium.getMolten(9), Materials.Deuterium.getGas(375), Materials.Nitrogen.getPlasma(125), 16, 16384, 180000000);
-    
+    GT_ModHandler.removeRecipeByOutput(ItemList.IC2_Fertilizer.get(1L, new Object[0]));    
     GT_Values.RA.addImplosionRecipe(ItemList.IC2_Compressed_Coal_Chunk.get(1L, new Object[0]), 8, ItemList.IC2_Industrial_Diamond.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 4L));
     
 //    GT_Values.RA.addDistillationRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oil, 16L), 32, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Fuel, 16L), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricAcid, 16L), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Glyceryl, 1L), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Methane, 15L), 4000, 64);
@@ -696,7 +705,8 @@ public class GT_MachineRecipeLoader
     GT_Values.RA.addDistillationTowerRecipe(Materials.FishOil.getFluid(24L), new FluidStack[]{Materials.Lubricant.getFluid(12L)}, null, 16, 96);
     GT_Values.RA.addDistillationTowerRecipe(Materials.Biomass.getFluid(150L), new FluidStack[]{Materials.Ethanol.getFluid(60L),Materials.Water.getFluid(60L)},  GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 1L), 25, 64);
     GT_Values.RA.addDistillationTowerRecipe(Materials.Water.getFluid(288L), new FluidStack[]{GT_ModHandler.getDistilledWater(260L)}, null, 16, 64);
-    
+    GT_Values.RA.addDistillationTowerRecipe(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 250), new FluidStack[]{new FluidStack(FluidRegistry.getFluid("ic2biogas"), 8000),Materials.Water.getFluid(125L)},  ItemList.IC2_Fertilizer.get(1, new Object[0]), 150, 512);
+    GT_Values.RA.addFuel(GT_ModHandler.getIC2Item("biogasCell", 1L), null, 32, 1);
     
     GT_Values.RA.addElectrolyzerRecipe(GT_Values.NI, ItemList.Cell_Empty.get(1L, new Object[0]), Materials.Water.getFluid(3000L), Materials.Hydrogen.getGas(2000L), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 1500, 30);
     GT_Values.RA.addElectrolyzerRecipe(GT_Values.NI, ItemList.Cell_Empty.get(1L, new Object[0]), GT_ModHandler.getDistilledWater(3000L), Materials.Hydrogen.getGas(2000L), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 1500, 30);
@@ -705,7 +715,7 @@ public class GT_MachineRecipeLoader
     GT_Values.RA.addElectrolyzerRecipe(ItemList.Dye_Bonemeal.get(3L, new Object[0]), 0, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 1L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, 98, 26);
     GT_Values.RA.addElectrolyzerRecipe(new ItemStack(Blocks.sand, 8), 0, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, 500, 25);
     
-    GT_ModHandler.removeRecipeByOutput(ItemList.IC2_Fertilizer.get(1L, new Object[0]));
+
     GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NetherQuartz, 3L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 1L), Materials.Water.getFluid(1000L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.gem, Materials.NetherQuartz, 3L), 500);
     GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartz, 3L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 1L), Materials.Water.getFluid(1000L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.gem, Materials.CertusQuartz, 3L), 500);
     GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Quartzite, 3L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 1L), Materials.Water.getFluid(1000L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Quartzite, 3L), 500);

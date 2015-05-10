@@ -14,7 +14,7 @@ public class GT_MetaTileEntity_QuantumTank
   extends GT_MetaTileEntity_BasicTank
 {
 	public GT_MetaTileEntity_QuantumTank(int aID, String aName, String aNameRegional, int aTier) {
-		super(aID, aName, aNameRegional, aTier, 3, "Stores "+((int)(Math.pow(6, aTier)*270000))+"L of fluid");
+		super(aID, aName, aNameRegional, aTier, 3, "Stores "+((int)(Math.pow(6, aTier)*267000))+"L of fluid");
 	}
 	
 	public GT_MetaTileEntity_QuantumTank(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -28,7 +28,7 @@ public class GT_MetaTileEntity_QuantumTank
 
 	@Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-		return aSide ==1 ? new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex+1],new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SCREEN)} :new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex+1]};//aSide != aFacing ? mMachineBlock != 0 ? new ITexture[] {Textures.BlockIcons.CASING_BLOCKS[mMachineBlock]} : new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex+1]} : mMachineBlock != 0 ? aActive ? getTexturesActive(Textures.BlockIcons.CASING_BLOCKS[mMachineBlock]) : getTexturesInactive(Textures.BlockIcons.CASING_BLOCKS[mMachineBlock]) : aActive ? getTexturesActive(Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex+1]) : getTexturesInactive(Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex+1]);
+		return aSide ==1 ? new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex+1],new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SCREEN)} :new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex+1]};
 	}
 	
 	@Override
@@ -79,7 +79,7 @@ public class GT_MetaTileEntity_QuantumTank
 	
 	@Override
 	public boolean displaysItemStack() {
-		return false;
+		return true;
 	}
 	
 	@Override
@@ -94,7 +94,7 @@ public class GT_MetaTileEntity_QuantumTank
   
 	@Override
 	public int getCapacity() {
-		return (int) (Math.pow(6, mTier)*270000);
+		return (int) (Math.pow(6, mTier)*267000);
 	}
 	
 	@Override

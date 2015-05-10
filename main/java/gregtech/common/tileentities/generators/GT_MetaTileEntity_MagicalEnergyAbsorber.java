@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Textures;
@@ -95,12 +96,16 @@ import gregtech.api.util.GT_Utility;
 			    		//Energyzed node
 			    		if(isThaumcraftLoaded){
 			    			try{
-			    				int fire = VisNetHandler.drainVis(this.getBaseMetaTileEntity().getWorld(), this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord(), Aspect.FIRE, 1000);
-			    				int earth = VisNetHandler.drainVis(this.getBaseMetaTileEntity().getWorld(), this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord(), Aspect.EARTH, 1000);
-			    				int air = VisNetHandler.drainVis(this.getBaseMetaTileEntity().getWorld(), this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord(), Aspect.AIR, 1000);
-			    				int destruction =  VisNetHandler.drainVis(this.getBaseMetaTileEntity().getWorld(), this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord(), Aspect.ENTROPY, 1000);
-			    				int order = VisNetHandler.drainVis(this.getBaseMetaTileEntity().getWorld(), this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord(), Aspect.ORDER, 1000);
-			    				int water =  VisNetHandler.drainVis(this.getBaseMetaTileEntity().getWorld(), this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord(), Aspect.WATER, 1000);
+			    				World tmpWorld = this.getBaseMetaTileEntity().getWorld();
+			    				int tmpX = this.getBaseMetaTileEntity().getXCoord();
+			    				int tmpY = this.getBaseMetaTileEntity().getYCoord();
+			    				int tmpZ = this.getBaseMetaTileEntity().getZCoord();
+			    				int fire = 			VisNetHandler.drainVis(tmpWorld, tmpX, tmpY, tmpZ, Aspect.FIRE, 1000);
+			    				int earth = 		VisNetHandler.drainVis(tmpWorld, tmpX, tmpY, tmpZ, Aspect.EARTH, 1000);
+			    				int air = 			VisNetHandler.drainVis(tmpWorld, tmpX, tmpY, tmpZ, Aspect.AIR, 1000);
+			    				int destruction =  	VisNetHandler.drainVis(tmpWorld, tmpX, tmpY, tmpZ, Aspect.ENTROPY, 1000);
+			    				int order = 		VisNetHandler.drainVis(tmpWorld, tmpX, tmpY, tmpZ, Aspect.ORDER, 1000);
+			    				int water =  		VisNetHandler.drainVis(tmpWorld, tmpX, tmpY, tmpZ, Aspect.WATER, 1000);
 			    				int visEU = (int) (Math.pow(fire, 4)+Math.pow(earth, 4)+Math.pow(air, 4)+Math.pow(destruction, 4)+Math.pow(order, 4)+Math.pow(water, 4));
 			    				getBaseMetaTileEntity().increaseStoredEnergyUnits(Math.min(maxEUOutput(), visEU*getEfficiency()/this.sEnergyFromVis), false);
 			    			}catch (Throwable e){}
@@ -121,7 +126,9 @@ import gregtech.api.util.GT_Utility;
 			    
 			    public boolean hasEgg()
 			    {
-			      return Blocks.dragon_egg == getBaseMetaTileEntity().getBlockOffset(0, 1, 0);
+			    	Block above = getBaseMetaTileEntity().getBlockOffset(0, 1, 0);
+			    	if(above==null||Blocks.air==above){return false;}
+			      return Blocks.dragon_egg == above || above.getUnlocalizedName().equals("tile.dragonEgg");
 			    }
 /* 43:   */   
 /* 44:   */   public int getEfficiency()

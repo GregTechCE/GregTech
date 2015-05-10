@@ -75,7 +75,7 @@ public class GT_RadioactiveCell_Item
       tNBT = new NBTTagCompound();
       aStack.setTagCompound(tNBT);
     }
-    return tNBT.getInteger("durability");
+    return tNBT.getInteger("advDmg");
   }
   
   public int getMaxNuclearDurability()
@@ -156,6 +156,6 @@ public class GT_RadioactiveCell_Item
   {
     super.addAdditionalToolTips(aList, aStack);
     //aList.add("Time left: " + (this.maxDelay - getDurabilityOfStack(aStack)) + " secs");
-    aList.add("Durability: "+(this.maxDmg - this.dura)+"/"+this.maxDmg);
+    aList.add("Durability: "+(this.maxDmg - getDurabilityOfStack(aStack))+"/"+this.maxDmg);
   }
 }

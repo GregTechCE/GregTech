@@ -963,6 +963,7 @@ public class GT_Utility {
 	public static boolean addSimpleIC2MachineRecipe(ItemStack aInput, Map<IRecipeInput, RecipeOutput> aRecipeList, NBTTagCompound aNBT, Object... aOutput) {
 		if (isStackInvalid(aInput) || aOutput.length == 0 || aRecipeList == null) return F;
 		ItemData tOreName = GT_OreDictUnificator.getAssociation(aInput);
+		for(int i = 0;i<aOutput.length;i++){if(aOutput[i]==null){System.out.println("EmptyIC2Output!"+aInput.getUnlocalizedName());return F;}}
 		if (tOreName != null) {
 			aRecipeList.put(new RecipeInputOreDict(tOreName.toString(), aInput.stackSize), new RecipeOutput(aNBT, GT_OreDictUnificator.getStackArray(T, aOutput)));
 		} else {

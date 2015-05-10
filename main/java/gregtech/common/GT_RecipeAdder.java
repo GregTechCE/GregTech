@@ -299,7 +299,7 @@
 					if((aDuration = GregTech_API.sRecipeFile.get("distillation", aInput.getUnlocalizedName(), aDuration))<=0){
 						return false;
 					}
-					GT_Recipe.GT_Recipe_Map.sDistillationRecipes.addRecipe(true, null,new ItemStack[]{ aOutput2}, null, new FluidStack[]{ aInput}, aOutputs, Math.min(aDuration,16), Math.max(1, aEUt), 0);
+					GT_Recipe.GT_Recipe_Map.sDistillationRecipes.addRecipe(false, null,new ItemStack[]{ aOutput2}, null, new FluidStack[]{ aInput}, aOutputs, Math.max(1, aDuration), Math.max(1, aEUt), 0);
 					return false;
 				}
 /* 293:    */   

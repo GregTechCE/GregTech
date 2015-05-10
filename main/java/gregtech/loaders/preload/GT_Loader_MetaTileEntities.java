@@ -59,9 +59,11 @@ import gregtech.common.tileentities.generators.GT_MetaTileEntity_PlasmaGenerator
 /*   54:     */ import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Disassembler;
 /*   55:     */ import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Massfabricator;
 /*   56:     */ import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_PotionBrewer;
+import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Pump;
 /*   57:     */ import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Replicator;
 /*   58:     */ import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_RockBreaker;
 /*   59:     */ import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Scanner;
+import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Teleporter;
 import gregtech.common.tileentities.machines.multi.*;
 /*   69:     */ import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_AlloySmelter_Bronze;
 /*   70:     */ import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_AlloySmelter_Steel;
@@ -977,6 +979,25 @@ import net.minecraftforge.oredict.OreDictionary;
 						
 						ItemList.Distillation_Tower.set(new GT_MetaTileEntity_DistillationTower(1126, "multimachine.distillationtower", "Distillation Tower").getStackForm(1L));
 						GT_ModHandler.addCraftingRecipe(ItemList.Distillation_Tower.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "CBC", "FMF", "CBC", 'M', ItemList.Hull_EV, 'B', OrePrefixes.pipeLarge.get(Materials.StainlessSteel), 'C', OrePrefixes.circuit.get(Materials.Master), 'F', ItemList.Electric_Pump_EV});
+						
+						ItemList.LargeTurbine.set(new GT_MetaTileEntity_LargeTurbine(1131, "multimachine.largeturbine", "Large Turbine").getStackForm(1L));
+						
+						
+						
+						ItemList.Pump_LV.set(new GT_MetaTileEntity_Pump(1140, "basicmachine.pump.tier.01", "Basic Pump",1).getStackForm(1L));
+						ItemList.Pump_MV.set(new GT_MetaTileEntity_Pump(1141, "basicmachine.pump.tier.02", "Advanced Pump",2).getStackForm(1L));
+						ItemList.Pump_HV.set(new GT_MetaTileEntity_Pump(1142, "basicmachine.pump.tier.03", "Advanced Pump II",3).getStackForm(1L));
+						ItemList.Pump_EV.set(new GT_MetaTileEntity_Pump(1143, "basicmachine.pump.tier.04", "Advanced Pump III",4).getStackForm(1L));
+						ItemList.Pump_IV.set(new GT_MetaTileEntity_Pump(1144, "basicmachine.pump.tier.05", "Advanced Pump IV",5).getStackForm(1L));
+						
+						GT_ModHandler.addCraftingRecipe(ItemList.Pump_LV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "CPC", "PMP", "BPB", 'M', ItemList.Hull_LV, 'B', OrePrefixes.pipeLarge.get(Materials.Bronze), 'C', OrePrefixes.circuit.get(Materials.Basic), 'P', ItemList.Electric_Pump_LV});
+						GT_ModHandler.addCraftingRecipe(ItemList.Pump_MV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "CPC", "PMP", "BPB", 'M', ItemList.Hull_MV, 'B', OrePrefixes.pipeLarge.get(Materials.Steel), 'C', OrePrefixes.circuit.get(Materials.Good), 'P', ItemList.Electric_Pump_MV});
+						GT_ModHandler.addCraftingRecipe(ItemList.Pump_HV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "CPC", "PMP", "BPB", 'M', ItemList.Hull_HV, 'B', OrePrefixes.pipeLarge.get(Materials.StainlessSteel), 'C', OrePrefixes.circuit.get(Materials.Advanced), 'P', ItemList.Electric_Pump_HV});
+						GT_ModHandler.addCraftingRecipe(ItemList.Pump_EV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "CPC", "PMP", "BPB", 'M', ItemList.Hull_EV, 'B', OrePrefixes.pipeLarge.get(Materials.Titanium), 'C', OrePrefixes.circuit.get(Materials.Data), 'P', ItemList.Electric_Pump_EV});
+						GT_ModHandler.addCraftingRecipe(ItemList.Pump_IV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "CPC", "PMP", "BPB", 'M', ItemList.Hull_IV, 'B', OrePrefixes.pipeLarge.get(Materials.TungstenSteel), 'C', OrePrefixes.circuit.get(Materials.Elite), 'P', ItemList.Electric_Pump_IV});
+						
+						ItemList.Teleporter.set(new GT_MetaTileEntity_Teleporter(1145, "basicmachine.teleporter", "Teleporter",6).getStackForm(1L));
+//						GT_ModHandler.addCraftingRecipe(ItemList.Teleporter.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "CPC", "PMP", "BPB", 'M', ItemList.Hull_LuV, 'B', OrePrefixes.pipeLarge.get(Materials.Bronze), 'C', OrePrefixes.circuit.get(Materials.Basic), 'P', ItemList.Electric_Pump_LV});
 						
 }
 /*  981:     */   

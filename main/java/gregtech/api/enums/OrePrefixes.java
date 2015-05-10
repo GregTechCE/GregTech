@@ -133,7 +133,7 @@ public enum OrePrefixes {
 	compressedDirt			("9^X Compressed Dirt"			, ""								, ""								,F,F,F,F,F,F,F,F,F,F, 0                       ,        -1, 64,  -1),
 	compressedGravel		("9^X Compressed Gravel"		, ""								, ""								,F,F,F,F,F,F,F,F,F,F, 0                       ,        -1, 64,  -1),
 	compressedSand			("9^X Compressed Sand"			, ""								, ""								,F,F,F,F,F,F,F,F,F,F, 0                       ,        -1, 64,  -1),
-	compressed				("Compressed Materials"			, "Compressed "						, ""								,T,T,F,F,F,F,T,F,F,F, 0                       , M * 1    , 64,  -1), // Compressed Material, worth 1 Unit. Introduced by Galacticraft
+	compressed				("Compressed Materials"			, "Compressed "						, ""								,T,T,F,F,F,F,T,F,F,F, 0                       , M * 2    , 64,  -1), // Compressed Material, worth 1 Unit. Introduced by Galacticraft
 	glass					("Glasses"						, ""								, ""								,F,F,T,F,T,F,F,F,F,F, 0                       ,        -1, 64,  -1),
 	paneGlass				("Glass Panes"					, ""								, ""								,F,F,T,F,F,T,F,F,F,F, 0                       ,        -1, 64,  -1),
 	blockGlass				("Glass Blocks"					, ""								, ""								,F,F,T,F,F,T,F,F,F,F, 0                       ,        -1, 64,  -1),

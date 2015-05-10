@@ -249,10 +249,8 @@ public boolean checkRecipe(ItemStack aStack) {
 					if(tInput2.mFluid!=null&& tInput2.mFluid!=null&&tInput2.mFluid.getFluid().getID()==this.mLastRecipe.mFluidInputs[1].getFluid().getID()&&tInput2.mFluid.amount>=this.mLastRecipe.mFluidInputs[1].amount&&getMaxInputVoltage()>=this.mLastRecipe.mEUt){
 						tInput.drain(this.mLastRecipe.mFluidInputs[0].amount, true);
 						tInput2.drain(this.mLastRecipe.mFluidInputs[1].amount, true);
-						
-						this.mEUt = -(this.mLastRecipe.mEUt*overclock(this.mLastRecipe.mEUt));
+						this.mEUt = (this.mLastRecipe.mEUt*overclock(this.mLastRecipe.mEUt));
 						this.mMaxProgresstime = this.mLastRecipe.mDuration/overclock(this.mLastRecipe.mEUt);
-						
 						this.mEfficiencyIncrease = 10000;
 						this.mOutputFluids = this.mLastRecipe.mFluidOutputs;
 						turnCasingActive(true);
@@ -268,16 +266,16 @@ public boolean checkRecipe(ItemStack aStack) {
 		FluidStack tFluid = tRecipe.mFluidInputs[0];
 		if(tFluid!=null){
 			for(GT_MetaTileEntity_Hatch_Input tInput : this.mInputHatches){
-				if(tFluid.fluid !=null&& tInput.getFluid()!=null && tFluid.fluid.getID()==tInput.getFluid().getFluid().getID()&&tFluid.amount<=tInput.getFluid().amount){
+				if(tFluid.getFluid() !=null&& tInput.getFluid()!=null && tFluid.getFluid().getID()==tInput.getFluid().getFluid().getID()&&tFluid.amount<=tInput.getFluid().amount){
 					FluidStack tFluid2 = tRecipe.mFluidInputs[1];
 						if(tFluid2!=null){
 							for(GT_MetaTileEntity_Hatch_Input tInput2 : this.mInputHatches){
-								if(tFluid2.fluid !=null&& tInput2.getFluid()!=null&&tFluid2.fluid.getID()==tInput2.getFluid().getFluid().getID()&&tFluid2.amount<=tInput2.getFluid().amount&&getMaxInputVoltage()>=tRecipe.mEUt&&this.mEUStore>=tRecipe.mSpecialValue){
+								if(tFluid2.getFluid() !=null&& tInput2.getFluid()!=null&&tFluid2.getFluid().getID()==tInput2.getFluid().getFluid().getID()&&tFluid2.amount<=tInput2.getFluid().amount&&getMaxInputVoltage()>=tRecipe.mEUt&&this.mEUStore>=tRecipe.mSpecialValue){
 									tInput.drain(tFluid.amount, true);
 									tInput2.drain(tFluid2.amount, true);
 									this.mLastRecipe=tRecipe;
 									
-									this.mEUt = -(tRecipe.mEUt*overclock(this.mLastRecipe.mEUt));
+									this.mEUt = (tRecipe.mEUt*overclock(this.mLastRecipe.mEUt));
 									this.mMaxProgresstime = tRecipe.mDuration/overclock(this.mLastRecipe.mEUt);
 									
 									this.mEfficiencyIncrease = 10000;
@@ -355,11 +353,7 @@ public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 				}
 				if (getRepairStatus() > 0) {
 			    	if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) {
-			    		if (aBaseMetaTileEntity.decreaseStoredEnergyUnits(mEUt, false)) {
-				    		if (!polluteEnvironment(getPollutionPerTick(mInventory[1]))) {
-				    			stopMachine();
-				    		}
-				    		
+			    		this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(mEUt, true);
 					    	if (mMaxProgresstime > 0 && ++mProgresstime>=mMaxProgresstime) {
 					    		if (mOutputItems != null) for (ItemStack tStack : mOutputItems) if (tStack != null) addOutput(tStack);
 					    		if (mOutputFluids != null) for (FluidStack tStack : mOutputFluids) if (tStack != null) addOutput(tStack);
@@ -371,7 +365,6 @@ public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 					    		this.mEUStore=(int) aBaseMetaTileEntity.getStoredEU();
 					    		if (aBaseMetaTileEntity.isAllowedToWork()) checkRecipe(mInventory[1]);
 					    	}
-			    		}
 			    	} else {
 			    		if (aTick % 100 == 0 || aBaseMetaTileEntity.hasWorkJustBeenEnabled() || aBaseMetaTileEntity.hasInventoryBeenModified()) {
 			    			turnCasingActive(mMaxProgresstime>0);
@@ -385,10 +378,12 @@ public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 			    		}
 			    	}
 				} else {
+					this.mLastRecipe=null;
 					stopMachine();
 				}
 			} else {
 				turnCasingActive(false);
+				this.mLastRecipe=null;
 				stopMachine();
 			}
 		}
@@ -401,6 +396,7 @@ public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 public boolean onRunningTick(ItemStack aStack) {
 	if (mEUt < 0) {
 		if (!drainEnergyInput(((long)-mEUt * 10000) / Math.max(1000, mEfficiency))) {
+			this.mLastRecipe=null;
 			stopMachine();
 			return false;
 		}
