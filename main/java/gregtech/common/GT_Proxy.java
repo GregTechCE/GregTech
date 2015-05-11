@@ -148,6 +148,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 	public boolean mHardRock = false;
 	public boolean mHungerEffect = true;
 	public boolean mOnline = true;
+	public boolean mIgnoreTcon = true;
 	public int mSkeletonsShootGTArrows = 16;
 	public int mMaxEqualEntitiesAtOneSpot = 3;
 	public int mFlintChance = 30;
@@ -199,7 +200,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 			"naturalAluminum", "naturalAluminium", "antimatterMilligram", "antimatterGram", "strangeMatter", "coalGenerator", "electricFurnace",
 			"unfinishedTank", "valvePart", "aquaRegia", "leatherSeal", "leatherSlimeSeal", "hambone", "slimeball", "clay", "enrichedUranium", "camoPaste",
 			"antiBlock", "burntQuartz", "salmonRaw","blockHopper" ,"blockEnderObsidian","blockIcestone","blockMagicWood","blockEnderCore","blockHeeEndium",
-			"oreHeeEndium","oreHeeEndPowder","oreHeeStardust","oreHeeIgneousRock","oreHeeInstabilityOrb","crystalPureFluix","shardNether","gemFluorite"}));
+			"oreHeeEndium","oreHeeEndPowder","oreHeeStardust","oreHeeIgneousRock","oreHeeInstabilityOrb","crystalPureFluix","shardNether","gemFluorite",
+			"stickObsidian","caveCrystal","shardCrystal","dyeCrystal"}));
 	private final Collection<String> mInvalidNames = new HashSet(Arrays.asList(new String[] { "diamondShard", "redstoneRoot", "obsidianStick", "bloodstoneOre",
 			"universalCable", "bronzeTube", "ironTube", "netherTube", "obbyTube", "infiniteBattery", "eliteBattery", "advancedBattery", "10kEUStore",
 			"blueDye", "MonazitOre", "quartzCrystal", "whiteLuminiteCrystal", "darkStoneIngot", "invisiumIngot", "demoniteOrb", "enderGem", "starconiumGem",
@@ -237,6 +239,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 		GT_Log.ore.println("GT_Mod: Preload-Phase started!");
 
 		GregTech_API.sPreloadStarted = true;
+		this.mIgnoreTcon = GregTech_API.sOPStuff.get(ConfigCategories.general, "ignoreTConstruct", true);
 		NetworkRegistry.INSTANCE.registerGuiHandler(GT_Values.GT, this);
 		for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
 			if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
@@ -996,13 +999,14 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 		}
 		try {
 			aEvent.Ore.stackSize = 1;
+			if(this.mIgnoreTcon){
 			if ((aOriginalMod.toLowerCase().contains("xycraft")) || (aOriginalMod.toLowerCase().contains("tconstruct"))
 					|| ((aOriginalMod.toLowerCase().contains("natura")) && (!aOriginalMod.toLowerCase().contains("natural")))) {
 				if (GT_Values.D1) {
 					GT_Log.ore.println(aMod + " -> " + aEvent.Name + " is getting ignored, because of racism. :P");
 				}
 				return;
-			}
+			}}
 			String tModToName = aMod + " -> " + aEvent.Name;
 			if ((this.mOreDictActivated) || (GregTech_API.sPostloadStarted) || ((this.mSortToTheEnd) && (GregTech_API.sLoadFinished))) {
 				tModToName = aOriginalMod + " --Late--> " + aEvent.Name;

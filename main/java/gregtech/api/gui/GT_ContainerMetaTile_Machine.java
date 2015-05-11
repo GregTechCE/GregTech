@@ -19,6 +19,7 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
     
     public GT_ContainerMetaTile_Machine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
     	super(aInventoryPlayer, aTileEntity);
+    	
     	mTileEntity = aTileEntity;
         
     	if (mTileEntity != null && mTileEntity.getMetaTileEntity() != null) {

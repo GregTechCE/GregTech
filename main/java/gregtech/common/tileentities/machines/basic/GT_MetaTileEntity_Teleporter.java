@@ -17,6 +17,7 @@ import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.entity.projectile.EntityFishHook;
@@ -26,21 +27,25 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.GT_Container_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.gui.GT_Container_Teleporter;
+import gregtech.common.gui.GT_GUIContainer_FusionReactor;
+import gregtech.common.gui.GT_GUIContainer_Teleporter;
 
-public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_Hatch{
+public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank{
 
 	  public int mTargetX = 0;
 	  public int mTargetY = 0;
 	  public int mTargetZ = 0;
 	  public int mTargetD = 0;
-	  public int mCharge = 0;
 	  public boolean mDebug = false;
 	  public boolean hasEgg = false;
 	  public static boolean sInterDimensionalTeleportAllowed = true;
@@ -50,11 +55,28 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_Hatch{
 	}
 
 	public GT_MetaTileEntity_Teleporter(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-		super(aName, aTier, 3, aDescription,aTextures);
+		super(aName, aTier, 3, aDescription, aTextures);
 	}
 	
-	@Override public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {return true;}
+	@Override
+	public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+		if (aBaseMetaTileEntity.isClientSide()) return true;
+		this.hasEgg = checkForEgg();
+		aBaseMetaTileEntity.openGUI(aPlayer);
+		return true;
+	}
+	
+	@Override
+	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+		return new GT_Container_Teleporter(aPlayerInventory, aBaseMetaTileEntity);
+	}
+	
 
+	@Override
+	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+		return new GT_GUIContainer_Teleporter(aPlayerInventory, aBaseMetaTileEntity);
+	}
+	
 	@Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
 		return new GT_MetaTileEntity_Teleporter(this.mName, this.mTier, this.mDescription, this.mTextures);
@@ -62,14 +84,12 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_Hatch{
 	
 	  public String[] getInfoData()
 	  {
-	    return new String[] { "Charge:", this.mCharge + " EU", "Coordinates:", "X: " + this.mTargetX, "Y: " + this.mTargetY, "Z: " + this.mTargetZ, "Dimension: " + this.mTargetD };
+	    return new String[] { "Coordinates:", "X: " + this.mTargetX, "Y: " + this.mTargetY, "Z: " + this.mTargetZ, "Dimension: " + this.mTargetD };
 	  }
 
-	@Override public ITexture[] getTexturesActive(ITexture aBaseTexture) {return null;}
-	@Override public ITexture[] getTexturesInactive(ITexture aBaseTexture) {return null;}
 	@Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-		return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex+1], (aSide !=1) ? null : aActive ? new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE) : new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER) };
+		return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex+1], (aSide !=this.getBaseMetaTileEntity().getFrontFacing()) ? null : aActive ? new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE) : new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER) };
 	}
 
 
@@ -79,7 +99,6 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_Hatch{
 	    aNBT.setInteger("mTargetY", this.mTargetY);
 	    aNBT.setInteger("mTargetZ", this.mTargetZ);
 	    aNBT.setInteger("mTargetD", this.mTargetD);
-	    aNBT.setInteger("mCharge", this.mCharge);
 	    aNBT.setBoolean("mDebug", this.mDebug);
 	  }
 	  
@@ -89,7 +108,6 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_Hatch{
 	    this.mTargetY = aNBT.getInteger("mTargetY");
 	    this.mTargetZ = aNBT.getInteger("mTargetZ");
 	    this.mTargetD = aNBT.getInteger("mTargetD");
-	    this.mCharge = aNBT.getInteger("mCharge");
 	    this.mDebug = aNBT.getBoolean("mDebug");
 	  }
 	  
@@ -137,8 +155,9 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_Hatch{
 	    return (this.mDebug) || ((hasDimensionalTeleportCapability()) && (GT_Utility.isRealDimension(this.mTargetD)) && (GT_Utility.isRealDimension(getBaseMetaTileEntity().getWorld().provider.dimensionId)));
 	  }
 	  
-	  public void onPostTick()
-	  {
+	  @Override
+	  public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+		super.onPostTick(aBaseMetaTileEntity, aTick);
 	    if (getBaseMetaTileEntity().isServerSide())
 	    {
 	      if (getBaseMetaTileEntity().getTimer() % 100L == 50L) {
@@ -146,20 +165,14 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_Hatch{
 	      }
 	      if ((getBaseMetaTileEntity().isAllowedToWork()) && (getBaseMetaTileEntity().getRedstone()))
 	      {
-	        this.mCharge -= 8192;
-	        if (this.mCharge < 0) {
-	          this.mCharge = 0;
-	        }
-	        int tDistance = distanceCalculation();int tCost = 0;
+	    	if(getBaseMetaTileEntity().decreaseStoredEnergyUnits(8192, false)){
+	        int tDistance = distanceCalculation();
 	        for (Object tObject : getBaseMetaTileEntity().getWorld().getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(getBaseMetaTileEntity().getOffsetX(getBaseMetaTileEntity().getFrontFacing(), 2) - 1, getBaseMetaTileEntity().getOffsetY(getBaseMetaTileEntity().getFrontFacing(), 2) - 1, getBaseMetaTileEntity().getOffsetZ(getBaseMetaTileEntity().getFrontFacing(), 2) - 1, getBaseMetaTileEntity().getOffsetX(getBaseMetaTileEntity().getFrontFacing(), 2) + 2, getBaseMetaTileEntity().getOffsetY(getBaseMetaTileEntity().getFrontFacing(), 2) + 2, getBaseMetaTileEntity().getOffsetZ(getBaseMetaTileEntity().getFrontFacing(), 2) + 2))) {
 	          if (((tObject instanceof Entity)) && (!((Entity)tObject).isDead))
 	          {
 	            Entity tEntity = (Entity)tObject;
-	            if (((this.mCharge >= (tCost = (int)(tDistance * tDistance * weightCalculation(tEntity)))) && (tCost >= 0)) || (this.mDebug))
+	            if (getBaseMetaTileEntity().decreaseStoredEnergyUnits((int)(tDistance * tDistance * weightCalculation(tEntity)), false))
 	            {
-	              if (!this.mDebug) {
-	                this.mCharge -= tCost;
-	              }
 	              if (tEntity.ridingEntity != null) {
 	                tEntity.mountEntity(null);
 	              }
@@ -168,23 +181,14 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_Hatch{
 	              }
 	              if ((this.mTargetD == getBaseMetaTileEntity().getWorld().provider.dimensionId) || (!isDimensionalTeleportAvailable()) || (!GT_Utility.moveEntityToDimensionAtCoords(tEntity, this.mTargetD, this.mTargetX + 0.5D, this.mTargetY + 0.5D, this.mTargetZ + 0.5D))) {
 	                if ((tEntity instanceof EntityLivingBase)) {
-	                  ((EntityLivingBase)tEntity).setPosition(this.mTargetX + 0.5D, this.mTargetY + 0.5D, this.mTargetZ + 0.5D);
+	                  ((EntityLivingBase)tEntity).setPositionAndUpdate(this.mTargetX + 0.5D, this.mTargetY + 0.5D, this.mTargetZ + 0.5D);
 	                } else {
 	                  tEntity.setPosition(this.mTargetX + 0.5D, this.mTargetY + 0.5D, this.mTargetZ + 0.5D);
 	                }
 	              }
 	            }
-	            else
-	            {
-	              long tCharge = getBaseMetaTileEntity().getUniversalEnergyStored();
-	              if ((tCharge > 0) && (this.mCharge + tCharge > 0))
-	              {
-	                this.mCharge += tCharge;
-	                getBaseMetaTileEntity().decreaseStoredEnergyUnits(tCharge, true);
-	              }
-	            }
 	          }
-	        }
+	        }}
 	        getBaseMetaTileEntity().setActive(true);
 	      }
 	      else
@@ -297,5 +301,40 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_Hatch{
 	    @Override public long maxAmperesIn()							{return 2;}
 		@Override public int getStackDisplaySlot()						{return 2;}
 		@Override public boolean isAccessAllowed(EntityPlayer aPlayer)	{return true;}
+
+		@Override
+		public boolean doesFillContainers() {
+			return false;
+		}
+
+		@Override
+		public boolean doesEmptyContainers() {
+			return false;
+		}
+
+		@Override
+		public boolean canTankBeFilled() {
+			return true;
+		}
+
+		@Override
+		public boolean canTankBeEmptied() {
+			return false;
+		}
+
+		@Override
+		public boolean displaysItemStack() {
+			return false;
+		}
+
+		@Override
+		public boolean displaysStackSize() {
+			return false;
+		}
+
+		@Override
+		public ITexture[][][] getTextureSet(ITexture[] aTextures) {
+			return null;
+		}
 	
 }

@@ -997,7 +997,7 @@ import net.minecraftforge.oredict.OreDictionary;
 						GT_ModHandler.addCraftingRecipe(ItemList.Pump_IV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "CPC", "PMP", "BPB", 'M', ItemList.Hull_IV, 'B', OrePrefixes.pipeLarge.get(Materials.TungstenSteel), 'C', OrePrefixes.circuit.get(Materials.Elite), 'P', ItemList.Electric_Pump_IV});
 						
 						ItemList.Teleporter.set(new GT_MetaTileEntity_Teleporter(1145, "basicmachine.teleporter", "Teleporter",6).getStackForm(1L));
-//						GT_ModHandler.addCraftingRecipe(ItemList.Teleporter.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "CPC", "PMP", "BPB", 'M', ItemList.Hull_LuV, 'B', OrePrefixes.pipeLarge.get(Materials.Bronze), 'C', OrePrefixes.circuit.get(Materials.Basic), 'P', ItemList.Electric_Pump_LV});
+						GT_ModHandler.addCraftingRecipe(ItemList.Teleporter.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "CPC", "PMP", "BCB", 'M', ItemList.Hull_LuV, 'B', ItemList.Tool_DataOrb, 'C', OrePrefixes.circuit.get(Materials.Master), 'P', ItemList.Field_Generator_EV});
 						
 }
 /*  981:     */   

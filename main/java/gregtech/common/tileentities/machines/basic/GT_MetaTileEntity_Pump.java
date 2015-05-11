@@ -142,7 +142,7 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
 							this.mPumpList.clear();
 							int y = getBaseMetaTileEntity().getYCoord() - 1;
 							for (int yHead = getYOfPumpHead(); (this.mPumpList.isEmpty()) && (y >= yHead); y--) {
-							scanForFluid(getBaseMetaTileEntity().getXCoord(), y, getBaseMetaTileEntity().getZCoord(), this.mPumpList, getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getZCoord(), 8*((int)Math.pow(2, this.mTier)));
+							scanForFluid(getBaseMetaTileEntity().getXCoord(), y, getBaseMetaTileEntity().getZCoord(), this.mPumpList, getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getZCoord(), 10*((int)Math.pow(1.6, this.mTier)));
 							}
 						}
 						if ((!tMovedOneDown) && (this.mPumpTimer <= 0)) {

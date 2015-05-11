@@ -25,6 +25,7 @@ public class GT_Container extends Container {
 	public InventoryPlayer mPlayerInventory;
 	
     public GT_Container (InventoryPlayer aPlayerInventory, IGregTechTileEntity aTileEntityInventory) {
+    	
         mTileEntity = aTileEntityInventory;
         mPlayerInventory = aPlayerInventory;
     }
