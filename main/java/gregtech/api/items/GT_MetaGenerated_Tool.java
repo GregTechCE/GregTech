@@ -13,6 +13,7 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.tools.GT_Tool_Turbine;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -238,11 +239,19 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
 		IToolStats tStats = getToolStats(aStack);
 		int tOffset = getElectricStats(aStack) != null ? 2 : 1;
 		if (tStats != null) {
+			String name = aStack.getUnlocalizedName();
+			if(name.equals("gt.metatool.01.170")||name.equals("gt.metatool.01.172")||name.equals("gt.metatool.01.174")||name.equals("gt.metatool.01.176")){
+				aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
+				aList.add(tOffset + 1, EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.YELLOW + " lvl " + getHarvestLevel(aStack, "") + EnumChatFormatting.GRAY);
+				aList.add(tOffset + 2, EnumChatFormatting.WHITE + "Turbine Efficency: " + EnumChatFormatting.BLUE + (50.0F+(10.0F*getToolCombatDamage(aStack))) + EnumChatFormatting.GRAY);
+				aList.add(tOffset + 3, EnumChatFormatting.WHITE + "Optimal Steam flow: " + EnumChatFormatting.LIGHT_PURPLE + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed*20) + EnumChatFormatting.GRAY+ "L/sec");
+				
+			}else{
 			aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
 			aList.add(tOffset + 1, EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.YELLOW + " lvl " + getHarvestLevel(aStack, "") + EnumChatFormatting.GRAY);
 			aList.add(tOffset + 2, EnumChatFormatting.WHITE + "Attack Damage: " + EnumChatFormatting.BLUE + getToolCombatDamage(aStack) + EnumChatFormatting.GRAY);
 			aList.add(tOffset + 3, EnumChatFormatting.WHITE + "Mining Speed: " + EnumChatFormatting.LIGHT_PURPLE + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed) + EnumChatFormatting.GRAY);
-		}
+			}}
 	}
 	
 	public static final Materials getPrimaryMaterial(ItemStack aStack) {

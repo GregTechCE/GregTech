@@ -132,7 +132,7 @@ public class GT_MetaTileEntity_QuantumChest extends GT_MetaTileEntity_TieredMach
 	          this.mInventory[0] = null;
 	        }
 	      }
-	      if (this.mInventory[1] == null)
+	      if (this.mInventory[1] == null&&mItemStack!=null)
 	      {
 	        this.mInventory[1] = mItemStack.copy();
 	        this.mInventory[1].stackSize = Math.min(mItemStack.getMaxStackSize(), this.mItemCount);
@@ -188,12 +188,15 @@ public class GT_MetaTileEntity_QuantumChest extends GT_MetaTileEntity_TieredMach
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 	    aNBT.setInteger("mItemCount", this.mItemCount);
+	    if(this.mItemStack!=null)
 	    aNBT.setTag("mItemStack", this.mItemStack.writeToNBT(new NBTTagCompound()));
 	  }
 
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
+		if(aNBT.hasKey("mItemCount"))
 	    this.mItemCount = aNBT.getInteger("mItemCount");
+		if(aNBT.hasKey("mItemStack"))
 	    this.mItemStack = ItemStack.loadItemStackFromNBT((NBTTagCompound) aNBT.getTag("mItemStack"));
 	  }
 

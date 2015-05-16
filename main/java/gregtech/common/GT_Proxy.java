@@ -149,6 +149,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 	public boolean mHungerEffect = true;
 	public boolean mOnline = true;
 	public boolean mIgnoreTcon = true;
+	public boolean mDisableIC2Cables = false;
+	public boolean mAchievements = true;
 	public int mSkeletonsShootGTArrows = 16;
 	public int mMaxEqualEntitiesAtOneSpot = 3;
 	public int mFlintChance = 30;
@@ -610,6 +612,11 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 					GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 1L), tBits,
 							new Object[] { "Xx", Character.valueOf('X'), OrePrefixes.foil.get(aMaterial) });
 
+					GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 1L), tBits, new Object[] { "fPd", "SPS", " P ",
+						Character.valueOf('P'), aMaterial == Materials.Wood ? OrePrefixes.plank.get(aMaterial) : OrePrefixes.plateDouble.get(aMaterial),
+						Character.valueOf('R'), OrePrefixes.ring.get(aMaterial), Character.valueOf('S'), OrePrefixes.screw.get(aMaterial) });
+					
+					
 					GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.arrowGtWood, aMaterial, 1L), tBits, new Object[] { "  A", " S ",
 							"F  ", Character.valueOf('S'), OrePrefixes.stick.get(Materials.Wood), Character.valueOf('F'), OreDictNames.craftingFeather,
 							Character.valueOf('A'), OrePrefixes.toolHeadArrow.get(aMaterial) });
@@ -1310,11 +1317,11 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 										GT_OreDictUnificator.set(OrePrefixes.ingot, Materials.RedAlloy, new ItemStack(aEvent.Ore.getItem(), 1, 0));
 										GT_OreDictUnificator.set(OrePrefixes.ingot, Materials.BlueAlloy, new ItemStack(aEvent.Ore.getItem(), 1, 1));
 										GT_OreDictUnificator.set(OrePrefixes.ingot, Materials.Brass, new ItemStack(aEvent.Ore.getItem(), 1, 2));
-
+										if(!mDisableIC2Cables){
 										GT_Values.RA.addWiremillRecipe(GT_ModHandler.getIC2Item("copperCableItem", 3L), new ItemStack(aEvent.Ore.getItem(), 1,
 												8), 400, 1);
 										GT_Values.RA.addWiremillRecipe(GT_ModHandler.getIC2Item("ironCableItem", 6L),
-												new ItemStack(aEvent.Ore.getItem(), 1, 9), 400, 2);
+												new ItemStack(aEvent.Ore.getItem(), 1, 9), 400, 2);}
 										GT_Values.RA.addCutterRecipe(new ItemStack(aEvent.Ore.getItem(), 1, 3), new ItemStack(aEvent.Ore.getItem(), 16, 4),
 												null, 400, 8);
 									}

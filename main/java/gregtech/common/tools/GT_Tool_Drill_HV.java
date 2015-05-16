@@ -5,6 +5,7 @@ import gregtech.api.enums.Textures;
 /*  4:   */ import gregtech.api.enums.Textures.ItemIcons;
 /*  5:   */ import gregtech.api.interfaces.IIconContainer;
 /*  6:   */ import gregtech.common.GT_Proxy;
+import net.minecraft.entity.player.EntityPlayer;
 /*  7:   */ import net.minecraft.item.ItemStack;
 /*  8:   */ 
 /*  9:   */ public class GT_Tool_Drill_HV
@@ -49,6 +50,12 @@ import gregtech.api.enums.Textures;
 /* 48:   */   {
 /* 49:48 */     return 4.0F;
 /* 50:   */   }
+
+				public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer)
+/* 117:    */   {
+/* 118:117 */     super.onToolCrafted(aStack, aPlayer);
+  				  GT_Mod.achievements.issueAchievement(aPlayer, "highpowerdrill");
+/* 121:    */   }
 /* 51:   */   
 /* 52:   */   public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack)
 /* 53:   */   {

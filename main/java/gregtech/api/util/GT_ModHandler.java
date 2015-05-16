@@ -16,6 +16,7 @@ import ic2.api.reactor.IReactorComponent;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeOutput;
+import ic2.core.AdvRecipe;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -1009,6 +1010,85 @@ public class GT_ModHandler {
 		}} catch(Throwable e) {e.printStackTrace(GT_Log.err);}}
 		return rReturn;
     }
+
+//    public static int replaceRecipe(ItemStack aOldItem, ItemStack aNewItem){
+//    	int replaced =0;
+//    	ArrayList<IRecipe> tList = (ArrayList<IRecipe>)CraftingManager.getInstance().getRecipeList();
+//    	System.out.println("tList.size "+tList.size());
+//		for (int i = 0; i < tList.size(); i++){
+//			System.out.println(tList.get(i).getClass());
+//			if(tList.get(i) instanceof ShapedRecipes){
+//				ShapedRecipes tRecipe = (ShapedRecipes)tList.get(i);
+//				System.out.println("found recipe!");
+//				for( int g =0 ; g < tRecipe.recipeItems.length;g++){
+//					if(GT_Utility.areStacksEqual(aOldItem, tRecipe.recipeItems[g], true)){
+//					ItemStack[] tItems = tRecipe.recipeItems;
+//					for(int f = 0; f < tItems.length;f++){
+//						if(GT_Utility.areStacksEqual(aOldItem, tItems[f], true)){
+//							tItems[f]=aNewItem;
+//						}
+//					}
+//					ShapedRecipes nRecipe = new ShapedRecipes(tRecipe.recipeWidth,tRecipe.recipeHeight,tItems,tRecipe.getRecipeOutput());
+//					tList.set(i, nRecipe);
+//					replaced++;
+//					}
+//				}
+//			}
+//			
+//			if(tList.get(i) instanceof AdvRecipe){
+//				AdvRecipe tRecipe = (AdvRecipe)tList.get(i);
+//				System.out.println("found recipe!");
+//				for( int g =0 ; g < tRecipe.input.length;g++){
+//					if(GT_Utility.areStacksEqual(aOldItem, (ItemStack) tRecipe.input[g], true)){
+//					ItemStack[] tItems = (ItemStack[]) tRecipe.input;
+//					for(int f = 0; f < tItems.length;f++){
+//						if(GT_Utility.areStacksEqual(aOldItem, tItems[f], true)){
+//							tItems[f]=aNewItem;
+//						}
+//					}
+//					System.out.println("converted Recipe");
+//					AdvRecipe nRecipe = new AdvRecipe(tRecipe.getRecipeOutput(),tItems);
+//					tList.set(i, nRecipe);
+//					replaced++;
+//					}
+//				}
+//			}
+////			if(tList.get(i) instanceof GT_Shaped_Recipe){
+////				GT_Shaped_Recipe tRecipe = (GT_Shaped_Recipe)tList.get(i);
+////				System.out.println("found recipe!");
+////				for( int g =0 ; g < tRecipe.getInput().length;g++){
+////					if(GT_Utility.areStacksEqual(aOldItem, (ItemStack)tRecipe.getInput()[g], true)){
+////					ItemStack[] tItems = (ItemStack[]) tRecipe.getInput();
+////					for(int f = 0; f < tItems.length;f++){
+////						if(GT_Utility.areStacksEqual(aOldItem, tItems[f], true)){
+////							tItems[f]=aNewItem;
+////						}
+////					}
+////					GT_Shaped_Recipe nRecipe = new GT_Shaped_Recipe(tItems,tRecipe.getRecipeOutput());
+////					tList.set(i, nRecipe);
+////					replaced++;
+////					}
+////				}
+////			}
+//			if(tList.get(i) instanceof ShapelessRecipes){
+//				ShapelessRecipes tRecipe = (ShapelessRecipes)tList.get(i);
+//				System.out.println("found recipe!");
+//				for( int g =0 ; g < tRecipe.recipeItems.size();g++){
+//					if(GT_Utility.areStacksEqual(aOldItem, (ItemStack) tRecipe.recipeItems.get(g), true)){
+//					List tItems = tRecipe.recipeItems;
+//					for(int f = 0; f < tItems.size();f++){
+//						if(GT_Utility.areStacksEqual(aOldItem, (ItemStack) tItems.get(f), true)){
+//							tItems.set(f,aNewItem);
+//						}
+//					}
+//					ShapelessRecipes nRecipe = new ShapelessRecipes(tRecipe.getRecipeOutput(),tItems);
+//					tList.set(i, nRecipe);
+//					replaced++;
+//					}
+//				}
+//			}
+//		}return replaced;
+//    }
 
     public static boolean removeRecipeByOutput(ItemStack aOutput) {
     	return removeRecipeByOutput(aOutput, T, F, F);

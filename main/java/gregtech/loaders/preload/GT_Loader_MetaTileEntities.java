@@ -1046,12 +1046,12 @@ import net.minecraftforge.oredict.OreDictionary;
 /* 1024: 962 */     makeWires(Materials.RedAlloy, 2000, 0L, 1L, 1L, gregtech.api.enums.GT_Values.V[0], true, false);
 /* 1025:     */     
 /* 1026: 964 */     makeWires(Materials.Superconductor, 2020, 1L, 1L, 4L, gregtech.api.enums.GT_Values.V[9], false, true);
-/* 1027:     */     
+/* 1027:     */     if(!GT_Mod.gregtechproxy.mDisableIC2Cables){
 /* 1028: 966 */     GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("copperCableItem", 2L), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "xP", Character.valueOf('P'), OrePrefixes.plate.get(Materials.AnyCopper) });
 /* 1029: 967 */     GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("goldCableItem", 4L), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "xP", Character.valueOf('P'), OrePrefixes.plate.get(Materials.Gold) });
 /* 1030: 968 */     GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("ironCableItem", 3L), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "xP", Character.valueOf('P'), OrePrefixes.plate.get(Materials.AnyIron) });
 /* 1031: 969 */     GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("tinCableItem", 3L), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "xP", Character.valueOf('P'), OrePrefixes.plate.get(Materials.Tin) });
-/* 1032:     */     
+/* 1032:     */     }
 /* 1033:     */ 
 /* 1034:     */ 
 /* 1035: 973 */     GT_OreDictUnificator.registerOre(OrePrefixes.pipeSmall.get(Materials.Wood), new GT_MetaPipeEntity_Fluid(5101, "GT_Pipe_Wood_Small", "Small Wooden Fluid Pipe", 0.375F, Materials.Wood, 10, 350, false).getStackForm(1L));

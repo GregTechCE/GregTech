@@ -1,11 +1,14 @@
 /*   1:    */ package gregtech.common.tools;
 /*   2:    */ 
-/*   3:    */ import gregtech.api.GregTech_API;
+/*   3:    */ import gregtech.GT_Mod;
+import gregtech.api.GregTech_API;
 /*   4:    */ import gregtech.api.enums.Materials;
 /*   5:    */ import gregtech.api.interfaces.IIconContainer;
 /*   6:    */ import gregtech.api.items.GT_MetaGenerated_Tool;
 /*   7:    */ import gregtech.common.items.behaviors.Behaviour_Crowbar;
+
 /*   8:    */ import java.util.Map;
+
 /*   9:    */ import net.minecraft.block.Block;
 /*  10:    */ import net.minecraft.block.material.Material;
 /*  11:    */ import net.minecraft.entity.EntityLivingBase;
@@ -124,6 +127,7 @@
 /* 124:    */   {
 /* 125:122 */     super.onToolCrafted(aStack, aPlayer);
 /* 126:123 */     aPlayer.triggerAchievement(AchievementList.buildSword);
+  				  GT_Mod.achievements.issueAchievement(aPlayer, "unitool");
 /* 127:    */   }
 /* 128:    */   
 /* 129:    */   public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity)

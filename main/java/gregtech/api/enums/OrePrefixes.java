@@ -121,6 +121,7 @@ public enum OrePrefixes {
 	toolHeadDrill			("Drill Tips"					, ""								, " Drill Tip"						,T,T,F,F,F,F,T,T,F,F, B[6]                    , M * 4    , 16,  40), // consisting out of 4 Ingots.
 	toolHeadChainsaw		("Chainsaw Tips"				, ""								, " Chainsaw Tip"					,T,T,F,F,F,F,T,T,F,F, B[6]                    , M * 2    , 16,  41), // consisting out of 2 Ingots.
 	toolHeadWrench			("Wrench Tips"					, ""								, " Wrench Tip"						,T,T,F,F,F,F,T,T,F,F, B[6]                    , M * 4    , 16,  42), // consisting out of 4 Ingots.
+	turbineBlade    		("Turbine Blades"				, ""								, " Turbine Blade"					,T,T,F,F,F,F,T,T,F,F, B[6]                    , M * 6    , 64,  100), // consisting out of 6 Ingots.
 	toolSword				("Swords"						, ""								, ""								,F,T,F,F,F,F,T,F,T,F, B[6]                    , M * 2    ,  1,  -1), // vanilly Sword
 	toolPickaxe				("Pickaxes"						, ""								, ""								,F,T,F,F,F,F,T,F,T,F, B[6]                    , M * 3    ,  1,  -1), // vanilly Pickaxe
 	toolShovel				("Shovels"						, ""								, ""								,F,T,F,F,F,F,T,F,T,F, B[6]                    , M * 1    ,  1,  -1), // vanilly Shovel

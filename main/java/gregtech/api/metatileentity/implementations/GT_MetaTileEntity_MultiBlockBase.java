@@ -1,6 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.V;
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.gui.GT_Container_MultiMachine;
@@ -179,10 +180,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 					    		if (!polluteEnvironment(getPollutionPerTick(mInventory[1]))) {
 					    			stopMachine();
 					    		}
-					    		
 						    	if (mMaxProgresstime > 0 && ++mProgresstime>=mMaxProgresstime) {
-						    		if (mOutputItems != null) for (ItemStack tStack : mOutputItems) if (tStack != null) addOutput(tStack);
-						    		if (mOutputFluids != null&&mOutputFluids.length==1) {for (FluidStack tStack : mOutputFluids) if (tStack != null) addOutput(tStack);}
+						    		if (mOutputItems != null) for (ItemStack tStack : mOutputItems) if (tStack != null) {GT_Mod.instance.achievements.issueAchivementHatch(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), tStack);addOutput(tStack);}
+						    		if (mOutputFluids != null&&mOutputFluids.length==1) {for (FluidStack tStack : mOutputFluids) if (tStack != null) {addOutput(tStack);}}
 						    		else if(mOutputFluids!=null&&mOutputFluids.length>1){
 						    			addFluidOutputs(mOutputFluids);}
 						    		mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
@@ -191,6 +191,12 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 						    		mMaxProgresstime = 0;
 						    		mEfficiencyIncrease = 0;
 						    		if (aBaseMetaTileEntity.isAllowedToWork()) checkRecipe(mInventory[1]);
+						    		if(mOutputFluids!=null&&mOutputFluids.length>0){
+						    		System.out.println("fluids"+mOutputFluids.length);
+						    		GT_Mod.instance.achievements.issueAchivementHatchFluid(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), mOutputFluids[0]);
+						    		if(mOutputFluids.length>1){GT_Mod.instance.achievements.issueAchievement(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "oilplant");}
+						    		mOutputFluids = null;
+						    		}
 						    	}
 				    		}
 				    	} else {

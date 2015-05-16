@@ -1,6 +1,7 @@
 /*   1:    */ package gregtech.common.tileentities.machines.multi;
 /*   2:    */ 
-/*   3:    */ import gregtech.api.GregTech_API;
+/*   3:    */ import gregtech.GT_Mod;
+import gregtech.api.GregTech_API;
 /*   4:    */ import gregtech.api.enums.Materials;
 /*   5:    */ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
@@ -225,6 +226,7 @@ import gregtech.api.enums.Textures;
 /* 224:    */         {
 /* 225:151 */           if (++this.mProgresstime >= this.mMaxProgresstime)
 /* 226:    */           {
+						  GT_Mod.instance.achievements.issueAchievement(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "steel");
 /* 227:152 */             addOutputProducts();
 /* 228:153 */             this.mOutputItem1 = null;
 /* 229:154 */             this.mOutputItem2 = null;

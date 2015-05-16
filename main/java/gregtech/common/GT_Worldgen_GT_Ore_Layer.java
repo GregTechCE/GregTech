@@ -1,12 +1,16 @@
 /*  1:   */ package gregtech.common;
 /*  2:   */ 
-/*  3:   */ import gregtech.api.GregTech_API;
+/*  3:   */ import gregtech.GT_Mod;
+import gregtech.api.GregTech_API;
 /*  4:   */ import gregtech.api.enums.Materials;
 /*  5:   */ import gregtech.api.util.GT_Config;
 /*  6:   */ import gregtech.api.world.GT_Worldgen;
 /*  7:   */ import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.loaders.misc.GT_Achievements;
+
 /*  8:   */ import java.util.ArrayList;
 /*  9:   */ import java.util.Random;
+
 /* 10:   */ import net.minecraft.world.World;
 /* 11:   */ import net.minecraft.world.chunk.IChunkProvider;
 /* 12:   */ 
@@ -44,6 +48,10 @@
 /* 44:32 */     this.mBetweenMeta = ((short)GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "OreSporadiclyInbetween", aBetween.mMetaItemSubID));
 /* 45:33 */     this.mSporadicMeta = ((short)GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "OreSporaticlyAround", aSporadic.mMetaItemSubID));
 /* 46:34 */     if (this.mEnabled) {
+				GT_Achievements.registerOre(aPrimary,aMinY,aMaxY,aWeight,aOverworld,aNether,aEnd);
+/* 46:34 */     GT_Achievements.registerOre(aSecondary,aMinY,aMaxY,aWeight,aOverworld,aNether,aEnd);
+/* 46:34 */     GT_Achievements.registerOre(aBetween,aMinY,aMaxY,aWeight,aOverworld,aNether,aEnd);
+/* 46:34 */     GT_Achievements.registerOre(aSporadic,aMinY,aMaxY,aWeight,aOverworld,aNether,aEnd);
 /* 47:34 */       sWeight += this.mWeight;
 /* 48:   */     }
 /* 49:   */   }

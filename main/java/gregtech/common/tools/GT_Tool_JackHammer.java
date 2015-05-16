@@ -101,6 +101,13 @@ import net.minecraftforge.event.world.BlockEvent;
 /*  97:    */     }
 /*  98: 91 */     return rConversions;
 /*  99:    */   }
+
+					public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer)
+/* 117:    */   {
+/* 118:117 */     super.onToolCrafted(aStack, aPlayer);
+  					GT_Mod.achievements.issueAchievement(aPlayer, "hammertime");
+/* 121:    */   }
+
 /* 100:    */   
 /* 101:    */   public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack)
 /* 102:    */   {

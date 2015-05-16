@@ -53,6 +53,7 @@ import gregtech.api.enums.*;
 /*  59:    */ import gregtech.loaders.load.GT_FuelLoader;
 /*  60:    */ import gregtech.loaders.load.GT_ItemIterator;
 /*  61:    */ import gregtech.loaders.load.GT_SonictronLoader;
+import gregtech.loaders.misc.GT_Achievements;
 /*  62:    */ import gregtech.loaders.misc.GT_CoverLoader;
 /*  63:    */ import gregtech.loaders.postload.GT_BlockResistanceLoader;
 /*  64:    */ import gregtech.loaders.postload.GT_BookAndLootLoader;
@@ -101,6 +102,7 @@ import gregtech.api.enums.*;
 /* 106:    */ import net.minecraft.item.crafting.CraftingManager;
 /* 107:    */ import net.minecraft.item.crafting.FurnaceRecipes;
 /* 108:    */ import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.stats.Achievement;
 /* 109:    */ import net.minecraft.util.WeightedRandomChestContent;
 /* 110:    */ import net.minecraft.world.World;
 /* 111:    */ import net.minecraft.world.biome.BiomeGenBase;
@@ -125,6 +127,7 @@ import net.minecraftforge.common.ForgeVersion;
 /* 129:    */   public static final int VERSION = 508;
 /* 130:    */   public static final int REQUIRED_IC2 = 624;
 /* 131: 72 */   public static int MAX_IC2 = 2147483647;
+				public static GT_Achievements achievements;
 /* 132:    */   
 /* 133:    */   static
 /* 134:    */   {
@@ -303,6 +306,9 @@ import net.minecraftforge.common.ForgeVersion;
 /* 307:207 */     gregtechproxy.mNerfedWoodPlank = tMainConfig.get("general", "WoodNeedsSawForCrafting", true).getBoolean(true);
 /* 308:208 */     gregtechproxy.mNerfedVanillaTools = tMainConfig.get("general", "smallerVanillaToolDurability", true).getBoolean(true);
 /* 309:209 */     gregtechproxy.mSortToTheEnd = tMainConfig.get("general", "EnsureToBeLoadedLast", true).getBoolean(true);
+				  gregtechproxy.mDisableIC2Cables = tMainConfig.get("general", "DisableIC2Cables", false).getBoolean(false);
+				  gregtechproxy.mAchievements = tMainConfig.get("general", "EnableAchievements", true).getBoolean(true);
+				  
 /* 310:211 */     if (tMainConfig.get("general", "hardermobspawners", true).getBoolean(true)) {
 /* 311:211 */       Blocks.mob_spawner.setHardness(500.0F).setResistance(6000000.0F);
 /* 312:    */     }
@@ -320,7 +326,7 @@ import net.minecraftforge.common.ForgeVersion;
 /* 324:225 */         tPrefix.mDefaultStackSize = ((byte)Math.min(64, Math.max(16, tMainConfig.get("features", "MaxOtherBlockStackSize", 64).getInt())));
 /* 325:    */       }
 /* 326:    */     }
-/* 327:229 */     GT_Config.troll = (Calendar.getInstance().get(2) + 1 == 4) && (Calendar.getInstance().get(5) >= 1) && (Calendar.getInstance().get(5) <= 2);
+/* 327:229 */     //GT_Config.troll = (Calendar.getInstance().get(2) + 1 == 4) && (Calendar.getInstance().get(5) >= 1) && (Calendar.getInstance().get(5) <= 2);
 /* 328:    */     
 /* 329:231 */     Materials.init(GregTech_API.sMaterialProperties);
 /* 330:    */     
@@ -753,6 +759,8 @@ import net.minecraftforge.common.ForgeVersion;
 /* 757:    */         }
 /* 758:    */       }
 /* 759:    */     }
+				  if(gregtechproxy.mAchievements){
+				  achievements = new GT_Achievements();}
 /* 760:    */     Map.Entry<IRecipeInput, RecipeOutput> tRecipe;
 /* 761:540 */     GT_Log.out.println("GT_Mod: Loading finished, deallocating temporary Init Variables.");
 /* 762:541 */     GregTech_API.sBeforeGTPreload = null;
@@ -777,33 +785,6 @@ import net.minecraftforge.common.ForgeVersion;
 /* 781:    */       }
 /* 782:    */     }
 /* 783:565 */     gregtechproxy.onServerStarting();
-/* 784:    */     
-/* 785:    */ 
-/* 786:    */ 
-/* 787:    */ 
-/* 788:    */ 
-/* 789:    */ 
-/* 790:    */ 
-/* 791:    */ 
-/* 792:    */ 
-/* 793:    */ 
-/* 794:    */ 
-/* 795:    */ 
-/* 796:    */ 
-/* 797:    */ 
-/* 798:    */ 
-/* 799:    */ 
-/* 800:    */ 
-/* 801:    */ 
-/* 802:    */ 
-/* 803:    */ 
-/* 804:    */ 
-/* 805:    */ 
-/* 806:    */ 
-/* 807:    */ 
-/* 808:    */ 
-/* 809:    */ 
-/* 810:    */ 
 /* 811:593 */     GT_Log.out.println("GT_Mod: Unificating outputs of all known Recipe Types.");
 /* 812:594 */     ArrayList<ItemStack> tStacks = new ArrayList(10000);
 /* 813:595 */     GT_Log.out.println("GT_Mod: IC2 Machines");

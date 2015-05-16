@@ -122,6 +122,7 @@ import gregtech.api.enums.Textures;
 /* 119:118 */     super.onToolCrafted(aStack, aPlayer);
 /* 120:119 */     aPlayer.triggerAchievement(AchievementList.buildPickaxe);
 /* 121:120 */     aPlayer.triggerAchievement(AchievementList.buildBetterPickaxe);
+				  GT_Mod.achievements.issueAchievement(aPlayer, "driltime");
 /* 122:    */   }
 /* 123:    */   
 /* 124:    */   public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity)

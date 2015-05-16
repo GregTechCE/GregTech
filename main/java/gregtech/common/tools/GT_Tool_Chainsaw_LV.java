@@ -1,6 +1,7 @@
 /*  1:   */ package gregtech.common.tools;
 /*  2:   */ 
-/*  3:   */ import gregtech.api.GregTech_API;
+/*  3:   */ import gregtech.GT_Mod;
+import gregtech.api.GregTech_API;
 /*  4:   */ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 /*  5:   */ import gregtech.api.enums.Textures.ItemIcons;
@@ -10,6 +11,7 @@ import gregtech.api.enums.Textures;
 /*  8:   */ import java.util.Map;
 
 /*  9:   */ import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 /* 10:   */ import net.minecraft.item.ItemStack;
 /* 11:   */ import net.minecraft.util.ChatComponentText;
 /* 12:   */ import net.minecraft.util.EnumChatFormatting;
@@ -87,6 +89,13 @@ import gregtech.api.enums.Textures;
 /* 84:   */   {
 /* 85:82 */     return true;
 /* 86:   */   }
+
+					public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer)
+/* 117:    */   {
+/* 118:117 */     super.onToolCrafted(aStack, aPlayer);
+  					GT_Mod.achievements.issueAchievement(aPlayer, "brrrr");
+/* 121:    */   }
+
 /* 87:   */   
 /* 88:   */   public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack)
 /* 89:   */   {

@@ -43,6 +43,11 @@ import gregtech.api.enums.ConfigCategories;
 /* 42:   */ import gregtech.common.tools.GT_Tool_SoftHammer;
 import gregtech.common.tools.GT_Tool_Soldering_Iron;
 /* 43:   */ import gregtech.common.tools.GT_Tool_Sword;
+import gregtech.common.tools.GT_Tool_Turbine;
+import gregtech.common.tools.GT_Tool_Turbine_Huge;
+import gregtech.common.tools.GT_Tool_Turbine_Large;
+import gregtech.common.tools.GT_Tool_Turbine_Normal;
+import gregtech.common.tools.GT_Tool_Turbine_Small;
 /* 44:   */ import gregtech.common.tools.GT_Tool_UniversalSpade;
 /* 45:   */ import gregtech.common.tools.GT_Tool_WireCutter;
 /* 46:   */ import gregtech.common.tools.GT_Tool_Wrench;
@@ -94,6 +99,11 @@ import gregtech.common.tools.GT_Tool_Soldering_Iron;
 /* 92:   */   public static final short BUZZSAW = 140;
 /* 93:   */   public static final short SCREWDRIVER_LV = 150;
 			  public static final short SOLDERING_IRON_LV = 160;
+			  public static final short TURBINE_SMALL = 170;
+			  public static final short TURBINE = 172;
+			  public static final short TURBINE_LARGE = 174;
+			  public static final short TURBINE_HUGE = 176;
+			  public static final short TURBINE_BLADE = 178;
 /* 94:   */   
 /* 95:   */   public GT_MetaGenerated_Tool_01()
 /* 96:   */   {
@@ -137,6 +147,11 @@ import gregtech.common.tools.GT_Tool_Soldering_Iron;
 /* =4:57 */     addTool(140, "Buzzsaw (LV)", "Not suitable for harvesting Blocks", new GT_Tool_BuzzSaw(), new Object[] { ToolDictNames.craftingToolSaw, new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 2L) });
 /* =5:58 */     GregTech_API.registerTool(addTool(150, "Screwdriver (LV)", "Adjusts Covers and Machines", new GT_Tool_Screwdriver_LV(), new Object[] { ToolDictNames.craftingToolScrewdriver, new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L) }), GregTech_API.sScrewdriverList);
 /* =6:   */     GregTech_API.registerTool(addTool(SOLDERING_IRON_LV, "Soldering Iron (LV)", "Fixes burned out Circuits. Needs soldering materials in inventory", new GT_Tool_Soldering_Iron(), new Object[] { ToolDictNames.craftingToolSolderingIron, new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L) }),  GregTech_API.sSolderingToolList);
+				
+				addTool(TURBINE_SMALL, "Small Turbine", "Turbine Rotors for your power station", new GT_Tool_Turbine_Small(), new Object[] {});
+				addTool(TURBINE,       "Turbine",       "Turbine Rotors for your power station", new GT_Tool_Turbine_Normal(), new Object[] {});
+				addTool(TURBINE_LARGE, "Large Turbine", "Turbine Rotors for your power station", new GT_Tool_Turbine_Large(), new Object[] {});
+				addTool(TURBINE_HUGE,  "Huge Turbine",  "Turbine Rotors for your power station", new GT_Tool_Turbine_Huge(), new Object[] {});
 
 /* =7:60 */     GT_ModHandler.addCraftingRecipe(INSTANCE.getToolWithStats(24, 1, Materials.Flint, Materials.Stone, null), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { " I ", "SIS", "SSS", Character.valueOf('I'), new ItemStack(Items.flint, 1), Character.valueOf('S'), OrePrefixes.stone });
 /* =8:61 */     GT_ModHandler.addCraftingRecipe(INSTANCE.getToolWithStats(24, 1, Materials.Bronze, Materials.Stone, null), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { " I ", "SIS", "SSS", Character.valueOf('I'), OrePrefixes.ingot.get(Materials.Bronze), Character.valueOf('S'), OrePrefixes.stone });

@@ -1,12 +1,15 @@
 /*  1:   */ package gregtech.loaders.postload;
 /*  2:   */ 
-/*  3:   */ import gregtech.api.enums.ItemList;
+/*  3:   */ import gregtech.GT_Mod;
+import gregtech.api.enums.ItemList;
 /*  4:   */ import gregtech.api.enums.Materials;
 /*  5:   */ import gregtech.api.enums.OrePrefixes;
 /*  6:   */ import gregtech.api.util.GT_Log;
 /*  7:   */ import gregtech.api.util.GT_ModHandler;
 /*  8:   */ import gregtech.api.util.GT_OreDictUnificator;
+
 /*  9:   */ import java.io.PrintStream;
+
 /* 10:   */ import net.minecraft.init.Blocks;
 /* 11:   */ import net.minecraft.init.Items;
 /* 12:   */ import net.minecraft.item.ItemStack;
@@ -57,8 +60,9 @@
 /* 57:54 */     GT_ModHandler.addScrapboxDrop(1.8F, ItemList.Circuit_Board_Basic.get(1L, new Object[0]));
 /* 58:55 */     GT_ModHandler.addScrapboxDrop(0.4F, ItemList.Circuit_Board_Advanced.get(1L, new Object[0]));
 /* 59:56 */     GT_ModHandler.addScrapboxDrop(0.2F, ItemList.Circuit_Board_Elite.get(1L, new Object[0]));
+				if(!GT_Mod.gregtechproxy.mDisableIC2Cables){
 /* 60:57 */     GT_ModHandler.addScrapboxDrop(2.0F, GT_ModHandler.getIC2Item("insulatedCopperCableItem", 1L));
-/* 61:58 */     GT_ModHandler.addScrapboxDrop(0.4F, GT_ModHandler.getIC2Item("insulatedGoldCableItem", 1L));
+/* 61:58 */     GT_ModHandler.addScrapboxDrop(0.4F, GT_ModHandler.getIC2Item("insulatedGoldCableItem", 1L));}
 /* 62:59 */     GT_ModHandler.addScrapboxDrop(0.9F, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L));
 /* 63:60 */     GT_ModHandler.addScrapboxDrop(0.8F, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L));
 /* 64:61 */     GT_ModHandler.addScrapboxDrop(0.8F, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L));

@@ -1,6 +1,7 @@
 /*   1:    */ package gregtech.common.tools;
 /*   2:    */ 
-/*   3:    */ import gregtech.api.GregTech_API;
+/*   3:    */ import gregtech.GT_Mod;
+import gregtech.api.GregTech_API;
 /*   4:    */ import gregtech.api.enums.Materials;
 /*   5:    */ import gregtech.api.interfaces.IIconContainer;
 /*   6:    */ import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -20,6 +21,7 @@
 /*  18:    */ import net.minecraft.entity.monster.EntityIronGolem;
 /*  19:    */ import net.minecraft.entity.player.EntityPlayer;
 /*  20:    */ import net.minecraft.item.ItemStack;
+import net.minecraft.stats.AchievementList;
 /*  21:    */ import net.minecraft.util.ChatComponentText;
 /*  22:    */ import net.minecraft.util.EnumChatFormatting;
 /*  23:    */ import net.minecraft.util.IChatComponent;
@@ -179,6 +181,12 @@ import net.minecraftforge.event.world.BlockEvent;
 /* 176:    */   {
 /* 177:173 */     return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " was squashed by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
 /* 178:    */   }
+
+				public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer)
+/* 117:    */   {
+/* 118:117 */     super.onToolCrafted(aStack, aPlayer);
+				  GT_Mod.achievements.issueAchievement(aPlayer, "tools");
+/* 121:    */   }
 /* 179:    */ }
 
 

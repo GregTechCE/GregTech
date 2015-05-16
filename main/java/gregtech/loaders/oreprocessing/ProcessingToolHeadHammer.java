@@ -1,12 +1,15 @@
 /*    */ package gregtech.loaders.oreprocessing;
 /*    */ 
 /*    */ import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 /*    */ import gregtech.api.enums.Materials;
 /*    */ import gregtech.api.enums.OrePrefixes;
 /*    */ import gregtech.api.enums.SubTag;
 /*    */ import gregtech.api.interfaces.IOreRecipeRegistrator;
 /*    */ import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 /*    */ import gregtech.api.util.GT_ModHandler.RecipeBits;
 /*    */ import gregtech.common.items.GT_MetaGenerated_Tool_01;
 /*    */ import net.minecraft.init.Blocks;
@@ -36,13 +39,15 @@ import gregtech.api.enums.ItemList;
 /* 35 */         GT_ModHandler.addCraftingRecipe(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(34, 1, aMaterial, aMaterial, null), GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "fPh", " S ", Character.valueOf('S'), OrePrefixes.stick.get(aMaterial), Character.valueOf('P'), OrePrefixes.plate.get(aMaterial) });
 /* 36 */         GT_ModHandler.addCraftingRecipe(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(36, 1, aMaterial, aMaterial, null), GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "PPf", "PP ", "Sh ", Character.valueOf('S'), OrePrefixes.stick.get(aMaterial), Character.valueOf('P'), OrePrefixes.plate.get(aMaterial) });
 /*    */         GT_ModHandler.addCraftingRecipe(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(160, 1, aMaterial, Materials.Rubber, new long[] { 100000L, 32L, 1L, -1L }), GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "LBf", "Sd ", "P  ", 'B', OrePrefixes.bolt.get(aMaterial), 'P', OrePrefixes.plate.get(Materials.Rubber),'S',OrePrefixes.stick.get(Materials.Iron),'L',ItemList.Battery_RE_LV_Lithium.get(1L, new Object[0]) });
-/*    */       }
+/*    */       
+//				GT_ModHandler.addCraftingRecipe(GT_Utility.copyAmount(1L,OrePrefixes.turbineBlade.get(aMaterial)), gregtech.api.util.GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "B", "B", "B", 'S', OrePrefixes.screw.get(aMaterial), 'B', OrePrefixes.plate.get(aMaterial) });     
+				
+				   
+				GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 4L),GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Magnalium, 1L),GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(170, 1, aMaterial, aMaterial, null),   160, 100);
+				GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 8L),GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Titanium, 1L),GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(172, 1, aMaterial, aMaterial, null),   320, 400);
+     			GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 12L),GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.TungstenSteel, 1L),GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(174, 1, aMaterial, aMaterial, null),  640, 1600);
+     			GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 16L),GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Americium, 1L),GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(176, 1, aMaterial, aMaterial, null),  1280, 6400);        
+}
 /*    */     }
 /*    */   }
 /*    */ }
-
-
-/* Location:              F:\Torrent\minecraft\jdgui test\gregtech_1.7.10-5.07.07-dev.jar!\gregtech\loaders\oreprocessing\ProcessingToolHeadHammer.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       0.7.1-SNAPSHOT-20140817
- */

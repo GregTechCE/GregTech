@@ -2,6 +2,7 @@ package gregtech.api.metatileentity;
 
 import static gregtech.api.enums.GT_Values.NW;
 import static gregtech.api.enums.GT_Values.V;
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
@@ -387,7 +388,9 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     					    || (getCoverIDAtSide((byte)4) == 0 && worldObj.getPrecipitationHeight(xCoord-1, zCoord  ) - 1 < yCoord)
     						|| (getCoverIDAtSide((byte)5) == 0 && worldObj.getPrecipitationHeight(xCoord+1, zCoord  ) - 1 < yCoord)) {
     				    	    if (GregTech_API.sMachineRainExplosions && worldObj.isRaining() && getBiome().rainfall > 0) {
-    				        	    if (getRandomNumber(10)==0) doEnergyExplosion(); else setOnFire();
+    				        	    if (getRandomNumber(10)==0) {doEnergyExplosion(); 
+    				        	    GT_Mod.instance.achievements.issueAchievement(this.getWorldObj().getPlayerEntityByName(mOwnerName), "badweather");
+    				        	    }else setOnFire();
     				    	    }
     				        	if (!hasValidMetaTileEntity()) {
     				        	    mRunningThroughTick = false;
@@ -395,6 +398,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     				        	}
     				    	    if (GregTech_API.sMachineThunderExplosions && worldObj.isThundering() && getBiome().rainfall > 0 && getRandomNumber(3) == 0) {
     				        	    doEnergyExplosion();
+    				        	    GT_Mod.instance.achievements.issueAchievement(this.getWorldObj().getPlayerEntityByName(mOwnerName), "badweather");
     				    	    }
     			            }
     		        	}
@@ -683,7 +687,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 	
     public boolean playerOwnsThis(EntityPlayer aPlayer, boolean aCheckPrecicely) {if (!canAccessData()) return false; if (aCheckPrecicely || privateAccess() || mOwnerName.equals("")) if (mOwnerName.equals("")&&isServerSide()) setOwnerName(aPlayer.getDisplayName()); else if (privateAccess() && !aPlayer.getDisplayName().equals("Player") && !mOwnerName.equals("Player") && !mOwnerName.equals(aPlayer.getDisplayName())) return false; return true;}
     public boolean privateAccess() {if (!canAccessData()) return mLockUpgrade; return mLockUpgrade || mMetaTileEntity.ownerControl();}
-    public void doEnergyExplosion() {if (getUniversalEnergyCapacity() > 0 && getUniversalEnergyStored() >= getUniversalEnergyCapacity()/5) doExplosion(oOutput*(getUniversalEnergyStored() >= getUniversalEnergyCapacity()?4:getUniversalEnergyStored() >= getUniversalEnergyCapacity()/2?2:1));}
+    public void doEnergyExplosion() {if (getUniversalEnergyCapacity() > 0 && getUniversalEnergyStored() >= getUniversalEnergyCapacity()/5) {doExplosion(oOutput*(getUniversalEnergyStored() >= getUniversalEnergyCapacity()?4:getUniversalEnergyStored() >= getUniversalEnergyCapacity()/2?2:1));  GT_Mod.instance.achievements.issueAchievement(this.getWorldObj().getPlayerEntityByName(mOwnerName), "electricproblems");}}
     
     @Override
     public void doExplosion(long aAmount) {
