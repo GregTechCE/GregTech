@@ -226,13 +226,13 @@ import gregtech.api.enums.Textures;
 /* 224:    */         {
 /* 225:151 */           if (++this.mProgresstime >= this.mMaxProgresstime)
 /* 226:    */           {
-						  GT_Mod.instance.achievements.issueAchievement(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "steel");
-/* 227:152 */             addOutputProducts();
+						  addOutputProducts();
 /* 228:153 */             this.mOutputItem1 = null;
 /* 229:154 */             this.mOutputItem2 = null;
 /* 230:155 */             this.mProgresstime = 0;
 /* 231:156 */             this.mMaxProgresstime = 0;
-/* 232:    */           }
+/* 232:    */             try{GT_Mod.instance.achievements.issueAchievement(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "steel");}catch(Exception e){}
+/* 227:152 */			}
 /* 233:    */         }
 /* 234:159 */         else if (aBaseMetaTileEntity.isAllowedToWork()) {
 /* 235:159 */           checkRecipe();

@@ -54,7 +54,7 @@ import net.minecraft.entity.player.EntityPlayer;
 				public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer)
 /* 117:    */   {
 /* 118:117 */     super.onToolCrafted(aStack, aPlayer);
-  				  GT_Mod.achievements.issueAchievement(aPlayer, "highpowerdrill");
+  				  try{GT_Mod.instance.achievements.issueAchievement(aPlayer, "highpowerdrill");}catch(Exception e){}
 /* 121:    */   }
 /* 51:   */   
 /* 52:   */   public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack)

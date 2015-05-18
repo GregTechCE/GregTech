@@ -1,6 +1,7 @@
 /*   1:    */ package gregtech.common.tileentities.machines.multi;
 /*   2:    */ 
-/*   3:    */ import gregtech.api.enums.Materials;
+/*   3:    */ import gregtech.GT_Mod;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 /*   4:    */ import gregtech.api.enums.Textures.BlockIcons;
 /*   5:    */ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
@@ -150,6 +151,18 @@ import gregtech.api.enums.Textures;
 /* 147:    */     }
 /* 148:126 */     return true;
 /* 149:    */   }
+
+private boolean firstRun = true;
+
+@Override
+public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+	if (mProgresstime>0&&firstRun) {firstRun = false;try{
+		GT_Mod.instance.achievements.issueAchievement(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "extremepressure");}catch (Exception e){}
+	}
+	super.onPostTick(aBaseMetaTileEntity, aTick);
+}
+
+
 /* 150:    */   
 /* 151:    */   public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack)
 /* 152:    */   {

@@ -3,6 +3,7 @@
 /*   3:    */ import forestry.api.genetics.AlleleManager;
 /*   4:    */ import forestry.api.genetics.IAlleleRegistry;
 /*   5:    */ import forestry.api.genetics.IIndividual;
+import gregtech.GT_Mod;
 /*   6:    */ import gregtech.api.GregTech_API;
 /*   7:    */ import gregtech.api.enums.Element;
 /*   8:    */ import gregtech.api.enums.GT_Values;
@@ -132,7 +133,6 @@ import gregtech.api.util.GT_Recipe;
 /* 128:101 */           this.mOutputItems[0] = ItemList.Tool_DataOrb.get(1L, new Object[0]);
 /* 129:102 */           Behaviour_DataOrb.setDataTitle(this.mOutputItems[0], "Elemental-Scan");
 /* 130:103 */           Behaviour_DataOrb.setDataName(this.mOutputItems[0], tData.mMaterial.mMaterial.mElement.name());
-/* 131:    */           
 /* 132:105 */           this.mMaxProgresstime = ((int)(tData.mMaterial.mMaterial.getMass() * 8192L / (1 << this.mTier - 1)));
 /* 133:106 */           this.mEUt = (32 * (1 << this.mTier - 1) * (1 << this.mTier - 1));
 /* 134:107 */           return 2;
@@ -174,6 +174,16 @@ import gregtech.api.util.GT_Recipe;
 /* 170:    */     }
 /* 171:140 */     return 0;
 /* 172:    */   }
+
+@Override
+public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+	if (mProgresstime>=(mMaxProgresstime-1)) {try{
+		if(this.mOutputItems[0].getUnlocalizedName().equals("gt.metaitem.01.32707")){
+		GT_Mod.instance.achievements.issueAchievement(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "scanning");}}catch (Exception e){}
+	}
+	super.onPostTick(aBaseMetaTileEntity, aTick);
+}
+
 /* 173:    */   
 /* 174:    */   public GT_Recipe.GT_Recipe_Map getRecipeList()
 /* 175:    */   {

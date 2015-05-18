@@ -19,14 +19,21 @@ public class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_MultiBlock
 	public GT_MetaTileEntity_LargeTurbine(String aName){super(aName);}
 
 	@Override
-	public String[] getDescription() {
-		return new String[]{"Consumes 1600 Liters of Steam per Tick"};
-	}
-
-	@Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex+1],new GT_RenderedTexture(Textures.BlockIcons.STEAM_TURBINE_SIDE)};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex+1], aFacing == aSide ? new GT_RenderedTexture(Textures.BlockIcons.LARGETURBINE5) : Textures.BlockIcons.CASING_BLOCKS[57]};
 	}
+	
+	   
+	   public String[] getDescription()
+	   {
+	     return new String[] { 
+	    		 "Controller Block for the Large Turbine",
+	    		 "Size: 3x3x4 (Hollow)", "Controller (front centered)",
+	    		 "1x Input Hatch (side centered)", "1x Output Hatch(side centered)",
+	    		 "1x Dynamo Hatch (back centered)", 
+	    		 "1x Maintenance Hatch (side centered)", 
+	    		 "Turbine Casings for the rest (24 at least!)" };
+	   }
 
 	@Override
 	public boolean isCorrectMachinePart(ItemStack aStack) {

@@ -115,7 +115,7 @@ import ic2.core.item.ItemRadioactive;
 /* 107:108 */     ItemList.NC_SensorCard.set(tItem == null ? new GT_Generic_Item("sensorcard", "GregTech Sensor Card", "Nuclear Control not installed", false) : tItem);
 
 					ItemList.Neutron_Reflector.set(new GT_NeutronReflector_Item("neutronreflector", "Iridium Neutron Reflector", 0));
-					GT_ModHandler.addCraftingRecipe(ItemList.Neutron_Reflector.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE , new Object[] { "RRR", "RPR", "RRR",'R', GT_ModHandler.getIC2Item("reactorReflectorThick", 1L),'P', OrePrefixes.plate.get(Materials.Iridium) });    
+					GT_ModHandler.addCraftingRecipe(ItemList.Neutron_Reflector.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE , new Object[] { "RRR", "RPR", "RRR",'R', GT_ModHandler.getIC2Item("reactorReflectorThick", 1L),'P', OrePrefixes.plateAlloy.get(Materials.Iridium) });    
 					
 					ItemList.Reactor_Coolant_He_1.set(GregTech_API.constructCoolantCellItem("60k_Helium_Coolantcell", "60k He Coolant Cell", 60000));
 					GT_ModHandler.addCraftingRecipe(ItemList.Reactor_Coolant_He_1.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE , new Object[] { " P ", "PCP", " P ",'C', OrePrefixes.cell.get(Materials.Helium),'P', OrePrefixes.plate.get(Materials.Tin) });    

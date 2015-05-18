@@ -1579,6 +1579,7 @@ public class GT_ModHandler {
 			if (aPlayer instanceof EntityPlayer) {
 				EntityPlayer tPlayer = (EntityPlayer)aPlayer;
 				if (tPlayer.capabilities.isCreativeMode) return T;
+				System.out.println("hier");
 				for (int i = 0; i < tPlayer.inventory.mainInventory.length; i++) {
 					if (GT_Utility.isStackInList(tPlayer.inventory.mainInventory[i], GregTech_API.sSolderingMetalList)) {
 						tPlayer.inventory.mainInventory[i].stackSize--;

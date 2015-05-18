@@ -111,8 +111,8 @@ public int adjY = 9;
 		
 		registerAchievement("magneticiron", 4, -2, GT_OreDictUnificator.get(OrePrefixes.stick, Materials.IronMagnetic, 1L), "steel", false);
 		registerAchievement("lvmotor", 4, -6, ItemList.Electric_Motor_LV.get(1, new Object[] {}), "magneticiron", false);
-		registerAchievement("pump", 2, -8, ItemList.Electric_Pump_LV.get(1, new Object[] {}), "lvmotor", false);
-		registerAchievement("closeit", 2, -10, ItemList.Cover_Shutter.get(1, new Object[] {}), "pump", false);
+		registerAchievement("pumpcover", 2, -8, ItemList.Electric_Pump_LV.get(1, new Object[] {}), "lvmotor", false);
+		registerAchievement("closeit", 2, -10, ItemList.Cover_Shutter.get(1, new Object[] {}), "pumpcover", false);
 		registerAchievement("slurp", 2, -12, ItemList.Pump_HV.get(1, new Object[] {}), "closeit", false);
 		registerAchievement("transport", 4, -10, ItemList.Conveyor_Module_LV.get(1, new Object[] {}), "lvmotor", false);
 		registerAchievement("manipulation", 4, -12, ItemList.Cover_Controller.get(1, new Object[] {}), "transport", false);
@@ -160,7 +160,7 @@ public int adjY = 9;
 		registerAchievement("tothelimit", 12, 10, ItemList.Generator_Plasma_LuV.get(1, new Object[] {}), "advancing", false);
 		registerAchievement("denseaspossible", 10, 10, ItemList.FusionComputer_UV.get(1, new Object[] {}), "tothelimit", false);
 		registerAchievement("fullefficiency", 10, 12, ItemList.Generator_Plasma_ZPMV.get(1, new Object[] {}), "denseaspossible", false);
-		registerAchievement("whatnow", 8, 10, GT_OreDictUnificator.get(OrePrefixes.battery, Materials.Ultimate, 1L), "denseaspossible", false);
+		registerAchievement("whatnow", 8, 10, ItemList.ZPM2.get(1, new Object[] {}), "denseaspossible", false);
 		
 		AchievementPage.registerAchievementPage(new AchievementPage("GregTech 5", (Achievement[]) this.achievementList.values().toArray(
 				new Achievement[this.achievementList.size()])));
@@ -261,7 +261,6 @@ public int adjY = 9;
 	}
 	
 	public void issueAchivementHatchFluid(EntityPlayer player, FluidStack fluid){
-		System.out.println("fluid!");
 		if (player == null||fluid==null) {
 			return;
 		}
@@ -280,13 +279,11 @@ public int adjY = 9;
 
 	@SubscribeEvent
 	public void onCrafting(ItemCraftedEvent event) {
-		System.out.println("crafting");
 		EntityPlayer player = event.player;
 		ItemStack stack = event.crafting;
 		if (player == null||stack==null) {
 			return;
 		}
-		System.out.println(stack.getUnlocalizedName());
 		if(stack.getUnlocalizedName().startsWith("gt.metaitem.")){
 			if(stack.getUnlocalizedName().equals("gt.metaitem.01.2300")){
 				issueAchievement(player, "bronze");
@@ -299,7 +296,7 @@ public int adjY = 9;
 			}else if(stack.getUnlocalizedName().equals("gt.metaitem.01.32600")){
 				issueAchievement(player, "lvmotor");
 			}else if(stack.getUnlocalizedName().equals("gt.metaitem.01.32610")){
-				issueAchievement(player, "pump");
+				issueAchievement(player, "pumpcover");
 			}else if(stack.getUnlocalizedName().equals("gt.metaitem.01.32630")){
 				issueAchievement(player, "transport");
 			}else if(stack.getUnlocalizedName().equals("gt.metaitem.01.32650")){
@@ -415,8 +412,8 @@ public int adjY = 9;
 					|| data.mPrefix == OrePrefixes.oreNetherrack || data.mPrefix == OrePrefixes.oreRedgranite) {
 				for (int i = 0; i < data.getAllMaterialStacks().size(); i++) {
 					issueAchievement(player, data.getAllMaterialStacks().get(i).mMaterial.name());
-					
-				}return;
+					if(data.getAllMaterialStacks().get(i).mMaterial == Materials.AnyIron){issueAchievement(player, "iron");}
+				}
 			}else if(data.mPrefix == OrePrefixes.crushed){
 				issueAchievement(player, "crushed");
 			}else if(data.mPrefix == OrePrefixes.crushedPurified){
@@ -425,7 +422,6 @@ public int adjY = 9;
 				issueAchievement(player, "spinit");
 			}
 		}
-		System.out.println(stack.getUnlocalizedName());
 		if(stack.getUnlocalizedName().startsWith("gt.metaitem.")){
 			if(stack.getUnlocalizedName().equals("gt.metaitem.02.32500")){
 				issueAchievement(player, "havestlead");

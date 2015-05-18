@@ -118,7 +118,7 @@
 /* 118:117 */     super.onToolCrafted(aStack, aPlayer);
 /* 119:118 */     aPlayer.triggerAchievement(AchievementList.buildPickaxe);
 /* 120:119 */     aPlayer.triggerAchievement(AchievementList.buildBetterPickaxe);
-				  GT_Mod.achievements.issueAchievement(aPlayer, "flintpick");
+				  try{GT_Mod.instance.achievements.issueAchievement(aPlayer, "flintpick");}catch(Exception e){}
 /* 121:    */   }
 /* 122:    */   
 /* 123:    */   public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity)

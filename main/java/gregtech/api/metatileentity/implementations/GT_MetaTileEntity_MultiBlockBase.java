@@ -181,7 +181,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 					    			stopMachine();
 					    		}
 						    	if (mMaxProgresstime > 0 && ++mProgresstime>=mMaxProgresstime) {
-						    		if (mOutputItems != null) for (ItemStack tStack : mOutputItems) if (tStack != null) {GT_Mod.instance.achievements.issueAchivementHatch(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), tStack);addOutput(tStack);}
+						    		if (mOutputItems != null) for (ItemStack tStack : mOutputItems) if (tStack != null) {
+						    			try{GT_Mod.instance.achievements.issueAchivementHatch(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), tStack);}catch(Exception e){}
+						    			addOutput(tStack);}
 						    		if (mOutputFluids != null&&mOutputFluids.length==1) {for (FluidStack tStack : mOutputFluids) if (tStack != null) {addOutput(tStack);}}
 						    		else if(mOutputFluids!=null&&mOutputFluids.length>1){
 						    			addFluidOutputs(mOutputFluids);}
@@ -195,7 +197,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 						    		System.out.println("fluids"+mOutputFluids.length);
 						    		GT_Mod.instance.achievements.issueAchivementHatchFluid(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), mOutputFluids[0]);
 						    		if(mOutputFluids.length>1){GT_Mod.instance.achievements.issueAchievement(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "oilplant");}
-						    		mOutputFluids = null;
+//						    		mOutputFluids = null;
 						    		}
 						    	}
 				    		}

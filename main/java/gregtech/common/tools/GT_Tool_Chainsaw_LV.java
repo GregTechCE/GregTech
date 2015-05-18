@@ -93,7 +93,7 @@ import net.minecraft.entity.player.EntityPlayer;
 					public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer)
 /* 117:    */   {
 /* 118:117 */     super.onToolCrafted(aStack, aPlayer);
-  					GT_Mod.achievements.issueAchievement(aPlayer, "brrrr");
+  					try{GT_Mod.instance.achievements.issueAchievement(aPlayer, "brrrr");}catch(Exception e){}
 /* 121:    */   }
 
 /* 87:   */   

@@ -185,7 +185,7 @@ import net.minecraftforge.event.world.BlockEvent;
 				public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer)
 /* 117:    */   {
 /* 118:117 */     super.onToolCrafted(aStack, aPlayer);
-				  GT_Mod.achievements.issueAchievement(aPlayer, "tools");
+				  try{GT_Mod.instance.achievements.issueAchievement(aPlayer, "tools");}catch(Exception e){}
 /* 121:    */   }
 /* 179:    */ }
 

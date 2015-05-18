@@ -105,7 +105,7 @@ import net.minecraftforge.event.world.BlockEvent;
 					public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer)
 /* 117:    */   {
 /* 118:117 */     super.onToolCrafted(aStack, aPlayer);
-  					GT_Mod.achievements.issueAchievement(aPlayer, "hammertime");
+  					try{GT_Mod.instance.achievements.issueAchievement(aPlayer, "hammertime");}catch(Exception e){}
 /* 121:    */   }
 
 /* 100:    */   

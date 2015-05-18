@@ -127,7 +127,7 @@ import gregtech.api.GregTech_API;
 /* 124:    */   {
 /* 125:122 */     super.onToolCrafted(aStack, aPlayer);
 /* 126:123 */     aPlayer.triggerAchievement(AchievementList.buildSword);
-  				  GT_Mod.achievements.issueAchievement(aPlayer, "unitool");
+  				  try{GT_Mod.instance.achievements.issueAchievement(aPlayer, "unitool");}catch(Exception e){}
 /* 127:    */   }
 /* 128:    */   
 /* 129:    */   public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity)
