@@ -297,12 +297,6 @@ label0:
           drawGrid(aEvent);
           return;
         }
-//        for(Iterator it = GregTech_API.sWrenchList.getMap().keySet().iterator();it.hasNext();){
-//        	GT_ItemStack tmp = (GT_ItemStack) it.next();
-//        	 System.out.println("nameinlist: "+(tmp.isStackEqual(aEvent.currentItem)));
-//        }
-//        System.out.println("Contains: "+GregTech_API.sWrenchList.contains(aEvent.currentItem));
-//        System.out.println("contains2: "+GregTech_API.sWrenchList.getMap().containsKey(aEvent.currentItem));
         if ((((aTileEntity instanceof ITurnable)) || (ROTATABLE_VANILLA_BLOCKS.contains(aBlock)) || ((aTileEntity instanceof IWrenchable))) && (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sWrenchList)))
         {
           drawGrid(aEvent);

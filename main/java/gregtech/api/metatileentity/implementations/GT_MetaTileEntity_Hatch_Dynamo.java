@@ -35,7 +35,7 @@ public class GT_MetaTileEntity_Hatch_Dynamo extends GT_MetaTileEntity_Hatch {
 	@Override public boolean isValidSlot(int aIndex)				{return false;}
 	@Override public long getMinimumStoredEU()						{return 512;}
     @Override public long maxEUOutput()								{return V[mTier];}
-    @Override public long maxEUStore()								{return 512+V[mTier];}
+    @Override public long maxEUStore()								{return 512+V[mTier+1]*2;}
 	
 	@Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {

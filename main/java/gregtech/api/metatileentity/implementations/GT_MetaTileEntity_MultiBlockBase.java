@@ -8,11 +8,14 @@ import gregtech.api.gui.GT_Container_MultiMachine;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.tools.GT_Tool_Turbine;
 
 import java.util.ArrayList;
 
@@ -194,10 +197,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 						    		mEfficiencyIncrease = 0;
 						    		if (aBaseMetaTileEntity.isAllowedToWork()) checkRecipe(mInventory[1]);
 						    		if(mOutputFluids!=null&&mOutputFluids.length>0){
-						    		System.out.println("fluids"+mOutputFluids.length);
 						    		GT_Mod.instance.achievements.issueAchivementHatchFluid(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), mOutputFluids[0]);
 						    		if(mOutputFluids.length>1){GT_Mod.instance.achievements.issueAchievement(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "oilplant");}
-//						    		mOutputFluids = null;
 						    		}
 						    	}
 				    		}
@@ -335,15 +336,17 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 				}
 			}
 			if (mInventory[1] != null && getBaseMetaTileEntity().getRandomNumber(2) == 0 &&!mInventory[1].getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.")) {
-				mInventory[1].setItemDamage(mInventory[1].getItemDamage() + getDamageToComponent(mInventory[1]));
-				if (mInventory[1].getItemDamage() >= mInventory[1].getMaxDamage()) {
-					if (explodesOnComponentBreak(mInventory[1])) {
-						explodeMultiblock();
-					} else {
-						mInventory[1] = null;
-					}
-					return false;
+				if(mInventory[1].getItem() instanceof GT_MetaGenerated_Tool_01){
 				}
+//				mInventory[1].setItemDamage(mInventory[1].getItemDamage() + getDamageToComponent(mInventory[1]));
+//				if (mInventory[1].getItemDamage() >= mInventory[1].getMaxDamage()) {
+//					if (explodesOnComponentBreak(mInventory[1])) {
+//						explodeMultiblock();
+//					} else {
+//						mInventory[1] = null;
+//					}
+//					return false;
+//				}
 			}
 		}
 		return true;

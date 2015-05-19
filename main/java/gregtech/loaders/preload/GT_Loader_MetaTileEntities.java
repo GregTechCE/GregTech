@@ -58,6 +58,7 @@ import gregtech.common.tileentities.generators.GT_MetaTileEntity_PlasmaGenerator
 /*   53:     */ import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Boxinator;
 /*   54:     */ import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Disassembler;
 /*   55:     */ import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Massfabricator;
+import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_MonsterRepellent;
 /*   56:     */ import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_PotionBrewer;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Pump;
 /*   57:     */ import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Replicator;
@@ -983,8 +984,6 @@ import net.minecraftforge.oredict.OreDictionary;
 						
 						ItemList.LargeTurbine.set(new GT_MetaTileEntity_LargeTurbine(1131, "multimachine.largeturbine", "Large Turbine").getStackForm(1L));
 						
-						
-						
 						ItemList.Pump_LV.set(new GT_MetaTileEntity_Pump(1140, "basicmachine.pump.tier.01", "Basic Pump",1).getStackForm(1L));
 						ItemList.Pump_MV.set(new GT_MetaTileEntity_Pump(1141, "basicmachine.pump.tier.02", "Advanced Pump",2).getStackForm(1L));
 						ItemList.Pump_HV.set(new GT_MetaTileEntity_Pump(1142, "basicmachine.pump.tier.03", "Advanced Pump II",3).getStackForm(1L));
@@ -999,6 +998,18 @@ import net.minecraftforge.oredict.OreDictionary;
 						
 						ItemList.Teleporter.set(new GT_MetaTileEntity_Teleporter(1145, "basicmachine.teleporter", "Teleporter",6).getStackForm(1L));
 						GT_ModHandler.addCraftingRecipe(ItemList.Teleporter.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "CPC", "PMP", "BCB", 'M', ItemList.Hull_LuV, 'B', ItemList.Tool_DataOrb, 'C', OrePrefixes.circuit.get(Materials.Master), 'P', ItemList.Field_Generator_EV});
+						
+						ItemList.MobRep_LV.set(new GT_MetaTileEntity_MonsterRepellent(1146, "basicmachine.mobrep.tier.01", "Basic Monster Repellator",1).getStackForm(1L));
+						ItemList.MobRep_MV.set(new GT_MetaTileEntity_MonsterRepellent(1147, "basicmachine.mobrep.tier.02", "Advanced Monster Repellator",2).getStackForm(1L));
+						ItemList.MobRep_HV.set(new GT_MetaTileEntity_MonsterRepellent(1148, "basicmachine.mobrep.tier.03", "Advanced Monster Repellator II",3).getStackForm(1L));
+						ItemList.MobRep_EV.set(new GT_MetaTileEntity_MonsterRepellent(1149, "basicmachine.mobrep.tier.04", "Advanced Monster Repellator III",4).getStackForm(1L));
+						ItemList.MobRep_IV.set(new GT_MetaTileEntity_MonsterRepellent(1150, "basicmachine.mobrep.tier.05", "Advanced Monster Repellator IV",5).getStackForm(1L));
+						
+						GT_ModHandler.addCraftingRecipe(ItemList.MobRep_LV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "EEE", " M ", "CCC", 'M', ItemList.Hull_LV, 'E', ItemList.Emitter_LV.get(1L, new Object[0]), 'C', OrePrefixes.circuit.get(Materials.Basic)});
+						GT_ModHandler.addCraftingRecipe(ItemList.MobRep_MV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "EEE", " M ", "CCC", 'M', ItemList.Hull_MV, 'E', ItemList.Emitter_MV.get(1L, new Object[0]), 'C', OrePrefixes.circuit.get(Materials.Good)});
+						GT_ModHandler.addCraftingRecipe(ItemList.MobRep_HV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "EEE", " M ", "CCC", 'M', ItemList.Hull_HV, 'E', ItemList.Emitter_HV.get(1L, new Object[0]), 'C', OrePrefixes.circuit.get(Materials.Advanced)});
+						GT_ModHandler.addCraftingRecipe(ItemList.MobRep_EV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "EEE", " M ", "CCC", 'M', ItemList.Hull_EV, 'E', ItemList.Emitter_EV.get(1L, new Object[0]), 'C', OrePrefixes.circuit.get(Materials.Data)});
+						GT_ModHandler.addCraftingRecipe(ItemList.MobRep_IV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "EEE", " M ", "CCC", 'M', ItemList.Hull_IV, 'E', ItemList.Emitter_IV.get(1L, new Object[0]), 'C', OrePrefixes.circuit.get(Materials.Elite)});
 						
 }
 /*  981:     */   

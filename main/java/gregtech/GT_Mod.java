@@ -41,6 +41,7 @@ import gregtech.api.enums.*;
 /*  47:    */ import gregtech.api.util.GT_Recipe;
 /*  48:    */ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 /*  49:    */ import gregtech.api.util.GT_RecipeRegistrator;
+import gregtech.api.util.GT_SpawnEventHandler;
 /*  50:    */ import gregtech.api.util.GT_Utility;
 /*  51:    */ import gregtech.common.GT_DummyWorld;
 /*  52:    */ import gregtech.common.GT_Network;
@@ -367,6 +368,7 @@ import net.minecraftforge.common.ForgeVersion;
 /* 365:263 */     new GT_Loader_CircuitBehaviors().run();
 /* 366:264 */     new GT_CoverBehaviorLoader().run();
 /* 367:265 */     new GT_SonictronLoader().run();
+				  new GT_SpawnEventHandler();
 /* 368:267 */     if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.gregtechrecipes, "SolarPanel", true)) {
 /* 369:267 */       GT_ModHandler.addCraftingRecipe(ItemList.Cover_SolarPanel.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[] { "SGS", "CPC", Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Basic), Character.valueOf('G'), new ItemStack(Blocks.glass_pane, 1), Character.valueOf('P'), OrePrefixes.plateAlloy.get(Materials.Carbon), Character.valueOf('S'), OrePrefixes.plate.get(Materials.Silicon) });
 /* 370:    */     }

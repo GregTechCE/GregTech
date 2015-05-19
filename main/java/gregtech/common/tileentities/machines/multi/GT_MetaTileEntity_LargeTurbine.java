@@ -7,11 +7,14 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.items.GT_MetaGenerated_Tool_01;
 
 public class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_MultiBlockBase{
 
@@ -20,7 +23,7 @@ public class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_MultiBlock
 
 	@Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex+1], aFacing == aSide ? new GT_RenderedTexture(Textures.BlockIcons.LARGETURBINE5) : Textures.BlockIcons.CASING_BLOCKS[57]};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex+1], aFacing == aSide ? aActive ? new GT_RenderedTexture(Textures.BlockIcons.LARGETURBINE_ACTIVE5):new GT_RenderedTexture(Textures.BlockIcons.LARGETURBINE5) : Textures.BlockIcons.CASING_BLOCKS[57]};
 	}
 	
 	   
@@ -42,25 +45,24 @@ public class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_MultiBlock
 
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
-
 	    if (depleteInput(GT_ModHandler.getSteam(1600L)))
 	    {
-	      this.mEUt = 800;
+	      this.mEUt = 1000;
 	      this.mMaxProgresstime = 1;
-	      if (ItemList.Component_Turbine_Bronze.isStackEqual(aStack, true, true)) {
-	        this.mEfficiencyIncrease = (this.mMaxProgresstime * 10);
-	      } else if (ItemList.Component_Turbine_Steel.isStackEqual(aStack, true, true)) {
+//	      if (ItemList.Component_Turbine_Bronze.isStackEqual(aStack, true, true)) {
+//	        this.mEfficiencyIncrease = (this.mMaxProgresstime * 10);
+//	      } else if (ItemList.Component_Turbine_Steel.isStackEqual(aStack, true, true)) {
+//	        this.mEfficiencyIncrease = (this.mMaxProgresstime * 20);
+//	      } else if (ItemList.Component_Turbine_Magnalium.isStackEqual(aStack, true, true)) {
+//	        this.mEfficiencyIncrease = (this.mMaxProgresstime * 50);
+//	      } else if (ItemList.Component_Turbine_TungstenSteel.isStackEqual(aStack, true, true)) {
+//	        this.mEfficiencyIncrease = (this.mMaxProgresstime * 15);
+//	      } else if (ItemList.Component_Turbine_Carbon.isStackEqual(aStack, true, true)) {
+//	        this.mEfficiencyIncrease = (this.mMaxProgresstime * 100);
+//	      } else {
 	        this.mEfficiencyIncrease = (this.mMaxProgresstime * 20);
-	      } else if (ItemList.Component_Turbine_Magnalium.isStackEqual(aStack, true, true)) {
-	        this.mEfficiencyIncrease = (this.mMaxProgresstime * 50);
-	      } else if (ItemList.Component_Turbine_TungstenSteel.isStackEqual(aStack, true, true)) {
-	        this.mEfficiencyIncrease = (this.mMaxProgresstime * 15);
-	      } else if (ItemList.Component_Turbine_Carbon.isStackEqual(aStack, true, true)) {
-	        this.mEfficiencyIncrease = (this.mMaxProgresstime * 100);
-	      } else {
-	        this.mEfficiencyIncrease = (this.mMaxProgresstime * 20);
-	      }
-	      addOutput(GT_ModHandler.getWater(10L));
+//	      }
+	      addOutput(GT_ModHandler.getDistilledWater(10L));
 	      return true;
 	    }
 	    return false;
@@ -68,7 +70,6 @@ public class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_MultiBlock
 
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-
 	    byte tSide = getBaseMetaTileEntity().getBackFacing();
 	    if ((getBaseMetaTileEntity().getAirAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), 1)) && (getBaseMetaTileEntity().getAirAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), 2)))
 	    {
@@ -103,15 +104,15 @@ public class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_MultiBlock
 	              {
 	                if (getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)) == GregTech_API.sBlockCasings4)
 	                {
-	                  if (getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)) == 13) {}
+	                  if (getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)) == 9) {}
 	                }
 	                else if (!addToMachineList(getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)))) {
-	                  return false;
+	                	return false;
 	                }
 	              }
 	              else if (getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)) == GregTech_API.sBlockCasings4)
 	              {
-	                if (getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)) == 13) {}
+	                if (getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)) == 9) {}
 	              }
 	              else {
 	                return false;
@@ -125,6 +126,7 @@ public class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_MultiBlock
 	      if ((tTileEntity != null) && (tTileEntity.getMetaTileEntity() != null)) {
 	        if ((tTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Dynamo)) {
 	          this.mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo)tTileEntity.getMetaTileEntity());
+	          ((GT_MetaTileEntity_Hatch)tTileEntity.getMetaTileEntity()).mMachineBlock = (byte)46;
 	        } else {
 	          return false;
 	        }
@@ -138,12 +140,12 @@ public class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_MultiBlock
 	    }
 	
 	private boolean addToMachineList(IGregTechTileEntity tTileEntity){
-		return ((!addMaintenanceToMachineList(tTileEntity, 11)) && (!addInputToMachineList(tTileEntity, 11)) && (!addOutputToMachineList(tTileEntity, 11)));
+		return ((addMaintenanceToMachineList(tTileEntity, 46)) || (addInputToMachineList(tTileEntity, 46)) || (addOutputToMachineList(tTileEntity, 46)));
 	}
 	
 	@Override
 	public int getDamageToComponent(ItemStack aStack) {
-	    return GT_Utility.areStacksEqual(GT_ModHandler.getModItem("Railcraft","part.turbine.rotor", 1L, 32767), aStack) ? 2 : 1;
+	    return 1;//GT_Utility.areStacksEqual(GT_ModHandler.getModItem("Railcraft","part.turbine.rotor", 1L, 32767), aStack) ? 2 : 1;
 	  }
 
 	
@@ -152,23 +154,8 @@ public class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_MultiBlock
 	    if (GT_Utility.isStackInvalid(aStack)) {
 	      return 0;
 	    }
-	    if (ItemList.Component_Turbine_Bronze.isStackEqual(aStack, true, true)) {
-	      return 6000;
-	    }
-	    if (ItemList.Component_Turbine_Steel.isStackEqual(aStack, true, true)) {
-	      return 8000;
-	    }
-	    if (ItemList.Component_Turbine_Magnalium.isStackEqual(aStack, true, true)) {
+	    if (aStack.getItem() instanceof GT_MetaGenerated_Tool_01) {
 	      return 10000;
-	    }
-	    if (ItemList.Component_Turbine_TungstenSteel.isStackEqual(aStack, true, true)) {
-	      return 9000;
-	    }
-	    if (ItemList.Component_Turbine_Carbon.isStackEqual(aStack, true, true)) {
-	      return 12500;
-	    }
-	    if (GT_Utility.areStacksEqual(aStack, GT_ModHandler.getModItem("Railcraft","part.turbine.rotor", 1L, 32767))) {
-	      return 8000;
 	    }
 	    return 0;
 	  }
