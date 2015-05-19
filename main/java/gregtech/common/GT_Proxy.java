@@ -1329,7 +1329,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 								default:
 									break;
 								}
-								if ((!aPrefix.mIsUnificatable) || (aMaterial.mUnificatable)) {return;
+								if (aPrefix.mIsUnificatable && !aMaterial.mUnificatable) {
+									return;
 								}
 							} else {
 								for (Dyes tDye : Dyes.VALUES) {
