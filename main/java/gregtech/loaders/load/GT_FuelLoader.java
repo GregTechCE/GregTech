@@ -29,7 +29,7 @@
 /* 29:   */     
 /* 30:23 */     GT_Values.RA.addFuel(GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 1L, 4), null, 4, 5);
 /* 31:24 */     GT_Values.RA.addFuel(new ItemStack(Items.experience_bottle, 1), null, 10, 5);
-/* 32:25 */     GT_Values.RA.addFuel(new ItemStack(Items.ghast_tear, 1), null, 500, 5);
+/* 32:25 */     GT_Values.RA.addFuel(new ItemStack(Items.ghast_tear, 1), null, 50, 5);
 /* 33:26 */     GT_Values.RA.addFuel(new ItemStack(Blocks.beacon, 1), null, Materials.NetherStar.mFuelPower * 2, Materials.NetherStar.mFuelType);
 /* 34:   */   }
 /* 35:   */ }

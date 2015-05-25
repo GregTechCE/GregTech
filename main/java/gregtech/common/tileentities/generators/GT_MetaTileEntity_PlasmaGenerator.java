@@ -51,7 +51,7 @@ onConfigLoad();
 
 public void onConfigLoad()
 /* 39:   */   {
-				this.mEfficiency =GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "PlasmaGenerator.efficiency.tier."+this.mTier, (50 + ((this.mTier-5) * 25)));
+				this.mEfficiency =GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "PlasmaGenerator.efficiency.tier."+this.mTier, (10 + (this.mTier * 10)));
 }
 
 /* 43:   */   

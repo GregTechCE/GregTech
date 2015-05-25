@@ -261,7 +261,7 @@ public enum Element {
 	$Uuo	(-118,-176,   0,          -1, null		, "Anti-Ununoctium"		, false),
 	
 	$Ma		(   0,   0,-100,          -1, null		, "Anti-Magic"			, false),
-	$Nt		(0,-100000,   0,          -1, null		, "Anti-Neutronium"		, false);
+	$Nt		(0, -10000,   0,          -1, null		, "Anti-Neutronium"		, false);
 	
 	public static Element get(String aMaterialName) {
 		Object tObject = GT_Utility.getFieldContent(Element.class, aMaterialName, false, false);

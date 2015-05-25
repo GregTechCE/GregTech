@@ -139,8 +139,8 @@ public int adjY = 9;
 		registerAchievement("magic", 10, 4, ItemList.MagicEnergyConverter_LV.get(1, new Object[] {}), "titan", false);
 		registerAchievement("highmage", 10, 6, ItemList.MagicEnergyAbsorber_HV.get(1, new Object[] {}), "magic", false);
 		registerAchievement("artificaldia", 11, 2, ItemList.IC2_Industrial_Diamond.get(1, new Object[] {}), "titan", false);
-		registerAchievement("muchsteam", 12, 1, ItemList.LargeTurbine.get(1, new Object[] {}), "titan", false);
-		registerAchievement("efficientsteam", 12, 3, ItemList.LargeTurbine.get(1, new Object[] {}), "muchsteam", false);
+		registerAchievement("muchsteam", 12, 1, ItemList.LargeSteamTurbine.get(1, new Object[] {}), "titan", false);
+		registerAchievement("efficientsteam", 12, 3, ItemList.LargeSteamTurbine.get(1, new Object[] {}), "muchsteam", false);
 		
 		registerAchievement("upgrade", 14, 0, ItemList.Casing_Coil_Kanthal.get(1, new Object[] {}), "titan", false);
 		registerAchievement("tungsten", 16, 0, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Tungsten, 1L), "upgrade", false);
@@ -261,18 +261,19 @@ public int adjY = 9;
 	}
 	
 	public void issueAchivementHatchFluid(EntityPlayer player, FluidStack fluid){
+		System.out.println("fluidAchievement "+fluid.getFluid().getUnlocalizedName());
 		if (player == null||fluid==null) {
 			return;
 		}
-		if(fluid.getFluid().getUnlocalizedName().equals("plasma.helium")){
+		if(fluid.getFluid().getUnlocalizedName().equals("fluid.plasma.helium")){
 			issueAchievement(player, "fusion");
-		}else if(fluid.getFluid().getUnlocalizedName().equals("molten.europium")){
+		}else if(fluid.getFluid().getUnlocalizedName().equals("fluid.molten.europium")){
 			issueAchievement(player, "advancing");
-		}else if(fluid.getFluid().getUnlocalizedName().equals("molten.americum")){
+		}else if(fluid.getFluid().getUnlocalizedName().equals("fluid.molten.americium")){
 			issueAchievement(player, "tothelimit");
-		}else if(fluid.getFluid().getUnlocalizedName().equals("molten.neutronium")){
+		}else if(fluid.getFluid().getUnlocalizedName().equals("fluid.molten.neutronium")){
 			issueAchievement(player, "denseaspossible");
-		}else if(fluid.getFluid().getUnlocalizedName().equals("plasma.nitrogen")){
+		}else if(fluid.getFluid().getUnlocalizedName().equals("fluid.plasma.nitrogen")){
 			issueAchievement(player, "higherefficency");
 		}
 	}
@@ -367,6 +368,12 @@ public int adjY = 9;
 				issueAchievement(player, "alienpower");
 			}else if(stack.getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.replicator.tier.")){
 				issueAchievement(player, "replication");
+			}else if(stack.getUnlocalizedName().equals("gt.blockmachines.basicgenerator.plasmagenerator.tier.07")){
+				issueAchievement(player, "fullefficiency");
+			}else if(stack.getUnlocalizedName().equals("gt.blockmachines.multimachine.largeturbine")){
+				issueAchievement(player, "muchsteam");
+			}else if(stack.getUnlocalizedName().equals("gt.blockmachines.multimachine.largehpturbine")){
+				issueAchievement(player, "efficientsteam");
 			}
 		}else if(stack.getUnlocalizedName().equals("gt.Thoriumcell")){
 			issueAchievement(player, "newfuel");
@@ -379,7 +386,6 @@ public int adjY = 9;
 		}else if(stack.getUnlocalizedName().equals("gt.blockcasings.15")){
 			issueAchievement(player, "conducting");
 		}
-		
 	}
 
 	@SubscribeEvent
@@ -457,6 +463,8 @@ public int adjY = 9;
 				issueAchievement(player, "manipulation");
 			}else if(stack.getUnlocalizedName().equals("gt.metaitem.01.32729")){
 				issueAchievement(player, "filterregulate");
+			}else if(stack.getUnlocalizedName().equals("gt.metaitem.01.32605")){
+				issueAchievement(player, "whatnow");
 			}
 		}else if(stack.getUnlocalizedName().equals("ic2.itemPartCircuitAdv")){
 			issueAchievement(player, "stepforward");

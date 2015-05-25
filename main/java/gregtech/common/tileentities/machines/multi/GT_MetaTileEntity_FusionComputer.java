@@ -3,6 +3,7 @@
 /*   3:    */ import java.util.ArrayList;
 import java.util.Arrays;
 
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
@@ -362,6 +363,8 @@ public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 					    		mProgresstime = 0;
 					    		mMaxProgresstime = 0;
 					    		mEfficiencyIncrease = 0;
+					    		if(mOutputFluids!=null&&mOutputFluids.length>0){
+						    		GT_Mod.instance.achievements.issueAchivementHatchFluid(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), mOutputFluids[0]);}
 					    		this.mEUStore=(int) aBaseMetaTileEntity.getStoredEU();
 					    		if (aBaseMetaTileEntity.isAllowedToWork()) checkRecipe(mInventory[1]);
 					    	}

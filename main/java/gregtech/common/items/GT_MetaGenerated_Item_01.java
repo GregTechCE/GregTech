@@ -42,6 +42,7 @@ import gregtech.api.util.GT_Utility;
 /*  38:    */ import gregtech.common.covers.GT_Cover_ItemMeter;
 /*  39:    */ import gregtech.common.covers.GT_Cover_LiquidMeter;
 import gregtech.common.covers.GT_Cover_NeedMaintainance;
+import gregtech.common.covers.GT_Cover_PlayerDetector;
 /*  40:    */ import gregtech.common.covers.GT_Cover_Pump;
 import gregtech.common.covers.GT_Cover_RedstoneReceiverExternal;
 import gregtech.common.covers.GT_Cover_RedstoneReceiverInternal;
@@ -709,13 +710,16 @@ import net.minecraftforge.common.ForgeModContainer;
 /* 677:645 */     ItemList.Cover_FluidDetector.set(addItem(tLastID = 732, "Fluid Detector", "Gives out Fluid Amount as Redstone", new Object[] { new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L) }));
 /* 678:646 */     ItemList.Cover_ItemDetector.set(addItem(tLastID = 733, "Item Detector", "Gives out Item Amount as Redstone", new Object[] { new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.TERRA, 1L) }));
 /* 679:647 */     ItemList.Cover_EnergyDetector.set(addItem(tLastID = 734, "Energy Detector", "Gives out Energy Amount as Redstone", new Object[] { new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L) }));
-/* 680:    */     
+/* 680:    */     ItemList.Cover_PlayerDetector.set(addItem(tLastID = 735, "Player Detector", "Gives out close Players as Redstone", new Object[] { new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L) }));
+/* 677:645 */      GT_Values.RA.addAssemblerRecipe( ItemList.Sensor_EV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1L),ItemList.Cover_PlayerDetector.get(1L, new Object[0]), 3200, 128);
+/* 743:711 */     
 /* 681:649 */     GregTech_API.registerCover(ItemList.Cover_Controller.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_CONTROLLER) }), new GT_Cover_ControlsWork());
 /* 682:650 */     GregTech_API.registerCover(ItemList.Cover_ActivityDetector.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR) }), new GT_Cover_DoesWork());
 /* 683:651 */     GregTech_API.registerCover(ItemList.Cover_FluidDetector.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FLUIDDETECTOR) }), new GT_Cover_LiquidMeter());
 /* 684:652 */     GregTech_API.registerCover(ItemList.Cover_ItemDetector.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ITEMDETECTOR) }), new GT_Cover_ItemMeter());
 /* 685:653 */     GregTech_API.registerCover(ItemList.Cover_EnergyDetector.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ENERGYDETECTOR) }), new GT_Cover_EUMeter());
-/* 686:    */     
+/* 686:    */     GregTech_API.registerCover(ItemList.Cover_PlayerDetector.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR) }), new GT_Cover_PlayerDetector());
+/* 683:651 */     
 /* 687:655 */     ItemList.Cover_Screen.set(addItem(tLastID = 740, "Computer Monitor", "Displays Data", new Object[] { new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 1L) }));
 /* 688:656 */     ItemList.Cover_Crafting.set(addItem(tLastID = 744, "Crafting Table Cover", "Better than a wooden Workbench", new Object[] { new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 4L) }));
 /* 689:657 */     ItemList.Cover_Drain.set(addItem(tLastID = 745, "Drain", "Absorbs Fluids and collects Rain", new Object[] { new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 2L) }));

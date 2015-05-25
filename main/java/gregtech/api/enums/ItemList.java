@@ -646,13 +646,13 @@ public enum ItemList implements IItemContainer {
 	ZPM2, Quantum_Tank_LV,Quantum_Tank_MV,Quantum_Tank_HV,Quantum_Tank_EV,Quantum_Tank_IV, Quantum_Chest_LV, Quantum_Chest_MV, Quantum_Chest_HV, Quantum_Chest_EV, Quantum_Chest_IV,
 	
 	NULL, Cover_RedstoneTransmitterExternal,Cover_RedstoneTransmitterInternal,Cover_RedstoneReceiverExternal,Cover_RedstoneReceiverInternal, 
-	LargeTurbine, 
+	LargeSteamTurbine, 
 	Ingot_Heavy1,Ingot_Heavy2,Ingot_Heavy3, 
 	Pump_LV, Pump_MV, Pump_HV, Pump_EV, Pump_IV, 
 	Teleporter, 
 	Cover_NeedsMaintainance, 
 	Casing_Turbine, 
-	MobRep_LV,MobRep_MV,MobRep_HV,MobRep_EV,MobRep_IV;
+	MobRep_LV,MobRep_MV,MobRep_HV,MobRep_EV,MobRep_IV, LargeGasTurbine, LargeHPSteamTurbine, LargePlasmaTurbine, Cover_PlayerDetector, Machine_Multi_HeatExchanger;
 	
 	public static final ItemList[]
 	  DYE_ONLY_ITEMS = {Color_00, Color_01, Color_02, Color_03, Color_04, Color_05, Color_06, Color_07, Color_08, Color_09, Color_10, Color_11, Color_12, Color_13, Color_14, Color_15}

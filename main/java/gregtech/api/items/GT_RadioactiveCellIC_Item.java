@@ -78,6 +78,7 @@ import net.minecraft.world.World;
           checkHeatAcceptor(reactor, x, y + 1, heatAcceptors);
           while ((heatAcceptors.size() > 0) && (heat > 0))
           {
+        	  heat *=sEnergy;
             int dheat = heat / heatAcceptors.size();
             heat -= dheat;
             dheat = ((IReactorComponent)((ItemStackCoord)heatAcceptors.get(0)).stack.getItem()).alterHeat(reactor, ((ItemStackCoord)heatAcceptors.get(0)).stack, ((ItemStackCoord)heatAcceptors.get(0)).x, ((ItemStackCoord)heatAcceptors.get(0)).y, dheat);

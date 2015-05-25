@@ -6,9 +6,16 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.visnet.VisNetHandler;
 import cpw.mods.fml.common.Loader;
 import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
@@ -74,7 +81,7 @@ import gregtech.api.util.GT_Utility;
 				this.mEfficiency =GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "MagicEnergyAbsorber.efficiency.tier."+this.mTier, 100-this.mTier*10);
 			    this.sAllowMultipleEggs = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "MagicEnergyAbsorber.AllowMultipleEggs", false);
 			    this.sEnergyPerEnderCrystal = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "MagicEnergyAbsorber.EnergyPerTick.EnderCrystal", 32);
-			    this.sEnergyFromVis = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "MagicEnergyAbsorber.EnergyPerVisDivisor", 2500);
+			    this.sEnergyFromVis = (GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "MagicEnergyAbsorber.EnergyPerVisDivisor", 2500)*10);
 			    this.sDragonEggEnergyPerTick = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "MagicEnergyAbsorber.EnergyPerTick", 2048);
 			    this.isThaumcraftLoaded = Loader.isModLoaded("Thaumcraft");
 				}
@@ -84,7 +91,7 @@ import gregtech.api.util.GT_Utility;
 			    	if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && aBaseMetaTileEntity.getUniversalEnergyStored() < maxEUOutput() + aBaseMetaTileEntity.getEUCapacity()) {
 			    		//Dragon Egg
 			    		if(hasEgg()&&aTick%10==0){
-			    			getBaseMetaTileEntity().increaseStoredEnergyUnits(sDragonEggEnergyPerTick*getEfficiency()/10, false);
+			    			getBaseMetaTileEntity().increaseStoredEnergyUnits(sDragonEggEnergyPerTick*getEfficiency()*10, false);
 			    			if ((mActiveSiphon != this) && (!sAllowMultipleEggs)) {
 			    		          if ((mActiveSiphon == null) || (mActiveSiphon.getBaseMetaTileEntity() == null) || (mActiveSiphon.getBaseMetaTileEntity().isInvalidTileEntity()) || (!mActiveSiphon.hasEgg())) {
 			    		            mActiveSiphon = this;
@@ -107,13 +114,97 @@ import gregtech.api.util.GT_Utility;
 			    				int order = 		VisNetHandler.drainVis(tmpWorld, tmpX, tmpY, tmpZ, Aspect.ORDER, 1000);
 			    				int water =  		VisNetHandler.drainVis(tmpWorld, tmpX, tmpY, tmpZ, Aspect.WATER, 1000);
 			    				int visEU = (int) (Math.pow(fire, 4)+Math.pow(earth, 4)+Math.pow(air, 4)+Math.pow(destruction, 4)+Math.pow(order, 4)+Math.pow(water, 4));
+			    				int mult = 85;
+			    				if(fire>4)mult+=15;
+			    				if(earth>4)mult+=15;
+			    				if(air>4)mult+=15;
+			    				if(destruction>4)mult+=15;
+			    				if(order>4)mult+=15;
+			    				if(water>4)mult+=15;
+			    				visEU = (visEU*mult) / 100;
 			    				getBaseMetaTileEntity().increaseStoredEnergyUnits(Math.min(maxEUOutput(), visEU*getEfficiency()/this.sEnergyFromVis), false);
 			    			}catch (Throwable e){}
 			    		}
 			    		//EnderCrystal
 			    		
-			    		//GC Creeper Egg
+			    	      if (sEnergyPerEnderCrystal > 0) {
+			    	          if (this.mTargetedCrystal == null)
+			    	          {
+			    	            ArrayList<EntityEnderCrystal> tList = (ArrayList)getBaseMetaTileEntity().getWorld().getEntitiesWithinAABB(EntityEnderCrystal.class, AxisAlignedBB.getBoundingBox(getBaseMetaTileEntity().getXCoord() - 64, getBaseMetaTileEntity().getYCoord() - 64, getBaseMetaTileEntity().getZCoord() - 64, getBaseMetaTileEntity().getXCoord() + 64, getBaseMetaTileEntity().getYCoord() + 64, getBaseMetaTileEntity().getZCoord() + 64));
+			    	            if ((tList != null) && (!tList.isEmpty()))
+			    	            {
+			    	              tList.removeAll(sUsedDragonCrystalList);
+			    	              if (tList.size() > 0)
+			    	              {
+			    	                this.mTargetedCrystal = ((EntityEnderCrystal)tList.get(0));
+			    	                if (this.mTargetedCrystal != null) {
+			    	                  sUsedDragonCrystalList.add(this.mTargetedCrystal);
+			    	                }
+			    	              }
+			    	            }
+			    	          }
+			    	          else if (this.mTargetedCrystal.isEntityAlive())
+			    	          {
+			    	            getBaseMetaTileEntity().increaseStoredEnergyUnits(sEnergyPerEnderCrystal * 10, false);
+			    	          }
+			    	          else
+			    	          {
+			    	            sUsedDragonCrystalList.remove(this.mTargetedCrystal);
+			    	            this.mTargetedCrystal = null;
+			    	          }
+			    	        }
 			    		
+			    		//Absorb entchantments
+			    		
+			    		try
+			            {
+			              if ((this.mInventory[0] != null) && (this.mInventory[1] == null))
+			              {
+			                if ((this.mInventory[0].isItemEnchanted()) && (this.mInventory[0].getItem().getItemEnchantability() > 0))
+			                {
+			                  NBTTagList tEnchantments = this.mInventory[0].getEnchantmentTagList();
+			                  if (tEnchantments != null)
+			                  {
+			                    for (int i = 0; i < tEnchantments.tagCount(); i++)
+			                    {
+			                      short tID = ((NBTTagCompound)tEnchantments.getCompoundTagAt(i)).getShort("id");
+			                      short tLevel = ((NBTTagCompound)tEnchantments.getCompoundTagAt(i)).getShort("lvl");
+			                      if ((tID > -1) && (tID < Enchantment.enchantmentsList.length))
+			                      {
+			                        Enchantment tEnchantment = Enchantment.enchantmentsList[tID];
+			                        if (tEnchantment != null) {
+			                          getBaseMetaTileEntity().increaseStoredEnergyUnits(1000000 * tLevel / (tEnchantment.getMaxLevel() * tEnchantment.getWeight()), true);
+			                        }
+			                      }
+			                    }
+			                    this.mInventory[0].stackTagCompound.removeTag("ench");
+			                  }
+			                }
+			                else if ((this.mInventory[0].getItem() instanceof ItemEnchantedBook))
+			                {
+			                  NBTTagList tEnchantments = ((ItemEnchantedBook)this.mInventory[0].getItem()).func_92110_g(this.mInventory[0]);
+			                  if (tEnchantments != null)
+			                  {
+			                    for (int i = 0; i < tEnchantments.tagCount(); i++)
+			                    {
+			                      short tID = ((NBTTagCompound)tEnchantments.getCompoundTagAt(i)).getShort("id");
+			                      short tLevel = ((NBTTagCompound)tEnchantments.getCompoundTagAt(i)).getShort("lvl");
+			                      if ((tID > -1) && (tID < Enchantment.enchantmentsBookList.length))
+			                      {
+			                        Enchantment tEnchantment = Enchantment.enchantmentsBookList[tID];
+			                        if (tEnchantment != null) {
+			                          getBaseMetaTileEntity().increaseStoredEnergyUnits(1000000 * tLevel / (tEnchantment.getMaxLevel() * tEnchantment.getWeight()), true);
+			                        }
+			                      }
+			                    }
+			                    this.mInventory[0] = new ItemStack(Items.book, 1);
+			                  }
+			                }
+			                this.mInventory[1] = this.mInventory[0];
+			                this.mInventory[0] = null;
+			              }
+			            }
+			            catch (Throwable e){}			    		
 					}
 			    }
 			    
