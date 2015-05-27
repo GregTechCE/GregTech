@@ -28,7 +28,7 @@ import gregtech.api.enums.Textures;
 /* 27:   */   
 /* 28:   */   public int getToolDamagePerContainerCraft()
 /* 29:   */   {
-/* 30:27 */     return 400;
+/* 30:27 */     return 100;
 /* 31:   */   }
 /* 32:   */   
 /* 33:   */   public int getToolDamagePerEntityAttack()

@@ -1,6 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.VN;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
@@ -20,6 +21,7 @@ import ic2.api.energy.tile.IEnergySink;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import cofh.api.energy.IEnergyReceiver;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -136,6 +138,15 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
             		if (((IEnergySink)tTileEntity).acceptsEnergyFrom((TileEntity)getBaseMetaTileEntity(), tDirection)) {
             			if (((IEnergySink)tTileEntity).getDemandedEnergy() > 0 && ((IEnergySink)tTileEntity).injectEnergy(tDirection, aVoltage, aVoltage) < aVoltage) rUsedAmperes++;
             		}
+        		} else if(GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver){
+        			ForgeDirection tDirection = ForgeDirection.getOrientation(i).getOpposite();
+        			int rfOut = (int) (aVoltage * GregTech_API.mEUtoRF / 100);
+        			if(((IEnergyReceiver)tTileEntity).receiveEnergy(tDirection, rfOut, true)==rfOut){
+        				((IEnergyReceiver)tTileEntity).receiveEnergy(tDirection, rfOut, false); rUsedAmperes++;
+        			}
+        			if(GregTech_API.mRFExplosions && ((IEnergyReceiver)tTileEntity).getMaxEnergyStored(tDirection) < rfOut * 600){
+        				if(rfOut > 32 * GregTech_API.mEUtoRF / 100) this.doExplosion(rfOut);
+        			}
         		}
     		}
     	}
@@ -181,7 +192,12 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
 					    if (tTileEntity instanceof IEnergySink && ((IEnergySink)tTileEntity).acceptsEnergyFrom((TileEntity)aBaseMetaTileEntity, ForgeDirection.getOrientation(j))) {
 				    		mConnections |= (1<<i);
 				    		continue;
-					    }/*
+					    }
+					    if(GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver){
+					    	mConnections |= (1<<i);
+				    		continue;					    	
+					    }					    
+					    /*
 					    if (tTileEntity instanceof IEnergyEmitter && ((IEnergyEmitter)tTileEntity).emitsEnergyTo((TileEntity)aBaseMetaTileEntity, ForgeDirection.getOrientation(j))) {
 				    		mConnections |= (1<<i);
 				    		continue;

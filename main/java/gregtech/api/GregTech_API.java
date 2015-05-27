@@ -116,6 +116,11 @@ public class GregTech_API {
 	
 	/** Getting assigned by the Config */
 	public static boolean sTimber = F, sDrinksAlwaysDrinkable = F, sMultiThreadedSounds = F, sDoShowAllItemsInCreative = F, sColoredGUI = T, sConstantEnergy = T, sMachineExplosions = T, sMachineFlammable = T, sMachineNonWrenchExplosions = T, sMachineRainExplosions = T, sMachineThunderExplosions = T, sMachineFireExplosions = T, sMachineWireFire = true;
+	public static boolean mOutputRF =false;
+	public static boolean mInputRF =false;
+	public static int mEUtoRF = 360;
+	public static int mRFtoEU = 20;
+	public static boolean mRFExplosions = true;
 	
 	/** Getting assigned by the Mod loading */
 	public static boolean sUnificationEntriesRegistered = F, sPreloadStarted = F, sPreloadFinished = F, sLoadStarted = F, sLoadFinished = F, sPostloadStarted = F, sPostloadFinished = F;

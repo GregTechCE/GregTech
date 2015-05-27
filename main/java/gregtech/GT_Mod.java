@@ -310,6 +310,13 @@ import net.minecraftforge.common.ForgeVersion;
 				  gregtechproxy.mDisableIC2Cables = tMainConfig.get("general", "DisableIC2Cables", false).getBoolean(false);
 				  gregtechproxy.mAchievements = tMainConfig.get("general", "EnableAchievements", true).getBoolean(true);
 				  
+				  
+				  GregTech_API.mOutputRF =GregTech_API.sOPStuff.get(ConfigCategories.general, "OutputRF", false);
+				  GregTech_API.mInputRF =GregTech_API.sOPStuff.get(ConfigCategories.general, "InputRF", false);
+				  GregTech_API.mEUtoRF = GregTech_API.sOPStuff.get(ConfigCategories.general, "100EUtoRF", 360);
+				  GregTech_API.mRFtoEU = GregTech_API.sOPStuff.get(ConfigCategories.general, "100RFtoEU", 20);
+				  GregTech_API.mRFExplosions = GregTech_API.sOPStuff.get(ConfigCategories.general, "RFExplosions", true);
+				  
 /* 310:211 */     if (tMainConfig.get("general", "hardermobspawners", true).getBoolean(true)) {
 /* 311:211 */       Blocks.mob_spawner.setHardness(500.0F).setResistance(6000000.0F);
 /* 312:    */     }

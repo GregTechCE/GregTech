@@ -1,6 +1,8 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.V;
+import cofh.api.energy.IEnergyProvider;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -83,6 +85,10 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
 //					long tEU = (long)((IEnergySource)tTileEntity).getOfferedEnergy();
 					long tEU = Math.min(maxEUInput(), (long)((IEnergySource)tTileEntity).getOfferedEnergy());
 					((IEnergySource)tTileEntity).drawEnergy(tEU);
+					aBaseMetaTileEntity.injectEnergyUnits((byte)6, tEU, 1);
+				}else if (GregTech_API.mInputRF && tTileEntity instanceof IEnergyProvider&& ((IEnergyProvider)tTileEntity).extractEnergy(ForgeDirection.getOrientation(GT_Utility.getOppositeSide(i)),1,true)==1) {
+					long tEU = Math.min(maxEUInput(), (long)((IEnergyProvider)tTileEntity).extractEnergy(ForgeDirection.getOrientation(GT_Utility.getOppositeSide(i)),(int) maxEUInput()* 100 / GregTech_API.mRFtoEU ,false));
+					tEU = tEU * GregTech_API.mRFtoEU / 100;
 					aBaseMetaTileEntity.injectEnergyUnits((byte)6, tEU, 1);
 				}
 			}
