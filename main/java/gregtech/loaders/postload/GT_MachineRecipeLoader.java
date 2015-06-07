@@ -680,24 +680,27 @@ public class GT_MachineRecipeLoader
     GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Copper, 1L), GT_Values.NI, Materials.Oxygen.getGas(1000L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.AnnealedCopper, 1L), GT_Values.NI, 500, 120, 1200);
     GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.ElectricalSteel, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 1L), GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.DarkSteel, 1L), GT_Values.NI, 4000, 360, 2000);
     
-    GT_Values.RA.addFusionReactorRecipe(Materials.Lithium.getMolten(9), Materials.Tungsten.getMolten(9), Materials.Iridium.getMolten(9), 32, 32768, 150000000);
+    GT_Values.RA.addFusionReactorRecipe(Materials.Lithium.getMolten(16), Materials.Tungsten.getMolten(16), Materials.Iridium.getMolten(16), 32, 32768, 300000000);
     GT_Values.RA.addFusionReactorRecipe(Materials.Deuterium.getGas(125), Materials.Tritium.getGas(125), Materials.Helium.getPlasma(125), 16, 4096, 40000000);  //Mark 1 Cheap //
     GT_Values.RA.addFusionReactorRecipe(Materials.Deuterium.getGas(125), Materials.Helium_3.getGas(125), Materials.Helium.getPlasma(125), 16, 2048, 60000000); //Mark 1 Expensive //
     GT_Values.RA.addCannerRecipe(GT_ModHandler.getIC2Item("fuelRod", 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lithium, 1L), GT_ModHandler.getIC2Item("reactorLithiumCell", 1) , null, 16, 64);
-    GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getIC2Item("TritiumCell", 1), GT_ModHandler.getIC2Item("fuelRod", 1), Materials.Tritium.getGas(9), 10000, 16, 64);
-    GT_Values.RA.addFusionReactorRecipe(Materials.Carbon.getMolten(144), Materials.Helium_3.getGas(144), Materials.Oxygen.getPlasma(144), 20, 4096, 80000000); //Mark 1 Expensive //
-    GT_Values.RA.addFusionReactorRecipe(Materials.Aluminium.getMolten(144), Materials.Lithium.getMolten(144), Materials.Sulfur.getPlasma(144), 20, 10240, 240000000); //Mark 2 Cheap
-    GT_Values.RA.addFusionReactorRecipe(Materials.Beryllium.getMolten(9), Materials.Deuterium.getGas(375), Materials.Nitrogen.getPlasma(125), 16, 16384, 180000000); //Mark 2 Expensive //
-    GT_Values.RA.addFusionReactorRecipe(Materials.Silicon.getMolten(9), Materials.Magnesium.getMolten(9), Materials.Iron.getPlasma(9), 20, 8192, 360000000); //Mark 3 Cheap //
-    GT_Values.RA.addFusionReactorRecipe(Materials.Potassium.getMolten(144), Materials.Fluorine.getGas(144), Materials.Nickel.getPlasma(144), 20, 32768, 480000000); //Mark 3 Expensive //
-    GT_Values.RA.addFusionReactorRecipe(Materials.Beryllium.getMolten(9), Materials.Tungsten.getMolten(9), Materials.Platinum.getMolten(9), 32, 32768, 300000000); //
-    GT_Values.RA.addFusionReactorRecipe(Materials.Neodymium.getMolten(9), Materials.Hydrogen.getGas(27), Materials.Europium.getMolten(9), 64, 24576, 150000000); //
-    GT_Values.RA.addFusionReactorRecipe(Materials.Lutetium.getMolten(9), Materials.Chrome.getMolten(9), Materials.Americium.getMolten(9), 96, 49152, 200000000); //
-    GT_Values.RA.addFusionReactorRecipe(Materials.Plutonium.getMolten(9), Materials.Thorium.getMolten(9), Materials.Naquadah.getMolten(9), 64, 32768, 300000000); //
+    GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getIC2Item("TritiumCell", 1), GT_ModHandler.getIC2Item("fuelRod", 1), Materials.Tritium.getGas(32), 10000, 16, 64);
+    GT_Values.RA.addFusionReactorRecipe(Materials.Carbon.getMolten(125), Materials.Helium_3.getGas(125), Materials.Oxygen.getPlasma(125), 32, 4096, 80000000); //Mark 1 Expensive //
+    GT_Values.RA.addFusionReactorRecipe(Materials.Aluminium.getMolten(16), Materials.Lithium.getMolten(16), Materials.Sulfur.getPlasma(125), 32, 10240, 240000000); //Mark 2 Cheap
+    GT_Values.RA.addFusionReactorRecipe(Materials.Beryllium.getMolten(16), Materials.Deuterium.getGas(375), Materials.Nitrogen.getPlasma(175), 16, 16384, 180000000); //Mark 2 Expensive //
+    GT_Values.RA.addFusionReactorRecipe(Materials.Silicon.getMolten(16), Materials.Magnesium.getMolten(16), Materials.Iron.getPlasma(125), 32, 8192, 360000000); //Mark 3 Cheap //
+    GT_Values.RA.addFusionReactorRecipe(Materials.Potassium.getMolten(16), Materials.Fluorine.getGas(125), Materials.Nickel.getPlasma(125), 16, 32768, 480000000); //Mark 3 Expensive //
+    GT_Values.RA.addFusionReactorRecipe(Materials.Beryllium.getMolten(16), Materials.Tungsten.getMolten(16), Materials.Platinum.getMolten(16), 32, 32768, 150000000); //
+    GT_Values.RA.addFusionReactorRecipe(Materials.Neodymium.getMolten(16), Materials.Hydrogen.getGas(48), Materials.Europium.getMolten(16), 64, 24576, 150000000); //
+    GT_Values.RA.addFusionReactorRecipe(Materials.Lutetium.getMolten(16), Materials.Chrome.getMolten(16), Materials.Americium.getMolten(16), 96, 49152, 200000000); //
+    GT_Values.RA.addFusionReactorRecipe(Materials.Plutonium.getMolten(16), Materials.Thorium.getMolten(16), Materials.Naquadah.getMolten(16), 64, 32768, 300000000); //
     GT_Values.RA.addFusionReactorRecipe(Materials.Americium.getMolten(16), Materials.Naquadria.getMolten(16), Materials.Neutronium.getMolten(1), 1200, 98304, 600000000); //
 
-
-    
+    GT_Values.RA.addFusionReactorRecipe(Materials.Tungsten.getMolten(16), Materials.Helium.getGas(16), Materials.Osmium.getMolten(16), 64, 24578, 150000000); //
+    GT_Values.RA.addFusionReactorRecipe(Materials.Manganese.getMolten(16), Materials.Hydrogen.getGas(16), Materials.Iron.getMolten(16), 64, 8192, 120000000); //
+    GT_Values.RA.addFusionReactorRecipe(Materials.Mercury.getFluid(16), Materials.Magnesium.getMolten(16), Materials.Uranium.getMolten(16), 64, 49152, 240000000); //
+    GT_Values.RA.addFusionReactorRecipe(Materials.Gold.getMolten(16), Materials.Aluminium.getMolten(16), Materials.Uranium.getMolten(16), 64, 49152, 240000000); //
+    GT_Values.RA.addFusionReactorRecipe(Materials.Uranium.getMolten(16), Materials.Helium.getGas(16), Materials.Plutonium.getMolten(16), 128, 49152, 480000000); //    
     
     GT_ModHandler.removeRecipeByOutput(ItemList.IC2_Fertilizer.get(1L, new Object[0]));    
     GT_Values.RA.addImplosionRecipe(ItemList.IC2_Compressed_Coal_Chunk.get(1L, new Object[0]), 8, ItemList.IC2_Industrial_Diamond.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 4L));

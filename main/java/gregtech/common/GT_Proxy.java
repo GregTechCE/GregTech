@@ -1006,7 +1006,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 		}
 		try {
 			aEvent.Ore.stackSize = 1;
-			if(this.mIgnoreTcon){
+			if(this.mIgnoreTcon||aEvent.Ore.getUnlocalizedName().startsWith("item.oreberry")){
 			if ((aOriginalMod.toLowerCase().contains("xycraft")) || (aOriginalMod.toLowerCase().contains("tconstruct"))
 					|| ((aOriginalMod.toLowerCase().contains("natura")) && (!aOriginalMod.toLowerCase().contains("natural")))) {
 				if (GT_Values.D1) {
@@ -1340,8 +1340,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 										return;
 									}
 								}
-								System.out.println("Material Name: "+aEvent.Name+ " !!!Unknown Material detected!!! Please report to GregTech Intergalactical for additional compatiblity. This is not an Error, an Issue nor a Lag Source, it is just an Information, which you should pass to me.");
-								GT_Log.ore.println(tModToName + " uses an unknown Material. Report this to GregTech.");
+//								System.out.println("Material Name: "+aEvent.Name+ " !!!Unknown Material detected!!! Please report to GregTech Intergalactical for additional compatiblity. This is not an Error, an Issue nor a Lag Source, it is just an Information, which you should pass to me.");
+//								GT_Log.ore.println(tModToName + " uses an unknown Material. Report this to GregTech.");
 								return;
 							}
 						} else {
@@ -1795,7 +1795,34 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 		for (OreDictEventContainer tOre : this.mEvents) {
 			if ((!(tOre.mEvent.Ore.getItem() instanceof GT_MetaGenerated_Item)) && (tOre.mPrefix != null) && (tOre.mPrefix.mIsUnificatable)
 					&& (tOre.mMaterial != null)) {
-				if (GT_OreDictUnificator.isBlacklisted(tOre.mEvent.Ore)) {
+				if(tOre.mModID!=null&&tOre.mModID.toLowerCase().equals("enderio")&&tOre.mPrefix==OrePrefixes.ingot&&tOre.mMaterial==Materials.DarkSteel){
+					GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
+					GT_OreDictUnificator.set(tOre.mPrefix,tOre.mMaterial,tOre.mEvent.Ore,(tOre.mModID != null) && (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.Name, true)), true);
+				}else if(tOre.mModID!=null&&tOre.mModID.toLowerCase().equals("thermalfoundation")&&tOre.mPrefix==OrePrefixes.dust&&tOre.mMaterial==Materials.Blizz){
+					GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
+					GT_OreDictUnificator.set(tOre.mPrefix,tOre.mMaterial,tOre.mEvent.Ore,(tOre.mModID != null) && (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.Name, true)), true);
+				}else if(tOre.mModID!=null&&tOre.mModID.toLowerCase().equals("thermalfoundation")&&tOre.mPrefix==OrePrefixes.dust&&tOre.mMaterial==Materials.Pyrotheum){
+					GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
+					GT_OreDictUnificator.set(tOre.mPrefix,tOre.mMaterial,tOre.mEvent.Ore,(tOre.mModID != null) && (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.Name, true)), true);
+				}else if(tOre.mModID!=null&&tOre.mModID.toLowerCase().equals("arsmagica2")&&tOre.mPrefix==OrePrefixes.dust&&tOre.mMaterial==Materials.Vinteum){
+					GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
+					GT_OreDictUnificator.set(tOre.mPrefix,tOre.mMaterial,tOre.mEvent.Ore,(tOre.mModID != null) && (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.Name, true)), true);
+				}else if(tOre.mModID!=null&&tOre.mModID.toLowerCase().equals("arsmagica2")&&tOre.mPrefix==OrePrefixes.gem&&tOre.mMaterial==Materials.BlueTopaz){
+					GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
+					GT_OreDictUnificator.set(tOre.mPrefix,tOre.mMaterial,tOre.mEvent.Ore,(tOre.mModID != null) && (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.Name, true)), true);
+				}else if(tOre.mModID!=null&&tOre.mModID.toLowerCase().equals("arsmagica2")&&tOre.mPrefix==OrePrefixes.gem&&tOre.mMaterial==Materials.Chimerite){
+					GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
+					GT_OreDictUnificator.set(tOre.mPrefix,tOre.mMaterial,tOre.mEvent.Ore,(tOre.mModID != null) && (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.Name, true)), true);
+				}else if(tOre.mModID!=null&&tOre.mModID.toLowerCase().equals("arsmagica2")&&tOre.mPrefix==OrePrefixes.gem&&tOre.mMaterial==Materials.Moonstone){
+					GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
+					GT_OreDictUnificator.set(tOre.mPrefix,tOre.mMaterial,tOre.mEvent.Ore,(tOre.mModID != null) && (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.Name, true)), true);
+				}else if(tOre.mModID!=null&&tOre.mModID.toLowerCase().equals("arsmagica2")&&tOre.mPrefix==OrePrefixes.gem&&tOre.mMaterial==Materials.Sunstone){
+					GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
+					GT_OreDictUnificator.set(tOre.mPrefix,tOre.mMaterial,tOre.mEvent.Ore,(tOre.mModID != null) && (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.Name, true)), true);
+				}else if(tOre.mModID!=null&&tOre.mModID.toLowerCase().equals("rotarycraft")&&tOre.mPrefix==OrePrefixes.ingot&&tOre.mMaterial==Materials.HSLA){
+					GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
+					GT_OreDictUnificator.set(tOre.mPrefix,tOre.mMaterial,tOre.mEvent.Ore,(tOre.mModID != null) && (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.Name, true)), true);
+				}else if(GT_OreDictUnificator.isBlacklisted(tOre.mEvent.Ore)) {
 					GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, true);
 				} else {
 					GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
@@ -1810,13 +1837,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 					GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, true);
 				} else {
 					GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
-					GT_OreDictUnificator
-							.set(tOre.mPrefix,
-									tOre.mMaterial,
-									tOre.mEvent.Ore,
-									(tOre.mModID != null)
-											&& (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.Name,
-													false)), true);
+					GT_OreDictUnificator.set(tOre.mPrefix,tOre.mMaterial,tOre.mEvent.Ore,(tOre.mModID != null)&& 
+							(GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.Name,false)), true);
 				}
 			}
 		}

@@ -1,6 +1,7 @@
 package gregtech.common.items;
 
 import gregtech.api.items.GT_Generic_Item;
+import gregtech.api.items.GT_RadioactiveCellIC_Item;
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
 import ic2.core.item.reactor.ItemReactorMOX;
@@ -28,7 +29,11 @@ public class GT_NeutronReflector_Item
 	      }
 	      else
 	      {
-	        reactor.addOutput(1.0F);
+	    	  float tEnergy=1.0f;
+	    	  if(pulsingStack.getItem() instanceof GT_RadioactiveCellIC_Item){
+	    		 tEnergy = (float) ((GT_RadioactiveCellIC_Item)pulsingStack.getItem()).sEnergy;
+	    	  }
+	    	  reactor.addOutput(tEnergy);
 	      }
 	    }
 	    return true;

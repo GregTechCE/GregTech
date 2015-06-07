@@ -71,20 +71,20 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_M
 	            for (byte k = 0; k < 4; k = (byte)(k + 1)) {
 	              if (((i == 0) || (j == 0)) && ((k == 1) || (k == 2)))
 	              {
-	                if (getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)) == getCasingBlock())
+	                if (getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide > 4 ? -k : tSide == 3 ? k : i)) == getCasingBlock())
 	                {
-	                  if (getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)) == getCasingMeta()) {}
+	                  if (getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide > 4 ? -k : tSide == 3 ? k : i)) == getCasingMeta()) {}
 	                }
-	                else if (!addToMachineList(getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)))) {
+	                else if (!addToMachineList(getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide > 4 ? -k : tSide == 3 ? k : i)))) {
 	                	return false;
 	                }
 	              }
-	              else if (getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)) == getCasingBlock())
+	              else if (getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide > 4 ? -k : tSide == 3 ? k : i)) == getCasingBlock())
 	              {
-	                if (getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)) == getCasingMeta()) {}
+	                if (getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide > 4 ? -k : tSide == 3 ? k : i)) == getCasingMeta()) {}
 	              }
 	              else {
-	                return false;
+	            	  return false;
 	              }
 	            }
 	          }

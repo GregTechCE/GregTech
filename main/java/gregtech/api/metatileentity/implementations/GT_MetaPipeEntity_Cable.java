@@ -193,7 +193,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
 				    		mConnections |= (1<<i);
 				    		continue;
 					    }
-					    if(GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver){
+					    if(GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver && ((IEnergyReceiver)tTileEntity).canConnectEnergy(ForgeDirection.getOrientation(j))){
 					    	mConnections |= (1<<i);
 				    		continue;					    	
 					    }					    

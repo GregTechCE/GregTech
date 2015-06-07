@@ -49,7 +49,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
 		    		counter = 0;
 		    		baseEff = (int) ((50.0F+(10.0F*((GT_MetaGenerated_Tool)aStack.getItem()).getToolCombatDamage(aStack)))*100);
 		    		optFlow = (int) Math.max(Float.MIN_NORMAL, ((GT_MetaGenerated_Tool)aStack.getItem()).getToolStats(aStack).getSpeedMultiplier() * ((GT_MetaGenerated_Tool)aStack.getItem()).getPrimaryMaterial(aStack).mToolSpeed*50);
-		    		optFlow *=10;
+		    		optFlow *=40;
 		    }
 		    int tEU=0;
 		    for(int i=0;i<steams.size();i++){

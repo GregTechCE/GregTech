@@ -83,9 +83,8 @@ import gregtech.api.enums.Textures;
 /*  81: 62 */                 i = 0;
 /*  82:    */               }
 /*  83:    */             }
-/*  84: 64 */             if ((OrePrefixes.values()[i].mPrefixedItems.isEmpty()) || (OrePrefixes.values()[i].mPrefixInto != OrePrefixes.values()[i])) {
-/*  85:    */           
-/*  86:    */             }
+/*  84: 64 */             if(!OrePrefixes.values()[i].mPrefixedItems.isEmpty() && OrePrefixes.values()[i].mPrefixInto == OrePrefixes.values()[i])
+    						mPrefix = OrePrefixes.values()[i];
 /*  87:    */           }
 /*  88:    */         }
 /*  89:    */       }

@@ -60,37 +60,37 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
 									String tmp = mInventory[1].getUnlocalizedName().replaceAll("gt.blockmachines.basicmachine.", "");
 										if(tmp.startsWith("centrifuge")){
 											return GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
-										}else if(tmp.equals("electrolyzer")){
+										}else if(tmp.startsWith("electrolyzer")){
 											return GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes;
-										}else if(tmp.equals("alloysmelter")){
+										}else if(tmp.startsWith("alloysmelter")){
 											return GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes;
-										}else if(tmp.equals("assembler")){
+										}else if(tmp.startsWith("assembler")){
 											return GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
-										}else if(tmp.equals("compressor")){
+										}else if(tmp.startsWith("compressor")){
 											return GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
-										}else if(tmp.equals("extractor")){
+										}else if(tmp.startsWith("extractor")){
 											return GT_Recipe.GT_Recipe_Map.sExtractorRecipes;
-										}else if(tmp.equals("macerator")){
+										}else if(tmp.startsWith("macerator")){
 											return GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
-										}else if(tmp.equals("recycler")){
+										}else if(tmp.startsWith("recycler")){
 											return GT_Recipe.GT_Recipe_Map.sRecyclerRecipes;
-										}else if(tmp.equals("thermalcentrifuge")){
+										}else if(tmp.startsWith("thermalcentrifuge")){
 											return GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes;
-										}else if(tmp.equals("orewasher")){
+										}else if(tmp.startsWith("orewasher")){
 											return GT_Recipe.GT_Recipe_Map.sOreWasherRecipes;
-										}else if(tmp.equals("chemicalreactor")){
+										}else if(tmp.startsWith("chemicalreactor")){
 											return GT_Recipe.GT_Recipe_Map.sChemicalRecipes;
-										}else if(tmp.equals("chemicalbath")){
+										}else if(tmp.startsWith("chemicalbath")){
 											return GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes;
-										}else if(tmp.equals("electromagneticseparator")){
+										}else if(tmp.startsWith("electromagneticseparator")){
 											return GT_Recipe.GT_Recipe_Map.sElectroMagneticSeparatorRecipes;
-										}else if(tmp.equals("autoclave")){
+										}else if(tmp.startsWith("autoclave")){
 											return GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes;
-										}else if(tmp.equals("mixer")){
+										}else if(tmp.startsWith("mixer")){
 											return GT_Recipe.GT_Recipe_Map.sMixerRecipes;
-										}else if(tmp.equals("hammer")){
+										}else if(tmp.startsWith("hammer")){
 											return GT_Recipe.GT_Recipe_Map.sHammerRecipes;
-										}else if(tmp.equals("sifter")){
+										}else if(tmp.startsWith("sifter")){
 											return GT_Recipe.GT_Recipe_Map.sSifterRecipes;
 										}
 				/*  57: 54 */     return null;
@@ -160,13 +160,20 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
 										this.mOutputItems = null;
 										this.mOutputFluids = null;
 										this.mMaxProgresstime = tRecipe.mDuration;
-										int machines = Math.max(16,mInventory[1].stackSize);
+										int machines = Math.min(16,mInventory[1].stackSize);
 										this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
 										this.mEfficiencyIncrease = 10000;
 										int i = 0;
 										for(;i<machines;i++){
 											if(!tRecipe.isRecipeInputEqual(true, tFluids, tInputs))break;
 										}
+//										System.out.println("recipe:"+i+" "+tRecipe.mDuration+" "+tRecipe.mEUt);
+//										if(tRecipe.mOutputs.length>0){
+//											System.out.println(tRecipe.mOutputs[0].getUnlocalizedName());
+//										}
+//										if(tRecipe.mFluidOutputs.length>0){
+//											System.out.println(tRecipe.mFluidOutputs[0].getUnlocalizedName());
+//										}
 										      if (tRecipe.mEUt <= 16)
 										       {
 										        this.mEUt = (tRecipe.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
@@ -206,6 +213,7 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
 										this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
 										this.mOutputItems = tOut;
 										this.mOutputFluids = new FluidStack[]{tFOut};
+//										System.out.println("ArrayOut"+mOutputItems.length+" "+mOutputFluids.length+" "+(mOutputItems.length>0?mOutputItems[0].getUnlocalizedName():"")+" "+(mOutputFluids.length>0?mOutputFluids[0].getUnlocalizedName():" "));
 										updateSlots();
 				/* 105: 93 */           return true;
 				/* 107:    */       }

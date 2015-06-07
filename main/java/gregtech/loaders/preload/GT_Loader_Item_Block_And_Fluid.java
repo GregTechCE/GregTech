@@ -1,6 +1,7 @@
 /*   1:    */ package gregtech.loaders.preload;
 /*   2:    */ 
 /*   3:    */ import codechicken.nei.api.API;
+import cpw.mods.fml.common.Loader;
 /*   4:    */ import cpw.mods.fml.common.event.FMLInterModComms;
 /*   5:    */ import cpw.mods.fml.common.registry.GameRegistry;
 /*   6:    */ import gregtech.GT_Mod;
@@ -136,7 +137,7 @@ import ic2.core.item.ItemRadioactive;
 					GT_ModHandler.addCraftingRecipe(ItemList.Reactor_Coolant_NaK_6.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE , new Object[] { "PCP", "PDP", "PCP",'C', ItemList.Reactor_Coolant_NaK_3,'P', OrePrefixes.plate.get(Materials.Tin),'D',OrePrefixes.plateDense.get(Materials.Copper) });    
 					
 					ItemList.ThoriumCell_1.set(new GT_RadioactiveCellIC_Item("Thoriumcell", "Fuel Rod (Thorium)", 1, 50000, 0.2D,0));
-					GT_ModHandler.addCraftingRecipe(ItemList.ThoriumCell_1.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE , new Object[] { "DR ", "   ", "   ",'R', Ic2Items.fuelRod ,'D', OrePrefixes.dust.get(Materials.Thorium) });    
+					GT_ModHandler.addShapelessCraftingRecipe(ItemList.ThoriumCell_1.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE , new Object[] {Ic2Items.fuelRod , OrePrefixes.dust.get(Materials.Thorium) });    
 					
 					ItemList.ThoriumCell_2.set(new GT_RadioactiveCellIC_Item("Double_Thoriumcell", "Double Fuel Rod (Thorium)", 2, 50000, 0.2D,0));
 					GT_ModHandler.addCraftingRecipe(ItemList.ThoriumCell_2.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE , new Object[] { "RPR", "   ", "   ",'R', ItemList.ThoriumCell_1 ,'P', OrePrefixes.plate.get(Materials.Iron) });    
@@ -148,9 +149,9 @@ import ic2.core.item.ItemRadioactive;
 					ItemList.Depleted_Thorium_2.set(new GT_DepletetCell_Item("Double_ThoriumcellDep","Dual Fuel Rod (Depleted Thorium)",2));
 					ItemList.Depleted_Thorium_4.set(new GT_DepletetCell_Item("Quad_ThoriumcellDep","Quad Fuel Rod (Depleted Thorium)",4));
 
-					GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_1.get(1, new Object[0]), 5000, new Object[]{ GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lutetium, 1L),GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Thorium, 2L),GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L)});
-					GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_2.get(1, new Object[0]), 5000, new Object[]{ GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lutetium, 2L),GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Thorium, 4L),GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 3L)});
-					GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_4.get(1, new Object[0]), 5000, new Object[]{ GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lutetium, 4L),GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Thorium, 8L),GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 6L)});
+					GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_1.get(1, new Object[0]), 5000, new Object[]{ GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lutetium, 1L),GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Thorium, 2L),GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L)});
+					GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_2.get(1, new Object[0]), 5000, new Object[]{ GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lutetium, 2L),GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Thorium, 4L),GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 3L)});
+					GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_4.get(1, new Object[0]), 5000, new Object[]{ GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lutetium, 4L),GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Thorium, 8L),GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 6L)});
 
 					
 /* 108:    */     
@@ -476,9 +477,7 @@ import ic2.core.item.ItemRadioactive;
 					if(GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateCopper", true)){
 /* 412:425 */     GT_OreDictUnificator.set(OrePrefixes.plate, Materials.Copper, GT_ModHandler.getModItem("Railcraft", "part.plate", 1L, 3));}else{
 					GT_OreDictUnificator.set(OrePrefixes.plate, Materials.Copper, GT_ModHandler.getModItem("Railcraft", "part.plate", 1L, 3),false,false);}
-
-
-
+			
 /* 410:423 */     
 /* 411:424 */    
 /* 412:425 */     
