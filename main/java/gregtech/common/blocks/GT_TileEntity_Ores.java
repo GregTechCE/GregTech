@@ -150,7 +150,7 @@ import gregtech.api.enums.Textures;
 /* 147:157 */     ArrayList<ItemStack> rList = new ArrayList();
 /* 148:158 */     if (this.mMetaData <= 0)
 /* 149:    */     {
-/* 150:159 */       rList.add(new ItemStack(Blocks.iron_ore, 1, 0));
+/* 150:159 */       rList.add(new ItemStack(Blocks.cobblestone, 1, 0));
 /* 151:160 */       return rList;
 /* 152:    */     }
 /* 153:162 */     if (this.mMetaData < 16000)
@@ -246,8 +246,12 @@ import gregtech.api.enums.Textures;
 /* 243:    */   }
 /* 244:    */ }
 
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.common.blocks.GT_TileEntity_Ores
- * JD-Core Version:    0.7.0.1
+
+
+/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
+
+ * Qualified Name:     gregtech.common.blocks.GT_TileEntity_Ores
+
+ * JD-Core Version:    0.7.0.1
+
  */
