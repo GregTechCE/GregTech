@@ -219,6 +219,7 @@ public enum OrePrefixes {
 	batterySingleuse		("Single Use Batteries"			, ""								, ""								,F,T,F,F,F,F,F,F,F,F, 0                       ,        -1, 64,  -1),
 	battery					("Reusable Batteries"			, ""								, ""								,F,T,F,F,F,F,F,F,F,F, 0                       ,        -1, 64,  -1), // Introduced by Calclavia
 	circuit					("Circuits"						, ""								, ""								,T,T,F,F,F,F,F,F,F,F, 0                       ,        -1, 64,  -1), // Introduced by Calclavia
+	chipset					("Chipsets"						, ""								, ""								,T,T,F,F,F,F,F,F,F,F, 0                       ,        -1, 64,  -1), // Introduced by Buildcraft
 	computer				("Computers"					, ""								, ""								,T,T,F,F,T,F,F,F,F,F, 0                       ,        -1, 64,  -1), // A whole Computer. "computerMaster" = ComputerCube
 	
 	// random known prefixes without special abilities.

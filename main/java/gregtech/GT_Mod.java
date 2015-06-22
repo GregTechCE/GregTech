@@ -15,15 +15,14 @@
 /*  16:    */ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 /*  17:    */ import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 /*  18:    */ import cpw.mods.fml.common.registry.EntityRegistry;
-import forestry.factory.gadgets.MachineCentrifuge;
-/*  19:    */ import forestry.factory.gadgets.MachineCentrifuge.Recipe;
+			  import forestry.factory.gadgets.MachineCentrifuge;
 /*  20:    */ import forestry.factory.gadgets.MachineCentrifuge.RecipeManager;
-import forestry.factory.gadgets.MachineSqueezer;
+			  import forestry.factory.gadgets.MachineSqueezer;
 /*  23:    */ import gregtech.api.GregTech_API;
 /*  24:    */ import gregtech.api.enchants.Enchantment_EnderDamage;
 /*  25:    */ import gregtech.api.enchants.Enchantment_Radioactivity;
 /*  26:    */ import gregtech.api.enums.ConfigCategories.Recipes;
-import gregtech.api.enums.*;
+			  import gregtech.api.enums.*;
 /*  33:    */ import gregtech.api.enums.Textures.BlockIcons;
 /*  34:    */ import gregtech.api.enums.Textures.ItemIcons;
 /*  35:    */ import gregtech.api.interfaces.internal.IGT_Mod;
@@ -41,7 +40,7 @@ import gregtech.api.enums.*;
 /*  47:    */ import gregtech.api.util.GT_Recipe;
 /*  48:    */ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 /*  49:    */ import gregtech.api.util.GT_RecipeRegistrator;
-import gregtech.api.util.GT_SpawnEventHandler;
+			  import gregtech.api.util.GT_SpawnEventHandler;
 /*  50:    */ import gregtech.api.util.GT_Utility;
 /*  51:    */ import gregtech.common.GT_DummyWorld;
 /*  52:    */ import gregtech.common.GT_Network;
@@ -54,7 +53,7 @@ import gregtech.api.util.GT_SpawnEventHandler;
 /*  59:    */ import gregtech.loaders.load.GT_FuelLoader;
 /*  60:    */ import gregtech.loaders.load.GT_ItemIterator;
 /*  61:    */ import gregtech.loaders.load.GT_SonictronLoader;
-import gregtech.loaders.misc.GT_Achievements;
+			  import gregtech.loaders.misc.GT_Achievements;
 /*  62:    */ import gregtech.loaders.misc.GT_CoverLoader;
 /*  63:    */ import gregtech.loaders.postload.GT_BlockResistanceLoader;
 /*  64:    */ import gregtech.loaders.postload.GT_BookAndLootLoader;
@@ -103,12 +102,12 @@ import gregtech.loaders.misc.GT_Achievements;
 /* 106:    */ import net.minecraft.item.crafting.CraftingManager;
 /* 107:    */ import net.minecraft.item.crafting.FurnaceRecipes;
 /* 108:    */ import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.stats.Achievement;
+			  import net.minecraft.stats.Achievement;
 /* 109:    */ import net.minecraft.util.WeightedRandomChestContent;
 /* 110:    */ import net.minecraft.world.World;
 /* 111:    */ import net.minecraft.world.biome.BiomeGenBase;
 /* 112:    */ import net.minecraftforge.common.ChestGenHooks;
-import net.minecraftforge.common.ForgeVersion;
+			  import net.minecraftforge.common.ForgeVersion;
 /* 113:    */ import net.minecraftforge.common.config.Configuration;
 /* 114:    */ import net.minecraftforge.common.config.Property;
 /* 115:    */ import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -316,6 +315,7 @@ import net.minecraftforge.common.ForgeVersion;
 				  GregTech_API.mEUtoRF = GregTech_API.sOPStuff.get(ConfigCategories.general, "100EUtoRF", 360);
 				  GregTech_API.mRFtoEU = GregTech_API.sOPStuff.get(ConfigCategories.general, "100RFtoEU", 20);
 				  GregTech_API.mRFExplosions = GregTech_API.sOPStuff.get(ConfigCategories.general, "RFExplosions", true);
+				  GregTech_API.meIOLoaded = Loader.isModLoaded("EnderIO");
 				  
 /* 310:211 */     if (tMainConfig.get("general", "hardermobspawners", true).getBoolean(true)) {
 /* 311:211 */       Blocks.mob_spawner.setHardness(500.0F).setResistance(6000000.0F);
@@ -570,14 +570,23 @@ import net.minecraftforge.common.ForgeVersion;
 /* 559:    */     try
 /* 560:    */     {
 /* 561:415 */       for (Object tRecipe : MachineCentrifuge.RecipeManager.recipes)
-/* 562:    */       {
-/* 563:416 */         Integer[] tOriginalChances = (Integer[])((MachineCentrifuge.Recipe)tRecipe).products.values().toArray(new Integer[((MachineCentrifuge.Recipe)tRecipe).products.size()]);
-/* 564:417 */         ItemStack[] tOutputs = (ItemStack[])((MachineCentrifuge.Recipe)tRecipe).products.keySet().toArray(new ItemStack[((MachineCentrifuge.Recipe)tRecipe).products.size()]);
-/* 565:418 */         int[] tChances = new int[tOriginalChances.length];
-/* 566:419 */         for (int i = 0; i < tOriginalChances.length; i++) {
-/* 567:419 */           tChances[i] = (tOriginalChances[i].intValue() * 100);
-/* 568:    */         }
-/* 569:420 */         GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(true, new ItemStack[] { ((MachineCentrifuge.Recipe)tRecipe).resource }, tOutputs, null, tChances, null, null, 128, 5, 0);
+/* 562:    */       { 
+	
+	
+	Map<ItemStack,Float> outputs = ((MachineCentrifuge.CentrifugeRecipe)tRecipe).getAllProducts();
+/* 564:417 */         ItemStack[] tOutputs = new ItemStack[outputs.size()];
+/* 565:418 */         int[] tChances = new int[outputs.size()];
+int i =0;
+for (Map.Entry<ItemStack, Float> entry : outputs.entrySet()) {
+	tChances[i] = (int) (entry.getValue()*10000);
+	tOutputs[i] = entry.getKey().copy();
+	i++;
+}
+///* 566:419 */         for (int i = 0; i < outputs.size(); i++) {
+//						tOutputs[i] = outputs.entrySet().
+///* 567:419 */           tChances[i] = (tOriginalChances[i].intValue() * 100);
+///* 568:    */         }
+/* 569:420 */         GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(true, new ItemStack[] { ((MachineCentrifuge.CentrifugeRecipe)tRecipe).getInput() }, tOutputs, null, tChances, null, null, 128, 5, 0);
 /* 570:    */       }
 /* 571:    */     }
 /* 572:    */     catch (Throwable e)
@@ -768,8 +777,7 @@ import net.minecraftforge.common.ForgeVersion;
 /* 757:    */         }
 /* 758:    */       }
 /* 759:    */     }
-				  if(gregtechproxy.mAchievements){
-				  achievements = new GT_Achievements();}
+				  achievements = new GT_Achievements();
 /* 760:    */     Map.Entry<IRecipeInput, RecipeOutput> tRecipe;
 /* 761:540 */     GT_Log.out.println("GT_Mod: Loading finished, deallocating temporary Init Variables.");
 /* 762:541 */     GregTech_API.sBeforeGTPreload = null;
