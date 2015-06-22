@@ -43,11 +43,13 @@ import net.minecraftforge.fluids.FluidStack;
 public class GT_Achievements {
 
 	public HashMap<String, Achievement> achievementList;
+	public HashMap<String, Boolean> issuedAchievements;
 public int adjX = 5;
 public int adjY = 9;
 	
 	public GT_Achievements() {
 		this.achievementList = new HashMap();
+		this.issuedAchievements = new HashMap();
 		for (int i = 0; i < oreList.size(); i++) {
 			if (GT_Values.D1 && this.achievementList.get(oreList.get(i).name()) == null) {
 				GT_Log.out.println("achievement." + oreList.get(i).name() + "=Find " + oreList.get(i).name() + " Ore");
@@ -161,11 +163,12 @@ public int adjY = 9;
 		registerAchievement("denseaspossible", 10, 10, ItemList.FusionComputer_UV.get(1, new Object[] {}), "tothelimit", false);
 		registerAchievement("fullefficiency", 10, 12, ItemList.Generator_Plasma_ZPMV.get(1, new Object[] {}), "denseaspossible", false);
 		registerAchievement("whatnow", 8, 10, ItemList.ZPM2.get(1, new Object[] {}), "denseaspossible", false);
-		
+
+		  if(GT_Mod.gregtechproxy.mAchievements){
 		AchievementPage.registerAchievementPage(new AchievementPage("GregTech 5", (Achievement[]) this.achievementList.values().toArray(
 				new Achievement[this.achievementList.size()])));
 		MinecraftForge.EVENT_BUS.register(this);
-		FMLCommonHandler.instance().bus().register(this);
+		FMLCommonHandler.instance().bus().register(this);}
 	}
 
 	public Achievement registerAchievement(String textId, int x, int y, ItemStack icon, Achievement requirement, boolean special) {
@@ -218,11 +221,15 @@ public int adjY = 9;
 	}
 
 	public void issueAchievement(EntityPlayer entityplayer, String textId) {
-		if(entityplayer==null){
+		if(entityplayer==null||!GT_Mod.gregtechproxy.mAchievements){
 			return;
 		}
 		if (this.achievementList.containsKey(textId)) {
-			entityplayer.triggerAchievement((StatBase) this.achievementList.get(textId));
+			if(this.issuedAchievements.containsKey((entityplayer.getDisplayName()+textId))){
+			return;	
+			}else{
+			this.issuedAchievements.put((entityplayer.getDisplayName()+textId), true);	
+			entityplayer.triggerAchievement((StatBase) this.achievementList.get(textId));}
 		}
 	}
 

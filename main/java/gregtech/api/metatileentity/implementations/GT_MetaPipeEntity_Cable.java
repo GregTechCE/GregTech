@@ -39,6 +39,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
 	public final Materials mMaterial;
 	public final long mCableLossPerMeter, mAmperage, mVoltage;
 	public final boolean mInsulated, mCanShock;
+	public long mRestRF;
 	
 	public GT_MetaPipeEntity_Cable(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial, long aCableLossPerMeter, long aAmperage, long aVoltage, boolean aInsulated, boolean aCanShock) {
 		super(aID, aName, aNameRegional, 0);
@@ -143,6 +144,14 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
         			int rfOut = (int) (aVoltage * GregTech_API.mEUtoRF / 100);
         			if(((IEnergyReceiver)tTileEntity).receiveEnergy(tDirection, rfOut, true)==rfOut){
         				((IEnergyReceiver)tTileEntity).receiveEnergy(tDirection, rfOut, false); rUsedAmperes++;
+        			}else if(((IEnergyReceiver)tTileEntity).receiveEnergy(tDirection, rfOut, true)>0){
+        				if(mRestRF==0){
+        					int RFtrans = ((IEnergyReceiver)tTileEntity).receiveEnergy(tDirection, (int) rfOut, false);rUsedAmperes++;
+        					mRestRF = rfOut - RFtrans; 
+        				}else{
+        					int RFtrans = ((IEnergyReceiver)tTileEntity).receiveEnergy(tDirection, (int) mRestRF, false); 
+        					mRestRF = mRestRF - RFtrans;
+        				}
         			}
         			if(GregTech_API.mRFExplosions && ((IEnergyReceiver)tTileEntity).getMaxEnergyStored(tDirection) < rfOut * 600){
         				if(rfOut > 32 * GregTech_API.mEUtoRF / 100) this.doExplosion(rfOut);

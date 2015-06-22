@@ -270,7 +270,7 @@ import ic2.core.item.ItemRadioactive;
 /* 219:    */     
 /* 220:    */ 
 /* 221:    */ 
-/* 222:226 */     GT_Mod.gregtechproxy.addFluid("molten.glass", "Molten Glass", Materials.Glass, 4, 800);
+/* 222:226 */     GT_Mod.gregtechproxy.addFluid("molten.glass", "Molten Glass", Materials.Glass, 4, 1500);
 /* 223:227 */     GT_Mod.gregtechproxy.addFluid("molten.redstone", "Molten Redstone", Materials.Redstone, 4, 500);
 /* 224:228 */     GT_Mod.gregtechproxy.addFluid("molten.blaze", "Molten Blaze", Materials.Blaze, 4, 6400);
 /* 225:229 */     GT_Mod.gregtechproxy.addFluid("molten.concrete", "Wet Concrete", Materials.Concrete, 4, 300);
