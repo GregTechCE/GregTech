@@ -63,58 +63,58 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior{
 	}
 	
 	public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ)
-	/*  64:    */   {
-	/*  65: 54 */     aCoverVariable = (aCoverVariable + 1) % 3;
-	/*  66: 55 */     if (aCoverVariable == 0) {
-	/*  67: 55 */       GT_Utility.sendChatToPlayer(aPlayer, "Emit if any Player is close");
-	/*  68:    */     }
-	/*  69: 56 */     if (aCoverVariable == 1) {
-	/*  70: 56 */       GT_Utility.sendChatToPlayer(aPlayer, "Emit if you are close");
-	/*  71:    */     }
-	/*  72: 57 */     if (aCoverVariable == 2) {
-	/*  73: 57 */       GT_Utility.sendChatToPlayer(aPlayer, "Emit if other player is close");
-	/*  74:    */     }
-	/*  96: 65 */     return aCoverVariable;
-	/*  97:    */   }
-	/*  98:    */   
-	/*  99:    */   public boolean letsEnergyIn(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity)
-	/* 100:    */   {
-	/* 101: 70 */     return true;
-	/* 102:    */   }
-	/* 103:    */   
-	/* 104:    */   public boolean letsEnergyOut(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity)
-	/* 105:    */   {
-	/* 106: 75 */     return true;
-	/* 107:    */   }
-	/* 108:    */   
-	/* 109:    */   public boolean letsFluidIn(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity)
-	/* 110:    */   {
-	/* 111: 80 */     return true;
-	/* 112:    */   }
-	/* 113:    */   
-	/* 114:    */   public boolean letsFluidOut(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity)
-	/* 115:    */   {
-	/* 116: 85 */     return true;
-	/* 117:    */   }
-	/* 118:    */   
-	/* 119:    */   public boolean letsItemsIn(byte aSide, int aCoverID, int aCoverVariable, int aSlot, ICoverable aTileEntity)
-	/* 120:    */   {
-	/* 121: 90 */     return true;
-	/* 122:    */   }
-	/* 123:    */   
-	/* 124:    */   public boolean letsItemsOut(byte aSide, int aCoverID, int aCoverVariable, int aSlot, ICoverable aTileEntity)
-	/* 125:    */   {
-	/* 126: 95 */     return true;
-	/* 127:    */   }
-	/* 128:    */   
-	/* 129:    */   public boolean manipulatesSidedRedstoneOutput(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity)
-	/* 130:    */   {
-	/* 131:100 */     return true;
-	/* 132:    */   }
-	/* 133:    */   
-	/* 134:    */   public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity)
-	/* 135:    */   {
-	/* 136:105 */     return 20;
-	/* 137:    */   }
+	  {
+	    aCoverVariable = (aCoverVariable + 1) % 3;
+	    if (aCoverVariable == 0) {
+	      GT_Utility.sendChatToPlayer(aPlayer, "Emit if any Player is close");
+	    }
+	    if (aCoverVariable == 1) {
+	      GT_Utility.sendChatToPlayer(aPlayer, "Emit if you are close");
+	    }
+	    if (aCoverVariable == 2) {
+	      GT_Utility.sendChatToPlayer(aPlayer, "Emit if other player is close");
+	    }
+	    return aCoverVariable;
+	  }
+	  
+	  public boolean letsEnergyIn(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity)
+	  {
+	    return true;
+	  }
+	  
+	  public boolean letsEnergyOut(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity)
+	  {
+	    return true;
+	  }
+	  
+	  public boolean letsFluidIn(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity)
+	  {
+	    return true;
+	  }
+	  
+	  public boolean letsFluidOut(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity)
+	  {
+	    return true;
+	  }
+	  
+	  public boolean letsItemsIn(byte aSide, int aCoverID, int aCoverVariable, int aSlot, ICoverable aTileEntity)
+	  {
+	    return true;
+	  }
+	  
+	  public boolean letsItemsOut(byte aSide, int aCoverID, int aCoverVariable, int aSlot, ICoverable aTileEntity)
+	  {
+	    return true;
+	  }
+	  
+	  public boolean manipulatesSidedRedstoneOutput(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity)
+	  {
+	    return true;
+	  }
+	  
+	  public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity)
+	  {
+	    return 20;
+	  }
 	
 }
