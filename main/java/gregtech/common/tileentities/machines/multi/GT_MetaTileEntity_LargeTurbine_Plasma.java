@@ -54,7 +54,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
 		    int tEU=0;
 		    for(int i=0;i<steams.size();i++){
 		    	int fuelValue = getFuelValue(steams.get(i));
-		    	if(fuelValue>0&&depleteInput(new FluidStack(steams.get(i),optFlow/(fuelValue*2)))){
+		    	if(fuelValue>0&&depleteInput(new FluidStack(steams.get(i),Math.max(optFlow/(fuelValue*2),1)))){
 		    		tEU += optFlow/2;}
 		    }
 		      this.mEUt = baseEff*tEU/10000;
@@ -63,8 +63,11 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
 		      if(mEUt==0){return false;}
 		      return true;
 		    }
-		    return false;
-		  }
+		    if(this.mEfficiency>50){
+		    	this.mEfficiency = this.mEfficiency-50;
+		    	return true;
+		    }else{return false;}
+		    		  }
 		
 		public int getFuelValue(FluidStack aLiquid) {
 	    	if (aLiquid == null || GT_Recipe_Map.sTurbineFuels == null) return 0;

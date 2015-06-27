@@ -336,7 +336,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 			}
 			if (mInventory[1] != null && getBaseMetaTileEntity().getRandomNumber(2) == 0 &&!mInventory[1].getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.")) {
 				if(mInventory[1].getItem() instanceof GT_MetaGenerated_Tool_01){
-					((GT_MetaGenerated_Tool)mInventory[1].getItem()).doDamage(mInventory[1], mEUt/5);
+					((GT_MetaGenerated_Tool)mInventory[1].getItem()).doDamage(mInventory[1], (long) Math.min(mEUt/5, Math.pow(mEUt, 0.7)));
+					if(mInventory[1]!=null&&mInventory[1].getItem().getDamage(mInventory[1])>mInventory[1].getMaxDamage()){
+						mInventory[1]=null;
+					}
 				}
 			}
 		}

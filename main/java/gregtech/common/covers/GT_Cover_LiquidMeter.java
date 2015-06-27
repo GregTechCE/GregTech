@@ -33,9 +33,9 @@ public class GT_Cover_LiquidMeter
       }
       tAll /= 14L;
       if (tAll > 0L) {
-        aTileEntity.setOutputRedstoneSignal(aSide, aCoverVariable == 0 ? 0 : tFull > 0L ? (byte)(int)(tFull / tAll + 1L) : (byte)(int)(15L - (tFull > 0L ? tFull / tAll + 1L : 0L)));
+          aTileEntity.setOutputRedstoneSignal(aSide, aCoverVariable != 0 ? (byte)(int)(15L - (tFull <= 0L ? 0L : tFull / tAll + 1L)) : tFull <= 0L ? 0 : (byte)(int)(tFull / tAll + 1L));
       } else {
-        aTileEntity.setOutputRedstoneSignal(aSide, (byte)(aCoverVariable == 0 ? 0 : 15));
+    	  aTileEntity.setOutputRedstoneSignal(aSide, ((byte)(aCoverVariable != 0 ? 15 : 0)));
       }
     }
     else
@@ -95,9 +95,3 @@ public class GT_Cover_LiquidMeter
     return 5;
   }
 }
-
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.common.covers.GT_Cover_LiquidMeter
- * JD-Core Version:    0.7.0.1
- */

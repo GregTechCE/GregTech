@@ -36,11 +36,15 @@ public class GT_Config implements Runnable {
 		Object rName = GT_OreDictUnificator.getAssociation(aStack);
 		if (rName != null) return rName.toString();
 		try {if (GT_Utility.isStringValid(rName = aStack.getUnlocalizedName())) return rName.toString();} catch (Throwable e) {/*Do nothing*/}
-		return aStack.getItem() + "." + aStack.getItemDamage();
+		String sName = aStack.getItem().toString();
+			String[] tmp = sName.split("@");
+			if(tmp.length>0)sName=tmp[0];
+		return sName + "." + aStack.getItemDamage();
 	}
 	
 	public boolean get(Object aCategory, ItemStack aStack, boolean aDefault) {
-		return get(aCategory, getStackConfigName(aStack), aDefault);
+		String aName = getStackConfigName(aStack);		
+		return get(aCategory, aName , aDefault);
 	}
 	
 	public boolean get(Object aCategory, String aName, boolean aDefault) {

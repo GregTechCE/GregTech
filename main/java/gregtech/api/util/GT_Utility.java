@@ -1149,11 +1149,16 @@ public class GT_Utility {
 		return aStack;
 	}
 	
-	public static boolean isOpaqueBlock(World aWorld, int aX, int aY, int aZ) {
-		return aWorld.getBlock(aX, aY, aZ).isOpaqueCube();
+	public static boolean isBlockOccluded(World aWorld, int aX, int aY, int aZ, boolean aIgnoreUnloadedChunks, boolean aDefault) {
+		return isBlockOpaque(aWorld, aX+1, aY, aZ, aIgnoreUnloadedChunks, aDefault) && isBlockOpaque(aWorld, aX-1, aY, aZ, aIgnoreUnloadedChunks, aDefault) && isBlockOpaque(aWorld, aX, aY+1, aZ, T, aDefault) && isBlockOpaque(aWorld, aX, aY-1, aZ, T, aDefault) && isBlockOpaque(aWorld, aX, aY, aZ+1, aIgnoreUnloadedChunks, aDefault) && isBlockOpaque(aWorld, aX, aY, aZ-1, aIgnoreUnloadedChunks, aDefault);
 	}
 	
-	public static boolean isAirBlock(World aWorld, int aX, int aY, int aZ) {
+	public static boolean isBlockOpaque(World aWorld, int aX, int aY, int aZ, boolean aIgnoreUnloadedChunks, boolean aDefault) {
+		if (aIgnoreUnloadedChunks || aWorld.blockExists(aX, aY, aZ)) return aWorld.getBlock(aX, aY, aZ).isOpaqueCube();
+		return aDefault;
+	}
+	
+	public static boolean isBlockAir(World aWorld, int aX, int aY, int aZ) {
 		return aWorld.getBlock(aX, aY, aZ).isAir(aWorld, aX, aY, aZ);
 	}
 	

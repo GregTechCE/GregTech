@@ -795,7 +795,7 @@ public class GT_MetaGenerated_Item_01
                   GT_ModHandler.addShapelessCraftingRecipe(ItemList.Cover_RedstoneTransmitterExternal.get(1L, new Object[0]), new Object[]{ItemList.Cover_RedstoneTransmitterInternal.get(1L, new Object[0])});
                   GT_ModHandler.addShapelessCraftingRecipe(ItemList.Cover_RedstoneReceiverExternal.get(1L, new Object[0]), new Object[]{ItemList.Cover_RedstoneReceiverInternal.get(1L, new Object[0])});
                   
-                  ItemList.Cover_NeedsMaintainance.set(addItem(tLastID = 748, "Needs Maintainance Cover", "Emits Redstone Signal if Multiblock Machine needs Maintainance", new Object[] { new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L) }));
+                  ItemList.Cover_NeedsMaintainance.set(addItem(tLastID = 748, "Needs Maintainance Cover", "Attach to Multiblock Controller. Emits Redstone Signal if needs Maintainance", new Object[] { new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L) }));
                   GregTech_API.registerCover(ItemList.Cover_NeedsMaintainance.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR) }), new GT_Cover_NeedMaintainance());
                   GT_Values.RA.addAssemblerRecipe(ItemList.Emitter_MV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),ItemList.Cover_NeedsMaintainance.get(1L, new Object[0]) , 600, 24);
                   }

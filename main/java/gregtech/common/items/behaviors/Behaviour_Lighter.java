@@ -77,7 +77,7 @@ public class Behaviour_Lighter
     
     ForgeDirection tDirection = ForgeDirection.getOrientation(aSide);
     aX += tDirection.offsetX;aY += tDirection.offsetY;aZ += tDirection.offsetZ;
-    if ((!GT_Utility.isAirBlock(aWorld, aX, aY, aZ)) || (!aPlayer.canPlayerEdit(aX, aY, aZ, aSide, aStack))) {
+    if ((!GT_Utility.isBlockAir(aWorld, aX, aY, aZ)) || (!aPlayer.canPlayerEdit(aX, aY, aZ, aSide, aStack))) {
       return false;
     }
     prepare(aStack);

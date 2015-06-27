@@ -28,7 +28,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_Container_QuantumChest;
 import gregtech.common.gui.GT_GUIContainer_QuantumChest;
 
-public class GT_MetaTileEntity_QuantumChest extends GT_MetaTileEntity_TieredMachineBlock {
+public class GT_MetaTileEntity_QuantumChest extends GT_MetaTileEntity_TieredMachineBlock{
 	public GT_MetaTileEntity_QuantumChest(int aID, String aName, String aNameRegional, int aTier) {
 		super(aID, aName, aNameRegional, aTier, 3, "This Chest stores "+((int)((Math.pow(6, aTier))*270000))+" Blocks");
 	}

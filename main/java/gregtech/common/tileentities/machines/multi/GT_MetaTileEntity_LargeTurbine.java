@@ -108,7 +108,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_M
 	   public abstract byte getCasingTextureIndex();
 	
 	private boolean addToMachineList(IGregTechTileEntity tTileEntity){
-		return ((addMaintenanceToMachineList(tTileEntity, getCasingTextureIndex())) || (addInputToMachineList(tTileEntity, getCasingTextureIndex())) || (addOutputToMachineList(tTileEntity, getCasingTextureIndex())));
+		return ((addMaintenanceToMachineList(tTileEntity, getCasingTextureIndex())) || (addInputToMachineList(tTileEntity, getCasingTextureIndex())) || (addOutputToMachineList(tTileEntity, getCasingTextureIndex()))|| (addMufflerToMachineList(tTileEntity, getCasingTextureIndex())));
 	}
 	
 	@Override

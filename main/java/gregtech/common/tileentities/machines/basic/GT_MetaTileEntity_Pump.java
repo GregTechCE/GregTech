@@ -169,8 +169,8 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
 		if (yHead <= 0) {
 			return false;
 		}
-		if ((!consumeFluid(getBaseMetaTileEntity().getXCoord(), yHead - 1, getBaseMetaTileEntity().getZCoord()))
-				&& (!getBaseMetaTileEntity().getAir(getBaseMetaTileEntity().getXCoord(), yHead - 1, getBaseMetaTileEntity().getZCoord()))) {
+		if ((!consumeFluid(getBaseMetaTileEntity().getXCoord(), yHead - 1, getBaseMetaTileEntity().getZCoord()))&& (!getBaseMetaTileEntity().getAir(getBaseMetaTileEntity().getXCoord(), yHead - 1, getBaseMetaTileEntity().getZCoord()))) {
+
 			return false;
 		}
 		if (!(getBaseMetaTileEntity().getWorld().setBlock(getBaseMetaTileEntity().getXCoord(), yHead - 1, getBaseMetaTileEntity().getZCoord(),GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L))))) {
@@ -306,11 +306,15 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
 					getBaseMetaTileEntity().decreaseStoredEnergyUnits(4*((int)Math.pow(4, this.mTier)), true);
 				}
 			}
-			if ((aBlock instanceof IFluidBlock)) {
+			if ((aBlock instanceof IFluidBlock)) {				
 				if (this.mFluid == null) {
 					this.mFluid = ((IFluidBlock) aBlock).drain(getBaseMetaTileEntity().getWorld(), aX, aY, aZ, true);
 					getBaseMetaTileEntity().decreaseStoredEnergyUnits(this.mFluid == null ? 1000 : this.mFluid.amount, true);
-				} else {
+				}else if(this.mFluid.isFluidEqual(((IFluidBlock) aBlock).drain(getBaseMetaTileEntity().getWorld(), aX, aY, aZ, false))){ 
+					this.getBaseMetaTileEntity().getWorld().setBlockToAir( aX, aY, aZ);
+					this.mFluid.amount += 1000;
+					getBaseMetaTileEntity().decreaseStoredEnergyUnits(16*((int)Math.pow(4, this.mTier)), true);
+				}else {
 					return false;
 				}
 			}

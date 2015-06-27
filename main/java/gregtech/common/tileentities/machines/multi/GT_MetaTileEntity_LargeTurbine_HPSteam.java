@@ -67,7 +67,10 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
 		      addOutput(GT_ModHandler.getSteam(distOut));
 		      return true;
 		    }
-		    return false;
+		    if(this.mEfficiency>50){
+		    	this.mEfficiency = this.mEfficiency-50;
+		    	return true;
+		    }else{return false;}
 		  }
 		
 		@Override

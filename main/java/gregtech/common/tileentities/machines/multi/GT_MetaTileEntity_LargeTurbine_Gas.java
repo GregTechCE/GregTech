@@ -37,6 +37,7 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
 	    		 "1x Input Hatch (side centered)",
 	    		 "1x Dynamo Hatch (back centered)", 
 	    		 "1x Maintenance Hatch (side centered)", 
+	    		 "1x Muffler Hatch (side centered)",
 	    		 "Turbine Casings for the rest (24 at least!)",
 	    		 "Needs a Turbine Item (inside controller GUI)"};
 	   }
@@ -44,6 +45,9 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
 		@Override
 		public boolean checkRecipe(ItemStack aStack) {
 			ArrayList<FluidStack> steams = getStoredFluids();
+			if(this.mMufflerHatches.size()==0){
+				return false;
+			}
 		    if (steams.size()>0)
 		    {if(baseEff==0 || optFlow == 0 || counter >= 1000 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled() || this.getBaseMetaTileEntity().hasInventoryBeenModified()){
 		    		counter = 0;
@@ -62,7 +66,10 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
 		      if(mEUt==0){return false;}
 		      return true;
 		    }
-		    return false;
+		    if(this.mEfficiency>50){
+		    	this.mEfficiency = this.mEfficiency-50;
+		    	return true;
+		    }else{return false;}
 		  }
 		
 	    public int getFuelValue(FluidStack aLiquid) {

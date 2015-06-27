@@ -138,8 +138,8 @@ public class GT_MetaTileEntity_Boiler_Solar
       }
       if ((this.mProcessingEnergy <= 0) && (aBaseMetaTileEntity.isAllowedToWork()) && (aTick % 256L == 0L) && (!aBaseMetaTileEntity.getWorld().isThundering()))
       {
-        boolean bRain = (aBaseMetaTileEntity.getWorld().isRaining()) && (aBaseMetaTileEntity.getBiome().rainfall > 0.0F);
-        this.mProcessingEnergy += (((!bRain) || (aBaseMetaTileEntity.getWorld().skylightSubtracted < 4)) && (aBaseMetaTileEntity.getSkyAtSide((byte)1)) ? 8 : (bRain) || (!aBaseMetaTileEntity.getWorld().isDaytime()) ? 1 : 0);
+          boolean bRain = aBaseMetaTileEntity.getWorld().isRaining() && aBaseMetaTileEntity.getBiome().rainfall > 0.0F;
+          mProcessingEnergy += bRain && aBaseMetaTileEntity.getWorld().skylightSubtracted >= 4 || !aBaseMetaTileEntity.getSkyAtSide((byte)1) ? 0 : !bRain && aBaseMetaTileEntity.getWorld().isDaytime() ? 8 : 1;
       }
       if ((this.mTemperature < 500) && (this.mProcessingEnergy > 0) && (aTick % 12L == 0L))
       {

@@ -113,7 +113,9 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTil
 	
 	public ArrayList<ItemStack> getDrops();
 	
-	
+	/**
+	 *  255 = 100%
+	 */
 	public int getLightOpacity();
 	
 	public void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB, List<AxisAlignedBB> outputAABB, Entity collider);

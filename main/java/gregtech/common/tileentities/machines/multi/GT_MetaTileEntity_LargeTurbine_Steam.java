@@ -67,7 +67,10 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
 		      addOutput(GT_ModHandler.getDistilledWater(distOut));
 		      return true;
 		    }
-		    return false;
+		    if(this.mEfficiency>50){
+		    	this.mEfficiency = this.mEfficiency-50;
+		    	return true;
+		    }else{return false;}
 		  }
 		
 		@Override

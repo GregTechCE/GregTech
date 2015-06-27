@@ -1822,6 +1822,12 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 				}else if(tOre.mModID!=null&&tOre.mModID.toLowerCase().equals("rotarycraft")&&tOre.mPrefix==OrePrefixes.ingot&&tOre.mMaterial==Materials.HSLA){
 					GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
 					GT_OreDictUnificator.set(tOre.mPrefix,tOre.mMaterial,tOre.mEvent.Ore,(tOre.mModID != null) && (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.Name, true)), true);
+				}else if(tOre.mModID!=null&&tOre.mModID.toLowerCase().equals("appliedenergistics2")&&tOre.mPrefix==OrePrefixes.gem&&tOre.mMaterial==Materials.CertusQuartz){
+					GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
+					GT_OreDictUnificator.set(tOre.mPrefix,tOre.mMaterial,tOre.mEvent.Ore,(tOre.mModID != null) && (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.Name, true)), true);
+				}else if(tOre.mModID!=null&&tOre.mModID.toLowerCase().equals("appliedenergistics2")&&tOre.mPrefix==OrePrefixes.dust&&tOre.mMaterial==Materials.CertusQuartz){
+					GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
+					GT_OreDictUnificator.set(tOre.mPrefix,tOre.mMaterial,tOre.mEvent.Ore,(tOre.mModID != null) && (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.Name, true)), true);
 				}else if(GT_OreDictUnificator.isBlacklisted(tOre.mEvent.Ore)) {
 					GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, true);
 				} else {
