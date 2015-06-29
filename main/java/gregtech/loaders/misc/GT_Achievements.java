@@ -224,13 +224,14 @@ public int adjY = 9;
 		if(entityplayer==null||!GT_Mod.gregtechproxy.mAchievements){
 			return;
 		}
-		if (this.achievementList.containsKey(textId)) {
-			if(this.issuedAchievements.containsKey((entityplayer.getDisplayName()+textId))){
-			return;	
-			}else{
-			this.issuedAchievements.put((entityplayer.getDisplayName()+textId), true);	
-			entityplayer.triggerAchievement((StatBase) this.achievementList.get(textId));}
-		}
+//		if (this.achievementList.containsKey(textId)) {
+//			if(this.issuedAchievements.containsKey((entityplayer.getDisplayName()+textId))){
+//			return;	
+//			}else{
+//			this.issuedAchievements.put((entityplayer.getDisplayName()+textId), true);	
+			entityplayer.triggerAchievement((StatBase) this.achievementList.get(textId));
+//			}
+//		}
 	}
 
 	public Achievement getAchievement(String textId) {
@@ -268,7 +269,6 @@ public int adjY = 9;
 	}
 	
 	public void issueAchivementHatchFluid(EntityPlayer player, FluidStack fluid){
-		System.out.println("fluidAchievement "+fluid.getFluid().getUnlocalizedName());
 		if (player == null||fluid==null) {
 			return;
 		}

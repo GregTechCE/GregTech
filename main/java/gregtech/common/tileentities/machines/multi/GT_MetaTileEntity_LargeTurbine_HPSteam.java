@@ -49,7 +49,7 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
 		    int tEU=0;
 		    int distOut=0;
 		    for(int i=0;i<steams.size();i++){
-		    	if(steams.get(i).getFluid().getUnlocalizedName(steams.get(i)).equals("fluid.ic2superheatedsteam")){
+		    	if(steams.get(i).getFluid().getUnlocalizedName(steams.get(i)).equals("ic2.fluidSuperheatedSteam")){
 		    		int out = Math.min((int)(optFlow*1.5f),steams.get(i).amount);
 		    		depleteInput(new FluidStack(steams.get(i),out));
 		    		distOut += out;

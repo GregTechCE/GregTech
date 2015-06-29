@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.generators;
 
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
@@ -13,6 +15,7 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 public class GT_MetaTileEntity_FluidNaquadahReactor
   extends GT_MetaTileEntity_BasicGenerator
 {
+	public int mEfficiency;
   public boolean isOutputFacing(byte aSide)
   {
     return (aSide > 1) && (aSide != getBaseMetaTileEntity().getFrontFacing()) && (aSide != getBaseMetaTileEntity().getBackFacing());
@@ -20,12 +23,12 @@ public class GT_MetaTileEntity_FluidNaquadahReactor
   
   public GT_MetaTileEntity_FluidNaquadahReactor(int aID, String aName, String aNameRegional, int aTier)
   {
-    super(aID, aName, aNameRegional, aTier, "Requires Enriched Naquadah Cells", new ITexture[0]);
+    super(aID, aName, aNameRegional, aTier, "Requires Enriched Naquadah Cells", new ITexture[0]);onConfigLoad();
   }
   
   public GT_MetaTileEntity_FluidNaquadahReactor(String aName, int aTier, String aDescription, ITexture[][][] aTextures)
   {
-    super(aName, aTier, aDescription, aTextures);
+    super(aName, aTier, aDescription, aTextures);onConfigLoad();
   }
   
   public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity)
@@ -45,8 +48,13 @@ public class GT_MetaTileEntity_FluidNaquadahReactor
   
   public int getEfficiency()
   {
-    return 100;
+    return mEfficiency;
   }
+  
+  public void onConfigLoad()
+  {
+				this.mEfficiency =GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "FluidNaquadah.efficiency.tier."+this.mTier, 100);
+}
   
   public ITexture[] getFront(byte aColor)
   {

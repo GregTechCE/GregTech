@@ -21,10 +21,11 @@ import net.minecraft.world.World;
  public class GT_RadioactiveCellIC_Item  extends GT_RadioactiveCell_Item  implements IReactorComponent
   {
     public final int numberOfCells;
-    public final double sEnergy;
+    public final float sEnergy;
     public final int sRadiation;
+    public final float sHeat;
     
-    public GT_RadioactiveCellIC_Item( String aUnlocalized, String aEnglish, int aCellcount, int maxDamage, double aEnergy, int aRadiation)
+    public GT_RadioactiveCellIC_Item( String aUnlocalized, String aEnglish, int aCellcount, int maxDamage, float aEnergy, int aRadiation, float aHeat)
   {
     super(aUnlocalized, aEnglish, aCellcount);
      setMaxStackSize(64);
@@ -32,6 +33,7 @@ import net.minecraft.world.World;
       this.numberOfCells = aCellcount;
       this.sEnergy = aEnergy;
       this.sRadiation = aRadiation;
+      this.sHeat = aHeat;
     
   }
     
@@ -76,7 +78,7 @@ import net.minecraft.world.World;
           checkHeatAcceptor(reactor, x + 1, y, heatAcceptors);
           checkHeatAcceptor(reactor, x, y - 1, heatAcceptors);
           checkHeatAcceptor(reactor, x, y + 1, heatAcceptors);
-          heat = (int) (heat * sEnergy);
+          heat = Math.round(heat * sHeat);
           while ((heatAcceptors.size() > 0) && (heat > 0))
           {
         	  

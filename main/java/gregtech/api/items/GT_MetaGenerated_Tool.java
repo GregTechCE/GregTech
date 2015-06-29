@@ -339,6 +339,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
 				if (tStats == null || GT_Utility.setStack(aStack, tStats.getBrokenItem(aStack)) == null) {
 					if (tStats != null) GT_Utility.doSoundAtClient(tStats.getBreakingSound(), 1, 1.0F);
 					if (aStack.stackSize > 0) aStack.stackSize--;
+					
 				}
 			}
 			return true;

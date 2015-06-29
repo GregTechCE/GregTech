@@ -22,4 +22,5 @@ public abstract class GT_Tool_Turbine extends GT_Tool{
 	 }  
 	   public abstract float getSpeedMultiplier();
 	   public abstract float getMaxDurabilityMultiplier();
+	   public ItemStack getBrokenItem(ItemStack aStack){return null;}
 }

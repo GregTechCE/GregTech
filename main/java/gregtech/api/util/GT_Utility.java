@@ -1149,13 +1149,8 @@ public class GT_Utility {
 		return aStack;
 	}
 	
-	public static boolean isBlockOccluded(World aWorld, int aX, int aY, int aZ, boolean aIgnoreUnloadedChunks, boolean aDefault) {
-		return isBlockOpaque(aWorld, aX+1, aY, aZ, aIgnoreUnloadedChunks, aDefault) && isBlockOpaque(aWorld, aX-1, aY, aZ, aIgnoreUnloadedChunks, aDefault) && isBlockOpaque(aWorld, aX, aY+1, aZ, T, aDefault) && isBlockOpaque(aWorld, aX, aY-1, aZ, T, aDefault) && isBlockOpaque(aWorld, aX, aY, aZ+1, aIgnoreUnloadedChunks, aDefault) && isBlockOpaque(aWorld, aX, aY, aZ-1, aIgnoreUnloadedChunks, aDefault);
-	}
-	
-	public static boolean isBlockOpaque(World aWorld, int aX, int aY, int aZ, boolean aIgnoreUnloadedChunks, boolean aDefault) {
-		if (aIgnoreUnloadedChunks || aWorld.blockExists(aX, aY, aZ)) return aWorld.getBlock(aX, aY, aZ).isOpaqueCube();
-		return aDefault;
+	public static boolean isOpaqueBlock(World aWorld, int aX, int aY, int aZ) {
+		return aWorld.getBlock(aX, aY, aZ).isOpaqueCube();
 	}
 	
 	public static boolean isBlockAir(World aWorld, int aX, int aY, int aZ) {
@@ -1447,20 +1442,6 @@ public class GT_Utility {
 		if (aStack == null) {return F;}
 		return isStackInList(new GT_ItemStack(aStack), aList);
 	}
-	
-//	public static boolean isStackInList2(ItemStack aStack, Collection<GT_ItemStack> aList) {
-//		if (aStack == null) {return F;}
-//		GT_ItemStack bStack = new GT_ItemStack(aStack);
-//		for(Iterator it = aList.iterator();it.hasNext();){
-//	    	GT_ItemStack stack = (GT_ItemStack) it.next();
-//	    	if(stack.mItem==bStack.mItem){
-//	    		if(stack.mMetaData==bStack.mMetaData){
-//	    			return true;
-//	    		}
-//	    	}
-//		}
-//		return false;
-//	}
 	
 	public static boolean isStackInList(GT_ItemStack aStack, Collection<GT_ItemStack> aList) {
 		return aStack != null && (aList.contains(aStack) || aList.contains(new GT_ItemStack(aStack.mItem, aStack.mStackSize, W)));

@@ -127,7 +127,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     @Override
     public final boolean getOpacity(int aX, int aY, int aZ) {
     	if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.blockExists(aX, aY, aZ)) return false;
-    	return GT_Utility.isBlockOpaque(worldObj, aX, aY, aZ,true,true);
+    	return GT_Utility.isOpaqueBlock(worldObj, aX, aY, aZ);
     }
     
     @Override

@@ -136,13 +136,13 @@ public class GT_Loader_Item_Block_And_Fluid
 					ItemList.Reactor_Coolant_NaK_6.set(GregTech_API.constructCoolantCellItem("360k_NaK_Coolantcell", "360k NaK Coolantcell", 360000));
 					GT_ModHandler.addCraftingRecipe(ItemList.Reactor_Coolant_NaK_6.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE , new Object[] { "PCP", "PDP", "PCP",'C', ItemList.Reactor_Coolant_NaK_3,'P', OrePrefixes.plate.get(Materials.Tin),'D',OrePrefixes.plateDense.get(Materials.Copper) });    
 					
-					ItemList.ThoriumCell_1.set(new GT_RadioactiveCellIC_Item("Thoriumcell", "Fuel Rod (Thorium)", 1, 50000, 0.2D,0));
+					ItemList.ThoriumCell_1.set(new GT_RadioactiveCellIC_Item("Thoriumcell", "Fuel Rod (Thorium)", 1, 50000, 0.2F,0,0.25F));
 					GT_ModHandler.addShapelessCraftingRecipe(ItemList.ThoriumCell_1.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE , new Object[] {Ic2Items.fuelRod , OrePrefixes.dust.get(Materials.Thorium) });    
 					
-					ItemList.ThoriumCell_2.set(new GT_RadioactiveCellIC_Item("Double_Thoriumcell", "Double Fuel Rod (Thorium)", 2, 50000, 0.2D,0));
+					ItemList.ThoriumCell_2.set(new GT_RadioactiveCellIC_Item("Double_Thoriumcell", "Double Fuel Rod (Thorium)", 2, 50000, 0.2F,0,0.25F));
 					GT_ModHandler.addCraftingRecipe(ItemList.ThoriumCell_2.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE , new Object[] { "RPR", "   ", "   ",'R', ItemList.ThoriumCell_1 ,'P', OrePrefixes.plate.get(Materials.Iron) });    
 					
-					ItemList.ThoriumCell_4.set(new GT_RadioactiveCellIC_Item("Quad_Thoriumcell", "Quad Fuel Rod (Thorium)", 4, 50000, 0.2D,0));
+					ItemList.ThoriumCell_4.set(new GT_RadioactiveCellIC_Item("Quad_Thoriumcell", "Quad Fuel Rod (Thorium)", 4, 50000, 0.2F,0,0.25F));
 					GT_ModHandler.addCraftingRecipe(ItemList.ThoriumCell_4.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE , new Object[] { "RPR", "CPC", "RPR",'R', ItemList.ThoriumCell_1 ,'P', OrePrefixes.plate.get(Materials.Iron),'C', OrePrefixes.plate.get(Materials.Copper) });    
 				
 					ItemList.Depleted_Thorium_1.set(new GT_DepletetCell_Item("ThoriumcellDep","Fuel Rod (Depleted Thorium)",1));

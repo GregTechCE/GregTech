@@ -10,7 +10,10 @@ import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+
 import java.util.ArrayList;
+
+import crazypants.enderio.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -123,7 +126,7 @@ public class GT_RecipeAdder
   
   public boolean addAlloySmelterRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, int aDuration, int aEUt)
   {
-    if ((aInput1 == null) || (aOutput1 == null)) {
+    if ((aInput1 == null) || (aOutput1 == null || Materials.Graphite.contains(aInput1))) {
       return false;
     }
     if ((aInput2 == null) && ((OrePrefixes.ingot.contains(aInput1)) || (OrePrefixes.dust.contains(aInput1)) || (OrePrefixes.gem.contains(aInput1)))) {
