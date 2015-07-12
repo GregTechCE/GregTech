@@ -1,9 +1,18 @@
 package gregtech.common.covers;
 
+import ic2.api.item.IElectricItem;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.util.GT_BaseCrop;
 import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 
 public class GT_Cover_EUMeter
@@ -57,12 +66,46 @@ public class GT_Cover_EUMeter
         aTileEntity.setOutputRedstoneSignal(aSide, (byte)(aCoverVariable % 2 == 0 ? 0 : 15));
       }
     }
+    else if (aCoverVariable < 12)
+    {
+      tScale = aTileEntity.getEUCapacity();
+      long tStored = aTileEntity.getStoredEU();
+		if(aTileEntity instanceof IGregTechTileEntity){
+		IGregTechTileEntity tTileEntity = (IGregTechTileEntity) aTileEntity;
+		IMetaTileEntity mTileEntity = tTileEntity.getMetaTileEntity();
+		if(mTileEntity instanceof GT_MetaTileEntity_BasicBatteryBuffer){
+			GT_MetaTileEntity_BasicBatteryBuffer buffer = (GT_MetaTileEntity_BasicBatteryBuffer) mTileEntity;
+			if(buffer.mInventory!=null){
+			for(ItemStack aStack : buffer.mInventory){
+				if (GT_ModHandler.isElectricItem(aStack)) {
+					
+					if(aStack.getItem() instanceof GT_MetaBase_Item){
+						Long[] stats = ((GT_MetaBase_Item)aStack.getItem()).getElectricStats(aStack);
+						if(stats!=null){
+							tScale = tScale + stats[0];
+							tStored = tStored + ((GT_MetaBase_Item)aStack.getItem()).getRealCharge(aStack);
+						}
+					}else if(aStack.getItem() instanceof IElectricItem){
+						tStored =  tStored + (long)ic2.api.item.ElectricItem.manager.getCharge(aStack);
+						tScale = tScale + (long)((IElectricItem)aStack.getItem()).getMaxCharge(aStack);
+					}
+				}
+			}
+		
+			}}}
+		tScale = tScale/15L;
+      if (tScale > 0L) {
+        aTileEntity.setOutputRedstoneSignal(aSide, aCoverVariable % 2 == 0 ? (byte)(int)(tStored / tScale) : (byte)(int)(15L - tStored / tScale));
+      } else {
+        aTileEntity.setOutputRedstoneSignal(aSide, (byte)(aCoverVariable % 2 == 0 ? 0 : 15));
+      }
+    }
     return aCoverVariable;
   }
   
   public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ)
   {
-    aCoverVariable = (aCoverVariable + 1) % 10;
+    aCoverVariable = (aCoverVariable + 1) % 12;
     if (aCoverVariable == 0) {
       GT_Utility.sendChatToPlayer(aPlayer, "Normal Universal Storage");
     }
@@ -93,6 +136,12 @@ public class GT_Cover_EUMeter
     if (aCoverVariable == 9) {
       GT_Utility.sendChatToPlayer(aPlayer, "Inverted Average Electric Output");
     }
+    if (aCoverVariable == 10) {
+        GT_Utility.sendChatToPlayer(aPlayer, "Normal Electricity Storage(Including Batterys)");
+      }
+      if (aCoverVariable == 11) {
+        GT_Utility.sendChatToPlayer(aPlayer, "Inverted Electricity Storage(Including Batterys)");
+      }
     return aCoverVariable;
   }
   
@@ -133,7 +182,7 @@ public class GT_Cover_EUMeter
   
   public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity)
   {
-    return 5;
+    return 20;
   }
 }
 

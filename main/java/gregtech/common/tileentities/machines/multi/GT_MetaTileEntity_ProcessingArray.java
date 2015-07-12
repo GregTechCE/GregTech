@@ -2,6 +2,9 @@ package gregtech.common.tileentities.machines.multi;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -101,6 +104,12 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
 											return GT_Recipe.GT_Recipe_Map.sHammerRecipes;
 										}else if(tmp.startsWith("sifter")){
 											return GT_Recipe.GT_Recipe_Map.sSifterRecipes;
+										}else if(tmp.startsWith("extruder")){
+											return GT_Recipe.GT_Recipe_Map.sExtruderRecipes;
+										}else if(tmp.startsWith("laserengraver")){
+											return GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes;
+										}else if(tmp.startsWith("bender")){
+											return GT_Recipe.GT_Recipe_Map.sBenderRecipes;
 										}
 				    return null;
 				  }
@@ -176,13 +185,6 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
 										for(;i<machines;i++){
 											if(!tRecipe.isRecipeInputEqual(true, tFluids, tInputs))break;
 										}
-//										System.out.println("recipe:"+i+" "+tRecipe.mDuration+" "+tRecipe.mEUt);
-//										if(tRecipe.mOutputs.length>0){
-//											System.out.println(tRecipe.mOutputs[0].getUnlocalizedName());
-//										}
-//										if(tRecipe.mFluidOutputs.length>0){
-//											System.out.println(tRecipe.mFluidOutputs[0].getUnlocalizedName());
-//										}
 										      if (tRecipe.mEUt <= 16)
 										       {
 										        this.mEUt = (tRecipe.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
@@ -220,9 +222,24 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
 												tFOut.amount = tSize * i;
 											}
 										this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+										List<ItemStack> overStacks = new ArrayList<ItemStack>();
+										for(int f =0; f < tOut.length ; f++){
+											if(tOut[f].getMaxStackSize()<tOut[f].stackSize){
+												while(tOut[f].getMaxStackSize()<tOut[f].stackSize){
+													ItemStack tmp = tOut[f].copy();
+													tmp.stackSize = tmp.getMaxStackSize();
+													tOut[f].stackSize = tOut[f].stackSize - tOut[f].getMaxStackSize();
+													overStacks.add(tmp);
+												}
+											}
+										}
+										if(overStacks.size()>0){
+											ItemStack[] tmp = new ItemStack[overStacks.size()];
+											tmp = overStacks.toArray(tmp);
+											tOut = ArrayUtils.addAll(tOut, tmp);
+										}
 										this.mOutputItems = tOut;
 										this.mOutputFluids = new FluidStack[]{tFOut};
-//										System.out.println("ArrayOut"+mOutputItems.length+" "+mOutputFluids.length+" "+(mOutputItems.length>0?mOutputItems[0].getUnlocalizedName():"")+" "+(mOutputFluids.length>0?mOutputFluids[0].getUnlocalizedName():" "));
 										updateSlots();
 				          return true;
 				      }

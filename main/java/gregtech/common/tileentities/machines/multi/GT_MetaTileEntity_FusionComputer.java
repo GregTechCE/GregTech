@@ -404,6 +404,11 @@ public boolean onRunningTick(ItemStack aStack) {
 			return false;
 		}
 	}
+	if(this.mEUStore<=0){
+		this.mLastRecipe=null;
+		stopMachine();
+		return false;
+	}
 	return true;
 }
 
