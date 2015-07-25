@@ -231,7 +231,7 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 	CertusQuartz		( 516, TextureSet.SET_QUARTZ			,   5.0F,     32,  1, 1  |4|8      |64                      , 210, 210, 230,   0,	"Certus Quartz"					,    0,       0,         -1,    0, F, F,   3,   1,   1, Dyes.dyeLightGray	, Arrays.asList(new TC_AspectStack(TC_Aspects.POTENTIA, 1), new TC_AspectStack(TC_Aspects.VITREUS, 1))),
 	Ceruclase			(  -1, TextureSet.SET_NONE				,   1.0F,      0,  2, 1|2  |8                               , 255, 255, 255,   0,	"Ceruclase"						,    0,       0,         -1,    0, F, F,   1,   1,   1, Dyes._NULL			),
 	Citrine				(  -1, TextureSet.SET_NONE				,   1.0F,      0,  2, 1                                     , 255, 255, 255,   0,	"Citrine"						,    0,       0,         -1,    0, F, F,   3,   1,   1, Dyes._NULL			),
-	ChargedCertusQuartz	( 517, TextureSet.SET_QUARTZ			,   5.0F,     32,  1, 1  |4|8      |64                      , 210, 210, 230,   0,	"Charged Certus Quartz"			,    0,       0,         -1,    0, F, F,   3,   1,   1, Dyes.dyeLightGray	, Arrays.asList(new TC_AspectStack(TC_Aspects.POTENTIA, 2), new TC_AspectStack(TC_Aspects.VITREUS, 1))),
+	//ChargedCertusQuartz	( 517, TextureSet.SET_QUARTZ			,   5.0F,     32,  1, 1  |4|8      |64                      , 210, 210, 230,   0,	"Charged Certus Quartz"			,    0,       0,         -1,    0, F, F,   3,   1,   1, Dyes.dyeLightGray	, Arrays.asList(new TC_AspectStack(TC_Aspects.POTENTIA, 2), new TC_AspectStack(TC_Aspects.VITREUS, 1))),
 	CobaltHexahydrate	( 853, TextureSet.SET_METALLIC			,   1.0F,      0,  2, 1      |16                            ,  80,  80, 250,   0,	"Cobalt Hexahydrate"			,    0,       0,         -1,    0, F, F,   1,   1,   1, Dyes.dyeBlue		),
 	ConstructionFoam	( 854, TextureSet.SET_DULL				,   1.0F,      0,  2, 1      |16                            , 128, 128, 128,   0,	"Construction Foam"				,    0,       0,         -1,    0, F, F,   1,   1,   1, Dyes.dyeGray		),
 	Chert				( 857, TextureSet.SET_DULL				,   1.0F,      0,  2, 1                                     , 255, 255, 255,   0,	"Chert"							,    0,       0,         -1,    0, F, F,   0,   1,   1, Dyes._NULL			),
@@ -830,7 +830,7 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 		NetherQuartz			.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
 		CertusQuartz			.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
 		Fluix					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
-		ChargedCertusQuartz		.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.QUARTZ);
+		//ChargedCertusQuartz		.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.QUARTZ);
 		Phosphorus				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE, SubTag.EXPLOSIVE);
 		Phosphate				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE, SubTag.EXPLOSIVE);
 		InfusedAir				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
@@ -943,7 +943,7 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 		CassiteriteSand			.setOreMultiplier( 2).setSmeltingMultiplier( 2);
 		NetherQuartz			.setOreMultiplier( 2).setSmeltingMultiplier( 2);
 		CertusQuartz			.setOreMultiplier( 2).setSmeltingMultiplier( 2);
-		ChargedCertusQuartz		.setOreMultiplier( 2).setSmeltingMultiplier( 2);
+		//ChargedCertusQuartz		.setOreMultiplier( 2).setSmeltingMultiplier( 2);
 		Phosphorus				.setOreMultiplier( 3).setSmeltingMultiplier( 3);
 		Saltpeter				.setOreMultiplier( 4).setSmeltingMultiplier( 4);
 		Apatite					.setOreMultiplier( 4).setSmeltingMultiplier( 4).setByProductMultiplier(2);
@@ -1083,9 +1083,9 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 		Tungstate				.addOreByProducts(Manganese				, Silver				, Lithium				);
 		Bauxite					.addOreByProducts(Grossular				, Titanium				, Gallium				);
 		QuartzSand				.addOreByProducts(CertusQuartz			, Quartzite				, Barite				);
-		Quartzite				.addOreByProducts(CertusQuartz			, Barite				, ChargedCertusQuartz	);
-		CertusQuartz			.addOreByProducts(Quartzite				, ChargedCertusQuartz	, Barite				);
-		ChargedCertusQuartz		.addOreByProducts(CertusQuartz			, Quartzite				, Barite				);
+		Quartzite				.addOreByProducts(CertusQuartz			, Barite				);
+		CertusQuartz			.addOreByProducts(Quartzite				, Barite				);
+		//ChargedCertusQuartz		.addOreByProducts(CertusQuartz			, Quartzite				, Barite				);
 		Redstone				.addOreByProducts(Cinnabar				, RareEarth				, Glowstone				);
 		Monazite				.addOreByProducts(Thorium				, Neodymium				, RareEarth				);
 		Forcicium				.addOreByProducts(Thorium				, Neodymium				, RareEarth				);

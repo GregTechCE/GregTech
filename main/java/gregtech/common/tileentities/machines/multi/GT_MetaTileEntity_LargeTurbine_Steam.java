@@ -37,6 +37,15 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
 	    		 "Needs a Turbine Item (inside controller GUI)" };
 	   }
 	   
+	   private float water;
+	   private int useWater(float input){
+		   water = water + input;
+		   int usage = (int)water;
+		   water = water - (int)usage;
+		   return  usage;
+	   }
+	   
+	   
 		@Override
 		public boolean checkRecipe(ItemStack aStack) {
 			ArrayList<FluidStack> steams = getStoredFluids();
@@ -47,11 +56,11 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
 		    		optFlow = (int) Math.max(Float.MIN_NORMAL, ((GT_MetaGenerated_Tool)aStack.getItem()).getToolStats(aStack).getSpeedMultiplier() * ((GT_MetaGenerated_Tool)aStack.getItem()).getPrimaryMaterial(aStack).mToolSpeed*50);
 		    	}
 		    int tEU=0;
-		    int distOut=0;
+		    float distOut=0;
 		    for(int i=0;i<steams.size();i++){
 		    	if(steams.get(i).getFluid().getUnlocalizedName(steams.get(i)).equals("fluid.steam")||steams.get(i).getFluid().getUnlocalizedName(steams.get(i)).equals("ic2.fluidSteam")){
-		    		int out = Math.min((int)(optFlow*1.5f),steams.get(i).amount);
-		    		depleteInput(new FluidStack(steams.get(i),out));
+		    		float out = Math.min((int)(optFlow*1.5f),steams.get(i).amount);
+		    		depleteInput(new FluidStack(steams.get(i),(int)out));
 		    		distOut += out/160;
 		    		tEU += steams.get(i).amount/2;
 		    	}
@@ -64,7 +73,7 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
 //		      System.out.println("Eff: "+baseEff+" optFlow: "+optFlow+" tEff: "+tEff+" eut: "+mEUt+" out: "+distOut);
 		      this.mEfficiencyIncrease = (this.mMaxProgresstime * 10);
 		      if(mEUt==0){return false;}
-		      addOutput(GT_ModHandler.getDistilledWater(distOut));
+		      addOutput(GT_ModHandler.getDistilledWater(useWater(distOut)));
 		      return true;
 		    }
 		    if(this.mEfficiency>50){

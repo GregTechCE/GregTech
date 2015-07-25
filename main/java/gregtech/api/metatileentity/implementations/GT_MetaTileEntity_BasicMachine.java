@@ -467,7 +467,13 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 	
 	@Override
 	public String[] getInfoData() {
-		return new String[] {"Progress:", (mProgresstime/20)+" secs", (mMaxProgresstime/20)+" secs"};
+		return new String[] {
+				mNEIName,
+				"Progress:", (mProgresstime/20)+" secs", 
+							(mMaxProgresstime/20)+" secs",
+				"Stored Energy:",
+				getBaseMetaTileEntity().getStoredEU()+"EU",
+				getBaseMetaTileEntity().getEUCapacity()+"EU"};
 	}
 	
 	@Override

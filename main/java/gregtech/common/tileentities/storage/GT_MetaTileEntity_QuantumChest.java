@@ -184,6 +184,30 @@ public class GT_MetaTileEntity_QuantumChest extends GT_MetaTileEntity_TieredMach
 	public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
 		return true;
 	}
+	
+	@Override
+	public String[] getInfoData() {
+		
+		if(mItemStack==null){
+			return new String[]{
+					"Quantum Chest",
+					"Stored Items:",
+					"No Items",
+					Integer.toString(0),
+					Integer.toString(getMaxItemCount())};
+		}
+		return new String[] {
+				"Quantum Chest",
+				"Stored Items:",
+				mItemStack.getDisplayName(),
+				Integer.toString(mItemCount),
+				Integer.toString(getMaxItemCount())};
+	}
+	
+	@Override
+	public boolean isGivingInformation() {
+		return true;
+	}
 
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {

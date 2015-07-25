@@ -75,14 +75,14 @@ public class GT_MetaTileEntity_HeatExchanger extends GT_MetaTileEntity_MultiBloc
 	  {
 		if(GT_ModHandler.isLava(mInputHotFluidHatch.getFluid())){
 			int fluidAmount = mInputHotFluidHatch.getFluidAmount();
-			if(fluidAmount >= 1000){superheated=true;}else{superheated=false;}
-			if(fluidAmount>2000){fluidAmount=2000;}
+			if(fluidAmount >= 500){superheated=true;}else{superheated=false;}
+			if(fluidAmount>1000){fluidAmount=1000;}
 			mInputHotFluidHatch.drain(fluidAmount, true);
 			mOutputColdFluidHatch.fill(FluidRegistry.getFluidStack("ic2pahoehoelava", fluidAmount), true);
 			
 			
 			           this.mMaxProgresstime = 20;
-			           this.mEUt = fluidAmount*2;
+			           this.mEUt = fluidAmount*4;
 			           this.mEfficiencyIncrease = 80;
 		return true;	
 		}
@@ -102,15 +102,22 @@ public class GT_MetaTileEntity_HeatExchanger extends GT_MetaTileEntity_MultiBloc
 		}
 		return false;}
 	  
+	   private float water;
+	   private int useWater(float input){
+		   water = water + input;
+		   int usage = (int)water;
+		   water = water - (int)usage;
+		   return  usage;
+	   }
+	  
 	  public boolean onRunningTick(ItemStack aStack)
 	  {
 	    if (this.mEUt > 0)
-	    {System.out.println("EU: "+mEUt+" Eff: "+mEfficiency);
+	    {
 	      int tGeneratedEU = (int)(this.mEUt * 2L * this.mEfficiency / 10000L);
 	      if (tGeneratedEU > 0) {
-	        if (depleteInput(GT_ModHandler.getDistilledWater(((superheated ? tGeneratedEU/2 :tGeneratedEU) + 160) / 160))) {
-							if(superheated){
-								addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", tGeneratedEU/2));
+	        if (depleteInput(GT_ModHandler.getDistilledWater(useWater(((float)(superheated ? tGeneratedEU/2 :tGeneratedEU) + 160f) / 160f)))) {
+							if(superheated){addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", tGeneratedEU/2));
 							}else{
 	          addOutput(GT_ModHandler.getSteam(tGeneratedEU));}
 	        } else {

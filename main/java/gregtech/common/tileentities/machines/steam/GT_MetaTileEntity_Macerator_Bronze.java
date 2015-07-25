@@ -11,7 +11,9 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_Bronze;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 
 import java.util.Map;
 import java.util.Random;
@@ -56,13 +58,17 @@ public class GT_MetaTileEntity_Macerator_Bronze
   
   public int checkRecipe()
   {
-    if (null != (this.mOutputItems[0] = GT_ModHandler.getMaceratorOutput(getInputAt(0), true, getOutputAt(0))))
-    {
+  	GT_Recipe_Map tMap = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
+  	if (tMap == null) return DID_NOT_FIND_RECIPE;
+  	GT_Recipe tRecipe = tMap.findRecipe(getBaseMetaTileEntity(), mLastRecipe, false, V[1], null, null, getAllInputs());
+  	if (tRecipe == null) return DID_NOT_FIND_RECIPE;
+  	if (tRecipe.mCanBeBuffered) mLastRecipe = tRecipe;
+      if (!canOutput(tRecipe)) {mOutputBlocked++; return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;}
+      if(tRecipe.getOutput(0)!=null) mOutputItems[0] = tRecipe.getOutput(0);
       this.mEUt = 2;
       this.mMaxProgresstime = 800;
-      return 2;
-    }
-    return 0;
+      getInputAt(0).stackSize-=tRecipe.mInputs[0].stackSize;
+      return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
   }
   
   public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack)

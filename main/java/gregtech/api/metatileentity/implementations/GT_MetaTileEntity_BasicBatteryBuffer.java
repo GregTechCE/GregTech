@@ -1,12 +1,16 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.V;
+import ic2.api.item.IElectricItem;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.*;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -133,11 +137,76 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
 	
 	@Override
 	public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+		if(GT_ModHandler.isElectricItem(aStack)&&aStack.getUnlocalizedName().startsWith("gt.metaitem.01.")){
+			String name = aStack.getUnlocalizedName();
+			if(name.equals("gt.metaitem.01.32510")||
+					name.equals("gt.metaitem.01.32511")||
+					name.equals("gt.metaitem.01.32520")||
+					name.equals("gt.metaitem.01.32521")||
+					name.equals("gt.metaitem.01.32530")||
+					name.equals("gt.metaitem.01.32531")){
+			return true;}
+		}
 		return false;
 	}
 	
 	@Override
 	public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+		if(!GT_Utility.isStackValid(aStack)){
+			return false;
+		}
+		if(GT_ModHandler.isElectricItem(aStack, this.mTier)){
+			return true;
+		}
 		return false;
+	}
+	
+	public long[] getStoredEnergy(){
+	      long tScale = getBaseMetaTileEntity().getEUCapacity();
+	      long tStored = getBaseMetaTileEntity().getStoredEU();
+				if(mInventory!=null){
+				for(ItemStack aStack : mInventory){
+					if (GT_ModHandler.isElectricItem(aStack)) {
+						
+						if(aStack.getItem() instanceof GT_MetaBase_Item){
+							Long[] stats = ((GT_MetaBase_Item)aStack.getItem()).getElectricStats(aStack);
+							if(stats!=null){
+								tScale = tScale + stats[0];
+								tStored = tStored + ((GT_MetaBase_Item)aStack.getItem()).getRealCharge(aStack);
+							}
+						}else if(aStack.getItem() instanceof IElectricItem){
+							tStored =  tStored + (long)ic2.api.item.ElectricItem.manager.getCharge(aStack);
+							tScale = tScale + (long)((IElectricItem)aStack.getItem()).getMaxCharge(aStack);
+						}
+					}
+				}
+			
+				}
+			return new long[] {tStored,tScale};
+	}
+	
+	private long count=0;
+	private long mStored=0;
+	private long mMax=0;
+	
+	@Override
+	public String[] getInfoData() {
+		count++;
+		if(mMax==0||count%20==0){
+			long[] tmp = getStoredEnergy();
+			mStored=tmp[0];
+			mMax=tmp[1];
+		}
+		
+		return new String[] {
+				getMetaName(),
+				"Stored Items:",
+				Long.toString(mStored),
+				Long.toString(mMax)};
+	}
+	
+	@Override
+	public boolean isGivingInformation() {
+		return true;
 	}
 }

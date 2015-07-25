@@ -86,6 +86,30 @@ public class GT_MetaTileEntity_QuantumTank
 	public boolean displaysStackSize() {
 		return false;
 	}
+	
+	@Override
+	public String[] getInfoData() {
+		
+		if(mFluid==null){
+			return new String[]{
+					"Quantum Tank",
+					"Stored Fluid:",
+					"No Fluid",
+					Integer.toString(0)+"L",
+					Integer.toString(getCapacity())+"L"};
+		}
+		return new String[] {
+				"Quantum Tank",
+				"Stored Fluid:",
+				mFluid.getLocalizedName(),
+				Integer.toString(mFluid.amount)+"L",
+				Integer.toString(getCapacity())+"L"};
+	}
+	
+	@Override
+	public boolean isGivingInformation() {
+		return true;
+	}
 
 	@Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {

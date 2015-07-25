@@ -138,7 +138,7 @@ public class GT_MetaTileEntity_Boiler_Lava
       }
       if ((this.mTemperature < 1000) && (this.mProcessingEnergy > 0) && (aTick % 8L == 0L))
       {
-        this.mProcessingEnergy -= 2;
+        this.mProcessingEnergy -= 3;
         this.mTemperature += 1;
       }
       aBaseMetaTileEntity.setActive(this.mProcessingEnergy > 0);
