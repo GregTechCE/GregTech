@@ -199,6 +199,14 @@ public class GT_ThaumcraftCompat
     return ThaumcraftApi.addCrucibleRecipe(aResearch, GT_Utility.copy(new Object[] { aOutput }), ((aInput instanceof ItemStack)) || ((aInput instanceof ArrayList)) ? aInput : aInput.toString(), getAspectList(aAspects));
   }
   
+  public Object addInfusionRecipe(String aResearch, ItemStack aMainInput,ItemStack[] aSideInputs, ItemStack aOutput,int aInstability, List<TC_Aspects.TC_AspectStack> aAspects)
+  {
+    if ((GT_Utility.isStringInvalid(aResearch)) || (aMainInput == null)|| (aSideInputs==null) || (aOutput == null) || (aAspects == null) || (aAspects.isEmpty())) {
+      return null;
+    }
+    return ThaumcraftApi.addInfusionCraftingRecipe(aResearch, GT_Utility.copy(new Object[] { aOutput }), aInstability, getAspectList(aAspects), aMainInput, aSideInputs);
+  }
+  
   public boolean registerThaumcraftAspectsToItem(ItemStack aExampleStack, List<TC_Aspects.TC_AspectStack> aAspects, String aOreDict)
   {
     if (aAspects.isEmpty()) {

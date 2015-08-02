@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import thaumcraft.api.ThaumcraftApi;
+import thaumcraft.api.ThaumcraftApiHelper;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemSmeltedEvent;
@@ -414,6 +417,7 @@ public int adjY = 9;
 		if (player == null||stack==null) {
 			return;
 		}
+//		System.out.println("Pickup: "+stack.getUnlocalizedName());
 		ItemData data = GT_OreDictUnificator.getItemData(stack);
 		if (data != null) {
 			if (data.mPrefix == OrePrefixes.dust) {
@@ -433,6 +437,14 @@ public int adjY = 9;
 				issueAchievement(player, "washing");
 			}else if(data.mPrefix == OrePrefixes.crushedCentrifuged){
 				issueAchievement(player, "spinit");
+			}else if(data.mMaterial.mMaterial == Materials.Steel){
+				if(data.mPrefix == OrePrefixes.ingot && stack.stackSize == stack.getMaxStackSize()){
+					issueAchievement(player, "steel");
+				}else if(data.mPrefix == OrePrefixes.nugget && Loader.isModLoaded("Thaumcraft")){
+					if(ThaumcraftApiHelper.isResearchComplete(player.getDisplayName(), "GT_IRON_TO_STEEL")){
+						issueAchievement(player, "steel");
+					}
+				}
 			}
 		}
 		if(stack.getUnlocalizedName().startsWith("gt.metaitem.")){

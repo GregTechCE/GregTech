@@ -252,6 +252,7 @@ public interface IGT_RecipeAdder {
 	
 	public boolean addPlasmaArcFurnaceRecipe(ItemStack aInput, FluidStack aFluidInput, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt);
 	
+	public boolean addPlasmaArcFurnaceRecipe(ItemStack aInput, FluidStack aFluidInput, ItemStack[] aOutputs,FluidStack aFluidPutput, int[] aChances, int aDuration, int aEUt);
 	
 	
 	

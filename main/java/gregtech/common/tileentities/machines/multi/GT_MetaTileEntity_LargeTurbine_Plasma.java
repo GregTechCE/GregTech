@@ -40,35 +40,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
 	    		 "Turbine Casings for the rest (24 at least!)",
 	    		 "Needs a Turbine Item (inside controller GUI)" };
 	   }
-	   
-		@Override
-		public boolean checkRecipe(ItemStack aStack) {
-			ArrayList<FluidStack> steams = getStoredFluids();
-		    if (steams.size()>0)
-		    {if(baseEff==0 || optFlow == 0 || counter >= 1000 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled() || this.getBaseMetaTileEntity().hasInventoryBeenModified()){
-		    		counter = 0;
-		    		baseEff = (int) ((50.0F+(10.0F*((GT_MetaGenerated_Tool)aStack.getItem()).getToolCombatDamage(aStack)))*100);
-		    		optFlow = (int) Math.max(Float.MIN_NORMAL, ((GT_MetaGenerated_Tool)aStack.getItem()).getToolStats(aStack).getSpeedMultiplier() * ((GT_MetaGenerated_Tool)aStack.getItem()).getPrimaryMaterial(aStack).mToolSpeed*50);
-		    		optFlow *=40;
-		    }
-		    int tEU=0;
-		    for(int i=0;i<steams.size();i++){
-		    	int fuelValue = getFuelValue(steams.get(i));
-		    	if(fuelValue>0&&depleteInput(new FluidStack(steams.get(i),Math.max(optFlow/(fuelValue*2),1)))){
-		    		tEU += optFlow/2;}
-		    }
-		      this.mEUt = baseEff*tEU/10000;
-		      this.mMaxProgresstime = 1;
-		      this.mEfficiencyIncrease = (this.mMaxProgresstime * 10);
-		      if(mEUt==0){return false;}
-		      return true;
-		    }
-		    if(this.mEfficiency>50){
-		    	this.mEfficiency = this.mEfficiency-50;
-		    	return true;
-		    }else{return false;}
-		    		  }
-		
+	   	
 		public int getFuelValue(FluidStack aLiquid) {
 	    	if (aLiquid == null || GT_Recipe_Map.sTurbineFuels == null) return 0;
 	    	FluidStack tLiquid;
@@ -90,6 +62,27 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
 		@Override
 		public byte getCasingTextureIndex() {
 			return 46;
+		}
+		@Override
+		public int getPollutionPerTick(ItemStack aStack) {
+			return 0;
+		}
+		
+		@Override
+		int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow,	int aBaseEff) {
+		    int tEU=0;
+		    int tOut=0;
+		    int tOptFlow = aOptFlow * 40;
+		    boolean b = false;
+		    for(int i=0;i<aFluids.size();i++){
+		    	int fuelValue = getFuelValue(aFluids.get(i));
+		    	if(fuelValue>0&&depleteInput(new FluidStack(aFluids.get(i),Math.max(tOptFlow/(fuelValue*2),1)))){
+		    		tEU += tOptFlow/2;}
+		    }
+		    if(tEU>0)b=true;
+		    tEU = getAverage(tEU);
+		    if(b&&tEU<=0)tEU=3;
+			return tEU * aBaseEff / 10000;
 		}
 
 

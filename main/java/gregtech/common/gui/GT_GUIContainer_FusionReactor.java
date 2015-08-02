@@ -31,7 +31,7 @@ public class GT_GUIContainer_FusionReactor extends GT_GUIContainerMetaTile_Machi
     			}
         	}
         	if(this.mContainer!=null){
-        	fontRendererObj.drawString(GT_Utility.formatNumbers(this.mContainer.mEnergy)+" EU", 50, 155, 0x00b0b000);
+        	fontRendererObj.drawString(GT_Utility.formatNumbers(this.mContainer.mEnergy)+" EU", 50, 155, 0x00ff0000);
         }
         }
     }

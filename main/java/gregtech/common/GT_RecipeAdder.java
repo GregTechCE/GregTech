@@ -669,6 +669,24 @@ public class GT_RecipeAdder
     }
     return false;
   }
+  
+  public boolean addPlasmaArcFurnaceRecipe(ItemStack aInput, FluidStack aFluidInput, ItemStack[] aOutputs, FluidStack aFluidOutput, int[] aChances, int aDuration, int aEUt)
+  {
+    if ((aInput == null) || (aOutputs == null)||aFluidInput==null) {
+      return false;
+    }
+    for (ItemStack tStack : aOutputs) {
+      if (tStack != null)
+      {
+        if ((aDuration = GregTech_API.sRecipeFile.get("arcfurnace", aInput, aDuration)) <= 0) {
+          return false;
+        }
+        GT_Recipe.GT_Recipe_Map.sPlasmaArcFurnaceRecipes.addRecipe(true, new ItemStack[] { aInput }, aOutputs, null, aChances, new FluidStack[] { aFluidInput }, new FluidStack[]{aFluidOutput}, Math.max(1, aDuration), Math.max(1, aEUt), 0);
+        return true;
+      }
+    }
+    return false;
+  }
 
   public boolean addPulveriserRecipe(ItemStack aInput, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt)
   {

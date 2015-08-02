@@ -35,52 +35,7 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
 	    		 "1x Maintenance Hatch (side centered)", 
 	    		 "Turbine Casings for the rest (24 at least!)",
 	    		 "Needs a Turbine Item (inside controller GUI)" };
-	   }
-	   
-	   private float water;
-	   private int useWater(float input){
-		   water = water + input;
-		   int usage = (int)water;
-		   water = water - (int)usage;
-		   return  usage;
-	   }
-	   
-	   
-		@Override
-		public boolean checkRecipe(ItemStack aStack) {
-			ArrayList<FluidStack> steams = getStoredFluids();
-		    if (steams.size()>0)
-		    {if(baseEff==0 || optFlow == 0 || counter >= 1000 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled() || this.getBaseMetaTileEntity().hasInventoryBeenModified()){
-		    		counter = 0;
-		    		baseEff = (int) ((50.0F+(10.0F*((GT_MetaGenerated_Tool)aStack.getItem()).getToolCombatDamage(aStack)))*100);
-		    		optFlow = (int) Math.max(Float.MIN_NORMAL, ((GT_MetaGenerated_Tool)aStack.getItem()).getToolStats(aStack).getSpeedMultiplier() * ((GT_MetaGenerated_Tool)aStack.getItem()).getPrimaryMaterial(aStack).mToolSpeed*50);
-		    	}
-		    int tEU=0;
-		    float distOut=0;
-		    for(int i=0;i<steams.size();i++){
-		    	if(steams.get(i).getFluid().getUnlocalizedName(steams.get(i)).equals("fluid.steam")||steams.get(i).getFluid().getUnlocalizedName(steams.get(i)).equals("ic2.fluidSteam")){
-		    		float out = Math.min((int)(optFlow*1.5f),steams.get(i).amount);
-		    		depleteInput(new FluidStack(steams.get(i),(int)out));
-		    		distOut += out/160;
-		    		tEU += steams.get(i).amount/2;
-		    	}
-		    }
-		      if(tEU<optFlow/20){tEU=0;}
-		      if(tEU>optFlow/2) {tEU = optFlow/2;}
-		      float tEff = tEU/(optFlow/2);
-		      this.mEUt = (int) (tEff*tEU*baseEff/10000);
-		      this.mMaxProgresstime = 1;
-//		      System.out.println("Eff: "+baseEff+" optFlow: "+optFlow+" tEff: "+tEff+" eut: "+mEUt+" out: "+distOut);
-		      this.mEfficiencyIncrease = (this.mMaxProgresstime * 10);
-		      if(mEUt==0){return false;}
-		      addOutput(GT_ModHandler.getDistilledWater(useWater(distOut)));
-		      return true;
-		    }
-		    if(this.mEfficiency>50){
-		    	this.mEfficiency = this.mEfficiency-50;
-		    	return true;
-		    }else{return false;}
-		  }
+	   } 
 		
 		@Override
 		public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {return new GT_MetaTileEntity_LargeTurbine_Steam(mName);}
@@ -95,6 +50,37 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
 		@Override
 		public byte getCasingTextureIndex() {
 			return 46;
+		}
+		@Override
+		public int getPollutionPerTick(ItemStack aStack) {
+		return 0;
+		}
+		
+		private float water;
+		private int useWater(float input){
+			   water = water + input;
+			   int usage = (int)water;
+			   water = water - (int)usage;
+			   return  usage;
+		}
+		
+		@Override
+		int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow,	int aBaseEff) {
+		    int tEU=0;
+		    int tOut=0;
+		    for(int i=0;i<aFluids.size();i++){
+		    	if(aFluids.get(i).getFluid().getUnlocalizedName(aFluids.get(i)).equals("fluid.steam")||aFluids.get(i).getFluid().getUnlocalizedName(aFluids.get(i)).equals("ic2.fluidSteam")){
+		    		tOut = Math.min((int)(aOptFlow*1.5f),aFluids.get(i).amount);
+		    		depleteInput(new FluidStack(aFluids.get(i), tOut));
+		    	}
+		    }
+		    tOut = getAverage(tOut);
+		    tEU = Math.min(aOptFlow,tOut);
+		      addOutput(GT_ModHandler.getDistilledWater(useWater(tOut/160.0f)));
+		      if(tOut>0&&tOut<aOptFlow){
+		    	  tEU = tEU*(tOut*100/aOptFlow)+3;
+		      }
+			return tEU * aBaseEff / 20000;
 		}
 
 

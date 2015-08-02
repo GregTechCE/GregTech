@@ -1,9 +1,13 @@
 package gregtech.api.items;
 
 import gregtech.api.GregTech_API;
+import ic2.core.util.StackUtil;
+
 import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 public class GT_CoolantCell_Item
   extends GT_Generic_Item
@@ -44,6 +48,12 @@ public class GT_CoolantCell_Item
   {
     super.addAdditionalToolTips(aList, aStack);
     aList.add("Stored Heat: " + getHeatOfStack(aStack));
+    switch (getControlTagOfStack(aStack))
+    {
+    case 1: 
+    	aList.add(StatCollector.translateToLocal("ic2.reactoritem.heatwarning.line1"));
+    	aList.add(StatCollector.translateToLocal("ic2.reactoritem.heatwarning.line2"));
+    }
   }
   
   protected static int getHeatOfStack(ItemStack aStack)
@@ -56,4 +66,17 @@ public class GT_CoolantCell_Item
     }
     return tNBT.getInteger("heat");
   }
+  
+  public int getControlTagOfStack(ItemStack stack)
+  {
+    NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
+    return nbtData.getInteger("tag");
+  }
+  
+  public void setControlTagOfStack(ItemStack stack, int tag)
+  {
+    NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
+    nbtData.setInteger("tag", tag);
+  }
+  
 }

@@ -16,6 +16,7 @@ import gregtech.api.util.GT_Utility;
 
 import java.util.ArrayList;
 
+import scala.actors.threadpool.Arrays;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -151,6 +152,10 @@ public class GT_MetaTileEntity_DistillationTower
 						if(tmpHatches[hatchNumber]==null){
 							tmpHatches[hatchNumber]=this.mOutputHatches.get(i);
 						}else{return false;}
+					}
+					this.mOutputHatches.clear();
+					for(int i=0;i< tmpHatches.length;i++){
+						this.mOutputHatches.add(tmpHatches[i]);
 					}
     return tAmount >= 26;
   }

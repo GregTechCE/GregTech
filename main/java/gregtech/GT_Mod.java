@@ -661,6 +661,9 @@ for (Map.Entry<ItemStack, Float> entry : outputs.entrySet()) {
     if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2_" + (tName = "massFabricator"), true)) {
       GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1L));
     }
+    if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2_" + (tName = "replicator"), true)) {
+        GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1L));
+      }
     if (gregtechproxy.mNerfedVanillaTools)
     {
       GT_Log.out.println("GT_Mod: Nerfing Vanilla Tool Durability");

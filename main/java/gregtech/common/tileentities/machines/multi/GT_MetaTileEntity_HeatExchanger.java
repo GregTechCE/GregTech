@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -43,6 +44,16 @@ public class GT_MetaTileEntity_HeatExchanger extends GT_MetaTileEntity_MultiBloc
 	  {
 	    return new String[] { "Controller Block for the Heat Exchanger", "Size: 3x3x4", "Controller (front middle at bottom)", "3x3x4 of Stable Titanium Casing (hollow, Min 24!)", "2 Titanium Pipe Casing Blocks inside the Hollow Casing", "1x Distillated Water Input (one of the Casings)","min 1 Steam Output (one of the Casings)", "1x Maintenance Hatch (one of the Casings)", "1x Hot Fluid Input (botton Center)", "1x Cold Fluid Output (top Center)" };
 	  }
+	  
+		@Override
+		public void loadNBTData(NBTTagCompound aNBT) {
+	    	superheated = aNBT.getBoolean("superheated");
+	    	super.loadNBTData(aNBT);}
+		
+		@Override
+		public void saveNBTData(NBTTagCompound aNBT) {
+	    	aNBT.setBoolean("superheated", superheated);
+	    	super.saveNBTData(aNBT);}
 	
 	public GT_MetaTileEntity_Hatch_Input mInputHotFluidHatch;
 	public GT_MetaTileEntity_Hatch_Output mOutputColdFluidHatch;
@@ -111,7 +122,7 @@ public class GT_MetaTileEntity_HeatExchanger extends GT_MetaTileEntity_MultiBloc
 	   }
 	  
 	  public boolean onRunningTick(ItemStack aStack)
-	  {
+	  { 
 	    if (this.mEUt > 0)
 	    {
 	      int tGeneratedEU = (int)(this.mEUt * 2L * this.mEfficiency / 10000L);
@@ -238,7 +249,7 @@ public class GT_MetaTileEntity_HeatExchanger extends GT_MetaTileEntity_MultiBloc
 	  
 	  public int getPollutionPerTick(ItemStack aStack)
 	  {
-	    return 10;
+	    return 0;
 	  }
 	  
 	  public int getDamageToComponent(ItemStack aStack)

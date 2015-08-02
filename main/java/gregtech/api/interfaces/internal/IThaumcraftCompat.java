@@ -1,5 +1,6 @@
 package gregtech.api.interfaces.internal;
 
+import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 
 import java.util.List;
@@ -37,5 +38,6 @@ public interface IThaumcraftCompat {
 	public boolean registerThaumcraftAspectsToItem(ItemStack aStack, List<TC_AspectStack> aAspects, boolean aAdditive);
 	public boolean registerThaumcraftAspectsToItem(ItemStack aStack, List<TC_AspectStack> aAspects, String aOreDict);
 	public Object addCrucibleRecipe(String aResearch, Object aInput, ItemStack aOutput, List<TC_AspectStack> aAspects);
+	public Object addInfusionRecipe(String aResearch, ItemStack aMainInput,ItemStack[] aSideInputs, ItemStack aOutput,int aInstability, List<TC_Aspects.TC_AspectStack> aAspects);
 	public Object addResearch(String aResearch, String aName, String aText, String[] aParentResearches, String aCategory, ItemStack aIcon, int aComplexity, int aType, int aX, int aY, List<TC_AspectStack> aAspects, ItemStack[] aResearchTriggers, Object[] aPages);
 }

@@ -385,11 +385,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 	
 	public boolean addOutput(FluidStack aLiquid) {
 		if (aLiquid == null) return false;
+			FluidStack tLiquid = aLiquid.copy();
 		for (GT_MetaTileEntity_Hatch_Output tHatch : mOutputHatches) {
 			if (isValidMetaTileEntity(tHatch) && GT_ModHandler.isSteam(aLiquid)?tHatch.outputsSteam():tHatch.outputsLiquids()) {
-				int tAmount = tHatch.fill(aLiquid, false);
-				if (tAmount >= aLiquid.amount) {
-					return tHatch.fill(aLiquid, true) >= aLiquid.amount;
+				int tAmount = tHatch.fill(tLiquid, false);
+				if (tAmount >= tLiquid.amount) {
+					return tHatch.fill(tLiquid, true) >= tLiquid.amount;
+				}else if(tAmount>0){
+					tLiquid.amount = tLiquid.amount - tHatch.fill(tLiquid, true);
 				}
 			}
 		}
