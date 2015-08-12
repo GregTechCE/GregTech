@@ -110,57 +110,59 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_M
 		return ((addMaintenanceToMachineList(tTileEntity, getCasingTextureIndex())) || (addInputToMachineList(tTileEntity, getCasingTextureIndex())) || (addOutputToMachineList(tTileEntity, getCasingTextureIndex()))|| (addMufflerToMachineList(tTileEntity, getCasingTextureIndex())));
 	}
 	
-	private int[] mLastTicks = new int[256];
-	private int mCurrentTick;
-	private long mOverall;
-	
-	public int getAverage(int aCurrent){
-		++mCurrentTick;
-		mCurrentTick = mCurrentTick % 256;
-		mOverall = mOverall - mLastTicks[mCurrentTick];
-		mOverall = mOverall + aCurrent;
-		mLastTicks[mCurrentTick] = aCurrent;
-		return (int) (mOverall/256);
-	}
+
 	
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
-		aNBT.setLong("mOverall", mOverall);
 	}
 	
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
-		mOverall = aNBT.getLong("mOverall");
-		mOverall = mOverall - mOverall%256;
-		int tAverage = (int) (mOverall <<7);
-		for(int i = 0;i<256;i++){
-			mLastTicks[i]=tAverage;
-		}
 	}
 	
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
 		ArrayList<FluidStack> tFluids = getStoredFluids();
-	    if (tFluids.size()>0){
-	    	if(baseEff==0 || optFlow == 0 || counter >= 1000 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled() || this.getBaseMetaTileEntity().hasInventoryBeenModified()){
-	    		counter = 0;
-	    		baseEff = (int) ((50.0F+(10.0F*((GT_MetaGenerated_Tool)aStack.getItem()).getToolCombatDamage(aStack)))*100);
-	    		optFlow = (int) Math.max(Float.MIN_NORMAL, ((GT_MetaGenerated_Tool)aStack.getItem()).getToolStats(aStack).getSpeedMultiplier() * ((GT_MetaGenerated_Tool)aStack.getItem()).getPrimaryMaterial(aStack).mToolSpeed*50);
-	    	}else{
-	    		counter++;}}
-	      this.mEUt = fluidIntoPower(tFluids, optFlow, baseEff);
-	      this.mMaxProgresstime = 1;
-	      this.mEfficiencyIncrease = (10);
-	      if(mEUt<=0){
-	    	  mEfficiency=0;
-	    	  mOverall=0;
-	    	  mLastTicks = new int[256];
-	    	  stopMachine();
-	    	  return false;
-	    	  }else{
-	    		  return true;}
+		if (tFluids.size() > 0) {
+		    if (baseEff == 0 || optFlow == 0 || counter >= 1000 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()
+		            || this.getBaseMetaTileEntity().hasInventoryBeenModified()) {
+		        counter = 0;
+		        baseEff = (int) ((50.0F
+		                + (10.0F * ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack))) * 100);
+		        optFlow = (int) Math.max(Float.MIN_NORMAL,
+		                ((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack).getSpeedMultiplier()
+		                        * ((GT_MetaGenerated_Tool) aStack.getItem()).getPrimaryMaterial(aStack).mToolSpeed
+		                        * 50);
+		    } else {
+		        counter++;
+		    }
+		}
+		
+		int newPower = fluidIntoPower(tFluids, optFlow, baseEff);  // How much the turbine should be producing with this flow
+		int difference = newPower - this.mEUt; // difference between current output and new output
+		
+		// Magic numbers: can always change by at least 10 eu/t, but otherwise by at most 1 percent of the difference in power level (per tick)
+		// This is how much the turbine can actually change during this tick
+		int maxChangeAllowed = Math.max(10, (int) Math.ceil(Math.abs(difference) * 0.01));
+		
+		if (Math.abs(difference) > maxChangeAllowed) { // If this difference is too big, use the maximum allowed change
+		    int change = maxChangeAllowed * (difference > 0 ? 1 : -1); // Make the change positive or negative.
+		    this.mEUt += change; // Apply the change
+		}
+		else
+		    this.mEUt = newPower;
+		
+		this.mMaxProgresstime = 1;
+		this.mEfficiencyIncrease = (10);
+		if (mEUt <= 0) {
+		    mEfficiency = 0;
+		    stopMachine();
+		    return false;
+		} else {
+		    return true;
+		}
 	}
 	
 	abstract int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff);
