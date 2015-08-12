@@ -121,18 +121,28 @@ public class GT_MetaTileEntity_HeatExchanger extends GT_MetaTileEntity_MultiBloc
 		   return  usage;
 	   }
 	  
-	  public boolean onRunningTick(ItemStack aStack)
-	  { 
-	    if (this.mEUt > 0)
-	    {
-	      int tGeneratedEU = (int)(this.mEUt * 2L * this.mEfficiency / 10000L);
+	  public boolean onRunningTick(ItemStack aStack) {
+	
+	    if (this.mEUt > 0) {
+	      int tGeneratedEU = (int) (this.mEUt * 2L * this.mEfficiency / 10000L); // APPROXIMATELY how much steam to generate.
+
 	      if (tGeneratedEU > 0) {
-	        if (depleteInput(GT_ModHandler.getDistilledWater(useWater(((float)(superheated ? tGeneratedEU/2 :tGeneratedEU) + 160f) / 160f)))) {
-							if(superheated){addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", tGeneratedEU/2));
-							}else{
-	          addOutput(GT_ModHandler.getSteam(tGeneratedEU));}
+	        if (superheated)
+	          tGeneratedEU /= 2; // We produce half as much superheated steam if necessary
+	
+	        int distilledConsumed = useWater(tGeneratedEU / 160f); // how much distilled water to consume
+	        tGeneratedEU = distilledConsumed * 160; // EXACTLY how much steam to generate, producing a perfect 1:160 ratio with distilled water consumption
+	
+	        FluidStack distilledStack = GT_ModHandler.getDistilledWater(distilledConsumed);
+	        if (depleteInput(distilledStack)) // Consume the distilled water
+	        {
+	          if (superheated) {
+	            addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", tGeneratedEU)); // Generate superheated steam
+	          } else {
+	            addOutput(GT_ModHandler.getSteam(tGeneratedEU)); // Generate regular steam
+	          }
 	        } else {
-	          explodeMultiblock();
+	          explodeMultiblock(); // Generate crater
 	        }
 	      }
 	      return true;
