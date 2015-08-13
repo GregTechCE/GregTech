@@ -56,24 +56,35 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
 			return 0;
 		}
 		
-		@Override
-		int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow,	int aBaseEff) {
-		    int tEU=0;
-		    int tOut=0;
-		    for(int i=0;i<aFluids.size();i++){
-		    	if(aFluids.get(i).getFluid().getUnlocalizedName(aFluids.get(i)).equals("ic2.fluidSuperheatedSteam")){
-		    		tOut = Math.min((int)(aOptFlow*1.5f),aFluids.get(i).amount);
-		    		depleteInput(new FluidStack(aFluids.get(i),tOut));
-		    	}
-		    }
-		    tOut = getAverage(tOut);
-		    tEU = Math.min(aOptFlow,tOut);
-		      addOutput(GT_ModHandler.getSteam(tOut));
-		      if(tOut>0&&tOut<aOptFlow){
-		    	  tEU = tEU*(tOut*100/aOptFlow)+3;
-		      }
-			return tEU * aBaseEff / 10000;
-		}
+    @Override
+    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff) {
+        int tEU = 0;
+        int totalFlow = 0; // Byproducts are based on actual flow
+        int flow = 0;
+        int remainingFlow = (int) (aOptFlow * 1.25f); // Allowed to use up to 125% of optimal flow
+
+        for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) {
+            if (aFluids.get(i).getFluid().getUnlocalizedName(aFluids.get(i)).equals("ic2.fluidSuperheatedSteam")) {
+                flow = aFluids.get(i).amount; // Get all (steam) in hatch
+                flow = Math.min(flow, Math.min(remainingFlow, (int) (aOptFlow * 1.25f))); // try to use up to 125% of optimal flow w/o exceeding remainingFlow
+                depleteInput(new FluidStack(aFluids.get(i), flow)); // deplete that amount
+                remainingFlow -= flow; // track amount we're allowed to keep depleting from hatches
+                totalFlow += flow; // track total used
+            }
+        }
+        
+        tEU = (int) (Math.min((float) aOptFlow, totalFlow));
+        addOutput(GT_ModHandler.getSteam(totalFlow));
+        if (totalFlow > 0 && totalFlow != aOptFlow) {
+            float efficiency = 1.0f - Math.abs(((totalFlow - (float) aOptFlow) / aOptFlow));
+            tEU *= efficiency;
+            tEU = Math.max(1, tEU * aBaseEff / 10000);
+        } else {
+            tEU = tEU * aBaseEff / 10000;
+        }
+
+        return tEU;
+    }
 
 
 }

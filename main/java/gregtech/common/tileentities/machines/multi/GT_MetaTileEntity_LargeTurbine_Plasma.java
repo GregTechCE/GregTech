@@ -68,22 +68,50 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
 			return 0;
 		}
 		
-		@Override
-		int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow,	int aBaseEff) {
-		    int tEU=0;
-		    int tOut=0;
-		    int tOptFlow = aOptFlow * 40;
-		    boolean b = false;
-		    for(int i=0;i<aFluids.size();i++){
-		    	int fuelValue = getFuelValue(aFluids.get(i));
-		    	if(fuelValue>0&&depleteInput(new FluidStack(aFluids.get(i),Math.max(tOptFlow/(fuelValue*2),1)))){
-		    		tEU += tOptFlow/2;}
-		    }
-		    if(tEU>0)b=true;
-		    tEU = getAverage(tEU);
-		    if(b&&tEU<=0)tEU=3;
-			return tEU * aBaseEff / 10000;
-		}
+    @Override
+    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff) {
+
+        aOptFlow *= 40;
+        int tEU = 0;
+
+        int actualOptimalFlow = 0;
+
+        if (aFluids.size() >= 1) {
+            FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0); // Identify a SINGLE type of fluid to process.  Doesn't matter which one. Ignore the rest!
+            int fuelValue = getFuelValue(firstFuelType);
+            actualOptimalFlow = (int) (aOptFlow / fuelValue);
+
+            int remainingFlow = (int) (actualOptimalFlow * 1.25f); // Allowed to use up to 125% of optimal flow.  Variable required outside of loop for multi-hatch scenarios.
+            int flow = 0;
+            int totalFlow = 0;
+
+            for (int i = 0; i < aFluids.size(); i++) {
+                if (aFluids.get(i).isFluidEqual(firstFuelType)) {
+                    flow = aFluids.get(i).amount; // Get all (steam) in hatch
+                    flow = Math.min(flow, Math.min(remainingFlow, (int) (actualOptimalFlow * 1.25f))); // try to use up to 125% of optimal flow w/o exceeding remainingFlow
+                    depleteInput(new FluidStack(aFluids.get(i), flow)); // deplete that amount
+                    remainingFlow -= flow; // track amount we're allowed to continue depleting from hatches
+                    totalFlow += flow; // track total input used
+                }
+            }
+
+            tEU = (int) (Math.min((float) actualOptimalFlow, totalFlow) * fuelValue);
+
+            if (totalFlow != actualOptimalFlow) {
+                float efficiency = 1.0f - Math.abs(((totalFlow - (float) actualOptimalFlow) / actualOptimalFlow));
+                if (efficiency < 0)
+                    efficiency = 0; // Can happen with really ludicrously poor inefficiency.
+                tEU *= efficiency;
+                tEU = Math.max(1, tEU * aBaseEff / 10000);
+            } else {
+                tEU = tEU * aBaseEff / 10000;
+            }
+
+            return tEU;
+
+        }
+        return 0;
+    }
 
 
 }

@@ -64,35 +64,35 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
 			   return  usage;
 		}
 		
-		@Override
-		int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow,	int aBaseEff) {
-		    int tEU=0;
-		    int averageFlow = 0; // To prevent closed water loops from breaking.  EU is based on average flow
-		    int totalFlow = 0; // Byproducts are based on actual flow
-		    int flow = 0;
-		    int remainingFlow = (int)(aOptFlow * 1.25f);  // Allowed to use up to 125% of optimal flow.  Variable required outside of loop for multi-hatch scenarios.
+    @Override
+    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff) {
+        int tEU = 0;
+        int totalFlow = 0; // Byproducts are based on actual flow
+        int flow = 0;
+        int remainingFlow = (int) (aOptFlow * 1.25f); // Allowed to use up to 125% of optimal flow.  Variable required outside of loop for multi-hatch scenarios.
 
-		    for(int i=0;i<aFluids.size() && remainingFlow > 0;i++){ // loop through each hatch; extract inputs and track totals.
-		    	if(aFluids.get(i).getFluid().getUnlocalizedName(aFluids.get(i)).equals("fluid.steam")||aFluids.get(i).getFluid().getUnlocalizedName(aFluids.get(i)).equals("ic2.fluidSteam")){
-		    		flow = aFluids.get(i).amount;  // Get all (steam) in hatch
-		    		flow = Math.min(flow, Math.min(remainingFlow, (int)( aOptFlow * 1.25f)));  // try to use up to 125% of optimal flow w/o exceeding remainingFlow
-		    		depleteInput(new FluidStack(aFluids.get(i), flow)); // deplete that amount
-		    		remainingFlow -= flow; // track amount we're allowed to continue depleting from hatches
-		    		totalFlow += flow; // track total input used
-		    	}
-		    }
-		    averageFlow = getAverage(totalFlow); // calculate recent average usage for power output purposes but NOT byproduct generation.  We used what we used, and get byproducts from that.
-		    
-		    tEU = Math.min(aOptFlow, averageFlow); 
-		    addOutput(GT_ModHandler.getDistilledWater(useWater(totalFlow/160.0f)));
-		    if(averageFlow > 0 && averageFlow != aOptFlow){
-			  float efficiency =  1.0f - Math.abs(((averageFlow - (float)aOptFlow) / aOptFlow));
-			  tEU *= efficiency;
-			  tEU = Math.max(1, tEU * aBaseEff / 20000);
-		    }
-		    else {
-		    	tEU = tEU * aBaseEff / 20000;
-		    }
-	            return  tEU;
-		}
+        for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) { // loop through each hatch; extract inputs and track totals.
+            if (aFluids.get(i).getFluid().getUnlocalizedName(aFluids.get(i)).equals("fluid.steam")
+                    || aFluids.get(i).getFluid().getUnlocalizedName(aFluids.get(i)).equals("ic2.fluidSteam")) {
+                flow = aFluids.get(i).amount; // Get all (steam) in hatch
+                flow = Math.min(flow, Math.min(remainingFlow, (int) (aOptFlow * 1.25f))); // try to use up to 125% of optimal flow w/o exceeding remainingFlow
+                depleteInput(new FluidStack(aFluids.get(i), flow)); // deplete that amount
+                remainingFlow -= flow; // track amount we're allowed to continue depleting from hatches
+                totalFlow += flow; // track total input used
+            }
+        }
+
+        tEU = (int) (Math.min((float) aOptFlow, totalFlow));
+        int waterToOutput = useWater(totalFlow / 160.0f);
+        addOutput(GT_ModHandler.getDistilledWater(waterToOutput));
+        if (totalFlow > 0 && totalFlow != aOptFlow) {
+            float efficiency = 1.0f - Math.abs(((totalFlow - (float) aOptFlow) / aOptFlow));
+            tEU *= efficiency;
+            tEU = Math.max(1, tEU * aBaseEff / 20000);
+        } else {
+            tEU = tEU * aBaseEff / 20000;
+        }
+
+        return tEU;
+    }
 }
