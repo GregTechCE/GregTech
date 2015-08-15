@@ -154,15 +154,16 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_M
 		else
 		    this.mEUt = newPower;
 		
-		this.mMaxProgresstime = 1;
-		this.mEfficiencyIncrease = (10);
-		if (mEUt <= 0) {
-		    mEfficiency = 0;
-		    stopMachine();
-		    return false;
-		} else {
-		    return true;
-		}
+	        if (mEUt <= 0) {
+	
+	            this.mEfficiencyIncrease = (-10);
+	            //stopMachine();
+	            return false;
+	        } else {
+	            this.mMaxProgresstime = 1;
+	            this.mEfficiencyIncrease = (10);
+	            return true;
+	        }
 	}
 	
 	abstract int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff);
