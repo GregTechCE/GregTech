@@ -1,6 +1,8 @@
 package gregtech.common.tileentities.machines.multi;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import net.minecraft.block.Block;
@@ -41,6 +43,11 @@ public class GT_MetaTileEntity_FusionComputer3 extends GT_MetaTileEntity_FusionC
 	@Override
 	public Block getCasing() {
 		return GregTech_API.sBlockCasings4;
+	}
+
+	@Override
+	public IIconContainer getIconOverlay() {
+		return Textures.BlockIcons.OVERLAY_FUSION3;
 	}
 
 }

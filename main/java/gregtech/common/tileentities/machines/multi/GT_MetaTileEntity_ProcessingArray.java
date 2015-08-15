@@ -110,6 +110,8 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
 											return GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes;
 										}else if(tmp.startsWith("bender")){
 											return GT_Recipe.GT_Recipe_Map.sBenderRecipes;
+										}else if(tmp.startsWith("wiremill")){
+											return GT_Recipe.GT_Recipe_Map.sWiremillRecipes;
 										}
 				    return null;
 				  }

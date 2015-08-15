@@ -295,10 +295,16 @@ public int adjY = 9;
 		if (player == null||stack==null) {
 			return;
 		}
+		ItemData data = GT_OreDictUnificator.getItemData(stack);
+		if (data != null) {
+			if (data.mPrefix == OrePrefixes.dust&&data.mMaterial.mMaterial == Materials.Bronze) {
+				issueAchievement(player, "bronze");				
+			}else if(data.mPrefix == OrePrefixes.circuit&&data.mMaterial.mMaterial == Materials.Advanced){
+				issueAchievement(player, "stepforward");
+			}
+		}
 		if(stack.getUnlocalizedName().startsWith("gt.metaitem.")){
 			if(stack.getUnlocalizedName().equals("gt.metaitem.01.2300")){
-				issueAchievement(player, "bronze");
-			}else if(stack.getUnlocalizedName().equals("gt.metaitem.01.2300")){
 				issueAchievement(player, "bronze");
 			}else if(stack.getUnlocalizedName().equals("gt.metaitem.01.32700")){
 				issueAchievement(player, "smallparts");

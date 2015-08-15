@@ -9,6 +9,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
@@ -199,10 +200,10 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
 		}
 		
 		return new String[] {
-				getMetaName(),
+				getLocalName(),
 				"Stored Items:",
-				Long.toString(mStored),
-				Long.toString(mMax)};
+				GT_Utility.formatNumbers(mStored)+" EU /",
+				GT_Utility.formatNumbers(mMax)+" EU"};
 	}
 	
 	@Override

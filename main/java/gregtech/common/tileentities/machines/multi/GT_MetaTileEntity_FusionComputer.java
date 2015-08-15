@@ -9,6 +9,7 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_Container_MultiMachine;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -222,7 +223,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
   {
 					ITexture[] sTexture;
 					if(aSide==aFacing){
-						sTexture  = new ITexture[] { new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa)),new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SCREEN) };
+						sTexture  = new ITexture[] { new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa)),new GT_RenderedTexture(getIconOverlay()) };
 					}else{
 						if(!aActive){
 						sTexture  = new ITexture[] { new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa))};}else{
@@ -231,6 +232,8 @@ public abstract class GT_MetaTileEntity_FusionComputer
 					}
     return sTexture;
   }
+  
+  public abstract IIconContainer getIconOverlay();
 
 @Override
 public boolean isCorrectMachinePart(ItemStack aStack) {return true;}

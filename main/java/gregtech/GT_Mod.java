@@ -759,11 +759,13 @@ for (Map.Entry<ItemStack, Float> entry : outputs.entrySet()) {
         ItemStack tInput = GT_OreDictUnificator.get(OrePrefixes.dust, tMaterial, 1L);
         if (tInput != null) {
           GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[] { tInput }, new ItemStack[] { tOutput }, ItemList.Tool_DataOrb.get(1L, new Object[0]), null, null, (int)(tMaterial.getMass() * 8192L), 32, 0);
+          GT_Recipe.GT_Recipe_Map.sRepicatorFakeRecipes.addFakeRecipe(false, null , new ItemStack[] { tInput }, new ItemStack[] { tOutput } , new FluidStack[]{Materials.UUMatter.getFluid(tMaterial.getMass())}, null, (int)(tMaterial.getMass() * 512L), 32, 0);
         }
         tInput = GT_OreDictUnificator.get(OrePrefixes.cell, tMaterial, 1L);
         if (tInput != null) {
           GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[] { tInput }, new ItemStack[] { tOutput }, ItemList.Tool_DataOrb.get(1L, new Object[0]), null, null, (int)(tMaterial.getMass() * 8192L), 32, 0);
-        }
+          GT_Recipe.GT_Recipe_Map.sRepicatorFakeRecipes.addFakeRecipe(false, null , new ItemStack[] { tInput }, new ItemStack[] { tOutput } , new FluidStack[]{Materials.UUMatter.getFluid(tMaterial.getMass())}, null, (int)(tMaterial.getMass() * 512L), 32, 0);
+           }
       }
     }
     GT_Recipe.GT_Recipe_Map.sRockBreakerFakeRecipes.addFakeRecipe(false, new ItemStack[] { ItemList.Display_ITS_FREE.getWithName(0L, "Place Lava on Side", new Object[0]) }, new ItemStack[] { new ItemStack(Blocks.cobblestone, 1) }, null, null, null, 16, 32, 0);
