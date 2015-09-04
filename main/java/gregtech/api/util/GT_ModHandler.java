@@ -1500,7 +1500,7 @@ public class GT_ModHandler {
 			if (aPlayer instanceof EntityPlayer) {
 				EntityPlayer tPlayer = (EntityPlayer)aPlayer;
 				if (tPlayer.capabilities.isCreativeMode) return T;
-				System.out.println("hier");
+				if(isElectricItem(aStack)&&ic2.api.item.ElectricItem.manager.getCharge(aStack)>1000.0d){
 				for (int i = 0; i < tPlayer.inventory.mainInventory.length; i++) {
 					if (GT_Utility.isStackInList(tPlayer.inventory.mainInventory[i], GregTech_API.sSolderingMetalList)) {
 						tPlayer.inventory.mainInventory[i].stackSize--;
@@ -1508,7 +1508,10 @@ public class GT_ModHandler {
 						if (canUseElectricItem(aStack, 10000)) {
 							return GT_ModHandler.useElectricItem(aStack, 10000, (EntityPlayer)aPlayer);
 						}
+						GT_ModHandler.useElectricItem(aStack, (int) ic2.api.item.ElectricItem.manager.getCharge(aStack), (EntityPlayer)aPlayer);
+						return false;	
 					}
+				  }
 				}
 			} else {
 				damageOrDechargeItem(aStack, 1, 1000, aPlayer);

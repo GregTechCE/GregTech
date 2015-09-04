@@ -202,7 +202,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 			"naturalAluminum", "naturalAluminium", "antimatterMilligram", "antimatterGram", "strangeMatter", "coalGenerator", "electricFurnace",
 			"unfinishedTank", "valvePart", "aquaRegia", "leatherSeal", "leatherSlimeSeal", "hambone", "slimeball", "clay", "enrichedUranium", "camoPaste",
 			"antiBlock", "burntQuartz", "salmonRaw","blockHopper" ,"blockEnderObsidian","blockIcestone","blockMagicWood","blockEnderCore","blockHeeEndium",
-			"oreHeeEndium","oreHeeEndPowder","oreHeeStardust","oreHeeIgneousRock","oreHeeInstabilityOrb","crystalPureFluix","shardNether","gemFluorite",
+			"oreHeeEndPowder","oreHeeStardust","oreHeeIgneousRock","oreHeeInstabilityOrb","crystalPureFluix","shardNether","gemFluorite",
 			"stickObsidian","caveCrystal","shardCrystal","dyeCrystal"}));
 	private final Collection<String> mInvalidNames = new HashSet(Arrays.asList(new String[] { "diamondShard", "redstoneRoot", "obsidianStick", "bloodstoneOre",
 			"universalCable", "bronzeTube", "ironTube", "netherTube", "obbyTube", "infiniteBattery", "eliteBattery", "advancedBattery", "10kEUStore",
@@ -1051,6 +1051,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 			}
 			if (aEvent.Name.equals("copperWire")) {
 				GT_OreDictUnificator.registerOre(OreDictNames.craftingWireCopper, aEvent.Ore);
+			}
+			if (aEvent.Name.equals("oreHeeEndrium")) {
+				GT_OreDictUnificator.registerOre(OrePrefixes.ore, Materials.Endium, aEvent.Ore);
 			}
 			if (aEvent.Name.equals("sheetPlastic")) {
 				GT_OreDictUnificator.registerOre(OrePrefixes.plate, Materials.Plastic, aEvent.Ore);

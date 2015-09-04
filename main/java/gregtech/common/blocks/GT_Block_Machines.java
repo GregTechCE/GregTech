@@ -297,7 +297,7 @@ public class GT_Block_Machines
   public float getPlayerRelativeBlockHardness(EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ)
   {
     TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-    if (((tTileEntity instanceof BaseMetaTileEntity)) && (((BaseMetaTileEntity)tTileEntity).privateAccess()) && (!((BaseMetaTileEntity)tTileEntity).playerOwnsThis(aPlayer, true))) {
+    if (((tTileEntity instanceof BaseMetaTileEntity)) && (((BaseMetaTileEntity)tTileEntity).privateAccess()) && (!((BaseMetaTileEntity)tTileEntity).playerOwnsThis(aPlayer, false))) {
       return -1.0F;
     }
     return super.getPlayerRelativeBlockHardness(aPlayer, aWorld, aX, aY, aZ);

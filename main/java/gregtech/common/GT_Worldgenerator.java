@@ -85,13 +85,13 @@ public class GT_Worldgenerator
                   if (tWorldGen.executeWorldgen(this.mWorld, this.mRandom, this.mBiome, this.mDimensionType, this.mX, this.mZ, this.mChunkGenerator, this.mChunkProvider))
                   {
                     temp = false;
-                    break;
                   }
                 }
                 catch (Throwable e)
                 {
                   e.printStackTrace(GT_Log.err);
                 }
+                    break;
               }
             }
           }

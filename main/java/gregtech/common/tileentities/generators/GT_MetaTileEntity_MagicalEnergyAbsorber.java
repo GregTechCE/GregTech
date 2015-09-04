@@ -1,8 +1,12 @@
 package gregtech.common.tileentities.generators;
 
+import static gregtech.api.enums.GT_Values.V;
+
 import java.util.ArrayList;
 
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.api.visnet.VisNetHandler;
 import cpw.mods.fml.common.Loader;
 import net.minecraft.block.Block;
@@ -17,8 +21,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
+import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
@@ -30,8 +36,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 
-public class GT_MetaTileEntity_MagicalEnergyAbsorber
-  extends GT_MetaTileEntity_BasicGenerator
+public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_BasicGenerator
 {
 
 				  public int mEfficiency;
@@ -154,12 +159,25 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber
 			    	          }
 			    	        }
 			    		
-			    		//Absorb entchantments
-			    		
+			    		//Absorb entchantments		    		
 			    		try
 			            {
 			              if ((this.mInventory[0] != null) && (this.mInventory[1] == null))
 			              {
+			              if(isThaumcraftLoaded && this.mInventory[0].getItem() instanceof IEssentiaContainerItem){
+			            	  AspectList tAspect = ((IEssentiaContainerItem)this.mInventory[0].getItem()).getAspects(this.mInventory[0]);
+			            	  TC_Aspects tValue = TC_Aspects.valueOf(tAspect.getAspects()[0].getTag().toUpperCase());
+			            	  int tEU = (tValue.mValue*tAspect.getAmount((Aspect) tValue.mAspect)*100);
+			            	  getBaseMetaTileEntity().increaseStoredEnergyUnits(tEU, true);
+			            	  ItemStack tStack = this.mInventory[0].copy();
+			            	  tStack.setTagCompound(null);
+			            	  tStack.setItemDamage(0);
+			            	  tStack.stackSize=1;
+			            	  this.mInventory[1]=tStack;
+			            	  this.mInventory[0].stackSize--;
+			            	  if(this.mInventory[0].stackSize<1){this.mInventory[0]=null;}
+			            	  
+			              }else{
 			                if ((this.mInventory[0].isItemEnchanted()) && (this.mInventory[0].getItem().getItemEnchantability() > 0))
 			                {
 			                  NBTTagList tEnchantments = this.mInventory[0].getEnchantmentTagList();
@@ -203,7 +221,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber
 			                this.mInventory[1] = this.mInventory[0];
 			                this.mInventory[0] = null;
 			              }
-			            }
+			            }}
 			            catch (Throwable e){}			    		
 					}
 			    }
@@ -221,6 +239,8 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber
 			    	if(above==null||Blocks.air==above){return false;}
 			      return Blocks.dragon_egg == above || above.getUnlocalizedName().equals("tile.dragonEgg");
 			    }
+			    
+  @Override public long maxEUStore(){return Math.max(getEUVar(), V[mTier] * 16000 + getMinimumStoredEU());}
   
   public int getEfficiency()
   {

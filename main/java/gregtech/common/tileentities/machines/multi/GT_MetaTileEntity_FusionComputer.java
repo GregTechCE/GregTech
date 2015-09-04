@@ -355,6 +355,9 @@ public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 						}
 					}
 				}
+				if(this.mEUStore<=0&&mMaxProgresstime>0){
+					stopMachine();
+				}
 				if (getRepairStatus() > 0) {
 			    	if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) {
 			    		this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(mEUt, true);

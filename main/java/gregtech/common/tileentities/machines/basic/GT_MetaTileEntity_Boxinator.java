@@ -92,17 +92,16 @@ public class GT_MetaTileEntity_Boxinator
     return 0;
   }
   
-public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack)
-{
-    if(super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack))
-        return getInputSlot() != aIndex && ItemList.Crate_Empty.isStackEqual(aStack) || ItemList.Schematic_1by1.isStackEqual(getInputAt(1)) || ItemList.Schematic_2by2.isStackEqual(getInputAt(1)) || ItemList.Schematic_3by3.isStackEqual(getInputAt(1)) || gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes.findRecipe(getBaseMetaTileEntity(), true, GT_Values.V[mTier], null, new ItemStack[] {
-            GT_Utility.copyAmount(64L, new Object[] {
-                aStack
-            }), getInputAt(1)
-        }) != null;
-    else
-        return false;
-}
+  public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack)
+  {
+    if (super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack))
+    {
+      if ((ItemList.Schematic_1by1.isStackEqual(getInputAt(1))) || (ItemList.Schematic_2by2.isStackEqual(getInputAt(1))) || (ItemList.Schematic_3by3.isStackEqual(getInputAt(1)))) {
+      return GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes.findRecipe(getBaseMetaTileEntity(), true, gregtech.api.enums.GT_Values.V[this.mTier], null, new ItemStack[] { GT_Utility.copyAmount(64L, new Object[] { aStack }), getInputAt(1) }) != null;
+      }else{return GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes.containsInput(aStack);}
+    }
+    return false;
+  }
 }
 
 

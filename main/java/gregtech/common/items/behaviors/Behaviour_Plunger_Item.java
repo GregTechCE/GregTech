@@ -40,15 +40,16 @@ public class Behaviour_Plunger_Item
     {
       IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity)aTileEntity).getMetaTileEntity();
       if ((tMetaTileEntity instanceof IMetaTileEntityItemPipe)) {
-        for (IMetaTileEntityItemPipe tTileEntity : GT_Utility.sortMapByValuesAcending(IMetaTileEntityItemPipe.Util.scanPipes((IMetaTileEntityItemPipe)tMetaTileEntity, new HashMap(), 0L, false, true)).keySet())
+        for (Object tTileEntity : GT_Utility.sortMapByValuesAcending(IMetaTileEntityItemPipe.Util.scanPipes((IMetaTileEntityItemPipe)tMetaTileEntity, new HashMap(), 0L, false, true)).keySet())
+
         {
           int i = 0;
-          for (int j = tTileEntity.getSizeInventory(); i < j; i++) {
-            if (tTileEntity.isValidSlot(i)) {
-              if ((tTileEntity.getStackInSlot(i) != null) && (
+          for (int j = ((IMetaTileEntityItemPipe)tTileEntity).getSizeInventory(); i < j; i++) {
+            if (((IMetaTileEntityItemPipe)tTileEntity).isValidSlot(i)) {
+              if ((((IMetaTileEntityItemPipe)tTileEntity).getStackInSlot(i) != null) && (
                 (aPlayer.capabilities.isCreativeMode) || (((GT_MetaGenerated_Tool)aItem).doDamage(aStack, this.mCosts))))
               {
-                ItemStack tStack = tTileEntity.decrStackSize(i, 64);
+                ItemStack tStack = ((IMetaTileEntityItemPipe)tTileEntity).decrStackSize(i, 64);
                 if (tStack != null)
                 {
                   EntityItem tEntity = new EntityItem(aWorld, ((IGregTechTileEntity)aTileEntity).getOffsetX((byte)aSide, 1) + 0.5D, ((IGregTechTileEntity)aTileEntity).getOffsetY((byte)aSide, 1) + 0.5D, ((IGregTechTileEntity)aTileEntity).getOffsetZ((byte)aSide, 1) + 0.5D, tStack);

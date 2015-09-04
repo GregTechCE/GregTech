@@ -4,6 +4,8 @@ import static gregtech.api.enums.GT_Values.V;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.GT_Container_MultiMachine;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -12,6 +14,7 @@ import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
@@ -322,7 +325,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 			stopMachine();
 			return false;
 		}
-		if (mRuntime++>1000) {
+		if (mRuntime++>10) {
 			mRuntime = 0;
 			if (getBaseMetaTileEntity().getRandomNumber(6000) == 0) {
 				switch (getBaseMetaTileEntity().getRandomNumber(6)) {
@@ -336,6 +339,66 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 			}
 			if (mInventory[1] != null && getBaseMetaTileEntity().getRandomNumber(2) == 0 &&!mInventory[1].getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.")) {
 				if(mInventory[1].getItem() instanceof GT_MetaGenerated_Tool_01){
+					 NBTTagCompound tNBT = mInventory[1].getTagCompound();
+				      if (tNBT != null)
+				      {
+				        NBTTagCompound tNBT2 = tNBT.getCompoundTag("GT.CraftingComponents");
+				        if (!tNBT.getBoolean("mDis"))
+				        {
+				        	tNBT2 = new NBTTagCompound();
+				        	Materials tMaterial = GT_MetaGenerated_Tool.getPrimaryMaterial(mInventory[1]);
+				        	ItemStack tTurbine = GT_OreDictUnificator.get(OrePrefixes.turbineBlade, tMaterial, 1);
+				        	int i = mInventory[1].getItemDamage();
+				        	if(i == 170){
+				        		ItemStack tStack = GT_Utility.copyAmount(1, tTurbine);
+				        		tNBT2.setTag("Ingredient.0", tStack.writeToNBT(new NBTTagCompound()));
+				        		tNBT2.setTag("Ingredient.1", tStack.writeToNBT(new NBTTagCompound()));
+				        		tNBT2.setTag("Ingredient.2", tStack.writeToNBT(new NBTTagCompound()));
+				        		tNBT2.setTag("Ingredient.3", tStack.writeToNBT(new NBTTagCompound()));
+				        		tStack = GT_OreDictUnificator.get(OrePrefixes.stickLong,Materials.Magnalium,1);
+				        		tNBT2.setTag("Ingredient.4", tStack.writeToNBT(new NBTTagCompound()));
+				        	}else if(i == 172){
+				        		ItemStack tStack = GT_Utility.copyAmount(1, tTurbine);
+				        		tNBT2.setTag("Ingredient.0", tStack.writeToNBT(new NBTTagCompound()));
+				        		tNBT2.setTag("Ingredient.1", tStack.writeToNBT(new NBTTagCompound()));
+				        		tNBT2.setTag("Ingredient.2", tStack.writeToNBT(new NBTTagCompound()));
+				        		tNBT2.setTag("Ingredient.3", tStack.writeToNBT(new NBTTagCompound()));
+				        		tNBT2.setTag("Ingredient.5", tStack.writeToNBT(new NBTTagCompound()));
+				        		tNBT2.setTag("Ingredient.6", tStack.writeToNBT(new NBTTagCompound()));
+				        		tNBT2.setTag("Ingredient.7", tStack.writeToNBT(new NBTTagCompound()));
+				        		tNBT2.setTag("Ingredient.8", tStack.writeToNBT(new NBTTagCompound()));
+				        		tStack = GT_OreDictUnificator.get(OrePrefixes.stickLong,Materials.Titanium,1);
+				        		tNBT2.setTag("Ingredient.4", tStack.writeToNBT(new NBTTagCompound()));				        		
+				        	}else if(i == 174){
+				        		ItemStack tStack = GT_Utility.copyAmount(2, tTurbine);
+				        		tNBT2.setTag("Ingredient.0", tStack.writeToNBT(new NBTTagCompound()));
+				        		tNBT2.setTag("Ingredient.1", tStack.writeToNBT(new NBTTagCompound()));
+				        		tNBT2.setTag("Ingredient.2", tStack.writeToNBT(new NBTTagCompound()));
+				        		tNBT2.setTag("Ingredient.3", tStack.writeToNBT(new NBTTagCompound()));
+				        		tNBT2.setTag("Ingredient.5", tStack.writeToNBT(new NBTTagCompound()));
+				        		tNBT2.setTag("Ingredient.6", tStack.writeToNBT(new NBTTagCompound()));
+				        		tStack = GT_OreDictUnificator.get(OrePrefixes.stickLong,Materials.TungstenSteel,1);
+				        		tNBT2.setTag("Ingredient.4", tStack.writeToNBT(new NBTTagCompound()));
+				        	}else if(i == 176){
+				        		ItemStack tStack = GT_Utility.copyAmount(2, tTurbine);
+				        		tNBT2.setTag("Ingredient.0", tStack.writeToNBT(new NBTTagCompound()));
+				        		tNBT2.setTag("Ingredient.1", tStack.writeToNBT(new NBTTagCompound()));
+				        		tNBT2.setTag("Ingredient.2", tStack.writeToNBT(new NBTTagCompound()));
+				        		tNBT2.setTag("Ingredient.3", tStack.writeToNBT(new NBTTagCompound()));
+				        		tNBT2.setTag("Ingredient.5", tStack.writeToNBT(new NBTTagCompound()));
+				        		tNBT2.setTag("Ingredient.6", tStack.writeToNBT(new NBTTagCompound()));
+				        		tNBT2.setTag("Ingredient.7", tStack.writeToNBT(new NBTTagCompound()));
+				        		tNBT2.setTag("Ingredient.8", tStack.writeToNBT(new NBTTagCompound()));
+				        		tStack = GT_OreDictUnificator.get(OrePrefixes.stickLong,Materials.Americium,1);
+				        		tNBT2.setTag("Ingredient.4", tStack.writeToNBT(new NBTTagCompound()));
+				        	}
+				        	tNBT.setTag("GT.CraftingComponents", tNBT2);
+				        	tNBT.setBoolean("mDis", true);
+							mInventory[1].setTagCompound(tNBT);	
+				        	
+				        }
+				      }
+					
 					((GT_MetaGenerated_Tool)mInventory[1].getItem()).doDamage(mInventory[1], (long) Math.min(mEUt/5, Math.pow(mEUt, 0.7)));
 					if(mInventory[1].stackSize==0)mInventory[1]=null;
 				}

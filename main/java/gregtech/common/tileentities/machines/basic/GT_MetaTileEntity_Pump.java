@@ -195,9 +195,11 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
 				return y + 1;
 			}
 		} else if (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord(), y, getBaseMetaTileEntity().getZCoord()) != GT_Utility
-				.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L))) {
+				.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L))&&this.mInventory[0] != null&&this.mInventory[0].stackSize>0&&GT_Utility.areStacksEqual(this.mInventory[0], GT_ModHandler.getIC2Item("miningPipe", 1L))) {
 			getBaseMetaTileEntity().getWorld().setBlock(getBaseMetaTileEntity().getXCoord(), y, getBaseMetaTileEntity().getZCoord(),
 					GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L)));
+			getBaseMetaTileEntity().decrStackSize(0, 1);
+			
 		}
 		return y;
 	}

@@ -71,7 +71,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
     @Override
     int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff) {
 
-        aOptFlow *= 40;
+        aOptFlow *= 20;
         int tEU = 0;
 
         int actualOptimalFlow = 0;

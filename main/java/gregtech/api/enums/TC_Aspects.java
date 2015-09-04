@@ -3,70 +3,76 @@ package gregtech.api.enums;
 import java.util.List;
 
 public enum TC_Aspects {
-	  AER
-	, ALIENIS
-	, AQUA
-	, ARBOR
-	, AURAM
-	, BESTIA
-	, COGNITO
-	, CORPUS
-	, ELECTRUM
-	, EXAMINIS
-	, FABRICO
-	, FAMES
-	, GELUM
-	, GRANUM
-	, HERBA
-	, HUMANUS
-	, IGNIS
-	, INSTRUMENTUM
-	, ITER
-	, LIMUS
-	, LUCRUM
-	, LUX
-	, MACHINA
-	, MAGNETO
-	, MESSIS
-	, METALLUM
-	, METO
-	, MORTUUS
-	, MOTUS
-	, NEBRISUM
-	, ORDO
-	, PANNUS
-	, PERDITIO
-	, PERFODIO
-	, PERMUTATIO
-	, POTENTIA
-	, PRAECANTIO
-	, RADIO
-	, SANO
-	, SENSUS
-	, SPIRITUS
-	, STRONTIO
-	, TELUM
-	, TERRA
-	, TEMPESTAS
-	, TENEBRAE
-	, TUTAMEN
-	, VACUOS
-	, VENENUM
-	, VICTUS
-	, VINCULUM
-	, VITIUM
-	, VITREUS
-	, VOLATUS
+	  AER(1)
+	, ALIENIS(20)
+	, AQUA(3)
+	, ARBOR(1)
+	, AURAM(16)
+	, BESTIA(6)
+	, COGNITO(2)
+	, CORPUS(2)
+	, ELECTRUM(24)
+	, EXAMINIS(32)
+	, FABRICO(2)
+	, FAMES(2)
+	, GELUM(1)
+	, GRANUM(4)
+	, HERBA(2)
+	, HUMANUS(8)
+	, IGNIS(4)
+	, INSTRUMENTUM(4)
+	, ITER(6)
+	, LIMUS(3)
+	, LUCRUM(32)
+	, LUX(4)
+	, MACHINA(16)
+	, MAGNETO(24)
+	, MESSIS(3)
+	, METALLUM(8)
+	, METO(2)
+	, MORTUUS(16)
+	, MOTUS(4)
+	, NEBRISUM(48)
+	, ORDO(8)
+	, PANNUS(6)
+	, PERDITIO(2)
+	, PERFODIO(4)
+	, PERMUTATIO(12)
+	, POTENTIA(16)
+	, PRAECANTIO(16)
+	, RADIO(48)
+	, SANO(24)
+	, SENSUS(4)
+	, SPIRITUS(24)
+	, STRONTIO(64)
+	, TELUM(6)
+	, TERRA(1)
+	, TEMPESTAS(64)
+	, TENEBRAE(24)
+	, TUTAMEN(12)
+	, VACUOS(6)
+	, VENENUM(16)
+	, VICTUS(4)
+	, VINCULUM(16)
+	, VITIUM(48)
+	, VITREUS(3)
+	, VOLATUS(12)
 	;
 	
 	/**
 	 * The Thaumcraft Aspect Object of the Mod itself.
 	 */
 	public Object mAspect;
-	
+	public int mValue;
+		
+	private TC_Aspects(int aValue){
+		mValue = aValue;
+	}
+		
 	public static class TC_AspectStack {
 		public TC_Aspects mAspect;
 		public long mAmount;
+		
 		
 		public TC_AspectStack(TC_Aspects aAspect, long aAmount) {
 			mAspect = aAspect;

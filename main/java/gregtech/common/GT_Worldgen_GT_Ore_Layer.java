@@ -2,6 +2,7 @@ package gregtech.common;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Config;
 import gregtech.api.world.GT_Worldgen;
@@ -91,6 +92,8 @@ public class GT_Worldgen_GT_Ore_Layer
         }
       }
     }
+    if(GT_Values.D1){
+    System.out.println("Generated Orevein: "+this.mWorldGenName);}
     return true;
   }
 }

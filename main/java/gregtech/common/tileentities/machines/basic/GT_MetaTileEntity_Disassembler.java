@@ -41,13 +41,13 @@ public class GT_MetaTileEntity_Disassembler
         {
           getInputAt(0).stackSize -= 1;
           this.mEUt = (16 * (1 << this.mTier - 1) * (1 << this.mTier - 1));
-          this.mMaxProgresstime = 160;
+          this.mMaxProgresstime = 80;
           for (int i = 0; i < this.mOutputItems.length; i++) {
             if (getBaseMetaTileEntity().getRandomNumber(100) < 50 + 10 * this.mTier)
             {
               this.mOutputItems[i] = GT_Utility.loadItem(tNBT, "Ingredient." + i);
               if (this.mOutputItems[i] != null) {
-                this.mMaxProgresstime *= 2;
+                this.mMaxProgresstime *= 1.7;
               }
             }
           }

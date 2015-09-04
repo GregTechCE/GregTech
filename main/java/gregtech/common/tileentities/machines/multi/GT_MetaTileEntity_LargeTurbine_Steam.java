@@ -72,9 +72,9 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
         int remainingFlow = (int) (aOptFlow * 1.25f); // Allowed to use up to 125% of optimal flow.  Variable required outside of loop for multi-hatch scenarios.
 
         for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) { // loop through each hatch; extract inputs and track totals.
-            if (aFluids.get(i).getFluid().getUnlocalizedName(aFluids.get(i)).equals("fluid.steam")
-                    || aFluids.get(i).getFluid().getUnlocalizedName(aFluids.get(i)).equals("ic2.fluidSteam")) {
-                flow = aFluids.get(i).amount; // Get all (steam) in hatch
+        	 String fluidName = aFluids.get(i).getFluid().getUnlocalizedName(aFluids.get(i));
+        	 if (fluidName.equals("fluid.steam") || fluidName.equals("ic2.fluidSteam") || fluidName.equals("fluid.mfr.steam.still.name")) {
+        	                    flow = aFluids.get(i).amount; // Get all (steam) in hatch
                 flow = Math.min(flow, Math.min(remainingFlow, (int) (aOptFlow * 1.25f))); // try to use up to 125% of optimal flow w/o exceeding remainingFlow
                 depleteInput(new FluidStack(aFluids.get(i), flow)); // deplete that amount
                 remainingFlow -= flow; // track amount we're allowed to continue depleting from hatches
