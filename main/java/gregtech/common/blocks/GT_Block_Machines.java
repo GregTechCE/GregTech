@@ -296,10 +296,14 @@ public class GT_Block_Machines
   
   public float getPlayerRelativeBlockHardness(EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ)
   {
+//	  System.out.println("player hardness");
     TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-    if (((tTileEntity instanceof BaseMetaTileEntity)) && (((BaseMetaTileEntity)tTileEntity).privateAccess()) && (!((BaseMetaTileEntity)tTileEntity).playerOwnsThis(aPlayer, false))) {
-      return -1.0F;
+    if (((tTileEntity instanceof BaseMetaTileEntity)) && (((BaseMetaTileEntity)tTileEntity).privateAccess()) && (!((BaseMetaTileEntity)tTileEntity).playerOwnsThis(aPlayer, true))) {
+//      System.out.println("locked");
+    	return -1.0F;
     }
+//    System.out.println("unlocked");
+//    System.out.println("hardness: "+super.getPlayerRelativeBlockHardness(aPlayer, aWorld, aX, aY, aZ));
     return super.getPlayerRelativeBlockHardness(aPlayer, aWorld, aX, aY, aZ);
   }
   

@@ -552,7 +552,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 				mFacing			= (byte)(aValue& 7);
 				mActive			= ((aValue& 8) != 0);
 				mRedstone		= ((aValue&16) != 0);
-				mLockUpgrade	= ((aValue&32) != 0);
+				//mLockUpgrade	= ((aValue&32) != 0);
 				break;
 			case  1:
 				if (hasValidMetaTileEntity()) mMetaTileEntity.onValueUpdate((byte)aValue);

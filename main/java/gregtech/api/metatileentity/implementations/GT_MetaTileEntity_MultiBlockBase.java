@@ -325,7 +325,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 			stopMachine();
 			return false;
 		}
-		if (mRuntime++>10) {
+		if (mRuntime++>1000) {
 			mRuntime = 0;
 			if (getBaseMetaTileEntity().getRandomNumber(6000) == 0) {
 				switch (getBaseMetaTileEntity().getRandomNumber(6)) {
