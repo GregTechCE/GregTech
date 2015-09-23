@@ -9,6 +9,11 @@ public abstract class GT_MetaTileEntity_Hatch extends GT_MetaTileEntity_BasicTan
 	
 	public byte mMachineBlock = 0;
 	
+	public static int getSlots(int aTier)
+	{
+		return aTier < 1 ? 1 : aTier == 1 ? 4 : aTier == 2 ? 9 : 16;
+	}
+	
 	public GT_MetaTileEntity_Hatch(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription, ITexture... aTextures) {
 		super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
 	}
