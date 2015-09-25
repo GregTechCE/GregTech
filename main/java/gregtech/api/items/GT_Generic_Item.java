@@ -138,7 +138,7 @@ public class GT_Generic_Item extends Item implements IProjectileItem {
     }
     
 	@Override
-    public final boolean hasContainerItem(ItemStack aStack) {
+    public boolean hasContainerItem(ItemStack aStack) {
         return getContainerItem(aStack) != null;
     }
 }
