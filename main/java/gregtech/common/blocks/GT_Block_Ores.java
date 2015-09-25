@@ -102,8 +102,10 @@ public class GT_Block_Ores
 	      return aMaterial.mDefaultLocalName + " Infused Stone";
 	    case Vermiculite: case Bentonite: case Kaolinite: case Talc: case BasalticMineralSand: case GraniticMineralSand: case GlauconiteSand: case CassiteriteSand: case GarnetSand: case QuartzSand: case Pitchblende: case FullersEarth: 
 	      return aMaterial.mDefaultLocalName;
+	    default:
+	      return aMaterial.mDefaultLocalName + OrePrefixes.ore.mLocalizedMaterialPost;
 	    }
-	    return aMaterial.mDefaultLocalName + OrePrefixes.ore.mLocalizedMaterialPost;
+	    
 	  }
   
   public boolean onBlockEventReceived(World p_149696_1_, int p_149696_2_, int p_149696_3_, int p_149696_4_, int p_149696_5_, int p_149696_6_)
@@ -260,8 +262,12 @@ public class GT_Block_Ores
   }
 }
 
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.common.blocks.GT_Block_Ores
- * JD-Core Version:    0.7.0.1
+
+
+/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
+
+ * Qualified Name:     gregtech.common.blocks.GT_Block_Ores
+
+ * JD-Core Version:    0.7.0.1
+
  */
