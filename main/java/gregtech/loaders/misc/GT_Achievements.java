@@ -451,6 +451,8 @@ public int adjY = 9;
 						issueAchievement(player, "steel");
 					}
 				}
+			}else if(data.mPrefix == OrePrefixes.circuit&&data.mMaterial.mMaterial == Materials.Advanced){
+				issueAchievement(player, "stepforward");
 			}
 		}
 		if(stack.getUnlocalizedName().startsWith("gt.metaitem.")){
@@ -491,8 +493,6 @@ public int adjY = 9;
 			}else if(stack.getUnlocalizedName().equals("gt.metaitem.01.32605")){
 				issueAchievement(player, "whatnow");
 			}
-		}else if(stack.getUnlocalizedName().equals("ic2.itemPartCircuitAdv")){
-			issueAchievement(player, "stepforward");
 		}
 	}
 }
