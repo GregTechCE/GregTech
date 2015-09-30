@@ -393,16 +393,28 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
     }
     
 	@Override
-    public final ItemStack getContainerItem(ItemStack aStack) {
+	public final ItemStack getContainerItem(ItemStack aStack) {
+		return getContainerItem(aStack, true);
+	}
+
+	@Override
+	public final boolean hasContainerItem(ItemStack aStack) {
+		return getContainerItem(aStack, false) != null;
+	}
+	
+	private ItemStack getContainerItem(ItemStack aStack, boolean playSound) {
 		if (!isItemStackUsable(aStack)) return null;
 		aStack = GT_Utility.copyAmount(1, aStack);
 		IToolStats tStats = getToolStats(aStack);
 		if (tStats == null) return null;
 		doDamage(aStack, tStats.getToolDamagePerContainerCraft());
 		aStack = aStack.stackSize > 0 ? aStack : null;
-		if (aStack == null) GT_Utility.doSoundAtClient(tStats.getBreakingSound(), 1, 1.0F); else GT_Utility.doSoundAtClient(tStats.getCraftingSound(), 1, 1.0F);
+		if (playSound) {
+			String sound = (aStack == null) ? tStats.getBreakingSound() : tStats.getCraftingSound();
+			GT_Utility.doSoundAtClient(sound, 1, 1.0F);
+		}
 		return aStack;
-    }
+	}
 	
 	public IToolStats getToolStats(ItemStack aStack) {
 		isItemStackUsable(aStack);
