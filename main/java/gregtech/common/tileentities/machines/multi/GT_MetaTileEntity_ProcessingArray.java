@@ -112,6 +112,8 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
 											return GT_Recipe.GT_Recipe_Map.sBenderRecipes;
 										}else if(tmp.startsWith("wiremill")){
 											return GT_Recipe.GT_Recipe_Map.sWiremillRecipes;
+										}else if(tmp.startsWith("arcfurnace")){
+											return GT_Recipe.GT_Recipe_Map.sArcFurnaceRecipes;
 										}
 				    return null;
 				  }
@@ -240,6 +242,11 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
 											tmp = overStacks.toArray(tmp);
 											tOut = ArrayUtils.addAll(tOut, tmp);
 										}
+										List<ItemStack> tSList = new ArrayList<ItemStack>();
+										for(ItemStack tS : tOut){
+											if(tS.stackSize>0)tSList.add(tS);
+										}
+										tOut = tSList.toArray(new ItemStack[tSList.size()]);
 										this.mOutputItems = tOut;
 										this.mOutputFluids = new FluidStack[]{tFOut};
 										updateSlots();

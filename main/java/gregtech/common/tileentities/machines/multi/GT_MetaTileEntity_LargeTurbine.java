@@ -156,7 +156,8 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_M
 		
 	        if (mEUt <= 0) {
 	
-	            this.mEfficiencyIncrease = (-10);
+//	            this.mEfficiencyIncrease = (-10);
+	        	this.mEfficiency = 0;
 	            //stopMachine();
 	            return false;
 	        } else {

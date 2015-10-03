@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -55,6 +56,7 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
 		public int getPollutionPerTick(ItemStack aStack) {
 			return 0;
 		}
+		public boolean achievement=false;
 		
     @Override
     int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff) {
@@ -70,6 +72,10 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
                 depleteInput(new FluidStack(aFluids.get(i), flow)); // deplete that amount
                 remainingFlow -= flow; // track amount we're allowed to keep depleting from hatches
                 totalFlow += flow; // track total used
+                if(!achievement){
+                	try{GT_Mod.instance.achievements.issueAchievement(this.getBaseMetaTileEntity().getWorld().getPlayerEntityByName(this.getBaseMetaTileEntity().getOwnerName()), "efficientsteam");}catch(Exception e){}
+                	achievement=true;
+                }
             }
         }
         

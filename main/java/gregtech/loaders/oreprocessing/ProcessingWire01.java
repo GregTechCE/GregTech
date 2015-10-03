@@ -1,5 +1,9 @@
 package gregtech.loaders.oreprocessing;
 
+import appeng.api.config.TunnelType;
+import appeng.api.features.IP2PTunnelRegistry;
+import appeng.core.Api;
+import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -31,6 +35,11 @@ public class ProcessingWire01 implements gregtech.api.interfaces.IOreRecipeRegis
     GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(8L, new Object[] { aStack }), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.wireGt08, aMaterial, 1L), 300, 8);
     GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(12L, new Object[] { aStack }), ItemList.Circuit_Integrated.getWithDamage(0L, 12L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.wireGt12, aMaterial, 1L), 400, 8);
     GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(16L, new Object[] { aStack }), ItemList.Circuit_Integrated.getWithDamage(0L, 16L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.wireGt16, aMaterial, 1L), 500, 8);
+  
+    if(GT_Mod.gregtechproxy.mAE2Integration){
+    	Api.INSTANCE.registries().p2pTunnel().addNewAttunement(aStack, TunnelType.IC2_POWER);  
+    	Api.INSTANCE.registries().p2pTunnel().addNewAttunement(GT_OreDictUnificator.get(OrePrefixes.cableGt01, aMaterial, 1L), TunnelType.IC2_POWER);   	
+    }
   }
 }
 

@@ -61,3 +61,26 @@ processResources
         exclude 'mcmod.info'
     }
 }
+task sourceJar(type: Jar) {
+from sourceSets.main.allSource
+classifier = 'sources'}
+task devJar(type: Jar) {
+from sourceSets.main.output
+classifier = 'dev'
+manifest {
+//attributes 'FMLCorePlugin': 'WhateverLoaderClass'
+//attributes 'FMLCorePluginContainsFMLMod': 'true'
+}
+}
+//task apiJar(type: Jar) {
+//from sourceSets.main.allSource
+//include 'api/**'
+//classifier = 'sources'
+//manifest {
+//attributes 'FMLCorePlugin': 'WhateverLoaderClass'
+//attributes 'FMLCorePluginContainsFMLMod': 'true'
+//}
+}
+artifacts {
+archives devJar
+}

@@ -101,7 +101,12 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
 			    		          if ((mActiveSiphon == null) || (mActiveSiphon.getBaseMetaTileEntity() == null) || (mActiveSiphon.getBaseMetaTileEntity().isInvalidTileEntity()) || (!mActiveSiphon.hasEgg())) {
 			    		            mActiveSiphon = this;
 			    		          } else {
-			    		            getBaseMetaTileEntity().doExplosion(Integer.MAX_VALUE);
+			    		        	  Block tEgg = mActiveSiphon.getBaseMetaTileEntity().getBlockOffset(0, 1, 0);
+			    		        	  if(!getBaseMetaTileEntity().getWorld().getChunkFromBlockCoords(mActiveSiphon.getBaseMetaTileEntity().getXCoord(), mActiveSiphon.getBaseMetaTileEntity().getZCoord()).isChunkLoaded&&(tEgg==Blocks.dragon_egg||tEgg.getUnlocalizedName().equals("tile.dragonEgg")))
+			    		        	  {getBaseMetaTileEntity().doExplosion(Integer.MAX_VALUE);}else{
+			    		        		  mActiveSiphon=this;
+			    		        	  }
+			    		        	  
 			    		          }
 			    		     }
 			    		}

@@ -30,7 +30,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 	
-	public boolean mMachine = false, mWrench = false, mScrewdriver = false, mSoftHammer = false, mHardHammer = false, mSolderingTool = false, mCrowbar = false;
+	public boolean mMachine = false, mWrench = false, mScrewdriver = false, mSoftHammer = false, mHardHammer = false, mSolderingTool = false, mCrowbar = false, mRunningOnLoad = false;
 	public int mPollution = 0, mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mEfficiencyIncrease = 0, mUpdate = 0, mStartUpCheck = 100, mRuntime = 0, mEfficiency = 0;
 	public ItemStack[] mOutputItems = null;
 	public FluidStack[] mOutputFluids = null;
@@ -83,6 +83,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         	mOutputItems[i].writeToNBT(tNBT);
             aNBT.setTag("mOutputItem"+i, tNBT);
     	}
+    	if (mOutputFluids != null) for (int i = 0; i < mOutputFluids.length; i++) if (mOutputFluids[i] != null) {
+            NBTTagCompound tNBT = new NBTTagCompound();
+            mOutputFluids[i].writeToNBT(tNBT);
+            aNBT.setTag("mOutputFluids"+i, tNBT);
+    	}
     	
 		aNBT.setBoolean("mWrench", mWrench);
 		aNBT.setBoolean("mScrewdriver", mScrewdriver);
@@ -97,13 +102,16 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
     	mEUt = aNBT.getInteger("mEUt");
     	mProgresstime = aNBT.getInteger("mProgresstime");
     	mMaxProgresstime = aNBT.getInteger("mMaxProgresstime");
+    	if(mMaxProgresstime>0)mRunningOnLoad=true;
     	mEfficiencyIncrease = aNBT.getInteger("mEfficiencyIncrease");
     	mEfficiency = aNBT.getInteger("mEfficiency");
     	mPollution = aNBT.getInteger("mPollution");
     	mRuntime = aNBT.getInteger("mRuntime");
     	mOutputItems = new ItemStack[getAmountOfOutputs()];
     	for (int i = 0; i < mOutputItems.length; i++) mOutputItems[i] = GT_Utility.loadItem(aNBT, "mOutputItem" + i);
-		mWrench = aNBT.getBoolean("mWrench");
+    	mOutputFluids = new FluidStack[getAmountOfOutputs()];
+    	for (int i = 0; i < mOutputFluids.length; i++) mOutputFluids[i] = GT_Utility.loadFluid(aNBT, "mOutputFluids" + i);
+    	mWrench = aNBT.getBoolean("mWrench");
 		mScrewdriver = aNBT.getBoolean("mScrewdriver");
 		mSoftHammer = aNBT.getBoolean("mSoftHammer");
 		mHardHammer = aNBT.getBoolean("mHardHammer");

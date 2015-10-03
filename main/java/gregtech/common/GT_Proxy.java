@@ -151,6 +151,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 	public boolean mIgnoreTcon = true;
 	public boolean mDisableIC2Cables = false;
 	public boolean mAchievements = true;
+	public boolean mAE2Integration = true;
 	public int mSkeletonsShootGTArrows = 16;
 	public int mMaxEqualEntitiesAtOneSpot = 3;
 	public int mFlintChance = 30;

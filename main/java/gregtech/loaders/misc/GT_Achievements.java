@@ -175,6 +175,7 @@ public int adjY = 9;
 	}
 
 	public Achievement registerAchievement(String textId, int x, int y, ItemStack icon, Achievement requirement, boolean special) {
+		if(GT_Mod.gregtechproxy.mAchievements){return null;};
 		Achievement achievement = new Achievement(textId, textId, this.adjX + x, this.adjY+y, icon, requirement);
 		if (special) {
 			achievement.setSpecial();
@@ -189,6 +190,7 @@ public int adjY = 9;
 	}
 
 	public Achievement registerAchievement(String textId, int x, int y, ItemStack icon, String requirement, boolean special) {
+		if(GT_Mod.gregtechproxy.mAchievements){return null;};
 		Achievement achievement = new Achievement(textId, textId, this.adjX + x, this.adjY+y, icon, getAchievement(requirement));
 		if (special) {
 			achievement.setSpecial();

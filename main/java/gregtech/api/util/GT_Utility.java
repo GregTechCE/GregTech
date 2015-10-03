@@ -1411,6 +1411,13 @@ public class GT_Utility {
 	/**
 	 * Loads an ItemStack properly.
 	 */
+	public static FluidStack loadFluid(NBTTagCompound aNBT, String aTagName) {
+		return loadFluid(aNBT.getCompoundTag(aTagName));
+	}
+	
+	/**
+	 * Loads an ItemStack properly.
+	 */
 	public static ItemStack loadItem(NBTTagCompound aNBT) {
 		if (aNBT == null) return null;
 		ItemStack rStack = ItemStack.loadItemStackFromNBT(aNBT);
@@ -1422,6 +1429,14 @@ public class GT_Utility {
 			e.printStackTrace(GT_Log.err);
 		}
 		return GT_OreDictUnificator.get(T, rStack);
+	}
+	
+	/**
+	 * Loads an ItemStack properly.
+	 */
+	public static FluidStack loadFluid(NBTTagCompound aNBT) {
+		if (aNBT == null) return null;
+		return FluidStack.loadFluidStackFromNBT(aNBT);
 	}
 	
 	public static <E> E selectItemInList(int aIndex, E aReplacement, List<E> aList) {
