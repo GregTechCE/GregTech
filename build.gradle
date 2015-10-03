@@ -72,15 +72,6 @@ manifest {
 //attributes 'FMLCorePluginContainsFMLMod': 'true'
 }
 }
-//task apiJar(type: Jar) {
-//from sourceSets.main.allSource
-//include 'api/**'
-//classifier = 'sources'
-//manifest {
-//attributes 'FMLCorePlugin': 'WhateverLoaderClass'
-//attributes 'FMLCorePluginContainsFMLMod': 'true'
-//}
-}
 artifacts {
 archives devJar
 }
