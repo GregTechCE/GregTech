@@ -177,18 +177,22 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
 									if(tInputList.size() > 0 || tFluids.length>0){
 				      GT_Recipe tRecipe = map.findRecipe(getBaseMetaTileEntity(), mLastRecipe, false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
 				      if (tRecipe != null) {
+				    	  				if(tRecipe.mFluidInputs!=null){
+				    	  					
+				    	  				}
 										mLastRecipe = tRecipe;
 										this.mEUt = 0;
 										this.mOutputItems = null;
 										this.mOutputFluids = null;
-										this.mMaxProgresstime = tRecipe.mDuration;
 										int machines = Math.min(16,mInventory[1].stackSize);
-										this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-										this.mEfficiencyIncrease = 10000;
 										int i = 0;
 										for(;i<machines;i++){
-											if(!tRecipe.isRecipeInputEqual(true, tFluids, tInputs))break;
+											if(!tRecipe.isRecipeInputEqual(true, tFluids, tInputs)){if(i==0){return false;}
+												break;}
 										}
+										this.mMaxProgresstime = tRecipe.mDuration;
+										this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+										this.mEfficiencyIncrease = 10000;
 										      if (tRecipe.mEUt <= 16)
 										       {
 										        this.mEUt = (tRecipe.mEUt * (1 << tTier - 1) * (1 << tTier - 1));

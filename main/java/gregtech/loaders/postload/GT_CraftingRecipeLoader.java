@@ -570,7 +570,7 @@ public class GT_CraftingRecipeLoader
       GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("obscurator", 1L));
       GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("obscurator", 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] {"RER","CAC","RRR",'C', OrePrefixes.cableGt01.get(Materials.Gold),'R', OrePrefixes.dust.get(Materials.Redstone),'E', OrePrefixes.battery.get(Materials.Advanced), 'A', OrePrefixes.circuit.get(Materials.Advanced)});   
       GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("overclockerUpgrade", 1L));
-      GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("overclockerUpgrade", 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] {"CCC","WEW",'W', OrePrefixes.cableGt01.get(Materials.Copper),'C', GT_ModHandler.getIC2Item("reactorCoolantSimple", 1L), 'E', OrePrefixes.circuit.get(Materials.Basic)});   
+      GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("overclockerUpgrade", 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] {"CCC","WEW",'W', OrePrefixes.cableGt01.get(Materials.Copper),'C', GT_ModHandler.getIC2Item("reactorCoolantSimple", 1L, 1), 'E', OrePrefixes.circuit.get(Materials.Basic)});   
       GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("transformerUpgrade", 1L));
       GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("transformerUpgrade", 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] {"GGG","WTW","GEG",'W', OrePrefixes.cableGt01.get(Materials.Gold),'T', GT_ModHandler.getIC2Item("mvTransformer", 1L),'E', OrePrefixes.circuit.get(Materials.Basic),'G', OrePrefixes.block.get(Materials.Glass)});  
       GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("energyStorageUpgrade", 1L));
@@ -611,7 +611,7 @@ public class GT_CraftingRecipeLoader
     }
     if ((GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "beryliumreflector", true)) && 
       (GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("reactorReflectorThick", 1L,1)))) {
-      GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("reactorReflectorThick", 1L,1), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { " N ", "NBN", " N ", Character.valueOf('B'), OrePrefixes.plate.get(Materials.Beryllium), Character.valueOf('N'), GT_ModHandler.getIC2Item("reactorReflector", 1L) });
+      GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("reactorReflectorThick", 1L,1), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { " N ", "NBN", " N ", Character.valueOf('B'), OrePrefixes.plate.get(Materials.Beryllium), Character.valueOf('N'), GT_ModHandler.getIC2Item("reactorReflector", 1L, 1) });
     }
     if (GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Diamond, 1L) != null)
     {
