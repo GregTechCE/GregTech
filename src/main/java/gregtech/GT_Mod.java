@@ -237,18 +237,12 @@ public class GT_Mod
     try
     {
       List<String> tList = ((GT_Log.LogBuffer)GT_Log.ore).mBufferedOreDictLog;
-      GT_Log.ore = new PrintStream(GT_Log.mOreDictLogFile);
-      GT_Log.ore.println("**********************************************************************");
-      GT_Log.ore.println("* This is the complete Log of the GregTech OreDictionary Handler     *");
-      GT_Log.ore.println("* Everything in the OreDict goes through it sometimes causing Errors *");
-      GT_Log.ore.println("* These Errors are getting logged aswell as properly registered Ores *");
-      GT_Log.ore.println("* If you see something fishy going on in this Log, such as improper  *");
-      GT_Log.ore.println("* Items being registered, then mention it to the corresponding Mod   *");
-      GT_Log.ore.println("* In case it mentions GregTech itself improperly registering Stuff   *");
-      GT_Log.ore.println("* then please contact me about that immediatly                       *");
-      GT_Log.ore.println("*                                                                    *");
-      GT_Log.ore.println("* In case of something being 'ignored properly', that one isnt a Bug *");
-      GT_Log.ore.println("**********************************************************************");
+      GT_Log.ore.println("******************************************************************************");
+      GT_Log.ore.println("* This is the complete log of the GT5-Unofficial OreDictionary Handler. It   *");
+      GT_Log.ore.println("* processes all OreDictionary entries and can sometimes cause errors. All    *");
+      GT_Log.ore.println("* entries and errors are being logged. If you see an error please raise an   *");
+      GT_Log.ore.println("* issue at https://github.com/Blood-Asp/GT5-Unofficial.                      *");
+      GT_Log.ore.println("******************************************************************************");
       String tString;
       for (Iterator i$ = tList.iterator(); i$.hasNext(); GT_Log.ore.println(tString)) {
         tString = (String)i$.next();
@@ -1116,9 +1110,3 @@ public void onIDChangingEvent(FMLModIdMappingEvent aEvent)
     gregtechproxy.doSonictronSound(aStack, aWorld, aX, aY, aZ);
   }
 }
-
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.GT_Mod
- * JD-Core Version:    0.7.0.1
- */
