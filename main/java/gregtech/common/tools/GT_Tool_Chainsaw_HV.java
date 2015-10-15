@@ -53,9 +53,3 @@ public class GT_Tool_Chainsaw_HV
     return aIsToolHead ? gregtech.api.items.GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadChainsaw.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_HV;
   }
 }
-
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.common.tools.GT_Tool_Chainsaw_HV
- * JD-Core Version:    0.7.0.1
- */

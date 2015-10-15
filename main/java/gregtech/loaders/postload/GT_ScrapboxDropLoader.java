@@ -105,9 +105,3 @@ public class GT_ScrapboxDropLoader
     GT_ModHandler.addScrapboxDrop(0.05F, GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Diamond, 1L));
   }
 }
-
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.loaders.postload.GT_ScrapboxDropLoader
- * JD-Core Version:    0.7.0.1
- */

@@ -117,9 +117,3 @@ public class GT_BookAndLootLoader
     ChestGenHooks.addItem("strongholdCorridor", new WeightedRandomChestContent(GT_OreDictUnificator.get(OrePrefixes.arrowGtWood, Materials.SterlingSilver, 1L), 8, 24, 6));
   }
 }
-
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.loaders.postload.GT_BookAndLootLoader
- * JD-Core Version:    0.7.0.1
- */

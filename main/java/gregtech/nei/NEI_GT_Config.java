@@ -29,9 +29,3 @@ public class NEI_GT_Config
     return "(5.03a)";
   }
 }
-
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.nei.NEI_GT_Config
- * JD-Core Version:    0.7.0.1
- */

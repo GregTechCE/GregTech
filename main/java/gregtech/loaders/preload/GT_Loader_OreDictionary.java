@@ -205,9 +205,3 @@ public class GT_Loader_OreDictionary
     GT_OreDictUnificator.registerOre(OrePrefixes.circuit, Materials.Advanced, GT_ModHandler.getIC2Item("advancedCircuit", 1L));
   }
 }
-
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.loaders.preload.GT_Loader_OreDictionary
- * JD-Core Version:    0.7.0.1
- */

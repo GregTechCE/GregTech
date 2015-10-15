@@ -31,9 +31,3 @@ public class GT_GUIContainer_BronzeBlastFurnace
     }
   }
 }
-
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.common.gui.GT_GUIContainer_BronzeBlastFurnace
- * JD-Core Version:    0.7.0.1
- */

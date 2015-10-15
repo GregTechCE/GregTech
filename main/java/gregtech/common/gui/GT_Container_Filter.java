@@ -141,9 +141,3 @@ public class GT_Container_Filter
     return 9;
   }
 }
-
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.common.gui.GT_Container_Filter
- * JD-Core Version:    0.7.0.1
- */

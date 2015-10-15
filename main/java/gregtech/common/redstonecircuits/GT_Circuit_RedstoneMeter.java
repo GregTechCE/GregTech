@@ -95,9 +95,3 @@ public class GT_Circuit_RedstoneMeter
     return null;
   }
 }
-
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.common.redstonecircuits.GT_Circuit_RedstoneMeter
- * JD-Core Version:    0.7.0.1
- */

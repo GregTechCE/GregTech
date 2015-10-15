@@ -32,9 +32,3 @@ public class ProcessingToolHeadWrench implements gregtech.api.interfaces.IOreRec
     GT_ModHandler.addCraftingRecipe(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(150, 1, aMaterial, Materials.StainlessSteel, new long[] { 50000L, 32L, 1L, -1L }), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "PdX", "MGS", "GBP", Character.valueOf('X'), OrePrefixes.stickLong.get(aMaterial), Character.valueOf('M'), ItemList.Electric_Motor_LV.get(1L, new Object[0]), Character.valueOf('S'), OrePrefixes.screw.get(Materials.StainlessSteel), Character.valueOf('P'), OrePrefixes.plate.get(Materials.StainlessSteel), Character.valueOf('G'), OrePrefixes.gearGtSmall.get(Materials.StainlessSteel), Character.valueOf('B'), ItemList.Battery_RE_LV_Sodium.get(1L, new Object[0]) });
   }
 }
-
-
-/* Location:              F:\Torrent\minecraft\jdgui test\gregtech_1.7.10-5.07.07-dev.jar!\gregtech\loaders\oreprocessing\ProcessingToolHeadWrench.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       0.7.1-SNAPSHOT-20140817
- */

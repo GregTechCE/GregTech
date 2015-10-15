@@ -24,9 +24,3 @@ public class GT_CoverLoader
     GregTech_API.registerCover(GT_ModHandler.getIC2Item("reactorVentDiamond", 1L), new GT_RenderedTexture(Textures.BlockIcons.VENT_ADVANCED), null);
   }
 }
-
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.loaders.misc.GT_CoverLoader
- * JD-Core Version:    0.7.0.1
- */

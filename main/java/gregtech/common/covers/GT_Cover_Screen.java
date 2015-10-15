@@ -78,9 +78,3 @@ public class GT_Cover_Screen
     return 0;
   }
 }
-
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.common.covers.GT_Cover_Screen
- * JD-Core Version:    0.7.0.1
- */
