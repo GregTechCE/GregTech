@@ -17,9 +17,3 @@ public class ProcessingAll implements gregtech.api.interfaces.IOreRecipeRegistra
     if (((aStack.getItem() instanceof net.minecraft.item.ItemBlock)) && (aPrefix.mDefaultStackSize < aStack.getItem().getItemStackLimit(aStack))) aStack.getItem().setMaxStackSize(aPrefix.mDefaultStackSize);
   }
 }
-
-
-/* Location:              F:\Torrent\minecraft\jdgui test\gregtech_1.7.10-5.07.07-dev.jar!\gregtech\loaders\oreprocessing\ProcessingAll.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       0.7.1-SNAPSHOT-20140817
- */

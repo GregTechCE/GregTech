@@ -105,9 +105,3 @@ public class GT_MetaTileEntity_Regulator
     return (super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack)) && (GT_Utility.areStacksEqual(aStack, this.mInventory[(aIndex + 9)]));
   }
 }
-
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.common.tileentities.automation.GT_MetaTileEntity_Regulator
- * JD-Core Version:    0.7.0.1
- */

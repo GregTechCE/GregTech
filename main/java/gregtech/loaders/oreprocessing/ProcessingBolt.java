@@ -24,9 +24,3 @@ public class ProcessingBolt implements gregtech.api.interfaces.IOreRecipeRegistr
    if (!aMaterial.contains(SubTag.NO_WORKING)) GT_Values.RA.addLatheRecipe(GT_Utility.copyAmount(1L, new Object[] { aStack }), GT_OreDictUnificator.get(OrePrefixes.screw, aMaterial, 1L), null, (int)Math.max(aMaterial.getMass() / 8L, 1L), 4);
  	 }
 }
-
-
-/* Location:              F:\Torrent\minecraft\jdgui test\gregtech_1.7.10-5.07.07-dev.jar!\gregtech\loaders\oreprocessing\ProcessingBolt.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       0.7.1-SNAPSHOT-20140817
- */

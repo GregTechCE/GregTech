@@ -91,9 +91,3 @@ public class GT_Block_Casings3
     return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
   }
 }
-
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.common.blocks.GT_Block_Casings3
- * JD-Core Version:    0.7.0.1
- */

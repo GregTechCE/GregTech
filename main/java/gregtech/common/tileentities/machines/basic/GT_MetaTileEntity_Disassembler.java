@@ -63,9 +63,3 @@ public class GT_MetaTileEntity_Disassembler
     return (super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack)) && (aStack.getTagCompound() != null) && (aStack.getTagCompound().getCompoundTag("GT.CraftingComponents") != null);
   }
 }
-
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Disassembler
- * JD-Core Version:    0.7.0.1
- */

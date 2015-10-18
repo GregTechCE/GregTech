@@ -57,9 +57,3 @@ public class GT_Tool_Knife
     return new ChatComponentText("<" + EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + "> " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE + " what are you doing?, " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE + "?!? STAHP!!!");
   }
 }
-
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.common.tools.GT_Tool_Knife
- * JD-Core Version:    0.7.0.1
- */

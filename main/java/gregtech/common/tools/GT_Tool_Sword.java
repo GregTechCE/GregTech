@@ -120,9 +120,3 @@ public class GT_Tool_Sword
     aPlayer.triggerAchievement(AchievementList.buildSword);
   }
 }
-
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.common.tools.GT_Tool_Sword
- * JD-Core Version:    0.7.0.1
- */
