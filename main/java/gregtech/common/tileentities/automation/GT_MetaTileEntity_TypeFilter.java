@@ -139,7 +139,9 @@ public class GT_MetaTileEntity_TypeFilter
   {
 	  boolean tAllowPrefix = this.mPrefix.contains(aStack);
 	  if(this.mPrefix==OrePrefixes.ore){
-		OrePrefixes tFix = GT_OreDictUnificator.getItemData(aStack).mPrefix;
+		  ItemData tData = GT_OreDictUnificator.getItemData(aStack);
+		  if(tData!=null&&tData.mPrefix!=null){
+	  OrePrefixes tFix = tData.mPrefix;
 		if(tFix==OrePrefixes.oreBlackgranite||
 		   tFix==OrePrefixes.oreDense||
 		   tFix==OrePrefixes.oreEnd||
@@ -151,7 +153,7 @@ public class GT_MetaTileEntity_TypeFilter
 		   tFix==OrePrefixes.oreRedgranite||
 		   tFix==OrePrefixes.oreRich||
 		   tFix==OrePrefixes.oreSmall)tAllowPrefix=true;
-	  }	  
+	  }} 
     return (super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack)) && ((this.bNBTAllowed) || (!aStack.hasTagCompound())) && (tAllowPrefix != this.bInvertFilter);
   }
 }

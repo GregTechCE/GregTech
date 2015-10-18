@@ -10,10 +10,12 @@ import gregtech.api.util.GT_Utility;
 public class GT_GUIContainer_FusionReactor extends GT_GUIContainerMetaTile_Machine {
 	
 	String mName = "";
+	public String mNEI;
 	
-    public GT_GUIContainer_FusionReactor(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile) {
+    public GT_GUIContainer_FusionReactor(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile, String aNEI) {
         super(new GT_Container_MultiMachine(aInventoryPlayer, aTileEntity, false), RES_PATH_GUI + "multimachines/" + (aTextureFile==null?"MultiblockDisplay":aTextureFile));
         mName = aName;
+		mNEI = aNEI;
     }
     
     @Override
