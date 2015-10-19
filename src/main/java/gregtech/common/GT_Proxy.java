@@ -1125,7 +1125,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 					GT_Log.ore.println(tModToName + " is invalid due to being solely uppercased.");
 					return;
 				}
-				if (GT_Values.CU.contains(Character.valueOf(aEvent.Name.charAt(0)))) {
+				if (Character.isUpperCase(aEvent.Name.charAt(0))) {
 					GT_Log.ore.println(tModToName + " is invalid due to the first character being uppercased.");
 				}
 			} else {
@@ -1142,8 +1142,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 				}
 				String tName = aEvent.Name.replaceFirst(aPrefix.toString(), "");
 				if (tName.length() > 0) {
-					if ((GT_Values.CU.contains(Character.valueOf(tName.charAt(0)))) || (GT_Values.CN.contains(Character.valueOf(tName.charAt(0))))
-							|| (tName.charAt(0) == '_')) {
+					char firstChar = tName.charAt(0);
+					if (Character.isUpperCase(firstChar) || Character.isLowerCase(firstChar) || firstChar == '_') {
 						if (aPrefix.mIsMaterialBased) {
 							aMaterial = Materials.get(tName);
 							if (aMaterial != aMaterial.mMaterialInto) {
