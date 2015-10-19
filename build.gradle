@@ -16,30 +16,84 @@ buildscript {
 }
 
 apply plugin: 'forge'
+apply plugin: 'idea'
 
-version = "5.08"
-group= "gregtech" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+file "build.properties" withReader {
+    def prop = new Properties()
+    prop.load(it)
+    ext.config = new ConfigSlurper().parse prop
+}
+
+version = "${config.gt.version}"
+group= "gregtech"
 archivesBaseName = "gregtech"
 
 minecraft {
-    version = "1.7.10-10.13.4.1481-1.7.10"
+    version = "${config.minecraft.version}-${config.forge.version}"
     runDir = "eclipse"
 }
 
+configurations {
+    provided
+    embedded
+    compile.extendsFrom provided, embedded
+}
+
+repositories {
+    maven {
+        name 'Forge'
+        url 'http://files.minecraftforge.net/maven'
+    }
+    maven {
+        name = "chickenbones"
+        url = "http://chickenbones.net/maven/"
+    }
+    maven {
+        name = "ic2, forestry"
+        url = "http://maven.ic2.player.to/"
+    }
+    maven { // EnderIO & EnderCore
+        name 'tterrag Repo'
+        url "http://maven.tterrag.com"
+    }
+    maven { // AppleCore
+        url "http://www.ryanliptak.com/maven/"
+    }
+    ivy {
+        name "BuildCraft"
+        artifactPattern "http://www.mod-buildcraft.com/releases/BuildCraft/[revision]/[module]-[revision]-[classifier].[ext]"
+    }
+    ivy {
+        name 'CoFHLib'
+        artifactPattern "http://addons-origin.cursecdn.com/files/${config.cofhlib.cf}/[module]-[revision].[ext]"
+    }
+    ivy {
+        name 'CoFHCore'
+        artifactPattern "http://addons-origin.cursecdn.com/files/${config.cofhcore.cf}/[module]-[revision].[ext]"
+    }
+    ivy {
+        name 'Railcraft'
+        artifactPattern "http://addons-origin.cursecdn.com/files/${config.railcraft.cf}/[module]_[revision].[ext]"
+    }
+}
+
 dependencies {
-    // you may put jars on which you depend on in ./libs
-    // or you may define them like so..
-    //compile "some.group:artifact:version:classifier"
-    //compile "some.group:artifact:version"
-      
-    // real examples
-    //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
-    //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
-
-    // for more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
+    provided ("appeng:appliedenergistics2:${config.ae2.version}:dev") {
+        exclude module: '*'
+    }
+    provided "codechicken:CodeChickenLib:${config.minecraft.version}-${config.codechickenlib.version}:dev"
+    provided "codechicken:NotEnoughItems:${config.minecraft.version}-${config.nei.version}:dev"
+    provided "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"
+    provided "net.sengir.forestry:forestry_${config.minecraft.version}:${config.forestry.version}:dev"
+    provided "applecore:AppleCore:${config.applecore.version}:api"
+    provided "com.enderio.core:EnderCore:${config.enderiocore.version}:dev"
+    provided ("com.enderio:EnderIO:${config.enderio.version}:dev") {
+        transitive = false
+    }
+    provided name: 'buildcraft', version: config.buildcraft.version, classifier: "dev", ext: 'jar'
+    provided name: 'CoFHLib', version: config.cofhlib.version, ext: 'jar'
+    provided name: 'CoFHCore', version: config.cofhcore.version, ext: 'jar'
+    provided name: 'Railcraft', version: config.railcraft.version, ext: 'jar'
 }
 
 processResources
@@ -61,17 +115,21 @@ processResources
         exclude 'mcmod.info'
     }
 }
+
 task sourceJar(type: Jar) {
-from sourceSets.main.allSource
-classifier = 'sources'}
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
 task devJar(type: Jar) {
-from sourceSets.main.output
-classifier = 'dev'
-manifest {
-//attributes 'FMLCorePlugin': 'WhateverLoaderClass'
-//attributes 'FMLCorePluginContainsFMLMod': 'true'
+    from sourceSets.main.output
+    classifier = 'dev'
+    manifest {
+        //attributes 'FMLCorePlugin': 'WhateverLoaderClass'
+        //attributes 'FMLCorePluginContainsFMLMod': 'true'
+    }
 }
-}
+
 artifacts {
-archives devJar
+    archives devJar
 }
