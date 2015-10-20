@@ -15,14 +15,17 @@ import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
-			  import forestry.factory.gadgets.MachineCentrifuge;
-import forestry.factory.gadgets.MachineCentrifuge.RecipeManager;
-			  import forestry.factory.gadgets.MachineSqueezer;
+import forestry.factory.recipes.ISqueezerRecipe;
+import forestry.factory.tiles.TileCentrifuge;
+import forestry.factory.tiles.TileSqueezer;
+//import forestry.factory.gadgets.MachineCentrifuge;
+//import forestry.factory.gadgets.MachineCentrifuge.RecipeManager;
+//import forestry.factory.gadgets.MachineSqueezer;
 import gregtech.api.GregTech_API;
 import gregtech.api.enchants.Enchantment_EnderDamage;
 import gregtech.api.enchants.Enchantment_Radioactivity;
 import gregtech.api.enums.ConfigCategories.Recipes;
-			  import gregtech.api.enums.*;
+import gregtech.api.enums.*;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.enums.Textures.ItemIcons;
 import gregtech.api.interfaces.internal.IGT_Mod;
@@ -40,7 +43,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_RecipeRegistrator;
-			  import gregtech.api.util.GT_SpawnEventHandler;
+import gregtech.api.util.GT_SpawnEventHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_DummyWorld;
 import gregtech.common.GT_Network;
@@ -53,7 +56,7 @@ import gregtech.loaders.load.GT_CoverBehaviorLoader;
 import gregtech.loaders.load.GT_FuelLoader;
 import gregtech.loaders.load.GT_ItemIterator;
 import gregtech.loaders.load.GT_SonictronLoader;
-			  import gregtech.loaders.misc.GT_Achievements;
+import gregtech.loaders.misc.GT_Achievements;
 import gregtech.loaders.misc.GT_CoverLoader;
 import gregtech.loaders.postload.GT_BlockResistanceLoader;
 import gregtech.loaders.postload.GT_BookAndLootLoader;
@@ -102,12 +105,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
-			  import net.minecraft.stats.Achievement;
+import net.minecraft.stats.Achievement;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.ChestGenHooks;
-			  import net.minecraftforge.common.ForgeVersion;
+import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -564,24 +567,18 @@ public class GT_Mod
     }
     try
     {
-      for (Object tRecipe : MachineCentrifuge.RecipeManager.recipes)
-      { 
-	
-	
-	Map<ItemStack,Float> outputs = ((MachineCentrifuge.CentrifugeRecipe)tRecipe).getAllProducts();
+      for (Object tRecipe : TileCentrifuge.RecipeManager.recipes)
+      {
+    	Map<ItemStack,Float> outputs = ((TileCentrifuge.CentrifugeRecipe)tRecipe).getAllProducts();
         ItemStack[] tOutputs = new ItemStack[outputs.size()];
         int[] tChances = new int[outputs.size()];
-int i =0;
-for (Map.Entry<ItemStack, Float> entry : outputs.entrySet()) {
-	tChances[i] = (int) (entry.getValue()*10000);
-	tOutputs[i] = entry.getKey().copy();
-	i++;
-}
-//        for (int i = 0; i < outputs.size(); i++) {
-//						tOutputs[i] = outputs.entrySet().
-//          tChances[i] = (tOriginalChances[i].intValue() * 100);
-//        }
-        GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(true, new ItemStack[] { ((MachineCentrifuge.CentrifugeRecipe)tRecipe).getInput() }, tOutputs, null, tChances, null, null, 128, 5, 0);
+        int i =0;
+        for (Map.Entry<ItemStack, Float> entry : outputs.entrySet()) {
+        	tChances[i] = (int) (entry.getValue()*10000);
+        	tOutputs[i] = entry.getKey().copy();
+        	i++;
+        }
+        GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(true, new ItemStack[] { ((TileCentrifuge.CentrifugeRecipe)tRecipe).getInput() }, tOutputs, null, tChances, null, null, 128, 5, 0);
       }
     }
     catch (Throwable e)
@@ -592,9 +589,9 @@ for (Map.Entry<ItemStack, Float> entry : outputs.entrySet()) {
     }
     try
     {
-      for (Object tRecipe : MachineSqueezer.RecipeManager.recipes) {
-        if ((((MachineSqueezer.Recipe)tRecipe).resources.length == 1) && (GT_Utility.getFluidForFilledItem(((MachineSqueezer.Recipe)tRecipe).resources[0], true) == null)) {
-          GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes.addRecipe(true, new ItemStack[] { ((MachineSqueezer.Recipe)tRecipe).resources[0] }, new ItemStack[] { ((MachineSqueezer.Recipe)tRecipe).remnants }, null, new int[] { ((MachineSqueezer.Recipe)tRecipe).chance * 100 }, null, new FluidStack[] { ((MachineSqueezer.Recipe)tRecipe).liquid }, 400, 2, 0);
+      for (Object tRecipe : TileSqueezer.RecipeManager.recipes) {
+        if ((((ISqueezerRecipe)tRecipe).getResources().length == 1) && (((ISqueezerRecipe)tRecipe).getFluidOutput() != null)) {
+          GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes.addRecipe(true, new ItemStack[] { ((ISqueezerRecipe)tRecipe).getResources()[0] }, new ItemStack[] { ((ISqueezerRecipe)tRecipe).getRemnants() }, null, new int[] { (int) (((ISqueezerRecipe)tRecipe).getRemnantsChance() * 10000) }, null, new FluidStack[] { ((ISqueezerRecipe)tRecipe).getFluidOutput() }, 400, 2, 0);
         }
       }
     }
