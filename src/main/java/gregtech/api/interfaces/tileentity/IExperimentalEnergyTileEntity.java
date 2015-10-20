@@ -1,7 +1,5 @@
 package gregtech.api.interfaces.tileentity;
 
-import static gregtech.api.enums.GT_Values.F;
-import static gregtech.api.enums.GT_Values.T;
 import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_Utility;
 import ic2.api.energy.tile.IEnergySink;
@@ -37,7 +35,7 @@ public interface IExperimentalEnergyTileEntity extends IColoredTileEntity, IHasW
 	
 	/** Utility for the Network */
 	public static class Util {
-		private static boolean RF_ENERGY = F, IC_ENERGY = F, CHECK_ALL = T;
+		private static boolean RF_ENERGY = false, IC_ENERGY = false, CHECK_ALL = true;
 		public static int RF_PER_EU = 4;
 		
 		private static void checkAvailabilities() {
@@ -45,14 +43,14 @@ public interface IExperimentalEnergyTileEntity extends IColoredTileEntity, IHasW
 				try {
 					Class tClass = cofh.api.energy.IEnergyReceiver.class;
 					tClass.getCanonicalName();
-					RF_ENERGY = T;
+					RF_ENERGY = true;
 				} catch(Throwable e) {/**/}
 				try {
 					Class tClass = ic2.api.energy.tile.IEnergySink.class;
 					tClass.getCanonicalName();
-					IC_ENERGY = T;
+					IC_ENERGY = true;
 				} catch(Throwable e) {/**/}
-				CHECK_ALL = F;
+				CHECK_ALL = false;
 			}
 		}
 		
@@ -77,7 +75,7 @@ public interface IExperimentalEnergyTileEntity extends IColoredTileEntity, IHasW
 	        			while (aSecondary > rUsedSecondary && ((IEnergySink)tTileEntity).getDemandedEnergy() > 0 && ((IEnergySink)tTileEntity).injectEnergy(ForgeDirection.getOrientation(j), aPrimary, aPrimary) < aPrimary) rUsedSecondary++;
 	        		}
 	    		} else if (RF_ENERGY && aEnergyType == SubTag.ENERGY_REDSTONE_FLUX && tTileEntity instanceof IEnergyReceiver && ((IEnergyReceiver)tTileEntity).canConnectEnergy(ForgeDirection.getOrientation(j))) {
-	    			rUsedSecondary+=((IEnergyReceiver)tTileEntity).receiveEnergy(ForgeDirection.getOrientation(j), (int)aSecondary, F);
+	    			rUsedSecondary+=((IEnergyReceiver)tTileEntity).receiveEnergy(ForgeDirection.getOrientation(j), (int)aSecondary, false);
 	    		}
 			}
 			return rUsedSecondary;

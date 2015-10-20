@@ -1,6 +1,5 @@
 package gregtech.api.util;
 
-import static gregtech.api.enums.GT_Values.F;
 import gregtech.api.damagesources.GT_DamageSources;
 import gregtech.api.interfaces.IFoodStat;
 import gregtech.api.items.GT_MetaBase_Item;
@@ -17,7 +16,7 @@ public class GT_FoodStat implements IFoodStat {
 	private final EnumAction mAction;
 	private final ItemStack mEmptyContainer;
 	private final boolean mAlwaysEdible, mInvisibleParticles, mIsRotten;
-	private boolean mExplosive = F, mMilk = F;
+	private boolean mExplosive = false, mMilk = false;
 	
 	/**
 	 * @param aFoodLevel Amount of Food in Half Bacon [0 - 20]

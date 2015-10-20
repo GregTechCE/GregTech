@@ -1,14 +1,13 @@
 package gregtech.api.util;
 
 import static gregtech.api.enums.GT_Values.E;
-import static gregtech.api.enums.GT_Values.F;
 import gregtech.api.GregTech_API;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 
 public class GT_Config implements Runnable {
-	public static boolean troll = F;
+	public static boolean troll = false;
 	
 	public static Configuration sConfigFileIDs;
 	
