@@ -50,13 +50,18 @@ public class GT_SensorCard_Item
       }
     }
   }
-  
-  public CardState update(TileEntity aPanel, ICardWrapper aCard, int aMaxRange)
-  {
+
+  @Override
+  public CardState update(TileEntity aPanel, ICardWrapper aCard, int aMaxRange) {
+    return update(aPanel.getWorldObj(), aCard, aMaxRange);
+  }
+
+  @Override
+  public CardState update(World world, ICardWrapper aCard, int aMaxRange) {
     ChunkCoordinates target = aCard.getTarget();
-    TileEntity tTileEntity = aPanel.getWorldObj().getTileEntity(target.posX, target.posY, target.posZ);
-    if ((tTileEntity != null) && ((tTileEntity instanceof IGregTechDeviceInformation)) && (((IGregTechDeviceInformation)tTileEntity).isGivingInformation()))
-    {
+
+    TileEntity tTileEntity = world.getTileEntity(target.posX, target.posY, target.posZ);
+    if ((tTileEntity != null) && ((tTileEntity instanceof IGregTechDeviceInformation)) && (((IGregTechDeviceInformation)tTileEntity).isGivingInformation())) {
       String[] tInfoData = ((IGregTechDeviceInformation)tTileEntity).getInfoData();
       for (int i = 0; i < tInfoData.length; i++) {
         aCard.setString("mString" + i, tInfoData[i]);
@@ -65,7 +70,7 @@ public class GT_SensorCard_Item
     }
     return CardState.NO_TARGET;
   }
-  
+
   public List<PanelString> getStringData(int aSettings, ICardWrapper aCard, boolean aLabels)
   {
     List<PanelString> rList = new LinkedList();
