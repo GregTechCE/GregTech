@@ -8,17 +8,14 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
-public class ProcessingIngot4 implements gregtech.api.interfaces.IOreRecipeRegistrator
-{
-  public ProcessingIngot4()
-  {
-    OrePrefixes.ingotQuadruple.add(this);
-  }
-  
-  public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack)
-  {
-    if (!aMaterial.contains(SubTag.NO_SMASHING)) {
-      GT_Values.RA.addBenderRecipe(GT_Utility.copyAmount(1L, new Object[] { aStack }), GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L), (int)Math.max(aMaterial.getMass() * 1L, 1L), 96);
+public class ProcessingIngot4 implements gregtech.api.interfaces.IOreRecipeRegistrator {
+    public ProcessingIngot4() {
+        OrePrefixes.ingotQuadruple.add(this);
     }
-  }
+
+    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+        if (!aMaterial.contains(SubTag.NO_SMASHING)) {
+            GT_Values.RA.addBenderRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L), (int) Math.max(aMaterial.getMass() * 1L, 1L), 96);
+        }
+    }
 }
