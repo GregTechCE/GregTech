@@ -5,7 +5,6 @@ import java.util.Locale;
 
 import org.apache.commons.lang3.text.WordUtils;
 
-import crazypants.util.OreDictionaryHelper;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import forestry.api.apiculture.BeeManager;

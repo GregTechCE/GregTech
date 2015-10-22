@@ -15,7 +15,6 @@ import net.minecraft.util.IIcon;
 import forestry.api.core.ForestryAPI;
 import forestry.api.core.Tabs;
 import forestry.api.recipes.RecipeManagers;
-import forestry.factory.gadgets.MachineCentrifuge.RecipeManager;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
