@@ -26,9 +26,6 @@ public class GT_Values {
 	// TODO: Rename OrePrefixes Class to 'P'
 	// TODO: Rename Materials Class to 'M'
 	
-	/** Because "true" and "false" are too long. Some Programmers might wanna kill me for that, but this looks much better than true and false, and also it is better to have something that is not 4 and 5 Characters long, because of symmetry */
-	public static final boolean T = true, F = false;
-	
 	/** Empty String for an easier Call Hierarchy */
 	public static final String E = "";
 	
