@@ -22,9 +22,3 @@ public class ProcessingCrushedPurified implements gregtech.api.interfaces.IOreRe
     if (tGem != null) GT_Values.RA.addSifterRecipe(GT_Utility.copyAmount(1L, new Object[] { aStack }), new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, tGem, 1L), GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, tGem, 1L), tGem, GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, tGem, 1L), GT_OreDictUnificator.get(OrePrefixes.gemChipped, aMaterial, tGem, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, tGem, 1L) }, new int[] { 100, 400, 1500, 2000, 4000, 5000 }, 800, 16);
   }
 }
-
-
-/* Location:              F:\Torrent\minecraft\jdgui test\gregtech_1.7.10-5.07.07-dev.jar!\gregtech\loaders\oreprocessing\ProcessingCrushedPurified.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       0.7.1-SNAPSHOT-20140817
- */

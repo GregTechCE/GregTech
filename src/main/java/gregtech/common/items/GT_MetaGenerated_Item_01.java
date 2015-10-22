@@ -881,9 +881,3 @@ public class GT_MetaGenerated_Item_01
     return (super.doesMaterialAllowGeneration(aPrefix, aMaterial)) && ((aPrefix != OrePrefixes.ingotHot) || (aMaterial.mBlastFurnaceTemp > 1750));
   }
 }
-
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.common.items.GT_MetaGenerated_Item_01
- * JD-Core Version:    0.7.0.1
- */

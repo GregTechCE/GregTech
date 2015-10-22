@@ -72,9 +72,3 @@ public class GT_Tool_Wrench_LV
     return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
   }
 }
-
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.common.tools.GT_Tool_Wrench_LV
- * JD-Core Version:    0.7.0.1
- */

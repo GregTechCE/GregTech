@@ -117,9 +117,3 @@ public class GT_Tool_WireCutter
     return new ChatComponentText(EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE + " has cut the Cable for the Life Support Machine of " + EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE);
   }
 }
-
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.common.tools.GT_Tool_WireCutter
- * JD-Core Version:    0.7.0.1
- */

@@ -185,9 +185,3 @@ public class GT_Cover_Pump
     return 1;
   }
 }
-
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.common.covers.GT_Cover_Pump
- * JD-Core Version:    0.7.0.1
- */

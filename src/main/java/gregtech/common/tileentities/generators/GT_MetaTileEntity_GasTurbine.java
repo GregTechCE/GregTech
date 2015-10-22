@@ -110,9 +110,3 @@ public void onConfigLoad()
     return new ITexture[] { super.getSidesActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.GAS_TURBINE_SIDE_ACTIVE) };
   }
 }
-
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.common.tileentities.generators.GT_MetaTileEntity_GasTurbine
- * JD-Core Version:    0.7.0.1
- */

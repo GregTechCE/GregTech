@@ -26,9 +26,3 @@ public class ProcessingStoneCobble implements gregtech.api.interfaces.IOreRecipe
     GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(7L, new Object[] { aStack }), new ItemStack(Items.bow, 1, 0), Materials.Redstone.getMolten(144L), new ItemStack(Blocks.dispenser, 1), 400, 4);
   }
 }
-
-
-/* Location:              F:\Torrent\minecraft\jdgui test\gregtech_1.7.10-5.07.07-dev.jar!\gregtech\loaders\oreprocessing\ProcessingStoneCobble.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       0.7.1-SNAPSHOT-20140817
- */

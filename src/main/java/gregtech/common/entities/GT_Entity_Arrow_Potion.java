@@ -69,9 +69,3 @@ public class GT_Entity_Arrow_Potion
     return super.onHitEntity(aHitEntity, aShootingEntity, aArrow, 1, aMagicDamage, aKnockback, aFireDamage, aHitTimer);
   }
 }
-
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.common.entities.GT_Entity_Arrow_Potion
- * JD-Core Version:    0.7.0.1
- */

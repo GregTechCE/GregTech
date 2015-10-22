@@ -32,9 +32,3 @@ public class ProcessingToolHeadDrill implements gregtech.api.interfaces.IOreReci
     GT_ModHandler.addCraftingRecipe(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(130, 1, aMaterial, Materials.Titanium, new long[] { 800000L, 512L, 3L, -1L }), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "SXd", "PRP", "MPB", Character.valueOf('X'), OrePrefixes.stickLong.get(aMaterial), Character.valueOf('M'), ItemList.Electric_Piston_HV.get(1L, new Object[0]), Character.valueOf('S'), OrePrefixes.screw.get(Materials.Titanium), Character.valueOf('P'), OrePrefixes.plate.get(Materials.Titanium), Character.valueOf('R'), OrePrefixes.spring.get(Materials.Titanium), Character.valueOf('B'), ItemList.Battery_RE_HV_Sodium.get(1L, new Object[0]) });
   }
 }
-
-
-/* Location:              F:\Torrent\minecraft\jdgui test\gregtech_1.7.10-5.07.07-dev.jar!\gregtech\loaders\oreprocessing\ProcessingToolHeadDrill.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       0.7.1-SNAPSHOT-20140817
- */
