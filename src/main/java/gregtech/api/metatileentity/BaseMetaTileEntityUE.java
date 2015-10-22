@@ -3,16 +3,16 @@ package gregtech.api.metatileentity;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
- * 
+ * <p/>
  * This file contains all the needed 'implements' of the Interfaces for the Universal Electricity Stuff.
- * 
+ * <p/>
  * I am using the BC3 Ratio, since that is a constant in comparison to IC² Energy (1 MJ is always 2,5 EU).
  */
 public class BaseMetaTileEntityUE extends BaseMetaTileEntity /*implements IUETileEntity*/ {
-	public BaseMetaTileEntityUE() {
-		super();
-	}
-	/*
+    public BaseMetaTileEntityUE() {
+        super();
+    }
+    /*
 	@Override
 	public void updateStatus() {
 		super.updateStatus();

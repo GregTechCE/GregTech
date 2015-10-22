@@ -1,29 +1,28 @@
 package gregtech.api.items;
 
 import gregtech.api.util.GT_LanguageManager;
-
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class GT_Spray_Pepper_Item extends GT_Tool_Item {
-	public GT_Spray_Pepper_Item(String aUnlocalized, String aEnglish, int aMaxDamage, int aEntityDamage) {
-		super(aUnlocalized, aEnglish, "To defend yourself against Bears", aMaxDamage, aEntityDamage, true);/*
-		setCraftingSound(GregTech_API.sSoundList.get(102));
+    public GT_Spray_Pepper_Item(String aUnlocalized, String aEnglish, int aMaxDamage, int aEntityDamage) {
+        super(aUnlocalized, aEnglish, "To defend yourself against Bears", aMaxDamage, aEntityDamage, true);/*
+        setCraftingSound(GregTech_API.sSoundList.get(102));
 		setBreakingSound(GregTech_API.sSoundList.get(102));
 		setEntityHitSound(GregTech_API.sSoundList.get(102));
 		setUsageAmounts(1, 8, 1);*/
-	}
-	
-	@Override
-	public void addAdditionalToolTips(List aList, ItemStack aStack) {
-		aList.add(GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".tooltip_1", "especially Pedobears, Care Bears,"));
-		aList.add(GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".tooltip_2", "Confession Bears, Bear Grylls"));
-		aList.add(GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".tooltip_3", "And ofcourse Man-Bear-Pig"));
-	}
+    }
+
+    @Override
+    public void addAdditionalToolTips(List aList, ItemStack aStack) {
+        aList.add(GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".tooltip_1", "especially Pedobears, Care Bears,"));
+        aList.add(GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".tooltip_2", "Confession Bears, Bear Grylls"));
+        aList.add(GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".tooltip_3", "And ofcourse Man-Bear-Pig"));
+    }
 	/*
 	@Override
 	public void onHitEntity(Entity aEntity) {
@@ -35,18 +34,18 @@ public class GT_Spray_Pepper_Item extends GT_Tool_Item {
 		}
 	}
 	*/
-	
-	@Override
+
+    @Override
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
-		super.onItemUseFirst(aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ);
-		if (aWorld.isRemote) {
-    		return false;
-    	}
-    	Block aBlock = aWorld.getBlock(aX, aY, aZ);
-    	if (aBlock == null) return false;
+        super.onItemUseFirst(aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ);
+        if (aWorld.isRemote) {
+            return false;
+        }
+        Block aBlock = aWorld.getBlock(aX, aY, aZ);
+        if (aBlock == null) return false;
 //    	byte aMeta = (byte)aWorld.getBlockMetadata(aX, aY, aZ);
 //    	TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-    	
-    	return false;
+
+        return false;
     }
 }
