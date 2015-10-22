@@ -35,6 +35,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 	public ItemStack[] mOutputItems = null;
 	public FluidStack[] mOutputFluids = null;
 	public static boolean disableMaintenance;
+	public String mNEI;
 	
 	public ArrayList<GT_MetaTileEntity_Hatch_Input> mInputHatches = new ArrayList<GT_MetaTileEntity_Hatch_Input>();
 	public ArrayList<GT_MetaTileEntity_Hatch_Output> mOutputHatches = new ArrayList<GT_MetaTileEntity_Hatch_Output>();
@@ -48,6 +49,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 	public GT_MetaTileEntity_MultiBlockBase(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional, 2);
 		this.disableMaintenance = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "MultiBlockMachines.disableMaintenance", false);
+		this.mNEI = "";
 	}
 	
 	public GT_MetaTileEntity_MultiBlockBase(String aName) {
@@ -84,11 +86,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
             aNBT.setTag("mOutputItem"+i, tNBT);
     	}
     	if (mOutputFluids != null) for (int i = 0; i < mOutputFluids.length; i++) if (mOutputFluids[i] != null) {
-            NBTTagCompound tNBT = new NBTTagCompound();
-            mOutputFluids[i].writeToNBT(tNBT);
-            aNBT.setTag("mOutputFluids"+i, tNBT);
+    	    NBTTagCompound tNBT = new NBTTagCompound();
+    	    mOutputFluids[i].writeToNBT(tNBT);
+    	    aNBT.setTag("mOutputFluids"+i, tNBT);
     	}
-    	
 		aNBT.setBoolean("mWrench", mWrench);
 		aNBT.setBoolean("mScrewdriver", mScrewdriver);
 		aNBT.setBoolean("mSoftHammer", mSoftHammer);
@@ -110,7 +111,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
     	mOutputItems = new ItemStack[getAmountOfOutputs()];
     	for (int i = 0; i < mOutputItems.length; i++) mOutputItems[i] = GT_Utility.loadItem(aNBT, "mOutputItem" + i);
     	mOutputFluids = new FluidStack[getAmountOfOutputs()];
-    	for (int i = 0; i < mOutputFluids.length; i++) mOutputFluids[i] = GT_Utility.loadFluid(aNBT, "mOutputFluids" + i);
+    	for (int i = 0; i < mOutputFluids.length; i++) mOutputFluids[i] = GT_Utility.loadFluid(aNBT, "mOutputFluids" + i);   	
     	mWrench = aNBT.getBoolean("mWrench");
 		mScrewdriver = aNBT.getBoolean("mScrewdriver");
 		mSoftHammer = aNBT.getBoolean("mSoftHammer");
@@ -208,7 +209,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 						    		mEfficiencyIncrease = 0;
 						    		if (aBaseMetaTileEntity.isAllowedToWork()) checkRecipe(mInventory[1]);
 						    		if(mOutputFluids!=null&&mOutputFluids.length>0){
-						    		if(mOutputFluids.length>1){GT_Mod.instance.achievements.issueAchievement(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "oilplant");}
+						    		if(mOutputFluids.length>1){try{GT_Mod.instance.achievements.issueAchievement(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "oilplant");}catch(Exception e){}}
 						    		}
 						    	}
 				    		}
@@ -347,7 +348,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 			}
 			if (mInventory[1] != null && getBaseMetaTileEntity().getRandomNumber(2) == 0 &&!mInventory[1].getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.")) {
 				if(mInventory[1].getItem() instanceof GT_MetaGenerated_Tool_01){
-					 NBTTagCompound tNBT = mInventory[1].getTagCompound();
+					NBTTagCompound tNBT = mInventory[1].getTagCompound();
 				      if (tNBT != null)
 				      {
 				        NBTTagCompound tNBT2 = tNBT.getCompoundTag("GT.CraftingComponents");
@@ -406,7 +407,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 				        	
 				        }
 				      }
-					
 					((GT_MetaGenerated_Tool)mInventory[1].getItem()).doDamage(mInventory[1], (long) Math.min(mEUt/5, Math.pow(mEUt, 0.7)));
 					if(mInventory[1].stackSize==0)mInventory[1]=null;
 				}
@@ -456,7 +456,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 	
 	public boolean addOutput(FluidStack aLiquid) {
 		if (aLiquid == null) return false;
-			FluidStack tLiquid = aLiquid.copy();
+		FluidStack tLiquid = aLiquid.copy();
 		for (GT_MetaTileEntity_Hatch_Output tHatch : mOutputHatches) {
 			if (isValidMetaTileEntity(tHatch) && GT_ModHandler.isSteam(aLiquid)?tHatch.outputsSteam():tHatch.outputsLiquids()) {
 				int tAmount = tHatch.fill(tLiquid, false);

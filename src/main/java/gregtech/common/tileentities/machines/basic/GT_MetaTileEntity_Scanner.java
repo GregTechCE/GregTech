@@ -171,6 +171,20 @@ public class GT_MetaTileEntity_Scanner
           return 2;
         }
       }
+      if(getSpecialSlot()==null&&ItemList.Tool_DataStick.isStackEqual(aStack, false, true)){
+    	  if(GT_Utility.ItemNBT.getBookTitle(aStack).equals("Raw Prospection Data")){
+    		  GT_Utility.ItemNBT.setBookTitle(aStack,"Analyzed Prospection Data");
+    		  GT_Utility.ItemNBT.convertProspectionData(aStack);
+              aStack.stackSize -= 1;
+              
+              this.mOutputItems[0] = GT_Utility.copyAmount(1L, new Object[] { aStack });
+              this.mMaxProgresstime = (1000 / (1 << this.mTier - 1));
+              this.mEUt = (32 * (1 << this.mTier - 1) * (1 << this.mTier - 1));
+              return 2;
+    		  
+    	  }
+      }
+      
     }
     return 0;
   }

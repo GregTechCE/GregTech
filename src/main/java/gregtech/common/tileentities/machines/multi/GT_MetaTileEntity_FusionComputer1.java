@@ -44,7 +44,7 @@ public class GT_MetaTileEntity_FusionComputer1 extends GT_MetaTileEntity_FusionC
 	public Block getCasing() {
 		return GregTech_API.sBlockCasings1;
 	}
-
+	
 	@Override
 	public IIconContainer getIconOverlay() {
 		return Textures.BlockIcons.OVERLAY_FUSION1;

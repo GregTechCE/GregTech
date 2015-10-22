@@ -32,6 +32,7 @@ public class GT_Worldgen_GT_Ore_Layer
   public final boolean mOverworld;
   public final boolean mNether;
   public final boolean mEnd;
+  public final boolean mEndAsteroid;
   
   public GT_Worldgen_GT_Ore_Layer(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity, int aSize, boolean aOverworld, boolean aNether, boolean aEnd, Materials aPrimary, Materials aSecondary, Materials aBetween, Materials aSporadic)
   {
@@ -39,6 +40,7 @@ public class GT_Worldgen_GT_Ore_Layer
     this.mOverworld = GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Overworld", aOverworld);
     this.mNether = GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Nether", aNether);
     this.mEnd = GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "TheEnd", aEnd);
+    this.mEndAsteroid = GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "EndAsteroid", aEnd);
     this.mMinY = ((short)GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MinHeight", aMinY));
     this.mMaxY = ((short)Math.max(this.mMinY + 5, GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MaxHeight", aMaxY)));
     this.mWeight = ((short)GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "RandomWeight", aWeight));

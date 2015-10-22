@@ -5,6 +5,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.ConfigCategories.Recipes;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
@@ -17,11 +18,11 @@ import gregtech.api.util.GT_ModHandler.RecipeBits;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
+import ic2.core.Ic2Items;
 
 import java.io.PrintStream;
 
-import appeng.api.features.IP2PTunnelRegistry;
-import appeng.core.Api;
+import scala.tools.nsc.interpreter.MemberHandlers.ModuleHandler;
 import cpw.mods.fml.common.Loader;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -489,6 +490,12 @@ public class GT_CraftingRecipeLoader
     GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.YttriumBariumCuprate, 6L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { OrePrefixes.dustTiny.get(Materials.Yttrium), OrePrefixes.dustTiny.get(Materials.Barium), OrePrefixes.dustTiny.get(Materials.Barium), OrePrefixes.dustTiny.get(Materials.AnyCopper), OrePrefixes.dustTiny.get(Materials.AnyCopper), OrePrefixes.dustTiny.get(Materials.AnyCopper) });
     GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Kanthal, 3L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { OrePrefixes.dustTiny.get(Materials.Iron), OrePrefixes.dustTiny.get(Materials.Aluminium), OrePrefixes.dustTiny.get(Materials.Chrome) });
     
+    GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.VanadiumSteel, 9L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { OrePrefixes.dust.get(Materials.Steel), OrePrefixes.dust.get(Materials.Steel), OrePrefixes.dust.get(Materials.Steel), OrePrefixes.dust.get(Materials.Steel), OrePrefixes.dust.get(Materials.Steel), OrePrefixes.dust.get(Materials.Steel), OrePrefixes.dust.get(Materials.Steel), OrePrefixes.dust.get(Materials.Vanadium), OrePrefixes.dust.get(Materials.Chrome) });
+    GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HSSG, 9L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { OrePrefixes.dust.get(Materials.TungstenSteel), OrePrefixes.dust.get(Materials.TungstenSteel), OrePrefixes.dust.get(Materials.TungstenSteel), OrePrefixes.dust.get(Materials.TungstenSteel), OrePrefixes.dust.get(Materials.TungstenSteel), OrePrefixes.dust.get(Materials.Chrome), OrePrefixes.dust.get(Materials.Molybdenum), OrePrefixes.dust.get(Materials.Molybdenum), OrePrefixes.dust.get(Materials.Vanadium) });
+    GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HSSE, 9L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { OrePrefixes.dust.get(Materials.HSSG), OrePrefixes.dust.get(Materials.HSSG), OrePrefixes.dust.get(Materials.HSSG), OrePrefixes.dust.get(Materials.HSSG), OrePrefixes.dust.get(Materials.HSSG), OrePrefixes.dust.get(Materials.HSSG), OrePrefixes.dust.get(Materials.Cobalt), OrePrefixes.dust.get(Materials.Manganese), OrePrefixes.dust.get(Materials.Silicon) });
+    GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HSSS, 9L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { OrePrefixes.dust.get(Materials.HSSG), OrePrefixes.dust.get(Materials.HSSG), OrePrefixes.dust.get(Materials.HSSG), OrePrefixes.dust.get(Materials.HSSG), OrePrefixes.dust.get(Materials.HSSG), OrePrefixes.dust.get(Materials.HSSG), OrePrefixes.dust.get(Materials.Iridium), OrePrefixes.dust.get(Materials.Iridium), OrePrefixes.dust.get(Materials.Osmium) });
+    
+    
     GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.IronWood, 2L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { OrePrefixes.dust.get(Materials.Iron), OrePrefixes.dust.get(Materials.LiveRoot), OrePrefixes.dustTiny.get(Materials.Gold) });
     
     GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(Items.gunpowder, 3), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { OrePrefixes.dust.get(Materials.Coal), OrePrefixes.dust.get(Materials.Sulfur), OrePrefixes.dust.get(Materials.Saltpeter), OrePrefixes.dust.get(Materials.Saltpeter) });
@@ -496,7 +503,6 @@ public class GT_CraftingRecipeLoader
     
     GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 5L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { OrePrefixes.dust.get(Materials.Potassium), OrePrefixes.cell.get(Materials.Nitrogen), OrePrefixes.cell.get(Materials.Oxygen), OrePrefixes.cell.get(Materials.Oxygen), OrePrefixes.cell.get(Materials.Oxygen) });
     GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("carbonFiber", 1L));
-    
     if(GT_Mod.gregtechproxy.mDisableIC2Cables){
     	GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("copperCableItem", 1L));
     	GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("insulatedCopperCableItem", 1L));
@@ -570,7 +576,7 @@ public class GT_CraftingRecipeLoader
       GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("obscurator", 1L));
       GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("obscurator", 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] {"RER","CAC","RRR",'C', OrePrefixes.cableGt01.get(Materials.Gold),'R', OrePrefixes.dust.get(Materials.Redstone),'E', OrePrefixes.battery.get(Materials.Advanced), 'A', OrePrefixes.circuit.get(Materials.Advanced)});   
       GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("overclockerUpgrade", 1L));
-      GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("overclockerUpgrade", 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] {"CCC","WEW",'W', OrePrefixes.cableGt01.get(Materials.Copper),'C', GT_ModHandler.getIC2Item("reactorCoolantSimple", 1L), 'E', OrePrefixes.circuit.get(Materials.Basic)});   
+      GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("overclockerUpgrade", 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] {"CCC","WEW",'W', OrePrefixes.cableGt01.get(Materials.Copper),'C', GT_ModHandler.getIC2Item("reactorCoolantSimple", 1L, 1), 'E', OrePrefixes.circuit.get(Materials.Basic)});   
       GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("transformerUpgrade", 1L));
       GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("transformerUpgrade", 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] {"GGG","WTW","GEG",'W', OrePrefixes.cableGt01.get(Materials.Gold),'T', GT_ModHandler.getIC2Item("mvTransformer", 1L),'E', OrePrefixes.circuit.get(Materials.Basic),'G', OrePrefixes.block.get(Materials.Glass)});  
       GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("energyStorageUpgrade", 1L));
@@ -611,8 +617,48 @@ public class GT_CraftingRecipeLoader
     }
     if ((GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "beryliumreflector", true)) && 
       (GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("reactorReflectorThick", 1L,1)))) {
-      GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("reactorReflectorThick", 1L,1), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { " N ", "NBN", " N ", Character.valueOf('B'), OrePrefixes.plate.get(Materials.Beryllium), Character.valueOf('N'), GT_ModHandler.getIC2Item("reactorReflector", 1L) });
+      GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("reactorReflectorThick", 1L,1), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { " N ", "NBN", " N ", Character.valueOf('B'), OrePrefixes.plate.get(Materials.Beryllium), Character.valueOf('N'), GT_ModHandler.getIC2Item("reactorReflector", 1L, 1) });
     }
+    if ((GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "cropharvester", true)) && 
+    	      (GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("crophavester", 1L)))) {
+    	      GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("crophavester", 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { "ACA", "PMS", "WOW",'M',ItemList.Hull_HV, 'C', OrePrefixes.circuit.get(Materials.Master), 'A', ItemList.Robot_Arm_HV, 'P',ItemList.Electric_Piston_HV,'S',ItemList.Sensor_HV,'W',OrePrefixes.toolHeadSense.get(Materials.StainlessSteel),'O',ItemList.Conveyor_Module_HV });
+    	    }
+    if ((GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "nuclearReactor", true)) && 
+    	      (GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("nuclearReactor", 1L)))) {
+    	      GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("nuclearReactor", 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { "PCP", "PMP", "PAP", 'P', OrePrefixes.plateDense.get(Materials.Lead), 'C', OrePrefixes.circuit.get(Materials.Master),'M',GT_ModHandler.getIC2Item("reactorChamber", 1),'A',ItemList.Robot_Arm_EV });
+    	      
+    	      GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("reactorChamber", 1L));
+    	      GT_Values.RA.addAssemblerRecipe(ItemList.Hull_EV.get(1, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Lead, 4), GT_ModHandler.getIC2Item("reactorChamber", 1), 200, 256);
+    	      
+    	      GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("reactorvessel", 1L));
+    	      GT_Values.RA.addChemicalBathRecipe(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Lead,  1), Materials.Concrete.getMolten(144), GT_ModHandler.getIC2Item("reactorvessel", 1),GT_Values.NI,GT_Values.NI,null, 400, 80);
+    	      
+    	      GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("reactorAccessHatch", 1L));
+    	      GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getIC2Item("reactorvessel", 1L), ItemList.Conveyor_Module_EV.get(1, new Object[0]), GT_ModHandler.getIC2Item("reactorAccessHatch", 1L), 200, 80);
+    
+    	      GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("reactorFluidPort", 1L));
+    	      GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getIC2Item("reactorvessel", 1L), ItemList.Electric_Pump_EV.get(1, new Object[0]), GT_ModHandler.getIC2Item("reactorFluidPort", 1L), 200, 80);
+    
+    	      GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("reactorRedstonePort", 1L));
+    	      GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getIC2Item("reactorvessel", 1L), GT_OreDictUnificator.get(OrePrefixes.circuit,Materials.Master,1), GT_ModHandler.getIC2Item("reactorRedstonePort", 1L), 200, 80);
+    }
+    if ((GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "rtg", true)) && 
+    	      (GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("RTGenerator", 1L)))) {
+    	      GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("RTGenerator", 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { "III", "IMI", "ICI", 'I',ItemList.IC2_Item_Casing_Steel,'C', OrePrefixes.circuit.get(Materials.Master), 'M', ItemList.Hull_IV });
+    	      
+    	      GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("RTHeatGenerator", 1L));
+    	      GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("RTHeatGenerator", 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { "III", "IMB", "ICI", 'I',ItemList.IC2_Item_Casing_Steel,'C', OrePrefixes.circuit.get(Materials.Master), 'M', ItemList.Hull_IV ,'B',GT_OreDictUnificator.get(OrePrefixes.block,Materials.Copper,1)});
+      	    }
+    if ((GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "windRotor", true)) && 
+  	      (GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("carbonrotor", 1L)))) {
+  	       GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("carbonrotor", 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { "dBS", "BTB", "SBw",'B',GT_ModHandler.getIC2Item("carbonrotorblade", 1),'S', OrePrefixes.screw.get(Materials.Iridium),'T', GT_ModHandler.getIC2Item("steelshaft", 1) });
+  	       GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("steelrotor", 1L));
+    	   GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("steelrotor", 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { "dBS", "BTB", "SBw",'B',GT_ModHandler.getIC2Item("steelrotorblade", 1),'S', OrePrefixes.screw.get(Materials.StainlessSteel),'T', GT_ModHandler.getIC2Item("ironshaft", 1) });
+    	   GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("ironrotor", 1L));
+    	   GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("ironrotor", 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { "dBS", "BTB", "SBw",'B',GT_ModHandler.getIC2Item("ironrotorblade", 1),'S', OrePrefixes.screw.get(Materials.WroughtIron),'T', GT_ModHandler.getIC2Item("ironshaft", 1) });
+    	   GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("woodrotor", 1L));
+    	   GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("woodrotor", 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { "dBS", "BTB", "SBw",'B',GT_ModHandler.getIC2Item("woodrotorblade", 1),'S', OrePrefixes.screw.get(Materials.WroughtIron),'T', OrePrefixes.stickLong.get(Materials.WroughtIron) });
+    	}
     if (GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Diamond, 1L) != null)
     {
       tStack = GT_ModHandler.getRecipeOutput(new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Iron, 1L), new ItemStack(Items.redstone, 1), GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Iron, 1L), GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Gold, 1L), GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Iron, 1L), GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Gold, 1L), GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Diamond, 1L), new ItemStack(Items.diamond_pickaxe, 1), GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Diamond, 1L) });
@@ -625,6 +671,16 @@ public class GT_CraftingRecipeLoader
         GT_ModHandler.removeRecipeByOutput(tStack);
       }
     }
+    if((GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "sugarpaper", true))){
+    	GT_ModHandler.removeRecipeByOutput(new ItemStack(Items.paper));
+    	GT_ModHandler.removeRecipeByOutput(new ItemStack(Items.sugar));
+    	GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Paper, 2), new Object[]{"SSS"," m ",'S',new ItemStack(Items.reeds)});
+    	GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1), new Object[]{"Sm ",'S',new ItemStack(Items.reeds)});
+    	GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.paper, Materials.Empty, 2), new Object[]{" C ","SSS"," C ",'S',GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Paper, 1),'C',new ItemStack(Blocks.stone_slab)});
+    	
+    	
+    }    
+    
     GT_Log.out.println("GT_Mod: Applying Recipes for Tools");
     if ((GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "nanosaber", true)) && 
       (GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("nanoSaber", 1L)))) {

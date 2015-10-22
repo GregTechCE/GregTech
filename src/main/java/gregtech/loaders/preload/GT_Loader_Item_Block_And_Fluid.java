@@ -4,6 +4,7 @@ import codechicken.nei.api.API;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.registry.GameRegistry;
+import crazypants.util.OreDictionaryHelper;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
@@ -29,7 +30,9 @@ import gregtech.common.blocks.GT_Block_Casings4;
 import gregtech.common.blocks.GT_Block_Concretes;
 import gregtech.common.blocks.GT_Block_Granites;
 import gregtech.common.blocks.GT_Block_Machines;
+import gregtech.common.blocks.GT_Block_Metal;
 import gregtech.common.blocks.GT_Block_Ores;
+import gregtech.common.blocks.GT_Block_Reinforced;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import gregtech.common.items.GT_DepletetCell_Item;
 import gregtech.common.items.GT_FluidDisplayItem;
@@ -39,6 +42,7 @@ import gregtech.common.items.GT_MetaGenerated_Item_02;
 import gregtech.common.items.GT_MetaGenerated_Item_03;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.GT_NeutronReflector_Item;
+import gregtech.loaders.misc.GT_Bees;
 import ic2.core.Ic2Items;
 import ic2.core.item.ItemRadioactive;
 
@@ -64,43 +68,34 @@ public class GT_Loader_Item_Block_And_Fluid
     
     GT_Log.out.println("GT_Mod: Register Books.");
     
-    GT_Utility.getWrittenBook("Manual_Printer", "Printer Manual V2.0", "Gregorius Techneticies", new String[] { "This Manual explains the different Functionalities the GregTech Printing Factory has built in, which are not in NEI. Most got NEI Support now, but there is still some left without it.", "1. Coloring Items and Blocks: You know those Crafting Recipes, which have a dye surrounded by 8 Item to dye them? Or the ones which have just one Item and one Dye in the Grid? Those two Recipe Types can be cheaply automated using the Printer.", "The Colorization Functionality even optimizes the Recipes, which normally require 8 Items + 1 Dye to 1 Item and an 8th of the normally used Dye in Fluid Form, isn't that awesome?", "2. Copying Books: This Task got slightly harder. The first Step is putting the written and signed Book inside the Scanner with a Data Stick ready to receive the Data.", "Now insert the Stick into the Data Slot of the Printer and add 3 pieces of Paper together with 144 Liters of actual Ink Fluid. Water mixed and chemical Dyes won't work on Paper without messing things up!", "You got a stack of Pages for your new Book, just put them into the Assembler with some Glue and a piece of Leather for the Binding, and you receive an identical copy of the Book, which would stack together with the original.", "3. Renaming Items: This Functionality is no longer Part of the Printer. There is now a Name Mold for the Forming Press to imprint a Name into an Item, just rename the Mold in an Anvil and use it in the Forming Press on any Item.", "4. Crafting of Books, Maps, Nametags etc etc etc: Those Recipes moved to other Machines, just look them up in NEI." });
+    GT_Utility.getWrittenBook("Manual_Printer", "Printer Manual V2.0", "Gregorius Techneticies", new String[] { 
+    		"This Manual explains the different Functionalities the GregTech Printing Factory has built in, which are not in NEI. Most got NEI Support now, but there is still some left without it.", 
+    		"1. Coloring Items and Blocks: You know those Crafting Recipes, which have a dye surrounded by 8 Item to dye them? Or the ones which have just one Item and one Dye in the Grid? Those two Recipe Types can be cheaply automated using the Printer.", 
+    		"The Colorization Functionality even optimizes the Recipes, which normally require 8 Items + 1 Dye to 1 Item and an 8th of the normally used Dye in Fluid Form, isn't that awesome?", 
+    		"2. Copying Books: This Task got slightly harder. The first Step is putting the written and signed Book inside the Scanner with a Data Stick ready to receive the Data.", 
+    		"Now insert the Stick into the Data Slot of the Printer and add 3 pieces of Paper together with 144 Liters of actual Ink Fluid. Water mixed and chemical Dyes won't work on Paper without messing things up!", 
+    		"You got a stack of Pages for your new Book, just put them into the Assembler with some Glue and a piece of Leather for the Binding, and you receive an identical copy of the Book, which would stack together with the original.", 
+    		"3. Renaming Items: This Functionality is no longer Part of the Printer. There is now a Name Mold for the Forming Press to imprint a Name into an Item, just rename the Mold in an Anvil and use it in the Forming Press on any Item.", 
+    		"4. Crafting of Books, Maps, Nametags etc etc etc: Those Recipes moved to other Machines, just look them up in NEI." });
     
+    GT_Utility.getWrittenBook("Manual_Punch_Cards", "Punch Card Manual V0.0", "Gregorius Techneticies", new String[] { 
+    		"This Manual will explain the Functionality of the Punch Cards, once they are fully implemented. And no, they won't be like the IRL Punch Cards. This is just a current Idea Collection.", 
+    		"(i1&&i2)?o1=15:o1=0;=10", "ignore all Whitespace Characters, use Long for saving the Numbers", "&& || ^^ & | ^ ! ++ -- + - % / // * ** << >> >>> < > <= >= == !=  ~ ( ) ?: , ; ;= ;=X; = i0 i1 i2 i3 i4 i5 o0 o1 o2 o3 o4 o5 v0 v1 v2 v3 v4 v5 v6 v7 v8 v9 m0 m1 m2 m3 m4 m5 m6 m7 m8 m9 A B C D E F", 
+    		"'0' = false, 'everything but 0' = true, '!' turns '0' into '1' and everything else into '0'", "',' is just a separator for multiple executed Codes in a row.", 
+    		"';' means that the Program waits until the next tick before continuing. ';=10' and ';=10;' both mean that it will wait 10 Ticks instead of 1. And ';=0' or anything < 0 will default to 0.", 
+    		"If the '=' Operator is used within Brackets, it returns the value the variable has been set to.", "The Program saves the Char Index of the current Task, the 10 Variables (which reset to 0 as soon as the Program Loop stops), the 10 Member Variables and the remaining waiting Time in its NBT.", 
+    		"A = 10, B = 11, C = 12, D = 13, E = 14, F = 15, just for Hexadecimal Space saving, since Redstone has only 4 Bits.", 
+    		"For implementing Loops you just need 1 Punch Card per Loop, these Cards can restart once they are finished, depending on how many other Cards there are in the Program Loop you inserted your Card into, since it will process them procedurally.", 
+    		"A Punch Card Processor can run up to four Loops, each with the length of seven Punch Cards, parallel.", 
+    		"Why does the Punch Card need Ink to be made, you ask? Because the empty one needs to have some lines on, and the for the punched one it prints the Code to execute in a human readable format on the Card." });
 
-
-
-
-
-
-
-
-
-    GT_Utility.getWrittenBook("Manual_Punch_Cards", "Punch Card Manual V0.0", "Gregorius Techneticies", new String[] { "This Manual will explain the Functionality of the Punch Cards, once they are fully implemented. And no, they won't be like the IRL Punch Cards. This is just a current Idea Collection.", "(i1&&i2)?o1=15:o1=0;=10", "ignore all Whitespace Characters, use Long for saving the Numbers", "&& || ^^ & | ^ ! ++ -- + - % / // * ** << >> >>> < > <= >= == !=  ~ ( ) ?: , ; ;= ;=X; = i0 i1 i2 i3 i4 i5 o0 o1 o2 o3 o4 o5 v0 v1 v2 v3 v4 v5 v6 v7 v8 v9 m0 m1 m2 m3 m4 m5 m6 m7 m8 m9 A B C D E F", "'0' = false, 'everything but 0' = true, '!' turns '0' into '1' and everything else into '0'", "',' is just a separator for multiple executed Codes in a row.", "';' means that the Program waits until the next tick before continuing. ';=10' and ';=10;' both mean that it will wait 10 Ticks instead of 1. And ';=0' or anything < 0 will default to 0.", "If the '=' Operator is used within Brackets, it returns the value the variable has been set to.", "The Program saves the Char Index of the current Task, the 10 Variables (which reset to 0 as soon as the Program Loop stops), the 10 Member Variables and the remaining waiting Time in its NBT.", "A = 10, B = 11, C = 12, D = 13, E = 14, F = 15, just for Hexadecimal Space saving, since Redstone has only 4 Bits.", "For implementing Loops you just need 1 Punch Card per Loop, these Cards can restart once they are finished, depending on how many other Cards there are in the Program Loop you inserted your Card into, since it will process them procedurally.", "A Punch Card Processor can run up to four Loops, each with the length of seven Punch Cards, parallel.", "Why does the Punch Card need Ink to be made, you ask? Because the empty one needs to have some lines on, and the for the punched one it prints the Code to execute in a human readable format on the Card." });
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    GT_Utility.getWrittenBook("Manual_Microwave", "Microwave Oven Manual", "Kitchen Industries", new String[] { "Congratulations, you inserted a random seemingly empty Book into the Microwave and these Letters appeared out of nowhere.", "You just got a Microwave Oven and asked yourself 'why do I even need it?'. It's simple, the Microwave can cook for just 128 EU and at an insane speed. Not even a normal E-furnace can do it that fast and cheap!", "This is the cheapest and fastest way to cook for you. That is why the Microwave Oven can be found in almost every Kitchen (see www.youwannabuyakitchen.ly).", "Long time exposure to Microwaves can cause Cancer, but we doubt Steve lives long enough to die because of that.", "Do not insert any Metals. It might result in an Explosion.", "Do not dry Animals with it. It will result in a Hot Dog, no matter which Animal you put into it.", "Do not insert inflammable Objects. The Oven will catch on Fire.", "Do not insert Explosives such as Eggs. Just don't." });
-    
-
-
-
-
-
-
-
-
+    GT_Utility.getWrittenBook("Manual_Microwave", "Microwave Oven Manual", "Kitchen Industries", new String[] { 
+    		"Congratulations, you inserted a random seemingly empty Book into the Microwave and these Letters appeared out of nowhere.", 
+    		"You just got a Microwave Oven and asked yourself 'why do I even need it?'. It's simple, the Microwave can cook for just 128 EU and at an insane speed. Not even a normal E-furnace can do it that fast and cheap!", 
+    		"This is the cheapest and fastest way to cook for you. That is why the Microwave Oven can be found in almost every Kitchen (see www.youwannabuyakitchen.ly).", 
+    		"Long time exposure to Microwaves can cause Cancer, but we doubt Steve lives long enough to die because of that.", 
+    		"Do not insert any Metals. It might result in an Explosion.", "Do not dry Animals with it. It will result in a Hot Dog, no matter which Animal you put into it.", 
+    		"Do not insert inflammable Objects. The Oven will catch on Fire.", "Do not insert Explosives such as Eggs. Just don't." });
 
     GT_Log.out.println("GT_Mod: Register Items.");
     
@@ -109,8 +104,13 @@ public class GT_Loader_Item_Block_And_Fluid
     new GT_MetaGenerated_Item_02();
     new GT_MetaGenerated_Item_03();
     new GT_MetaGenerated_Tool_01();
-    
     new GT_FluidDisplayItem();
+    
+    ItemList.Rotor_LV.set(GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Tin, 1L));
+    ItemList.Rotor_MV.set(GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Bronze, 1L));
+    ItemList.Rotor_HV.set(GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Steel, 1L));
+    ItemList.Rotor_EV.set(GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 1L));
+    ItemList.Rotor_IV.set(GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.TungstenSteel, 1L));
     
     Item tItem = (Item)GT_Utility.callConstructor("gregtech.common.items.GT_SensorCard_Item", 0, null, false, new Object[] { "sensorcard", "GregTech Sensor Card" });
     ItemList.NC_SensorCard.set(tItem == null ? new GT_Generic_Item("sensorcard", "GregTech Sensor Card", "Nuclear Control not installed", false) : tItem);
@@ -128,7 +128,7 @@ public class GT_Loader_Item_Block_And_Fluid
 					GT_ModHandler.addCraftingRecipe(ItemList.Reactor_Coolant_He_6.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE , new Object[] { "PCP", "PDP", "PCP",'C', ItemList.Reactor_Coolant_He_3,'P', OrePrefixes.plate.get(Materials.Tin),'D',OrePrefixes.plateDense.get(Materials.Copper) });    
 					
 					ItemList.Reactor_Coolant_NaK_1.set(GregTech_API.constructCoolantCellItem("60k_NaK_Coolantcell", "60k NaK Coolantcell", 60000));
-					GT_ModHandler.addCraftingRecipe(ItemList.Reactor_Coolant_NaK_1.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE , new Object[] { "TST", "PCP", "TST",'C', GT_ModHandler.getIC2Item("reactorCoolantSimple", 1L, 1),'T', OrePrefixes.plate.get(Materials.Tin) ,'S', OrePrefixes.dust.get(Materials.Sodium),'P', OrePrefixes.dust.get(Materials.Potassium)});    
+					GT_ModHandler.addCraftingRecipe(ItemList.Reactor_Coolant_NaK_1.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE , new Object[] { "TST", "PCP", "TST",'C', GT_ModHandler.getIC2Item("reactorCoolantSimple", 1L,1),'T', OrePrefixes.plate.get(Materials.Tin) ,'S', OrePrefixes.dust.get(Materials.Sodium),'P', OrePrefixes.dust.get(Materials.Potassium)});    
 					
 					ItemList.Reactor_Coolant_NaK_3.set(GregTech_API.constructCoolantCellItem("180k_NaK_Coolantcell", "180k NaK Coolantcell", 180000));
 					GT_ModHandler.addCraftingRecipe(ItemList.Reactor_Coolant_NaK_3.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE , new Object[] { "PCP", "PCP", "PCP",'C', ItemList.Reactor_Coolant_NaK_1,'P', OrePrefixes.plate.get(Materials.Tin)});    
@@ -137,7 +137,6 @@ public class GT_Loader_Item_Block_And_Fluid
 					GT_ModHandler.addCraftingRecipe(ItemList.Reactor_Coolant_NaK_6.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE , new Object[] { "PCP", "PDP", "PCP",'C', ItemList.Reactor_Coolant_NaK_3,'P', OrePrefixes.plate.get(Materials.Tin),'D',OrePrefixes.plateDense.get(Materials.Copper) });    
 					
 					ItemList.ThoriumCell_1.set(new GT_RadioactiveCellIC_Item("Thoriumcell", "Fuel Rod (Thorium)", 1, 50000, 0.2F,0,0.25F));
-					GT_ModHandler.addShapelessCraftingRecipe(ItemList.ThoriumCell_1.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE , new Object[] {Ic2Items.fuelRod , OrePrefixes.dust.get(Materials.Thorium) });    
 					
 					ItemList.ThoriumCell_2.set(new GT_RadioactiveCellIC_Item("Double_Thoriumcell", "Double Fuel Rod (Thorium)", 2, 50000, 0.2F,0,0.25F));
 					GT_ModHandler.addCraftingRecipe(ItemList.ThoriumCell_2.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE , new Object[] { "RPR", "   ", "   ",'R', ItemList.ThoriumCell_1 ,'P', OrePrefixes.plate.get(Materials.Iron) });    
@@ -149,11 +148,9 @@ public class GT_Loader_Item_Block_And_Fluid
 					ItemList.Depleted_Thorium_2.set(new GT_DepletetCell_Item("Double_ThoriumcellDep","Dual Fuel Rod (Depleted Thorium)",2));
 					ItemList.Depleted_Thorium_4.set(new GT_DepletetCell_Item("Quad_ThoriumcellDep","Quad Fuel Rod (Depleted Thorium)",4));
 
-					GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_1.get(1, new Object[0]), 5000, new Object[]{ GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lutetium, 1L),GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Thorium, 2L),GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L)});
-					GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_2.get(1, new Object[0]), 5000, new Object[]{ GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lutetium, 2L),GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Thorium, 4L),GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 3L)});
-					GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_4.get(1, new Object[0]), 5000, new Object[]{ GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lutetium, 4L),GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Thorium, 8L),GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 6L)});
-
-					
+					GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_1.get(1, new Object[0]), 5000, new Object[]{ GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lutetium, 2L),GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 1L),GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L)});
+					GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_2.get(1, new Object[0]), 5000, new Object[]{ GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 1L),GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 2L),GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 3L)});
+					GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_4.get(1, new Object[0]), 5000, new Object[]{ GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 2L),GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 4L),GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 6L)});
     
     GT_Log.out.println("GT_Mod: Adding Blocks.");
     GregTech_API.sBlockMachines = new GT_Block_Machines();
@@ -164,6 +161,201 @@ public class GT_Loader_Item_Block_And_Fluid
     GregTech_API.sBlockGranites = new GT_Block_Granites();
     GregTech_API.sBlockConcretes = new GT_Block_Concretes();
     GregTech_API.sBlockOres1 = new GT_Block_Ores();
+    GregTech_API.sBlockMetal1 = new GT_Block_Metal("gt.blockmetal1",new Materials[]{
+    		Materials.Adamantium,
+    		Materials.Aluminium,
+    		Materials.Americium, 
+    		Materials.AnnealedCopper, 
+    		Materials.Antimony, 
+    		Materials.Arsenic, 
+    		Materials.AstralSilver, 
+    		Materials.BatteryAlloy, 
+    		Materials.Beryllium, 
+    		Materials.Bismuth, 
+    		Materials.BismuthBronze, 
+    		Materials.BlackBronze, 
+    		Materials.BlackSteel, 
+    		Materials.BlueAlloy, 
+    		Materials.BlueSteel, 
+    		Materials.Brass},OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS1);
+    
+    GregTech_API.sBlockMetal2 = new GT_Block_Metal("gt.blockmetal2",new Materials[]{
+    		Materials.Bronze,
+    		Materials.Caesium,
+    		Materials.Cerium,
+    		Materials.Chrome,
+    		Materials.ChromiumDioxide,
+    		Materials.Cobalt,
+    		Materials.CobaltBrass,
+    		Materials.Copper,
+    		Materials.Cupronickel,
+    		Materials.DamascusSteel,
+    		Materials.DarkIron,
+    		Materials.DeepIron,
+    		Materials.Desh,
+    		Materials.Duranium,
+    		Materials.Dysprosium,
+    		Materials.Electrum
+    },OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS2);
+   
+    GregTech_API.sBlockMetal3 = new GT_Block_Metal("gt.blockmetal3",new Materials[]{
+    		Materials.ElectrumFlux,
+    		Materials.Enderium,
+    		Materials.Erbium,
+    		Materials.Europium,
+    		Materials.FierySteel,
+    		Materials.Gadolinium,
+    		Materials.Gallium,
+    		Materials.Holmium,
+    		Materials.HSLA,
+    		Materials.Indium,
+    		Materials.InfusedGold,
+    		Materials.Invar,
+    		Materials.Iridium,
+    		Materials.IronMagnetic,
+    		Materials.IronWood,
+    		Materials.Kanthal
+    },OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS3);
+    
+    GregTech_API.sBlockMetal4 = new GT_Block_Metal("gt.blockmetal4",new Materials[]{
+    		Materials.Knightmetal,
+    		Materials.Lanthanum,
+    		Materials.Lead,
+    		Materials.Lutetium,
+    		Materials.Magnalium,
+    		Materials.Magnesium,
+    		Materials.Manganese,
+    		Materials.MeteoricIron,
+    		Materials.MeteoricSteel,
+    		Materials.Midasium,
+    		Materials.Mithril,
+    		Materials.Molybdenum,
+    		Materials.Naquadah,
+    		Materials.NaquadahAlloy,
+    		Materials.NaquadahEnriched,
+    		Materials.Naquadria
+    },OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS4);
+    
+    GregTech_API.sBlockMetal5 = new GT_Block_Metal("gt.blockmetal5",new Materials[]{
+    		Materials.Neodymium,
+    		Materials.NeodymiumMagnetic,
+    		Materials.Neutronium,
+    		Materials.Nichrome,
+    		Materials.Nickel,
+    		Materials.Niobium,
+    		Materials.NiobiumNitride,
+    		Materials.NiobiumTitanium,
+    		Materials.Osmiridium,
+    		Materials.Osmium,
+    		Materials.Palladium,
+    		Materials.PigIron,
+    		Materials.Platinum,
+    		Materials.Plutonium,
+    		Materials.Plutonium241,
+    		Materials.Praseodymium
+    },OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS5);
+    
+    GregTech_API.sBlockMetal6 = new GT_Block_Metal("gt.blockmetal6",new Materials[]{
+    		Materials.Promethium,
+    		Materials.RedAlloy,
+    		Materials.RedSteel,
+    		Materials.RoseGold,
+    		Materials.Rubidium,
+    		Materials.Samarium,
+    		Materials.Scandium,
+    		Materials.ShadowIron,
+    		Materials.ShadowSteel,
+    		Materials.Silicon,
+    		Materials.Silver,
+    		Materials.SolderingAlloy,
+    		Materials.StainlessSteel,
+    		Materials.Steel,
+    		Materials.SteelMagnetic,
+    		Materials.SterlingSilver
+    },OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS6);
+    
+    GregTech_API.sBlockMetal7 = new GT_Block_Metal("gt.blockmetal7",new Materials[]{
+    		Materials.Sunnarium,
+    		Materials.Tantalum,
+    		Materials.Tellurium,
+    		Materials.Terbium,
+    		Materials.Thaumium,
+    		Materials.Thorium,
+    		Materials.Thulium,
+    		Materials.Tin,
+    		Materials.TinAlloy,
+    		Materials.Titanium,
+    		Materials.Tritanium,
+    		Materials.Tungsten,
+    		Materials.TungstenSteel,
+    		Materials.Ultimet,
+    		Materials.Uranium,
+    		Materials.Uranium235
+    },OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS7);
+    
+    GregTech_API.sBlockMetal8 = new GT_Block_Metal("gt.blockmetal8",new Materials[]{
+    		Materials.Vanadium,
+    		Materials.VanadiumGallium,
+    		Materials.WroughtIron,
+    		Materials.Ytterbium,
+    		Materials.Yttrium,
+    		Materials.YttriumBariumCuprate,
+    		Materials.Zinc,
+    		Materials.TungstenCarbide,
+    		Materials.VanadiumSteel,
+    		Materials.HSSG,
+    		Materials.HSSE,
+    		Materials.HSSS
+    },OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS8);
+    
+    GregTech_API.sBlockGem1 = new GT_Block_Metal("gt.blockgem1",new Materials[]{
+    		Materials.InfusedAir,
+    		Materials.Amber,
+    		Materials.Amethyst,
+    		Materials.InfusedWater,
+    		Materials.BlueTopaz,
+    		Materials.CertusQuartz,
+    		Materials.Dilithium,
+    		Materials.EnderEye,
+    		Materials.EnderPearl,
+    		Materials.FoolsRuby,
+    		Materials.Force,
+    		Materials.Forcicium,
+    		Materials.Forcillium,
+    		Materials.GreenSapphire,
+    		Materials.InfusedFire,
+    		Materials.Jasper
+    },OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS9);
+    
+    GregTech_API.sBlockGem2 = new GT_Block_Metal("gt.blockgem2",new Materials[]{
+    		Materials.Lazurite,
+    		Materials.Lignite,
+    		Materials.Monazite,
+    		Materials.Niter,
+    		Materials.Olivine,
+    		Materials.Opal,
+    		Materials.InfusedOrder,
+    		Materials.InfusedEntropy,
+    		Materials.Phosphorus,
+    		Materials.Quartzite,
+    		Materials.GarnetRed,
+    		Materials.Ruby,
+    		Materials.Sapphire,
+    		Materials.Sodalite,
+    		Materials.Tanzanite,
+    		Materials.InfusedEarth
+    },OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS10);
+    
+    GregTech_API.sBlockGem3 = new GT_Block_Metal("gt.blockgem3",new Materials[]{
+    		Materials.Topaz,
+    		Materials.Vinteum,
+    		Materials.GarnetYellow,
+    		Materials.NetherStar,
+    		Materials.Charcoal
+    },OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS11);
+    
+    GregTech_API.sBlockReinforced = new GT_Block_Reinforced("gt.blockreinforced");
+    
     
     GT_Log.out.println("GT_Mod: Register TileEntities.");
     
@@ -192,11 +384,7 @@ public class GT_Loader_Item_Block_And_Fluid
     Materials.ConstructionFoam.mFluid = GT_Utility.getFluidForFilledItem(GT_ModHandler.getIC2Item("CFCell", 1L), true).getFluid();
     Materials.UUMatter.mFluid = GT_Utility.getFluidForFilledItem(GT_ModHandler.getIC2Item("uuMatterCell", 1L), true).getFluid();
     
-//    GT_Mod.gregtechproxy.addFluid("HeliumPlasma", "Helium Plasma", Materials.Helium, 3, 10000, GT_OreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Helium, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
-//    GT_Mod.gregtechproxy.addFluid("NitrogenPlasma", "Nitrogen Plasma", Materials.Nitrogen, 3, 10000, GT_OreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Nitrogen, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
     
-
-
     GT_Mod.gregtechproxy.addFluid("Air", "Air", Materials.Air, 2, 295, ItemList.Cell_Air.get(1L, new Object[0]), ItemList.Cell_Empty.get(1L, new Object[0]), 2000);
     GT_Mod.gregtechproxy.addFluid("Oxygen", "Oxygen", Materials.Oxygen, 2, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
     GT_Mod.gregtechproxy.addFluid("Hydrogen", "Hydrogen", Materials.Hydrogen, 2, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
@@ -204,8 +392,8 @@ public class GT_Loader_Item_Block_And_Fluid
     GT_Mod.gregtechproxy.addFluid("Tritium", "Tritium", Materials.Tritium, 2, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Tritium, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
     GT_Mod.gregtechproxy.addFluid("Helium", "Helium", Materials.Helium, 2, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Helium, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
     GT_Mod.gregtechproxy.addFluid("Fluorine", "Fluorine", Materials.Fluorine, 2, 53, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Fluorine, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
-//    Materials.Lithium.mStandardMoltenFluid = new Fluid("lithium");
-				  GT_Mod.gregtechproxy.addFluid("Helium-3", "Helium-3", Materials.Helium_3, 2, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Helium_3, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+    GT_Mod.gregtechproxy.addFluid("Titaniumtetrachloride", "Titaniumtetrachloride", Materials.Titaniumtetrachloride, 1, 2200, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Titaniumtetrachloride, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+    GT_Mod.gregtechproxy.addFluid("Helium-3", "Helium-3", Materials.Helium_3, 2, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Helium_3, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
     GT_Mod.gregtechproxy.addFluid("Methane", "Methane", Materials.Methane, 2, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Methane, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
     GT_Mod.gregtechproxy.addFluid("Nitrogen", "Nitrogen", Materials.Nitrogen, 2, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Nitrogen, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
     GT_Mod.gregtechproxy.addFluid("NitrogenDioxide", "Nitrogen Dioxide", Materials.NitrogenDioxide, 2, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NitrogenDioxide, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
@@ -213,13 +401,26 @@ public class GT_Loader_Item_Block_And_Fluid
     Materials.Ice.mGas = Materials.Water.mGas;
     Materials.Water.mGas.setTemperature(375).setGaseous(true);
     
-
-
-    ItemList.sOilExtraHeavy = GT_Mod.gregtechproxy.addFluid("liquid_extra_heavy_oil", "Very Heavy Oil", null, 1, 295);
-    ItemList.sOilHeavy = GT_Mod.gregtechproxy.addFluid("liquid_heavy_oil", "Heavy Oil", null, 1, 295);
-    ItemList.sOilMedium = GT_Mod.gregtechproxy.addFluid("liquid_medium_oil", "Raw Oil", null, 1, 295);
-    ItemList.sOilLight = GT_Mod.gregtechproxy.addFluid("liquid_light_oil", "Light Oil", null, 1, 295);
-    ItemList.sNaturalGas = GT_Mod.gregtechproxy.addFluid("gas_natural_gas", "Natural Gas", null, 2, 295);
+    ItemList.sOilExtraHeavy = 	GT_Mod.gregtechproxy.addFluid("liquid_extra_heavy_oil", "Very Heavy Oil", null, 1, 295);
+    ItemList.sEpichlorhydrin = 	GT_Mod.gregtechproxy.addFluid("liquid_epichlorhydrin",  "Epichlorhydrin", null, 1, 295);
+    ItemList.sDrillingFluid = 	GT_Mod.gregtechproxy.addFluid("liquid_drillingfluid",  "Drilling Fluid", null, 1, 295);
+    
+    GT_Mod.gregtechproxy.addFluid("liquid_heavy_oil", "Heavy Oil", Materials.OilHeavy, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.OilHeavy, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+    GT_Mod.gregtechproxy.addFluid("liquid_medium_oil", "Raw Oil", Materials.OilMedium, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.OilMedium, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+    GT_Mod.gregtechproxy.addFluid("liquid_light_oil", "Light Oil", Materials.OilLight, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.OilLight, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+    GT_Mod.gregtechproxy.addFluid("gas_natural_gas", "Natural Gas", Materials.NatruralGas, 2, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NatruralGas, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+    GT_Mod.gregtechproxy.addFluid("liquid_hydricsulfur", "Hydric Sulfide", Materials.HydricSulfide, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HydricSulfide, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+    GT_Mod.gregtechproxy.addFluid("gas_sufuricgas", "Sufuric Gas", Materials.SulfuricGas, 2, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricGas, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+    GT_Mod.gregtechproxy.addFluid("gas_gas", "Refinery Gas", Materials.Gas, 2, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Gas, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+    GT_Mod.gregtechproxy.addFluid("liquid_sulfuricnaphtha", "Sufluric Naphtha", Materials.SulfuricNaphtha, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricNaphtha, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+    GT_Mod.gregtechproxy.addFluid("liquid_sufluriclight_fuel", "Sulfuric Light Fuel", Materials.SulfuricLightFuel, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricLightFuel, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+    GT_Mod.gregtechproxy.addFluid("liquid_sulfuricheavy_fuel", "Sulfuric Heavy Fuel", Materials.SulfuricHeavyFuel, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricHeavyFuel, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+    GT_Mod.gregtechproxy.addFluid("liquid_naphtha", "Naphtha", Materials.Naphtha, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Naphtha, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+    GT_Mod.gregtechproxy.addFluid("liquid_light_fuel", "Light Fuel", Materials.LightFuel, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.LightFuel, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+    GT_Mod.gregtechproxy.addFluid("liquid_heavy_fuel", "Heavy Fuel", Materials.HeavyFuel, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HeavyFuel, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+    GT_Mod.gregtechproxy.addFluid("liquid_lpg", "LPG", Materials.LPG, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.LPG, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+    GT_Mod.gregtechproxy.addFluid("liquid_cracked_light_fuel", "Cracked Light Fuel", Materials.CrackedLightFuel, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.CrackedLightFuel, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+    GT_Mod.gregtechproxy.addFluid("liquid_cracked_heavy_fuel", "Cracked Heavy Fuel", Materials.CrackedHeavyFuel, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.CrackedHeavyFuel, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
     
     GT_Mod.gregtechproxy.addFluid("UUAmplifier", "UU Amplifier", Materials.UUAmplifier, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.UUAmplifier, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
     GT_Mod.gregtechproxy.addFluid("Chlorine", "Chlorine", Materials.Chlorine, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Chlorine, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);

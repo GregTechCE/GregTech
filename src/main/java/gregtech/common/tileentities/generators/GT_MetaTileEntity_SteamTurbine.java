@@ -14,116 +14,96 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GT_MetaTileEntity_SteamTurbine
-  extends GT_MetaTileEntity_BasicGenerator
-{
+public class GT_MetaTileEntity_SteamTurbine extends GT_MetaTileEntity_BasicGenerator {
 
 	public int mEfficiency;
-  public boolean isOutputFacing(byte aSide)
-  {
-    return aSide == getBaseMetaTileEntity().getFrontFacing();
-  }
-  
-  public GT_MetaTileEntity_SteamTurbine(int aID, String aName, String aNameRegional, int aTier)
-  {
-    super(aID, aName, aNameRegional, aTier, "Requires Steam to run", new ITexture[0]);
-onConfigLoad();
-  }
-  
-  public GT_MetaTileEntity_SteamTurbine(String aName, int aTier, String aDescription, ITexture[][][] aTextures)
-  {
-    super(aName, aTier, aDescription, aTextures);
-onConfigLoad();
-  }
-  
-  public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity)
-  {
-    return new GT_MetaTileEntity_SteamTurbine(this.mName, this.mTier, this.mDescription, this.mTextures);
-  }
-  
-  public GT_Recipe.GT_Recipe_Map getRecipes()
-  {
-    return null;
-  }
-  
-  public int getCapacity()
-  {
-    return 24000 * this.mTier;
-  }
 
-public void onConfigLoad()
-  {
-				this.mEfficiency =GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "SteamTurbine.efficiency.tier."+this.mTier, (200 / consumedFluidPerOperation(GT_ModHandler.getSteam(1L))));
-}
-  
-  public int getEfficiency()
-  {
-    return this.mEfficiency;
-  }
-  
-  public int getFuelValue(FluidStack aLiquid)
-  {
-    return GT_ModHandler.isSteam(aLiquid) ? 1 : 0;
-  }
-  
-  public int consumedFluidPerOperation(FluidStack aLiquid)
-  {
-    return 2 + this.mTier;
-  }
-  
-  public ITexture[] getFront(byte aColor)
-  {
-    return new ITexture[] { super.getFront(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.STEAM_TURBINE_FRONT), Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
-  }
-  
-  public ITexture[] getBack(byte aColor)
-  {
-    return new ITexture[] { super.getBack(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.STEAM_TURBINE_BACK) };
-  }
-  
-  public ITexture[] getBottom(byte aColor)
-  {
-    return new ITexture[] { super.getBottom(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.STEAM_TURBINE_BOTTOM) };
-  }
-  
-  public ITexture[] getTop(byte aColor)
-  {
-    return new ITexture[] { super.getTop(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.STEAM_TURBINE_TOP) };
-  }
-  
-  public ITexture[] getSides(byte aColor)
-  {
-    return new ITexture[] { super.getSides(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.STEAM_TURBINE_SIDE) };
-  }
-  
-  public ITexture[] getFrontActive(byte aColor)
-  {
-    return new ITexture[] { super.getFrontActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.STEAM_TURBINE_FRONT_ACTIVE), Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
-  }
-  
-  public ITexture[] getBackActive(byte aColor)
-  {
-    return new ITexture[] { super.getBackActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.STEAM_TURBINE_BACK_ACTIVE) };
-  }
-  
-  public ITexture[] getBottomActive(byte aColor)
-  {
-    return new ITexture[] { super.getBottomActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.STEAM_TURBINE_BOTTOM_ACTIVE) };
-  }
-  
-  public ITexture[] getTopActive(byte aColor)
-  {
-    return new ITexture[] { super.getTopActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.STEAM_TURBINE_TOP_ACTIVE) };
-  }
-  
-  public ITexture[] getSidesActive(byte aColor)
-  {
-    return new ITexture[] { super.getSidesActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.STEAM_TURBINE_SIDE_ACTIVE) };
-  }
-}
+	public boolean isOutputFacing(byte aSide) {
+		return aSide == getBaseMetaTileEntity().getFrontFacing();
+	}
 
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
- * Qualified Name:     gregtech.common.tileentities.generators.GT_MetaTileEntity_SteamTurbine
- * JD-Core Version:    0.7.0.1
- */
+	public GT_MetaTileEntity_SteamTurbine(int aID, String aName, String aNameRegional, int aTier) {
+		super(aID, aName, aNameRegional, aTier, "Requires Steam to run", new ITexture[0]);
+		onConfigLoad();
+	}
+
+	public GT_MetaTileEntity_SteamTurbine(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+		super(aName, aTier, aDescription, aTextures);
+		onConfigLoad();
+	}
+
+	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+		return new GT_MetaTileEntity_SteamTurbine(this.mName, this.mTier, this.mDescription, this.mTextures);
+	}
+
+	public GT_Recipe.GT_Recipe_Map getRecipes() {
+		return null;
+	}
+	
+	@Override
+	public String[] getDescription() {
+		return new String[] {mDescription, "Fuel Efficiency: " + (600/getEfficiency()) + "%"};
+	}
+
+	public int getCapacity() {
+		return 24000 * this.mTier;
+	}
+
+	public void onConfigLoad() {
+		this.mEfficiency = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "SteamTurbine.efficiency.tier." + this.mTier,6+this.mTier);
+	}
+
+	public int getEfficiency() {
+		return this.mEfficiency;
+	}
+
+	public int getFuelValue(FluidStack aLiquid) {
+		return GT_ModHandler.isSteam(aLiquid) ? 3 : 0;
+	}
+
+	public int consumedFluidPerOperation(FluidStack aLiquid) {
+		return this.mEfficiency;
+	}
+
+	public ITexture[] getFront(byte aColor) {
+		return new ITexture[] { super.getFront(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.STEAM_TURBINE_FRONT),
+				Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
+	}
+
+	public ITexture[] getBack(byte aColor) {
+		return new ITexture[] { super.getBack(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.STEAM_TURBINE_BACK) };
+	}
+
+	public ITexture[] getBottom(byte aColor) {
+		return new ITexture[] { super.getBottom(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.STEAM_TURBINE_BOTTOM) };
+	}
+
+	public ITexture[] getTop(byte aColor) {
+		return new ITexture[] { super.getTop(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.STEAM_TURBINE_TOP) };
+	}
+
+	public ITexture[] getSides(byte aColor) {
+		return new ITexture[] { super.getSides(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.STEAM_TURBINE_SIDE) };
+	}
+
+	public ITexture[] getFrontActive(byte aColor) {
+		return new ITexture[] { super.getFrontActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.STEAM_TURBINE_FRONT_ACTIVE),
+				Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
+	}
+
+	public ITexture[] getBackActive(byte aColor) {
+		return new ITexture[] { super.getBackActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.STEAM_TURBINE_BACK_ACTIVE) };
+	}
+
+	public ITexture[] getBottomActive(byte aColor) {
+		return new ITexture[] { super.getBottomActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.STEAM_TURBINE_BOTTOM_ACTIVE) };
+	}
+
+	public ITexture[] getTopActive(byte aColor) {
+		return new ITexture[] { super.getTopActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.STEAM_TURBINE_TOP_ACTIVE) };
+	}
+
+	public ITexture[] getSidesActive(byte aColor) {
+		return new ITexture[] { super.getSidesActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.STEAM_TURBINE_SIDE_ACTIVE) };
+	}
+}

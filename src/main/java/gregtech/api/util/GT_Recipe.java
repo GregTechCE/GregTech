@@ -34,7 +34,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
  * I know this File causes some Errors, because of missing Main Functions, but if you just need to compile Stuff, then remove said erroreous Functions.
  */
 public class GT_Recipe {
-	public static volatile int VERSION = 508;
+	public static volatile int VERSION = 509;
 	
 	public static class GT_Recipe_Map {
 		/** Contains all Recipe Maps */
@@ -52,7 +52,7 @@ public class GT_Recipe {
 		public static final GT_Recipe_Map		sRockBreakerFakeRecipes						= new GT_Recipe_Map						(new HashSet<GT_Recipe>(    3), "gt.recipe.rockbreaker"					, "Rock Breaker"					, null							, RES_PATH_GUI+"basicmachines/RockBreaker"						, 1, 1, 0, 0, 1, E 					,    1, E 		, T, T);
 		public static final GT_Recipe_Map		sByProductList								= new GT_Recipe_Map						(new HashSet<GT_Recipe>( 1000), "gt.recipe.byproductlist"				, "Ore Byproduct List"				, null							, RES_PATH_GUI+"basicmachines/Default"							, 1, 6, 1, 0, 1, E 					,    1, E 		, T, T);
 		public static final GT_Recipe_Map		sRepicatorFakeRecipes						= new GT_Recipe_Map						(new HashSet<GT_Recipe>(  100), "gt.recipe.replicator"					, "Replicator"						, null							, RES_PATH_GUI+"basicmachines/Replicator"						, 0, 1, 0, 1, 1, E 					,    1, E 		, T, T);
-		
+ 		
 		public static final GT_Recipe_Map		sPlasmaArcFurnaceRecipes					= new GT_Recipe_Map						(new HashSet<GT_Recipe>(10000), "gt.recipe.plasmaarcfurnace"			, "Plasma Arc Furnace"				, null							, RES_PATH_GUI+"basicmachines/PlasmaArcFurnace"					, 1, 4, 1, 1, 1, E 					,    1, E 		, T, T);
 		public static final GT_Recipe_Map		sArcFurnaceRecipes							= new GT_Recipe_Map						(new HashSet<GT_Recipe>(10000), "gt.recipe.arcfurnace"					, "Arc Furnace"						, null							, RES_PATH_GUI+"basicmachines/ArcFurnace"						, 1, 4, 1, 1, 3, E 					,    1, E 		, T, T);
 		public static final GT_Recipe_Map		sPrinterRecipes								= new GT_Recipe_Map_Printer				(new HashSet<GT_Recipe>(  100), "gt.recipe.printer"						, "Printer"							, null							, RES_PATH_GUI+"basicmachines/Printer"							, 1, 1, 1, 1, 1, E 					,    1, E 		, T, T);
@@ -82,6 +82,8 @@ public class GT_Recipe {
 		public static final GT_Recipe_Map		sVacuumRecipes								= new GT_Recipe_Map						(new HashSet<GT_Recipe>(  100), "gt.recipe.vacuumfreezer"				, "Vacuum Freezer"					, null							, RES_PATH_GUI+"basicmachines/Default"							, 1, 1, 1, 0, 1, E 					,    1, E 		, T, T);
 		public static final GT_Recipe_Map		sChemicalRecipes							= new GT_Recipe_Map						(new HashSet<GT_Recipe>(  100), "gt.recipe.chemicalreactor"				, "Chemical Reactor"				, null							, RES_PATH_GUI+"basicmachines/ChemicalReactor"					, 2, 1, 1, 0, 1, E 					,    1, E 		, T, T);
 		public static final GT_Recipe_Map		sDistillationRecipes						= new GT_Recipe_Map						(new HashSet<GT_Recipe>(   50), "gt.recipe.distillationtower"			, "Distillation Tower"				, null							, RES_PATH_GUI+"basicmachines/Default"							, 2, 4, 0, 0, 1, E 					,    1, E 		, T, T);
+		public static final GT_Recipe_Map		sCrakingRecipes								= new GT_Recipe_Map						(new HashSet<GT_Recipe>(   50), "gt.recipe.craker"						, "Oil Cracker"						, null							, RES_PATH_GUI+"basicmachines/Default"							, 1, 1, 0, 1, 1, E 					,    1, E 		, T, T);
+		public static final GT_Recipe_Map		sPyrolyseRecipes							= new GT_Recipe_Map						(new HashSet<GT_Recipe>(   50), "gt.recipe.pyro"						, "Pyrolyse Oven"					, null							, RES_PATH_GUI+"basicmachines/Default"							, 2, 1, 1, 0, 1, E 					,    1, E 		, T, T);
 		public static final GT_Recipe_Map		sWiremillRecipes							= new GT_Recipe_Map						(new HashSet<GT_Recipe>(   50), "gt.recipe.wiremill"					, "Wiremill"						, null							, RES_PATH_GUI+"basicmachines/Wiremill"							, 1, 1, 1, 0, 1, E 					,    1, E 		, T, T);
 		public static final GT_Recipe_Map		sBenderRecipes								= new GT_Recipe_Map						(new HashSet<GT_Recipe>(  400), "gt.recipe.metalbender"					, "Metal Bender"					, null							, RES_PATH_GUI+"basicmachines/Bender"							, 2, 1, 2, 0, 1, E 					,    1, E 		, T, T);
 		public static final GT_Recipe_Map		sAlloySmelterRecipes						= new GT_Recipe_Map						(new HashSet<GT_Recipe>( 3000), "gt.recipe.alloysmelter"				, "Alloy Smelter"					, null							, RES_PATH_GUI+"basicmachines/AlloySmelter"						, 2, 1, 2, 0, 1, E 					,    1, E 		, T, T);

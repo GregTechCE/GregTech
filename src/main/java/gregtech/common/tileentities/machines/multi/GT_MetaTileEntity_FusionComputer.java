@@ -60,11 +60,11 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
 
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_GUIContainer_FusionReactor(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "FusionComputer.png");
+		return new GT_GUIContainer_FusionReactor(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "FusionComputer.png", GT_Recipe.GT_Recipe_Map.sFusionRecipes.mNEIName);
 	}
 
 	public abstract MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity);
-
+	
 	public boolean allowCoverOnSide(byte aSide, GT_ItemStack aStack) {
 		
 		return aSide != getBaseMetaTileEntity().getFrontFacing();
@@ -283,7 +283,6 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
 				return false;
 			}
 			if (mRunningOnLoad||tRecipe.isRecipeInputEqual(true, tFluids, new ItemStack[] {})) {
-				if(mRunningOnLoad)System.out.println("First Recipe!");
 				this.mLastRecipe = tRecipe;
 				this.mEUt = (this.mLastRecipe.mEUt * overclock(this.mLastRecipe.mSpecialValue));
 				this.mMaxProgresstime = this.mLastRecipe.mDuration / overclock(this.mLastRecipe.mSpecialValue);
@@ -363,7 +362,7 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
 								mMaxProgresstime = 0;
 								mEfficiencyIncrease = 0;
 								if (mOutputFluids != null && mOutputFluids.length > 0) {
-									GT_Mod.instance.achievements.issueAchivementHatchFluid(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), mOutputFluids[0]);
+									try{GT_Mod.instance.achievements.issueAchivementHatchFluid(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), mOutputFluids[0]);}catch(Exception e){}
 								}
 								this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
 								if (aBaseMetaTileEntity.isAllowedToWork())

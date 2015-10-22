@@ -29,7 +29,7 @@ public class GT_MetaTileEntity_QuantumTank
 	@Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
 		return aSide ==1 ? new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex+1],new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_QTANK)} :new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex+1]};
-	}
+	 	}
 	
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {

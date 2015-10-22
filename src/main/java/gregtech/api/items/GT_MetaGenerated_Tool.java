@@ -247,7 +247,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
 				aList.add(tOffset + 3, EnumChatFormatting.WHITE + "Optimal Steam flow: " + EnumChatFormatting.LIGHT_PURPLE + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed*1000) + EnumChatFormatting.GRAY+ "L/sec");
 				aList.add(tOffset + 3, EnumChatFormatting.WHITE + "Optimal Gas flow(EU burnvalue per tick): " + EnumChatFormatting.LIGHT_PURPLE + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed*25) + EnumChatFormatting.GRAY+ "EU/t");
 				aList.add(tOffset + 3, EnumChatFormatting.WHITE + "Optimal Plasma flow(Plasma energyvalue per tick): " + EnumChatFormatting.LIGHT_PURPLE + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed*1000) + EnumChatFormatting.GRAY+ "EU/t");
-				
+				 				
 			}else{
 			aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
 			aList.add(tOffset + 1, EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.YELLOW + " lvl " + getHarvestLevel(aStack, "") + EnumChatFormatting.GRAY);
@@ -396,25 +396,25 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
 	public final ItemStack getContainerItem(ItemStack aStack) {
 		return getContainerItem(aStack, true);
 	}
-
+	
 	@Override
 	public final boolean hasContainerItem(ItemStack aStack) {
 		return getContainerItem(aStack, false) != null;
 	}
-	
+			
 	private ItemStack getContainerItem(ItemStack aStack, boolean playSound) {
-		if (!isItemStackUsable(aStack)) return null;
-		aStack = GT_Utility.copyAmount(1, aStack);
-		IToolStats tStats = getToolStats(aStack);
-		if (tStats == null) return null;
-		doDamage(aStack, tStats.getToolDamagePerContainerCraft());
-		aStack = aStack.stackSize > 0 ? aStack : null;
-		if (playSound) {
-			String sound = (aStack == null) ? tStats.getBreakingSound() : tStats.getCraftingSound();
-			GT_Utility.doSoundAtClient(sound, 1, 1.0F);
-		}
-		return aStack;
+	if (!isItemStackUsable(aStack)) return null;
+	aStack = GT_Utility.copyAmount(1, aStack);
+	IToolStats tStats = getToolStats(aStack);
+	if (tStats == null) return null;
+	doDamage(aStack, tStats.getToolDamagePerContainerCraft());
+	aStack = aStack.stackSize > 0 ? aStack : null;
+	if (playSound) {
+		String sound = (aStack == null) ? tStats.getBreakingSound() : tStats.getCraftingSound();
+		GT_Utility.doSoundAtClient(sound, 1, 1.0F);
 	}
+	return aStack;
+    }
 	
 	public IToolStats getToolStats(ItemStack aStack) {
 		isItemStackUsable(aStack);

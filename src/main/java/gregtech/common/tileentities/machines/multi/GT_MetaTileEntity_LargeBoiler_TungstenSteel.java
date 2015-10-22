@@ -72,6 +72,12 @@ public class GT_MetaTileEntity_LargeBoiler_TungstenSteel
   {
     return 4;
   }
+  
+  @Override
+  int runtimeBoost(int mTime) {
+  	return mTime * 120 /100;
+  }
+  
 }
 
 

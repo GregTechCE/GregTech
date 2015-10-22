@@ -22,7 +22,7 @@ import net.minecraft.item.ItemStack;
  * Class for Automatic Recipe registering.
  */
 public class GT_RecipeRegistrator {
-	public static volatile int VERSION = 508;
+	public static volatile int VERSION = 509;
 	
 	/** List of Materials, which are used in the Creation of Sticks. All Rod Materials are automatically added to this List. */
 	public static final List<Materials> sRodMaterialList = new ArrayList<Materials>();

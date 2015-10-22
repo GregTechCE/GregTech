@@ -72,4 +72,9 @@ public class GT_MetaTileEntity_LargeBoiler_Titanium
   {
     return 8;
   }
+  
+  @Override
+  int runtimeBoost(int mTime) {
+  	return mTime * 130 /100;
+  }
 }

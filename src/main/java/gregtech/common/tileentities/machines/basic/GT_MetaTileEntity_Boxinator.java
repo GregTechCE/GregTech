@@ -14,7 +14,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
 
 public class GT_MetaTileEntity_Boxinator
   extends GT_MetaTileEntity_BasicMachine
@@ -98,11 +97,11 @@ public class GT_MetaTileEntity_Boxinator
     if (super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack))
     {
       if ((ItemList.Schematic_1by1.isStackEqual(getInputAt(1))) || (ItemList.Schematic_2by2.isStackEqual(getInputAt(1))) || (ItemList.Schematic_3by3.isStackEqual(getInputAt(1)))) {
-      if(GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes.findRecipe(getBaseMetaTileEntity(), true, gregtech.api.enums.GT_Values.V[this.mTier], null, new ItemStack[] { GT_Utility.copyAmount(64L, new Object[] { aStack }), getInputAt(1) }) != null){return true;}
-      if(ItemList.Schematic_1by1.isStackEqual(getInputAt(1))&&GT_ModHandler.getRecipeOutput(new ItemStack[] { aStack })!=null)return true;
-      if(ItemList.Schematic_2by2.isStackEqual(getInputAt(1))&&GT_ModHandler.getRecipeOutput(new ItemStack[] { aStack, aStack, null, aStack, aStack })!=null){return true;}
-      if(ItemList.Schematic_3by3.isStackEqual(getInputAt(1))&&(GT_ModHandler.getRecipeOutput(new ItemStack[] { aStack,aStack,aStack,aStack,aStack,aStack,aStack,aStack,aStack })!=null)){return true;}
-      }else{return GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes.containsInput(aStack);}
+    	  if(GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes.findRecipe(getBaseMetaTileEntity(), true, gregtech.api.enums.GT_Values.V[this.mTier], null, new ItemStack[] { GT_Utility.copyAmount(64L, new Object[] { aStack }), getInputAt(1) }) != null){return true;}
+    	  if(ItemList.Schematic_1by1.isStackEqual(getInputAt(1))&&GT_ModHandler.getRecipeOutput(new ItemStack[] { aStack })!=null)return true;
+    	  if(ItemList.Schematic_2by2.isStackEqual(getInputAt(1))&&GT_ModHandler.getRecipeOutput(new ItemStack[] { aStack, aStack, null, aStack, aStack })!=null){return true;}
+    	  if(ItemList.Schematic_3by3.isStackEqual(getInputAt(1))&&(GT_ModHandler.getRecipeOutput(new ItemStack[] { aStack,aStack,aStack,aStack,aStack,aStack,aStack,aStack,aStack })!=null)){return true;}
+    	  }else{return GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes.containsInput(aStack);}
     }
     return false;
   }

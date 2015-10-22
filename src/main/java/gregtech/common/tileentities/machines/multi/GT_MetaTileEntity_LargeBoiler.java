@@ -94,7 +94,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
         tFluid.amount = 1000;
         if (depleteInput(tFluid))
         {
-          this.mMaxProgresstime = (tRecipe.mSpecialValue / 2);
+          this.mMaxProgresstime = (runtimeBoost(tRecipe.mSpecialValue / 2));
           this.mEUt = getEUt();
           this.mEfficiencyIncrease = (this.mMaxProgresstime * getEfficiencyIncrease() * 4);
           return true;
@@ -109,7 +109,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
         tFluid.amount = 1000;
         if (depleteInput(tFluid))
         {
-          this.mMaxProgresstime = Math.max(1, tRecipe.mSpecialValue * 2);
+          this.mMaxProgresstime = Math.max(1, runtimeBoost(tRecipe.mSpecialValue * 2));
           this.mEUt = getEUt();
           this.mEfficiencyIncrease = (this.mMaxProgresstime * getEfficiencyIncrease());
           return true;
@@ -119,7 +119,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
     ArrayList<ItemStack> tInputList = getStoredInputs();
     if (!tInputList.isEmpty()) {
       for (ItemStack tInput : tInputList) {
-        if ((GT_Utility.getFluidForFilledItem(tInput, true) == null) && ((this.mMaxProgresstime = GT_ModHandler.getFuelValue(tInput) / 80) > 0))
+        if ((GT_Utility.getFluidForFilledItem(tInput, true) == null) && ((this.mMaxProgresstime = runtimeBoost(GT_ModHandler.getFuelValue(tInput) / 80)) > 0))
         {
           this.mEUt = getEUt();
           this.mEfficiencyIncrease = (this.mMaxProgresstime * getEfficiencyIncrease());
@@ -135,14 +135,16 @@ public abstract class GT_MetaTileEntity_LargeBoiler
     return false;
   }
   
+  abstract int runtimeBoost(int mTime);
+  
   public boolean onRunningTick(ItemStack aStack)
   {
     if (this.mEUt > 0)
     {
       int tGeneratedEU = (int)(this.mEUt * 2L * this.mEfficiency / 10000L);
       if (tGeneratedEU > 0) {
-      	long amount = (tGeneratedEU + 160) / 160;
-        if (depleteInput(Materials.Water.getFluid(amount)) || depleteInput(GT_ModHandler.getDistilledWater(amount))) {
+    	  long amount = (tGeneratedEU + 160) / 160;
+    	  if (depleteInput(Materials.Water.getFluid(amount)) || depleteInput(GT_ModHandler.getDistilledWater(amount))) {
           addOutput(GT_ModHandler.getSteam(tGeneratedEU));
         } else {
           explodeMultiblock();
@@ -258,12 +260,8 @@ public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
   }
 }
 
-
-
-/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
-
- * Qualified Name:     gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler
-
- * JD-Core Version:    0.7.0.1
-
+
+/* Location:           F:\Torrent\minecraft\jd-gui-0.3.6.windows\gregtech_1.7.10-5.07.07-dev.jar
+ * Qualified Name:     gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler
+ * JD-Core Version:    0.7.0.1
  */

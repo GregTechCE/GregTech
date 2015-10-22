@@ -157,6 +157,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 	public int mFlintChance = 30;
 	public int mItemDespawnTime = 6000;
 	public int mUpgradeCount = 4;
+	public boolean mGTBees = true;
 
 	public static class OreDictEventContainer {
 		public final OreDictionary.OreRegisterEvent mEvent;
@@ -1633,22 +1634,22 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 			rFuelValue = (short) Math.max(rFuelValue, 888);
 		}
 		if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "gemLignite")) {
-			rFuelValue = (short) Math.max(rFuelValue, 300);
+			rFuelValue = (short) Math.max(rFuelValue, 1200);
 		}
 		if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "crushedLignite")) {
-			rFuelValue = (short) Math.max(rFuelValue, 300);
+			rFuelValue = (short) Math.max(rFuelValue, 1200);
 		}
 		if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustImpureLignite")) {
-			rFuelValue = (short) Math.max(rFuelValue, 300);
+			rFuelValue = (short) Math.max(rFuelValue, 1200);
 		}
 		if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustLignite")) {
-			rFuelValue = (short) Math.max(rFuelValue, 300);
+			rFuelValue = (short) Math.max(rFuelValue, 1200);
 		}
 		if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustSmallLignite")) {
-			rFuelValue = (short) Math.max(rFuelValue, 75);
+			rFuelValue = (short) Math.max(rFuelValue, 375);
 		}
 		if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustTinyLignite")) {
-			rFuelValue = (short) Math.max(rFuelValue, 33);
+			rFuelValue = (short) Math.max(rFuelValue, 166);
 		}
 		if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "gemCoal")) {
 			rFuelValue = (short) Math.max(rFuelValue, 1600);

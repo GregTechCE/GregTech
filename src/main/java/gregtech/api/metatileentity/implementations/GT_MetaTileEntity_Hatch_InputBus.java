@@ -17,7 +17,7 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch {
 	
 	public GT_MetaTileEntity_Hatch_InputBus(int aID, String aName, String aNameRegional, int aTier) {
 		super(aID, aName, aNameRegional, aTier, getSlots(aTier), "Item Input for Multiblocks (" + getSlots(aTier)  + " slot" + (getSlots(aTier) >= 2 ? "s" : "") + ")");
-	}
+	 	}
 	
 	public GT_MetaTileEntity_Hatch_InputBus(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
 		super(aName, aTier, aTier<1?1:aTier==1?4:aTier==2?9:16, aDescription, aTextures);

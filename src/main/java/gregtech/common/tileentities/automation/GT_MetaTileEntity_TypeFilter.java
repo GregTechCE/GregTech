@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.automation;
 
-import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
@@ -10,10 +9,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Buffer;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_Container_TypeFilter;
 import gregtech.common.gui.GT_GUIContainer_TypeFilter;
+import gregtech.api.util.GT_OreDictUnificator;
 
 import java.util.ArrayList;
 
@@ -80,7 +79,6 @@ public class GT_MetaTileEntity_TypeFilter
                 i = OrePrefixes.values().length - 1;
               }
             	}while(OrePrefixes.values()[i].mPrefixedItems.isEmpty());
-              
             }
             else
             {
@@ -102,21 +100,21 @@ public class GT_MetaTileEntity_TypeFilter
   
   public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick)
   {
-	    super.onPreTick(aBaseMetaTileEntity, aTick);
-	    if ((getBaseMetaTileEntity().isServerSide()) && (aTick % 8L == 0L)) {
-	      if (this.mPrefix.mPrefixedItems.isEmpty())
-	      {
-	        this.mInventory[9] = null;
+	  super.onPreTick(aBaseMetaTileEntity, aTick);
+	  if ((getBaseMetaTileEntity().isServerSide()) && (aTick % 8L == 0L)) {
+	     if (this.mPrefix.mPrefixedItems.isEmpty())
+	    {
+	      this.mInventory[9] = null;
+	  }
+	  else
+	  {
+	      this.mInventory[9] = GT_Utility.copyAmount(1L, new Object[] { this.mPrefix.mPrefixedItems.get(this.mRotationIndex = (this.mRotationIndex + 1) % this.mPrefix.mPrefixedItems.size()) });
+	      if (this.mInventory[9].getItemDamage() == 32767) {
+	        this.mInventory[9].setItemDamage(0);
 	      }
-	      else
-	      {
-	        this.mInventory[9] = GT_Utility.copyAmount(1L, new Object[] { this.mPrefix.mPrefixedItems.get(this.mRotationIndex = (this.mRotationIndex + 1) % this.mPrefix.mPrefixedItems.size()) });
-	        if (this.mInventory[9].getItemDamage() == 32767) {
-	          this.mInventory[9].setItemDamage(0);
-	        }
-	        this.mInventory[9].setStackDisplayName(this.mPrefix.toString());
-	      }
+	      this.mInventory[9].setStackDisplayName(this.mPrefix.toString());
 	    }
+	  }
   }
   
   public void saveNBTData(NBTTagCompound aNBT)
@@ -139,21 +137,23 @@ public class GT_MetaTileEntity_TypeFilter
   {
 	  boolean tAllowPrefix = this.mPrefix.contains(aStack);
 	  if(this.mPrefix==OrePrefixes.ore){
-		OrePrefixes tFix = GT_OreDictUnificator.getItemData(aStack).mPrefix;
-		if(tFix==OrePrefixes.oreBlackgranite||
-		   tFix==OrePrefixes.oreDense||
-		   tFix==OrePrefixes.oreEnd||
-		   tFix==OrePrefixes.oreEndstone||
-		   tFix==OrePrefixes.oreNether||
-		   tFix==OrePrefixes.oreNetherrack||
-		   tFix==OrePrefixes.oreNormal||
-		   tFix==OrePrefixes.orePoor||
-		   tFix==OrePrefixes.oreRedgranite||
-		   tFix==OrePrefixes.oreRich||
-		   tFix==OrePrefixes.oreSmall)tAllowPrefix=true;
-	  }	  
-    return (super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack)) && ((this.bNBTAllowed) || (!aStack.hasTagCompound())) && (tAllowPrefix != this.bInvertFilter);
-  }
+		  ItemData tData = GT_OreDictUnificator.getItemData(aStack);
+		  if(tData!=null&&tData.mPrefix!=null){
+	  OrePrefixes tFix = tData.mPrefix;
+	  if(tFix==OrePrefixes.oreBlackgranite||
+	     tFix==OrePrefixes.oreDense||
+	     tFix==OrePrefixes.oreEnd||
+	     tFix==OrePrefixes.oreEndstone||
+	     tFix==OrePrefixes.oreNether||
+	     tFix==OrePrefixes.oreNetherrack||
+	     tFix==OrePrefixes.oreNormal||
+	     tFix==OrePrefixes.orePoor||
+	     tFix==OrePrefixes.oreRedgranite||
+	     tFix==OrePrefixes.oreRich||
+	     tFix==OrePrefixes.oreSmall)tAllowPrefix=true;
+	  }	}  
+	  return (super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack)) && ((this.bNBTAllowed) || (!aStack.hasTagCompound())) && (tAllowPrefix != this.bInvertFilter);
+	     }
 }
 
 

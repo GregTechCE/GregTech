@@ -612,47 +612,29 @@ public enum ItemList implements IItemContainer {
 	Machine_LV_FluidHeater, Machine_MV_FluidHeater, Machine_HV_FluidHeater, Machine_EV_FluidHeater, Machine_IV_FluidHeater,
 	
 	Neutron_Reflector,
-	Reactor_Coolant_He_1,
-	Reactor_Coolant_He_3,
-	Reactor_Coolant_He_6,
-	Reactor_Coolant_NaK_1,
-	Reactor_Coolant_NaK_3,
-	Reactor_Coolant_NaK_6,
-	ThoriumCell_1,
-	ThoriumCell_2,
-	ThoriumCell_4,
-	FusionComputer_LuV,
-	FusionComputer_ZPMV,
-	FusionComputer_UV,
-	Casing_Fusion_Coil,
-	Casing_Fusion, 
-	Casing_Fusion2,
-	Generator_Plasma_IV, 
-	Generator_Plasma_LuV, 
-	Generator_Plasma_ZPMV, 
-	MagicEnergyConverter_LV, 
-	MagicEnergyConverter_MV, 
-	MagicEnergyConverter_HV,
-	MagicEnergyAbsorber_LV,
-	MagicEnergyAbsorber_MV,
-	MagicEnergyAbsorber_HV,
-	MagicEnergyAbsorber_EV,
-	Depleted_Thorium_1,
-	Depleted_Thorium_2,
-	Depleted_Thorium_4,
-	Processing_Array,
-	Distillation_Tower,
-	Energy_LapotronicOrb2, 
+	Reactor_Coolant_He_1, Reactor_Coolant_He_3, Reactor_Coolant_He_6, Reactor_Coolant_NaK_1, Reactor_Coolant_NaK_3,	Reactor_Coolant_NaK_6,
+	ThoriumCell_1, ThoriumCell_2, ThoriumCell_4,
+	FusionComputer_LuV,	FusionComputer_ZPMV, FusionComputer_UV,
+	Casing_Fusion_Coil,	Casing_Fusion, Casing_Fusion2,
+	Generator_Plasma_IV, Generator_Plasma_LuV, 	Generator_Plasma_ZPMV, 
+	MagicEnergyConverter_LV, MagicEnergyConverter_MV, MagicEnergyConverter_HV,
+	MagicEnergyAbsorber_LV, MagicEnergyAbsorber_MV,	MagicEnergyAbsorber_HV,	MagicEnergyAbsorber_EV,
+	Depleted_Thorium_1,	Depleted_Thorium_2,	Depleted_Thorium_4,
+	Processing_Array, Distillation_Tower, Energy_LapotronicOrb2, 
 	ZPM2, Quantum_Tank_LV,Quantum_Tank_MV,Quantum_Tank_HV,Quantum_Tank_EV,Quantum_Tank_IV, Quantum_Chest_LV, Quantum_Chest_MV, Quantum_Chest_HV, Quantum_Chest_EV, Quantum_Chest_IV,
 	
 	NULL, Cover_RedstoneTransmitterExternal,Cover_RedstoneTransmitterInternal,Cover_RedstoneReceiverExternal,Cover_RedstoneReceiverInternal, 
-	LargeSteamTurbine, 
+	LargeSteamTurbine, LargeGasTurbine, LargeHPSteamTurbine, LargePlasmaTurbine,
 	Ingot_Heavy1,Ingot_Heavy2,Ingot_Heavy3, 
 	Pump_LV, Pump_MV, Pump_HV, Pump_EV, Pump_IV, 
-	Teleporter, 
-	Cover_NeedsMaintainance, 
-	Casing_Turbine, 
-	MobRep_LV,MobRep_MV,MobRep_HV,MobRep_EV,MobRep_IV, LargeGasTurbine, LargeHPSteamTurbine, LargePlasmaTurbine, Cover_PlayerDetector, Machine_Multi_HeatExchanger;
+	Teleporter, Cover_NeedsMaintainance, Casing_Turbine, 
+	MobRep_LV,MobRep_MV,MobRep_HV,MobRep_EV,MobRep_IV, Cover_PlayerDetector, Machine_Multi_HeatExchanger, 
+	Block_BronzePlate, Block_IridiumTungstensteel, Block_Plascrete, Block_TungstenSteelReinforced,
+	Honeycomb, Charcoal_Pile, Block_BrittleCharcoal, Seismic_Prospector, OilDrill, AdvancedMiner2, PyrolyseOven, OilCracker, Crop_Drop_UUMBerry, Crop_Drop_UUABerry, Empty_Board_Basic, Empty_Board_Elite, 
+	Battery_Charger_4by4_ULV,Battery_Charger_4by4_LV,Battery_Charger_4by4_MV,Battery_Charger_4by4_HV,Battery_Charger_4by4_EV,Battery_Charger_4by4_IV,Battery_Charger_4by4_LuV,Battery_Charger_4by4_ZPM,Battery_Charger_4by4_UV,Battery_Charger_4by4_MAX, 
+	MicroTransmitter_HV, MicroTransmitter_EV, MicroTransmitter_IV, MicroTransmitter_LUV, MicroTransmitter_ZPM,
+	
+	;
 	
 	public static final ItemList[]
 	  DYE_ONLY_ITEMS = {Color_00, Color_01, Color_02, Color_03, Color_04, Color_05, Color_06, Color_07, Color_08, Color_09, Color_10, Color_11, Color_12, Color_13, Color_14, Color_15}
@@ -671,7 +653,7 @@ public enum ItemList implements IItemContainer {
 	private ItemStack mStack;
 	private boolean mHasNotBeenSet = true;
 	
-	public static Fluid sOilExtraHeavy, sOilHeavy, sOilMedium, sOilLight, sNaturalGas;
+	public static Fluid sOilExtraHeavy, sEpichlorhydrin, sDrillingFluid;
 	
 	@Override
 	public IItemContainer set(Item aItem) {

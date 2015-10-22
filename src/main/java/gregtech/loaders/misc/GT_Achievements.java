@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.ThaumcraftApiHelper;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -133,14 +132,14 @@ public int adjY = 9;
 		registerAchievement("ebf", 8, -6, ItemList.Machine_Multi_BlastFurnace.get(1, new Object[] {}), "steampower", false);
 		registerAchievement("energyhatch", 12, -6, ItemList.Hatch_Energy_LV.get(1, new Object[] {}), "ebf", false);
 		
-		registerAchievement("aluminium", 8, 0, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Aluminium, 1L), "steel", false);
-		registerAchievement("highpowersmelt", 8, 2, ItemList.Machine_Multi_Furnace.get(1, new Object[] {}), "aluminium", false);
+		registerAchievement("gtaluminium", 8, 0, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Aluminium, 1L), "steel", false);
+		registerAchievement("highpowersmelt", 8, 2, ItemList.Machine_Multi_Furnace.get(1, new Object[] {}), "gtaluminium", false);
 		registerAchievement("oilplant", 8, 4, ItemList.Distillation_Tower.get(1, new Object[] {}), "highpowersmelt", false);
 		registerAchievement("factory", 8, 6, ItemList.Processing_Array.get(1, new Object[] {}), "oilplant", false);
-		registerAchievement("upgradeebf", 8, -2, ItemList.Hatch_Energy_MV.get(1, new Object[] {}), "aluminium", false);
+		registerAchievement("upgradeebf", 8, -2, ItemList.Hatch_Energy_MV.get(1, new Object[] {}), "gtaluminium", false);
 		registerAchievement("maintainance", 10, -2, ItemList.Hatch_Maintenance.get(1, new Object[] {}), "upgradeebf", false);
 		
-		registerAchievement("titan", 10, 0, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Titanium, 1L), "aluminium", false);
+		registerAchievement("titan", 10, 0, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Titanium, 1L), "gtaluminium", false);
 		registerAchievement("magic", 10, 4, ItemList.MagicEnergyConverter_LV.get(1, new Object[] {}), "titan", false);
 		registerAchievement("highmage", 10, 6, ItemList.MagicEnergyAbsorber_HV.get(1, new Object[] {}), "magic", false);
 		registerAchievement("artificaldia", 11, 2, ItemList.IC2_Industrial_Diamond.get(1, new Object[] {}), "titan", false);
@@ -255,7 +254,7 @@ public int adjY = 9;
 		if (data != null) {
 			if (data.mPrefix == OrePrefixes.ingot) {
 				if(data.mMaterial.mMaterial==Materials.Aluminium){
-					issueAchievement(player, "aluminium");
+					issueAchievement(player, "gtaluminium");
 				}else if(data.mMaterial.mMaterial==Materials.Titanium){
 					issueAchievement(player, "titan");
 				}else if(data.mMaterial.mMaterial==Materials.BlueSteel){
@@ -298,13 +297,13 @@ public int adjY = 9;
 			return;
 		}
 		ItemData data = GT_OreDictUnificator.getItemData(stack);
-		if (data != null) {
-			if (data.mPrefix == OrePrefixes.dust&&data.mMaterial.mMaterial == Materials.Bronze) {
-				issueAchievement(player, "bronze");				
-			}else if(data.mPrefix == OrePrefixes.circuit&&data.mMaterial.mMaterial == Materials.Advanced){
-				issueAchievement(player, "stepforward");
+			if (data != null) {
+				if (data.mPrefix == OrePrefixes.dust&&data.mMaterial.mMaterial == Materials.Bronze) {
+					issueAchievement(player, "bronze");				
+				}else if(data.mPrefix == OrePrefixes.circuit&&data.mMaterial.mMaterial == Materials.Advanced){
+					issueAchievement(player, "stepforward");
+				}
 			}
-		}
 		if(stack.getUnlocalizedName().startsWith("gt.metaitem.")){
 			if(stack.getUnlocalizedName().equals("gt.metaitem.01.2300")){
 				issueAchievement(player, "bronze");
@@ -425,7 +424,6 @@ public int adjY = 9;
 		if (player == null||stack==null) {
 			return;
 		}
-//		System.out.println("Pickup: "+stack.getUnlocalizedName());
 		ItemData data = GT_OreDictUnificator.getItemData(stack);
 		if (data != null) {
 			if (data.mPrefix == OrePrefixes.dust) {
@@ -446,13 +444,13 @@ public int adjY = 9;
 			}else if(data.mPrefix == OrePrefixes.crushedCentrifuged){
 				issueAchievement(player, "spinit");
 			}else if(data.mMaterial.mMaterial == Materials.Steel){
-				if(data.mPrefix == OrePrefixes.ingot && stack.stackSize == stack.getMaxStackSize()){
-					issueAchievement(player, "steel");
-				}else if(data.mPrefix == OrePrefixes.nugget && Loader.isModLoaded("Thaumcraft")){
-					if(ThaumcraftApiHelper.isResearchComplete(player.getDisplayName(), "GT_IRON_TO_STEEL")){
-						issueAchievement(player, "steel");
-					}
-				}
+								if(data.mPrefix == OrePrefixes.ingot && stack.stackSize == stack.getMaxStackSize()){
+										issueAchievement(player, "steel");
+									}else if(data.mPrefix == OrePrefixes.nugget && Loader.isModLoaded("Thaumcraft")){
+										if(ThaumcraftApiHelper.isResearchComplete(player.getDisplayName(), "GT_IRON_TO_STEEL")){
+											issueAchievement(player, "steel");
+										}
+									}
 			}else if(data.mPrefix == OrePrefixes.circuit&&data.mMaterial.mMaterial == Materials.Advanced){
 				issueAchievement(player, "stepforward");
 			}

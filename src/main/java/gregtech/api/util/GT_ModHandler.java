@@ -52,7 +52,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
  * Due to the many imports, this File can cause compile Problems if not all the APIs are installed
  */
 public class GT_ModHandler {
-	public static volatile int VERSION = 508;
+	public static volatile int VERSION = 509;
 	
 	/**
 	 * Returns if that Liquid is Water or Distilled Water
@@ -1501,17 +1501,19 @@ public class GT_ModHandler {
 				EntityPlayer tPlayer = (EntityPlayer)aPlayer;
 				if (tPlayer.capabilities.isCreativeMode) return T;
 				if(isElectricItem(aStack)&&ic2.api.item.ElectricItem.manager.getCharge(aStack)>1000.0d){
-				for (int i = 0; i < tPlayer.inventory.mainInventory.length; i++) {
+	 				for (int i = 0; i < tPlayer.inventory.mainInventory.length; i++) {
 					if (GT_Utility.isStackInList(tPlayer.inventory.mainInventory[i], GregTech_API.sSolderingMetalList)) {
-						tPlayer.inventory.mainInventory[i].stackSize--;
+						if(tPlayer.inventory.mainInventory[i].stackSize<1)return false;
+						if(tPlayer.inventory.mainInventory[i].stackSize==1){tPlayer.inventory.mainInventory[i]=null;}else{
+						tPlayer.inventory.mainInventory[i].stackSize--;}
 						if (tPlayer.inventoryContainer != null) tPlayer.inventoryContainer.detectAndSendChanges();
 						if (canUseElectricItem(aStack, 10000)) {
 							return GT_ModHandler.useElectricItem(aStack, 10000, (EntityPlayer)aPlayer);
 						}
 						GT_ModHandler.useElectricItem(aStack, (int) ic2.api.item.ElectricItem.manager.getCharge(aStack), (EntityPlayer)aPlayer);
-						return false;	
-					}
-				  }
+							return false;	
+								}
+						 }
 				}
 			} else {
 				damageOrDechargeItem(aStack, 1, 1000, aPlayer);

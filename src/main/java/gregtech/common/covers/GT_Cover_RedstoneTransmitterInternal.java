@@ -18,14 +18,13 @@ public class GT_Cover_RedstoneTransmitterInternal
     return true;
   }
   
-  public boolean manipulatesSidedRedstoneOutput(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity)
-  {
-    return true;
-  }
-  
   public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity)
   {
     return 1;
+  }
+  public boolean manipulatesSidedRedstoneOutput(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity)
+  {
+    return true;
   }
 }
 

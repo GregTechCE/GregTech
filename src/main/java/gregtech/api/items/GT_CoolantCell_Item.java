@@ -49,11 +49,11 @@ public class GT_CoolantCell_Item
     super.addAdditionalToolTips(aList, aStack);
     aList.add("Stored Heat: " + getHeatOfStack(aStack));
     switch (getControlTagOfStack(aStack))
-    {
-    case 1: 
-    	aList.add(StatCollector.translateToLocal("ic2.reactoritem.heatwarning.line1"));
-    	aList.add(StatCollector.translateToLocal("ic2.reactoritem.heatwarning.line2"));
-    }
+        {
+        case 1: 
+        	aList.add(StatCollector.translateToLocal("ic2.reactoritem.heatwarning.line1"));
+        	aList.add(StatCollector.translateToLocal("ic2.reactoritem.heatwarning.line2"));
+        }
   }
   
   protected static int getHeatOfStack(ItemStack aStack)
@@ -68,15 +68,14 @@ public class GT_CoolantCell_Item
   }
   
   public int getControlTagOfStack(ItemStack stack)
-  {
-    NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
-    return nbtData.getInteger("tag");
-  }
-  
-  public void setControlTagOfStack(ItemStack stack, int tag)
-  {
-    NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
-    nbtData.setInteger("tag", tag);
-  }
-  
+    {
+      NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
+      return nbtData.getInteger("tag");
+    }
+    
+    public void setControlTagOfStack(ItemStack stack, int tag)
+    {
+      NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
+      nbtData.setInteger("tag", tag);
+    }
 }

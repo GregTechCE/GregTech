@@ -18,7 +18,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
 
 	public GT_MetaTileEntity_Hatch_Output(int aID, String aName, String aNameRegional, int aTier) {
 		super(aID, aName, aNameRegional, aTier, 3, "Fluid Output for Multiblocks (" + 8000 * (aTier + 1) + "L) (Screwdriver for output type)");
-	}
+	 	}
 	
 	public GT_MetaTileEntity_Hatch_Output(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
 		super(aName, aTier, 3, aDescription, aTextures);

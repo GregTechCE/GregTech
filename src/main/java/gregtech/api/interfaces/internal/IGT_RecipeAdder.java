@@ -92,6 +92,17 @@ public interface IGT_RecipeAdder {
 	public boolean addChemicalRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput, int aDuration);
 	
 	/**
+	 * Adds a Chemical Recipe
+	 * @param aInput1 must be != null
+	 * @param aInput2 must be != null
+	 * @param aOutput1 must be != null
+	 * @param aDuration must be > 0
+	 * @param aEUtick must be > 0
+	 */
+	public boolean addChemicalRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput, int aDuration, int aEUtick);
+	
+	
+	/**
 	 * Adds a Blast Furnace Recipe
 	 * @param aInput1 must be != null
 	 * @param aInput2 can be null
@@ -253,7 +264,7 @@ public interface IGT_RecipeAdder {
 	public boolean addPlasmaArcFurnaceRecipe(ItemStack aInput, FluidStack aFluidInput, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt);
 	
 	public boolean addPlasmaArcFurnaceRecipe(ItemStack aInput, FluidStack aFluidInput, ItemStack[] aOutputs,FluidStack aFluidPutput, int[] aChances, int aDuration, int aEUt);
-	
+ 	
 	
 	
 	
@@ -400,6 +411,35 @@ public interface IGT_RecipeAdder {
 	 * Adds a Recipe for the GT Pulveriser. (up to 4 Outputs)
 	 */
 	public boolean addPulveriserRecipe(ItemStack aInput, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt);
+	
+	/**
+	 * Adds a Distillation Tower Recipe
+	 * Every Fluid also gets seperate distillation recipes
+	 * @param aInput1 must be != null
+	 * @param aOutputs must be != null 1-5 Fluids
+	 * @param aOutput2 can be null
+	 */
+	public boolean addUniversalDistillationRecipe(FluidStack aInput, FluidStack[] aOutputs, ItemStack aOutput2, int aDuration, int aEUt);
+	
+	/**
+	 * Adds Pyrolyse Recipe
+	 * @param aInput
+	 * @param intCircuit
+	 * @param aOutput
+	 * @param aFluidOutput
+	 * @param aDuration
+	 * @param aEUt
+	 */
+	public boolean addPyrolyseRecipe(ItemStack aInput, FluidStack aFluidInput,int intCircuit, ItemStack aOutput, FluidStack aFluidOutput, int aDuration, int aEUt);
+	
+	/**
+	 * Adds Oil Cracking Recipe
+	 * @param aInput
+	 * @param aOutput
+	 * @param aDuration
+	 * @param aEUt
+	 */
+	public boolean addCrackingRecipe(FluidStack aInput, FluidStack aOutput, int aDuration, int aEUt);
 	
 	/**
 	 * Adds a Sound to the Sonictron9001

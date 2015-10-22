@@ -89,7 +89,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
 	
 	@Override
 	public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity aEntity) {
-		if (mCanShock && (((BaseMetaPipeEntity)getBaseMetaTileEntity()).mConnections & -128) == 0 && aEntity instanceof EntityLivingBase) GT_Utility.applyElectricityDamage((EntityLivingBase)aEntity, mTransferredVoltageLast20, mTransferredAmperageLast20);
+		if (mCanShock && (((BaseMetaPipeEntity)getBaseMetaTileEntity()).mConnections & -128) == 0 && aEntity instanceof EntityLivingBase && !isCoverOnSide((BaseMetaPipeEntity)getBaseMetaTileEntity(), (EntityLivingBase)aEntity)) GT_Utility.applyElectricityDamage((EntityLivingBase)aEntity, mTransferredVoltageLast20, mTransferredAmperageLast20);
 	}
 	
 	@Override

@@ -50,7 +50,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class GregTech_API {
 	/** For the API Version check */
-	public static volatile int VERSION = 508;
+	public static volatile int VERSION = 509;
 	
 	@Deprecated
 	public static IGT_RecipeAdder sRecipeAdder;
@@ -110,7 +110,7 @@ public class GregTech_API {
 	
 	/** Initialized by the Block creation. */
 	public static Block sBlockMachines;
-	public static Block sBlockOres1;
+	public static Block sBlockOres1, sBlockGem, sBlockMetal1,sBlockMetal2, sBlockMetal3, sBlockMetal4, sBlockMetal5, sBlockMetal6, sBlockMetal7, sBlockMetal8, sBlockGem1, sBlockGem2, sBlockGem3, sBlockReinforced;
 	public static Block sBlockGranites, sBlockConcretes;
 	public static Block sBlockCasings1, sBlockCasings2, sBlockCasings3, sBlockCasings4;
 	

@@ -64,8 +64,8 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
 			   water = water - (int)usage;
 			   return  usage;
 		}
-	
-	private boolean achievement = false;
+		
+		private boolean achievement = false;
 		
     @Override
     int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff) {
@@ -77,15 +77,15 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
         for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) { // loop through each hatch; extract inputs and track totals.
         	 String fluidName = aFluids.get(i).getFluid().getUnlocalizedName(aFluids.get(i));
         	 if (fluidName.equals("fluid.steam") || fluidName.equals("ic2.fluidSteam") || fluidName.equals("fluid.mfr.steam.still.name")) {
-        	                    flow = aFluids.get(i).amount; // Get all (steam) in hatch
+        	 flow = aFluids.get(i).amount; // Get all (steam) in hatch
                 flow = Math.min(flow, Math.min(remainingFlow, (int) (aOptFlow * 1.25f))); // try to use up to 125% of optimal flow w/o exceeding remainingFlow
                 depleteInput(new FluidStack(aFluids.get(i), flow)); // deplete that amount
                 remainingFlow -= flow; // track amount we're allowed to continue depleting from hatches
                 totalFlow += flow; // track total input used
                 if(!achievement){
                 	try{GT_Mod.instance.achievements.issueAchievement(this.getBaseMetaTileEntity().getWorld().getPlayerEntityByName(this.getBaseMetaTileEntity().getOwnerName()), "muchsteam");}catch(Exception e){}
-                	achievement=true;
-                }
+                		achievement=true;
+                	}
             }
         }
 

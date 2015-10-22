@@ -158,7 +158,7 @@ public class GT_MetaTileEntity_Boiler_Bronze
         }
         else if ((GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.gem.get(Materials.Lignite))) || (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.dust.get(Materials.Lignite))) || (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.dustImpure.get(Materials.Lignite))) || (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.crushed.get(Materials.Lignite))))
         {
-          this.mProcessingEnergy += 40;
+          this.mProcessingEnergy += 120;
           aBaseMetaTileEntity.decrStackSize(2, 1);
           if (aBaseMetaTileEntity.getRandomNumber(8) == 0) {
             aBaseMetaTileEntity.addStackToSlot(3, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L));

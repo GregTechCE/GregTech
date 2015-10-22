@@ -19,6 +19,7 @@ public class GT_Block_Casings1
     for (byte i = 0; i < 16; i = (byte)(i + 1)) {
       Textures.BlockIcons.CASING_BLOCKS[i] = new GT_CopiedBlockTexture(this, 6, i);
     }
+    Textures.BlockIcons.CASING_BLOCKS[120] = new GT_CopiedBlockTexture(this, 6, 0);
     GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "ULV Machine Casing");
     GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "LV Machine Casing");
     GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "MV Machine Casing");

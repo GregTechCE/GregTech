@@ -97,10 +97,16 @@ public class GT_TileEntity_Ores
   }
   
   public static boolean setOreBlock(World aWorld, int aX, int aY, int aZ, int aMetaData)
+  {return setOreBlock(aWorld, aX, aY, aZ, aMetaData, false);
+  }
+  
+  public static boolean setOreBlock(World aWorld, int aX, int aY, int aZ, int aMetaData, boolean air)
   {
-    aY = Math.min(aWorld.getActualHeight(), Math.max(aY, 1));
+	  if (!air) {
+			aY = Math.min(aWorld.getActualHeight(), Math.max(aY, 1));
+		}
     Block tBlock = aWorld.getBlock(aX, aY, aZ);
-    if ((aMetaData > 0) && (tBlock != Blocks.air))
+    if ((aMetaData > 0) && ((tBlock != Blocks.air)|| air))
     {
       if (tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.netherrack)) {
         aMetaData += 1000;

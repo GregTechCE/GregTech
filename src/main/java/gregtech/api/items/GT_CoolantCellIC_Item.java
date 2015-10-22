@@ -22,10 +22,9 @@ public class GT_CoolantCellIC_Item
   }
   
   public boolean canStoreHeat(IReactor aReactor, ItemStack aStack, int x, int y)
-  {
-	  if(aReactor.isFluidCooled()&&(getControlTagOfStack(aStack))!=0){
-		  return false;
-	  }
+  {if(aReactor.isFluidCooled()&&(getControlTagOfStack(aStack))!=0){
+	  	  return false;
+	  	  }
     return true;
   }
   
@@ -46,11 +45,10 @@ public class GT_CoolantCellIC_Item
   
   public int alterHeat(IReactor aReactor, ItemStack aStack, int x, int y, int aHeat)
   {
-	  
     int tHeat = getHeatOfStack(aStack);
     if ((tHeat == 0) && (getControlTagOfStack(aStack) != 0)) {
-        setControlTagOfStack(aStack, 0);
-      }
+    	       setControlTagOfStack(aStack, 0);
+    	     }
     tHeat += aHeat;
     if (tHeat > this.heatStorage)
     {
@@ -69,8 +67,8 @@ public class GT_CoolantCellIC_Item
         aHeat = 0;
       }
       if ((tHeat > 0) && (getControlTagOfStack(aStack) == 0) && (!aReactor.isFluidCooled())) {
-          setControlTagOfStack(aStack, 1);
-        }
+    	          setControlTagOfStack(aStack, 1);
+    	       }
       setHeatForStack(aStack, tHeat);
     }
     return aHeat;

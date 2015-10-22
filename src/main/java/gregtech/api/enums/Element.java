@@ -307,5 +307,5 @@ public enum Element {
 		return mProtons + mNeutrons + mAdditionalMass;
 	}
 	
-	public static volatile int VERSION = 508;
+	public static volatile int VERSION = 509;
 }

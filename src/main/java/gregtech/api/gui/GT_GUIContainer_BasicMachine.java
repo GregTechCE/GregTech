@@ -36,25 +36,25 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         fontRendererObj.drawString(mName, 8,  4, 4210752);
         drawTooltip(par1, par2);
-    }
-    
-    private void drawTooltip(int x2, int y2){
-    	int xStart = (width - xSize) / 2;
-		int yStart = (height - ySize) / 2;
-		int x = x2 - xStart;
-		int y = y2 - yStart +5;
-		List<String> list = new ArrayList<String>();
-		if (y >= 67 && y <= 84) {
-			 if (x >= 7 && x <= 24){
-				list.add("Fluid Auto-Output");
-			}
-			 if (x >= 25 && x <= 42){
-					list.add("Item Auto-Output");
-				}
-		}
-		if (!list.isEmpty())
-			drawHoveringText(list, x, y, fontRendererObj);
-    }
+        }
+         
+        private void drawTooltip(int x2, int y2){
+        	int xStart = (width - xSize) / 2;
+        	int yStart = (height - ySize) / 2;
+        	int x = x2 - xStart;
+        	int y = y2 - yStart +5;
+        	List<String> list = new ArrayList<String>();
+        	if (y >= 67 && y <= 84) {
+        		 if (x >= 7 && x <= 24){
+        			list.add("Fluid Auto-Output");
+        		}
+        		 if (x >= 25 && x <= 42){
+        				list.add("Item Auto-Output");
+        			}
+        	}
+        	if (!list.isEmpty())
+        		drawHoveringText(list, x, y, fontRendererObj);
+        }
     
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {

@@ -28,6 +28,8 @@ public class ProcessingCircuit implements gregtech.api.interfaces.IOreRecipeRegi
       GT_ModHandler.removeRecipeByOutput(aStack);
       GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Basic.get(1L, new Object[0]), new Object[] { "WWW", "CPC", "WWW", Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Primitive), Character.valueOf('W'), OreDictNames.craftingWireCopper, Character.valueOf('P'), OrePrefixes.plate.get(Materials.Steel) });
       GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Basic.get(1L, new Object[0]), new Object[] { "WCW", "WPW", "WCW", Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Primitive), Character.valueOf('W'), OreDictNames.craftingWireCopper, Character.valueOf('P'), OrePrefixes.plate.get(Materials.Steel) });
+      GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Basic.get(1L, new Object[0]), new Object[] { "WWW", "CPC", "WWW", Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Primitive), Character.valueOf('W'), OrePrefixes.cableGt01.get(Materials.RedAlloy), Character.valueOf('P'), OrePrefixes.plate.get(Materials.Steel) });
+      GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Basic.get(1L, new Object[0]), new Object[] { "WCW", "WPW", "WCW", Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Primitive), Character.valueOf('W'), OrePrefixes.cableGt01.get(Materials.RedAlloy), Character.valueOf('P'), OrePrefixes.plate.get(Materials.Steel) });
       GT_ModHandler.addShapelessCraftingRecipe(ItemList.Circuit_Basic.get(1L, new Object[0]), new Object[] { ItemList.Circuit_Integrated.getWildcard(1L, new Object[0]) });
     }
   }

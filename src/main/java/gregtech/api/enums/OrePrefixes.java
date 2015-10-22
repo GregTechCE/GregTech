@@ -79,6 +79,7 @@ public enum OrePrefixes {
 	stick					("Sticks/Rods"					, ""								, " Rod"							,T,T,F,F,F,F,T,T,F,F, B[1]|B[2]               , M / 2    , 64,  23), // Stick made of half an Ingot. Introduced by Eloraam
 	round					("Rounds"						, ""								, " Round"							,T,T,F,F,F,F,T,T,F,F, B[1]                    , M / 9    , 64,  25), // consisting out of one Nugget.
 	bolt					("Bolts"						, ""								, " Bolt"							,T,T,F,F,F,F,T,T,F,F, B[1]|B[2]               , M / 8    , 64,  26), // consisting out of 1/8 Ingot or 1/4 Stick.
+	comb					("Combs"						, ""								, " Comb"							,F,F,F,F,F,F,F,T,F,F, B[1]|B[2]               , M        , 64, 101), // contain dusts
 	screw					("Screws"						, ""								, " Screw"							,T,T,F,F,F,F,T,T,F,F, B[1]|B[2]               , M / 9    , 64,  27), // consisting out of a Bolt.
 	ring					("Rings"						, ""								, " Ring"							,T,T,F,F,F,F,T,T,F,F, B[1]                    , M / 4    , 64,  28), // consisting out of 1/2 Stick.
 	springSmall				("Small Springs"				, "Small "							, " Spring"							,T,T,F,F,F,F,T,T,F,F, B[1]                    , M / 4    , 64,  55), // consisting out of 1 Fine Wire.
@@ -479,11 +480,11 @@ public enum OrePrefixes {
 		pipeRestrictiveMedium.mSecondaryMaterial	= new MaterialStack(Materials.Steel			, ring.mMaterialAmount * 3);
 		pipeRestrictiveLarge.mSecondaryMaterial		= new MaterialStack(Materials.Steel			, ring.mMaterialAmount * 4);
 		pipeRestrictiveHuge.mSecondaryMaterial		= new MaterialStack(Materials.Steel			, ring.mMaterialAmount * 5);
-		cableGt12.mSecondaryMaterial				= new MaterialStack(Materials.Rubber		, plate.mMaterialAmount * 4);
-		cableGt08.mSecondaryMaterial				= new MaterialStack(Materials.Rubber		, plate.mMaterialAmount * 3);
-		cableGt04.mSecondaryMaterial				= new MaterialStack(Materials.Rubber		, plate.mMaterialAmount * 2);
-		cableGt02.mSecondaryMaterial				= new MaterialStack(Materials.Rubber		, plate.mMaterialAmount);
-		cableGt01.mSecondaryMaterial				= new MaterialStack(Materials.Rubber		, plate.mMaterialAmount);
+		cableGt12.mSecondaryMaterial				= new MaterialStack(Materials.Ash			, dustSmall.mMaterialAmount * 4);
+		cableGt08.mSecondaryMaterial				= new MaterialStack(Materials.Ash			, dustSmall.mMaterialAmount * 3);
+		cableGt04.mSecondaryMaterial				= new MaterialStack(Materials.Ash			, dustSmall.mMaterialAmount * 2);
+		cableGt02.mSecondaryMaterial				= new MaterialStack(Materials.Ash			, dustSmall.mMaterialAmount);
+		cableGt01.mSecondaryMaterial				= new MaterialStack(Materials.Ash			, dustSmall.mMaterialAmount);
 		bucket.mSecondaryMaterial					= new MaterialStack(Materials.Iron			, ingot.mMaterialAmount * 3);
 		cell.mSecondaryMaterial						= new MaterialStack(Materials.Tin			, plate.mMaterialAmount * 2);
 		cellPlasma.mSecondaryMaterial				= new MaterialStack(Materials.Tin			, plate.mMaterialAmount * 2);
@@ -710,7 +711,7 @@ public enum OrePrefixes {
 		return aName == null ? false : aName.startsWith(aPrefix.toString());
 	}
 	
-	public static volatile int VERSION = 508;
+	public static volatile int VERSION = 509;
 	
 	@SuppressWarnings("incomplete-switch")
 	public String getDefaultLocalNameForItem(Materials aMaterial) {

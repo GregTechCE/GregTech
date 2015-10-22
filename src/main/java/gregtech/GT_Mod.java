@@ -15,14 +15,14 @@ import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
-			  import forestry.factory.gadgets.MachineCentrifuge;
+import forestry.factory.gadgets.MachineCentrifuge;
 import forestry.factory.gadgets.MachineCentrifuge.RecipeManager;
-			  import forestry.factory.gadgets.MachineSqueezer;
+import forestry.factory.gadgets.MachineSqueezer;
 import gregtech.api.GregTech_API;
 import gregtech.api.enchants.Enchantment_EnderDamage;
 import gregtech.api.enchants.Enchantment_Radioactivity;
 import gregtech.api.enums.ConfigCategories.Recipes;
-			  import gregtech.api.enums.*;
+import gregtech.api.enums.*;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.enums.Textures.ItemIcons;
 import gregtech.api.interfaces.internal.IGT_Mod;
@@ -40,7 +40,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_RecipeRegistrator;
-			  import gregtech.api.util.GT_SpawnEventHandler;
+import gregtech.api.util.GT_SpawnEventHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_DummyWorld;
 import gregtech.common.GT_Network;
@@ -53,7 +53,9 @@ import gregtech.loaders.load.GT_CoverBehaviorLoader;
 import gregtech.loaders.load.GT_FuelLoader;
 import gregtech.loaders.load.GT_ItemIterator;
 import gregtech.loaders.load.GT_SonictronLoader;
-			  import gregtech.loaders.misc.GT_Achievements;
+import gregtech.loaders.misc.GT_Achievements;
+import gregtech.loaders.misc.GT_BeeDefinition;
+import gregtech.loaders.misc.GT_Bees;
 import gregtech.loaders.misc.GT_CoverLoader;
 import gregtech.loaders.postload.GT_BlockResistanceLoader;
 import gregtech.loaders.postload.GT_BookAndLootLoader;
@@ -102,12 +104,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
-			  import net.minecraft.stats.Achievement;
+import net.minecraft.stats.Achievement;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.ChestGenHooks;
-			  import net.minecraftforge.common.ForgeVersion;
+import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -131,7 +133,7 @@ public class GT_Mod
   
   static
   {
-    if ((508 != GregTech_API.VERSION) || (508 != GT_ModHandler.VERSION) || (508 != GT_OreDictUnificator.VERSION) || (508 != GT_Recipe.VERSION) || (508 != GT_Utility.VERSION) || (508 != GT_RecipeRegistrator.VERSION) || (508 != Element.VERSION) || (508 != Materials.VERSION) || (508 != OrePrefixes.VERSION)) {
+    if ((509 != GregTech_API.VERSION) || (509 != GT_ModHandler.VERSION) || (509 != GT_OreDictUnificator.VERSION) || (509 != GT_Recipe.VERSION) || (509 != GT_Utility.VERSION) || (509 != GT_RecipeRegistrator.VERSION) || (509 != Element.VERSION) || (509 != Materials.VERSION) || (509 != OrePrefixes.VERSION)) {
       throw new GT_ItsNotMyFaultException("One of your Mods included GregTech-API Files inside it's download, mention this to the Mod Author, who does this bad thing, and tell him/her to use reflection. I have added a Version check, to prevent Authors from breaking my Mod that way.");
     }
   }
@@ -302,20 +304,21 @@ public class GT_Mod
     gregtechproxy.mHungerEffect = tMainConfig.get("general", "AFK_Hunger", false).getBoolean(false);
     gregtechproxy.mHardRock = tMainConfig.get("general", "harderstone", false).getBoolean(false);
     gregtechproxy.mInventoryUnification = tMainConfig.get("general", "InventoryUnification", true).getBoolean(true);
+    gregtechproxy.mGTBees = tMainConfig.get("general", "GTBees", true).getBoolean(true);
     gregtechproxy.mCraftingUnification = tMainConfig.get("general", "CraftingUnification", true).getBoolean(true);
     gregtechproxy.mNerfedWoodPlank = tMainConfig.get("general", "WoodNeedsSawForCrafting", true).getBoolean(true);
     gregtechproxy.mNerfedVanillaTools = tMainConfig.get("general", "smallerVanillaToolDurability", true).getBoolean(true);
     gregtechproxy.mSortToTheEnd = tMainConfig.get("general", "EnsureToBeLoadedLast", true).getBoolean(true);
-	gregtechproxy.mDisableIC2Cables = tMainConfig.get("general", "DisableIC2Cables", false).getBoolean(false);
+	gregtechproxy.mDisableIC2Cables = tMainConfig.get("general", "DisableIC2Cables", true).getBoolean(true);
 	gregtechproxy.mAchievements = tMainConfig.get("general", "EnableAchievements", true).getBoolean(true);
 	gregtechproxy.mAE2Integration = tMainConfig.get("general", "EnableAE2Integration", Loader.isModLoaded("appliedenergistics2")).getBoolean(Loader.isModLoaded("appliedenergistics2"));
+			 				  
 				  
-				  
-				  GregTech_API.mOutputRF =GregTech_API.sOPStuff.get(ConfigCategories.general, "OutputRF", false);
+				  GregTech_API.mOutputRF =GregTech_API.sOPStuff.get(ConfigCategories.general, "OutputRF", true);
 				  GregTech_API.mInputRF =GregTech_API.sOPStuff.get(ConfigCategories.general, "InputRF", false);
 				  GregTech_API.mEUtoRF = GregTech_API.sOPStuff.get(ConfigCategories.general, "100EUtoRF", 360);
 				  GregTech_API.mRFtoEU = GregTech_API.sOPStuff.get(ConfigCategories.general, "100RFtoEU", 20);
-				  GregTech_API.mRFExplosions = GregTech_API.sOPStuff.get(ConfigCategories.general, "RFExplosions", true);
+				  GregTech_API.mRFExplosions = GregTech_API.sOPStuff.get(ConfigCategories.general, "RFExplosions", false);
 				  GregTech_API.meIOLoaded = Loader.isModLoaded("EnderIO");
 				  
     if (tMainConfig.get("general", "hardermobspawners", true).getBoolean(true)) {
@@ -525,6 +528,7 @@ public class GT_Mod
     new GT_CropLoader().run();
     new GT_Worldgenloader().run();
     new GT_CoverLoader().run();
+    new GT_Bees();
     
     GT_RecipeRegistrator.registerUsagesForMaterials(new ItemStack(Blocks.planks, 1), null, false);
     GT_RecipeRegistrator.registerUsagesForMaterials(new ItemStack(Blocks.cobblestone, 1), null, false);
@@ -663,8 +667,8 @@ for (Map.Entry<ItemStack, Float> entry : outputs.entrySet()) {
       GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1L));
     }
     if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2_" + (tName = "replicator"), true)) {
-        GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1L));
-      }
+      GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1L));
+    }
     if (gregtechproxy.mNerfedVanillaTools)
     {
       GT_Log.out.println("GT_Mod: Nerfing Vanilla Tool Durability");
@@ -750,7 +754,8 @@ for (Map.Entry<ItemStack, Float> entry : outputs.entrySet()) {
     GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[] { new ItemStack(Items.written_book, 1, 32767) }, new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Scanned Book Data", new Object[0]) }, ItemList.Tool_DataStick.getWithName(1L, "Stick to save it to", new Object[0]), null, null, 128, 32, 0);
     GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[] { new ItemStack(Items.filled_map, 1, 32767) }, new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Scanned Map Data", new Object[0]) }, ItemList.Tool_DataStick.getWithName(1L, "Stick to save it to", new Object[0]), null, null, 128, 32, 0);
     GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[] { ItemList.Tool_DataOrb.getWithName(1L, "Orb to overwrite", new Object[0]) }, new ItemStack[] { ItemList.Tool_DataOrb.getWithName(1L, "Copy of the Orb", new Object[0]) }, ItemList.Tool_DataOrb.getWithName(0L, "Orb to copy", new Object[0]), null, null, 512, 32, 0);
-    GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Stick to overwrite", new Object[0]) }, new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Copy of the Stick", new Object[0]) }, ItemList.Tool_DataStick.getWithName(0L, "Stick to copy", new Object[0]), null, null, 128, 32, 0);
+    GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Stick to overwrite",   new Object[0]) }, new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Copy of the Stick",         new Object[0]) }, ItemList.Tool_DataStick.getWithName(0L, "Stick to copy", new Object[0]), null, null, 128, 32, 0);
+    GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Raw Prospection Data", new Object[0]) }, new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Analyzed Prospection Data", new Object[0]) }, null, null, null, 1000, 32, 0);
     for (Materials tMaterial : Materials.VALUES) {
       if ((tMaterial.mElement != null) && (!tMaterial.mElement.mIsIsotope) && (tMaterial != Materials.Magic) && (tMaterial.getMass() > 0L))
       {
@@ -761,12 +766,12 @@ for (Map.Entry<ItemStack, Float> entry : outputs.entrySet()) {
         if (tInput != null) {
           GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[] { tInput }, new ItemStack[] { tOutput }, ItemList.Tool_DataOrb.get(1L, new Object[0]), null, null, (int)(tMaterial.getMass() * 8192L), 32, 0);
           GT_Recipe.GT_Recipe_Map.sRepicatorFakeRecipes.addFakeRecipe(false, null , new ItemStack[] { tInput }, new ItemStack[] { tOutput } , new FluidStack[]{Materials.UUMatter.getFluid(tMaterial.getMass())}, null, (int)(tMaterial.getMass() * 512L), 32, 0);
-        }
+          }
         tInput = GT_OreDictUnificator.get(OrePrefixes.cell, tMaterial, 1L);
         if (tInput != null) {
           GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[] { tInput }, new ItemStack[] { tOutput }, ItemList.Tool_DataOrb.get(1L, new Object[0]), null, null, (int)(tMaterial.getMass() * 8192L), 32, 0);
           GT_Recipe.GT_Recipe_Map.sRepicatorFakeRecipes.addFakeRecipe(false, null , new ItemStack[] { tInput }, new ItemStack[] { tOutput } , new FluidStack[]{Materials.UUMatter.getFluid(tMaterial.getMass())}, null, (int)(tMaterial.getMass() * 512L), 32, 0);
-           }
+        }
       }
     }
     GT_Recipe.GT_Recipe_Map.sRockBreakerFakeRecipes.addFakeRecipe(false, new ItemStack[] { ItemList.Display_ITS_FREE.getWithName(0L, "Place Lava on Side", new Object[0]) }, new ItemStack[] { new ItemStack(Blocks.cobblestone, 1) }, null, null, null, 16, 32, 0);

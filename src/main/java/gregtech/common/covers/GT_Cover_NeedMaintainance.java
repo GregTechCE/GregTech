@@ -1,9 +1,7 @@
 package gregtech.common.covers;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
-import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -40,7 +38,7 @@ public class GT_Cover_NeedMaintainance extends GT_CoverBehavior{
 		
 		aTileEntity.setOutputRedstoneSignal(aSide, (byte)(needsRepair ? 0 : 15));
 		aTileEntity.setOutputRedstoneSignal(GT_Utility.getOppositeSide(aSide), (byte)(needsRepair ? 0 : 15));
-		return aCoverVariable;
+ 		return aCoverVariable;
 	}
 	
 	public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ)

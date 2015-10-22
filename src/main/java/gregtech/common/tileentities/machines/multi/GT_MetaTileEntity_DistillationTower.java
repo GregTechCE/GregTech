@@ -16,7 +16,6 @@ import gregtech.api.util.GT_Utility;
 
 import java.util.ArrayList;
 
-import scala.actors.threadpool.Arrays;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -43,7 +42,14 @@ public class GT_MetaTileEntity_DistillationTower
   
   public String[] getDescription()
   {
-    return new String[] { "Controller Block for the Distillation Tower", "Size: 3x6x3 (Hollow)", "Controller (front bottom)", "1x Input Hatch (bottom)", "5x Output Hatch (one each height level besides botton)","1x Output Bus (Botton)", "1x Energy Hatch (anywhere)", "1x Maintenance Hatch (anywhere)", "Clean Stainless Steel Casings for the rest (26 at least!)" };
+    return new String[] { 
+    		"Controller Block for the Distillation Tower", 
+    		"Size: 3x6x3 (Hollow)", "Controller (front bottom)", 
+    		"1x Input Hatch (bottom)", 
+    		"5x Output Hatch (one each height level besides botton)",
+    		"1x Output Bus (Botton)", "1x Energy Hatch (anywhere)", 
+    		"1x Maintenance Hatch (anywhere)", 
+    		"Clean Stainless Steel Casings for the rest (26 at least!)" };
   }
   
   public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone)

@@ -31,7 +31,7 @@ import net.minecraftforge.oredict.OreDictionary;
  * P.S. It is intended to be named "Unificator" and not "Unifier", because that sounds more awesome.
  */
 public class GT_OreDictUnificator {
-	public static volatile int VERSION = 508;
+	public static volatile int VERSION = 509;
 	
 	private static final HashMap<String, ItemStack> sName2StackMap = new HashMap<String, ItemStack>();
 	private static final HashMap<GT_ItemStack, ItemData> sItemStack2DataMap = new HashMap<GT_ItemStack, ItemData>();

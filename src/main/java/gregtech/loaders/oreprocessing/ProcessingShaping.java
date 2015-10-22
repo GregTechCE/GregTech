@@ -43,9 +43,11 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
         }
         
         GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, new Object[] { aStack }), ItemList.Shape_Extruder_Pipe_Tiny.get(0L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeTiny, aMaterial.mSmeltInto, tAmount * 2), 4 * tAmount, 8 * tVoltageMultiplier);
+        if(!(aMaterial == Materials.Redstone|| aMaterial == Materials.Glowstone)){
         GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, new Object[] { aStack }), ItemList.Shape_Extruder_Pipe_Small.get(0L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial.mSmeltInto, tAmount), 8 * tAmount, 8 * tVoltageMultiplier);
         GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(3L, new Object[] { aStack }), ItemList.Shape_Extruder_Pipe_Medium.get(0L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial.mSmeltInto, tAmount), 24 * tAmount, 8 * tVoltageMultiplier);
         GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(6L, new Object[] { aStack }), ItemList.Shape_Extruder_Pipe_Large.get(0L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeLarge, aMaterial.mSmeltInto, tAmount), 48 * tAmount, 8 * tVoltageMultiplier);
+        }
         GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(12L, new Object[] { aStack }), ItemList.Shape_Extruder_Pipe_Huge.get(0L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.pipeHuge, aMaterial.mSmeltInto, tAmount), 96 * tAmount, 8 * tVoltageMultiplier);
         GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, new Object[] { aStack }), ItemList.Shape_Extruder_Plate.get(0L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial.mSmeltInto, tAmount), (int)Math.max(aMaterial.getMass() * 1L * tAmount, tAmount), 8 * tVoltageMultiplier);
         if (tAmount * 2 <= 64) GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, new Object[] { aStack }), ItemList.Shape_Extruder_Rod.get(0L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mSmeltInto, tAmount * 2), (int)Math.max(aMaterial.getMass() * 2L * tAmount, tAmount), 6 * tVoltageMultiplier);

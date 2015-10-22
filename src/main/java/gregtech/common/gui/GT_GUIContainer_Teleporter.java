@@ -6,6 +6,7 @@ import gregtech.api.gui.GT_GUIContainer_BasicTank;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_Container_Teleporter;
+import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Teleporter;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.InventoryPlayer;
 

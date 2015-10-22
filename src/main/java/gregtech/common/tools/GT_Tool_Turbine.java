@@ -14,7 +14,7 @@ public abstract class GT_Tool_Turbine extends GT_Tool{
 	public abstract float getBaseDamage();
 	@Override public boolean isMinableBlock(Block aBlock, byte aMetaData) {return false;}
 	@Override public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {return aIsToolHead ? getTurbineIcon(): null;}
-	@Override public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : null;}
+ 	@Override public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : null;}
 	public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity)
 	 {
 	   return new ChatComponentText(EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE + " put " + EnumChatFormatting.RED + 

@@ -388,8 +388,8 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     					    || (getCoverIDAtSide((byte)4) == 0 && worldObj.getPrecipitationHeight(xCoord-1, zCoord  ) - 1 < yCoord)
     						|| (getCoverIDAtSide((byte)5) == 0 && worldObj.getPrecipitationHeight(xCoord+1, zCoord  ) - 1 < yCoord)) {
     				    	    if (GregTech_API.sMachineRainExplosions && worldObj.isRaining() && getBiome().rainfall > 0) {
-    				        	    if (getRandomNumber(10)==0) {doEnergyExplosion(); 
-    				        	    try{GT_Mod.instance.achievements.issueAchievement(this.getWorldObj().getPlayerEntityByName(mOwnerName), "badweather");}catch(Exception e){}
+    				        	    if (getRandomNumber(10)==0) {try{GT_Mod.instance.achievements.issueAchievement(this.getWorldObj().getPlayerEntityByName(mOwnerName), "badweather");}catch(Exception e){}
+    				        	    doEnergyExplosion();     				        	    
     				        	    }else setOnFire();
     				    	    }
     				        	if (!hasValidMetaTileEntity()) {
@@ -397,8 +397,8 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     				        		return;
     				        	}
     				    	    if (GregTech_API.sMachineThunderExplosions && worldObj.isThundering() && getBiome().rainfall > 0 && getRandomNumber(3) == 0) {
-    				        	    doEnergyExplosion();
     				        	    try{GT_Mod.instance.achievements.issueAchievement(this.getWorldObj().getPlayerEntityByName(mOwnerName), "badweather");}catch(Exception e){}
+    				        	    doEnergyExplosion();
     				    	    }
     			            }
     		        	}
@@ -552,7 +552,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 				mFacing			= (byte)(aValue& 7);
 				mActive			= ((aValue& 8) != 0);
 				mRedstone		= ((aValue&16) != 0);
-				//mLockUpgrade	= ((aValue&32) != 0);
+//				mLockUpgrade	= ((aValue&32) != 0);
 				break;
 			case  1:
 				if (hasValidMetaTileEntity()) mMetaTileEntity.onValueUpdate((byte)aValue);
@@ -941,8 +941,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 	@Override
 	public byte getOutputRedstoneSignal(byte aSide) {
 		return getCoverBehaviorAtSide(aSide).manipulatesSidedRedstoneOutput(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this) ? mSidedRedstone[aSide]: 0;
-//		return (byte)(getCoverBehaviorAtSide(aSide).manipulatesSidedRedstoneOutput(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this) || (mRedstone && getCoverBehaviorAtSide(aSide).letsRedstoneGoOut(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this))?mSidedRedstone[aSide]&15:0);
-	}
+}
 	
 	@Override
 	public void setInternalOutputRedstoneSignal(byte aSide, byte aStrength) {
@@ -950,7 +949,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 	}
 	
 	@Override
-	public void setOutputRedstoneSignal(byte aSide, byte aStrength) {	
+	public void setOutputRedstoneSignal(byte aSide, byte aStrength) {
 		aStrength = (byte)Math.min(Math.max(0, aStrength), 15);
 		if (aSide >= 0 && aSide < 6 && mSidedRedstone[aSide] != aStrength) {
 			mSidedRedstone[aSide] = aStrength;

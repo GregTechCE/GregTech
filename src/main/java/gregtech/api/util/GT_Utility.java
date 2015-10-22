@@ -1,11 +1,13 @@
 package gregtech.api.util;
 
 import static gregtech.api.enums.GT_Values.*;
+import forestry.core.fluids.Fluids;
 import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.GT_DamageSources;
 import gregtech.api.enchants.Enchantment_Radioactivity;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.events.BlockScanningEvent;
 import gregtech.api.interfaces.IDebugableBlock;
@@ -72,7 +74,7 @@ import cofh.api.transport.*;
  * Just a few Utility Functions I use.
  */
 public class GT_Utility {
-	public static volatile int VERSION = 508;
+	public static volatile int VERSION = 509;
 	
 	public static class ItemNBT {
 		public static void setNBT(ItemStack aStack, NBTTagCompound aNBT) {
@@ -141,6 +143,31 @@ public class GT_Utility {
 	    	NBTTagCompound tNBT = getNBT(aStack);
 	    	return tNBT.getString("author");
 	    }
+		
+		public static void setProspectionData(ItemStack aStack, int aX, int aY, int aZ, int aDim,FluidStack aFluid, String[] aOres){
+			NBTTagCompound tNBT = getNBT(aStack);
+			String tData = aX+","+aY+","+aZ+","+aDim+","+(aFluid.amount/5000)+","+aFluid.getLocalizedName()+",";
+			for(String tString : aOres){tData +=tString+",";}
+	    	tNBT.setString("prospection", tData);
+	    	setNBT(aStack, tNBT);
+		}
+		
+		public static void convertProspectionData(ItemStack aStack){
+			NBTTagCompound tNBT = getNBT(aStack);
+			String tData = tNBT.getString("prospection");
+			String[] tDataArray = tData.split(",");
+			if(tDataArray.length>6){
+				tNBT.setString("author", "X: "+tDataArray[0]+" Y: "+tDataArray[1]+" Z: "+tDataArray[2]+" Dim: "+tDataArray[3]);
+			    NBTTagList tNBTList = new NBTTagList();
+			    String tOres =" Prospected Ores: ";
+			    for(int i=6;tDataArray.length>i;i++){
+			    	tOres += (tDataArray[i]+" ");
+			    }
+			    tNBTList.appendTag(new NBTTagString("Prospection Data From: X"+tDataArray[0]+" Z:"+tDataArray[2]+" Dim:"+tDataArray[3]+" Produces "+tDataArray[4]+"L "+tDataArray[5]+" "+tOres));
+				tNBT.setTag("pages", tNBTList);
+			}
+	    	setNBT(aStack, tNBT);
+		}
 		
 		public static void addEnchantment(ItemStack aStack, Enchantment aEnchantment, int aLevel) {
 			NBTTagCompound tNBT = getNBT(aStack), tEnchantmentTag;
@@ -1408,9 +1435,6 @@ public class GT_Utility {
 		return loadItem(aNBT.getCompoundTag(aTagName));
 	}
 	
-	/**
-	 * Loads an ItemStack properly.
-	 */
 	public static FluidStack loadFluid(NBTTagCompound aNBT, String aTagName) {
 		return loadFluid(aNBT.getCompoundTag(aTagName));
 	}
@@ -1432,8 +1456,8 @@ public class GT_Utility {
 	}
 	
 	/**
-	 * Loads an ItemStack properly.
-	 */
+	* Loads an FluidStack properly.
+	*/
 	public static FluidStack loadFluid(NBTTagCompound aNBT) {
 		if (aNBT == null) return null;
 		return FluidStack.loadFluidStackFromNBT(aNBT);
@@ -1580,6 +1604,27 @@ public class GT_Utility {
 		return F;
 	}
 	
+	public static FluidStack getUndergroundOil(World aWorld, int aX, int aZ){
+		Random tRandom = new Random((aWorld.getSeed()+(aX/96)+(7*(aZ/96))));
+		int oil = tRandom.nextInt(3);
+		double amount = tRandom.nextInt(50)+tRandom.nextDouble();
+//		System.out.println("Oil: "+(aX/96)+" "+(aZ/96)+" "+oil+" "+amount);
+//		amount = 40;
+		Fluid tFluid=null;
+		switch (oil){
+		case 0: tFluid = Materials.NatruralGas.mGas;
+			break;
+		case 1: tFluid = Materials.OilLight.mFluid;
+			break;
+		case 2: tFluid = Materials.OilMedium.mFluid;
+		break;
+		case 3: tFluid = Materials.OilHeavy.mFluid;
+		break;
+		default:tFluid = Materials.Oil.mFluid;
+		}
+		return new FluidStack(tFluid,(int) (Math.pow(amount,5)/100));
+	}
+	
 	public static int getCoordinateScan(ArrayList<String> aList, EntityPlayer aPlayer, World aWorld, int aScanLevel, int aX, int aY, int aZ, int aSide, float aClickX, float aClickY, float aClickZ) {
 		if (aList == null) return 0;
 		
@@ -1700,12 +1745,16 @@ public class GT_Utility {
 				}
 			}} catch(Throwable e) {if (D1) e.printStackTrace(GT_Log.err);}
     	}
+	    if(aPlayer.capabilities.isCreativeMode){
+	    FluidStack tFluid = getUndergroundOil(aWorld, aX, aZ);
+	    tList.add("Oil in Chunk: "+tFluid.amount+" "+tFluid.getLocalizedName());}
+	    
 	    try {if (tBlock instanceof IDebugableBlock) {
 	    	rEUAmount+=500;
 	        ArrayList<String> temp = ((IDebugableBlock)tBlock).getDebugInfo(aPlayer, aX, aY, aZ, 3);
 	        if (temp != null) tList.addAll(temp);
 	    }} catch(Throwable e) {if (D1) e.printStackTrace(GT_Log.err);}
-	    
+	  
 	    BlockScanningEvent tEvent = new BlockScanningEvent(aWorld, aPlayer, aX, aY, aZ, (byte)aSide, aScanLevel, tBlock, tTileEntity, tList, aClickX, aClickY, aClickZ);
 	    tEvent.mEUCost = rEUAmount;
 	    MinecraftForge.EVENT_BUS.post(tEvent);

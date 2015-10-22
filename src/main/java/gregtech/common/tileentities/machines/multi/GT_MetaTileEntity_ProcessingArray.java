@@ -115,6 +115,7 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
 										}else if(tmp.startsWith("arcfurnace")){
 											return GT_Recipe.GT_Recipe_Map.sArcFurnaceRecipes;
 										}
+	 										
 				    return null;
 				  }
 				  
@@ -181,14 +182,15 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
 										this.mEUt = 0;
 										this.mOutputItems = null;
 										this.mOutputFluids = null;
-										this.mMaxProgresstime = tRecipe.mDuration;
 										int machines = Math.min(16,mInventory[1].stackSize);
-										this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-										this.mEfficiencyIncrease = 10000;
 										int i = 0;
 										for(;i<machines;i++){
-											if(!tRecipe.isRecipeInputEqual(true, tFluids, tInputs))break;
-										}
+											if(!tRecipe.isRecipeInputEqual(true, tFluids, tInputs)){if(i==0){return false;}
+												break;}
+											}
+											this.mMaxProgresstime = tRecipe.mDuration;
+											this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+											this.mEfficiencyIncrease = 10000;
 										      if (tRecipe.mEUt <= 16)
 										       {
 										        this.mEUt = (tRecipe.mEUt * (1 << tTier - 1) * (1 << tTier - 1));

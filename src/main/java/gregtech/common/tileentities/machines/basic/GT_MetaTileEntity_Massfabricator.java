@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+import static gregtech.api.enums.GT_Values.V;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -46,14 +47,17 @@ public class GT_MetaTileEntity_Massfabricator
     Materials.UUAmplifier.mChemicalFormula = ("Mass Fabricator Eff/Speed Bonus: x" + sUUASpeedBonus);
   }
   
+@Override public long maxAmperesIn(){return 10;}
+@Override public long maxEUStore()  {return V[mTier]*512;}
+  
   public int checkRecipe()
   {
     FluidStack tFluid = getDrainableStack();
     if ((tFluid == null) || (tFluid.amount < getCapacity()))
     {
       this.mOutputFluid = Materials.UUMatter.getFluid(1L);
-      this.mEUt = ((int)gregtech.api.enums.GT_Values.V[this.mTier]);
-      this.mMaxProgresstime = (sDurationMultiplier / (1 << this.mTier - 1));
+      this.mEUt = ((int)gregtech.api.enums.GT_Values.V[this.mTier])*8;
+      this.mMaxProgresstime = (sDurationMultiplier / (1 << (this.mTier*2) - 2));
       if (((tFluid = getFillableStack()) != null) && (tFluid.amount >= sUUAperUUM) && (tFluid.isFluidEqual(Materials.UUAmplifier.getFluid(1L))))
       {
         tFluid.amount -= sUUAperUUM;

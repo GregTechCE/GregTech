@@ -51,7 +51,7 @@ onConfigLoad();
 
 public void onConfigLoad()
   {
-				this.mEfficiency =GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "GasTurbine.efficiency.tier."+this.mTier, (100 - this.mTier * 10));
+				this.mEfficiency =GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "GasTurbine.efficiency.tier."+this.mTier, (100 - this.mTier * 5));
 }
 
   
