@@ -1677,5 +1677,5 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
         return mRGBa;
     }
     
-    public static volatile int VERSION = 509;
+    public static volatile int VERSION = 508;
 }
