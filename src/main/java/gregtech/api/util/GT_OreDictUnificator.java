@@ -317,6 +317,7 @@ public class GT_OreDictUnificator {
 
     public static ItemStack getIngotOrDust(MaterialStack aMaterial) {
         ItemStack rStack = getIngot(aMaterial);
+        if(aMaterial!=null&&aMaterial.mMaterial!=null&&(aMaterial.mMaterial==Materials.Naquadah||aMaterial.mMaterial==Materials.NaquadahEnriched))rStack = getDust(aMaterial);
         if (rStack == null) rStack = getDust(aMaterial);
         return rStack;
     }

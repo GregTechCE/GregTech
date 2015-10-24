@@ -160,6 +160,7 @@ public class GT_RecipeRegistrator {
         if (aStack == null || aMaterial == null || aMaterialAmount <= 0 || aMaterial.contains(SubTag.NO_SMELTING) || (aMaterialAmount > M && aMaterial.contains(SubTag.METAL)))
             return;
         aMaterialAmount /= aStack.stackSize;
+        if(aMaterial==Materials.Naquadah||aMaterial==Materials.NaquadahEnriched)return;
         if (aAllowAlloySmelter)
             GT_ModHandler.addSmeltingAndAlloySmeltingRecipe(GT_Utility.copyAmount(1, aStack), GT_OreDictUnificator.getIngot(aMaterial.mSmeltInto, aMaterialAmount));
         else
