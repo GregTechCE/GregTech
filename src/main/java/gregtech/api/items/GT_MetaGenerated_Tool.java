@@ -1,5 +1,6 @@
 package gregtech.api.items;
 
+import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -51,8 +52,8 @@ import static gregtech.api.enums.GT_Values.MOD_ID_RC;
  * This is an example on how you can create a Tool ItemStack, in this case a Bismuth Wrench:
  * GT_MetaGenerated_Tool.sInstances.get("gt.metatool.01").getToolWithStats(16, 1, Materials.Bismuth, Materials.Bismuth, null);
  */
-@Optional.InterfaceList(value = {@Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = MOD_ID_FR), @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = MOD_ID_RC)})
-public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements IDamagableItem, IToolGrafter, IToolCrowbar {
+@Optional.InterfaceList(value = {@Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = MOD_ID_FR), @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = MOD_ID_RC), @Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = "BuildCraft")})
+public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements IDamagableItem, IToolGrafter, IToolCrowbar, IToolWrench {
     /**
      * All instances of this Item Class are listed here.
      * This gets used to register the Renderer to all Items of this Type, if useStandardMetaItemRenderer() returns true.
@@ -456,6 +457,24 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
         IToolStats tStats = getToolStats(aStack);
         if (tStats != null) doDamage(aStack, tStats.getToolDamagePerEntityAttack());
     }
+    
+	@Override
+	public boolean canWrench(EntityPlayer player, int x, int y, int z) {
+		System.out.println("canWrench");
+		if(player==null)return false;
+		if(player.getCurrentEquippedItem()==null)return false;
+        if (!isItemStackUsable(player.getCurrentEquippedItem())) return false;
+        IToolStats tStats = getToolStats(player.getCurrentEquippedItem());
+        return tStats != null && tStats.isCrowbar();
+	}
+
+	@Override
+	public void wrenchUsed(EntityPlayer player, int x, int y, int z) {
+		if(player==null)return;
+		if(player.getCurrentEquippedItem()==null)return;
+        IToolStats tStats = getToolStats(player.getCurrentEquippedItem());
+        if (tStats != null) doDamage(player.getCurrentEquippedItem(), tStats.getToolDamagePerEntityAttack());
+	}
 
     @Override
     public boolean canLink(EntityPlayer aPlayer, ItemStack aStack, EntityMinecart cart) {

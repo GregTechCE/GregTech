@@ -90,6 +90,10 @@ public class GT_Tool_Wrench
         return false;
     }
 
+    public boolean isWrench() {
+        return true;
+    }
+    
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
         String tTool = aBlock.getHarvestTool(aMetaData);
         return ((tTool != null) && (tTool.equals("wrench"))) || (aBlock.getMaterial() == Material.piston) || (aBlock == Blocks.hopper) || (aBlock == Blocks.dispenser) || (aBlock == Blocks.dropper);

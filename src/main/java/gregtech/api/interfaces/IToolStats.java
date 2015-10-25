@@ -98,10 +98,15 @@ public interface IToolStats {
     public boolean isCrowbar();
 
     /**
-     * @return If this Tool can be used as an RC Crowbar.
+     * @return If this Tool can be used as an FR Grafter.
      */
     public boolean isGrafter();
 
+    /**
+     * @return If this Tool can be used as an BC Wrench.
+     */
+    public boolean isWrench();
+    
     /**
      * @return If this Tool can be used as Weapon i.e. if that is the main purpose.
      */
