@@ -1582,6 +1582,24 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustTinyLithium")) {
             rFuelValue = (short) Math.max(rFuelValue, 888);
         }
+        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "gemCaesium")) {
+            rFuelValue = (short) Math.max(rFuelValue, 6000);
+        }
+        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "crushedCaesium")) {
+            rFuelValue = (short) Math.max(rFuelValue, 6000);
+        }
+        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustImpureCaesium")) {
+            rFuelValue = (short) Math.max(rFuelValue, 6000);
+        }
+        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustCaesium")) {
+            rFuelValue = (short) Math.max(rFuelValue, 6000);
+        }
+        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustSmallCaesium")) {
+            rFuelValue = (short) Math.max(rFuelValue, 2000);
+        }
+        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustTinyCaesium")) {
+            rFuelValue = (short) Math.max(rFuelValue, 888);
+        }
         if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "gemLignite")) {
             rFuelValue = (short) Math.max(rFuelValue, 1200);
         }
