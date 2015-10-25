@@ -103,7 +103,7 @@ public class GT_MetaTileEntity_PyrolyseOven extends GT_MetaTileEntity_MultiBlock
                                 }
                             }
                         } else {// innen air
-                            if (!aBaseMetaTileEntity.getAir(xDir + i, h, zDir + j)) {
+                            if (!aBaseMetaTileEntity.getAirOffset(xDir + i, h, zDir + j)) {
                                 return false;
                             }
                         }
