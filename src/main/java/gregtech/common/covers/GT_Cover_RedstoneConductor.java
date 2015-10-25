@@ -20,26 +20,13 @@ public class GT_Cover_RedstoneConductor
     public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable = (aCoverVariable + 1) % 7;
         switch (aCoverVariable) {
-            case 0:
-                GT_Utility.sendChatToPlayer(aPlayer, "Conducts strongest Input");
-                break;
-            case 1:
-                GT_Utility.sendChatToPlayer(aPlayer, "Conducts from bottom Input");
-                break;
-            case 2:
-                GT_Utility.sendChatToPlayer(aPlayer, "Conducts from top Input");
-                break;
-            case 3:
-                GT_Utility.sendChatToPlayer(aPlayer, "Conducts from north Input");
-                break;
-            case 4:
-                GT_Utility.sendChatToPlayer(aPlayer, "Conducts from south Input");
-                break;
-            case 5:
-                GT_Utility.sendChatToPlayer(aPlayer, "Conducts from west Input");
-                break;
-            case 6:
-                GT_Utility.sendChatToPlayer(aPlayer, "Conducts from east Input");
+            case 0: GT_Utility.sendChatToPlayer(aPlayer, "Conducts strongest Input"); break;
+            case 1: GT_Utility.sendChatToPlayer(aPlayer, "Conducts from bottom Input"); break;
+            case 2: GT_Utility.sendChatToPlayer(aPlayer, "Conducts from top Input"); break;
+            case 3: GT_Utility.sendChatToPlayer(aPlayer, "Conducts from north Input"); break;
+            case 4: GT_Utility.sendChatToPlayer(aPlayer, "Conducts from south Input"); break;
+            case 5: GT_Utility.sendChatToPlayer(aPlayer, "Conducts from west Input"); break;
+            case 6: GT_Utility.sendChatToPlayer(aPlayer, "Conducts from east Input"); break;
         }
         return aCoverVariable;
     }

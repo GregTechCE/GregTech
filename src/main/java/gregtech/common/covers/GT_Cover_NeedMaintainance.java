@@ -45,35 +45,17 @@ public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
 
     public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable = (aCoverVariable + 1) % 10;
-        if (aCoverVariable == 0) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Emit if 1 Maintainance Needed");
-        }
-        if (aCoverVariable == 1) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Emit if 1 Maintainance Needed(inverted)");
-        }
-        if (aCoverVariable == 2) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Emit if 2 Maintainance Needed");
-        }
-        if (aCoverVariable == 3) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Emit if 2 Maintainance Needed(inverted)");
-        }
-        if (aCoverVariable == 4) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Emit if 3 Maintainance Needed");
-        }
-        if (aCoverVariable == 5) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Emit if 3 Maintainance Needed(inverted)");
-        }
-        if (aCoverVariable == 6) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Emit if 4 Maintainance Needed");
-        }
-        if (aCoverVariable == 7) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Emit if 4 Maintainance Needed(inverted)");
-        }
-        if (aCoverVariable == 8) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Emit if 5 Maintainance Needed");
-        }
-        if (aCoverVariable == 9) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Emit if 5 Maintainance Needed(inverted)");
+        switch(aCoverVariable) {
+            case 0: GT_Utility.sendChatToPlayer(aPlayer, "Emit if 1 Maintenance Needed"); break;
+            case 1: GT_Utility.sendChatToPlayer(aPlayer, "Emit if 1 Maintenance Needed(inverted)"); break;
+            case 2: GT_Utility.sendChatToPlayer(aPlayer, "Emit if 2 Maintenance Needed"); break;
+            case 3: GT_Utility.sendChatToPlayer(aPlayer, "Emit if 2 Maintenance Needed(inverted)"); break;
+            case 4: GT_Utility.sendChatToPlayer(aPlayer, "Emit if 3 Maintenance Needed"); break;
+            case 5: GT_Utility.sendChatToPlayer(aPlayer, "Emit if 3 Maintenance Needed(inverted)"); break;
+            case 6: GT_Utility.sendChatToPlayer(aPlayer, "Emit if 4 Maintenance Needed"); break;
+            case 7: GT_Utility.sendChatToPlayer(aPlayer, "Emit if 4 Maintenance Needed(inverted)"); break;
+            case 8: GT_Utility.sendChatToPlayer(aPlayer, "Emit if 5 Maintenance Needed"); break;
+            case 9: GT_Utility.sendChatToPlayer(aPlayer, "Emit if 5 Maintenance Needed(inverted)"); break;
         }
         return aCoverVariable;
     }

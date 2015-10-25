@@ -29,17 +29,11 @@ public class GT_Cover_DoesWork
 
     public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable = (aCoverVariable + 1) % 4;
-        if (aCoverVariable == 0) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Normal");
-        }
-        if (aCoverVariable == 1) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Inverted");
-        }
-        if (aCoverVariable == 2) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Ready to work");
-        }
-        if (aCoverVariable == 3) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Not ready to work");
+        switch(aCoverVariable) {
+            case 0: GT_Utility.sendChatToPlayer(aPlayer, "Normal"); break;
+            case 1: GT_Utility.sendChatToPlayer(aPlayer, "Inverted"); break;
+            case 2: GT_Utility.sendChatToPlayer(aPlayer, "Ready to work"); break;
+            case 3: GT_Utility.sendChatToPlayer(aPlayer, "Not ready to work"); break;
         }
         return aCoverVariable;
     }
