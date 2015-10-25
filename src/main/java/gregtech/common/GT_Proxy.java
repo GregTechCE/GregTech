@@ -152,6 +152,10 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     private World mUniverse = null;
     private boolean isFirstServerWorldTick = true;
     private boolean mOreDictActivated = false;
+    public int[] mHarvestLevel= new int[1000];
+    public int mGraniteHavestLevel=3;
+    public int mMaxHarvestLevel=7;
+    public boolean mChangeHarvestLevels=false;
 
     public GT_Proxy() {
         GameRegistry.registerFuelHandler(this);

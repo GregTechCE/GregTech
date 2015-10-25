@@ -55,8 +55,6 @@ import java.io.PrintStream;
 import java.util.*;
 import java.util.Map.Entry;
 
-//import gregtech.loaders.misc.GT_BeeDefinition;
-//import gregtech.loaders.misc.GT_Bees;
 
 @Mod(modid = "gregtech", name = "GregTech", version = "MC1710", useMetadata = false, dependencies = "required-after:IC2; after:Forestry; after:PFAAGeologica; after:Thaumcraft; after:Railcraft; after:appliedenergistics2; after:ThermalExpansion; after:TwilightForest; after:harvestcraft; after:magicalcrops; after:BuildCraft|Transport; after:BuildCraft|Silicon; after:BuildCraft|Factory; after:BuildCraft|Energy; after:BuildCraft|Core; after:BuildCraft|Builders; after:GalacticraftCore; after:GalacticraftMars; after:GalacticraftPlanets; after:ThermalExpansion|Transport; after:ThermalExpansion|Energy; after:ThermalExpansion|Factory; after:RedPowerCore; after:RedPowerBase; after:RedPowerMachine; after:RedPowerCompat; after:RedPowerWiring; after:RedPowerLogic; after:RedPowerLighting; after:RedPowerWorld; after:RedPowerControl;")
 public class GT_Mod
@@ -237,6 +235,16 @@ public class GT_Mod
         GregTech_API.mRFExplosions = GregTech_API.sOPStuff.get(ConfigCategories.general, "RFExplosions", false);
         GregTech_API.meIOLoaded = Loader.isModLoaded("EnderIO");
 
+        gregtechproxy.mChangeHarvestLevels = GregTech_API.sMaterialProperties.get("havestLevel", "activateHarvestLevelChange", false);
+        if(gregtechproxy.mChangeHarvestLevels){
+        gregtechproxy.mGraniteHavestLevel = (int) GregTech_API.sMaterialProperties.get("havestLevel", "graniteHarvestLevel", 3);
+        gregtechproxy.mMaxHarvestLevel=(int) Math.min(15, GregTech_API.sMaterialProperties.get("havestLevel", "maxLevel",7));
+        for(Materials tMaterial : Materials.values()){
+        	if(tMaterial!=null&&tMaterial.mToolQuality>0&&tMaterial.mMetaItemSubID<gregtechproxy.mHarvestLevel.length&&tMaterial.mMetaItemSubID>=0){
+        		gregtechproxy.mHarvestLevel[tMaterial.mMetaItemSubID] = GregTech_API.sMaterialProperties.get("materialHavestLevel", tMaterial.mDefaultLocalName,tMaterial.mToolQuality);
+        	}
+        }}
+        
         if (tMainConfig.get("general", "hardermobspawners", true).getBoolean(true)) {
             Blocks.mob_spawner.setHardness(500.0F).setResistance(6000000.0F);
         }
