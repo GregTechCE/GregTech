@@ -59,23 +59,13 @@ public class GT_Cover_Drain
 
     public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable = (aCoverVariable + 1) % 6;
-        if (aCoverVariable == 0) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Import");
-        }
-        if (aCoverVariable == 1) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Import (conditional)");
-        }
-        if (aCoverVariable == 2) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Import (invert cond)");
-        }
-        if (aCoverVariable == 3) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Keep Liquids Away");
-        }
-        if (aCoverVariable == 4) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Keep Liquids Away (conditional)");
-        }
-        if (aCoverVariable == 5) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Keep Liquids Away (invert cond)");
+        switch(aCoverVariable) {
+            case 0: GT_Utility.sendChatToPlayer(aPlayer, "Import"); break;
+            case 1: GT_Utility.sendChatToPlayer(aPlayer, "Import (conditional)"); break;
+            case 2: GT_Utility.sendChatToPlayer(aPlayer, "Import (invert cond)"); break;
+            case 3: GT_Utility.sendChatToPlayer(aPlayer, "Keep Liquids Away"); break;
+            case 4: GT_Utility.sendChatToPlayer(aPlayer, "Keep Liquids Away (conditional)"); break;
+            case 5: GT_Utility.sendChatToPlayer(aPlayer, "Keep Liquids Away (invert cond)"); break;
         }
         return aCoverVariable;
     }

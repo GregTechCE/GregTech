@@ -15,17 +15,11 @@ public class GT_Cover_Shutter
 
     public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable = (aCoverVariable + 1) % 4;
-        if (aCoverVariable == 0) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Open if work enabled");
-        }
-        if (aCoverVariable == 1) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Open if work disabled");
-        }
-        if (aCoverVariable == 2) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Only Output allowed");
-        }
-        if (aCoverVariable == 3) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Only Input allowed");
+        switch(aCoverVariable) {
+            case 0: GT_Utility.sendChatToPlayer(aPlayer, "Open if work enabled"); break;
+            case 1: GT_Utility.sendChatToPlayer(aPlayer, "Open if work disabled"); break;
+            case 2: GT_Utility.sendChatToPlayer(aPlayer, "Only Output allowed"); break;
+            case 3: GT_Utility.sendChatToPlayer(aPlayer, "Only Input allowed"); break;
         }
         return aCoverVariable;
     }

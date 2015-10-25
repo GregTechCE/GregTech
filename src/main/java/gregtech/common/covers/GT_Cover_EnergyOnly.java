@@ -11,14 +11,10 @@ public class GT_Cover_EnergyOnly
         extends GT_CoverBehavior {
     public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable = (aCoverVariable + 1) % 3;
-        if (aCoverVariable == 0) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Allow");
-        }
-        if (aCoverVariable == 1) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Allow (conditional)");
-        }
-        if (aCoverVariable == 2) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Disallow (conditional)");
+        switch(aCoverVariable) {
+            case 0: GT_Utility.sendChatToPlayer(aPlayer, "Allow"); break;
+            case 1: GT_Utility.sendChatToPlayer(aPlayer, "Allow (conditional)"); break;
+            case 2: GT_Utility.sendChatToPlayer(aPlayer, "Disallow (conditional)"); break;
         }
         return aCoverVariable;
     }
