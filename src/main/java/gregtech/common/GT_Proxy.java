@@ -156,6 +156,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public int mGraniteHavestLevel=3;
     public int mMaxHarvestLevel=7;
     public boolean mChangeHarvestLevels=false;
+    public boolean mNervedCombs = true;
 
     public GT_Proxy() {
         GameRegistry.registerFuelHandler(this);
@@ -273,8 +274,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         ItemList.IC2_Item_Casing_Lead.set(GT_ModHandler.getIC2Item("casinglead", 1L));
         ItemList.IC2_Item_Casing_Steel.set(GT_ModHandler.getIC2Item("casingadviron", 1L));
         ItemList.IC2_Spray_WeedEx.set(GT_ModHandler.getIC2Item("weedEx", 1L));
-        ItemList.IC2_Fuel_Can_Empty.set(GT_ModHandler.getIC2Item("fuelCan", 1L,
-                GT_ModHandler.getIC2Item("fuelCanEmpty", 1L, GT_ModHandler.getIC2Item("emptyFuelCan", 1L))));
+        ItemList.IC2_Fuel_Can_Empty.set(GT_ModHandler.getIC2Item("fuelCan", 1L, GT_ModHandler.getIC2Item("fuelCanEmpty", 1L, GT_ModHandler.getIC2Item("emptyFuelCan", 1L))));
         ItemList.IC2_Fuel_Can_Filled.set(GT_ModHandler.getIC2Item("filledFuelCan", 1L));
         ItemList.IC2_Mixed_Metal_Ingot.set(GT_ModHandler.getIC2Item("mixedMetalIngot", 1L));
         ItemList.IC2_Fertilizer.set(GT_ModHandler.getIC2Item("fertilizer", 1L));

@@ -39,7 +39,7 @@ public enum CombType {
     CHROME("chrome", true, Materials.Chrome, 50),
     TUNGSTEN("tungsten", true, Materials.Tungstate, 100),
     PLATINUM("platinum", true, Materials.Platinum, 40),
-    IRIDIUM("iridium", true, Materials._NULL, 20),
+    IRIDIUM("iridium", true, Materials.Iridium, 20),
 
 
     // Radioactive Line

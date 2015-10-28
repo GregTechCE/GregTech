@@ -118,7 +118,7 @@ public class TextureSet {
         mTextures[98] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/crateGtGem");
         mTextures[99] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/crateGtPlate");
         mTextures[100] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/turbineBlade");
-        mTextures[101] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/comb");
+        mTextures[101] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
         mTextures[102] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
         mTextures[103] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
         mTextures[104] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
