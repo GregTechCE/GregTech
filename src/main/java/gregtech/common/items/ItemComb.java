@@ -126,7 +126,7 @@ public class ItemComb extends Item {
 							type.material.mOreByProducts.isEmpty() ? null : type.material.mOreByProducts.get(0).getMolten(144),
 							GT_OreDictUnificator.get(OrePrefixes.crushedPurified, type.material, 4), 96, 300);
 
-					GT_Values.RA.addAutoclaveRecipe(tComb, Materials.UUMatter.getFluid(1), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, type.material, 1),(type==CombType.URANIUM||type==CombType.PLUTONIUM||type==CombType.NAQUADAH)? 3: 10, 300, 24);
+					GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(16, tComb), Materials.UUMatter.getFluid(1), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, type.material, 1),(type==CombType.URANIUM||type==CombType.PLUTONIUM||type==CombType.NAQUADAH)? 300: 1000, 1000, 24);
 				} else {
 					if (type == type.IRIDIUM) {
 						GT_Values.RA.addCentrifugeRecipe(tComb, GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iridium, 1),
