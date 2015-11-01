@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Materials;
@@ -78,10 +79,11 @@ public class GT_BaseCrop extends CropCard {
             mStats[4] = aStatWeed;
             mAttributes = aAttributes;
             mBlock = aBlock;
+            if(GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.crops, aCropName, true)){
             if (!Crops.instance.registerCrop(this, aID))
                 throw new GT_ItsNotMyFaultException("Make sure the Crop ID is valid!");
             if (aBaseSeed != null) Crops.instance.registerBaseSeed(aBaseSeed, this, 1, 1, 1, 1);
-            sCropList.add(this);
+            sCropList.add(this);}
         }
     }
 
