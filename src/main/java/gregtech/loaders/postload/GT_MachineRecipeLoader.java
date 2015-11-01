@@ -95,7 +95,6 @@ public class GT_MachineRecipeLoader
         GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 1L), null, null, null, GT_ModHandler.getDistilledWater(1000), FluidRegistry.getFluidStack("ic2coolant", 1000), null, 256, 48);
 
         ItemStack[] tItems = {ItemList.Crop_Drop_Bauxite.get(1, new Object[0]),
-        		ItemList.Crop_Drop_Bauxite.get(1, new Object[0]),
         		ItemList.Crop_Drop_Ilmenite.get(1, new Object[0]),
         		ItemList.Crop_Drop_Pitchblende.get(1, new Object[0]),
         		ItemList.Crop_Drop_Uraninite.get(1, new Object[0]),
