@@ -5,6 +5,7 @@ import forestry.api.apiculture.EnumBeeChromosome;
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IAllele;
 import forestry.api.genetics.IClassification;
+import forestry.apiculture.genetics.alleles.AlleleEffect;
 import forestry.core.genetics.alleles.Allele;
 import forestry.core.genetics.alleles.AlleleHelper;
 import forestry.core.genetics.alleles.EnumAllele;
@@ -82,7 +83,7 @@ public enum GT_BranchDefinition {
             AlleleHelper.instance.set(defaultTemplate, EnumBeeChromosome.FLOWER_PROVIDER, EnumAllele.Flowers.VANILLA);
             AlleleHelper.instance.set(defaultTemplate, EnumBeeChromosome.FLOWERING, EnumAllele.Flowering.SLOWEST);
             AlleleHelper.instance.set(defaultTemplate, EnumBeeChromosome.TERRITORY, EnumAllele.Territory.AVERAGE);
-            //AlleleHelper.instance.set(defaultTemplate, EnumBeeChromosome.EFFECT, EnumAllele.effectNone);
+            AlleleHelper.instance.set(defaultTemplate, EnumBeeChromosome.EFFECT, AlleleEffect.effectNone);
         }
         return Arrays.copyOf(defaultTemplate, defaultTemplate.length);
     }
