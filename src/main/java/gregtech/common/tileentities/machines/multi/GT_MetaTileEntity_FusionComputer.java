@@ -244,7 +244,7 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
         if (tierOverclock() == 2) {
             return mStartEnergy < 160000000 ? 2 : 1;
         }
-        return mStartEnergy < 160000000 ? 4 : mStartEnergy > 320000000 ? 2 : 1;
+        return mStartEnergy < 160000000 ? 4 : mStartEnergy < 320000000 ? 2 : 1;
     }
 
     @Override
