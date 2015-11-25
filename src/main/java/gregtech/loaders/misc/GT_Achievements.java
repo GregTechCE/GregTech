@@ -337,14 +337,10 @@ public class GT_Achievements {
                 issueAchievement(player, "alloysmelter");
             } else if (stack.getUnlocalizedName().equals("gt.blockmachines.bronzemachine.extractor")) {
                 issueAchievement(player, "extract");
-            } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.disassembler.tier.")) {
-                issueAchievement(player, "repair");
             } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.automation.superbuffer.tier.")) {
                 issueAchievement(player, "superbuffer");
             } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.quantum.tank.tier.")) {
                 issueAchievement(player, "whereistheocean");
-            } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.disassembler.tier.")) {
-                issueAchievement(player, "repair");
             } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.quantum.chest.tier.")) {
                 issueAchievement(player, "newstorage");
             } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.hammer.tier.")) {
@@ -353,7 +349,7 @@ public class GT_Achievements {
                 issueAchievement(player, "buffer");
             } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicgenerator.steamturbine.tier.")) {
                 issueAchievement(player, "steampower");
-            } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.pump.tier.")) {
+            } else if (stack.getUnlocalizedName().equals("gt.blockmachines.basicmachine.pump.tier.03")) {
                 issueAchievement(player, "slurp");
             } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.assembler.tier.")) {
                 issueAchievement(player, "avengers");
