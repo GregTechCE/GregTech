@@ -1,16 +1,25 @@
 package gregtech.common.tools;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
+import net.minecraftforge.common.IShearable;
+import net.minecraftforge.event.world.BlockEvent;
 
 public class GT_Tool_Chainsaw_LV
         extends GT_Tool_Saw {
@@ -77,7 +86,35 @@ public class GT_Tool_Chainsaw_LV
         } catch (Exception e) {
         }
     }
-
+    @Override
+    public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX, int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
+        int rAmount = 0;
+        if ((aBlock.getMaterial() == Material.leaves) && ((aBlock instanceof IShearable))) {
+            aPlayer.worldObj.setBlock(aX, aY, aZ, aBlock, aMetaData, 0);
+            if (((IShearable) aBlock).isShearable(aStack, aPlayer.worldObj, aX, aY, aZ)) {
+                ArrayList<ItemStack> tDrops = ((IShearable) aBlock).onSheared(aStack, aPlayer.worldObj, aX, aY, aZ, aFortune);
+                aDrops.clear();
+                aDrops.addAll(tDrops);
+                aEvent.dropChance = 1.0F;
+            }
+            aPlayer.worldObj.setBlock(aX, aY, aZ, Blocks.air, 0, 0);
+        } else if (((aBlock.getMaterial() == Material.ice) || (aBlock.getMaterial() == Material.packedIce)) && (aDrops.isEmpty())) {
+            aDrops.add(new ItemStack(aBlock, 1, aMetaData));
+            aPlayer.worldObj.setBlockToAir(aX, aY, aZ);
+            aEvent.dropChance = 1.0F;
+            return 1;
+        }
+        if ((GregTech_API.sTimber) && (!aPlayer.isSneaking()) && (OrePrefixes.log.contains(new ItemStack(aBlock, 1, aMetaData)))) {
+            int tY = aY + 1;
+            for (int tH = aPlayer.worldObj.getHeight(); tY < tH; tY++) {
+                if ((aPlayer.worldObj.getBlock(aX, tY, aZ) != aBlock) || (!aPlayer.worldObj.func_147480_a(aX, tY, aZ, true))) {
+                    break;
+                }
+                rAmount++;
+            }
+        }
+        return rAmount;
+    }
 
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadChainsaw.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_LV;
