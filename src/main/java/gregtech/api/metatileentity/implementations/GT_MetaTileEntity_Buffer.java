@@ -204,7 +204,8 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aSide == getBaseMetaTileEntity().getBackFacing()) {
-            mTargetStackSize = (byte) ((mTargetStackSize + 1) % 65);
+        	
+            mTargetStackSize = (byte) ((mTargetStackSize + (aPlayer.isSneaking()? -1 : 1)) % 65);
             if (mTargetStackSize == 0) {
                 GT_Utility.sendChatToPlayer(aPlayer, "Do not regulate Item Stack Size");
             } else {
