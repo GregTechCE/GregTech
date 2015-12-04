@@ -33,6 +33,8 @@ public class GT_RecyclerBlacklistLoader
                 GT_ModHandler.addToRecyclerBlackList(tStack);
                 tStack = GT_ModHandler.getRecipeOutput(new ItemStack[]{tStack, tStack, tStack, tStack, tStack, tStack, tStack, tStack, tStack});
             }
+            GT_ModHandler.addToRecyclerBlackList(new ItemStack(Blocks.gravel, 1, 32767));
+            GT_ModHandler.addToRecyclerBlackList(new ItemStack(Items.flint, 1, 32767));
             GT_ModHandler.addToRecyclerBlackList(new ItemStack(Blocks.cobblestone_wall, 1, 32767));
             GT_ModHandler.addToRecyclerBlackList(new ItemStack(Blocks.sandstone_stairs, 1, 32767));
             GT_ModHandler.addToRecyclerBlackList(new ItemStack(Blocks.stone_stairs, 1, 32767));
