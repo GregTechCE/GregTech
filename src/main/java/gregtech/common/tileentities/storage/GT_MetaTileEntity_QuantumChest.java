@@ -109,6 +109,9 @@ public class GT_MetaTileEntity_QuantumChest extends GT_MetaTileEntity_TieredMach
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
 
         if (getBaseMetaTileEntity().isServerSide() && getBaseMetaTileEntity().isAllowedToWork()) {
+//            	if(mInventory[0]!=null)System.out.println("input: "+mInventory[0].stackSize);
+//            	System.out.println("store: "+mItemCount);
+//            	if(mInventory[0]!=null)System.out.println("output: "+mInventory[2].stackSize);
             if ((getItemCount() <= 0)) {
                 this.mItemStack = null;
                 this.mItemCount = 0;
@@ -136,6 +139,7 @@ public class GT_MetaTileEntity_QuantumChest extends GT_MetaTileEntity_TieredMach
             }
             if (this.mItemStack != null) {
                 this.mInventory[2] = this.mItemStack.copy();
+                this.mInventory[2].stackSize = Math.min(mItemStack.getMaxStackSize(), this.mItemCount);
             } else {
                 this.mInventory[2] = null;
             }
@@ -164,12 +168,12 @@ public class GT_MetaTileEntity_QuantumChest extends GT_MetaTileEntity_TieredMach
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return true;
+        return aIndex==1;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return true;
+        return aIndex==0&&(mInventory[0]==null||GT_Utility.areStacksEqual(this.mInventory[0], aStack));
     }
 
     @Override
