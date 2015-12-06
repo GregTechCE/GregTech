@@ -187,6 +187,7 @@ public class GregTech_API {
     public static int mEUtoRF = 360;
     public static int mRFtoEU = 20;
     public static boolean mRFExplosions = true;
+    public static boolean mServerStarted = false;
     /**
      * Getting assigned by the Mod loading
      */

@@ -819,6 +819,7 @@ public class GT_Mod
                 GT_OreDictUnificator.setStack(tOutput);
             }
         }
+        GregTech_API.mServerStarted = true;
         GT_Log.out.println("GT_Mod: ServerStarting-Phase finished!");
         GT_Log.ore.println("GT_Mod: ServerStarting-Phase finished!");
         for (Runnable tRunnable : GregTech_API.sAfterGTServerstart) {
