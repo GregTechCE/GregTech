@@ -43,9 +43,9 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         ItemList.Block_Plascrete.set(new ItemStack(this.setHardness(80.0f).setResistance(350.0f), 1, 2));
         ItemList.Block_TungstenSteelReinforced.set(new ItemStack(this.setHardness(100.0f).setResistance(400.0f), 1, 3));
         ItemList.Block_BrittleCharcoal.set(new ItemStack(this.setHardness(0.5f).setResistance(8.0f), 1, 4));
-        GT_ModHandler.addCraftingRecipe(ItemList.Block_BronzePlate.get(1L, new Object[0]), new Object[]{"hP ", "PBP", " P ", 'P', OrePrefixes.plate.get(Materials.Bronze), 'B', OrePrefixes.stone.get(Materials.GraniteBlack)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Block_BronzePlate.get(1L, new Object[0]), new Object[]{"hP ", "PBP", " P ", 'P', OrePrefixes.plate.get(Materials.Bronze), 'B', OrePrefixes.stone.get(Materials.GraniteRed)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Block_IridiumTungstensteel.get(1L, new Object[0]), new Object[]{"hBP", 'P', OrePrefixes.plate.get(Materials.Iridium), 'B', ItemList.Block_TungstenSteelReinforced.get(1L, new Object[0])});
+        GT_ModHandler.addCraftingRecipe(ItemList.Block_BronzePlate.get(1L, new Object[0]),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hP ", "PBP", " P ", 'P', OrePrefixes.plate.get(Materials.Bronze), 'B', OrePrefixes.stone.get(Materials.GraniteBlack)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Block_BronzePlate.get(1L, new Object[0]),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hP ", "PBP", " P ", 'P', OrePrefixes.plate.get(Materials.Bronze), 'B', OrePrefixes.stone.get(Materials.GraniteRed)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Block_IridiumTungstensteel.get(1L, new Object[0]),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hBP", 'P', OrePrefixes.plate.get(Materials.Iridium), 'B', ItemList.Block_TungstenSteelReinforced.get(1L, new Object[0])});
         GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(Items.coal, 1, 1), new Object[]{ItemList.Block_BrittleCharcoal.get(1, new Object[0])});
     }
 

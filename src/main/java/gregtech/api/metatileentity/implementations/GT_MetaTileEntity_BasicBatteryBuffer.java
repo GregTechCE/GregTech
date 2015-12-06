@@ -255,7 +255,7 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
         if (!GT_Utility.isStackValid(aStack)) {
             return false;
         }
-        if (GT_ModHandler.isElectricItem(aStack, this.mTier)) {
+        if (mInventory[aIndex]==null && GT_ModHandler.isElectricItem(aStack, this.mTier)) {
             return true;
         }
         return false;

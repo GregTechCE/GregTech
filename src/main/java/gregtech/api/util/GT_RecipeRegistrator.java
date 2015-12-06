@@ -240,7 +240,7 @@ public class GT_RecipeRegistrator {
         for (MaterialStack tMaterial : aData.getAllMaterialStacks())
             tAmount += tMaterial.mAmount * tMaterial.mMaterial.getMass();
 
-        RA.addPulveriserRecipe(aStack, new ItemStack[]{GT_OreDictUnificator.getDust(aData.mMaterial), GT_OreDictUnificator.getDust(aData.getByProduct(0)), GT_OreDictUnificator.getDust(aData.getByProduct(1)), GT_OreDictUnificator.getDust(aData.getByProduct(2))}, null, (int) Math.max(16, tAmount / M), 4);
+        RA.addPulveriserRecipe(aStack, new ItemStack[]{GT_OreDictUnificator.getDust(aData.mMaterial), GT_OreDictUnificator.getDust(aData.getByProduct(0)), GT_OreDictUnificator.getDust(aData.getByProduct(1)), GT_OreDictUnificator.getDust(aData.getByProduct(2))}, null, aData.mMaterial.mMaterial==Materials.Marble ? 1 : (int) Math.max(16, tAmount / M), 4);
 
         if (aAllowHammer) for (MaterialStack tMaterial : aData.getAllMaterialStacks())
             if (tMaterial.mMaterial.contains(SubTag.CRYSTAL) && !tMaterial.mMaterial.contains(SubTag.METAL)) {

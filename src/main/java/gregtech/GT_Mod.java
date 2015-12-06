@@ -229,7 +229,7 @@ public class GT_Mod
         gregtechproxy.mSortToTheEnd = tMainConfig.get("general", "EnsureToBeLoadedLast", true).getBoolean(true);
         gregtechproxy.mDisableIC2Cables = tMainConfig.get("general", "DisableIC2Cables", true).getBoolean(true);
         gregtechproxy.mAchievements = tMainConfig.get("general", "EnableAchievements", true).getBoolean(true);
-        gregtechproxy.mAE2Integration = tMainConfig.get("general", "EnableAE2Integration", Loader.isModLoaded("appliedenergistics2")).getBoolean(Loader.isModLoaded("appliedenergistics2"));
+        gregtechproxy.mAE2Integration = GregTech_API.sSpecialFile.get(ConfigCategories.general, "EnableAE2Integration", Loader.isModLoaded("appliedenergistics2"));
         gregtechproxy.mNervedCombs = tMainConfig.get("general", "NervCombs", true).getBoolean(true);
 
         GregTech_API.mOutputRF = GregTech_API.sOPStuff.get(ConfigCategories.general, "OutputRF", true);

@@ -32,7 +32,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
     }
 
     public String[] getDescription() {
-        return new String[]{"Controller Block for the Large Boiler", "Size: 3x3x5", "Controller (front middle in Fireboxes)", "3x3 of Fire Boxes (bottom Layer, Min 3!)", "3x3x4 of Casing (above Fireboxes, hollow, Min 24!)", "3 Pipe Casing Blocks inside the Hollow Casing", "1x Input (one of Fireboxes)", "1x Maintenance Hatch (one of Fireboxes)", "1x Muffler Hatch (one of Fireboxes)", "1x Fluid Output (one of Main Casing)"};
+        return new String[]{"Controller Block for the Large Boiler", "Size: 3x3x5", "Controller (front middle in Fireboxes)", "3x3 of Fire Boxes (bottom Layer, Min 3!)", "3x3x4 of Casing (above Fireboxes, hollow, Min 24!)", "3 Pipe Casing Blocks inside the Hollow Casing", "1x Input (one of Fireboxes)", "1x Maintenance Hatch (one of Fireboxes)", "1x Muffler Hatch (one of Fireboxes)", "1x Fluid Output (one of Main Casing)","Produces "+getEUt()*40+"L/sec steam","Runs "+(runtimeBoost(20)/20f)+" per coal of fuel","Refined liquid fuels have 1/4 efficiency"};
     }
 
     public abstract Block getCasingBlock();

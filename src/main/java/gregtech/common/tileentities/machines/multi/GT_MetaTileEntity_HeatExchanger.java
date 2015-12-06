@@ -59,7 +59,7 @@ public class GT_MetaTileEntity_HeatExchanger extends GT_MetaTileEntity_MultiBloc
     }
 
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "LargeBoiler.png");
+        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "LargeHeatExchanger.png");
     }
 
     public boolean isCorrectMachinePart(ItemStack aStack) {

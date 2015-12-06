@@ -410,7 +410,7 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 	 * TODO: This
 	 */
 	AluminiumBrass		(  -1, TextureSet.SET_METALLIC			,   6.0F,     64,  2, 1|2          |64                      , 255, 255, 255,   0,	"Aluminium Brass"				,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow		),
-	Osmiridium			( 317, TextureSet.SET_METALLIC			,   7.0F,   1600,  3, 1|2          |64|128                  , 100, 100, 255,   0,	"Osmiridium"					,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightBlue	),
+	Osmiridium			( 317, TextureSet.SET_METALLIC			,   7.0F,   1600,  3, 1|2          |64|128                  , 100, 100, 255,   0,	"Osmiridium"					,    0,       0,       3333, 2500, true,  false,   1,   1,   1, Dyes.dyeLightBlue	, 1, Arrays.asList(new MaterialStack(Iridium, 3), new MaterialStack(Osmium, 1))),
 	Sunnarium			( 318, TextureSet.SET_SHINY				,   1.0F,      0,  1, 1|2                                   , 255, 255,   0,   0,	"Sunnarium"						,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow		),
 	Endstone			( 808, TextureSet.SET_DULL				,   1.0F,      0,  1, 1                                     , 255, 255, 255,   0,	"Endstone"						,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes.dyeYellow		),
 	Netherrack			( 807, TextureSet.SET_DULL				,   1.0F,      0,  0, 1                                     , 200,   0,   0,   0,	"Netherrack"					,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes.dyeRed			),
@@ -709,13 +709,14 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 	@Deprecated RedGranite			(GraniteRed, false),
 	@Deprecated Sheldonite			(Cooperite, false),
 	@Deprecated Soulsand			(SoulSand, false),
-	@Deprecated SilverLead			(Galena, false),
+//	@Deprecated SilverLead			(Galena, false),
 	@Deprecated Titan				(Titanium, false),
 	@Deprecated Uran				(Uranium, false),
 	@Deprecated Wolframite			(Tungstate, false),
 	@Deprecated Wolframium			(Tungsten, false),
 	@Deprecated Wolfram				(Tungsten, false),
-	@Deprecated WrougtIron			(WroughtIron, false);
+//	@Deprecated WrougtIron			(WroughtIron, false)
+	;
 	
 	/** List of all Materials. */
 	public static final Collection<Materials> VALUES = new HashSet<Materials>(Arrays.asList(values())); 
@@ -754,7 +755,6 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 		Snow					.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.NO_RECYCLING);
 		Ice						.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.NO_RECYCLING);
 		Water					.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.NO_RECYCLING);
-		Silicon					.add(SubTag.NO_RECYCLING);
 		Sulfur					.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE);
 		Saltpeter				.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE);
 		Graphite				.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE, SubTag.NO_SMELTING);
