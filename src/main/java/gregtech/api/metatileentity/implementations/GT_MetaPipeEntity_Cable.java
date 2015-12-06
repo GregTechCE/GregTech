@@ -197,7 +197,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
         mTransferredVoltageLast20 = Math.max(mTransferredVoltageLast20, aVoltage);
         mTransferredAmperageLast20 = Math.max(mTransferredAmperageLast20, mTransferredAmperage);
         if (aVoltage > mVoltage || mTransferredAmperage > mAmperage) {
-            getBaseMetaTileEntity().setToFire();
+            //getBaseMetaTileEntity().setToFire();
             return aAmperage;
         }
         return rUsedAmperes;
