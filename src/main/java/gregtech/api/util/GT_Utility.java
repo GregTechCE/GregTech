@@ -5,6 +5,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.GT_DamageSources;
 import gregtech.api.enchants.Enchantment_Radioactivity;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
@@ -18,6 +19,7 @@ import gregtech.api.net.GT_Packet_Sound;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.threads.GT_Runnable_Sound;
+import gregtech.common.GT_Proxy;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
@@ -50,6 +52,7 @@ import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
@@ -1476,6 +1479,8 @@ public class GT_Utility {
     }
 
     public static FluidStack getUndergroundOil(World aWorld, int aX, int aZ) {
+
+    	
         Random tRandom = new Random((aWorld.getSeed() + (aX / 96) + (7 * (aZ / 96))));
         int oil = tRandom.nextInt(3);
         double amount = tRandom.nextInt(50) + tRandom.nextDouble();
@@ -1498,7 +1503,19 @@ public class GT_Utility {
             default:
                 tFluid = Materials.Oil.mFluid;
         }
-        return new FluidStack(tFluid, (int) (Math.pow(amount, 5) / 100));
+        int tAmount = (int) (Math.pow(amount, 5) / 100);
+        ChunkPosition tPos = new ChunkPosition(aX/16, 1, aZ/16);
+    	if(GT_Proxy.chunkData.containsKey(tPos)){
+    		int[] tInts = GT_Proxy.chunkData.get(tPos);
+    		if(tInts.length>0){
+    			if(tInts[0]>=0){tAmount = tInts[0];}
+    		}
+    		GT_Proxy.chunkData.remove(tPos);
+    	}
+    	tAmount = tAmount - 5;
+    	GT_Proxy.chunkData.put(tPos, new int[]{tAmount});
+    	
+        return new FluidStack(tFluid, tAmount);
     }
 
     public static int getCoordinateScan(ArrayList<String> aList, EntityPlayer aPlayer, World aWorld, int aScanLevel, int aX, int aY, int aZ, int aSide, float aClickX, float aClickY, float aClickZ) {
@@ -1688,7 +1705,7 @@ public class GT_Utility {
                 if (D1) e.printStackTrace(GT_Log.err);
             }
         }
-        if (aPlayer.capabilities.isCreativeMode) {
+        if (aPlayer.capabilities.isCreativeMode&&GT_Values.D1) {
             FluidStack tFluid = getUndergroundOil(aWorld, aX, aZ);
             tList.add("Oil in Chunk: " + tFluid.amount + " " + tFluid.getLocalizedName());
         }

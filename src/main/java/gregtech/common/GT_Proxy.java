@@ -48,6 +48,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings.GameType;
 import net.minecraft.world.gen.feature.WorldGenMinable;
@@ -60,6 +61,7 @@ import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.ChunkDataEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -1827,6 +1829,29 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             tEvent = (OreDictEventContainer) i$.next();
         }
     }
+    
+    public static final HashMap<ChunkPosition, int[]>  chunkData = new HashMap<ChunkPosition, int[]>(5000);
+    
+    @SubscribeEvent
+    public void handleChunkSaveEvent(ChunkDataEvent.Save event)
+    {
+    	ChunkPosition tPos = new ChunkPosition(event.getChunk().xPosition,1,event.getChunk().zPosition);
+    	if(chunkData.containsKey(tPos)){
+    		int[] tInts = chunkData.get(tPos);
+    		if(tInts.length>0){event.getData().setInteger("GTOIL", tInts[0]);}}
+    }
+    
+    @SubscribeEvent
+    public void handleChunkLoadEvent(ChunkDataEvent.Load event)
+    {
+    	int tOil = -1;
+    	if(event.getData().hasKey("GTOIL")){
+    	tOil = event.getData().getInteger("GTOIL");}
+    	ChunkPosition tPos = new ChunkPosition(event.getChunk().xPosition,1,event.getChunk().zPosition);
+    	if(chunkData.containsKey(tPos)){
+    		chunkData.remove(tPos);}
+    	chunkData.put(tPos, new int[]{ tOil});
+    } 
 
     public static class OreDictEventContainer {
         public final OreDictionary.OreRegisterEvent mEvent;
