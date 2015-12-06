@@ -299,6 +299,9 @@ public class GT_MetaGenerated_Item_02
         ItemList.Crop_Drop_Osmium.set(addItem(tLastID = 534, "Quantaria Leaf", "Source of Osmium", new Object[]{}));
         ItemList.Crop_Drop_Naquadah.set(addItem(tLastID = 535, "Stargatium Leaf", "Source of Naquadah", new Object[]{}));   
         
+        ItemList.PlatinumGroupSludge.set(addItem(tLastID = 536, "Platinum group metals sludge", "", new Object[]{}));
+        ItemList.PlatinumGroupSludgeTiny.set(addItem(tLastID = 537, "Tiny Pile Platinum group metals sludge", "", new Object[]{}));
+        
         ItemList.Crop_Drop_Chilly.set(addItem(tLastID = 550, "Chilly Pepper", "It is red and hot", new Object[]{"cropChilipepper", new GT_FoodStat(1, 0.3F, EnumAction.eat, null, false, true, false, new int[]{Potion.confusion.id, 200, 1, 40}), new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L)}));
         ItemList.Crop_Drop_Lemon.set(addItem(tLastID = 551, "Lemon", "Don't make Lemonade", new Object[]{"cropLemon", new GT_FoodStat(1, 0.3F, EnumAction.eat, null, false, true, false, new int[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L)}));
         ItemList.Crop_Drop_Tomato.set(addItem(tLastID = 552, "Tomato", "Solid Ketchup", new Object[]{"cropTomato", new GT_FoodStat(1, 0.2F, EnumAction.eat, null, false, true, false, new int[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L)}));

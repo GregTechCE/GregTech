@@ -313,6 +313,13 @@ public class GT_MachineRecipeLoader
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Steel, 64), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Zinc, 16), null, ItemList.Component_Filter.get(1, new Object[0]), 16, 1600);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 8), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicon, 1), Materials.Glue.getFluid(250L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Graphene, 1), 480, 480);
 
+        GT_Values.RA.addCentrifugeRecipe(ItemList.Cell_Empty.get(5, new Object[0]), null, Materials.Air.getGas(10000), Materials.Nitrogen.getGas(3900), GT_OreDictUnificator.get(OrePrefixes.cell,Materials.Oxygen,1), null, null, null, null, null, null, 1600, 8);
+        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell,Materials.NitrogenDioxide,4), GT_OreDictUnificator.get(OrePrefixes.cell,Materials.Oxygen,1), Materials.Water.getFluid(2000), new FluidStack(ItemList.sNitricAcid,4000), ItemList.Cell_Empty.get(5, new Object[0]), 950, 30);
+        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.crushedPurified,Materials.Pentlandite,1), null, new FluidStack(ItemList.sNitricAcid,8000), new FluidStack(ItemList.sNickelSulfate,9000), ItemList.PlatinumGroupSludgeTiny.get(1, new Object[0]), 50, 30);
+        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.crushedPurified,Materials.Chalcopyrite,1), null, new FluidStack(ItemList.sNitricAcid,8000), new FluidStack(ItemList.sBlueVitriol,9000), ItemList.PlatinumGroupSludgeTiny.get(1, new Object[0]), 50, 30);
+        GT_Values.RA.addElectrolyzerRecipe(ItemList.Cell_Empty.get(5, new Object[0]), null, new FluidStack(ItemList.sBlueVitriol,9000), Materials.SulfuricAcid.getFluid(8000), GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Copper,1), GT_OreDictUnificator.get(OrePrefixes.cell,Materials.Oxygen,1), null, null, null, null, null, 900, 30);
+        GT_Values.RA.addElectrolyzerRecipe(ItemList.Cell_Empty.get(5, new Object[0]), null, new FluidStack(ItemList.sNickelSulfate,9000), Materials.SulfuricAcid.getFluid(8000), GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Nickel,1), GT_OreDictUnificator.get(OrePrefixes.cell,Materials.Oxygen,1), null, null, null, null, null, 900, 30);
+        GT_Values.RA.addCentrifugeRecipe(ItemList.PlatinumGroupSludge.get(1, new Object[0]), null, null, null, GT_OreDictUnificator.get(OrePrefixes.dust,Materials.SiliconDioxide,1), GT_OreDictUnificator.get(OrePrefixes.dustTiny,Materials.Gold,1), GT_OreDictUnificator.get(OrePrefixes.dustTiny,Materials.Platinum,1), GT_OreDictUnificator.get(OrePrefixes.dustTiny,Materials.Palladium,1), GT_OreDictUnificator.get(OrePrefixes.dustTiny,Materials.Iridium,1), GT_OreDictUnificator.get(OrePrefixes.dustTiny,Materials.Osmium,1), new int[]{10000,10000,10000,8000,6000,6000}, 900, 30);
         
         GT_Values.RA.addSlicerRecipe(ItemList.Food_Dough_Chocolate.get(1L, new Object[0]), ItemList.Shape_Slicer_Flat.get(0L, new Object[0]), ItemList.Food_Raw_Cookie.get(4L, new Object[0]), 128, 4);
         GT_Values.RA.addSlicerRecipe(ItemList.Food_Baked_Bun.get(1L, new Object[0]), ItemList.Shape_Slicer_Flat.get(0L, new Object[0]), ItemList.Food_Sliced_Bun.get(2L, new Object[0]), 128, 4);
@@ -900,7 +907,7 @@ public class GT_MachineRecipeLoader
         GT_Values.RA.addVacuumFreezerRecipe(ItemList.Reactor_Coolant_NaK_3.getWildcard(1L, new Object[0]), ItemList.Reactor_Coolant_NaK_3.get(1L, new Object[0]), 1800);
         GT_Values.RA.addVacuumFreezerRecipe(ItemList.Reactor_Coolant_NaK_6.getWildcard(1L, new Object[0]), ItemList.Reactor_Coolant_NaK_6.get(1L, new Object[0]), 3600);
         GT_Values.RA.addVacuumFreezerRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1L), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Ice, 1L), 50);
-        GT_Values.RA.addVacuumFreezerRecipe(GT_ModHandler.getIC2Item("airCell", 1L), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.LiquidAir, 1L), 250);
+        GT_Values.RA.addVacuumFreezerRecipe(GT_ModHandler.getIC2Item("airCell", 1L), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.LiquidAir, 1L), 25);
 
 
         GT_Values.RA.addAlloySmelterRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 2L), ItemList.TE_Hardened_Glass.get(2L, new Object[0]), 200, 16);
