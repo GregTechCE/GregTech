@@ -407,10 +407,7 @@ public class GT_CraftingRecipeLoader
         GT_ModHandler.addCraftingRecipe(ItemList.IC2_Item_Casing_Tin.get(1L, new Object[0]), new Object[]{"h P", Character.valueOf('P'), OrePrefixes.plate.get(Materials.Tin)});
         GT_ModHandler.addCraftingRecipe(ItemList.IC2_Item_Casing_Lead.get(1L, new Object[0]), new Object[]{"h P", Character.valueOf('P'), OrePrefixes.plate.get(Materials.Lead)});
         GT_ModHandler.addCraftingRecipe(ItemList.IC2_Item_Casing_Steel.get(1L, new Object[0]), new Object[]{"h P", Character.valueOf('P'), OrePrefixes.plate.get(Materials.Steel)});
-
-        GT_ModHandler.addCraftingRecipe(ItemList.PlatinumGroupSludge.get(1, new Object[0]), new Object[]{"DDD","DDD","DDD", 'D', ItemList.PlatinumGroupSludgeTiny.get(1, new Object[0])});
-        GT_ModHandler.addShapelessCraftingRecipe(ItemList.PlatinumGroupSludgeTiny.get(9, new Object[0]), new Object[]{ItemList.PlatinumGroupSludge.get(1, new Object[0])});
-        
+       
         GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.torch, 2), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"C", "S", Character.valueOf('C'), OrePrefixes.dust.get(Materials.Sulfur), Character.valueOf('S'), OrePrefixes.stick.get(Materials.Wood)});
         GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.torch, 6), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"C", "S", Character.valueOf('C'), OrePrefixes.dust.get(Materials.Phosphorus), Character.valueOf('S'), OrePrefixes.stick.get(Materials.Wood)});
 

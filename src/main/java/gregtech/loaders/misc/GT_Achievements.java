@@ -384,8 +384,6 @@ public class GT_Achievements {
             } else if (stack.getUnlocalizedName().equals("gt.blockmachines.multimachine.largehpturbine")) {
                 issueAchievement(player, "efficientsteam");
             }
-        } else if (stack.getUnlocalizedName().equals("gt.Thoriumcell")) {
-            issueAchievement(player, "newfuel");
         } else if (stack.getUnlocalizedName().equals("gt.neutronreflector")) {
             issueAchievement(player, "reflect");
         } else if (stack.getUnlocalizedName().equals("gt.blockcasings.13")) {
@@ -486,6 +484,8 @@ public class GT_Achievements {
                 issueAchievement(player, "filterregulate");
             } else if (stack.getUnlocalizedName().equals("gt.metaitem.01.32605")) {
                 issueAchievement(player, "whatnow");
+            } else if (stack.getUnlocalizedName().equals("gt.Thoriumcell")) {
+                issueAchievement(player, "newfuel");
             }
         }
     }
