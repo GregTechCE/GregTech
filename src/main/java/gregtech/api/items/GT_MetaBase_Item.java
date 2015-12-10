@@ -560,7 +560,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
     @Override
     public int getItemStackLimit(ItemStack aStack) {
         Long[] tStats = getElectricStats(aStack);
-        if (tStats != null && (tStats[3] == -1 || tStats[3] == -3) && getRealCharge(aStack) > 0) return 1;
+        if (tStats != null && (tStats[3] == -1 || tStats[3] == -2 || tStats[3] == -3) && getRealCharge(aStack) > 0) return 1;
         tStats = getFluidContainerStats(aStack);
         if (tStats != null) return (int) (long) tStats[1];
         return 64;
