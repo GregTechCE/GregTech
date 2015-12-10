@@ -91,7 +91,8 @@ public class GT_Cover_EUMeter
     }
 
     public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        aCoverVariable = (aCoverVariable + 1) % 12;
+        aCoverVariable = (aCoverVariable + (aPlayer.isSneaking()? -1 : 1)) % 12;
+        if(aCoverVariable <0){aCoverVariable = 11;}
         switch(aCoverVariable) {
             case 0: GT_Utility.sendChatToPlayer(aPlayer, "Normal Universal Storage"); break;
             case 1: GT_Utility.sendChatToPlayer(aPlayer, "Inverted Universal Storage"); break;

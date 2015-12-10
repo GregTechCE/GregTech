@@ -35,7 +35,8 @@ public class GT_Cover_Conveyor
     }
 
     public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        aCoverVariable = (aCoverVariable + 1) % 12;
+        aCoverVariable = (aCoverVariable + (aPlayer.isSneaking()? -1 : 1)) % 12;
+        if(aCoverVariable <0){aCoverVariable = 11;}
         switch(aCoverVariable) {
             case 0: GT_Utility.sendChatToPlayer(aPlayer, "Export"); break;
             case 1: GT_Utility.sendChatToPlayer(aPlayer, "Import"); break;

@@ -28,7 +28,8 @@ public class GT_Cover_DoesWork
     }
 
     public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        aCoverVariable = (aCoverVariable + 1) % 4;
+        aCoverVariable = (aCoverVariable + (aPlayer.isSneaking()? -1 : 1)) % 4;
+        if(aCoverVariable <0){aCoverVariable = 3;}
         switch(aCoverVariable) {
             case 0: GT_Utility.sendChatToPlayer(aPlayer, "Normal"); break;
             case 1: GT_Utility.sendChatToPlayer(aPlayer, "Inverted"); break;
