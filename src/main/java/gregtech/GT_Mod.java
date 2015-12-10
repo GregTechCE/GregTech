@@ -238,6 +238,17 @@ public class GT_Mod
         GregTech_API.mRFtoEU = GregTech_API.sOPStuff.get(ConfigCategories.general, "100RFtoEU", 20);
         GregTech_API.mRFExplosions = GregTech_API.sOPStuff.get(ConfigCategories.general, "RFExplosions", false);
         GregTech_API.meIOLoaded = Loader.isModLoaded("EnderIO");
+        
+        if(GregTech_API.mOutputRF||GregTech_API.mInputRF){
+        	try {
+				Class tClass = cofh.api.energy.IEnergyReceiver.class;
+				tClass.getCanonicalName();
+			} catch (Exception e) {
+				GregTech_API.mOutputRF = false;
+				GregTech_API.mInputRF = false;
+				System.err.println("RF API not found");
+			}
+        }
 
         gregtechproxy.mChangeHarvestLevels = GregTech_API.sMaterialProperties.get("havestLevel", "activateHarvestLevelChange", false);
         if(gregtechproxy.mChangeHarvestLevels){
