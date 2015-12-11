@@ -61,7 +61,7 @@ public class GT_CropLoader
             new GT_BaseCrop(166, "Pyrolusium", "unknown", 			null, 12, 3,    0, 2, 3, 1, 0, 1, 1, 0, new String[]{"Metal", "Clean", "Bush", "Manganese"}, Materials.Manganese, 		ItemList.Crop_Drop_Manganese.get(1, new Object[0]), null);
             new GT_BaseCrop(167, "Scheelinium", "unknown", 			null, 12, 3,    0, 2, 3, 3, 0, 1, 1, 0, new String[]{"Metal", "Hard", "Bush", "Tungsten"}, Materials.Tungsten, 			ItemList.Crop_Drop_Scheelite.get(1, new Object[0]), null);
             new GT_BaseCrop(168, "Platina", "unknown", 				null, 11, 4,    0, 1, 4, 3, 0, 0, 3, 0, new String[]{"Metal", "Shiny", "Reed", "Platinum"}, Materials.Platinum, 		ItemList.Crop_Drop_Platinum.get(1, new Object[0]), null);
-            new GT_BaseCrop(169, "Quantaria", "unknown", 			null, 12, 4, 1000, 1, 4, 4, 0, 0, 1, 0, new String[]{"Metal", "Iridium", "Reed", "Iridium"}, Materials.Iridium, 		ItemList.Crop_Drop_Iridium.get(1, new Object[0]), new ItemStack[]{ItemList.Crop_Drop_Osmium.get(1, new Object[0])});
+            new GT_BaseCrop(169, "Quantaria", "unknown", 			null, 12, 4, 1000, 1, 4, 4, 0, 0, 1, 0, new String[]{"Metal", "Iridium", "Reed"}, Materials.Iridium, 		ItemList.Crop_Drop_Iridium.get(1, new Object[0]), new ItemStack[]{ItemList.Crop_Drop_Osmium.get(1, new Object[0])});
             new GT_BaseCrop(170, "Stargatium", "unknown", 			null, 12, 4, 1500, 1, 4, 4, 0, 0, 2, 0, new String[]{"Metal", "Heavy", "Alien", "Naquadah"}, Materials.Naquadah, 		GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Endstone, 1L), new ItemStack[]{ItemList.Crop_Drop_Naquadah.get(1, new Object[0])});
         } catch (Throwable e) {
             GT_Log.err.println("GT_Mod: Failed to register Crops to IC2.");
