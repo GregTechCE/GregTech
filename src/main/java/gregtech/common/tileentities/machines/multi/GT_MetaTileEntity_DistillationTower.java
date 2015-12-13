@@ -36,7 +36,7 @@ public class GT_MetaTileEntity_DistillationTower
     public String[] getDescription() {
         return new String[]{
                 "Controller Block for the Distillation Tower",
-                "Size: 3x6x3 (Hollow)", "Controller (front bottom)",
+                "Size: 3x3x6 (Hollow)", "Controller (front bottom)",
                 "1x Input Hatch (bottom)",
                 "5x Output Hatch (one each height level besides botton)",
                 "1x Output Bus (Botton)", "1x Energy Hatch (anywhere)",

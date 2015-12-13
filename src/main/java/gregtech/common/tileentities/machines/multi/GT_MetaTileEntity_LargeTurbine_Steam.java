@@ -36,7 +36,7 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
     public String[] getDescription() {
         return new String[]{
                 "Controller Block for the Large Steam Turbine",
-                "Size: 3x3x4 (Hollow)", "Controller (front centered)",
+                "Size: 3x4x3 (Hollow)", "Controller (front centered)",
                 "1x Input Hatch (side centered)", "1x Output Hatch(side centered)",
                 "1x Dynamo Hatch (back centered)",
                 "1x Maintenance Hatch (side centered)",

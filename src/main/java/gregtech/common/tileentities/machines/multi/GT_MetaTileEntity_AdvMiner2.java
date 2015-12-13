@@ -42,7 +42,7 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
     public String[] getDescription() {
         return new String[]{
                 "Controller Block for the Advanced Miner II",
-                "Size: 3x7x3", "Controller (front middle at bottom)",
+                "Size: 3x3x7", "Controller (front middle at bottom)",
                 "3x3 Base of Solid Steel Casings",
                 "Also part of Base: MV+ Energy Input Hatch",
                 "Fluid Input Hatch, Output Bus and Maintainance Hatch",

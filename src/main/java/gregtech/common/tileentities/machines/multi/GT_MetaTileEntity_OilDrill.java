@@ -33,7 +33,7 @@ public class GT_MetaTileEntity_OilDrill extends GT_MetaTileEntity_MultiBlockBase
     public String[] getDescription() {
         return new String[]{
                 "Controller Block for the Oil Drilling Rig",
-                "Size: 3x7x3", "Controller (front middle at bottom)",
+                "Size: 3x3x7", "Controller (front middle at bottom)",
                 "3x3 Base of Solid Steel Casings",
                 "Also part of Base: Energy Input Hatch",
                 "Fluid Output Hatch and Maintainance Hatch",

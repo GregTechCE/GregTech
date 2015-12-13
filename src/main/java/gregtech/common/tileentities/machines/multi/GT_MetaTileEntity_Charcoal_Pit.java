@@ -38,7 +38,7 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlock
     public String[] getDescription() {
         return new String[]{"Charcoal pit controller",
                 "Place on top of a pile of wood logs",
-                "Maximum size of logs below 11x5x11",
+                "Maximum size of logs below 11x11x5",
                 "Each log only can have other logs,",
                 "dirt or grass on its sides or above",
                 "or only logs or bricks below",

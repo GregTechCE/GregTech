@@ -21,7 +21,7 @@ public class GT_Cover_Arm
             return aCoverVariable;
         }
         TileEntity tTileEntity = aTileEntity.getTileEntityAtSide(aSide);
-        aTileEntity.decreaseStoredEnergyUnits(1L, true);
+        //aTileEntity.decreaseStoredEnergyUnits(1L, true);
         if (aTileEntity.getUniversalEnergyCapacity() >= 128L) {
             if (aTileEntity.isUniversalEnergyStored(256L)) {
                 aTileEntity.decreaseStoredEnergyUnits(4 * GT_Utility.moveOneItemStackIntoSlot(aCoverVariable > 0 ? aTileEntity : tTileEntity, aCoverVariable > 0 ? tTileEntity : aTileEntity, aCoverVariable > 0 ? aSide : GT_Utility.getOppositeSide(aSide), Math.abs(aCoverVariable) - 1, null, false, (byte) 64, (byte) 1, (byte) 64, (byte) 1), true);

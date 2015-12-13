@@ -36,7 +36,17 @@ public class GT_MetaTileEntity_HeatExchanger extends GT_MetaTileEntity_MultiBloc
     }
 
     public String[] getDescription() {
-        return new String[]{"Controller Block for the Heat Exchanger", "Size: 3x3x4", "Controller (front middle at bottom)", "3x3x4 of Stable Titanium Casing (hollow, Min 24!)", "2 Titanium Pipe Casing Blocks inside the Hollow Casing", "1x Distillated Water Input (one of the Casings)", "min 1 Steam Output (one of the Casings)", "1x Maintenance Hatch (one of the Casings)", "1x Hot Fluid Input (botton Center)", "1x Cold Fluid Output (top Center)"};
+        return new String[]{
+        		"Controller Block for the Heat Exchanger", 
+        		"Size: 3x3x4", 
+        		"Controller (front middle at bottom)", 
+        		"3x3x4 of Stable Titanium Casing (hollow, Min 24!)", 
+        		"2 Titanium Pipe Casing Blocks inside the Hollow Casing", 
+        		"1x Distillated Water Input (one of the Casings)", 
+        		"min 1 Steam Output (one of the Casings)", 
+        		"1x Maintenance Hatch (one of the Casings)", 
+        		"1x Hot Fluid Input (botton Center)", 
+        		"1x Cold Fluid Output (top Center)"};
     }
 
     @Override

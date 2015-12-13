@@ -97,51 +97,191 @@ public class ItemComb extends Item {
 	}
 
 	public void initCombsRecipes() {
-		for (CombType type : CombType.values()) {
-			ItemStack tComb = getStackForType(type);
-			if (type.material == Materials._NULL || type == type.COAL || type == type.LIGNIE) {
-				if (type == type.STICKY) {
-					GT_Values.RA.addCentrifugeRecipe(tComb, GT_Values.NI, GT_Values.NF, GT_Values.NF, ItemList.IC2_Resin.get(1, new Object[0]), ItemList.FR_Wax.get(1, new Object[0]),
-							ItemList.IC2_Plantball.get(1, new Object[0]), GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[] { 5000, 10000, 1500 }, 128, 5);
-					RecipeManagers.centrifugeManager.addRecipe(40, tComb,
-							ImmutableMap.of(ItemList.IC2_Resin.get(1, new Object[0]), 0.5f, ItemList.FR_Wax.get(1, new Object[0]), 1.0f, ItemList.IC2_Plantball.get(1, new Object[0]), 0.15f));
-				} else if (type == type.OIL) {
-					GT_Values.RA.addCentrifugeRecipe(tComb, GT_Values.NI, GT_Values.NF, GT_Values.NF, ItemList.Crop_Drop_OilBerry.get(1, new Object[0]), ItemList.FR_Wax.get(1, new Object[0]),
-							GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[] { 10000, 10000 }, 128, 5);
-					RecipeManagers.centrifugeManager.addRecipe(40, tComb, ImmutableMap.of(ItemList.Crop_Drop_OilBerry.get(1, new Object[0]), 1.0f, ItemList.FR_Wax.get(1, new Object[0]), 1.0f));
-				} else if (type == type.STONE || type == type.SLAG) {
-					GT_Values.RA.addCentrifugeRecipe(tComb, GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1),
-							ItemList.FR_Wax.get(1, new Object[0]), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[] { 7000, 3000 }, 128, 5);
-					RecipeManagers.centrifugeManager.addRecipe(40, tComb,
-							ImmutableMap.of(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1), 0.7f, ItemList.FR_Wax.get(1, new Object[0]), 0.3f));
-				} else {
-					GT_Values.RA.addCentrifugeRecipe(tComb, GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dustTiny, type.material, 1),
-							ItemList.FR_Wax.get(1, new Object[0]), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[] { type.chance * 100, 3000 }, 128, 5);
-					RecipeManagers.centrifugeManager.addRecipe(40, tComb,
-							ImmutableMap.of(GT_OreDictUnificator.get(OrePrefixes.dustTiny, type.material, 1), type.chance * 0.01f, ItemList.FR_Wax.get(1, new Object[0]), 0.3f));
-				}
-			} else {
-				if (GT_Mod.gregtechproxy.mNervedCombs) {
-					GT_Values.RA.addChemicalRecipe(GT_Utility.copyAmount(9, tComb), GT_OreDictUnificator.get(OrePrefixes.crushed, type.material, 1), Materials.Water.getFluid(1000),
-							type.material.mOreByProducts.isEmpty() ? null : type.material.mOreByProducts.get(0).getMolten(144),
-							GT_OreDictUnificator.get(OrePrefixes.crushedPurified, type.material, 4), 96, 300);
+		ItemStack tComb;
+		
+	    //Organic
+		tComb = getStackForType(CombType.LIGNIE);
+		addSpecialCent(tComb,GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lignite, 1), 90);
+		addProcess(tComb, Materials.Lignite, 100);
+		tComb = getStackForType(CombType.COAL);
+		addSpecialCent(tComb,GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1), 40);
+		addProcess(tComb, Materials.Coal, 100);
+		tComb = getStackForType(CombType.STICKY);
+		addSpecialCent(tComb, ItemList.IC2_Resin.get(1, new Object[0]), 70);
+		tComb = getStackForType(CombType.OIL);
+		addSpecialCent(tComb, ItemList.Crop_Drop_OilBerry.get(1, new Object[0]), 70);
+		addProcess(tComb, Materials.Oilsands, 100);
+		
+	    //Gem Line
+		tComb = getStackForType(CombType.STONE);
+		addSpecialCent(tComb,GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1), 70);
+		addProcess(tComb, Materials.Soapstone, 100);
+		addProcess(tComb, Materials.Talc, 100);
+		addProcess(tComb, Materials.Apatite, 100);
+		addProcess(tComb, Materials.Phosphate, 100);
+		addProcess(tComb, Materials.Phosphorus, 100);
+		tComb = getStackForType(CombType.CERTUS);
+		addProcess(tComb, Materials.CertusQuartz, 100);
+		addProcess(tComb, Materials.Quartzite, 100);
+		addProcess(tComb, Materials.Barite, 100);
+		tComb = getStackForType(CombType.REDSTONE);
+		addProcess(tComb, Materials.Redstone, 100);
+		addProcess(tComb, Materials.Cinnabar, 100);
+		tComb = getStackForType(CombType.LAPIS);
+		addProcess(tComb, Materials.Lapis, 100);
+		addProcess(tComb, Materials.Sodalite, 100);
+		addProcess(tComb, Materials.Lazurite, 100);
+		addProcess(tComb, Materials.Calcite, 100);
+		tComb = getStackForType(CombType.RUBY);
+		addProcess(tComb, Materials.Ruby, 100);
+		addProcess(tComb, Materials.Redstone, 100);
+		tComb = getStackForType(CombType.SAPPHIRE);
+		addProcess(tComb, Materials.Sapphire, 100);
+		addProcess(tComb, Materials.GreenSapphire, 100);
+		addProcess(tComb, Materials.Almandine, 100);
+		addProcess(tComb, Materials.Pyrope, 100);
+		tComb = getStackForType(CombType.DIAMOND);
+		addProcess(tComb, Materials.Diamond, 100);
+		addProcess(tComb, Materials.Graphite, 100);
+		tComb = getStackForType(CombType.OLIVINE);
+		addProcess(tComb, Materials.Olivine, 100);
+		addProcess(tComb, Materials.Bentonite, 100);
+		addProcess(tComb, Materials.Magnesite, 100);
+		addProcess(tComb, Materials.Glauconite, 100);
+		tComb = getStackForType(CombType.EMERALD);
+		addProcess(tComb, Materials.Emerald, 100);
+		addProcess(tComb, Materials.Beryllium, 100);
+		addProcess(tComb, Materials.Thorium, 100);
 
-					GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(16, tComb), Materials.UUMatter.getFluid(1), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, type.material, 1),(type==CombType.URANIUM||type==CombType.PLUTONIUM||type==CombType.NAQUADAH)? 300: 1000, 1000, 24);
-				} else {
-					if (type == type.IRIDIUM) {
-						GT_Values.RA.addCentrifugeRecipe(tComb, GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iridium, 1),
-								GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Osmium, 1), ItemList.FR_Wax.get(1, new Object[0]), GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[] { 2000,
-										800, 3000 }, 128, 5);
-						RecipeManagers.centrifugeManager.addRecipe(40, tComb, ImmutableMap.of(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iridium, 1), 0.2f,
-								GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Osmium, 1), 0.08f, ItemList.FR_Wax.get(1, new Object[0]), 0.3f));
-					} else {
-						GT_Values.RA.addCentrifugeRecipe(tComb, GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dustTiny, type.material, 1),
-								ItemList.FR_Wax.get(1, new Object[0]), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[] { type.chance * 100, 3000 }, 128, 5);
-						RecipeManagers.centrifugeManager.addRecipe(40, tComb,
-								ImmutableMap.of(GT_OreDictUnificator.get(OrePrefixes.dustTiny, type.material, 1), type.chance * 0.01f, ItemList.FR_Wax.get(1, new Object[0]), 0.3f));
-					}
-				}
-			}
+//	    // Metals Line
+		tComb = getStackForType(CombType.SLAG);
+		addSpecialCent(tComb,GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1), 50);
+		addProcess(tComb, Materials.Salt, 100);
+		addProcess(tComb, Materials.RockSalt, 100);
+		addProcess(tComb, Materials.Lepidolite, 100);
+		addProcess(tComb, Materials.Spodumene, 100);
+		addProcess(tComb, Materials.Monazite, 100);
+		tComb = getStackForType(CombType.COPPER);
+		addProcess(tComb, Materials.Copper, 100);
+		addProcess(tComb, Materials.Tetrahedrite, 100);
+		addProcess(tComb, Materials.Chalcopyrite, 100);
+		addProcess(tComb, Materials.Malachite, 100);
+		addProcess(tComb, Materials.Pyrite, 100);
+		addProcess(tComb, Materials.Stibnite, 100);
+		tComb = getStackForType(CombType.TIN);
+		addProcess(tComb, Materials.Tin, 100);
+		addProcess(tComb, Materials.Cassiterite, 100);
+		tComb = getStackForType(CombType.LEAD);
+		addProcess(tComb, Materials.Lead, 100);
+		addProcess(tComb, Materials.Galena, 100);
+		tComb = getStackForType(CombType.IRON);
+		addProcess(tComb, Materials.Iron, 100);
+		addProcess(tComb, Materials.Magnetite, 100);
+		addProcess(tComb, Materials.BrownLimonite, 100);
+		addProcess(tComb, Materials.YellowLimonite, 100);
+		addProcess(tComb, Materials.VanadiumMagnetite, 100);
+		addProcess(tComb, Materials.BandedIron, 100);
+		addProcess(tComb, Materials.Pyrite, 100);
+		addProcess(tComb, Materials.MeteoricIron, 100);
+		tComb = getStackForType(CombType.STEEL);
+		addProcess(tComb, Materials.Iron, Materials.Steel, 100);
+		addProcess(tComb, Materials.Magnetite, Materials.Steel, 100);
+		addProcess(tComb, Materials.BrownLimonite, Materials.Steel, 100);
+		addProcess(tComb, Materials.YellowLimonite, Materials.Steel, 100);
+		addProcess(tComb, Materials.VanadiumMagnetite, Materials.VanadiumSteel, 100);
+		addProcess(tComb, Materials.BandedIron, Materials.Steel, 100);
+		addProcess(tComb, Materials.Pyrite, Materials.Steel, 100);
+		addProcess(tComb, Materials.MeteoricIron, Materials.MeteoricSteel, 100);
+		addProcess(tComb, Materials.Molybdenite, 100);
+		addProcess(tComb, Materials.Molybdenum, 100);
+		tComb = getStackForType(CombType.NICKEL);
+		addProcess(tComb, Materials.Nickel, 100);
+		addProcess(tComb, Materials.Garnierite, 100);
+		addProcess(tComb, Materials.Pentlandite, 100);
+		addProcess(tComb, Materials.Cobaltite, 100);
+		addProcess(tComb, Materials.Wulfenite, 100);
+		addProcess(tComb, Materials.Powellite, 100);
+		tComb = getStackForType(CombType.ZINC);
+		addProcess(tComb, Materials.Zinc, 100);
+		addProcess(tComb, Materials.Sphalerite, 100);
+		addProcess(tComb, Materials.Sulfur, 100);
+		tComb = getStackForType(CombType.SILVER);
+		addProcess(tComb, Materials.Silver, 100);
+		addProcess(tComb, Materials.Galena, 100);
+		tComb = getStackForType(CombType.GOLD);
+		addProcess(tComb, Materials.Gold, 100);
+		addProcess(tComb, Materials.Magnetite, Materials.Gold, 100);
+
+	    // Rare Metals Line    
+		tComb = getStackForType(CombType.ALUMINIUM);
+		addProcess(tComb,Materials.Aluminium,60);
+		addProcess(tComb,Materials.Bauxite,100);
+		tComb = getStackForType(CombType.MANGANESE);
+		addProcess(tComb,Materials.Manganese,30);
+		addProcess(tComb,Materials.Grossular,100);
+		addProcess(tComb,Materials.Spessartine,100);
+		addProcess(tComb,Materials.Pyrolusite,100);
+		addProcess(tComb,Materials.Tantalite,100);
+		tComb = getStackForType(CombType.TITANIUM);
+		addProcess(tComb,Materials.Titanium,100);
+		addProcess(tComb,Materials.Ilmenite,100);
+		addProcess(tComb,Materials.Bauxite,100);
+		tComb = getStackForType(CombType.CHROME);
+		addProcess(tComb,Materials.Chrome,50);
+		addProcess(tComb,Materials.Ruby,100);
+		addProcess(tComb,Materials.Chromite,50);
+		addProcess(tComb,Materials.Redstone,100);
+		addProcess(tComb, Materials.Neodymium, 100);
+		addProcess(tComb, Materials.Bastnasite, 100);
+		tComb = getStackForType(CombType.TUNGSTEN);
+		addProcess(tComb,Materials.Tungstate,100);
+		addProcess(tComb,Materials.Scheelite,100);
+		addProcess(tComb,Materials.Lithium,100);
+		tComb = getStackForType(CombType.PLATINUM);
+		addProcess(tComb,Materials.Platinum,40);
+		addProcess(tComb,Materials.Cooperite,40);
+		addProcess(tComb,Materials.Palladium,40);
+		tComb = getStackForType(CombType.IRIDIUM);
+		addProcess(tComb,Materials.Iridium,20);
+		addProcess(tComb,Materials.Osmium,20);
+
+	    // Radioactive Line
+		tComb = getStackForType(CombType.URANIUM);
+		addProcess(tComb,Materials.Uranium,50);
+		addProcess(tComb,Materials.Pitchblende,50);
+		addProcess(tComb,Materials.Uraninite,50);
+		addProcess(tComb,Materials.Uranium235,50);
+		tComb = getStackForType(CombType.PLUTONIUM);
+		addProcess(tComb,Materials.Plutonium,10);
+		addProcess(tComb,Materials.Uranium235,Materials.Plutonium,5);
+		tComb = getStackForType(CombType.NAQUADAH);
+		addProcess(tComb,Materials.Naquadah,10);
+		addProcess(tComb,Materials.NaquadahEnriched,10);
+		addProcess(tComb,Materials.Naquadria,10);
+	}
+	public void addSpecialCent(ItemStack tComb, ItemStack aOutput, int chance){
+		GT_Values.RA.addCentrifugeRecipe(tComb, GT_Values.NI, GT_Values.NF, GT_Values.NF, aOutput,	ItemList.FR_Wax.get(1, new Object[0]), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[] { chance * 100, 3000 }, 128, 5);
+		RecipeManagers.centrifugeManager.addRecipe(40, tComb, ImmutableMap.of(aOutput, chance * 0.01f, ItemList.FR_Wax.get(1, new Object[0]), 0.3f));
+	}
+	
+	public void addProcess(ItemStack tComb, Materials aMaterial, int chance){
+		if(GT_Mod.gregtechproxy.mNervedCombs){
+			GT_Values.RA.addChemicalRecipe(GT_Utility.copyAmount(9, tComb), GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1), Materials.Water.getFluid(1000), aMaterial.mOreByProducts.isEmpty() ? null : aMaterial.mOreByProducts.get(0).getMolten(144), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4), 96, 300);
+			GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(16, tComb), Materials.UUMatter.getFluid(1), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1), 1000, 1000, 24);
+		}else{
+			GT_Values.RA.addCentrifugeRecipe(tComb, GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1),	ItemList.FR_Wax.get(1, new Object[0]), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[] { chance * 100, 3000 }, 128, 5);
+			RecipeManagers.centrifugeManager.addRecipe(40, tComb, ImmutableMap.of(GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1), chance * 0.01f, ItemList.FR_Wax.get(1, new Object[0]), 0.3f));
 		}
 	}
+	
+	public void addProcess(ItemStack tComb, Materials aInMaterial, Materials aOutMaterial, int chance){
+		if(GT_Mod.gregtechproxy.mNervedCombs){
+			GT_Values.RA.addChemicalRecipe(GT_Utility.copyAmount(9, tComb), GT_OreDictUnificator.get(OrePrefixes.crushed, aInMaterial, 1), Materials.Water.getFluid(1000), aInMaterial.mOreByProducts.isEmpty() ? null : aInMaterial.mOreByProducts.get(0).getMolten(144), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aOutMaterial, 4), 96, 300);
+			GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(16, tComb), Materials.UUMatter.getFluid(1), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aOutMaterial, 1), 1000, 1000, 24);
+		}else{
+			GT_Values.RA.addCentrifugeRecipe(tComb, GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dustTiny, aOutMaterial, 1),	ItemList.FR_Wax.get(1, new Object[0]), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[] { chance * 100, 3000 }, 128, 5);
+			RecipeManagers.centrifugeManager.addRecipe(40, tComb, ImmutableMap.of(GT_OreDictUnificator.get(OrePrefixes.dustTiny, aOutMaterial, 1), chance * 0.01f, ItemList.FR_Wax.get(1, new Object[0]), 0.3f));
+		}
+	}
+	
 }

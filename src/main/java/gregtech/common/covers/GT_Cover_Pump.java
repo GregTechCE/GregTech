@@ -27,7 +27,7 @@ public class GT_Cover_Pump
         if ((aTileEntity instanceof IFluidHandler)) {
             IFluidHandler tTank2 = aTileEntity.getITankContainerAtSide(aSide);
             if (tTank2 != null) {
-                aTileEntity.decreaseStoredEnergyUnits(GT_Utility.getTier(this.mTransferRate), true);
+                //aTileEntity.decreaseStoredEnergyUnits(GT_Utility.getTier(this.mTransferRate), true);
                 IFluidHandler tTank1 = (IFluidHandler) aTileEntity;
                 if (aCoverVariable % 2 == 0) {
                     FluidStack tLiquid = tTank1.drain(ForgeDirection.getOrientation(aSide), this.mTransferRate, false);
