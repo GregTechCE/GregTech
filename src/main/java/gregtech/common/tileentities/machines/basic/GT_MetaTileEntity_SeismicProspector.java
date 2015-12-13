@@ -57,18 +57,20 @@ public class GT_MetaTileEntity_SeismicProspector extends GT_MetaTileEntity_Basic
                 GT_Utility.ItemNBT.setBookTitle(aPlayer.getCurrentEquippedItem(), "Raw Prospection Data");
                 List<String> tStringList = new ArrayList<String>();
                 for (int i = this.getBaseMetaTileEntity().getYCoord(); i > 0; i--) {
-                    for (int f = -1; f < 2; f++) {
-                        for (int g = -1; g < 2; g++) {
+                    for (int f = -2; f < 3; f++) {
+                        for (int g = -2; g < 3; g++) {
                             Block tBlock = this.getBaseMetaTileEntity().getBlockOffset(f, -i, g);
                             if ((tBlock instanceof GT_Block_Ores)) {
                                 TileEntity tTileEntity = getBaseMetaTileEntity().getWorld().getTileEntity(getBaseMetaTileEntity().getXCoord() + f, getBaseMetaTileEntity().getYCoord() + (-i), getBaseMetaTileEntity().getZCoord() + g);
                                 if ((tTileEntity instanceof GT_TileEntity_Ores)) {
+                                	if(((GT_TileEntity_Ores) tTileEntity).mMetaData < 16000){
                                     Materials tMaterial = GregTech_API.sGeneratedMaterials[(((GT_TileEntity_Ores) tTileEntity).mMetaData % 1000)];
                                     if ((tMaterial != null) && (tMaterial != Materials._NULL)) {
                                         if (!tStringList.contains(tMaterial.mDefaultLocalName)) {
                                             tStringList.add(tMaterial.mDefaultLocalName);
                                         }
                                     }
+                                  }
                                 }
                             } else {
                                 int tMetaID = getBaseMetaTileEntity().getWorld().getBlockMetadata(getBaseMetaTileEntity().getXCoord() + f, getBaseMetaTileEntity().getYCoord() + (-i), getBaseMetaTileEntity().getZCoord() + g);
