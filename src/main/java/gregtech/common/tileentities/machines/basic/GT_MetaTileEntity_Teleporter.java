@@ -34,7 +34,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.FluidStack;
-
 import static gregtech.api.enums.GT_Values.V;
 
 public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank {
@@ -156,6 +155,12 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank {
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Teleporter(this.mName, this.mTier, this.mDescription, this.mTextures);
     }
+
+    @Override
+    public boolean isGivingInformation() {
+        return true;
+    }
+    
 
     public String[] getInfoData() {
         return new String[]{"Coordinates:", "X: " + this.mTargetX, "Y: " + this.mTargetY, "Z: " + this.mTargetZ, "Dimension: " + this.mTargetD};
@@ -426,5 +431,4 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank {
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         return null;
     }
-
 }
