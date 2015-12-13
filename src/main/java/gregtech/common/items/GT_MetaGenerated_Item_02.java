@@ -1,5 +1,9 @@
 package gregtech.common.items;
 
+import com.google.common.collect.ImmutableMap;
+
+import forestry.api.recipes.RecipeManagers;
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.items.GT_MetaGenerated_Item_X32;
@@ -297,10 +301,7 @@ public class GT_MetaGenerated_Item_02
         ItemList.Crop_Drop_Platinum.set(addItem(tLastID = 532, "Platina Leaf", "Source of Platinum", new Object[]{}));
         ItemList.Crop_Drop_Iridium.set(addItem(tLastID = 533, "Quantaria Leaf", "Source of Iridium", new Object[]{}));
         ItemList.Crop_Drop_Osmium.set(addItem(tLastID = 534, "Quantaria Leaf", "Source of Osmium", new Object[]{}));
-        ItemList.Crop_Drop_Naquadah.set(addItem(tLastID = 535, "Stargatium Leaf", "Source of Naquadah", new Object[]{}));   
-        
-//        ItemList.PlatinumGroupSludge.set(addItem(tLastID = 536, "Platinum group metals sludge", "", new Object[]{}));
-//        ItemList.PlatinumGroupSludgeTiny.set(addItem(tLastID = 537, "Tiny Pile Platinum group metals sludge", "", new Object[]{}));
+        ItemList.Crop_Drop_Naquadah.set(addItem(tLastID = 535, "Stargatium Leaf", "Source of Naquadah", new Object[]{}));
         
         ItemList.Crop_Drop_Chilly.set(addItem(tLastID = 550, "Chilly Pepper", "It is red and hot", new Object[]{"cropChilipepper", new GT_FoodStat(1, 0.3F, EnumAction.eat, null, false, true, false, new int[]{Potion.confusion.id, 200, 1, 40}), new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L)}));
         ItemList.Crop_Drop_Lemon.set(addItem(tLastID = 551, "Lemon", "Don't make Lemonade", new Object[]{"cropLemon", new GT_FoodStat(1, 0.3F, EnumAction.eat, null, false, true, false, new int[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L)}));
@@ -347,9 +348,6 @@ public class GT_MetaGenerated_Item_02
         GT_ModHandler.addExtractionRecipe(ItemList.Crop_Drop_Plumbilia.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lead, 1L));
         GT_ModHandler.addExtractionRecipe(ItemList.Crop_Drop_Argentia.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Silver, 1L));
         GT_ModHandler.addExtractionRecipe(ItemList.Crop_Drop_Indigo.get(1L, new Object[0]), ItemList.Dye_Indigo.get(1L, new Object[0]));
-        GT_ModHandler.addExtractionRecipe(ItemList.Crop_Drop_Ferru.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Crop_Drop_Aurelia.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Gold, 1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Crop_Drop_BobsYerUncleRanks.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Emerald, 1L));
         GT_ModHandler.addExtractionRecipe(ItemList.Crop_Drop_MilkWart.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Milk, 1L));
         GT_ModHandler.addExtractionRecipe(ItemList.Crop_Drop_Coppon.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Copper, 1L));
         GT_ModHandler.addExtractionRecipe(ItemList.Crop_Drop_Tine.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Tin, 1L));

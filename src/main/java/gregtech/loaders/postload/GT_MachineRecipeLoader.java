@@ -7,6 +7,7 @@ import gregtech.api.enums.*;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.*;
 import gregtech.common.GT_DummyWorld;
+import gregtech.common.items.CombType;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -1525,5 +1526,121 @@ public class GT_MachineRecipeLoader
                 GT_ModHandler.addAlloySmelterRecipe(tDust1, tDust2, tOutputIngot, (int) tMats[2].mAmount * 50, 16, false);
             }
         }
+        
+        GT_Utility.removeSimpleIC2MachineRecipe(ItemList.Crop_Drop_BobsYerUncleRanks.get(1L, new Object[0]), GT_ModHandler.getExtractorRecipeList(), null);
+        GT_Utility.removeSimpleIC2MachineRecipe(ItemList.Crop_Drop_Ferru.get(1L, new Object[0]), GT_ModHandler.getExtractorRecipeList(), null);
+        GT_Utility.removeSimpleIC2MachineRecipe(ItemList.Crop_Drop_Aurelia.get(1L, new Object[0]), GT_ModHandler.getExtractorRecipeList(), null);
+
+//        GT_ModHandler.addExtractionRecipe(ItemList.Crop_Drop_BobsYerUncleRanks.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Emerald, 1L));
+//        GT_ModHandler.addExtractionRecipe(ItemList.Crop_Drop_Ferru.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 1L));
+//        GT_ModHandler.addExtractionRecipe(ItemList.Crop_Drop_Aurelia.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Gold, 1L));
+        
+//        ItemList.Crop_Drop_Bauxite.set(addItem(tLastID = 521, "Bauxia Leaf", "Source of Aluminium", new Object[]{}));
+//        ItemList.Crop_Drop_Ilmenite.set(addItem(tLastID = 522, "Titania Leaf", "Source of Titanium", new Object[]{}));
+//        ItemList.Crop_Drop_Pitchblende.set(addItem(tLastID = 523, "Reactoria Leaf", "Source of Uranium", new Object[]{}));
+//        ItemList.Crop_Drop_Uraninite.set(addItem(tLastID = 524, "Milk Leaf", "Source of Uranite", new Object[]{}));
+//        ItemList.Crop_Drop_Thorium.set(addItem(tLastID = 526, "Thunder Leaf", "Source of Thorium", new Object[]{}));
+//        ItemList.Crop_Drop_Nickel.set(addItem(tLastID = 527, "Nickelback Leaf", "Source of Nickel", new Object[]{}));
+//        ItemList.Crop_Drop_Zinc.set(addItem(tLastID = 528, "Galvania Leaf", "Source of Zinc", new Object[]{}));
+//        ItemList.Crop_Drop_Manganese.set(addItem(tLastID = 529, "Pyrolusium Leaf", "Source of Manganese", new Object[]{}));
+//        ItemList.Crop_Drop_Scheelite.set(addItem(tLastID = 531, "Scheelinium Leaf", "Source of Tungsten", new Object[]{}));
+//        ItemList.Crop_Drop_Platinum.set(addItem(tLastID = 532, "Platina Leaf", "Source of Platinum", new Object[]{}));
+//        ItemList.Crop_Drop_Iridium.set(addItem(tLastID = 533, "Quantaria Leaf", "Source of Iridium", new Object[]{}));
+//        ItemList.Crop_Drop_Osmium.set(addItem(tLastID = 534, "Quantaria Leaf", "Source of Osmium", new Object[]{}));
+//        ItemList.Crop_Drop_Naquadah.set(addItem(tLastID = 535, "Stargatium Leaf", "Source of Naquadah", new Object[]{}));
+        
+		ItemStack tCrop;
+	    // Metals Line
+		tCrop = ItemList.Crop_Drop_Coppon.get(1, new Object[0]);
+		addProcess(tCrop, Materials.Copper, 100);
+		addProcess(tCrop, Materials.Tetrahedrite, 100);
+		addProcess(tCrop, Materials.Chalcopyrite, 100);
+		addProcess(tCrop, Materials.Malachite, 100);
+		addProcess(tCrop, Materials.Pyrite, 100);
+		addProcess(tCrop, Materials.Stibnite, 100);
+		tCrop = ItemList.Crop_Drop_Tine.get(1, new Object[0]);
+		addProcess(tCrop, Materials.Tin, 100);
+		addProcess(tCrop, Materials.Cassiterite, 100);
+		tCrop = ItemList.Crop_Drop_Plumbilia.get(1, new Object[0]);
+		addProcess(tCrop, Materials.Lead, 100);
+		addProcess(tCrop, Materials.Galena, 100);
+		tCrop = ItemList.Crop_Drop_Ferru.get(1, new Object[0]);
+		addProcess(tCrop, Materials.Iron, 100);
+		addProcess(tCrop, Materials.Magnetite, 100);
+		addProcess(tCrop, Materials.BrownLimonite, 100);
+		addProcess(tCrop, Materials.YellowLimonite, 100);
+		addProcess(tCrop, Materials.VanadiumMagnetite, 100);
+		addProcess(tCrop, Materials.BandedIron, 100);
+		addProcess(tCrop, Materials.Pyrite, 100);
+		addProcess(tCrop, Materials.MeteoricIron, 100);
+		tCrop = ItemList.Crop_Drop_Nickel.get(1, new Object[0]);
+		addProcess(tCrop, Materials.Nickel, 100);
+		addProcess(tCrop, Materials.Garnierite, 100);
+		addProcess(tCrop, Materials.Pentlandite, 100);
+		addProcess(tCrop, Materials.Cobaltite, 100);
+		addProcess(tCrop, Materials.Wulfenite, 100);
+		addProcess(tCrop, Materials.Powellite, 100);
+		tCrop = ItemList.Crop_Drop_Zinc.get(1, new Object[0]);
+		addProcess(tCrop, Materials.Zinc, 100);
+		addProcess(tCrop, Materials.Sphalerite, 100);
+		addProcess(tCrop, Materials.Sulfur, 100);
+		tCrop = ItemList.Crop_Drop_Argentia.get(1, new Object[0]);
+		addProcess(tCrop, Materials.Silver, 100);
+		addProcess(tCrop, Materials.Galena, 100);
+		tCrop = ItemList.Crop_Drop_Aurelia.get(1, new Object[0]);
+		addProcess(tCrop, Materials.Gold, 100);
+		addProcess(tCrop, Materials.Magnetite, 100);
+
+	    // Rare Metals Line    
+		tCrop = ItemList.Crop_Drop_Bauxite.get(1, new Object[0]);
+		addProcess(tCrop,Materials.Aluminium,60);
+		addProcess(tCrop,Materials.Bauxite,100);
+		tCrop = ItemList.Crop_Drop_Manganese.get(1, new Object[0]);
+		addProcess(tCrop,Materials.Manganese,30);
+		addProcess(tCrop,Materials.Grossular,100);
+		addProcess(tCrop,Materials.Spessartine,100);
+		addProcess(tCrop,Materials.Pyrolusite,100);
+		addProcess(tCrop,Materials.Tantalite,100);
+		tCrop = ItemList.Crop_Drop_Ilmenite.get(1, new Object[0]);
+		addProcess(tCrop,Materials.Titanium,100);
+		addProcess(tCrop,Materials.Ilmenite,100);
+		addProcess(tCrop,Materials.Bauxite,100);
+		tCrop = ItemList.Crop_Drop_Scheelite.get(1, new Object[0]);
+		addProcess(tCrop,Materials.Scheelite,100);
+		addProcess(tCrop,Materials.Tungstate,100);
+		addProcess(tCrop,Materials.Lithium,100);
+		tCrop = ItemList.Crop_Drop_Platinum.get(1, new Object[0]);
+		addProcess(tCrop,Materials.Platinum,40);
+		addProcess(tCrop,Materials.Cooperite,40);
+		addProcess(tCrop,Materials.Palladium,40);
+		addProcess(tCrop, Materials.Neodymium, 100);
+		addProcess(tCrop, Materials.Bastnasite, 100);
+		tCrop = ItemList.Crop_Drop_Iridium.get(1, new Object[0]);
+		addProcess(tCrop,Materials.Iridium,20);
+		tCrop = ItemList.Crop_Drop_Osmium.get(1, new Object[0]);
+		addProcess(tCrop,Materials.Osmium,20);
+
+	    // Radioactive Line
+		tCrop = ItemList.Crop_Drop_Uraninite.get(1, new Object[0]);
+		addProcess(tCrop,Materials.Uraninite,50);
+		addProcess(tCrop,Materials.Uranium,50);
+		addProcess(tCrop,Materials.Pitchblende,50);
+		addProcess(tCrop,Materials.Uranium235,50);
+		tCrop = ItemList.Crop_Drop_Thorium.get(1, new Object[0]);
+		addProcess(tCrop,Materials.Thorium,50);
+		tCrop = ItemList.Crop_Drop_Naquadah.get(1, new Object[0]);
+		addProcess(tCrop,Materials.Naquadah,10);
+		addProcess(tCrop,Materials.NaquadahEnriched,10);
+		addProcess(tCrop,Materials.Naquadria,10);
+        
     }
+    
+	public void addProcess(ItemStack tCrop, Materials aMaterial, int chance){
+		if(GT_Mod.gregtechproxy.mNervedCombs){
+			GT_Values.RA.addChemicalRecipe(GT_Utility.copyAmount(9, tCrop), GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1), Materials.Water.getFluid(1000), aMaterial.mOreByProducts.isEmpty() ? null : aMaterial.mOreByProducts.get(0).getMolten(144), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4), 96, 300);
+			GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(16, tCrop), Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass()+9)/10))), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1), 1000, 1000, 24);
+		}else{
+			GT_ModHandler.addExtractionRecipe(tCrop, GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1));
+}
+	}
 }
