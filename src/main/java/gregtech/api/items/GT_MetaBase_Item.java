@@ -563,6 +563,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         if (tStats != null && (tStats[3] == -1 || tStats[3] == -2 || tStats[3] == -3) && getRealCharge(aStack) > 0) return 1;
         tStats = getFluidContainerStats(aStack);
         if (tStats != null) return (int) (long) tStats[1];
+        if(getDamage(aStack)==32763)return 1;
         return 64;
     }
 
