@@ -71,11 +71,11 @@ public class ProcessingStone
             break;
             case Greenschist:
             case Blueschist:
-            	GT_ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Glauconite, 2L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Basalt, 100L), 10, false);
+            	GT_ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Glauconite, 2L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Basalt, 1L), 100, false);
             break;
             case Gneiss:
             case Migmatite:
-             	GT_ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1L), GT_OreDictUnificator.get(OrePrefixes.dustImpure, Materials.GraniteBlack, 50L), 10, false);
+             	GT_ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1L), GT_OreDictUnificator.get(OrePrefixes.dustImpure, Materials.GraniteBlack, 1L), 50, false);
                 break;
             case Redrock:
             case Marble:
