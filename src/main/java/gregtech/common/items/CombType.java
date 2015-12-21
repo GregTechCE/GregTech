@@ -22,30 +22,30 @@ public enum CombType {
 
     // Metals Line
     SLAG("slag", true, Materials._NULL, 50),
-    COPPER("copperdust", true, Materials.Copper, 100),
-    TIN("tindust", true, Materials.Tin, 100),
-    LEAD("leaddust", true, Materials.Lead, 100),
-    IRON("irondust", true, Materials.Iron, 100),
+    COPPER("coppon", true, Materials.Copper, 100),
+    TIN("tine", true, Materials.Tin, 100),
+    LEAD("plumbilia", true, Materials.Lead, 100),
+    IRON("ferru", true, Materials.Iron, 100),
     STEEL("steeldust", true, Materials.Steel, 100),
     NICKEL("nickeldust", true, Materials.Nickel, 100),
-    ZINC("zincdust", true, Materials.Zinc, 100),
-    SILVER("silverdust", true, Materials.Silver, 100),
-    GOLD("golddust", true, Materials.Gold, 100),
+    ZINC("galvania", true, Materials.Zinc, 100),
+    SILVER("argentia", true, Materials.Silver, 100),
+    GOLD("aurelia", true, Materials.Gold, 100),
 
     // Rare Metals Line    
-    ALUMINIUM("aluminium", true, Materials.Aluminium, 60),
-    MANGANESE("manganese", true, Materials.Manganese, 30),
+    ALUMINIUM("bauxia", true, Materials.Aluminium, 60),
+    MANGANESE("pyrolusium", true, Materials.Manganese, 30),
     TITANIUM("titanium", true, Materials.Ilmenite, 100),
-    CHROME("chrome", true, Materials.Chrome, 50),
-    TUNGSTEN("tungsten", true, Materials.Tungstate, 100),
-    PLATINUM("platinum", true, Materials.Platinum, 40),
-    IRIDIUM("iridium", true, Materials.Iridium, 20),
+    CHROME("chromium", true, Materials.Chrome, 50),
+    TUNGSTEN("scheelinium", true, Materials.Tungstate, 100),
+    PLATINUM("platina", true, Materials.Platinum, 40),
+    IRIDIUM("quantaria", true, Materials.Iridium, 20),
 
 
     // Radioactive Line
-    URANIUM("uranium", true, Materials.Uranium, 50),
+    URANIUM("urania", true, Materials.Uranium, 50),
     PLUTONIUM("plutonium", true, Materials.Plutonium, 10),
-    NAQUADAH("naquada", true, Materials.Naquadah, 10),;
+    NAQUADAH("stargatium", true, Materials.Naquadah, 10),;
 
     private static int[][] colours = new int[][]{
             {0x906237, 0x58300B},

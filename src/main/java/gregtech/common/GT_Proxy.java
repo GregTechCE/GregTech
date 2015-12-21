@@ -160,7 +160,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public int mGraniteHavestLevel=3;
     public int mMaxHarvestLevel=7;
     public boolean mChangeHarvestLevels=false;
-    public boolean mNervedCombs = true;
+    public boolean mNerfedCombs = true;
     public int mWireHeatingTicks = 4;
 
     public GT_Proxy() {
