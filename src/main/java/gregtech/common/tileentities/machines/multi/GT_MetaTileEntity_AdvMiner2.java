@@ -88,7 +88,7 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
         if (tFluid == null) {
             return false;
         }
-        if (tFluid.amount < 20) {
+        if (tFluid.amount < 100) {
             return false;
         }
         tFluid.amount = 100;
@@ -147,7 +147,7 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
         int tEU = 48;
-        int tDuration = 40;
+        int tDuration = 24;
         if (tEU <= 16) {
             this.mEUt = (tEU * (1 << tTier - 1) * (1 << tTier - 1));
             this.mMaxProgresstime = (tDuration / (1 << tTier - 1));
