@@ -49,7 +49,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
             beeSpecies.addProduct(GT_ModHandler.getModItem(GT_Values.MOD_ID_FR, "beeCombs", 1, 15), 0.30f);
-            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.STICKY), 0.30f);
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STICKY), 0.30f);
             beeSpecies.setHumidity(EnumHumidity.DAMP);
             beeSpecies.setTemperature(EnumTemperature.NORMAL);
         }
@@ -106,7 +106,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
             beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.LIGNIE), 0.30f);
-            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.COAL), 0.15f);
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.COAL), 0.15f);
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setTemperature(EnumTemperature.NORMAL);
         }
@@ -125,7 +125,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
             beeSpecies.addProduct(GT_ModHandler.getModItem(GT_Values.MOD_ID_FR, "beeCombs", 1, 0), 0.30f);
-            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.OIL), 0.15f);
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.OIL), 0.15f);
             beeSpecies.setHumidity(EnumHumidity.DAMP);
             beeSpecies.setTemperature(EnumTemperature.NORMAL);
             beeSpecies.setNocturnal();
@@ -145,7 +145,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
             beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.30f);
-            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.REDSTONE), 0.15f);
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.REDSTONE), 0.15f);
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setTemperature(EnumTemperature.NORMAL);
         }
@@ -164,7 +164,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
             beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.30f);
-            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.LAPIS), 0.15f);
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.LAPIS), 0.15f);
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setTemperature(EnumTemperature.NORMAL);
         }
@@ -183,7 +183,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
             beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.30f);
-            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.CERTUS), 0.15f);
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.CERTUS), 0.15f);
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setTemperature(EnumTemperature.NORMAL);
         }
@@ -202,7 +202,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
             beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.30f);
-            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.RUBY), 0.15f);
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.RUBY), 0.15f);
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setTemperature(EnumTemperature.NORMAL);
         }
@@ -221,7 +221,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
             beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.30f);
-            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.SAPPHIRE), 0.15f);
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SAPPHIRE), 0.15f);
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setTemperature(EnumTemperature.NORMAL);
         }
@@ -240,7 +240,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
             beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.30f);
-            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.DIAMOND), 0.15f);
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.DIAMOND), 0.15f);
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setTemperature(EnumTemperature.NORMAL);
         }
@@ -259,7 +259,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
             beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.30f);
-            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.OLIVINE), 0.15f);
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.OLIVINE), 0.15f);
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setTemperature(EnumTemperature.NORMAL);
         }
@@ -278,7 +278,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
             beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.30f);
-            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.EMERALD), 0.15f);
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.EMERALD), 0.15f);
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setTemperature(EnumTemperature.COLD);
         }
@@ -587,7 +587,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
             beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.TUNGSTEN), 0.15f);
             beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.PLATINUM), 0.15f);
-            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.IRIDIUM), 0.15f);
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.IRIDIUM), 0.15f);
             beeSpecies.setHumidity(EnumHumidity.ARID);
             beeSpecies.setTemperature(EnumTemperature.HELLISH);
         }
