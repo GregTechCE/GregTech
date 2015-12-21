@@ -15,8 +15,16 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import ic2.api.recipe.IRecipeInput;
+import ic2.api.recipe.RecipeOutput;
+import ic2.api.recipe.ILiquidHeatExchangerManager.HeatExchangeProperty;
+import ic2.api.recipe.Recipes;
+import ic2.core.block.machine.tileentity.TileEntityLiquidHeatExchanger;
 
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class GT_MachineRecipeLoader
         implements Runnable {
@@ -1526,6 +1534,31 @@ public class GT_MachineRecipeLoader
                 GT_ModHandler.addAlloySmelterRecipe(tDust1, tDust2, tOutputIngot, (int) tMats[2].mAmount * 50, 16, false);
             }
         }
+        
+        
+            try {
+                Map<String, HeatExchangeProperty> tLiqExchange = ic2.api.recipe.Recipes.liquidCooldownManager.getHeatExchangeProperties();
+                Iterator<Map.Entry<String, HeatExchangeProperty>> tIterator = tLiqExchange.entrySet().iterator();
+                while (tIterator.hasNext()) {
+                    Map.Entry<String, HeatExchangeProperty> tEntry = tIterator.next();
+                    if(tEntry.getKey().equals("ic2hotcoolant")){
+                    	tIterator.remove();
+                    	Recipes.liquidCooldownManager.addFluid("ic2hotcoolant", "ic2coolant", 80);                    	
+                    }
+                }
+            } catch (Throwable e) {/*Do nothing*/}
+            
+            try {
+                Map<String, HeatExchangeProperty> tLiqExchange = ic2.api.recipe.Recipes.liquidHeatupManager.getHeatExchangeProperties();
+                Iterator<Map.Entry<String, HeatExchangeProperty>> tIterator = tLiqExchange.entrySet().iterator();
+                while (tIterator.hasNext()) {
+                    Map.Entry<String, HeatExchangeProperty> tEntry = tIterator.next();
+                    if(tEntry.getKey().equals("ic2coolant")){
+                    	tIterator.remove();
+                    	Recipes.liquidHeatupManager.addFluid("ic2coolant", "ic2hotcoolant", 80);                    	
+                    }
+                }
+            } catch (Throwable e) {/*Do nothing*/}
         
         GT_Utility.removeSimpleIC2MachineRecipe(ItemList.Crop_Drop_BobsYerUncleRanks.get(1L, new Object[0]), GT_ModHandler.getExtractorRecipeList(), null);
         GT_Utility.removeSimpleIC2MachineRecipe(ItemList.Crop_Drop_Ferru.get(1L, new Object[0]), GT_ModHandler.getExtractorRecipeList(), null);

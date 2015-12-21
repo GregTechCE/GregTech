@@ -110,7 +110,7 @@ public class GT_MetaTileEntity_HeatExchanger extends GT_MetaTileEntity_MultiBloc
             superheated_threshold /= 4;
             do_lava = true;
         } else if (mInputHotFluidHatch.getFluid().isFluidEqual(FluidRegistry.getFluidStack("ic2hotcoolant", 1))) {
-            steam_output_multiplier = 0.5f;
+            steam_output_multiplier = 2f;
         } else {
             // If we're working with neither, fail out
             return false;
