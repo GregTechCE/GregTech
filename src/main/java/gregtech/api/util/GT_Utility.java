@@ -85,7 +85,7 @@ public class GT_Utility {
     private static final Map<GT_ItemStack, FluidContainerData> sFilledContainerToData = new HashMap<GT_ItemStack, FluidContainerData>();
     private static final Map<GT_ItemStack, Map<Fluid, FluidContainerData>> sEmptyContainerToFluidToData = new HashMap<GT_ItemStack, Map<Fluid, FluidContainerData>>();
     public static volatile int VERSION = 509;
-    public static boolean TE_CHECK = false, BC_CHECK = false, CHECK_ALL = true;
+    public static boolean TE_CHECK = false, BC_CHECK = false, CHECK_ALL = true, RF_CHECK = false;
     public static Map<GT_PlayedSound, Integer> sPlayedSoundMap = new HashMap<GT_PlayedSound, Integer>();
     private static int sBookCount = 0;
 
@@ -335,6 +335,11 @@ public class GT_Utility {
                 Class tClass = buildcraft.api.transport.IPipeTile.class;
                 tClass.getCanonicalName();
                 BC_CHECK = true;
+            } catch (Throwable e) {/**/}
+            try {
+                Class tClass = cofh.api.energy.IEnergyReceiver.class;
+                tClass.getCanonicalName();
+                RF_CHECK = true;
             } catch (Throwable e) {/**/}
             CHECK_ALL = false;
         }
