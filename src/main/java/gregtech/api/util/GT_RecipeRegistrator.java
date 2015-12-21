@@ -244,7 +244,7 @@ public class GT_RecipeRegistrator {
 
         if (aAllowHammer) for (MaterialStack tMaterial : aData.getAllMaterialStacks())
             if (tMaterial.mMaterial.contains(SubTag.CRYSTAL) && !tMaterial.mMaterial.contains(SubTag.METAL)) {
-                if (RA.addForgeHammerRecipe(GT_Utility.copyAmount(1, aStack), GT_OreDictUnificator.getGem(aData.mMaterial), 200, 32))
+                if (RA.addForgeHammerRecipe(GT_Utility.copyAmount(1, aStack), GT_OreDictUnificator.getDust(aData.mMaterial), 200, 32))
                     break;
             }
         ItemStack tDust = GT_OreDictUnificator.getDust(aData.mMaterial);
