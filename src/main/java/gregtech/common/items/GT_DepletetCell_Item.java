@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 public class GT_DepletetCell_Item extends GT_RadioactiveCellIC_Item {
 
     public GT_DepletetCell_Item(String aUnlocalized, String aEnglish, int aRadiation) {
-        super(aUnlocalized, aEnglish, 1, 1, 0, aRadiation, 0);
+        super(aUnlocalized, aEnglish, 1, 1, 0, aRadiation, 0, null, false);
     }
 
     public void processChamber(IReactor paramIReactor, ItemStack paramItemStack, int paramInt1, int paramInt2, boolean paramBoolean) {
