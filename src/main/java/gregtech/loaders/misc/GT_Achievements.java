@@ -48,7 +48,24 @@ public class GT_Achievements {
         for (int i = 0; i < oreList.size(); i++) {
             if (GT_Values.D1 && this.achievementList.get(oreList.get(i).name()) == null) {
                 GT_Log.out.println("achievement." + oreList.get(i).name() + "=Find " + oreList.get(i).name() + " Ore");
-                GT_Log.out.println("achievement." + oreList.get(i).name() + ".desc=Height: " + (oreStats.get(i)[0]) + "-" + (oreStats.get(i)[1]) + ", Chance: " + (oreStats.get(i)[2]) + ", " + (oreStats.get(i)[3] == 1 ? "Overworld" : "") + "/" + (oreStats.get(i)[4] == 1 ? "Nether" : "") + "/" + (oreStats.get(i)[5] == 1 ? "End" : ""));
+
+                StringBuilder dimensions = new StringBuilder();
+                boolean isFirst = true;
+                if(oreStats.get(i)[3] == 1) {
+                    dimensions.append("Overworld");
+                    isFirst = false;
+                }
+                if(oreStats.get(i)[4] == 1) {
+                    if(!isFirst) dimensions.append("/");
+                    dimensions.append("Nether");
+                    isFirst = false;
+                }
+                if(oreStats.get(i)[5] == 1) {
+                    if(!isFirst) dimensions.append("/");
+                    dimensions.append("End");
+                    isFirst = false;
+                }
+                GT_Log.out.println("achievement." + oreList.get(i).name() + ".desc=Height: " + (oreStats.get(i)[0]) + "-" + (oreStats.get(i)[1]) + ", Chance: " + (oreStats.get(i)[2]) + ", " + dimensions.toString());
             }
             registerOreAchievement(oreList.get(i));
         }
