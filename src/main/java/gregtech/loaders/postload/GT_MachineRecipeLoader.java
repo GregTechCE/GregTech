@@ -692,6 +692,29 @@ public class GT_MachineRecipeLoader
             GT_ModHandler.addExtractionRecipe(GT_ModHandler.getModItem("ExtrabiomesXL", "flower2", 1, 2), new ItemStack(Items.dye, 4, 1));
             GT_ModHandler.addExtractionRecipe(GT_ModHandler.getModItem("ExtrabiomesXL", "flower2", 1, 1), new ItemStack(Items.dye, 4, 9));
             GT_ModHandler.addExtractionRecipe(GT_ModHandler.getModItem("ExtrabiomesXL", "flower2", 1, 0), new ItemStack(Items.dye, 4, 13));
+            
+            GT_ModHandler.addExtractionRecipe(GT_ModHandler.getModItem("ExtrabiomesXL", "flower2", 1, 7), GT_ModHandler.getModItem("ExtrabiomesXL", "extrabiomes.dye", 1, 0));
+            GT_ModHandler.addExtractionRecipe(GT_ModHandler.getModItem("ExtrabiomesXL", "flower3", 1, 1), GT_ModHandler.getModItem("ExtrabiomesXL", "extrabiomes.dye", 1, 1));
+            GT_ModHandler.addExtractionRecipe(GT_ModHandler.getModItem("ExtrabiomesXL", "flower3", 1,12), GT_ModHandler.getModItem("ExtrabiomesXL", "extrabiomes.dye", 1, 1));
+            GT_ModHandler.addExtractionRecipe(GT_ModHandler.getModItem("ExtrabiomesXL", "flower2", 1, 4), GT_ModHandler.getModItem("ExtrabiomesXL", "extrabiomes.dye", 1, 1));
+            GT_ModHandler.addExtractionRecipe(GT_ModHandler.getModItem("ExtrabiomesXL", "flower1", 1, 6), GT_ModHandler.getModItem("ExtrabiomesXL", "extrabiomes.dye", 1, 2));
+            GT_ModHandler.addExtractionRecipe(GT_ModHandler.getModItem("ExtrabiomesXL", "flower2", 1, 8), GT_ModHandler.getModItem("ExtrabiomesXL", "extrabiomes.dye", 1, 3));
+            GT_ModHandler.addExtractionRecipe(GT_ModHandler.getModItem("ExtrabiomesXL", "flower2", 1, 3), GT_ModHandler.getModItem("ExtrabiomesXL", "extrabiomes.dye", 1, 3));
+            
+            GT_ModHandler.addCompressionRecipe(GT_ModHandler.getModItem("ExtrabiomesXL", "saplings_1", 4, 0), ItemList.IC2_Plantball.get(1, new Object[0]));
+            GT_ModHandler.addCompressionRecipe(GT_ModHandler.getModItem("ExtrabiomesXL", "saplings_1", 4, 1), ItemList.IC2_Plantball.get(1, new Object[0]));
+            GT_ModHandler.addCompressionRecipe(GT_ModHandler.getModItem("ExtrabiomesXL", "saplings_1", 4, 2), ItemList.IC2_Plantball.get(1, new Object[0]));
+            GT_ModHandler.addCompressionRecipe(GT_ModHandler.getModItem("ExtrabiomesXL", "saplings_1", 4, 3), ItemList.IC2_Plantball.get(1, new Object[0]));
+            GT_ModHandler.addCompressionRecipe(GT_ModHandler.getModItem("ExtrabiomesXL", "saplings_1", 4, 4), ItemList.IC2_Plantball.get(1, new Object[0]));
+            GT_ModHandler.addCompressionRecipe(GT_ModHandler.getModItem("ExtrabiomesXL", "saplings_1", 4, 5), ItemList.IC2_Plantball.get(1, new Object[0]));
+            GT_ModHandler.addCompressionRecipe(GT_ModHandler.getModItem("ExtrabiomesXL", "saplings_1", 4, 6), ItemList.IC2_Plantball.get(1, new Object[0]));
+            GT_ModHandler.addCompressionRecipe(GT_ModHandler.getModItem("ExtrabiomesXL", "saplings_1", 4, 7), ItemList.IC2_Plantball.get(1, new Object[0]));
+            GT_ModHandler.addCompressionRecipe(GT_ModHandler.getModItem("ExtrabiomesXL", "saplings_2", 4, 0), ItemList.IC2_Plantball.get(1, new Object[0]));
+            GT_ModHandler.addCompressionRecipe(GT_ModHandler.getModItem("ExtrabiomesXL", "saplings_2", 4, 1), ItemList.IC2_Plantball.get(1, new Object[0]));
+            GT_ModHandler.addCompressionRecipe(GT_ModHandler.getModItem("ExtrabiomesXL", "saplings_2", 4, 2), ItemList.IC2_Plantball.get(1, new Object[0]));
+            GT_ModHandler.addCompressionRecipe(GT_ModHandler.getModItem("ExtrabiomesXL", "saplings_2", 4, 3), ItemList.IC2_Plantball.get(1, new Object[0]));
+            GT_ModHandler.addCompressionRecipe(GT_ModHandler.getModItem("ExtrabiomesXL", "saplings_2", 4, 4), ItemList.IC2_Plantball.get(1, new Object[0]));
+            
         }
         GT_ModHandler.addCompressionRecipe(ItemList.IC2_Compressed_Coal_Chunk.get(1L, new Object[0]), ItemList.IC2_Industrial_Diamond.get(1L, new Object[0]));
         GT_ModHandler.addCompressionRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1L), GT_ModHandler.getIC2Item("Uran238", 1L));
