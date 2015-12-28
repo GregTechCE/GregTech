@@ -1,6 +1,7 @@
 package gregtech.common.items.armor;
 
 import gregtech.api.damagesources.GT_DamageSources;
+import gregtech.api.enums.GT_Values;
 import ic2.core.IC2;
 
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class ModularArmor_Item extends ItemArmor implements ISpecialArmor, IGogg
 	public ModularArmor_Item(int aArmorIndex, int aType, String name, int gui) {
 		super(ArmorMaterial.DIAMOND, aArmorIndex, aType);
 		MinecraftForge.EVENT_BUS.register(this);
-		setUnlocalizedName("gtextras:" + name);
+		setUnlocalizedName("gregtech:" + name);
 		GameRegistry.registerItem(this, name);
 		mName = name;
 		int mMaxDamage = (gui + 1) * 1024;
@@ -72,8 +73,7 @@ public class ModularArmor_Item extends ItemArmor implements ISpecialArmor, IGogg
 			data = fillArmorData(aPlayer, aStack);
 		}
 		if (!aWorld.isRemote) {
-			//TODO
-//			aPlayer.openGui(GTExtras.INSTANCE, openGuiNr, aWorld, (int) aPlayer.posX, (int) aPlayer.posY, (int) aPlayer.posZ);
+			aPlayer.openGui(GT_Values.GT, openGuiNr+1000, aWorld, (int) aPlayer.posX, (int) aPlayer.posY, (int) aPlayer.posZ);
 		}
 		return aStack;
 	}
@@ -254,14 +254,12 @@ public class ModularArmor_Item extends ItemArmor implements ISpecialArmor, IGogg
 					typeMod=100;
 					break;
 				}
-				//TODO
-//					aPlayer.openGui(GTExtras.INSTANCE, openGuiNr+(typeMod), aWorld, (int) aPlayer.posX, (int) aPlayer.posY, (int) aPlayer.posZ);
+					aPlayer.openGui(GT_Values.GT, openGuiNr+(typeMod), aWorld, (int) aPlayer.posX, (int) aPlayer.posY, (int) aPlayer.posZ);
 			}
-			//TODO
-//			if(data.helmet!=null&&data.helmet.openGui){data.helmet.openGui=false;aPlayer.openGui(GTExtras.INSTANCE, openGuiNr+400, aWorld, (int) aPlayer.posX, (int) aPlayer.posY, (int) aPlayer.posZ);}
-//			if(data.chestplate!=null&&data.chestplate.openGui){data.chestplate.openGui=false;aPlayer.openGui(GTExtras.INSTANCE, openGuiNr+300, aWorld, (int) aPlayer.posX, (int) aPlayer.posY, (int) aPlayer.posZ);}
-//			if(data.leggings!=null&&data.leggings.openGui){data.leggings.openGui=false;aPlayer.openGui(GTExtras.INSTANCE, openGuiNr+200, aWorld, (int) aPlayer.posX, (int) aPlayer.posY, (int) aPlayer.posZ);}
-//			if(data.boots!=null&&data.boots.openGui){data.boots.openGui=false;aPlayer.openGui(GTExtras.INSTANCE, openGuiNr+100, aWorld, (int) aPlayer.posX, (int) aPlayer.posY, (int) aPlayer.posZ);}
+			if(data.helmet!=null&&data.helmet.openGui){data.helmet.openGui=false;aPlayer.openGui(GT_Values.GT, openGuiNr+400, aWorld, (int) aPlayer.posX, (int) aPlayer.posY, (int) aPlayer.posZ);}
+			if(data.chestplate!=null&&data.chestplate.openGui){data.chestplate.openGui=false;aPlayer.openGui(GT_Values.GT, openGuiNr+300, aWorld, (int) aPlayer.posX, (int) aPlayer.posY, (int) aPlayer.posZ);}
+			if(data.leggings!=null&&data.leggings.openGui){data.leggings.openGui=false;aPlayer.openGui(GT_Values.GT, openGuiNr+200, aWorld, (int) aPlayer.posX, (int) aPlayer.posY, (int) aPlayer.posZ);}
+			if(data.boots!=null&&data.boots.openGui){data.boots.openGui=false;aPlayer.openGui(GT_Values.GT, openGuiNr+100, aWorld, (int) aPlayer.posX, (int) aPlayer.posY, (int) aPlayer.posZ);}
 			// Night Vision
 			if (timer >= 200) {
 				timer = 0;
@@ -386,12 +384,12 @@ public class ModularArmor_Item extends ItemArmor implements ISpecialArmor, IGogg
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister aIconRegister) {
-		this.itemIcon = aIconRegister.registerIcon("gtextras:" + mName);
+		this.itemIcon = aIconRegister.registerIcon(GT_Values.MOD_ID+":" + mName);
 	}
 
 	@SideOnly(Side.CLIENT)
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
-		String armor="gtextras:textures/item/armorhelmet.png";
+		String armor=GT_Values.RES_PATH_ITEM+"armorhelmet.png";
 		String tier="";
 		try{
 		if (data == null) {
@@ -405,9 +403,9 @@ public class ModularArmor_Item extends ItemArmor implements ISpecialArmor, IGogg
 			tier="e2";
 		}
 		if(this.data.type==0||this.data.type==1){
-			armor = "gtextras:textures/models/armor/"+tier+"_helmet_chest.png";
+			armor = GT_Values.RES_PATH_MODEL+"armor/"+tier+"_helmet_chest.png";
 		}else{
-			armor = "gtextras:textures/models/armor/"+tier+"_leggings_boots.png";
+			armor = GT_Values.RES_PATH_MODEL+"armor/"+tier+"_leggings_boots.png";
 		}}catch(Exception e){System.err.println(e);}
 		return armor;
 	}

@@ -16,6 +16,9 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.*;
 import gregtech.common.items.*;
+import gregtech.common.items.armor.ElectricModularArmor1;
+import gregtech.common.items.armor.ModularArmor_Item;
+import gregtech.common.items.armor.Values;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -626,6 +629,35 @@ public class GT_Loader_Item_Block_And_Fluid
         GT_OreDictUnificator.set(OrePrefixes.gem, Materials.Amber, GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 1L, 6));
         GT_OreDictUnificator.set(OrePrefixes.gem, Materials.Firestone, GT_ModHandler.getModItem("Railcraft", "firestone.raw", 1L));
 
+        new Values();
+		ItemList.ModularBasicHelmet.set(new ModularArmor_Item(0, 0, "modulararmor_helmet",0));
+		ItemList.ModularBasicChestplate.set(new ModularArmor_Item(0, 1, "modulararmor_chestplate",0));
+		ItemList.ModularBasicLeggings.set(new ModularArmor_Item(0, 2, "modulararmor_leggings",0));
+		ItemList.ModularBasicBoots.set(new ModularArmor_Item(0, 3, "modulararmor_boots",0));
+		ItemList.ModularElectric1Helmet.set(new ElectricModularArmor1(0, 0, "modularelectric1_helmet",1));
+		ItemList.ModularElectric1Chestplate.set(new ElectricModularArmor1(0, 1, "modularelectric1_chestplate",1));
+		ItemList.ModularElectric1Leggings.set(new ElectricModularArmor1(0, 2, "modularelectric1_leggings",1));
+		ItemList.ModularElectric1Boots.set(new ElectricModularArmor1(0, 3, "modularelectric1_boots",1));
+		ItemList.ModularElectric2Helmet.set(new ElectricModularArmor1(0, 0, "modularelectric2_helmet",2));
+		ItemList.ModularElectric2Chestplate.set(new ElectricModularArmor1(0, 1, "modularelectric2_chestplate",2));
+		ItemList.ModularElectric2Leggings.set(new ElectricModularArmor1(0, 2, "modularelectric2_leggings",2));
+		ItemList.ModularElectric2Boots.set(new ElectricModularArmor1(0, 3, "modularelectric2_boots",2));
+        
+		long bits =  GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE;
+		GT_ModHandler.addCraftingRecipe(ItemList.ModularBasicHelmet.		getWildcard(1, new Object[0]),bits, new Object[] { "AAA", "B B", 'A', 			new ItemStack(Items.leather, 1, 32767), 'B', OrePrefixes.ring.get(Materials.AnyIron)} );
+		GT_ModHandler.addCraftingRecipe(ItemList.ModularBasicChestplate.	getWildcard(1, new Object[0]),bits, new Object[] { "A A", "BAB", "AAA", 'A', 	new ItemStack(Items.leather, 1, 32767), 'B', OrePrefixes.ring.get(Materials.AnyIron)} );
+		GT_ModHandler.addCraftingRecipe(ItemList.ModularBasicLeggings.		getWildcard(1, new Object[0]),bits, new Object[] { "BAB", "A A", "A A", 'A', 	new ItemStack(Items.leather, 1, 32767), 'B', OrePrefixes.ring.get(Materials.AnyIron)} );
+		GT_ModHandler.addCraftingRecipe(ItemList.ModularBasicBoots.			getWildcard(1, new Object[0]),bits, new Object[] { "A A", "B B", "A A", 'A', 	new ItemStack(Items.leather, 1, 32767), 'B', OrePrefixes.ring.get(Materials.AnyIron)} );
+		GT_ModHandler.addCraftingRecipe(ItemList.ModularElectric1Helmet.	getWildcard(1, new Object[0]),bits, new Object[] { "ACA", "B B", 'A', 			OrePrefixes.stick.get(Materials.Aluminium), 'B', OrePrefixes.plate.get(Materials.Steel), 'C', OrePrefixes.battery.get(Materials.Advanced)});
+		GT_ModHandler.addCraftingRecipe(ItemList.ModularElectric1Chestplate.getWildcard(1, new Object[0]),bits, new Object[] { "A A", "BCB", "AAA", 'A', 	OrePrefixes.stick.get(Materials.Aluminium), 'B', OrePrefixes.plate.get(Materials.Steel), 'C', OrePrefixes.battery.get(Materials.Advanced)});
+		GT_ModHandler.addCraftingRecipe(ItemList.ModularElectric1Leggings.	getWildcard(1, new Object[0]),bits, new Object[] { "BCB", "A A", "A A", 'A', 	OrePrefixes.stick.get(Materials.Aluminium), 'B', OrePrefixes.plate.get(Materials.Steel), 'C', OrePrefixes.battery.get(Materials.Advanced)});
+		GT_ModHandler.addCraftingRecipe(ItemList.ModularElectric1Boots.		getWildcard(1, new Object[0]),bits, new Object[] { "A A", "BCB", "A A", 'A', 	OrePrefixes.stick.get(Materials.Aluminium), 'B', OrePrefixes.plate.get(Materials.Steel), 'C', OrePrefixes.battery.get(Materials.Advanced)});
+		GT_ModHandler.addCraftingRecipe(ItemList.ModularElectric2Helmet.	getWildcard(1, new Object[0]),bits, new Object[] { "ACA", "B B", 'A', 			OrePrefixes.stick.get(Materials.TungstenSteel), 'B', OrePrefixes.plateAlloy.get(Materials.Carbon),'C',OrePrefixes.battery.get(Materials.Master)});
+		GT_ModHandler.addCraftingRecipe(ItemList.ModularElectric2Chestplate.getWildcard(1, new Object[0]),bits, new Object[] { "A A", "BCB", "AAA", 'A', 	OrePrefixes.stick.get(Materials.TungstenSteel), 'B', OrePrefixes.plateAlloy.get(Materials.Carbon),'C',OrePrefixes.battery.get(Materials.Master)});
+		GT_ModHandler.addCraftingRecipe(ItemList.ModularElectric2Leggings.	getWildcard(1, new Object[0]),bits, new Object[] { "BCB", "A A", "A A", 'A', 	OrePrefixes.stick.get(Materials.TungstenSteel), 'B', OrePrefixes.plateAlloy.get(Materials.Carbon),'C',OrePrefixes.battery.get(Materials.Master)});
+		GT_ModHandler.addCraftingRecipe(ItemList.ModularElectric2Boots.		getWildcard(1, new Object[0]),bits, new Object[] { "A A", "BCB", "A A", 'A', 	OrePrefixes.stick.get(Materials.TungstenSteel), 'B', OrePrefixes.plateAlloy.get(Materials.Carbon),'C',OrePrefixes.battery.get(Materials.Master)});
+
+		
         if (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateIron", true)) {
             GT_OreDictUnificator.set(OrePrefixes.plate, Materials.Iron, GT_ModHandler.getModItem("Railcraft", "part.plate", 1L, 0));
         } else {

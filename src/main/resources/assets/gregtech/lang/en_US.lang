@@ -1,3 +1,16 @@
+item.gregtech:modulararmor_helmet.name=Basic Modular Armor Helmet
+item.gregtech:modulararmor_chestplate.name=Basic Modular Armor Chestplate
+item.gregtech:modulararmor_leggings.name=Basic Modular Armor Leggings
+item.gregtech:modulararmor_boots.name=Basic Modular Armor Boots
+item.gregtech:modularelectric1_helmet.name=Modular Exoskeleton Helmet
+item.gregtech:modularelectric1_chestplate.name=Modular Exoskeleton Chestplate
+item.gregtech:modularelectric1_leggings.name=Modular Exoskeleton Leggings
+item.gregtech:modularelectric1_boots.name=Modular Exoskeleton Boots
+item.gregtech:modularelectric2_helmet.name=Modular Nanosuit Helmet
+item.gregtech:modularelectric2_chestplate.name=Modular Nanosuit Chestplate
+item.gregtech:modularelectric2_leggings.name=Modular Nanosuit Leggings
+item.gregtech:modularelectric2_boots.name=Modular Nanosuit Boots
+
 achievement.Naquadah=Find Naquadah Ore
 achievement.Naquadah.desc=Height: 10-60, Chance: 10, End
 achievement.NaquadahEnriched=Find NaquadahEnriched Ore
