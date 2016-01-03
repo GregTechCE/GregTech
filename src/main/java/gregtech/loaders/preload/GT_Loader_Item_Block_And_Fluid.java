@@ -376,7 +376,7 @@ public class GT_Loader_Item_Block_And_Fluid
         Materials.Water.mGas.setTemperature(375).setGaseous(true);
 
         ItemList.sOilExtraHeavy = GT_Mod.gregtechproxy.addFluid("liquid_extra_heavy_oil", "Very Heavy Oil", null, 1, 295);
-        ItemList.sEpichlorhydrin = GT_Mod.gregtechproxy.addFluid("liquid_epichlorhydrin", "Epichlorhydrin", null, 1, 295);
+        ItemList.sEpichlorhydrin = GT_Mod.gregtechproxy.addFluid("liquid_epichlorhydrin", "Epichlorohydrin", null, 1, 295);
         ItemList.sDrillingFluid = GT_Mod.gregtechproxy.addFluid("liquid_drillingfluid", "Drilling Fluid", null, 1, 295);
         ItemList.sToluene = GT_Mod.gregtechproxy.addFluid("liquid_toluene", "Toluene", null, 1, 295);
         ItemList.sNitrationMixture = GT_Mod.gregtechproxy.addFluid("liquid_nitrationmixture", "Nitration Mixture", null, 1, 295);

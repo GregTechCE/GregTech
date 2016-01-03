@@ -17,7 +17,7 @@ public class GT_MetaTileEntity_MonsterRepellent extends GT_MetaTileEntity_Tiered
     public int mRange = 16;
 
     public GT_MetaTileEntity_MonsterRepellent(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "Reprells nasty Creatures. Range: " + (4 + (12 * aTier)) + " unpowered / " + (16 + (48 * aTier)) + " powered");
+        super(aID, aName, aNameRegional, aTier, 0, "Repels nasty Creatures. Range: " + (4 + (12 * aTier)) + " unpowered / " + (16 + (48 * aTier)) + " powered");
     }
 
     public GT_MetaTileEntity_MonsterRepellent(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {

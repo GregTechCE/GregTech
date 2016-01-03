@@ -102,6 +102,7 @@ public interface IToolStats {
      */
     public boolean isGrafter();
 
+    public boolean isChainsaw();
     /**
      * @return If this Tool can be used as an BC Wrench.
      */

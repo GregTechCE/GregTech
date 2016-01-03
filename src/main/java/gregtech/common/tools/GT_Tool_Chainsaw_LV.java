@@ -2,6 +2,7 @@ package gregtech.common.tools;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -12,6 +13,7 @@ import gregtech.api.items.GT_MetaGenerated_Tool;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -75,6 +77,10 @@ public class GT_Tool_Chainsaw_LV
         return false;
     }
 
+    public boolean isChainsaw(){
+    	return true;
+    }
+    
     public boolean isWeapon() {
         return true;
     }
@@ -94,11 +100,24 @@ public class GT_Tool_Chainsaw_LV
             if (((IShearable) aBlock).isShearable(aStack, aPlayer.worldObj, aX, aY, aZ)) {
                 ArrayList<ItemStack> tDrops = ((IShearable) aBlock).onSheared(aStack, aPlayer.worldObj, aX, aY, aZ, aFortune);
                 aDrops.clear();
-                aDrops.addAll(tDrops);
-                aEvent.dropChance = 1.0F;
+//                aDrops.addAll(tDrops);
+//                aEvent.dropChance = 1.0F;
+//                for (ItemStack stack : tDrops)
+//                {
+//                Random itemRand = new Random();
+//                  float f = 0.7F;
+//                  double d = itemRand.nextFloat() * f + (1.0F - f) * 0.5D;
+//                  double d1 = itemRand.nextFloat() * f + (1.0F - f) * 0.5D;
+//                  double d2 = itemRand.nextFloat() * f + (1.0F - f) * 0.5D;
+//                  EntityItem entityitem = new EntityItem(aPlayer.worldObj, aX + d, aY + d1, aZ + d2, stack);
+//                  entityitem.delayBeforeCanPickup = 10;
+//                  aPlayer.worldObj.spawnEntityInWorld(entityitem);
+//                }
+//                aPlayer.addStat(net.minecraft.stats.StatList.mineBlockStatArray[Block.getIdFromBlock(aBlock)], 1);                
             }
             aPlayer.worldObj.setBlock(aX, aY, aZ, Blocks.air, 0, 0);
-        } else if (((aBlock.getMaterial() == Material.ice) || (aBlock.getMaterial() == Material.packedIce)) && (aDrops.isEmpty())) {
+        } else 
+        	if (((aBlock.getMaterial() == Material.ice) || (aBlock.getMaterial() == Material.packedIce)) && (aDrops.isEmpty())) {
             aDrops.add(new ItemStack(aBlock, 1, aMetaData));
             aPlayer.worldObj.setBlockToAir(aX, aY, aZ);
             aEvent.dropChance = 1.0F;

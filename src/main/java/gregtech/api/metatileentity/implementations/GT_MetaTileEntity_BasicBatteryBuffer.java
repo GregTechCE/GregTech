@@ -244,7 +244,8 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
                     name.equals("gt.metaitem.01.32521") ||
                     name.equals("gt.metaitem.01.32530") ||
                     name.equals("gt.metaitem.01.32531")) {
-                return true;
+            	if(ic2.api.item.ElectricItem.manager.getCharge(aStack)==0){
+                return true;}
             }
         }
         return false;

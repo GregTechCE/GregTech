@@ -24,6 +24,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
@@ -37,6 +38,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IShearable;
 import net.minecraftforge.event.world.BlockEvent;
 
 import java.util.ArrayList;
@@ -208,6 +210,38 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
         IToolStats tStats = getToolStats(aStack);
         if (isItemStackUsable(aStack) && getDigSpeed(aStack, aBlock, aMetaData) > 0.0F)
             doDamage(aStack, tStats.convertBlockDrops(aDrops, aStack, aPlayer, aBlock, aX, aY, aZ, aMetaData, aFortune, aSilkTouch, aEvent) * tStats.getToolDamagePerDropConversion());
+    }
+    
+    @Override
+    public boolean onBlockStartBreak(ItemStack aStack, int aX, int aY, int aZ, EntityPlayer aPlayer)
+    {
+    	if(aPlayer.worldObj.isRemote){
+    		return false;
+    	}
+    	IToolStats tStats = getToolStats(aStack);
+      Block aBlock = aPlayer.worldObj.getBlock(aX, aY, aZ);
+      if (tStats.isChainsaw()&&(aBlock instanceof IShearable))
+      {
+        IShearable target = (IShearable)aBlock;
+        if ((target.isShearable(aStack, aPlayer.worldObj, aX, aY, aZ)))
+        {
+          ArrayList<ItemStack> drops = target.onSheared(aStack, aPlayer.worldObj, aX, aY, aZ, EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, aStack));
+          for (ItemStack stack : drops)
+          {
+            float f = 0.7F;
+            double d = itemRand.nextFloat() * f + (1.0F - f) * 0.5D;
+            double d1 = itemRand.nextFloat() * f + (1.0F - f) * 0.5D;
+            double d2 = itemRand.nextFloat() * f + (1.0F - f) * 0.5D;
+            EntityItem entityitem = new EntityItem(aPlayer.worldObj, aX + d, aY + d1, aZ + d2, stack);
+            entityitem.delayBeforeCanPickup = 10;
+            aPlayer.worldObj.spawnEntityInWorld(entityitem);
+          }
+          aPlayer.addStat(net.minecraft.stats.StatList.mineBlockStatArray[Block.getIdFromBlock(aBlock)], 1);
+          onBlockDestroyed(aStack, aPlayer.worldObj, aBlock, aX, aY, aZ, aPlayer);
+        }
+        return false;
+      }
+      return super.onBlockStartBreak(aStack, aX, aY, aZ, aPlayer);
     }
 
     @Override

@@ -114,7 +114,7 @@ public class ItemComb extends Item {
 		
 	    //Gem Line
 		tComb = getStackForType(CombType.STONE);
-		addSpecialCent(tComb,GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1), 70);
+		addSpecialCent(tComb,GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1), 70,GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Salt,1),20,GT_OreDictUnificator.get(OrePrefixes.dust,Materials.RockSalt,1),20);
 		addProcess(tComb, Materials.Soapstone, 100);
 		addProcess(tComb, Materials.Talc, 100);
 		addProcess(tComb, Materials.Apatite, 100);
@@ -155,7 +155,7 @@ public class ItemComb extends Item {
 
 //	    // Metals Line
 		tComb = getStackForType(CombType.SLAG);
-		addSpecialCent(tComb, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1), 50);
+		addSpecialCent(tComb, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1), 50,GT_OreDictUnificator.get(OrePrefixes.dust, Materials.GraniteBlack, 1), 20,GT_OreDictUnificator.get(OrePrefixes.dust, Materials.GraniteRed, 1), 20);
 		addProcess(tComb, Materials.Salt, 100);
 		addProcess(tComb, Materials.RockSalt, 100);
 		addProcess(tComb, Materials.Lepidolite, 100);
@@ -266,6 +266,16 @@ public class ItemComb extends Item {
 	public void addSpecialCent(ItemStack tComb, ItemStack aOutput, int chance){
 		GT_Values.RA.addCentrifugeRecipe(tComb, GT_Values.NI, GT_Values.NF, GT_Values.NF, aOutput,	ItemList.FR_Wax.get(1, new Object[0]), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[] { chance * 100, 3000 }, 128, 5);
 		RecipeManagers.centrifugeManager.addRecipe(40, tComb, ImmutableMap.of(aOutput, chance * 0.01f, ItemList.FR_Wax.get(1, new Object[0]), 0.3f));
+	}
+	
+	public void addSpecialCent(ItemStack tComb, ItemStack aOutput, int chance, ItemStack aOutput2, int chance2){
+		GT_Values.RA.addCentrifugeRecipe(tComb, GT_Values.NI, GT_Values.NF, GT_Values.NF, aOutput,	ItemList.FR_Wax.get(1, new Object[0]), aOutput2, GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[] { chance * 100, 3000, chance2 * 100 }, 128, 5);
+		RecipeManagers.centrifugeManager.addRecipe(40, tComb, ImmutableMap.of(aOutput, chance * 0.01f, ItemList.FR_Wax.get(1, new Object[0]), 0.3f,aOutput2,chance2 * 0.01f));
+	}
+	
+	public void addSpecialCent(ItemStack tComb, ItemStack aOutput, int chance, ItemStack aOutput2, int chance2, ItemStack aOutput3, int chance3){
+		GT_Values.RA.addCentrifugeRecipe(tComb, GT_Values.NI, GT_Values.NF, GT_Values.NF, aOutput,	ItemList.FR_Wax.get(1, new Object[0]), aOutput2, aOutput3, GT_Values.NI, GT_Values.NI, new int[] { chance * 100, 3000, chance2 * 100, chance3*100 }, 128, 5);
+		RecipeManagers.centrifugeManager.addRecipe(40, tComb, ImmutableMap.of(aOutput, chance * 0.01f, ItemList.FR_Wax.get(1, new Object[0]), 0.3f,aOutput2,chance2 * 0.01f,aOutput3,chance3*0.01f));
 	}
 	
 	public void addProcess(ItemStack tComb, Materials aMaterial, int chance){

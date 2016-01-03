@@ -85,6 +85,10 @@ public abstract class GT_Tool
         return false;
     }
     
+    public boolean isChainsaw(){
+    	return false;
+    }
+    
     public boolean isWrench() {
         return false;
     }
