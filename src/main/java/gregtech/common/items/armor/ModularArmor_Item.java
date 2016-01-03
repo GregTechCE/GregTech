@@ -402,7 +402,7 @@ public class ModularArmor_Item extends ItemArmor implements ISpecialArmor, IGogg
 		}else if(this.data.armorTier==2){
 			tier="e2";
 		}
-		if(this.data.type==0||this.data.type==1){
+		if(this.data.type==0||this.data.type==1||this.data.type==3){
 			armor = GT_Values.RES_PATH_MODEL+"armor/"+tier+"_helmet_chest.png";
 		}else{
 			armor = GT_Values.RES_PATH_MODEL+"armor/"+tier+"_leggings_boots.png";
