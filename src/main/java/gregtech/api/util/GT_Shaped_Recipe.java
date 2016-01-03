@@ -73,8 +73,9 @@ public class GT_Shaped_Recipe extends ShapedOreRecipe implements IGT_CraftingRec
                     ItemStack tStack = aGrid.getStackInSlot(i);
                     if (tStack != null && GT_Utility.getContainerItem(tStack, true) == null && !(tStack.getItem() instanceof GT_MetaGenerated_Tool)) {
                         tStack = GT_Utility.copyAmount(1, tStack);
+                        if(GT_Utility.isStackValid(tStack)){
                         GT_ModHandler.dischargeElectricItem(tStack, Integer.MAX_VALUE, Integer.MAX_VALUE, true, false, true);
-                        tNBT.setTag("Ingredient." + i, tStack.writeToNBT(new NBTTagCompound()));
+                        tNBT.setTag("Ingredient." + i, tStack.writeToNBT(new NBTTagCompound()));}
                     }
                 }
                 rNBT.setTag("GT.CraftingComponents", tNBT);
