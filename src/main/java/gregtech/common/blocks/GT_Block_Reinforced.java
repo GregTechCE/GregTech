@@ -13,19 +13,26 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import ic2.core.IC2;
+import ic2.core.block.EntityIC2Explosive;
+import ic2.core.block.EntityItnt;
 
 import java.util.List;
 import java.util.Random;
@@ -41,25 +48,29 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Plascrete Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Tungstensteel Reinforced Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Brittle Charcoal");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Powderbarrel");
         ItemList.Block_BronzePlate.set(new ItemStack(this.setHardness(60.0f).setResistance(150.0f), 1, 0));
         ItemList.Block_IridiumTungstensteel.set(new ItemStack(this.setHardness(200.0f).setResistance(600.0f), 1, 1));
         ItemList.Block_Plascrete.set(new ItemStack(this.setHardness(80.0f).setResistance(350.0f), 1, 2));
         ItemList.Block_TungstenSteelReinforced.set(new ItemStack(this.setHardness(100.0f).setResistance(400.0f), 1, 3));
         ItemList.Block_BrittleCharcoal.set(new ItemStack(this.setHardness(0.5f).setResistance(8.0f), 1, 4));
+        ItemList.Block_Powderbarrel.set(new ItemStack(this.setHardness(2.5f).setResistance(2.0f), 1, 5));
         GT_ModHandler.addCraftingRecipe(ItemList.Block_BronzePlate.get(1L, new Object[0]),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hP ", "PBP", " P ", 'P', OrePrefixes.plate.get(Materials.Bronze), 'B', OrePrefixes.stone.get(Materials.GraniteBlack)});
         GT_ModHandler.addCraftingRecipe(ItemList.Block_BronzePlate.get(1L, new Object[0]),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hP ", "PBP", " P ", 'P', OrePrefixes.plate.get(Materials.Bronze), 'B', OrePrefixes.stone.get(Materials.GraniteRed)});
         GT_ModHandler.addCraftingRecipe(ItemList.Block_IridiumTungstensteel.get(1L, new Object[0]),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hBP", 'P', OrePrefixes.plate.get(Materials.Iridium), 'B', ItemList.Block_TungstenSteelReinforced.get(1L, new Object[0])});
         GT_OreDictUnificator.setItemData(ItemList.Block_IridiumTungstensteel.get(1, new Object[0]), new ItemData(new MaterialStack(Materials.Iridium, OrePrefixes.plate.mMaterialAmount), new MaterialStack(Materials.TungstenSteel, 2*OrePrefixes.plate.mMaterialAmount),new MaterialStack(Materials.Concrete, OrePrefixes.dust.mMaterialAmount)));
         GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(Items.coal, 1, 1), new Object[]{ItemList.Block_BrittleCharcoal.get(1, new Object[0])});
+        GT_ModHandler.addCraftingRecipe(ItemList.Block_Powderbarrel.get(1L, new Object[0]),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"WSW","GGG","WGW", 'W', OrePrefixes.plank.get(Materials.Wood), 'G', Items.gunpowder,'S',Items.string});
+        
     }
 
     public String getHarvestTool(int aMeta) {
-        if (aMeta == 4) return "axe";
+        if (aMeta == 4||aMeta == 5) return "axe";
         return "pickaxe";
     }
 
     public int getHarvestLevel(int aMeta) {
-        if (aMeta == 4) return 1;
+        if (aMeta == 4||aMeta == 5) return 1;
         return 4;
     }
 
@@ -76,6 +87,8 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
                     return Textures.BlockIcons.BLOCK_TSREIN.getIcon();
                 case 4:
                     return Blocks.coal_block.getIcon(0, 0);
+                case 5:
+                	return Textures.BlockIcons.COVER_WOOD_PLATE.getIcon();
             }
         }
         return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
@@ -98,7 +111,7 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         if (tMeta == 3) {
             return 100.0F;
         }
-        if (tMeta == 4) {
+        if (tMeta == 4||tMeta == 5) {
             return 0.5F;
         }
         return Blocks.iron_block.getBlockHardness(aWorld, aX, aY, aZ);
@@ -123,6 +136,9 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         }
         if (tMeta == 4) {
             return 8.0F;
+        }
+        if (tMeta == 5) {
+            return 1.0F;
         }
         return super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ);
     }
@@ -179,6 +195,69 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         } else {
             super.dropBlockAsItemWithChance(aWorld, aX, aY, aZ, par5, chance, par7);
         }
+    }
+    
+    public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z)
+    {
+      if(world.getBlockMetadata(x, y, z)==5){
+        EntityIC2Explosive entitytntprimed = getExplosionEntity(world, x, y, z, player == null ? null : player);
+        if (entitytntprimed == null) {
+          return false;
+        }
+        
+        world.spawnEntityInWorld(entitytntprimed);
+        world.playSoundAtEntity(entitytntprimed, "random.fuse", 1.0F, 1.0F);
+        
+      world.setBlockToAir(x, y, z);
+      return false;
+      }
+      return super.removedByPlayer(world, player, x, y, z);
+    }
+    
+    public EntityIC2Explosive getExplosionEntity(World world, int x, int y, int z, EntityLivingBase igniter)
+    {
+      EntityIC2Explosive ret;
+      ret = new EntityItnt(world, x + 0.5D, y + 0.5D, z + 0.5D);
+      ret.setIgniter(igniter);
+      
+      return ret;
+    }
+    
+    public void onBlockAdded(World world, int x, int y, int z)
+    {
+      super.onBlockAdded(world, x, y, z);
+      if (world.isBlockIndirectlyGettingPowered(x, y, z)&&world.getBlockMetadata(x, y, z)==5) {
+        removedByPlayer(world, null, x, y, z);
+      }
+    }
+    
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor)
+    {
+      if (world.isBlockIndirectlyGettingPowered(x, y, z)&&world.getBlockMetadata(x, y, z)==5) {
+        removedByPlayer(world, null, x, y, z);
+      }
+    }
+    
+    public void onBlockDestroyedByExplosion(World world, int x, int y, int z, Explosion explosion)
+    {
+      EntityIC2Explosive entitytntprimed = getExplosionEntity(world, x, y, z, explosion == null ? null : explosion.getExplosivePlacedBy());
+      if (entitytntprimed == null) {
+        return;
+      }
+      entitytntprimed.fuse = (world.rand.nextInt(entitytntprimed.fuse / 4) + entitytntprimed.fuse / 8);
+      world.spawnEntityInWorld(entitytntprimed);
+    }
+    
+    public boolean onBlockActivated(World par1World, int x, int y, int z, EntityPlayer player, int side, float xOffset, float yOffset, float zOffset)
+    {
+      if ((player.getCurrentEquippedItem() != null) && (player.getCurrentEquippedItem().getItem() == Items.flint_and_steel)&&par1World.getBlockMetadata(x, y, z)==5)
+      {
+//        par1World.setBlockMetadataWithNotify(x, y, z, 6, 7);
+        removedByPlayer(par1World, player, x, y, z);
+        
+        return true;
+      }
+      return super.onBlockActivated(par1World, x, y, z, player, side, xOffset, yOffset, zOffset);
     }
 
     @SideOnly(Side.CLIENT)
