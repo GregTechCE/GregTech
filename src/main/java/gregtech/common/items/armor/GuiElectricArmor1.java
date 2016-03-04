@@ -59,7 +59,7 @@ public class GuiElectricArmor1 extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1F, 1F, 1F, 1F);
-		this.mc.getTextureManager().bindTexture(new ResourceLocation("gtextras", "textures/gui/armorgui3x4.png"));
+		this.mc.getTextureManager().bindTexture(new ResourceLocation("gregtech", "textures/gui/armorgui3x4.png"));
 		int xStart = (width - xSize) / 2;
 		int yStart = (height - ySize) / 2;
 		//Draw background
