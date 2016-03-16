@@ -993,8 +993,6 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 		Mithril					.setEnchantmentForTools(Enchantment.fortune, 3);
 		Vinteum					.setEnchantmentForTools(Enchantment.fortune, 1);
 		Thaumium				.setEnchantmentForTools(Enchantment.fortune, 2);
-		DarkThaumium			.setEnchantmentForTools(Enchantment.fortune, 3);
-		Magic					.setEnchantmentForTools(Enchantment.fortune, 3);
 		InfusedWater			.setEnchantmentForTools(Enchantment.fortune, 3);
 		
 		Flint					.setEnchantmentForTools(Enchantment.fireAspect, 1);
@@ -1043,6 +1041,9 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 		DamascusSteel			.setEnchantmentForTools(Enchantment.sharpness, 5);
 		InfusedEntropy			.setEnchantmentForTools(Enchantment.sharpness, 5);
 		TungstenCarbide			.setEnchantmentForTools(Enchantment.sharpness, 5);
+		HSSE					.setEnchantmentForTools(Enchantment.sharpness, 5);
+		HSSG					.setEnchantmentForTools(Enchantment.sharpness, 4);
+		HSSS					.setEnchantmentForTools(Enchantment.sharpness, 5);
 		
 		InfusedAir				.setEnchantmentForArmors(Enchantment.respiration, 3);
 		
@@ -1062,20 +1063,6 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 		InfusedDull				.setEnchantmentForArmors(Enchantment.blastProtection, 4);
 		
 		InfusedVis				.setEnchantmentForArmors(Enchantment.protection, 4);
-		
-		/*
-		Stone					.setSpecialEffect(SpecialToolEffect.Crushing, 1);
-		GraniteRed				.setSpecialEffect(SpecialToolEffect.Crushing, 2);
-		GraniteBlack			.setSpecialEffect(SpecialToolEffect.Crushing, 2);
-		Adamantium				.setSpecialEffect(SpecialToolEffect.Crushing, 3);
-		
-		DeepIron				.setSpecialEffect(SpecialToolEffect.Magnetic, 1);
-		MeteoricIron			.setSpecialEffect(SpecialToolEffect.Magnetic, 2);
-		MeteoricSteel			.setSpecialEffect(SpecialToolEffect.Magnetic, 3);
-		IronMagnetic			.setSpecialEffect(SpecialToolEffect.Magnetic, 1);
-		SteelMagnetic			.setSpecialEffect(SpecialToolEffect.Magnetic, 2);
-		NeodymiumMagnetic		.setSpecialEffect(SpecialToolEffect.Magnetic, 3);
-		*/
 
 		FryingOilHot			.setHeatDamage(1.0F);
 		Lava					.setHeatDamage(3.0F);
