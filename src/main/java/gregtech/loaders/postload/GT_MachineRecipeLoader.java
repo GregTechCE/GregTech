@@ -128,7 +128,7 @@ public class GT_MachineRecipeLoader
         GT_Values.RA.addChemicalRecipe(GT_Utility.copyAmount(9, tItems[i]), GT_OreDictUnificator.get(OrePrefixes.crushed, tMaterials[i], 1), Materials.Water.getFluid(1000),
         		tMaterials[i].mOreByProducts.isEmpty() ? null : tMaterials[i].mOreByProducts.get(0).getMolten(144),
 				GT_OreDictUnificator.get(OrePrefixes.crushedPurified, tMaterials[i], 4), 96, 300);
-		GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(16, tItems[i]), Materials.UUMatter.getFluid(1), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, tMaterials[i], 1), 1000, 1000, 24);
+		GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(16, tItems[i]), Materials.UUMatter.getFluid(Math.max(1, ((tMaterials[i].getMass()+9)/10))), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, tMaterials[i], 1), 10000, (int) (tMaterials[i].getMass() * 128), 384);
         }
         
         GT_Values.RA.addExtruderRecipe(ItemList.FR_Wax.get(1L, new Object[0]), ItemList.Shape_Extruder_Cell.get(0L, new Object[0]), ItemList.FR_WaxCapsule.get(1L, new Object[0]), 64, 16);
