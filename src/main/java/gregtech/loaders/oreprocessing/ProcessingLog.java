@@ -30,9 +30,9 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
         GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(8L, new Object[]{aStack}), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), Materials.SeedOil.getFluid(250L), ItemList.FR_Casing_Impregnated.get(1L, new Object[0]), 64, 16);
         GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), Materials.Creosote.getFluid(1000L), GT_ModHandler.getModItem("Railcraft", "tile.railcraft.cube", 1L, 8), null, null, null, 16, 16);
 
-        int aMeta = aStack.getItemDamage();
+        short aMeta = (short) aStack.getItemDamage();
 
-        if (aMeta == 32767) {
+        if (aMeta == Short.MAX_VALUE) {
             if ((GT_Utility.areStacksEqual(GT_ModHandler.getSmeltingOutput(GT_Utility.copyAmount(1L, new Object[]{aStack}), false, null), new ItemStack(Items.coal, 1, 1)))) {
                 GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, new Object[]{aStack}), null, 1, new ItemStack(Items.coal, 20, 1), Materials.Creosote.getFluid(4000), 640, 64);
                 GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, new Object[]{aStack}), Materials.Nitrogen.getGas(1000), 2, new ItemStack(Items.coal, 20, 1), Materials.Creosote.getFluid(4000), 320, 96);
@@ -41,7 +41,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                     GT_ModHandler.removeFurnaceSmelting(GT_Utility.copyAmount(1L, new Object[]{aStack}));
                 }
             }
-            for (int i = 0; i < 16; i++) {
+            for (int i = 0; i < 32767; i++) {
                 if ((GT_Utility.areStacksEqual(GT_ModHandler.getSmeltingOutput(new ItemStack(aStack.getItem(), 1, i), false, null), new ItemStack(Items.coal, 1, 1)))) {
                     GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, new Object[]{aStack}), null, 1, new ItemStack(Items.coal, 20, 1), Materials.Creosote.getFluid(4000), 640, 64);
                     GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, new Object[]{aStack}), Materials.Nitrogen.getGas(1000), 2, new ItemStack(Items.coal, 20, 1), Materials.Creosote.getFluid(4000), 320, 96);
@@ -51,7 +51,14 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                     }
                 }
                 ItemStack tStack = GT_ModHandler.getRecipeOutput(new ItemStack[]{new ItemStack(aStack.getItem(), 1, i)});
-                if (tStack != null) {
+                if (tStack == null) {
+                	if (i >= 16) {
+                        break;
+                      }
+                    }
+                    else
+                    {
+                	
                     ItemStack tPlanks = GT_Utility.copy(new Object[]{tStack});
                     tPlanks.stackSize = (tPlanks.stackSize * 3 / 2);
                     GT_Values.RA.addCutterRecipe(new ItemStack(aStack.getItem(), 1, i), Materials.Lubricant.getFluid(1L), GT_Utility.copy(new Object[]{tPlanks}), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L), 200, 8);
