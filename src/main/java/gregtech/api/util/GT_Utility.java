@@ -1508,8 +1508,9 @@ public class GT_Utility {
 
     	
         Random tRandom = new Random((aWorld.getSeed() + (aX / 96) + (7 * (aZ / 96))));
-        int oil = tRandom.nextInt(4);
+        int oil = tRandom.nextInt(3);
         double amount = tRandom.nextInt(50) + tRandom.nextDouble();
+        oil = tRandom.nextInt(4);
 //		System.out.println("Oil: "+(aX/96)+" "+(aZ/96)+" "+oil+" "+amount);
 //		amount = 40;
         Fluid tFluid = null;
