@@ -190,4 +190,29 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_M
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return true;
     }
+    
+    @Override
+    public String[] getInfoData() {
+        		String tRunning = mMaxProgresstime>0 ? "Turbine running":"Turbine stopped";
+        		String tMaintainance = getIdealStatus() == getRepairStatus() ? "No Maintainance issues" : "Needs Maintainance" ;
+        		int tDura = 0;
+        		
+                if (mInventory[1] != null && mInventory[1].getItem() instanceof GT_MetaGenerated_Tool_01) {
+                	tDura = (int) ((100.0f / GT_MetaGenerated_Tool.getToolMaxDamage(mInventory[1]) * (GT_MetaGenerated_Tool.getToolDamage(mInventory[1]))+1));
+                }
+        		
+        return new String[]{
+                "Large Turbine",
+                tRunning,
+                "Current output: "+mEUt+" EU/t",
+                "Current speed: "+(mEfficiency/100)+"%",
+                tMaintainance,
+                "Turbine Damage: "+tDura+"%"};
+    }
+
+    @Override
+    public boolean isGivingInformation() {
+        return true;
+    }
+    
 }
