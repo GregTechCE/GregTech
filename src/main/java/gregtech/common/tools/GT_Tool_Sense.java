@@ -23,6 +23,11 @@ public class GT_Tool_Sense
     public float getBaseDamage() {
         return 3.0F;
     }
+    
+    public float getMaxDurabilityMultiplier() {
+        return 4.0F;
+    }
+
 
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
         String tTool = aBlock.getHarvestTool(aMetaData);
@@ -33,9 +38,9 @@ public class GT_Tool_Sense
         int rConversions = 0;
         if ((this.sIsHarvestingRightNow.get() == null) && ((aPlayer instanceof EntityPlayerMP))) {
             this.sIsHarvestingRightNow.set(this);
-            for (int i = -1; i < 2; i++) {
-                for (int j = -1; j < 2; j++) {
-                    for (int k = -1; k < 2; k++) {
+            for (int i = -2; i < 3; i++) {
+                for (int j = -2; j < 3; j++) {
+                    for (int k = -2; k < 3; k++) {
                         if (((i != 0) || (j != 0) || (k != 0)) && (aStack.getItem().getDigSpeed(aStack, aPlayer.worldObj.getBlock(aX + i, aY + j, aZ + k), aPlayer.worldObj.getBlockMetadata(aX + i, aY + j, aZ + k)) > 0.0F) && (((EntityPlayerMP) aPlayer).theItemInWorldManager.tryHarvestBlock(aX + i, aY + j, aZ + k))) {
                             rConversions++;
                         }
