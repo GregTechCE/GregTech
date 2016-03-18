@@ -1445,7 +1445,7 @@ public class GT_MachineRecipeLoader
                                             GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Thaumium, 1L),
                                             ItemList.Field_Generator_MV.get(1L, new Object[0]),
                                             GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1L),
-                                            GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Europium, 1L),
+                                            GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Osmium, 1L),
                                             ItemList.Field_Generator_MV.get(1L, new Object[0])
                                     },
                                     ItemList.MagicEnergyConverter_HV.get(1L, new Object[0]),
