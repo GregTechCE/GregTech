@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
@@ -109,10 +110,12 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
                     }
                 }
             }
-            if (mMineList.isEmpty() && getBaseMetaTileEntity().getBlockOffset(ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetX, getYOfPumpHead() - 1 - getBaseMetaTileEntity().getYCoord(), ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetZ) != Blocks.bedrock) {
-                if (mEnergyHatches.size() > 0 && mEnergyHatches.get(0).getEUVar() > (512 + getMaxInputVoltage() * 4)) {
+            if (mMineList.isEmpty()) {
+              if(getBaseMetaTileEntity().getBlockOffset(ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetX, getYOfPumpHead() - 1 - getBaseMetaTileEntity().getYCoord(), ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetZ) != Blocks.bedrock){
+            	if (mEnergyHatches.size() > 0 && mEnergyHatches.get(0).getEUVar() > (512 + getMaxInputVoltage() * 4)) {
                     moveOneDown();
                 }
+              }else{return false;}
             }
             ArrayList<ItemStack> tDrops = new ArrayList();
             if (!mMineList.isEmpty()) {
@@ -127,6 +130,8 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
                                 mOutputItems[g] = tRecipe.mOutputs[g].copy();
                                 mOutputItems[g].stackSize = mOutputItems[g].stackSize * (getBaseMetaTileEntity().getRandomNumber(4) + 1);
                             }
+                        }else if(GT_OreDictUnificator.getItemData(tDrops.get(0)).mMaterial.mMaterial == Materials.Oilsands){
+                        	mOutputItems[0] = tDrops.get(0).copy();
                         }
                     } else {
                         this.mOutputItems = null;
