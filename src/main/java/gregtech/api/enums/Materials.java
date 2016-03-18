@@ -487,7 +487,7 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 	PigIron				( 307, TextureSet.SET_METALLIC			,   6.0F,    384,  2, 1|2  |8      |64                      , 200, 180, 180,   0,	"Pig Iron"						,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyePink		, 2, Arrays.asList(new MaterialStack(Iron, 1))),
 	Plastic				( 874, TextureSet.SET_DULL				,   3.0F,     32,  1, 1|2          |64|128                  , 200, 200, 200,   0,	"Polyethylene"					,    0,       0,        400,    0, false, false,   1,   1,   1, Dyes.dyeWhite		, 0, Arrays.asList(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 2)), Arrays.asList(new TC_AspectStack(TC_Aspects.MOTUS, 2))),
 	Epoxid				( 470, TextureSet.SET_DULL				,   3.0F,     32,  1, 1|2          |64|128                  , 200, 140,  20,   0,	"Epoxid"						,    0,       0,        400,    0, false, false,   1,   1,   1, Dyes.dyeWhite		, 0, Arrays.asList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 1)), Arrays.asList(new TC_AspectStack(TC_Aspects.MOTUS, 2))),
-	Silicone			( 471, TextureSet.SET_DULL				,   3.0F,     32,  1, 1|2          |64|128                  , 220, 220, 220,   0,	"Silicone"						,    0,       0,        900,    0, false, false,   1,   1,   1, Dyes.dyeWhite		, 0, Arrays.asList(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 1), new MaterialStack(Silicon, 2), new MaterialStack(Oxygen, 1)), Arrays.asList(new TC_AspectStack(TC_Aspects.MOTUS, 2))),
+	Silicone			( 471, TextureSet.SET_DULL				,   3.0F,    128,  1, 1|2          |64|128                  , 220, 220, 220,   0,	"Polysiloxane"						,    0,       0,        900,    0, false, false,   1,   1,   1, Dyes.dyeWhite		, 0, Arrays.asList(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 1), new MaterialStack(Silicon, 2), new MaterialStack(Oxygen, 1)), Arrays.asList(new TC_AspectStack(TC_Aspects.MOTUS, 2))),
 	Polycaprolactam		( 472, TextureSet.SET_DULL				,   3.0F,     32,  1, 1|2          |64|128                  ,  50,  50,  50,   0,	"Polycaprolactam"				,    0,       0,        500,    0, false, false,   1,   1,   1, Dyes.dyeWhite		, 0, Arrays.asList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 11), new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 1)), Arrays.asList(new TC_AspectStack(TC_Aspects.MOTUS, 2))),
 	Polytetrafluoroethylene( 473, TextureSet.SET_DULL			,   3.0F,     32,  1, 1|2          |64|128                  , 100, 100, 100,   0,	"Polytetrafluoroethylene"		,    0,       0,       1400,    0, false, false,   1,   1,   1, Dyes.dyeWhite		, 0, Arrays.asList(new MaterialStack(Carbon, 2), new MaterialStack(Fluorine, 4)), Arrays.asList(new TC_AspectStack(TC_Aspects.MOTUS, 2))),
 	Powellite			( 883, TextureSet.SET_DULL				,   1.0F,      0,  2, 1    |8                               , 255, 255,   0,   0,	"Powellite"						,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow		, 2, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Molybdenum, 1), new MaterialStack(Oxygen, 4))),
@@ -662,8 +662,6 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 	@Deprecated IridiumAndSodiumOxide(IridiumSodiumOxide, false),
 	@Deprecated Palygorskite		(FullersEarth, false),
 	@Deprecated Adamantine			(Adamantium, true),
-//	@Deprecated FzDarkIron			(DarkIron, true),
-//	@Deprecated FZDarkIron			(DarkIron, true),
 	@Deprecated Ashes				(Ash, false),
 	@Deprecated DarkAshes			(DarkAsh, false),
 	@Deprecated Abyssal				(Basalt, false),
@@ -683,8 +681,6 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 	@Deprecated Endereye			(EnderEye, false),
 	@Deprecated EyeOfEnder			(EnderEye, false),
 	@Deprecated Eyeofender			(EnderEye, false),
-//	@Deprecated RawTerrasteelAlloy	(TerrasteelAlloyRaw, false),
-//	@Deprecated StrengthenedTerrasteelAlloy(TerrasteelAlloyStrengthened, false),
 	@Deprecated Flour				(Wheat, false),
 	@Deprecated Meat				(MeatRaw, false),
 	@Deprecated Garnet				(GarnetRed, true),
@@ -709,13 +705,11 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 	@Deprecated RedGranite			(GraniteRed, false),
 	@Deprecated Sheldonite			(Cooperite, false),
 	@Deprecated Soulsand			(SoulSand, false),
-//	@Deprecated SilverLead			(Galena, false),
 	@Deprecated Titan				(Titanium, false),
 	@Deprecated Uran				(Uranium, false),
 	@Deprecated Wolframite			(Tungstate, false),
 	@Deprecated Wolframium			(Tungsten, false),
 	@Deprecated Wolfram				(Tungsten, false),
-//	@Deprecated WrougtIron			(WroughtIron, false)
 	;
 	
 	/** List of all Materials. */
@@ -767,6 +761,7 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 		
 		Rubber					.add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.BOUNCY, SubTag.STRETCHY);
 		Plastic					.add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.BOUNCY);
+		Silicone				.add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.BOUNCY, SubTag.STRETCHY);
 		
 		TNT						.add(SubTag.FLAMMABLE, SubTag.EXPLOSIVE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
 		Gunpowder				.add(SubTag.FLAMMABLE, SubTag.EXPLOSIVE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
@@ -857,7 +852,6 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 		NetherQuartz			.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
 		CertusQuartz			.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
 		Fluix					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
-		//ChargedCertusQuartz		.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.QUARTZ);
 		Phosphorus				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE, SubTag.EXPLOSIVE);
 		Phosphate				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE, SubTag.EXPLOSIVE);
 		InfusedAir				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
@@ -930,7 +924,6 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 		
 		Mercury					.add(SubTag.SMELTING_TO_GEM);
 		Cinnabar				.setDirectSmelting(Mercury		).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT).add(SubTag.SMELTING_TO_GEM);
-//		Celestine				.setDirectSmelting(Strontium	).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
 		Tetrahedrite			.setDirectSmelting(Copper		).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
 		Chalcopyrite			.setDirectSmelting(Copper		).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
 		Malachite				.setDirectSmelting(Copper		).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
@@ -970,7 +963,6 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 		CassiteriteSand			.setOreMultiplier( 2).setSmeltingMultiplier( 2);
 		NetherQuartz			.setOreMultiplier( 2).setSmeltingMultiplier( 2);
 		CertusQuartz			.setOreMultiplier( 2).setSmeltingMultiplier( 2);
-		//ChargedCertusQuartz		.setOreMultiplier( 2).setSmeltingMultiplier( 2);
 		Phosphorus				.setOreMultiplier( 3).setSmeltingMultiplier( 3);
 		Saltpeter				.setOreMultiplier( 4).setSmeltingMultiplier( 4);
 		Apatite					.setOreMultiplier( 4).setSmeltingMultiplier( 4).setByProductMultiplier(2);
@@ -1100,7 +1092,6 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 		QuartzSand				.addOreByProducts(CertusQuartz			, Quartzite				, Barite				);
 		Quartzite				.addOreByProducts(CertusQuartz			, Barite				);
 		CertusQuartz			.addOreByProducts(Quartzite				, Barite				);
-		//ChargedCertusQuartz		.addOreByProducts(CertusQuartz			, Quartzite				, Barite				);
 		Redstone				.addOreByProducts(Cinnabar				, RareEarth				, Glowstone				);
 		Monazite				.addOreByProducts(Thorium				, Neodymium				, RareEarth				);
 		Forcicium				.addOreByProducts(Thorium				, Neodymium				, RareEarth				);
@@ -1142,7 +1133,6 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 		GraniticMineralSand		.addOreByProducts(GraniteBlack			, Magnetite				);
 		BasalticMineralSand		.addOreByProducts(Basalt				, Magnetite				);
 		Basalt					.addOreByProducts(Olivine				, DarkAsh				);
-//		Celestine				.addOreByProducts(Strontium				, Sulfur				);
 		VanadiumMagnetite		.addOreByProducts(Magnetite				, Vanadium				);
 		Lazurite				.addOreByProducts(Sodalite				, Lapis					);
 		Sodalite				.addOreByProducts(Lazurite				, Lapis					);
@@ -1205,11 +1195,9 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 		GraniteRed				.addOreByProducts(PotassiumFeldspar		);
 		Phosphate				.addOreByProducts(Phosphor				);
 		Phosphor				.addOreByProducts(Phosphate				);
-		Jade					.addOreByProducts(Jade					);
 		Tanzanite				.addOreByProducts(Opal					);
 		Opal					.addOreByProducts(Tanzanite				);
 		Amethyst				.addOreByProducts(Amethyst				);
-		Jasper					.addOreByProducts(FoolsRuby				);
 		FoolsRuby				.addOreByProducts(Jasper				);
 		Amber					.addOreByProducts(Amber					);
 		Topaz					.addOreByProducts(BlueTopaz				);
@@ -1231,7 +1219,6 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 		Wood.mChemicalFormula = "";
 		FoolsRuby.mChemicalFormula = Ruby.mChemicalFormula;
 		
-		// Naquadah is green when molten, so this reflects the Color change approciately
 		Naquadah.mMoltenRGBa[0] = 0;
 		Naquadah.mMoltenRGBa[1] = 255;
 		Naquadah.mMoltenRGBa[2] = 0;
