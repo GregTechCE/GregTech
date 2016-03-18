@@ -94,7 +94,7 @@ public class GT_RadioactiveCellIC_Item extends GT_RadioactiveCell_Item implement
     {
       if (sMox&&reactor.isFluidCooled())
       {
-        float breedereffectiveness = reactor.getHeat() / reactor.getMaxHeat();
+        float breedereffectiveness = (float)reactor.getHeat() / (float)reactor.getMaxHeat();
         if (breedereffectiveness > 0.5D) {
           heat *= 2;
         }

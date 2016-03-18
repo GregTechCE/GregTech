@@ -267,7 +267,7 @@ public class GT_RecipeAdder
         if(tGunpowder<65){
         	GT_Recipe.GT_Recipe_Map.sImplosionRecipes.addRecipe(true, new ItemStack[]{aInput1, ItemList.Block_Powderbarrel.get(tGunpowder, new Object[0])}, new ItemStack[]{aOutput1, aOutput2}, null, null, null, null, 20, 30, 0);
         }
-        if(tDynamite<65){
+        if(tDynamite<17){
         	GT_Recipe.GT_Recipe_Map.sImplosionRecipes.addRecipe(true, new ItemStack[]{aInput1, GT_ModHandler.getIC2Item("dynamite", tDynamite, null)}, new ItemStack[]{aOutput1, aOutput2}, null, null, null, null, 20, 30, 0);
         }
         GT_Recipe.GT_Recipe_Map.sImplosionRecipes.addRecipe(true, new ItemStack[]{aInput1, new ItemStack(Blocks.tnt,tTNT)}, new ItemStack[]{aOutput1, aOutput2}, null, null, null, null, 20, 30, 0);
