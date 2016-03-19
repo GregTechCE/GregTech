@@ -479,6 +479,27 @@ public class GT_MetaGenerated_Item_01
         GregTech_API.registerCover(ItemList.Electric_Pump_EV.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[4][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)}), new GT_Cover_Pump(2048));
         GregTech_API.registerCover(ItemList.Electric_Pump_IV.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[5][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)}), new GT_Cover_Pump(8192));
 
+        ItemList.FluidRegulator_LV.set(addItem(tLastID = 615, "Fluid Regulator (LV)", "Configuable up to 640 L/sec (as Cover)", new Object[]{}));
+        ItemList.FluidRegulator_MV.set(addItem(tLastID = 616, "Fluid Regulator (MV)", "Configuable up to 2560 L/sec (as Cover)", new Object[]{}));
+        ItemList.FluidRegulator_HV.set(addItem(tLastID = 617, "Fluid Regulator (HV)", "Configuable up to 10240 L/sec (as Cover)", new Object[]{}));
+        ItemList.FluidRegulator_EV.set(addItem(tLastID = 618, "Fluid Regulator (EV)", "Configuable up to 40960 L/sec (as Cover)", new Object[]{}));
+        ItemList.FluidRegulator_IV.set(addItem(tLastID = 619, "Fluid Regulator (IV)", "Configuable up to 163840 L/sec (as Cover)", new Object[]{}));
+
+        GregTech_API.registerCover(ItemList.FluidRegulator_LV.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)}), new GT_Cover_FluidRegulator(32));
+        GregTech_API.registerCover(ItemList.FluidRegulator_MV.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)}), new GT_Cover_FluidRegulator(128));
+        GregTech_API.registerCover(ItemList.FluidRegulator_HV.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[3][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)}), new GT_Cover_FluidRegulator(512));
+        GregTech_API.registerCover(ItemList.FluidRegulator_EV.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[4][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)}), new GT_Cover_FluidRegulator(2048));
+        GregTech_API.registerCover(ItemList.FluidRegulator_IV.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[5][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)}), new GT_Cover_FluidRegulator(8192));
+
+        GT_Values.RA.addAssemblerRecipe(ItemList.Electric_Pump_LV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 2), ItemList.FluidRegulator_LV.get(1L, new Object[0]), 800, 4);
+        GT_Values.RA.addAssemblerRecipe(ItemList.Electric_Pump_MV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 2), ItemList.FluidRegulator_LV.get(1L, new Object[0]), 800, 4);
+        GT_Values.RA.addAssemblerRecipe(ItemList.Electric_Pump_HV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 2), ItemList.FluidRegulator_LV.get(1L, new Object[0]), 800, 4);
+        GT_Values.RA.addAssemblerRecipe(ItemList.Electric_Pump_EV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 2), ItemList.FluidRegulator_LV.get(1L, new Object[0]), 800, 4);
+        GT_Values.RA.addAssemblerRecipe(ItemList.Electric_Pump_IV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2), ItemList.FluidRegulator_LV.get(1L, new Object[0]), 800, 4);
+
+        ItemList.FluidFilter.set(addItem(tLastID = 635, "Fluid Filter", "Set with Fluid Container to only accept one Fluid Type", new Object[]{}));
+        GregTech_API.registerCover(ItemList.FluidFilter.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SHUTTER)}), new GT_Cover_Fluidfilter());
+
         /**ItemList.Rotor_LV.set(addItem(tLastID = 620, "Tin Rotor", "", new Object[] { OrePrefixes.rotor.get(Materials.Tin), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 1L) }));
          ItemList.Rotor_MV.set(addItem(tLastID = 621, "Bronze Rotor", "", new Object[] { OrePrefixes.rotor.get(Materials.Bronze), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 2L) }));
          ItemList.Rotor_HV.set(addItem(tLastID = 622, "Steel Rotor", "", new Object[] { OrePrefixes.rotor.get(Materials.Steel), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 4L) }));
@@ -680,7 +701,8 @@ public class GT_MetaGenerated_Item_01
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L), new ItemStack(Blocks.crafting_table, 1), ItemList.Cover_Crafting.get(1L, new Object[0]), 800, 16);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L), new ItemStack(Blocks.crafting_table, 1), ItemList.Cover_Crafting.get(1L, new Object[0]), 800, 16);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L), new ItemStack(Blocks.crafting_table, 1), ItemList.Cover_Crafting.get(1L, new Object[0]), 800, 16);
-
+        GT_Values.RA.addAssemblerRecipe(ItemList.Cover_Shutter.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 2), ItemList.FluidFilter.get(1L, new Object[0]), 800, 4);
+        
         GregTech_API.registerCover(ItemList.Cover_Screen.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SCREEN)}), new GT_Cover_Screen());
         GregTech_API.registerCover(ItemList.Cover_Crafting.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_CRAFTING)}), new GT_Cover_Crafting());
         GregTech_API.registerCover(ItemList.Cover_Drain.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[0][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_DRAIN)}), new GT_Cover_Drain());
