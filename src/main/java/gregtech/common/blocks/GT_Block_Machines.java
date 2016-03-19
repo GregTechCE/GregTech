@@ -256,8 +256,16 @@ public class GT_Block_Machines
 
     public boolean onBlockActivated(World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer, int aSide, float par1, float par2, float par3) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity == null) || (aPlayer.isSneaking())) {
+        if (tTileEntity == null) {
             return false;
+        }
+        if(aPlayer.isSneaking()){
+        	ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
+        	if(tCurrentItem!=null){
+        		if(!GT_Utility.isStackInList(tCurrentItem, GregTech_API.sScrewdriverList)){
+        			return false;
+        		}
+        	}else {return false;}
         }
         if ((tTileEntity instanceof IGregTechTileEntity)) {
             if (((IGregTechTileEntity) tTileEntity).getTimer() < 50L) {
