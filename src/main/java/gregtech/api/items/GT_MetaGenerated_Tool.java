@@ -327,7 +327,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
     }
 
     @Override
-    public void addAdditionalToolTips(List aList, ItemStack aStack) {
+    public void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
         long tMaxDamage = getToolMaxDamage(aStack);
         Materials tMaterial = getPrimaryMaterial(aStack);
         IToolStats tStats = getToolStats(aStack);
@@ -347,6 +347,25 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
                 aList.add(tOffset + 1, EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.YELLOW + " lvl " + getHarvestLevel(aStack, "") + EnumChatFormatting.GRAY);
                 aList.add(tOffset + 2, EnumChatFormatting.WHITE + "Attack Damage: " + EnumChatFormatting.BLUE + getToolCombatDamage(aStack) + EnumChatFormatting.GRAY);
                 aList.add(tOffset + 3, EnumChatFormatting.WHITE + "Mining Speed: " + EnumChatFormatting.LIGHT_PURPLE + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed) + EnumChatFormatting.GRAY);
+                NBTTagCompound aNBT = aStack.getTagCompound();
+                if (aNBT != null) {
+                    aNBT = aNBT.getCompoundTag("GT.ToolStats");
+                    if (aNBT != null && aNBT.hasKey("Heat")){
+                    	int tHeat = aNBT.getInteger("Heat");
+                    	long tWorldTime = aPlayer.getEntityWorld().getWorldTime();
+                    	if(aNBT.hasKey("HeatTime")){
+                    		long tHeatTime = aNBT.getLong("HeatTime");
+                    		if(tWorldTime>(tHeatTime+10)){
+                    			tHeat = (int) (tHeat - ((tWorldTime-tHeatTime)/10));
+                    			if(tHeat<300&&tHeat>-10000)tHeat=300;
+                    		}
+                    		aNBT.setLong("HeatTime", tWorldTime);
+                    		if(tHeat>-10000)aNBT.setInteger("Heat", tHeat);
+                    	}
+                    	
+                    	 aList.add(tOffset + 3, EnumChatFormatting.RED + "Heat: " + aNBT.getInteger("Heat")+" K" + EnumChatFormatting.GRAY);
+                    }
+                }
             }
         }
     }
@@ -494,7 +513,6 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
     
 	@Override
 	public boolean canWrench(EntityPlayer player, int x, int y, int z) {
-		System.out.println("canWrench");
 		if(player==null)return false;
 		if(player.getCurrentEquippedItem()==null)return false;
         if (!isItemStackUsable(player.getCurrentEquippedItem())) return false;
