@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
@@ -147,7 +148,9 @@ public class GT_RecipeRegistrator {
     public static void registerReverseFluidSmelting(ItemStack aStack, Materials aMaterial, long aMaterialAmount, MaterialStack aByproduct) {
         if (aStack == null || aMaterial == null || aMaterial.mSmeltInto.mStandardMoltenFluid == null || !aMaterial.contains(SubTag.SMELTING_TO_FLUID) || (L * aMaterialAmount) / (M * aStack.stackSize) <= 0)
             return;
-        RA.addFluidSmelterRecipe(GT_Utility.copyAmount(1, aStack), aByproduct == null ? null : aByproduct.mMaterial.contains(SubTag.NO_SMELTING) || !aByproduct.mMaterial.contains(SubTag.METAL) ? aByproduct.mMaterial.contains(SubTag.FLAMMABLE) ? GT_OreDictUnificator.getDust(Materials.Ash, aByproduct.mAmount / 2) : aByproduct.mMaterial.contains(SubTag.UNBURNABLE) ? GT_OreDictUnificator.getDustOrIngot(aByproduct.mMaterial.mSmeltInto, aByproduct.mAmount) : null : GT_OreDictUnificator.getIngotOrDust(aByproduct.mMaterial.mSmeltInto, aByproduct.mAmount), aMaterial.mSmeltInto.getMolten((L * aMaterialAmount) / (M * aStack.stackSize)), 10000, (int) Math.max(1, (24 * aMaterialAmount) / M), Math.max(8, (int) Math.sqrt(2 * aMaterial.mSmeltInto.mStandardMoltenFluid.getTemperature())));
+
+        boolean tHide = (aMaterial != Materials.Iron)&&(GT_Mod.gregtechproxy.mHideRecyclingRecipes);
+        RA.addFluidSmelterRecipe(GT_Utility.copyAmount(1, aStack), aByproduct == null ? null : aByproduct.mMaterial.contains(SubTag.NO_SMELTING) || !aByproduct.mMaterial.contains(SubTag.METAL) ? aByproduct.mMaterial.contains(SubTag.FLAMMABLE) ? GT_OreDictUnificator.getDust(Materials.Ash, aByproduct.mAmount / 2) : aByproduct.mMaterial.contains(SubTag.UNBURNABLE) ? GT_OreDictUnificator.getDustOrIngot(aByproduct.mMaterial.mSmeltInto, aByproduct.mAmount) : null : GT_OreDictUnificator.getIngotOrDust(aByproduct.mMaterial.mSmeltInto, aByproduct.mAmount), aMaterial.mSmeltInto.getMolten((L * aMaterialAmount) / (M * aStack.stackSize)), 10000, (int) Math.max(1, (24 * aMaterialAmount) / M), Math.max(8, (int) Math.sqrt(2 * aMaterial.mSmeltInto.mStandardMoltenFluid.getTemperature())), tHide);
     }
 
     /**
@@ -161,8 +164,10 @@ public class GT_RecipeRegistrator {
             return;
         aMaterialAmount /= aStack.stackSize;
         if(aMaterial==Materials.Naquadah||aMaterial==Materials.NaquadahEnriched)return;
+
+        boolean tHide = (aMaterial != Materials.Iron)&&(GT_Mod.gregtechproxy.mHideRecyclingRecipes);
         if (aAllowAlloySmelter)
-            GT_ModHandler.addSmeltingAndAlloySmeltingRecipe(GT_Utility.copyAmount(1, aStack), GT_OreDictUnificator.getIngot(aMaterial.mSmeltInto, aMaterialAmount));
+            GT_ModHandler.addSmeltingAndAlloySmeltingRecipe(GT_Utility.copyAmount(1, aStack), GT_OreDictUnificator.getIngot(aMaterial.mSmeltInto, aMaterialAmount),tHide);
         else
             GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1, aStack), GT_OreDictUnificator.getIngot(aMaterial.mSmeltInto, aMaterialAmount));
     }
@@ -204,9 +209,12 @@ public class GT_RecipeRegistrator {
         }
 
         aData = new ItemData(aData);
+        boolean tIron = false;
 
-        if (aData.mByProducts.length > 3) for (MaterialStack tMaterial : aData.getAllMaterialStacks())
+        if (aData.mByProducts.length > 3) for (MaterialStack tMaterial : aData.getAllMaterialStacks()){
             if (tMaterial.mMaterial == Materials.Ash) tMaterial.mAmount = 0;
+            if (tMaterial.mMaterial == Materials.Iron) tIron = true;
+        }
 
         aData = new ItemData(aData);
 
@@ -215,8 +223,9 @@ public class GT_RecipeRegistrator {
         long tAmount = 0;
         for (MaterialStack tMaterial : aData.getAllMaterialStacks())
             tAmount += tMaterial.mAmount * tMaterial.mMaterial.getMass();
-
-        RA.addArcFurnaceRecipe(aStack, new ItemStack[]{GT_OreDictUnificator.getIngotOrDust(aData.mMaterial), GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(0)), GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(1)), GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(2))}, null, (int) Math.max(16, tAmount / M), 96);
+            
+        boolean tHide = !tIron && GT_Mod.gregtechproxy.mHideRecyclingRecipes;
+        RA.addArcFurnaceRecipe(aStack, new ItemStack[]{GT_OreDictUnificator.getIngotOrDust(aData.mMaterial), GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(0)), GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(1)), GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(2))}, null, (int) Math.max(16, tAmount / M), 96, tHide);
     }
 
     public static void registerReverseMacerating(ItemStack aStack, Materials aMaterial, long aMaterialAmount, MaterialStack aByProduct01, MaterialStack aByProduct02, MaterialStack aByProduct03, boolean aAllowHammer) {
@@ -239,8 +248,8 @@ public class GT_RecipeRegistrator {
         long tAmount = 0;
         for (MaterialStack tMaterial : aData.getAllMaterialStacks())
             tAmount += tMaterial.mAmount * tMaterial.mMaterial.getMass();
-
-        RA.addPulveriserRecipe(aStack, new ItemStack[]{GT_OreDictUnificator.getDust(aData.mMaterial), GT_OreDictUnificator.getDust(aData.getByProduct(0)), GT_OreDictUnificator.getDust(aData.getByProduct(1)), GT_OreDictUnificator.getDust(aData.getByProduct(2))}, null, aData.mMaterial.mMaterial==Materials.Marble ? 1 : (int) Math.max(16, tAmount / M), 4);
+        boolean tHide = (aData.mMaterial.mMaterial != Materials.Iron)&&(GT_Mod.gregtechproxy.mHideRecyclingRecipes);
+        RA.addPulveriserRecipe(aStack, new ItemStack[]{GT_OreDictUnificator.getDust(aData.mMaterial), GT_OreDictUnificator.getDust(aData.getByProduct(0)), GT_OreDictUnificator.getDust(aData.getByProduct(1)), GT_OreDictUnificator.getDust(aData.getByProduct(2))}, null, aData.mMaterial.mMaterial==Materials.Marble ? 1 : (int) Math.max(16, tAmount / M), 4, tHide);
 
         if (aAllowHammer) for (MaterialStack tMaterial : aData.getAllMaterialStacks())
             if (tMaterial.mMaterial.contains(SubTag.CRYSTAL) && !tMaterial.mMaterial.contains(SubTag.METAL)) {
