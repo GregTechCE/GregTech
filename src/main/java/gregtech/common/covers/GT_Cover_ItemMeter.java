@@ -27,7 +27,6 @@ public class GT_Cover_ItemMeter
                 }
             }
         }
-        System.out.println("inventory: "+tAll+" "+tFull);
         tAll /= 14;
         if(tAll > 0)
             aTileEntity.setOutputRedstoneSignal(aSide, aCoverVariable == 1 ? (byte)(15 - (tFull <= 0 ? 0 : tFull / tAll + 1)) : tFull <= 0 ? 0 : (byte)(tFull / tAll + 1));
