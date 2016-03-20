@@ -8,6 +8,7 @@ import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,7 +26,7 @@ public class GT_FluidDisplayItem
         ItemList.Display_Fluid.set(this);
     }
 
-    protected void addAdditionalToolTips(List aList, ItemStack aStack) {
+    protected void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (GT_Values.D1) {
             Fluid tFluid = FluidRegistry.getFluid(aStack.getItemDamage());

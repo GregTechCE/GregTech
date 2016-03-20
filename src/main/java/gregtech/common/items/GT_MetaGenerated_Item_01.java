@@ -17,6 +17,7 @@ import gregtech.common.items.behaviors.*;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
@@ -797,8 +798,8 @@ public class GT_MetaGenerated_Item_01
         return false;
     }
 
-    protected void addAdditionalToolTips(List aList, ItemStack aStack) {
-        super.addAdditionalToolTips(aList, aStack);
+    protected void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
+        super.addAdditionalToolTips(aList, aStack, aPlayer);
         int aDamage = aStack.getItemDamage();
         if ((aDamage < 32000) && (aDamage >= 0)) {
             Materials aMaterial = GregTech_API.sGeneratedMaterials[(aDamage % 1000)];
