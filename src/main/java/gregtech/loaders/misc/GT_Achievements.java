@@ -446,7 +446,9 @@ public class GT_Achievements {
                 if (data.mMaterial.mMaterial == Materials.Lutetium) {
                     issueAchievement(player, "newmetal");
                 }
+                if(data.mMaterial.mMaterial != Materials.Gunpowder){
                 issueAchievement(player, "cleandust");
+                }
             } else if (data.mPrefix == OrePrefixes.ore || data.mPrefix == OrePrefixes.oreBlackgranite || data.mPrefix == OrePrefixes.oreEndstone
                     || data.mPrefix == OrePrefixes.oreNetherrack || data.mPrefix == OrePrefixes.oreRedgranite) {
                 for (int i = 0; i < data.getAllMaterialStacks().size(); i++) {
