@@ -75,6 +75,10 @@ repositories {
         name 'Railcraft'
         artifactPattern "http://addons-origin.cursecdn.com/files/${config.railcraft.cf}/[module]_[revision].[ext]"
     }
+	ivy {
+        name 'IC2NuclearControl'
+        artifactPattern "http://addons-origin.cursecdn.com/files/${config.nc.cf}/[module]-[revision].[ext]"
+    }
 }
 
 dependencies {
@@ -95,6 +99,7 @@ dependencies {
     provided name: 'CoFHLib', version: config.cofhlib.version, ext: 'jar'
     provided name: 'CoFHCore', version: config.cofhcore.version, ext: 'jar'
     provided name: 'Railcraft', version: config.railcraft.version, ext: 'jar'
+    provided name: 'IC2NuclearControl', version: config.nc.version, ext: 'jar'
 }
 
 processResources
