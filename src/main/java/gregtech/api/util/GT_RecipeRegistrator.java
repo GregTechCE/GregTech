@@ -148,8 +148,11 @@ public class GT_RecipeRegistrator {
     public static void registerReverseFluidSmelting(ItemStack aStack, Materials aMaterial, long aMaterialAmount, MaterialStack aByproduct) {
         if (aStack == null || aMaterial == null || aMaterial.mSmeltInto.mStandardMoltenFluid == null || !aMaterial.contains(SubTag.SMELTING_TO_FLUID) || (L * aMaterialAmount) / (M * aStack.stackSize) <= 0)
             return;
-
+        ItemData tData = GT_OreDictUnificator.getItemData(aStack);
         boolean tHide = (aMaterial != Materials.Iron)&&(GT_Mod.gregtechproxy.mHideRecyclingRecipes);
+        if(tHide && tData!=null&&tData.hasValidPrefixData()&&tData.mPrefix==OrePrefixes.ingot){
+        	tHide=false;
+        	}
         RA.addFluidSmelterRecipe(GT_Utility.copyAmount(1, aStack), aByproduct == null ? null : aByproduct.mMaterial.contains(SubTag.NO_SMELTING) || !aByproduct.mMaterial.contains(SubTag.METAL) ? aByproduct.mMaterial.contains(SubTag.FLAMMABLE) ? GT_OreDictUnificator.getDust(Materials.Ash, aByproduct.mAmount / 2) : aByproduct.mMaterial.contains(SubTag.UNBURNABLE) ? GT_OreDictUnificator.getDustOrIngot(aByproduct.mMaterial.mSmeltInto, aByproduct.mAmount) : null : GT_OreDictUnificator.getIngotOrDust(aByproduct.mMaterial.mSmeltInto, aByproduct.mAmount), aMaterial.mSmeltInto.getMolten((L * aMaterialAmount) / (M * aStack.stackSize)), 10000, (int) Math.max(1, (24 * aMaterialAmount) / M), Math.max(8, (int) Math.sqrt(2 * aMaterial.mSmeltInto.mStandardMoltenFluid.getTemperature())), tHide);
     }
 
@@ -181,8 +184,13 @@ public class GT_RecipeRegistrator {
         aData = new ItemData(aData);
 
         if (!aData.hasValidMaterialData()) return;
+        boolean tIron = false;
+
 
         for (MaterialStack tMaterial : aData.getAllMaterialStacks()) {
+            if (tMaterial.mMaterial == Materials.Iron||tMaterial.mMaterial == Materials.Copper ||
+            		tMaterial.mMaterial == Materials.WroughtIron||tMaterial.mMaterial == Materials.AnnealedCopper) tIron = true;
+        	
             if (tMaterial.mMaterial.contains(SubTag.UNBURNABLE)) {
                 tMaterial.mMaterial = tMaterial.mMaterial.mSmeltInto.mArcSmeltInto;
                 continue;
@@ -209,11 +217,8 @@ public class GT_RecipeRegistrator {
         }
 
         aData = new ItemData(aData);
-        boolean tIron = false;
-
         if (aData.mByProducts.length > 3) for (MaterialStack tMaterial : aData.getAllMaterialStacks()){
             if (tMaterial.mMaterial == Materials.Ash) tMaterial.mAmount = 0;
-            if (tMaterial.mMaterial == Materials.Iron) tIron = true;
         }
 
         aData = new ItemData(aData);
