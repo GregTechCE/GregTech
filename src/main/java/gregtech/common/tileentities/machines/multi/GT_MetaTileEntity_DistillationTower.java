@@ -1,5 +1,10 @@
 package gregtech.common.tileentities.machines.multi;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
@@ -69,12 +74,27 @@ public class GT_MetaTileEntity_DistillationTower
 
     public boolean checkRecipe(ItemStack aStack) {
 
+        ArrayList<FluidStack> tFluidList = getStoredFluids();
+        for (int i = 0; i < tFluidList.size() - 1; i++) {
+            for (int j = i + 1; j < tFluidList.size(); j++) {
+                if (GT_Utility.areFluidsEqual((FluidStack) tFluidList.get(i), (FluidStack) tFluidList.get(j))) {
+                    if (((FluidStack) tFluidList.get(i)).amount >= ((FluidStack) tFluidList.get(j)).amount) {
+                        tFluidList.remove(j--);
+                    } else {
+                        tFluidList.remove(i--);
+                        break;
+                    }
+                }
+            }
+        }
+    	
         long tVoltage = getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-        if (this.mInputHatches.size() > 0 && this.mInputHatches.get(0) != null && this.mInputHatches.get(0).mFluid != null && this.mInputHatches.get(0).mFluid.amount > 0) {
-            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sDistillationRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], new FluidStack[]{this.mInputHatches.get(0).mFluid}, new ItemStack[]{});
+        FluidStack[] tFluids = (FluidStack[]) Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tFluidList.size()]), 0, 1);
+        if (tFluids.length > 0) {
+        	GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sDistillationRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, new ItemStack[]{});
             if (tRecipe != null) {
-                if (tRecipe.isRecipeInputEqual(true, new FluidStack[]{this.mInputHatches.get(0).mFluid}, new ItemStack[]{})) {
+                if (tRecipe.isRecipeInputEqual(true, tFluids, new ItemStack[]{})) {
                     this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
                     if (tRecipe.mEUt <= 16) {
@@ -94,6 +114,7 @@ public class GT_MetaTileEntity_DistillationTower
                     this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
                     this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0)};
                     this.mOutputFluids = tRecipe.mFluidOutputs;
+                	ArrayUtils.reverse(mOutputFluids);
                     updateSlots();
                     return true;
                 }
@@ -130,7 +151,7 @@ public class GT_MetaTileEntity_DistillationTower
                 }
             }
         }
-        if (this.mInputHatches.size() != 1 || this.mOutputBusses.size() != 1 || this.mInputBusses.size() != 0 || this.mOutputHatches.size() != 5) {
+        if (this.mOutputBusses.size() != 1 || this.mInputBusses.size() != 0 || this.mOutputHatches.size() != 5) {
             return false;
         }
         int height = this.getBaseMetaTileEntity().getYCoord();
