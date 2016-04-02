@@ -2,6 +2,7 @@ package gregtech.api.items;
 
 import gregtech.api.GregTech_API;
 import ic2.core.util.StackUtil;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -47,8 +48,8 @@ public class GT_CoolantCell_Item
         }
     }
 
-    public void addAdditionalToolTips(List aList, ItemStack aStack) {
-        super.addAdditionalToolTips(aList, aStack);
+    public void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
+        super.addAdditionalToolTips(aList, aStack, aPlayer);
         aList.add("Stored Heat: " + getHeatOfStack(aStack));
         switch (getControlTagOfStack(aStack)) {
             case 1:

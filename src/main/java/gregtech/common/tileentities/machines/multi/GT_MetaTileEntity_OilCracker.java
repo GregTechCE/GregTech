@@ -41,6 +41,7 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_MultiBlockBa
                 "2 Blocks left Input Hatch and 8 Casings",
                 "2 Blocks right Output Hatch and 8 Casings",
                 "beween coils: Controller, second input Hatch",
+                "Add steam for lower energy cost(50%) or Hydrogen for bonus output(30%)",
                 "Maintainance Hatch and Energy Hatch"};
     }
 
@@ -71,7 +72,7 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_MultiBlockBa
                     for (FluidStack tInput2 : tInputList) {
                         if (tInput2.getFluid() == GT_ModHandler.getSteam(1).getFluid()) {
                             steam = true;
-                            tInput2.amount -= 64;
+                            tInput2.amount -= 128;
                         }
                         if (tInput2.getFluid() == Materials.Hydrogen.mGas) {
                             hydrogen = true;
@@ -94,7 +95,7 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_MultiBlockBa
                             this.mMaxProgresstime /= 2;
                         }
                     }
-                    if (steam) this.mEUt = this.mEUt * 66 / 100;
+                    if (steam) this.mEUt = this.mEUt / 2;
                     if (this.mEUt > 0) {
                         this.mEUt = (-this.mEUt);
                     }

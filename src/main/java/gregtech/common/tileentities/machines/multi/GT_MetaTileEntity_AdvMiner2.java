@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
@@ -10,6 +11,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
@@ -109,18 +111,21 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
                     }
                 }
             }
-            if (mMineList.isEmpty() && getBaseMetaTileEntity().getBlockOffset(ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetX, getYOfPumpHead() - 1 - getBaseMetaTileEntity().getYCoord(), ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetZ) != Blocks.bedrock) {
-                if (mEnergyHatches.size() > 0 && mEnergyHatches.get(0).getEUVar() > (512 + getMaxInputVoltage() * 4)) {
+            if (mMineList.isEmpty()) {
+              if(getBaseMetaTileEntity().getBlockOffset(ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetX, getYOfPumpHead() - 1 - getBaseMetaTileEntity().getYCoord(), ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetZ) != Blocks.bedrock){
+            	if (mEnergyHatches.size() > 0 && mEnergyHatches.get(0).getEUVar() > (512 + getMaxInputVoltage() * 4)) {
                     moveOneDown();
                 }
+              }else{return false;}
             }
             ArrayList<ItemStack> tDrops = new ArrayList();
             if (!mMineList.isEmpty()) {
                 Block tMineBlock = getBaseMetaTileEntity().getBlockOffset(mMineList.get(0).chunkPosX, mMineList.get(0).chunkPosY, mMineList.get(0).chunkPosZ);
                 tDrops = tMineBlock.getDrops(getBaseMetaTileEntity().getWorld(), mMineList.get(0).chunkPosX, mMineList.get(0).chunkPosY, mMineList.get(0).chunkPosZ, getBaseMetaTileEntity().getMetaIDOffset(mMineList.get(0).chunkPosX, mMineList.get(0).chunkPosY, mMineList.get(0).chunkPosZ), 1);
                 if (!tDrops.isEmpty()) {
-                    if (GT_OreDictUnificator.getItemData(tDrops.get(0)).mPrefix != OrePrefixes.crushed) {
-                        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(getBaseMetaTileEntity(), false, tVoltage, null, tDrops.get(0));
+                	ItemData tData = GT_OreDictUnificator.getItemData(tDrops.get(0).copy());
+                    if (tData.mPrefix != OrePrefixes.crushed&& tData.mMaterial.mMaterial != Materials.Oilsands) {
+                        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(getBaseMetaTileEntity(), false, tVoltage, null, tDrops.get(0).copy());
                         if (tRecipe != null) {
                             this.mOutputItems = new ItemStack[tRecipe.mOutputs.length];
                             for (int g = 0; g < mOutputItems.length; g++) {

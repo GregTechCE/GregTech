@@ -99,7 +99,7 @@ public class GT_BaseCrop extends CropCard {
     }
 
     public int getrootslength(ICropTile crop) {
-        return 3;
+        return 5;
     }
 
     @Override

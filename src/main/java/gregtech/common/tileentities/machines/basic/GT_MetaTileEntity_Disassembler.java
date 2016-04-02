@@ -30,7 +30,6 @@ public class GT_MetaTileEntity_Disassembler
             if (tNBT != null) {
                 tNBT = tNBT.getCompoundTag("GT.CraftingComponents");
                 if (tNBT != null) {
-                    getInputAt(0).stackSize -= 1;
                     this.mEUt = (16 * (1 << this.mTier - 1) * (1 << this.mTier - 1));
                     this.mMaxProgresstime = 80;
                     for (int i = 0; i < this.mOutputItems.length; i++) {
@@ -41,6 +40,10 @@ public class GT_MetaTileEntity_Disassembler
                             }
                         }
                     }
+                    if(mMaxProgresstime==80){
+                    	return 0;
+                    }
+                    getInputAt(0).stackSize -= 1;
                     return 2;
                 }
             }

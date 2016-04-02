@@ -24,7 +24,7 @@ public class GT_SolderingTool_Item extends GT_Tool_Item {
     }
 
     @Override
-    public void addAdditionalToolTips(List aList, ItemStack aStack) {
+    public void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
         aList.add(GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".tooltip_1", "Sets the Strength of outputted Redstone"));
         aList.add(GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".tooltip_2", "Needs Soldering Metal in Inventory!"));
     }

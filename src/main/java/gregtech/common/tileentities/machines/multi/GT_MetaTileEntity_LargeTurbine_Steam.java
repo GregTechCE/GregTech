@@ -106,6 +106,7 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
         addOutput(GT_ModHandler.getDistilledWater(waterToOutput));
         if (totalFlow > 0 && totalFlow != aOptFlow) {
             float efficiency = 1.0f - Math.abs(((totalFlow - (float) aOptFlow) / aOptFlow));
+            if(totalFlow>aOptFlow){efficiency = 1.0f;}
             tEU *= efficiency;
             tEU = Math.max(1, tEU * aBaseEff / 20000);
         } else {

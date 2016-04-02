@@ -231,6 +231,8 @@ public class GT_Mod
         gregtechproxy.mAchievements = tMainConfig.get("general", "EnableAchievements", true).getBoolean(true);
         gregtechproxy.mAE2Integration = GregTech_API.sSpecialFile.get(ConfigCategories.general, "EnableAE2Integration", Loader.isModLoaded("appliedenergistics2"));
         gregtechproxy.mNerfedCombs = tMainConfig.get("general", "NerfCombs", true).getBoolean(true);
+        gregtechproxy.mHideUnusedOres = tMainConfig.get("general", "HideUnusedOres", true).getBoolean(true);
+        gregtechproxy.mHideRecyclingRecipes = tMainConfig.get("general", "HideRecyclingRecipes", true).getBoolean(true);
 
         GregTech_API.mOutputRF = GregTech_API.sOPStuff.get(ConfigCategories.general, "OutputRF", true);
         GregTech_API.mInputRF = GregTech_API.sOPStuff.get(ConfigCategories.general, "InputRF", false);

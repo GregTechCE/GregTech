@@ -114,8 +114,13 @@ public class GT_RecipeAdder
         new GT_Recipe(aInput1, aEUt, aInput2, aDuration, aOutput1, aOutput2);
         return true;
     }
+    
+	@Override
+	public boolean addAlloySmelterRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, int aDuration, int aEUt) {
+		return addAlloySmelterRecipe(aInput1, aInput2, aOutput1, aDuration, aEUt, false);
+	}
 
-    public boolean addAlloySmelterRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, int aDuration, int aEUt) {
+    public boolean addAlloySmelterRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, int aDuration, int aEUt, boolean hidden) {
         if ((aInput1 == null) || (aOutput1 == null || Materials.Graphite.contains(aInput1))) {
             return false;
         }
@@ -125,7 +130,10 @@ public class GT_RecipeAdder
         if ((aDuration = GregTech_API.sRecipeFile.get("alloysmelting", aInput2 == null ? aInput1 : aOutput1, aDuration)) <= 0) {
             return false;
         }
-        new GT_Recipe(aInput1, aInput2, aEUt, aDuration, aOutput1);
+        GT_Recipe tRecipe =new GT_Recipe(aInput1, aInput2, aEUt, aDuration, aOutput1);
+         if ((hidden) && (tRecipe != null)) {
+            tRecipe.mHidden = true;
+        }
         return true;
     }
 
@@ -267,7 +275,7 @@ public class GT_RecipeAdder
         if(tGunpowder<65){
         	GT_Recipe.GT_Recipe_Map.sImplosionRecipes.addRecipe(true, new ItemStack[]{aInput1, ItemList.Block_Powderbarrel.get(tGunpowder, new Object[0])}, new ItemStack[]{aOutput1, aOutput2}, null, null, null, null, 20, 30, 0);
         }
-        if(tDynamite<65){
+        if(tDynamite<17){
         	GT_Recipe.GT_Recipe_Map.sImplosionRecipes.addRecipe(true, new ItemStack[]{aInput1, GT_ModHandler.getIC2Item("dynamite", tDynamite, null)}, new ItemStack[]{aOutput1, aOutput2}, null, null, null, null, 20, 30, 0);
         }
         GT_Recipe.GT_Recipe_Map.sImplosionRecipes.addRecipe(true, new ItemStack[]{aInput1, new ItemStack(Blocks.tnt,tTNT)}, new ItemStack[]{aOutput1, aOutput2}, null, null, null, null, 20, 30, 0);
@@ -464,8 +472,13 @@ public class GT_RecipeAdder
         GT_Recipe.GT_Recipe_Map.sFluidSolidficationRecipes.addRecipe(true, new ItemStack[]{aMold}, new ItemStack[]{aOutput}, null, new FluidStack[]{aInput}, null, aDuration, aEUt, 0);
         return true;
     }
+    
+	@Override
+	public boolean addFluidSmelterRecipe(ItemStack aInput, ItemStack aRemains, FluidStack aOutput, int aChance, int aDuration, int aEUt) {
+		return addFluidSmelterRecipe(aInput, aRemains, aOutput, aChance, aDuration, aEUt, false);
+	}
 
-    public boolean addFluidSmelterRecipe(ItemStack aInput, ItemStack aRemains, FluidStack aOutput, int aChance, int aDuration, int aEUt) {
+    public boolean addFluidSmelterRecipe(ItemStack aInput, ItemStack aRemains, FluidStack aOutput, int aChance, int aDuration, int aEUt, boolean hidden) {
         if ((aInput == null) || (aOutput == null)) {
             return false;
         }
@@ -478,7 +491,10 @@ public class GT_RecipeAdder
         if ((aDuration = GregTech_API.sRecipeFile.get("fluidsmelter", aInput, aDuration)) <= 0) {
             return false;
         }
-        GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes.addRecipe(true, new ItemStack[]{aInput}, new ItemStack[]{aRemains}, null, new int[]{aChance}, null, new FluidStack[]{aOutput}, aDuration, aEUt, 0);
+        GT_Recipe tRecipe =GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes.addRecipe(true, new ItemStack[]{aInput}, new ItemStack[]{aRemains}, null, new int[]{aChance}, null, new FluidStack[]{aOutput}, aDuration, aEUt, 0);
+        if ((hidden) && (tRecipe != null)) {
+           tRecipe.mHidden = true;
+        }
         return true;
     }
 
@@ -619,8 +635,14 @@ public class GT_RecipeAdder
         }
         return false;
     }
+    
 
-    public boolean addArcFurnaceRecipe(ItemStack aInput, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt) {
+	@Override
+	public boolean addArcFurnaceRecipe(ItemStack aInput, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt) {
+		return addArcFurnaceRecipe(aInput, aOutputs, aChances, aDuration, aEUt,	false);
+	}
+
+    public boolean addArcFurnaceRecipe(ItemStack aInput, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt,	boolean hidden) {
         if ((aInput == null) || (aOutputs == null)) {
             return false;
         }
@@ -629,11 +651,17 @@ public class GT_RecipeAdder
                 if ((aDuration = GregTech_API.sRecipeFile.get("arcfurnace", aInput, aDuration)) <= 0) {
                     return false;
                 }
-                GT_Recipe.GT_Recipe_Map.sArcFurnaceRecipes.addRecipe(true, new ItemStack[]{aInput}, aOutputs, null, aChances, new FluidStack[]{Materials.Oxygen.getGas(aDuration)}, null, Math.max(1, aDuration), Math.max(1, aEUt), 0);
+                GT_Recipe sRecipe = GT_Recipe.GT_Recipe_Map.sArcFurnaceRecipes.addRecipe(true, new ItemStack[]{aInput}, aOutputs, null, aChances, new FluidStack[]{Materials.Oxygen.getGas(aDuration)}, null, Math.max(1, aDuration), Math.max(1, aEUt), 0);
+                if ((hidden) && (sRecipe != null)) {
+                   sRecipe.mHidden = true;
+                }
                 for (Materials tMaterial : new Materials[]{Materials.Argon, Materials.Nitrogen}) {
                     if (tMaterial.mPlasma != null) {
                         int tPlasmaAmount = (int) Math.max(1L, aDuration / (tMaterial.getMass() * 16L));
-                        GT_Recipe.GT_Recipe_Map.sPlasmaArcFurnaceRecipes.addRecipe(true, new ItemStack[]{aInput}, aOutputs, null, aChances, new FluidStack[]{tMaterial.getPlasma(tPlasmaAmount)}, new FluidStack[]{tMaterial.getGas(tPlasmaAmount)}, Math.max(1, aDuration / 16), Math.max(1, aEUt / 3), 0);
+                        GT_Recipe tRecipe =GT_Recipe.GT_Recipe_Map.sPlasmaArcFurnaceRecipes.addRecipe(true, new ItemStack[]{aInput}, aOutputs, null, aChances, new FluidStack[]{tMaterial.getPlasma(tPlasmaAmount)}, new FluidStack[]{tMaterial.getGas(tPlasmaAmount)}, Math.max(1, aDuration / 16), Math.max(1, aEUt / 3), 0);
+                        if ((hidden) && (tRecipe != null)) {
+                           tRecipe.mHidden = true;
+                        }
                     }
                 }
                 return true;
@@ -689,8 +717,14 @@ public class GT_RecipeAdder
         }
         return false;
     }
+    
 
-    public boolean addPulveriserRecipe(ItemStack aInput, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt) {
+	@Override
+	public boolean addPulveriserRecipe(ItemStack aInput, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt) {
+		return addPulveriserRecipe(aInput, aOutputs, aChances, aDuration, aEUt, false);
+	}
+
+    public boolean addPulveriserRecipe(ItemStack aInput, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt, boolean hidden) {
         if ((aInput == null) || (aOutputs == null)) {
             return false;
         }
@@ -699,7 +733,10 @@ public class GT_RecipeAdder
                 if ((aDuration = GregTech_API.sRecipeFile.get("pulveriser", aInput, aDuration)) <= 0) {
                     return false;
                 }
-                GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.addRecipe(true, new ItemStack[]{aInput}, aOutputs, null, aChances, null, null, aDuration, aEUt, 0);
+                GT_Recipe tRecipe =GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.addRecipe(true, new ItemStack[]{aInput}, aOutputs, null, aChances, null, null, aDuration, aEUt, 0);
+                if ((hidden) && (tRecipe != null)) {
+                   tRecipe.mHidden = true;
+                }
                 return true;
             }
         }
@@ -731,5 +768,8 @@ public class GT_RecipeAdder
         GT_Recipe.GT_Recipe_Map.sCrakingRecipes.addRecipe(true, null, null, null, null, new FluidStack[]{aInput, Materials.Hydrogen.getGas(aInput.amount)}, new FluidStack[]{new FluidStack(aOutput.getFluid(), (int) (aOutput.amount * 1.3))}, aDuration, aEUt, 0);
         return true;
     }
+
+
+
 
 }

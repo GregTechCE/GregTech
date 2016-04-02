@@ -223,7 +223,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         if (tList != null) for (IItemBehaviour<GT_MetaBase_Item> tBehavior : tList)
             aList = tBehavior.getAdditionalToolTips(this, aList, aStack);
 
-        addAdditionalToolTips(aList, aStack);
+        addAdditionalToolTips(aList, aStack, aPlayer);
     }
 
     @Override

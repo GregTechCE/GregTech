@@ -28,16 +28,15 @@ public class GT_Cover_ItemMeter
             }
         }
         tAll /= 14;
-        if (tAll > 0) {
-            aTileEntity.setOutputRedstoneSignal(aSide, aCoverVariable != 1 ? 0 : tFull > 0 ? (byte) (tFull / tAll + 1) : (byte) (15 - (tFull > 0 ? tFull / tAll + 1 : 0)));
-        } else {
-            aTileEntity.setOutputRedstoneSignal(aSide, (byte) (aCoverVariable != 1 ? 0 : 15));
-        }
+        if(tAll > 0)
+            aTileEntity.setOutputRedstoneSignal(aSide, aCoverVariable == 1 ? (byte)(15 - (tFull <= 0 ? 0 : tFull / tAll + 1)) : tFull <= 0 ? 0 : (byte)(tFull / tAll + 1));
+        else
+            aTileEntity.setOutputRedstoneSignal(aSide, ((byte)(aCoverVariable == 1 ? 15 : 0)));
         return aCoverVariable;
     }
 
     public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        aCoverVariable = (aCoverVariable + 1) % (2 + aTileEntity.getSizeInventory());
+        aCoverVariable = (aCoverVariable + (aPlayer.isSneaking()? -1 : 1)) % (2 + aTileEntity.getSizeInventory());
         switch(aCoverVariable) {
             case 0: GT_Utility.sendChatToPlayer(aPlayer, "Normal"); break;
             case 1: GT_Utility.sendChatToPlayer(aPlayer, "Inverted"); break;

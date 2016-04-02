@@ -162,6 +162,9 @@ public abstract class MetaPipeEntity implements IMetaTileEntity {
         if (aSide < 6 && mBaseMetaTileEntity.getCoverIDAtSide(aSide) > 0) {
             tCovered = true;
         }
+        if((mConnections & (byte)(Math.pow(2, aSide))) != 0){
+        	tCovered = true;
+        }
         //System.out.println("Cover: "+mBaseMetaTileEntity.getCoverIDAtSide(aSide));
         //toDo: filter cover ids that actually protect against temperature (rubber/plastic maybe?)
         return tCovered;
