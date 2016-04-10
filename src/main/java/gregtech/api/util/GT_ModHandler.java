@@ -726,7 +726,7 @@ public class GT_ModHandler {
      * 'k' ToolDictNames.craftingToolKnive
      * 'm' ToolDictNames.craftingToolMortar,
      * 'p' ToolDictNames.craftingToolDrawplate,
-     * 'r' ToolDictNames.craftingToolSoftHammer,
+     * 'r' ToolDictNames.craftingToolSoftMallet,
      * 's' ToolDictNames.craftingToolSaw,
      * 'w' ToolDictNames.craftingToolWrench,
      * 'x' ToolDictNames.craftingToolWireCutter,
@@ -754,7 +754,7 @@ public class GT_ModHandler {
      * 'k' ToolDictNames.craftingToolKnive
      * 'm' ToolDictNames.craftingToolMortar,
      * 'p' ToolDictNames.craftingToolDrawplate,
-     * 'r' ToolDictNames.craftingToolSoftHammer,
+     * 'r' ToolDictNames.craftingToolSoftMallet,
      * 's' ToolDictNames.craftingToolSaw,
      * 'w' ToolDictNames.craftingToolWrench,
      * 'x' ToolDictNames.craftingToolWireCutter,
@@ -842,7 +842,7 @@ public class GT_ModHandler {
                             break;
                         case 'r':
                             tRecipeList.add(c);
-                            tRecipeList.add(ToolDictNames.craftingToolSoftHammer.name());
+                            tRecipeList.add(ToolDictNames.craftingToolSoftMallet.name());
                             break;
                         case 's':
                             tRecipeList.add(c);

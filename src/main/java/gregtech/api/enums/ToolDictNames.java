@@ -22,7 +22,7 @@ public enum ToolDictNames {
     craftingToolWireCutter,
     craftingToolBranchCutter,
     craftingToolHardHammer,
-    craftingToolSoftHammer,
+    craftingToolSoftMallet,
     craftingToolJackHammer,
     craftingToolMiningDrill,
     craftingToolForgeHammer,
