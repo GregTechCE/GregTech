@@ -117,7 +117,7 @@ public class GT_MetaTileEntity_AssemblyLine
         }
         }else{
         	for(int r = 0; r <= 16; r++){
-        		int i = r*zDir;
+        		int i = r*-zDir;
         		
         		if(i!=0&&aBaseMetaTileEntity.getBlockOffset(i, 0, 0)!=GregTech_API.sBlockCasings3&&aBaseMetaTileEntity.getMetaIDOffset(i, 0, 0)!=10){return false;}
         		if(!aBaseMetaTileEntity.getBlockOffset(i, -1, 0).getUnlocalizedName().equals("blockAlloyGlass")){return false;}
