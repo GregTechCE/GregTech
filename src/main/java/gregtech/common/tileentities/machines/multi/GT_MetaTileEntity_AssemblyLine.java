@@ -109,18 +109,11 @@ public class GT_MetaTileEntity_AssemblyLine
                     if (aBaseMetaTileEntity.getBlockOffset(xDir*2, -2, i) != GregTech_API.sBlockCasings2) {return false;}
                     if (aBaseMetaTileEntity.getMetaIDOffset(xDir*2, -2, i) != 0) {return false;}
         		}
-
-
-        	
         	tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, -2, i);
         		if (!addInputToMachineList(tTileEntity, 16)){
-        			if (!addOutputToMachineList(tTileEntity, 16)){
-        				System.out.println("finish3");return false;
-        			}else{if(r>0){System.out.println("finish");return true;}else{System.out.println("finish2");return false;}}
+        			if (!addOutputToMachineList(tTileEntity, 16)){;return false;
+        			}else{if(r>0){return true;}else{return false;}}
         		}
-        	System.out.println("success: "+i);
-        		
-        		
         }
         }else{
         	for(int r = 0; r <= 16; r++){
@@ -150,30 +143,13 @@ public class GT_MetaTileEntity_AssemblyLine
                     if (aBaseMetaTileEntity.getBlockOffset(i, -2, zDir*2) != GregTech_API.sBlockCasings2) {return false;}
                     if (aBaseMetaTileEntity.getMetaIDOffset(i, -2, zDir*2) != 0) {return false;}
         		}
-
-
-        	
         	tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(i, -2, zDir);
         		if (!addInputToMachineList(tTileEntity, 16)){
         			if (!addOutputToMachineList(tTileEntity, 16)){
-        				System.out.println("finish3");return false;
-        			}else{if(r>0){System.out.println("finish");return true;}else{System.out.println("finish2");return false;}}
+        			}else{if(r>0){return true;}else{return false;}}
         		}
-        	System.out.println("success: "+i);
-        		
-        		
-        }
-        
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        	}
+        } 
         return false;
     }
 
