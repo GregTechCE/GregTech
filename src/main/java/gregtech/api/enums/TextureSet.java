@@ -143,7 +143,7 @@ public class TextureSet {
         mTextures[123] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
         mTextures[124] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
         mTextures[125] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[126] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[127] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        mTextures[126] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/handleMallet");
+        mTextures[127] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/toolHeadMallet");
     }
 }
