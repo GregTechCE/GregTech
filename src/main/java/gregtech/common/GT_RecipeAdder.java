@@ -769,6 +769,29 @@ public class GT_RecipeAdder
         return true;
     }
 
+	@Override
+	public boolean addAssemblylineRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput1, int aDuration, int aEUt) {
+        if ((aInputs == null) || (aOutput1 == null) || aInputs.length>15 || aInputs.length<4) {
+            return false;
+        }
+        if ((aDuration = GregTech_API.sRecipeFile.get("assemblingline", aOutput1, aDuration)) <= 0) {
+            return false;
+        }
+        String tRecipe = "";
+        for(ItemStack sStack: aInputs){
+        	tRecipe += sStack.getItem().getItemStackDisplayName(sStack)+" x"+sStack.stackSize+"; ";
+        }
+        
+        for(FluidStack sStack: aFluidInputs){
+        	tRecipe += sStack.getLocalizedName()+" "+sStack.amount+"L; ";
+        }
+        
+        GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "tRecipe", new Object[0])}, new ItemStack[]{aOutput1}, null, null, null, aDuration, aEUt, 0);
+        
+        GT_Recipe.GT_Recipe_Map.sAssemblylineRecipes.addRecipe(true, aInputs, new ItemStack[]{aOutput1}, null, aFluidInputs, null, aDuration, aEUt, 0);
+        return true;
+	}
+
 
 
 

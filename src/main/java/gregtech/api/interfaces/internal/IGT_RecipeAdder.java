@@ -193,6 +193,17 @@ public interface IGT_RecipeAdder {
     public boolean addAssemblerRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput, ItemStack aOutput1, int aDuration, int aEUt);
 
     /**
+     * Adds a Assemblyline Recipe
+     *
+     * @param aInputs   must be != null, 4-16 inputs
+     * @param aFluidInputs 0-4 fluids
+     * @param aOutput1  must be != null
+     * @param aDuration must be > 0
+     * @param aEUt      should be > 0
+     */
+    public boolean addAssemblylineRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput1, int aDuration, int aEUt);
+
+    /**
      * Adds a Forge Hammer Recipe
      *
      * @param aInput1   must be != null
