@@ -28,7 +28,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex + 1], aFacing == aSide ? aActive ? new GT_RenderedTexture(Textures.BlockIcons.LARGETURBINE_ACTIVE5) : new GT_RenderedTexture(Textures.BlockIcons.LARGETURBINE5) : Textures.BlockIcons.CASING_BLOCKS[57]};
+        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex + 1], aFacing == aSide ? aActive ? new GT_RenderedTexture(Textures.BlockIcons.LARGETURBINE_TU_ACTIVE5) : new GT_RenderedTexture(Textures.BlockIcons.LARGETURBINE_TU5) : Textures.BlockIcons.CASING_BLOCKS[60]};
     }
 
 
@@ -39,7 +39,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
                 "1x Input Hatch (side centered)",
                 "1x Dynamo Hatch (back centered)",
                 "1x Maintenance Hatch (side centered)",
-                "Turbine Casings for the rest (24 at least!)",
+                "Tungstensteel Turbine Casings for the rest (24 at least!)",
                 "Needs a Turbine Item (inside controller GUI)"};
     }
 
@@ -65,7 +65,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
 
     @Override
     public byte getCasingMeta() {
-        return 9;
+        return 12;
     }
 
     @Override

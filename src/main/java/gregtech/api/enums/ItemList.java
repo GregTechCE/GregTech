@@ -625,10 +625,10 @@ public enum ItemList implements IItemContainer {
     ZPM2, Quantum_Tank_LV, Quantum_Tank_MV, Quantum_Tank_HV, Quantum_Tank_EV, Quantum_Tank_IV, Quantum_Chest_LV, Quantum_Chest_MV, Quantum_Chest_HV, Quantum_Chest_EV, Quantum_Chest_IV,
 
     NULL, Cover_RedstoneTransmitterExternal, Cover_RedstoneTransmitterInternal, Cover_RedstoneReceiverExternal, Cover_RedstoneReceiverInternal,
-    LargeSteamTurbine, LargeGasTurbine, LargeHPSteamTurbine, LargePlasmaTurbine,
+    LargeSteamTurbine, LargeGasTurbine, LargeHPSteamTurbine, LargePlasmaTurbine, LargeDieselTurbine,
     Ingot_Heavy1, Ingot_Heavy2, Ingot_Heavy3,
     Pump_LV, Pump_MV, Pump_HV, Pump_EV, Pump_IV,
-    Teleporter, Cover_NeedsMaintainance, Casing_Turbine,
+    Teleporter, Cover_NeedsMaintainance, Casing_Turbine, Casing_Turbine1, Casing_Turbine2, Casing_Turbine3,
     MobRep_LV, MobRep_MV, MobRep_HV, MobRep_EV, MobRep_IV, Cover_PlayerDetector, Machine_Multi_HeatExchanger,
     Block_BronzePlate, Block_IridiumTungstensteel, Block_Plascrete, Block_TungstenSteelReinforced,
     Honeycomb, Charcoal_Pile, Block_BrittleCharcoal, Seismic_Prospector, OilDrill, AdvancedMiner2, PyrolyseOven, OilCracker, Crop_Drop_UUMBerry, Crop_Drop_UUABerry, Empty_Board_Basic, Empty_Board_Elite,
