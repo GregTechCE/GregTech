@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
@@ -16,18 +17,21 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import speiger.src.crops.api.ICropCardInfo;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import static gregtech.api.enums.GT_Values.E;
 
-public class GT_BaseCrop extends CropCard {
+public class GT_BaseCrop extends CropCard implements ICropCardInfo {
     public static ArrayList<GT_BaseCrop> sCropList = new ArrayList<GT_BaseCrop>();
     private String mName = E, mDiscoveredBy = "Gregorius Techneticies", mAttributes[];
     private int mTier = 0, mMaxSize = 0, mAfterHarvestSize = 0, mHarvestSize = 0, mStats[] = new int[5], mGrowthSpeed = 0;
     private ItemStack mDrop = null, mSpecialDrops[] = null;
     private Materials mBlock = null;
+    private static boolean bIc2NeiLoaded = Loader.isModLoaded("Ic2Nei");
 
     /**
      * To create new Crops
@@ -84,6 +88,25 @@ public class GT_BaseCrop extends CropCard {
                 throw new GT_ItsNotMyFaultException("Make sure the Crop ID is valid!");
             if (aBaseSeed != null) Crops.instance.registerBaseSeed(aBaseSeed, this, 1, 1, 1, 1);
             sCropList.add(this);}
+        }
+        if (bIc2NeiLoaded) {
+            try {
+                Class.forName("speiger.src.crops.api.CropPluginAPI").getMethod("registerCropInfo", Class.forName("speiger.src.crops.api.ICropCardInfo")).invoke(Class.forName("speiger.src.crops.api.CropPluginAPI").getField("instance"), this);
+            } catch (IllegalAccessException ex) {
+                bIc2NeiLoaded = false;
+            } catch (IllegalArgumentException ex) {
+                bIc2NeiLoaded = false;
+            } catch (java.lang.reflect.InvocationTargetException ex) {
+                bIc2NeiLoaded = false;
+            } catch (NoSuchFieldException ex) {
+                bIc2NeiLoaded = false;
+            } catch (NoSuchMethodException ex) {
+                bIc2NeiLoaded = false;
+            } catch (SecurityException ex) {
+                bIc2NeiLoaded = false;
+            } catch (ClassNotFoundException ex) {
+                bIc2NeiLoaded = false;
+            }
         }
     }
 
@@ -210,6 +233,22 @@ public class GT_BaseCrop extends CropCard {
 //	      }
         }
         return false;
+    }
+
+    public List<String> getCropInformation() {
+        if (mBlock != null) {
+            ArrayList<String> result = new ArrayList<String>(1);
+            result.add(String.format("Requires %s Ore or Block of %s as soil block to reach full growth.", mBlock.name(), mBlock.name()));
+            return result;
+        }
+        return null;
+    }
+
+    public ItemStack getDisplayItem() {
+        if (mSpecialDrops != null && mSpecialDrops[mSpecialDrops.length - 1] != null) {
+            return GT_Utility.copy(mSpecialDrops[mSpecialDrops.length - 1]);
+        }
+        return GT_Utility.copy(mDrop);
     }
 
 }
