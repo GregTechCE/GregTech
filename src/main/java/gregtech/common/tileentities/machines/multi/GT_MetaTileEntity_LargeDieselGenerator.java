@@ -95,7 +95,10 @@ public class GT_MetaTileEntity_LargeDieselGenerator extends GT_MetaTileEntity_Mu
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
         int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-        if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {
+        if (aBaseMetaTileEntity.getBlockOffset(xDir, 0, zDir) != getPipeBlock()) {
+            return false;
+        }
+        if (aBaseMetaTileEntity.getMetaIDOffset(xDir, 0, zDir) != getPipeMeta()) {
             return false;
         }
         int tAmount = 0;
