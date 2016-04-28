@@ -562,16 +562,21 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         aStack = GT_Utility.copy(aStack);
 //		FluidStack aLiquid = GT_Utility.getFluidForFilledItem(aStack, true);
 //		if (aLiquid == null) {
-        for (GT_MetaTileEntity_Hatch_OutputBus tHatch : mOutputBusses) {
-            if (isValidMetaTileEntity(tHatch)) {
-                for (int i = tHatch.getSizeInventory() - 1; i >= 0; i--) {
-                    if (tHatch.getBaseMetaTileEntity().addStackToSlot(i, aStack)) return true;
+        boolean outputSuccess = true;
+        while (outputSuccess && aStack.stackSize > 0) {
+            outputSuccess = false;
+            ItemStack single = aStack.splitStack(1);
+            for (GT_MetaTileEntity_Hatch_OutputBus tHatch : mOutputBusses) {
+                if (!outputSuccess && isValidMetaTileEntity(tHatch)) {
+                    for (int i = tHatch.getSizeInventory() - 1; i >= 0 && !outputSuccess; i--) {
+                        if (tHatch.getBaseMetaTileEntity().addStackToSlot(i, single)) outputSuccess = true;
+                    }
                 }
             }
-        }
-        for (GT_MetaTileEntity_Hatch_Output tHatch : mOutputHatches) {
-            if (isValidMetaTileEntity(tHatch) && tHatch.outputsItems()) {
-                if (tHatch.getBaseMetaTileEntity().addStackToSlot(1, aStack)) return true;
+            for (GT_MetaTileEntity_Hatch_Output tHatch : mOutputHatches) {
+                if (!outputSuccess && isValidMetaTileEntity(tHatch) && tHatch.outputsItems()) {
+                    if (tHatch.getBaseMetaTileEntity().addStackToSlot(1, single)) outputSuccess = true;
+                }
             }
         }
 //		}else {
@@ -584,7 +589,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 //				}
 //			}
 //		}
-        return false;
+        return outputSuccess;
     }
 
     public boolean depleteInput(ItemStack aStack) {
