@@ -7,8 +7,6 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
@@ -33,13 +31,13 @@ public class GT_MetaTileEntity_LargeDieselGenerator extends GT_MetaTileEntity_Mu
     public String[] getDescription() {
         return new String[]{
                 "Controller Block for the Large Diesel Generator",
-                "Size: 3x3x4",
+                "Size: 3x3x3",
                 "Controller (front centered)",
-                "3x3x4 of Stable Titanium Casing (hollow, Min 24!)",
-                "1 Titanium Pipe Casing Block inside the Hollow Casing",
-                "3x Fluid Input (one of the Casings)",
+                "3x3x3 of Stable Titanium Casing (hollow, Min 24!)",
+                "1x Titanium Pipe Casing Block inside the Hollow Casing",
+                "3x Input Hatch (one of the Casings)",
                 "1x Maintenance Hatch (one of the Casings)",
-                "1x Muffler Hatch (top centered)",
+                "1x Muffler Hatch (one of the Casings)",
                 "1x Dynamo Hatch (back centered)"};
     }
 
@@ -67,7 +65,6 @@ public class GT_MetaTileEntity_LargeDieselGenerator extends GT_MetaTileEntity_Mu
         Collection<GT_Recipe> tRecipeList = GT_Recipe.GT_Recipe_Map.sDieselFuels.mRecipeList;
 
         boolean hasLubricant = false;
-        int baseEUt = 4096;
 
         if(tFluids.size() > 0 && tRecipeList != null) {
             for (FluidStack hatchFluid : tFluids) {
@@ -83,7 +80,9 @@ public class GT_MetaTileEntity_LargeDieselGenerator extends GT_MetaTileEntity_Mu
                             tLiquid.amount = 5;
                             depleteInput(tLiquid); //Possible issue if diesel isn't divisible by 5?
                             depleteInput(Materials.Lubricant.getFluid(1L)); //Possible NPE?
-                            
+
+                            //Implement output calculation
+
                             return true;
                         }
                     }
@@ -118,10 +117,6 @@ public class GT_MetaTileEntity_LargeDieselGenerator extends GT_MetaTileEntity_Mu
             }
         }
         return tAmount >= 16;
-    }
-
-    public int getCasingMulti() {
-        return 2;
     }
 
     public Block getCasingBlock() {
@@ -172,6 +167,7 @@ public class GT_MetaTileEntity_LargeDieselGenerator extends GT_MetaTileEntity_Mu
     public String[] getInfoData() {
         return new String[]{
                 "Large Diesel Generator",
+                "Efficiency: " + mEfficiency / 100 + "%",
                 "Current Output: " + mEUt + " EU/t"
         };
     }
