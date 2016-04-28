@@ -23,13 +23,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class GT_MetaTileEntity_LargeDieselGenerator extends GT_MetaTileEntity_MultiBlockBase {
-
-    private static boolean controller;
-    public GT_MetaTileEntity_Hatch_Input mInputHotFluidHatch;
-    public GT_MetaTileEntity_Hatch_Output mOutputColdFluidHatch;
-    public boolean superheated = false;
-    private float water;
-
     public GT_MetaTileEntity_LargeDieselGenerator(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -39,16 +32,15 @@ public class GT_MetaTileEntity_LargeDieselGenerator extends GT_MetaTileEntity_Mu
 
     public String[] getDescription() {
         return new String[]{
-                "Controller Block for the Heat Exchanger",
+                "Controller Block for the Large Diesel Generator",
                 "Size: 3x3x4",
-                "Controller (front middle at bottom)",
+                "Controller (front centered)",
                 "3x3x4 of Stable Titanium Casing (hollow, Min 24!)",
-                "2 Titanium Pipe Casing Blocks inside the Hollow Casing",
-                "1x Distillated Water Input (one of the Casings)",
-                "min 1 Steam Output (one of the Casings)",
+                "1 Titanium Pipe Casing Block inside the Hollow Casing",
+                "3x Fluid Input (one of the Casings)",
                 "1x Maintenance Hatch (one of the Casings)",
-                "1x Hot Fluid Input (botton Center)",
-                "1x Cold Fluid Output (top Center)"};
+                "1x Muffler Hatch (top centered)",
+                "1x Dynamo Hatch (back centered)"};
     }
 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
@@ -59,7 +51,7 @@ public class GT_MetaTileEntity_LargeDieselGenerator extends GT_MetaTileEntity_Mu
     }
 
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "LargeHeatExchanger.png");
+        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "LargeDieselGenerator.png");
     }
 
     public boolean isCorrectMachinePart(ItemStack aStack) {
@@ -89,15 +81,9 @@ public class GT_MetaTileEntity_LargeDieselGenerator extends GT_MetaTileEntity_Mu
                     if ((tLiquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null) {
                         if (hatchFluid.isFluidEqual(tLiquid) && hasLubricant) {
                             tLiquid.amount = 5;
-                            depleteInput(tLiquid);
-                            depleteInput(Materials.Lubricant.getFluid(1L));
-                            this.mProgresstime = 1;
-                            this.mMaxProgresstime = 1;
-                            this.mEfficiencyIncrease = 5;
-                            this.mEUt = (2048 * (aFuel.mSpecialValue / 100) * getCasingMulti()) * (mEfficiency / 1000);
-                            System.out.println("Eff Value: " + mEfficiency);
-                            System.out.println("Fuel Value: " + aFuel.mSpecialValue);
-                            System.out.println("EU/t : " + mEUt);
+                            depleteInput(tLiquid); //Possible issue if diesel isn't divisible by 5?
+                            depleteInput(Materials.Lubricant.getFluid(1L)); //Possible NPE?
+                            
                             return true;
                         }
                     }
@@ -185,7 +171,7 @@ public class GT_MetaTileEntity_LargeDieselGenerator extends GT_MetaTileEntity_Mu
     @Override
     public String[] getInfoData() {
         return new String[]{
-                "Diesel Engine",
+                "Large Diesel Generator",
                 "Current Output: " + mEUt + " EU/t"
         };
     }
