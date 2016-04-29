@@ -40,7 +40,7 @@ public class GT_MetaTileEntity_AssemblyLine
         		"Middle: Reinforced Glass, Assembling Line, Reinforced Glass", 
         		"UpMiddle: Grate Casing(or Controller), Assambling Casing, Grate Casing", 
         		"Top: Steel Casing(or Energy Hatch)", 
-        		"Up to 16 repeating slices, last is Butput Bus"};
+        		"Up to 16 repeating slices, last is Output Bus"};
     }
 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
