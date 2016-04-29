@@ -15,22 +15,28 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class GT_MetaTileEntity_LargeDieselGenerator extends GT_MetaTileEntity_MultiBlockBase {
-    public GT_MetaTileEntity_LargeDieselGenerator(int aID, String aName, String aNameRegional) {
+public class GT_MetaTileEntity_LargeDieselEngine extends GT_MetaTileEntity_MultiBlockBase {
+    boolean firstRun = true;
+    boolean hasLubricant = false;
+    boolean hasCoolant = false;
+    boolean hasOxygen = false;
+
+    public GT_MetaTileEntity_LargeDieselEngine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
-    public GT_MetaTileEntity_LargeDieselGenerator(String aName) {
+    public GT_MetaTileEntity_LargeDieselEngine(String aName) {
         super(aName);
     }
 
     public String[] getDescription() {
         return new String[]{
-                "Controller Block for the Large Diesel Generator",
+                "Controller Block for the Large Diesel Engine",
                 "Size: 3x3x3",
                 "Controller (front centered)",
                 "3x3x3 of Stable Titanium Casing (hollow, Min 24!)",
@@ -49,7 +55,7 @@ public class GT_MetaTileEntity_LargeDieselGenerator extends GT_MetaTileEntity_Mu
     }
 
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "LargeDieselGenerator.png");
+        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "LargeDieselEngine.png");
     }
 
     public boolean isCorrectMachinePart(ItemStack aStack) {
@@ -63,26 +69,65 @@ public class GT_MetaTileEntity_LargeDieselGenerator extends GT_MetaTileEntity_Mu
     public boolean checkRecipe(ItemStack aStack) {
         ArrayList<FluidStack> tFluids = getStoredFluids();
         Collection<GT_Recipe> tRecipeList = GT_Recipe.GT_Recipe_Map.sDieselFuels.mRecipeList;
-
-        boolean hasLubricant = false;
+        hasLubricant = false;
+        hasCoolant = false;
+        hasOxygen = false;
 
         if(tFluids.size() > 0 && tRecipeList != null) {
-            for (FluidStack hatchFluid : tFluids) {
-                if(hatchFluid.isFluidEqual(Materials.Lubricant.getFluid(1L))) {
-                    hasLubricant = true;
-                }
-            }
-            for (FluidStack hatchFluid : tFluids) { //Loops through hatches
+
+            for (FluidStack hatchFluid1 : tFluids) { //Loops through hatches
                 for(GT_Recipe aFuel : tRecipeList) { //Loops through diesel fuel recipes
                     FluidStack tLiquid;
                     if ((tLiquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null) {
-                        if (hatchFluid.isFluidEqual(tLiquid) && hasLubricant) {
-                            tLiquid.amount = 5;
-                            depleteInput(tLiquid); //Possible issue if diesel isn't divisible by 5?
-                            depleteInput(Materials.Lubricant.getFluid(1L)); //Possible NPE?
+                        if (hatchFluid1.isFluidEqual(tLiquid)) {
+                            for (FluidStack hatchFluid2 : tFluids) {
+                                if(hatchFluid2.isFluidEqual(Materials.Lubricant.getFluid(1L))) hasLubricant = true;
+                                if(hatchFluid2.isFluidEqual(FluidRegistry.getFluidStack("ic2coolant", 1))) hasCoolant = true;
+                                if(hatchFluid2.isFluidEqual(Materials.Oxygen.getGas(1L))) {
+                                    if(hatchFluid2.amount >= aFuel.mSpecialValue / 10) {
+                                        hasOxygen = true;
+                                    }
+                                }
+                            }
 
-                            //Implement output calculation
+                            System.out.println("Fuel Value: "+aFuel.mSpecialValue);
 
+                            //Deplete Oxygen
+                            if(hasOxygen) depleteInput(Materials.Oxygen.getGas(aFuel.mSpecialValue / 10));
+
+                            //Deplete coolant every IRL hour
+                            //Create Maintenance issues every hour if there is no coolant
+                            if(hasCoolant) {
+                                int amount = hasOxygen ? 3 ^ (mEfficiency / 10000) : (mEfficiency / 10000);
+                                if(firstRun) {
+                                    depleteInput(FluidRegistry.getFluidStack("ic2coolant", amount));
+                                } else if(mRuntime % 720 == 0) {
+                                    depleteInput(FluidRegistry.getFluidStack("ic2coolant", amount));
+                                }
+                            } else {
+                                doRandomMaintenanceDamage();
+                            }
+
+                            //Deplete Lubricant every 12096 ticks or 10.08 minutes (Every 1000L should last an IRL week)
+                            if(hasLubricant) {
+                                if(firstRun) {
+                                    depleteInput(Materials.Lubricant.getFluid(1L));
+                                } else if(mRuntime % 12096 == 0) {
+                                    depleteInput(Materials.Lubricant.getFluid(1L));
+                                }
+                            } else {
+                                //Negative Effect?
+                            }
+
+                            tLiquid.amount = 1;
+                            depleteInput(tLiquid);
+
+                            mProgresstime = 1;
+                            mMaxProgresstime = 1;
+                            mEfficiencyIncrease = 10;
+
+                            int baseEUt = 768;
+                            mEUt = (baseEUt + (aFuel.mSpecialValue * 10) * mEfficiency / 10000);
                             return true;
                         }
                     }
@@ -90,6 +135,19 @@ public class GT_MetaTileEntity_LargeDieselGenerator extends GT_MetaTileEntity_Mu
             }
         }
         return false;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (mProgresstime > 0 && firstRun) {
+            firstRun = false;
+            try {
+                //Implement Achievement
+                //GT_Mod.instance.achievements.issueAchievement(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "extremepressure");
+            } catch (Exception e) {
+            }
+        }
+        super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
@@ -107,7 +165,7 @@ public class GT_MetaTileEntity_LargeDieselGenerator extends GT_MetaTileEntity_Mu
                 for (int h = -1; h < 2; h++) {
                     if ((h != 0) || (((xDir + i != 0) || (zDir + j != 0)) && ((i != 0) || (j != 0)))) {
                         IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-                        if ((!addMaintenanceToMachineList(tTileEntity, 50)) && (!addMufflerToMachineList(tTileEntity, 50)) && (!addInputToMachineList(tTileEntity, 50)) && (!addInputToMachineList(tTileEntity, 50)) && (!addInputToMachineList(tTileEntity, 50)) && (!addDynamoToMachineList(tTileEntity, 50))) {
+                        if ((!addMaintenanceToMachineList(tTileEntity, 50)) && (!addMufflerToMachineList(tTileEntity, 50)) && (!addInputToMachineList(tTileEntity, 50)) && (!addInputToMachineList(tTileEntity, 50)) && (!addInputToMachineList(tTileEntity, 50)) && (!addInputToMachineList(tTileEntity, 50)) && (!addOutputToMachineList(tTileEntity, 50)) && (!addDynamoToMachineList(tTileEntity, 50))) {
                             Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
                             byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
                             if (((tBlock != GregTech_API.sBlockCasings4) || (tMeta != 2))) {
@@ -143,7 +201,7 @@ public class GT_MetaTileEntity_LargeDieselGenerator extends GT_MetaTileEntity_Mu
     }
 
     public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
+        return hasOxygen ? 14500 : 10000;
     }
 
     public int getPollutionPerTick(ItemStack aStack) {
@@ -163,14 +221,15 @@ public class GT_MetaTileEntity_LargeDieselGenerator extends GT_MetaTileEntity_Mu
     }
 
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_LargeDieselGenerator(this.mName);
+        return new GT_MetaTileEntity_LargeDieselEngine(this.mName);
     }
 
     @Override
     public String[] getInfoData() {
         return new String[]{
-                "Large Diesel Generator",
-                "Efficiency: " + mEfficiency / 100 + "%",
+                "Large Diesel Engine",
+                "Efficiency: " + (float) mEfficiency / 100 + "%",
+                "EfficiencyRaw: " + mEfficiency,
                 "Current Output: " + mEUt + " EU/t"
         };
     }
