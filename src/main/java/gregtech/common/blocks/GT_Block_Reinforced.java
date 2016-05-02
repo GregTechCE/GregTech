@@ -40,7 +40,7 @@ import java.util.Random;
 public class GT_Block_Reinforced extends GT_Generic_Block {
 
     public GT_Block_Reinforced(String aName) {
-        super(GT_Item_Storage.class, aName, Material.rock);
+        super(GT_Item_Storage.class, aName, new Material(net.minecraft.block.material.MapColor.stoneColor));
         setStepSound(soundTypeStone);
         setCreativeTab(GregTech_API.TAB_GREGTECH);
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Bronzeplate Reinforced Block");
@@ -65,7 +65,8 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
     }
 
     public String getHarvestTool(int aMeta) {
-        if (aMeta == 4||aMeta == 5) return "axe";
+        if (aMeta == 4) return "shovel";
+        if (aMeta == 5) return "axe";
         return "pickaxe";
     }
 
@@ -96,6 +97,9 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
 
     public float getBlockHardness(World aWorld, int aX, int aY, int aZ) {
         if (aWorld == null) {
+            return 0.0F;
+        }
+        if (aWorld.isAirBlock(aX, aY, aZ)) {
             return 0.0F;
         }
         int tMeta = aWorld.getBlockMetadata(aX, aY, aZ);
