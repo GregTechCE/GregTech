@@ -523,6 +523,9 @@ public class GT_Loader_MetaTileEntities
         GT_ModHandler.addCraftingRecipe(ItemList.Locker_ZPM.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"T", "M", Character.valueOf('M'), ItemList.Battery_Buffer_2by2_ZPM, Character.valueOf('T'), OreDictNames.craftingChest});
         GT_ModHandler.addCraftingRecipe(ItemList.Locker_UV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"T", "M", Character.valueOf('M'), ItemList.Battery_Buffer_2by2_UV, Character.valueOf('T'), OreDictNames.craftingChest});
         GT_ModHandler.addCraftingRecipe(ItemList.Locker_MAX.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"T", "M", Character.valueOf('M'), ItemList.Battery_Buffer_2by2_MAX, Character.valueOf('T'), OreDictNames.craftingChest});
+
+        ItemList.Hatch_Turbo.set(new GT_MetaTileEntity_Hatch_Turbo(700, "hatch.turbo", "Turbo Hatch", 1).getStackForm(1L));
+        GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Turbo.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"dwx", "hMc", "fsr", Character.valueOf('M'), ItemList.Hull_LV});
     }
 
     private static void run2() {
@@ -1033,8 +1036,11 @@ public class GT_Loader_MetaTileEntities
         ItemList.Machine_Multi_Assemblyline.set(new GT_MetaTileEntity_AssemblyLine(1170, "multimachine.assemblyline", "Assemblyline").getStackForm(1L));
         GT_ModHandler.addCraftingRecipe(ItemList.Machine_Multi_Assemblyline.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"WCW", "EME", "WCW", 'M', ItemList.Hull_IV, 'W', ItemList.Casing_Assembler, 'E', OrePrefixes.circuit.get(Materials.Ultimate), 'C', ItemList.Robot_Arm_IV});
 
-        ItemList.Machine_Multi_LargeDieselEngine.set(new GT_MetaTileEntity_LargeDieselEngine(1171, "multimachine.dieselengine", "Large Diesel Engine").getStackForm(1L));
-        GT_ModHandler.addCraftingRecipe(ItemList.Machine_Multi_LargeDieselEngine.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"WCW", "EME", "WCW", 'M', ItemList.Hull_IV, 'W', ItemList.Casing_Assembler, 'E', OrePrefixes.circuit.get(Materials.Ultimate), 'C', ItemList.Robot_Arm_IV});
+        ItemList.Machine_Multi_DieselEngine.set(new GT_MetaTileEntity_DieselEngine(1171, "multimachine.dieselengine", "Diesel Engine").getStackForm(1L));
+        GT_ModHandler.addCraftingRecipe(ItemList.Machine_Multi_DieselEngine.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"WCW", "EME", "WCW", 'M', ItemList.Hull_IV, 'W', ItemList.Casing_Assembler, 'E', OrePrefixes.circuit.get(Materials.Ultimate), 'C', ItemList.Robot_Arm_IV});
+
+        ItemList.Machine_Multi_TurboDieselEngine.set(new GT_MetaTileEntity_DieselEngineTurbo(1172, "multimachine.turbodieselengine", "Turbo Diesel Engine").getStackForm(1L));
+        GT_ModHandler.addCraftingRecipe(ItemList.Machine_Multi_TurboDieselEngine.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"WCW", "EME", "WCW", 'M', ItemList.Hull_IV, 'W', ItemList.Casing_Assembler, 'E', OrePrefixes.circuit.get(Materials.Ultimate), 'C', ItemList.Robot_Arm_IV});
     }
 
     private static void run4() {
