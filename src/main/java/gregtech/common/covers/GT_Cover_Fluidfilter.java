@@ -26,23 +26,25 @@ public class GT_Cover_Fluidfilter
     }
 
     public boolean onCoverRightclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-       System.out.println("rightclick");
+       //System.out.println("rightclick");
     	if (((aX > 0.375D) && (aX < 0.625D)) || ((aSide > 3) && (((aY > 0.375D) && (aY < 0.625D)) || ((aSide < 2) && (((aZ > 0.375D) && (aZ < 0.625D)) || (aSide == 2) || (aSide == 3)))))) {
             ItemStack tStack = aPlayer.inventory.getCurrentItem();
             if(tStack!=null){
             FluidStack tFluid = FluidContainerRegistry.getFluidForFilledItem(tStack);
             if(tFluid!=null){
-            	System.out.println(tFluid.getLocalizedName()+" "+tFluid.getFluidID());
+            	//System.out.println(tFluid.getLocalizedName()+" "+tFluid.getFluidID());
             	aCoverVariable = tFluid.getFluidID();
             aTileEntity.setCoverDataAtSide(aSide, aCoverVariable);
         	FluidStack sFluid = new FluidStack(FluidRegistry.getFluid(aCoverVariable),1000);
             GT_Utility.sendChatToPlayer(aPlayer, "Filter Fluid: " + sFluid.getLocalizedName());
             }else if(tStack.getItem() instanceof IFluidContainerItem){
             	IFluidContainerItem tContainer = (IFluidContainerItem)tStack.getItem();
-            	aCoverVariable = tContainer.getFluid(tStack).getFluidID();
-            	System.out.println("fluidcontainer " + aCoverVariable);
-            	FluidStack sFluid = new FluidStack(FluidRegistry.getFluid(aCoverVariable),1000);
-            	GT_Utility.sendChatToPlayer(aPlayer, "Filter Fluid: " + sFluid.getLocalizedName());
+                if(tContainer.getFluid(tStack) != null) {
+                    aCoverVariable = tContainer.getFluid(tStack).getFluidID();
+                    //System.out.println("fluidcontainer " + aCoverVariable);
+                    FluidStack sFluid = new FluidStack(FluidRegistry.getFluid(aCoverVariable), 1000);
+                    GT_Utility.sendChatToPlayer(aPlayer, "Filter Fluid: " + sFluid.getLocalizedName());
+                }
             }
             }
             return true;
