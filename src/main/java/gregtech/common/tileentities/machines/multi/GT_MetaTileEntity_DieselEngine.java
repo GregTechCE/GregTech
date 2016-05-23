@@ -26,6 +26,7 @@ import java.util.Collection;
 public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlockBase {
     protected int fuelConsumption = 0;
     protected int fuelRemaining = 0;
+    protected boolean enableTurboOut = false;
 
     public GT_MetaTileEntity_DieselEngine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -70,33 +71,33 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
         ArrayList<FluidStack> tFluids = getStoredFluids();
         Collection<GT_Recipe> tRecipeList = GT_Recipe.GT_Recipe_Map.sDieselFuels.mRecipeList;
 
+        //TODO Better method to detect turbine item. This will do for testing.
         if(tHatches.size() > 0) {
-            if(tHatches.get(0).getStackInSlot(0) != null) {
+            if (tHatches.get(0).getStackInSlot(0) != null) {
                 ItemStack hatchStack = tHatches.get(0).getStackInSlot(0);
-                if(hatchStack.getItem() instanceof GT_MetaGenerated_Tool) { //Has a GT tool
-                    GT_MetaGenerated_Tool hatchTool = (GT_MetaGenerated_Tool)tHatches.get(0).getStackInSlot(0).getItem();
+                if (hatchStack.getItem() instanceof GT_MetaGenerated_Tool) { //Has a GT tool
+                    GT_MetaGenerated_Tool hatchTool = (GT_MetaGenerated_Tool) tHatches.get(0).getStackInSlot(0).getItem();
+                    if(GT_MetaGenerated_Tool.getPrimaryMaterial(hatchStack).mDurability > 0) enableTurboOut = true;
+                }
+            }
+        }
 
-                    //TODO Better method to detect turbine item. This will do for testing.
-                    int baseEUt = GT_MetaGenerated_Tool.getPrimaryMaterial(hatchStack).mDurability > 0 ? 8192 : 2048; //Choose base output
-
-                    if(tFluids.size() > 0 && tRecipeList != null) { //Does input hatch have a diesel fuel?
-                        for (FluidStack hatchFluid1 : tFluids) { //Loops through hatches
-                            for(GT_Recipe aFuel : tRecipeList) { //Loops through diesel fuel recipes
-                                FluidStack tLiquid;
-                                if ((tLiquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null) { //Create fluidstack from current recipe
-                                    if (hatchFluid1.isFluidEqual(tLiquid)) { //Has a diesel fluid
-                                        System.out.println("Fuel Value: "+aFuel.mSpecialValue); //For testing, needs to be removed
-                                        fuelConsumption = tLiquid.amount = baseEUt / aFuel.mSpecialValue; //Calc fuel consumption
-                                        depleteInput(tLiquid); //Deplete that amount
-                                        fuelRemaining = hatchFluid1.amount; //Record available fuel
-                                        this.mProgresstime = 1;
-                                        this.mMaxProgresstime = 1;
-                                        this.mEfficiencyIncrease = 10;
-                                        this.mEUt = mEfficiency < 2000 ? 0 : (int)(baseEUt * ((float)mEfficiency / 10000)); //Output 0 if startup is less than 20%
-                                        return true;
-                                    }
-                                }
-                            }
+        int baseEUt = enableTurboOut ? 8192 : 2048; //Choose base output
+        if(tFluids.size() > 0 && tRecipeList != null) { //Does input hatch have a diesel fuel?
+            for (FluidStack hatchFluid1 : tFluids) { //Loops through hatches
+                for(GT_Recipe aFuel : tRecipeList) { //Loops through diesel fuel recipes
+                    FluidStack tLiquid;
+                    if ((tLiquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null) { //Create fluidstack from current recipe
+                        if (hatchFluid1.isFluidEqual(tLiquid)) { //Has a diesel fluid
+                            System.out.println("Fuel Value: "+aFuel.mSpecialValue); //For testing, needs to be removed
+                            fuelConsumption = tLiquid.amount = baseEUt / aFuel.mSpecialValue; //Calc fuel consumption
+                            depleteInput(tLiquid); //Deplete that amount
+                            fuelRemaining = hatchFluid1.amount; //Record available fuel
+                            this.mProgresstime = 1;
+                            this.mMaxProgresstime = 1;
+                            this.mEfficiencyIncrease = 10;
+                            this.mEUt = mEfficiency < 2000 ? 0 : (int)(baseEUt * ((float)mEfficiency / 10000)); //Output 0 if startup is less than 20%
+                            return true;
                         }
                     }
                 }
