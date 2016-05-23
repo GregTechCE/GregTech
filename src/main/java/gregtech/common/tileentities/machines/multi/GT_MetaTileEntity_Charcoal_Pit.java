@@ -36,14 +36,14 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlock
     }
 
     public String[] getDescription() {
-        return new String[]{"Charcoal pit controller",
-                "Place on top of a pile of wood logs",
-                "Maximum size of logs below 11x11x5",
-                "No air beween logs alowed",
-                "Sides and top must be dirt or grass",
-                "Below logs must be bricks",
-                "No other blocks can touch logs",
-                "Turns logs into Brittle Charcoal blocks"};
+        return new String[]{
+                "Controller for the Charcoal Pit",
+                "Converts Logs into Brittle Charcoal blocks",
+                "Max Size(WxHxD): 11x6x11, Controller (Top layer, centered)",
+                "11x1x11 of Bricks (Bottom layer only)",
+                "11x5x11 of Logs (Above bottom Brick layer)",
+                "Only grass/dirt can touch Log blocks",
+                "No air between logs allowed"};
     }
 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
@@ -184,7 +184,7 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlock
         if (p6) aList2.add(new ChunkPosition(aX, aY, aZ - 1));
         return true;
     }
-    
+
     public boolean isWoodLog(Block log){
         String tTool = log.getHarvestTool(0);
         return  OrePrefixes.log.contains(new ItemStack(log, 1))&& ((tTool != null) && (tTool.equals("axe"))) || (log.getMaterial() == Material.wood);

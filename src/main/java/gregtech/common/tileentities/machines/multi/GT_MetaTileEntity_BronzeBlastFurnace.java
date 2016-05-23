@@ -43,7 +43,11 @@ public class GT_MetaTileEntity_BronzeBlastFurnace
     }
 
     public String[] getDescription() {
-        return new String[]{"To get your first Steel", "Multiblock: 3x3x4 hollow with opening on top", "32 Bronze Plated Bricks required"};
+        return new String[]{
+                "Controller Block for the Bronze Blast Furnace",
+                "How to get your first Steel",
+                "Size(WxHxD): 3x4x3 (Hollow, with opening on top)",
+                "Bronze Plated Bricks for the rest (32 at least!)"};
     }
 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {

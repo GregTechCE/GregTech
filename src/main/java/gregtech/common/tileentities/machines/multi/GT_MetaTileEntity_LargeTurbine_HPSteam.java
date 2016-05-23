@@ -34,12 +34,13 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
     public String[] getDescription() {
         return new String[]{
                 "Controller Block for the Large High Pressure Steam Turbine",
-                "Size: 3x4x3 (Hollow)", "Controller (front centered)",
-                "1x Input Hatch (side centered)", "1x Output Hatch(side centered)",
-                "1x Dynamo Hatch (back centered)",
-                "1x Maintenance Hatch (side centered)",
+                "Size(WxHxD): 3x3x4 (Hollow), Controller (Front centered)",
+                "1x Input Hatch (Side centered)",
+                "1x Maintenance Hatch (Side centered)",
+                "1x Muffler Hatch (Side centered)",
+                "1x Dynamo Hatch (Back centered)",
                 "Stainless Steel Turbine Casings for the rest (24 at least!)",
-                "Needs a Turbine Item (inside controller GUI)"};
+                "Needs a Turbine Item (Inside controller GUI)"};
     }
 
     @Override
@@ -73,13 +74,15 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
         int totalFlow = 0; // Byproducts are based on actual flow
         int flow = 0;
         int remainingFlow = (int) (aOptFlow * 1.25f); // Allowed to use up to 125% of optimal flow
+        this.realOptFlow = (aOptFlow / 2);
 
         for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) {
-        	String fluidName = aFluids.get(i).getFluid().getUnlocalizedName(aFluids.get(i));
+            String fluidName = aFluids.get(i).getFluid().getUnlocalizedName(aFluids.get(i));
             if (fluidName.equals("ic2.fluidSuperheatedSteam")) {
                 flow = aFluids.get(i).amount; // Get all (steam) in hatch
                 flow = Math.min(flow, Math.min(remainingFlow, (int) (aOptFlow * 1.25f))); // try to use up to 125% of optimal flow w/o exceeding remainingFlow
                 depleteInput(new FluidStack(aFluids.get(i), flow)); // deplete that amount
+                this.storedFluid = aFluids.get(i).amount;
                 remainingFlow -= flow; // track amount we're allowed to keep depleting from hatches
                 totalFlow += flow; // track total used
                 if (!achievement) {
@@ -90,7 +93,7 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
                     achievement = true;
                 }
             }else if(fluidName.equals("fluid.steam") || fluidName.equals("ic2.fluidSteam") || fluidName.equals("fluid.mfr.steam.still.name")){
-            	depleteInput(new FluidStack(aFluids.get(i), aFluids.get(i).amount));
+                depleteInput(new FluidStack(aFluids.get(i), aFluids.get(i).amount));
             }
         }
 

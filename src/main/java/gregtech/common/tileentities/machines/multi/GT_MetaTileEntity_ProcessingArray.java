@@ -37,16 +37,16 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
     }
 
     public String[] getDescription() {
-        return new String[]{"Controller Block for the Processing Array",
-                "Size: 3x3x3 (Hollow)",
-                "Controller (front centered)",
-                "1x Input (anywhere)",
-                "1x Output (anywhere)",
-                "1x Energy Hatch (anywhere)",
-                "1x Maintenance Hatch (anywhere)",
+        return new String[]{
+                "Controller Block for the Processing Array",
+                "Runs supplied machines as if placed in the world",
+                "Size(WxHxD): 3x3x3 (Hollow), Controller (Front centered)",
+                "1x Input Hatch/Bus (Any casing)",
+                "1x Output Hatch/Bus (Any casing)",
+                "1x Maintenance Hatch (Any casing)",
+                "1x Energy Hatch (Any casing)",
                 "Robust Tungstensteel Casings for the rest (16 at least!)",
-                "Place up to 16 Single Block GT Machines into the GUI Inventory",
-                "They will work the same way as placed directly in world"};
+                "Place up to 16 Single Block GT Machines into the GUI Inventory"};
     }
 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {

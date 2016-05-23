@@ -44,12 +44,14 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
     public String[] getDescription() {
         return new String[]{
                 "Controller Block for the Advanced Miner II",
-                "Size: 3x3x7", "Controller (front middle at bottom)",
-                "3x3 Base of Solid Steel Casings",
-                "Also part of Base: MV+ Energy Input Hatch",
-                "Fluid Input Hatch, Output Bus and Maintainance Hatch",
-                "3x Solid Steel Casings on top the Center of the base",
-                "Steel Frame Boxes on each side and 3 more on top"};
+                "Size(WxHxD): 3x7x3, Controller (Front middle bottom)",
+                "3x1x3 Base of Solid Steel Casings",
+                "1x3x1 Solid Steel Casing pillar (Center of base)",
+                "1x3x1 Steel Frame Boxes (Each Steel pillar side and on top)",
+                "1x Input Hatch (Any bottom layer casing)",
+                "1x Output Bus (Any bottom layer casing)",
+                "1x Maintenance Hatch (Any bottom layer casing)",
+                "1x MV+ Energy Hatch (Any bottom layer casing)"};
     }
 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
@@ -58,7 +60,7 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
         }
         return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[16]};
     }
-    
+
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "DrillingRig.png");
     }
@@ -112,18 +114,18 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
                 }
             }
             if (mMineList.isEmpty()) {
-              if(getBaseMetaTileEntity().getBlockOffset(ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetX, getYOfPumpHead() - 1 - getBaseMetaTileEntity().getYCoord(), ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetZ) != Blocks.bedrock){
-            	if (mEnergyHatches.size() > 0 && mEnergyHatches.get(0).getEUVar() > (512 + getMaxInputVoltage() * 4)) {
-                    moveOneDown();
-                }
-              }else{return false;}
+                if(getBaseMetaTileEntity().getBlockOffset(ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetX, getYOfPumpHead() - 1 - getBaseMetaTileEntity().getYCoord(), ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetZ) != Blocks.bedrock){
+                    if (mEnergyHatches.size() > 0 && mEnergyHatches.get(0).getEUVar() > (512 + getMaxInputVoltage() * 4)) {
+                        moveOneDown();
+                    }
+                }else{return false;}
             }
             ArrayList<ItemStack> tDrops = new ArrayList();
             if (!mMineList.isEmpty()) {
                 Block tMineBlock = getBaseMetaTileEntity().getBlockOffset(mMineList.get(0).chunkPosX, mMineList.get(0).chunkPosY, mMineList.get(0).chunkPosZ);
                 tDrops = tMineBlock.getDrops(getBaseMetaTileEntity().getWorld(), mMineList.get(0).chunkPosX, mMineList.get(0).chunkPosY, mMineList.get(0).chunkPosZ, getBaseMetaTileEntity().getMetaIDOffset(mMineList.get(0).chunkPosX, mMineList.get(0).chunkPosY, mMineList.get(0).chunkPosZ), 1);
                 if (!tDrops.isEmpty()) {
-                	ItemData tData = GT_OreDictUnificator.getItemData(tDrops.get(0).copy());
+                    ItemData tData = GT_OreDictUnificator.getItemData(tDrops.get(0).copy());
                     if (tData.mPrefix != OrePrefixes.crushed&& tData.mMaterial.mMaterial != Materials.Oilsands) {
                         GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(getBaseMetaTileEntity(), false, tVoltage, null, tDrops.get(0).copy());
                         if (tRecipe != null) {
