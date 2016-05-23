@@ -6,8 +6,10 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Turbo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
@@ -22,6 +24,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlockBase {
+    protected int fuelConsumption = 0;
+    protected int fuelRemaining = 0;
+
     public GT_MetaTileEntity_DieselEngine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -61,24 +66,37 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
 
     @Override
     public boolean checkRecipe(ItemStack aStack) {
+        ArrayList<GT_MetaTileEntity_Hatch_Turbo> tHatches = mTurboHatches;
         ArrayList<FluidStack> tFluids = getStoredFluids();
         Collection<GT_Recipe> tRecipeList = GT_Recipe.GT_Recipe_Map.sDieselFuels.mRecipeList;
-        int baseEUt = requiresTurboHatch() ? 8192 : 2048;
 
-        if(tFluids.size() > 0 && tRecipeList != null) {
-            for (FluidStack hatchFluid1 : tFluids) { //Loops through hatches
-                for(GT_Recipe aFuel : tRecipeList) { //Loops through diesel fuel recipes
-                    FluidStack tLiquid;
-                    if ((tLiquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null) {
-                        if (hatchFluid1.isFluidEqual(tLiquid)) { //Has a diesel fluid
-                            System.out.println("Fuel Value: "+aFuel.mSpecialValue); //For testing, needs to be removed
-                            tLiquid.amount = baseEUt / aFuel.mSpecialValue; //Calc fuel consumption
-                            depleteInput(tLiquid); //Deplete that amount
-                            mProgresstime = 1;
-                            mMaxProgresstime = 1;
-                            mEfficiencyIncrease = 10;
-                            mEUt = mEfficiency <= 2000 ? 0 : baseEUt * (mEfficiency / 10000); //Output 0 if startup is 20% or less
-                            return true;
+        if(tHatches.size() > 0) {
+            if(tHatches.get(0).getStackInSlot(0) != null) {
+                ItemStack hatchStack = tHatches.get(0).getStackInSlot(0);
+                if(hatchStack.getItem() instanceof GT_MetaGenerated_Tool) { //Has a GT tool
+                    GT_MetaGenerated_Tool hatchTool = (GT_MetaGenerated_Tool)tHatches.get(0).getStackInSlot(0).getItem();
+
+                    //TODO Better method to detect turbine item. This will do for testing.
+                    int baseEUt = GT_MetaGenerated_Tool.getPrimaryMaterial(hatchStack).mDurability > 0 ? 8192 : 2048; //Choose base output
+
+                    if(tFluids.size() > 0 && tRecipeList != null) { //Does input hatch have a diesel fuel?
+                        for (FluidStack hatchFluid1 : tFluids) { //Loops through hatches
+                            for(GT_Recipe aFuel : tRecipeList) { //Loops through diesel fuel recipes
+                                FluidStack tLiquid;
+                                if ((tLiquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null) { //Create fluidstack from current recipe
+                                    if (hatchFluid1.isFluidEqual(tLiquid)) { //Has a diesel fluid
+                                        System.out.println("Fuel Value: "+aFuel.mSpecialValue); //For testing, needs to be removed
+                                        fuelConsumption = tLiquid.amount = baseEUt / aFuel.mSpecialValue; //Calc fuel consumption
+                                        depleteInput(tLiquid); //Deplete that amount
+                                        fuelRemaining = hatchFluid1.amount; //Record available fuel
+                                        this.mProgresstime = 1;
+                                        this.mMaxProgresstime = 1;
+                                        this.mEfficiencyIncrease = 10;
+                                        this.mEUt = mEfficiency < 2000 ? 0 : (int)(baseEUt * ((float)mEfficiency / 10000)); //Output 0 if startup is less than 20%
+                                        return true;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -112,10 +130,6 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
                             if (getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)) == getCasingBlock() && getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)) == getCasingMeta()) {
                             } else if (!addMufflerToMachineList(getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? 2 : tSide == 4 ? -2 : 0), tY + 1, tZ + (tSide == 3 ? 2 : tSide == 2 ? -2 : 0)), getCasingTextureIndex())) {
                                 return false; //Fail if no muffler top middle back
-                            } else if (!requiresTurboHatch() && addTurboToMachineList(getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)), getCasingTextureIndex())) {
-                                return false; //Fail if has turbo hatch and !requiresTurboHatch()
-                            } else if (requiresTurboHatch() && !addTurboToMachineList(getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)), getCasingTextureIndex())) {
-                                return false; //Fail if does not have turbo hatch and requiresTurboHatch()
                             } else if (!addToMachineList(getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)))) {
                                 return false;
                             }
@@ -142,10 +156,6 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
             }
         }
         return true;
-    }
-
-    public boolean requiresTurboHatch() {
-        return false;
     }
 
     public Block getCasingBlock() {
@@ -177,7 +187,7 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
     }
 
     private boolean addToMachineList(IGregTechTileEntity tTileEntity) {
-        return ((addTurboToMachineList(tTileEntity, getCasingTextureIndex()) && requiresTurboHatch()) || (addMaintenanceToMachineList(tTileEntity, getCasingTextureIndex())) || (addInputToMachineList(tTileEntity, getCasingTextureIndex())) || (addOutputToMachineList(tTileEntity, getCasingTextureIndex())) || (addMufflerToMachineList(tTileEntity, getCasingTextureIndex())));
+        return ((addTurboToMachineList(tTileEntity, getCasingTextureIndex()) || (addMaintenanceToMachineList(tTileEntity, getCasingTextureIndex())) || (addInputToMachineList(tTileEntity, getCasingTextureIndex())) || (addOutputToMachineList(tTileEntity, getCasingTextureIndex())) || (addMufflerToMachineList(tTileEntity, getCasingTextureIndex()))));
     }
 
     @Override
@@ -222,9 +232,11 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
     @Override
     public String[] getInfoData() {
         return new String[]{
-                "Diesel Engine",
-                "Current Output: "+mEUt+" EU/t",
-                "Current Efficiency: "+(mEfficiency/100)+"%"};
+            "Diesel Engine",
+            "Current Output: "+mEUt+" EU/t",
+            "Fuel Consumption: "+fuelConsumption+"L/t",
+            "Fuel Remaining: "+fuelRemaining+" Litres",
+            "Current Efficiency: "+(mEfficiency/100)+"%"};
     }
 
     @Override
