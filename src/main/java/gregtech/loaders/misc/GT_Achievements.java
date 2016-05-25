@@ -172,9 +172,9 @@ public class GT_Achievements {
         registerAchievement("higherefficency", 14, 10, ItemList.Generator_Plasma_IV.get(1, new Object[]{}), "fusion", false);
         registerAchievement("advancing", 12, 8, ItemList.FusionComputer_ZPMV.get(1, new Object[]{}), "fusion", false);
         registerAchievement("tothelimit", 12, 10, ItemList.Generator_Plasma_LuV.get(1, new Object[]{}), "advancing", false);
-        registerAchievement("denseaspossible", 10, 10, ItemList.FusionComputer_UV.get(1, new Object[]{}), "tothelimit", false);
-        registerAchievement("fullefficiency", 10, 12, ItemList.Generator_Plasma_ZPMV.get(1, new Object[]{}), "denseaspossible", false);
-        registerAchievement("whatnow", 8, 10, ItemList.ZPM2.get(1, new Object[]{}), "denseaspossible", false);
+        registerAchievement("fullefficiency", 10, 10, ItemList.Generator_Plasma_ZPMV.get(1, new Object[]{}), "tothelimit", false);
+        registerAchievement("denseaspossible", 8, 10, ItemList.FusionComputer_UV.get(1, new Object[]{}), "fullefficiency", false);
+        registerAchievement("whatnow", 6, 10, ItemList.ZPM2.get(1, new Object[]{}), "denseaspossible", false);
         
         if(Loader.isModLoaded("NotEnoughItems") && GT_Mod.gregtechproxy.mHideUnusedOres){
         for (int i = 1; i < GregTech_API.sGeneratedMaterials.length; i++) {
