@@ -14,6 +14,7 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.*;
 import gregtech.common.covers.*;
 import gregtech.common.items.behaviors.*;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
@@ -24,7 +25,9 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
+import net.minecraftforge.fluids.FluidStack;
 
+import java.util.Collection;
 import java.util.List;
 
 public class GT_MetaGenerated_Item_01
@@ -813,8 +816,18 @@ public class GT_MetaGenerated_Item_01
         }
     }
 
+    public boolean isPlasmaCellUsed(OrePrefixes aPrefix, Materials aMaterial) {
+        Collection<GT_Recipe> fusionRecipes = GT_Recipe.GT_Recipe_Map.sFusionRecipes.mRecipeList;
+        if(aPrefix == OrePrefixes.cellPlasma && aMaterial.getPlasma(1L) != null) { //Materials has a plasma fluid
+            for(GT_Recipe recipe : fusionRecipes) { //Loop through fusion recipes
+                if(recipe.getFluidOutput(0).isFluidEqual(aMaterial.getPlasma(1L))) return true; //Fusion recipe output matches current plasma cell fluid
+            }
+        }
+        return false;
+    }
+
     public boolean doesShowInCreative(OrePrefixes aPrefix, Materials aMaterial, boolean aDoShowAllItems) {
-        return (aDoShowAllItems) || (((aPrefix != OrePrefixes.gem) || (!aMaterial.name().startsWith("Infused"))) && (aPrefix != OrePrefixes.nugget) && (aPrefix != OrePrefixes.dustTiny) && (aPrefix != OrePrefixes.dustSmall) && (aPrefix != OrePrefixes.dustImpure) && (aPrefix != OrePrefixes.dustPure) && (aPrefix != OrePrefixes.crushed) && (aPrefix != OrePrefixes.crushedPurified) && (aPrefix != OrePrefixes.crushedCentrifuged) && (aPrefix != OrePrefixes.ingotHot) && (aPrefix != OrePrefixes.cellPlasma));
+        return (aDoShowAllItems) || (((aPrefix != OrePrefixes.gem) || (!aMaterial.name().startsWith("Infused"))) && (aPrefix != OrePrefixes.nugget) && (aPrefix != OrePrefixes.dustTiny) && (aPrefix != OrePrefixes.dustSmall) && (aPrefix != OrePrefixes.dustImpure) && (aPrefix != OrePrefixes.dustPure) && (aPrefix != OrePrefixes.crushed) && (aPrefix != OrePrefixes.crushedPurified) && (aPrefix != OrePrefixes.crushedCentrifuged) && (aPrefix != OrePrefixes.ingotHot) && isPlasmaCellUsed(aPrefix, aMaterial));
     }
 
     public ItemStack getContainerItem(ItemStack aStack) {
