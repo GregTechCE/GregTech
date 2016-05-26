@@ -40,7 +40,7 @@ import java.util.Random;
 public class GT_Block_Reinforced extends GT_Generic_Block {
 
     public GT_Block_Reinforced(String aName) {
-        super(GT_Item_Storage.class, aName, new Material(net.minecraft.block.material.MapColor.stoneColor));
+        super(GT_Item_Storage.class, aName, new GT_Material_Reinforced());
         setStepSound(soundTypeStone);
         setCreativeTab(GregTech_API.TAB_GREGTECH);
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Bronzeplate Reinforced Block");
