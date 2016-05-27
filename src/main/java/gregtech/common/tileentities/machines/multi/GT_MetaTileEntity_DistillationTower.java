@@ -41,11 +41,12 @@ public class GT_MetaTileEntity_DistillationTower
     public String[] getDescription() {
         return new String[]{
                 "Controller Block for the Distillation Tower",
-                "Size: 3x3x6 (Hollow)", "Controller (front bottom)",
-                "1x Input Hatch (bottom)",
-                "5x Output Hatch (one each height level besides botton)",
-                "1x Output Bus (Botton)", "1x Energy Hatch (anywhere)",
-                "1x Maintenance Hatch (anywhere)",
+                "Size(WxHxD): 3x6x3 (Hollow), Controller (Front bottom)",
+                "1x Input Hatch (Any bottom layer casing)",
+                "5x Output Hatch (Any casing besides bottom layer)",
+                "1x Output Bus (Any bottom layer casing)",
+                "1x Maintenance Hatch (Any casing)",
+                "1x Energy Hatch (Any casing)",
                 "Clean Stainless Steel Casings for the rest (26 at least!)"};
     }
 
@@ -87,12 +88,12 @@ public class GT_MetaTileEntity_DistillationTower
                 }
             }
         }
-    	
+
         long tVoltage = getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
         FluidStack[] tFluids = (FluidStack[]) Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tFluidList.size()]), 0, 1);
         if (tFluids.length > 0) {
-        	GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sDistillationRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, new ItemStack[]{});
+            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sDistillationRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, new ItemStack[]{});
             if (tRecipe != null) {
                 if (tRecipe.isRecipeInputEqual(true, tFluids, new ItemStack[]{})) {
                     this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
@@ -114,7 +115,7 @@ public class GT_MetaTileEntity_DistillationTower
                     this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
                     this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0)};
                     this.mOutputFluids = tRecipe.mFluidOutputs.clone();
-                	ArrayUtils.reverse(mOutputFluids);
+                    ArrayUtils.reverse(mOutputFluids);
                     updateSlots();
                     return true;
                 }

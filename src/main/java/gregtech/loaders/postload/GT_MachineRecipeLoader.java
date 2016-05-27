@@ -1364,7 +1364,7 @@ public class GT_MachineRecipeLoader
 
             tKey = "GT_ADVANCEDMETALLURGY";
             GT_LanguageManager.addStringLocalization("gt.research.page.1." + tKey, "Now that you have discovered all the basic metals, you can finally move on to the next Level of magic metallurgy and create more advanced metals");
-            GregTech_API.sThaumcraftCompat.addResearch(tKey, "Advanced Metallurgic Transmutation", "Mastering the basic metals", new String[]{"GT_TRANSBISMUTH", "GT_IRON_TO_STEEL", "GT_TRANSSOLDERINGALLOY", "GT_TRANSBATTERYALLOY", "GT_TRANSBRASS", "GT_TRANSELECTRUM", "GT_TRANSCUPRONICKEL", "GT_TRANSINVAR"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L), 3, 0, 16, 14, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 50L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 20L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITO, 20L), new TC_Aspects.TC_AspectStack(TC_Aspects.PRAECANTIO, 20L), new TC_Aspects.TC_AspectStack(TC_Aspects.NEBRISUM, 20L), new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 20L)}), null, new Object[]{"gt.research.page.1." + tKey});
+            GregTech_API.sThaumcraftCompat.addResearch(tKey, "Advanced Metallurgic Transmutation", "Mastering the basic metals", new String[]{"GT_TRANSBISMUTH", "GT_IRON_TO_STEEL", "GT_TRANSSOLDERINGALLOY", "GT_TRANSBATTERYALLOY", "GT_TRANSBRASS", "GT_TRANSELECTRUM", "GT_TRANSCUPRONICKEL", "GT_TRANSINVAR"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L), 3, 0, 16, 14, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 50L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 20L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 20L), new TC_Aspects.TC_AspectStack(TC_Aspects.PRAECANTATIO, 20L), new TC_Aspects.TC_AspectStack(TC_Aspects.NEBRISUM, 20L), new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 20L)}), null, new Object[]{"gt.research.page.1." + tKey});
 
             tKey = "GT_TRANSALUMINIUM";
             GT_LanguageManager.addStringLocalization("gt.research.page.1." + tKey, "You have discovered a way to multiply aluminium by steeping aluminium nuggets in metallum harvested from other metals.<BR><BR>This transmutation is slightly harder to achieve, because aluminium has special properties, which require more order to achieve the desired result.");
@@ -1386,7 +1386,7 @@ public class GT_MachineRecipeLoader
                     3, 0, -3, 10,
                     Arrays.asList(new TC_Aspects.TC_AspectStack[]{
                             new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 10L),
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITO, 10L),
+                            new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 10L),
                             new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 20L),
                             new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 10L)}),
                     null, new Object[]{"gt.research.page.1." + tKey,
@@ -1420,7 +1420,7 @@ public class GT_MachineRecipeLoader
                     1, 1, -4, 12,
                     Arrays.asList(new TC_Aspects.TC_AspectStack[]{
                             new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 10L),
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITO, 10L),
+                            new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 10L),
                             new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 20L),
                             new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 10L)}),
                     null, new Object[]{"gt.research.page.1." + tKey,
@@ -1454,7 +1454,7 @@ public class GT_MachineRecipeLoader
                     1, 1, -4, 14,
                     Arrays.asList(new TC_Aspects.TC_AspectStack[]{
                             new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 20L),
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITO, 20L),
+                            new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 20L),
                             new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 40L),
                             new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 20L)}),
                     null, new Object[]{"gt.research.page.1." + tKey,
@@ -1489,7 +1489,7 @@ public class GT_MachineRecipeLoader
                     3, 0, -2, 12,
                     Arrays.asList(new TC_Aspects.TC_AspectStack[]{
                             new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 10L),
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITO, 10L),
+                            new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 10L),
                             new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 20L),
                             new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 10L)}),
                     null, new Object[]{"gt.research.page.1." + tKey,
@@ -1523,7 +1523,7 @@ public class GT_MachineRecipeLoader
                     3, 1, -2, 14,
                     Arrays.asList(new TC_Aspects.TC_AspectStack[]{
                             new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 10L),
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITO, 10L),
+                            new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 10L),
                             new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 20L),
                             new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 10L)}),
                     null, new Object[]{"gt.research.page.1." + tKey,

@@ -36,9 +36,9 @@ public class GT_ThaumcraftCompat
         TC_Aspects.ARBOR.mAspect = Aspect.TREE;
         TC_Aspects.AURAM.mAspect = Aspect.AURA;
         TC_Aspects.BESTIA.mAspect = Aspect.BEAST;
-        TC_Aspects.COGNITO.mAspect = Aspect.MIND;
+        TC_Aspects.COGNITIO.mAspect = Aspect.MIND;
         TC_Aspects.CORPUS.mAspect = Aspect.FLESH;
-        TC_Aspects.EXAMINIS.mAspect = Aspect.UNDEAD;
+        TC_Aspects.EXANIMIS.mAspect = Aspect.UNDEAD;
         TC_Aspects.FABRICO.mAspect = Aspect.CRAFT;
         TC_Aspects.FAMES.mAspect = Aspect.HUNGER;
         TC_Aspects.GELUM.mAspect = Aspect.COLD;
@@ -63,7 +63,7 @@ public class GT_ThaumcraftCompat
         TC_Aspects.PERFODIO.mAspect = Aspect.MINE;
         TC_Aspects.PERMUTATIO.mAspect = Aspect.EXCHANGE;
         TC_Aspects.POTENTIA.mAspect = Aspect.ENERGY;
-        TC_Aspects.PRAECANTIO.mAspect = Aspect.MAGIC;
+        TC_Aspects.PRAECANTATIO.mAspect = Aspect.MAGIC;
         TC_Aspects.SANO.mAspect = Aspect.HEAL;
         TC_Aspects.SENSUS.mAspect = Aspect.SENSES;
         TC_Aspects.SPIRITUS.mAspect = Aspect.SOUL;
