@@ -523,9 +523,6 @@ public class GT_Loader_MetaTileEntities
         GT_ModHandler.addCraftingRecipe(ItemList.Locker_ZPM.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"T", "M", Character.valueOf('M'), ItemList.Battery_Buffer_2by2_ZPM, Character.valueOf('T'), OreDictNames.craftingChest});
         GT_ModHandler.addCraftingRecipe(ItemList.Locker_UV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"T", "M", Character.valueOf('M'), ItemList.Battery_Buffer_2by2_UV, Character.valueOf('T'), OreDictNames.craftingChest});
         GT_ModHandler.addCraftingRecipe(ItemList.Locker_MAX.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"T", "M", Character.valueOf('M'), ItemList.Battery_Buffer_2by2_MAX, Character.valueOf('T'), OreDictNames.craftingChest});
-
-        ItemList.Hatch_Turbo.set(new GT_MetaTileEntity_Hatch_Turbo(700, "hatch.turbo", "Turbo Hatch", 1).getStackForm(1L));
-        GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Turbo.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"dwx", "hMc", "fsr", Character.valueOf('M'), ItemList.Hull_LV});
     }
 
     private static void run2() {

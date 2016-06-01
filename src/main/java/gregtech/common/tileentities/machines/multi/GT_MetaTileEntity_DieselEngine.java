@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
@@ -9,7 +10,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Turbo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
@@ -25,8 +25,9 @@ import java.util.Collection;
 
 public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlockBase {
     protected int fuelConsumption = 0;
+    protected int fuelValue = 0;
     protected int fuelRemaining = 0;
-    protected boolean enableTurboOut = false;
+    protected boolean boostEu = false;
 
     public GT_MetaTileEntity_DieselEngine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -67,42 +68,40 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
 
     @Override
     public boolean checkRecipe(ItemStack aStack) {
-        ArrayList<GT_MetaTileEntity_Hatch_Turbo> tHatches = mTurboHatches;
         ArrayList<FluidStack> tFluids = getStoredFluids();
         Collection<GT_Recipe> tRecipeList = GT_Recipe.GT_Recipe_Map.sDieselFuels.mRecipeList;
 
-        //TODO Better method to detect turbine item. This will do for testing.
-        if(tHatches.size() > 0) {
-            if (tHatches.get(0).getStackInSlot(0) != null) {
-                ItemStack hatchStack = tHatches.get(0).getStackInSlot(0);
-                if (hatchStack.getItem() instanceof GT_MetaGenerated_Tool) { //Has a GT tool
-                    GT_MetaGenerated_Tool hatchTool = (GT_MetaGenerated_Tool) tHatches.get(0).getStackInSlot(0).getItem();
-                    if(GT_MetaGenerated_Tool.getPrimaryMaterial(hatchStack).mDurability > 0) enableTurboOut = true;
-                }
-            }
-        }
-
-        int baseEUt = enableTurboOut ? 8192 : 2048; //Choose base output
         if(tFluids.size() > 0 && tRecipeList != null) { //Does input hatch have a diesel fuel?
             for (FluidStack hatchFluid1 : tFluids) { //Loops through hatches
                 for(GT_Recipe aFuel : tRecipeList) { //Loops through diesel fuel recipes
                     FluidStack tLiquid;
                     if ((tLiquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null) { //Create fluidstack from current recipe
                         if (hatchFluid1.isFluidEqual(tLiquid)) { //Has a diesel fluid
-                            System.out.println("Fuel Value: "+aFuel.mSpecialValue); //For testing, needs to be removed
-                            fuelConsumption = tLiquid.amount = baseEUt / aFuel.mSpecialValue; //Calc fuel consumption
-                            depleteInput(tLiquid); //Deplete that amount
-                            fuelRemaining = hatchFluid1.amount; //Record available fuel
-                            this.mProgresstime = 1;
-                            this.mMaxProgresstime = 1;
-                            this.mEfficiencyIncrease = 10;
-                            this.mEUt = mEfficiency < 2000 ? 0 : (int)(baseEUt * ((float)mEfficiency / 10000)); //Output 0 if startup is less than 20%
-                            return true;
+                            if(tFluids.contains(Materials.Oxygen.getGas(1L))) { //Has oxygen?
+                                if(depleteInput(Materials.Oxygen.getGas((8192 / aFuel.mSpecialValue) / 4))) boostEu = true;
+                            } else boostEu = false;
+
+                            if(tFluids.contains(Materials.Lubricant.getFluid(1L))) { //Has lubricant?
+                                //Deplete Lubricant. 1000L should = 1 hour of runtime (if baseEU = 2048)
+                                if(mRuntime % 72 == 0 || mRuntime == 0) depleteInput(Materials.Lubricant.getFluid(boostEu ? 4 : 1));
+                            } else return false;
+
+                            fuelConsumption = tLiquid.amount = boostEu ? 8192 / aFuel.mSpecialValue : 2048 / aFuel.mSpecialValue; //Calc fuel consumption
+                            if(depleteInput(tLiquid)) { //Deplete that amount
+                                fuelValue = aFuel.mSpecialValue;
+                                fuelRemaining = hatchFluid1.amount; //Record available fuel
+                                this.mEUt = mEfficiency < 2000 ? 0 : (int) (2048 * ((float) mEfficiency / 10000)); //Output 0 if startup is less than 20%
+                                this.mProgresstime = 1;
+                                this.mMaxProgresstime = 1;
+                                this.mEfficiencyIncrease = 50;
+                                return true;
+                            }
                         }
                     }
                 }
             }
         }
+        this.mEUt = 0;
         return false;
     }
 
@@ -187,8 +186,13 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
         return 50;
     }
 
+    @Override
+    public long maxAmperesOut() {
+        return 4;
+    }
+
     private boolean addToMachineList(IGregTechTileEntity tTileEntity) {
-        return ((addTurboToMachineList(tTileEntity, getCasingTextureIndex()) || (addMaintenanceToMachineList(tTileEntity, getCasingTextureIndex())) || (addInputToMachineList(tTileEntity, getCasingTextureIndex())) || (addOutputToMachineList(tTileEntity, getCasingTextureIndex())) || (addMufflerToMachineList(tTileEntity, getCasingTextureIndex()))));
+        return ((addMaintenanceToMachineList(tTileEntity, getCasingTextureIndex())) || (addInputToMachineList(tTileEntity, getCasingTextureIndex())) || (addOutputToMachineList(tTileEntity, getCasingTextureIndex())) || (addMufflerToMachineList(tTileEntity, getCasingTextureIndex())));
     }
 
     @Override
@@ -212,7 +216,7 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
     }
 
     public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
+        return boostEu ? 40000 : 10000;
     }
 
     @Override
@@ -236,6 +240,7 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
             "Diesel Engine",
             "Current Output: "+mEUt+" EU/t",
             "Fuel Consumption: "+fuelConsumption+"L/t",
+            "Fuel Value: "+fuelValue+" EU/mb",
             "Fuel Remaining: "+fuelRemaining+" Litres",
             "Current Efficiency: "+(mEfficiency/100)+"%"};
     }
