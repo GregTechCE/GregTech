@@ -39,8 +39,7 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
     public String[] getDescription() {
         return new String[]{
                 "Controller Block for the Large Diesel Engine",
-                "Size: 3x3x4",
-                "Controller (front centered)",
+                "Size(WxHxD): 3x3x4, Controller (front centered)",
                 "3x3x4 of Stable Titanium Casing (hollow, Min 24!)",
                 "2x Titanium Pipe Casing Block inside the Hollow Casing",
                 "1x Input Hatch (one of the Casings)",
@@ -184,11 +183,6 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
 
     public byte getCasingTextureIndex() {
         return 50;
-    }
-
-    @Override
-    public long maxAmperesOut() {
-        return 4;
     }
 
     private boolean addToMachineList(IGregTechTileEntity tTileEntity) {
