@@ -440,4 +440,28 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
     }
+
+    @Override
+    public String[] getInfoData() {
+        String tier = tier() == 6 ? "I" : tier() == 7 ? "II" : "III";
+        float plasmaOut = 0;
+        int powerRequired = 0;
+        if (this.mLastRecipe != null) {
+            powerRequired = this.mLastRecipe.mEUt;
+            if (this.mLastRecipe.getFluidOutput(0) != null) {
+                plasmaOut = (float)this.mLastRecipe.getFluidOutput(0).amount / (float)this.mLastRecipe.mDuration;
+            }
+        }
+
+        return new String[]{
+                "Fusion Reactor MK "+tier,
+                "EU Required: "+powerRequired+"EU/t",
+                "Stored EU: "+mEUStore+" / "+maxEUStore(),
+                "Plasma Output: "+plasmaOut+"L/t"};
+    }
+
+    @Override
+    public boolean isGivingInformation() {
+        return true;
+    }
 }

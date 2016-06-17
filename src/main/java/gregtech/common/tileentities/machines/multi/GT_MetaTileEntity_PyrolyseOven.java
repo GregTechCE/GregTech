@@ -31,13 +31,15 @@ public class GT_MetaTileEntity_PyrolyseOven extends GT_MetaTileEntity_MultiBlock
         return new String[]{
                 "Controller Block for the Pyrolyse Oven",
                 "Industrial Charcoal producer and Oil from Plants",
-                "Size: 5x5x4, Controller (bottom center)",
-                "Made from ULV Machine Casings (min 60)",
-                "Bottom 3x3 Kantal Heating Coils",
-                "4 high ULV Casings around the coils",
-                "bottom row of casings are Energy Hatch",
-                "Maintainance Hatch and Output Hatch/Bus",
-                "top 3x3 has Input Hatch/Bus and Muffler Hatch"};
+                "Size(WxHxD): 5x4x5, Controller (Bottom center)",
+                "3x1x3 Kanthal Heating Coils (Inside bottom 5x1x5 layer)",
+                "9x Kanthal Heating Coils (Centered 3x1x3 area in Bottom layer)",
+                "1x Input Hatch/Bus (Centered 3x1x3 area in Top layer)",
+                "1x Output Hatch/Bus (Any bottom layer casing)",
+                "1x Maintenance Hatch (Any bottom layer casing)",
+                "1x Muffler Hatch (Centered 3x1x3 area in Top layer)",
+                "1x Energy Hatch (Any bottom layer casing)",
+                "ULV Machine Casings for the rest (60 at least!)"};
     }
 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
@@ -47,7 +49,7 @@ public class GT_MetaTileEntity_PyrolyseOven extends GT_MetaTileEntity_MultiBlock
         }
         return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[0]};
     }
-    
+
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "PyrolyseOven.png");
     }

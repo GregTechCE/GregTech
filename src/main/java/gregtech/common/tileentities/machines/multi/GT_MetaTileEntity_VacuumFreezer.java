@@ -31,7 +31,15 @@ public class GT_MetaTileEntity_VacuumFreezer
     }
 
     public String[] getDescription() {
-        return new String[]{"Controller Block for the Vacuum Freezer", "Size: 3x3x3 (Hollow)", "Controller (front centered)", "1x Input (anywhere)", "1x Output (anywhere)", "1x Energy Hatch (anywhere)", "1x Maintenance Hatch (anywhere)", "Frost Proof Casings for the rest (16 at least!)"};
+        return new String[]{
+                "Controller Block for the Vacuum Freezer",
+                "Super cools hot ingots and cells",
+                "Size(WxHxD): 3x3x3 (Hollow), Controller (Front centered)",
+                "1x Input Bus (Any casing)",
+                "1x Output Bus (Any casing)",
+                "1x Maintenance Hatch (Any casing)",
+                "1x Energy Hatch (Any casing)",
+                "Frost Proof Casings for the rest (16 at least!)"};
     }
 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {

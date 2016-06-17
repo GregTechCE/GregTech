@@ -33,16 +33,15 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_MultiBlockBa
         return new String[]{
                 "Controller Block for the Oil Cracking Unit",
                 "Cracks heavy oil into lighter parts",
-                "Size: 3 high, 3 deep, 5 wide",
-                "Controller (front center)",
-                "Made from Clean Stainless Steel Casings (18 at least!)",
-                "On both sides of the Controller each",
-                "a ring of 8 Cupronickel Coils",
-                "2 Blocks left Input Hatch and 8 Casings",
-                "2 Blocks right Output Hatch and 8 Casings",
-                "beween coils: Controller, second input Hatch",
-                "Add steam for lower energy cost(50%) or Hydrogen for bonus output(30%)",
-                "Maintainance Hatch and Energy Hatch"};
+                "Size(WxHxD): 5x3x3 (Hollow), Controller (Front center)",
+                "Ring of 8 Cupronickel Coils (Each side of Controller)",
+                "1x Input Hatch (Left side middle)",
+                "1x Input Hatch (Any middle ring casing)",
+                "1x Output Hatch (Right side middle)",
+                "1x Maintenance Hatch (Any casing)",
+                "1x Energy Hatch (Any casing)",
+                "Clean Stainless Steel Casings for the rest (18 at least!)",
+                "Optional Steam(50% less EU/t) or Hydrogen(30% more output)"};
     }
 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
@@ -52,7 +51,7 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_MultiBlockBa
         }
         return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[49]};
     }
-    
+
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "OilCrackingUnit.png");
     }
