@@ -317,56 +317,101 @@ public class GT_Recipe {
 
     public boolean isRecipeInputEqual(boolean aDecreaseStacksizeBySuccess, boolean aDontCheckStackSizes, FluidStack[] aFluidInputs, ItemStack... aInputs) {
         if (mFluidInputs.length > 0 && aFluidInputs == null) return false;
+        int amt;
         for (FluidStack tFluid : mFluidInputs)
             if (tFluid != null) {
                 boolean temp = true;
+                amt = tFluid.amount;
                 for (FluidStack aFluid : aFluidInputs)
-                    if (aFluid != null && aFluid.isFluidEqual(tFluid) && (aDontCheckStackSizes || aFluid.amount >= tFluid.amount)) {
-                        temp = false;
-                        break;
+                    if (aFluid != null && aFluid.isFluidEqual(tFluid)){
+                        if (aDontCheckStackSizes ){
+                            temp = false;
+                            break;
+                        }
+                        amt -= aFluid.amount;
+                        if (amt<1){
+                            temp = false;
+                            break;
+                        }
                     }
                 if (temp) return false;
             }
 
         if (mInputs.length > 0 && aInputs == null) return false;
 
-        for (ItemStack tStack : mInputs)
+        for (ItemStack tStack : mInputs) {
             if (tStack != null) {
+                amt = tStack.stackSize;
                 boolean temp = true;
-                for (ItemStack aStack : aInputs)
-                    if ((GT_Utility.areUnificationsEqual(aStack, tStack, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, aStack), tStack, true)) && (aDontCheckStackSizes || aStack.stackSize >= tStack.stackSize)) {
-                        temp = false;
-                        break;
+                for (ItemStack aStack : aInputs) {
+                    if ((GT_Utility.areUnificationsEqual(aStack, tStack, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, aStack), tStack, true))) {
+                        if (aDontCheckStackSizes) {
+                            temp = false;
+                            break;
+                        }
+                        amt -= aStack.stackSize;
+                        if (amt < 1) {
+                            temp = false;
+                            break;
+                        }
                     }
+                }
                 if (temp) return false;
             }
-
+        }
         if (aDecreaseStacksizeBySuccess) {
             if (aFluidInputs != null) {
-                for (FluidStack tFluid : mFluidInputs)
+                for (FluidStack tFluid : mFluidInputs) {
                     if (tFluid != null) {
-                        for (FluidStack aFluid : aFluidInputs)
-                            if (aFluid != null && aFluid.isFluidEqual(tFluid) && (aDontCheckStackSizes || aFluid.amount >= tFluid.amount)) {
-                                aFluid.amount -= tFluid.amount;
-                                break;
+                        amt = tFluid.amount;
+                        for (FluidStack aFluid : aFluidInputs) {
+                            if (aFluid != null && aFluid.isFluidEqual(tFluid)) {
+                                if (aDontCheckStackSizes) {
+                                    aFluid.amount -= amt;
+                                    break;
+                                }
+                                if (aFluid.amount < amt) {
+                                    amt -= aFluid.amount;
+                                    aFluid.amount = 0;
+                                } else {
+                                    aFluid.amount -= amt;
+                                    amt = 0;
+                                    break;
+                                }
                             }
+                        }
                     }
+                }
             }
 
             if (aInputs != null) {
-                for (ItemStack tStack : mInputs)
+                for (ItemStack tStack : mInputs) {
                     if (tStack != null) {
-                        for (ItemStack aStack : aInputs)
-                            if ((GT_Utility.areUnificationsEqual(aStack, tStack, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, aStack), tStack, true)) && (aDontCheckStackSizes || aStack.stackSize >= tStack.stackSize)) {
-                                aStack.stackSize -= tStack.stackSize;
-                                break;
+                        amt = tStack.stackSize;
+                        for (ItemStack aStack : aInputs) {
+                            if ((GT_Utility.areUnificationsEqual(aStack, tStack, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, aStack), tStack, true))) {
+                                if (aDontCheckStackSizes){
+                                    aStack.stackSize -= amt;
+                                    break;
+                                }
+                                if (aStack.stackSize < amt){
+                                    amt -= aStack.stackSize;
+                                    aStack.stackSize = 0;
+                                }else{
+                                    aStack.stackSize -= amt;
+                                    amt = 0;
+                                    break;
+                                }
                             }
+                        }
                     }
+                }
             }
         }
 
         return true;
     }
+
 
     public static class GT_Recipe_Map {
         /**
