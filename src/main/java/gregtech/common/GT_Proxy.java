@@ -1725,6 +1725,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustTinyWood")) {
             rFuelValue = (short) Math.max(rFuelValue, 11);
         }
+        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "plateWood")) {
+            rFuelValue = (short) Math.min(rFuelValue, 300);
+        }
         if (GT_Utility.areStacksEqual(aFuel, new ItemStack(Blocks.wooden_button, 1))) {
             rFuelValue = (short) Math.max(rFuelValue, 150);
         }
