@@ -33,7 +33,15 @@ public class GT_MetaTileEntity_ImplosionCompressor
     }
 
     public String[] getDescription() {
-        return new String[]{"Controller Block for the Implosion Compressor", "Size: 3x3x3 (Hollow)", "Controller (front centered)", "1x Input (anywhere)", "1x Output (anywhere)", "1x Energy Hatch (anywhere)", "1x Maintenance Hatch (anywhere)", "1x Muffler Hatch (anywhere)", "Solid Steel Casings for the rest (16 at least!)"};
+        return new String[]{
+                "Controller Block for the Implosion Compressor",
+                "Size(WxHxD): 3x3x3 (Hollow), Controller (Front centered)",
+                "1x Input Bus (Any casing)",
+                "1x Output Bus (Any casing)",
+                "1x Maintenance Hatch (Any casing)",
+                "1x Muffler Hatch (Any casing)",
+                "1x Energy Hatch (Any casing)",
+                "Solid Steel Casings for the rest (16 at least!)"};
     }
 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {

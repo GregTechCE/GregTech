@@ -34,7 +34,17 @@ public class GT_MetaTileEntity_MultiFurnace
     }
 
     public String[] getDescription() {
-        return new String[]{"Smelts up to 6-18 Items at once", "Controller Block for the Multi Smelter", "Size: 3x3x3 (Hollow)", "Controller (front middle at bottom)", "8x Heating Coils (middle Layer, hollow)", "1x Input (one of bottom)", "1x Output (one of bottom)", "1x Energy Hatch (one of bottom)", "1x Maintenance Hatch (one of bottom)", "1x Muffler Hatch (top middle)", "Heat Proof Machine Casings for the rest"};
+        return new String[]{
+                "Controller Block for the Multi Smelter",
+                "Smelts up to 6-18 Items at once",
+                "Size(WxHxD): 3x3x3 (Hollow), Controller (Front middle at bottom)",
+                "8x Heating Coils (Middle layer, hollow)",
+                "1x Input Bus (One of bottom)",
+                "1x Output Bus (One of bottom)",
+                "1x Maintenance Hatch (One of bottom)",
+                "1x Muffler Hatch (Top middle)",
+                "1x Energy Hatch (One of bottom)",
+                "Heat Proof Machine Casings for the rest",};
     }
 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {

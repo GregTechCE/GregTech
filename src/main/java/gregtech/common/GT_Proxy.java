@@ -1,5 +1,9 @@
 package gregtech.common;
 
+import java.io.File;
+import java.text.DateFormat;
+import java.util.*;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IFuelHandler;
 import cpw.mods.fml.common.Loader;
@@ -28,12 +32,7 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.*;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
-import gregtech.common.items.armor.ContainerBasicArmor;
-import gregtech.common.items.armor.ContainerElectricArmor1;
-import gregtech.common.items.armor.GuiElectricArmor1;
-import gregtech.common.items.armor.GuiModularArmor;
-import gregtech.common.items.armor.InventoryArmor;
-import gregtech.common.items.armor.ModularArmor_Item;
+import gregtech.common.items.armor.*;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -76,21 +75,17 @@ import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-import java.io.File;
-import java.text.DateFormat;
-import java.util.*;
-
 public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     private static final EnumSet<OreGenEvent.GenerateMinable.EventType> PREVENTED_ORES = EnumSet.of(OreGenEvent.GenerateMinable.EventType.COAL,
             new OreGenEvent.GenerateMinable.EventType[]{OreGenEvent.GenerateMinable.EventType.IRON, OreGenEvent.GenerateMinable.EventType.GOLD,
                     OreGenEvent.GenerateMinable.EventType.DIAMOND, OreGenEvent.GenerateMinable.EventType.REDSTONE, OreGenEvent.GenerateMinable.EventType.LAPIS,
                     OreGenEvent.GenerateMinable.EventType.QUARTZ});
-    public final HashSet<ItemStack> mRegisteredOres = new HashSet(10000);
-    public final ArrayList<String> mSoundNames = new ArrayList();
-    public final ArrayList<ItemStack> mSoundItems = new ArrayList();
-    public final ArrayList<Integer> mSoundCounts = new ArrayList();
-    private final Collection<OreDictEventContainer> mEvents = new HashSet();
-    private final Collection<String> mIgnoredItems = new HashSet(Arrays.asList(new String[]{"itemGhastTear", "itemFlint", "itemClay", "itemBucketSaltWater",
+    public final HashSet<ItemStack> mRegisteredOres = new HashSet<ItemStack>(10000);
+    public final ArrayList<String> mSoundNames = new ArrayList<String>();
+    public final ArrayList<ItemStack> mSoundItems = new ArrayList<ItemStack>();
+    public final ArrayList<Integer> mSoundCounts = new ArrayList<Integer>();
+    private final Collection<OreDictEventContainer> mEvents = new HashSet<OreDictEventContainer>();
+    private final Collection<String> mIgnoredItems = new HashSet<String>(Arrays.asList(new String[]{"itemGhastTear", "itemFlint", "itemClay", "itemBucketSaltWater",
             "itemBucketFreshWater", "itemBucketWater", "itemRock", "itemReed", "itemArrow", "itemSaw", "itemKnife", "itemHammer", "itemChisel", "itemRubber",
             "itemEssence", "itemIlluminatedPanel", "itemSkull", "itemRawRubber", "itemBacon", "itemJetpackAccelerator", "itemLazurite", "itemIridium",
             "itemTear", "itemClaw", "itemFertilizer", "itemTar", "itemSlimeball", "itemCoke", "itemBeeswax", "itemBeeQueen", "itemForcicium", "itemForcillium",
@@ -101,7 +96,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             "itemWhippingCream", "itemGlisteningWhippingCream", "itemCleaver", "itemHerbalMedicineWhippingCream", "itemStrangeWhippingCream",
             "itemBlazeCleaver", "itemBakedCakeSponge", "itemMagmaCake", "itemGlisteningCake", "itemOgreCleaver", "itemFishandPumpkinCake",
             "itemMagmaWhippingCream", "itemMultimeter", "itemSuperconductor"}));
-    private final Collection<String> mIgnoredNames = new HashSet(Arrays.asList(new String[]{"grubBee", "chainLink", "candyCane", "bRedString", "bVial",
+    private final Collection<String> mIgnoredNames = new HashSet<String>(Arrays.asList(new String[]{"grubBee", "chainLink", "candyCane", "bRedString", "bVial",
             "bFlask", "anorthositeSmooth", "migmatiteSmooth", "slateSmooth", "travertineSmooth", "limestoneSmooth", "orthogneissSmooth", "marbleSmooth",
             "honeyDrop", "lumpClay", "honeyEqualssugar", "flourEqualswheat", "bluestoneInsulated", "blockWaterstone", "blockSand", "blockTorch",
             "blockPumpkin", "blockClothRock", "blockStainedHardenedClay", "blockQuartzPillar", "blockQuartzChiselled", "blockSpawner", "blockCloth", "mobHead",
@@ -119,7 +114,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             "antiBlock", "burntQuartz", "salmonRaw", "blockHopper", "blockEnderObsidian", "blockIcestone", "blockMagicWood", "blockEnderCore", "blockHeeEndium",
             "oreHeeEndPowder", "oreHeeStardust", "oreHeeIgneousRock", "oreHeeInstabilityOrb", "crystalPureFluix", "shardNether", "gemFluorite",
             "stickObsidian", "caveCrystal", "shardCrystal", "dyeCrystal","shardFire","shardWater","shardAir","shardEarth","ingotRefinedIron","blockMarble"}));
-    private final Collection<String> mInvalidNames = new HashSet(Arrays.asList(new String[]{"diamondShard", "redstoneRoot", "obsidianStick", "bloodstoneOre",
+    private final Collection<String> mInvalidNames = new HashSet<String>(Arrays.asList(new String[]{"diamondShard", "redstoneRoot", "obsidianStick", "bloodstoneOre",
             "universalCable", "bronzeTube", "ironTube", "netherTube", "obbyTube", "infiniteBattery", "eliteBattery", "advancedBattery", "10kEUStore",
             "blueDye", "MonazitOre", "quartzCrystal", "whiteLuminiteCrystal", "darkStoneIngot", "invisiumIngot", "demoniteOrb", "enderGem", "starconiumGem",
             "osmoniumIngot", "tapaziteGem", "zectiumIngot", "foolsRubyGem", "rubyGem", "meteoriteGem", "adamiteShard", "sapphireGem", "copperIngot",
@@ -1128,14 +1123,14 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                                     tReRegisteredMaterial = (Materials) i$.next();
                                 }
                                 aMaterial.add(GT_Utility.copyAmount(1L, new Object[]{aEvent.Ore}));
-                                
+
                     			if (GregTech_API.sThaumcraftCompat != null && aPrefix.doGenerateItem(aMaterial) && !aPrefix.isIgnored(aMaterial)) {
                     	    	    List<TC_AspectStack> tAspects = new ArrayList<TC_AspectStack>();
                     	    	    for (TC_AspectStack tAspect : aPrefix.mAspects) tAspect.addToAspectList(tAspects);
                     	    	    if (aPrefix.mMaterialAmount >= 3628800 || aPrefix.mMaterialAmount < 0) for (TC_AspectStack tAspect : aMaterial.mAspects) tAspect.addToAspectList(tAspects);
                     	    	    GregTech_API.sThaumcraftCompat.registerThaumcraftAspectsToItem(GT_Utility.copyAmount(1, aEvent.Ore), tAspects, aEvent.Name);
                         	    }
-                                
+
                                 switch (aPrefix) {
                                     case crystal:
                                         if ((aMaterial == Materials.CertusQuartz) || (aMaterial == Materials.NetherQuartz) || (aMaterial == Materials.Fluix)) {
@@ -1540,11 +1535,11 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         }
         return null;
     }
-    
+
 	public Object getRightItem(EntityPlayer player, int ID){
 		ItemStack mStack = player.getEquipmentInSlot(ID/100);
 		if(mStack==null||!(mStack.getItem() instanceof ModularArmor_Item))return null;
-		
+
 		switch(ID % 100){
 		case 0:
 			return new ContainerBasicArmor(player, new InventoryArmor(ModularArmor_Item.class, mStack));
@@ -1559,7 +1554,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     public Object getClientGuiElement(int aID, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
     	if(aID>=1000){
-    		int ID = aID-1000;    		
+    		int ID = aID-1000;
     		switch(ID){
     		case 0:
     			return new GuiModularArmor(new ContainerBasicArmor(aPlayer, new InventoryArmor(ModularArmor_Item.class, aPlayer.getCurrentEquippedItem())), aPlayer);
@@ -1580,11 +1575,11 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         }
         return null;
     }
-    
+
 	public Object getRightItemGui(EntityPlayer player, int ID){
 		ItemStack mStack = player.getEquipmentInSlot(ID/100);
 		if(mStack==null||!(mStack.getItem() instanceof ModularArmor_Item))return null;
-		
+
 		switch(ID % 100){
 		case 0:
 			return new GuiModularArmor(new ContainerBasicArmor(player, new InventoryArmor(ModularArmor_Item.class, mStack)),player);
@@ -1902,9 +1897,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             tEvent = (OreDictEventContainer) i$.next();
         }
     }
-    
+
     public static final HashMap<ChunkPosition, int[]>  chunkData = new HashMap<ChunkPosition, int[]>(5000);
-    
+
     @SubscribeEvent
     public void handleChunkSaveEvent(ChunkDataEvent.Save event)
     {
@@ -1913,7 +1908,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     		int[] tInts = chunkData.get(tPos);
     		if(tInts.length>0){event.getData().setInteger("GTOIL", tInts[0]);}}
     }
-    
+
     @SubscribeEvent
     public void handleChunkLoadEvent(ChunkDataEvent.Load event)
     {
@@ -1924,7 +1919,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     	if(chunkData.containsKey(tPos)){
     		chunkData.remove(tPos);}
     	chunkData.put(tPos, new int[]{ tOil});
-    } 
+    }
 
     public static class OreDictEventContainer {
         public final OreDictionary.OreRegisterEvent mEvent;

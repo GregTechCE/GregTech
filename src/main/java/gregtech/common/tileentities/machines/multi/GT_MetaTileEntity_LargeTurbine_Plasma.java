@@ -35,12 +35,13 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
     public String[] getDescription() {
         return new String[]{
                 "Controller Block for the Large Plasma Generator",
-                "Size: 3x4x3 (Hollow)", "Controller (front centered)",
-                "1x Input Hatch (side centered)",
-                "1x Dynamo Hatch (back centered)",
-                "1x Maintenance Hatch (side centered)",
+                "Size(WxHxD): 3x3x4 (Hollow), Controller (Front centered)",
+                "1x Input Hatch (Side centered)",
+                "1x Maintenance Hatch (Side centered)",
+                "1x Muffler Hatch (Side centered)",
+                "1x Dynamo Hatch (Back centered)",
                 "Tungstensteel Turbine Casings for the rest (24 at least!)",
-                "Needs a Turbine Item (inside controller GUI)"};
+                "Needs a Turbine Item (Inside controller GUI)"};
     }
 
     public int getFuelValue(FluidStack aLiquid) {
@@ -90,6 +91,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
             FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0); // Identify a SINGLE type of fluid to process.  Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
             actualOptimalFlow = (int) ((aOptFlow + fuelValue - 1) / fuelValue);
+            this.realOptFlow = (aOptFlow / fuelValue); // For scanner info
 
             int remainingFlow = (int) (actualOptimalFlow * 1.25f); // Allowed to use up to 125% of optimal flow.  Variable required outside of loop for multi-hatch scenarios.
             int flow = 0;
@@ -100,6 +102,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
                     flow = aFluids.get(i).amount; // Get all (steam) in hatch
                     flow = Math.min(flow, Math.min(remainingFlow, (int) (actualOptimalFlow * 1.25f))); // try to use up to 125% of optimal flow w/o exceeding remainingFlow
                     depleteInput(new FluidStack(aFluids.get(i), flow)); // deplete that amount
+                    this.storedFluid = aFluids.get(i).amount;
                     remainingFlow -= flow; // track amount we're allowed to continue depleting from hatches
                     totalFlow += flow; // track total input used
                 }

@@ -595,9 +595,9 @@ public enum OrePrefixes {
         } else if (name().startsWith("crate")) {
             new TC_AspectStack(TC_Aspects.ITER, 2).addToAspectList(mAspects);
         } else if (name().startsWith("circuit")) {
-            new TC_AspectStack(TC_Aspects.COGNITO, 1).addToAspectList(mAspects);
+            new TC_AspectStack(TC_Aspects.COGNITIO, 1).addToAspectList(mAspects);
         } else if (name().startsWith("computer")) {
-            new TC_AspectStack(TC_Aspects.COGNITO, 4).addToAspectList(mAspects);
+            new TC_AspectStack(TC_Aspects.COGNITIO, 4).addToAspectList(mAspects);
         } else if (name().startsWith("battery")) {
             new TC_AspectStack(TC_Aspects.ELECTRUM, 1).addToAspectList(mAspects);
         }

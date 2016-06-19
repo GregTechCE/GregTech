@@ -20,6 +20,8 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_M
 
     protected int baseEff = 0;
     protected int optFlow = 0;
+    protected int realOptFlow = 0;
+    protected int storedFluid = 0;
     protected int counter = 0;
 
     public GT_MetaTileEntity_LargeTurbine(int aID, String aName, String aNameRegional) {
@@ -33,7 +35,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_M
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return getMaxEfficiency(aStack) > 0;
     }
-    
+
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "LargeTurbine.png");
     }
@@ -190,29 +192,31 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_M
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return true;
     }
-    
+
     @Override
     public String[] getInfoData() {
-        		String tRunning = mMaxProgresstime>0 ? "Turbine running":"Turbine stopped";
-        		String tMaintainance = getIdealStatus() == getRepairStatus() ? "No Maintainance issues" : "Needs Maintainance" ;
-        		int tDura = 0;
-        		
-                if (mInventory[1] != null && mInventory[1].getItem() instanceof GT_MetaGenerated_Tool_01) {
-                	tDura = (int) ((100.0f / GT_MetaGenerated_Tool.getToolMaxDamage(mInventory[1]) * (GT_MetaGenerated_Tool.getToolDamage(mInventory[1]))+1));
-                }
-        		
+        String tRunning = mMaxProgresstime>0 ? "Turbine running":"Turbine stopped";
+        String tMaintainance = getIdealStatus() == getRepairStatus() ? "No Maintainance issues" : "Needs Maintainance" ;
+        int tDura = 0;
+
+        if (mInventory[1] != null && mInventory[1].getItem() instanceof GT_MetaGenerated_Tool_01) {
+            tDura = (int) ((100.0f / GT_MetaGenerated_Tool.getToolMaxDamage(mInventory[1]) * (GT_MetaGenerated_Tool.getToolDamage(mInventory[1]))+1));
+        }
+
         return new String[]{
                 "Large Turbine",
                 tRunning,
-                "Current output: "+mEUt+" EU/t",
-                "Current speed: "+(mEfficiency/100)+"%",
-                tMaintainance,
-                "Turbine Damage: "+tDura+"%"};
+                "Current Output: "+mEUt+" EU/t",
+                "Optimal Flow: "+realOptFlow+" L/t",
+                "Fuel Remaining: "+storedFluid+"L",
+                "Current Speed: "+(mEfficiency/100)+"%",
+                "Turbine Damage: "+tDura+"%",
+                tMaintainance};
     }
 
     @Override
     public boolean isGivingInformation() {
         return true;
     }
-    
+
 }

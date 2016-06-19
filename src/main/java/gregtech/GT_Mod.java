@@ -1,15 +1,17 @@
 package gregtech;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
+import java.util.*;
+import java.util.Map.Entry;
+
 import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.registry.EntityRegistry;
-import forestry.api.core.ForestryAPI;
 import forestry.api.recipes.ICentrifugeRecipe;
 import forestry.api.recipes.ISqueezerRecipe;
 import forestry.api.recipes.RecipeManagers;
-//import forestry.factory.recipes.ISqueezerRecipe;
-//import forestry.factory.tiles.TileCentrifuge;
-//import forestry.factory.tiles.TileSqueezer;
 import gregtech.api.GregTech_API;
 import gregtech.api.enchants.Enchantment_EnderDamage;
 import gregtech.api.enchants.Enchantment_Radioactivity;
@@ -32,6 +34,7 @@ import gregtech.loaders.load.GT_SonictronLoader;
 import gregtech.loaders.misc.GT_Achievements;
 import gregtech.loaders.misc.GT_Bees;
 import gregtech.loaders.misc.GT_CoverLoader;
+import gregtech.loaders.misc.OreProcessingConfiguration;
 import gregtech.loaders.postload.*;
 import gregtech.loaders.preload.*;
 import ic2.api.recipe.IRecipeInput;
@@ -53,11 +56,9 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
-import java.util.*;
-import java.util.Map.Entry;
+//import forestry.factory.recipes.ISqueezerRecipe;
+//import forestry.factory.tiles.TileCentrifuge;
+//import forestry.factory.tiles.TileSqueezer;
 
 
 @Mod(modid = "gregtech", name = "GregTech", version = "MC1710", useMetadata = false, dependencies = "required-after:IC2; after:Forestry; after:PFAAGeologica; after:Thaumcraft; after:Railcraft; after:appliedenergistics2; after:ThermalExpansion; after:TwilightForest; after:harvestcraft; after:magicalcrops; after:BuildCraft|Transport; after:BuildCraft|Silicon; after:BuildCraft|Factory; after:BuildCraft|Energy; after:BuildCraft|Core; after:BuildCraft|Builders; after:GalacticraftCore; after:GalacticraftMars; after:GalacticraftPlanets; after:ThermalExpansion|Transport; after:ThermalExpansion|Energy; after:ThermalExpansion|Factory; after:RedPowerCore; after:RedPowerBase; after:RedPowerMachine; after:RedPowerCompat; after:RedPowerWiring; after:RedPowerLogic; after:RedPowerLighting; after:RedPowerWorld; after:RedPowerControl;")
@@ -250,7 +251,7 @@ public class GT_Mod
         		gregtechproxy.mHarvestLevel[tMaterial.mMetaItemSubID] = GregTech_API.sMaterialProperties.get("materialHavestLevel", tMaterial.mDefaultLocalName,tMaterial.mToolQuality);
         	}
         }}
-        
+
         if (tMainConfig.get("general", "hardermobspawners", true).getBoolean(true)) {
             Blocks.mob_spawner.setHardness(500.0F).setResistance(6000000.0F);
         }
@@ -296,6 +297,8 @@ public class GT_Mod
 
         new Enchantment_EnderDamage();
         new Enchantment_Radioactivity();
+
+        new OreProcessingConfiguration(aEvent.getModConfigurationDirectory()).run();
 
         new GT_Loader_OreProcessing().run();
         new GT_Loader_OreDictionary().run();
@@ -671,7 +674,7 @@ public class GT_Mod
                 }
             }
         }
-        
+
         if(GregTech_API.mOutputRF||GregTech_API.mInputRF){
         	GT_Utility.checkAvailabilities();
         	if(!GT_Utility.RF_CHECK){
@@ -679,7 +682,7 @@ public class GT_Mod
 				GregTech_API.mInputRF = false;
         	}
         }
-        
+
         achievements = new GT_Achievements();
         Map.Entry<IRecipeInput, RecipeOutput> tRecipe;
         GT_Log.out.println("GT_Mod: Loading finished, deallocating temporary Init Variables.");
