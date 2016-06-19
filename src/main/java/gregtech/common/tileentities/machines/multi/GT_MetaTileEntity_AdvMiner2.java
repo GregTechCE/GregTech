@@ -71,18 +71,17 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
             ArrayList<ItemStack> tItems = getStoredInputs();
             for (ItemStack tStack : tItems) {
                 if (tStack.isItemEqual(GT_ModHandler.getIC2Item("miningPipe", 1L))) {
-                    if (tStack.stackSize < 2) {
-                        tStack = null;
-                    } else {
                         tStack.stackSize--;
+                    if (tStack.stackSize < 1) {
+                        tStack = null;
                     }
-
-                }
                 if (mInventory[1] == null) {
                     mInventory[1] = GT_ModHandler.getIC2Item("miningPipe", 1L);
                 } else {
                     mInventory[1].stackSize++;
                 }
+                }
+
             }
         }
         if (mInputHatches == null || mInputHatches.get(0).mFluid == null || mInputHatches.get(0).mFluid.getFluid().getID() != ItemList.sDrillingFluid.getID()) {
