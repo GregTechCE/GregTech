@@ -448,6 +448,12 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                                 for (int i = mMetaTileEntity.dechargerSlotStartIndex(), k = mMetaTileEntity.dechargerSlotCount() + i; i < k; i++) {
                                     if (mMetaTileEntity.mInventory[i] != null && getStoredEU() < getEUCapacity()) {
                                         dischargeItem(mMetaTileEntity.mInventory[i]);
+                                        if(ic2.api.info.Info.itemEnergy.getEnergyValue(mMetaTileEntity.mInventory[i])>0){
+                                        	if((getStoredEU() + ic2.api.info.Info.itemEnergy.getEnergyValue(mMetaTileEntity.mInventory[i]))<getEUCapacity()){
+                                        	increaseStoredEnergyUnits((long)ic2.api.info.Info.itemEnergy.getEnergyValue(mMetaTileEntity.mInventory[i]),false);
+                                        	mMetaTileEntity.mInventory[i].stackSize--;
+                                        	}
+                                        }
                                         if (mMetaTileEntity.mInventory[i].stackSize <= 0)
                                             mMetaTileEntity.mInventory[i] = null;
                                         mInventoryChanged = true;
