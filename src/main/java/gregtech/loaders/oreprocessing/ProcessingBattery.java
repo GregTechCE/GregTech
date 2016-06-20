@@ -15,7 +15,7 @@ public class ProcessingBattery implements gregtech.api.interfaces.IOreRecipeRegi
 
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         if (aMaterial == Materials.Lithium) {
-            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_ModHandler.getIC2Item("cropnalyzer", 1L, 32767), ItemList.Tool_Scanner.getAlmostBroken(1L, new Object[0]), 12800, 16);
+           // GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_ModHandler.getIC2Item("cropnalyzer", 1L, 32767), ItemList.Tool_Scanner.getAlmostBroken(1L, new Object[0]), 12800, 16);
         }
     }
 }

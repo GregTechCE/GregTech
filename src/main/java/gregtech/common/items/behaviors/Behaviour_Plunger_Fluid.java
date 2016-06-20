@@ -1,8 +1,12 @@
 package gregtech.common.items.behaviors;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,7 +42,18 @@ public class Behaviour_Plunger_Fluid
                     }
                 }
             }
-        }
+
+        }       
+        if (aTileEntity instanceof IGregTechTileEntity) {
+        IGregTechTileEntity tTileEntity = (IGregTechTileEntity) aTileEntity;
+        IMetaTileEntity mTileEntity = tTileEntity.getMetaTileEntity();
+        if (mTileEntity instanceof GT_MetaTileEntity_BasicTank) {
+          	GT_MetaTileEntity_BasicTank machine = (GT_MetaTileEntity_BasicTank) mTileEntity;
+           	if(machine.mFluid!=null&&machine.mFluid.amount>0)
+           	machine.mFluid.amount = machine.mFluid.amount - Math.min(machine.mFluid.amount, 1000);
+           	return true;
+                }
+            }
         return false;
     }
 
