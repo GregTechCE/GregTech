@@ -41,7 +41,7 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
                 "Controller Block for the Large Diesel Engine",
                 "Size(WxHxD): 3x3x4, Controller (front centered)",
                 "3x3x4 of Stable Titanium Casing (hollow, Min 24!)",
-                "2x Titanium Pipe Casing Block inside the Hollow Casing",
+                "2x Titanium Gear Box Casing inside the Hollow Casing",
                 "1x Input Hatch (one of the Casings)",
                 "1x Maintenance Hatch (one of the Casings)",
                 "1x Muffler Hatch (top middle back)",
@@ -76,17 +76,16 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
                     FluidStack tLiquid;
                     if ((tLiquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null) { //Create fluidstack from current recipe
                         if (hatchFluid1.isFluidEqual(tLiquid)) { //Has a diesel fluid
-                            if(tFluids.contains(Materials.Oxygen.getGas(1L))) { //Has oxygen?
-                                if(depleteInput(Materials.Oxygen.getGas((8192 / aFuel.mSpecialValue) / 4))) boostEu = true;
-                            } else boostEu = false;
-
-                            if(tFluids.contains(Materials.Lubricant.getFluid(1L))) { //Has lubricant?
-                                //Deplete Lubricant. 1000L should = 1 hour of runtime (if baseEU = 2048)
-                                if(mRuntime % 72 == 0 || mRuntime == 0) depleteInput(Materials.Lubricant.getFluid(boostEu ? 4 : 1));
-                            } else return false;
-
                             fuelConsumption = tLiquid.amount = boostEu ? 8192 / aFuel.mSpecialValue : 2048 / aFuel.mSpecialValue; //Calc fuel consumption
                             if(depleteInput(tLiquid)) { //Deplete that amount
+                                if(tFluids.contains(Materials.Oxygen.getGas(1L))) { //Has oxygen?
+                                    if(depleteInput(Materials.Oxygen.getGas((8192 / aFuel.mSpecialValue) / 4))) boostEu = true;
+                                } else boostEu = false;
+
+                                if(tFluids.contains(Materials.Lubricant.getFluid(1L))) { //Has lubricant?
+                                    //Deplete Lubricant. 1000L should = 1 hour of runtime (if baseEU = 2048)
+                                    if(mRuntime % 72 == 0 || mRuntime == 0) depleteInput(Materials.Lubricant.getFluid(boostEu ? 4 : 1));
+                                } else return false;
                                 fuelValue = aFuel.mSpecialValue;
                                 fuelRemaining = hatchFluid1.amount; //Record available fuel
                                 this.mEUt = mEfficiency < 2000 ? 0 : (int) (2048 * ((float) mEfficiency / 10000)); //Output 0 if startup is less than 20%
@@ -234,7 +233,7 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
             "Diesel Engine",
             "Current Output: "+mEUt+" EU/t",
             "Fuel Consumption: "+fuelConsumption+"L/t",
-            "Fuel Value: "+fuelValue+" EU/mb",
+            "Fuel Value: "+fuelValue+" EU/L",
             "Fuel Remaining: "+fuelRemaining+" Litres",
             "Current Efficiency: "+(mEfficiency/100)+"%"};
     }
