@@ -1035,7 +1035,6 @@ public class GT_Loader_MetaTileEntities
 
         ItemList.Machine_Multi_DieselEngine.set(new GT_MetaTileEntity_DieselEngine(1171, "multimachine.dieselengine", "Diesel Engine").getStackForm(1L));
         GT_ModHandler.addCraftingRecipe(ItemList.Machine_Multi_DieselEngine.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"PCP", "EME", "GWG", Character.valueOf('M'), ItemList.Hull_EV, Character.valueOf('P'), ItemList.Electric_Piston_EV, Character.valueOf('E'), ItemList.Electric_Motor_EV, Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Ultimate), Character.valueOf('W'), OrePrefixes.cableGt01.get(Materials.TungstenSteel), Character.valueOf('G'), OrePrefixes.gearGt.get(Materials.Titanium)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Casing_EngineIntake.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"PhP", "RFR", "PwP", Character.valueOf('P'), OrePrefixes.pipe.get(Materials.TungstenSteel), Character.valueOf('F'), ItemList.Casing_StableTitanium, Character.valueOf('R'), OrePrefixes.rotor.get(Materials.Titanium)});
     }
 
     private static void run4() {
