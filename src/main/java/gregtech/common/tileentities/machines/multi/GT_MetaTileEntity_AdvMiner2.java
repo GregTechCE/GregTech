@@ -119,10 +119,13 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
                     }
                 }else{return false;}
             }
-            ArrayList<ItemStack> tDrops = new ArrayList();
             if (!mMineList.isEmpty()) {
                 ChunkPosition oreBlockOffsetPos = mMineList.get(0);
-                tDrops = ((GT_TileEntity_Ores) getBaseMetaTileEntity().getTileEntityOffset(oreBlockOffsetPos.chunkPosX, oreBlockOffsetPos.chunkPosY, oreBlockOffsetPos.chunkPosZ)).getDrops(1);
+                ArrayList<ItemStack> tDrops = new ArrayList<ItemStack>();
+                GT_TileEntity_Ores oreBlockTileEntity = (GT_TileEntity_Ores) getBaseMetaTileEntity().getTileEntityOffset(oreBlockOffsetPos.chunkPosX, oreBlockOffsetPos.chunkPosY, oreBlockOffsetPos.chunkPosZ);
+                if (oreBlockTileEntity != null) {
+                    tDrops = oreBlockTileEntity.getDrops(1);
+                }
                 if (!tDrops.isEmpty()) {
                     ItemData tData = GT_OreDictUnificator.getItemData(tDrops.get(0).copy());
                     if (tData.mPrefix != OrePrefixes.crushed&& tData.mMaterial.mMaterial != Materials.Oilsands) {
@@ -131,7 +134,9 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
                             this.mOutputItems = new ItemStack[tRecipe.mOutputs.length];
                             for (int g = 0; g < mOutputItems.length; g++) {
                                 mOutputItems[g] = tRecipe.mOutputs[g].copy();
-                                mOutputItems[g].stackSize = mOutputItems[g].stackSize * (getBaseMetaTileEntity().getRandomNumber(4) + 1);
+                                if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(g)) {
+                                    mOutputItems[g].stackSize *= getBaseMetaTileEntity().getRandomNumber(4) + 1;
+                                }
                             }
                         }
                     } else {
