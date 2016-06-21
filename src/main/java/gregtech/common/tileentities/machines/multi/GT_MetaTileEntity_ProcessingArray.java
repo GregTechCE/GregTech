@@ -168,34 +168,12 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
         if (mInventory[1].getUnlocalizedName().endsWith("5")) {
             tTier = 5;
         }
-        for (int i = 0; i < tInputList.size() - 1; i++) {
-            for (int j = i + 1; j < tInputList.size(); j++) {
-                if (GT_Utility.areStacksEqual((ItemStack) tInputList.get(i), (ItemStack) tInputList.get(j))) {
-                    if (((ItemStack) tInputList.get(i)).stackSize >= ((ItemStack) tInputList.get(j)).stackSize) {
-                        tInputList.remove(j--);
-                    } else {
-                        tInputList.remove(i--);
-                        break;
-                    }
-                }
-            }
-        }
-        ItemStack[] tInputs = (ItemStack[]) Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, 2);
+        
+        ItemStack[] tInputs = (ItemStack[]) tInputList.toArray(new ItemStack[tInputList.size()]);
 
         ArrayList<FluidStack> tFluidList = getStoredFluids();
-        for (int i = 0; i < tFluidList.size() - 1; i++) {
-            for (int j = i + 1; j < tFluidList.size(); j++) {
-                if (GT_Utility.areFluidsEqual((FluidStack) tFluidList.get(i), (FluidStack) tFluidList.get(j))) {
-                    if (((FluidStack) tFluidList.get(i)).amount >= ((FluidStack) tFluidList.get(j)).amount) {
-                        tFluidList.remove(j--);
-                    } else {
-                        tFluidList.remove(i--);
-                        break;
-                    }
-                }
-            }
-        }
-        FluidStack[] tFluids = (FluidStack[]) Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tInputList.size()]), 0, 1);
+        
+        FluidStack[] tFluids = (FluidStack[]) tFluidList.toArray(new FluidStack[tFluidList.size()]); 
         if (tInputList.size() > 0 || tFluids.length > 0) {
             GT_Recipe tRecipe = map.findRecipe(getBaseMetaTileEntity(), mLastRecipe, false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
             if (tRecipe != null) {
