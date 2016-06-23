@@ -1728,6 +1728,12 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "plateWood")) {
             rFuelValue = (short) Math.min(rFuelValue, 300);
         }
+        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "blockLignite")) {
+            rFuelValue = (short) Math.max(rFuelValue, 12000);
+        }
+        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "blockCharcoal")) {
+            rFuelValue = (short) Math.max(rFuelValue, 16000);
+        }
         if (GT_Utility.areStacksEqual(aFuel, new ItemStack(Blocks.wooden_button, 1))) {
             rFuelValue = (short) Math.max(rFuelValue, 150);
         }
@@ -1739,6 +1745,10 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         }
         if (GT_Utility.areStacksEqual(aFuel, new ItemStack(Items.wooden_door, 1))) {
             rFuelValue = (short) Math.max(rFuelValue, 600);
+        }
+        if (GT_Utility.areStacksEqual(aFuel, ItemList.Block_SSFUEL.get(1, new Object[0]))) {
+        }
+        if (GT_Utility.areStacksEqual(aFuel, ItemList.Block_MSSFUEL.get(1, new Object[0]))) {
         }
         return rFuelValue;
     }

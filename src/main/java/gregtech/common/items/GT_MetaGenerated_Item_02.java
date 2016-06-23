@@ -89,6 +89,8 @@ public class GT_MetaGenerated_Item_02
         ItemList.Bottle_Milk.set(addItem(tLastID = 136, "Milk", "Got Milk?", new Object[]{OrePrefixes.bottle.get(Materials.Milk), new GT_FoodStat(0, 0.0F, EnumAction.drink, ItemList.Bottle_Empty.get(1L, new Object[0]), GregTech_API.sDrinksAlwaysDrinkable, false, false, new int[0]).setMilk(), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.SANO, 1L)}));
         ItemList.Bottle_Holy_Water.set(addItem(tLastID = 137, "Holy Water", "May the holy Planks be with you", new Object[]{OrePrefixes.bottle.get(Materials.HolyWater), new GT_FoodStat(0, 0.0F, EnumAction.drink, ItemList.Bottle_Empty.get(1L, new Object[0]), GregTech_API.sDrinksAlwaysDrinkable, false, false, new int[]{Potion.poison.id, 100, 1, 100}).setMilk(), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.AURAM, 1L)}));
 
+        
+        
         ItemList.Food_Potato_On_Stick.set(addItem(tLastID = 200, "Potato on a Stick", "Totally looks like a Crab Claw", new Object[]{new GT_FoodStat(1, 0.3F, EnumAction.eat, new ItemStack(Items.stick, 1), false, true, false, new int[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)}));
         ItemList.Food_Potato_On_Stick_Roasted.set(addItem(tLastID = 201, "Roasted Potato on a Stick", "Still looks like a Crab Claw", new Object[]{new GT_FoodStat(6, 0.6F, EnumAction.eat, new ItemStack(Items.stick, 1), false, true, false, new int[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}));
         ItemList.Food_Raw_Fries.set(addItem(tLastID = 202, "Potato Strips", "It's Potato in Stripe Form", new Object[]{new GT_FoodStat(1, 0.3F, EnumAction.eat, null, false, true, false, new int[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L)}));
@@ -210,6 +212,9 @@ public class GT_MetaGenerated_Item_02
         ItemList.Plank_Citrus.set(addItem(tLastID = 499, "Citrus Plank", "Usable as Cover", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)}));
         setBurnValue(32000 + tLastID, 200);
 
+        ItemList.SFMixture.set(addItem(tLastID = 270, "Super Fuel Binder", "Raw Material", new Object[]{}));
+        ItemList.MSFMixture.set(addItem(tLastID = 271, "Magic Super Fuel Binder", "Raw Material", new Object[]{}));
+        
         GT_ModHandler.addCraftingRecipe(ItemList.Plank_Oak.get(2L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"s ", " P", Character.valueOf('P'), new ItemStack(Blocks.wooden_slab, 1, 0)});
         GT_ModHandler.addCraftingRecipe(ItemList.Plank_Spruce.get(2L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"s ", " P", Character.valueOf('P'), new ItemStack(Blocks.wooden_slab, 1, 1)});
         GT_ModHandler.addCraftingRecipe(ItemList.Plank_Birch.get(2L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"s ", " P", Character.valueOf('P'), new ItemStack(Blocks.wooden_slab, 1, 2)});
