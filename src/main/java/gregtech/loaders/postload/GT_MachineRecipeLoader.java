@@ -110,26 +110,26 @@ public class GT_MachineRecipeLoader
         GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 1L), null, null, null, Materials.Water.getFluid(125), FluidRegistry.getFluidStack("ic2coolant", 125), null, 256, 48);
         GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 1L), null, null, null, GT_ModHandler.getDistilledWater(1000), FluidRegistry.getFluidStack("ic2coolant", 1000), null, 256, 48);
 
-        ItemStack[] tItems = {ItemList.Crop_Drop_Bauxite.get(1, new Object[0]),
-        		ItemList.Crop_Drop_Ilmenite.get(1, new Object[0]),
-        		ItemList.Crop_Drop_Pitchblende.get(1, new Object[0]),
-        		ItemList.Crop_Drop_Uraninite.get(1, new Object[0]),
-        		ItemList.Crop_Drop_Thorium.get(1, new Object[0]),
-        		ItemList.Crop_Drop_Nickel.get(1, new Object[0]),
-        		ItemList.Crop_Drop_Zinc.get(1, new Object[0]),
-        		ItemList.Crop_Drop_Manganese.get(1, new Object[0]),
-        		ItemList.Crop_Drop_Scheelite.get(1, new Object[0]),
-        		ItemList.Crop_Drop_Platinum.get(1, new Object[0]),
-        		ItemList.Crop_Drop_Iridium.get(1, new Object[0]),
-        		ItemList.Crop_Drop_Osmium.get(1, new Object[0]),
-        		ItemList.Crop_Drop_Naquadah.get(1, new Object[0])};
-        Materials[] tMaterials ={Materials.Bauxite,Materials.Ilmenite,Materials.Pitchblende,Materials.Uraninite,Materials.Thorium,Materials.Nickel,Materials.Zinc,Materials.Manganese,Materials.Scheelite,Materials.Platinum,Materials.Iridium,Materials.Osmium,Materials.Naquadah};
-        for(int i = 0;i<tItems.length;i++){
-        GT_Values.RA.addChemicalRecipe(GT_Utility.copyAmount(9, tItems[i]), GT_OreDictUnificator.get(OrePrefixes.crushed, tMaterials[i], 1), Materials.Water.getFluid(1000),
-        		tMaterials[i].mOreByProducts.isEmpty() ? null : tMaterials[i].mOreByProducts.get(0).getMolten(144),
-				GT_OreDictUnificator.get(OrePrefixes.crushedPurified, tMaterials[i], 4), 96, 300);
-		GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(16, tItems[i]), Materials.UUMatter.getFluid(Math.max(1, ((tMaterials[i].getMass()+9)/10))), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, tMaterials[i], 1), 10000, (int) (tMaterials[i].getMass() * 128), 384);
-        }
+//        ItemStack[] tItems = {ItemList.Crop_Drop_Bauxite.get(1, new Object[0]),
+//        		ItemList.Crop_Drop_Ilmenite.get(1, new Object[0]),
+//        		ItemList.Crop_Drop_Pitchblende.get(1, new Object[0]),
+//        		ItemList.Crop_Drop_Uraninite.get(1, new Object[0]),
+//        		ItemList.Crop_Drop_Thorium.get(1, new Object[0]),
+//        		ItemList.Crop_Drop_Nickel.get(1, new Object[0]),
+//        		ItemList.Crop_Drop_Zinc.get(1, new Object[0]),
+//        		ItemList.Crop_Drop_Manganese.get(1, new Object[0]),
+//        		ItemList.Crop_Drop_Scheelite.get(1, new Object[0]),
+//        		ItemList.Crop_Drop_Platinum.get(1, new Object[0]),
+//        		ItemList.Crop_Drop_Iridium.get(1, new Object[0]),
+//        		ItemList.Crop_Drop_Osmium.get(1, new Object[0]),
+//        		ItemList.Crop_Drop_Naquadah.get(1, new Object[0])};
+//        Materials[] tMaterials ={Materials.Bauxite,Materials.Ilmenite,Materials.Pitchblende,Materials.Uraninite,Materials.Thorium,Materials.Nickel,Materials.Zinc,Materials.Manganese,Materials.Scheelite,Materials.Platinum,Materials.Iridium,Materials.Osmium,Materials.Naquadah};
+//        for(int i = 0;i<tItems.length;i++){
+//        GT_Values.RA.addChemicalRecipe(GT_Utility.copyAmount(9, tItems[i]), GT_OreDictUnificator.get(OrePrefixes.crushed, tMaterials[i], 1), Materials.Water.getFluid(1000),
+//        		tMaterials[i].mOreByProducts.isEmpty() ? null : tMaterials[i].mOreByProducts.get(0).getMolten(144),
+//				GT_OreDictUnificator.get(OrePrefixes.crushedPurified, tMaterials[i], 4), 96, 24);
+//		GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(16, tItems[i]), Materials.UUMatter.getFluid(Math.max(1, ((tMaterials[i].getMass()+9)/10))), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, tMaterials[i], 1), 10000, (int) (tMaterials[i].getMass() * 128), 384);
+//        }
         
         GT_Values.RA.addExtruderRecipe(ItemList.FR_Wax.get(1L, new Object[0]), ItemList.Shape_Extruder_Cell.get(0L, new Object[0]), ItemList.FR_WaxCapsule.get(1L, new Object[0]), 64, 16);
         GT_Values.RA.addExtruderRecipe(ItemList.FR_RefractoryWax.get(1L, new Object[0]), ItemList.Shape_Extruder_Cell.get(0L, new Object[0]), ItemList.FR_RefractoryCapsule.get(1L, new Object[0]), 128, 16);
@@ -864,7 +864,7 @@ public class GT_MachineRecipeLoader
         GT_Values.RA.addDistillationTowerRecipe(Materials.Water.getFluid(288L), new FluidStack[]{GT_ModHandler.getDistilledWater(260L)}, null, 16, 64);
         GT_Values.RA.addDistillationTowerRecipe(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 250), new FluidStack[]{new FluidStack(FluidRegistry.getFluid("ic2biogas"), 8000), Materials.Water.getFluid(125L)}, ItemList.IC2_Fertilizer.get(1, new Object[0]), 250, 480);
         GT_Values.RA.addFuel(GT_ModHandler.getIC2Item("biogasCell", 1L), null, 32, 1);
-        GT_Values.RA.addFuel(new ItemStack(Items.golden_apple,1,1), new ItemStack(Items.apple,1), 640000, 5);
+        GT_Values.RA.addFuel(new ItemStack(Items.golden_apple,1,1), new ItemStack(Items.apple,1), 6400, 5);
 
         GT_Values.RA.addDistilleryRecipe(ItemList.Circuit_Integrated.getWithDamage(0L, 1L, new Object[0]), new FluidStack(FluidRegistry.getFluid("ic2biomass"), 1), new FluidStack(FluidRegistry.getFluid("ic2biogas"), 32), 40, 16, false);
         GT_Values.RA.addDistilleryRecipe(ItemList.Circuit_Integrated.getWithDamage(0L, 2L, new Object[0]), new FluidStack(FluidRegistry.getFluid("ic2biomass"), 4), Materials.Water.getFluid(2), 80, 30, false);
