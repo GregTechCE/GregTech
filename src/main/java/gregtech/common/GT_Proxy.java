@@ -1747,8 +1747,10 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             rFuelValue = (short) Math.max(rFuelValue, 600);
         }
         if (GT_Utility.areStacksEqual(aFuel, ItemList.Block_SSFUEL.get(1, new Object[0]))) {
+            rFuelValue = (short) Math.max(rFuelValue, 100000);
         }
         if (GT_Utility.areStacksEqual(aFuel, ItemList.Block_MSSFUEL.get(1, new Object[0]))) {
+            rFuelValue = (short) Math.max(rFuelValue, 150000);
         }
         return rFuelValue;
     }
