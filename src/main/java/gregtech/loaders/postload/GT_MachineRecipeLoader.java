@@ -137,12 +137,12 @@ public class GT_MachineRecipeLoader
         GT_Values.RA.addMixerRecipe(ItemList.SFMixture.get(2, new Object[]{}), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.InfusedOrder, 1L), null, null, Materials.Mercury.getFluid(50), null, ItemList.MSFMixture.get(2, new Object[]{}), 100, 64);
         GT_Values.RA.addMixerRecipe(ItemList.SFMixture.get(2, new Object[]{}), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.InfusedWater, 1L), null, null, Materials.Mercury.getFluid(50), null, ItemList.MSFMixture.get(2, new Object[]{}), 100, 64);
  
-        GT_Values.RA.addMixerRecipe(ItemList.SFMixture.get(8, new Object[]{}), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.InfusedAir, 1L), null, null, new FluidStack(new Fluid("fluiddeath"),10), null, ItemList.MSFMixture.get(8, new Object[]{}), 100, 64);
-        GT_Values.RA.addMixerRecipe(ItemList.SFMixture.get(8, new Object[]{}), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.InfusedEarth, 1L), null, null, new FluidStack(new Fluid("fluiddeath"),10), null, ItemList.MSFMixture.get(8, new Object[]{}), 100, 64);
-        GT_Values.RA.addMixerRecipe(ItemList.SFMixture.get(8, new Object[]{}), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.InfusedEntropy, 1L), null, null, new FluidStack(new Fluid("fluiddeath"),10), null, ItemList.MSFMixture.get(8, new Object[]{}), 100, 64);
-        GT_Values.RA.addMixerRecipe(ItemList.SFMixture.get(8, new Object[]{}), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.InfusedFire, 1L), null, null, new FluidStack(new Fluid("fluiddeath"),10), null, ItemList.MSFMixture.get(8, new Object[]{}), 100, 64);
-        GT_Values.RA.addMixerRecipe(ItemList.SFMixture.get(8, new Object[]{}), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.InfusedOrder, 1L), null, null, new FluidStack(new Fluid("fluiddeath"),10), null, ItemList.MSFMixture.get(8, new Object[]{}), 100, 64);
-        GT_Values.RA.addMixerRecipe(ItemList.SFMixture.get(8, new Object[]{}), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.InfusedWater, 1L), null, null, new FluidStack(new Fluid("fluiddeath"),10), null, ItemList.MSFMixture.get(8, new Object[]{}), 100, 64);
+        GT_Values.RA.addMixerRecipe(ItemList.SFMixture.get(8, new Object[]{}), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.InfusedAir, 1L), null, null, FluidRegistry.getFluidStack("fluiddeath", 10), null, ItemList.MSFMixture.get(8, new Object[]{}), 100, 64);
+        GT_Values.RA.addMixerRecipe(ItemList.SFMixture.get(8, new Object[]{}), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.InfusedEarth, 1L), null, null, FluidRegistry.getFluidStack("fluiddeath", 10), null, ItemList.MSFMixture.get(8, new Object[]{}), 100, 64);
+        GT_Values.RA.addMixerRecipe(ItemList.SFMixture.get(8, new Object[]{}), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.InfusedEntropy, 1L), null, null, FluidRegistry.getFluidStack("fluiddeath", 10), null, ItemList.MSFMixture.get(8, new Object[]{}), 100, 64);
+        GT_Values.RA.addMixerRecipe(ItemList.SFMixture.get(8, new Object[]{}), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.InfusedFire, 1L), null, null, FluidRegistry.getFluidStack("fluiddeath", 10), null, ItemList.MSFMixture.get(8, new Object[]{}), 100, 64);
+        GT_Values.RA.addMixerRecipe(ItemList.SFMixture.get(8, new Object[]{}), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.InfusedOrder, 1L), null, null, FluidRegistry.getFluidStack("fluiddeath", 10), null, ItemList.MSFMixture.get(8, new Object[]{}), 100, 64);
+        GT_Values.RA.addMixerRecipe(ItemList.SFMixture.get(8, new Object[]{}), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.InfusedWater, 1L), null, null, FluidRegistry.getFluidStack("fluiddeath", 10), null, ItemList.MSFMixture.get(8, new Object[]{}), 100, 64);
  
         
         GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.block,Materials.Lignite,1), ItemList.SFMixture.get(6, new Object[]{}), null, null, Materials.NitroFuel.getFluid(1000), null, ItemList.Block_SSFUEL.get(1, new Object[]{}), 120, 96);
@@ -175,27 +175,6 @@ public class GT_MachineRecipeLoader
         GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.block,Materials.Charcoal,1), ItemList.MSFMixture.get(4, new Object[]{}), GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 4), null, Materials.LPG.getFluid(1200), null, ItemList.Block_MSSFUEL.get(1, new Object[]{}), 120, 96);
         GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.block,Materials.Coal,1), ItemList.MSFMixture.get(2, new Object[]{}), GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 4), null, Materials.LPG.getFluid(750), null, ItemList.Block_MSSFUEL.get(1, new Object[]{}), 120, 96);
         GT_Values.RA.addMixerRecipe(GT_ModHandler.getModItem("Railcraft", "tile.railcraft.cube", 1), ItemList.MSFMixture.get(1, new Object[]{}), GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 4), null, Materials.LPG.getFluid(375), null, ItemList.Block_MSSFUEL.get(1, new Object[]{}), 120, 96);
-
-//        ItemStack[] tItems = {ItemList.Crop_Drop_Bauxite.get(1, new Object[0]),
-//        		ItemList.Crop_Drop_Ilmenite.get(1, new Object[0]),
-//        		ItemList.Crop_Drop_Pitchblende.get(1, new Object[0]),
-//        		ItemList.Crop_Drop_Uraninite.get(1, new Object[0]),
-//        		ItemList.Crop_Drop_Thorium.get(1, new Object[0]),
-//        		ItemList.Crop_Drop_Nickel.get(1, new Object[0]),
-//        		ItemList.Crop_Drop_Zinc.get(1, new Object[0]),
-//        		ItemList.Crop_Drop_Manganese.get(1, new Object[0]),
-//        		ItemList.Crop_Drop_Scheelite.get(1, new Object[0]),
-//        		ItemList.Crop_Drop_Platinum.get(1, new Object[0]),
-//        		ItemList.Crop_Drop_Iridium.get(1, new Object[0]),
-//        		ItemList.Crop_Drop_Osmium.get(1, new Object[0]),
-//        		ItemList.Crop_Drop_Naquadah.get(1, new Object[0])};
-//        Materials[] tMaterials ={Materials.Bauxite,Materials.Ilmenite,Materials.Pitchblende,Materials.Uraninite,Materials.Thorium,Materials.Nickel,Materials.Zinc,Materials.Manganese,Materials.Scheelite,Materials.Platinum,Materials.Iridium,Materials.Osmium,Materials.Naquadah};
-//        for(int i = 0;i<tItems.length;i++){
-//        GT_Values.RA.addChemicalRecipe(GT_Utility.copyAmount(9, tItems[i]), GT_OreDictUnificator.get(OrePrefixes.crushed, tMaterials[i], 1), Materials.Water.getFluid(1000),
-//        		tMaterials[i].mOreByProducts.isEmpty() ? null : tMaterials[i].mOreByProducts.get(0).getMolten(144),
-//				GT_OreDictUnificator.get(OrePrefixes.crushedPurified, tMaterials[i], 4), 96, 24);
-//		GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(16, tItems[i]), Materials.UUMatter.getFluid(Math.max(1, ((tMaterials[i].getMass()+9)/10))), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, tMaterials[i], 1), 10000, (int) (tMaterials[i].getMass() * 128), 384);
-//        }
         
         GT_Values.RA.addExtruderRecipe(ItemList.FR_Wax.get(1L, new Object[0]), ItemList.Shape_Extruder_Cell.get(0L, new Object[0]), ItemList.FR_WaxCapsule.get(1L, new Object[0]), 64, 16);
         GT_Values.RA.addExtruderRecipe(ItemList.FR_RefractoryWax.get(1L, new Object[0]), ItemList.Shape_Extruder_Cell.get(0L, new Object[0]), ItemList.FR_RefractoryCapsule.get(1L, new Object[0]), 128, 16);
