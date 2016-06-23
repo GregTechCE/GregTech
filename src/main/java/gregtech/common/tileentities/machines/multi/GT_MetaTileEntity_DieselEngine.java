@@ -76,22 +76,21 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
                     FluidStack tLiquid;
                     if ((tLiquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null) { //Create fluidstack from current recipe
                         if (hatchFluid1.isFluidEqual(tLiquid)) { //Has a diesel fluid
-                            fuelConsumption = tLiquid.amount = boostEu ? 8192 / aFuel.mSpecialValue : 2048 / aFuel.mSpecialValue; //Calc fuel consumption
+                            fuelConsumption = tLiquid.amount = boostEu ? (4096 / aFuel.mSpecialValue) : (2048 / aFuel.mSpecialValue); //Calc fuel consumption
                             if(depleteInput(tLiquid)) { //Deplete that amount
-                                if(tFluids.contains(Materials.Oxygen.getGas(1L))) { //Has oxygen?
-                                    if(depleteInput(Materials.Oxygen.getGas((8192 / aFuel.mSpecialValue) / 4))) boostEu = true;
-                                } else boostEu = false;
+                                boostEu = depleteInput(Materials.Oxygen.getGas(2L));
 
                                 if(tFluids.contains(Materials.Lubricant.getFluid(1L))) { //Has lubricant?
                                     //Deplete Lubricant. 1000L should = 1 hour of runtime (if baseEU = 2048)
-                                    if(mRuntime % 72 == 0 || mRuntime == 0) depleteInput(Materials.Lubricant.getFluid(boostEu ? 4 : 1));
+                                    if(mRuntime % 72 == 0 || mRuntime == 0) depleteInput(Materials.Lubricant.getFluid(boostEu ? 2 : 1));
                                 } else return false;
+
                                 fuelValue = aFuel.mSpecialValue;
                                 fuelRemaining = hatchFluid1.amount; //Record available fuel
                                 this.mEUt = mEfficiency < 2000 ? 0 : (int) (2048 * ((float) mEfficiency / 10000)); //Output 0 if startup is less than 20%
                                 this.mProgresstime = 1;
                                 this.mMaxProgresstime = 1;
-                                this.mEfficiencyIncrease = 50;
+                                this.mEfficiencyIncrease = 15;
                                 return true;
                             }
                         }
@@ -100,6 +99,7 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
             }
         }
         this.mEUt = 0;
+        this.mEfficiency = 0;
         return false;
     }
 
@@ -209,7 +209,7 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
     }
 
     public int getMaxEfficiency(ItemStack aStack) {
-        return boostEu ? 40000 : 10000;
+        return boostEu ? 30000 : 10000;
     }
 
     @Override
