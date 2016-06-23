@@ -1596,11 +1596,11 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         if ((aFuel == null) || (aFuel.getItem() == null)) {
             return 0;
         }
-        short rFuelValue = 0;
+        int rFuelValue = 0;
         if ((aFuel.getItem() instanceof GT_MetaGenerated_Item)) {
             Short tFuelValue = (Short) ((GT_MetaGenerated_Item) aFuel.getItem()).mBurnValues.get(Short.valueOf((short) aFuel.getItemDamage()));
             if (tFuelValue != null) {
-                rFuelValue = (short) Math.max(rFuelValue, tFuelValue.shortValue());
+                rFuelValue = Math.max(rFuelValue, tFuelValue.shortValue());
             }
         }
         NBTTagCompound tNBT = aFuel.getTagCompound();
@@ -1747,10 +1747,10 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             rFuelValue = (short) Math.max(rFuelValue, 600);
         }
         if (GT_Utility.areStacksEqual(aFuel, ItemList.Block_SSFUEL.get(1, new Object[0]))) {
-            rFuelValue = (short) Math.max(rFuelValue, 100000);
+            rFuelValue = Math.max(rFuelValue, 100000);
         }
         if (GT_Utility.areStacksEqual(aFuel, ItemList.Block_MSSFUEL.get(1, new Object[0]))) {
-            rFuelValue = (short) Math.max(rFuelValue, 150000);
+            rFuelValue = Math.max(rFuelValue, 150000);
         }
         return rFuelValue;
     }
