@@ -49,12 +49,16 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Tungstensteel Reinforced Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Brittle Charcoal");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Powderbarrel");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Solid Super Fuel");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Magic Solid Super Fuel");
         ItemList.Block_BronzePlate.set(new ItemStack(this.setHardness(60.0f).setResistance(150.0f), 1, 0));
         ItemList.Block_IridiumTungstensteel.set(new ItemStack(this.setHardness(200.0f).setResistance(600.0f), 1, 1));
         ItemList.Block_Plascrete.set(new ItemStack(this.setHardness(80.0f).setResistance(350.0f), 1, 2));
         ItemList.Block_TungstenSteelReinforced.set(new ItemStack(this.setHardness(100.0f).setResistance(400.0f), 1, 3));
         ItemList.Block_BrittleCharcoal.set(new ItemStack(this.setHardness(0.5f).setResistance(8.0f), 1, 4));
         ItemList.Block_Powderbarrel.set(new ItemStack(this.setHardness(2.5f).setResistance(2.0f), 1, 5));
+        ItemList.Block_SSFUEL.set(new ItemStack(this.setHardness(2.5f).setResistance(2.0f), 1, 6));
+        ItemList.Block_MSSFUEL.set(new ItemStack(this.setHardness(2.5f).setResistance(2.0f), 1, 7));
         GT_ModHandler.addCraftingRecipe(ItemList.Block_BronzePlate.get(1L, new Object[0]),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hP ", "PBP", " P ", 'P', OrePrefixes.plate.get(Materials.Bronze), 'B', OrePrefixes.stone.get(Materials.GraniteBlack)});
         GT_ModHandler.addCraftingRecipe(ItemList.Block_BronzePlate.get(1L, new Object[0]),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hP ", "PBP", " P ", 'P', OrePrefixes.plate.get(Materials.Bronze), 'B', OrePrefixes.stone.get(Materials.GraniteRed)});
         GT_ModHandler.addCraftingRecipe(ItemList.Block_IridiumTungstensteel.get(1L, new Object[0]),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hBP", 'P', OrePrefixes.plate.get(Materials.Iridium), 'B', ItemList.Block_TungstenSteelReinforced.get(1L, new Object[0])});
@@ -65,13 +69,12 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
     }
 
     public String getHarvestTool(int aMeta) {
-        if (aMeta == 4) return "shovel";
-        if (aMeta == 5) return "axe";
+        if (aMeta == 5 || aMeta == 4 || aMeta == 6 || aMeta == 7) return "axe";
         return "pickaxe";
     }
 
     public int getHarvestLevel(int aMeta) {
-        if (aMeta == 4||aMeta == 5) return 1;
+        if (aMeta == 4||aMeta == 5 || aMeta == 6 || aMeta == 7) return 1;
         return 4;
     }
 
@@ -90,6 +93,10 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
                     return Blocks.coal_block.getIcon(0, 0);
                 case 5:
                 	return Textures.BlockIcons.COVER_WOOD_PLATE.getIcon();
+                case 6:
+                	return Blocks.coal_block.getIcon(0, 0);
+                case 7:
+                	return Blocks.coal_block.getIcon(0, 0);
             }
         }
         return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
@@ -115,7 +122,7 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         if (tMeta == 3) {
             return 100.0F;
         }
-        if (tMeta == 4||tMeta == 5) {
+        if (tMeta == 4||tMeta == 5 || tMeta == 6 || tMeta == 7) {
             return 0.5F;
         }
         return Blocks.iron_block.getBlockHardness(aWorld, aX, aY, aZ);
@@ -138,7 +145,7 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         if (tMeta == 3) {
             return 400.0F;
         }
-        if (tMeta == 4) {
+        if (tMeta == 4 || tMeta == 6 || tMeta == 7) {
             return 8.0F;
         }
         if (tMeta == 5) {

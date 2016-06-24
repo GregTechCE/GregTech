@@ -113,7 +113,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             "unfinishedTank", "valvePart", "aquaRegia", "leatherSeal", "leatherSlimeSeal", "hambone", "slimeball", "clay", "enrichedUranium", "camoPaste",
             "antiBlock", "burntQuartz", "salmonRaw", "blockHopper", "blockEnderObsidian", "blockIcestone", "blockMagicWood", "blockEnderCore", "blockHeeEndium",
             "oreHeeEndPowder", "oreHeeStardust", "oreHeeIgneousRock", "oreHeeInstabilityOrb", "crystalPureFluix", "shardNether", "gemFluorite",
-            "stickObsidian", "caveCrystal", "shardCrystal", "dyeCrystal","shardFire","shardWater","shardAir","shardEarth","ingotRefinedIron","blockMarble"}));
+            "stickObsidian", "caveCrystal", "shardCrystal", "dyeCrystal","shardFire","shardWater","shardAir","shardEarth","ingotRefinedIron","blockMarble","ingotUnstable"}));
     private final Collection<String> mInvalidNames = new HashSet<String>(Arrays.asList(new String[]{"diamondShard", "redstoneRoot", "obsidianStick", "bloodstoneOre",
             "universalCable", "bronzeTube", "ironTube", "netherTube", "obbyTube", "infiniteBattery", "eliteBattery", "advancedBattery", "10kEUStore",
             "blueDye", "MonazitOre", "quartzCrystal", "whiteLuminiteCrystal", "darkStoneIngot", "invisiumIngot", "demoniteOrb", "enderGem", "starconiumGem",
@@ -1596,11 +1596,11 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         if ((aFuel == null) || (aFuel.getItem() == null)) {
             return 0;
         }
-        short rFuelValue = 0;
+        int rFuelValue = 0;
         if ((aFuel.getItem() instanceof GT_MetaGenerated_Item)) {
             Short tFuelValue = (Short) ((GT_MetaGenerated_Item) aFuel.getItem()).mBurnValues.get(Short.valueOf((short) aFuel.getItemDamage()));
             if (tFuelValue != null) {
-                rFuelValue = (short) Math.max(rFuelValue, tFuelValue.shortValue());
+                rFuelValue = Math.max(rFuelValue, tFuelValue.shortValue());
             }
         }
         NBTTagCompound tNBT = aFuel.getTagCompound();
@@ -1725,6 +1725,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustTinyWood")) {
             rFuelValue = (short) Math.max(rFuelValue, 11);
         }
+        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "plateWood")) {
+            rFuelValue = (short) Math.min(rFuelValue, 300);
+        }
+        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "blockLignite")) {
+            rFuelValue = (short) Math.max(rFuelValue, 12000);
+        }
+        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "blockCharcoal")) {
+            rFuelValue = (short) Math.max(rFuelValue, 16000);
+        }
         if (GT_Utility.areStacksEqual(aFuel, new ItemStack(Blocks.wooden_button, 1))) {
             rFuelValue = (short) Math.max(rFuelValue, 150);
         }
@@ -1736,6 +1745,12 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         }
         if (GT_Utility.areStacksEqual(aFuel, new ItemStack(Items.wooden_door, 1))) {
             rFuelValue = (short) Math.max(rFuelValue, 600);
+        }
+        if (GT_Utility.areStacksEqual(aFuel, ItemList.Block_SSFUEL.get(1, new Object[0]))) {
+            rFuelValue = Math.max(rFuelValue, 100000);
+        }
+        if (GT_Utility.areStacksEqual(aFuel, ItemList.Block_MSSFUEL.get(1, new Object[0]))) {
+            rFuelValue = Math.max(rFuelValue, 150000);
         }
         return rFuelValue;
     }

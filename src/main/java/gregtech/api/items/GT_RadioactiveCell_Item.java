@@ -1,5 +1,6 @@
 package gregtech.api.items;
 
+import ic2.api.item.IBoxable;
 import ic2.core.util.StackUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -8,7 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import java.util.List;
 
 public class GT_RadioactiveCell_Item
-        extends GT_Generic_Item {
+        extends GT_Generic_Item  implements IBoxable{
     protected int cellCount;
     protected int maxDmg;
     protected int dura;
@@ -140,4 +141,9 @@ public class GT_RadioactiveCell_Item
         //aList.add("Time left: " + (this.maxDelay - getDurabilityOfStack(aStack)) + " secs");
         aList.add("Durability: " + (this.maxDmg - getDurabilityOfStack(aStack)) + "/" + this.maxDmg);
     }
+
+	@Override
+	public boolean canBeStoredInToolbox(ItemStack itemstack) {
+		return true;
+	}
 }

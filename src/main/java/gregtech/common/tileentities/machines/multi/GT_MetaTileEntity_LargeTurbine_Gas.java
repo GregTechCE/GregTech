@@ -28,7 +28,7 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex + 1], aFacing == aSide ? aActive ? new GT_RenderedTexture(Textures.BlockIcons.LARGETURBINE_SS_ACTIVE5) : new GT_RenderedTexture(Textures.BlockIcons.LARGETURBINE_SS5) : Textures.BlockIcons.CASING_BLOCKS[59]};
+        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex + 1], aFacing == aSide ? aActive ? new GT_RenderedTexture(Textures.BlockIcons.LARGETURBINE_SS_ACTIVE5) : new GT_RenderedTexture(Textures.BlockIcons.LARGETURBINE_SS5) : Textures.BlockIcons.CASING_BLOCKS[58]};
     }
 
 
@@ -40,7 +40,7 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
                 "1x Maintenance Hatch (Side centered)",
                 "1x Muffler Hatch (Side centered)",
                 "1x Dynamo Hatch (Back centered)",
-                "Titanium Turbine Casings for the rest (24 at least!)",
+                "Stainless Steel Turbine Casings for the rest (24 at least!)",
                 "Needs a Turbine Item (Inside controller GUI)"};
     }
 
@@ -66,12 +66,12 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
 
     @Override
     public byte getCasingMeta() {
-        return 11;
+        return 10;
     }
 
     @Override
     public byte getCasingTextureIndex() {
-        return 59;
+        return 58;
     }
 
     @Override

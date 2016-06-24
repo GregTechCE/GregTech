@@ -36,6 +36,7 @@ public class GT_Block_Casings4
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Stainless Steel Turbine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Titanium Turbine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Tungstensteel Turbine Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Engine Intake Casing");
 
         ItemList.Casing_RobustTungstenSteel.set(new ItemStack(this, 1, 0));
         ItemList.Casing_CleanStainlessSteel.set(new ItemStack(this, 1, 1));
@@ -48,6 +49,7 @@ public class GT_Block_Casings4
         ItemList.Casing_Turbine1.set(new ItemStack(this, 1, 10));
         ItemList.Casing_Turbine2.set(new ItemStack(this, 1, 11));
         ItemList.Casing_Turbine3.set(new ItemStack(this, 1, 12));
+        ItemList.Casing_EngineIntake.set(new ItemStack(this, 1, 13));
     }
 
     public IIcon getIcon(int aSide, int aMeta) {
@@ -79,7 +81,7 @@ public class GT_Block_Casings4
             case 12:
                 return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
             case 13:
-                return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_ENGINE_INTAKE.getIcon();
             case 14:
                 return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
             case 15:
@@ -117,66 +119,50 @@ public class GT_Block_Casings4
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 3 ? 1 : -1), yCoord - 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 0, true);
-                        //return Textures.BlockIcons.TURBINE_ACTIVE[0].getIcon();
                     }
                     return getTurbineCasing(tMeta, 0, false);
-                    //return Textures.BlockIcons.TURBINE[0].getIcon();
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 3 ? 1 : -1), yCoord, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 3, true);
-                        //return Textures.BlockIcons.TURBINE_ACTIVE[3].getIcon();
                     }
                     return getTurbineCasing(tMeta, 3, false);
-                    //return Textures.BlockIcons.TURBINE[3].getIcon();
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 3 ? 1 : -1), yCoord + 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 6, true);
-                        //return Textures.BlockIcons.TURBINE_ACTIVE[6].getIcon();
                     }
                     return getTurbineCasing(tMeta, 6, false);
-                    //return Textures.BlockIcons.TURBINE[6].getIcon();
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord - 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 1, true);
-                        //return Textures.BlockIcons.TURBINE_ACTIVE[1].getIcon();
                     }
                     return getTurbineCasing(tMeta, 1, false);
-                    //return Textures.BlockIcons.TURBINE[1].getIcon();
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord + 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 7, true);
-                        //return Textures.BlockIcons.TURBINE_ACTIVE[7].getIcon();
                     }
                     return getTurbineCasing(tMeta, 7, false);
-                    //return Textures.BlockIcons.TURBINE[7].getIcon();
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 2 ? 1 : -1), yCoord + 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 8, true);
-                        //return Textures.BlockIcons.TURBINE_ACTIVE[8].getIcon();
                     }
                     return getTurbineCasing(tMeta, 8, false);
-                    //return Textures.BlockIcons.TURBINE[8].getIcon();
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 2 ? 1 : -1), yCoord, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 5, true);
-                        //return Textures.BlockIcons.TURBINE_ACTIVE[5].getIcon();
                     }
                     return getTurbineCasing(tMeta, 5, false);
-                    //return Textures.BlockIcons.TURBINE[5].getIcon();
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 2 ? 1 : -1), yCoord - 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 2, true);
-                        //return Textures.BlockIcons.TURBINE_ACTIVE[2].getIcon();
                     }
                     return getTurbineCasing(tMeta, 2, false);
-                    //return Textures.BlockIcons.TURBINE[2].getIcon();
                 }
             } else if ((aSide == 4) || (aSide == 5)) {
                 TileEntity tTileEntity;
@@ -184,66 +170,50 @@ public class GT_Block_Casings4
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord - 1, zCoord + (aSide == 4 ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 0, true);
-                        //return Textures.BlockIcons.TURBINE_ACTIVE[0].getIcon();
                     }
                     return getTurbineCasing(tMeta, 0, false);
-                    //return Textures.BlockIcons.TURBINE[0].getIcon();
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord, zCoord + (aSide == 4 ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 3, true);
-                        //return Textures.BlockIcons.TURBINE_ACTIVE[3].getIcon();
                     }
                     return getTurbineCasing(tMeta, 3, false);
-                    //return Textures.BlockIcons.TURBINE[3].getIcon();
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord + 1, zCoord + (aSide == 4 ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 6, true);
-                        //return Textures.BlockIcons.TURBINE_ACTIVE[6].getIcon();
                     }
                     return getTurbineCasing(tMeta, 6, false);
-                    //return Textures.BlockIcons.TURBINE[6].getIcon();
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord - 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 1, true);
-                        //return Textures.BlockIcons.TURBINE_ACTIVE[1].getIcon();
                     }
                     return getTurbineCasing(tMeta, 1, false);
-                    //return Textures.BlockIcons.TURBINE[1].getIcon();
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord + 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 7, true);
-                        //return Textures.BlockIcons.TURBINE_ACTIVE[7].getIcon();
                     }
                     return getTurbineCasing(tMeta, 7, false);
-                    //return Textures.BlockIcons.TURBINE[7].getIcon();
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord + 1, zCoord + (aSide == 5 ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 8, true);
-                        //return Textures.BlockIcons.TURBINE_ACTIVE[8].getIcon();
                     }
                     return getTurbineCasing(tMeta, 8, false);
-                    //return Textures.BlockIcons.TURBINE[8].getIcon();
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord, zCoord + (aSide == 5 ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 5, true);
-                        //return Textures.BlockIcons.TURBINE_ACTIVE[5].getIcon();
                     }
                     return getTurbineCasing(tMeta, 5, false);
-                    //return Textures.BlockIcons.TURBINE[5].getIcon();
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord - 1, zCoord + (aSide == 5 ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 2, true);
-                        //return Textures.BlockIcons.TURBINE_ACTIVE[2].getIcon();
                     }
                     return getTurbineCasing(tMeta, 2, false);
-                    //return Textures.BlockIcons.TURBINE[2].getIcon();
                 }
             }
             switch (tMeta) {

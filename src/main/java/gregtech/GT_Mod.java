@@ -389,6 +389,9 @@ public class GT_Mod
                 e.printStackTrace(GT_Log.err);
             }
         }
+        
+        new GT_Bees();
+        
         gregtechproxy.onLoad();
         if (gregtechproxy.mSortToTheEnd) {
             new GT_ItemIterator().run();
@@ -437,7 +440,6 @@ public class GT_Mod
         new GT_CropLoader().run();
         new GT_Worldgenloader().run();
         new GT_CoverLoader().run();
-        new GT_Bees();
 
         GT_RecipeRegistrator.registerUsagesForMaterials(new ItemStack(Blocks.planks, 1), null, false);
         GT_RecipeRegistrator.registerUsagesForMaterials(new ItemStack(Blocks.cobblestone, 1), null, false);
