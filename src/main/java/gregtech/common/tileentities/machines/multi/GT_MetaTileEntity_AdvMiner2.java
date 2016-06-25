@@ -159,7 +159,9 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
                             this.mOutputItems = new ItemStack[tRecipe.mOutputs.length];
                             for (int g = 0; g < mOutputItems.length; g++) {
                                 mOutputItems[g] = tRecipe.mOutputs[g].copy();
-                                mOutputItems[g].stackSize = mOutputItems[g].stackSize * (getBaseMetaTileEntity().getRandomNumber(4) + 1);
+                                if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(g)) {
+                                    mOutputItems[g].stackSize *= getBaseMetaTileEntity().getRandomNumber(4) + 1;
+                                }
                             }
                         } else {
                             this.mOutputItems = new ItemStack[tDrops.size()];
