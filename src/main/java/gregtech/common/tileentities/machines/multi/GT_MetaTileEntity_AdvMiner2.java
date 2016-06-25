@@ -106,7 +106,7 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
                         int tMetaID = getBaseMetaTileEntity().getMetaIDOffset(i, yLevel - getBaseMetaTileEntity().getYCoord(), f);
                         if (tBlock == GregTech_API.sBlockOres1) {
                             TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityOffset(i, yLevel - getBaseMetaTileEntity().getYCoord(), f);
-                            if ((tTileEntity instanceof GT_TileEntity_Ores) && ((GT_TileEntity_Ores) tTileEntity).mNatural == true && !mMineList.contains(new ChunkPosition(i, yLevel - getBaseMetaTileEntity().getYCoord(), f))) {
+                            if ((tTileEntity!=null) && (tTileEntity instanceof GT_TileEntity_Ores) && ((GT_TileEntity_Ores) tTileEntity).mNatural == true && !mMineList.contains(new ChunkPosition(i, yLevel - getBaseMetaTileEntity().getYCoord(), f))) {
                                 mMineList.add(new ChunkPosition(i, yLevel - getBaseMetaTileEntity().getYCoord(), f));
                             }
                         }
