@@ -71,15 +71,15 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
             ArrayList<ItemStack> tItems = getStoredInputs();
             for (ItemStack tStack : tItems) {
                 if (tStack.isItemEqual(GT_ModHandler.getIC2Item("miningPipe", 1L))) {
-                        tStack.stackSize--;
+                    tStack.stackSize--;
                     if (tStack.stackSize < 1) {
                         tStack = null;
                     }
-                if (mInventory[1] == null) {
-                    mInventory[1] = GT_ModHandler.getIC2Item("miningPipe", 1L);
-                } else {
-                    mInventory[1].stackSize++;
-                }
+                    if (mInventory[1] == null) {
+                        mInventory[1] = GT_ModHandler.getIC2Item("miningPipe", 1L);
+                    } else {
+                        mInventory[1].stackSize++;
+                    }
                 }
 
             }
@@ -103,10 +103,20 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
                 for (int i = -48; i < 49; i++) {
                     for (int f = -48; f < 49; f++) {
                         Block tBlock = getBaseMetaTileEntity().getBlockOffset(i, yLevel - getBaseMetaTileEntity().getYCoord(), f);
+                        int tMetaID = getBaseMetaTileEntity().getMetaIDOffset(i, yLevel - getBaseMetaTileEntity().getYCoord(), f);
                         if (tBlock == GregTech_API.sBlockOres1) {
                             TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityOffset(i, yLevel - getBaseMetaTileEntity().getYCoord(), f);
-                            if ((tTileEntity instanceof GT_TileEntity_Ores) && ((GT_TileEntity_Ores) tTileEntity).mNatural == true && !mMineList.contains(new ChunkPosition(i, yLevel - getBaseMetaTileEntity().getYCoord(), f))) {
+                            if ((tTileEntity!=null) && (tTileEntity instanceof GT_TileEntity_Ores) && ((GT_TileEntity_Ores) tTileEntity).mNatural == true && !mMineList.contains(new ChunkPosition(i, yLevel - getBaseMetaTileEntity().getYCoord(), f))) {
                                 mMineList.add(new ChunkPosition(i, yLevel - getBaseMetaTileEntity().getYCoord(), f));
+                            }
+                        }
+                        else {
+                            ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
+                            if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {
+                                ChunkPosition cp = new ChunkPosition(i, yLevel - getBaseMetaTileEntity().getYCoord(), f);
+                                if (!mMineList.contains(cp)) {
+                                    mMineList.add(cp);
+                                }
                             }
                         }
                     }
@@ -117,18 +127,35 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
                     if (mEnergyHatches.size() > 0 && mEnergyHatches.get(0).getEUVar() > (512 + getMaxInputVoltage() * 4)) {
                         moveOneDown();
                     }
-                }else{return false;}
-            }
-            if (!mMineList.isEmpty()) {
-                ChunkPosition oreBlockOffsetPos = mMineList.get(0);
-                ArrayList<ItemStack> tDrops = new ArrayList<ItemStack>();
-                GT_TileEntity_Ores oreBlockTileEntity = (GT_TileEntity_Ores) getBaseMetaTileEntity().getTileEntityOffset(oreBlockOffsetPos.chunkPosX, oreBlockOffsetPos.chunkPosY, oreBlockOffsetPos.chunkPosZ);
-                if (oreBlockTileEntity != null) {
-                    tDrops = oreBlockTileEntity.getDrops(1);
+                }else{
+                    return false;
                 }
+            }
+            ArrayList<ItemStack> tDrops = new ArrayList();
+            if (!mMineList.isEmpty()) {
+                Block tMineBlock = null;
+                while ((tMineBlock==null || tMineBlock == Blocks.air) && !mMineList.isEmpty()) {
+                    ChunkPosition mle = mMineList.get(0);
+                    mMineList.remove(0);
+                    tMineBlock = getBaseMetaTileEntity().getBlockOffset(mle.chunkPosX, mle.chunkPosY, mle.chunkPosZ);
+                }
+                int metadata = getBaseMetaTileEntity().getMetaIDOffset(mle.chunkPosX, mle.chunkPosY, mle.chunkPosZ);
+                boolean silkTouch = tMineBlock.canSilkHarvest(getBaseMetaTileEntity().getWorld(), null, mle.chunkPosX, mle.chunkPosY, mle.chunkPosZ, metadata);
+                if (silkTouch){
+                    ItemStack IS = new ItemStack(tMineBlock);
+                    IS.setItemDamage(metadata);
+                    IS.stackSize=1;
+                    tDrops.add(IS);
+                }
+                else{
+                    tDrops = tMineBlock.getDrops(getBaseMetaTileEntity().getWorld(), mle.chunkPosX, mle.chunkPosY, mle.chunkPosZ, metadata, 1);
+                }
+
+                getBaseMetaTileEntity().getWorld().setBlockToAir(mle.chunkPosX + getBaseMetaTileEntity().getXCoord(), mle.chunkPosY + getBaseMetaTileEntity().getYCoord(), mle.chunkPosZ + getBaseMetaTileEntity().getZCoord());
                 if (!tDrops.isEmpty()) {
                     ItemData tData = GT_OreDictUnificator.getItemData(tDrops.get(0).copy());
-                    if (tData.mPrefix != OrePrefixes.crushed&& tData.mMaterial.mMaterial != Materials.Oilsands) {
+                    if (tData.mPrefix != OrePrefixes.crushed && tData.mMaterial.mMaterial != Materials.Oilsands) {
+
                         GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(getBaseMetaTileEntity(), false, tVoltage, null, tDrops.get(0).copy());
                         if (tRecipe != null) {
                             this.mOutputItems = new ItemStack[tRecipe.mOutputs.length];
@@ -137,6 +164,11 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
                                 if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(g)) {
                                     mOutputItems[g].stackSize *= getBaseMetaTileEntity().getRandomNumber(4) + 1;
                                 }
+                            }
+                        } else {
+                            this.mOutputItems = new ItemStack[tDrops.size()];
+                            for (int g = 0; g < mOutputItems.length; g++) {
+                                mOutputItems[g] = tDrops.get(g).copy();
                             }
                         }
                     } else {
@@ -149,8 +181,7 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
                         mOutputItems = tStack;
                     }
                 }
-                getBaseMetaTileEntity().getWorld().setBlockToAir(oreBlockOffsetPos.chunkPosX + getBaseMetaTileEntity().getXCoord(), oreBlockOffsetPos.chunkPosY + getBaseMetaTileEntity().getYCoord(), oreBlockOffsetPos.chunkPosZ + getBaseMetaTileEntity().getZCoord());
-                mMineList.remove(0);
+
             }
         }
 
