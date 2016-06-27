@@ -770,8 +770,8 @@ public class GT_RecipeAdder
     }
 
 	@Override
-	public boolean addAssemblylineRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput1, int aDuration, int aEUt) {
-        if ((aInputs == null) || (aOutput1 == null) || aInputs.length>15 || aInputs.length<4) {
+	public boolean addAssemblylineRecipe(ItemStack mainItem, int researchTime, ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput1, int aDuration, int aEUt) {
+        if ((mainItem==null)||(researchTime<=0)||(aInputs == null) || (aOutput1 == null) || aInputs.length>15 || aInputs.length<4) {
             return false;
         }
         if ((aDuration = GregTech_API.sRecipeFile.get("assemblingline", aOutput1, aDuration)) <= 0) {

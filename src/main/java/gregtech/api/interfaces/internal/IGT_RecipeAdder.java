@@ -201,7 +201,7 @@ public interface IGT_RecipeAdder {
      * @param aDuration must be > 0
      * @param aEUt      should be > 0
      */
-    public boolean addAssemblylineRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput1, int aDuration, int aEUt);
+    public boolean addAssemblylineRecipe(ItemStack mainItem, int researchTime, ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput1, int aDuration, int aEUt);
 
     /**
      * Adds a Forge Hammer Recipe
