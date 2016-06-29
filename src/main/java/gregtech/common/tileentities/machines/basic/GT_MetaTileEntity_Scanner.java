@@ -16,6 +16,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
+import gregtech.common.items.behaviors.Behaviour_DataStick;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -146,6 +147,41 @@ public class GT_MetaTileEntity_Scanner
                     return 2;
 
                 }
+            }
+            if(ItemList.Tool_DataStick.isStackEqual(getSpecialSlot(), false, true)&& aStack !=null){
+            	for(GT_Recipe.GT_Recipe_AssemblyLine tRecipe:GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes){
+            	if(GT_Utility.areStacksEqual(tRecipe.mResearchItem, aStack, true)){
+            	
+            	this.mOutputItems[0] = GT_Utility.copyAmount(1L, new Object[]{getSpecialSlot()});
+            	getSpecialSlot().stackSize -= 1;
+                GT_Utility.ItemNBT.setBookTitle(this.mOutputItems[0], tRecipe.mOutput.getDisplayName()+" Construction Data");
+                
+                
+                
+                NBTTagCompound tNBT = this.mOutputItems[0].getTagCompound();
+                if (tNBT == null) {
+                    tNBT = new NBTTagCompound();
+                }     
+                tNBT.setTag("output", new NBTTagCompound());
+                tNBT.setInteger("time", tRecipe.mDuration);
+                tNBT.setInteger("eu", tRecipe.mEUt);
+                for(int i = 0 ; i < tRecipe.mInputs.length ; i++){
+                	
+                	tNBT.setTag(""+i, new NBTTagCompound());
+                }
+                for(int i = 0 ; i < tRecipe.mFluidInputs.length ; i++){
+                	
+                	tNBT.setTag("f"+i, new NBTTagCompound());
+                }
+                this.mOutputItems[0].setTagCompound(tNBT);
+                
+                aStack.stackSize -= 1;
+                this.mMaxProgresstime = (tRecipe.mResearchTime / (1 << this.mTier - 1));
+                this.mEUt = (30 * (1 << this.mTier - 1) * (1 << this.mTier - 1));
+            	getSpecialSlot().stackSize -= 1;
+            	return 2;
+            	}
+            	}
             }
 
         }

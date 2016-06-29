@@ -412,6 +412,29 @@ public class GT_Recipe {
         return true;
     }
 
+    
+    public static class GT_Recipe_AssemblyLine{
+        public static final ArrayList<GT_Recipe_AssemblyLine> sAssemblylineRecipes = new ArrayList<GT_Recipe_AssemblyLine>();
+        
+        public ItemStack mResearchItem;
+        public int mResearchTime;
+        public ItemStack[] mInputs;
+        public FluidStack[] mFluidInputs;
+        public ItemStack mOutput;
+        public int mDuration;
+        public int mEUt;
+        
+        public GT_Recipe_AssemblyLine(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt) {
+        	mResearchItem = aResearchItem;
+        	mResearchTime = aResearchTime;
+        	mInputs = aInputs;
+        	mFluidInputs = aFluidInputs;
+        	mOutput = aOutput;
+        	mDuration = aDuration;
+        	mEUt = aEUt;
+        }
+        
+    }
 
     public static class GT_Recipe_Map {
         /**
@@ -485,7 +508,6 @@ public class GT_Recipe {
         public static final GT_Recipe_Map_Fuel sSmallNaquadahReactorFuels = new GT_Recipe_Map_Fuel(new HashSet<GT_Recipe>(10), "gt.recipe.smallnaquadahreactor", "Small Naquadah Reactor", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
         public static final GT_Recipe_Map_Fuel sLargeNaquadahReactorFuels = new GT_Recipe_Map_Fuel(new HashSet<GT_Recipe>(10), "gt.recipe.largenaquadahreactor", "Large Naquadah Reactor", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
         public static final GT_Recipe_Map_Fuel sFluidNaquadahReactorFuels = new GT_Recipe_Map_Fuel(new HashSet<GT_Recipe>(10), "gt.recipe.fluidnaquadahreactor", "Fluid Naquadah Reactor", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
-        public static final GT_Recipe_Map sAssemblylineRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(100), "gt.recipe.assemblyline", "Assemblyline", null, RES_PATH_GUI + "basicmachines/Default", 15, 1, 4, 0, 1, E, 1, E, false, false);
         
         /**
          * HashMap of Recipes based on their Items

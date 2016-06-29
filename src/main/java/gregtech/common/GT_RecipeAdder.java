@@ -8,6 +8,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -770,25 +771,25 @@ public class GT_RecipeAdder
     }
 
 	@Override
-	public boolean addAssemblylineRecipe(ItemStack mainItem, int researchTime, ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput1, int aDuration, int aEUt) {
-        if ((mainItem==null)||(researchTime<=0)||(aInputs == null) || (aOutput1 == null) || aInputs.length>15 || aInputs.length<4) {
+	public boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput1, int aDuration, int aEUt) {
+        if ((aResearchItem==null)||(aResearchTime<=0)||(aInputs == null) || (aOutput1 == null) || aInputs.length>15 || aInputs.length<4) {
             return false;
         }
         if ((aDuration = GregTech_API.sRecipeFile.get("assemblingline", aOutput1, aDuration)) <= 0) {
             return false;
         }
-        String tRecipe = "";
-        for(ItemStack sStack: aInputs){
-        	tRecipe += sStack.getItem().getItemStackDisplayName(sStack)+" x"+sStack.stackSize+"; ";
-        }
+//        String tRecipe = "";
+//        for(ItemStack sStack: aInputs){
+//        	tRecipe += sStack.getItem().getItemStackDisplayName(sStack)+" x"+sStack.stackSize+"; ";
+//        }
+//        
+//        for(FluidStack sStack: aFluidInputs){
+//        	tRecipe += sStack.getLocalizedName()+" "+sStack.amount+"L; ";
+//        }
+//        
+        GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[]{aResearchItem}, new ItemStack[]{aOutput1}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Research result", new Object[0])}, null, null, aResearchTime, 30, 0);
         
-        for(FluidStack sStack: aFluidInputs){
-        	tRecipe += sStack.getLocalizedName()+" "+sStack.amount+"L; ";
-        }
-        
-        GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "tRecipe", new Object[0])}, new ItemStack[]{aOutput1}, null, null, null, aDuration, aEUt, 0);
-        
-        GT_Recipe.GT_Recipe_Map.sAssemblylineRecipes.addRecipe(true, aInputs, new ItemStack[]{aOutput1}, null, aFluidInputs, null, aDuration, aEUt, 0);
+        GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(new GT_Recipe_AssemblyLine( aResearchItem, aResearchTime, aInputs, aFluidInputs, aOutput1, aDuration, aEUt));
         return true;
 	}
 
