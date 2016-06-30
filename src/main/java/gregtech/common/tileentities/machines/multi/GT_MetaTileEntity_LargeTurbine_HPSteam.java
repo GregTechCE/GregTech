@@ -74,7 +74,7 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
         int totalFlow = 0; // Byproducts are based on actual flow
         int flow = 0;
         int remainingFlow = (int) (aOptFlow * 1.25f); // Allowed to use up to 125% of optimal flow
-        this.realOptFlow = (aOptFlow / 2);
+        this.realOptFlow = aOptFlow;
 
         for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) {
             String fluidName = aFluids.get(i).getFluid().getUnlocalizedName(aFluids.get(i));

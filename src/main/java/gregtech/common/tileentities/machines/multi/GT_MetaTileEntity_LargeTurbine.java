@@ -20,7 +20,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_M
 
     protected int baseEff = 0;
     protected int optFlow = 0;
-    protected int realOptFlow = 0;
+    protected double realOptFlow = 0;
     protected int storedFluid = 0;
     protected int counter = 0;
 
@@ -207,7 +207,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_M
                 "Large Turbine",
                 tRunning,
                 "Current Output: "+mEUt+" EU/t",
-                "Optimal Flow: "+realOptFlow+" L/t",
+                "Optimal Flow: "+(int)realOptFlow+" L/t",
                 "Fuel Remaining: "+storedFluid+"L",
                 "Current Speed: "+(mEfficiency/100)+"%",
                 "Turbine Damage: "+tDura+"%",
