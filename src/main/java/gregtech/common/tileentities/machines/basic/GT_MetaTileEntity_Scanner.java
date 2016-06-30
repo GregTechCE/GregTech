@@ -20,6 +20,8 @@ import gregtech.common.items.behaviors.Behaviour_DataStick;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 
 public class GT_MetaTileEntity_Scanner
         extends GT_MetaTileEntity_BasicMachine {
@@ -155,9 +157,7 @@ public class GT_MetaTileEntity_Scanner
             	this.mOutputItems[0] = GT_Utility.copyAmount(1L, new Object[]{getSpecialSlot()});
             	getSpecialSlot().stackSize -= 1;
                 GT_Utility.ItemNBT.setBookTitle(this.mOutputItems[0], tRecipe.mOutput.getDisplayName()+" Construction Data");
-                
-                
-                
+
                 NBTTagCompound tNBT = this.mOutputItems[0].getTagCompound();
                 if (tNBT == null) {
                     tNBT = new NBTTagCompound();
@@ -173,6 +173,22 @@ public class GT_MetaTileEntity_Scanner
                 	
                 	tNBT.setTag("f"+i, tRecipe.mFluidInputs[i].writeToNBT(new NBTTagCompound()));
                 }
+                
+                tNBT.setString("author", "Assemblyline Recipe Generator");
+                NBTTagList tNBTList = new NBTTagList();
+                tNBTList.appendTag(new NBTTagString("Constructionplan for "+tRecipe.mOutput.stackSize+" "+tRecipe.mOutput.getDisplayName()+". Needed EU/t: "+tRecipe.mEUt+" Productiontime: "+(tRecipe.mDuration/20)));
+                for(int i=0;i<tRecipe.mInputs.length;i++){
+                	if(tRecipe.mInputs[i]!=null){
+                		tNBTList.appendTag(new NBTTagString("Input Bus "+(i+1)+": "+tRecipe.mInputs[i].stackSize+" "+tRecipe.mInputs[i].getDisplayName()));
+                	}
+                }
+                for(int i=0;i<tRecipe.mFluidInputs.length;i++){
+                	if(tRecipe.mFluidInputs[i]!=null){
+                		tNBTList.appendTag(new NBTTagString("Input Hatch "+(i+1)+": "+tRecipe.mFluidInputs[i].amount+"L "+tRecipe.mFluidInputs[i].getLocalizedName()));
+                	}
+                }
+                tNBT.setTag("pages", tNBTList);
+                
                 this.mOutputItems[0].setTagCompound(tNBT);
                 
                 aStack.stackSize -= 1;
