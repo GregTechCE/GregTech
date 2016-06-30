@@ -12,6 +12,8 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidRegistry;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -105,6 +107,18 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
                     this.storedFluid = aFluids.get(i).amount;
                     remainingFlow -= flow; // track amount we're allowed to continue depleting from hatches
                     totalFlow += flow; // track total input used
+                }
+            }
+            String fn = FluidRegistry.getFluidName(firstFuelType);
+            String[] nameSegments = fn.split("\\.",2);
+            if (nameSegments.length==2){
+                String outputName=nameSegments[1];
+                FluidStack output = FluidRegistry.getFluidStack(outputName, totalFlow);
+                if (output==null){
+                    output = FluidRegistry.getFluidStack("molten."+outputName, totalFlow);
+                }
+                if (output!=null) {
+                    addOutput(output);
                 }
             }
 
