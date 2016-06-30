@@ -162,16 +162,16 @@ public class GT_MetaTileEntity_Scanner
                 if (tNBT == null) {
                     tNBT = new NBTTagCompound();
                 }     
-                tNBT.setTag("output", new NBTTagCompound());
+                tNBT.setTag("output", tRecipe.mOutput.writeToNBT(new NBTTagCompound()));
                 tNBT.setInteger("time", tRecipe.mDuration);
                 tNBT.setInteger("eu", tRecipe.mEUt);
                 for(int i = 0 ; i < tRecipe.mInputs.length ; i++){
                 	
-                	tNBT.setTag(""+i, new NBTTagCompound());
+                	tNBT.setTag(""+i, tRecipe.mInputs[i].writeToNBT(new NBTTagCompound()));
                 }
                 for(int i = 0 ; i < tRecipe.mFluidInputs.length ; i++){
                 	
-                	tNBT.setTag("f"+i, new NBTTagCompound());
+                	tNBT.setTag("f"+i, tRecipe.mFluidInputs[i].writeToNBT(new NBTTagCompound()));
                 }
                 this.mOutputItems[0].setTagCompound(tNBT);
                 

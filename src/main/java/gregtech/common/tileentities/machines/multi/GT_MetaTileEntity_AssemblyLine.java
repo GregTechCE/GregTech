@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
@@ -13,6 +14,7 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -55,7 +57,7 @@ public class GT_MetaTileEntity_AssemblyLine
     }
 
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return GT_Recipe.GT_Recipe_Map.sImplosionRecipes;
+        return null;
     }
 
     public boolean isCorrectMachinePart(ItemStack aStack) {
@@ -67,63 +69,71 @@ public class GT_MetaTileEntity_AssemblyLine
     }
 
     public boolean checkRecipe(ItemStack aStack) {
-        ArrayList<ItemStack> tInputList = getStoredInputs();
-        for (int i = 0; i < tInputList.size() - 1; i++) {
-            for (int j = i + 1; j < tInputList.size(); j++) {
-                if (GT_Utility.areStacksEqual((ItemStack) tInputList.get(i), (ItemStack) tInputList.get(j))) {
-                    if (((ItemStack) tInputList.get(i)).stackSize >= ((ItemStack) tInputList.get(j)).stackSize) {
-                        tInputList.remove(j--);
-                    } else {
-                        tInputList.remove(i--);
-                        break;
-                    }
-                }
+    	 if(!GT_Utility.isStackValid(mInventory[1]) && !ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true))return false;
+    	NBTTagCompound tTag = mInventory[1].getTagCompound();
+    	if(tTag==null)return false;
+    	ItemStack tStack[] = new ItemStack[15];
+    	for(int i = 0;i<15;i++){
+    		if(tTag.hasKey(""+i)){
+    		tStack[i] = GT_Utility.loadItem(tTag, ""+i);
+    		if(tStack[i]!=null){
+    			if(mInputBusses.get(i)==null)return false;
+    			if(GT_Utility.areStacksEqual(tStack[i],mInputBusses.get(i).getBaseMetaTileEntity().getStackInSlot(0),true) && tStack[i].stackSize <= mInputBusses.get(i).getBaseMetaTileEntity().getStackInSlot(0).stackSize){
+    			}else{return false;}
+    		}}
+    	}
+    	FluidStack[] tFluids = new FluidStack[4];
+    	for(int i = 0;i<4;i++){
+    		if(tTag.hasKey("f"+i)){
+    			tFluids[i] = GT_Utility.loadFluid(tTag, "f"+i);
+    			if(tFluids[i]!=null){
+    				if(mInputHatches.get(i)==null)return false;
+    				if(mInputHatches.get(i).mFluid!=null && GT_Utility.areFluidsEqual(mInputHatches.get(i).mFluid, tFluids[i], true) && mInputHatches.get(i).mFluid.amount>=tFluids[i].amount){
+    				}else{return false;}
+    			}
+    		}
+    	}
+    	if(tTag.hasKey("output")){
+    		mOutputItems = new ItemStack[]{GT_Utility.loadItem(tTag, "output")};
+    		if(mOutputItems==null||mOutputItems[0]==null||!GT_Utility.isStackValid(mOutputItems[0]))return false;
+    	}else{return false;}
+    	if(tTag.hasKey("time")){
+    		mMaxProgresstime = tTag.getInteger("time");
+    		if(mMaxProgresstime<=0)return false;
+    	}else{return false;}
+    	if(tTag.hasKey("eu")){
+    		mEUt = tTag.getInteger("eu");
+    	}else{return false;}
+    	for(int i = 0;i<15;i++){
+    		if(tStack[i]!=null){
+    			mInputBusses.get(i).getBaseMetaTileEntity().getStackInSlot(0).stackSize -= tStack[i].stackSize;
+    			if(mInputBusses.get(i).getBaseMetaTileEntity().getStackInSlot(0).stackSize <= 0){
+    			}
+    		}
+    	}
+    	
+    	for(int i = 0;i<4;i++){
+    		if(tFluids[i]!=null){
+    			mInputHatches.get(i).mFluid.amount -= tFluids[i].amount;
+    			if(mInputHatches.get(i).mFluid.amount<=0){
+    				mInputHatches.get(i).mFluid = null;
+    			}
+    		}
+    	}
+    	byte tTier = (byte) Math.max(1, GT_Utility.getTier(getMaxInputVoltage()));
+        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+        this.mEfficiencyIncrease = 10000;
+        if (mEUt <= 16) {
+            this.mEUt = (mEUt * (1 << tTier - 1) * (1 << tTier - 1));
+            this.mMaxProgresstime = (mMaxProgresstime / (1 << tTier - 1));
+        } else {
+            while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+                this.mEUt *= 4;
+                this.mMaxProgresstime /= 2;
             }
         }
-        ItemStack[] tInputs = (ItemStack[]) Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, 2);
-
-        ArrayList<FluidStack> tFluidList = getStoredFluids();
-        for (int i = 0; i < tFluidList.size() - 1; i++) {
-            for (int j = i + 1; j < tFluidList.size(); j++) {
-                if (GT_Utility.areFluidsEqual((FluidStack) tFluidList.get(i), (FluidStack) tFluidList.get(j))) {
-                    if (((FluidStack) tFluidList.get(i)).amount >= ((FluidStack) tFluidList.get(j)).amount) {
-                        tFluidList.remove(j--);
-                    } else {
-                        tFluidList.remove(i--);
-                        break;
-                    }
-                }
-            }
-        }
-        FluidStack[] tFluids = (FluidStack[]) Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tInputList.size()]), 0, 1);
-        if (tInputList.size() > 0) {
-            long tVoltage = getMaxInputVoltage();
-            byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sAssemblylineRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
-            if ((tRecipe != null) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
-                this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-                this.mEfficiencyIncrease = 10000;
-                if (tRecipe.mEUt <= 16) {
-                    this.mEUt = (tRecipe.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
-                    this.mMaxProgresstime = (tRecipe.mDuration / (1 << tTier - 1));
-                } else {
-                    this.mEUt = tRecipe.mEUt;
-                    this.mMaxProgresstime = tRecipe.mDuration;
-                    while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-                        this.mEUt *= 4;
-                        this.mMaxProgresstime /= 2;
-                    }
-                }
-                if (this.mEUt > 0) {
-                    this.mEUt = (-this.mEUt);
-                }
-                this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-                this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0), tRecipe.getOutput(1)};
-                updateSlots();
-                return true;
-            }
-        }
-        return false;
+        this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+        return true;
     }
 
     public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
@@ -213,7 +223,7 @@ public class GT_MetaTileEntity_AssemblyLine
     }
 
     public int getPollutionPerTick(ItemStack aStack) {
-        return 1000;
+        return 0;
     }
 
     public int getDamageToComponent(ItemStack aStack) {

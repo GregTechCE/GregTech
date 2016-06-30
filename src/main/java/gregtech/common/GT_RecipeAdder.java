@@ -771,25 +771,16 @@ public class GT_RecipeAdder
     }
 
 	@Override
-	public boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput1, int aDuration, int aEUt) {
-        if ((aResearchItem==null)||(aResearchTime<=0)||(aInputs == null) || (aOutput1 == null) || aInputs.length>15 || aInputs.length<4) {
+	public boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt) {
+        if ((aResearchItem==null)||(aResearchTime<=0)||(aInputs == null) || (aOutput == null) || aInputs.length>15 || aInputs.length<4) {
             return false;
         }
-        if ((aDuration = GregTech_API.sRecipeFile.get("assemblingline", aOutput1, aDuration)) <= 0) {
+        if ((aDuration = GregTech_API.sRecipeFile.get("assemblingline", aOutput, aDuration)) <= 0) {
             return false;
-        }
-//        String tRecipe = "";
-//        for(ItemStack sStack: aInputs){
-//        	tRecipe += sStack.getItem().getItemStackDisplayName(sStack)+" x"+sStack.stackSize+"; ";
-//        }
-//        
-//        for(FluidStack sStack: aFluidInputs){
-//        	tRecipe += sStack.getLocalizedName()+" "+sStack.amount+"L; ";
-//        }
-//        
-        GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[]{aResearchItem}, new ItemStack[]{aOutput1}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Research result", new Object[0])}, null, null, aResearchTime, 30, 0);
+        } 
+        GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[]{aResearchItem}, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Research result", new Object[0])}, null, null, aResearchTime, 30, 0);
         
-        GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(new GT_Recipe_AssemblyLine( aResearchItem, aResearchTime, aInputs, aFluidInputs, aOutput1, aDuration, aEUt));
+        GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(new GT_Recipe_AssemblyLine( aResearchItem, aResearchTime, aInputs, aFluidInputs, aOutput, aDuration, aEUt));
         return true;
 	}
 
