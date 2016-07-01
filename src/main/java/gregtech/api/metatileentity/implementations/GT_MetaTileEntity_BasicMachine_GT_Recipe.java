@@ -315,13 +315,13 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                             aRecipe[i] = OrePrefixes.rotor.get(Materials.TungstenSteel);
                             break;
                         case 6:
-                            aRecipe[i] = OrePrefixes.rotor.get(Materials.TungstenSteel);
+                            aRecipe[i] = OrePrefixes.rotor.get(Materials.Chrome);
                             break;
                         case 7:
-                            aRecipe[i] = OrePrefixes.rotor.get(Materials.TungstenSteel);
+                            aRecipe[i] = OrePrefixes.rotor.get(Materials.Iridium);
                             break;
                         default:
-                            aRecipe[i] = OrePrefixes.rotor.get(Materials.TungstenSteel);
+                            aRecipe[i] = OrePrefixes.rotor.get(Materials.Osmium);
                             break;
                     }
                     continue;
