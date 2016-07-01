@@ -69,6 +69,11 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
 
                 if (aRecipe[i] == X.GLASS) {
                     switch (mTier) {
+                        case 6:
+                        case 7:
+                        case 8:
+                        	aRecipe[i] = GT_ModHandler.getIC2Item("blockAlloyGlass", 1);
+                        	break;
                         default:
                             aRecipe[i] = new ItemStack(Blocks.glass, 1, W);
                             break;
@@ -90,6 +95,18 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                             break;
                         case 4:
                             aRecipe[i] = OrePrefixes.plate.get(Materials.Titanium);
+                            break;
+                        case 5:
+                            aRecipe[i] = OrePrefixes.plate.get(Materials.TungstenSteel);
+                            break;
+                        case 6:
+                            aRecipe[i] = OrePrefixes.plate.get(Materials.HSSE);
+                            break;
+                        case 7:
+                            aRecipe[i] = OrePrefixes.plate.get(Materials.HSSG);
+                            break;
+                        case 8:
+                            aRecipe[i] = OrePrefixes.plate.get(Materials.Neutronium);
                             break;
                         default:
                             aRecipe[i] = OrePrefixes.plate.get(Materials.TungstenSteel);
@@ -113,6 +130,18 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         case 4:
                             aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.Titanium);
                             break;
+                        case 5:
+                            aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.TungstenSteel);
+                            break;
+                        case 6:
+                            aRecipe[i] = OrePrefixes.pipeSmall.get(Materials.Ultimate);
+                            break;
+                        case 7:
+                            aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.Ultimate);
+                            break;
+                        case 8:
+                            aRecipe[i] = OrePrefixes.pipeLarge.get(Materials.Ultimate);
+                            break;
                         default:
                             aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.TungstenSteel);
                             break;
@@ -135,6 +164,18 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         case 4:
                             aRecipe[i] = OrePrefixes.wireGt02.get(Materials.Nichrome);
                             break;
+                        case 5:
+                            aRecipe[i] = OrePrefixes.wireGt08.get(Materials.Nichrome);
+                            break;
+                        case 6:
+                            aRecipe[i] = OrePrefixes.wireGt08.get(Materials.NiobiumTitanium);
+                            break;
+                        case 7:
+                            aRecipe[i] = OrePrefixes.wireGt02.get(Materials.Superconductor);
+                            break;
+                        case 8:
+                            aRecipe[i] = OrePrefixes.wireGt08.get(Materials.Superconductor);
+                            break;
                         default:
                             aRecipe[i] = OrePrefixes.wireGt08.get(Materials.Nichrome);
                             break;
@@ -156,6 +197,18 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                             break;
                         case 4:
                             aRecipe[i] = OrePrefixes.wireGt04.get(Materials.Nichrome);
+                            break;
+                        case 5:
+                            aRecipe[i] = OrePrefixes.wireGt16.get(Materials.Nichrome);
+                            break;
+                        case 6:
+                            aRecipe[i] = OrePrefixes.wireGt16.get(Materials.NiobiumTitanium);
+                            break;
+                        case 7:
+                            aRecipe[i] = OrePrefixes.wireGt04.get(Materials.Superconductor);
+                            break;
+                        case 8:
+                            aRecipe[i] = OrePrefixes.wireGt16.get(Materials.Superconductor);
                             break;
                         default:
                             aRecipe[i] = OrePrefixes.wireGt16.get(Materials.Nichrome);
@@ -183,8 +236,16 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         case 3:
                             aRecipe[i] = OrePrefixes.stick.get(Materials.SteelMagnetic);
                             break;
-                        default:
+                        case 4:
+                        case 5:
                             aRecipe[i] = OrePrefixes.stick.get(Materials.NeodymiumMagnetic);
+                            break;
+                        case 6:
+                        case 7:
+                            aRecipe[i] = OrePrefixes.stickLong.get(Materials.NeodymiumMagnetic);
+                            break;
+                        default:
+                            aRecipe[i] = OrePrefixes.block.get(Materials.NeodymiumMagnetic);
                             break;
                     }
                     continue;
@@ -227,8 +288,17 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         case 4:
                             aRecipe[i] = OrePrefixes.wireGt08.get(Materials.AnnealedCopper);
                             break;
+                        case 5:
+                            aRecipe[i] = OrePrefixes.wireGt08.get(Materials.AnnealedCopper);
+                            break;
+                        case 6:
+                            aRecipe[i] = OrePrefixes.wireGt04.get(Materials.YttriumBariumCuprate);
+                            break;
+                        case 7:
+                            aRecipe[i] = OrePrefixes.wireGt08.get(Materials.Superconductor);
+                            break;
                         default:
-                            aRecipe[i] = OrePrefixes.wireGt16.get(Materials.AnnealedCopper);
+                            aRecipe[i] = OrePrefixes.wireGt16.get(Materials.Superconductor);
                             break;
                     }
                     continue;
