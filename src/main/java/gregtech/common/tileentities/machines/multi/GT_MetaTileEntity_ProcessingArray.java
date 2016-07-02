@@ -168,6 +168,15 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
         if (mInventory[1].getUnlocalizedName().endsWith("5")) {
             tTier = 5;
         }
+        if (mInventory[1].getUnlocalizedName().endsWith("6")) {
+            tTier = 6;
+        }
+        if (mInventory[1].getUnlocalizedName().endsWith("7")) {
+            tTier = 7;
+        }
+        if (mInventory[1].getUnlocalizedName().endsWith("8")) {
+            tTier = 8;
+        }
         
         ItemStack[] tInputs = (ItemStack[]) tInputList.toArray(new ItemStack[tInputList.size()]);
 

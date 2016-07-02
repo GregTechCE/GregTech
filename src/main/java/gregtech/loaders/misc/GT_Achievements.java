@@ -16,6 +16,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import ic2.core.Ic2Items;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -291,6 +292,8 @@ public class GT_Achievements {
         }
         if (stack.getUnlocalizedName().equals("ic2.itemPartIndustrialDiamond")) {
             issueAchievement(player, "artificaldia");
+            issueAchievement(player, "buildCoalDiamond");
+            
         }
     }
 
@@ -335,6 +338,7 @@ public class GT_Achievements {
                 issueAchievement(player, "magneticiron");
             } else if (stack.getUnlocalizedName().equals("gt.metaitem.01.32600")) {
                 issueAchievement(player, "lvmotor");
+                issueAchievement(player, "buildCable");
             } else if (stack.getUnlocalizedName().equals("gt.metaitem.01.32610")) {
                 issueAchievement(player, "pumpcover");
             } else if (stack.getUnlocalizedName().equals("gt.metaitem.01.32630")) {
@@ -359,10 +363,17 @@ public class GT_Achievements {
                 issueAchievement(player, "highpressure");
             } else if (stack.getUnlocalizedName().equals("gt.blockmachines.bronzemachine.macerator")) {
                 issueAchievement(player, "macerator");
+                issueAchievement(player, "buildMacerator");
             } else if (stack.getUnlocalizedName().equals("gt.blockmachines.bronzemachine.alloysmelter")) {
                 issueAchievement(player, "alloysmelter");
+                issueAchievement(player, "buildElecFurnace");
+                if(stack.getUnlocalizedName().equals("gt.blockmachines.bronzemachine.alloysmelter.tier.3")){
+                	issueAchievement(player, "buildIndFurnace");
+                }
             } else if (stack.getUnlocalizedName().equals("gt.blockmachines.bronzemachine.extractor")) {
                 issueAchievement(player, "extract");
+                issueAchievement(player, "buildCompressor");
+                issueAchievement(player, "buildExtractor");
             } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.automation.superbuffer.tier.")) {
                 issueAchievement(player, "superbuffer");
             } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.quantum.tank.tier.")) {
@@ -373,8 +384,13 @@ public class GT_Achievements {
                 issueAchievement(player, "cheapermac");
             } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.automation.chestbuffer.tier.")) {
                 issueAchievement(player, "buffer");
+                issueAchievement(player, "buildBatBox");
+                if(stack.getUnlocalizedName().startsWith("gt.blockmachines.automation.chestbuffer.tier.3")){
+                	issueAchievement(player, "buildMFE");
+                }
             } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicgenerator.steamturbine.tier.")) {
                 issueAchievement(player, "steampower");
+                issueAchievement(player, "buildGenerator");
             } else if (stack.getUnlocalizedName().equals("gt.blockmachines.basicmachine.pump.tier.03")) {
                 issueAchievement(player, "slurp");
             } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.assembler.tier.")) {
@@ -399,6 +415,7 @@ public class GT_Achievements {
                 issueAchievement(player, "amplifier");
             } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.massfab.tier.")) {
                 issueAchievement(player, "universal");
+                issueAchievement(player, "buildMassFab");
             } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicgenerator.naquadah.tier.")) {
                 issueAchievement(player, "alienpower");
             } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.replicator.tier.")) {
@@ -456,6 +473,10 @@ public class GT_Achievements {
                     if (data.getAllMaterialStacks().get(i).mMaterial == Materials.AnyIron) {
                         issueAchievement(player, "iron");
                     }
+                if(data.getAllMaterialStacks().get(i).mMaterial == Materials.Copper||data.getAllMaterialStacks().get(i).mMaterial == Materials.Tin){
+                	issueAchievement(event.entityPlayer, "mineOre");
+                }
+                    
                 }
             } else if (data.mPrefix == OrePrefixes.crushed) {
                 issueAchievement(player, "crushed");
@@ -515,6 +536,8 @@ public class GT_Achievements {
             }
         } else if (stack.getUnlocalizedName().equals("gt.Thoriumcell")) {
                 issueAchievement(player, "newfuel");
-            }
+            }else if ((stack.getItem() == Ic2Items.quantumBodyarmor.getItem()) || (stack.getItem() == Ic2Items.quantumBoots.getItem()) || 
+            		(stack.getItem() == Ic2Items.quantumHelmet.getItem()) || (stack.getItem() == Ic2Items.quantumLeggings.getItem())) {
+                issueAchievement(player, "buildQArmor");}
     }
 }

@@ -44,6 +44,7 @@ public class GT_Tool_Drill_HV
         super.onToolCrafted(aStack, aPlayer);
         try {
             GT_Mod.instance.achievements.issueAchievement(aPlayer, "highpowerdrill");
+            GT_Mod.instance.achievements.issueAchievement(aPlayer, "buildDDrill");
         } catch (Exception e) {
         }
     }
