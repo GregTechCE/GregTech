@@ -11,6 +11,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_ModHandler.RecipeBits;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
+import ic2.core.Ic2Items;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -72,7 +73,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         case 6:
                         case 7:
                         case 8:
-                        	aRecipe[i] = GT_ModHandler.getIC2Item("blockAlloyGlass", 1);
+                        	aRecipe[i] = Ic2Items.reinforcedGlass;
                         	break;
                         default:
                             aRecipe[i] = new ItemStack(Blocks.glass, 1, W);
