@@ -89,4 +89,9 @@ public class GT_MetaTileEntity_PlasmaGenerator
     public ITexture[] getSidesActive(byte aColor) {
         return new ITexture[]{super.getSidesActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW)};
     }
+
+	@Override
+	public int getPollution() {
+		return 0;
+	}
 }

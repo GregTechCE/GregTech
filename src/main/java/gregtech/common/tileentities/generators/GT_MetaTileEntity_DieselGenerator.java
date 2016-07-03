@@ -100,4 +100,9 @@ public class GT_MetaTileEntity_DieselGenerator
     public ITexture[] getSidesActive(byte aColor) {
         return new ITexture[]{super.getSidesActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_SIDE_ACTIVE)};
     }
+
+	@Override
+	public int getPollution() {
+		return 10;
+	}
 }

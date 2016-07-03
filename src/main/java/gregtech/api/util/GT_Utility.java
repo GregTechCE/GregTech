@@ -1532,15 +1532,17 @@ public class GT_Utility {
         }
         int tAmount = (int) (Math.pow(amount, 5) / 100);
         ChunkPosition tPos = new ChunkPosition(aX/16, 1, aZ/16);
+        int[] tInts = new int[2];
     	if(GT_Proxy.chunkData.containsKey(tPos)){
-    		int[] tInts = GT_Proxy.chunkData.get(tPos);
+    		tInts = GT_Proxy.chunkData.get(tPos);
     		if(tInts.length>0){
     			if(tInts[0]>=0){tAmount = tInts[0];}
     		}
     		GT_Proxy.chunkData.remove(tPos);
     	}
     	tAmount = tAmount - 5;
-    	GT_Proxy.chunkData.put(tPos, new int[]{tAmount});
+    	tInts[0] = tAmount;
+    	GT_Proxy.chunkData.put(tPos, tInts);
     	
         return new FluidStack(tFluid, tAmount);
     }
