@@ -1738,6 +1738,17 @@ public class GT_Utility {
             FluidStack tFluid = getUndergroundOil(aWorld, aX, aZ);
             tList.add("Oil in Chunk: " + tFluid.amount + " " + tFluid.getLocalizedName());
         }
+        if(aPlayer.capabilities.isCreativeMode){
+        	ChunkPosition tPos = new ChunkPosition(aX, aY, aZ);
+        	if(GT_Proxy.chunkData.containsKey(tPos)){
+        		int[] tPollution = GT_Proxy.chunkData.get(tPos);
+        		if(tPollution.length>1){
+        		tList.add("Pollution in Chunk: "+tPollution[1]);
+        		}else{
+        			tList.add("No Pollution in Chunk");
+        		}
+        	}
+        }
 
         try {
             if (tBlock instanceof IDebugableBlock) {

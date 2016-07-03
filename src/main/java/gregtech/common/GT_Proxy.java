@@ -1445,6 +1445,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                     }
                 }
             }
+            GT_Pollution.onWorldTick((int) (aEvent.world.getTotalWorldTime() % 1200));            
         }
     }
 
@@ -1917,23 +1918,52 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     @SubscribeEvent
     public void handleChunkSaveEvent(ChunkDataEvent.Save event)
-    {
+    {    	
     	ChunkPosition tPos = new ChunkPosition(event.getChunk().xPosition,1,event.getChunk().zPosition);
     	if(chunkData.containsKey(tPos)){
     		int[] tInts = chunkData.get(tPos);
-    		if(tInts.length>0){event.getData().setInteger("GTOIL", tInts[0]);}}
+    		if(tInts.length>0){event.getData().setInteger("GTOIL", tInts[0]);}
+			if(tInts.length>1){event.getData().setInteger("GTPOLLUTION", tInts[1]);}}
     }
 
     @SubscribeEvent
     public void handleChunkLoadEvent(ChunkDataEvent.Load event)
     {
-    	int tOil = -1;
-    	if(event.getData().hasKey("GTOIL")){
-    	tOil = event.getData().getInteger("GTOIL");}
+    	int tOil = 0;
+    	int tPollution = 0;
+    	
     	ChunkPosition tPos = new ChunkPosition(event.getChunk().xPosition,1,event.getChunk().zPosition);
+    	int[] tData = new int[2];
     	if(chunkData.containsKey(tPos)){
-    		chunkData.remove(tPos);}
-    	chunkData.put(tPos, new int[]{ tOil});
+    		tData = chunkData.get(tPos);
+    		chunkData.remove(tPos);
+    	}
+    	    
+    	if(event.getData().hasKey("GTOIL")){
+    		if(tData.length>2){
+    			tOil = tData[0];
+    	}else{
+        	tOil += event.getData().getInteger("GTOIL");
+    		}
+    	}else{
+    		if(tData[0]!=0){
+    			tOil = tData[0];
+    		}
+    	}
+    	    
+    	if(event.getData().hasKey("GTPOLLUTION")){
+    		if(tData.length>2){
+    			tPollution = tData[1];
+    		}else{
+    		tPollution += event.getData().getInteger("GTPOLLUTION");    			
+    		}
+    	}else{
+    		if(tData[1]!=0){
+    			tPollution = tData[1];
+    		}
+    	}
+    	
+    	chunkData.put(tPos, new int[]{ tOil,tPollution,-1});
     }
 
     public static class OreDictEventContainer {
