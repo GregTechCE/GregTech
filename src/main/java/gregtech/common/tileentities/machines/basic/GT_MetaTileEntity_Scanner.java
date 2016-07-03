@@ -174,7 +174,7 @@ public class GT_MetaTileEntity_Scanner
                 	tNBT.setTag("f"+i, tRecipe.mFluidInputs[i].writeToNBT(new NBTTagCompound()));
                 }
                 
-                tNBT.setString("author", "Assemblyline Recipe Generator");
+                tNBT.setString("author", "Assembly Line Recipe Generator");
                 NBTTagList tNBTList = new NBTTagList();
                 tNBTList.appendTag(new NBTTagString("Constructionplan for "+tRecipe.mOutput.stackSize+" "+tRecipe.mOutput.getDisplayName()+". Needed EU/t: "+tRecipe.mEUt+" Productiontime: "+(tRecipe.mDuration/20)));
                 for(int i=0;i<tRecipe.mInputs.length;i++){
