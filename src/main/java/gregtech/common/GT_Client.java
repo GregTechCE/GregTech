@@ -234,7 +234,7 @@ public class GT_Client extends GT_Proxy
         try {
             GT_Log.out.println("GT_Mod: Downloading Cape List.");
             @SuppressWarnings("resource")
-            Scanner tScanner = new Scanner(new URL("http://files.minecraftforge.net/maven/com/gregoriust/gregtech/capelist.txt").openStream());
+            Scanner tScanner = new Scanner(new URL("http://gregtech.overminddl1.com/com/gregoriust/gregtech/supporterlist.txt").openStream());
             while (tScanner.hasNextLine()) {
                 String tName = tScanner.nextLine();
                 if (!this.mCapeList.contains(tName.toLowerCase())) {
