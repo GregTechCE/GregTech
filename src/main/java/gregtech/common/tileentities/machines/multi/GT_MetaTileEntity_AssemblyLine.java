@@ -135,6 +135,7 @@ public class GT_MetaTileEntity_AssemblyLine
             }
         }
         this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+        updateSlots();
         return true;
     }
 
