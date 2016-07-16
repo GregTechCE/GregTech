@@ -34,13 +34,14 @@ public class GT_Cover_Fluidfilter
             if(tFluid!=null){
             	//System.out.println(tFluid.getLocalizedName()+" "+tFluid.getFluidID());
             	aCoverVariable = tFluid.getFluidID();
-            aTileEntity.setCoverDataAtSide(aSide, aCoverVariable);
+                aTileEntity.setCoverDataAtSide(aSide, aCoverVariable);
         	FluidStack sFluid = new FluidStack(FluidRegistry.getFluid(aCoverVariable),1000);
-            GT_Utility.sendChatToPlayer(aPlayer, "Filter Fluid: " + sFluid.getLocalizedName());
+                GT_Utility.sendChatToPlayer(aPlayer, "Filter Fluid: " + sFluid.getLocalizedName());
             }else if(tStack.getItem() instanceof IFluidContainerItem){
             	IFluidContainerItem tContainer = (IFluidContainerItem)tStack.getItem();
                 if(tContainer.getFluid(tStack) != null) {
                     aCoverVariable = tContainer.getFluid(tStack).getFluidID();
+                    aTileEntity.setCoverDataAtSide(aSide, aCoverVariable);
                     //System.out.println("fluidcontainer " + aCoverVariable);
                     FluidStack sFluid = new FluidStack(FluidRegistry.getFluid(aCoverVariable), 1000);
                     GT_Utility.sendChatToPlayer(aPlayer, "Filter Fluid: " + sFluid.getLocalizedName());
