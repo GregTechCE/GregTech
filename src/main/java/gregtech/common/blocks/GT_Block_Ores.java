@@ -53,27 +53,40 @@ public class GT_Block_Ores
                 GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (i + 2000) + ".name", getLocalizedName(GregTech_API.sGeneratedMaterials[i]));
                 GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (i + 3000) + ".name", getLocalizedName(GregTech_API.sGeneratedMaterials[i]));
                 GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (i + 4000) + ".name", getLocalizedName(GregTech_API.sGeneratedMaterials[i]));
+                GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (i + 5000) + ".name", getLocalizedName(GregTech_API.sGeneratedMaterials[i]));
                 GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (i + 16000) + ".name", "Small " + getLocalizedName(GregTech_API.sGeneratedMaterials[i]));
                 GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (i + 17000) + ".name", "Small " + getLocalizedName(GregTech_API.sGeneratedMaterials[i]));
                 GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (i + 18000) + ".name", "Small " + getLocalizedName(GregTech_API.sGeneratedMaterials[i]));
                 GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (i + 19000) + ".name", "Small " + getLocalizedName(GregTech_API.sGeneratedMaterials[i]));
                 GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (i + 20000) + ".name", "Small " + getLocalizedName(GregTech_API.sGeneratedMaterials[i]));
+                GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (i + 21000) + ".name", getLocalizedName(GregTech_API.sGeneratedMaterials[i]));
+                //GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (i + 30000) + ".name", getLocalizedName(GregTech_API.sGeneratedMaterials[i]));
+                //GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (i + 50000) + ".name", getLocalizedName(GregTech_API.sGeneratedMaterials[i]));
+
                 if ((GregTech_API.sGeneratedMaterials[i].mTypes & 0x8) != 0) {
                     GT_OreDictUnificator.registerOre(OrePrefixes.ore.get(GregTech_API.sGeneratedMaterials[i]), new ItemStack(this, 1, i));
                     GT_OreDictUnificator.registerOre(OrePrefixes.oreNetherrack.get(GregTech_API.sGeneratedMaterials[i]), new ItemStack(this, 1, i + 1000));
                     GT_OreDictUnificator.registerOre(OrePrefixes.oreEndstone.get(GregTech_API.sGeneratedMaterials[i]), new ItemStack(this, 1, i + 2000));
                     GT_OreDictUnificator.registerOre(OrePrefixes.oreBlackgranite.get(GregTech_API.sGeneratedMaterials[i]), new ItemStack(this, 1, i + 3000));
-                    GT_OreDictUnificator.registerOre(OrePrefixes.oreRedgranite.get(GregTech_API.sGeneratedMaterials[i]), new ItemStack(this, 1, i + 4000));       	
+                    GT_OreDictUnificator.registerOre(OrePrefixes.oreRedgranite.get(GregTech_API.sGeneratedMaterials[i]), new ItemStack(this, 1, i + 4000));
+                    GT_OreDictUnificator.registerOre(OrePrefixes.oreMarble.get(GregTech_API.sGeneratedMaterials[i]), new ItemStack(this, 1, i + 5000));
+                    GT_OreDictUnificator.registerOre("oreIgneousStone", new ItemStack(this, 1, i + 21000));
+                    //GT_OreDictUnificator.registerOre("oreMetamorphicStone", new ItemStack(this, 1, i + 40000));
+                    //GT_OreDictUnificator.registerOre("oreSedimentaryStone", new ItemStack(this, 1, i + 50000));
                 if (tHideOres) {
                     codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i + 1000));
                     codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i + 2000));
                     codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i + 3000));
                     codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i + 4000));
+                    codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i + 5000));
                     codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i + 16000));
                     codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i + 17000));
                     codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i + 18000));
                     codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i + 19000));
                     codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i + 20000));
+                    codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i + 21000));
+                    //codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i + 40000));
+                    //codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i + 50000));
                 }
                 }         
             }
@@ -251,11 +264,15 @@ public class GT_Block_Ores
                 aList.add(new ItemStack(aItem, 1, i + 2000));
                 aList.add(new ItemStack(aItem, 1, i + 3000));
                 aList.add(new ItemStack(aItem, 1, i + 4000));
+                aList.add(new ItemStack(aItem, 1, i + 5000));
                 aList.add(new ItemStack(aItem, 1, i + 16000));
                 aList.add(new ItemStack(aItem, 1, i + 17000));
                 aList.add(new ItemStack(aItem, 1, i + 18000));
                 aList.add(new ItemStack(aItem, 1, i + 19000));
                 aList.add(new ItemStack(aItem, 1, i + 20000));
+                aList.add(new ItemStack(aItem, 1, i + 21000));
+                //aList.add(new ItemStack(aItem, 1, i + 40000));
+                //aList.add(new ItemStack(aItem, 1, i + 50000));
             }
         }
     }
