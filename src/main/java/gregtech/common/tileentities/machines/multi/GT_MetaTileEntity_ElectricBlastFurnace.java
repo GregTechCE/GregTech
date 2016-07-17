@@ -1,5 +1,8 @@
 package gregtech.common.tileentities.machines.multi;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
@@ -14,9 +17,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class GT_MetaTileEntity_ElectricBlastFurnace
         extends GT_MetaTileEntity_MultiBlockBase {
@@ -144,29 +144,38 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
         addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 3, zDir), 11);
 
         byte tUsedMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, 2, zDir);
+        boolean tUseAdvancedCoils = aBaseMetaTileEntity.getBlockOffset(xDir + 1, 2, zDir) == GregTech_API.sBlockCasings4;
         switch (tUsedMeta) {
             case 12:
-                this.mHeatingCapacity = 1800;
+                this.mHeatingCapacity = tUseAdvancedCoils ? 0 : 1800;
                 break;
             case 13:
-                this.mHeatingCapacity = 2700;
+                this.mHeatingCapacity = tUseAdvancedCoils ? 0 : 2700;
                 break;
             case 14:
-                this.mHeatingCapacity = 3600;
+                this.mHeatingCapacity = tUseAdvancedCoils ? 4500 : 3600;
+                break;
+            case 15:
+                this.mHeatingCapacity = tUseAdvancedCoils ? 9001 : 0;
                 break;
             default:
                 return false;
         }
+        if (this.mHeatingCapacity == 0) {
+            return false;
+        }
         for (int i = -1; i < 2; i++) {
             for (int j = -1; j < 2; j++) {
                 if ((i != 0) || (j != 0)) {
-                    if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 2, zDir + j) != GregTech_API.sBlockCasings1) {
+                    if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 2, zDir + j) != GregTech_API.sBlockCasings1 && !tUseAdvancedCoils ||
+                        aBaseMetaTileEntity.getBlockOffset(xDir + i, 2, zDir + j) != GregTech_API.sBlockCasings4 && tUseAdvancedCoils) {
                         return false;
                     }
                     if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 2, zDir + j) != tUsedMeta) {
                         return false;
                     }
-                    if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j) != GregTech_API.sBlockCasings1) {
+                    if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j) != GregTech_API.sBlockCasings1 && !tUseAdvancedCoils ||
+                        aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j) != GregTech_API.sBlockCasings4 && tUseAdvancedCoils) {
                         return false;
                     }
                     if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 1, zDir + j) != tUsedMeta) {

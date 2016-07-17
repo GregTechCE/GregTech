@@ -37,6 +37,8 @@ public class GT_Block_Casings4
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Titanium Turbine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Tungstensteel Turbine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Engine Intake Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Tungstensteel Coil Block");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Naquadah Alloy Coil Block");
 
         ItemList.Casing_RobustTungstenSteel.set(new ItemStack(this, 1, 0));
         ItemList.Casing_CleanStainlessSteel.set(new ItemStack(this, 1, 1));
@@ -50,6 +52,8 @@ public class GT_Block_Casings4
         ItemList.Casing_Turbine2.set(new ItemStack(this, 1, 11));
         ItemList.Casing_Turbine3.set(new ItemStack(this, 1, 12));
         ItemList.Casing_EngineIntake.set(new ItemStack(this, 1, 13));
+        ItemList.Casing_Coil_TungstenSteel.set(new ItemStack(this, 1, 14));
+        ItemList.Casing_Coil_NaquadahAlloy.set(new ItemStack(this, 1, 15));
     }
 
     public IIcon getIcon(int aSide, int aMeta) {
@@ -83,9 +87,9 @@ public class GT_Block_Casings4
             case 13:
                 return Textures.BlockIcons.MACHINE_CASING_ENGINE_INTAKE.getIcon();
             case 14:
-                return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
+                return Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL.getIcon();
             case 15:
-                return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
+                return Textures.BlockIcons.MACHINE_COIL_NAQUADAHALLOY.getIcon();
         }
         return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
     }
