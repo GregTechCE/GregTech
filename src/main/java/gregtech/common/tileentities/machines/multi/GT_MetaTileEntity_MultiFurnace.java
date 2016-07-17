@@ -36,7 +36,7 @@ public class GT_MetaTileEntity_MultiFurnace
     public String[] getDescription() {
         return new String[]{
                 "Controller Block for the Multi Smelter",
-                "Smelts up to 6-18 Items at once",
+                "Smelts up to 8-128 Items at once",
                 "Size(WxHxD): 3x3x3 (Hollow), Controller (Front middle at bottom)",
                 "8x Heating Coils (Middle layer, hollow)",
                 "1x Input Bus (One of bottom)",
