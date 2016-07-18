@@ -9,7 +9,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.common.blocks.GT_Block_Machines;
-import gregtech.common.blocks.GT_Block_Ores;
+import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -529,7 +529,7 @@ public class GT_Renderer_Block
                     (!GregTech_API.METATILEENTITIES[aMeta].renderInInventory(aBlock, aMeta, aRenderer))) {
                 renderNormalInventoryMetaTileEntity(aBlock, aMeta, aRenderer);
             }
-        } else if ((aBlock instanceof GT_Block_Ores)) {
+        } else if ((aBlock instanceof GT_Block_Ores_Abstract)) {
             GT_TileEntity_Ores tTileEntity = new GT_TileEntity_Ores();
             tTileEntity.mMetaData = ((short) aMeta);
 
