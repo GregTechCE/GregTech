@@ -106,8 +106,14 @@ public class GT_MetaTileEntity_MultiFurnace
         addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 2, zDir), 11);
 
         byte tUsedMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, 1, zDir);
-        boolean tUseAdvancedCoils = aBaseMetaTileEntity.getBlockOffset(xDir + 1, 1, zDir) == GregTech_API.sBlockCasings4;
+        boolean tUseAdvancedCoils = aBaseMetaTileEntity.getBlockOffset(xDir + 1, 1, zDir) == GregTech_API.sBlockCasings5;
         switch (tUsedMeta) {
+            case 4:
+                this.mLevel = tUseAdvancedCoils ? 8 : 0;
+                break;
+            case 5:
+                this.mLevel = tUseAdvancedCoils ? 16 : 0;
+                break;
             case 12:
                 this.mLevel = tUseAdvancedCoils ? 0 : 1;
                 break;
@@ -115,10 +121,7 @@ public class GT_MetaTileEntity_MultiFurnace
                 this.mLevel = tUseAdvancedCoils ? 0 : 2;
                 break;
             case 14:
-                this.mLevel = tUseAdvancedCoils ? 8 : 4;
-                break;
-            case 15:
-                this.mLevel = tUseAdvancedCoils ? 16 : 0;
+                this.mLevel = tUseAdvancedCoils ? 0 : 4;
                 break;
             default:
                 return false;
@@ -130,7 +133,7 @@ public class GT_MetaTileEntity_MultiFurnace
             for (int j = -1; j < 2; j++) {
                 if ((i != 0) || (j != 0)) {
                     if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j) != GregTech_API.sBlockCasings1 && !tUseAdvancedCoils ||
-                        aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j) != GregTech_API.sBlockCasings4 && tUseAdvancedCoils) {
+                        aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j) != GregTech_API.sBlockCasings5 && tUseAdvancedCoils) {
                         return false;
                     }
                     if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 1, zDir + j) != tUsedMeta) {

@@ -144,8 +144,14 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
         addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 3, zDir), 11);
 
         byte tUsedMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, 2, zDir);
-        boolean tUseAdvancedCoils = aBaseMetaTileEntity.getBlockOffset(xDir + 1, 2, zDir) == GregTech_API.sBlockCasings4;
+        boolean tUseAdvancedCoils = aBaseMetaTileEntity.getBlockOffset(xDir + 1, 2, zDir) == GregTech_API.sBlockCasings5;
         switch (tUsedMeta) {
+            case 4:
+                this.mHeatingCapacity = tUseAdvancedCoils ? 4500 : 0;
+                break;
+            case 5:
+                this.mHeatingCapacity = tUseAdvancedCoils ? 9001 : 0;
+                break;
             case 12:
                 this.mHeatingCapacity = tUseAdvancedCoils ? 0 : 1800;
                 break;
@@ -153,10 +159,7 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
                 this.mHeatingCapacity = tUseAdvancedCoils ? 0 : 2700;
                 break;
             case 14:
-                this.mHeatingCapacity = tUseAdvancedCoils ? 4500 : 3600;
-                break;
-            case 15:
-                this.mHeatingCapacity = tUseAdvancedCoils ? 9001 : 0;
+                this.mHeatingCapacity = tUseAdvancedCoils ? 0 : 3600;
                 break;
             default:
                 return false;
@@ -168,14 +171,14 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
             for (int j = -1; j < 2; j++) {
                 if ((i != 0) || (j != 0)) {
                     if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 2, zDir + j) != GregTech_API.sBlockCasings1 && !tUseAdvancedCoils ||
-                        aBaseMetaTileEntity.getBlockOffset(xDir + i, 2, zDir + j) != GregTech_API.sBlockCasings4 && tUseAdvancedCoils) {
+                        aBaseMetaTileEntity.getBlockOffset(xDir + i, 2, zDir + j) != GregTech_API.sBlockCasings5 && tUseAdvancedCoils) {
                         return false;
                     }
                     if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 2, zDir + j) != tUsedMeta) {
                         return false;
                     }
                     if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j) != GregTech_API.sBlockCasings1 && !tUseAdvancedCoils ||
-                        aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j) != GregTech_API.sBlockCasings4 && tUseAdvancedCoils) {
+                        aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j) != GregTech_API.sBlockCasings5 && tUseAdvancedCoils) {
                         return false;
                     }
                     if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 1, zDir + j) != tUsedMeta) {
