@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
+import java.util.ArrayList;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -16,8 +18,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-
-import java.util.ArrayList;
 
 public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_MultiBlockBase {
 
@@ -120,10 +120,10 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_MultiBlockBa
                         if (!(j == 0 && i == 0 && (h == -1 || h == 0 || h == 1))) {
                             if (h == 1 || h == -1) {
                                 IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, j, h + zDir);
-                                if (aBaseMetaTileEntity.getBlockOffset(xDir + i, j, h + zDir) != GregTech_API.sBlockCasings1) {
+                                if (aBaseMetaTileEntity.getBlockOffset(xDir + i, j, h + zDir) != GregTech_API.sBlockCasings5) {
                                     return false;
                                 }
-                                if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, j, h + zDir) != 12) {
+                                if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, j, h + zDir) != 0) {
                                     return false;
                                 }
                             }
@@ -167,10 +167,10 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_MultiBlockBa
                         if (!(j == 0 && i == 0 && (h == -1 || h == 0 || h == 1))) {
                             if (h == 1 || h == -1) {
                                 IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + h, j, i + zDir);
-                                if (aBaseMetaTileEntity.getBlockOffset(xDir + h, j, i + zDir) != GregTech_API.sBlockCasings1) {
+                                if (aBaseMetaTileEntity.getBlockOffset(xDir + h, j, i + zDir) != GregTech_API.sBlockCasings5) {
                                     return false;
                                 }
-                                if (aBaseMetaTileEntity.getMetaIDOffset(xDir + h, j, i + zDir) != 12) {
+                                if (aBaseMetaTileEntity.getMetaIDOffset(xDir + h, j, i + zDir) != 0) {
                                     return false;
                                 }
                             }
