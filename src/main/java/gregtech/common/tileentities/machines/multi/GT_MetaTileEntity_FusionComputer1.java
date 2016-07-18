@@ -39,12 +39,12 @@ public class GT_MetaTileEntity_FusionComputer1 extends GT_MetaTileEntity_FusionC
 
     @Override
     public Block getFusionCoil() {
-        return GregTech_API.sBlockCasings1;
+        return GregTech_API.sBlockCasings5;
     }
 
     @Override
     public int getFusionCoilMeta() {
-        return 15;
+        return 5;
     }
 
     public String[] getDescription() {

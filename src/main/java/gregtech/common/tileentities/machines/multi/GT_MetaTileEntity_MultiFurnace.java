@@ -106,34 +106,29 @@ public class GT_MetaTileEntity_MultiFurnace
         addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 2, zDir), 11);
 
         byte tUsedMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, 1, zDir);
-        boolean tUseAdvancedCoils = aBaseMetaTileEntity.getBlockOffset(xDir + 1, 1, zDir) == GregTech_API.sBlockCasings5;
         switch (tUsedMeta) {
+            case 0:
+                this.mLevel = 1;
+                break;
+            case 1:
+                this.mLevel = 2;
+                break;
+            case 2:
+                this.mLevel = 4;
+                break;
+            case 3:
+                this.mLevel = 8;
+                break;
             case 4:
-                this.mLevel = tUseAdvancedCoils ? 8 : 0;
-                break;
-            case 5:
-                this.mLevel = tUseAdvancedCoils ? 16 : 0;
-                break;
-            case 12:
-                this.mLevel = tUseAdvancedCoils ? 0 : 1;
-                break;
-            case 13:
-                this.mLevel = tUseAdvancedCoils ? 0 : 2;
-                break;
-            case 14:
-                this.mLevel = tUseAdvancedCoils ? 0 : 4;
+                this.mLevel = 16;
                 break;
             default:
                 return false;
         }
-        if (this.mLevel == 0) {
-            return false;
-        }
         for (int i = -1; i < 2; i++) {
             for (int j = -1; j < 2; j++) {
                 if ((i != 0) || (j != 0)) {
-                    if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j) != GregTech_API.sBlockCasings1 && !tUseAdvancedCoils ||
-                        aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j) != GregTech_API.sBlockCasings5 && tUseAdvancedCoils) {
+                    if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j) != GregTech_API.sBlockCasings5) {
                         return false;
                     }
                     if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 1, zDir + j) != tUsedMeta) {
