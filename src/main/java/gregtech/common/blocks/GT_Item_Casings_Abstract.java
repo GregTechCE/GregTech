@@ -18,6 +18,8 @@ public abstract class GT_Item_Casings_Abstract
     protected final String mCoil03Tooltip = GT_LanguageManager.addStringLocalization("gt.coil03tooltip", "Base Heating Capacity = 3600 Kelvin");
     protected final String mCoil04Tooltip = GT_LanguageManager.addStringLocalization("gt.coil04tooltip", "Base Heating Capacity = 4500 Kelvin");
     protected final String mCoil05Tooltip = GT_LanguageManager.addStringLocalization("gt.coil05tooltip", "Base Heating Capacity = 9001 Kelvin");
+    protected final String mCoilOverheated1Tooltip = GT_LanguageManager.addStringLocalization("gt.coil.overheated1.tooltip", "These coils are overheated");
+    protected final String mCoilOverheated2Tooltip = GT_LanguageManager.addStringLocalization("gt.coil.overheated2.tooltip", "Place in crafting grid to repair");
     protected final String mBlastProofTooltip = GT_LanguageManager.addStringLocalization("gt.blastprooftooltip", "This Block is Blast Proof");
     public GT_Item_Casings_Abstract(Block par1) {
         super(par1);

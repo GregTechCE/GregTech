@@ -21,14 +21,12 @@ public class GT_Block_Casings5
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Nichrome Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Tungstensteel Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Naquadah Alloy Coil Block");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Superconducting Coil Block");
 
         ItemList.Casing_Coil_Cupronickel.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Coil_Kanthal.set(new ItemStack(this, 1, 1));
         ItemList.Casing_Coil_Nichrome.set(new ItemStack(this, 1, 2));
         ItemList.Casing_Coil_TungstenSteel.set(new ItemStack(this, 1, 3));
         ItemList.Casing_Coil_NaquadahAlloy.set(new ItemStack(this, 1, 4));
-        ItemList.Casing_Coil_Superconductor.set(new ItemStack(this, 1, 5));
     }
     @Override
     @SideOnly(Side.CLIENT)
@@ -44,8 +42,6 @@ public class GT_Block_Casings5
                 return Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL.getIcon();
             case 4:
                 return Textures.BlockIcons.MACHINE_COIL_NAQUADAHALLOY.getIcon();
-            case 5:
-                return Textures.BlockIcons.MACHINE_COIL_SUPERCONDUCTOR.getIcon();
         }
         return Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL.getIcon();
     }
