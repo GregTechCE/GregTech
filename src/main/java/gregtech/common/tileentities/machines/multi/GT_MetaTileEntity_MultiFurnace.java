@@ -20,6 +20,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class GT_MetaTileEntity_MultiFurnace
         extends GT_MetaTileEntity_MultiBlockBase {
     private int mLevel = 0;
+    private int mCostDiscount = 1;
 
     public GT_MetaTileEntity_MultiFurnace(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -86,7 +87,7 @@ public class GT_MetaTileEntity_MultiFurnace
                 this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
 
-                this.mEUt = (-4 * (1 << tTier - 1) * (1 << tTier - 1) * Math.min(this.mLevel, 8));
+                this.mEUt = (-4 * (1 << tTier - 1) * (1 << tTier - 1) * this.mLevel / this.mCostDiscount);
                 this.mMaxProgresstime = Math.max(1, 512 / (1 << tTier - 1));
             }
             updateSlots();
@@ -100,6 +101,7 @@ public class GT_MetaTileEntity_MultiFurnace
         int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
 
         this.mLevel = 0;
+        this.mCostDiscount = 1;
         if (!aBaseMetaTileEntity.getAirOffset(xDir, 1, zDir)) {
             return false;
         }
@@ -109,18 +111,31 @@ public class GT_MetaTileEntity_MultiFurnace
         switch (tUsedMeta) {
             case 0:
                 this.mLevel = 1;
+                this.mCostDiscount = 1;
                 break;
             case 1:
                 this.mLevel = 2;
+                this.mCostDiscount = 1;
                 break;
             case 2:
                 this.mLevel = 4;
+                this.mCostDiscount = 1;
                 break;
             case 3:
                 this.mLevel = 8;
+                this.mCostDiscount = 1;
                 break;
             case 4:
                 this.mLevel = 16;
+                this.mCostDiscount = 2;
+                break;
+            case 5:
+                this.mLevel = 16;
+                this.mCostDiscount = 4;
+                break;
+            case 6:
+                this.mLevel = 16;
+                this.mCostDiscount = 8;
                 break;
             default:
                 return false;
@@ -174,7 +189,7 @@ public class GT_MetaTileEntity_MultiFurnace
     }
 
     public int getAmountOfOutputs() {
-        return 18;
+        return 128;
     }
 
     public boolean explodesOnComponentBreak(ItemStack aStack) {
