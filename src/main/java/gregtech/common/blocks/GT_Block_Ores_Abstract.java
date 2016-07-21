@@ -7,7 +7,6 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.GT_Generic_Block;
 import gregtech.common.render.GT_Renderer_Block;
 import net.minecraft.block.Block;
@@ -189,13 +188,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
         aWorld.removeTileEntity(aX, aY, aZ);
     }
 
-    public ArrayList<ItemStack> getDrops(World aWorld, int aX, int aY, int aZ, int aMeta, int aFortune) {
-        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity instanceof GT_TileEntity_Ores)) {
-            return ((GT_TileEntity_Ores) tTileEntity).getDrops(aFortune);
-        }
-        return mTemporaryTileEntity.get() == null ? new ArrayList() : mTemporaryTileEntity.get().getDrops(aFortune);
-    }
+    public abstract ArrayList<ItemStack> getDrops(World aWorld, int aX, int aY, int aZ, int aMeta, int aFortune);
 
     public TileEntity createTileEntity(World aWorld, int aMeta) {
         return new GT_TileEntity_Ores();
@@ -203,6 +196,4 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
 
     @SideOnly(Side.CLIENT)
     public abstract void getSubBlocks(Item aItem, CreativeTabs aTab, List aList);
-
-    public abstract ITexture[] getStoneTexture(byte aSide, int aMetaData, Materials aMaterial);
 }
