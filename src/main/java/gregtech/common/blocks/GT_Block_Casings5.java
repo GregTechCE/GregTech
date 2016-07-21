@@ -20,7 +20,7 @@ public class GT_Block_Casings5
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Kanthal Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Nichrome Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Tungstensteel Coil Block");
-        //GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Naquadah Alloy Coil Block");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "HSS-G Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Naquadah Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Naquadah Alloy Coil Block");
 
@@ -28,7 +28,7 @@ public class GT_Block_Casings5
         ItemList.Casing_Coil_Kanthal.set(new ItemStack(this, 1, 1));
         ItemList.Casing_Coil_Nichrome.set(new ItemStack(this, 1, 2));
         ItemList.Casing_Coil_TungstenSteel.set(new ItemStack(this, 1, 3));
-        //ItemList.Casing_Coil_NaquadahAlloy.set(new ItemStack(this, 1, 4));
+        ItemList.Casing_Coil_HSSG.set(new ItemStack(this, 1, 4));
         ItemList.Casing_Coil_Naquadah.set(new ItemStack(this, 1, 5));
         ItemList.Casing_Coil_NaquadahAlloy.set(new ItemStack(this, 1, 6));
     }
@@ -44,6 +44,8 @@ public class GT_Block_Casings5
                 return Textures.BlockIcons.MACHINE_COIL_NICHROME.getIcon();
             case 3:
                 return Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL.getIcon();
+            case 4:
+                return Textures.BlockIcons.MACHINE_COIL_HSSG.getIcon();
             case 5:
                 return Textures.BlockIcons.MACHINE_COIL_NAQUADAH.getIcon();
             case 6:
