@@ -1,5 +1,7 @@
 package gregtech.api.enums;
 
+import java.util.*;
+
 import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
@@ -14,8 +16,6 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-
-import java.util.*;
 
 import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.GT_Values.MOD_ID_TC;
@@ -479,7 +479,7 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 	Molybdenite			( 942, TextureSet.SET_METALLIC			,   1.0F,      0,  2, 1    |8                               ,  25,  25,  25,   0,	"Molybdenite"					,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlue		, 1, Arrays.asList(new MaterialStack(Molybdenum, 1), new MaterialStack(Sulfur, 2))), // MoS2 (also source of Re)
 	Nichrome			( 311, TextureSet.SET_METALLIC			,   6.0F,     64,  2, 1|2          |64                      , 205, 206, 246,   0,	"Nichrome"						,    0,       0,       2700, 2700, true, false,   1,   1,   1, Dyes.dyeRed			, 2, Arrays.asList(new MaterialStack(Nickel, 4), new MaterialStack(Chrome, 1))),
 	NiobiumNitride		( 359, TextureSet.SET_DULL				,   1.0F,      0,  2, 1|2                                   ,  29,  41,  29,   0,	"Niobium Nitride"				,    0,       0,       2573, 2573, true, false,   1,   1,   1, Dyes.dyeBlack		, 1, Arrays.asList(new MaterialStack(Niobium, 1), new MaterialStack(Nitrogen, 1))), // Anti-Reflective Material
-	NiobiumTitanium		( 360, TextureSet.SET_DULL				,   1.0F,      0,  2, 1|2                                   ,  29,  29,  41,   0,	"Niobium-Titanium"				,    0,       0,       2800, 2800, true, false,   1,   1,   1, Dyes.dyeBlack		, 2, Arrays.asList(new MaterialStack(Niobium, 1), new MaterialStack(Titanium, 1))),
+	NiobiumTitanium		( 360, TextureSet.SET_DULL				,   1.0F,      0,  2, 1|2                                   ,  29,  29,  41,   0,	"Niobium-Titanium"				,    0,       0,       4500, 4500, true, false,   1,   1,   1, Dyes.dyeBlack		, 2, Arrays.asList(new MaterialStack(Niobium, 1), new MaterialStack(Titanium, 1))),
 	NitroCarbon			( 716, TextureSet.SET_FLUID				,   1.0F,      0,  1,         16                            ,   0,  75, 100,   0,	"Nitro-Carbon"					,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeCyan		, 1, Arrays.asList(new MaterialStack(Nitrogen, 1), new MaterialStack(Carbon, 1))),
 	NitrogenDioxide		( 717, TextureSet.SET_FLUID				,   1.0F,      0,  1,         16                            , 100, 175, 255,   0,	"Nitrogen Dioxide"				,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeCyan		, 1, Arrays.asList(new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 2))),
 	Obsidian			( 804, TextureSet.SET_DULL				,   1.0F,      0,  3, 1                                     ,  80,  50, 100,   0,	"Obsidian"						,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack		, 1, Arrays.asList(new MaterialStack(Magnesium, 1), new MaterialStack(Iron, 1), new MaterialStack(Silicon, 2), new MaterialStack(Oxygen, 8))),
@@ -543,12 +543,12 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 	Ultimet				( 344, TextureSet.SET_SHINY				,   9.0F,   2048,  4, 1|2          |64|128                  , 180, 180, 230,   0,	"Ultimet"						,    0,       0,       2700, 2700, true, false,   1,   1,   1, Dyes.dyeLightBlue	, 1, Arrays.asList(new MaterialStack(Cobalt, 5), new MaterialStack(Chrome, 2), new MaterialStack(Nickel, 1), new MaterialStack(Molybdenum, 1))), // 54% Cobalt, 26% Chromium, 9% Nickel, 5% Molybdenum, 3% Iron, 2% Tungsten, 0.8% Manganese, 0.3% Silicon, 0.08% Nitrogen and 0.06% Carbon
 	Uraninite			( 922, TextureSet.SET_METALLIC			,   1.0F,      0,  3, 1    |8                               ,  35,  35,  35,   0,	"Uraninite"						,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLime		, 2, Arrays.asList(new MaterialStack(Uranium, 1), new MaterialStack(Oxygen, 2))),
 	Uvarovite			( 842, TextureSet.SET_DIAMOND			,   1.0F,      0,  2, 1    |8                               , 180, 255, 180,   0,	"Uvarovite"						,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeGreen		, 1, Arrays.asList(new MaterialStack(Calcium, 3), new MaterialStack(Chrome, 2), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12))),
-	VanadiumGallium		( 357, TextureSet.SET_SHINY				,   1.0F,      0,  2, 1|2                                   , 128, 128, 140,   0,	"Vanadium-Gallium"				,    0,       0,       3000, 3000, true, false,   1,   1,   1, Dyes.dyeGray		, 2, Arrays.asList(new MaterialStack(Vanadium, 3), new MaterialStack(Gallium, 1))),
+	VanadiumGallium		( 357, TextureSet.SET_SHINY				,   1.0F,      0,  2, 1|2                                   , 128, 128, 140,   0,	"Vanadium-Gallium"				,    0,       0,       4500, 4500, true, false,   1,   1,   1, Dyes.dyeGray		, 2, Arrays.asList(new MaterialStack(Vanadium, 3), new MaterialStack(Gallium, 1))),
 	Wood				( 809, TextureSet.SET_WOOD				,   2.0F,     16,  0, 1|2          |64|128                  , 100,  50,   0,   0,	"Wood"							,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBrown		, 0, Arrays.asList(new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 1), new MaterialStack(Hydrogen, 1)), Arrays.asList(new TC_AspectStack(TC_Aspects.ARBOR, 2))),
 	WroughtIron			( 304, TextureSet.SET_METALLIC			,   6.0F,    384,  2, 1|2          |64|128                  , 200, 180, 180,   0,	"Wrought Iron"					,    0,       0,       1811,    0, false, false,   3,   1,   1, Dyes.dyeLightGray	, 2, Arrays.asList(new MaterialStack(Iron, 1))),
 	Wulfenite			( 882, TextureSet.SET_DULL				,   1.0F,      0,  3, 1    |8                               , 255, 128,   0,   0,	"Wulfenite"						,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange		, 2, Arrays.asList(new MaterialStack(Lead, 1), new MaterialStack(Molybdenum, 1), new MaterialStack(Oxygen, 4))),
 	YellowLimonite		( 931, TextureSet.SET_METALLIC			,   1.0F,      0,  2, 1    |8                               , 200, 200,   0,   0,	"Yellow Limonite"				,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow		, 2, Arrays.asList(new MaterialStack(Iron, 1), new MaterialStack(Hydrogen, 1), new MaterialStack(Oxygen, 2))), // FeO(OH) + a bit Ni and Co
-	YttriumBariumCuprate( 358, TextureSet.SET_METALLIC			,   1.0F,      0,  2, 1|2                                   ,  80,  64,  70,   0,	"Yttrium Barium Cuprate"		,    0,       0,       1200, 1200, true, false,   1,   1,   1, Dyes.dyeGray		, 0, Arrays.asList(new MaterialStack(Yttrium, 1), new MaterialStack(Barium, 2), new MaterialStack(Copper, 3), new MaterialStack(Oxygen, 7))),
+	YttriumBariumCuprate( 358, TextureSet.SET_METALLIC			,   1.0F,      0,  2, 1|2                                   ,  80,  64,  70,   0,	"Yttrium Barium Cuprate"		,    0,       0,       4500, 4500, true, false,   1,   1,   1, Dyes.dyeGray		, 0, Arrays.asList(new MaterialStack(Yttrium, 1), new MaterialStack(Barium, 2), new MaterialStack(Copper, 3), new MaterialStack(Oxygen, 7))),
 
 	/**
 	 * Second Degree Compounds
