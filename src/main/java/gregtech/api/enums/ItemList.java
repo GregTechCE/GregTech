@@ -629,7 +629,7 @@ public enum ItemList implements IItemContainer {
     Ingot_Heavy1, Ingot_Heavy2, Ingot_Heavy3,
     Pump_LV, Pump_MV, Pump_HV, Pump_EV, Pump_IV, Pump_LuV, Pump_ZPM, Pump_UV,
     Teleporter, Cover_NeedsMaintainance, Casing_Turbine, Casing_Turbine1, Casing_Turbine2, Casing_Turbine3, Casing_EngineIntake,
-    Casing_Coil_Cupronickel, Casing_Coil_Kanthal, Casing_Coil_Nichrome, Casing_Coil_TungstenSteel, Casing_Coil_Naquadah, Casing_Coil_NaquadahAlloy,
+    Casing_Coil_Cupronickel, Casing_Coil_Kanthal, Casing_Coil_Nichrome, Casing_Coil_TungstenSteel, Casing_Coil_HSSG, Casing_Coil_Naquadah, Casing_Coil_NaquadahAlloy,
     MobRep_LV, MobRep_MV, MobRep_HV, MobRep_EV, MobRep_IV, MobRep_LuV, MobRep_ZPM, MobRep_UV, Cover_PlayerDetector, Machine_Multi_HeatExchanger,
     Block_BronzePlate, Block_IridiumTungstensteel, Block_Plascrete, Block_TungstenSteelReinforced,
     Honeycomb, Charcoal_Pile, Block_BrittleCharcoal, Seismic_Prospector, OilDrill, AdvancedMiner2, PyrolyseOven, OilCracker, Crop_Drop_UUMBerry, Crop_Drop_UUABerry, Empty_Board_Basic, Empty_Board_Elite,

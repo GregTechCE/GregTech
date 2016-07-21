@@ -1,5 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
+import java.util.Random;
+
 import gregtech.api.enums.*;
 import gregtech.api.gui.GT_Container_BasicMachine;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
@@ -16,8 +18,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-
-import java.util.Random;
 
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.W;
@@ -101,10 +101,10 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                             aRecipe[i] = OrePrefixes.plate.get(Materials.TungstenSteel);
                             break;
                         case 6:
-                            aRecipe[i] = OrePrefixes.plate.get(Materials.HSSE);
+                            aRecipe[i] = OrePrefixes.plate.get(Materials.HSSG);
                             break;
                         case 7:
-                            aRecipe[i] = OrePrefixes.plate.get(Materials.HSSG);
+                            aRecipe[i] = OrePrefixes.plate.get(Materials.HSSS);
                             break;
                         case 8:
                             aRecipe[i] = OrePrefixes.plate.get(Materials.Neutronium);

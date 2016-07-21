@@ -73,6 +73,7 @@ public class GT_Loader_MetaTileEntities
         GT_ModHandler.addCraftingRecipe(ItemList.Casing_Coil_Kanthal.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"PPP", "PwP", "PPP", Character.valueOf('P'), OrePrefixes.wireGt02.get(Materials.Kanthal)});
         GT_ModHandler.addCraftingRecipe(ItemList.Casing_Coil_Nichrome.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"PPP", "PwP", "PPP", Character.valueOf('P'), OrePrefixes.wireGt02.get(Materials.Nichrome)});
         GT_ModHandler.addCraftingRecipe(ItemList.Casing_Coil_TungstenSteel.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"PPP", "PwP", "PPP", Character.valueOf('P'), OrePrefixes.wireGt02.get(Materials.TungstenSteel)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Casing_Coil_HSSG.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"PPP", "PwP", "PPP", Character.valueOf('P'), OrePrefixes.wireGt02.get(Materials.HSSG)});
         GT_ModHandler.addCraftingRecipe(ItemList.Casing_Coil_Naquadah.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"PPP", "PwP", "PPP", Character.valueOf('P'), OrePrefixes.wireGt02.get(Materials.Naquadah)});
         GT_ModHandler.addCraftingRecipe(ItemList.Casing_Coil_NaquadahAlloy.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"PPP", "PwP", "PPP", Character.valueOf('P'), OrePrefixes.wireGt02.get(Materials.NaquadahAlloy)});
         GT_ModHandler.addCraftingRecipe(ItemList.Casing_Coil_Superconductor.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"PPP", "PwP", "PPP", Character.valueOf('P'), OrePrefixes.wireGt02.get(Materials.Superconductor)});
@@ -1259,14 +1260,15 @@ public class GT_Loader_MetaTileEntities
         makeWires(Materials.Osmium, 1620, bEC ? 2L : 32L, bEC ? 4L : 64L, 4L, gregtech.api.enums.GT_Values.V[5], true, false);
         makeWires(Materials.Platinum, 1640, bEC ? 1L : 16L, bEC ? 2L : 32L, 2L, gregtech.api.enums.GT_Values.V[5], true, false);
 
-        makeWires(Materials.Naquadah, 1700, bEC ? 1L : 64L, bEC ? 2L : 128L, 4L, gregtech.api.enums.GT_Values.V[6], true, false);
+        makeWires(Materials.HSSG, 1700, bEC ? 2L : 128L, bEC ? 4L : 256L, 4L, gregtech.api.enums.GT_Values.V[6], true, false);
         makeWires(Materials.NiobiumTitanium, 1720, bEC ? 2L : 128L, bEC ? 4L : 256L, 4L, gregtech.api.enums.GT_Values.V[6], true, false);
         makeWires(Materials.VanadiumGallium, 1740, bEC ? 2L : 128L, bEC ? 4L : 256L, 4L, gregtech.api.enums.GT_Values.V[6], true, false);
         makeWires(Materials.YttriumBariumCuprate, 1760, bEC ? 4L : 256L, bEC ? 8L : 512L, 4L, gregtech.api.enums.GT_Values.V[6], true, false);
 
-        makeWires(Materials.NaquadahAlloy, 1780, bEC ? 4L : 64L, bEC ? 8L : 128L, 2L, gregtech.api.enums.GT_Values.V[7], true, false);
+        makeWires(Materials.Naquadah, 1780, bEC ? 2L : 64L, bEC ? 4L : 128L, 2L, gregtech.api.enums.GT_Values.V[7], true, false);
 
-        makeWires(Materials.Duranium, 1800, bEC ? 8L : 64L, bEC ? 16L : 128L, 1L, gregtech.api.enums.GT_Values.V[8], true, false);
+        makeWires(Materials.NaquadahAlloy, 1800, bEC ? 4L : 64L, bEC ? 8L : 128L, 2L, gregtech.api.enums.GT_Values.V[8], true, false);
+        makeWires(Materials.Duranium, 1820, bEC ? 8L : 64L, bEC ? 16L : 128L, 1L, gregtech.api.enums.GT_Values.V[8], true, false);
 
         makeWires(Materials.Superconductor, 2020, 1L, 1L, 4L, gregtech.api.enums.GT_Values.V[9], false, true);
         if (!GT_Mod.gregtechproxy.mDisableIC2Cables) {
