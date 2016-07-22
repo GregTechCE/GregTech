@@ -109,7 +109,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     }
 
     public int getHarvestLevel(int aMeta) {
-        return aMeta % 8;
+        return 2;
     }
 
     public float getBlockHardness(World aWorld, int aX, int aY, int aZ) {
@@ -200,9 +200,4 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     public abstract void getSubBlocks(Item aItem, CreativeTabs aTab, List aList);
 
     public abstract ITexture[] getStoneTexture(int aTextureIndex, GT_RenderedTexture aIconSet);
-
-    @Override
-    public int getMixedBrightnessForBlock(IBlockAccess p_149677_1_, int p_149677_2_, int p_149677_3_, int p_149677_4_) {
-        return super.getMixedBrightnessForBlock(p_149677_1_, p_149677_2_, p_149677_3_, p_149677_4_);
-    }
 }

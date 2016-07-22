@@ -74,6 +74,11 @@ public class GT_Block_Ores extends GT_Block_Ores_Abstract {
     }
 
     @Override
+    public int getHarvestLevel(int aMeta) {
+        return aMeta == 5 || aMeta == 6 ? 2 : aMeta % 8;
+    }
+
+    @Override
     public ArrayList<ItemStack> getDrops(World aWorld, int aX, int aY, int aZ, int aMeta, int aFortune) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if ((tTileEntity instanceof GT_TileEntity_Ores)) {

@@ -112,7 +112,7 @@ public class GT_Block_Ores_UB1 extends GT_Block_Ores_Abstract {
                 aList.add(new ItemStack(aItem, 1, i + 6000));
                 aList.add(new ItemStack(aItem, 1, i + 7000));
                 aList.add(new ItemStack(aItem, 1, i + 16000));
-                aList.add(new ItemStack(aItem, 1, i + 1700));
+                aList.add(new ItemStack(aItem, 1, i + 17000));
                 aList.add(new ItemStack(aItem, 1, i + 18000));
                 aList.add(new ItemStack(aItem, 1, i + 19000));
                 aList.add(new ItemStack(aItem, 1, i + 20000));

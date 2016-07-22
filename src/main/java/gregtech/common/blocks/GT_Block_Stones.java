@@ -51,7 +51,7 @@ public class GT_Block_Stones extends GT_Block_Stones_Abstract {
     }
 
     public int getHarvestLevel(int aMeta) {
-        return 3;
+        return 2;
     }
 
     public float getBlockHardness(World aWorld, int aX, int aY, int aZ) {
