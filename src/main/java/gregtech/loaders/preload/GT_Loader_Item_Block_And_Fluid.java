@@ -1,6 +1,7 @@
 package gregtech.loaders.preload;
 
 import codechicken.nei.api.API;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GT_Mod;
@@ -137,9 +138,11 @@ public class GT_Loader_Item_Block_And_Fluid
         GregTech_API.sBlockConcretes = new GT_Block_Concretes();
         GregTech_API.sBlockStones = new GT_Block_Stones();
         GregTech_API.sBlockOres1 = new GT_Block_Ores();
-        GregTech_API.sBlockOresUb1 = new GT_Block_Ores_UB1();
-        GregTech_API.sBlockOresUb2 = new GT_Block_Ores_UB2();
-        GregTech_API.sBlockOresUb3 = new GT_Block_Ores_UB3();
+        if(Loader.isModLoaded("UndergroundBiomes")) {
+            GregTech_API.sBlockOresUb1 = new GT_Block_Ores_UB1();
+            GregTech_API.sBlockOresUb2 = new GT_Block_Ores_UB2();
+            GregTech_API.sBlockOresUb3 = new GT_Block_Ores_UB3();
+        }
         GregTech_API.sBlockMetal1 = new GT_Block_Metal("gt.blockmetal1", new Materials[]{
                 Materials.Adamantium,
                 Materials.Aluminium,

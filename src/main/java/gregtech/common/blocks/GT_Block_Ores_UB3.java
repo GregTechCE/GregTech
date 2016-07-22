@@ -2,8 +2,13 @@ package gregtech.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import exterminatorJeff.undergroundBiomes.common.UndergroundBiomes;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.objects.GT_CopiedBlockTexture;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -42,22 +47,14 @@ public class GT_Block_Ores_UB3 extends GT_Block_Ores_Abstract {
                 GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (i + 22000) + ".name", "Small " + getLocalizedName(GregTech_API.sGeneratedMaterials[i]));
                 GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (i + 23000) + ".name", "Small " + getLocalizedName(GregTech_API.sGeneratedMaterials[i]));
                 if ((GregTech_API.sGeneratedMaterials[i].mTypes & 0x8) != 0) {
-                    GT_OreDictUnificator.registerOre("ore", new ItemStack(this, 1, i));
-                    GT_OreDictUnificator.registerOre("ore", new ItemStack(this, 1, i + 1000));
-                    GT_OreDictUnificator.registerOre("ore", new ItemStack(this, 1, i + 2000));
-                    GT_OreDictUnificator.registerOre("ore", new ItemStack(this, 1, i + 3000));
-                    GT_OreDictUnificator.registerOre("ore", new ItemStack(this, 1, i + 4000));
-                    GT_OreDictUnificator.registerOre("ore", new ItemStack(this, 1, i + 5000));
-                    GT_OreDictUnificator.registerOre("ore", new ItemStack(this, 1, i + 6000));
-                    GT_OreDictUnificator.registerOre("ore", new ItemStack(this, 1, i + 7000));
-                    GT_OreDictUnificator.registerOre("ore", new ItemStack(this, 1, i + 16000));
-                    GT_OreDictUnificator.registerOre("ore", new ItemStack(this, 1, i + 17000));
-                    GT_OreDictUnificator.registerOre("ore", new ItemStack(this, 1, i + 18000));
-                    GT_OreDictUnificator.registerOre("ore", new ItemStack(this, 1, i + 19000));
-                    GT_OreDictUnificator.registerOre("ore", new ItemStack(this, 1, i + 20000));
-                    GT_OreDictUnificator.registerOre("ore", new ItemStack(this, 1, i + 21000));
-                    GT_OreDictUnificator.registerOre("ore", new ItemStack(this, 1, i + 22000));
-                    GT_OreDictUnificator.registerOre("ore", new ItemStack(this, 1, i + 23000));
+                    GT_OreDictUnificator.registerOre(OrePrefixes.ore.get(GregTech_API.sGeneratedMaterials[i]), new ItemStack(this, 1, i));
+                    GT_OreDictUnificator.registerOre(OrePrefixes.ore.get(GregTech_API.sGeneratedMaterials[i]), new ItemStack(this, 1, i + 1000));
+                    GT_OreDictUnificator.registerOre(OrePrefixes.ore.get(GregTech_API.sGeneratedMaterials[i]), new ItemStack(this, 1, i + 2000));
+                    GT_OreDictUnificator.registerOre(OrePrefixes.ore.get(GregTech_API.sGeneratedMaterials[i]), new ItemStack(this, 1, i + 3000));
+                    GT_OreDictUnificator.registerOre(OrePrefixes.ore.get(GregTech_API.sGeneratedMaterials[i]), new ItemStack(this, 1, i + 4000));
+                    GT_OreDictUnificator.registerOre(OrePrefixes.ore.get(GregTech_API.sGeneratedMaterials[i]), new ItemStack(this, 1, i + 5000));
+                    GT_OreDictUnificator.registerOre(OrePrefixes.ore.get(GregTech_API.sGeneratedMaterials[i]), new ItemStack(this, 1, i + 6000));
+                    GT_OreDictUnificator.registerOre(OrePrefixes.ore.get(GregTech_API.sGeneratedMaterials[i]), new ItemStack(this, 1, i + 7000));
                     if (tHideOres) {
                         codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i));
                         codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i + 1000));
@@ -93,6 +90,12 @@ public class GT_Block_Ores_UB3 extends GT_Block_Ores_Abstract {
             return ((GT_TileEntity_Ores) tTileEntity).getDrops(GregTech_API.sBlockOresUb3, aFortune);
         }
         return mTemporaryTileEntity.get() == null ? new ArrayList() : mTemporaryTileEntity.get().getDrops(GregTech_API.sBlockOresUb3, aFortune);
+    }
+
+    @Override
+    public ITexture[] getStoneTexture(int aTextureIndex, GT_RenderedTexture aIconSet) {
+        ITexture[] mStoneTextures = new ITexture[]{new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 0), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 1), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 2), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 3), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 4), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 5), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 6), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 7), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 0), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 1), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 2), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 3), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 4), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 5), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 6), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 7)};
+        return new ITexture[]{mStoneTextures[aTextureIndex], aIconSet};
     }
 
     @SideOnly(Side.CLIENT)

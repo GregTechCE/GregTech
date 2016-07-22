@@ -7,7 +7,9 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.GT_Generic_Block;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.common.render.GT_Renderer_Block;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -196,4 +198,11 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
 
     @SideOnly(Side.CLIENT)
     public abstract void getSubBlocks(Item aItem, CreativeTabs aTab, List aList);
+
+    public abstract ITexture[] getStoneTexture(int aTextureIndex, GT_RenderedTexture aIconSet);
+
+    @Override
+    public int getMixedBrightnessForBlock(IBlockAccess p_149677_1_, int p_149677_2_, int p_149677_3_, int p_149677_4_) {
+        return super.getMixedBrightnessForBlock(p_149677_1_, p_149677_2_, p_149677_3_, p_149677_4_);
+    }
 }
