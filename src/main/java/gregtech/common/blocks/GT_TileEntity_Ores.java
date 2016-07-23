@@ -126,7 +126,6 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
     }
 
     public void overrideOreBlockMaterial(Block aOverridingStoneBlock, byte aOverridingStoneMeta) {
-        if (this.mMetaData < 3000) { //Avoid existing "stone" vein having it's ore meta changed if a new vein is generated around it.
             this.mMetaData = ((short) (int) (this.mMetaData % 1000L + this.mMetaData / 16000L * 16000L));
             if (aOverridingStoneBlock.isReplaceableOreGen(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Blocks.netherrack)) {
                 this.mMetaData = ((short) (this.mMetaData + 1000));
@@ -149,18 +148,19 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
                     } else {
                         this.mMetaData = ((short) (this.mMetaData + 6000));
                     }
+                } else {
+                    this.mMetaData = ((short) (this.mMetaData + 5000));
                 }
             }
             this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, getHarvestData(this.mMetaData), 0);
-        }
     }
 
     public void convertOreBlock(World aWorld, short aMeta, int aX, int aY, int aZ) {
         aWorld.setBlock(aX, aY, aZ, GregTech_API.sBlockOres1);
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof GT_TileEntity_Ores) {
-            ((GT_TileEntity_Ores) tTileEntity).mMetaData = aMeta;
-            this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, getHarvestData(this.mMetaData), 0);
+            ((GT_TileEntity_Ores) tTileEntity).mMetaData = (short)(aMeta % 1000);
+            this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, getHarvestData((short)(aMeta % 1000)), 0);
         }
     }
 

@@ -4,12 +4,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class GT_Block_Stones extends GT_Block_Stones_Abstract {
@@ -63,9 +60,5 @@ public class GT_Block_Stones extends GT_Block_Stones_Abstract {
             return gregtech.api.enums.Textures.BlockIcons.STONES[aMeta].getIcon();
         }
         return gregtech.api.enums.Textures.BlockIcons.STONES[0].getIcon();
-    }
-
-    public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity) {
-        return !(entity instanceof EntityWither);
     }
 }

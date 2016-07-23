@@ -41,7 +41,8 @@ public class GT_Block_Ores extends GT_Block_Ores_Abstract {
                 GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (i + 18000) + ".name", "Small " + getLocalizedName(GregTech_API.sGeneratedMaterials[i]));
                 GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (i + 19000) + ".name", "Small " + getLocalizedName(GregTech_API.sGeneratedMaterials[i]));
                 GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (i + 20000) + ".name", "Small " + getLocalizedName(GregTech_API.sGeneratedMaterials[i]));
-
+                GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (i + 21000) + ".name", "Small " + getLocalizedName(GregTech_API.sGeneratedMaterials[i]));
+                GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (i + 22000) + ".name", "Small " + getLocalizedName(GregTech_API.sGeneratedMaterials[i]));
                 if ((GregTech_API.sGeneratedMaterials[i].mTypes & 0x8) != 0) {
                     GT_OreDictUnificator.registerOre(OrePrefixes.ore.get(GregTech_API.sGeneratedMaterials[i]), new ItemStack(this, 1, i));
                     GT_OreDictUnificator.registerOre(OrePrefixes.oreNetherrack.get(GregTech_API.sGeneratedMaterials[i]), new ItemStack(this, 1, i + 1000));
@@ -62,6 +63,8 @@ public class GT_Block_Ores extends GT_Block_Ores_Abstract {
                         codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i + 18000));
                         codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i + 19000));
                         codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i + 20000));
+                        codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i + 21000));
+                        codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i + 22000));
                     }
                 }         
             }
@@ -110,6 +113,8 @@ public class GT_Block_Ores extends GT_Block_Ores_Abstract {
                 aList.add(new ItemStack(aItem, 1, i + 18000));
                 aList.add(new ItemStack(aItem, 1, i + 19000));
                 aList.add(new ItemStack(aItem, 1, i + 20000));
+                aList.add(new ItemStack(aItem, 1, i + 21000));
+                aList.add(new ItemStack(aItem, 1, i + 22000));
             }
         }
     }
