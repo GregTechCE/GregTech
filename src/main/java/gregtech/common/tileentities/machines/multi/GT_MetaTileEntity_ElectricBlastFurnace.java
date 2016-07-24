@@ -208,7 +208,7 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
                 }
             }
         }
-        this.mHeatingCapacity += 100 * (GT_Utility.getTier(getMaxInputVoltage()) - 2);
+        this.mHeatingCapacity += 100 * (GT_Utility.getTier(getMaxInputVoltage()) - 3);
         return true;
     }
 
