@@ -2,6 +2,7 @@ package gregtech.common;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.world.GT_Worldgen_Ore;
+import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -56,12 +57,16 @@ public class GT_Worldgen_Stone
                                             double var45 = (eZ + 0.5D - var24) / (var28 / 2.0D);
                                             if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D) {
                                                 Block tTargetedBlock = aWorld.getBlock(eX, eY, eZ);
-                                                if (tTargetedBlock == GregTech_API.sBlockOres1) {
+                                                if (tTargetedBlock instanceof GT_Block_Ores_Abstract) {
                                                     TileEntity tTileEntity = aWorld.getTileEntity(eX, eY, eZ);
                                                     if ((tTileEntity instanceof GT_TileEntity_Ores)) {
-                                                        ((GT_TileEntity_Ores) tTileEntity).overrideOreBlockMaterial(this.mBlock, (byte) this.mBlockMeta);
+                                                        short aMeta = ((GT_TileEntity_Ores) tTileEntity).mMetaData;
+                                                        if (tTargetedBlock != GregTech_API.sBlockOres1) {
+                                                            ((GT_TileEntity_Ores) tTileEntity).convertOreBlock(aWorld, eX, eY, eZ);
+                                                        }
+                                                        ((GT_TileEntity_Ores)tTileEntity).overrideOreBlockMaterial(this.mBlock, (byte) this.mBlockMeta);
                                                     }
-                                                } else if (((this.mAllowToGenerateinVoid) && (aWorld.getBlock(eX, eY, eZ).isAir(aWorld, eX, eY, eZ))) || ((tTargetedBlock != null) && ((tTargetedBlock.isReplaceableOreGen(aWorld, eX, eY, eZ, Blocks.stone)) || (tTargetedBlock.isReplaceableOreGen(aWorld, eX, eY, eZ, Blocks.end_stone)) || (tTargetedBlock.isReplaceableOreGen(aWorld, eX, eY, eZ, Blocks.netherrack))))) {
+                                                } else if (((this.mAllowToGenerateinVoid) && (aWorld.getBlock(eX, eY, eZ).isAir(aWorld, eX, eY, eZ))) || ((tTargetedBlock != null) && ((tTargetedBlock.isReplaceableOreGen(aWorld, eX, eY, eZ, Blocks.stone)) || (tTargetedBlock.isReplaceableOreGen(aWorld, eX, eY, eZ, Blocks.end_stone)) || (tTargetedBlock.isReplaceableOreGen(aWorld, eX, eY, eZ, Blocks.netherrack)) || (tTargetedBlock.isReplaceableOreGen(aWorld, eX, eY, eZ, GregTech_API.sBlockGranites)) || (tTargetedBlock.isReplaceableOreGen(aWorld, eX, eY, eZ, GregTech_API.sBlockStones))))) {
                                                     aWorld.setBlock(eX, eY, eZ, this.mBlock, this.mBlockMeta, 0);
                                                 }
                                             }

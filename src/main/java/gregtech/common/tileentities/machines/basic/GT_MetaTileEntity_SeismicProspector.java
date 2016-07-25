@@ -10,10 +10,9 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.ItemData;
-import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Ores;
+import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import ic2.core.Ic2Items;
 import net.minecraft.block.Block;
@@ -74,7 +73,7 @@ public class GT_MetaTileEntity_SeismicProspector extends GT_MetaTileEntity_Basic
                     for (int f = -2; f < 3; f++) {
                         for (int g = -2; g < 3; g++) {
                             Block tBlock = this.getBaseMetaTileEntity().getBlockOffset(f, -i, g);
-                            if ((tBlock instanceof GT_Block_Ores)) {
+                            if ((tBlock instanceof GT_Block_Ores_Abstract)) {
                                 TileEntity tTileEntity = getBaseMetaTileEntity().getWorld().getTileEntity(getBaseMetaTileEntity().getXCoord() + f, getBaseMetaTileEntity().getYCoord() + (-i), getBaseMetaTileEntity().getZCoord() + g);
                                 if ((tTileEntity instanceof GT_TileEntity_Ores)) {
                                 	if(((GT_TileEntity_Ores) tTileEntity).mMetaData < 16000){

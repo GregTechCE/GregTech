@@ -1,9 +1,5 @@
 package gregtech.common;
 
-import java.io.File;
-import java.text.DateFormat;
-import java.util.*;
-
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IFuelHandler;
 import cpw.mods.fml.common.Loader;
@@ -74,6 +70,10 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+
+import java.io.File;
+import java.text.DateFormat;
+import java.util.*;
 
 public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     private static final EnumSet<OreGenEvent.GenerateMinable.EventType> PREVENTED_ORES = EnumSet.of(OreGenEvent.GenerateMinable.EventType.COAL,
@@ -1747,12 +1747,13 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         if (GT_Utility.areStacksEqual(aFuel, new ItemStack(Items.wooden_door, 1))) {
             rFuelValue = (short) Math.max(rFuelValue, 600);
         }
-        if (GT_Utility.areStacksEqual(aFuel, ItemList.Block_SSFUEL.get(1, new Object[0]))) {
-            rFuelValue = Math.max(rFuelValue, 100000);
-        }
         if (GT_Utility.areStacksEqual(aFuel, ItemList.Block_MSSFUEL.get(1, new Object[0]))) {
-            rFuelValue = Math.max(rFuelValue, 150000);
+            rFuelValue = (short) Math.max(rFuelValue, 150000);
         }
+        if (GT_Utility.areStacksEqual(aFuel, ItemList.Block_SSFUEL.get(1, new Object[0]))) {
+            rFuelValue = (short) Math.max(rFuelValue, 100000);
+        }
+
         return rFuelValue;
     }
 
