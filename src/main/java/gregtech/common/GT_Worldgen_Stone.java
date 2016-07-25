@@ -62,7 +62,7 @@ public class GT_Worldgen_Stone
                                                     if ((tTileEntity instanceof GT_TileEntity_Ores)) {
                                                         short aMeta = ((GT_TileEntity_Ores) tTileEntity).mMetaData;
                                                         if (tTargetedBlock != GregTech_API.sBlockOres1) {
-                                                            ((GT_TileEntity_Ores) tTileEntity).convertOreBlock(aWorld, aMeta, eX, eY, eZ);
+                                                            ((GT_TileEntity_Ores) tTileEntity).convertOreBlock(aWorld, eX, eY, eZ);
                                                         }
                                                         ((GT_TileEntity_Ores)tTileEntity).overrideOreBlockMaterial(this.mBlock, (byte) this.mBlockMeta);
                                                     }
