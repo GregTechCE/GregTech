@@ -1020,7 +1020,9 @@ if(Loader.isModLoaded("Railcraft")){
         GT_Values.RA.addVacuumFreezerRecipe(ItemList.Reactor_Coolant_NaK_6.getWildcard(1L, new Object[0]), ItemList.Reactor_Coolant_NaK_6.get(1L, new Object[0]), 3600);
         GT_Values.RA.addVacuumFreezerRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1L), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Ice, 1L), 50);
         GT_Values.RA.addVacuumFreezerRecipe(GT_ModHandler.getIC2Item("airCell", 1L), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.LiquidAir, 1L), 25);
-
+        GT_Values.RA.addVacuumFreezerRecipe(ItemList.Casing_Coil_Cupronickel_Overheated.get(1L, new Object[0]), ItemList.Casing_Coil_Cupronickel.get(1L, new Object[0]), (int) Math.max(Materials.Cupronickel.getMass() * 24L, 1L));
+        GT_Values.RA.addVacuumFreezerRecipe(ItemList.Casing_Coil_Kanthal_Overheated.get(1L, new Object[0]), ItemList.Casing_Coil_Kanthal.get(1L, new Object[0]), (int) Math.max(Materials.Kanthal.getMass() * 24L, 1L));
+        GT_Values.RA.addVacuumFreezerRecipe(ItemList.Casing_Coil_Nichrome_Overheated.get(1L, new Object[0]), ItemList.Casing_Coil_Nichrome.get(1L, new Object[0]), (int) Math.max(Materials.Nichrome.getMass() * 24L, 1L));
 
         GT_Values.RA.addAlloySmelterRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 2L), ItemList.TE_Hardened_Glass.get(2L, new Object[0]), 200, 16);
         GT_Values.RA.addAlloySmelterRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Lead, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 2L), ItemList.TE_Hardened_Glass.get(2L, new Object[0]), 200, 16);

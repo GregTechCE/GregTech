@@ -716,183 +716,7 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 	public static final Collection<Materials> VALUES = new HashSet<Materials>(Arrays.asList(values()));
 
 	static {
-		SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM.addTo(Bastnasite, Monazite, Forcicium, Forcillium);
-		SubTag.ELECTROMAGNETIC_SEPERATION_GOLD.addTo(Magnetite, VanadiumMagnetite, BasalticMineralSand, GraniticMineralSand);
-		SubTag.ELECTROMAGNETIC_SEPERATION_IRON.addTo(YellowLimonite, BrownLimonite, Pyrite, BandedIron, Nickel, Vermiculite, Glauconite, GlauconiteSand, Pentlandite, Tin, Antimony, Ilmenite, Manganese, Chrome, Chromite, Andradite);
-		SubTag.BLASTFURNACE_CALCITE_DOUBLE.addTo(Pyrite, YellowLimonite, BasalticMineralSand, GraniticMineralSand);
-		SubTag.BLASTFURNACE_CALCITE_TRIPLE.addTo(Iron, PigIron, DeepIron, ShadowIron, WroughtIron, MeteoricIron, BrownLimonite);
-		SubTag.WASHING_MERCURY.addTo(Gold, Silver, Osmium, Mithril, Platinum, Midasium, Cooperite, AstralSilver);
-		SubTag.WASHING_SODIUMPERSULFATE.addTo(Zinc, Nickel, Copper, Cobalt, Cobaltite, Tetrahedrite);
-		SubTag.METAL.addTo(AnyIron, AnyCopper, AnyBronze, Metal, Aluminium, Americium, Antimony, Beryllium, Bismuth, Caesium, Cerium, Chrome, Cobalt, Copper, Dysprosium, Erbium, Europium, Gadolinium, Gallium, Gold,
-				Holmium, Indium, Iridium, Iron, Lanthanum, Lead, Lutetium, Magnesium, Manganese, Mercury, Niobium, Molybdenum, Neodymium, Neutronium, Nickel, Osmium, Palladium, Platinum, Plutonium, Plutonium241,
-				Praseodymium, Promethium, Rubidium, Samarium, Scandium, Silicon, Silver, Tantalum, Tellurium, Terbium, Thorium, Thulium, Tin, Titanium, Tungsten, Uranium, Uranium235, Vanadium, Ytterbium, Yttrium,
-				Zinc, /**Satinspar, Selenite, Microcline, Sylvite, RefinedGlowstone, RefinedObsidian,**/ Serpentine, Signalum, Lumium, PhasedIron, PhasedGold, DarkSteel, Terrasteel, TinAlloy, ConductiveIron, ElectricalSteel, EnergeticAlloy, VibrantAlloy,
-				PulsatingIron, Manasteel, DarkThaumium, ElvenElementium, EnrichedCopper, DiamondCopper, Adamantium, Amordrine, Angmallen, Ardite, Aredrite, Atlarus, Blutonium, Carmot, Celenegil, Ceruclase, DarkIron,
-				Desh, Desichalkos, Duranium, ElectrumFlux, Enderium, EnderiumBase, Eximite, FierySteel, Force, Haderoth, Hematite, Hepatizon, HSLA, Infuscolium, InfusedGold, Inolashite, Mercassium, MeteoricIron,
-				MeteoricSteel, Naquadah, NaquadahAlloy, NaquadahEnriched, Naquadria, ObsidianFlux, Orichalcum, Osmonium, Oureclase, Phoenixite, Prometheum, Sanguinite, Starconium,
-				Tartarite, Thyrium, Tritanium, Vulcanite, Vyroxeres, Yellorium, Zectium, AluminiumBrass, Osmiridium, Sunnarium, AnnealedCopper, BatteryAlloy, Brass, Bronze, ChromiumDioxide, Cupronickel, DeepIron,
-				Electrum, Invar, IronCompressed, Kanthal, Magnalium, Nichrome, NiobiumNitride, NiobiumTitanium, PigIron, SolderingAlloy, StainlessSteel, Steel, Ultimet, VanadiumGallium, WroughtIron,
-				YttriumBariumCuprate, IronWood, Alumite, Manyullyn, ShadowIron, ShadowSteel, Steeleaf, SterlingSilver, RoseGold, BlackBronze, BismuthBronze, BlackSteel, RedSteel, BlueSteel, DamascusSteel,
-				TungstenSteel, AstralSilver, Midasium, Mithril, BlueAlloy, RedAlloy, CobaltBrass, Thaumium, IronMagnetic, SteelMagnetic, NeodymiumMagnetic, Knightmetal);
-
-		SubTag.FOOD.addTo(MeatRaw, MeatCooked, Ice, Water, Salt, Chili, Cocoa, Cheese, Coffee, Chocolate, Milk, Honey, FryingOilHot, FishOil, SeedOil, SeedOilLin, SeedOilHemp, Wheat, Sugar, FreshWater);
-
-		Wood					.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
-		WoodSealed				.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING, SubTag.NO_WORKING);
-		Peanutwood				.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
-		LiveRoot				.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING, SubTag.MAGICAL, SubTag.MORTAR_GRINDABLE);
-		IronWood				.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.MAGICAL, SubTag.MORTAR_GRINDABLE);
-		Steeleaf				.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.MAGICAL, SubTag.MORTAR_GRINDABLE, SubTag.NO_SMELTING);
-
-		MeatRaw					.add(SubTag.NO_SMASHING);
-		MeatCooked				.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		Snow					.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.NO_RECYCLING);
-		Ice						.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.NO_RECYCLING);
-		Water					.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.NO_RECYCLING);
-		Sulfur					.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE);
-		Saltpeter				.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE);
-		Graphite				.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE, SubTag.NO_SMELTING);
-
-		Wheat					.add(SubTag.FLAMMABLE, SubTag.MORTAR_GRINDABLE);
-		Paper					.add(SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING, SubTag.MORTAR_GRINDABLE, SubTag.PAPER);
-		Coal					.add(SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING, SubTag.MORTAR_GRINDABLE);
-		Charcoal				.add(SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING, SubTag.MORTAR_GRINDABLE);
-		Lignite					.add(SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING, SubTag.MORTAR_GRINDABLE);
-
-		Rubber					.add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.BOUNCY, SubTag.STRETCHY);
-		Plastic					.add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.BOUNCY);
-		Silicone				.add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.BOUNCY, SubTag.STRETCHY);
-
-		TNT						.add(SubTag.FLAMMABLE, SubTag.EXPLOSIVE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
-		Gunpowder				.add(SubTag.FLAMMABLE, SubTag.EXPLOSIVE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
-		Glyceryl				.add(SubTag.FLAMMABLE, SubTag.EXPLOSIVE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
-		NitroCoalFuel			.add(SubTag.FLAMMABLE, SubTag.EXPLOSIVE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
-		NitroFuel				.add(SubTag.FLAMMABLE, SubTag.EXPLOSIVE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
-		NitroCarbon				.add(SubTag.FLAMMABLE, SubTag.EXPLOSIVE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
-
-		Lead					.add(SubTag.MORTAR_GRINDABLE, SubTag.SOLDERING_MATERIAL, SubTag.SOLDERING_MATERIAL_BAD);
-		Tin						.add(SubTag.MORTAR_GRINDABLE, SubTag.SOLDERING_MATERIAL);
-		SolderingAlloy			.add(SubTag.MORTAR_GRINDABLE, SubTag.SOLDERING_MATERIAL, SubTag.SOLDERING_MATERIAL_GOOD);
-
-		Cheese					.add(SubTag.SMELTING_TO_FLUID);
-		Sugar					.add(SubTag.SMELTING_TO_FLUID);
-
-		Concrete				.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.SMELTING_TO_FLUID);
-		ConstructionFoam		.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.EXPLOSIVE, SubTag.NO_SMELTING);
-		Redstone				.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE, SubTag.SMELTING_TO_FLUID, SubTag.PULVERIZING_CINNABAR);
-		Glowstone				.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE, SubTag.SMELTING_TO_FLUID);
-		Nikolite				.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE, SubTag.SMELTING_TO_FLUID);
-		Teslatite				.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE, SubTag.SMELTING_TO_FLUID);
-		Netherrack				.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE, SubTag.FLAMMABLE);
-		Stone					.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.NO_RECYCLING);
-		Brick					.add(SubTag.STONE, SubTag.NO_SMASHING);
-		NetherBrick				.add(SubTag.STONE, SubTag.NO_SMASHING);
-		Endstone				.add(SubTag.STONE, SubTag.NO_SMASHING);
-		Marble					.add(SubTag.STONE, SubTag.NO_SMASHING);
-		Basalt					.add(SubTag.STONE, SubTag.NO_SMASHING);
-		Redrock					.add(SubTag.STONE, SubTag.NO_SMASHING);
-		Obsidian				.add(SubTag.STONE, SubTag.NO_SMASHING);
-		Flint					.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.MORTAR_GRINDABLE);
-		GraniteRed				.add(SubTag.STONE, SubTag.NO_SMASHING);
-		GraniteBlack			.add(SubTag.STONE, SubTag.NO_SMASHING);
-		Salt					.add(SubTag.STONE, SubTag.NO_SMASHING);
-		RockSalt				.add(SubTag.STONE, SubTag.NO_SMASHING);
-
-		Sand					.add(SubTag.NO_RECYCLING);
-
-		Gold					.add(SubTag.MORTAR_GRINDABLE);
-		Silver					.add(SubTag.MORTAR_GRINDABLE);
-		Iron					.add(SubTag.MORTAR_GRINDABLE);
-		IronMagnetic			.add(SubTag.MORTAR_GRINDABLE);
-		HSLA					.add(SubTag.MORTAR_GRINDABLE);
-		Steel					.add(SubTag.MORTAR_GRINDABLE);
-		SteelMagnetic			.add(SubTag.MORTAR_GRINDABLE);
-		Zinc					.add(SubTag.MORTAR_GRINDABLE);
-		Antimony				.add(SubTag.MORTAR_GRINDABLE);
-		Copper					.add(SubTag.MORTAR_GRINDABLE);
-		AnnealedCopper			.add(SubTag.MORTAR_GRINDABLE);
-		Bronze					.add(SubTag.MORTAR_GRINDABLE);
-		Nickel					.add(SubTag.MORTAR_GRINDABLE);
-		Invar					.add(SubTag.MORTAR_GRINDABLE);
-		Brass					.add(SubTag.MORTAR_GRINDABLE);
-		WroughtIron				.add(SubTag.MORTAR_GRINDABLE);
-		Electrum				.add(SubTag.MORTAR_GRINDABLE);
-		Clay					.add(SubTag.MORTAR_GRINDABLE);
-
-		Glass					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_RECYCLING, SubTag.SMELTING_TO_FLUID);
-		Diamond					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE);
-		Emerald					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		Amethyst				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		Tanzanite				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		Topaz					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		BlueTopaz				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		Amber					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		GreenSapphire			.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		Sapphire				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		Ruby					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		FoolsRuby				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		Opal					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		Olivine					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		Jasper					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		GarnetRed				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		GarnetYellow			.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		Mimichite				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		CrystalFlux				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		Crystal					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		Niter					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		Apatite					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE);
-		Lapis					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE);
-		Sodalite				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE);
-		Lazurite				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE);
-		Monazite				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE);
-		Quartzite				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
-		Quartz					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
-		SiliconDioxide			.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
-		Dilithium				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
-		NetherQuartz			.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
-		CertusQuartz			.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
-		Fluix					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
-		Phosphorus				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE, SubTag.EXPLOSIVE);
-		Phosphate				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE, SubTag.EXPLOSIVE);
-		InfusedAir				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
-		InfusedFire				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
-		InfusedEarth			.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
-		InfusedWater			.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
-		InfusedEntropy			.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
-		InfusedOrder			.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
-		InfusedVis				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
-		InfusedDull				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
-		Vinteum					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
-		NetherStar				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
-		EnderPearl				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.PEARL);
-		EnderEye				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.PEARL);
-		Firestone				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.MAGICAL, SubTag.QUARTZ, SubTag.UNBURNABLE, SubTag.BURNING);
-		Forcicium				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.MAGICAL);
-		Forcillium				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.MAGICAL);
-		Force					.add(SubTag.CRYSTAL, SubTag.MAGICAL, SubTag.UNBURNABLE);
-		Magic					.add(SubTag.CRYSTAL, SubTag.MAGICAL, SubTag.UNBURNABLE);
-
-		Primitive				.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		Basic					.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		Good					.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		Advanced				.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		Data					.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		Elite					.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		Master					.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		Ultimate				.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		Superconductor			.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-		Infinite				.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-
-		Blaze					.add(SubTag.MAGICAL, SubTag.NO_SMELTING, SubTag.SMELTING_TO_FLUID, SubTag.MORTAR_GRINDABLE, SubTag.UNBURNABLE, SubTag.BURNING);
-		FierySteel				.add(SubTag.MAGICAL, SubTag.UNBURNABLE, SubTag.BURNING);
-		ElvenElementium			.add(SubTag.MAGICAL);
-		DarkThaumium			.add(SubTag.MAGICAL);
-		Thaumium				.add(SubTag.MAGICAL);
-		Enderium				.add(SubTag.MAGICAL);
-		AstralSilver			.add(SubTag.MAGICAL);
-		Midasium				.add(SubTag.MAGICAL);
-		Mithril					.add(SubTag.MAGICAL);
-
+		initSubTags();
 		Iron					.mOreReRegistrations.add(AnyIron	);
 		PigIron					.mOreReRegistrations.add(AnyIron	);
 		WroughtIron				.mOreReRegistrations.add(AnyIron	);
@@ -1237,6 +1061,185 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 		Naquadria.mChemicalFormula = "NqX";
 	}
 
+	private static void initSubTags() {
+		SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM.addTo(Bastnasite, Monazite, Forcicium, Forcillium);
+		SubTag.ELECTROMAGNETIC_SEPERATION_GOLD.addTo(Magnetite, VanadiumMagnetite, BasalticMineralSand, GraniticMineralSand);
+		SubTag.ELECTROMAGNETIC_SEPERATION_IRON.addTo(YellowLimonite, BrownLimonite, Pyrite, BandedIron, Nickel, Vermiculite, Glauconite, GlauconiteSand, Pentlandite, Tin, Antimony, Ilmenite, Manganese, Chrome, Chromite, Andradite);
+		SubTag.BLASTFURNACE_CALCITE_DOUBLE.addTo(Pyrite, YellowLimonite, BasalticMineralSand, GraniticMineralSand);
+		SubTag.BLASTFURNACE_CALCITE_TRIPLE.addTo(Iron, PigIron, DeepIron, ShadowIron, WroughtIron, MeteoricIron, BrownLimonite);
+		SubTag.WASHING_MERCURY.addTo(Gold, Silver, Osmium, Mithril, Platinum, Midasium, Cooperite, AstralSilver);
+		SubTag.WASHING_SODIUMPERSULFATE.addTo(Zinc, Nickel, Copper, Cobalt, Cobaltite, Tetrahedrite);
+		SubTag.METAL.addTo(AnyIron, AnyCopper, AnyBronze, Metal, Aluminium, Americium, Antimony, Beryllium, Bismuth, Caesium, Cerium, Chrome, Cobalt, Copper, Dysprosium, Erbium, Europium, Gadolinium, Gallium, Gold,
+						   Holmium, Indium, Iridium, Iron, Lanthanum, Lead, Lutetium, Magnesium, Manganese, Mercury, Niobium, Molybdenum, Neodymium, Neutronium, Nickel, Osmium, Palladium, Platinum, Plutonium, Plutonium241,
+						   Praseodymium, Promethium, Rubidium, Samarium, Scandium, Silicon, Silver, Tantalum, Tellurium, Terbium, Thorium, Thulium, Tin, Titanium, Tungsten, Uranium, Uranium235, Vanadium, Ytterbium, Yttrium,
+						   Zinc, /**Satinspar, Selenite, Microcline, Sylvite, RefinedGlowstone, RefinedObsidian,**/ Serpentine, Signalum, Lumium, PhasedIron, PhasedGold, DarkSteel, Terrasteel, TinAlloy, ConductiveIron, ElectricalSteel, EnergeticAlloy, VibrantAlloy,
+						   PulsatingIron, Manasteel, DarkThaumium, ElvenElementium, EnrichedCopper, DiamondCopper, Adamantium, Amordrine, Angmallen, Ardite, Aredrite, Atlarus, Blutonium, Carmot, Celenegil, Ceruclase, DarkIron,
+						   Desh, Desichalkos, Duranium, ElectrumFlux, Enderium, EnderiumBase, Eximite, FierySteel, Force, Haderoth, Hematite, Hepatizon, HSLA, Infuscolium, InfusedGold, Inolashite, Mercassium, MeteoricIron,
+						   MeteoricSteel, Naquadah, NaquadahAlloy, NaquadahEnriched, Naquadria, ObsidianFlux, Orichalcum, Osmonium, Oureclase, Phoenixite, Prometheum, Sanguinite, Starconium,
+						   Tartarite, Thyrium, Tritanium, Vulcanite, Vyroxeres, Yellorium, Zectium, AluminiumBrass, Osmiridium, Sunnarium, AnnealedCopper, BatteryAlloy, Brass, Bronze, ChromiumDioxide, Cupronickel, DeepIron,
+						   Electrum, Invar, IronCompressed, Kanthal, Magnalium, Nichrome, NiobiumNitride, NiobiumTitanium, PigIron, SolderingAlloy, StainlessSteel, Steel, Ultimet, VanadiumGallium, WroughtIron,
+						   YttriumBariumCuprate, IronWood, Alumite, Manyullyn, ShadowIron, ShadowSteel, Steeleaf, SterlingSilver, RoseGold, BlackBronze, BismuthBronze, BlackSteel, RedSteel, BlueSteel, DamascusSteel,
+						   TungstenSteel, AstralSilver, Midasium, Mithril, BlueAlloy, RedAlloy, CobaltBrass, Thaumium, IronMagnetic, SteelMagnetic, NeodymiumMagnetic, Knightmetal, HSSG, HSSE, HSSS);
+
+		SubTag.FOOD.addTo(MeatRaw, MeatCooked, Ice, Water, Salt, Chili, Cocoa, Cheese, Coffee, Chocolate, Milk, Honey, FryingOilHot, FishOil, SeedOil, SeedOilLin, SeedOilHemp, Wheat, Sugar, FreshWater);
+
+		Wood					.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
+		WoodSealed				.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING, SubTag.NO_WORKING);
+		Peanutwood				.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
+		LiveRoot				.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING, SubTag.MAGICAL, SubTag.MORTAR_GRINDABLE);
+		IronWood				.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.MAGICAL, SubTag.MORTAR_GRINDABLE);
+		Steeleaf				.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.MAGICAL, SubTag.MORTAR_GRINDABLE, SubTag.NO_SMELTING);
+
+		MeatRaw					.add(SubTag.NO_SMASHING);
+		MeatCooked				.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		Snow					.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.NO_RECYCLING);
+		Ice						.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.NO_RECYCLING);
+		Water					.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.NO_RECYCLING);
+		Sulfur					.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE);
+		Saltpeter				.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE);
+		Graphite				.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE, SubTag.NO_SMELTING);
+
+		Wheat					.add(SubTag.FLAMMABLE, SubTag.MORTAR_GRINDABLE);
+		Paper					.add(SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING, SubTag.MORTAR_GRINDABLE, SubTag.PAPER);
+		Coal					.add(SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING, SubTag.MORTAR_GRINDABLE);
+		Charcoal				.add(SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING, SubTag.MORTAR_GRINDABLE);
+		Lignite					.add(SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING, SubTag.MORTAR_GRINDABLE);
+
+		Rubber					.add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.BOUNCY, SubTag.STRETCHY);
+		Plastic					.add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.BOUNCY);
+		Silicone				.add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.BOUNCY, SubTag.STRETCHY);
+
+		TNT						.add(SubTag.FLAMMABLE, SubTag.EXPLOSIVE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
+		Gunpowder				.add(SubTag.FLAMMABLE, SubTag.EXPLOSIVE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
+		Glyceryl				.add(SubTag.FLAMMABLE, SubTag.EXPLOSIVE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
+		NitroCoalFuel			.add(SubTag.FLAMMABLE, SubTag.EXPLOSIVE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
+		NitroFuel				.add(SubTag.FLAMMABLE, SubTag.EXPLOSIVE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
+		NitroCarbon				.add(SubTag.FLAMMABLE, SubTag.EXPLOSIVE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
+
+		Lead					.add(SubTag.MORTAR_GRINDABLE, SubTag.SOLDERING_MATERIAL, SubTag.SOLDERING_MATERIAL_BAD);
+		Tin						.add(SubTag.MORTAR_GRINDABLE, SubTag.SOLDERING_MATERIAL);
+		SolderingAlloy			.add(SubTag.MORTAR_GRINDABLE, SubTag.SOLDERING_MATERIAL, SubTag.SOLDERING_MATERIAL_GOOD);
+
+		Cheese					.add(SubTag.SMELTING_TO_FLUID);
+		Sugar					.add(SubTag.SMELTING_TO_FLUID);
+
+		Concrete				.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.SMELTING_TO_FLUID);
+		ConstructionFoam		.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.EXPLOSIVE, SubTag.NO_SMELTING);
+		Redstone				.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE, SubTag.SMELTING_TO_FLUID, SubTag.PULVERIZING_CINNABAR);
+		Glowstone				.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE, SubTag.SMELTING_TO_FLUID);
+		Nikolite				.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE, SubTag.SMELTING_TO_FLUID);
+		Teslatite				.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE, SubTag.SMELTING_TO_FLUID);
+		Netherrack				.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE, SubTag.FLAMMABLE);
+		Stone					.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.NO_RECYCLING);
+		Brick					.add(SubTag.STONE, SubTag.NO_SMASHING);
+		NetherBrick				.add(SubTag.STONE, SubTag.NO_SMASHING);
+		Endstone				.add(SubTag.STONE, SubTag.NO_SMASHING);
+		Marble					.add(SubTag.STONE, SubTag.NO_SMASHING);
+		Basalt					.add(SubTag.STONE, SubTag.NO_SMASHING);
+		Redrock					.add(SubTag.STONE, SubTag.NO_SMASHING);
+		Obsidian				.add(SubTag.STONE, SubTag.NO_SMASHING);
+		Flint					.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.MORTAR_GRINDABLE);
+		GraniteRed				.add(SubTag.STONE, SubTag.NO_SMASHING);
+		GraniteBlack			.add(SubTag.STONE, SubTag.NO_SMASHING);
+		Salt					.add(SubTag.STONE, SubTag.NO_SMASHING);
+		RockSalt				.add(SubTag.STONE, SubTag.NO_SMASHING);
+
+		Sand					.add(SubTag.NO_RECYCLING);
+
+		Gold					.add(SubTag.MORTAR_GRINDABLE);
+		Silver					.add(SubTag.MORTAR_GRINDABLE);
+		Iron					.add(SubTag.MORTAR_GRINDABLE);
+		IronMagnetic			.add(SubTag.MORTAR_GRINDABLE);
+		HSLA					.add(SubTag.MORTAR_GRINDABLE);
+		Steel					.add(SubTag.MORTAR_GRINDABLE);
+		SteelMagnetic			.add(SubTag.MORTAR_GRINDABLE);
+		Zinc					.add(SubTag.MORTAR_GRINDABLE);
+		Antimony				.add(SubTag.MORTAR_GRINDABLE);
+		Copper					.add(SubTag.MORTAR_GRINDABLE);
+		AnnealedCopper			.add(SubTag.MORTAR_GRINDABLE);
+		Bronze					.add(SubTag.MORTAR_GRINDABLE);
+		Nickel					.add(SubTag.MORTAR_GRINDABLE);
+		Invar					.add(SubTag.MORTAR_GRINDABLE);
+		Brass					.add(SubTag.MORTAR_GRINDABLE);
+		WroughtIron				.add(SubTag.MORTAR_GRINDABLE);
+		Electrum				.add(SubTag.MORTAR_GRINDABLE);
+		Clay					.add(SubTag.MORTAR_GRINDABLE);
+
+		Glass					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_RECYCLING, SubTag.SMELTING_TO_FLUID);
+		Diamond					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE);
+		Emerald					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		Amethyst				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		Tanzanite				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		Topaz					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		BlueTopaz				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		Amber					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		GreenSapphire			.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		Sapphire				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		Ruby					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		FoolsRuby				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		Opal					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		Olivine					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		Jasper					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		GarnetRed				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		GarnetYellow			.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		Mimichite				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		CrystalFlux				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		Crystal					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		Niter					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		Apatite					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE);
+		Lapis					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE);
+		Sodalite				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE);
+		Lazurite				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE);
+		Monazite				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE);
+		Quartzite				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
+		Quartz					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
+		SiliconDioxide			.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
+		Dilithium				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
+		NetherQuartz			.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
+		CertusQuartz			.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
+		Fluix					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
+		Phosphorus				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE, SubTag.EXPLOSIVE);
+		Phosphate				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE, SubTag.EXPLOSIVE);
+		InfusedAir				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
+		InfusedFire				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
+		InfusedEarth			.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
+		InfusedWater			.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
+		InfusedEntropy			.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
+		InfusedOrder			.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
+		InfusedVis				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
+		InfusedDull				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
+		Vinteum					.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
+		NetherStar				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
+		EnderPearl				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.PEARL);
+		EnderEye				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.PEARL);
+		Firestone				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.MAGICAL, SubTag.QUARTZ, SubTag.UNBURNABLE, SubTag.BURNING);
+		Forcicium				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.MAGICAL);
+		Forcillium				.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.MAGICAL);
+		Force					.add(SubTag.CRYSTAL, SubTag.MAGICAL, SubTag.UNBURNABLE);
+		Magic					.add(SubTag.CRYSTAL, SubTag.MAGICAL, SubTag.UNBURNABLE);
+
+		Primitive				.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		Basic					.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		Good					.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		Advanced				.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		Data					.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		Elite					.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		Master					.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		Ultimate				.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		Superconductor			.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		Infinite				.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+
+		Blaze					.add(SubTag.MAGICAL, SubTag.NO_SMELTING, SubTag.SMELTING_TO_FLUID, SubTag.MORTAR_GRINDABLE, SubTag.UNBURNABLE, SubTag.BURNING);
+		FierySteel				.add(SubTag.MAGICAL, SubTag.UNBURNABLE, SubTag.BURNING);
+		ElvenElementium			.add(SubTag.MAGICAL);
+		DarkThaumium			.add(SubTag.MAGICAL);
+		Thaumium				.add(SubTag.MAGICAL);
+		Enderium				.add(SubTag.MAGICAL);
+		AstralSilver			.add(SubTag.MAGICAL);
+		Midasium				.add(SubTag.MAGICAL);
+		Mithril					.add(SubTag.MAGICAL);
+	}
+
     /**
      * This Array can be changed dynamically by a Tick Handler in order to get a glowing Effect on all GT Meta Items out of this Material.
      */
@@ -1311,8 +1314,6 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
      * @param aLocalName            The Name used as Default for localization.
      * @param aFuelType             Type of Generator to get Energy from this Material.
      * @param aFuelPower            EU generated. Will be multiplied by 1000, also additionally multiplied by 2 for Gems.
-     * @param aAmplificationValue   Amount of UUM amplifier gotten from this.
-     * @param aUUMEnergy            Amount of EU needed to shape the UUM into this Material.
      * @param aMeltingPoint         Used to determine the smelting Costs in Furnii.
      * @param aBlastFurnaceTemp     Used to determine the needed Heat capactiy Costs in Blast Furnii.
      * @param aBlastFurnaceRequired If this requires a Blast Furnace.
