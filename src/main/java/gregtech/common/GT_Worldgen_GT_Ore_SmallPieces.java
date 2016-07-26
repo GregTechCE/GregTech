@@ -18,6 +18,7 @@ public class GT_Worldgen_GT_Ore_SmallPieces
     public final boolean mOverworld;
     public final boolean mNether;
     public final boolean mEnd;
+    public final String mBiome;
 
     public GT_Worldgen_GT_Ore_SmallPieces(String aName, boolean aDefault, int aMinY, int aMaxY, int aAmount, boolean aOverworld, boolean aNether, boolean aEnd, Materials aPrimary) {
         super(aName, GregTech_API.sWorldgenList, aDefault);
@@ -28,16 +29,20 @@ public class GT_Worldgen_GT_Ore_SmallPieces
         this.mMaxY = ((short) Math.max(this.mMinY + 1, GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MaxHeight", aMaxY)));
         this.mAmount = ((short) Math.max(1, GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Amount", aAmount)));
         this.mMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Ore", aPrimary.mMetaItemSubID));
+        this.mBiome = GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "BiomeName", "None");
     }
 
     public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX, int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
+        if (!this.mBiome.equals("None") && !(this.mBiome.equals(aBiome))) {
+            return false; //Not the correct biome for ore mix
+        }
         if (!isGenerationAllowed(aWorld, aDimensionType, ((aDimensionType == -1) && (this.mNether)) || ((aDimensionType == 0) && (this.mOverworld)) || ((aDimensionType == 1) && (this.mEnd)) ? aDimensionType : aDimensionType ^ 0xFFFFFFFF)) {
             return false;
         }
         if (this.mMeta > 0) {
             int i = 0;
             for (int j = Math.max(1, this.mAmount / 2 + aRandom.nextInt(this.mAmount) / 2); i < j; i++) {
-                GT_TileEntity_Ores.setOreBlock(aWorld, aChunkX + aRandom.nextInt(16), this.mMinY + aRandom.nextInt(Math.max(1, this.mMaxY - this.mMinY)), aChunkZ + aRandom.nextInt(16), this.mMeta + 16000);
+                GT_TileEntity_Ores.setOreBlock(aWorld, aChunkX + aRandom.nextInt(16), this.mMinY + aRandom.nextInt(Math.max(1, this.mMaxY - this.mMinY)), aChunkZ + aRandom.nextInt(16), this.mMeta, true);
             }
         }
         return true;
