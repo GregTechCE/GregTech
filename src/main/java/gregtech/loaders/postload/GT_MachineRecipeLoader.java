@@ -1766,6 +1766,8 @@ if(Loader.isModLoaded("Railcraft")){
 		addProcess(tCrop,Materials.Osmium,20);
 
 	    // Radioactive Line
+	    	tCrop = ItemList.Crop_Drop_Pitchblende.get(1, new Object[0]);
+	    	addProcess(tCrop,Materials.Pitchblende,50);
 		tCrop = ItemList.Crop_Drop_Uraninite.get(1, new Object[0]);
 		addProcess(tCrop,Materials.Uraninite,50);
 		addProcess(tCrop,Materials.Uranium,50);
