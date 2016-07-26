@@ -100,6 +100,10 @@ public class GT_Loader_MetaTileEntities
         GT_ModHandler.addShapelessCraftingRecipe(ItemList.Casing_SolidSteel.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{ItemList.Casing_FrostHazard});
         GT_ModHandler.addShapelessCraftingRecipe(ItemList.Casing_SolidSteel.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{ItemList.Casing_NoiseHazard});
 
+        GT_ModHandler.addShapelessCraftingRecipe(ItemList.Casing_Coil_Cupronickel.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] {ItemList.Casing_Coil_Cupronickel_Deprecated});
+        GT_ModHandler.addShapelessCraftingRecipe(ItemList.Casing_Coil_Kanthal.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] {ItemList.Casing_Coil_Kanthal_Deprecated});
+        GT_ModHandler.addShapelessCraftingRecipe(ItemList.Casing_Coil_Nichrome.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] {ItemList.Casing_Coil_Nichrome_Deprecated});
+
         ItemList.Hull_Bronze.set(new GT_MetaTileEntity_BasicHull_Bronze(1, "hull.bronze", "Bronze Hull", 0, "For your first Steam Machines").getStackForm(1L));
         ItemList.Hull_Bronze_Bricks.set(new GT_MetaTileEntity_BasicHull_BronzeBricks(2, "hull.bronze_bricked", "Bricked Bronze Hull", 0, "For your first Steam Machines").getStackForm(1L));
         ItemList.Hull_Steel.set(new GT_MetaTileEntity_BasicHull_Steel(3, "hull.steel", "Steel Hull", 0, "For improved Steam Machines").getStackForm(1L));
