@@ -50,7 +50,7 @@ public class Textures {
          * 0 = 8V, 1 = LV, 2 = MV, 3 = HV, 4 = EV, 5 = IV, 6 = IV, 7 = IV, 8 = IV, 9 = IV
          */
         public static final IIconContainer[]
-                MACHINECASINGS_SIDE = new IIconContainer[]{
+            MACHINECASINGS_SIDE = new IIconContainer[]{
                 MACHINE_8V_SIDE,
                 MACHINE_LV_SIDE,
                 MACHINE_MV_SIDE,
@@ -67,196 +67,213 @@ public class Textures {
                 MACHINE_MAX_SIDE,
                 MACHINE_MAX_SIDE,
                 MACHINE_MAX_SIDE,
-        },
-                MACHINECASINGS_TOP = new IIconContainer[]{
-                        MACHINE_8V_TOP,
-                        MACHINE_LV_TOP,
-                        MACHINE_MV_TOP,
-                        MACHINE_HV_TOP,
-                        MACHINE_EV_TOP,
-                        MACHINE_IV_TOP,
-                        MACHINE_LuV_TOP,
-                        MACHINE_ZPM_TOP,
-                        MACHINE_UV_TOP,
-                        MACHINE_MAX_TOP,
-                        MACHINE_MAX_TOP,
-                        MACHINE_MAX_TOP,
-                        MACHINE_MAX_TOP,
-                        MACHINE_MAX_TOP,
-                        MACHINE_MAX_TOP,
-                        MACHINE_MAX_TOP,
-                },
-                MACHINECASINGS_BOTTOM = new IIconContainer[]{
-                        MACHINE_8V_BOTTOM,
-                        MACHINE_LV_BOTTOM,
-                        MACHINE_MV_BOTTOM,
-                        MACHINE_HV_BOTTOM,
-                        MACHINE_EV_BOTTOM,
-                        MACHINE_IV_BOTTOM,
-                        MACHINE_LuV_BOTTOM,
-                        MACHINE_ZPM_BOTTOM,
-                        MACHINE_UV_BOTTOM,
-                        MACHINE_MAX_BOTTOM,
-                        MACHINE_MAX_BOTTOM,
-                        MACHINE_MAX_BOTTOM,
-                        MACHINE_MAX_BOTTOM,
-                        MACHINE_MAX_BOTTOM,
-                        MACHINE_MAX_BOTTOM,
-                        MACHINE_MAX_BOTTOM,
-                },
-                GRANITES = new IIconContainer[]{
-                        GRANITE_BLACK_STONE,
-                        GRANITE_BLACK_COBBLE,
-                        GRANITE_BLACK_COBBLE_MOSSY,
-                        GRANITE_BLACK_BRICKS,
-                        GRANITE_BLACK_BRICKS_CRACKED,
-                        GRANITE_BLACK_BRICKS_MOSSY,
-                        GRANITE_BLACK_BRICKS_CHISELED,
-                        GRANITE_BLACK_SMOOTH,
-                        GRANITE_RED_STONE,
-                        GRANITE_RED_COBBLE,
-                        GRANITE_RED_COBBLE_MOSSY,
-                        GRANITE_RED_BRICKS,
-                        GRANITE_RED_BRICKS_CRACKED,
-                        GRANITE_RED_BRICKS_MOSSY,
-                        GRANITE_RED_BRICKS_CHISELED,
-                        GRANITE_RED_SMOOTH,
-                },
-                CONCRETES = new IIconContainer[]{
-                        CONCRETE_DARK_STONE,
-                        CONCRETE_DARK_COBBLE,
-                        CONCRETE_DARK_COBBLE_MOSSY,
-                        CONCRETE_DARK_BRICKS,
-                        CONCRETE_DARK_BRICKS_CRACKED,
-                        CONCRETE_DARK_BRICKS_MOSSY,
-                        CONCRETE_DARK_BRICKS_CHISELED,
-                        CONCRETE_DARK_SMOOTH,
-                        CONCRETE_LIGHT_STONE,
-                        CONCRETE_LIGHT_COBBLE,
-                        CONCRETE_LIGHT_COBBLE_MOSSY,
-                        CONCRETE_LIGHT_BRICKS,
-                        CONCRETE_LIGHT_BRICKS_CRACKED,
-                        CONCRETE_LIGHT_BRICKS_MOSSY,
-                        CONCRETE_LIGHT_BRICKS_CHISELED,
-                        CONCRETE_LIGHT_SMOOTH,
-                },
-                TURBINE = new IIconContainer[]{
-                        LARGETURBINE_ST1,
-                        LARGETURBINE_ST2,
-                        LARGETURBINE_ST3,
-                        LARGETURBINE_ST4,
-                        LARGETURBINE_ST5,
-                        LARGETURBINE_ST6,
-                        LARGETURBINE_ST7,
-                        LARGETURBINE_ST8,
-                        LARGETURBINE_ST9
-                },
-                TURBINE_ACTIVE = new IIconContainer[]{
-                        LARGETURBINE_ST_ACTIVE1,
-                        LARGETURBINE_ST_ACTIVE2,
-                        LARGETURBINE_ST_ACTIVE3,
-                        LARGETURBINE_ST_ACTIVE4,
-                        LARGETURBINE_ST_ACTIVE5,
-                        LARGETURBINE_ST_ACTIVE6,
-                        LARGETURBINE_ST_ACTIVE7,
-                        LARGETURBINE_ST_ACTIVE8,
-                        LARGETURBINE_ST_ACTIVE9
-                },
-                TURBINE1 = new IIconContainer[]{
-                        LARGETURBINE_SS1,
-                        LARGETURBINE_SS2,
-                        LARGETURBINE_SS3,
-                        LARGETURBINE_SS4,
-                        LARGETURBINE_SS5,
-                        LARGETURBINE_SS6,
-                        LARGETURBINE_SS7,
-                        LARGETURBINE_SS8,
-                        LARGETURBINE_SS9
-                },
-                TURBINE_ACTIVE1 = new IIconContainer[]{
-                        LARGETURBINE_SS_ACTIVE1,
-                        LARGETURBINE_SS_ACTIVE2,
-                        LARGETURBINE_SS_ACTIVE3,
-                        LARGETURBINE_SS_ACTIVE4,
-                        LARGETURBINE_SS_ACTIVE5,
-                        LARGETURBINE_SS_ACTIVE6,
-                        LARGETURBINE_SS_ACTIVE7,
-                        LARGETURBINE_SS_ACTIVE8,
-                        LARGETURBINE_SS_ACTIVE9
-                },
-                TURBINE2 = new IIconContainer[]{
-                        LARGETURBINE_TI1,
-                        LARGETURBINE_TI2,
-                        LARGETURBINE_TI3,
-                        LARGETURBINE_TI4,
-                        LARGETURBINE_TI5,
-                        LARGETURBINE_TI6,
-                        LARGETURBINE_TI7,
-                        LARGETURBINE_TI8,
-                        LARGETURBINE_TI9
-                },
-                TURBINE_ACTIVE2 = new IIconContainer[]{
-                        LARGETURBINE_TI_ACTIVE1,
-                        LARGETURBINE_TI_ACTIVE2,
-                        LARGETURBINE_TI_ACTIVE3,
-                        LARGETURBINE_TI_ACTIVE4,
-                        LARGETURBINE_TI_ACTIVE5,
-                        LARGETURBINE_TI_ACTIVE6,
-                        LARGETURBINE_TI_ACTIVE7,
-                        LARGETURBINE_TI_ACTIVE8,
-                        LARGETURBINE_TI_ACTIVE9
-                },
-                TURBINE3 = new IIconContainer[]{
-                        LARGETURBINE_TU1,
-                        LARGETURBINE_TU2,
-                        LARGETURBINE_TU3,
-                        LARGETURBINE_TU4,
-                        LARGETURBINE_TU5,
-                        LARGETURBINE_TU6,
-                        LARGETURBINE_TU7,
-                        LARGETURBINE_TU8,
-                        LARGETURBINE_TU9
-                },
-                TURBINE_ACTIVE3 = new IIconContainer[]{
-                        LARGETURBINE_TU_ACTIVE1,
-                        LARGETURBINE_TU_ACTIVE2,
-                        LARGETURBINE_TU_ACTIVE3,
-                        LARGETURBINE_TU_ACTIVE4,
-                        LARGETURBINE_TU_ACTIVE5,
-                        LARGETURBINE_TU_ACTIVE6,
-                        LARGETURBINE_TU_ACTIVE7,
-                        LARGETURBINE_TU_ACTIVE8,
-                        LARGETURBINE_TU_ACTIVE9
-                },
-                CONNECTED_HULLS = new IIconContainer[]{
-                        CONCRETE_DARK_STONE,
-                        FUSIONI_1,
-                        FUSIONI_2,
-                        FUSIONI_3,
-                        FUSIONI_4,
-                        FUSIONI_5,
-                        FUSIONI_6,
-                        FUSIONI_7,
-                        FUSIONI_8,
-                        FUSIONI_9,
-                        FUSIONI_10,
-                        FUSIONI_11,
-                        FUSIONI_12,
-                        FUSIONII_1,
-                        FUSIONII_2,
-                        FUSIONII_3,
-                        FUSIONII_4,
-                        FUSIONII_5,
-                        FUSIONII_6,
-                        FUSIONII_7,
-                        FUSIONII_8,
-                        FUSIONII_9,
-                        FUSIONII_10,
-                        FUSIONII_11,
-                        FUSIONII_12,
-                },
-
-        STORAGE_BLOCKS1 = new IIconContainer[]{
+            },
+            MACHINECASINGS_TOP = new IIconContainer[]{
+                MACHINE_8V_TOP,
+                MACHINE_LV_TOP,
+                MACHINE_MV_TOP,
+                MACHINE_HV_TOP,
+                MACHINE_EV_TOP,
+                MACHINE_IV_TOP,
+                MACHINE_LuV_TOP,
+                MACHINE_ZPM_TOP,
+                MACHINE_UV_TOP,
+                MACHINE_MAX_TOP,
+                MACHINE_MAX_TOP,
+                MACHINE_MAX_TOP,
+                MACHINE_MAX_TOP,
+                MACHINE_MAX_TOP,
+                MACHINE_MAX_TOP,
+                MACHINE_MAX_TOP,
+            },
+            MACHINECASINGS_BOTTOM = new IIconContainer[]{
+                MACHINE_8V_BOTTOM,
+                MACHINE_LV_BOTTOM,
+                MACHINE_MV_BOTTOM,
+                MACHINE_HV_BOTTOM,
+                MACHINE_EV_BOTTOM,
+                MACHINE_IV_BOTTOM,
+                MACHINE_LuV_BOTTOM,
+                MACHINE_ZPM_BOTTOM,
+                MACHINE_UV_BOTTOM,
+                MACHINE_MAX_BOTTOM,
+                MACHINE_MAX_BOTTOM,
+                MACHINE_MAX_BOTTOM,
+                MACHINE_MAX_BOTTOM,
+                MACHINE_MAX_BOTTOM,
+                MACHINE_MAX_BOTTOM,
+                MACHINE_MAX_BOTTOM,
+            },
+            GRANITES = new IIconContainer[]{
+                GRANITE_BLACK_STONE,
+                GRANITE_BLACK_COBBLE,
+                GRANITE_BLACK_COBBLE_MOSSY,
+                GRANITE_BLACK_BRICKS,
+                GRANITE_BLACK_BRICKS_CRACKED,
+                GRANITE_BLACK_BRICKS_MOSSY,
+                GRANITE_BLACK_BRICKS_CHISELED,
+                GRANITE_BLACK_SMOOTH,
+                GRANITE_RED_STONE,
+                GRANITE_RED_COBBLE,
+                GRANITE_RED_COBBLE_MOSSY,
+                GRANITE_RED_BRICKS,
+                GRANITE_RED_BRICKS_CRACKED,
+                GRANITE_RED_BRICKS_MOSSY,
+                GRANITE_RED_BRICKS_CHISELED,
+                GRANITE_RED_SMOOTH,
+            },
+            CONCRETES = new IIconContainer[]{
+                CONCRETE_DARK_STONE,
+                CONCRETE_DARK_COBBLE,
+                CONCRETE_DARK_COBBLE_MOSSY,
+                CONCRETE_DARK_BRICKS,
+                CONCRETE_DARK_BRICKS_CRACKED,
+                CONCRETE_DARK_BRICKS_MOSSY,
+                CONCRETE_DARK_BRICKS_CHISELED,
+                CONCRETE_DARK_SMOOTH,
+                CONCRETE_LIGHT_STONE,
+                CONCRETE_LIGHT_COBBLE,
+                CONCRETE_LIGHT_COBBLE_MOSSY,
+                CONCRETE_LIGHT_BRICKS,
+                CONCRETE_LIGHT_BRICKS_CRACKED,
+                CONCRETE_LIGHT_BRICKS_MOSSY,
+                CONCRETE_LIGHT_BRICKS_CHISELED,
+                CONCRETE_LIGHT_SMOOTH,
+            },
+            STONES = new IIconContainer[]{
+                MARBLE_STONE,
+                MARBLE_COBBLE,
+                MARBLE_COBBLE_MOSSY,
+                MARBLE_BRICKS,
+                MARBLE_BRICKS_CRACKED,
+                MARBLE_BRICKS_MOSSY,
+                MARBLE_BRICKS_CHISELED,
+                MARBLE_SMOOTH,
+                BASALT_STONE,
+                BASALT_COBBLE,
+                BASALT_COBBLE_MOSSY,
+                BASALT_BRICKS,
+                BASALT_BRICKS_CRACKED,
+                BASALT_BRICKS_MOSSY,
+                BASALT_BRICKS_CHISELED,
+                BASALT_SMOOTH,
+            },
+            TURBINE = new IIconContainer[]{
+                LARGETURBINE_ST1,
+                LARGETURBINE_ST2,
+                LARGETURBINE_ST3,
+                LARGETURBINE_ST4,
+                LARGETURBINE_ST5,
+                LARGETURBINE_ST6,
+                LARGETURBINE_ST7,
+                LARGETURBINE_ST8,
+                LARGETURBINE_ST9
+            },
+            TURBINE_ACTIVE = new IIconContainer[]{
+                LARGETURBINE_ST_ACTIVE1,
+                LARGETURBINE_ST_ACTIVE2,
+                LARGETURBINE_ST_ACTIVE3,
+                LARGETURBINE_ST_ACTIVE4,
+                LARGETURBINE_ST_ACTIVE5,
+                LARGETURBINE_ST_ACTIVE6,
+                LARGETURBINE_ST_ACTIVE7,
+                LARGETURBINE_ST_ACTIVE8,
+                LARGETURBINE_ST_ACTIVE9
+            },
+            TURBINE1 = new IIconContainer[]{
+                LARGETURBINE_SS1,
+                LARGETURBINE_SS2,
+                LARGETURBINE_SS3,
+                LARGETURBINE_SS4,
+                LARGETURBINE_SS5,
+                LARGETURBINE_SS6,
+                LARGETURBINE_SS7,
+                LARGETURBINE_SS8,
+                LARGETURBINE_SS9
+            },
+            TURBINE_ACTIVE1 = new IIconContainer[]{
+                LARGETURBINE_SS_ACTIVE1,
+                LARGETURBINE_SS_ACTIVE2,
+                LARGETURBINE_SS_ACTIVE3,
+                LARGETURBINE_SS_ACTIVE4,
+                LARGETURBINE_SS_ACTIVE5,
+                LARGETURBINE_SS_ACTIVE6,
+                LARGETURBINE_SS_ACTIVE7,
+                LARGETURBINE_SS_ACTIVE8,
+                LARGETURBINE_SS_ACTIVE9
+            },
+            TURBINE2 = new IIconContainer[]{
+                LARGETURBINE_TI1,
+                LARGETURBINE_TI2,
+                LARGETURBINE_TI3,
+                LARGETURBINE_TI4,
+                LARGETURBINE_TI5,
+                LARGETURBINE_TI6,
+                LARGETURBINE_TI7,
+                LARGETURBINE_TI8,
+                LARGETURBINE_TI9
+            },
+            TURBINE_ACTIVE2 = new IIconContainer[]{
+                LARGETURBINE_TI_ACTIVE1,
+                LARGETURBINE_TI_ACTIVE2,
+                LARGETURBINE_TI_ACTIVE3,
+                LARGETURBINE_TI_ACTIVE4,
+                LARGETURBINE_TI_ACTIVE5,
+                LARGETURBINE_TI_ACTIVE6,
+                LARGETURBINE_TI_ACTIVE7,
+                LARGETURBINE_TI_ACTIVE8,
+                LARGETURBINE_TI_ACTIVE9
+            },
+            TURBINE3 = new IIconContainer[]{
+                LARGETURBINE_TU1,
+                LARGETURBINE_TU2,
+                LARGETURBINE_TU3,
+                LARGETURBINE_TU4,
+                LARGETURBINE_TU5,
+                LARGETURBINE_TU6,
+                LARGETURBINE_TU7,
+                LARGETURBINE_TU8,
+                LARGETURBINE_TU9
+            },
+            TURBINE_ACTIVE3 = new IIconContainer[]{
+                LARGETURBINE_TU_ACTIVE1,
+                LARGETURBINE_TU_ACTIVE2,
+                LARGETURBINE_TU_ACTIVE3,
+                LARGETURBINE_TU_ACTIVE4,
+                LARGETURBINE_TU_ACTIVE5,
+                LARGETURBINE_TU_ACTIVE6,
+                LARGETURBINE_TU_ACTIVE7,
+                LARGETURBINE_TU_ACTIVE8,
+                LARGETURBINE_TU_ACTIVE9
+            },
+            CONNECTED_HULLS = new IIconContainer[]{
+                CONCRETE_DARK_STONE,
+                FUSIONI_1,
+                FUSIONI_2,
+                FUSIONI_3,
+                FUSIONI_4,
+                FUSIONI_5,
+                FUSIONI_6,
+                FUSIONI_7,
+                FUSIONI_8,
+                FUSIONI_9,
+                FUSIONI_10,
+                FUSIONI_11,
+                FUSIONI_12,
+                FUSIONII_1,
+                FUSIONII_2,
+                FUSIONII_3,
+                FUSIONII_4,
+                FUSIONII_5,
+                FUSIONII_6,
+                FUSIONII_7,
+                FUSIONII_8,
+                FUSIONII_9,
+                FUSIONII_10,
+                FUSIONII_11,
+                FUSIONII_12,
+            },
+            STORAGE_BLOCKS1 = new IIconContainer[]{
                 BLOCK_ADAMANTIUM,
                 BLOCK_ALUMINIUM,
                 BLOCK_AMERICIUM,
@@ -273,9 +290,8 @@ public class Textures {
                 BLOCK_BLUEALLOY,
                 BLOCK_BLUESTEEL,
                 BLOCK_BRASS
-        },
-
-        STORAGE_BLOCKS2 = new IIconContainer[]{
+            },
+            STORAGE_BLOCKS2 = new IIconContainer[]{
                 BLOCK_BRONZE,
                 BLOCK_CAESIUM,
                 BLOCK_CERIUM,
@@ -292,9 +308,8 @@ public class Textures {
                 BLOCK_DURANIUM,
                 BLOCK_DYSPROSIUM,
                 BLOCK_ELECTRUM
-        },
-
-        STORAGE_BLOCKS3 = new IIconContainer[]{
+            },
+            STORAGE_BLOCKS3 = new IIconContainer[]{
                 BLOCK_ELECTRUMFLUX,
                 BLOCK_ENDERIUM,
                 BLOCK_ERBIUM,
@@ -311,9 +326,8 @@ public class Textures {
                 BLOCK_IRONMAGNETIC,
                 BLOCK_IRONWOOD,
                 BLOCK_KANTHAL
-        },
-
-        STORAGE_BLOCKS4 = new IIconContainer[]{
+            },
+            STORAGE_BLOCKS4 = new IIconContainer[]{
                 BLOCK_KNIGHTMETAL,
                 BLOCK_LANTHANUM,
                 BLOCK_LEAD,
@@ -330,9 +344,8 @@ public class Textures {
                 BLOCK_NAQUADAHALLOY,
                 BLOCK_NAQUADAHENRICHED,
                 BLOCK_NAQUADRIA
-        },
-
-        STORAGE_BLOCKS5 = new IIconContainer[]{
+            },
+            STORAGE_BLOCKS5 = new IIconContainer[]{
                 BLOCK_NEODYMIUM,
                 BLOCK_NEODYMIUMMAGNETIC,
                 BLOCK_NEUTRONIUM,
@@ -349,9 +362,8 @@ public class Textures {
                 BLOCK_PLUTONIUM,
                 BLOCK_PLUTONIUM241,
                 BLOCK_PRASEODYMIUM
-        },
-
-        STORAGE_BLOCKS6 = new IIconContainer[]{
+            },
+            STORAGE_BLOCKS6 = new IIconContainer[]{
                 BLOCK_PROMETHIUM,
                 BLOCK_REDALLOY,
                 BLOCK_REDSTEEL,
@@ -368,9 +380,8 @@ public class Textures {
                 BLOCK_STEEL,
                 BLOCK_STEELMAGNETIC,
                 BLOCK_STERLINGSILVER
-        },
-
-        STORAGE_BLOCKS7 = new IIconContainer[]{
+            },
+            STORAGE_BLOCKS7 = new IIconContainer[]{
                 BLOCK_SUNNARIUM,
                 BLOCK_TANTALUM,
                 BLOCK_TELLURIUM,
@@ -387,9 +398,8 @@ public class Textures {
                 BLOCK_ULTIMET,
                 BLOCK_URANIUM,
                 BLOCK_URANIUM235
-        },
-
-        STORAGE_BLOCKS8 = new IIconContainer[]{
+            },
+            STORAGE_BLOCKS8 = new IIconContainer[]{
                 BLOCK_VANADIUM,
                 BLOCK_VANADIUMGALLIUM,
                 BLOCK_WROUGHTIRON,
@@ -402,9 +412,8 @@ public class Textures {
                 BLOCK_HSSG,
                 BLOCK_HSSE,
                 BLOCK_HSSS
-        },
-
-        STORAGE_BLOCKS9 = new IIconContainer[]{
+            },
+            STORAGE_BLOCKS9 = new IIconContainer[]{
                 BLOCK_AERCRYSTAL,
                 BLOCK_AMBER,
                 BLOCK_AMETHYST,
@@ -421,9 +430,8 @@ public class Textures {
                 BLOCK_GREENSAPPHIRE,
                 BLOCK_IGNISCRYSTAL,
                 BLOCK_JASPER
-        },
-
-        STORAGE_BLOCKS10 = new IIconContainer[]{
+            },
+            STORAGE_BLOCKS10 = new IIconContainer[]{
                 BLOCK_LAZURITE,
                 BLOCK_LIGNITE,
                 BLOCK_MONAZITE,
@@ -440,15 +448,14 @@ public class Textures {
                 BLOCK_SODALITE,
                 BLOCK_TANZANITE,
                 BLOCK_TERRACRYSTAL
-        },
-
-        STORAGE_BLOCKS11 = new IIconContainer[]{
+            },
+            STORAGE_BLOCKS11 = new IIconContainer[]{
                 BLOCK_TOPAZ,
                 BLOCK_VINTEUM,
                 BLOCK_YELLOWGARNET,
                 BLOCK_NETHERSTAR,
                 BLOCK_CHARCOAL
-        };
+            };
         public static ITexture[]
                 ERROR_RENDERING = new ITexture[]{
                 new GT_RenderedTexture(RENDERING_ERROR)
