@@ -4,7 +4,6 @@ import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
-import gregtech.api.items.GT_RadioactiveCellIC_Item;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -400,7 +399,7 @@ public class GT_CraftingRecipeLoader
         GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 3L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"NPT", "CCC", "HPT", Character.valueOf('H'), OrePrefixes.cell.get(Materials.Helium), Character.valueOf('N'), OrePrefixes.cell.get(Materials.Nitrogen), Character.valueOf('T'), OrePrefixes.pipeTiny.get(Materials.TungstenSteel), Character.valueOf('P'), ItemList.Electric_Pump_LV, Character.valueOf('C'), OrePrefixes.wireGt01.get(Materials.NiobiumTitanium)});
         GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 3L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"NPT", "CCC", "HPT", Character.valueOf('H'), OrePrefixes.cell.get(Materials.Helium), Character.valueOf('N'), OrePrefixes.cell.get(Materials.Nitrogen), Character.valueOf('T'), OrePrefixes.pipeTiny.get(Materials.TungstenSteel), Character.valueOf('P'), ItemList.Electric_Pump_LV, Character.valueOf('C'), OrePrefixes.wireGt01.get(Materials.VanadiumGallium)});
         GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 3L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"NPT", "CCC", "NPT", Character.valueOf('N'), OrePrefixes.cell.get(Materials.Nitrogen), Character.valueOf('T'), OrePrefixes.pipeTiny.get(Materials.TungstenSteel), Character.valueOf('P'), ItemList.Electric_Pump_LV, Character.valueOf('C'), OrePrefixes.wireGt01.get(Materials.YttriumBariumCuprate)});
-        GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 3L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"NPT", "CCC", "NPT", Character.valueOf('N'), OrePrefixes.cell.get(Materials.Nitrogen), Character.valueOf('T'), OrePrefixes.pipeTiny.get(Materials.TungstenSteel), Character.valueOf('P'), ItemList.Electric_Pump_LV, Character.valueOf('C'), OrePrefixes.wireGt01.get(Materials.Naquadah)});
+        GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 3L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"NPT", "CCC", "NPT", Character.valueOf('N'), OrePrefixes.cell.get(Materials.Nitrogen), Character.valueOf('T'), OrePrefixes.pipeTiny.get(Materials.TungstenSteel), Character.valueOf('P'), ItemList.Electric_Pump_LV, Character.valueOf('C'), OrePrefixes.wireGt01.get(Materials.HSSG)});
 
         GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.stick, Materials.IronMagnetic, 1L), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{OrePrefixes.stick.get(Materials.AnyIron), OrePrefixes.dust.get(Materials.Redstone), OrePrefixes.dust.get(Materials.Redstone), OrePrefixes.dust.get(Materials.Redstone), OrePrefixes.dust.get(Materials.Redstone)});
 
@@ -411,7 +410,7 @@ public class GT_CraftingRecipeLoader
         GT_ModHandler.addCraftingRecipe(ItemList.IC2_Item_Casing_Tin.get(1L, new Object[0]), new Object[]{"h P", Character.valueOf('P'), OrePrefixes.plate.get(Materials.Tin)});
         GT_ModHandler.addCraftingRecipe(ItemList.IC2_Item_Casing_Lead.get(1L, new Object[0]), new Object[]{"h P", Character.valueOf('P'), OrePrefixes.plate.get(Materials.Lead)});
         GT_ModHandler.addCraftingRecipe(ItemList.IC2_Item_Casing_Steel.get(1L, new Object[0]), new Object[]{"h P", Character.valueOf('P'), OrePrefixes.plate.get(Materials.Steel)});
-       
+
         GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.torch, 2), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"C", "S", Character.valueOf('C'), OrePrefixes.dust.get(Materials.Sulfur), Character.valueOf('S'), OrePrefixes.stick.get(Materials.Wood)});
         GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.torch, 6), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"C", "S", Character.valueOf('C'), OrePrefixes.dust.get(Materials.Phosphorus), Character.valueOf('S'), OrePrefixes.stick.get(Materials.Wood)});
 
@@ -569,7 +568,7 @@ public class GT_CraftingRecipeLoader
         } else {
             GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("glassFiberCableItem", 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"GGG", "EDE", "GGG", Character.valueOf('G'), new ItemStack(Blocks.glass, 1, 32767), Character.valueOf('D'), OrePrefixes.dust.get(Materials.Silver), Character.valueOf('E'), ItemList.IC2_Energium_Dust.get(1L, new Object[0])});
         }
-        
+
         if (Loader.isModLoaded("NotEnoughItems")) {
         	codechicken.nei.api.API.hideItem(GT_ModHandler.getIC2Item("reactorUraniumSimple", 1L,1));
         	codechicken.nei.api.API.hideItem(GT_ModHandler.getIC2Item("reactorUraniumDual", 1L,1));
@@ -580,8 +579,8 @@ public class GT_CraftingRecipeLoader
         }
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("UranFuel", 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"UUU", "NNN", "UUU", 'U', OrePrefixes.ingot.get(Materials.Uranium), 'N', OrePrefixes.nugget.get(Materials.Uranium235)});
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("MOXFuel", 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"UUU", "NNN", "UUU", 'U', OrePrefixes.ingot.get(Materials.Uranium), 'N', OrePrefixes.ingot.get(Materials.Plutonium)});
-        
-        
+
+
         GT_ModHandler.addCraftingRecipe(ItemList.Uraniumcell_2.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"RPR", "   ", "   ", 'R', ItemList.Uraniumcell_1, 'P', OrePrefixes.plate.get(Materials.Iron)});
         GT_ModHandler.addCraftingRecipe(ItemList.Uraniumcell_4.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"RPR", "CPC", "RPR", 'R', ItemList.Uraniumcell_1, 'P', OrePrefixes.plate.get(Materials.Iron), 'C', OrePrefixes.plate.get(Materials.Copper)});
         GT_ModHandler.addCraftingRecipe(ItemList.Moxcell_2.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"RPR", "   ", "   ", 'R', ItemList.Moxcell_1, 'P', OrePrefixes.plate.get(Materials.Iron)});
