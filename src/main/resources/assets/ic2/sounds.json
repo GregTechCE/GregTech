@@ -1,52 +1,389 @@
 {
-"machines.ExtractorOp":{"category":"master", "sounds":[{"name":"ExtractorOp", "stream":false}]},
-"machines.CompressorOp":{"category":"master", "sounds":[{"name":"CompressorOp", "stream":false}]},
-"machines.ElectroFurnaceLoop":{"category":"master", "sounds":[{"name":"ElectroFurnaceLoop", "stream":false}]},
-"machines.InductionLoop":{"category":"master", "sounds":[{"name":"InductionLoop", "stream":false}]},
-"machines.InterruptOne":{"category":"master", "sounds":[{"name":"InterruptOne", "stream":false}]},
-"machines.IronFurnaceOp":{"category":"master", "sounds":[{"name":"IronFurnaceOp", "stream":false}]},
-"machines.KaChing":{"category":"master", "sounds":[{"name":"KaChing", "stream":false}]},
-"machines.MaceratorOp":{"category":"master", "sounds":[{"name":"MaceratorOp", "stream":false}]},
-"machines.MachineOverload":{"category":"master", "sounds":[{"name":"MachineOverload", "stream":false}]},
-"machines.MagnetizerLoop":{"category":"master", "sounds":[{"name":"MagnetizerLoop", "stream":false}]},
-"machines.MinerOp":{"category":"master", "sounds":[{"name":"MinerOp", "stream":false}]},
-"machines.PumpOp":{"category":"master", "sounds":[{"name":"PumpOp", "stream":false}]},
-"machines.RecyclerOp":{"category":"master", "sounds":[{"name":"RecyclerOp", "stream":false}]},
-
-"tools.BatteryUse":{"category":"master", "sounds":[{"name":"BatteryUse", "stream":false}]},
-"tools.Dynamiteomote":{"category":"master", "sounds":[{"name":"Dynamiteomote", "stream":false}]},
-"tools.InsulationCutters":{"category":"master", "sounds":[{"name":"InsulationCutters", "stream":false}]},
-"tools.NukeExplosion":{"category":"master", "sounds":[{"name":"NukeExplosion", "stream":false}]},
-"tools.ODScanner":{"category":"master", "sounds":[{"name":"ODScanner", "stream":false}]},
-"tools.Painter":{"category":"master", "sounds":[{"name":"Painter", "stream":false}]},
-"tools.RubberTrampoline":{"category":"master", "sounds":[{"name":"RubberTrampoline", "stream":false}]},
-"tools.Treetap":{"category":"master", "sounds":[{"name":"Treetap", "stream":false}]},
-"tools.Wrench":{"category":"master", "sounds":[{"name":"Wrench", "stream":false}]},
-
-"tools.chainsaw.ChainsawIdle":{"category":"master", "sounds":[{"name":"ChainsawIdle", "stream":false}]},
-"tools.chainsaw.ChainsawStop":{"category":"master", "sounds":[{"name":"ChainsawStop", "stream":false}]},
-"tools.chainsaw.ChainsawUseOne":{"category":"master", "sounds":[{"name":"ChainsawUseOne", "stream":false}]},
-"tools.chainsaw.ChainsawUseTwo":{"category":"master", "sounds":[{"name":"ChainsawUseTwo", "stream":false}]},
-
-"tools.drill.DrillHard":{"category":"master", "sounds":[{"name":"DrillHard", "stream":false}]},
-"tools.drill.DrillSoft":{"category":"master", "sounds":[{"name":"DrillSoft", "stream":false}]},
-"tools.drill.DrillUseLoop":{"category":"master", "sounds":[{"name":"DrillUseLoop", "stream":false}]},
-
-"tools.jetpack.JetpackFire":{"category":"master", "sounds":[{"name":"JetpackFire", "stream":false}]},
-"tools.jetpack.JetpackLoop":{"category":"master", "sounds":[{"name":"JetpackLoop", "stream":false}]},
-
-"tools.mininglaser.MiningLaser":{"category":"master", "sounds":[{"name":"MiningLaser", "stream":false}]},
-"tools.mininglaser.MiningLaserExplosive":{"category":"master", "sounds":[{"name":"MiningLaserExplosive", "stream":false}]},
-"tools.mininglaser.MiningLaserLongRange":{"category":"master", "sounds":[{"name":"MiningLaserLongRange", "stream":false}]},
-"tools.mininglaser.MiningLaserLowFocus":{"category":"master", "sounds":[{"name":"MiningLaserLowFocus", "stream":false}]},
-"tools.mininglaser.MiningLaserScatter":{"category":"master", "sounds":[{"name":"MiningLaserScatter", "stream":false}]},
-
-"tools.nanosabre.NanosabreIdle":{"category":"master", "sounds":[{"name":"NanosabreIdle", "stream":false}]},
-"tools.nanosabre.NanosabrePowerup":{"category":"master", "sounds":[{"name":"NanosabrePowerup", "stream":false}]},
-"tools.nanosabre.NanosabreSwing1":{"category":"master", "sounds":[{"name":"NanosabreSwing1", "stream":false}]},
-"tools.nanosabre.NanosabreSwing2":{"category":"master", "sounds":[{"name":"NanosabreSwing2", "stream":false}]},
-"tools.nanosabre.NanosabreSwing3":{"category":"master", "sounds":[{"name":"NanosabreSwing3", "stream":false}]},
-
-"tools.quantumsuit.HelmetLoop":{"category":"master", "sounds":[{"name":"HelmetLoop", "stream":false}]},
-"tools.quantumsuit.QuantumsuitBoots":{"category":"master", "sounds":[{"name":"QuantumsuitBoots", "stream":false}]}
+  "machines.ExtractorOp": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "ExtractorOp",
+        "stream": false
+      }
+    ]
+  },
+  "machines.CompressorOp": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "CompressorOp",
+        "stream": false
+      }
+    ]
+  },
+  "machines.ElectroFurnaceLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "ElectroFurnaceLoop",
+        "stream": false
+      }
+    ]
+  },
+  "machines.InductionLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "InductionLoop",
+        "stream": false
+      }
+    ]
+  },
+  "machines.InterruptOne": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "InterruptOne",
+        "stream": false
+      }
+    ]
+  },
+  "machines.IronFurnaceOp": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "IronFurnaceOp",
+        "stream": false
+      }
+    ]
+  },
+  "machines.KaChing": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "KaChing",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MaceratorOp": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MaceratorOp",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MachineOverload": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MachineOverload",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MagnetizerLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MagnetizerLoop",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MinerOp": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MinerOp",
+        "stream": false
+      }
+    ]
+  },
+  "machines.PumpOp": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "PumpOp",
+        "stream": false
+      }
+    ]
+  },
+  "machines.RecyclerOp": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "RecyclerOp",
+        "stream": false
+      }
+    ]
+  },
+  "tools.BatteryUse": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "BatteryUse",
+        "stream": false
+      }
+    ]
+  },
+  "tools.Dynamiteomote": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "Dynamiteomote",
+        "stream": false
+      }
+    ]
+  },
+  "tools.InsulationCutters": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "InsulationCutters",
+        "stream": false
+      }
+    ]
+  },
+  "tools.NukeExplosion": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "NukeExplosion",
+        "stream": false
+      }
+    ]
+  },
+  "tools.ODScanner": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "ODScanner",
+        "stream": false
+      }
+    ]
+  },
+  "tools.Painter": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "Painter",
+        "stream": false
+      }
+    ]
+  },
+  "tools.RubberTrampoline": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "RubberTrampoline",
+        "stream": false
+      }
+    ]
+  },
+  "tools.Treetap": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "Treetap",
+        "stream": false
+      }
+    ]
+  },
+  "tools.Wrench": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "Wrench",
+        "stream": false
+      }
+    ]
+  },
+  "tools.chainsaw.ChainsawIdle": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "ChainsawIdle",
+        "stream": false
+      }
+    ]
+  },
+  "tools.chainsaw.ChainsawStop": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "ChainsawStop",
+        "stream": false
+      }
+    ]
+  },
+  "tools.chainsaw.ChainsawUseOne": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "ChainsawUseOne",
+        "stream": false
+      }
+    ]
+  },
+  "tools.chainsaw.ChainsawUseTwo": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "ChainsawUseTwo",
+        "stream": false
+      }
+    ]
+  },
+  "tools.drill.DrillHard": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "DrillHard",
+        "stream": false
+      }
+    ]
+  },
+  "tools.drill.DrillSoft": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "DrillSoft",
+        "stream": false
+      }
+    ]
+  },
+  "tools.drill.DrillUseLoop": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "DrillUseLoop",
+        "stream": false
+      }
+    ]
+  },
+  "tools.jetpack.JetpackFire": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "JetpackFire",
+        "stream": false
+      }
+    ]
+  },
+  "tools.jetpack.JetpackLoop": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "JetpackLoop",
+        "stream": false
+      }
+    ]
+  },
+  "tools.mininglaser.MiningLaser": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "MiningLaser",
+        "stream": false
+      }
+    ]
+  },
+  "tools.mininglaser.MiningLaserExplosive": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "MiningLaserExplosive",
+        "stream": false
+      }
+    ]
+  },
+  "tools.mininglaser.MiningLaserLongRange": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "MiningLaserLongRange",
+        "stream": false
+      }
+    ]
+  },
+  "tools.mininglaser.MiningLaserLowFocus": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "MiningLaserLowFocus",
+        "stream": false
+      }
+    ]
+  },
+  "tools.mininglaser.MiningLaserScatter": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "MiningLaserScatter",
+        "stream": false
+      }
+    ]
+  },
+  "tools.nanosabre.NanosabreIdle": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "NanosabreIdle",
+        "stream": false
+      }
+    ]
+  },
+  "tools.nanosabre.NanosabrePowerup": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "NanosabrePowerup",
+        "stream": false
+      }
+    ]
+  },
+  "tools.nanosabre.NanosabreSwing1": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "NanosabreSwing1",
+        "stream": false
+      }
+    ]
+  },
+  "tools.nanosabre.NanosabreSwing2": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "NanosabreSwing2",
+        "stream": false
+      }
+    ]
+  },
+  "tools.nanosabre.NanosabreSwing3": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "NanosabreSwing3",
+        "stream": false
+      }
+    ]
+  },
+  "tools.quantumsuit.HelmetLoop": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "HelmetLoop",
+        "stream": false
+      }
+    ]
+  },
+  "tools.quantumsuit.QuantumsuitBoots": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "QuantumsuitBoots",
+        "stream": false
+      }
+    ]
+  }
 }
