@@ -206,8 +206,8 @@ public class GT_ModHandler {
     /**
      * @return the Value of this Stack, when burning inside a Furnace (200 = 1 Burn Process = 500 EU, max = 32767 (that is 81917.5 EU)), limited to Short because the vanilla Furnace otherwise can't handle it properly, stupid Mojang...
      */
-    public static short getFuelValue(ItemStack aStack) {
-        return (short) TileEntityFurnace.getItemBurnTime(aStack);
+    public static int getFuelValue(ItemStack aStack) {
+        return TileEntityFurnace.getItemBurnTime(aStack);
     }
 
     /**
