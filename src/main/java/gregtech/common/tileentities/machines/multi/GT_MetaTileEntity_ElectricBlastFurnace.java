@@ -142,7 +142,7 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
             return false;
         }
         addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 3, zDir), 11);
-
+        replaceDeprecatedCoils(aBaseMetaTileEntity);
         byte tUsedMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, 2, zDir);
         switch (tUsedMeta) {
             case 0:
@@ -230,5 +230,25 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
 
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
+    }
+
+    private void replaceDeprecatedCoils(IGregTechTileEntity aBaseMetaTileEntity) {
+        int x = aBaseMetaTileEntity.getXCoord() + ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
+        int y = (int) aBaseMetaTileEntity.getYCoord();
+        int z = aBaseMetaTileEntity.getZCoord() + ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+        int tUsedMeta;
+        for (int xPos = x - 1; xPos <= x + 1; xPos++) {
+            for (int zPos = z - 1; zPos <= z + 1; zPos++) {
+                if ((xPos == x) && (zPos == z)) {
+                    continue;
+                }
+                for (int yPos = y + 1; yPos <= y + 2; yPos++) {
+                    tUsedMeta = aBaseMetaTileEntity.getMetaID(xPos, yPos, zPos);
+                    if (tUsedMeta >= 12 && tUsedMeta <= 14 && aBaseMetaTileEntity.getBlock(xPos, yPos, zPos) == GregTech_API.sBlockCasings1) {
+                        aBaseMetaTileEntity.getWorld().setBlock(xPos, yPos, zPos, GregTech_API.sBlockCasings5, tUsedMeta - 12, 3);
+                    }
+                }
+            }
+        }
     }
 }
