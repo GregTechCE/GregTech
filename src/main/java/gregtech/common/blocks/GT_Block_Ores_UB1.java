@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -9,7 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
 public class GT_Block_Ores_UB1 extends GT_Block_Ores_Abstract {
-    Block aUBBlock = (Block) Block.blockRegistry.getObject("UndergroundBiomes:igneousStone");
+    Block aUBBlock = GameRegistry.findBlock("UndergroundBiomes", "igneousStone");
 
     public GT_Block_Ores_UB1() {
         super("gt.blockores.ub1", true, Material.rock);
