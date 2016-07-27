@@ -113,13 +113,13 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_MultiBlockBa
         int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
         int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
         int amount = 0;
+        replaceDeprecatedCoils(aBaseMetaTileEntity);
         if (xDir != 0) {
             for (int i = -1; i < 2; i++) {// xDirection
                 for (int j = -1; j < 2; j++) {// height
                     for (int h = -2; h < 3; h++) {
                         if (!(j == 0 && i == 0 && (h == -1 || h == 0 || h == 1))) {
                             if (h == 1 || h == -1) {
-                                IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, j, h + zDir);
                                 if (aBaseMetaTileEntity.getBlockOffset(xDir + i, j, h + zDir) != GregTech_API.sBlockCasings5) {
                                     return false;
                                 }
@@ -166,7 +166,6 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_MultiBlockBa
                     for (int h = -2; h < 3; h++) {
                         if (!(j == 0 && i == 0 && (h == -1 || h == 0 || h == 1))) {
                             if (h == 1 || h == -1) {
-                                IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + h, j, i + zDir);
                                 if (aBaseMetaTileEntity.getBlockOffset(xDir + h, j, i + zDir) != GregTech_API.sBlockCasings5) {
                                     return false;
                                 }
@@ -246,4 +245,25 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_MultiBlockBa
         return new GT_MetaTileEntity_OilCracker(this.mName);
     }
 
+    private void replaceDeprecatedCoils(IGregTechTileEntity aBaseMetaTileEntity) {
+        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
+        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+        int tX = aBaseMetaTileEntity.getXCoord() + xDir;
+        int tY = (int) aBaseMetaTileEntity.getYCoord();
+        int tZ = aBaseMetaTileEntity.getZCoord() + zDir;
+        for (int xPos = tX - 1; xPos <= tX + 1; xPos += (xDir != 0 ? 1 : 2)) {
+            for (int yPos = tY - 1; yPos <= tY + 1; yPos++) {
+                for (int zPos = tZ - 1; zPos <= tZ + 1; zPos += (xDir != 0 ? 2 : 1)) {
+                    if ((yPos == tY) && (xPos == tX || zPos == tZ)) {
+                        continue;
+                    }
+                    if (aBaseMetaTileEntity.getBlock(xPos, yPos, zPos) == GregTech_API.sBlockCasings1 &&
+                        aBaseMetaTileEntity.getMetaID(xPos, yPos, zPos) == 12)
+                    {
+                        aBaseMetaTileEntity.getWorld().setBlock(xPos, yPos, zPos, GregTech_API.sBlockCasings5, 0, 3);
+                    }
+                }
+            }
+        }
+    }
 }
