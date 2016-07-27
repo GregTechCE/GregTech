@@ -197,18 +197,20 @@ public class GT_MetaTileEntity_MultiFurnace
     }
 
     private void replaceDeprecatedCoils(IGregTechTileEntity aBaseMetaTileEntity) {
-        int x = aBaseMetaTileEntity.getXCoord() + ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-        int y = (int) aBaseMetaTileEntity.getYCoord();
-        int z = aBaseMetaTileEntity.getZCoord() + ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
+        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+        int tX = aBaseMetaTileEntity.getXCoord() + xDir;
+        int tY = (int) aBaseMetaTileEntity.getYCoord();
+        int tZ = aBaseMetaTileEntity.getZCoord() + zDir;
         int tUsedMeta;
-        for (int xPos = x - 1; xPos <= x + 1; xPos++) {
-            for (int zPos = z - 1; zPos <= z + 1; zPos++) {
-                if ((xPos == x) && (zPos == z)) {
+        for (int xPos = tX - 1; xPos <= tX + 1; xPos++) {
+            for (int zPos = tZ - 1; zPos <= tZ + 1; zPos++) {
+                if ((xPos == tX) && (zPos == tZ)) {
                     continue;
                 }
-                tUsedMeta = aBaseMetaTileEntity.getMetaID(xPos, y + 1, zPos);
-                if (tUsedMeta >= 12 && tUsedMeta <= 14 && aBaseMetaTileEntity.getBlock(xPos, y + 1, zPos) == GregTech_API.sBlockCasings1) {
-                    aBaseMetaTileEntity.getWorld().setBlock(xPos, y + 1, zPos, GregTech_API.sBlockCasings5, tUsedMeta - 12, 3);
+                tUsedMeta = aBaseMetaTileEntity.getMetaID(xPos, tY + 1, zPos);
+                if (tUsedMeta >= 12 && tUsedMeta <= 14 && aBaseMetaTileEntity.getBlock(xPos, tY + 1, zPos) == GregTech_API.sBlockCasings1) {
+                    aBaseMetaTileEntity.getWorld().setBlock(xPos, tY + 1, zPos, GregTech_API.sBlockCasings5, tUsedMeta - 12, 3);
                 }
             }
         }

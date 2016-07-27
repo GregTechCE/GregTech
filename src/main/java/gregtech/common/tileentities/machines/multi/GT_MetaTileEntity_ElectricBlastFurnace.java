@@ -233,16 +233,18 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
     }
 
     private void replaceDeprecatedCoils(IGregTechTileEntity aBaseMetaTileEntity) {
-        int x = aBaseMetaTileEntity.getXCoord() + ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-        int y = (int) aBaseMetaTileEntity.getYCoord();
-        int z = aBaseMetaTileEntity.getZCoord() + ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
+        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+        int tX = aBaseMetaTileEntity.getXCoord() + xDir;
+        int tY = (int) aBaseMetaTileEntity.getYCoord();
+        int tZ = aBaseMetaTileEntity.getZCoord() + zDir;
         int tUsedMeta;
-        for (int xPos = x - 1; xPos <= x + 1; xPos++) {
-            for (int zPos = z - 1; zPos <= z + 1; zPos++) {
-                if ((xPos == x) && (zPos == z)) {
+        for (int xPos = tX - 1; xPos <= tX + 1; xPos++) {
+            for (int zPos = tZ - 1; zPos <= tZ + 1; zPos++) {
+                if ((xPos == tX) && (zPos == tZ)) {
                     continue;
                 }
-                for (int yPos = y + 1; yPos <= y + 2; yPos++) {
+                for (int yPos = tY + 1; yPos <= tY + 2; yPos++) {
                     tUsedMeta = aBaseMetaTileEntity.getMetaID(xPos, yPos, zPos);
                     if (tUsedMeta >= 12 && tUsedMeta <= 14 && aBaseMetaTileEntity.getBlock(xPos, yPos, zPos) == GregTech_API.sBlockCasings1) {
                         aBaseMetaTileEntity.getWorld().setBlock(xPos, yPos, zPos, GregTech_API.sBlockCasings5, tUsedMeta - 12, 3);
