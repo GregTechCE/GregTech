@@ -51,14 +51,20 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
         aMetaData += isSmallOre ? 16000 : 0;
         if ((aMetaData > 0) && ((tBlock != Blocks.air) || air)) {
             if (BlockName.equals("tile.igneousStone")) {
-                tOreBlock = GregTech_API.sBlockOresUb1;
-                aMetaData += (BlockMeta * 1000);
+                if (GregTech_API.sBlockOresUb1 != null) {
+                    tOreBlock = GregTech_API.sBlockOresUb1;
+                    aMetaData += (BlockMeta * 1000);
+                }
             } else if (BlockName.equals("tile.metamorphicStone")) {
-                tOreBlock = GregTech_API.sBlockOresUb2;
-                aMetaData += (BlockMeta * 1000);
+                if (GregTech_API.sBlockOresUb2 != null) {
+                    tOreBlock = GregTech_API.sBlockOresUb2;
+                    aMetaData += (BlockMeta * 1000);
+                }
             } else if (BlockName.equals("tile.sedimentaryStone")) {
-                tOreBlock = GregTech_API.sBlockOresUb3;
-                aMetaData += (BlockMeta * 1000);
+                if (GregTech_API.sBlockOresUb3 != null) {
+                    tOreBlock = GregTech_API.sBlockOresUb3;
+                    aMetaData += (BlockMeta * 1000);
+                }
             } else if (tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.netherrack)) {
                 aMetaData += 1000;
             } else if (tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.end_stone)) {
