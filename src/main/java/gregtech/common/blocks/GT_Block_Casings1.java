@@ -28,9 +28,9 @@ public class GT_Block_Casings1
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "MAX Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Bronze Plated Bricks");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Heat Proof Machine Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Cupronickel Coil Block");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Kanthal Coil Block");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Nichrome Coil Block");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Cupronickel Coil Block (Deprecated)");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Kanthal Coil Block (Deprecated)");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Nichrome Coil Block (Deprecated)");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Superconducting Coil Block");
         ItemList.Casing_ULV.set(new ItemStack(this, 1, 0));
         ItemList.Casing_LV.set(new ItemStack(this, 1, 1));
@@ -44,9 +44,9 @@ public class GT_Block_Casings1
         ItemList.Casing_MAX.set(new ItemStack(this, 1, 9));
         ItemList.Casing_BronzePlatedBricks.set(new ItemStack(this, 1, 10));
         ItemList.Casing_HeatProof.set(new ItemStack(this, 1, 11));
-        ItemList.Casing_Coil_Cupronickel.set(new ItemStack(this, 1, 12));
-        ItemList.Casing_Coil_Kanthal.set(new ItemStack(this, 1, 13));
-        ItemList.Casing_Coil_Nichrome.set(new ItemStack(this, 1, 14));
+        ItemList.Casing_Coil_Cupronickel_Deprecated.set(new ItemStack(this, 1, 12));
+        ItemList.Casing_Coil_Kanthal_Deprecated.set(new ItemStack(this, 1, 13));
+        ItemList.Casing_Coil_Nichrome_Deprecated.set(new ItemStack(this, 1, 14));
         ItemList.Casing_Coil_Superconductor.set(new ItemStack(this, 1, 15));
     }
 
@@ -58,11 +58,11 @@ public class GT_Block_Casings1
                 case 11:
                     return Textures.BlockIcons.MACHINE_HEATPROOFCASING.getIcon();
                 case 12:
-                    return Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL.getIcon();
+                    return Textures.BlockIcons.RENDERING_ERROR.getIcon();
                 case 13:
-                    return Textures.BlockIcons.MACHINE_COIL_KANTHAL.getIcon();
+                    return Textures.BlockIcons.RENDERING_ERROR.getIcon();
                 case 14:
-                    return Textures.BlockIcons.MACHINE_COIL_NICHROME.getIcon();
+                    return Textures.BlockIcons.RENDERING_ERROR.getIcon();
                 case 15:
                     return Textures.BlockIcons.MACHINE_COIL_SUPERCONDUCTOR.getIcon();
             }
