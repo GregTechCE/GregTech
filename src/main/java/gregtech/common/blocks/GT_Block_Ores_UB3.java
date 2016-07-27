@@ -1,6 +1,5 @@
 package gregtech.common.blocks;
 
-import exterminatorJeff.undergroundBiomes.common.UndergroundBiomes;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -10,6 +9,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
 public class GT_Block_Ores_UB3 extends GT_Block_Ores_Abstract {
+    Block aUBBlock = (Block) Block.blockRegistry.getObject("UndergroundBiomes:sedimentaryStone");
+
     public GT_Block_Ores_UB3() {
         super("gt.blockores.ub3", true, Material.rock);
     }
@@ -36,6 +37,6 @@ public class GT_Block_Ores_UB3 extends GT_Block_Ores_Abstract {
 
     @Override
     public ITexture[] getTextureSet() { //Must have 16 entries.
-        return new ITexture[]{new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 0), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 1), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 2), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 3), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 4), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 5), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 6), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 7), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 0), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 1), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 2), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 3), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 4), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 5), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 6), new GT_CopiedBlockTexture(UndergroundBiomes.sedimentaryStone, 0, 7)};
+        return new ITexture[]{new GT_CopiedBlockTexture(aUBBlock, 0, 0), new GT_CopiedBlockTexture(aUBBlock, 0, 1), new GT_CopiedBlockTexture(aUBBlock, 0, 2), new GT_CopiedBlockTexture(aUBBlock, 0, 3), new GT_CopiedBlockTexture(aUBBlock, 0, 4), new GT_CopiedBlockTexture(aUBBlock, 0, 5), new GT_CopiedBlockTexture(aUBBlock, 0, 6), new GT_CopiedBlockTexture(aUBBlock, 0, 7), new GT_CopiedBlockTexture(aUBBlock, 0, 0), new GT_CopiedBlockTexture(aUBBlock, 0, 1), new GT_CopiedBlockTexture(aUBBlock, 0, 2), new GT_CopiedBlockTexture(aUBBlock, 0, 3), new GT_CopiedBlockTexture(aUBBlock, 0, 4), new GT_CopiedBlockTexture(aUBBlock, 0, 5), new GT_CopiedBlockTexture(aUBBlock, 0, 6), new GT_CopiedBlockTexture(aUBBlock, 0, 7)};
     }
 }
