@@ -9,6 +9,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
@@ -208,7 +209,7 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
             aFortune = 0;
         }
         if (aMaterial != null) {
-            Random tRandom = new Random(this.xCoord ^ this.yCoord ^ this.zCoord);
+            Random tRandom = new XSTR(this.xCoord ^ this.yCoord ^ this.zCoord);
             ArrayList<ItemStack> tSelector = new ArrayList();
 
 
