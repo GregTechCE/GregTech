@@ -52,7 +52,7 @@ public class GT_Worldgen_GT_Ore_Layer
         this.mSecondaryMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "OreSecondaryLayer", aSecondary.mMetaItemSubID));
         this.mBetweenMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "OreSporadiclyInbetween", aBetween.mMetaItemSubID));
         this.mSporadicMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "OreSporaticlyAround", aSporadic.mMetaItemSubID));
-        this.mRestrictBiome = GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "mRestrictToBiomeName", "None");
+        this.mRestrictBiome = GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "RestrictToBiomeName", "None");
         if (this.mEnabled) {
             GT_Achievements.registerOre(GregTech_API.sGeneratedMaterials[(mPrimaryMeta % 1000)], aMinY, aMaxY, aWeight, aOverworld, aNether, aEnd);
             GT_Achievements.registerOre(GregTech_API.sGeneratedMaterials[(mSecondaryMeta % 1000)], aMinY, aMaxY, aWeight, aOverworld, aNether, aEnd);

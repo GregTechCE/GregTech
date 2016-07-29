@@ -21,8 +21,8 @@ import java.util.Random;
 
 public class GT_Worldgenerator
         implements IWorldGenerator {
-    private static int mEndAsteroidProbability = 50;
-    private static int mGCAsteroidProbability = 300;
+    private static int mEndAsteroidProbability = 300;
+    private static int mGCAsteroidProbability = 50;
     private static int mSize = 100;
     private static int endMinSize = 50;
     private static int endMaxSize = 200;
