@@ -206,7 +206,12 @@ public class GT_Worldgenerator
                                                     if (tDimensionType == -1) {
                                                         mWorld.setBlock(eX, eY, eZ, Blocks.end_stone, 0, 0);
                                                     } else if (tDimensionType == -30) {
-                                                        mWorld.setBlock(eX, eY, eZ, GregTech_API.sBlockGranites, 8, 3);
+                                                        //int asteroidType = aRandom.nextInt(20);
+                                                        //if (asteroidType == 19) { //Rare Asteroid?
+                                                            //mWorld.setBlock(eX, eY, eZ, GregTech_API.sBlockGranites, 8, 3);
+                                                        //} else {
+                                                            mWorld.setBlock(eX, eY, eZ, GregTech_API.sBlockGranites, 8, 3);
+                                                        //}
                                                     }
                                                 }
                                             }
