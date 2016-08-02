@@ -66,7 +66,7 @@ public class GT_Worldgen_GT_Ore_Layer
         if (!this.mRestrictBiome.equals("None") && !(this.mRestrictBiome.equals(aBiome))) {
             return false; //Not the correct biome for ore mix
         }
-        if (!isGenerationAllowed(aWorld, aDimensionType, ((aDimensionType == -1) && (this.mNether)) || ((aDimensionType == 0) && (this.mOverworld)) || ((aDimensionType == 1) && (this.mEnd)) || ((aDimensionType == -28) && (this.mMoon)) || ((aDimensionType == -29) && (this.mMars)) ? aDimensionType : aDimensionType ^ 0xFFFFFFFF)) {
+        if (!isGenerationAllowed(aWorld, aDimensionType, ((aDimensionType == -1) && (this.mNether)) || ((aDimensionType == 0) && (this.mOverworld)) || ((aDimensionType == 1) && (this.mEnd)) || ((aWorld.provider.getDimensionName().equals("Moon")) && (this.mMoon)) || ((aWorld.provider.getDimensionName().equals("Mars")) && (this.mMars)) ? aDimensionType : aDimensionType ^ 0xFFFFFFFF)) {
             return false;
         }
         int tMinY = this.mMinY + aRandom.nextInt(this.mMaxY - this.mMinY - 5);
