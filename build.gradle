@@ -1,22 +1,16 @@
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
     }
 }
-
-apply plugin: 'forge'
-apply plugin: 'idea'
+apply plugin: 'net.minecraftforge.gradle.forge'
 
 file "build.properties" withReader {
     def prop = new Properties()
@@ -30,6 +24,7 @@ archivesBaseName = "gregtech"
 
 minecraft {
     version = "${config.minecraft.version}-${config.forge.version}"
+	mappings = "snapshot_20160518"
     runDir = "run"
 }
 
@@ -123,12 +118,12 @@ processResources
     }
 }
 
-task sourceJar(type: Jar) {
+task source(type: Jar) {
     from sourceSets.main.allSource
     classifier = 'sources'
 }
 
-task devJar(type: Jar) {
+task dev(type: Jar) {
     from sourceSets.main.output
     classifier = 'dev'
     manifest {
@@ -138,5 +133,6 @@ task devJar(type: Jar) {
 }
 
 artifacts {
-    archives devJar
+    archives dev
+	archives source
 }
