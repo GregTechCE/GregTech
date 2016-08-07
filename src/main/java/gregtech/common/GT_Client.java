@@ -6,9 +6,9 @@
 package gregtech.common;
 
 import codechicken.lib.vec.Rotation;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
@@ -334,8 +334,8 @@ public class GT_Client extends GT_Proxy
     }
 
     @SubscribeEvent
-    public void onClientTickEvent(cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent aEvent) {
-        if (aEvent.phase == cpw.mods.fml.common.gameevent.TickEvent.Phase.END) {
+    public void onClientTickEvent(net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent aEvent) {
+        if (aEvent.phase == net.minecraftforge.fml.common.gameevent.TickEvent.Phase.END) {
             mAnimationTick++;
             if (mAnimationTick % 50L == 0L)
                 mAnimationDirection = !mAnimationDirection;

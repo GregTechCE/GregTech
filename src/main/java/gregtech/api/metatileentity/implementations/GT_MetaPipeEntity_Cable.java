@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity.implementations;
 
-import cofh.api.energy.IEnergyReceiver;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
@@ -23,10 +22,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -102,7 +101,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
         if (!mCanShock) return super.getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
-        return AxisAlignedBB.getBoundingBox(aX + 0.125D, aY + 0.125D, aZ + 0.125D, aX + 0.875D, aY + 0.875D, aZ + 0.875D);
+        return new AxisAlignedBB(aX + 0.125D, aY + 0.125D, aZ + 0.125D, aX + 0.875D, aY + 0.875D, aZ + 0.875D);
     }
 
     @Override
@@ -163,18 +162,18 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
                             rUsedAmperes += ((IEnergyConnected) tTileEntity).injectEnergyUnits(GT_Utility.getOppositeSide(i), aVoltage, aAmperage - rUsedAmperes);
                         }
 //        		} else if (tTileEntity instanceof IEnergySink) {
-//            		ForgeDirection tDirection = ForgeDirection.getOrientation(i).getOpposite();
+//            		EnumFacing tDirection = EnumFacing.getOrientation(i).getOpposite();
 //            		if (((IEnergySink)tTileEntity).acceptsEnergyFrom((TileEntity)getBaseMetaTileEntity(), tDirection)) {
 //            			if (((IEnergySink)tTileEntity).demandedEnergyUnits() > 0 && ((IEnergySink)tTileEntity).injectEnergyUnits(tDirection, aVoltage) < aVoltage) rUsedAmperes++;
 //            		}
                     } else if (tTileEntity instanceof IEnergySink) {
-                        ForgeDirection tDirection = ForgeDirection.getOrientation(i).getOpposite();
-                        if (((IEnergySink) tTileEntity).acceptsEnergyFrom((TileEntity) getBaseMetaTileEntity(), tDirection)) {
+                        EnumFacing tDirection = EnumFacing.VALUES[i].getOpposite();
+                        if (((IEnergySink) tTileEntity).acceptsEnergyFrom(getBaseMetaTileEntity(), tDirection)) {
                             if (((IEnergySink) tTileEntity).getDemandedEnergy() > 0 && ((IEnergySink) tTileEntity).injectEnergy(tDirection, aVoltage, aVoltage) < aVoltage)
                                 rUsedAmperes++;
                         }
-                    } else if (GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver) {
-                        ForgeDirection tDirection = ForgeDirection.getOrientation(i).getOpposite();
+                    } /*else if (GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver) {
+                        EnumFacing tDirection = EnumFacing.getOrientation(i).getOpposite();
                         int rfOut = (int) (aVoltage * GregTech_API.mEUtoRF / 100);
                         if (((IEnergyReceiver) tTileEntity).receiveEnergy(tDirection, rfOut, true) == rfOut) {
                             ((IEnergyReceiver) tTileEntity).receiveEnergy(tDirection, rfOut, false);
@@ -192,7 +191,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
                         if (GregTech_API.mRFExplosions && ((IEnergyReceiver) tTileEntity).getMaxEnergyStored(tDirection) < rfOut * 600) {
                             if (rfOut > 32 * GregTech_API.mEUtoRF / 100) this.doExplosion(rfOut);
                         }
-                    }
+                    }*/
                 }
             }
         mTransferredAmperage += rUsedAmperes;
@@ -235,16 +234,17 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
                                 continue;
                             }
                         }
-                        if (tTileEntity instanceof IEnergySink && ((IEnergySink) tTileEntity).acceptsEnergyFrom((TileEntity) aBaseMetaTileEntity, ForgeDirection.getOrientation(j))) {
+                        if (tTileEntity instanceof IEnergySink && ((IEnergySink) tTileEntity).acceptsEnergyFrom(aBaseMetaTileEntity, EnumFacing.VALUES[j])) {
                             mConnections |= (1 << i);
-                            continue;
                         }
-                        if (GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver && ((IEnergyReceiver) tTileEntity).canConnectEnergy(ForgeDirection.getOrientation(j))) {
-                            mConnections |= (1 << i);
-                            continue;
-                        }
+                        
+                        //if (GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver && ((IEnergyReceiver) tTileEntity).canConnectEnergy(EnumFacing.getOrientation(j))) {
+                        //    mConnections |= (1 << i);
+                        //    continue;
+                        //}
                         /*
-					    if (tTileEntity instanceof IEnergyEmitter && ((IEnergyEmitter)tTileEntity).emitsEnergyTo((TileEntity)aBaseMetaTileEntity, ForgeDirection.getOrientation(j))) {
+                        
+					    if (tTileEntity instanceof IEnergyEmitter && ((IEnergyEmitter)tTileEntity).emitsEnergyTo((TileEntity)aBaseMetaTileEntity, EnumFacing.getOrientation(j))) {
 				    		mConnections |= (1<<i);
 				    		continue;
 					    }*/
@@ -267,9 +267,9 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     @Override
     public String[] getDescription() {
         return new String[]{
-                "Max Voltage: " + EnumChatFormatting.GREEN + mVoltage + " (" + VN[GT_Utility.getTier(mVoltage)] + ")" + EnumChatFormatting.GRAY,
-                "Max Amperage: " + EnumChatFormatting.YELLOW + mAmperage + EnumChatFormatting.GRAY,
-                "Loss/Meter/Ampere: " + EnumChatFormatting.RED + mCableLossPerMeter + EnumChatFormatting.GRAY + " EU-Volt"
+                "Max Voltage: " + TextFormatting.GREEN + mVoltage + " (" + VN[GT_Utility.getTier(mVoltage)] + ")" + TextFormatting.GRAY,
+                "Max Amperage: " + TextFormatting.YELLOW + mAmperage + TextFormatting.GRAY,
+                "Loss/Meter/Ampere: " + TextFormatting.RED + mCableLossPerMeter + TextFormatting.GRAY + " EU-Volt"
         };
     }
 

@@ -1,7 +1,7 @@
 package gregtech.common.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDebugableBlock;
@@ -208,7 +208,6 @@ public class GT_Block_Machines
     public void registerBlockIcons(IIconRegister aIconRegister) {
         if (GregTech_API.sPostloadFinished) {
             GT_Log.out.println("GT_Mod: Setting up Icon Register for Blocks");
-            GregTech_API.sBlockIcons = aIconRegister;
 
             GT_Log.out.println("GT_Mod: Registering MetaTileEntity specific Textures");
             for (IMetaTileEntity tMetaTileEntity : GregTech_API.METATILEENTITIES) {

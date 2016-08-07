@@ -1,9 +1,18 @@
 package gregtech.api.items;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.common.render.newrenderer.IIconProvider;
+import gregtech.common.render.newrenderer.IIconRegister;
+import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Optional;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -18,19 +27,17 @@ import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import squeek.applecore.api.food.FoodValues;
-import squeek.applecore.api.food.IEdible;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 import static gregtech.api.enums.GT_Values.*;
 
@@ -46,8 +53,7 @@ import static gregtech.api.enums.GT_Values.*;
  *         <p/>
  *         These Items can also have special RightClick abilities, electric Charge or even be set to become a Food alike Item.
  */
-@Optional.Interface(iface = "squeek.applecore.api.food.IEdible", modid = MOD_ID_APC)
-public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements IEdible {
+public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements IIconProvider, IIconRegister, IItemColor {
     /**
      * All instances of this Item Class are listed here.
      * This gets used to register the Renderer to all Items of this Type, if useStandardMetaItemRenderer() returns true.
@@ -61,7 +67,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
     public final short mOffset, mItemAmount;
     public final BitSet mEnabledItems;
     public final BitSet mVisibleItems;
-    public final IIcon[][] mIconList;
+    public final TextureAtlasSprite[][] mIconList;
 
     public final HashMap<Short, IFoodStat> mFoodStats = new HashMap<Short, IFoodStat>();
     public final HashMap<Short, Long[]> mElectricStats = new HashMap<Short, Long[]>();
@@ -83,7 +89,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
 
         mOffset = (short) Math.min(32766, aOffset);
         mItemAmount = (short) Math.min(aItemAmount, 32766 - mOffset);
-        mIconList = new IIcon[aItemAmount][1];
+        mIconList = new TextureAtlasSprite[aItemAmount][1];
 
         sInstances.put(getUnlocalizedName(), this);
     }
@@ -116,7 +122,6 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
                     }
                     if (tRandomData == SubTag.NO_UNIFICATION) {
                         GT_OreDictUnificator.addToBlacklist(rStack);
-                        continue;
                     }
                 }
             // now check for the rest
@@ -125,7 +130,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
                     boolean tUseOreDict = true;
                     if (tRandomData instanceof IFoodStat) {
                         setFoodBehavior(mOffset + aID, (IFoodStat) tRandomData);
-                        if (((IFoodStat) tRandomData).getFoodAction(this, rStack) == EnumAction.eat) {
+                        if (((IFoodStat) tRandomData).getFoodAction(this, rStack) == EnumAction.EAT) {
                             int tFoodValue = ((IFoodStat) tRandomData).getFoodLevel(this, rStack, null);
                             if (tFoodValue > 0)
                                 RA.addCannerRecipe(rStack, ItemList.IC2_Food_Can_Empty.get(tFoodValue), ((IFoodStat) tRandomData).isRotten(this, rStack, null) ? ItemList.IC2_Food_Can_Spoiled.get(tFoodValue) : ItemList.IC2_Food_Can_Filled.get(tFoodValue), null, tFoodValue * 100, 1);
@@ -155,7 +160,6 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
                     }
                     if (tUseOreDict) {
                         GT_OreDictUnificator.registerOre(tRandomData, rStack);
-                        continue;
                     }
                 }
             if (GregTech_API.sThaumcraftCompat != null)
@@ -233,11 +237,10 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
         return this;
     }
 
-    /**
-     * @return if this MetaGenerated Item should use my Default Renderer System.
-     */
-    public boolean useStandardMetaItemRenderer() {
-        return true;
+    @Override
+    public int getColorFromItemstack(ItemStack stack, int tintIndex) {
+        short[] rgba = getRGBa(stack);
+        return new Color(rgba[0], rgba[1], rgba[2], rgba[3]).getRGB();
     }
 
     /**
@@ -250,18 +253,36 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
     /**
      * @return the Icon the Material is going to be rendered with.
      */
-    public IIconContainer getIconContainer(int aMetaData) {
-        return null;
+    public IIconContainer getIconContainer(final int aMetaData) {
+        return new IIconContainer() {
+            @Override
+            public TextureAtlasSprite getIcon() {
+                return mIconList[aMetaData][0];
+            }
+
+            @Override
+            public TextureAtlasSprite getOverlayIcon() {
+                if(mIconList[aMetaData].length > 1) {
+                    return mIconList[aMetaData][1];
+                }
+                return null;
+            }
+        };
     }
-	
-	/* ---------- INTERNAL OVERRIDES ---------- */
 
     @Override
-    public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
+    public IIconContainer getIconContainer(ItemStack itemStack) {
+        return getIconContainer(itemStack.getItemDamage());
+    }
+
+    /* ---------- INTERNAL OVERRIDES ---------- */
+
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer, EnumHand hand) {
         IFoodStat tStat = mFoodStats.get((short) getDamage(aStack));
         if (tStat != null && aPlayer.canEat(tStat.alwaysEdible(this, aStack, aPlayer)))
-            aPlayer.setItemInUse(aStack, 32);
-        return super.onItemRightClick(aStack, aWorld, aPlayer);
+            return ActionResult.newResult(EnumActionResult.PASS, aStack);
+        return super.onItemRightClick(aStack, aWorld, aPlayer, hand);
     }
 
     @Override
@@ -272,33 +293,24 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
     @Override
     public EnumAction getItemUseAction(ItemStack aStack) {
         IFoodStat tStat = mFoodStats.get((short) getDamage(aStack));
-        return tStat == null ? EnumAction.none : tStat.getFoodAction(this, aStack);
+        return tStat == null ? EnumAction.NONE : tStat.getFoodAction(this, aStack);
     }
 
-    @Override
-    public final ItemStack onEaten(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
+
+
+    /*@Override
+    public final ItemStack onEaten(ItemStack aStack, World aWorld, EntityPlayer aPlayer, EnumHand hand) {
         IFoodStat tStat = mFoodStats.get((short) getDamage(aStack));
         if (tStat != null) {
-            if (Loader.isModLoaded(MOD_ID_APC)) {
-                aPlayer.getFoodStats().func_151686_a((ItemFood) GT_Utility.callConstructor("squeek.applecore.api.food.ItemFoodProxy.ItemFoodProxy", 0, null, true, this), aStack);
-            } else {
-                aPlayer.getFoodStats().addStats(tStat.getFoodLevel(this, aStack, aPlayer), tStat.getSaturation(this, aStack, aPlayer));
-            }
+            aPlayer.getFoodStats().addStats(tStat.getFoodLevel(this, aStack, aPlayer), tStat.getSaturation(this, aStack, aPlayer));
             tStat.onEaten(this, aStack, aPlayer);
         }
         return aStack;
-    }
-
-    @Override
-    @Optional.Method(modid = MOD_ID_APC)
-    public FoodValues getFoodValues(ItemStack aStack) {
-        IFoodStat tStat = mFoodStats.get((short) getDamage(aStack));
-        return tStat == null ? null : new FoodValues(tStat.getFoodLevel(this, aStack, null), tStat.getSaturation(this, aStack, null));
-    }
+    }*/
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
+    public void getSubItems(Item var1, CreativeTabs aCreativeTab, List<ItemStack> aList) {
         for (int i = 0, j = mEnabledItems.length(); i < j; i++)
             if (mVisibleItems.get(i) || (D1 && mEnabledItems.get(i))) {
                 Long[] tStats = mElectricStats.get((short) (mOffset + i));
@@ -318,13 +330,13 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
 
     @Override
     @SideOnly(Side.CLIENT)
-    public final void registerIcons(IIconRegister aIconRegister) {
+    public final void registerIcons(TextureMap aIconRegister) {
         for (short i = 0, j = (short) mEnabledItems.length(); i < j; i++)
             if (mEnabledItems.get(i)) {
                 for (byte k = 1; k < mIconList[i].length; k++) {
-                    mIconList[i][k] = aIconRegister.registerIcon(RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i + "/" + k));
+                    mIconList[i][k] = aIconRegister.registerSprite(new ResourceLocation(RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i + "/" + k)));
                 }
-                mIconList[i][0] = aIconRegister.registerIcon(RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i));
+                mIconList[i][0] = aIconRegister.registerSprite(new ResourceLocation(RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i)));
             }
     }
 

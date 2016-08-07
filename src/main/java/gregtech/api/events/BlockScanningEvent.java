@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 
 import java.util.ArrayList;
 
-@cpw.mods.fml.common.eventhandler.Cancelable
+@net.minecraftforge.fml.common.eventhandler.Cancelable
 public class BlockScanningEvent extends net.minecraftforge.event.world.WorldEvent {
 
     public final EntityPlayer mPlayer;

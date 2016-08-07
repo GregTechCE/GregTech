@@ -1,11 +1,5 @@
 package gregtech.api.items;
 
-import buildcraft.api.tools.IToolWrench;
-import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.api.tool.ITool;
-import forestry.api.arboriculture.IToolGrafter;
 import gregtech.api.GregTech_API;
 import gregtech.api.enchants.Enchantment_Radioactivity;
 import gregtech.api.enums.Materials;
@@ -16,9 +10,9 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import mods.railcraft.api.core.items.IToolCrowbar;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -28,6 +22,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -35,12 +30,17 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.stats.StatList;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,15 +48,12 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_FR;
-import static gregtech.api.enums.GT_Values.MOD_ID_RC;
-
 /**
  * This is an example on how you can create a Tool ItemStack, in this case a Bismuth Wrench:
  * GT_MetaGenerated_Tool.sInstances.get("gt.metatool.01").getToolWithStats(16, 1, Materials.Bismuth, Materials.Bismuth, null);
  */
-@Optional.InterfaceList(value = {@Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = MOD_ID_FR), @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = MOD_ID_RC), @Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = "BuildCraft"), @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = "EnderIO")})
-public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements IDamagableItem, IToolGrafter, IToolCrowbar, IToolWrench, ITool {
+//@Optional.InterfaceList(value = {@Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = MOD_ID_FR), @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = MOD_ID_RC), @Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = "BuildCraft"), @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = "EnderIO")})
+public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements IDamagableItem {//, IToolGrafter, IToolCrowbar, IToolWrench, ITool {
     /**
      * All instances of this Item Class are listed here.
      * This gets used to register the Renderer to all Items of this Type, if useStandardMetaItemRenderer() returns true.
@@ -209,40 +206,43 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
      */
     public void onHarvestBlockEvent(ArrayList<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX, int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         IToolStats tStats = getToolStats(aStack);
-        if (isItemStackUsable(aStack) && getDigSpeed(aStack, aBlock, aMetaData) > 0.0F)
+        if (isItemStackUsable(aStack) && getStrVsBlock(aStack, aBlock.getStateFromMeta(aMetaData)) > 0.0F)
             doDamage(aStack, tStats.convertBlockDrops(aDrops, aStack, aPlayer, aBlock, aX, aY, aZ, aMetaData, aFortune, aSilkTouch, aEvent) * tStats.getToolDamagePerDropConversion());
     }
     
     @Override
-    public boolean onBlockStartBreak(ItemStack aStack, int aX, int aY, int aZ, EntityPlayer aPlayer)
-    {
+    public boolean onBlockStartBreak(ItemStack aStack, BlockPos blockPos, EntityPlayer aPlayer) {
     	if(aPlayer.worldObj.isRemote){
     		return false;
     	}
     	IToolStats tStats = getToolStats(aStack);
-      Block aBlock = aPlayer.worldObj.getBlock(aX, aY, aZ);
+      IBlockState aBlock = aPlayer.worldObj.getBlockState(blockPos);
       if (tStats.isChainsaw()&&(aBlock instanceof IShearable))
       {
         IShearable target = (IShearable)aBlock;
-        if ((target.isShearable(aStack, aPlayer.worldObj, aX, aY, aZ)))
+        if ((target.isShearable(aStack, aPlayer.worldObj, blockPos)))
         {
-          ArrayList<ItemStack> drops = target.onSheared(aStack, aPlayer.worldObj, aX, aY, aZ, EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, aStack));
+          List<ItemStack> drops = target.onSheared(aStack, aPlayer.worldObj, blockPos, EnchantmentHelper.getEnchantmentLevel(Enchantment.getEnchantmentByLocation("fortune"), aStack));
           for (ItemStack stack : drops)
           {
             float f = 0.7F;
             double d = itemRand.nextFloat() * f + (1.0F - f) * 0.5D;
             double d1 = itemRand.nextFloat() * f + (1.0F - f) * 0.5D;
             double d2 = itemRand.nextFloat() * f + (1.0F - f) * 0.5D;
-            EntityItem entityitem = new EntityItem(aPlayer.worldObj, aX + d, aY + d1, aZ + d2, stack);
-            entityitem.delayBeforeCanPickup = 10;
+            EntityItem entityitem = new EntityItem(aPlayer.worldObj,
+                    blockPos.getX() + d,
+                    blockPos.getY() + d1,
+                    blockPos.getZ() + d2,
+                    stack);
+            entityitem.setPickupDelay(10);
             aPlayer.worldObj.spawnEntityInWorld(entityitem);
           }
-          aPlayer.addStat(net.minecraft.stats.StatList.mineBlockStatArray[Block.getIdFromBlock(aBlock)], 1);
-          onBlockDestroyed(aStack, aPlayer.worldObj, aBlock, aX, aY, aZ, aPlayer);
+          //aPlayer.addStat(net.minecraft.stats.StatList.mine[Block.getIdFromBlock(aBlock.getBlock())], 1);
+          onBlockDestroyed(aStack, aPlayer.worldObj, aBlock, blockPos, aPlayer);
         }
         return false;
       }
-      return super.onBlockStartBreak(aStack, aX, aY, aZ, aPlayer);
+      return super.onBlockStartBreak(aStack, blockPos, aPlayer);
     }
 
     @Override
@@ -251,16 +251,21 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
         if (tStats == null || !isItemStackUsable(aStack)) return true;
         GT_Utility.doSoundAtClient(tStats.getEntityHitSound(), 1, 1.0F);
         if (super.onLeftClickEntity(aStack, aPlayer, aEntity)) return true;
-        if (aEntity.canAttackWithItem() && !aEntity.hitByEntity(aPlayer)) {
-            float tMagicDamage = tStats.getMagicDamageAgainstEntity(aEntity instanceof EntityLivingBase ? EnchantmentHelper.getEnchantmentModifierLiving(aPlayer, (EntityLivingBase) aEntity) : 0.0F, aEntity, aStack, aPlayer), tDamage = tStats.getNormalDamageAgainstEntity((float) aPlayer.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue() + getToolCombatDamage(aStack), aEntity, aStack, aPlayer);
+        if (aEntity.canBeAttackedWithItem() && !aEntity.hitByEntity(aPlayer)) {
+            float tMagicDamage = tStats.getMagicDamageAgainstEntity(aEntity instanceof EntityLivingBase ? EnchantmentHelper.getModifierForCreature(aStack, ((EntityLivingBase) aEntity).getCreatureAttribute()) : 0.0F, aEntity, aStack, aPlayer);
+            float tDamage = tStats.getNormalDamageAgainstEntity((float) aPlayer.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() + getToolCombatDamage(aStack), aEntity, aStack, aPlayer);
             if (tDamage + tMagicDamage > 0.0F) {
-                boolean tCriticalHit = aPlayer.fallDistance > 0.0F && !aPlayer.onGround && !aPlayer.isOnLadder() && !aPlayer.isInWater() && !aPlayer.isPotionActive(Potion.blindness) && aPlayer.ridingEntity == null && aEntity instanceof EntityLivingBase;
+                boolean tCriticalHit = aPlayer.fallDistance > 0.0F &&
+                        !aPlayer.onGround && !aPlayer.isOnLadder() &&
+                        !aPlayer.isInWater() &&
+                        !aPlayer.isPotionActive(Potion.getPotionFromResourceLocation("blindness")) &&
+                        aPlayer.getRidingEntity() == null && aEntity instanceof EntityLivingBase;
                 if (tCriticalHit && tDamage > 0.0F) tDamage *= 1.5F;
                 tDamage += tMagicDamage;
                 if (aEntity.attackEntityFrom(tStats.getDamageSource(aPlayer, aEntity), tDamage)) {
                     if (aEntity instanceof EntityLivingBase)
                         aEntity.setFire(EnchantmentHelper.getFireAspectModifier(aPlayer) * 4);
-                    int tKnockcack = (aPlayer.isSprinting() ? 1 : 0) + (aEntity instanceof EntityLivingBase ? EnchantmentHelper.getKnockbackModifier(aPlayer, (EntityLivingBase) aEntity) : 0);
+                    int tKnockcack = (aPlayer.isSprinting() ? 1 : 0) + (aEntity instanceof EntityLivingBase ? EnchantmentHelper.getKnockbackModifier((EntityLivingBase) aEntity) : 0);
                     if (tKnockcack > 0) {
                         aEntity.addVelocity(-MathHelper.sin(aPlayer.rotationYaw * (float) Math.PI / 180.0F) * tKnockcack * 0.5F, 0.1D, MathHelper.cos(aPlayer.rotationYaw * (float) Math.PI / 180.0F) * tKnockcack * 0.5F);
                         aPlayer.motionX *= 0.6D;
@@ -269,28 +274,30 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
                     }
                     if (tCriticalHit) aPlayer.onCriticalHit(aEntity);
                     if (tMagicDamage > 0.0F) aPlayer.onEnchantmentCritical(aEntity);
-                    if (tDamage >= 18.0F) aPlayer.triggerAchievement(AchievementList.overkill);
+                    if (tDamage >= 18.0F) aPlayer.addStat(AchievementList.OVERKILL);
                     aPlayer.setLastAttacker(aEntity);
+                    //if (aEntity instanceof EntityLivingBase)
+                    //    EnchantmentHelper.((EntityLivingBase) aEntity, aPlayer);
+                    //EnchantmentHelper.(aPlayer, aEntity);
                     if (aEntity instanceof EntityLivingBase)
-                        EnchantmentHelper.func_151384_a((EntityLivingBase) aEntity, aPlayer);
-                    EnchantmentHelper.func_151385_b(aPlayer, aEntity);
-                    if (aEntity instanceof EntityLivingBase)
-                        aPlayer.addStat(StatList.damageDealtStat, Math.round(tDamage * 10.0F));
+                        aPlayer.addStat(StatList.DAMAGE_DEALT, Math.round(tDamage * 10.0F));
                     aEntity.hurtResistantTime = Math.max(1, tStats.getHurtResistanceTime(aEntity.hurtResistantTime, aEntity));
                     aPlayer.addExhaustion(0.3F);
                     doDamage(aStack, tStats.getToolDamagePerEntityAttack());
                 }
             }
         }
-        if (aStack.stackSize <= 0) aPlayer.destroyCurrentEquippedItem();
+        if (aStack.stackSize <= 0) {
+            aPlayer.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, null);
+        }
         return true;
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
+    public ActionResult<ItemStack> onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer, EnumHand hand) {
         IToolStats tStats = getToolStats(aStack);
-        if (tStats != null && tStats.canBlock()) aPlayer.setItemInUse(aStack, 72000);
-        return super.onItemRightClick(aStack, aWorld, aPlayer);
+        if (tStats != null && tStats.canBlock()) return ActionResult.newResult(EnumActionResult.PASS, aStack);
+        return super.onItemRightClick(aStack, aWorld, aPlayer, hand);
     }
 
     @Override
@@ -301,13 +308,13 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
     @Override
     public final EnumAction getItemUseAction(ItemStack aStack) {
         IToolStats tStats = getToolStats(aStack);
-        if (tStats != null && tStats.canBlock()) return EnumAction.block;
-        return EnumAction.none;
+        if (tStats != null && tStats.canBlock()) return EnumAction.BLOCK;
+        return EnumAction.NONE;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public final void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
+    public final void getSubItems(Item var1, CreativeTabs aCreativeTab, List<ItemStack> aList) {
         for (int i = 0; i < 32766; i += 2)
             if (getToolStats(new ItemStack(this, 1, i)) != null) {
                 ItemStack tStack = new ItemStack(this, 1, i);
@@ -318,17 +325,10 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
 
     @Override
     @SideOnly(Side.CLIENT)
-    public final void registerIcons(IIconRegister aIconRegister) {
-        //
-    }
+    public final void registerIcons(TextureMap aIconRegister) {}
 
     @Override
-    public final IIcon getIconFromDamage(int aMetaData) {
-        return null;
-    }
-
-    @Override
-    public void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
+    public void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         long tMaxDamage = getToolMaxDamage(aStack);
         Materials tMaterial = getPrimaryMaterial(aStack);
         IToolStats tStats = getToolStats(aStack);
@@ -336,18 +336,18 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
         if (tStats != null) {
             String name = aStack.getUnlocalizedName();
             if (name.equals("gt.metatool.01.170") || name.equals("gt.metatool.01.172") || name.equals("gt.metatool.01.174") || name.equals("gt.metatool.01.176")) {
-                aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
-                aList.add(tOffset + 1, EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.YELLOW + " lvl " + getHarvestLevel(aStack, "") + EnumChatFormatting.GRAY);
-                aList.add(tOffset + 2, EnumChatFormatting.WHITE + "Turbine Efficency: " + EnumChatFormatting.BLUE + (50.0F + (10.0F * getToolCombatDamage(aStack))) + EnumChatFormatting.GRAY);
-                aList.add(tOffset + 3, EnumChatFormatting.WHITE + "Optimal Steam flow: " + EnumChatFormatting.LIGHT_PURPLE + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * 1000) + EnumChatFormatting.GRAY + "L/sec");
-                aList.add(tOffset + 3, EnumChatFormatting.WHITE + "Optimal Gas flow(EU burnvalue per tick): " + EnumChatFormatting.LIGHT_PURPLE + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * 50) + EnumChatFormatting.GRAY + "EU/t");
-                aList.add(tOffset + 3, EnumChatFormatting.WHITE + "Optimal Plasma flow(Plasma energyvalue per tick): " + EnumChatFormatting.LIGHT_PURPLE + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * 1000) + EnumChatFormatting.GRAY + "EU/t");
+                aList.add(tOffset, TextFormatting.WHITE + "Durability: " + TextFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + TextFormatting.GRAY);
+                aList.add(tOffset + 1, TextFormatting.WHITE + tMaterial.mDefaultLocalName + TextFormatting.YELLOW + " lvl " + getHarvestLevel(aStack, "") + TextFormatting.GRAY);
+                aList.add(tOffset + 2, TextFormatting.WHITE + "Turbine Efficency: " + TextFormatting.BLUE + (50.0F + (10.0F * getToolCombatDamage(aStack))) + TextFormatting.GRAY);
+                aList.add(tOffset + 3, TextFormatting.WHITE + "Optimal Steam flow: " + TextFormatting.LIGHT_PURPLE + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * 1000) + TextFormatting.GRAY + "L/sec");
+                aList.add(tOffset + 3, TextFormatting.WHITE + "Optimal Gas flow(EU burnvalue per tick): " + TextFormatting.LIGHT_PURPLE + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * 50) + TextFormatting.GRAY + "EU/t");
+                aList.add(tOffset + 3, TextFormatting.WHITE + "Optimal Plasma flow(Plasma energyvalue per tick): " + TextFormatting.LIGHT_PURPLE + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * 1000) + TextFormatting.GRAY + "EU/t");
 
             } else {
-                aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
-                aList.add(tOffset + 1, EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.YELLOW + " lvl " + getHarvestLevel(aStack, "") + EnumChatFormatting.GRAY);
-                aList.add(tOffset + 2, EnumChatFormatting.WHITE + "Attack Damage: " + EnumChatFormatting.BLUE + getToolCombatDamage(aStack) + EnumChatFormatting.GRAY);
-                aList.add(tOffset + 3, EnumChatFormatting.WHITE + "Mining Speed: " + EnumChatFormatting.LIGHT_PURPLE + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed) + EnumChatFormatting.GRAY);
+                aList.add(tOffset + 0, TextFormatting.WHITE + "Durability: " + TextFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + TextFormatting.GRAY);
+                aList.add(tOffset + 1, TextFormatting.WHITE + tMaterial.mDefaultLocalName + TextFormatting.YELLOW + " lvl " + getHarvestLevel(aStack, "") + TextFormatting.GRAY);
+                aList.add(tOffset + 2, TextFormatting.WHITE + "Attack Damage: " + TextFormatting.BLUE + getToolCombatDamage(aStack) + TextFormatting.GRAY);
+                aList.add(tOffset + 3, TextFormatting.WHITE + "Mining Speed: " + TextFormatting.LIGHT_PURPLE + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed) + TextFormatting.GRAY);
                 NBTTagCompound aNBT = aStack.getTagCompound();
                 if (aNBT != null) {
                     aNBT = aNBT.getCompoundTag("GT.ToolStats");
@@ -364,7 +364,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
                     		if(tHeat>-10000)aNBT.setInteger("Heat", tHeat);
                     	}
                     	
-                    	 aList.add(tOffset + 3, EnumChatFormatting.RED + "Heat: " + aNBT.getInteger("Heat")+" K" + EnumChatFormatting.GRAY);
+                    	 aList.add(tOffset + 3, TextFormatting.RED + "Heat: " + aNBT.getInteger("Heat")+" K" + TextFormatting.GRAY);
                     }
                 }
             }
@@ -432,16 +432,13 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
     }
 
     @Override
-    public float getDigSpeed(ItemStack aStack, Block aBlock, int aMetaData) {
+    public float getStrVsBlock(ItemStack aStack, IBlockState state) {
         if (!isItemStackUsable(aStack)) return 0.0F;
         IToolStats tStats = getToolStats(aStack);
-        if (tStats == null || Math.max(0, getHarvestLevel(aStack, "")) < aBlock.getHarvestLevel(aMetaData)) return 0.0F;
-        return tStats.isMinableBlock(aBlock, (byte) aMetaData) ? Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed) : 0.0F;
-    }
-
-    @Override
-    public final boolean canHarvestBlock(Block aBlock, ItemStack aStack) {
-        return getDigSpeed(aStack, aBlock, (byte) 0) > 0.0F;
+        if (tStats == null || Math.max(0, getHarvestLevel(aStack, "")) < state.getBlock().getHarvestLevel(state)) return 0.0F;
+        return tStats.isMinableBlock(state.getBlock(), (byte) state.getBlock().getMetaFromState(state)) ?
+                Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed) :
+                0.0F;
     }
 
     @Override
@@ -450,14 +447,16 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
         return tStats == null ? -1 : tStats.getBaseQuality() + getPrimaryMaterial(aStack).mToolQuality;
     }
 
+
+
     @Override
-    public boolean onBlockDestroyed(ItemStack aStack, World aWorld, Block aBlock, int aX, int aY, int aZ, EntityLivingBase aPlayer) {
+    public boolean onBlockDestroyed(ItemStack aStack, World aWorld, IBlockState state, BlockPos blockPos, EntityLivingBase aPlayer) {
         if (!isItemStackUsable(aStack)) return false;
         IToolStats tStats = getToolStats(aStack);
         if (tStats == null) return false;
         GT_Utility.doSoundAtClient(tStats.getMiningSound(), 1, 1.0F);
-        doDamage(aStack, (int) Math.max(1, aBlock.getBlockHardness(aWorld, aX, aY, aZ) * tStats.getToolDamagePerBlockBreak()));
-        return getDigSpeed(aStack, aBlock, aWorld.getBlockMetadata(aX, aY, aZ)) > 0.0F;
+        doDamage(aStack, (int) Math.max(1, state.getBlockHardness(aWorld, blockPos) * tStats.getToolDamagePerBlockBreak()));
+        return true;
     }
 
     @Override
@@ -493,7 +492,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
         return aStack == null ? null : mToolStats.get((short) aStack.getItemDamage());
     }
 
-    @Override
+    /*@Override
     public float getSaplingModifier(ItemStack aStack, World aWorld, EntityPlayer aPlayer, int aX, int aY, int aZ) {
         IToolStats tStats = getToolStats(aStack);
         return tStats != null && tStats.isGrafter() ? Math.min(100.0F, (1 + getHarvestLevel(aStack, "")) * 20.0F) : 0.0F;
@@ -573,7 +572,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
     public void onBoost(EntityPlayer aPlayer, ItemStack aStack, EntityMinecart cart) {
         IToolStats tStats = getToolStats(aStack);
         if (tStats != null) doDamage(aStack, tStats.getToolDamagePerEntityAttack());
-    }
+    }*/
 
     @Override
     public void onCreated(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
@@ -582,10 +581,6 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
         super.onCreated(aStack, aWorld, aPlayer);
     }
 
-    @Override
-    public final boolean doesContainerItemLeaveCraftingGrid(ItemStack aStack) {
-        return false;
-    }
 
     @Override
     public final int getItemStackLimit(ItemStack aStack) {
@@ -606,48 +601,49 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
             return false;
         }
         Materials aMaterial = getPrimaryMaterial(aStack);
-        HashMap<Integer, Integer> tMap = new HashMap<Integer, Integer>(), tResult = new HashMap<Integer, Integer>();
+        HashMap<Enchantment, Integer> tMap = new HashMap<>(), tResult = new HashMap<>();
         if (aMaterial.mEnchantmentTools != null) {
-            tMap.put(aMaterial.mEnchantmentTools.effectId, (int) aMaterial.mEnchantmentToolsLevel);
-            if (aMaterial.mEnchantmentTools == Enchantment.fortune)
-                tMap.put(Enchantment.looting.effectId, (int) aMaterial.mEnchantmentToolsLevel);
-            if (aMaterial.mEnchantmentTools == Enchantment.knockback)
-                tMap.put(Enchantment.power.effectId, (int) aMaterial.mEnchantmentToolsLevel);
-            if (aMaterial.mEnchantmentTools == Enchantment.fireAspect)
-                tMap.put(Enchantment.flame.effectId, (int) aMaterial.mEnchantmentToolsLevel);
+            tMap.put(aMaterial.mEnchantmentTools, (int) aMaterial.mEnchantmentToolsLevel);
+            if (aMaterial.mEnchantmentTools == Enchantment.getEnchantmentByLocation("fortune"))
+                tMap.put(Enchantment.getEnchantmentByLocation("looting"), (int) aMaterial.mEnchantmentToolsLevel);
+            if (aMaterial.mEnchantmentTools == Enchantment.getEnchantmentByLocation("knockback"))
+                tMap.put(Enchantment.getEnchantmentByLocation("power"), (int) aMaterial.mEnchantmentToolsLevel);
+            if (aMaterial.mEnchantmentTools == Enchantment.getEnchantmentByLocation("fire_aspect"))
+                tMap.put(Enchantment.getEnchantmentByLocation("flame"), (int) aMaterial.mEnchantmentToolsLevel);
         }
         Enchantment[] tEnchants = tStats.getEnchantments(aStack);
         int[] tLevels = tStats.getEnchantmentLevels(aStack);
         for (int i = 0; i < tEnchants.length; i++)
             if (tLevels[i] > 0) {
-                Integer tLevel = tMap.get(tEnchants[i].effectId);
-                tMap.put(tEnchants[i].effectId, tLevel == null ? tLevels[i] : tLevel == tLevels[i] ? tLevel + 1 : Math.max(tLevel, tLevels[i]));
+                Integer tLevel = tMap.get(tEnchants[i]);
+                tMap.put(tEnchants[i], tLevel == null ? tLevels[i] : tLevel == tLevels[i] ? tLevel + 1 : Math.max(tLevel, tLevels[i]));
             }
-        for (Entry<Integer, Integer> tEntry : tMap.entrySet()) {
-            if (tEntry.getKey() == 33 || (tEntry.getKey() == 20 && tEntry.getValue() > 2) || tEntry.getKey() == Enchantment_Radioactivity.INSTANCE.effectId)
+        for (Entry<Enchantment, Integer> tEntry : tMap.entrySet()) {
+            int id = Enchantment.getEnchantmentID(tEntry.getKey());
+            if (id == 33 || (id == 20 && id > 2) || id == Enchantment.getEnchantmentID(Enchantment_Radioactivity.INSTANCE))
                 tResult.put(tEntry.getKey(), tEntry.getValue());
             else
-                switch (Enchantment.enchantmentsList[tEntry.getKey()].type) {
-                    case weapon:
+                switch (tEntry.getKey().type) {
+                    case WEAPON:
                         if (tStats.isWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());
                         break;
-                    case all:
+                    case ALL:
                         tResult.put(tEntry.getKey(), tEntry.getValue());
                         break;
-                    case armor:
-                    case armor_feet:
-                    case armor_head:
-                    case armor_legs:
-                    case armor_torso:
+                    case ARMOR:
+                    case ARMOR_FEET:
+                    case ARMOR_HEAD:
+                    case ARMOR_LEGS:
+                    case ARMOR_CHEST:
                         break;
-                    case bow:
+                    case BOW:
                         if (tStats.isRangedWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());
                         break;
-                    case breakable:
+                    case BREAKABLE:
                         break;
-                    case fishing_rod:
+                    case FISHING_ROD:
                         break;
-                    case digger:
+                    case DIGGER:
                         if (tStats.isMiningTool()) tResult.put(tEntry.getKey(), tEntry.getValue());
                         break;
                 }

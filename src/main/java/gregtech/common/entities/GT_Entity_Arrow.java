@@ -17,11 +17,13 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.play.server.S2BPacketChangeGameState;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.*;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayerFactory;
@@ -29,12 +31,11 @@ import net.minecraftforge.common.util.FakePlayerFactory;
 import java.util.List;
 import java.util.UUID;
 
-public class GT_Entity_Arrow
-        extends EntityArrow {
+public class GT_Entity_Arrow extends EntityArrow {
     private int mHitBlockX = -1;
     private int mHitBlockY = -1;
     private int mHitBlockZ = -1;
-    private Block mHitBlock = Blocks.air;
+    private Block mHitBlock = Blocks.AIR;
     private int mHitBlockMeta = 0;
     private boolean inGround = false;
     private int mTicksAlive = 0;
@@ -286,15 +287,15 @@ public class GT_Entity_Arrow
 
     public void writeEntityToNBT(NBTTagCompound aNBT) {
         super.writeEntityToNBT(aNBT);
-        aNBT.setShort("xTile", (short) this.mHitBlockX);
-        aNBT.setShort("yTile", (short) this.mHitBlockY);
-        aNBT.setShort("zTile", (short) this.mHitBlockZ);
+        aNBT.setInteger("xTile", this.mHitBlockX);
+        aNBT.setInteger("yTile", this.mHitBlockY);
+        aNBT.setInteger("zTile", this.mHitBlockZ);
         aNBT.setShort("life", (short) this.mTicksAlive);
         aNBT.setByte("inTile", (byte) Block.getIdFromBlock(this.mHitBlock));
         aNBT.setByte("inData", (byte) this.mHitBlockMeta);
         aNBT.setByte("shake", (byte) this.arrowShake);
         aNBT.setByte("inGround", (byte) (this.inGround ? 1 : 0));
-        aNBT.setByte("pickup", (byte) this.canBePickedUp);
+        aNBT.setByte("pickup", (byte) pickupStatus.ordinal());
         aNBT.setDouble("damage", getDamage());
         aNBT.setTag("mArrow", this.mArrow == null ? null : this.mArrow.writeToNBT(new NBTTagCompound()));
     }
@@ -310,13 +311,13 @@ public class GT_Entity_Arrow
         this.arrowShake = (aNBT.getByte("shake") & 0xFF);
         this.inGround = (aNBT.getByte("inGround") == 1);
         setDamage(aNBT.getDouble("damage"));
-        this.canBePickedUp = aNBT.getByte("pickup");
+        this.pickupStatus = PickupStatus.getByOrdinal(aNBT.getByte("pickup"));
         this.mArrow = GT_Utility.loadItem(aNBT, "mArrow");
     }
 
     public void onCollideWithPlayer(EntityPlayer aPlayer) {
-        if ((!this.worldObj.isRemote) && (this.inGround) && (this.arrowShake <= 0) && (this.canBePickedUp == 1) && (aPlayer.inventory.addItemStackToInventory(getArrowItem()))) {
-            playSound("random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+        if ((!this.worldObj.isRemote) && (this.inGround) && (this.arrowShake <= 0) && (this.pickupStatus == PickupStatus.ALLOWED) && (aPlayer.inventory.addItemStackToInventory(getArrowStack()))) {
+            playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             aPlayer.onItemPickup(this, 1);
             setDead();
         }
@@ -326,12 +327,12 @@ public class GT_Entity_Arrow
         return new int[]{aRegularDamage, aMagicDamage, aKnockback, aFireDamage, aHitTimer};
     }
 
-    public ItemStack getArrowItem() {
-        return GT_Utility.copy(new Object[]{this.mArrow});
+    public ItemStack getArrowStack() {
+        return this.mArrow;
     }
 
     public void setArrowItem(ItemStack aStack) {
-        this.mArrow = GT_Utility.updateItemStack(GT_Utility.copyAmount(1L, new Object[]{aStack}));
+        this.mArrow = GT_Utility.updateItemStack(GT_Utility.copyAmount(1L, aStack));
     }
 
     public boolean breaksOnImpact() {

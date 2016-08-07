@@ -84,7 +84,7 @@ public class GT_Shaped_Recipe extends ShapedOreRecipe implements IGT_CraftingRec
 
             // Add Enchantments
             for (int i = 0; i < mEnchantmentsAdded.length; i++)
-                GT_Utility.ItemNBT.addEnchantment(rStack, mEnchantmentsAdded[i], EnchantmentHelper.getEnchantmentLevel(mEnchantmentsAdded[i].effectId, rStack) + mEnchantmentLevelsAdded[i]);
+                GT_Utility.ItemNBT.addEnchantment(rStack, mEnchantmentsAdded[i], EnchantmentHelper.getEnchantmentLevel(mEnchantmentsAdded[i], rStack) + mEnchantmentLevelsAdded[i]);
 
             // Update the Stack again
             GT_Utility.updateItemStack(rStack);

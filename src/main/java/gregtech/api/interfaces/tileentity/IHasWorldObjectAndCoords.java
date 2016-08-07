@@ -5,8 +5,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fluids.IFluidHandler;
 
 /**
@@ -18,6 +19,8 @@ import net.minecraftforge.fluids.IFluidHandler;
  */
 public interface IHasWorldObjectAndCoords {
     public World getWorld();
+
+    public BlockPos getPos();
 
     public int getXCoord();
 
@@ -111,9 +114,9 @@ public interface IHasWorldObjectAndCoords {
 
     public boolean getAirAtSideAndDistance(byte aSide, int aDistance);
 
-    public BiomeGenBase getBiome();
+    public Biome getBiome();
 
-    public BiomeGenBase getBiome(int aX, int aZ);
+    public Biome getBiome(int aX, int aZ);
 
     public int getOffsetX(byte aSide, int aMultiplier);
 
@@ -145,7 +148,7 @@ public interface IHasWorldObjectAndCoords {
     /**
      * Function of the regular TileEntity
      */
-    public void writeToNBT(NBTTagCompound aNBT);
+    public NBTTagCompound writeToNBT(NBTTagCompound aNBT);
 
     /**
      * Function of the regular TileEntity

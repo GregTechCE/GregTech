@@ -1,11 +1,16 @@
 package gregtech.api.world;
 
+import com.google.common.base.Predicate;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.IBlockStatePalette;
 import net.minecraft.world.chunk.IChunkProvider;
 
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Random;
 
@@ -19,7 +24,7 @@ public class GT_Worldgen_Ore_Normal extends GT_Worldgen_Ore {
         if (isGenerationAllowed(aWorld, aDimensionType, mDimensionType) && (mBiomeList.isEmpty() || mBiomeList.contains(aBiome)) && (mProbability <= 1 || aRandom.nextInt(mProbability) == 0)) {
             for (int i = 0; i < mAmount; i++) {
                 int tX = aChunkX + aRandom.nextInt(16), tY = mMinY + aRandom.nextInt(mMaxY - mMinY), tZ = aChunkZ + aRandom.nextInt(16);
-                if (mAllowToGenerateinVoid || aWorld.getBlock(tX, tY, tZ).isAir(aWorld, tX, tY, tZ)) {
+                if (mAllowToGenerateinVoid || aWorld.isAirBlock(new BlockPos(tX, tY, tZ))) {
                     float var6 = aRandom.nextFloat() * (float) Math.PI;
                     double var7 = ((tX + 8) + MathHelper.sin(var6) * mSize / 8.0F);
                     double var9 = ((tX + 8) - MathHelper.sin(var6) * mSize / 8.0F);
@@ -50,9 +55,10 @@ public class GT_Worldgen_Ore_Normal extends GT_Worldgen_Ore {
                                     if (var39 * var39 + var42 * var42 < 1.0D) {
                                         for (int var44 = var34; var44 <= var37; ++var44) {
                                             double var45 = (var44 + 0.5D - var24) / (var28 / 2.0D);
-                                            Block block = aWorld.getBlock(var38, var41, var44);
-                                            if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && ((mAllowToGenerateinVoid && aWorld.getBlock(var38, var41, var44).isAir(aWorld, var38, var41, var44)) || (block != null && (block.isReplaceableOreGen(aWorld, var38, var41, var44, Blocks.stone) || block.isReplaceableOreGen(aWorld, var38, var41, var44, Blocks.end_stone) || block.isReplaceableOreGen(aWorld, var38, var41, var44, Blocks.netherrack))))) {
-                                                aWorld.setBlock(var38, var41, var44, mBlock, mBlockMeta, 0);
+                                            BlockPos blockPos = new BlockPos(var38, var41, var44);
+                                            IBlockState block = aWorld.getBlockState(blockPos);
+                                            if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && ((mAllowToGenerateinVoid && aWorld.isAirBlock(blockPos)) || block.getBlock().isReplaceableOreGen(block, aWorld, blockPos, STONE))) {
+                                                aWorld.setBlockState(new BlockPos(var38, var41, var44), mBlock.getStateFromMeta(mBlockMeta));
                                             }
                                         }
                                     }
@@ -65,5 +71,19 @@ public class GT_Worldgen_Ore_Normal extends GT_Worldgen_Ore {
             return true;
         }
         return false;
+
+
+
     }
+
+
+    public static Predicate<IBlockState> STONE = new Predicate<IBlockState>() {
+        @Override
+        public boolean apply(@Nullable IBlockState input) {
+            return input.getBlock() == Blocks.STONE ||
+                    input.getBlock() == Blocks.END_STONE ||
+                    input.getBlock() == Blocks.NETHERRACK;
+        }
+    };
+
 }

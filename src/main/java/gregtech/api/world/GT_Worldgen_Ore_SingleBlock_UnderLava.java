@@ -1,7 +1,9 @@
 package gregtech.api.world;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
@@ -18,10 +20,11 @@ public class GT_Worldgen_Ore_SingleBlock_UnderLava extends GT_Worldgen_Ore {
         if (isGenerationAllowed(aWorld, aDimensionType, mDimensionType) && (mBiomeList.isEmpty() || mBiomeList.contains(aBiome)) && (mProbability <= 1 || aRandom.nextInt(mProbability) == 0)) {
             for (int i = 0; i < mAmount; i++) {
                 int tX = aChunkX + aRandom.nextInt(16), tY = mMinY + aRandom.nextInt(mMaxY - mMinY), tZ = aChunkZ + aRandom.nextInt(16);
-                Block tBlock = aWorld.getBlock(tX, tY, tZ);
-                if (((mAllowToGenerateinVoid && aWorld.getBlock(tX, tY, tZ).isAir(aWorld, tX, tY, tZ)) || (tBlock != null && (tBlock.isReplaceableOreGen(aWorld, tX, tY, tZ, Blocks.stone) || tBlock.isReplaceableOreGen(aWorld, tX, tY, tZ, Blocks.end_stone) || tBlock.isReplaceableOreGen(aWorld, tX, tY, tZ, Blocks.netherrack))))) {
-                    if (aWorld.getBlock(tX, tY + 1, tZ) == Blocks.lava || aWorld.getBlock(tX, tY, tZ) == Blocks.flowing_lava)
-                        aWorld.setBlock(tX, tY, tZ, mBlock, mBlockMeta, 0);
+                BlockPos blockPos = new BlockPos(tX, tY, tZ);
+                IBlockState tBlock = aWorld.getBlockState(blockPos);
+                if ((mAllowToGenerateinVoid && aWorld.isAirBlock(blockPos)) || tBlock.getBlock().isReplaceableOreGen(tBlock, aWorld, blockPos, GT_Worldgen_Ore_Normal.STONE)) {
+                    if (aWorld.getBlockState(blockPos.up()).getBlock() == Blocks.LAVA || aWorld.getBlockState(blockPos).getBlock() == Blocks.FLOWING_LAVA)
+                        aWorld.setBlockState(blockPos, mBlock.getStateFromMeta(mBlockMeta));
                 }
             }
             return true;

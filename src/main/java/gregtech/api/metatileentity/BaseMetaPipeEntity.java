@@ -9,6 +9,7 @@ import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.*;
+import ic2.api.energy.tile.IEnergyAcceptor;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -18,13 +19,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.Packet;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -52,7 +56,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound aNBT) {
+    public NBTTagCompound writeToNBT(NBTTagCompound aNBT) {
         try {
             super.writeToNBT(aNBT);
         } catch (Throwable e) {
@@ -97,6 +101,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
             GT_Log.err.println("Encountered CRITICAL ERROR while saving MetaTileEntity, the Chunk whould've been corrupted by now, but I prevented that. Please report immidietly to GregTech Intergalactical!!!");
             e.printStackTrace(GT_Log.err);
         }
+        return aNBT;
     }
 
     @Override
@@ -170,8 +175,8 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
-    public void updateEntity() {
-        super.updateEntity();
+    public void update() {
+        super.update();
 
         if (!hasValidMetaTileEntity()) {
             if (mMetaTileEntity == null) return;
@@ -186,14 +191,14 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                     case 0:
                         tCode++;
                         if (mTickTimer++ == 0) {
-                            oX = xCoord;
-                            oY = yCoord;
-                            oZ = zCoord;
+                            oX = getXCoord();
+                            oY = getYCoord();
+                            oZ = getZCoord();
                             if (isServerSide()) for (byte i = 0; i < 6; i++)
                                 if (getCoverIDAtSide(i) != 0)
                                     if (!mMetaTileEntity.allowCoverOnSide(i, new GT_ItemStack(getCoverIDAtSide(i))))
                                         dropCover(i, i, true);
-                            worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
+                            worldObj.markChunkDirty(getPos(), this);
                             mMetaTileEntity.onFirstTick(this);
                             if (!hasValidMetaTileEntity()) return;
                         }
@@ -206,8 +211,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                             }
 
                             if (mNeedsUpdate) {
-                                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-                                //worldObj.func_147479_m(xCoord, yCoord, zCoord);
+                                worldObj.notifyNeighborsOfStateChange(getPos(), getBlockType());
                                 mNeedsUpdate = false;
                             }
                         }
@@ -246,10 +250,10 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                                 issueBlockUpdate();
                             }
 
-                            if (xCoord != oX || yCoord != oY || zCoord != oZ) {
-                                oX = xCoord;
-                                oY = yCoord;
-                                oZ = zCoord;
+                            if (getXCoord() != oX || getYCoord() != oY || getZCoord() != oZ) {
+                                oX = getXCoord();
+                                oY = getYCoord();
+                                oZ = getZCoord();
                                 issueClientUpdate();
                                 clearTileEntityBuffer();
                             }
@@ -263,7 +267,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                         if (isServerSide()) {
                             if (mTickTimer % 10 == 0) {
                                 if (mSendClientData) {
-                                    NW.sendPacketToAllPlayersInRange(worldObj, new GT_Packet_TileEntity(xCoord, (short) yCoord, zCoord, mID, mCoverSides[0], mCoverSides[1], mCoverSides[2], mCoverSides[3], mCoverSides[4], mCoverSides[5], oTextureData = mConnections, oUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0, oRedstoneData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0) | ((mSidedRedstone[2] > 0) ? 4 : 0) | ((mSidedRedstone[3] > 0) ? 8 : 0) | ((mSidedRedstone[4] > 0) ? 16 : 0) | ((mSidedRedstone[5] > 0) ? 32 : 0)), oColor = mColor), xCoord, zCoord);
+                                    NW.sendPacketToAllPlayersInRange(worldObj, new GT_Packet_TileEntity(getXCoord(), getYCoord(), getZCoord(), mID, mCoverSides[0], mCoverSides[1], mCoverSides[2], mCoverSides[3], mCoverSides[4], mCoverSides[5], oTextureData = mConnections, oUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0, oRedstoneData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0) | ((mSidedRedstone[2] > 0) ? 4 : 0) | ((mSidedRedstone[3] > 0) ? 8 : 0) | ((mSidedRedstone[4] > 0) ? 16 : 0) | ((mSidedRedstone[5] > 0) ? 32 : 0)), oColor = mColor), getXCoord(), getZCoord());
                                     mSendClientData = false;
                                 }
                             }
@@ -278,7 +282,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                             }
 
                             if (mNeedsBlockUpdate) {
-                                worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockOffset(0, 0, 0));
+                                worldObj.notifyBlockOfStateChange(getPos(), getBlockType());
                                 mNeedsBlockUpdate = false;
                             }
                         }
@@ -297,14 +301,16 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
             if (mTimeStatistics.length > 0)
                 mTimeStatistics[mTimeStatisticsIndex = (mTimeStatisticsIndex + 1) % mTimeStatistics.length] = (int) tTime;
             if (tTime > 0 && tTime > GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING && mTickTimer > 1000 && getMetaTileEntity().doTickProfilingMessageDuringThisTick() && mLagWarningCount++ < 10)
-                System.out.println("WARNING: Possible Lag Source at [" + xCoord + ", " + yCoord + ", " + zCoord + "] in Dimension " + worldObj.provider.dimensionId + " with " + tTime + "ms caused by an instance of " + getMetaTileEntity().getClass());
+                System.out.println("WARNING: Possible Lag Source at [" + getXCoord() + ", " + getYCoord() + ", " + getZCoord() + "] in Dimension " + worldObj.provider.getDimension() + " with " + tTime + "ms caused by an instance of " + getMetaTileEntity().getClass());
         }
 
         mWorkUpdate = mInventoryChanged = false;
     }
+    
+    
 
     @Override
-    public Packet getDescriptionPacket() {
+    public SPacketUpdateTileEntity getUpdatePacket() {
         issueClientUpdate();
         return null;
     }
@@ -367,15 +373,15 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                     break;
                 case 4:
                     if (hasValidMetaTileEntity() && mTickTimer > 20)
-                        mMetaTileEntity.doSound((byte) aValue, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
+                        mMetaTileEntity.doSound((byte) aValue, getXCoord() + 0.5, getYCoord() + 0.5, getZCoord() + 0.5);
                     break;
                 case 5:
                     if (hasValidMetaTileEntity() && mTickTimer > 20)
-                        mMetaTileEntity.startSoundLoop((byte) aValue, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
+                        mMetaTileEntity.startSoundLoop((byte) aValue, getXCoord() + 0.5, getYCoord() + 0.5, getZCoord() + 0.5);
                     break;
                 case 6:
                     if (hasValidMetaTileEntity() && mTickTimer > 20)
-                        mMetaTileEntity.stopSoundLoop((byte) aValue, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
+                        mMetaTileEntity.stopSoundLoop((byte) aValue, getXCoord() + 0.5, getYCoord() + 0.5, getZCoord() + 0.5);
                     break;
             }
         }
@@ -485,9 +491,9 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
-    public String getInventoryName() {
-        if (canAccessData()) return mMetaTileEntity.getInventoryName();
-        if (GregTech_API.METATILEENTITIES[mID] != null) return GregTech_API.METATILEENTITIES[mID].getInventoryName();
+    public String getName() {
+        if (canAccessData()) return mMetaTileEntity.getName();
+        if (GregTech_API.METATILEENTITIES[mID] != null) return GregTech_API.METATILEENTITIES[mID].getName();
         return "";
     }
 
@@ -498,14 +504,14 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
-    public void openInventory() {/*Do nothing*/}
+    public void openInventory(EntityPlayer entityPlayer) {/*Do nothing*/}
 
     @Override
-    public void closeInventory() {/*Do nothing*/}
+    public void closeInventory(EntityPlayer entityPlayer) {/*Do nothing*/}
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer aPlayer) {
-        return hasValidMetaTileEntity() && mTickTimer > 40 && getTileEntityOffset(0, 0, 0) == this && aPlayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64 && mMetaTileEntity.isAccessAllowed(aPlayer);
+        return hasValidMetaTileEntity() && mTickTimer > 40 && getTileEntityOffset(0, 0, 0) == this && aPlayer.getDistanceSq(getXCoord() + 0.5, getYCoord() + 0.5, getZCoord() + 0.5) < 64 && mMetaTileEntity.isAccessAllowed(aPlayer);
     }
 
     @Override
@@ -523,23 +529,13 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         }
         super.invalidate();
     }
+    
 
     @Override
-    public void onChunkUnload() {
-        super.onChunkUnload();
-    }
-
-    @Override
-    public boolean hasCustomInventoryName() {
+    public boolean hasCustomName() {
         return false;
     }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int slot) {
-        ItemStack stack = getStackInSlot(slot);
-        if (stack != null) setInventorySlotContents(slot, null);
-        return stack;
-    }
+    
 
     @Override
     public void onMachineBlockUpdate() {
@@ -767,8 +763,8 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         if (isServerSide()) {
             ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
             if (tCurrentItem != null) {
-                if (getColorization() >= 0 && GT_Utility.areStacksEqual(new ItemStack(Items.water_bucket, 1), tCurrentItem)) {
-                    tCurrentItem.func_150996_a(Items.bucket);
+                if (getColorization() >= 0 && GT_Utility.areStacksEqual(new ItemStack(Items.WATER_BUCKET, 1), tCurrentItem)) {
+                    tCurrentItem.setItem(Items.BUCKET);
                     setColorization((byte) -1);
                     return true;
                 }
@@ -776,7 +772,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                 if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWrenchList)) {
                     if (mMetaTileEntity.onWrenchRightClick(aSide, tSide, aPlayer, aX, aY, aZ)) {
                         GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
-                        GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, xCoord, yCoord, zCoord);
+                        GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, getXCoord(), getYCoord(), getZCoord());
                     }
                     return true;
                 }
@@ -785,13 +781,13 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                         if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 200, aPlayer)) {
                             setCoverDataAtSide(tSide, getCoverBehaviorAtSide(tSide).onCoverScrewdriverclick(tSide, getCoverIDAtSide(tSide), getCoverDataAtSide(tSide), this, aPlayer, 0.5F, 0.5F, 0.5F));
                             mMetaTileEntity.onScrewdriverRightClick(tSide, aPlayer, aX, aY, aZ);
-                            GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, xCoord, yCoord, zCoord);
+                            GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, getXCoord(), getYCoord(), getZCoord());
                         }
                     } else {
                         if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                             setCoverDataAtSide(aSide, getCoverBehaviorAtSide(aSide).onCoverScrewdriverclick(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this, aPlayer, aX, aY, aZ));
                             mMetaTileEntity.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
-                            GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, xCoord, yCoord, zCoord);
+                            GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, getXCoord(), getYCoord(), getZCoord());
                         }
                     }
                     return true;
@@ -799,7 +795,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
 
                 if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sHardHammerList)) {
                     //if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                    //	GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(1), 1.0F, -1, xCoord, yCoord, zCoord);
+                    //	GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(1), 1.0F, -1, getXCoord(), getYCoord(), getZCoord());
                     //}
                     return true;
                 }
@@ -809,7 +805,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                         if (mWorks) disableWorking();
                         else enableWorking();
                         GT_Utility.sendChatToPlayer(aPlayer, "Machine Processing: " + (isAllowedToWork() ? "Enabled" : "Disabled"));
-                        GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(101), 1.0F, -1, xCoord, yCoord, zCoord);
+                        GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(101), 1.0F, -1, getXCoord(), getYCoord(), getZCoord());
                     }
                     return true;
                 }
@@ -818,7 +814,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                     if (GT_ModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
                         mStrongRedstone ^= (1 << tSide);
                         GT_Utility.sendChatToPlayer(aPlayer, "Redstone Output at Side " + tSide + " set to: " + ((mStrongRedstone & (1 << tSide)) != 0 ? "Strong" : "Weak"));
-                        GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(103), 3.0F, -1, xCoord, yCoord, zCoord);
+                        GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(103), 3.0F, -1, getXCoord(), getYCoord(), getZCoord());
                     }
                     return true;
                 }
@@ -831,14 +827,14 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                         if (GregTech_API.getCoverBehavior(tCurrentItem).isCoverPlaceable(cSide, new GT_ItemStack(tCurrentItem), this) && mMetaTileEntity.allowCoverOnSide(cSide, new GT_ItemStack(tCurrentItem))) {
                             setCoverItemAtSide(cSide, tCurrentItem);
                             if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
-                            GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, xCoord, yCoord, zCoord);
+                            GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, getXCoord(), getYCoord(), getZCoord());
                         }
                         return true;
                     }
                 } else {
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCrowbarList)) {
                         if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                            GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(0), 1.0F, -1, xCoord, yCoord, zCoord);
+                            GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(0), 1.0F, -1, getXCoord(), getYCoord(), getZCoord());
                             dropCover(cSide, aSide, false);
                         }
                         return true;
@@ -901,14 +897,34 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         return canAccessData() && mMetaTileEntity.isItemValidForSlot(aIndex, aStack);
     }
 
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
     /**
      * returns all valid Inventory Slots, no matter which Side (Unless it's covered).
      * The Side Stuff is done in the following two Functions.
      */
     @Override
-    public int[] getAccessibleSlotsFromSide(int aSide) {
-        if (canAccessData() && (getCoverBehaviorAtSide((byte) aSide).letsItemsOut((byte) aSide, getCoverIDAtSide((byte) aSide), getCoverDataAtSide((byte) aSide), -1, this) || getCoverBehaviorAtSide((byte) aSide).letsItemsIn((byte) aSide, getCoverIDAtSide((byte) aSide), getCoverDataAtSide((byte) aSide), -1, this)))
-            return mMetaTileEntity.getAccessibleSlotsFromSide(aSide);
+    public int[] getSlotsForFace(EnumFacing aSide) {
+        if (canAccessData() && (getCoverBehaviorAtSide((byte) aSide.getIndex()).letsItemsOut((byte) aSide.getIndex(), getCoverIDAtSide((byte) aSide.getIndex()), getCoverDataAtSide((byte) aSide.getIndex()), -1, this) || getCoverBehaviorAtSide((byte) aSide.getIndex()).letsItemsIn((byte) aSide.getIndex(), getCoverIDAtSide((byte) aSide.getIndex()), getCoverDataAtSide((byte) aSide.getIndex()), -1, this)))
+            return mMetaTileEntity.getSlotsForFace(aSide);
         return new int[0];
     }
 
@@ -916,16 +932,16 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
      * Can put aStack into Slot at Side
      */
     @Override
-    public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
-        return canAccessData() && getCoverBehaviorAtSide((byte) aSide).letsItemsIn((byte) aSide, getCoverIDAtSide((byte) aSide), getCoverDataAtSide((byte) aSide), aIndex, this) && mMetaTileEntity.canInsertItem(aIndex, aStack, aSide);
+    public boolean canInsertItem(int aIndex, ItemStack aStack, EnumFacing aSide) {
+        return canAccessData() && getCoverBehaviorAtSide((byte) aSide.getIndex()).letsItemsIn((byte) aSide.getIndex(), getCoverIDAtSide((byte) aSide.getIndex()), getCoverDataAtSide((byte) aSide.getIndex()), aIndex, this) && mMetaTileEntity.canInsertItem(aIndex, aStack, aSide);
     }
 
     /**
      * Can pull aStack out of Slot from Side
      */
     @Override
-    public boolean canExtractItem(int aIndex, ItemStack aStack, int aSide) {
-        return canAccessData() && getCoverBehaviorAtSide((byte) aSide).letsItemsOut((byte) aSide, getCoverIDAtSide((byte) aSide), getCoverDataAtSide((byte) aSide), aIndex, this) && mMetaTileEntity.canExtractItem(aIndex, aStack, aSide);
+    public boolean canExtractItem(int aIndex, ItemStack aStack, EnumFacing aSide) {
+        return canAccessData() && getCoverBehaviorAtSide((byte) aSide.getIndex()).letsItemsOut((byte) aSide.getIndex(), getCoverIDAtSide((byte) aSide.getIndex()), getCoverDataAtSide((byte) aSide.getIndex()), aIndex, this) && mMetaTileEntity.canExtractItem(aIndex, aStack, aSide);
     }
 
     @Override
@@ -940,7 +956,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public byte getInputRedstoneSignal(byte aSide) {
-        return (byte) (worldObj.getIndirectPowerLevelTo(getOffsetX(aSide, 1), getOffsetY(aSide, 1), getOffsetZ(aSide, 1), aSide) & 15);
+        return (byte) (worldObj.getRedstonePower(getPos(), EnumFacing.VALUES[aSide]) & 15);
     }
 
     @Override
@@ -1135,6 +1151,12 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         return null;
     }
 
+    @Nullable
+    @Override
+    public ItemStack removeStackFromSlot(int index) {
+        return null;
+    }
+
     @Override
     public long injectEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
         if (canAccessData()) return mMetaTileEntity.injectEnergyUnits(aSide, aVoltage, aAmperage);
@@ -1159,43 +1181,43 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
-    public int fill(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
-        if (mTickTimer > 5 && canAccessData() && (aSide == ForgeDirection.UNKNOWN || (mMetaTileEntity.isLiquidInput((byte) aSide.ordinal()) && getCoverBehaviorAtSide((byte) aSide.ordinal()).letsFluidIn((byte) aSide.ordinal(), getCoverIDAtSide((byte) aSide.ordinal()), getCoverDataAtSide((byte) aSide.ordinal()), aFluid == null ? null : aFluid.getFluid(), this))))
+    public int fill(EnumFacing aSide, FluidStack aFluid, boolean doFill) {
+        if (mTickTimer > 5 && canAccessData() && (aSide == null || (mMetaTileEntity.isLiquidInput((byte) aSide.getIndex()) && getCoverBehaviorAtSide((byte) aSide.getIndex()).letsFluidIn((byte) aSide.getIndex(), getCoverIDAtSide((byte) aSide.getIndex()), getCoverDataAtSide((byte) aSide.getIndex()), aFluid == null ? null : aFluid.getFluid(), this))))
             return mMetaTileEntity.fill(aSide, aFluid, doFill);
         return 0;
     }
 
     @Override
-    public FluidStack drain(ForgeDirection aSide, int maxDrain, boolean doDrain) {
-        if (mTickTimer > 5 && canAccessData() && (aSide == ForgeDirection.UNKNOWN || (mMetaTileEntity.isLiquidOutput((byte) aSide.ordinal()) && getCoverBehaviorAtSide((byte) aSide.ordinal()).letsFluidOut((byte) aSide.ordinal(), getCoverIDAtSide((byte) aSide.ordinal()), getCoverDataAtSide((byte) aSide.ordinal()), mMetaTileEntity.getFluid() == null ? null : mMetaTileEntity.getFluid().getFluid(), this))))
+    public FluidStack drain(EnumFacing aSide, int maxDrain, boolean doDrain) {
+        if (mTickTimer > 5 && canAccessData() && (aSide == null || (mMetaTileEntity.isLiquidOutput((byte) aSide.getIndex()) && getCoverBehaviorAtSide((byte) aSide.getIndex()).letsFluidOut((byte) aSide.getIndex(), getCoverIDAtSide((byte) aSide.getIndex()), getCoverDataAtSide((byte) aSide.getIndex()), mMetaTileEntity.getFluid() == null ? null : mMetaTileEntity.getFluid().getFluid(), this))))
             return mMetaTileEntity.drain(aSide, maxDrain, doDrain);
         return null;
     }
 
     @Override
-    public FluidStack drain(ForgeDirection aSide, FluidStack aFluid, boolean doDrain) {
-        if (mTickTimer > 5 && canAccessData() && (aSide == ForgeDirection.UNKNOWN || (mMetaTileEntity.isLiquidOutput((byte) aSide.ordinal()) && getCoverBehaviorAtSide((byte) aSide.ordinal()).letsFluidOut((byte) aSide.ordinal(), getCoverIDAtSide((byte) aSide.ordinal()), getCoverDataAtSide((byte) aSide.ordinal()), aFluid == null ? null : aFluid.getFluid(), this))))
+    public FluidStack drain(EnumFacing aSide, FluidStack aFluid, boolean doDrain) {
+        if (mTickTimer > 5 && canAccessData() && (aSide == null || (mMetaTileEntity.isLiquidOutput((byte) aSide.getIndex()) && getCoverBehaviorAtSide((byte) aSide.getIndex()).letsFluidOut((byte) aSide.getIndex(), getCoverIDAtSide((byte) aSide.getIndex()), getCoverDataAtSide((byte) aSide.getIndex()), aFluid == null ? null : aFluid.getFluid(), this))))
             return mMetaTileEntity.drain(aSide, aFluid, doDrain);
         return null;
     }
 
     @Override
-    public boolean canFill(ForgeDirection aSide, Fluid aFluid) {
-        if (mTickTimer > 5 && canAccessData() && (aSide == ForgeDirection.UNKNOWN || (mMetaTileEntity.isLiquidInput((byte) aSide.ordinal()) && getCoverBehaviorAtSide((byte) aSide.ordinal()).letsFluidIn((byte) aSide.ordinal(), getCoverIDAtSide((byte) aSide.ordinal()), getCoverDataAtSide((byte) aSide.ordinal()), aFluid, this))))
+    public boolean canFill(EnumFacing aSide, Fluid aFluid) {
+        if (mTickTimer > 5 && canAccessData() && (aSide == null || (mMetaTileEntity.isLiquidInput((byte) aSide.getIndex()) && getCoverBehaviorAtSide((byte) aSide.getIndex()).letsFluidIn((byte) aSide.getIndex(), getCoverIDAtSide((byte) aSide.getIndex()), getCoverDataAtSide((byte) aSide.getIndex()), aFluid, this))))
             return mMetaTileEntity.canFill(aSide, aFluid);
         return false;
     }
 
     @Override
-    public boolean canDrain(ForgeDirection aSide, Fluid aFluid) {
-        if (mTickTimer > 5 && canAccessData() && (aSide == ForgeDirection.UNKNOWN || (mMetaTileEntity.isLiquidOutput((byte) aSide.ordinal()) && getCoverBehaviorAtSide((byte) aSide.ordinal()).letsFluidOut((byte) aSide.ordinal(), getCoverIDAtSide((byte) aSide.ordinal()), getCoverDataAtSide((byte) aSide.ordinal()), aFluid, this))))
+    public boolean canDrain(EnumFacing aSide, Fluid aFluid) {
+        if (mTickTimer > 5 && canAccessData() && (aSide == null || (mMetaTileEntity.isLiquidOutput((byte) aSide.getIndex()) && getCoverBehaviorAtSide((byte) aSide.getIndex()).letsFluidOut((byte) aSide.getIndex(), getCoverIDAtSide((byte) aSide.getIndex()), getCoverDataAtSide((byte) aSide.getIndex()), aFluid, this))))
             return mMetaTileEntity.canDrain(aSide, aFluid);
         return false;
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
-        if (canAccessData() && (aSide == ForgeDirection.UNKNOWN || (mMetaTileEntity.isLiquidInput((byte) aSide.ordinal()) && getCoverBehaviorAtSide((byte) aSide.ordinal()).letsFluidIn((byte) aSide.ordinal(), getCoverIDAtSide((byte) aSide.ordinal()), getCoverDataAtSide((byte) aSide.ordinal()), null, this)) || (mMetaTileEntity.isLiquidOutput((byte) aSide.ordinal()) && getCoverBehaviorAtSide((byte) aSide.ordinal()).letsFluidOut((byte) aSide.ordinal(), getCoverIDAtSide((byte) aSide.ordinal()), getCoverDataAtSide((byte) aSide.ordinal()), null, this))))
+    public FluidTankInfo[] getTankInfo(EnumFacing aSide) {
+        if (canAccessData() && (aSide == null || (mMetaTileEntity.isLiquidInput((byte) aSide.getIndex()) && getCoverBehaviorAtSide((byte) aSide.getIndex()).letsFluidIn((byte) aSide.getIndex(), getCoverIDAtSide((byte) aSide.getIndex()), getCoverDataAtSide((byte) aSide.getIndex()), null, this)) || (mMetaTileEntity.isLiquidOutput((byte) aSide.getIndex()) && getCoverBehaviorAtSide((byte) aSide.getIndex()).letsFluidOut((byte) aSide.getIndex(), getCoverIDAtSide((byte) aSide.getIndex()), getCoverDataAtSide((byte) aSide.getIndex()), null, this))))
             return mMetaTileEntity.getTankInfo(aSide);
         return new FluidTankInfo[]{};
     }
@@ -1313,4 +1335,10 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity collider) {
         mMetaTileEntity.onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
     }
+
+    @Override
+    public boolean emitsEnergyTo(IEnergyAcceptor iEnergyAcceptor, EnumFacing enumFacing) {
+        return true;
+    }
+
 }

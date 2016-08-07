@@ -1,16 +1,17 @@
 package gregtech.common;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.IFuelHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.ModContainer;
-import cpw.mods.fml.common.eventhandler.Event.Result;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.common.network.FMLNetworkEvent;
-import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.IFuelHandler;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
@@ -48,7 +49,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings.GameType;
 import net.minecraft.world.gen.feature.WorldGenMinable;
@@ -1915,12 +1916,12 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         }
     }
 
-    public static final HashMap<ChunkPosition, int[]>  chunkData = new HashMap<ChunkPosition, int[]>(5000);
+    public static final HashMap<BlockPos, int[]>  chunkData = new HashMap<BlockPos, int[]>(5000);
 
     @SubscribeEvent
     public void handleChunkSaveEvent(ChunkDataEvent.Save event)
     {    	
-    	ChunkPosition tPos = new ChunkPosition(event.getChunk().xPosition,1,event.getChunk().zPosition);
+    	BlockPos tPos = new BlockPos(event.getChunk().xPosition,1,event.getChunk().zPosition);
     	if(chunkData.containsKey(tPos)){
     		int[] tInts = chunkData.get(tPos);
     		if(tInts.length>0){event.getData().setInteger("GTOIL", tInts[0]);}
@@ -1933,7 +1934,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     	int tOil = 0;
     	int tPollution = 0;
     	
-    	ChunkPosition tPos = new ChunkPosition(event.getChunk().xPosition,1,event.getChunk().zPosition);
+    	BlockPos tPos = new BlockPos(event.getChunk().xPosition,1,event.getChunk().zPosition);
     	int[] tData = new int[2];
     	if(chunkData.containsKey(tPos)){
     		tData = chunkData.get(tPos);

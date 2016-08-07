@@ -111,7 +111,7 @@ public class GT_Recipe {
         for (int i = 0; i < aFluidOutputs.length; i++) aFluidOutputs[i] = new GT_FluidStack(aFluidOutputs[i]);
 
         for (int i = 0; i < aInputs.length; i++)
-            if (aInputs[i] != null && Items.feather.getDamage(aInputs[i]) != W)
+            if (aInputs[i] != null && Items.FEATHER.getDamage(aInputs[i]) != W)
                 for (int j = 0; j < aOutputs.length; j++) {
                     if (GT_Utility.areStacksEqual(aInputs[i], aOutputs[j])) {
                         if (aInputs[i].stackSize >= aOutputs[j].stackSize) {
@@ -220,7 +220,7 @@ public class GT_Recipe {
     }
 
     public GT_Recipe(ItemStack aInput1, int aInput2, ItemStack aOutput1, ItemStack aOutput2) {
-        this(true, new ItemStack[]{aInput1, GT_ModHandler.getIC2Item("industrialTnt", aInput2 > 0 ? aInput2 < 64 ? aInput2 : 64 : 1, new ItemStack(Blocks.tnt, aInput2 > 0 ? aInput2 < 64 ? aInput2 : 64 : 1))}, new ItemStack[]{aOutput1, aOutput2}, null, null, null, null, 20, 30, 0);
+        this(true, new ItemStack[]{aInput1, GT_ModHandler.getIC2Item("industrialTnt", aInput2 > 0 ? aInput2 < 64 ? aInput2 : 64 : 1, new ItemStack(Blocks.TNT, aInput2 > 0 ? aInput2 < 64 ? aInput2 : 64 : 1))}, new ItemStack[]{aOutput1, aOutput2}, null, null, null, null, 20, 30, 0);
         if (mInputs.length > 0 && mOutputs[0] != null) {
             GT_Recipe_Map.sImplosionRecipes.addRecipe(this);
         }
@@ -885,19 +885,19 @@ public class GT_Recipe {
             if (aRecipe != null && aRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) return aRecipe;
             ItemStack tOutput = GT_ModHandler.getSmeltingOutput(aInputs[0], false, null);
 
-            if (GT_Utility.areStacksEqual(aInputs[0], new ItemStack(Items.book, 1, W))) {
+            if (GT_Utility.areStacksEqual(aInputs[0], new ItemStack(Items.BOOK, 1, W))) {
                 return new GT_Recipe(false, new ItemStack[]{GT_Utility.copyAmount(1, aInputs[0])}, new ItemStack[]{GT_Utility.getWrittenBook("Manual_Microwave", ItemList.Book_Written_03.get(1))}, null, null, null, null, 32, 4, 0);
             }
 
             // Check Container Item of Input since it is around the Input, then the Input itself, then Container Item of Output and last check the Output itself
             for (ItemStack tStack : new ItemStack[]{GT_Utility.getContainerItem(aInputs[0], true), aInputs[0], GT_Utility.getContainerItem(tOutput, true), tOutput})
                 if (tStack != null) {
-                    if (GT_Utility.areStacksEqual(tStack, new ItemStack(Blocks.netherrack, 1, W), true)
-                            || GT_Utility.areStacksEqual(tStack, new ItemStack(Blocks.tnt, 1, W), true)
-                            || GT_Utility.areStacksEqual(tStack, new ItemStack(Items.egg, 1, W), true)
-                            || GT_Utility.areStacksEqual(tStack, new ItemStack(Items.firework_charge, 1, W), true)
-                            || GT_Utility.areStacksEqual(tStack, new ItemStack(Items.fireworks, 1, W), true)
-                            || GT_Utility.areStacksEqual(tStack, new ItemStack(Items.fire_charge, 1, W), true)
+                    if (GT_Utility.areStacksEqual(tStack, new ItemStack(Blocks.NETHERRACK, 1, W), true)
+                            || GT_Utility.areStacksEqual(tStack, new ItemStack(Blocks.TNT, 1, W), true)
+                            || GT_Utility.areStacksEqual(tStack, new ItemStack(Items.EGG, 1, W), true)
+                            || GT_Utility.areStacksEqual(tStack, new ItemStack(Items.FIREWORK_CHARGE, 1, W), true)
+                            || GT_Utility.areStacksEqual(tStack, new ItemStack(Items.FIREWORKS, 1, W), true)
+                            || GT_Utility.areStacksEqual(tStack, new ItemStack(Items.FIRE_CHARGE, 1, W), true)
                             ) {
                         if (aTileEntity instanceof IGregTechTileEntity)
                             ((IGregTechTileEntity) aTileEntity).doExplosion(aVoltage * 4);
@@ -1163,13 +1163,14 @@ public class GT_Recipe {
             if (aRecipe != null) return aRecipe;
 
             try {
-                List<ItemStack> tRecipeOutputs = mods.railcraft.api.crafting.RailcraftCraftingManager.rockCrusher.getRecipe(GT_Utility.copyAmount(1, aInputs[0])).getRandomizedOuputs();
-                if (tRecipeOutputs != null) {
-                    aRecipe = new GT_Recipe(false, new ItemStack[]{GT_Utility.copyAmount(1, aInputs[0])}, tRecipeOutputs.toArray(new ItemStack[tRecipeOutputs.size()]), null, null, null, null, 800, 2, 0);
-                    aRecipe.mCanBeBuffered = false;
-                    aRecipe.mNeedsEmptyOutput = true;
-                    return aRecipe;
-                }
+                //TODO: railcraft on 1.9
+                //List<ItemStack> tRecipeOutputs = mods.railcraft.api.crafting.RailcraftCraftingManager.rockCrusher.getRecipe(GT_Utility.copyAmount(1, aInputs[0])).getRandomizedOuputs();
+                //if (tRecipeOutputs != null) {
+                //    aRecipe = new GT_Recipe(false, new ItemStack[]{GT_Utility.copyAmount(1, aInputs[0])}, tRecipeOutputs.toArray(new ItemStack[tRecipeOutputs.size()]), null, null, null, null, 800, 2, 0);
+                //    aRecipe.mCanBeBuffered = false;
+                //    aRecipe.mNeedsEmptyOutput = true;
+                //    return aRecipe;
+                //}
             } catch (NoClassDefFoundError e) {
                 if (D1) GT_Log.err.println("Railcraft Not loaded");
             } catch (NullPointerException e) {/**/}
@@ -1289,7 +1290,7 @@ public class GT_Recipe {
                 if (tOutput != null)
                     return addRecipe(new GT_Recipe(true, new ItemStack[]{GT_Utility.copyAmount(1, aInputs[0])}, new ItemStack[]{tOutput}, null, null, new FluidStack[]{new FluidStack(aFluids[0].getFluid(), (int) L)}, null, 32, 2, 0), false, false, true);
             } else {
-                if (aInputs[0].getItem() == Items.paper) {
+                if (aInputs[0].getItem() == Items.WRITTEN_BOOK) {
                     if (!ItemList.Tool_DataStick.isStackEqual(aSpecialSlot, false, true)) return null;
                     NBTTagCompound tNBT = aSpecialSlot.getTagCompound();
                     if (tNBT == null || GT_Utility.isStringInvalid(tNBT.getString("title")) || GT_Utility.isStringInvalid(tNBT.getString("author")))
@@ -1300,7 +1301,7 @@ public class GT_Recipe {
                     rRecipe.mOutputs[0].setTagCompound(tNBT);
                     return rRecipe;
                 }
-                if (aInputs[0].getItem() == Items.map) {
+                if (aInputs[0].getItem() == Items.FILLED_MAP) {
                     if (!ItemList.Tool_DataStick.isStackEqual(aSpecialSlot, false, true)) return null;
                     NBTTagCompound tNBT = aSpecialSlot.getTagCompound();
                     if (tNBT == null || !tNBT.hasKey("map_id")) return null;

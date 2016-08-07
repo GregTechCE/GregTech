@@ -6,9 +6,11 @@ import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDynamicLiquid;
+import net.minecraft.block.BlockStaticLiquid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidBlock;
@@ -17,6 +19,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 public class GT_Cover_Drain
         extends GT_CoverBehavior {
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+        EnumFacing sideFacing = EnumFacing.VALUES[aSide];
         if ((aCoverVariable % 3 > 1) && ((aTileEntity instanceof IMachineProgress))) {
             if (((IMachineProgress) aTileEntity).isAllowedToWork() != aCoverVariable % 3 < 2) {
                 return aCoverVariable;
@@ -27,31 +30,30 @@ public class GT_Cover_Drain
             if ((aCoverVariable < 3) && ((aTileEntity instanceof IFluidHandler))) {
                 if ((aSide == 1) &&
                         (aTileEntity.getWorld().isRaining()) &&
-                        (aTileEntity.getWorld().getPrecipitationHeight(aTileEntity.getXCoord(), aTileEntity.getZCoord()) - 2 < aTileEntity.getYCoord())) {
-                    int tAmount = (int) (aTileEntity.getBiome().rainfall * 10.0F);
+                        (aTileEntity.getWorld().getPrecipitationHeight(aTileEntity.getPos()).getY() - 2 < aTileEntity.getYCoord())) {
+                    int tAmount = (int) (aTileEntity.getBiome().getRainfall() * 10.0F);
                     if (tAmount > 0) {
-                        ((IFluidHandler) aTileEntity).fill(ForgeDirection.getOrientation(aSide), Materials.Water.getFluid(aTileEntity.getWorld().isThundering() ? tAmount * 2 : tAmount), true);
+                        ((IFluidHandler) aTileEntity).fill(sideFacing, Materials.Water.getFluid(aTileEntity.getWorld().isThundering() ? tAmount * 2 : tAmount), true);
                     }
                 }
                 FluidStack tLiquid = null;
                 if (tBlock != null) {
-                    if (((tBlock == Blocks.water) || (tBlock == Blocks.flowing_water)) && (aTileEntity.getMetaIDAtSide(aSide) == 0)) {
+                    if (((tBlock == Blocks.WATER) || (tBlock == Blocks.FLOWING_WATER)) && (aTileEntity.getMetaIDAtSide(aSide) == 0)) {
                         tLiquid = Materials.Water.getFluid(1000L);
-                    } else if (((tBlock == Blocks.lava) || (tBlock == Blocks.flowing_lava)) && (aTileEntity.getMetaIDAtSide(aSide) == 0)) {
+                    } else if (((tBlock == Blocks.LAVA) || (tBlock == Blocks.FLOWING_LAVA)) && (aTileEntity.getMetaIDAtSide(aSide) == 0)) {
                         tLiquid = Materials.Lava.getFluid(1000L);
                     } else if ((tBlock instanceof IFluidBlock)) {
-                        tLiquid = ((IFluidBlock) tBlock).drain(aTileEntity.getWorld(), aTileEntity.getOffsetX(aSide, 1), aTileEntity.getOffsetY(aSide, 1), aTileEntity.getOffsetZ(aSide, 1), false);
+                        tLiquid = ((IFluidBlock) tBlock).drain(aTileEntity.getWorld(), aTileEntity.getPos().offset(sideFacing), false);
                     }
                     if ((tLiquid != null) && (tLiquid.getFluid() != null) && ((aSide > 1) || ((aSide == 0) && (tLiquid.getFluid().getDensity() <= 0)) || ((aSide == 1) && (tLiquid.getFluid().getDensity() >= 0))) &&
-                            (((IFluidHandler) aTileEntity).fill(ForgeDirection.getOrientation(aSide), tLiquid, false) == tLiquid.amount)) {
-                        ((IFluidHandler) aTileEntity).fill(ForgeDirection.getOrientation(aSide), tLiquid, true);
-                        aTileEntity.getWorld().setBlockToAir(aTileEntity.getXCoord() + ForgeDirection.getOrientation(aSide).offsetX, aTileEntity.getYCoord() + ForgeDirection.getOrientation(aSide).offsetY, aTileEntity.getZCoord() + ForgeDirection.getOrientation(aSide).offsetZ);
+                            (((IFluidHandler) aTileEntity).fill(sideFacing, tLiquid, false) == tLiquid.amount)) {
+                        ((IFluidHandler) aTileEntity).fill(sideFacing, tLiquid, true);
+                        aTileEntity.getWorld().setBlockToAir(aTileEntity.getPos().offset(sideFacing));
                     }
                 }
             }
-            if ((aCoverVariable >= 3) && (tBlock != null) && (
-                    (tBlock == Blocks.lava) || (tBlock == Blocks.flowing_lava) || (tBlock == Blocks.water) || (tBlock == Blocks.flowing_water) || ((tBlock instanceof IFluidBlock)))) {
-                aTileEntity.getWorld().setBlock(aTileEntity.getOffsetX(aSide, 1), aTileEntity.getOffsetY(aSide, 1), aTileEntity.getOffsetZ(aSide, 1), Blocks.air, 0, 0);
+            if ((aCoverVariable >= 3) && (tBlock != null) && (tBlock instanceof IFluidBlock || tBlock instanceof BlockDynamicLiquid || tBlock instanceof BlockStaticLiquid)) {
+                aTileEntity.getWorld().setBlockToAir(aTileEntity.getPos().offset(sideFacing));
             }
         }
         return aCoverVariable;

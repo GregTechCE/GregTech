@@ -1,7 +1,8 @@
 package gregtech.api.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -12,7 +13,6 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 import java.util.List;
 
@@ -103,6 +103,11 @@ public abstract class GT_MetaGenerated_Item_X01 extends GT_MetaGenerated_Item {
 	/* ---------- INTERNAL OVERRIDES ---------- */
 
     @Override
+    public IIconContainer getIconContainer(ItemStack itemStack) {
+        return getIconContainer(itemStack.getItemDamage());
+    }
+
+    @Override
     public ItemStack getContainerItem(ItemStack aStack) {
         int aMetaData = aStack.getItemDamage();
         if (aMetaData < GregTech_API.sGeneratedMaterials.length && aMetaData >= 0) {
@@ -122,12 +127,12 @@ public abstract class GT_MetaGenerated_Item_X01 extends GT_MetaGenerated_Item {
 
     @Override
     public final IIconContainer getIconContainer(int aMetaData) {
-        return aMetaData < GregTech_API.sGeneratedMaterials.length && GregTech_API.sGeneratedMaterials[aMetaData] != null ? getIconContainer(aMetaData, GregTech_API.sGeneratedMaterials[aMetaData]) : null;
+        return getIconFromDamage(aMetaData);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public final void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
+    public final void getSubItems(Item var1, CreativeTabs aCreativeTab, List<ItemStack> aList) {
         for (int i = 0; i < GregTech_API.sGeneratedMaterials.length; i++)
             if (mPrefix.doGenerateItem(GregTech_API.sGeneratedMaterials[i]) && doesShowInCreative(mPrefix, GregTech_API.sGeneratedMaterials[i], GregTech_API.sDoShowAllItemsInCreative)) {
                 ItemStack tStack = new ItemStack(this, 1, i);
@@ -137,17 +142,16 @@ public abstract class GT_MetaGenerated_Item_X01 extends GT_MetaGenerated_Item {
         super.getSubItems(var1, aCreativeTab, aList);
     }
 
-    @Override
-    public final IIcon getIconFromDamage(int aMetaData) {
+    public final IIconContainer getIconFromDamage(int aMetaData) {
         if (aMetaData < 0) return null;
         if (aMetaData < GregTech_API.sGeneratedMaterials.length) {
             Materials tMaterial = GregTech_API.sGeneratedMaterials[aMetaData];
             if (tMaterial == null) return null;
             IIconContainer tIcon = getIconContainer(aMetaData, tMaterial);
-            if (tIcon != null) return tIcon.getIcon();
+            if (tIcon != null) return tIcon;
             return null;
         }
-        return aMetaData >= mOffset && aMetaData - mOffset < mIconList.length ? mIconList[aMetaData - mOffset][0] : null;
+        return aMetaData >= mOffset && aMetaData - mOffset < mIconList.length ? GT_Utility.sprite2Container(mIconList[aMetaData - mOffset][0]) : null;
     }
 
     @Override

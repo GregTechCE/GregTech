@@ -2,10 +2,10 @@ package gregtech.api.items;
 
 import gregtech.api.GregTech_API;
 import ic2.core.util.StackUtil;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
@@ -53,8 +53,8 @@ public class GT_CoolantCell_Item
         aList.add("Stored Heat: " + getHeatOfStack(aStack));
         switch (getControlTagOfStack(aStack)) {
             case 1:
-                aList.add(StatCollector.translateToLocal("ic2.reactoritem.heatwarning.line1"));
-                aList.add(StatCollector.translateToLocal("ic2.reactoritem.heatwarning.line2"));
+                aList.add(I18n.format("ic2.reactoritem.heatwarning.line1"));
+                aList.add(I18n.format("ic2.reactoritem.heatwarning.line2"));
         }
     }
 

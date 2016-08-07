@@ -1,12 +1,13 @@
 package gregtech.api.gui;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.inventory.ClickType;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
@@ -177,7 +178,7 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
     }
 
     @Override
-    public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
+    public ItemStack slotClick(int aSlotIndex, int aMouseclick, ClickType aShifthold, EntityPlayer aPlayer) {
         switch (aSlotIndex) {
             case 0:
                 if (mTileEntity.getMetaTileEntity() == null) return null;
@@ -201,18 +202,13 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
         mItemTransfer = ((GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity()).mItemTransfer;
         mStuttering = ((GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity()).mStuttering;
 
-        Iterator var2 = this.crafters.iterator();
+        Iterator<IContainerListener> var2 = this.listeners.iterator();
         while (var2.hasNext()) {
-            ICrafting var1 = (ICrafting) var2.next();
+            IContainerListener var1 = var2.next();
             var1.sendProgressBarUpdate(this, 102, mFluidTransfer ? 1 : 0);
             var1.sendProgressBarUpdate(this, 103, mItemTransfer ? 1 : 0);
             var1.sendProgressBarUpdate(this, 104, mStuttering ? 1 : 0);
         }
-    }
-
-    @Override
-    public void addCraftingToCrafters(ICrafting par1ICrafting) {
-        super.addCraftingToCrafters(par1ICrafting);
     }
 
     @Override

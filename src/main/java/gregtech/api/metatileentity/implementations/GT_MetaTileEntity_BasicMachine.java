@@ -18,7 +18,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
@@ -430,9 +430,9 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                 if (tTank != null) {
                     FluidStack tDrained = drain(1000, false);
                     if (tDrained != null) {
-                        int tFilledAmount = tTank.fill(ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()), tDrained, false);
+                        int tFilledAmount = tTank.fill(EnumFacing.VALUES[aBaseMetaTileEntity.getBackFacing()], tDrained, false);
                         if (tFilledAmount > 0)
-                            tTank.fill(ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()), drain(tFilledAmount, true), true);
+                            tTank.fill(EnumFacing.VALUES[aBaseMetaTileEntity.getBackFacing()], drain(tFilledAmount, true), true);
                     }
                 }
                 if (getDrainableStack() == null) tRemovedOutputFluid = true;

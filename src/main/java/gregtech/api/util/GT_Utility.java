@@ -1,7 +1,6 @@
 package gregtech.api.util;
 
-import cofh.api.transport.IItemDuct;
-import cpw.mods.fml.common.FMLCommonHandler;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.GT_DamageSources;
 import gregtech.api.enchants.Enchantment_Radioactivity;
@@ -11,6 +10,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.events.BlockScanningEvent;
 import gregtech.api.interfaces.IDebugableBlock;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.tileentity.*;
 import gregtech.api.items.GT_EnergyArmor_Item;
@@ -20,12 +20,13 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.threads.GT_Runnable_Sound;
 import gregtech.common.GT_Proxy;
-import ic2.api.recipe.ICannerBottleRecipeManager;
-import ic2.api.recipe.IRecipeInput;
-import ic2.api.recipe.RecipeInputItemStack;
-import ic2.api.recipe.RecipeInputOreDict;
-import ic2.api.recipe.RecipeOutput;
+import ic2.api.crops.CropProperties;
+import ic2.api.crops.ICropTile;
+import ic2.api.recipe.*;
+import ic2.core.IC2Potion;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
@@ -34,33 +35,34 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTBase.NBTPrimitive;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
-import net.minecraft.network.play.server.S07PacketRespawn;
-import net.minecraft.network.play.server.S1DPacketEntityEffect;
+import net.minecraft.nbt.*;
+import net.minecraft.network.play.server.SPacketRespawn;
+import net.minecraft.network.play.server.SPacketEntityEffect;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.ChunkPosition;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSource;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -226,6 +228,20 @@ public class GT_Utility {
         return E;
     }
 
+    public static IIconContainer sprite2Container(final TextureAtlasSprite sprite) {
+        return new IIconContainer() {
+            @Override
+            public TextureAtlasSprite getIcon() {
+                return sprite;
+            }
+
+            @Override
+            public TextureAtlasSprite getOverlayIcon() {
+                return null;
+            }
+        };
+    }
+
     public static boolean getPotion(EntityLivingBase aPlayer, int aPotionIndex) {
         try {
             Field tPotionHashmap = null;
@@ -299,7 +315,7 @@ public class GT_Utility {
     }
 
     public static ItemStack suckOneItemStackAt(World aWorld, double aX, double aY, double aZ, double aL, double aH, double aW) {
-        for (EntityItem tItem : (ArrayList<EntityItem>) aWorld.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + aL, aY + aH, aZ + aW))) {
+        for (EntityItem tItem : aWorld.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(aX, aY, aZ, aX + aL, aY + aH, aZ + aW))) {
             if (!tItem.isDead) {
                 aWorld.removeEntity(tItem);
                 tItem.setDead();
@@ -310,7 +326,7 @@ public class GT_Utility {
     }
 
     public static byte getOppositeSide(int aSide) {
-        return (byte) ForgeDirection.getOrientation(aSide).getOpposite().ordinal();
+        return (byte) EnumFacing.VALUES[aSide].getOpposite().getIndex();
     }
 
     public static byte getTier(long l) {
@@ -321,26 +337,26 @@ public class GT_Utility {
 
     public static void sendChatToPlayer(EntityPlayer aPlayer, String aChatMessage) {
         if (aPlayer != null && aPlayer instanceof EntityPlayerMP && aChatMessage != null) {
-            aPlayer.addChatComponentMessage(new ChatComponentText(aChatMessage));
+            aPlayer.addChatComponentMessage(new TextComponentString(aChatMessage));
         }
     }
 
     public static void checkAvailabilities() {
         if (CHECK_ALL) {
             try {
-                Class tClass = IItemDuct.class;
-                tClass.getCanonicalName();
-                TE_CHECK = true;
+                //Class tClass = IItemDuct.class;
+                //tClass.getCanonicalName();
+                //TE_CHECK = true;
             } catch (Throwable e) {/**/}
             try {
-                Class tClass = buildcraft.api.transport.IPipeTile.class;
-                tClass.getCanonicalName();
-                BC_CHECK = true;
+                //Class tClass = buildcraft.api.transport.IPipeTile.class;
+                //tClass.getCanonicalName();
+                //BC_CHECK = true;
             } catch (Throwable e) {/**/}
             try {
-                Class tClass = cofh.api.energy.IEnergyReceiver.class;
-                tClass.getCanonicalName();
-                RF_CHECK = true;
+                //Class tClass = cofh.api.energy.IEnergyReceiver.class;
+                //tClass.getCanonicalName();
+                //RF_CHECK = true;
             } catch (Throwable e) {/**/}
             CHECK_ALL = false;
         }
@@ -348,10 +364,10 @@ public class GT_Utility {
 
     public static boolean isConnectableNonInventoryPipe(Object aTileEntity, int aSide) {
         if (aTileEntity == null) return false;
-        checkAvailabilities();
-        if (TE_CHECK) if (aTileEntity instanceof IItemDuct) return true;
-        if (BC_CHECK) if (aTileEntity instanceof buildcraft.api.transport.IPipeTile)
-            return ((buildcraft.api.transport.IPipeTile) aTileEntity).isPipeConnected(ForgeDirection.getOrientation(aSide));
+        //checkAvailabilities();
+        //if (TE_CHECK) if (aTileEntity instanceof IItemDuct) return true;
+        //if (BC_CHECK) if (aTileEntity instanceof buildcraft.api.transport.IPipeTile)
+        //    return ((buildcraft.api.transport.IPipeTile) aTileEntity).isPipeConnected(ForgeDirection.getOrientation(aSide));
         return false;
     }
 
@@ -364,8 +380,8 @@ public class GT_Utility {
         if (aTileEntity1 == null || aMaxTargetStackSize <= 0 || aMinTargetStackSize <= 0 || aMinTargetStackSize > aMaxTargetStackSize || aMaxMoveAtOnce <= 0 || aMinMoveAtOnce > aMaxMoveAtOnce)
             return 0;
         if (aTileEntity2 != null) {
-            checkAvailabilities();
-            if (TE_CHECK && aTileEntity2 instanceof IItemDuct) {
+            //checkAvailabilities();
+            /*if (TE_CHECK && aTileEntity2 instanceof IItemDuct) {
                 for (int i = 0; i < aGrabSlots.length; i++) {
                     if (listContainsItem(aFilter, aTileEntity1.getStackInSlot(aGrabSlots[i]), true, aInvertFilter)) {
                         if (isAllowedToTakeFromSlot(aTileEntity1, aGrabSlots[i], (byte) aGrabFrom, aTileEntity1.getStackInSlot(aGrabSlots[i]))) {
@@ -373,8 +389,8 @@ public class GT_Utility {
                                 ItemStack tStack = copyAmount(Math.min(aTileEntity1.getStackInSlot(aGrabSlots[i]).stackSize, Math.min(aMaxMoveAtOnce, aMaxTargetStackSize)), aTileEntity1.getStackInSlot(aGrabSlots[i]));
                                 ItemStack rStack = ((IItemDuct) aTileEntity2).insertItem(ForgeDirection.getOrientation(aPutTo), copy(tStack));
                                 byte tMovedItemCount = (byte) (tStack.stackSize - (rStack == null ? 0 : rStack.stackSize));
-                                if (tMovedItemCount >= 1/*Math.max(aMinMoveAtOnce, aMinTargetStackSize)*/) {
-                                    //((cofh.api.transport.IItemConduit)aTileEntity2).insertItem(ForgeDirection.getOrientation(aPutTo), copyAmount(tMovedItemCount, tStack), F);
+                                if (tMovedItemCount >= 1/*Math.max(aMinMoveAtOnce, aMinTargetStackSize)) {
+                                    ((cofh.api.transport.IItemConduit)aTileEntity2).insertItem(ForgeDirection.getOrientation(aPutTo), copyAmount(tMovedItemCount, tStack), F);
                                     aTileEntity1.decrStackSize(aGrabSlots[i], tMovedItemCount);
                                     aTileEntity1.markDirty();
                                     return tMovedItemCount;
@@ -384,8 +400,8 @@ public class GT_Utility {
                     }
                 }
                 return 0;
-            }
-            if (BC_CHECK && aTileEntity2 instanceof buildcraft.api.transport.IPipeTile) {
+            }*/
+            /*if (BC_CHECK && aTileEntity2 instanceof buildcraft.api.transport.IPipeTile) {
                 for (int i = 0; i < aGrabSlots.length; i++) {
                     if (listContainsItem(aFilter, aTileEntity1.getStackInSlot(aGrabSlots[i]), true, aInvertFilter)) {
                         if (isAllowedToTakeFromSlot(aTileEntity1, aGrabSlots[i], (byte) aGrabFrom, aTileEntity1.getStackInSlot(aGrabSlots[i]))) {
@@ -403,21 +419,21 @@ public class GT_Utility {
                     }
                 }
                 return 0;
-            }
+            }*/
         }
 
-        ForgeDirection tDirection = ForgeDirection.getOrientation(aGrabFrom);
-        if (aTileEntity1 instanceof TileEntity && tDirection != ForgeDirection.UNKNOWN && tDirection.getOpposite() == ForgeDirection.getOrientation(aPutTo)) {
-            int tX = ((TileEntity) aTileEntity1).xCoord + tDirection.offsetX, tY = ((TileEntity) aTileEntity1).yCoord + tDirection.offsetY, tZ = ((TileEntity) aTileEntity1).zCoord + tDirection.offsetZ;
-            if (!hasBlockHitBox(((TileEntity) aTileEntity1).getWorldObj(), tX, tY, tZ)) {
+        EnumFacing tDirection = EnumFacing.VALUES[aGrabFrom];
+        if (aTileEntity1 instanceof TileEntity && tDirection != null && tDirection.getOpposite() == EnumFacing.VALUES[aPutTo]) {
+            int tX = ((TileEntity) aTileEntity1).getPos().getX() + tDirection.getFrontOffsetX(), tY = ((TileEntity) aTileEntity1).getPos().getY() + tDirection.getFrontOffsetY(), tZ = ((TileEntity) aTileEntity1).getPos().getZ() + tDirection.getFrontOffsetZ();
+            if (!hasBlockHitBox(((TileEntity) aTileEntity1).getWorld(), tX, tY, tZ)) {
                 for (int i = 0; i < aGrabSlots.length; i++) {
                     if (listContainsItem(aFilter, aTileEntity1.getStackInSlot(aGrabSlots[i]), true, aInvertFilter)) {
                         if (isAllowedToTakeFromSlot(aTileEntity1, aGrabSlots[i], (byte) aGrabFrom, aTileEntity1.getStackInSlot(aGrabSlots[i]))) {
                             if (Math.max(aMinMoveAtOnce, aMinTargetStackSize) <= aTileEntity1.getStackInSlot(aGrabSlots[i]).stackSize) {
                                 ItemStack tStack = copyAmount(Math.min(aTileEntity1.getStackInSlot(aGrabSlots[i]).stackSize, Math.min(aMaxMoveAtOnce, aMaxTargetStackSize)), aTileEntity1.getStackInSlot(aGrabSlots[i]));
-                                EntityItem tEntity = new EntityItem(((TileEntity) aTileEntity1).getWorldObj(), tX + 0.5, tY + 0.5, tZ + 0.5, tStack);
+                                EntityItem tEntity = new EntityItem(((TileEntity) aTileEntity1).getWorld(), tX + 0.5, tY + 0.5, tZ + 0.5, tStack);
                                 tEntity.motionX = tEntity.motionY = tEntity.motionZ = 0;
-                                ((TileEntity) aTileEntity1).getWorldObj().spawnEntityInWorld(tEntity);
+                                ((TileEntity) aTileEntity1).getWorld().spawnEntityInWorld(tEntity);
                                 aTileEntity1.decrStackSize(aGrabSlots[i], tStack.stackSize);
                                 aTileEntity1.markDirty();
                                 return (byte) tStack.stackSize;
@@ -465,7 +481,7 @@ public class GT_Utility {
     }
 
     public static boolean isAllowedToTakeFromSlot(IInventory aTileEntity, int aSlot, byte aSide, ItemStack aStack) {
-        if (ForgeDirection.getOrientation(aSide) == ForgeDirection.UNKNOWN) {
+        if (aSide > 6) {
             return isAllowedToTakeFromSlot(aTileEntity, aSlot, (byte) 0, aStack)
                     || isAllowedToTakeFromSlot(aTileEntity, aSlot, (byte) 1, aStack)
                     || isAllowedToTakeFromSlot(aTileEntity, aSlot, (byte) 2, aStack)
@@ -473,16 +489,14 @@ public class GT_Utility {
                     || isAllowedToTakeFromSlot(aTileEntity, aSlot, (byte) 4, aStack)
                     || isAllowedToTakeFromSlot(aTileEntity, aSlot, (byte) 5, aStack);
         }
-        if (aTileEntity instanceof ISidedInventory)
-            return ((ISidedInventory) aTileEntity).canExtractItem(aSlot, aStack, aSide);
-        return true;
+        return !(aTileEntity instanceof ISidedInventory) || ((ISidedInventory) aTileEntity).canExtractItem(aSlot, aStack, EnumFacing.VALUES[aSide]);
     }
 
     public static boolean isAllowedToPutIntoSlot(IInventory aTileEntity, int aSlot, byte aSide, ItemStack aStack, byte aMaxStackSize) {
         ItemStack tStack = aTileEntity.getStackInSlot(aSlot);
         if (tStack != null && (!areStacksEqual(tStack, aStack) || tStack.stackSize >= tStack.getMaxStackSize()))
             return false;
-        if (ForgeDirection.getOrientation(aSide) == ForgeDirection.UNKNOWN) {
+        if (aSide > 6) {
             return isAllowedToPutIntoSlot(aTileEntity, aSlot, (byte) 0, aStack, aMaxStackSize)
                     || isAllowedToPutIntoSlot(aTileEntity, aSlot, (byte) 1, aStack, aMaxStackSize)
                     || isAllowedToPutIntoSlot(aTileEntity, aSlot, (byte) 2, aStack, aMaxStackSize)
@@ -490,9 +504,7 @@ public class GT_Utility {
                     || isAllowedToPutIntoSlot(aTileEntity, aSlot, (byte) 4, aStack, aMaxStackSize)
                     || isAllowedToPutIntoSlot(aTileEntity, aSlot, (byte) 5, aStack, aMaxStackSize);
         }
-        if (aTileEntity instanceof ISidedInventory && !((ISidedInventory) aTileEntity).canInsertItem(aSlot, aStack, aSide))
-            return false;
-        return aTileEntity.isItemValidForSlot(aSlot, aStack);
+        return !(aTileEntity instanceof ISidedInventory && !((ISidedInventory) aTileEntity).canInsertItem(aSlot, aStack, EnumFacing.VALUES[aSide])) && aTileEntity.isItemValidForSlot(aSlot, aStack);
     }
 
     /**
@@ -515,7 +527,7 @@ public class GT_Utility {
 
         int[] tGrabSlots = null;
         if (aTileEntity1 instanceof ISidedInventory)
-            tGrabSlots = ((ISidedInventory) aTileEntity1).getAccessibleSlotsFromSide(aGrabFrom);
+            tGrabSlots = ((ISidedInventory) aTileEntity1).getSlotsForFace(EnumFacing.VALUES[aGrabFrom]);
         if (tGrabSlots == null) {
             tGrabSlots = new int[aTileEntity1.getSizeInventory()];
             for (int i = 0; i < tGrabSlots.length; i++) tGrabSlots[i] = i;
@@ -524,7 +536,7 @@ public class GT_Utility {
         if (aTileEntity2 != null && aTileEntity2 instanceof IInventory) {
             int[] tPutSlots = null;
             if (aTileEntity2 instanceof ISidedInventory)
-                tPutSlots = ((ISidedInventory) aTileEntity2).getAccessibleSlotsFromSide(aPutTo);
+                tPutSlots = ((ISidedInventory) aTileEntity2).getSlotsForFace(EnumFacing.VALUES[aPutTo]);
 
             if (tPutSlots == null) {
                 tPutSlots = new int[((IInventory) aTileEntity2).getSizeInventory()];
@@ -592,7 +604,7 @@ public class GT_Utility {
 
         int[] tGrabSlots = null;
         if (aTileEntity1 instanceof ISidedInventory)
-            tGrabSlots = ((ISidedInventory) aTileEntity1).getAccessibleSlotsFromSide(aGrabFrom);
+            tGrabSlots = ((ISidedInventory) aTileEntity1).getSlotsForFace(EnumFacing.VALUES[aGrabFrom]);
         if (tGrabSlots == null) {
             tGrabSlots = new int[((IInventory) aTileEntity1).getSizeInventory()];
             for (int i = 0; i < tGrabSlots.length; i++) tGrabSlots[i] = i;
@@ -649,7 +661,7 @@ public class GT_Utility {
     public static boolean areStacksOrToolsEqual(ItemStack aStack1, ItemStack aStack2) {
         if (aStack1 != null && aStack2 != null && aStack1.getItem() == aStack2.getItem()) {
             if (aStack1.getItem().isDamageable()) return true;
-            return ((aStack1.getTagCompound() == null) == (aStack2.getTagCompound() == null)) && (aStack1.getTagCompound() == null || aStack1.getTagCompound().equals(aStack2.getTagCompound())) && (Items.feather.getDamage(aStack1) == Items.feather.getDamage(aStack2) || Items.feather.getDamage(aStack1) == W || Items.feather.getDamage(aStack2) == W);
+            return ((aStack1.getTagCompound() == null) == (aStack2.getTagCompound() == null)) && (aStack1.getTagCompound() == null || aStack1.getTagCompound().equals(aStack2.getTagCompound())) && (Items.FEATHER.getDamage(aStack1) == Items.FEATHER.getDamage(aStack2) || Items.FEATHER.getDamage(aStack1) == W || Items.FEATHER.getDamage(aStack2) == W);
         }
         return false;
     }
@@ -667,7 +679,7 @@ public class GT_Utility {
     }
 
     public static boolean areStacksEqual(ItemStack aStack1, ItemStack aStack2, boolean aIgnoreNBT) {
-        return aStack1 != null && aStack2 != null && aStack1.getItem() == aStack2.getItem() && (aIgnoreNBT || ((aStack1.getTagCompound() == null) == (aStack2.getTagCompound() == null)) && (aStack1.getTagCompound() == null || aStack1.getTagCompound().equals(aStack2.getTagCompound()))) && (Items.feather.getDamage(aStack1) == Items.feather.getDamage(aStack2) || Items.feather.getDamage(aStack1) == W || Items.feather.getDamage(aStack2) == W);
+        return aStack1 != null && aStack2 != null && aStack1.getItem() == aStack2.getItem() && (aIgnoreNBT || ((aStack1.getTagCompound() == null) == (aStack2.getTagCompound() == null)) && (aStack1.getTagCompound() == null || aStack1.getTagCompound().equals(aStack2.getTagCompound()))) && (Items.FEATHER.getDamage(aStack1) == Items.FEATHER.getDamage(aStack2) || Items.FEATHER.getDamage(aStack1) == W || Items.FEATHER.getDamage(aStack2) == W);
     }
 
     public static boolean areUnificationsEqual(ItemStack aStack1, ItemStack aStack2) {
@@ -721,7 +733,7 @@ public class GT_Utility {
         if (GT_ModHandler.isWater(aFluid) && ItemList.Bottle_Empty.isStackEqual(aStack)) {
             if (aFluid.amount >= 250) {
                 if (aRemoveFluidDirectly) aFluid.amount -= 250;
-                return new ItemStack(Items.potionitem, 1, 0);
+                return new ItemStack(Items.POTIONITEM, 1, 0);
             }
             return null;
         }
@@ -746,12 +758,8 @@ public class GT_Utility {
 
     public static ItemStack getFluidDisplayStack(FluidStack aFluid, boolean aUseStackSize) {
         if (aFluid == null || aFluid.getFluid() == null) return null;
-        int tmp = 0;
-        try {
-            tmp = aFluid.getFluid().getID();
-        } catch (Exception e) {
-            System.err.println(e);
-        }
+        int tmp = FluidRegistry.getFluidID(aFluid.getFluid());
+      
         ItemStack rStack = ItemList.Display_Fluid.getWithDamage(aUseStackSize ? aFluid.amount / 1000 : 1, tmp);
         NBTTagCompound tNBT = new NBTTagCompound();
         tNBT.setLong("mFluidDisplayAmount", aFluid.amount);
@@ -763,10 +771,19 @@ public class GT_Utility {
 
     public static boolean containsFluid(ItemStack aStack, FluidStack aFluid, boolean aCheckIFluidContainerItems) {
         if (isStackInvalid(aStack) || aFluid == null) return false;
-        if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem && ((IFluidContainerItem) aStack.getItem()).getCapacity(aStack) > 0)
-            return aFluid.isFluidEqual(((IFluidContainerItem) aStack.getItem()).getFluid(aStack = copyAmount(1, aStack)));
+        aStack = copyAmount(1, aStack);
+        if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem) {
+            IFluidContainerItem containerItem = (IFluidContainerItem) aStack.getItem();
+            return aFluid.isFluidEqual(containerItem.getFluid(aStack));
+
+        }
+        if(aCheckIFluidContainerItems && aStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+            net.minecraftforge.fluids.capability.IFluidHandler fluidHandler = aStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+            if(fluidHandler.getTankProperties().length == 0) return false;
+            return aFluid.isFluidEqual(fluidHandler.getTankProperties()[0].getContents());
+        }
         FluidContainerData tData = sFilledContainerToData.get(new GT_ItemStack(aStack));
-        return tData == null ? false : tData.fluid.isFluidEqual(aFluid);
+        return tData != null && tData.fluid.isFluidEqual(aFluid);
     }
 
     public static FluidStack getFluidForFilledItem(ItemStack aStack, boolean aCheckIFluidContainerItems) {
@@ -794,7 +811,7 @@ public class GT_Utility {
         /** These are all special Cases, in which it is intended to have only GT Blocks outputting those Container Items */
         if (ItemList.Cell_Empty.isStackEqual(aStack, false, true)) return null;
         if (ItemList.IC2_Fuel_Can_Filled.isStackEqual(aStack, false, true)) return ItemList.IC2_Fuel_Can_Empty.get(1);
-        if (aStack.getItem() == Items.potionitem || aStack.getItem() == Items.experience_bottle || ItemList.TF_Vial_FieryBlood.isStackEqual(aStack) || ItemList.TF_Vial_FieryTears.isStackEqual(aStack))
+        if (aStack.getItem() == Items.POTIONITEM || aStack.getItem() == Items.EXPERIENCE_BOTTLE || ItemList.TF_Vial_FieryBlood.isStackEqual(aStack) || ItemList.TF_Vial_FieryTears.isStackEqual(aStack))
             return ItemList.Bottle_Empty.get(1);
 
         if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem && ((IFluidContainerItem) aStack.getItem()).getCapacity(aStack) > 0) {
@@ -808,7 +825,7 @@ public class GT_Utility {
         if (tCapsuleCount > 0) return ItemList.Cell_Empty.get(tCapsuleCount);
 
         if (ItemList.IC2_ForgeHammer.isStackEqual(aStack) || ItemList.IC2_WireCutter.isStackEqual(aStack))
-            return copyMetaData(Items.feather.getDamage(aStack) + 1, aStack);
+            return copyMetaData(Items.FEATHER.getDamage(aStack) + 1, aStack);
         return null;
     }
     
@@ -832,15 +849,15 @@ public class GT_Utility {
         return rReturn;
     }
 
-    public static synchronized boolean removeSimpleIC2MachineRecipe(ItemStack aInput, Map<IRecipeInput, RecipeOutput> aRecipeList, ItemStack aOutput) {
+    public static synchronized boolean removeSimpleIC2MachineRecipe(ItemStack aInput, Iterable<IMachineRecipeManager.RecipeIoContainer> aRecipeList, ItemStack aOutput) {
         if ((isStackInvalid(aInput) && isStackInvalid(aOutput)) || aRecipeList == null) return false;
         boolean rReturn = false;
-        Iterator<Map.Entry<IRecipeInput, RecipeOutput>> tIterator = aRecipeList.entrySet().iterator();
+        Iterator<IMachineRecipeManager.RecipeIoContainer> tIterator = aRecipeList.iterator();
         aOutput = GT_OreDictUnificator.get(aOutput);
         while (tIterator.hasNext()) {
-            Map.Entry<IRecipeInput, RecipeOutput> tEntry = tIterator.next();
-            if (aInput == null || tEntry.getKey().matches(aInput)) {
-                List<ItemStack> tList = tEntry.getValue().items;
+            IMachineRecipeManager.RecipeIoContainer tEntry = tIterator.next();
+            if (aInput == null || tEntry.input.matches(aInput)) {
+                List<ItemStack> tList = tEntry.output.items;
                 if (tList != null) for (ItemStack tOutput : tList)
                     if (aOutput == null || areStacksEqual(GT_OreDictUnificator.get(tOutput), aOutput)) {
                         tIterator.remove();
@@ -852,7 +869,7 @@ public class GT_Utility {
         return rReturn;
     }
 
-    public static boolean addSimpleIC2MachineRecipe(ItemStack aInput, Map<IRecipeInput, RecipeOutput> aRecipeList, NBTTagCompound aNBT, Object... aOutput) {
+    public static boolean addSimpleIC2MachineRecipe(ItemStack aInput, IMachineRecipeManager aRecipeList, NBTTagCompound aNBT, Object... aOutput) {
         if (isStackInvalid(aInput) || aOutput.length == 0 || aRecipeList == null) return false;
         ItemData tOreName = GT_OreDictUnificator.getAssociation(aInput);
         for (int i = 0; i < aOutput.length; i++) {
@@ -862,9 +879,9 @@ public class GT_Utility {
             }
         }
         if (tOreName != null) {
-            aRecipeList.put(new RecipeInputOreDict(tOreName.toString(), aInput.stackSize), new RecipeOutput(aNBT, GT_OreDictUnificator.getStackArray(true, aOutput)));
+            aRecipeList.addRecipe(new RecipeInputOreDict(tOreName.toString(), aInput.stackSize), aNBT, true, GT_OreDictUnificator.getStackArray(true, aOutput));
         } else {
-            aRecipeList.put(new RecipeInputItemStack(copy(aInput), aInput.stackSize), new RecipeOutput(aNBT, GT_OreDictUnificator.getStackArray(true, aOutput)));
+            aRecipeList.addRecipe(new RecipeInputItemStack(copy(aInput), aInput.stackSize), aNBT, true, GT_OreDictUnificator.getStackArray(true, aOutput));
         }
         return true;
     }
@@ -886,7 +903,7 @@ public class GT_Utility {
         if (rStack != null) return copyAmount(1, rStack);
         if (isStringInvalid(aTitle) || isStringInvalid(aAuthor) || aPages.length <= 0) return null;
         sBookCount++;
-        rStack = new ItemStack(Items.written_book, 1);
+        rStack = new ItemStack(Items.WRITTEN_BOOK, 1);
         NBTTagCompound tNBT = new NBTTagCompound();
         tNBT.setString("title", GT_LanguageManager.addStringLocalization("Book." + aTitle + ".Name", aTitle));
         tNBT.setString("author", aAuthor);
@@ -942,7 +959,7 @@ public class GT_Utility {
 
     public static int stackToInt(ItemStack aStack) {
         if (isStackInvalid(aStack)) return 0;
-        return Item.getIdFromItem(aStack.getItem()) | (Items.feather.getDamage(aStack) << 16);
+        return Item.getIdFromItem(aStack.getItem()) | (Items.FEATHER.getDamage(aStack) << 16);
     }
 
     public static int stackToWildcard(ItemStack aStack) {
@@ -951,7 +968,7 @@ public class GT_Utility {
     }
 
     public static ItemStack intToStack(int aStack) {
-        int tID = aStack & (~0 >>> 16), tMeta = aStack >>> 16;
+        int tID = aStack, tMeta = aStack >>> 16;
         Item tItem = Item.getItemById(tID);
         if (tItem != null) return new ItemStack(tItem, 1, tMeta);
         return null;
@@ -1006,7 +1023,7 @@ public class GT_Utility {
     }
 
     public static Block getBlockFromStack(Object aStack) {
-        if (isStackInvalid(aStack)) return Blocks.air;
+        if (isStackInvalid(aStack)) return Blocks.AIR;
         return Block.getBlockFromItem(((ItemStack) aStack).getItem());
     }
 
@@ -1045,33 +1062,34 @@ public class GT_Utility {
     }
 
     public static boolean isOpaqueBlock(World aWorld, int aX, int aY, int aZ) {
-        return aWorld.getBlock(aX, aY, aZ).isOpaqueCube();
+        return aWorld.getBlockState(new BlockPos(aX, aY, aZ)).isOpaqueCube();
     }
 
     public static boolean isBlockAir(World aWorld, int aX, int aY, int aZ) {
-        return aWorld.getBlock(aX, aY, aZ).isAir(aWorld, aX, aY, aZ);
+        return aWorld.isAirBlock(new BlockPos(aX, aY, aZ));
     }
 
     public static boolean hasBlockHitBox(World aWorld, int aX, int aY, int aZ) {
-        return aWorld.getBlock(aX, aY, aZ).getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ) != null;
+        return aWorld.getBlockState(new BlockPos(aX, aY, aZ)).getCollisionBoundingBox(aWorld, new BlockPos(aX, aY, aZ)) != null;
     }
 
     public static void setCoordsOnFire(World aWorld, int aX, int aY, int aZ, boolean aReplaceCenter) {
+        BlockPos blockPos = new BlockPos(aX, aY, aZ);
         if (aReplaceCenter)
-            if (aWorld.getBlock(aX, aY, aZ).getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ) == null)
-                aWorld.setBlock(aX, aY, aZ, Blocks.fire);
-        if (aWorld.getBlock(aX + 1, aY, aZ).getCollisionBoundingBoxFromPool(aWorld, aX + 1, aY, aZ) == null)
-            aWorld.setBlock(aX + 1, aY, aZ, Blocks.fire);
-        if (aWorld.getBlock(aX - 1, aY, aZ).getCollisionBoundingBoxFromPool(aWorld, aX - 1, aY, aZ) == null)
-            aWorld.setBlock(aX - 1, aY, aZ, Blocks.fire);
-        if (aWorld.getBlock(aX, aY + 1, aZ).getCollisionBoundingBoxFromPool(aWorld, aX, aY + 1, aZ) == null)
-            aWorld.setBlock(aX, aY + 1, aZ, Blocks.fire);
-        if (aWorld.getBlock(aX, aY - 1, aZ).getCollisionBoundingBoxFromPool(aWorld, aX, aY - 1, aZ) == null)
-            aWorld.setBlock(aX, aY - 1, aZ, Blocks.fire);
-        if (aWorld.getBlock(aX, aY, aZ + 1).getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ + 1) == null)
-            aWorld.setBlock(aX, aY, aZ + 1, Blocks.fire);
-        if (aWorld.getBlock(aX, aY, aZ - 1).getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ - 1) == null)
-            aWorld.setBlock(aX, aY, aZ - 1, Blocks.fire);
+            if (aWorld.getBlockState(blockPos).getCollisionBoundingBox(aWorld, blockPos) == null)
+                aWorld.setBlockState(blockPos, Blocks.FIRE.getDefaultState());
+        if (aWorld.getBlockState(blockPos.east()).getCollisionBoundingBox(aWorld, blockPos.east()) == null)
+            aWorld.setBlockState(blockPos.east(), Blocks.FIRE.getDefaultState());
+        if (aWorld.getBlockState(blockPos.south()).getCollisionBoundingBox(aWorld, blockPos.south()) == null)
+            aWorld.setBlockState(blockPos.south(), Blocks.FIRE.getDefaultState());
+        if (aWorld.getBlockState(blockPos.west()).getCollisionBoundingBox(aWorld, blockPos.west()) == null)
+            aWorld.setBlockState(blockPos.west(), Blocks.FIRE.getDefaultState());
+        if (aWorld.getBlockState(blockPos.north()).getCollisionBoundingBox(aWorld, blockPos.north()) == null)
+            aWorld.setBlockState(blockPos.north(), Blocks.FIRE.getDefaultState());
+        if (aWorld.getBlockState(blockPos.up()).getCollisionBoundingBox(aWorld, blockPos.up()) == null)
+            aWorld.setBlockState(blockPos.up(), Blocks.FIRE.getDefaultState());
+        if (aWorld.getBlockState(blockPos.down()).getCollisionBoundingBox(aWorld, blockPos.down()) == null)
+            aWorld.setBlockState(blockPos.down(), Blocks.FIRE.getDefaultState());
     }
 
     public static ItemStack getProjectile(SubTag aProjectileType, IInventory aInventory) {
@@ -1161,38 +1179,38 @@ public class GT_Utility {
     }
 
     public static boolean isWearingFullFrostHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
-            if (!isStackInList(aEntity.getEquipmentInSlot(i), GregTech_API.sFrostHazmatList)) return false;
+        for (EntityEquipmentSlot i : EntityEquipmentSlot.values())
+            if (!isStackInList(aEntity.getItemStackFromSlot(i), GregTech_API.sFrostHazmatList)) return false;
         return true;
     }
 
     public static boolean isWearingFullHeatHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
-            if (!isStackInList(aEntity.getEquipmentInSlot(i), GregTech_API.sHeatHazmatList)) return false;
+        for (EntityEquipmentSlot i : EntityEquipmentSlot.values())
+            if (!isStackInList(aEntity.getItemStackFromSlot(i), GregTech_API.sHeatHazmatList)) return false;
         return true;
     }
 
     public static boolean isWearingFullBioHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
-            if (!isStackInList(aEntity.getEquipmentInSlot(i), GregTech_API.sBioHazmatList)) return false;
+        for (EntityEquipmentSlot i : EntityEquipmentSlot.values())
+            if (!isStackInList(aEntity.getItemStackFromSlot(i), GregTech_API.sBioHazmatList)) return false;
         return true;
     }
 
     public static boolean isWearingFullRadioHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
-            if (!isStackInList(aEntity.getEquipmentInSlot(i), GregTech_API.sRadioHazmatList)) return false;
+        for (EntityEquipmentSlot i : EntityEquipmentSlot.values())
+            if (!isStackInList(aEntity.getItemStackFromSlot(i), GregTech_API.sRadioHazmatList)) return false;
         return true;
     }
 
     public static boolean isWearingFullElectroHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
-            if (!isStackInList(aEntity.getEquipmentInSlot(i), GregTech_API.sElectroHazmatList)) return false;
+        for (EntityEquipmentSlot i : EntityEquipmentSlot.values())
+            if (!isStackInList(aEntity.getItemStackFromSlot(i), GregTech_API.sElectroHazmatList)) return false;
         return true;
     }
 
     public static boolean isWearingFullGasHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
-            if (!isStackInList(aEntity.getEquipmentInSlot(i), GregTech_API.sGasHazmatList)) return false;
+        for (EntityEquipmentSlot i : EntityEquipmentSlot.values())
+            if (!isStackInList(aEntity.getItemStackFromSlot(i), GregTech_API.sGasHazmatList)) return false;
         return true;
     }
 
@@ -1209,7 +1227,7 @@ public class GT_Utility {
             if (tData.mMaterial.mMaterial.mEnchantmentTools instanceof Enchantment_Radioactivity)
                 return tData.mMaterial.mMaterial.mEnchantmentToolsLevel;
         }
-        return EnchantmentHelper.getEnchantmentLevel(Enchantment_Radioactivity.INSTANCE.effectId, aStack);
+        return EnchantmentHelper.getEnchantmentLevel(Enchantment_Radioactivity.INSTANCE, aStack);
     }
 
     public static boolean isImmuneToBreathingGasses(EntityLivingBase aEntity) {
@@ -1217,7 +1235,7 @@ public class GT_Utility {
     }
 
     public static boolean applyHeatDamage(EntityLivingBase aEntity, float aDamage) {
-        if (aDamage > 0 && aEntity != null && aEntity.getActivePotionEffect(Potion.fireResistance) == null && !isWearingFullHeatHazmat(aEntity)) {
+        if (aDamage > 0 && aEntity != null && aEntity.getActivePotionEffect(Potion.getPotionFromResourceLocation("fire_resistance")) == null && !isWearingFullHeatHazmat(aEntity)) {
             aEntity.attackEntityFrom(GT_DamageSources.getHeatDamage(), aDamage);
             return true;
         }
@@ -1243,13 +1261,11 @@ public class GT_Utility {
 
     public static boolean applyRadioactivity(EntityLivingBase aEntity, int aLevel, int aAmountOfItems) {
         if (aLevel > 0 && aEntity != null && aEntity.getCreatureAttribute() != EnumCreatureAttribute.UNDEAD && aEntity.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD && !isWearingFullRadioHazmat(aEntity)) {
-            PotionEffect tEffect = null;
-            aEntity.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, aLevel * 140 * aAmountOfItems + Math.max(0, ((tEffect = aEntity.getActivePotionEffect(Potion.moveSlowdown)) == null ? 0 : tEffect.getDuration())), Math.max(0, (5 * aLevel) / 7)));
-            aEntity.addPotionEffect(new PotionEffect(Potion.digSlowdown.id, aLevel * 150 * aAmountOfItems + Math.max(0, ((tEffect = aEntity.getActivePotionEffect(Potion.digSlowdown)) == null ? 0 : tEffect.getDuration())), Math.max(0, (5 * aLevel) / 7)));
-            aEntity.addPotionEffect(new PotionEffect(Potion.confusion.id, aLevel * 130 * aAmountOfItems + Math.max(0, ((tEffect = aEntity.getActivePotionEffect(Potion.confusion)) == null ? 0 : tEffect.getDuration())), Math.max(0, (5 * aLevel) / 7)));
-            aEntity.addPotionEffect(new PotionEffect(Potion.weakness.id, aLevel * 150 * aAmountOfItems + Math.max(0, ((tEffect = aEntity.getActivePotionEffect(Potion.weakness)) == null ? 0 : tEffect.getDuration())), Math.max(0, (5 * aLevel) / 7)));
-            aEntity.addPotionEffect(new PotionEffect(Potion.hunger.id, aLevel * 130 * aAmountOfItems + Math.max(0, ((tEffect = aEntity.getActivePotionEffect(Potion.hunger)) == null ? 0 : tEffect.getDuration())), Math.max(0, (5 * aLevel) / 7)));
-            aEntity.addPotionEffect(new PotionEffect(24 /* IC2 Radiation */, aLevel * 180 * aAmountOfItems + Math.max(0, ((tEffect = aEntity.getActivePotionEffect(Potion.potionTypes[24])) == null ? 0 : tEffect.getDuration())), Math.max(0, (5 * aLevel) / 7)));
+            aEntity.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("slowness"), aLevel * 140 * aAmountOfItems));
+            aEntity.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("confusion"), aLevel * 130 * aAmountOfItems));
+            aEntity.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("weakness"), aLevel * 150 * aAmountOfItems));
+            aEntity.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("hunger"), aLevel * 130 * aAmountOfItems));
+            aEntity.addPotionEffect(new PotionEffect(IC2Potion.radiation, aLevel * 180 * aAmountOfItems));
             return true;
         }
         return false;
@@ -1257,9 +1273,9 @@ public class GT_Utility {
 
     public static ItemStack setStack(Object aSetStack, Object aToStack) {
         if (isStackInvalid(aSetStack) || isStackInvalid(aToStack)) return null;
-        ((ItemStack) aSetStack).func_150996_a(((ItemStack) aToStack).getItem());
+        ((ItemStack) aSetStack).setItem(((ItemStack) aToStack).getItem());
         ((ItemStack) aSetStack).stackSize = ((ItemStack) aToStack).stackSize;
-        Items.feather.setDamage((ItemStack) aSetStack, Items.feather.getDamage((ItemStack) aToStack));
+        Items.FEATHER.setDamage((ItemStack) aSetStack, Items.FEATHER.getDamage((ItemStack) aToStack));
         ((ItemStack) aSetStack).setTagCompound(((ItemStack) aToStack).getTagCompound());
         return (ItemStack) aSetStack;
     }
@@ -1294,14 +1310,14 @@ public class GT_Utility {
     public static ItemStack copyMetaData(long aMetaData, Object... aStacks) {
         ItemStack rStack = copy(aStacks);
         if (isStackInvalid(rStack)) return null;
-        Items.feather.setDamage(rStack, (short) aMetaData);
+        Items.FEATHER.setDamage(rStack, (short) aMetaData);
         return rStack;
     }
 
     public static ItemStack copyAmountAndMetaData(long aAmount, long aMetaData, Object... aStacks) {
         ItemStack rStack = copyAmount(aAmount, aStacks);
         if (isStackInvalid(rStack)) return null;
-        Items.feather.setDamage(rStack, (short) aMetaData);
+        Items.FEATHER.setDamage(rStack, (short) aMetaData);
         return rStack;
     }
 
@@ -1448,30 +1464,28 @@ public class GT_Utility {
     }
 
     public static boolean moveEntityToDimensionAtCoords(Entity aEntity, int aDimension, double aX, double aY, double aZ) {
-        WorldServer tTargetWorld = DimensionManager.getWorld(aDimension), tOriginalWorld = DimensionManager.getWorld(aEntity.worldObj.provider.dimensionId);
+        WorldServer tTargetWorld = DimensionManager.getWorld(aDimension), tOriginalWorld = DimensionManager.getWorld(aEntity.worldObj.provider.getDimension());
         if (tTargetWorld != null && tOriginalWorld != null && tTargetWorld != tOriginalWorld) {
-            if (aEntity.ridingEntity != null) aEntity.mountEntity(null);
-            if (aEntity.riddenByEntity != null) aEntity.riddenByEntity.mountEntity(null);
 
             if (aEntity instanceof EntityPlayerMP) {
                 EntityPlayerMP aPlayer = (EntityPlayerMP) aEntity;
                 aPlayer.dimension = aDimension;
-                aPlayer.playerNetServerHandler.sendPacket(new S07PacketRespawn(aPlayer.dimension, aPlayer.worldObj.difficultySetting, aPlayer.worldObj.getWorldInfo().getTerrainType(), aPlayer.theItemInWorldManager.getGameType()));
-                tOriginalWorld.removePlayerEntityDangerously(aPlayer);
+                aPlayer.connection.sendPacket(new SPacketRespawn(aPlayer.dimension, aPlayer.worldObj.getDifficulty(), aPlayer.worldObj.getWorldInfo().getTerrainType(), aPlayer.interactionManager.getGameType()));
+                tOriginalWorld.removeEntityDangerously(aPlayer);
                 aPlayer.isDead = false;
                 aPlayer.setWorld(tTargetWorld);
-                MinecraftServer.getServer().getConfigurationManager().func_72375_a(aPlayer, tOriginalWorld);
-                aPlayer.playerNetServerHandler.setPlayerLocation(aX + 0.5, aY + 0.5, aZ + 0.5, aPlayer.rotationYaw, aPlayer.rotationPitch);
-                aPlayer.theItemInWorldManager.setWorld(tTargetWorld);
-                MinecraftServer.getServer().getConfigurationManager().updateTimeAndWeatherForPlayer(aPlayer, tTargetWorld);
-                MinecraftServer.getServer().getConfigurationManager().syncPlayerInventory(aPlayer);
+                FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().preparePlayer(aPlayer, tOriginalWorld);
+                aPlayer.connection.setPlayerLocation(aX + 0.5, aY + 0.5, aZ + 0.5, aPlayer.rotationYaw, aPlayer.rotationPitch);
+                aPlayer.interactionManager.setWorld(tTargetWorld);
+                FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().updateTimeAndWeatherForPlayer(aPlayer, tTargetWorld);
+                FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().syncPlayerInventory(aPlayer);
                 Iterator tIterator = aPlayer.getActivePotionEffects().iterator();
                 while (tIterator.hasNext()) {
                     PotionEffect potioneffect = (PotionEffect) tIterator.next();
-                    aPlayer.playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(aPlayer.getEntityId(), potioneffect));
+                    aPlayer.connection.sendPacket(new SPacketEntityEffect(aPlayer.getEntityId(), potioneffect));
                 }
-                aPlayer.playerNetServerHandler.setPlayerLocation(aX + 0.5, aY + 0.5, aZ + 0.5, aPlayer.rotationYaw, aPlayer.rotationPitch);
-                FMLCommonHandler.instance().firePlayerChangedDimensionEvent(aPlayer, tOriginalWorld.provider.dimensionId, aDimension);
+                aPlayer.connection.setPlayerLocation(aX + 0.5, aY + 0.5, aZ + 0.5, aPlayer.rotationYaw, aPlayer.rotationPitch);
+                FMLCommonHandler.instance().firePlayerChangedDimensionEvent(aPlayer, tOriginalWorld.provider.getDimension(), aDimension);
             } else {
                 aEntity.setPosition(aX + 0.5, aY + 0.5, aZ + 0.5);
                 aEntity.worldObj.removeEntity(aEntity);
@@ -1479,7 +1493,12 @@ public class GT_Utility {
                 aEntity.isDead = false;
                 Entity tNewEntity = EntityList.createEntityByName(EntityList.getEntityString(aEntity), tTargetWorld);
                 if (tNewEntity != null) {
-                    tNewEntity.copyDataFrom(aEntity, true);
+
+                    NBTTagCompound nbttagcompound = aEntity.writeToNBT(new NBTTagCompound());
+                    nbttagcompound.removeTag("Dimension");
+                    tNewEntity.readFromNBT(nbttagcompound);
+                    tNewEntity.timeUntilPortal = aEntity.timeUntilPortal;
+
                     aEntity.setDead();
                     tNewEntity.isDead = false;
                     boolean temp = tNewEntity.forceSpawn;
@@ -1492,7 +1511,7 @@ public class GT_Utility {
             }
 
             if (aEntity instanceof EntityLivingBase) {
-                ((EntityLivingBase) aEntity).setPositionAndUpdate(aX, aY, aZ);
+                aEntity.setPositionAndUpdate(aX, aY, aZ);
             } else {
                 aEntity.setPosition(aX, aY, aZ);
             }
@@ -1531,7 +1550,7 @@ public class GT_Utility {
                 tFluid = Materials.Oil.mFluid;
         }
         int tAmount = (int) (Math.pow(amount, 5) / 100);
-        ChunkPosition tPos = new ChunkPosition(aX/16, 1, aZ/16);
+        BlockPos tPos = new BlockPos(aX/16, 1, aZ/16);
         int[] tInts = new int[2];
     	if(GT_Proxy.chunkData.containsKey(tPos)){
     		tInts = GT_Proxy.chunkData.get(tPos);
@@ -1550,22 +1569,23 @@ public class GT_Utility {
     public static int getCoordinateScan(ArrayList<String> aList, EntityPlayer aPlayer, World aWorld, int aScanLevel, int aX, int aY, int aZ, int aSide, float aClickX, float aClickY, float aClickZ) {
         if (aList == null) return 0;
 
-        ArrayList<String> tList = new ArrayList<String>();
+        BlockPos blockPos = new BlockPos(aX, aY, aZ);
+        ArrayList<String> tList = new ArrayList<>();
         int rEUAmount = 0;
 
-        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        TileEntity tTileEntity = aWorld.getTileEntity(blockPos);
 
-        Block tBlock = aWorld.getBlock(aX, aY, aZ);
+        IBlockState tBlock = aWorld.getBlockState(blockPos);
 
         tList.add("----- X: " + aX + " Y: " + aY + " Z: " + aZ + " -----");
         try {
             if (tTileEntity != null && tTileEntity instanceof IInventory)
-                tList.add("Name: " + ((IInventory) tTileEntity).getInventoryName() + "  MetaData: " + aWorld.getBlockMetadata(aX, aY, aZ));
+                tList.add("Name: " + ((IInventory) tTileEntity).getName() + "  MetaData: " + aWorld.getBlockState(blockPos));
             else
-                tList.add("Name: " + tBlock.getUnlocalizedName() + "  MetaData: " + aWorld.getBlockMetadata(aX, aY, aZ));
+                tList.add("Name: " + tBlock.getBlock().getUnlocalizedName() + "  MetaData: " + tBlock.getBlock().getMetaFromState(tBlock));
 
-            tList.add("Hardness: " + tBlock.getBlockHardness(aWorld, aX, aY, aZ) + "  Blast Resistance: " + tBlock.getExplosionResistance(aPlayer, aWorld, aX, aY, aZ, aPlayer.posX, aPlayer.posY, aPlayer.posZ));
-            if (tBlock.isBeaconBase(aWorld, aX, aY, aZ, aX, aY + 1, aZ)) tList.add("Is valid Beacon Pyramid Material");
+            //tList.add("Hardness: " + tBlock.getBlockHardness(aWorld, blockPos) + "  Blast Resistance: " + tBlock.getBlock().getExplosionResistance(aPlayer, aWorld, aX, aY, aZ, aPlayer.posX, aPlayer.posY, aPlayer.posZ));
+            if (tBlock.getBlock().isBeaconBase(aWorld, blockPos, blockPos.add(0, 1, 0))) tList.add("Is valid Beacon Pyramid Material");
         } catch (Throwable e) {
             if (D1) e.printStackTrace(GT_Log.err);
         }
@@ -1573,7 +1593,7 @@ public class GT_Utility {
             try {
                 if (tTileEntity instanceof IFluidHandler) {
                     rEUAmount += 500;
-                    FluidTankInfo[] tTanks = ((IFluidHandler) tTileEntity).getTankInfo(ForgeDirection.getOrientation(aSide));
+                    FluidTankInfo[] tTanks = ((IFluidHandler) tTileEntity).getTankInfo(EnumFacing.VALUES[aSide]);
                     if (tTanks != null) for (byte i = 0; i < tTanks.length; i++) {
                         tList.add("Tank " + i + ": " + GT_Utility.formatNumbers((tTanks[i].fluid == null ? 0 : tTanks[i].fluid.amount)) + " / " + GT_Utility.formatNumbers(tTanks[i].capacity) + " " + getFluidName(tTanks[i].fluid, true));
                     }
@@ -1584,7 +1604,7 @@ public class GT_Utility {
             try {
                 if (tTileEntity instanceof ic2.api.reactor.IReactorChamber) {
                     rEUAmount += 500;
-                    tTileEntity = (TileEntity) (((ic2.api.reactor.IReactorChamber) tTileEntity).getReactor());
+                    tTileEntity = (TileEntity) (((ic2.api.reactor.IReactorChamber) tTileEntity).getReactorInstance());
                 }
             } catch (Throwable e) {
                 if (D1) e.printStackTrace(GT_Log.err);
@@ -1601,8 +1621,8 @@ public class GT_Utility {
             try {
                 if (tTileEntity instanceof ic2.api.tile.IWrenchable) {
                     rEUAmount += 100;
-                    tList.add("Facing: " + ((ic2.api.tile.IWrenchable) tTileEntity).getFacing() + " / Chance: " + (((ic2.api.tile.IWrenchable) tTileEntity).getWrenchDropRate() * 100) + "%");
-                    tList.add(((ic2.api.tile.IWrenchable) tTileEntity).wrenchCanRemove(aPlayer) ? "You can remove this with a Wrench" : "You can NOT remove this with a Wrench");
+                    tList.add("Facing: " + ((ic2.api.tile.IWrenchable) tTileEntity).getFacing(tTileEntity.getWorld(), blockPos));
+                    tList.add(((ic2.api.tile.IWrenchable) tTileEntity).wrenchCanRemove(tTileEntity.getWorld(), blockPos, aPlayer) ? "You can remove this with a Wrench" : "You can NOT remove this with a Wrench");
                 }
             } catch (Throwable e) {
                 if (D1) e.printStackTrace(GT_Log.err);
@@ -1702,32 +1722,29 @@ public class GT_Utility {
             }
             try {
                 if (tTileEntity instanceof ic2.api.crops.ICropTile) {
-                    if (((ic2.api.crops.ICropTile) tTileEntity).getScanLevel() < 4) {
+                    ICropTile cropTile = (ICropTile) tTileEntity;
+                    if (cropTile.getScanLevel() < 4) {
                         rEUAmount += 10000;
-                        ((ic2.api.crops.ICropTile) tTileEntity).setScanLevel((byte) 4);
+                        cropTile.setScanLevel((byte) 4);
                     }
-                    if (((ic2.api.crops.ICropTile) tTileEntity).getID() >= 0 && ((ic2.api.crops.ICropTile) tTileEntity).getID() < ic2.api.crops.Crops.instance.getCropList().length && ic2.api.crops.Crops.instance.getCropList()[((ic2.api.crops.ICropTile) tTileEntity).getID()] != null) {
+                    if (cropTile.getCrop() != null) {
                         rEUAmount += 1000;
-                        tList.add("Type -- Crop-Name: " + ic2.api.crops.Crops.instance.getCropList()[((ic2.api.crops.ICropTile) tTileEntity).getID()].name()
-                                        + "  Growth: " + ((ic2.api.crops.ICropTile) tTileEntity).getGrowth()
-                                        + "  Gain: " + ((ic2.api.crops.ICropTile) tTileEntity).getGain()
-                                        + "  Resistance: " + ((ic2.api.crops.ICropTile) tTileEntity).getResistance()
+                        CropProperties properties = cropTile.getCrop().getProperties();
+                        tList.add("Type -- Crop-Name: " + cropTile.getCrop().getDisplayName()
+                                        + "  Growth: " + cropTile.getCurrentSize()
+                                        + "  Gain: " + cropTile.getCrop().getGain(cropTile)
+                                        + "  Resistance: " + properties.getDefensive()
                         );
-                        tList.add("Plant -- Fertilizer: " + ((ic2.api.crops.ICropTile) tTileEntity).getNutrientStorage()
-                                        + "  Water: " + ((ic2.api.crops.ICropTile) tTileEntity).getHydrationStorage()
-                                        + "  Weed-Ex: " + ((ic2.api.crops.ICropTile) tTileEntity).getWeedExStorage()
-                                        + "  Scan-Level: " + ((ic2.api.crops.ICropTile) tTileEntity).getScanLevel()
+                        tList.add("Plant -- Fertilizer: " + cropTile.getNutrients()
+                                        + "  Water: " + cropTile.getHumidity()
+                                        + "  Weed-Ex: " + cropTile.getStorageWeedEX()
+                                        + "  Scan-Level: " + cropTile.getScanLevel()
                         );
-                        tList.add("Environment -- Nutrients: " + ((ic2.api.crops.ICropTile) tTileEntity).getNutrients()
-                                        + "  Humidity: " + ((ic2.api.crops.ICropTile) tTileEntity).getHumidity()
-                                        + "  Air-Quality: " + ((ic2.api.crops.ICropTile) tTileEntity).getAirQuality()
+                        tList.add("Environment -- Nutrients: " + cropTile.getNutrients()
+                                        + "  Humidity: " + cropTile.getHumidity()
+                                        + "  Air-Quality: " + cropTile.getAirQuality()
                         );
-                        String tString = E;
-                        for (String tAttribute : ic2.api.crops.Crops.instance.getCropList()[((ic2.api.crops.ICropTile) tTileEntity).getID()].attributes()) {
-                            tString += ", " + tAttribute;
-                        }
-                        tList.add("Attributes:" + tString.replaceFirst(",", E));
-                        tList.add("Discovered by: " + ic2.api.crops.Crops.instance.getCropList()[((ic2.api.crops.ICropTile) tTileEntity).getID()].discoveredBy());
+                        tList.add("Discovered by: " + cropTile.getCrop().getDiscoveredBy());
                     }
                 }
             } catch (Throwable e) {
@@ -1739,7 +1756,7 @@ public class GT_Utility {
             tList.add("Oil in Chunk: " + tFluid.amount + " " + tFluid.getLocalizedName());
         }
         if(aPlayer.capabilities.isCreativeMode){
-        	ChunkPosition tPos = new ChunkPosition(aX, aY, aZ);
+        	BlockPos tPos = new BlockPos(aX, aY, aZ);
         	if(GT_Proxy.chunkData.containsKey(tPos)){
         		int[] tPollution = GT_Proxy.chunkData.get(tPos);
         		if(tPollution.length>1){
@@ -1760,7 +1777,7 @@ public class GT_Utility {
             if (D1) e.printStackTrace(GT_Log.err);
         }
 
-        BlockScanningEvent tEvent = new BlockScanningEvent(aWorld, aPlayer, aX, aY, aZ, (byte) aSide, aScanLevel, tBlock, tTileEntity, tList, aClickX, aClickY, aClickZ);
+        BlockScanningEvent tEvent = new BlockScanningEvent(aWorld, aPlayer, aX, aY, aZ, (byte) aSide, aScanLevel, tBlock.getBlock(), tTileEntity, tList, aClickX, aClickY, aClickZ);
         tEvent.mEUCost = rEUAmount;
         MinecraftForge.EVENT_BUS.post(tEvent);
         if (!tEvent.isCanceled()) aList.addAll(tList);
@@ -1859,9 +1876,9 @@ public class GT_Utility {
                 return;
             }
             ArrayList<String> tTagsToRemove = new ArrayList<String>();
-            for (Object tKey : aNBT.func_150296_c()) {
+            for (Object tKey : aNBT.getKeySet()) {
                 NBTBase tValue = aNBT.getTag((String) tKey);
-                if (tValue == null || (tValue instanceof NBTPrimitive && ((NBTPrimitive) tValue).func_150291_c() == 0) || (tValue instanceof NBTTagString && isStringInvalid(((NBTTagString) tValue).func_150285_a_())))
+                if (tValue == null || (tValue instanceof NBTPrimitive && ((NBTPrimitive) tValue).getInt() == 0) || (tValue instanceof NBTTagString && isStringInvalid(((NBTTagString) tValue).getString())))
                     tTagsToRemove.add((String) tKey);
             }
             for (Object tKey : tTagsToRemove) aNBT.removeTag((String) tKey);
@@ -1965,8 +1982,8 @@ public class GT_Utility {
 
             for (int i = 0; i < tList.tagCount(); i++) {
                 tEnchantmentTag = tList.getCompoundTagAt(i);
-                if (tEnchantmentTag.getShort("id") == aEnchantment.effectId) {
-                    tEnchantmentTag.setShort("id", (short) aEnchantment.effectId);
+                if (tEnchantmentTag.getShort("id") == Enchantment.getEnchantmentID(aEnchantment)) {
+                    tEnchantmentTag.setShort("id", (short) Enchantment.getEnchantmentID(aEnchantment));
                     tEnchantmentTag.setShort("lvl", (byte) aLevel);
                     temp = false;
                     break;
@@ -1975,7 +1992,7 @@ public class GT_Utility {
 
             if (temp) {
                 tEnchantmentTag = new NBTTagCompound();
-                tEnchantmentTag.setShort("id", (short) aEnchantment.effectId);
+                tEnchantmentTag.setShort("id", (short) Enchantment.getEnchantmentID(aEnchantment));
                 tEnchantmentTag.setShort("lvl", (byte) aLevel);
                 tList.appendTag(tEnchantmentTag);
             }
@@ -1998,8 +2015,8 @@ public class GT_Utility {
                         try {
                             short short1 = nbttaglist.getCompoundTagAt(i).getShort("id");
                             short short2 = nbttaglist.getCompoundTagAt(i).getShort("lvl");
-                            if (Enchantment.enchantmentsList[short1] != null)
-                                aBullshitModifier.calculateModifier(Enchantment.enchantmentsList[short1], short2);
+                            if (Enchantment.getEnchantmentByID(short1) != null)
+                                aBullshitModifier.calculateModifier(Enchantment.getEnchantmentByID(short1), short2);
                         } catch (Throwable e) {
                             //
                         }
@@ -2020,14 +2037,14 @@ public class GT_Utility {
         public static void applyBullshitA(EntityLivingBase aPlayer, Entity aEntity, ItemStack aStack) {
             mBullshitIteratorA.mPlayer = aPlayer;
             mBullshitIteratorA.mEntity = aEntity;
-            if (aPlayer != null) applyArrayOfBullshit(mBullshitIteratorA, aPlayer.getLastActiveItems());
+            //if (aPlayer != null) applyArrayOfBullshit(mBullshitIteratorA, aPlayer.getLastActiveItems());
             if (aStack != null) applyBullshit(mBullshitIteratorA, aStack);
         }
 
         public static void applyBullshitB(EntityLivingBase aPlayer, Entity aEntity, ItemStack aStack) {
             mBullshitIteratorB.mPlayer = aPlayer;
             mBullshitIteratorB.mEntity = aEntity;
-            if (aPlayer != null) applyArrayOfBullshit(mBullshitIteratorB, aPlayer.getLastActiveItems());
+            //if (aPlayer != null) applyArrayOfBullshit(mBullshitIteratorB, aPlayer.last);
             if (aStack != null) applyBullshit(mBullshitIteratorB, aStack);
         }
 
@@ -2044,7 +2061,7 @@ public class GT_Utility {
 
             @Override
             public void calculateModifier(Enchantment aEnchantment, int aLevel) {
-                aEnchantment.func_151367_b(mPlayer, mEntity, aLevel);
+                aEnchantment.calcModifierDamage(aLevel, DamageSource.causeThornsDamage(mEntity));
             }
         }
 
@@ -2057,7 +2074,7 @@ public class GT_Utility {
 
             @Override
             public void calculateModifier(Enchantment aEnchantment, int aLevel) {
-                aEnchantment.func_151368_a(mPlayer, mEntity, aLevel);
+                aEnchantment.calcModifierDamage(aLevel, DamageSource.causeMobDamage(mPlayer));
             }
         }
     }

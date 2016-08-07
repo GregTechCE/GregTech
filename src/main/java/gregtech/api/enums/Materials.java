@@ -2,7 +2,7 @@ package gregtech.api.enums;
 
 import java.util.*;
 
-import cpw.mods.fml.common.Loader;
+import net.minecraftforge.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.interfaces.IColorModulationContainer;
@@ -799,86 +799,86 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 		Lazurite				.setOreMultiplier( 6).setSmeltingMultiplier( 6).setByProductMultiplier(4);
 		Monazite				.setOreMultiplier( 8).setSmeltingMultiplier( 8).setByProductMultiplier(2);
 
-		Plastic					.setEnchantmentForTools(Enchantment.knockback, 1);
-		Rubber					.setEnchantmentForTools(Enchantment.knockback, 2);
-		InfusedAir				.setEnchantmentForTools(Enchantment.knockback, 2);
+		Plastic					.setEnchantmentForTools(enchantment("knockback"), 1);
+		Rubber					.setEnchantmentForTools(enchantment("knockback"), 2);
+		InfusedAir				.setEnchantmentForTools(enchantment("knockback"), 2);
 
-		IronWood				.setEnchantmentForTools(Enchantment.fortune, 1);
-		Steeleaf				.setEnchantmentForTools(Enchantment.fortune, 2);
-		Midasium				.setEnchantmentForTools(Enchantment.fortune, 2);
-		Mithril					.setEnchantmentForTools(Enchantment.fortune, 3);
-		Vinteum					.setEnchantmentForTools(Enchantment.fortune, 1);
-		Thaumium				.setEnchantmentForTools(Enchantment.fortune, 2);
-		InfusedWater			.setEnchantmentForTools(Enchantment.fortune, 3);
+		IronWood				.setEnchantmentForTools(enchantment("fortune"), 1);
+		Steeleaf				.setEnchantmentForTools(enchantment("fortune"), 2);
+		Midasium				.setEnchantmentForTools(enchantment("fortune"), 2);
+		Mithril					.setEnchantmentForTools(enchantment("fortune"), 3);
+		Vinteum					.setEnchantmentForTools(enchantment("fortune"), 1);
+		Thaumium				.setEnchantmentForTools(enchantment("fortune"), 2);
+		InfusedWater			.setEnchantmentForTools(enchantment("fortune"), 3);
 
-		Flint					.setEnchantmentForTools(Enchantment.fireAspect, 1);
-		DarkIron				.setEnchantmentForTools(Enchantment.fireAspect, 2);
-		Firestone				.setEnchantmentForTools(Enchantment.fireAspect, 3);
-		FierySteel				.setEnchantmentForTools(Enchantment.fireAspect, 3);
-		Pyrotheum				.setEnchantmentForTools(Enchantment.fireAspect, 3);
-		Blaze					.setEnchantmentForTools(Enchantment.fireAspect, 3);
-		InfusedFire				.setEnchantmentForTools(Enchantment.fireAspect, 3);
+		Flint					.setEnchantmentForTools(enchantment("fire_aspect"), 1);
+		DarkIron				.setEnchantmentForTools(enchantment("fire_aspect"), 2);
+		Firestone				.setEnchantmentForTools(enchantment("fire_aspect"), 3);
+		FierySteel				.setEnchantmentForTools(enchantment("fire_aspect"), 3);
+		Pyrotheum				.setEnchantmentForTools(enchantment("fire_aspect"), 3);
+		Blaze					.setEnchantmentForTools(enchantment("fire_aspect"), 3);
+		InfusedFire				.setEnchantmentForTools(enchantment("fire_aspect"), 3);
 
-		Force					.setEnchantmentForTools(Enchantment.silkTouch, 1);
-		Amber					.setEnchantmentForTools(Enchantment.silkTouch, 1);
-		EnderPearl				.setEnchantmentForTools(Enchantment.silkTouch, 1);
-		Enderium				.setEnchantmentForTools(Enchantment.silkTouch, 1);
-		NetherStar				.setEnchantmentForTools(Enchantment.silkTouch, 1);
-		InfusedOrder			.setEnchantmentForTools(Enchantment.silkTouch, 1);
+		Force					.setEnchantmentForTools(enchantment("silk_touch"), 1);
+		Amber					.setEnchantmentForTools(enchantment("silk_touch"), 1);
+		EnderPearl				.setEnchantmentForTools(enchantment("silk_touch"), 1);
+		Enderium				.setEnchantmentForTools(enchantment("silk_touch"), 1);
+		NetherStar				.setEnchantmentForTools(enchantment("silk_touch"), 1);
+		InfusedOrder			.setEnchantmentForTools(enchantment("silk_touch"), 1);
 
-		BlackBronze				.setEnchantmentForTools(Enchantment.smite, 2);
-		Gold					.setEnchantmentForTools(Enchantment.smite, 3);
-		RoseGold				.setEnchantmentForTools(Enchantment.smite, 4);
-		Platinum				.setEnchantmentForTools(Enchantment.smite, 5);
-		InfusedVis				.setEnchantmentForTools(Enchantment.smite, 5);
+		BlackBronze				.setEnchantmentForTools(enchantment("smite"), 2);
+		Gold					.setEnchantmentForTools(enchantment("smite"), 3);
+		RoseGold				.setEnchantmentForTools(enchantment("smite"), 4);
+		Platinum				.setEnchantmentForTools(enchantment("smite"), 5);
+		InfusedVis				.setEnchantmentForTools(enchantment("smite"), 5);
 
-		Lead					.setEnchantmentForTools(Enchantment.baneOfArthropods, 2);
-		Nickel					.setEnchantmentForTools(Enchantment.baneOfArthropods, 2);
-		Invar					.setEnchantmentForTools(Enchantment.baneOfArthropods, 3);
-		Antimony				.setEnchantmentForTools(Enchantment.baneOfArthropods, 3);
-		BatteryAlloy			.setEnchantmentForTools(Enchantment.baneOfArthropods, 4);
-		Bismuth					.setEnchantmentForTools(Enchantment.baneOfArthropods, 4);
-		BismuthBronze			.setEnchantmentForTools(Enchantment.baneOfArthropods, 5);
-		InfusedEarth			.setEnchantmentForTools(Enchantment.baneOfArthropods, 5);
+		Lead					.setEnchantmentForTools(enchantment("bane_of_arthropods"), 2);
+		Nickel					.setEnchantmentForTools(enchantment("bane_of_arthropods"), 2);
+		Invar					.setEnchantmentForTools(enchantment("bane_of_arthropods"), 3);
+		Antimony				.setEnchantmentForTools(enchantment("bane_of_arthropods"), 3);
+		BatteryAlloy			.setEnchantmentForTools(enchantment("bane_of_arthropods"), 4);
+		Bismuth					.setEnchantmentForTools(enchantment("bane_of_arthropods"), 4);
+		BismuthBronze			.setEnchantmentForTools(enchantment("bane_of_arthropods"), 5);
+		InfusedEarth			.setEnchantmentForTools(enchantment("bane_of_arthropods"), 5);
 
-		Iron					.setEnchantmentForTools(Enchantment.sharpness, 1);
-		Bronze					.setEnchantmentForTools(Enchantment.sharpness, 1);
-		Brass					.setEnchantmentForTools(Enchantment.sharpness, 2);
-		HSLA					.setEnchantmentForTools(Enchantment.sharpness, 2);
-		Steel					.setEnchantmentForTools(Enchantment.sharpness, 2);
-		WroughtIron				.setEnchantmentForTools(Enchantment.sharpness, 2);
-		StainlessSteel			.setEnchantmentForTools(Enchantment.sharpness, 3);
-		Knightmetal				.setEnchantmentForTools(Enchantment.sharpness, 3);
-		ShadowIron				.setEnchantmentForTools(Enchantment.sharpness, 3);
-		ShadowSteel				.setEnchantmentForTools(Enchantment.sharpness, 4);
-		BlackSteel				.setEnchantmentForTools(Enchantment.sharpness, 4);
-		RedSteel				.setEnchantmentForTools(Enchantment.sharpness, 4);
-		BlueSteel				.setEnchantmentForTools(Enchantment.sharpness, 5);
-		DamascusSteel			.setEnchantmentForTools(Enchantment.sharpness, 5);
-		InfusedEntropy			.setEnchantmentForTools(Enchantment.sharpness, 5);
-		TungstenCarbide			.setEnchantmentForTools(Enchantment.sharpness, 5);
-		HSSE					.setEnchantmentForTools(Enchantment.sharpness, 5);
-		HSSG					.setEnchantmentForTools(Enchantment.sharpness, 4);
-		HSSS					.setEnchantmentForTools(Enchantment.sharpness, 5);
+		Iron					.setEnchantmentForTools(enchantment("sharpness"), 1);
+		Bronze					.setEnchantmentForTools(enchantment("sharpness"), 1);
+		Brass					.setEnchantmentForTools(enchantment("sharpness"), 2);
+		HSLA					.setEnchantmentForTools(enchantment("sharpness"), 2);
+		Steel					.setEnchantmentForTools(enchantment("sharpness"), 2);
+		WroughtIron				.setEnchantmentForTools(enchantment("sharpness"), 2);
+		StainlessSteel			.setEnchantmentForTools(enchantment("sharpness"), 3);
+		Knightmetal				.setEnchantmentForTools(enchantment("sharpness"), 3);
+		ShadowIron				.setEnchantmentForTools(enchantment("sharpness"), 3);
+		ShadowSteel				.setEnchantmentForTools(enchantment("sharpness"), 4);
+		BlackSteel				.setEnchantmentForTools(enchantment("sharpness"), 4);
+		RedSteel				.setEnchantmentForTools(enchantment("sharpness"), 4);
+		BlueSteel				.setEnchantmentForTools(enchantment("sharpness"), 5);
+		DamascusSteel			.setEnchantmentForTools(enchantment("sharpness"), 5);
+		InfusedEntropy			.setEnchantmentForTools(enchantment("sharpness"), 5);
+		TungstenCarbide			.setEnchantmentForTools(enchantment("sharpness"), 5);
+		HSSE					.setEnchantmentForTools(enchantment("sharpness"), 5);
+		HSSG					.setEnchantmentForTools(enchantment("sharpness"), 4);
+		HSSS					.setEnchantmentForTools(enchantment("sharpness"), 5);
 
-		InfusedAir				.setEnchantmentForArmors(Enchantment.respiration, 3);
+		InfusedAir				.setEnchantmentForArmors(enchantment("respiration"), 3);
 
-		InfusedFire				.setEnchantmentForArmors(Enchantment.featherFalling, 4);
+		InfusedFire				.setEnchantmentForArmors(enchantment("feather_falling"), 4);
 
-		Steeleaf				.setEnchantmentForArmors(Enchantment.protection, 2);
-		Knightmetal				.setEnchantmentForArmors(Enchantment.protection, 1);
-		InfusedEarth			.setEnchantmentForArmors(Enchantment.protection, 4);
+		Steeleaf				.setEnchantmentForArmors(enchantment("protection"), 2);
+		Knightmetal				.setEnchantmentForArmors(enchantment("protection"), 1);
+		InfusedEarth			.setEnchantmentForArmors(enchantment("protection"), 4);
 
-		InfusedEntropy			.setEnchantmentForArmors(Enchantment.thorns, 3);
+		InfusedEntropy			.setEnchantmentForArmors(enchantment("throns"), 3);
 
-		InfusedWater			.setEnchantmentForArmors(Enchantment.aquaAffinity, 1);
-		IronWood				.setEnchantmentForArmors(Enchantment.aquaAffinity, 1);
+		InfusedWater			.setEnchantmentForArmors(enchantment("aqua_affinity"), 1);
+		IronWood				.setEnchantmentForArmors(enchantment("aqua_affinity"), 1);
 
-		InfusedOrder			.setEnchantmentForArmors(Enchantment.projectileProtection, 4);
+		InfusedOrder			.setEnchantmentForArmors(enchantment("projectile_protection"), 4);
 
-		InfusedDull				.setEnchantmentForArmors(Enchantment.blastProtection, 4);
+		InfusedDull				.setEnchantmentForArmors(enchantment("blast_protection"), 4);
 
-		InfusedVis				.setEnchantmentForArmors(Enchantment.protection, 4);
+		InfusedVis				.setEnchantmentForArmors(enchantment("protection"), 4);
 
 		FryingOilHot			.setHeatDamage(1.0F);
 		Lava					.setHeatDamage(3.0F);
@@ -1678,5 +1678,9 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
         return mRGBa;
     }
 
+    public static Enchantment enchantment(String name) {
+        return Enchantment.getEnchantmentByLocation(name);
+    }
+    
     public static volatile int VERSION = 509;
 }

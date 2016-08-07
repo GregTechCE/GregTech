@@ -1,7 +1,14 @@
 package gregtech.api.metatileentity;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.EnumFaceDirection;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -11,22 +18,19 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -142,7 +146,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister aBlockIconRegister) {/*Do nothing*/}
+    public void registerIcons(TextureMap aBlockIconRegister) {/*Do nothing*/}
 
     @Override
     public boolean allowCoverOnSide(byte aSide, GT_ItemStack aStack) {
@@ -628,13 +632,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     }
 
     @Override
-    public String getInventoryName() {
-        if (GregTech_API.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()] != null)
-            return GregTech_API.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()].getMetaName();
-        return "";
-    }
-
-    @Override
     public int getInventoryStackLimit() {
         return 64;
     }
@@ -661,50 +658,52 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int aSide) {
+    public int[] getSlotsForFace(EnumFacing aSide) {
         ArrayList<Integer> tList = new ArrayList<Integer>();
         IGregTechTileEntity tTileEntity = getBaseMetaTileEntity();
-        boolean tSkip = tTileEntity.getCoverBehaviorAtSide((byte) aSide).letsItemsIn((byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getCoverDataAtSide((byte) aSide), -2, tTileEntity) || tTileEntity.getCoverBehaviorAtSide((byte) aSide).letsItemsOut((byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getCoverDataAtSide((byte) aSide), -2, tTileEntity);
+        boolean tSkip = tTileEntity.getCoverBehaviorAtSide((byte) aSide.getIndex()).letsItemsIn((byte) aSide.getIndex(), tTileEntity.getCoverIDAtSide((byte) aSide.getIndex()), tTileEntity.getCoverDataAtSide((byte) aSide.getIndex()), -2, tTileEntity) || tTileEntity.getCoverBehaviorAtSide((byte) aSide.getIndex()).letsItemsOut((byte) aSide.getIndex(), tTileEntity.getCoverIDAtSide((byte) aSide.getIndex()), tTileEntity.getCoverDataAtSide((byte) aSide.getIndex()), -2, tTileEntity);
         for (int i = 0; i < getSizeInventory(); i++)
-            if (isValidSlot(i) && (tSkip || tTileEntity.getCoverBehaviorAtSide((byte) aSide).letsItemsOut((byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getCoverDataAtSide((byte) aSide), i, tTileEntity) || tTileEntity.getCoverBehaviorAtSide((byte) aSide).letsItemsIn((byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getCoverDataAtSide((byte) aSide), i, tTileEntity)))
+            if (isValidSlot(i) && (tSkip || tTileEntity.getCoverBehaviorAtSide((byte) aSide.getIndex()).letsItemsOut((byte) aSide.getIndex(), tTileEntity.getCoverIDAtSide((byte) aSide.getIndex()), tTileEntity.getCoverDataAtSide((byte) aSide.getIndex()), i, tTileEntity) || tTileEntity.getCoverBehaviorAtSide((byte) aSide.getIndex()).letsItemsIn((byte) aSide.getIndex(), tTileEntity.getCoverIDAtSide((byte) aSide.getIndex()), tTileEntity.getCoverDataAtSide((byte) aSide.getIndex()), i, tTileEntity)))
                 tList.add(i);
         int[] rArray = new int[tList.size()];
         for (int i = 0; i < rArray.length; i++) rArray[i] = tList.get(i);
         return rArray;
     }
 
+
+
     @Override
-    public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
-        return isValidSlot(aIndex) && aStack != null && aIndex < mInventory.length && (mInventory[aIndex] == null || GT_Utility.areStacksEqual(aStack, mInventory[aIndex])) && allowPutStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
+    public boolean canInsertItem(int aIndex, ItemStack aStack, EnumFacing aSide) {
+        return isValidSlot(aIndex) && aStack != null && aIndex < mInventory.length && (mInventory[aIndex] == null || GT_Utility.areStacksEqual(aStack, mInventory[aIndex])) && allowPutStack(getBaseMetaTileEntity(), aIndex, (byte) aSide.getIndex(), aStack);
     }
 
     @Override
-    public boolean canExtractItem(int aIndex, ItemStack aStack, int aSide) {
-        return isValidSlot(aIndex) && aStack != null && aIndex < mInventory.length && allowPullStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
+    public boolean canExtractItem(int aIndex, ItemStack aStack, EnumFacing aSide) {
+        return isValidSlot(aIndex) && aStack != null && aIndex < mInventory.length && allowPullStack(getBaseMetaTileEntity(), aIndex, (byte) aSide.getIndex(), aStack);
     }
 
     @Override
-    public boolean canFill(ForgeDirection aSide, Fluid aFluid) {
+    public boolean canFill(EnumFacing aSide, Fluid aFluid) {
         return fill(aSide, new FluidStack(aFluid, 1), false) == 1;
     }
 
     @Override
-    public boolean canDrain(ForgeDirection aSide, Fluid aFluid) {
+    public boolean canDrain(EnumFacing aSide, Fluid aFluid) {
         return drain(aSide, new FluidStack(aFluid, 1), false) != null;
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
+    public FluidTankInfo[] getTankInfo(EnumFacing aSide) {
         if (getCapacity() <= 0 && !getBaseMetaTileEntity().hasSteamEngineUpgrade()) return new FluidTankInfo[]{};
         return new FluidTankInfo[]{getInfo()};
     }
 
-    public int fill_default(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
+    public int fill_default(EnumFacing aSide, FluidStack aFluid, boolean doFill) {
         return fill(aFluid, doFill);
     }
 
     @Override
-    public int fill(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
+    public int fill(EnumFacing aSide, FluidStack aFluid, boolean doFill) {
         if (getBaseMetaTileEntity().hasSteamEngineUpgrade() && GT_ModHandler.isSteam(aFluid) && aFluid.amount > 1) {
             int tSteam = (int) Math.min(Integer.MAX_VALUE, Math.min(aFluid.amount / 2, getBaseMetaTileEntity().getSteamCapacity() - getBaseMetaTileEntity().getStoredSteam()));
             if (tSteam > 0) {
@@ -718,14 +717,14 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     }
 
     @Override
-    public FluidStack drain(ForgeDirection aSide, FluidStack aFluid, boolean doDrain) {
+    public FluidStack drain(EnumFacing aSide, FluidStack aFluid, boolean doDrain) {
         if (getFluid() != null && aFluid != null && getFluid().isFluidEqual(aFluid))
             return drain(aFluid.amount, doDrain);
         return null;
     }
 
     @Override
-    public FluidStack drain(ForgeDirection aSide, int maxDrain, boolean doDrain) {
+    public FluidStack drain(EnumFacing aSide, int maxDrain, boolean doDrain) {
         return drain(maxDrain, doDrain);
     }
 
@@ -745,16 +744,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int i) {
-        return null;
-    }
-
-    @Override
-    public boolean hasCustomInventoryName() {
-        return false;
-    }
-
-    @Override
     public boolean doTickProfilingMessageDuringThisTick() {
         return doTickProfilingInThisTick;
     }
@@ -767,16 +756,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     @Override
     public boolean isUseableByPlayer(EntityPlayer entityplayer) {
         return false;
-    }
-
-    @Override
-    public void openInventory() {
-        //
-    }
-
-    @Override
-    public void closeInventory() {
-        //
     }
 
     @Override
@@ -816,13 +795,13 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean renderInInventory(Block aBlock, int aMeta, RenderBlocks aRenderer) {
+    public boolean renderInInventory(Block aBlock, int aMeta) {
         return false;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer) {
+    public boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock) {
         return false;
     }
 
@@ -832,9 +811,14 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
         int tX = getBaseMetaTileEntity().getXCoord(), tY = getBaseMetaTileEntity().getYCoord(), tZ = getBaseMetaTileEntity().getZCoord();
         World tWorld = getBaseMetaTileEntity().getWorld();
         GT_Utility.sendSoundToPlayers(tWorld, GregTech_API.sSoundList.get(209), 1.0F, -1, tX, tY, tZ);
-        tWorld.setBlock(tX, tY, tZ, Blocks.air);
+        tWorld.setBlockToAir(new BlockPos(tX, tY, tZ));
         if (GregTech_API.sMachineExplosions)
             tWorld.createExplosion(null, tX + 0.5, tY + 0.5, tZ + 0.5, tStrength, true);
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
     }
 
     @Override
@@ -850,7 +834,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        return AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1);
+        return new AxisAlignedBB(aX, aY, aZ, aX + 1, aY + 1, aZ + 1);
     }
 
     @Override
@@ -862,4 +846,57 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     public void onCreated(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         //
     }
+
+    @Nullable
+    @Override
+    public ItemStack removeStackFromSlot(int index) {
+        ItemStack stack = getStackInSlot(index);
+        setInventorySlotContents(index, null);
+        return stack;
+    }
+
+    @Override
+    public void openInventory(EntityPlayer player) {
+
+    }
+
+    @Override
+    public void closeInventory(EntityPlayer player) {
+
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public String getName() {
+        return getMetaName();
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return false;
+    }
+
+    @Override
+    public ITextComponent getDisplayName() {
+        return new TextComponentString(getMetaName());
+    }
+
+    protected static EnumFacing facing(byte value) {
+        return EnumFacing.VALUES[value];
+    }
+
 }

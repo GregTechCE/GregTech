@@ -1,6 +1,6 @@
 package gregtech.api.net;
 
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 

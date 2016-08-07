@@ -14,7 +14,7 @@ public class GT_Slot_Render extends GT_Slot_Holo {
      */
     @Override
     public void putStack(ItemStack aStack) {
-        if (inventory instanceof TileEntity && ((TileEntity) inventory).getWorldObj().isRemote) {
+        if (inventory instanceof TileEntity && ((TileEntity) inventory).getWorld().isRemote) {
             inventory.setInventorySlotContents(getSlotIndex(), aStack);
         }
         onSlotChanged();

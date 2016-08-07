@@ -7,8 +7,8 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
 
-public class GT_Cover_RedstoneSignalizer
-        extends GT_CoverBehavior {
+public class GT_Cover_RedstoneSignalizer extends GT_CoverBehavior {
+
     public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable = (aCoverVariable + 1) % 48;
         switch(aCoverVariable / 16) {

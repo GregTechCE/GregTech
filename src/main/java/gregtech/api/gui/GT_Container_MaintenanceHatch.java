@@ -4,6 +4,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.item.ItemStack;
 
 public class GT_Container_MaintenanceHatch extends GT_ContainerMetaTile_Machine {
@@ -18,7 +19,7 @@ public class GT_Container_MaintenanceHatch extends GT_ContainerMetaTile_Machine 
     }
 
     @Override
-    public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
+    public ItemStack slotClick(int aSlotIndex, int aMouseclick, ClickType aShifthold, EntityPlayer aPlayer) {
         if (aSlotIndex != 0) return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
         ItemStack tStack = aPlayer.inventory.getItemStack();
         if (tStack != null) {

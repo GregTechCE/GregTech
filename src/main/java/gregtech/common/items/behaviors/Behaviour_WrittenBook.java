@@ -1,7 +1,7 @@
 package gregtech.common.items.behaviors;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.client.Minecraft;

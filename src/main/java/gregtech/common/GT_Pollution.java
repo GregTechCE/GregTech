@@ -1,6 +1,6 @@
 package gregtech.common;
 
-import net.minecraft.world.ChunkPosition;
+import net.minecraft.util.math.BlockPos;
 
 public class GT_Pollution {
 	
@@ -11,7 +11,7 @@ public class GT_Pollution {
 		
 	}
 	
-	public static void addPollution(ChunkPosition aPos, int aPollution){
+	public static void addPollution(BlockPos aPos, int aPollution){
 		int[] tData = new int[2];
 		if(GT_Proxy.chunkData.containsKey(aPos)){
 			tData = GT_Proxy.chunkData.get(aPos);

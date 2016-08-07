@@ -14,7 +14,7 @@ public class GT_CreativeTab extends CreativeTabs {
 
     @Override
     public ItemStack getIconItemStack() {
-        return ItemList.Tool_Cheat.get(1, new ItemStack(Blocks.iron_block, 1));
+        return ItemList.Tool_Cheat.get(1, new ItemStack(Blocks.IRON_BLOCK, 1));
     }
 
     @Override

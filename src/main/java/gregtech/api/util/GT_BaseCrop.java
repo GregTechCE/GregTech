@@ -1,6 +1,8 @@
 package gregtech.api.util;
 
-import cpw.mods.fml.common.Loader;
+import ic2.api.crops.CropProperties;
+import net.minecraft.block.state.IBlockState;
+import net.minecraftforge.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
@@ -63,7 +65,6 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
      * @param aGrowthSpeed  how fast the Crop grows. if < 0 then its set to Tier*300
      * @param aHarvestSize  the size the Crop needs to be harvested. forced to be between 2 and max size
      * @param aBlock        the block below needed for crop to grow. If null no block needed
-     * @param aMeta         meta of the block below(-1 if no meta)
      */
     public GT_BaseCrop(int aID, String aCropName, String aDiscoveredBy, ItemStack aBaseSeed, int aTier, int aMaxSize, int aGrowthSpeed, int aAfterHarvestSize, int aHarvestSize, int aStatChemical, int aStatFood, int aStatDefensive, int aStatColor, int aStatWeed, String[] aAttributes, Materials aBlock, ItemStack aDrop, ItemStack[] aSpecialDrops) {
         mName = aCropName;
@@ -84,8 +85,7 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
             mAttributes = aAttributes;
             mBlock = aBlock;
             if(GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.crops, aCropName, true)){
-            if (!Crops.instance.registerCrop(this, aID))
-                throw new GT_ItsNotMyFaultException("Make sure the Crop ID is valid!");
+            Crops.instance.registerCrop(this);
             if (aBaseSeed != null) Crops.instance.registerBaseSeed(aBaseSeed, this, 1, 1, 1, 1);
             sCropList.add(this);}
         }
@@ -111,14 +111,14 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
     }
 
     @Override
-    public byte getSizeAfterHarvest(ICropTile crop) {
+    public int getSizeAfterHarvest(ICropTile crop) {
         return (byte) mAfterHarvestSize;
     }
 
     @Override
-    public int growthDuration(ICropTile aCrop) {
-        if (mGrowthSpeed < 200) return super.growthDuration(aCrop);
-        return tier() * mGrowthSpeed;
+    public int getGrowthDuration(ICropTile cropTile) {
+        if (mGrowthSpeed < 200) return super.getGrowthDuration(cropTile);
+        return getTier() * mGrowthSpeed;
     }
 
     public int getrootslength(ICropTile crop) {
@@ -126,52 +126,45 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
     }
 
     @Override
-    public String[] attributes() {
-        return mAttributes;
-    }
-
-    @Override
-    public String discoveredBy() {
-        return mDiscoveredBy;
-    }
-
-    @Override
     public final boolean canGrow(ICropTile aCrop) {
-        if (mBlock != null && aCrop.getSize() == mMaxSize - 1) {
+        if (mBlock != null && aCrop.getCurrentSize() == mMaxSize - 1) {
             return isBlockBelow(aCrop);
         }
-        return aCrop.getSize() < maxSize();
+        return aCrop.getCurrentSize() < getMaxSize();
     }
 
     @Override
     public final boolean canBeHarvested(ICropTile aCrop) {
-        return aCrop.getSize() >= mHarvestSize;
+        return aCrop.getCurrentSize() >= mHarvestSize;
     }
 
     @Override
     public boolean canCross(ICropTile aCrop) {
-        return aCrop.getSize() + 2 > maxSize();
+        return aCrop.getCurrentSize() + 2 > getMaxSize();
     }
 
     @Override
-    public int stat(int n) {
-        if (n < 0 || n >= mStats.length) return 0;
-        return mStats[n];
-    }
-
-    @Override
-    public String name() {
+    public String getName() {
         return mName;
     }
 
-    @Override
-    public int tier() {
+    public int getTier() {
         return mTier;
     }
 
     @Override
-    public int maxSize() {
+    public int getMaxSize() {
         return mMaxSize;
+    }
+
+    @Override
+    public String getOwner() {
+        return mDiscoveredBy;
+    }
+
+    @Override
+    public CropProperties getProperties() {
+        return new CropProperties(getTier(), 0, 0, 1, 0, 1);
     }
 
     @Override
@@ -184,36 +177,28 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
     }
 
     @Override
-    public boolean rightclick(ICropTile aCrop, EntityPlayer aPlayer) {
-        if (!canBeHarvested(aCrop)) return false;
-        return aCrop.harvest(aPlayer == null ? false : aPlayer instanceof EntityPlayerMP);
+    public boolean onRightClick(ICropTile cropTile, EntityPlayer player) {
+        return canBeHarvested(cropTile) && super.onRightClick(cropTile, player);
     }
 
-    @Override
-    public int getOptimalHavestSize(ICropTile crop) {
-        return maxSize();
-    }
 
     public boolean isBlockBelow(ICropTile aCrop) {
         if (aCrop == null) {
             return false;
         }
         for (int i = 1; i < this.getrootslength(aCrop); i++) {
-            Block tBlock = aCrop.getWorld().getBlock(aCrop.getLocation().posX, aCrop.getLocation().posY - i, aCrop.getLocation().posZ);
+            Block tBlock = aCrop.getWorld().getBlockState(aCrop.getLocation().down()).getBlock();
             if ((tBlock instanceof GT_Block_Ores_Abstract)) {
-                TileEntity tTileEntity = aCrop.getWorld().getTileEntity(aCrop.getLocation().posX, aCrop.getLocation().posY - i, aCrop.getLocation().posZ);
+                TileEntity tTileEntity = aCrop.getWorld().getTileEntity(aCrop.getLocation().down());
                 if ((tTileEntity instanceof GT_TileEntity_Ores)) {
                     Materials tMaterial = GregTech_API.sGeneratedMaterials[(((GT_TileEntity_Ores) tTileEntity).mMetaData % 1000)];
                     if ((tMaterial != null) && (tMaterial != Materials._NULL)) {
-                        if (tMaterial == mBlock) {
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return tMaterial == mBlock;
                     }
                 }
             } else {
-                int tMetaID = aCrop.getWorld().getBlockMetadata(aCrop.getLocation().posX, aCrop.getLocation().posY - i, aCrop.getLocation().posZ);
+                IBlockState downState = aCrop.getWorld().getBlockState(aCrop.getLocation().down());
+                int tMetaID = downState.getBlock().getMetaFromState(downState);
                 ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
                 if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore")) && (tAssotiation.mMaterial.mMaterial == mBlock)) {
                     return true;

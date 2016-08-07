@@ -8,7 +8,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.common.GT_Pollution;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.ChunkPosition;
+import net.minecraft.util.math.BlockPos;
 
 public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
     public GT_MetaTileEntity_Hatch_Muffler(int aID, String aName, String aNameRegional, int aTier) {
@@ -60,7 +60,7 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
     }
 
     public boolean polluteEnvironment() {
-    	GT_Pollution.addPollution(new ChunkPosition(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()), 1000 - (95*mTier));
+    	GT_Pollution.addPollution(new BlockPos(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()), 1000 - (95*mTier));
         return (mTier > 1 && getBaseMetaTileEntity().getRandomNumber(mTier) != 0) || getBaseMetaTileEntity().getAirAtSide(getBaseMetaTileEntity().getFrontFacing());
     }
 

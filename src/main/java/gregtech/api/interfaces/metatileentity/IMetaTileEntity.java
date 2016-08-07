@@ -1,22 +1,21 @@
 package gregtech.api.interfaces.metatileentity;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGearEnergyTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Config;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -345,19 +344,19 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * @param aBlockIconRegister The Block Icon Register
      */
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister aBlockIconRegister);
+    public void registerIcons(TextureMap aBlockIconRegister);
 
     /**
      * @return true if you override the Rendering.
      */
     @SideOnly(Side.CLIENT)
-    public boolean renderInInventory(Block aBlock, int aMeta, RenderBlocks aRenderer);
+    public boolean renderInInventory(Block aBlock, int aMeta);
 
     /**
      * @return true if you override the Rendering.
      */
     @SideOnly(Side.CLIENT)
-    public boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer);
+    public boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock);
 
     /**
      * Gets the Output for the comparator on the given Side

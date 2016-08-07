@@ -8,8 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.List;
 
-public class GT_RadioactiveCell_Item
-        extends GT_Generic_Item  implements IBoxable{
+public class GT_RadioactiveCell_Item extends GT_Generic_Item  implements IBoxable {
     protected int cellCount;
     protected int maxDmg;
     protected int dura;

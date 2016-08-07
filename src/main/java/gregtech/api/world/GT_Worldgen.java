@@ -48,7 +48,7 @@ public abstract class GT_Worldgen {
     }
 
     public boolean isGenerationAllowed(World aWorld, int aDimensionType, int aAllowedDimensionType) {
-        String aDimName = aWorld.provider.getDimensionName();
+        String aDimName = aWorld.getProviderName();
         Boolean tAllowed = mDimensionMap.get(aDimName);
         if (tAllowed == null) {
             boolean tValue = GregTech_API.sWorldgenFile.get("worldgen.dimensions." + mWorldGenName, aDimName, aDimensionType == aAllowedDimensionType);

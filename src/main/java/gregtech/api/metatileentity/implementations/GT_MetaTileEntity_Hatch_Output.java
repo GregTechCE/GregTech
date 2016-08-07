@@ -9,7 +9,6 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
@@ -74,12 +73,12 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
             if (tTileEntity != null) {
                 for (boolean temp = true; temp && mFluid != null; ) {
                     temp = false;
-                    FluidStack tDrained = aBaseMetaTileEntity.drain(ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()), Math.max(1, mFluid.amount), false);
+                    FluidStack tDrained = aBaseMetaTileEntity.drain(facing(aBaseMetaTileEntity.getFrontFacing()), Math.max(1, mFluid.amount), false);
                     if (tDrained != null) {
-                        int tFilledAmount = tTileEntity.fill(ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()), tDrained, false);
+                        int tFilledAmount = tTileEntity.fill(facing(aBaseMetaTileEntity.getBackFacing()), tDrained, false);
                         if (tFilledAmount > 0) {
                             temp = true;
-                            tTileEntity.fill(ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()), aBaseMetaTileEntity.drain(ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()), tFilledAmount, true), true);
+                            tTileEntity.fill(facing(aBaseMetaTileEntity.getBackFacing()), aBaseMetaTileEntity.drain(facing(aBaseMetaTileEntity.getFrontFacing()), tFilledAmount, true), true);
                         }
                     }
                 }

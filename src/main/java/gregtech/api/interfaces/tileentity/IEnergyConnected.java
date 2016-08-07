@@ -1,15 +1,10 @@
 package gregtech.api.interfaces.tileentity;
 
-import cofh.api.energy.IEnergyReceiver;
-import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_Utility;
+import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergySink;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import static gregtech.api.enums.GT_Values.V;
+import net.minecraft.util.EnumFacing;
 
 /**
  * Interface for getting Connected to the GregTech Energy Network.
@@ -18,7 +13,7 @@ import static gregtech.api.enums.GT_Values.V;
  * IColoredTileEntity is needed for not connecting differently coloured Blocks to each other.
  * IHasWorldObjectAndCoords is needed for the InWorld related Stuff. @BaseTileEntity does implement most of that Interface.
  */
-public interface IEnergyConnected extends IColoredTileEntity, IHasWorldObjectAndCoords {
+public interface IEnergyConnected extends IColoredTileEntity, IHasWorldObjectAndCoords, IEnergyEmitter {
     /**
      * Inject Energy Call for Electricity. Gets called by EnergyEmitters to inject Energy into your Block
      * <p/>
@@ -61,16 +56,16 @@ public interface IEnergyConnected extends IColoredTileEntity, IHasWorldObjectAnd
                         }
                         rUsedAmperes += ((IEnergyConnected) tTileEntity).injectEnergyUnits(j, aVoltage, aAmperage - rUsedAmperes);
 //				} else if (tTileEntity instanceof IEnergySink) {
-//	        		if (((IEnergySink)tTileEntity).acceptsEnergyFrom((TileEntity)aEmitter, ForgeDirection.getOrientation(j))) {
-//	        			while (aAmperage > rUsedAmperes && ((IEnergySink)tTileEntity).demandedEnergyUnits() > 0 && ((IEnergySink)tTileEntity).injectEnergyUnits(ForgeDirection.getOrientation(j), aVoltage) < aVoltage) rUsedAmperes++;
+//	        		if (((IEnergySink)tTileEntity).acceptsEnergyFrom((TileEntity)aEmitter, EnumFacing.getOrientation(j))) {
+//	        			while (aAmperage > rUsedAmperes && ((IEnergySink)tTileEntity).demandedEnergyUnits() > 0 && ((IEnergySink)tTileEntity).injectEnergyUnits(EnumFacing.getOrientation(j), aVoltage) < aVoltage) rUsedAmperes++;
 //	        		}
                     } else if (tTileEntity instanceof IEnergySink) {
-                        if (((IEnergySink) tTileEntity).acceptsEnergyFrom((TileEntity) aEmitter, ForgeDirection.getOrientation(j))) {
-                            while (aAmperage > rUsedAmperes && ((IEnergySink) tTileEntity).getDemandedEnergy() > 0 && ((IEnergySink) tTileEntity).injectEnergy(ForgeDirection.getOrientation(j), aVoltage, aVoltage) < aVoltage)
+                        if (((IEnergySink) tTileEntity).acceptsEnergyFrom(aEmitter, EnumFacing.VALUES[j])) {
+                            while (aAmperage > rUsedAmperes && ((IEnergySink) tTileEntity).getDemandedEnergy() > 0 && ((IEnergySink) tTileEntity).injectEnergy(EnumFacing.VALUES[j], aVoltage, aVoltage) < aVoltage)
                                 rUsedAmperes++;
                         }
-                    } else if (GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver) {
-                        ForgeDirection tDirection = ForgeDirection.getOrientation(i).getOpposite();
+                    } /*else if (GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver) {
+                        EnumFacing tDirection = EnumFacing.getOrientation(i).getOpposite();
                         int rfOut = (int) (aVoltage * GregTech_API.mEUtoRF / 100);
                         if (((IEnergyReceiver) tTileEntity).receiveEnergy(tDirection, rfOut, true) == rfOut) {
                             ((IEnergyReceiver) tTileEntity).receiveEnergy(tDirection, rfOut, false);
@@ -88,7 +83,7 @@ public interface IEnergyConnected extends IColoredTileEntity, IHasWorldObjectAnd
                                     tWorld.createExplosion(null, tX + 0.5, tY + 0.5, tZ + 0.5, tStrength, true);
                             }
                         }
-                    }
+                    }*/
                 }
             return rUsedAmperes;
         }

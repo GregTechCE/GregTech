@@ -1,19 +1,24 @@
 package gregtech.api.util;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
+
+import net.minecraft.util.text.translation.LanguageMap;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import gregtech.api.GregTech_API;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import static gregtech.api.enums.GT_Values.E;
 
 public class GT_LanguageManager {
+
+    public static final LanguageMap TRANSLATION = ObfuscationReflectionHelper.getPrivateValue(LanguageMap.class, null, 2);
+
     public static final HashMap<String, String> TEMPMAP = new HashMap<String, String>(), BUFFERMAP = new HashMap<String, String>();
     public static Configuration sEnglishFile;
 
@@ -25,8 +30,8 @@ public class GT_LanguageManager {
         if (aKey == null) return E;
         if (aWriteIntoLangFile) aEnglish = writeToLangFile(aKey, aEnglish);
         TEMPMAP.put(aKey.trim(), aEnglish);
-        LanguageRegistry.instance().injectLanguage("en_US", TEMPMAP);
-        TEMPMAP.clear();
+        Map<String, String> translation = ObfuscationReflectionHelper.getPrivateValue(LanguageMap.class, TRANSLATION, 3);
+        translation.put(aKey.trim(), aEnglish);
         return aEnglish;
     }
 
@@ -52,24 +57,12 @@ public class GT_LanguageManager {
 
     public static String getTranslation(String aKey) {
         if (aKey == null) return E;
-        String tTrimmedKey = aKey.trim(), rTranslation = LanguageRegistry.instance().getStringLocalization(tTrimmedKey);
-        if (GT_Utility.isStringInvalid(rTranslation)) {
-            rTranslation = StatCollector.translateToLocal(tTrimmedKey);
-            if (GT_Utility.isStringInvalid(rTranslation) || tTrimmedKey.equals(rTranslation)) {
-                if (aKey.endsWith(".name")) {
-                    rTranslation = StatCollector.translateToLocal(tTrimmedKey.substring(0, tTrimmedKey.length() - 5));
-                    if (GT_Utility.isStringInvalid(rTranslation) || tTrimmedKey.substring(0, tTrimmedKey.length() - 5).equals(rTranslation)) {
-                        return aKey;
-                    }
-                } else {
-                    rTranslation = StatCollector.translateToLocal(tTrimmedKey + ".name");
-                    if (GT_Utility.isStringInvalid(rTranslation) || (tTrimmedKey + ".name").equals(rTranslation)) {
-                        return aKey;
-                    }
-                }
-            }
+        aKey = aKey.trim();
+        String result = TRANSLATION.translateKey(aKey);
+        if(result.equals(aKey) && !aKey.endsWith(".name")) {
+            result = TRANSLATION.translateKey(aKey + ".name");
         }
-        return rTranslation;
+        return result;
     }
 
     public static String getTranslation(String aKey, String aSeperator) {
@@ -92,4 +85,5 @@ public class GT_LanguageManager {
         }
         return aStack.getUnlocalizedName() + ".name";
     }
+
 }

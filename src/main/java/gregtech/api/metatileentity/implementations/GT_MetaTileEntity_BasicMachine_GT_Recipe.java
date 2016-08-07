@@ -1,7 +1,5 @@
 package gregtech.api.metatileentity.implementations;
 
-import java.util.Random;
-
 import gregtech.api.enums.*;
 import gregtech.api.gui.GT_Container_BasicMachine;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
@@ -13,11 +11,15 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_ModHandler.RecipeBits;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
-import ic2.core.Ic2Items;
+import ic2.core.block.BlockTexGlass;
+import ic2.core.ref.BlockName;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraftforge.fluids.FluidStack;
+
+import java.util.Random;
 
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.W;
@@ -73,10 +75,10 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         case 6:
                         case 7:
                         case 8:
-                        	aRecipe[i] = Ic2Items.reinforcedGlass;
+                        	aRecipe[i] = BlockName.glass.getItemStack(BlockTexGlass.GlassType.reinforced);
                         	break;
                         default:
-                            aRecipe[i] = new ItemStack(Blocks.glass, 1, W);
+                            aRecipe[i] = new ItemStack(Blocks.GLASS, 1, W);
                             break;
                     }
                     continue;
@@ -643,7 +645,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                 case 1:
                     if (aBaseMetaTileEntity.getFrontFacing() != 1 && aBaseMetaTileEntity.getCoverIDAtSide((byte) 1) == 0 && !aBaseMetaTileEntity.getOpacityAtSide((byte) 1)) {
                         Random tRandom = aBaseMetaTileEntity.getWorld().rand;
-                        aBaseMetaTileEntity.getWorld().spawnParticle("smoke", aBaseMetaTileEntity.getXCoord() + 0.8F - tRandom.nextFloat() * 0.6F, aBaseMetaTileEntity.getYCoord() + 0.9F + tRandom.nextFloat() * 0.2F, aBaseMetaTileEntity.getZCoord() + 0.8F - tRandom.nextFloat() * 0.6F, 0.0D, 0.0D, 0.0D);
+                        aBaseMetaTileEntity.getWorld().spawnParticle(EnumParticleTypes.SMOKE_NORMAL, aBaseMetaTileEntity.getXCoord() + 0.8F - tRandom.nextFloat() * 0.6F, aBaseMetaTileEntity.getYCoord() + 0.9F + tRandom.nextFloat() * 0.2F, aBaseMetaTileEntity.getZCoord() + 0.8F - tRandom.nextFloat() * 0.6F, 0.0D, 0.0D, 0.0D);
                     }
                     break;
             }

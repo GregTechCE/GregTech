@@ -1,7 +1,5 @@
 package gregtech.api.metatileentity;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -10,8 +8,7 @@ import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,14 +16,20 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -137,21 +140,21 @@ public abstract class MetaPipeEntity implements IMetaTileEntity {
 
     public boolean isCoverOnSide(BaseMetaPipeEntity aPipe, EntityLivingBase aEntity) {
         byte aSide = 6;
-        double difference = aEntity.posY - (double) aPipe.yCoord;
+        double difference = aEntity.posY - (double) aPipe.getPos().getY();
         if (difference > 0.6 && difference < 0.99) {
             aSide = 1;
         }
         if (difference < -1.5 && difference > -1.99) {
             aSide = 0;
         }
-        difference = aEntity.posZ - (double) aPipe.zCoord;
+        difference = aEntity.posZ - (double) aPipe.getPos().getZ();
         if (difference < -0.05 && difference > -0.4) {
             aSide = 2;
         }
         if (difference > 1.05 && difference < 1.4) {
             aSide = 3;
         }
-        difference = aEntity.posX - (double) aPipe.xCoord;
+        difference = aEntity.posX - (double) aPipe.getPos().getX();
         if (difference < -0.05 && difference > -0.4) {
             aSide = 4;
         }
@@ -187,7 +190,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister aBlockIconRegister) {/*Do nothing*/}
+    public void registerIcons(TextureMap aBlockIconRegister) {/*Do nothing*/}
 
     @Override
     public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCoverID) {
@@ -443,12 +446,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity {
         if (aIndex >= 0 && aIndex < mInventory.length) mInventory[aIndex] = aStack;
     }
 
-    @Override
-    public String getInventoryName() {
-        if (GregTech_API.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()] != null)
-            return GregTech_API.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()].getMetaName();
-        return "";
-    }
+   
 
     @Override
     public int getInventoryStackLimit() {
@@ -477,62 +475,64 @@ public abstract class MetaPipeEntity implements IMetaTileEntity {
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int aSide) {
+    public int[] getSlotsForFace(EnumFacing aSide) {
         ArrayList<Integer> tList = new ArrayList<Integer>();
         IGregTechTileEntity tTileEntity = getBaseMetaTileEntity();
-        boolean tSkip = tTileEntity.getCoverBehaviorAtSide((byte) aSide).letsItemsIn((byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getCoverDataAtSide((byte) aSide), -2, tTileEntity) || tTileEntity.getCoverBehaviorAtSide((byte) aSide).letsItemsOut((byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getCoverDataAtSide((byte) aSide), -2, tTileEntity);
+        boolean tSkip = tTileEntity.getCoverBehaviorAtSide((byte) aSide.getIndex()).letsItemsIn((byte) aSide.getIndex(), tTileEntity.getCoverIDAtSide((byte) aSide.getIndex()), tTileEntity.getCoverDataAtSide((byte) aSide.getIndex()), -2, tTileEntity) || tTileEntity.getCoverBehaviorAtSide((byte) aSide.getIndex()).letsItemsOut((byte) aSide.getIndex(), tTileEntity.getCoverIDAtSide((byte) aSide.getIndex()), tTileEntity.getCoverDataAtSide((byte) aSide.getIndex()), -2, tTileEntity);
         for (int i = 0; i < getSizeInventory(); i++)
-            if (isValidSlot(i) && (tSkip || tTileEntity.getCoverBehaviorAtSide((byte) aSide).letsItemsOut((byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getCoverDataAtSide((byte) aSide), i, tTileEntity) || tTileEntity.getCoverBehaviorAtSide((byte) aSide).letsItemsIn((byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getCoverDataAtSide((byte) aSide), i, tTileEntity)))
+            if (isValidSlot(i) && (tSkip || tTileEntity.getCoverBehaviorAtSide((byte) aSide.getIndex()).letsItemsOut((byte) aSide.getIndex(), tTileEntity.getCoverIDAtSide((byte) aSide.getIndex()), tTileEntity.getCoverDataAtSide((byte) aSide.getIndex()), i, tTileEntity) || tTileEntity.getCoverBehaviorAtSide((byte) aSide.getIndex()).letsItemsIn((byte) aSide.getIndex(), tTileEntity.getCoverIDAtSide((byte) aSide.getIndex()), tTileEntity.getCoverDataAtSide((byte) aSide.getIndex()), i, tTileEntity)))
                 tList.add(i);
         int[] rArray = new int[tList.size()];
         for (int i = 0; i < rArray.length; i++) rArray[i] = tList.get(i);
         return rArray;
     }
+    
+    
 
     @Override
-    public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
-        return isValidSlot(aIndex) && aStack != null && aIndex < mInventory.length && (mInventory[aIndex] == null || GT_Utility.areStacksEqual(aStack, mInventory[aIndex])) && allowPutStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
+    public boolean canInsertItem(int aIndex, ItemStack aStack, EnumFacing aSide) {
+        return isValidSlot(aIndex) && aStack != null && aIndex < mInventory.length && (mInventory[aIndex] == null || GT_Utility.areStacksEqual(aStack, mInventory[aIndex])) && allowPutStack(getBaseMetaTileEntity(), aIndex, (byte) aSide.getIndex(), aStack);
     }
 
     @Override
-    public boolean canExtractItem(int aIndex, ItemStack aStack, int aSide) {
-        return isValidSlot(aIndex) && aStack != null && aIndex < mInventory.length && allowPullStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
+    public boolean canExtractItem(int aIndex, ItemStack aStack, EnumFacing aSide) {
+        return isValidSlot(aIndex) && aStack != null && aIndex < mInventory.length && allowPullStack(getBaseMetaTileEntity(), aIndex, (byte) aSide.getIndex(), aStack);
     }
 
     @Override
-    public boolean canFill(ForgeDirection aSide, Fluid aFluid) {
+    public boolean canFill(EnumFacing aSide, Fluid aFluid) {
         return fill(aSide, new FluidStack(aFluid, 1), false) == 1;
     }
 
     @Override
-    public boolean canDrain(ForgeDirection aSide, Fluid aFluid) {
+    public boolean canDrain(EnumFacing aSide, Fluid aFluid) {
         return drain(aSide, new FluidStack(aFluid, 1), false) != null;
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
+    public FluidTankInfo[] getTankInfo(EnumFacing aSide) {
         if (getCapacity() <= 0 && !getBaseMetaTileEntity().hasSteamEngineUpgrade()) return new FluidTankInfo[]{};
         return new FluidTankInfo[]{getInfo()};
     }
 
-    public int fill_default(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
+    public int fill_default(EnumFacing aSide, FluidStack aFluid, boolean doFill) {
         return fill(aFluid, doFill);
     }
 
     @Override
-    public int fill(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
+    public int fill(EnumFacing aSide, FluidStack aFluid, boolean doFill) {
         return fill_default(aSide, aFluid, doFill);
     }
 
     @Override
-    public FluidStack drain(ForgeDirection aSide, FluidStack aFluid, boolean doDrain) {
+    public FluidStack drain(EnumFacing aSide, FluidStack aFluid, boolean doDrain) {
         if (getFluid() != null && aFluid != null && getFluid().isFluidEqual(aFluid))
             return drain(aFluid.amount, doDrain);
         return null;
     }
 
     @Override
-    public FluidStack drain(ForgeDirection aSide, int maxDrain, boolean doDrain) {
+    public FluidStack drain(EnumFacing aSide, int maxDrain, boolean doDrain) {
         return drain(maxDrain, doDrain);
     }
 
@@ -550,12 +550,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity {
     public String getMetaName() {
         return mName;
     }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int i) {
-        return null;
-    }
-
+    
     @Override
     public boolean doTickProfilingMessageDuringThisTick() {
         return doTickProfilingInThisTick;
@@ -569,16 +564,6 @@ public abstract class MetaPipeEntity implements IMetaTileEntity {
     @Override
     public boolean connectsToItemPipe(byte aSide) {
         return false;
-    }
-
-    @Override
-    public void openInventory() {
-        //
-    }
-
-    @Override
-    public void closeInventory() {
-        //
     }
 
     @Override
@@ -602,11 +587,6 @@ public abstract class MetaPipeEntity implements IMetaTileEntity {
     }
 
     @Override
-    public boolean hasCustomInventoryName() {
-        return false;
-    }
-
-    @Override
     public void markDirty() {
         //
     }
@@ -627,13 +607,13 @@ public abstract class MetaPipeEntity implements IMetaTileEntity {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean renderInInventory(Block aBlock, int aMeta, RenderBlocks aRenderer) {
+    public boolean renderInInventory(Block aBlock, int aMeta) {
         return false;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer) {
+    public boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock) {
         return false;
     }
 
@@ -642,7 +622,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity {
         float tStrength = aExplosionPower < V[0] ? 1.0F : aExplosionPower < V[1] ? 2.0F : aExplosionPower < V[2] ? 3.0F : aExplosionPower < V[3] ? 4.0F : aExplosionPower < V[4] ? 5.0F : aExplosionPower < V[4] * 2 ? 6.0F : aExplosionPower < V[5] ? 7.0F : aExplosionPower < V[6] ? 8.0F : aExplosionPower < V[7] ? 9.0F : 10.0F;
         int tX = getBaseMetaTileEntity().getXCoord(), tY = getBaseMetaTileEntity().getYCoord(), tZ = getBaseMetaTileEntity().getZCoord();
         World tWorld = getBaseMetaTileEntity().getWorld();
-        tWorld.setBlock(tX, tY, tZ, Blocks.air);
+        tWorld.setBlockToAir(new BlockPos(tX, tY, tZ));
         if (GregTech_API.sMachineExplosions)
             tWorld.createExplosion(null, tX + 0.5, tY + 0.5, tZ + 0.5, tStrength, true);
     }
@@ -660,7 +640,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity {
 
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        return AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1);
+        return new AxisAlignedBB(aX, aY, aZ, aX + 1, aY + 1, aZ + 1);
     }
 
     @Override
@@ -672,4 +652,58 @@ public abstract class MetaPipeEntity implements IMetaTileEntity {
     public void onCreated(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         //
     }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public String getName() {
+        return getMetaName();
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return false;
+    }
+
+    @Override
+    public ITextComponent getDisplayName() {
+        return new TextComponentString(getName());
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void closeInventory(EntityPlayer player) {
+
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void openInventory(EntityPlayer player) {
+
+    }
+
+    @Nullable
+    @Override
+    public ItemStack removeStackFromSlot(int index) {
+        ItemStack stack = getStackInSlot(index);
+        setInventorySlotContents(index, null);
+        return stack;
+    }
+
 }

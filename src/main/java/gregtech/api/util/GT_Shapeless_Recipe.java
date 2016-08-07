@@ -83,7 +83,7 @@ public class GT_Shapeless_Recipe extends ShapelessOreRecipe implements IGT_Craft
 
             // Add Enchantments
             for (int i = 0; i < mEnchantmentsAdded.length; i++)
-                GT_Utility.ItemNBT.addEnchantment(rStack, mEnchantmentsAdded[i], EnchantmentHelper.getEnchantmentLevel(mEnchantmentsAdded[i].effectId, rStack) + mEnchantmentLevelsAdded[i]);
+                GT_Utility.ItemNBT.addEnchantment(rStack, mEnchantmentsAdded[i], EnchantmentHelper.getEnchantmentLevel(mEnchantmentsAdded[i], rStack) + mEnchantmentLevelsAdded[i]);
 
             // Update the Stack again
             GT_Utility.updateItemStack(rStack);

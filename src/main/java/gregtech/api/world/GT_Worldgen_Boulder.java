@@ -2,7 +2,9 @@ package gregtech.api.world;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
-import net.minecraft.util.MathHelper;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
@@ -19,8 +21,8 @@ public class GT_Worldgen_Boulder extends GT_Worldgen_Ore {
         if (isGenerationAllowed(aWorld, aDimensionType, mDimensionType) && (mBiomeList.isEmpty() || mBiomeList.contains(aBiome)) && (mProbability <= 1 || aRandom.nextInt(mProbability) == 0)) {
             for (int i = 0; i < mAmount; i++) {
                 int tX = aChunkX + aRandom.nextInt(16), tY = mMinY + aRandom.nextInt(mMaxY - mMinY), tZ = aChunkZ + aRandom.nextInt(16);
-                Block tBlock = aWorld.getBlock(tX, tY - 7, tZ);
-                if (tBlock != null && tBlock.isOpaqueCube() && aWorld.getBlock(tX, tY - 6, tZ).isAir(aWorld, tX, tY - 6, tZ)) {
+                IBlockState tBlock = aWorld.getBlockState(new BlockPos(tX, tY - 7, tZ));
+                if (tBlock != null && tBlock.isOpaqueCube() && aWorld.isAirBlock(new BlockPos(tX, tY - 6, tZ))) {
                     float var6 = aRandom.nextFloat() * (float) Math.PI;
                     double var7 = ((tX + 8) + MathHelper.sin(var6) * mSize / 8.0F);
                     double var9 = ((tX + 8) - MathHelper.sin(var6) * mSize / 8.0F);
@@ -51,9 +53,11 @@ public class GT_Worldgen_Boulder extends GT_Worldgen_Ore {
                                     if (var39 * var39 + var42 * var42 < 1.0D) {
                                         for (int var44 = var34; var44 <= var37; ++var44) {
                                             double var45 = (var44 + 0.5D - var24) / (var28 / 2.0D);
-                                            Block block = aWorld.getBlock(var38, var41, var44);
-                                            if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && ((mAllowToGenerateinVoid && aWorld.getBlock(var38, var41, var44).isAir(aWorld, var38, var41, var44)) || (block != null && !(block instanceof BlockContainer)))) {
-                                                aWorld.setBlock(var38, var41, var44, mBlock, mBlockMeta, 0);
+                                            Block block = aWorld.getBlockState(new BlockPos(var38, var41, var44)).getBlock();
+                                            if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && ((mAllowToGenerateinVoid &&
+                                                    aWorld.isAirBlock(new BlockPos(var38, var41, var44))) ||
+                                                    (block != null && !(block instanceof BlockContainer)))) {
+                                                aWorld.setBlockState(new BlockPos(var38, var41, var44), mBlock.getStateFromMeta(mBlockMeta));
                                             }
                                         }
                                     }

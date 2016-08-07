@@ -14,7 +14,8 @@ public class Enchantment_Radioactivity extends EnchantmentDamage {
     public static Enchantment_Radioactivity INSTANCE;
 
     public Enchantment_Radioactivity() {
-        super(GT_Config.addIDConfig(ConfigCategories.IDs.enchantments, "Radioactivity", 14), 0, -1);
+        super(Rarity.VERY_RARE, 0);
+        GT_Config.addIDConfig(ConfigCategories.IDs.enchantments, "Radioactivity", 14);
         GT_LanguageManager.addStringLocalization(getName(), "Radioactivity");
         Materials.Plutonium.setEnchantmentForTools(this, 1).setEnchantmentForArmors(this, 1);
         Materials.Uranium235.setEnchantmentForTools(this, 2).setEnchantmentForArmors(this, 2);
@@ -50,7 +51,7 @@ public class Enchantment_Radioactivity extends EnchantmentDamage {
     }
 
     @Override
-    public void func_151367_b(EntityLivingBase aHurtEntity, Entity aDamagingEntity, int aLevel) {
+    public void onEntityDamaged(EntityLivingBase aHurtEntity, Entity aDamagingEntity, int aLevel) {
         GT_Utility.applyRadioactivity(aHurtEntity, aLevel, 1);
     }
 

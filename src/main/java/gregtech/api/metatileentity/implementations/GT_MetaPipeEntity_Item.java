@@ -17,6 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.tileentity.TileEntityHopper;
+import net.minecraft.util.EnumFacing;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -171,7 +172,7 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
                     }
                     if (tTileEntity instanceof ISidedInventory) {
                         temp = true;
-                        int[] tSlots = ((ISidedInventory) tTileEntity).getAccessibleSlotsFromSide(GT_Utility.getOppositeSide(i));
+                        int[] tSlots = ((ISidedInventory) tTileEntity).getSlotsForFace(EnumFacing.VALUES[i].getOpposite());
                         if (tSlots == null || tSlots.length <= 0) {
                             continue;
                         }
@@ -279,7 +280,7 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
     }
 
     @Override
-    public boolean canExtractItem(int aIndex, ItemStack aStack, int aSide) {
+    public boolean canExtractItem(int aIndex, ItemStack aStack, EnumFacing aSide) {
         return true;
     }
 

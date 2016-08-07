@@ -3,7 +3,7 @@ package gregtech.common.items.armor;
 import java.util.List;
 
 import thaumcraft.api.nodes.IRevealer;
-import cpw.mods.fml.common.Loader;
+import net.minecraftforge.fml.common.Loader;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;

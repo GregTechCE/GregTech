@@ -4,17 +4,18 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class GT_Cover_LiquidMeter
-        extends GT_CoverBehavior {
+public class GT_Cover_LiquidMeter extends GT_CoverBehavior {
+
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+        EnumFacing aSideDirection = EnumFacing.VALUES[aSide];
         if ((aTileEntity instanceof IFluidHandler)) {
-            FluidTankInfo[] tTanks = ((IFluidHandler) aTileEntity).getTankInfo(ForgeDirection.UNKNOWN);
+            FluidTankInfo[] tTanks = ((IFluidHandler) aTileEntity).getTankInfo(aSideDirection);
             long tAll = 0L;
             long tFull = 0L;
             if (tTanks != null) {
@@ -80,4 +81,5 @@ public class GT_Cover_LiquidMeter
     public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return 5;
     }
+
 }

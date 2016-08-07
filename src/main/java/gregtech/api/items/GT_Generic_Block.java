@@ -1,6 +1,6 @@
 package gregtech.api.items;
 
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -13,7 +13,7 @@ public class GT_Generic_Block extends Block {
 
     protected GT_Generic_Block(Class<? extends ItemBlock> aItemClass, String aName, Material aMaterial) {
         super(aMaterial);
-        setBlockName(mUnlocalizedName = aName);
+        setUnlocalizedName(mUnlocalizedName = aName);
         GameRegistry.registerBlock(this, aItemClass, getUnlocalizedName());
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + W + ".name", "Any Sub Block of this one");
     }

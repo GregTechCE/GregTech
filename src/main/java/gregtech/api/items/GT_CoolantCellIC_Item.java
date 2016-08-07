@@ -5,9 +5,7 @@ import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
 import net.minecraft.item.ItemStack;
 
-public class GT_CoolantCellIC_Item
-        extends GT_CoolantCell_Item
-        implements IReactorComponent {
+public class GT_CoolantCellIC_Item extends GT_CoolantCell_Item implements IReactorComponent {
     public GT_CoolantCellIC_Item(String aUnlocalized, String aEnglish, int aMaxStore) {
         super(aUnlocalized, aEnglish, aMaxStore);
     }
@@ -60,5 +58,40 @@ public class GT_CoolantCellIC_Item
             setHeatForStack(aStack, tHeat);
         }
         return aHeat;
+    }
+
+    @Override
+    public void processChamber(ItemStack itemStack, IReactor iReactor, int i, int i1, boolean b) {
+        processChamber(iReactor, itemStack, i, i1, b);
+    }
+
+    @Override
+    public boolean acceptUraniumPulse(ItemStack itemStack, IReactor iReactor, ItemStack itemStack1, int i, int i1, int i2, int i3, boolean b) {
+        return acceptUraniumPulse(iReactor, itemStack, itemStack1, i, i1, i2, i3, b);
+    }
+
+    @Override
+    public boolean canStoreHeat(ItemStack itemStack, IReactor iReactor, int i, int i1) {
+        return canStoreHeat(iReactor, itemStack, i, i1);
+    }
+
+    @Override
+    public int getMaxHeat(ItemStack itemStack, IReactor iReactor, int i, int i1) {
+        return getMaxHeat(iReactor, itemStack, i, i1);
+    }
+
+    @Override
+    public int getCurrentHeat(ItemStack itemStack, IReactor iReactor, int i, int i1) {
+        return getCurrentHeat(iReactor, itemStack, i, i1);
+    }
+
+    @Override
+    public int alterHeat(ItemStack itemStack, IReactor iReactor, int i, int i1, int i2) {
+        return alterHeat(iReactor, itemStack, i, i1, i2);
+    }
+
+    @Override
+    public float influenceExplosion(ItemStack itemStack, IReactor iReactor) {
+        return influenceExplosion(iReactor, itemStack);
     }
 }

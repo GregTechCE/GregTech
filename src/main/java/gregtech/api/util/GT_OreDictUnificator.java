@@ -62,7 +62,7 @@ public class GT_OreDictUnificator {
     }
 
     public static void set(OrePrefixes aPrefix, Materials aMaterial, ItemStack aStack, boolean aOverwrite, boolean aAlreadyRegistered) {
-        if (aMaterial == null || aPrefix == null || GT_Utility.isStackInvalid(aStack) || Items.feather.getDamage(aStack) == W)
+        if (aMaterial == null || aPrefix == null || GT_Utility.isStackInvalid(aStack) || Items.FEATHER.getDamage(aStack) == W)
             return;
         isAddingOre++;
         aStack = GT_Utility.copyAmount(1, aStack);
@@ -122,8 +122,8 @@ public class GT_OreDictUnificator {
         if (GT_Utility.isStackInvalid(aStack)) return aStack;
         ItemStack tStack = get(aUseBlackList, aStack);
         if (GT_Utility.areStacksEqual(aStack, tStack)) return aStack;
-        aStack.func_150996_a(tStack.getItem());
-        Items.feather.setDamage(aStack, Items.feather.getDamage(tStack));
+        aStack.setItem(tStack.getItem());
+        Items.FEATHER.setDamage(aStack, Items.FEATHER.getDamage(tStack));
         return aStack;
     }
 
@@ -191,7 +191,7 @@ public class GT_OreDictUnificator {
 
     public static void addAssociation(OrePrefixes aPrefix, Materials aMaterial, ItemStack aStack, boolean aBlackListed) {
         if (aPrefix == null || aMaterial == null || GT_Utility.isStackInvalid(aStack)) return;
-        if (Items.feather.getDamage(aStack) == W) for (byte i = 0; i < 16; i++)
+        if (Items.FEATHER.getDamage(aStack) == W) for (byte i = 0; i < 16; i++)
             setItemData(GT_Utility.copyAmountAndMetaData(1, i, aStack), new ItemData(aPrefix, aMaterial, aBlackListed));
         setItemData(aStack, new ItemData(aPrefix, aMaterial, aBlackListed));
     }

@@ -5,9 +5,12 @@ import gregtech.api.interfaces.IFoodStat;
 import gregtech.api.items.GT_MetaBase_Item;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.SoundCategory;
 
 public class GT_FoodStat implements IFoodStat {
     private final int mFoodLevel;
@@ -34,7 +37,7 @@ public class GT_FoodStat implements IFoodStat {
     public GT_FoodStat(int aFoodLevel, float aSaturation, EnumAction aAction, ItemStack aEmptyContainer, boolean aAlwaysEdible, boolean aInvisibleParticles, boolean aIsRotten, int... aPotionEffects) {
         mFoodLevel = aFoodLevel;
         mSaturation = aSaturation;
-        mAction = aAction == null ? EnumAction.eat : aAction;
+        mAction = aAction == null ? EnumAction.EAT : aAction;
         mPotionEffects = aPotionEffects;
         mEmptyContainer = GT_Utility.copy(aEmptyContainer);
         mInvisibleParticles = aInvisibleParticles;
@@ -67,15 +70,15 @@ public class GT_FoodStat implements IFoodStat {
         aStack.stackSize--;
         ItemStack tStack = GT_OreDictUnificator.get(GT_Utility.copy(mEmptyContainer));
         if (tStack != null && !aPlayer.inventory.addItemStackToInventory(tStack))
-            aPlayer.dropPlayerItemWithRandomChoice(tStack, true);
-        aPlayer.worldObj.playSoundAtEntity(aPlayer, "random.burp", 0.5F, aPlayer.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+            aPlayer.dropItem(tStack, true);
+        aPlayer.worldObj.playSound(aPlayer, aPlayer.getPosition(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.VOICE, 0.5F, aPlayer.worldObj.rand.nextFloat() * 0.1F + 0.9F);
         if (!aPlayer.worldObj.isRemote) {
             if (mMilk) {
-                aPlayer.curePotionEffects(new ItemStack(Items.milk_bucket, 1, 0));
+                aPlayer.curePotionEffects(new ItemStack(Items.MILK_BUCKET, 1, 0));
             }
             for (int i = 3; i < mPotionEffects.length; i += 4) {
                 if (aPlayer.worldObj.rand.nextInt(100) < mPotionEffects[i]) {
-                    aPlayer.addPotionEffect(new PotionEffect(mPotionEffects[i - 3], mPotionEffects[i - 2], mPotionEffects[i - 1], mInvisibleParticles));
+                    aPlayer.addPotionEffect(new PotionEffect(Potion.getPotionById(mPotionEffects[i - 3]), mPotionEffects[i - 2], mPotionEffects[i - 1], false, mInvisibleParticles));
                 }
             }
             if (mExplosive) {

@@ -47,7 +47,7 @@ public class GT_GUIContainer extends GuiContainer {
             super.drawScreen(par1, par2, par3);
         } catch (Throwable e) {
             try {
-                Tessellator.instance.draw();
+                Tessellator.getInstance().draw();
             } catch (Throwable f) {
                 //
             }

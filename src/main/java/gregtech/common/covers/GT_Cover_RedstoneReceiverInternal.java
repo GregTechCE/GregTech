@@ -10,7 +10,7 @@ public class GT_Cover_RedstoneReceiverInternal
     }
 
     public byte getRedstoneInput(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        return GregTech_API.sWirelessRedstone.get(Integer.valueOf(aCoverVariable)) == null ? 0 : ((Byte) GregTech_API.sWirelessRedstone.get(Integer.valueOf(aCoverVariable))).byteValue();
+        return GregTech_API.sWirelessRedstone.get(aCoverVariable) == null ? 0 : GregTech_API.sWirelessRedstone.get(aCoverVariable);
     }
 
     public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {

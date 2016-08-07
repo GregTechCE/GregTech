@@ -5,14 +5,17 @@ import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.net.GT_Packet_Block_Event;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import static gregtech.api.enums.GT_Values.GT;
@@ -23,7 +26,7 @@ import static gregtech.api.enums.GT_Values.NW;
  * <p/>
  * Basically everything a TileEntity should have.
  */
-public abstract class BaseTileEntity extends TileEntity implements IHasWorldObjectAndCoords {
+public abstract class BaseTileEntity extends TileEntity implements IHasWorldObjectAndCoords, ITickable {
     /**
      * Buffers adjacent TileEntities for faster access
      * <p/>
@@ -60,32 +63,32 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public final int getXCoord() {
-        return xCoord;
+        return getPos().getX();
     }
 
     @Override
     public final short getYCoord() {
-        return (short) yCoord;
+        return (short) getPos().getY();
     }
 
     @Override
     public final int getZCoord() {
-        return zCoord;
+        return getPos().getZ();
     }
 
     @Override
     public final int getOffsetX(byte aSide, int aMultiplier) {
-        return xCoord + ForgeDirection.getOrientation(aSide).offsetX * aMultiplier;
+        return getXCoord() + EnumFacing.VALUES[aSide].getFrontOffsetX() * aMultiplier;
     }
 
     @Override
     public final short getOffsetY(byte aSide, int aMultiplier) {
-        return (short) (yCoord + ForgeDirection.getOrientation(aSide).offsetY * aMultiplier);
+        return (short) (getYCoord() + EnumFacing.VALUES[aSide].getFrontOffsetY() * aMultiplier);
     }
 
     @Override
     public final int getOffsetZ(byte aSide, int aMultiplier) {
-        return zCoord + ForgeDirection.getOrientation(aSide).offsetZ * aMultiplier;
+        return getZCoord() + EnumFacing.VALUES[aSide].getFrontOffsetZ() * aMultiplier;
     }
 
     @Override
@@ -106,7 +109,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     @Override
     public final boolean openGUI(EntityPlayer aPlayer, int aID) {
         if (aPlayer == null) return false;
-        aPlayer.openGui(GT, aID, worldObj, xCoord, yCoord, zCoord);
+        aPlayer.openGui(GT, aID, worldObj, getXCoord(), getYCoord(), getZCoord());
         return true;
     }
 
@@ -116,18 +119,18 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     @Override
-    public final BiomeGenBase getBiome(int aX, int aZ) {
-        return worldObj.getBiomeGenForCoords(aX, aZ);
+    public final Biome getBiome(int aX, int aZ) {
+        return worldObj.getBiomeGenForCoords(new BlockPos(aX, 1, aZ));
     }
 
     @Override
-    public final BiomeGenBase getBiome() {
-        return getBiome(xCoord, zCoord);
+    public final Biome getBiome() {
+        return getBiome(getXCoord(), getZCoord());
     }
 
     @Override
     public final Block getBlockOffset(int aX, int aY, int aZ) {
-        return getBlock(xCoord + aX, yCoord + aY, zCoord + aZ);
+        return getBlock(getXCoord() + aX, getYCoord() + aY, getZCoord() + aZ);
     }
 
     @Override
@@ -142,7 +145,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public final byte getMetaIDOffset(int aX, int aY, int aZ) {
-        return getMetaID(xCoord + aX, yCoord + aY, zCoord + aZ);
+        return getMetaID(getXCoord() + aX, getYCoord() + aY, getZCoord() + aZ);
     }
 
     @Override
@@ -157,7 +160,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public final byte getLightLevelOffset(int aX, int aY, int aZ) {
-        return getLightLevel(xCoord + aX, yCoord + aY, zCoord + aZ);
+        return getLightLevel(getXCoord() + aX, getYCoord() + aY, getZCoord() + aZ);
     }
 
     @Override
@@ -172,7 +175,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public final boolean getOpacityOffset(int aX, int aY, int aZ) {
-        return getOpacity(xCoord + aX, yCoord + aY, zCoord + aZ);
+        return getOpacity(getXCoord() + aX, getYCoord() + aY, getZCoord() + aZ);
     }
 
     @Override
@@ -187,7 +190,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public final boolean getSkyOffset(int aX, int aY, int aZ) {
-        return getSky(xCoord + aX, yCoord + aY, zCoord + aZ);
+        return getSky(getXCoord() + aX, getYCoord() + aY, getZCoord() + aZ);
     }
 
     @Override
@@ -202,7 +205,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public final boolean getAirOffset(int aX, int aY, int aZ) {
-        return getAir(xCoord + aX, yCoord + aY, zCoord + aZ);
+        return getAir(getXCoord() + aX, getYCoord() + aY, getZCoord() + aZ);
     }
 
     @Override
@@ -217,7 +220,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public final TileEntity getTileEntityOffset(int aX, int aY, int aZ) {
-        return getTileEntity(xCoord + aX, yCoord + aY, zCoord + aZ);
+        return getTileEntity(getXCoord() + aX, getYCoord() + aY, getZCoord() + aZ);
     }
 
     @Override
@@ -312,44 +315,45 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public final Block getBlock(int aX, int aY, int aZ) {
-        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.blockExists(aX, aY, aZ)) return Blocks.air;
-        return worldObj.getBlock(aX, aY, aZ);
+        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.isBlockLoaded(new BlockPos(aX, aY, aZ))) return Blocks.AIR;
+        return worldObj.getBlockState(new BlockPos(aX, aY, aZ)).getBlock();
     }
 
     @Override
     public final byte getMetaID(int aX, int aY, int aZ) {
-        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.blockExists(aX, aY, aZ)) return 0;
-        return (byte) worldObj.getBlockMetadata(aX, aY, aZ);
+        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.isBlockLoaded(new BlockPos(aX, aY, aZ))) return 0;
+        IBlockState blockState = worldObj.getBlockState(new BlockPos(aX, aY, aZ));
+        return (byte) blockState.getBlock().getMetaFromState(blockState);
     }
 
     @Override
     public final byte getLightLevel(int aX, int aY, int aZ) {
-        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.blockExists(aX, aY, aZ)) return 0;
-        return (byte) (worldObj.getLightBrightness(aX, aY, aZ) * 15);
+        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.isBlockLoaded(new BlockPos(aX, aY, aZ))) return 0;
+        return (byte) (worldObj.getLightBrightness(new BlockPos(aX, aY, aZ)) * 15);
     }
 
     @Override
     public final boolean getSky(int aX, int aY, int aZ) {
-        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.blockExists(aX, aY, aZ)) return true;
-        return worldObj.canBlockSeeTheSky(aX, aY, aZ);
+        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.isBlockLoaded(new BlockPos(aX, aY, aZ))) return true;
+        return worldObj.canSeeSky(new BlockPos(aX, aY, aZ));
     }
 
     @Override
     public final boolean getOpacity(int aX, int aY, int aZ) {
-        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.blockExists(aX, aY, aZ)) return false;
+        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.isBlockLoaded(new BlockPos(aX, aY, aZ))) return false;
         return GT_Utility.isOpaqueBlock(worldObj, aX, aY, aZ);
     }
 
     @Override
     public final boolean getAir(int aX, int aY, int aZ) {
-        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.blockExists(aX, aY, aZ)) return true;
+        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.isBlockLoaded(new BlockPos(aX, aY, aZ))) return true;
         return GT_Utility.isBlockAir(worldObj, aX, aY, aZ);
     }
 
     @Override
     public final TileEntity getTileEntity(int aX, int aY, int aZ) {
-        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.blockExists(aX, aY, aZ)) return null;
-        return worldObj.getTileEntity(aX, aY, aZ);
+        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.isBlockLoaded(new BlockPos(aX, aY, aZ))) return null;
+        return worldObj.getTileEntity(new BlockPos(aX, aY, aZ));
     }
 
     @Override
@@ -358,10 +362,10 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         int tX = getOffsetX(aSide, 1), tY = getOffsetY(aSide, 1), tZ = getOffsetZ(aSide, 1);
         if (crossedChunkBorder(tX, tZ)) {
             mBufferedTileEntities[aSide] = null;
-            if (ignoreUnloadedChunks && !worldObj.blockExists(tX, tY, tZ)) return null;
+            if (ignoreUnloadedChunks && !worldObj.isBlockLoaded(new BlockPos(tX, tY, tZ))) return null;
         }
         if (mBufferedTileEntities[aSide] == null) {
-            mBufferedTileEntities[aSide] = worldObj.getTileEntity(tX, tY, tZ);
+            mBufferedTileEntities[aSide] = worldObj.getTileEntity(new BlockPos(tX, tY, tZ));
             if (mBufferedTileEntities[aSide] == null) {
                 mBufferedTileEntities[aSide] = this;
                 return null;
@@ -372,16 +376,17 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
             mBufferedTileEntities[aSide] = null;
             return getTileEntityAtSide(aSide);
         }
-        if (mBufferedTileEntities[aSide].xCoord == tX && mBufferedTileEntities[aSide].yCoord == tY && mBufferedTileEntities[aSide].zCoord == tZ) {
+        if (mBufferedTileEntities[aSide].getPos().getX() == tX && mBufferedTileEntities[aSide].getPos().getY() == tY && mBufferedTileEntities[aSide].getPos().getZ() == tZ) {
             return mBufferedTileEntities[aSide];
         }
         return null;
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound aNBT) {
+    public NBTTagCompound writeToNBT(NBTTagCompound aNBT) {
         super.writeToNBT(aNBT);
         //isDead = true;
+        return aNBT;
     }
 
     @Override
@@ -409,7 +414,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     @Override
-    public void updateEntity() {
+    public void update() {
         // Well if the TileEntity gets ticked it is alive.
         isDead = false;
     }
@@ -420,18 +425,18 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public final void sendBlockEvent(byte aID, byte aValue) {
-        NW.sendPacketToAllPlayersInRange(worldObj, new GT_Packet_Block_Event(xCoord, (short) yCoord, zCoord, aID, aValue), xCoord, zCoord);
+        NW.sendPacketToAllPlayersInRange(worldObj, new GT_Packet_Block_Event(getXCoord(), (short) getYCoord(), getZCoord(), aID, aValue), getXCoord(), getZCoord());
     }
 
     private boolean crossedChunkBorder(int aX, int aZ) {
-        return aX >> 4 != xCoord >> 4 || aZ >> 4 != zCoord >> 4;
+        return aX >> 4 != getXCoord() >> 4 || aZ >> 4 != getZCoord() >> 4;
     }
 
     public final void setOnFire() {
-        GT_Utility.setCoordsOnFire(worldObj, xCoord, yCoord, zCoord, false);
+        GT_Utility.setCoordsOnFire(worldObj, getXCoord(), getYCoord(), getZCoord(), false);
     }
 
     public final void setToFire() {
-        worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.fire);
+        worldObj.setBlockState(getPos(), Blocks.FIRE.getDefaultState());
     }
 }

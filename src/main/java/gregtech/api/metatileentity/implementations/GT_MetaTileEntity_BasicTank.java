@@ -175,10 +175,10 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
 
     @Override
     public int fill(FluidStack aFluid, boolean doFill) {
-        if (aFluid == null || aFluid.getFluid().getID() <= 0 || aFluid.amount <= 0 || !canTankBeFilled() || !isFluidInputAllowed(aFluid))
+        if (aFluid == null || aFluid.amount <= 0 || !canTankBeFilled() || !isFluidInputAllowed(aFluid))
             return 0;
 
-        if (getFillableStack() == null || getFillableStack().getFluid().getID() <= 0) {
+        if (getFillableStack() == null) {
             if (aFluid.amount <= getCapacity()) {
                 if (doFill) {
                     setFillableStack(aFluid.copy());

@@ -5,10 +5,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
@@ -99,7 +96,7 @@ public class GT_Container extends Container {
     }
 
     @Override
-    public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
+    public ItemStack slotClick(int aSlotIndex, int aMouseclick, ClickType aShifthold, EntityPlayer aPlayer) {
         mTileEntity.markDirty();
 
         if (aSlotIndex >= 0) {
@@ -122,21 +119,21 @@ public class GT_Container extends Container {
         int tTempStackSize;
         ItemStack aHoldStack;
 
-        if ((aShifthold == 0 || aShifthold == 1) && (aMouseclick == 0 || aMouseclick == 1)) {
+        if ((aShifthold == ClickType.THROW || aShifthold == ClickType.PICKUP) && (aMouseclick == 0 || aMouseclick == 1)) {
             if (aSlotIndex == -999) {
                 if (aPlayerInventory.getItemStack() != null && aSlotIndex == -999) {
                     if (aMouseclick == 0) {
-                        aPlayer.dropPlayerItemWithRandomChoice(aPlayerInventory.getItemStack(), true);
+                        aPlayer.dropItem(aPlayerInventory.getItemStack(), true);
                         aPlayerInventory.setItemStack(null);
                     }
                     if (aMouseclick == 1) {
-                        aPlayer.dropPlayerItemWithRandomChoice(aPlayerInventory.getItemStack().splitStack(1), true);
+                        aPlayer.dropItem(aPlayerInventory.getItemStack().splitStack(1), true);
                         if (aPlayerInventory.getItemStack().stackSize == 0) {
                             aPlayerInventory.setItemStack(null);
                         }
                     }
                 }
-            } else if (aShifthold == 1) {
+            } else if (aShifthold == ClickType.PICKUP_ALL) {
                 aSlot = (Slot) this.inventorySlots.get(aSlotIndex);
                 if (aSlot != null && aSlot.canTakeStack(aPlayer)) {
                     tTempStack = this.transferStackInSlot(aPlayer, aSlotIndex);
@@ -215,7 +212,7 @@ public class GT_Container extends Container {
                     aSlot.onSlotChanged();
                 }
             }
-        } else if (aShifthold == 2 && aMouseclick >= 0 && aMouseclick < 9) {
+        } else if (aShifthold == ClickType.QUICK_MOVE && aMouseclick >= 0 && aMouseclick < 9) {
             aSlot = (Slot) this.inventorySlots.get(aSlotIndex);
 
             if (aSlot.canTakeStack(aPlayer)) {
@@ -249,7 +246,7 @@ public class GT_Container extends Container {
                     aSlot.putStack(tTempStack);
                 }
             }
-        } else if (aShifthold == 3 && aPlayer.capabilities.isCreativeMode && aPlayerInventory.getItemStack() == null && aSlotIndex >= 0) {
+        } else if (aShifthold == ClickType.CLONE && aPlayer.capabilities.isCreativeMode && aPlayerInventory.getItemStack() == null && aSlotIndex >= 0) {
             aSlot = (Slot) this.inventorySlots.get(aSlotIndex);
             if (aSlot != null && aSlot.getHasStack()) {
                 tTempStack = GT_Utility.copy(aSlot.getStack());
@@ -379,16 +376,16 @@ public class GT_Container extends Container {
     }
 
     @Override
-    public void addCraftingToCrafters(ICrafting par1ICrafting) {
+    public void addListener(IContainerListener par1ICrafting) {
         try {
-            super.addCraftingToCrafters(par1ICrafting);
+            super.addListener(par1ICrafting);
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
         }
     }
 
     @Override
-    public List getInventory() {
+    public List<ItemStack> getInventory() {
         try {
             return super.getInventory();
         } catch (Throwable e) {
@@ -398,9 +395,9 @@ public class GT_Container extends Container {
     }
 
     @Override
-    public void removeCraftingFromCrafters(ICrafting par1ICrafting) {
+    public void removeListener(IContainerListener par1ICrafting) {
         try {
-            super.removeCraftingFromCrafters(par1ICrafting);
+            super.removeListener(par1ICrafting);
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
         }
@@ -443,16 +440,6 @@ public class GT_Container extends Container {
             e.printStackTrace(GT_Log.err);
         }
         return null;
-    }
-
-    @Override
-    public boolean func_94530_a(ItemStack par1ItemStack, Slot par2Slot) {
-        try {
-            return super.func_94530_a(par1ItemStack, par2Slot);
-        } catch (Throwable e) {
-            e.printStackTrace(GT_Log.err);
-        }
-        return true;
     }
 
     @Override
@@ -517,34 +504,6 @@ public class GT_Container extends Container {
             e.printStackTrace(GT_Log.err);
         }
         return 0;
-    }
-
-    @Override
-    public boolean isPlayerNotUsingContainer(EntityPlayer par1EntityPlayer) {
-        try {
-            return super.isPlayerNotUsingContainer(par1EntityPlayer);
-        } catch (Throwable e) {
-            e.printStackTrace(GT_Log.err);
-        }
-        return true;
-    }
-
-    @Override
-    public void setPlayerIsPresent(EntityPlayer par1EntityPlayer, boolean par2) {
-        try {
-            super.setPlayerIsPresent(par1EntityPlayer, par2);
-        } catch (Throwable e) {
-            e.printStackTrace(GT_Log.err);
-        }
-    }
-
-    @Override
-    protected void func_94533_d() {
-        try {
-            super.func_94533_d();
-        } catch (Throwable e) {
-            e.printStackTrace(GT_Log.err);
-        }
     }
 
     @Override

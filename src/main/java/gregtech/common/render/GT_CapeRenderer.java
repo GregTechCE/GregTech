@@ -1,17 +1,9 @@
 package gregtech.common.render;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Utility;
-import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderPlayerEvent;
-import org.lwjgl.opengl.GL11;
 
 import java.util.Collection;
 
@@ -21,12 +13,12 @@ public class GT_CapeRenderer
     private final Collection<String> mCapeList;
 
     public GT_CapeRenderer(Collection<String> aCapeList) {
+        super(Minecraft.getMinecraft().getRenderManager());
         this.mCapeList = aCapeList;
-        setRenderManager(RenderManager.instance);
     }
 
     public void receiveRenderSpecialsEvent(RenderPlayerEvent.Specials.Pre aEvent) {
-        AbstractClientPlayer aPlayer = (AbstractClientPlayer) aEvent.entityPlayer;
+        /*AbstractClientPlayer aPlayer = (AbstractClientPlayer) aEvent.getEntityPlayer();
         if (GT_Utility.getFullInvisibility(aPlayer)) {
             aEvent.setCanceled(true);
             return;
@@ -90,6 +82,6 @@ public class GT_CapeRenderer
             if (GT_Values.D1) {
                 e.printStackTrace(GT_Log.err);
             }
-        }
+        }*/
     }
 }

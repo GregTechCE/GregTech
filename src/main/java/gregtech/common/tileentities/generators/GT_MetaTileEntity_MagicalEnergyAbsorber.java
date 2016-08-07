@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.generators;
 
-import cpw.mods.fml.common.Loader;
+import net.minecraftforge.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.TC_Aspects;

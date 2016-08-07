@@ -34,7 +34,7 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
                         playerDetected = true;
                         break;
                     }
-                    if (tEntity.getDisplayName().equalsIgnoreCase(placer)) {
+                    if (tEntity.getName().equalsIgnoreCase(placer)) {
                         if (aCoverVariable == 1) {
                             playerDetected = true;
                             break;

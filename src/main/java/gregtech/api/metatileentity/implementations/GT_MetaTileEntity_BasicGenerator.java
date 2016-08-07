@@ -5,12 +5,12 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gregtech.common.GT_Pollution;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.GT_Pollution;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.ChunkPosition;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.Collection;
@@ -185,7 +185,7 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
                     mInventory[getStackDisplaySlot()] = null;
                 } else {
                     if (mInventory[getStackDisplaySlot()] == null)
-                        mInventory[getStackDisplaySlot()] = new ItemStack(Blocks.fire, 1);
+                        mInventory[getStackDisplaySlot()] = new ItemStack(Blocks.FIRE, 1);
                     mInventory[getStackDisplaySlot()].setStackDisplayName("Generating: " + (aBaseMetaTileEntity.getUniversalEnergyStored() - getMinimumStoredEU()) + " EU");
                 }
             } else {
@@ -209,7 +209,7 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
                 }
             }
             if(tProducedEU>0&&getPollution()>0){            	
-            	GT_Pollution.addPollution(new ChunkPosition(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()), 
+            	GT_Pollution.addPollution(new BlockPos(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()),
             			(int) ((tProducedEU * getPollution()/500)+1));                
             }
         }

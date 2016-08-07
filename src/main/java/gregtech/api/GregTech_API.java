@@ -1,7 +1,9 @@
 package gregtech.api;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDamagableItem;
@@ -21,7 +23,6 @@ import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.*;
 import gregtech.api.world.GT_Worldgen;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -165,7 +166,7 @@ public class GregTech_API {
      * The Icon Registers from Blocks and Items. They will get set right before the corresponding Icon Load Phase as executed in the Runnable List above.
      */
     @SideOnly(Side.CLIENT)
-    public static IIconRegister sBlockIcons, sItemIcons;
+    public static final TextureMap sBlockIcons = Minecraft.getMinecraft().getTextureMapBlocks();
     /**
      * The Configuration Objects
      */
@@ -283,7 +284,7 @@ public class GregTech_API {
      * You should call @causeMachineUpdate in @Block.breakBlock and in @Block.onBlockAdded of your registered Block.
      * You don't need to register TileEntities which implement @IMachineBlockUpdateable
      *
-     * @param aID   the ID of your Block
+     * @param aBlock   the block
      * @param aMeta the Metadata of the Blocks as Bitmask! -1 or ~0 for all Metavalues
      */
     public static boolean registerMachineBlock(Block aBlock, int aMeta) {

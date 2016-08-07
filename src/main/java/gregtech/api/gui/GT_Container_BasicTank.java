@@ -1,11 +1,11 @@
 package gregtech.api.gui;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.inventory.IContainerListener;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 
 import java.util.Iterator;
@@ -38,9 +38,9 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
             mContent = ((GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity()).mFluid.amount;
         else
             mContent = 0;
-        Iterator var2 = this.crafters.iterator();
+        Iterator<IContainerListener> var2 = this.listeners.iterator();
         while (var2.hasNext()) {
-            ICrafting var1 = (ICrafting) var2.next();
+            IContainerListener var1 = var2.next();
             var1.sendProgressBarUpdate(this, 100, mContent & 65535);
             var1.sendProgressBarUpdate(this, 101, mContent >>> 16);
         }

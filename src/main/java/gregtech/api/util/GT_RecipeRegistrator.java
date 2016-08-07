@@ -25,7 +25,7 @@ public class GT_RecipeRegistrator {
      * List of Materials, which are used in the Creation of Sticks. All Rod Materials are automatically added to this List.
      */
     public static final List<Materials> sRodMaterialList = new ArrayList<Materials>();
-    private static final ItemStack sMt1 = new ItemStack(Blocks.dirt, 1, 0), sMt2 = new ItemStack(Blocks.dirt, 1, 0);
+    private static final ItemStack sMt1 = new ItemStack(Blocks.DIRT, 1, 0), sMt2 = new ItemStack(Blocks.DIRT, 1, 0);
     private static final String s_H = "h", s_F = "f", s_I = "I", s_P = "P", s_R = "R";
     private static final ItemStack[][]
             sShapes1 = new ItemStack[][]{
@@ -132,7 +132,7 @@ public class GT_RecipeRegistrator {
     }
 
     public static void registerMaterialRecycling(ItemStack aStack, ItemData aData) {
-        if (GT_Utility.isStackInvalid(aStack) || GT_Utility.areStacksEqual(new ItemStack(Items.blaze_rod), aStack) || aData == null || !aData.hasValidMaterialData() || aData.mMaterial.mAmount <= 0 || GT_Utility.getFluidForFilledItem(aStack, false) != null)
+        if (GT_Utility.isStackInvalid(aStack) || GT_Utility.areStacksEqual(new ItemStack(Items.BLAZE_ROD), aStack) || aData == null || !aData.hasValidMaterialData() || aData.mMaterial.mAmount <= 0 || GT_Utility.getFluidForFilledItem(aStack, false) != null)
             return;
         registerReverseMacerating(GT_Utility.copyAmount(1, aStack), aData, aData.mPrefix == null);
         registerReverseSmelting(GT_Utility.copyAmount(1, aStack), aData.mMaterial.mMaterial, aData.mMaterial.mAmount, true);
@@ -272,7 +272,6 @@ public class GT_RecipeRegistrator {
      * You give this Function a Material and it will scan almost everything for adding recycling Recipes
      *
      * @param aMat             a Material, for example an Ingot or a Gem.
-     * @param aOutput          the Dust you usually get from macerating aMat
      * @param aRecipeReplacing allows to replace the Recipe with a Plate variant
      */
     public static synchronized void registerUsagesForMaterials(ItemStack aMat, String aPlate, boolean aRecipeReplacing) {
@@ -283,13 +282,13 @@ public class GT_RecipeRegistrator {
         if (aItemData == null || aItemData.mPrefix != OrePrefixes.ingot) aPlate = null;
         if (aPlate != null && GT_OreDictUnificator.getFirstOre(aPlate, 1) == null) aPlate = null;
 
-        sMt1.func_150996_a(aMat.getItem());
+        sMt1.setItem(aMat.getItem());
         sMt1.stackSize = 1;
-        Items.feather.setDamage(sMt1, Items.feather.getDamage(aMat));
+        Items.FEATHER.setDamage(sMt1, Items.FEATHER.getDamage(aMat));
 
-        sMt2.func_150996_a(new ItemStack(Blocks.dirt).getItem());
+        sMt2.setItem(new ItemStack(Blocks.DIRT).getItem());
         sMt2.stackSize = 1;
-        Items.feather.setDamage(sMt2, 0);
+        Items.FEATHER.setDamage(sMt2, 0);
 
         for (ItemStack[] tRecipe : sShapes1) {
             int tAmount1 = 0;
@@ -305,9 +304,9 @@ public class GT_RecipeRegistrator {
         for (Materials tMaterial : sRodMaterialList) {
             ItemStack tMt2 = GT_OreDictUnificator.get(OrePrefixes.stick, tMaterial, 1);
             if (tMt2 != null) {
-                sMt2.func_150996_a(tMt2.getItem());
+                sMt2.setItem(tMt2.getItem());
                 sMt2.stackSize = 1;
-                Items.feather.setDamage(sMt2, Items.feather.getDamage(tMt2));
+                Items.FEATHER.setDamage(sMt2, Items.FEATHER.getDamage(tMt2));
 
                 for (int i = 0; i < sShapes1.length; i++) {
                     ItemStack[] tRecipe = sShapes1[i];

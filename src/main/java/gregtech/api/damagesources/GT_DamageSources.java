@@ -2,6 +2,9 @@ package gregtech.api.damagesources;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.*;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 
 public class GT_DamageSources {
     public static DamageSource getElectricDamage() {
@@ -20,7 +23,7 @@ public class GT_DamageSources {
         return new DamageSourceExploding();
     }
 
-    public static DamageSource getCombatDamage(String aType, EntityLivingBase aPlayer, IChatComponent aDeathMessage) {
+    public static DamageSource getCombatDamage(String aType, EntityLivingBase aPlayer, ITextComponent aDeathMessage) {
         return new DamageSourceCombat(aType, aPlayer, aDeathMessage);
     }
 
@@ -33,16 +36,16 @@ public class GT_DamageSources {
     }
 
     private static class DamageSourceCombat extends EntityDamageSource {
-        private IChatComponent mDeathMessage;
+        private ITextComponent mDeathMessage;
 
-        public DamageSourceCombat(String aType, EntityLivingBase aPlayer, IChatComponent aDeathMessage) {
+        public DamageSourceCombat(String aType, EntityLivingBase aPlayer, ITextComponent aDeathMessage) {
             super(aType, aPlayer);
             mDeathMessage = aDeathMessage;
         }
 
         @Override
-        public IChatComponent func_151519_b(EntityLivingBase aTarget) {
-            return mDeathMessage == null ? super.func_151519_b(aTarget) : mDeathMessage;
+        public ITextComponent getDeathMessage(EntityLivingBase entityLivingBaseIn) {
+            return mDeathMessage == null ? super.getDeathMessage(entityLivingBaseIn) : mDeathMessage;
         }
     }
 
@@ -53,9 +56,12 @@ public class GT_DamageSources {
         }
 
         @Override
-        public IChatComponent func_151519_b(EntityLivingBase aTarget) {
-            return new ChatComponentText(EnumChatFormatting.RED + aTarget.getCommandSenderName() + EnumChatFormatting.WHITE + " got frozen");
+        public ITextComponent getDeathMessage(EntityLivingBase aTarget) {
+            return new TextComponentString(TextFormatting.RED.toString())
+                    .appendSibling(aTarget.getDisplayName())
+                    .appendText(TextFormatting.WHITE + " got frozen");
         }
+
     }
 
     private static class DamageSourceHeat extends DamageSource {
@@ -65,8 +71,10 @@ public class GT_DamageSources {
         }
 
         @Override
-        public IChatComponent func_151519_b(EntityLivingBase aTarget) {
-            return new ChatComponentText(EnumChatFormatting.RED + aTarget.getCommandSenderName() + EnumChatFormatting.WHITE + " was boiled alive");
+        public ITextComponent getDeathMessage(EntityLivingBase aTarget) {
+            return new TextComponentString(TextFormatting.RED.toString())
+                    .appendSibling(aTarget.getDisplayName())
+                    .appendText(TextFormatting.WHITE + " was boiled alive");
         }
     }
 
@@ -79,8 +87,11 @@ public class GT_DamageSources {
         }
 
         @Override
-        public IChatComponent func_151519_b(EntityLivingBase aTarget) {
-            return new ChatComponentText(EnumChatFormatting.RED + aTarget.getCommandSenderName() + EnumChatFormatting.WHITE + " exploded");
+        public ITextComponent getDeathMessage(EntityLivingBase aTarget) {
+            return new TextComponentString(TextFormatting.RED.toString())
+                    .appendSibling(aTarget.getDisplayName())
+                    .appendText(TextFormatting.WHITE + " exploded");
         }
+
     }
 }
