@@ -13,7 +13,7 @@ import net.minecraft.init.Blocks;
 
 public class GT_Block_Ores extends GT_Block_Ores_Abstract {
     public GT_Block_Ores() {
-        super("gt.blockores", false, Material.rock);
+        super("gt.blockores", 7, false, Material.rock);
     }
 
     @Override
@@ -34,11 +34,6 @@ public class GT_Block_Ores extends GT_Block_Ores_Abstract {
     @Override
     public Materials[] getDroppedDusts() { //Must have 8 entries; can be null.
         return new Materials[]{Materials.Stone, Materials.Netherrack, Materials.Endstone, Materials.GraniteBlack, Materials.GraniteRed, Materials.Marble, Materials.Basalt, Materials.Stone};
-    }
-
-    @Override
-    public int getHarvestLevel(int aMeta) {
-        return aMeta == 5 || aMeta == 6 ? 2 : aMeta % 8;
     }
 
     @Override

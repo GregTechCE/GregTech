@@ -65,6 +65,20 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
                     tOreBlock = GregTech_API.sBlockOresUb3;
                     aMetaData += (BlockMeta * 1000);
                 }
+            } else if (BlockName.equals("tile.moonBlock") && (BlockMeta == 3 || BlockMeta == 4)) {
+                if (GregTech_API.sBlockOresGC != null) {
+                    switch (BlockMeta) {
+                        case 3: tOreBlock = GregTech_API.sBlockOresGC; break;
+                        case 4: aMetaData += 1000; tOreBlock = GregTech_API.sBlockOresGC; break;
+                    }
+                }
+            } else if (BlockName.equals("tile.mars") && (BlockMeta == 6 || BlockMeta == 9)) {
+                if (GregTech_API.sBlockOresGC != null) {
+                    switch (BlockMeta) {
+                        case 6: aMetaData += 2000; tOreBlock = GregTech_API.sBlockOresGC; break;
+                        case 9: aMetaData += 3000; tOreBlock = GregTech_API.sBlockOresGC; break;
+                    }
+                }
             } else if (tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.netherrack)) {
                 aMetaData += 1000;
             } else if (tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.end_stone)) {
