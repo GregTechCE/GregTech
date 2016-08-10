@@ -8,12 +8,14 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 
 public class GT_Block_Ores_UB1 extends GT_Block_Ores_Abstract {
     Block aUBBlock = GameRegistry.findBlock("UndergroundBiomes", "igneousStone");
 
     public GT_Block_Ores_UB1() {
-        super("gt.blockores.ub1", true, Material.rock);
+        super("gt.blockores.ub1", 8, true, Material.rock);
+        if (aUBBlock == null) aUBBlock = Blocks.stone;
     }
 
     @Override

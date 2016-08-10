@@ -41,6 +41,7 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
                 "Size(WxHxD): 3x3x4, Controller (front centered)",
                 "3x3x4 of Stable Titanium Casing (hollow, Min 24!)",
                 "2x Titanium Gear Box Casing inside the Hollow Casing",
+                "8x Engine Intake Casings (around controller, Min 8!)",
                 "1x Input Hatch (one of the Casings)",
                 "1x Maintenance Hatch (one of the Casings)",
                 "1x Muffler Hatch (top middle back)",
