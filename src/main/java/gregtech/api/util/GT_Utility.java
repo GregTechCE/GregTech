@@ -26,6 +26,7 @@ import ic2.api.recipe.*;
 import ic2.core.IC2Potion;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -63,6 +64,8 @@ import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -228,6 +231,12 @@ public class GT_Utility {
         return E;
     }
 
+    @SideOnly(Side.CLIENT)
+    public static TextureAtlasSprite getTexture(String location) {
+        return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location);
+    }
+
+    @SideOnly(Side.CLIENT)
     public static IIconContainer sprite2Container(final TextureAtlasSprite sprite) {
         return new IIconContainer() {
             @Override
@@ -240,6 +249,10 @@ public class GT_Utility {
                 return null;
             }
         };
+    }
+
+    public static int shortsToIntColor(short[] shorts) {
+        return shorts[0] << 16 | shorts[1] << 8 | shorts[2];
     }
 
     public static boolean getPotion(EntityLivingBase aPlayer, int aPotionIndex) {
@@ -1063,6 +1076,10 @@ public class GT_Utility {
 
     public static boolean isOpaqueBlock(World aWorld, int aX, int aY, int aZ) {
         return aWorld.getBlockState(new BlockPos(aX, aY, aZ)).isOpaqueCube();
+    }
+
+    public static boolean isOpaqueBlock(World aWorld, BlockPos blockPos) {
+        return aWorld.getBlockState(blockPos).isOpaqueCube();
     }
 
     public static boolean isBlockAir(World aWorld, int aX, int aY, int aZ) {

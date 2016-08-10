@@ -1,15 +1,20 @@
 package gregtech.common.blocks;
 
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.util.GT_LanguageManager;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
-public class GT_Block_Casings1
-        extends GT_Block_Casings_Abstract {
+import javax.annotation.Nullable;
+
+public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
     public GT_Block_Casings1() {
         super(GT_Item_Casings1.class, "gt.blockcasings", GT_Material_Casings.INSTANCE);
         for (byte i = 0; i < 16; i = (byte) (i + 1)) {
@@ -50,7 +55,7 @@ public class GT_Block_Casings1
         ItemList.Casing_Coil_Superconductor.set(new ItemStack(this, 1, 15));
     }
 
-    public IIcon getIcon(int aSide, int aMeta) {
+    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
             switch (aMeta) {
                 case 10:
@@ -66,10 +71,10 @@ public class GT_Block_Casings1
                 case 15:
                     return Textures.BlockIcons.MACHINE_COIL_SUPERCONDUCTOR.getIcon();
             }
-            if (aSide == 0) {
+            if (aSide == EnumFacing.DOWN) {
                 return Textures.BlockIcons.MACHINECASINGS_BOTTOM[aMeta].getIcon();
             }
-            if (aSide == 1) {
+            if (aSide == EnumFacing.UP) {
                 return Textures.BlockIcons.MACHINECASINGS_TOP[aMeta].getIcon();
             }
             return Textures.BlockIcons.MACHINECASINGS_SIDE[aMeta].getIcon();
@@ -77,7 +82,11 @@ public class GT_Block_Casings1
         return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
     }
 
-    public int colorMultiplier(IBlockAccess aWorld, int aX, int aY, int aZ) {
-        return aWorld.getBlockMetadata(aX, aY, aZ) > 9 ? super.colorMultiplier(aWorld, aX, aY, aZ) : gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[0] << 16 | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[1] << 8 | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[2];
+
+    @Override
+    public int colorMultiplier(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) {
+        int metadata = state.getValue(METADATA);
+        return metadata > 9 ? Dyes._NULL.getRGBAInt() : Dyes.MACHINE_METAL.getRGBAInt();
     }
+
 }

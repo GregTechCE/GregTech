@@ -1,18 +1,20 @@
 package gregtech.api.objects;
 
 import gregtech.api.GregTech_API;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
 
 public class GT_Fluid extends Fluid implements Runnable {
-    public final String mTextureName;
+
     private final short[] mRGBa;
 
     public GT_Fluid(String aName, String aTextureName, short[] aRGBa) {
-        super(aName);
+        super(aName,
+                new ResourceLocation(RES_PATH_BLOCK + "fluids/fluid." + aTextureName),
+                new ResourceLocation(RES_PATH_BLOCK + "fluids/fluid." + aTextureName));
         mRGBa = aRGBa;
-        mTextureName = aTextureName;
         GregTech_API.sGTBlockIconload.add(this);
     }
 
@@ -23,6 +25,7 @@ public class GT_Fluid extends Fluid implements Runnable {
 
     @Override
     public void run() {
-        setIcons(GregTech_API.sBlockIcons.registerIcon(RES_PATH_BLOCK + "fluids/fluid." + mTextureName));
+        GregTech_API.sBlockIcons.registerSprite(getStill());
+        GregTech_API.sBlockIcons.registerSprite(getFlowing());
     }
 }

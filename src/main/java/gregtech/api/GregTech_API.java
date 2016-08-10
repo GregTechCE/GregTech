@@ -1,5 +1,6 @@
 package gregtech.api;
 
+import gregtech.common.blocks.GT_Block_Machines;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraftforge.fml.relauncher.Side;
@@ -175,7 +176,7 @@ public class GregTech_API {
     /**
      * Initialized by the Block creation.
      */
-    public static Block sBlockMachines;
+    public static GT_Block_Machines sBlockMachines;
 
     public static Block sBlockOres1, sBlockOresUb1, sBlockOresUb2, sBlockOresUb3, sBlockGem, sBlockMetal1, sBlockMetal2, sBlockMetal3, sBlockMetal4, sBlockMetal5, sBlockMetal6, sBlockMetal7, sBlockMetal8, sBlockGem1, sBlockGem2, sBlockGem3, sBlockReinforced;
     public static Block sBlockGranites, sBlockConcretes, sBlockStones;

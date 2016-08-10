@@ -6,17 +6,21 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidBlock;
 
-public class GT_Block_Concretes
-        extends GT_Block_Stones_Abstract {
+import javax.annotation.Nullable;
+
+public class GT_Block_Concretes extends GT_Block_Stones_Abstract {
+
     public GT_Block_Concretes() {
         super(GT_Item_Concretes.class, "gt.blockconcretes");
         setResistance(20.0F);
@@ -55,23 +59,17 @@ public class GT_Block_Concretes
         GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Concrete, new ItemStack(this, 1, 15));
     }
 
-    public int getHarvestLevel(int aMeta) {
-        return 1;
-    }
-
-    public float getBlockHardness(World aWorld, int aX, int aY, int aZ) {
-        return this.blockHardness = Blocks.stone.getBlockHardness(aWorld, aX, aY, aZ);
-    }
-
-    public IIcon getIcon(int aSide, int aMeta) {
+    @Override
+    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
             return gregtech.api.enums.Textures.BlockIcons.CONCRETES[aMeta].getIcon();
         }
         return gregtech.api.enums.Textures.BlockIcons.CONCRETES[0].getIcon();
     }
 
-    public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity aEntity) {
-        Block tBlock = aWorld.getBlock(aX, aY + 1, aZ);
+    @Override
+    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity aEntity) {
+        Block tBlock = worldIn.getBlockState(pos.up()).getBlock();
         if (((aEntity instanceof EntityLivingBase)) && (!(tBlock instanceof IFluidBlock)) && (!(tBlock instanceof BlockLiquid)) && (aEntity.onGround) && (!aEntity.isInWater()) && (!aEntity.isWet())) {
             if (aEntity.isSneaking()) {
                 aEntity.motionX *= 0.8999999761581421D;
@@ -85,11 +83,14 @@ public class GT_Block_Concretes
         }
     }
 
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        Block tBlock = aWorld.getBlock(aX, aY + 1, aZ);
+    @Nullable
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World aWorld, BlockPos pos) {
+        Block tBlock = aWorld.getBlockState(pos.up()).getBlock();
         if (((tBlock instanceof IFluidBlock)) || ((tBlock instanceof BlockLiquid))) {
-            return super.getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
+            return super.getCollisionBoundingBox(blockState, aWorld, pos);
         }
-        return AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 0.875D, aZ + 1);
+        return new AxisAlignedBB(pos, pos.add(1, 0.875D, 1));
     }
+
 }

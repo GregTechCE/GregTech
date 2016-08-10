@@ -4,12 +4,16 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.common.render.newblocks.IBlockIconProvider;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class GT_Block_Stones extends GT_Block_Stones_Abstract {
+public class GT_Block_Stones extends GT_Block_Stones_Abstract implements IBlockIconProvider {
     public GT_Block_Stones() {
         super(GT_Item_Granites.class, "gt.blockstones");
         setResistance(60.0F);
@@ -47,18 +51,22 @@ public class GT_Block_Stones extends GT_Block_Stones_Abstract {
         GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(this, 1, 15));
     }
 
-    public int getHarvestLevel(int aMeta) {
+    @Override
+    public int getHarvestLevel(IBlockState aMeta) {
         return 2;
     }
 
-    public float getBlockHardness(World aWorld, int aX, int aY, int aZ) {
-        return this.blockHardness = Blocks.stone.getBlockHardness(aWorld, aX, aY, aZ) * 3.0F;
+    @Override
+    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
+        return Blocks.STONE.getBlockHardness(blockState, worldIn, pos);
     }
 
-    public IIcon getIcon(int aSide, int aMeta) {
+    @Override
+    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
             return gregtech.api.enums.Textures.BlockIcons.STONES[aMeta].getIcon();
         }
         return gregtech.api.enums.Textures.BlockIcons.STONES[0].getIcon();
     }
+
 }

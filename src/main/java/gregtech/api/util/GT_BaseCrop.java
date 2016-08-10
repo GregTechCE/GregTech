@@ -92,19 +92,7 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
         if (bIc2NeiLoaded) {
             try {
                 Class.forName("speiger.src.crops.api.CropPluginAPI").getMethod("registerCropInfo", Class.forName("speiger.src.crops.api.ICropCardInfo")).invoke(Class.forName("speiger.src.crops.api.CropPluginAPI").getField("instance"), this);
-            } catch (IllegalAccessException ex) {
-                bIc2NeiLoaded = false;
-            } catch (IllegalArgumentException ex) {
-                bIc2NeiLoaded = false;
-            } catch (java.lang.reflect.InvocationTargetException ex) {
-                bIc2NeiLoaded = false;
-            } catch (NoSuchFieldException ex) {
-                bIc2NeiLoaded = false;
-            } catch (NoSuchMethodException ex) {
-                bIc2NeiLoaded = false;
-            } catch (SecurityException ex) {
-                bIc2NeiLoaded = false;
-            } catch (ClassNotFoundException ex) {
+            } catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException | java.lang.reflect.InvocationTargetException | ClassNotFoundException | NoSuchMethodException | SecurityException ex) {
                 bIc2NeiLoaded = false;
             }
         }

@@ -103,6 +103,10 @@ public enum Dyes implements IColorModulationContainer {
         return new FluidStack(mFluidDyes.get(aIndex), (int) aAmount);
     }
 
+    public int getRGBAInt() {
+        return GT_Utility.shortsToIntColor(mRGBa);
+    }
+
     @Override
     public short[] getRGBA() {
         return mRGBa;

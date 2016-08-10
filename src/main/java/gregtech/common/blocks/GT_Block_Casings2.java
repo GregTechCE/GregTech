@@ -4,14 +4,17 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.util.GT_LanguageManager;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
-public class GT_Block_Casings2
-        extends GT_Block_Casings_Abstract {
+public class GT_Block_Casings2 extends GT_Block_Casings_Abstract {
+
     public GT_Block_Casings2() {
         super(GT_Item_Casings2.class, "gt.blockcasings2", GT_Material_Casings.INSTANCE);
         for (byte i = 0; i < 16; i = (byte) (i + 1)) {
@@ -51,7 +54,8 @@ public class GT_Block_Casings2
         ItemList.Casing_Pipe_TungstenSteel.set(new ItemStack(this, 1, 15));
     }
 
-    public IIcon getIcon(int aSide, int aMeta) {
+    @Override
+    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
         switch (aMeta) {
             case 0:
                 return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
@@ -89,7 +93,11 @@ public class GT_Block_Casings2
         return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
     }
 
-    public float getExplosionResistance(Entity aTNT, World aWorld, int aX, int aY, int aZ, double eX, double eY, double eZ) {
-        return aWorld.getBlockMetadata(aX, aY, aZ) == 8 ? Blocks.bedrock.getExplosionResistance(aTNT) : super.getExplosionResistance(aTNT, aWorld, aX, aY, aZ, eX, eY, eZ);
+    @Override
+    public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
+        return world.getBlockState(pos).getValue(METADATA) == 8 ?
+                Blocks.BEDROCK.getExplosionResistance(world, pos, exploder, explosion) :
+                super.getExplosionResistance(world, pos, exploder, explosion);
     }
+
 }

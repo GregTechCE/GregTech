@@ -2,9 +2,14 @@ package gregtech.common.blocks;
 
 import gregtech.api.GregTech_API;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class GT_Item_Ores
@@ -16,30 +21,34 @@ public class GT_Item_Ores
         setCreativeTab(GregTech_API.TAB_GREGTECH_MATERIALS);
     }
 
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-        return false;
+    @Override
+    public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
+        return EnumActionResult.FAIL;
     }
 
+    @Override
     public String getUnlocalizedName(ItemStack aStack) {
-        return this.field_150939_a.getUnlocalizedName() + "." + getDamage(aStack);
+        return this.block.getUnlocalizedName() + "." + getDamage(aStack);
     }
 
-    public boolean placeBlockAt(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int side, float hitX, float hitY, float hitZ, int aMeta) {
-        short tDamage = (short) getDamage(aStack);
+    @Override
+    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
+        short tDamage = (short) getDamage(stack);
         if (tDamage > 0) {
-            if (!aWorld.setBlock(aX, aY, aZ, this.field_150939_a, GT_TileEntity_Ores.getHarvestData(tDamage), 3)) {
+            if (!world.setBlockState(pos, block.getStateFromMeta(GT_TileEntity_Ores.getHarvestData(tDamage)))) {
                 return false;
             }
-            GT_TileEntity_Ores tTileEntity = (GT_TileEntity_Ores) aWorld.getTileEntity(aX, aY, aZ);
+            GT_TileEntity_Ores tTileEntity = (GT_TileEntity_Ores) world.getTileEntity(pos);
             tTileEntity.mMetaData = tDamage;
             tTileEntity.mNatural = false;
-        } else if (!aWorld.setBlock(aX, aY, aZ, this.field_150939_a, 0, 3)) {
+        } else if (!world.setBlockState(pos, block.getDefaultState())) {
             return false;
         }
-        if (aWorld.getBlock(aX, aY, aZ) == this.field_150939_a) {
-            this.field_150939_a.onBlockPlacedBy(aWorld, aX, aY, aZ, aPlayer, aStack);
-            this.field_150939_a.onPostBlockPlaced(aWorld, aX, aY, aZ, tDamage);
+        IBlockState state = world.getBlockState(pos);
+        if (state.getBlock() == block) {
+            this.block.onBlockPlacedBy(world, pos, state, player, stack);
         }
         return true;
     }
+
 }

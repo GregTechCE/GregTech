@@ -6,7 +6,7 @@ import net.minecraft.block.material.Material;
 public class GT_Material_Reinforced
         extends Material {
     public GT_Material_Reinforced() {
-        super(MapColor.stoneColor);
+        super(MapColor.STONE);
         setRequiresTool();
         setAdventureModeExempt();
     }

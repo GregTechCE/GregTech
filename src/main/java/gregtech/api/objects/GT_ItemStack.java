@@ -17,7 +17,7 @@ public class GT_ItemStack {
     }
 
     public GT_ItemStack(ItemStack aStack) {
-        this(aStack == null ? null : aStack.getItem(), aStack == null ? 0 : aStack.stackSize, aStack == null ? 0 : Items.feather.getDamage(aStack));
+        this(aStack == null ? null : aStack.getItem(), aStack == null ? 0 : aStack.stackSize, aStack == null ? 0 : Items.FEATHER.getDamage(aStack));
     }
 
     public GT_ItemStack(int aHashCode) {
@@ -39,11 +39,7 @@ public class GT_ItemStack {
 
     @Override
     public boolean equals(Object aStack) {
-        if (aStack == this) return true;
-        if (aStack instanceof GT_ItemStack) {
-            return ((GT_ItemStack) aStack).mItem == mItem && ((GT_ItemStack) aStack).mMetaData == mMetaData;
-        }
-        return false;
+        return aStack == this || aStack instanceof GT_ItemStack && ((GT_ItemStack) aStack).mItem == mItem && ((GT_ItemStack) aStack).mMetaData == mMetaData;
     }
 
     @Override

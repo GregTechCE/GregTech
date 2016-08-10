@@ -1,7 +1,5 @@
 package gregtech.common.blocks;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -9,13 +7,18 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class GT_Block_Casings4
-        extends GT_Block_Casings_Abstract {
+public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
+
     public static boolean mConnectedMachineTextures = true;
 
     public GT_Block_Casings4() {
@@ -52,7 +55,8 @@ public class GT_Block_Casings4
         ItemList.Casing_EngineIntake.set(new ItemStack(this, 1, 13));
     }
 
-    public IIcon getIcon(int aSide, int aMeta) {
+    @Override
+    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
         switch (aMeta) {
             case 0:
                 return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
@@ -61,7 +65,7 @@ public class GT_Block_Casings4
             case 2:
                 return Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
             case 3:
-                return aSide > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_TITANIUM.getIcon() : Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
+                return aSide.getIndex() > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_TITANIUM.getIcon() : Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
             case 4:
                 return Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW.getIcon();
             case 5:
@@ -90,7 +94,7 @@ public class GT_Block_Casings4
         return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
     }
 
-    public IIcon getTurbineCasing(int meta, int iconIndex, boolean active) {
+    public TextureAtlasSprite getTurbineCasing(int meta, int iconIndex, boolean active) {
         switch (meta) {
             case 9:
                 return active ? Textures.BlockIcons.TURBINE_ACTIVE[iconIndex].getIcon() : Textures.BlockIcons.TURBINE[iconIndex].getIcon();
@@ -106,110 +110,111 @@ public class GT_Block_Casings4
     }
 
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int aSide) {
-        int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
+    @Override
+    public TextureAtlasSprite getIcon(IBlockAccess aWorld, BlockPos pos, EnumFacing aSide) {
+        int tMeta = aWorld.getBlockState(pos).getValue(METADATA);
         if ((tMeta != 6) && (tMeta != 8) && (tMeta != 9) && (tMeta != 10) && (tMeta != 11) && (tMeta != 12) || (!mConnectedMachineTextures)) {
             return getIcon(aSide, tMeta);
         }
         int tStartIndex = tMeta == 6 ? 1 : 13;
         if ((tMeta == 9) || (tMeta == 10) || (tMeta == 11) || (tMeta == 12)) {
-            if ((aSide == 2) || (aSide == 3)) {
+            if ((aSide == EnumFacing.NORTH) || (aSide == EnumFacing.SOUTH)) {
                 TileEntity tTileEntity;
                 IMetaTileEntity tMetaTileEntity;
-                if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 3 ? 1 : -1), yCoord - 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                if ((null != (tTileEntity = aWorld.getTileEntity(pos.add(aSide == EnumFacing.SOUTH ? 1 : -1, -1, 0)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 0, true);
                     }
                     return getTurbineCasing(tMeta, 0, false);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 3 ? 1 : -1), yCoord, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                if ((null != (tTileEntity = aWorld.getTileEntity(pos.add(aSide == EnumFacing.SOUTH ? 1 : -1, 0, 0)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 3, true);
                     }
                     return getTurbineCasing(tMeta, 3, false);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 3 ? 1 : -1), yCoord + 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                if ((null != (tTileEntity = aWorld.getTileEntity(pos.add(aSide == EnumFacing.SOUTH ? 1 : -1, 1, 0)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 6, true);
                     }
                     return getTurbineCasing(tMeta, 6, false);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord - 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                if ((null != (tTileEntity = aWorld.getTileEntity(pos.down()))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 1, true);
                     }
                     return getTurbineCasing(tMeta, 1, false);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord + 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                if ((null != (tTileEntity = aWorld.getTileEntity(pos.up()))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 7, true);
                     }
                     return getTurbineCasing(tMeta, 7, false);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 2 ? 1 : -1), yCoord + 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                if ((null != (tTileEntity = aWorld.getTileEntity(pos.add(aSide == EnumFacing.NORTH ? 1 : -1, 1, 0)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 8, true);
                     }
                     return getTurbineCasing(tMeta, 8, false);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 2 ? 1 : -1), yCoord, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                if ((null != (tTileEntity = aWorld.getTileEntity(pos.add(aSide == EnumFacing.NORTH ? 1 : -1, 0, 0)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 5, true);
                     }
                     return getTurbineCasing(tMeta, 5, false);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 2 ? 1 : -1), yCoord - 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                if ((null != (tTileEntity = aWorld.getTileEntity(pos.add(aSide == EnumFacing.NORTH ? 1 : -1, -1, 0)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 2, true);
                     }
                     return getTurbineCasing(tMeta, 2, false);
                 }
-            } else if ((aSide == 4) || (aSide == 5)) {
+            } else if ((aSide == EnumFacing.WEST) || (aSide == EnumFacing.EAST)) {
                 TileEntity tTileEntity;
                 Object tMetaTileEntity;
-                if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord - 1, zCoord + (aSide == 4 ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                if ((null != (tTileEntity = aWorld.getTileEntity(pos.add(0, -1, aSide == EnumFacing.WEST ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 0, true);
                     }
                     return getTurbineCasing(tMeta, 0, false);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord, zCoord + (aSide == 4 ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                if ((null != (tTileEntity = aWorld.getTileEntity(pos.add(0, 0, aSide == EnumFacing.WEST ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 3, true);
                     }
                     return getTurbineCasing(tMeta, 3, false);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord + 1, zCoord + (aSide == 4 ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                if ((null != (tTileEntity = aWorld.getTileEntity(pos.add(0, 1, aSide == EnumFacing.WEST ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 6, true);
                     }
                     return getTurbineCasing(tMeta, 6, false);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord - 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                if ((null != (tTileEntity = aWorld.getTileEntity(pos.down()))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 1, true);
                     }
                     return getTurbineCasing(tMeta, 1, false);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord + 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                if ((null != (tTileEntity = aWorld.getTileEntity(pos.up()))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 7, true);
                     }
                     return getTurbineCasing(tMeta, 7, false);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord + 1, zCoord + (aSide == 5 ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                if ((null != (tTileEntity = aWorld.getTileEntity(pos.add(0, 1, aSide == EnumFacing.EAST ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 8, true);
                     }
                     return getTurbineCasing(tMeta, 8, false);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord, zCoord + (aSide == 5 ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                if ((null != (tTileEntity = aWorld.getTileEntity(pos.add(0, 0, aSide == EnumFacing.EAST ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 5, true);
                     }
                     return getTurbineCasing(tMeta, 5, false);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord - 1, zCoord + (aSide == 5 ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                if ((null != (tTileEntity = aWorld.getTileEntity(pos.add(0, -1, aSide == EnumFacing.EAST ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
                     if (((IGregTechTileEntity) tTileEntity).isActive()) {
                         return getTurbineCasing(tMeta, 2, true);
                     }
@@ -229,9 +234,15 @@ public class GT_Block_Casings4
                     return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
             }
         }
-        boolean[] tConnectedSides = {(aWorld.getBlock(xCoord, yCoord - 1, zCoord) == this) && (aWorld.getBlockMetadata(xCoord, yCoord - 1, zCoord) == tMeta), (aWorld.getBlock(xCoord, yCoord + 1, zCoord) == this) && (aWorld.getBlockMetadata(xCoord, yCoord + 1, zCoord) == tMeta), (aWorld.getBlock(xCoord + 1, yCoord, zCoord) == this) && (aWorld.getBlockMetadata(xCoord + 1, yCoord, zCoord) == tMeta), (aWorld.getBlock(xCoord, yCoord, zCoord + 1) == this) && (aWorld.getBlockMetadata(xCoord, yCoord, zCoord + 1) == tMeta), (aWorld.getBlock(xCoord - 1, yCoord, zCoord) == this) && (aWorld.getBlockMetadata(xCoord - 1, yCoord, zCoord) == tMeta), (aWorld.getBlock(xCoord, yCoord, zCoord - 1) == this) && (aWorld.getBlockMetadata(xCoord, yCoord, zCoord - 1) == tMeta)};
+        boolean[] tConnectedSides = {
+                stateAndMetaEquals(aWorld, pos.down(), tMeta),
+                stateAndMetaEquals(aWorld, pos.up(), tMeta),
+                stateAndMetaEquals(aWorld, pos.north(), tMeta),
+                stateAndMetaEquals(aWorld, pos.south(), tMeta),
+                stateAndMetaEquals(aWorld, pos.west(), tMeta),
+                stateAndMetaEquals(aWorld, pos.east(), tMeta)};
         switch (aSide) {
-            case 0:
+            case DOWN:
                 if (tConnectedSides[0]) {
                     return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 7)].getIcon();
                 }
@@ -269,9 +280,9 @@ public class GT_Block_Casings4
                     return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 1)].getIcon();
                 }
                 if ((!tConnectedSides[5]) && (!tConnectedSides[3])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 0)].getIcon();
+                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex)].getIcon();
                 }
-            case 1:
+            case UP:
                 if (tConnectedSides[1]) {
                     return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 7)].getIcon();
                 }
@@ -309,9 +320,9 @@ public class GT_Block_Casings4
                     return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 1)].getIcon();
                 }
                 if ((!tConnectedSides[3]) && (!tConnectedSides[5])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 0)].getIcon();
+                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex)].getIcon();
                 }
-            case 2:
+            case NORTH:
                 if (tConnectedSides[5]) {
                     return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 7)].getIcon();
                 }
@@ -349,9 +360,9 @@ public class GT_Block_Casings4
                     return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 1)].getIcon();
                 }
                 if ((!tConnectedSides[0]) && (!tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 0)].getIcon();
+                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex)].getIcon();
                 }
-            case 3:
+            case SOUTH:
                 if (tConnectedSides[3]) {
                     return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 7)].getIcon();
                 }
@@ -389,9 +400,9 @@ public class GT_Block_Casings4
                     return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 1)].getIcon();
                 }
                 if ((!tConnectedSides[0]) && (!tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 0)].getIcon();
+                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex)].getIcon();
                 }
-            case 4:
+            case WEST:
                 if (tConnectedSides[4]) {
                     return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 7)].getIcon();
                 }
@@ -426,12 +437,12 @@ public class GT_Block_Casings4
                     return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 7)].getIcon();
                 }
                 if ((!tConnectedSides[0]) && (!tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 0)].getIcon();
+                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex)].getIcon();
                 }
                 if ((!tConnectedSides[3]) && (!tConnectedSides[5])) {
                     return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 1)].getIcon();
                 }
-            case 5:
+            case EAST:
                 if (tConnectedSides[2]) {
                     return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 7)].getIcon();
                 }
@@ -466,7 +477,7 @@ public class GT_Block_Casings4
                     return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 7)].getIcon();
                 }
                 if ((!tConnectedSides[0]) && (!tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 0)].getIcon();
+                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex)].getIcon();
                 }
                 if ((!tConnectedSides[3]) && (!tConnectedSides[5])) {
                     return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 1)].getIcon();
@@ -475,4 +486,10 @@ public class GT_Block_Casings4
         }
         return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 7)].getIcon();
     }
+
+    public boolean stateAndMetaEquals(IBlockAccess access, BlockPos blockPos, int meta) {
+        IBlockState state = access.getBlockState(blockPos);
+        return state.getBlock() == this && state.getValue(METADATA) == meta;
+    }
+
 }

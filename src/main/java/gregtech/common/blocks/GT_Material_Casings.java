@@ -8,7 +8,7 @@ public class GT_Material_Casings
     public static final Material INSTANCE = new GT_Material_Casings();
 
     private GT_Material_Casings() {
-        super(MapColor.ironColor);
+        super(MapColor.IRON);
         setRequiresTool();
     }
 

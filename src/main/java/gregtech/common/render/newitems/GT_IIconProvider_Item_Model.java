@@ -1,8 +1,10 @@
-package gregtech.common.render.newrenderer;
+package gregtech.common.render.newitems;
 
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.common.render.IIconRegister;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemMeshDefinition;
@@ -19,17 +21,17 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.*;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
+import net.minecraftforge.common.model.IModelPart;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 
 import javax.annotation.Nullable;
-import javax.vecmath.Vector4f;
 import java.util.*;
 
 public class GT_IIconProvider_Item_Model implements ICustomModelLoader, IModel, IBakedModel {
 
     private static GT_IIconProvider_Item_Model INSTANCE = new GT_IIconProvider_Item_Model();
-    private static ModelResourceLocation RESOURCE_LOCATION = new ModelResourceLocation("gregtech", "IIconProvider");
+    private static ModelResourceLocation RESOURCE_LOCATION = new ModelResourceLocation("gregtech", "IItemIconProvider");
 
     private HashMap<TextureAtlasSprite, List<BakedQuad>> iconsCache = new HashMap<>();
     private HashMap<TextureAtlasSprite, List<BakedQuad>> overlaysCache = new HashMap<>();
@@ -38,7 +40,7 @@ public class GT_IIconProvider_Item_Model implements ICustomModelLoader, IModel, 
     private VertexFormat vertexFormat;
 
     //-----------------------------------------
-    // IModel
+    // IModelLoader
     //-----------------------------------------
 
     public static void setupItemIcons() {
@@ -55,7 +57,7 @@ public class GT_IIconProvider_Item_Model implements ICustomModelLoader, IModel, 
         ModelLoaderRegistry.registerLoader(INSTANCE);
         for(ResourceLocation itemId : Item.REGISTRY.getKeys()) {
             Item item = Item.REGISTRY.getObject(itemId);
-            if(item instanceof IIconProvider) {
+            if(item instanceof IItemIconProvider) {
                 ModelLoader.registerItemVariants(item, RESOURCE_LOCATION);
                 ModelLoader.setCustomMeshDefinition(item, new ItemMeshDefinition() {
                     @Override
@@ -105,7 +107,7 @@ public class GT_IIconProvider_Item_Model implements ICustomModelLoader, IModel, 
 
     @Override
     public IModelState getDefaultState() {
-        return null;
+        return new SimpleModelState(ImmutableMap.<IModelPart, TRSRTransformation>of());
     }
 
 
@@ -114,15 +116,11 @@ public class GT_IIconProvider_Item_Model implements ICustomModelLoader, IModel, 
     // IBakedModel
     //-----------------------------------------
 
-    /*
-    We hacks into ItemRenderer here
-    We draw to VertexBuffer instead of wrapping around BakedQuads
-     */
     @Override
     public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
         //Only one call
         if(side == null && itemStack != null) {
-            IIconProvider iconProvider = (IIconProvider) itemStack.getItem();
+            IItemIconProvider iconProvider = (IItemIconProvider) itemStack.getItem();
             IIconContainer iconContainer = iconProvider.getIconContainer(itemStack);
             TextureAtlasSprite textureIcon = iconContainer.getIcon();
             TextureAtlasSprite overlayIcon = iconContainer.getOverlayIcon();
@@ -166,7 +164,7 @@ public class GT_IIconProvider_Item_Model implements ICustomModelLoader, IModel, 
     @Override
     public TextureAtlasSprite getParticleTexture() {
         if(itemStack != null) {
-            IIconProvider iconProvider = (IIconProvider) itemStack.getItem();
+            IItemIconProvider iconProvider = (IItemIconProvider) itemStack.getItem();
             IIconContainer iconContainer = iconProvider.getIconContainer(itemStack);
             return iconContainer.getIcon();
         }

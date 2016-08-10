@@ -13,7 +13,7 @@ public class GT_Block_Ores_UB1 extends GT_Block_Ores_Abstract {
     Block aUBBlock = GameRegistry.findBlock("UndergroundBiomes", "igneousStone");
 
     public GT_Block_Ores_UB1() {
-        super("gt.blockores.ub1", true, Material.rock);
+        super("gt.blockores.ub1", true, Material.ROCK);
     }
 
     @Override

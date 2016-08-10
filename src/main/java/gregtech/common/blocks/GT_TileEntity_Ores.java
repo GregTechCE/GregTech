@@ -7,18 +7,24 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
+import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.world.GT_Worldgen_Ore_Normal;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -44,12 +50,14 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
         if (!air) {
             aY = Math.min(aWorld.getActualHeight(), Math.max(aY, 1));
         }
-        Block tBlock = aWorld.getBlock(aX, aY, aZ);
+        BlockPos blockPos = new BlockPos(aX, aY, aZ);
+        IBlockState blockState = aWorld.getBlockState(blockPos);
+        Block tBlock = blockState.getBlock();
         Block tOreBlock = GregTech_API.sBlockOres1;
-        int BlockMeta = aWorld.getBlockMetadata(aX, aY, aZ);
+        int BlockMeta = tBlock.getMetaFromState(blockState);
         String BlockName = tBlock.getUnlocalizedName();
         aMetaData += isSmallOre ? 16000 : 0;
-        if ((aMetaData > 0) && ((tBlock != Blocks.air) || air)) {
+        if ((aMetaData > 0) && ((tBlock != Blocks.AIR) || air)) {
             if (BlockName.equals("tile.igneousStone")) {
                 if (GregTech_API.sBlockOresUb1 != null) {
                     tOreBlock = GregTech_API.sBlockOresUb1;
@@ -65,35 +73,11 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
                     tOreBlock = GregTech_API.sBlockOresUb3;
                     aMetaData += (BlockMeta * 1000);
                 }
-            } else if (tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.netherrack)) {
+            } else if (tBlock.isReplaceableOreGen(blockState, aWorld, blockPos, GT_Worldgen_Ore_Normal.STONE)) {
                 aMetaData += 1000;
-            } else if (tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.end_stone)) {
-                aMetaData += 2000;
-            } else if (tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTech_API.sBlockGranites)) {
-                if (tBlock == GregTech_API.sBlockGranites) {
-                    if (aWorld.getBlockMetadata(aX, aY, aZ) < 8) {
-                        aMetaData += 3000;
-                    } else {
-                        aMetaData += 4000;
-                    }
-                } else {
-                    aMetaData += 3000;
-                }
-            } else if (tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTech_API.sBlockStones)) {
-                if (tBlock == GregTech_API.sBlockStones) {
-                    if (aWorld.getBlockMetadata(aX, aY, aZ) < 8) {
-                        aMetaData += 5000;
-                    } else {
-                        aMetaData += 6000;
-                    }
-                } else {
-                    aMetaData += 5000;
-                }
-            } else if (!tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.stone)) {
-                return false;
             }
-            aWorld.setBlock(aX, aY, aZ, tOreBlock, getHarvestData((short) aMetaData), 0);
-            TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+            aWorld.setBlockState(blockPos, tOreBlock.getStateFromMeta(getHarvestData((short) aMetaData)), 0);
+            TileEntity tTileEntity = aWorld.getTileEntity(blockPos);
             if ((tTileEntity instanceof GT_TileEntity_Ores)) {
                 ((GT_TileEntity_Ores) tTileEntity).mMetaData = ((short) aMetaData);
                 ((GT_TileEntity_Ores) tTileEntity).mNatural = true;
@@ -103,41 +87,56 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
         return false;
     }
 
+    @Override
     public void readFromNBT(NBTTagCompound aNBT) {
         super.readFromNBT(aNBT);
         this.mMetaData = aNBT.getShort("m");
         this.mNatural = aNBT.getBoolean("n");
     }
 
-    public void writeToNBT(NBTTagCompound aNBT) {
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound aNBT) {
         super.writeToNBT(aNBT);
         aNBT.setShort("m", this.mMetaData);
         aNBT.setBoolean("n", this.mNatural);
+        return aNBT;
     }
 
     public void onUpdated() {
         if ((!this.worldObj.isRemote) && (this.mBlocked)) {
             this.mBlocked = false;
-            GT_Values.NW.sendPacketToAllPlayersInRange(this.worldObj, new GT_Packet_Ores(this.xCoord, (short) this.yCoord, this.zCoord, this.mMetaData), this.xCoord, this.zCoord);
+            GT_Values.NW.sendPacketToAllPlayersInRange(this.worldObj, new GT_Packet_Ores(getPos(), this.mMetaData), getPos().getX(), getPos().getZ());
         }
     }
 
-    public Packet getDescriptionPacket() {
+    @Nullable
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
         if (!this.worldObj.isRemote) {
-            if ((this.mBlocked == (GT_Utility.isOpaqueBlock(this.worldObj, this.xCoord + 1, this.yCoord, this.zCoord)) && (GT_Utility.isOpaqueBlock(this.worldObj, this.xCoord - 1, this.yCoord, this.zCoord)) && (GT_Utility.isOpaqueBlock(this.worldObj, this.xCoord, this.yCoord + 1, this.zCoord)) && (GT_Utility.isOpaqueBlock(this.worldObj, this.xCoord, this.yCoord - 1, this.zCoord)) && (GT_Utility.isOpaqueBlock(this.worldObj, this.xCoord, this.yCoord, this.zCoord + 1)) && (GT_Utility.isOpaqueBlock(this.worldObj, this.xCoord, this.yCoord, this.zCoord - 1)) ? 1 : 0) == 0) {
-                GT_Values.NW.sendPacketToAllPlayersInRange(this.worldObj, new GT_Packet_Ores(this.xCoord, (short) this.yCoord, this.zCoord, this.mMetaData), this.xCoord, this.zCoord);
+            updateBlocked();
+            if (!this.mBlocked) {
+                GT_Values.NW.sendPacketToAllPlayersInRange(this.worldObj, new GT_Packet_Ores(getPos(), this.mMetaData), getPos().getX(), getPos().getZ());
             }
         }
         return null;
     }
 
+    public void updateBlocked() {
+        mBlocked = !(GT_Utility.isOpaqueBlock(worldObj, getPos().up()) ||
+                GT_Utility.isOpaqueBlock(worldObj, getPos().down()) ||
+                GT_Utility.isOpaqueBlock(worldObj, getPos().east()) ||
+                GT_Utility.isOpaqueBlock(worldObj, getPos().west()) ||
+                GT_Utility.isOpaqueBlock(worldObj, getPos().south()) ||
+                GT_Utility.isOpaqueBlock(worldObj, getPos().north()));
+     }
+
     public void overrideOreBlockMaterial(Block aOverridingStoneBlock, byte aOverridingStoneMeta) {
             this.mMetaData = ((short) (int) (this.mMetaData % 1000L + this.mMetaData / 16000L * 16000L));
-            if (aOverridingStoneBlock.isReplaceableOreGen(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Blocks.netherrack)) {
+            if (aOverridingStoneBlock.isReplaceableOreGen(worldObj.getBlockState(getPos()), this.worldObj, getPos(), state -> state.getBlock() == Blocks.NETHERRACK)) {
                 this.mMetaData = ((short) (this.mMetaData + 1000));
-            } else if (aOverridingStoneBlock.isReplaceableOreGen(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Blocks.end_stone)) {
+            } else if (aOverridingStoneBlock.isReplaceableOreGen(worldObj.getBlockState(getPos()), this.worldObj, getPos(), state -> state.getBlock() == Blocks.END_STONE)) {
                 this.mMetaData = ((short) (this.mMetaData + 2000));
-            } else if (aOverridingStoneBlock.isReplaceableOreGen(this.worldObj, this.xCoord, this.yCoord, this.zCoord, GregTech_API.sBlockGranites)) {
+            } else if (aOverridingStoneBlock.isReplaceableOreGen(worldObj.getBlockState(getPos()), this.worldObj, getPos(), state -> state.getBlock() == GregTech_API.sBlockGranites)) {
                 if (aOverridingStoneBlock == GregTech_API.sBlockGranites) {
                     if (aOverridingStoneMeta < 8) {
                         this.mMetaData = ((short) (this.mMetaData + 3000));
@@ -147,7 +146,7 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
                 } else {
                     this.mMetaData = ((short) (this.mMetaData + 3000));
                 }
-            } else if (aOverridingStoneBlock.isReplaceableOreGen(this.worldObj, this.xCoord, this.yCoord, this.zCoord, GregTech_API.sBlockStones)) {
+            } else if (aOverridingStoneBlock.isReplaceableOreGen(worldObj.getBlockState(getPos()), this.worldObj, getPos(), state -> state.getBlock() == GregTech_API.sBlockStones)) {
                 if (aOverridingStoneBlock == GregTech_API.sBlockStones) {
                     if (aOverridingStoneMeta < 8) {
                         this.mMetaData = ((short) (this.mMetaData + 5000));
@@ -158,16 +157,15 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
                     this.mMetaData = ((short) (this.mMetaData + 5000));
                 }
             }
-            this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, getHarvestData(this.mMetaData), 0);
+            this.worldObj.setBlockState(getPos(), getBlockType().getStateFromMeta(getHarvestData(this.mMetaData)), 0);
     }
 
     public void convertOreBlock(World aWorld, int aX, int aY, int aZ) {
         short aMeta = ((short) (int) (this.mMetaData % 1000 + (this.mMetaData / 16000 * 16000)));
-        aWorld.setBlock(aX, aY, aZ, GregTech_API.sBlockOres1);
-        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        aWorld.setBlockState(new BlockPos(aX, aY, aZ), GregTech_API.sBlockOres1.getStateFromMeta(getHarvestData(aMeta)));
+        TileEntity tTileEntity = aWorld.getTileEntity(new BlockPos(aX, aY, aZ));
         if (tTileEntity instanceof GT_TileEntity_Ores) {
             ((GT_TileEntity_Ores) tTileEntity).mMetaData = aMeta;
-            this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, getHarvestData(aMeta), 0);
         }
     }
 
@@ -175,14 +173,10 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
         return this.mMetaData;
     }
 
-    public boolean canUpdate() {
-        return false;
-    }
-
     public ArrayList<ItemStack> getDrops(Block aDroppedOre, int aFortune) {
-        ArrayList<ItemStack> rList = new ArrayList();
+        ArrayList<ItemStack> rList = new ArrayList<>();
         if (this.mMetaData <= 0) {
-            rList.add(new ItemStack(Blocks.cobblestone, 1, 0));
+            rList.add(new ItemStack(Blocks.COBBLESTONE, 1, 0));
             return rList;
         }
         if (this.mMetaData < 16000) {
@@ -194,8 +188,8 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
             aFortune = 0;
         }
         if (aMaterial != null) {
-            Random tRandom = new Random(this.xCoord ^ this.yCoord ^ this.zCoord);
-            ArrayList<ItemStack> tSelector = new ArrayList();
+            Random tRandom = new Random(getPos().hashCode());
+            ArrayList<ItemStack> tSelector = new ArrayList<>();
 
 
             ItemStack tStack = GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 1L);
@@ -243,7 +237,7 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
             if (tSelector.size() > 0) {
                 int i = 0;
                 for (int j = Math.max(1, aMaterial.mOreMultiplier + (aFortune > 0 ? tRandom.nextInt(1 + aFortune * aMaterial.mOreMultiplier) : 0) / 2); i < j; i++) {
-                    rList.add(GT_Utility.copyAmount(1L, new Object[]{tSelector.get(tRandom.nextInt(tSelector.size()))}));
+                    rList.add(GT_Utility.copyAmount(1L, tSelector.get(tRandom.nextInt(tSelector.size()))));
                 }
             }
             if (tRandom.nextInt(3 + aFortune) > 1) {
@@ -262,6 +256,6 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
                 return new ITexture[]{((GT_Block_Ores_Abstract) aBlock).getTextureSet()[((this.mMetaData / 1000) % 16)], aIconSet};
             }
         }
-        return new ITexture[]{new GT_CopiedBlockTexture(Blocks.stone, 0, 0), new GT_RenderedTexture(gregtech.api.enums.TextureSet.SET_NONE.mTextures[OrePrefixes.ore.mTextureIndex])};
+        return new ITexture[]{new GT_CopiedBlockTexture(Blocks.STONE, 0, 0), new GT_RenderedTexture(gregtech.api.enums.TextureSet.SET_NONE.mTextures[OrePrefixes.ore.mTextureIndex])};
     }
 }

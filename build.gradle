@@ -54,6 +54,9 @@ repositories {
     maven { // AppleCore
         url "http://www.ryanliptak.com/maven/"
     }
+    maven { //JEI
+        url "http://dvs1.progwml6.com/files/maven/"
+    }
     ivy {
         name "BuildCraft"
         artifactPattern "http://www.mod-buildcraft.com/releases/BuildCraft/[revision]/[module]-[revision]-[classifier].[ext]"
@@ -84,7 +87,8 @@ dependencies {
 	//provided "codechicken:CodeChickenCore:${config.minecraft.version}-${config.codechickencore.version}:dev"
     //provided "codechicken:NotEnoughItems:${config.minecraft.version}-${config.nei.version}:dev"
     provided "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"
-    provided "net.sengir.forestry:forestry_${config.minecraft.version}:${config.forestry.version}:dev"
+    deobfCompile "net.sengir.forestry:forestry_${config.minecraft.version}:${config.forestry.version}"
+    deobfCompile "mezz.jei:jei_${config.minecraft.version}:+"
     //provided "applecore:AppleCore:${config.applecore.version}:api"
     //provided "com.enderio.core:EnderCore:${config.enderiocore.version}:dev"
     //provided ("com.enderio:EnderIO:${config.enderio.version}:dev") {

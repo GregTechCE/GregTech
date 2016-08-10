@@ -8,8 +8,8 @@ import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.render.newrenderer.IIconProvider;
-import gregtech.common.render.newrenderer.IIconRegister;
+import gregtech.common.render.newitems.IItemIconProvider;
+import gregtech.common.render.IIconRegister;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -38,7 +38,7 @@ import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
 /**
  * Extended by most Items, also used as a fallback Item, to prevent the accidental deletion when Errors occur.
  */
-public class GT_Generic_Item extends Item implements IProjectileItem, IIconRegister, IIconProvider {
+public class GT_Generic_Item extends Item implements IProjectileItem, IIconRegister, IItemIconProvider {
     private final String mName, mTooltip;
     protected TextureAtlasSprite mIcon;
 

@@ -3,17 +3,23 @@ package gregtech.common.blocks;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.util.GT_ItsNotMyFaultException;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -27,7 +33,8 @@ public class GT_Item_Machines
         setCreativeTab(GregTech_API.TAB_GREGTECH);
     }
 
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean par4) {
+    @Override
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean par4) {
         try {
             int tDamage = getDamage(aStack);
             if ((tDamage <= 0) || (tDamage >= GregTech_API.METATILEENTITIES.length)) {
@@ -37,12 +44,10 @@ public class GT_Item_Machines
                 aList.add("WARNING, THE EXISTENCE OF THIS ITEM IS A BUG");
                 aList.add("IF YOU GOT IT IN SURVIVAL THEN PLEASE REPORT IT");
             } else {
-                TileEntity temp = GregTech_API.sBlockMachines.createTileEntity(aPlayer == null ? GT_Values.DW : aPlayer.worldObj, GregTech_API.METATILEENTITIES[tDamage] == null ? 0 : GregTech_API.METATILEENTITIES[tDamage].getTileEntityBaseType());
+                TileEntity temp = GregTech_API.sBlockMachines.createNewTileEntity(aPlayer == null ? GT_Values.DW : aPlayer.worldObj, GregTech_API.METATILEENTITIES[tDamage] == null ? 0 : GregTech_API.METATILEENTITIES[tDamage].getTileEntityBaseType());
                 if (temp != null) {
                     temp.setWorldObj(aPlayer == null ? GT_Values.DW : aPlayer.worldObj);
-                    temp.xCoord = 0;
-                    temp.yCoord = 0;
-                    temp.zCoord = 0;
+                    temp.setPos(BlockPos.ORIGIN);
                     if ((temp instanceof IGregTechTileEntity)) {
                         IGregTechTileEntity tTileEntity = (IGregTechTileEntity) temp;
                         tTileEntity.setInitialValuesAsNBT(new NBTTagCompound(), (short) tDamage);
@@ -56,15 +61,15 @@ public class GT_Item_Machines
                         }
                         if (tTileEntity.getEUCapacity() > 0L) {
                             if (tTileEntity.getInputVoltage() > 0L) {
-                                aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_IN", "Voltage IN: ", !GregTech_API.sPostloadFinished) + EnumChatFormatting.GREEN + tTileEntity.getInputVoltage() + " (" + GT_Values.VN[GT_Utility.getTier(tTileEntity.getInputVoltage())] + ")" + EnumChatFormatting.GRAY);
+                                aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_IN", "Voltage IN: ", !GregTech_API.sPostloadFinished) + TextFormatting.GREEN + tTileEntity.getInputVoltage() + " (" + GT_Values.VN[GT_Utility.getTier(tTileEntity.getInputVoltage())] + ")" + TextFormatting.GRAY);
                             }
                             if (tTileEntity.getOutputVoltage() > 0L) {
-                                aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_OUT", "Voltage OUT: ", !GregTech_API.sPostloadFinished) + EnumChatFormatting.GREEN + tTileEntity.getOutputVoltage() + " (" + GT_Values.VN[GT_Utility.getTier(tTileEntity.getOutputVoltage())] + ")" + EnumChatFormatting.GRAY);
+                                aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_OUT", "Voltage OUT: ", !GregTech_API.sPostloadFinished) + TextFormatting.GREEN + tTileEntity.getOutputVoltage() + " (" + GT_Values.VN[GT_Utility.getTier(tTileEntity.getOutputVoltage())] + ")" + TextFormatting.GRAY);
                             }
                             if (tTileEntity.getOutputAmperage() > 1L) {
-                                aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_AMOUNT", "Amperage: ", !GregTech_API.sPostloadFinished) + EnumChatFormatting.YELLOW + tTileEntity.getOutputAmperage() + EnumChatFormatting.GRAY);
+                                aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_AMOUNT", "Amperage: ", !GregTech_API.sPostloadFinished) + TextFormatting.YELLOW + tTileEntity.getOutputAmperage() + TextFormatting.GRAY);
                             }
-                            aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_STORE", "Capacity: ", !GregTech_API.sPostloadFinished) + EnumChatFormatting.BLUE + tTileEntity.getEUCapacity() + EnumChatFormatting.GRAY);
+                            aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_STORE", "Capacity: ", !GregTech_API.sPostloadFinished) + TextFormatting.BLUE + tTileEntity.getEUCapacity() + TextFormatting.GRAY);
                         }
                     }
                 }
@@ -87,10 +92,12 @@ public class GT_Item_Machines
         }
     }
 
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-        return false;
+    @Override
+    public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
+        return EnumActionResult.FAIL;
     }
 
+    @Override
     public String getUnlocalizedName(ItemStack aStack) {
         short tDamage = (short) getDamage(aStack);
         if ((tDamage < 0) || (tDamage >= GregTech_API.METATILEENTITIES.length)) {
@@ -102,6 +109,7 @@ public class GT_Item_Machines
         return "";
     }
 
+    @Override
     public void onCreated(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         super.onCreated(aStack, aWorld, aPlayer);
         short tDamage = (short) getDamage(aStack);
@@ -110,37 +118,40 @@ public class GT_Item_Machines
         }
     }
 
-    public boolean placeBlockAt(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int side, float hitX, float hitY, float hitZ, int aMeta) {
-        short tDamage = (short) getDamage(aStack);
+    @Override
+    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
+        short tDamage = (short) getDamage(stack);
         if (tDamage > 0) {
             if (GregTech_API.METATILEENTITIES[tDamage] == null) {
                 return false;
             }
             int tMetaData = GregTech_API.METATILEENTITIES[tDamage].getTileEntityBaseType();
-            if (!aWorld.setBlock(aX, aY, aZ, this.field_150939_a, tMetaData, 3)) {
+            if (!world.setBlockState(pos, block.getStateFromMeta(tDamage))) {
                 return false;
             }
-            if (aWorld.getBlock(aX, aY, aZ) != this.field_150939_a) {
+            IBlockState placed = world.getBlockState(pos);
+            if (placed != this.block) {
                 throw new GT_ItsNotMyFaultException("Failed to place Block even though World.setBlock returned true. It COULD be MCPC/Bukkit causing that. In case you really have that installed, don't report this Bug to me, I don't know how to fix it.");
             }
-            if (aWorld.getBlockMetadata(aX, aY, aZ) != tMetaData) {
+            if (placed.getValue(GT_Generic_Block.METADATA) != tMetaData) {
                 throw new GT_ItsNotMyFaultException("Failed to set the MetaValue of the Block even though World.setBlock returned true. It COULD be MCPC/Bukkit causing that. In case you really have that installed, don't report this Bug to me, I don't know how to fix it.");
             }
-            IGregTechTileEntity tTileEntity = (IGregTechTileEntity) aWorld.getTileEntity(aX, aY, aZ);
+            IGregTechTileEntity tTileEntity = (IGregTechTileEntity) world.getTileEntity(pos);
             if (tTileEntity != null) {
-                tTileEntity.setInitialValuesAsNBT(tTileEntity.isServerSide() ? aStack.getTagCompound() : null, tDamage);
-                if (aPlayer != null) {
-                    tTileEntity.setOwnerName(aPlayer.getDisplayName());
+                tTileEntity.setInitialValuesAsNBT(tTileEntity.isServerSide() ? stack.getTagCompound() : null, tDamage);
+                if (player != null) {
+                    tTileEntity.setOwnerName(player.getName());
                 }
-                tTileEntity.getMetaTileEntity().initDefaultModes(aStack.getTagCompound());
+                tTileEntity.getMetaTileEntity().initDefaultModes(stack.getTagCompound());
             }
-        } else if (!aWorld.setBlock(aX, aY, aZ, this.field_150939_a, tDamage, 3)) {
+        } else if (!world.setBlockState(pos, block.getStateFromMeta(tDamage))) {
             return false;
         }
-        if (aWorld.getBlock(aX, aY, aZ) == this.field_150939_a) {
-            this.field_150939_a.onBlockPlacedBy(aWorld, aX, aY, aZ, aPlayer, aStack);
-            this.field_150939_a.onPostBlockPlaced(aWorld, aX, aY, aZ, tDamage);
+        IBlockState state = world.getBlockState(pos);
+        if (state.getBlock() == block) {
+            this.block.onBlockPlacedBy(world, pos, state, player, stack);
         }
         return true;
     }
+
 }

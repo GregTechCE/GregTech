@@ -6,7 +6,7 @@ import net.minecraft.block.material.Material;
 public class GT_Material_Machines
         extends Material {
     public GT_Material_Machines() {
-        super(MapColor.ironColor);
+        super(MapColor.IRON);
         setRequiresTool();
         setImmovableMobility();
         setAdventureModeExempt();

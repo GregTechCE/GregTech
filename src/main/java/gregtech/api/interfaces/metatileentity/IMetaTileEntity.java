@@ -21,6 +21,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -330,7 +331,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * @param aActive     if the Machine is currently active (use this instead of calling mBaseMetaTileEntity.mActive!!!). Note: In case of Pipes this means if this Side is connected to something or not.
      * @param aRedstone   if the Machine is currently outputting a RedstoneSignal (use this instead of calling mBaseMetaTileEntity.mRedstone!!!)
      */
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone);
+    public ITexture[] getTexture(@Nullable IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone);
 
     /**
      * The Textures used for the Item rendering. Return null if you want the regular 3D Block Rendering.

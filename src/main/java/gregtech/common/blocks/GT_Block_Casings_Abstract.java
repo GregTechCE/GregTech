@@ -1,121 +1,136 @@
 package gregtech.common.blocks;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import com.google.common.collect.Lists;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Dyes;
 import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.util.GT_LanguageManager;
-import net.minecraft.block.Block;
+import gregtech.common.render.IIconRegister;
+import gregtech.common.render.newblocks.IBlockIconProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.color.IBlockColor;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Random;
 
-public abstract class GT_Block_Casings_Abstract
-        extends GT_Generic_Block {
+public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block implements IBlockIconProvider, IBlockColor {
+
+
     public GT_Block_Casings_Abstract(Class<? extends ItemBlock> aItemClass, String aName, Material aMaterial) {
         super(aItemClass, aName, aMaterial);
-        setStepSound(soundTypeMetal);
+        setSoundType(SoundType.METAL);
         setCreativeTab(GregTech_API.TAB_GREGTECH);
         GregTech_API.registerMachineBlock(this, -1);
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + 32767 + ".name", "Any Sub Block of this");
     }
 
-    public String getHarvestTool(int aMeta) {
+    @Override
+    public String getHarvestTool(IBlockState state) {
         return "wrench";
     }
 
-    public int getHarvestLevel(int aMeta) {
+    @Override
+    public int getHarvestLevel(IBlockState state) {
         return 2;
     }
 
-    public float getBlockHardness(World aWorld, int aX, int aY, int aZ) {
-        return Blocks.iron_block.getBlockHardness(aWorld, aX, aY, aZ);
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return super.createBlockState();
     }
 
-    public float getExplosionResistance(Entity aTNT) {
-        return Blocks.iron_block.getExplosionResistance(aTNT);
+    @Override
+    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
+        return Blocks.IRON_BLOCK.getBlockHardness(blockState, worldIn, pos);
+    }
+
+    @Override
+    public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
+        return Blocks.IRON_BLOCK.getExplosionResistance(world, pos, exploder, explosion);
+    }
+
+    @Override
+    public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+        return false;
     }
 
     protected boolean canSilkHarvest() {
         return false;
     }
 
-    public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
-        if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
-            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+    @Override
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+        if(GregTech_API.isMachineBlock(this, state.getValue(METADATA))) {
+            GregTech_API.causeMachineUpdate(worldIn, pos.getX(), pos.getY(), pos.getZ());
         }
     }
 
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        if(GregTech_API.isMachineBlock(this, state.getValue(METADATA))) {
+            GregTech_API.causeMachineUpdate(worldIn, pos.getX(), pos.getY(), pos.getZ());
+        }
+    }
+
+    @Override
     public String getUnlocalizedName() {
         return this.mUnlocalizedName;
     }
 
+    @Override
     public String getLocalizedName() {
-        return StatCollector.translateToLocal(this.mUnlocalizedName + ".name");
+        return GT_LanguageManager.TRANSLATION.translateKey(this.mUnlocalizedName + ".name");
     }
 
-    public boolean canBeReplacedByLeaves(IBlockAccess aWorld, int aX, int aY, int aZ) {
+    @Override
+    public boolean canBeReplacedByLeaves(IBlockState state, IBlockAccess world, BlockPos pos) {
         return false;
     }
 
-    public boolean isNormalCube(IBlockAccess aWorld, int aX, int aY, int aZ) {
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
         return true;
     }
 
-    public boolean renderAsNormalBlock() {
-        return true;
-    }
-
-    public boolean isOpaqueCube() {
-        return true;
-    }
-
-    public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetaData) {
-        if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
-            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
-        }
-    }
-
-    public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
+    @Override
+    public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
         return false;
     }
 
-    public int damageDropped(int par1) {
-        return par1;
-    }
-
-    public int getDamageValue(World par1World, int par2, int par3, int par4) {
-        return par1World.getBlockMetadata(par2, par3, par4);
-    }
-
-    public int quantityDropped(Random par1Random) {
-        return 1;
-    }
-
-    public Item getItemDropped(int par1, Random par2Random, int par3) {
-        return Item.getItemFromBlock(this);
+    @Override
+    public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+        return Lists.newArrayList(new ItemStack(this, 1, state.getValue(METADATA)));
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister aIconRegister) {
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
+    @Override
+    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List<ItemStack> aList) {
         for (int i = 0; i < 16; i++) {
             aList.add(new ItemStack(aItem, 1, i));
         }
     }
+
+    @Override
+    public int colorMultiplier(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) {
+        return Dyes._NULL.getRGBAInt();
+    }
+
 }

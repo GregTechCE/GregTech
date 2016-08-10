@@ -1,9 +1,9 @@
-package gregtech.common.render.newrenderer;
+package gregtech.common.render.newitems;
 
 import gregtech.api.interfaces.IIconContainer;
 import net.minecraft.item.ItemStack;
 
-public interface IIconProvider {
+public interface IItemIconProvider {
 
     IIconContainer getIconContainer(ItemStack itemStack);
 

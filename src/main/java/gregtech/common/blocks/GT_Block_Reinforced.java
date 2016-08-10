@@ -1,7 +1,6 @@
 package gregtech.common.blocks;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import com.google.common.collect.Lists;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -13,35 +12,41 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.render.newblocks.IBlockIconProvider;
+import ic2.core.block.EntityIC2Explosive;
+import ic2.core.block.EntityItnt;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import ic2.core.IC2;
-import ic2.core.block.EntityIC2Explosive;
-import ic2.core.block.EntityItnt;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Random;
 
-public class GT_Block_Reinforced extends GT_Generic_Block {
+public class GT_Block_Reinforced extends GT_Generic_Block implements IBlockIconProvider {
 
     public GT_Block_Reinforced(String aName) {
         super(GT_Item_Storage.class, aName, new GT_Material_Reinforced());
-        setStepSound(soundTypeStone);
+        setSoundType(SoundType.STONE);
         setCreativeTab(GregTech_API.TAB_GREGTECH);
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Bronzeplate Reinforced Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Iridium-Tungstensteel Reinforced Block");
@@ -59,26 +64,31 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         ItemList.Block_Powderbarrel.set(new ItemStack(this.setHardness(2.5f).setResistance(2.0f), 1, 5));
         ItemList.Block_SSFUEL.set(new ItemStack(this.setHardness(2.5f).setResistance(2.0f), 1, 6));
         ItemList.Block_MSSFUEL.set(new ItemStack(this.setHardness(2.5f).setResistance(2.0f), 1, 7));
-        GT_ModHandler.addCraftingRecipe(ItemList.Block_BronzePlate.get(1L, new Object[0]),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hP ", "PBP", " P ", 'P', OrePrefixes.plate.get(Materials.Bronze), 'B', OrePrefixes.stone.get(Materials.GraniteBlack)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Block_BronzePlate.get(1L, new Object[0]),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hP ", "PBP", " P ", 'P', OrePrefixes.plate.get(Materials.Bronze), 'B', OrePrefixes.stone.get(Materials.GraniteRed)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Block_IridiumTungstensteel.get(1L, new Object[0]),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hBP", 'P', OrePrefixes.plate.get(Materials.Iridium), 'B', ItemList.Block_TungstenSteelReinforced.get(1L, new Object[0])});
-        GT_OreDictUnificator.setItemData(ItemList.Block_IridiumTungstensteel.get(1, new Object[0]), new ItemData(new MaterialStack(Materials.Iridium, OrePrefixes.plate.mMaterialAmount), new MaterialStack(Materials.TungstenSteel, 2*OrePrefixes.plate.mMaterialAmount),new MaterialStack(Materials.Concrete, OrePrefixes.dust.mMaterialAmount)));
-        GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(Items.coal, 1, 1), new Object[]{ItemList.Block_BrittleCharcoal.get(1, new Object[0])});
-        GT_ModHandler.addCraftingRecipe(ItemList.Block_Powderbarrel.get(1L, new Object[0]),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"WSW","GGG","WGW", 'W', OrePrefixes.plank.get(Materials.Wood), 'G', new ItemStack(Items.gunpowder,1),'S',new ItemStack(Items.string,1)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Block_BronzePlate.get(1L),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hP ", "PBP", " P ", 'P', OrePrefixes.plate.get(Materials.Bronze), 'B', OrePrefixes.stone.get(Materials.GraniteBlack)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Block_BronzePlate.get(1L),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hP ", "PBP", " P ", 'P', OrePrefixes.plate.get(Materials.Bronze), 'B', OrePrefixes.stone.get(Materials.GraniteRed)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Block_IridiumTungstensteel.get(1L),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hBP", 'P', OrePrefixes.plate.get(Materials.Iridium), 'B', ItemList.Block_TungstenSteelReinforced.get(1L)});
+        GT_OreDictUnificator.setItemData(ItemList.Block_IridiumTungstensteel.get(1), new ItemData(new MaterialStack(Materials.Iridium, OrePrefixes.plate.mMaterialAmount), new MaterialStack(Materials.TungstenSteel, 2*OrePrefixes.plate.mMaterialAmount),new MaterialStack(Materials.Concrete, OrePrefixes.dust.mMaterialAmount)));
+        GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(Items.COAL, 1, 1), new Object[]{ItemList.Block_BrittleCharcoal.get(1)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Block_Powderbarrel.get(1L),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"WSW","GGG","WGW", 'W', OrePrefixes.plank.get(Materials.Wood), 'G', new ItemStack(Items.GUNPOWDER,1),'S',new ItemStack(Items.STRING ,1)});
         
     }
 
-    public String getHarvestTool(int aMeta) {
+    @Override
+    public String getHarvestTool(IBlockState state) {
+        int aMeta = state.getValue(METADATA);
         if (aMeta == 5 || aMeta == 4 || aMeta == 6 || aMeta == 7) return "axe";
         return "pickaxe";
     }
 
-    public int getHarvestLevel(int aMeta) {
+    @Override
+    public int getHarvestLevel(IBlockState blockState) {
+        int aMeta = blockState.getValue(METADATA);
         if (aMeta == 4||aMeta == 5 || aMeta == 6 || aMeta == 7) return 1;
         return 4;
     }
 
-    public IIcon getIcon(int aSide, int aMeta) {
+    @Override
+    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
             switch (aMeta) {
                 case 0:
@@ -90,26 +100,21 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
                 case 3:
                     return Textures.BlockIcons.BLOCK_TSREIN.getIcon();
                 case 4:
-                    return Blocks.coal_block.getIcon(0, 0);
+                    return GT_Utility.getTexture("minecraft:blocks/coal_block");
                 case 5:
                 	return Textures.BlockIcons.COVER_WOOD_PLATE.getIcon();
                 case 6:
-                	return Blocks.coal_block.getIcon(0, 0);
+                	return GT_Utility.getTexture("minecraft:blocks/coal_block");
                 case 7:
-                	return Blocks.coal_block.getIcon(0, 0);
+                	return GT_Utility.getTexture("minecraft:blocks/coal_block");
             }
         }
         return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
     }
 
-    public float getBlockHardness(World aWorld, int aX, int aY, int aZ) {
-        if (aWorld == null) {
-            return 0.0F;
-        }
-        if (aWorld.isAirBlock(aX, aY, aZ)) {
-            return 0.0F;
-        }
-        int tMeta = aWorld.getBlockMetadata(aX, aY, aZ);
+    @Override
+    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
+        int tMeta = blockState.getValue(METADATA);
         if (tMeta == 0) {
             return 60.0F;
         }
@@ -125,14 +130,12 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         if (tMeta == 4||tMeta == 5 || tMeta == 6 || tMeta == 7) {
             return 0.5F;
         }
-        return Blocks.iron_block.getBlockHardness(aWorld, aX, aY, aZ);
+        return Blocks.IRON_BLOCK.getBlockHardness(blockState, worldIn, pos);
     }
 
-    public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
-        if (world == null) {
-            return 0.0F;
-        }
-        int tMeta = world.getBlockMetadata(x, y, z);
+    @Override
+    public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
+        int tMeta = world.getBlockState(pos).getValue(METADATA);
         if (tMeta == 0) {
             return 150.0F;
         }
@@ -151,134 +154,121 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         if (tMeta == 5) {
             return 1.0F;
         }
-        return super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ);
+        return Blocks.IRON_BLOCK.getExplosionResistance(world, pos, exploder, explosion);
     }
 
+
+    @Override
     public String getUnlocalizedName() {
         return this.mUnlocalizedName;
     }
 
+    @Override
     public String getLocalizedName() {
-        return StatCollector.translateToLocal(this.mUnlocalizedName + ".name");
+        return GT_LanguageManager.TRANSLATION.translateKey(this.mUnlocalizedName + ".name");
     }
 
-    public boolean canBeReplacedByLeaves(IBlockAccess aWorld, int aX, int aY, int aZ) {
+    @Override
+    public boolean isBlockNormalCube(IBlockState state) {
+        return true;
+    }
+
+    @Override
+    public boolean isVisuallyOpaque() {
+        return true;
+    }
+
+    @Override
+    public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
+        return super.canCreatureSpawn(state, world, pos, type);
+    }
+
+    @Override
+    public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+        return Lists.newArrayList(new ItemStack(this, 1, state.getValue(METADATA)));
+    }
+
+    @Override
+    public void dropBlockAsItemWithChance(World worldIn, BlockPos pos, IBlockState state, float chance, int fortune) {
+        if(state.getValue(METADATA) == 4) {
+            spawnAsEntity(worldIn, pos, new ItemStack(Items.COAL, worldIn.rand.nextInt(2) + 1, 1));
+        } else  {
+            super.dropBlockAsItemWithChance(worldIn, pos, state, chance, fortune);
+        }
+    }
+
+    @Override
+    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+        if(state.getValue(METADATA) == 5) {
+            EntityIC2Explosive entitytntprimed = getExplosionEntity(world, pos.getX(), pos.getY(), pos.getZ(), player == null ? null : player);
+            world.spawnEntityInWorld(entitytntprimed);
+            world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+        }
+        return true;
+    }
+
+    public EntityIC2Explosive getExplosionEntity(World world, int x, int y, int z, EntityLivingBase igniter) {
+      EntityIC2Explosive ret = new EntityItnt(world, x + 0.5D, y + 0.5D, z + 0.5D);
+      ret.setIgniter(igniter);
+      return ret;
+    }
+
+    public void checkAndExplode(World world, BlockPos pos) {
+        if(world.isBlockIndirectlyGettingPowered(pos) > 0) {
+            explode(world, pos);
+        }
+    }
+
+    public void explode(World world, BlockPos pos) {
+        EntityIC2Explosive entitytntprimed = getExplosionEntity(world, pos.getX(), pos.getY(), pos.getZ(), null);
+        world.spawnEntityInWorld(entitytntprimed);
+        world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+        world.setBlockToAir(pos);
+    }
+
+    @Override
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+        super.onBlockAdded(worldIn, pos, state);
+        if(state.getValue(METADATA) == 5) {
+            checkAndExplode(worldIn, pos);
+        }
+    }
+
+    @Override
+    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
+        super.onNeighborChange(world, pos, neighbor);
+        if(world.getBlockState(pos).getValue(METADATA) == 5) {
+            checkAndExplode((World) world, pos);
+        }
+    }
+
+    @Override
+    public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn) {
+        super.onBlockDestroyedByExplosion(worldIn, pos, explosionIn);
+        if(worldIn.getBlockState(pos).getValue(METADATA) == 5) {
+            checkAndExplode(worldIn, pos);
+        }
+    }
+
+
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if(state.getValue(METADATA) == 5) {
+            ItemStack held = playerIn.getHeldItem(hand);
+            if (held != null && held.getItem() == Items.FLINT_AND_STEEL) {
+                held.damageItem(1, playerIn);
+                explode(worldIn, pos);
+                return true;
+            }
+        }
         return false;
     }
 
-    public boolean isNormalCube(IBlockAccess aWorld, int aX, int aY, int aZ) {
-        return true;
-    }
-
-    public boolean renderAsNormalBlock() {
-        return true;
-    }
-
-    public boolean isOpaqueCube() {
-        return true;
-    }
-
-    public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
-        return true;
-    }
-
-    public int damageDropped(int par1) {
-        return par1;
-    }
-
-    public int getDamageValue(World par1World, int par2, int par3, int par4) {
-        return par1World.getBlockMetadata(par2, par3, par4);
-    }
-
-    public int quantityDropped(Random par1Random) {
-        return 1;
-    }
-
-    public Item getItemDropped(int par1, Random par2Random, int par3) {
-        return Item.getItemFromBlock(this);
-    }
-
-    public void dropBlockAsItemWithChance(World aWorld, int aX, int aY, int aZ, int par5, float chance, int par7) {
-        if (par5 == 4) {
-            Random ran = new Random();
-
-            this.dropBlockAsItem(aWorld, aX, aY, aZ, new ItemStack(Items.coal, ran.nextInt(2) + 1, 1));
-        } else {
-            super.dropBlockAsItemWithChance(aWorld, aX, aY, aZ, par5, chance, par7);
-        }
-    }
-    
-    public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z)
-    {
-      if(world.getBlockMetadata(x, y, z)==5){
-        EntityIC2Explosive entitytntprimed = getExplosionEntity(world, x, y, z, player == null ? null : player);
-        if (entitytntprimed == null) {
-          return false;
-        }
-        
-        world.spawnEntityInWorld(entitytntprimed);
-        world.playSoundAtEntity(entitytntprimed, "random.fuse", 1.0F, 1.0F);
-        
-      world.setBlockToAir(x, y, z);
-      return false;
-      }
-      return super.removedByPlayer(world, player, x, y, z);
-    }
-    
-    public EntityIC2Explosive getExplosionEntity(World world, int x, int y, int z, EntityLivingBase igniter)
-    {
-      EntityIC2Explosive ret;
-      ret = new EntityItnt(world, x + 0.5D, y + 0.5D, z + 0.5D);
-      ret.setIgniter(igniter);
-      
-      return ret;
-    }
-    
-    public void onBlockAdded(World world, int x, int y, int z)
-    {
-      super.onBlockAdded(world, x, y, z);
-      if (world.isBlockIndirectlyGettingPowered(x, y, z)&&world.getBlockMetadata(x, y, z)==5) {
-        removedByPlayer(world, null, x, y, z);
-      }
-    }
-    
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor)
-    {
-      if (world.isBlockIndirectlyGettingPowered(x, y, z)&&world.getBlockMetadata(x, y, z)==5) {
-        removedByPlayer(world, null, x, y, z);
-      }
-    }
-    
-    public void onBlockDestroyedByExplosion(World world, int x, int y, int z, Explosion explosion)
-    {
-      EntityIC2Explosive entitytntprimed = getExplosionEntity(world, x, y, z, explosion == null ? null : explosion.getExplosivePlacedBy());
-      if (entitytntprimed == null) {
-        return;
-      }
-      entitytntprimed.fuse = (world.rand.nextInt(entitytntprimed.fuse / 4) + entitytntprimed.fuse / 8);
-      world.spawnEntityInWorld(entitytntprimed);
-    }
-    
-    public boolean onBlockActivated(World par1World, int x, int y, int z, EntityPlayer player, int side, float xOffset, float yOffset, float zOffset)
-    {
-      if ((player.getCurrentEquippedItem() != null) && (player.getCurrentEquippedItem().getItem() == Items.flint_and_steel)&&par1World.getBlockMetadata(x, y, z)==5)
-      {
-//        par1World.setBlockMetadataWithNotify(x, y, z, 6, 7);
-        removedByPlayer(par1World, player, x, y, z);
-        
-        return true;
-      }
-      return super.onBlockActivated(par1World, x, y, z, player, side, xOffset, yOffset, zOffset);
-    }
-
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister aIconRegister) {
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
+    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List<ItemStack> aList) {
         for (int i = 0; i < 16; i++) {
             aList.add(new ItemStack(aItem, 1, i));
         }
     }
+
 }

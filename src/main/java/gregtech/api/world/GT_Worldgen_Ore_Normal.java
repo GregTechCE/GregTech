@@ -1,6 +1,9 @@
 package gregtech.api.world;
 
 import com.google.common.base.Predicate;
+import gregtech.common.blocks.GT_Block_Granites;
+import gregtech.common.blocks.GT_Block_Stones;
+import gregtech.common.blocks.GT_Block_Stones_Abstract;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -77,13 +80,10 @@ public class GT_Worldgen_Ore_Normal extends GT_Worldgen_Ore {
     }
 
 
-    public static Predicate<IBlockState> STONE = new Predicate<IBlockState>() {
-        @Override
-        public boolean apply(@Nullable IBlockState input) {
-            return input.getBlock() == Blocks.STONE ||
-                    input.getBlock() == Blocks.END_STONE ||
-                    input.getBlock() == Blocks.NETHERRACK;
-        }
-    };
+    public static Predicate<IBlockState> STONE = input -> input.getBlock() == Blocks.STONE ||
+            input.getBlock() == Blocks.END_STONE ||
+            input.getBlock() == Blocks.NETHERRACK ||
+            input.getBlock() instanceof GT_Block_Granites ||
+            input.getBlock() instanceof GT_Block_Stones;
 
 }

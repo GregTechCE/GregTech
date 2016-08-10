@@ -9,11 +9,12 @@ import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 
 public class GT_Block_Ores extends GT_Block_Ores_Abstract {
     public GT_Block_Ores() {
-        super("gt.blockores", false, Material.rock);
+        super("gt.blockores", false, Material.ROCK);
     }
 
     @Override
@@ -37,12 +38,29 @@ public class GT_Block_Ores extends GT_Block_Ores_Abstract {
     }
 
     @Override
-    public int getHarvestLevel(int aMeta) {
+    public int getHarvestLevel(IBlockState state) {
+        int aMeta = state.getValue(METADATA);
         return aMeta == 5 || aMeta == 6 ? 2 : aMeta % 8;
     }
 
     @Override
     public ITexture[] getTextureSet() { //Must have 16 entries.
-        return new ITexture[]{new GT_CopiedBlockTexture(Blocks.stone, 0, 0), new GT_CopiedBlockTexture(Blocks.netherrack, 0, 0), new GT_CopiedBlockTexture(Blocks.end_stone, 0, 0), new GT_RenderedTexture(Textures.BlockIcons.GRANITE_BLACK_STONE), new GT_RenderedTexture(Textures.BlockIcons.GRANITE_RED_STONE), new GT_RenderedTexture(Textures.BlockIcons.MARBLE_STONE), new GT_RenderedTexture(Textures.BlockIcons.BASALT_STONE), new GT_CopiedBlockTexture(Blocks.stone, 0, 0), new GT_CopiedBlockTexture(Blocks.stone, 0, 0), new GT_CopiedBlockTexture(Blocks.stone, 0, 0), new GT_CopiedBlockTexture(Blocks.stone, 0, 0), new GT_CopiedBlockTexture(Blocks.stone, 0, 0), new GT_CopiedBlockTexture(Blocks.stone, 0, 0), new GT_CopiedBlockTexture(Blocks.stone, 0, 0), new GT_CopiedBlockTexture(Blocks.stone, 0, 0), new GT_CopiedBlockTexture(Blocks.stone, 0, 0)};
+        return new ITexture[]{
+                new GT_CopiedBlockTexture(Blocks.STONE, 0, 0), 
+                new GT_CopiedBlockTexture(Blocks.NETHERRACK, 0, 0),
+                new GT_CopiedBlockTexture(Blocks.END_STONE, 0, 0),
+                new GT_RenderedTexture(Textures.BlockIcons.GRANITE_BLACK_STONE),
+                new GT_RenderedTexture(Textures.BlockIcons.GRANITE_RED_STONE), 
+                new GT_RenderedTexture(Textures.BlockIcons.MARBLE_STONE),
+                new GT_RenderedTexture(Textures.BlockIcons.BASALT_STONE),
+                new GT_CopiedBlockTexture(Blocks.STONE, 0, 0), 
+                new GT_CopiedBlockTexture(Blocks.STONE, 0, 0), 
+                new GT_CopiedBlockTexture(Blocks.STONE, 0, 0),
+                new GT_CopiedBlockTexture(Blocks.STONE, 0, 0), 
+                new GT_CopiedBlockTexture(Blocks.STONE, 0, 0), 
+                new GT_CopiedBlockTexture(Blocks.STONE, 0, 0), 
+                new GT_CopiedBlockTexture(Blocks.STONE, 0, 0), 
+                new GT_CopiedBlockTexture(Blocks.STONE, 0, 0),
+                new GT_CopiedBlockTexture(Blocks.STONE, 0, 0)};
     }
 }

@@ -1,8 +1,8 @@
 package gregtech.api.items;
 
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.common.render.newrenderer.IIconProvider;
-import gregtech.common.render.newrenderer.IIconRegister;
+import gregtech.common.render.newitems.IItemIconProvider;
+import gregtech.common.render.IIconRegister;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -32,7 +32,7 @@ import java.util.Map;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
 
-public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor, IIconRegister, IIconProvider {
+public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor, IIconRegister, IItemIconProvider {
 
     private TextureAtlasSprite itemIcon;
 

@@ -1,19 +1,17 @@
 package gregtech.api.interfaces;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+
+import java.util.List;
 
 public interface ITexture {
-    public void renderXPos(Block aBlock, int aX, int aY, int aZ);
 
-    public void renderXNeg(Block aBlock, int aX, int aY, int aZ);
+    public List<BakedQuad> getQuads(Block aBlock, BlockPos blockPos, EnumFacing side, int tintOffset);
 
-    public void renderYPos(Block aBlock, int aX, int aY, int aZ);
-
-    public void renderYNeg(Block aBlock, int aX, int aY, int aZ);
-
-    public void renderZPos(Block aBlock, int aX, int aY, int aZ);
-
-    public void renderZNeg(Block aBlock, int aX, int aY, int aZ);
+    public int applyColor(int tint);
 
     public boolean isValidTexture();
 }

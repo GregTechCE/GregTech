@@ -1,4 +1,4 @@
-package gregtech.common.render.newrenderer;
+package gregtech.common.render;
 
 import net.minecraft.client.renderer.texture.TextureMap;
 
