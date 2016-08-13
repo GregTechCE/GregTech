@@ -319,7 +319,7 @@ public class GT_Utility {
     }
 
     public static void sendChatToPlayer(EntityPlayer aPlayer, String aChatMessage) {
-        if (aPlayer != null && aPlayer instanceof EntityPlayerMP && aChatMessage != null) {
+        if (aPlayer instanceof EntityPlayerMP && aChatMessage != null) {
             aPlayer.addChatComponentMessage(new ChatComponentText(aChatMessage));
         }
     }
@@ -500,7 +500,7 @@ public class GT_Utility {
      * @return the Amount of moved Items
      */
     public static byte moveOneItemStack(Object aTileEntity1, Object aTileEntity2, byte aGrabFrom, byte aPutTo, List<ItemStack> aFilter, boolean aInvertFilter, byte aMaxTargetStackSize, byte aMinTargetStackSize, byte aMaxMoveAtOnce, byte aMinMoveAtOnce) {
-        if (aTileEntity1 != null && aTileEntity1 instanceof IInventory)
+        if (aTileEntity1 instanceof IInventory)
             return moveOneItemStack((IInventory) aTileEntity1, aTileEntity2, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce, true);
         return 0;
     }
@@ -597,7 +597,7 @@ public class GT_Utility {
             for (int i = 0; i < tGrabSlots.length; i++) tGrabSlots[i] = i;
         }
 
-        if (aTileEntity2 != null && aTileEntity2 instanceof IInventory) {
+        if (aTileEntity2 instanceof IInventory) {
             for (int i = 0; i < tGrabSlots.length; i++) {
                 if (listContainsItem(aFilter, ((IInventory) aTileEntity1).getStackInSlot(tGrabSlots[i]), true, aInvertFilter)) {
                     if (isAllowedToTakeFromSlot((IInventory) aTileEntity1, tGrabSlots[i], aGrabFrom, ((IInventory) aTileEntity1).getStackInSlot(tGrabSlots[i]))) {
@@ -1010,7 +1010,7 @@ public class GT_Utility {
     }
 
     public static boolean isBlockValid(Object aBlock) {
-        return aBlock != null && (aBlock instanceof Block);
+        return (aBlock instanceof Block);
     }
 
     public static boolean isBlockInvalid(Object aBlock) {
@@ -1026,7 +1026,7 @@ public class GT_Utility {
     }
 
     public static boolean isStackValid(Object aStack) {
-        return aStack != null && (aStack instanceof ItemStack) && ((ItemStack) aStack).getItem() != null && ((ItemStack) aStack).stackSize >= 0;
+        return (aStack instanceof ItemStack) && ((ItemStack) aStack).getItem() != null && ((ItemStack) aStack).stackSize >= 0;
     }
 
     public static boolean isStackInvalid(Object aStack) {
@@ -1558,7 +1558,7 @@ public class GT_Utility {
 
         tList.add("----- X: " + aX + " Y: " + aY + " Z: " + aZ + " -----");
         try {
-            if (tTileEntity != null && tTileEntity instanceof IInventory)
+            if (tTileEntity instanceof IInventory)
                 tList.add("Name: " + ((IInventory) tTileEntity).getInventoryName() + "  MetaData: " + aWorld.getBlockMetadata(aX, aY, aZ));
             else
                 tList.add("Name: " + tBlock.getUnlocalizedName() + "  MetaData: " + aWorld.getBlockMetadata(aX, aY, aZ));

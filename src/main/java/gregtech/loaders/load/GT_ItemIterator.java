@@ -57,7 +57,7 @@ public class GT_ItemIterator
         Iterator tIterator = Item.itemRegistry.iterator();
         while (tIterator.hasNext()) {
             Object tObject;
-            if (((tObject = tIterator.next()) != null) && ((tObject instanceof Item)) && (!(tObject instanceof GT_Generic_Item))) {
+            if (((tObject = tIterator.next()) instanceof Item) && (!(tObject instanceof GT_Generic_Item))) {
                 Item tItem = (Item) tObject;
                 String tName;
                 if ((tName = tItem.getUnlocalizedName()) != null) {

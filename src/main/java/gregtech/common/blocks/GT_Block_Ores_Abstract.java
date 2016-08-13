@@ -201,7 +201,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
 
     public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity != null) && ((tTileEntity instanceof GT_TileEntity_Ores))) {
+        if (((tTileEntity instanceof GT_TileEntity_Ores))) {
             return ((GT_TileEntity_Ores) tTileEntity).getMetaData();
         }
         return 0;

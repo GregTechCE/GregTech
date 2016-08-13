@@ -282,8 +282,7 @@ public class GT_Block_Machines
 
     public void onBlockClicked(World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity != null) &&
-                ((tTileEntity instanceof IGregTechTileEntity))) {
+        if (((tTileEntity instanceof IGregTechTileEntity))) {
             ((IGregTechTileEntity) tTileEntity).onLeftclick(aPlayer);
         }
     }
@@ -341,7 +340,7 @@ public class GT_Block_Machines
 
     public int getComparatorInputOverride(World aWorld, int aX, int aY, int aZ, int aSide) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity != null) && ((tTileEntity instanceof IGregTechTileEntity))) {
+        if (((tTileEntity instanceof IGregTechTileEntity))) {
             return ((IGregTechTileEntity) tTileEntity).getComparatorValue((byte) aSide);
         }
         return 0;
@@ -352,7 +351,7 @@ public class GT_Block_Machines
             return 0;
         }
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity != null) && ((tTileEntity instanceof IGregTechTileEntity))) {
+        if (((tTileEntity instanceof IGregTechTileEntity))) {
             return ((IGregTechTileEntity) tTileEntity).getOutputRedstoneSignal(GT_Utility.getOppositeSide(aSide));
         }
         return 0;
@@ -363,7 +362,7 @@ public class GT_Block_Machines
             return 0;
         }
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity != null) && ((tTileEntity instanceof IGregTechTileEntity))) {
+        if (((tTileEntity instanceof IGregTechTileEntity))) {
             return ((IGregTechTileEntity) tTileEntity).getStrongOutputRedstoneSignal(GT_Utility.getOppositeSide(aSide));
         }
         return 0;
@@ -429,7 +428,7 @@ public class GT_Block_Machines
 
     public float getExplosionResistance(Entity par1Entity, World aWorld, int aX, int aY, int aZ, double explosionX, double explosionY, double explosionZ) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity != null) && ((tTileEntity instanceof IGregTechTileEntity))) {
+        if (((tTileEntity instanceof IGregTechTileEntity))) {
             return ((IGregTechTileEntity) tTileEntity).getBlastResistance((byte) 6);
         }
         return 10.0F;
