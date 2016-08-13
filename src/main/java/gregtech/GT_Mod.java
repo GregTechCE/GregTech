@@ -348,7 +348,8 @@ public class GT_Mod
                 List<ModContainer> tModList = tLoadController.getActiveModList();
                 List<ModContainer> tNewModsList = new ArrayList();
                 ModContainer tGregTech = null;
-                for (short i = 0; i < tModList.size(); i = (short) (i + 1)) {
+                short tModList_sS= (short) tModList.size();
+                for (short i = 0; i < tModList_sS; i = (short) (i + 1)) {
                     ModContainer tMod = (ModContainer) tModList.get(i);
                     if (tMod.getModId().equalsIgnoreCase("gregtech")) {
                         tGregTech = tMod;

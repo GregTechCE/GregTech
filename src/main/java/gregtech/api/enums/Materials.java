@@ -1,7 +1,5 @@
 package gregtech.api.enums;
 
-import java.util.*;
-
 import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
@@ -16,6 +14,8 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+
+import java.util.*;
 
 import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.GT_Values.MOD_ID_TC;
@@ -1506,7 +1506,8 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
     public boolean remove(ItemStack aStack) {
         if (aStack == null) return false;
         boolean temp = false;
-        for (int i = 0; i < mMaterialItems.size(); i++)
+		int mMaterialItems_sS=mMaterialItems.size();
+		for (int i = 0; i < mMaterialItems_sS; i++)
             if (GT_Utility.areStacksEqual(aStack, mMaterialItems.get(i))) {
                 mMaterialItems.remove(i--);
                 temp = true;

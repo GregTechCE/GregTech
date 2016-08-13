@@ -951,11 +951,12 @@ public class GT_ModHandler {
 
         if (aOnlyAddIfThereIsAnyRecipeOutputtingThis && !tThereWasARecipe) {
             ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance().getRecipeList();
-            for (int i = 0; i < tList.size() && !tThereWasARecipe; i++) {
+            int tList_sS=tList.size();
+            for (int i = 0; i < tList_sS && !tThereWasARecipe; i++) {
                 IRecipe tRecipe = tList.get(i);
                 if (sSpecialRecipeClasses.contains(tRecipe.getClass().getName())) continue;
                 if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(tRecipe.getRecipeOutput()), aResult, true)) {
-                    tList.remove(i--);
+                    tList.remove(i--); tList_sS=tList.size();
                     tThereWasARecipe = true;
                 }
             }
@@ -1091,18 +1092,16 @@ public class GT_ModHandler {
         }, 3, 3);
         for (int i = 0; i < aRecipe.length && i < 9; i++) aCrafting.setInventorySlotContents(i, aRecipe[i]);
         ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance().getRecipeList();
-        for (int i = 0; i < tList.size(); i++) {
-            try {
-                for (; i < tList.size(); i++) {
+        int tList_sS=tList.size();
+        try {
+            for (int i = 0; i < tList_sS; i++) {
+                for (; i < tList_sS; i++) {
                     if ((!(tList.get(i) instanceof IGT_CraftingRecipe) || ((IGT_CraftingRecipe) tList.get(i)).isRemovable()) && tList.get(i).matches(aCrafting, DW)) {
                         rReturn = tList.get(i).getCraftingResult(aCrafting);
-                        if (rReturn != null) tList.remove(i--);
+                        if (rReturn != null) tList.remove(i--); tList_sS=tList.size();
                     }
                 }
-            } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
-            }
-        }
+        }} catch (Throwable e) {e.printStackTrace(GT_Log.err);}
         return rReturn;
     }
 
@@ -1121,7 +1120,8 @@ public class GT_ModHandler {
         boolean rReturn = false;
         ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance().getRecipeList();
         aOutput = GT_OreDictUnificator.get(aOutput);
-        for (int i = 0; i < tList.size(); i++) {
+        int tList_sS=tList.size();
+        for (int i = 0; i < tList_sS; i++) {
             IRecipe tRecipe = tList.get(i);
             if (aNotRemoveShapelessRecipes && (tRecipe instanceof ShapelessRecipes || tRecipe instanceof ShapelessOreRecipe))
                 continue;
@@ -1132,7 +1132,7 @@ public class GT_ModHandler {
             }
             ItemStack tStack = tRecipe.getRecipeOutput();
             if ((!(tRecipe instanceof IGT_CraftingRecipe) || ((IGT_CraftingRecipe) tRecipe).isRemovable()) && GT_Utility.areStacksEqual(GT_OreDictUnificator.get(tStack), aOutput, aIgnoreNBT)) {
-                tList.remove(i--);
+                tList.remove(i--); tList_sS=tList.size();
                 rReturn = true;
             }
         }
@@ -1169,11 +1169,12 @@ public class GT_ModHandler {
                 sAllRecipeList.clear();
                 sAllRecipeList.addAll(tList);
             }
-            for (int i = 0, j = sAllRecipeList.size(); i < j; i++) {
+            int sAllRecipeList_sS=sAllRecipeList.size();
+            for (int i = 0, j = sAllRecipeList_sS; i < j; i++) {
                 IRecipe tRecipe = sAllRecipeList.get(i);
                 if (tRecipe.matches(aCrafting, aWorld)) {
                     if (i > 10) {
-                        sAllRecipeList.remove(i);
+                        sAllRecipeList.remove(i); sAllRecipeList_sS=sAllRecipeList.size();
                         sAllRecipeList.add(i - 10, tRecipe);
                     }
                     return tRecipe.getCraftingResult(aCrafting);
@@ -1233,13 +1234,11 @@ public class GT_ModHandler {
         }, 3, 3);
         for (int i = 0; i < 9 && i < aRecipe.length; i++) aCrafting.setInventorySlotContents(i, aRecipe[i]);
         ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance().getRecipeList();
-        for (int i = 0; i < tList.size(); i++) {
+        int tList_sS=tList.size();
+        try {
+        for (int i = 0; i < tList_sS; i++) {
             temp = false;
-            try {
-                temp = tList.get(i).matches(aCrafting, DW);
-            } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
-            }
+            temp = tList.get(i).matches(aCrafting, DW);
             if (temp) {
                 ItemStack tOutput = aUncopiedStack ? tList.get(i).getRecipeOutput() : tList.get(i).getCraftingResult(aCrafting);
                 if (tOutput == null || tOutput.stackSize <= 0) {
@@ -1251,7 +1250,7 @@ public class GT_ModHandler {
                     return GT_Utility.copy(tOutput);
                 }
             }
-        }
+        }} catch (Throwable e) {e.printStackTrace(GT_Log.err);}
         return null;
     }
 
@@ -1335,13 +1334,11 @@ public class GT_ModHandler {
             }
         }, 3, 3);
         for (int i = 0; i < 9 && i < aRecipe.length; i++) aCrafting.setInventorySlotContents(i, aRecipe[i]);
-        for (int i = 0; i < aList.size(); i++) {
+        int aList_sS=aList.size();
+        try {
+        for (int i = 0; i < aList_sS; i++) {
             temp = false;
-            try {
-                temp = aList.get(i).matches(aCrafting, DW);
-            } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
-            }
+            temp = aList.get(i).matches(aCrafting, DW);
             if (temp) {
                 ItemStack tOutput = aList.get(i).getCraftingResult(aCrafting);
                 if (tOutput == null || tOutput.stackSize <= 0) {
@@ -1350,10 +1347,10 @@ public class GT_ModHandler {
                         throw new GT_ItsNotMyFaultException("Seems another Mod added a Crafting Recipe with null Output. Tell the Developer of said Mod to fix that.");
                 } else {
                     rList.add(GT_Utility.copy(tOutput));
-                    if (aDeleteFromList) aList.remove(i--);
+                    if (aDeleteFromList) aList.remove(i--); aList_sS=aList.size();
                 }
             }
-        }
+        }} catch (Throwable e) {e.printStackTrace(GT_Log.err);}
         return rList;
     }
 

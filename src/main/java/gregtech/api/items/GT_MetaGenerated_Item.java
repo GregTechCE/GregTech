@@ -299,7 +299,8 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
-        for (int i = 0, j = mEnabledItems.length(); i < j; i++)
+        int j = mEnabledItems.length();
+        for (int i = 0; i < j; i++)
             if (mVisibleItems.get(i) || (D1 && mEnabledItems.get(i))) {
                 Long[] tStats = mElectricStats.get((short) (mOffset + i));
                 if (tStats != null && tStats[3] < 0) {
@@ -319,7 +320,8 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
     @Override
     @SideOnly(Side.CLIENT)
     public final void registerIcons(IIconRegister aIconRegister) {
-        for (short i = 0, j = (short) mEnabledItems.length(); i < j; i++)
+        short j = (short) mEnabledItems.length();
+        for (short i = 0; i < j; i++)
             if (mEnabledItems.get(i)) {
                 for (byte k = 1; k < mIconList[i].length; k++) {
                     mIconList[i][k] = aIconRegister.registerIcon(RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i + "/" + k));
