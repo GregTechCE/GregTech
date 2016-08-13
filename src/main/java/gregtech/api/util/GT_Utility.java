@@ -1993,16 +1993,14 @@ public class GT_Utility {
             if (aStack != null) {
                 NBTTagList nbttaglist = aStack.getEnchantmentTagList();
                 if (nbttaglist != null) {
-                    for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-                        try {
+                    try {
+                        for (int i = 0; i < nbttaglist.tagCount(); ++i) {
                             short short1 = nbttaglist.getCompoundTagAt(i).getShort("id");
                             short short2 = nbttaglist.getCompoundTagAt(i).getShort("lvl");
                             if (Enchantment.enchantmentsList[short1] != null)
                                 aBullshitModifier.calculateModifier(Enchantment.enchantmentsList[short1], short2);
-                        } catch (Throwable e) {
-                            //
                         }
-                    }
+                    } catch (Throwable e) {/**/}
                 }
             }
         }

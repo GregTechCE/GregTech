@@ -483,17 +483,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             }
         }
         GT_Log.out.println("GT_Mod: Adding Configs specific for MetaTileEntities");
-        for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
-            try {
+        try {
+            for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
                 for (; i < GregTech_API.METATILEENTITIES.length; i++) {
                     if (GregTech_API.METATILEENTITIES[i] != null) {
                         GregTech_API.METATILEENTITIES[i].onConfigLoad(GregTech_API.sMachineFile);
                     }
                 }
-            } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
             }
-        }
+        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
         GT_Log.out.println("GT_Mod: Adding Tool Usage Crafting Recipes for OreDict Items.");
         long tBits = GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED
                 | GT_ModHandler.RecipeBits.ONLY_ADD_IF_RESULT_IS_NOT_NULL | GT_ModHandler.RecipeBits.NOT_REMOVABLE;
@@ -740,17 +738,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 break;
             }
         }
-        for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
-            try {
+        try {
+            for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
                 for (; i < GregTech_API.METATILEENTITIES.length; i++) {
                     if (GregTech_API.METATILEENTITIES[i] != null) {
                         GregTech_API.METATILEENTITIES[i].onServerStart();
                     }
                 }
-            } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
             }
-        }
+        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
     }
 
     public void onServerStarted() {
@@ -782,17 +778,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         File tSaveDirectory = getSaveDirectory();
         GregTech_API.sWirelessRedstone.clear();
         if (tSaveDirectory != null) {
-            for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
-                try {
+            try {
+                for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
                     for (; i < GregTech_API.METATILEENTITIES.length; i++) {
                         if (GregTech_API.METATILEENTITIES[i] != null) {
                             GregTech_API.METATILEENTITIES[i].onWorldSave(tSaveDirectory);
                         }
                     }
-                } catch (Throwable e) {
-                    e.printStackTrace(GT_Log.err);
                 }
-            }
+            } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
         }
         this.mUniverse = null;
     }
@@ -1413,15 +1407,13 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 File tSaveDiretory = getSaveDirectory();
                 if (tSaveDiretory != null) {
                     this.isFirstServerWorldTick = false;
-                    for (IMetaTileEntity tMetaTileEntity : GregTech_API.METATILEENTITIES) {
-                        try {
+                    try {
+                        for (IMetaTileEntity tMetaTileEntity : GregTech_API.METATILEENTITIES) {
                             if (tMetaTileEntity != null) {
                                 tMetaTileEntity.onWorldLoad(tSaveDiretory);
                             }
-                        } catch (Throwable e) {
-                            e.printStackTrace(GT_Log.err);
                         }
-                    }
+                    } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
                 }
             }
             if ((aEvent.world.getTotalWorldTime() % 100L == 0L) && ((this.mItemDespawnTime != 6000) || (this.mMaxEqualEntitiesAtOneSpot > 0))) {

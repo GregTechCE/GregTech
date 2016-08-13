@@ -58,8 +58,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 @Mod(modid = "gregtech", name = "GregTech", version = "MC1710", useMetadata = false, dependencies = "required-after:IC2; after:Forestry; after:PFAAGeologica; after:Thaumcraft; after:Railcraft; after:appliedenergistics2; after:ThermalExpansion; after:TwilightForest; after:harvestcraft; after:magicalcrops; after:BuildCraft|Transport; after:BuildCraft|Silicon; after:BuildCraft|Factory; after:BuildCraft|Energy; after:BuildCraft|Core; after:BuildCraft|Builders; after:GalacticraftCore; after:GalacticraftMars; after:GalacticraftPlanets; after:ThermalExpansion|Transport; after:ThermalExpansion|Energy; after:ThermalExpansion|Factory; after:RedPowerCore; after:RedPowerBase; after:RedPowerMachine; after:RedPowerCompat; after:RedPowerWiring; after:RedPowerLogic; after:RedPowerLighting; after:RedPowerWorld; after:RedPowerControl; after:UndergroundBiomes;")
-public class GT_Mod
-        implements IGT_Mod {
+public class GT_Mod implements IGT_Mod {
     public static final int VERSION = 509;
     public static final int REQUIRED_IC2 = 624;
     @Mod.Instance("gregtech")
@@ -104,13 +103,11 @@ public class GT_Mod
         if (GregTech_API.sPreloadStarted) {
             return;
         }
-        for (Runnable tRunnable : GregTech_API.sBeforeGTPreload) {
-            try {
+        try {
+            for (Runnable tRunnable : GregTech_API.sBeforeGTPreload) {
                 tRunnable.run();
-            } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
             }
-        }
+        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
         File tFile = new File(new File(aEvent.getModConfigurationDirectory(), "GregTech"), "GregTech.cfg");
         Configuration tMainConfig = new Configuration(tFile);
         tMainConfig.load();
@@ -367,13 +364,11 @@ public class GT_Mod
         GregTech_API.sPreloadFinished = true;
         GT_Log.out.println("GT_Mod: Preload-Phase finished!");
         GT_Log.ore.println("GT_Mod: Preload-Phase finished!");
-        for (Runnable tRunnable : GregTech_API.sAfterGTPreload) {
-            try {
+        try {
+            for (Runnable tRunnable : GregTech_API.sAfterGTPreload) {
                 tRunnable.run();
-            } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
             }
-        }
+        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
     }
 
     @Mod.EventHandler
@@ -381,13 +376,11 @@ public class GT_Mod
         if (GregTech_API.sLoadStarted) {
             return;
         }
-        for (Runnable tRunnable : GregTech_API.sBeforeGTLoad) {
-            try {
+        try {
+            for (Runnable tRunnable : GregTech_API.sBeforeGTLoad) {
                 tRunnable.run();
-            } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
             }
-        }
+        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
 
         new GT_Bees();
 
@@ -400,13 +393,11 @@ public class GT_Mod
         GregTech_API.sLoadFinished = true;
         GT_Log.out.println("GT_Mod: Load-Phase finished!");
         GT_Log.ore.println("GT_Mod: Load-Phase finished!");
-        for (Runnable tRunnable : GregTech_API.sAfterGTLoad) {
-            try {
+        try {
+            for (Runnable tRunnable : GregTech_API.sAfterGTLoad) {
                 tRunnable.run();
-            } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
             }
-        }
+        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
     }
 
     @Mod.EventHandler
@@ -414,13 +405,11 @@ public class GT_Mod
         if (GregTech_API.sPostloadStarted) {
             return;
         }
-        for (Runnable tRunnable : GregTech_API.sBeforeGTPostload) {
-            try {
+        try {
+            for (Runnable tRunnable : GregTech_API.sBeforeGTPostload) {
                 tRunnable.run();
-            } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
             }
-        }
+        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
         gregtechproxy.onPostLoad();
         if (gregtechproxy.mSortToTheEnd) {
             gregtechproxy.registerUnificationEntries();
@@ -605,13 +594,11 @@ public class GT_Mod
         GregTech_API.sPostloadFinished = true;
         GT_Log.out.println("GT_Mod: PostLoad-Phase finished!");
         GT_Log.ore.println("GT_Mod: PostLoad-Phase finished!");
-        for (Runnable tRunnable : GregTech_API.sAfterGTPostload) {
-            try {
+        try {
+            for (Runnable tRunnable : GregTech_API.sAfterGTPostload) {
                 tRunnable.run();
-            } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
             }
-        }
+        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
         GT_Log.out.println("GT_Mod: Adding Fake Recipes for NEI");
         if (ItemList.FR_Bee_Drone.get(1L, new Object[0]) != null) {
             GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[]{ItemList.FR_Bee_Drone.getWildcard(1L, new Object[0])}, new ItemStack[]{ItemList.FR_Bee_Drone.getWithName(1L, "Scanned Drone", new Object[0])}, null, new FluidStack[]{Materials.Honey.getFluid(100L)}, null, 500, 2, 0);
@@ -700,13 +687,11 @@ public class GT_Mod
 
     @Mod.EventHandler
     public void onServerStarting(FMLServerStartingEvent aEvent) {
-        for (Runnable tRunnable : GregTech_API.sBeforeGTServerstart) {
-            try {
+        try {
+            for (Runnable tRunnable : GregTech_API.sBeforeGTServerstart) {
                 tRunnable.run();
-            } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
             }
-        }
+        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
         gregtechproxy.onServerStarting();
         GT_Log.out.println("GT_Mod: Unificating outputs of all known Recipe Types.");
         ArrayList<ItemStack> tStacks = new ArrayList(10000);
@@ -840,13 +825,11 @@ public class GT_Mod
         GregTech_API.mServerStarted = true;
         GT_Log.out.println("GT_Mod: ServerStarting-Phase finished!");
         GT_Log.ore.println("GT_Mod: ServerStarting-Phase finished!");
-        for (Runnable tRunnable : GregTech_API.sAfterGTServerstart) {
-            try {
+        try {
+            for (Runnable tRunnable : GregTech_API.sAfterGTServerstart) {
                 tRunnable.run();
-            } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
             }
-        }
+        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
     }
 
     @Mod.EventHandler
@@ -858,14 +841,12 @@ public class GT_Mod
     public void onIDChangingEvent(FMLModIdMappingEvent aEvent) {
         GT_Utility.reInit();
         GT_Recipe.reInit();
-        for (Iterator i$ = GregTech_API.sItemStackMappings.iterator(); i$.hasNext(); ) {
-            Map tMap = (Map) i$.next();
-            try {
+        try {
+            for (Iterator i$ = GregTech_API.sItemStackMappings.iterator(); i$.hasNext(); ) {
+                Map tMap = (Map) i$.next();
                 GT_Utility.reMap(tMap);
-            } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
             }
-        }
+        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
 
     }
 //  public void onIDChangingEvent(FMLModIdMappingEvent aEvent)
@@ -880,13 +861,11 @@ public class GT_Mod
 
     @Mod.EventHandler
     public void onServerStopping(FMLServerStoppingEvent aEvent) {
-        for (Runnable tRunnable : GregTech_API.sBeforeGTServerstop) {
-            try {
+        try {
+            for (Runnable tRunnable : GregTech_API.sBeforeGTServerstop) {
                 tRunnable.run();
-            } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
             }
-        }
+        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
         gregtechproxy.onServerStopping();
         try {
             if ((GT_Values.D1) || (GT_Log.out != System.out)) {
@@ -954,13 +933,11 @@ public class GT_Mod
                 e.printStackTrace(GT_Log.err);
             }
         }
-        for (Runnable tRunnable : GregTech_API.sAfterGTServerstop) {
-            try {
+        try {
+            for (Runnable tRunnable : GregTech_API.sAfterGTServerstop) {
                 tRunnable.run();
-            } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
             }
-        }
+        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
     }
 
     public boolean isServerSide() {

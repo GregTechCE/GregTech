@@ -98,13 +98,11 @@ public class GT_IntegratedCircuit_Item
             GT_Log.out.println("GT_Mod: Starting Item Icon Load Phase");
             System.out.println("GT_Mod: Starting Item Icon Load Phase");
             GregTech_API.sItemIcons = aIconRegister;
-            for (Runnable tRunnable : GregTech_API.sGTItemIconload) {
-                try {
+            try {
+                for (Runnable tRunnable : GregTech_API.sGTItemIconload) {
                     tRunnable.run();
-                } catch (Throwable e) {
-                    e.printStackTrace(GT_Log.err);
                 }
-            }
+            } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
             GT_Log.out.println("GT_Mod: Finished Item Icon Load Phase");
             System.out.println("GT_Mod: Finished Item Icon Load Phase");
         }
