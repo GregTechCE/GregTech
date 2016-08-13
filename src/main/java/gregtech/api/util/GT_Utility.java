@@ -20,7 +20,6 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.threads.GT_Runnable_Sound;
 import gregtech.common.GT_Proxy;
-import ic2.api.recipe.ICannerBottleRecipeManager;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
@@ -83,11 +82,11 @@ public class GT_Utility {
      * Forge screwed the Fluid Registry up again, so I make my own, which is also much more efficient than the stupid Stuff over there.
      */
     private static final List<FluidContainerData> sFluidContainerList = new ArrayList<FluidContainerData>();
-    private static final Map<GT_ItemStack, FluidContainerData> sFilledContainerToData = new HashMap<GT_ItemStack, FluidContainerData>();
-    private static final Map<GT_ItemStack, Map<Fluid, FluidContainerData>> sEmptyContainerToFluidToData = new HashMap<GT_ItemStack, Map<Fluid, FluidContainerData>>();
+    private static final Map<GT_ItemStack, FluidContainerData> sFilledContainerToData = new /*Concurrent*/HashMap<GT_ItemStack, FluidContainerData>();
+    private static final Map<GT_ItemStack, Map<Fluid, FluidContainerData>> sEmptyContainerToFluidToData = new /*Concurrent*/HashMap<GT_ItemStack, Map<Fluid, FluidContainerData>>();
     public static volatile int VERSION = 509;
     public static boolean TE_CHECK = false, BC_CHECK = false, CHECK_ALL = true, RF_CHECK = false;
-    public static Map<GT_PlayedSound, Integer> sPlayedSoundMap = new HashMap<GT_PlayedSound, Integer>();
+    public static Map<GT_PlayedSound, Integer> sPlayedSoundMap = new /*Concurrent*/HashMap<GT_PlayedSound, Integer>();
     private static int sBookCount = 0;
 
     static {
@@ -698,7 +697,7 @@ public class GT_Utility {
             sFilledContainerToData.put(new GT_ItemStack(tData.filledContainer), tData);
             Map<Fluid, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData.get(new GT_ItemStack(tData.emptyContainer));
             if (tFluidToContainer == null) {
-                sEmptyContainerToFluidToData.put(new GT_ItemStack(tData.emptyContainer), tFluidToContainer = new HashMap<Fluid, FluidContainerData>());
+                sEmptyContainerToFluidToData.put(new GT_ItemStack(tData.emptyContainer), tFluidToContainer = new /*Concurrent*/HashMap<Fluid, FluidContainerData>());
                 GregTech_API.sFluidMappings.add(tFluidToContainer);
             }
             tFluidToContainer.put(tData.fluid.getFluid(), tData);
@@ -710,7 +709,7 @@ public class GT_Utility {
         sFilledContainerToData.put(new GT_ItemStack(aData.filledContainer), aData);
         Map<Fluid, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData.get(new GT_ItemStack(aData.emptyContainer));
         if (tFluidToContainer == null) {
-            sEmptyContainerToFluidToData.put(new GT_ItemStack(aData.emptyContainer), tFluidToContainer = new HashMap<Fluid, FluidContainerData>());
+            sEmptyContainerToFluidToData.put(new GT_ItemStack(aData.emptyContainer), tFluidToContainer = new /*Concurrent*/HashMap<Fluid, FluidContainerData>());
             GregTech_API.sFluidMappings.add(tFluidToContainer);
         }
         tFluidToContainer.put(aData.fluid.getFluid(), aData);
@@ -1379,7 +1378,7 @@ public class GT_Utility {
      * re-maps all Keys of a Map after the Keys were weakened.
      */
     public static <X, Y> Map<X, Y> reMap(Map<X, Y> aMap) {
-        Map<X, Y> tMap = new HashMap<X, Y>();
+        Map<X, Y> tMap = new /*Concurrent*/HashMap<X, Y>();
         tMap.putAll(aMap);
         aMap.clear();
         aMap.putAll(tMap);

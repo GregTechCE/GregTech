@@ -25,15 +25,15 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static gregtech.api.enums.GT_Values.D1;
 import static gregtech.api.enums.GT_Values.V;
 
 public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpecialElectricItem, IElectricItemManager, IFluidContainerItem {
     /* ---------- CONSTRUCTOR AND MEMBER VARIABLES ---------- */
-    private final HashMap<Short, ArrayList<IItemBehaviour<GT_MetaBase_Item>>> mItemBehaviors = new HashMap<Short, ArrayList<IItemBehaviour<GT_MetaBase_Item>>>();
+    private final ConcurrentHashMap<Short, ArrayList<IItemBehaviour<GT_MetaBase_Item>>> mItemBehaviors = new ConcurrentHashMap<Short, ArrayList<IItemBehaviour<GT_MetaBase_Item>>>();
 
     /**
      * Creates the Item using these Parameters.

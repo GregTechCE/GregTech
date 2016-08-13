@@ -57,12 +57,12 @@ public class GT_ModHandler {
     public static Collection<String> sNativeRecipeClasses = new HashSet<String>(), sSpecialRecipeClasses = new HashSet<String>();
     public static GT_HashSet<GT_ItemStack> sNonReplaceableItems = new GT_HashSet<GT_ItemStack>();
     public static Object sBoxableWrapper = GT_Utility.callConstructor("gregtechmod.api.util.GT_IBoxableWrapper", 0, null, false);
-    private static Map<IRecipeInput, RecipeOutput> sExtractorRecipes = new HashMap<IRecipeInput, RecipeOutput>();
-    private static Map<IRecipeInput, RecipeOutput> sMaceratorRecipes = new HashMap<IRecipeInput, RecipeOutput>();
-    private static Map<IRecipeInput, RecipeOutput> sCompressorRecipes = new HashMap<IRecipeInput, RecipeOutput>();
-    private static Map<IRecipeInput, RecipeOutput> sOreWashingRecipes = new HashMap<IRecipeInput, RecipeOutput>();
-    private static Map<IRecipeInput, RecipeOutput> sThermalCentrifugeRecipes = new HashMap<IRecipeInput, RecipeOutput>();
-    private static Map<IRecipeInput, RecipeOutput> sMassfabRecipes = new HashMap<IRecipeInput, RecipeOutput>();
+    private static Map<IRecipeInput, RecipeOutput> sExtractorRecipes = new /*Concurrent*/HashMap<IRecipeInput, RecipeOutput>();
+    private static Map<IRecipeInput, RecipeOutput> sMaceratorRecipes = new /*Concurrent*/HashMap<IRecipeInput, RecipeOutput>();
+    private static Map<IRecipeInput, RecipeOutput> sCompressorRecipes = new /*Concurrent*/HashMap<IRecipeInput, RecipeOutput>();
+    private static Map<IRecipeInput, RecipeOutput> sOreWashingRecipes = new /*Concurrent*/HashMap<IRecipeInput, RecipeOutput>();
+    private static Map<IRecipeInput, RecipeOutput> sThermalCentrifugeRecipes = new /*Concurrent*/HashMap<IRecipeInput, RecipeOutput>();
+    private static Map<IRecipeInput, RecipeOutput> sMassfabRecipes = new /*Concurrent*/HashMap<IRecipeInput, RecipeOutput>();
     private static boolean sBufferCraftingRecipes = true;
     public static List<Integer> sSingleNonBlockDamagableRecipeList_list = new ArrayList<Integer>(100);
     private static boolean sSingleNonBlockDamagableRecipeList_create = true;
@@ -921,8 +921,8 @@ public class GT_ModHandler {
             if (aRecipe[idx] instanceof Boolean) {
                 idx++;
             }
-            HashMap<Character, ItemStack> tItemStackMap = new HashMap<Character, ItemStack>();
-            HashMap<Character, ItemData> tItemDataMap = new HashMap<Character, ItemData>();
+            /*ConcurrentHash*/Map<Character, ItemStack> tItemStackMap = new /*ConcurrentHash*/HashMap<Character, ItemStack>();
+            /*ConcurrentHash*/Map<Character, ItemData> tItemDataMap = new /*ConcurrentHash*/HashMap<Character, ItemData>();
             tItemStackMap.put(' ', null);
 
             boolean tRemoveRecipe = true;

@@ -57,11 +57,6 @@ import java.io.PrintStream;
 import java.util.*;
 import java.util.Map.Entry;
 
-//import forestry.factory.recipes.ISqueezerRecipe;
-//import forestry.factory.tiles.TileCentrifuge;
-//import forestry.factory.tiles.TileSqueezer;
-
-
 @Mod(modid = "gregtech", name = "GregTech", version = "MC1710", useMetadata = false, dependencies = "required-after:IC2; after:Forestry; after:PFAAGeologica; after:Thaumcraft; after:Railcraft; after:appliedenergistics2; after:ThermalExpansion; after:TwilightForest; after:harvestcraft; after:magicalcrops; after:BuildCraft|Transport; after:BuildCraft|Silicon; after:BuildCraft|Factory; after:BuildCraft|Energy; after:BuildCraft|Core; after:BuildCraft|Builders; after:GalacticraftCore; after:GalacticraftMars; after:GalacticraftPlanets; after:ThermalExpansion|Transport; after:ThermalExpansion|Energy; after:ThermalExpansion|Factory; after:RedPowerCore; after:RedPowerBase; after:RedPowerMachine; after:RedPowerCompat; after:RedPowerWiring; after:RedPowerLogic; after:RedPowerLighting; after:RedPowerWorld; after:RedPowerControl; after:UndergroundBiomes;")
 public class GT_Mod
         implements IGT_Mod {
@@ -73,12 +68,14 @@ public class GT_Mod
     public static GT_Proxy gregtechproxy;
     public static int MAX_IC2 = 2147483647;
     public static GT_Achievements achievements;
+    private final String aTextGeneral = "general";
+    private final String aTextIC2 = "ic2_";
 
-    static {
+    /*static {
         if ((509 != GregTech_API.VERSION) || (509 != GT_ModHandler.VERSION) || (509 != GT_OreDictUnificator.VERSION) || (509 != GT_Recipe.VERSION) || (509 != GT_Utility.VERSION) || (509 != GT_RecipeRegistrator.VERSION) || (509 != Element.VERSION) || (509 != Materials.VERSION) || (509 != OrePrefixes.VERSION)) {
             throw new GT_ItsNotMyFaultException("One of your Mods included GregTech-API Files inside it's download, mention this to the Mod Author, who does this bad thing, and tell him/her to use reflection. I have added a Version check, to prevent Authors from breaking my Mod that way.");
         }
-    }
+    }*/
 
     public GT_Mod() {
         try {
@@ -149,7 +146,7 @@ public class GT_Mod
             } catch (Throwable e) {
             }
         }
-        if (tMainConfig.get("general", "LoggingPlayerActivity", true).getBoolean(true)) {
+        if (tMainConfig.get(aTextGeneral, "LoggingPlayerActivity", true).getBoolean(true)) {
             GT_Log.mPlayerActivityLogFile = new File(aEvent.getModConfigurationDirectory().getParentFile(), "logs/PlayerActivity.log");
             if (!GT_Log.mPlayerActivityLogFile.exists()) {
                 try {
@@ -179,15 +176,15 @@ public class GT_Mod
         gregtechproxy.onPreLoad();
 
         GT_Log.out.println("GT_Mod: Setting Configs");
-        GT_Values.D1 = tMainConfig.get("general", "Debug", false).getBoolean(false);
-        GT_Values.D2 = tMainConfig.get("general", "Debug2", false).getBoolean(false);
+        GT_Values.D1 = tMainConfig.get(aTextGeneral, "Debug", false).getBoolean(false);
+        GT_Values.D2 = tMainConfig.get(aTextGeneral, "Debug2", false).getBoolean(false);
 
-        GregTech_API.TICKS_FOR_LAG_AVERAGING = tMainConfig.get("general", "TicksForLagAveragingWithScanner", 25).getInt(25);
-        GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = tMainConfig.get("general", "MillisecondsPassedInGTTileEntityUntilLagWarning", 100).getInt(100);
-        if (tMainConfig.get("general", "disable_STDOUT", false).getBoolean(false)) {
+        GregTech_API.TICKS_FOR_LAG_AVERAGING = tMainConfig.get(aTextGeneral, "TicksForLagAveragingWithScanner", 25).getInt(25);
+        GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = tMainConfig.get(aTextGeneral, "MillisecondsPassedInGTTileEntityUntilLagWarning", 100).getInt(100);
+        if (tMainConfig.get(aTextGeneral, "disable_STDOUT", false).getBoolean(false)) {
             System.out.close();
         }
-        if (tMainConfig.get("general", "disable_STDERR", false).getBoolean(false)) {
+        if (tMainConfig.get(aTextGeneral, "disable_STDERR", false).getBoolean(false)) {
             System.err.close();
         }
         GregTech_API.sMachineExplosions = tMainConfig.get("machines", "machines_explosion_damage", true).getBoolean(false);
@@ -200,10 +197,10 @@ public class GT_Mod
         GregTech_API.sConstantEnergy = tMainConfig.get("machines", "constant_need_of_energy", true).getBoolean(false);
         GregTech_API.sColoredGUI = tMainConfig.get("machines", "colored_guis_when_painted", true).getBoolean(false);
 
-        GregTech_API.sTimber = tMainConfig.get("general", "timber_axe", false).getBoolean(false);
-        GregTech_API.sDrinksAlwaysDrinkable = tMainConfig.get("general", "drinks_always_drinkable", false).getBoolean(false);
-        GregTech_API.sDoShowAllItemsInCreative = tMainConfig.get("general", "show_all_metaitems_in_creative_and_NEI", false).getBoolean(false);
-        GregTech_API.sMultiThreadedSounds = tMainConfig.get("general", "sound_multi_threading", false).getBoolean(false);
+        GregTech_API.sTimber = tMainConfig.get(aTextGeneral, "timber_axe", false).getBoolean(false);
+        GregTech_API.sDrinksAlwaysDrinkable = tMainConfig.get(aTextGeneral, "drinks_always_drinkable", false).getBoolean(false);
+        GregTech_API.sDoShowAllItemsInCreative = tMainConfig.get(aTextGeneral, "show_all_metaitems_in_creative_and_NEI", false).getBoolean(false);
+        GregTech_API.sMultiThreadedSounds = tMainConfig.get(aTextGeneral, "sound_multi_threading", false).getBoolean(false);
         for (Dyes tDye : Dyes.values()) {
             if ((tDye != Dyes._NULL) && (tDye.mIndex < 0)) {
                 tDye.mRGBa[0] = ((short) Math.min(255, Math.max(0, GregTech_API.sClientDataFile.get("ColorModulation." + tDye, "R", tDye.mRGBa[0]))));
@@ -211,30 +208,30 @@ public class GT_Mod
                 tDye.mRGBa[2] = ((short) Math.min(255, Math.max(0, GregTech_API.sClientDataFile.get("ColorModulation." + tDye, "B", tDye.mRGBa[2]))));
             }
         }
-        gregtechproxy.mMaxEqualEntitiesAtOneSpot = tMainConfig.get("general", "MaxEqualEntitiesAtOneSpot", 3).getInt(3);
-        gregtechproxy.mSkeletonsShootGTArrows = tMainConfig.get("general", "SkeletonsShootGTArrows", 16).getInt(16);
-        gregtechproxy.mFlintChance = tMainConfig.get("general", "FlintAndSteelChance", 30).getInt(30);
-        gregtechproxy.mItemDespawnTime = tMainConfig.get("general", "ItemDespawnTime", 6000).getInt(6000);
-        gregtechproxy.mDisableVanillaOres = tMainConfig.get("general", "DisableVanillaOres", true).getBoolean(true);
-        gregtechproxy.mNerfDustCrafting = tMainConfig.get("general", "NerfDustCrafting", true).getBoolean(true);
-        gregtechproxy.mIncreaseDungeonLoot = tMainConfig.get("general", "IncreaseDungeonLoot", true).getBoolean(true);
-        gregtechproxy.mAxeWhenAdventure = tMainConfig.get("general", "AdventureModeStartingAxe", true).getBoolean(true);
-        gregtechproxy.mHardcoreCables = tMainConfig.get("general", "HardCoreCableLoss", false).getBoolean(false);
-        gregtechproxy.mSurvivalIntoAdventure = tMainConfig.get("general", "forceAdventureMode", false).getBoolean(false);
-        gregtechproxy.mHungerEffect = tMainConfig.get("general", "AFK_Hunger", false).getBoolean(false);
-        gregtechproxy.mHardRock = tMainConfig.get("general", "harderstone", false).getBoolean(false);
-        gregtechproxy.mInventoryUnification = tMainConfig.get("general", "InventoryUnification", true).getBoolean(true);
-        gregtechproxy.mGTBees = tMainConfig.get("general", "GTBees", true).getBoolean(true);
-        gregtechproxy.mCraftingUnification = tMainConfig.get("general", "CraftingUnification", true).getBoolean(true);
-        gregtechproxy.mNerfedWoodPlank = tMainConfig.get("general", "WoodNeedsSawForCrafting", true).getBoolean(true);
-        gregtechproxy.mNerfedVanillaTools = tMainConfig.get("general", "smallerVanillaToolDurability", true).getBoolean(true);
-        gregtechproxy.mSortToTheEnd = tMainConfig.get("general", "EnsureToBeLoadedLast", true).getBoolean(true);
-        gregtechproxy.mDisableIC2Cables = tMainConfig.get("general", "DisableIC2Cables", true).getBoolean(true);
-        gregtechproxy.mAchievements = tMainConfig.get("general", "EnableAchievements", true).getBoolean(true);
+        gregtechproxy.mMaxEqualEntitiesAtOneSpot = tMainConfig.get(aTextGeneral, "MaxEqualEntitiesAtOneSpot", 3).getInt(3);
+        gregtechproxy.mSkeletonsShootGTArrows = tMainConfig.get(aTextGeneral, "SkeletonsShootGTArrows", 16).getInt(16);
+        gregtechproxy.mFlintChance = tMainConfig.get(aTextGeneral, "FlintAndSteelChance", 30).getInt(30);
+        gregtechproxy.mItemDespawnTime = tMainConfig.get(aTextGeneral, "ItemDespawnTime", 6000).getInt(6000);
+        gregtechproxy.mDisableVanillaOres = tMainConfig.get(aTextGeneral, "DisableVanillaOres", true).getBoolean(true);
+        gregtechproxy.mNerfDustCrafting = tMainConfig.get(aTextGeneral, "NerfDustCrafting", true).getBoolean(true);
+        gregtechproxy.mIncreaseDungeonLoot = tMainConfig.get(aTextGeneral, "IncreaseDungeonLoot", true).getBoolean(true);
+        gregtechproxy.mAxeWhenAdventure = tMainConfig.get(aTextGeneral, "AdventureModeStartingAxe", true).getBoolean(true);
+        gregtechproxy.mHardcoreCables = tMainConfig.get(aTextGeneral, "HardCoreCableLoss", false).getBoolean(false);
+        gregtechproxy.mSurvivalIntoAdventure = tMainConfig.get(aTextGeneral, "forceAdventureMode", false).getBoolean(false);
+        gregtechproxy.mHungerEffect = tMainConfig.get(aTextGeneral, "AFK_Hunger", false).getBoolean(false);
+        gregtechproxy.mHardRock = tMainConfig.get(aTextGeneral, "harderstone", false).getBoolean(false);
+        gregtechproxy.mInventoryUnification = tMainConfig.get(aTextGeneral, "InventoryUnification", true).getBoolean(true);
+        gregtechproxy.mGTBees = tMainConfig.get(aTextGeneral, "GTBees", true).getBoolean(true);
+        gregtechproxy.mCraftingUnification = tMainConfig.get(aTextGeneral, "CraftingUnification", true).getBoolean(true);
+        gregtechproxy.mNerfedWoodPlank = tMainConfig.get(aTextGeneral, "WoodNeedsSawForCrafting", true).getBoolean(true);
+        gregtechproxy.mNerfedVanillaTools = tMainConfig.get(aTextGeneral, "smallerVanillaToolDurability", true).getBoolean(true);
+        gregtechproxy.mSortToTheEnd = tMainConfig.get(aTextGeneral, "EnsureToBeLoadedLast", true).getBoolean(true);
+        gregtechproxy.mDisableIC2Cables = tMainConfig.get(aTextGeneral, "DisableIC2Cables", true).getBoolean(true);
+        gregtechproxy.mAchievements = tMainConfig.get(aTextGeneral, "EnableAchievements", true).getBoolean(true);
         gregtechproxy.mAE2Integration = GregTech_API.sSpecialFile.get(ConfigCategories.general, "EnableAE2Integration", Loader.isModLoaded("appliedenergistics2"));
-        gregtechproxy.mNerfedCombs = tMainConfig.get("general", "NerfCombs", true).getBoolean(true);
-        gregtechproxy.mHideUnusedOres = tMainConfig.get("general", "HideUnusedOres", true).getBoolean(true);
-        gregtechproxy.mHideRecyclingRecipes = tMainConfig.get("general", "HideRecyclingRecipes", true).getBoolean(true);
+        gregtechproxy.mNerfedCombs = tMainConfig.get(aTextGeneral, "NerfCombs", true).getBoolean(true);
+        gregtechproxy.mHideUnusedOres = tMainConfig.get(aTextGeneral, "HideUnusedOres", true).getBoolean(true);
+        gregtechproxy.mHideRecyclingRecipes = tMainConfig.get(aTextGeneral, "HideRecyclingRecipes", true).getBoolean(true);
 
         GregTech_API.mOutputRF = GregTech_API.sOPStuff.get(ConfigCategories.general, "OutputRF", true);
         GregTech_API.mInputRF = GregTech_API.sOPStuff.get(ConfigCategories.general, "InputRF", false);
@@ -253,10 +250,10 @@ public class GT_Mod
                 }
             }}
 
-        if (tMainConfig.get("general", "hardermobspawners", true).getBoolean(true)) {
+        if (tMainConfig.get(aTextGeneral, "hardermobspawners", true).getBoolean(true)) {
             Blocks.mob_spawner.setHardness(500.0F).setResistance(6000000.0F);
         }
-        gregtechproxy.mOnline = tMainConfig.get("general", "online", true).getBoolean(false);
+        gregtechproxy.mOnline = tMainConfig.get(aTextGeneral, "online", true).getBoolean(false);
 
         gregtechproxy.mUpgradeCount = Math.min(64, Math.max(1, tMainConfig.get("features", "UpgradeStacksize", 4).getInt()));
         for (OrePrefixes tPrefix : OrePrefixes.values()) {
@@ -514,58 +511,58 @@ public class GT_Mod
             }
         }
         String tName = "";
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2_" + (tName = "blastfurnace"), true)) {
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "blastfurnace"), true)) {
             GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1L));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2_" + (tName = "blockcutter"), true)) {
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "blockcutter"), true)) {
             GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1L));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2_" + (tName = "inductionFurnace"), true)) {
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "inductionFurnace"), true)) {
             GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1L));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2_" + (tName = "generator"), false)) {
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "generator"), false)) {
             GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1L));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2_" + (tName = "windMill"), true)) {
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "windMill"), true)) {
             GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1L));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2_" + (tName = "waterMill"), true)) {
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "waterMill"), true)) {
             GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1L));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2_" + (tName = "solarPanel"), true)) {
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "solarPanel"), true)) {
             GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1L));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2_" + (tName = "centrifuge"), true)) {
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "centrifuge"), true)) {
             GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1L));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2_" + (tName = "electrolyzer"), false)) {
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "electrolyzer"), false)) {
             GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1L));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2_" + (tName = "compressor"), true)) {
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "compressor"), true)) {
             GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1L));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2_" + (tName = "electroFurnace"), true)) {
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "electroFurnace"), true)) {
             GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1L));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2_" + (tName = "extractor"), true)) {
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "extractor"), true)) {
             GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1L));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2_" + (tName = "macerator"), true)) {
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "macerator"), true)) {
             GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1L));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2_" + (tName = "recycler"), true)) {
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "recycler"), true)) {
             GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1L));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2_" + (tName = "metalformer"), true)) {
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "metalformer"), true)) {
             GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1L));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2_" + (tName = "orewashingplant"), true)) {
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "orewashingplant"), true)) {
             GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1L));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2_" + (tName = "massFabricator"), true)) {
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "massFabricator"), true)) {
             GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1L));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2_" + (tName = "replicator"), true)) {
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "replicator"), true)) {
             GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1L));
         }
         if (gregtechproxy.mNerfedVanillaTools) {

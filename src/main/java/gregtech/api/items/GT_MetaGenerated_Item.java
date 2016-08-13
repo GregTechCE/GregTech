@@ -31,6 +31,7 @@ import squeek.applecore.api.food.FoodValues;
 import squeek.applecore.api.food.IEdible;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static gregtech.api.enums.GT_Values.*;
 
@@ -54,7 +55,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
      * <p/>
      * You can also use the unlocalized Name gotten from getUnlocalizedName() as Key if you want to get a specific Item.
      */
-    public static final HashMap<String, GT_MetaGenerated_Item> sInstances = new HashMap<String, GT_MetaGenerated_Item>();
+    public static final ConcurrentHashMap<String, GT_MetaGenerated_Item> sInstances = new ConcurrentHashMap<String, GT_MetaGenerated_Item>();
 
 	/* ---------- CONSTRUCTOR AND MEMBER VARIABLES ---------- */
 
@@ -63,10 +64,10 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
     public final BitSet mVisibleItems;
     public final IIcon[][] mIconList;
 
-    public final HashMap<Short, IFoodStat> mFoodStats = new HashMap<Short, IFoodStat>();
-    public final HashMap<Short, Long[]> mElectricStats = new HashMap<Short, Long[]>();
-    public final HashMap<Short, Long[]> mFluidContainerStats = new HashMap<Short, Long[]>();
-    public final HashMap<Short, Short> mBurnValues = new HashMap<Short, Short>();
+    public final ConcurrentHashMap<Short, IFoodStat> mFoodStats = new ConcurrentHashMap<Short, IFoodStat>();
+    public final ConcurrentHashMap<Short, Long[]> mElectricStats = new ConcurrentHashMap<Short, Long[]>();
+    public final ConcurrentHashMap<Short, Long[]> mFluidContainerStats = new ConcurrentHashMap<Short, Long[]>();
+    public final ConcurrentHashMap<Short, Short> mBurnValues = new ConcurrentHashMap<Short, Short>();
 
     /**
      * Creates the Item using these Parameters.

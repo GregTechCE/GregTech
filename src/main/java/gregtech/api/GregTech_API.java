@@ -29,6 +29,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static gregtech.api.enums.GT_Values.*;
 
@@ -92,35 +93,35 @@ public class GregTech_API {
     /**
      * The Icon List for Covers
      */
-    public static final Map<GT_ItemStack, ITexture> sCovers = new HashMap<GT_ItemStack, ITexture>();
+    public static final Map<GT_ItemStack, ITexture> sCovers = new ConcurrentHashMap<GT_ItemStack, ITexture>();
     /**
      * The List of Cover Behaviors for the Covers
      */
-    public static final Map<GT_ItemStack, GT_CoverBehavior> sCoverBehaviors = new HashMap<GT_ItemStack, GT_CoverBehavior>();
+    public static final Map<GT_ItemStack, GT_CoverBehavior> sCoverBehaviors = new ConcurrentHashMap<GT_ItemStack, GT_CoverBehavior>();
     /**
      * The List of Circuit Behaviors for the Redstone Circuit Block
      */
-    public static final Map<Integer, GT_CircuitryBehavior> sCircuitryBehaviors = new HashMap<Integer, GT_CircuitryBehavior>();
+    public static final Map<Integer, GT_CircuitryBehavior> sCircuitryBehaviors = new ConcurrentHashMap<Integer, GT_CircuitryBehavior>();
     /**
      * The List of Blocks, which can conduct Machine Block Updates
      */
-    public static final Map<Block, Integer> sMachineIDs = new HashMap<Block, Integer>();
+    public static final Map<Block, Integer> sMachineIDs = new ConcurrentHashMap<Block, Integer>();
     /**
      * The Redstone Frequencies
      */
-    public static final Map<Integer, Byte> sWirelessRedstone = new HashMap<Integer, Byte>();
+    public static final Map<Integer, Byte> sWirelessRedstone = new ConcurrentHashMap<Integer, Byte>();
     /**
      * The IDSU Frequencies
      */
-    public static final Map<Integer, Integer> sIDSUList = new HashMap<Integer, Integer>();
+    public static final Map<Integer, Integer> sIDSUList = new ConcurrentHashMap<Integer, Integer>();
     /**
      * A List of all Books, which were created using @GT_Utility.getWrittenBook the original Title is the Key Value
      */
-    public static final Map<String, ItemStack> sBookList = new HashMap<String, ItemStack>();
+    public static final Map<String, ItemStack> sBookList = new ConcurrentHashMap<String, ItemStack>();
     /**
      * The List of all Sounds used in GT, indices are in the static Block at the bottom
      */
-    public static final Map<Integer, String> sSoundList = new HashMap<Integer, String>();
+    public static final Map<Integer, String> sSoundList = new ConcurrentHashMap<Integer, String>();
     /**
      * The List of Tools, which can be used. Accepts regular damageable Items and Electric Items
      */

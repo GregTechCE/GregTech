@@ -30,22 +30,22 @@ import net.minecraftforge.fluids.FluidStack;
 import thaumcraft.api.ThaumcraftApiHelper;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class GT_Achievements {
 
     public static List<Materials> oreList = new ArrayList<Materials>();
     public static List<Integer[]> oreStats = new ArrayList<Integer[]>();
     public static int oreReg = -1;
-    public HashMap<String, Achievement> achievementList;
-    public HashMap<String, Boolean> issuedAchievements;
+    public ConcurrentHashMap<String, Achievement> achievementList;
+    public ConcurrentHashMap<String, Boolean> issuedAchievements;
     public int adjX = 5;
     public int adjY = 9;
 
     public GT_Achievements() {
-        this.achievementList = new HashMap();
-        this.issuedAchievements = new HashMap();
+        this.achievementList = new ConcurrentHashMap();
+        this.issuedAchievements = new ConcurrentHashMap();
         int oreList_sS=oreList.size();
         for (int i = 0; i < oreList_sS; i++) {
             if (GT_Values.D1 && this.achievementList.get(oreList.get(i).name()) == null) {
