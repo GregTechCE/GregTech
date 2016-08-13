@@ -1267,33 +1267,31 @@ public class GT_ModHandler {
             for (IRecipe tRecipe : (ArrayList<IRecipe>) CraftingManager.getInstance().getRecipeList()) {
                 ItemStack tStack = tRecipe.getRecipeOutput();
                 if (GT_Utility.isStackValid(tStack) && tStack.getMaxStackSize() == 1 && tStack.getMaxDamage() > 0 && !(tStack.getItem() instanceof ItemBlock) && !(tStack.getItem() instanceof IReactorComponent) && !isElectricItem(tStack) && !GT_Utility.isStackInList(tStack, sNonReplaceableItems)) {
-                    if (!(tRecipe instanceof ShapelessRecipes || tRecipe instanceof ShapelessOreRecipe)) {
-                        if (tRecipe instanceof ShapedOreRecipe) {
-                            boolean temp = true;
-                            for (Object tObject : ((ShapedOreRecipe) tRecipe).getInput())
-                                if (tObject != null) {
-                                    if (tObject instanceof ItemStack && (((ItemStack) tObject).getItem() == null || ((ItemStack) tObject).getMaxStackSize() < 2 || ((ItemStack) tObject).getMaxDamage() > 0 || ((ItemStack) tObject).getItem() instanceof ItemBlock)) {
-                                        temp = false;
-                                        break;
-                                    }
-                                    if (tObject instanceof List && ((List) tObject).isEmpty()) {
-                                        temp = false;
-                                        break;
-                                    }
+                    if (tRecipe instanceof ShapedOreRecipe) {
+                        boolean temp = true;
+                        for (Object tObject : ((ShapedOreRecipe) tRecipe).getInput())
+                            if (tObject != null) {
+                                if (tObject instanceof ItemStack && (((ItemStack) tObject).getItem() == null || ((ItemStack) tObject).getMaxStackSize() < 2 || ((ItemStack) tObject).getMaxDamage() > 0 || ((ItemStack) tObject).getItem() instanceof ItemBlock)) {
+                                    temp = false;
+                                    break;
                                 }
-                            if (temp) sSingleNonBlockDamagableRecipeList.add(tRecipe);
-                        } else if (tRecipe instanceof ShapedRecipes) {
-                            boolean temp = true;
-                            for (ItemStack tObject : ((ShapedRecipes) tRecipe).recipeItems) {
-                                if (tObject != null && (tObject.getItem() == null || tObject.getMaxStackSize() < 2 || tObject.getMaxDamage() > 0 || tObject.getItem() instanceof ItemBlock)) {
+                                if (tObject instanceof List && ((List) tObject).isEmpty()) {
                                     temp = false;
                                     break;
                                 }
                             }
-                            if (temp) sSingleNonBlockDamagableRecipeList.add(tRecipe);
-                        } else {
-                            sSingleNonBlockDamagableRecipeList.add(tRecipe);
+                        if (temp) sSingleNonBlockDamagableRecipeList.add(tRecipe);
+                    } else if (tRecipe instanceof ShapedRecipes) {
+                        boolean temp = true;
+                        for (ItemStack tObject : ((ShapedRecipes) tRecipe).recipeItems) {
+                            if (tObject != null && (tObject.getItem() == null || tObject.getMaxStackSize() < 2 || tObject.getMaxDamage() > 0 || tObject.getItem() instanceof ItemBlock)) {
+                                temp = false;
+                                break;
+                            }
                         }
+                        if (temp) sSingleNonBlockDamagableRecipeList.add(tRecipe);
+                    } else {
+                        sSingleNonBlockDamagableRecipeList.add(tRecipe);
                     }
                 }
             }
@@ -1403,7 +1401,7 @@ public class GT_ModHandler {
             for (Entry<IRecipeInput, RecipeOutput> tEntry : aRecipeList.entrySet()) {
                 if (tEntry.getKey().matches(aInput)) {
                     if (tEntry.getKey().getAmount() <= aInput.stackSize) {
-                        ItemStack[] tList = (ItemStack[]) tEntry.getValue().items.toArray();
+                        ItemStack[] tList = (ItemStack[]) tEntry.getValue().items.toArray(new ItemStack[tEntry.getValue().items.size()]);
                         if (tList.length == 0) break;
                         ItemStack[] rList = new ItemStack[aOutputSlots.length];
                         rRecipeMetaData.setTag("return", tEntry.getValue().metadata);

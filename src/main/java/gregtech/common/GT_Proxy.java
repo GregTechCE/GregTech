@@ -175,12 +175,14 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
             onFluidContainerRegistration(new FluidContainerRegistry.FluidContainerRegisterEvent(tData));
         }
-        for (String tOreName : OreDictionary.getOreNames()) {
-            ItemStack tOreStack;
-            for (Iterator i$ = OreDictionary.getOres(tOreName).iterator(); i$.hasNext(); registerOre(new OreDictionary.OreRegisterEvent(tOreName, tOreStack))) {
-                tOreStack = (ItemStack) i$.next();
+        try {
+            for (String tOreName : OreDictionary.getOreNames()) {
+                ItemStack tOreStack;
+                for (Iterator i$ = OreDictionary.getOres(tOreName).iterator(); i$.hasNext(); registerOre(new OreDictionary.OreRegisterEvent(tOreName, tOreStack))) {
+                    tOreStack = (ItemStack) i$.next();
+                }
             }
-        }
+        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
     }
 
     private static final void registerRecipes(OreDictEventContainer aOre) {
