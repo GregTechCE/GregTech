@@ -1324,33 +1324,32 @@ public class GT_ModHandler {
             for (IRecipe tRecipe : (ArrayList<IRecipe>) CraftingManager.getInstance().getRecipeList()) {
                 ItemStack tStack = tRecipe.getRecipeOutput();
                 if (GT_Utility.isStackValid(tStack) && tStack.getMaxStackSize() == 1 && tStack.getMaxDamage() > 0 && !(tStack.getItem() instanceof ItemBlock) && !(tStack.getItem() instanceof IReactorComponent) && !isElectricItem(tStack) && !GT_Utility.isStackInList(tStack, sNonReplaceableItems)) {
-                    if (!(tRecipe instanceof ShapelessRecipes || tRecipe instanceof ShapelessOreRecipe)) {
-                        if (tRecipe instanceof ShapedOreRecipe) {
-                            boolean temp = true;
-                            for (Object tObject : ((ShapedOreRecipe) tRecipe).getInput())
-                                if (tObject != null) {
-                                    if (tObject instanceof ItemStack && (((ItemStack) tObject).getItem() == null || ((ItemStack) tObject).getMaxStackSize() < 2 || ((ItemStack) tObject).getMaxDamage() > 0 || ((ItemStack) tObject).getItem() instanceof ItemBlock)) {
-                                        temp = false;
-                                        break;
-                                    }
-                                    if (tObject instanceof List && ((List) tObject).isEmpty()) {
-                                        temp = false;
-                                        break;
-                                    }
+                    if (tRecipe instanceof ShapedOreRecipe) {
+                        boolean temp = true;
+                        for (Object tObject : ((ShapedOreRecipe) tRecipe).getInput()) {
+                            if (tObject != null) {
+                                if (tObject instanceof ItemStack && (((ItemStack) tObject).getItem() == null || ((ItemStack) tObject).getMaxStackSize() < 2 || ((ItemStack) tObject).getMaxDamage() > 0 || ((ItemStack) tObject).getItem() instanceof ItemBlock)) {
+                                    temp = false;
+                                    break;
                                 }
-                            if (temp) sSingleNonBlockDamagableRecipeList.add(tRecipe);
-                        } else if (tRecipe instanceof ShapedRecipes) {
-                            boolean temp = true;
-                            for (ItemStack tObject : ((ShapedRecipes) tRecipe).recipeItems) {
-                                if (tObject != null && (tObject.getItem() == null || tObject.getMaxStackSize() < 2 || tObject.getMaxDamage() > 0 || tObject.getItem() instanceof ItemBlock)) {
+                                if (tObject instanceof List && ((List) tObject).isEmpty()) {
                                     temp = false;
                                     break;
                                 }
                             }
-                            if (temp) sSingleNonBlockDamagableRecipeList.add(tRecipe);
-                        } else {
-                            sSingleNonBlockDamagableRecipeList.add(tRecipe);
                         }
+                        if (temp) {sSingleNonBlockDamagableRecipeList.add(tRecipe);}
+                    } else if (tRecipe instanceof ShapedRecipes) {
+                        boolean temp = true;
+                        for (ItemStack tObject : ((ShapedRecipes) tRecipe).recipeItems) {
+                            if (tObject != null && (tObject.getItem() == null || tObject.getMaxStackSize() < 2 || tObject.getMaxDamage() > 0 || tObject.getItem() instanceof ItemBlock)) {
+                                temp = false;
+                                break;
+                            }
+                        }
+                        if (temp) {sSingleNonBlockDamagableRecipeList.add(tRecipe);}
+                    } else {
+                        sSingleNonBlockDamagableRecipeList.add(tRecipe);
                     }
                 }
             }
@@ -1360,8 +1359,8 @@ public class GT_ModHandler {
             sSingleNonBlockDamagableRecipeList_create = false;
             sSingleNonBlockDamagableRecipeList_validsShapes1_update = true;
             InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
-            @Override
-            public boolean canInteractWith(EntityPlayer var1) {return false;}}, 3, 3);
+                @Override
+                public boolean canInteractWith(EntityPlayer var1) {return false;}}, 3, 3);
             for (int i = 0; i < aList_move; i++) {
                 for (int j = 0; j < sShapes1.length; j++) {
                     ItemStack[] sRecipe = sShapes1[j];
@@ -1395,7 +1394,7 @@ public class GT_ModHandler {
      */
     public static ArrayList<ItemStack> getRecipeOutputs(List<IRecipe> aList, boolean aDeleteFromList, ItemStack... aRecipe) {
         ArrayList<ItemStack> rList = new ArrayList<ItemStack>();
-        if (aRecipe == null || aList.size() == 0) return rList;
+        if (aRecipe == null || aList.size() == 0) {return rList;}
         boolean temp = false;
         for (byte i = 0; i < aRecipe.length; i++) {
             if (aRecipe[i] != null) {
@@ -1403,7 +1402,7 @@ public class GT_ModHandler {
                 break;
             }
         }
-        if (!temp) return rList;
+        if (!temp) {return rList;}
         InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
             @Override
             public boolean canInteractWith(EntityPlayer var1) {
