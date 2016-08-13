@@ -78,7 +78,7 @@ public class GT_SensorCard_Item
     public List<PanelSetting> getSettingsList() {
         List<PanelSetting> rList = new ArrayList(30);
         for (int i = 0; i < 8; i++) {
-            rList.add(new PanelSetting("" + (i + 1), 1 << i, getCardType()));
+            rList.add(new PanelSetting(String.valueOf((i + 1)), 1 << i, getCardType()));
         }
         return rList;
     }
