@@ -121,6 +121,8 @@ public class GT_RecipeRegistrator {
             {"Scythe", s_H + s_P + s_I, s_P + s_F + s_R, " " + " " + s_R}
     };
     public static volatile int VERSION = 509;
+    public static int sRodMaterialList_cycles = 0;
+    private static int i_count = 0;
 
     public static void registerMaterialRecycling(ItemStack aStack, Materials aMaterial, long aMaterialAmount, MaterialStack aByproduct) {
         if (GT_Utility.isStackInvalid(aStack)) return;
@@ -272,7 +274,7 @@ public class GT_RecipeRegistrator {
      * You give this Function a Material and it will scan almost everything for adding recycling Recipes
      *
      * @param aMat             a Material, for example an Ingot or a Gem.
-     * @param aOutput          the Dust you usually get from macerating aMat
+     * @param aPlate          the Dust you usually get from macerating aMat
      * @param aRecipeReplacing allows to replace the Recipe with a Plate variant
      */
     public static synchronized void registerUsagesForMaterials(ItemStack aMat, String aPlate, boolean aRecipeReplacing) {
@@ -280,8 +282,11 @@ public class GT_RecipeRegistrator {
         aMat = GT_Utility.copy(aMat);
         ItemStack tStack;
         ItemData aItemData = GT_OreDictUnificator.getItemData(aMat);
-        if (aItemData == null || aItemData.mPrefix != OrePrefixes.ingot) aPlate = null;
+        boolean aItemData_b_0 = aItemData != null ? true : false;
+        if (!aItemData_b_0 || aItemData.mPrefix != OrePrefixes.ingot) {aPlate = null;}
         if (aPlate != null && GT_OreDictUnificator.getFirstOre(aPlate, 1) == null) aPlate = null;
+        boolean aItemData_b_1 = aItemData.hasValidPrefixMaterialData() ? true : false;
+        boolean aPlate_b_0 = aPlate != null ? true : false;
 
         sMt1.func_150996_a(aMat.getItem());
         sMt1.stackSize = 1;
@@ -296,12 +301,13 @@ public class GT_RecipeRegistrator {
             for (ItemStack tMat : tRecipe) {
                 if (tMat == sMt1) tAmount1++;
             }
-            if (aItemData != null && aItemData.hasValidPrefixMaterialData())
+            if (aItemData_b_0 && aItemData_b_1)
                 for (ItemStack tCrafted : GT_ModHandler.getRecipeOutputs(tRecipe)) {
                     GT_OreDictUnificator.addItemData(tCrafted, new ItemData(aItemData.mMaterial.mMaterial, aItemData.mMaterial.mAmount * tAmount1));
                 }
         }
 
+        GT_ModHandler.getVanillyToolRecipeOutputs(sShapes1[0]);
         for (Materials tMaterial : sRodMaterialList) {
             ItemStack tMt2 = GT_OreDictUnificator.get(OrePrefixes.stick, tMaterial, 1);
             if (tMt2 != null) {
@@ -309,37 +315,48 @@ public class GT_RecipeRegistrator {
                 sMt2.stackSize = 1;
                 Items.feather.setDamage(sMt2, Items.feather.getDamage(tMt2));
 
-                for (int i = 0; i < sShapes1.length; i++) {
-                    ItemStack[] tRecipe = sShapes1[i];
+                if (GT_ModHandler.sSingleNonBlockDamagableRecipeList.size() == 0 || GT_ModHandler.sSingleNonBlockDamagableRecipeList_validsShapes1.size() == 0 || GT_ModHandler.sSingleNonBlockDamagableRecipeList_verified.size() == 0) { sRodMaterialList_cycles++;continue;}
+                int sShapes1_len = GT_ModHandler.sSingleNonBlockDamagableRecipeList_validsShapes1.size();
+                for (int i = 0; i < sShapes1_len; i++) {
+                    int i2 = GT_ModHandler.sSingleNonBlockDamagableRecipeList_validsShapes1.get(i);
+                    ItemStack[] tRecipe = sShapes1[i2];
+                    if (tRecipe == null) continue;
 
                     int tAmount1 = 0, tAmount2 = 0;
                     for (ItemStack tMat : tRecipe) {
                         if (tMat == sMt1) tAmount1++;
                         if (tMat == sMt2) tAmount2++;
                     }
-                    for (ItemStack tCrafted : GT_ModHandler.getVanillyToolRecipeOutputs(tRecipe)) {
-                        if (aItemData != null && aItemData.hasValidPrefixMaterialData())
-                            GT_OreDictUnificator.addItemData(tCrafted, new ItemData(aItemData.mMaterial.mMaterial, aItemData.mMaterial.mAmount * tAmount1, new MaterialStack(tMaterial, OrePrefixes.stick.mMaterialAmount * tAmount2)));
+                    List<ItemStack> tempTest = GT_ModHandler.getVanillyToolRecipeOutputs(tRecipe);
+                    if (GT_ModHandler.sSingleNonBlockDamagableRecipeList_validsShapes1_update && GT_ModHandler.sSingleNonBlockDamagableRecipeList_validsShapes1.size() != 0) {sShapes1_len = GT_ModHandler.sSingleNonBlockDamagableRecipeList_validsShapes1.size();GT_ModHandler.sSingleNonBlockDamagableRecipeList_validsShapes1_update = false;}
+                    int tempTest_size_sS = tempTest.size();
+                    if (tempTest_size_sS > 0) {
+                        for (ItemStack tCrafted : tempTest/*GT_ModHandler.getVanillyToolRecipeOutputs(tRecipe)*/) {
+                            if (aItemData_b_0 && aItemData_b_1) {
+                                GT_OreDictUnificator.addItemData(tCrafted, new ItemData(aItemData.mMaterial.mMaterial, aItemData.mMaterial.mAmount * tAmount1, new MaterialStack(tMaterial, OrePrefixes.stick.mMaterialAmount * tAmount2)));
+                            }
 
-                        if (aRecipeReplacing && aPlate != null && sShapesA[i] != null && sShapesA[i].length > 1) {
-                            assert aItemData != null;
-                            if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.recipereplacements, aItemData.mMaterial.mMaterial + "." + sShapesA[i][0], true)) {
-                                if (null != (tStack = GT_ModHandler.removeRecipe(tRecipe))) {
-                                    switch (sShapesA[i].length) {
-                                        case 2:
-                                            GT_ModHandler.addCraftingRecipe(tStack, GT_ModHandler.RecipeBits.BUFFERED, new Object[]{sShapesA[i][1], s_P.charAt(0), aPlate, s_R.charAt(0), OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData});
-                                            break;
-                                        case 3:
-                                            GT_ModHandler.addCraftingRecipe(tStack, GT_ModHandler.RecipeBits.BUFFERED, new Object[]{sShapesA[i][1], sShapesA[i][2], s_P.charAt(0), aPlate, s_R.charAt(0), OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData});
-                                            break;
-                                        default:
-                                            GT_ModHandler.addCraftingRecipe(tStack, GT_ModHandler.RecipeBits.BUFFERED, new Object[]{sShapesA[i][1], sShapesA[i][2], sShapesA[i][3], s_P.charAt(0), aPlate, s_R.charAt(0), OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData});
-                                            break;
+                            if (aRecipeReplacing && aPlate_b_0 && sShapesA[i2] != null && sShapesA[i2].length > 1) {
+                                //assert aItemData != null;//dead dev code or decomp JAD?
+                                if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.recipereplacements, new StringBuilder().append(aItemData.mMaterial.mMaterial).append('.').append(sShapesA[i2][0]).toString(), true)) {
+                                    if (null != (tStack = GT_ModHandler.removeRecipe(tRecipe))) {
+                                        switch (sShapesA[i].length) {
+                                            case 2:
+                                                GT_ModHandler.addCraftingRecipe(tStack, GT_ModHandler.RecipeBits.BUFFERED, new Object[]{sShapesA[i2][1], s_P.charAt(0), aPlate, s_R.charAt(0), OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData});
+                                                break;
+                                            case 3:
+                                                GT_ModHandler.addCraftingRecipe(tStack, GT_ModHandler.RecipeBits.BUFFERED, new Object[]{sShapesA[i2][1], sShapesA[i2][2], s_P.charAt(0), aPlate, s_R.charAt(0), OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData});
+                                                break;
+                                            default:
+                                                GT_ModHandler.addCraftingRecipe(tStack, GT_ModHandler.RecipeBits.BUFFERED, new Object[]{sShapesA[i2][1], sShapesA[i2][2], sShapesA[i2][3], s_P.charAt(0), aPlate, s_R.charAt(0), OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData});
+                                                break;
+                                        }
                                     }
                                 }
                             }
                         }
                     }
+                    sRodMaterialList_cycles++;
                 }
             }
         }
