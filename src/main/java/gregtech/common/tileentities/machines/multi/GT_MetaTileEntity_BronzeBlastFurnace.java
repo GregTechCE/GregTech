@@ -340,8 +340,6 @@ public class GT_MetaTileEntity_BronzeBlastFurnace
     }
 
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        //if (aIndex < 2) {
-        //}
         return !GT_Utility.areStacksEqual(aStack, this.mInventory[0]);
     }
 
