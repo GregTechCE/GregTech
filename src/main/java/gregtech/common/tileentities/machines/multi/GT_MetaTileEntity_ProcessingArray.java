@@ -238,15 +238,12 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
                 this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
                 List<ItemStack> overStacks = new ArrayList<ItemStack>();
                 for (int f = 0; f < tOut.length; f++) {
-                    /* FindBugs: Bug kind and pattern: RpC - RpC_REPEATED_CONDITIONAL_TEST */
-                    //if (tOut[f].getMaxStackSize() < tOut[f].stackSize) {
-                        while (tOut[f].getMaxStackSize() < tOut[f].stackSize) {
-                            ItemStack tmp = tOut[f].copy();
-                            tmp.stackSize = tmp.getMaxStackSize();
-                            tOut[f].stackSize = tOut[f].stackSize - tOut[f].getMaxStackSize();
-                            overStacks.add(tmp);
-                        }
-                    //}
+                    while (tOut[f].getMaxStackSize() < tOut[f].stackSize) {
+                        ItemStack tmp = tOut[f].copy();
+                        tmp.stackSize = tmp.getMaxStackSize();
+                        tOut[f].stackSize = tOut[f].stackSize - tOut[f].getMaxStackSize();
+                        overStacks.add(tmp);
+                    }
                 }
                 if (overStacks.size() > 0) {
                     ItemStack[] tmp = new ItemStack[overStacks.size()];

@@ -18,7 +18,6 @@ public class MaterialStack implements Cloneable {
     @Override
     public MaterialStack clone() {
         try { Object cloneMS = super.clone();
-        //return new MaterialStack(mMaterial, mAmount);
         return (MaterialStack) cloneMS;} catch (Exception e) { return new MaterialStack(mMaterial, mAmount); }
     }
 
