@@ -180,9 +180,9 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         long tTime = System.currentTimeMillis();
         int tCode = 0;
 
-        try {
-            for (tCode = 0; hasValidMetaTileEntity() && tCode >= 0; ) {
-                if (tCode == 0) {
+        try { for (tCode = 0; hasValidMetaTileEntity() && tCode >= 0; ) {
+            switch (tCode) {
+                case 0:
                     tCode++;
                     if (mTickTimer++ == 0) {
                         oX = xCoord;
@@ -196,8 +196,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                         mMetaTileEntity.onFirstTick(this);
                         if (!hasValidMetaTileEntity()) return;
                     }
-                }
-                if (tCode == 1) {
+                case 1:
                     tCode++;
                     if (isClientSide()) {
                         if (mColor != oColor) {
@@ -211,8 +210,12 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                             mNeedsUpdate = false;
                         }
                     }
-                }
-                if (tCode >= 2 && tCode <= 7) {
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
+                case 7:
                     if (isServerSide() && mTickTimer > 10) {
                         for (byte i = (byte) (tCode - 2); i < 6; i++)
                             if (getCoverIDAtSide(i) != 0) {
@@ -229,12 +232,11 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                             mConnections = (byte) ((mConnections & ~64) | -128);
                         }
                     }
-                }
-                if (tCode == 8) {
+                case 8:
                     tCode = 9;
                     mMetaTileEntity.onPreTick(this, mTickTimer);
-                    if (!hasValidMetaTileEntity()) return;}
-                if (tCode == 9) {
+                    if (!hasValidMetaTileEntity()) return;
+                case 9:
                     tCode++;
                     if (isServerSide()) {
                         if (mTickTimer == 10) {
@@ -251,12 +253,11 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                             clearTileEntityBuffer();
                         }
                     }
-                }
-                if (tCode == 10) {
+                case 10:
                     tCode++;
                     mMetaTileEntity.onPostTick(this, mTickTimer);
-                    if (!hasValidMetaTileEntity()) return;}
-                if (tCode == 11) {
+                    if (!hasValidMetaTileEntity()) return;
+                case 11:
                     tCode++;
                     if (isServerSide()) {
                         if (mTickTimer % 10 == 0) {
@@ -280,15 +281,13 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                             mNeedsBlockUpdate = false;
                         }
                     }
-                }
-                if (tCode > 11) {
+                default:
                     tCode = -1;
-                    break;
-                }
             }
+        }
         } catch (Throwable e) {
             gregtech.api.util.GT_Log.err.println("Encountered Exception while ticking MetaTileEntity in Step " + (tCode - 1) + ". The Game should've crashed now, but I prevented that. Please report immidietly to GregTech Intergalactical!!!");
-            e.printStackTrace(GT_Log.err);
+            e.printStackTrace(gregtech.api.util.GT_Log.err);
         }
 
         if (isServerSide() && hasValidMetaTileEntity()) {
