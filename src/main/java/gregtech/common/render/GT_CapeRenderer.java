@@ -58,17 +58,17 @@ public class GT_CapeRenderer
                 bindTexture(tResource);
                 GL11.glPushMatrix();
                 GL11.glTranslatef(glf0, glf0, 0.125F);
-                double var1f = (aPlayer.prevPosX + (aPlayer.posX - aPlayer.prevPosX) * aPartialTicks);
-                double d0 = aPlayer.field_71091_bM + var1f;
-                double d1 = aPlayer.field_71096_bN + var1f;
-                double d2 = aPlayer.field_71097_bO + var1f;
-                float f6 = aPlayer.prevRenderYawOffset + (aPlayer.renderYawOffset - aPlayer.prevRenderYawOffset) * aPartialTicks;
+                float var1f = (float) (aPlayer.prevPosX + (aPlayer.posX - aPlayer.prevPosX) * aPartialTicks);
+                float d0 = (float) aPlayer.field_71091_bM + var1f;
+                float d1 = (float) aPlayer.field_71096_bN + var1f;
+                float d2 = (float) aPlayer.field_71097_bO + var1f;
+                float f6 = (float) (aPlayer.prevRenderYawOffset + (aPlayer.renderYawOffset - aPlayer.prevRenderYawOffset) * aPartialTicks);
                 float var2f = f6 * 3.141593F / 180.0F;
-                double d3 = MathHelper.sin(var2f);
-                double d4 = -MathHelper.cos(var2f);
-                float f7 = (float) d1 * 10.0F;
-                float f8 = (float) (d0 * d3 + d2 * d4) * 100.0F;
-                float f9 = (float) (d0 * d4 - d2 * d3) * 100.0F;
+                float d3 = MathHelper.sin(var2f);
+                float d4 = -MathHelper.cos(var2f);
+                float f7 = /*(float) */d1 * 10.0F;
+                float f8 = /*(float) */(d0 * d3 + d2 * d4) * 100.0F;
+                float f9 = /*(float) */(d0 * d4 - d2 * d3) * 100.0F;
                 if (f7 < -6.0F) {
                     f7 = -6.0F;
                 }

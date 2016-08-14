@@ -43,7 +43,7 @@ public class GT_Tool_Plunger
 
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
         String tTool = aBlock.getHarvestTool(aMetaData);
-        return (tTool != null) && (tTool.equals("plunger"));
+        return /*(tTool != null) && */(tTool.equals("plunger"));
     }
 
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {

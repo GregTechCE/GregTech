@@ -84,7 +84,7 @@ public class GT_Tool_SoftHammer
 
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
         String tTool = aBlock.getHarvestTool(aMetaData);
-        return (tTool != null) && (tTool.equals("softhammer"));
+        return /*(tTool != null) && */(tTool.equals("softhammer"));
     }
 
     public ItemStack getBrokenItem(ItemStack aStack) {

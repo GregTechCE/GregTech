@@ -60,7 +60,7 @@ public class GT_Tool_BranchCutter
 
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
         String tTool = aBlock.getHarvestTool(aMetaData);
-        return ((tTool != null) && (tTool.equals("grafter"))) || (aBlock.getMaterial() == Material.leaves);
+        return (/*(tTool != null) && */(tTool.equals("grafter"))) || (aBlock.getMaterial() == Material.leaves);
     }
 
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {

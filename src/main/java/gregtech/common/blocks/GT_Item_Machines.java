@@ -38,7 +38,7 @@ public class GT_Item_Machines
                 aList.add("IF YOU GOT IT IN SURVIVAL THEN PLEASE REPORT IT");
             } else {
                 TileEntity temp = GregTech_API.sBlockMachines.createTileEntity(aPlayer == null ? GT_Values.DW : aPlayer.worldObj, GregTech_API.METATILEENTITIES[tDamage] == null ? 0 : GregTech_API.METATILEENTITIES[tDamage].getTileEntityBaseType());
-                if (temp != null) {
+                //if (temp != null) {
                     temp.setWorldObj(aPlayer == null ? GT_Values.DW : aPlayer.worldObj);
                     temp.xCoord = 0;
                     temp.yCoord = 0;
@@ -67,7 +67,7 @@ public class GT_Item_Machines
                             aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_STORE", "Capacity: ", !GregTech_API.sPostloadFinished) + EnumChatFormatting.BLUE + tTileEntity.getEUCapacity() + EnumChatFormatting.GRAY);
                         }
                     }
-                }
+                //}
             }
             NBTTagCompound aNBT = aStack.getTagCompound();
             if (aNBT != null) {

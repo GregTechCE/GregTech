@@ -31,7 +31,7 @@ public class GT_Tool_Plow
 
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
         String tTool = aBlock.getHarvestTool(aMetaData);
-        return ((tTool != null) && (tTool.equals("plow"))) || (aBlock.getMaterial() == Material.snow) || (aBlock.getMaterial() == Material.craftedSnow);
+        return (/*(tTool != null) && */(tTool.equals("plow"))) || (aBlock.getMaterial() == Material.snow) || (aBlock.getMaterial() == Material.craftedSnow);
     }
 
     public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX, int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
