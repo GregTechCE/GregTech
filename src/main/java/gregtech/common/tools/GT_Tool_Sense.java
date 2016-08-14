@@ -31,7 +31,7 @@ public class GT_Tool_Sense
 
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
         String tTool = aBlock.getHarvestTool(aMetaData);
-        return (/*(tTool != null) && */((tTool.equals("sense")) || (tTool.equals("scythe")))) || (aBlock.getMaterial() == Material.plants) || (aBlock.getMaterial() == Material.leaves);
+        return (((tTool.equals("sense")) || (tTool.equals("scythe")))) || (aBlock.getMaterial() == Material.plants) || (aBlock.getMaterial() == Material.leaves);
     }
 
     public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX, int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
