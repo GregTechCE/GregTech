@@ -47,9 +47,6 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
         ItemStack tCleaned = GT_OreDictUnificator.get(OrePrefixes.crushedPurified, tMaterial, tDust, 1L);
         ItemStack tCrushed = GT_OreDictUnificator.get(OrePrefixes.crushed, tMaterial, aMaterial.mOreMultiplier * aMultiplier);
         ItemStack tPrimaryByProduct = null;
-        ItemStack tPrimaryByProductSmall = null;
-        ItemStack tSecondaryByProduct = null;
-        ItemStack tSecondaryByProductSmall = null;
 
         if (tCrushed == null) {
             tCrushed = GT_OreDictUnificator.get(OrePrefixes.dustImpure, tMaterial, GT_Utility.copyAmount(aMaterial.mOreMultiplier * aMultiplier, new Object[]{tCleaned, tDust, tGem}), aMaterial.mOreMultiplier * aMultiplier);
@@ -63,17 +60,12 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
             if (tPrimaryByProduct == null) {
                 tPrimaryByMaterial = tMat;
                 tPrimaryByProduct = GT_OreDictUnificator.get(OrePrefixes.dust, tMat, 1L);
-                tPrimaryByProductSmall = GT_OreDictUnificator.get(OrePrefixes.dustSmall, tMat, 1L);
-                if (tPrimaryByProductSmall == null)
-                    tPrimaryByProductSmall = GT_OreDictUnificator.get(OrePrefixes.dustTiny, tMat, GT_OreDictUnificator.get(OrePrefixes.nugget, tMat, 2L), 2L);
+                if (GT_OreDictUnificator.get(OrePrefixes.dustSmall, tMat, 1L) == null)
+                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, tMat, GT_OreDictUnificator.get(OrePrefixes.nugget, tMat, 2L), 2L);
             }
-            if ((tSecondaryByProduct == null) || (tSecondaryByMaterial == tPrimaryByMaterial)) {
-                tSecondaryByMaterial = tMat;
-                tSecondaryByProduct = GT_OreDictUnificator.get(OrePrefixes.dust, tMat, 1L);
-                tSecondaryByProductSmall = GT_OreDictUnificator.get(OrePrefixes.dustSmall, tMat, 1L);
-                if (tSecondaryByProductSmall == null) {
-                    tSecondaryByProductSmall = GT_OreDictUnificator.get(OrePrefixes.dustTiny, tMat, GT_OreDictUnificator.get(OrePrefixes.nugget, tMat, 2L), 2L);
-                }
+            GT_OreDictUnificator.get(OrePrefixes.dust, tMat, 1L);
+            if (GT_OreDictUnificator.get(OrePrefixes.dustSmall, tMat, 1L) == null) {
+                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, tMat, GT_OreDictUnificator.get(OrePrefixes.nugget, tMat, 2L), 2L);
             }
         }
         if ((!tByProductStacks.isEmpty()) && (!this.mAlreadyListedOres.contains(aMaterial))) {
@@ -83,14 +75,6 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
 
         if (tPrimaryByMaterial == null) tPrimaryByMaterial = tMaterial;
         if (tPrimaryByProduct == null) tPrimaryByProduct = tDust;
-        if (tPrimaryByProductSmall == null) {
-            tPrimaryByProductSmall = tSmall;
-        }
-        //if (tSecondaryByMaterial == null) tSecondaryByMaterial = tPrimaryByMaterial;//dead code?
-        //if (tSecondaryByProduct == null) tSecondaryByProduct = tPrimaryByProduct;//dead code?
-        //if (tSecondaryByProductSmall == null) {
-            //tSecondaryByProductSmall = tPrimaryByProductSmall;//dead code?
-        //}
         boolean tHasSmelting = false;
 
         if (tSmeltInto != null) {

@@ -103,23 +103,17 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
                 && (addIfInjector(xCenter - 6, yCenter - 1, zCenter + 1, aBaseMetaTileEntity)) && (addIfInjector(xCenter + 6, yCenter - 1, zCenter + 1, aBaseMetaTileEntity))
                 && (addIfInjector(xCenter - 6, yCenter - 1, zCenter - 1, aBaseMetaTileEntity)) && (addIfInjector(xCenter + 6, yCenter - 1, zCenter - 1, aBaseMetaTileEntity))
                 && (this.mEnergyHatches.size() >= 1) && (this.mOutputHatches.size() >= 1) && (this.mInputHatches.size() >= 2)) {
-            if (this.mEnergyHatches != null) {
-                for (int i = 0; i < this.mEnergyHatches.size(); i++) {
-                    if (this.mEnergyHatches.get(i).mTier < tier())
-                        return false;
-                }
+            for (int i = 0; i < this.mEnergyHatches.size(); i++) {
+                if (this.mEnergyHatches.get(i).mTier < tier())
+                    return false;
             }
-            if (this.mOutputHatches != null) {
-                for (int i = 0; i < this.mOutputHatches.size(); i++) {
-                    if (this.mOutputHatches.get(i).mTier < tier())
-                        return false;
-                }
+            for (int i = 0; i < this.mOutputHatches.size(); i++) {
+                if (this.mOutputHatches.get(i).mTier < tier())
+                    return false;
             }
-            if (this.mInputHatches != null) {
-                for (int i = 0; i < this.mInputHatches.size(); i++) {
-                    if (this.mInputHatches.get(i).mTier < tier())
-                        return false;
-                }
+            for (int i = 0; i < this.mInputHatches.size(); i++) {
+                if (this.mInputHatches.get(i).mTier < tier())
+                    return false;
             }
             mWrench = true;
             mScrewdriver = true;
@@ -272,16 +266,14 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
                 this.mLastRecipe = null;
                 return false;
             }
-            if (mRunningOnLoad || tRecipe.isRecipeInputEqual(true, tFluids, new ItemStack[]{})) {
-                this.mLastRecipe = tRecipe;
-                this.mEUt = (this.mLastRecipe.mEUt * overclock(this.mLastRecipe.mSpecialValue));
-                this.mMaxProgresstime = this.mLastRecipe.mDuration / overclock(this.mLastRecipe.mSpecialValue);
-                this.mEfficiencyIncrease = 10000;
-                this.mOutputFluids = this.mLastRecipe.mFluidOutputs;
-                turnCasingActive(true);
-                mRunningOnLoad = false;
-                return true;
-            }
+            this.mLastRecipe = tRecipe;
+            this.mEUt = (this.mLastRecipe.mEUt * overclock(this.mLastRecipe.mSpecialValue));
+            this.mMaxProgresstime = this.mLastRecipe.mDuration / overclock(this.mLastRecipe.mSpecialValue);
+            this.mEfficiencyIncrease = 10000;
+            this.mOutputFluids = this.mLastRecipe.mFluidOutputs;
+            turnCasingActive(true);
+            mRunningOnLoad = false;
+            return true;
         }
         return false;
     }

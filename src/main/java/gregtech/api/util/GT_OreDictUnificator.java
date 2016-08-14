@@ -259,7 +259,7 @@ public class GT_OreDictUnificator {
 
     public static ItemStack getGem(Materials aMaterial, long aMaterialAmount) {
         ItemStack rStack = null;
-        if (((aMaterialAmount >= M)/* || aMaterialAmount >= M * 32*/))
+        if (((aMaterialAmount >= M)))
             rStack = get(OrePrefixes.gem, aMaterial, aMaterialAmount / M);
         if (rStack == null) {
             if ((((aMaterialAmount * 2) % M == 0) || aMaterialAmount >= M * 16))

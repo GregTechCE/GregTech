@@ -325,13 +325,6 @@ public class GT_Client extends GT_Proxy
         }
     }
 
-    //dead event
-    /*@*//*SubscribeEvent*/
-    /*@SubscribeEvent
-    public void receiveRenderSpecialsEvent(net.minecraftforge.client.event.RenderPlayerEvent.Specials.Pre aEvent) {
-        mCapeRenderer.receiveRenderSpecialsEvent(aEvent);
-    }*/
-
     @SubscribeEvent
     public void onClientTickEvent(cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent aEvent) {
         if (aEvent.phase == cpw.mods.fml.common.gameevent.TickEvent.Phase.END) {
