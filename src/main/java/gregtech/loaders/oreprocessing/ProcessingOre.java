@@ -86,11 +86,11 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
         if (tPrimaryByProductSmall == null) {
             tPrimaryByProductSmall = tSmall;
         }
-        if (tSecondaryByMaterial == null) tSecondaryByMaterial = tPrimaryByMaterial;
-        if (tSecondaryByProduct == null) tSecondaryByProduct = tPrimaryByProduct;
-        if (tSecondaryByProductSmall == null) {
-            tSecondaryByProductSmall = tPrimaryByProductSmall;
-        }
+        //if (tSecondaryByMaterial == null) tSecondaryByMaterial = tPrimaryByMaterial;//dead code?
+        //if (tSecondaryByProduct == null) tSecondaryByProduct = tPrimaryByProduct;//dead code?
+        //if (tSecondaryByProductSmall == null) {
+            //tSecondaryByProductSmall = tPrimaryByProductSmall;//dead code?
+        //}
         boolean tHasSmelting = false;
 
         if (tSmeltInto != null) {
@@ -110,7 +110,9 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
         }
 
         if (!tHasSmelting) {
-            tHasSmelting = GT_ModHandler.addSmeltingRecipe(aOreStack, GT_OreDictUnificator.get(OrePrefixes.gem, tMaterial.mDirectSmelting, Math.max(1, aMultiplier * aMaterial.mSmeltingMultiplier / 2)));
+            //dead code?
+            //tHasSmelting = GT_ModHandler.addSmeltingRecipe(aOreStack, GT_OreDictUnificator.get(OrePrefixes.gem, tMaterial.mDirectSmelting, Math.max(1, aMultiplier * aMaterial.mSmeltingMultiplier / 2)));
+            GT_ModHandler.addSmeltingRecipe(aOreStack, GT_OreDictUnificator.get(OrePrefixes.gem, tMaterial.mDirectSmelting, Math.max(1, aMultiplier * aMaterial.mSmeltingMultiplier / 2)));
         }
 
         if (tCrushed != null) {

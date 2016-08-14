@@ -142,7 +142,7 @@ public class GT_RecipeAdder
         if ((aInput1 == null) || (aOutput1 == null)) {
             return false;
         }
-        if ((aDuration = GregTech_API.sRecipeFile.get("cnc", aOutput1, aDuration)) <= 0) {
+        if ((/*aDuration = */GregTech_API.sRecipeFile.get("cnc", aOutput1, aDuration)) <= 0) {
             return false;
         }
         return true;

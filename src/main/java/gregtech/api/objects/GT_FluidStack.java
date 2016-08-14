@@ -49,6 +49,7 @@ public class GT_FluidStack extends FluidStack {
         }
     }
 
+    @Deprecated
     public void fixFluidIDForFucksSake() {
         if (ForgeVersion.getBuildVersion() < 1355) {
             int fluidID;

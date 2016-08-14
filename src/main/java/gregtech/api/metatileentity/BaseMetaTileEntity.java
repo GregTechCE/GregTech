@@ -604,13 +604,13 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     if (aValue > 16 || aValue < 0) aValue = 0;
                     mColor = (byte) aValue;
                     break;
-                case 3:
-                    mSidedRedstone[0] = (byte) ((aValue & 1) > 0 ? 15 : 0);
-                    mSidedRedstone[1] = (byte) ((aValue & 2) > 0 ? 15 : 0);
-                    mSidedRedstone[2] = (byte) ((aValue & 4) > 0 ? 15 : 0);
-                    mSidedRedstone[3] = (byte) ((aValue & 8) > 0 ? 15 : 0);
-                    mSidedRedstone[4] = (byte) ((aValue & 16) > 0 ? 15 : 0);
-                    mSidedRedstone[5] = (byte) ((aValue & 32) > 0 ? 15 : 0);
+                case 3: //int X & Y = 0 or Y; Y -> {1,2,4,8,16,32}; byte type analogy
+                    mSidedRedstone[0] = (byte) ((aValue & 1) == 1 ? 15 : 0);
+                    mSidedRedstone[1] = (byte) ((aValue & 2) == 2 ? 15 : 0);
+                    mSidedRedstone[2] = (byte) ((aValue & 4) == 4 ? 15 : 0);
+                    mSidedRedstone[3] = (byte) ((aValue & 8) == 8 ? 15 : 0);
+                    mSidedRedstone[4] = (byte) ((aValue & 16) == 16 ? 15 : 0);
+                    mSidedRedstone[5] = (byte) ((aValue & 32) == 32 ? 15 : 0);
                     break;
                 case 4:
                     if (hasValidMetaTileEntity() && mTickTimer > 20)
