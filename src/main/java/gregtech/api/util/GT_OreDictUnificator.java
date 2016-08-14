@@ -261,10 +261,12 @@ public class GT_OreDictUnificator {
         ItemStack rStack = null;
         if (((aMaterialAmount >= M)/* || aMaterialAmount >= M * 32*/))
             rStack = get(OrePrefixes.gem, aMaterial, aMaterialAmount / M);
-        if (rStack == null && (((aMaterialAmount * 2) % M == 0) || aMaterialAmount >= M * 16))
-            rStack = get(OrePrefixes.gemFlawed, aMaterial, (aMaterialAmount * 2) / M);
-        if (rStack == null && (((aMaterialAmount * 4) >= M)))
-            rStack = get(OrePrefixes.gemChipped, aMaterial, (aMaterialAmount * 4) / M);
+        if (rStack == null) {
+            if ((((aMaterialAmount * 2) % M == 0) || aMaterialAmount >= M * 16))
+                rStack = get(OrePrefixes.gemFlawed, aMaterial, (aMaterialAmount * 2) / M);
+            if ((((aMaterialAmount * 4) >= M)))
+                rStack = get(OrePrefixes.gemChipped, aMaterial, (aMaterialAmount * 4) / M);
+        }
         return rStack;
     }
 

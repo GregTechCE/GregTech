@@ -206,13 +206,13 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         if (aID <= 0 || aID >= GregTech_API.METATILEENTITIES.length || GregTech_API.METATILEENTITIES[aID] == null) {
             GT_Log.err.println("MetaID " + aID + " not loadable => locking TileEntity!");
         } else {
-            if (aID != 0) {
+            //if (aID != 0) {
                 if (hasValidMetaTileEntity()) mMetaTileEntity.setBaseMetaTileEntity(null);
                 GregTech_API.METATILEENTITIES[aID].newMetaEntity(this).setBaseMetaTileEntity(this);
                 mTickTimer = 0;
                 mID = aID;
                 return true;
-            }
+            //}
         }
         return false;
     }

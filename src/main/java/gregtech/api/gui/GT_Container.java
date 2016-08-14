@@ -124,7 +124,7 @@ public class GT_Container extends Container {
 
         if ((aShifthold == 0 || aShifthold == 1) && (aMouseclick == 0 || aMouseclick == 1)) {
             if (aSlotIndex == -999) {
-                if (aPlayerInventory.getItemStack() != null && aSlotIndex == -999) {
+                if (aPlayerInventory.getItemStack() != null/* && aSlotIndex == -999*/) {
                     if (aMouseclick == 0) {
                         aPlayer.dropPlayerItemWithRandomChoice(aPlayerInventory.getItemStack(), true);
                         aPlayerInventory.setItemStack(null);

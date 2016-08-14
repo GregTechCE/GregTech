@@ -33,10 +33,10 @@ public class GT_Item_Machines
             if ((tDamage <= 0) || (tDamage >= GregTech_API.METATILEENTITIES.length)) {
                 return;
             }
-            if (tDamage == 0) {
-                aList.add("WARNING, THE EXISTENCE OF THIS ITEM IS A BUG");
-                aList.add("IF YOU GOT IT IN SURVIVAL THEN PLEASE REPORT IT");
-            } else {
+            //if (tDamage == 0) {
+                //aList.add("WARNING, THE EXISTENCE OF THIS ITEM IS A BUG");
+                //aList.add("IF YOU GOT IT IN SURVIVAL THEN PLEASE REPORT IT");
+            //} else {
                 TileEntity temp = GregTech_API.sBlockMachines.createTileEntity(aPlayer == null ? GT_Values.DW : aPlayer.worldObj, GregTech_API.METATILEENTITIES[tDamage] == null ? 0 : GregTech_API.METATILEENTITIES[tDamage].getTileEntityBaseType());
                 //if (temp != null) {
                     temp.setWorldObj(aPlayer == null ? GT_Values.DW : aPlayer.worldObj);
@@ -68,7 +68,7 @@ public class GT_Item_Machines
                         }
                     }
                 //}
-            }
+            //}
             NBTTagCompound aNBT = aStack.getTagCompound();
             if (aNBT != null) {
                 if (aNBT.getBoolean("mMuffler")) {
