@@ -107,9 +107,6 @@ public class GT_Worldgenerator
                     int j = 0;
                     for (int tZ = this.mZ - 16; j < 3; tZ += 16) {
                         String tBiome = this.mWorld.getBiomeGenForCoords(tX + 8, tZ + 8).biomeName;
-                        /*if (tBiome == null) {
- +                            tBiome = BiomeGenBase.plains.biomeName;//FindBugs: DLS - DLS_DEAD_LOCAL_STORE
- +                      }*/
                         for (GT_Worldgen tWorldGen : GregTech_API.sWorldgenList) {
                             try {
                                 tWorldGen.executeWorldgen(this.mWorld, this.mRandom, this.mBiome, this.mDimensionType, tX, tZ, this.mChunkGenerator, this.mChunkProvider);
