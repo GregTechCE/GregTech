@@ -838,7 +838,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             }
             aEvent.bow.damageItem(1, aEvent.entityPlayer);
             aEvent.bow.getItem();
-            aEvent.entityPlayer.worldObj.playSoundAtEntity(aEvent.entityPlayer, "random.bow", 1.0F, 1.0F / (new Random().nextFloat() * 0.4F + 1.2F) + tSpeed
+            aEvent.entityPlayer.worldObj.playSoundAtEntity(aEvent.entityPlayer, "random.bow", 1.0F, 0.64893958288F + tSpeed
                     * 0.5F);
 
             tArrowEntity.canBePickedUp = 1;
@@ -931,14 +931,16 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                             aEvent.z, (byte) aEvent.blockMetadata, aEvent.fortuneLevel, aEvent.isSilkTouching, aEvent);
                 }
                 if (EnchantmentHelper.getEnchantmentLevel(Enchantment.fireAspect.effectId, aStack) > 2) {
-                    for (ItemStack tDrop : aEvent.drops) {
-                        ItemStack tSmeltingOutput = GT_ModHandler.getSmeltingOutput(tDrop, false, null);
-                        if (tSmeltingOutput != null) {
-                            tDrop.stackSize *= tSmeltingOutput.stackSize;
-                            tSmeltingOutput.stackSize = tDrop.stackSize;
-                            GT_Utility.setStack(tDrop, tSmeltingOutput);
+                    try {
+                        for (ItemStack tDrop : aEvent.drops) {
+                            ItemStack tSmeltingOutput = GT_ModHandler.getSmeltingOutput(tDrop, false, null);
+                            if (tSmeltingOutput != null) {
+                                tDrop.stackSize *= tSmeltingOutput.stackSize;
+                                tSmeltingOutput.stackSize = tDrop.stackSize;
+                                GT_Utility.setStack(tDrop, tSmeltingOutput);
+                            }
                         }
-                    }
+                    } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
                 }
             }
         }

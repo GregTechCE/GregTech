@@ -201,10 +201,10 @@ public class GT_MetaTileEntity_BronzeBlastFurnace
                         this.mOutputItem2 = null;
                         this.mProgresstime = 0;
                         this.mMaxProgresstime = 0;
-                        try {
+                        //try {
                             GT_Mod.instance.achievements.issueAchievement(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "steel");
-                        } catch (Exception e) {
-                        }
+                        //} catch (Exception e) {
+                        //}
                     }
                 } else if (aBaseMetaTileEntity.isAllowedToWork()) {
                     checkRecipe();
