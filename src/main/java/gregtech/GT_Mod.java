@@ -103,6 +103,7 @@ public class GT_Mod
 
     @Mod.EventHandler
     public void onPreLoad(FMLPreInitializationEvent aEvent) {
+        Locale.setDefault(Locale.ENGLISH);
         if (GregTech_API.sPreloadStarted) {
             return;
         }

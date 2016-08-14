@@ -132,6 +132,8 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
         return false;
     }
 
+    //FindBugs
+    @Deprecated
     private boolean checkTier(byte tier, ArrayList<GT_MetaTileEntity_Hatch> list) {
         if (list != null) {
             for (int i = 0; i < list.size(); i++) {
