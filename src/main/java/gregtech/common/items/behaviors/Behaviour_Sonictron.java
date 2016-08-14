@@ -97,8 +97,6 @@ public class Behaviour_Sonictron
     }
 
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
-        //if ((!aWorld.isRemote) && (aWorld.getBlock(aX, aY, aZ) == GregTech_API.sBlockMachines) && (aWorld.getBlockMetadata(aX, aY, aZ) == 6)) {
-        //}
         setCurrentIndex(aStack, -1);
         return false;
     }
