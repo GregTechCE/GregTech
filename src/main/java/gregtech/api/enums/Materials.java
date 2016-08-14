@@ -1408,7 +1408,7 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
      */
     public static void init(GT_Config aConfiguration) {
         for (Materials tMaterial : VALUES) {
-            String tString = tMaterial.toString().toLowerCase();
+            String tString = tMaterial.toString().toLowerCase(Locale.ENGLISH);
             tMaterial.mHeatDamage = (float) aConfiguration.get(ConfigCategories.Materials.heatdamage, tString, tMaterial.mHeatDamage);
             if (tMaterial.mBlastFurnaceRequired)
                 tMaterial.mBlastFurnaceRequired = aConfiguration.get(ConfigCategories.Materials.blastfurnacerequirements, tString, true);

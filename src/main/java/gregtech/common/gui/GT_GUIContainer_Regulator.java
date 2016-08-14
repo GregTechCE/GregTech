@@ -11,15 +11,15 @@ public class GT_GUIContainer_Regulator
     }
 
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        this.fontRendererObj.drawString("" + ((GT_Container_Regulator) this.mContainer).mTargetSlots[0], 120, 9, 16448255);
-        this.fontRendererObj.drawString("" + ((GT_Container_Regulator) this.mContainer).mTargetSlots[1], 137, 9, 16448255);
-        this.fontRendererObj.drawString("" + ((GT_Container_Regulator) this.mContainer).mTargetSlots[2], 155, 9, 16448255);
-        this.fontRendererObj.drawString("" + ((GT_Container_Regulator) this.mContainer).mTargetSlots[3], 120, 26, 16448255);
-        this.fontRendererObj.drawString("" + ((GT_Container_Regulator) this.mContainer).mTargetSlots[4], 137, 26, 16448255);
-        this.fontRendererObj.drawString("" + ((GT_Container_Regulator) this.mContainer).mTargetSlots[5], 155, 26, 16448255);
-        this.fontRendererObj.drawString("" + ((GT_Container_Regulator) this.mContainer).mTargetSlots[6], 120, 43, 16448255);
-        this.fontRendererObj.drawString("" + ((GT_Container_Regulator) this.mContainer).mTargetSlots[7], 137, 43, 16448255);
-        this.fontRendererObj.drawString("" + ((GT_Container_Regulator) this.mContainer).mTargetSlots[8], 155, 43, 16448255);
+        this.fontRendererObj.drawString(String.valueOf(((GT_Container_Regulator) this.mContainer).mTargetSlots[0]), 120, 9, 16448255);
+        this.fontRendererObj.drawString(String.valueOf(((GT_Container_Regulator) this.mContainer).mTargetSlots[1]), 137, 9, 16448255);
+        this.fontRendererObj.drawString(String.valueOf(((GT_Container_Regulator) this.mContainer).mTargetSlots[2]), 155, 9, 16448255);
+        this.fontRendererObj.drawString(String.valueOf(((GT_Container_Regulator) this.mContainer).mTargetSlots[3]), 120, 26, 16448255);
+        this.fontRendererObj.drawString(String.valueOf(((GT_Container_Regulator) this.mContainer).mTargetSlots[4]), 137, 26, 16448255);
+        this.fontRendererObj.drawString(String.valueOf(((GT_Container_Regulator) this.mContainer).mTargetSlots[5]), 155, 26, 16448255);
+        this.fontRendererObj.drawString(String.valueOf(((GT_Container_Regulator) this.mContainer).mTargetSlots[6]), 120, 43, 16448255);
+        this.fontRendererObj.drawString(String.valueOf(((GT_Container_Regulator) this.mContainer).mTargetSlots[7]), 137, 43, 16448255);
+        this.fontRendererObj.drawString(String.valueOf(((GT_Container_Regulator) this.mContainer).mTargetSlots[8]), 155, 43, 16448255);
     }
 
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {

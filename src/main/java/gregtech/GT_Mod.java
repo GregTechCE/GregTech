@@ -204,8 +204,10 @@ public class GT_Mod
         GregTech_API.sDrinksAlwaysDrinkable = tMainConfig.get("general", "drinks_always_drinkable", false).getBoolean(false);
         GregTech_API.sDoShowAllItemsInCreative = tMainConfig.get("general", "show_all_metaitems_in_creative_and_NEI", false).getBoolean(false);
         GregTech_API.sMultiThreadedSounds = tMainConfig.get("general", "sound_multi_threading", false).getBoolean(false);
+        String SBdye0 = "ColorModulation.";
         for (Dyes tDye : Dyes.values()) {
             if ((tDye != Dyes._NULL) && (tDye.mIndex < 0)) {
+                String SBdye1 = new StringBuilder(18).append(SBdye0).append(tDye).toString();
                 tDye.mRGBa[0] = ((short) Math.min(255, Math.max(0, GregTech_API.sClientDataFile.get("ColorModulation." + tDye, "R", tDye.mRGBa[0]))));
                 tDye.mRGBa[1] = ((short) Math.min(255, Math.max(0, GregTech_API.sClientDataFile.get("ColorModulation." + tDye, "G", tDye.mRGBa[1]))));
                 tDye.mRGBa[2] = ((short) Math.min(255, Math.max(0, GregTech_API.sClientDataFile.get("ColorModulation." + tDye, "B", tDye.mRGBa[2]))));

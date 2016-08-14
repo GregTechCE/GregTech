@@ -126,19 +126,6 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
         return false;
     }
 
-    //FindBugs
-    @Deprecated
-    private boolean checkTier(byte tier, ArrayList<GT_MetaTileEntity_Hatch> list) {
-        if (list != null) {
-            for (int i = 0; i < list.size(); i++) {
-                if (list.get(i).mTier < tier) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
     private boolean checkCoils(int aX, int aY, int aZ) {
         return (isFusionCoil(aX + 6, aY, aZ - 1)) && (isFusionCoil(aX + 6, aY, aZ)) && (isFusionCoil(aX + 6, aY, aZ + 1)) && (isFusionCoil(aX + 5, aY, aZ - 3)) && (isFusionCoil(aX + 5, aY, aZ - 2))
                 && (isFusionCoil(aX + 5, aY, aZ + 2)) && (isFusionCoil(aX + 5, aY, aZ + 3)) && (isFusionCoil(aX + 4, aY, aZ - 4)) && (isFusionCoil(aX + 4, aY, aZ + 4))

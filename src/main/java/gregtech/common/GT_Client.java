@@ -49,8 +49,6 @@ public class GT_Client extends GT_Proxy
         });
     }
 
-    private final HashSet mCapeList = new HashSet();
-    private final GT_CapeRenderer mCapeRenderer;
     private final List mPosR;
     private final List mPosG;
     private final List mPosB;
@@ -69,14 +67,9 @@ public class GT_Client extends GT_Proxy
     private final List mMoltenNegA = Arrays.asList(new Object[0]);
     private long mAnimationTick;
     private boolean mAnimationDirection;
-    private boolean isFirstClientPlayerTick;
-    private String mMessage;
     public GT_Client() {
-        mCapeRenderer = new GT_CapeRenderer(mCapeList);
         mAnimationTick = 0L;
         mAnimationDirection = false;
-        isFirstClientPlayerTick = true;
-        mMessage = "";
         mPosR = Arrays.asList(new Materials[]{
                 /**Materials.ChargedCertusQuartz, **/Materials.Enderium, Materials.Vinteum, Materials.Uranium235, Materials.InfusedGold, Materials.Plutonium241, Materials.NaquadahEnriched, Materials.Naquadria, Materials.InfusedOrder, Materials.Force,
                 Materials.Pyrotheum, Materials.Sunnarium, Materials.Glowstone, Materials.Thaumium, Materials.InfusedVis, Materials.InfusedAir, Materials.InfusedFire, Materials.FierySteel, Materials.Firestone
@@ -164,27 +157,6 @@ public class GT_Client extends GT_Proxy
 
     public void onPreLoad() {
         super.onPreLoad();
-        String arr$[] = {
-                "renadi", "hanakocz", "MysteryDump", "Flaver4", "x_Fame", "Peluche321", "Goshen_Ithilien", "manf", "Bimgo", "leagris",
-                "IAmMinecrafter02", "Cerous", "Devilin_Pixy", "Bkarlsson87", "BadAlchemy", "CaballoCraft", "melanclock", "Resursator", "demanzke", "AndrewAmmerlaan",
-                "Deathlycraft", "Jirajha", "Axlegear", "kei_kouma", "Dracion", "dungi", "Dorfschwein", "Zero Tw0", "mattiagraz85", "sebastiank30",
-                "Plem", "invultri", "grillo126", "malcanteth", "Malevolence_", "Nicholas_Manuel", "Sirbab", "kehaan", "bpgames123", "semig0d",
-                "9000bowser", "Sovereignty89", "Kris1432", "xander_cage_", "samuraijp", "bsaa", "SpwnX", "tworf", "Kadah", "kanni",
-                "Stute", "Hegik", "Onlyme", "t3hero", "Hotchi", "jagoly", "Nullav", "BH5432", "Sibmer", "inceee",
-                "foxxx0", "Hartok", "TMSama", "Shlnen", "Carsso", "zessirb", "meep310", "Seldron", "yttr1um", "hohounk",
-                "freebug", "Sylphio", "jmarler", "Saberawr", "r00teniy", "Neonbeta", "yinscape", "voooon24", "Quintine", "peach774",
-                "lepthymo", "bildeman", "Kremnari", "Aerosalo", "OndraSter", "oscares91", "mr10movie", "Daxx367x2", "EGERTRONx", "aka13_404",
-                "Abouttabs", "Johnstaal", "djshiny99", "megatronp", "DZCreeper", "Kane_Hart", "Truculent", "vidplace7", "simon6689", "MomoNasty",
-                "UnknownXLV", "goreacraft", "Fluttermine", "Daddy_Cecil", "MrMaleficus", "TigersFangs", "cublikefoot", "chainman564", "NikitaBuker", "Misha999777",
-                "25FiveDetail", "AntiCivilBoy", "michaelbrady", "xXxIceFirexXx", "Speedynutty68", "GarretSidzaka", "HallowCharm977", "mastermind1919", "The_Hypersonic", "diamondguy2798",
-                "zF4ll3nPr3d4t0r", "CrafterOfMines57", "XxELIT3xSNIP3RxX", "SuterusuKusanagi", "xavier0014", "adamros", "alexbegt"
-        };
-        int len$ = arr$.length;
-        for (int i$ = 0; i$ < len$; i$++) {
-            String tName = arr$[i$];
-            mCapeList.add(tName.toLowerCase());
-        }
-
         (new Thread(this)).start();
     }
 
