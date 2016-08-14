@@ -249,6 +249,8 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         mRunningThroughTick = true;
         long tTime = System.currentTimeMillis();
         int tCode = 0;
+        boolean sidetypeS = isServerSide() ? true : false;
+        boolean sidetypeC = isClientSide() ? true : false;
 
         try { for (tCode = 0; hasValidMetaTileEntity() && tCode >= 0; ) {
             switch (tCode) {
@@ -258,7 +260,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                         oX = xCoord;
                         oY = yCoord;
                         oZ = zCoord;
-                        if (isServerSide()) for (byte i = 0; i < 6; i++)
+                        if (sidetypeS) for (byte i = 0; i < 6; i++)
                             if (getCoverIDAtSide(i) != 0)
                                 if (!mMetaTileEntity.allowCoverOnSide(i, new GT_ItemStack(getCoverIDAtSide(i))))
                                     dropCover(i, i, true);
@@ -302,7 +304,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                 case 5:
                 case 6:
                 case 7:
-                    if (isServerSide() && mTickTimer > 10) {
+                    if (sidetypeS && mTickTimer > 10) {
                         for (byte i = (byte) (tCode - 2); i < 6; i++)
                             if (getCoverIDAtSide(i) != 0) {
                                 tCode++;
@@ -320,7 +322,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     }
                 case 8:
                     tCode = 9;
-                    if (isServerSide()) {
+                    if (sidetypeS) {
                         if (++mAverageEUInputIndex >= mAverageEUInput.length) mAverageEUInputIndex = 0;
                         if (++mAverageEUOutputIndex >= mAverageEUOutput.length) mAverageEUOutputIndex = 0;
 
@@ -336,7 +338,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     }
                 case 10:
                     tCode++;
-                    if (isServerSide()) {
+                    if (sidetypeS) {
                         if (mRedstone != oRedstone || mTickTimer == 10) {
                             for (byte i = 0; i < 6; i++)
                                 mCoverBehaviors[i] = GregTech_API.getCoverBehavior(mCoverSides[i]);
@@ -433,7 +435,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     }
                 case 11:
                     tCode++;
-                    if (isServerSide()) {
+                    if (sidetypeS) {
                         if (mMetaTileEntity.dechargerSlotCount() > 0 && getStoredEU() < getEUCapacity()) {
                             for (int i = mMetaTileEntity.dechargerSlotStartIndex(), k = mMetaTileEntity.dechargerSlotCount() + i; i < k; i++) {
                                 if (mMetaTileEntity.mInventory[i] != null && getStoredEU() < getEUCapacity()) {
@@ -447,7 +449,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     }
                 case 12:
                     tCode++;
-                    if (isServerSide()) {
+                    if (sidetypeS) {
                         if (mMetaTileEntity.rechargerSlotCount() > 0 && getStoredEU() > 0) {
                             for (int i = mMetaTileEntity.rechargerSlotStartIndex(), k = mMetaTileEntity.rechargerSlotCount() + i; i < k; i++) {
                                 if (getStoredEU() > 0 && mMetaTileEntity.mInventory[i] != null) {
@@ -475,7 +477,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     }
                 case 15:
                     tCode++;
-                    if (isServerSide()) {
+                    if (sidetypeS) {
                         if (mTickTimer % 10 == 0) {
                             if (mSendClientData) {
                                 NW.sendPacketToAllPlayersInRange(worldObj, new GT_Packet_TileEntity(xCoord, (short) yCoord, zCoord, mID, mCoverSides[0], mCoverSides[1], mCoverSides[2], mCoverSides[3], mCoverSides[4], mCoverSides[5], oTextureData = (byte) ((mFacing & 7) | (mActive ? 8 : 0) | (mRedstone ? 16 : 0) | (mLockUpgrade ? 32 : 0)), oUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0, oRedstoneData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0) | ((mSidedRedstone[2] > 0) ? 4 : 0) | ((mSidedRedstone[3] > 0) ? 8 : 0) | ((mSidedRedstone[4] > 0) ? 16 : 0) | ((mSidedRedstone[5] > 0) ? 32 : 0)), oColor = mColor), xCoord, zCoord);
@@ -519,7 +521,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
             e.printStackTrace(gregtech.api.util.GT_Log.err);
         }
 
-        if (isServerSide() && hasValidMetaTileEntity()) {
+        if (sidetypeS && hasValidMetaTileEntity()) {
             tTime = System.currentTimeMillis() - tTime;
             if (mTimeStatistics.length > 0)
                 mTimeStatistics[mTimeStatisticsIndex = (mTimeStatisticsIndex + 1) % mTimeStatistics.length] = (int) tTime;

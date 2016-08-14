@@ -303,7 +303,7 @@ public class GregTech_API {
         if (GregTech_API.sThaumcraftCompat != null)
             GregTech_API.sThaumcraftCompat.registerPortholeBlacklistedBlock(aBlock);
         int rMeta = 0;
-        for (byte i = 0; i < aMeta.length && i < 16; i++) if (aMeta[i]) rMeta |= B[i];
+        for (byte i = 0; i < 16 && i < aMeta.length; i++) if (aMeta[i]) rMeta |= B[i];
         sMachineIDs.put(aBlock, rMeta);
         return true;
     }
