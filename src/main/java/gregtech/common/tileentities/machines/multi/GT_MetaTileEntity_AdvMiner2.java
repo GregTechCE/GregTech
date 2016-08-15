@@ -32,7 +32,6 @@ import java.util.ArrayList;
 public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBase {
 
     private final ArrayList<ChunkPosition> mMineList = new ArrayList();
-    private boolean completedCycle = false;
 
     public GT_MetaTileEntity_AdvMiner2(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

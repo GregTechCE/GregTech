@@ -154,6 +154,7 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
                                     && (!consumeFluid(((ChunkPosition) this.mPumpList.get(this.mPumpList.size() - 1)).chunkPosX,
                                     ((ChunkPosition) this.mPumpList.get(this.mPumpList.size() - 1)).chunkPosY,
                                     ((ChunkPosition) this.mPumpList.remove(this.mPumpList.size() - 1)).chunkPosZ))) {
+                                //Should this be empty?
                             }
                             this.mPumpTimer = 160 / ((int) Math.pow(2, this.mTier));
                         }

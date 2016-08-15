@@ -17,8 +17,7 @@ public class ElementStack implements Cloneable {
 
     @Override
     public ElementStack clone() {
-        try { Object cloneES = super.clone();
-        return (ElementStack) cloneES; } catch (Exception e) { return new ElementStack(mElement, mAmount); }
+        try { return (ElementStack) super.clone(); } catch (Exception e) { return new ElementStack(mElement, mAmount); }
     }
 
     @Override

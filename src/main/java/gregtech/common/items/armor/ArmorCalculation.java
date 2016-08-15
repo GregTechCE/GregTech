@@ -1,8 +1,5 @@
 package gregtech.common.items.armor;
 
-import java.util.List;
-
-import thaumcraft.api.nodes.IRevealer;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -12,8 +9,8 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import thaumcraft.api.nodes.IRevealer;
 
 public class ArmorCalculation {
 	public static float[] calculateArmor(ItemStack[] parts) {

@@ -20,7 +20,6 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.threads.GT_Runnable_Sound;
 import gregtech.common.GT_Proxy;
-import ic2.api.recipe.ICannerBottleRecipeManager;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
@@ -1095,7 +1094,6 @@ public class GT_Utility {
      * Converts a Number to a String
      */
     public static String parseNumberToString(int aNumber) {
-        String tString = E;
         boolean temp = true, negative = false;
 
         if (aNumber < 0) {
@@ -1103,14 +1101,17 @@ public class GT_Utility {
             negative = true;
         }
 
+        StringBuilder tStringB = new StringBuilder();
         for (int i = 1000000000; i > 0; i /= 10) {
             int tDigit = (aNumber / i) % 10;
             if (temp && tDigit != 0) temp = false;
             if (!temp) {
-                tString += tDigit;
-                if (i != 1) for (int j = i; j > 0; j /= 1000) if (j == 1) tString += ",";
+                tStringB.append(tDigit);
+                if (i != 1) for (int j = i; j > 0; j /= 1000) if (j == 1) tStringB.append(",");
             }
         }
+
+        String tString = tStringB.toString();
 
         if (tString.equals(E)) tString = "0";
 
@@ -1722,10 +1723,11 @@ public class GT_Utility {
                                         + "  Humidity: " + ((ic2.api.crops.ICropTile) tTileEntity).getHumidity()
                                         + "  Air-Quality: " + ((ic2.api.crops.ICropTile) tTileEntity).getAirQuality()
                         );
-                        String tString = E;
+                        StringBuilder tStringB = new StringBuilder();
                         for (String tAttribute : ic2.api.crops.Crops.instance.getCropList()[((ic2.api.crops.ICropTile) tTileEntity).getID()].attributes()) {
-                            tString += ", " + tAttribute;
+                            tStringB.append(", ").append(tAttribute);
                         }
+                        String tString = tStringB.toString();
                         tList.add("Attributes:" + tString.replaceFirst(",", E));
                         tList.add("Discovered by: " + ic2.api.crops.Crops.instance.getCropList()[((ic2.api.crops.ICropTile) tTileEntity).getID()].discoveredBy());
                     }
