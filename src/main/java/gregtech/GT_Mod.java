@@ -127,6 +127,7 @@ public class GT_Mod
         GregTech_API.sUnification = new GT_Config(new Configuration(new File(new File(aEvent.getModConfigurationDirectory(), "GregTech"), "Unification.cfg")));
         GregTech_API.sSpecialFile = new GT_Config(new Configuration(new File(new File(aEvent.getModConfigurationDirectory(), "GregTech"), "Other.cfg")));
         GregTech_API.sOPStuff = new GT_Config(new Configuration(new File(new File(aEvent.getModConfigurationDirectory(), "GregTech"), "OverpoweredStuff.cfg")));
+        GregTech_API.sMaterialsFile = new GT_Config(new Configuration(new File(new File(aEvent.getModConfigurationDirectory(), "GregTech"), "Materials.cfg")));
 
         GregTech_API.sClientDataFile = new GT_Config(new Configuration(new File(aEvent.getModConfigurationDirectory().getParentFile(), "GregTech.cfg")));
 
@@ -246,7 +247,7 @@ public class GT_Mod
         if(gregtechproxy.mChangeHarvestLevels){
         gregtechproxy.mGraniteHavestLevel = (int) GregTech_API.sMaterialProperties.get("havestLevel", "graniteHarvestLevel", 3);
         gregtechproxy.mMaxHarvestLevel=(int) Math.min(15, GregTech_API.sMaterialProperties.get("havestLevel", "maxLevel",7));
-        for(Materials tMaterial : Materials.values()){
+        for(Materials tMaterial : Materials.VALUES){
         	if(tMaterial!=null&&tMaterial.mToolQuality>0&&tMaterial.mMetaItemSubID<gregtechproxy.mHarvestLevel.length&&tMaterial.mMetaItemSubID>=0){
         		gregtechproxy.mHarvestLevel[tMaterial.mMetaItemSubID] = GregTech_API.sMaterialProperties.get("materialHavestLevel", tMaterial.mDefaultLocalName,tMaterial.mToolQuality);
         	}
@@ -270,8 +271,7 @@ public class GT_Mod
             }
         }
         //GT_Config.troll = (Calendar.getInstance().get(2) + 1 == 4) && (Calendar.getInstance().get(5) >= 1) && (Calendar.getInstance().get(5) <= 2);
-
-        Materials.init(GregTech_API.sMaterialProperties);
+        Materials.initCustomMats("custom");
 
         GT_Log.out.println("GT_Mod: Saving Main Config");
         tMainConfig.save();

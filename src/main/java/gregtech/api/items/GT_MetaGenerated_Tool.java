@@ -184,10 +184,10 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
         if (tToolStats != null) {
             NBTTagCompound tMainNBT = new NBTTagCompound(), tToolNBT = new NBTTagCompound();
             if (aPrimaryMaterial != null) {
-                tToolNBT.setString("PrimaryMaterial", aPrimaryMaterial.toString());
+                tToolNBT.setString("PrimaryMaterial", aPrimaryMaterial.mName);
                 tToolNBT.setLong("MaxDamage", 100L * (long) (aPrimaryMaterial.mDurability * tToolStats.getMaxDurabilityMultiplier()));
             }
-            if (aSecondaryMaterial != null) tToolNBT.setString("SecondaryMaterial", aSecondaryMaterial.toString());
+            if (aSecondaryMaterial != null) tToolNBT.setString("SecondaryMaterial", aSecondaryMaterial.mName);
 
             if (aElectricArray != null) {
                 tToolNBT.setBoolean("Electric", true);
