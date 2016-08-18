@@ -3,6 +3,7 @@ package gregtech.common.items.armor;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -138,7 +139,8 @@ public class GuiElectricArmor1 extends GuiContainer {
 		
 	}
 
-	protected void mouseClicked(int mouseX, int mouseY, int mouseBtn) {
+    @Override
+	protected void mouseClicked(int mouseX, int mouseY, int mouseBtn) throws IOException {
 		int xStart = mouseX-((width - xSize) / 2);
 		int yStart = mouseY-((height - ySize) / 2);
 		if(yStart>68&&yStart<77){
@@ -305,6 +307,6 @@ public class GuiElectricArmor1 extends GuiContainer {
 	}
 
 	private boolean isMouseOverSlot(Slot p_146981_1_, int p_146981_2_, int p_146981_3_) {
-		return this.func_146978_c(p_146981_1_.xDisplayPosition, p_146981_1_.yDisplayPosition, 16, 16, p_146981_2_, p_146981_3_);
+		return this.isPointInRegion(p_146981_1_.xDisplayPosition, p_146981_1_.yDisplayPosition, 16, 16, p_146981_2_, p_146981_3_);
 	}
 }

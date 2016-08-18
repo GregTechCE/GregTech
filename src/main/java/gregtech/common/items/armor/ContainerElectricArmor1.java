@@ -11,6 +11,7 @@ public class ContainerElectricArmor1 extends ContainerBasicArmor {
 		super(player, aInvArmor);
 	}
 
+    @Override
 	public void addSlots(InventoryPlayer aInventoryPlayer) {
 		addSlotToContainer(new Slot(mInvArmor, 0, 118, 6));
 		addSlotToContainer(new Slot(mInvArmor, 1, 136, 6));
@@ -42,10 +43,12 @@ public class ContainerElectricArmor1 extends ContainerBasicArmor {
 		}
 	}
 
+    @Override
 	public int getSlotCount() {
 		return 12;
 	}
 
+    @Override
 	public int getShiftClickSlotCount() {
 		return 12;
 	}

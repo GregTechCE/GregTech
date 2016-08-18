@@ -5,6 +5,7 @@ import gregtech.api.damagesources.GT_DamageSources;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -13,17 +14,30 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.event.world.BlockEvent;
 
 import java.util.List;
 
 public abstract class GT_Tool
         implements IToolStats {
-    public static final Enchantment[] FORTUNE_ENCHANTMENT = {Enchantment.fortune};
-    public static final Enchantment[] LOOTING_ENCHANTMENT = {Enchantment.looting};
+    public static final Enchantment[] FORTUNE_ENCHANTMENT = {Enchantment.getEnchantmentByLocation("fortune")};
+    public static final Enchantment[] LOOTING_ENCHANTMENT = {Enchantment.getEnchantmentByLocation("looting")};
     public static final Enchantment[] ZERO_ENCHANTMENTS = new Enchantment[0];
     public static final int[] ZERO_ENCHANTMENT_LEVELS = new int[0];
+
+    public static ItemStack getBlockStack(IBlockState blockState) {
+        return new ItemStack(blockState.getBlock(), 1, blockState.getBlock().getMetaFromState(blockState));
+    }
+
+    protected static boolean isStateEqual(IBlockState state1, IBlockState state2) {
+        if(state1.getBlock() != state2.getBlock())
+            return false;
+        if(!state1.getProperties().equals(state2))
+            return false;
+        return true;
+    }
 
     public int getToolDamagePerBlockBreak() {
         return 100;
@@ -66,7 +80,7 @@ public abstract class GT_Tool
     }
 
     public String getBreakingSound() {
-        return (String) GregTech_API.sSoundList.get(Integer.valueOf(0));
+        return GregTech_API.sSoundList.get(0);
     }
 
     public int getBaseQuality() {
@@ -109,11 +123,11 @@ public abstract class GT_Tool
         return GT_DamageSources.getCombatDamage((aPlayer instanceof EntityPlayer) ? "player" : "mob", aPlayer, (aEntity instanceof EntityLivingBase) ? getDeathMessage(aPlayer, (EntityLivingBase) aEntity) : null);
     }
 
-    public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new EntityDamageSource((aPlayer instanceof EntityPlayer) ? "player" : "mob", aPlayer).func_151519_b(aEntity);
+    public ITextComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
+        return new EntityDamageSource((aPlayer instanceof EntityPlayer) ? "player" : "mob", aPlayer).getDeathMessage(aEntity);
     }
 
-    public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX, int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
+    public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, IBlockState aBlock, BlockPos blockPos, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         return 0;
     }
 
@@ -130,9 +144,9 @@ public abstract class GT_Tool
     }
 
     public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {
-        aPlayer.triggerAchievement(AchievementList.openInventory);
-        aPlayer.triggerAchievement(AchievementList.mineWood);
-        aPlayer.triggerAchievement(AchievementList.buildWorkBench);
+        aPlayer.addStat(AchievementList.OPEN_INVENTORY);
+        aPlayer.addStat(AchievementList.MINE_WOOD);
+        aPlayer.addStat(AchievementList.BUILD_WORK_BENCH);
     }
 
     public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {

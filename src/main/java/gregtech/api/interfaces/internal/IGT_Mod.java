@@ -31,16 +31,9 @@ public interface IGT_Mod {
     public EntityPlayer getThePlayer();
 
     //---------- Internal Usage Only ----------
-
-    /**
-     * works only ClientSide otherwise returns 0
-     *
-     * @return the Index of the added Armor
-     */
-    public int addArmor(String aArmorPrefix);
-
     /**
      * Plays the Sonictron Sound for the ItemStack on the Client Side
      */
     public void doSonictronSound(ItemStack aStack, World aWorld, double aX, double aY, double aZ);
+
 }

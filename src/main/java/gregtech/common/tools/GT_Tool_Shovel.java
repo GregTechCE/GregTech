@@ -8,11 +8,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 import net.minecraft.util.IChatComponent;
 
-public class GT_Tool_Shovel
-        extends GT_Tool {
+public class GT_Tool_Shovel extends GT_Tool {
+
+
     public int getToolDamagePerBlockBreak() {
         return 50;
     }
@@ -90,6 +91,6 @@ public class GT_Tool_Shovel
     }
 
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " got dug up by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
+        return new ChatComponentText(TextFormatting.RED + aEntity.getCommandSenderName() + TextFormatting.WHITE + " got dug up by " + TextFormatting.GREEN + aPlayer.getCommandSenderName() + TextFormatting.WHITE);
     }
 }

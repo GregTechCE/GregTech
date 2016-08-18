@@ -7,6 +7,9 @@ import ic2.api.crops.ICropTile;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -20,16 +23,17 @@ public class Behaviour_Sense
         this.mCosts = aCosts;
     }
 
-    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+    @Override
+    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, BlockPos blockPos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
         if (aWorld.isRemote) {
             return false;
         }
-        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        TileEntity tTileEntity = aWorld.getTileEntity(blockPos);
         if ((tTileEntity instanceof ICropTile)) {
             for (int i = -1; i < 2; i++) {
                 for (int j = -1; j < 2; j++) {
                     for (int k = -1; k < 2; k++) {
-                        if ((aStack.stackSize > 0) && (((tTileEntity = aWorld.getTileEntity(aX + i, aY + j, aZ + k)) instanceof ICropTile)) && (((ICropTile) tTileEntity).harvest(true)) && (!aPlayer.capabilities.isCreativeMode)) {
+                        if ((aStack.stackSize > 0) && (((tTileEntity = aWorld.getTileEntity(blockPos.add(i, j, k))) instanceof ICropTile)) && (((ICropTile) tTileEntity).performManualHarvest()) && (!aPlayer.capabilities.isCreativeMode)) {
                             ((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts);
                         }
                     }

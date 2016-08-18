@@ -12,6 +12,9 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -26,15 +29,15 @@ public class Behaviour_Plunger_Item
         this.mCosts = aCosts;
     }
 
-    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, BlockPos blockPos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
         if (aWorld.isRemote) {
             return false;
         }
-        TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        TileEntity aTileEntity = aWorld.getTileEntity(blockPos);
         if ((aTileEntity instanceof IGregTechTileEntity)) {
             IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) aTileEntity).getMetaTileEntity();
             if ((tMetaTileEntity instanceof IMetaTileEntityItemPipe)) {
-                for (Object tTileEntity : GT_Utility.sortMapByValuesAcending(IMetaTileEntityItemPipe.Util.scanPipes((IMetaTileEntityItemPipe) tMetaTileEntity, new HashMap(), 0L, false, true)).keySet())
+                for (Object tTileEntity : GT_Utility.sortMapByValuesAcending(IMetaTileEntityItemPipe.Util.scanPipes((IMetaTileEntityItemPipe) tMetaTileEntity, new HashMap<>(), 0L, false, true)).keySet())
 
                 {
                     int i = 0;
@@ -44,12 +47,13 @@ public class Behaviour_Plunger_Item
                                     (aPlayer.capabilities.isCreativeMode) || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts)))) {
                                 ItemStack tStack = ((IMetaTileEntityItemPipe) tTileEntity).decrStackSize(i, 64);
                                 if (tStack != null) {
-                                    EntityItem tEntity = new EntityItem(aWorld, ((IGregTechTileEntity) aTileEntity).getOffsetX((byte) aSide, 1) + 0.5D, ((IGregTechTileEntity) aTileEntity).getOffsetY((byte) aSide, 1) + 0.5D, ((IGregTechTileEntity) aTileEntity).getOffsetZ((byte) aSide, 1) + 0.5D, tStack);
+                                    BlockPos faced = blockPos.offset(side);
+                                    EntityItem tEntity = new EntityItem(aWorld, faced.getX(), faced.getY(), faced.getZ(), tStack);
                                     tEntity.motionX = 0.0D;
                                     tEntity.motionY = 0.0D;
                                     tEntity.motionZ = 0.0D;
                                     aWorld.spawnEntityInWorld(tEntity);
-                                    GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(Integer.valueOf(101)), 1.0F, -1.0F, aX, aY, aZ);
+                                    GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(101), 1.0F, -1.0F, blockPos);
                                 }
                                 return true;
                             }
@@ -61,8 +65,10 @@ public class Behaviour_Plunger_Item
         return false;
     }
 
+    @Override
     public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
         aList.add(this.mTooltip);
         return aList;
     }
+
 }

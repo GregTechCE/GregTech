@@ -10,6 +10,7 @@ public class GT_GUIContainer_Regulator
         super(new GT_Container_Regulator(aInventoryPlayer, aTileEntity), "gregtech:textures/gui/Regulator.png");
     }
 
+    @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         this.fontRendererObj.drawString("" + ((GT_Container_Regulator) this.mContainer).mTargetSlots[0], 120, 9, 16448255);
         this.fontRendererObj.drawString("" + ((GT_Container_Regulator) this.mContainer).mTargetSlots[1], 137, 9, 16448255);
@@ -22,6 +23,7 @@ public class GT_GUIContainer_Regulator
         this.fontRendererObj.drawString("" + ((GT_Container_Regulator) this.mContainer).mTargetSlots[8], 155, 43, 16448255);
     }
 
+    @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
         super.drawGuiContainerBackgroundLayer(par1, par2, par3);
         int x = (this.width - this.xSize) / 2;

@@ -1,5 +1,13 @@
 package gregtech.common.items.behaviors;
 
+import net.minecraft.block.BlockDirt;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -12,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.UseHoeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.List;
 
@@ -24,37 +33,39 @@ public class Behaviour_Hoe
         this.mCosts = aCosts;
     }
 
-    public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
-        if (!aPlayer.canPlayerEdit(aX, aY, aZ, aSide, aStack)) {
-            return false;
-        }
-        UseHoeEvent event = new UseHoeEvent(aPlayer, aStack, aWorld, aX, aY, aZ);
-        if (MinecraftForge.EVENT_BUS.post(event)) {
-            return false;
-        }
-        if (event.getResult() == Event.Result.ALLOW) {
-            if (!aPlayer.capabilities.isCreativeMode) {
-                ((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts);
+    @Override
+    public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, BlockPos blockPos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
+        if (aPlayer.canPlayerEdit(blockPos, side, aStack) && !aWorld.isAirBlock(blockPos)) {
+            IBlockState blockState = aWorld.getBlockState(blockPos);
+            if (blockState.getBlock() == Blocks.GRASS || blockState.getBlock() == Blocks.DIRT) {
+                if (blockState.getBlock() == Blocks.GRASS && aPlayer.isSneaking()) {
+                    if(((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts)) {
+                        if (aWorld.rand.nextInt(3) == 0) {
+                            ItemStack grassSeed = ForgeHooks.getGrassSeed(aWorld.rand, 0);
+                            Block.spawnAsEntity(aWorld, blockPos.up(), grassSeed);
+                        }
+                        aWorld.playSound(null, blockPos, SoundEvents.ITEM_HOE_TILL, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                        aWorld.setBlockState(blockPos, Blocks.DIRT.getDefaultState()
+                                .withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.COARSE_DIRT));
+                        return true;
+                    }
+                } else if (blockState.getBlock() != Blocks.DIRT ||
+                        blockState.getValue(BlockDirt.VARIANT) == BlockDirt.DirtType.DIRT) {
+                    if(((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts)) {
+                        aWorld.playSound(null, blockPos, SoundEvents.ITEM_HOE_TILL, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                        aWorld.setBlockState(blockPos, Blocks.FARMLAND.getDefaultState());
+                        return true;
+                    }
+                }
             }
-            return true;
-        }
-        Block aBlock = aWorld.getBlock(aX, aY, aZ);
-        if ((aSide != 0) && (GT_Utility.isBlockAir(aWorld, aX, aY + 1, aZ)) && ((aBlock == Blocks.grass) || (aBlock == Blocks.dirt))) {
-            aWorld.playSoundEffect(aX + 0.5F, aY + 0.5F, aZ + 0.5F, Blocks.farmland.stepSound.getStepResourcePath(), (Blocks.farmland.stepSound.getVolume() + 1.0F) / 2.0F, Blocks.farmland.stepSound.getPitch() * 0.8F);
-            if (aWorld.isRemote) {
-                return true;
-            }
-            aWorld.setBlock(aX, aY, aZ, Blocks.farmland);
-            if (!aPlayer.capabilities.isCreativeMode) {
-                ((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts);
-            }
-            return true;
         }
         return false;
     }
 
+    @Override
     public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
         aList.add(this.mTooltip);
         return aList;
     }
+
 }

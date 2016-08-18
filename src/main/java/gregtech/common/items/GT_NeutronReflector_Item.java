@@ -16,7 +16,8 @@ public class GT_NeutronReflector_Item
         this.setMaxDamage(aMaxDamage);
     }
 
-    public boolean acceptUraniumPulse(IReactor reactor, ItemStack yourStack, ItemStack pulsingStack, int youX, int youY, int pulseX, int pulseY, boolean heatrun) {
+    @Override
+    public boolean acceptUraniumPulse(ItemStack yourStack, IReactor reactor, ItemStack pulsingStack, int youX, int youY, int pulseX, int pulseY, boolean heatrun) {
         if (!heatrun) {
             if ((pulsingStack.getItem() instanceof ItemReactorMOX)) {
                 float breedereffectiveness = reactor.getHeat() / reactor.getMaxHeat();
@@ -33,26 +34,33 @@ public class GT_NeutronReflector_Item
         return true;
     }
 
-    public boolean canStoreHeat(IReactor aReactor, ItemStack aStack, int x, int y) {
+    @Override
+    public boolean canStoreHeat(ItemStack aStack, IReactor reactor, int x, int y) {
         return false;
     }
 
-    public int getMaxHeat(IReactor aReactor, ItemStack aStack, int x, int y) {
+    @Override
+    public int getMaxHeat(ItemStack aStack, IReactor reactor, int x, int y) {
         return 0;
     }
 
-    public int getCurrentHeat(IReactor aReactor, ItemStack aStack, int x, int y) {
+    @Override
+    public int getCurrentHeat(ItemStack aStack, IReactor reactor, int x, int y) {
         return 0;
     }
 
-    public float influenceExplosion(IReactor aReactor, ItemStack aStack) {
+    @Override
+    public float influenceExplosion(ItemStack aStack, IReactor reactor) {
         return -1.0F;
     }
 
-    public int alterHeat(IReactor aReactor, ItemStack aStack, int x, int y, int aHeat) {
+    @Override
+    public int alterHeat(ItemStack aStack, IReactor reactor, int x, int y, int aHeat) {
         return aHeat;
     }
 
-    public void processChamber(IReactor aReactor, ItemStack aStack, int x, int y, boolean aHeatRun) {
+    @Override
+    public void processChamber(ItemStack aStack, IReactor reactor, int x, int y, boolean aHeatRun) {
     }
+
 }

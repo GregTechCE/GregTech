@@ -8,6 +8,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.automation.GT_MetaTileEntity_TypeFilter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
@@ -17,6 +18,7 @@ public class GT_Container_TypeFilter
         super(aInventoryPlayer, aTileEntity);
     }
 
+    @Override
     public void addSlots(InventoryPlayer aInventoryPlayer) {
         addSlotToContainer(new Slot(this.mTileEntity, 0, 98, 5));
         addSlotToContainer(new Slot(this.mTileEntity, 1, 116, 5));
@@ -37,7 +39,8 @@ public class GT_Container_TypeFilter
         addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 10, 80, 63, false, true, 1));
     }
 
-    public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
+    @Override
+    public ItemStack slotClick(int aSlotIndex, int aMouseclick, ClickType aShifthold, EntityPlayer aPlayer) {
         if (aSlotIndex < 9) {
             return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
         }
@@ -99,10 +102,12 @@ public class GT_Container_TypeFilter
         return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
     }
 
+    @Override
     public int getSlotCount() {
         return 9;
     }
 
+    @Override
     public int getShiftClickSlotCount() {
         return 9;
     }

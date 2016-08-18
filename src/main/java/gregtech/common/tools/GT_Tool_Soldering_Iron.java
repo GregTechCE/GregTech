@@ -14,7 +14,7 @@ import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 import net.minecraft.util.IChatComponent;
 
 import java.util.Arrays;
@@ -111,6 +111,6 @@ public class GT_Tool_Soldering_Iron extends GT_Tool {
     }
 
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " got soldert! (by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE + ")");
+        return new ChatComponentText(TextFormatting.RED + aEntity.getCommandSenderName() + TextFormatting.WHITE + " got soldert! (by " + TextFormatting.GREEN + aPlayer.getCommandSenderName() + TextFormatting.WHITE + ")");
     }
 }

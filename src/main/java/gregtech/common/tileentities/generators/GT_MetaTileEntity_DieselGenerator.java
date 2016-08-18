@@ -20,7 +20,7 @@ public class GT_MetaTileEntity_DieselGenerator
     public int mEfficiency;
 
     public GT_MetaTileEntity_DieselGenerator(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "Requires liquid Fuel", new ITexture[0]);
+        super(aID, aName, aNameRegional, aTier, "Requires liquid Fuel");
         onConfigLoad();
     }
 

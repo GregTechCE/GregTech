@@ -122,7 +122,7 @@ public class GregTech_API {
     /**
      * The List of all Sounds used in GT, indices are in the static Block at the bottom
      */
-    public static final Map<Integer, String> sSoundList = new HashMap<Integer, String>();
+    public static final Map<Integer, String> sSoundList = new HashMap<>();
     /**
      * The List of Tools, which can be used. Accepts regular damageable Items and Electric Items
      */

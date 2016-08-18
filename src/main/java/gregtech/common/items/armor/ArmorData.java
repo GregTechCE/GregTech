@@ -12,6 +12,7 @@ import gregtech.api.damagesources.GT_DamageSources;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -24,7 +25,7 @@ public class ArmorData {
 
 	public int type; // 0 = helmet; 1 = chestplate; 2 = leggings; 3 = boots;
 	public int armorTier; // 0 = Basic Modular Armor; 1 = Modular Exoskeleton; 2= Modular Nanosuit; 3 = Heavy Power Armor
-	public List info; // needs Localization
+	public List<String> info; // needs Localization
 	public boolean isTopItem;
 	public int tooltipUpdate;
 	public boolean openGui;
@@ -236,12 +237,12 @@ public class ArmorData {
 		chestplate = null;
 		leggings = null;
 		boots = null;
-		for (int i = 1; i < 5; i++) {
-			ItemStack stack = aPlayer.getEquipmentInSlot(i);
+		for (EntityEquipmentSlot i : EntityEquipmentSlot.values()) {
+			ItemStack stack = aPlayer.getItemStackFromSlot(i);
 			if (stack != null && stack.getItem() instanceof ModularArmor_Item) {
 				ModularArmor_Item tmp = (ModularArmor_Item) stack.getItem();
 				ContainerModularArmor tmp2 = new ContainerBasicArmor(aPlayer, new InventoryArmor(ModularArmor_Item.class, stack));
-				if ((this.type + i) == 4) {
+				if ((this.type + i.ordinal()) == 4) {
 					fluid = ArmorCalculation.getFluid(tmp2.mInvArmor.parts, tankCap);
 				}
 				if (maxCharge > 0 && charge < maxCharge) {
@@ -251,16 +252,16 @@ public class ArmorData {
 
 				}
 				switch (tmp.armorType) {
-				case 0:
+                    case HEAD:
 					helmet = tmp.data;
 					break;
-				case 1:
+                    case CHEST:
 					chestplate = tmp.data;
 					break;
-				case 2:
+                    case LEGS:
 					leggings = tmp.data;
 					break;
-				case 3:
+                    case FEET:
 					boots = tmp.data;
 					break;
 				default:

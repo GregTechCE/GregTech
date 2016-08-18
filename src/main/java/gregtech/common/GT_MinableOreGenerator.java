@@ -1,8 +1,11 @@
 package gregtech.common;
 
+import gregtech.api.world.GT_Worldgen_Ore_Normal;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
@@ -10,6 +13,7 @@ import java.util.Random;
 
 public class GT_MinableOreGenerator
         extends WorldGenerator {
+
     private Block minableBlockId;
     private Block mBlock;
     private int minableBlockMeta = 0;
@@ -28,8 +32,9 @@ public class GT_MinableOreGenerator
         this.mBlock = aBlock;
     }
 
-    public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5) {
+    public boolean generate(World par1World, Random par2Random, BlockPos pos) {
         float var6 = par2Random.nextFloat() * 3.141593F;
+        int par3 = pos.getX(), par4 = pos.getY(), par5 = pos.getZ();
         double var7 = par3 + 8 + MathHelper.sin(var6) * this.numberOfBlocks / 8.0F;
         double var9 = par3 + 8 - MathHelper.sin(var6) * this.numberOfBlocks / 8.0F;
         double var11 = par5 + 8 + MathHelper.cos(var6) * this.numberOfBlocks / 8.0F;
@@ -57,9 +62,11 @@ public class GT_MinableOreGenerator
                         if (var39 * var39 + var42 * var42 < 1.0D) {
                             for (int var44 = var34; var44 <= var37; var44++) {
                                 double var45 = (var44 + 0.5D - var24) / (var28 / 2.0D);
-                                Block block = par1World.getBlock(var38, var41, var44);
-                                if ((var39 * var39 + var42 * var42 + var45 * var45 < 1.0D) && (((this.allowVoid) && (par1World.getBlock(var38, var41, var44) == Blocks.air)) || ((block != null) && (block.isReplaceableOreGen(par1World, var38, var41, var44, this.mBlock))))) {
-                                    par1World.setBlock(var38, var41, var44, this.minableBlockId, this.minableBlockMeta, 0);
+                                BlockPos block = new BlockPos(var38, var41, var44);
+                                IBlockState blockState = par1World.getBlockState(block);
+                                if ((var39 * var39 + var42 * var42 + var45 * var45 < 1.0D) && ((this.allowVoid && par1World.isAirBlock(block)) ||
+                                        (block != null && (blockState.getBlock().isReplaceableOreGen(blockState, par1World, pos, GT_Worldgen_Ore_Normal.STONE))))) {
+                                    par1World.setBlockState(block, this.minableBlockId.getStateFromMeta(minableBlockMeta));
                                 }
                             }
                         }

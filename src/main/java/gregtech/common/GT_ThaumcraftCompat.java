@@ -1,35 +1,15 @@
 package gregtech.common;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.ResourceLocation;
-import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.ThaumcraftApiHelper;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.crafting.CrucibleRecipe;
-import thaumcraft.api.crafting.IArcaneRecipe;
-import thaumcraft.api.crafting.InfusionEnchantmentRecipe;
-import thaumcraft.api.crafting.InfusionRecipe;
-import thaumcraft.api.research.ResearchCategories;
-import thaumcraft.api.research.ResearchCategoryList;
-import thaumcraft.api.research.ResearchItem;
-import thaumcraft.api.research.ResearchPage;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class GT_ThaumcraftCompat
         implements IThaumcraftCompat {
-    public GT_ThaumcraftCompat() {
+    /*public GT_ThaumcraftCompat() {
         TC_Aspects.AER.mAspect = Aspect.AIR;
         TC_Aspects.ALIENIS.mAspect = Aspect.ELDRITCH;
         TC_Aspects.AQUA.mAspect = Aspect.WATER;
@@ -220,5 +200,36 @@ public class GT_ThaumcraftCompat
     public boolean registerPortholeBlacklistedBlock(Block aBlock) {
         ThaumcraftApi.portableHoleBlackList.add(aBlock);
         return true;
+    }*/
+
+    @Override
+    public boolean registerPortholeBlacklistedBlock(Block aBlock) {
+        return false;
     }
+
+    @Override
+    public boolean registerThaumcraftAspectsToItem(ItemStack aStack, List<TC_Aspects.TC_AspectStack> aAspects, boolean aAdditive) {
+        return false;
+    }
+
+    @Override
+    public boolean registerThaumcraftAspectsToItem(ItemStack aStack, List<TC_Aspects.TC_AspectStack> aAspects, String aOreDict) {
+        return false;
+    }
+
+    @Override
+    public Object addCrucibleRecipe(String aResearch, Object aInput, ItemStack aOutput, List<TC_Aspects.TC_AspectStack> aAspects) {
+        return null;
+    }
+
+    @Override
+    public Object addInfusionRecipe(String aResearch, ItemStack aMainInput, ItemStack[] aSideInputs, ItemStack aOutput, int aInstability, List<TC_Aspects.TC_AspectStack> aAspects) {
+        return null;
+    }
+
+    @Override
+    public Object addResearch(String aResearch, String aName, String aText, String[] aParentResearches, String aCategory, ItemStack aIcon, int aComplexity, int aType, int aX, int aY, List<TC_Aspects.TC_AspectStack> aAspects, ItemStack[] aResearchTriggers, Object[] aPages) {
+        return null;
+    }
+
 }

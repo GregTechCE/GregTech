@@ -10,6 +10,7 @@ public class GT_GUIContainer_Filter
         super(new GT_Container_Filter(aInventoryPlayer, aTileEntity), "gregtech:textures/gui/Filter.png");
     }
 
+    @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
         super.drawGuiContainerBackgroundLayer(par1, par2, par3);
         int x = (this.width - this.xSize) / 2;

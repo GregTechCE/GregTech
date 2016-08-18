@@ -39,7 +39,7 @@ import static gregtech.api.enums.GT_Values.V;
 
 public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpecialElectricItem, IElectricItemManager, IFluidContainerItem {
     /* ---------- CONSTRUCTOR AND MEMBER VARIABLES ---------- */
-    private final HashMap<Short, ArrayList<IItemBehaviour<GT_MetaBase_Item>>> mItemBehaviors = new HashMap<Short, ArrayList<IItemBehaviour<GT_MetaBase_Item>>>();
+    private final HashMap<Short, ArrayList<IItemBehaviour<GT_MetaBase_Item>>> mItemBehaviors = new HashMap<>();
 
     /**
      * Creates the Item using these Parameters.
@@ -66,7 +66,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         if (aMetaValue < 0 || aMetaValue >= 32766 || aBehavior == null) return this;
         ArrayList<IItemBehaviour<GT_MetaBase_Item>> tList = mItemBehaviors.get((short) aMetaValue);
         if (tList == null) {
-            tList = new ArrayList<IItemBehaviour<GT_MetaBase_Item>>(1);
+            tList = new ArrayList<>(1);
             mItemBehaviors.put((short) aMetaValue, tList);
         }
         tList.add(aBehavior);
@@ -128,7 +128,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         ArrayList<IItemBehaviour<GT_MetaBase_Item>> tList = mItemBehaviors.get((short) getDamage(aStack));
         if (tList != null)
             for (IItemBehaviour<GT_MetaBase_Item> tBehavior : tList)
-                if (tBehavior.onLeftClickEntity(this, aStack, aPlayer, aEntity)) {
+                if (tBehavior.onLeftClickEntity(this, aStack, aPlayer, aEntity, aPlayer.getActiveHand())) {
                     if (aStack.stackSize <= 0) aPlayer.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, null);
                     return true;
                 }
@@ -147,7 +147,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         isItemStackUsable(aStack);
         ArrayList<IItemBehaviour<GT_MetaBase_Item>> tList = mItemBehaviors.get((short) getDamage(aStack));
         if (tList != null) for (IItemBehaviour<GT_MetaBase_Item> tBehavior : tList)
-            if (tBehavior.onItemUse(this, aStack, aPlayer, aWorld, blockPos.getX(), blockPos.getY(), blockPos.getZ(), aSide.getIndex(), hitX, hitY, hitZ)) {
+            if (tBehavior.onItemUse(this, aStack, aPlayer, aWorld, blockPos, aSide, hitX, hitY, hitZ, hand)) {
                 if (aStack.stackSize <= 0) aPlayer.setHeldItem(hand, null);
                 return EnumActionResult.SUCCESS;
             }
@@ -166,7 +166,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         isItemStackUsable(aStack);
         ArrayList<IItemBehaviour<GT_MetaBase_Item>> tList = mItemBehaviors.get((short) getDamage(aStack));
         if (tList != null) for (IItemBehaviour<GT_MetaBase_Item> tBehavior : tList)
-            if (tBehavior.onItemUseFirst(this, aStack, aPlayer, aWorld, pos.getX(), pos.getY(), pos.getZ(), side.getIndex(), hitX, hitY, hitZ)) {
+            if (tBehavior.onItemUseFirst(this, aStack, aPlayer, aWorld, pos, side, hitX, hitY, hitZ, hand)) {
                 if (aStack.stackSize <= 0) aPlayer.setHeldItem(hand, null);
                 return EnumActionResult.SUCCESS;
             }
@@ -185,7 +185,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         isItemStackUsable(aStack);
         ArrayList<IItemBehaviour<GT_MetaBase_Item>> tList = mItemBehaviors.get((short) getDamage(aStack));
         if (tList != null) for (IItemBehaviour<GT_MetaBase_Item> tBehavior : tList)
-            aStack = tBehavior.onItemRightClick(this, aStack, aWorld, aPlayer);
+            aStack = tBehavior.onItemRightClick(this, aStack, aWorld, aPlayer, hand);
         return ActionResult.newResult(EnumActionResult.PASS, aStack);
     }
 

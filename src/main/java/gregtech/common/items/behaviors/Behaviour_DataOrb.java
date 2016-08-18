@@ -15,7 +15,7 @@ public class Behaviour_DataOrb
             if (aNewContent[i] == null) {
                 aInventory[i] = null;
             } else {
-                aInventory[i] = GT_Utility.copy(new Object[]{aNewContent[i]});
+                aInventory[i] = GT_Utility.copy(aNewContent[i]);
             }
         }
     }
@@ -93,6 +93,7 @@ public class Behaviour_DataOrb
         return tNBT;
     }
 
+    @Override
     public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
         if (!getDataTitle(aStack).equals("")) {
             aList.add(getDataTitle(aStack));
@@ -100,4 +101,5 @@ public class Behaviour_DataOrb
         }
         return aList;
     }
+
 }

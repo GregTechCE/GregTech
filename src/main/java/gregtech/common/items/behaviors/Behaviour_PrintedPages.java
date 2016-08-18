@@ -7,8 +7,8 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.List;
 
-public class Behaviour_PrintedPages
-        extends Behaviour_None {
+public class Behaviour_PrintedPages extends Behaviour_None {
+
     public static String getTitle(ItemStack aStack) {
         NBTTagCompound tNBT = aStack.getTagCompound();
         if (tNBT == null) {
@@ -25,6 +25,7 @@ public class Behaviour_PrintedPages
         return tNBT.getString("author");
     }
 
+    @Override
     public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
         if (GT_Utility.isStringValid(getTitle(aStack))) {
             aList.add(getTitle(aStack));

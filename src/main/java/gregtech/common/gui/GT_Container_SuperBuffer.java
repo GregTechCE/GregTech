@@ -7,6 +7,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.automation.GT_MetaTileEntity_ChestBuffer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
@@ -16,13 +17,15 @@ public class GT_Container_SuperBuffer
         super(aInventoryPlayer, aTileEntity);
     }
 
+    @Override
     public void addSlots(InventoryPlayer aInventoryPlayer) {
         addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 256, 8, 63, false, true, 1));
         addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 256, 26, 63, false, true, 1));
         addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 256, 44, 63, false, true, 1));
     }
 
-    public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
+    @Override
+    public ItemStack slotClick(int aSlotIndex, int aMouseclick, ClickType aShifthold, EntityPlayer aPlayer) {
         if (aSlotIndex < 0) {
             return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
         }
@@ -62,10 +65,12 @@ public class GT_Container_SuperBuffer
         return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
     }
 
+    @Override
     public int getSlotCount() {
         return 0;
     }
 
+    @Override
     public int getShiftClickSlotCount() {
         return 0;
     }

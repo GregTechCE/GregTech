@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IBlockStatePalette;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import javax.annotation.Nullable;
@@ -23,7 +24,7 @@ public class GT_Worldgen_Ore_Normal extends GT_Worldgen_Ore {
     }
 
     @Override
-    public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX, int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
+    public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX, int aChunkZ, IChunkGenerator aChunkGenerator, IChunkProvider aChunkProvider) {
         if (isGenerationAllowed(aWorld, aDimensionType, mDimensionType) && (mBiomeList.isEmpty() || mBiomeList.contains(aBiome)) && (mProbability <= 1 || aRandom.nextInt(mProbability) == 0)) {
             for (int i = 0; i < mAmount; i++) {
                 int tX = aChunkX + aRandom.nextInt(16), tY = mMinY + aRandom.nextInt(mMaxY - mMinY), tZ = aChunkZ + aRandom.nextInt(16);
@@ -80,7 +81,8 @@ public class GT_Worldgen_Ore_Normal extends GT_Worldgen_Ore {
     }
 
 
-    public static Predicate<IBlockState> STONE = input -> input.getBlock() == Blocks.STONE ||
+    public static Predicate<IBlockState> STONE = input ->
+            input.getBlock() == Blocks.STONE ||
             input.getBlock() == Blocks.END_STONE ||
             input.getBlock() == Blocks.NETHERRACK ||
             input.getBlock() instanceof GT_Block_Granites ||

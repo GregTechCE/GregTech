@@ -7,104 +7,136 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.AchievementList;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 
-public class GT_Tool_Drill_LV
-        extends GT_Tool {
+public class GT_Tool_Drill_LV extends GT_Tool {
+
+    @Override
     public int getToolDamagePerBlockBreak() {
         return GT_Mod.gregtechproxy.mHardRock ? 25 : 50;
     }
 
+    @Override
     public int getToolDamagePerDropConversion() {
         return 100;
     }
 
+    @Override
     public int getToolDamagePerContainerCraft() {
         return 100;
     }
 
+    @Override
     public int getToolDamagePerEntityAttack() {
         return 200;
     }
 
+    @Override
     public int getBaseQuality() {
         return 0;
     }
 
+    @Override
     public float getBaseDamage() {
         return 2.0F;
     }
 
+    @Override
     public float getSpeedMultiplier() {
         return 3.0F;
     }
 
+    @Override
     public float getMaxDurabilityMultiplier() {
         return 1.0F;
     }
 
+    @Override
     public String getCraftingSound() {
-        return (String) GregTech_API.sSoundList.get(Integer.valueOf(106));
+        return GregTech_API.sSoundList.get(106);
     }
 
+    @Override
     public String getEntityHitSound() {
-        return (String) GregTech_API.sSoundList.get(Integer.valueOf(106));
+        return GregTech_API.sSoundList.get(106);
     }
 
+    @Override
     public String getBreakingSound() {
-        return (String) GregTech_API.sSoundList.get(Integer.valueOf(106));
+        return GregTech_API.sSoundList.get(106);
     }
 
+    @Override
     public String getMiningSound() {
-        return (String) GregTech_API.sSoundList.get(Integer.valueOf(106));
+        return GregTech_API.sSoundList.get(106);
     }
 
+    @Override
     public boolean canBlock() {
         return false;
     }
 
+    @Override
     public boolean isCrowbar() {
         return false;
     }
 
-    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
-        String tTool = aBlock.getHarvestTool(aMetaData);
-        return ((tTool != null) && ((tTool.equals("pickaxe")) || (tTool.equals("shovel")))) || (aBlock.getMaterial() == Material.rock) || (aBlock.getMaterial() == Material.iron) || (aBlock.getMaterial() == Material.anvil) || (aBlock.getMaterial() == Material.sand) || (aBlock.getMaterial() == Material.grass) || (aBlock.getMaterial() == Material.ground) || (aBlock.getMaterial() == Material.snow) || (aBlock.getMaterial() == Material.clay) || (aBlock.getMaterial() == Material.glass);
+    @Override
+    public boolean isMinableBlock(IBlockState aBlock) {
+        String tTool = aBlock.getBlock().getHarvestTool(aBlock);
+        return ((tTool != null) && ((tTool.equals("pickaxe")) || (tTool.equals("shovel")))) ||
+                (aBlock.getMaterial() == Material.ROCK) ||
+                (aBlock.getMaterial() == Material.IRON) ||
+                (aBlock.getMaterial() == Material.ANVIL) ||
+                (aBlock.getMaterial() == Material.SAND) ||
+                (aBlock.getMaterial() == Material.GRASS) ||
+                (aBlock.getMaterial() == Material.GROUND) ||
+                (aBlock.getMaterial() == Material.SNOW) ||
+                (aBlock.getMaterial() == Material.CLAY) ||
+                (aBlock.getMaterial() == Material.GLASS);
     }
 
+    @Override
     public ItemStack getBrokenItem(ItemStack aStack) {
         return null;
     }
 
+    @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadDrill.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_LV;
     }
 
+    @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
     }
 
+    @Override
     public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
     }
 
+    @Override
     public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {
         super.onToolCrafted(aStack, aPlayer);
-        aPlayer.triggerAchievement(AchievementList.buildPickaxe);
-        aPlayer.triggerAchievement(AchievementList.buildBetterPickaxe);
-        try {
-            GT_Mod.instance.achievements.issueAchievement(aPlayer, "driltime");
-            GT_Mod.instance.achievements.issueAchievement(aPlayer, "buildDrill");
-        } catch (Exception e) {
-        }
+        aPlayer.addStat(AchievementList.BUILD_PICKAXE);
+        aPlayer.addStat(AchievementList.BUILD_BETTER_PICKAXE);
+        GT_Mod.achievements.issueAchievement(aPlayer, "driltime");
+        GT_Mod.achievements.issueAchievement(aPlayer, "buildDrill");
     }
 
-    public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " got the Drill! (by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE + ")");
+    @Override
+    public ITextComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
+        return new TextComponentString(TextFormatting.RED + "")
+                .appendSibling(aEntity.getDisplayName())
+                .appendText(TextFormatting.WHITE + " got the Drill by " + TextFormatting.GREEN)
+                .appendSibling(aPlayer.getDisplayName());
     }
+
 }

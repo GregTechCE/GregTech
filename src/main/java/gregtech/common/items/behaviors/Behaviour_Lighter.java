@@ -1,6 +1,5 @@
 package gregtech.common.items.behaviors;
 
-import codechicken.lib.math.MathHelper;
 import gregtech.api.GregTech_API;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_LanguageManager;
@@ -12,8 +11,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
@@ -34,7 +36,8 @@ public class Behaviour_Lighter
         this.mFuelAmount = aFuelAmount;
     }
 
-    public boolean onLeftClickEntity(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, Entity aEntity) {
+    @Override
+    public boolean onLeftClickEntity(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, Entity aEntity, EnumHand hand) {
         if ((aPlayer.worldObj.isRemote) || (aStack.stackSize != 1)) {
             return false;
         }
@@ -43,8 +46,8 @@ public class Behaviour_Lighter
             prepare(aStack);
             long tFuelAmount = GT_Utility.ItemNBT.getLighterFuel(aStack);
             if (GT_Utility.areStacksEqual(aStack, this.mUsedLighter, true)) {
-                GT_Utility.sendSoundToPlayers(aPlayer.worldObj, (String) GregTech_API.sSoundList.get(Integer.valueOf(6)), 1.0F, 1.0F, MathHelper.floor_double(aEntity.posX), MathHelper.floor_double(aEntity.posY), MathHelper.floor_double(aEntity.posZ));
-                ((EntityCreeper) aEntity).func_146079_cb();
+                GT_Utility.sendSoundToPlayers(aPlayer.worldObj, GregTech_API.sSoundList.get(6), 1.0F, 1.0F, MathHelper.floor_double(aEntity.posX), MathHelper.floor_double(aEntity.posY), MathHelper.floor_double(aEntity.posZ));
+                ((EntityCreeper) aEntity).ignite();
                 if (!aPlayer.capabilities.isCreativeMode) {
                     tFuelAmount -= 1L;
                 }
@@ -58,44 +61,42 @@ public class Behaviour_Lighter
         return rOutput;
     }
 
-    public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+    @Override
+    public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, BlockPos blockPos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
         return false;
     }
 
-    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
-        if ((aWorld.isRemote) || (aStack.stackSize != 1)) {
+    @Override
+    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, BlockPos blockPos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
+        if ((aWorld.isRemote) || (aStack.stackSize != 1) || !aPlayer.canPlayerEdit(blockPos, side, aStack)) {
             return false;
         }
-        boolean rOutput = false;
 
-        ForgeDirection tDirection = ForgeDirection.getOrientation(aSide);
-        aX += tDirection.offsetX;
-        aY += tDirection.offsetY;
-        aZ += tDirection.offsetZ;
-        if ((!GT_Utility.isBlockAir(aWorld, aX, aY, aZ)) || (!aPlayer.canPlayerEdit(aX, aY, aZ, aSide, aStack))) {
-            return false;
-        }
-        prepare(aStack);
         long tFuelAmount = GT_Utility.ItemNBT.getLighterFuel(aStack);
-        if (GT_Utility.areStacksEqual(aStack, this.mUsedLighter, true)) {
-            GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(Integer.valueOf(6)), 1.0F, 1.0F, aX, aY, aZ);
-            aWorld.setBlock(aX, aY, aZ, Blocks.fire);
-            if (!aPlayer.capabilities.isCreativeMode) {
-                tFuelAmount -= 1L;
+        BlockPos clickedBlock = blockPos.offset(side);
+        if(Blocks.FIRE.canCatchFire(aWorld, blockPos, side)) {
+            prepare(aStack);
+            aWorld.setBlockState(clickedBlock, Blocks.FIRE.getDefaultState());
+            GT_Utility.ItemNBT.setLighterFuel(aStack, --tFuelAmount);
+            if(tFuelAmount == 0L) {
+                useUp(aStack);
             }
-            rOutput = true;
+        } else if(Blocks.FIRE.canCatchFire(aWorld, clickedBlock, EnumFacing.UP)) {
+            prepare(aStack);
+            aWorld.setBlockState(clickedBlock, Blocks.FIRE.getDefaultState());
+            GT_Utility.ItemNBT.setLighterFuel(aStack, --tFuelAmount);
+            if(tFuelAmount == 0L) {
+                useUp(aStack);
+            }
         }
-        GT_Utility.ItemNBT.setLighterFuel(aStack, tFuelAmount);
-        if (tFuelAmount <= 0L) {
-            useUp(aStack);
-        }
-        return rOutput;
+
+        return false;
     }
 
     private void prepare(ItemStack aStack) {
         if (GT_Utility.areStacksEqual(aStack, this.mFullLighter, true)) {
-            aStack.func_150996_a(this.mUsedLighter.getItem());
-            Items.feather.setDamage(aStack, Items.feather.getDamage(this.mUsedLighter));
+            aStack.setItem(this.mUsedLighter.getItem());
+            Items.FEATHER.setDamage(aStack, Items.FEATHER.getDamage(this.mUsedLighter));
             GT_Utility.ItemNBT.setLighterFuel(aStack, this.mFuelAmount);
         }
     }
@@ -104,8 +105,8 @@ public class Behaviour_Lighter
         if (this.mEmptyLighter == null) {
             aStack.stackSize -= 1;
         } else {
-            aStack.func_150996_a(this.mEmptyLighter.getItem());
-            Items.feather.setDamage(aStack, Items.feather.getDamage(this.mEmptyLighter));
+            aStack.setItem(this.mEmptyLighter.getItem());
+            Items.FEATHER.setDamage(aStack, Items.FEATHER.getDamage(this.mEmptyLighter));
         }
     }
 

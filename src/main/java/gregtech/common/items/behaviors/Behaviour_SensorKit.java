@@ -26,7 +26,7 @@ public class Behaviour_SensorKit
                 return false;
             }
             if (((tTileEntity instanceof IGregTechDeviceInformation)) && (((IGregTechDeviceInformation) tTileEntity).isGivingInformation())) {
-                GT_Utility.setStack(aStack, ItemList.NC_SensorCard.get(aStack.stackSize, new Object[0]));
+                GT_Utility.setStack(aStack, ItemList.NC_SensorCard.get(aStack.stackSize));
                 NBTTagCompound tNBT = aStack.getTagCompound();
                 if (tNBT == null) {
                     tNBT = new NBTTagCompound();

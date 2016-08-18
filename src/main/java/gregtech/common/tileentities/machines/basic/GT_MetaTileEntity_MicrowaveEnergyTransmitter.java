@@ -18,6 +18,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.FluidStack;
@@ -51,7 +53,7 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, EnumHand hand) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         this.hasEgg = checkForEgg();
         aBaseMetaTileEntity.openGUI(aPlayer);
@@ -107,13 +109,14 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
         mPassiveEnergyUse = aConfig.get(ConfigCategories.machineconfig, "MicrowaveTransmitter.PassiveEnergy", true);
     }
 
-    public void onFirstTick() {
-        if (getBaseMetaTileEntity().isServerSide()) {
+
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        if (aBaseMetaTileEntity.isServerSide()) {
             if ((this.mTargetX == 0) && (this.mTargetY == 0) && (this.mTargetZ == 0) && (this.mTargetD == 0)) {
-                this.mTargetX = getBaseMetaTileEntity().getXCoord();
-                this.mTargetY = getBaseMetaTileEntity().getYCoord();
-                this.mTargetZ = getBaseMetaTileEntity().getZCoord();
-                this.mTargetD = getBaseMetaTileEntity().getWorld().provider.dimensionId;
+                this.mTargetX = aBaseMetaTileEntity.getXCoord();
+                this.mTargetY = aBaseMetaTileEntity.getYCoord();
+                this.mTargetZ = aBaseMetaTileEntity.getZCoord();
+                this.mTargetD = aBaseMetaTileEntity.getWorld().provider.getDimension();
             }
             this.hasEgg = checkForEgg();
         }
@@ -123,7 +126,7 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
         for (byte i = -5; i <= 5; i = (byte) (i + 1)) {
             for (byte j = -5; j <= 5; j = (byte) (j + 1)) {
                 for (byte k = -5; k <= 5; k = (byte) (k + 1)) {
-                    if (getBaseMetaTileEntity().getBlockOffset(i, j, k) == Blocks.dragon_egg) {
+                    if (getBaseMetaTileEntity().getBlockOffset(i, j, k) == Blocks.DRAGON_EGG) {
                         return true;
                     }
                 }
@@ -137,7 +140,7 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
     }
 
     public boolean isDimensionalTeleportAvailable() {
-        return (this.mDebug) || ((hasDimensionalTeleportCapability()) && (GT_Utility.isRealDimension(this.mTargetD)) && (GT_Utility.isRealDimension(getBaseMetaTileEntity().getWorld().provider.dimensionId)));
+        return (this.mDebug) || ((hasDimensionalTeleportCapability()) && (GT_Utility.isRealDimension(this.mTargetD)) && (GT_Utility.isRealDimension(getBaseMetaTileEntity().getWorld().provider.getDimension())));
     }
 
     @Override
@@ -155,7 +158,7 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
                     if (mPassiveEnergyUse) {
                         getBaseMetaTileEntity().decreaseStoredEnergyUnits((long) Math.pow(2, mTier), false);
                     }
-                    if (hasDimensionalTeleportCapability() && this.mTargetD != getBaseMetaTileEntity().getWorld().provider.dimensionId && mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1))) {
+                    if (hasDimensionalTeleportCapability() && this.mTargetD != getBaseMetaTileEntity().getWorld().provider.getDimension() && mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1))) {
                         mFluid.amount--;
                         if (mFluid.amount < 1) {
                             mFluid = null;
@@ -166,12 +169,12 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
                         tTargetX = mTargetX;
                         tTargetY = mTargetY;
                         tTargetZ = mTargetZ;
-                        if (this.mTargetD == getBaseMetaTileEntity().getWorld().provider.dimensionId) {
+                        if (this.mTargetD == getBaseMetaTileEntity().getWorld().provider.getDimension()) {
                             tTile = getBaseMetaTileEntity().getTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ);
                         } else {
                             World tWorld = DimensionManager.getWorld(this.mTargetD);
                             if (tWorld != null) {
-                                tTile = tWorld.getTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ);
+                                tTile = tWorld.getTileEntity(new BlockPos(this.mTargetX, this.mTargetY, this.mTargetZ));
                             }
                         }
                     }
@@ -195,7 +198,7 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
     }
 
     private int distanceCalculation() {
-        return Math.abs(((this.mTargetD != getBaseMetaTileEntity().getWorld().provider.dimensionId) && (isDimensionalTeleportAvailable()) ? 100 : 1) * (int) Math.sqrt(Math.pow(getBaseMetaTileEntity().getXCoord() - this.mTargetX, 2.0D) + Math.pow(getBaseMetaTileEntity().getYCoord() - this.mTargetY, 2.0D) + Math.pow(getBaseMetaTileEntity().getZCoord() - this.mTargetZ, 2.0D)));
+        return Math.abs(((this.mTargetD != getBaseMetaTileEntity().getWorld().provider.getDimension()) && (isDimensionalTeleportAvailable()) ? 100 : 1) * (int) Math.sqrt(Math.pow(getBaseMetaTileEntity().getXCoord() - this.mTargetX, 2.0D) + Math.pow(getBaseMetaTileEntity().getYCoord() - this.mTargetY, 2.0D) + Math.pow(getBaseMetaTileEntity().getZCoord() - this.mTargetZ, 2.0D)));
     }
 
     @Override

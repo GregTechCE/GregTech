@@ -38,24 +38,24 @@ public class GT_MetaTileEntity_RockBreaker
 
     public int checkRecipe() {
         IGregTechTileEntity aBaseMetaTileEntity = getBaseMetaTileEntity();
-        if ((aBaseMetaTileEntity.getBlockOffset(0, 0, 1) == Blocks.water) || (aBaseMetaTileEntity.getBlockOffset(0, 0, -1) == Blocks.water) || (aBaseMetaTileEntity.getBlockOffset(-1, 0, 0) == Blocks.water) || (aBaseMetaTileEntity.getBlockOffset(1, 0, 0) == Blocks.water)) {
+        if ((aBaseMetaTileEntity.getBlockOffset(0, 0, 1) == Blocks.WATER) || (aBaseMetaTileEntity.getBlockOffset(0, 0, -1) == Blocks.WATER) || (aBaseMetaTileEntity.getBlockOffset(-1, 0, 0) == Blocks.WATER) || (aBaseMetaTileEntity.getBlockOffset(1, 0, 0) == Blocks.WATER)) {
             ItemStack tOutput = null;
-            if (aBaseMetaTileEntity.getBlockOffset(0, 1, 0) == Blocks.lava) {
-                tOutput = new ItemStack(Blocks.stone, 1);
-            } else if ((aBaseMetaTileEntity.getBlockOffset(0, 0, 1) == Blocks.lava) || (aBaseMetaTileEntity.getBlockOffset(0, 0, -1) == Blocks.lava) || (aBaseMetaTileEntity.getBlockOffset(-1, 0, 0) == Blocks.lava) || (aBaseMetaTileEntity.getBlockOffset(1, 0, 0) == Blocks.lava)) {
-                tOutput = new ItemStack(Blocks.cobblestone, 1);
+            if (aBaseMetaTileEntity.getBlockOffset(0, 1, 0) == Blocks.LAVA) {
+                tOutput = new ItemStack(Blocks.STONE, 1);
+            } else if ((aBaseMetaTileEntity.getBlockOffset(0, 0, 1) == Blocks.LAVA) || (aBaseMetaTileEntity.getBlockOffset(0, 0, -1) == Blocks.LAVA) || (aBaseMetaTileEntity.getBlockOffset(-1, 0, 0) == Blocks.LAVA) || (aBaseMetaTileEntity.getBlockOffset(1, 0, 0) == Blocks.LAVA)) {
+                tOutput = new ItemStack(Blocks.COBBLESTONE, 1);
             }
             if (tOutput != null) {
                 if (GT_Utility.areStacksEqual(getInputAt(0), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))) {
-                    tOutput = new ItemStack(Blocks.obsidian, 1);
-                    if (canOutput(new ItemStack[]{tOutput})) {
+                    tOutput = new ItemStack(Blocks.OBSIDIAN, 1);
+                    if (canOutput(tOutput)) {
                         getInputAt(0).stackSize -= 1;
                         this.mOutputItems[0] = tOutput;
                         this.mMaxProgresstime = (128 / (1 << this.mTier - 1));
                         this.mEUt = (32 * (1 << this.mTier - 1) * (1 << this.mTier - 1));
                         return 2;
                     }
-                } else if (canOutput(new ItemStack[]{tOutput})) {
+                } else if (canOutput(tOutput)) {
                     this.mOutputItems[0] = tOutput;
                     this.mMaxProgresstime = (16 / (1 << this.mTier - 1));
                     this.mEUt = (32 * (1 << this.mTier - 1) * (1 << this.mTier - 1));

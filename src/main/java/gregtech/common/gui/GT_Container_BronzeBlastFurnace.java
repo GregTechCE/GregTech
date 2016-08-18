@@ -12,6 +12,7 @@ public class GT_Container_BronzeBlastFurnace
         super(aInventoryPlayer, aTileEntity);
     }
 
+    @Override
     public void addSlots(InventoryPlayer aInventoryPlayer) {
         addSlotToContainer(new Slot(this.mTileEntity, 0, 34, 16));
         addSlotToContainer(new Slot(this.mTileEntity, 1, 34, 34));
@@ -19,10 +20,12 @@ public class GT_Container_BronzeBlastFurnace
         addSlotToContainer(new GT_Slot_Output(this.mTileEntity, 3, 104, 25));
     }
 
+    @Override
     public int getSlotCount() {
         return 4;
     }
 
+    @Override
     public int getShiftClickSlotCount() {
         return 2;
     }

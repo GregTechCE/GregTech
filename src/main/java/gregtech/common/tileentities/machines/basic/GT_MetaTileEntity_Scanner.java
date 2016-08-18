@@ -48,7 +48,7 @@ public class GT_MetaTileEntity_Scanner
                     if (tIndividual != null) {
                         if (((IIndividual) tIndividual).analyze()) {
                             getFillableStack().amount -= 100;
-                            this.mOutputItems[0] = GT_Utility.copy(new Object[]{aStack});
+                            this.mOutputItems[0] = GT_Utility.copy(aStack);
                             aStack.stackSize = 0;
                             NBTTagCompound tNBT = new NBTTagCompound();
                             ((IIndividual) tIndividual).writeToNBT(tNBT);
@@ -57,7 +57,7 @@ public class GT_MetaTileEntity_Scanner
                             this.mEUt = (2 * (1 << this.mTier - 1) * (1 << this.mTier - 1));
                             return 2;
                         }
-                        this.mOutputItems[0] = GT_Utility.copy(new Object[]{aStack});
+                        this.mOutputItems[0] = GT_Utility.copy(aStack);
                         aStack.stackSize = 0;
                         this.mMaxProgresstime = 1;
                         this.mEUt = 1;
@@ -116,7 +116,7 @@ public class GT_MetaTileEntity_Scanner
                     this.mEUt = (32 * (1 << this.mTier - 1) * (1 << this.mTier - 1));
                     return 2;
                 }
-                if (aStack.getItem() == Items.written_book) {
+                if (aStack.getItem() == Items.WRITTEN_BOOK) {
                     getSpecialSlot().stackSize -= 1;
                     aStack.stackSize -= 1;
 
@@ -126,7 +126,7 @@ public class GT_MetaTileEntity_Scanner
                     this.mEUt = (32 * (1 << this.mTier - 1) * (1 << this.mTier - 1));
                     return 2;
                 }
-                if (aStack.getItem() == Items.filled_map) {
+                if (aStack.getItem() == Items.FILLED_MAP) {
                     getSpecialSlot().stackSize -= 1;
                     aStack.stackSize -= 1;
 

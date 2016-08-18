@@ -40,6 +40,10 @@ public class GT_Entity_Arrow extends EntityArrow {
         }
     }
 
+    public void setPickup(PickupStatus pickup) {
+        pickupStatus = pickup;
+    }
+
     public void setArrowStack(ItemStack arrowStack) {
         this.arrowStack = arrowStack;
     }

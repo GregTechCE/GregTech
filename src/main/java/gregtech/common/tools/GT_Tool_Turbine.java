@@ -3,17 +3,19 @@ package gregtech.common.tools;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 
 public abstract class GT_Tool_Turbine extends GT_Tool {
+
     public abstract float getBaseDamage();
 
     @Override
-    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
+    public boolean isMinableBlock(IBlockState aBlock) {
         return false;
     }
 
@@ -27,9 +29,13 @@ public abstract class GT_Tool_Turbine extends GT_Tool {
         return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : null;
     }
 
-    public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new ChatComponentText(EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE + " put " + EnumChatFormatting.RED +
-                aEntity.getCommandSenderName() + "s" + EnumChatFormatting.WHITE + " head into a turbine");
+    @Override
+    public ITextComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
+        return new TextComponentString(TextFormatting.GREEN + "")
+                .appendSibling(aPlayer.getDisplayName())
+                .appendText(TextFormatting.WHITE + " put " + TextFormatting.RED)
+                .appendSibling(aPlayer.getDisplayName())
+                .appendText(TextFormatting.WHITE + " head into turbine");
     }
 
     public abstract IIconContainer getTurbineIcon();

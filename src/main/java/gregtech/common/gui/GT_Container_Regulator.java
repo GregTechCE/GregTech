@@ -1,5 +1,7 @@
 package gregtech.common.gui;
 
+import net.minecraft.inventory.ClickType;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
@@ -9,11 +11,8 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.automation.GT_MetaTileEntity_Regulator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-
-import java.util.Iterator;
 
 public class GT_Container_Regulator
         extends GT_ContainerMetaTile_Machine {
@@ -23,6 +22,7 @@ public class GT_Container_Regulator
         super(aInventoryPlayer, aTileEntity);
     }
 
+    @Override
     public void addSlots(InventoryPlayer aInventoryPlayer) {
         this.mTargetSlots = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
 
@@ -59,11 +59,12 @@ public class GT_Container_Regulator
         addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 18, 8, 63, false, true, 1));
     }
 
-    public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
+    @Override
+    public ItemStack slotClick(int aSlotIndex, int aMouseclick, ClickType aShifthold, EntityPlayer aPlayer) {
         if (aSlotIndex < 9) {
             return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
         }
-        Slot tSlot = (Slot) this.inventorySlots.get(aSlotIndex);
+        Slot tSlot = this.inventorySlots.get(aSlotIndex);
         if (tSlot != null) {
             if (this.mTileEntity.getMetaTileEntity() == null) {
                 return null;
@@ -80,15 +81,15 @@ public class GT_Container_Regulator
             if ((aSlotIndex >= 9) && (aSlotIndex < 18)) {
                 ItemStack tStack = aPlayer.inventory.getItemStack();
                 if (tStack != null) {
-                    tSlot.putStack(GT_Utility.copy(new Object[]{tStack}));
+                    tSlot.putStack(GT_Utility.copy(tStack));
                 } else if (tSlot.getStack() != null) {
                     if (aMouseclick == 0) {
-                        tSlot.getStack().stackSize -= (aShifthold == 1 ? 8 : 1);
+                        tSlot.getStack().stackSize -= (aShifthold == ClickType.PICKUP ? 8 : 1);
                         if (tSlot.getStack().stackSize <= 0) {
                             tSlot.putStack(null);
                         }
                     } else {
-                        tSlot.getStack().stackSize += (aShifthold == 1 ? 8 : 1);
+                        tSlot.getStack().stackSize += (aShifthold == ClickType.PICKUP ? 8 : 1);
                         if (tSlot.getStack().stackSize > tSlot.getStack().getMaxStackSize()) {
                             tSlot.getStack().stackSize = tSlot.getStack().getMaxStackSize();
                         }
@@ -97,13 +98,14 @@ public class GT_Container_Regulator
                 return null;
             }
             if ((aSlotIndex >= 18) && (aSlotIndex < 27)) {
-                ((GT_MetaTileEntity_Regulator) this.mTileEntity.getMetaTileEntity()).mTargetSlots[(aSlotIndex - 18)] = Math.min(99, Math.max(0, ((GT_MetaTileEntity_Regulator) this.mTileEntity.getMetaTileEntity()).mTargetSlots[(aSlotIndex - 18)] + (aMouseclick == 0 ? -1 : 1) * (aShifthold == 0 ? 1 : 16)));
+                ((GT_MetaTileEntity_Regulator) this.mTileEntity.getMetaTileEntity()).mTargetSlots[(aSlotIndex - 18)] = Math.min(99, Math.max(0, ((GT_MetaTileEntity_Regulator) this.mTileEntity.getMetaTileEntity()).mTargetSlots[(aSlotIndex - 18)] + (aMouseclick == 0 ? -1 : 1) * (aShifthold == ClickType.QUICK_CRAFT ? 1 : 16)));
                 return null;
             }
         }
         return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
     }
 
+    @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
         if ((this.mTileEntity.isClientSide()) || (this.mTileEntity.getMetaTileEntity() == null)) {
@@ -113,9 +115,7 @@ public class GT_Container_Regulator
         for (int i = 0; i < 9; i++) {
             this.mTargetSlots[i] = ((GT_MetaTileEntity_Regulator) this.mTileEntity.getMetaTileEntity()).mTargetSlots[i];
         }
-        Iterator var2 = this.crafters.iterator();
-        while (var2.hasNext()) {
-            ICrafting var1 = (ICrafting) var2.next();
+        for (IContainerListener var1 : this.listeners) {
             for (int i = 0; i < 9; i++) {
                 var1.sendProgressBarUpdate(this, 100 + i, this.mTargetSlots[i]);
             }
@@ -123,6 +123,7 @@ public class GT_Container_Regulator
     }
 
     @SideOnly(Side.CLIENT)
+    @Override
     public void updateProgressBar(int par1, int par2) {
         super.updateProgressBar(par1, par2);
         switch (par1) {

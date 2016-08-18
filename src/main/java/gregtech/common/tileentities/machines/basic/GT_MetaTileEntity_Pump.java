@@ -6,30 +6,22 @@ import gregtech.api.gui.GT_GUIContainer_BasicTank;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.ChunkPosition;
+import net.minecraft.util.EnumHand;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidBlock;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 
 import static gregtech.api.enums.GT_Values.V;
 
 public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
 
-    public ArrayList<ChunkPosition> mPumpList = new ArrayList();
-    public int mPumpTimer = 0;
-    public int mPumpCountBelow = 0;
+    //public ArrayList<ChunkPos> mPumpList = new ArrayList<>();
+    //public int mPumpTimer = 0;
+    //public int mPumpCountBelow = 0;
     public Block mPumpedBlock1 = null;
     public Block mPumpedBlock2 = null;
 
@@ -106,7 +98,7 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (getBaseMetaTileEntity().isServerSide()) {
+        /*if (getBaseMetaTileEntity().isServerSide()) {
             this.mPumpTimer -= 1;
             if ((getBaseMetaTileEntity() instanceof BaseTileEntity)) {
                 ((BaseTileEntity) getBaseMetaTileEntity()).ignoreUnloadedChunks = false;
@@ -151,9 +143,9 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
                         }
                         if ((!tMovedOneDown) && (this.mPumpTimer <= 0)) {
                             while ((!this.mPumpList.isEmpty())
-                                    && (!consumeFluid(((ChunkPosition) this.mPumpList.get(this.mPumpList.size() - 1)).chunkPosX,
-                                    ((ChunkPosition) this.mPumpList.get(this.mPumpList.size() - 1)).chunkPosY,
-                                    ((ChunkPosition) this.mPumpList.remove(this.mPumpList.size() - 1)).chunkPosZ))) {
+                                    && (!consumeFluid(((ChunkPos) this.mPumpList.get(this.mPumpList.size() - 1)).chunkXPos,
+                                    0,
+                                    this.mPumpList.remove(this.mPumpList.size() - 1).chunkZPos))) {
                             }
                             this.mPumpTimer = 160 / ((int) Math.pow(2, this.mTier));
                         }
@@ -207,17 +199,17 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
         return y;
     }
 
-    private void scanForFluid(int aX, int aY, int aZ, ArrayList<ChunkPosition> aList, int mX, int mZ, int mDist) {
+    private void scanForFluid(int aX, int aY, int aZ, ArrayList<ChunkPos> aList, int mX, int mZ, int mDist) {
         doTickProfilingInThisTick = false;
         ArrayList tList1 = new ArrayList();
         ArrayList tList2 = new ArrayList();
-        tList1.add(new ChunkPosition(aX, aY, aZ));
+        tList1.add(new ChunkPos(aX, aY, aZ));
         while (!tList1.isEmpty()) {
             Iterator i$ = tList1.iterator();
             do {
                 if (!i$.hasNext())
                     break;
-                ChunkPosition tPos = (ChunkPosition) i$.next();
+                ChunkPos tPos = (ChunkPos) i$.next();
                 if (tPos.chunkPosX < mX + mDist)
                     addToFirstListIfFluidAndNotAlreadyAddedToAnyOfTheLists(tPos.chunkPosX + 1, tPos.chunkPosY, tPos.chunkPosZ, tList2, aList);
                 if (tPos.chunkPosX > mX - mDist)
@@ -227,7 +219,7 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
                 if (tPos.chunkPosZ > mZ - mDist)
                     addToFirstListIfFluidAndNotAlreadyAddedToAnyOfTheLists(tPos.chunkPosX, tPos.chunkPosY, tPos.chunkPosZ - 1, tList2, aList);
                 addToFirstListIfFluidAndNotAlreadyAddedToAnyOfTheLists(tPos.chunkPosX, tPos.chunkPosY + 1, tPos.chunkPosZ, tList2, aList);
-                ChunkPosition tCoordinate = new ChunkPosition(aX, aY + 1, aZ);
+                ChunkPos tCoordinate = new ChunkPos(aX, aY + 1, aZ);
                 if (tPos.chunkPosX == mX && tPos.chunkPosZ == mZ && tPos.chunkPosY < getBaseMetaTileEntity().getYCoord() && !aList.contains(tCoordinate) && !tList2.contains(tCoordinate))
                     tList2.add(tCoordinate);
             } while (true);
@@ -236,12 +228,12 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
             tList2 = new ArrayList();
         }
         for (int y = getBaseMetaTileEntity().getYCoord(); y >= aY; y--)
-            aList.remove(new ChunkPosition(aX, y, aZ));
+            aList.remove(new ChunkPos(aX, y, aZ));
     }
 
-    private boolean addToFirstListIfFluidAndNotAlreadyAddedToAnyOfTheLists(int aX, int aY, int aZ, ArrayList<ChunkPosition> aList1,
-                                                                           ArrayList<ChunkPosition> aList2) {
-        ChunkPosition tCoordinate = new ChunkPosition(aX, aY, aZ);
+    private boolean addToFirstListIfFluidAndNotAlreadyAddedToAnyOfTheLists(int aX, int aY, int aZ, ArrayList<ChunkPos> aList1,
+                                                                           ArrayList<ChunkPos> aList2) {
+        ChunkPos tCoordinate = new ChunkPos(aX, aY, aZ);
         if ((!aList1.contains(tCoordinate)) && (!aList2.contains(tCoordinate))) {
             Block aBlock = getBaseMetaTileEntity().getBlock(aX, aY, aZ);
             if ((this.mPumpedBlock1 == aBlock) || (this.mPumpedBlock2 == aBlock)) {
@@ -325,10 +317,10 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
             return true;
         }
         return false;
-    }
+    */}
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, EnumHand hand) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         aBaseMetaTileEntity.openGUI(aPlayer);
         return true;

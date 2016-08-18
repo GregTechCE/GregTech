@@ -4,6 +4,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 
 public class GT_Tool_Turbine_Small extends GT_Tool_Turbine {
+
     @Override
     public float getSpeedMultiplier() {
         return 1.0F;
@@ -23,4 +24,5 @@ public class GT_Tool_Turbine_Small extends GT_Tool_Turbine {
     public IIconContainer getTurbineIcon() {
         return Textures.ItemIcons.TURBINE_SMALL;
     }
+
 }

@@ -15,9 +15,11 @@ public class ProcessingSand implements gregtech.api.interfaces.IOreRecipeRegistr
 
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         if (aOreDictName.equals("sandCracked")) {
-            GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(16L, new Object[]{aStack}), -1, gregtech.api.util.GT_ModHandler.getFuelCan(25000), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 8L), null, null, null, new ItemStack(Blocks.sand, 10), 2500);
+            GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(16L, aStack), -1, gregtech.api.util.GT_ModHandler.getFuelCan(25000), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 8L), null, null, null, new ItemStack(Blocks.SAND, 10, 1), 2500);
+            GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(16L, aStack), -1, gregtech.api.util.GT_ModHandler.getFuelCan(25000), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 8L), null, null, null, new ItemStack(Blocks.SAND, 10), 2500);
         } else if (aOreDictName.equals("sandOil")) {
-            GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(2L, new Object[]{aStack}), 1, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oil, 1L), new ItemStack(Blocks.sand, 1, 0), null, null, null, null, 1000);
+            GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(2L, aStack), 1, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oil, 1L), new ItemStack(Blocks.SAND, 1, 1), null, null, null, null, 1000);
+            GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(2L, aStack), 1, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oil, 1L), new ItemStack(Blocks.SAND, 1, 0), null, null, null, null, 1000);
         }
     }
 }

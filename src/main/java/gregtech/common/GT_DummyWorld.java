@@ -1,132 +1,160 @@
 package gregtech.common;
 
-import net.minecraft.block.Block;
+import gregtech.common.tools.GT_Tool;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.profiler.Profiler;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
-import net.minecraft.world.WorldSettings;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.*;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.chunk.storage.IChunkLoader;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.minecraft.world.storage.IPlayerFileData;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.WorldInfo;
 
+import javax.annotation.Nullable;
 import java.io.File;
 
-public class GT_DummyWorld
-        extends World {
+public class GT_DummyWorld extends World {
+
+    public static WorldSettings DUMMY_SETTINGS =
+            new WorldSettings(1L, GameType.SURVIVAL, true, false, WorldType.DEFAULT);
+
+    public static WorldInfo DUMMY_INFO = new WorldInfo(DUMMY_SETTINGS, "DUMMY_DIMENSION");
+
     public GT_IteratorRandom mRandom = new GT_IteratorRandom();
     public ItemStack mLastSetBlock = null;
 
     public GT_DummyWorld(ISaveHandler par1iSaveHandler, String par2Str, WorldProvider par3WorldProvider, WorldSettings par4WorldSettings, Profiler par5Profiler) {
-        super(par1iSaveHandler, par2Str, par4WorldSettings, par3WorldProvider, par5Profiler);
-        this.rand = this.mRandom;
+        super(par1iSaveHandler, par1iSaveHandler.loadWorldInfo(), par3WorldProvider, par5Profiler, false);
+        //this.rand = this.mRandom;
     }
 
     public GT_DummyWorld() {
         this(new ISaveHandler() {
-                 public void saveWorldInfoWithPlayer(WorldInfo var1, NBTTagCompound var2) {
-                 }
 
-                 public void saveWorldInfo(WorldInfo var1) {
-                 }
-
+                 @Override
                  public WorldInfo loadWorldInfo() {
+                     return DUMMY_INFO;
+                 }
+
+                 @Override
+                 public void checkSessionLock() throws MinecraftException {}
+
+                 @Override
+                 public IChunkLoader getChunkLoader(WorldProvider provider) {
                      return null;
                  }
 
-                 public IPlayerFileData getSaveHandler() {
+                 @Override
+                 public void saveWorldInfoWithPlayer(WorldInfo worldInformation, NBTTagCompound tagCompound) {}
+
+                 @Override
+                 public void saveWorldInfo(WorldInfo worldInformation) {}
+
+                 @Override
+                 public IPlayerFileData getPlayerNBTManager() {
                      return null;
                  }
 
-                 public File getMapFileFromName(String var1) {
-                     return null;
-                 }
+                 @Override
+                 public void flush() {}
 
-                 public IChunkLoader getChunkLoader(WorldProvider var1) {
-                     return null;
-                 }
-
-                 public void flush() {
-                 }
-
-                 public void checkSessionLock() {
-                 }
-
-                 public String getWorldDirectoryName() {
-                     return null;
-                 }
-
+                 @Override
                  public File getWorldDirectory() {
                      return null;
                  }
-             }, "DUMMY_DIMENSION", null,
-//				new WorldProvider(),
-//    
-//
-//
-//      new WorldSettings(new WorldInfo(new NBTTagCompound()))
-//      {
-//        public String getDimensionName()
-//        {
-//          return "DUMMY_DIMENSION";
-//        }
-//      }
-                new WorldSettings(new WorldInfo(new NBTTagCompound())), new Profiler());
+
+                 @Override
+                 public File getMapFileFromName(String mapName) {
+                     return null;
+                 }
+
+                 @Override
+                 public TemplateManager getStructureTemplateManager() {
+                     return null;
+                 }
+             }, DUMMY_INFO.getWorldName(), null, DUMMY_SETTINGS, new Profiler());
     }
 
     protected IChunkProvider createChunkProvider() {
         return null;
     }
 
+    @Override
+    protected boolean isChunkLoaded(int x, int z, boolean allowEmpty) {
+        return false;
+    }
+
+    @Override
     public Entity getEntityByID(int aEntityID) {
         return null;
     }
 
-    public boolean setBlock(int aX, int aY, int aZ, Block aBlock, int aMeta, int aFlags) {
-        this.mLastSetBlock = new ItemStack(aBlock, 1, aMeta);
+    @Override
+    public boolean setBlockState(BlockPos pos, IBlockState newState, int flags) {
+        this.mLastSetBlock = GT_Tool.getBlockStack(newState);
         return true;
     }
 
-    public float getSunBrightnessFactor(float p_72967_1_) {
+    @Override
+    public float getSunBrightness(float par1) {
         return 1.0F;
     }
 
-    public BiomeGenBase getBiomeGenForCoords(int aX, int aZ) {
-        if ((aX >= 16) && (aZ >= 16) && (aX < 32) && (aZ < 32)) {
-            return BiomeGenBase.plains;
-        }
-        return BiomeGenBase.ocean;
+    @Override
+    public Biome getBiomeForCoordsBody(BlockPos pos) {
+        return getBiomeGenForCoords(pos);
     }
 
-    public int getFullBlockLightValue(int aX, int aY, int aZ) {
+    @Override
+    public Biome getBiomeGenForCoords(BlockPos pos) {
+        return Biomes.PLAINS;
+    }
+
+    @Override
+    public int getLight(BlockPos pos) {
         return 10;
     }
 
-    public Block getBlock(int aX, int aY, int aZ) {
-        if ((aX >= 16) && (aZ >= 16) && (aX < 32) && (aZ < 32)) {
-            return aY == 64 ? Blocks.grass : Blocks.air;
-        }
-        return Blocks.air;
+    @Override
+    public int getCombinedLight(BlockPos pos, int lightValue) {
+        return 10;
     }
 
-    public int getBlockMetadata(int aX, int aY, int aZ) {
-        return 0;
+    @Override
+    public IBlockState getBlockState(BlockPos pos) {
+        return Blocks.AIR.getDefaultState();
     }
 
-    public boolean canBlockSeeTheSky(int aX, int aY, int aZ) {
-        if ((aX >= 16) && (aZ >= 16) && (aX < 32) && (aZ < 32)) {
-            return aY > 64;
-        }
+    @Nullable
+    @Override
+    public TileEntity getTileEntity(BlockPos pos) {
+        return null;
+    }
+
+    @Override
+    public void setTileEntity(BlockPos pos, @Nullable TileEntity tileEntityIn) {}
+
+    @Override
+    public void removeTileEntity(BlockPos pos) {}
+
+    @Override
+    public boolean addTileEntity(TileEntity tile) {
         return true;
     }
 
-    protected int func_152379_p() {
-        return 0;
+    @Override
+    public boolean canBlockSeeSky(BlockPos pos) {
+        return true;
     }
+
+
 }

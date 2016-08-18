@@ -9,7 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 import net.minecraft.util.IChatComponent;
 
 public class GT_Tool_SoftHammer
@@ -104,6 +104,6 @@ public class GT_Tool_SoftHammer
     }
 
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " was hammered to death by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
+        return new ChatComponentText(TextFormatting.RED + aEntity.getCommandSenderName() + TextFormatting.WHITE + " was hammered to death by " + TextFormatting.GREEN + aPlayer.getCommandSenderName() + TextFormatting.WHITE);
     }
 }

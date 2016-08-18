@@ -8,7 +8,7 @@ public class GT_MinableRegistrator
         implements Runnable {
     public void run() {
         GT_Log.out.println("GT_Mod: Adding Blocks to the Miners Valuable List.");
-        GT_ModHandler.addValuableOre(Blocks.glowstone, 0, 1);
-        GT_ModHandler.addValuableOre(Blocks.soul_sand, 0, 1);
+        GT_ModHandler.addValuableOre(Blocks.GLOWSTONE, 0, 1);
+        GT_ModHandler.addValuableOre(Blocks.SOUL_SAND, 0, 1);
     }
 }

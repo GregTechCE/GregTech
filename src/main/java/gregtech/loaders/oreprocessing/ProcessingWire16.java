@@ -1,8 +1,5 @@
 package gregtech.loaders.oreprocessing;
 
-import appeng.api.config.TunnelType;
-import appeng.core.Api;
-import gregtech.GT_Mod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
@@ -20,8 +17,8 @@ public class ProcessingWire16 implements gregtech.api.interfaces.IOreRecipeRegis
         GT_ModHandler.addShapelessCraftingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), new Object[]{OrePrefixes.wireGt08.get(aMaterial), OrePrefixes.wireGt08.get(aMaterial)});
         GT_ModHandler.addShapelessCraftingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), new Object[]{OrePrefixes.wireGt12.get(aMaterial), OrePrefixes.wireGt04.get(aMaterial)});
 
-        if (GT_Mod.gregtechproxy.mAE2Integration) {
-            Api.INSTANCE.registries().p2pTunnel().addNewAttunement(aStack, TunnelType.IC2_POWER);
-        }
+        //if (GT_Mod.gregtechproxy.mAE2Integration) {
+        //    Api.INSTANCE.registries().p2pTunnel().addNewAttunement(aStack, TunnelType.IC2_POWER);
+        //}
     }
 }

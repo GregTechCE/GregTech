@@ -14,12 +14,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidHandler;
 
-public abstract class GT_MetaTileEntity_Boiler
-        extends GT_MetaTileEntity_BasicTank {
+public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTank {
+
     public int mTemperature = 20;
     public int mProcessingEnergy = 0;
     public int mLossTimer = 0;
@@ -34,6 +35,7 @@ public abstract class GT_MetaTileEntity_Boiler
         super(aName, aTier, 4, aDescription, aTextures);
     }
 
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         ITexture[] tmp = mTextures[aSide >= 2 ? aSide != aFacing ? 2 : ((byte) (aActive ? 4 : 3)) : aSide][aColorIndex + 1];
         //mTextures[(aSide==aFacing?(aActive?4:3):aSide==GT_Utility.getOppositeSide(aFacing)?2:aSide==0?0:aSide==1?1:2)][aColorIndex+1];
@@ -43,50 +45,60 @@ public abstract class GT_MetaTileEntity_Boiler
         return tmp;
     }
 
+    @Override
     public boolean isElectric() {
         return false;
     }
 
+    @Override
     public boolean isPneumatic() {
         return false;
     }
 
+    @Override
     public boolean isSteampowered() {
         return false;
     }
 
+    @Override
     public boolean isSimpleMachine() {
         return false;
     }
 
+    @Override
     public boolean isFacingValid(byte aFacing) {
         return aFacing > 1;
     }
 
+    @Override
     public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
     }
 
+    @Override
     public boolean isValidSlot(int aIndex) {
         return true;
     }
 
+    @Override
     public int getProgresstime() {
         return this.mTemperature;
     }
 
+    @Override
     public int maxProgresstime() {
         return 500;
     }
 
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, EnumHand hand) {
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         }
         if (aPlayer != null) {
-            if (GT_Utility.areStacksEqual(aPlayer.getCurrentEquippedItem(), new ItemStack(Items.water_bucket, 1))) {
-                fill(Materials.Water.getFluid(1000 * aPlayer.getCurrentEquippedItem().stackSize), true);
-                aPlayer.getCurrentEquippedItem().func_150996_a(Items.bucket);
+            if (GT_Utility.areStacksEqual(aPlayer.getHeldItem(hand), new ItemStack(Items.WATER_BUCKET, 1))) {
+                fill(Materials.Water.getFluid(1000 * aPlayer.getHeldItem(hand).stackSize), true);
+                aPlayer.getHeldItem(hand).setItem(Items.BUCKET);
             } else {
                 aBaseMetaTileEntity.openGUI(aPlayer);
             }
@@ -94,60 +106,69 @@ public abstract class GT_MetaTileEntity_Boiler
         return true;
     }
 
+    @Override
     public boolean doesFillContainers() {
         return true;
     }
 
+    @Override
     public boolean doesEmptyContainers() {
         return true;
     }
 
+    @Override
     public boolean canTankBeFilled() {
         return true;
     }
 
+    @Override
     public boolean canTankBeEmptied() {
         return true;
     }
 
+    @Override
     public boolean displaysItemStack() {
         return false;
     }
 
+    @Override
     public boolean displaysStackSize() {
         return false;
     }
 
+    @Override
     public boolean isFluidInputAllowed(FluidStack aFluid) {
         return GT_ModHandler.isWater(aFluid);
     }
 
+    @Override
     public FluidStack getDrainableStack() {
         return this.mSteam;
     }
 
+    @Override
     public FluidStack setDrainableStack(FluidStack aFluid) {
         this.mSteam = aFluid;
         return this.mSteam;
     }
 
+    @Override
     public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCover) {
         return GregTech_API.getCoverBehavior(aCover.toStack()).isSimpleCover();
     }
 
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("mLossTimer", this.mLossTimer);
         aNBT.setInteger("mTemperature", this.mTemperature);
         aNBT.setInteger("mProcessingEnergy", this.mProcessingEnergy);
         if (this.mSteam != null) {
-            try {
-                aNBT.setTag("mSteam", this.mSteam.writeToNBT(new NBTTagCompound()));
-            } catch (Throwable e) {
-            }
+            aNBT.setTag("mSteam", this.mSteam.writeToNBT(new NBTTagCompound()));
         }
     }
 
+    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         this.mLossTimer = aNBT.getInteger("mLossTimer");
@@ -156,6 +177,7 @@ public abstract class GT_MetaTileEntity_Boiler
         this.mSteam = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mSteam"));
     }
 
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if ((aBaseMetaTileEntity.isServerSide()) && (aTick > 20L)) {
             if (this.mTemperature <= 20) {
@@ -166,16 +188,17 @@ public abstract class GT_MetaTileEntity_Boiler
                 this.mTemperature -= 1;
                 this.mLossTimer = 0;
             }
-            for (byte i = 1; (this.mSteam != null) && (i < 6); i = (byte) (i + 1)) {
-                if (i != aBaseMetaTileEntity.getFrontFacing()) {
-                    IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide(i);
-                    if (tTileEntity != null) {
-                        FluidStack tDrained = aBaseMetaTileEntity.drain(ForgeDirection.getOrientation(i), Math.max(1, this.mSteam.amount / 2), false);
-                        if (tDrained != null) {
-                            int tFilledAmount = tTileEntity.fill(ForgeDirection.getOrientation(i).getOpposite(), tDrained, false);
-                            if (tFilledAmount > 0) {
-                                tTileEntity.fill(ForgeDirection.getOrientation(i).getOpposite(), aBaseMetaTileEntity.drain(ForgeDirection.getOrientation(i), tFilledAmount, true), true);
-                            }
+            if (getFluidAmount() != 0) {
+                for (EnumFacing side : EnumFacing.VALUES) {
+                    if (side.getIndex() != aBaseMetaTileEntity.getFrontFacing()) {
+                        int drain = GT_Utility.fillFluidTank(
+                                aBaseMetaTileEntity.getWorld(),
+                                aBaseMetaTileEntity.getPos(), side,
+                                getDrainableStack());
+                        if (drain != 0) {
+                            drain(side, drain, true);
+                            if (getFluidAmount() == 0)
+                                break;
                         }
                     }
                 }
@@ -243,28 +266,34 @@ public abstract class GT_MetaTileEntity_Boiler
         }
     }
 
+    @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return false;
     }
 
+    @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return false;
     }
 
+    @Override
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
         if (aIndex == 1) {
-            GT_Utility.doSoundAtClient((String) GregTech_API.sSoundList.get(Integer.valueOf(4)), 2, 1.0F, aX, aY, aZ);
+            GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(4), 2, 1.0F, aX, aY, aZ);
             for (int l = 0; l < 8; l++) {
-                getBaseMetaTileEntity().getWorld().spawnParticle("largesmoke", aX - 0.5D + Math.random(), aY, aZ - 0.5D + Math.random(), 0.0D, 0.0D, 0.0D);
+                getBaseMetaTileEntity().getWorld().spawnParticle(EnumParticleTypes.SMOKE_LARGE, aX - 0.5D + Math.random(), aY, aZ - 0.5D + Math.random(), 0.0D, 0.0D, 0.0D);
             }
         }
     }
 
+    @Override
     public int getCapacity() {
         return 16000;
     }
 
+    @Override
     public int getTankPressure() {
         return 100;
     }
+
 }

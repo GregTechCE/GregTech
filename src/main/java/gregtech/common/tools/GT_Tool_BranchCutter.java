@@ -5,73 +5,91 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.block.Block;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.event.world.BlockEvent;
 
 import java.util.List;
 
-public class GT_Tool_BranchCutter
-        extends GT_Tool {
+public class GT_Tool_BranchCutter extends GT_Tool {
+
+    @Override
     public float getBaseDamage() {
         return 2.5F;
     }
 
+    @Override
     public float getSpeedMultiplier() {
         return 0.25F;
     }
 
+    @Override
     public float getMaxDurabilityMultiplier() {
         return 0.25F;
     }
 
+    @Override
     public boolean isGrafter() {
         return true;
     }
 
-    public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX, int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
-        if (aBlock.getMaterial() == Material.leaves) {
-            aEvent.dropChance = Math.min(1.0F, Math.max(aEvent.dropChance, (aStack.getItem().getHarvestLevel(aStack, "") + 1) * 0.2F));
-            if (aBlock == Blocks.leaves) {
+    @Override
+    public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, IBlockState aBlock, BlockPos blockPos, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
+        if (aBlock.getMaterial() == Material.LEAVES) {
+            aEvent.setDropChance(Math.min(1.0F, Math.max(aEvent.getDropChance(), (aStack.getItem().getHarvestLevel(aStack, "") + 1) * 0.2F)));
+            if (aBlock.getBlock() == Blocks.LEAVES) {
                 aDrops.clear();
-                if (((aMetaData & 0x3) == 0) && (aPlayer.worldObj.rand.nextInt(9) <= aFortune * 2)) {
-                    aDrops.add(new ItemStack(Items.apple, 1, 0));
+                if ((aBlock.getValue(BlockOldLeaf.VARIANT) == BlockPlanks.EnumType.OAK &&
+                        aPlayer.worldObj.rand.nextInt(9) <= aFortune * 2)) {
+                    aDrops.add(new ItemStack(Items.APPLE, 1, 0));
                 } else {
-                    aDrops.add(new ItemStack(Blocks.sapling, 1, aMetaData & 0x3));
+                    aDrops.add(new ItemStack(Blocks.SAPLING, 1, aBlock
+                            .getValue(BlockOldLeaf.VARIANT).getMetadata()));
                 }
-            } else if (aBlock == Blocks.leaves2) {
+            } else if (aBlock == Blocks.LEAVES2) {
                 aDrops.clear();
-                aDrops.add(new ItemStack(Blocks.sapling, 1, (aMetaData & 0x3) + 4));
-            } else if (aBlock == GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("rubberLeaves", 1L))) {
+                aDrops.add(new ItemStack(Blocks.SAPLING, 1, aBlock
+                        .getValue(BlockNewLeaf.VARIANT).getMetadata()));
+            } else if (aBlock == GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("rubberLeaves", 1))) {
                 aDrops.clear();
-                aDrops.add(GT_ModHandler.getIC2Item("rubberSapling", 1L));
+                aDrops.add(GT_ModHandler.getIC2Item("rubberSapling", 1));
             }
         }
         return 0;
     }
 
-    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
-        String tTool = aBlock.getHarvestTool(aMetaData);
-        return ((tTool != null) && (tTool.equals("grafter"))) || (aBlock.getMaterial() == Material.leaves);
+    @Override
+    public boolean isMinableBlock(IBlockState aBlock) {
+        String tTool = aBlock.getBlock().getHarvestTool(aBlock);
+        return ((tTool != null) && (tTool.equals("grafter"))) || (aBlock.getMaterial() == Material.LEAVES);
     }
 
+    @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? Textures.ItemIcons.GRAFTER : null;
     }
 
+    @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
     }
 
-    public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " has been trimmed by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
+    @Override
+    public ITextComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
+        return new TextComponentString(TextFormatting.RED + "")
+                .appendSibling(aEntity.getDisplayName())
+                .appendText(TextFormatting.WHITE + " has been trimmed by " + TextFormatting.GREEN)
+                .appendSibling(aPlayer.getDisplayName());
     }
+
 }

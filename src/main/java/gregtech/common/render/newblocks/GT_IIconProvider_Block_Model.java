@@ -1,124 +1,82 @@
 package gregtech.common.render.newblocks;
 
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.GT_Generic_Block;
 import gregtech.common.render.IIconRegister;
+import gregtech.common.render.newitems.GT_IIconProvider_Item_Model;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.*;
-import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
-import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.*;
+import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
-import net.minecraftforge.common.model.IModelPart;
-import net.minecraftforge.common.model.IModelState;
-import net.minecraftforge.common.model.TRSRTransformation;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class GT_IIconProvider_Block_Model implements ICustomModelLoader, IModel, IBakedModel {
+@SideOnly(Side.CLIENT)
+public class GT_IIconProvider_Block_Model implements IBakedModel {
 
-    private static GT_IIconProvider_Block_Model INSTANCE = new GT_IIconProvider_Block_Model();
     private static ModelResourceLocation RESOURCE_LOCATION = new ModelResourceLocation("gregtech", "IBlockIconProvider");
 
     private VertexFormat vertexFormat;
+
+    private EntityPlayer entityPlayer;
     private ItemStack itemStack;
 
-    //-----------------------------------------
-    // IModelLoader
-    //-----------------------------------------
+    public GT_IIconProvider_Block_Model() {
+        this.vertexFormat = DefaultVertexFormats.BLOCK;
+        MinecraftForge.EVENT_BUS.register(this);
+        setupBlockModels();
+    }
 
-    public static void setupBlocksIcons() {
-        TextureMap iconRegisterer = Minecraft.getMinecraft().getTextureMapBlocks();
+    @SubscribeEvent
+    public void onTextureMapStitch(TextureStitchEvent.Pre event) {
         for(ResourceLocation itemId : Block.REGISTRY.getKeys()) {
             Block block = Block.REGISTRY.getObject(itemId);
             if(block instanceof IIconRegister) {
-                ((IIconRegister) block).registerIcons(iconRegisterer);
+                ((IIconRegister) block).registerIcons(event.getMap());
             }
         }
     }
 
-    public static void setupBlockModels() {
-        ModelLoaderRegistry.registerLoader(INSTANCE);
+    @SubscribeEvent
+    public void onModelsBake(ModelBakeEvent event) {
+        event.getModelRegistry().putObject(RESOURCE_LOCATION, this);
+    }
+
+    private static void setupBlockModels() {
         for(ResourceLocation itemId : Block.REGISTRY.getKeys()) {
             Block block = Block.REGISTRY.getObject(itemId);
             if(block instanceof IBlockIconProvider || block instanceof ITextureBlockIconProvider) {
                 Item itemBlock = Item.getItemFromBlock(block);
                 if(itemBlock != null) {
                     ModelBakery.registerItemVariants(itemBlock, RESOURCE_LOCATION);
-                    ModelLoader.setCustomMeshDefinition(itemBlock, new ItemMeshDefinition() {
-                        @Override
-                        public ModelResourceLocation getModelLocation(ItemStack stack) {
-                            return RESOURCE_LOCATION;
-                        }
-                    });
+                    ModelLoader.setCustomMeshDefinition(itemBlock, stack -> RESOURCE_LOCATION);
                 }
-                ModelLoader.setCustomStateMapper(block, new IStateMapper() {
-                    @Override
-                    public Map<IBlockState, ModelResourceLocation> putStateModelLocations(Block blockIn) {
-                        return new FakeStateMap();
-                    }
-                });
+                ModelLoader.setCustomStateMapper(block, blockIn -> new FakeStateMap());
             }
         }
-    }
-
-    @Override
-    public boolean accepts(ResourceLocation modelLocation) {
-        return modelLocation.equals(RESOURCE_LOCATION);
-    }
-
-    @Override
-    public IModel loadModel(ResourceLocation modelLocation) throws Exception {
-        return this;
-    }
-
-    @Override
-    public void onResourceManagerReload(IResourceManager resourceManager) {}
-
-
-    //-----------------------------------------
-    // IModel
-    //-----------------------------------------
-
-    @Override
-    public Collection<ResourceLocation> getDependencies() {
-        return Collections.emptyList();
-    }
-
-    @Override
-    public Collection<ResourceLocation> getTextures() {
-        return Collections.emptyList();
-    }
-
-    @Override
-    public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
-        this.vertexFormat = format;
-        return this;
-    }
-
-    @Override
-    public IModelState getDefaultState() {
-        return new SimpleModelState(ImmutableMap.<IModelPart, TRSRTransformation>of());
     }
 
     //-----------------------------------------
@@ -152,7 +110,7 @@ public class GT_IIconProvider_Block_Model implements ICustomModelLoader, IModel,
             if(state.getBlock() instanceof ITextureBlockIconProvider) {
                 ITextureBlockIconProvider blockIconProvider = (ITextureBlockIconProvider) renderBlock;
                 if(state == null) {
-                    ITexture[] textures = blockIconProvider.getItemblockTexture(itemStack, side);
+                    ITexture[] textures = blockIconProvider.getItemblockTexture(entityPlayer, itemStack, side);
                     for(ITexture iTexture : textures) {
                         builder.addAll(iTexture.getQuads(renderBlock, BlockPos.ORIGIN, side, 0));
                     }
@@ -246,6 +204,9 @@ public class GT_IIconProvider_Block_Model implements ICustomModelLoader, IModel,
             @Override
             public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
                 GT_IIconProvider_Block_Model.this.itemStack = stack;
+                if(entity instanceof EntityPlayer) {
+                    GT_IIconProvider_Block_Model.this.entityPlayer = (EntityPlayer) entity;
+                }
                 return GT_IIconProvider_Block_Model.this;
             }
         };

@@ -12,6 +12,7 @@ import gregtech.api.events.BlockScanningEvent;
 import gregtech.api.interfaces.IDebugableBlock;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IProjectileItem;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.*;
 import gregtech.api.items.GT_EnergyArmor_Item;
 import gregtech.api.items.GT_Generic_Item;
@@ -52,6 +53,7 @@ import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -62,7 +64,8 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.capability.*;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -92,7 +95,6 @@ public class GT_Utility {
     private static final Map<GT_ItemStack, Map<Fluid, FluidContainerData>> sEmptyContainerToFluidToData = new HashMap<GT_ItemStack, Map<Fluid, FluidContainerData>>();
     public static volatile int VERSION = 509;
     public static boolean TE_CHECK = false, BC_CHECK = false, CHECK_ALL = true, RF_CHECK = false;
-    public static Map<GT_PlayedSound, Integer> sPlayedSoundMap = new HashMap<GT_PlayedSound, Integer>();
     private static int sBookCount = 0;
 
     static {
@@ -235,6 +237,10 @@ public class GT_Utility {
     public static TextureAtlasSprite getTexture(String location) {
         return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location);
     }
+    @SideOnly(Side.CLIENT)
+    public static TextureAtlasSprite getTexture(ResourceLocation location) {
+        return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
+    }
 
     @SideOnly(Side.CLIENT)
     public static IIconContainer sprite2Container(final TextureAtlasSprite sprite) {
@@ -249,6 +255,21 @@ public class GT_Utility {
                 return null;
             }
         };
+    }
+
+    public static int fillFluidTank(World world, BlockPos blockPos, EnumFacing side, FluidStack fill) {
+        TileEntity tileEntity = world.getTileEntity(blockPos.offset(side));
+        if(tileEntity != null && fill != null) {
+            if(tileEntity instanceof IFluidHandler) {
+                IFluidHandler fluidHandler = (IFluidHandler) tileEntity;
+                return fluidHandler.fill(side.getOpposite(), fill, true);
+            }
+            if(tileEntity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite())) {
+                net.minecraftforge.fluids.capability.IFluidHandler fluidHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite());
+                return fluidHandler.fill(fill, true);
+            }
+        }
+        return 0;
     }
 
     public static int shortsToIntColor(short[] shorts) {
@@ -392,62 +413,20 @@ public class GT_Utility {
     public static byte moveStackIntoPipe(IInventory aTileEntity1, Object aTileEntity2, int[] aGrabSlots, int aGrabFrom, int aPutTo, List<ItemStack> aFilter, boolean aInvertFilter, byte aMaxTargetStackSize, byte aMinTargetStackSize, byte aMaxMoveAtOnce, byte aMinMoveAtOnce) {
         if (aTileEntity1 == null || aMaxTargetStackSize <= 0 || aMinTargetStackSize <= 0 || aMinTargetStackSize > aMaxTargetStackSize || aMaxMoveAtOnce <= 0 || aMinMoveAtOnce > aMaxMoveAtOnce)
             return 0;
-        if (aTileEntity2 != null) {
-            //checkAvailabilities();
-            /*if (TE_CHECK && aTileEntity2 instanceof IItemDuct) {
-                for (int i = 0; i < aGrabSlots.length; i++) {
-                    if (listContainsItem(aFilter, aTileEntity1.getStackInSlot(aGrabSlots[i]), true, aInvertFilter)) {
-                        if (isAllowedToTakeFromSlot(aTileEntity1, aGrabSlots[i], (byte) aGrabFrom, aTileEntity1.getStackInSlot(aGrabSlots[i]))) {
-                            if (Math.max(aMinMoveAtOnce, aMinTargetStackSize) <= aTileEntity1.getStackInSlot(aGrabSlots[i]).stackSize) {
-                                ItemStack tStack = copyAmount(Math.min(aTileEntity1.getStackInSlot(aGrabSlots[i]).stackSize, Math.min(aMaxMoveAtOnce, aMaxTargetStackSize)), aTileEntity1.getStackInSlot(aGrabSlots[i]));
-                                ItemStack rStack = ((IItemDuct) aTileEntity2).insertItem(ForgeDirection.getOrientation(aPutTo), copy(tStack));
-                                byte tMovedItemCount = (byte) (tStack.stackSize - (rStack == null ? 0 : rStack.stackSize));
-                                if (tMovedItemCount >= 1/*Math.max(aMinMoveAtOnce, aMinTargetStackSize)) {
-                                    ((cofh.api.transport.IItemConduit)aTileEntity2).insertItem(ForgeDirection.getOrientation(aPutTo), copyAmount(tMovedItemCount, tStack), F);
-                                    aTileEntity1.decrStackSize(aGrabSlots[i], tMovedItemCount);
-                                    aTileEntity1.markDirty();
-                                    return tMovedItemCount;
-                                }
-                            }
-                        }
-                    }
-                }
-                return 0;
-            }*/
-            /*if (BC_CHECK && aTileEntity2 instanceof buildcraft.api.transport.IPipeTile) {
-                for (int i = 0; i < aGrabSlots.length; i++) {
-                    if (listContainsItem(aFilter, aTileEntity1.getStackInSlot(aGrabSlots[i]), true, aInvertFilter)) {
-                        if (isAllowedToTakeFromSlot(aTileEntity1, aGrabSlots[i], (byte) aGrabFrom, aTileEntity1.getStackInSlot(aGrabSlots[i]))) {
-                            if (Math.max(aMinMoveAtOnce, aMinTargetStackSize) <= aTileEntity1.getStackInSlot(aGrabSlots[i]).stackSize) {
-                                ItemStack tStack = copyAmount(Math.min(aTileEntity1.getStackInSlot(aGrabSlots[i]).stackSize, Math.min(aMaxMoveAtOnce, aMaxTargetStackSize)), aTileEntity1.getStackInSlot(aGrabSlots[i]));
-                                byte tMovedItemCount = (byte) ((buildcraft.api.transport.IPipeTile) aTileEntity2).injectItem(copy(tStack), false, ForgeDirection.getOrientation(aPutTo));
-                                if (tMovedItemCount >= Math.max(aMinMoveAtOnce, aMinTargetStackSize)) {
-                                    tMovedItemCount = (byte) (((buildcraft.api.transport.IPipeTile) aTileEntity2).injectItem(copyAmount(tMovedItemCount, tStack), true, ForgeDirection.getOrientation(aPutTo)));
-                                    aTileEntity1.decrStackSize(aGrabSlots[i], tMovedItemCount);
-                                    aTileEntity1.markDirty();
-                                    return tMovedItemCount;
-                                }
-                            }
-                        }
-                    }
-                }
-                return 0;
-            }*/
-        }
 
         EnumFacing tDirection = EnumFacing.VALUES[aGrabFrom];
         if (aTileEntity1 instanceof TileEntity && tDirection != null && tDirection.getOpposite() == EnumFacing.VALUES[aPutTo]) {
             int tX = ((TileEntity) aTileEntity1).getPos().getX() + tDirection.getFrontOffsetX(), tY = ((TileEntity) aTileEntity1).getPos().getY() + tDirection.getFrontOffsetY(), tZ = ((TileEntity) aTileEntity1).getPos().getZ() + tDirection.getFrontOffsetZ();
-            if (!hasBlockHitBox(((TileEntity) aTileEntity1).getWorld(), tX, tY, tZ)) {
-                for (int i = 0; i < aGrabSlots.length; i++) {
-                    if (listContainsItem(aFilter, aTileEntity1.getStackInSlot(aGrabSlots[i]), true, aInvertFilter)) {
-                        if (isAllowedToTakeFromSlot(aTileEntity1, aGrabSlots[i], (byte) aGrabFrom, aTileEntity1.getStackInSlot(aGrabSlots[i]))) {
-                            if (Math.max(aMinMoveAtOnce, aMinTargetStackSize) <= aTileEntity1.getStackInSlot(aGrabSlots[i]).stackSize) {
-                                ItemStack tStack = copyAmount(Math.min(aTileEntity1.getStackInSlot(aGrabSlots[i]).stackSize, Math.min(aMaxMoveAtOnce, aMaxTargetStackSize)), aTileEntity1.getStackInSlot(aGrabSlots[i]));
+            if (!hasBlockHitBox(((TileEntity) aTileEntity1).getWorld(), ((TileEntity) aTileEntity1).getPos())) {
+                for (int aGrabSlot : aGrabSlots) {
+                    if (listContainsItem(aFilter, aTileEntity1.getStackInSlot(aGrabSlot), true, aInvertFilter)) {
+                        if (isAllowedToTakeFromSlot(aTileEntity1, aGrabSlot, (byte) aGrabFrom, aTileEntity1.getStackInSlot(aGrabSlot))) {
+                            if (Math.max(aMinMoveAtOnce, aMinTargetStackSize) <= aTileEntity1.getStackInSlot(aGrabSlot).stackSize) {
+                                ItemStack tStack = copyAmount(Math.min(aTileEntity1.getStackInSlot(aGrabSlot).stackSize, Math.min(aMaxMoveAtOnce, aMaxTargetStackSize)), aTileEntity1.getStackInSlot(aGrabSlot));
                                 EntityItem tEntity = new EntityItem(((TileEntity) aTileEntity1).getWorld(), tX + 0.5, tY + 0.5, tZ + 0.5, tStack);
                                 tEntity.motionX = tEntity.motionY = tEntity.motionZ = 0;
                                 ((TileEntity) aTileEntity1).getWorld().spawnEntityInWorld(tEntity);
-                                aTileEntity1.decrStackSize(aGrabSlots[i], tStack.stackSize);
+                                aTileEntity1.decrStackSize(aGrabSlot, tStack.stackSize);
                                 aTileEntity1.markDirty();
                                 return (byte) tStack.stackSize;
                             }
@@ -954,6 +933,11 @@ public class GT_Utility {
         return doSoundAtClient(aSoundName, aTimeUntilNextSound, aSoundStrength, 0.9F + new Random().nextFloat() * 0.2F, aX, aY, aZ);
     }
 
+    public static boolean doSoundAtClient(String aSoundName, int aTimeUntilNextSound, float aSoundStrength, BlockPos pos) {
+        return doSoundAtClient(aSoundName, aTimeUntilNextSound, aSoundStrength, 0.9F + new Random().nextFloat() * 0.2F, pos.getX(), pos.getY(), pos.getZ());
+    }
+
+
     public static boolean doSoundAtClient(String aSoundName, int aTimeUntilNextSound, float aSoundStrength, float aSoundModulation, double aX, double aY, double aZ) {
         if (isStringInvalid(aSoundName) || !FMLCommonHandler.instance().getEffectiveSide().isClient() || GT.getThePlayer() == null || !GT.getThePlayer().worldObj.isRemote)
             return false;
@@ -969,6 +953,10 @@ public class GT_Utility {
         NW.sendPacketToAllPlayersInRange(aWorld, new GT_Packet_Sound(aSoundName, aSoundStrength, aSoundModulation, aX, (short) aY, aZ), aX, aZ);
         return true;
     }
+    public static boolean sendSoundToPlayers(World aWorld, String aSoundName, float aSoundStrength, float aSoundModulation, BlockPos blockPos) {
+        return sendSoundToPlayers(aWorld, aSoundName, aSoundStrength, aSoundModulation, blockPos.getX(), blockPos.getY(), blockPos.getZ());
+    }
+
 
     public static int stackToInt(ItemStack aStack) {
         if (isStackInvalid(aStack)) return 0;
@@ -1086,8 +1074,9 @@ public class GT_Utility {
         return aWorld.isAirBlock(new BlockPos(aX, aY, aZ));
     }
 
-    public static boolean hasBlockHitBox(World aWorld, int aX, int aY, int aZ) {
-        return aWorld.getBlockState(new BlockPos(aX, aY, aZ)).getCollisionBoundingBox(aWorld, new BlockPos(aX, aY, aZ)) != null;
+    public static boolean hasBlockHitBox(World aWorld, BlockPos blockPos) {
+        AxisAlignedBB box = aWorld.getBlockState(blockPos).getCollisionBoundingBox(aWorld, blockPos);
+        return box != null && (box.maxX != box.minX && box.maxZ != box.minZ && box.maxY != box.minY);
     }
 
     public static void setCoordsOnFire(World aWorld, int aX, int aY, int aZ, boolean aReplaceCenter) {
@@ -1583,18 +1572,16 @@ public class GT_Utility {
         return new FluidStack(tFluid, tAmount);
     }
 
-    public static int getCoordinateScan(ArrayList<String> aList, EntityPlayer aPlayer, World aWorld, int aScanLevel, int aX, int aY, int aZ, int aSide, float aClickX, float aClickY, float aClickZ) {
+    public static int getCoordinateScan(ArrayList<String> aList, EntityPlayer aPlayer, World aWorld, int aScanLevel, BlockPos blockPos, EnumFacing aSide, float aClickX, float aClickY, float aClickZ) {
         if (aList == null) return 0;
 
-        BlockPos blockPos = new BlockPos(aX, aY, aZ);
         ArrayList<String> tList = new ArrayList<>();
         int rEUAmount = 0;
 
         TileEntity tTileEntity = aWorld.getTileEntity(blockPos);
-
         IBlockState tBlock = aWorld.getBlockState(blockPos);
 
-        tList.add("----- X: " + aX + " Y: " + aY + " Z: " + aZ + " -----");
+        tList.add("----- X: " + blockPos.getX() + " Y: " + blockPos.getY() + " Z: " + blockPos.getZ() + " -----");
         try {
             if (tTileEntity != null && tTileEntity instanceof IInventory)
                 tList.add("Name: " + ((IInventory) tTileEntity).getName() + "  MetaData: " + aWorld.getBlockState(blockPos));
@@ -1610,7 +1597,7 @@ public class GT_Utility {
             try {
                 if (tTileEntity instanceof IFluidHandler) {
                     rEUAmount += 500;
-                    FluidTankInfo[] tTanks = ((IFluidHandler) tTileEntity).getTankInfo(EnumFacing.VALUES[aSide]);
+                    FluidTankInfo[] tTanks = ((IFluidHandler) tTileEntity).getTankInfo(aSide);
                     if (tTanks != null) for (byte i = 0; i < tTanks.length; i++) {
                         tList.add("Tank " + i + ": " + GT_Utility.formatNumbers((tTanks[i].fluid == null ? 0 : tTanks[i].fluid.amount)) + " / " + GT_Utility.formatNumbers(tTanks[i].capacity) + " " + getFluidName(tTanks[i].fluid, true));
                     }
@@ -1708,7 +1695,7 @@ public class GT_Utility {
             try {
                 if (tTileEntity instanceof ICoverable) {
                     rEUAmount += 300;
-                    String tString = ((ICoverable) tTileEntity).getCoverBehaviorAtSide((byte) aSide).getDescription((byte) aSide, ((ICoverable) tTileEntity).getCoverIDAtSide((byte) aSide), ((ICoverable) tTileEntity).getCoverDataAtSide((byte) aSide), (ICoverable) tTileEntity);
+                    String tString = ((ICoverable) tTileEntity).getCoverBehaviorAtSide((byte) aSide.getIndex()).getDescription((byte) aSide.getIndex(), ((ICoverable) tTileEntity).getCoverIDAtSide((byte) aSide.getIndex()), ((ICoverable) tTileEntity).getCoverDataAtSide((byte) aSide.getIndex()), (ICoverable) tTileEntity);
                     if (tString != null && !tString.equals(E)) tList.add(tString);
                 }
             } catch (Throwable e) {
@@ -1769,13 +1756,12 @@ public class GT_Utility {
             }
         }
         if (aPlayer.capabilities.isCreativeMode&&GT_Values.D1) {
-            FluidStack tFluid = getUndergroundOil(aWorld, aX, aZ);
+            FluidStack tFluid = getUndergroundOil(aWorld, blockPos.getX(), blockPos.getY());
             tList.add("Oil in Chunk: " + tFluid.amount + " " + tFluid.getLocalizedName());
         }
         if(aPlayer.capabilities.isCreativeMode){
-        	BlockPos tPos = new BlockPos(aX, aY, aZ);
-        	if(GT_Proxy.chunkData.containsKey(tPos)){
-        		int[] tPollution = GT_Proxy.chunkData.get(tPos);
+        	if(GT_Proxy.chunkData.containsKey(blockPos)){
+        		int[] tPollution = GT_Proxy.chunkData.get(blockPos);
         		if(tPollution.length>1){
         		tList.add("Pollution in Chunk: "+tPollution[1]);
         		}else{
@@ -1787,14 +1773,14 @@ public class GT_Utility {
         try {
             if (tBlock instanceof IDebugableBlock) {
                 rEUAmount += 500;
-                ArrayList<String> temp = ((IDebugableBlock) tBlock).getDebugInfo(aPlayer, aX, aY, aZ, 3);
+                ArrayList<String> temp = ((IDebugableBlock) tBlock).getDebugInfo(aPlayer, blockPos.getX(), blockPos.getY(), blockPos.getZ(), 3);
                 if (temp != null) tList.addAll(temp);
             }
         } catch (Throwable e) {
             if (D1) e.printStackTrace(GT_Log.err);
         }
 
-        BlockScanningEvent tEvent = new BlockScanningEvent(aWorld, aPlayer, aX, aY, aZ, (byte) aSide, aScanLevel, tBlock.getBlock(), tTileEntity, tList, aClickX, aClickY, aClickZ);
+        BlockScanningEvent tEvent = new BlockScanningEvent(aWorld, aPlayer, blockPos.getX(), blockPos.getY(), blockPos.getZ(), (byte) aSide.getIndex(), aScanLevel, tBlock.getBlock(), tTileEntity, tList, aClickX, aClickY, aClickZ);
         tEvent.mEUCost = rEUAmount;
         MinecraftForge.EVENT_BUS.post(tEvent);
         if (!tEvent.isCanceled()) aList.addAll(tList);

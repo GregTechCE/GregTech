@@ -1,5 +1,6 @@
 package gregtech.common.gui;
 
+import net.minecraft.inventory.IContainerListener;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
@@ -8,10 +9,7 @@ import gregtech.api.gui.GT_Slot_Render;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumChest;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
-
-import java.util.Iterator;
 
 public class GT_Container_QuantumChest extends GT_ContainerMetaTile_Machine {
 
@@ -39,9 +37,7 @@ public class GT_Container_QuantumChest extends GT_ContainerMetaTile_Machine {
             mContent = 0;
         }
 
-        Iterator var2 = this.crafters.iterator();
-        while (var2.hasNext()) {
-            ICrafting var1 = (ICrafting) var2.next();
+        for (IContainerListener var1 : this.listeners) {
             var1.sendProgressBarUpdate(this, 100, mContent & 65535);
             var1.sendProgressBarUpdate(this, 101, mContent >>> 16);
         }

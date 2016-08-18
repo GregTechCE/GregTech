@@ -204,10 +204,10 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
     /**
      * Called by the Block Harvesting Event within the GT_Proxy
      */
-    public void onHarvestBlockEvent(ArrayList<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX, int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
+    public void onHarvestBlockEvent(ArrayList<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, IBlockState aBlock, BlockPos pos, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         IToolStats tStats = getToolStats(aStack);
-        if (isItemStackUsable(aStack) && getStrVsBlock(aStack, aBlock.getStateFromMeta(aMetaData)) > 0.0F)
-            doDamage(aStack, tStats.convertBlockDrops(aDrops, aStack, aPlayer, aBlock, aX, aY, aZ, aMetaData, aFortune, aSilkTouch, aEvent) * tStats.getToolDamagePerDropConversion());
+        if (isItemStackUsable(aStack) && getStrVsBlock(aStack, aBlock) > 0.0F)
+            doDamage(aStack, tStats.convertBlockDrops(aDrops, aStack, aPlayer, aBlock, pos, aFortune, aSilkTouch, aEvent) * tStats.getToolDamagePerDropConversion());
     }
     
     @Override
@@ -436,7 +436,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
         if (!isItemStackUsable(aStack)) return 0.0F;
         IToolStats tStats = getToolStats(aStack);
         if (tStats == null || Math.max(0, getHarvestLevel(aStack, "")) < state.getBlock().getHarvestLevel(state)) return 0.0F;
-        return tStats.isMinableBlock(state.getBlock(), (byte) state.getBlock().getMetaFromState(state)) ?
+        return tStats.isMinableBlock(state) ?
                 Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed) :
                 0.0F;
     }

@@ -7,24 +7,26 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_Container_Boiler;
 import gregtech.common.gui.GT_GUIContainer_Boiler;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class GT_MetaTileEntity_Boiler_Solar
-        extends GT_MetaTileEntity_Boiler {
+public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
+
     public GT_MetaTileEntity_Boiler_Solar(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, "Steam Power by the Sun", new ITexture[0]);
+        super(aID, aName, aNameRegional, "Steam Power by the Sun");
     }
 
     public GT_MetaTileEntity_Boiler_Solar(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
+    @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[4][17][];
         for (byte i = -1; i < 16; i = (byte) (i + 1)) {
@@ -40,22 +42,27 @@ public class GT_MetaTileEntity_Boiler_Solar
         return rTextures;
     }
 
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         return mTextures[aSide >= 2 ? ((byte) (aSide != aFacing ? 2 : 3)) : aSide][aColorIndex + 1];
     }
 
+    @Override
     public int maxProgresstime() {
         return 500;
     }
 
+    @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return new GT_Container_Boiler(aPlayerInventory, aBaseMetaTileEntity, 16000);
     }
 
+    @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return new GT_GUIContainer_Boiler(aPlayerInventory, aBaseMetaTileEntity, "SolarBoiler.png", 16000);
     }
 
+    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Boiler_Solar(this.mName, this.mTier, this.mDescription, this.mTextures);
     }
@@ -74,6 +81,7 @@ public class GT_MetaTileEntity_Boiler_Solar
         this.mRunTime = aNBT.getInteger("mRunTime");
     }
 
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if ((aBaseMetaTileEntity.isServerSide()) && (aTick > 20L)) {
             if (this.mTemperature <= 20) {
@@ -84,15 +92,17 @@ public class GT_MetaTileEntity_Boiler_Solar
                 this.mTemperature -= 1;
                 this.mLossTimer = 0;
             }
-            if (this.mSteam != null) {
-                byte i = aBaseMetaTileEntity.getFrontFacing();
-                IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide(i);
-                if (tTileEntity != null) {
-                    FluidStack tDrained = aBaseMetaTileEntity.drain(ForgeDirection.getOrientation(i), Math.max(1, this.mSteam.amount / 2), false);
-                    if (tDrained != null) {
-                        int tFilledAmount = tTileEntity.fill(ForgeDirection.getOrientation(i).getOpposite(), tDrained, false);
-                        if (tFilledAmount > 0) {
-                            tTileEntity.fill(ForgeDirection.getOrientation(i).getOpposite(), aBaseMetaTileEntity.drain(ForgeDirection.getOrientation(i), tFilledAmount, true), true);
+            if (getFluidAmount() != 0) {
+                for (EnumFacing side : EnumFacing.VALUES) {
+                    if (side.getIndex() != aBaseMetaTileEntity.getFrontFacing()) {
+                        int drain = GT_Utility.fillFluidTank(
+                                aBaseMetaTileEntity.getWorld(),
+                                aBaseMetaTileEntity.getPos(), side,
+                                getDrainableStack());
+                        if (drain != 0) {
+                            drain(side, drain, true);
+                            if (getFluidAmount() == 0)
+                                break;
                         }
                     }
                 }
@@ -130,8 +140,8 @@ public class GT_MetaTileEntity_Boiler_Solar
                 this.mSteam.amount = 12000;
             }
             if ((this.mProcessingEnergy <= 0) && (aBaseMetaTileEntity.isAllowedToWork()) && (aTick % 256L == 0L) && (!aBaseMetaTileEntity.getWorld().isThundering())) {
-                boolean bRain = aBaseMetaTileEntity.getWorld().isRaining() && aBaseMetaTileEntity.getBiome().rainfall > 0.0F;
-                mProcessingEnergy += bRain && aBaseMetaTileEntity.getWorld().skylightSubtracted >= 4 || !aBaseMetaTileEntity.getSkyAtSide((byte) 1) ? 0 : !bRain && aBaseMetaTileEntity.getWorld().isDaytime() ? 8 : 1;
+                boolean bRain = aBaseMetaTileEntity.getWorld().isRaining() && aBaseMetaTileEntity.getBiome().getRainfall() > 0.0F;
+                mProcessingEnergy += bRain && aBaseMetaTileEntity.getWorld().getSkylightSubtracted() >= 4 || !aBaseMetaTileEntity.getSkyAtSide((byte) 1) ? 0 : !bRain && aBaseMetaTileEntity.getWorld().isDaytime() ? 8 : 1;
             }
             if ((this.mTemperature < 500) && (this.mProcessingEnergy > 0) && (aTick % 12L == 0L)) {
                 this.mProcessingEnergy -= 1;

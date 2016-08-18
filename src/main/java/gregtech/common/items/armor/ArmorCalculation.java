@@ -2,8 +2,8 @@ package gregtech.common.items.armor;
 
 import java.util.List;
 
-import thaumcraft.api.nodes.IRevealer;
-import net.minecraftforge.fml.common.Loader;
+//import thaumcraft.api.nodes.IRevealer;
+//import net.minecraftforge.fml.common.Loader;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -13,6 +13,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class ArmorCalculation {
@@ -128,10 +129,10 @@ public class ArmorCalculation {
 						def[12] = def[12] + (float) ic2.api.item.ElectricItem.manager.getCharge(parts[i]);
 						def[0] = (float) (def[0] + Math.pow(ic2.api.item.ElectricItem.manager.getCharge(parts[i]), 0.33f));
 					}
-					else if (Loader.isModLoaded("Thaumcraft") && parts[i].getItem() instanceof IRevealer) {
-						def[13] = 1;
-						def[31] += 100;
-					}
+					//else if (Loader.isModLoaded("Thaumcraft") && parts[i].getItem() instanceof IRevealer) {
+					//	def[13] = 1;
+					//	def[31] += 100;
+					//}
 					else if (parts[i].getItem().getUnlocalizedName().equals("ic2.itemNightvisionGoggles")) {
 						def[14] = 1;
 						def[31] += 100;
@@ -392,7 +393,7 @@ public class ArmorCalculation {
 					parts[12].setTagCompound(nbt);
 					fluidAmount = tankCap;
 				}
-				return new FluidStack(parts[12].getItemDamage(), fluidAmount);
+				return new FluidStack(FluidRegistry.getFluid(parts[12].getItemDamage()), fluidAmount);
 			}
 
 		}

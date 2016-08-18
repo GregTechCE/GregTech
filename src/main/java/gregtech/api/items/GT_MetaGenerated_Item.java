@@ -1,6 +1,6 @@
 package gregtech.api.items;
 
-import gregtech.common.render.newitems.IItemIconProvider;
+import gregtech.common.render.newitems.IItemIconContainerProvider;
 import gregtech.common.render.IIconRegister;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -50,7 +50,7 @@ import static gregtech.api.enums.GT_Values.*;
  *         <p/>
  *         These Items can also have special RightClick abilities, electric Charge or even be set to become a Food alike Item.
  */
-public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements IItemIconProvider, IIconRegister, IItemColor {
+public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements IItemIconContainerProvider, IIconRegister, IItemColor {
     /**
      * All instances of this Item Class are listed here.
      * This gets used to register the Renderer to all Items of this Type, if useStandardMetaItemRenderer() returns true.

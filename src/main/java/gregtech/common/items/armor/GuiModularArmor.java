@@ -2,6 +2,7 @@ package gregtech.common.items.armor;
 
 import gregtech.api.util.GT_LanguageManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -178,8 +179,9 @@ public class GuiModularArmor extends GuiContainer {
 		drawTexturedModalRect(xStart + x, yStart + y, 177, 78, bar, 5);
 		drawTexturedModalRect(xStart+ bar + x, yStart + y, 177, 73, 35-bar, 5);
 	}
-	
-	protected void mouseClicked(int mouseX, int mouseY, int mouseBtn) {
+
+    @Override
+	protected void mouseClicked(int mouseX, int mouseY, int mouseBtn) throws IOException {
 		int xStart = mouseX-((width - xSize) / 2);
 		int yStart = mouseY-((height - ySize) / 2);
 		if(yStart>67&&yStart<77){

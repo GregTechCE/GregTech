@@ -1,15 +1,13 @@
 package gregtech.common.gui;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.tileentities.boilers.GT_MetaTileEntity_Boiler;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
-
-import java.util.Iterator;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GT_Container_Boiler
         extends GT_ContainerMetaTile_Machine {
@@ -23,6 +21,7 @@ public class GT_Container_Boiler
         this.mSteamCapacity = aSteamCapacity;
     }
 
+    @Override
     public void addSlots(InventoryPlayer aInventoryPlayer) {
         addSlotToContainer(new Slot(this.mTileEntity, 2, 116, 62));
         addSlotToContainer(new Slot(this.mTileEntity, 0, 44, 26));
@@ -30,14 +29,17 @@ public class GT_Container_Boiler
         addSlotToContainer(new Slot(this.mTileEntity, 3, 116, 26));
     }
 
+    @Override
     public int getSlotCount() {
         return 4;
     }
 
+    @Override
     public int getShiftClickSlotCount() {
         return 1;
     }
 
+    @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
         if ((this.mTileEntity.isClientSide()) || (this.mTileEntity.getMetaTileEntity() == null)) {
@@ -53,9 +55,7 @@ public class GT_Container_Boiler
         this.mWaterAmount = Math.min(54, Math.max(0, this.mWaterAmount * 54 / 15900));
         this.mProcessingEnergy = Math.min(14, Math.max(this.mProcessingEnergy > 0 ? 1 : 0, this.mProcessingEnergy * 14 / 1000));
 
-        Iterator var2 = this.crafters.iterator();
-        while (var2.hasNext()) {
-            ICrafting var1 = (ICrafting) var2.next();
+        for (IContainerListener var1 : this.listeners) {
             var1.sendProgressBarUpdate(this, 100, this.mTemperature);
             var1.sendProgressBarUpdate(this, 101, this.mProcessingEnergy);
             var1.sendProgressBarUpdate(this, 102, this.mSteamAmount);
@@ -64,6 +64,7 @@ public class GT_Container_Boiler
     }
 
     @SideOnly(Side.CLIENT)
+    @Override
     public void updateProgressBar(int par1, int par2) {
         super.updateProgressBar(par1, par2);
         switch (par1) {

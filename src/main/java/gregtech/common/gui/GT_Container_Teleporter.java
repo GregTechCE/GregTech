@@ -1,18 +1,17 @@
 package gregtech.common.gui;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Teleporter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.ClickType;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-
-import java.util.Iterator;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GT_Container_Teleporter
         extends GT_ContainerMetaTile_Machine {
@@ -49,7 +48,7 @@ public class GT_Container_Teleporter
     }
 
     @Override
-    public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
+    public ItemStack slotClick(int aSlotIndex, int aMouseclick, ClickType aShifthold, EntityPlayer aPlayer) {
         if (aSlotIndex < 0) {
             return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
         }
@@ -57,52 +56,52 @@ public class GT_Container_Teleporter
         if ((tSlot != null) && (this.mTileEntity.getMetaTileEntity() != null)) {
             switch (aSlotIndex) {
                 case 0:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetX -= (aShifthold == 1 ? 512 : 64);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetX -= (aShifthold == ClickType.PICKUP ? 512 : 64);
                     return null;
                 case 1:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetY -= (aShifthold == 1 ? 512 : 64);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetY -= (aShifthold == ClickType.PICKUP ? 512 : 64);
                     return null;
                 case 2:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetZ -= (aShifthold == 1 ? 512 : 64);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetZ -= (aShifthold == ClickType.PICKUP ? 512 : 64);
                     return null;
                 case 3:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetD -= (aShifthold == 1 ? 16 : 8);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetD -= (aShifthold == ClickType.PICKUP ? 16 : 8);
                     return null;
                 case 4:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetX -= (aShifthold == 1 ? 16 : 1);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetX -= (aShifthold == ClickType.PICKUP ? 16 : 1);
                     return null;
                 case 5:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetY -= (aShifthold == 1 ? 16 : 1);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetY -= (aShifthold == ClickType.PICKUP ? 16 : 1);
                     return null;
                 case 6:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetZ -= (aShifthold == 1 ? 16 : 1);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetZ -= (aShifthold == ClickType.PICKUP ? 16 : 1);
                     return null;
                 case 7:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetD -= (aShifthold == 1 ? 4 : 1);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetD -= (aShifthold == ClickType.PICKUP ? 4 : 1);
                     return null;
                 case 8:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetX += (aShifthold == 1 ? 512 : 64);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetX += (aShifthold == ClickType.PICKUP ? 512 : 64);
                     return null;
                 case 9:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetY += (aShifthold == 1 ? 512 : 64);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetY += (aShifthold == ClickType.PICKUP ? 512 : 64);
                     return null;
                 case 10:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetZ += (aShifthold == 1 ? 512 : 64);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetZ += (aShifthold == ClickType.PICKUP ? 512 : 64);
                     return null;
                 case 11:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetD += (aShifthold == 1 ? 16 : 8);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetD += (aShifthold == ClickType.PICKUP ? 16 : 8);
                     return null;
                 case 12:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetX += (aShifthold == 1 ? 16 : 1);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetX += (aShifthold == ClickType.PICKUP ? 16 : 1);
                     return null;
                 case 13:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetY += (aShifthold == 1 ? 16 : 1);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetY += (aShifthold == ClickType.PICKUP ? 16 : 1);
                     return null;
                 case 14:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetZ += (aShifthold == 1 ? 16 : 1);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetZ += (aShifthold == ClickType.PICKUP ? 16 : 1);
                     return null;
                 case 15:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetD += (aShifthold == 1 ? 4 : 1);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetD += (aShifthold == ClickType.PICKUP ? 4 : 1);
                     return null;
             }
         }
@@ -121,9 +120,7 @@ public class GT_Container_Teleporter
         this.mTargetD = ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetD;
         this.mEgg = (((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).hasDimensionalTeleportCapability() ? 1 : 0);
 
-        Iterator var2 = this.crafters.iterator();
-        while (var2.hasNext()) {
-            ICrafting var1 = (ICrafting) var2.next();
+        for (IContainerListener var1 : this.listeners) {
             var1.sendProgressBarUpdate(this, 100, this.mTargetX & 0xFFFF);
             var1.sendProgressBarUpdate(this, 101, this.mTargetX >>> 16);
             var1.sendProgressBarUpdate(this, 102, this.mTargetY & 0xFFFF);
@@ -137,6 +134,7 @@ public class GT_Container_Teleporter
     }
 
     @SideOnly(Side.CLIENT)
+    @Override
     public void updateProgressBar(int par1, int par2) {
         super.updateProgressBar(par1, par2);
         switch (par1) {

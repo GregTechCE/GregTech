@@ -14,20 +14,16 @@ public class GT_ItemMaxStacksizeLoader
         GT_Log.out.println("GT_Mod: Changing maximum Stacksizes if configured.");
 
         ItemList.Upgrade_Overclocker.getItem().setMaxStackSize(GT_Mod.gregtechproxy.mUpgradeCount);
-        Items.cake.setMaxStackSize(64);
-        Items.wooden_door.setMaxStackSize(8);
-        Items.iron_door.setMaxStackSize(8);
+        Items.CAKE.setMaxStackSize(64);
+        Items.OAK_DOOR.setMaxStackSize(8);
+        Items.IRON_DOOR.setMaxStackSize(8);
         if (OrePrefixes.plank.mDefaultStackSize < 64) {
-            Item.getItemFromBlock(Blocks.wooden_slab).setMaxStackSize(OrePrefixes.plank.mDefaultStackSize);
-            Item.getItemFromBlock(Blocks.double_wooden_slab).setMaxStackSize(OrePrefixes.plank.mDefaultStackSize);
-            Item.getItemFromBlock(Blocks.oak_stairs).setMaxStackSize(OrePrefixes.plank.mDefaultStackSize);
-            Item.getItemFromBlock(Blocks.jungle_stairs).setMaxStackSize(OrePrefixes.plank.mDefaultStackSize);
-            Item.getItemFromBlock(Blocks.birch_stairs).setMaxStackSize(OrePrefixes.plank.mDefaultStackSize);
-            Item.getItemFromBlock(Blocks.spruce_stairs).setMaxStackSize(OrePrefixes.plank.mDefaultStackSize);
-            Item.getItemFromBlock(Blocks.acacia_stairs).setMaxStackSize(OrePrefixes.plank.mDefaultStackSize);
-            Item.getItemFromBlock(Blocks.dark_oak_stairs).setMaxStackSize(OrePrefixes.plank.mDefaultStackSize);
+            Item.getItemFromBlock(Blocks.WOODEN_SLAB).setMaxStackSize(OrePrefixes.plank.mDefaultStackSize);
+            Item.getItemFromBlock(Blocks.DOUBLE_STONE_SLAB).setMaxStackSize(OrePrefixes.plank.mDefaultStackSize);
+            Item.getItemFromBlock(Blocks.OAK_STAIRS).setMaxStackSize(OrePrefixes.plank.mDefaultStackSize);
         }
         if (OrePrefixes.block.mDefaultStackSize < 64) {
+            /*
             Item.getItemFromBlock(Blocks.stone_slab).setMaxStackSize(OrePrefixes.block.mDefaultStackSize);
             Item.getItemFromBlock(Blocks.double_stone_slab).setMaxStackSize(OrePrefixes.block.mDefaultStackSize);
             Item.getItemFromBlock(Blocks.brick_stairs).setMaxStackSize(OrePrefixes.block.mDefaultStackSize);
@@ -73,6 +69,7 @@ public class GT_ItemMaxStacksizeLoader
             Item.getItemFromBlock(Blocks.bookshelf).setMaxStackSize(OrePrefixes.block.mDefaultStackSize);
             Item.getItemFromBlock(Blocks.furnace).setMaxStackSize(OrePrefixes.block.mDefaultStackSize);
             Item.getItemFromBlock(Blocks.lit_furnace).setMaxStackSize(OrePrefixes.block.mDefaultStackSize);
+        */
         }
     }
 }

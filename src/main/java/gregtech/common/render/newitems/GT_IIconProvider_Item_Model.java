@@ -24,17 +24,22 @@ import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
 import net.minecraftforge.common.model.IModelPart;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
 import java.util.*;
 
+@SideOnly(Side.CLIENT)
 public class GT_IIconProvider_Item_Model implements ICustomModelLoader, IModel, IBakedModel {
 
     private static GT_IIconProvider_Item_Model INSTANCE = new GT_IIconProvider_Item_Model();
     private static ModelResourceLocation RESOURCE_LOCATION = new ModelResourceLocation("gregtech", "IItemIconProvider");
 
     private HashMap<TextureAtlasSprite, List<BakedQuad>> iconsCache = new HashMap<>();
-    private HashMap<TextureAtlasSprite, List<BakedQuad>> overlaysCache = new HashMap<>();
+    private HashMap<Pair<TextureAtlasSprite, Integer>, List<BakedQuad>> overlaysCache = new HashMap<>();
 
     private ItemStack itemStack;
     private VertexFormat vertexFormat;
@@ -59,12 +64,7 @@ public class GT_IIconProvider_Item_Model implements ICustomModelLoader, IModel, 
             Item item = Item.REGISTRY.getObject(itemId);
             if(item instanceof IItemIconProvider) {
                 ModelLoader.registerItemVariants(item, RESOURCE_LOCATION);
-                ModelLoader.setCustomMeshDefinition(item, new ItemMeshDefinition() {
-                    @Override
-                    public ModelResourceLocation getModelLocation(ItemStack stack) {
-                        return RESOURCE_LOCATION;
-                    }
-                });
+                ModelLoader.setCustomMeshDefinition(item, stack -> RESOURCE_LOCATION);
             }
         }
     }
@@ -121,24 +121,30 @@ public class GT_IIconProvider_Item_Model implements ICustomModelLoader, IModel, 
         //Only one call
         if(side == null && itemStack != null) {
             IItemIconProvider iconProvider = (IItemIconProvider) itemStack.getItem();
-            IIconContainer iconContainer = iconProvider.getIconContainer(itemStack);
-            TextureAtlasSprite textureIcon = iconContainer.getIcon();
-            TextureAtlasSprite overlayIcon = iconContainer.getOverlayIcon();
+            TextureAtlasSprite textureIcon = iconProvider.getIcon(itemStack, 0);
             ArrayList<BakedQuad> resultQuads = new ArrayList<>();
-            if(iconsCache.containsKey(textureIcon)) {
-                resultQuads.addAll(iconsCache.get(textureIcon));
-            } else {
-                List<BakedQuad> textureQuads = ItemLayerModel.getQuadsForSprite(0, textureIcon, vertexFormat, Optional.<TRSRTransformation>absent());
-                iconsCache.put(textureIcon, textureQuads);
-                resultQuads.addAll(textureQuads);
-            }
-            if(overlayIcon != null) {
-                if(overlaysCache.containsKey(overlayIcon)) {
-                    resultQuads.addAll(overlaysCache.get(overlayIcon));
+            if(textureIcon != null) {
+                if (iconsCache.containsKey(textureIcon)) {
+                    resultQuads.addAll(iconsCache.get(textureIcon));
                 } else {
-                    List<BakedQuad> overlayQuads = getOverlayQuads(overlayIcon, 1);
-                    overlaysCache.put(overlayIcon, overlayQuads);
-                    resultQuads.addAll(overlayQuads);
+                    List<BakedQuad> textureQuads = ItemLayerModel.getQuadsForSprite(0, textureIcon, vertexFormat, Optional.<TRSRTransformation>absent());
+                    iconsCache.put(textureIcon, textureQuads);
+                    resultQuads.addAll(textureQuads);
+                }
+            }
+            if(iconProvider.getRenderPasses(itemStack) > 0) {
+                for (int i = 0; i < iconProvider.getRenderPasses(itemStack); ++i) {
+                    TextureAtlasSprite overlayIcon = iconProvider.getIcon(itemStack, i);
+                    ImmutablePair<TextureAtlasSprite, Integer> iconPair = new ImmutablePair<>(overlayIcon, i);
+                    if (overlayIcon != null) {
+                        if (overlaysCache.containsKey(iconPair)) {
+                            resultQuads.addAll(overlaysCache.get(iconPair));
+                        } else {
+                            List<BakedQuad> overlayQuads = getOverlayQuads(iconPair.getLeft(), i, 0.01F * i);
+                            overlaysCache.put(iconPair, overlayQuads);
+                            resultQuads.addAll(overlayQuads);
+                        }
+                    }
                 }
             }
             return resultQuads;
@@ -165,8 +171,7 @@ public class GT_IIconProvider_Item_Model implements ICustomModelLoader, IModel, 
     public TextureAtlasSprite getParticleTexture() {
         if(itemStack != null) {
             IItemIconProvider iconProvider = (IItemIconProvider) itemStack.getItem();
-            IIconContainer iconContainer = iconProvider.getIconContainer(itemStack);
-            return iconContainer.getIcon();
+            return iconProvider.getIcon(itemStack, 0);
         }
         return null;
     }
@@ -187,21 +192,21 @@ public class GT_IIconProvider_Item_Model implements ICustomModelLoader, IModel, 
         };
     }
 
-    private List<BakedQuad> getOverlayQuads(TextureAtlasSprite sprite, int tint) {
+    private List<BakedQuad> getOverlayQuads(TextureAtlasSprite sprite, int tint, float offset) {
         ArrayList<BakedQuad> builder = new ArrayList<>();
         // front
         builder.add(buildQuad(vertexFormat, EnumFacing.NORTH, sprite, tint,
-                0, 0, 7.48f / 16f, sprite.getMinU(), sprite.getMaxV(),
-                0, 1, 7.48f / 16f, sprite.getMinU(), sprite.getMinV(),
-                1, 1, 7.48f / 16f, sprite.getMaxU(), sprite.getMinV(),
-                1, 0, 7.48f / 16f, sprite.getMaxU(), sprite.getMaxV()
+                0, 0, 7.48f - offset / 16f, sprite.getMinU(), sprite.getMaxV(),
+                0, 1, 7.48f - offset / 16f, sprite.getMinU(), sprite.getMinV(),
+                1, 1, 7.48f - offset / 16f, sprite.getMaxU(), sprite.getMinV(),
+                1, 0, 7.48f - offset / 16f, sprite.getMaxU(), sprite.getMaxV()
         ));
         // back
         builder.add(buildQuad(vertexFormat, EnumFacing.SOUTH, sprite, tint,
-                0, 0, 8.52f / 16f, sprite.getMinU(), sprite.getMaxV(),
-                1, 0, 8.52f / 16f, sprite.getMaxU(), sprite.getMaxV(),
-                1, 1, 8.52f / 16f, sprite.getMaxU(), sprite.getMinV(),
-                0, 1, 8.52f / 16f, sprite.getMinU(), sprite.getMinV()
+                0, 0, 8.52f + offset / 16f, sprite.getMinU(), sprite.getMaxV(),
+                1, 0, 8.52f + offset / 16f, sprite.getMaxU(), sprite.getMaxV(),
+                1, 1, 8.52f + offset / 16f, sprite.getMaxU(), sprite.getMinV(),
+                0, 1, 8.52f + offset / 16f, sprite.getMinU(), sprite.getMinV()
         ));
         return builder;
     }

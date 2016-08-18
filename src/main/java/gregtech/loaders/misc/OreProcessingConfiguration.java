@@ -15,7 +15,7 @@ public class OreProcessingConfiguration
     private final HashMap<String, Boolean> mEnabledMaterials;
     public OreProcessingConfiguration(File aModConfigurationDirectory)
     {
-        this.mEnabledMaterials = new HashMap<String, Boolean>();
+        this.mEnabledMaterials = new HashMap<>();
         this.mConfiguration =
             new Configuration(new File(new File(aModConfigurationDirectory, "GregTech"), "OreProcessing.cfg"));
         this.mConfiguration.load();
