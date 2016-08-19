@@ -1270,7 +1270,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         }
     }
     public static void initMaterialProperties() {
-        MATERIALS.
         StringBuilder aConfigPath = new StringBuilder();
         for (Materials aMaterial : MATERIALS.values()) {
             if (aMaterial != null && aMaterial != Materials._NULL && aMaterial != Materials.Empty) {
