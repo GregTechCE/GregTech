@@ -115,17 +115,17 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
  /**
 * The "Random Material" ones.
 */
- public static Materials Organic = new Materials(-1, TextureSet.SET_LEAF, 1.0F, 0, 1, false);
- public static Materials AnyCopper = new Materials(-1, TextureSet.SET_SHINY, 1.0F, 0, 3, false);
- public static Materials AnyBronze = new Materials(-1, TextureSet.SET_SHINY, 1.0F, 0, 3, false);
- public static Materials AnyIron = new Materials(-1, TextureSet.SET_SHINY, 1.0F, 0, 3, false);
- public static Materials Crystal = new Materials(-1, TextureSet.SET_SHINY, 1.0F, 0, 3, false);
- public static Materials Quartz = new Materials(-1, TextureSet.SET_QUARTZ, 1.0F, 0, 2, false);
- public static Materials Metal = new Materials(-1, TextureSet.SET_METALLIC, 1.0F, 0, 2, false);
- public static Materials Unknown = new Materials(-1, TextureSet.SET_DULL, 1.0F, 0, 2, false);
- public static Materials Cobblestone = new Materials(-1, TextureSet.SET_DULL, 1.0F, 0, 1, false);
- public static Materials Brick = new Materials(-1, TextureSet.SET_DULL, 1.0F, 0, 1, false);
- public static Materials BrickNether = new Materials(-1, TextureSet.SET_DULL, 1.0F, 0, 1, false);
+ public static Materials Organic = new Materials(-1, TextureSet.SET_LEAF, 1.0F, 0, 1, false, "Organic");
+ public static Materials AnyCopper = new Materials(-1, TextureSet.SET_SHINY, 1.0F, 0, 3, false, "AnyCopper");
+ public static Materials AnyBronze = new Materials(-1, TextureSet.SET_SHINY, 1.0F, 0, 3, false, "AnyBronze");
+ public static Materials AnyIron = new Materials(-1, TextureSet.SET_SHINY, 1.0F, 0, 3, false, "AnyIron");
+ public static Materials Crystal = new Materials(-1, TextureSet.SET_SHINY, 1.0F, 0, 3, false, "Crystal");
+ public static Materials Quartz = new Materials(-1, TextureSet.SET_QUARTZ, 1.0F, 0, 2, false, "Quartz");
+ public static Materials Metal = new Materials(-1, TextureSet.SET_METALLIC, 1.0F, 0, 2, false, "Metal");
+ public static Materials Unknown = new Materials(-1, TextureSet.SET_DULL, 1.0F, 0, 2, false, "Unknown");
+ public static Materials Cobblestone = new Materials(-1, TextureSet.SET_DULL, 1.0F, 0, 1, false, "Cobblestone");
+ public static Materials Brick = new Materials(-1, TextureSet.SET_DULL, 1.0F, 0, 1, false, "Brick");
+ public static Materials BrickNether = new Materials(-1, TextureSet.SET_DULL, 1.0F, 0, 1, false, "BrickNether");
 
  /**
 * The "I don't care" Section, everything I don't want to do anything with right now, is right here. Just to make the Material Finder shut up about them.
@@ -1399,11 +1399,12 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         }
     }
 
-    public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality, boolean aUnificatable) {
-        this(aMetaItemSubID, aIconSet, aToolSpeed, aDurability, aToolQuality, aUnificatable, "ore", false, "null");
+    public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality, boolean aUnificatable, String aDefaultLocalName) {
+        this(aMetaItemSubID, aIconSet, aToolSpeed, aDurability, aToolQuality, aUnificatable, aDefaultLocalName, "ore", false, "null");
     }
 
-    public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality, boolean aUnificatable, String aConfigSection, boolean aCustomOre, String aCustomID) {
+    public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality, boolean aUnificatable, String aDefaultLocalName, String aConfigSection, boolean aCustomOre, String aCustomID) {
+        mDefaultLocalName = aDefaultLocalName;
         mName = mDefaultLocalName.contains(" ") ? mDefaultLocalName.replaceAll(" ", "") : mDefaultLocalName;
         MATERIALS.put(mName, this);
         if (aCustomOre) MATERIALS_CUSTOM.put(mName, this);
@@ -1438,8 +1439,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality, int aTypes, int aR, int aG, int aB, int aA, String aDefaultLocalName, int aFuelType, int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent, int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor, String aConfigSection, boolean aCustomOre, String aCustomID) {
-        this(aMetaItemSubID, aIconSet, aToolSpeed, aDurability, aToolQuality, true, aConfigSection, aCustomOre, aCustomID);
-        mDefaultLocalName = aDefaultLocalName;
+        this(aMetaItemSubID, aIconSet, aToolSpeed, aDurability, aToolQuality, true, aDefaultLocalName, aConfigSection, aCustomOre, aCustomID);
         mMeltingPoint = (short) aMeltingPoint;
         mBlastFurnaceRequired = aBlastFurnaceRequired;
         mBlastFurnaceTemp = (short) aBlastFurnaceTemp;
@@ -1449,7 +1449,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mOreValue = aOreValue;
         mDensityMultiplier = aDensityMultiplier;
         mDensityDivider = aDensityDivider;
-        mDensity = (M * mDensityMultiplier) / mDensityDivider;
+        mDensity = (M * aDensityMultiplier) / aDensityDivider;
         mColor = aColor;
         mRGBa[0] = mMoltenRGBa[0] = (short) aR;
         mRGBa[1] = mMoltenRGBa[1] = (short) aG;
