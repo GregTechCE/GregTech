@@ -14,7 +14,7 @@ public class GT_Block_Ores_UB2 extends GT_Block_Ores_Abstract {
     Block aUBBlock = GameRegistry.findBlock("UndergroundBiomes", "metamorphicStone");
 
     public GT_Block_Ores_UB2() {
-        super("gt.blockores.ub2", 8, true, Material.rock);
+        super("gt.blockores.ub2", 8, Material.rock);
         if (aUBBlock == null) aUBBlock = Blocks.stone;
     }
 

@@ -1,5 +1,6 @@
 package gregtech.api.enums;
 
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.interfaces.IColorModulationContainer;
@@ -17,8 +18,8 @@ import java.util.*;
 import static gregtech.api.enums.GT_Values.M;
 
 public class Materials implements IColorModulationContainer, ISubTagContainer {
-    public static Collection<Materials> VALUES = new HashSet<Materials>();
-    public static Collection<Materials> VALUES_CUSTOM = new HashSet<Materials>();
+    public static Map<String, Materials> MATERIALS = new HashMap<String, Materials>();
+    public static Map<String, Materials> MATERIALS_CUSTOM = new HashMap<String, Materials>();
 
     /**
      * This is the Default Material returned in case no Material has been found or a NullPointer has been inserted at a location where it shouldn't happen.
@@ -706,19 +707,19 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public TextureSet mIconSet;
     public int mMetaItemSubID;
     public boolean mUnificatable;
-    public final Materials mMaterialInto;
-    public final List<MaterialStack> mMaterialList = new ArrayList<MaterialStack>();
-    public final List<Materials> mOreByProducts = new ArrayList<Materials>(), mOreReRegistrations = new ArrayList<Materials>();
-    public final List<TC_Aspects.TC_AspectStack> mAspects = new ArrayList<TC_Aspects.TC_AspectStack>();
-    private final ArrayList<ItemStack> mMaterialItems = new ArrayList<ItemStack>();
-    private final Collection<SubTag> mSubTags = new HashSet<SubTag>();
+    public Materials mMaterialInto;
+    public List<MaterialStack> mMaterialList = new ArrayList<MaterialStack>();
+    public List<Materials> mOreByProducts = new ArrayList<Materials>(), mOreReRegistrations = new ArrayList<Materials>();
+    public List<TC_Aspects.TC_AspectStack> mAspects = new ArrayList<TC_Aspects.TC_AspectStack>();
+    private ArrayList<ItemStack> mMaterialItems = new ArrayList<ItemStack>();
+    private Collection<SubTag> mSubTags = new HashSet<SubTag>();
     public Enchantment mEnchantmentTools = null, mEnchantmentArmors = null;
     public byte mEnchantmentToolsLevel = 0, mEnchantmentArmorsLevel = 0;
     public boolean mBlastFurnaceRequired = false, mTransparent = false;
     public float mToolSpeed = 1.0F, mHeatDamage = 0.0F;
     public String mChemicalFormula = "?", mName = "null", mDefaultLocalName = "null";
     public Dyes mColor = Dyes._NULL;
-    public short mMeltingPoint = 0, mBlastFurnaceTemp = 0;
+    public short mMeltingPoint = 0, mBlastFurnaceTemp = 0, mGasTemp = 0;
     public int mTypes = 0; // 1=?; 2=?; 4=?; 8=OreProcessing; 16=?; 32=?; 64=?; 128=?; 256=?;
     public int mDurability = 16, mFuelPower = 0, mFuelType = 0, mExtraData = 0, mOreValue = 0, mOreMultiplier = 1, mByProductMultiplier = 1, mSmeltingMultiplier = 1;
     public int mDensityMultiplier = 1, mDensityDivider = 1;
@@ -728,13 +729,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public byte mToolQuality = 0;
     public boolean mCustomOre = false;
     public String mCustomID = "null", mConfigSection = "null";
+    public boolean mHasPlasma = false, mHasGas = false;
     public Fluid mSolid = null, mFluid = null, mGas = null, mPlasma = null;
 
     /**
      * This Fluid is used as standard Unit for Molten Materials. 1296 is a Molten Block, that means 144 is one Material Unit worth of fluid.
      */
     public Fluid mStandardMoltenFluid = null;
-    
+
     static {
         initSubTags();
         Iron					.mOreReRegistrations.add(AnyIron	);
@@ -1261,26 +1263,16 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     public static void initCustomMaterials() {
-        //TODO register fluids
         int i = 0;
-        StringBuilder aCustomPath = new StringBuilder();
-        StringBuilder aCustomID = new StringBuilder();
         for (int j = GregTech_API.sMaterialProperties.get("general", "AmountOfCustomMaterialSlots", 16); i < j; i++) {
-            aCustomID.append((i < 10 ? "0" : "")).append(i);
-            aCustomPath.append("materials.custom.").append(aCustomID.toString());
-            int aMaterialID = GregTech_API.sMaterialProperties.get(aCustomPath.toString(), "MaterialID", -1);
-            String aMaterialName = GregTech_API.sMaterialProperties.get(aCustomPath.toString(), "MaterialName", "NullMat");
-            if (aMaterialID >= 0 && aMaterialID <= 1000 && !aMaterialName.equalsIgnoreCase("nullmat")) {
-                new Materials(aMaterialID, TextureSet.SET_METALLIC, 1.0F, 0, 0, 0, 255, 255, 255, 0, aMaterialName, 0, 0, 0, 0, false, false, 1, 1, 1, Dyes._NULL, "custom", true, aCustomID.toString());
-            }
-            aCustomID.setLength(0);
-            aCustomPath.setLength(0);
+            String aID = (i < 10 ? "0" : "") + i;
+            new Materials(-1, TextureSet.SET_METALLIC, 1.0F, 0, 0, 0, 255, 255, 255, 0, "custom" + aID, 0, 0, 0, 0, false, false, 1, 1, 1, Dyes._NULL, "custom", true, aID);
         }
     }
-
     public static void initMaterialProperties() {
+        MATERIALS.
         StringBuilder aConfigPath = new StringBuilder();
-        for (Materials aMaterial : VALUES) {
+        for (Materials aMaterial : MATERIALS.values()) {
             if (aMaterial != null && aMaterial != Materials._NULL && aMaterial != Materials.Empty) {
                 aConfigPath.append("materials.").append(aMaterial.mConfigSection).append(".").append(aMaterial.mCustomOre ? aMaterial.mCustomID : aMaterial.mName);
                 aMaterial.mMetaItemSubID = GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "MaterialID", aMaterial.mCustomOre ? -1 : aMaterial.mMetaItemSubID);
@@ -1300,44 +1292,122 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 //aMaterial.mIconSet = GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "IconSet", aMaterial.mIconSet);
                 aMaterial.mTransparent = GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "Transparent", aMaterial.mTransparent);
                 aMaterial.mColor = Dyes.get(GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "DyeColor", aMaterial.mColor.mName));
-                aMaterial.mRGBa[0] = aMaterial.mMoltenRGBa[0] = (short) GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "MatRed", aMaterial. mRGBa[0]);
+                aMaterial.mRGBa[0] = aMaterial.mMoltenRGBa[0] = (short) GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "MatRed", aMaterial.mRGBa[0]);
                 aMaterial.mRGBa[1] = aMaterial.mMoltenRGBa[1] = (short) GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "MatGreen", aMaterial.mRGBa[1]);
                 aMaterial.mRGBa[2] = aMaterial.mMoltenRGBa[2] = (short) GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "MatBlue", aMaterial.mRGBa[2]);
                 aMaterial.mRGBa[3] = aMaterial.mMoltenRGBa[3] = (short) GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "MatAlpha", aMaterial.mRGBa[3]);
                 aMaterial.mTypes = GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "MaterialTypes", aMaterial.mCustomOre ? 1|2|4|8|16|32|64|128 : aMaterial.mTypes);
                 aMaterial.mUnificatable = GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "Unificatable", aMaterial.mUnificatable);
+                aMaterial.mChemicalFormula = GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "ChemicalFormula", aMaterial.mChemicalFormula);
+                aMaterial.mGasTemp = (short) GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "GasTemp", aMaterial.mGasTemp);
+                aMaterial.setOreMultiplier(GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "OreMultiplier", aMaterial.mOreMultiplier));
+                aMaterial.setSmeltingMultiplier(GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "OreSmeltingMultiplier", aMaterial.mSmeltingMultiplier));
+                aMaterial.setByProductMultiplier(GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "OreByProductMultiplier", aMaterial.mByProductMultiplier));
+                aMaterial.setHeatDamage((float) GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "HeatDamage", aMaterial.mHeatDamage));
+                aMaterial.mSmeltInto = MATERIALS.get(GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "MaterialSmeltInto", aMaterial.mSmeltInto.mName));
+                aMaterial.mMacerateInto = MATERIALS.get(GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "MaterialMacerateInto", aMaterial.mMacerateInto.mName));
+                aMaterial.mArcSmeltInto = MATERIALS.get(GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "MaterialArcSmeltInto", aMaterial.mArcSmeltInto.mName));
+                aMaterial.mDirectSmelting = MATERIALS.get(GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "MaterialDirectSmeltInto", aMaterial.mDirectSmelting.mName));
+                if (aMaterial.mHasPlasma = GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "AddPlasma", aMaterial.mHasPlasma)) GT_Mod.gregtechproxy.addAutogeneratedPlasmaFluid(aMaterial);
+                if (aMaterial.mHasGas = GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "AddGas", aMaterial.mHasGas)) GT_Mod.gregtechproxy.addFluid(aMaterial.mName.toLowerCase(), aMaterial.mDefaultLocalName, aMaterial, 2, aMaterial.mGasTemp);
+
+                //TODO
+                //mOreReRegistrations - Enchantments
+                /**
+                 * Converts the pre-defined list of SubTags from out material into a list of SubTag names for setting/getting to/from the config.
+                 * Then converts that List of names into a singular string[] for insertion into the config
+                 * If the config string is different from the default, we then want to clear the Materials SubTags and insert new ones from the config string.
+                 */
+                List<String> aSubTags = new ArrayList<>();
+                for (SubTag aTag : aMaterial.mSubTags) aSubTags.add(aTag.mName);
+                String aDefaultTagString = aSubTags.toString().replace(" ", "").replace("[", "").replace("]", "");
+                String aConfigTagString = GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "ListSubTags", aDefaultTagString);
+                if (!aConfigTagString.equals(aDefaultTagString)) {
+                    aMaterial.mSubTags.clear();
+                    if (aConfigTagString.length() > 0) {
+                        aSubTags = new ArrayList<>(Arrays.asList(aConfigTagString.split(",")));
+                        for (String aTagString : aSubTags) {
+                            SubTag aTag = SubTag.sSubTags.get(aTagString);
+                            if (aTag != null) aMaterial.mSubTags.add(aTag);
+                        }
+                    }
+                }
+                /**
+                 * Same principal as SubTags
+                 */
+                List<String> aOreByProducts = new ArrayList<>();
+                for (Materials aMat : aMaterial.mOreByProducts) aOreByProducts.add(aMat.mName);
+                String aDefaultMaterialString = aOreByProducts.toString().replace(" ", "").replace("[", "").replace("]", "");
+                String aConfigMaterialString = GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "ListMaterialByProducts", aDefaultMaterialString);
+                if (!aConfigMaterialString.equals(aDefaultMaterialString)) {
+                    aMaterial.mOreByProducts.clear();
+                    if (aConfigMaterialString.length() > 0) {
+                        aOreByProducts = new ArrayList<>(Arrays.asList(aConfigMaterialString.split(",")));
+                        for (String aMaterialString : aOreByProducts) {
+                            Materials aMat = MATERIALS.get(aMaterialString);
+                            if (aMat != null) aMaterial.mOreByProducts.add(aMat);
+                        }
+                    }
+                }
+                /**
+                 * Same principal as SubTags
+                 */
                 List<String> aAspects = new ArrayList<>();
                 ArrayList<String> aAspectAmounts = new ArrayList<>();
                 for (TC_Aspects.TC_AspectStack aAspectStack : aMaterial.mAspects) {
                     aAspects.add(aAspectStack.mAspect.toString());
                     aAspectAmounts.add(String.valueOf(aAspectStack.mAmount));
                 }
-                String aAspectsString = GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "TCAspects", aAspects.toString().replace(" ", "").replace("[", "").replace("]", ""));
-                String aAspectAmountsString = GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "TCAspectAmounts", aAspectAmounts.toString().replace(" ", "").replace("[", "").replace("]", ""));
-
-                aAspects = new ArrayList<>(Arrays.asList(aAspectsString.split(",")));
-                aAspectAmounts = new ArrayList<>(Arrays.asList(aAspectAmountsString.split(",")));
-
-                for (int x = 0; x < aAspects.size(); x++) {
-                    String str = aAspects.get(x);
-                    if (!str.isEmpty()) {
-                        TC_AspectStack aAspectStack = new TC_AspectStack(TC_Aspects.valueOf(str), Long.parseLong(aAspectAmounts.get(x)));
-                        if (!aMaterial.mAspects.contains(aAspectStack)) aMaterial.mAspects.add(aAspectStack);
+                String aDefaultAspectString = aAspects.toString().replace(" ", "").replace("[", "").replace("]", "");
+                String aDefaultAspectAmountString = aAspectAmounts.toString().replace(" ", "").replace("[", "").replace("]", "");
+                String aConfigAspectString = GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "ListTCAspects", aDefaultAspectString);
+                String aConfigAspectAmountString = GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "ListTCAspectAmounts", aDefaultAspectAmountString);
+                if (!aConfigAspectString.equals(aDefaultAspectString) || !aConfigAspectAmountString.equals(aDefaultAspectAmountString)) {
+                    aMaterial.mAspects.clear();
+                    if (aConfigAspectString.length() > 0) {
+                        aAspects = new ArrayList<>(Arrays.asList(aConfigAspectString.split(",")));
+                        for (int i = 0; i < aAspects.size(); i++) {
+                            String aAspectString = aAspects.get(i);
+                            long aAspectAmount = Long.parseLong(aAspectAmounts.get(i));
+                            TC_AspectStack aAspectStack = new TC_AspectStack(TC_Aspects.valueOf(aAspectString), aAspectAmount);
+                            if (aAspectStack != null) aMaterial.mAspects.add(aAspectStack);
+                        }
                     }
                 }
+                //End of updating values from the config
             }
+
+            //Temp code for testing
             aConfigPath.setLength(0);
+            StringBuilder sb = new StringBuilder();
+            sb.append("##### - ").append(aMaterial.mName).append(": ");
+            for (SubTag aTag : aMaterial.mSubTags) {
+                sb.append(aTag.mName).append(",");
+            }
+            System.out.println(sb.toString());
         }
     }
 
+    public static void initGeneratedMaterials() {
+        for (Materials aMaterial : MATERIALS.values()) {
+            if (aMaterial.mMetaItemSubID >= 0) {
+                if (aMaterial.mMetaItemSubID < 1000) {
+                    if (GregTech_API.sGeneratedMaterials[aMaterial.mMetaItemSubID] == null) {
+                        GregTech_API.sGeneratedMaterials[aMaterial.mMetaItemSubID] = aMaterial;
+                    } else throw new IllegalArgumentException("The Material Index " + aMaterial.mMetaItemSubID + " is already used!");
+                } else throw new IllegalArgumentException("The Material Index " + aMaterial.mMetaItemSubID + " is over the maximum of 1000");
+            }
+        }
+    }
 
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality, boolean aUnificatable) {
         this(aMetaItemSubID, aIconSet, aToolSpeed, aDurability, aToolQuality, aUnificatable, "ore", false, "null");
     }
 
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality, boolean aUnificatable, String aConfigSection, boolean aCustomOre, String aCustomID) {
-        VALUES.add(this);
-        if (aCustomOre) VALUES_CUSTOM.add(this);
+        mName = mDefaultLocalName.contains(" ") ? mDefaultLocalName.replaceAll(" ", "") : mDefaultLocalName;
+        MATERIALS.put(mName, this);
+        if (aCustomOre) MATERIALS_CUSTOM.put(mName, this);
         mCustomOre = aCustomOre;
         mCustomID = aCustomID;
         mConfigSection = aConfigSection;
@@ -1348,13 +1418,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mToolQuality = (byte) aToolQuality;
         mMaterialInto = this;
         mIconSet = aIconSet;
-        if (aMetaItemSubID >= 0) {
-            if (aMetaItemSubID < 1000) {
-                if (GregTech_API.sGeneratedMaterials[aMetaItemSubID] == null) {
-                    GregTech_API.sGeneratedMaterials[aMetaItemSubID] = this;
-                } else throw new IllegalArgumentException("The Material Index " + aMetaItemSubID + " is already used!");
-            } else throw new IllegalArgumentException("The Material Index " + aMetaItemSubID + " is over the maximum of 1000");
-        }
     }
 
     public Materials(Materials aMaterialInto, boolean aReRegisterIntoThis) {
@@ -1378,7 +1441,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality, int aTypes, int aR, int aG, int aB, int aA, String aDefaultLocalName, int aFuelType, int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent, int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor, String aConfigSection, boolean aCustomOre, String aCustomID) {
         this(aMetaItemSubID, aIconSet, aToolSpeed, aDurability, aToolQuality, true, aConfigSection, aCustomOre, aCustomID);
         mDefaultLocalName = aDefaultLocalName;
-        mName = mDefaultLocalName.contains(" ") ? mDefaultLocalName.replaceAll(" ", "") : mDefaultLocalName;
         mMeltingPoint = (short) aMeltingPoint;
         mBlastFurnaceRequired = aBlastFurnaceRequired;
         mBlastFurnaceTemp = (short) aBlastFurnaceTemp;
