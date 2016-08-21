@@ -22,6 +22,7 @@ import java.util.Iterator;
 public class GT_ItemIterator
         implements Runnable {
     public void run() {
+        System.out.println("##### Started Item Iter");
         GT_Log.out.println("GT_Mod: Scanning for certain kinds of compatible Machineblocks.");
         ItemStack tStack2;
         ItemStack tStack;
@@ -180,7 +181,9 @@ public class GT_ItemIterator
                         GT_OreDictUnificator.registerOre("bookThaumonomicon", new ItemStack(tItem, 1, 32767));
                     }
                     if (tName.equals("item.ligniteCoal")) {
+                        System.out.println("#### Started Lignite");
                         GT_OreDictUnificator.set(OrePrefixes.gem, Materials.Lignite, new ItemStack(tItem, 1, 0));
+                        System.out.println("#### Ended Lignite");
                     }
                     if ((tName.equals("tile.extrabiomes.redrock")) || (tName.equals("tile.bop.redRocks"))) {
                         GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 0));
