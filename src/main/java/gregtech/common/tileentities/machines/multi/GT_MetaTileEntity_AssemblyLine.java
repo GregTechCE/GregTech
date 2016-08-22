@@ -175,7 +175,7 @@ public class GT_MetaTileEntity_AssemblyLine
                 }
                 tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, -2, i);
                 if (!addInputToMachineList(tTileEntity, 16)){
-                    if (!addOutputToMachineList(tTileEntity, 16)){;return false;
+                    if (!addOutputToMachineList(tTileEntity, 16)){
                     }else{if(r>0){return true;}else{return false;}}
                 }
             }
