@@ -38,7 +38,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     public static boolean tHideOres;
     public static int tOreMetaCount;
 
-    protected GT_Block_Ores_Abstract(String aUnlocalizedName, int aOreMetaCount, boolean aHideFirstMeta, Material aMaterial) {
+    protected GT_Block_Ores_Abstract(String aUnlocalizedName, int aOreMetaCount, Material aMaterial) {
         super(GT_Item_Ores.class, aUnlocalizedName, aMaterial);
         this.isBlockContainer = true;
         setStepSound(soundTypeStone);
@@ -58,7 +58,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
                     if ((GregTech_API.sGeneratedMaterials[i].mTypes & 0x8) != 0) {
                         GT_OreDictUnificator.registerOre(this.getProcessingPrefix()[j] != null ? this.getProcessingPrefix()[j].get(GregTech_API.sGeneratedMaterials[i]) : "", new ItemStack(this, 1, i + (j * 1000)));
                         if (tHideOres) {
-                            codechicken.nei.api.API.hideItem(new ItemStack(this, 1, (j == 0 && aHideFirstMeta) ? i : i + (j * 1000)));
+                            if (!aUnlocalizedName.equals("gt.blockores") && !(i + (j * 1000) < 1000)) codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i + (j * 1000)));
                             codechicken.nei.api.API.hideItem(new ItemStack(this, 1, (i + 16000) + (j * 1000)));
                         }
                     }
@@ -90,28 +90,28 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     }
 
     public String getLocalizedName(Materials aMaterial) {
-        switch (aMaterial) {
-            case InfusedAir:
-            case InfusedDull:
-            case InfusedEarth:
-            case InfusedEntropy:
-            case InfusedFire:
-            case InfusedOrder:
-            case InfusedVis:
-            case InfusedWater:
+        switch (aMaterial.mName) {
+            case "InfusedAir":
+            case "InfusedDull":
+            case "InfusedEarth":
+            case "InfusedEntropy":
+            case "InfusedFire":
+            case "InfusedOrder":
+            case "InfusedVis":
+            case "InfusedWater":
                 return aMaterial.mDefaultLocalName + " Infused Stone";
-            case Vermiculite:
-            case Bentonite:
-            case Kaolinite:
-            case Talc:
-            case BasalticMineralSand:
-            case GraniticMineralSand:
-            case GlauconiteSand:
-            case CassiteriteSand:
-            case GarnetSand:
-            case QuartzSand:
-            case Pitchblende:
-            case FullersEarth:
+            case "Vermiculite":
+            case "Bentonite":
+            case "Kaolinite":
+            case "Talc":
+            case "BasalticMineralSand":
+            case "GraniticMineralSand":
+            case "GlauconiteSand":
+            case "CassiteriteSand":
+            case "GarnetSand":
+            case "QuartzSand":
+            case "Pitchblende":
+            case "FullersEarth":
                 return aMaterial.mDefaultLocalName;
             default:
                 return aMaterial.mDefaultLocalName + OrePrefixes.ore.mLocalizedMaterialPost;

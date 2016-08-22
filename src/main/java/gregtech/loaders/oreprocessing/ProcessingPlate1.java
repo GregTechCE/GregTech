@@ -28,47 +28,47 @@ public class ProcessingPlate1 implements gregtech.api.interfaces.IOreRecipeRegis
         if (aMaterial.mStandardMoltenFluid != null) {
             GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Plate.get(0L, new Object[0]), aMaterial.getMolten(144L), GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L), 32, 8);
         }
-        switch (aMaterial) {
-            case Iron:
+        switch (aMaterial.mName) {
+            case "Iron":
                 GregTech_API.registerCover(aStack, new GT_CopiedBlockTexture(Blocks.iron_block, 1, 0), null);
                 break;
-            case Gold:
+            case "Gold":
                 GregTech_API.registerCover(aStack, new GT_CopiedBlockTexture(Blocks.gold_block, 1, 0), null);
                 break;
-            case Diamond:
+            case "Diamond":
                 GregTech_API.registerCover(aStack, new GT_CopiedBlockTexture(Blocks.diamond_block, 1, 0), null);
                 break;
-            case Emerald:
+            case "Emerald":
                 GregTech_API.registerCover(aStack, new GT_CopiedBlockTexture(Blocks.emerald_block, 1, 0), null);
                 break;
-            case Lapis:
+            case "Lapis":
                 GregTech_API.registerCover(aStack, new GT_CopiedBlockTexture(Blocks.lapis_block, 1, 0), null);
                 break;
-            case Coal:
+            case "Coal":
                 GregTech_API.registerCover(aStack, new GT_CopiedBlockTexture(Blocks.coal_block, 1, 0), null);
                 break;
-            case Redstone:
+            case "Redstone":
                 GregTech_API.registerCover(aStack, new GT_CopiedBlockTexture(Blocks.redstone_block, 1, 0), null);
                 break;
-            case Glowstone:
+            case "Glowstone":
                 GregTech_API.registerCover(aStack, new GT_CopiedBlockTexture(Blocks.glowstone, 1, 0), null);
                 break;
-            case NetherQuartz:
+            case "NetherQuartz":
                 GregTech_API.registerCover(aStack, new GT_CopiedBlockTexture(Blocks.quartz_block, 1, 0), null);
                 break;
-            case Obsidian:
+            case "Obsidian":
                 GregTech_API.registerCover(aStack, new GT_CopiedBlockTexture(Blocks.obsidian, 1, 0), null);
                 break;
-            case Stone:
+            case "Stone":
                 GregTech_API.registerCover(aStack, new GT_CopiedBlockTexture(Blocks.stone, 1, 0), null);
                 break;
-            case GraniteBlack:
+            case "GraniteBlack":
                 GregTech_API.registerCover(aStack, new GT_RenderedTexture(gregtech.api.enums.Textures.BlockIcons.GRANITE_BLACK_SMOOTH), null);
                 break;
-            case GraniteRed:
+            case "GraniteRed":
                 GregTech_API.registerCover(aStack, new GT_RenderedTexture(gregtech.api.enums.Textures.BlockIcons.GRANITE_RED_SMOOTH), null);
                 break;
-            case Concrete:
+            case "Concrete":
                 GregTech_API.registerCover(aStack, new GT_RenderedTexture(gregtech.api.enums.Textures.BlockIcons.CONCRETE_LIGHT_SMOOTH), null);
                 break;
             default:

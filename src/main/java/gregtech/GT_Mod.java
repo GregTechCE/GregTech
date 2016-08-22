@@ -28,7 +28,6 @@ import gregtech.loaders.load.GT_SonictronLoader;
 import gregtech.loaders.misc.GT_Achievements;
 import gregtech.loaders.misc.GT_Bees;
 import gregtech.loaders.misc.GT_CoverLoader;
-import gregtech.loaders.misc.OreProcessingConfiguration;
 import gregtech.loaders.postload.*;
 import gregtech.loaders.preload.*;
 import ic2.api.recipe.IRecipeInput;
@@ -242,16 +241,6 @@ public class GT_Mod
         GregTech_API.mRFExplosions = GregTech_API.sOPStuff.get(ConfigCategories.general, "RFExplosions", false);
         GregTech_API.meIOLoaded = Loader.isModLoaded("EnderIO");
 
-        gregtechproxy.mChangeHarvestLevels = GregTech_API.sMaterialProperties.get("havestLevel", "activateHarvestLevelChange", false);
-        if(gregtechproxy.mChangeHarvestLevels){
-        gregtechproxy.mGraniteHavestLevel = (int) GregTech_API.sMaterialProperties.get("havestLevel", "graniteHarvestLevel", 3);
-        gregtechproxy.mMaxHarvestLevel=(int) Math.min(15, GregTech_API.sMaterialProperties.get("havestLevel", "maxLevel",7));
-        for(Materials tMaterial : Materials.values()){
-        	if(tMaterial!=null&&tMaterial.mToolQuality>0&&tMaterial.mMetaItemSubID<gregtechproxy.mHarvestLevel.length&&tMaterial.mMetaItemSubID>=0){
-        		gregtechproxy.mHarvestLevel[tMaterial.mMetaItemSubID] = GregTech_API.sMaterialProperties.get("materialHavestLevel", tMaterial.mDefaultLocalName,tMaterial.mToolQuality);
-        	}
-        }}
-
         if (tMainConfig.get("general", "hardermobspawners", true).getBoolean(true)) {
             Blocks.mob_spawner.setHardness(500.0F).setResistance(6000000.0F);
         }
@@ -270,8 +259,8 @@ public class GT_Mod
             }
         }
         //GT_Config.troll = (Calendar.getInstance().get(2) + 1 == 4) && (Calendar.getInstance().get(5) >= 1) && (Calendar.getInstance().get(5) <= 2);
-
-        Materials.init(GregTech_API.sMaterialProperties);
+        new GT_Loader_MaterialProcessing().run();
+        Materials.init();
 
         GT_Log.out.println("GT_Mod: Saving Main Config");
         tMainConfig.save();
@@ -297,8 +286,6 @@ public class GT_Mod
 
         new Enchantment_EnderDamage();
         new Enchantment_Radioactivity();
-
-        new OreProcessingConfiguration(aEvent.getModConfigurationDirectory()).run();
 
         new GT_Loader_OreProcessing().run();
         new GT_Loader_OreDictionary().run();
@@ -391,7 +378,7 @@ public class GT_Mod
         }
         
         new GT_Bees();
-        
+
         gregtechproxy.onLoad();
         if (gregtechproxy.mSortToTheEnd) {
             new GT_ItemIterator().run();
@@ -646,7 +633,7 @@ public class GT_Mod
         GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Orb to overwrite", new Object[0])}, new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Copy of the Orb", new Object[0])}, ItemList.Tool_DataOrb.getWithName(0L, "Orb to copy", new Object[0]), null, null, 512, 32, 0);
         GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Stick to overwrite", new Object[0])}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Copy of the Stick", new Object[0])}, ItemList.Tool_DataStick.getWithName(0L, "Stick to copy", new Object[0]), null, null, 128, 32, 0);
         GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Raw Prospection Data", new Object[0])}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Analyzed Prospection Data", new Object[0])}, null, null, null, 1000, 32, 0);
-        for (Materials tMaterial : Materials.VALUES) {
+        for (Materials tMaterial : Materials.values()) {
             if ((tMaterial.mElement != null) && (!tMaterial.mElement.mIsIsotope) && (tMaterial != Materials.Magic) && (tMaterial.getMass() > 0L)) {
                 ItemStack tOutput = ItemList.Tool_DataOrb.get(1L, new Object[0]);
                 Behaviour_DataOrb.setDataTitle(tOutput, "Elemental-Scan");
@@ -684,7 +671,6 @@ public class GT_Mod
 				GregTech_API.mInputRF = false;
         	}
         }
-
         achievements = new GT_Achievements();
         Map.Entry<IRecipeInput, RecipeOutput> tRecipe;
         GT_Log.out.println("GT_Mod: Loading finished, deallocating temporary Init Variables.");

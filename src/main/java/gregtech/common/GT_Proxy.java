@@ -492,7 +492,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         GT_Log.out.println("GT_Mod: Adding Tool Usage Crafting Recipes for OreDict Items.");
         long tBits = GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED
                 | GT_ModHandler.RecipeBits.ONLY_ADD_IF_RESULT_IS_NOT_NULL | GT_ModHandler.RecipeBits.NOT_REMOVABLE;
-        for (Materials aMaterial : Materials.VALUES) {
+        for (Materials aMaterial : Materials.values()) {
             if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial)) {
                 if (!aMaterial.contains(SubTag.NO_SMASHING)) {
                     if (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.hammerplating, aMaterial.toString(), true)) {
@@ -623,12 +623,12 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                             Character.valueOf('R'), OrePrefixes.ring.get(Materials.Steel)});
                     GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, aMaterial, 1L), tBits, new Object[]{"XSX", "XSX",
                             "ShS", Character.valueOf('X'), OrePrefixes.plate.get(aMaterial), Character.valueOf('S'), OrePrefixes.plate.get(Materials.Steel)});
-                    switch (aMaterial) {
-                        case Wood:
+                    switch (aMaterial.mName) {
+                        case "Wood":
                             GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1L), tBits, new Object[]{"P ", " s",
                                     Character.valueOf('P'), OrePrefixes.plank.get(aMaterial)});
                             break;
-                        case Stone:
+                        case "Stone":
                             GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1L), tBits, new Object[]{"P ", " f",
                                     Character.valueOf('P'), OrePrefixes.stoneSmooth});
                             break;
@@ -636,12 +636,12 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                             GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1L), tBits,
                                     new Object[]{"P ", aMaterial.contains(SubTag.WOOD) ? " s" : " h", Character.valueOf('P'), OrePrefixes.plate.get(aMaterial)});
                     }
-                    switch (aMaterial) {
-                        case Wood:
+                    switch (aMaterial.mName) {
+                        case "Wood":
                             GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1L), tBits, new Object[]{"SPS", "PsP", "SPS",
                                     Character.valueOf('P'), OrePrefixes.plank.get(aMaterial), Character.valueOf('S'), OrePrefixes.stick.get(aMaterial)});
                             break;
-                        case Stone:
+                        case "Stone":
                             GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1L), tBits, new Object[]{"SPS", "PfP", "SPS",
                                     Character.valueOf('P'), OrePrefixes.stoneSmooth, Character.valueOf('S'), new ItemStack(Blocks.stone_button, 1, 32767)});
                             break;
@@ -703,7 +703,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                         new Object[]{"h", "X", Character.valueOf('X'), OrePrefixes.gemFlawless.get(aMaterial)});
                 GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 2L), tBits,
                         new Object[]{"h", "X", Character.valueOf('X'), OrePrefixes.gemExquisite.get(aMaterial)});
-                if ((aMaterial.contains(SubTag.MORTAR_GRINDABLE)) && (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, aMaterial.name(), true))) {
+                if ((aMaterial.contains(SubTag.MORTAR_GRINDABLE)) && (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, aMaterial.mName, true))) {
                     GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 1L), tBits,
                             new Object[]{"X", "m", Character.valueOf('X'), OrePrefixes.gemChipped.get(aMaterial)});
                     GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 2L), tBits,
@@ -1138,31 +1138,31 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                                         }
                                         break;
                                     case gem:
-                                        switch (aMaterial) {
-                                            case Lapis:
-                                            case Sodalite:
+                                        switch (aMaterial.mName) {
+                                            case "Lapis":
+                                            case "Sodalite":
                                                 GT_OreDictUnificator.registerOre(Dyes.dyeBlue, aEvent.Ore);
                                                 break;
-                                            case Lazurite:
+                                            case "Lazurite":
                                                 GT_OreDictUnificator.registerOre(Dyes.dyeCyan, aEvent.Ore);
                                                 break;
-                                            case InfusedAir:
-                                            case InfusedWater:
-                                            case InfusedFire:
-                                            case InfusedEarth:
-                                            case InfusedOrder:
-                                            case InfusedEntropy:
-                                                GT_OreDictUnificator.registerOre(aMaterial.name().replaceFirst("Infused", "shard"), aEvent.Ore);
+                                            case "InfusedAir":
+                                            case "InfusedWater":
+                                            case "InfusedFire":
+                                            case "InfusedEarth":
+                                            case "InfusedOrder":
+                                            case "InfusedEntropy":
+                                                GT_OreDictUnificator.registerOre(aMaterial.mName.replaceFirst("Infused", "shard"), aEvent.Ore);
                                                 break;
-                                            case Chocolate:
+                                            case "Chocolate":
                                                 GT_OreDictUnificator.registerOre(Dyes.dyeBrown, aEvent.Ore);
                                                 break;
-                                            case CertusQuartz:
-                                            case NetherQuartz:
+                                            case "CertusQuartz":
+                                            case "NetherQuartz":
                                                 GT_OreDictUnificator.registerOre(OrePrefixes.item.get(aMaterial), aEvent.Ore);
-                                            case Fluix:
-                                            case Quartz:
-                                            case Quartzite:
+                                            case "Fluix":
+                                            case "Quartz":
+                                            case "Quartzite":
                                                 GT_OreDictUnificator.registerOre(OrePrefixes.crystal, aMaterial, aEvent.Ore);
                                                 GT_OreDictUnificator.registerOre(OreDictNames.craftingQuartz, aEvent.Ore);
                                             default:
@@ -1758,12 +1758,12 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     }
 
     public Fluid addAutogeneratedMoltenFluid(Materials aMaterial) {
-        return addFluid("molten." + aMaterial.name().toLowerCase(), "molten.autogenerated", "Molten " + aMaterial.mDefaultLocalName, aMaterial,
+        return addFluid("molten." + aMaterial.mName.toLowerCase(), "molten.autogenerated", "Molten " + aMaterial.mDefaultLocalName, aMaterial,
                 aMaterial.mMoltenRGBa, 4, aMaterial.mMeltingPoint <= 0 ? 1000 : aMaterial.mMeltingPoint, null, null, 0);
     }
 
     public Fluid addAutogeneratedPlasmaFluid(Materials aMaterial) {
-        return addFluid("plasma." + aMaterial.name().toLowerCase(), "plasma.autogenerated", aMaterial.mDefaultLocalName + " Plasma", aMaterial,
+        return addFluid("plasma." + aMaterial.mName.toLowerCase(), "plasma.autogenerated", aMaterial.mDefaultLocalName + " Plasma", aMaterial,
                 aMaterial.mMoltenRGBa, 3, 10000, GT_OreDictUnificator.get(OrePrefixes.cellPlasma, aMaterial, 1L), ItemList.Cell_Empty.get(1L, new Object[0]),
                 1000);
     }

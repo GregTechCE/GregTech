@@ -108,80 +108,80 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
             GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_ModHandler.getDistilledWater(200L), GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 9000, 1500, 24);
         }
 
-        switch (aMaterial) {
-            case _NULL:
+        switch (aMaterial.mName) {
+            case "_NULL":
                 break;
-            case Glass:
+            case "Glass":
                 GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), new ItemStack(net.minecraft.init.Blocks.glass));
                 break;
-            case NetherQuartz:
-            case Quartz:
-            case CertusQuartz:
+            case "NetherQuartz":
+            case "Quartz":
+            case "CertusQuartz":
                 if (gregtech.api.GregTech_API.sRecipeFile.get(gregtech.api.enums.ConfigCategories.Recipes.disabledrecipes, "QuartzDustSmeltingIntoAESilicon", true))
                     GT_ModHandler.removeFurnaceSmelting(aStack);
                 break;
-            case MeatRaw:
+            case "MeatRaw":
                 GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.MeatCooked, 1L));
                 break;
-            case Mercury:
+            case "Mercury":
                 System.err.println("Quicksilver Dust?, To melt that, you don't even need a Furnace...");
                 break;
-            case Tetrahedrite:
-            case Chalcopyrite:
-            case Malachite:
+            case "Tetrahedrite":
+            case "Chalcopyrite":
+            case "Malachite":
                 GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Copper, 6L));
                 break;
-            case Pentlandite:
+            case "Pentlandite":
                 GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Nickel, 6L));
                 break;
-            case Garnierite:
+            case "Garnierite":
                 GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Nickel, 1L));
                 break;
-            case Cassiterite:
-            case CassiteriteSand:
+            case "Cassiterite":
+            case "CassiteriteSand":
                 GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1L));
                 break;
-            case Magnetite:
-            case VanadiumMagnetite:
-            case BasalticMineralSand:
-            case GraniticMineralSand:
+            case "Magnetite":
+            case "VanadiumMagnetite":
+            case "BasalticMineralSand":
+            case "GraniticMineralSand":
                 GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Iron, 3L));
                 break;
-            case YellowLimonite:
-            case BrownLimonite:
-            case BandedIron:
+            case "YellowLimonite":
+            case "BrownLimonite":
+            case "BandedIron":
                 GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L));
                 break;
-            case Coal:
+            case "Coal":
                 GT_ModHandler.addLiquidTransposerFillRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), Materials.Water.getFluid(125L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HydratedCoal, 1L), 125);
                 break;
-            case HydratedCoal:
+            case "HydratedCoal":
                 GT_ModHandler.addLiquidTransposerEmptyRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), Materials.Water.getFluid(125L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L), 125);
                 GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L));
                 break;
-            case Diamond:
+            case "Diamond":
                 GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(4L, new Object[]{aStack}), 32, ItemList.IC2_Industrial_Diamond.get(3L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 16L));
                 break;
-            case Opal:
-            case Olivine:
-            case Emerald:
-            case Ruby:
-            case Sapphire:
-            case GreenSapphire:
-            case Topaz:
-            case BlueTopaz:
-            case Tanzanite:
+            case "Opal":
+            case "Olivine":
+            case "Emerald":
+            case "Ruby":
+            case "Sapphire":
+            case "GreenSapphire":
+            case "Topaz":
+            case "BlueTopaz":
+            case "Tanzanite":
                 GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(4L, new Object[]{aStack}), 24, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 3L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 12L));
                 break;
-            case FoolsRuby:
-            case GarnetRed:
-            case GarnetYellow:
-            case Jasper:
-            case Amber:
-            case Monazite:
-            case Forcicium:
-            case Forcillium:
-            case Force:
+            case "FoolsRuby":
+            case "GarnetRed":
+            case "GarnetYellow":
+            case "Jasper":
+            case "Amber":
+            case "Monazite":
+            case "Forcicium":
+            case "Forcillium":
+            case "Force":
                 GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(4L, new Object[]{aStack}), 16, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 3L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 8L));
         }
     }

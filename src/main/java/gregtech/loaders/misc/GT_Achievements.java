@@ -1,9 +1,5 @@
 package gregtech.loaders.misc;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -33,6 +29,10 @@ import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.fluids.FluidStack;
 import thaumcraft.api.ThaumcraftApiHelper;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class GT_Achievements {
 
     public static List<Materials> oreList = new ArrayList<Materials>();
@@ -47,8 +47,8 @@ public class GT_Achievements {
         this.achievementList = new HashMap();
         this.issuedAchievements = new HashMap();
         for (int i = 0; i < oreList.size(); i++) {
-            if (GT_Values.D1 && this.achievementList.get(oreList.get(i).name()) == null) {
-                GT_Log.out.println("achievement." + oreList.get(i).name() + "=Find " + oreList.get(i).name() + " Ore");
+            if (GT_Values.D1 && this.achievementList.get(oreList.get(i).mName) == null) {
+                GT_Log.out.println("achievement." + oreList.get(i).mName + "=Find " + oreList.get(i).mName + " Ore");
 
                 StringBuilder dimensions = new StringBuilder();
                 boolean isFirst = true;
@@ -66,7 +66,7 @@ public class GT_Achievements {
                     dimensions.append("End");
                     isFirst = false;
                 }
-                GT_Log.out.println("achievement." + oreList.get(i).name() + ".desc=Height: " + (oreStats.get(i)[0]) + "-" + (oreStats.get(i)[1]) + ", Chance: " + (oreStats.get(i)[2]) + ", " + dimensions.toString());
+                GT_Log.out.println("achievement." + oreList.get(i).mName + ".desc=Height: " + (oreStats.get(i)[0]) + "-" + (oreStats.get(i)[1]) + ", Chance: " + (oreStats.get(i)[2]) + ", " + dimensions.toString());
             }
             registerOreAchievement(oreList.get(i));
         }
@@ -249,9 +249,9 @@ public class GT_Achievements {
     }
 
     public Achievement registerOreAchievement(Materials aMaterial) {
-        if (this.achievementList.get(aMaterial.name()) == null) {
+        if (this.achievementList.get(aMaterial.mName) == null) {
             oreReg++;
-            return registerAchievement(aMaterial.name(), -(6 + oreReg % 5), ((oreReg) / 5) - 8, new ItemStack(GregTech_API.sBlockOres1, 1,
+            return registerAchievement(aMaterial.mName, -(6 + oreReg % 5), ((oreReg) / 5) - 8, new ItemStack(GregTech_API.sBlockOres1, 1,
                     aMaterial.mMetaItemSubID), AchievementList.openInventory, false);
         }
         return null;
@@ -498,7 +498,7 @@ public class GT_Achievements {
             } else if (data.mPrefix == OrePrefixes.ore || data.mPrefix == OrePrefixes.oreBlackgranite || data.mPrefix == OrePrefixes.oreEndstone
                     || data.mPrefix == OrePrefixes.oreNetherrack || data.mPrefix == OrePrefixes.oreRedgranite) {
                 for (int i = 0; i < data.getAllMaterialStacks().size(); i++) {
-                    issueAchievement(player, data.getAllMaterialStacks().get(i).mMaterial.name());
+                    issueAchievement(player, data.getAllMaterialStacks().get(i).mMaterial.mName);
                     if (data.getAllMaterialStacks().get(i).mMaterial == Materials.AnyIron) {
                         issueAchievement(player, "iron");
                     }

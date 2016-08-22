@@ -13,7 +13,7 @@ import net.minecraft.init.Blocks;
 
 public class GT_Block_Ores extends GT_Block_Ores_Abstract {
     public GT_Block_Ores() {
-        super("gt.blockores", 7, false, Material.rock);
+        super("gt.blockores", 7, Material.rock);
     }
 
     @Override

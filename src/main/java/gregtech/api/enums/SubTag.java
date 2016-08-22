@@ -3,8 +3,8 @@ package gregtech.api.enums;
 import gregtech.api.interfaces.ICondition;
 import gregtech.api.interfaces.ISubTagContainer;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -21,7 +21,7 @@ import java.util.HashSet;
  * Some SubTags are used for other things than Materials too. It is useful when I need an easy way to declare Stuff in Items.
  */
 public final class SubTag implements ICondition<ISubTagContainer> {
-    public static final ArrayList<SubTag> sSubTags = new ArrayList<SubTag>();
+    public static final HashMap<String, SubTag> sSubTags = new HashMap<String, SubTag>();
     private static long sSubtagID = 0;
     public final long mSubtagID;
     public final String mName;
@@ -231,11 +231,11 @@ public final class SubTag implements ICondition<ISubTagContainer> {
     private SubTag(String aName) {
         mSubtagID = sSubtagID++;
         mName = aName;
-        sSubTags.add(this);
+        sSubTags.put(aName, this);
     }
 
     public static SubTag getNewSubTag(String aName) {
-        for (SubTag tSubTag : sSubTags) if (tSubTag.mName.equals(aName)) return tSubTag;
+        for (SubTag tSubTag : sSubTags.values()) if (tSubTag.mName.equals(aName)) return tSubTag;
         return new SubTag(aName);
     }
 
