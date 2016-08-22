@@ -7,6 +7,5 @@ public class GT_Loader_MaterialProcessing implements Runnable {
     public void run() {
         GT_Log.out.println("GT_Mod: Register Material processing.");
         new ProcessingConfig();
-        //new ProcessingTest();
     }
 }

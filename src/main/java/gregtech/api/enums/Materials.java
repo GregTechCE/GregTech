@@ -19,9 +19,8 @@ import java.util.*;
 import static gregtech.api.enums.GT_Values.M;
 
 public class Materials implements IColorModulationContainer, ISubTagContainer {
-    private static Materials[] MATERIALS_ARRAY = new Materials[50000];
+    private static Materials[] MATERIALS_ARRAY = new Materials[]{};
     private static final Map<String, Materials> MATERIALS_MAP = new HashMap<String, Materials>();
-    private static final List<Integer> USED_IDS = new ArrayList<Integer>();
     private static final List<IMaterialRegistrator> mMaterialRegistrators = new ArrayList<IMaterialRegistrator>();
 
     /**
@@ -1264,7 +1263,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     public static void init() {
-        Materials Muranium = new Materials(378, TextureSet.SET_NONE, 1.0F, 9999, 2, 1|2|8|32|64|128, 92, 0, 168, 0, "Muranium", 1, 50, 1337, 1337, true, false, 3, 1, 1, Dyes.dyePurple);
         for (IMaterialRegistrator aRegistrator : mMaterialRegistrators) {
             aRegistrator.onMaterialsInit();
         }
@@ -1275,10 +1273,16 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 if (aMaterial.mMetaItemSubID < 1000) {
                     if (GregTech_API.sGeneratedMaterials[aMaterial.mMetaItemSubID] == null) {
                         GregTech_API.sGeneratedMaterials[aMaterial.mMetaItemSubID] = aMaterial;
-                    } else throw new IllegalArgumentException("The Material Index " + aMaterial.mMetaItemSubID + " for " + aMaterial.mName + "is already used!");
+                    } else throw new IllegalArgumentException("The Material Index " + aMaterial.mMetaItemSubID + " for " + aMaterial.mName + " is already used!");
                 } else throw new IllegalArgumentException("The Material Index " + aMaterial.mMetaItemSubID + " for " + aMaterial.mName + " is/over the maximum of 1000");
             }
         }
+        // Fills empty spaces with materials, causes horrible load times.
+        /*for (int i = 0; i < GregTech_API.sGeneratedMaterials.length; i++) {
+            if (GregTech_API.sGeneratedMaterials[i] == null) {
+                GregTech_API.sGeneratedMaterials[i] = new Materials(i, TextureSet.SET_NONE, 1.0F, 0, 2, 1|2|4|8|16|32|64|128, 92, 0, 168, 0, "TestMat" + i, 0, 0, -1, 0, false, false, 3, 1, 1, Dyes._NULL, "testmat");
+            }
+        }*/
     }
 
     public static void initMaterialProperties() {
@@ -1423,7 +1427,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mDefaultLocalName = aDefaultLocalName;
         mName = aDefaultLocalName.contains(" ") ? aDefaultLocalName.replaceAll(" ", "") : aDefaultLocalName;
         MATERIALS_MAP.put(mName, this);
-        USED_IDS.add(aMetaItemSubID);
         mCustomOre = aCustomOre;
         mCustomID = aCustomID;
         mConfigSection = aConfigSection;
@@ -1524,24 +1527,25 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         else mAspects.addAll(aAspects);
     }
 
-    /** This is for keeping compatibility with addons mods (Such as TinkersGregworks) that looped over the old materials enum **/
+    /**
+     * This is for keeping compatibility with addons mods (Such as TinkersGregworks) that looped over the old materials enum
+     */
     public String name() {
         return mName;
     }
 
-    /** This is for keeping compatibility with addons mods (Such as TinkersGregworks) that looped over the old materials enum **/
+    /**
+     * This is for keeping compatibility with addons mods (Such as TinkersGregworks) that looped over the old materials enum
+     */
     public static Materials[] values() {
         return MATERIALS_ARRAY;
     }
 
-    /** This should only be used for getting a Material by its name as a String. Do not loop over this map, use values(). **/
+    /**
+     * This should only be used for getting a Material by its name as a String. Do not loop over this map, use values().
+     */
     public static Map<String, Materials> getMaterialsMap() {
         return MATERIALS_MAP;
-    }
-
-    /** Useful for checking if a Material ID is already being used. This is a List so the 'contains()' method can be used. **/
-    public static List<Integer> getUsedIds() {
-        return USED_IDS;
     }
 
     public static Materials get(String aMaterialName) {
