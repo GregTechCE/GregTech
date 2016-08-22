@@ -737,18 +737,17 @@ public enum OrePrefixes {
             case "InfusedVis":
             case "InfusedWater":
                 if (name().startsWith("gem")) return mLocalizedMaterialPre + "Shard of " + aMaterial.mDefaultLocalName;
-                if (name().startsWith("crystal"))
-                    return mLocalizedMaterialPre + "Shard of " + aMaterial.mDefaultLocalName;
+                if (name().startsWith("crystal")) return mLocalizedMaterialPre + "Shard of " + aMaterial.mDefaultLocalName;
                 if (name().startsWith("plate"))
                     return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Crystal Plate";
                 if (name().startsWith("dust"))
                     return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Crystal Powder";
-                if (this == OrePrefixes.crushedCentrifuged)
-                    return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Crystals";
-                if (this == OrePrefixes.crushedPurified)
-                    return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Crystals";
-                if (this == OrePrefixes.crushed)
-                    return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Crystals";
+                switch (this) {
+                    case crushedCentrifuged:
+                    case crushedPurified:
+                    case crushed:
+                        return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Crystals";
+                }
                 break;
             case "Wheat":
                 if (name().startsWith("dust")) return mLocalizedMaterialPre + "Flour";
@@ -793,12 +792,14 @@ public enum OrePrefixes {
                 break;
             case "Paper":
                 if (name().startsWith("dust")) return mLocalizedMaterialPre + "Chad";
-                if (this == OrePrefixes.plate) return "Sheet of Paper";
-                if (this == OrePrefixes.plateDouble) return "Paperboard";
-                if (this == OrePrefixes.plateTriple) return "Carton";
-                if (this == OrePrefixes.plateQuadruple) return "Cardboard";
-                if (this == OrePrefixes.plateQuintuple) return "Thick Cardboard";
-                if (this == OrePrefixes.plateDense) return "Strong Cardboard";
+                switch (this) {
+                    case plate: return "Sheet of Paper";
+                    case plateDouble: return "Paperboard";
+                    case plateTriple: return "Carton";
+                    case plateQuadruple: return "Cardboard";
+                    case plateQuintuple: return "Thick Cardboard";
+                    case plateDense: return "Strong Cardboard";
+                }
                 break;
             case "MeatRaw":
                 if (name().startsWith("dust")) return mLocalizedMaterialPre + "Mince Meat";
@@ -829,9 +830,13 @@ public enum OrePrefixes {
             case "Pitchblende":
             case "FullersEarth":
                 if (name().startsWith("dust")) return mLocalizedMaterialPre + aMaterial.mDefaultLocalName;
-                if (this == OrePrefixes.crushedCentrifuged) return mLocalizedMaterialPre + aMaterial.mDefaultLocalName;
-                if (this == OrePrefixes.crushedPurified) return mLocalizedMaterialPre + aMaterial.mDefaultLocalName;
-                if (this == OrePrefixes.crushed) return "Ground " + aMaterial.mDefaultLocalName;
+                switch (this) {
+                    case crushedCentrifuged:
+                    case crushedPurified:
+                        return mLocalizedMaterialPre + aMaterial.mDefaultLocalName;
+                    case crushed:
+                        return "Ground " + aMaterial.mDefaultLocalName;
+                }
                 break;
         }
         // Use Standard Localization

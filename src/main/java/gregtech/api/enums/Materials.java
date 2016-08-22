@@ -19,9 +19,9 @@ import java.util.*;
 import static gregtech.api.enums.GT_Values.M;
 
 public class Materials implements IColorModulationContainer, ISubTagContainer {
-    public static Materials[] MATERIALS_ARRAY = new Materials[]{};
-    public static final Map<String, Materials> MATERIALS_MAP = new HashMap<String, Materials>();
-    public static final List<Integer> USED_IDS = new ArrayList<Integer>();
+    private static Materials[] MATERIALS_ARRAY = new Materials[50000];
+    private static final Map<String, Materials> MATERIALS_MAP = new HashMap<String, Materials>();
+    private static final List<Integer> USED_IDS = new ArrayList<Integer>();
     private static final List<IMaterialRegistrator> mMaterialRegistrators = new ArrayList<IMaterialRegistrator>();
 
     /**
@@ -1264,22 +1264,19 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     public static void init() {
-        Materials Muranium = new Materials(378, TextureSet.SET_NONE, 1.0F, 999999999, 2, 1|2|8|32|64|128, 92, 0, 168, 0, "Muranium", 1, 50, 1337, 1337, true, false, 3, 1, 1, Dyes.dyePurple);
-        Muranium.add(SubTag.METAL);
-        Muranium.addOreByProduct(Muranium);
-        Muranium.mExtraData = 1;
+        Materials Muranium = new Materials(378, TextureSet.SET_NONE, 1.0F, 9999, 2, 1|2|8|32|64|128, 92, 0, 168, 0, "Muranium", 1, 50, 1337, 1337, true, false, 3, 1, 1, Dyes.dyePurple);
         for (IMaterialRegistrator aRegistrator : mMaterialRegistrators) {
             aRegistrator.onMaterialsInit();
         }
-        initMaterialProperties(); //No more material addition or manipulation past this point!
+        initMaterialProperties(); /** No more material addition or manipulation past this point! **/
         MATERIALS_ARRAY = MATERIALS_MAP.values().toArray(new Materials[MATERIALS_MAP.size()]);
-        for (Materials aMaterial : values()) {
+        for (Materials aMaterial : MATERIALS_ARRAY) {
             if (aMaterial.mMetaItemSubID >= 0) {
                 if (aMaterial.mMetaItemSubID < 1000) {
                     if (GregTech_API.sGeneratedMaterials[aMaterial.mMetaItemSubID] == null) {
                         GregTech_API.sGeneratedMaterials[aMaterial.mMetaItemSubID] = aMaterial;
-                    } else throw new IllegalArgumentException("The Material Index " + aMaterial.mMetaItemSubID + " is already used!");
-                } else throw new IllegalArgumentException("The Material Index " + aMaterial.mMetaItemSubID + " is/over the maximum of 1000");
+                    } else throw new IllegalArgumentException("The Material Index " + aMaterial.mMetaItemSubID + " for " + aMaterial.mName + "is already used!");
+                } else throw new IllegalArgumentException("The Material Index " + aMaterial.mMetaItemSubID + " for " + aMaterial.mName + " is/over the maximum of 1000");
             }
         }
     }
@@ -1289,7 +1286,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         GT_Mod.gregtechproxy.mMaxHarvestLevel = Math.min(15, GregTech_API.sMaterialProperties.get("harvestlevel", "MaxHarvestLevel",7));
         GT_Mod.gregtechproxy.mGraniteHavestLevel = GregTech_API.sMaterialProperties.get("harvestlevel", "GraniteHarvestLevel", 3);
         StringBuilder aConfigPathSB = new StringBuilder();
-        for (Materials aMaterial : MATERIALS_MAP.values()) { //The only place where MATERIALS_MAP should be used to loop over all materials.
+        for (Materials aMaterial : MATERIALS_MAP.values()) { /** The only place where MATERIALS_MAP should be used to loop over all materials. **/
             if (aMaterial != null && aMaterial != Materials._NULL && aMaterial != Materials.Empty) {
                 aConfigPathSB.append("materials.").append(aMaterial.mConfigSection).append(".").append(aMaterial.mCustomOre ? aMaterial.mCustomID : aMaterial.mName);
                 String aConfigPath = aConfigPathSB.toString();
@@ -1337,8 +1334,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                     }
                 }
                 /**
-                 * Converts the pre-defined list of SubTags from out material into a list of SubTag names for setting/getting to/from the config.
-                 * Then converts that List of names into a singular string[] for insertion into the config
+                 * Converts the pre-defined list of SubTags from a material into a list of SubTag names for setting/getting to/from the config.
+                 * It is then converted to a String[] and finally to a singular String for insertion into the config
                  * If the config string is different from the default, we then want to clear the Materials SubTags and insert new ones from the config string.
                  */
                 List<String> aSubTags = new ArrayList<>();
@@ -1385,7 +1382,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                         }
                     }
                 }
-                /** Same principal as SubTags **/
+                /** Same principal as SubTags but with two values **/
                 List<String> aAspects = new ArrayList<>();
                 ArrayList<String> aAspectAmounts = new ArrayList<>();
                 for (TC_Aspects.TC_AspectStack aAspectStack : aMaterial.mAspects) {
@@ -1408,7 +1405,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                         }
                     }
                 }
-                /** Moved the harvest level changes from GT_Mod to have less thing iterating over materials **/
+                /** Moved the harvest level changes from GT_Mod to have less things iterating over MATERIALS_ARRAY **/
                 if (GT_Mod.gregtechproxy.mChangeHarvestLevels && aMaterial.mToolQuality > 0 && aMaterial.mMetaItemSubID < GT_Mod.gregtechproxy.mHarvestLevel.length && aMaterial.mMetaItemSubID >= 0) {
                     GT_Mod.gregtechproxy.mHarvestLevel[aMaterial.mMetaItemSubID] = GregTech_API.sMaterialProperties.get(aConfigPath, "HarvestLevel", aMaterial.mToolQuality);
                 }
@@ -1527,10 +1524,28 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         else mAspects.addAll(aAspects);
     }
 
+    /** This is for keeping compatibility with addons mods (Such as TinkersGregworks) that looped over the old materials enum **/
+    public String name() {
+        return mName;
+    }
+
+    /** This is for keeping compatibility with addons mods (Such as TinkersGregworks) that looped over the old materials enum **/
+    public static Materials[] values() {
+        return MATERIALS_ARRAY;
+    }
+
+    /** This should only be used for getting a Material by its name as a String. Do not loop over this map, use values(). **/
+    public static Map<String, Materials> getMaterialsMap() {
+        return MATERIALS_MAP;
+    }
+
+    /** Useful for checking if a Material ID is already being used. This is a List so the 'contains()' method can be used. **/
+    public static List<Integer> getUsedIds() {
+        return USED_IDS;
+    }
+
     public static Materials get(String aMaterialName) {
-        Object tObject = GT_Utility.getFieldContent(Materials.class, aMaterialName, false, false);
-        if (tObject instanceof Materials) return (Materials) tObject;
-        return _NULL;
+        return getMaterialsMap().get(aMaterialName);
     }
 
     public static Materials getRealMaterial(String aMaterialName) {
@@ -1803,16 +1818,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     @Override
     public short[] getRGBA() {
         return mRGBa;
-    }
-
-    /** This is for keeping compatiblity with addons mods (Such as TinkersGregworks) that looped over the old materials enum **/
-    public String name() {
-        return mName;
-    }
-
-    /** This is for keeping compatiblity with addons mods (Such as TinkersGregworks) that looped over the old materials enum **/
-    public static Materials[] values() {
-        return MATERIALS_ARRAY;
     }
 
     public static volatile int VERSION = 509;
