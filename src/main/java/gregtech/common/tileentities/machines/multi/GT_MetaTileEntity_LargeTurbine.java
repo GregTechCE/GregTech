@@ -162,6 +162,10 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_M
         } else {
             this.mMaxProgresstime = 1;
             this.mEfficiencyIncrease = (10);
+            if(this.mDynamoHatches.size()>0){
+            	if(this.mDynamoHatches.get(0).getBaseMetaTileEntity().getOutputVoltage() < (mEUt * mEfficiency) / 10000){
+            	explodeMultiblock();}
+            }
             return true;
         }
     }

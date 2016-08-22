@@ -496,7 +496,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         if (aEU <= 0) return true;
         for (GT_MetaTileEntity_Hatch_Dynamo tHatch : mDynamoHatches) {
             if (isValidMetaTileEntity(tHatch)) {
-                if (tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(aEU, false)) {
+                if (tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(aEU, true)) {
                     return true;
                 }
             }
