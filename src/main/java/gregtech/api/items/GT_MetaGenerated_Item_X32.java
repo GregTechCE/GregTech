@@ -49,7 +49,7 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
             OrePrefixes tPrefix = mGeneratedPrefixList[i / 1000];
             if (tPrefix == null) continue;
             Materials tMaterial = GregTech_API.sGeneratedMaterials[i % 1000];
-            if (tMaterial == null) continue;
+            if (tMaterial == null || !tMaterial.mComponents.contains(tPrefix)) continue;
             if (doesMaterialAllowGeneration(tPrefix, tMaterial)) {
                 ItemStack tStack = new ItemStack(this, 1, i);
                 GT_LanguageManager.addStringLocalization(getUnlocalizedName(tStack) + ".name", getDefaultLocalization(tPrefix, tMaterial, i));

@@ -6,6 +6,7 @@ import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IMaterialRegistrator;
 import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.interfaces.IComponentRegistrator;
 import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_Utility;
@@ -22,6 +23,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     private static Materials[] MATERIALS_ARRAY = new Materials[]{};
     private static final Map<String, Materials> MATERIALS_MAP = new HashMap<String, Materials>();
     private static final List<IMaterialRegistrator> mMaterialRegistrators = new ArrayList<IMaterialRegistrator>();
+    private static final List<IComponentRegistrator> mComponentRegistrators = new ArrayList<IComponentRegistrator>();
 
     /**
      * This is the Default Material returned in case no Material has been found or a NullPointer has been inserted at a location where it shouldn't happen.
@@ -731,6 +733,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public byte mToolQuality = 0;
     public boolean mHasPlasma = false, mHasGas = false, mCustomOre = false;
     public Fluid mSolid = null, mFluid = null, mGas = null, mPlasma = null;
+    public List<OrePrefixes> mComponents = new LinkedList<>(Arrays.asList(OrePrefixes.dustTiny, OrePrefixes.dustSmall, OrePrefixes.dust, OrePrefixes.dustImpure, OrePrefixes.dustPure, OrePrefixes.crushed, OrePrefixes.crushedPurified, OrePrefixes.crushedCentrifuged, OrePrefixes.gem, OrePrefixes.nugget, OrePrefixes.ingot, OrePrefixes.ingotHot, OrePrefixes.ingotDouble, OrePrefixes.ingotTriple, OrePrefixes.ingotQuadruple, OrePrefixes.ingotQuintuple, OrePrefixes.plate, OrePrefixes.plateDouble, OrePrefixes.plateTriple, OrePrefixes.plateQuadruple, OrePrefixes.plateQuintuple, OrePrefixes.plateDense, OrePrefixes.stick, OrePrefixes.lens, OrePrefixes.round, OrePrefixes.bolt, OrePrefixes.screw, OrePrefixes.ring, OrePrefixes.foil, OrePrefixes.cell, OrePrefixes.cellPlasma, OrePrefixes.toolHeadSword, OrePrefixes.toolHeadPickaxe, OrePrefixes.toolHeadShovel, OrePrefixes.toolHeadAxe, OrePrefixes.toolHeadHoe, OrePrefixes.toolHeadHammer, OrePrefixes.toolHeadFile, OrePrefixes.toolHeadSaw, OrePrefixes.toolHeadDrill, OrePrefixes.toolHeadChainsaw, OrePrefixes.toolHeadWrench, OrePrefixes.toolHeadUniversalSpade, OrePrefixes.toolHeadSense, OrePrefixes.toolHeadPlow, OrePrefixes.toolHeadArrow, OrePrefixes.toolHeadBuzzSaw, OrePrefixes.turbineBlade, OrePrefixes.wireFine, OrePrefixes.gearGtSmall, OrePrefixes.rotor, OrePrefixes.stickLong, OrePrefixes.springSmall, OrePrefixes.spring, OrePrefixes.arrowGtWood, OrePrefixes.arrowGtPlastic, OrePrefixes.gemChipped, OrePrefixes.gemFlawed, OrePrefixes.gemFlawless, OrePrefixes.gemExquisite, OrePrefixes.gearGt, OrePrefixes.crateGtDust, OrePrefixes.crateGtIngot, OrePrefixes.crateGtGem, OrePrefixes.crateGtPlate));
+    public static List<OrePrefixes> mDefaultComponents = new LinkedList<>(Arrays.asList(OrePrefixes.dustTiny, OrePrefixes.dustSmall, OrePrefixes.dust, OrePrefixes.dustImpure, OrePrefixes.dustPure, OrePrefixes.crushed, OrePrefixes.crushedPurified, OrePrefixes.crushedCentrifuged, OrePrefixes.gem, OrePrefixes.nugget, OrePrefixes.ingot, OrePrefixes.ingotHot, OrePrefixes.ingotDouble, OrePrefixes.ingotTriple, OrePrefixes.ingotQuadruple, OrePrefixes.ingotQuintuple, OrePrefixes.plate, OrePrefixes.plateDouble, OrePrefixes.plateTriple, OrePrefixes.plateQuadruple, OrePrefixes.plateQuintuple, OrePrefixes.plateDense, OrePrefixes.stick, OrePrefixes.lens, OrePrefixes.round, OrePrefixes.bolt, OrePrefixes.screw, OrePrefixes.ring, OrePrefixes.foil, OrePrefixes.cell, OrePrefixes.cellPlasma, OrePrefixes.toolHeadSword, OrePrefixes.toolHeadPickaxe, OrePrefixes.toolHeadShovel, OrePrefixes.toolHeadAxe, OrePrefixes.toolHeadHoe, OrePrefixes.toolHeadHammer, OrePrefixes.toolHeadFile, OrePrefixes.toolHeadSaw, OrePrefixes.toolHeadDrill, OrePrefixes.toolHeadChainsaw, OrePrefixes.toolHeadWrench, OrePrefixes.toolHeadUniversalSpade, OrePrefixes.toolHeadSense, OrePrefixes.toolHeadPlow, OrePrefixes.toolHeadArrow, OrePrefixes.toolHeadBuzzSaw, OrePrefixes.turbineBlade, OrePrefixes.wireFine, OrePrefixes.gearGtSmall, OrePrefixes.rotor, OrePrefixes.stickLong, OrePrefixes.springSmall, OrePrefixes.spring, OrePrefixes.arrowGtWood, OrePrefixes.arrowGtPlastic, OrePrefixes.gemChipped, OrePrefixes.gemFlawed, OrePrefixes.gemFlawless, OrePrefixes.gemExquisite, OrePrefixes.gearGt, OrePrefixes.crateGtDust, OrePrefixes.crateGtIngot, OrePrefixes.crateGtGem, OrePrefixes.crateGtPlate));
 
     /**
      * This Fluid is used as standard Unit for Molten Materials. 1296 is a Molten Block, that means 144 is one Material Unit worth of fluid.
@@ -1413,6 +1417,16 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 if (GT_Mod.gregtechproxy.mChangeHarvestLevels && aMaterial.mToolQuality > 0 && aMaterial.mMetaItemSubID < GT_Mod.gregtechproxy.mHarvestLevel.length && aMaterial.mMetaItemSubID >= 0) {
                     GT_Mod.gregtechproxy.mHarvestLevel[aMaterial.mMetaItemSubID] = GregTech_API.sMaterialProperties.get(aConfigPath, "HarvestLevel", aMaterial.mToolQuality);
                 }
+                if (aMaterial.mMetaItemSubID >= 0) {
+                    for (IComponentRegistrator aRegistrator : mComponentRegistrators) {
+                        aRegistrator.registerComponents(aMaterial);
+                    }
+                    aConfigPath = aConfigPath.replace("materials", "components");
+                    for (OrePrefixes aPrefix : mDefaultComponents) {
+                        boolean aComponent = GregTech_API.sMaterialComponents.get(aConfigPath, aPrefix.toString(), aMaterial.mComponents.contains(aPrefix));
+                        if (!aComponent) aMaterial.mComponents.remove(aPrefix);
+                    }
+                }
             }
             aConfigPathSB.setLength(0);
         }
@@ -1422,10 +1436,20 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         this(aMetaItemSubID, aIconSet, aToolSpeed, aDurability, aToolQuality, aUnificatable, aDefaultLocalName, "ore", false, "null");
     }
 
+    public static String getFixedName(String aDefaultLocalName) {
+        if (aDefaultLocalName.contains(" ")) aDefaultLocalName = aDefaultLocalName.replaceAll(" ", "");
+        switch (aDefaultLocalName) {
+            case "Uranium": return "Uranium238";
+            case "Plutonium": return "Plutonium244";
+            case "Ash": return "Ashes";
+            default: return aDefaultLocalName;
+        }
+    }
+
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality, boolean aUnificatable, String aDefaultLocalName, String aConfigSection, boolean aCustomOre, String aCustomID) {
         mMetaItemSubID = aMetaItemSubID;
         mDefaultLocalName = aDefaultLocalName;
-        mName = aDefaultLocalName.contains(" ") ? aDefaultLocalName.replaceAll(" ", "") : aDefaultLocalName;
+        mName = getFixedName(aDefaultLocalName);
         MATERIALS_MAP.put(mName, this);
         mCustomOre = aCustomOre;
         mCustomID = aCustomID;
@@ -1549,6 +1573,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     public static Materials get(String aMaterialName) {
+        //System.out.println("S:" + aMaterialName + " - M:" + getMaterialsMap().get(aMaterialName));
+        if (aMaterialName.equals("")) return Materials._NULL;
         return getMaterialsMap().get(aMaterialName);
     }
 
@@ -1625,6 +1651,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static boolean add(IMaterialRegistrator aRegistrator) {
         if (aRegistrator == null) return false;
         return mMaterialRegistrators.add(aRegistrator);
+    }
+
+    /**
+     * Adds a Class implementing IComponentRegistrator to the master list
+     */
+    public static boolean add(IComponentRegistrator aRegistrator) {
+        if (aRegistrator == null) return false;
+        return mComponentRegistrators.add(aRegistrator);
     }
 
     /**
