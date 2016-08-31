@@ -775,7 +775,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public List<Materials> mOreByProducts = new ArrayList<Materials>(), mOreReRegistrations = new ArrayList<Materials>();
     public List<TC_Aspects.TC_AspectStack> mAspects = new ArrayList<TC_Aspects.TC_AspectStack>();
     public ArrayList<ItemStack> mMaterialItems = new ArrayList<ItemStack>();
-    public Collection<SubTag> mSubTags = new HashSet<SubTag>();
+    public Collection<SubTag> mSubTags = new LinkedHashSet<SubTag>();
     public Enchantment mEnchantmentTools = null, mEnchantmentArmors = null;
     public byte mEnchantmentToolsLevel = 0, mEnchantmentArmorsLevel = 0;
     public boolean mBlastFurnaceRequired = false, mTransparent = false;
@@ -1491,7 +1491,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     public static void initMaterialProperties() {
-        //TODO Fix multiple subtag entries for some materials?
+        //TODO Fix multiple subtag entries for some materials? this is due to HashSet not being ordered
         GT_Mod.gregtechproxy.mChangeHarvestLevels = GregTech_API.sMaterialProperties.get("harvestlevel", "ActivateHarvestLevelChange", false);
         GT_Mod.gregtechproxy.mMaxHarvestLevel = Math.min(15, GregTech_API.sMaterialProperties.get("harvestlevel", "MaxHarvestLevel",7));
         GT_Mod.gregtechproxy.mGraniteHavestLevel = GregTech_API.sMaterialProperties.get("harvestlevel", "GraniteHarvestLevel", 3);
@@ -1516,12 +1516,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 aMaterial.mToolQuality = (byte) GregTech_API.sMaterialProperties.get(aConfigPath, "ToolQuality", aMaterial.mToolQuality);
                 //aMaterial.mIconSet = TextureSet.valueOf(GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "IconSet", aMaterial.mIconSet.mSetName));
                 aMaterial.mTransparent = GregTech_API.sMaterialProperties.get(aConfigPath, "Transparent", aMaterial.mTransparent);
-                String aColor = GregTech_API.sMaterialProperties.get(aConfigPath, "DyeColor", aMaterial.mColor == Dyes._NULL ? "None" : aMaterial.mColor.mName);
+                String aColor = GregTech_API.sMaterialProperties.get(aConfigPath, "DyeColor", aMaterial.mColor == Dyes._NULL ? "None" : aMaterial.mColor.toString());
                 aMaterial.mColor = aColor.equals("None") ? Dyes._NULL : Dyes.get(aColor);
-                aMaterial.mRGBa[0] = aMaterial.mMoltenRGBa[0] = (short) GregTech_API.sMaterialProperties.get(aConfigPath, "MatRed", aMaterial.mRGBa[0]);
-                aMaterial.mRGBa[1] = aMaterial.mMoltenRGBa[1] = (short) GregTech_API.sMaterialProperties.get(aConfigPath, "MatGreen", aMaterial.mRGBa[1]);
-                aMaterial.mRGBa[2] = aMaterial.mMoltenRGBa[2] = (short) GregTech_API.sMaterialProperties.get(aConfigPath, "MatBlue", aMaterial.mRGBa[2]);
-                aMaterial.mRGBa[3] = aMaterial.mMoltenRGBa[3] = (short) GregTech_API.sMaterialProperties.get(aConfigPath, "MatAlpha", aMaterial.mRGBa[3]);
+                String[] aRGBA = GregTech_API.sMaterialProperties.get(aConfigPath, "MatRGBA", String.valueOf(aMaterial.mRGBa[0] + "," + aMaterial.mRGBa[1] + "," + aMaterial.mRGBa[2] + "," + aMaterial.mRGBa[3] + ",")).split(",");
+                aMaterial.mRGBa[0] = Short.parseShort(aRGBA[0]);
+                aMaterial.mRGBa[1] = Short.parseShort(aRGBA[1]);
+                aMaterial.mRGBa[2] = Short.parseShort(aRGBA[2]);
+                aMaterial.mRGBa[3] = Short.parseShort(aRGBA[3]);
                 aMaterial.mTypes = GregTech_API.sMaterialProperties.get(aConfigPath, "MaterialTypes", aMaterial.mCustomOre ? 1|2|4|8|16|32|64|128 : aMaterial.mTypes);
                 aMaterial.mUnificatable = GregTech_API.sMaterialProperties.get(aConfigPath, "Unificatable", aMaterial.mUnificatable);
                 aMaterial.mChemicalFormula = GregTech_API.sMaterialProperties.get(aConfigPath, "ChemicalFormula", aMaterial.mChemicalFormula);
@@ -1550,7 +1551,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                  */
                 List<String> aSubTags = new ArrayList<>();
                 for (SubTag aTag : aMaterial.mSubTags) aSubTags.add(aTag.mName);
-                String aDefaultTagString = aSubTags.toString().replace(" ", "").replace("[", "").replace("]", "");
+                String aDefaultTagString = "," + aSubTags.toString().replace(" ", "").replace("[", "").replace("]", "");
                 String aConfigTagString = GregTech_API.sMaterialProperties.get(aConfigPath, "ListSubTags", aDefaultTagString);
                 if (!aConfigTagString.equals(aDefaultTagString)) {
                     aMaterial.mSubTags.clear();
@@ -1565,7 +1566,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 /** Same principal as SubTags **/
                 List<String> aOreByProducts = new ArrayList<>();
                 for (Materials aMat : aMaterial.mOreByProducts) aOreByProducts.add(aMat.mName);
-                String aDefaultMatByProString = aOreByProducts.toString().replace(" ", "").replace("[", "").replace("]", "");
+                String aDefaultMatByProString = "," + aOreByProducts.toString().replace(" ", "").replace("[", "").replace("]", "");
                 String aConfigMatByProString = GregTech_API.sMaterialProperties.get(aConfigPath, "ListMaterialByProducts", aDefaultMatByProString);
                 if (!aConfigMatByProString.equals(aDefaultMatByProString)) {
                     aMaterial.mOreByProducts.clear();
@@ -1580,7 +1581,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 /** Same principal as SubTags **/
                 List<String> aOreReRegistrations = new ArrayList<>();
                 for (Materials aMat : aMaterial.mOreReRegistrations) aOreReRegistrations.add(aMat.mName);
-                String aDefaultMatReRegString = aOreReRegistrations.toString().replace(" ", "").replace("[", "").replace("]", "");
+                String aDefaultMatReRegString = "," + aOreReRegistrations.toString().replace(" ", "").replace("[", "").replace("]", "");
                 String aConfigMatMatReRegString = GregTech_API.sMaterialProperties.get(aConfigPath, "ListMaterialReRegistrations", aDefaultMatReRegString);
                 if (!aConfigMatMatReRegString.equals(aDefaultMatReRegString)) {
                     aMaterial.mOreReRegistrations.clear();
@@ -1599,8 +1600,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                     aAspects.add(aAspectStack.mAspect.toString());
                     aAspectAmounts.add(String.valueOf(aAspectStack.mAmount));
                 }
-                String aDefaultAspectString = aAspects.toString().replace(" ", "").replace("[", "").replace("]", "");
-                String aDefaultAspectAmountString = aAspectAmounts.toString().replace(" ", "").replace("[", "").replace("]", "");
+                String aDefaultAspectString = "," + aAspects.toString().replace(" ", "").replace("[", "").replace("]", "");
+                String aDefaultAspectAmountString = "," + aAspectAmounts.toString().replace(" ", "").replace("[", "").replace("]", "");
                 String aConfigAspectString = GregTech_API.sMaterialProperties.get(aConfigPath, "ListTCAspects", aDefaultAspectString);
                 String aConfigAspectAmountString = GregTech_API.sMaterialProperties.get(aConfigPath, "ListTCAspectAmounts", aDefaultAspectAmountString);
                 if (!aConfigAspectString.equals(aDefaultAspectString) || !aConfigAspectAmountString.equals(aDefaultAspectAmountString)) {
