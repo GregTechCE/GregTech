@@ -89,7 +89,7 @@ public class GT_BookAndLootLoader
         ChestGenHooks.addItem("pyramidJungleChest", new WeightedRandomChestContent(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.GarnetYellow, 1L), 2, 8, 4));
 
         ChestGenHooks.addItem("pyramidJungleDispenser", new WeightedRandomChestContent(new ItemStack(Items.fire_charge, 1), 2, 8, 30));
-        if (Materials.DamascusSteel.mComponents.contains(OrePrefixes.arrowGtWood)) ChestGenHooks.addItem("pyramidJungleDispenser", new WeightedRandomChestContent(GT_OreDictUnificator.get(OrePrefixes.arrowGtWood, Materials.DamascusSteel, 1L), 8, 16, 20));
+        ChestGenHooks.addItem("pyramidJungleDispenser", new WeightedRandomChestContent(GT_OreDictUnificator.get(OrePrefixes.arrowGtWood, Materials.DamascusSteel, 1L), 8, 16, 20));
 
 
         ChestGenHooks.addItem("mineshaftCorridor", new WeightedRandomChestContent(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Silver, 1L), 1, 4, 12));
@@ -118,16 +118,16 @@ public class GT_BookAndLootLoader
         ChestGenHooks.addItem("strongholdCrossing", new WeightedRandomChestContent(ItemList.Bottle_Holy_Water.get(1L, new Object[0]), 4, 8, 6));
         ChestGenHooks.addItem("strongholdCrossing", new WeightedRandomChestContent(ItemList.McGuffium_239.get(1L, new Object[0]), 1, 1, 10));
 
-        if (Materials.DamascusSteel.mComponents.contains(OrePrefixes.crateGtIngot)) ChestGenHooks.addItem("strongholdCrossing", new WeightedRandomChestContent(GT_OreDictUnificator.get(OrePrefixes.crateGtIngot, Materials.DamascusSteel, 1L), 4, 8, 6));
-        if (Materials.Steel.mComponents.contains(OrePrefixes.crateGtIngot)) ChestGenHooks.addItem("strongholdCrossing", new WeightedRandomChestContent(GT_OreDictUnificator.get(OrePrefixes.crateGtIngot, Materials.Steel, 1L), 8, 16, 12));
-        if (Materials.Bronze.mComponents.contains(OrePrefixes.crateGtIngot)) ChestGenHooks.addItem("strongholdCrossing", new WeightedRandomChestContent(GT_OreDictUnificator.get(OrePrefixes.crateGtIngot, Materials.Bronze, 1L), 8, 16, 12));
-        if (Materials.Manganese.mComponents.contains(OrePrefixes.crateGtIngot)) ChestGenHooks.addItem("strongholdCrossing", new WeightedRandomChestContent(GT_OreDictUnificator.get(OrePrefixes.crateGtIngot, Materials.Manganese, 1L), 4, 8, 12));
-        if (Materials.Neodymium.mComponents.contains(OrePrefixes.crateGtDust)) ChestGenHooks.addItem("strongholdCrossing", new WeightedRandomChestContent(GT_OreDictUnificator.get(OrePrefixes.crateGtDust, Materials.Neodymium, 1L), 4, 8, 6));
-        if (Materials.Chrome.mComponents.contains(OrePrefixes.crateGtDust)) ChestGenHooks.addItem("strongholdCrossing", new WeightedRandomChestContent(GT_OreDictUnificator.get(OrePrefixes.crateGtDust, Materials.Chrome, 1L), 2, 4, 6));
+        ChestGenHooks.addItem("strongholdCrossing", new WeightedRandomChestContent(GT_OreDictUnificator.get(OrePrefixes.crateGtIngot, Materials.DamascusSteel, 1L), 4, 8, 6));
+        ChestGenHooks.addItem("strongholdCrossing", new WeightedRandomChestContent(GT_OreDictUnificator.get(OrePrefixes.crateGtIngot, Materials.Steel, 1L), 8, 16, 12));
+        ChestGenHooks.addItem("strongholdCrossing", new WeightedRandomChestContent(GT_OreDictUnificator.get(OrePrefixes.crateGtIngot, Materials.Bronze, 1L), 8, 16, 12));
+        ChestGenHooks.addItem("strongholdCrossing", new WeightedRandomChestContent(GT_OreDictUnificator.get(OrePrefixes.crateGtIngot, Materials.Manganese, 1L), 4, 8, 12));
+        ChestGenHooks.addItem("strongholdCrossing", new WeightedRandomChestContent(GT_OreDictUnificator.get(OrePrefixes.crateGtDust, Materials.Neodymium, 1L), 4, 8, 6));
+        ChestGenHooks.addItem("strongholdCrossing", new WeightedRandomChestContent(GT_OreDictUnificator.get(OrePrefixes.crateGtDust, Materials.Chrome, 1L), 2, 4, 6));
 
         ChestGenHooks.addItem("strongholdCorridor", new WeightedRandomChestContent(GT_OreDictUnificator.get(OrePrefixes.toolHeadSword, Materials.DamascusSteel, 1L), 1, 4, 6));
         ChestGenHooks.addItem("strongholdCorridor", new WeightedRandomChestContent(GT_OreDictUnificator.get(OrePrefixes.toolHeadAxe, Materials.DamascusSteel, 1L), 1, 4, 6));
-        if (Materials.DamascusSteel.mComponents.contains(OrePrefixes.arrowGtWood)) ChestGenHooks.addItem("strongholdCorridor", new WeightedRandomChestContent(GT_OreDictUnificator.get(OrePrefixes.arrowGtWood, Materials.DamascusSteel, 1L), 16, 48, 6));
-        if (Materials.SterlingSilver.mComponents.contains(OrePrefixes.arrowGtWood)) ChestGenHooks.addItem("strongholdCorridor", new WeightedRandomChestContent(GT_OreDictUnificator.get(OrePrefixes.arrowGtWood, Materials.SterlingSilver, 1L), 8, 24, 6));
+        ChestGenHooks.addItem("strongholdCorridor", new WeightedRandomChestContent(GT_OreDictUnificator.get(OrePrefixes.arrowGtWood, Materials.DamascusSteel, 1L), 16, 48, 6));
+        ChestGenHooks.addItem("strongholdCorridor", new WeightedRandomChestContent(GT_OreDictUnificator.get(OrePrefixes.arrowGtWood, Materials.SterlingSilver, 1L), 8, 24, 6));
     }
 }

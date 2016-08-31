@@ -1385,15 +1385,18 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 if (!enableAllRounds && (aMaterial != Materials.HSSE || aMaterial == Materials.Neutronium || aMaterial == Materials.HSSG)) aMaterial.mComponents.remove(OrePrefixes.round);
                 //if (!enableAllFrameBoxes) aMaterial.mComponents.remove(OrePrefixes.frameGt);
                 if (!enableAllCrates) {
-                    aMaterial.mComponents.remove(OrePrefixes.crateGtDust);
+                    if (!(aMaterial == DamascusSteel || aMaterial == Steel || aMaterial == Bronze || aMaterial == Materials.Manganese))
+                        aMaterial.mComponents.remove(OrePrefixes.crateGtIngot);
+                    if (!(aMaterial == Materials.Neodymium || aMaterial == Materials.Chrome))
+                        aMaterial.mComponents.remove(OrePrefixes.crateGtDust);
                     aMaterial.mComponents.remove(OrePrefixes.crateGtGem);
-                    aMaterial.mComponents.remove(OrePrefixes.crateGtIngot);
                     aMaterial.mComponents.remove(OrePrefixes.crateGtPlate);
                 }
                 if (!enableAllArrows) {
                     aMaterial.mComponents.remove(OrePrefixes.toolHeadArrow);
-                    aMaterial.mComponents.remove(OrePrefixes.arrowGtWood);
                     aMaterial.mComponents.remove(OrePrefixes.arrowGtPlastic);
+                    if (!(aMaterial == Materials.DamascusSteel || aMaterial == Materials.SterlingSilver))
+                        aMaterial.mComponents.remove(OrePrefixes.arrowGtWood);
                 }
                 if (!enableAllPlates && (((aMaterial.mTypes & 0x40) == 0) || (((aMaterial.mTypes & 0x04) == 0) && aMaterial.mTransparent)) && !(aMaterial == Materials.Silicon || aMaterial == Materials.Zinc || aMaterial == Materials.Europium ||
                         aMaterial == Materials.Americium || aMaterial == Materials.RedAlloy || aMaterial == Materials.SolderingAlloy || aMaterial == Materials.BatteryAlloy ||
