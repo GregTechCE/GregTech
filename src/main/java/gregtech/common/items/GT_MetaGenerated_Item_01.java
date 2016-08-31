@@ -14,7 +14,6 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.*;
 import gregtech.common.covers.*;
 import gregtech.common.items.behaviors.*;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
@@ -25,7 +24,6 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
-import net.minecraftforge.fluids.FluidStack;
 
 import java.util.Collection;
 import java.util.List;
@@ -862,6 +860,6 @@ public class GT_MetaGenerated_Item_01
     }
 
     public boolean doesMaterialAllowGeneration(OrePrefixes aPrefix, Materials aMaterial) {
-        return (super.doesMaterialAllowGeneration(aPrefix, aMaterial)) && ((aPrefix != OrePrefixes.ingotHot) || (aMaterial.mBlastFurnaceTemp > 1750));
+        return (super.doesMaterialAllowGeneration(aPrefix, aMaterial));
     }
 }

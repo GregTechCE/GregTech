@@ -41,7 +41,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
         gregtech.api.util.GT_RecipeRegistrator.registerUsagesForMaterials(GT_Utility.copyAmount(1L, new Object[]{aStack}), OrePrefixes.plate.get(aMaterial).toString(), !aMaterial.contains(SubTag.NO_SMASHING));
 
         switch (aMaterial.mName) {
-            case "_NULL":
+            case "NULL":
                 break;
             case "Coal":
             case "Charcoal":

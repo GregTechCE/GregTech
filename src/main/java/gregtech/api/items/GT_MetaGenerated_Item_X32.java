@@ -142,12 +142,17 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
     @Override
     @SideOnly(Side.CLIENT)
     public final void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
-        for (int i = 0; i < 32000; i++)
-            if (doesMaterialAllowGeneration(mGeneratedPrefixList[i / 1000], GregTech_API.sGeneratedMaterials[i % 1000]) && doesShowInCreative(mGeneratedPrefixList[i / 1000], GregTech_API.sGeneratedMaterials[i % 1000], GregTech_API.sDoShowAllItemsInCreative)) {
-                ItemStack tStack = new ItemStack(this, 1, i);
-                isItemStackUsable(tStack);
-                aList.add(tStack);
+        for (int i = 0; i < 32000; i++) {
+            OrePrefixes aPrefix = mGeneratedPrefixList[i / 1000];
+            Materials aMaterial = GregTech_API.sGeneratedMaterials[i % 1000];
+            if (aPrefix != null && aMaterial != null) {
+                if (aMaterial.mComponents.contains(aPrefix) && doesMaterialAllowGeneration(aPrefix, aMaterial) && doesShowInCreative(aPrefix, aMaterial, GregTech_API.sDoShowAllItemsInCreative)) {
+                    ItemStack tStack = new ItemStack(this, 1, i);
+                    isItemStackUsable(tStack);
+                    aList.add(tStack);
+                }
             }
+        }
         super.getSubItems(var1, aCreativeTab, aList);
     }
 

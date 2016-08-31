@@ -22,7 +22,7 @@ public class ProcessingStone
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         Block aBlock = GT_Utility.getBlockFromStack(aStack);
         switch (aMaterial.mName) {
-            case "_NULL":
+            case "NULL":
                 GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(3L, new Object[]{aStack}), new ItemStack(Blocks.redstone_torch, 2), Materials.Redstone.getMolten(144L), new ItemStack(Items.repeater, 1), 100, 4);
                 break;
             case "Sand":

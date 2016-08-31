@@ -109,7 +109,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
         }
 
         switch (aMaterial.mName) {
-            case "_NULL":
+            case "NULL":
                 break;
             case "Glass":
                 GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), new ItemStack(net.minecraft.init.Blocks.glass));
