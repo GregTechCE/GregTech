@@ -190,32 +190,25 @@ public class GT_ThaumcraftCompat
         }
         return ThaumcraftApi.addInfusionCraftingRecipe(aResearch, GT_Utility.copy(new Object[]{aOutput}), aInstability, getAspectList(aAspects), aMainInput, aSideInputs);
     }
+    
+	public boolean registerThaumcraftAspectsToItem(ItemStack aExampleStack, List<TC_Aspects.TC_AspectStack> aAspects, String aOreDict) {
+		if (aAspects.isEmpty()) return false;
+		ThaumcraftApi.registerObjectTag(aOreDict, (AspectList)getAspectList(aAspects));
+		return true;
+	}
 
-    public boolean registerThaumcraftAspectsToItem(ItemStack aExampleStack, List<TC_Aspects.TC_AspectStack> aAspects, String aOreDict) {
-        if (aAspects.isEmpty()) {
-            return false;
-        }
-        AspectList tAlreadyRegisteredAspects = ThaumcraftApiHelper.getObjectAspects(aExampleStack);
-        if ((tAlreadyRegisteredAspects == null) || (tAlreadyRegisteredAspects.size() <= 0)) {
-            ThaumcraftApi.registerObjectTag(aOreDict, getAspectList(aAspects));
-        }
-        return true;
-    }
-
-    public boolean registerThaumcraftAspectsToItem(ItemStack aStack, List<TC_Aspects.TC_AspectStack> aAspects, boolean aAdditive) {
-        if (aAspects.isEmpty()) {
-            return false;
-        }
-        if (aAdditive) {
-            ThaumcraftApi.registerComplexObjectTag(aStack, getAspectList(aAspects));
-            return true;
-        }
-        AspectList tAlreadyRegisteredAspects = ThaumcraftApiHelper.getObjectAspects(aStack);
-        if ((tAlreadyRegisteredAspects == null) || (tAlreadyRegisteredAspects.size() <= 0)) {
-            ThaumcraftApi.registerObjectTag(aStack, getAspectList(aAspects));
-        }
-        return true;
-    }
+	public boolean registerThaumcraftAspectsToItem(ItemStack aStack, List<TC_Aspects.TC_AspectStack> aAspects, boolean aAdditive) {
+		if (aAspects.isEmpty()) return false;
+		if (aAdditive) {
+			ThaumcraftApi.registerComplexObjectTag(aStack, (AspectList)getAspectList(aAspects));
+			return true;
+		}
+		AspectList tAlreadyRegisteredAspects = ThaumcraftApiHelper.getObjectAspects(aStack);
+		if (tAlreadyRegisteredAspects == null || tAlreadyRegisteredAspects.size() <= 0) {
+			ThaumcraftApi.registerObjectTag(aStack, (AspectList)getAspectList(aAspects));
+		}
+		return true;
+	}
 
     public boolean registerPortholeBlacklistedBlock(Block aBlock) {
         ThaumcraftApi.portableHoleBlackList.add(aBlock);
