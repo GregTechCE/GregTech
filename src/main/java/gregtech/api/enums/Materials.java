@@ -1379,7 +1379,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         boolean enableAllFrameBoxes = GregTech_API.sMaterialComponents.get("globalcomponents", "enableAllFrameBoxes", false);
         for (Materials aMaterial : MATERIALS_MAP.values()) {
             if (aMaterial.mMetaItemSubID >= 0) {
-                //TODO lens recipes broken?
                 if (aMaterial.mBlastFurnaceTemp <= 1750) aMaterial.mComponents.remove(OrePrefixes.ingotHot);//Moved HotIngot code from GT_MetaGenerated_Item_01 so all this is in once place
                 if (!enableAllSprings && (aMaterial != Materials.Titanium)) aMaterial.mComponents.remove(OrePrefixes.spring);
                 if (!enableAllSmallSprings) aMaterial.mComponents.remove(OrePrefixes.springSmall);
@@ -1491,7 +1490,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     public static void initMaterialProperties() {
-        //TODO Fix multiple subtag entries for some materials? this is due to HashSet not being ordered
         GT_Mod.gregtechproxy.mChangeHarvestLevels = GregTech_API.sMaterialProperties.get("harvestlevel", "ActivateHarvestLevelChange", false);
         GT_Mod.gregtechproxy.mMaxHarvestLevel = Math.min(15, GregTech_API.sMaterialProperties.get("harvestlevel", "MaxHarvestLevel",7));
         GT_Mod.gregtechproxy.mGraniteHavestLevel = GregTech_API.sMaterialProperties.get("harvestlevel", "GraniteHarvestLevel", 3);
