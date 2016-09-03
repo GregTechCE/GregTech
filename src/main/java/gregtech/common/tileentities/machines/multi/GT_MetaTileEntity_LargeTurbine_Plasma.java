@@ -130,9 +130,9 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
                 if (efficiency < 0)
                     efficiency = 0; // Can happen with really ludicrously poor inefficiency.
                 tEU *= efficiency;
-                tEU = Math.max(1, tEU * (aBaseEff / 10000));
+                tEU = Math.max(1, (int)((long)tEU * (long)aBaseEff / 10000L));
             } else {
-                tEU = tEU * (aBaseEff / 10000);
+                tEU = (int)((long)tEU * (long)aBaseEff / 10000L);
             }
 
             return tEU;
