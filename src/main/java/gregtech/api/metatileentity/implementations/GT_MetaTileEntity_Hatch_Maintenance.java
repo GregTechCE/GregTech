@@ -18,6 +18,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
 
 public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch {
     public boolean mWrench = false, mScrewdriver = false, mSoftHammer = false, mHardHammer = false, mSolderingTool = false, mCrowbar = false;
@@ -76,7 +77,7 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ, EnumHand hand) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         if (aSide == aBaseMetaTileEntity.getFrontFacing()) aBaseMetaTileEntity.openGUI(aPlayer);
         return true;

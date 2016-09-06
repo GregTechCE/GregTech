@@ -14,6 +14,6 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
     }
 
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        GregTech_API.registerCover(aStack, new GT_MultiTexture(new gregtech.api.interfaces.ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_LENS, aMaterial.mRGBa, false)}), new gregtech.common.covers.GT_Cover_Lens(aMaterial.mColor.mIndex));
+        GregTech_API.registerCover(aStack, new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_LENS, aMaterial.mRGBa)), new gregtech.common.covers.GT_Cover_Lens(aMaterial.mColor.mIndex));
     }
 }

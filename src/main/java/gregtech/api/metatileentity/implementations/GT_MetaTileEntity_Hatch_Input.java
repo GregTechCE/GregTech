@@ -9,6 +9,7 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_Hatch_Input extends GT_MetaTileEntity_Hatch {
@@ -53,7 +54,7 @@ public class GT_MetaTileEntity_Hatch_Input extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, EnumHand hand) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         aBaseMetaTileEntity.openGUI(aPlayer);
         return true;

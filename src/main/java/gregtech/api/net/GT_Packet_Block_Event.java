@@ -4,6 +4,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
 /**
@@ -46,7 +47,7 @@ public class GT_Packet_Block_Event extends GT_Packet {
     @Override
     public void process(IBlockAccess aWorld) {
         if (aWorld != null) {
-            TileEntity tTileEntity = aWorld.getTileEntity(mX, mY, mZ);
+            TileEntity tTileEntity = aWorld.getTileEntity(new BlockPos(mX, mY, mZ));
             if (tTileEntity != null) tTileEntity.receiveClientEvent(mID, mValue);
         }
     }

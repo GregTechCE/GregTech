@@ -25,6 +25,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
@@ -1139,7 +1140,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
-    public boolean onRightclick(EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
+    public boolean onRightclick(EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ, EnumHand hand) {
         if (isClientSide()) {
             if (getCoverBehaviorAtSide(aSide).onCoverRightclickClient(aSide, this, aPlayer, aX, aY, aZ)) return true;
             if (!getCoverBehaviorAtSide(aSide).isGUIClickable(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this))
@@ -1256,7 +1257,8 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         }
 
         try {
-            if (hasValidMetaTileEntity()) return mMetaTileEntity.onRightclick(this, aPlayer, aSide, aX, aY, aZ);
+            if (hasValidMetaTileEntity())
+                return mMetaTileEntity.onRightclick(this, aPlayer, aSide, aX, aY, aZ, hand);
         } catch (Throwable e) {
             GT_Log.err.println("Encountered Exception while rightclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immidietly to GregTech Intergalactical!!!");
             e.printStackTrace(GT_Log.err);
@@ -1268,7 +1270,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     @Override
     public void onLeftclick(EntityPlayer aPlayer) {
         try {
-            if (aPlayer != null && hasValidMetaTileEntity()) mMetaTileEntity.onLeftclick(this, aPlayer);
+            if (aPlayer != null && hasValidMetaTileEntity()) mMetaTileEntity.onLeftclick(this, aPlayer, EnumHand.MAIN_HAND);
         } catch (Throwable e) {
             GT_Log.err.println("Encountered Exception while leftclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immidietly to GregTech Intergalactical!!!");
             e.printStackTrace(GT_Log.err);

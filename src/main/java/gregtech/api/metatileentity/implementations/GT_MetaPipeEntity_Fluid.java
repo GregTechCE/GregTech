@@ -16,9 +16,11 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TextFormatting;
@@ -101,6 +103,14 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
     public boolean isValidSlot(int aIndex) {
         return false;
     }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ, EnumHand hand) {
+        return false;
+    }
+
+    @Override
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, EnumHand hand) {}
 
     @Override
     public final boolean renderInside(byte aSide) {

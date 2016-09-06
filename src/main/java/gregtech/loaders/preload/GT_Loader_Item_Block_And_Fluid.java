@@ -16,6 +16,10 @@ import gregtech.common.items.*;
 import gregtech.common.items.armor.ElectricModularArmor1;
 import gregtech.common.items.armor.ModularArmor_Item;
 import gregtech.common.items.armor.Values;
+import ic2.core.IC2;
+import ic2.core.block.machine.tileentity.TileEntityMatter;
+import ic2.core.ref.FluidName;
+import ic2.core.ref.ItemName;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -82,7 +86,7 @@ public class GT_Loader_Item_Block_And_Fluid
         ItemList.NC_SensorCard.set(tItem == null ? new GT_Generic_Item("sensorcard", "GregTech Sensor Card", "Nuclear Control not installed", false) : tItem);
 
         ItemList.Neutron_Reflector.set(new GT_NeutronReflector_Item("neutronreflector", "Iridium Neutron Reflector", 0));
-        GT_ModHandler.addCraftingRecipe(ItemList.Neutron_Reflector.get(1), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"RRR", "RPR", "RRR", 'R', GT_ModHandler.getIC2Item("reactorReflectorThick", 1, 1), 'P', OrePrefixes.plateAlloy.get(Materials.Iridium)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Neutron_Reflector.get(1), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"RRR", "RPR", "RRR", 'R', GT_ModHandler.getIC2Item(ItemName.thick_neutron_reflector, 1), 'P', OrePrefixes.plateAlloy.get(Materials.Iridium)});
 
         ItemList.Reactor_Coolant_He_1.set(GregTech_API.constructCoolantCellItem("60k_Helium_Coolantcell", "60k He Coolant Cell", 60000));
         GT_ModHandler.addCraftingRecipe(ItemList.Reactor_Coolant_He_1.get(1), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{" P ", "PCP", " P ", 'C', OrePrefixes.cell.get(Materials.Helium), 'P', OrePrefixes.plate.get(Materials.Tin)});
@@ -94,7 +98,7 @@ public class GT_Loader_Item_Block_And_Fluid
         GT_ModHandler.addCraftingRecipe(ItemList.Reactor_Coolant_He_6.get(1), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"PCP", "PDP", "PCP", 'C', ItemList.Reactor_Coolant_He_3, 'P', OrePrefixes.plate.get(Materials.Tin), 'D', OrePrefixes.plateDense.get(Materials.Copper)});
 
         ItemList.Reactor_Coolant_NaK_1.set(GregTech_API.constructCoolantCellItem("60k_NaK_Coolantcell", "60k NaK Coolantcell", 60000));
-        GT_ModHandler.addCraftingRecipe(ItemList.Reactor_Coolant_NaK_1.get(1), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"TST", "PCP", "TST", 'C', GT_ModHandler.getIC2Item("reactorCoolantSimple", 1, 1), 'T', OrePrefixes.plate.get(Materials.Tin), 'S', OrePrefixes.dust.get(Materials.Sodium), 'P', OrePrefixes.dust.get(Materials.Potassium)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Reactor_Coolant_NaK_1.get(1), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"TST", "PCP", "TST", 'C', GT_ModHandler.getIC2Item(ItemName.heat_vent, 1), 'T', OrePrefixes.plate.get(Materials.Tin), 'S', OrePrefixes.dust.get(Materials.Sodium), 'P', OrePrefixes.dust.get(Materials.Potassium)});
 
         ItemList.Reactor_Coolant_NaK_3.set(GregTech_API.constructCoolantCellItem("180k_NaK_Coolantcell", "180k NaK Coolantcell", 180000));
         GT_ModHandler.addCraftingRecipe(ItemList.Reactor_Coolant_NaK_3.get(1), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"PCP", "PCP", "PCP", 'C', ItemList.Reactor_Coolant_NaK_1, 'P', OrePrefixes.plate.get(Materials.Tin)});
@@ -114,12 +118,12 @@ public class GT_Loader_Item_Block_And_Fluid
         ItemList.ThoriumCell_4.set(new GT_RadioactiveCellIC_Item("Quad_Thoriumcell", "Quad Fuel Rod (Thorium)", 4, 50000, 0.4F, 0, 0.25F, ItemList.Depleted_Thorium_4.get(1),false));
         GT_ModHandler.addCraftingRecipe(ItemList.ThoriumCell_4.get(1), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"RPR", "CPC", "RPR", 'R', ItemList.ThoriumCell_1, 'P', OrePrefixes.plate.get(Materials.Iron), 'C', OrePrefixes.plate.get(Materials.Copper)});
 
-        ItemList.Uraniumcell_1.set(new GT_RadioactiveCellIC_Item("reactorUraniumSimple", "Fuel Rod (Uranium)"       , 1, 20000, 2F, 1, 1F, GT_ModHandler.getIC2Item("reactorDepletedUraniumSimple", 1),false));
-        ItemList.Uraniumcell_2.set(new GT_RadioactiveCellIC_Item("reactorUraniumDual", "Dual Fuel Rod (Uranium)"  , 2, 20000, 2F, 1, 1F, GT_ModHandler.getIC2Item("reactorDepletedUraniumDual", 1),false));
-        ItemList.Uraniumcell_4.set(new GT_RadioactiveCellIC_Item("reactorUraniumQuad"  , "Quad Fuel Rod (Uranium)"  , 4, 20000, 2F, 1, 1F, GT_ModHandler.getIC2Item("reactorDepletedUraniumQuad"  , 1),false));
-        ItemList.Moxcell_1.set(new GT_RadioactiveCellIC_Item("reactorMOXSimple", "Fuel Rod (Mox)", 1, 10000, 2F, 1, 1F, GT_ModHandler.getIC2Item("reactorDepletedMOXSimple", 1),true));
-        ItemList.Moxcell_2.set(new GT_RadioactiveCellIC_Item("reactorMOXDual"  , "Dual Fuel Rod (Mox)", 2, 10000, 2F, 1, 1F, GT_ModHandler.getIC2Item("reactorDepletedMOXDual", 1),true));
-        ItemList.Moxcell_4.set(new GT_RadioactiveCellIC_Item("reactorMOXQuad", "Quad Fuel Rod (Mox)"  , 4, 10000, 2F, 1, 1F, GT_ModHandler.getIC2Item("reactorDepletedMOXQuad"  , 1),true));
+        ItemList.Uraniumcell_1.set(new GT_RadioactiveCellIC_Item("reactorUraniumSimple", "Fuel Rod (Uranium)"       , 1, 20000, 2F, 1, 1F, GT_ModHandler.getIC2Item(ItemName.uranium_fuel_rod, 1),false));
+        ItemList.Uraniumcell_2.set(new GT_RadioactiveCellIC_Item("reactorUraniumDual", "Dual Fuel Rod (Uranium)"  , 2, 20000, 2F, 1, 1F, GT_ModHandler.getIC2Item(ItemName.dual_uranium_fuel_rod, 1),false));
+        ItemList.Uraniumcell_4.set(new GT_RadioactiveCellIC_Item("reactorUraniumQuad"  , "Quad Fuel Rod (Uranium)"  , 4, 20000, 2F, 1, 1F, GT_ModHandler.getIC2Item(ItemName.quad_uranium_fuel_rod, 1),false));
+        ItemList.Moxcell_1.set(new GT_RadioactiveCellIC_Item("reactorMOXSimple", "Fuel Rod (Mox)", 1, 10000, 2F, 1, 1F, GT_ModHandler.getIC2Item(ItemName.mox_fuel_rod, 1),true));
+        ItemList.Moxcell_2.set(new GT_RadioactiveCellIC_Item("reactorMOXDual"  , "Dual Fuel Rod (Mox)", 2, 10000, 2F, 1, 1F, GT_ModHandler.getIC2Item(ItemName.dual_mox_fuel_rod, 1),true));
+        ItemList.Moxcell_4.set(new GT_RadioactiveCellIC_Item("reactorMOXQuad", "Quad Fuel Rod (Mox)"  , 4, 10000, 2F, 1, 1F, GT_ModHandler.getIC2Item(ItemName.quad_mox_fuel_rod, 1),true));
 
         GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_1.get(1), 5000, GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lutetium, 2L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1));
         GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_2.get(1), 5000, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 2L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 3L));
@@ -360,8 +364,8 @@ public class GT_Loader_Item_Block_And_Fluid
         FMLInterModComms.sendMessage("appliedenergistics2", "whitelist-spatial", GT_TileEntity_Ores.class.getName());
 
         GT_Log.out.println("GT_Mod: Registering Fluids.");
-        Materials.ConstructionFoam.mFluid = GT_Utility.getFluidForFilledItem(GT_ModHandler.getIC2Item("CFCell", 1), true).getFluid();
-        Materials.UUMatter.mFluid = GT_Utility.getFluidForFilledItem(GT_ModHandler.getIC2Item("uuMatterCell", 1), true).getFluid();
+        Materials.ConstructionFoam.mFluid = FluidName.construction_foam.getInstance();
+        Materials.UUMatter.mFluid = FluidName.uu_matter.getInstance();
 
 
         GT_Mod.gregtechproxy.addFluid("Air", "Air", Materials.Air, 2, 295, ItemList.Cell_Air.get(1), ItemList.Cell_Empty.get(1), 2000);
@@ -628,18 +632,18 @@ public class GT_Loader_Item_Block_And_Fluid
         GT_OreDictUnificator.set(OrePrefixes.gem, Materials.Firestone, GT_ModHandler.getModItem("Railcraft", "firestone.raw", 1));
 
         new Values();
-		ItemList.ModularBasicHelmet.set(new ModularArmor_Item(0, EntityEquipmentSlot.HEAD, "modulararmor_helmet",0));
-		ItemList.ModularBasicChestplate.set(new ModularArmor_Item(0, EntityEquipmentSlot.CHEST, "modulararmor_chestplate",0));
-		ItemList.ModularBasicLeggings.set(new ModularArmor_Item(0, EntityEquipmentSlot.LEGS, "modulararmor_leggings",0));
-		ItemList.ModularBasicBoots.set(new ModularArmor_Item(0, EntityEquipmentSlot.FEET, "modulararmor_boots",0));
-		ItemList.ModularElectric1Helmet.set(new ElectricModularArmor1(0, 0, "modularelectric1_helmet",1));
-		ItemList.ModularElectric1Chestplate.set(new ElectricModularArmor1(0, 1, "modularelectric1_chestplate",1));
-		ItemList.ModularElectric1Leggings.set(new ElectricModularArmor1(0, 2, "modularelectric1_leggings",1));
-		ItemList.ModularElectric1Boots.set(new ElectricModularArmor1(0, 3, "modularelectric1_boots",1));
-		ItemList.ModularElectric2Helmet.set(new ElectricModularArmor1(0, 0, "modularelectric2_helmet",2));
-		ItemList.ModularElectric2Chestplate.set(new ElectricModularArmor1(0, 1, "modularelectric2_chestplate",2));
-		ItemList.ModularElectric2Leggings.set(new ElectricModularArmor1(0, 2, "modularelectric2_leggings",2));
-		ItemList.ModularElectric2Boots.set(new ElectricModularArmor1(0, 3, "modularelectric2_boots",2));
+		ItemList.ModularBasicHelmet.set(new ModularArmor_Item(EntityEquipmentSlot.HEAD, "modulararmor_helmet",0));
+		ItemList.ModularBasicChestplate.set(new ModularArmor_Item(EntityEquipmentSlot.CHEST, "modulararmor_chestplate",0));
+		ItemList.ModularBasicLeggings.set(new ModularArmor_Item(EntityEquipmentSlot.LEGS, "modulararmor_leggings",0));
+		ItemList.ModularBasicBoots.set(new ModularArmor_Item(EntityEquipmentSlot.FEET, "modulararmor_boots",0));
+		ItemList.ModularElectric1Helmet.set(new ElectricModularArmor1(EntityEquipmentSlot.HEAD, "modularelectric1_helmet",1));
+		ItemList.ModularElectric1Chestplate.set(new ElectricModularArmor1(EntityEquipmentSlot.CHEST, "modularelectric1_chestplate",1));
+		ItemList.ModularElectric1Leggings.set(new ElectricModularArmor1(EntityEquipmentSlot.LEGS, "modularelectric1_leggings",1));
+		ItemList.ModularElectric1Boots.set(new ElectricModularArmor1(EntityEquipmentSlot.FEET, "modularelectric1_boots",1));
+		ItemList.ModularElectric2Helmet.set(new ElectricModularArmor1(EntityEquipmentSlot.HEAD, "modularelectric2_helmet",2));
+		ItemList.ModularElectric2Chestplate.set(new ElectricModularArmor1(EntityEquipmentSlot.CHEST, "modularelectric2_chestplate",2));
+		ItemList.ModularElectric2Leggings.set(new ElectricModularArmor1(EntityEquipmentSlot.LEGS, "modularelectric2_leggings",2));
+		ItemList.ModularElectric2Boots.set(new ElectricModularArmor1(EntityEquipmentSlot.FEET, "modularelectric2_boots",2));
 
 //		long bits =  GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE;
 //		GT_ModHandler.addCraftingRecipe(ItemList.ModularBasicHelmet.		getWildcard(1, new Object[0]),bits, new Object[] { "AAA", "B B", 'A', 			new ItemStack(Items.leather, 1, 32767), 'B', OrePrefixes.ring.get(Materials.AnyIron)} );

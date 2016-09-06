@@ -10,6 +10,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.newitems.IItemIconContainerProvider;
 import gregtech.common.render.IIconRegister;
+import gregtech.common.render.newitems.IItemIconProvider;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -25,11 +26,17 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.FMLControlledNamespacedRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
+import net.minecraftforge.fml.common.registry.PersistentRegistryManager;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 import static gregtech.api.enums.GT_Values.MOD_ID;
@@ -38,7 +45,8 @@ import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
 /**
  * Extended by most Items, also used as a fallback Item, to prevent the accidental deletion when Errors occur.
  */
-public class GT_Generic_Item extends Item implements IProjectileItem, IIconRegister, IItemIconContainerProvider {
+public class GT_Generic_Item extends Item implements IProjectileItem, IIconRegister, IItemIconProvider {
+
     private final String mName, mTooltip;
     protected TextureAtlasSprite mIcon;
 
@@ -73,6 +81,7 @@ public class GT_Generic_Item extends Item implements IProjectileItem, IIconRegis
     public String getUnlocalizedName(ItemStack aStack) {
         return getHasSubtypes() ? mName + "." + getDamage(aStack) : mName;
     }
+
 
     @Override
     public void registerIcons(TextureMap aIconRegister) {
@@ -140,18 +149,29 @@ public class GT_Generic_Item extends Item implements IProjectileItem, IIconRegis
     }
 
     @Override
-    public IIconContainer getIconContainer(ItemStack itemStack) {
-        return new IIconContainer() {
-            @Override
-            public TextureAtlasSprite getIcon() {
-                return mIcon;
+    public TextureAtlasSprite getIcon(ItemStack stack, int pass) {
+        if(this instanceof IItemIconContainerProvider) {
+            IItemIconContainerProvider iItemIconContainerProvider = (IItemIconContainerProvider) this;
+            IIconContainer iconContainer = iItemIconContainerProvider.getIconContainer(stack);
+            if(iconContainer != null) {
+                switch (pass) {
+                    case 0:
+                        return iconContainer.getIcon();
+                    case 1:
+                        return iconContainer.getOverlayIcon();
+                }
             }
+            return null;
+        }
+        return mIcon;
+    }
 
-            @Override
-            public TextureAtlasSprite getOverlayIcon() {
-                return null;
-            }
-        };
+    @Override
+    public int getRenderPasses(ItemStack stack) {
+        if(this instanceof IItemIconContainerProvider) {
+            return 1;
+        }
+        return 0;
     }
 
     public static class GT_Item_Dispense extends BehaviorProjectileDispense {
@@ -166,4 +186,16 @@ public class GT_Generic_Item extends Item implements IProjectileItem, IIconRegis
         }
 
     }
+
+    public static <T> int id(IForgeRegistryEntry<T> registryEntry) {
+        try {
+            Method findRegistry = PersistentRegistryManager.class.getDeclaredMethod("findRegistry", IForgeRegistryEntry.class);
+            findRegistry.setAccessible(true);
+            FMLControlledNamespacedRegistry registry = (FMLControlledNamespacedRegistry) findRegistry.invoke(null, registryEntry);
+            return registry.getId(registryEntry);
+        } catch (ReflectiveOperationException fail) {
+            throw new RuntimeException(fail);
+        }
+    }
+
 }

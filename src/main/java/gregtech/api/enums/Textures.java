@@ -656,6 +656,7 @@ public class Textures {
 
             @Override
             public void run() {
+                System.out.println("Register icon " + mIconName);
                 mIcon = GregTech_API.sBlockIcons.registerSprite(new ResourceLocation(RES_PATH_ITEM + mIconName));
                 mOverlay = GregTech_API.sBlockIcons.registerSprite(new ResourceLocation(RES_PATH_ITEM + mIconName + "_OVERLAY"));
             }

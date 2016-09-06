@@ -14,7 +14,7 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
@@ -161,8 +161,8 @@ public abstract class GT_MetaTileEntity_LargeBoiler
 
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+        int xDir = EnumFacing.VALUES[aBaseMetaTileEntity.getBackFacing()].getFrontOffsetX();
+        int zDir = EnumFacing.VALUES[aBaseMetaTileEntity.getBackFacing()].getFrontOffsetZ();
 
         int tCasingAmount = 0;
         int tFireboxAmount = 0;

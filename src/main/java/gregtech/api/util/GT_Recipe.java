@@ -7,10 +7,11 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
-import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
+import ic2.core.ref.BlockName;
+import ic2.core.ref.TeBlock;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -107,18 +108,18 @@ public class GT_Recipe {
         for (ItemStack tStack : aOutputs) GT_Utility.updateItemStack(tStack);
 
         for (int i = 0; i < aChances.length; i++) if (aChances[i] <= 0) aChances[i] = 10000;
-        for (int i = 0; i < aFluidInputs.length; i++) aFluidInputs[i] = new GT_FluidStack(aFluidInputs[i]);
-        for (int i = 0; i < aFluidOutputs.length; i++) aFluidOutputs[i] = new GT_FluidStack(aFluidOutputs[i]);
+        System.arraycopy(aFluidInputs, 0, aFluidInputs, 0, aFluidInputs.length);
+        System.arraycopy(aFluidOutputs, 0, aFluidOutputs, 0, aFluidOutputs.length);
 
-        for (int i = 0; i < aInputs.length; i++)
-            if (aInputs[i] != null && Items.FEATHER.getDamage(aInputs[i]) != W)
+        for (ItemStack aInput : aInputs)
+            if (aInput != null && Items.FEATHER.getDamage(aInput) != W)
                 for (int j = 0; j < aOutputs.length; j++) {
-                    if (GT_Utility.areStacksEqual(aInputs[i], aOutputs[j])) {
-                        if (aInputs[i].stackSize >= aOutputs[j].stackSize) {
-                            aInputs[i].stackSize -= aOutputs[j].stackSize;
+                    if (GT_Utility.areStacksEqual(aInput, aOutputs[j])) {
+                        if (aInput.stackSize >= aOutputs[j].stackSize) {
+                            aInput.stackSize -= aOutputs[j].stackSize;
                             aOutputs[j] = null;
                         } else {
-                            aOutputs[j].stackSize -= aInputs[i].stackSize;
+                            aOutputs[j].stackSize -= aInput.stackSize;
                         }
                     }
                 }
@@ -220,7 +221,7 @@ public class GT_Recipe {
     }
 
     public GT_Recipe(ItemStack aInput1, int aInput2, ItemStack aOutput1, ItemStack aOutput2) {
-        this(true, new ItemStack[]{aInput1, GT_ModHandler.getIC2Item("industrialTnt", aInput2 > 0 ? aInput2 < 64 ? aInput2 : 64 : 1, new ItemStack(Blocks.TNT, aInput2 > 0 ? aInput2 < 64 ? aInput2 : 64 : 1))}, new ItemStack[]{aOutput1, aOutput2}, null, null, null, null, 20, 30, 0);
+        this(true, new ItemStack[]{aInput1, GT_ModHandler.getIC2Item(BlockName.te, TeBlock.itnt, aInput2 > 0 ? aInput2 < 64 ? aInput2 : 64 : 1)}, new ItemStack[]{aOutput1, aOutput2}, null, null, null, null, 20, 30, 0);
         if (mInputs.length > 0 && mOutputs[0] != null) {
             GT_Recipe_Map.sImplosionRecipes.addRecipe(this);
         }
@@ -487,8 +488,8 @@ public class GT_Recipe {
         public static final GT_Recipe_Map sDistillationRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(50), "gt.recipe.distillationtower", "Distillation Tower", null, RES_PATH_GUI + "basicmachines/Default", 2, 4, 0, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sCrakingRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(50), "gt.recipe.craker", "Oil Cracker", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 1, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sPyrolyseRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(50), "gt.recipe.pyro", "Pyrolyse Oven", null, RES_PATH_GUI + "basicmachines/Default", 2, 1, 1, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sWiremillRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(50), "gt.recipe.wiremill", "Wiremill", null, RES_PATH_GUI + "basicmachines/Wiremill", 1, 1, 1, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sBenderRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(400), "gt.recipe.metalbender", "Metal Bender", null, RES_PATH_GUI + "basicmachines/Bender", 2, 1, 2, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sWiremillRecipes = new GT_Recipe_Map(new HashSet<>(50), "gt.recipe.wiremill", "Wiremill", null, RES_PATH_GUI + "basicmachines/Wiremill", 1, 1, 1, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sBenderRecipes = new GT_Recipe_Map(new HashSet<>(400), "gt.recipe.metalbender", "Metal Bender", null, RES_PATH_GUI + "basicmachines/Bender", 2, 1, 2, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sAlloySmelterRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(3000), "gt.recipe.alloysmelter", "Alloy Smelter", null, RES_PATH_GUI + "basicmachines/AlloySmelter", 2, 1, 2, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sAssemblerRecipes = new GT_Recipe_Map_Assembler(new HashSet<GT_Recipe>(300), "gt.recipe.assembler", "Assembler", null, RES_PATH_GUI + "basicmachines/Assembler", 2, 1, 1, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sCannerRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(300), "gt.recipe.canner", "Canning Machine", null, RES_PATH_GUI + "basicmachines/Canner", 2, 2, 1, 0, 1, E, 1, E, true, true);

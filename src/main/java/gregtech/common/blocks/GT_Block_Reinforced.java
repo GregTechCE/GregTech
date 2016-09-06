@@ -165,7 +165,7 @@ public class GT_Block_Reinforced extends GT_Generic_Block implements IBlockIconP
 
     @Override
     public String getLocalizedName() {
-        return GT_LanguageManager.TRANSLATION.translateKey(this.mUnlocalizedName + ".name");
+        return GT_LanguageManager.getTranslation(this.mUnlocalizedName + ".name");
     }
 
     @Override

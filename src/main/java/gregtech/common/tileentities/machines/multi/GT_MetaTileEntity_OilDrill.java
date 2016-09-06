@@ -10,16 +10,23 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
+import ic2.core.block.machine.BlockMiningPipe;
+import ic2.core.block.type.ResourceBlock;
+import ic2.core.ref.BlockName;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 
 public class GT_MetaTileEntity_OilDrill extends GT_MetaTileEntity_MultiBlockBase {
 
+    private static final ItemStack mining_pipe = GT_ModHandler.getIC2Item(BlockName.mining_pipe, BlockMiningPipe.MiningPipeType.pipe, 1);
+    private static final ItemStack mining_pipe_tip = GT_ModHandler.getIC2Item(BlockName.mining_pipe, BlockMiningPipe.MiningPipeType.tip, 1);
+    
     private boolean completedCycle = false;
 
     public GT_MetaTileEntity_OilDrill(int aID, String aName, String aNameRegional) {
@@ -55,10 +62,10 @@ public class GT_MetaTileEntity_OilDrill extends GT_MetaTileEntity_MultiBlockBase
 
     @Override
     public boolean checkRecipe(ItemStack aStack) {
-        if (mInventory[1] == null || (mInventory[1].isItemEqual(GT_ModHandler.getIC2Item("miningPipe", 1L)) && mInventory[1].stackSize < mInventory[1].getMaxStackSize())) {
+        if (mInventory[1] == null || (mInventory[1].isItemEqual(mining_pipe) && mInventory[1].stackSize < mInventory[1].getMaxStackSize())) {
             ArrayList<ItemStack> tItems = getStoredInputs();
             for (ItemStack tStack : tItems) {
-                if (tStack.isItemEqual(GT_ModHandler.getIC2Item("miningPipe", 1L))) {
+                if (tStack.isItemEqual(mining_pipe)) {
                     if (tStack.stackSize < 2) {
                         tStack = null;
                     } else {
@@ -67,7 +74,7 @@ public class GT_MetaTileEntity_OilDrill extends GT_MetaTileEntity_MultiBlockBase
 
                 }
                 if (mInventory[1] == null) {
-                    mInventory[1] = GT_ModHandler.getIC2Item("miningPipe", 1L);
+                    mInventory[1] = mining_pipe;
                 } else {
                     mInventory[1].stackSize++;
                 }
@@ -77,7 +84,10 @@ public class GT_MetaTileEntity_OilDrill extends GT_MetaTileEntity_MultiBlockBase
         if (tFluid == null) {
             return false;
         }
-        if (getBaseMetaTileEntity().getBlockOffset(ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetX, getYOfPumpHead() - 1 - getBaseMetaTileEntity().getYCoord(), ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetZ) != Blocks.bedrock) {
+        if (getBaseMetaTileEntity().getBlockOffset(
+                EnumFacing.VALUES[getBaseMetaTileEntity().getBackFacing()].getFrontOffsetX(),
+                getYOfPumpHead() - 1 - getBaseMetaTileEntity().getYCoord(),
+                EnumFacing.VALUES[getBaseMetaTileEntity().getBackFacing()].getFrontOffsetZ()) != Blocks.BEDROCK) {
             if (completedCycle) {
                 moveOneDown();
             }
@@ -116,43 +126,48 @@ public class GT_MetaTileEntity_OilDrill extends GT_MetaTileEntity_MultiBlockBase
 
     private boolean moveOneDown() {
         if ((this.mInventory[1] == null) || (this.mInventory[1].stackSize < 1)
-                || (!GT_Utility.areStacksEqual(this.mInventory[1], GT_ModHandler.getIC2Item("miningPipe", 1L)))) {
+                || (!GT_Utility.areStacksEqual(this.mInventory[1], mining_pipe))) {
             return false;
         }
-        int xDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetX;
-        int zDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetZ;
+        int xDir = EnumFacing.VALUES[getBaseMetaTileEntity().getBackFacing()].getFrontOffsetX();
+        int zDir = EnumFacing.VALUES[getBaseMetaTileEntity().getBackFacing()].getFrontOffsetZ();
         int yHead = getYOfPumpHead();
         if (yHead <= 0) {
             return false;
         }
-        if (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, yHead - 1, getBaseMetaTileEntity().getZCoord() + zDir) == Blocks.bedrock) {
+        if (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, yHead - 1, getBaseMetaTileEntity().getZCoord() + zDir) == Blocks.BEDROCK) {
             return false;
         }
-        if (!(getBaseMetaTileEntity().getWorld().setBlock(getBaseMetaTileEntity().getXCoord() + xDir, yHead - 1, getBaseMetaTileEntity().getZCoord() + zDir, GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L))))) {
+        if (!(getBaseMetaTileEntity().getWorld().setBlockState(
+                new BlockPos(getBaseMetaTileEntity().getXCoord() + xDir, yHead - 1, getBaseMetaTileEntity().getZCoord() + zDir),
+                GT_Utility.getBlockFromStack(mining_pipe_tip).getDefaultState()))) {
             return false;
         }
         if (yHead != getBaseMetaTileEntity().getYCoord()) {
-            getBaseMetaTileEntity().getWorld().setBlock(getBaseMetaTileEntity().getXCoord() + xDir, yHead, getBaseMetaTileEntity().getZCoord() + zDir, GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipe", 1L)));
+            getBaseMetaTileEntity().getWorld().setBlockState(
+                    new BlockPos(getBaseMetaTileEntity().getXCoord() + xDir, yHead, getBaseMetaTileEntity().getZCoord() + zDir),
+                    GT_Utility.getBlockFromStack(mining_pipe).getDefaultState());
         }
         getBaseMetaTileEntity().decrStackSize(1, 1);
         return true;
     }
 
     private int getYOfPumpHead() {
-        int xDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetX;
-        int zDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetZ;
+        int xDir = EnumFacing.VALUES[getBaseMetaTileEntity().getBackFacing()].getFrontOffsetX();
+        int zDir = EnumFacing.VALUES[getBaseMetaTileEntity().getBackFacing()].getFrontOffsetZ();
         int y = getBaseMetaTileEntity().getYCoord() - 1;
-        while (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir) == GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipe", 1L))) {
+        while (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir) == GT_Utility.getBlockFromStack(mining_pipe)) {
             y--;
         }
         if (y == getBaseMetaTileEntity().getYCoord() - 1) {
-            if (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir) != GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L))) {
+            if (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir) != GT_Utility.getBlockFromStack(mining_pipe_tip)) {
                 return y + 1;
             }
         } else if (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir) != GT_Utility
-                .getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L)) && this.mInventory[1] != null && this.mInventory[1].stackSize > 0 && GT_Utility.areStacksEqual(this.mInventory[1], GT_ModHandler.getIC2Item("miningPipe", 1L))) {
-            getBaseMetaTileEntity().getWorld().setBlock(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir,
-                    GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L)));
+                .getBlockFromStack(mining_pipe_tip) && this.mInventory[1] != null && this.mInventory[1].stackSize > 0 && GT_Utility.areStacksEqual(this.mInventory[1], mining_pipe)) {
+            getBaseMetaTileEntity().getWorld().setBlockState(
+                    new BlockPos(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir),
+                    GT_Utility.getBlockFromStack(mining_pipe_tip).getDefaultState());
             getBaseMetaTileEntity().decrStackSize(0, 1);
         }
         return y;
@@ -160,8 +175,8 @@ public class GT_MetaTileEntity_OilDrill extends GT_MetaTileEntity_MultiBlockBase
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+        int xDir = EnumFacing.VALUES[aBaseMetaTileEntity.getBackFacing()].getFrontOffsetX();
+        int zDir = EnumFacing.VALUES[aBaseMetaTileEntity.getBackFacing()].getFrontOffsetZ();
         for (int i = -1; i < 2; i++) {
             for (int j = -1; j < 2; j++) {
                 if ((xDir + i != 0) || (zDir + j != 0)) {

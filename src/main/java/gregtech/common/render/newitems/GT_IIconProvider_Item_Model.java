@@ -1,41 +1,44 @@
 package gregtech.common.render.newitems;
 
-import com.google.common.base.Function;
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableMap;
-import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.GregTech_API;
+import gregtech.api.util.GT_Log;
 import gregtech.common.render.IIconRegister;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.*;
+import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
-import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.*;
+import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.model.ItemLayerModel;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
-import net.minecraftforge.common.model.IModelPart;
-import net.minecraftforge.common.model.IModelState;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.model.TRSRTransformation;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 @SideOnly(Side.CLIENT)
-public class GT_IIconProvider_Item_Model implements ICustomModelLoader, IModel, IBakedModel {
+public class GT_IIconProvider_Item_Model implements IBakedModel {
 
-    private static GT_IIconProvider_Item_Model INSTANCE = new GT_IIconProvider_Item_Model();
     private static ModelResourceLocation RESOURCE_LOCATION = new ModelResourceLocation("gregtech", "IItemIconProvider");
 
     private HashMap<TextureAtlasSprite, List<BakedQuad>> iconsCache = new HashMap<>();
@@ -44,73 +47,55 @@ public class GT_IIconProvider_Item_Model implements ICustomModelLoader, IModel, 
     private ItemStack itemStack;
     private VertexFormat vertexFormat;
 
-    //-----------------------------------------
-    // IModelLoader
-    //-----------------------------------------
+    public GT_IIconProvider_Item_Model() {
+        MinecraftForge.EVENT_BUS.register(this);
+        setupItemModels();
+        this.vertexFormat = DefaultVertexFormats.ITEM;
+    }
 
-    public static void setupItemIcons() {
-        TextureMap iconRegisterer = Minecraft.getMinecraft().getTextureMapBlocks();
+    @SubscribeEvent
+    public void onTextureMapStitch(TextureStitchEvent.Pre pre) {
+        ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
+        System.out.println("Texture map stitch");
+        GT_Log.out.println("GT_Mod: Starting Item Icon Load Phase");
+        System.out.println("GT_Mod: Starting Item Icon Load Phase");
+        GregTech_API.sBlockIcons = pre.getMap();
+        for (Runnable tRunnable : GregTech_API.sGTItemIconload) {
+            try {
+                tRunnable.run();
+            } catch (Throwable e) {
+                e.printStackTrace(GT_Log.err);
+            }
+        }
         for(ResourceLocation itemId : Item.REGISTRY.getKeys()) {
             Item item = Item.REGISTRY.getObject(itemId);
             if(item instanceof IIconRegister) {
-                ((IIconRegister) item).registerIcons(iconRegisterer);
+                ((IIconRegister) item).registerIcons(pre.getMap());
+            }
+            if(item instanceof IItemColor) {
+                itemColors.registerItemColorHandler((IItemColor) item, item);
             }
         }
+        GT_Log.out.println("GT_Mod: Finished Item Icon Load Phase");
+        System.out.println("GT_Mod: Finished Item Icon Load Phase");
+    }
+
+    @SubscribeEvent
+    public void onModelsBake(ModelBakeEvent bakeEvent) {
+        System.out.println("Models bake");
+        bakeEvent.getModelRegistry().putObject(RESOURCE_LOCATION, this);
     }
 
     public static void setupItemModels() {
-        ModelLoaderRegistry.registerLoader(INSTANCE);
         for(ResourceLocation itemId : Item.REGISTRY.getKeys()) {
             Item item = Item.REGISTRY.getObject(itemId);
             if(item instanceof IItemIconProvider) {
-                ModelLoader.registerItemVariants(item, RESOURCE_LOCATION);
-                ModelLoader.setCustomMeshDefinition(item, stack -> RESOURCE_LOCATION);
+                for (int i = 0; i < Short.MAX_VALUE; i++) {
+                    Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, i, RESOURCE_LOCATION);
+                }
             }
         }
     }
-
-    @Override
-    public boolean accepts(ResourceLocation modelLocation) {
-        return modelLocation.equals(RESOURCE_LOCATION);
-    }
-
-    @Override
-    public IModel loadModel(ResourceLocation modelLocation) throws Exception {
-        if(modelLocation.equals(RESOURCE_LOCATION))
-            return this;
-        return null;
-    }
-
-    @Override
-    public void onResourceManagerReload(IResourceManager resourceManager) {}
-
-
-    //-----------------------------------------
-    // IModel
-    //-----------------------------------------
-
-    @Override
-    public Collection<ResourceLocation> getDependencies() {
-        return Collections.emptyList();
-    }
-
-    @Override
-    public Collection<ResourceLocation> getTextures() {
-        return Collections.emptyList();
-    }
-
-    @Override
-    public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
-        vertexFormat = format;
-        return this;
-    }
-
-    @Override
-    public IModelState getDefaultState() {
-        return new SimpleModelState(ImmutableMap.<IModelPart, TRSRTransformation>of());
-    }
-
-
 
     //-----------------------------------------
     // IBakedModel
@@ -118,21 +103,22 @@ public class GT_IIconProvider_Item_Model implements ICustomModelLoader, IModel, 
 
     @Override
     public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
-        //Only one call
-        if(side == null && itemStack != null) {
+
+        if (side == null && itemStack != null) {
             IItemIconProvider iconProvider = (IItemIconProvider) itemStack.getItem();
             TextureAtlasSprite textureIcon = iconProvider.getIcon(itemStack, 0);
+            //System.out.println(iconProvider.getClass() + " " + textureIcon);
             ArrayList<BakedQuad> resultQuads = new ArrayList<>();
-            if(textureIcon != null) {
-                if (iconsCache.containsKey(textureIcon)) {
-                    resultQuads.addAll(iconsCache.get(textureIcon));
-                } else {
-                    List<BakedQuad> textureQuads = ItemLayerModel.getQuadsForSprite(0, textureIcon, vertexFormat, Optional.<TRSRTransformation>absent());
-                    iconsCache.put(textureIcon, textureQuads);
-                    resultQuads.addAll(textureQuads);
-                }
+            if (textureIcon != null) {
+                //if (iconsCache.containsKey(textureIcon)) {
+                //    resultQuads.addAll(iconsCache.get(textureIcon));
+                //} else {
+                List<BakedQuad> textureQuads = ItemLayerModel.getQuadsForSprite(0, textureIcon, vertexFormat, Optional.<TRSRTransformation>absent());
+                //iconsCache.put(textureIcon, textureQuads);
+                resultQuads.addAll(textureQuads);
+                //}
             }
-            if(iconProvider.getRenderPasses(itemStack) > 0) {
+            if (iconProvider.getRenderPasses(itemStack) > 0) {
                 for (int i = 0; i < iconProvider.getRenderPasses(itemStack); ++i) {
                     TextureAtlasSprite overlayIcon = iconProvider.getIcon(itemStack, i);
                     ImmutablePair<TextureAtlasSprite, Integer> iconPair = new ImmutablePair<>(overlayIcon, i);

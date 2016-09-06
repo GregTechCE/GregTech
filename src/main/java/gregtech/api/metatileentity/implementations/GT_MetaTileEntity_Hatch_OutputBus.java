@@ -9,6 +9,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 
 public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch {
     public GT_MetaTileEntity_Hatch_OutputBus(int aID, String aName, String aNameRegional, int aTier) {
@@ -55,7 +56,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, EnumHand hand) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         aBaseMetaTileEntity.openGUI(aPlayer);
         return true;

@@ -1,40 +1,7 @@
 package gregtech.nei;
 
-import codechicken.lib.gui.GuiDraw;
-import codechicken.nei.PositionedStack;
-import codechicken.nei.guihook.GuiContainerManager;
-import codechicken.nei.guihook.IContainerInputHandler;
-import codechicken.nei.guihook.IContainerTooltipHandler;
-import codechicken.nei.recipe.GuiCraftingRecipe;
-import codechicken.nei.recipe.GuiRecipe;
-import codechicken.nei.recipe.GuiUsageRecipe;
-import codechicken.nei.recipe.TemplateRecipeHandler;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.gui.GT_GUIContainer_BasicMachine;
-import gregtech.api.objects.ItemData;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.gui.GT_GUIContainer_FusionReactor;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.opengl.GL11;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-public class GT_NEI_DefaultHandler
-        extends TemplateRecipeHandler {
-    public static final int sOffsetX = 5;
+public class GT_NEI_DefaultHandler {
+    /*public static final int sOffsetX = 5;
     public static final int sOffsetY = 11;
 
     static {
@@ -55,7 +22,7 @@ public class GT_NEI_DefaultHandler
     }
 
     public static void drawText(int aX, int aY, String aString, int aColor) {
-        Minecraft.getMinecraft().fontRenderer.drawString(aString, aX, aY, aColor);
+        Minecraft.getMinecraft().fontRendererObj.drawString(aString, aX, aY, aColor);
     }
 
     public TemplateRecipeHandler newInstance() {
@@ -212,6 +179,47 @@ public class GT_NEI_DefaultHandler
         if ((GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePre)) || (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePost))) {
             drawText(10, 123, this.mRecipeMap.mNEISpecialValuePre + ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue * this.mRecipeMap.mNEISpecialValueMultiplier + this.mRecipeMap.mNEISpecialValuePost, -16777216);
         }
+    }
+
+    @Override
+    public List getInputs() {
+        return this.mRecipeMap
+    }
+
+    @Override
+    public List getOutputs() {
+        return null;
+    }
+
+    @Override
+    public List<FluidStack> getFluidInputs() {
+        return null;
+    }
+
+    @Override
+    public List<FluidStack> getFluidOutputs() {
+        return null;
+    }
+
+    @Override
+    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+
+    }
+
+    @Override
+    public void drawAnimations(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight) {
+
+    }
+
+    @Nullable
+    @Override
+    public List<String> getTooltipStrings(int mouseX, int mouseY) {
+        return handleItemTooltip()
+    }
+
+    @Override
+    public boolean handleClick(@Nonnull Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
+        return false;
     }
 
     public static class GT_RectHandler
@@ -791,5 +799,5 @@ public class GT_NEI_DefaultHandler
         public List<PositionedStack> getOtherStacks() {
             return this.mOutputs;
         }
-    }
+    }*/
 }

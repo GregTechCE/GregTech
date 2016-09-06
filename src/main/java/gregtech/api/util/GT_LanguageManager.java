@@ -1,13 +1,16 @@
 package gregtech.api.util;
 
 
-import net.minecraft.util.text.translation.LanguageMap;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.*;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import gregtech.api.GregTech_API;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,11 +18,16 @@ import java.util.Map.Entry;
 
 import static gregtech.api.enums.GT_Values.E;
 
-public class GT_LanguageManager {
+@SideOnly(Side.CLIENT)
+public class GT_LanguageManager implements IResourceManagerReloadListener {
 
-    public static final LanguageMap TRANSLATION = ObfuscationReflectionHelper.getPrivateValue(LanguageMap.class, null, 2);
+    public static GT_LanguageManager INSTANCE = new GT_LanguageManager();
+    private GT_LanguageManager() {}
 
-    public static final HashMap<String, String> TEMPMAP = new HashMap<String, String>(), BUFFERMAP = new HashMap<String, String>();
+    public static final HashMap<String, String>
+            LOCALIZATION = new HashMap<>(),
+            BUFFERMAP = new HashMap<>();
+
     public static Configuration sEnglishFile;
 
     public static String addStringLocalization(String aKey, String aEnglish) {
@@ -27,11 +35,11 @@ public class GT_LanguageManager {
     }
 
     public static String addStringLocalization(String aKey, String aEnglish, boolean aWriteIntoLangFile) {
-        if (aKey == null) return E;
-        if (aWriteIntoLangFile) aEnglish = writeToLangFile(aKey, aEnglish);
-        TEMPMAP.put(aKey.trim(), aEnglish);
-        Map<String, String> translation = ObfuscationReflectionHelper.getPrivateValue(LanguageMap.class, TRANSLATION, 3);
-        translation.put(aKey.trim(), aEnglish);
+        if (aKey == null)
+            return E;
+        if (aWriteIntoLangFile)
+            aEnglish = writeToLangFile(aKey, aEnglish);
+        LOCALIZATION.put(aKey, aEnglish);
         return aEnglish;
     }
 
@@ -57,12 +65,7 @@ public class GT_LanguageManager {
 
     public static String getTranslation(String aKey) {
         if (aKey == null) return E;
-        aKey = aKey.trim();
-        String result = TRANSLATION.translateKey(aKey);
-        if(result.equals(aKey) && !aKey.endsWith(".name")) {
-            result = TRANSLATION.translateKey(aKey + ".name");
-        }
-        return result;
+        return I18n.format(aKey.trim());
     }
 
     public static String getTranslation(String aKey, String aSeperator) {
@@ -84,6 +87,14 @@ public class GT_LanguageManager {
             }
         }
         return aStack.getUnlocalizedName() + ".name";
+    }
+
+    @Override
+    public void onResourceManagerReload(IResourceManager resourceManager) {
+        Locale i18nLocale = ObfuscationReflectionHelper.getPrivateValue(I18n.class, null, 0);
+        Map<String, String> properties = ObfuscationReflectionHelper.getPrivateValue(Locale.class, i18nLocale, 2);
+        properties.putAll(LOCALIZATION);
+        GT_Log.out.println("Resource manager reloaded. Localization injected.");
     }
 
 }

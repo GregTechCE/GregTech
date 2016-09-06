@@ -21,6 +21,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 
@@ -754,11 +755,11 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         }
         if (hasValidMetaTileEntity()) mMetaTileEntity.setItemNBT(tNBT);
         if (!tNBT.hasNoTags()) rStack.setTagCompound(tNBT);
-        return new ArrayList<ItemStack>(Arrays.asList(rStack));
+        return new ArrayList<>(Arrays.asList(rStack));
     }
 
     @Override
-    public boolean onRightclick(EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
+    public boolean onRightclick(EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ, EnumHand clickedHand) {
         if (isClientSide()) {
             if (getCoverBehaviorAtSide(aSide).onCoverRightclickClient(aSide, this, aPlayer, aX, aY, aZ)) return true;
         }
@@ -852,7 +853,8 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
             return false;
 
         try {
-            if (hasValidMetaTileEntity()) return mMetaTileEntity.onRightclick(this, aPlayer, aSide, aX, aY, aZ);
+            if (hasValidMetaTileEntity())
+                return mMetaTileEntity.onRightclick(this, aPlayer, aSide, aX, aY, aZ, clickedHand);
         } catch (Throwable e) {
             GT_Log.err.println("Encountered Exception while rightclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immidietly to GregTech Intergalactical!!!");
             e.printStackTrace(GT_Log.err);
@@ -864,7 +866,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     @Override
     public void onLeftclick(EntityPlayer aPlayer) {
         try {
-            if (aPlayer != null && hasValidMetaTileEntity()) mMetaTileEntity.onLeftclick(this, aPlayer);
+            if (aPlayer != null && hasValidMetaTileEntity()) mMetaTileEntity.onLeftclick(this, aPlayer, EnumHand.MAIN_HAND);
         } catch (Throwable e) {
             GT_Log.err.println("Encountered Exception while leftclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immidietly to GregTech Intergalactical!!!");
             e.printStackTrace(GT_Log.err);

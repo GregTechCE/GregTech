@@ -1,6 +1,7 @@
 package gregtech.api.interfaces.tileentity;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
@@ -68,7 +69,13 @@ public interface IHasWorldObjectAndCoords {
 
     public Block getBlock(int aX, int aY, int aZ);
 
-    public Block getBlockOffset(int aX, int aY, int aZ);
+    public default Block getBlockOffset(int aX, int aY, int aZ) {
+        return getBlockStateOffset(aX, aY, aZ).getBlock();
+    }
+
+    public default IBlockState getBlockStateOffset(int aX, int aY, int aZ) {
+        return getWorld().getBlockState(new BlockPos(getXCoord() + aX, getYCoord() + aY, getZCoord() + aZ));
+    }
 
     public Block getBlockAtSide(byte aSide);
 

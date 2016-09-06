@@ -1,20 +1,18 @@
 package gregtech.nei;
 
-import codechicken.nei.api.IConfigureNEI;
 import gregtech.api.util.GT_Recipe;
 
-public class NEI_GT_Config
-        implements IConfigureNEI {
+public class NEI_GT_Config {
     public static boolean sIsAdded = true;
 
     public void loadConfig() {
-        sIsAdded = false;
+        /*sIsAdded = false;
         for (GT_Recipe.GT_Recipe_Map tMap : GT_Recipe.GT_Recipe_Map.sMappings) {
             if (tMap.mNEIAllowed) {
                 new GT_NEI_DefaultHandler(tMap);
             }
         }
-        sIsAdded = true;
+        sIsAdded = true;*/
     }
 
     public String getName() {
@@ -24,4 +22,5 @@ public class NEI_GT_Config
     public String getVersion() {
         return "(5.03a)";
     }
+
 }

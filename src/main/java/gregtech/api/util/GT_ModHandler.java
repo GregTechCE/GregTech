@@ -1,6 +1,12 @@
 package gregtech.api.util;
 
 import ic2.api.recipe.*;
+import ic2.core.Ic2Items;
+import ic2.core.block.state.IIdProvider;
+import ic2.core.ref.BlockName;
+import ic2.core.ref.FluidName;
+import ic2.core.ref.ItemName;
+import ic2.core.ref.TeBlock;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
@@ -32,6 +38,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -53,7 +60,7 @@ public class GT_ModHandler {
     private static final List<IRecipe> sAllRecipeList = Collections.synchronizedList(new ArrayList<IRecipe>(5000)), sBufferRecipeList = new ArrayList<IRecipe>(1000);
     public static volatile int VERSION = 509;
     public static Collection<String> sNativeRecipeClasses = new HashSet<String>(), sSpecialRecipeClasses = new HashSet<String>();
-    public static GT_HashSet<GT_ItemStack> sNonReplaceableItems = new GT_HashSet<GT_ItemStack>();
+    public static GT_HashSet<GT_ItemStack> sNonReplaceableItems = new GT_HashSet<>();
     public static Object sBoxableWrapper = GT_Utility.callConstructor("gregtechmod.api.util.GT_IBoxableWrapper", 0, null, false);
     private static Map<IRecipeInput, RecipeOutput> sExtractorRecipes = new HashMap<IRecipeInput, RecipeOutput>();
     private static Map<IRecipeInput, RecipeOutput> sMaceratorRecipes = new HashMap<IRecipeInput, RecipeOutput>();
@@ -106,6 +113,57 @@ public class GT_ModHandler {
         sSpecialRecipeClasses.add("shedar.mods.ic2.nuclearcontrol.StorageArrayRecipe");
     }
 
+    public static ItemStack getIC2Item(ItemName itemName, int amount) {
+        ItemStack stack = itemName.getItemStack();
+        stack.stackSize = amount;
+        return stack;
+    }
+
+    public static ItemStack getIC2Item(ItemName itemName, int amount, boolean wildcard) {
+        ItemStack stack = itemName.getItemStack();
+        if(wildcard) stack.setItemDamage(OreDictionary.WILDCARD_VALUE);
+        stack.stackSize = amount;
+        return stack;
+    }
+
+    public static ItemStack getIC2Item(ItemName itemName, int amount, int explicitDamage) {
+        ItemStack stack = itemName.getItemStack();
+        stack.setItemDamage(explicitDamage);
+        stack.stackSize = amount;
+        return stack;
+    }
+
+    public static ItemStack getIC2Item(BlockName itemName, int amount) {
+        ItemStack stack = itemName.getItemStack();
+        stack.stackSize = amount;
+        return stack;
+    }
+
+    public static <T extends Enum<T> & IIdProvider> ItemStack getIC2Item(BlockName itemName, T variant, int amount) {
+        ItemStack stack = itemName.getItemStack(variant);
+        stack.stackSize = amount;
+        return stack;
+    }
+
+    public static ItemStack getIC2TEItem(TeBlock variant, int amount) {
+        ItemStack stack = BlockName.te.getItemStack(variant);
+        stack.stackSize = amount;
+        return stack;
+    }
+
+    public static ItemStack getIC2Item(ItemName itemName, String variant, int amount) {
+        ItemStack stack = itemName.getItemStack(variant);
+        stack.stackSize = amount;
+        return stack;
+    }
+
+    public static <T extends Enum<T> & IIdProvider> ItemStack getIC2Item(ItemName itemName, T type, int amount) {
+        ItemStack stack = itemName.getItemStack(type);
+        stack.stackSize = amount;
+        return stack;
+    }
+
+
     /**
      * Returns if that Liquid is Water or Distilled Water
      */
@@ -118,14 +176,14 @@ public class GT_ModHandler {
      * Returns a Liquid Stack with given amount of Water.
      */
     public static FluidStack getWater(long aAmount) {
-        return FluidRegistry.getFluidStack("water", (int) aAmount);
+        return new FluidStack(FluidRegistry.WATER, (int) aAmount);
     }
 
     /**
      * Returns a Liquid Stack with given amount of distilled Water.
      */
     public static FluidStack getDistilledWater(long aAmount) {
-        return FluidRegistry.getFluidStack("ic2distilledwater", (int) aAmount);
+        return new FluidStack(FluidName.distilled_water.getInstance(), (int) aAmount);
     }
 
     /**
@@ -140,7 +198,7 @@ public class GT_ModHandler {
      * Returns a Liquid Stack with given amount of Lava.
      */
     public static FluidStack getLava(long aAmount) {
-        return FluidRegistry.getFluidStack("lava", (int) aAmount);
+        return new FluidStack(FluidRegistry.LAVA, (int) aAmount);
     }
 
     /**
@@ -155,7 +213,7 @@ public class GT_ModHandler {
      * Returns a Liquid Stack with given amount of Steam.
      */
     public static FluidStack getSteam(long aAmount) {
-        return FluidRegistry.getFluidStack("steam", (int) aAmount);
+        return new FluidStack(FluidName.steam.getInstance(), (int) aAmount);
     }
 
     /**
@@ -233,64 +291,29 @@ public class GT_ModHandler {
     }
 
     /**
-     * Gets an Item from IndustrialCraft, and returns a Replacement Item if not possible
-     */
-    public static ItemStack getIC2Item(String aItem, long aAmount, ItemStack aReplacement) {
-        if (GT_Utility.isStringInvalid(aItem) || !GregTech_API.sPreloadStarted) return null;
-        //if (D1) GT_Log.out.println("Requested the Item '" + aItem + "' from the IC2-API");
-        if (!sIC2ItemMap.containsKey(aItem)) try {
-            ItemStack tStack = IC2Items.getItem(aItem);
-            sIC2ItemMap.put(aItem, tStack);
-            if (tStack == null && D1) GT_Log.err.println(aItem + " is not found in the IC2 Items!");
-        } catch (Throwable e) {/*Do nothing*/}
-        return GT_Utility.copyAmount(aAmount, sIC2ItemMap.get(aItem), aReplacement);
-    }
-
-    /**
-     * Gets an Item from IndustrialCraft, but the Damage Value can be specified, and returns a Replacement Item with the same Damage if not possible
-     */
-    public static ItemStack getIC2Item(String aItem, long aAmount, int aMeta, ItemStack aReplacement) {
-        ItemStack rStack = getIC2Item(aItem, aAmount, aReplacement);
-        if (rStack == null) return null;
-        Items.FEATHER.setDamage(rStack, aMeta);
-        return rStack;
-    }
-
-    /**
-     * Gets an Item from IndustrialCraft, but the Damage Value can be specified
-     */
-    public static ItemStack getIC2Item(String aItem, long aAmount, int aMeta) {
-        return getIC2Item(aItem, aAmount, aMeta, null);
-    }
-
-    /**
-     * Gets an Item from IndustrialCraft
-     */
-    public static ItemStack getIC2Item(String aItem, int aAmount) {
-        return getIC2Item(aItem, aAmount, null);
-    }
-
-    /**
      * Gets an Item from RailCraft
      */
-    public static ItemStack getModItem(String aModID, String aItem, int aAmount) {
+    public static ItemStack getModItem(String aModID, String aItem, long aAmount) {
         return getModItem(aModID, aItem, aAmount, null);
     }
 
     /**
      * Gets an Item from RailCraft, and returns a Replacement Item if not possible
      */
-    public static ItemStack getModItem(String aModID, String aItem, int aAmount, ItemStack aReplacement) {
+    public static ItemStack getModItem(String aModID, String aItem, long aAmount, ItemStack aReplacement) {
         if (GT_Utility.isStringInvalid(aItem) || !GregTech_API.sPreloadStarted) return null;
-        ItemStack stack =GT_Utility.copyAmount(aAmount, GameRegistry.findItem(aModID, aItem), aReplacement);
-        stack.stackSize = aAmount;
-        return stack;
+        ItemStack stack = GT_Utility.copyAmount(aAmount, GameRegistry.findItem(aModID, aItem), aReplacement);
+        if(stack != null) {
+            stack.stackSize = (int) aAmount;
+            return stack;
+        }
+        return new ItemStack(Blocks.STONE);
     }
 
     /**
      * Gets an Item from RailCraft, but the Damage Value can be specified
      */
-    public static ItemStack getModItem(String aModID, String aItem, int aAmount, int aMeta) {
+    public static ItemStack getModItem(String aModID, String aItem, long aAmount, int aMeta) {
         ItemStack rStack = getModItem(aModID, aItem, aAmount);
         if (rStack == null) return null;
         Items.FEATHER.setDamage(rStack, aMeta);
@@ -300,7 +323,7 @@ public class GT_ModHandler {
     /**
      * Gets an Item from RailCraft, but the Damage Value can be specified, and returns a Replacement Item with the same Damage if not possible
      */
-    public static ItemStack getModItem(String aModID, String aItem, int aAmount, int aMeta, ItemStack aReplacement) {
+    public static ItemStack getModItem(String aModID, String aItem, long aAmount, int aMeta, ItemStack aReplacement) {
         ItemStack rStack = getModItem(aModID, aItem, aAmount, aReplacement);
         if (rStack == null) return null;
         Items.FEATHER.setDamage(rStack, aMeta);
@@ -1619,7 +1642,7 @@ public class GT_ModHandler {
 
     public static int getCapsuleCellContainerCount(ItemStack aStack) {
         if (aStack == null) return 0;
-        return GT_Utility.areStacksEqual(GT_Utility.getContainerForFilledItem(aStack, true), ItemList.Cell_Empty.get(1)) || OrePrefixes.cell.contains(aStack) || OrePrefixes.cellPlasma.contains(aStack) || GT_Utility.areStacksEqual(aStack, getIC2Item("waterCell", 1, W)) ? 1 : 0;
+        return GT_Utility.areStacksEqual(GT_Utility.getContainerForFilledItem(aStack, true), ItemList.Cell_Empty.get(1)) || OrePrefixes.cell.contains(aStack) || OrePrefixes.cellPlasma.contains(aStack) || GT_Utility.areStacksEqual(aStack, Ic2Items.waterCell) ? 1 : 0;
     }
 
     public static class RecipeBits {

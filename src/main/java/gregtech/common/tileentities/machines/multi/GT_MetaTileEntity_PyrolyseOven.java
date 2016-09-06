@@ -14,7 +14,8 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_PyrolyseOven extends GT_MetaTileEntity_MultiBlockBase {
@@ -97,8 +98,8 @@ public class GT_MetaTileEntity_PyrolyseOven extends GT_MetaTileEntity_MultiBlock
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 2;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 2;
+        int xDir = EnumFacing.VALUES[aBaseMetaTileEntity.getBackFacing()].getFrontOffsetX() * 2;
+        int zDir = EnumFacing.VALUES[aBaseMetaTileEntity.getBackFacing()].getFrontOffsetZ() * 2;
         replaceDeprecatedCoils(aBaseMetaTileEntity);
         for (int i = -2; i < 3; i++) {
             for (int j = -2; j < 3; j++) {
@@ -188,8 +189,8 @@ public class GT_MetaTileEntity_PyrolyseOven extends GT_MetaTileEntity_MultiBlock
     }
 
     private void replaceDeprecatedCoils(IGregTechTileEntity aBaseMetaTileEntity) {
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+        int xDir = EnumFacing.VALUES[aBaseMetaTileEntity.getBackFacing()].getFrontOffsetX();
+        int zDir = EnumFacing.VALUES[aBaseMetaTileEntity.getBackFacing()].getFrontOffsetX();
         int tX = aBaseMetaTileEntity.getXCoord() + xDir * 2;
         int tY = (int) aBaseMetaTileEntity.getYCoord();
         int tZ = aBaseMetaTileEntity.getZCoord() + zDir * 2;
@@ -198,7 +199,9 @@ public class GT_MetaTileEntity_PyrolyseOven extends GT_MetaTileEntity_MultiBlock
                 if (aBaseMetaTileEntity.getBlock(xPos, tY, zPos) == GregTech_API.sBlockCasings1 &&
                     aBaseMetaTileEntity.getMetaID(xPos, tY, zPos) == 13)
                 {
-                    aBaseMetaTileEntity.getWorld().setBlock(xPos, tY, zPos, GregTech_API.sBlockCasings5, 1, 3);
+                    aBaseMetaTileEntity.getWorld().setBlockState(
+                            new BlockPos(xPos, tY, zPos),
+                            GregTech_API.sBlockCasings5.getStateFromMeta(1), 3);
                 }
             }
         }

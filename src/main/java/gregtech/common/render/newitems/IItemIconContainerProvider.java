@@ -11,11 +11,14 @@ public interface IItemIconContainerProvider extends IItemIconProvider {
 
     @Override
     default TextureAtlasSprite getIcon(ItemStack stack, int pass) {
-        switch (pass) {
-            case 0:
-                return getIconContainer(stack).getIcon();
-            case 1:
-                return getIconContainer(stack).getOverlayIcon();
+        IIconContainer iconContainer = getIconContainer(stack);
+        if(iconContainer != null) {
+            switch (pass) {
+                case 0:
+                    return iconContainer.getIcon();
+                case 1:
+                    return iconContainer.getOverlayIcon();
+            }
         }
         return null;
     }

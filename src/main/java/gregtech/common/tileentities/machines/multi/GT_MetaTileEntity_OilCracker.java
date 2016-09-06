@@ -16,7 +16,8 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_MultiBlockBase {
@@ -110,8 +111,8 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_MultiBlockBa
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+        int xDir = EnumFacing.VALUES[getBaseMetaTileEntity().getBackFacing()].getFrontOffsetX();
+        int zDir = EnumFacing.VALUES[getBaseMetaTileEntity().getBackFacing()].getFrontOffsetZ();
         int amount = 0;
         replaceDeprecatedCoils(aBaseMetaTileEntity);
         if (xDir != 0) {
@@ -246,8 +247,8 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_MultiBlockBa
     }
 
     private void replaceDeprecatedCoils(IGregTechTileEntity aBaseMetaTileEntity) {
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+        int xDir = EnumFacing.VALUES[getBaseMetaTileEntity().getBackFacing()].getFrontOffsetX();
+        int zDir = EnumFacing.VALUES[getBaseMetaTileEntity().getBackFacing()].getFrontOffsetZ();
         int tX = aBaseMetaTileEntity.getXCoord() + xDir;
         int tY = (int) aBaseMetaTileEntity.getYCoord();
         int tZ = aBaseMetaTileEntity.getZCoord() + zDir;
@@ -258,9 +259,10 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_MultiBlockBa
                         continue;
                     }
                     if (aBaseMetaTileEntity.getBlock(xPos, yPos, zPos) == GregTech_API.sBlockCasings1 &&
-                        aBaseMetaTileEntity.getMetaID(xPos, yPos, zPos) == 12)
-                    {
-                        aBaseMetaTileEntity.getWorld().setBlock(xPos, yPos, zPos, GregTech_API.sBlockCasings5, 0, 3);
+                        aBaseMetaTileEntity.getMetaID(xPos, yPos, zPos) == 12) {
+                        aBaseMetaTileEntity.getWorld().setBlockState(
+                                new BlockPos(xPos, yPos, zPos),
+                                GregTech_API.sBlockCasings5.getDefaultState(), 3);
                     }
                 }
             }

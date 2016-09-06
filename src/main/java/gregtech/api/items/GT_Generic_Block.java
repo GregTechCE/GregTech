@@ -22,12 +22,10 @@ import net.minecraft.item.ItemBlock;
 
 import static gregtech.api.enums.GT_Values.W;
 
-@SuppressWarnings("deprecation")
 public abstract class GT_Generic_Block extends Block {
 
-    public static IProperty<Integer> METADATA = PropertyInteger.create("METADATA", 0, 16);
-
-    public static IUnlistedProperty<BlockPos> BLOCK_POS = new UnlistedBlockPosProperty("POSITION");
+    public static IProperty<Integer> METADATA = PropertyInteger.create("metadata", 0, 15);
+    public static IUnlistedProperty<BlockPos> BLOCK_POS = new UnlistedBlockPosProperty("pos");
 
     protected final String mUnlocalizedName;
 

@@ -21,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
@@ -162,7 +163,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, EnumHand hand) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         aBaseMetaTileEntity.openGUI(aPlayer);
         return true;

@@ -51,8 +51,8 @@ public class ModularArmor_Item extends ItemArmor implements ISpecialArmor, IIcon
 
     // public int maxEU;
 
-    public ModularArmor_Item(int aArmorIndex, EntityEquipmentSlot aType, String name, int gui) {
-        super(ArmorMaterial.DIAMOND, aArmorIndex, aType);
+    public ModularArmor_Item(EntityEquipmentSlot aType, String name, int gui) {
+        super(ArmorMaterial.DIAMOND, 0, aType);
         MinecraftForge.EVENT_BUS.register(this);
         setUnlocalizedName("gregtech:" + name);
         setRegistryName(GT_Values.MOD_ID, name);

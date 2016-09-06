@@ -5,6 +5,8 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
+import ic2.core.block.Ic2Leaves;
+import ic2.core.ref.BlockName;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -60,9 +62,9 @@ public class GT_Tool_BranchCutter extends GT_Tool {
                 aDrops.clear();
                 aDrops.add(new ItemStack(Blocks.SAPLING, 1, aBlock
                         .getValue(BlockNewLeaf.VARIANT).getMetadata()));
-            } else if (aBlock == GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("rubberLeaves", 1))) {
+            } else if (aBlock == GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item(BlockName.leaves, 1))) {
                 aDrops.clear();
-                aDrops.add(GT_ModHandler.getIC2Item("rubberSapling", 1));
+                aDrops.add(GT_ModHandler.getIC2Item(BlockName.sapling, 1));
             }
         }
         return 0;

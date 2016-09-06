@@ -14,8 +14,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
@@ -25,13 +23,11 @@ import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.common.render.GT_Renderer_Block;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -182,7 +178,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     public abstract String getUnlocalizedName();
 
     public String getLocalizedName() {
-        return GT_LanguageManager.TRANSLATION.translateKey(getUnlocalizedName() + ".name");
+        return GT_LanguageManager.getTranslation(getUnlocalizedName() + ".name");
     }
 
     @Override

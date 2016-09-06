@@ -11,6 +11,9 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -19,9 +22,10 @@ public class Behaviour_SensorKit
         extends Behaviour_None {
     private final String mTooltip = GT_LanguageManager.addStringLocalization("gt.behaviour.sensorkit.tooltip", "Used to display Information using the Mod Nuclear Control");
 
-    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+    @Override
+    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, BlockPos pos, EnumFacing aSide, float hitX, float hitY, float hitZ, EnumHand hand) {
         if ((aPlayer instanceof EntityPlayerMP)) {
-            TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+            TileEntity tTileEntity = aWorld.getTileEntity(pos);
             if (((tTileEntity instanceof IInventory)) && (!((IInventory) tTileEntity).isUseableByPlayer(aPlayer))) {
                 return false;
             }
@@ -31,9 +35,9 @@ public class Behaviour_SensorKit
                 if (tNBT == null) {
                     tNBT = new NBTTagCompound();
                 }
-                tNBT.setInteger("x", aX);
-                tNBT.setInteger("y", aY);
-                tNBT.setInteger("z", aZ);
+                tNBT.setInteger("x", pos.getX());
+                tNBT.setInteger("y", pos.getY());
+                tNBT.setInteger("z", pos.getZ());
                 aStack.setTagCompound(tNBT);
             }
             return true;

@@ -3,6 +3,7 @@ package gregtech.common;
 import gregtech.common.tools.GT_Tool;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -12,6 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.*;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.chunk.storage.IChunkLoader;
 import net.minecraft.world.gen.structure.template.TemplateManager;
@@ -21,6 +23,7 @@ import net.minecraft.world.storage.WorldInfo;
 
 import javax.annotation.Nullable;
 import java.io.File;
+import java.io.IOException;
 
 public class GT_DummyWorld extends World {
 
@@ -29,11 +32,11 @@ public class GT_DummyWorld extends World {
 
     public static WorldInfo DUMMY_INFO = new WorldInfo(DUMMY_SETTINGS, "DUMMY_DIMENSION");
 
-    public GT_IteratorRandom mRandom = new GT_IteratorRandom();
+    //public GT_IteratorRandom mRandom = new GT_IteratorRandom();
     public ItemStack mLastSetBlock = null;
 
-    public GT_DummyWorld(ISaveHandler par1iSaveHandler, String par2Str, WorldProvider par3WorldProvider, WorldSettings par4WorldSettings, Profiler par5Profiler) {
-        super(par1iSaveHandler, par1iSaveHandler.loadWorldInfo(), par3WorldProvider, par5Profiler, false);
+    public GT_DummyWorld(ISaveHandler par1iSaveHandler, String par2Str, WorldSettings par4WorldSettings, Profiler par5Profiler) {
+        super(par1iSaveHandler, par1iSaveHandler.loadWorldInfo(), new WorldProviderSurface(), par5Profiler, false);
         //this.rand = this.mRandom;
     }
 
@@ -50,7 +53,33 @@ public class GT_DummyWorld extends World {
 
                  @Override
                  public IChunkLoader getChunkLoader(WorldProvider provider) {
-                     return null;
+                     return new IChunkLoader() {
+                         @Nullable
+                         @Override
+                         public Chunk loadChunk(World worldIn, int x, int z) throws IOException {
+                             return null;
+                         }
+
+                         @Override
+                         public void saveChunk(World worldIn, Chunk chunkIn) throws MinecraftException, IOException {
+
+                         }
+
+                         @Override
+                         public void saveExtraChunkData(World worldIn, Chunk chunkIn) throws IOException {
+
+                         }
+
+                         @Override
+                         public void chunkTick() {
+
+                         }
+
+                         @Override
+                         public void saveExtraData() {
+
+                         }
+                     };
                  }
 
                  @Override
@@ -61,7 +90,20 @@ public class GT_DummyWorld extends World {
 
                  @Override
                  public IPlayerFileData getPlayerNBTManager() {
-                     return null;
+                     return new IPlayerFileData() {
+                         @Override
+                         public void writePlayerData(EntityPlayer player) {}
+
+                         @Override
+                         public NBTTagCompound readPlayerData(EntityPlayer player) {
+                             return new NBTTagCompound();
+                         }
+
+                         @Override
+                         public String[] getAvailablePlayerDat() {
+                             return new String[0];
+                         }
+                     };
                  }
 
                  @Override
@@ -81,11 +123,32 @@ public class GT_DummyWorld extends World {
                  public TemplateManager getStructureTemplateManager() {
                      return null;
                  }
-             }, DUMMY_INFO.getWorldName(), null, DUMMY_SETTINGS, new Profiler());
+             }, DUMMY_INFO.getWorldName(), DUMMY_SETTINGS, new Profiler());
     }
 
     protected IChunkProvider createChunkProvider() {
-        return null;
+        return new IChunkProvider() {
+            @Nullable
+            @Override
+            public Chunk getLoadedChunk(int x, int z) {
+                return null;
+            }
+
+            @Override
+            public Chunk provideChunk(int x, int z) {
+                return null;
+            }
+
+            @Override
+            public boolean unloadQueuedChunks() {
+                return false;
+            }
+
+            @Override
+            public String makeString() {
+                return "Dummy";
+            }
+        };
     }
 
     @Override

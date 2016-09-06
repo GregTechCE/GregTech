@@ -94,23 +94,4 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements IIconR
         aList.add(new ItemStack(this, 1, 0));
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(TextureMap aIconRegister) {
-        super.registerIcons(aIconRegister);
-        if (GregTech_API.sPostloadFinished) {
-            GT_Log.out.println("GT_Mod: Starting Item Icon Load Phase");
-            System.out.println("GT_Mod: Starting Item Icon Load Phase");
-            for (Runnable tRunnable : GregTech_API.sGTItemIconload) {
-                try {
-                    tRunnable.run();
-                } catch (Throwable e) {
-                    e.printStackTrace(GT_Log.err);
-                }
-            }
-            GT_Log.out.println("GT_Mod: Finished Item Icon Load Phase");
-            System.out.println("GT_Mod: Finished Item Icon Load Phase");
-        }
-    }
-
 }

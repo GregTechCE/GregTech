@@ -1,5 +1,13 @@
 package gregtech.common.items;
 
+import ic2.core.item.type.CraftingItemType;
+import ic2.core.ref.ItemName;
+import net.minecraft.block.BlockCauldron;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Enchantments;
+import net.minecraft.init.MobEffects;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
@@ -14,7 +22,6 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.*;
 import gregtech.common.covers.*;
 import gregtech.common.items.behaviors.*;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
@@ -24,8 +31,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.MathHelper;
-import net.minecraftforge.fluids.FluidStack;
 
 import java.util.Collection;
 import java.util.List;
@@ -48,20 +53,20 @@ public class GT_MetaGenerated_Item_01
 
         ItemStack tStack = new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID);
         tStack.setStackDisplayName("The holy Planks of Sengir");
-        GT_Utility.ItemNBT.addEnchantment(tStack, Enchantment.smite, 10);
-        GT_ModHandler.addCraftingRecipe(tStack, GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"XXX", "XDX", "XXX", Character.valueOf('X'), OrePrefixes.gem.get(Materials.NetherStar), Character.valueOf('D'), new ItemStack(Blocks.dragon_egg, 1, 32767)});
+        GT_Utility.ItemNBT.addEnchantment(tStack, Enchantments.SMITE, 10);
+        GT_ModHandler.addCraftingRecipe(tStack, GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"XXX", "XDX", "XXX", Character.valueOf('X'), OrePrefixes.gem.get(Materials.NetherStar), Character.valueOf('D'), new ItemStack(Blocks.DRAGON_EGG, 1, 32767)});
 
         ItemList.Credit_Greg_Copper.set(addItem(tLastID = 0, "Copper GT Credit", "0.125 Credits"));
-        ItemList.Credit_Greg_Cupronickel.set(addItem(tLastID = 1, "Cupronickel GT Credit", "1 Credit", new Object[]{new ItemData(Materials.Cupronickel, 907200L, new MaterialStack[0])}));
+        ItemList.Credit_Greg_Cupronickel.set(addItem(tLastID = 1, "Cupronickel GT Credit", "1 Credit", new Object[]{new ItemData(Materials.Cupronickel, 907200L)}));
         ItemList.Credit_Greg_Silver.set(addItem(tLastID = 2, "Silver GT Credit", "8 Credits", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 1L)}));
         ItemList.Credit_Greg_Gold.set(addItem(tLastID = 3, "Gold GT Credit", "64 Credits"));
         ItemList.Credit_Greg_Platinum.set(addItem(tLastID = 4, "Platinum GT Credit", "512 Credits"));
         ItemList.Credit_Greg_Osmium.set(addItem(tLastID = 5, "Osmium GT Credit", "4096 Credits"));
         ItemList.Credit_Greg_Naquadah.set(addItem(tLastID = 6, "Naquadah GT Credit", "32768 Credits"));
         ItemList.Credit_Greg_Neutronium.set(addItem(tLastID = 7, "Neutronium GT Credit", "262144 Credits"));
-        ItemList.Coin_Gold_Ancient.set(addItem(tLastID = 8, "Ancient Gold Coin", "Found in ancient Ruins", new Object[]{new ItemData(Materials.Gold, 907200L, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 8L)}));
-        ItemList.Coin_Doge.set(addItem(tLastID = 9, "Doge Coin", "wow much coin how money so crypto plz mine v rich very currency wow", new Object[]{new ItemData(Materials.Brass, 907200L, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 1L)}));
-        ItemList.Coin_Chocolate.set(addItem(tLastID = 10, "Chocolate Coin", "Wrapped in Gold", new Object[]{new ItemData(Materials.Gold, OrePrefixes.foil.mMaterialAmount, new MaterialStack[0]), new GT_FoodStat(1, 0.1F, EnumAction.eat, GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gold, 1L), true, false, false, new int[]{Potion.moveSpeed.id, 200, 1, 100})}));
+        ItemList.Coin_Gold_Ancient.set(addItem(tLastID = 8, "Ancient Gold Coin", "Found in ancient Ruins", new Object[]{new ItemData(Materials.Gold, 907200L), new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 8L)}));
+        ItemList.Coin_Doge.set(addItem(tLastID = 9, "Doge Coin", "wow much coin how money so crypto plz mine v rich very currency wow", new Object[]{new ItemData(Materials.Brass, 907200L), new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 1L)}));
+        ItemList.Coin_Chocolate.set(addItem(tLastID = 10, "Chocolate Coin", "Wrapped in Gold", new Object[]{new ItemData(Materials.Gold, OrePrefixes.foil.mMaterialAmount), new GT_FoodStat(1, 0.1F, EnumAction.EAT, GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gold, 1L), true, false, false, new int[]{Potion.getIdFromPotion(MobEffects.SPEED), 200, 1, 100})}));
         ItemList.Credit_Copper.set(addItem(tLastID = 11, "Industrial Copper Credit", "0.125 Credits"));
 
         ItemList.Credit_Silver.set(addItem(tLastID = 13, "Industrial Silver Credit", "8 Credits", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 1L)}));
@@ -115,25 +120,25 @@ public class GT_MetaGenerated_Item_01
         ItemList.Arrow_Head_Glass_Weakness_Long.set(addItem(tLastID = 207, "Weakness Glass Arrow Head", "Glass Arrow filled with stretched Weakening Brew", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
         ItemList.Arrow_Head_Glass_Holy_Water.set(addItem(tLastID = 208, "Holy Water Glass Arrow Head", "Glass Arrow filled with Holy Water", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.AURAM, 1L)}));
 
-        ItemList.Arrow_Wooden_Glass_Emtpy.set(addItem(tLastID = 225, "Regular Glass Vial Arrow", "Empty Glass Arrow", new Object[]{new Behaviour_Arrow_Potion(1.0F, 6.0F, new int[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L)}));
-        ItemList.Arrow_Wooden_Glass_Poison.set(addItem(tLastID = 226, "Regular Poison Arrow", "Glass Arrow filled with Poison", new Object[]{new Behaviour_Arrow_Potion(1.0F, 6.0F, new int[]{Potion.poison.id, 450, 0, 100}), new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
-        ItemList.Arrow_Wooden_Glass_Poison_Long.set(addItem(tLastID = 227, "Regular Poison Arrow", "Glass Arrow filled with stretched Poison", new Object[]{new Behaviour_Arrow_Potion(1.0F, 6.0F, new int[]{Potion.poison.id, 900, 0, 100}), new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
-        ItemList.Arrow_Wooden_Glass_Poison_Strong.set(addItem(tLastID = 228, "Regular Poison Arrow", "Glass Arrow filled with strong Poison", new Object[]{new Behaviour_Arrow_Potion(1.0F, 6.0F, new int[]{Potion.poison.id, 450, 1, 100}), new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
-        ItemList.Arrow_Wooden_Glass_Slowness.set(addItem(tLastID = 229, "Regular Slowness Arrow", "Glass Arrow filled with Laming Brew", new Object[]{new Behaviour_Arrow_Potion(1.0F, 6.0F, new int[]{Potion.moveSlowdown.id, 900, 0, 100}), new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
-        ItemList.Arrow_Wooden_Glass_Slowness_Long.set(addItem(tLastID = 230, "Regular Slowness Arrow", "Glass Arrow filled with stretched Laming Brew", new Object[]{new Behaviour_Arrow_Potion(1.0F, 6.0F, new int[]{Potion.moveSlowdown.id, 1800, 0, 100}), new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
-        ItemList.Arrow_Wooden_Glass_Weakness.set(addItem(tLastID = 231, "Regular Weakness Arrow", "Glass Arrow filled with Weakening Brew", new Object[]{new Behaviour_Arrow_Potion(1.0F, 6.0F, new int[]{Potion.weakness.id, 900, 0, 100}), new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
-        ItemList.Arrow_Wooden_Glass_Weakness_Long.set(addItem(tLastID = 232, "Regular Weakness Arrow", "Glass Arrow filled with stretched Weakening Brew", new Object[]{new Behaviour_Arrow_Potion(1.0F, 6.0F, new int[]{Potion.weakness.id, 1800, 0, 100}), new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
-        ItemList.Arrow_Wooden_Glass_Holy_Water.set(addItem(tLastID = 233, "Regular Holy Water Arrow", "Glass Arrow filled with Holy Water", new Object[]{new Behaviour_Arrow_Potion(1.0F, 6.0F, Enchantment.smite, 10, new int[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.AURAM, 1L)}));
+        ItemList.Arrow_Wooden_Glass_Emtpy.set(addItem(tLastID = 225, "Regular Glass Vial Arrow", "Empty Glass Arrow", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L)}));
+        ItemList.Arrow_Wooden_Glass_Poison.set(addItem(tLastID = 226, "Regular Poison Arrow", "Glass Arrow filled with Poison", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
+        ItemList.Arrow_Wooden_Glass_Poison_Long.set(addItem(tLastID = 227, "Regular Poison Arrow", "Glass Arrow filled with stretched Poison", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
+        ItemList.Arrow_Wooden_Glass_Poison_Strong.set(addItem(tLastID = 228, "Regular Poison Arrow", "Glass Arrow filled with strong Poison", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
+        ItemList.Arrow_Wooden_Glass_Slowness.set(addItem(tLastID = 229, "Regular Slowness Arrow", "Glass Arrow filled with Laming Brew", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
+        ItemList.Arrow_Wooden_Glass_Slowness_Long.set(addItem(tLastID = 230, "Regular Slowness Arrow", "Glass Arrow filled with stretched Laming Brew", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
+        ItemList.Arrow_Wooden_Glass_Weakness.set(addItem(tLastID = 231, "Regular Weakness Arrow", "Glass Arrow filled with Weakening Brew", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
+        ItemList.Arrow_Wooden_Glass_Weakness_Long.set(addItem(tLastID = 232, "Regular Weakness Arrow", "Glass Arrow filled with stretched Weakening Brew", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
+        ItemList.Arrow_Wooden_Glass_Holy_Water.set(addItem(tLastID = 233, "Regular Holy Water Arrow", "Glass Arrow filled with Holy Water", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.AURAM, 1L)}));
 
-        ItemList.Arrow_Plastic_Glass_Emtpy.set(addItem(tLastID = 250, "Light Glass Vial Arrow", "Empty Glass Arrow", new Object[]{new Behaviour_Arrow_Potion(1.5F, 6.0F, new int[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L)}));
-        ItemList.Arrow_Plastic_Glass_Poison.set(addItem(tLastID = 251, "Light Poison Arrow", "Glass Arrow filled with Poison", new Object[]{new Behaviour_Arrow_Potion(1.5F, 6.0F, new int[]{Potion.poison.id, 450, 0, 100}), new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
-        ItemList.Arrow_Plastic_Glass_Poison_Long.set(addItem(tLastID = 252, "Light Poison Arrow", "Glass Arrow filled with stretched Poison", new Object[]{new Behaviour_Arrow_Potion(1.5F, 6.0F, new int[]{Potion.poison.id, 900, 0, 100}), new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
-        ItemList.Arrow_Plastic_Glass_Poison_Strong.set(addItem(tLastID = 253, "Light Poison Arrow", "Glass Arrow filled with strong Poison", new Object[]{new Behaviour_Arrow_Potion(1.5F, 6.0F, new int[]{Potion.poison.id, 450, 1, 100}), new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
-        ItemList.Arrow_Plastic_Glass_Slowness.set(addItem(tLastID = 254, "Light Slowness Arrow", "Glass Arrow filled with Laming Brew", new Object[]{new Behaviour_Arrow_Potion(1.5F, 6.0F, new int[]{Potion.moveSlowdown.id, 900, 0, 100}), new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
-        ItemList.Arrow_Plastic_Glass_Slowness_Long.set(addItem(tLastID = 255, "Light Slowness Arrow", "Glass Arrow filled with stretched Laming Brew", new Object[]{new Behaviour_Arrow_Potion(1.5F, 6.0F, new int[]{Potion.moveSlowdown.id, 1800, 0, 100}), new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
-        ItemList.Arrow_Plastic_Glass_Weakness.set(addItem(tLastID = 256, "Light Weakness Arrow", "Glass Arrow filled with Weakening Brew", new Object[]{new Behaviour_Arrow_Potion(1.5F, 6.0F, new int[]{Potion.weakness.id, 900, 0, 100}), new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
-        ItemList.Arrow_Plastic_Glass_Weakness_Long.set(addItem(tLastID = 257, "Light Weakness Arrow", "Glass Arrow filled with stretched Weakening Brew", new Object[]{new Behaviour_Arrow_Potion(1.5F, 6.0F, new int[]{Potion.weakness.id, 1800, 0, 100}), new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
-        ItemList.Arrow_Plastic_Glass_Holy_Water.set(addItem(tLastID = 258, "Light Holy Water Arrow", "Glass Arrow filled with Holy Water", new Object[]{new Behaviour_Arrow_Potion(1.5F, 6.0F, Enchantment.smite, 10, new int[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.AURAM, 1L)}));
+        ItemList.Arrow_Plastic_Glass_Emtpy.set(addItem(tLastID = 250, "Light Glass Vial Arrow", "Empty Glass Arrow", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L)}));
+        ItemList.Arrow_Plastic_Glass_Poison.set(addItem(tLastID = 251, "Light Poison Arrow", "Glass Arrow filled with Poison", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
+        ItemList.Arrow_Plastic_Glass_Poison_Long.set(addItem(tLastID = 252, "Light Poison Arrow", "Glass Arrow filled with stretched Poison", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
+        ItemList.Arrow_Plastic_Glass_Poison_Strong.set(addItem(tLastID = 253, "Light Poison Arrow", "Glass Arrow filled with strong Poison", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
+        ItemList.Arrow_Plastic_Glass_Slowness.set(addItem(tLastID = 254, "Light Slowness Arrow", "Glass Arrow filled with Laming Brew", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
+        ItemList.Arrow_Plastic_Glass_Slowness_Long.set(addItem(tLastID = 255, "Light Slowness Arrow", "Glass Arrow filled with stretched Laming Brew", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
+        ItemList.Arrow_Plastic_Glass_Weakness.set(addItem(tLastID = 256, "Light Weakness Arrow", "Glass Arrow filled with Weakening Brew", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
+        ItemList.Arrow_Plastic_Glass_Weakness_Long.set(addItem(tLastID = 257, "Light Weakness Arrow", "Glass Arrow filled with stretched Weakening Brew", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)}));
+        ItemList.Arrow_Plastic_Glass_Holy_Water.set(addItem(tLastID = 258, "Light Holy Water Arrow", "Glass Arrow filled with Holy Water", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.AURAM, 1L)}));
 
         GT_ModHandler.addCraftingRecipe(ItemList.Arrow_Wooden_Glass_Emtpy.get(1L), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"  A", " S ", "F  ", Character.valueOf('A'), ItemList.Arrow_Head_Glass_Emtpy, Character.valueOf('F'), OreDictNames.craftingFeather, Character.valueOf('S'), OrePrefixes.stick.get(Materials.Wood)});
         GT_ModHandler.addCraftingRecipe(ItemList.Arrow_Wooden_Glass_Poison.get(1L), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"  A", " S ", "F  ", Character.valueOf('A'), ItemList.Arrow_Head_Glass_Poison, Character.valueOf('F'), OreDictNames.craftingFeather, Character.valueOf('S'), OrePrefixes.stick.get(Materials.Wood)});
@@ -177,7 +182,7 @@ public class GT_MetaGenerated_Item_01
         ItemList.Shape_Mold_Arrow.set(addItem(tLastID = 316, "Mold (Arrow Head)", "Mold for making Arrow Heads"));
         ItemList.Shape_Mold_Gear_Small.set(addItem(tLastID = 317, "Mold (Small Gear)", "Mold for making small Gears"));
 
-        GT_ModHandler.removeRecipe(new ItemStack(Blocks.glass), null, new ItemStack(Blocks.glass), null, new ItemStack(Blocks.glass));
+        GT_ModHandler.removeRecipe(new ItemStack(Blocks.GLASS), null, new ItemStack(Blocks.GLASS), null, new ItemStack(Blocks.GLASS));
 
         GT_ModHandler.addCraftingRecipe(ItemList.Shape_Mold_Credit.get(1L), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"h  ", " P ", "   ", Character.valueOf('P'), ItemList.Shape_Empty});
         GT_ModHandler.addCraftingRecipe(ItemList.Shape_Mold_Plate.get(1L), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{" h ", " P ", "   ", Character.valueOf('P'), ItemList.Shape_Empty});
@@ -255,8 +260,8 @@ public class GT_MetaGenerated_Item_01
         GT_ModHandler.addCraftingRecipe(ItemList.Shape_Slicer_Flat.get(1L), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hXS", " P ", "fXd", Character.valueOf('P'), ItemList.Shape_Extruder_Block, Character.valueOf('X'), OrePrefixes.plate.get(Materials.StainlessSteel), Character.valueOf('S'), OrePrefixes.screw.get(Materials.StainlessSteel)});
         GT_ModHandler.addCraftingRecipe(ItemList.Shape_Slicer_Stripes.get(1L), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hXS", "XPX", "fXd", Character.valueOf('P'), ItemList.Shape_Extruder_Block, Character.valueOf('X'), OrePrefixes.plate.get(Materials.StainlessSteel), Character.valueOf('S'), OrePrefixes.screw.get(Materials.StainlessSteel)});
 
-        ItemList.Fuel_Can_Plastic_Empty.set(addItem(tLastID = 400, "Empty Plastic Fuel Can", "Used to store Fuels", new Object[]{new ItemData(Materials.Plastic, OrePrefixes.plate.mMaterialAmount * 1L, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 1L)}));
-        ItemList.Fuel_Can_Plastic_Filled.set(addItem(tLastID = 401, "Plastic Fuel Can", "Burns well in Diesel Generators", new Object[]{new ItemData(Materials.Plastic, OrePrefixes.plate.mMaterialAmount * 1L, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 1L)}));
+        ItemList.Fuel_Can_Plastic_Empty.set(addItem(tLastID = 400, "Empty Plastic Fuel Can", "Used to store Fuels", new Object[]{new ItemData(Materials.Plastic, OrePrefixes.plate.mMaterialAmount * 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 1L)}));
+        ItemList.Fuel_Can_Plastic_Filled.set(addItem(tLastID = 401, "Plastic Fuel Can", "Burns well in Diesel Generators", new Object[]{new ItemData(Materials.Plastic, OrePrefixes.plate.mMaterialAmount * 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 1L)}));
 
         GT_ModHandler.addCraftingRecipe(ItemList.Fuel_Can_Plastic_Empty.get(7L), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{" PP", "P P", "PPP", Character.valueOf('P'), OrePrefixes.plate.get(Materials.Plastic)});
 
@@ -269,16 +274,16 @@ public class GT_MetaGenerated_Item_01
         GT_ModHandler.addCraftingRecipe(ItemList.Crate_Empty.get(4L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"SWS", "WdW", "SWS", Character.valueOf('W'), OrePrefixes.plank.get(Materials.Wood), Character.valueOf('S'), OrePrefixes.screw.get(Materials.AnyIron)});
         GT_ModHandler.addCraftingRecipe(ItemList.Crate_Empty.get(4L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"SWS", "WdW", "SWS", Character.valueOf('W'), OrePrefixes.plank.get(Materials.Wood), Character.valueOf('S'), OrePrefixes.screw.get(Materials.Steel)});
 
-        ItemList.ThermosCan_Empty.set(addItem(tLastID = 404, "Empty Thermos Can", "Keeping hot things hot and cold things cold", new Object[]{new ItemData(Materials.Aluminium, OrePrefixes.plate.mMaterialAmount * 1L + 2L * OrePrefixes.ring.mMaterialAmount, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.GELUM, 1L)}));
+        ItemList.ThermosCan_Empty.set(addItem(tLastID = 404, "Empty Thermos Can", "Keeping hot things hot and cold things cold", new Object[]{new ItemData(Materials.Aluminium, OrePrefixes.plate.mMaterialAmount * 1L + 2L * OrePrefixes.ring.mMaterialAmount), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.GELUM, 1L)}));
 
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Aluminium, 1L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Aluminium, 2L), ItemList.ThermosCan_Empty.get(1L), 800, 1);
 
-        ItemList.Large_Fluid_Cell_Steel.set(addItem(tLastID = 405, "Large Steel Fluid Cell", "", new Object[]{new ItemData(Materials.Steel, OrePrefixes.plate.mMaterialAmount * 2L + 2L * OrePrefixes.ring.mMaterialAmount, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 2L)}));
+        ItemList.Large_Fluid_Cell_Steel.set(addItem(tLastID = 405, "Large Steel Fluid Cell", "", new Object[]{new ItemData(Materials.Steel, OrePrefixes.plate.mMaterialAmount * 2L + 2L * OrePrefixes.ring.mMaterialAmount), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 2L)}));
         setFluidContainerStats(32000 + tLastID, 16000L, 16L);
 
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Steel, 1L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Steel, 2L), ItemList.Large_Fluid_Cell_Steel.get(1L), 100, 64);
 
-        ItemList.Large_Fluid_Cell_TungstenSteel.set(addItem(tLastID = 406, "Large Tungstensteel Fluid Cell", "", new Object[]{new ItemData(Materials.TungstenSteel, OrePrefixes.plate.mMaterialAmount * 2L + 2L * OrePrefixes.ring.mMaterialAmount, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 6L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 3L)}));
+        ItemList.Large_Fluid_Cell_TungstenSteel.set(addItem(tLastID = 406, "Large Tungstensteel Fluid Cell", "", new Object[]{new ItemData(Materials.TungstenSteel, OrePrefixes.plate.mMaterialAmount * 2L + 2L * OrePrefixes.ring.mMaterialAmount), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 6L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 3L)}));
         setFluidContainerStats(32000 + tLastID, 64000L, 16L);
 
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.TungstenSteel, 1L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.TungstenSteel, 2L), ItemList.Large_Fluid_Cell_TungstenSteel.get(1L), 200, 256);
@@ -306,25 +311,25 @@ public class GT_MetaGenerated_Item_01
         GT_Values.RA.addBoxingRecipe(ItemList.Tool_Matches.get(16L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Paper, 1L), ItemList.Tool_MatchBox_Full.get(1L), 64, 16);
         GT_Values.RA.addUnboxingRecipe(ItemList.Tool_MatchBox_Full.get(1L), ItemList.Tool_Matches.get(16L), null, 32, 16);
 
-        ItemList.Tool_Lighter_Invar_Empty.set(addItem(tLastID = 474, "Lighter (Empty)", "", new Object[]{new ItemData(Materials.Invar, OrePrefixes.plate.mMaterialAmount * 2L, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L)}));
-        ItemList.Tool_Lighter_Invar_Used.set(addItem(tLastID = 475, "Lighter", "", new Object[]{new ItemData(Materials.Invar, OrePrefixes.plate.mMaterialAmount * 2L, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L), SubTag.INVISIBLE}));
-        ItemList.Tool_Lighter_Invar_Full.set(addItem(tLastID = 476, "Lighter (Full)", "", new Object[]{new ItemData(Materials.Invar, OrePrefixes.plate.mMaterialAmount * 2L, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)}));
+        ItemList.Tool_Lighter_Invar_Empty.set(addItem(tLastID = 474, "Lighter (Empty)", "", new Object[]{new ItemData(Materials.Invar, OrePrefixes.plate.mMaterialAmount * 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L)}));
+        ItemList.Tool_Lighter_Invar_Used.set(addItem(tLastID = 475, "Lighter", "", new Object[]{new ItemData(Materials.Invar, OrePrefixes.plate.mMaterialAmount * 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L), SubTag.INVISIBLE}));
+        ItemList.Tool_Lighter_Invar_Full.set(addItem(tLastID = 476, "Lighter (Full)", "", new Object[]{new ItemData(Materials.Invar, OrePrefixes.plate.mMaterialAmount * 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)}));
 
         tBehaviour = new Behaviour_Lighter(ItemList.Tool_Lighter_Invar_Empty.get(1L), ItemList.Tool_Lighter_Invar_Used.get(1L), ItemList.Tool_Lighter_Invar_Full.get(1L), 100L);
         addItemBehavior(32475, tBehaviour);
         addItemBehavior(32476, tBehaviour);
 
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Invar, 2L), new ItemStack(Items.flint, 1), ItemList.Tool_Lighter_Invar_Empty.get(1L), 256, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Invar, 2L), new ItemStack(Items.FLINT, 1), ItemList.Tool_Lighter_Invar_Empty.get(1L), 256, 16);
 
-        ItemList.Tool_Lighter_Platinum_Empty.set(addItem(tLastID = 477, "Platinum Lighter (Empty)", "A known Prank Master is engraved on it", new Object[]{new ItemData(Materials.Platinum, OrePrefixes.plate.mMaterialAmount * 2L, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.NEBRISUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L)}));
-        ItemList.Tool_Lighter_Platinum_Used.set(addItem(tLastID = 478, "Platinum Lighter", "A known Prank Master is engraved on it", new Object[]{new ItemData(Materials.Platinum, OrePrefixes.plate.mMaterialAmount * 2L, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.NEBRISUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L), SubTag.INVISIBLE}));
-        ItemList.Tool_Lighter_Platinum_Full.set(addItem(tLastID = 479, "Platinum Lighter (Full)", "A known Prank Master is engraved on it", new Object[]{new ItemData(Materials.Platinum, OrePrefixes.plate.mMaterialAmount * 2L, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.NEBRISUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)}));
+        ItemList.Tool_Lighter_Platinum_Empty.set(addItem(tLastID = 477, "Platinum Lighter (Empty)", "A known Prank Master is engraved on it", new Object[]{new ItemData(Materials.Platinum, OrePrefixes.plate.mMaterialAmount * 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.NEBRISUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L)}));
+        ItemList.Tool_Lighter_Platinum_Used.set(addItem(tLastID = 478, "Platinum Lighter", "A known Prank Master is engraved on it", new Object[]{new ItemData(Materials.Platinum, OrePrefixes.plate.mMaterialAmount * 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.NEBRISUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L), SubTag.INVISIBLE}));
+        ItemList.Tool_Lighter_Platinum_Full.set(addItem(tLastID = 479, "Platinum Lighter (Full)", "A known Prank Master is engraved on it", new Object[]{new ItemData(Materials.Platinum, OrePrefixes.plate.mMaterialAmount * 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.NEBRISUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)}));
 
         tBehaviour = new Behaviour_Lighter(ItemList.Tool_Lighter_Platinum_Empty.get(1L), ItemList.Tool_Lighter_Platinum_Used.get(1L), ItemList.Tool_Lighter_Platinum_Full.get(1L), 1000L);
         addItemBehavior(32478, tBehaviour);
         addItemBehavior(32479, tBehaviour);
 
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Platinum, 2L), new ItemStack(Items.flint, 1), ItemList.Tool_Lighter_Platinum_Empty.get(1L), 256, 256);
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Platinum, 2L), new ItemStack(Items.FLINT, 1), ItemList.Tool_Lighter_Platinum_Empty.get(1L), 256, 256);
 
         if (Loader.isModLoaded("GalacticraftMars")) {
             ItemList.Ingot_Heavy1.set(addItem(tLastID = 462, "Heavy Duty Alloy Ingot", "Used to make Heavy Duty Plates"));
@@ -340,22 +345,22 @@ public class GT_MetaGenerated_Item_01
         GT_ModHandler.addRollingMachineRecipe(ItemList.Ingot_IridiumAlloy.get(1L), new Object[]{"IAI", "ADA", "IAI", Character.valueOf('D'), GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "iridiumplate", true) ? OreDictNames.craftingIndustrialDiamond : OrePrefixes.dust.get(Materials.Diamond), Character.valueOf('A'), OrePrefixes.plateAlloy.get("Advanced"), Character.valueOf('I'), OrePrefixes.plate.get(Materials.Iridium)});
         GT_ModHandler.addCraftingRecipe(ItemList.Ingot_IridiumAlloy.get(1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"IAI", "ADA", "IAI", Character.valueOf('D'), GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "iridiumplate", true) ? OreDictNames.craftingIndustrialDiamond : OrePrefixes.dust.get(Materials.Diamond), Character.valueOf('A'), OrePrefixes.plateAlloy.get("Advanced"), Character.valueOf('I'), OrePrefixes.plate.get(Materials.Iridium)});
 
-        ItemList.Paper_Printed_Pages.set(addItem(tLastID = 481, "Printed Pages", "Used to make written Books", new Object[]{new ItemData(Materials.Paper, 10886400L, new MaterialStack[0]), new Behaviour_PrintedPages(), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 2L)}));
-        ItemList.Paper_Magic_Empty.set(addItem(tLastID = 482, "Magic Paper", "", new Object[]{SubTag.INVISIBLE, new ItemData(Materials.Paper, 3628800L, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.PRAECANTATIO, 1L)}));
-        ItemList.Paper_Magic_Page.set(addItem(tLastID = 483, "Enchanted Page", "", new Object[]{SubTag.INVISIBLE, new ItemData(Materials.Paper, 3628800L, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.PRAECANTATIO, 2L)}));
-        ItemList.Paper_Magic_Pages.set(addItem(tLastID = 484, "Enchanted Pages", "", new Object[]{SubTag.INVISIBLE, new ItemData(Materials.Paper, 10886400L, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.PRAECANTATIO, 4L)}));
-        ItemList.Paper_Punch_Card_Empty.set(addItem(tLastID = 485, "Punch Card", "", new Object[]{SubTag.INVISIBLE, new ItemData(Materials.Paper, 7257600L, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1L)}));
-        ItemList.Paper_Punch_Card_Encoded.set(addItem(tLastID = 486, "Punched Card", "", new Object[]{SubTag.INVISIBLE, new ItemData(Materials.Paper, 7257600L, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 2L)}));
-        ItemList.Book_Written_01.set(addItem(tLastID = 487, "Book", "", new Object[]{new ItemData(Materials.Paper, 10886400L, new MaterialStack[0]), "bookWritten", OreDictNames.craftingBook, new Behaviour_WrittenBook(), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 2L)}));
-        ItemList.Book_Written_02.set(addItem(tLastID = 488, "Book", "", new Object[]{new ItemData(Materials.Paper, 10886400L, new MaterialStack[0]), "bookWritten", OreDictNames.craftingBook, new Behaviour_WrittenBook(), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 2L)}));
-        ItemList.Book_Written_03.set(addItem(tLastID = 489, "Book", "", new Object[]{new ItemData(Materials.Paper, 10886400L, new MaterialStack[0]), "bookWritten", OreDictNames.craftingBook, new Behaviour_WrittenBook(), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 2L)}));
+        ItemList.Paper_Printed_Pages.set(addItem(tLastID = 481, "Printed Pages", "Used to make written Books", new Object[]{new ItemData(Materials.Paper, 10886400L), new Behaviour_PrintedPages(), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 2L)}));
+        ItemList.Paper_Magic_Empty.set(addItem(tLastID = 482, "Magic Paper", "", new Object[]{SubTag.INVISIBLE, new ItemData(Materials.Paper, 3628800L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.PRAECANTATIO, 1L)}));
+        ItemList.Paper_Magic_Page.set(addItem(tLastID = 483, "Enchanted Page", "", new Object[]{SubTag.INVISIBLE, new ItemData(Materials.Paper, 3628800L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.PRAECANTATIO, 2L)}));
+        ItemList.Paper_Magic_Pages.set(addItem(tLastID = 484, "Enchanted Pages", "", new Object[]{SubTag.INVISIBLE, new ItemData(Materials.Paper, 10886400L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.PRAECANTATIO, 4L)}));
+        ItemList.Paper_Punch_Card_Empty.set(addItem(tLastID = 485, "Punch Card", "", new Object[]{SubTag.INVISIBLE, new ItemData(Materials.Paper, 7257600L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1L)}));
+        ItemList.Paper_Punch_Card_Encoded.set(addItem(tLastID = 486, "Punched Card", "", new Object[]{SubTag.INVISIBLE, new ItemData(Materials.Paper, 7257600L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 2L)}));
+        ItemList.Book_Written_01.set(addItem(tLastID = 487, "Book", "", new Object[]{new ItemData(Materials.Paper, 10886400L), "bookWritten", OreDictNames.craftingBook, new Behaviour_WrittenBook(), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 2L)}));
+        ItemList.Book_Written_02.set(addItem(tLastID = 488, "Book", "", new Object[]{new ItemData(Materials.Paper, 10886400L), "bookWritten", OreDictNames.craftingBook, new Behaviour_WrittenBook(), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 2L)}));
+        ItemList.Book_Written_03.set(addItem(tLastID = 489, "Book", "", new Object[]{new ItemData(Materials.Paper, 10886400L), "bookWritten", OreDictNames.craftingBook, new Behaviour_WrittenBook(), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 2L)}));
 
-        ItemList.Schematic.set(addItem(tLastID = 490, "Schematic", "EMPTY", new Object[]{new ItemData(Materials.StainlessSteel, 7257600L, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.STRONTIO, 1L)}));
-        ItemList.Schematic_Crafting.set(addItem(tLastID = 491, "Schematic (Crafting)", "Crafts the Programmed Recipe", new Object[]{new ItemData(Materials.StainlessSteel, 7257600L, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 1L)}));
-        ItemList.Schematic_1by1.set(addItem(tLastID = 495, "Schematic (1x1)", "Crafts 1 Items as 1x1 (use in Packager)", new Object[]{new ItemData(Materials.StainlessSteel, 7257600L, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 1L)}));
-        ItemList.Schematic_2by2.set(addItem(tLastID = 496, "Schematic (2x2)", "Crafts 4 Items as 2x2 (use in Packager)", new Object[]{new ItemData(Materials.StainlessSteel, 7257600L, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 1L)}));
-        ItemList.Schematic_3by3.set(addItem(tLastID = 497, "Schematic (3x3)", "Crafts 9 Items as 3x3 (use in Packager)", new Object[]{new ItemData(Materials.StainlessSteel, 7257600L, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 1L)}));
-        ItemList.Schematic_Dust.set(addItem(tLastID = 498, "Schematic (Dusts)", "Combines Dusts (use in Packager)", new Object[]{new ItemData(Materials.StainlessSteel, 7257600L, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 1L)}));
+        ItemList.Schematic.set(addItem(tLastID = 490, "Schematic", "EMPTY", new Object[]{new ItemData(Materials.StainlessSteel, 7257600L), new TC_Aspects.TC_AspectStack(TC_Aspects.STRONTIO, 1L)}));
+        ItemList.Schematic_Crafting.set(addItem(tLastID = 491, "Schematic (Crafting)", "Crafts the Programmed Recipe", new Object[]{new ItemData(Materials.StainlessSteel, 7257600L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 1L)}));
+        ItemList.Schematic_1by1.set(addItem(tLastID = 495, "Schematic (1x1)", "Crafts 1 Items as 1x1 (use in Packager)", new Object[]{new ItemData(Materials.StainlessSteel, 7257600L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 1L)}));
+        ItemList.Schematic_2by2.set(addItem(tLastID = 496, "Schematic (2x2)", "Crafts 4 Items as 2x2 (use in Packager)", new Object[]{new ItemData(Materials.StainlessSteel, 7257600L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 1L)}));
+        ItemList.Schematic_3by3.set(addItem(tLastID = 497, "Schematic (3x3)", "Crafts 9 Items as 3x3 (use in Packager)", new Object[]{new ItemData(Materials.StainlessSteel, 7257600L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 1L)}));
+        ItemList.Schematic_Dust.set(addItem(tLastID = 498, "Schematic (Dusts)", "Combines Dusts (use in Packager)", new Object[]{new ItemData(Materials.StainlessSteel, 7257600L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 1L)}));
 
         GT_ModHandler.addCraftingRecipe(ItemList.Schematic_1by1.get(1L), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"d  ", " P ", "   ", Character.valueOf('P'), ItemList.Schematic});
         GT_ModHandler.addCraftingRecipe(ItemList.Schematic_2by2.get(1L), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{" d ", " P ", "   ", Character.valueOf('P'), ItemList.Schematic});
@@ -368,9 +373,9 @@ public class GT_MetaGenerated_Item_01
         GT_ModHandler.addShapelessCraftingRecipe(ItemList.Schematic.get(1L), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ItemList.Schematic_3by3});
         GT_ModHandler.addShapelessCraftingRecipe(ItemList.Schematic.get(1L), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ItemList.Schematic_Dust});
 
-        ItemList.Battery_Hull_LV.set(addItem(tLastID = 500, "Small Battery Hull", "An empty LV Battery Hull", new Object[]{new ItemData(Materials.BatteryAlloy, OrePrefixes.plate.mMaterialAmount * 1L, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L)}));
-        ItemList.Battery_Hull_MV.set(addItem(tLastID = 501, "Medium Battery Hull", "An empty MV Battery Hull", new Object[]{new ItemData(Materials.BatteryAlloy, OrePrefixes.plate.mMaterialAmount * 3L, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L)}));
-        ItemList.Battery_Hull_HV.set(addItem(tLastID = 502, "Large Battery Hull", "An empty HV Battery Hull", new Object[]{new ItemData(Materials.BatteryAlloy, OrePrefixes.plate.mMaterialAmount * 9L, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L)}));
+        ItemList.Battery_Hull_LV.set(addItem(tLastID = 500, "Small Battery Hull", "An empty LV Battery Hull", new Object[]{new ItemData(Materials.BatteryAlloy, OrePrefixes.plate.mMaterialAmount * 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L)}));
+        ItemList.Battery_Hull_MV.set(addItem(tLastID = 501, "Medium Battery Hull", "An empty MV Battery Hull", new Object[]{new ItemData(Materials.BatteryAlloy, OrePrefixes.plate.mMaterialAmount * 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L)}));
+        ItemList.Battery_Hull_HV.set(addItem(tLastID = 502, "Large Battery Hull", "An empty HV Battery Hull", new Object[]{new ItemData(Materials.BatteryAlloy, OrePrefixes.plate.mMaterialAmount * 9L), new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L)}));
 
         GT_ModHandler.addCraftingRecipe(ItemList.Battery_Hull_LV.get(1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"C", "P", "P", Character.valueOf('P'), OrePrefixes.plate.get(Materials.BatteryAlloy), Character.valueOf('C'), OreDictNames.craftingWireTin});
         GT_ModHandler.addCraftingRecipe(ItemList.Battery_Hull_MV.get(1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"C C", "PPP", "PPP", Character.valueOf('P'), OrePrefixes.plate.get(Materials.BatteryAlloy), Character.valueOf('C'), OreDictNames.craftingWireCopper});
@@ -477,14 +482,14 @@ public class GT_MetaGenerated_Item_01
         ItemList.Electric_Pump_ZPM.set(addItem(tLastID = 621, "Electric Pump (ZPM)", "2.621.440 L/sec (as Cover)", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 16L)}));
         ItemList.Electric_Pump_UV.set(addItem(tLastID = 622, "Electric Pump (UV)", "10.485.760 L/sec (as Cover)", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 16L)}));
 
-        GregTech_API.registerCover(ItemList.Electric_Pump_LV.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)}), new GT_Cover_Pump(32));
-        GregTech_API.registerCover(ItemList.Electric_Pump_MV.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)}), new GT_Cover_Pump(128));
-        GregTech_API.registerCover(ItemList.Electric_Pump_HV.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[3][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)}), new GT_Cover_Pump(512));
-        GregTech_API.registerCover(ItemList.Electric_Pump_EV.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[4][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)}), new GT_Cover_Pump(2048));
-        GregTech_API.registerCover(ItemList.Electric_Pump_IV.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[5][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)}), new GT_Cover_Pump(8192));
-        GregTech_API.registerCover(ItemList.Electric_Pump_LuV.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[6][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)}), new GT_Cover_Pump(32768));
-        GregTech_API.registerCover(ItemList.Electric_Pump_ZPM.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[7][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)}), new GT_Cover_Pump(131072));
-        GregTech_API.registerCover(ItemList.Electric_Pump_UV.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[8][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)}), new GT_Cover_Pump(524288));
+        GregTech_API.registerCover(ItemList.Electric_Pump_LV.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[1][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)), new GT_Cover_Pump(32));
+        GregTech_API.registerCover(ItemList.Electric_Pump_MV.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)), new GT_Cover_Pump(128));
+        GregTech_API.registerCover(ItemList.Electric_Pump_HV.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[3][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)), new GT_Cover_Pump(512));
+        GregTech_API.registerCover(ItemList.Electric_Pump_EV.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[4][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)), new GT_Cover_Pump(2048));
+        GregTech_API.registerCover(ItemList.Electric_Pump_IV.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[5][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)), new GT_Cover_Pump(8192));
+        GregTech_API.registerCover(ItemList.Electric_Pump_LuV.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[6][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)), new GT_Cover_Pump(32768));
+        GregTech_API.registerCover(ItemList.Electric_Pump_ZPM.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[7][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)), new GT_Cover_Pump(131072));
+        GregTech_API.registerCover(ItemList.Electric_Pump_UV.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[8][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)), new GT_Cover_Pump(524288));
 
         ItemList.FluidRegulator_LV.set(addItem(tLastID = 615, "Fluid Regulator (LV)", "Configuable up to 640 L/sec (as Cover)", new Object[]{}));
         ItemList.FluidRegulator_MV.set(addItem(tLastID = 616, "Fluid Regulator (MV)", "Configuable up to 2560 L/sec (as Cover)", new Object[]{}));
@@ -492,14 +497,14 @@ public class GT_MetaGenerated_Item_01
         ItemList.FluidRegulator_EV.set(addItem(tLastID = 618, "Fluid Regulator (EV)", "Configuable up to 40960 L/sec (as Cover)", new Object[]{}));
         ItemList.FluidRegulator_IV.set(addItem(tLastID = 619, "Fluid Regulator (IV)", "Configuable up to 163840 L/sec (as Cover)", new Object[]{}));
 
-        GregTech_API.registerCover(ItemList.FluidRegulator_LV.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)}), new GT_Cover_FluidRegulator(32));
-        GregTech_API.registerCover(ItemList.FluidRegulator_MV.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)}), new GT_Cover_FluidRegulator(128));
-        GregTech_API.registerCover(ItemList.FluidRegulator_HV.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[3][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)}), new GT_Cover_FluidRegulator(512));
-        GregTech_API.registerCover(ItemList.FluidRegulator_EV.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[4][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)}), new GT_Cover_FluidRegulator(2048));
-        GregTech_API.registerCover(ItemList.FluidRegulator_IV.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[5][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)}), new GT_Cover_FluidRegulator(8192));
+        GregTech_API.registerCover(ItemList.FluidRegulator_LV.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[1][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)), new GT_Cover_FluidRegulator(32));
+        GregTech_API.registerCover(ItemList.FluidRegulator_MV.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)), new GT_Cover_FluidRegulator(128));
+        GregTech_API.registerCover(ItemList.FluidRegulator_HV.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[3][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)), new GT_Cover_FluidRegulator(512));
+        GregTech_API.registerCover(ItemList.FluidRegulator_EV.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[4][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)), new GT_Cover_FluidRegulator(2048));
+        GregTech_API.registerCover(ItemList.FluidRegulator_IV.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[5][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)), new GT_Cover_FluidRegulator(8192));
 
         ItemList.FluidFilter.set(addItem(tLastID = 635, "Fluid Filter", "Set with Fluid Container to only accept one Fluid Type", new Object[]{}));
-        GregTech_API.registerCover(ItemList.FluidFilter.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SHUTTER)}), new GT_Cover_Fluidfilter());
+        GregTech_API.registerCover(ItemList.FluidFilter.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[1][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SHUTTER)), new GT_Cover_Fluidfilter());
 
         /**ItemList.Rotor_LV.set(addItem(tLastID = 620, "Tin Rotor", "", new Object[] { OrePrefixes.rotor.get(Materials.Tin), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 1L) }));
          ItemList.Rotor_MV.set(addItem(tLastID = 621, "Bronze Rotor", "", new Object[] { OrePrefixes.rotor.get(Materials.Bronze), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 2L) }));
@@ -531,14 +536,14 @@ public class GT_MetaGenerated_Item_01
         GT_ModHandler.addCraftingRecipe(ItemList.Conveyor_Module_EV.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"RRR", "MCM", "RRR", Character.valueOf('M'), ItemList.Electric_Motor_EV, Character.valueOf('C'), OrePrefixes.cableGt01.get(Materials.Aluminium), Character.valueOf('R'), OrePrefixes.plate.get(Materials.Rubber)});
         GT_ModHandler.addCraftingRecipe(ItemList.Conveyor_Module_IV.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"RRR", "MCM", "RRR", Character.valueOf('M'), ItemList.Electric_Motor_IV, Character.valueOf('C'), OrePrefixes.cableGt01.get(Materials.Tungsten), Character.valueOf('R'), OrePrefixes.plate.get(Materials.Rubber)});
 
-        GregTech_API.registerCover(ItemList.Conveyor_Module_LV.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_CONVEYOR)}), new GT_Cover_Conveyor(400));
-        GregTech_API.registerCover(ItemList.Conveyor_Module_MV.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_CONVEYOR)}), new GT_Cover_Conveyor(100));
-        GregTech_API.registerCover(ItemList.Conveyor_Module_HV.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[3][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_CONVEYOR)}), new GT_Cover_Conveyor(20));
-        GregTech_API.registerCover(ItemList.Conveyor_Module_EV.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[4][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_CONVEYOR)}), new GT_Cover_Conveyor(4));
-        GregTech_API.registerCover(ItemList.Conveyor_Module_IV.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[5][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_CONVEYOR)}), new GT_Cover_Conveyor(1));
-        GregTech_API.registerCover(ItemList.Conveyor_Module_LuV.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[6][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_CONVEYOR)}), new GT_Cover_Conveyor(1));
-        GregTech_API.registerCover(ItemList.Conveyor_Module_ZPM.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[7][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_CONVEYOR)}), new GT_Cover_Conveyor(1));
-        GregTech_API.registerCover(ItemList.Conveyor_Module_UV.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[8][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_CONVEYOR)}), new GT_Cover_Conveyor(1));
+        GregTech_API.registerCover(ItemList.Conveyor_Module_LV.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[1][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_CONVEYOR)), new GT_Cover_Conveyor(400));
+        GregTech_API.registerCover(ItemList.Conveyor_Module_MV.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_CONVEYOR)), new GT_Cover_Conveyor(100));
+        GregTech_API.registerCover(ItemList.Conveyor_Module_HV.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[3][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_CONVEYOR)), new GT_Cover_Conveyor(20));
+        GregTech_API.registerCover(ItemList.Conveyor_Module_EV.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[4][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_CONVEYOR)), new GT_Cover_Conveyor(4));
+        GregTech_API.registerCover(ItemList.Conveyor_Module_IV.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[5][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_CONVEYOR)), new GT_Cover_Conveyor(1));
+        GregTech_API.registerCover(ItemList.Conveyor_Module_LuV.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[6][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_CONVEYOR)), new GT_Cover_Conveyor(1));
+        GregTech_API.registerCover(ItemList.Conveyor_Module_ZPM.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[7][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_CONVEYOR)), new GT_Cover_Conveyor(1));
+        GregTech_API.registerCover(ItemList.Conveyor_Module_UV.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[8][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_CONVEYOR)), new GT_Cover_Conveyor(1));
 
         ItemList.Electric_Piston_LV.set(addItem(tLastID = 640, "Electric Piston (LV)", "", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 1L)}));
         ItemList.Electric_Piston_MV.set(addItem(tLastID = 641, "Electric Piston (MV)", "", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 2L)}));
@@ -677,9 +682,9 @@ public class GT_MetaGenerated_Item_01
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 1L), ItemList.Upgrade_Lock.get(1L), 6400, 16);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 1L), ItemList.Upgrade_Lock.get(1L), 6400, 16);
 
-        ItemList.Component_Filter.set(addItem(tLastID = 729, "Item Filter", "", new Object[]{new ItemData(Materials.Zinc, OrePrefixes.foil.mMaterialAmount * 16L, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 1L), OreDictNames.craftingFilter}));
+        ItemList.Component_Filter.set(addItem(tLastID = 729, "Item Filter", "", new Object[]{new ItemData(Materials.Zinc, OrePrefixes.foil.mMaterialAmount * 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 1L), OreDictNames.craftingFilter}));
 
-        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getIC2Item("carbonMesh", 4L), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Zinc, 16L), Materials.Plastic.getMolten(144), ItemList.Component_Filter.get(1L), 1600, 32);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getIC2Item(ItemName.crafting, CraftingItemType.carbon_mesh, 4), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Zinc, 16L), Materials.Plastic.getMolten(144), ItemList.Component_Filter.get(1L), 1600, 32);
 
         ItemList.Cover_Controller.set(addItem(tLastID = 730, "Machine Controller", "Turns Machines ON/OFF", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)}));
         ItemList.Cover_ActivityDetector.set(addItem(tLastID = 731, "Activity Detector", "Gives out Activity as Redstone", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)}));
@@ -689,12 +694,12 @@ public class GT_MetaGenerated_Item_01
         ItemList.Cover_PlayerDetector.set(addItem(tLastID = 735, "Player Detector", "Gives out close Players as Redstone", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)}));
         GT_Values.RA.addAssemblerRecipe(ItemList.Sensor_EV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1L), ItemList.Cover_PlayerDetector.get(1L), 3200, 128);
 
-        GregTech_API.registerCover(ItemList.Cover_Controller.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_CONTROLLER)}), new GT_Cover_ControlsWork());
-        GregTech_API.registerCover(ItemList.Cover_ActivityDetector.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR)}), new GT_Cover_DoesWork());
-        GregTech_API.registerCover(ItemList.Cover_FluidDetector.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FLUIDDETECTOR)}), new GT_Cover_LiquidMeter());
-        GregTech_API.registerCover(ItemList.Cover_ItemDetector.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ITEMDETECTOR)}), new GT_Cover_ItemMeter());
-        GregTech_API.registerCover(ItemList.Cover_EnergyDetector.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ENERGYDETECTOR)}), new GT_Cover_EUMeter());
-        GregTech_API.registerCover(ItemList.Cover_PlayerDetector.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR)}), new GT_Cover_PlayerDetector());
+        GregTech_API.registerCover(ItemList.Cover_Controller.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_CONTROLLER)), new GT_Cover_ControlsWork());
+        GregTech_API.registerCover(ItemList.Cover_ActivityDetector.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR)), new GT_Cover_DoesWork());
+        GregTech_API.registerCover(ItemList.Cover_FluidDetector.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FLUIDDETECTOR)), new GT_Cover_LiquidMeter());
+        GregTech_API.registerCover(ItemList.Cover_ItemDetector.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ITEMDETECTOR)), new GT_Cover_ItemMeter());
+        GregTech_API.registerCover(ItemList.Cover_EnergyDetector.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ENERGYDETECTOR)), new GT_Cover_EUMeter());
+        GregTech_API.registerCover(ItemList.Cover_PlayerDetector.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR)), new GT_Cover_PlayerDetector());
 
         ItemList.Cover_Screen.set(addItem(tLastID = 740, "Computer Monitor", "Displays Data", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 1L)}));
         ItemList.Cover_Crafting.set(addItem(tLastID = 744, "Crafting Table Cover", "Better than a wooden Workbench", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 4L)}));
@@ -704,21 +709,21 @@ public class GT_MetaGenerated_Item_01
 
         GT_ModHandler.addCraftingRecipe(ItemList.Cover_Screen.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"AGA", "RPB", "ALA", Character.valueOf('A'), OrePrefixes.plate.get(Materials.Aluminium), Character.valueOf('L'), OrePrefixes.dust.get(Materials.Glowstone), Character.valueOf('R'), Dyes.dyeRed, Character.valueOf('G'), Dyes.dyeLime, Character.valueOf('B'), Dyes.dyeBlue, Character.valueOf('P'), OrePrefixes.plate.get(Materials.Glass)});
 
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 2L), new ItemStack(Items.iron_door, 1), ItemList.Cover_Shutter.get(2L), 800, 16);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 2L), new ItemStack(Items.iron_door, 1), ItemList.Cover_Shutter.get(2L), 800, 16);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 2L), new ItemStack(Items.iron_door, 1), ItemList.Cover_Shutter.get(2L), 800, 16);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 2L), new ItemStack(Blocks.iron_bars, 2), ItemList.Cover_Drain.get(1L), 800, 16);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 2L), new ItemStack(Blocks.iron_bars, 2), ItemList.Cover_Drain.get(1L), 800, 16);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 2L), new ItemStack(Blocks.iron_bars, 2), ItemList.Cover_Drain.get(1L), 800, 16);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L), new ItemStack(Blocks.crafting_table, 1), ItemList.Cover_Crafting.get(1L), 800, 16);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L), new ItemStack(Blocks.crafting_table, 1), ItemList.Cover_Crafting.get(1L), 800, 16);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L), new ItemStack(Blocks.crafting_table, 1), ItemList.Cover_Crafting.get(1L), 800, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 2L), new ItemStack(Items.IRON_DOOR, 1), ItemList.Cover_Shutter.get(2L), 800, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 2L), new ItemStack(Items.IRON_DOOR, 1), ItemList.Cover_Shutter.get(2L), 800, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 2L), new ItemStack(Items.IRON_DOOR, 1), ItemList.Cover_Shutter.get(2L), 800, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 2L), new ItemStack(Blocks.IRON_BARS, 2), ItemList.Cover_Drain.get(1L), 800, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 2L), new ItemStack(Blocks.IRON_BARS, 2), ItemList.Cover_Drain.get(1L), 800, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 2L), new ItemStack(Blocks.IRON_BARS, 2), ItemList.Cover_Drain.get(1L), 800, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L), new ItemStack(Blocks.CRAFTING_TABLE, 1), ItemList.Cover_Crafting.get(1L), 800, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L), new ItemStack(Blocks.CRAFTING_TABLE, 1), ItemList.Cover_Crafting.get(1L), 800, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L), new ItemStack(Blocks.CRAFTING_TABLE, 1), ItemList.Cover_Crafting.get(1L), 800, 16);
         GT_Values.RA.addAssemblerRecipe(ItemList.Cover_Shutter.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 2), ItemList.FluidFilter.get(1L), 800, 4);
         
-        GregTech_API.registerCover(ItemList.Cover_Screen.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SCREEN)}), new GT_Cover_Screen());
-        GregTech_API.registerCover(ItemList.Cover_Crafting.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_CRAFTING)}), new GT_Cover_Crafting());
-        GregTech_API.registerCover(ItemList.Cover_Drain.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[0][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_DRAIN)}), new GT_Cover_Drain());
-        GregTech_API.registerCover(ItemList.Cover_Shutter.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SHUTTER)}), new GT_Cover_Shutter());
+        GregTech_API.registerCover(ItemList.Cover_Screen.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SCREEN)), new GT_Cover_Screen());
+        GregTech_API.registerCover(ItemList.Cover_Crafting.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[1][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_CRAFTING)), new GT_Cover_Crafting());
+        GregTech_API.registerCover(ItemList.Cover_Drain.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[0][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_DRAIN)), new GT_Cover_Drain());
+        GregTech_API.registerCover(ItemList.Cover_Shutter.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[1][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SHUTTER)), new GT_Cover_Shutter());
 
         ItemList.Cover_SolarPanel.set(addItem(tLastID = 750, "Solar Panel", "May the Sun be with you", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 1L)}));
         ItemList.Cover_SolarPanel_8V.set(addItem(tLastID = 751, "Solar Panel (8V)", "8 Volt Solar Panel", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 2L)}));
@@ -760,10 +765,10 @@ public class GT_MetaGenerated_Item_01
         ItemList.Cover_RedstoneReceiverExternal.set(addItem(tLastID = 746, "Redstone Receiver (Out)", "Transfers Redstonesignals wireless", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)}));
         ItemList.Cover_RedstoneReceiverInternal.set(addItem(tLastID = 747, "Redstone Receiver (In)", "Transfers Redstonesignals wireless", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)}));
 
-        GregTech_API.registerCover(ItemList.Cover_RedstoneTransmitterExternal.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR)}), new GT_Cover_RedstoneTransmitterExternal());
-        GregTech_API.registerCover(ItemList.Cover_RedstoneTransmitterInternal.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR)}), new GT_Cover_RedstoneTransmitterInternal());
-        GregTech_API.registerCover(ItemList.Cover_RedstoneReceiverExternal.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FLUIDDETECTOR)}), new GT_Cover_RedstoneReceiverExternal());
-        GregTech_API.registerCover(ItemList.Cover_RedstoneReceiverInternal.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FLUIDDETECTOR)}), new GT_Cover_RedstoneReceiverInternal());
+        GregTech_API.registerCover(ItemList.Cover_RedstoneTransmitterExternal.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR)), new GT_Cover_RedstoneTransmitterExternal());
+        GregTech_API.registerCover(ItemList.Cover_RedstoneTransmitterInternal.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR)), new GT_Cover_RedstoneTransmitterInternal());
+        GregTech_API.registerCover(ItemList.Cover_RedstoneReceiverExternal.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FLUIDDETECTOR)), new GT_Cover_RedstoneReceiverExternal());
+        GregTech_API.registerCover(ItemList.Cover_RedstoneReceiverInternal.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FLUIDDETECTOR)), new GT_Cover_RedstoneReceiverInternal());
 
         GT_Values.RA.addAssemblerRecipe(ItemList.Emitter_EV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 1L), ItemList.Cover_RedstoneTransmitterExternal.get(1L), 3200, 128);
         GT_Values.RA.addAssemblerRecipe(ItemList.Sensor_EV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 1L), ItemList.Cover_RedstoneReceiverExternal.get(1L), 3200, 128);
@@ -773,7 +778,7 @@ public class GT_MetaGenerated_Item_01
         GT_ModHandler.addShapelessCraftingRecipe(ItemList.Cover_RedstoneReceiverExternal.get(1L), new Object[]{ItemList.Cover_RedstoneReceiverInternal.get(1L)});
 
         ItemList.Cover_NeedsMaintainance.set(addItem(tLastID = 748, "Needs Maintainance Cover", "Attach to Multiblock Controller. Emits Redstone Signal if needs Maintainance", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)}));
-        GregTech_API.registerCover(ItemList.Cover_NeedsMaintainance.get(1L), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR)}), new GT_Cover_NeedMaintainance());
+        GregTech_API.registerCover(ItemList.Cover_NeedsMaintainance.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR)), new GT_Cover_NeedMaintainance());
         GT_Values.RA.addAssemblerRecipe(ItemList.Emitter_MV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L), ItemList.Cover_NeedsMaintainance.get(1L), 600, 24);
     
         GT_Values.RA.addAssemblerRecipe(ItemList.Electric_Pump_LV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 2), 	ItemList.FluidRegulator_LV.get(1L), 800, 4);
@@ -793,22 +798,20 @@ public class GT_MetaGenerated_Item_01
                 int tY = MathHelper.floor_double(aItemEntity.posY);
                 int tZ = MathHelper.floor_double(aItemEntity.posZ);
                 OrePrefixes aPrefix = this.mGeneratedPrefixList[(aDamage / 1000)];
-                if ((aPrefix == OrePrefixes.dustImpure) || (aPrefix == OrePrefixes.dustPure)) {
-                    Block tBlock = aItemEntity.worldObj.getBlock(tX, tY, tZ);
-                    byte tMetaData = (byte) aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
-                    if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
-                        aItemEntity.setEntityItemStack(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, aItemEntity.getEntityItem().stackSize));
-                        aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
-                        return true;
-                    }
-                }
-                if (aPrefix == OrePrefixes.crushed) {
-                    Block tBlock = aItemEntity.worldObj.getBlock(tX, tY, tZ);
-                    byte tMetaData = (byte) aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
-                    if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
-                        aItemEntity.setEntityItemStack(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, aItemEntity.getEntityItem().stackSize));
-                        aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
-                        return true;
+                if (aPrefix == OrePrefixes.dustImpure || aPrefix == OrePrefixes.dustPure || aPrefix == OrePrefixes.crushed) {
+                    IBlockState tBlock = aItemEntity.worldObj.getBlockState(new BlockPos(tX, tY, tZ));
+                    if(tBlock.getBlock() == Blocks.CAULDRON) {
+                        int waterLevel = tBlock.getValue(BlockCauldron.LEVEL);
+                        if(waterLevel > 0) {
+                            if(aPrefix == OrePrefixes.crushed) {
+                                aItemEntity.setEntityItemStack(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, aItemEntity.getEntityItem().stackSize));
+                            } else {
+                                aItemEntity.setEntityItemStack(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, aItemEntity.getEntityItem().stackSize));
+                            }
+                            aItemEntity.worldObj.setBlockState(new BlockPos(tX, tY, tZ),
+                                    tBlock.withProperty(BlockCauldron.LEVEL, waterLevel - 1));
+                            return true;
+                        }
                     }
                 }
             }

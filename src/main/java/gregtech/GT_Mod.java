@@ -1,8 +1,13 @@
 package gregtech;
 
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.common.*;
 import ic2.api.recipe.IMachineRecipeManager;
 import ic2.api.recipe.Recipes;
+import ic2.core.block.type.ResourceBlock;
+import ic2.core.item.type.CraftingItemType;
+import ic2.core.ref.BlockName;
+import ic2.core.ref.ItemName;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.event.*;
@@ -16,12 +21,7 @@ import gregtech.api.enchants.Enchantment_Radioactivity;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.objects.ItemData;
-import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.*;
-import gregtech.common.GT_DummyWorld;
-import gregtech.common.GT_Network;
-import gregtech.common.GT_Proxy;
-import gregtech.common.GT_RecipeAdder;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
@@ -35,7 +35,6 @@ import gregtech.loaders.misc.GT_CoverLoader;
 import gregtech.loaders.misc.OreProcessingConfiguration;
 import gregtech.loaders.postload.*;
 import gregtech.loaders.preload.*;
-import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -54,8 +53,9 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.*;
-import java.util.Map.Entry;
 
 //import forestry.factory.recipes.ISqueezerRecipe;
 //import forestry.factory.tiles.TileCentrifuge;
@@ -107,6 +107,43 @@ public class GT_Mod implements IGT_Mod {
         if (GregTech_API.sPreloadStarted) {
             return;
         }
+
+
+            /*final Thread currentThread = Thread.currentThread();
+            new Thread(new Runnable() {
+                long currentMills = 0;
+
+                @Override
+                public void run() {
+                    while (true) {
+                        if (System.currentTimeMillis() - currentMills > 100000) {
+                            currentMills = System.currentTimeMillis();
+                            System.out.println("Last stack trace of " + currentThread.getName() + ": ");
+                            StackTraceElement[] trace = currentThread.getStackTrace();
+                            if (trace.length > 10) {
+                                for (int i = 0; i < 10; i++) {
+                                    System.out.println(trace[i].toString());
+                                }
+                            }
+                        }
+                    }
+                }
+            }).start();*/
+
+        GT_Log.out.println("GT_Mod: Replacing IC2 recipes managers");
+        try {
+            for (Field f : Recipes.class.getFields()) {
+                if (Modifier.isStatic(f.getModifiers()) && f.getType() == IMachineRecipeManager.class) {
+                    IMachineRecipeManager delegate = (IMachineRecipeManager) f.get(null);
+                    if(delegate != null) {
+                        f.set(null, new GT_IC2RecipesHandler());
+                    }
+                }
+            }
+        } catch (ReflectiveOperationException e) {
+            e.printStackTrace();
+        }
+
         for (Runnable tRunnable : GregTech_API.sBeforeGTPreload) {
             try {
                 tRunnable.run();
@@ -286,7 +323,7 @@ public class GT_Mod implements IGT_Mod {
             }
         }
         GT_Log.out.println("GT_Mod: Adding Scrap with a Weight of 200.0F to the Scrapbox Drops.");
-        GT_ModHandler.addScrapboxDrop(200.0F, GT_ModHandler.getIC2Item("scrap", 1));
+        GT_ModHandler.addScrapboxDrop(200.0F, GT_ModHandler.getIC2Item(ItemName.crafting, CraftingItemType.scrap, 1));
 
         EntityRegistry.registerModEntity(GT_Entity_Arrow.class, "GT_Entity_Arrow", 1, GT_Values.GT, 160, 1, true);
         EntityRegistry.registerModEntity(GT_Entity_Arrow_Potion.class, "GT_Entity_Arrow_Potion", 2, GT_Values.GT, 160, 1, true);
@@ -394,6 +431,7 @@ public class GT_Mod implements IGT_Mod {
             gregtechproxy.registerUnificationEntries();
             new GT_FuelLoader().run();
         }
+
         GregTech_API.sLoadFinished = true;
         GT_Log.out.println("GT_Mod: Load-Phase finished!");
         GT_Log.ore.println("GT_Mod: Load-Phase finished!");
@@ -464,8 +502,8 @@ public class GT_Mod implements IGT_Mod {
         if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2forgehammer", true)) {
             GT_ModHandler.removeRecipeByOutput(ItemList.IC2_ForgeHammer.getWildcard(1));
         }
-        GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("machine", 1));
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("machine", 1), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"RRR", "RwR", "RRR", Character.valueOf('R'), OrePrefixes.plate.get(Materials.Iron)});
+        GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(BlockName.resource, ResourceBlock.machine, 1));
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item(BlockName.resource, ResourceBlock.machine, 1), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"RRR", "RwR", "RRR", Character.valueOf('R'), OrePrefixes.plate.get(Materials.Iron)});
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.POTIONITEM) && (tData.filledContainer.getItemDamage() == 0)) {
                 GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes.addRecipe(true, new ItemStack[]{ItemList.Bottle_Empty.get(1)}, new ItemStack[]{new ItemStack(Items.POTIONITEM, 1, 0)}, null, new FluidStack[]{Materials.Water.getFluid(250L)}, null, 4, 1, 0);
@@ -504,6 +542,7 @@ public class GT_Mod implements IGT_Mod {
                 e.printStackTrace(GT_Log.err);
             }
         }
+        /*идите нахуй короче
         String tName = "";
         if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2_" + (tName = "blastfurnace"), true)) {
             GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1));
@@ -559,6 +598,7 @@ public class GT_Mod implements IGT_Mod {
         if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2_" + (tName = "replicator"), true)) {
             GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1));
         }
+        */
         if (gregtechproxy.mNerfedVanillaTools) {
             GT_Log.out.println("GT_Mod: Nerfing Vanilla Tool Durability");
             Items.WOODEN_SWORD.setMaxDamage(12);

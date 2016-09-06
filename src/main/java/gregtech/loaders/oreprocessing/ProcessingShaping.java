@@ -4,6 +4,9 @@ import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import ic2.core.item.type.CasingResourceType;
+import ic2.core.item.type.CraftingItemType;
+import ic2.core.ref.ItemName;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -69,51 +72,51 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         break;
                     case Steel:
                         if (tAmount * 2 <= 64)
-                            GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Casing.get(0L), GT_ModHandler.getIC2Item("casingadviron", tAmount * 2), tAmount * 32, 3 * tVoltageMultiplier);
+                            GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Casing.get(0L), GT_ModHandler.getIC2Item(ItemName.casing, CasingResourceType.steel, tAmount * 2), tAmount * 32, 3 * tVoltageMultiplier);
                         if (tAmount * 2 <= 64)
-                            GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Mold_Casing.get(0L), GT_ModHandler.getIC2Item("casingadviron", tAmount * 3), tAmount * 128, 1 * tVoltageMultiplier);
+                            GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Mold_Casing.get(0L), GT_ModHandler.getIC2Item(ItemName.casing, CasingResourceType.steel, tAmount * 3), tAmount * 128, 1 * tVoltageMultiplier);
                         break;
                     case Iron:
                     case WroughtIron:
-                        GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Cell.get(0L), GT_ModHandler.getIC2Item("fuelRod", tAmount), tAmount * 128, 32);
+                        GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Cell.get(0L), GT_ModHandler.getIC2Item(ItemName.crafting, CraftingItemType.fuel_rod, tAmount), tAmount * 128, 32);
                         if (tAmount * 2 <= 64)
-                            GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Casing.get(0L), GT_ModHandler.getIC2Item("casingiron", tAmount * 2), tAmount * 32, 3 * tVoltageMultiplier);
+                            GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Casing.get(0L), GT_ModHandler.getIC2Item(ItemName.casing, CasingResourceType.iron, tAmount * 2), tAmount * 32, 3 * tVoltageMultiplier);
                         if (tAmount * 2 <= 64)
-                            GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Mold_Casing.get(0L), GT_ModHandler.getIC2Item("casingiron", tAmount * 3), tAmount * 128, 1 * tVoltageMultiplier);
+                            GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Mold_Casing.get(0L), GT_ModHandler.getIC2Item(ItemName.casing, CasingResourceType.iron, tAmount * 3), tAmount * 128, 1 * tVoltageMultiplier);
                         if (tAmount * 31 <= 64)
                             GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(31L, aStack), ItemList.Shape_Mold_Anvil.get(0L), new ItemStack(Blocks.ANVIL, 1, 0), tAmount * 512, 4 * tVoltageMultiplier);
                         break;
                     case Tin:
                         GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Extruder_Cell.get(0L), ItemList.Cell_Empty.get(tAmount), tAmount * 128, 32);
                         if (tAmount * 2 <= 64)
-                            GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Casing.get(0L), GT_ModHandler.getIC2Item("casingtin", tAmount * 2), tAmount * 32, 3 * tVoltageMultiplier);
+                            GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Casing.get(0L), GT_ModHandler.getIC2Item(ItemName.casing, CasingResourceType.tin, tAmount * 2), tAmount * 32, 3 * tVoltageMultiplier);
                         if (tAmount * 2 <= 64)
-                            GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Mold_Casing.get(0L), GT_ModHandler.getIC2Item("casingtin", tAmount * 3), tAmount * 128, 1 * tVoltageMultiplier);
+                            GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Mold_Casing.get(0L), GT_ModHandler.getIC2Item(ItemName.casing, CasingResourceType.tin, tAmount * 3), tAmount * 128, 1 * tVoltageMultiplier);
                         break;
                     case Lead:
                         if (tAmount * 2 <= 64)
-                            GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Casing.get(0L), GT_ModHandler.getIC2Item("casinglead", tAmount * 2), tAmount * 32, 3 * tVoltageMultiplier);
+                            GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Casing.get(0L), GT_ModHandler.getIC2Item(ItemName.casing, CasingResourceType.lead, tAmount * 2), tAmount * 32, 3 * tVoltageMultiplier);
                         if (tAmount * 2 <= 64)
-                            GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Mold_Casing.get(0L), GT_ModHandler.getIC2Item("casinglead", tAmount * 3), tAmount * 128, 1 * tVoltageMultiplier);
+                            GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Mold_Casing.get(0L), GT_ModHandler.getIC2Item(ItemName.casing, CasingResourceType.lead, tAmount * 3), tAmount * 128, 1 * tVoltageMultiplier);
                         break;
                     case Copper:
                     case AnnealedCopper:
                         if (tAmount * 2 <= 64)
-                            GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Casing.get(0L), GT_ModHandler.getIC2Item("casingcopper", tAmount * 2), tAmount * 32, 3 * tVoltageMultiplier);
+                            GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Casing.get(0L), GT_ModHandler.getIC2Item(ItemName.casing, CasingResourceType.copper, tAmount * 2), tAmount * 32, 3 * tVoltageMultiplier);
                         if (tAmount * 2 <= 64)
-                            GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Mold_Casing.get(0L), GT_ModHandler.getIC2Item("casingcopper", tAmount * 3), tAmount * 128, 1 * tVoltageMultiplier);
+                            GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Mold_Casing.get(0L), GT_ModHandler.getIC2Item(ItemName.casing, CasingResourceType.copper, tAmount * 3), tAmount * 128, 1 * tVoltageMultiplier);
                         break;
                     case Bronze:
                         if (tAmount * 2 <= 64)
-                            GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Casing.get(0L), GT_ModHandler.getIC2Item("casingbronze", tAmount * 2), tAmount * 32, 3 * tVoltageMultiplier);
+                            GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Casing.get(0L), GT_ModHandler.getIC2Item(ItemName.casing, CasingResourceType.bronze, tAmount * 2), tAmount * 32, 3 * tVoltageMultiplier);
                         if (tAmount * 2 <= 64)
-                            GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Mold_Casing.get(0L), GT_ModHandler.getIC2Item("casingbronze", tAmount * 3), tAmount * 128, 1 * tVoltageMultiplier);
+                            GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Mold_Casing.get(0L), GT_ModHandler.getIC2Item(ItemName.casing, CasingResourceType.bronze, tAmount * 3), tAmount * 128, 1 * tVoltageMultiplier);
                         break;
                     case Gold:
                         if (tAmount * 2 <= 64)
-                            GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Casing.get(0L), GT_ModHandler.getIC2Item("casinggold", tAmount * 2), tAmount * 32, 3 * tVoltageMultiplier);
+                            GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Casing.get(0L), GT_ModHandler.getIC2Item(ItemName.casing, CasingResourceType.gold, tAmount * 2), tAmount * 32, 3 * tVoltageMultiplier);
                         if (tAmount * 2 <= 64)
-                            GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Mold_Casing.get(0L), GT_ModHandler.getIC2Item("casinggold", tAmount * 3), tAmount * 128, 1 * tVoltageMultiplier);
+                            GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Mold_Casing.get(0L), GT_ModHandler.getIC2Item(ItemName.casing, CasingResourceType.gold, tAmount * 3), tAmount * 128, 1 * tVoltageMultiplier);
                         break;
                 }
             }

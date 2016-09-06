@@ -15,6 +15,6 @@ public class ProcessingPlate9 implements IOreRecipeRegistrator {
 
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         GT_ModHandler.removeRecipeByOutput(aStack);
-        GregTech_API.registerCover(aStack, new GT_RenderedTexture(aMaterial.mIconSet.mTextures[76], aMaterial.mRGBa, false), null);
+        GregTech_API.registerCover(aStack, new GT_RenderedTexture(aMaterial.mIconSet.mTextures[76], aMaterial.mRGBa), null);
     }
 }

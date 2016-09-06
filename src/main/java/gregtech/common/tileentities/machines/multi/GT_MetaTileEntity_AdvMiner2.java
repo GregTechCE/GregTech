@@ -18,20 +18,28 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
+import ic2.core.block.machine.BlockMiningPipe;
+import ic2.core.ref.BlockName;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.ChunkPosition;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBase {
 
-    private final ArrayList<ChunkPosition> mMineList = new ArrayList();
+    private static final ItemStack mining_pipe = GT_ModHandler.getIC2Item(BlockName.mining_pipe, BlockMiningPipe.MiningPipeType.pipe, 1);
+    private static final ItemStack mining_pipe_tip = GT_ModHandler.getIC2Item(BlockName.mining_pipe, BlockMiningPipe.MiningPipeType.tip, 1);
+
+
+    private final ArrayList<BlockPos> mMineList = new ArrayList();
     private boolean completedCycle = false;
 
     public GT_MetaTileEntity_AdvMiner2(int aID, String aName, String aNameRegional) {
@@ -68,16 +76,16 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
 
     @Override
     public boolean checkRecipe(ItemStack aStack) {
-        if (mInventory[1] == null || (mInventory[1].isItemEqual(GT_ModHandler.getIC2Item("miningPipe", 1L)) && mInventory[1].stackSize < mInventory[1].getMaxStackSize())) {
+        if (mInventory[1] == null || (mInventory[1].isItemEqual(mining_pipe) && mInventory[1].stackSize < mInventory[1].getMaxStackSize())) {
             ArrayList<ItemStack> tItems = getStoredInputs();
             for (ItemStack tStack : tItems) {
-                if (tStack.isItemEqual(GT_ModHandler.getIC2Item("miningPipe", 1L))) {
+                if (tStack.isItemEqual(mining_pipe)) {
                     tStack.stackSize--;
                     if (tStack.stackSize < 1) {
                         tStack = null;
                     }
                     if (mInventory[1] == null) {
-                        mInventory[1] = GT_ModHandler.getIC2Item("miningPipe", 1L);
+                        mInventory[1] = mining_pipe;
                     } else {
                         mInventory[1].stackSize++;
                     }
@@ -85,7 +93,7 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
 
             }
         }
-        if (mInputHatches == null || mInputHatches.get(0).mFluid == null || mInputHatches.get(0).mFluid.getFluid().getID() != ItemList.sDrillingFluid.getID()) {
+        if (mInputHatches == null || mInputHatches.get(0).mFluid == null || mInputHatches.get(0).mFluid.getFluid() != ItemList.sDrillingFluid) {
             return false;
         }
         FluidStack tFluid = mInputHatches.get(0).mFluid.copy();
@@ -107,14 +115,14 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
                         int tMetaID = getBaseMetaTileEntity().getMetaIDOffset(i, yLevel - getBaseMetaTileEntity().getYCoord(), f);
                         if (tBlock instanceof GT_Block_Ores_Abstract) {
                             TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityOffset(i, yLevel - getBaseMetaTileEntity().getYCoord(), f);
-                            if ((tTileEntity!=null) && (tTileEntity instanceof GT_TileEntity_Ores) && ((GT_TileEntity_Ores) tTileEntity).mNatural == true && !mMineList.contains(new ChunkPosition(i, yLevel - getBaseMetaTileEntity().getYCoord(), f))) {
-                                mMineList.add(new ChunkPosition(i, yLevel - getBaseMetaTileEntity().getYCoord(), f));
+                            if ((tTileEntity!=null) && (tTileEntity instanceof GT_TileEntity_Ores) && ((GT_TileEntity_Ores) tTileEntity).mNatural == true && !mMineList.contains(new BlockPos(i, yLevel - getBaseMetaTileEntity().getYCoord(), f))) {
+                                mMineList.add(new BlockPos(i, yLevel - getBaseMetaTileEntity().getYCoord(), f));
                             }
                         }
                         else {
                             ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
                             if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {
-                                ChunkPosition cp = new ChunkPosition(i, yLevel - getBaseMetaTileEntity().getYCoord(), f);
+                                BlockPos cp = new BlockPos(i, yLevel - getBaseMetaTileEntity().getYCoord(), f);
                                 if (!mMineList.contains(cp)) {
                                     mMineList.add(cp);
                                 }
@@ -124,7 +132,7 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
                 }
             }
             if (mMineList.isEmpty()) {
-                if(getBaseMetaTileEntity().getBlockOffset(ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetX, getYOfPumpHead() - 1 - getBaseMetaTileEntity().getYCoord(), ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetZ) != Blocks.bedrock){
+                if(getBaseMetaTileEntity().getBlockOffset(EnumFacing.VALUES[getBaseMetaTileEntity().getBackFacing()].getFrontOffsetX(), getYOfPumpHead() - 1 - getBaseMetaTileEntity().getYCoord(), EnumFacing.VALUES[getBaseMetaTileEntity().getBackFacing()].getFrontOffsetZ()) != Blocks.BEDROCK){
                     if (mEnergyHatches.size() > 0 && mEnergyHatches.get(0).getEUVar() > (512 + getMaxInputVoltage() * 4)) {
                         moveOneDown();
                     }
@@ -132,29 +140,29 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
                     return false;
                 }
             }
-            ArrayList<ItemStack> tDrops = new ArrayList();
+            List<ItemStack> tDrops = new ArrayList();
             Block tMineBlock = null;
-            ChunkPosition mle = null;;
-            while ((tMineBlock==null || tMineBlock == Blocks.air) && !mMineList.isEmpty()) {
+            BlockPos mle = null;
+            while ((tMineBlock==null || tMineBlock == Blocks.AIR) && !mMineList.isEmpty()) {
                 mle = mMineList.get(0);
                 mMineList.remove(0);
-                tMineBlock = getBaseMetaTileEntity().getBlockOffset(mle.chunkPosX, mle.chunkPosY, mle.chunkPosZ);
+                tMineBlock = getBaseMetaTileEntity().getBlockOffset(mle.getX(), mle.getY(), mle.getZ());
             }
             
-            if (tMineBlock!=null && tMineBlock!=Blocks.air) {
-                int metadata = getBaseMetaTileEntity().getMetaIDOffset(mle.chunkPosX, mle.chunkPosY, mle.chunkPosZ);
-                boolean silkTouch = tMineBlock.canSilkHarvest(getBaseMetaTileEntity().getWorld(), null, mle.chunkPosX, mle.chunkPosY, mle.chunkPosZ, metadata);
+            if (tMineBlock!=null && tMineBlock!=Blocks.AIR) {
+                IBlockState metadata = getBaseMetaTileEntity().getWorld().getBlockState(mle);
+                boolean silkTouch = tMineBlock.canSilkHarvest(getBaseMetaTileEntity().getWorld(), mle, metadata, null);
                 if (silkTouch){
                     ItemStack IS = new ItemStack(tMineBlock);
-                    IS.setItemDamage(metadata);
+                    IS.setItemDamage(metadata.getBlock().getMetaFromState(metadata));
                     IS.stackSize=1;
                     tDrops.add(IS);
                 }
                 else{
-                    tDrops = tMineBlock.getDrops(getBaseMetaTileEntity().getWorld(), mle.chunkPosX, mle.chunkPosY, mle.chunkPosZ, metadata, 1);
+                    tDrops = tMineBlock.getDrops(getBaseMetaTileEntity().getWorld(), mle, metadata, 1);
                 }
 
-                getBaseMetaTileEntity().getWorld().setBlockToAir(mle.chunkPosX + getBaseMetaTileEntity().getXCoord(), mle.chunkPosY + getBaseMetaTileEntity().getYCoord(), mle.chunkPosZ + getBaseMetaTileEntity().getZCoord());
+                getBaseMetaTileEntity().getWorld().setBlockToAir(getBaseMetaTileEntity().getPos().add(mle.getX(), mle.getY(), mle.getZ()));
                 if (!tDrops.isEmpty()) {
                     ItemData tData = GT_OreDictUnificator.getItemData(tDrops.get(0).copy());
                     if (tData.mPrefix != OrePrefixes.crushed && tData.mMaterial.mMaterial != Materials.Oilsands) {
@@ -213,43 +221,48 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
 
     private boolean moveOneDown() {
         if ((this.mInventory[1] == null) || (this.mInventory[1].stackSize < 1)
-                || (!GT_Utility.areStacksEqual(this.mInventory[1], GT_ModHandler.getIC2Item("miningPipe", 1L)))) {
+                || (!GT_Utility.areStacksEqual(this.mInventory[1], mining_pipe))) {
             return false;
         }
-        int xDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetX;
-        int zDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetZ;
+        int xDir = EnumFacing.VALUES[getBaseMetaTileEntity().getBackFacing()].getFrontOffsetX();
+        int zDir = EnumFacing.VALUES[getBaseMetaTileEntity().getBackFacing()].getFrontOffsetZ();
         int yHead = getYOfPumpHead();
         if (yHead <= 0) {
             return false;
         }
-        if (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, yHead - 1, getBaseMetaTileEntity().getZCoord() + zDir) == Blocks.bedrock) {
+        if (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, yHead - 1, getBaseMetaTileEntity().getZCoord() + zDir) == Blocks.BEDROCK) {
             return false;
         }
-        if (!(getBaseMetaTileEntity().getWorld().setBlock(getBaseMetaTileEntity().getXCoord() + xDir, yHead - 1, getBaseMetaTileEntity().getZCoord() + zDir, GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L))))) {
+        if (!(getBaseMetaTileEntity().getWorld().setBlockState(
+                new BlockPos(getBaseMetaTileEntity().getXCoord() + xDir, yHead - 1, getBaseMetaTileEntity().getZCoord() + zDir),
+                GT_Utility.getBlockFromStack(mining_pipe_tip).getDefaultState()))) {
             return false;
         }
         if (yHead != getBaseMetaTileEntity().getYCoord()) {
-            getBaseMetaTileEntity().getWorld().setBlock(getBaseMetaTileEntity().getXCoord() + xDir, yHead, getBaseMetaTileEntity().getZCoord() + zDir, GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipe", 1L)));
+            getBaseMetaTileEntity().getWorld().setBlockState(
+                    new BlockPos(getBaseMetaTileEntity().getXCoord() + xDir, yHead, getBaseMetaTileEntity().getZCoord() + zDir),
+                    GT_Utility.getBlockFromStack(mining_pipe).getDefaultState());
         }
         getBaseMetaTileEntity().decrStackSize(1, 1);
         return true;
     }
 
     private int getYOfPumpHead() {
-        int xDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetX;
-        int zDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetZ;
+        int xDir = EnumFacing.VALUES[getBaseMetaTileEntity().getBackFacing()].getFrontOffsetX();
+        int zDir = EnumFacing.VALUES[getBaseMetaTileEntity().getBackFacing()].getFrontOffsetZ();
         int y = getBaseMetaTileEntity().getYCoord() - 1;
-        while (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir) == GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipe", 1L))) {
+        while (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir) == GT_Utility.getBlockFromStack(mining_pipe)) {
             y--;
         }
         if (y == getBaseMetaTileEntity().getYCoord() - 1) {
-            if (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir) != GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L))) {
+            if (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir) != GT_Utility.getBlockFromStack(mining_pipe_tip)) {
                 return y + 1;
             }
         } else if (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir) != GT_Utility
-                .getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L)) && this.mInventory[1] != null && this.mInventory[1].stackSize > 0 && GT_Utility.areStacksEqual(this.mInventory[1], GT_ModHandler.getIC2Item("miningPipe", 1L))) {
-            getBaseMetaTileEntity().getWorld().setBlock(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir,
-                    GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L)));
+                .getBlockFromStack(mining_pipe_tip) && this.mInventory[1] != null && this.mInventory[1].stackSize > 0 && GT_Utility.areStacksEqual(this.mInventory[1], mining_pipe)) {
+            getBaseMetaTileEntity().getWorld().setBlockState(
+                    new BlockPos(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir),
+                    GT_Utility.getBlockFromStack(mining_pipe_tip).getDefaultState());
             getBaseMetaTileEntity().decrStackSize(0, 1);
         }
         return y;
@@ -257,8 +270,8 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+        int xDir = EnumFacing.VALUES[aBaseMetaTileEntity.getBackFacing()].getFrontOffsetX();
+        int zDir = EnumFacing.VALUES[aBaseMetaTileEntity.getBackFacing()].getFrontOffsetZ();
         for (int i = -1; i < 2; i++) {
             for (int j = -1; j < 2; j++) {
                 if ((xDir + i != 0) || (zDir + j != 0)) {

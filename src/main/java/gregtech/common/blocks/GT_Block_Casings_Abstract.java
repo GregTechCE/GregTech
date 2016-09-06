@@ -97,7 +97,7 @@ public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block impleme
 
     @Override
     public String getLocalizedName() {
-        return GT_LanguageManager.TRANSLATION.translateKey(this.mUnlocalizedName + ".name");
+        return GT_LanguageManager.getTranslation(this.mUnlocalizedName + ".name");
     }
 
     @Override

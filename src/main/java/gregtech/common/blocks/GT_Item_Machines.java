@@ -94,7 +94,7 @@ public class GT_Item_Machines
 
     @Override
     public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
-        return EnumActionResult.FAIL;
+        return EnumActionResult.PASS;
     }
 
     @Override
@@ -121,17 +121,18 @@ public class GT_Item_Machines
     @Override
     public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
         short tDamage = (short) getDamage(stack);
+        System.out.println("Place block " + block + " " + tDamage);
         if (tDamage > 0) {
             if (GregTech_API.METATILEENTITIES[tDamage] == null) {
                 return false;
             }
             int tMetaData = GregTech_API.METATILEENTITIES[tDamage].getTileEntityBaseType();
-            if (!world.setBlockState(pos, block.getStateFromMeta(tDamage))) {
+            if (!world.setBlockState(pos, block.getStateFromMeta(tMetaData))) {
                 return false;
             }
             IBlockState placed = world.getBlockState(pos);
-            if (placed != this.block) {
-                throw new GT_ItsNotMyFaultException("Failed to place Block even though World.setBlock returned true. It COULD be MCPC/Bukkit causing that. In case you really have that installed, don't report this Bug to me, I don't know how to fix it.");
+            if (placed != block.getStateFromMeta(tMetaData)) {
+                throw new GT_ItsNotMyFaultException("Failed to place Block even though World.setBlockState returned true. It COULD be MCPC/Bukkit causing that. In case you really have that installed, don't report this Bug to me, I don't know how to fix it.");
             }
             if (placed.getValue(GT_Generic_Block.METADATA) != tMetaData) {
                 throw new GT_ItsNotMyFaultException("Failed to set the MetaValue of the Block even though World.setBlock returned true. It COULD be MCPC/Bukkit causing that. In case you really have that installed, don't report this Bug to me, I don't know how to fix it.");

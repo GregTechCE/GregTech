@@ -18,29 +18,29 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
 
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         if (aOreDictName.startsWith("plankWood")) {
-            GT_Values.RA.addLatheRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2L), null, 10, 8);
-            GT_Values.RA.addCNCRecipe(GT_Utility.copyAmount(4L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Wood, 1L), 800, 1);
-            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(8L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L), new ItemStack(Blocks.noteblock, 1), 200, 4);
-            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(8L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Diamond, 1L), new ItemStack(Blocks.jukebox, 1), 400, 4);
-            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Iron, 1L), ItemList.Crate_Empty.get(1L, new Object[0]), 200, 1);
-            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.WroughtIron, 1L), ItemList.Crate_Empty.get(1L, new Object[0]), 200, 1);
-            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 1L), ItemList.Crate_Empty.get(1L, new Object[0]), 200, 1);
-            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), ItemList.Circuit_Integrated.getWithDamage(0L, 1L, new Object[0]), new ItemStack(Blocks.wooden_button, 1), 100, 4);
-            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(2L, new Object[]{aStack}), ItemList.Circuit_Integrated.getWithDamage(0L, 2L, new Object[0]), new ItemStack(Blocks.wooden_pressure_plate, 1), 200, 4);
-            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(3L, new Object[]{aStack}), ItemList.Circuit_Integrated.getWithDamage(0L, 3L, new Object[0]), new ItemStack(Blocks.trapdoor, 1), 300, 4);
-            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(4L, new Object[]{aStack}), ItemList.Circuit_Integrated.getWithDamage(0L, 4L, new Object[0]), new ItemStack(Blocks.crafting_table, 1), 400, 4);
-            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(6L, new Object[]{aStack}), ItemList.Circuit_Integrated.getWithDamage(0L, 6L, new Object[0]), new ItemStack(Items.wooden_door, 1), 600, 4);
-            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(8L, new Object[]{aStack}), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), new ItemStack(Blocks.chest, 1), 800, 4);
-            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(6L, new Object[]{aStack}), new ItemStack(Items.book, 3), new ItemStack(Blocks.bookshelf, 1), 400, 4);
+            GT_Values.RA.addLatheRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2L), null, 10, 8);
+            GT_Values.RA.addCNCRecipe(GT_Utility.copyAmount(4L, aStack), GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Wood, 1L), 800, 1);
+            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(8L, aStack), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L), new ItemStack(Blocks.NOTEBLOCK, 1), 200, 4);
+            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(8L, aStack), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Diamond, 1L), new ItemStack(Blocks.JUKEBOX, 1), 400, 4);
+            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Iron, 1L), ItemList.Crate_Empty.get(1L), 200, 1);
+            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.WroughtIron, 1L), ItemList.Crate_Empty.get(1L), 200, 1);
+            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 1L), ItemList.Crate_Empty.get(1L), 200, 1);
+            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Circuit_Integrated.getWithDamage(0L, 1L), new ItemStack(Blocks.WOODEN_BUTTON, 1), 100, 4);
+            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(2L, aStack), ItemList.Circuit_Integrated.getWithDamage(0L, 2L), new ItemStack(Blocks.WOODEN_PRESSURE_PLATE, 1), 200, 4);
+            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(3L, aStack), ItemList.Circuit_Integrated.getWithDamage(0L, 3L), new ItemStack(Blocks.TRAPDOOR, 1), 300, 4);
+            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(4L, aStack), ItemList.Circuit_Integrated.getWithDamage(0L, 4L), new ItemStack(Blocks.CRAFTING_TABLE, 1), 400, 4);
+            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(6L, aStack), ItemList.Circuit_Integrated.getWithDamage(0L, 6L), new ItemStack(Items.OAK_DOOR, 1), 600, 4);
+            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(8L, aStack), ItemList.Circuit_Integrated.getWithDamage(0L, 8L), new ItemStack(Blocks.CHEST, 1), 800, 4);
+            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(6L, aStack), new ItemStack(Items.BOOK, 3), new ItemStack(Blocks.BOOKSHELF, 1), 400, 4);
 
             if (aStack.getItemDamage() == 32767) {
                 for (byte i = 0; i < 64; i = (byte) (i + 1)) {
-                    ItemStack tStack = GT_Utility.copyMetaData(i, new Object[]{aStack});
-                    ItemStack tOutput = GT_ModHandler.getRecipeOutput(new ItemStack[]{tStack, tStack, tStack});
+                    ItemStack tStack = GT_Utility.copyMetaData(i, aStack);
+                    ItemStack tOutput = GT_ModHandler.getRecipeOutput(tStack, tStack, tStack);
                     if ((tOutput != null) && (tOutput.stackSize >= 3)) {
-                        GT_Values.RA.addCutterRecipe(GT_Utility.copyAmount(1L, new Object[]{tStack}), GT_Utility.copyAmount(tOutput.stackSize / 3, new Object[]{tOutput}), null, 25, 4);
-                        GT_ModHandler.removeRecipe(new ItemStack[]{tStack, tStack, tStack});
-                        GT_ModHandler.addCraftingRecipe(GT_Utility.copyAmount(tOutput.stackSize / 3, new Object[]{tOutput}), new Object[]{"sP", Character.valueOf('P'), tStack});
+                        GT_Values.RA.addCutterRecipe(GT_Utility.copyAmount(1L, tStack), GT_Utility.copyAmount(tOutput.stackSize / 3, tOutput), null, 25, 4);
+                        GT_ModHandler.removeRecipe(tStack, tStack, tStack);
+                        GT_ModHandler.addCraftingRecipe(GT_Utility.copyAmount(tOutput.stackSize / 3, tOutput), new Object[]{"sP", Character.valueOf('P'), tStack});
                     }
                     if(tStack==null){
                     	if(i>=16){
@@ -49,11 +49,11 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                     }
                 }
             } else {
-                ItemStack tOutput = GT_ModHandler.getRecipeOutput(new ItemStack[]{aStack, aStack, aStack});
+                ItemStack tOutput = GT_ModHandler.getRecipeOutput(aStack, aStack, aStack);
                 if ((tOutput != null) && (tOutput.stackSize >= 3)) {
-                    GT_Values.RA.addCutterRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_Utility.copyAmount(tOutput.stackSize / 3, new Object[]{tOutput}), null, 25, 4);
-                    GT_ModHandler.removeRecipe(new ItemStack[]{aStack, aStack, aStack});
-                    GT_ModHandler.addCraftingRecipe(GT_Utility.copyAmount(tOutput.stackSize / 3, new Object[]{tOutput}), new Object[]{"sP", Character.valueOf('P'), aStack});
+                    GT_Values.RA.addCutterRecipe(GT_Utility.copyAmount(1L, aStack), GT_Utility.copyAmount(tOutput.stackSize / 3, tOutput), null, 25, 4);
+                    GT_ModHandler.removeRecipe(aStack, aStack, aStack);
+                    GT_ModHandler.addCraftingRecipe(GT_Utility.copyAmount(tOutput.stackSize / 3, tOutput), new Object[]{"sP", Character.valueOf('P'), aStack});
                 }
             }
         }

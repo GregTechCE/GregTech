@@ -10,6 +10,7 @@ import gregtech.common.GT_Pollution;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -55,7 +56,7 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, EnumHand hand) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         aBaseMetaTileEntity.openGUI(aPlayer);
         return true;

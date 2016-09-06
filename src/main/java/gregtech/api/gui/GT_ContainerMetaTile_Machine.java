@@ -1,13 +1,11 @@
 package gregtech.api.gui;
 
+import net.minecraft.inventory.IContainerListener;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
-
-import java.util.Iterator;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -62,9 +60,7 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
         mActive = mTileEntity.isActive() ? 1 : 0;
         mTimer++;
 
-        Iterator var2 = this.crafters.iterator();
-        while (var2.hasNext()) {
-            ICrafting var1 = (ICrafting) var2.next();
+        for(IContainerListener var1 : listeners) {
             if (mTimer % 500 == 10 || oEnergy != mEnergy) {
                 var1.sendProgressBarUpdate(this, 0, mEnergy & 65535);
                 var1.sendProgressBarUpdate(this, 1, mEnergy >>> 16);

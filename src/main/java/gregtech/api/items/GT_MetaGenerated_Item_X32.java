@@ -1,11 +1,10 @@
 package gregtech.api.items;
 
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -13,6 +12,8 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Arrays;
 import java.util.List;
@@ -106,7 +107,7 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
      * @return an Icon Container for the Item Display.
      */
     public final IIconContainer getIconContainer(int aMetaData, Materials aMaterial) {
-        return mGeneratedPrefixList[aMetaData / 1000] != null && mGeneratedPrefixList[aMetaData / 1000].mTextureIndex >= 0 ? aMaterial.mIconSet.mTextures[mGeneratedPrefixList[aMetaData / 1000].mTextureIndex] : null;
+        return aMaterial.mIconSet.mTextures[mGeneratedPrefixList[aMetaData / 1000].mTextureIndex];
     }
 
     /**
@@ -135,11 +136,6 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
     }
 
     @Override
-    public final IIconContainer getIconContainer(int aMetaData) {
-        return GregTech_API.sGeneratedMaterials[aMetaData % 1000] == null ? null : getIconContainer(aMetaData, GregTech_API.sGeneratedMaterials[aMetaData % 1000]);
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     public final void getSubItems(Item var1, CreativeTabs aCreativeTab, List<ItemStack> aList) {
         for (int i = 0; i < 32000; i++)
@@ -164,7 +160,7 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
     }
 
     @Override
-    public IIconContainer getIconContainer(final ItemStack itemStack) {
+    public IIconContainer getIconContainer(ItemStack itemStack) {
         return getIconFromDamage(itemStack.getItemDamage());
     }
 

@@ -109,7 +109,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
 
     @Override
     public String getLocalizedName() {
-        return GT_LanguageManager.TRANSLATION.translateKey(getUnlocalizedName() + ".name");
+        return GT_LanguageManager.getTranslation(getUnlocalizedName() + ".name");
     }
 
     @Override

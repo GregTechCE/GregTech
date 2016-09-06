@@ -57,7 +57,7 @@ public class GT_Block_Storage extends GT_Generic_Block {
 
     @Override
     public String getLocalizedName() {
-        return GT_LanguageManager.TRANSLATION.translateKey(this.mUnlocalizedName + ".name");
+        return GT_LanguageManager.getTranslation(this.mUnlocalizedName + ".name");
     }
 
     @Override

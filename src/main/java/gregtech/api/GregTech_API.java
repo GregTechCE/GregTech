@@ -167,7 +167,7 @@ public class GregTech_API {
      * The Icon Registers from Blocks and Items. They will get set right before the corresponding Icon Load Phase as executed in the Runnable List above.
      */
     @SideOnly(Side.CLIENT)
-    public static final TextureMap sBlockIcons = Minecraft.getMinecraft().getTextureMapBlocks();
+    public static TextureMap sBlockIcons;
     /**
      * The Configuration Objects
      */

@@ -11,6 +11,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import ic2.core.ref.BlockName;
 import mezz.jei.Internal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -69,7 +70,6 @@ public class GT_Achievements {
             registerOreAchievement(oreList.get(i));
         }
         registerAchievement("flintpick", 0, 0, GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(2, 1, Materials.Flint, Materials.Wood, null), "", false);
-        registerAchievement("crops", -4, 0, GT_ModHandler.getIC2Item("crop", 1), "flintpick", false);
         registerAchievement("havestlead", -4, 2, ItemList.Crop_Drop_Plumbilia.get(1), "crops", false);
         registerAchievement("havestcopper", -2, 1, ItemList.Crop_Drop_Coppon.get(1), "crops", false);
         registerAchievement("havesttin", -2, -1, ItemList.Crop_Drop_Tine.get(1), "crops", false);

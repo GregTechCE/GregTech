@@ -25,6 +25,7 @@ import ic2.api.crops.CropProperties;
 import ic2.api.crops.ICropTile;
 import ic2.api.recipe.*;
 import ic2.core.IC2Potion;
+import ic2.core.ref.ItemName;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -1053,7 +1054,7 @@ public class GT_Utility {
     }
 
     public static boolean isDebugItem(ItemStack aStack) {
-        return /*ItemList.Armor_Cheat.isStackEqual(aStack, T, T) || */areStacksEqual(GT_ModHandler.getIC2Item("debug", 1), aStack, true);
+        return /*ItemList.Armor_Cheat.isStackEqual(aStack, T, T) || */areStacksEqual(GT_ModHandler.getIC2Item(ItemName.debug_item, 1), aStack, true);
     }
 
     public static ItemStack updateItemStack(ItemStack aStack) {
@@ -1299,7 +1300,8 @@ public class GT_Utility {
     }
 
     public static ItemStack copy(Object... aStacks) {
-        for (Object tStack : aStacks) if (isStackValid(tStack)) return ((ItemStack) tStack).copy();
+        for (Object tStack : aStacks)
+            if (isStackValid(tStack)) return ((ItemStack) tStack).copy();
         return null;
     }
 

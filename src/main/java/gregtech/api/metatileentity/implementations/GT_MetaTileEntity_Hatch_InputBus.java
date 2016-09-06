@@ -11,6 +11,7 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 
 public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch {
     public GT_Recipe_Map mRecipeMap = null;
@@ -59,7 +60,7 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, EnumHand hand) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         aBaseMetaTileEntity.openGUI(aPlayer);
         return true;

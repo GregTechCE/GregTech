@@ -8,6 +8,7 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
 
 import static gregtech.api.enums.GT_Values.V;
 
@@ -173,7 +174,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     public abstract ITexture getOverlayIcon();
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, EnumHand hand) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         aBaseMetaTileEntity.openGUI(aPlayer);
         return true;

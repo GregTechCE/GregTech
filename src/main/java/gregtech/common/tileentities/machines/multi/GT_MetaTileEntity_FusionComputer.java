@@ -19,7 +19,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
@@ -70,9 +70,9 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        int xCenter = getBaseMetaTileEntity().getXCoord() + ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetX * 5;
+        int xCenter = getBaseMetaTileEntity().getXCoord() + EnumFacing.VALUES[getBaseMetaTileEntity().getFrontFacing()].getFrontOffsetX() * 5;
         int yCenter = getBaseMetaTileEntity().getYCoord();
-        int zCenter = getBaseMetaTileEntity().getZCoord() + ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetZ * 5;
+        int zCenter = getBaseMetaTileEntity().getZCoord() + EnumFacing.VALUES[getBaseMetaTileEntity().getFrontFacing()].getFrontOffsetZ() * 5;
         if (((isAdvancedMachineCasing(xCenter + 5, yCenter, zCenter)) || (xCenter + 5 == getBaseMetaTileEntity().getXCoord()))
                 && ((isAdvancedMachineCasing(xCenter - 5, yCenter, zCenter)) || (xCenter - 5 == getBaseMetaTileEntity().getXCoord()))
                 && ((isAdvancedMachineCasing(xCenter, yCenter, zCenter + 5)) || (zCenter + 5 == getBaseMetaTileEntity().getZCoord()))

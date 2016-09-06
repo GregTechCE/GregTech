@@ -19,7 +19,7 @@ public class GT_GUIContainer_QuantumChest extends GT_GUIContainerMetaTile_Machin
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        fontRendererObj.drawString(GT_LanguageManager.TRANSLATION.translateKey("container.inventory"), 8, ySize - 96 + 2, 4210752);
+        fontRendererObj.drawString(GT_LanguageManager.getTranslation("container.inventory"), 8, ySize - 96 + 2, 4210752);
         fontRendererObj.drawString(mName, 8, 6, 4210752);
         if (mContainer != null) {
             fontRendererObj.drawString("Item Amount", 10, 20, 16448255);

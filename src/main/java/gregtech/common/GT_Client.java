@@ -7,18 +7,17 @@ package gregtech.common;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.*;
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.render.GT_CapeRenderer;
 import gregtech.common.render.GT_Renderer_Entity_Arrow;
-import gregtech.common.render.newblocks.GT_IIconProvider_Block_Model;
 import gregtech.common.render.newitems.GT_IIconProvider_Item_Model;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentString;
@@ -158,8 +157,6 @@ public class GT_Client extends GT_Proxy
 
     public void onLoad() {
         super.onLoad();
-        new GT_IIconProvider_Block_Model();
-        new GT_IIconProvider_Item_Model();
 
         //new GT_MetaGenerated_Tool_Renderer(); TODO tools repair
 
@@ -173,24 +170,19 @@ public class GT_Client extends GT_Proxy
 
     }
 
-    /*
-    //What?
+
+    //Models init
     public void onPostLoad() {
         super.onPostLoad();
-        label0:
-        for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++)
-            try {
-                do {
-                    if (i >= GregTech_API.METATILEENTITIES.length)
-                        continue label0;
-                    if (GregTech_API.METATILEENTITIES[i] != null)
-                        GregTech_API.METATILEENTITIES[i].getStackForm(1L).getTooltip(null, true);
-                    i++;
-                } while (true);
-            } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
-            }
-    }*/
+
+        Textures.BlockIcons.BASALT_BRICKS.getClass();
+        Textures.ItemIcons.BUTCHERYKNIFE.getClass();
+        TextureSet.SET_DIAMOND.getClass();
+
+        new GT_IIconProvider_Item_Model();
+        IReloadableResourceManager resourceManager = (IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager();
+        resourceManager.registerReloadListener(GT_LanguageManager.INSTANCE);
+    }
 
     public void run() {
         try {

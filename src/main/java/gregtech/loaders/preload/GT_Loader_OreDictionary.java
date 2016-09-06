@@ -8,9 +8,21 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import ic2.core.block.BlockTexGlass;
+import ic2.core.block.type.ResourceBlock;
+import ic2.core.block.wiring.CableType;
+import ic2.core.item.block.ItemCable;
+import ic2.core.item.type.CraftingItemType;
+import ic2.core.item.type.IngotResourceType;
+import ic2.core.item.type.PlateResourceType;
+import ic2.core.ref.BlockName;
+import ic2.core.ref.FluidName;
+import ic2.core.ref.ItemName;
+import ic2.core.ref.TeBlock;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
 
 public class GT_Loader_OreDictionary
         implements Runnable {
@@ -18,14 +30,14 @@ public class GT_Loader_OreDictionary
         GT_Log.out.println("GT_Mod: Register OreDict Entries of Non-GT-Items.");
         GT_OreDictUnificator.set(OrePrefixes.cell, Materials.Empty, ItemList.Cell_Empty.get(1));
         GT_OreDictUnificator.set(OrePrefixes.cell, Materials.Lava, ItemList.Cell_Lava.get(1));
-        GT_OreDictUnificator.set(OrePrefixes.cell, Materials.Lava, GT_ModHandler.getIC2Item("lavaCell", 1));
+        GT_OreDictUnificator.set(OrePrefixes.cell, Materials.Lava, GT_ModHandler.getIC2Item(ItemName.fluid_cell, FluidRegistry.LAVA.getName(), 1));
         GT_OreDictUnificator.set(OrePrefixes.cell, Materials.Water, ItemList.Cell_Water.get(1));
-        GT_OreDictUnificator.set(OrePrefixes.cell, Materials.Water, GT_ModHandler.getIC2Item("waterCell", 1));
+        GT_OreDictUnificator.set(OrePrefixes.cell, Materials.Water, GT_ModHandler.getIC2Item(ItemName.fluid_cell, FluidRegistry.WATER.getName(), 1));
         GT_OreDictUnificator.set(OrePrefixes.cell, Materials.Creosote, GT_ModHandler.getModItem("Railcraft", "fluid.creosote.cell", 1));
 
 
-        GT_OreDictUnificator.set(OrePrefixes.cell, Materials.UUMatter, GT_ModHandler.getIC2Item("uuMatterCell", 1));
-        GT_OreDictUnificator.set(OrePrefixes.cell, Materials.ConstructionFoam, GT_ModHandler.getIC2Item("CFCell", 1));
+        GT_OreDictUnificator.set(OrePrefixes.cell, Materials.UUMatter, GT_ModHandler.getIC2Item(ItemName.fluid_cell, FluidName.uu_matter, 1));
+        GT_OreDictUnificator.set(OrePrefixes.cell, Materials.ConstructionFoam, GT_ModHandler.getIC2Item(ItemName.fluid_cell, FluidName.construction_foam, 1));
 
         GT_OreDictUnificator.set(OrePrefixes.bucket, Materials.Empty, new ItemStack(Items.BUCKET, 1, 0));
         GT_OreDictUnificator.set(OrePrefixes.bucket, Materials.Water, new ItemStack(Items.WATER_BUCKET, 1, 0));
@@ -35,9 +47,9 @@ public class GT_Loader_OreDictionary
         GT_OreDictUnificator.set(OrePrefixes.bottle, Materials.Empty, new ItemStack(Items.GLASS_BOTTLE, 1, 0));
         GT_OreDictUnificator.set(OrePrefixes.bottle, Materials.Water, new ItemStack(Items.POTIONITEM, 1, 0));
 
-        GT_OreDictUnificator.set(OrePrefixes.plateAlloy, Materials.Iridium, GT_ModHandler.getIC2Item("iridiumPlate", 1));
-        GT_OreDictUnificator.set(OrePrefixes.plateAlloy, Materials.Advanced, GT_ModHandler.getIC2Item("advancedAlloy", 1));
-        GT_OreDictUnificator.set(OrePrefixes.plateAlloy, Materials.Carbon, GT_ModHandler.getIC2Item("carbonPlate", 1));
+        GT_OreDictUnificator.set(OrePrefixes.plateAlloy, Materials.Iridium, GT_ModHandler.getIC2Item(ItemName.crafting, CraftingItemType.iridium, 1));
+        GT_OreDictUnificator.set(OrePrefixes.plateAlloy, Materials.Advanced, GT_ModHandler.getIC2Item(ItemName.crafting, CraftingItemType.alloy, 1));
+        GT_OreDictUnificator.set(OrePrefixes.plateAlloy, Materials.Carbon, GT_ModHandler.getIC2Item(ItemName.crafting, CraftingItemType.carbon_plate, 1));
 
         GT_OreDictUnificator.set(OrePrefixes.ore, Materials.Coal, new ItemStack(Blocks.COAL_ORE, 1));
         GT_OreDictUnificator.set(OrePrefixes.ore, Materials.Iron, new ItemStack(Blocks.IRON_ORE, 1));
@@ -48,12 +60,11 @@ public class GT_Loader_OreDictionary
         GT_OreDictUnificator.set(OrePrefixes.ore, Materials.Diamond, new ItemStack(Blocks.DIAMOND_ORE, 1));
         GT_OreDictUnificator.set(OrePrefixes.ore, Materials.Emerald, new ItemStack(Blocks.EMERALD_ORE, 1));
         GT_OreDictUnificator.set(OrePrefixes.ore, Materials.NetherQuartz, new ItemStack(Blocks.QUARTZ_ORE, 1));
-        GT_OreDictUnificator.set(OrePrefixes.ingot, Materials.Copper, GT_ModHandler.getIC2Item("copperIngot", 1));
-        GT_OreDictUnificator.set(OrePrefixes.ingot, Materials.Tin, GT_ModHandler.getIC2Item("tinIngot", 1));
-        GT_OreDictUnificator.set(OrePrefixes.ingot, Materials.Lead, GT_ModHandler.getIC2Item("leadIngot", 1));
-        GT_OreDictUnificator.set(OrePrefixes.ingot, Materials.Bronze, GT_ModHandler.getIC2Item("bronzeIngot", 1));
-        GT_OreDictUnificator.set(OrePrefixes.ingot, Materials.Silver, GT_ModHandler.getIC2Item("silverIngot", 1));
-        GT_OreDictUnificator.set(OrePrefixes.gem, Materials.Iridium, GT_ModHandler.getIC2Item("iridiumOre", 1));
+        GT_OreDictUnificator.set(OrePrefixes.ingot, Materials.Copper, GT_ModHandler.getIC2Item(ItemName.ingot, IngotResourceType.copper, 1));
+        GT_OreDictUnificator.set(OrePrefixes.ingot, Materials.Tin, GT_ModHandler.getIC2Item(ItemName.ingot, IngotResourceType.tin, 1));
+        GT_OreDictUnificator.set(OrePrefixes.ingot, Materials.Lead, GT_ModHandler.getIC2Item(ItemName.ingot, IngotResourceType.lead, 1));
+        GT_OreDictUnificator.set(OrePrefixes.ingot, Materials.Bronze, GT_ModHandler.getIC2Item(ItemName.ingot, IngotResourceType.bronze, 1));
+        GT_OreDictUnificator.set(OrePrefixes.ingot, Materials.Silver, GT_ModHandler.getIC2Item(ItemName.ingot, IngotResourceType.silver, 1));
         GT_OreDictUnificator.set(OrePrefixes.gem, Materials.Lapis, new ItemStack(Items.DYE, 1, 4));
         GT_OreDictUnificator.set(OrePrefixes.gem, Materials.EnderEye, new ItemStack(Items.ENDER_EYE, 1));
         GT_OreDictUnificator.set(OrePrefixes.gem, Materials.EnderPearl, new ItemStack(Items.ENDER_PEARL, 1));
@@ -89,7 +100,7 @@ public class GT_Loader_OreDictionary
         GT_OreDictUnificator.registerOre(OreDictNames.craftingAnvil, GT_ModHandler.getModItem("Railcraft", "tile.railcraft.anvil", 1, 0));
         GT_OreDictUnificator.registerOre(OreDictNames.craftingIndustrialDiamond, ItemList.IC2_Industrial_Diamond.get(1));
         GT_OreDictUnificator.registerOre(OrePrefixes.dust, Materials.Wood, GT_ModHandler.getModItem("ThermalExpansion", "sawdust", 1));
-        GT_OreDictUnificator.registerOre(OrePrefixes.glass, Materials.Reinforced, GT_ModHandler.getIC2Item("reinforcedGlass", 1));
+        GT_OreDictUnificator.registerOre(OrePrefixes.glass, Materials.Reinforced, GT_ModHandler.getIC2Item(BlockName.glass, BlockTexGlass.GlassType.reinforced, 1));
         GT_OreDictUnificator.registerOre(OrePrefixes.glass, Materials.Reinforced, GT_ModHandler.getModItem("ThermalExpansion", "glassHardened", 1));
 
         GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Basalt, GT_ModHandler.getModItem("Railcraft", "tile.railcraft.cube", 1, 6));
@@ -120,18 +131,18 @@ public class GT_Loader_OreDictionary
         GT_OreDictUnificator.registerOre("cropLemon", ItemList.FR_Lemon.get(1));
         GT_OreDictUnificator.registerOre("cropCoffee", ItemList.IC2_CoffeeBeans.get(1));
         GT_OreDictUnificator.registerOre("cropPotato", ItemList.Food_Raw_Potato.get(1));
-        GT_OreDictUnificator.registerOre("calclavia:BATTERY", GT_ModHandler.getIC2Item("reBattery", 1));
-        GT_OreDictUnificator.registerOre("calclavia:BATTERY", GT_ModHandler.getIC2Item("chargedReBattery", 1, 32767));
-        GT_OreDictUnificator.registerOre(OrePrefixes.battery, Materials.Basic, GT_ModHandler.getIC2Item("reBattery", 1));
-        GT_OreDictUnificator.registerOre(OrePrefixes.battery, Materials.Basic, GT_ModHandler.getIC2Item("chargedReBattery", 1, 32767));
-        GT_OreDictUnificator.registerOre(OrePrefixes.battery, Materials.Advanced, GT_ModHandler.getIC2Item("advBattery", 1, 32767));
-        GT_OreDictUnificator.registerOre(OrePrefixes.battery, Materials.Elite, GT_ModHandler.getIC2Item("energyCrystal", 1, 32767));
-        GT_OreDictUnificator.registerOre(OrePrefixes.battery, Materials.Master, GT_ModHandler.getIC2Item("lapotronCrystal", 1, 32767));
+        GT_OreDictUnificator.registerOre("calclavia:BATTERY", GT_ModHandler.getIC2Item(ItemName.re_battery, 1));
+        GT_OreDictUnificator.registerOre("calclavia:BATTERY", GT_ModHandler.getIC2Item(ItemName.re_battery, 1, 32767));
+        GT_OreDictUnificator.registerOre(OrePrefixes.battery, Materials.Basic, GT_ModHandler.getIC2Item(ItemName.re_battery, 1));
+        GT_OreDictUnificator.registerOre(OrePrefixes.battery, Materials.Basic, GT_ModHandler.getIC2Item(ItemName.re_battery, 1, 32767));
+        GT_OreDictUnificator.registerOre(OrePrefixes.battery, Materials.Advanced, GT_ModHandler.getIC2Item(ItemName.advanced_re_battery, 1, 32767));
+        GT_OreDictUnificator.registerOre(OrePrefixes.battery, Materials.Elite, GT_ModHandler.getIC2Item(ItemName.energy_crystal, 1, 32767));
+        GT_OreDictUnificator.registerOre(OrePrefixes.battery, Materials.Master, GT_ModHandler.getIC2Item(ItemName.lapotron_crystal, 1, 32767));
 
-        GT_OreDictUnificator.registerOre(OreDictNames.craftingWireCopper, GT_ModHandler.getIC2Item("insulatedCopperCableItem", 1));
-        GT_OreDictUnificator.registerOre(OreDictNames.craftingWireGold, GT_ModHandler.getIC2Item("insulatedGoldCableItem", 1));
-        GT_OreDictUnificator.registerOre(OreDictNames.craftingWireIron, GT_ModHandler.getIC2Item("insulatedIronCableItem", 1));
-        GT_OreDictUnificator.registerOre(OreDictNames.craftingWireTin, GT_ModHandler.getIC2Item("insulatedTinCableItem", 1, GT_ModHandler.getIC2Item("insulatedCopperCableItem", 1)));
+        GT_OreDictUnificator.registerOre(OreDictNames.craftingWireCopper, ItemCable.getCable(CableType.copper, 1));
+        GT_OreDictUnificator.registerOre(OreDictNames.craftingWireGold, ItemCable.getCable(CableType.gold, 1));
+        GT_OreDictUnificator.registerOre(OreDictNames.craftingWireIron, ItemCable.getCable(CableType.iron, 1));
+        GT_OreDictUnificator.registerOre(OreDictNames.craftingWireTin, ItemCable.getCable(CableType.tin, 1));
 
         GT_OreDictUnificator.registerOre(OreDictNames.craftingRedstoneTorch, new ItemStack(Blocks.REDSTONE_TORCH, 1, 32767));
         GT_OreDictUnificator.registerOre(OreDictNames.craftingRedstoneTorch, new ItemStack(Blocks.UNLIT_REDSTONE_TORCH, 1, 32767));
@@ -143,7 +154,7 @@ public class GT_Loader_OreDictionary
         GT_OreDictUnificator.registerOre(OreDictNames.craftingPiston, new ItemStack(Blocks.STICKY_PISTON, 1, 32767));
 
         GT_OreDictUnificator.registerOre(OreDictNames.craftingSafe, new ItemStack(GregTech_API.sBlockMachines, 1, 45));
-        GT_OreDictUnificator.registerOre(OreDictNames.craftingSafe, GT_ModHandler.getIC2Item("personalSafe", 1));
+        GT_OreDictUnificator.registerOre(OreDictNames.craftingSafe, GT_ModHandler.getIC2TEItem(TeBlock.personal_chest, 1));
 
         GT_OreDictUnificator.registerOre(OreDictNames.craftingChest, new ItemStack(Blocks.CHEST, 1, 32767));
         GT_OreDictUnificator.registerOre(OreDictNames.craftingChest, new ItemStack(Blocks.TRAPPED_CHEST, 1, 32767));
@@ -151,36 +162,36 @@ public class GT_Loader_OreDictionary
         GT_OreDictUnificator.registerOre(OreDictNames.craftingFurnace, new ItemStack(Blocks.FURNACE, 1, 32767));
         GT_OreDictUnificator.registerOre(OreDictNames.craftingFurnace, new ItemStack(Blocks.LIT_FURNACE, 1, 32767));
 
-        GT_OreDictUnificator.registerOre(OreDictNames.craftingPump, GT_ModHandler.getIC2Item("pump", 1));
-        GT_OreDictUnificator.registerOre(OreDictNames.craftingElectromagnet, GT_ModHandler.getIC2Item("magnetizer", 1));
-        GT_OreDictUnificator.registerOre(OreDictNames.craftingTeleporter, GT_ModHandler.getIC2Item("teleporter", 1));
+        GT_OreDictUnificator.registerOre(OreDictNames.craftingPump, GT_ModHandler.getIC2TEItem(TeBlock.pump, 1));
+        GT_OreDictUnificator.registerOre(OreDictNames.craftingElectromagnet, GT_ModHandler.getIC2TEItem(TeBlock.magnetizer, 1));
+        GT_OreDictUnificator.registerOre(OreDictNames.craftingTeleporter, GT_ModHandler.getIC2TEItem(TeBlock.teleporter, 1));
 
-        GT_OreDictUnificator.registerOre(OreDictNames.craftingMacerator, GT_ModHandler.getIC2Item("macerator", 1));
+        GT_OreDictUnificator.registerOre(OreDictNames.craftingMacerator, GT_ModHandler.getIC2TEItem(TeBlock.macerator, 1));
         GT_OreDictUnificator.registerOre(OreDictNames.craftingMacerator, new ItemStack(GregTech_API.sBlockMachines, 1, 50));
 
 
-        GT_OreDictUnificator.registerOre(OreDictNames.craftingExtractor, GT_ModHandler.getIC2Item("extractor", 1));
+        GT_OreDictUnificator.registerOre(OreDictNames.craftingExtractor, GT_ModHandler.getIC2TEItem(TeBlock.extractor, 1));
         GT_OreDictUnificator.registerOre(OreDictNames.craftingExtractor, new ItemStack(GregTech_API.sBlockMachines, 1, 51));
 
-        GT_OreDictUnificator.registerOre(OreDictNames.craftingCompressor, GT_ModHandler.getIC2Item("compressor", 1));
+        GT_OreDictUnificator.registerOre(OreDictNames.craftingCompressor, GT_ModHandler.getIC2TEItem(TeBlock.compressor, 1));
         GT_OreDictUnificator.registerOre(OreDictNames.craftingCompressor, new ItemStack(GregTech_API.sBlockMachines, 1, 52));
 
-        GT_OreDictUnificator.registerOre(OreDictNames.craftingRecycler, GT_ModHandler.getIC2Item("recycler", 1));
+        GT_OreDictUnificator.registerOre(OreDictNames.craftingRecycler, GT_ModHandler.getIC2TEItem(TeBlock.recycler, 1));
         GT_OreDictUnificator.registerOre(OreDictNames.craftingRecycler, new ItemStack(GregTech_API.sBlockMachines, 1, 53));
 
-        GT_OreDictUnificator.registerOre(OreDictNames.craftingIronFurnace, GT_ModHandler.getIC2Item("ironFurnace", 1));
+        GT_OreDictUnificator.registerOre(OreDictNames.craftingIronFurnace, GT_ModHandler.getIC2TEItem(TeBlock.iron_furnace, 1));
 
         GT_OreDictUnificator.registerOre(OreDictNames.craftingCentrifuge, new ItemStack(GregTech_API.sBlockMachines, 1, 62));
 
-        GT_OreDictUnificator.registerOre(OreDictNames.craftingInductionFurnace, GT_ModHandler.getIC2Item("inductionFurnace", 1));
+        GT_OreDictUnificator.registerOre(OreDictNames.craftingInductionFurnace, GT_ModHandler.getIC2TEItem(TeBlock.induction_furnace, 1));
 
 
-        GT_OreDictUnificator.registerOre(OreDictNames.craftingElectricFurnace, GT_ModHandler.getIC2Item("electroFurnace", 1));
+        GT_OreDictUnificator.registerOre(OreDictNames.craftingElectricFurnace, GT_ModHandler.getIC2TEItem(TeBlock.electric_furnace, 1));
         GT_OreDictUnificator.registerOre(OreDictNames.craftingElectricFurnace, new ItemStack(GregTech_API.sBlockMachines, 1, 54));
 
-        GT_OreDictUnificator.registerOre(OreDictNames.craftingGenerator, GT_ModHandler.getIC2Item("generator", 1));
+        GT_OreDictUnificator.registerOre(OreDictNames.craftingGenerator, GT_ModHandler.getIC2TEItem(TeBlock.generator, 1));
 
-        GT_OreDictUnificator.registerOre(OreDictNames.craftingGeothermalGenerator, GT_ModHandler.getIC2Item("geothermalGenerator", 1));
+        GT_OreDictUnificator.registerOre(OreDictNames.craftingGeothermalGenerator, GT_ModHandler.getIC2TEItem(TeBlock.geo_generator, 1));
 
         GT_OreDictUnificator.registerOre(OreDictNames.craftingFeather, new ItemStack(Items.FEATHER, 1, 32767));
         GT_OreDictUnificator.registerOre(OreDictNames.craftingFeather, GT_ModHandler.getModItem("TwilightForest", "item.tfFeather", 1, 32767));
@@ -198,7 +209,7 @@ public class GT_Loader_OreDictionary
         GT_OreDictUnificator.registerOre(OreDictNames.craftingBook, new ItemStack(Items.WRITTEN_BOOK, 1, 32767));
         GT_OreDictUnificator.registerOre(OreDictNames.craftingBook, new ItemStack(Items.ENCHANTED_BOOK, 1, 32767));
 
-        GT_OreDictUnificator.registerOre(OrePrefixes.circuit, Materials.Basic, GT_ModHandler.getIC2Item("electronicCircuit", 1));
-        GT_OreDictUnificator.registerOre(OrePrefixes.circuit, Materials.Advanced, GT_ModHandler.getIC2Item("advancedCircuit", 1));
+        GT_OreDictUnificator.registerOre(OrePrefixes.circuit, Materials.Basic, GT_ModHandler.getIC2Item(ItemName.crafting, CraftingItemType.circuit, 1));
+        GT_OreDictUnificator.registerOre(OrePrefixes.circuit, Materials.Advanced, GT_ModHandler.getIC2Item(ItemName.crafting, CraftingItemType.advanced_circuit, 1));
     }
 }

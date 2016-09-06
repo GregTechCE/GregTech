@@ -5,6 +5,7 @@ import gregtech.common.render.IIconRegister;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -107,7 +108,8 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
             ItemStack rStack = new ItemStack(this, 1, mOffset + aID);
             mEnabledItems.set(aID);
             mVisibleItems.set(aID);
-            GT_LanguageManager.addStringLocalization(getUnlocalizedName(rStack) + ".name", aEnglish);
+            GT_LanguageManager.addStringLocalization(getUnlocalizedName(rStack), aEnglish);
+            GT_LanguageManager.addStringLocalization(getUnlocalizedName(rStack) + ".fuck", aEnglish);
             GT_LanguageManager.addStringLocalization(getUnlocalizedName(rStack) + ".tooltip", aToolTip);
             List<TC_AspectStack> tAspects = new ArrayList<TC_AspectStack>();
             // Important Stuff to do first
@@ -164,6 +166,11 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
             return rStack;
         }
         return null;
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack stack) {
+        return I18n.format(getUnlocalizedName(stack) + ".fuck");
     }
 
     /**
@@ -236,8 +243,16 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
 
     @Override
     public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-        short[] rgba = getRGBa(stack);
-        return new Color(rgba[0], rgba[1], rgba[2], rgba[3]).getRGB();
+        return makeColor(getRGBa(stack));
+    }
+
+    private int makeColor(short[] rgba) {
+        short[] nullRGBA = Materials._NULL.getRGBA();
+        short red = rgba[0] > 0 && 255 > rgba[0] ? rgba[0] : nullRGBA[0];
+        short green = rgba[1] > 0 && 255 > rgba[1] ? rgba[1] : nullRGBA[1];
+        short blue = rgba[2] > 0 && 255 > rgba[2] ? rgba[2] : nullRGBA[2];
+        short alpha = rgba[3] > 0 && 255 > rgba[3] ? rgba[3] : nullRGBA[3];
+        return new Color(red, green, blue, alpha).getRGB();
     }
 
     /**
@@ -328,6 +343,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
     @Override
     @SideOnly(Side.CLIENT)
     public final void registerIcons(TextureMap aIconRegister) {
+        System.out.println("Register icons");
         for (short i = 0, j = (short) mEnabledItems.length(); i < j; i++)
             if (mEnabledItems.get(i)) {
                 for (byte k = 1; k < mIconList[i].length; k++) {

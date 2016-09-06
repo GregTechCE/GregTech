@@ -9,6 +9,9 @@ import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
+import ic2.core.ref.BlockName;
+import ic2.core.ref.ItemName;
+import ic2.core.ref.TeBlock;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -277,10 +280,10 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         	GT_Recipe.GT_Recipe_Map.sImplosionRecipes.addRecipe(true, new ItemStack[]{aInput1, ItemList.Block_Powderbarrel.get(tGunpowder)}, new ItemStack[]{aOutput1, aOutput2}, null, null, null, null, 20, 30, 0);
         }
         if(tDynamite < 17){
-        	GT_Recipe.GT_Recipe_Map.sImplosionRecipes.addRecipe(true, new ItemStack[]{aInput1, GT_ModHandler.getIC2Item("dynamite", tDynamite, null)}, new ItemStack[]{aOutput1, aOutput2}, null, null, null, null, 20, 30, 0);
+        	GT_Recipe.GT_Recipe_Map.sImplosionRecipes.addRecipe(true, new ItemStack[]{aInput1, GT_ModHandler.getIC2Item(ItemName.dynamite, tDynamite)}, new ItemStack[]{aOutput1, aOutput2}, null, null, null, null, 20, 30, 0);
         }
         GT_Recipe.GT_Recipe_Map.sImplosionRecipes.addRecipe(true, new ItemStack[]{aInput1, new ItemStack(Blocks.TNT, tTNT)}, new ItemStack[]{aOutput1, aOutput2}, null, null, null, null, 20, 30, 0);
-        GT_Recipe.GT_Recipe_Map.sImplosionRecipes.addRecipe(true, new ItemStack[]{aInput1, GT_ModHandler.getIC2Item("industrialTnt", tITNT, null)}, new ItemStack[]{aOutput1, aOutput2}, null, null, null, null, 20, 30, 0);
+        GT_Recipe.GT_Recipe_Map.sImplosionRecipes.addRecipe(true, new ItemStack[]{aInput1, GT_ModHandler.getIC2Item(BlockName.te, TeBlock.itnt, tITNT)}, new ItemStack[]{aOutput1, aOutput2}, null, null, null, null, 20, 30, 0);
         
         return true;
     }

@@ -98,7 +98,7 @@ public abstract class GT_Block_Stones_Abstract extends GT_Generic_Block implemen
 
     @Override
     public String getLocalizedName() {
-        return GT_LanguageManager.TRANSLATION.translateKey(this.mUnlocalizedName + ".name");
+        return GT_LanguageManager.getTranslation(this.mUnlocalizedName + ".name");
     }
 
     @Override

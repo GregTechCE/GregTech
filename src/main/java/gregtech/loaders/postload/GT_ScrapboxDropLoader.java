@@ -7,6 +7,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import ic2.core.item.type.CraftingItemType;
+import ic2.core.ref.ItemName;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -41,20 +43,16 @@ public class GT_ScrapboxDropLoader
         GT_ModHandler.addScrapboxDrop(5.0F, GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Paper, 1));
         GT_ModHandler.addScrapboxDrop(1.0F, new ItemStack(Items.LEATHER));
         GT_ModHandler.addScrapboxDrop(1.0F, new ItemStack(Items.FEATHER));
-        GT_ModHandler.addScrapboxDrop(0.7F, GT_ModHandler.getIC2Item("plantBall", 1));
+        GT_ModHandler.addScrapboxDrop(0.7F, GT_ModHandler.getIC2Item(ItemName.crafting, CraftingItemType.plant_ball, 1));
         GT_ModHandler.addScrapboxDrop(3.8F, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1));
         GT_ModHandler.addScrapboxDrop(0.6F, new ItemStack(Items.SLIME_BALL));
         GT_ModHandler.addScrapboxDrop(0.8F, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Rubber, 1));
-        GT_ModHandler.addScrapboxDrop(2.7F, GT_ModHandler.getIC2Item("suBattery", 1));
+        GT_ModHandler.addScrapboxDrop(2.7F, GT_ModHandler.getIC2Item(ItemName.single_use_battery, 1));
         GT_ModHandler.addScrapboxDrop(3.6F, ItemList.Circuit_Primitive.get(1));
         GT_ModHandler.addScrapboxDrop(0.8F, ItemList.Circuit_Parts_Advanced.get(1));
         GT_ModHandler.addScrapboxDrop(1.8F, ItemList.Circuit_Board_Basic.get(1));
         GT_ModHandler.addScrapboxDrop(0.4F, ItemList.Circuit_Board_Advanced.get(1));
         GT_ModHandler.addScrapboxDrop(0.2F, ItemList.Circuit_Board_Elite.get(1));
-        if (!GT_Mod.gregtechproxy.mDisableIC2Cables) {
-            GT_ModHandler.addScrapboxDrop(2.0F, GT_ModHandler.getIC2Item("insulatedCopperCableItem", 1));
-            GT_ModHandler.addScrapboxDrop(0.4F, GT_ModHandler.getIC2Item("insulatedGoldCableItem", 1));
-        }
         GT_ModHandler.addScrapboxDrop(0.9F, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1));
         GT_ModHandler.addScrapboxDrop(0.8F, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1));
         GT_ModHandler.addScrapboxDrop(0.8F, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1));
