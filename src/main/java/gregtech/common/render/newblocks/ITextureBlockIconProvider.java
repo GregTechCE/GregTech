@@ -10,10 +10,12 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
 public interface ITextureBlockIconProvider {
 
+    @SideOnly(Side.CLIENT)
     public ITexture[] getTexture(World world, BlockPos blockPos, IExtendedBlockState blockState, EnumFacing side);
+
+    @SideOnly(Side.CLIENT)
     public ITexture[] getItemblockTexture(EntityPlayer player, ItemStack itemStack, EnumFacing side);
 
 }

@@ -1,12 +1,19 @@
 package gregtech.common.render.newitems;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import gregtech.api.GregTech_API;
-import gregtech.api.util.GT_Log;
+import gregtech.common.render.newblocks.BlockRenderer;
 import gregtech.common.render.IIconRegister;
+import gregtech.common.render.newblocks.IBlockIconProvider;
+import gregtech.common.render.newblocks.ITextureBlockIconProvider;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.*;
+import net.minecraft.client.renderer.color.BlockColors;
+import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -14,6 +21,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -31,19 +39,15 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import javax.vecmath.Vector4f;
+import java.util.*;
 
 @SideOnly(Side.CLIENT)
 public class GT_IIconProvider_Item_Model implements IBakedModel {
 
-    private static ModelResourceLocation RESOURCE_LOCATION = new ModelResourceLocation("gregtech", "IItemIconProvider");
+    private static final ModelResourceLocation RESOURCE_LOCATION = new ModelResourceLocation("gregtech", "IItemIconProvider");
 
-    private HashMap<TextureAtlasSprite, List<BakedQuad>> iconsCache = new HashMap<>();
-    private HashMap<Pair<TextureAtlasSprite, Integer>, List<BakedQuad>> overlaysCache = new HashMap<>();
-
+    private TextureAtlasSprite missingno;
     private ItemStack itemStack;
     private VertexFormat vertexFormat;
 
@@ -57,14 +61,22 @@ public class GT_IIconProvider_Item_Model implements IBakedModel {
     public void onTextureMapStitch(TextureStitchEvent.Pre pre) {
         ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
         System.out.println("Texture map stitch");
-        GT_Log.out.println("GT_Mod: Starting Item Icon Load Phase");
         System.out.println("GT_Mod: Starting Item Icon Load Phase");
         GregTech_API.sBlockIcons = pre.getMap();
         for (Runnable tRunnable : GregTech_API.sGTItemIconload) {
             try {
                 tRunnable.run();
             } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
+                System.out.println("Failed to load item icon " + tRunnable);
+                e.printStackTrace();
+            }
+        }
+        for (Runnable tRunnable : GregTech_API.sGTBlockIconload) {
+            try {
+                tRunnable.run();
+            } catch (Throwable e) {
+                System.out.println("Failed to load block icon " + tRunnable);
+                e.printStackTrace();
             }
         }
         for(ResourceLocation itemId : Item.REGISTRY.getKeys()) {
@@ -76,7 +88,17 @@ public class GT_IIconProvider_Item_Model implements IBakedModel {
                 itemColors.registerItemColorHandler((IItemColor) item, item);
             }
         }
-        GT_Log.out.println("GT_Mod: Finished Item Icon Load Phase");
+        BlockColors blockColors = Minecraft.getMinecraft().getBlockColors();
+        for(ResourceLocation blockId : Block.REGISTRY.getKeys()) {
+            Block block = Block.REGISTRY.getObject(blockId);
+            if(block instanceof IIconRegister) {
+                ((IIconRegister) block).registerIcons(pre.getMap());
+            }
+            if(block instanceof IBlockColor) {
+                blockColors.registerBlockColorHandler((IBlockColor) block, block);
+            }
+        }
+        missingno = pre.getMap().getMissingSprite();
         System.out.println("GT_Mod: Finished Item Icon Load Phase");
     }
 
@@ -89,7 +111,9 @@ public class GT_IIconProvider_Item_Model implements IBakedModel {
     public static void setupItemModels() {
         for(ResourceLocation itemId : Item.REGISTRY.getKeys()) {
             Item item = Item.REGISTRY.getObject(itemId);
-            if(item instanceof IItemIconProvider) {
+            if(item instanceof IItemIconProvider || (item instanceof ItemBlock && (
+                    Block.getBlockFromItem(item) instanceof IBlockIconProvider ||
+                    Block.getBlockFromItem(item) instanceof ITextureBlockIconProvider))) {
                 for (int i = 0; i < Short.MAX_VALUE; i++) {
                     Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, i, RESOURCE_LOCATION);
                 }
@@ -105,32 +129,12 @@ public class GT_IIconProvider_Item_Model implements IBakedModel {
     public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
 
         if (side == null && itemStack != null) {
-            IItemIconProvider iconProvider = (IItemIconProvider) itemStack.getItem();
-            TextureAtlasSprite textureIcon = iconProvider.getIcon(itemStack, 0);
-            //System.out.println(iconProvider.getClass() + " " + textureIcon);
             ArrayList<BakedQuad> resultQuads = new ArrayList<>();
-            if (textureIcon != null) {
-                //if (iconsCache.containsKey(textureIcon)) {
-                //    resultQuads.addAll(iconsCache.get(textureIcon));
-                //} else {
-                List<BakedQuad> textureQuads = ItemLayerModel.getQuadsForSprite(0, textureIcon, vertexFormat, Optional.<TRSRTransformation>absent());
-                //iconsCache.put(textureIcon, textureQuads);
-                resultQuads.addAll(textureQuads);
-                //}
-            }
-            if (iconProvider.getRenderPasses(itemStack) > 0) {
-                for (int i = 0; i < iconProvider.getRenderPasses(itemStack); ++i) {
-                    TextureAtlasSprite overlayIcon = iconProvider.getIcon(itemStack, i);
-                    ImmutablePair<TextureAtlasSprite, Integer> iconPair = new ImmutablePair<>(overlayIcon, i);
-                    if (overlayIcon != null) {
-                        if (overlaysCache.containsKey(iconPair)) {
-                            resultQuads.addAll(overlaysCache.get(iconPair));
-                        } else {
-                            List<BakedQuad> overlayQuads = getOverlayQuads(iconPair.getLeft(), i, 0.01F * i);
-                            overlaysCache.put(iconPair, overlayQuads);
-                            resultQuads.addAll(overlayQuads);
-                        }
-                    }
+            IItemIconProvider iconProvider = (IItemIconProvider) itemStack.getItem();
+            for(int i = 0; i < iconProvider.getRenderPasses(itemStack) + 1; i++) {
+                TextureAtlasSprite atlasSprite = iconProvider.getIcon(itemStack, i);
+                if(atlasSprite != null) {
+                    resultQuads.addAll(getQuadsForSprite(i, atlasSprite, vertexFormat, Optional.absent()));
                 }
             }
             return resultQuads;
@@ -164,6 +168,10 @@ public class GT_IIconProvider_Item_Model implements IBakedModel {
 
     @Override
     public ItemCameraTransforms getItemCameraTransforms() {
+        if(itemStack != null) {
+            IItemIconProvider iconProvider = (IItemIconProvider) itemStack.getItem();
+            return iconProvider.isHandheld(itemStack) ? ModelUtil.HANDHELD_TRANSFORMS : ModelUtil.DEFAULT_TRANSFORMS;
+        }
         return ItemCameraTransforms.DEFAULT;
     }
 
@@ -172,33 +180,192 @@ public class GT_IIconProvider_Item_Model implements IBakedModel {
         return new ItemOverrideList(Collections.<ItemOverride>emptyList()) {
             @Override
             public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
+                if(stack.getItem() instanceof ItemBlock) {
+                    Block block = Block.getBlockFromItem(stack.getItem());
+                    if(block instanceof ITextureBlockIconProvider) {
+                        return BlockRenderer.makeTextureProviderItemblock(stack, entity);
+                    } else if(block instanceof IBlockIconProvider) {
+                        return BlockRenderer.makeIconProviderItemblock(stack, entity);
+                    } else {
+                        return null;
+                    }
+                }
+
                 GT_IIconProvider_Item_Model.this.itemStack = stack;
                 return GT_IIconProvider_Item_Model.this;
             }
         };
     }
 
-    private List<BakedQuad> getOverlayQuads(TextureAtlasSprite sprite, int tint, float offset) {
-        ArrayList<BakedQuad> builder = new ArrayList<>();
+    public static ImmutableList<BakedQuad> getQuadsForSprite(int tint, TextureAtlasSprite sprite, VertexFormat format, Optional<TRSRTransformation> transform)
+    {
+        ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
+
+        int uMax = sprite.getIconWidth();
+        int vMax = sprite.getIconHeight();
+
+        BitSet faces = new BitSet((uMax + 1) * (vMax + 1) * 4);
+        for(int f = 0; f < sprite.getFrameCount(); f++)
+        {
+            int[] pixels = sprite.getFrameTextureData(f)[0];
+            boolean ptu;
+            boolean[] ptv = new boolean[uMax];
+            Arrays.fill(ptv, true);
+            for(int v = 0; v < vMax; v++)
+            {
+                ptu = true;
+                for(int u = 0; u < uMax; u++)
+                {
+                    boolean t = isTransparent(pixels, uMax, vMax, u, v);
+                    if(ptu && !t) // left - transparent, right - opaque
+                    {
+                        addSideQuad(builder, faces, format, transform, EnumFacing.WEST, tint, sprite, uMax, vMax, u, v);
+                    }
+                    if(!ptu && t) // left - opaque, right - transparent
+                    {
+                        addSideQuad(builder, faces, format, transform, EnumFacing.EAST, tint, sprite, uMax, vMax, u, v);
+                    }
+                    if(ptv[u] && !t) // up - transparent, down - opaque
+                    {
+                        addSideQuad(builder, faces, format, transform, EnumFacing.UP, tint, sprite, uMax, vMax, u, v);
+                    }
+                    if(!ptv[u] && t) // up - opaque, down - transparent
+                    {
+                        addSideQuad(builder, faces, format, transform, EnumFacing.DOWN, tint, sprite, uMax, vMax, u, v);
+                    }
+                    ptu = t;
+                    ptv[u] = t;
+                }
+                if(!ptu) // last - opaque
+                {
+                    addSideQuad(builder, faces, format, transform, EnumFacing.EAST, tint, sprite, uMax, vMax, uMax, v);
+                }
+            }
+            // last line
+            for(int u = 0; u < uMax; u++)
+            {
+                if(!ptv[u])
+                {
+                    addSideQuad(builder, faces, format, transform, EnumFacing.DOWN, tint, sprite, uMax, vMax, u, vMax);
+                }
+            }
+        }
         // front
-        builder.add(buildQuad(vertexFormat, EnumFacing.NORTH, sprite, tint,
-                0, 0, 7.48f - offset / 16f, sprite.getMinU(), sprite.getMaxV(),
-                0, 1, 7.48f - offset / 16f, sprite.getMinU(), sprite.getMinV(),
-                1, 1, 7.48f - offset / 16f, sprite.getMaxU(), sprite.getMinV(),
-                1, 0, 7.48f - offset / 16f, sprite.getMaxU(), sprite.getMaxV()
+        builder.add(buildQuad(format, transform, EnumFacing.NORTH, sprite, tint,
+                0, 0, 7.5f / 16f, sprite.getMinU(), sprite.getMaxV(),
+                0, 1, 7.5f / 16f, sprite.getMinU(), sprite.getMinV(),
+                1, 1, 7.5f / 16f, sprite.getMaxU(), sprite.getMinV(),
+                1, 0, 7.5f / 16f, sprite.getMaxU(), sprite.getMaxV()
         ));
         // back
-        builder.add(buildQuad(vertexFormat, EnumFacing.SOUTH, sprite, tint,
-                0, 0, 8.52f + offset / 16f, sprite.getMinU(), sprite.getMaxV(),
-                1, 0, 8.52f + offset / 16f, sprite.getMaxU(), sprite.getMaxV(),
-                1, 1, 8.52f + offset / 16f, sprite.getMaxU(), sprite.getMinV(),
-                0, 1, 8.52f + offset / 16f, sprite.getMinU(), sprite.getMinV()
+        builder.add(buildQuad(format, transform, EnumFacing.SOUTH, sprite, tint,
+                0, 0, 8.5f / 16f, sprite.getMinU(), sprite.getMaxV(),
+                1, 0, 8.5f / 16f, sprite.getMaxU(), sprite.getMaxV(),
+                1, 1, 8.5f / 16f, sprite.getMaxU(), sprite.getMinV(),
+                0, 1, 8.5f / 16f, sprite.getMinU(), sprite.getMinV()
         ));
-        return builder;
+        return builder.build();
+    }
+
+    private static boolean isTransparent(int[] pixels, int uMax, int vMax, int u, int v)
+    {
+        return (pixels[u + (vMax - 1 - v) * uMax] >> 24 & 0xFF) == 0;
+    }
+
+    private static void addSideQuad(ImmutableList.Builder<BakedQuad> builder, BitSet faces, VertexFormat format, Optional<TRSRTransformation> transform, EnumFacing side, int tint, TextureAtlasSprite sprite, int uMax, int vMax, int u, int v)
+    {
+        int si = side.ordinal();
+        if(si > 4) si -= 2;
+        int index = (vMax + 1) * ((uMax + 1) * si + u) + v;
+        if(!faces.get(index))
+        {
+            faces.set(index);
+            builder.add(buildSideQuad(format, transform, side, tint, sprite, u, v));
+        }
+    }
+
+    private static BakedQuad buildSideQuad(VertexFormat format, Optional<TRSRTransformation> transform, EnumFacing side, int tint, TextureAtlasSprite sprite, int u, int v)
+    {
+        final float eps0 = 30e-5f;
+        final float eps1 = 45e-5f;
+        final float eps2 = .5f;
+        final float eps3 = .5f;
+        float x0 = (float)u / sprite.getIconWidth();
+        float y0 = (float)v / sprite.getIconHeight();
+        float x1 = x0, y1 = y0;
+        float z1 = 7.5f / 16f - eps1, z2 = 8.5f / 16f + eps1;
+        switch(side)
+        {
+            case WEST:
+                z1 = 8.5f / 16f + eps1;
+                z2 = 7.5f / 16f - eps1;
+            case EAST:
+                y1 = (v + 1f) / sprite.getIconHeight();
+                break;
+            case DOWN:
+                z1 = 8.5f / 16f + eps1;
+                z2 = 7.5f / 16f - eps1;
+            case UP:
+                x1 = (u + 1f) / sprite.getIconWidth();
+                break;
+            default:
+                throw new IllegalArgumentException("can't handle z-oriented side");
+        }
+        float u0 = 16f * (x0 - side.getDirectionVec().getX() * eps3 / sprite.getIconWidth());
+        float u1 = 16f * (x1 - side.getDirectionVec().getX() * eps3 / sprite.getIconWidth());
+        float v0 = 16f * (1f - y0 - side.getDirectionVec().getY() * eps3 / sprite.getIconHeight());
+        float v1 = 16f * (1f - y1 - side.getDirectionVec().getY() * eps3 / sprite.getIconHeight());
+        switch(side)
+        {
+            case WEST:
+            case EAST:
+                y0 -= eps1;
+                y1 += eps1;
+                v0 -= eps2 / sprite.getIconHeight();
+                v1 += eps2 / sprite.getIconHeight();
+                break;
+            case DOWN:
+            case UP:
+                x0 -= eps1;
+                x1 += eps1;
+                u0 += eps2 / sprite.getIconWidth();
+                u1 -= eps2 / sprite.getIconWidth();
+                break;
+            default:
+                throw new IllegalArgumentException("can't handle z-oriented side");
+        }
+        switch(side)
+        {
+            case WEST:
+                x0 += eps0;
+                x1 += eps0;
+                break;
+            case EAST:
+                x0 -= eps0;
+                x1 -= eps0;
+                break;
+            case DOWN:
+                y0 -= eps0;
+                y1 -= eps0;
+                break;
+            case UP:
+                y0 += eps0;
+                y1 += eps0;
+                break;
+            default:
+                throw new IllegalArgumentException("can't handle z-oriented side");
+        }
+        return buildQuad(
+                format, transform, side.getOpposite(), sprite, tint, // getOpposite is related either to the swapping of V direction, or something else
+                x0, y0, z1, sprite.getInterpolatedU(u0), sprite.getInterpolatedV(v0),
+                x1, y1, z1, sprite.getInterpolatedU(u1), sprite.getInterpolatedV(v1),
+                x1, y1, z2, sprite.getInterpolatedU(u1), sprite.getInterpolatedV(v1),
+                x0, y0, z2, sprite.getInterpolatedU(u0), sprite.getInterpolatedV(v0)
+        );
     }
 
     private static BakedQuad buildQuad(
-            VertexFormat format, EnumFacing side, TextureAtlasSprite sprite, int tint,
+            VertexFormat format, Optional<TRSRTransformation> transform, EnumFacing side, TextureAtlasSprite sprite, int tint,
             float x0, float y0, float z0, float u0, float v0,
             float x1, float y1, float z1, float u1, float v1,
             float x2, float y2, float z2, float u2, float v2,
@@ -208,20 +375,34 @@ public class GT_IIconProvider_Item_Model implements IBakedModel {
         builder.setQuadTint(tint);
         builder.setQuadOrientation(side);
         builder.setTexture(sprite);
-        putVertex(builder, format, side, x0, y0, z0, u0, v0);
-        putVertex(builder, format, side, x1, y1, z1, u1, v1);
-        putVertex(builder, format, side, x2, y2, z2, u2, v2);
-        putVertex(builder, format, side, x3, y3, z3, u3, v3);
+        putVertex(builder, format, transform, side, x0, y0, z0, u0, v0);
+        putVertex(builder, format, transform, side, x1, y1, z1, u1, v1);
+        putVertex(builder, format, transform, side, x2, y2, z2, u2, v2);
+        putVertex(builder, format, transform, side, x3, y3, z3, u3, v3);
         return builder.build();
     }
 
-    private static void putVertex(UnpackedBakedQuad.Builder builder, VertexFormat format, EnumFacing side, float x, float y, float z, float u, float v)  {
+    private static void putVertex(UnpackedBakedQuad.Builder builder, VertexFormat format, Optional<TRSRTransformation> transform, EnumFacing side, float x, float y, float z, float u, float v)
+    {
+        Vector4f vec = new Vector4f();
         for(int e = 0; e < format.getElementCount(); e++)
         {
             switch(format.getElement(e).getUsage())
             {
                 case POSITION:
-                    builder.put(e, x, y, z, 1);
+                    if(transform.isPresent())
+                    {
+                        vec.x = x;
+                        vec.y = y;
+                        vec.z = z;
+                        vec.w = 1;
+                        transform.get().getMatrix().transform(vec);
+                        builder.put(e, vec.x, vec.y, vec.z, vec.w);
+                    }
+                    else
+                    {
+                        builder.put(e, x, y, z, 1);
+                    }
                     break;
                 case COLOR:
                     builder.put(e, 1f, 1f, 1f, 1f);

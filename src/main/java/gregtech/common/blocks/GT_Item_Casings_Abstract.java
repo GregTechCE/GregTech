@@ -36,6 +36,11 @@ public abstract class GT_Item_Casings_Abstract
     }
 
     @Override
+    public String getItemStackDisplayName(ItemStack stack) {
+        return GT_LanguageManager.getTranslation(getUnlocalizedName(stack) + ".name");
+    }
+
+    @Override
     public String getUnlocalizedName(ItemStack aStack) {
         return this.block.getUnlocalizedName() + "." + getDamage(aStack);
     }

@@ -15,6 +15,7 @@ import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.info.Info;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,6 +38,9 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -139,6 +143,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     public void readFromNBT(NBTTagCompound aNBT) {
         super.readFromNBT(aNBT);
         setInitialValuesAsNBT(aNBT, (short) 0);
+        issueClientUpdate();
     }
 
     @Override
@@ -273,6 +278,22 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         mRunningThroughTick = true;
         long tTime = System.currentTimeMillis();
 
+        if (isServerSide()) {
+            if (mTickTimer % 20 == 0) {
+                NW.sendPacketToAllPlayersInRange(worldObj, new GT_Packet_TileEntity(
+                        getXCoord(), getYCoord(), getZCoord(), mID,
+                        mCoverSides[0], mCoverSides[1], mCoverSides[2],
+                        mCoverSides[3], mCoverSides[4], mCoverSides[5],
+                        oTextureData = (byte) ((mFacing & 7) | (mActive ? 8 : 0) |
+                                (mRedstone ? 16 : 0) | (mLockUpgrade ? 32 : 0)),
+                        oUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0,
+                        oRedstoneData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0) |
+                                ((mSidedRedstone[2] > 0) ? 4 : 0) | ((mSidedRedstone[3] > 0) ? 8 : 0) |
+                                ((mSidedRedstone[4] > 0) ? 16 : 0) | ((mSidedRedstone[5] > 0) ? 32 : 0)), oColor = mColor),
+                        getXCoord(), getZCoord());
+            }
+        }
+
         for (int tCode = 0; hasValidMetaTileEntity() && tCode >= 0; ) {
             try {
                 switch (tCode) {
@@ -317,7 +338,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                             }
 
                             if (mNeedsUpdate) {
-                                worldObj.notifyBlockOfStateChange(getPos(), getBlockType());
+                                causeChunkUpdate();
                                 mNeedsUpdate = false;
                             }
 
@@ -562,6 +583,17 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         }
 
         mWorkUpdate = mInventoryChanged = mRunningThroughTick = false;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void causeChunkUpdate() {
+        int minX = pos.getX() - 5;
+        int minY = pos.getY() - 5;
+        int minZ = pos.getZ() - 5;
+        int maxX = pos.getX() + 5;
+        int maxY = pos.getY() + 5;
+        int maxZ = pos.getZ() + 5;
+        Minecraft.getMinecraft().renderGlobal.markBlockRangeForRenderUpdate(minX, minY, minZ, maxX, maxY, maxZ);
     }
 
     @Override
@@ -874,6 +906,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public void setActive(boolean aActive) {
+        worldObj.markBlockRangeForRenderUpdate(getPos(), getPos());
         mActive = aActive;
     }
 
@@ -1132,7 +1165,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         }
         if (hasValidMetaTileEntity()) mMetaTileEntity.setItemNBT(tNBT);
         if (!tNBT.hasNoTags()) rStack.setTagCompound(tNBT);
-        return new ArrayList<ItemStack>(Arrays.asList(rStack));
+        return new ArrayList<>(Arrays.asList(rStack));
     }
 
     public int getUpgradeCount() {

@@ -111,8 +111,10 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public TextureAtlasSprite getIcon(IBlockAccess aWorld, BlockPos pos, EnumFacing aSide) {
-        int tMeta = aWorld.getBlockState(pos).getValue(METADATA);
+    public TextureAtlasSprite getIcon(IBlockAccess aWorld, BlockPos pos, EnumFacing aSide, int tMeta) {
+        if(pos == null) {
+            return getIcon(aSide, tMeta);
+        }
         if ((tMeta != 6) && (tMeta != 8) && (tMeta != 9) && (tMeta != 10) && (tMeta != 11) && (tMeta != 12) || (!mConnectedMachineTextures)) {
             return getIcon(aSide, tMeta);
         }

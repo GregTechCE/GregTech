@@ -98,6 +98,11 @@ public class GT_Item_Machines
     }
 
     @Override
+    public String getItemStackDisplayName(ItemStack stack) {
+        return GT_LanguageManager.getTranslation(getUnlocalizedName(stack) + ".name");
+    }
+
+    @Override
     public String getUnlocalizedName(ItemStack aStack) {
         short tDamage = (short) getDamage(aStack);
         if ((tDamage < 0) || (tDamage >= GregTech_API.METATILEENTITIES.length)) {

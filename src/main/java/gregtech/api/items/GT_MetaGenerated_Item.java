@@ -2,6 +2,8 @@ package gregtech.api.items;
 
 import gregtech.common.render.newitems.IItemIconContainerProvider;
 import gregtech.common.render.IIconRegister;
+import gregtech.common.render.newitems.IItemIconProvider;
+import ic2.api.item.IElectricItem;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -10,6 +12,8 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
@@ -51,7 +55,7 @@ import static gregtech.api.enums.GT_Values.*;
  *         <p/>
  *         These Items can also have special RightClick abilities, electric Charge or even be set to become a Food alike Item.
  */
-public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements IItemIconContainerProvider, IIconRegister, IItemColor {
+public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements IElectricItem, IItemIconProvider, IIconRegister, IItemColor {
     /**
      * All instances of this Item Class are listed here.
      * This gets used to register the Renderer to all Items of this Type, if useStandardMetaItemRenderer() returns true.
@@ -109,7 +113,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
             mEnabledItems.set(aID);
             mVisibleItems.set(aID);
             GT_LanguageManager.addStringLocalization(getUnlocalizedName(rStack), aEnglish);
-            GT_LanguageManager.addStringLocalization(getUnlocalizedName(rStack) + ".fuck", aEnglish);
+            GT_LanguageManager.addStringLocalization(getUnlocalizedName(rStack) + ".name", aEnglish);
             GT_LanguageManager.addStringLocalization(getUnlocalizedName(rStack) + ".tooltip", aToolTip);
             List<TC_AspectStack> tAspects = new ArrayList<TC_AspectStack>();
             // Important Stuff to do first
@@ -170,7 +174,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        return I18n.format(getUnlocalizedName(stack) + ".fuck");
+        return GT_LanguageManager.getTranslation(getUnlocalizedName(stack) + ".name");
     }
 
     /**
@@ -236,14 +240,14 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
      */
     public final GT_MetaGenerated_Item setFluidContainerStats(int aMetaValue, long aCapacity, long aStacksize) {
         if (aMetaValue < 0 || aMetaValue >= mOffset + mEnabledItems.length()) return this;
-        if (aCapacity < 0) mElectricStats.remove((short) aMetaValue);
+        if (aCapacity < 0) mFluidContainerStats.remove((short) aMetaValue);
         else mFluidContainerStats.put((short) aMetaValue, new Long[]{aCapacity, Math.max(1, aStacksize)});
         return this;
     }
 
     @Override
     public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-        return makeColor(getRGBa(stack));
+        return makeColor(getRGBa(stack, tintIndex));
     }
 
     private int makeColor(short[] rgba) {
@@ -258,33 +262,24 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
     /**
      * @return the Color Modulation the Material is going to be rendered with.
      */
-    public short[] getRGBa(ItemStack aStack) {
+    public short[] getRGBa(ItemStack aStack, int tint) {
         return Materials._NULL.getRGBA();
     }
 
-    /**
-     * @return the Icon the Material is going to be rendered with.
-     */
-    public IIconContainer getIconContainer(final int aMetaData) {
-        return new IIconContainer() {
-            @Override
-            public TextureAtlasSprite getIcon() {
-                return mIconList[aMetaData][0];
-            }
-
-            @Override
-            public TextureAtlasSprite getOverlayIcon() {
-                if(mIconList[aMetaData].length > 1) {
-                    return mIconList[aMetaData][1];
-                }
-                return null;
-            }
-        };
-    }
-
     @Override
-    public IIconContainer getIconContainer(ItemStack itemStack) {
-        return getIconContainer(itemStack.getItemDamage());
+    public TextureAtlasSprite getIcon(ItemStack stack, int pass) {
+        double maxCharge = getMaxCharge(stack);
+        if(maxCharge != 0) {
+            double currentCharge = getCharge(stack);
+            double chargePercentage = currentCharge / maxCharge;
+            TextureAtlasSprite[] icons = mIconList[stack.getItemDamage() - mOffset];
+            if(icons.length > 1) {
+                int maxIcons = icons.length - 2;
+                int iconIndex = (int) Math.ceil(maxIcons * chargePercentage);
+                return icons[1 + iconIndex];
+            }
+        }
+        return mIconList[stack.getItemDamage() - mOffset][0];
     }
 
     /* ---------- INTERNAL OVERRIDES ---------- */
@@ -355,7 +350,11 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
 
     @Override
     public final Long[] getElectricStats(ItemStack aStack) {
-        return mElectricStats.get((short) aStack.getItemDamage());
+        return getElectricStats((short) aStack.getItemDamage());
+    }
+
+    public final Long[] getElectricStats(short aDamage) {
+        return mElectricStats.get(aDamage);
     }
 
     @Override

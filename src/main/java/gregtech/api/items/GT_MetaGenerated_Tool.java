@@ -1,17 +1,25 @@
 package gregtech.api.items;
 
+import forestry.api.arboriculture.IToolGrafter;
 import gregtech.api.GregTech_API;
 import gregtech.api.enchants.Enchantment_Radioactivity;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GT_Values.*;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDamagableItem;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.render.newitems.IItemIconProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
@@ -39,9 +47,12 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,19 +63,24 @@ import java.util.Random;
  * This is an example on how you can create a Tool ItemStack, in this case a Bismuth Wrench:
  * GT_MetaGenerated_Tool.sInstances.get("gt.metatool.01").getToolWithStats(16, 1, Materials.Bismuth, Materials.Bismuth, null);
  */
-//@Optional.InterfaceList(value = {@Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = MOD_ID_FR), @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = MOD_ID_RC), @Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = "BuildCraft"), @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = "EnderIO")})
-public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements IDamagableItem {//, IToolGrafter, IToolCrowbar, IToolWrench, ITool {
+@Optional.InterfaceList(value = {
+        @Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = GT_Values.MOD_ID_FR)
+        //@Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = MOD_ID_RC),
+        //@Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = "BuildCraft"),
+        //@Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = "EnderIO")
+})
+public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements IDamagableItem, IToolGrafter, IItemIconProvider, IItemColor {//, IToolGrafter, IToolCrowbar, IToolWrench, ITool {
     /**
      * All instances of this Item Class are listed here.
      * This gets used to register the Renderer to all Items of this Type, if useStandardMetaItemRenderer() returns true.
      * <p/>
      * You can also use the unlocalized Name gotten from getUnlocalizedName() as Key if you want to get a specific Item.
      */
-    public static final HashMap<String, GT_MetaGenerated_Tool> sInstances = new HashMap<String, GT_MetaGenerated_Tool>();
+    public static final HashMap<String, GT_MetaGenerated_Tool> sInstances = new HashMap<>();
 
 	/* ---------- CONSTRUCTOR AND MEMBER VARIABLES ---------- */
 
-    public final HashMap<Short, IToolStats> mToolStats = new HashMap<Short, IToolStats>();
+    public final HashMap<Short, IToolStats> mToolStats = new HashMap<>();
 
     /**
      * Creates the Item using these Parameters.
@@ -678,4 +694,77 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
     public boolean getIsRepairable(ItemStack aStack, ItemStack aMaterial) {
         return false;
     }
+
+    @Override
+    public int getColorFromItemstack(ItemStack stack, int tintIndex) {
+        IToolStats toolStats = getToolStats(stack);
+        switch (tintIndex) {
+            case 2:
+            case 3:
+                short[] colorsHead = toolStats.getRGBa(true, stack);
+                if(colorsHead != null)
+                    return makeColor(colorsHead);
+            case 0:
+            case 1:
+                short[] colors = toolStats.getRGBa(false, stack);
+                if(colors != null)
+                    return makeColor(colors);
+            default:
+                return makeColor(Materials._NULL.getRGBA());
+        }
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack stack) {
+        return GT_LanguageManager.getTranslation(getUnlocalizedName(stack) + ".name");
+    }
+
+    private int makeColor(short[] rgba) {
+        short[] nullRGBA = Materials._NULL.getRGBA();
+        short red = rgba[0] > 0 && 255 > rgba[0] ? rgba[0] : nullRGBA[0];
+        short green = rgba[1] > 0 && 255 > rgba[1] ? rgba[1] : nullRGBA[1];
+        short blue = rgba[2] > 0 && 255 > rgba[2] ? rgba[2] : nullRGBA[2];
+        short alpha = rgba[3] > 0 && 255 > rgba[3] ? rgba[3] : nullRGBA[3];
+        return new Color(red, green, blue, alpha).getRGB();
+    }
+
+    @Override
+    public TextureAtlasSprite getIcon(ItemStack stack, int pass) {
+        IToolStats toolStats = getToolStats(stack);
+        IIconContainer head = toolStats.getIcon(true, stack);
+        IIconContainer handle = toolStats.getIcon(false, stack);
+        if((pass == 0 || pass == 1) && handle == null) {
+            return null;
+        }
+        if((pass == 2 || pass == 3) && head == null) {
+            return null;
+        }
+        switch (pass) {
+            case 2: return head.getIcon();
+            case 3: return head.getOverlayIcon();
+            case 0: return handle.getIcon();
+            case 1: return handle.getOverlayIcon();
+            default: return null;
+        }
+    }
+
+    @Override
+    public int getRenderPasses(ItemStack stack) {
+        return 3;
+    }
+
+    @Override
+    public boolean isHandheld(ItemStack stack) {
+        return true;
+    }
+
+    @Override
+    public float getSaplingModifier(ItemStack stack, World world, EntityPlayer player, BlockPos pos) {
+        IToolStats toolStats = getToolStats(stack);
+        if(toolStats.isGrafter()) {
+            return 0.78F;
+        }
+        return 0.0F;
+    }
+
 }

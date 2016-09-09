@@ -2,6 +2,7 @@ package gregtech.common.blocks;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IDebugableBlock;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -16,9 +17,12 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.IIconRegister;
 import gregtech.common.render.newblocks.ITextureBlockIconProvider;
+import gregtech.common.render.newitems.GT_IIconProvider_Item_Model;
+import net.minecraft.block.BlockGlass;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -30,15 +34,18 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -194,7 +201,11 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     public ITexture[] getItemblockTexture(EntityPlayer player, ItemStack itemStack, EnumFacing side) {
         int tDamage = itemStack.getItemDamage();
         if(GregTech_API.METATILEENTITIES.length > tDamage) {
-            return GregTech_API.METATILEENTITIES[tDamage].getTexture(null, (byte) side.getIndex(), (byte) 0, (byte) 0, false, false);
+            if (GregTech_API.METATILEENTITIES[tDamage] != null) {
+                return GregTech_API.METATILEENTITIES[tDamage].getTexture(null, (byte) side.getIndex(), (byte) 0, (byte) 0, false, false);
+            } else {
+                System.out.println("METATILEENTITY WAS NULL FOR MACHINE " + tDamage);
+            }
         }
         return new ITexture[0];
     }
@@ -234,13 +245,22 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         super.onEntityCollidedWithBlock(worldIn, pos, state, entityIn);
     }
 
+    @Override
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+        IGregTechTileEntity greg = getGregTile(world, pos);
+        if(greg != null) {
+            ArrayList<ItemStack> drops = greg.getDrops();
+            if(!drops.isEmpty()) return drops.get(0);
+        }
+        return null;
+    }
+
+
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(TextureMap aIconRegister) {
         if (GregTech_API.sPostloadFinished) {
-            GT_Log.out.println("GT_Mod: Setting up Icon Register for Blocks");
-
             GT_Log.out.println("GT_Mod: Registering MetaTileEntity specific Textures");
             for (IMetaTileEntity tMetaTileEntity : GregTech_API.METATILEENTITIES) {
                 try {
@@ -251,18 +271,6 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
                     e.printStackTrace(GT_Log.err);
                 }
             }
-
-            GT_Log.out.println("GT_Mod: Starting Block Icon Load Phase");
-            System.out.println("GT_Mod: Starting Block Icon Load Phase");
-            for (Runnable tRunnable : GregTech_API.sGTBlockIconload) {
-                try {
-                    tRunnable.run();
-                } catch (Throwable e) {
-                    e.printStackTrace(GT_Log.err);
-                }
-            }
-            GT_Log.out.println("GT_Mod: Finished Block Icon Load Phase");
-            System.out.println("GT_Mod: Finished Block Icon Load Phase");
         }
     }
 
@@ -295,8 +303,10 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         if(gregTechTileEntity.getTimer() < 50L) {
             return false;
         }
-        if(!worldIn.isRemote && gregTechTileEntity.isUseableByPlayer(playerIn))
+        if(!worldIn.isRemote && gregTechTileEntity.isUseableByPlayer(playerIn)) {
+            gregTechTileEntity.onRightclick(playerIn, (byte) side.getIndex(), hitX, hitY, hitZ, hand);
             return true;
+        }
         return false;
     }
 
@@ -520,4 +530,12 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         }
         return false;
     }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
+    }
+
+
 }

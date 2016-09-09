@@ -1,6 +1,7 @@
 package gregtech.common.blocks;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -14,6 +15,11 @@ public class GT_Item_Storage extends ItemBlock {
         setMaxDamage(0);
         setHasSubtypes(true);
         setCreativeTab(GregTech_API.TAB_GREGTECH_MATERIALS);
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack stack) {
+        return GT_LanguageManager.getTranslation(getUnlocalizedName(stack) + ".name");
     }
 
     @Override

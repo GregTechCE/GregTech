@@ -21,6 +21,11 @@ public class GT_Item_Stones_Abstract extends ItemBlock {
     }
 
     @Override
+    public String getItemStackDisplayName(ItemStack stack) {
+        return GT_LanguageManager.getTranslation(getUnlocalizedName(stack) + ".name");
+    }
+
+    @Override
     public String getUnlocalizedName(ItemStack aStack) {
         return this.block.getUnlocalizedName() + "." + getDamage(aStack);
     }

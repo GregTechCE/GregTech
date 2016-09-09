@@ -185,9 +185,7 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
                 if (aBaseMetaTileEntity.getUniversalEnergyStored() < maxEUOutput() + getMinimumStoredEU()) {
                     mInventory[getStackDisplaySlot()] = null;
                 } else {
-                    if (mInventory[getStackDisplaySlot()] == null)
-                        mInventory[getStackDisplaySlot()] = new ItemStack(Blocks.FIRE, 1);
-                    mInventory[getStackDisplaySlot()].setStackDisplayName("Generating: " + (aBaseMetaTileEntity.getUniversalEnergyStored() - getMinimumStoredEU()) + " EU");
+                    mInventory[getStackDisplaySlot()] = null;
                 }
             } else {
                 int tFuelValue = getFuelValue(mFluid), tConsumed = consumedFluidPerOperation(mFluid);

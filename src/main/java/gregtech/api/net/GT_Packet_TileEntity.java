@@ -3,11 +3,13 @@ package gregtech.api.net;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import gregtech.api.GregTech_API;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 public class GT_Packet_TileEntity extends GT_Packet {
     private int mX, mZ, mC0, mC1, mC2, mC3, mC4, mC5;
@@ -69,12 +71,17 @@ public class GT_Packet_TileEntity extends GT_Packet {
     public void process(IBlockAccess aWorld) {
         if (aWorld != null) {
             TileEntity tTileEntity = aWorld.getTileEntity(new BlockPos(mX, mY, mZ));
-            if (tTileEntity != null) {
-                if (tTileEntity instanceof BaseMetaTileEntity)
-                    ((BaseMetaTileEntity) tTileEntity).receiveMetaTileEntityData(mID, mC0, mC1, mC2, mC3, mC4, mC5, mTexture, mUpdate, mRedstone, mColor);
-                else if (tTileEntity instanceof BaseMetaPipeEntity)
-                    ((BaseMetaPipeEntity) tTileEntity).receiveMetaTileEntityData(mID, mC0, mC1, mC2, mC3, mC4, mC5, mTexture, mUpdate, mRedstone, mColor);
+            if(tTileEntity == null) {
+                tTileEntity = GregTech_API.constructBaseMetaTileEntity();
+                tTileEntity.setWorldObj((World) aWorld);
+                tTileEntity.setPos(new BlockPos(mX, mY, mZ));
+                ((World) aWorld).setTileEntity(new BlockPos(mX, mY, mZ), tTileEntity);
             }
+
+            if (tTileEntity instanceof BaseMetaTileEntity)
+                ((BaseMetaTileEntity) tTileEntity).receiveMetaTileEntityData(mID, mC0, mC1, mC2, mC3, mC4, mC5, mTexture, mUpdate, mRedstone, mColor);
+            else if (tTileEntity instanceof BaseMetaPipeEntity)
+                ((BaseMetaPipeEntity) tTileEntity).receiveMetaTileEntityData(mID, mC0, mC1, mC2, mC3, mC4, mC5, mTexture, mUpdate, mRedstone, mColor);
         }
     }
 

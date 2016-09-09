@@ -256,6 +256,8 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
                 return new ITexture[]{((GT_Block_Ores_Abstract) aBlock).getTextureSet()[((this.mMetaData / 1000) % 16)], aIconSet};
             }
         }
-        return new ITexture[]{new GT_CopiedBlockTexture(Blocks.STONE, 0, 0), new GT_RenderedTexture(gregtech.api.enums.TextureSet.SET_NONE.mTextures[OrePrefixes.ore.mTextureIndex])};
+        return new ITexture[]{
+                new GT_RenderedTexture("minecraft:blocks/stone", null),
+                new GT_RenderedTexture(gregtech.api.enums.TextureSet.SET_NONE.mTextures[OrePrefixes.ore.mTextureIndex])};
     }
 }

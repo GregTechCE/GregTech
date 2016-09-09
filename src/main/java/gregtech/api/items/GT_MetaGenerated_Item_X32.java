@@ -9,12 +9,14 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -73,9 +75,12 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
      * @return the Color Modulation the Material is going to be rendered with.
      */
     @Override
-    public short[] getRGBa(ItemStack aStack) {
-        Materials tMaterial = GregTech_API.sGeneratedMaterials[getDamage(aStack) % 1000];
-        return tMaterial == null ? Materials._NULL.mRGBa : tMaterial.mRGBa;
+    public short[] getRGBa(ItemStack aStack, int tint) {
+        if(aStack.getItemDamage() < 32000 && tint == 0) {
+            Materials tMaterial = GregTech_API.sGeneratedMaterials[getDamage(aStack) % 1000];
+            return tMaterial == null ? Materials._NULL.mRGBa : tMaterial.mRGBa;
+        }
+        return super.getRGBa(aStack, tint);
     }
 
     /**
@@ -147,21 +152,32 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
         super.getSubItems(var1, aCreativeTab, aList);
     }
 
-    public final IIconContainer getIconFromDamage(int aMetaData) {
-        if (aMetaData < 0) return null;
-        if (aMetaData < 32000) {
+    public final IIconContainer getMaterialIcon(int aMetaData) {
             Materials tMaterial = GregTech_API.sGeneratedMaterials[aMetaData % 1000];
             if (tMaterial == null) return null;
             IIconContainer tIcon = getIconContainer(aMetaData, tMaterial);
             if (tIcon != null) return tIcon;
             return null;
-        }
-        return aMetaData - 32000 < mIconList.length ? GT_Utility.sprite2Container(mIconList[aMetaData - 32000][0]) : null;
     }
 
     @Override
-    public IIconContainer getIconContainer(ItemStack itemStack) {
-        return getIconFromDamage(itemStack.getItemDamage());
+    public TextureAtlasSprite getIcon(ItemStack stack, int pass) {
+        int tDamage = stack.getItemDamage();
+        if (tDamage < 32000) {
+            IIconContainer iconContainer = getMaterialIcon(tDamage);
+            switch (pass) {
+                case 0:
+                    return iconContainer.getIcon();
+                case 1:
+                    return iconContainer.getOverlayIcon();
+            }
+        }
+        return super.getIcon(stack, pass);
+    }
+
+    @Override
+    public int getRenderPasses(ItemStack stack) {
+        return stack.getItemDamage() < 32000 ? 1 : 0 ;
     }
 
     @Override
@@ -171,4 +187,5 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
             return Math.min(super.getItemStackLimit(aStack), mGeneratedPrefixList[tDamage / 1000].mDefaultStackSize);
         return super.getItemStackLimit(aStack);
     }
+
 }

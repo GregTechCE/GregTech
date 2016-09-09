@@ -46,21 +46,21 @@ public class GT_Block_Ores extends GT_Block_Ores_Abstract {
     @Override
     public ITexture[] getTextureSet() { //Must have 16 entries.
         return new ITexture[]{
-                new GT_CopiedBlockTexture(Blocks.STONE, 0, 0), 
-                new GT_CopiedBlockTexture(Blocks.NETHERRACK, 0, 0),
-                new GT_CopiedBlockTexture(Blocks.END_STONE, 0, 0),
+                new GT_RenderedTexture("minecraft:blocks/stone", null),
+                new GT_RenderedTexture("minecraft:blocks/netherrack", null),
+                new GT_RenderedTexture("minecraft:blocks/end_stone", null),
                 new GT_RenderedTexture(Textures.BlockIcons.GRANITE_BLACK_STONE),
                 new GT_RenderedTexture(Textures.BlockIcons.GRANITE_RED_STONE), 
                 new GT_RenderedTexture(Textures.BlockIcons.MARBLE_STONE),
                 new GT_RenderedTexture(Textures.BlockIcons.BASALT_STONE),
-                new GT_CopiedBlockTexture(Blocks.STONE, 0, 0), 
-                new GT_CopiedBlockTexture(Blocks.STONE, 0, 0), 
-                new GT_CopiedBlockTexture(Blocks.STONE, 0, 0),
-                new GT_CopiedBlockTexture(Blocks.STONE, 0, 0), 
-                new GT_CopiedBlockTexture(Blocks.STONE, 0, 0), 
-                new GT_CopiedBlockTexture(Blocks.STONE, 0, 0), 
-                new GT_CopiedBlockTexture(Blocks.STONE, 0, 0), 
-                new GT_CopiedBlockTexture(Blocks.STONE, 0, 0),
-                new GT_CopiedBlockTexture(Blocks.STONE, 0, 0)};
+                new GT_RenderedTexture("minecraft:blocks/stone", null),
+                new GT_RenderedTexture("minecraft:blocks/stone", null),
+                new GT_RenderedTexture("minecraft:blocks/stone", null),
+                new GT_RenderedTexture("minecraft:blocks/stone", null),
+                new GT_RenderedTexture("minecraft:blocks/stone", null),
+                new GT_RenderedTexture("minecraft:blocks/stone", null),
+                new GT_RenderedTexture("minecraft:blocks/stone", null),
+                new GT_RenderedTexture("minecraft:blocks/stone", null),
+                new GT_RenderedTexture("minecraft:blocks/stone", null)};
     }
 }

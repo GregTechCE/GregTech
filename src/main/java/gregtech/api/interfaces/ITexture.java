@@ -11,7 +11,5 @@ public interface ITexture {
 
     public List<BakedQuad> getQuads(Block aBlock, BlockPos blockPos, EnumFacing side, int tintOffset);
 
-    public int applyColor(int tint);
-
     public boolean isValidTexture();
 }

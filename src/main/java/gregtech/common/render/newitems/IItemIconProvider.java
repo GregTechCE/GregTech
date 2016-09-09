@@ -14,4 +14,8 @@ public interface IItemIconProvider {
         return 0;
     }
 
+    default boolean isHandheld(ItemStack stack) {
+        return false;
+    }
+
 }

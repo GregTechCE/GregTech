@@ -65,7 +65,10 @@ public class GT_LanguageManager implements IResourceManagerReloadListener {
 
     public static String getTranslation(String aKey) {
         if (aKey == null) return E;
-        return I18n.format(aKey.trim());
+        if(LOCALIZATION.containsKey(aKey)) {
+            return LOCALIZATION.get(aKey);
+        }
+        return I18n.format(aKey);
     }
 
     public static String getTranslation(String aKey, String aSeperator) {

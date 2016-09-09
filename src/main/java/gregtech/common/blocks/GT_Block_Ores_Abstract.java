@@ -9,6 +9,7 @@ import mezz.jei.api.IItemBlacklist;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
@@ -224,7 +225,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
             return new ITexture[]{getTextureSet()[(mMetaData / 1000) % 16], aIconSet};
         }
         return new ITexture[]{
-                new GT_CopiedBlockTexture(Blocks.STONE, 0, 0),
+                new GT_RenderedTexture("minecraft:blocks/stone", null),
                 new GT_RenderedTexture(TextureSet.SET_NONE.mTextures[OrePrefixes.ore.mTextureIndex])};
     }
 
@@ -283,5 +284,10 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
                 aList.add(new ItemStack(aItem, 1, i + 23000));
             }
         }
+    }
+
+    @Override
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
     }
 }
