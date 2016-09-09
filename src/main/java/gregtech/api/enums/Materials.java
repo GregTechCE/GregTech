@@ -5,7 +5,7 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.interfaces.IColorModulationContainer;
-import gregtech.api.interfaces.IMaterialRegistrator;
+import gregtech.api.interfaces.IMaterialHandler;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.objects.MaterialStack;
@@ -22,7 +22,12 @@ import static gregtech.api.enums.GT_Values.M;
 public class Materials implements IColorModulationContainer, ISubTagContainer {
     private static Materials[] MATERIALS_ARRAY = new Materials[]{};
     private static final Map<String, Materials> MATERIALS_MAP = new HashMap<String, Materials>();
-    private static final List<IMaterialRegistrator> mMaterialRegistrators = new ArrayList<IMaterialRegistrator>();
+    public static final List<IMaterialHandler> mMaterialHandlers = new ArrayList<IMaterialHandler>();
+    /**
+     * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc) that looped over the old materials enum
+     */
+    @Deprecated
+    public static final Collection<Materials> VALUES = new HashSet<Materials>(Arrays.asList(MATERIALS_ARRAY));
 
     /**
      * This is the Default Material returned in case no Material has been found or a NullPointer has been inserted at a location where it shouldn't happen.
@@ -63,7 +68,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Hydrogen = new Materials(1, TextureSet.SET_FLUID, 1.0F, 0, 2, 16|32, 0, 0, 255, 240, "Hydrogen", "Hydrogen", 1, 15, 14, 0, false, true, 2, 1, 1, Dyes.dyeBlue, Element.H, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1)));
     public static Materials Helium = new Materials(4, TextureSet.SET_FLUID, 1.0F, 0, 2, 16|32, 255, 255, 0, 240, "Helium", "Helium", 0, 0, 1, 0, false, true, 5, 1, 1, Dyes.dyeYellow, Element.He, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.AER, 2)));
     public static Materials Helium_3 = new Materials(5, TextureSet.SET_FLUID, 1.0F, 0, 2, 16|32, 255, 255, 0, 240, "Helium_3", "Helium-3", 0, 0, 1, 0, false, true, 10, 1, 1, Dyes.dyeYellow, Element.He_3, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.AER, 3)));
-    public static Materials Indium = new Materials(56, TextureSet.SET_METALLIC, 1.0F, 0, 2, 1|2|8|32, 64, 0, 128, 0, "Indium", "Indium", 0, 0, 429, 0, false, false, 4, 1, 1, Dyes.dyeGray, Element.In, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.RADIO, 1)));
+    public static Materials Indium = new Materials(-1/*56*/, TextureSet.SET_METALLIC, 1.0F, 0, 2, 1|2|8|32, 64, 0, 128, 0, "Indium", "Indium", 0, 0, 429, 0, false, false, 4, 1, 1, Dyes.dyeGray, Element.In, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.RADIO, 1)));
     public static Materials Iridium = new Materials(84, TextureSet.SET_DULL, 6.0F, 2560, 3, 1|2|8|32|64|128, 240, 240, 245, 0, "Iridium", "Iridium", 0, 0, 2719, 2719, true, false, 10, 1, 1, Dyes.dyeWhite, Element.Ir, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.MACHINA, 1)));
     public static Materials Iron = new Materials(32, TextureSet.SET_METALLIC, 6.0F, 256, 2, 1|2|8|32|64|128, 200, 200, 200, 0, "Iron", "Iron", 0, 0, 1811, 0, false, false, 3, 1, 1, Dyes.dyeLightGray, Element.Fe, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 3)));
     public static Materials Lanthanum = new Materials(-1/*64 El*/, TextureSet.SET_METALLIC, 1.0F, 0, 2, 1|2|8|32, 255, 255, 255, 0, "Lanthanum", "Lanthanum", 0, 0, 1193, 1193, true, false, 4, 1, 1, Dyes._NULL, Element.La, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.RADIO, 1)));
@@ -91,15 +96,15 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Praseodymium = new Materials(-1/*66 El*/, TextureSet.SET_METALLIC, 1.0F, 0, 2, 1|2|8|32, 255, 255, 255, 0, "Praseodymium", "Praseodymium", 0, 0, 1208, 1208, true, false, 4, 1, 1, Dyes._NULL, Element.Pr, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.RADIO, 1)));
     public static Materials Promethium = new Materials(-1/*68 El*/, TextureSet.SET_METALLIC, 1.0F, 0, 2, 1|2|8|32, 255, 255, 255, 0, "Promethium", "Promethium", 0, 0, 1315, 1315, true, false, 4, 1, 1, Dyes._NULL, Element.Pm, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.RADIO, 1)));
     public static Materials Radon = new Materials(93, TextureSet.SET_FLUID, 1.0F, 0, 2, 16|32, 255, 0, 255, 240, "Radon", "Radon", 0, 0, 202, 0, false, true, 5, 1, 1, Dyes.dyePurple, Element.Rn, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.AER, 1), new TC_AspectStack(TC_Aspects.RADIO, 1)));
-    public static Materials Rubidium = new Materials(43, TextureSet.SET_METALLIC, 1.0F, 0, 2, 1|2|8|32, 240, 30, 30, 0, "Rubidium", "Rubidium", 0, 0, 312, 0, false, false, 4, 1, 1, Dyes.dyeRed, Element.Rb, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.VITREUS, 1)));
+    public static Materials Rubidium = new Materials(-1/*43*/, TextureSet.SET_METALLIC, 1.0F, 0, 2, 1|2|8|32, 240, 30, 30, 0, "Rubidium", "Rubidium", 0, 0, 312, 0, false, false, 4, 1, 1, Dyes.dyeRed, Element.Rb, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.VITREUS, 1)));
     public static Materials Samarium = new Materials(-1/*69 El*/, TextureSet.SET_METALLIC, 1.0F, 0, 2, 1|2|8|32, 255, 255, 255, 0, "Samarium", "Samarium", 0, 0, 1345, 1345, true, false, 4, 1, 1, Dyes._NULL, Element.Sm, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.RADIO, 1)));
-    public static Materials Scandium = new Materials(27, TextureSet.SET_METALLIC, 1.0F, 0, 2, 1|2|8|32, 255, 255, 255, 0, "Scandium", "Scandium", 0, 0, 1814, 1814, true, false, 2, 1, 1, Dyes.dyeYellow, Element.Sc, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.RADIO, 1)));
+    public static Materials Scandium = new Materials(-1/*27*/, TextureSet.SET_METALLIC, 1.0F, 0, 2, 1|2|8|32, 255, 255, 255, 0, "Scandium", "Scandium", 0, 0, 1814, 1814, true, false, 2, 1, 1, Dyes.dyeYellow, Element.Sc, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.RADIO, 1)));
     public static Materials Silicon = new Materials(20, TextureSet.SET_METALLIC, 1.0F, 0, 2, 1|2|8|32, 60, 60, 80, 0, "Silicon", "Silicon", 0, 0, 1687, 1687, true, false, 1, 1, 1, Dyes.dyeBlack, Element.Si, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.TENEBRAE, 1)));
     public static Materials Silver = new Materials(54, TextureSet.SET_SHINY, 10.0F, 64, 2, 1|2|8|32|64|128, 220, 220, 255, 0, "Silver", "Silver", 0, 0, 1234, 0, false, false, 3, 1, 1, Dyes.dyeLightGray, Element.Ag, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.LUCRUM, 1)));
     public static Materials Sodium = new Materials(17, TextureSet.SET_METALLIC, 1.0F, 0, 2, 1 |32, 0, 0, 150, 0, "Sodium", "Sodium", 0, 0, 370, 0, false, false, 1, 1, 1, Dyes.dyeBlue, Element.Na, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 2), new TC_AspectStack(TC_Aspects.LUX, 1)));
-    public static Materials Strontium = new Materials(44, TextureSet.SET_METALLIC, 1.0F, 0, 2, 1 |8|32, 200, 200, 200, 0, "Strontium", "Strontium", 0, 0, 1050, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Element.Sr, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.STRONTIO, 1)));
+    public static Materials Strontium = new Materials(-1/*44*/, TextureSet.SET_METALLIC, 1.0F, 0, 2, 1 |8|32, 200, 200, 200, 0, "Strontium", "Strontium", 0, 0, 1050, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Element.Sr, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.STRONTIO, 1)));
     public static Materials Sulfur = new Materials(22, TextureSet.SET_DULL, 1.0F, 0, 2, 1 |8|32, 200, 200, 0, 0, "Sulfur", "Sulfur", 0, 0, 388, 0, false, false, 2, 1, 1, Dyes.dyeYellow, Element.S, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1)));
-    public static Materials Tantalum = new Materials(-1/*80 El*/, TextureSet.SET_METALLIC, 1.0F, 0, 2, 1|2|8|32, 255, 255, 255, 0, "Tantalum", "Tantalum", 0, 0, 3290, 0, false, false, 4, 1, 1, Dyes._NULL, Element.Ta, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.VINCULUM, 1)));
+    public static Materials Tantalum = new Materials(80, TextureSet.SET_METALLIC, 1.0F, 0, 2, 1|2|8|32, 255, 255, 255, 0, "Tantalum", "Tantalum", 0, 0, 3290, 0, false, false, 4, 1, 1, Dyes._NULL, Element.Ta, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.VINCULUM, 1)));
     public static Materials Tellurium = new Materials(-1/*59 El*/, TextureSet.SET_METALLIC, 1.0F, 0, 2, 1|2|8|32, 255, 255, 255, 0, "Tellurium", "Tellurium", 0, 0, 722, 0, false, false, 4, 1, 1, Dyes.dyeGray, Element.Te, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.RADIO, 1)));
     public static Materials Terbium = new Materials(-1/*72 El*/, TextureSet.SET_METALLIC, 1.0F, 0, 2, 1|2|8|32, 255, 255, 255, 0, "Terbium", "Terbium", 0, 0, 1629, 1629, true, false, 4, 1, 1, Dyes._NULL, Element.Tb, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.RADIO, 1)));
     public static Materials Thorium = new Materials(96, TextureSet.SET_SHINY, 6.0F, 512, 2, 1|2|8|32|64, 0, 30, 0, 0, "Thorium", "Thorium", 0, 0, 2115, 0, false, false, 4, 1, 1, Dyes.dyeBlack, Element.Th, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.RADIO, 1)));
@@ -793,7 +798,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public boolean mHasPlasma = false, mHasGas = false, mCustomOre = false;
     public Fluid mSolid = null, mFluid = null, mGas = null, mPlasma = null;
     public static List<OrePrefixes> mDefaultComponents = new LinkedList<>(Arrays.asList(OrePrefixes.dustTiny, OrePrefixes.dustSmall, OrePrefixes.dust, OrePrefixes.dustImpure, OrePrefixes.dustPure, OrePrefixes.crushed, OrePrefixes.crushedPurified, OrePrefixes.crushedCentrifuged, OrePrefixes.gem, OrePrefixes.nugget, OrePrefixes.ingot, OrePrefixes.ingotHot, OrePrefixes.ingotDouble, OrePrefixes.ingotTriple, OrePrefixes.ingotQuadruple, OrePrefixes.ingotQuintuple, OrePrefixes.plate, OrePrefixes.plateDouble, OrePrefixes.plateTriple, OrePrefixes.plateQuadruple, OrePrefixes.plateQuintuple, OrePrefixes.plateDense, OrePrefixes.stick, OrePrefixes.lens, OrePrefixes.round, OrePrefixes.bolt, OrePrefixes.screw, OrePrefixes.ring, OrePrefixes.foil, OrePrefixes.cell, OrePrefixes.cellPlasma, OrePrefixes.toolHeadSword, OrePrefixes.toolHeadPickaxe, OrePrefixes.toolHeadShovel, OrePrefixes.toolHeadAxe, OrePrefixes.toolHeadHoe, OrePrefixes.toolHeadHammer, OrePrefixes.toolHeadFile, OrePrefixes.toolHeadSaw, OrePrefixes.toolHeadDrill, OrePrefixes.toolHeadChainsaw, OrePrefixes.toolHeadWrench, OrePrefixes.toolHeadUniversalSpade, OrePrefixes.toolHeadSense, OrePrefixes.toolHeadPlow, OrePrefixes.toolHeadArrow, OrePrefixes.toolHeadBuzzSaw, OrePrefixes.turbineBlade, OrePrefixes.wireFine, OrePrefixes.gearGtSmall, OrePrefixes.rotor, OrePrefixes.stickLong, OrePrefixes.springSmall, OrePrefixes.spring, OrePrefixes.arrowGtWood, OrePrefixes.arrowGtPlastic, OrePrefixes.gemChipped, OrePrefixes.gemFlawed, OrePrefixes.gemFlawless, OrePrefixes.gemExquisite, OrePrefixes.gearGt, OrePrefixes.crateGtDust, OrePrefixes.crateGtIngot, OrePrefixes.crateGtGem, OrePrefixes.crateGtPlate));
-    public List<OrePrefixes> mComponents = new LinkedList<>(Arrays.asList(OrePrefixes.dustTiny, OrePrefixes.dustSmall, OrePrefixes.dust, OrePrefixes.dustImpure, OrePrefixes.dustPure, OrePrefixes.crushed, OrePrefixes.crushedPurified, OrePrefixes.crushedCentrifuged, OrePrefixes.gem, OrePrefixes.nugget, OrePrefixes.ingot, OrePrefixes.ingotHot, OrePrefixes.ingotDouble, OrePrefixes.ingotTriple, OrePrefixes.ingotQuadruple, OrePrefixes.ingotQuintuple, OrePrefixes.plate, OrePrefixes.plateDouble, OrePrefixes.plateTriple, OrePrefixes.plateQuadruple, OrePrefixes.plateQuintuple, OrePrefixes.plateDense, OrePrefixes.stick, OrePrefixes.lens, OrePrefixes.round, OrePrefixes.bolt, OrePrefixes.screw, OrePrefixes.ring, OrePrefixes.foil, OrePrefixes.cell, OrePrefixes.cellPlasma, OrePrefixes.toolHeadSword, OrePrefixes.toolHeadPickaxe, OrePrefixes.toolHeadShovel, OrePrefixes.toolHeadAxe, OrePrefixes.toolHeadHoe, OrePrefixes.toolHeadHammer, OrePrefixes.toolHeadFile, OrePrefixes.toolHeadSaw, OrePrefixes.toolHeadDrill, OrePrefixes.toolHeadChainsaw, OrePrefixes.toolHeadWrench, OrePrefixes.toolHeadUniversalSpade, OrePrefixes.toolHeadSense, OrePrefixes.toolHeadPlow, OrePrefixes.toolHeadArrow, OrePrefixes.toolHeadBuzzSaw, OrePrefixes.turbineBlade, OrePrefixes.wireFine, OrePrefixes.gearGtSmall, OrePrefixes.rotor, OrePrefixes.stickLong, OrePrefixes.springSmall, OrePrefixes.spring, OrePrefixes.arrowGtWood, OrePrefixes.arrowGtPlastic, OrePrefixes.gemChipped, OrePrefixes.gemFlawed, OrePrefixes.gemFlawless, OrePrefixes.gemExquisite, OrePrefixes.gearGt, OrePrefixes.crateGtDust, OrePrefixes.crateGtIngot, OrePrefixes.crateGtGem, OrePrefixes.crateGtPlate));
 
     /**
      * This Fluid is used as standard Unit for Molten Materials. 1296 is a Molten Block, that means 144 is one Material Unit worth of fluid.
@@ -1326,12 +1330,12 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     public static void init() {
-        for (IMaterialRegistrator aRegistrator : mMaterialRegistrators) {
-            aRegistrator.onMaterialsInit();
+        for (IMaterialHandler aRegistrator : mMaterialHandlers) {
+            aRegistrator.onMaterialsInit(); //This is where addon mods can and manipulate materials
         }
-        initMaterialProperties(); /** No more material addition or manipulation past this point! **/
-        initMaterialComponents();
-        MATERIALS_ARRAY = MATERIALS_MAP.values().toArray(new Materials[MATERIALS_MAP.size()]);
+        initMaterialProperties(); //No more material addition or manipulation should be done past this point!
+        MATERIALS_ARRAY = MATERIALS_MAP.values().toArray(new Materials[MATERIALS_MAP.size()]); //Generate standard object array. This is a lot faster to loop over.
+        OrePrefixes.initMaterialComponents();
         for (Materials aMaterial : MATERIALS_ARRAY) {
             if (aMaterial.mMetaItemSubID >= 0) {
                 if (aMaterial.mMetaItemSubID < 1000) {
@@ -1347,149 +1351,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 GregTech_API.sGeneratedMaterials[i] = new Materials(i, TextureSet.SET_NONE, 1.0F, 0, 2, 1|2|4|8|16|32|64|128, 92, 0, 168, 0, "TestMat" + i, 0, 0, -1, 0, false, false, 3, 1, 1, Dyes._NULL, "testmat");
             }
         }*/
-    }
-
-    public static void initMaterialComponents() {
-        boolean enablePerItemSettings = GregTech_API.sMaterialComponents.get("general", "enablePerItemSettings", false);
-        boolean enableAllPlates = GregTech_API.sMaterialComponents.get("globalcomponents", "enableAllPlates", false);
-        boolean enableAllDoubleIngots = GregTech_API.sMaterialComponents.get("globalcomponents", "enableAllDoubleIngots", false);
-        boolean enableAllTripleIngots = GregTech_API.sMaterialComponents.get("globalcomponents", "enableAllTripleIngots", false);
-        boolean enableAllQuadIngots = GregTech_API.sMaterialComponents.get("globalcomponents", "enableAllQuadIngots", false);
-        boolean enableAllQuinIngots = GregTech_API.sMaterialComponents.get("globalcomponents", "enableAllQuinIngots", false);
-        boolean enableAllDoublePlates = GregTech_API.sMaterialComponents.get("globalcomponents", "enableAllDoublePlates", false);
-        boolean enableAllTriplePlates = GregTech_API.sMaterialComponents.get("globalcomponents", "enableAllTriplePlates", false);
-        boolean enableAllQuadPlates = GregTech_API.sMaterialComponents.get("globalcomponents", "enableAllQuadPlates", false);
-        boolean enableAllQuinPlates = GregTech_API.sMaterialComponents.get("globalcomponents", "enableAllQuinPlates", false);
-        boolean enableAllDensePlates = GregTech_API.sMaterialComponents.get("globalcomponents", "enableAllDensePlates", false);
-        boolean enableAllGears = GregTech_API.sMaterialComponents.get("globalcomponents", "enableAllGears", false);
-        boolean enableAllSmallGears = GregTech_API.sMaterialComponents.get("globalcomponents", "enableAllSmallGears", false);
-        boolean enableAllRings = GregTech_API.sMaterialComponents.get("globalcomponents", "enableAllRings", false);
-        boolean enableAllSprings = GregTech_API.sMaterialComponents.get("globalcomponents", "enableAllSprings", false);
-        boolean enableAllSmallSprings = GregTech_API.sMaterialComponents.get("globalcomponents", "enableAllSmallSprings", false);
-        boolean enableAllRounds = GregTech_API.sMaterialComponents.get("globalcomponents", "enableAllRounds", false);
-        boolean enableAllRotors = GregTech_API.sMaterialComponents.get("globalcomponents", "enableAllRotors", false);
-        boolean enableAllFineWires = GregTech_API.sMaterialComponents.get("globalcomponents", "enableAllFineWires", false);
-        boolean enableAllFoil = GregTech_API.sMaterialComponents.get("globalcomponents", "enableAllFoil", false);
-        boolean enableAllArrows = GregTech_API.sMaterialComponents.get("globalcomponents", "enableAllArrowHeads", false);
-        boolean enableAllCrates = GregTech_API.sMaterialComponents.get("globalcomponents", "enableAllCrates", false);
-        boolean enableAllBolts = GregTech_API.sMaterialComponents.get("globalcomponents", "enableAllBolts", false);
-        boolean enableAllScrews = GregTech_API.sMaterialComponents.get("globalcomponents", "enableAllScrews", false);
-        boolean enableAllRods = GregTech_API.sMaterialComponents.get("globalcomponents", "enableAllRods", false);
-        boolean enableAllLongRods = GregTech_API.sMaterialComponents.get("globalcomponents", "enableAllLongRods", false);
-        boolean enableAllFrameBoxes = GregTech_API.sMaterialComponents.get("globalcomponents", "enableAllFrameBoxes", false);
-        for (Materials aMaterial : MATERIALS_MAP.values()) {
-            if (aMaterial.mMetaItemSubID >= 0) {
-                if (aMaterial.mBlastFurnaceTemp <= 1750) aMaterial.mComponents.remove(OrePrefixes.ingotHot);//Moved HotIngot code from GT_MetaGenerated_Item_01 so all this is in once place
-                if (!enableAllSprings && (aMaterial != Materials.Titanium)) aMaterial.mComponents.remove(OrePrefixes.spring);
-                if (!enableAllSmallSprings) aMaterial.mComponents.remove(OrePrefixes.springSmall);
-                if (!enableAllRounds && (aMaterial != Materials.HSSE || aMaterial == Materials.Neutronium || aMaterial == Materials.HSSG)) aMaterial.mComponents.remove(OrePrefixes.round);
-                //if (!enableAllFrameBoxes) aMaterial.mComponents.remove(OrePrefixes.frameGt);
-                if (!enableAllCrates) {
-                    if (!(aMaterial == DamascusSteel || aMaterial == Steel || aMaterial == Bronze || aMaterial == Materials.Manganese))
-                        aMaterial.mComponents.remove(OrePrefixes.crateGtIngot);
-                    if (!(aMaterial == Materials.Neodymium || aMaterial == Materials.Chrome))
-                        aMaterial.mComponents.remove(OrePrefixes.crateGtDust);
-                    aMaterial.mComponents.remove(OrePrefixes.crateGtGem);
-                    aMaterial.mComponents.remove(OrePrefixes.crateGtPlate);
-                }
-                if (!enableAllArrows) {
-                    aMaterial.mComponents.remove(OrePrefixes.toolHeadArrow);
-                    aMaterial.mComponents.remove(OrePrefixes.arrowGtPlastic);
-                    if (!(aMaterial == Materials.DamascusSteel || aMaterial == Materials.SterlingSilver))
-                        aMaterial.mComponents.remove(OrePrefixes.arrowGtWood);
-                }
-                if (!enableAllPlates && (((aMaterial.mTypes & 0x40) == 0) || (((aMaterial.mTypes & 0x04) == 0) && aMaterial.mTransparent)) && !(aMaterial == Materials.Silicon || aMaterial == Materials.Zinc || aMaterial == Materials.Europium ||
-                        aMaterial == Materials.Americium || aMaterial == Materials.RedAlloy || aMaterial == Materials.SolderingAlloy || aMaterial == Materials.BatteryAlloy ||
-                        aMaterial == Materials.AnnealedCopper || aMaterial == Materials.Firestone || aMaterial == Materials.VanadiumGallium || aMaterial == Materials.YttriumBariumCuprate ||
-                        aMaterial == Materials.NiobiumTitanium || aMaterial == Materials.CertusQuartz || aMaterial == Materials.NetherQuartz || aMaterial == Materials.Lazurite || aMaterial == Materials.Lapis))
-                    aMaterial.mComponents.remove(OrePrefixes.plate);
-                //Ingot/Plate Storage
-                if (!enableAllDoubleIngots) aMaterial.mComponents.remove(OrePrefixes.ingotDouble);
-                if (!enableAllTripleIngots) aMaterial.mComponents.remove(OrePrefixes.ingotTriple);
-                if (!enableAllQuadIngots) aMaterial.mComponents.remove(OrePrefixes.ingotQuadruple);
-                if (!enableAllQuinIngots) aMaterial.mComponents.remove(OrePrefixes.ingotQuintuple);
-                if (!enableAllDoublePlates && ((aMaterial.mTypes & 0x40) == 0)) aMaterial.mComponents.remove(OrePrefixes.plateDouble);
-                if (!enableAllTriplePlates) aMaterial.mComponents.remove(OrePrefixes.plateTriple);
-                if (!enableAllQuadPlates) aMaterial.mComponents.remove(OrePrefixes.plateQuadruple);
-                if (!enableAllQuinPlates) aMaterial.mComponents.remove(OrePrefixes.plateQuintuple);
-                if (!enableAllDensePlates && !(aMaterial == Materials.Iron || aMaterial == Materials.Copper || aMaterial == Materials.Lead))
-                    aMaterial.mComponents.remove(OrePrefixes.plateDense);
-                //Rotors
-                if (!enableAllRotors && !(aMaterial == Materials.Titanium || aMaterial == Materials.Chrome || aMaterial == Materials.Tin || aMaterial == Materials.Osmium ||
-                        aMaterial == Materials.Iridium || aMaterial == Materials.Bronze || aMaterial == Materials.Steel || aMaterial == Materials.StainlessSteel ||
-                        aMaterial == Materials.TungstenSteel || aMaterial == Materials.HSSG || aMaterial == Materials.HSSE || aMaterial == Materials.Neutronium))
-                    aMaterial.mComponents.remove(OrePrefixes.rotor);
-                //Rings
-                if (!enableAllRings && !(aMaterial == Materials.Titanium || aMaterial == Materials.Chrome || aMaterial == Materials.Iron || aMaterial == Materials.Tin ||
-                        aMaterial == Materials.Osmium || aMaterial == Materials.Iridium || aMaterial == Materials.Bronze || aMaterial == Materials.WroughtIron ||
-                        aMaterial == Materials.Steel || aMaterial == Materials.StainlessSteel || aMaterial == Materials.PigIron || aMaterial == Materials.TungstenSteel ||
-                        aMaterial == Materials.Rubber || aMaterial == Materials.HSSE || aMaterial == Materials.Neutronium || aMaterial == Materials.HSSG))
-                    aMaterial.mComponents.remove(OrePrefixes.ring);
-                //Foil
-                if (!enableAllFoil && !(aMaterial == Materials.Zinc || aMaterial == Materials.Aluminium || aMaterial == Materials.Silicon || aMaterial == Materials.Gold ||
-                        aMaterial == Materials.Electrum || aMaterial == Materials.Platinum || aMaterial == Materials.Osmiridium))
-                    aMaterial.mComponents.remove(OrePrefixes.foil);
-                //Fine Wire
-                if (!enableAllFineWires && !(aMaterial == Materials.Steel || aMaterial == Materials.AnnealedCopper || aMaterial == Materials.Platinum || aMaterial == Materials.Osmium))
-                    aMaterial.mComponents.remove(OrePrefixes.wireFine);
-                //Gears
-                if (!enableAllGears && !(aMaterial == Materials.Aluminium || aMaterial == Materials.Titanium || aMaterial == Materials.Iron || aMaterial == Materials.Copper ||
-                        aMaterial == Materials.Tin || aMaterial == Materials.Gold || aMaterial == Materials.Stone || aMaterial == Materials.Bronze ||
-                        aMaterial == Materials.Steel || aMaterial == Materials.StainlessSteel || aMaterial == Materials.TungstenSteel || aMaterial == Materials.CobaltBrass ||
-                        aMaterial == Materials.Diamond || aMaterial == Materials.Wood || aMaterial == Materials.HSSG || aMaterial == Materials.HSSE || aMaterial == Materials.Neutronium))
-                    aMaterial.mComponents.remove(OrePrefixes.gearGt);
-                //Small Gears
-                if (!enableAllSmallGears && !(aMaterial == Materials.Aluminium || aMaterial == Materials.Titanium || aMaterial == Materials.Steel || aMaterial == Materials.StainlessSteel ||
-                        aMaterial == Materials.TungstenSteel || aMaterial == Materials.HSSG || aMaterial == Materials.HSSE || aMaterial == Materials.Neutronium))
-                    aMaterial.mComponents.remove(OrePrefixes.gearGtSmall);
-                //Bolts
-                if (!enableAllBolts && ((aMaterial.mTypes & 0x40) == 0) && !(aMaterial == Materials.Titanium || aMaterial == Materials.Chrome || aMaterial == Materials.Iron ||
-                        aMaterial == Materials.Tin || aMaterial == Materials.Osmium || aMaterial == Materials.Iridium || aMaterial == Materials.Neutronium ||
-                        aMaterial == Materials.Bronze || aMaterial == Materials.WroughtIron || aMaterial == Materials.Steel || aMaterial == Materials.StainlessSteel ||
-                        aMaterial == Materials.PigIron || aMaterial == Materials.TungstenSteel || aMaterial == Materials.HSSE || aMaterial == Materials.HSSG))
-                    aMaterial.mComponents.remove(OrePrefixes.bolt);
-                //Screws
-                if (!enableAllScrews && ((aMaterial.mTypes & 0x40) == 0) && !(aMaterial == Materials.Titanium || aMaterial == Materials.Chrome || aMaterial == Materials.Iron ||
-                        aMaterial == Materials.Tin || aMaterial == Materials.Osmium || aMaterial == Materials.Iridium || aMaterial == Materials.Neutronium ||
-                        aMaterial == Materials.Bronze || aMaterial == Materials.WroughtIron || aMaterial == Materials.Steel || aMaterial == Materials.StainlessSteel ||
-                        aMaterial == Materials.PigIron || aMaterial == Materials.TungstenSteel || aMaterial == Materials.HSSE || aMaterial == Materials.HSSG))
-                    aMaterial.mComponents.remove(OrePrefixes.screw);
-                //Rods
-                if (!enableAllRods && ((aMaterial.mTypes & 0x40) == 0) && !(aMaterial == Materials.Titanium || aMaterial == Materials.Chrome || aMaterial == Materials.Iron ||
-                        aMaterial == Materials.Tin || aMaterial == Materials.Osmium || aMaterial == Materials.Iridium || aMaterial == Materials.Neutronium ||
-                        aMaterial == Materials.Bronze || aMaterial == Materials.WroughtIron || aMaterial == Materials.Steel || aMaterial == Materials.StainlessSteel ||
-                        aMaterial == Materials.PigIron || aMaterial == Materials.TungstenSteel || aMaterial == Materials.HSSE || aMaterial == Materials.HSSG ||
-                        aMaterial == Materials.Aluminium || aMaterial == Materials.Copper || aMaterial == Materials.Neodymium || aMaterial == Materials.Europium ||
-                        aMaterial == Materials.Platinum || aMaterial == Materials.Gold || aMaterial == Materials.Uranium235 || aMaterial == Materials.Plutonium241 ||
-                        aMaterial == Materials.Americium || aMaterial == Materials.Neutronium || aMaterial == Materials.Bronze || aMaterial == Materials.Brass ||
-                        aMaterial == Materials.Electrum || aMaterial == Materials.NaquadahEnriched || aMaterial == Materials.CobaltBrass || aMaterial == Materials.IronMagnetic ||
-                        aMaterial == Materials.SteelMagnetic || aMaterial == Materials.NeodymiumMagnetic || aMaterial == Materials.VanadiumGallium || aMaterial == Materials.Diamond ||
-                        aMaterial == Materials.Wood || aMaterial == Materials.Plastic))
-                    aMaterial.mComponents.remove(OrePrefixes.stick);
-                //Long Rods
-                if (!enableAllLongRods && !(aMaterial == Materials.Titanium || aMaterial == Materials.NeodymiumMagnetic || aMaterial == Materials.HSSG || aMaterial == Materials.HSSE ||
-                        aMaterial == Materials.Neutronium || aMaterial == Materials.Americium || aMaterial == Materials.WroughtIron || aMaterial == Materials.Magnalium ||
-                        aMaterial == Materials.TungstenSteel))
-                    aMaterial.mComponents.remove(OrePrefixes.stickLong);
-
-                for (IMaterialRegistrator aRegistrator : mMaterialRegistrators) {
-                    aRegistrator.onComponentRegistration(aMaterial);
-                }
-                if (enablePerItemSettings) {
-                    StringBuilder aConfigPathSB = new StringBuilder();
-                    aConfigPathSB.append("materialcomponents.").append(aMaterial.mConfigSection).append(".").append(aMaterial.mName);
-                    String aConfigPath = aConfigPathSB.toString();
-                    for (OrePrefixes aPrefix : mDefaultComponents) {
-                        boolean aComponent = GregTech_API.sMaterialComponents.get(aConfigPath, aPrefix.toString(), aMaterial.mComponents.contains(aPrefix));
-                        if (!aComponent && aMaterial.mComponents.contains(aPrefix))
-                            aMaterial.mComponents.remove(aPrefix);
-                        else if (aComponent && !aMaterial.mComponents.contains(aPrefix))
-                            aMaterial.mComponents.add(aPrefix);
-                    }
-                    aConfigPathSB.setLength(0);
-                }
-            }
-        }
     }
 
     public static void initMaterialProperties() {
@@ -1758,14 +1619,21 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     /**
-     * This is for keeping compatibility with addons mods (Such as TinkersGregworks) that looped over the old materials enum
+     * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc) that looped over the old materials enum
      */
     public String name() {
         return mName;
     }
 
     /**
-     * This is for keeping compatibility with addons mods (Such as TinkersGregworks) that looped over the old materials enum
+     * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc) that looped over the old materials enum
+     */
+    public static Materials valueOf(String aMaterialName) {
+        return getMaterialsMap().get(aMaterialName);
+    }
+
+    /**
+     * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc) that looped over the old materials enum
      */
     public static Materials[] values() {
         return MATERIALS_ARRAY;
@@ -1779,7 +1647,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     public static Materials get(String aMaterialName) {
-        //System.out.println("##### S:" + aMaterialName + " - M:" + getMaterialsMap().get(aMaterialName));
         Materials aMaterial = getMaterialsMap().get(aMaterialName);
         if (aMaterial != null) return aMaterial;
         return Materials._NULL;
@@ -1855,9 +1722,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     /**
      * Adds a Class implementing IMaterialRegistrator to the master list
      */
-    public static boolean add(IMaterialRegistrator aRegistrator) {
+    public static boolean add(IMaterialHandler aRegistrator) {
         if (aRegistrator == null) return false;
-        return mMaterialRegistrators.add(aRegistrator);
+        return mMaterialHandlers.add(aRegistrator);
     }
 
     /**

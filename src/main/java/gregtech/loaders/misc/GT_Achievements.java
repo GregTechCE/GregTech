@@ -47,28 +47,30 @@ public class GT_Achievements {
         this.achievementList = new HashMap();
         this.issuedAchievements = new HashMap();
         for (int i = 0; i < oreList.size(); i++) {
-            if (GT_Values.D1 && this.achievementList.get(oreList.get(i).mName) == null) {
-                GT_Log.out.println("achievement." + oreList.get(i).mName + "=Find " + oreList.get(i).mName + " Ore");
+            if (oreList.get(i) != null) {
+                if (GT_Values.D1 && this.achievementList.get(oreList.get(i).mName) == null) {
+                    GT_Log.out.println("achievement." + oreList.get(i).mName + "=Find " + oreList.get(i).mName + " Ore");
 
-                StringBuilder dimensions = new StringBuilder();
-                boolean isFirst = true;
-                if(oreStats.get(i)[3] == 1) {
-                    dimensions.append("Overworld");
-                    isFirst = false;
+                    StringBuilder dimensions = new StringBuilder();
+                    boolean isFirst = true;
+                    if (oreStats.get(i)[3] == 1) {
+                        dimensions.append("Overworld");
+                        isFirst = false;
+                    }
+                    if (oreStats.get(i)[4] == 1) {
+                        if (!isFirst) dimensions.append("/");
+                        dimensions.append("Nether");
+                        isFirst = false;
+                    }
+                    if (oreStats.get(i)[5] == 1) {
+                        if (!isFirst) dimensions.append("/");
+                        dimensions.append("End");
+                        isFirst = false;
+                    }
+                    GT_Log.out.println("achievement." + oreList.get(i).mName + ".desc=Height: " + (oreStats.get(i)[0]) + "-" + (oreStats.get(i)[1]) + ", Chance: " + (oreStats.get(i)[2]) + ", " + dimensions.toString());
                 }
-                if(oreStats.get(i)[4] == 1) {
-                    if(!isFirst) dimensions.append("/");
-                    dimensions.append("Nether");
-                    isFirst = false;
-                }
-                if(oreStats.get(i)[5] == 1) {
-                    if(!isFirst) dimensions.append("/");
-                    dimensions.append("End");
-                    isFirst = false;
-                }
-                GT_Log.out.println("achievement." + oreList.get(i).mName + ".desc=Height: " + (oreStats.get(i)[0]) + "-" + (oreStats.get(i)[1]) + ", Chance: " + (oreStats.get(i)[2]) + ", " + dimensions.toString());
+                registerOreAchievement(oreList.get(i));
             }
-            registerOreAchievement(oreList.get(i));
         }
         registerAchievement("flintpick", 0, 0, GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(2, 1, Materials.Flint, Materials.Wood, null), "", false);
         registerAchievement("crops", -4, 0, GT_ModHandler.getIC2Item("crop", 1L), "flintpick", false);

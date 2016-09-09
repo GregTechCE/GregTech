@@ -53,6 +53,12 @@ public class GT_Worldgen_GT_Ore_Layer
         this.mBetweenMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "OreSporadiclyInbetween", aBetween.mMetaItemSubID));
         this.mSporadicMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "OreSporaticlyAround", aSporadic.mMetaItemSubID));
         this.mRestrictBiome = GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "RestrictToBiomeName", "None");
+
+        if (mPrimaryMeta != -1 && GregTech_API.sGeneratedMaterials[(mPrimaryMeta % 1000)] == null) throw new IllegalArgumentException("A Material for the supplied Material ID " + mPrimaryMeta + " for " + mWorldGenName + " does not exist");
+        if (mSecondaryMeta != -1 && GregTech_API.sGeneratedMaterials[(mSecondaryMeta % 1000)] == null) throw new IllegalArgumentException("A Material for the supplied Material ID " + mSecondaryMeta + " for " + mWorldGenName + " does not exist");
+        if (mBetweenMeta != -1 && GregTech_API.sGeneratedMaterials[(mBetweenMeta % 1000)] == null) throw new IllegalArgumentException("A Material for the supplied Material ID " + mBetweenMeta + " for " + mWorldGenName + " does not exist");
+        if (mPrimaryMeta != -1 && GregTech_API.sGeneratedMaterials[(mSporadicMeta % 1000)] == null) throw new IllegalArgumentException("A Material for the supplied Material ID " + mSporadicMeta + " for " + mWorldGenName + " does not exist");
+
         if (this.mEnabled) {
             GT_Achievements.registerOre(GregTech_API.sGeneratedMaterials[(mPrimaryMeta % 1000)], aMinY, aMaxY, aWeight, aOverworld, aNether, aEnd);
             GT_Achievements.registerOre(GregTech_API.sGeneratedMaterials[(mSecondaryMeta % 1000)], aMinY, aMaxY, aWeight, aOverworld, aNether, aEnd);

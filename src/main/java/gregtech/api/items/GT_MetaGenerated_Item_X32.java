@@ -49,7 +49,7 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
             OrePrefixes tPrefix = mGeneratedPrefixList[i / 1000];
             if (tPrefix == null) continue;
             Materials tMaterial = GregTech_API.sGeneratedMaterials[i % 1000];
-            if (tMaterial == null || !tMaterial.mComponents.contains(tPrefix)) continue;
+            if (tMaterial == null) continue;
             if (doesMaterialAllowGeneration(tPrefix, tMaterial)) {
                 ItemStack tStack = new ItemStack(this, 1, i);
                 GT_LanguageManager.addStringLocalization(getUnlocalizedName(tStack) + ".name", getDefaultLocalization(tPrefix, tMaterial, i));
@@ -146,7 +146,7 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
             OrePrefixes aPrefix = mGeneratedPrefixList[i / 1000];
             Materials aMaterial = GregTech_API.sGeneratedMaterials[i % 1000];
             if (aPrefix != null && aMaterial != null) {
-                if (aMaterial.mComponents.contains(aPrefix) && doesMaterialAllowGeneration(aPrefix, aMaterial) && doesShowInCreative(aPrefix, aMaterial, GregTech_API.sDoShowAllItemsInCreative)) {
+                if (doesMaterialAllowGeneration(aPrefix, aMaterial) && doesShowInCreative(aPrefix, aMaterial, GregTech_API.sDoShowAllItemsInCreative)) {
                     ItemStack tStack = new ItemStack(this, 1, i);
                     isItemStackUsable(tStack);
                     aList.add(tStack);
