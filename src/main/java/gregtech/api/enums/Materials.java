@@ -1331,7 +1331,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public static void init() {
         for (IMaterialHandler aRegistrator : mMaterialHandlers) {
-            aRegistrator.onMaterialsInit(); //This is where addon mods can and manipulate materials
+            aRegistrator.onMaterialsInit(); //This is where addon mods can add/manipulate materials
         }
         initMaterialProperties(); //No more material addition or manipulation should be done past this point!
         MATERIALS_ARRAY = MATERIALS_MAP.values().toArray(new Materials[MATERIALS_MAP.size()]); //Generate standard object array. This is a lot faster to loop over.

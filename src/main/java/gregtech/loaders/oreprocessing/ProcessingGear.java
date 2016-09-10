@@ -6,16 +6,26 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
 public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistrator {
     public ProcessingGear() {
         OrePrefixes.gearGt.add(this);
+        OrePrefixes.gearGtSmall.add(this);
     }
 
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        GT_ModHandler.removeRecipeByOutput(aStack);
-        if (aMaterial.mStandardMoltenFluid != null)
-            GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Gear.get(0L, new Object[0]), aMaterial.getMolten(576L), GT_OreDictUnificator.get(aPrefix, aMaterial, 1L), 128, 8);
+        switch (aPrefix) {
+            case gearGt:
+                GT_ModHandler.removeRecipeByOutput(aStack);
+                if (aMaterial.mStandardMoltenFluid != null)
+                    GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Gear.get(0L, new Object[0]), aMaterial.getMolten(576L), GT_OreDictUnificator.get(aPrefix, aMaterial, 1L), 128, 8);
+                break;
+            case gearGtSmall:
+                if (aMaterial.mStandardMoltenFluid != null)
+                    GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Gear_Small.get(0L, new Object[0]), aMaterial.getMolten(144L), GT_Utility.copyAmount(1L, new Object[]{aStack}), 16, 8);
+                break;
+        }
     }
 }

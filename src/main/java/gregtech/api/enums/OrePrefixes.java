@@ -854,6 +854,8 @@ public enum OrePrefixes {
             for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
                 if (D2)
                     GT_Log.ore.println("Processing '" + aOreDictName + "' with the Prefix '" + name() + "' and the Material '" + aMaterial.mName + "' at " + GT_Utility.getClassName(tRegistrator));
+                //if (Materials.mDefaultComponents.contains(this) && !this.mGeneratedItems.contains(aMaterial)) return;
+                //if (this.mGeneratedItems.contains(aMaterial))
                 tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GT_Utility.copyAmount(1, aStack));
             }
     }

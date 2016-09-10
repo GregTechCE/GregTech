@@ -10,10 +10,8 @@ import net.minecraft.item.ItemStack;
 
 public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegistrator {
     public ProcessingArrows() {
-        for (OrePrefixes tPrefix : OrePrefixes.values())
-            if (tPrefix.name().startsWith("arrowGt")) {
-                tPrefix.add(this);
-            }
+        OrePrefixes.arrowGtWood.add(this);
+        OrePrefixes.arrowGtPlastic.add(this);
     }
 
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
