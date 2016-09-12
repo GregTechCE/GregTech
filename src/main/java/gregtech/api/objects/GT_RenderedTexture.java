@@ -17,33 +17,37 @@ import net.minecraft.util.math.BlockPos;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GT_RenderedTexture implements ITexture {
 
     private final IIconContainer mIconContainer;
-
-    public int mRGBa;
+    public int mRGBa = -1;
 
     public GT_RenderedTexture(IIconContainer aIcon, short[] aRGBa) {
-        if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GT_RenderedTexture");
         mIconContainer = aIcon;
-        mRGBa = makeColor(aRGBa);
+        if(aRGBa != null) {
+            this.mRGBa = makeColor(aRGBa);
+        }
     }
 
     public GT_RenderedTexture(String spriteName, short[] aRGBa) {
-        this(GT_Utility.sprite2Container(
-                Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(spriteName)),
-                aRGBa == null ? new short[] {255, 255, 255, 255} : aRGBa);
+        TextureAtlasSprite sprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(spriteName);
+        this.mIconContainer = GT_Utility.sprite2Container(sprite);
+        if(aRGBa != null) {
+            this.mRGBa = makeColor(aRGBa);
+        }
     }
 
     private int makeColor(short[] rgba) {
-        short[] nullRGBA = Materials._NULL.getRGBA();
-        short red = rgba[0] > 0 && 255 > rgba[0] ? rgba[0] : nullRGBA[0];
-        short green = rgba[1] > 0 && 255 > rgba[1] ? rgba[1] : nullRGBA[1];
-        short blue = rgba[2] > 0 && 255 > rgba[2] ? rgba[2] : nullRGBA[2];
-        short alpha = rgba[3] > 0 && 255 > rgba[3] ? rgba[3] : nullRGBA[3];
-        return new Color(red, green, blue, alpha).getRGB();
+        try {
+            for(int i = 0; i < 4; i++)
+                rgba[i] = (short) Math.max(0, rgba[i]);
+            return new Color(rgba[0], rgba[1], rgba[2], rgba[3]).getRGB();
+        } catch (IllegalArgumentException err) {
+            return Color.WHITE.getRGB();
+        }
     }
 
     public GT_RenderedTexture(IIconContainer aIcon, int aRGBa) {
@@ -52,9 +56,8 @@ public class GT_RenderedTexture implements ITexture {
     }
 
     public GT_RenderedTexture(IIconContainer aIcon) {
-        this(aIcon, Dyes._NULL.mRGBa);
+        this.mIconContainer = aIcon;
     }
-
 
     @Override
     public List<BakedQuad> getQuads(Block aBlock, BlockPos blockPos, EnumFacing side, int tintOff) {
@@ -62,10 +65,10 @@ public class GT_RenderedTexture implements ITexture {
         TextureAtlasSprite sprite = mIconContainer.getIcon();
         TextureAtlasSprite overlay = mIconContainer.getOverlayIcon();
         if(sprite != null) {
-            quads.add(RenderUtil.renderSide(DefaultVertexFormats.BLOCK, sprite, side, tintOff, -0.003F, mRGBa));
+            quads.add(RenderUtil.renderSide(DefaultVertexFormats.BLOCK, sprite, side, tintOff, 0.0F, mRGBa, blockPos == null));
         }
         if(overlay != null) {
-            quads.add(RenderUtil.renderSide(DefaultVertexFormats.BLOCK, overlay, side, tintOff, -0.0023F, mRGBa));
+            quads.add(RenderUtil.renderSide(DefaultVertexFormats.BLOCK, overlay, side, tintOff + 1000, 0.001F, mRGBa, blockPos == null));
         }
         return quads;
     }

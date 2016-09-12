@@ -27,11 +27,6 @@ public class GT_Block_Metal extends GT_Block_Storage implements IBlockIconProvid
             GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + i + ".name", "Block of " + aMats[i].mDefaultLocalName);
             GT_OreDictUnificator.registerOre(aPrefix, aMats[i], new ItemStack(this, 1, i));
         }
-        if (aMats.length < 16 && Loader.isModLoaded("JustEnoughItems")) {
-            for (int i = aMats.length; i < 16; i++) {
-                Internal.getHelpers().getItemBlacklist().addItemToBlacklist(new ItemStack(this, 1, i));
-            }
-        }
     }
 
     @Override

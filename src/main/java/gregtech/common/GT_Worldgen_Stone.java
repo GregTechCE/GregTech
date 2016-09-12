@@ -25,7 +25,7 @@ public class GT_Worldgen_Stone
 
     @Override
     public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX, int aChunkZ, IChunkGenerator aChunkGenerator, IChunkProvider aChunkProvider) {
-        if ((isGenerationAllowed(aWorld, aDimensionType, this.mDimensionType)) && ((this.mBiomeList.isEmpty()) || (this.mBiomeList.contains(aBiome))) && ((this.mProbability <= 1) || (aRandom.nextInt(this.mProbability) == 0))) {
+        if ((isDimensionAllowed(aWorld, aDimensionType, this.mDimensionType)) && ((this.mBiomeList.isEmpty()) || (this.mBiomeList.contains(aBiome))) && ((this.mProbability <= 1) || (aRandom.nextInt(this.mProbability) == 0))) {
             for (int i = 0; i < this.mAmount; i++) {
                 int tX = aChunkX + aRandom.nextInt(16);
                 int tY = this.mMinY + aRandom.nextInt(this.mMaxY - this.mMinY);
@@ -71,7 +71,7 @@ public class GT_Worldgen_Stone
                                                         ((GT_TileEntity_Ores)tTileEntity).overrideOreBlockMaterial(this.mBlock, (byte) this.mBlockMeta);
                                                     }
                                                 } else if ((this.mAllowToGenerateinVoid && aWorld.isAirBlock(randPos)) ||
-                                                        (tTargetedBlock != null && tTargetedBlock.getBlock().isReplaceableOreGen(tTargetedBlock, aWorld, randPos, GT_Worldgen_Ore_Normal.STONE))) {
+                                                        (tTargetedBlock != null && tTargetedBlock.getBlock().isReplaceableOreGen(tTargetedBlock, aWorld, randPos, GT_Worldgen_Ore_Normal.ANY))) {
                                                     aWorld.setBlockState(randPos, this.mBlock.getStateFromMeta(mBlockMeta));
                                                 }
                                             }

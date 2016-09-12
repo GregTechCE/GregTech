@@ -1,6 +1,8 @@
 package gregtech.api.world;
 
 import gregtech.api.GregTech_API;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -48,14 +50,31 @@ public abstract class GT_Worldgen {
         return false;
     }
 
-    public boolean isGenerationAllowed(World aWorld, int aDimensionType, int aAllowedDimensionType) {
+    public boolean isDimensionAllowed(World aWorld, int aDimensionType, boolean nether, boolean overworld, boolean end) {
         String aDimName = aWorld.getProviderName();
         Boolean tAllowed = mDimensionMap.get(aDimName);
         if (tAllowed == null) {
-            boolean tValue = GregTech_API.sWorldgenFile.get("worldgen.dimensions." + mWorldGenName, aDimName, aDimensionType == aAllowedDimensionType);
+            boolean tValue = GregTech_API.sWorldgenFile.get("worldgen.dimensions." + mWorldGenName, aDimName, ((aDimensionType == -1) && nether) || ((aDimensionType == 0) && overworld) || ((aDimensionType == 1) && end));
             mDimensionMap.put(aDimName, tValue);
             return tValue;
         }
         return tAllowed;
     }
+
+    public boolean isDimensionAllowed(World aWorld, int aDimensionType, int exceptedDimension) {
+        String aDimName = aWorld.getProviderName();
+        Boolean tAllowed = mDimensionMap.get(aDimName);
+        if (tAllowed == null) {
+            boolean tValue = GregTech_API.sWorldgenFile.get("worldgen.dimensions." + mWorldGenName, aDimName, aDimensionType == exceptedDimension);
+            mDimensionMap.put(aDimName, tValue);
+            return tValue;
+        }
+        return tAllowed;
+    }
+
+    public boolean isGenerationAllowed(World aWorld, BlockPos blockPos) {
+        IBlockState blockState = aWorld.getBlockState(blockPos);
+        return blockState.getBlock().isReplaceableOreGen(blockState, aWorld, blockPos, GT_Worldgen_Ore_Normal.ANY);
+    }
+
 }

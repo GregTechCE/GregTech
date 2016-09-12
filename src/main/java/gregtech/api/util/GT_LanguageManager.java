@@ -3,6 +3,8 @@ package gregtech.api.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.*;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.util.text.translation.*;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import gregtech.api.GregTech_API;
 import net.minecraft.item.ItemStack;
@@ -96,7 +98,12 @@ public class GT_LanguageManager implements IResourceManagerReloadListener {
     public void onResourceManagerReload(IResourceManager resourceManager) {
         Locale i18nLocale = ObfuscationReflectionHelper.getPrivateValue(I18n.class, null, 0);
         Map<String, String> properties = ObfuscationReflectionHelper.getPrivateValue(Locale.class, i18nLocale, 2);
+
+        LanguageMap languageMap = ObfuscationReflectionHelper.getPrivateValue(net.minecraft.util.text.translation.I18n.class, null, 0);
+        Map<String, String> properties2 = ObfuscationReflectionHelper.getPrivateValue(LanguageMap.class, languageMap, 3);
+
         properties.putAll(LOCALIZATION);
+        properties2.putAll(LOCALIZATION);
         GT_Log.out.println("Resource manager reloaded. Localization injected.");
     }
 

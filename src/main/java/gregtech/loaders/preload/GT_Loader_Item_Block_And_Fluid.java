@@ -16,8 +16,6 @@ import gregtech.common.items.*;
 import gregtech.common.items.armor.ElectricModularArmor1;
 import gregtech.common.items.armor.ModularArmor_Item;
 import gregtech.common.items.armor.Values;
-import ic2.core.IC2;
-import ic2.core.block.machine.tileentity.TileEntityMatter;
 import ic2.core.ref.FluidName;
 import ic2.core.ref.ItemName;
 import net.minecraft.init.Blocks;
@@ -145,6 +143,7 @@ public class GT_Loader_Item_Block_And_Fluid
             GregTech_API.sBlockOresUb2 = new GT_Block_Ores_UB2();
             GregTech_API.sBlockOresUb3 = new GT_Block_Ores_UB3();
         }
+        new GT_TickHandler_Ores();
         GregTech_API.sBlockMetal1 = new GT_Block_Metal("gt.blockmetal1", new Materials[]{
                 Materials.Adamantium,
                 Materials.Aluminium,

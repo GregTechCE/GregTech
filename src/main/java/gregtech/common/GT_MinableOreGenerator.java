@@ -65,7 +65,7 @@ public class GT_MinableOreGenerator
                                 BlockPos block = new BlockPos(var38, var41, var44);
                                 IBlockState blockState = par1World.getBlockState(block);
                                 if ((var39 * var39 + var42 * var42 + var45 * var45 < 1.0D) && ((this.allowVoid && par1World.isAirBlock(block)) ||
-                                        (block != null && (blockState.getBlock().isReplaceableOreGen(blockState, par1World, pos, GT_Worldgen_Ore_Normal.STONE))))) {
+                                        (block != null && (blockState.getBlock().isReplaceableOreGen(blockState, par1World, pos, GT_Worldgen_Ore_Normal.ANY))))) {
                                     par1World.setBlockState(block, this.minableBlockId.getStateFromMeta(minableBlockMeta));
                                 }
                             }

@@ -6,6 +6,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import gregtech.loaders.misc.GT_Achievements;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -62,7 +63,7 @@ public class GT_Worldgen_GT_Ore_Layer
         if (!this.mBiome.equals("None") && !(this.mBiome.equals(aBiome))) {
             return false; //Not the correct biome for ore mix
         }
-        if (!isGenerationAllowed(aWorld, aDimensionType, ((aDimensionType == -1) && (this.mNether)) || ((aDimensionType == 0) && (this.mOverworld)) || ((aDimensionType == 1) && (this.mEnd)) ? aDimensionType : aDimensionType ^ 0xFFFFFFFF)) {
+        if (!isDimensionAllowed(aWorld, aDimensionType, mNether, mOverworld, mEnd)) {
             return false;
         }
         int tMinY = this.mMinY + aRandom.nextInt(this.mMaxY - this.mMinY - 5);
@@ -76,22 +77,34 @@ public class GT_Worldgen_GT_Ore_Layer
                 if (this.mSecondaryMeta > 0) {
                     for (int i = tMinY - 1; i < tMinY + 2; i++) {
                         if ((aRandom.nextInt(Math.max(1, Math.max(Math.abs(cZ - tZ), Math.abs(eZ - tZ)) / this.mDensity)) == 0) || (aRandom.nextInt(Math.max(1, Math.max(Math.abs(cX - tX), Math.abs(eX - tX)) / this.mDensity)) == 0)) {
-                            GT_TileEntity_Ores.setOreBlock(aWorld, tX, i, tZ, this.mSecondaryMeta, false);
+                            BlockPos blockPos = new BlockPos(tX, i, tZ);
+                            if(isGenerationAllowed(aWorld, blockPos)) {
+                                GT_TileEntity_Ores.setOreBlock(aWorld, blockPos, this.mSecondaryMeta, false);
+                            }
                         }
                     }
                 }
                 if ((this.mBetweenMeta > 0) && ((aRandom.nextInt(Math.max(1, Math.max(Math.abs(cZ - tZ), Math.abs(eZ - tZ)) / this.mDensity)) == 0) || (aRandom.nextInt(Math.max(1, Math.max(Math.abs(cX - tX), Math.abs(eX - tX)) / this.mDensity)) == 0))) {
-                    GT_TileEntity_Ores.setOreBlock(aWorld, tX, tMinY + 2 + aRandom.nextInt(2), tZ, this.mBetweenMeta, false);
+                    BlockPos blockPos = new BlockPos(tX, tMinY + 2 + aRandom.nextInt(2), tZ);
+                    if(isGenerationAllowed(aWorld, blockPos)) {
+                        GT_TileEntity_Ores.setOreBlock(aWorld, blockPos, this.mBetweenMeta, false);
+                    }
                 }
                 if (this.mPrimaryMeta > 0) {
                     for (int i = tMinY + 3; i < tMinY + 6; i++) {
                         if ((aRandom.nextInt(Math.max(1, Math.max(Math.abs(cZ - tZ), Math.abs(eZ - tZ)) / this.mDensity)) == 0) || (aRandom.nextInt(Math.max(1, Math.max(Math.abs(cX - tX), Math.abs(eX - tX)) / this.mDensity)) == 0)) {
-                            GT_TileEntity_Ores.setOreBlock(aWorld, tX, i, tZ, this.mPrimaryMeta, false);
+                            BlockPos blockPos = new BlockPos(tX, i, tZ);
+                            if(isGenerationAllowed(aWorld, blockPos)) {
+                                GT_TileEntity_Ores.setOreBlock(aWorld, blockPos, this.mPrimaryMeta, false);
+                            }
                         }
                     }
                 }
                 if ((this.mSporadicMeta > 0) && ((aRandom.nextInt(Math.max(1, Math.max(Math.abs(cZ - tZ), Math.abs(eZ - tZ)) / this.mDensity)) == 0) || (aRandom.nextInt(Math.max(1, Math.max(Math.abs(cX - tX), Math.abs(eX - tX)) / this.mDensity)) == 0))) {
-                    GT_TileEntity_Ores.setOreBlock(aWorld, tX, tMinY - 1 + aRandom.nextInt(7), tZ, this.mSporadicMeta, false);
+                    BlockPos blockPos = new BlockPos(tX, tMinY - 1 + aRandom.nextInt(7), tZ);
+                    if(isGenerationAllowed(aWorld, blockPos)) {
+                        GT_TileEntity_Ores.setOreBlock(aWorld, blockPos, this.mSporadicMeta, false);
+                    }
                 }
             }
         }

@@ -4,6 +4,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.blocks.GT_TileEntity_Ores;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -38,13 +39,16 @@ public class GT_Worldgen_GT_Ore_SmallPieces
         if (!this.mBiome.equals("None") && !(this.mBiome.equals(aBiome))) {
             return false; //Not the correct biome for ore mix
         }
-        if (!isGenerationAllowed(aWorld, aDimensionType, ((aDimensionType == -1) && (this.mNether)) || ((aDimensionType == 0) && (this.mOverworld)) || ((aDimensionType == 1) && (this.mEnd)) ? aDimensionType : aDimensionType ^ 0xFFFFFFFF)) {
+        if (!isDimensionAllowed(aWorld, aDimensionType, mNether, mOverworld, mEnd)) {
             return false;
         }
         if (this.mMeta > 0) {
             int i = 0;
             for (int j = Math.max(1, this.mAmount / 2 + aRandom.nextInt(this.mAmount) / 2); i < j; i++) {
-                GT_TileEntity_Ores.setOreBlock(aWorld, aChunkX + aRandom.nextInt(16), this.mMinY + aRandom.nextInt(Math.max(1, this.mMaxY - this.mMinY)), aChunkZ + aRandom.nextInt(16), this.mMeta, true);
+                BlockPos blockPos = new BlockPos(aChunkX + aRandom.nextInt(16), this.mMinY + aRandom.nextInt(Math.max(1, this.mMaxY - this.mMinY)), aChunkZ + aRandom.nextInt(16));
+                if(isGenerationAllowed(aWorld, blockPos)) {
+                    GT_TileEntity_Ores.setOreBlock(aWorld, blockPos, this.mMeta, true);
+                }
             }
         }
         return true;

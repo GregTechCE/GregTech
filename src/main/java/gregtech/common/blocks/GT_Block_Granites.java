@@ -19,7 +19,6 @@ public class GT_Block_Granites extends GT_Block_Stones_Abstract {
     public GT_Block_Granites() {
         super(GT_Item_Granites.class, "gt.blockgranites");
         setResistance(60.0F);
-        World w = null;
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Black Granite");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Black Granite Cobblestone");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Mossy Black Granite Cobblestone");

@@ -133,7 +133,8 @@ public class GT_Mod implements IGT_Mod {
         GT_Log.out.println("GT_Mod: Replacing IC2 recipes managers");
         try {
             for (Field f : Recipes.class.getFields()) {
-                if (Modifier.isStatic(f.getModifiers()) && f.getType() == IMachineRecipeManager.class) {
+                if (Modifier.isStatic(f.getModifiers()) && f.getType() == IMachineRecipeManager.class &&
+                        !(f.getName().equals("recycler") || f.getName().equals("matterAmplifier"))) {
                     IMachineRecipeManager delegate = (IMachineRecipeManager) f.get(null);
                     if(delegate != null) {
                         f.set(null, new GT_IC2RecipesHandler());

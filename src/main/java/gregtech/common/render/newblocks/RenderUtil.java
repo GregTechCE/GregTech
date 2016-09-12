@@ -12,12 +12,12 @@ import java.awt.*;
 
 public class RenderUtil {
 
-    public static BakedQuad renderSide(VertexFormat vertexFormat, TextureAtlasSprite sprite, EnumFacing side, int tint, float offset, int color) {
+    public static BakedQuad renderSide(VertexFormat vertexFormat, TextureAtlasSprite sprite, EnumFacing side, int tint, float offset, int color, boolean hideSiding) {
 
         switch (side) {
             case NORTH:
                 //front
-                return buildQuad(vertexFormat, EnumFacing.NORTH, sprite, tint,
+                return buildQuad(vertexFormat, hideSiding ? null : EnumFacing.NORTH, sprite, tint,
                         0, 0, -offset, sprite.getMinU(), sprite.getMinV(),
                         0, 1, -offset, sprite.getMinU(), sprite.getMaxV(),
                         1, 1, -offset, sprite.getMaxU(), sprite.getMaxV(),
@@ -25,35 +25,35 @@ public class RenderUtil {
                 color);
             case SOUTH:
                 // back
-                return buildQuad(vertexFormat, EnumFacing.SOUTH, sprite, tint,
+                return buildQuad(vertexFormat, hideSiding ? null : EnumFacing.SOUTH, sprite, tint,
                         1, 0, 1 + offset, sprite.getMaxU(), sprite.getMinV(),
                         1, 1, 1 + offset, sprite.getMaxU(), sprite.getMaxV(),
                         0, 1, 1 + offset, sprite.getMinU(), sprite.getMaxV(),
                         0, 0, 1 + offset, sprite.getMinU(), sprite.getMinV(),
                         color);
             case WEST:
-                return buildQuad(vertexFormat, EnumFacing.WEST, sprite, tint,
+                return buildQuad(vertexFormat, hideSiding ? null : EnumFacing.WEST, sprite, tint,
                         -offset, 0, 1, sprite.getMaxU(), sprite.getMaxV(),
                         -offset, 1, 1 , sprite.getMaxU(), sprite.getMinV(),
                         -offset, 1, 0, sprite.getMinU(), sprite.getMinV(),
                         -offset, 0, 0, sprite.getMinU(), sprite.getMaxV(),
                         color);
             case EAST:
-                return buildQuad(vertexFormat, EnumFacing.EAST, sprite, tint,
+                return buildQuad(vertexFormat, hideSiding ? null : EnumFacing.EAST, sprite, tint,
                         1 + offset, 0, 0, sprite.getMaxU(), sprite.getMaxV(),
                         1 + offset, 1, 0 , sprite.getMaxU(), sprite.getMinV(),
                         1 + offset, 1, 1, sprite.getMinU(), sprite.getMinV(),
                         1 + offset, 0, 1, sprite.getMinU(), sprite.getMaxV(),
                 color);
             case DOWN:
-                return buildQuad(vertexFormat, EnumFacing.DOWN, sprite, tint,
+                return buildQuad(vertexFormat, hideSiding ? null : EnumFacing.DOWN, sprite, tint,
                         0, -offset, 0, sprite.getMinU(), sprite.getMinV(),
                         1, -offset, 0, sprite.getMaxU(), sprite.getMinV(),
                         1, -offset, 1, sprite.getMaxU(), sprite.getMaxV(),
                         0, -offset, 1, sprite.getMinU(), sprite.getMaxV(),
                         color);
             case UP:
-                return buildQuad(vertexFormat, EnumFacing.UP, sprite, tint,
+                return buildQuad(vertexFormat, hideSiding ? null : EnumFacing.UP, sprite, tint,
                         0, 1 + offset, 1, sprite.getMinU(), sprite.getMaxV(),
                         1, 1 + offset, 1, sprite.getMaxU(), sprite.getMaxV(),
                         1, 1 + offset, 0, sprite.getMaxU(), sprite.getMinV(),
@@ -94,10 +94,14 @@ public class RenderUtil {
                     builder.put(e, x, y, z, 1);
                     break;
                 case COLOR:
-                    builder.put(e,
-                            ((color >> 16) & 0xFF) / 255.0F,
-                            ((color >> 8) & 0xFF) / 255.0F,
-                            ((color) & 0xFF) / 255.0F, 1f);
+                    if(color == -1) {
+                        builder.put(e, 1f, 1f, 1f, 1f);
+                    } else {
+                        builder.put(e,
+                                ((color >> 16) & 0xFF) / 255.0F,
+                                ((color >> 8) & 0xFF) / 255.0F,
+                                ((color) & 0xFF) / 255.0F, 1f);
+                    }
                     break;
                 case UV: if(format.getElement(e).getIndex() == 0)
                 {
@@ -105,7 +109,7 @@ public class RenderUtil {
                     break;
                 }
                 case NORMAL:
-                    builder.put(e, 0.0F, 0.0F, 0.0F, 1.0F);
+                    builder.put(e, 0.0F, 0.0F, 1.0F, 0.0F);
                     break;
                 default:
                     builder.put(e);

@@ -11,6 +11,7 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.*;
 import ic2.api.energy.tile.IEnergyAcceptor;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,6 +31,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -186,6 +189,22 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
             mMetaTileEntity.setBaseMetaTileEntity(this);
         }
 
+        if (isServerSide()) {
+            if (mTickTimer % 10 == 0) {
+                if (mSendClientData) {
+                    NW.sendPacketToAllPlayersInRange(worldObj,
+                            new GT_Packet_TileEntity(
+                                    getXCoord(), getYCoord(), getZCoord(), mID,
+                                    mCoverSides[0], mCoverSides[1], mCoverSides[2], mCoverSides[3], mCoverSides[4], mCoverSides[5],
+                                    oTextureData = mConnections, oUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0,
+                                    oRedstoneData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0) |
+                                            ((mSidedRedstone[2] > 0) ? 4 : 0) | ((mSidedRedstone[3] > 0) ? 8 : 0) | ((mSidedRedstone[4] > 0) ? 16 : 0)
+                                            | ((mSidedRedstone[5] > 0) ? 32 : 0)), oColor = mColor), getXCoord(), getZCoord());
+                    mSendClientData = false;
+                }
+            }
+        }
+
         long tTime = System.currentTimeMillis();
 
         for (int tCode = 0; hasValidMetaTileEntity() && tCode >= 0; ) {
@@ -214,7 +233,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                             }
 
                             if (mNeedsUpdate) {
-                                worldObj.notifyNeighborsOfStateChange(getPos(), getBlockType());
+                                causeChunkUpdate();
                                 mNeedsUpdate = false;
                             }
                         }
@@ -268,13 +287,6 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                     case 11:
                         tCode++;
                         if (isServerSide()) {
-                            if (mTickTimer % 10 == 0) {
-                                if (mSendClientData) {
-                                    NW.sendPacketToAllPlayersInRange(worldObj, new GT_Packet_TileEntity(getXCoord(), getYCoord(), getZCoord(), mID, mCoverSides[0], mCoverSides[1], mCoverSides[2], mCoverSides[3], mCoverSides[4], mCoverSides[5], oTextureData = mConnections, oUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0, oRedstoneData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0) | ((mSidedRedstone[2] > 0) ? 4 : 0) | ((mSidedRedstone[3] > 0) ? 8 : 0) | ((mSidedRedstone[4] > 0) ? 16 : 0) | ((mSidedRedstone[5] > 0) ? 32 : 0)), oColor = mColor), getXCoord(), getZCoord());
-                                    mSendClientData = false;
-                                }
-                            }
-
                             if (mTickTimer > 10) {
                                 if (mConnections != oTextureData) sendBlockEvent((byte) 0, oTextureData = mConnections);
                                 byte tData = mMetaTileEntity.getUpdateData();
@@ -418,6 +430,17 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     @Override
     public void issueBlockUpdate() {
         mNeedsBlockUpdate = true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void causeChunkUpdate() {
+        int minX = pos.getX() - 5;
+        int minY = pos.getY() - 5;
+        int minZ = pos.getZ() - 5;
+        int maxX = pos.getX() + 5;
+        int maxY = pos.getY() + 5;
+        int maxZ = pos.getZ() + 5;
+        Minecraft.getMinecraft().renderGlobal.markBlockRangeForRenderUpdate(minX, minY, minZ, maxX, maxY, maxZ);
     }
 
     @Override

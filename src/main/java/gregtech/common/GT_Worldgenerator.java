@@ -21,6 +21,7 @@ import net.minecraft.world.gen.ChunkProviderHell;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GT_Worldgenerator implements IWorldGenerator {
 
@@ -29,7 +30,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
     private static int endMinSize = 50;
     private static int endMaxSize = 200;
     private static boolean endAsteroids = true;
-    public List<Runnable> mList = new ArrayList();
+    public List<Runnable> mList = new CopyOnWriteArrayList<>();
     public boolean mIsGenerating = false;
 
 
@@ -43,23 +44,14 @@ public class GT_Worldgenerator implements IWorldGenerator {
 
     @Override
     public void generate(Random aRandom, int aX, int aZ, World aWorld, IChunkGenerator aChunkGenerator, IChunkProvider aChunkProvider) {
-        /*Biome biome = aWorld.getBiomeGenForCoords(new BlockPos(aX * 16 + 8, 16, aZ * 16 + 8));
-        this.mList.add(new WorldGenContainer(new Random(aRandom.nextInt()), aX * 16, aZ * 16,
-                (aChunkGenerator instanceof ChunkProviderEnd || biome == Biomes.SKY) ? 1 :
-                (aChunkGenerator instanceof ChunkProviderHell || biome == Biomes.HELL) ? -1 : 0,
-                aWorld, aChunkGenerator, aChunkProvider, biome.getBiomeName()));
-        if (!this.mIsGenerating) {
-            this.mIsGenerating = true;
-            for (Runnable aMList : this.mList) {
-                aMList.run();
-            }
-            this.mList.clear();
-            this.mIsGenerating = false;
+        if(aRandom.nextInt(4) == 0) {
+            //TODO less lag on ore gen
+            Biome biome = aWorld.getBiomeGenForCoords(new BlockPos(aX * 16 + 8, 16, aZ * 16 + 8));
+            new WorldGenContainer(new Random(aRandom.nextInt()), aX * 16, aZ * 16,
+                    (aChunkGenerator instanceof ChunkProviderEnd || biome == Biomes.SKY) ? 1 :
+                            (aChunkGenerator instanceof ChunkProviderHell || biome == Biomes.HELL) ? -1 : 0,
+                    aWorld, aChunkGenerator, aChunkProvider, biome.getBiomeName()).run();
         }
-        new WorldGenContainer(new Random(aRandom.nextInt()), aX * 16, aZ * 16,
-                (aChunkGenerator instanceof ChunkProviderEnd || biome == Biomes.SKY) ? 1 :
-                        (aChunkGenerator instanceof ChunkProviderHell || biome == Biomes.HELL) ? -1 : 0,
-                aWorld, aChunkGenerator, aChunkProvider, biome.getBiomeName()).run();*/
     }
 
     public static class WorldGenContainer
@@ -197,14 +189,15 @@ public class GT_Worldgenerator implements IWorldGenerator {
                                             if ((var39 * var39 + var42 * var42 + var45 * var45 < 1.0D) && mWorld.isAirBlock(randPos)) {
                                                 int ranOre = aRandom.nextInt(50);
                                                 if (ranOre < 3) {
-                                                    GT_TileEntity_Ores.setOreBlock(mWorld, eX, eY, eZ, primaryMeta , true);
+                                                    GT_TileEntity_Ores.setOreBlock(mWorld, randPos, primaryMeta , true);
                                                 } else if (ranOre < 6) {
-                                                    GT_TileEntity_Ores.setOreBlock(mWorld, eX, eY, eZ, secondaryMeta , true);
+                                                    GT_TileEntity_Ores.setOreBlock(mWorld, randPos, secondaryMeta , true);
                                                 } else if (ranOre < 8) {
-                                                    GT_TileEntity_Ores.setOreBlock(mWorld, eX, eY, eZ, betweenMeta , true);
+                                                    GT_TileEntity_Ores.setOreBlock(mWorld, randPos, betweenMeta , true);
                                                 } else if (ranOre < 10) {
-                                                    GT_TileEntity_Ores.setOreBlock(mWorld, eX, eY, eZ, sporadicMeta , true);
-                                                } else {mWorld.setBlockState(randPos, Blocks.END_STONE.getDefaultState());
+                                                    GT_TileEntity_Ores.setOreBlock(mWorld, randPos, sporadicMeta , true);
+                                                } else {
+                                                    mWorld.setBlockState(randPos, Blocks.END_STONE.getDefaultState());
                                                 }
                                             }
                                         }

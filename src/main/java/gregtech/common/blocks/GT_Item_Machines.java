@@ -10,6 +10,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -22,10 +23,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
+import java.awt.*;
 import java.util.List;
 
 public class GT_Item_Machines
-        extends ItemBlock {
+        extends ItemBlock implements IItemColor {
     public GT_Item_Machines(Block par1) {
         super(par1);
         setMaxDamage(0);
@@ -160,4 +162,8 @@ public class GT_Item_Machines
         return true;
     }
 
+    @Override
+    public int getColorFromItemstack(ItemStack stack, int tintIndex) {
+        return Color.WHITE.getRGB();
+    }
 }

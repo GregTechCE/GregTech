@@ -11,9 +11,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -36,12 +38,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements ITileEntityProvider, ITextureBlockIconProvider {
     public static ThreadLocal<GT_TileEntity_Ores> mTemporaryTileEntity = new ThreadLocal<>();
-    public static boolean FUCKING_LOCK = false;
     public static boolean tHideOres;
 
     protected GT_Block_Ores_Abstract(String aUnlocalizedName, boolean aHideFirstMeta, Material aMaterial) {
@@ -104,16 +106,13 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
         }
     }
 
+
     @Override
-    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-        if (!FUCKING_LOCK) {
-            FUCKING_LOCK = true;
-            TileEntity tTileEntity = world.getTileEntity(pos);
-            if ((tTileEntity instanceof GT_TileEntity_Ores)) {
-                ((GT_TileEntity_Ores) tTileEntity).onUpdated();
-            }
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
+        GT_TileEntity_Ores tileEntity_ores = (GT_TileEntity_Ores) worldIn.getTileEntity(pos);
+        if (tileEntity_ores != null && !worldIn.isRemote) {
+            tileEntity_ores.sendPacket();
         }
-        FUCKING_LOCK = false;
     }
 
     public String getLocalizedName(Materials aMaterial) {

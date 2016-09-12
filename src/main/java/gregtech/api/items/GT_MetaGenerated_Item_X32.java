@@ -1,10 +1,7 @@
 package gregtech.api.items;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TextureSet;
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.*;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -62,6 +59,13 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
                 } else {
                     GT_OreDictUnificator.registerOre(tPrefix.get(tMaterial), tStack);
                 }
+                if(tPrefix == OrePrefixes.lens) {
+                    Dyes materialColor = tMaterial.mColor;
+                    if(materialColor != null) {
+                        GT_OreDictUnificator.registerOre("craftingLens" + materialColor.mName.replace(' ', '\0'), tStack);
+                    }
+                }
+
                 if ((tPrefix == OrePrefixes.stick || tPrefix == OrePrefixes.wireFine || tPrefix == OrePrefixes.ingot) && (tMaterial == Materials.Lead || tMaterial == Materials.Tin || tMaterial == Materials.SolderingAlloy)) {
                     GregTech_API.sSolderingMetalList.add(tStack);
                 }

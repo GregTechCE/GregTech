@@ -3,11 +3,14 @@ package gregtech.common.blocks;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.net.GT_Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GT_Packet_Ores
         extends GT_Packet {
@@ -49,12 +52,10 @@ public class GT_Packet_Ores
     public void process(IBlockAccess aWorld) {
         if (aWorld != null) {
             BlockPos blockPos = new BlockPos(this.mX, this.mY, this.mZ);
-            TileEntity tTileEntity = aWorld.getTileEntity(blockPos);
-            if ((tTileEntity instanceof GT_TileEntity_Ores)) {
-                ((GT_TileEntity_Ores) tTileEntity).mMetaData = this.mMetaData;
-            }
-            if (((aWorld instanceof World)) && (((World) aWorld).isRemote)) {
-                ((World) aWorld).markBlockRangeForRenderUpdate(blockPos, blockPos);
+            GT_TileEntity_Ores tileEntity_ores = (GT_TileEntity_Ores) aWorld.getTileEntity(blockPos);
+            if(tileEntity_ores != null) {
+                tileEntity_ores.mMetaData = mMetaData;
+                tileEntity_ores.causeChunkUpdate();
             }
         }
     }

@@ -138,7 +138,6 @@ public class GT_Loader_OreDictionary
         GT_OreDictUnificator.registerOre(OrePrefixes.battery, Materials.Advanced, GT_ModHandler.getIC2Item(ItemName.advanced_re_battery, 1, 32767));
         GT_OreDictUnificator.registerOre(OrePrefixes.battery, Materials.Elite, GT_ModHandler.getIC2Item(ItemName.energy_crystal, 1, 32767));
         GT_OreDictUnificator.registerOre(OrePrefixes.battery, Materials.Master, GT_ModHandler.getIC2Item(ItemName.lapotron_crystal, 1, 32767));
-
         GT_OreDictUnificator.registerOre(OreDictNames.craftingWireCopper, ItemCable.getCable(CableType.copper, 1));
         GT_OreDictUnificator.registerOre(OreDictNames.craftingWireGold, ItemCable.getCable(CableType.gold, 1));
         GT_OreDictUnificator.registerOre(OreDictNames.craftingWireIron, ItemCable.getCable(CableType.iron, 1));

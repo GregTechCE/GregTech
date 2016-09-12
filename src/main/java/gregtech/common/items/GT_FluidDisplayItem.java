@@ -2,7 +2,9 @@ package gregtech.common.items;
 
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.common.render.newitems.IItemIconContainerProvider;
+import gregtech.common.render.newitems.IItemIconProvider;
 import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -20,7 +22,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import java.util.List;
 
-public class GT_FluidDisplayItem extends GT_Generic_Item implements IItemColor, IItemIconContainerProvider {
+public class GT_FluidDisplayItem extends GT_Generic_Item implements IItemColor {
     public GT_FluidDisplayItem() {
         super("GregTech_FluidDisplay", "Fluid Display", null);
         ItemList.Display_Fluid.set(this);
@@ -46,9 +48,9 @@ public class GT_FluidDisplayItem extends GT_Generic_Item implements IItemColor, 
     }
 
     @Override
-    public IIconContainer getIconContainer(ItemStack stack) {
+    public TextureAtlasSprite getIcon(ItemStack stack, int pass) {
         Fluid tFluid = FluidRegistry.getFluid(stack.getItemDamage());
-        return GT_Utility.sprite2Container(GT_Utility.getTexture(tFluid.getStill()));
+        return GT_Utility.getTexture(tFluid.getStill());
     }
 
     @Override
