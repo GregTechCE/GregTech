@@ -6,9 +6,14 @@ import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 
 import java.util.Map;
 
+@IFMLLoadingPlugin.Name("GregtechASM")
+@IFMLLoadingPlugin.SortingIndex(10001)
 public class ASM implements IFMLLoadingPlugin, IClassTransformer {
 
     private static ClassPool pool = ClassPool.getDefault();
+
+    private static final String OBF_METHOD_NAME = "func_178125_b";
+    private static boolean runtimeDeobfuscation = false;
 
     static {
         pool.appendClassPath(new LoaderClassPath(Thread.currentThread().getContextClassLoader()));
@@ -22,7 +27,7 @@ public class ASM implements IFMLLoadingPlugin, IClassTransformer {
             CtClass ctClass = pool.getOrNull(s1);
             System.out.println(s1);
             try {
-                CtMethod method = ctClass.getDeclaredMethod("getModelForState");
+                CtMethod method = ctClass.getDeclaredMethod(runtimeDeobfuscation ? OBF_METHOD_NAME : "getModelForState");
                 method.insertBefore(
                         "if(gregtech.common.render.newblocks.BlockRenderer.shouldHook($1)) {" +
                         "return gregtech.common.render.newblocks.BlockRenderer.hook($1); }");
@@ -51,7 +56,7 @@ public class ASM implements IFMLLoadingPlugin, IClassTransformer {
 
     @Override
     public void injectData(Map<String, Object> data) {
-
+        runtimeDeobfuscation = (Boolean) data.get("runtimeDeobfuscationEnabled");
     }
 
     @Override
