@@ -86,7 +86,6 @@ dependencies {
     //provided "codechicken:CodeChickenLib:${config.minecraft.version}-${config.codechickenlib.version}:dev"
 	//provided "codechicken:CodeChickenCore:${config.minecraft.version}-${config.codechickencore.version}:dev"
     //provided "codechicken:NotEnoughItems:${config.minecraft.version}-${config.nei.version}:dev"
-    compile "org.javassist:javassist:3.20.0-GA"
     provided "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"
     deobfCompile "net.sengir.forestry:forestry_${config.minecraft.version}:${config.forestry.version}"
     deobfCompile "mezz.jei:jei_${config.minecraft.version}:+"
@@ -142,13 +141,6 @@ jar {
         attributes 'FMLCorePlugin': 'gregtech.asm.ASM'
         attributes 'FMLCorePluginContainsFMLMod': 'true'
     }
-    doFirst {
-        for(file in configurations.compile) {
-            if(file.name.contains("javassist")) {
-                from zipTree(file)
-            }
-        }
-    }
 }
 
 task dev(type: Jar) {
@@ -157,13 +149,6 @@ task dev(type: Jar) {
     manifest {
         attributes 'FMLCorePlugin': 'gregtech.asm.ASM'
         attributes 'FMLCorePluginContainsFMLMod': 'true'
-    }
-    doFirst {
-        for(file in configurations.compile) {
-            if(file.name.contains("javassist")) {
-                from zipTree(file)
-            }
-        }
     }
 }
 

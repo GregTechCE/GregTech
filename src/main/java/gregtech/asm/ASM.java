@@ -1,8 +1,11 @@
 package gregtech.asm;
 
-import javassist.*;
 import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.*;
 
 import java.util.Map;
 
@@ -10,31 +13,45 @@ import java.util.Map;
 @IFMLLoadingPlugin.SortingIndex(10001)
 public class ASM implements IFMLLoadingPlugin, IClassTransformer {
 
-    private static ClassPool pool = ClassPool.getDefault();
-
     private static final String OBF_METHOD_NAME = "func_178125_b";
-    private static boolean runtimeDeobfuscation = false;
-
-    static {
-        pool.appendClassPath(new LoaderClassPath(Thread.currentThread().getContextClassLoader()));
-        pool.appendClassPath(new LoaderClassPath(ClassLoader.getSystemClassLoader()));
-    }
+    private static final String BLOCK_RENDERER = "gregtech/common/render/newblocks/BlockRenderer";
+    private static final String SHOULD_HOOK_DESC = "(Lnet/minecraft/block/state/IBlockState;)Z";
+    private static final String HOOK_DESC = "(Lnet/minecraft/block/state/IBlockState;)Lnet/minecraft/client/renderer/block/model/IBakedModel;";
 
     @Override
     public byte[] transform(String s, String s1, byte[] bytes) {
         if(s1.equals("net.minecraft.client.renderer.BlockModelShapes")) {
-            pool.appendClassPath(new ByteArrayClassPath(s1, bytes));
-            CtClass ctClass = pool.getOrNull(s1);
-            System.out.println(s1);
-            try {
-                CtMethod method = ctClass.getDeclaredMethod(runtimeDeobfuscation ? OBF_METHOD_NAME : "getModelForState");
-                method.insertBefore(
-                        "if(gregtech.common.render.newblocks.BlockRenderer.shouldHook($1)) {" +
-                        "return gregtech.common.render.newblocks.BlockRenderer.hook($1); }");
-                return ctClass.toBytecode();
-            } catch (Exception exception) {
-                exception.printStackTrace();
+            ClassReader classReader = new ClassReader(bytes);
+            ClassNode classNode = new ClassNode();
+            classReader.accept(classNode, 0);
+
+            for(MethodNode method : classNode.methods) {
+                if(method.name.equals("getModelForState") || method.name.equals(OBF_METHOD_NAME)) {
+                    InsnList insnList = new InsnList();
+                    // load block state argument
+                    insnList.add(new VarInsnNode(Opcodes.ALOAD, 1));
+                    //shouldHook: pop IBlockState -> push boolean
+                    insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, BLOCK_RENDERER, "shouldHook", SHOULD_HOOK_DESC, false));
+                    LabelNode labelNode = new LabelNode();
+                    //pop boolean and jump if 0
+                    insnList.add(new JumpInsnNode(Opcodes.IFEQ, labelNode));
+                    // load block state argument
+                    insnList.add(new VarInsnNode(Opcodes.ALOAD, 1));
+                    //hook: pop IBlockState -> push IBakedModel
+                    insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, BLOCK_RENDERER, "hook", HOOK_DESC, false));
+                    //returnL pop IBakedModel
+                    insnList.add(new InsnNode(Opcodes.ARETURN));
+                    //normal execution
+                    insnList.add(labelNode);
+                    //inject before method code
+                    method.instructions.insert(insnList);
+                }
             }
+
+
+            ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+            classNode.accept(classWriter);
+            return classWriter.toByteArray();
         }
         return bytes;
     }
@@ -55,9 +72,7 @@ public class ASM implements IFMLLoadingPlugin, IClassTransformer {
     }
 
     @Override
-    public void injectData(Map<String, Object> data) {
-        runtimeDeobfuscation = (Boolean) data.get("runtimeDeobfuscationEnabled");
-    }
+    public void injectData(Map<String, Object> data) {}
 
     @Override
     public String getAccessTransformerClass() {
