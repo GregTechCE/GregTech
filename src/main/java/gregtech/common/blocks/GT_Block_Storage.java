@@ -61,16 +61,6 @@ public class GT_Block_Storage extends GT_Generic_Block {
     }
 
     @Override
-    public boolean isNormalCube(IBlockState state) {
-        return true;
-    }
-
-    @Override
-    public boolean isVisuallyOpaque() {
-        return true;
-    }
-
-    @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
         return Lists.newArrayList(new ItemStack(this, 1, state.getValue(METADATA)));
     }

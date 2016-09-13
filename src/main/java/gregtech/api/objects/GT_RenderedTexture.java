@@ -65,10 +65,10 @@ public class GT_RenderedTexture implements ITexture {
         TextureAtlasSprite sprite = mIconContainer.getIcon();
         TextureAtlasSprite overlay = mIconContainer.getOverlayIcon();
         if(sprite != null) {
-            quads.add(RenderUtil.renderSide(DefaultVertexFormats.BLOCK, sprite, side, tintOff, 0.0F, mRGBa, blockPos == null));
+            quads.add(RenderUtil.renderSide(DefaultVertexFormats.BLOCK, sprite, side, -1, 0.001F, mRGBa, blockPos == null));
         }
         if(overlay != null) {
-            quads.add(RenderUtil.renderSide(DefaultVertexFormats.BLOCK, overlay, side, tintOff + 1000, 0.001F, mRGBa, blockPos == null));
+            quads.add(RenderUtil.renderSide(DefaultVertexFormats.BLOCK, overlay, side, -1, 0.001F, mRGBa, blockPos == null));
         }
         return quads;
     }
