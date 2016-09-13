@@ -24,16 +24,16 @@ public class GT_ItemStack {
         this(GT_Utility.intToStack(aHashCode));
     }
 
-    public ItemStack toStack() {
+    public final ItemStack toStack() {
         if (mItem == null) return null;
         return new ItemStack(mItem, 1, mMetaData);
     }
 
-    public boolean isStackEqual(ItemStack aStack) {
+    public final boolean isStackEqual(ItemStack aStack) {
         return GT_Utility.areStacksEqual(toStack(), aStack);
     }
 
-    public boolean isStackEqual(GT_ItemStack aStack) {
+    public final boolean isStackEqual(GT_ItemStack aStack) {
         return GT_Utility.areStacksEqual(toStack(), aStack.toStack());
     }
 

@@ -204,9 +204,9 @@ public class GT_Client extends GT_Proxy
 
     public void onPostLoad() {
         super.onPostLoad();
-        label0:
-        for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++)
-            try {
+        try {
+            label0:
+            for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++)
                 do {
                     if (i >= GregTech_API.METATILEENTITIES.length)
                         continue label0;
@@ -214,9 +214,7 @@ public class GT_Client extends GT_Proxy
                         GregTech_API.METATILEENTITIES[i].getStackForm(1L).getTooltip(null, true);
                     i++;
                 } while (true);
-            } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
-            }
+        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
 
 
 //        super.onPostLoad();

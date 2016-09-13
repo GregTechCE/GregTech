@@ -69,13 +69,14 @@ public class GT_MetaTileEntity_ImplosionCompressor
 
     public boolean checkRecipe(ItemStack aStack) {
         ArrayList<ItemStack> tInputList = getStoredInputs();
-        for (int i = 0; i < tInputList.size() - 1; i++) {
-            for (int j = i + 1; j < tInputList.size(); j++) {
+        int tInputList_sS=tInputList.size();
+        for (int i = 0; i < tInputList_sS - 1; i++) {
+            for (int j = i + 1; j < tInputList_sS; j++) {
                 if (GT_Utility.areStacksEqual((ItemStack) tInputList.get(i), (ItemStack) tInputList.get(j))) {
                     if (((ItemStack) tInputList.get(i)).stackSize >= ((ItemStack) tInputList.get(j)).stackSize) {
-                        tInputList.remove(j--);
+                        tInputList.remove(j--); tInputList_sS=tInputList.size();
                     } else {
-                        tInputList.remove(i--);
+                        tInputList.remove(i--); tInputList_sS=tInputList.size();
                         break;
                     }
                 }

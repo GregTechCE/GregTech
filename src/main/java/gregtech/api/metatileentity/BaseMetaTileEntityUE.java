@@ -75,7 +75,7 @@ public class BaseMetaTileEntityUE extends BaseMetaTileEntity /*implements IUETil
 		for (byte i = 0; i < 6; i++) {
 			if (inputEnergyFrom(i)) {
 				Object tTileEntity = getTileEntityAtSide(i);
-				if (tTileEntity != null && tTileEntity instanceof IConductor) {
+				if (tTileEntity instanceof IConductor) {
 					rSides.add(ForgeDirection.getOrientation(i));
 				}
 			}
@@ -88,7 +88,7 @@ public class BaseMetaTileEntityUE extends BaseMetaTileEntity /*implements IUETil
 		for (byte i = 0; i < 6; i++) {
 			if (outputsEnergyTo(i)) {
 				Object tTileEntity = getTileEntityAtSide(i);
-				if (tTileEntity != null && tTileEntity instanceof IConductor) {
+				if (tTileEntity instanceof IConductor) {
 					rSides.add(ForgeDirection.getOrientation(i));
 				}
 			}
