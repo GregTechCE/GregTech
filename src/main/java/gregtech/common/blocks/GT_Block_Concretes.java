@@ -69,8 +69,7 @@ public class GT_Block_Concretes extends GT_Block_Stones_Abstract {
 
     @Override
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity aEntity) {
-        Block tBlock = worldIn.getBlockState(pos.up()).getBlock();
-        if (((aEntity instanceof EntityLivingBase)) && (!(tBlock instanceof IFluidBlock)) && (!(tBlock instanceof BlockLiquid)) && (aEntity.onGround) && (!aEntity.isInWater()) && (!aEntity.isWet())) {
+        if (aEntity.onGround && !aEntity.isInWater()) {
             if (aEntity.isSneaking()) {
                 aEntity.motionX *= 0.8999999761581421D;
                 aEntity.motionZ *= 0.8999999761581421D;
@@ -87,10 +86,10 @@ public class GT_Block_Concretes extends GT_Block_Stones_Abstract {
     @Override
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World aWorld, BlockPos pos) {
         Block tBlock = aWorld.getBlockState(pos.up()).getBlock();
-        if (((tBlock instanceof IFluidBlock)) || ((tBlock instanceof BlockLiquid))) {
-            return super.getCollisionBoundingBox(blockState, aWorld, pos);
+        if (tBlock instanceof IFluidBlock || tBlock instanceof BlockLiquid) {
+            return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
         }
-        return new AxisAlignedBB(pos, pos.add(1, 0.875D, 1));
+        return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D);
     }
 
 }

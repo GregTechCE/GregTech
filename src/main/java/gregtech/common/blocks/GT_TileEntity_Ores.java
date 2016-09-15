@@ -115,14 +115,6 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
         return aNBT;
     }
 
-    public void sendPacket() {
-        if (!worldObj.isRemote) {
-            GT_Values.NW.sendPacketToAllPlayersInRange(this.worldObj,
-                    new GT_Packet_Ores(getPos(), this.mMetaData),
-                    getPos().getX(), getPos().getZ());
-        }
-    }
-
     @SideOnly(Side.CLIENT)
     public void causeChunkUpdate() {
         int minX = pos.getX() - 5;

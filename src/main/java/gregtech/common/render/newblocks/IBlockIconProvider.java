@@ -1,6 +1,5 @@
 package gregtech.common.render.newblocks;
 
-import gregtech.api.items.GT_Generic_Block;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

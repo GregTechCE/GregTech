@@ -21,6 +21,8 @@ import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static gregtech.api.enums.GT_Values.W;
 
@@ -36,13 +38,6 @@ public abstract class GT_Generic_Block extends Block {
         setUnlocalizedName(mUnlocalizedName = aName);
         GameRegistry.registerBlock(this, aItemClass, getUnlocalizedName());
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + W + ".name", "Any Sub Block of this one");
-        setLightLevel(2);
-        translucent = true;
-    }
-
-    @Override
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
     }
 
     @Override
@@ -76,17 +71,14 @@ public abstract class GT_Generic_Block extends Block {
     }
 
     @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT;
     }
 
-    @Override
-    public EnumBlockRenderType getRenderType(IBlockState state) {
-        StackTraceElement[] trace = Thread.currentThread().getStackTrace();
-        if(trace[3].getMethodName().equals("renderBlockDamage")) {
-            return EnumBlockRenderType.INVISIBLE;
-            //TODO FIX ME PLEASE
-        }
-        return EnumBlockRenderType.MODEL;
-    }
 }

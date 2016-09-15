@@ -16,21 +16,16 @@ import java.util.List;
  */
 public class GT_MultiTexture implements ITexture {
     private final ITexture[] mTextures;
-    private final int[] mTexturesTintsMappings;
 
     public GT_MultiTexture(ITexture... aTextures) {
         mTextures = aTextures;
-        this.mTexturesTintsMappings = new int[aTextures.length];
-        for(int i = 0; i < mTextures.length; i++) {
-            mTexturesTintsMappings[i] = i * 100;
-        }
     }
 
     @Override
-    public List<BakedQuad> getQuads(Block aBlock, BlockPos blockPos, EnumFacing side, int tintOffset) {
+    public List<BakedQuad> getQuads(Block aBlock, BlockPos blockPos, EnumFacing side, float offset) {
         ArrayList<BakedQuad> quads = new ArrayList<>();
         for(int index = 0; index < mTextures.length; index++) {
-            quads.addAll(mTextures[index].getQuads(aBlock, blockPos, side, tintOffset + mTexturesTintsMappings[index]));
+            quads.addAll(mTextures[index].getQuads(aBlock, blockPos, side, offset + 0.001F * index));
         }
         return quads;
     }

@@ -1,6 +1,8 @@
 package gregtech.common.blocks;
 
+import gregtech.api.enums.GT_Values;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -49,18 +51,24 @@ public class GT_TickHandler_Ores {
 
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent player) {
-        EntityPlayer entityPlayer = player.player;
-        World world = entityPlayer.worldObj;
-        if(world.getWorldTime() % 40 == 0) {
-            ChunkCoordIntPair chunk = new ChunkCoordIntPair(new BlockPos(entityPlayer));
-            for (int x = -1; x < 1; x++) {
-                for (int z = -1; z < 1; z++) {
-                    ChunkCoordIntPair offset = chunk.offset(x, z);
-                    ArrayList<GT_TileEntity_Ores> ores = getChunkData(world.provider.getDimension(), offset);
-                    ores.removeIf(TileEntity::isInvalid);
-                    for(GT_TileEntity_Ores oresTile : ores) {
-                        if(!oresTile.isBlocked()) oresTile.sendPacket();
+        if(player.side.isServer()) {
+            EntityPlayer entityPlayer = player.player;
+            World world = entityPlayer.worldObj;
+            if (world.getWorldTime() % 10 == 0) {
+                GT_Packet_Ores packet_ores = new GT_Packet_Ores();
+                ChunkCoordIntPair chunk = new ChunkCoordIntPair(new BlockPos(entityPlayer));
+                for (int x = -1; x < 1; x++) {
+                    for (int z = -1; z < 1; z++) {
+                        ChunkCoordIntPair offset = chunk.offset(x, z);
+                        ArrayList<GT_TileEntity_Ores> ores = getChunkData(world.provider.getDimension(), offset);
+                        ores.removeIf(TileEntity::isInvalid);
+                        for (GT_TileEntity_Ores oresTile : ores) {
+                            packet_ores.addPos(oresTile);
+                        }
                     }
+                }
+                if (!packet_ores.isEmpty()) {
+                    GT_Values.NW.sendTo(packet_ores, (EntityPlayerMP) entityPlayer);
                 }
             }
         }

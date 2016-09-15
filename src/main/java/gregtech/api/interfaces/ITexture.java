@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ITexture {
 
-    public List<BakedQuad> getQuads(Block aBlock, BlockPos blockPos, EnumFacing side, int tintOffset);
+    public List<BakedQuad> getQuads(Block aBlock, BlockPos blockPos, EnumFacing side, float offset);
 
     public boolean isValidTexture();
 }

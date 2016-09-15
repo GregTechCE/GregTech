@@ -30,8 +30,8 @@ public class GT_Worldgenerator implements IWorldGenerator {
     private static int endMinSize = 50;
     private static int endMaxSize = 200;
     private static boolean endAsteroids = true;
-    public List<Runnable> mList = new CopyOnWriteArrayList<>();
-    public boolean mIsGenerating = false;
+    //public List<Runnable> mList = new CopyOnWriteArrayList<>();
+    //public boolean mIsGenerating = false;
 
 
     public GT_Worldgenerator() {
@@ -44,14 +44,11 @@ public class GT_Worldgenerator implements IWorldGenerator {
 
     @Override
     public void generate(Random aRandom, int aX, int aZ, World aWorld, IChunkGenerator aChunkGenerator, IChunkProvider aChunkProvider) {
-        if(aRandom.nextInt(4) == 0) {
-            //TODO less lag on ore gen
-            Biome biome = aWorld.getBiomeGenForCoords(new BlockPos(aX * 16 + 8, 16, aZ * 16 + 8));
-            new WorldGenContainer(new Random(aRandom.nextInt()), aX * 16, aZ * 16,
-                    (aChunkGenerator instanceof ChunkProviderEnd || biome == Biomes.SKY) ? 1 :
-                            (aChunkGenerator instanceof ChunkProviderHell || biome == Biomes.HELL) ? -1 : 0,
-                    aWorld, aChunkGenerator, aChunkProvider, biome.getBiomeName()).run();
-        }
+        Biome biome = aWorld.getBiomeGenForCoords(new BlockPos(aX * 16 + 8, 16, aZ * 16 + 8));
+        new WorldGenContainer(new Random(aRandom.nextInt()), aX * 16, aZ * 16,
+                (aChunkGenerator instanceof ChunkProviderEnd || biome == Biomes.SKY) ? 1 :
+                        (aChunkGenerator instanceof ChunkProviderHell || biome == Biomes.HELL) ? -1 : 0,
+                aWorld, aChunkGenerator, aChunkProvider, biome.getBiomeName()).run();
     }
 
     public static class WorldGenContainer

@@ -1,16 +1,16 @@
 package gregtech.api.objects;
 
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.common.render.newblocks.IBlockIconProvider;
+import gregtech.common.render.newblocks.RenderUtil;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 import java.awt.*;
 import java.util.Collections;
@@ -23,44 +23,41 @@ public class GT_CopiedBlockTexture implements ITexture {
     public int mRGBa;
 
     public GT_CopiedBlockTexture(Block aBlock, int aSide, int aMeta, short[] aRGBa) {
-        if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GT_CopiedBlockTexture");
         mBlock = aBlock;
-        mRGBa = makeColor(aRGBa);
-        mSide = (byte) aSide;
+        mRGBa = aRGBa == null ? -1 : makeColor(aRGBa);
+        mSide = (byte) (aSide - 1);
         mMeta = (byte) aMeta;
     }
 
     private int makeColor(short[] rgba) {
-        short[] nullRGBA = Materials._NULL.getRGBA();
-        short red = rgba[0] > 0 && 255 > rgba[0] ? rgba[0] : nullRGBA[0];
-        short green = rgba[1] > 0 && 255 > rgba[1] ? rgba[1] : nullRGBA[1];
-        short blue = rgba[2] > 0 && 255 > rgba[2] ? rgba[2] : nullRGBA[2];
-        short alpha = rgba[3] > 0 && 255 > rgba[3] ? rgba[3] : nullRGBA[3];
-        return new Color(red, green, blue, alpha).getRGB();
-    }
-
-    public GT_CopiedBlockTexture(Block aBlock, int aSide, int aMeta) {
-        this(aBlock, aSide, aMeta, Dyes._NULL.mRGBa);
-    }
-
-    public List<BakedQuad> getSideQuads(Block aBlock, int aMeta, EnumFacing side) {
         try {
-            Minecraft mc = Minecraft.getMinecraft();
-            IBlockState blockState = aBlock.getStateFromMeta(aMeta);
-            IBakedModel model = mc.getBlockRendererDispatcher().getModelForState(blockState);
-            return model.getQuads(blockState, side, mc.theWorld.rand.nextLong());
-        } catch (Throwable error) {
-            System.out.println("Failed to gen side quads of " + aBlock.getRegistryName() + " " + mMeta);
-            error.printStackTrace();
-            return Collections.emptyList();
+            for(int i = 0; i < 4; i++)
+                rgba[i] = (short) Math.max(0, rgba[i]);
+            return new Color(rgba[0], rgba[1], rgba[2], rgba[3]).getRGB();
+        } catch (IllegalArgumentException err) {
+            return Color.WHITE.getRGB();
         }
     }
 
+    public GT_CopiedBlockTexture(Block aBlock, int aSide, int aMeta) {
+        this(aBlock, aSide, aMeta, null);
+    }
+
+    public static TextureAtlasSprite getSide(Block aBlock, int aMeta, EnumFacing side) {
+        if (aBlock instanceof IBlockIconProvider) {
+            IBlockIconProvider iconProvider = ((IBlockIconProvider) aBlock);
+            return iconProvider.getIcon(FMLClientHandler.instance().getWorldClient(), null, side, aMeta);
+        }
+        System.out.println("Failed to copy texture of " + aBlock.getRegistryName() + " " + aMeta);
+        return Textures.BlockIcons.RENDERING_ERROR.getIcon();
+    }
+
     @Override
-    public List<BakedQuad> getQuads(Block aBlock, BlockPos blockPos, EnumFacing side, int tintOffset) {
-        List<BakedQuad> quads = getSideQuads(mBlock, mMeta, EnumFacing.VALUES[mSide > 0 ? mSide - 1 : 0]);
-        for (BakedQuad bakedQuad : quads) {
-            ObfuscationReflectionHelper.setPrivateValue(BakedQuad.class, bakedQuad, tintOffset, 1);
+    public List<BakedQuad> getQuads(Block aBlock, BlockPos blockPos, EnumFacing side, float offset) {
+        TextureAtlasSprite sprite = getSide(mBlock, mMeta, EnumFacing.VALUES[mSide]);
+        if(sprite != null) {
+            BakedQuad quad = RenderUtil.renderSide(DefaultVertexFormats.BLOCK, sprite, side, -1, offset, mRGBa, false);
+            return Collections.singletonList(quad);
         }
         return Collections.emptyList();
     }

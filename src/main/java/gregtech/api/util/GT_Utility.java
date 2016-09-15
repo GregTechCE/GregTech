@@ -38,6 +38,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -951,7 +952,7 @@ public class GT_Utility {
 
     public static boolean sendSoundToPlayers(World aWorld, String aSoundName, float aSoundStrength, float aSoundModulation, int aX, int aY, int aZ) {
         if (isStringInvalid(aSoundName) || aWorld == null || aWorld.isRemote) return false;
-        NW.sendPacketToAllPlayersInRange(aWorld, new GT_Packet_Sound(aSoundName, aSoundStrength, aSoundModulation, aX, (short) aY, aZ), aX, aZ);
+        NW.sendToAllAround(aWorld, new GT_Packet_Sound(aSoundName, aSoundStrength, aSoundModulation, aX, (short) aY, aZ), aX, aY, aZ);
         return true;
     }
     public static boolean sendSoundToPlayers(World aWorld, String aSoundName, float aSoundStrength, float aSoundModulation, BlockPos blockPos) {
@@ -1242,7 +1243,7 @@ public class GT_Utility {
     }
 
     public static boolean applyHeatDamage(EntityLivingBase aEntity, float aDamage) {
-        if (aDamage > 0 && aEntity != null && aEntity.getActivePotionEffect(Potion.getPotionFromResourceLocation("fire_resistance")) == null && !isWearingFullHeatHazmat(aEntity)) {
+        if (aDamage > 0 && aEntity != null && aEntity.getActivePotionEffect(MobEffects.FIRE_RESISTANCE) == null && !isWearingFullHeatHazmat(aEntity)) {
             aEntity.attackEntityFrom(GT_DamageSources.getHeatDamage(), aDamage);
             return true;
         }
@@ -1268,10 +1269,10 @@ public class GT_Utility {
 
     public static boolean applyRadioactivity(EntityLivingBase aEntity, int aLevel, int aAmountOfItems) {
         if (aLevel > 0 && aEntity != null && aEntity.getCreatureAttribute() != EnumCreatureAttribute.UNDEAD && aEntity.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD && !isWearingFullRadioHazmat(aEntity)) {
-            aEntity.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("slowness"), aLevel * 140 * aAmountOfItems));
-            aEntity.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("confusion"), aLevel * 130 * aAmountOfItems));
-            aEntity.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("weakness"), aLevel * 150 * aAmountOfItems));
-            aEntity.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("hunger"), aLevel * 130 * aAmountOfItems));
+            aEntity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, aLevel * 140 * aAmountOfItems));
+            aEntity.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, aLevel * 130 * aAmountOfItems));
+            aEntity.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, aLevel * 150 * aAmountOfItems));
+            aEntity.addPotionEffect(new PotionEffect(MobEffects.HUNGER, aLevel * 130 * aAmountOfItems));
             aEntity.addPotionEffect(new PotionEffect(IC2Potion.radiation, aLevel * 180 * aAmountOfItems));
             return true;
         }

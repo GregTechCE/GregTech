@@ -189,24 +189,19 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
             mMetaTileEntity.setBaseMetaTileEntity(this);
         }
 
-        if (isServerSide()) {
-            if (mTickTimer % 10 == 0) {
-                if (mSendClientData) {
-                    NW.sendPacketToAllPlayersInRange(worldObj,
-                            new GT_Packet_TileEntity(
-                                    getXCoord(), getYCoord(), getZCoord(), mID,
-                                    mCoverSides[0], mCoverSides[1], mCoverSides[2], mCoverSides[3], mCoverSides[4], mCoverSides[5],
-                                    oTextureData = mConnections, oUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0,
-                                    oRedstoneData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0) |
-                                            ((mSidedRedstone[2] > 0) ? 4 : 0) | ((mSidedRedstone[3] > 0) ? 8 : 0) | ((mSidedRedstone[4] > 0) ? 16 : 0)
-                                            | ((mSidedRedstone[5] > 0) ? 32 : 0)), oColor = mColor), getXCoord(), getZCoord());
-                    mSendClientData = false;
-                }
-            }
+        if (isServerSide() && mTickTimer % 10 == 0) {
+            NW.sendToAllAround(worldObj,
+                    new GT_Packet_TileEntity(
+                            getXCoord(), getYCoord(), getZCoord(), mID,
+                            mCoverSides[0], mCoverSides[1], mCoverSides[2], mCoverSides[3], mCoverSides[4], mCoverSides[5],
+                            oTextureData = mConnections, oUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0,
+                            oRedstoneData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0) |
+                                    ((mSidedRedstone[2] > 0) ? 4 : 0) | ((mSidedRedstone[3] > 0) ? 8 : 0) | ((mSidedRedstone[4] > 0) ? 16 : 0)
+                                    | ((mSidedRedstone[5] > 0) ? 32 : 0)), oColor = mColor, true),
+                    getXCoord(), getYCoord(), getZCoord());
         }
 
         long tTime = System.currentTimeMillis();
-
         for (int tCode = 0; hasValidMetaTileEntity() && tCode >= 0; ) {
             try {
                 switch (tCode) {
@@ -236,6 +231,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                                 causeChunkUpdate();
                                 mNeedsUpdate = false;
                             }
+
                         }
                     case 2:
                     case 3:

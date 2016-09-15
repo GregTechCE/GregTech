@@ -1,5 +1,6 @@
 package gregtech;
 
+import gregtech.api.net.GT_PacketHandler;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.common.*;
 import ic2.api.recipe.IMachineRecipeManager;
@@ -95,7 +96,7 @@ public class GT_Mod implements IGT_Mod {
         }
         GT_Values.GT = this;
         GT_Values.DW = new GT_DummyWorld();
-        GT_Values.NW = new GT_Network();
+        GT_Values.NW = new GT_PacketHandler();
         GregTech_API.sRecipeAdder = GT_Values.RA = new GT_RecipeAdder();
 
         Textures.BlockIcons.VOID.name();
@@ -107,28 +108,6 @@ public class GT_Mod implements IGT_Mod {
         if (GregTech_API.sPreloadStarted) {
             return;
         }
-
-
-            /*final Thread currentThread = Thread.currentThread();
-            new Thread(new Runnable() {
-                long currentMills = 0;
-
-                @Override
-                public void run() {
-                    while (true) {
-                        if (System.currentTimeMillis() - currentMills > 100000) {
-                            currentMills = System.currentTimeMillis();
-                            System.out.println("Last stack trace of " + currentThread.getName() + ": ");
-                            StackTraceElement[] trace = currentThread.getStackTrace();
-                            if (trace.length > 10) {
-                                for (int i = 0; i < 10; i++) {
-                                    System.out.println(trace[i].toString());
-                                }
-                            }
-                        }
-                    }
-                }
-            }).start();*/
 
         GT_Log.out.println("GT_Mod: Replacing IC2 recipes managers");
         try {

@@ -78,7 +78,7 @@ public class BlockRenderer {
             if(side != null) {
                 TextureAtlasSprite sideIcon = getSideSprite(side);
                 if (sideIcon != null) {
-                    BakedQuad faceQuad = RenderUtil.renderSide(DefaultVertexFormats.BLOCK, sideIcon, side, side.getIndex(), 0.0F, -1, true);
+                    BakedQuad faceQuad = RenderUtil.renderSide(DefaultVertexFormats.BLOCK, sideIcon, side, -1, 0.0F, -1, false);
                     if (faceQuad != null) {
                         return Collections.singletonList(faceQuad);
                     }
@@ -101,7 +101,7 @@ public class BlockRenderer {
             if(side != null && state != null) {
                 TextureAtlasSprite sideIcon = getSideSprite(side, state);
                 if (sideIcon != null) {
-                    BakedQuad faceQuad = RenderUtil.renderSide(DefaultVertexFormats.BLOCK, sideIcon, side, side.getIndex(), 0.0F, -1, false);
+                    BakedQuad faceQuad = RenderUtil.renderSide(DefaultVertexFormats.BLOCK, sideIcon, side, -1, 0.0F, -1, false);
                     if (faceQuad != null) {
                         return Collections.singletonList(faceQuad);
                     }
@@ -128,9 +128,9 @@ public class BlockRenderer {
                 BlockPos pos = blockState.getValue(GT_Generic_Block.BLOCK_POS);
                 ITextureBlockIconProvider provider = (ITextureBlockIconProvider) blockState.getBlock();
                 ITexture[] textures = provider.getTexture(Minecraft.getMinecraft().theWorld, pos, blockState, side);
-                for (ITexture texture : textures) {
-                    if(texture != null) {
-                        quads.addAll(texture.getQuads(state.getBlock(), pos, side, side.getIndex()));
+                for (int i = 0; i < textures.length; i++) {
+                    if(textures[i] != null) {
+                        quads.addAll(textures[i].getQuads(state.getBlock(), pos, side, i * 0.01F));
                     }
                 }
                 return quads;
@@ -155,14 +155,12 @@ public class BlockRenderer {
         @Override
         public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
             if(side != null) {
-                GlStateManager.enableLighting();
-                RenderHelper.enableGUIStandardItemLighting();
                 ArrayList<BakedQuad> quads = new ArrayList<>();
                 ITextureBlockIconProvider provider = (ITextureBlockIconProvider) block;
                 ITexture[] textures = provider.getItemblockTexture(holder, itemStack, side);
-                for (ITexture texture : textures) {
-                    if(texture != null) {
-                        quads.addAll(texture.getQuads(block, null, side, side.getIndex()));
+                for (int i = 0; i < textures.length; i++) {
+                    if(textures[i] != null) {
+                        quads.addAll(textures[i].getQuads(block, null, side, i * 0.01F));
                     }
                 }
                 return quads;

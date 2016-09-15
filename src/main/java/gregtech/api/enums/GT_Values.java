@@ -2,7 +2,7 @@ package gregtech.api.enums;
 
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
-import gregtech.api.net.IGT_NetworkHandler;
+import gregtech.api.net.GT_PacketHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
@@ -101,7 +101,7 @@ public class GT_Values {
     /**
      * For Internal Usage (Network)
      */
-    public static IGT_NetworkHandler NW;
+    public static GT_PacketHandler NW;
     /**
      * Not really Constants, but they set using the Config and therefore should be constant (those are for the Debug Mode)
      */

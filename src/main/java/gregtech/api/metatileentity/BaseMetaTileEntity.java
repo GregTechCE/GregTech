@@ -278,20 +278,18 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         mRunningThroughTick = true;
         long tTime = System.currentTimeMillis();
 
-        if (isServerSide()) {
-            if (mTickTimer % 20 == 0) {
-                NW.sendPacketToAllPlayersInRange(worldObj, new GT_Packet_TileEntity(
-                        getXCoord(), getYCoord(), getZCoord(), mID,
-                        mCoverSides[0], mCoverSides[1], mCoverSides[2],
-                        mCoverSides[3], mCoverSides[4], mCoverSides[5],
-                        oTextureData = (byte) ((mFacing & 7) | (mActive ? 8 : 0) |
-                                (mRedstone ? 16 : 0) | (mLockUpgrade ? 32 : 0)),
-                        oUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0,
-                        oRedstoneData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0) |
-                                ((mSidedRedstone[2] > 0) ? 4 : 0) | ((mSidedRedstone[3] > 0) ? 8 : 0) |
-                                ((mSidedRedstone[4] > 0) ? 16 : 0) | ((mSidedRedstone[5] > 0) ? 32 : 0)), oColor = mColor),
-                        getXCoord(), getZCoord());
-            }
+        if (isServerSide() && mTickTimer % 10 == 0) {
+            NW.sendToAllAround(worldObj, new GT_Packet_TileEntity(
+                            getXCoord(), getYCoord(), getZCoord(), mID,
+                            mCoverSides[0], mCoverSides[1], mCoverSides[2],
+                            mCoverSides[3], mCoverSides[4], mCoverSides[5],
+                            oTextureData = (byte) ((mFacing & 7) | (mActive ? 8 : 0) |
+                                    (mRedstone ? 16 : 0) | (mLockUpgrade ? 32 : 0)),
+                            oUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0,
+                            oRedstoneData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0) |
+                                    ((mSidedRedstone[2] > 0) ? 4 : 0) | ((mSidedRedstone[3] > 0) ? 8 : 0) |
+                                    ((mSidedRedstone[4] > 0) ? 16 : 0) | ((mSidedRedstone[5] > 0) ? 32 : 0)), oColor = mColor, false),
+                    getXCoord(), getYCoord(), getZCoord());
         }
 
         for (int tCode = 0; hasValidMetaTileEntity() && tCode >= 0; ) {
@@ -530,13 +528,6 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     case 15:
                         tCode++;
                         if (isServerSide()) {
-                            if (mTickTimer % 10 == 0) {
-                                if (mSendClientData) {
-                                    NW.sendPacketToAllPlayersInRange(worldObj, new GT_Packet_TileEntity(getXCoord(), (short) getYCoord(), getZCoord(), mID, mCoverSides[0], mCoverSides[1], mCoverSides[2], mCoverSides[3], mCoverSides[4], mCoverSides[5], oTextureData = (byte) ((mFacing & 7) | (mActive ? 8 : 0) | (mRedstone ? 16 : 0) | (mLockUpgrade ? 32 : 0)), oUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0, oRedstoneData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0) | ((mSidedRedstone[2] > 0) ? 4 : 0) | ((mSidedRedstone[3] > 0) ? 8 : 0) | ((mSidedRedstone[4] > 0) ? 16 : 0) | ((mSidedRedstone[5] > 0) ? 32 : 0)), oColor = mColor), getXCoord(), getZCoord());
-                                    mSendClientData = false;
-                                }
-                            }
-
                             if (mTickTimer > 10) {
                                 byte tData = (byte) ((mFacing & 7) | (mActive ? 8 : 0) | (mRedstone ? 16 : 0) | (mLockUpgrade ? 32 : 0));
                                 if (tData != oTextureData) sendBlockEvent((byte) 0, oTextureData = tData);

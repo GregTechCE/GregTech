@@ -532,12 +532,16 @@ public class Textures {
         static {
             for (byte i = 0; i < MACHINE_CASINGS.length; i++)
                 for (byte j = 0; j < MACHINE_CASINGS[i].length; j++)
-                    MACHINE_CASINGS[i][j] = new GT_SidedTexture(MACHINECASINGS_BOTTOM[i], MACHINECASINGS_TOP[i], MACHINECASINGS_SIDE[i], Dyes.getModulation(j - 1, Dyes.MACHINE_METAL.mRGBa));
+                    MACHINE_CASINGS[i][j] = new GT_SidedTexture(
+                            MACHINECASINGS_BOTTOM[i],
+                            MACHINECASINGS_TOP[i],
+                            MACHINECASINGS_SIDE[i],
+                            Dyes.MACHINE_METAL.mRGBa);
         }
 
         protected TextureAtlasSprite mIcon;
 
-        private BlockIcons() {
+        BlockIcons() {
             GregTech_API.sGTBlockIconload.add(this);
         }
 

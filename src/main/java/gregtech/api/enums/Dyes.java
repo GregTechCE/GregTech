@@ -37,9 +37,9 @@ public enum Dyes implements IColorModulationContainer {
      */
     CABLE_INSULATION(-1, 64, 64, 64, "Cable Insulation"),
     CONSTRUCTION_FOAM(-1, 64, 64, 64, "Construction Foam"),
-    MACHINE_METAL(-1, 220, 220, 255, "Machine Metal");
+    MACHINE_METAL(-1, 230, 230, 255, "Machine Metal");
 
-    public static final Dyes VALUES[] = {dyeBlack, dyeRed, dyeGreen, dyeBrown, dyeBlue, dyePurple, dyeCyan, dyeLightGray, dyeGray, dyePink, dyeLime, dyeYellow, dyeLightBlue, dyeMagenta, dyeOrange, dyeWhite};
+    public static final Dyes VALUES[] = {MACHINE_METAL, dyeRed, dyeGreen, dyeBrown, dyeBlue, dyePurple, dyeCyan, dyeLightGray, dyeGray, dyePink, dyeLime, dyeYellow, dyeLightBlue, dyeMagenta, dyeOrange, dyeWhite};
 
     public final byte mIndex;
     public final String mName;
@@ -57,8 +57,13 @@ public enum Dyes implements IColorModulationContainer {
         return _NULL;
     }
 
+    public static short[] getModulation(int aColor, Dyes aDefaultModulation) {
+        return getModulation(aColor, aDefaultModulation.mRGBa);
+    }
+
     public static short[] getModulation(int aColor, short[] aDefaultModulation) {
-        if (aColor >= 0 && aColor < 16) return VALUES[aColor].mRGBa;
+        if (aColor >= 0 && aColor < VALUES.length)
+            return VALUES[aColor].mRGBa;
         return aDefaultModulation;
     }
 

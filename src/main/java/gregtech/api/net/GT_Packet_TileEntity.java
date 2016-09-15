@@ -6,6 +6,7 @@ import com.google.common.io.ByteStreams;
 import gregtech.api.GregTech_API;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -15,13 +16,11 @@ public class GT_Packet_TileEntity extends GT_Packet {
     private int mX, mZ, mC0, mC1, mC2, mC3, mC4, mC5;
     private short mY, mID;
     private byte mTexture, mUpdate, mRedstone, mColor;
+    private boolean isPipeBaseTile;
 
-    public GT_Packet_TileEntity() {
-        super(true);
-    }
+    public GT_Packet_TileEntity() {}
 
-    public GT_Packet_TileEntity(int aX, short aY, int aZ, short aID, int aC0, int aC1, int aC2, int aC3, int aC4, int aC5, byte aTexture, byte aUpdate, byte aRedstone, byte aColor) {
-        super(false);
+    public GT_Packet_TileEntity(int aX, short aY, int aZ, short aID, int aC0, int aC1, int aC2, int aC3, int aC4, int aC5, byte aTexture, byte aUpdate, byte aRedstone, byte aColor, boolean isPipeBaseTile) {
         mX = aX;
         mY = aY;
         mZ = aZ;
@@ -36,12 +35,11 @@ public class GT_Packet_TileEntity extends GT_Packet {
         mUpdate = aUpdate;
         mRedstone = aRedstone;
         mColor = aColor;
+        this.isPipeBaseTile = isPipeBaseTile;
     }
 
     @Override
-    public byte[] encode() {
-        ByteArrayDataOutput tOut = ByteStreams.newDataOutput(40);
-
+    public void encode(ByteBuf tOut) {
         tOut.writeInt(mX);
         tOut.writeShort(mY);
         tOut.writeInt(mZ);
@@ -58,24 +56,39 @@ public class GT_Packet_TileEntity extends GT_Packet {
         tOut.writeByte(mUpdate);
         tOut.writeByte(mRedstone);
         tOut.writeByte(mColor);
-
-        return tOut.toByteArray();
+        tOut.writeBoolean(isPipeBaseTile);
     }
 
     @Override
-    public GT_Packet decode(ByteArrayDataInput aData) {
-        return new GT_Packet_TileEntity(aData.readInt(), aData.readShort(), aData.readInt(), aData.readShort(), aData.readInt(), aData.readInt(), aData.readInt(), aData.readInt(), aData.readInt(), aData.readInt(), aData.readByte(), aData.readByte(), aData.readByte(), aData.readByte());
+    public void decode(ByteBuf buf) {
+        mX = buf.readInt();
+        mY = buf.readShort();
+        mZ = buf.readInt();
+        mID = buf.readShort();
+
+        mC0 = buf.readInt();
+        mC1 = buf.readInt();
+        mC2 = buf.readInt();
+        mC3 = buf.readInt();
+        mC4 = buf.readInt();
+        mC5 = buf.readInt();
+
+        mTexture = buf.readByte();
+        mUpdate = buf.readByte();
+        mRedstone = buf.readByte();
+        mColor = buf.readByte();
+        isPipeBaseTile = buf.readBoolean();
     }
 
     @Override
-    public void process(IBlockAccess aWorld) {
+    public void process(World aWorld) {
         if (aWorld != null) {
             TileEntity tTileEntity = aWorld.getTileEntity(new BlockPos(mX, mY, mZ));
             if(tTileEntity == null) {
-                tTileEntity = GregTech_API.constructBaseMetaTileEntity();
-                tTileEntity.setWorldObj((World) aWorld);
+                tTileEntity = isPipeBaseTile ? new BaseMetaPipeEntity() : new BaseMetaTileEntity();
+                tTileEntity.setWorldObj(aWorld);
                 tTileEntity.setPos(new BlockPos(mX, mY, mZ));
-                ((World) aWorld).setTileEntity(new BlockPos(mX, mY, mZ), tTileEntity);
+                aWorld.setTileEntity(new BlockPos(mX, mY, mZ), tTileEntity);
             }
 
             if (tTileEntity instanceof BaseMetaTileEntity)
@@ -85,8 +98,4 @@ public class GT_Packet_TileEntity extends GT_Packet {
         }
     }
 
-    @Override
-    public byte getPacketID() {
-        return 0;
-    }
 }

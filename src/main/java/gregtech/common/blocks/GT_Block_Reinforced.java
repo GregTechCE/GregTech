@@ -169,21 +169,6 @@ public class GT_Block_Reinforced extends GT_Generic_Block implements IBlockIconP
     }
 
     @Override
-    public boolean isBlockNormalCube(IBlockState state) {
-        return true;
-    }
-
-    @Override
-    public boolean isVisuallyOpaque() {
-        return true;
-    }
-
-    @Override
-    public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
-        return super.canCreatureSpawn(state, world, pos, type);
-    }
-
-    @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
         return Lists.newArrayList(new ItemStack(this, 1, state.getValue(METADATA)));
     }
@@ -195,73 +180,6 @@ public class GT_Block_Reinforced extends GT_Generic_Block implements IBlockIconP
         } else  {
             super.dropBlockAsItemWithChance(worldIn, pos, state, chance, fortune);
         }
-    }
-
-    @Override
-    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
-        if(state.getValue(METADATA) == 5) {
-            EntityIC2Explosive entitytntprimed = getExplosionEntity(world, pos.getX(), pos.getY(), pos.getZ(), player == null ? null : player);
-            world.spawnEntityInWorld(entitytntprimed);
-            world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
-        }
-        return true;
-    }
-
-    public EntityIC2Explosive getExplosionEntity(World world, int x, int y, int z, EntityLivingBase igniter) {
-      EntityIC2Explosive ret = new EntityItnt(world, x + 0.5D, y + 0.5D, z + 0.5D);
-      ret.setIgniter(igniter);
-      return ret;
-    }
-
-    public void checkAndExplode(World world, BlockPos pos) {
-        if(world.isBlockIndirectlyGettingPowered(pos) > 0) {
-            explode(world, pos);
-        }
-    }
-
-    public void explode(World world, BlockPos pos) {
-        EntityIC2Explosive entitytntprimed = getExplosionEntity(world, pos.getX(), pos.getY(), pos.getZ(), null);
-        world.spawnEntityInWorld(entitytntprimed);
-        world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
-        world.setBlockToAir(pos);
-    }
-
-    @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
-        super.onBlockAdded(worldIn, pos, state);
-        if(state.getValue(METADATA) == 5) {
-            checkAndExplode(worldIn, pos);
-        }
-    }
-
-    @Override
-    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-        super.onNeighborChange(world, pos, neighbor);
-        if(world.getBlockState(pos).getValue(METADATA) == 5) {
-            checkAndExplode((World) world, pos);
-        }
-    }
-
-    @Override
-    public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn) {
-        super.onBlockDestroyedByExplosion(worldIn, pos, explosionIn);
-        if(worldIn.getBlockState(pos).getValue(METADATA) == 5) {
-            checkAndExplode(worldIn, pos);
-        }
-    }
-
-
-    @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if(state.getValue(METADATA) == 5) {
-            ItemStack held = playerIn.getHeldItem(hand);
-            if (held != null && held.getItem() == Items.FLINT_AND_STEEL) {
-                held.damageItem(1, playerIn);
-                explode(worldIn, pos);
-                return true;
-            }
-        }
-        return false;
     }
 
     @SideOnly(Side.CLIENT)

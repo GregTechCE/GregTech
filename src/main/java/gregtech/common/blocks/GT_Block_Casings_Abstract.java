@@ -31,7 +31,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block implements IBlockIconProvider, IBlockColor {
+public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block implements IBlockIconProvider {
 
 
     public GT_Block_Casings_Abstract(Class<? extends ItemBlock> aItemClass, String aName, Material aMaterial) {
@@ -101,16 +101,6 @@ public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block impleme
     }
 
     @Override
-    public boolean canBeReplacedByLeaves(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return false;
-    }
-
-    @Override
-    public boolean isOpaqueCube(IBlockState state) {
-        return true;
-    }
-
-    @Override
     public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
         return false;
     }
@@ -126,11 +116,6 @@ public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block impleme
         for (int i = 0; i < 16; i++) {
             aList.add(new ItemStack(aItem, 1, i));
         }
-    }
-
-    @Override
-    public int colorMultiplier(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) {
-        return Dyes._NULL.getRGBAInt();
     }
 
 }

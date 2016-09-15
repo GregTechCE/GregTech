@@ -1,10 +1,7 @@
 package gregtech.api.objects;
 
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.newblocks.RenderUtil;
 import net.minecraft.block.Block;
@@ -17,7 +14,6 @@ import net.minecraft.util.math.BlockPos;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class GT_RenderedTexture implements ITexture {
@@ -60,15 +56,15 @@ public class GT_RenderedTexture implements ITexture {
     }
 
     @Override
-    public List<BakedQuad> getQuads(Block aBlock, BlockPos blockPos, EnumFacing side, int tintOff) {
+    public List<BakedQuad> getQuads(Block aBlock, BlockPos blockPos, EnumFacing side, float offset) {
         ArrayList<BakedQuad> quads = new ArrayList<>();
         TextureAtlasSprite sprite = mIconContainer.getIcon();
         TextureAtlasSprite overlay = mIconContainer.getOverlayIcon();
         if(sprite != null) {
-            quads.add(RenderUtil.renderSide(DefaultVertexFormats.BLOCK, sprite, side, -1, 0.001F, mRGBa, blockPos == null));
+            quads.add(RenderUtil.renderSide(DefaultVertexFormats.BLOCK, sprite, side, -1, offset, mRGBa, false));
         }
         if(overlay != null) {
-            quads.add(RenderUtil.renderSide(DefaultVertexFormats.BLOCK, overlay, side, -1, 0.001F, mRGBa, blockPos == null));
+            quads.add(RenderUtil.renderSide(DefaultVertexFormats.BLOCK, overlay, side, -1, offset + 0.01F, mRGBa, false));
         }
         return quads;
     }

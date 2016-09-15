@@ -6,30 +6,24 @@ import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
 
-import javax.vecmath.Vector3d;
-import javax.vecmath.Vector3f;
-import java.awt.*;
-
 public class RenderUtil {
 
     public static BakedQuad renderSide(VertexFormat vertexFormat, TextureAtlasSprite sprite, EnumFacing side, int tint, float offset, int color, boolean hideSiding) {
 
         switch (side) {
             case NORTH:
-                //front
                 return buildQuad(vertexFormat, hideSiding ? null : EnumFacing.NORTH, sprite, tint,
-                        0, 0, -offset, sprite.getMinU(), sprite.getMinV(),
-                        0, 1, -offset, sprite.getMinU(), sprite.getMaxV(),
-                        1, 1, -offset, sprite.getMaxU(), sprite.getMaxV(),
-                        1, 0, -offset, sprite.getMaxU(), sprite.getMinV(),
+                        0, 0, -offset, sprite.getMaxU(), sprite.getMaxV(),
+                        0, 1, -offset, sprite.getMaxU(), sprite.getMinV(),
+                        1, 1, -offset, sprite.getMinU(), sprite.getMinV(),
+                        1, 0, -offset, sprite.getMinU(), sprite.getMaxV(),
                 color);
             case SOUTH:
-                // back
                 return buildQuad(vertexFormat, hideSiding ? null : EnumFacing.SOUTH, sprite, tint,
-                        1, 0, 1 + offset, sprite.getMaxU(), sprite.getMinV(),
-                        1, 1, 1 + offset, sprite.getMaxU(), sprite.getMaxV(),
-                        0, 1, 1 + offset, sprite.getMinU(), sprite.getMaxV(),
-                        0, 0, 1 + offset, sprite.getMinU(), sprite.getMinV(),
+                        1, 0, 1 + offset, sprite.getMinU(), sprite.getMaxV(),
+                        1, 1, 1 + offset, sprite.getMinU(), sprite.getMinV(),
+                        0, 1, 1 + offset, sprite.getMaxU(), sprite.getMinV(),
+                        0, 0, 1 + offset, sprite.getMaxU(), sprite.getMaxV(),
                         color);
             case WEST:
                 return buildQuad(vertexFormat, hideSiding ? null : EnumFacing.WEST, sprite, tint,

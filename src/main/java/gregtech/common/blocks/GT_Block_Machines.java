@@ -30,6 +30,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -307,7 +308,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
             gregTechTileEntity.onRightclick(playerIn, (byte) side.getIndex(), hitX, hitY, hitZ, hand);
             return true;
         }
-        return false;
+        return true;
     }
 
     @Override
@@ -519,7 +520,9 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         return null;
     }
 
-    public boolean recolourBlock(World aWorld, BlockPos blockPos, EnumFacing aSide, int aColor) {
+    @Override
+    public boolean recolorBlock(World aWorld, BlockPos blockPos, EnumFacing aSide, EnumDyeColor colorDye) {
+        int aColor = colorDye.getMetadata();
         TileEntity tTileEntity = aWorld.getTileEntity(blockPos);
         if ((tTileEntity instanceof IGregTechTileEntity)) {
             if (((IGregTechTileEntity) tTileEntity).getColorization() == (byte) ((~aColor) & 0xF)) {
@@ -530,12 +533,5 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         }
         return false;
     }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
-
 
 }

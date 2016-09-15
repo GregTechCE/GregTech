@@ -107,14 +107,6 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     }
 
 
-    @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
-        GT_TileEntity_Ores tileEntity_ores = (GT_TileEntity_Ores) worldIn.getTileEntity(pos);
-        if (tileEntity_ores != null && !worldIn.isRemote) {
-            tileEntity_ores.sendPacket();
-        }
-    }
-
     public String getLocalizedName(Materials aMaterial) {
         switch (aMaterial) {
             case InfusedAir:
@@ -285,8 +277,4 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
         }
     }
 
-    @Override
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
 }

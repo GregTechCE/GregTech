@@ -24,12 +24,13 @@ public class GT_SidedTexture implements ITexture {
     }
 
     private int makeColor(short[] rgba) {
-        short[] nullRGBA = Materials._NULL.getRGBA();
-        short red = rgba[0] > 0 && 255 > rgba[0] ? rgba[0] : nullRGBA[0];
-        short green = rgba[1] > 0 && 255 > rgba[1] ? rgba[1] : nullRGBA[1];
-        short blue = rgba[2] > 0 && 255 > rgba[2] ? rgba[2] : nullRGBA[2];
-        short alpha = rgba[3] > 0 && 255 > rgba[3] ? rgba[3] : nullRGBA[3];
-        return new Color(red, green, blue, alpha).getRGB();
+        try {
+            for(int i = 0; i < 4; i++)
+                rgba[i] = (short) Math.max(0, rgba[i]);
+            return new Color(rgba[0], rgba[1], rgba[2], rgba[3]).getRGB();
+        } catch (IllegalArgumentException err) {
+            return Color.WHITE.getRGB();
+        }
     }
 
     public GT_SidedTexture(IIconContainer aIcon0, IIconContainer aIcon1, IIconContainer aIcon2, IIconContainer aIcon3, IIconContainer aIcon4, IIconContainer aIcon5) {
@@ -45,9 +46,9 @@ public class GT_SidedTexture implements ITexture {
     }
 
     @Override
-    public List<BakedQuad> getQuads(Block aBlock, BlockPos blockPos, EnumFacing side, int tintOffset) {
+    public List<BakedQuad> getQuads(Block aBlock, BlockPos blockPos, EnumFacing side, float offset) {
         return new GT_RenderedTexture(mIconContainer[side.getIndex()], mRGBa)
-                .getQuads(aBlock, blockPos, side, tintOffset);
+                .getQuads(aBlock, blockPos, side, offset);
     }
 
     @Override

@@ -1,23 +1,20 @@
 package gregtech.api.net;
 
-import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
 import gregtech.api.util.GT_Utility;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 public class GT_Packet_Sound extends GT_Packet {
-    private int mX, mZ;
-    private short mY;
+
+    private int mX, mZ, mY;
     private String mSoundName;
     private float mSoundStrength, mSoundPitch;
 
-    public GT_Packet_Sound() {
-        super(true);
-    }
+    public GT_Packet_Sound() {}
 
     public GT_Packet_Sound(String aSoundName, float aSoundStrength, float aSoundPitch, int aX, short aY, int aZ) {
-        super(false);
         mX = aX;
         mY = aY;
         mZ = aZ;
@@ -27,29 +24,28 @@ public class GT_Packet_Sound extends GT_Packet {
     }
 
     @Override
-    public byte[] encode() {
-        ByteArrayDataOutput tOut = ByteStreams.newDataOutput(10);
-        tOut.writeUTF(mSoundName);
-        tOut.writeFloat(mSoundStrength);
-        tOut.writeFloat(mSoundPitch);
-        tOut.writeInt(mX);
-        tOut.writeShort(mY);
-        tOut.writeInt(mZ);
-        return tOut.toByteArray();
+    public void encode(ByteBuf buf) {
+        ByteBufUtils.writeUTF8String(buf, mSoundName);
+        buf.writeFloat(mSoundStrength);
+        buf.writeFloat(mSoundPitch);
+        buf.writeInt(mX);
+        buf.writeShort(mY);
+        buf.writeInt(mZ);
     }
 
     @Override
-    public GT_Packet decode(ByteArrayDataInput aData) {
-        return new GT_Packet_Sound(aData.readUTF(), aData.readFloat(), aData.readFloat(), aData.readInt(), aData.readShort(), aData.readInt());
+    public void decode(ByteBuf buf) {
+        mSoundName = ByteBufUtils.readUTF8String(buf);
+        mSoundStrength = buf.readFloat();
+        mSoundPitch = buf.readFloat();
+        mX = buf.readInt();
+        mY = buf.readShort();
+        mZ = buf.readInt();
     }
 
     @Override
-    public void process(IBlockAccess aWorld) {
+    public void process(World aWorld) {
         GT_Utility.doSoundAtClient(mSoundName, 1, mSoundStrength, mSoundPitch, mX, mY, mZ);
     }
 
-    @Override
-    public byte getPacketID() {
-        return 1;
-    }
 }
