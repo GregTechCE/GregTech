@@ -307,7 +307,7 @@ public class GT_ModHandler {
             stack.stackSize = (int) aAmount;
             return stack;
         }
-        return new ItemStack(Blocks.STONE);
+        return null;
     }
 
     /**

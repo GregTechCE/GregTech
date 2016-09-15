@@ -31,6 +31,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.FMLControlledNamespacedRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
@@ -201,6 +202,12 @@ public class GT_Generic_Item extends Item implements IProjectileItem, IIconRegis
             return registry.getId(registryEntry);
         } catch (ReflectiveOperationException fail) {
             throw new RuntimeException(fail);
+        }
+    }
+
+    public void invokeOnClient(Runnable runnable) {
+        if(FMLCommonHandler.instance().getSide().isClient()) {
+            runnable.run();
         }
     }
 

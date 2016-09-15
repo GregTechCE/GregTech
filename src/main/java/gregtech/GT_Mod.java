@@ -9,9 +9,12 @@ import ic2.core.block.type.ResourceBlock;
 import ic2.core.item.type.CraftingItemType;
 import ic2.core.ref.BlockName;
 import ic2.core.ref.ItemName;
+import net.minecraft.item.Item;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import forestry.api.recipes.ICentrifugeRecipe;
 import forestry.api.recipes.ISqueezerRecipe;
@@ -69,11 +72,21 @@ public class GT_Mod implements IGT_Mod {
 
     public static GT_Achievements achievements;
 
+    //@SubscribeEvent
+    //public void onOreDictReg(OreDictionary.OreRegisterEvent event) {
+    //    if(event.getOre().getItem() == Item.getItemFromBlock(Blocks.STONE)) {
+    //        System.out.println("Register stone as " + event.getName());
+    //       new Throwable().printStackTrace();
+    //    }
+    //}
+
     @Mod.EventHandler
     public void onPreLoad(FMLPreInitializationEvent aEvent) {
         if (GregTech_API.sPreloadStarted) {
             return;
         }
+
+        //MinecraftForge.EVENT_BUS.register(this);
 
         GT_Values.GT = this;
         GT_Values.DW = new GT_DummyWorld();

@@ -91,6 +91,14 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
         mItemAmount = (short) Math.min(aItemAmount, 32766 - mOffset);
 
         sInstances.put(getUnlocalizedName(), this);
+        invokeOnClient(this::initClient);
+    }
+
+
+
+    @SideOnly(Side.CLIENT)
+    public void initClient() {
+        mIconList = new TextureAtlasSprite[mItemAmount][1];
     }
 
     /**
@@ -213,15 +221,13 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
         if (aMaxCharge == 0) mElectricStats.remove((short) aMetaValue);
         else {
             mElectricStats.put((short) aMetaValue, new Long[]{aMaxCharge, Math.max(0, aTransferLimit), Math.max(-1, aTier), aSpecialData});
-            if(FMLCommonHandler.instance().getSide().isClient()) {
-                setIconElectricStats(aMetaValue, aUseAnimations);
-            }
+            invokeOnClient(() -> setElectricStatsIcon(aMetaValue, aUseAnimations));
         }
         return this;
     }
 
     @SideOnly(Side.CLIENT)
-    public void setIconElectricStats(int aMetaValue, boolean aUseAnimations) {
+    public void setElectricStatsIcon(int aMetaValue, boolean aUseAnimations) {
         if (aMetaValue >= mOffset && aUseAnimations)
             mIconList[aMetaValue - mOffset] = Arrays.copyOf(mIconList[aMetaValue - mOffset], Math.max(9, mIconList[aMetaValue - mOffset].length));
     }
@@ -342,7 +348,6 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
     @SideOnly(Side.CLIENT)
     public final void registerIcons(TextureMap aIconRegister) {
         System.out.println("Registering item icons");
-        mIconList = new TextureAtlasSprite[mItemAmount][1];
         for (short i = 0, j = (short) mEnabledItems.length(); i < j; i++)
             if (mEnabledItems.get(i)) {
                 for (byte k = 1; k < mIconList[i].length; k++) {
