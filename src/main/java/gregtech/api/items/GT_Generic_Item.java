@@ -35,6 +35,8 @@ import net.minecraftforge.fml.common.registry.FMLControlledNamespacedRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
 import net.minecraftforge.fml.common.registry.PersistentRegistryManager;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -48,6 +50,8 @@ import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
 public class GT_Generic_Item extends Item implements IProjectileItem, IIconRegister, IItemIconProvider {
 
     private final String mName, mTooltip;
+
+    @SideOnly(Side.CLIENT)
     protected TextureAtlasSprite mIcon;
 
     public GT_Generic_Item(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
@@ -82,8 +86,8 @@ public class GT_Generic_Item extends Item implements IProjectileItem, IIconRegis
         return getHasSubtypes() ? mName + "." + getDamage(aStack) : mName;
     }
 
-
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerIcons(TextureMap aIconRegister) {
         mIcon = aIconRegister.registerSprite(new ResourceLocation(RES_PATH_ITEM + (GT_Config.troll ? "troll" : mName)));
     }
@@ -149,6 +153,7 @@ public class GT_Generic_Item extends Item implements IProjectileItem, IIconRegis
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getIcon(ItemStack stack, int pass) {
         if(this instanceof IItemIconContainerProvider) {
             IItemIconContainerProvider iItemIconContainerProvider = (IItemIconContainerProvider) this;
@@ -167,6 +172,7 @@ public class GT_Generic_Item extends Item implements IProjectileItem, IIconRegis
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public int getRenderPasses(ItemStack stack) {
         if(this instanceof IItemIconContainerProvider) {
             return 1;

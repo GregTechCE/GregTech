@@ -37,6 +37,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -199,12 +201,14 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public ITexture[] getTexture(World world, BlockPos blockPos, IExtendedBlockState blockState, EnumFacing side) {
         GT_TileEntity_Ores oreTile = (GT_TileEntity_Ores) world.getTileEntity(blockPos);
         return oreTile.getTexture(this, (byte) side.getIndex());
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public ITexture[] getItemblockTexture(EntityPlayer player, ItemStack itemStack, EnumFacing side) {
         int mMetaData = itemStack.getItemDamage();
         Materials aMaterial = GregTech_API.sGeneratedMaterials[(mMetaData % 1000)];

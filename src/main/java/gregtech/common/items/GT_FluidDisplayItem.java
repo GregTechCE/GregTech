@@ -1,28 +1,25 @@
 package gregtech.common.items;
 
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.common.render.newitems.IItemIconContainerProvider;
-import gregtech.common.render.newitems.IItemIconProvider;
-import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.render.IColorMultiplier;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class GT_FluidDisplayItem extends GT_Generic_Item implements IItemColor {
+public class GT_FluidDisplayItem extends GT_Generic_Item implements IColorMultiplier {
     public GT_FluidDisplayItem() {
         super("GregTech_FluidDisplay", "Fluid Display", null);
         ItemList.Display_Fluid.set(this);
@@ -48,12 +45,14 @@ public class GT_FluidDisplayItem extends GT_Generic_Item implements IItemColor {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getIcon(ItemStack stack, int pass) {
         Fluid tFluid = FluidRegistry.getFluid(stack.getItemDamage());
         return GT_Utility.getTexture(tFluid.getStill());
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public int getColorFromItemstack(ItemStack stack, int tintIndex) {
         Fluid tFluid = FluidRegistry.getFluid(stack.getItemDamage());
         return tFluid == null ? 16777215 : tFluid.getColor();

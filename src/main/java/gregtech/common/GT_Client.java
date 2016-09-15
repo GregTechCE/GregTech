@@ -5,7 +5,6 @@
 
 package gregtech.common;
 
-import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_LanguageManager;
@@ -22,10 +21,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.net.URL;
 import java.util.*;
@@ -33,10 +33,11 @@ import java.util.*;
 // Referenced classes of package gregtech.common:
 //            GT_Proxy
 
+@SideOnly(Side.CLIENT)
 public class GT_Client extends GT_Proxy
         implements Runnable {
 
-    private final HashSet mCapeList = new HashSet<>();
+    private final HashSet<String> mCapeList = new HashSet<>();
     private final GT_CapeRenderer mCapeRenderer;
     private final List<Materials> mPosR;
     private final List<Materials> mPosG;
@@ -158,8 +159,6 @@ public class GT_Client extends GT_Proxy
     public void onLoad() {
         super.onLoad();
 
-        //new GT_MetaGenerated_Tool_Renderer(); TODO tools repair
-
         RenderingRegistry.registerEntityRenderingHandler(GT_Entity_Arrow.class, manager -> {
             return new GT_Renderer_Entity_Arrow(GT_Entity_Arrow.class, "arrow", manager);
         });
@@ -167,7 +166,6 @@ public class GT_Client extends GT_Proxy
         RenderingRegistry.registerEntityRenderingHandler(GT_Entity_Arrow.class, manager -> {
             return new GT_Renderer_Entity_Arrow(GT_Entity_Arrow_Potion.class, "arrow_potions", manager);
         });
-
     }
 
 
@@ -180,14 +178,15 @@ public class GT_Client extends GT_Proxy
         TextureSet.SET_DIAMOND.getClass();
 
         new GT_IIconProvider_Item_Model();
-        IReloadableResourceManager resourceManager = (IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager();
-        resourceManager.registerReloadListener(GT_LanguageManager.INSTANCE);
     }
 
     public void run() {
+        downloadStuff();
+    }
+
+    public void downloadStuff() {
         try {
             GT_Log.out.println("GT_Mod: Downloading Cape List.");
-            @SuppressWarnings("resource")
             Scanner tScanner = new Scanner(new URL("http://gregtech.overminddl1.com/com/gregoriust/gregtech/supporterlist.txt").openStream());
             while (tScanner.hasNextLine()) {
                 String tName = tScanner.nextLine();
@@ -195,51 +194,31 @@ public class GT_Client extends GT_Proxy
                     this.mCapeList.add(tName.toLowerCase());
                 }
             }
-        } catch (Throwable e) {
-        }
+        } catch (Throwable e) {}
         try {
             GT_Log.out.println("GT_Mod: Downloading News.");
-            @SuppressWarnings("resource")
             Scanner tScanner = new Scanner(new URL("http://files.minecraftforge.net/maven/com/gregoriust/gregtech/message.txt").openStream());
             while (tScanner.hasNextLine()) {
                 this.mMessage = (this.mMessage + tScanner.nextLine() + " ");
             }
-        } catch (Throwable e) {
-        }
+        } catch (Throwable e) {}
     }
 
     @SubscribeEvent
     public void onPlayerTickEventClient(TickEvent.PlayerTickEvent aEvent) {
         if ((!aEvent.player.isDead) && (aEvent.phase == TickEvent.Phase.END) && (aEvent.side.isClient())) {
-
             if ((this.isFirstClientPlayerTick) && (aEvent.player == GT_Values.GT.getThePlayer())) {
                 this.isFirstClientPlayerTick = false;
                 if ((this.mMessage.length() > 5) && (GregTech_API.sSpecialFile.get(ConfigCategories.news, this.mMessage, true))) {
                     aEvent.player.addChatComponentMessage(new TextComponentString(this.mMessage));
                 }
-                try {
-                    int tVersion = Integer.parseInt(((String) Class.forName("ic2.core.IC2").getField("VERSION").get(null)).substring(4, 7));
-                    if (GT_Values.D1) {
-                        GT_Log.out.println("Industrialcraft Version: " + tVersion);
-                    }
-                    if (tVersion < 624) {
-                        aEvent.player.addChatComponentMessage(new TextComponentString("GregTech: Please update your IndustrialCraft here:"));
-                        aEvent.player.addChatComponentMessage(new TextComponentString("ic2api.player.to:8080/job/IC2_experimental/" + (GT_Mod.MAX_IC2 < Integer.MAX_VALUE ? GT_Mod.MAX_IC2 : 624) + "/"));
-                    } else if (tVersion > GT_Mod.MAX_IC2) {
-                        aEvent.player.addChatComponentMessage(new TextComponentString("GregTech: Please downgrade your IndustrialCraft here:"));
-                        aEvent.player.addChatComponentMessage(new TextComponentString("ic2api.player.to:8080/job/IC2_experimental/" + GT_Mod.MAX_IC2 + "/"));
-                    }
-                } catch (Throwable e) {
-                    aEvent.player.addChatComponentMessage(new TextComponentString("GregTech: Please get the recommended Version of IndustrialCraft here:"));
-                    aEvent.player.addChatComponentMessage(new TextComponentString("ic2api.player.to:8080/job/IC2_experimental/" + (GT_Mod.MAX_IC2 < Integer.MAX_VALUE ? GT_Mod.MAX_IC2 : 624) + "/"));
-                }
             }
         }
     }
 
-    @SubscribeEvent
+    /*@SubscribeEvent
     public void onDrawBlockHighlight(DrawBlockHighlightEvent aEvent) {
-        /*if (GT_Utility.isStackValid(aEvent.currentItem)) {
+        if (GT_Utility.isStackValid(aEvent.currentItem)) {
             Block aBlock = aEvent.player.worldObj.getBlock(aEvent.target.blockX, aEvent.target.blockY, aEvent.target.blockZ);
             TileEntity aTileEntity = aEvent.player.worldObj.getTileEntity(aEvent.target.blockX, aEvent.target.blockY, aEvent.target.blockZ);
             try {
@@ -257,9 +236,8 @@ public class GT_Client extends GT_Proxy
                     e.printStackTrace(GT_Log.err);
                 }
             }
-        }*/
-        //FIXME
-    }
+        }
+    }*/
 
     @SubscribeEvent
     public void receiveRenderEvent(net.minecraftforge.client.event.RenderPlayerEvent.Pre aEvent) {

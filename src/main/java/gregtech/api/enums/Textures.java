@@ -8,6 +8,8 @@ import gregtech.api.objects.GT_SidedTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
 import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
@@ -561,7 +563,10 @@ public class Textures {
         }
 
         public static class CustomIcon implements IIconContainer, Runnable {
+
+            @SideOnly(Side.CLIENT)
             protected TextureAtlasSprite mIcon;
+
             protected String mIconName;
 
             public CustomIcon(String aIconName) {
@@ -570,16 +575,19 @@ public class Textures {
             }
 
             @Override
+            @SideOnly(Side.CLIENT)
             public TextureAtlasSprite getIcon() {
                 return mIcon;
             }
 
             @Override
+            @SideOnly(Side.CLIENT)
             public TextureAtlasSprite getOverlayIcon() {
                 return null;
             }
 
             @Override
+            @SideOnly(Side.CLIENT)
             public void run() {
                 mIcon = GregTech_API.sBlockIcons.registerSprite(new ResourceLocation(RES_PATH_BLOCK + mIconName));
             }
@@ -617,6 +625,7 @@ public class Textures {
 
         public static final ITexture[] ERROR_RENDERING = new ITexture[]{new GT_RenderedTexture(RENDERING_ERROR)};
 
+        @SideOnly(Side.CLIENT)
         protected TextureAtlasSprite mIcon, mOverlay;
 
         private ItemIcons() {
@@ -624,23 +633,29 @@ public class Textures {
         }
 
         @Override
+        @SideOnly(Side.CLIENT)
         public TextureAtlasSprite getIcon() {
             return mIcon;
         }
 
         @Override
+        @SideOnly(Side.CLIENT)
         public TextureAtlasSprite getOverlayIcon() {
             return mOverlay;
         }
 
         @Override
+        @SideOnly(Side.CLIENT)
         public void run() {
             mIcon = GregTech_API.sBlockIcons.registerSprite(new ResourceLocation(RES_PATH_ITEM + "iconsets/" + this));
             mOverlay = GregTech_API.sBlockIcons.registerSprite(new ResourceLocation(RES_PATH_ITEM + "iconsets/" + this + "_OVERLAY"));
         }
 
         public static class CustomIcon implements IIconContainer, Runnable {
+
+            @SideOnly(Side.CLIENT)
             protected TextureAtlasSprite mIcon, mOverlay;
+
             protected String mIconName;
 
             public CustomIcon(String aIconName) {
@@ -649,16 +664,19 @@ public class Textures {
             }
 
             @Override
+            @SideOnly(Side.CLIENT)
             public TextureAtlasSprite getIcon() {
                 return mIcon;
             }
 
             @Override
+            @SideOnly(Side.CLIENT)
             public TextureAtlasSprite getOverlayIcon() {
                 return mOverlay;
             }
 
             @Override
+            @SideOnly(Side.CLIENT)
             public void run() {
                 System.out.println("Register icon " + mIconName);
                 mIcon = GregTech_API.sBlockIcons.registerSprite(new ResourceLocation(RES_PATH_ITEM + mIconName));

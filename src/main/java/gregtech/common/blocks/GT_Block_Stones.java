@@ -12,6 +12,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GT_Block_Stones extends GT_Block_Stones_Abstract implements IBlockIconProvider {
     public GT_Block_Stones() {
@@ -62,6 +64,7 @@ public class GT_Block_Stones extends GT_Block_Stones_Abstract implements IBlockI
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
             return gregtech.api.enums.Textures.BlockIcons.STONES[aMeta].getIcon();

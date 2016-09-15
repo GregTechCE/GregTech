@@ -13,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -115,6 +114,7 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
      * @param aMaterial the Material
      * @return an Icon Container for the Item Display.
      */
+    @SideOnly(Side.CLIENT)
     public final IIconContainer getIconContainer(int aMetaData, Materials aMaterial) {
         return aMaterial.mIconSet.mTextures[mGeneratedPrefixList[aMetaData / 1000].mTextureIndex];
     }
@@ -156,6 +156,7 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
         super.getSubItems(var1, aCreativeTab, aList);
     }
 
+    @SideOnly(Side.CLIENT)
     public final IIconContainer getMaterialIcon(int aMetaData) {
             Materials tMaterial = GregTech_API.sGeneratedMaterials[aMetaData % 1000];
             if (tMaterial == null) return null;
@@ -165,6 +166,7 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getIcon(ItemStack stack, int pass) {
         int tDamage = stack.getItemDamage();
         if (tDamage < 32000) {
@@ -180,6 +182,7 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public int getRenderPasses(ItemStack stack) {
         return stack.getItemDamage() < 32000 ? 1 : 0 ;
     }

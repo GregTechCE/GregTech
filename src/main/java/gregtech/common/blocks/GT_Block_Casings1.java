@@ -1,21 +1,16 @@
 package gregtech.common.blocks;
 
-import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.util.GT_LanguageManager;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
-
-public class GT_Block_Casings1 extends GT_Block_Casings_Abstract implements IBlockColor {
+public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
     public GT_Block_Casings1() {
         super(GT_Item_Casings1.class, "gt.blockcasings", GT_Material_Casings.INSTANCE);
         for (byte i = 0; i < 16; i = (byte) (i + 1)) {
@@ -56,6 +51,8 @@ public class GT_Block_Casings1 extends GT_Block_Casings_Abstract implements IBlo
         ItemList.Casing_Coil_Superconductor.set(new ItemStack(this, 1, 15));
     }
 
+    @Override
+    @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
             switch (aMeta) {
@@ -84,10 +81,10 @@ public class GT_Block_Casings1 extends GT_Block_Casings_Abstract implements IBlo
     }
 
 
-    @Override
-    public int colorMultiplier(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) {
-        int metadata = state.getValue(METADATA);
-        return metadata > 9 ? Dyes._NULL.getRGBAInt() : Dyes.MACHINE_METAL.getRGBAInt();
-    }
+    //@Override
+    //public int colorMultiplier(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) {
+    //   int metadata = state.getValue(METADATA);
+    //   return metadata > 9 ? Dyes._NULL.getRGBAInt() : Dyes.MACHINE_METAL.getRGBAInt();
+    //}
 
 }

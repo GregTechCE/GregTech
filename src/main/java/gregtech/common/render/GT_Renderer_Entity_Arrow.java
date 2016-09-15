@@ -6,7 +6,10 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraft.client.renderer.entity.RenderArrow;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class GT_Renderer_Entity_Arrow extends RenderArrow {
 
     private final ResourceLocation mTexture;

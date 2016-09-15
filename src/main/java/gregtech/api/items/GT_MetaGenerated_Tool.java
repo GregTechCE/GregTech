@@ -4,10 +4,8 @@ import forestry.api.arboriculture.IToolGrafter;
 import gregtech.api.GregTech_API;
 import gregtech.api.enchants.Enchantment_Radioactivity;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.GT_Values.*;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
@@ -15,10 +13,9 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.render.IColorMultiplier;
 import gregtech.common.render.newitems.IItemIconProvider;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
@@ -28,7 +25,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
@@ -51,7 +47,6 @@ import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,7 +64,7 @@ import java.util.Random;
         //@Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = "BuildCraft"),
         //@Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = "EnderIO")
 })
-public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements IDamagableItem, IToolGrafter, IItemIconProvider, IItemColor {//, IToolGrafter, IToolCrowbar, IToolWrench, ITool {
+public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements IDamagableItem, IToolGrafter, IItemIconProvider, IColorMultiplier {//, IToolGrafter, IToolCrowbar, IToolWrench, ITool {
     /**
      * All instances of this Item Class are listed here.
      * This gets used to register the Renderer to all Items of this Type, if useStandardMetaItemRenderer() returns true.
@@ -696,6 +691,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public int getColorFromItemstack(ItemStack stack, int tintIndex) {
         IToolStats toolStats = getToolStats(stack);
         switch (tintIndex) {
@@ -729,6 +725,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getIcon(ItemStack stack, int pass) {
         IToolStats toolStats = getToolStats(stack);
         IIconContainer head = toolStats.getIcon(true, stack);
@@ -749,11 +746,13 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public int getRenderPasses(ItemStack stack) {
         return 3;
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public boolean isHandheld(ItemStack stack) {
         return true;
     }

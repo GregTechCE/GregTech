@@ -1,16 +1,17 @@
 package gregtech.api.util;
 
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.*;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.text.translation.*;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import gregtech.api.GregTech_API;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.client.resources.Locale;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.translation.LanguageMap;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -20,10 +21,8 @@ import java.util.Map.Entry;
 
 import static gregtech.api.enums.GT_Values.E;
 
-@SideOnly(Side.CLIENT)
-public class GT_LanguageManager implements IResourceManagerReloadListener {
+public class GT_LanguageManager {
 
-    public static GT_LanguageManager INSTANCE = new GT_LanguageManager();
     private GT_LanguageManager() {}
 
     public static final HashMap<String, String>
@@ -66,11 +65,15 @@ public class GT_LanguageManager implements IResourceManagerReloadListener {
     }
 
     public static String getTranslation(String aKey) {
-        if (aKey == null) return E;
-        if(LOCALIZATION.containsKey(aKey)) {
-            return LOCALIZATION.get(aKey);
+        if (aKey == null) {
+            return E;
         }
-        return I18n.format(aKey);
+        if(LOCALIZATION.containsKey(aKey) &&
+                !LOCALIZATION.get(aKey).equals(
+                net.minecraft.util.text.translation.I18n.translateToLocal(aKey))) {
+            injectAllLocales();
+        }
+        return net.minecraft.util.text.translation.I18n.translateToLocal(aKey);
     }
 
     public static String getTranslation(String aKey, String aSeperator) {
@@ -82,29 +85,27 @@ public class GT_LanguageManager implements IResourceManagerReloadListener {
         return rTranslation;
     }
 
-    public static String getTranslateableItemStackName(ItemStack aStack) {
-        if (GT_Utility.isStackInvalid(aStack)) return "null";
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT != null && tNBT.hasKey("display")) {
-            String tName = tNBT.getCompoundTag("display").getString("Name");
-            if (GT_Utility.isStringValid(tName)) {
-                return tName;
-            }
+    public static void injectAllLocales() {
+        injectCommonLocales();
+
+        if(FMLCommonHandler.instance().getSide().isClient()) {
+            injectClientLocales();
         }
-        return aStack.getUnlocalizedName() + ".name";
+
+        GT_Log.out.println("Localization injected.");
     }
 
-    @Override
-    public void onResourceManagerReload(IResourceManager resourceManager) {
-        Locale i18nLocale = ObfuscationReflectionHelper.getPrivateValue(I18n.class, null, 0);
-        Map<String, String> properties = ObfuscationReflectionHelper.getPrivateValue(Locale.class, i18nLocale, 2);
-
+    public static void injectCommonLocales() {
         LanguageMap languageMap = ObfuscationReflectionHelper.getPrivateValue(net.minecraft.util.text.translation.I18n.class, null, 0);
         Map<String, String> properties2 = ObfuscationReflectionHelper.getPrivateValue(LanguageMap.class, languageMap, 3);
-
-        properties.putAll(LOCALIZATION);
         properties2.putAll(LOCALIZATION);
-        GT_Log.out.println("Resource manager reloaded. Localization injected.");
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void injectClientLocales() {
+        Locale i18nLocale = ObfuscationReflectionHelper.getPrivateValue(I18n.class, null, 0);
+        Map<String, String> properties = ObfuscationReflectionHelper.getPrivateValue(Locale.class, i18nLocale, 2);
+        properties.putAll(LOCALIZATION);
     }
 
 }

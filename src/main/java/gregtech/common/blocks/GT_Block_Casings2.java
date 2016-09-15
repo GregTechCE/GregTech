@@ -12,6 +12,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GT_Block_Casings2 extends GT_Block_Casings_Abstract {
 
@@ -55,6 +57,7 @@ public class GT_Block_Casings2 extends GT_Block_Casings_Abstract {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
         switch (aMeta) {
             case 0:

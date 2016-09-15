@@ -56,6 +56,7 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
         switch (aMeta) {
             case 0:
@@ -94,6 +95,7 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
         return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
     }
 
+    @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getTurbineCasing(int meta, int iconIndex, boolean active) {
         switch (meta) {
             case 9:

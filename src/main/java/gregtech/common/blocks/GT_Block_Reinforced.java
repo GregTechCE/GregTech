@@ -88,6 +88,7 @@ public class GT_Block_Reinforced extends GT_Generic_Block implements IBlockIconP
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
             switch (aMeta) {

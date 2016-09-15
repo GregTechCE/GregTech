@@ -11,6 +11,8 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -56,6 +58,7 @@ public class GT_RenderedTexture implements ITexture {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public List<BakedQuad> getQuads(Block aBlock, BlockPos blockPos, EnumFacing side, float offset) {
         ArrayList<BakedQuad> quads = new ArrayList<>();
         TextureAtlasSprite sprite = mIconContainer.getIcon();

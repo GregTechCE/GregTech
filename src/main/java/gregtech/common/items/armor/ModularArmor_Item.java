@@ -40,6 +40,7 @@ public class ModularArmor_Item extends ItemArmor implements ISpecialArmor, IIcon
 
     private static final Potion NIGHT_VISION = Potion.getPotionFromResourceLocation("night_vision");
 
+    @SideOnly(Side.CLIENT)
     private TextureAtlasSprite itemIcon;
 
     public String mName;
@@ -380,6 +381,7 @@ public class ModularArmor_Item extends ItemArmor implements ISpecialArmor, IIcon
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getIcon(ItemStack stack, int pass) {
         return itemIcon;
     }

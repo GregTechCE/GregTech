@@ -5,7 +5,10 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class RenderUtil {
 
     public static BakedQuad renderSide(VertexFormat vertexFormat, TextureAtlasSprite sprite, EnumFacing side, int tint, float offset, int color, boolean hideSiding) {

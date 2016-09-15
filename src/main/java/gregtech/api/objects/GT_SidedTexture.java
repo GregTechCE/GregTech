@@ -8,6 +8,8 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.awt.*;
 import java.util.*;
@@ -46,6 +48,7 @@ public class GT_SidedTexture implements ITexture {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public List<BakedQuad> getQuads(Block aBlock, BlockPos blockPos, EnumFacing side, float offset) {
         return new GT_RenderedTexture(mIconContainer[side.getIndex()], mRGBa)
                 .getQuads(aBlock, blockPos, side, offset);

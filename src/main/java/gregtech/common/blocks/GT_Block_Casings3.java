@@ -7,6 +7,8 @@ import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GT_Block_Casings3 extends GT_Block_Casings_Abstract {
 
@@ -50,6 +52,7 @@ public class GT_Block_Casings3 extends GT_Block_Casings_Abstract {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
         switch (aMeta) {
             case 0:

@@ -1,19 +1,16 @@
 package gregtech.api.items;
 
-import gregtech.common.render.newitems.IItemIconContainerProvider;
+import gregtech.common.render.IColorMultiplier;
 import gregtech.common.render.IIconRegister;
 import gregtech.common.render.newitems.IItemIconProvider;
 import ic2.api.item.IElectricItem;
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
@@ -22,7 +19,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.interfaces.IFoodStat;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.objects.ItemData;
@@ -55,7 +51,7 @@ import static gregtech.api.enums.GT_Values.*;
  *         <p/>
  *         These Items can also have special RightClick abilities, electric Charge or even be set to become a Food alike Item.
  */
-public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements IElectricItem, IItemIconProvider, IIconRegister, IItemColor {
+public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements IElectricItem, IItemIconProvider, IIconRegister, IColorMultiplier {
     /**
      * All instances of this Item Class are listed here.
      * This gets used to register the Renderer to all Items of this Type, if useStandardMetaItemRenderer() returns true.
@@ -69,7 +65,9 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
     public final short mOffset, mItemAmount;
     public final BitSet mEnabledItems;
     public final BitSet mVisibleItems;
-    public final TextureAtlasSprite[][] mIconList;
+
+    @SideOnly(Side.CLIENT)
+    public TextureAtlasSprite[][] mIconList;
 
     public final HashMap<Short, IFoodStat> mFoodStats = new HashMap<Short, IFoodStat>();
     public final HashMap<Short, Long[]> mElectricStats = new HashMap<Short, Long[]>();
@@ -91,7 +89,6 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
 
         mOffset = (short) Math.min(32766, aOffset);
         mItemAmount = (short) Math.min(aItemAmount, 32766 - mOffset);
-        mIconList = new TextureAtlasSprite[aItemAmount][1];
 
         sInstances.put(getUnlocalizedName(), this);
     }
@@ -172,11 +169,6 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
         return null;
     }
 
-    @Override
-    public String getItemStackDisplayName(ItemStack stack) {
-        return GT_LanguageManager.getTranslation(getUnlocalizedName(stack) + ".name");
-    }
-
     /**
      * Sets a Food Behavior for the Item.
      *
@@ -221,10 +213,17 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
         if (aMaxCharge == 0) mElectricStats.remove((short) aMetaValue);
         else {
             mElectricStats.put((short) aMetaValue, new Long[]{aMaxCharge, Math.max(0, aTransferLimit), Math.max(-1, aTier), aSpecialData});
-            if (aMetaValue >= mOffset && aUseAnimations)
-                mIconList[aMetaValue - mOffset] = Arrays.copyOf(mIconList[aMetaValue - mOffset], Math.max(9, mIconList[aMetaValue - mOffset].length));
+            if(FMLCommonHandler.instance().getSide().isClient()) {
+                setIconElectricStats(aMetaValue, aUseAnimations);
+            }
         }
         return this;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void setIconElectricStats(int aMetaValue, boolean aUseAnimations) {
+        if (aMetaValue >= mOffset && aUseAnimations)
+            mIconList[aMetaValue - mOffset] = Arrays.copyOf(mIconList[aMetaValue - mOffset], Math.max(9, mIconList[aMetaValue - mOffset].length));
     }
 
     /**
@@ -246,6 +245,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public int getColorFromItemstack(ItemStack stack, int tintIndex) {
         return makeColor(getRGBa(stack, tintIndex));
     }
@@ -269,6 +269,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getIcon(ItemStack stack, int pass) {
         double maxCharge = getMaxCharge(stack);
         if(maxCharge != 0) {
@@ -340,7 +341,8 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
     @Override
     @SideOnly(Side.CLIENT)
     public final void registerIcons(TextureMap aIconRegister) {
-        System.out.println("Register icons");
+        System.out.println("Registering item icons");
+        mIconList = new TextureAtlasSprite[mItemAmount][1];
         for (short i = 0, j = (short) mEnabledItems.length(); i < j; i++)
             if (mEnabledItems.get(i)) {
                 for (byte k = 1; k < mIconList[i].length; k++) {

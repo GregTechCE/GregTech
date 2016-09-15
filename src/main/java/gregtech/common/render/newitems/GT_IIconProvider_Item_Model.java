@@ -2,10 +2,10 @@ package gregtech.common.render.newitems;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import gregtech.api.GregTech_API;
-import gregtech.common.render.newblocks.BlockRenderer;
+import gregtech.common.render.IColorMultiplier;
 import gregtech.common.render.IIconRegister;
+import gregtech.common.render.newblocks.BlockRenderer;
 import gregtech.common.render.newblocks.IBlockIconProvider;
 import gregtech.common.render.newblocks.ITextureBlockIconProvider;
 import net.minecraft.block.Block;
@@ -25,18 +25,17 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.model.ItemLayerModel;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
 import javax.vecmath.Vector4f;
@@ -47,7 +46,6 @@ public class GT_IIconProvider_Item_Model implements IBakedModel {
 
     private static final ModelResourceLocation RESOURCE_LOCATION = new ModelResourceLocation("gregtech", "IItemIconProvider");
 
-    private TextureAtlasSprite missingno;
     private ItemStack itemStack;
     private VertexFormat vertexFormat;
 
@@ -84,22 +82,18 @@ public class GT_IIconProvider_Item_Model implements IBakedModel {
             if(item instanceof IIconRegister) {
                 ((IIconRegister) item).registerIcons(pre.getMap());
             }
-            if(item instanceof IItemColor) {
-                itemColors.registerItemColorHandler((IItemColor) item, item);
+            if(item instanceof IColorMultiplier) {
+                IColorMultiplier colorMultiplier = (IColorMultiplier) item;
+                itemColors.registerItemColorHandler(colorMultiplier::getColorFromItemstack, item);
             }
         }
-        BlockColors blockColors = Minecraft.getMinecraft().getBlockColors();
         for(ResourceLocation blockId : Block.REGISTRY.getKeys()) {
             Block block = Block.REGISTRY.getObject(blockId);
             if(block instanceof IIconRegister) {
                 ((IIconRegister) block).registerIcons(pre.getMap());
             }
-            if(block instanceof IBlockColor) {
-                blockColors.registerBlockColorHandler((IBlockColor) block, block);
-            }
         }
-        missingno = pre.getMap().getMissingSprite();
-        System.out.println("GT_Mod: Finished Item Icon Load Phase");
+        System.out.println("GT_Mod: Finished Icon Load Phase");
     }
 
     @SubscribeEvent

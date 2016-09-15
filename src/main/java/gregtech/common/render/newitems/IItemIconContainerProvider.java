@@ -10,6 +10,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public interface IItemIconContainerProvider extends IItemIconProvider {
 
     @Override
+    @SideOnly(Side.CLIENT)
     default TextureAtlasSprite getIcon(ItemStack stack, int pass) {
         IIconContainer iconContainer = getIconContainer(stack);
         if(iconContainer != null) {
@@ -24,10 +25,12 @@ public interface IItemIconContainerProvider extends IItemIconProvider {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     default int getRenderPasses(ItemStack stack) {
         return 1;
     }
 
+    @SideOnly(Side.CLIENT)
     IIconContainer getIconContainer(ItemStack itemStack);
 
 }

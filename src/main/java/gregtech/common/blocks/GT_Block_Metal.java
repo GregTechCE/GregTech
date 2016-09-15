@@ -12,6 +12,8 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GT_Block_Metal extends GT_Block_Storage implements IBlockIconProvider {
     public Materials[] mMats;
@@ -30,6 +32,7 @@ public class GT_Block_Metal extends GT_Block_Storage implements IBlockIconProvid
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getIcon(EnumFacing aSide, int aDamage) {
         if ((aDamage >= 0) && (aDamage < 16) && aDamage < mMats.length) {
             return mBlockIcons[aDamage].getIcon();

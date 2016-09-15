@@ -11,6 +11,8 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.awt.*;
 import java.util.Collections;
@@ -43,6 +45,7 @@ public class GT_CopiedBlockTexture implements ITexture {
         this(aBlock, aSide, aMeta, null);
     }
 
+    @SideOnly(Side.CLIENT)
     public static TextureAtlasSprite getSide(Block aBlock, int aMeta, EnumFacing side) {
         if (aBlock instanceof IBlockIconProvider) {
             IBlockIconProvider iconProvider = ((IBlockIconProvider) aBlock);
@@ -53,6 +56,7 @@ public class GT_CopiedBlockTexture implements ITexture {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public List<BakedQuad> getQuads(Block aBlock, BlockPos blockPos, EnumFacing side, float offset) {
         TextureAtlasSprite sprite = getSide(mBlock, mMeta, EnumFacing.VALUES[mSide]);
         if(sprite != null) {

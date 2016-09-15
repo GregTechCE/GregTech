@@ -1,5 +1,6 @@
 package gregtech.api.net;
 
+import gregtech.GT_Mod;
 import gregtech.common.blocks.GT_Packet_Ores;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -37,7 +38,7 @@ public class GT_PacketHandler extends SimpleNetworkWrapper {
             if(ctx.side == Side.SERVER) {
                 message.process(ctx.getServerHandler().playerEntity.worldObj);
             } else {
-                message.process(FMLClientHandler.instance().getWorldClient());
+                message.process(GT_Mod.gregtechproxy.getThePlayer().worldObj);
             }
             return null;
         }
