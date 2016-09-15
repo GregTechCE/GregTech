@@ -147,6 +147,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public boolean mDisableIC2Cables = false;
     public boolean mAchievements = true;
     public boolean mAE2Integration = true;
+	public boolean mArcSmeltIntoAnnealed = true;
+	public boolean mMagneticraftRecipes = true;
     public int mSkeletonsShootGTArrows = 16;
     public int mMaxEqualEntitiesAtOneSpot = 3;
     public int mFlintChance = 30;
@@ -164,6 +166,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public int mWireHeatingTicks = 4;
     public boolean mHideUnusedOres = true;
     public boolean mHideRecyclingRecipes = true;
+	public double mMagneticraftBonusOutputPercent = 100.0d;
     private final String aTextThermalExpansion = "ThermalExpansion";
     private final String aTextRailcraft = "Railcraft";
     private final String aTextTwilightForest = "TwilightForest";

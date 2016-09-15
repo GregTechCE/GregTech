@@ -1,7 +1,9 @@
 package gregtech.api.util;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.IDamagableItem;
@@ -37,6 +39,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -555,7 +559,7 @@ public class GT_ModHandler {
             if (GregTech_API.sRecipeFile.get(ConfigCategories.Machines.maceration, aInput, true)) {
                 GT_Utility.addSimpleIC2MachineRecipe(aInput, getMaceratorRecipeList(), null, aOutput1);
             }
-
+            addMagneticraftRecipe(aInput, aOutput1, aOutput2, aChance2, aOutput3, aChance3);   
             RA.addPulveriserRecipe(aInput, new ItemStack[]{aOutput1, aOutput2, aOutput3}, new int[]{10000, aChance2 <= 0 ? 1000 : 100 * aChance2, aChance3 <= 0 ? 1000 : 100 * aChance3}, 400, 2);
 
             if (!OrePrefixes.log.contains(aInput)) {
@@ -589,6 +593,31 @@ public class GT_ModHandler {
             }
         }
         return true;
+    }    
+    
+    static Class tClass;
+    static Method tMethod1;
+    static Method tMethod2;
+	
+    public static boolean addMagneticraftRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, int aChance2, ItemStack aOutput3, int aChance3){
+    	if(GT_Mod.gregtechproxy.mMagneticraftRecipes && Loader.isModLoaded("Magneticraft")){
+    		try {
+    			if(tClass==null)tClass = Class.forName("com.cout970.magneticraft.api.access.MgRecipeRegister");
+				if(tMethod1==null)tMethod1 = tClass.getMethod("registerCrusherRecipe", ItemStack.class, ItemStack.class,ItemStack.class, float.class, ItemStack.class, float.class);
+    			if(tMethod2==null)tMethod2 = tClass.getMethod("registerGrinderRecipe", ItemStack.class, ItemStack.class,ItemStack.class, float.class, ItemStack.class, float.class);
+    			
+    			ItemData  tData = GT_OreDictUnificator.getAssociation(aInput);
+    			if(tData!=null&&tData.mPrefix!=null){
+    			if(tData.mPrefix==OrePrefixes.ore||tData.mPrefix==OrePrefixes.oreBlackgranite||tData.mPrefix==OrePrefixes.oreEndstone||tData.mPrefix==OrePrefixes.oreNetherrack||tData.mPrefix==OrePrefixes.oreRedgranite){
+    				tMethod1.invoke(null, aInput, aOutput1, aOutput2,(float)((float)aChance2/GT_Mod.gregtechproxy.mMagneticraftBonusOutputPercent), aOutput3,(float)((float)aChance3/GT_Mod.gregtechproxy.mMagneticraftBonusOutputPercent));
+    				}else if(tData.mPrefix==OrePrefixes.crushed||tData.mPrefix==OrePrefixes.crushedCentrifuged||tData.mPrefix==OrePrefixes.crushedPurified){
+    				tMethod2.invoke(null, aInput, aOutput1, aOutput2,(float)((float)aChance2/GT_Mod.gregtechproxy.mMagneticraftBonusOutputPercent), aOutput3,(float)((float)aChance3/GT_Mod.gregtechproxy.mMagneticraftBonusOutputPercent));
+        			}
+    			}
+				
+			} catch (Exception e) {e.printStackTrace();}
+    	}    	
+    	return true;
     }
 
     /**
