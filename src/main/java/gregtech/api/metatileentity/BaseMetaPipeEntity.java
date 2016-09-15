@@ -283,11 +283,12 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                     }
                 default:
                     tCode = -1;
+                    break;
             }
         }
         } catch (Throwable e) {
-            gregtech.api.util.GT_Log.err.println("Encountered Exception while ticking MetaTileEntity in Step " + (tCode - 1) + ". The Game should've crashed now, but I prevented that. Please report immidietly to GregTech Intergalactical!!!");
-            e.printStackTrace(gregtech.api.util.GT_Log.err);
+            //GT_Log.err.println("Encountered Exception while ticking MetaTileEntity in Step " + (tCode - 1) + ". The Game should've crashed now, but I prevented that. Please report immidietly to GregTech Intergalactical!!!");
+            e.printStackTrace(GT_Log.err);
         }
 
         if (isServerSide() && hasValidMetaTileEntity()) {
@@ -355,7 +356,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                     if (aValue > 16 || aValue < 0) aValue = 0;
                     mColor = (byte) aValue;
                     break;
-                case 3: //int X & Y = 0 or Y; Y -> {1,2,4,8,16,32}; byte type analogy
+                case 3:
                     mSidedRedstone[0] = (byte) ((aValue & 1) == 1 ? 15 : 0);
                     mSidedRedstone[1] = (byte) ((aValue & 2) == 2 ? 15 : 0);
                     mSidedRedstone[2] = (byte) ((aValue & 4) == 4 ? 15 : 0);

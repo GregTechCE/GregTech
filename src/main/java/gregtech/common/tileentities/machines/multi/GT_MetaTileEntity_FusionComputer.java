@@ -103,15 +103,18 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
                 && (addIfInjector(xCenter - 6, yCenter - 1, zCenter + 1, aBaseMetaTileEntity)) && (addIfInjector(xCenter + 6, yCenter - 1, zCenter + 1, aBaseMetaTileEntity))
                 && (addIfInjector(xCenter - 6, yCenter - 1, zCenter - 1, aBaseMetaTileEntity)) && (addIfInjector(xCenter + 6, yCenter - 1, zCenter - 1, aBaseMetaTileEntity))
                 && (this.mEnergyHatches.size() >= 1) && (this.mOutputHatches.size() >= 1) && (this.mInputHatches.size() >= 2)) {
-            for (int i = 0; i < this.mEnergyHatches.size(); i++) {
+            int mEnergyHatches_sS = this.mEnergyHatches.size();
+            for (int i = 0; i < mEnergyHatches_sS; i++) {
                 if (this.mEnergyHatches.get(i).mTier < tier())
                     return false;
             }
-            for (int i = 0; i < this.mOutputHatches.size(); i++) {
+            int mOutputHatches_sS = this.mOutputHatches.size();
+            for (int i = 0; i < mOutputHatches_sS; i++) {
                 if (this.mOutputHatches.get(i).mTier < tier())
                     return false;
             }
-            for (int i = 0; i < this.mInputHatches.size(); i++) {
+            int mInputHatches_sS = this.mInputHatches.size();
+            for (int i = 0; i < mInputHatches_sS; i++) {
                 if (this.mInputHatches.get(i).mTier < tier())
                     return false;
             }
@@ -233,13 +236,14 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
     @Override
     public boolean checkRecipe(ItemStack aStack) {
         ArrayList<FluidStack> tFluidList = getStoredFluids();
-        for (int i = 0; i < tFluidList.size() - 1; i++) {
-            for (int j = i + 1; j < tFluidList.size(); j++) {
+        int tFluidList_sS=tFluidList.size();
+        for (int i = 0; i < tFluidList_sS - 1; i++) {
+            for (int j = i + 1; j < tFluidList_sS; j++) {
                 if (GT_Utility.areFluidsEqual((FluidStack) tFluidList.get(i), (FluidStack) tFluidList.get(j))) {
                     if (((FluidStack) tFluidList.get(i)).amount >= ((FluidStack) tFluidList.get(j)).amount) {
-                        tFluidList.remove(j--);
+                        tFluidList.remove(j--); tFluidList_sS=tFluidList.size();
                     } else {
-                        tFluidList.remove(i--);
+                        tFluidList.remove(i--); tFluidList_sS=tFluidList.size();
                         break;
                     }
                 }

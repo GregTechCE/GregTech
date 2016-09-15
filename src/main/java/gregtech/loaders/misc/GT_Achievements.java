@@ -30,23 +30,24 @@ import net.minecraftforge.fluids.FluidStack;
 import thaumcraft.api.ThaumcraftApiHelper;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class GT_Achievements {
 
     public static List<Materials> oreList = new ArrayList<Materials>();
     public static List<Integer[]> oreStats = new ArrayList<Integer[]>();
     public static int oreReg = -1;
-    public HashMap<String, Achievement> achievementList;
-    public HashMap<String, Boolean> issuedAchievements;
+    public ConcurrentHashMap<String, Achievement> achievementList;
+    public ConcurrentHashMap<String, Boolean> issuedAchievements;
     public int adjX = 5;
     public int adjY = 9;
 
     public GT_Achievements() {
-        this.achievementList = new HashMap();
-        this.issuedAchievements = new HashMap();
-        for (int i = 0; i < oreList.size(); i++) {
+        this.achievementList = new ConcurrentHashMap();
+        this.issuedAchievements = new ConcurrentHashMap();
+        int oreList_sS=oreList.size();
+        for (int i = 0; i < oreList_sS; i++) {
             if (GT_Values.D1 && this.achievementList.get(oreList.get(i).name()) == null) {
                 GT_Log.out.println("achievement." + oreList.get(i).name() + "=Find " + oreList.get(i).name() + " Ore");
 
@@ -189,11 +190,11 @@ public class GT_Achievements {
         registerAchievement("whatnow", 4, 10, ItemList.ZPM2.get(1, new Object[]{}), "denseaspossible", false);
 
         if(Loader.isModLoaded("NotEnoughItems") && GT_Mod.gregtechproxy.mHideUnusedOres){
-        for (int i = 1; i < GregTech_API.sGeneratedMaterials.length; i++) {
-            if ((GregTech_API.sGeneratedMaterials[i] != null) && (!oreList.contains(GregTech_API.sGeneratedMaterials[i]))) {
-                codechicken.nei.api.API.hideItem(GT_OreDictUnificator.get(OrePrefixes.ore, GregTech_API.sGeneratedMaterials[i], 1));
+            for (int i = 1; i < GregTech_API.sGeneratedMaterials.length; i++) {
+                if ((GregTech_API.sGeneratedMaterials[i] != null) && !oreList.contains(GregTech_API.sGeneratedMaterials[i])) {
+                    codechicken.nei.api.API.hideItem(GT_OreDictUnificator.get(OrePrefixes.ore, GregTech_API.sGeneratedMaterials[i], 1));
+                }
             }
-        }
         }
         if (GT_Mod.gregtechproxy.mAchievements) {
             AchievementPage.registerAchievementPage(new AchievementPage("GregTech 5", (Achievement[]) this.achievementList.values().toArray(
@@ -385,7 +386,7 @@ public class GT_Achievements {
                 issueAchievement(player, "alloysmelter");
                 issueAchievement(player, "buildElecFurnace");
                 if(stack.getUnlocalizedName().equals("gt.blockmachines.bronzemachine.alloysmelter.tier.3")){
-                	issueAchievement(player, "buildIndFurnace");
+                    issueAchievement(player, "buildIndFurnace");
                 }
             } else if (stack.getUnlocalizedName().equals("gt.blockmachines.bronzemachine.extractor")) {
                 issueAchievement(player, "extract");
@@ -403,7 +404,7 @@ public class GT_Achievements {
                 issueAchievement(player, "buffer");
                 issueAchievement(player, "buildBatBox");
                 if(stack.getUnlocalizedName().startsWith("gt.blockmachines.automation.chestbuffer.tier.3")){
-                	issueAchievement(player, "buildMFE");
+                    issueAchievement(player, "buildMFE");
                 }
             } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicgenerator.steamturbine.tier.")) {
                 issueAchievement(player, "steampower");
@@ -489,18 +490,19 @@ public class GT_Achievements {
                     issueAchievement(player, "newmetal");
                 }
                 if(data.mMaterial.mMaterial != Materials.Gunpowder){
-                issueAchievement(player, "cleandust");
+                    issueAchievement(player, "cleandust");
                 }
             } else if (data.mPrefix == OrePrefixes.ore || data.mPrefix == OrePrefixes.oreBlackgranite || data.mPrefix == OrePrefixes.oreEndstone
                     || data.mPrefix == OrePrefixes.oreNetherrack || data.mPrefix == OrePrefixes.oreRedgranite) {
-                for (int i = 0; i < data.getAllMaterialStacks().size(); i++) {
+                int data_getAllMaterialStacks_sS=data.getAllMaterialStacks().size();
+                for (int i = 0; i < data_getAllMaterialStacks_sS; i++) {
                     issueAchievement(player, data.getAllMaterialStacks().get(i).mMaterial.name());
                     if (data.getAllMaterialStacks().get(i).mMaterial == Materials.AnyIron) {
                         issueAchievement(player, "iron");
                     }
-                if(data.getAllMaterialStacks().get(i).mMaterial == Materials.Copper||data.getAllMaterialStacks().get(i).mMaterial == Materials.Tin){
-                	issueAchievement(event.entityPlayer, "mineOre");
-                }
+                    if(data.getAllMaterialStacks().get(i).mMaterial == Materials.Copper||data.getAllMaterialStacks().get(i).mMaterial == Materials.Tin){
+                        issueAchievement(event.entityPlayer, "mineOre");
+                    }
 
                 }
             } else if (data.mPrefix == OrePrefixes.crushed) {
@@ -512,7 +514,7 @@ public class GT_Achievements {
             } else if (data.mMaterial.mMaterial == Materials.Steel) {
                 if (data.mPrefix == OrePrefixes.ingot && stack.stackSize == stack.getMaxStackSize()) {
                     issueAchievement(player, "steel");
-                } else if ((data.mPrefix == OrePrefixes.nugget) && Loader.isModLoaded("Thaumcraft") && ThaumcraftApiHelper.isResearchComplete(player.getDisplayName(), "GT_IRON_TO_STEEL")) {
+                } else if (data.mPrefix == OrePrefixes.nugget && Loader.isModLoaded("Thaumcraft") && ThaumcraftApiHelper.isResearchComplete(player.getDisplayName(), "GT_IRON_TO_STEEL")) {
                     issueAchievement(player, "steel");
                 }
             } else if (data.mPrefix == OrePrefixes.circuit && data.mMaterial.mMaterial == Materials.Advanced) {
@@ -558,9 +560,9 @@ public class GT_Achievements {
                 issueAchievement(player, "whatnow");
             }
         } else if (stack.getUnlocalizedName().equals("gt.Thoriumcell")) {
-                issueAchievement(player, "newfuel");
-            }else if ((stack.getItem() == Ic2Items.quantumBodyarmor.getItem()) || (stack.getItem() == Ic2Items.quantumBoots.getItem()) ||
-            		(stack.getItem() == Ic2Items.quantumHelmet.getItem()) || (stack.getItem() == Ic2Items.quantumLeggings.getItem())) {
-                issueAchievement(player, "buildQArmor");}
+            issueAchievement(player, "newfuel");
+        }else if ((stack.getItem() == Ic2Items.quantumBodyarmor.getItem()) || (stack.getItem() == Ic2Items.quantumBoots.getItem()) ||
+                (stack.getItem() == Ic2Items.quantumHelmet.getItem()) || (stack.getItem() == Ic2Items.quantumLeggings.getItem())) {
+            issueAchievement(player, "buildQArmor");}
     }
 }
