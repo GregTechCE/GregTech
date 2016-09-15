@@ -36,7 +36,7 @@ public class GT_CopiedBlockTexture implements ITexture {
         this(aBlock, aSide, aMeta, Dyes._NULL.mRGBa);
     }
 
-    private IIcon getIcon(int aSide) {
+    private final IIcon getIcon(int aSide) {
         if (mSide == 6) return mBlock.getIcon(aSide, mMeta);
         return mBlock.getIcon(mSide, mMeta);
     }

@@ -50,7 +50,7 @@ public class GT_Spray_Hardener_Item extends GT_Tool_Item {
         }
 
         ItemStack tStack1 = GT_ModHandler.getIC2Item("constructionFoam", 1), tStack2 = GT_ModHandler.getIC2Item("constructionFoamWall", 1);
-        if (tStack1 != null && tStack1.isItemEqual(new ItemStack(aBlock)) && tStack2 != null && tStack2.getItem() != null && tStack2.getItem() instanceof ItemBlock) {
+        if (tStack1 != null && tStack1.isItemEqual(new ItemStack(aBlock)) && tStack2 != null && tStack2.getItem() instanceof ItemBlock) {
             if (GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
                 GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(102), 1.0F, -1, aX, aY, aZ);
                 aWorld.setBlock(aX, aY, aZ, GT_Utility.getBlockFromStack(tStack2), 7, 3);

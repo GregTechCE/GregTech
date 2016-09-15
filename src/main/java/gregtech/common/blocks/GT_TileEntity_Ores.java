@@ -9,6 +9,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
@@ -54,16 +55,19 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
                 if (GregTech_API.sBlockOresUb1 != null) {
                     tOreBlock = GregTech_API.sBlockOresUb1;
                     aMetaData += (BlockMeta * 1000);
+                    //System.out.println("Block changed to UB1");
                 }
             } else if (BlockName.equals("tile.metamorphicStone")) {
                 if (GregTech_API.sBlockOresUb2 != null) {
                     tOreBlock = GregTech_API.sBlockOresUb2;
                     aMetaData += (BlockMeta * 1000);
+                    //System.out.println("Block changed to UB2");
                 }
             } else if (BlockName.equals("tile.sedimentaryStone")) {
                 if (GregTech_API.sBlockOresUb3 != null) {
                     tOreBlock = GregTech_API.sBlockOresUb3;
                     aMetaData += (BlockMeta * 1000);
+                    //System.out.println("Block changed to UB3");
                 }
             } else if (BlockName.equals("tile.moonBlock") && (BlockMeta == 3 || BlockMeta == 4)) {
                 if (GregTech_API.sBlockOresGC != null) {
@@ -106,6 +110,7 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
             } else if (!tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.stone)) {
                 return false;
             }
+            System.out.println(tOreBlock);
             aWorld.setBlock(aX, aY, aZ, tOreBlock, getHarvestData((short) aMetaData), 0);
             TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
             if ((tTileEntity instanceof GT_TileEntity_Ores)) {
@@ -208,7 +213,7 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
             aFortune = 0;
         }
         if (aMaterial != null) {
-            Random tRandom = new Random(this.xCoord ^ this.yCoord ^ this.zCoord);
+            Random tRandom = new XSTR(this.xCoord ^ this.yCoord ^ this.zCoord);
             ArrayList<ItemStack> tSelector = new ArrayList();
 
 

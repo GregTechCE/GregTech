@@ -93,26 +93,26 @@ public class ItemData {
         mByProducts = rList.toArray(new MaterialStack[rList.size()]);
     }
 
-    public boolean hasValidPrefixMaterialData() {
+    public final boolean hasValidPrefixMaterialData() {
         return mPrefix != null && mMaterial != null && mMaterial.mMaterial != null;
     }
 
-    public boolean hasValidPrefixData() {
+    public final boolean hasValidPrefixData() {
         return mPrefix != null;
     }
 
-    public boolean hasValidMaterialData() {
+    public final boolean hasValidMaterialData() {
         return mMaterial != null && mMaterial.mMaterial != null;
     }
 
-    public ArrayList<MaterialStack> getAllMaterialStacks() {
+    public final ArrayList<MaterialStack> getAllMaterialStacks() {
         ArrayList<MaterialStack> rList = new ArrayList();
         if (hasValidMaterialData()) rList.add(mMaterial);
         rList.addAll(Arrays.asList(mByProducts));
         return rList;
     }
 
-    public MaterialStack getByProduct(int aIndex) {
+    public final MaterialStack getByProduct(int aIndex) {
         return aIndex >= 0 && aIndex < mByProducts.length ? mByProducts[aIndex] : null;
     }
 

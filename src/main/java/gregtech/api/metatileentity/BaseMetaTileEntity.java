@@ -251,37 +251,256 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         mRunningThroughTick = true;
         long tTime = System.currentTimeMillis();
 
-        for (int tCode = 0; hasValidMetaTileEntity() && tCode >= 0; ) {
-            try {
-                switch (tCode) {
-                    case 0:
-                        tCode++;
-                        if (mTickTimer++ == 0) {
+        try { for (int tCode = 0; hasValidMetaTileEntity() && tCode >= 0; ) {
+            switch (tCode) {
+                case 0:
+                    tCode++;
+                    if (mTickTimer++ == 0) {
+                        oX = xCoord;
+                        oY = yCoord;
+                        oZ = zCoord;
+                        if (isServerSide()) for (byte i = 0; i < 6; i++)
+                            if (getCoverIDAtSide(i) != 0)
+                                if (!mMetaTileEntity.allowCoverOnSide(i, new GT_ItemStack(getCoverIDAtSide(i))))
+                                    dropCover(i, i, true);
+
+                        worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
+
+                        mMetaTileEntity.onFirstTick(this);
+                        if (!hasValidMetaTileEntity()) {
+                            mRunningThroughTick = false;
+                            return;
+                        }
+                    }
+                case 1:
+                    tCode++;
+                    if (isClientSide()) {
+                        if (mColor != oColor) {
+                            mMetaTileEntity.onColorChangeClient(oColor = mColor);
+                            issueTextureUpdate();
+                        }
+
+                        if (mLightValue != oLightValueClient) {
+                            worldObj.setLightValue(EnumSkyBlock.Block, xCoord, yCoord, zCoord, mLightValue);
+                            worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
+                            worldObj.updateLightByType(EnumSkyBlock.Block, xCoord + 1, yCoord, zCoord);
+                            worldObj.updateLightByType(EnumSkyBlock.Block, xCoord - 1, yCoord, zCoord);
+                            worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord + 1, zCoord);
+                            worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord - 1, zCoord);
+                            worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord + 1);
+                            worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord - 1);
+                            oLightValueClient = mLightValue;
+                            issueTextureUpdate();
+                        }
+
+                        if (mNeedsUpdate) {
+                            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                            //worldObj.func_147479_m(xCoord, yCoord, zCoord);
+                            mNeedsUpdate = false;
+                        }
+                    }
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
+                case 7:
+                    if (isServerSide() && mTickTimer > 10) {
+                        for (byte i = (byte) (tCode - 2); i < 6; i++)
+                            if (getCoverIDAtSide(i) != 0) {
+                                tCode++;
+                                GT_CoverBehavior tCover = getCoverBehaviorAtSide(i);
+                                int tCoverTickRate = tCover.getTickRate(i, getCoverIDAtSide(i), mCoverData[i], this);
+                                if (tCoverTickRate > 0 && mTickTimer % tCoverTickRate == 0) {
+                                    mCoverData[i] = tCover.doCoverThings(i, getInputRedstoneSignal(i), getCoverIDAtSide(i), mCoverData[i], this, mTickTimer);
+                                    if (!hasValidMetaTileEntity()) {
+                                        mRunningThroughTick = false;
+                                        return;
+                                    }
+                                }
+                            }
+
+                    }
+                case 8:
+                    tCode = 9;
+                    if (isServerSide()) {
+                        if (++mAverageEUInputIndex >= mAverageEUInput.length) mAverageEUInputIndex = 0;
+                        if (++mAverageEUOutputIndex >= mAverageEUOutput.length) mAverageEUOutputIndex = 0;
+
+                        mAverageEUInput[mAverageEUInputIndex] = 0;
+                        mAverageEUOutput[mAverageEUOutputIndex] = 0;
+                    }
+                case 9:
+                    tCode++;
+                    mMetaTileEntity.onPreTick(this, mTickTimer);
+                    if (!hasValidMetaTileEntity()) {
+                        mRunningThroughTick = false;
+                        return;
+                    }
+                case 10:
+                    tCode++;
+                    if (isServerSide()) {
+                        if (mRedstone != oRedstone || mTickTimer == 10) {
+                            for (byte i = 0; i < 6; i++)
+                                mCoverBehaviors[i] = GregTech_API.getCoverBehavior(mCoverSides[i]);
+                            oRedstone = mRedstone;
+                            issueBlockUpdate();
+                        }
+
+                        if (xCoord != oX || yCoord != oY || zCoord != oZ) {
                             oX = xCoord;
                             oY = yCoord;
                             oZ = zCoord;
-                            if (isServerSide()) for (byte i = 0; i < 6; i++)
+                            issueClientUpdate();
+                            clearTileEntityBuffer();
+                        }
+
+                        if (mFacing != oFacing) {
+                            oFacing = mFacing;
+                            for (byte i = 0; i < 6; i++)
                                 if (getCoverIDAtSide(i) != 0)
                                     if (!mMetaTileEntity.allowCoverOnSide(i, new GT_ItemStack(getCoverIDAtSide(i))))
                                         dropCover(i, i, true);
+                            issueBlockUpdate();
+                        }
 
-                            worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
+                        if (mTickTimer > 20 && mMetaTileEntity.isElectric()) {
+                            mAcceptedAmperes = 0;
 
-                            mMetaTileEntity.onFirstTick(this);
-                            if (!hasValidMetaTileEntity()) {
-                                mRunningThroughTick = false;
-                                return;
+                            if (getOutputVoltage() != oOutput) {
+                                oOutput = getOutputVoltage();
+                            }
+
+                            if (mMetaTileEntity.isEnetOutput() || mMetaTileEntity.isEnetInput()) {
+                                for (byte i = 0; i < 6; i++) {
+                                    boolean
+                                            temp = isEnergyInputSide(i);
+                                    if (temp != mActiveEUInputs[i]) {
+                                        mActiveEUInputs[i] = temp;
+                                    }
+                                    temp = isEnergyOutputSide(i);
+                                    if (temp != mActiveEUOutputs[i]) {
+                                        mActiveEUOutputs[i] = temp;
+                                    }
+                                }
+                            }
+
+                            if (mMetaTileEntity.isEnetOutput() && oOutput > 0) {
+                                long tOutputVoltage = Math.max(oOutput, oOutput + (1 << GT_Utility.getTier(oOutput))), tUsableAmperage = Math.min(getOutputAmperage(), (getStoredEU() - mMetaTileEntity.getMinimumStoredEU()) / tOutputVoltage);
+                                if (tUsableAmperage > 0) {
+                                    long tEU = tOutputVoltage * IEnergyConnected.Util.emitEnergyToNetwork(oOutput, tUsableAmperage, this);
+                                    mAverageEUOutput[mAverageEUOutputIndex] += tEU;
+                                    decreaseStoredEU(tEU, true);
+                                }
+                            }
+                            if (getEUCapacity() > 0) {
+                                if (GregTech_API.sMachineFireExplosions && getRandomNumber(1000) == 0) {
+                                    Block tBlock = getBlockAtSide((byte) getRandomNumber(6));
+                                    if (tBlock instanceof BlockFire) doEnergyExplosion();
+                                }
+
+                                if (!hasValidMetaTileEntity()) {
+                                    mRunningThroughTick = false;
+                                    return;
+                                }
+
+                                if (getRandomNumber(1000) == 0) {
+                                    if ((getCoverIDAtSide((byte) 1) == 0 && worldObj.getPrecipitationHeight(xCoord, zCoord) - 2 < yCoord)
+                                            || (getCoverIDAtSide((byte) 2) == 0 && worldObj.getPrecipitationHeight(xCoord, zCoord - 1) - 1 < yCoord)
+                                            || (getCoverIDAtSide((byte) 3) == 0 && worldObj.getPrecipitationHeight(xCoord, zCoord + 1) - 1 < yCoord)
+                                            || (getCoverIDAtSide((byte) 4) == 0 && worldObj.getPrecipitationHeight(xCoord - 1, zCoord) - 1 < yCoord)
+                                            || (getCoverIDAtSide((byte) 5) == 0 && worldObj.getPrecipitationHeight(xCoord + 1, zCoord) - 1 < yCoord)) {
+                                        if (GregTech_API.sMachineRainExplosions && worldObj.isRaining() && getBiome().rainfall > 0) {
+                                            if (getRandomNumber(10) == 0) {
+                                                try {
+                                                    GT_Mod.instance.achievements.issueAchievement(this.getWorldObj().getPlayerEntityByName(mOwnerName), "badweather");
+                                                } catch (Exception e) {
+                                                }
+                                                doEnergyExplosion();
+                                            } else setOnFire();
+                                        }
+                                        if (!hasValidMetaTileEntity()) {
+                                            mRunningThroughTick = false;
+                                            return;
+                                        }
+                                        if (GregTech_API.sMachineThunderExplosions && worldObj.isThundering() && getBiome().rainfall > 0 && getRandomNumber(3) == 0) {
+                                            try {
+                                                GT_Mod.instance.achievements.issueAchievement(this.getWorldObj().getPlayerEntityByName(mOwnerName), "badweather");
+                                            } catch (Exception e) {
+                                            }
+                                            doEnergyExplosion();
+                                        }
+                                    }
+                                }
                             }
                         }
-                    case 1:
-                        tCode++;
-                        if (isClientSide()) {
-                            if (mColor != oColor) {
-                                mMetaTileEntity.onColorChangeClient(oColor = mColor);
-                                issueTextureUpdate();
-                            }
 
-                            if (mLightValue != oLightValueClient) {
+                        if (!hasValidMetaTileEntity()) {
+                            mRunningThroughTick = false;
+                            return;
+                        }
+                    }
+                case 11:
+                    tCode++;
+                    if (isServerSide()) {
+                        if (mMetaTileEntity.dechargerSlotCount() > 0 && getStoredEU() < getEUCapacity()) {
+                            for (int i = mMetaTileEntity.dechargerSlotStartIndex(), k = mMetaTileEntity.dechargerSlotCount() + i; i < k; i++) {
+                                if (mMetaTileEntity.mInventory[i] != null && getStoredEU() < getEUCapacity()) {
+                                    dischargeItem(mMetaTileEntity.mInventory[i]);
+                                    if (mMetaTileEntity.mInventory[i].stackSize <= 0)
+                                        mMetaTileEntity.mInventory[i] = null;
+                                    mInventoryChanged = true;
+                                }
+                            }
+                        }
+                    }
+                case 12:
+                    tCode++;
+                    if (isServerSide()) {
+                        if (mMetaTileEntity.rechargerSlotCount() > 0 && getStoredEU() > 0) {
+                            for (int i = mMetaTileEntity.rechargerSlotStartIndex(), k = mMetaTileEntity.rechargerSlotCount() + i; i < k; i++) {
+                                if (getStoredEU() > 0 && mMetaTileEntity.mInventory[i] != null) {
+                                    chargeItem(mMetaTileEntity.mInventory[i]);
+                                    if (mMetaTileEntity.mInventory[i].stackSize <= 0)
+                                        mMetaTileEntity.mInventory[i] = null;
+                                    mInventoryChanged = true;
+                                }
+                            }
+                        }
+                    }
+                case 13:
+                    tCode++;
+                    updateStatus();
+                    if (!hasValidMetaTileEntity()) {
+                        mRunningThroughTick = false;
+                        return;
+                    }
+                case 14:
+                    tCode++;
+                    mMetaTileEntity.onPostTick(this, mTickTimer);
+                    if (!hasValidMetaTileEntity()) {
+                        mRunningThroughTick = false;
+                        return;
+                    }
+                case 15:
+                    tCode++;
+                    if (isServerSide()) {
+                        if (mTickTimer % 10 == 0) {
+                            if (mSendClientData) {
+                                NW.sendPacketToAllPlayersInRange(worldObj, new GT_Packet_TileEntity(xCoord, (short) yCoord, zCoord, mID, mCoverSides[0], mCoverSides[1], mCoverSides[2], mCoverSides[3], mCoverSides[4], mCoverSides[5], oTextureData = (byte) ((mFacing & 7) | (mActive ? 8 : 0) | (mRedstone ? 16 : 0) | (mLockUpgrade ? 32 : 0)), oUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0, oRedstoneData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0) | ((mSidedRedstone[2] > 0) ? 4 : 0) | ((mSidedRedstone[3] > 0) ? 8 : 0) | ((mSidedRedstone[4] > 0) ? 16 : 0) | ((mSidedRedstone[5] > 0) ? 32 : 0)), oColor = mColor), xCoord, zCoord);
+                                mSendClientData = false;
+                            }
+                        }
+
+                        if (mTickTimer > 10) {
+                            byte tData = (byte) ((mFacing & 7) | (mActive ? 8 : 0) | (mRedstone ? 16 : 0) | (mLockUpgrade ? 32 : 0));
+                            if (tData != oTextureData) sendBlockEvent((byte) 0, oTextureData = tData);
+                            tData = mMetaTileEntity.getUpdateData();
+                            if (tData != oUpdateData) sendBlockEvent((byte) 1, oUpdateData = tData);
+                            if (mColor != oColor) sendBlockEvent((byte) 2, oColor = mColor);
+                            tData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0) | ((mSidedRedstone[2] > 0) ? 4 : 0) | ((mSidedRedstone[3] > 0) ? 8 : 0) | ((mSidedRedstone[4] > 0) ? 16 : 0) | ((mSidedRedstone[5] > 0) ? 32 : 0));
+                            if (tData != oRedstoneData) sendBlockEvent((byte) 3, oRedstoneData = tData);
+                            if (mLightValue != oLightValue) {
                                 worldObj.setLightValue(EnumSkyBlock.Block, xCoord, yCoord, zCoord, mLightValue);
                                 worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
                                 worldObj.updateLightByType(EnumSkyBlock.Block, xCoord + 1, yCoord, zCoord);
@@ -290,250 +509,23 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                                 worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord - 1, zCoord);
                                 worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord + 1);
                                 worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord - 1);
-                                oLightValueClient = mLightValue;
                                 issueTextureUpdate();
-                            }
-
-                            if (mNeedsUpdate) {
-                                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-                                //worldObj.func_147479_m(xCoord, yCoord, zCoord);
-                                mNeedsUpdate = false;
+                                sendBlockEvent((byte) 7, oLightValue = mLightValue);
                             }
                         }
-                    case 2:
-                    case 3:
-                    case 4:
-                    case 5:
-                    case 6:
-                    case 7:
-                        if (isServerSide() && mTickTimer > 10) {
-                            for (byte i = (byte) (tCode - 2); i < 6; i++)
-                                if (getCoverIDAtSide(i) != 0) {
-                                    tCode++;
-                                    GT_CoverBehavior tCover = getCoverBehaviorAtSide(i);
-                                    int tCoverTickRate = tCover.getTickRate(i, getCoverIDAtSide(i), mCoverData[i], this);
-                                    if (tCoverTickRate > 0 && mTickTimer % tCoverTickRate == 0) {
-                                        mCoverData[i] = tCover.doCoverThings(i, getInputRedstoneSignal(i), getCoverIDAtSide(i), mCoverData[i], this, mTickTimer);
-                                        if (!hasValidMetaTileEntity()) {
-                                            mRunningThroughTick = false;
-                                            return;
-                                        }
-                                    }
-                                }
 
+                        if (mNeedsBlockUpdate) {
+                            worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockOffset(0, 0, 0));
+                            mNeedsBlockUpdate = false;
                         }
-                    case 8:
-                        tCode = 9;
-                        if (isServerSide()) {
-                            if (++mAverageEUInputIndex >= mAverageEUInput.length) mAverageEUInputIndex = 0;
-                            if (++mAverageEUOutputIndex >= mAverageEUOutput.length) mAverageEUOutputIndex = 0;
-
-                            mAverageEUInput[mAverageEUInputIndex] = 0;
-                            mAverageEUOutput[mAverageEUOutputIndex] = 0;
-                        }
-                    case 9:
-                        tCode++;
-                        mMetaTileEntity.onPreTick(this, mTickTimer);
-                        if (!hasValidMetaTileEntity()) {
-                            mRunningThroughTick = false;
-                            return;
-                        }
-                    case 10:
-                        tCode++;
-                        if (isServerSide()) {
-                            if (mRedstone != oRedstone || mTickTimer == 10) {
-                                for (byte i = 0; i < 6; i++)
-                                    mCoverBehaviors[i] = GregTech_API.getCoverBehavior(mCoverSides[i]);
-                                oRedstone = mRedstone;
-                                issueBlockUpdate();
-                            }
-
-                            if (xCoord != oX || yCoord != oY || zCoord != oZ) {
-                                oX = xCoord;
-                                oY = yCoord;
-                                oZ = zCoord;
-                                issueClientUpdate();
-                                clearTileEntityBuffer();
-                            }
-
-                            if (mFacing != oFacing) {
-                                oFacing = mFacing;
-                                for (byte i = 0; i < 6; i++)
-                                    if (getCoverIDAtSide(i) != 0)
-                                        if (!mMetaTileEntity.allowCoverOnSide(i, new GT_ItemStack(getCoverIDAtSide(i))))
-                                            dropCover(i, i, true);
-                                issueBlockUpdate();
-                            }
-
-                            if (mTickTimer > 20 && mMetaTileEntity.isElectric()) {
-                                mAcceptedAmperes = 0;
-
-                                if (getOutputVoltage() != oOutput) {
-                                    oOutput = getOutputVoltage();
-                                }
-
-                                if (mMetaTileEntity.isEnetOutput() || mMetaTileEntity.isEnetInput()) {
-                                    for (byte i = 0; i < 6; i++) {
-                                        boolean
-                                                temp = isEnergyInputSide(i);
-                                        if (temp != mActiveEUInputs[i]) {
-                                            mActiveEUInputs[i] = temp;
-                                        }
-                                        temp = isEnergyOutputSide(i);
-                                        if (temp != mActiveEUOutputs[i]) {
-                                            mActiveEUOutputs[i] = temp;
-                                        }
-                                    }
-                                }
-
-                                if (mMetaTileEntity.isEnetOutput() && oOutput > 0) {
-                                    long tOutputVoltage = Math.max(oOutput, oOutput + (1 << GT_Utility.getTier(oOutput))), tUsableAmperage = Math.min(getOutputAmperage(), (getStoredEU() - mMetaTileEntity.getMinimumStoredEU()) / tOutputVoltage);
-                                    if (tUsableAmperage > 0) {
-                                        long tEU = tOutputVoltage * IEnergyConnected.Util.emitEnergyToNetwork(oOutput, tUsableAmperage, this);
-                                        mAverageEUOutput[mAverageEUOutputIndex] += tEU;
-                                        decreaseStoredEU(tEU, true);
-                                    }
-                                }
-                                if (getEUCapacity() > 0) {
-                                    if (GregTech_API.sMachineFireExplosions && getRandomNumber(1000) == 0) {
-                                        Block tBlock = getBlockAtSide((byte) getRandomNumber(6));
-                                        if (tBlock != null && tBlock instanceof BlockFire) doEnergyExplosion();
-                                    }
-
-                                    if (!hasValidMetaTileEntity()) {
-                                        mRunningThroughTick = false;
-                                        return;
-                                    }
-
-                                    if (getRandomNumber(1000) == 0) {
-                                        if ((getCoverIDAtSide((byte) 1) == 0 && worldObj.getPrecipitationHeight(xCoord, zCoord) - 2 < yCoord)
-                                                || (getCoverIDAtSide((byte) 2) == 0 && worldObj.getPrecipitationHeight(xCoord, zCoord - 1) - 1 < yCoord)
-                                                || (getCoverIDAtSide((byte) 3) == 0 && worldObj.getPrecipitationHeight(xCoord, zCoord + 1) - 1 < yCoord)
-                                                || (getCoverIDAtSide((byte) 4) == 0 && worldObj.getPrecipitationHeight(xCoord - 1, zCoord) - 1 < yCoord)
-                                                || (getCoverIDAtSide((byte) 5) == 0 && worldObj.getPrecipitationHeight(xCoord + 1, zCoord) - 1 < yCoord)) {
-                                            if (GregTech_API.sMachineRainExplosions && worldObj.isRaining() && getBiome().rainfall > 0) {
-                                                if (getRandomNumber(10) == 0) {
-                                                    try {
-                                                        GT_Mod.instance.achievements.issueAchievement(this.getWorldObj().getPlayerEntityByName(mOwnerName), "badweather");
-                                                    } catch (Exception e) {
-                                                    }
-                                                    doEnergyExplosion();
-                                                } else setOnFire();
-                                            }
-                                            if (!hasValidMetaTileEntity()) {
-                                                mRunningThroughTick = false;
-                                                return;
-                                            }
-                                            if (GregTech_API.sMachineThunderExplosions && worldObj.isThundering() && getBiome().rainfall > 0 && getRandomNumber(3) == 0) {
-                                                try {
-                                                    GT_Mod.instance.achievements.issueAchievement(this.getWorldObj().getPlayerEntityByName(mOwnerName), "badweather");
-                                                } catch (Exception e) {
-                                                }
-                                                doEnergyExplosion();
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            if (!hasValidMetaTileEntity()) {
-                                mRunningThroughTick = false;
-                                return;
-                            }
-                        }
-                    case 11:
-                        tCode++;
-                        if (isServerSide()) {
-                            if (mMetaTileEntity.dechargerSlotCount() > 0 && getStoredEU() < getEUCapacity()) {
-                                for (int i = mMetaTileEntity.dechargerSlotStartIndex(), k = mMetaTileEntity.dechargerSlotCount() + i; i < k; i++) {
-                                    if (mMetaTileEntity.mInventory[i] != null && getStoredEU() < getEUCapacity()) {
-                                        dischargeItem(mMetaTileEntity.mInventory[i]);
-                                        if(ic2.api.info.Info.itemEnergy.getEnergyValue(mMetaTileEntity.mInventory[i])>0){
-                                        	if((getStoredEU() + ic2.api.info.Info.itemEnergy.getEnergyValue(mMetaTileEntity.mInventory[i]))<getEUCapacity()){
-                                        	increaseStoredEnergyUnits((long)ic2.api.info.Info.itemEnergy.getEnergyValue(mMetaTileEntity.mInventory[i]),false);
-                                        	mMetaTileEntity.mInventory[i].stackSize--;
-                                        	}
-                                        }
-                                        if (mMetaTileEntity.mInventory[i].stackSize <= 0)
-                                            mMetaTileEntity.mInventory[i] = null;
-                                        mInventoryChanged = true;
-                                    }
-                                }
-                            }
-                        }
-                    case 12:
-                        tCode++;
-                        if (isServerSide()) {
-                            if (mMetaTileEntity.rechargerSlotCount() > 0 && getStoredEU() > 0) {
-                                for (int i = mMetaTileEntity.rechargerSlotStartIndex(), k = mMetaTileEntity.rechargerSlotCount() + i; i < k; i++) {
-                                    if (getStoredEU() > 0 && mMetaTileEntity.mInventory[i] != null) {
-                                        chargeItem(mMetaTileEntity.mInventory[i]);
-                                        if (mMetaTileEntity.mInventory[i].stackSize <= 0)
-                                            mMetaTileEntity.mInventory[i] = null;
-                                        mInventoryChanged = true;
-                                    }
-                                }
-                            }
-                        }
-                    case 13:
-                        tCode++;
-                        updateStatus();
-                        if (!hasValidMetaTileEntity()) {
-                            mRunningThroughTick = false;
-                            return;
-                        }
-                    case 14:
-                        tCode++;
-                        mMetaTileEntity.onPostTick(this, mTickTimer);
-                        if (!hasValidMetaTileEntity()) {
-                            mRunningThroughTick = false;
-                            return;
-                        }
-                    case 15:
-                        tCode++;
-                        if (isServerSide()) {
-                            if (mTickTimer % 10 == 0) {
-                                if (mSendClientData) {
-                                    NW.sendPacketToAllPlayersInRange(worldObj, new GT_Packet_TileEntity(xCoord, (short) yCoord, zCoord, mID, mCoverSides[0], mCoverSides[1], mCoverSides[2], mCoverSides[3], mCoverSides[4], mCoverSides[5], oTextureData = (byte) ((mFacing & 7) | (mActive ? 8 : 0) | (mRedstone ? 16 : 0) | (mLockUpgrade ? 32 : 0)), oUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0, oRedstoneData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0) | ((mSidedRedstone[2] > 0) ? 4 : 0) | ((mSidedRedstone[3] > 0) ? 8 : 0) | ((mSidedRedstone[4] > 0) ? 16 : 0) | ((mSidedRedstone[5] > 0) ? 32 : 0)), oColor = mColor), xCoord, zCoord);
-                                    mSendClientData = false;
-                                }
-                            }
-
-                            if (mTickTimer > 10) {
-                                byte tData = (byte) ((mFacing & 7) | (mActive ? 8 : 0) | (mRedstone ? 16 : 0) | (mLockUpgrade ? 32 : 0));
-                                if (tData != oTextureData) sendBlockEvent((byte) 0, oTextureData = tData);
-                                tData = mMetaTileEntity.getUpdateData();
-                                if (tData != oUpdateData) sendBlockEvent((byte) 1, oUpdateData = tData);
-                                if (mColor != oColor) sendBlockEvent((byte) 2, oColor = mColor);
-                                tData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0) | ((mSidedRedstone[2] > 0) ? 4 : 0) | ((mSidedRedstone[3] > 0) ? 8 : 0) | ((mSidedRedstone[4] > 0) ? 16 : 0) | ((mSidedRedstone[5] > 0) ? 32 : 0));
-                                if (tData != oRedstoneData) sendBlockEvent((byte) 3, oRedstoneData = tData);
-                                if (mLightValue != oLightValue) {
-                                    worldObj.setLightValue(EnumSkyBlock.Block, xCoord, yCoord, zCoord, mLightValue);
-                                    worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
-                                    worldObj.updateLightByType(EnumSkyBlock.Block, xCoord + 1, yCoord, zCoord);
-                                    worldObj.updateLightByType(EnumSkyBlock.Block, xCoord - 1, yCoord, zCoord);
-                                    worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord + 1, zCoord);
-                                    worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord - 1, zCoord);
-                                    worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord + 1);
-                                    worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord - 1);
-                                    issueTextureUpdate();
-                                    sendBlockEvent((byte) 7, oLightValue = mLightValue);
-                                }
-                            }
-
-                            if (mNeedsBlockUpdate) {
-                                worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockOffset(0, 0, 0));
-                                mNeedsBlockUpdate = false;
-                            }
-                        }
-                    default:
-                        tCode = -1;
-                        break;
-                }
-            } catch (Throwable e) {
-                GT_Log.err.println("Encountered Exception while ticking MetaTileEntity in Step " + (tCode - 1) + ". The Game should've crashed now, but I prevented that. Please report immidietly to GregTech Intergalactical!!!");
-                e.printStackTrace(GT_Log.err);
-            }
+                    }
+                default:
+                    tCode = -1;
+                    break;
+            }}
+        } catch (Throwable e) {
+            //gregtech.api.util.GT_Log.err.println("Encountered Exception while ticking MetaTileEntity in Step " + (tCode - 1) + ". The Game should've crashed now, but I prevented that. Please report immidietly to GregTech Intergalactical!!!");
+            e.printStackTrace(GT_Log.err);
         }
 
         if (isServerSide() && hasValidMetaTileEntity()) {
