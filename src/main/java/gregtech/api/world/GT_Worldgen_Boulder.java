@@ -21,38 +21,44 @@ public class GT_Worldgen_Boulder extends GT_Worldgen_Ore {
                 int tX = aChunkX + aRandom.nextInt(16), tY = mMinY + aRandom.nextInt(mMaxY - mMinY), tZ = aChunkZ + aRandom.nextInt(16);
                 Block tBlock = aWorld.getBlock(tX, tY - 7, tZ);
                 if (tBlock != null && tBlock.isOpaqueCube() && aWorld.getBlock(tX, tY - 6, tZ).isAir(aWorld, tX, tY - 6, tZ)) {
-                    float var6 = aRandom.nextFloat() * (float) Math.PI;
-                    double var7 = ((tX + 8) + MathHelper.sin(var6) * mSize / 8.0F);
-                    double var9 = ((tX + 8) - MathHelper.sin(var6) * mSize / 8.0F);
-                    double var11 = ((tZ + 8) + MathHelper.cos(var6) * mSize / 8.0F);
-                    double var13 = ((tZ + 8) - MathHelper.cos(var6) * mSize / 8.0F);
-                    double var15 = (tY + aRandom.nextInt(3) - 2);
-                    double var17 = (tY + aRandom.nextInt(3) - 2);
+                    float math_pi = 3.141593F;
+                    float var6 = aRandom.nextFloat() * math_pi;
+                    float var1b = mSize / 8.0F;
+                    float var3b = MathHelper.sin(var6) * var1b; float var4b = MathHelper.cos(var6) * var1b;
+                    float var8b = -2*var3b;float var9b = -2*var4b;
+                    int var10b = (tX + 8);int var11b = (tZ + 8);
+                    float var7 = (var10b + var3b);
+                    float var11 = (var11b + var4b);
+                    int var5b = aRandom.nextInt(3);int var6b = aRandom.nextInt(3);int var7b = var6b - var5b;
+                    float var15 = (tY + var5b - 2);
+                    float var12b = math_pi / mSize;
 
                     for (int var19 = 0; var19 <= mSize; ++var19) {
-                        double var20 = var7 + (var9 - var7) * var19 / mSize;
-                        double var22 = var15 + (var17 - var15) * var19 / mSize;
-                        double var24 = var11 + (var13 - var11) * var19 / mSize;
-                        double var26 = aRandom.nextDouble() * mSize / 16.0D;
-                        double var28 = (MathHelper.sin(var19 * (float) Math.PI / mSize) + 1.0F) * var26 + 1.0D;
-                        double var30 = (MathHelper.sin(var19 * (float) Math.PI / mSize) + 1.0F) * var26 + 1.0D;
-                        int var32 = MathHelper.floor_double(var20 - var28 / 2.0D);
-                        int var33 = MathHelper.floor_double(var22 - var30 / 2.0D);
-                        int var34 = MathHelper.floor_double(var24 - var28 / 2.0D);
-                        int var35 = MathHelper.floor_double(var20 + var28 / 2.0D);
-                        int var36 = MathHelper.floor_double(var22 + var30 / 2.0D);
-                        int var37 = MathHelper.floor_double(var24 + var28 / 2.0D);
+                        float var2b = var19 / mSize;
+                        float var20 = var7 + var8b * var2b;
+                        float var22 = var15 + var7b * var2b;
+                        float var24 = var11 + var9b * var2b;
+                        float var26 = aRandom.nextFloat() * mSize / 16.0F;
+                        float var28 = ((MathHelper.sin(var19 * var12b) + 1.0F) * var26 + 1.0F) / 2.0F;
+                        int var32 = MathHelper.floor_float(var20 - var28);
+                        int var33 = MathHelper.floor_float(var22 - var28);
+                        int var34 = MathHelper.floor_float(var24 - var28);
+                        int var35 = MathHelper.floor_float(var20 + var28);
+                        int var36 = MathHelper.floor_float(var22 + var28);
+                        int var37 = MathHelper.floor_float(var24 + var28);
 
                         for (int var38 = var32; var38 <= var35; ++var38) {
-                            double var39 = (var38 + 0.5D - var20) / (var28 / 2.0D);
-                            if (var39 * var39 < 1.0D) {
+                            float var39 = (var38 + 0.5F - var20) / (var28);
+                            float var13b = var39 * var39;
+                            if (var13b < 1.0F) {
                                 for (int var41 = var33; var41 <= var36; ++var41) {
-                                    double var42 = (var41 + 0.5D - var22) / (var30 / 2.0D);
-                                    if (var39 * var39 + var42 * var42 < 1.0D) {
+                                    float var42 = (var41 + 0.5F - var22) / (var28);
+                                    float var14b = var13b + var42 * var42;
+                                    if (var14b < 1.0F) {
                                         for (int var44 = var34; var44 <= var37; ++var44) {
-                                            double var45 = (var44 + 0.5D - var24) / (var28 / 2.0D);
+                                            float var45 = (var44 + 0.5F - var24) / (var28);
                                             Block block = aWorld.getBlock(var38, var41, var44);
-                                            if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && ((mAllowToGenerateinVoid && aWorld.getBlock(var38, var41, var44).isAir(aWorld, var38, var41, var44)) || (block != null && !(block instanceof BlockContainer)))) {
+                                            if (var14b + var45 * var45 < 1.0F && ((mAllowToGenerateinVoid && aWorld.getBlock(var38, var41, var44).isAir(aWorld, var38, var41, var44)) || (block != null && !(block instanceof BlockContainer)))) {
                                                 aWorld.setBlock(var38, var41, var44, mBlock, mBlockMeta, 0);
                                             }
                                         }

@@ -141,6 +141,7 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
         return aFacing > 1;
     }
 
+    public String mMachine = "";
     public boolean checkRecipe(ItemStack aStack) {
         if (!isCorrectMachinePart(mInventory[1])) {
             return false;
@@ -176,6 +177,8 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
             tTier = 8;
         }
         
+        if(!mMachine.equals(mInventory[1].getUnlocalizedName()))mLastRecipe=null;
+        mMachine = mInventory[1].getUnlocalizedName();
         ItemStack[] tInputs = (ItemStack[]) tInputList.toArray(new ItemStack[tInputList.size()]);
 
         ArrayList<FluidStack> tFluidList = getStoredFluids();

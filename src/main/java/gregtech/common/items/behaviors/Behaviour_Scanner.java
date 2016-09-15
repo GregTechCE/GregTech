@@ -22,7 +22,8 @@ public class Behaviour_Scanner
         if (((aPlayer instanceof EntityPlayerMP)) && (aItem.canUse(aStack, 20000.0D))) {
             ArrayList<String> tList = new ArrayList();
             if (aItem.use(aStack, GT_Utility.getCoordinateScan(tList, aPlayer, aWorld, 1, aX, aY, aZ, aSide, hitX, hitY, hitZ), aPlayer)) {
-                for (int i = 0; i < tList.size(); i++) {
+                int tList_sS=tList.size();
+                for (int i = 0; i < tList_sS; i++) {
                     GT_Utility.sendChatToPlayer(aPlayer, (String) tList.get(i));
                 }
             }

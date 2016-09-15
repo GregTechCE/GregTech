@@ -115,7 +115,7 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
             this.mPumpCountBelow = 0;
             IGregTechTileEntity tTileEntity;
             for (int i = 1; (i < 21) && ((tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntityAtSideAndDistance((byte) 0, i)) != null)
-                    && (tTileEntity.getMetaTileEntity() != null) && ((tTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Pump)); i++) {
+                    && ((tTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Pump)); i++) {
                 getBaseMetaTileEntity().setActive(tTileEntity.isActive());
                 this.mPumpCountBelow += 1;
                 ((GT_MetaTileEntity_Pump) tTileEntity.getMetaTileEntity()).mPumpTimer -= 1;

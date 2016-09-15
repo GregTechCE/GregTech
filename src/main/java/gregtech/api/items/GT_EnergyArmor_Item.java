@@ -23,14 +23,14 @@ import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
 
 public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
-    public static Map jumpChargeMap = new HashMap();
+    public static Map jumpChargeMap = new ConcurrentHashMap();
     public int mCharge, mTransfer, mTier, mDamageEnergyCost, mSpecials;
     public boolean mChargeProvider;
     public double mArmorAbsorbtionPercentage;

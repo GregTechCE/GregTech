@@ -190,7 +190,7 @@ public class GT_ThaumcraftCompat
         }
         return ThaumcraftApi.addInfusionCraftingRecipe(aResearch, GT_Utility.copy(new Object[]{aOutput}), aInstability, getAspectList(aAspects), aMainInput, aSideInputs);
     }
-
+    
     public boolean registerThaumcraftAspectsToItem(ItemStack aExampleStack, List<TC_Aspects.TC_AspectStack> aAspects, String aOreDict) {
         if (aAspects.isEmpty()) {
             return false;
