@@ -8,26 +8,26 @@ import java.util.*;
 
 public class GT_HashSet<E extends GT_ItemStack> extends AbstractSet<E> {
     private static final Object OBJECT = new Object();
-    private transient Map<GT_ItemStack, Object> map;
+    private transient HashMap<GT_ItemStack, Object> map;
 
     public GT_HashSet() {
-        map = new WeakHashMap<GT_ItemStack, Object>();
+        map = new HashMap<GT_ItemStack, Object>();
         GregTech_API.sItemStackMappings.add(map);
     }
 
     public GT_HashSet(Collection<? extends E> c) {
-        map = new WeakHashMap<GT_ItemStack, Object>(Math.max((int) (c.size() / .75f) + 1, 16));
+        map = new HashMap<GT_ItemStack, Object>(Math.max((int) (c.size() / .75f) + 1, 16));
         addAll(c);
         GregTech_API.sItemStackMappings.add(map);
     }
 
     public GT_HashSet(int initialCapacity, float loadFactor) {
-        map = new WeakHashMap<GT_ItemStack, Object>(initialCapacity, loadFactor);
+        map = new HashMap<GT_ItemStack, Object>(initialCapacity, loadFactor);
         GregTech_API.sItemStackMappings.add(map);
     }
 
     public GT_HashSet(int initialCapacity) {
-        map = new WeakHashMap<GT_ItemStack, Object>(initialCapacity);
+        map = new HashMap<GT_ItemStack, Object>(initialCapacity);
         GregTech_API.sItemStackMappings.add(map);
     }
 
@@ -36,7 +36,7 @@ public class GT_HashSet<E extends GT_ItemStack> extends AbstractSet<E> {
         GregTech_API.sItemStackMappings.add(map);
     }
 
-    public final Map getMap() {
+    public HashMap getMap() {
         return map;
     }
 
