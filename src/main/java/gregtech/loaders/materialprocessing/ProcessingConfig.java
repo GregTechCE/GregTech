@@ -3,6 +3,7 @@ package gregtech.loaders.materialprocessing;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 
 public class ProcessingConfig implements gregtech.api.interfaces.IMaterialHandler {
@@ -21,6 +22,10 @@ public class ProcessingConfig implements gregtech.api.interfaces.IMaterialHandle
 
     @Override
     public void onComponentRegistration(Materials aMaterial) {
-        //NOOP
+        switch (aMaterial.mName) {
+            case "Cobalt":
+                OrePrefixes.spring.mGeneratedItems.add(aMaterial);
+                break;
+        }
     }
 }

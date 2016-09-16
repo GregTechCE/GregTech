@@ -540,7 +540,7 @@ public enum OrePrefixes {
      * Negative = Undefined Amount
      */
     public final long mMaterialAmount;
-    private final Collection<Materials> mNotGeneratedItems = new HashSet<Materials>(), mIgnoredMaterials = new HashSet<Materials>(), mGeneratedItems = new HashSet<Materials>();
+    public final Collection<Materials> mNotGeneratedItems = new HashSet<Materials>(), mIgnoredMaterials = new HashSet<Materials>(), mGeneratedItems = new HashSet<Materials>();
     private final ArrayList<IOreRecipeRegistrator> mOreProcessing = new ArrayList<IOreRecipeRegistrator>();
     public ItemStack mContainerItem = null;
     public ICondition<ISubTagContainer> mCondition = null;
@@ -665,14 +665,14 @@ public enum OrePrefixes {
                         aMaterial == Materials.AnnealedCopper || aMaterial == Materials.Firestone || aMaterial == Materials.VanadiumGallium || aMaterial == Materials.YttriumBariumCuprate ||
                         aMaterial == Materials.NiobiumTitanium || aMaterial == Materials.CertusQuartz || aMaterial == Materials.NetherQuartz || aMaterial == Materials.Lazurite || aMaterial == Materials.Lapis ||
                         aMaterial == Materials.Paper || aMaterial == Materials.Jasper || aMaterial == Materials.Dilithium || aMaterial == Materials.Forcicium || aMaterial == Materials.Forcillium ||
-                        aMaterial == Materials.EnderPearl || aMaterial == Materials.EnderEye || aMaterial == Materials.Glass))
+                        aMaterial == Materials.EnderPearl || aMaterial == Materials.EnderEye || aMaterial == Materials.Glass || aMaterial == Materials.Copper))
                     plate.mNotGeneratedItems.add(aMaterial);
                 //Ingot/Plate Storage
                 if (!enableUnusedDoubleIngots) ingotDouble.mNotGeneratedItems.add(aMaterial);
                 if (!enableUnusedTripleIngots) ingotTriple.mNotGeneratedItems.add(aMaterial);
                 if (!enableUnusedQuadIngots) ingotQuadruple.mNotGeneratedItems.add(aMaterial);
                 if (!enableUnusedQuinIngots) ingotQuintuple.mNotGeneratedItems.add(aMaterial);
-                if (!enableUnusedDoublePlates && (((aMaterial.mTypes & 0x40) == 0) && !(aMaterial == Materials.Paper || aMaterial == Materials.Aluminium || aMaterial == Materials.Steel || aMaterial == Materials.TungstenSteel)))
+                if (!enableUnusedDoublePlates && ((aMaterial.mTypes & 0x40) == 0) && !(aMaterial == Materials.Paper || aMaterial == Materials.Aluminium || aMaterial == Materials.Steel || aMaterial == Materials.TungstenSteel))
                     plateDouble.mNotGeneratedItems.add(aMaterial);
                 if (!enableUnusedTriplePlates && !(aMaterial == Materials.Paper)) plateTriple.mNotGeneratedItems.add(aMaterial);
                 if (!enableUnusedQuadPlates && !(aMaterial == Materials.Paper)) plateQuadruple.mNotGeneratedItems.add(aMaterial);
@@ -732,7 +732,7 @@ public enum OrePrefixes {
                         aMaterial == Materials.Wood || aMaterial == Materials.Plastic))
                     stick.mNotGeneratedItems.add(aMaterial);
                 //Long Rods
-                if (!enableUnusedLongRods && !(aMaterial == Materials.Titanium || aMaterial == Materials.NeodymiumMagnetic || aMaterial == Materials.HSSG || aMaterial == Materials.HSSE ||
+                if (!enableUnusedLongRods && ((aMaterial.mTypes & 0x40) == 0) && !(aMaterial == Materials.Titanium || aMaterial == Materials.NeodymiumMagnetic || aMaterial == Materials.HSSG || aMaterial == Materials.HSSE ||
                         aMaterial == Materials.Neutronium || aMaterial == Materials.Americium || aMaterial == Materials.WroughtIron || aMaterial == Materials.Magnalium ||
                         aMaterial == Materials.TungstenSteel))
                     stickLong.mNotGeneratedItems.add(aMaterial);
@@ -774,15 +774,6 @@ public enum OrePrefixes {
             }
         }
         return aOre;
-    }
-
-    public static String replacePrefix(String aOre, OrePrefixes aPrefix) {
-        for (OrePrefixes tPrefix : values()) {
-            if (aOre.startsWith(tPrefix.toString())) {
-                return aOre.replaceFirst(tPrefix.toString(), aPrefix.toString());
-            }
-        }
-        return "";
     }
 
     public static OrePrefixes getPrefix(String aPrefixName) {
@@ -850,14 +841,13 @@ public enum OrePrefixes {
     }
 
     public void processOre(Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        if (aMaterial != null && (aMaterial != Materials._NULL || mIsSelfReferencing || !mIsMaterialBased) && GT_Utility.isStackValid(aStack))
+        if (aMaterial != null && (aMaterial != Materials._NULL || mIsSelfReferencing || !mIsMaterialBased) && GT_Utility.isStackValid(aStack)) {
             for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
-                if (D2)
-                    GT_Log.ore.println("Processing '" + aOreDictName + "' with the Prefix '" + name() + "' and the Material '" + aMaterial.mName + "' at " + GT_Utility.getClassName(tRegistrator));
-                //if (Materials.mDefaultComponents.contains(this) && !this.mGeneratedItems.contains(aMaterial)) return;
-                //if (this.mGeneratedItems.contains(aMaterial))
+                if (Materials.mDefaultComponents.contains(this) && this.mNotGeneratedItems.contains(aMaterial)) return;
+                if (D2) GT_Log.ore.println("Processing '" + aOreDictName + "' with the Prefix '" + name() + "' and the Material '" + aMaterial.mName + "' at " + GT_Utility.getClassName(tRegistrator));
                 tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GT_Utility.copyAmount(1, aStack));
             }
+        }
     }
 
     public Object get(Object aMaterial) {
@@ -882,27 +872,6 @@ public enum OrePrefixes {
             case "Glass":
                 if (name().startsWith("gem")) return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Crystal";
                 if (name().startsWith("plate")) return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Pane";
-                break;
-            case "InfusedAir":
-            case "InfusedDull":
-            case "InfusedEarth":
-            case "InfusedEntropy":
-            case "InfusedFire":
-            case "InfusedOrder":
-            case "InfusedVis":
-            case "InfusedWater":
-                if (name().startsWith("gem")) return mLocalizedMaterialPre + "Shard of " + aMaterial.mDefaultLocalName;
-                if (name().startsWith("crystal")) return mLocalizedMaterialPre + "Shard of " + aMaterial.mDefaultLocalName;
-                if (name().startsWith("plate"))
-                    return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Crystal Plate";
-                if (name().startsWith("dust"))
-                    return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Crystal Powder";
-                switch (this) {
-                    case crushedCentrifuged:
-                    case crushedPurified:
-                    case crushed:
-                        return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Crystals";
-                }
                 break;
             case "Wheat":
                 if (name().startsWith("dust")) return mLocalizedMaterialPre + "Flour";
@@ -993,6 +962,31 @@ public enum OrePrefixes {
                         return "Ground " + aMaterial.mDefaultLocalName;
                 }
                 break;
+        }
+        if (Materials.aEnableThaumcraftMats) {
+            switch (aMaterial.mName) {
+                case "InfusedAir":
+                case "InfusedDull":
+                case "InfusedEarth":
+                case "InfusedEntropy":
+                case "InfusedFire":
+                case "InfusedOrder":
+                case "InfusedVis":
+                case "InfusedWater":
+                    if (name().startsWith("gem")) return mLocalizedMaterialPre + "Shard of " + aMaterial.mDefaultLocalName;
+                    if (name().startsWith("crystal")) return mLocalizedMaterialPre + "Shard of " + aMaterial.mDefaultLocalName;
+                    if (name().startsWith("plate"))
+                        return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Crystal Plate";
+                    if (name().startsWith("dust"))
+                        return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Crystal Powder";
+                    switch (this) {
+                        case crushedCentrifuged:
+                        case crushedPurified:
+                        case crushed:
+                            return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Crystals";
+                    }
+                    break;
+            }
         }
         // Use Standard Localization
         return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + mLocalizedMaterialPost;

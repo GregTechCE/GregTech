@@ -56,6 +56,8 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                 GT_ModHandler.addShapelessCraftingRecipe(tStack1, new Object[]{OrePrefixes.block.get(aMaterial)});
             }
         }
+        if (!OrePrefixes.block.isIgnored(aMaterial))
+            GT_ModHandler.addCompressionRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 9L), GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L));
         switch (aMaterial.mName) {
             case "Mercury":
                 System.err.println("'blockQuickSilver'?, In which Ice Desert can you actually place this as a solid Block?");

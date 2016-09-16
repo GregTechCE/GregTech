@@ -164,6 +164,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public int mWireHeatingTicks = 4;
     public boolean mHideUnusedOres = true;
     public boolean mHideRecyclingRecipes = true;
+    public boolean mTEMachineRecipes = false;
 
     public GT_Proxy() {
         GameRegistry.registerFuelHandler(this);

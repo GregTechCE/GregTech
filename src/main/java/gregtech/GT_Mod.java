@@ -234,6 +234,7 @@ public class GT_Mod
         gregtechproxy.mNerfedCombs = tMainConfig.get("general", "NerfCombs", true).getBoolean(true);
         gregtechproxy.mHideUnusedOres = tMainConfig.get("general", "HideUnusedOres", true).getBoolean(true);
         gregtechproxy.mHideRecyclingRecipes = tMainConfig.get("general", "HideRecyclingRecipes", true).getBoolean(true);
+        gregtechproxy.mTEMachineRecipes = tMainConfig.get("general", "TEMachineRecipes", false).getBoolean(false);
 
         GregTech_API.mOutputRF = GregTech_API.sOPStuff.get(ConfigCategories.general, "OutputRF", true);
         GregTech_API.mInputRF = GregTech_API.sOPStuff.get(ConfigCategories.general, "InputRF", false);

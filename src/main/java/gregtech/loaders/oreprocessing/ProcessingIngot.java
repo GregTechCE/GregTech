@@ -20,7 +20,6 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         Object[] aIngotObj = new Object[]{aStack};
         boolean aNoSmashing = aMaterial.contains(SubTag.NO_SMASHING);
-        boolean aNoWorking = aMaterial.contains(SubTag.NO_WORKING);
         boolean aNoSmelting = aMaterial.contains(SubTag.NO_SMELTING);
         long aMaterialMass = aMaterial.getMass();
 
@@ -29,9 +28,6 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                 if (aMaterial.mFuelPower > 0) {
                     GT_Values.RA.addFuel(GT_Utility.copyAmount(1L, aIngotObj), null, aMaterial.mFuelPower, aMaterial.mFuelType);
                 }
-                GT_Values.RA.addBoxingRecipe(GT_Utility.copyAmount(16L, aIngotObj), ItemList.Crate_Empty.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.crateGtIngot, aMaterial, 1L), 100, 8);
-                GT_Values.RA.addUnboxingRecipe(GT_OreDictUnificator.get(OrePrefixes.crateGtIngot, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 16L), ItemList.Crate_Empty.get(1L, new Object[0]), 800, 1);
-
                 if (aMaterial.mStandardMoltenFluid != null) {
                     GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Ingot.get(0L, new Object[0]), aMaterial.getMolten(144L), GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L), 32, 8);
                 }
@@ -49,17 +45,6 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                     GT_Values.RA.addBenderRecipe(GT_Utility.copyAmount(4L, aIngotObj), GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L), (int) Math.max(aMaterialMass * 4L, 1L), 96);
                     GT_Values.RA.addBenderRecipe(GT_Utility.copyAmount(5L, aIngotObj), GT_OreDictUnificator.get(OrePrefixes.plateQuintuple, aMaterial, 1L), (int) Math.max(aMaterialMass * 5L, 1L), 96);
                     GT_Values.RA.addBenderRecipe(GT_Utility.copyAmount(9L, aIngotObj), GT_OreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L), (int) Math.max(aMaterialMass * 9L, 1L), 96);
-                }
-
-
-                if (!OrePrefixes.block.isIgnored(aMaterial))
-                    GT_ModHandler.addCompressionRecipe(GT_Utility.copyAmount(9L, aIngotObj), GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L));
-                if (!aNoWorking)
-                    GT_Values.RA.addLatheRecipe(GT_Utility.copyAmount(1L, aIngotObj), GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial.mMacerateInto, 2L), (int) Math.max(aMaterialMass * 5L, 1L), 16);
-                if (!aNoSmelting) {
-                    GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(1L, aIngotObj), ItemList.Shape_Mold_Nugget.get(0L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial, 9L), 100, 1);
-                    if ((GT_ModHandler.getSmeltingOutput(aStack, false, null) == null) && (GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial.mSmeltInto, 1L) != null) && (!GT_ModHandler.addSmeltingRecipe(aStack, GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial.mSmeltInto, 9L)))) {
-                        GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial.mSmeltInto, 9L), new Object[]{aOreDictName});}
                 }
                 ItemStack tStack;
                 if ((null != (tStack = GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L))) && (

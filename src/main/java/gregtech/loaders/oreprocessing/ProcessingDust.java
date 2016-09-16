@@ -1,5 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
+import gregtech.GT_Mod;
 import gregtech.api.enums.*;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_ModHandler;
@@ -28,8 +29,6 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     GT_Values.RA.addFuel(GT_Utility.copyAmount(1L, new Object[]{aStack}), null, aMaterial.mFuelPower, aMaterial.mFuelType);
                 if (GT_Utility.getFluidForFilledItem(GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L), true) == null)
                     GT_Values.RA.addCannerRecipe(aStack, ItemList.Cell_Empty.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L), null, 100, 1);
-                GT_Values.RA.addBoxingRecipe(GT_Utility.copyAmount(16L, new Object[]{aStack}), ItemList.Crate_Empty.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.crateGtDust, aMaterial, 1L), 100, 8);
-                GT_Values.RA.addUnboxingRecipe(GT_OreDictUnificator.get(OrePrefixes.crateGtDust, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 16L), ItemList.Crate_Empty.get(1L, new Object[0]), 800, 1);
                 if (!aMaterial.mBlastFurnaceRequired) {
                     GT_RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
                     if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
@@ -149,10 +148,12 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L));
                         break;
                     case "Coal":
-                        GT_ModHandler.addLiquidTransposerFillRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), Materials.Water.getFluid(125L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HydratedCoal, 1L), 125);
+                        if (GT_Mod.gregtechproxy.mTEMachineRecipes)
+                            GT_ModHandler.addLiquidTransposerFillRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), Materials.Water.getFluid(125L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HydratedCoal, 1L), 125);
                         break;
                     case "HydratedCoal":
-                        GT_ModHandler.addLiquidTransposerEmptyRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), Materials.Water.getFluid(125L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L), 125);
+                        if (GT_Mod.gregtechproxy.mTEMachineRecipes)
+                            GT_ModHandler.addLiquidTransposerEmptyRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), Materials.Water.getFluid(125L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L), 125);
                         GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L));
                         break;
                     case "Diamond":

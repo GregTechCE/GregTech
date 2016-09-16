@@ -32,9 +32,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 GT_ModHandler.removeRecipeByOutput(aStack);
                 GT_ModHandler.removeRecipe(new ItemStack[]{aStack});
 
-                GT_Values.RA.addBoxingRecipe(GT_Utility.copyAmount(16L, aPlateObj), ItemList.Crate_Empty.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.crateGtPlate, aMaterial, 1L), 100, 8);
-                GT_Values.RA.addUnboxingRecipe(GT_OreDictUnificator.get(OrePrefixes.crateGtPlate, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 16L), ItemList.Crate_Empty.get(1L, new Object[0]), 800, 1);
-
                 if (aMaterial.mStandardMoltenFluid != null) {
                     GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Plate.get(0L, new Object[0]), aMaterial.getMolten(144L), GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L), 32, 8);
                 }
@@ -89,25 +86,15 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     GT_Values.RA.addFuel(GT_Utility.copyAmount(1L, aPlateObj), null, aMaterial.mFuelPower, aMaterial.mFuelType);
                 GT_Utility.removeSimpleIC2MachineRecipe(GT_Utility.copyAmount(9L, aPlateObj), GT_ModHandler.getCompressorRecipeList(), GT_OreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L));
                 GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(2L, aPlateObj), 2, GT_OreDictUnificator.get(OrePrefixes.compressed, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L));
-                if (!aNoWorking) {
-                    GT_Values.RA.addLatheRecipe(GT_Utility.copyAmount(1L, aPlateObj), GT_OreDictUnificator.get(OrePrefixes.lens, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 1L), (int) Math.max(aMaterialMass / 2L, 1L), 16);
-                }
                 if (aMaterial == Materials.Paper)
                     GT_ModHandler.addCraftingRecipe(GT_Utility.copyAmount(GregTech_API.sRecipeFile.get(gregtech.api.enums.ConfigCategories.Recipes.harderrecipes, aStack, true) ? 2L : 3L, aPlateObj), new Object[]{"XXX", Character.valueOf('X'), new ItemStack(net.minecraft.init.Items.reeds, 1, 32767)});
-                if (!aNoSmashing) {
-                    GT_Values.RA.addBenderRecipe(GT_Utility.copyAmount(1L, aPlateObj), GT_OreDictUnificator.get(OrePrefixes.foil, aMaterial, 4L), (int) Math.max(aMaterialMass, 1L), 24);
-                    GT_Values.RA.addBenderRecipe(GT_Utility.copyAmount(2L, aPlateObj), GT_OreDictUnificator.get(OrePrefixes.plateDouble, aMaterial, 1L), (int) Math.max(aMaterialMass * 2L, 1L), 96);
-                    GT_Values.RA.addBenderRecipe(GT_Utility.copyAmount(3L, aPlateObj), GT_OreDictUnificator.get(OrePrefixes.plateTriple, aMaterial, 1L), (int) Math.max(aMaterialMass * 3L, 1L), 96);
-                    GT_Values.RA.addBenderRecipe(GT_Utility.copyAmount(4L, aStack), GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L), (int) Math.max(aMaterialMass * 4L, 1L), 96);
-                    GT_Values.RA.addBenderRecipe(GT_Utility.copyAmount(5L, aPlateObj), GT_OreDictUnificator.get(OrePrefixes.plateQuintuple, aMaterial, 1L), (int) Math.max(aMaterialMass * 5L, 1L), 96);
-                    GT_Values.RA.addBenderRecipe(GT_Utility.copyAmount(9L, aPlateObj), GT_OreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L), (int) Math.max(aMaterialMass * 9L, 1L), 96);
-                }
                 break;
             case plateDouble:
                 GT_ModHandler.removeRecipeByOutput(aStack);
                 GregTech_API.registerCover(aStack, new gregtech.api.objects.GT_RenderedTexture(aMaterial.mIconSet.mTextures[72], aMaterial.mRGBa, false), null);
                 if (!aNoSmashing) {
                     GT_Values.RA.addBenderRecipe(GT_Utility.copyAmount(2L, aPlateObj), GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L), (int) Math.max(aMaterialMass * 2L, 1L), 96);
+                    GT_Values.RA.addBenderRecipe(GT_Utility.copyAmount(2L, aPlateObj), GT_OreDictUnificator.get(OrePrefixes.plateDouble, aMaterial, 1L), (int) Math.max(aMaterialMass * 2L, 1L), 96);
                 }
                 if ((!aNoSmashing) && (GregTech_API.sRecipeFile.get(gregtech.api.enums.ConfigCategories.Tools.hammerdoubleplate, OrePrefixes.plate.get(aMaterial).toString(), true))) {
                     Object aPlateStack = OrePrefixes.plate.get(aMaterial);
@@ -122,6 +109,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 GregTech_API.registerCover(aStack, new gregtech.api.objects.GT_RenderedTexture(aMaterial.mIconSet.mTextures[73], aMaterial.mRGBa, false), null);
                 if (!aNoSmashing) {
                     GT_Values.RA.addBenderRecipe(GT_Utility.copyAmount(3L, aPlateObj), GT_OreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L), (int) Math.max(aMaterialMass * 3L, 1L), 96);
+                    GT_Values.RA.addBenderRecipe(GT_Utility.copyAmount(3L, aPlateObj), GT_OreDictUnificator.get(OrePrefixes.plateTriple, aMaterial, 1L), (int) Math.max(aMaterialMass * 3L, 1L), 96);
                 }
                 if ((!aNoSmashing) && (GregTech_API.sRecipeFile.get(gregtech.api.enums.ConfigCategories.Tools.hammertripleplate, OrePrefixes.plate.get(aMaterial).toString(), true))) {
                     Object aPlateStack = OrePrefixes.plate.get(aMaterial);
@@ -140,6 +128,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     Object aPlateStack = OrePrefixes.plate.get(aMaterial);
                     GT_ModHandler.addCraftingRecipe(GT_Utility.copyAmount(1L, aPlateObj), gregtech.api.util.GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"I", "B", "h", Character.valueOf('I'), OrePrefixes.plateTriple.get(aMaterial), Character.valueOf('B'), aPlateStack});
                     GT_ModHandler.addShapelessCraftingRecipe(GT_Utility.copyAmount(1L, aPlateObj), new Object[]{gregtech.api.enums.ToolDictNames.craftingToolForgeHammer, aPlateStack, aPlateStack, aPlateStack, aPlateStack});
+                    GT_Values.RA.addBenderRecipe(GT_Utility.copyAmount(4L, aStack), GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L), (int) Math.max(aMaterialMass * 4L, 1L), 96);
                 } else {
                     GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 4L), gregtech.api.enums.ItemList.Circuit_Integrated.getWithDamage(0L, 4L, new Object[0]), Materials.Glue.getFluid(30L), GT_Utility.copyAmount(1L, aPlateObj), 128, 8);
                 }
@@ -151,6 +140,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     Object aPlateStack = OrePrefixes.plate.get(aMaterial);
                     GT_ModHandler.addCraftingRecipe(GT_Utility.copyAmount(1L, aPlateObj), GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"I", "B", "h", Character.valueOf('I'), OrePrefixes.plateQuadruple.get(aMaterial), Character.valueOf('B'), aPlateStack});
                     GT_ModHandler.addShapelessCraftingRecipe(GT_Utility.copyAmount(1L, aPlateObj), new Object[]{ToolDictNames.craftingToolForgeHammer, aPlateStack, aPlateStack, aPlateStack, aPlateStack, aPlateStack});
+                    GT_Values.RA.addBenderRecipe(GT_Utility.copyAmount(5L, aPlateObj), GT_OreDictUnificator.get(OrePrefixes.plateQuintuple, aMaterial, 1L), (int) Math.max(aMaterialMass * 5L, 1L), 96);
                 } else {
                     gregtech.api.enums.GT_Values.RA.addAssemblerRecipe(gregtech.api.util.GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 5L), ItemList.Circuit_Integrated.getWithDamage(0L, 5L, new Object[0]), Materials.Glue.getFluid(40L), GT_Utility.copyAmount(1L, aPlateObj), 160, 8);
                 }
@@ -158,6 +148,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             case plateDense:
                 GT_ModHandler.removeRecipeByOutput(aStack);
                 GregTech_API.registerCover(aStack, new GT_RenderedTexture(aMaterial.mIconSet.mTextures[76], aMaterial.mRGBa, false), null);
+                if (!aNoSmashing) GT_Values.RA.addBenderRecipe(GT_Utility.copyAmount(9L, aPlateObj), GT_OreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L), (int) Math.max(aMaterialMass * 9L, 1L), 96);
                 break;
             case plateAlloy:
                 switch (aOreDictName) {

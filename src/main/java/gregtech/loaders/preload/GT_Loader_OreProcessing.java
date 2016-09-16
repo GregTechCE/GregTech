@@ -13,6 +13,7 @@ public class GT_Loader_OreProcessing
         new ProcessingBlock();
         new ProcessingBolt();
         new ProcessingCell();
+        new ProcessingCrate();
         new ProcessingCircuit();
         new ProcessingCompressed();
         new ProcessingCrafting();
@@ -41,8 +42,10 @@ public class GT_Loader_OreProcessing
         new ProcessingPlate();
         new ProcessingPure();
         new ProcessingRecycling();
+        new ProcessingRound();
         new ProcessingSand();
         new ProcessingSaplings();
+        new ProcessingScrew();
         new ProcessingSlab();
         new ProcessingStick();
         new ProcessingStickLong();

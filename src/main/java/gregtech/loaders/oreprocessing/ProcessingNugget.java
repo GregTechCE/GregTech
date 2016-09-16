@@ -17,13 +17,16 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         if (aMaterial == Materials.Iron)
             GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.WroughtIron, 1L));
-        if (!aMaterial.contains(SubTag.NO_WORKING))
-            GT_Values.RA.addLatheRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.round, aMaterial, 1L), null, (int) Math.max(aMaterial.getMass() / 4L, 1L), 8);
         GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(9L, new Object[]{aStack}), aMaterial.contains(SubTag.SMELTING_TO_GEM) ? ItemList.Shape_Mold_Ball.get(0L, new Object[0]) : ItemList.Shape_Mold_Ingot.get(0L, new Object[0]), GT_OreDictUnificator.get(aMaterial.contains(SubTag.SMELTING_TO_GEM) ? OrePrefixes.gem : OrePrefixes.ingot, aMaterial.mSmeltInto, 1L), 200, 2);
         if (aMaterial.mStandardMoltenFluid != null)
             GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Nugget.get(0L, new Object[0]), aMaterial.getMolten(16L), GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial, 1L), 16, 4);
         GT_RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
         GT_RecipeRegistrator.registerReverseMacerating(aStack, aMaterial, aPrefix.mMaterialAmount, null, null, null, false);
+        if (!aMaterial.contains(SubTag.NO_SMELTING)) {
+            GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), ItemList.Shape_Mold_Nugget.get(0L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial, 9L), 100, 1);
+            if ((GT_ModHandler.getSmeltingOutput(aStack, false, null) == null) && (GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial.mSmeltInto, 1L) != null) && (!GT_ModHandler.addSmeltingRecipe(aStack, GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial.mSmeltInto, 9L)))) {
+                GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial.mSmeltInto, 9L), new Object[]{aOreDictName});}
+        }
         if (GT_Mod.gregtechproxy.mAE2Integration) {
             Api.INSTANCE.registries().matterCannon().registerAmmo(GT_OreDictUnificator.get(OrePrefixes.round, aMaterial, 1L), aMaterial.getMass());
             ;

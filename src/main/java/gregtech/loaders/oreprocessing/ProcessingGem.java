@@ -27,13 +27,10 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 if (aMaterial.mFuelPower > 0) {
                     GT_Values.RA.addFuel(GT_Utility.copyAmount(1L, aGemObj), null, aMaterial.mFuelPower * 2, aMaterial.mFuelType);
                 }
-                GT_Values.RA.addBoxingRecipe(GT_Utility.copyAmount(16L, aGemObj), ItemList.Crate_Empty.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.crateGtGem, aMaterial, 1L), 100, 8);
-                GT_Values.RA.addUnboxingRecipe(GT_OreDictUnificator.get(OrePrefixes.crateGtGem, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 16L), ItemList.Crate_Empty.get(1L, new Object[0]), 800, 1);
-
                 if (!OrePrefixes.block.isIgnored(aMaterial)) {
                     GT_ModHandler.addCompressionRecipe(GT_Utility.copyAmount(9L, aGemObj), GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L));
                 }
-                if (!aNoSmelting) {
+                if (!aMaterial.contains(SubTag.NO_SMELTING)) {
                     GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, aGemObj), GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L));
                 }
                 if (aNoSmashing) {
@@ -64,6 +61,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     case "CertusQuartz":
                         GT_Values.RA.addElectrolyzerRecipe(aStack, 0, GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 1), null, null, null, null, null, 2000, 30);
                 }
+
                 break;
             case gemChipped:
                 if (aMaterial.mFuelPower > 0)

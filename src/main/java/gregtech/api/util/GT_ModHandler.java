@@ -2,6 +2,7 @@ package gregtech.api.util;
 
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.IDamagableItem;
@@ -387,7 +388,8 @@ public class GT_ModHandler {
         if (aInput.stackSize == 1 && addSmeltingRecipe(aInput, aOutput)) temp = true;
         if (RA.addAlloySmelterRecipe(aInput, OrePrefixes.ingot.contains(aOutput) ? ItemList.Shape_Mold_Ingot.get(0) : OrePrefixes.block.contains(aOutput) ? ItemList.Shape_Mold_Block.get(0) : OrePrefixes.nugget.contains(aOutput) ? ItemList.Shape_Mold_Nugget.get(0) : null, aOutput, 130, 3,hidden))
             temp = true;
-        if (addInductionSmelterRecipe(aInput, null, aOutput, null, aOutput.stackSize * 1600, 0)) temp = true;
+        if (GT_Mod.gregtechproxy.mTEMachineRecipes)
+            if (addInductionSmelterRecipe(aInput, null, aOutput, null, aOutput.stackSize * 1600, 0)) temp = true;
         return temp;
     }
 
@@ -557,7 +559,8 @@ public class GT_ModHandler {
         aOutput1 = GT_OreDictUnificator.get(true, aOutput1);
         boolean temp = false;
         if (RA.addAlloySmelterRecipe(aInput1, aInput2, aOutput1, aDuration, aEUt)) temp = true;
-        if (addInductionSmelterRecipe(aInput1, aInput2, aOutput1, null, aDuration * aEUt * 2, 0)) temp = true;
+        if (GT_Mod.gregtechproxy.mTEMachineRecipes)
+            if (addInductionSmelterRecipe(aInput1, aInput2, aOutput1, null, aDuration * aEUt * 2, 0)) temp = true;
         return temp;
     }
 
