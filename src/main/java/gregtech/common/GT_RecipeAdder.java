@@ -16,6 +16,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class GT_RecipeAdder
         implements IGT_RecipeAdder {
+	@Deprecated
     public boolean addFusionReactorRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, int aDuration, int aEUt, int aStartEU) {
         return false;
     }
@@ -23,6 +24,9 @@ public class GT_RecipeAdder
     @Override
     public boolean addFusionReactorRecipe(FluidStack aInput1, FluidStack aInput2, FluidStack aOutput1, int aDuration, int aEUt, int aStartEU) {
         if (aInput1 == null || aInput2 == null || aOutput1 == null || aDuration < 1 || aEUt < 1 || aStartEU < 1) {
+            return false;
+        }
+        if ((aOutput1 != null) && ((aDuration = GregTech_API.sRecipeFile.get("fusion", aOutput1.getFluid().getName(), aDuration)) <= 0)) {
             return false;
         }
         GT_Recipe.GT_Recipe_Map.sFusionRecipes.addRecipe(null, new FluidStack[]{aInput1, aInput2}, new FluidStack[]{aOutput1}, aDuration, aEUt, aStartEU);
