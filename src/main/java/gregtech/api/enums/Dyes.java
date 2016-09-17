@@ -35,7 +35,7 @@ public enum Dyes implements IColorModulationContainer {
     /**
      * Additional Colors only used for direct Color referencing
      */
-    CABLE_INSULATION(-1, 64, 64, 64, "Cable Insulation"),
+    INSULATION(-1, 64, 64, 64, "Cable Insulation"),
     CONSTRUCTION_FOAM(-1, 64, 64, 64, "Construction Foam"),
     MACHINE_METAL(-1, 230, 230, 255, "Machine Metal");
 
@@ -65,6 +65,10 @@ public enum Dyes implements IColorModulationContainer {
         if (aColor >= 0 && aColor < VALUES.length)
             return VALUES[aColor].mRGBa;
         return aDefaultModulation;
+    }
+
+    public static short[] getOrDef(int get, Dyes def) {
+        return getModulation(get, def);
     }
 
     public static Dyes get(String aColor) {

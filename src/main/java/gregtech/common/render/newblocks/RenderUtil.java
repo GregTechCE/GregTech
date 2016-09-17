@@ -12,7 +12,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class RenderUtil {
 
     public static BakedQuad renderSide(VertexFormat vertexFormat, TextureAtlasSprite sprite, EnumFacing side, int tint, float offset, int color, boolean hideSiding) {
-
         switch (side) {
             case NORTH:
                 return buildQuad(vertexFormat, hideSiding ? null : EnumFacing.NORTH, sprite, tint,
@@ -56,6 +55,58 @@ public class RenderUtil {
                         1, 1 + offset, 0, sprite.getMaxU(), sprite.getMinV(),
                         0, 1 + offset, 0, sprite.getMinU(), sprite.getMinV(),
                 color);
+
+            default:
+                System.out.println("Can't render side " + side);
+                return null;
+        }
+    }
+
+    public static BakedQuad renderQuadCustom(float x, float y, float z, float width, float height, VertexFormat vertexFormat, TextureAtlasSprite sprite, EnumFacing side, int tint, int color, boolean hide) {
+        //float spriteCut = Math.min((width + height) / 2.0F, 1.0F); TODO
+        switch (side) {
+            case NORTH:
+                return buildQuad(vertexFormat, EnumFacing.NORTH, sprite, tint,
+                        x, y, z, sprite.getMaxU(), sprite.getMaxV(),
+                        x, y + height, z, sprite.getMaxU(), sprite.getMinV(),
+                        x + width, y + height, z, sprite.getMinU(), sprite.getMinV(),
+                        x + width, y, z, sprite.getMinU(), sprite.getMaxV(),
+                        color);
+            case SOUTH:
+                return buildQuad(vertexFormat, EnumFacing.SOUTH, sprite, tint,
+                        x + width, y, z, sprite.getMinU(), sprite.getMaxV(),
+                        x + width, y + height, z, sprite.getMinU(), sprite.getMinV(),
+                        x, y + height, z, sprite.getMaxU(), sprite.getMinV(),
+                        x, y, z, sprite.getMaxU(), sprite.getMaxV(),
+                        color);
+            case WEST:
+                return buildQuad(vertexFormat, EnumFacing.WEST, sprite, tint,
+                        x, y, z + height, sprite.getMaxU(), sprite.getMaxV(),
+                        x, y + width, z + height, sprite.getMaxU(), sprite.getMinV(),
+                        x, y + width, z, sprite.getMinU(), sprite.getMinV(),
+                        x, y, z, sprite.getMinU(), sprite.getMaxV(),
+                        color);
+            case EAST:
+                return buildQuad(vertexFormat, EnumFacing.EAST, sprite, tint,
+                        x, y, z, sprite.getMaxU(), sprite.getMaxV(),
+                        x, y + width, z, sprite.getMaxU(), sprite.getMinV(),
+                        x, y + width, z + height, sprite.getMinU(), sprite.getMinV(),
+                        x, y, z + height, sprite.getMinU(), sprite.getMaxV(),
+                        color);
+            case DOWN:
+                return buildQuad(vertexFormat, EnumFacing.DOWN, sprite, tint,
+                        x, y, z, sprite.getMinU(), sprite.getMinV(),
+                        x + width, y, z, sprite.getMaxU(), sprite.getMinV(),
+                        x + width, y, z + height, sprite.getMaxU(), sprite.getMaxV(),
+                        x, y, z + height, sprite.getMinU(), sprite.getMaxV(),
+                        color);
+            case UP:
+                return buildQuad(vertexFormat, hide ? null : EnumFacing.UP, sprite, tint,
+                        x, y, z + height, sprite.getMinU(), sprite.getMaxV(),
+                        x + width, y, z + height, sprite.getMaxU(), sprite.getMaxV(),
+                        x + width, y, z, sprite.getMaxU(), sprite.getMinV(),
+                        x, y, z, sprite.getMinU(), sprite.getMinV(),
+                        color);
 
             default:
                 System.out.println("Can't render side " + side);

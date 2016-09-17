@@ -95,7 +95,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity {
 
         if (GT.isClientSide()) {
             ItemStack tStack = new ItemStack(GregTech_API.sBlockMachines, 1, aID);
-            tStack.getItem().addInformation(tStack, null, new ArrayList<String>(), true);
+            tStack.getItem().addInformation(tStack, null, new ArrayList<>(), true);
         }
     }
 
@@ -403,11 +403,6 @@ public abstract class MetaPipeEntity implements IMetaTileEntity {
     }
 
     @Override
-    public String getSpecialVoltageToolTip() {
-        return null;
-    }
-
-    @Override
     public boolean isGivingInformation() {
         return false;
     }
@@ -604,18 +599,6 @@ public abstract class MetaPipeEntity implements IMetaTileEntity {
 
     public long injectEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
         return 0;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean renderInInventory(Block aBlock, int aMeta) {
-        return false;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock) {
-        return false;
     }
 
     @Override

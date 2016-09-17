@@ -38,7 +38,7 @@ public class GT_RenderedTexture implements ITexture {
         }
     }
 
-    private int makeColor(short[] rgba) {
+    public static int makeColor(short[] rgba) {
         try {
             for(int i = 0; i < 4; i++)
                 rgba[i] = (short) Math.max(0, rgba[i]);

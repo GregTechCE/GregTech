@@ -2,10 +2,8 @@ package gregtech.api.metatileentity.implementations;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.TextureSet;
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.*;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityCable;
@@ -14,6 +12,7 @@ import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
+import gregtech.api.objects.GT_PipeRenderedTexture;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import ic2.api.energy.tile.IEnergySink;
@@ -75,21 +74,38 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections, byte aColorIndex, boolean aConnected, boolean aRedstone) {
-        if (!mInsulated)
-            return new ITexture[]{new GT_RenderedTexture(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa)};
-        if (aConnected) {
-            float tThickNess = getThickNess();
-            if (tThickNess < 0.37F)
-                return new ITexture[]{new GT_RenderedTexture(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa), new GT_RenderedTexture(Textures.BlockIcons.INSULATION_TINY, Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa))};
-            if (tThickNess < 0.49F)
-                return new ITexture[]{new GT_RenderedTexture(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa), new GT_RenderedTexture(Textures.BlockIcons.INSULATION_SMALL, Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa))};
-            if (tThickNess < 0.74F)
-                return new ITexture[]{new GT_RenderedTexture(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa), new GT_RenderedTexture(Textures.BlockIcons.INSULATION_MEDIUM, Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa))};
-            if (tThickNess < 0.99F)
-                return new ITexture[]{new GT_RenderedTexture(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa), new GT_RenderedTexture(Textures.BlockIcons.INSULATION_LARGE, Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa))};
-            return new ITexture[]{new GT_RenderedTexture(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa), new GT_RenderedTexture(Textures.BlockIcons.INSULATION_HUGE, Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa))};
+        if (aBaseMetaTileEntity == null) {
+            //itemblock
+            switch (aSide) {
+                case 2:
+                case 3:
+                    aConnected = true;
+            }
+        } else if (aConnections == 0) {
+            aConnected = false;
         }
-        return new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.INSULATION_FULL, Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa))};
+
+        if (!mInsulated) {
+            return new ITexture[]{new GT_PipeRenderedTexture(mThickNess, aConnected, mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa)};
+        }
+
+        float tThickNess = getThickNess();
+        short[] rgba = Dyes.getOrDef(aColorIndex, Dyes.INSULATION);
+        IIconContainer[] textures = mMaterial.mIconSet.mTextures;
+
+        if (tThickNess < 0.37F)
+            return new ITexture[]{new GT_PipeRenderedTexture(tThickNess, aConnected, textures[TextureSet.INDEX_wire], mMaterial.mRGBa, Textures.BlockIcons.INSULATION_FULL, rgba)};
+
+        if (tThickNess < 0.49F)
+            return new ITexture[]{new GT_PipeRenderedTexture(tThickNess, aConnected, textures[TextureSet.INDEX_wire], mMaterial.mRGBa, Textures.BlockIcons.INSULATION_FULL, rgba)};
+
+        if (tThickNess < 0.74F)
+            return new ITexture[]{new GT_PipeRenderedTexture(tThickNess, aConnected, textures[TextureSet.INDEX_wire], mMaterial.mRGBa, Textures.BlockIcons.INSULATION_FULL, rgba)};
+
+        if (tThickNess < 0.99F)
+            return new ITexture[]{new GT_PipeRenderedTexture(tThickNess, aConnected, textures[TextureSet.INDEX_wire], mMaterial.mRGBa, Textures.BlockIcons.INSULATION_FULL, rgba)};
+
+        return new ITexture[]{new GT_PipeRenderedTexture(tThickNess, aConnected, textures[TextureSet.INDEX_wire], mMaterial.mRGBa, Textures.BlockIcons.INSULATION_FULL, rgba)};
     }
 
     @Override

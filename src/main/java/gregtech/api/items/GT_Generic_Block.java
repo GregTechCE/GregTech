@@ -1,6 +1,7 @@
 package gregtech.api.items;
 
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.common.blocks.GT_Block_Machines;
 import gregtech.common.blocks.UnlistedBlockPosProperty;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -13,6 +14,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
@@ -79,6 +81,15 @@ public abstract class GT_Generic_Block extends Block {
     @SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+        if(this instanceof GT_Block_Machines) {
+            return true; //Machines and wires should always render all sides;
+        }
+        //for anything else fallback to default implementation;
+        return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
     }
 
 }

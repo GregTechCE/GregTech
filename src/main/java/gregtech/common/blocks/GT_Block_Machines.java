@@ -196,7 +196,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         int tDamage = itemStack.getItemDamage();
         if(GregTech_API.METATILEENTITIES.length > tDamage) {
             if (GregTech_API.METATILEENTITIES[tDamage] != null) {
-                return GregTech_API.METATILEENTITIES[tDamage].getTexture(null, (byte) side.getIndex(), (byte) 0, (byte) 0, false, false);
+                return GregTech_API.METATILEENTITIES[tDamage].getTexture(null, (byte) side.getIndex(), (byte) 2, (byte) -1, false, false);
             } else {
                 System.out.println("METATILEENTITY WAS NULL FOR MACHINE " + tDamage);
             }
@@ -298,10 +298,9 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
             return false;
         }
         if(!worldIn.isRemote && gregTechTileEntity.isUseableByPlayer(playerIn)) {
-            gregTechTileEntity.onRightclick(playerIn, (byte) side.getIndex(), hitX, hitY, hitZ, hand);
-            return true;
+            return gregTechTileEntity.onRightclick(playerIn, (byte) side.getIndex(), hitX, hitY, hitZ, hand);
         }
-        return true;
+        return false;
     }
 
     @Override

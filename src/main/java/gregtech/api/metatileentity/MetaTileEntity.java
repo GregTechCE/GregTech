@@ -588,11 +588,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     }
 
     @Override
-    public String getSpecialVoltageToolTip() {
-        return null;
-    }
-
-    @Override
     public boolean isGivingInformation() {
         return false;
     }
@@ -792,18 +787,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     @Override
     public void onColorChangeClient(byte aColor) {
         //
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean renderInInventory(Block aBlock, int aMeta) {
-        return false;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock) {
-        return false;
     }
 
     @Override

@@ -142,7 +142,7 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
                 } else {
                     this.mMetaData = ((short) (this.mMetaData + 3000));
                 }
-            } else if (aOverridingStoneBlock.isReplaceableOreGen(worldObj.getBlockState(getPos()), this.worldObj, getPos(), state -> state.getBlock() == GregTech_API.sBlockStones)) {
+            } else if (aOverridingStoneBlock.isReplaceableOreGen(worldObj.getBlockState(getPos()), this.worldObj, getPos(), GT_Worldgen_Ore_Normal.ANY)) {
                 if (aOverridingStoneBlock == GregTech_API.sBlockStones) {
                     if (aOverridingStoneMeta < 8) {
                         this.mMetaData = ((short) (this.mMetaData + 5000));
@@ -166,14 +166,6 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
     public void validate() {
         super.validate();
         GT_TickHandler_Ores.loadChunkOre(this);
-    }
-
-    public boolean isBlocked() {
-        for(EnumFacing offset : EnumFacing.VALUES) {
-            if(!GT_Utility.isOpaqueBlock(worldObj, pos.offset(offset)))
-                return false;
-        }
-        return true;
     }
 
     public void convertOreBlock(World aWorld, int aX, int aY, int aZ) {

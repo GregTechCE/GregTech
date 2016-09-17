@@ -319,11 +319,6 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     public String[] getDescription();
 
     /**
-     * In case the Output Voltage varies.
-     */
-    public String getSpecialVoltageToolTip();
-
-    /**
      * Icon of the Texture. If this returns null then it falls back to getTextureIndex.
      *
      * @param aSide       is the Side of the Block
@@ -335,11 +330,6 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     public ITexture[] getTexture(@Nullable IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone);
 
     /**
-     * The Textures used for the Item rendering. Return null if you want the regular 3D Block Rendering.
-     */
-    //public ITexture[] getItemTexture(ItemStack aStack);
-
-    /**
      * Register Icons here. This gets called when the Icons get initialized by the Base Block
      * Best is you put your Icons in a static Array for quick and easy access without relying on the MetaTileList.
      *
@@ -347,18 +337,6 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      */
     @SideOnly(Side.CLIENT)
     public void registerIcons(TextureMap aBlockIconRegister);
-
-    /**
-     * @return true if you override the Rendering.
-     */
-    @SideOnly(Side.CLIENT)
-    public boolean renderInInventory(Block aBlock, int aMeta);
-
-    /**
-     * @return true if you override the Rendering.
-     */
-    @SideOnly(Side.CLIENT)
-    public boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock);
 
     /**
      * Gets the Output for the comparator on the given Side

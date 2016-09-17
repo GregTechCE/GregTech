@@ -91,7 +91,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
         mItemAmount = (short) Math.min(aItemAmount, 32766 - mOffset);
 
         sInstances.put(getUnlocalizedName(), this);
-        invokeOnClient(this::initClient);
+        invokeOnClient(() -> initClient());
     }
 
 
@@ -107,7 +107,6 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
      * @param aID           The Id of the assigned Item [0 - mItemAmount] (The MetaData gets auto-shifted by +mOffset)
      * @param aEnglish      The Default Localized Name of the created Item
      * @param aToolTip      The Default ToolTip of the created Item, you can also insert null for having no ToolTip
-     * @param aFoodBehavior The Food Value of this Item. Can be null aswell. Just a convenience thing.
      * @param aRandomData   The OreDict Names you want to give the Item. Also used for TC Aspects and some other things.
      * @return An ItemStack containing the newly created Item.
      */
@@ -117,7 +116,6 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
             ItemStack rStack = new ItemStack(this, 1, mOffset + aID);
             mEnabledItems.set(aID);
             mVisibleItems.set(aID);
-            GT_LanguageManager.addStringLocalization(getUnlocalizedName(rStack), aEnglish);
             GT_LanguageManager.addStringLocalization(getUnlocalizedName(rStack) + ".name", aEnglish);
             GT_LanguageManager.addStringLocalization(getUnlocalizedName(rStack) + ".tooltip", aToolTip);
             List<TC_AspectStack> tAspects = new ArrayList<TC_AspectStack>();
@@ -234,10 +232,6 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
 
     /**
      * @param aMetaValue     the Meta Value of the Item you want to set it to. [0 - 32765]
-     * @param aMaxCharge     Maximum Charge. (if this is == 0 it will remove the Electric Behavior)
-     * @param aTransferLimit Transfer Limit.
-     * @param aTier          The electric Tier.
-     * @param aSpecialData   If this Item has a Fixed Charge, like a SingleUse Battery (if > 0).
      *                       Use -1 if you want to make this Battery chargeable (the use and canUse Functions will still discharge if you just use this)
      *                       Use -2 if you want to make this Battery dischargeable.
      *                       Use -3 if you want to make this Battery charge/discharge-able.

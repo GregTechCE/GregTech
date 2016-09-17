@@ -32,7 +32,7 @@ public class GT_LanguageManager {
     public static Configuration sEnglishFile;
 
     public static String addStringLocalization(String aKey, String aEnglish) {
-        return addStringLocalization(aKey, aEnglish, true);
+        return addStringLocalization(aKey, aEnglish, false);
     }
 
     public static String addStringLocalization(String aKey, String aEnglish, boolean aWriteIntoLangFile) {

@@ -88,6 +88,11 @@ public class GT_Generic_Item extends Item implements IProjectileItem, IIconRegis
     }
 
     @Override
+    public String getUnlocalizedNameInefficiently(ItemStack stack) {
+        return getUnlocalizedName(stack);
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(TextureMap aIconRegister) {
         mIcon = aIconRegister.registerSprite(new ResourceLocation(RES_PATH_ITEM + (GT_Config.troll ? "troll" : mName)));
