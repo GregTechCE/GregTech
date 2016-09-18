@@ -44,11 +44,13 @@ public class GT_Worldgenerator implements IWorldGenerator {
 
     @Override
     public void generate(Random aRandom, int aX, int aZ, World aWorld, IChunkGenerator aChunkGenerator, IChunkProvider aChunkProvider) {
-        Biome biome = aWorld.getBiomeGenForCoords(new BlockPos(aX * 16 + 8, 16, aZ * 16 + 8));
-        new WorldGenContainer(new Random(aRandom.nextInt()), aX * 16, aZ * 16,
-                (aChunkGenerator instanceof ChunkProviderEnd || biome == Biomes.SKY) ? 1 :
-                        (aChunkGenerator instanceof ChunkProviderHell || biome == Biomes.HELL) ? -1 : 0,
-                aWorld, aChunkGenerator, aChunkProvider, biome.getBiomeName()).run();
+        if(aRandom.nextInt(3) == 0) {
+            Biome biome = aWorld.getBiomeGenForCoords(new BlockPos(aX * 16 + 8, 16, aZ * 16 + 8));
+            new WorldGenContainer(aRandom, aX * 16, aZ * 16,
+                    (aChunkGenerator instanceof ChunkProviderEnd || biome == Biomes.SKY) ? 1 :
+                            (aChunkGenerator instanceof ChunkProviderHell || biome == Biomes.HELL) ? -1 : 0,
+                    aWorld, aChunkGenerator, aChunkProvider, biome.getBiomeName()).run();
+        }
     }
 
     public static class WorldGenContainer
