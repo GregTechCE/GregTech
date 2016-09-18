@@ -6,6 +6,7 @@ import mezz.jei.Internal;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.recipe.IRecipeCategory;
+import mezz.jei.gui.DrawableResource;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
@@ -39,9 +40,15 @@ public class JEIGregtehRecipeCategory implements IRecipeCategory<JEIGregtechReci
     @Nonnull
     @Override
     public IDrawable getBackground() {
-        return Internal.getHelpers().getGuiHelper().createDrawable(
-                new ResourceLocation(mRecipeMap.mNEIGUIPath),
-                1, 3, 174, 78, -7, 0, -0, 0);
+        return new DrawableResource(new ResourceLocation(mRecipeMap.mNEIGUIPath),
+                1, 3, 174, 78, -7, 0, -0, 0) {
+
+
+            @Override
+            public int getHeight() {
+                return super.getHeight() + 50;
+            }
+        };
     }
 
     @Override
