@@ -39,7 +39,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.Map.Entry;
@@ -559,7 +558,7 @@ public class GT_ModHandler {
             if (GregTech_API.sRecipeFile.get(ConfigCategories.Machines.maceration, aInput, true)) {
                 GT_Utility.addSimpleIC2MachineRecipe(aInput, getMaceratorRecipeList(), null, aOutput1);
             }
-            addMagneticraftRecipe(aInput, aOutput1, aOutput2, aChance2, aOutput3, aChance3);   
+            addMagneticraftRecipe(aInput, aOutput1, aOutput2, aChance2, aOutput3, aChance3);
             RA.addPulveriserRecipe(aInput, new ItemStack[]{aOutput1, aOutput2, aOutput3}, new int[]{10000, aChance2 <= 0 ? 1000 : 100 * aChance2, aChance3 <= 0 ? 1000 : 100 * aChance3}, 400, 2);
 
             if (!OrePrefixes.log.contains(aInput)) {
@@ -593,31 +592,31 @@ public class GT_ModHandler {
             }
         }
         return true;
-    }    
-    
+    }
+
     static Class tClass;
     static Method tMethod1;
     static Method tMethod2;
-	
+
     public static boolean addMagneticraftRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, int aChance2, ItemStack aOutput3, int aChance3){
-    	if(GT_Mod.gregtechproxy.mMagneticraftRecipes && Loader.isModLoaded("Magneticraft")){
-    		try {
-    			if(tClass==null)tClass = Class.forName("com.cout970.magneticraft.api.access.MgRecipeRegister");
-				if(tMethod1==null)tMethod1 = tClass.getMethod("registerCrusherRecipe", ItemStack.class, ItemStack.class,ItemStack.class, float.class, ItemStack.class, float.class);
-    			if(tMethod2==null)tMethod2 = tClass.getMethod("registerGrinderRecipe", ItemStack.class, ItemStack.class,ItemStack.class, float.class, ItemStack.class, float.class);
-    			
-    			ItemData  tData = GT_OreDictUnificator.getAssociation(aInput);
-    			if(tData!=null&&tData.mPrefix!=null){
-    			if(tData.mPrefix==OrePrefixes.ore||tData.mPrefix==OrePrefixes.oreBlackgranite||tData.mPrefix==OrePrefixes.oreEndstone||tData.mPrefix==OrePrefixes.oreNetherrack||tData.mPrefix==OrePrefixes.oreRedgranite){
-    				tMethod1.invoke(null, aInput, aOutput1, aOutput2,(float)((float)aChance2/GT_Mod.gregtechproxy.mMagneticraftBonusOutputPercent), aOutput3,(float)((float)aChance3/GT_Mod.gregtechproxy.mMagneticraftBonusOutputPercent));
-    				}else if(tData.mPrefix==OrePrefixes.crushed||tData.mPrefix==OrePrefixes.crushedCentrifuged||tData.mPrefix==OrePrefixes.crushedPurified){
-    				tMethod2.invoke(null, aInput, aOutput1, aOutput2,(float)((float)aChance2/GT_Mod.gregtechproxy.mMagneticraftBonusOutputPercent), aOutput3,(float)((float)aChance3/GT_Mod.gregtechproxy.mMagneticraftBonusOutputPercent));
-        			}
-    			}
-				
-			} catch (Exception e) {e.printStackTrace();}
-    	}    	
-    	return true;
+        if(GT_Mod.gregtechproxy.mMagneticraftRecipes && Loader.isModLoaded("Magneticraft")){
+            try {
+                if(tClass==null)tClass = Class.forName("com.cout970.magneticraft.api.access.MgRecipeRegister");
+                if(tMethod1==null)tMethod1 = tClass.getMethod("registerCrusherRecipe", ItemStack.class, ItemStack.class,ItemStack.class, float.class, ItemStack.class, float.class);
+                if(tMethod2==null)tMethod2 = tClass.getMethod("registerGrinderRecipe", ItemStack.class, ItemStack.class,ItemStack.class, float.class, ItemStack.class, float.class);
+
+                ItemData  tData = GT_OreDictUnificator.getAssociation(aInput);
+                if(tData!=null&&tData.mPrefix!=null){
+                    if(tData.mPrefix==OrePrefixes.ore||tData.mPrefix==OrePrefixes.oreBlackgranite||tData.mPrefix==OrePrefixes.oreEndstone||tData.mPrefix==OrePrefixes.oreNetherrack||tData.mPrefix==OrePrefixes.oreRedgranite){
+                        tMethod1.invoke(null, aInput, aOutput1, aOutput2,(float)((float)aChance2/GT_Mod.gregtechproxy.mMagneticraftBonusOutputPercent), aOutput3,(float)((float)aChance3/GT_Mod.gregtechproxy.mMagneticraftBonusOutputPercent));
+                    }else if(tData.mPrefix==OrePrefixes.crushed||tData.mPrefix==OrePrefixes.crushedCentrifuged||tData.mPrefix==OrePrefixes.crushedPurified){
+                        tMethod2.invoke(null, aInput, aOutput1, aOutput2,(float)((float)aChance2/GT_Mod.gregtechproxy.mMagneticraftBonusOutputPercent), aOutput3,(float)((float)aChance3/GT_Mod.gregtechproxy.mMagneticraftBonusOutputPercent));
+                    }
+                }
+
+            } catch (Exception e) {e.printStackTrace();}
+        }
+        return true;
     }
 
     /**
@@ -1186,7 +1185,7 @@ public class GT_ModHandler {
                         if (rReturn != null) tList.remove(i--); tList_sS=tList.size();
                     }
                 }
-        }} catch (Throwable e) {e.printStackTrace(GT_Log.err);}
+            }} catch (Throwable e) {e.printStackTrace(GT_Log.err);}
         return rReturn;
     }
 
@@ -1321,21 +1320,21 @@ public class GT_ModHandler {
         ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance().getRecipeList();
         int tList_sS=tList.size();
         try {
-        for (int i = 0; i < tList_sS; i++) {
-            temp = false;
-            temp = tList.get(i).matches(aCrafting, DW);
-            if (temp) {
-                ItemStack tOutput = aUncopiedStack ? tList.get(i).getRecipeOutput() : tList.get(i).getCraftingResult(aCrafting);
-                if (tOutput == null || tOutput.stackSize <= 0) {
-                    // Seriously, who would ever do that shit?
-                    if (!GregTech_API.sPostloadFinished)
-                        throw new GT_ItsNotMyFaultException("Seems another Mod added a Crafting Recipe with null Output. Tell the Developer of said Mod to fix that.");
-                } else {
-                    if (aUncopiedStack) return tOutput;
-                    return GT_Utility.copy(tOutput);
+            for (int i = 0; i < tList_sS; i++) {
+                temp = false;
+                temp = tList.get(i).matches(aCrafting, DW);
+                if (temp) {
+                    ItemStack tOutput = aUncopiedStack ? tList.get(i).getRecipeOutput() : tList.get(i).getCraftingResult(aCrafting);
+                    if (tOutput == null || tOutput.stackSize <= 0) {
+                        // Seriously, who would ever do that shit?
+                        if (!GregTech_API.sPostloadFinished)
+                            throw new GT_ItsNotMyFaultException("Seems another Mod added a Crafting Recipe with null Output. Tell the Developer of said Mod to fix that.");
+                    } else {
+                        if (aUncopiedStack) return tOutput;
+                        return GT_Utility.copy(tOutput);
+                    }
                 }
-            }
-        }} catch (Throwable e) {e.printStackTrace(GT_Log.err);}
+            }} catch (Throwable e) {e.printStackTrace(GT_Log.err);}
         return null;
     }
 
@@ -1345,17 +1344,15 @@ public class GT_ModHandler {
      * This also removes old Recipes from the List.
      */
     public static ArrayList<ItemStack> getVanillyToolRecipeOutputs(ItemStack... aRecipe) {
-        ArrayList<ItemStack> rList = new ArrayList<ItemStack>();
-        if (aRecipe == null) {return rList;}
-        if (!GregTech_API.sPostloadStarted || GregTech_API.sPostloadFinished) {
-            sSingleNonBlockDamagableRecipeList.clear();sSingleNonBlockDamagableRecipeList_create = true;sSingleNonBlockDamagableRecipeList_validsShapes1.clear();}
-        if (sSingleNonBlockDamagableRecipeList_create/*sSingleNonBlockDamagableRecipeList.isEmpty()*/) {
+        if (!GregTech_API.sPostloadStarted || GregTech_API.sPostloadFinished)
+            sSingleNonBlockDamagableRecipeList.clear();
+        if (sSingleNonBlockDamagableRecipeList.isEmpty()) {
             for (IRecipe tRecipe : (ArrayList<IRecipe>) CraftingManager.getInstance().getRecipeList()) {
                 ItemStack tStack = tRecipe.getRecipeOutput();
                 if (GT_Utility.isStackValid(tStack) && tStack.getMaxStackSize() == 1 && tStack.getMaxDamage() > 0 && !(tStack.getItem() instanceof ItemBlock) && !(tStack.getItem() instanceof IReactorComponent) && !isElectricItem(tStack) && !GT_Utility.isStackInList(tStack, sNonReplaceableItems)) {
                     if (tRecipe instanceof ShapedOreRecipe) {
                         boolean temp = true;
-                        for (Object tObject : ((ShapedOreRecipe) tRecipe).getInput()) {
+                        for (Object tObject : ((ShapedOreRecipe) tRecipe).getInput())
                             if (tObject != null) {
                                 if (tObject instanceof ItemStack && (((ItemStack) tObject).getItem() == null || ((ItemStack) tObject).getMaxStackSize() < 2 || ((ItemStack) tObject).getMaxDamage() > 0 || ((ItemStack) tObject).getItem() instanceof ItemBlock)) {
                                     temp = false;
@@ -1366,8 +1363,7 @@ public class GT_ModHandler {
                                     break;
                                 }
                             }
-                        }
-                        if (temp) {sSingleNonBlockDamagableRecipeList.add(tRecipe);}
+                        if (temp) sSingleNonBlockDamagableRecipeList.add(tRecipe);
                     } else if (tRecipe instanceof ShapedRecipes) {
                         boolean temp = true;
                         for (ItemStack tObject : ((ShapedRecipes) tRecipe).recipeItems) {
@@ -1376,36 +1372,17 @@ public class GT_ModHandler {
                                 break;
                             }
                         }
-                        if (temp) {sSingleNonBlockDamagableRecipeList.add(tRecipe);}
+                        if (temp) sSingleNonBlockDamagableRecipeList.add(tRecipe);
                     } else {
                         sSingleNonBlockDamagableRecipeList.add(tRecipe);
                     }
                 }
             }
             GT_Log.out.println("GT_Mod: Created a List of Tool Recipes containing " + sSingleNonBlockDamagableRecipeList.size() + " Recipes for recycling." + (sSingleNonBlockDamagableRecipeList.size() > 1024 ? " Scanning all these Recipes is the reason for the startup Lag you receive right now." : E));
-            int aList_move = sSingleNonBlockDamagableRecipeList.size();
-            sSingleNonBlockDamagableRecipeList_list.add(aList_move);
-            sSingleNonBlockDamagableRecipeList_create = false;
-            sSingleNonBlockDamagableRecipeList_validsShapes1_update = true;
-            InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
-                @Override
-                public boolean canInteractWith(EntityPlayer var1) {return false;}}, 3, 3);
-            for (int i = 0; i < aList_move; i++) {
-                for (int j = 0; j < sShapes1.length; j++) {
-                    ItemStack[] sRecipe = sShapes1[j];
-                    for (int l = 0; l < 9 && l < sRecipe.length; l++) {aCrafting.setInventorySlotContents(l, sRecipe[l]);}
-                    IRecipe vRecipe = sSingleNonBlockDamagableRecipeList.get(i);
-                    if (vRecipe.matches(aCrafting, DW)) {
-                        if (!(sSingleNonBlockDamagableRecipeList_validsShapes1.contains(j))) {sSingleNonBlockDamagableRecipeList_validsShapes1.add(j);}
-                        sSingleNonBlockDamagableRecipeList_verified.add(vRecipe);
-                    }
-                }
-            }
         }
-        /*ArrayList<ItemStack> */
-        if (sSingleNonBlockDamagableRecipeList_verified.size() != 0) {rList = getRecipeOutputs(sSingleNonBlockDamagableRecipeList_verified, true, aRecipe);}
-        if (!GregTech_API.sPostloadStarted || GregTech_API.sPostloadFinished) {
-            sSingleNonBlockDamagableRecipeList.clear();sSingleNonBlockDamagableRecipeList_create = true;sSingleNonBlockDamagableRecipeList_validsShapes1.clear();}
+        ArrayList<ItemStack> rList = getRecipeOutputs(sSingleNonBlockDamagableRecipeList, true, aRecipe);
+        if (!GregTech_API.sPostloadStarted || GregTech_API.sPostloadFinished)
+            sSingleNonBlockDamagableRecipeList.clear();
         return rList;
     }
 
@@ -1463,11 +1440,11 @@ public class GT_ModHandler {
                 } else {
                     rList.add(GT_Utility.copy(tOutput));
                     if (aDeleteFromList) {tempaList_list.add(i);}
-                    }
                 }
             }
-            //boolean tempaList_list_b = tempaList_list.size() != 0 ? true : false;
-            if (aDeleteFromList && tempaList_list.size() != 0) {
+        }
+        //boolean tempaList_list_b = tempaList_list.size() != 0 ? true : false;
+        if (aDeleteFromList && tempaList_list.size() != 0) {
             List<IRecipe> tempaList_2 = new ArrayList<IRecipe>();
             for (int i = 0; i < aList_sS; i++) {
                 int k = 0, l = 0;
@@ -1525,7 +1502,7 @@ public class GT_ModHandler {
             for (Entry<IRecipeInput, RecipeOutput> tEntry : aRecipeList.entrySet()) {
                 if (tEntry.getKey().matches(aInput)) {
                     if (tEntry.getKey().getAmount() <= aInput.stackSize) {
-                        ItemStack[] tList = (ItemStack[]) tEntry.getValue().items.toArray();
+                        ItemStack[] tList = (ItemStack[]) tEntry.getValue().items.toArray(new ItemStack[tEntry.getValue().items.size()]);
                         if (tList.length == 0) break;
                         ItemStack[] rList = new ItemStack[aOutputSlots.length];
                         rRecipeMetaData.setTag("return", tEntry.getValue().metadata);

@@ -599,7 +599,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
     @Override
     public boolean isItemStackUsable(ItemStack aStack) {
         IToolStats tStats = getToolStatsInternal(aStack);
-        if (aStack.getItemDamage() % 2 == 1 || tStats == null) {
+        if (aStack.getItemDamage() % 2 != 0 || tStats == null) {
             NBTTagCompound aNBT = aStack.getTagCompound();
             if (aNBT != null) aNBT.removeTag("ench");
             return false;

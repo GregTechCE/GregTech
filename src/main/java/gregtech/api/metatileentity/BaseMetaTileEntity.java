@@ -206,13 +206,11 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         if (aID <= 0 || aID >= GregTech_API.METATILEENTITIES.length || GregTech_API.METATILEENTITIES[aID] == null) {
             GT_Log.err.println("MetaID " + aID + " not loadable => locking TileEntity!");
         } else {
-            if (aID != 0) {
-                if (hasValidMetaTileEntity()) mMetaTileEntity.setBaseMetaTileEntity(null);
-                GregTech_API.METATILEENTITIES[aID].newMetaEntity(this).setBaseMetaTileEntity(this);
-                mTickTimer = 0;
-                mID = aID;
-                return true;
-            }
+            if (hasValidMetaTileEntity()) mMetaTileEntity.setBaseMetaTileEntity(null);
+            GregTech_API.METATILEENTITIES[aID].newMetaEntity(this).setBaseMetaTileEntity(this);
+            mTickTimer = 0;
+            mID = aID;
+            return true;
         }
         return false;
     }
@@ -250,8 +248,11 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
         mRunningThroughTick = true;
         long tTime = System.currentTimeMillis();
+        int tCode = 0;
+        boolean aSideServer = isServerSide();
+        boolean aSideClient = isClientSide();
 
-        try { for (int tCode = 0; hasValidMetaTileEntity() && tCode >= 0; ) {
+        try { for (tCode = 0; hasValidMetaTileEntity() && tCode >= 0; ) {
             switch (tCode) {
                 case 0:
                     tCode++;
@@ -259,13 +260,11 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                         oX = xCoord;
                         oY = yCoord;
                         oZ = zCoord;
-                        if (isServerSide()) for (byte i = 0; i < 6; i++)
+                        if (aSideServer) for (byte i = 0; i < 6; i++)
                             if (getCoverIDAtSide(i) != 0)
                                 if (!mMetaTileEntity.allowCoverOnSide(i, new GT_ItemStack(getCoverIDAtSide(i))))
                                     dropCover(i, i, true);
-
                         worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
-
                         mMetaTileEntity.onFirstTick(this);
                         if (!hasValidMetaTileEntity()) {
                             mRunningThroughTick = false;
@@ -274,7 +273,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     }
                 case 1:
                     tCode++;
-                    if (isClientSide()) {
+                    if (aSideClient) {
                         if (mColor != oColor) {
                             mMetaTileEntity.onColorChangeClient(oColor = mColor);
                             issueTextureUpdate();
@@ -305,7 +304,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                 case 5:
                 case 6:
                 case 7:
-                    if (isServerSide() && mTickTimer > 10) {
+                    if (aSideServer && mTickTimer > 10) {
                         for (byte i = (byte) (tCode - 2); i < 6; i++)
                             if (getCoverIDAtSide(i) != 0) {
                                 tCode++;
@@ -323,7 +322,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     }
                 case 8:
                     tCode = 9;
-                    if (isServerSide()) {
+                    if (aSideServer) {
                         if (++mAverageEUInputIndex >= mAverageEUInput.length) mAverageEUInputIndex = 0;
                         if (++mAverageEUOutputIndex >= mAverageEUOutput.length) mAverageEUOutputIndex = 0;
 
@@ -339,7 +338,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     }
                 case 10:
                     tCode++;
-                    if (isServerSide()) {
+                    if (aSideServer) {
                         if (mRedstone != oRedstone || mTickTimer == 10) {
                             for (byte i = 0; i < 6; i++)
                                 mCoverBehaviors[i] = GregTech_API.getCoverBehavior(mCoverSides[i]);
@@ -412,10 +411,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                                             || (getCoverIDAtSide((byte) 5) == 0 && worldObj.getPrecipitationHeight(xCoord + 1, zCoord) - 1 < yCoord)) {
                                         if (GregTech_API.sMachineRainExplosions && worldObj.isRaining() && getBiome().rainfall > 0) {
                                             if (getRandomNumber(10) == 0) {
-                                                try {
-                                                    GT_Mod.instance.achievements.issueAchievement(this.getWorldObj().getPlayerEntityByName(mOwnerName), "badweather");
-                                                } catch (Exception e) {
-                                                }
+                                                GT_Mod.instance.achievements.issueAchievement(this.getWorldObj().getPlayerEntityByName(mOwnerName), "badweather");
                                                 doEnergyExplosion();
                                             } else setOnFire();
                                         }
@@ -424,10 +420,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                                             return;
                                         }
                                         if (GregTech_API.sMachineThunderExplosions && worldObj.isThundering() && getBiome().rainfall > 0 && getRandomNumber(3) == 0) {
-                                            try {
-                                                GT_Mod.instance.achievements.issueAchievement(this.getWorldObj().getPlayerEntityByName(mOwnerName), "badweather");
-                                            } catch (Exception e) {
-                                            }
+                                            GT_Mod.instance.achievements.issueAchievement(this.getWorldObj().getPlayerEntityByName(mOwnerName), "badweather");
                                             doEnergyExplosion();
                                         }
                                     }
@@ -442,7 +435,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     }
                 case 11:
                     tCode++;
-                    if (isServerSide()) {
+                    if (aSideServer) {
                         if (mMetaTileEntity.dechargerSlotCount() > 0 && getStoredEU() < getEUCapacity()) {
                             for (int i = mMetaTileEntity.dechargerSlotStartIndex(), k = mMetaTileEntity.dechargerSlotCount() + i; i < k; i++) {
                                 if (mMetaTileEntity.mInventory[i] != null && getStoredEU() < getEUCapacity()) {
@@ -456,7 +449,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     }
                 case 12:
                     tCode++;
-                    if (isServerSide()) {
+                    if (aSideServer) {
                         if (mMetaTileEntity.rechargerSlotCount() > 0 && getStoredEU() > 0) {
                             for (int i = mMetaTileEntity.rechargerSlotStartIndex(), k = mMetaTileEntity.rechargerSlotCount() + i; i < k; i++) {
                                 if (getStoredEU() > 0 && mMetaTileEntity.mInventory[i] != null) {
@@ -484,7 +477,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     }
                 case 15:
                     tCode++;
-                    if (isServerSide()) {
+                    if (aSideServer) {
                         if (mTickTimer % 10 == 0) {
                             if (mSendClientData) {
                                 NW.sendPacketToAllPlayersInRange(worldObj, new GT_Packet_TileEntity(xCoord, (short) yCoord, zCoord, mID, mCoverSides[0], mCoverSides[1], mCoverSides[2], mCoverSides[3], mCoverSides[4], mCoverSides[5], oTextureData = (byte) ((mFacing & 7) | (mActive ? 8 : 0) | (mRedstone ? 16 : 0) | (mLockUpgrade ? 32 : 0)), oUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0, oRedstoneData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0) | ((mSidedRedstone[2] > 0) ? 4 : 0) | ((mSidedRedstone[3] > 0) ? 8 : 0) | ((mSidedRedstone[4] > 0) ? 16 : 0) | ((mSidedRedstone[5] > 0) ? 32 : 0)), oColor = mColor), xCoord, zCoord);
@@ -521,14 +514,14 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     }
                 default:
                     tCode = -1;
-                    break;
-            }}
+            }
+        }
         } catch (Throwable e) {
             //gregtech.api.util.GT_Log.err.println("Encountered Exception while ticking MetaTileEntity in Step " + (tCode - 1) + ". The Game should've crashed now, but I prevented that. Please report immidietly to GregTech Intergalactical!!!");
             e.printStackTrace(GT_Log.err);
         }
 
-        if (isServerSide() && hasValidMetaTileEntity()) {
+        if (aSideServer && hasValidMetaTileEntity()) {
             tTime = System.currentTimeMillis() - tTime;
             if (mTimeStatistics.length > 0)
                 mTimeStatistics[mTimeStatisticsIndex = (mTimeStatisticsIndex + 1) % mTimeStatistics.length] = (int) tTime;
@@ -587,7 +580,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     mFacing = (byte) (aValue & 7);
                     mActive = ((aValue & 8) != 0);
                     mRedstone = ((aValue & 16) != 0);
-//				mLockUpgrade	= ((aValue&32) != 0);
+				    //mLockUpgrade	= ((aValue&32) != 0);
                     break;
                 case 1:
                     if (hasValidMetaTileEntity()) mMetaTileEntity.onValueUpdate((byte) aValue);
@@ -597,12 +590,12 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     mColor = (byte) aValue;
                     break;
                 case 3:
-                    mSidedRedstone[0] = (byte) ((aValue & 1) > 0 ? 15 : 0);
-                    mSidedRedstone[1] = (byte) ((aValue & 2) > 0 ? 15 : 0);
-                    mSidedRedstone[2] = (byte) ((aValue & 4) > 0 ? 15 : 0);
-                    mSidedRedstone[3] = (byte) ((aValue & 8) > 0 ? 15 : 0);
-                    mSidedRedstone[4] = (byte) ((aValue & 16) > 0 ? 15 : 0);
-                    mSidedRedstone[5] = (byte) ((aValue & 32) > 0 ? 15 : 0);
+                    mSidedRedstone[0] = (byte) ((aValue & 1) == 1 ? 15 : 0);
+                    mSidedRedstone[1] = (byte) ((aValue & 2) == 2 ? 15 : 0);
+                    mSidedRedstone[2] = (byte) ((aValue & 4) == 4 ? 15 : 0);
+                    mSidedRedstone[3] = (byte) ((aValue & 8) == 8 ? 15 : 0);
+                    mSidedRedstone[4] = (byte) ((aValue & 16) == 16 ? 15 : 0);
+                    mSidedRedstone[5] = (byte) ((aValue & 32) == 32 ? 15 : 0);
                     break;
                 case 4:
                     if (hasValidMetaTileEntity() && mTickTimer > 20)
@@ -1075,8 +1068,8 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     public boolean playerOwnsThis(EntityPlayer aPlayer, boolean aCheckPrecicely) {
         if (!canAccessData()) return false;
-        if (aCheckPrecicely || privateAccess() || mOwnerName.equals(""))
-            if (mOwnerName.equals("") && isServerSide()) setOwnerName(aPlayer.getDisplayName());
+        if (aCheckPrecicely || privateAccess() || (mOwnerName.length() == 0))
+            if ((mOwnerName.length() == 0) && isServerSide()) setOwnerName(aPlayer.getDisplayName());
             else if (privateAccess() && !aPlayer.getDisplayName().equals("Player") && !mOwnerName.equals("Player") && !mOwnerName.equals(aPlayer.getDisplayName()))
                 return false;
         return true;

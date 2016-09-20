@@ -76,11 +76,9 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                                 tList.add(GT_Utility.copyAmount(64L, new Object[]{tStack}));
                                 tStack.stackSize -= 64;
                             }
-                            if ((tStack.stackSize > 0) && (tList.size() < 6)) {
-                                if (tCapsuleCount + GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(new ItemStack[]{tStack}) <= 64L) {
-                                    tCapsuleCount += GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(new ItemStack[]{tStack});
-                                    tList.add(tStack);
-                                }
+                            if ((tStack.stackSize > 0) && (tList.size() < 6) && (tCapsuleCount + GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(new ItemStack[]{tStack}) <= 64L)) {
+                                tCapsuleCount += GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(new ItemStack[]{tStack});
+                                tList.add(tStack);
                             }
                         }
                     }

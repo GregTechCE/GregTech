@@ -920,7 +920,7 @@ public class GT_Utility {
     }
 
     public static boolean doSoundAtClient(String aSoundName, int aTimeUntilNextSound, float aSoundStrength, double aX, double aY, double aZ) {
-        return doSoundAtClient(aSoundName, aTimeUntilNextSound, aSoundStrength, 0.9F + new Random().nextFloat() * 0.2F, aX, aY, aZ);
+        return doSoundAtClient(aSoundName, aTimeUntilNextSound, aSoundStrength, 1.01818028F, aX, aY, aZ);
     }
 
     public static boolean doSoundAtClient(String aSoundName, int aTimeUntilNextSound, float aSoundStrength, float aSoundModulation, double aX, double aY, double aZ) {
@@ -1094,7 +1094,6 @@ public class GT_Utility {
      * Converts a Number to a String
      */
     public static String parseNumberToString(int aNumber) {
-        String tString = E;
         boolean temp = true, negative = false;
 
         if (aNumber < 0) {
@@ -1102,14 +1101,17 @@ public class GT_Utility {
             negative = true;
         }
 
+        StringBuilder tStringB = new StringBuilder();
         for (int i = 1000000000; i > 0; i /= 10) {
             int tDigit = (aNumber / i) % 10;
             if (temp && tDigit != 0) temp = false;
             if (!temp) {
-                tString += tDigit;
-                if (i != 1) for (int j = i; j > 0; j /= 1000) if (j == 1) tString += ",";
+                tStringB.append(tDigit);
+                if (i != 1) for (int j = i; j > 0; j /= 1000) if (j == 1) tStringB.append(",");
             }
         }
+
+        String tString = tStringB.toString();
 
         if (tString.equals(E)) tString = "0";
 
@@ -1409,7 +1411,7 @@ public class GT_Utility {
         Collections.sort(tEntrySet, new Comparator<Map.Entry<X, Y>>() {
             @Override
             public int compare(Entry<X, Y> aValue1, Entry<X, Y> aValue2) {
-                return -aValue1.getValue().compareTo(aValue2.getValue());
+                return aValue2.getValue().compareTo(aValue1.getValue());//FB: RV - RV_NEGATING_RESULT_OF_COMPARETO
             }
         });
         LinkedHashMap<X, Y> rMap = new LinkedHashMap<X, Y>();
@@ -1721,10 +1723,11 @@ public class GT_Utility {
                                         + "  Humidity: " + ((ic2.api.crops.ICropTile) tTileEntity).getHumidity()
                                         + "  Air-Quality: " + ((ic2.api.crops.ICropTile) tTileEntity).getAirQuality()
                         );
-                        String tString = E;
+                        StringBuilder tStringB = new StringBuilder();
                         for (String tAttribute : ic2.api.crops.Crops.instance.getCropList()[((ic2.api.crops.ICropTile) tTileEntity).getID()].attributes()) {
-                            tString += ", " + tAttribute;
+                            tStringB.append(", ").append(tAttribute);
                         }
+                        String tString = tStringB.toString();
                         tList.add("Attributes:" + tString.replaceFirst(",", E));
                         tList.add("Discovered by: " + ic2.api.crops.Crops.instance.getCropList()[((ic2.api.crops.ICropTile) tTileEntity).getID()].discoveredBy());
                     }

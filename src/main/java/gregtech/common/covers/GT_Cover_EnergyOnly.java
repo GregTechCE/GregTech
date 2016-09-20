@@ -33,7 +33,7 @@ public class GT_Cover_EnergyOnly
 
     public boolean letsEnergyIn(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         if ((aCoverVariable > 1) && ((aTileEntity instanceof IMachineProgress))) {
-            if (((IMachineProgress) aTileEntity).isAllowedToWork() != aCoverVariable < 2) {
+            if (((IMachineProgress) aTileEntity).isAllowedToWork()) {
                 return false;
             }
         }
@@ -42,7 +42,7 @@ public class GT_Cover_EnergyOnly
 
     public boolean letsEnergyOut(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         if ((aCoverVariable > 1) && ((aTileEntity instanceof IMachineProgress))) {
-            if (((IMachineProgress) aTileEntity).isAllowedToWork() != aCoverVariable < 2) {
+            if (((IMachineProgress) aTileEntity).isAllowedToWork()) {
                 return false;
             }
         }

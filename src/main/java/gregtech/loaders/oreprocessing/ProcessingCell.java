@@ -61,12 +61,10 @@ public class ProcessingCell
                                     tList.add(GT_Utility.copyAmount(64L, new Object[]{tStack}));
                                     tStack.stackSize -= 64;
                                 }
-                                if (tStack.stackSize > 0) {
-                                    if (tCapsuleCount + GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(new ItemStack[]{tStack}) <= 64L) {
-                                        if (tCapsuleCount + GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(new ItemStack[]{tStack}) < 0L ? tList.size() < 5 : tList.size() < 6) {
-                                            tCapsuleCount += GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(new ItemStack[]{tStack});
-                                            tList.add(tStack);
-                                        }
+                                if ((tStack.stackSize > 0) && tCapsuleCount + GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(new ItemStack[]{tStack}) <= 64L) {
+                                    if (tCapsuleCount + GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(new ItemStack[]{tStack}) < 0L ? tList.size() < 5 : tList.size() < 6) {
+                                        tCapsuleCount += GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(new ItemStack[]{tStack});
+                                        tList.add(tStack);
                                     }
                                 }
                             }

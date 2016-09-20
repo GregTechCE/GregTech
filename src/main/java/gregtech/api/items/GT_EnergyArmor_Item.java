@@ -200,9 +200,6 @@ public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
             if (tTargetChargeItem == null || !GT_ModHandler.isElectricItem(tTargetChargeItem)) {
                 tTargetChargeItem = null;
             }
-            if (tTargetDechargeItem == null || !GT_ModHandler.isElectricItem(tTargetChargeItem) || !(aStack == tTargetDechargeItem || GT_ModHandler.isChargerItem(tTargetDechargeItem))) {
-                tTargetDechargeItem = null;
-            }
 
             if (aPlayer.worldObj.isDaytime() && aPlayer.worldObj.canBlockSeeTheSky(MathHelper.floor_double(aPlayer.posX), MathHelper.floor_double(aPlayer.posY + 1), MathHelper.floor_double(aPlayer.posZ))) {
                 if ((mSpecials & 32) != 0 && tTargetChargeItem != null) {

@@ -109,9 +109,6 @@ public class GT_Worldgenerator
                     int j = 0;
                     for (int tZ = this.mZ - 16; j < 3; tZ += 16) {
                         String tBiome = this.mWorld.getBiomeGenForCoords(tX + 8, tZ + 8).biomeName;
-                        if (tBiome == null) {
-                            tBiome = BiomeGenBase.plains.biomeName;
-                        }
                         try {
                             for (GT_Worldgen tWorldGen : GregTech_API.sWorldgenList) {
                                 tWorldGen.executeWorldgen(this.mWorld, this.mRandom, this.mBiome, this.mDimensionType, tX, tZ, this.mChunkGenerator, this.mChunkProvider);
@@ -209,9 +206,9 @@ public class GT_Worldgenerator
                                                     } else if (tDimensionName.equals("Asteroids")) {
                                                         //int asteroidType = aRandom.nextInt(20);
                                                         //if (asteroidType == 19) { //Rare Asteroid?
-                                                            //mWorld.setBlock(eX, eY, eZ, GregTech_API.sBlockGranites, 8, 3);
+                                                        //mWorld.setBlock(eX, eY, eZ, GregTech_API.sBlockGranites, 8, 3);
                                                         //} else {
-                                                            mWorld.setBlock(eX, eY, eZ, GregTech_API.sBlockGranites, 8, 3);
+                                                        mWorld.setBlock(eX, eY, eZ, GregTech_API.sBlockGranites, 8, 3);
                                                         //}
                                                     }
                                                 }

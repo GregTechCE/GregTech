@@ -202,10 +202,7 @@ public class GT_MetaTileEntity_BronzeBlastFurnace
                         this.mOutputItem2 = null;
                         this.mProgresstime = 0;
                         this.mMaxProgresstime = 0;
-                        try {
-                            GT_Mod.instance.achievements.issueAchievement(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "steel");
-                        } catch (Exception e) {
-                        }
+                        GT_Mod.instance.achievements.issueAchievement(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "steel");
                     }
                 } else if (aBaseMetaTileEntity.isAllowedToWork()) {
                     checkRecipe();
@@ -341,8 +338,6 @@ public class GT_MetaTileEntity_BronzeBlastFurnace
     }
 
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        if (aIndex < 2) {
-        }
         return !GT_Utility.areStacksEqual(aStack, this.mInventory[0]);
     }
 

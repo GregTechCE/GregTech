@@ -28,6 +28,7 @@ import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.api.visnet.VisNetHandler;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import static gregtech.api.enums.GT_Values.V;
 
@@ -163,7 +164,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
                 if ((this.mInventory[0] != null) && (this.mInventory[1] == null)) {
                     if (isThaumcraftLoaded && this.mInventory[0].getItem() instanceof IEssentiaContainerItem) {
                         AspectList tAspect = ((IEssentiaContainerItem) this.mInventory[0].getItem()).getAspects(this.mInventory[0]);
-                        TC_Aspects tValue = TC_Aspects.valueOf(tAspect.getAspects()[0].getTag().toUpperCase());
+                        TC_Aspects tValue = TC_Aspects.valueOf(tAspect.getAspects()[0].getTag().toUpperCase(Locale.ENGLISH));
                         int tEU = (tValue.mValue * tAspect.getAmount((Aspect) tValue.mAspect) * 100);
                         getBaseMetaTileEntity().increaseStoredEnergyUnits(tEU * getEfficiency() / 100, true);
                         ItemStack tStack = this.mInventory[0].copy();

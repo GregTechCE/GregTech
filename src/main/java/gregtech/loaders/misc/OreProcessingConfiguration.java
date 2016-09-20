@@ -1,12 +1,13 @@
 package gregtech.loaders.misc;
 
-import java.io.File;
-import java.util.HashMap;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 public class OreProcessingConfiguration
     implements Runnable
@@ -40,17 +41,12 @@ public class OreProcessingConfiguration
         }
     }
     @Override
-    public void run()
-    {
-        for (String tMaterialName : this.mEnabledMaterials.keySet())
-        {
-            if (this.mEnabledMaterials.get(tMaterialName))
-            {
-                Materials.valueOf(tMaterialName).mTypes |= 8;
-            }
-            else if ((Materials.valueOf(tMaterialName).mTypes & 8) != 0)
-            {
-                Materials.valueOf(tMaterialName).mTypes ^= 8;
+    public void run() {
+        for (Map.Entry<String, Boolean> aEntry : this.mEnabledMaterials.entrySet()) {
+            if (this.mEnabledMaterials.get(aEntry.getKey())) {
+                Materials.valueOf(aEntry.getKey()).mTypes |= 8;
+            } else if ((Materials.valueOf(aEntry.getKey()).mTypes & 8) != 0) {
+                Materials.valueOf(aEntry.getKey()).mTypes ^= 8;
             }
         }
     }

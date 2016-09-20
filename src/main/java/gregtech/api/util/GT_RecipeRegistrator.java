@@ -178,7 +178,7 @@ public class GT_RecipeRegistrator {
     }
 
     public static void registerReverseArcSmelting(ItemStack aStack, Materials aMaterial, long aMaterialAmount, MaterialStack aByProduct01, MaterialStack aByProduct02, MaterialStack aByProduct03) {
-        registerReverseArcSmelting(aStack, new ItemData(aMaterial == null ? null : new MaterialStack(aMaterial, aMaterialAmount), aByProduct01, aByProduct02, aByProduct03));
+        registerReverseArcSmelting(aStack, new ItemData(new MaterialStack(aMaterial, aMaterialAmount), aByProduct01, aByProduct02, aByProduct03));
     }
 
     public static void registerReverseArcSmelting(ItemStack aStack, ItemData aData) {
@@ -240,7 +240,7 @@ public class GT_RecipeRegistrator {
     }
 
     public static void registerReverseMacerating(ItemStack aStack, Materials aMaterial, long aMaterialAmount, MaterialStack aByProduct01, MaterialStack aByProduct02, MaterialStack aByProduct03, boolean aAllowHammer) {
-        registerReverseMacerating(aStack, new ItemData(aMaterial == null ? null : new MaterialStack(aMaterial, aMaterialAmount), aByProduct01, aByProduct02, aByProduct03), aAllowHammer);
+        registerReverseMacerating(aStack, new ItemData(new MaterialStack(aMaterial, aMaterialAmount), aByProduct01, aByProduct02, aByProduct03), aAllowHammer);
     }
 
     public static void registerReverseMacerating(ItemStack aStack, ItemData aData, boolean aAllowHammer) {

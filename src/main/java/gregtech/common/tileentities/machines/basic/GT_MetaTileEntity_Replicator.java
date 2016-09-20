@@ -86,8 +86,6 @@ public class GT_MetaTileEntity_Replicator
             Materials tMaterial;
             for (Iterator i$ = Materials.VALUES.iterator(); i$.hasNext(); sHeaviestElementMass = Math.max(sHeaviestElementMass, (int) tMaterial.getMass())) {
                 tMaterial = (Materials) i$.next();
-                if ((tMaterial.mElement == null) || (tMaterial.mElement.mIsIsotope)) {
-                }
             }
         }
         return sHeaviestElementMass;

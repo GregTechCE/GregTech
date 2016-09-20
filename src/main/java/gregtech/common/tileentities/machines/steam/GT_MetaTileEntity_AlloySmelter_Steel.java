@@ -34,13 +34,8 @@ public class GT_MetaTileEntity_AlloySmelter_Steel
         GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[2], null, getAllInputs());
         if ((tRecipe != null) && (canOutput(tRecipe.mOutputs)) && (tRecipe.isRecipeInputEqual(true, null, getAllInputs()))) {
             this.mOutputItems[0] = tRecipe.getOutput(0);
-            if (tRecipe.mEUt <= 16) {
-                this.mEUt = (tRecipe.mEUt * 3);
-                this.mMaxProgresstime = tRecipe.mDuration;
-            } else {
-                this.mEUt = (tRecipe.mEUt * 3);
-                this.mMaxProgresstime = tRecipe.mDuration;
-            }
+            this.mEUt = (tRecipe.mEUt * 3);
+            this.mMaxProgresstime = tRecipe.mDuration;
             return 2;
         }
         return 0;

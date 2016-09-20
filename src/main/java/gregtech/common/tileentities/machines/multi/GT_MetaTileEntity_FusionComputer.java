@@ -103,26 +103,20 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
                 && (addIfInjector(xCenter - 6, yCenter - 1, zCenter + 1, aBaseMetaTileEntity)) && (addIfInjector(xCenter + 6, yCenter - 1, zCenter + 1, aBaseMetaTileEntity))
                 && (addIfInjector(xCenter - 6, yCenter - 1, zCenter - 1, aBaseMetaTileEntity)) && (addIfInjector(xCenter + 6, yCenter - 1, zCenter - 1, aBaseMetaTileEntity))
                 && (this.mEnergyHatches.size() >= 1) && (this.mOutputHatches.size() >= 1) && (this.mInputHatches.size() >= 2)) {
-            if (this.mEnergyHatches != null) {
-                int mEnergyHatches_sS=this.mEnergyHatches.size();
-                for (int i = 0; i < mEnergyHatches_sS; i++) {
-                    if (this.mEnergyHatches.get(i).mTier < tier())
-                        return false;
-                }
+            int mEnergyHatches_sS = this.mEnergyHatches.size();
+            for (int i = 0; i < mEnergyHatches_sS; i++) {
+                if (this.mEnergyHatches.get(i).mTier < tier())
+                    return false;
             }
-            if (this.mOutputHatches != null) {
-                int mOutputHatches_sS=this.mOutputHatches.size();
-                for (int i = 0; i < mOutputHatches_sS; i++) {
-                    if (this.mOutputHatches.get(i).mTier < tier())
-                        return false;
-                }
+            int mOutputHatches_sS = this.mOutputHatches.size();
+            for (int i = 0; i < mOutputHatches_sS; i++) {
+                if (this.mOutputHatches.get(i).mTier < tier())
+                    return false;
             }
-            if (this.mInputHatches != null) {
-                int mInputHatches_sS=this.mInputHatches.size();
-                for (int i = 0; i < mInputHatches_sS; i++) {
-                    if (this.mInputHatches.get(i).mTier < tier())
-                        return false;
-                }
+            int mInputHatches_sS = this.mInputHatches.size();
+            for (int i = 0; i < mInputHatches_sS; i++) {
+                if (this.mInputHatches.get(i).mTier < tier())
+                    return false;
             }
             mWrench = true;
             mScrewdriver = true;
@@ -133,18 +127,6 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
             return true;
         }
         return false;
-    }
-
-    private boolean checkTier(byte tier, ArrayList<GT_MetaTileEntity_Hatch> list) {
-        if (list != null) {
-            int list_sS=list.size();
-            for (int i = 0; i < list_sS; i++) {
-                if (list.get(i).mTier < tier) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
     private boolean checkCoils(int aX, int aY, int aZ) {
@@ -270,21 +252,19 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
         if (tFluidList.size() > 1) {
             FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
             GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sFusionRecipes.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, GT_Values.V[8], tFluids, new ItemStack[]{});
-            if (tRecipe == null && !mRunningOnLoad) {
+            if (mRunningOnLoad) {
                 turnCasingActive(false);
                 this.mLastRecipe = null;
                 return false;
             }
-            if (mRunningOnLoad || tRecipe.isRecipeInputEqual(true, tFluids, new ItemStack[]{})) {
-                this.mLastRecipe = tRecipe;
-                this.mEUt = (this.mLastRecipe.mEUt * overclock(this.mLastRecipe.mSpecialValue));
-                this.mMaxProgresstime = this.mLastRecipe.mDuration / overclock(this.mLastRecipe.mSpecialValue);
-                this.mEfficiencyIncrease = 10000;
-                this.mOutputFluids = this.mLastRecipe.mFluidOutputs;
-                turnCasingActive(true);
-                mRunningOnLoad = false;
-                return true;
-            }
+            this.mLastRecipe = tRecipe;
+            this.mEUt = (this.mLastRecipe.mEUt * overclock(this.mLastRecipe.mSpecialValue));
+            this.mMaxProgresstime = this.mLastRecipe.mDuration / overclock(this.mLastRecipe.mSpecialValue);
+            this.mEfficiencyIncrease = 10000;
+            this.mOutputFluids = this.mLastRecipe.mFluidOutputs;
+            turnCasingActive(true);
+            mRunningOnLoad = false;
+            return true;
         }
         return false;
     }

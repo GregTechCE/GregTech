@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity;
 
+import cpw.mods.fml.common.FMLLog;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -158,13 +159,11 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         if (aID <= 0 || aID >= GregTech_API.METATILEENTITIES.length || GregTech_API.METATILEENTITIES[aID] == null) {
             GT_Log.err.println("MetaID " + aID + " not loadable => locking TileEntity!");
         } else {
-            if (aID != 0) {
-                if (hasValidMetaTileEntity()) mMetaTileEntity.setBaseMetaTileEntity(null);
-                GregTech_API.METATILEENTITIES[aID].newMetaEntity(this).setBaseMetaTileEntity(this);
-                mTickTimer = 0;
-                mID = aID;
-                return true;
-            }
+            if (hasValidMetaTileEntity()) mMetaTileEntity.setBaseMetaTileEntity(null);
+            GregTech_API.METATILEENTITIES[aID].newMetaEntity(this).setBaseMetaTileEntity(this);
+            mTickTimer = 0;
+            mID = aID;
+            return true;
         }
         return false;
     }
@@ -179,8 +178,9 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         }
 
         long tTime = System.currentTimeMillis();
+        int tCode = 0;
 
-        try { for (int tCode = 0; hasValidMetaTileEntity() && tCode >= 0; ) {
+        try { for (tCode = 0; hasValidMetaTileEntity() && tCode >= 0; ) {
             switch (tCode) {
                 case 0:
                     tCode++;
@@ -285,7 +285,8 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                     tCode = -1;
                     break;
             }
-        }} catch (Throwable e) {
+        }
+        } catch (Throwable e) {
             //GT_Log.err.println("Encountered Exception while ticking MetaTileEntity in Step " + (tCode - 1) + ". The Game should've crashed now, but I prevented that. Please report immidietly to GregTech Intergalactical!!!");
             e.printStackTrace(GT_Log.err);
         }
@@ -295,7 +296,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
             if (mTimeStatistics.length > 0)
                 mTimeStatistics[mTimeStatisticsIndex = (mTimeStatisticsIndex + 1) % mTimeStatistics.length] = (int) tTime;
             if (tTime > 0 && tTime > GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING && mTickTimer > 1000 && getMetaTileEntity().doTickProfilingMessageDuringThisTick() && mLagWarningCount++ < 10)
-                System.out.println("WARNING: Possible Lag Source at [" + xCoord + ", " + yCoord + ", " + zCoord + "] in Dimension " + worldObj.provider.dimensionId + " with " + tTime + "ms caused by an instance of " + getMetaTileEntity().getClass());
+                FMLLog.warning("WARNING: Possible Lag Source at [%s,%s,%s] in Dimension %s with %s ms caused by an instance of %s", xCoord, yCoord, zCoord, worldObj.provider.dimensionId, tTime, getMetaTileEntity().getClass());
         }
 
         mWorkUpdate = mInventoryChanged = false;
@@ -309,7 +310,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
 
     public final void receiveMetaTileEntityData(short aID, int aCover0, int aCover1, int aCover2, int aCover3, int aCover4, int aCover5, byte aTextureData, byte aUpdateData, byte aRedstoneData, byte aColorData) {
         issueTextureUpdate();
-        if (mID != aID && aID > 0) {
+        if (aID > 0 && mID != aID) {
             mID = aID;
             createNewMetatileEntity(mID);
         }
@@ -356,12 +357,12 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                     mColor = (byte) aValue;
                     break;
                 case 3:
-                    mSidedRedstone[0] = (byte) ((aValue & 1) > 0 ? 15 : 0);
-                    mSidedRedstone[1] = (byte) ((aValue & 2) > 0 ? 15 : 0);
-                    mSidedRedstone[2] = (byte) ((aValue & 4) > 0 ? 15 : 0);
-                    mSidedRedstone[3] = (byte) ((aValue & 8) > 0 ? 15 : 0);
-                    mSidedRedstone[4] = (byte) ((aValue & 16) > 0 ? 15 : 0);
-                    mSidedRedstone[5] = (byte) ((aValue & 32) > 0 ? 15 : 0);
+                    mSidedRedstone[0] = (byte) ((aValue & 1) == 1 ? 15 : 0);
+                    mSidedRedstone[1] = (byte) ((aValue & 2) == 2 ? 15 : 0);
+                    mSidedRedstone[2] = (byte) ((aValue & 4) == 4 ? 15 : 0);
+                    mSidedRedstone[3] = (byte) ((aValue & 8) == 8 ? 15 : 0);
+                    mSidedRedstone[4] = (byte) ((aValue & 16) == 16 ? 15 : 0);
+                    mSidedRedstone[5] = (byte) ((aValue & 32) == 32 ? 15 : 0);
                     break;
                 case 4:
                     if (hasValidMetaTileEntity() && mTickTimer > 20)
@@ -704,7 +705,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
-    public ITexture[] getTexture(Block block, byte aSide) {
+    public ITexture[] getTexture(Block aBlock, byte aSide) {
         ITexture rIcon = getCoverTexture(aSide);
         if (rIcon != null) return new ITexture[]{rIcon};
         return getTextureUncovered(aSide);
@@ -729,7 +730,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     protected boolean canAccessData() {
-        return !isDead && hasValidMetaTileEntity();
+        return hasValidMetaTileEntity() && !isDead;
     }
 
     @Override

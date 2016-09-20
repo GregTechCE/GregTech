@@ -289,8 +289,7 @@ public class GT_NEI_DefaultHandler
         }
     }
 
-    public class FixedPositionedStack
-            extends PositionedStack {
+    public static class FixedPositionedStack extends PositionedStack {
         public final int mChance;
         public boolean permutated = false;
 

@@ -192,6 +192,7 @@ public class GregTech_API {
     public static int mRFtoEU = 20;
     public static boolean mRFExplosions = true;
     public static boolean mServerStarted = false;
+    private static final String aTextIC2Lower = MOD_ID_IC2.toLowerCase(Locale.ENGLISH);
     /**
      * Getting assigned by the Mod loading
      */
@@ -217,29 +218,29 @@ public class GregTech_API {
         sSoundList.put(5, "random.explode");
         sSoundList.put(6, "fire.ignite");
 
-        sSoundList.put(100, MOD_ID_IC2.toLowerCase() + ":" + "tools.Wrench");
-        sSoundList.put(101, MOD_ID_IC2.toLowerCase() + ":" + "tools.RubberTrampoline");
-        sSoundList.put(102, MOD_ID_IC2.toLowerCase() + ":" + "tools.Painter");
-        sSoundList.put(103, MOD_ID_IC2.toLowerCase() + ":" + "tools.BatteryUse");
-        sSoundList.put(104, MOD_ID_IC2.toLowerCase() + ":" + "tools.chainsaw.ChainsawUseOne");
-        sSoundList.put(105, MOD_ID_IC2.toLowerCase() + ":" + "tools.chainsaw.ChainsawUseTwo");
-        sSoundList.put(106, MOD_ID_IC2.toLowerCase() + ":" + "tools.drill.DrillSoft");
-        sSoundList.put(107, MOD_ID_IC2.toLowerCase() + ":" + "tools.drill.DrillHard");
-        sSoundList.put(108, MOD_ID_IC2.toLowerCase() + ":" + "tools.ODScanner");
+        sSoundList.put(100, aTextIC2Lower + ":" + "tools.Wrench");
+        sSoundList.put(101, aTextIC2Lower + ":" + "tools.RubberTrampoline");
+        sSoundList.put(102, aTextIC2Lower + ":" + "tools.Painter");
+        sSoundList.put(103, aTextIC2Lower + ":" + "tools.BatteryUse");
+        sSoundList.put(104, aTextIC2Lower + ":" + "tools.chainsaw.ChainsawUseOne");
+        sSoundList.put(105, aTextIC2Lower + ":" + "tools.chainsaw.ChainsawUseTwo");
+        sSoundList.put(106, aTextIC2Lower + ":" + "tools.drill.DrillSoft");
+        sSoundList.put(107, aTextIC2Lower + ":" + "tools.drill.DrillHard");
+        sSoundList.put(108, aTextIC2Lower + ":" + "tools.ODScanner");
 
-        sSoundList.put(200, MOD_ID_IC2.toLowerCase() + ":" + "machines.ExtractorOp");
-        sSoundList.put(201, MOD_ID_IC2.toLowerCase() + ":" + "machines.MaceratorOp");
-        sSoundList.put(202, MOD_ID_IC2.toLowerCase() + ":" + "machines.InductionLoop");
-        sSoundList.put(203, MOD_ID_IC2.toLowerCase() + ":" + "machines.CompressorOp");
-        sSoundList.put(204, MOD_ID_IC2.toLowerCase() + ":" + "machines.RecyclerOp");
-        sSoundList.put(205, MOD_ID_IC2.toLowerCase() + ":" + "machines.MinerOp");
-        sSoundList.put(206, MOD_ID_IC2.toLowerCase() + ":" + "machines.PumpOp");
-        sSoundList.put(207, MOD_ID_IC2.toLowerCase() + ":" + "machines.ElectroFurnaceLoop");
-        sSoundList.put(208, MOD_ID_IC2.toLowerCase() + ":" + "machines.InductionLoop");
-        sSoundList.put(209, MOD_ID_IC2.toLowerCase() + ":" + "machines.MachineOverload");
-        sSoundList.put(210, MOD_ID_IC2.toLowerCase() + ":" + "machines.InterruptOne");
-        sSoundList.put(211, MOD_ID_IC2.toLowerCase() + ":" + "machines.KaChing");
-        sSoundList.put(212, MOD_ID_IC2.toLowerCase() + ":" + "machines.MagnetizerLoop");
+        sSoundList.put(200, aTextIC2Lower + ":" + "machines.ExtractorOp");
+        sSoundList.put(201, aTextIC2Lower + ":" + "machines.MaceratorOp");
+        sSoundList.put(202, aTextIC2Lower + ":" + "machines.InductionLoop");
+        sSoundList.put(203, aTextIC2Lower + ":" + "machines.CompressorOp");
+        sSoundList.put(204, aTextIC2Lower + ":" + "machines.RecyclerOp");
+        sSoundList.put(205, aTextIC2Lower + ":" + "machines.MinerOp");
+        sSoundList.put(206, aTextIC2Lower + ":" + "machines.PumpOp");
+        sSoundList.put(207, aTextIC2Lower + ":" + "machines.ElectroFurnaceLoop");
+        sSoundList.put(208, aTextIC2Lower + ":" + "machines.InductionLoop");
+        sSoundList.put(209, aTextIC2Lower + ":" + "machines.MachineOverload");
+        sSoundList.put(210, aTextIC2Lower + ":" + "machines.InterruptOne");
+        sSoundList.put(211, aTextIC2Lower + ":" + "machines.KaChing");
+        sSoundList.put(212, aTextIC2Lower + ":" + "machines.MagnetizerLoop");
     }
 
     /**
@@ -304,7 +305,7 @@ public class GregTech_API {
         if (GregTech_API.sThaumcraftCompat != null)
             GregTech_API.sThaumcraftCompat.registerPortholeBlacklistedBlock(aBlock);
         int rMeta = 0;
-        for (byte i = 0; i < aMeta.length && i < 16; i++) if (aMeta[i]) rMeta |= B[i];
+        for (byte i = 0; i < 16 && i < aMeta.length; i++) if (aMeta[i]) rMeta |= B[i];
         sMachineIDs.put(aBlock, rMeta);
         return true;
     }
