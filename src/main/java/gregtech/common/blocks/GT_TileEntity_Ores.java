@@ -2,7 +2,6 @@ package gregtech.common.blocks;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
@@ -10,16 +9,14 @@ import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.world.GT_Worldgen_Ore_Normal;
+import gregtech.api.world.GT_Worldgen_Constants;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -88,7 +85,6 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
             } else if(tBlock == GregTech_API.sBlockStones && BlockMeta == 8) {
                 aMetaData += 6000;
             }
-
             aWorld.setBlockState(blockPos, tOreBlock.getStateFromMeta(getHarvestData((short) aMetaData)), 0);
             TileEntity tTileEntity = aWorld.getTileEntity(blockPos);
             if ((tTileEntity instanceof GT_TileEntity_Ores)) {
@@ -142,7 +138,7 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
                 } else {
                     this.mMetaData = ((short) (this.mMetaData + 3000));
                 }
-            } else if (aOverridingStoneBlock.isReplaceableOreGen(worldObj.getBlockState(getPos()), this.worldObj, getPos(), GT_Worldgen_Ore_Normal.ANY)) {
+            } else if (aOverridingStoneBlock.isReplaceableOreGen(worldObj.getBlockState(getPos()), this.worldObj, getPos(), GT_Worldgen_Constants.ANY)) {
                 if (aOverridingStoneBlock == GregTech_API.sBlockStones) {
                     if (aOverridingStoneMeta < 8) {
                         this.mMetaData = ((short) (this.mMetaData + 5000));
@@ -156,17 +152,17 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
             this.worldObj.setBlockState(getPos(), getBlockType().getStateFromMeta(getHarvestData(this.mMetaData)), 0);
     }
 
-    @Override
-    public void invalidate() {
-        super.invalidate();
-        GT_TickHandler_Ores.unloadChunkOre(this);
-    }
+    //@Override
+    //public void invalidate() {
+        //super.invalidate();
+        //GT_TickHandler_Ores.unloadChunkOre(this);
+    //}
 
-    @Override
-    public void validate() {
-        super.validate();
-        GT_TickHandler_Ores.loadChunkOre(this);
-    }
+    //@Override
+    //public void validate() {
+        //super.validate();
+        //GT_TickHandler_Ores.loadChunkOre(this);
+    //}
 
     public void convertOreBlock(World aWorld, int aX, int aY, int aZ) {
         short aMeta = ((short) (int) (this.mMetaData % 1000 + (this.mMetaData / 16000 * 16000)));

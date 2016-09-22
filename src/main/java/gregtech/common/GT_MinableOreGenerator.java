@@ -1,9 +1,8 @@
 package gregtech.common;
 
-import gregtech.api.world.GT_Worldgen_Ore_Normal;
+import gregtech.api.world.GT_Worldgen_Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -65,7 +64,7 @@ public class GT_MinableOreGenerator
                                 BlockPos block = new BlockPos(var38, var41, var44);
                                 IBlockState blockState = par1World.getBlockState(block);
                                 if ((var39 * var39 + var42 * var42 + var45 * var45 < 1.0D) && ((this.allowVoid && par1World.isAirBlock(block)) ||
-                                        (block != null && (blockState.getBlock().isReplaceableOreGen(blockState, par1World, pos, GT_Worldgen_Ore_Normal.ANY))))) {
+                                        (block != null && (blockState.getBlock().isReplaceableOreGen(blockState, par1World, pos, GT_Worldgen_Constants.ANY))))) {
                                     par1World.setBlockState(block, this.minableBlockId.getStateFromMeta(minableBlockMeta));
                                 }
                             }

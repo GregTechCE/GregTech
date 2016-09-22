@@ -18,7 +18,7 @@ import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Random;
 
-public class GT_Worldgen_Ore_Normal {
+public class GT_Worldgen_Constants {
 
 
     public static Predicate<IBlockState> STONES = input ->

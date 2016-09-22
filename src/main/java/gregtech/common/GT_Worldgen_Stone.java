@@ -2,7 +2,7 @@ package gregtech.common;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.world.GT_Worldgen_Ore;
-import gregtech.api.world.GT_Worldgen_Ore_Normal;
+import gregtech.api.world.GT_Worldgen_Constants;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import net.minecraft.block.Block;
@@ -71,7 +71,7 @@ public class GT_Worldgen_Stone
                                                         ((GT_TileEntity_Ores)tTileEntity).overrideOreBlockMaterial(this.mBlock, (byte) this.mBlockMeta);
                                                     }
                                                 } else if ((this.mAllowToGenerateinVoid && aWorld.isAirBlock(randPos)) ||
-                                                        (tTargetedBlock != null && tTargetedBlock.getBlock().isReplaceableOreGen(tTargetedBlock, aWorld, randPos, GT_Worldgen_Ore_Normal.ANY))) {
+                                                        (tTargetedBlock != null && tTargetedBlock.getBlock().isReplaceableOreGen(tTargetedBlock, aWorld, randPos, GT_Worldgen_Constants.ANY))) {
                                                     aWorld.setBlockState(randPos, this.mBlock.getStateFromMeta(mBlockMeta));
                                                 }
                                             }

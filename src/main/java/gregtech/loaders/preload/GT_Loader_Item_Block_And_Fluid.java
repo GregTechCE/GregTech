@@ -143,7 +143,7 @@ public class GT_Loader_Item_Block_And_Fluid
             GregTech_API.sBlockOresUb2 = new GT_Block_Ores_UB2();
             GregTech_API.sBlockOresUb3 = new GT_Block_Ores_UB3();
         }
-        new GT_TickHandler_Ores();
+        //new GT_TickHandler_Ores();
         GregTech_API.sBlockMetal1 = new GT_Block_Metal("gt.blockmetal1", new Materials[]{
                 Materials.Adamantium,
                 Materials.Aluminium,

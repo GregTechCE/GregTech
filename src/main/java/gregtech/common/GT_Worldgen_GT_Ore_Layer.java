@@ -10,6 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
+import org.apache.commons.lang3.time.StopWatch;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -60,12 +61,15 @@ public class GT_Worldgen_GT_Ore_Layer
 
     @Override
     public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX, int aChunkZ, IChunkGenerator aChunkGenerator, IChunkProvider aChunkProvider) {
-        if (!this.mBiome.equals("None") && !(this.mBiome.equals(aBiome))) {
-            return false; //Not the correct biome for ore mix
-        }
+        //if (!this.mBiome.equals("None") && !(this.mBiome.equals(aBiome))) {
+        //    return false; //Not the correct biome for ore mix
+        //}
+
         if (!isDimensionAllowed(aWorld, aDimensionType, mNether, mOverworld, mEnd)) {
             return false;
         }
+        //StopWatch watch = new StopWatch();
+        //watch.start();
         int tMinY = this.mMinY + aRandom.nextInt(this.mMaxY - this.mMinY - 5);
 
         int cX = aChunkX - aRandom.nextInt(this.mSize);
@@ -108,9 +112,10 @@ public class GT_Worldgen_GT_Ore_Layer
                 }
             }
         }
-        if (GT_Values.D1) {
-            System.out.println("Generated Orevein: " + this.mWorldGenName);
-        }
+        //watch.stop();
+        //if (GT_Values.D1) {
+            //System.out.println("Generated Orevein: " + watch.getTime() + " ms " + this.mWorldGenName + " X: " + (aChunkX * 16) + " Z: " + (aChunkZ * 16));
+        //}
         return true;
     }
 }

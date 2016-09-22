@@ -36,9 +36,9 @@ public class GT_Worldgen_GT_Ore_SmallPieces
 
     @Override
     public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX, int aChunkZ, IChunkGenerator aChunkGenerator, IChunkProvider aChunkProvider) {
-        if (!this.mBiome.equals("None") && !(this.mBiome.equals(aBiome))) {
-            return false; //Not the correct biome for ore mix
-        }
+        //if (!this.mBiome.equals("None") && !(this.mBiome.equals(aBiome))) {
+        //    return false; //Not the correct biome for ore mix
+        //}
         if (!isDimensionAllowed(aWorld, aDimensionType, mNether, mOverworld, mEnd)) {
             return false;
         }

@@ -51,7 +51,7 @@ public class GT_TickHandler_Ores {
 
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent player) {
-        if(player.side.isServer()) {
+        /*if(player.side.isServer()) {
             EntityPlayer entityPlayer = player.player;
             World world = entityPlayer.worldObj;
             if (world.getWorldTime() % 10 == 0) {
@@ -71,7 +71,7 @@ public class GT_TickHandler_Ores {
                     GT_Values.NW.sendTo(packet_ores, (EntityPlayerMP) entityPlayer);
                 }
             }
-        }
+        }*/
     }
 
 
