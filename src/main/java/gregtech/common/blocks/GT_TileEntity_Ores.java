@@ -16,12 +16,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -29,6 +33,63 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
 
     public short mMetaData = 0;
     public boolean mNatural = false;
+
+    @Nullable
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        return new SPacketUpdateTileEntity(this.pos, -1, this.getUpdateTag());
+    }
+
+    @Override
+    public NBTTagCompound getUpdateTag() {
+        return writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+        readFromNBT(pkt.getNbtCompound());
+        causeChunkUpdate();
+    }
+
+    @Override
+    public void handleUpdateTag(NBTTagCompound tag) {
+        readNBTInternal(tag);
+        causeChunkUpdate();
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound aNBT) {
+        super.readFromNBT(aNBT);
+        readNBTInternal(aNBT);
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound aNBT) {
+        super.writeToNBT(aNBT);
+        writeNBTInternal(aNBT);
+        return aNBT;
+    }
+
+    public void writeNBTInternal(NBTTagCompound tagCompound) {
+        tagCompound.setShort("m", this.mMetaData);
+        tagCompound.setBoolean("n", this.mNatural);
+    }
+
+    public void readNBTInternal(NBTTagCompound tagCompound) {
+        this.mMetaData = tagCompound.getShort("m");
+        this.mNatural = tagCompound.getBoolean("n");
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void causeChunkUpdate() {
+        int minX = pos.getX() - 5;
+        int minY = pos.getY() - 5;
+        int minZ = pos.getZ() - 5;
+        int maxX = pos.getX() + 5;
+        int maxY = pos.getY() + 5;
+        int maxZ = pos.getZ() + 5;
+        Minecraft.getMinecraft().renderGlobal.markBlockRangeForRenderUpdate(minX, minY, minZ, maxX, maxY, maxZ);
+    }
 
     public static byte getHarvestData(short aMetaData) {
         Materials aMaterial = GregTech_API.sGeneratedMaterials[(aMetaData % 1000)];
@@ -96,32 +157,6 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
         return false;
     }
 
-    @Override
-    public void readFromNBT(NBTTagCompound aNBT) {
-        super.readFromNBT(aNBT);
-        this.mMetaData = aNBT.getShort("m");
-        this.mNatural = aNBT.getBoolean("n");
-    }
-
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound aNBT) {
-        super.writeToNBT(aNBT);
-        aNBT.setShort("m", this.mMetaData);
-        aNBT.setBoolean("n", this.mNatural);
-        return aNBT;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void causeChunkUpdate() {
-        int minX = pos.getX() - 5;
-        int minY = pos.getY() - 5;
-        int minZ = pos.getZ() - 5;
-        int maxX = pos.getX() + 5;
-        int maxY = pos.getY() + 5;
-        int maxZ = pos.getZ() + 5;
-        Minecraft.getMinecraft().renderGlobal.markBlockRangeForRenderUpdate(minX, minY, minZ, maxX, maxY, maxZ);
-    }
-
     public void overrideOreBlockMaterial(Block aOverridingStoneBlock, byte aOverridingStoneMeta) {
             this.mMetaData = ((short) (int) (this.mMetaData % 1000L + this.mMetaData / 16000L * 16000L));
             if (aOverridingStoneBlock.isReplaceableOreGen(worldObj.getBlockState(getPos()), this.worldObj, getPos(), state -> state.getBlock() == Blocks.NETHERRACK)) {
@@ -152,18 +187,6 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
             this.worldObj.setBlockState(getPos(), getBlockType().getStateFromMeta(getHarvestData(this.mMetaData)), 0);
     }
 
-    //@Override
-    //public void invalidate() {
-        //super.invalidate();
-        //GT_TickHandler_Ores.unloadChunkOre(this);
-    //}
-
-    //@Override
-    //public void validate() {
-        //super.validate();
-        //GT_TickHandler_Ores.loadChunkOre(this);
-    //}
-
     public void convertOreBlock(World aWorld, int aX, int aY, int aZ) {
         short aMeta = ((short) (int) (this.mMetaData % 1000 + (this.mMetaData / 16000 * 16000)));
         aWorld.setBlockState(new BlockPos(aX, aY, aZ), GregTech_API.sBlockOres1.getStateFromMeta(getHarvestData(aMeta)));
@@ -171,10 +194,6 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
         if (tTileEntity instanceof GT_TileEntity_Ores) {
             ((GT_TileEntity_Ores) tTileEntity).mMetaData = aMeta;
         }
-    }
-
-    public short getMetaData() {
-        return this.mMetaData;
     }
 
     public ArrayList<ItemStack> getDrops(Block aDroppedOre, int aFortune) {
@@ -252,6 +271,7 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
         return rList;
     }
 
+    @Override
     public ITexture[] getTexture(Block aBlock, byte aSide) {
         Materials aMaterial = GregTech_API.sGeneratedMaterials[(this.mMetaData % 1000)];
         if ((aMaterial != null) && (this.mMetaData < 32000)) {
@@ -264,4 +284,5 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
                 new GT_RenderedTexture("minecraft:blocks/stone", null),
                 new GT_RenderedTexture(gregtech.api.enums.TextureSet.SET_NONE.mTextures[OrePrefixes.ore.mTextureIndex])};
     }
+
 }
