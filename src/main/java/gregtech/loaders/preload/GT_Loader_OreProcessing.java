@@ -24,6 +24,7 @@ public class GT_Loader_OreProcessing
         new ProcessingDust();
         new ProcessingDye();
         new ProcessingFoil();
+        new ProcessingFineWire();
         new ProcessingFood();
         new ProcessingLens();
         new ProcessingShaping();
@@ -43,6 +44,7 @@ public class GT_Loader_OreProcessing
         new ProcessingPure();
         new ProcessingRecycling();
         new ProcessingRound();
+        new ProcessingRotor();
         new ProcessingSand();
         new ProcessingSaplings();
         new ProcessingScrew();

@@ -24,7 +24,16 @@ public class ProcessingConfig implements gregtech.api.interfaces.IMaterialHandle
     public void onComponentRegistration(Materials aMaterial) {
         switch (aMaterial.mName) {
             case "Cobalt":
-                OrePrefixes.spring.mGeneratedItems.add(aMaterial);
+                OrePrefixes.spring.mDisabledMaterials.remove(aMaterial);
+                OrePrefixes.ingotDouble.mDisabledMaterials.remove(aMaterial);
+                OrePrefixes.ingotTriple.mDisabledMaterials.remove(aMaterial);
+                OrePrefixes.ingotQuadruple.mDisabledMaterials.remove(aMaterial);
+                OrePrefixes.ingotQuintuple.mDisabledMaterials.remove(aMaterial);
+                OrePrefixes.plateDouble.mDisabledMaterials.remove(aMaterial);
+                OrePrefixes.plateTriple.mDisabledMaterials.remove(aMaterial);
+                OrePrefixes.plateQuadruple.mDisabledMaterials.remove(aMaterial);
+                OrePrefixes.plateQuintuple.mDisabledMaterials.remove(aMaterial);
+                OrePrefixes.plateDense.mDisabledMaterials.remove(aMaterial);
                 break;
         }
     }

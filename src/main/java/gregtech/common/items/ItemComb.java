@@ -1,7 +1,6 @@
 package gregtech.common.items;
 
 import com.google.common.collect.ImmutableMap;
-
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -12,7 +11,6 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -185,7 +183,8 @@ public class ItemComb extends Item {
 		addProcess(tComb, Materials.VanadiumMagnetite, 100);
 		addProcess(tComb, Materials.BandedIron, 100);
 		addProcess(tComb, Materials.Pyrite, 100);
-		addProcess(tComb, Materials.MeteoricIron, 100);
+		if (Materials.aEnableGalacticraftMats)
+			addProcess(tComb, Materials.MeteoricIron, 100);
 		tComb = getStackForType(CombType.STEEL);
 		addProcess(tComb, Materials.Iron, Materials.Steel, 100);
 		addProcess(tComb, Materials.Magnetite, Materials.Steel, 100);
@@ -194,7 +193,8 @@ public class ItemComb extends Item {
 		addProcess(tComb, Materials.VanadiumMagnetite, Materials.VanadiumSteel, 100);
 		addProcess(tComb, Materials.BandedIron, Materials.Steel, 100);
 		addProcess(tComb, Materials.Pyrite, Materials.Steel, 100);
-		addProcess(tComb, Materials.MeteoricIron, Materials.MeteoricSteel, 100);
+		if (Materials.aEnableGalacticraftMats)
+			addProcess(tComb, Materials.MeteoricIron, Materials.MeteoricSteel, 100);
 		addProcess(tComb, Materials.Molybdenite, 100);
 		addProcess(tComb, Materials.Molybdenum, 100);
 		tComb = getStackForType(CombType.NICKEL);
