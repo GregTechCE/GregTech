@@ -11,6 +11,7 @@ import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
+import gregtech.loaders.materialprocessing.ProcessingConfig;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -1333,6 +1334,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     public static void init() {
+        new ProcessingConfig();
         for (IMaterialHandler aRegistrator : mMaterialHandlers) {
             aRegistrator.onMaterialsInit(); //This is where addon mods can add/manipulate materials
         }
@@ -1340,7 +1342,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MATERIALS_ARRAY = MATERIALS_MAP.values().toArray(new Materials[MATERIALS_MAP.size()]); //Generate standard object array. This is a lot faster to loop over.
         OrePrefixes.initMaterialComponents();
         for (Materials aMaterial : MATERIALS_ARRAY) {
-            if (aMaterial.mMetaItemSubID >= 0 /*&& OrePrefixes.ore.isComponentEnabled(aMaterial)*/) {
+            if (aMaterial.mMetaItemSubID >= 0) {
                 if (aMaterial.mMetaItemSubID < 1000) {
                     if (GregTech_API.sGeneratedMaterials[aMaterial.mMetaItemSubID] == null) {
                         GregTech_API.sGeneratedMaterials[aMaterial.mMetaItemSubID] = aMaterial;

@@ -3,7 +3,6 @@ package gregtech.loaders.materialprocessing;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 
 public class ProcessingConfig implements gregtech.api.interfaces.IMaterialHandler {
@@ -22,19 +21,20 @@ public class ProcessingConfig implements gregtech.api.interfaces.IMaterialHandle
 
     @Override
     public void onComponentRegistration(Materials aMaterial) {
+        /** This is just left here as an example of how to add components.
         switch (aMaterial.mName) {
             case "Cobalt":
-                OrePrefixes.spring.mDisabledMaterials.remove(aMaterial);
-                OrePrefixes.ingotDouble.mDisabledMaterials.remove(aMaterial);
-                OrePrefixes.ingotTriple.mDisabledMaterials.remove(aMaterial);
-                OrePrefixes.ingotQuadruple.mDisabledMaterials.remove(aMaterial);
-                OrePrefixes.ingotQuintuple.mDisabledMaterials.remove(aMaterial);
-                OrePrefixes.plateDouble.mDisabledMaterials.remove(aMaterial);
-                OrePrefixes.plateTriple.mDisabledMaterials.remove(aMaterial);
-                OrePrefixes.plateQuadruple.mDisabledMaterials.remove(aMaterial);
-                OrePrefixes.plateQuintuple.mDisabledMaterials.remove(aMaterial);
-                OrePrefixes.plateDense.mDisabledMaterials.remove(aMaterial);
+                OrePrefixes.spring.mDisabledItems.remove(aMaterial);
+                OrePrefixes.ingotDouble.mDisabledItems.remove(aMaterial);
+                OrePrefixes.ingotTriple.mDisabledItems.remove(aMaterial);
+                OrePrefixes.ingotQuadruple.mDisabledItems.remove(aMaterial);
+                OrePrefixes.ingotQuintuple.mDisabledItems.remove(aMaterial);
+                OrePrefixes.plateDouble.mDisabledItems.remove(aMaterial);
+                OrePrefixes.plateTriple.mDisabledItems.remove(aMaterial);
+                OrePrefixes.plateQuadruple.mDisabledItems.remove(aMaterial);
+                OrePrefixes.plateQuintuple.mDisabledItems.remove(aMaterial);
+                OrePrefixes.plateDense.mDisabledItems.remove(aMaterial);
                 break;
-        }
+        }**/
     }
 }

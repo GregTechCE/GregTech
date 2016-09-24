@@ -262,11 +262,7 @@ public class GT_Mod implements IGT_Mod {
             }
         }
         //GT_Config.troll = (Calendar.getInstance().get(2) + 1 == 4) && (Calendar.getInstance().get(5) >= 1) && (Calendar.getInstance().get(5) <= 2);
-        new GT_Loader_MaterialProcessing().run();
-        long startTime = System.nanoTime();
         Materials.init();
-        long stopTime = System.nanoTime();
-        System.out.println("##### Mats Init: " + (stopTime - startTime));
 
         GT_Log.out.println("GT_Mod: Saving Main Config");
         tMainConfig.save();
