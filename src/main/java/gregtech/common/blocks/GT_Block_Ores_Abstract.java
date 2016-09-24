@@ -60,7 +60,8 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
                     if ((GregTech_API.sGeneratedMaterials[i].mTypes & 0x8) != 0) {
                         GT_OreDictUnificator.registerOre(this.getProcessingPrefix()[j] != null ? this.getProcessingPrefix()[j].get(GregTech_API.sGeneratedMaterials[i]) : "", new ItemStack(this, 1, i + (j * 1000)));
                         if (tHideOres) {
-                            codechicken.nei.api.API.hideItem(new ItemStack(this, 1, (j == 0 && aHideFirstMeta) ? i : i + (j * 1000)));
+                        	if(!(j == 0 && !aHideFirstMeta)){
+                            codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i + (j * 1000)));}
                             codechicken.nei.api.API.hideItem(new ItemStack(this, 1, (i + 16000) + (j * 1000)));
                         }
                     }
