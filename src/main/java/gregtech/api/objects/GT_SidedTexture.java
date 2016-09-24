@@ -78,10 +78,11 @@ public class GT_SidedTexture implements ITexture, IColorModulationContainer {
         Tessellator.instance.setColorRGBA((int) (mRGBa[0] * 0.5F), (int) (mRGBa[1] * 0.5F), (int) (mRGBa[2] * 0.5F), mAllowAlpha ? 255 - mRGBa[3] : 255);
         IIcon aIcon = mIconContainer[0].getIcon();
 
-        double d3 = aIcon.getInterpolatedU(aRenderer.renderMaxX * 16.0D);
-        double d4 = aIcon.getInterpolatedU(aRenderer.renderMinX * 16.0D);
-        double d5 = aIcon.getInterpolatedV(aRenderer.renderMinZ * 16.0D);
-        double d6 = aIcon.getInterpolatedV(aRenderer.renderMaxZ * 16.0D);
+        float d_16 = 16.0F;
+        float d3 = (float)aIcon.getInterpolatedU(aRenderer.renderMaxX * d_16);
+        float d4 = (float)aIcon.getInterpolatedU(aRenderer.renderMinX * d_16);
+        float d5 = (float)aIcon.getInterpolatedV(aRenderer.renderMinZ * d_16);
+        float d6 = (float)aIcon.getInterpolatedV(aRenderer.renderMaxZ * d_16);
 
         if (aRenderer.renderMinX < 0.0D || aRenderer.renderMaxX > 1.0D) {
             d3 = aIcon.getMaxU();
@@ -93,24 +94,24 @@ public class GT_SidedTexture implements ITexture, IColorModulationContainer {
             d6 = aIcon.getMaxV();
         }
 
-        double d11 = aX + aRenderer.renderMinX;
-        double d12 = aX + aRenderer.renderMaxX;
-        double d13 = aY + aRenderer.renderMinY;
-        double d14 = aZ + aRenderer.renderMinZ;
-        double d15 = aZ + aRenderer.renderMaxZ;
+        float d11 = aX + (float)aRenderer.renderMinX;
+        float d12 = aX + (float)aRenderer.renderMaxX;
+        float d13 = aY + (float)aRenderer.renderMinY;
+        float d14 = aZ + (float)aRenderer.renderMinZ;
+        float d15 = aZ + (float)aRenderer.renderMaxZ;
 
-        Tessellator.instance.addVertexWithUV(d11, d13, d15, d3, d6);
-        Tessellator.instance.addVertexWithUV(d11, d13, d14, d3, d5);
-        Tessellator.instance.addVertexWithUV(d12, d13, d14, d4, d5);
-        Tessellator.instance.addVertexWithUV(d12, d13, d15, d4, d6);
+        Tessellator.instance.addVertexWithUV((double)d11, (double)d13, (double)d15, (double)d3, (double)d6);
+        Tessellator.instance.addVertexWithUV((double)d11, (double)d13, (double)d14, (double)d3, (double)d5);
+        Tessellator.instance.addVertexWithUV((double)d12, (double)d13, (double)d14, (double)d4, (double)d5);
+        Tessellator.instance.addVertexWithUV((double)d12, (double)d13, (double)d15, (double)d4, (double)d6);
 
         if ((aIcon = mIconContainer[0].getOverlayIcon()) != null) {
             Tessellator.instance.setColorRGBA(128, 128, 128, 255);
 
-            d3 = aIcon.getInterpolatedU(aRenderer.renderMaxX * 16.0D);
-            d4 = aIcon.getInterpolatedU(aRenderer.renderMinX * 16.0D);
-            d5 = aIcon.getInterpolatedV(aRenderer.renderMinZ * 16.0D);
-            d6 = aIcon.getInterpolatedV(aRenderer.renderMaxZ * 16.0D);
+            d3 = (float)aIcon.getInterpolatedU(aRenderer.renderMaxX * d_16);
+            d4 = (float)aIcon.getInterpolatedU(aRenderer.renderMinX * d_16);
+            d5 = (float)aIcon.getInterpolatedV(aRenderer.renderMinZ * d_16);
+            d6 = (float)aIcon.getInterpolatedV(aRenderer.renderMaxZ * d_16);
 
             if (aRenderer.renderMinX < 0.0D || aRenderer.renderMaxX > 1.0D) {
                 d3 = aIcon.getMaxU();
@@ -122,16 +123,16 @@ public class GT_SidedTexture implements ITexture, IColorModulationContainer {
                 d6 = aIcon.getMaxV();
             }
 
-            d11 = aX + aRenderer.renderMinX;
-            d12 = aX + aRenderer.renderMaxX;
-            d13 = aY + aRenderer.renderMinY;
-            d14 = aZ + aRenderer.renderMinZ;
-            d15 = aZ + aRenderer.renderMaxZ;
+            d11 = aX + (float)aRenderer.renderMinX;
+            d12 = aX + (float)aRenderer.renderMaxX;
+            d13 = aY + (float)aRenderer.renderMinY;
+            d14 = aZ + (float)aRenderer.renderMinZ;
+            d15 = aZ + (float)aRenderer.renderMaxZ;
 
-            Tessellator.instance.addVertexWithUV(d11, d13, d15, d3, d6);
-            Tessellator.instance.addVertexWithUV(d11, d13, d14, d3, d5);
-            Tessellator.instance.addVertexWithUV(d12, d13, d14, d4, d5);
-            Tessellator.instance.addVertexWithUV(d12, d13, d15, d4, d6);
+            Tessellator.instance.addVertexWithUV((double)d11, (double)d13, (double)d15, (double)d3, (double)d6);
+            Tessellator.instance.addVertexWithUV((double)d11, (double)d13, (double)d14, (double)d3, (double)d5);
+            Tessellator.instance.addVertexWithUV((double)d12, (double)d13, (double)d14, (double)d4, (double)d5);
+            Tessellator.instance.addVertexWithUV((double)d12, (double)d13, (double)d15, (double)d4, (double)d6);
         }
     }
 

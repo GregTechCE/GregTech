@@ -12,6 +12,7 @@ import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
+import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_BaseCrop;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
@@ -211,15 +212,13 @@ public class GT_Block_Machines
             GregTech_API.sBlockIcons = aIconRegister;
 
             GT_Log.out.println("GT_Mod: Registering MetaTileEntity specific Textures");
-            for (IMetaTileEntity tMetaTileEntity : GregTech_API.METATILEENTITIES) {
-                try {
+            try {
+                for (IMetaTileEntity tMetaTileEntity : GregTech_API.METATILEENTITIES) {
                     if (tMetaTileEntity != null) {
                         tMetaTileEntity.registerIcons(aIconRegister);
                     }
-                } catch (Throwable e) {
-                    e.printStackTrace(GT_Log.err);
                 }
-            }
+            } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
             GT_Log.out.println("GT_Mod: Registering Crop specific Textures");
             try {
                 for (GT_BaseCrop tCrop : GT_BaseCrop.sCropList) {
@@ -230,13 +229,11 @@ public class GT_Block_Machines
             }
             GT_Log.out.println("GT_Mod: Starting Block Icon Load Phase");
             System.out.println("GT_Mod: Starting Block Icon Load Phase");
-            for (Runnable tRunnable : GregTech_API.sGTBlockIconload) {
-                try {
+            try {
+                for (Runnable tRunnable : GregTech_API.sGTBlockIconload) {
                     tRunnable.run();
-                } catch (Throwable e) {
-                    e.printStackTrace(GT_Log.err);
                 }
-            }
+            } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
             GT_Log.out.println("GT_Mod: Finished Block Icon Load Phase");
             System.out.println("GT_Mod: Finished Block Icon Load Phase");
         }
@@ -281,8 +278,7 @@ public class GT_Block_Machines
 
     public void onBlockClicked(World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity != null) &&
-                ((tTileEntity instanceof IGregTechTileEntity))) {
+        if (((tTileEntity instanceof IGregTechTileEntity))) {
             ((IGregTechTileEntity) tTileEntity).onLeftclick(aPlayer);
         }
     }
@@ -308,7 +304,7 @@ public class GT_Block_Machines
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if ((tTileEntity instanceof IGregTechTileEntity)) {
             IGregTechTileEntity tGregTechTileEntity = (IGregTechTileEntity) tTileEntity;
-            Random tRandom = new Random();
+            Random tRandom = new XSTR();
             mTemporaryTileEntity.set(tGregTechTileEntity);
             for (int i = 0; i < tGregTechTileEntity.getSizeInventory(); i++) {
                 ItemStack tItem = tGregTechTileEntity.getStackInSlot(i);
@@ -340,7 +336,7 @@ public class GT_Block_Machines
 
     public int getComparatorInputOverride(World aWorld, int aX, int aY, int aZ, int aSide) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity != null) && ((tTileEntity instanceof IGregTechTileEntity))) {
+        if (((tTileEntity instanceof IGregTechTileEntity))) {
             return ((IGregTechTileEntity) tTileEntity).getComparatorValue((byte) aSide);
         }
         return 0;
@@ -351,7 +347,7 @@ public class GT_Block_Machines
             return 0;
         }
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity != null) && ((tTileEntity instanceof IGregTechTileEntity))) {
+        if (((tTileEntity instanceof IGregTechTileEntity))) {
             return ((IGregTechTileEntity) tTileEntity).getOutputRedstoneSignal(GT_Utility.getOppositeSide(aSide));
         }
         return 0;
@@ -362,7 +358,7 @@ public class GT_Block_Machines
             return 0;
         }
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity != null) && ((tTileEntity instanceof IGregTechTileEntity))) {
+        if (((tTileEntity instanceof IGregTechTileEntity))) {
             return ((IGregTechTileEntity) tTileEntity).getStrongOutputRedstoneSignal(GT_Utility.getOppositeSide(aSide));
         }
         return 0;
@@ -428,7 +424,7 @@ public class GT_Block_Machines
 
     public float getExplosionResistance(Entity par1Entity, World aWorld, int aX, int aY, int aZ, double explosionX, double explosionY, double explosionZ) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity != null) && ((tTileEntity instanceof IGregTechTileEntity))) {
+        if (((tTileEntity instanceof IGregTechTileEntity))) {
             return ((IGregTechTileEntity) tTileEntity).getBlastResistance((byte) 6);
         }
         return 10.0F;

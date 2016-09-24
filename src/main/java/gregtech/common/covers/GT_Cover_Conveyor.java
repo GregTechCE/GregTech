@@ -24,7 +24,7 @@ public class GT_Cover_Conveyor
         }
         TileEntity tTileEntity = aTileEntity.getTileEntityAtSide(aSide);
         //aTileEntity.decreaseStoredEnergyUnits(1L, true);
-        if (((aCoverVariable % 2 != 1) || (aSide != 1)) && ((aCoverVariable % 2 != 0) || (aSide != 0)) && (aTileEntity.getUniversalEnergyCapacity() >= 128L)) {
+        if (((aCoverVariable % 2 == 0) || (aSide != 1)) && ((aCoverVariable % 2 != 0) || (aSide != 0)) && (aTileEntity.getUniversalEnergyCapacity() >= 128L)) {
             if (aTileEntity.isUniversalEnergyStored(256L)) {
                 aTileEntity.decreaseStoredEnergyUnits(4 * GT_Utility.moveOneItemStack(aCoverVariable % 2 == 0 ? aTileEntity : tTileEntity, aCoverVariable % 2 != 0 ? aTileEntity : tTileEntity, aCoverVariable % 2 != 0 ? GT_Utility.getOppositeSide(aSide) : aSide, aCoverVariable % 2 == 0 ? GT_Utility.getOppositeSide(aSide) : aSide, null, false, (byte) 64, (byte) 1, (byte) 64, (byte) 1), true);
             }

@@ -95,7 +95,8 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
             int flow = 0;
             int totalFlow = 0;
 
-            for (int i = 0; i < aFluids.size(); i++) {
+            int aFluids_sS=aFluids.size();
+            for (int i = 0; i < aFluids_sS; i++) {
                 if (aFluids.get(i).isFluidEqual(firstFuelType)) {
                     flow = aFluids.get(i).amount; // Get all (steam) in hatch
                     flow = Math.min(flow, Math.min(remainingFlow, (int) (actualOptimalFlow * 1.25f))); // try to use up to 125% of optimal flow w/o exceeding remainingFlow
@@ -114,9 +115,9 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
                 if (efficiency < 0)
                     efficiency = 0; // Can happen with really ludicrously poor inefficiency.
                 tEU *= efficiency;
-                tEU = Math.max(1, tEU * aBaseEff / 10000);
+                tEU = Math.max(1, (int)((long)tEU * (long)aBaseEff / 10000L));
             } else {
-                tEU = tEU * aBaseEff / 10000;
+                tEU = (int)((long)tEU * (long)aBaseEff / 10000L);
             }
 
             return tEU;

@@ -29,6 +29,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static gregtech.api.enums.GT_Values.*;
 
@@ -82,8 +83,9 @@ public class GregTech_API {
      * 9728 - 10239 are reserved for 28Smiles.
      * 10240 - 10751 are reserved for VirMan.
      * 10752 - 11263 are reserved for Briareos81.
-     * 11264 - 12000 are reserved for the next one who asks me.
-     * 9728 - 32766 are currently free.
+     * 11264 - 12000 are reserved for Quantum64.
+     * 12001 - 12200 are reserved for the next one who asks me.
+     * 12001 - 32766 are currently free.
      * <p/>
      * Contact me if you need a free ID-Range, which doesn't conflict with other Addons.
      * You could make an ID-Config, but we all know, what "stupid" customers think about conflicting ID's
@@ -92,35 +94,35 @@ public class GregTech_API {
     /**
      * The Icon List for Covers
      */
-    public static final Map<GT_ItemStack, ITexture> sCovers = new HashMap<GT_ItemStack, ITexture>();
+    public static final Map<GT_ItemStack, ITexture> sCovers = new ConcurrentHashMap<GT_ItemStack, ITexture>();
     /**
      * The List of Cover Behaviors for the Covers
      */
-    public static final Map<GT_ItemStack, GT_CoverBehavior> sCoverBehaviors = new HashMap<GT_ItemStack, GT_CoverBehavior>();
+    public static final Map<GT_ItemStack, GT_CoverBehavior> sCoverBehaviors = new ConcurrentHashMap<GT_ItemStack, GT_CoverBehavior>();
     /**
      * The List of Circuit Behaviors for the Redstone Circuit Block
      */
-    public static final Map<Integer, GT_CircuitryBehavior> sCircuitryBehaviors = new HashMap<Integer, GT_CircuitryBehavior>();
+    public static final Map<Integer, GT_CircuitryBehavior> sCircuitryBehaviors = new ConcurrentHashMap<Integer, GT_CircuitryBehavior>();
     /**
      * The List of Blocks, which can conduct Machine Block Updates
      */
-    public static final Map<Block, Integer> sMachineIDs = new HashMap<Block, Integer>();
+    public static final Map<Block, Integer> sMachineIDs = new ConcurrentHashMap<Block, Integer>();
     /**
      * The Redstone Frequencies
      */
-    public static final Map<Integer, Byte> sWirelessRedstone = new HashMap<Integer, Byte>();
+    public static final Map<Integer, Byte> sWirelessRedstone = new ConcurrentHashMap<Integer, Byte>();
     /**
      * The IDSU Frequencies
      */
-    public static final Map<Integer, Integer> sIDSUList = new HashMap<Integer, Integer>();
+    public static final Map<Integer, Integer> sIDSUList = new ConcurrentHashMap<Integer, Integer>();
     /**
      * A List of all Books, which were created using @GT_Utility.getWrittenBook the original Title is the Key Value
      */
-    public static final Map<String, ItemStack> sBookList = new HashMap<String, ItemStack>();
+    public static final Map<String, ItemStack> sBookList = new ConcurrentHashMap<String, ItemStack>();
     /**
      * The List of all Sounds used in GT, indices are in the static Block at the bottom
      */
-    public static final Map<Integer, String> sSoundList = new HashMap<Integer, String>();
+    public static final Map<Integer, String> sSoundList = new ConcurrentHashMap<Integer, String>();
     /**
      * The List of Tools, which can be used. Accepts regular damageable Items and Electric Items
      */
@@ -190,6 +192,7 @@ public class GregTech_API {
     public static int mRFtoEU = 20;
     public static boolean mRFExplosions = true;
     public static boolean mServerStarted = false;
+    private static final String aTextIC2Lower = MOD_ID_IC2.toLowerCase(Locale.ENGLISH);
     /**
      * Getting assigned by the Mod loading
      */
@@ -215,29 +218,29 @@ public class GregTech_API {
         sSoundList.put(5, "random.explode");
         sSoundList.put(6, "fire.ignite");
 
-        sSoundList.put(100, MOD_ID_IC2.toLowerCase() + ":" + "tools.Wrench");
-        sSoundList.put(101, MOD_ID_IC2.toLowerCase() + ":" + "tools.RubberTrampoline");
-        sSoundList.put(102, MOD_ID_IC2.toLowerCase() + ":" + "tools.Painter");
-        sSoundList.put(103, MOD_ID_IC2.toLowerCase() + ":" + "tools.BatteryUse");
-        sSoundList.put(104, MOD_ID_IC2.toLowerCase() + ":" + "tools.chainsaw.ChainsawUseOne");
-        sSoundList.put(105, MOD_ID_IC2.toLowerCase() + ":" + "tools.chainsaw.ChainsawUseTwo");
-        sSoundList.put(106, MOD_ID_IC2.toLowerCase() + ":" + "tools.drill.DrillSoft");
-        sSoundList.put(107, MOD_ID_IC2.toLowerCase() + ":" + "tools.drill.DrillHard");
-        sSoundList.put(108, MOD_ID_IC2.toLowerCase() + ":" + "tools.ODScanner");
+        sSoundList.put(100, aTextIC2Lower + ":" + "tools.Wrench");
+        sSoundList.put(101, aTextIC2Lower + ":" + "tools.RubberTrampoline");
+        sSoundList.put(102, aTextIC2Lower + ":" + "tools.Painter");
+        sSoundList.put(103, aTextIC2Lower + ":" + "tools.BatteryUse");
+        sSoundList.put(104, aTextIC2Lower + ":" + "tools.chainsaw.ChainsawUseOne");
+        sSoundList.put(105, aTextIC2Lower + ":" + "tools.chainsaw.ChainsawUseTwo");
+        sSoundList.put(106, aTextIC2Lower + ":" + "tools.drill.DrillSoft");
+        sSoundList.put(107, aTextIC2Lower + ":" + "tools.drill.DrillHard");
+        sSoundList.put(108, aTextIC2Lower + ":" + "tools.ODScanner");
 
-        sSoundList.put(200, MOD_ID_IC2.toLowerCase() + ":" + "machines.ExtractorOp");
-        sSoundList.put(201, MOD_ID_IC2.toLowerCase() + ":" + "machines.MaceratorOp");
-        sSoundList.put(202, MOD_ID_IC2.toLowerCase() + ":" + "machines.InductionLoop");
-        sSoundList.put(203, MOD_ID_IC2.toLowerCase() + ":" + "machines.CompressorOp");
-        sSoundList.put(204, MOD_ID_IC2.toLowerCase() + ":" + "machines.RecyclerOp");
-        sSoundList.put(205, MOD_ID_IC2.toLowerCase() + ":" + "machines.MinerOp");
-        sSoundList.put(206, MOD_ID_IC2.toLowerCase() + ":" + "machines.PumpOp");
-        sSoundList.put(207, MOD_ID_IC2.toLowerCase() + ":" + "machines.ElectroFurnaceLoop");
-        sSoundList.put(208, MOD_ID_IC2.toLowerCase() + ":" + "machines.InductionLoop");
-        sSoundList.put(209, MOD_ID_IC2.toLowerCase() + ":" + "machines.MachineOverload");
-        sSoundList.put(210, MOD_ID_IC2.toLowerCase() + ":" + "machines.InterruptOne");
-        sSoundList.put(211, MOD_ID_IC2.toLowerCase() + ":" + "machines.KaChing");
-        sSoundList.put(212, MOD_ID_IC2.toLowerCase() + ":" + "machines.MagnetizerLoop");
+        sSoundList.put(200, aTextIC2Lower + ":" + "machines.ExtractorOp");
+        sSoundList.put(201, aTextIC2Lower + ":" + "machines.MaceratorOp");
+        sSoundList.put(202, aTextIC2Lower + ":" + "machines.InductionLoop");
+        sSoundList.put(203, aTextIC2Lower + ":" + "machines.CompressorOp");
+        sSoundList.put(204, aTextIC2Lower + ":" + "machines.RecyclerOp");
+        sSoundList.put(205, aTextIC2Lower + ":" + "machines.MinerOp");
+        sSoundList.put(206, aTextIC2Lower + ":" + "machines.PumpOp");
+        sSoundList.put(207, aTextIC2Lower + ":" + "machines.ElectroFurnaceLoop");
+        sSoundList.put(208, aTextIC2Lower + ":" + "machines.InductionLoop");
+        sSoundList.put(209, aTextIC2Lower + ":" + "machines.MachineOverload");
+        sSoundList.put(210, aTextIC2Lower + ":" + "machines.InterruptOne");
+        sSoundList.put(211, aTextIC2Lower + ":" + "machines.KaChing");
+        sSoundList.put(212, aTextIC2Lower + ":" + "machines.MagnetizerLoop");
     }
 
     /**
@@ -302,7 +305,7 @@ public class GregTech_API {
         if (GregTech_API.sThaumcraftCompat != null)
             GregTech_API.sThaumcraftCompat.registerPortholeBlacklistedBlock(aBlock);
         int rMeta = 0;
-        for (byte i = 0; i < aMeta.length && i < 16; i++) if (aMeta[i]) rMeta |= B[i];
+        for (byte i = 0; i < 16 && i < aMeta.length; i++) if (aMeta[i]) rMeta |= B[i];
         sMachineIDs.put(aBlock, rMeta);
         return true;
     }

@@ -5,6 +5,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.objects.ItemData;
+import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -87,7 +88,7 @@ public class Behaviour_Prospecting
                         break;
                     }
                 }
-                Random tRandom = new Random(aX ^ aY ^ aZ ^ aSide);
+                Random tRandom = new XSTR(aX ^ aY ^ aZ ^ aSide);
                 i = 0;
                 for (int j = 9 + 2 * tQuality; i < j; i++) {
                     tX = aX - 4 - tQuality + tRandom.nextInt(j);

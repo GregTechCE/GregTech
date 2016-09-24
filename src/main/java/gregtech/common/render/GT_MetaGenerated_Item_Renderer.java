@@ -23,8 +23,6 @@ public class GT_MetaGenerated_Item_Renderer
         GT_MetaGenerated_Item tItem;
         for (Iterator i$ = GT_MetaGenerated_Item.sInstances.values().iterator(); i$.hasNext(); MinecraftForgeClient.registerItemRenderer(tItem, this)) {
             tItem = (GT_MetaGenerated_Item) i$.next();
-            if ((tItem == null) || (!tItem.useStandardMetaItemRenderer())) {
-            }
         }
     }
 

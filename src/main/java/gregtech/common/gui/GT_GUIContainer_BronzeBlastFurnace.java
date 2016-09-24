@@ -21,7 +21,7 @@ public class GT_GUIContainer_BronzeBlastFurnace
         drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
         if ((this.mContainer != null) &&
                 (this.mContainer.mProgressTime > 0)) {
-            drawTexturedModalRect(x + 58, y + 28, 176, 0, Math.max(0, Math.min(20, (this.mContainer.mProgressTime > 0 ? 1 : 0) + this.mContainer.mProgressTime * 20 / (this.mContainer.mMaxProgressTime < 1 ? 1 : this.mContainer.mMaxProgressTime))), 11);
+            drawTexturedModalRect(x + 58, y + 28, 176, 0, Math.max(0, Math.min(20, (1) + this.mContainer.mProgressTime * 20 / (this.mContainer.mMaxProgressTime < 1 ? 1 : this.mContainer.mMaxProgressTime))), 11);
         }
     }
 }

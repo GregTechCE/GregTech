@@ -128,7 +128,7 @@ public class GT_Entity_Arrow
             if (tHitEntity != null) {
                 tVector = new MovingObjectPosition(tHitEntity);
             }
-            if ((tVector != null) && (tVector.entityHit != null) && ((tVector.entityHit instanceof EntityPlayer))) {
+            if ((tVector != null) && ((tVector.entityHit instanceof EntityPlayer))) {
                 EntityPlayer entityplayer = (EntityPlayer) tVector.entityHit;
                 if ((entityplayer.capabilities.disableDamage) || (((tShootingEntity instanceof EntityPlayer)) && (!((EntityPlayer) tShootingEntity).canAttackPlayer(entityplayer)))) {
                     tVector = null;

@@ -14,7 +14,7 @@ public class GT_Block_Ores_UB3 extends GT_Block_Ores_Abstract {
     Block aUBBlock = GameRegistry.findBlock("UndergroundBiomes", "sedimentaryStone");
 
     public GT_Block_Ores_UB3() {
-        super("gt.blockores.ub3", 8, Material.rock);
+        super("gt.blockores.ub3", 8, true, Material.rock);
         if (aUBBlock == null) aUBBlock = Blocks.stone;
     }
 

@@ -27,35 +27,41 @@ public class GT_Worldgen_Stone
                 int tY = this.mMinY + aRandom.nextInt(this.mMaxY - this.mMinY);
                 int tZ = aChunkZ + aRandom.nextInt(16);
                 if ((this.mAllowToGenerateinVoid) || (!aWorld.getBlock(tX, tY, tZ).isAir(aWorld, tX, tY, tZ))) {
-                    float var6 = aRandom.nextFloat() * 3.141593F;
-                    double var7 = tX + 8 + MathHelper.sin(var6) * this.mSize / 8.0F;
-                    double var9 = tX + 8 - MathHelper.sin(var6) * this.mSize / 8.0F;
-                    double var11 = tZ + 8 + MathHelper.cos(var6) * this.mSize / 8.0F;
-                    double var13 = tZ + 8 - MathHelper.cos(var6) * this.mSize / 8.0F;
-                    double var15 = tY + aRandom.nextInt(3) - 2;
-                    double var17 = tY + aRandom.nextInt(3) - 2;
+                    float math_pi = 3.141593F;//FB: CNT - CNT_ROUGH_CONSTANT_VALUE
+                    float var6 = aRandom.nextFloat() * math_pi;
+                    float var1d = this.mSize / 8.0F;int var2d = tX + 8;int var3d = tZ + 8;int var4d = tY - 2;
+                    float mh_s_0 = MathHelper.sin(var6) * var1d;float mh_c_0 = MathHelper.cos(var6) * var1d;
+                    float var7 = var2d + mh_s_0;
+                    float var11 = var3d + mh_c_0;
+                    int var15r = aRandom.nextInt(3);int var17r = aRandom.nextInt(3);
+                    int var15 = var4d + var15r;
+                    int mh_n_4=var17r - var15r;
+                    float mh_n_0 = -2*mh_s_0;float mh_n_1 = -2*mh_c_0;
                     for (int var19 = 0; var19 <= this.mSize; var19++) {
-                        double var20 = var7 + (var9 - var7) * var19 / this.mSize;
-                        double var22 = var15 + (var17 - var15) * var19 / this.mSize;
-                        double var24 = var11 + (var13 - var11) * var19 / this.mSize;
-                        double var26 = aRandom.nextDouble() * this.mSize / 16.0D;
-                        double var28 = (MathHelper.sin(var19 * 3.141593F / this.mSize) + 1.0F) * var26 + 1.0D;
-                        double var30 = (MathHelper.sin(var19 * 3.141593F / this.mSize) + 1.0F) * var26 + 1.0D;
-                        int tMinX = MathHelper.floor_double(var20 - var28 / 2.0D);
-                        int tMinY = MathHelper.floor_double(var22 - var30 / 2.0D);
-                        int tMinZ = MathHelper.floor_double(var24 - var28 / 2.0D);
-                        int tMaxX = MathHelper.floor_double(var20 + var28 / 2.0D);
-                        int tMaxY = MathHelper.floor_double(var22 + var30 / 2.0D);
-                        int tMaxZ = MathHelper.floor_double(var24 + var28 / 2.0D);
+                        float var5d = var19 / this.mSize;
+                        float var20 = var7 + mh_n_0 * var5d;
+                        float var22 = var15 + mh_n_4 * var5d;
+                        float var24 = var11 + mh_n_1 * var5d;
+                        float var6d = var19 * math_pi / this.mSize;
+                        float var26 = aRandom.nextFloat() * this.mSize / 16.0F;
+                        float var28 = ((MathHelper.sin(var6d) + 1.0F) * var26 + 1.0F) / 2.0F;
+                        int tMinX = MathHelper.floor_float(var20 - var28);
+                        int tMinY = MathHelper.floor_float(var22 - var28);
+                        int tMinZ = MathHelper.floor_float(var24 - var28);
+                        int tMaxX = MathHelper.floor_float(var20 + var28);
+                        int tMaxY = MathHelper.floor_float(var22 + var28);
+                        int tMaxZ = MathHelper.floor_float(var24 + var28);
                         for (int eX = tMinX; eX <= tMaxX; eX++) {
-                            double var39 = (eX + 0.5D - var20) / (var28 / 2.0D);
-                            if (var39 * var39 < 1.0D) {
+                            float var39 = (eX + 0.5F - var20) / (var28);
+                            float var10d = var39 * var39;
+                            if (var10d < 1.0F) {
                                 for (int eY = tMinY; eY <= tMaxY; eY++) {
-                                    double var42 = (eY + 0.5D - var22) / (var30 / 2.0D);
-                                    if (var39 * var39 + var42 * var42 < 1.0D) {
+                                    float var42 = (eY + 0.5F - var22) / (var28);
+                                    float var12d = var10d + var42 * var42;
+                                    if (var12d < 1.0F) {
                                         for (int eZ = tMinZ; eZ <= tMaxZ; eZ++) {
-                                            double var45 = (eZ + 0.5D - var24) / (var28 / 2.0D);
-                                            if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D) {
+                                            float var45 = (eZ + 0.5F - var24) / (var28);
+                                            if (var12d + var45 * var45 < 1.0F) {
                                                 Block tTargetedBlock = aWorld.getBlock(eX, eY, eZ);
                                                 if (tTargetedBlock instanceof GT_Block_Ores_Abstract) {
                                                     TileEntity tTileEntity = aWorld.getTileEntity(eX, eY, eZ);

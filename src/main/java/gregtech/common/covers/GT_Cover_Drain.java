@@ -72,8 +72,6 @@ public class GT_Cover_Drain
     }
 
     public boolean letsFluidIn(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
-        if ((aCoverVariable > 1) && ((aTileEntity instanceof IMachineProgress))) {
-        }
         return ((IMachineProgress) aTileEntity).isAllowedToWork() == aCoverVariable < 2;
     }
 

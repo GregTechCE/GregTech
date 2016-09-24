@@ -15,7 +15,7 @@ public class GT_Block_Ores_GC extends GT_Block_Ores_Abstract {
     Block aMarsBlock = GameRegistry.findBlock("GalacticraftMars", "tile.mars");
 
     public GT_Block_Ores_GC() {
-        super("gt.blockores.gc", 4, Material.rock);
+        super("gt.blockores.gc", 4, true, Material.rock);
         if (aMoonBlock == null) aMoonBlock = Blocks.stone;
         if (aMarsBlock == null) aMarsBlock = Blocks.stone;
     }

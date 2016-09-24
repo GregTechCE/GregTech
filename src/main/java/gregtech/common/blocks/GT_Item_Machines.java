@@ -33,53 +33,46 @@ public class GT_Item_Machines
             if ((tDamage <= 0) || (tDamage >= GregTech_API.METATILEENTITIES.length)) {
                 return;
             }
-            if (tDamage == 0) {
-                aList.add("WARNING, THE EXISTENCE OF THIS ITEM IS A BUG");
-                aList.add("IF YOU GOT IT IN SURVIVAL THEN PLEASE REPORT IT");
-            } else {
-                TileEntity temp = GregTech_API.sBlockMachines.createTileEntity(aPlayer == null ? GT_Values.DW : aPlayer.worldObj, GregTech_API.METATILEENTITIES[tDamage] == null ? 0 : GregTech_API.METATILEENTITIES[tDamage].getTileEntityBaseType());
-                if (temp != null) {
-                    temp.setWorldObj(aPlayer == null ? GT_Values.DW : aPlayer.worldObj);
-                    temp.xCoord = 0;
-                    temp.yCoord = 0;
-                    temp.zCoord = 0;
-                    if ((temp instanceof IGregTechTileEntity)) {
-                        IGregTechTileEntity tTileEntity = (IGregTechTileEntity) temp;
-                        tTileEntity.setInitialValuesAsNBT(new NBTTagCompound(), (short) tDamage);
-                        if (tTileEntity.getDescription() != null) {
-                            int i = 0;
-                            for (String tDescription : tTileEntity.getDescription()) {
-                                if (GT_Utility.isStringValid(tDescription)) {
-                                    aList.add(GT_LanguageManager.addStringLocalization("TileEntity_DESCRIPTION_" + tDamage + "_Index_" + i++, tDescription, !GregTech_API.sPostloadFinished));
-                                }
-                            }
-                        }
-                        if (tTileEntity.getEUCapacity() > 0L) {
-                            if (tTileEntity.getInputVoltage() > 0L) {
-                                aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_IN", "Voltage IN: ", !GregTech_API.sPostloadFinished) + EnumChatFormatting.GREEN + tTileEntity.getInputVoltage() + " (" + GT_Values.VN[GT_Utility.getTier(tTileEntity.getInputVoltage())] + ")" + EnumChatFormatting.GRAY);
-                            }
-                            if (tTileEntity.getOutputVoltage() > 0L) {
-                                aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_OUT", "Voltage OUT: ", !GregTech_API.sPostloadFinished) + EnumChatFormatting.GREEN + tTileEntity.getOutputVoltage() + " (" + GT_Values.VN[GT_Utility.getTier(tTileEntity.getOutputVoltage())] + ")" + EnumChatFormatting.GRAY);
-                            }
-                            if (tTileEntity.getOutputAmperage() > 1L) {
-                                aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_AMOUNT", "Amperage: ", !GregTech_API.sPostloadFinished) + EnumChatFormatting.YELLOW + tTileEntity.getOutputAmperage() + EnumChatFormatting.GRAY);
-                            }
-                            aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_STORE", "Capacity: ", !GregTech_API.sPostloadFinished) + EnumChatFormatting.BLUE + tTileEntity.getEUCapacity() + EnumChatFormatting.GRAY);
+            TileEntity temp = GregTech_API.sBlockMachines.createTileEntity(aPlayer == null ? GT_Values.DW : aPlayer.worldObj, GregTech_API.METATILEENTITIES[tDamage] == null ? 0 : GregTech_API.METATILEENTITIES[tDamage].getTileEntityBaseType());
+            temp.setWorldObj(aPlayer == null ? GT_Values.DW : aPlayer.worldObj);
+            temp.xCoord = 0;
+            temp.yCoord = 0;
+            temp.zCoord = 0;
+            if ((temp instanceof IGregTechTileEntity)) {
+                IGregTechTileEntity tTileEntity = (IGregTechTileEntity) temp;
+                tTileEntity.setInitialValuesAsNBT(new NBTTagCompound(), (short) tDamage);
+                if (tTileEntity.getDescription() != null) {
+                    int i = 0;
+                    for (String tDescription : tTileEntity.getDescription()) {
+                        if (GT_Utility.isStringValid(tDescription)) {
+                            aList.add(GT_LanguageManager.addStringLocalization("TileEntity_DESCRIPTION_" + tDamage + "_Index_" + i++, tDescription, !GregTech_API.sPostloadFinished ));
                         }
                     }
+                }
+                if (tTileEntity.getEUCapacity() > 0L) {
+                    if (tTileEntity.getInputVoltage() > 0L) {
+                        aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_IN", "Voltage IN: ", !GregTech_API.sPostloadFinished ) + EnumChatFormatting.GREEN + tTileEntity.getInputVoltage() + " (" + GT_Values.VN[GT_Utility.getTier(tTileEntity.getInputVoltage())] + ")" + EnumChatFormatting.GRAY);
+                    }
+                    if (tTileEntity.getOutputVoltage() > 0L) {
+                        aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_OUT", "Voltage OUT: ", !GregTech_API.sPostloadFinished ) + EnumChatFormatting.GREEN + tTileEntity.getOutputVoltage() + " (" + GT_Values.VN[GT_Utility.getTier(tTileEntity.getOutputVoltage())] + ")" + EnumChatFormatting.GRAY);
+                    }
+                    if (tTileEntity.getOutputAmperage() > 1L) {
+                        aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_AMOUNT", "Amperage: ", !GregTech_API.sPostloadFinished ) + EnumChatFormatting.YELLOW + tTileEntity.getOutputAmperage() + EnumChatFormatting.GRAY);
+                    }
+                    aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_STORE", "Capacity: ", !GregTech_API.sPostloadFinished ) + EnumChatFormatting.BLUE + tTileEntity.getEUCapacity() + EnumChatFormatting.GRAY);
                 }
             }
             NBTTagCompound aNBT = aStack.getTagCompound();
             if (aNBT != null) {
                 if (aNBT.getBoolean("mMuffler")) {
-                    aList.add(GT_LanguageManager.addStringLocalization("GT_TileEntity_MUFFLER", "has Muffler Upgrade", !GregTech_API.sPostloadFinished));
+                    aList.add(GT_LanguageManager.addStringLocalization("GT_TileEntity_MUFFLER", "has Muffler Upgrade", !GregTech_API.sPostloadFinished ));
                 }
                 if (aNBT.getBoolean("mSteamConverter")) {
-                    aList.add(GT_LanguageManager.addStringLocalization("GT_TileEntity_STEAMCONVERTER", "has Steam Upgrade", !GregTech_API.sPostloadFinished));
+                    aList.add(GT_LanguageManager.addStringLocalization("GT_TileEntity_STEAMCONVERTER", "has Steam Upgrade", !GregTech_API.sPostloadFinished ));
                 }
                 int tAmount = 0;
                 if ((tAmount = aNBT.getByte("mSteamTanks")) > 0) {
-                    aList.add(tAmount + " " + GT_LanguageManager.addStringLocalization("GT_TileEntity_STEAMTANKS", "Steam Tank Upgrades", !GregTech_API.sPostloadFinished));
+                    aList.add(tAmount + " " + GT_LanguageManager.addStringLocalization("GT_TileEntity_STEAMTANKS", "Steam Tank Upgrades", !GregTech_API.sPostloadFinished ));
                 }
             }
         } catch (Throwable e) {
