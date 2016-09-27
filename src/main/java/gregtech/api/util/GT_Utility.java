@@ -860,10 +860,12 @@ public class GT_Utility {
                 return false;
             }
         }
+        ItemStack[] tStack = GT_OreDictUnificator.getStackArray(true, aOutput);
+        if(tStack==null||(tStack.length>0&&GT_Utility.areStacksEqual(aInput, tStack[0])))return false;
         if (tOreName != null) {
-            aRecipeList.put(new RecipeInputOreDict(tOreName.toString(), aInput.stackSize), new RecipeOutput(aNBT, GT_OreDictUnificator.getStackArray(true, aOutput)));
+            aRecipeList.put(new RecipeInputOreDict(tOreName.toString(), aInput.stackSize), new RecipeOutput(aNBT, tStack));
         } else {
-            aRecipeList.put(new RecipeInputItemStack(copy(aInput), aInput.stackSize), new RecipeOutput(aNBT, GT_OreDictUnificator.getStackArray(true, aOutput)));
+            aRecipeList.put(new RecipeInputItemStack(copy(aInput), aInput.stackSize), new RecipeOutput(aNBT, tStack));
         }
         return true;
     }
@@ -1741,7 +1743,7 @@ public class GT_Utility {
             tList.add("Oil in Chunk: " + tFluid.amount + " " + tFluid.getLocalizedName());
         }
         if(aPlayer.capabilities.isCreativeMode){
-        	ChunkPosition tPos = new ChunkPosition(aX, aY, aZ);
+        	ChunkPosition tPos = new ChunkPosition(aX/16, 1, aZ/16);
         	if(GT_Proxy.chunkData.containsKey(tPos)){
         		int[] tPollution = GT_Proxy.chunkData.get(tPos);
         		if(tPollution.length>1){

@@ -238,7 +238,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
                                 if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
                                     if (mOutputItems != null) for (ItemStack tStack : mOutputItems)
                                         if (tStack != null) {
-                                            GT_Mod.instance.achievements.issueAchivementHatch(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), tStack);
+                                            try{GT_Mod.instance.achievements.issueAchivementHatch(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), tStack);}catch(Exception e){}
                                             addOutput(tStack);
                                         }
                                     if (mOutputFluids != null && mOutputFluids.length == 1) {
