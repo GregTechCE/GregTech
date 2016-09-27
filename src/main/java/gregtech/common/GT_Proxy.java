@@ -149,24 +149,29 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public boolean mAE2Integration = true;
     public boolean mArcSmeltIntoAnnealed = true;
     public boolean mMagneticraftRecipes = true;
+    private boolean isFirstServerWorldTick = true;
+    private boolean mOreDictActivated = false;
+    public boolean mChangeHarvestLevels=false;
+    public boolean mNerfedCombs = true;
+    public boolean mGTBees = true;
+    public boolean mHideUnusedOres = true;
+    public boolean mHideRecyclingRecipes = true;
+    public boolean mPollution = true;
     public int mSkeletonsShootGTArrows = 16;
     public int mMaxEqualEntitiesAtOneSpot = 3;
     public int mFlintChance = 30;
     public int mItemDespawnTime = 6000;
     public int mUpgradeCount = 4;
-    public boolean mGTBees = true;
-    private World mUniverse = null;
-    private boolean isFirstServerWorldTick = true;
-    private boolean mOreDictActivated = false;
     public int[] mHarvestLevel= new int[1000];
     public int mGraniteHavestLevel=3;
     public int mMaxHarvestLevel=7;
-    public boolean mChangeHarvestLevels=false;
-    public boolean mNerfedCombs = true;
     public int mWireHeatingTicks = 4;
-    public boolean mHideUnusedOres = true;
-    public boolean mHideRecyclingRecipes = true;
+    public int mPollutionSmogLimit = 500000;
+    public int mPollutionPoisonLimit = 750000;
+    public int mPollutionVegetationLimit = 1000000;
+    public int mPollutionSourRainLimit = 2000000;
     public double mMagneticraftBonusOutputPercent = 100.0d;
+    private World mUniverse = null;
     private final String aTextThermalExpansion = "ThermalExpansion";
     private final String aTextRailcraft = "Railcraft";
     private final String aTextTwilightForest = "TwilightForest";
@@ -1213,6 +1218,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                     }
                 }
             }
+            if(aEvent.world.provider.dimensionId==0)
             GT_Pollution.onWorldTick((int) (aEvent.world.getTotalWorldTime() % 1200));
         }
     }

@@ -207,7 +207,7 @@ public class GT_MetaTileEntity_Scanner
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (mProgresstime >= (mMaxProgresstime - 1)) {
-            if (this.mOutputItems[0].getUnlocalizedName().equals("gt.metaitem.01.32707")) {
+            if ((this.mOutputItems[0] != null) && (this.mOutputItems[0].getUnlocalizedName().equals("gt.metaitem.01.32707"))) {
                 GT_Mod.instance.achievements.issueAchievement(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "scanning");
             }
         }

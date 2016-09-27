@@ -1740,7 +1740,7 @@ if(Loader.isModLoaded("Railcraft")){
 		addProcess(tCrop, Materials.Galena, 100);
 		tCrop = ItemList.Crop_Drop_Aurelia.get(1, new Object[0]);
 		addProcess(tCrop, Materials.Gold, 100);
-		addProcess(tCrop, Materials.Magnetite, 100);
+		addProcess(tCrop, Materials.Magnetite, Materials.Gold, 100);
 
 	    // Rare Metals Line
 		tCrop = ItemList.Crop_Drop_Bauxite.get(1, new Object[0]);
@@ -1796,6 +1796,15 @@ if(Loader.isModLoaded("Railcraft")){
 	public void addProcess(ItemStack tCrop, Materials aMaterial, int chance){
 		if(GT_Mod.gregtechproxy.mNerfedCombs){
 			GT_Values.RA.addChemicalRecipe(GT_Utility.copyAmount(9, tCrop), GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1), Materials.Water.getFluid(1000), aMaterial.mOreByProducts.isEmpty() ? null : aMaterial.mOreByProducts.get(0).getMolten(144), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4), 96, 24);
+			GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(16, tCrop), Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass()+9)/10))), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1), 10000, (int) (aMaterial.getMass() * 128), 384);
+		}else{
+			GT_ModHandler.addExtractionRecipe(tCrop, GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1));
+}
+	}
+	
+	public void addProcess(ItemStack tCrop, Materials aMaterial, Materials aMaterialOut, int chance){
+		if(GT_Mod.gregtechproxy.mNerfedCombs){
+			GT_Values.RA.addChemicalRecipe(GT_Utility.copyAmount(9, tCrop), GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1), Materials.Water.getFluid(1000), aMaterialOut.mOreByProducts.isEmpty() ? null : aMaterialOut.mOreByProducts.get(0).getMolten(144), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterialOut, 4), 96, 24);
 			GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(16, tCrop), Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass()+9)/10))), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1), 10000, (int) (aMaterial.getMass() * 128), 384);
 		}else{
 			GT_ModHandler.addExtractionRecipe(tCrop, GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1));
