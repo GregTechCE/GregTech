@@ -1742,7 +1742,7 @@ public class GT_Utility {
             FluidStack tFluid = getUndergroundOil(aWorld, aX, aZ);
             tList.add("Oil in Chunk: " + tFluid.amount + " " + tFluid.getLocalizedName());
         }
-        if(aPlayer.capabilities.isCreativeMode){
+//        if(aPlayer.capabilities.isCreativeMode){
         	ChunkPosition tPos = new ChunkPosition(aX/16, 1, aZ/16);
         	if(GT_Proxy.chunkData.containsKey(tPos)){
         		int[] tPollution = GT_Proxy.chunkData.get(tPos);
@@ -1752,7 +1752,7 @@ public class GT_Utility {
         			tList.add("No Pollution in Chunk");
         		}
         	}
-        }
+//        }
 
         try {
             if (tBlock instanceof IDebugableBlock) {
