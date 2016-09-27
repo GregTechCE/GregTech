@@ -210,7 +210,7 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
                         tPipeList.add(tTileEntity);
                         while (!temp && !isInventoryEmpty() && tTileEntity.sendItemStack(aBaseMetaTileEntity))
                             for (IMetaTileEntityItemPipe tPipe : tPipeList)
-                                if (!tPipe.incrementTransferCounter(1)) temp = true;
+                                if (!tPipe.incrementTransferCounter(1)) temp = false;
                     }
                 }
             }
