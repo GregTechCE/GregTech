@@ -1455,26 +1455,27 @@ public class GT_Utility {
         if (tTargetWorld != null && tOriginalWorld != null && tTargetWorld != tOriginalWorld) {
             if (aEntity.ridingEntity != null) aEntity.mountEntity(null);
             if (aEntity.riddenByEntity != null) aEntity.riddenByEntity.mountEntity(null);
-
             if (aEntity instanceof EntityPlayerMP) {
                 EntityPlayerMP aPlayer = (EntityPlayerMP) aEntity;
-                aPlayer.dimension = aDimension;
-                aPlayer.playerNetServerHandler.sendPacket(new S07PacketRespawn(aPlayer.dimension, aPlayer.worldObj.difficultySetting, aPlayer.worldObj.getWorldInfo().getTerrainType(), aPlayer.theItemInWorldManager.getGameType()));
-                tOriginalWorld.removePlayerEntityDangerously(aPlayer);
-                aPlayer.isDead = false;
-                aPlayer.setWorld(tTargetWorld);
-                MinecraftServer.getServer().getConfigurationManager().func_72375_a(aPlayer, tOriginalWorld);
+//                aPlayer.dimension = aDimension;
+//                aPlayer.playerNetServerHandler.sendPacket(new S07PacketRespawn(aPlayer.dimension, aPlayer.worldObj.difficultySetting, aPlayer.worldObj.getWorldInfo().getTerrainType(), aPlayer.theItemInWorldManager.getGameType()));
+//                tOriginalWorld.removePlayerEntityDangerously(aPlayer);
+//                aPlayer.isDead = false;
+//                aPlayer.setWorld(tTargetWorld);
+//                MinecraftServer.getServer().getConfigurationManager().func_72375_a(aPlayer, tOriginalWorld);
+//                aPlayer.playerNetServerHandler.setPlayerLocation(aX + 0.5, aY + 0.5, aZ + 0.5, aPlayer.rotationYaw, aPlayer.rotationPitch);
+//                aPlayer.theItemInWorldManager.setWorld(tTargetWorld);
+//                MinecraftServer.getServer().getConfigurationManager().updateTimeAndWeatherForPlayer(aPlayer, tTargetWorld);
+//                MinecraftServer.getServer().getConfigurationManager().syncPlayerInventory(aPlayer);
+//                Iterator tIterator = aPlayer.getActivePotionEffects().iterator();
+//                while (tIterator.hasNext()) {
+//                    PotionEffect potioneffect = (PotionEffect) tIterator.next();
+//                    aPlayer.playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(aPlayer.getEntityId(), potioneffect));
+//                }
+//                FMLCommonHandler.instance().firePlayerChangedDimensionEvent(aPlayer, tOriginalWorld.provider.dimensionId, aDimension);
+            	aPlayer.travelToDimension(aDimension);
                 aPlayer.playerNetServerHandler.setPlayerLocation(aX + 0.5, aY + 0.5, aZ + 0.5, aPlayer.rotationYaw, aPlayer.rotationPitch);
-                aPlayer.theItemInWorldManager.setWorld(tTargetWorld);
-                MinecraftServer.getServer().getConfigurationManager().updateTimeAndWeatherForPlayer(aPlayer, tTargetWorld);
-                MinecraftServer.getServer().getConfigurationManager().syncPlayerInventory(aPlayer);
-                Iterator tIterator = aPlayer.getActivePotionEffects().iterator();
-                while (tIterator.hasNext()) {
-                    PotionEffect potioneffect = (PotionEffect) tIterator.next();
-                    aPlayer.playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(aPlayer.getEntityId(), potioneffect));
-                }
-                aPlayer.playerNetServerHandler.setPlayerLocation(aX + 0.5, aY + 0.5, aZ + 0.5, aPlayer.rotationYaw, aPlayer.rotationPitch);
-                FMLCommonHandler.instance().firePlayerChangedDimensionEvent(aPlayer, tOriginalWorld.provider.dimensionId, aDimension);
+            	
             } else {
                 aEntity.setPosition(aX + 0.5, aY + 0.5, aZ + 0.5);
                 aEntity.worldObj.removeEntity(aEntity);

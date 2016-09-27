@@ -36,6 +36,7 @@ public class GT_Pollution {
 		if(tList!=null && tList.size() > 0){
 			int i = 0;
 			for(; i < loops ; i++){
+				if(tList.size()>0){
 				ChunkPosition tPos = tList.get(0);
 				tList.remove(0);
 				if(tPos!=null && GT_Proxy.chunkData.containsKey(tPos)){
@@ -95,7 +96,7 @@ public class GT_Pollution {
 					}
 				}
 			}
-		}
+			}}
 	}
 	
 	public static void damageBlock(int x, int y, int z, boolean sourRain){
