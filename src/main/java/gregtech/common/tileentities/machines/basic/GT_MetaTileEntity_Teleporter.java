@@ -284,16 +284,11 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank {
                                     tEntity.riddenByEntity.mountEntity(null);
                                 }
                                 if ((this.mTargetD == getBaseMetaTileEntity().getWorld().provider.dimensionId) || (!isDimensionalTeleportAvailable()) || (!GT_Utility.moveEntityToDimensionAtCoords(tEntity, this.mTargetD, this.mTargetX + 0.5D, this.mTargetY + 0.5D, this.mTargetZ + 0.5D))) {
-//                                   System.out.println("tele");
-////                                    	System.out.println("tdim: "+mTargetD+" proDim: "+getBaseMetaTileEntity().getWorld().provider.dimensionId);
-//                                	if ((tEntity instanceof EntityLivingBase)) {
-//                                    		if(this.mTargetD != getBaseMetaTileEntity().getWorld().provider.dimensionId){
-//                                    			System.out.println("move dim");
-//                                    			GT_Utility.moveEntityToDimensionAtCoords(tEntity, mTargetD, mTargetX, mTargetY, mTargetZ);
-//                                    		}else{((EntityLivingBase) tEntity).setPositionAndUpdate(this.mTargetX + 0.5D, this.mTargetY + 0.5D, this.mTargetZ + 0.5D);}                                		
-//                                    	} else {
-//                                        tEntity.setPosition(this.mTargetX + 0.5D, this.mTargetY + 0.5D, this.mTargetZ + 0.5D);
-//                                    }
+                                    if ((tEntity instanceof EntityLivingBase)) {
+                                        ((EntityLivingBase) tEntity).setPositionAndUpdate(this.mTargetX + 0.5D, this.mTargetY + 0.5D, this.mTargetZ + 0.5D);
+                                    } else {
+                                        tEntity.setPosition(this.mTargetX + 0.5D, this.mTargetY + 0.5D, this.mTargetZ + 0.5D);
+                                    }
                                 }
                             }
                         }
