@@ -1,14 +1,10 @@
 	package gregtech.common;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gregtech.GT_Mod;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
 import net.minecraft.potion.Potion;
@@ -16,8 +12,10 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldManager;
 import net.minecraftforge.common.DimensionManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GT_Pollution {
 	
@@ -26,7 +24,7 @@ public class GT_Pollution {
 	static int loops = 1;
 	static XSTR tRan = new XSTR();
 
-	public static void onWorldTick(int aTick){
+	public static void onWorldTick(World aWorld, int aTick){
 		if(!GT_Mod.gregtechproxy.mPollution)return;
 		if(aTick == 0 || (tList==null && GT_Proxy.chunkData!=null)){
 			tList = new ArrayList<ChunkPosition>(GT_Proxy.chunkData.keySet());
@@ -64,7 +62,7 @@ public class GT_Pollution {
 							GT_Proxy.chunkData.get(tNPos)[1] = tNPol;
 						}
 					}else{
-						GT_Utility.getUndergroundOil(Minecraft.getMinecraft().theWorld,tPos.chunkPosX*16,tPos.chunkPosZ*16);
+						GT_Utility.getUndergroundOil(aWorld,tPos.chunkPosX*16,tPos.chunkPosZ*16);
 					}
 				}}
 				int[] tArray = GT_Proxy.chunkData.get(tPos);
@@ -78,7 +76,7 @@ public class GT_Pollution {
 //				Poison effects
 				if(tPollution > GT_Mod.gregtechproxy.mPollutionPoisonLimit){
 				AxisAlignedBB chunk = AxisAlignedBB.getBoundingBox(tPos.chunkPosX*16, 0, tPos.chunkPosZ*16, tPos.chunkPosX*16+16, 256, tPos.chunkPosZ*16+16);
-				List<EntityLiving> tEntitys = Minecraft.getMinecraft().theWorld.getEntitiesWithinAABB(EntityLiving.class, chunk);
+				List<EntityLiving> tEntitys = aWorld.getEntitiesWithinAABB(EntityLiving.class, chunk);
 				for(EntityLiving tEnt : tEntitys){
 				if(tRan.nextInt(tPollution/25000) > 20){
 					tEnt.addPotionEffect(new PotionEffect(Potion.poison.id, tPollution/25000, 1));

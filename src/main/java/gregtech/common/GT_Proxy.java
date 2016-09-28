@@ -1219,7 +1219,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 }
             }
             if(aEvent.world.provider.dimensionId==0)
-            GT_Pollution.onWorldTick((int) (aEvent.world.getTotalWorldTime() % 1200));
+                GT_Pollution.onWorldTick(aEvent.world, (int) (aEvent.world.getTotalWorldTime() % 1200));
         }
     }
 
