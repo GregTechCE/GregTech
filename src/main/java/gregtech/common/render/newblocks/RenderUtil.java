@@ -58,7 +58,7 @@ public class RenderUtil {
 
             default:
                 System.out.println("Can't render side " + side);
-                return null;
+                throw new IllegalArgumentException();
         }
     }
 
