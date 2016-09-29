@@ -32,6 +32,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import org.lwjgl.opengl.GL11;
 
+import java.net.URL;
 import java.util.*;
 
 // Referenced classes of package gregtech.common:
@@ -49,6 +50,8 @@ public class GT_Client extends GT_Proxy
         });
     }
 
+    private final HashSet mCapeList = new HashSet();
+    private final GT_CapeRenderer mCapeRenderer;
     private final List mPosR;
     private final List mPosG;
     private final List mPosB;
@@ -67,7 +70,9 @@ public class GT_Client extends GT_Proxy
     private final List mMoltenNegA = Arrays.asList(new Object[0]);
     private long mAnimationTick;
     private boolean mAnimationDirection;
+    
     public GT_Client() {
+    	mCapeRenderer = new GT_CapeRenderer(mCapeList);
         mAnimationTick = 0L;
         mAnimationDirection = false;
         mPosR = Arrays.asList(new Materials[]{
@@ -157,6 +162,26 @@ public class GT_Client extends GT_Proxy
 
     public void onPreLoad() {
         super.onPreLoad();
+        String arr$[] = {
+                "renadi", "hanakocz", "MysteryDump", "Flaver4", "x_Fame", "Peluche321", "Goshen_Ithilien", "manf", "Bimgo", "leagris",
+                "IAmMinecrafter02", "Cerous", "Devilin_Pixy", "Bkarlsson87", "BadAlchemy", "CaballoCraft", "melanclock", "Resursator", "demanzke", "AndrewAmmerlaan",
+                "Deathlycraft", "Jirajha", "Axlegear", "kei_kouma", "Dracion", "dungi", "Dorfschwein", "Zero Tw0", "mattiagraz85", "sebastiank30",
+                "Plem", "invultri", "grillo126", "malcanteth", "Malevolence_", "Nicholas_Manuel", "Sirbab", "kehaan", "bpgames123", "semig0d",
+                "9000bowser", "Sovereignty89", "Kris1432", "xander_cage_", "samuraijp", "bsaa", "SpwnX", "tworf", "Kadah", "kanni",
+                "Stute", "Hegik", "Onlyme", "t3hero", "Hotchi", "jagoly", "Nullav", "BH5432", "Sibmer", "inceee",
+                "foxxx0", "Hartok", "TMSama", "Shlnen", "Carsso", "zessirb", "meep310", "Seldron", "yttr1um", "hohounk",
+                "freebug", "Sylphio", "jmarler", "Saberawr", "r00teniy", "Neonbeta", "yinscape", "voooon24", "Quintine", "peach774",
+                "lepthymo", "bildeman", "Kremnari", "Aerosalo", "OndraSter", "oscares91", "mr10movie", "Daxx367x2", "EGERTRONx", "aka13_404",
+                "Abouttabs", "Johnstaal", "djshiny99", "megatronp", "DZCreeper", "Kane_Hart", "Truculent", "vidplace7", "simon6689", "MomoNasty",
+                "UnknownXLV", "goreacraft", "Fluttermine", "Daddy_Cecil", "MrMaleficus", "TigersFangs", "cublikefoot", "chainman564", "NikitaBuker", "Misha999777",
+                "25FiveDetail", "AntiCivilBoy", "michaelbrady", "xXxIceFirexXx", "Speedynutty68", "GarretSidzaka", "HallowCharm977", "mastermind1919", "The_Hypersonic", "diamondguy2798",
+                "zF4ll3nPr3d4t0r", "CrafterOfMines57", "XxELIT3xSNIP3RxX", "SuterusuKusanagi", "xavier0014", "adamros", "alexbegt"
+        };
+        int len$ = arr$.length;
+        for (int i$ = 0; i$ < len$; i$++) {
+            String tName = arr$[i$];
+            mCapeList.add(tName.toLowerCase());
+        }
         (new Thread(this)).start();
     }
 
@@ -196,28 +221,32 @@ public class GT_Client extends GT_Proxy
     }
 
     public void run() {
-        //skip - dead code, rly, txt files on server is now empty
         try {
             GT_Log.out.println("Skip: GT_Mod: Downloading Cape List.");
-            /*@*//*SuppressWarnings("resource")*/
-            //Scanner tScanner = new Scanner(new URL("http://gregtech.overminddl1.com/com/gregoriust/gregtech/supporterlist.txt").openStream());
-            //while (tScanner.hasNextLine()) {
-                //String tName = tScanner.nextLine();
-                //if (!this.mCapeList.contains(tName.toLowerCase())) {
-                    //this.mCapeList.add(tName.toLowerCase());
-                //}
-            //}
+            @SuppressWarnings("resource")
+            Scanner tScanner = new Scanner(new URL("http://gregtech.overminddl1.com/com/gregoriust/gregtech/supporterlist.txt").openStream());
+            while (tScanner.hasNextLine()) {
+                String tName = tScanner.nextLine();
+                if (!this.mCapeList.contains(tName.toLowerCase())) {
+                    this.mCapeList.add(tName.toLowerCase());
+                }
+            }
         } catch (Throwable e) {
         }
-        try {
+        /**try {
             GT_Log.out.println("Skip: GT_Mod: Downloading News.");
-            /*@*//*SuppressWarnings("resource")*/
-            //Scanner tScanner = new Scanner(new URL("http://files.minecraftforge.net/maven/com/gregoriust/gregtech/message.txt").openStream());
-            //while (tScanner.hasNextLine()) {
-                //this.mMessage = (this.mMessage + tScanner.nextLine() + " ");
-            //}
+            @SuppressWarnings("resource")
+            Scanner tScanner = new Scanner(new URL("http://files.minecraftforge.net/maven/com/gregoriust/gregtech/message.txt").openStream());
+            while (tScanner.hasNextLine()) {
+                this.mMessage = (this.mMessage + tScanner.nextLine() + " ");
+            }
         } catch (Throwable e) {
-        }
+        }**/
+    }
+    
+    @SubscribeEvent
+    public void receiveRenderSpecialsEvent(net.minecraftforge.client.event.RenderPlayerEvent.Specials.Pre aEvent) {
+        mCapeRenderer.receiveRenderSpecialsEvent(aEvent);
     }
 
     @SubscribeEvent
@@ -235,7 +264,6 @@ public class GT_Client extends GT_Proxy
             for (Iterator i$ = tList.iterator(); i$.hasNext(); GT_Utility.sPlayedSoundMap.remove(tKey)) {
                 tKey = (GT_PlayedSound) i$.next();
             }
-            //wut, every tick? baaad, not need (and other) -> dead code
             /*if ((this.isFirstClientPlayerTick) && (aEvent.player == GT_Values.GT.getThePlayer())) {
                 this.isFirstClientPlayerTick = false;
                 GT_FluidStack.fixAllThoseFuckingFluidIDs();
