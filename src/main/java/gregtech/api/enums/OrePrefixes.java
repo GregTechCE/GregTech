@@ -659,12 +659,12 @@ public enum OrePrefixes {
                         arrowGtWood.mDisabledItems.add(aMaterial);
                 }
                 //Plates
-                if (!enableUnusedPlates && /*(*/((aMaterial.mTypes & 0x40) == 0) /*|| ((aMaterial.mTypes & 0x04)) == 0)*/ && !(aMaterial == Materials.Silicon || aMaterial == Materials.Zinc ||
+                if (!enableUnusedPlates && ((aMaterial.mTypes & 0x40) == 0) && !(aMaterial == Materials.Silicon || aMaterial == Materials.Zinc ||
                         aMaterial == Materials.Europium || aMaterial == Materials.Americium || aMaterial == Materials.RedAlloy || aMaterial == Materials.SolderingAlloy || aMaterial == Materials.BatteryAlloy ||
                         aMaterial == Materials.AnnealedCopper || aMaterial == Materials.Firestone || aMaterial == Materials.VanadiumGallium || aMaterial == Materials.YttriumBariumCuprate ||
                         aMaterial == Materials.NiobiumTitanium || aMaterial == Materials.CertusQuartz || aMaterial == Materials.NetherQuartz || aMaterial == Materials.Lazurite || aMaterial == Materials.Lapis ||
                         aMaterial == Materials.Paper || aMaterial == Materials.Jasper || aMaterial == Materials.Dilithium || aMaterial == Materials.Forcicium || aMaterial == Materials.Forcillium ||
-                        aMaterial == Materials.EnderPearl || aMaterial == Materials.EnderEye || aMaterial == Materials.Glass || aMaterial == Materials.Copper || aMaterial == Materials.Tin))
+                        aMaterial == Materials.EnderPearl || aMaterial == Materials.EnderEye || aMaterial == Materials.Glass || aMaterial == Materials.Copper || aMaterial == Materials.Tin || aMaterial == Materials.Redstone))
                     plate.mDisabledItems.add(aMaterial);
                 //Ingot/Plate Storage
                 if (!enableUnusedDoubleIngots) ingotDouble.mDisabledItems.add(aMaterial);
@@ -695,7 +695,8 @@ public enum OrePrefixes {
                         aMaterial == Materials.AnnealedCopper || aMaterial == Materials.Steel || aMaterial == Materials.Copper))
                     foil.mDisabledItems.add(aMaterial);
                 //Fine Wire
-                if (!enableUnusedFineWires && !(aMaterial == Materials.Steel || aMaterial == Materials.AnnealedCopper || aMaterial == Materials.Platinum || aMaterial == Materials.Osmium))
+                if (!enableUnusedFineWires && !(aMaterial == Materials.Steel || aMaterial == Materials.AnnealedCopper || aMaterial == Materials.Platinum || aMaterial == Materials.Osmium ||
+                        aMaterial == Materials.Tin || aMaterial == Materials.Lead || aMaterial == Materials.SolderingAlloy))
                     wireFine.mDisabledItems.add(aMaterial);
                 //Gears
                 if (!enableUnusedGears && !(aMaterial == Materials.Aluminium || aMaterial == Materials.Titanium || aMaterial == Materials.Iron || aMaterial == Materials.Copper ||
@@ -729,7 +730,7 @@ public enum OrePrefixes {
                         aMaterial == Materials.Americium || aMaterial == Materials.Neutronium || aMaterial == Materials.Bronze || aMaterial == Materials.Brass ||
                         aMaterial == Materials.Electrum || aMaterial == Materials.NaquadahEnriched || aMaterial == Materials.CobaltBrass || aMaterial == Materials.IronMagnetic ||
                         aMaterial == Materials.SteelMagnetic || aMaterial == Materials.NeodymiumMagnetic || aMaterial == Materials.VanadiumGallium || aMaterial == Materials.Diamond ||
-                        aMaterial == Materials.Wood || aMaterial == Materials.Plastic))
+                        aMaterial == Materials.Wood || aMaterial == Materials.Plastic || aMaterial == Materials.Lead || aMaterial == Materials.SolderingAlloy))
                     stick.mDisabledItems.add(aMaterial);
                 //Long Rods
                 if (!enableUnusedLongRods && ((aMaterial.mTypes & 0x40) == 0) && !(aMaterial == Materials.Titanium || aMaterial == Materials.NeodymiumMagnetic || aMaterial == Materials.HSSG || aMaterial == Materials.HSSE ||
