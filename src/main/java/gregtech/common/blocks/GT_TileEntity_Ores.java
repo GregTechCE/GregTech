@@ -4,6 +4,7 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
@@ -275,14 +276,16 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
     public ITexture[] getTexture(Block aBlock, byte aSide) {
         Materials aMaterial = GregTech_API.sGeneratedMaterials[(this.mMetaData % 1000)];
         if ((aMaterial != null) && (this.mMetaData < 32000)) {
-            GT_RenderedTexture aIconSet = new GT_RenderedTexture(aMaterial.mIconSet.mTextures[this.mMetaData / 16000 == 0 ? OrePrefixes.ore.mTextureIndex : OrePrefixes.oreSmall.mTextureIndex], aMaterial.mRGBa);
             if (aBlock instanceof GT_Block_Ores_Abstract) {
-                return new ITexture[]{((GT_Block_Ores_Abstract) aBlock).getTextureSet()[((this.mMetaData / 1000) % 16)], aIconSet};
+                GT_Block_Ores_Abstract oreBlock = (GT_Block_Ores_Abstract) aBlock;
+                return new ITexture[]{
+                        oreBlock.getTextureSet()[((this.mMetaData / 1000) % 16)],
+                        aMaterial.mOreTextureSet[this.mMetaData / 16000 == 0 ? 0 : 1]};
             }
         }
         return new ITexture[]{
-                new GT_RenderedTexture("minecraft:blocks/stone", null),
-                new GT_RenderedTexture(gregtech.api.enums.TextureSet.SET_NONE.mTextures[OrePrefixes.ore.mTextureIndex])};
+                GT_Block_Ores.TEXTURES[0],
+                Materials._NULL.mOreTextureSet[0]};
     }
 
 }

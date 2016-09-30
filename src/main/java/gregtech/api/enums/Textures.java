@@ -464,6 +464,7 @@ public class Textures {
                 ERROR_RENDERING = new ITexture[]{
                 new GT_RenderedTexture(RENDERING_ERROR)
         },
+
                 OVERLAYS_ENERGY_IN = new ITexture[]{
                         new GT_RenderedTexture(OVERLAY_ENERGY_IN, new short[]{220, 220, 220, 0}),
                         new GT_RenderedTexture(OVERLAY_ENERGY_IN, new short[]{220, 220, 220, 0}),

@@ -18,8 +18,41 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class GT_Block_Ores extends GT_Block_Ores_Abstract {
+
+    public static final ITexture[] TEXTURES = new ITexture[] {
+        new GT_RenderedTexture("minecraft:blocks/stone", null),
+                new GT_RenderedTexture("minecraft:blocks/netherrack", null),
+                new GT_RenderedTexture("minecraft:blocks/end_stone", null),
+                new GT_RenderedTexture(Textures.BlockIcons.GRANITE_BLACK_STONE),
+                new GT_RenderedTexture(Textures.BlockIcons.GRANITE_RED_STONE),
+                new GT_RenderedTexture(Textures.BlockIcons.MARBLE_STONE),
+                new GT_RenderedTexture(Textures.BlockIcons.BASALT_STONE),
+                new GT_RenderedTexture("minecraft:blocks/sand", null),
+                new GT_RenderedTexture("minecraft:blocks/gravel", null),
+                new GT_RenderedTexture("minecraft:blocks/stone", null),
+                new GT_RenderedTexture("minecraft:blocks/stone", null),
+                new GT_RenderedTexture("minecraft:blocks/stone", null),
+                new GT_RenderedTexture("minecraft:blocks/stone", null),
+                new GT_RenderedTexture("minecraft:blocks/stone", null),
+                new GT_RenderedTexture("minecraft:blocks/stone", null),
+                new GT_RenderedTexture("minecraft:blocks/stone", null)};
+
+    public static final Materials[] DROPPED_MATERIALS = {
+            Materials.Stone, Materials.Netherrack, Materials.Endstone,
+            Materials.GraniteBlack, Materials.GraniteRed,
+            Materials.Marble, Materials.Basalt,
+            null, null,
+            Materials.Stone, Materials.Stone, Materials.Stone, Materials.Stone, Materials.Stone, Materials.Stone};
+
+    public static final OrePrefixes[] PROCESSING_PREFIXES = new OrePrefixes[] {
+            OrePrefixes.ore, OrePrefixes.oreNetherrack, OrePrefixes.oreEndstone,
+            OrePrefixes.oreBlackgranite, OrePrefixes.oreRedgranite,
+            OrePrefixes.oreMarble, OrePrefixes.oreBasalt,
+            OrePrefixes.oreSand, OrePrefixes.oreGravel,
+            null, null, null, null, null, null, null};
+
     public GT_Block_Ores() {
-        super("gt.blockores", false, Material.ROCK);
+        super("gt.blockores", Material.ROCK);
     }
 
     @Override
@@ -32,13 +65,9 @@ public class GT_Block_Ores extends GT_Block_Ores_Abstract {
     }
 
     @Override
-    public String getUnlocalizedName() {
-        return "gt.blockores";
-    }
-
-    @Override
-    public OrePrefixes[] getProcessingPrefix() { //Must have 8 entries; an entry can be null to disable automatic recipes.
-        return new OrePrefixes[]{OrePrefixes.ore, OrePrefixes.oreNetherrack, OrePrefixes.oreEndstone, OrePrefixes.oreBlackgranite, OrePrefixes.oreRedgranite, OrePrefixes.oreMarble, OrePrefixes.oreBasalt, null};
+    public int getHarvestLevel(IBlockState state) {
+        int aMeta = state.getValue(METADATA);
+        return aMeta == 5 || aMeta == 6 ? 2 : aMeta % 8;
     }
 
     @Override
@@ -46,35 +75,20 @@ public class GT_Block_Ores extends GT_Block_Ores_Abstract {
         return GregTech_API.sBlockOres1;
     }
 
+
     @Override
-    public Materials[] getDroppedDusts() { //Must have 8 entries; can be null.
-        return new Materials[]{Materials.Stone, Materials.Netherrack, Materials.Endstone, Materials.GraniteBlack, Materials.GraniteRed, Materials.Marble, Materials.Basalt, Materials.Stone};
+    public OrePrefixes[] getProcessingPrefix() { //Must have 16 entries; an entry can be null to disable automatic recipes.
+        return PROCESSING_PREFIXES;
     }
 
     @Override
-    public int getHarvestLevel(IBlockState state) {
-        int aMeta = state.getValue(METADATA);
-        return aMeta == 5 || aMeta == 6 ? 2 : aMeta % 8;
+    public Materials[] getDroppedDusts() { //Must have 16 entries; can be null.
+        return DROPPED_MATERIALS;
     }
 
     @Override
     public ITexture[] getTextureSet() { //Must have 16 entries.
-        return new ITexture[]{
-                new GT_RenderedTexture("minecraft:blocks/stone", null),
-                new GT_RenderedTexture("minecraft:blocks/netherrack", null),
-                new GT_RenderedTexture("minecraft:blocks/end_stone", null),
-                new GT_RenderedTexture(Textures.BlockIcons.GRANITE_BLACK_STONE),
-                new GT_RenderedTexture(Textures.BlockIcons.GRANITE_RED_STONE), 
-                new GT_RenderedTexture(Textures.BlockIcons.MARBLE_STONE),
-                new GT_RenderedTexture(Textures.BlockIcons.BASALT_STONE),
-                new GT_RenderedTexture("minecraft:blocks/stone", null),
-                new GT_RenderedTexture("minecraft:blocks/stone", null),
-                new GT_RenderedTexture("minecraft:blocks/stone", null),
-                new GT_RenderedTexture("minecraft:blocks/stone", null),
-                new GT_RenderedTexture("minecraft:blocks/stone", null),
-                new GT_RenderedTexture("minecraft:blocks/stone", null),
-                new GT_RenderedTexture("minecraft:blocks/stone", null),
-                new GT_RenderedTexture("minecraft:blocks/stone", null),
-                new GT_RenderedTexture("minecraft:blocks/stone", null)};
+       return TEXTURES;
     }
+
 }

@@ -2,6 +2,7 @@ package gregtech.api.enums;
 
 import java.util.*;
 
+import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraftforge.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
@@ -1243,7 +1244,10 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
      * This Array can be changed dynamically by a Tick Handler in order to get a glowing Effect on all GT Meta Items out of this Material.
      */
     public final short[] mRGBa = new short[]{255, 255, 255, 0}, mMoltenRGBa = new short[]{255, 255, 255, 0};
+
     public final TextureSet mIconSet;
+    public final GT_RenderedTexture[] mOreTextureSet;
+
     public final int mMetaItemSubID;
     public final boolean mUnificatable;
     public final Materials mMaterialInto;
@@ -1277,7 +1281,12 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
         mToolQuality = (byte) aToolQuality;
         mDurability = aToolDurability;
         mToolSpeed = aToolSpeed;
+
         mIconSet = aIconSet;
+        mOreTextureSet = new GT_RenderedTexture[2];
+        mOreTextureSet[0] = new GT_RenderedTexture(mIconSet.mTextures[68], mRGBa); //normal ore
+        mOreTextureSet[1] = new GT_RenderedTexture(mIconSet.mTextures[67], mRGBa); //small ore
+
         if (aMetaItemSubID >= 0) {
             if (GregTech_API.sGeneratedMaterials[aMetaItemSubID] == null) {
                 GregTech_API.sGeneratedMaterials[aMetaItemSubID] = this;
@@ -1295,6 +1304,10 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
         mChemicalFormula = aMaterialInto.mChemicalFormula;
         mMetaItemSubID = -1;
         mIconSet = TextureSet.SET_NONE;
+
+        mOreTextureSet = new GT_RenderedTexture[2];
+        mOreTextureSet[0] = new GT_RenderedTexture(mIconSet.mTextures[68], mRGBa); //normal ore
+        mOreTextureSet[1] = new GT_RenderedTexture(mIconSet.mTextures[67], mRGBa); //small ore
     }
 
     /**

@@ -4,7 +4,7 @@ import mezz.jei.api.IJeiHelpers;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
 
-public class JEICompat {
+public class JEI_Compat {
 
 
     public static void hideItem(ItemStack stack) {

@@ -92,4 +92,8 @@ public abstract class GT_Generic_Block extends Block {
         return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
     }
 
+    @Override
+    public String getUnlocalizedName() {
+        return mUnlocalizedName;
+    }
 }

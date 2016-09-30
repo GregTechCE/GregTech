@@ -1,6 +1,7 @@
 package gregtech.api.enums;
 
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.objects.GT_RenderedTexture;
 
 public class TextureSet {
     public static final TextureSet
@@ -13,6 +14,7 @@ public class TextureSet {
             INDEX_wire = 69, INDEX_foil = 70, INDEX_block1 = 71, INDEX_block2 = 72, INDEX_block3 = 73, INDEX_block4 = 74, INDEX_block5 = 75, INDEX_block6 = 76;
 
     public final IIconContainer[] mTextures = new IIconContainer[128];
+
     public final String mSetName;
 
     public TextureSet(String aSetName) {
@@ -81,19 +83,19 @@ public class TextureSet {
         mTextures[61] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/gemFlawless");
         mTextures[62] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/gemExquisite");
         mTextures[63] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/gearGt");
-        mTextures[64] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[65] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[66] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[64] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[65] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[66] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
         mTextures[67] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/oreSmall");
         mTextures[68] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/ore");
         mTextures[69] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/wire");
         mTextures[70] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/foil");
-        mTextures[71] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/block1");
-        mTextures[72] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/block2");
-        mTextures[73] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/block3");
-        mTextures[74] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/block4");
-        mTextures[75] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/block5");
-        mTextures[76] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/block6");
+        //mTextures[71] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/block1");
+        //mTextures[72] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/block2");
+        //mTextures[73] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/block3");
+        //mTextures[74] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/block4");
+        //mTextures[75] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/block5");
+        //mTextures[76] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/block6");
         mTextures[77] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/pipeSide");
         mTextures[78] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/pipeTiny");
         mTextures[79] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/pipeSmall");
@@ -101,48 +103,48 @@ public class TextureSet {
         mTextures[81] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/pipeLarge");
         mTextures[82] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/pipeHuge");
         mTextures[83] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/frameGt");
-        mTextures[84] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[85] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[86] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[87] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[88] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[89] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[90] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[91] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[92] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[93] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[94] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[95] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[84] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[85] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[86] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[87] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[88] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[89] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[90] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[91] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[92] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[93] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[94] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[95] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/void");
         mTextures[96] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/crateGtDust");
         mTextures[97] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/crateGtIngot");
         mTextures[98] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/crateGtGem");
         mTextures[99] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/crateGtPlate");
         mTextures[100] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/turbineBlade");
-        mTextures[101] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[102] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[103] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[104] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[105] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[106] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[107] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[108] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[109] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[110] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[111] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[112] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[113] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[114] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[115] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[116] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[117] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[118] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[119] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[120] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[121] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[122] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[123] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[124] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
-        mTextures[125] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[101] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[102] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[103] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[104] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[105] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[106] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[107] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[108] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[109] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[110] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[111] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[112] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[113] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[114] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[115] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[116] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[117] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[118] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[119] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[120] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[121] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[122] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[123] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[124] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        //mTextures[125] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
         mTextures[126] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/handleMallet");
         mTextures[127] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/toolHeadMallet");
     }

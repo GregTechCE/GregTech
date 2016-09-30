@@ -244,21 +244,6 @@ public class GT_Utility {
         return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
     }
 
-    @SideOnly(Side.CLIENT)
-    public static IIconContainer sprite2Container(final TextureAtlasSprite sprite) {
-        return new IIconContainer() {
-            @Override
-            public TextureAtlasSprite getIcon() {
-                return sprite;
-            }
-
-            @Override
-            public TextureAtlasSprite getOverlayIcon() {
-                return null;
-            }
-        };
-    }
-
     public static int fillFluidTank(World world, BlockPos blockPos, EnumFacing side, FluidStack fill) {
         TileEntity tileEntity = world.getTileEntity(blockPos.offset(side));
         if(tileEntity != null && fill != null) {

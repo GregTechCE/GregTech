@@ -31,9 +31,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
     private static int endMinSize = 50;
     private static int endMaxSize = 200;
     private static boolean endAsteroids = true;
-    //public List<Runnable> mList = new CopyOnWriteArrayList<>();
-    //public boolean mIsGenerating = false;
-
+    private static Random mRandom;
 
     public GT_Worldgenerator() {
         endAsteroids = GregTech_API.sWorldgenFile.get("endasteroids", "GenerateAsteroids", true);
@@ -45,10 +43,11 @@ public class GT_Worldgenerator implements IWorldGenerator {
 
     @Override
     public void generate(Random aRandom, int aX, int aZ, World aWorld, IChunkGenerator aChunkGenerator, IChunkProvider aChunkProvider) {
-        Random xstrRandom = new XSTR(aRandom.nextLong() ^ System.nanoTime());
+        if(mRandom == null) {
+            mRandom = new XSTR(aRandom.nextLong() ^ System.nanoTime());
+        }
         Biome biome = aWorld.getBiomeGenForCoords(new BlockPos(aX * 16, 64, aZ * 16));
-
-        generateInternal(xstrRandom, aX * 16, aZ * 16,
+        generateInternal(aX * 16, aZ * 16,
                 getDimensionType(aChunkGenerator, biome),
                 aWorld, aChunkGenerator, aChunkProvider,
                 biome.getBiomeName());
@@ -60,7 +59,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
     }
 
 
-    private void generateInternal(Random mRandom, int mX, int mZ, int mDimensionType, World mWorld, IChunkGenerator mChunkGenerator, IChunkProvider mChunkProvider, String mBiome) {
+    private void generateInternal(int mX, int mZ, int mDimensionType, World mWorld, IChunkGenerator mChunkGenerator, IChunkProvider mChunkProvider, String mBiome) {
         if ((Math.abs(mX / 16) % 3 == 1) && (Math.abs(mZ / 16) % 3 == 1)) {
             if ((GT_Worldgen_GT_Ore_Layer.sWeight > 0) && (GT_Worldgen_GT_Ore_Layer.sList.size() > 0)) {
                 boolean temp = true;

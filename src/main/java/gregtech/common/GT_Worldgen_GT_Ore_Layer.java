@@ -17,7 +17,7 @@ import java.util.Random;
 
 public class GT_Worldgen_GT_Ore_Layer
         extends GT_Worldgen {
-    public static ArrayList<GT_Worldgen_GT_Ore_Layer> sList = new ArrayList();
+    public static ArrayList<GT_Worldgen_GT_Ore_Layer> sList = new ArrayList<>();
     public static int sWeight = 0;
     public final short mMinY;
     public final short mMaxY;
