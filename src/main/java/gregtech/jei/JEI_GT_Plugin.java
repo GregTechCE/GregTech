@@ -2,6 +2,7 @@ package gregtech.jei;
 
 import gregtech.api.util.GT_Recipe;
 import mezz.jei.api.*;
+import mezz.jei.api.ingredients.IModIngredientRegistration;
 
 import javax.annotation.Nonnull;
 import java.util.stream.Collectors;
@@ -10,6 +11,12 @@ import java.util.stream.Collectors;
 public class JEI_GT_Plugin implements IModPlugin {
 
     private static IJeiHelpers jeiHelpers;
+
+    @Override
+    public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {}
+
+    @Override
+    public void registerIngredients(IModIngredientRegistration registry) {}
 
     @Override
     public void register(@Nonnull IModRegistry registry) {

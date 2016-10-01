@@ -7,6 +7,7 @@ import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -15,9 +16,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class JEIGregtechRecipe implements IRecipeWrapper {
 
@@ -606,12 +605,21 @@ public class JEIGregtechRecipe implements IRecipeWrapper {
     }
 
     @Override
-    public List getInputs() {
+    public void getIngredients(IIngredients ingredients) {
+        ingredients.setInputs(ItemStack.class, getInputs());
+        ingredients.setInputs(FluidStack.class, getFluidInputs());
+
+        ingredients.setOutputs(ItemStack.class, getOutputs());
+        ingredients.setOutputs(FluidStack.class, getFluidOutputs());
+    }
+
+    @Override
+    public List<ItemStack> getInputs() {
         return Arrays.asList(mRecipe.mInputs);
     }
 
     @Override
-    public List getOutputs() {
+    public List<ItemStack> getOutputs() {
         return Arrays.asList(mRecipe.mOutputs);
     }
 

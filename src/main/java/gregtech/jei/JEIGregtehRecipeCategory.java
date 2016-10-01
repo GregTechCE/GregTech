@@ -5,6 +5,7 @@ import gregtech.api.util.GT_Recipe;
 import mezz.jei.Internal;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.gui.DrawableResource;
 import net.minecraft.client.Minecraft;
@@ -59,6 +60,11 @@ public class JEIGregtehRecipeCategory implements IRecipeCategory<JEIGregtechReci
 
     @Override
     public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull JEIGregtechRecipe recipeWrapper) {
+        recipeWrapper.init(recipeLayout);
+    }
+
+    @Override
+    public void setRecipe(IRecipeLayout recipeLayout, JEIGregtechRecipe recipeWrapper, IIngredients ingredients) {
         recipeWrapper.init(recipeLayout);
     }
 
