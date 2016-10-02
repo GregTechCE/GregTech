@@ -1,17 +1,5 @@
 package gregtech.common.blocks;
 
-import gregtech.api.enums.TextureSet;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.render.newblocks.ITextureBlockIconProvider;
-import gregtech.jei.JEI_Compat;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Explosion;
-import net.minecraftforge.common.property.IExtendedBlockState;
-import net.minecraftforge.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
@@ -21,26 +9,34 @@ import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.common.render.blocks.IBlockTextureProvider;
+import gregtech.jei.JEI_Compat;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements ITileEntityProvider, ITextureBlockIconProvider {
-
-    private static final ITexture[] EMPTY = new ITexture[0];
+public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements ITileEntityProvider, IBlockTextureProvider {
 
     protected GT_Block_Ores_Abstract(String aUnlocalizedName, Material aMaterial) {
         super(GT_Item_Ores.class, aUnlocalizedName, aMaterial);
@@ -189,11 +185,8 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     @Override
     @SideOnly(Side.CLIENT)
     public ITexture[] getTexture(World world, BlockPos blockPos, IExtendedBlockState blockState, EnumFacing side) {
-        if (!GT_Utility.isOpaqueBlock(world, blockPos.offset(side))) {
-            GT_TileEntity_Ores oreTile = (GT_TileEntity_Ores) world.getTileEntity(blockPos);
-            return oreTile.getTexture(this, (byte) side.getIndex());
-        }
-        return EMPTY;
+        GT_TileEntity_Ores oreTile = (GT_TileEntity_Ores) world.getTileEntity(blockPos);
+        return oreTile.getTexture(this, (byte) side.getIndex());
     }
 
     @Override
@@ -217,7 +210,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
         if ((tTileEntity instanceof GT_TileEntity_Ores)) {
             return ((GT_TileEntity_Ores) tTileEntity).getDrops(getDroppedBlock(), fortune);
         }
-        return Collections.emptyList();
+        return Collections.EMPTY_LIST;
     }
 
     public abstract OrePrefixes[] getProcessingPrefix(); //Must have 17 entries; an entry can be null to disable automatic recipes.
@@ -245,6 +238,13 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
 
     public boolean isValidForCreativeTab(int baseBlockType) {
         return baseBlockType <= 8;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    //for multilayer blocks
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
     }
 
 }

@@ -1,4 +1,4 @@
-package gregtech.common.render.newitems;
+package gregtech.common.render.items;
 
 import gregtech.api.interfaces.IIconContainer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -6,6 +6,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+/**
+ * Simple multilayer implementation of {@link IItemIconProvider} for {@link IIconContainer} icons
+ *
+ * @see IIconContainer
+ * @see IItemIconProvider
+ */
 @SideOnly(Side.CLIENT)
 public interface IItemIconContainerProvider extends IItemIconProvider {
 

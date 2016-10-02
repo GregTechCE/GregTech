@@ -10,10 +10,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.render.IColorMultiplier;
+import gregtech.common.render.IItemColorMultiplier;
 import gregtech.common.render.IIconRegister;
-import gregtech.common.render.newitems.IItemIconProvider;
-import net.minecraft.client.renderer.color.IItemColor;
+import gregtech.common.render.items.IItemIconProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
@@ -28,7 +27,7 @@ import java.util.List;
 
 import static gregtech.api.enums.GT_Values.MOD_ID;
 
-public class ItemComb extends Item implements IItemIconProvider, IIconRegister, IColorMultiplier {
+public class ItemComb extends Item implements IItemIconProvider, IIconRegister, IItemColorMultiplier {
 
     @SideOnly(Side.CLIENT)
 	private TextureAtlasSprite itemIcon, secondIcon;

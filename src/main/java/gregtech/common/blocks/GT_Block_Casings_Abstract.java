@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import gregtech.api.GregTech_API;
 import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.render.newblocks.IBlockIconProvider;
+import gregtech.common.render.blocks.IBlockIconProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -45,11 +45,6 @@ public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block impleme
     @Override
     public int getHarvestLevel(IBlockState state) {
         return 2;
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return super.createBlockState();
     }
 
     @Override

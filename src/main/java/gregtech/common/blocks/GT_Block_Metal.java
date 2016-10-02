@@ -1,10 +1,8 @@
 package gregtech.common.blocks;
 
-import gregtech.common.render.newblocks.IBlockIconProvider;
-import mezz.jei.Internal;
+import gregtech.common.render.blocks.IBlockIconProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.common.Loader;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;

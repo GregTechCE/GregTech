@@ -1,4 +1,4 @@
-package gregtech.common.render.newitems;
+package gregtech.common.render;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
@@ -11,6 +11,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * Simple util for gathering transforms from external model jsons
+ */
 @SideOnly(Side.CLIENT)
 public class ModelUtil {
 

@@ -4,7 +4,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.render.IColorMultiplier;
+import gregtech.common.render.IItemColorMultiplier;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,7 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class GT_FluidDisplayItem extends GT_Generic_Item implements IColorMultiplier {
+public class GT_FluidDisplayItem extends GT_Generic_Item implements IItemColorMultiplier {
     public GT_FluidDisplayItem() {
         super("GregTech_FluidDisplay", "Fluid Display", null);
         ItemList.Display_Fluid.set(this);

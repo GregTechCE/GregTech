@@ -7,16 +7,14 @@ package gregtech.common;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
-import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
-import gregtech.common.render.GT_CapeRenderer;
-import gregtech.common.render.GT_Renderer_Entity_Arrow;
-import gregtech.common.render.newitems.GT_IIconProvider_Item_Model;
+import gregtech.common.render.entity.GT_CapeRenderer;
+import gregtech.common.render.entity.GT_Renderer_Entity_Arrow;
+import gregtech.common.render.GT_RenderDispatcher;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentString;
@@ -177,7 +175,7 @@ public class GT_Client extends GT_Proxy
         Textures.ItemIcons.BUTCHERYKNIFE.getClass();
         TextureSet.SET_DIAMOND.getClass();
 
-        new GT_IIconProvider_Item_Model();
+        new GT_RenderDispatcher();
     }
 
     public void run() {

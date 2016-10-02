@@ -1,7 +1,7 @@
 package gregtech.api.items;
 
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.common.render.newitems.IItemIconContainerProvider;
+import gregtech.common.render.items.IItemIconContainerProvider;
 import gregtech.common.render.IIconRegister;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;

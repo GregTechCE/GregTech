@@ -16,6 +16,9 @@ import java.util.*;
 import java.util.List;
 
 public class GT_SidedTexture implements ITexture {
+
+    private EnumMap<EnumFacing, ITexture> sidedTextures;
+
     private final IIconContainer[] mIconContainer;
     public int mRGBa;
 
@@ -23,6 +26,15 @@ public class GT_SidedTexture implements ITexture {
         if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GT_RenderedTexture");
         mIconContainer = new IIconContainer[]{aIcon0, aIcon1, aIcon2, aIcon3, aIcon4, aIcon5};
         mRGBa = makeColor(aRGBa);
+        generate9();
+    }
+
+    private void generate9() {
+        sidedTextures = new EnumMap<>(EnumFacing.class);
+        for(EnumFacing side : EnumFacing.VALUES) {
+            GT_RenderedTexture texture = new GT_RenderedTexture(mIconContainer[side.getIndex()], mRGBa);
+            sidedTextures.put(side, texture);
+        }
     }
 
     private int makeColor(short[] rgba) {
@@ -50,8 +62,10 @@ public class GT_SidedTexture implements ITexture {
     @Override
     @SideOnly(Side.CLIENT)
     public List<BakedQuad> getQuads(Block aBlock, BlockPos blockPos, EnumFacing side, float offset) {
-        return new GT_RenderedTexture(mIconContainer[side.getIndex()], mRGBa)
-                .getQuads(aBlock, blockPos, side, offset);
+        if(side != null) {
+            return sidedTextures.get(side).getQuads(aBlock, blockPos, side, offset);
+        }
+        return Collections.emptyList();
     }
 
     @Override

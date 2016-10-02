@@ -3,7 +3,7 @@ package gregtech.common.items.armor;
 import gregtech.api.damagesources.GT_DamageSources;
 import gregtech.api.enums.GT_Values;
 import gregtech.common.render.IIconRegister;
-import gregtech.common.render.newitems.IItemIconProvider;
+import gregtech.common.render.items.IItemIconProvider;
 import ic2.core.IC2;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

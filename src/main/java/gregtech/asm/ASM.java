@@ -14,7 +14,7 @@ import java.util.Map;
 public class ASM implements IFMLLoadingPlugin, IClassTransformer {
 
     private static final String OBF_METHOD_NAME = "func_178125_b";
-    private static final String BLOCK_RENDERER = "gregtech/common/render/newblocks/BlockRenderer";
+    private static final String BLOCK_RENDERER = "gregtech/common/render/GT_BlockRenderer";
     private static final String SHOULD_HOOK_DESC = "(Lnet/minecraft/block/state/IBlockState;)Z";
     private static final String HOOK_DESC = "(Lnet/minecraft/block/state/IBlockState;)Lnet/minecraft/client/renderer/block/model/IBakedModel;";
 

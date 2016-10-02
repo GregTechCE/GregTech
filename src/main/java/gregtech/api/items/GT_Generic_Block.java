@@ -1,7 +1,6 @@
 package gregtech.api.items;
 
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Block_Machines;
 import gregtech.common.blocks.UnlistedBlockPosProperty;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -12,9 +11,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
@@ -23,8 +19,6 @@ import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static gregtech.api.enums.GT_Values.W;
 
@@ -39,12 +33,15 @@ public abstract class GT_Generic_Block extends Block {
         super(aMaterial);
         setUnlocalizedName(mUnlocalizedName = aName);
         GameRegistry.registerBlock(this, aItemClass, getUnlocalizedName());
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + W + ".name", "Any Sub Block of this one");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + W + ".name", "Unnamed");
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState.Builder(this).add(METADATA).add(BLOCK_POS).build();
+        return new ExtendedBlockState.Builder(this)
+                .add(METADATA)
+                .add(BLOCK_POS)
+                .build();
     }
 
     @Override
@@ -63,37 +60,13 @@ public abstract class GT_Generic_Block extends Block {
     }
 
     @Override
-    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-        return getExtendedState(state, worldIn, pos);
-    }
-
-    @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
         return new ItemStack(this, 1, state.getValue(METADATA));
-    }
-
-    @Override
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
-
-    @Override
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-        if(this instanceof GT_Block_Machines) {
-            return true; //Machines and wires should always render all sides;
-        }
-        //for anything else fallback to default implementation;
-        return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
     }
 
     @Override
     public String getUnlocalizedName() {
         return mUnlocalizedName;
     }
+
 }

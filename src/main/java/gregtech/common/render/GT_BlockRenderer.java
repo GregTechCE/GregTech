@@ -1,21 +1,19 @@
-package gregtech.common.render.newblocks;
+package gregtech.common.render;
 
 import com.google.common.collect.ImmutableList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.GT_Generic_Block;
-import gregtech.common.render.newitems.ModelUtil;
+import gregtech.common.render.blocks.IBlockIconProvider;
+import gregtech.common.render.blocks.IBlockTextureProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -32,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
-public class BlockRenderer {
+public class GT_BlockRenderer {
 
     /**
      * Quads cache for standard icon provider blocks
@@ -44,8 +42,8 @@ public class BlockRenderer {
         if(blockState.getBlock() instanceof IBlockIconProvider) {
             return true;
         }
-        if(blockState.getBlock() instanceof ITextureBlockIconProvider) {
-            return true;
+        if(blockState.getBlock() instanceof IBlockTextureProvider) {
+           return true;
         }
         return false;
     }
@@ -54,21 +52,30 @@ public class BlockRenderer {
         if(blockState.getBlock() instanceof IBlockIconProvider) {
             return ICON_PROVIDER;
         }
-        if(blockState.getBlock() instanceof ITextureBlockIconProvider) {
+        if(blockState.getBlock() instanceof IBlockTextureProvider) {
             return TEXTURE_PROVIDER;
         }
         return null;
     }
 
-    private static final IconProviderModel ICON_PROVIDER = new IconProviderModel();
-    private static final TextureProviderModel TEXTURE_PROVIDER = new TextureProviderModel();
+    public static final IconProviderModel ICON_PROVIDER = new IconProviderModel();
+    public static final TextureProviderModel TEXTURE_PROVIDER = new TextureProviderModel();
 
+    public static IBakedModel getItemBlockModel(Block block, ItemStack stack, EntityLivingBase entity) {
+        if(block instanceof IBlockTextureProvider) {
+            return GT_BlockRenderer.makeTextureProviderItemblock(stack, entity);
+        } else if(block instanceof IBlockIconProvider) {
+            return GT_BlockRenderer.makeIconProviderItemblock(stack, entity);
+        } else {
+            return null;
+        }
+    }
 
-    public static IBakedModel makeTextureProviderItemblock(ItemStack stack, EntityLivingBase holder) {
+    private static IBakedModel makeTextureProviderItemblock(ItemStack stack, EntityLivingBase holder) {
         return new ItemblockTextureProviderModel(stack, holder instanceof EntityPlayer ? (EntityPlayer) holder : null);
     }
 
-    public static IBakedModel makeIconProviderItemblock(ItemStack stack, EntityLivingBase holder) {
+    private static IBakedModel makeIconProviderItemblock(ItemStack stack, EntityLivingBase holder) {
         return new ItemblockIconProviderModel(stack, holder instanceof EntityPlayer ? (EntityPlayer) holder : null);
     }
 
@@ -118,13 +125,13 @@ public class BlockRenderer {
                     }
                     ImmutableList<BakedQuad> faceQuad = quads.get(side);
                     if(faceQuad == null) {
-                        faceQuad = ImmutableList.of(RenderUtil.renderSide(DefaultVertexFormats.BLOCK, sideIcon, side, -1, 0.0F, -1, false));
+                        faceQuad = ImmutableList.of(RenderUtil.renderSide(sideIcon, side, 0.0F, 0xFFFFFF));
                         quads.put(side, faceQuad);
                     }
                     return faceQuad;
                 }
             }
-            return Collections.emptyList();
+            return Collections.EMPTY_LIST;
         }
 
         public abstract TextureAtlasSprite getSideSprite(EnumFacing side, IBlockState blockState);
@@ -139,7 +146,7 @@ public class BlockRenderer {
                 ArrayList<BakedQuad> quads = new ArrayList<>();
                 IExtendedBlockState blockState = (IExtendedBlockState) state;
                 BlockPos pos = blockState.getValue(GT_Generic_Block.BLOCK_POS);
-                ITextureBlockIconProvider provider = (ITextureBlockIconProvider) blockState.getBlock();
+                IBlockTextureProvider provider = (IBlockTextureProvider) blockState.getBlock();
                 ITexture[] textures = provider.getTexture(Minecraft.getMinecraft().theWorld, pos, blockState, side);
                 for (int i = 0; i < textures.length; i++) {
                     if(textures[i] != null) {
@@ -148,7 +155,7 @@ public class BlockRenderer {
                 }
                 return quads;
             }
-            return Collections.emptyList();
+            return Collections.EMPTY_LIST;
         }
 
     }
@@ -169,7 +176,7 @@ public class BlockRenderer {
         public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
             if(side != null) {
                 ArrayList<BakedQuad> quads = new ArrayList<>();
-                ITextureBlockIconProvider provider = (ITextureBlockIconProvider) block;
+                IBlockTextureProvider provider = (IBlockTextureProvider) block;
                 ITexture[] textures = provider.getItemblockTexture(holder, itemStack, side);
                 for (int i = 0; i < textures.length; i++) {
                     if(textures[i] != null) {
@@ -178,7 +185,7 @@ public class BlockRenderer {
                 }
                 return quads;
             }
-            return Collections.emptyList();
+            return Collections.EMPTY_LIST;
         }
 
     }
@@ -187,7 +194,7 @@ public class BlockRenderer {
 
         @Override
         public boolean isAmbientOcclusion() {
-            return false;
+            return true;
         }
 
         @Override

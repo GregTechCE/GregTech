@@ -35,27 +35,16 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
     public short mMetaData = 0;
     public boolean mNatural = false;
 
-    @Nullable
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        return new SPacketUpdateTileEntity(this.pos, -1, this.getUpdateTag());
-    }
-
     @Override
     public NBTTagCompound getUpdateTag() {
-        return writeToNBT(new NBTTagCompound());
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-        readFromNBT(pkt.getNbtCompound());
-        causeChunkUpdate();
+        //return writeToNBT(new NBTTagCompound());
+        return null;
     }
 
     @Override
     public void handleUpdateTag(NBTTagCompound tag) {
         readNBTInternal(tag);
-        causeChunkUpdate();
+        //causeChunkUpdate();
     }
 
     @Override

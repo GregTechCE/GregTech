@@ -14,7 +14,7 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.IIconRegister;
-import gregtech.common.render.newblocks.ITextureBlockIconProvider;
+import gregtech.common.render.blocks.IBlockTextureProvider;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
@@ -30,6 +30,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -49,10 +50,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-@SuppressWarnings("deprecation")
-public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlock, ITileEntityProvider, IIconRegister, ITextureBlockIconProvider {
-
-    public static ThreadLocal<IGregTechTileEntity> mTemporaryTileEntity = new ThreadLocal<>();
+public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlock, ITileEntityProvider, IIconRegister, IBlockTextureProvider {
 
     public GT_Block_Machines() {
         super(GT_Item_Machines.class, "gt.blockmachines", new GT_Material_Machines());
@@ -327,7 +325,6 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         if ((tTileEntity instanceof IGregTechTileEntity)) {
             IGregTechTileEntity tGregTechTileEntity = (IGregTechTileEntity) tTileEntity;
             Random tRandom = new Random();
-            mTemporaryTileEntity.set(tGregTechTileEntity);
             for (int i = 0; i < tGregTechTileEntity.getSizeInventory(); i++) {
                 ItemStack tItem = tGregTechTileEntity.getStackInSlot(i);
                 if ((tItem != null) && (tItem.stackSize > 0) && (tGregTechTileEntity.isValidSlot(i))) {
@@ -358,12 +355,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         if(gregTechTileEntity != null) {
             return gregTechTileEntity.getDrops();
         }
-        if(mTemporaryTileEntity.get() != null) {
-            IGregTechTileEntity tempTile = mTemporaryTileEntity.get();
-            mTemporaryTileEntity.remove();
-            return tempTile.getDrops();
-        }
-        return Collections.emptyList();
+        return Collections.EMPTY_LIST;
     }
 
     @Override
@@ -524,6 +516,13 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
             return true;
         }
         return false;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    //for multilayer blocks
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
     }
 
 }

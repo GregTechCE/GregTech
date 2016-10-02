@@ -2,12 +2,11 @@ package gregtech.api.objects;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.common.render.newblocks.IBlockIconProvider;
-import gregtech.common.render.newblocks.RenderUtil;
+import gregtech.common.render.blocks.IBlockIconProvider;
+import gregtech.common.render.RenderUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -58,12 +57,14 @@ public class GT_CopiedBlockTexture implements ITexture {
     @Override
     @SideOnly(Side.CLIENT)
     public List<BakedQuad> getQuads(Block aBlock, BlockPos blockPos, EnumFacing side, float offset) {
-        TextureAtlasSprite sprite = getSide(mBlock, mMeta, EnumFacing.VALUES[mSide]);
-        if(sprite != null) {
-            BakedQuad quad = RenderUtil.renderSide(DefaultVertexFormats.BLOCK, sprite, side, -1, offset, mRGBa, false);
-            return Collections.singletonList(quad);
+        if(side != null) {
+            TextureAtlasSprite sprite = getSide(mBlock, mMeta, EnumFacing.VALUES[mSide]);
+            if(sprite != null) {
+                BakedQuad quad = RenderUtil.renderSide(sprite, side, offset, mRGBa);
+                return Collections.singletonList(quad);
+            }
         }
-        return Collections.emptyList();
+        return Collections.EMPTY_LIST;
     }
 
     @Override

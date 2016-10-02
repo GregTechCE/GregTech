@@ -3,20 +3,17 @@ package gregtech.api.objects;
 import com.google.common.collect.ImmutableList;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.render.newblocks.RenderUtil;
+import gregtech.common.render.RenderUtil;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,7 +22,7 @@ public class GT_RenderedTexture implements ITexture {
     private final IIconContainer mIconContainer;
     public int mRGBa = -1;
 
-    private HashMap<Integer, HashMap<EnumFacing, ImmutableList<BakedQuad>>> cache = new HashMap<>();
+    private HashMap<Integer, EnumMap<EnumFacing, ImmutableList<BakedQuad>>> cache = new HashMap<>();
 
     public GT_RenderedTexture(IIconContainer aIcon, short[] aRGBa) {
         mIconContainer = aIcon;
@@ -66,9 +63,9 @@ public class GT_RenderedTexture implements ITexture {
     @SideOnly(Side.CLIENT)
     public List<BakedQuad> getQuads(Block aBlock, BlockPos blockPos, EnumFacing side, float offset) {
         int offsetKey = offset2key(offset);
-        HashMap<EnumFacing, ImmutableList<BakedQuad>> offsetCache = cache.get(offsetKey);
+        EnumMap<EnumFacing, ImmutableList<BakedQuad>> offsetCache = cache.get(offsetKey);
         if(offsetCache == null) {
-            offsetCache = new HashMap<>();
+            offsetCache = new EnumMap<>(EnumFacing.class);
             cache.put(offsetKey, offsetCache);
         }
         ImmutableList<BakedQuad> quads = offsetCache.get(side);
@@ -79,15 +76,15 @@ public class GT_RenderedTexture implements ITexture {
         return quads;
     }
 
-    public ImmutableList<BakedQuad> generate9(EnumFacing side, float offset) {
+    private ImmutableList<BakedQuad> generate9(EnumFacing side, float offset) {
         ImmutableList.Builder<BakedQuad> quads = ImmutableList.builder();
         TextureAtlasSprite sprite = mIconContainer.getIcon();
         TextureAtlasSprite overlay = mIconContainer.getOverlayIcon();
         if(sprite != null) {
-            quads.add(RenderUtil.renderSide(DefaultVertexFormats.BLOCK, sprite, side, -1, offset, mRGBa, false));
+            quads.add(RenderUtil.renderSide(sprite, side, offset, mRGBa));
         }
         if(overlay != null) {
-            quads.add(RenderUtil.renderSide(DefaultVertexFormats.BLOCK, overlay, side, -1, offset + 0.01F, mRGBa, false));
+            quads.add(RenderUtil.renderSide(overlay, side, offset + 0.01F, mRGBa));
         }
         return quads.build();
     }
