@@ -847,7 +847,7 @@ public enum OrePrefixes {
         if(tPrefix!=null){
         Materials tName = Materials.get(reEnable.replaceFirst(tPrefix.toString(), ""));
         if(tName!=null){
-        tPrefix.mDisabledItems.remove("");}else{System.out.println("noMaterial "+reEnable);}
+        tPrefix.mDisabledItems.remove(tName);}else{System.out.println("noMaterial "+reEnable);}
         }else{System.out.println("noPrefix "+reEnable);}}
         
         
