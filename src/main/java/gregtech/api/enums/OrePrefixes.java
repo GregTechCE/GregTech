@@ -1,5 +1,6 @@
 package gregtech.api.enums;
 
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.interfaces.ICondition;
@@ -12,10 +13,19 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.StringUtils;
+
+import cpw.mods.fml.common.Loader;
 
 import static gregtech.api.enums.GT_Values.*;
 
@@ -766,6 +776,87 @@ public enum OrePrefixes {
                 }
             }
         }
+        
+        System.out.println("preReader");
+        List<String> oreTags = new ArrayList<String>();
+        if(Loader.isModLoaded("MineTweaker3")){
+        	File globalDir = new File("scripts");
+        	if (globalDir.exists()){
+        		List<String> scripts = new ArrayList<String>();
+        			for (File file : globalDir.listFiles()) {
+        				 if (file.getName().endsWith(".zs")) {
+        					 try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+        						    String line;
+        						    while ((line = br.readLine()) != null) {
+        						       scripts.add(line);
+        						    }
+        						} catch (Exception e) {e.printStackTrace();}
+        				}
+        			}
+        			String pattern1 = "<";
+        			String pattern2 = ">";
+
+        			Pattern p = Pattern.compile(Pattern.quote(pattern1) + "(.*?)" + Pattern.quote(pattern2));
+        			for(String text : scripts){
+        			Matcher m = p.matcher(text);
+        			while (m.find()) {
+        			  String hit = m.group(1);
+        			  if(hit.startsWith("ore:")){
+        				  hit = hit.substring(4);
+        				  if(!oreTags.contains(hit)) oreTags.add(hit);
+        			  }else if(hit.startsWith("gregtech:gt.metaitem.0")){
+        				  hit = hit.substring(22);
+        				  int mIt = Integer.parseInt(hit.substring(0, 1));
+        				  if(mIt>0){
+        					  int meta = 0;
+        					  try{
+        					  hit = hit.substring(2);
+        					  meta = Integer.parseInt(hit);
+        					  }catch(Exception e){System.out.println("parseError: "+hit);}
+        					  if(meta>0&&meta<32000){
+        					  int prefix = meta/1000;
+        					  int material = meta % 1000;
+        					  String tag = "";
+        					  String[] tags = new String[]{};
+        					  if(mIt==1)tags = new String[]{"dustTiny","dustSmall","dust","dustImpure","dustPure","crushed","crushedPurified","crushedCentrifuged","gem","nugget",null,"ingot","ingotHot","ingotDouble","ingotTriple","ingotQuadruple","ingotQuintuple","plate","plateDouble","plateTriple","plateQuadruple","plateQuintuple","plateDense","stick","lens","round","bolt","screw","ring","foil","cell","cellPlasma"};
+        					  if(mIt==2)tags = new String[]{"toolHeadSword", "toolHeadPickaxe", "toolHeadShovel", "toolHeadAxe", "toolHeadHoe", "toolHeadHammer", "toolHeadFile", "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw", "toolHeadWrench", "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow", "toolHeadBuzzSaw", "turbineBlade", null, null, "wireFine", "gearGtSmall", "rotor", "stickLong", "springSmall", "spring", "arrowGtWood", "arrowGtPlastic", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gearGt"};
+        					  if(mIt==3)tags = new String[]{"crateGtDust", "crateGtIngot", "crateGtGem", "crateGtPlate"};
+        					  if(tags.length>prefix) tag = tags[prefix];
+        					  if(GregTech_API.sGeneratedMaterials[material]!=null){
+        						  tag += GregTech_API.sGeneratedMaterials[material].mName;
+        						  if(!oreTags.contains(tag)) oreTags.add(tag);
+        					  }else if(material>0){System.out.println("MaterialDisabled: "+material+" "+m.group(1));}
+        					  }
+        				  }
+        			  }
+        			}
+        		}
+        	}
+        }
+        String[] preS = new String[]{"dustTiny","dustSmall","dust","dustImpure","dustPure","crushed","crushedPurified","crushedCentrifuged","gem","nugget","ingot","ingotHot","ingotDouble","ingotTriple","ingotQuadruple","ingotQuintuple","plate","plateDouble","plateTriple","plateQuadruple","plateQuintuple","plateDense","stick","lens","round","bolt","screw","ring","foil","cell","cellPlasma","toolHeadSword", "toolHeadPickaxe", "toolHeadShovel", "toolHeadAxe", "toolHeadHoe", "toolHeadHammer", "toolHeadFile", "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw", "toolHeadWrench", "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow", "toolHeadBuzzSaw", "turbineBlade", "wireFine", "gearGtSmall", "rotor", "stickLong", "springSmall", "spring", "arrowGtWood", "arrowGtPlastic", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gearGt","crateGtDust", "crateGtIngot", "crateGtGem", "crateGtPlate"};
+
+        List<String> mMTTags = new ArrayList<String>();
+        for(String test : oreTags){
+        	if(StringUtils.startsWithAny(test, preS)){
+        	mMTTags.add(test);
+        	System.out.println("oretag: "+test);}}
+        
+        System.out.println("reenableMetaItems");
+        for(String reEnable : mMTTags){
+        OrePrefixes tPrefix = OrePrefixes.getOrePrefix(reEnable);
+        if(tPrefix!=null){
+        Materials tName = Materials.get(reEnable.replaceFirst(tPrefix.toString(), ""));
+        if(tName!=null){
+        tPrefix.mDisabledItems.remove("");}else{System.out.println("noMaterial "+reEnable);}
+        }else{System.out.println("noPrefix "+reEnable);}}
+        
+        
+        
+        
+        
+        
+        
+        
     }
 
     public static OrePrefixes getOrePrefix(String aOre) {
