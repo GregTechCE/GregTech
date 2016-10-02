@@ -50,11 +50,18 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.StringUtils;
 
 @Mod(modid = "gregtech", name = "GregTech", version = "MC1710", useMetadata = false, dependencies = "required-after:IC2; after:Forestry; after:PFAAGeologica; after:Thaumcraft; after:Railcraft; after:appliedenergistics2; after:ThermalExpansion; after:TwilightForest; after:harvestcraft; after:magicalcrops; after:BuildCraft|Transport; after:BuildCraft|Silicon; after:BuildCraft|Factory; after:BuildCraft|Energy; after:BuildCraft|Core; after:BuildCraft|Builders; after:GalacticraftCore; after:GalacticraftMars; after:GalacticraftPlanets; after:ThermalExpansion|Transport; after:ThermalExpansion|Energy; after:ThermalExpansion|Factory; after:RedPowerCore; after:RedPowerBase; after:RedPowerMachine; after:RedPowerCompat; after:RedPowerWiring; after:RedPowerLogic; after:RedPowerLighting; after:RedPowerWorld; after:RedPowerControl; after:UndergroundBiomes;")
 public class GT_Mod implements IGT_Mod {
@@ -291,6 +298,66 @@ public class GT_Mod implements IGT_Mod {
         EntityRegistry.registerModEntity(GT_Entity_Arrow.class, "GT_Entity_Arrow", 1, GT_Values.GT, 160, 1, true);
         EntityRegistry.registerModEntity(GT_Entity_Arrow_Potion.class, "GT_Entity_Arrow_Potion", 2, GT_Values.GT, 160, 1, true);
 
+        System.out.println("preReader");
+        List<String> oreTags = new ArrayList<String>();
+        if(Loader.isModLoaded("MineTweaker3")){
+        	File globalDir = new File("scripts");
+        	if (globalDir.exists()){
+        		List<String> scripts = new ArrayList<String>();
+        			for (File file : globalDir.listFiles()) {
+        				 if (file.getName().endsWith(".zs")) {
+        					 try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+        						    String line;
+        						    while ((line = br.readLine()) != null) {
+        						       scripts.add(line);
+        						    }
+        						} catch (Exception e) {e.printStackTrace();}
+        				}
+        			}
+        			String pattern1 = "<";
+        			String pattern2 = ">";
+
+        			Pattern p = Pattern.compile(Pattern.quote(pattern1) + "(.*?)" + Pattern.quote(pattern2));
+        			for(String text : scripts){
+        			Matcher m = p.matcher(text);
+        			while (m.find()) {
+        			  String hit = m.group(1);
+        			  if(hit.startsWith("ore:")){
+        				  hit = hit.substring(4);
+        				  if(!oreTags.contains(hit)) oreTags.add(hit);
+        			  }else if(hit.startsWith("gregtech:gt.metaitem.0")){
+        				  hit = hit.substring(22);
+        				  int mIt = Integer.parseInt(hit.substring(0, 1));
+        				  if(mIt>0){
+        					  int meta = 0;
+        					  try{
+        					  hit = hit.substring(2);
+        					  meta = Integer.parseInt(hit);
+        					  }catch(Exception e){System.out.println("parseError: "+hit);}
+        					  int prefix = meta/1000;
+        					  int material = meta % 1000;
+        					  String tag = "";
+        					  String[] tags = new String[]{};
+        					  if(mIt==1)tags = new String[]{"dustTiny","dustSmall","dust","dustImpure","dustPure","crushed","crushedPurified","crushedCentrifuged","gem","nugget",null,"ingot","ingotHot","ingotDouble","ingotTriple","ingotQuadruple","ingotQuintuple","plate","plateDouble","plateTriple","plateQuadruple","plateQuintuple","plateDense","stick","lens","round","bolt","screw","ring","foil","cell","cellPlasma"};
+        					  if(mIt==2)tags = new String[]{"toolHeadSword", "toolHeadPickaxe", "toolHeadShovel", "toolHeadAxe", "toolHeadHoe", "toolHeadHammer", "toolHeadFile", "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw", "toolHeadWrench", "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow", "toolHeadBuzzSaw", "turbineBlade", null, null, "wireFine", "gearGtSmall", "rotor", "stickLong", "springSmall", "spring", "arrowGtWood", "arrowGtPlastic", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gearGt"};
+        					  if(mIt==3)tags = new String[]{"crateGtDust", "crateGtIngot", "crateGtGem", "crateGtPlate"};
+        					  if(tags.length>prefix) tag = tags[prefix];
+        					  if(GregTech_API.sGeneratedMaterials[material]!=null){
+        						  tag += GregTech_API.sGeneratedMaterials[material].mName;
+        						  if(!oreTags.contains(tag)) oreTags.add(tag);
+        					  }else if(material>0){System.out.println("MaterialDisabled: "+material+" "+m.group(1));}
+        				  }
+        			  }
+        			}
+        		}
+        	}
+        }
+        String[] preS = new String[]{"dustTiny","dustSmall","dust","dustImpure","dustPure","crushed","crushedPurified","crushedCentrifuged","gem","nugget","ingot","ingotHot","ingotDouble","ingotTriple","ingotQuadruple","ingotQuintuple","plate","plateDouble","plateTriple","plateQuadruple","plateQuintuple","plateDense","stick","lens","round","bolt","screw","ring","foil","cell","cellPlasma","toolHeadSword", "toolHeadPickaxe", "toolHeadShovel", "toolHeadAxe", "toolHeadHoe", "toolHeadHammer", "toolHeadFile", "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw", "toolHeadWrench", "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow", "toolHeadBuzzSaw", "turbineBlade", "wireFine", "gearGtSmall", "rotor", "stickLong", "springSmall", "spring", "arrowGtWood", "arrowGtPlastic", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gearGt","crateGtDust", "crateGtIngot", "crateGtGem", "crateGtPlate"};
+        for(String test : oreTags){
+        	if(StringUtils.startsWithAny(test, preS))
+        	System.out.println("oretag: "+test);}
+        
+        
         new Enchantment_EnderDamage();
         new Enchantment_Radioactivity();
 
