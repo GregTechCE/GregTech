@@ -1,6 +1,5 @@
 package gregtech.api.enums;
 
-import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.interfaces.ICondition;
@@ -11,21 +10,13 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
+import gregtech.loaders.materialprocessing.ProcessingModSupport;
 import net.minecraft.item.ItemStack;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.commons.lang3.StringUtils;
-
-import cpw.mods.fml.common.Loader;
 
 import static gregtech.api.enums.GT_Values.*;
 
@@ -754,28 +745,39 @@ public enum OrePrefixes {
                     gemFlawless.mDisabledItems.add(aMaterial);
                     gemFlawed.mDisabledItems.add(aMaterial);
                     gemExquisite.mDisabledItems.add(aMaterial);
-                    //3685
-                }
-
-                for (IMaterialHandler aRegistrator : Materials.mMaterialHandlers) {
-                    aRegistrator.onComponentRegistration(aMaterial);
-                }
-                if (enablePerItemSettings) {
-                    StringBuilder aConfigPathSB = new StringBuilder();
-                    aConfigPathSB.append("materialcomponents.").append(aMaterial.mConfigSection).append(".").append(aMaterial.mName);
-                    String aConfigPath = aConfigPathSB.toString();
-                    for (OrePrefixes aPrefix : Materials.mDefaultComponents) {
-                        boolean aEnableComponent = GregTech_API.sMaterialComponents.get(aConfigPath, aPrefix.toString(), !aPrefix.mDisabledItems.contains(aMaterial));
-                        if (!aEnableComponent) { //Disable component if false and is not already in disabled list
-                            if (!aPrefix.mDisabledItems.contains(aMaterial)) aPrefix.mDisabledItems.remove(aMaterial);
-                        } else if (aEnableComponent) { //Enable component if true and is not already in enabled list
-                            if (aPrefix.mDisabledItems.contains(aMaterial)) aPrefix.mDisabledItems.remove(aMaterial);
-                        }
-                    }
-                    aConfigPathSB.setLength(0);
                 }
             }
         }
+        for (IMaterialHandler aRegistrator : Materials.mMaterialHandlers) {
+            aRegistrator.onComponentInit();
+        }
+        for (Materials aMaterial : Materials.values()) {
+            for (IMaterialHandler aRegistrator : Materials.mMaterialHandlers) {
+                aRegistrator.onComponentIteration(aMaterial);
+            }
+            if (enablePerItemSettings) {
+                StringBuilder aConfigPathSB = new StringBuilder();
+                aConfigPathSB.append("materialcomponents.").append(aMaterial.mConfigSection).append(".").append(aMaterial.mName);
+                String aConfigPath = aConfigPathSB.toString();
+                for (OrePrefixes aPrefix : Materials.mDefaultComponents) {
+                    boolean aEnableComponent = GregTech_API.sMaterialComponents.get(aConfigPath, aPrefix.toString(), !aPrefix.mDisabledItems.contains(aMaterial));
+                    if (!aEnableComponent) { //Disable component if false and is not already in disabled list
+                        aPrefix.disableComponent(aMaterial);
+                    } else if (aEnableComponent) { //Enable component if true and is not already in enabled list
+                        aPrefix.enableComponent(aMaterial);
+                    }
+                }
+                aConfigPathSB.setLength(0);
+            }
+        }
+    }
+
+    public void enableComponent(Materials aMaterial) {
+        if (this.mDisabledItems.contains(aMaterial)) this.mDisabledItems.remove(aMaterial);
+    }
+
+    public void disableComponent(Materials aMaterial) {
+        if (!this.mDisabledItems.contains(aMaterial)) this.mDisabledItems.add(aMaterial);
     }
 
     public static OrePrefixes getOrePrefix(String aOre) {
@@ -993,7 +995,7 @@ public enum OrePrefixes {
                 }
                 break;
         }
-        if (Materials.aEnableThaumcraftMats) {
+        if (ProcessingModSupport.aEnableThaumcraftMats) {
             switch (aMaterial.mName) {
                 case "InfusedAir":
                 case "InfusedDull":

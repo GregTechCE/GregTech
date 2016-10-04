@@ -20,24 +20,27 @@ public class ProcessingConfig implements gregtech.api.interfaces.IMaterialHandle
     }
 
     @Override
-    public void onComponentRegistration(Materials aMaterial) {
+    public void onComponentInit() {
         /** This is just left here as an example of how to add components. **/
+        /* Enabling specific components:
+        OrePrefixes.spring.enableComponent(Materials.Cobalt);
+        OrePrefixes.ingotDouble.enableComponent(Materials.Cobalt);
+        OrePrefixes.ingotTriple.enableComponent(Materials.Cobalt);
+        OrePrefixes.ingotQuadruple.enableComponent(Materials.Cobalt);
+        OrePrefixes.ingotQuintuple.enableComponent(Materials.Cobalt);
+        OrePrefixes.plateDouble.enableComponent(Materials.Cobalt);
+        OrePrefixes.plateTriple.enableComponent(Materials.Cobalt);
+        OrePrefixes.plateQuadruple.enableComponent(Materials.Cobalt);
+        OrePrefixes.plateQuintuple.enableComponent(Materials.Cobalt);
+        OrePrefixes.plateDense.enableComponent(Materials.Cobalt); */
+    }
 
+    @Override
+    public void onComponentIteration(Materials aMaterial) {
+        /** This is just left here as an example of how to add components. **/
         /*Enabling/Disabling components depending on the current Materials values:
         if ((aMaterial.mTypes & 0x40) != 0) { //This material can be made into tool heads
             OrePrefixes.plateQuadruple.mDisabledItems.remove(aMaterial);
         } */
-
-        /* Enabling specific components:
-        OrePrefixes.spring.mDisabledItems.remove(Materials.Cobalt);
-        OrePrefixes.ingotDouble.mDisabledItems.remove(Materials.Cobalt);
-        OrePrefixes.ingotTriple.mDisabledItems.remove(Materials.Cobalt);
-        OrePrefixes.ingotQuadruple.mDisabledItems.remove(Materials.Cobalt);
-        OrePrefixes.ingotQuintuple.mDisabledItems.remove(Materials.Cobalt);
-        OrePrefixes.plateDouble.mDisabledItems.remove(Materials.Cobalt);
-        OrePrefixes.plateTriple.mDisabledItems.remove(Materials.Cobalt);
-        OrePrefixes.plateQuadruple.mDisabledItems.remove(Materials.Cobalt);
-        OrePrefixes.plateQuintuple.mDisabledItems.remove(Materials.Cobalt);
-        OrePrefixes.plateDense.mDisabledItems.remove(Materials.Cobalt); */
     }
 }

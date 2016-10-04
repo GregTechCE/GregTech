@@ -24,7 +24,7 @@ public class GT_Block_Metal extends GT_Block_Storage {
         mHideBlocks = Loader.isModLoaded("NotEnoughItems");
 
         for (int i = 0; i < aMats.length; i++) {
-            if (aMats[i].mMetaItemSubID > 0) {
+            if (aMats[i].mMetaItemSubID > 0 && aMats[i].mHasParentMod) {
                 GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + i + ".name", "Block of " + aMats[i].mDefaultLocalName);
                 GT_OreDictUnificator.registerOre(aPrefix, aMats[i], new ItemStack(this, 1, i));
             }

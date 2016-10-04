@@ -5,5 +5,7 @@ import gregtech.api.enums.Materials;
 public interface IMaterialHandler {
     void onMaterialsInit();
 
-    void onComponentRegistration(Materials aMaterial);
+    void onComponentInit();
+
+    void onComponentIteration(Materials aMaterial);
 }

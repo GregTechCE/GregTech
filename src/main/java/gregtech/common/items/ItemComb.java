@@ -13,6 +13,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.loaders.materialprocessing.ProcessingModSupport;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -96,7 +97,7 @@ public class ItemComb extends Item {
 
 	public void initCombsRecipes() {
 		ItemStack tComb;
-		
+		System.out.println("#####" + GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lignite, 1));
 	    //Organic
 		tComb = getStackForType(CombType.LIGNIE);
 		addSpecialCent(tComb,GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lignite, 1), 90);
@@ -183,7 +184,7 @@ public class ItemComb extends Item {
 		addProcess(tComb, Materials.VanadiumMagnetite, 100);
 		addProcess(tComb, Materials.BandedIron, 100);
 		addProcess(tComb, Materials.Pyrite, 100);
-		if (Materials.aEnableGalacticraftMats)
+		if (ProcessingModSupport.aEnableGCMarsMats)
 			addProcess(tComb, Materials.MeteoricIron, 100);
 		tComb = getStackForType(CombType.STEEL);
 		addProcess(tComb, Materials.Iron, Materials.Steel, 100);
@@ -193,7 +194,7 @@ public class ItemComb extends Item {
 		addProcess(tComb, Materials.VanadiumMagnetite, Materials.VanadiumSteel, 100);
 		addProcess(tComb, Materials.BandedIron, Materials.Steel, 100);
 		addProcess(tComb, Materials.Pyrite, Materials.Steel, 100);
-		if (Materials.aEnableGalacticraftMats)
+		if (ProcessingModSupport.aEnableGCMarsMats)
 			addProcess(tComb, Materials.MeteoricIron, Materials.MeteoricSteel, 100);
 		addProcess(tComb, Materials.Molybdenite, 100);
 		addProcess(tComb, Materials.Molybdenum, 100);
