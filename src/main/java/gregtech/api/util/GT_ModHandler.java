@@ -746,7 +746,7 @@ public class GT_ModHandler {
      */
     public static boolean addCompressionRecipe(ItemStack aInput, ItemStack aOutput) {
         aOutput = GT_OreDictUnificator.get(true, aOutput);
-        if (aInput == null || aOutput == null) return false;
+        if (aInput == null || aOutput == null || GT_Utility.areStacksEqual(aInput, aOutput, true)) return false;
         GT_Utility.removeSimpleIC2MachineRecipe(aInput, getCompressorRecipeList(), null);
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.compression, aInput, true)) return false;
         GT_Utility.addSimpleIC2MachineRecipe(aInput, getCompressorRecipeList(), null, aOutput);
