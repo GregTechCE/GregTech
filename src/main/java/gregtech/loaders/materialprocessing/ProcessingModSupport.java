@@ -23,6 +23,7 @@ public class ProcessingModSupport implements gregtech.api.interfaces.IMaterialHa
 
     @Override
     public void onMaterialsInit() {
+        //Disable Materials if Parent Mod is not loaded
         if (!aTGregSupport) {
             Materials.Dysprosium.mHasParentMod = false;
             Materials.Erbium.mHasParentMod = false;
@@ -129,6 +130,9 @@ public class ProcessingModSupport implements gregtech.api.interfaces.IMaterialHa
         if (!aEnableRailcraftMats) {
             Materials.Firestone.mHasParentMod = false;
         }
+
+        //Enable Materials is correct mod is Loaded
+        Materials.ChromiumDioxide.mHasParentMod = Loader.isModLoaded("computronics");
     }
 
     @Override

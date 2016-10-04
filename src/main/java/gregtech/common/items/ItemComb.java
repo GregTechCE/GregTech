@@ -97,7 +97,7 @@ public class ItemComb extends Item {
 
 	public void initCombsRecipes() {
 		ItemStack tComb;
-		System.out.println("#####" + GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lignite, 1));
+
 	    //Organic
 		tComb = getStackForType(CombType.LIGNIE);
 		addSpecialCent(tComb,GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lignite, 1), 90);
