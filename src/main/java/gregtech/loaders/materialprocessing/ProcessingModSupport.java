@@ -131,7 +131,7 @@ public class ProcessingModSupport implements gregtech.api.interfaces.IMaterialHa
             Materials.Firestone.mHasParentMod = false;
         }
 
-        //Enable Materials is correct mod is Loaded
+        //Enable Materials if correct mod is Loaded
         Materials.ChromiumDioxide.mHasParentMod = Loader.isModLoaded("computronics");
     }
 
