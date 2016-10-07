@@ -153,6 +153,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     private boolean mOreDictActivated = false;
     public boolean mChangeHarvestLevels=false;
     public boolean mNerfedCombs = true;
+    public boolean mNerfedCrops = true;
     public boolean mGTBees = true;
     public boolean mHideUnusedOres = true;
     public boolean mHideRecyclingRecipes = true;

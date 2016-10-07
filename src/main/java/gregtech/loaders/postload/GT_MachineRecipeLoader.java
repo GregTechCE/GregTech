@@ -1703,113 +1703,131 @@ if(Loader.isModLoaded("Railcraft")){
 		ItemStack tCrop;
 	    // Metals Line
 		tCrop = ItemList.Crop_Drop_Coppon.get(1, new Object[0]);
-		addProcess(tCrop, Materials.Copper, 100);
-		addProcess(tCrop, Materials.Tetrahedrite, 100);
-		addProcess(tCrop, Materials.Chalcopyrite, 100);
-		addProcess(tCrop, Materials.Malachite, 100);
-		addProcess(tCrop, Materials.Pyrite, 100);
-		addProcess(tCrop, Materials.Stibnite, 100);
+		addProcess(tCrop, Materials.Copper, 100, true);
+		addProcess(tCrop, Materials.Tetrahedrite, 100, false);
+		addProcess(tCrop, Materials.Chalcopyrite, 100, false);
+		addProcess(tCrop, Materials.Malachite, 100, false);
+		addProcess(tCrop, Materials.Pyrite, 100, false);
+		addProcess(tCrop, Materials.Stibnite, 100, false);
 		tCrop = ItemList.Crop_Drop_Tine.get(1, new Object[0]);
-		addProcess(tCrop, Materials.Tin, 100);
-		addProcess(tCrop, Materials.Cassiterite, 100);
+		addProcess(tCrop, Materials.Tin, 100, true);
+		addProcess(tCrop, Materials.Cassiterite, 100, false);
 		tCrop = ItemList.Crop_Drop_Plumbilia.get(1, new Object[0]);
-		addProcess(tCrop, Materials.Lead, 100);
-		addProcess(tCrop, Materials.Galena, 100);
+		addProcess(tCrop, Materials.Lead, 100, true);
+		addProcess(tCrop, Materials.Galena, 100, false);
 		tCrop = ItemList.Crop_Drop_Ferru.get(1, new Object[0]);
-		addProcess(tCrop, Materials.Iron, 100);
-		addProcess(tCrop, Materials.Magnetite, 100);
-		addProcess(tCrop, Materials.BrownLimonite, 100);
-		addProcess(tCrop, Materials.YellowLimonite, 100);
-		addProcess(tCrop, Materials.VanadiumMagnetite, 100);
-		addProcess(tCrop, Materials.BandedIron, 100);
-		addProcess(tCrop, Materials.Pyrite, 100);
-		addProcess(tCrop, Materials.MeteoricIron, 100);
+		addProcess(tCrop, Materials.Iron, 100, true);
+		addProcess(tCrop, Materials.Magnetite, 100, false);
+		addProcess(tCrop, Materials.BrownLimonite, 100, false);
+		addProcess(tCrop, Materials.YellowLimonite, 100, false);
+		addProcess(tCrop, Materials.VanadiumMagnetite, 100, false);
+		addProcess(tCrop, Materials.BandedIron, 100, false);
+		addProcess(tCrop, Materials.Pyrite, 100, false);
+		addProcess(tCrop, Materials.MeteoricIron, 100, false);
 		tCrop = ItemList.Crop_Drop_Nickel.get(1, new Object[0]);
-		addProcess(tCrop, Materials.Nickel, 100);
-		addProcess(tCrop, Materials.Garnierite, 100);
-		addProcess(tCrop, Materials.Pentlandite, 100);
-		addProcess(tCrop, Materials.Cobaltite, 100);
-		addProcess(tCrop, Materials.Wulfenite, 100);
-		addProcess(tCrop, Materials.Powellite, 100);
+		addProcess(tCrop, Materials.Nickel, 100, true);
+		addProcess(tCrop, Materials.Garnierite, 100, false);
+		addProcess(tCrop, Materials.Pentlandite, 100, false);
+		addProcess(tCrop, Materials.Cobaltite, 100, false);
+		addProcess(tCrop, Materials.Wulfenite, 100, false);
+		addProcess(tCrop, Materials.Powellite, 100, false);
 		tCrop = ItemList.Crop_Drop_Zinc.get(1, new Object[0]);
-		addProcess(tCrop, Materials.Zinc, 100);
-		addProcess(tCrop, Materials.Sphalerite, 100);
-		addProcess(tCrop, Materials.Sulfur, 100);
+		addProcess(tCrop, Materials.Zinc, 100, true);
+		addProcess(tCrop, Materials.Sphalerite, 100, false);
+		addProcess(tCrop, Materials.Sulfur, 100, false);
 		tCrop = ItemList.Crop_Drop_Argentia.get(1, new Object[0]);
-		addProcess(tCrop, Materials.Silver, 100);
-		addProcess(tCrop, Materials.Galena, 100);
+		addProcess(tCrop, Materials.Silver, 100, true);
+		addProcess(tCrop, Materials.Galena, 100, false);
 		tCrop = ItemList.Crop_Drop_Aurelia.get(1, new Object[0]);
-		addProcess(tCrop, Materials.Gold, 100);
-		addProcess(tCrop, Materials.Magnetite, Materials.Gold, 100);
+		addProcess(tCrop, Materials.Gold, 100, true);
+		addProcess(tCrop, Materials.Magnetite, Materials.Gold, 100, false);
 
 	    // Rare Metals Line
 		tCrop = ItemList.Crop_Drop_Bauxite.get(1, new Object[0]);
-		addProcess(tCrop,Materials.Aluminium,60);
-		addProcess(tCrop,Materials.Bauxite,100);
+		addProcess(tCrop,Materials.Aluminium,60, true);
+		addProcess(tCrop,Materials.Bauxite,100, false);
 		tCrop = ItemList.Crop_Drop_Manganese.get(1, new Object[0]);
-		addProcess(tCrop,Materials.Manganese,30);
-		addProcess(tCrop,Materials.Grossular,100);
-		addProcess(tCrop,Materials.Spessartine,100);
-		addProcess(tCrop,Materials.Pyrolusite,100);
-		addProcess(tCrop,Materials.Tantalite,100);
+		addProcess(tCrop,Materials.Manganese,30, true);
+		addProcess(tCrop,Materials.Grossular,100, false);
+		addProcess(tCrop,Materials.Spessartine,100, false);
+		addProcess(tCrop,Materials.Pyrolusite,100, false);
+		addProcess(tCrop,Materials.Tantalite,100, false);
 		tCrop = ItemList.Crop_Drop_Ilmenite.get(1, new Object[0]);
-		addProcess(tCrop,Materials.Titanium,100);
-		addProcess(tCrop,Materials.Ilmenite,100);
-		addProcess(tCrop,Materials.Bauxite,100);
+		addProcess(tCrop,Materials.Titanium,100, true);
+		addProcess(tCrop,Materials.Ilmenite,100, false);
+		addProcess(tCrop,Materials.Bauxite,100, false);
 		tCrop = ItemList.Crop_Drop_Scheelite.get(1, new Object[0]);
-		addProcess(tCrop,Materials.Scheelite,100);
-		addProcess(tCrop,Materials.Tungstate,100);
-		addProcess(tCrop,Materials.Lithium,100);
+		addProcess(tCrop,Materials.Scheelite,100, true);
+		addProcess(tCrop,Materials.Tungstate,100, false);
+		addProcess(tCrop,Materials.Lithium,100, false);
 		tCrop = ItemList.Crop_Drop_Platinum.get(1, new Object[0]);
-		addProcess(tCrop,Materials.Platinum,40);
-		addProcess(tCrop,Materials.Cooperite,40);
-		addProcess(tCrop,Materials.Palladium,40);
-		addProcess(tCrop, Materials.Neodymium, 100);
-		addProcess(tCrop, Materials.Bastnasite, 100);
+		addProcess(tCrop,Materials.Platinum,40, true);
+		addProcess(tCrop,Materials.Cooperite,40, false);
+		addProcess(tCrop,Materials.Palladium,40, false);
+		addProcess(tCrop, Materials.Neodymium, 100, false);
+		addProcess(tCrop, Materials.Bastnasite, 100, false);
 		tCrop = ItemList.Crop_Drop_Iridium.get(1, new Object[0]);
-		addProcess(tCrop,Materials.Iridium,20);
+		addProcess(tCrop,Materials.Iridium,20, true);
 		tCrop = ItemList.Crop_Drop_Osmium.get(1, new Object[0]);
-		addProcess(tCrop,Materials.Osmium,20);
+		addProcess(tCrop,Materials.Osmium,20, true);
 
 	    // Radioactive Line
-	    	tCrop = ItemList.Crop_Drop_Pitchblende.get(1, new Object[0]);
-	    	addProcess(tCrop,Materials.Pitchblende,50);
+        tCrop = ItemList.Crop_Drop_Pitchblende.get(1, new Object[0]);
+        addProcess(tCrop,Materials.Pitchblende,50, true);
 		tCrop = ItemList.Crop_Drop_Uraninite.get(1, new Object[0]);
-		addProcess(tCrop,Materials.Uraninite,50);
-		addProcess(tCrop,Materials.Uranium,50);
-		addProcess(tCrop,Materials.Pitchblende,50);
-		addProcess(tCrop,Materials.Uranium235,50);
+		addProcess(tCrop,Materials.Uraninite,50, false);
+		addProcess(tCrop,Materials.Uranium,50, true);
+		addProcess(tCrop,Materials.Pitchblende,50, false);
+		addProcess(tCrop,Materials.Uranium235,50, false);
 		tCrop = ItemList.Crop_Drop_Thorium.get(1, new Object[0]);
-		addProcess(tCrop,Materials.Thorium,50);
+		addProcess(tCrop,Materials.Thorium,50, true);
 		tCrop = ItemList.Crop_Drop_Naquadah.get(1, new Object[0]);
-		addProcess(tCrop,Materials.Naquadah,10);
-		addProcess(tCrop,Materials.NaquadahEnriched,10);
-		addProcess(tCrop,Materials.Naquadria,10);
+		addProcess(tCrop,Materials.Naquadah,10, true);
+		addProcess(tCrop,Materials.NaquadahEnriched,10, false);
+		addProcess(tCrop,Materials.Naquadria,10, false);
 
 		//Gem Line
 		tCrop = ItemList.Crop_Drop_BobsYerUncleRanks.get(1, new Object[0]);
-		addProcess(tCrop, Materials.Emerald, 100);
-		addProcess(tCrop, Materials.Beryllium, 100);
+		addProcess(tCrop, Materials.Emerald, 100, true);
+		addProcess(tCrop, Materials.Beryllium, 100, false);
 
     }
 
-	public void addProcess(ItemStack tCrop, Materials aMaterial, int chance){
-		if(GT_Mod.gregtechproxy.mNerfedCombs){
-			GT_Values.RA.addChemicalRecipe(GT_Utility.copyAmount(9, tCrop), GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1), Materials.Water.getFluid(1000), aMaterial.mOreByProducts.isEmpty() ? null : aMaterial.mOreByProducts.get(0).getMolten(144), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4), 96, 24);
-			GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(16, tCrop), Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass()+9)/10))), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1), 10000, (int) (aMaterial.getMass() * 128), 384);
-		}else{
-			GT_ModHandler.addExtractionRecipe(tCrop, GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1));
-}
-	}
-	
-	public void addProcess(ItemStack tCrop, Materials aMaterial, Materials aMaterialOut, int chance){
-		if(GT_Mod.gregtechproxy.mNerfedCombs){
-			GT_Values.RA.addChemicalRecipe(GT_Utility.copyAmount(9, tCrop), GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1), Materials.Water.getFluid(1000), aMaterialOut.mOreByProducts.isEmpty() ? null : aMaterialOut.mOreByProducts.get(0).getMolten(144), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterialOut, 4), 96, 24);
-			GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(16, tCrop), Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass()+9)/10))), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1), 10000, (int) (aMaterial.getMass() * 128), 384);
-		}else{
-			GT_ModHandler.addExtractionRecipe(tCrop, GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1));
-}
-	}
+    public void addProcess(ItemStack tCrop, Materials aMaterial, int chance, boolean aMainOutput) {
+        if (GT_Mod.gregtechproxy.mNerfedCrops) {
+            GT_Values.RA.addChemicalRecipe(GT_Utility.copyAmount(9, tCrop), GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1), Materials.Water.getFluid(1000), aMaterial.mOreByProducts.isEmpty() ? null : aMaterial.mOreByProducts.get(0).getMolten(144), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4), 96, 24);
+            GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(16, tCrop), Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass()+9)/10))), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1), 10000, (int) (aMaterial.getMass() * 128), 384);
+        } else {
+            if (aMainOutput) GT_ModHandler.addExtractionRecipe(tCrop, GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1));
+        }
+    }
+
+    public void addProcess(ItemStack tCrop, Materials aMaterial, int chance){
+        if (GT_Mod.gregtechproxy.mNerfedCrops) {
+            GT_Values.RA.addChemicalRecipe(GT_Utility.copyAmount(9, tCrop), GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1), Materials.Water.getFluid(1000), aMaterial.mOreByProducts.isEmpty() ? null : aMaterial.mOreByProducts.get(0).getMolten(144), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4), 96, 24);
+            GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(16, tCrop), Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass()+9)/10))), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1), 10000, (int) (aMaterial.getMass() * 128), 384);
+        } else {
+            GT_ModHandler.addExtractionRecipe(tCrop, GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1));
+        }
+    }
+
+    public void addProcess(ItemStack tCrop, Materials aMaterial, Materials aMaterialOut, int chance, boolean aMainOutput){
+        if (GT_Mod.gregtechproxy.mNerfedCrops) {
+            GT_Values.RA.addChemicalRecipe(GT_Utility.copyAmount(9, tCrop), GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1), Materials.Water.getFluid(1000), aMaterialOut.mOreByProducts.isEmpty() ? null : aMaterialOut.mOreByProducts.get(0).getMolten(144), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterialOut, 4), 96, 24);
+            GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(16, tCrop), Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass()+9)/10))), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1), 10000, (int) (aMaterial.getMass() * 128), 384);
+        } else {
+            if (aMainOutput) GT_ModHandler.addExtractionRecipe(tCrop, GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1));
+        }
+    }
+
+    public void addProcess(ItemStack tCrop, Materials aMaterial, Materials aMaterialOut, int chance){
+        if (GT_Mod.gregtechproxy.mNerfedCrops) {
+            GT_Values.RA.addChemicalRecipe(GT_Utility.copyAmount(9, tCrop), GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1), Materials.Water.getFluid(1000), aMaterialOut.mOreByProducts.isEmpty() ? null : aMaterialOut.mOreByProducts.get(0).getMolten(144), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterialOut, 4), 96, 24);
+            GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(16, tCrop), Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass()+9)/10))), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1), 10000, (int) (aMaterial.getMass() * 128), 384);
+        } else {
+            GT_ModHandler.addExtractionRecipe(tCrop, GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1));
+        }
+    }
 
 	private void run2(){
         GT_Values.RA.addAssemblylineRecipe(ItemList.Electric_Motor_IV.get(1, new Object(){}),144000,new ItemStack[]{
