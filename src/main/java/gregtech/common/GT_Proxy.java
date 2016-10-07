@@ -488,6 +488,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             new Thread(new GT_PlayerActivityLogger()).start();
         }
         GregTech_API.sPostloadStarted = true;
+        GT_OreDictUnificator.addItemData(new ItemStack(Items.iron_door, 1), new ItemData(Materials.Iron, 21772800L, new MaterialStack[0]));
+        GT_OreDictUnificator.addItemData(new ItemStack(Items.wooden_door, 1, 32767), new ItemData(Materials.Wood, 21772800L, new MaterialStack[0]));
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
                 tData.fluid.amount = 0;

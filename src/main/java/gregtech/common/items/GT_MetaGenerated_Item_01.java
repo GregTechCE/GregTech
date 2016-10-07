@@ -703,9 +703,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         GT_ModHandler.addCraftingRecipe(ItemList.Cover_Screen.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"AGA", "RPB", "ALA", Character.valueOf('A'), OrePrefixes.plate.get(Materials.Aluminium), Character.valueOf('L'), OrePrefixes.dust.get(Materials.Glowstone), Character.valueOf('R'), Dyes.dyeRed, Character.valueOf('G'), Dyes.dyeLime, Character.valueOf('B'), Dyes.dyeBlue, Character.valueOf('P'), OrePrefixes.plate.get(Materials.Glass)});
 
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 2L), new ItemStack(Items.iron_door, 1), ItemList.Cover_Shutter.get(2L, new Object[0]), 800, 16);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 2L), new ItemStack(Items.iron_door, 1), ItemList.Cover_Shutter.get(2L, new Object[0]), 800, 16);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 2L), new ItemStack(Items.iron_door, 1), ItemList.Cover_Shutter.get(2L, new Object[0]), 800, 16);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 2L), new ItemStack(Blocks.iron_bars, 2), ItemList.Cover_Drain.get(1L, new Object[0]), 800, 16);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 2L), new ItemStack(Blocks.iron_bars, 2), ItemList.Cover_Drain.get(1L, new Object[0]), 800, 16);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 2L), new ItemStack(Blocks.iron_bars, 2), ItemList.Cover_Drain.get(1L, new Object[0]), 800, 16);

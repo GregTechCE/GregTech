@@ -69,7 +69,6 @@ public class GT_Loader_ItemData
         GT_OreDictUnificator.addItemData(new ItemStack(Items.golden_carrot, 1, 0), new ItemData(Materials.Gold, OrePrefixes.nugget.mMaterialAmount * 8L, new MaterialStack[0]));
         GT_OreDictUnificator.addItemData(new ItemStack(Items.speckled_melon, 1, 0), new ItemData(Materials.Gold, OrePrefixes.nugget.mMaterialAmount * 8L, new MaterialStack[0]));
         GT_OreDictUnificator.addItemData(new ItemStack(Items.minecart, 1), new ItemData(Materials.Iron, 18144000L, new MaterialStack[0]));
-        GT_OreDictUnificator.addItemData(new ItemStack(Items.iron_door, 1), new ItemData(Materials.Iron, 21772800L, new MaterialStack[0]));
         GT_OreDictUnificator.addItemData(new ItemStack(Items.cauldron, 1), new ItemData(Materials.Iron, 25401600L, new MaterialStack[0]));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.iron_bars, 8, 32767), new ItemData(Materials.Iron, 10886400L, new MaterialStack[0]));
         GT_OreDictUnificator.addItemData(GT_ModHandler.getIC2Item("ironFurnace", 1L), new ItemData(Materials.Iron, 18144000L, new MaterialStack[0]));
@@ -146,7 +145,6 @@ public class GT_Loader_ItemData
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.fence, 1, 32767), new ItemData(Materials.Wood, 5443200L, new MaterialStack[0]));
         GT_OreDictUnificator.addItemData(new ItemStack(Items.bowl, 1, 32767), new ItemData(Materials.Wood, 3628800L, new MaterialStack[0]));
         GT_OreDictUnificator.addItemData(new ItemStack(Items.sign, 1, 32767), new ItemData(Materials.Wood, 7257600L, new MaterialStack[0]));
-        GT_OreDictUnificator.addItemData(new ItemStack(Items.wooden_door, 1, 32767), new ItemData(Materials.Wood, 21772800L, new MaterialStack[0]));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.chest, 1, 32767), new ItemData(Materials.Wood, 29030400L, new MaterialStack[0]));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.trapped_chest, 1, 32767), new ItemData(Materials.Wood, 32659200L, new MaterialStack[]{new MaterialStack(Materials.Iron, OrePrefixes.ring.mMaterialAmount * 2L)}));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.unlit_redstone_torch, 1, 32767), new ItemData(Materials.Wood, 1814400L, new MaterialStack[]{new MaterialStack(Materials.Redstone, 3628800L)}));
