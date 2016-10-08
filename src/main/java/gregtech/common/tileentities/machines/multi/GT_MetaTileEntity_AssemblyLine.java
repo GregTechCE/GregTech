@@ -159,7 +159,6 @@ public class GT_MetaTileEntity_AssemblyLine
 
                 tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 1, i);
                 if (!addEnergyInputToMachineList(tTileEntity, 16)){
-                    if (i==0) return false;
                     if (aBaseMetaTileEntity.getBlockOffset(xDir, 1, i) != GregTech_API.sBlockCasings2) {return false;}
                     if (aBaseMetaTileEntity.getMetaIDOffset(xDir, 1, i) != 0) {return false;}
                 }
@@ -177,7 +176,7 @@ public class GT_MetaTileEntity_AssemblyLine
                 tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, -2, i);
                 if (!addInputToMachineList(tTileEntity, 16)){
                     if (!addOutputToMachineList(tTileEntity, 16)){
-                    }else{if(r>0){return true;}else{return false;}}
+                    }else{if(r>0){return mEnergyHatches.size()>0;}else{return false;}}
                 }
             }
         }else{
@@ -194,7 +193,6 @@ public class GT_MetaTileEntity_AssemblyLine
 
                 tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(i, 1, zDir);
                 if (!addEnergyInputToMachineList(tTileEntity, 16)){
-                    if (i==0) return false;
                     if (aBaseMetaTileEntity.getBlockOffset(i, 1, zDir) != GregTech_API.sBlockCasings2) {return false;}
                     if (aBaseMetaTileEntity.getMetaIDOffset(i, 1, zDir) != 0) {return false;}
                 }
@@ -212,7 +210,7 @@ public class GT_MetaTileEntity_AssemblyLine
                 tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(i, -2, zDir);
                 if (!addInputToMachineList(tTileEntity, 16)){
                     if (!addOutputToMachineList(tTileEntity, 16)){
-                    }else{if(r>0){return true;}else{return false;}}
+                    }else{if(r>0){return mEnergyHatches.size()>0;}else{return false;}}
                 }
             }
         }
