@@ -361,7 +361,9 @@ public class GT_Mod implements IGT_Mod {
         for(String test : oreTags){
         	if(StringUtils.startsWithAny(test, preS)){
         	mMTTags.add(test);
-        	System.out.println("oretag: "+test);}}
+        	if(GT_Values.D1)
+        	System.out.println("oretag: "+test);
+        	}}
         
         System.out.println("reenableMetaItems");
         for(String reEnable : mMTTags){
@@ -370,7 +372,32 @@ public class GT_Mod implements IGT_Mod {
         Materials tName = Materials.get(reEnable.replaceFirst(tPrefix.toString(), ""));
         if(tName!=null){
         tPrefix.mDisabledItems.remove(tName);
-        tPrefix.mGeneratedItems.add(tName);}else{System.out.println("noMaterial "+reEnable);}
+        tPrefix.mGeneratedItems.add(tName);
+        if(tPrefix == OrePrefixes.screw){
+        	OrePrefixes.bolt.mDisabledItems.remove(tName);
+        	OrePrefixes.bolt.mGeneratedItems.add(tName);
+        	OrePrefixes.stick.mDisabledItems.remove(tName);
+        	OrePrefixes.stick.mGeneratedItems.add(tName);
+        }
+        if(tPrefix == OrePrefixes.round){
+        	OrePrefixes.nugget.mDisabledItems.remove(tName);
+        	OrePrefixes.nugget.mGeneratedItems.add(tName);
+        }
+        if(tPrefix == OrePrefixes.spring){
+        	OrePrefixes.stickLong.mDisabledItems.remove(tName);
+        	OrePrefixes.stickLong.mGeneratedItems.add(tName);
+        	OrePrefixes.stick.mDisabledItems.remove(tName);
+        	OrePrefixes.stick.mGeneratedItems.add(tName);
+        }
+        if(tPrefix == OrePrefixes.springSmall){
+        	OrePrefixes.stick.mDisabledItems.remove(tName);
+        	OrePrefixes.stick.mGeneratedItems.add(tName);
+        }
+        if(tPrefix == OrePrefixes.stickLong){
+        	OrePrefixes.stick.mDisabledItems.remove(tName);
+        	OrePrefixes.stick.mGeneratedItems.add(tName);
+        }
+        }else{System.out.println("noMaterial "+reEnable);}
         }else{System.out.println("noPrefix "+reEnable);}}
         
         new Enchantment_EnderDamage();
