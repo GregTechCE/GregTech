@@ -13,10 +13,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
 import net.minecraft.item.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import static gregtech.api.enums.GT_Values.*;
 
@@ -549,6 +546,7 @@ public enum OrePrefixes {
     public MaterialStack mSecondaryMaterial = null;
     public OrePrefixes mPrefixInto = this;
     public float mHeatDamage = 0.0F; // Negative for Frost Damage
+    public static List<OrePrefixes> mPreventableComponents = new LinkedList<>(Arrays.asList(OrePrefixes.gem, OrePrefixes.ingotHot, OrePrefixes.ingotDouble, OrePrefixes.ingotTriple, OrePrefixes.ingotQuadruple, OrePrefixes.ingotQuintuple, OrePrefixes.plate, OrePrefixes.plateDouble, OrePrefixes.plateTriple, OrePrefixes.plateQuadruple, OrePrefixes.plateQuintuple, OrePrefixes.plateDense, OrePrefixes.stick, OrePrefixes.round, OrePrefixes.bolt, OrePrefixes.screw, OrePrefixes.ring, OrePrefixes.foil, OrePrefixes.toolHeadSword, OrePrefixes.toolHeadPickaxe, OrePrefixes.toolHeadShovel, OrePrefixes.toolHeadAxe, OrePrefixes.toolHeadHoe, OrePrefixes.toolHeadHammer, OrePrefixes.toolHeadFile, OrePrefixes.toolHeadSaw, OrePrefixes.toolHeadDrill, OrePrefixes.toolHeadChainsaw, OrePrefixes.toolHeadWrench, OrePrefixes.toolHeadUniversalSpade, OrePrefixes.toolHeadSense, OrePrefixes.toolHeadPlow, OrePrefixes.toolHeadArrow, OrePrefixes.toolHeadBuzzSaw, OrePrefixes.turbineBlade, OrePrefixes.wireFine, OrePrefixes.gearGtSmall, OrePrefixes.rotor, OrePrefixes.stickLong, OrePrefixes.springSmall, OrePrefixes.spring, OrePrefixes.arrowGtWood, OrePrefixes.arrowGtPlastic, OrePrefixes.gemChipped, OrePrefixes.gemFlawed, OrePrefixes.gemFlawless, OrePrefixes.gemExquisite, OrePrefixes.gearGt, OrePrefixes.crateGtDust, OrePrefixes.crateGtIngot, OrePrefixes.crateGtGem, OrePrefixes.crateGtPlate));
     /**
      * Yes this Value can be changed to add Bits for the MetaGenerated-Item-Check.
      */
@@ -640,7 +638,7 @@ public enum OrePrefixes {
         //TODO possibly use OrePrefix mNotGeneratedItems/mGeneratedItems instead of a static List for every material instance?
         //TODO Make sure stuff like gem plates / standard plates / paper plates all generate with the current condition
         for (Materials aMaterial : Materials.values()) {
-            if (aMaterial.mMetaItemSubID >= 0) {
+            if (aMaterial.mMetaItemSubID > 0) {
                 if (aMaterial.mBlastFurnaceTemp <= 1750) ingotHot.mDisabledItems.add(aMaterial); //Moved HotIngot code from GT_MetaGenerated_Item_01 so all this is in once place
                 if (!enableUnusedSprings && (aMaterial != Materials.Titanium)) spring.mDisabledItems.add(aMaterial);
                 if (!enableUnusedSmallSprings) springSmall.mDisabledItems.add(aMaterial);
@@ -752,22 +750,24 @@ public enum OrePrefixes {
             aRegistrator.onComponentInit();
         }
         for (Materials aMaterial : Materials.values()) {
-            for (IMaterialHandler aRegistrator : Materials.mMaterialHandlers) {
-                aRegistrator.onComponentIteration(aMaterial);
-            }
-            if (enablePerItemSettings) {
-                StringBuilder aConfigPathSB = new StringBuilder();
-                aConfigPathSB.append("materialcomponents.").append(aMaterial.mConfigSection).append(".").append(aMaterial.mName);
-                String aConfigPath = aConfigPathSB.toString();
-                for (OrePrefixes aPrefix : Materials.mDefaultComponents) {
-                    boolean aEnableComponent = GregTech_API.sMaterialComponents.get(aConfigPath, aPrefix.toString(), !aPrefix.mDisabledItems.contains(aMaterial));
-                    if (!aEnableComponent) { //Disable component if false and is not already in disabled list
-                        aPrefix.disableComponent(aMaterial);
-                    } else if (aEnableComponent) { //Enable component if true and is not already in enabled list
-                        aPrefix.enableComponent(aMaterial);
-                    }
+            if (aMaterial.mMetaItemSubID > 0) {
+                for (IMaterialHandler aRegistrator : Materials.mMaterialHandlers) {
+                    aRegistrator.onComponentIteration(aMaterial);
                 }
-                aConfigPathSB.setLength(0);
+                if (enablePerItemSettings) {
+                    StringBuilder aConfigPathSB = new StringBuilder();
+                    aConfigPathSB.append("materialcomponents.").append(aMaterial.mConfigSection).append(".").append(aMaterial.mName);
+                    String aConfigPath = aConfigPathSB.toString();
+                    for (OrePrefixes aPrefix : mPreventableComponents) {
+                        boolean aEnableComponent = GregTech_API.sMaterialComponents.get(aConfigPath, aPrefix.toString(), !aPrefix.mDisabledItems.contains(aMaterial));
+                        if (!aEnableComponent) { //Disable component if false and is not already in disabled list
+                            aPrefix.disableComponent(aMaterial);
+                        } else if (aEnableComponent) { //Enable component if true and is not already in enabled list
+                            aPrefix.enableComponent(aMaterial);
+                        }
+                    }
+                    aConfigPathSB.setLength(0);
+                }
             }
         }
     }
@@ -873,8 +873,7 @@ public enum OrePrefixes {
 
     public void processOre(Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         if (aMaterial != null && (aMaterial != Materials._NULL || mIsSelfReferencing || !mIsMaterialBased) && GT_Utility.isStackValid(aStack)) {
-            //if (Materials.mDefaultComponents.contains(this) && !this.mDynamicItems.contains(aMaterial)) return;
-            if (Materials.mDefaultComponents.contains(this) && this.mDisabledItems.contains(aMaterial)) return;
+            //if (Materials.mPreventableComponents.contains(this) && !this.mDynamicItems.contains(aMaterial)) return;
             for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
                 if (D2) GT_Log.ore.println("Processing '" + aOreDictName + "' with the Prefix '" + name() + "' and the Material '" + aMaterial.mName + "' at " + GT_Utility.getClassName(tRegistrator));
                 tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GT_Utility.copyAmount(1, aStack));
