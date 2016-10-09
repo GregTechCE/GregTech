@@ -1881,5 +1881,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         return mRGBa;
     }
 
+    @Override
+    public String toString() {
+        return this.mName;
+    }
+
     public static volatile int VERSION = 509;
 }
