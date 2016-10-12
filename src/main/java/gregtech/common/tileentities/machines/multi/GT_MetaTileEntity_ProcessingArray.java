@@ -125,6 +125,8 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
             return GT_Recipe.GT_Recipe_Map.sUnboxinatorRecipes;
         } else if (tmp.startsWith("polarizer")) {
             return GT_Recipe.GT_Recipe_Map.sPolarizerRecipes;
+        } else if(tmp.startsWith("press")){
+            return GT_Recipe.GT_Recipe_Map.sPressRecipes;
         }
 
         return null;
