@@ -158,6 +158,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public boolean mHideUnusedOres = true;
     public boolean mHideRecyclingRecipes = true;
     public boolean mPollution = true;
+    public boolean mExplosionItemDrop = false;
     public int mSkeletonsShootGTArrows = 16;
     public int mMaxEqualEntitiesAtOneSpot = 3;
     public int mFlintChance = 30;
@@ -1386,99 +1387,99 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         NBTTagCompound tNBT = aFuel.getTagCompound();
         if (tNBT != null) {
             short tValue = tNBT.getShort("GT.ItemFuelValue");
-            rFuelValue = (short) Math.max(rFuelValue, tValue);
+            rFuelValue = Math.max(rFuelValue, tValue);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "gemSodium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 4000);
+            rFuelValue =   Math.max(rFuelValue, 4000);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "crushedSodium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 4000);
+            rFuelValue =   Math.max(rFuelValue, 4000);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustImpureSodium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 4000);
+            rFuelValue =   Math.max(rFuelValue, 4000);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustSodium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 4000);
+            rFuelValue =   Math.max(rFuelValue, 400);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustSmallSodium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 1000);
+            rFuelValue =   Math.max(rFuelValue, 100);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustTinySodium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 444);
+            rFuelValue =   Math.max(rFuelValue, 44);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "gemLithium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 6000);
+            rFuelValue =   Math.max(rFuelValue, 6000);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "crushedLithium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 6000);
+            rFuelValue =   Math.max(rFuelValue, 6000);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustImpureLithium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 6000);
+            rFuelValue =   Math.max(rFuelValue, 6000);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustLithium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 6000);
+            rFuelValue =   Math.max(rFuelValue, 6000);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustSmallLithium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 2000);
+            rFuelValue =   Math.max(rFuelValue, 2000);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustTinyLithium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 888);
+            rFuelValue =   Math.max(rFuelValue, 888);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "gemCaesium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 6000);
+            rFuelValue =   Math.max(rFuelValue, 6000);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "crushedCaesium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 6000);
+            rFuelValue =   Math.max(rFuelValue, 6000);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustImpureCaesium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 6000);
+            rFuelValue =   Math.max(rFuelValue, 6000);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustCaesium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 6000);
+            rFuelValue =   Math.max(rFuelValue, 6000);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustSmallCaesium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 2000);
+            rFuelValue =   Math.max(rFuelValue, 2000);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustTinyCaesium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 888);
+            rFuelValue =   Math.max(rFuelValue, 888);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "gemLignite")) {
-            rFuelValue = (short) Math.max(rFuelValue, 1200);
+            rFuelValue =   Math.max(rFuelValue, 1200);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "crushedLignite")) {
-            rFuelValue = (short) Math.max(rFuelValue, 1200);
+            rFuelValue =   Math.max(rFuelValue, 1200);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustImpureLignite")) {
-            rFuelValue = (short) Math.max(rFuelValue, 1200);
+            rFuelValue =   Math.max(rFuelValue, 1200);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustLignite")) {
-            rFuelValue = (short) Math.max(rFuelValue, 1200);
+            rFuelValue =   Math.max(rFuelValue, 1200);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustSmallLignite")) {
-            rFuelValue = (short) Math.max(rFuelValue, 375);
+            rFuelValue =   Math.max(rFuelValue, 375);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustTinyLignite")) {
-            rFuelValue = (short) Math.max(rFuelValue, 166);
+            rFuelValue =   Math.max(rFuelValue, 166);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "gemCoal")) {
-            rFuelValue = (short) Math.max(rFuelValue, 1600);
+            rFuelValue =   Math.max(rFuelValue, 1600);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "crushedCoal")) {
-            rFuelValue = (short) Math.max(rFuelValue, 1600);
+            rFuelValue =   Math.max(rFuelValue, 1600);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustImpureCoal")) {
-            rFuelValue = (short) Math.max(rFuelValue, 1600);
+            rFuelValue =   Math.max(rFuelValue, 1600);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustCoal")) {
-            rFuelValue = (short) Math.max(rFuelValue, 1600);
+            rFuelValue =   Math.max(rFuelValue, 1600);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustSmallCoal")) {
-            rFuelValue = (short) Math.max(rFuelValue, 400);
+            rFuelValue =   Math.max(rFuelValue, 400);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustTinyCoal")) {
-            rFuelValue = (short) Math.max(rFuelValue, 177);
+            rFuelValue =   Math.max(rFuelValue, 177);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "gemCharcoal")) {
-            rFuelValue = (short) Math.max(rFuelValue, 1600);
+            rFuelValue =   Math.max(rFuelValue, 1600);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "crushedCharcoal")) {
-            rFuelValue = (short) Math.max(rFuelValue, 1600);
+            rFuelValue =   Math.max(rFuelValue, 1600);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustImpureCharcoal")) {
-            rFuelValue = (short) Math.max(rFuelValue, 1600);
+            rFuelValue =   Math.max(rFuelValue, 1600);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustCharcoal")) {
-            rFuelValue = (short) Math.max(rFuelValue, 1600);
+            rFuelValue =   Math.max(rFuelValue, 1600);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustSmallCharcoal")) {
-            rFuelValue = (short) Math.max(rFuelValue, 400);
+            rFuelValue =   Math.max(rFuelValue, 400);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustTinyCharcoal")) {
-            rFuelValue = (short) Math.max(rFuelValue, 177);
+            rFuelValue =   Math.max(rFuelValue, 177);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustWood")) {
-            rFuelValue = (short) Math.max(rFuelValue, 100);
+            rFuelValue =   Math.max(rFuelValue, 100);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustSmallWood")) {
-            rFuelValue = (short) Math.max(rFuelValue, 25);
+            rFuelValue =   Math.max(rFuelValue, 25);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustTinyWood")) {
-            rFuelValue = (short) Math.max(rFuelValue, 11);
+            rFuelValue =   Math.max(rFuelValue, 11);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "plateWood")) {
-            rFuelValue = (short) Math.min(rFuelValue, 300);
+            rFuelValue =   Math.min(rFuelValue, 300);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "blockLignite")) {
-            rFuelValue = (short) Math.max(rFuelValue, 12000);
+            rFuelValue =   Math.max(rFuelValue, 12000);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "blockCharcoal")) {
-            rFuelValue = (short) Math.max(rFuelValue, 16000);
+            rFuelValue =   Math.max(rFuelValue, 16000);
         } else if (GT_Utility.areStacksEqual(aFuel, new ItemStack(Blocks.wooden_button, 1))) {
-            rFuelValue = (short) Math.max(rFuelValue, 150);
+            rFuelValue =   Math.max(rFuelValue, 150);
         } else if (GT_Utility.areStacksEqual(aFuel, new ItemStack(Blocks.ladder, 1))) {
-            rFuelValue = (short) Math.max(rFuelValue, 100);
+            rFuelValue =   Math.max(rFuelValue, 100);
         } else if (GT_Utility.areStacksEqual(aFuel, new ItemStack(Items.sign, 1))) {
-            rFuelValue = (short) Math.max(rFuelValue, 600);
+            rFuelValue =   Math.max(rFuelValue, 600);
         } else if (GT_Utility.areStacksEqual(aFuel, new ItemStack(Items.wooden_door, 1))) {
-            rFuelValue = (short) Math.max(rFuelValue, 600);
+            rFuelValue =   Math.max(rFuelValue, 600);
         } else if (GT_Utility.areStacksEqual(aFuel, ItemList.Block_MSSFUEL.get(1, new Object[0]))) {
             rFuelValue = Math.max(rFuelValue, 150000);
         }if (GT_Utility.areStacksEqual(aFuel, ItemList.Block_SSFUEL.get(1, new Object[0]))) {

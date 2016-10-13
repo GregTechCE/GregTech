@@ -31,9 +31,11 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import static gregtech.api.enums.GT_Values.NW;
 import static gregtech.api.enums.GT_Values.V;
@@ -1089,6 +1091,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public void doExplosion(long aAmount) {
+    	System.out.println("doExplosion");
         if (canAccessData()) {
             // This is only for Electric Machines
             if (GregTech_API.sMachineWireFire && mMetaTileEntity.isElectric()) {
@@ -1100,6 +1103,33 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
             mReleaseEnergy = false;
             // Normal Explosion Code
             mMetaTileEntity.onExplosion();
+            if(GT_Mod.gregtechproxy.mExplosionItemDrop){
+            	Random tRandom = new Random();
+                for (int i = 0; i < this.getSizeInventory(); i++) {
+                    ItemStack tItem = this.getStackInSlot(i);
+                    System.out.println("getInventory: "+i);
+                    if ((tItem != null) && (tItem.stackSize > 0) && (this.isValidSlot(i))) {
+                        EntityItem tItemEntity = new EntityItem(this.worldObj, this.xCoord + tRandom.nextFloat() * 0.8F + 0.1F, this.yCoord + tRandom.nextFloat() * 0.8F + 0.1F, this.zCoord + tRandom.nextFloat() * 0.8F + 0.1F, new ItemStack(tItem.getItem(), tItem.stackSize, tItem.getItemDamage()));
+                        if (tItem.hasTagCompound()) {
+                            tItemEntity.getEntityItem().setTagCompound((NBTTagCompound) tItem.getTagCompound().copy());
+                        }
+                        tItemEntity.motionX = (tRandom.nextGaussian() * 0.0500000007450581D);
+                        tItemEntity.motionY = (tRandom.nextGaussian() * 0.0500000007450581D + 0.2000000029802322D);
+                        tItemEntity.motionZ = (tRandom.nextGaussian() * 0.0500000007450581D);
+                        tItemEntity.hurtResistantTime = 999999;
+                        tItemEntity.lifespan = 60000;
+                        try {
+							Field tField = tItemEntity.getClass().getDeclaredField("health");
+							tField.setAccessible(true);
+							tField.setInt(tItemEntity, 99999999);
+						} catch (Exception e) {e.printStackTrace();}
+                        this.worldObj.spawnEntityInWorld(tItemEntity);
+                        System.out.println("spawnItem: "+tItemEntity.getEntityItem().getDisplayName());
+                        tItem.stackSize = 0;
+                        this.setInventorySlotContents(i, null);
+                    }
+    }
+            }
             mMetaTileEntity.doExplosion(aAmount);
         }
     }
