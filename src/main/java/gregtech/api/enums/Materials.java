@@ -31,7 +31,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc) that looped over the old materials enum
      */
     @Deprecated
-    public static final Collection<Materials> VALUES = new HashSet<Materials>(Arrays.asList(MATERIALS_ARRAY));
+    public static Collection<Materials> VALUES = new LinkedHashSet<Materials>();
 
     /**
      * This is the Default Material returned in case no Material has been found or a NullPointer has been inserted at a location where it shouldn't happen.
@@ -1281,6 +1281,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         }
         initMaterialProperties(); //No more material addition or manipulation should be done past this point!
         MATERIALS_ARRAY = MATERIALS_MAP.values().toArray(new Materials[MATERIALS_MAP.size()]); //Generate standard object array. This is a lot faster to loop over.
+        VALUES = Arrays.asList(MATERIALS_ARRAY);
         OrePrefixes.initMaterialComponents();
         for (Materials aMaterial : MATERIALS_ARRAY) {
             if (aMaterial.mMetaItemSubID >= 0) {
