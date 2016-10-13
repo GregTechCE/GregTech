@@ -179,6 +179,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     private final String aTextForestry = "Forestry";
     private final String aTextArsmagica2 = "arsmagica2";
     public boolean mTEMachineRecipes = false;
+    public boolean mEnableAllMaterials = false;
+    public boolean mEnableAllComponents = false;
 
     public GT_Proxy() {
         GameRegistry.registerFuelHandler(this);
