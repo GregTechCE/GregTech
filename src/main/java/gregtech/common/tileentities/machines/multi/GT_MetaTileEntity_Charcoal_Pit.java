@@ -74,6 +74,10 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlock
 
     public boolean checkRecipe(ItemStack aStack) {
         if (!checkRecursiveBlocks()) {
+            this.mEfficiency = 0;
+            this.mEfficiencyIncrease = 0;
+            this.mMaxProgresstime = 0;
+            running = false;
             return false;
         }
 
