@@ -115,7 +115,8 @@ public abstract class GT_Block_Casings_Abstract
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
         for (int i = 0; i < 16; i++) {
-            aList.add(new ItemStack(aItem, 1, i));
+            ItemStack aStack = new ItemStack(aItem, 1, i);
+            if (!aStack.getDisplayName().contains(".name")) aList.add(aStack);
         }
     }
 }

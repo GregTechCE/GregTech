@@ -13,8 +13,9 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import ic2.core.block.EntityIC2Explosive;
+import ic2.core.block.EntityItnt;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -30,9 +31,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import ic2.core.IC2;
-import ic2.core.block.EntityIC2Explosive;
-import ic2.core.block.EntityItnt;
 
 import java.util.List;
 import java.util.Random;
@@ -278,7 +276,8 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
         for (int i = 0; i < 16; i++) {
-            aList.add(new ItemStack(aItem, 1, i));
+            ItemStack aStack = new ItemStack(aItem, 1, i);
+            if (!aStack.getDisplayName().contains(".name")) aList.add(aStack);
         }
     }
 }
