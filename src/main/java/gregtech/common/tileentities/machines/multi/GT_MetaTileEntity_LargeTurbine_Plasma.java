@@ -43,7 +43,8 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
                 "1x Muffler Hatch (Side centered)",
                 "1x Dynamo Hatch (Back centered)",
                 "Tungstensteel Turbine Casings for the rest (24 at least!)",
-                "Needs a Turbine Item (Inside controller GUI)"};
+                "Needs a Turbine Item (Inside controller GUI)",
+                "Output depending on Rotor: 4200-67200EU/t"};
     }
 
     public int getFuelValue(FluidStack aLiquid) {

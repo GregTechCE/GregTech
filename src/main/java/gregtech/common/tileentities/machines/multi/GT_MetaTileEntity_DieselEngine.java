@@ -46,7 +46,8 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
                 "1x Maintenance Hatch (one of the Casings)",
                 "1x Muffler Hatch (top middle back)",
                 "1x Dynamo Hatch (back centered)",
-                "Engine Intake Casings not obstructed (only air blocks)"};
+                "Engine Intake Casings not obstructed (only air blocks)",
+                "2048EU/t default output, 6144EU/t boosted output"};
     }
 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {

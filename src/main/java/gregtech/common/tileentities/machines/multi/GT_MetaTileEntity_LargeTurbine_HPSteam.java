@@ -40,7 +40,8 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
                 "1x Muffler Hatch (Side centered)",
                 "1x Dynamo Hatch (Back centered)",
                 "Titanium Turbine Casings for the rest (24 at least!)",
-                "Needs a Turbine Item (Inside controller GUI)"};
+                "Needs a Turbine Item (Inside controller GUI)",
+                "Output depending on Rotor: 210-3360EU/t"};
     }
 
     @Override
