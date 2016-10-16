@@ -1072,30 +1072,41 @@ if(Loader.isModLoaded("Railcraft")){
         GT_Values.RA.addCutterRecipe(new ItemStack(Blocks.wooden_slab, 1, 3), ItemList.Plank_Jungle.get(2L, new Object[0]), GT_Values.NI, 50, 8);
         GT_Values.RA.addCutterRecipe(new ItemStack(Blocks.wooden_slab, 1, 4), ItemList.Plank_Acacia.get(2L, new Object[0]), GT_Values.NI, 50, 8);
         GT_Values.RA.addCutterRecipe(new ItemStack(Blocks.wooden_slab, 1, 5), ItemList.Plank_DarkOak.get(2L, new Object[0]), GT_Values.NI, 50, 8);
-        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem(aTextForestry, "slabs1", 1L, 0), ItemList.Plank_Larch.get(2L, new Object[0]), GT_Values.NI, 50, 8);
-        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem(aTextForestry, "slabs1", 1L, 1), ItemList.Plank_Teak.get(2L, new Object[0]), GT_Values.NI, 50, 8);
-        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem(aTextForestry, "slabs1", 1L, 2), ItemList.Plank_Acacia_Green.get(2L, new Object[0]), GT_Values.NI, 50, 8);
-        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem(aTextForestry, "slabs1", 1L, 3), ItemList.Plank_Lime.get(2L, new Object[0]), GT_Values.NI, 50, 8);
-        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem(aTextForestry, "slabs1", 1L, 4), ItemList.Plank_Chestnut.get(2L, new Object[0]), GT_Values.NI, 50, 8);
-        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem(aTextForestry, "slabs1", 1L, 5), ItemList.Plank_Wenge.get(2L, new Object[0]), GT_Values.NI, 50, 8);
-        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem(aTextForestry, "slabs1", 1L, 6), ItemList.Plank_Baobab.get(2L, new Object[0]), GT_Values.NI, 50, 8);
-        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem(aTextForestry, "slabs1", 1L, 7), ItemList.Plank_Sequoia.get(2L, new Object[0]), GT_Values.NI, 50, 8);
-        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem(aTextForestry, "slabs2", 1L, 0), ItemList.Plank_Kapok.get(2L, new Object[0]), GT_Values.NI, 50, 8);
-        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem(aTextForestry, "slabs2", 1L, 1), ItemList.Plank_Ebony.get(2L, new Object[0]), GT_Values.NI, 50, 8);
-        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem(aTextForestry, "slabs2", 1L, 2), ItemList.Plank_Mahagony.get(2L, new Object[0]), GT_Values.NI, 50, 8);
-        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem(aTextForestry, "slabs2", 1L, 3), ItemList.Plank_Balsa.get(2L, new Object[0]), GT_Values.NI, 50, 8);
-        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem(aTextForestry, "slabs2", 1L, 4), ItemList.Plank_Willow.get(2L, new Object[0]), GT_Values.NI, 50, 8);
-        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem(aTextForestry, "slabs2", 1L, 5), ItemList.Plank_Walnut.get(2L, new Object[0]), GT_Values.NI, 50, 8);
-        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem(aTextForestry, "slabs2", 1L, 6), ItemList.Plank_Greenheart.get(2L, new Object[0]), GT_Values.NI, 50, 8);
-        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem(aTextForestry, "slabs2", 1L, 7), ItemList.Plank_Cherry.get(2L, new Object[0]), GT_Values.NI, 50, 8);
-        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem(aTextForestry, "slabs3", 1L, 0), ItemList.Plank_Mahoe.get(2L, new Object[0]), GT_Values.NI, 50, 8);
-        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem(aTextForestry, "slabs3", 1L, 1), ItemList.Plank_Poplar.get(2L, new Object[0]), GT_Values.NI, 50, 8);
-        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem(aTextForestry, "slabs3", 1L, 2), ItemList.Plank_Palm.get(2L, new Object[0]), GT_Values.NI, 50, 8);
-        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem(aTextForestry, "slabs3", 1L, 3), ItemList.Plank_Papaya.get(2L, new Object[0]), GT_Values.NI, 50, 8);
-        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem(aTextForestry, "slabs3", 1L, 4), ItemList.Plank_Pine.get(2L, new Object[0]), GT_Values.NI, 50, 8);
-        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem(aTextForestry, "slabs3", 1L, 5), ItemList.Plank_Plum.get(2L, new Object[0]), GT_Values.NI, 50, 8);
-        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem(aTextForestry, "slabs3", 1L, 6), ItemList.Plank_Maple.get(2L, new Object[0]), GT_Values.NI, 50, 8);
-        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem(aTextForestry, "slabs3", 1L, 7), ItemList.Plank_Citrus.get(2L, new Object[0]), GT_Values.NI, 50, 8);
+        ItemStack[] coverIDs = new ItemStack[]{
+        		ItemList.Plank_Larch.get(2L, new Object[0]), 
+        		ItemList.Plank_Teak.get(2L, new Object[0]), 
+        		ItemList.Plank_Acacia_Green.get(2L, new Object[0]), 
+        		ItemList.Plank_Lime.get(2L, new Object[0]), 
+        		ItemList.Plank_Chestnut.get(2L, new Object[0]), 
+        		ItemList.Plank_Wenge.get(2L, new Object[0]), 
+        		ItemList.Plank_Baobab.get(2L, new Object[0]), 
+        		ItemList.Plank_Sequoia.get(2L, new Object[0]),              
+        		ItemList.Plank_Kapok.get(2L, new Object[0]), 
+        		ItemList.Plank_Ebony.get(2L, new Object[0]), 
+        		ItemList.Plank_Mahagony.get(2L, new Object[0]), 
+        		ItemList.Plank_Balsa.get(2L, new Object[0]), 
+        		ItemList.Plank_Willow.get(2L, new Object[0]), 
+        		ItemList.Plank_Walnut.get(2L, new Object[0]), 
+        		ItemList.Plank_Greenheart.get(2L, new Object[0]), 
+        		ItemList.Plank_Cherry.get(2L, new Object[0]), 
+        		ItemList.Plank_Mahoe.get(2L, new Object[0]), 
+        		ItemList.Plank_Poplar.get(2L, new Object[0]), 
+        		ItemList.Plank_Palm.get(2L, new Object[0]), 
+        		ItemList.Plank_Papaya.get(2L, new Object[0]), 
+        		ItemList.Plank_Pine.get(2L, new Object[0]), 
+        		ItemList.Plank_Plum.get(2L, new Object[0]), 
+        		ItemList.Plank_Maple.get(2L, new Object[0]), 
+        		ItemList.Plank_Citrus.get(2L, new Object[0])};
+        int i = 0;
+        for(ItemStack cover : coverIDs){
+        	ItemStack slabWood = GT_ModHandler.getModItem(aTextForestry, "slabs", 1, i);
+        	ItemStack slabWoodFireproof = GT_ModHandler.getModItem(aTextForestry, "slabsFireproof", 1, i);
+            GT_ModHandler.addCraftingRecipe(cover, GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"s ", " P", 'P', slabWood});
+            GT_ModHandler.addCraftingRecipe(cover, GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"s ", " P", 'P', slabWoodFireproof});
+            GT_Values.RA.addCutterRecipe(slabWood, cover, null, 40, 8);
+            GT_Values.RA.addCutterRecipe(slabWoodFireproof, cover, null, 40, 8);
+        	i++;
+        }
 
         GT_Values.RA.addLatheRecipe(new ItemStack(Blocks.wooden_slab, 1, GT_Values.W), new ItemStack(Items.bowl,1), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 1), 50, 8);
         GT_Values.RA.addLatheRecipe(GT_ModHandler.getModItem(aTextForestry, "slabs", 1L, GT_Values.W), new ItemStack(Items.bowl,1), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 1), 50, 8);
