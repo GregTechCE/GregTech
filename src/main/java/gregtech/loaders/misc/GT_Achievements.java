@@ -99,10 +99,11 @@ public class GT_Achievements {
         registerAchievement("cleandust", 0, 10, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L), "crushed", false);
         registerAchievement("washing", -2, 6, GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Iron, 1L), "crushed", false);
         registerAchievement("spinit", -4, 6, GT_OreDictUnificator.get(OrePrefixes.crushedCentrifuged, Materials.Redstone, 1L), "crushed", false);
+        if(!GregTech_API.mIC2Classic){
         registerAchievement("newfuel", -4, 8, ItemList.ThoriumCell_4.get(1, new Object[]{}), "spinit", false);
         registerAchievement("newmetal", -4, 10, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 1L), "newfuel", false);
         registerAchievement("reflect", -2, 9, ItemList.Neutron_Reflector.get(1, new Object[]{}), "newfuel", false);
-
+        }
         registerAchievement("bronze", 2, 0, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 1L), "flintpick", false);
         registerAchievement("simplyeco", 2, 2, ItemList.Machine_Bronze_Boiler_Solar.get(1, new Object[]{}), "bronze", false);
         registerAchievement("firststeam", 2, -2, ItemList.Machine_Bronze_Boiler.get(1, new Object[]{}), "bronze", false);

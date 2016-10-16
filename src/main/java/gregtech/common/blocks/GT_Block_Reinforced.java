@@ -21,6 +21,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -209,11 +210,7 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
     public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z)
     {
       if(world.getBlockMetadata(x, y, z)==5){
-        EntityIC2Explosive entitytntprimed = getExplosionEntity(world, x, y, z, player == null ? null : player);
-        if (entitytntprimed == null) {
-          return false;
-        }
-        
+    	EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(world, x, y, z, player == null ? null : player);
         world.spawnEntityInWorld(entitytntprimed);
         world.playSoundAtEntity(entitytntprimed, "random.fuse", 1.0F, 1.0F);
         
@@ -221,15 +218,6 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
       return false;
       }
       return super.removedByPlayer(world, player, x, y, z);
-    }
-    
-    public EntityIC2Explosive getExplosionEntity(World world, int x, int y, int z, EntityLivingBase igniter)
-    {
-      EntityIC2Explosive ret;
-      ret = new EntityItnt(world, x + 0.5D, y + 0.5D, z + 0.5D);
-      ret.setIgniter(igniter);
-      
-      return ret;
     }
     
     public void onBlockAdded(World world, int x, int y, int z)
@@ -249,10 +237,7 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
     
     public void onBlockDestroyedByExplosion(World world, int x, int y, int z, Explosion explosion)
     {
-      EntityIC2Explosive entitytntprimed = getExplosionEntity(world, x, y, z, explosion == null ? null : explosion.getExplosivePlacedBy());
-      if (entitytntprimed == null) {
-        return;
-      }
+    	EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(world, x, y, z, explosion.getExplosivePlacedBy());
       entitytntprimed.fuse = (world.rand.nextInt(entitytntprimed.fuse / 4) + entitytntprimed.fuse / 8);
       world.spawnEntityInWorld(entitytntprimed);
     }
@@ -261,7 +246,6 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
     {
       if ((player.getCurrentEquippedItem() != null) && (player.getCurrentEquippedItem().getItem() == Items.flint_and_steel)&&par1World.getBlockMetadata(x, y, z)==5)
       {
-//        par1World.setBlockMetadataWithNotify(x, y, z, 6, 7);
         removedByPlayer(par1World, player, x, y, z);
         
         return true;
