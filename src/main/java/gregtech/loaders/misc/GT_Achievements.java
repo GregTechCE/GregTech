@@ -488,7 +488,7 @@ public class GT_Achievements {
             return;
         }
         ItemData data = GT_OreDictUnificator.getItemData(stack);
-        if (data != null) {
+        if (data != null && data.mPrefix!=null) {
             if (data.mPrefix == OrePrefixes.dust) {
                 if (data.mMaterial.mMaterial == Materials.Lutetium) {
                     issueAchievement(player, "newmetal");
