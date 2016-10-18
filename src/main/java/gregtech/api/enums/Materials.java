@@ -238,7 +238,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Dilithium = new Materials(515, TextureSet.SET_DIAMOND, 1.0F, 0, 1, 1|4|16, 255, 250, 250, 127, "Dilithium", "Dilithium", 0, 0, -1, 0, false, true, 1, 1, 1, Dyes.dyeWhite);
     public static Materials Draconic = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 2, 1, 255, 255, 255, 0, "Draconic", "Draconic", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeRed);
     public static Materials Drulloy = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 2, 1|16 , 255, 255, 255, 0, "Drulloy", "Drulloy", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeRed);
-    public static Materials Duranium = new Materials(328, TextureSet.SET_METALLIC, 8.0F, 1280, 4, 1|2|64, 255, 255, 255, 0, "Duranium", "Duranium", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray);
+    public static Materials Duranium = new Materials(328, TextureSet.SET_METALLIC, 16.0F, 5120, 5, 1|2|64, 255, 255, 255, 0, "Duranium", "Duranium", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray);
     public static Materials Eclogite = new Materials(860, TextureSet.SET_DULL, 1.0F, 0, 2, 1, 255, 255, 255, 0, "Eclogite", "Eclogite", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes._NULL);
     public static Materials ElectrumFlux = new Materials(320, TextureSet.SET_SHINY, 16.0F, 512, 3, 1|2|64, 255, 255, 120, 0, "ElectrumFlux", "Fluxed Electrum", 0, 0, 3000, 3000, true, false, 1, 1, 1, Dyes.dyeYellow);
     public static Materials Emery = new Materials(861, TextureSet.SET_DULL, 1.0F, 0, 2, 1, 255, 255, 255, 0, "Emery", "Emery", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes._NULL);
@@ -338,7 +338,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Tapazite = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 1, 1, 255, 255, 255, 0, "Tapazite", "Tapazite", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeGreen);
     public static Materials Thyrium = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 1, 1|2, 255, 255, 255, 0, "Thyrium", "Thyrium", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes._NULL);
     public static Materials Tourmaline = new Materials(-1, TextureSet.SET_RUBY, 1.0F, 0, 1, 1, 255, 255, 255, 0, "Tourmaline", "Tourmaline", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes._NULL);
-    public static Materials Tritanium = new Materials(329, TextureSet.SET_METALLIC, 6.0F, 2560, 4, 1|2|64, 255, 255, 255, 0, "Tritanium", "Tritanium", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeWhite, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.ORDO, 2)));
+    public static Materials Tritanium = new Materials(329, TextureSet.SET_METALLIC, 20.0F, 10240, 6, 1|2|64, 255, 255, 255, 0, "Tritanium", "Tritanium", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeWhite, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.ORDO, 2)));
     public static Materials Turquoise = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 1, 1, 255, 255, 255, 0, "Turquoise", "Turquoise", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes._NULL);
     public static Materials UUAmplifier = new Materials(721, TextureSet.SET_FLUID, 1.0F, 0, 1, 16, 96, 0, 128, 0, "UUAmplifier", "UU-Amplifier", 0, 0, -1, 0, false, false, 10, 1, 1, Dyes.dyePink);
     public static Materials UUMatter = new Materials(703, TextureSet.SET_FLUID, 1.0F, 0, 1, 16, 128, 0, 196, 0, "UUMatter", "UU-Matter", 0, 0, -1, 0, false, false, 10, 1, 1, Dyes.dyePink);
