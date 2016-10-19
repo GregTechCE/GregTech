@@ -72,43 +72,43 @@ public class GT_Block_Stones_Abstract
             GT_Values.RA.addLaserEngraverRecipe(new ItemStack(this, 1, 15), GT_Utility.copyAmount(0L, new Object[]{aStack}), new ItemStack(this, 1, 14), 50, 16);
         }
     }
-
+    @Override
     public String getHarvestTool(int aMeta) {
         return "pickaxe";
     }
-
+    @Override
     public int getHarvestLevel(int aMeta) {
         return 1;
     }
-
+    @Override
     public float getBlockHardness(World aWorld, int aX, int aY, int aZ) {
         return this.blockHardness = Blocks.stone.getBlockHardness(aWorld, aX, aY, aZ) * 3.0F;
     }
-
+    @Override
     public String getUnlocalizedName() {
         return this.mUnlocalizedName;
     }
-
+    @Override
     public String getLocalizedName() {
         return StatCollector.translateToLocal(this.mUnlocalizedName + ".name");
     }
-
+    @Override
     public boolean canBeReplacedByLeaves(IBlockAccess aWorld, int aX, int aY, int aZ) {
         return false;
     }
-
+    @Override
     public boolean isNormalCube(IBlockAccess aWorld, int aX, int aY, int aZ) {
         return true;
     }
-
+    @Override
     public boolean renderAsNormalBlock() {
         return true;
     }
-
+    @Override
     public boolean isOpaqueCube() {
         return true;
     }
-
+    @Override
     public IIcon getIcon(int aSide, int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
             return gregtech.api.enums.Textures.BlockIcons.GRANITES[aMeta].getIcon();
@@ -116,18 +116,19 @@ public class GT_Block_Stones_Abstract
         return null;
     }
 
+    @Override
     public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
         return world.getBlockMetadata(x, y, z) % 8 < 3;
     }
-
+    @Override
     public int damageDropped(int par1) {
         return par1 % 8 == 0 ? par1 + 1 : par1;
     }
-
+    @Override
     public int getDamageValue(World par1World, int par2, int par3, int par4) {
         return par1World.getBlockMetadata(par2, par3, par4);
     }
-
+    @Override
     public int quantityDropped(Random par1Random) {
         return 1;
     }

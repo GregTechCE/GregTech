@@ -21,6 +21,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -237,9 +238,10 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
     
     public void onBlockDestroyedByExplosion(World world, int x, int y, int z, Explosion explosion)
     {
+    	if(world.getBlockMetadata(x, y, z)==5){
     	EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(world, x, y, z, explosion.getExplosivePlacedBy());
       entitytntprimed.fuse = (world.rand.nextInt(entitytntprimed.fuse / 4) + entitytntprimed.fuse / 8);
-      world.spawnEntityInWorld(entitytntprimed);
+      world.spawnEntityInWorld(entitytntprimed);}
     }
     
     public boolean onBlockActivated(World par1World, int x, int y, int z, EntityPlayer player, int side, float xOffset, float yOffset, float zOffset)
@@ -263,5 +265,9 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
             ItemStack aStack = new ItemStack(aItem, 1, i);
             if (!aStack.getDisplayName().contains(".name")) aList.add(aStack);
         }
+    }
+    
+    public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity) {
+        return !(entity instanceof EntityWither);
     }
 }
