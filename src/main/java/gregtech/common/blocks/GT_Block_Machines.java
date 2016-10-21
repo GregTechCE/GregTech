@@ -259,7 +259,7 @@ public class GT_Block_Machines
         if(aPlayer.isSneaking()){
         	ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
         	if(tCurrentItem!=null){
-        		if(!GT_Utility.isStackInList(tCurrentItem, GregTech_API.sScrewdriverList)){
+        		if(!GT_Utility.isStackInList(tCurrentItem, GregTech_API.sScrewdriverList) && !GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWrenchList)){
         			return false;
         		}
         	}else {return false;}
