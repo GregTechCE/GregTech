@@ -83,6 +83,14 @@ repositories {
         name 'IC2NuclearControl'
         artifactPattern "http://addons-origin.cursecdn.com/files/${config.nc.cf}/[module]-[revision].[ext]"
     }
+		ivy {
+        name 'ImmersiveEngineering'
+        artifactPattern "http://addons-origin.cursecdn.com/files/${config.immeng.cf}/[module]-[revision].[ext]"
+    }
+		ivy {
+        name 'magneticraft'
+        artifactPattern "http://addons-origin.cursecdn.com/files/${config.magneticraft.cf}/[module]-[revision].[ext]"
+    }
 }
 
 dependencies {
@@ -104,6 +112,8 @@ dependencies {
     provided name: 'CoFHCore', version: config.cofhcore.version, ext: 'jar'
     provided name: 'Railcraft', version: config.railcraft.version, ext: 'jar'
     provided name: 'IC2NuclearControl', version: config.nc.version, ext: 'jar'
+    provided name: 'ImmersiveEngineering', version: config.immeng.version, ext: 'jar'
+    provided name: 'magneticraft', version: config.magneticraft.version, ext: 'jar'
 }
 
 processResources
