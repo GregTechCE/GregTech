@@ -193,6 +193,8 @@ public class GregTech_API {
     public static boolean mRFExplosions = true;
     public static boolean mServerStarted = false;
     public static boolean mIC2Classic = false;
+    public static boolean mMagneticraft = false;
+    public static boolean mImmersiveEngineering = false;
     private static final String aTextIC2Lower = MOD_ID_IC2.toLowerCase(Locale.ENGLISH);
     /**
      * Getting assigned by the Mod loading
