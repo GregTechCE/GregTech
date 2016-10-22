@@ -642,7 +642,6 @@ public enum OrePrefixes {
                 if (aMaterial.mBlastFurnaceTemp <= 1750) ingotHot.mDisabledItems.add(aMaterial); //Moved HotIngot code from GT_MetaGenerated_Item_01 so all this is in once place
                 if (!enableUnusedSprings && (aMaterial != Materials.Titanium)) spring.mDisabledItems.add(aMaterial);
                 if (!enableUnusedSmallSprings) springSmall.mDisabledItems.add(aMaterial);
-                if (!enableUnusedRounds && (aMaterial != Materials.HSSE || aMaterial == Materials.Neutronium || aMaterial == Materials.HSSG)) round.mDisabledItems.add(aMaterial);
                 if (!enableUnusedCrates) {
                     if (!(aMaterial == Materials.DamascusSteel || aMaterial == Materials.Steel || aMaterial == Materials.Bronze || aMaterial == Materials.Manganese))
                         crateGtIngot.mDisabledItems.add(aMaterial);
