@@ -16,6 +16,8 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBlockBase {
@@ -156,26 +158,19 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
         int tTier = 0;
         if (mInventory[1].getUnlocalizedName().endsWith("1")) {
             tTier = 1;
-        }
-        if (mInventory[1].getUnlocalizedName().endsWith("2")) {
+        }else if (mInventory[1].getUnlocalizedName().endsWith("2")) {
             tTier = 2;
-        }
-        if (mInventory[1].getUnlocalizedName().endsWith("3")) {
+        }else if (mInventory[1].getUnlocalizedName().endsWith("3")) {
             tTier = 3;
-        }
-        if (mInventory[1].getUnlocalizedName().endsWith("4")) {
+        }else if (mInventory[1].getUnlocalizedName().endsWith("4")) {
             tTier = 4;
-        }
-        if (mInventory[1].getUnlocalizedName().endsWith("5")) {
+        }else if (mInventory[1].getUnlocalizedName().endsWith("5")) {
             tTier = 5;
-        }
-        if (mInventory[1].getUnlocalizedName().endsWith("6")) {
+        }else if (mInventory[1].getUnlocalizedName().endsWith("6")) {
             tTier = 6;
-        }
-        if (mInventory[1].getUnlocalizedName().endsWith("7")) {
+        }else if (mInventory[1].getUnlocalizedName().endsWith("7")) {
             tTier = 7;
-        }
-        if (mInventory[1].getUnlocalizedName().endsWith("8")) {
+        }else if (mInventory[1].getUnlocalizedName().endsWith("8")) {
             tTier = 8;
         }
         
@@ -223,8 +218,9 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
                 }
                 ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length];
                 for (int h = 0; h < tRecipe.mOutputs.length; h++) {
+                	if(tRecipe.getOutput(h)!=null){
                     tOut[h] = tRecipe.getOutput(h).copy();
-                    tOut[h].stackSize = 0;
+                    tOut[h].stackSize = 0;}
                 }
                 FluidStack tFOut = null;
                 if (tRecipe.getFluidOutput(0) != null) tFOut = tRecipe.getFluidOutput(0).copy();
@@ -240,14 +236,16 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
                     int tSize = tFOut.amount;
                     tFOut.amount = tSize * i;
                 }
+                tOut = clean(tOut);
                 this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
                 List<ItemStack> overStacks = new ArrayList<ItemStack>();
                 for (int f = 0; f < tOut.length; f++) {
                     while (tOut[f].getMaxStackSize() < tOut[f].stackSize) {
+                    	if(tOut[f]!=null){
                         ItemStack tmp = tOut[f].copy();
                         tmp.stackSize = tmp.getMaxStackSize();
                         tOut[f].stackSize = tOut[f].stackSize - tOut[f].getMaxStackSize();
-                        overStacks.add(tmp);
+                        overStacks.add(tmp);}
                     }
                 }
                 if (overStacks.size() > 0) {
@@ -267,6 +265,12 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
             }
         }
         return false;
+    }
+    
+    public static ItemStack[] clean(final ItemStack[] v) {
+        List<ItemStack> list = new ArrayList<ItemStack>(Arrays.asList(v));
+        list.removeAll(Collections.singleton(null));
+        return list.toArray(new ItemStack[list.size()]);
     }
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
