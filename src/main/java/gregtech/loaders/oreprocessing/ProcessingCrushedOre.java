@@ -1,7 +1,5 @@
 package gregtech.loaders.oreprocessing;
 
-import com.cout970.magneticraft.api.access.MgRecipeRegister;
-
 import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -35,13 +33,13 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
 					case "Amber": case "Diamond": case "FoolsRuby": case "BlueTopaz": case "GarnetRed": case "Topaz": case "Jasper": case "GarnetYellow":
 						GT_Values.RA.addSifterRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, tGem, 1L), GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, tGem, 1L), tGem, GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, tGem, 1L), GT_OreDictUnificator.get(OrePrefixes.gemChipped, aMaterial, tGem, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, tGem, 1L)}, new int[]{300, 1200, 4500, 1400, 2800, 3500}, 800, 16);
 				        if(GT_Mod.gregtechproxy.mMagneticraftRecipes && GregTech_API.mMagneticraft){
-				        	MgRecipeRegister.registerSifterRecipe(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, tGem, 1), GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, tGem, 1), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, tGem, 1), 0.2f);
+				        	com.cout970.magneticraft.api.access.MgRecipeRegister.registerSifterRecipe(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, tGem, 1), GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, tGem, 1), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, tGem, 1), 0.2f);
 				        }
 						break;
 					default:
 						GT_Values.RA.addSifterRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, tGem, 1L), GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, tGem, 1L), tGem, GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, tGem, 1L), GT_OreDictUnificator.get(OrePrefixes.gemChipped, aMaterial, tGem, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, tGem, 1L)}, new int[]{100, 400, 1500, 2000, 4000, 5000}, 800, 16);
 						if(GT_Mod.gregtechproxy.mMagneticraftRecipes && GregTech_API.mMagneticraft){
-				        	MgRecipeRegister.registerSifterRecipe(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, tGem, 1), GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, tGem, 1), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, tGem, 1), 0.2f);
+							com.cout970.magneticraft.api.access.MgRecipeRegister.registerSifterRecipe(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, tGem, 1), GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, tGem, 1), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, tGem, 1), 0.2f);
 				        }
 				}}
 				break;

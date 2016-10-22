@@ -24,8 +24,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.cout970.magneticraft.Magneticraft;
-
 import codechicken.nei.api.API;
 
 public class GT_MachineRecipeLoader implements Runnable {

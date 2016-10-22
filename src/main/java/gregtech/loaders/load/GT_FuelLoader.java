@@ -1,5 +1,6 @@
 package gregtech.loaders.load;
 
+import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -15,6 +16,8 @@ import ic2.core.item.ItemFluidCell;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GT_FuelLoader
@@ -38,6 +41,23 @@ public class GT_FuelLoader
         GT_Values.RA.addFuel(GT_ModHandler.getModItem("EnderIO", "bucketRocket_fuel", 1), null, 250, 1);
         if(!GregTech_API.mIC2Classic){
         	GT_Values.RA.addFuel(ItemFluidCell.getUniversalFluidCell(new FluidStack(ItemList.sRocketFuel,1000)), Ic2Items.FluidCell.copy(), 250, 1);
+        }
+        if(GregTech_API.mMagneticraft){
+        	Fluid tFluid = FluidRegistry.getFluid("naturalgas");
+        	if(tFluid!=null)
+        	GT_Values.RA.addFuel(ItemFluidCell.getUniversalFluidCell(new FluidStack(tFluid,1000)), Ic2Items.FluidCell.copy(), 250, 1);
+        	 GT_Values.RA.addFuel(GT_ModHandler.getModItem("Magneticraft", "item.bucket_light_oil", 1), null, 256, 0);
+        	 GT_Values.RA.addFuel(GT_ModHandler.getModItem("Magneticraft", "item.bucket_heavy_oil", 1), null, 192, 3);
+        }
+        if(GregTech_API.mImmersiveEngineering){
+       	 GT_Values.RA.addFuel(GT_ModHandler.getModItem("ImmersiveEngineering", "fluidContainers", 1, 7), null, 128, 0);
+        }
+        if(Loader.isModLoaded("PneumaticCraft")){
+          	 GT_Values.RA.addFuel(GT_ModHandler.getModItem("PneumaticCraft", "pgBucket", 1), null, 512, 1);
+          	 GT_Values.RA.addFuel(GT_ModHandler.getModItem("PneumaticCraft", "fuelBucket", 1), null, 400, 0);
+          	 GT_Values.RA.addFuel(GT_ModHandler.getModItem("PneumaticCraft", "fuelBucket", 1, 1), null, 400, 0);
+          	 GT_Values.RA.addFuel(GT_ModHandler.getModItem("PneumaticCraft", "keroseneBucket", 1), null, 256, 0);
+          	 GT_Values.RA.addFuel(GT_ModHandler.getModItem("PneumaticCraft", "dieselBucket", 1), null, 200, 0);        	
         }
     }
 }
