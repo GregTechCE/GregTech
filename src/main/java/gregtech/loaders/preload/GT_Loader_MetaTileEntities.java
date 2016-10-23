@@ -344,6 +344,10 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         ItemList.Hatch_Maintenance.set(new GT_MetaTileEntity_Hatch_Maintenance(90, "hatch.maintenance", "Maintenance Hatch", 1).getStackForm(1L));
 
         GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Maintenance.get(1L, new Object[0]), bitsd, new Object[]{"dwx", "hMc", "fsr", 'M', ItemList.Hull_LV});
+        
+        ItemList.Hatch_AutoMaintenance.set(new GT_MetaTileEntity_Hatch_Maintenance(111, "hatch.maintenance.auto", "Auto Maintenance Hatch", 5, true).getStackForm(1L));
+
+        GT_ModHandler.addCraftingRecipe(ItemList.Hatch_AutoMaintenance.get(1L, new Object[0]), bitsd, new Object[]{"CHC", "AMA", "CHC", 'M', ItemList.Hull_IV,'H',ItemList.Hatch_Maintenance,'A',ItemList.Robot_Arm_IV,'C',OrePrefixes.circuit.get(Materials.Ultimate)});
 
         ItemList.Hatch_Muffler_LV.set(new GT_MetaTileEntity_Hatch_Muffler(91, "hatch.muffler.tier.01", "Muffler Hatch (LV)", 1).getStackForm(1L));
         ItemList.Hatch_Muffler_MV.set(new GT_MetaTileEntity_Hatch_Muffler(92, "hatch.muffler.tier.02", "Muffler Hatch (MV)", 2).getStackForm(1L));
