@@ -11,7 +11,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.IItemColorMultiplier;
-import gregtech.common.render.IIconRegister;
+import gregtech.common.render.data.IIconRegister;
 import gregtech.common.render.items.IItemIconProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;

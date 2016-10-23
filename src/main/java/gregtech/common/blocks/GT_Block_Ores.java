@@ -4,9 +4,11 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.objects.LazyCopiedIconContainer;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -17,43 +19,49 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
+import java.util.Random;
+
 public class GT_Block_Ores extends GT_Block_Ores_Abstract {
 
-    public static final ITexture[] TEXTURES = new ITexture[] {
-        new GT_RenderedTexture("minecraft:blocks/stone", null),
-                new GT_RenderedTexture("minecraft:blocks/netherrack", null),
-                new GT_RenderedTexture("minecraft:blocks/end_stone", null),
-                new GT_RenderedTexture(Textures.BlockIcons.GRANITE_BLACK_STONE),
-                new GT_RenderedTexture(Textures.BlockIcons.GRANITE_RED_STONE),
-                new GT_RenderedTexture(Textures.BlockIcons.MARBLE_STONE),
-                new GT_RenderedTexture(Textures.BlockIcons.BASALT_STONE),
-                new GT_RenderedTexture("minecraft:blocks/sand", null),
-                new GT_RenderedTexture("minecraft:blocks/gravel", null),
-                new GT_RenderedTexture("minecraft:blocks/stone", null),
-                new GT_RenderedTexture("minecraft:blocks/stone", null),
-                new GT_RenderedTexture("minecraft:blocks/stone", null),
-                new GT_RenderedTexture("minecraft:blocks/stone", null),
-                new GT_RenderedTexture("minecraft:blocks/stone", null),
-                new GT_RenderedTexture("minecraft:blocks/stone", null),
-                new GT_RenderedTexture("minecraft:blocks/stone", null)};
+    public static final IIconContainer[] TEXTURES = new IIconContainer[]{
+            new LazyCopiedIconContainer("minecraft:blocks/stone"),
+            new LazyCopiedIconContainer("minecraft:blocks/netherrack"),
+            new LazyCopiedIconContainer("minecraft:blocks/end_stone"),
+            Textures.BlockIcons.GRANITE_BLACK_STONE,
+            Textures.BlockIcons.GRANITE_RED_STONE,
+            Textures.BlockIcons.MARBLE_STONE,
+            Textures.BlockIcons.BASALT_STONE,
+            new LazyCopiedIconContainer("minecraft:blocks/stone_granite"),
+            new LazyCopiedIconContainer("minecraft:blocks/stone_diorite"),
+            new LazyCopiedIconContainer("minecraft:blocks/stone_andesite"),
+            new LazyCopiedIconContainer("minecraft:blocks/gravel"),
+            new LazyCopiedIconContainer("minecraft:blocks/sandstone_bottom"),
+            new LazyCopiedIconContainer("minecraft:blocks/stone"),
+            new LazyCopiedIconContainer("minecraft:blocks/stone"),
+            new LazyCopiedIconContainer("minecraft:blocks/stone"),
+            new LazyCopiedIconContainer("minecraft:blocks/stone")
+    };
 
     public static final Materials[] DROPPED_MATERIALS = {
             Materials.Stone, Materials.Netherrack, Materials.Endstone,
             Materials.GraniteBlack, Materials.GraniteRed,
             Materials.Marble, Materials.Basalt,
+            Materials.Stone, Materials.Stone, Materials.GraniteBlack,
             null, null,
-            Materials.Stone, Materials.Stone, Materials.Stone, Materials.Stone, Materials.Stone, Materials.Stone};
+            Materials.Stone, Materials.Stone, Materials.Stone};
 
     public static final OrePrefixes[] PROCESSING_PREFIXES = new OrePrefixes[] {
             OrePrefixes.ore, OrePrefixes.oreNetherrack, OrePrefixes.oreEndstone,
             OrePrefixes.oreBlackgranite, OrePrefixes.oreRedgranite,
             OrePrefixes.oreMarble, OrePrefixes.oreBasalt,
+            OrePrefixes.ore, OrePrefixes.ore, OrePrefixes.oreBlackgranite,
             OrePrefixes.oreSand, OrePrefixes.oreGravel,
-            null, null, null, null, null, null, null};
+            null, null, null, null};
 
     public GT_Block_Ores() {
         super("gt.blockores", Material.ROCK);
     }
+
 
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
@@ -75,7 +83,6 @@ public class GT_Block_Ores extends GT_Block_Ores_Abstract {
         return GregTech_API.sBlockOres1;
     }
 
-
     @Override
     public OrePrefixes[] getProcessingPrefix() { //Must have 16 entries; an entry can be null to disable automatic recipes.
         return PROCESSING_PREFIXES;
@@ -87,8 +94,13 @@ public class GT_Block_Ores extends GT_Block_Ores_Abstract {
     }
 
     @Override
-    public ITexture[] getTextureSet() { //Must have 16 entries.
+    public IIconContainer[] getTextureSet() { //Must have 16 entries.
        return TEXTURES;
+    }
+
+    @Override
+    public boolean isGravelAlike(int aOreMeta) {
+        return aOreMeta > 11000;
     }
 
 }

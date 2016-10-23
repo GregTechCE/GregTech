@@ -554,8 +554,8 @@ public enum OrePrefixes {
         oreBasalt.mSecondaryMaterial = new MaterialStack(Materials.Basalt, dust.mMaterialAmount);
         oreMarble.mSecondaryMaterial = new MaterialStack(Materials.Marble, dust.mMaterialAmount);
 
-        oreSand.mSecondaryMaterial = new MaterialStack(Materials.Sand, block.mMaterialAmount);
-        oreGravel.mSecondaryMaterial = new MaterialStack(Materials.Flint, gem.mMaterialAmount);
+        oreSand.mSecondaryMaterial = new MaterialStack(Materials.SiliconDioxide, dustTiny.mMaterialAmount);
+        oreGravel.mSecondaryMaterial = new MaterialStack(Materials.Flint, dustTiny.mMaterialAmount);
 
         oreNetherrack.mSecondaryMaterial = new MaterialStack(Materials.Netherrack, dust.mMaterialAmount);
         oreNether.mSecondaryMaterial = new MaterialStack(Materials.Netherrack, dust.mMaterialAmount);

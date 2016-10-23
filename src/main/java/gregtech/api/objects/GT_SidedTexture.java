@@ -79,4 +79,9 @@ public class GT_SidedTexture implements ITexture {
                 mIconContainer[5] != null;
     }
 
+    @Override
+    public boolean needsNonSidedRendering() {
+        return false;
+    }
+
 }

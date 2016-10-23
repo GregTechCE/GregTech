@@ -1,11 +1,13 @@
 package gregtech.common.blocks;
 
+import com.google.common.collect.ImmutableList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.render.blocks.IBlockIconProvider;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -65,11 +67,11 @@ public class GT_Block_Stones extends GT_Block_Stones_Abstract implements IBlockI
 
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
+    public ImmutableList<BakedQuad> getIcon(EnumFacing aSide, int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
-            return gregtech.api.enums.Textures.BlockIcons.STONES[aMeta].getIcon();
+            return gregtech.api.enums.Textures.BlockIcons.STONES[aMeta].getQuads(aSide);
         }
-        return gregtech.api.enums.Textures.BlockIcons.STONES[0].getIcon();
+        return gregtech.api.enums.Textures.BlockIcons.STONES[0].getQuads(aSide);
     }
 
 }

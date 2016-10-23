@@ -32,7 +32,14 @@ public class GT_Worldgen_Constants {
     public static Predicate<IBlockState> ENDSTONE = input ->
             input.getBlock() == Blocks.END_STONE;
 
+    public static Predicate<IBlockState> GRAVEL = input ->
+            input.getBlock() == Blocks.GRAVEL;
+
+    public static Predicate<IBlockState> SAND = input ->
+           input.getBlock() == Blocks.SANDSTONE;
+
+
     public static Predicate<IBlockState> ANY = input ->
-            STONES.apply(input) || NETHERRACK.apply(input) || ENDSTONE.apply(input);
+            STONES.apply(input) || NETHERRACK.apply(input) || ENDSTONE.apply(input) || GRAVEL.apply(input) || SAND.apply(input);
 
 }

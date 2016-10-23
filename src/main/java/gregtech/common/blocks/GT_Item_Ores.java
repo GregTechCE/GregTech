@@ -41,7 +41,7 @@ public class GT_Item_Ores extends ItemBlock {
     public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
         short tDamage = (short) getDamage(stack);
         if (tDamage > 0) {
-            if (!world.setBlockState(pos, block.getStateFromMeta(GT_TileEntity_Ores.getHarvestData(tDamage)))) {
+            if (!world.setBlockState(pos, block.getStateFromMeta(GT_TileEntity_Ores.getHarvestData((GT_Block_Ores_Abstract) block, tDamage)))) {
                 return false;
             }
             GT_TileEntity_Ores tTileEntity = (GT_TileEntity_Ores) world.getTileEntity(pos);

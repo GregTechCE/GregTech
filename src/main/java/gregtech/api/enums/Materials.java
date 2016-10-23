@@ -1430,6 +1430,13 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
         }
     }
 
+    public int getColorInt() {
+        return ((mRGBa[3] & 0xFF) << 24) |
+                ((mRGBa[0] & 0xFF) << 16) |
+                ((mRGBa[1] & 0xFF) << 8)  |
+                ((mRGBa[2] & 0xFF));
+    }
+
     public boolean isRadioactive() {
         if (mElement != null) return mElement.mHalfLifeSeconds >= 0;
         for (MaterialStack tMaterial : mMaterialList) if (tMaterial.mMaterial.isRadioactive()) return true;

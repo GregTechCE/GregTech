@@ -1,21 +1,28 @@
 package gregtech.common.blocks;
 
+import com.google.common.collect.ImmutableList;
+import gnu.trove.map.TIntObjectMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.common.render.blocks.IBlockTextureProvider;
+import gregtech.common.render.blocks.IBlockIconProvider;
+import gregtech.common.render.data.IIconData;
+import gregtech.common.render.data.IIconRegister;
+import gregtech.common.render.data.IconDataGetter;
 import gregtech.jei.JEI_Compat;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,15 +35,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Collections;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
-public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements ITileEntityProvider, IBlockTextureProvider {
+public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements ITileEntityProvider, IBlockIconProvider, IIconRegister {
+
+    @SideOnly(Side.CLIENT)
+    protected TIntObjectMap<IIconData> mGeneratedIconData = new TIntObjectHashMap<>();
 
     protected GT_Block_Ores_Abstract(String aUnlocalizedName, Material aMaterial) {
         super(GT_Item_Ores.class, aUnlocalizedName, aMaterial);
@@ -50,43 +60,28 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
         }
 
         boolean hideOres = Loader.isModLoaded("JustEnoughItems") && GT_Mod.gregtechproxy.mHideUnusedOres;
-
         for (int i = 1; i < GregTech_API.sGeneratedMaterials.length; i++) {
-
-            if (GregTech_API.sGeneratedMaterials[i] != null) {
-                for(int x = 0; x < 16; x++) {
-                    if (isValidForCreativeTab(x)) {
-                        String localizedName = getLocalizedName(GregTech_API.sGeneratedMaterials[i]);
-                        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (i + 1000 * x) + ".name", localizedName);
-                        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (i + 16000 + 1000 * x) + ".name", "Small " + localizedName);
+            Materials materials = GregTech_API.sGeneratedMaterials[i];
+            if (materials != null && (materials.mTypes & 0x8) != 0) {
+                OrePrefixes[] processingPrefixes = getProcessingPrefix();
+                for (int x = 0; x < processingPrefixes.length; x++) {
+                    ItemStack oreStack = new ItemStack(this, 1, i + 1000 * x);
+                    ItemStack smallOreStack = new ItemStack(this, 1, i + 1000 * x + 16000);
+                    if (processingPrefixes[x] != null) {
+                        GT_OreDictUnificator.registerOre(processingPrefixes[x].get(materials), oreStack);
                     }
-                }
-
-                if ((GregTech_API.sGeneratedMaterials[i].mTypes & 0x8) != 0) {
-                    GT_OreDictUnificator.registerOre(this.getProcessingPrefix()[0] != null ? this.getProcessingPrefix()[0].get(GregTech_API.sGeneratedMaterials[i]) : "", new ItemStack(this, 1, i));
-                    GT_OreDictUnificator.registerOre(this.getProcessingPrefix()[1] != null ? this.getProcessingPrefix()[1].get(GregTech_API.sGeneratedMaterials[i]) : "", new ItemStack(this, 1, i + 1000));
-                    GT_OreDictUnificator.registerOre(this.getProcessingPrefix()[2] != null ? this.getProcessingPrefix()[2].get(GregTech_API.sGeneratedMaterials[i]) : "", new ItemStack(this, 1, i + 2000));
-                    GT_OreDictUnificator.registerOre(this.getProcessingPrefix()[3] != null ? this.getProcessingPrefix()[3].get(GregTech_API.sGeneratedMaterials[i]) : "", new ItemStack(this, 1, i + 3000));
-                    GT_OreDictUnificator.registerOre(this.getProcessingPrefix()[4] != null ? this.getProcessingPrefix()[4].get(GregTech_API.sGeneratedMaterials[i]) : "", new ItemStack(this, 1, i + 4000));
-                    GT_OreDictUnificator.registerOre(this.getProcessingPrefix()[5] != null ? this.getProcessingPrefix()[5].get(GregTech_API.sGeneratedMaterials[i]) : "", new ItemStack(this, 1, i + 5000));
-                    GT_OreDictUnificator.registerOre(this.getProcessingPrefix()[6] != null ? this.getProcessingPrefix()[6].get(GregTech_API.sGeneratedMaterials[i]) : "", new ItemStack(this, 1, i + 6000));
-                    GT_OreDictUnificator.registerOre(this.getProcessingPrefix()[7] != null ? this.getProcessingPrefix()[7].get(GregTech_API.sGeneratedMaterials[i]) : "", new ItemStack(this, 1, i + 7000));
-
+                    String localizedName = getLocalizedName(materials);
+                    GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (oreStack.getItemDamage()) + ".name", localizedName);
+                    GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (smallOreStack.getItemDamage()) + ".name", "Small " + localizedName);
                     if (hideOres) {
-                        Item aItem = Item.getItemFromBlock(this);
-                        for(int x = 0; x < 16; x++) {
-                            if(isValidForCreativeTab(x)) {
-                                JEI_Compat.hideItem(new ItemStack(aItem, 1, 1000 * x + i));
-                                JEI_Compat.hideItem(new ItemStack(aItem, 1, 16000 + 1000 * x + i));
-                            }
-                        }
+                        JEI_Compat.hideItem(oreStack);
+                        JEI_Compat.hideItem(smallOreStack);
                     }
-
                 }
             }
         }
-    }
 
+    }
 
     public String getLocalizedName(Materials aMaterial) {
         switch (aMaterial) {
@@ -121,19 +116,13 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     }
 
     @Override
-    public boolean eventReceived(IBlockState state, World worldIn, BlockPos pos, int id, int param) {
-        TileEntity tileEntity = worldIn.getTileEntity(pos);
-        return tileEntity != null && tileEntity.receiveClientEvent(id, param);
-    }
-
-    @Override
     public String getHarvestTool(IBlockState aMeta) {
         return aMeta.getValue(METADATA) < 8 ? "pickaxe" : "shovel";
     }
 
     @Override
     public int getHarvestLevel(IBlockState aMeta) {
-        return 2;
+        return aMeta.getValue(METADATA) % 8;
     }
 
     @Override
@@ -151,30 +140,8 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
         return false;
     }
 
-    //public abstract String getUnlocalizedName();
-
     public String getLocalizedName() {
         return GT_LanguageManager.getTranslation(getUnlocalizedName() + ".name");
-    }
-
-    @Override
-    public boolean canBeReplacedByLeaves(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return false;
-    }
-
-    @Override
-    public boolean isNormalCube(IBlockState state) {
-        return true;
-    }
-
-    @Override
-    public boolean isVisuallyOpaque() {
-        return true;
-    }
-
-    @Override
-    public boolean hasTileEntity() {
-        return true;
     }
 
     @Override
@@ -183,62 +150,128 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public ITexture[] getTexture(World world, BlockPos blockPos, IExtendedBlockState blockState, EnumFacing side) {
-        GT_TileEntity_Ores oreTile = (GT_TileEntity_Ores) world.getTileEntity(blockPos);
-        return oreTile.getTexture(this, (byte) side.getIndex());
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn) {
+        GT_TileEntity_Ores tileEntity_ores = (GT_TileEntity_Ores) world.getTileEntity(pos);
+        if (tileEntity_ores != null) {
+            tileEntity_ores.broadcastPacketIfNeeded();
+        }
+    }
+
+
+    @Override
+    public ImmutableList<BakedQuad> getIcon(EnumFacing aSide, int aDamage) {
+        return null;
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public ITexture[] getItemblockTexture(EntityPlayer player, ItemStack itemStack, EnumFacing side) {
-        int mMetaData = itemStack.getItemDamage();
-        Materials aMaterial = GregTech_API.sGeneratedMaterials[(mMetaData % 1000)];
-        if (aMaterial != null && mMetaData < 32000) {
-            return new ITexture[]{
-                    getTextureSet()[(mMetaData / 1000) % 16],
-                    aMaterial.mOreTextureSet[mMetaData / 16000 == 0 ? 0 : 1]};
+    public ImmutableList<BakedQuad> getIcon(IBlockAccess world, BlockPos pos, EnumFacing aSide, int metadata) {
+        try {
+            GT_TileEntity_Ores tileEntity_ores = (GT_TileEntity_Ores) world.getTileEntity(pos);
+            if (tileEntity_ores != null) {
+                IIconData iconData = mGeneratedIconData.get(tileEntity_ores.mMetaData);
+                if (iconData == null) {
+                    return ImmutableList.of();
+                }
+                return iconData.getQuads(aSide);
+            }
+            //Dont know how and when it happens
+        } catch (ConcurrentModificationException dontknowhowandwhenithappens) {}
+        return ImmutableList.of();
+    }
+
+    @Override
+    public ImmutableList<BakedQuad> getIcon(EntityPlayer player, ItemStack itemStack, EnumFacing aSide) {
+        IIconData iconData = mGeneratedIconData.get(itemStack.getItemDamage());
+        if(iconData == null) {
+            return ImmutableList.of();
         }
-        return new ITexture[]{
-                GT_Block_Ores.TEXTURES[0],
-                Materials._NULL.mOreTextureSet[0]};
+        return iconData.getQuads(aSide);
+    }
+
+    @Override
+    public void registerIcons(IconDataGetter quadGetter) {
+        System.out.println("Starting ore texture generation");
+        for(int i = 1; i < GregTech_API.sGeneratedMaterials.length; i++) {
+            Materials materials = GregTech_API.sGeneratedMaterials[i];
+            if (materials != null && (materials.mTypes & 0x8) != 0) {
+                IIconContainer[] materialTextures = materials.mIconSet.mTextures;
+                IIconContainer[] textureSet = getTextureSet();
+                for(int j = 0; j < textureSet.length; j++) {
+                    IIconData normalIconData = quadGetter.makeIconData(
+                            textureSet[j],
+                            materialTextures[68],
+                            materials.getColorInt());
+
+                    IIconData smallIconData = quadGetter.makeIconData(
+                            textureSet[j],
+                            materialTextures[67],
+                            materials.getColorInt());
+
+                    mGeneratedIconData.put((i + 1000 * j), normalIconData);
+                    mGeneratedIconData.put((i + 1000 * j + 16000), smallIconData);
+                }
+            }
+        }
+        System.out.println("Finished ore texture generation");
+    }
+
+    private static ThreadLocal<GT_TileEntity_Ores> STUPID_MOJANGS = new ThreadLocal<>();
+
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        STUPID_MOJANGS.set((GT_TileEntity_Ores) worldIn.getTileEntity(pos));
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        TileEntity tTileEntity = world.getTileEntity(pos);
-        if ((tTileEntity instanceof GT_TileEntity_Ores)) {
-            return ((GT_TileEntity_Ores) tTileEntity).getDrops(getDroppedBlock(), fortune);
+        GT_TileEntity_Ores tTileEntity = (GT_TileEntity_Ores) world.getTileEntity(pos);
+        if(tTileEntity == null && STUPID_MOJANGS.get() != null) {
+            tTileEntity = STUPID_MOJANGS.get();
+            STUPID_MOJANGS.remove();
+        }
+        if (tTileEntity != null) {
+            return tTileEntity.getDrops(getDroppedBlock(), fortune);
         }
         return Collections.EMPTY_LIST;
     }
 
-    public abstract OrePrefixes[] getProcessingPrefix(); //Must have 17 entries; an entry can be null to disable automatic recipes.
+    public abstract OrePrefixes[] getProcessingPrefix(); //Must have 16 entries; an entry can be null to disable automatic recipes.
 
     public abstract Block getDroppedBlock();
 
     public abstract Materials[] getDroppedDusts(); //Must have 16 entries; can be null.
 
-    public abstract ITexture[] getTextureSet(); //Must have 16 entries.
+    public abstract IIconContainer[] getTextureSet(); //Must have 16 entries.
+
+    public abstract boolean isGravelAlike(int aOreMeta);
+
+    public boolean isValidForCreativeTab(int aOreMeta) {
+        return aOreMeta < 12000; //|| (metadata > 16000 && metadata < 25000);
+    }
 
     @Override
     public void getSubBlocks(Item aItem, CreativeTabs aTab, List<ItemStack> aList) {
+        int validMats = 0;
         for (int i = 0; i < GregTech_API.sGeneratedMaterials.length; i++) {
             Materials tMaterial = GregTech_API.sGeneratedMaterials[i];
             if (tMaterial != null && (tMaterial.mTypes & 0x8) != 0) {
+                validMats++;
                 for(byte x = 0; x < 16; x++) {
-                    if(isValidForCreativeTab(x)) {
-                        aList.add(new ItemStack(aItem, 1, 1000 * x + i));
-                        aList.add(new ItemStack(aItem, 1, 16000 + 1000 * x + i));
+                    int metadata = 1000 * x + i;
+                    if(isValidForCreativeTab(metadata)) {
+                        aList.add(new ItemStack(aItem, 1, metadata));
+                    }
+                    metadata = 16000 + 1000 * x + i;
+                    if(isValidForCreativeTab(metadata)) {
+                        aList.add(new ItemStack(aItem, 1, metadata));
                     }
                 }
             }
         }
+        System.out.println(validMats + " valid ores");
     }
 
-    public boolean isValidForCreativeTab(int baseBlockType) {
-        return baseBlockType <= 8;
-    }
 
     @Override
     @SideOnly(Side.CLIENT)

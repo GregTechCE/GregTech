@@ -13,7 +13,7 @@ import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.render.IIconRegister;
+import gregtech.common.render.data.IIconRegister;
 import gregtech.common.render.blocks.IBlockTextureProvider;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -519,10 +519,20 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    //for multilayer blocks
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+        IGregTechTileEntity tileEntity = getGregTile(blockAccess, pos);
+        return super.shouldSideBeRendered(blockState, blockAccess, pos, side) ||
+                tileEntity != null && tileEntity instanceof BaseMetaPipeEntity;
     }
 
 }

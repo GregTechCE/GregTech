@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
@@ -14,8 +15,12 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.blocks.IBlockIconProvider;
+import gregtech.common.render.data.IIconData;
+import gregtech.common.render.data.IIconRegister;
+import gregtech.common.render.data.IconDataGetter;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -33,7 +38,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class GT_Block_Reinforced extends GT_Generic_Block implements IBlockIconProvider {
+public class GT_Block_Reinforced extends GT_Generic_Block implements IBlockIconProvider, IIconRegister {
+
+    private IIconData COAL_BLOCK_ICON_DATA;
 
     public GT_Block_Reinforced(String aName) {
         super(GT_Item_Storage.class, aName, new GT_Material_Reinforced());
@@ -80,28 +87,32 @@ public class GT_Block_Reinforced extends GT_Generic_Block implements IBlockIconP
 
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
+    public ImmutableList<BakedQuad> getIcon(EnumFacing aSide, int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
             switch (aMeta) {
                 case 0:
-                    return Textures.BlockIcons.BLOCK_BRONZEPREIN.getIcon();
+                    return Textures.BlockIcons.BLOCK_BRONZEPREIN.getQuads(aSide);
                 case 1:
-                    return Textures.BlockIcons.BLOCK_IRREIN.getIcon();
+                    return Textures.BlockIcons.BLOCK_IRREIN.getQuads(aSide);
                 case 2:
-                    return Textures.BlockIcons.BLOCK_PLASCRETE.getIcon();
+                    return Textures.BlockIcons.BLOCK_PLASCRETE.getQuads(aSide);
                 case 3:
-                    return Textures.BlockIcons.BLOCK_TSREIN.getIcon();
+                    return Textures.BlockIcons.BLOCK_TSREIN.getQuads(aSide);
                 case 4:
-                    return GT_Utility.getTexture("minecraft:blocks/coal_block");
+                    return COAL_BLOCK_ICON_DATA.getQuads(aSide);
                 case 5:
-                	return Textures.BlockIcons.COVER_WOOD_PLATE.getIcon();
+                	return Textures.BlockIcons.COVER_WOOD_PLATE.getQuads(aSide);
                 case 6:
-                	return GT_Utility.getTexture("minecraft:blocks/coal_block");
                 case 7:
-                	return GT_Utility.getTexture("minecraft:blocks/coal_block");
+                	return COAL_BLOCK_ICON_DATA.getQuads(aSide);
             }
         }
-        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getQuads(aSide);
+    }
+
+    @Override
+    public void registerIcons(IconDataGetter quadGetter) {
+        COAL_BLOCK_ICON_DATA = quadGetter.makeIconData("minecraft:blocks/coal_block");
     }
 
     @Override
@@ -180,5 +191,4 @@ public class GT_Block_Reinforced extends GT_Generic_Block implements IBlockIconP
             aList.add(new ItemStack(aItem, 1, i));
         }
     }
-
 }

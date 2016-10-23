@@ -1,5 +1,6 @@
 package gregtech.common.render.items;
 
+import gregtech.common.render.data.IIconRegister;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
@@ -12,7 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * If you need multilayer, you can override {@link IItemIconProvider#getRenderPasses(ItemStack)}
  * If you need handheld item, return true in {@link IItemIconProvider#isHandheld(ItemStack)}
  *
- * @see gregtech.common.render.IIconRegister
+ * @see IIconRegister
  * @see TextureAtlasSprite
  * @see IItemIconContainerProvider
  */

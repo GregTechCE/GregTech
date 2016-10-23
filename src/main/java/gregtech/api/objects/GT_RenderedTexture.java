@@ -96,4 +96,9 @@ public class GT_RenderedTexture implements ITexture {
         return mIconContainer != null;
     }
 
+    @Override
+    public boolean needsNonSidedRendering() {
+        return false;
+    }
+
 }

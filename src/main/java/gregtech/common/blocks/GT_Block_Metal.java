@@ -1,6 +1,9 @@
 package gregtech.common.blocks;
 
+import com.google.common.collect.ImmutableList;
+import gregtech.api.enums.Textures;
 import gregtech.common.render.blocks.IBlockIconProvider;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
 import gregtech.api.enums.Materials;
@@ -16,9 +19,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class GT_Block_Metal extends GT_Block_Storage implements IBlockIconProvider {
     public Materials[] mMats;
     public OrePrefixes mPrefix;
-    public IIconContainer[] mBlockIcons;
+    public Textures.BlockIcons[] mBlockIcons;
 
-    public GT_Block_Metal(String aName, Materials[] aMats, OrePrefixes aPrefix, IIconContainer[] aBlockIcons) {
+    public GT_Block_Metal(String aName, Materials[] aMats, OrePrefixes aPrefix, Textures.BlockIcons[] aBlockIcons) {
         super(GT_Item_Storage.class, aName, Material.IRON);
         mMats = aMats;
         mPrefix = aPrefix;
@@ -31,11 +34,11 @@ public class GT_Block_Metal extends GT_Block_Storage implements IBlockIconProvid
 
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing aSide, int aDamage) {
+    public ImmutableList<BakedQuad> getIcon(EnumFacing aSide, int aDamage) {
         if ((aDamage >= 0) && (aDamage < 16) && aDamage < mMats.length) {
-            return mBlockIcons[aDamage].getIcon();
+            return mBlockIcons[aDamage].getQuads(aSide);
         }
-        return mBlockIcons[0].getIcon();
+        return mBlockIcons[0].getQuads(aSide);
     }
 
 }

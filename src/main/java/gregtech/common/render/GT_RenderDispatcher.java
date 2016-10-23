@@ -6,6 +6,9 @@ import com.google.common.collect.ImmutableMap;
 import gregtech.api.GregTech_API;
 import gregtech.common.render.blocks.IBlockIconProvider;
 import gregtech.common.render.blocks.IBlockTextureProvider;
+import gregtech.common.render.data.DefaultDataGetter;
+import gregtech.common.render.data.IIconRegister;
+import gregtech.common.render.data.IconDataGetter;
 import gregtech.common.render.items.IItemIconProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -13,6 +16,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.color.BlockColors;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -46,6 +50,7 @@ public class GT_RenderDispatcher implements IBakedModel {
     private static final ModelResourceLocation RESOURCE_LOCATION_BLOCK_TEXTURE = new ModelResourceLocation("gregtech", "IBlockTextureIconProvider");
     private static final ModelResourceLocation RESOURCE_LOCATION_BLOCK_ICON = new ModelResourceLocation("gregtech", "IBlockIconProvider");
 
+    private static IconDataGetter DEFAULT_ICON_DATA_GETTER;
     private ItemStack itemStack;
 
     public GT_RenderDispatcher() {
@@ -55,7 +60,7 @@ public class GT_RenderDispatcher implements IBakedModel {
 
     @SubscribeEvent
     public void onTextureMapStitch(TextureStitchEvent.Pre pre) {
-
+        DEFAULT_ICON_DATA_GETTER = new DefaultDataGetter(pre.getMap());
         ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
         BlockColors blockColors = Minecraft.getMinecraft().getBlockColors();
         System.out.println("Texture map stitch");
@@ -84,7 +89,7 @@ public class GT_RenderDispatcher implements IBakedModel {
             Item item = Item.REGISTRY.getObject(itemId);
 
             if(item instanceof IIconRegister) {
-                ((IIconRegister) item).registerIcons(pre.getMap());
+                ((IIconRegister) item).registerIcons(DEFAULT_ICON_DATA_GETTER);
             }
 
             if(item instanceof IItemColorMultiplier) {
@@ -93,9 +98,12 @@ public class GT_RenderDispatcher implements IBakedModel {
             }
 
             //we don't need color multiplier for standard blocks, only for ITexture-blocks
-            if(item instanceof ItemBlock && ((ItemBlock) item).block instanceof IBlockTextureProvider) {
-                //ITextures pass color as tint index
-                itemColors.registerItemColorHandler((stack, tintIndex) -> tintIndex, item);
+            if(item instanceof ItemBlock) {
+                ItemBlock itemBlock = (ItemBlock) item;
+                if(itemBlock.block instanceof IBlockTextureProvider || itemBlock.block instanceof IBlockIconProvider) {
+                    //ITextures pass color as tint index
+                    itemColors.registerItemColorHandler((stack, tintIndex) -> tintIndex, item);
+                }
             }
 
         }
@@ -103,11 +111,10 @@ public class GT_RenderDispatcher implements IBakedModel {
             Block block = Block.REGISTRY.getObject(blockId);
 
             if(block instanceof IIconRegister) {
-                ((IIconRegister) block).registerIcons(pre.getMap());
+                ((IIconRegister) block).registerIcons(DEFAULT_ICON_DATA_GETTER);
             }
 
-            //we don't need color multiplier for standard blocks, only for ITexture-blocks
-            if(block instanceof IBlockTextureProvider) {
+            if(block instanceof IBlockTextureProvider || block instanceof IBlockIconProvider) {
                 //ITextures pass color as tint index
                 blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> tintIndex, block);
             }
@@ -115,6 +122,18 @@ public class GT_RenderDispatcher implements IBakedModel {
         }
 
         System.out.println("GT_Mod: Finished Icon Load Phase");
+    }
+
+    @SubscribeEvent
+    public void onTextureMapStitchFinish(TextureStitchEvent.Post post) {
+        for(Runnable runnable : GregTech_API.sAfterGTIconload) {
+            try {
+                runnable.run();
+            } catch (Exception err) {
+                System.out.println("Failed to call after load on " + runnable);
+                err.printStackTrace();
+            }
+        }
     }
 
     @SubscribeEvent

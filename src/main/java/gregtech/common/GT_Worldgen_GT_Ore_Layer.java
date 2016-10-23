@@ -78,37 +78,27 @@ public class GT_Worldgen_GT_Ore_Layer
             int cZ = aChunkZ - aRandom.nextInt(this.mSize);
             int eZ = aChunkZ + 16 + aRandom.nextInt(this.mSize);
             for (int tZ = cZ; tZ <= eZ; tZ++) {
+                for (int i = tMinY + 3; i < tMinY + 6; i++) {
+                    if ((aRandom.nextInt(Math.max(1, Math.max(Math.abs(cZ - tZ), Math.abs(eZ - tZ)) / this.mDensity)) == 0) || (aRandom.nextInt(Math.max(1, Math.max(Math.abs(cX - tX), Math.abs(eX - tX)) / this.mDensity)) == 0)) {
+                        BlockPos blockPos = new BlockPos(tX, i, tZ);
+                        GT_TileEntity_Ores.setOreBlock(aWorld, blockPos, this.mPrimaryMeta, false);
+                    }
+                }
                 if (this.mSecondaryMeta > 0) {
                     for (int i = tMinY - 1; i < tMinY + 2; i++) {
                         if ((aRandom.nextInt(Math.max(1, Math.max(Math.abs(cZ - tZ), Math.abs(eZ - tZ)) / this.mDensity)) == 0) || (aRandom.nextInt(Math.max(1, Math.max(Math.abs(cX - tX), Math.abs(eX - tX)) / this.mDensity)) == 0)) {
                             BlockPos blockPos = new BlockPos(tX, i, tZ);
-                            if(isGenerationAllowed(aWorld, blockPos)) {
-                                GT_TileEntity_Ores.setOreBlock(aWorld, blockPos, this.mSecondaryMeta, false);
-                            }
+                            GT_TileEntity_Ores.setOreBlock(aWorld, blockPos, this.mSecondaryMeta, false);
                         }
                     }
                 }
-                if ((this.mBetweenMeta > 0) && ((aRandom.nextInt(Math.max(1, Math.max(Math.abs(cZ - tZ), Math.abs(eZ - tZ)) / this.mDensity)) == 0) || (aRandom.nextInt(Math.max(1, Math.max(Math.abs(cX - tX), Math.abs(eX - tX)) / this.mDensity)) == 0))) {
+                if (this.mBetweenMeta > 0 && ((aRandom.nextInt(Math.max(1, Math.max(Math.abs(cZ - tZ), Math.abs(eZ - tZ)) / this.mDensity)) == 0) || (aRandom.nextInt(Math.max(1, Math.max(Math.abs(cX - tX), Math.abs(eX - tX)) / this.mDensity)) == 0))) {
                     BlockPos blockPos = new BlockPos(tX, tMinY + 2 + aRandom.nextInt(2), tZ);
-                    if(isGenerationAllowed(aWorld, blockPos)) {
-                        GT_TileEntity_Ores.setOreBlock(aWorld, blockPos, this.mBetweenMeta, false);
-                    }
+                    GT_TileEntity_Ores.setOreBlock(aWorld, blockPos, this.mBetweenMeta, false);
                 }
-                if (this.mPrimaryMeta > 0) {
-                    for (int i = tMinY + 3; i < tMinY + 6; i++) {
-                        if ((aRandom.nextInt(Math.max(1, Math.max(Math.abs(cZ - tZ), Math.abs(eZ - tZ)) / this.mDensity)) == 0) || (aRandom.nextInt(Math.max(1, Math.max(Math.abs(cX - tX), Math.abs(eX - tX)) / this.mDensity)) == 0)) {
-                            BlockPos blockPos = new BlockPos(tX, i, tZ);
-                            if(isGenerationAllowed(aWorld, blockPos)) {
-                                GT_TileEntity_Ores.setOreBlock(aWorld, blockPos, this.mPrimaryMeta, false);
-                            }
-                        }
-                    }
-                }
-                if ((this.mSporadicMeta > 0) && ((aRandom.nextInt(Math.max(1, Math.max(Math.abs(cZ - tZ), Math.abs(eZ - tZ)) / this.mDensity)) == 0) || (aRandom.nextInt(Math.max(1, Math.max(Math.abs(cX - tX), Math.abs(eX - tX)) / this.mDensity)) == 0))) {
+                if (this.mSporadicMeta > 0 && ((aRandom.nextInt(Math.max(1, Math.max(Math.abs(cZ - tZ), Math.abs(eZ - tZ)) / this.mDensity)) == 0) || (aRandom.nextInt(Math.max(1, Math.max(Math.abs(cX - tX), Math.abs(eX - tX)) / this.mDensity)) == 0))) {
                     BlockPos blockPos = new BlockPos(tX, tMinY - 1 + aRandom.nextInt(7), tZ);
-                    if(isGenerationAllowed(aWorld, blockPos)) {
-                        GT_TileEntity_Ores.setOreBlock(aWorld, blockPos, this.mSporadicMeta, false);
-                    }
+                    GT_TileEntity_Ores.setOreBlock(aWorld, blockPos, this.mSporadicMeta, false);
                 }
             }
         }

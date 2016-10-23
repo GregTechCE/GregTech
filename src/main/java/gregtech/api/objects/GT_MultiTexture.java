@@ -38,4 +38,9 @@ public class GT_MultiTexture implements ITexture {
         return true;
     }
 
+    @Override
+    public boolean needsNonSidedRendering() {
+        return false;
+    }
+
 }

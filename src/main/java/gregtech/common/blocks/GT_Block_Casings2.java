@@ -1,9 +1,11 @@
 package gregtech.common.blocks;
 
+import com.google.common.collect.ImmutableList;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.util.GT_LanguageManager;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
@@ -58,42 +60,42 @@ public class GT_Block_Casings2 extends GT_Block_Casings_Abstract {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
+    public ImmutableList<BakedQuad> getIcon(EnumFacing aSide, int aMeta) {
         switch (aMeta) {
             case 0:
-                return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getQuads(aSide);
             case 1:
-                return Textures.BlockIcons.MACHINE_CASING_FROST_PROOF.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_FROST_PROOF.getQuads(aSide);
             case 2:
-                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_BRONZE.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_BRONZE.getQuads(aSide);
             case 3:
-                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_STEEL.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_STEEL.getQuads(aSide);
             case 4:
-                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_TITANIUM.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_TITANIUM.getQuads(aSide);
             case 5:
-                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_TUNGSTENSTEEL.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_TUNGSTENSTEEL.getQuads(aSide);
             case 6:
-                return Textures.BlockIcons.MACHINE_CASING_PROCESSOR.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_PROCESSOR.getQuads(aSide);
             case 7:
-                return Textures.BlockIcons.MACHINE_CASING_DATA_DRIVE.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_DATA_DRIVE.getQuads(aSide);
             case 8:
-                return Textures.BlockIcons.MACHINE_CASING_CONTAINMENT_FIELD.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_CONTAINMENT_FIELD.getQuads(aSide);
             case 9:
-                return Textures.BlockIcons.MACHINE_CASING_ASSEMBLER.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_ASSEMBLER.getQuads(aSide);
             case 10:
-                return Textures.BlockIcons.MACHINE_CASING_PUMP.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_PUMP.getQuads(aSide);
             case 11:
-                return Textures.BlockIcons.MACHINE_CASING_MOTOR.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_MOTOR.getQuads(aSide);
             case 12:
-                return Textures.BlockIcons.MACHINE_CASING_PIPE_BRONZE.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_PIPE_BRONZE.getQuads(aSide);
             case 13:
-                return Textures.BlockIcons.MACHINE_CASING_PIPE_STEEL.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_PIPE_STEEL.getQuads(aSide);
             case 14:
-                return Textures.BlockIcons.MACHINE_CASING_PIPE_TITANIUM.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_PIPE_TITANIUM.getQuads(aSide);
             case 15:
-                return Textures.BlockIcons.MACHINE_CASING_PIPE_TUNGSTENSTEEL.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_PIPE_TUNGSTENSTEEL.getQuads(aSide);
         }
-        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getQuads(aSide);
     }
 
     @Override

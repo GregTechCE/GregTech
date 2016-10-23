@@ -32,12 +32,6 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class GT_BlockRenderer {
 
-    /**
-     * Quads cache for standard icon provider blocks
-     * used for block and itemblock rendering
-     */
-    public static HashMap<TextureAtlasSprite, HashMap<EnumFacing, ImmutableList<BakedQuad>>> quadsCache = new HashMap<>();
-
     public static boolean shouldHook(IBlockState blockState) {
         if(blockState.getBlock() instanceof IBlockIconProvider) {
             return true;
@@ -92,7 +86,7 @@ public class GT_BlockRenderer {
         }
 
         @Override
-        public TextureAtlasSprite getSideSprite(EnumFacing side, IBlockState state) {
+        public ImmutableList<BakedQuad> getSideSprite(EnumFacing side, IBlockState state) {
             IBlockIconProvider provider = (IBlockIconProvider) block;
             return provider.getIcon(holder, itemStack, side);
         }
@@ -102,7 +96,7 @@ public class GT_BlockRenderer {
     private static class IconProviderModel extends AbstractIconProviderModel {
 
         @Override
-        public TextureAtlasSprite getSideSprite(EnumFacing side, IBlockState blockState) {
+        public ImmutableList<BakedQuad> getSideSprite(EnumFacing side, IBlockState blockState) {
             BlockPos pos = ((IExtendedBlockState) blockState).getValue(GT_Generic_Block.BLOCK_POS);
             IBlockIconProvider provider = (IBlockIconProvider) blockState.getBlock();
             return provider.getIcon(Minecraft.getMinecraft().theWorld, pos, side, blockState.getValue(GT_Generic_Block.METADATA));
@@ -116,28 +110,19 @@ public class GT_BlockRenderer {
         @Override
         public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
             if(side != null) {
-                TextureAtlasSprite sideIcon = getSideSprite(side, state);
-                if (sideIcon != null) {
-                    HashMap<EnumFacing, ImmutableList<BakedQuad>> quads = quadsCache.get(sideIcon);
-                    if(quads == null) {
-                        quads = new HashMap<>();
-                        quadsCache.put(sideIcon, quads);
-                    }
-                    ImmutableList<BakedQuad> faceQuad = quads.get(side);
-                    if(faceQuad == null) {
-                        faceQuad = ImmutableList.of(RenderUtil.renderSide(sideIcon, side, 0.0F, 0xFFFFFF));
-                        quads.put(side, faceQuad);
-                    }
-                    return faceQuad;
+                ImmutableList<BakedQuad> sideIcon = getSideSprite(side, state);
+                if(sideIcon != null) {
+                    return sideIcon;
                 }
             }
-            return Collections.EMPTY_LIST;
+            return ImmutableList.of();
         }
 
-        public abstract TextureAtlasSprite getSideSprite(EnumFacing side, IBlockState blockState);
+        public abstract ImmutableList<BakedQuad> getSideSprite(EnumFacing side, IBlockState blockState);
 
     }
 
+    //TODO null-side rendering
     private static class TextureProviderModel extends AbstractModel {
 
         @Override

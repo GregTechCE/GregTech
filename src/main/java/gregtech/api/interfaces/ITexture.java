@@ -15,4 +15,7 @@ public interface ITexture {
     public List<BakedQuad> getQuads(Block aBlock, BlockPos blockPos, EnumFacing side, float offset);
 
     public boolean isValidTexture();
+
+    public boolean needsNonSidedRendering();
+
 }

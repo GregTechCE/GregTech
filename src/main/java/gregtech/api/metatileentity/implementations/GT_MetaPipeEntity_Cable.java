@@ -40,6 +40,8 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     public long mRestRF;
     public short mOverheat;
 
+    private GT_PipeRenderedTexture[][][] mTextures;
+
     public GT_MetaPipeEntity_Cable(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial, long aCableLossPerMeter, long aAmperage, long aVoltage, boolean aInsulated, boolean aCanShock) {
         super(aID, aName, aNameRegional, 0);
         mThickNess = aThickNess;
@@ -49,9 +51,20 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
         mInsulated = aInsulated;
         mCanShock = aCanShock;
         mCableLossPerMeter = aCableLossPerMeter;
+
+        GregTech_API.sAfterGTIconload.add(() -> {
+            mTextures = new GT_PipeRenderedTexture[2][][];
+            mTextures[0] = new GT_PipeRenderedTexture[Dyes.VALUES.length + 1][];
+            mTextures[1] = new GT_PipeRenderedTexture[Dyes.VALUES.length + 1][];
+
+            for(int i = 0; i < Dyes.VALUES.length + 1; i++) {
+                mTextures[0][i] = new GT_PipeRenderedTexture[] {createTexture(false, i)};
+                mTextures[1][i] = new GT_PipeRenderedTexture[] {createTexture(true, i)};
+            }
+        });
     }
 
-    public GT_MetaPipeEntity_Cable(String aName, float aThickNess, Materials aMaterial, long aCableLossPerMeter, long aAmperage, long aVoltage, boolean aInsulated, boolean aCanShock) {
+    public GT_MetaPipeEntity_Cable(String aName, float aThickNess, Materials aMaterial, long aCableLossPerMeter, long aAmperage, long aVoltage, boolean aInsulated, boolean aCanShock, GT_PipeRenderedTexture[][][] textures) {
         super(aName, 0);
         mThickNess = aThickNess;
         mMaterial = aMaterial;
@@ -60,6 +73,31 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
         mInsulated = aInsulated;
         mCanShock = aCanShock;
         mCableLossPerMeter = aCableLossPerMeter;
+        mTextures = textures;
+    }
+
+    public GT_PipeRenderedTexture createTexture(boolean aConnected, int aColorIndex) {
+        float tThickNess = getThickNess();
+        short[] rgba = Dyes.getOrDef(aColorIndex, Dyes.INSULATION);
+        IIconContainer[] textures = mMaterial.mIconSet.mTextures;
+
+        if (!mInsulated) {
+            return new GT_PipeRenderedTexture(mThickNess, aConnected, textures[TextureSet.INDEX_wire], mMaterial.mRGBa);
+        }
+
+        if (tThickNess < 0.37F)
+            return new GT_PipeRenderedTexture(tThickNess, aConnected, textures[TextureSet.INDEX_wire], mMaterial.mRGBa, Textures.BlockIcons.INSULATION_FULL, rgba);
+
+        if (tThickNess < 0.49F)
+            return new GT_PipeRenderedTexture(tThickNess, aConnected, textures[TextureSet.INDEX_wire], mMaterial.mRGBa, Textures.BlockIcons.INSULATION_FULL, rgba);
+
+        if (tThickNess < 0.74F)
+            return new GT_PipeRenderedTexture(tThickNess, aConnected, textures[TextureSet.INDEX_wire], mMaterial.mRGBa, Textures.BlockIcons.INSULATION_FULL, rgba);
+
+        if (tThickNess < 0.99F)
+            return new GT_PipeRenderedTexture(tThickNess, aConnected, textures[TextureSet.INDEX_wire], mMaterial.mRGBa, Textures.BlockIcons.INSULATION_FULL, rgba);
+
+        return new GT_PipeRenderedTexture(tThickNess, aConnected, textures[TextureSet.INDEX_wire], mMaterial.mRGBa, Textures.BlockIcons.INSULATION_FULL, rgba);
     }
 
     @Override
@@ -69,7 +107,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaPipeEntity_Cable(mName, mThickNess, mMaterial, mCableLossPerMeter, mAmperage, mVoltage, mInsulated, mCanShock);
+        return new GT_MetaPipeEntity_Cable(mName, mThickNess, mMaterial, mCableLossPerMeter, mAmperage, mVoltage, mInsulated, mCanShock, mTextures);
     }
 
     @Override
@@ -85,27 +123,10 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
             aConnected = false;
         }
 
-        if (!mInsulated) {
-            return new ITexture[]{new GT_PipeRenderedTexture(mThickNess, aConnected, mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa)};
+        if(aColorIndex < 0 || aColorIndex >= Dyes.VALUES.length) {
+            aColorIndex = 16;
         }
-
-        float tThickNess = getThickNess();
-        short[] rgba = Dyes.getOrDef(aColorIndex, Dyes.INSULATION);
-        IIconContainer[] textures = mMaterial.mIconSet.mTextures;
-
-        if (tThickNess < 0.37F)
-            return new ITexture[]{new GT_PipeRenderedTexture(tThickNess, aConnected, textures[TextureSet.INDEX_wire], mMaterial.mRGBa, Textures.BlockIcons.INSULATION_FULL, rgba)};
-
-        if (tThickNess < 0.49F)
-            return new ITexture[]{new GT_PipeRenderedTexture(tThickNess, aConnected, textures[TextureSet.INDEX_wire], mMaterial.mRGBa, Textures.BlockIcons.INSULATION_FULL, rgba)};
-
-        if (tThickNess < 0.74F)
-            return new ITexture[]{new GT_PipeRenderedTexture(tThickNess, aConnected, textures[TextureSet.INDEX_wire], mMaterial.mRGBa, Textures.BlockIcons.INSULATION_FULL, rgba)};
-
-        if (tThickNess < 0.99F)
-            return new ITexture[]{new GT_PipeRenderedTexture(tThickNess, aConnected, textures[TextureSet.INDEX_wire], mMaterial.mRGBa, Textures.BlockIcons.INSULATION_FULL, rgba)};
-
-        return new ITexture[]{new GT_PipeRenderedTexture(tThickNess, aConnected, textures[TextureSet.INDEX_wire], mMaterial.mRGBa, Textures.BlockIcons.INSULATION_FULL, rgba)};
+        return mTextures[aConnected ? 1 : 0][aColorIndex];
     }
 
     @Override

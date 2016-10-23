@@ -1,9 +1,11 @@
 package gregtech.common.blocks;
 
+import com.google.common.collect.ImmutableList;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.util.GT_LanguageManager;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -53,31 +55,31 @@ public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
+    public ImmutableList<BakedQuad> getIcon(EnumFacing aSide, int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
             switch (aMeta) {
                 case 10:
-                    return Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS.getIcon();
+                    return Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS.getQuads(aSide);
                 case 11:
-                    return Textures.BlockIcons.MACHINE_HEATPROOFCASING.getIcon();
+                    return Textures.BlockIcons.MACHINE_HEATPROOFCASING.getQuads(aSide);
                 case 12:
-                    return Textures.BlockIcons.RENDERING_ERROR.getIcon();
+                    return Textures.BlockIcons.RENDERING_ERROR.getQuads(aSide);
                 case 13:
-                    return Textures.BlockIcons.RENDERING_ERROR.getIcon();
+                    return Textures.BlockIcons.RENDERING_ERROR.getQuads(aSide);
                 case 14:
-                    return Textures.BlockIcons.RENDERING_ERROR.getIcon();
+                    return Textures.BlockIcons.RENDERING_ERROR.getQuads(aSide);
                 case 15:
-                    return Textures.BlockIcons.MACHINE_COIL_SUPERCONDUCTOR.getIcon();
+                    return Textures.BlockIcons.MACHINE_COIL_SUPERCONDUCTOR.getQuads(aSide);
             }
             if (aSide == EnumFacing.DOWN) {
-                return Textures.BlockIcons.MACHINECASINGS_BOTTOM[aMeta].getIcon();
+                return Textures.BlockIcons.MACHINECASINGS_BOTTOM[aMeta].getQuads(aSide);
             }
             if (aSide == EnumFacing.UP) {
-                return Textures.BlockIcons.MACHINECASINGS_TOP[aMeta].getIcon();
+                return Textures.BlockIcons.MACHINECASINGS_TOP[aMeta].getQuads(aSide);
             }
-            return Textures.BlockIcons.MACHINECASINGS_SIDE[aMeta].getIcon();
+            return Textures.BlockIcons.MACHINECASINGS_SIDE[aMeta].getQuads(aSide);
         }
-        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getQuads(aSide);
     }
 
 

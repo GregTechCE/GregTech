@@ -1,4 +1,4 @@
-package gregtech.common.render;
+package gregtech.common.render.data;
 
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraftforge.fml.relauncher.Side;
@@ -17,6 +17,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public interface IIconRegister {
 
     @SideOnly(Side.CLIENT)
-    void registerIcons(TextureMap textureMap);
+    default void registerIcons(IconDataGetter quadGetter) {
+        registerIcons(quadGetter.getMap());
+    }
+
+    @Deprecated //TODO split to item register and block register
+    default void registerIcons(TextureMap textureMap) {}
 
 }

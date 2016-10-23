@@ -48,7 +48,7 @@ public class GT_CopiedBlockTexture implements ITexture {
     public static TextureAtlasSprite getSide(Block aBlock, int aMeta, EnumFacing side) {
         if (aBlock instanceof IBlockIconProvider) {
             IBlockIconProvider iconProvider = ((IBlockIconProvider) aBlock);
-            return iconProvider.getIcon(FMLClientHandler.instance().getWorldClient(), null, side, aMeta);
+            return null;
         }
         System.out.println("Failed to copy texture of " + aBlock.getRegistryName() + " " + aMeta);
         return Textures.BlockIcons.RENDERING_ERROR.getIcon();
@@ -70,6 +70,11 @@ public class GT_CopiedBlockTexture implements ITexture {
     @Override
     public boolean isValidTexture() {
         return mBlock != null;
+    }
+
+    @Override
+    public boolean needsNonSidedRendering() {
+        return false;
     }
 
 }

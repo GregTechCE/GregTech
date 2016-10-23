@@ -1,9 +1,11 @@
 package gregtech.common.blocks;
 
+import com.google.common.collect.ImmutableList;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.util.GT_LanguageManager;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -53,41 +55,41 @@ public class GT_Block_Casings3 extends GT_Block_Casings_Abstract {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
+    public ImmutableList<BakedQuad> getIcon(EnumFacing aSide, int aMeta) {
         switch (aMeta) {
             case 0:
-                return Textures.BlockIcons.MACHINE_CASING_STRIPES_A.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_STRIPES_A.getQuads(aSide);
             case 1:
-                return Textures.BlockIcons.MACHINE_CASING_STRIPES_B.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_STRIPES_B.getQuads(aSide);
             case 2:
-                return Textures.BlockIcons.MACHINE_CASING_RADIOACTIVEHAZARD.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_RADIOACTIVEHAZARD.getQuads(aSide);
             case 3:
-                return Textures.BlockIcons.MACHINE_CASING_BIOHAZARD.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_BIOHAZARD.getQuads(aSide);
             case 4:
-                return Textures.BlockIcons.MACHINE_CASING_EXPLOSIONHAZARD.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_EXPLOSIONHAZARD.getQuads(aSide);
             case 5:
-                return Textures.BlockIcons.MACHINE_CASING_FIREHAZARD.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_FIREHAZARD.getQuads(aSide);
             case 6:
-                return Textures.BlockIcons.MACHINE_CASING_ACIDHAZARD.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_ACIDHAZARD.getQuads(aSide);
             case 7:
-                return Textures.BlockIcons.MACHINE_CASING_MAGICHAZARD.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_MAGICHAZARD.getQuads(aSide);
             case 8:
-                return Textures.BlockIcons.MACHINE_CASING_FROSTHAZARD.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_FROSTHAZARD.getQuads(aSide);
             case 9:
-                return Textures.BlockIcons.MACHINE_CASING_NOISEHAZARD.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_NOISEHAZARD.getQuads(aSide);
             case 10:
-                return Textures.BlockIcons.MACHINE_CASING_GRATE.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_GRATE.getQuads(aSide);
             case 11:
-                return Textures.BlockIcons.MACHINE_CASING_VENT.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_VENT.getQuads(aSide);
             case 12:
-                return Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF.getQuads(aSide);
             case 13:
-                return aSide.getIndex() > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_BRONZE.getIcon() : Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS.getIcon();
+                return aSide.getIndex() > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_BRONZE.getQuads(aSide) : Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS.getQuads(aSide);
             case 14:
-                return aSide.getIndex() > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_STEEL.getIcon() : Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+                return aSide.getIndex() > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_STEEL.getQuads(aSide) : Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getQuads(aSide);
             case 15:
-                return aSide.getIndex() > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_TUNGSTENSTEEL.getIcon() : Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
+                return aSide.getIndex() > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_TUNGSTENSTEEL.getQuads(aSide) : Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getQuads(aSide);
         }
-        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getQuads(aSide);
     }
 }

@@ -1,7 +1,7 @@
 package gregtech.api.items;
 
 import gregtech.common.render.IItemColorMultiplier;
-import gregtech.common.render.IIconRegister;
+import gregtech.common.render.data.IIconRegister;
 import gregtech.common.render.items.IItemIconProvider;
 import ic2.api.item.IElectricItem;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

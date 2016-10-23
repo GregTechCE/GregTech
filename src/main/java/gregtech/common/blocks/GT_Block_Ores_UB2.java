@@ -3,6 +3,7 @@ package gregtech.common.blocks;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import net.minecraft.block.Block;
@@ -31,8 +32,13 @@ public class GT_Block_Ores_UB2 extends GT_Block_Ores_Abstract {
     }
 
     @Override
-    public ITexture[] getTextureSet() { //Must have 16 entries.
+    public IIconContainer[] getTextureSet() { //Must have 16 entries.
         return GT_Block_Ores.TEXTURES;
         //return new ITexture[]{new GT_CopiedBlockTexture(aUBBlock, 0, 0), new GT_CopiedBlockTexture(aUBBlock, 0, 1), new GT_CopiedBlockTexture(aUBBlock, 0, 2), new GT_CopiedBlockTexture(aUBBlock, 0, 3), new GT_CopiedBlockTexture(aUBBlock, 0, 4), new GT_CopiedBlockTexture(aUBBlock, 0, 5), new GT_CopiedBlockTexture(aUBBlock, 0, 6), new GT_CopiedBlockTexture(aUBBlock, 0, 7), new GT_CopiedBlockTexture(aUBBlock, 0, 0), new GT_CopiedBlockTexture(aUBBlock, 0, 1), new GT_CopiedBlockTexture(aUBBlock, 0, 2), new GT_CopiedBlockTexture(aUBBlock, 0, 3), new GT_CopiedBlockTexture(aUBBlock, 0, 4), new GT_CopiedBlockTexture(aUBBlock, 0, 5), new GT_CopiedBlockTexture(aUBBlock, 0, 6), new GT_CopiedBlockTexture(aUBBlock, 0, 7)};
+    }
+
+    @Override
+    public boolean isGravelAlike(int aOreMeta) {
+        return false;
     }
 }

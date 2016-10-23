@@ -1,9 +1,7 @@
 package gregtech.api.net;
 
 import gregtech.GT_Mod;
-import gregtech.common.blocks.GT_Packet_Ores;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -15,7 +13,6 @@ public class GT_PacketHandler extends SimpleNetworkWrapper {
     public GT_PacketHandler() {
         super("gregtech_network");
         registerMessage(0, GT_Packet_TileEntity.class, Side.CLIENT);
-        registerMessage(1, GT_Packet_Ores.class, Side.CLIENT);
         registerMessage(2, GT_Packet_Sound.class, Side.CLIENT);
     }
 

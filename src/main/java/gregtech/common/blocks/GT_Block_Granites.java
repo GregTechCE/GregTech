@@ -1,10 +1,12 @@
 package gregtech.common.blocks;
 
+import com.google.common.collect.ImmutableList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.boss.EntityWither;
@@ -62,11 +64,11 @@ public class GT_Block_Granites extends GT_Block_Stones_Abstract {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
+    public ImmutableList<BakedQuad> getIcon(EnumFacing aSide, int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
-            return gregtech.api.enums.Textures.BlockIcons.GRANITES[aMeta].getIcon();
+            return gregtech.api.enums.Textures.BlockIcons.GRANITES[aMeta].getQuads(aSide);
         }
-        return gregtech.api.enums.Textures.BlockIcons.GRANITES[0].getIcon();
+        return gregtech.api.enums.Textures.BlockIcons.GRANITES[0].getQuads(aSide);
     }
 
     @Override

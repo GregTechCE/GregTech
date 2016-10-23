@@ -1,6 +1,7 @@
 package gregtech.common.render.blocks;
 
 import gregtech.api.interfaces.ITexture;
+import gregtech.common.render.data.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -15,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * have custom rendering behaviour defined in {@link ITexture}s
  *
  * @see ITexture
- * @see gregtech.common.render.IIconRegister
+ * @see IIconRegister
  * @see IBlockIconProvider
  */
 public interface IBlockTextureProvider {

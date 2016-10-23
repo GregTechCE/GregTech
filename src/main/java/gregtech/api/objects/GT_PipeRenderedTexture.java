@@ -161,12 +161,17 @@ public class GT_PipeRenderedTexture implements ITexture {
     }
 
     public BakedQuad makeQuad(TextureAtlasSprite sprite, float x, float y, float z, float width, float height, EnumFacing side, int rgba) {
-        return RenderUtil.renderQuadCustom(x, y, z, width, height, sprite, side, rgba);
+        return RenderUtil.renderQuadCustom(x * 16F, y * 16F, z * 16F, width * 16F, height * 16F, sprite, side, rgba);
     }
 
     @Override
     public boolean isValidTexture() {
         return thickness > 0.0F;
+    }
+
+    @Override
+    public boolean needsNonSidedRendering() {
+        return false;
     }
 
 }

@@ -66,7 +66,7 @@ public class GT_Worldgen_Stone
                                                     TileEntity tTileEntity = aWorld.getTileEntity(randPos);
                                                     if ((tTileEntity instanceof GT_TileEntity_Ores)) {
                                                         if (tTargetedBlock != GregTech_API.sBlockOres1) {
-                                                            ((GT_TileEntity_Ores) tTileEntity).convertOreBlock(aWorld, eX, eY, eZ);
+                                                            //((GT_TileEntity_Ores) tTileEntity).convertOreBlock(aWorld, eX, eY, eZ);
                                                         }
                                                         ((GT_TileEntity_Ores)tTileEntity).overrideOreBlockMaterial(this.mBlock, (byte) this.mBlockMeta);
                                                     }

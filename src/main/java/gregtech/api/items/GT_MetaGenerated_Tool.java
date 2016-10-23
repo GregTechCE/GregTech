@@ -29,6 +29,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
@@ -210,6 +211,12 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
         }
         isItemStackUsable(rStack);
         return rStack;
+    }
+
+    @Override
+    public boolean canHarvestBlock(IBlockState state, ItemStack stack) {
+        IToolStats toolStats = getToolStats(stack);
+        return toolStats != null && toolStats.isMinableBlock(state);
     }
 
     /**
@@ -444,12 +451,21 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
 
     @Override
     public float getStrVsBlock(ItemStack aStack, IBlockState state) {
-        if (!isItemStackUsable(aStack)) return 0.0F;
-        IToolStats tStats = getToolStats(aStack);
-        if (tStats == null || Math.max(0, getHarvestLevel(aStack, "")) < state.getBlock().getHarvestLevel(state)) return 0.0F;
-        return tStats.isMinableBlock(state) ?
-                Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed) :
-                0.0F;
+        //defSpeed is default item mining speed divided by 2
+        float defSpeed = 0.5f;
+
+        if (isItemStackUsable(aStack)) {
+            IToolStats toolStats = getToolStats(aStack);
+            if(toolStats != null && toolStats.isMinableBlock(state)) {
+                if(getHarvestLevel(aStack, null) > state.getBlock().getHarvestLevel(state)) {
+                    float toolSpeed = toolStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed;
+                    return Math.max(defSpeed, toolSpeed);
+                }
+                return defSpeed;
+            }
+            return defSpeed;
+        }
+        return defSpeed;
     }
 
     @Override
@@ -495,8 +511,10 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
     }
 
     public IToolStats getToolStats(ItemStack aStack) {
-        isItemStackUsable(aStack);
-        return getToolStatsInternal(aStack);
+        if(isItemStackUsable(aStack)) {
+            return getToolStatsInternal(aStack);
+        }
+        return null;
     }
 
     private IToolStats getToolStatsInternal(ItemStack aStack) {

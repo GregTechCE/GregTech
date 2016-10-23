@@ -1,5 +1,7 @@
 package gregtech.common.blocks;
 
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
@@ -35,23 +37,23 @@ public class GT_Block_Casings5 extends GT_Block_Casings_Abstract {
     }
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
+    public ImmutableList<BakedQuad> getIcon(EnumFacing aSide, int aMeta) {
         switch (aMeta) {
             case 0:
-                return Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL.getIcon();
+                return Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL.getQuads(aSide);
             case 1:
-                return Textures.BlockIcons.MACHINE_COIL_KANTHAL.getIcon();
+                return Textures.BlockIcons.MACHINE_COIL_KANTHAL.getQuads(aSide);
             case 2:
-                return Textures.BlockIcons.MACHINE_COIL_NICHROME.getIcon();
+                return Textures.BlockIcons.MACHINE_COIL_NICHROME.getQuads(aSide);
             case 3:
-                return Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL.getIcon();
+                return Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL.getQuads(aSide);
             case 4:
-                return Textures.BlockIcons.MACHINE_COIL_HSSG.getIcon();
+                return Textures.BlockIcons.MACHINE_COIL_HSSG.getQuads(aSide);
             case 5:
-                return Textures.BlockIcons.MACHINE_COIL_NAQUADAH.getIcon();
+                return Textures.BlockIcons.MACHINE_COIL_NAQUADAH.getQuads(aSide);
             case 6:
-                return Textures.BlockIcons.MACHINE_COIL_NAQUADAHALLOY.getIcon();
+                return Textures.BlockIcons.MACHINE_COIL_NAQUADAHALLOY.getQuads(aSide);
         }
-        return Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL.getIcon();
+        return Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL.getQuads(aSide);
     }
 }

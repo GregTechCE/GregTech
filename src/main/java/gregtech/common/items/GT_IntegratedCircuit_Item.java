@@ -1,16 +1,13 @@
 package gregtech.common.items;
 
-import gregtech.common.render.IIconRegister;
-import net.minecraft.client.renderer.texture.TextureMap;
+import gregtech.common.render.data.IIconRegister;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;

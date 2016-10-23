@@ -9,7 +9,7 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.items.IItemIconContainerProvider;
-import gregtech.common.render.IIconRegister;
+import gregtech.common.render.data.IIconRegister;
 import gregtech.common.render.items.IItemIconProvider;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.state.IBlockState;

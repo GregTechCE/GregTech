@@ -1,21 +1,28 @@
 package gregtech.api.enums;
 
+import com.google.common.collect.ImmutableList;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.GT_SidedTexture;
+import gregtech.common.render.RenderUtil;
+import gregtech.common.render.data.IIconData;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.EnumMap;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
 import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
 
 public class Textures {
-    public enum BlockIcons implements IIconContainer, Runnable {
+    public enum BlockIcons implements IIconContainer, Runnable, IIconData {
         VOID // The Empty Texture
         , RENDERING_ERROR, PIPE_RESTRICTOR, INSULATION_FULL, INSULATION_TINY, INSULATION_SMALL, INSULATION_MEDIUM,
         INSULATION_LARGE, INSULATION_HUGE, CFOAM_FRESH, CFOAM_HARDENED, SOLARPANEL, SOLARPANEL_8V, SOLARPANEL_LV, SOLARPANEL_MV, SOLARPANEL_HV, SOLARPANEL_EV, SOLARPANEL_IV, SOLARPANEL_LuV, SOLARPANEL_ZPM, SOLARPANEL_UV,
@@ -53,8 +60,8 @@ public class Textures {
          * Machine Casings by Tier
          * 0 = 8V, 1 = LV, 2 = MV, 3 = HV, 4 = EV, 5 = IV, 6 = IV, 7 = IV, 8 = IV, 9 = IV
          */
-        public static final IIconContainer[]
-                MACHINECASINGS_SIDE = new IIconContainer[]{
+        public static final BlockIcons[]
+                MACHINECASINGS_SIDE = new BlockIcons[]{
                 MACHINE_8V_SIDE,
                 MACHINE_LV_SIDE,
                 MACHINE_MV_SIDE,
@@ -72,7 +79,7 @@ public class Textures {
                 MACHINE_MAX_SIDE,
                 MACHINE_MAX_SIDE,
         },
-                MACHINECASINGS_TOP = new IIconContainer[]{
+                MACHINECASINGS_TOP = new BlockIcons[]{
                         MACHINE_8V_TOP,
                         MACHINE_LV_TOP,
                         MACHINE_MV_TOP,
@@ -90,7 +97,7 @@ public class Textures {
                         MACHINE_MAX_TOP,
                         MACHINE_MAX_TOP,
                 },
-                MACHINECASINGS_BOTTOM = new IIconContainer[]{
+                MACHINECASINGS_BOTTOM = new BlockIcons[]{
                         MACHINE_8V_BOTTOM,
                         MACHINE_LV_BOTTOM,
                         MACHINE_MV_BOTTOM,
@@ -108,7 +115,7 @@ public class Textures {
                         MACHINE_MAX_BOTTOM,
                         MACHINE_MAX_BOTTOM,
                 },
-                GRANITES = new IIconContainer[]{
+                GRANITES = new BlockIcons[]{
                         GRANITE_BLACK_STONE,
                         GRANITE_BLACK_COBBLE,
                         GRANITE_BLACK_COBBLE_MOSSY,
@@ -126,7 +133,7 @@ public class Textures {
                         GRANITE_RED_BRICKS_CHISELED,
                         GRANITE_RED_SMOOTH,
                 },
-                CONCRETES = new IIconContainer[]{
+                CONCRETES = new BlockIcons[]{
                         CONCRETE_DARK_STONE,
                         CONCRETE_DARK_COBBLE,
                         CONCRETE_DARK_COBBLE_MOSSY,
@@ -144,7 +151,7 @@ public class Textures {
                         CONCRETE_LIGHT_BRICKS_CHISELED,
                         CONCRETE_LIGHT_SMOOTH,
                 },
-                STONES = new IIconContainer[]{
+                STONES = new BlockIcons[]{
                         MARBLE_STONE,
                         MARBLE_COBBLE,
                         MARBLE_COBBLE_MOSSY,
@@ -162,7 +169,7 @@ public class Textures {
                         BASALT_BRICKS_CHISELED,
                         BASALT_SMOOTH,
                 },
-                TURBINE = new IIconContainer[]{
+                TURBINE = new BlockIcons[]{
                         LARGETURBINE_ST1,
                         LARGETURBINE_ST2,
                         LARGETURBINE_ST3,
@@ -173,7 +180,7 @@ public class Textures {
                         LARGETURBINE_ST8,
                         LARGETURBINE_ST9
                 },
-                TURBINE_ACTIVE = new IIconContainer[]{
+                TURBINE_ACTIVE = new BlockIcons[]{
                         LARGETURBINE_ST_ACTIVE1,
                         LARGETURBINE_ST_ACTIVE2,
                         LARGETURBINE_ST_ACTIVE3,
@@ -184,7 +191,7 @@ public class Textures {
                         LARGETURBINE_ST_ACTIVE8,
                         LARGETURBINE_ST_ACTIVE9
                 },
-                TURBINE1 = new IIconContainer[]{
+                TURBINE1 = new BlockIcons[]{
                         LARGETURBINE_SS1,
                         LARGETURBINE_SS2,
                         LARGETURBINE_SS3,
@@ -195,7 +202,7 @@ public class Textures {
                         LARGETURBINE_SS8,
                         LARGETURBINE_SS9
                 },
-                TURBINE_ACTIVE1 = new IIconContainer[]{
+                TURBINE_ACTIVE1 = new BlockIcons[]{
                         LARGETURBINE_SS_ACTIVE1,
                         LARGETURBINE_SS_ACTIVE2,
                         LARGETURBINE_SS_ACTIVE3,
@@ -206,7 +213,7 @@ public class Textures {
                         LARGETURBINE_SS_ACTIVE8,
                         LARGETURBINE_SS_ACTIVE9
                 },
-                TURBINE2 = new IIconContainer[]{
+                TURBINE2 = new BlockIcons[]{
                         LARGETURBINE_TI1,
                         LARGETURBINE_TI2,
                         LARGETURBINE_TI3,
@@ -217,7 +224,7 @@ public class Textures {
                         LARGETURBINE_TI8,
                         LARGETURBINE_TI9
                 },
-                TURBINE_ACTIVE2 = new IIconContainer[]{
+                TURBINE_ACTIVE2 = new BlockIcons[]{
                         LARGETURBINE_TI_ACTIVE1,
                         LARGETURBINE_TI_ACTIVE2,
                         LARGETURBINE_TI_ACTIVE3,
@@ -228,7 +235,7 @@ public class Textures {
                         LARGETURBINE_TI_ACTIVE8,
                         LARGETURBINE_TI_ACTIVE9
                 },
-                TURBINE3 = new IIconContainer[]{
+                TURBINE3 = new BlockIcons[]{
                         LARGETURBINE_TU1,
                         LARGETURBINE_TU2,
                         LARGETURBINE_TU3,
@@ -239,7 +246,7 @@ public class Textures {
                         LARGETURBINE_TU8,
                         LARGETURBINE_TU9
                 },
-                TURBINE_ACTIVE3 = new IIconContainer[]{
+                TURBINE_ACTIVE3 = new BlockIcons[]{
                         LARGETURBINE_TU_ACTIVE1,
                         LARGETURBINE_TU_ACTIVE2,
                         LARGETURBINE_TU_ACTIVE3,
@@ -250,7 +257,7 @@ public class Textures {
                         LARGETURBINE_TU_ACTIVE8,
                         LARGETURBINE_TU_ACTIVE9
                 },
-                CONNECTED_HULLS = new IIconContainer[]{
+                CONNECTED_HULLS = new BlockIcons[]{
                         CONCRETE_DARK_STONE,
                         FUSIONI_1,
                         FUSIONI_2,
@@ -277,7 +284,7 @@ public class Textures {
                         FUSIONII_11,
                         FUSIONII_12,
                 },
-                STORAGE_BLOCKS1 = new IIconContainer[]{
+                STORAGE_BLOCKS1 = new BlockIcons[]{
                         BLOCK_ADAMANTIUM,
                         BLOCK_ALUMINIUM,
                         BLOCK_AMERICIUM,
@@ -295,7 +302,7 @@ public class Textures {
                         BLOCK_BLUESTEEL,
                         BLOCK_BRASS
                 },
-                STORAGE_BLOCKS2 = new IIconContainer[]{
+                STORAGE_BLOCKS2 = new BlockIcons[]{
                         BLOCK_BRONZE,
                         BLOCK_CAESIUM,
                         BLOCK_CERIUM,
@@ -313,7 +320,7 @@ public class Textures {
                         BLOCK_DYSPROSIUM,
                         BLOCK_ELECTRUM
                 },
-                STORAGE_BLOCKS3 = new IIconContainer[]{
+                STORAGE_BLOCKS3 = new BlockIcons[]{
                         BLOCK_ELECTRUMFLUX,
                         BLOCK_ENDERIUM,
                         BLOCK_ERBIUM,
@@ -331,7 +338,7 @@ public class Textures {
                         BLOCK_IRONWOOD,
                         BLOCK_KANTHAL
                 },
-                STORAGE_BLOCKS4 = new IIconContainer[]{
+                STORAGE_BLOCKS4 = new BlockIcons[]{
                         BLOCK_KNIGHTMETAL,
                         BLOCK_LANTHANUM,
                         BLOCK_LEAD,
@@ -349,7 +356,7 @@ public class Textures {
                         BLOCK_NAQUADAHENRICHED,
                         BLOCK_NAQUADRIA
                 },
-                STORAGE_BLOCKS5 = new IIconContainer[]{
+                STORAGE_BLOCKS5 = new BlockIcons[]{
                         BLOCK_NEODYMIUM,
                         BLOCK_NEODYMIUMMAGNETIC,
                         BLOCK_NEUTRONIUM,
@@ -367,7 +374,7 @@ public class Textures {
                         BLOCK_PLUTONIUM241,
                         BLOCK_PRASEODYMIUM
                 },
-                STORAGE_BLOCKS6 = new IIconContainer[]{
+                STORAGE_BLOCKS6 = new BlockIcons[]{
                         BLOCK_PROMETHIUM,
                         BLOCK_REDALLOY,
                         BLOCK_REDSTEEL,
@@ -385,7 +392,7 @@ public class Textures {
                         BLOCK_STEELMAGNETIC,
                         BLOCK_STERLINGSILVER
                 },
-                STORAGE_BLOCKS7 = new IIconContainer[]{
+                STORAGE_BLOCKS7 = new BlockIcons[]{
                         BLOCK_SUNNARIUM,
                         BLOCK_TANTALUM,
                         BLOCK_TELLURIUM,
@@ -403,7 +410,7 @@ public class Textures {
                         BLOCK_URANIUM,
                         BLOCK_URANIUM235
                 },
-                STORAGE_BLOCKS8 = new IIconContainer[]{
+                STORAGE_BLOCKS8 = new BlockIcons[]{
                         BLOCK_VANADIUM,
                         BLOCK_VANADIUMGALLIUM,
                         BLOCK_WROUGHTIRON,
@@ -417,7 +424,7 @@ public class Textures {
                         BLOCK_HSSE,
                         BLOCK_HSSS
                 },
-                STORAGE_BLOCKS9 = new IIconContainer[]{
+                STORAGE_BLOCKS9 = new BlockIcons[]{
                         BLOCK_AERCRYSTAL,
                         BLOCK_AMBER,
                         BLOCK_AMETHYST,
@@ -435,7 +442,7 @@ public class Textures {
                         BLOCK_IGNISCRYSTAL,
                         BLOCK_JASPER
                 },
-                STORAGE_BLOCKS10 = new IIconContainer[]{
+                STORAGE_BLOCKS10 = new BlockIcons[]{
                         BLOCK_LAZURITE,
                         BLOCK_LIGNITE,
                         BLOCK_MONAZITE,
@@ -453,7 +460,7 @@ public class Textures {
                         BLOCK_TANZANITE,
                         BLOCK_TERRACRYSTAL
                 },
-                STORAGE_BLOCKS11 = new IIconContainer[]{
+                STORAGE_BLOCKS11 = new BlockIcons[]{
                         BLOCK_TOPAZ,
                         BLOCK_VINTEUM,
                         BLOCK_YELLOWGARNET,
@@ -543,15 +550,19 @@ public class Textures {
         }
 
         protected TextureAtlasSprite mIcon;
+        protected EnumMap<EnumFacing, ImmutableList<BakedQuad>> mQuadData = new EnumMap<>(EnumFacing.class);
 
         BlockIcons() {
-            GregTech_API.sGTBlockIconload.add(this);
+            GregTech_API.sGTBlockIconload.add(this::run);
+            GregTech_API.sAfterGTIconload.add(this::afterRun);
         }
 
         @Override
         public TextureAtlasSprite getIcon() {
             return mIcon;
         }
+
+
 
         @Override
         public TextureAtlasSprite getOverlayIcon() {
@@ -561,6 +572,19 @@ public class Textures {
         @Override
         public void run() {
             mIcon = GregTech_API.sBlockIcons.registerSprite(new ResourceLocation(RES_PATH_BLOCK + "iconsets/" + this));
+        }
+
+        public void afterRun() {
+            for(EnumFacing facing : EnumFacing.VALUES) {
+                ImmutableList<BakedQuad> bakedQuads = ImmutableList.of(
+                        RenderUtil.renderSide(mIcon, facing, 0.0f, 0xffffff));
+                mQuadData.put(facing, bakedQuads);
+            }
+        }
+
+        @Override
+        public ImmutableList<BakedQuad> getQuads(EnumFacing side) {
+            return mQuadData.get(side);
         }
 
         public static class CustomIcon implements IIconContainer, Runnable {

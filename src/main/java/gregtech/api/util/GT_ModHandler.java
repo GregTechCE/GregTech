@@ -1390,7 +1390,9 @@ public class GT_ModHandler {
                         ItemStack[] tList = (ItemStack[]) tEntry.output.items.toArray();
                         if (tList.length == 0) break;
                         ItemStack[] rList = new ItemStack[aOutputSlots.length];
-                        rRecipeMetaData.setTag("return", tEntry.output.metadata);
+                        if(tEntry.output.metadata != null) {
+                            rRecipeMetaData.setTag("return", tEntry.output.metadata);
+                        }
                         for (byte i = 0; i < aOutputSlots.length && i < tList.length; i++) {
                             if (tList[i] != null) {
                                 if (aOutputSlots[i] == null || (GT_Utility.areStacksEqual(tList[i], aOutputSlots[i]) && tList[i].stackSize + aOutputSlots[i].stackSize <= aOutputSlots[i].getMaxStackSize())) {

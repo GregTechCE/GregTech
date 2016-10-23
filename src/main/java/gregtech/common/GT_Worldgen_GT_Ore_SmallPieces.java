@@ -46,9 +46,7 @@ public class GT_Worldgen_GT_Ore_SmallPieces
             int i = 0;
             for (int j = Math.max(1, this.mAmount / 2 + aRandom.nextInt(this.mAmount) / 2); i < j; i++) {
                 BlockPos blockPos = new BlockPos(aChunkX + aRandom.nextInt(16), this.mMinY + aRandom.nextInt(Math.max(1, this.mMaxY - this.mMinY)), aChunkZ + aRandom.nextInt(16));
-                if(isGenerationAllowed(aWorld, blockPos)) {
-                    GT_TileEntity_Ores.setOreBlock(aWorld, blockPos, this.mMeta, true);
-                }
+                GT_TileEntity_Ores.setOreBlock(aWorld, blockPos, this.mMeta, true);
             }
         }
         return true;
