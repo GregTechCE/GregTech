@@ -45,7 +45,6 @@ import java.util.List;
 
 public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements ITileEntityProvider, IBlockIconProvider, IIconRegister {
 
-    @SideOnly(Side.CLIENT)
     protected TIntObjectMap<IIconData> mGeneratedIconData = new TIntObjectHashMap<>();
 
     protected GT_Block_Ores_Abstract(String aUnlocalizedName, Material aMaterial) {
@@ -159,11 +158,13 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
 
 
     @Override
+    @SideOnly(Side.CLIENT)
     public ImmutableList<BakedQuad> getIcon(EnumFacing aSide, int aDamage) {
         return null;
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public ImmutableList<BakedQuad> getIcon(IBlockAccess world, BlockPos pos, EnumFacing aSide, int metadata) {
         try {
             GT_TileEntity_Ores tileEntity_ores = (GT_TileEntity_Ores) world.getTileEntity(pos);
@@ -180,6 +181,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public ImmutableList<BakedQuad> getIcon(EntityPlayer player, ItemStack itemStack, EnumFacing aSide) {
         IIconData iconData = mGeneratedIconData.get(itemStack.getItemDamage());
         if(iconData == null) {
@@ -189,6 +191,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerIcons(IconDataGetter quadGetter) {
         System.out.println("Starting ore texture generation");
         for(int i = 1; i < GregTech_API.sGeneratedMaterials.length; i++) {

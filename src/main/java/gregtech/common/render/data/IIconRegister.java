@@ -22,6 +22,7 @@ public interface IIconRegister {
     }
 
     @Deprecated //TODO split to item register and block register
+    @SideOnly(Side.CLIENT)
     default void registerIcons(TextureMap textureMap) {}
 
 }
