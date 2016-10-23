@@ -2195,6 +2195,63 @@ if(Loader.isModLoaded("Railcraft")){
         		GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NiobiumTitanium, 8L)}, new FluidStack[]{
         		Materials.SolderingAlloy.getMolten(2304)},
         		ItemList.Field_Generator_UV.get(1, new Object[]{}), 600, 100000);
+        
+//        Quantumsuite
+        GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("quantumHelmet", 1L));
+        GT_Values.RA.addAssemblylineRecipe(GT_ModHandler.getIC2Item("nanoHelmet", 1L), 144000, new ItemStack[]{
+        		GT_ModHandler.getIC2Item("nanoHelmet", 1L),
+            	GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+            	GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 4),
+            	ItemList.Energy_LapotronicOrb.get(1, new Object[]{}),
+            	ItemList.Sensor_IV.get(1, new Object[]{}),
+            	ItemList.Field_Generator_EV.get(1, new Object[]{}),
+            	GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Tungsten, 4)
+            	}, new FluidStack[]{
+            	Materials.SolderingAlloy.getMolten(2304),
+            	Materials.Titanium.getMolten(1440)
+            	}, GT_ModHandler.getIC2Item("quantumHelmet", 1L), 1500, 4096);            
+            
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("quantumBodyarmor", 1L));
+            GT_Values.RA.addAssemblylineRecipe(GT_ModHandler.getIC2Item("nanoBodyarmor", 1L), 144000, new ItemStack[]{
+            		GT_ModHandler.getIC2Item("nanoBodyarmor", 1L),
+                	GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                	GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 6),
+                	ItemList.Energy_LapotronicOrb.get(1, new Object[]{}),
+                	ItemList.Field_Generator_HV.get(2, new Object[]{}),
+                	ItemList.Electric_Motor_IV.get(2, new Object[]{}),
+                	GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Tungsten, 4)
+                	}, new FluidStack[]{
+                	Materials.SolderingAlloy.getMolten(2304),
+                	Materials.Titanium.getMolten(1440)
+                	}, GT_ModHandler.getIC2Item("quantumBodyarmor", 1L), 1500, 4096);   
+            
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("quantumLeggings", 1L));
+            GT_Values.RA.addAssemblylineRecipe(GT_ModHandler.getIC2Item("nanoLeggings", 1L), 144000, new ItemStack[]{
+            		GT_ModHandler.getIC2Item("nanoLeggings", 1L),
+                	GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                	GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 6),
+                	ItemList.Energy_LapotronicOrb.get(1, new Object[]{}),
+                	ItemList.Field_Generator_HV.get(2, new Object[]{}),
+                	ItemList.Electric_Motor_IV.get(4, new Object[]{}),
+                	GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Tungsten, 4)
+                	}, new FluidStack[]{
+                	Materials.SolderingAlloy.getMolten(2304),
+                	Materials.Titanium.getMolten(1440)
+                	}, GT_ModHandler.getIC2Item("quantumLeggings", 1L), 1500, 4096);   
+            
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("quantumBoots", 1L));
+            GT_Values.RA.addAssemblylineRecipe(GT_ModHandler.getIC2Item("nanoBoots", 1L), 144000, new ItemStack[]{
+            		GT_ModHandler.getIC2Item("nanoBoots", 1L),
+                	GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                	GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 4),
+                	ItemList.Energy_LapotronicOrb.get(1, new Object[]{}),
+                	ItemList.Field_Generator_HV.get(1, new Object[]{}),
+                	ItemList.Electric_Piston_IV.get(2, new Object[]{}),
+                	GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Tungsten, 4)
+                	}, new FluidStack[]{
+                	Materials.SolderingAlloy.getMolten(2304),
+                	Materials.Titanium.getMolten(1440)
+                	}, GT_ModHandler.getIC2Item("quantumBoots", 1L), 1500, 4096);   
 
 	}
 	
