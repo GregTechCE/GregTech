@@ -238,7 +238,7 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
     
     public void onBlockDestroyedByExplosion(World world, int x, int y, int z, Explosion explosion)
     {
-    	if(world.getBlockMetadata(x, y, z)==5){
+    	if(!world.isRemote && world.getBlockMetadata(x, y, z)==5){
     	EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(world, x, y, z, explosion.getExplosivePlacedBy());
       entitytntprimed.fuse = (world.rand.nextInt(entitytntprimed.fuse / 4) + entitytntprimed.fuse / 8);
       world.spawnEntityInWorld(entitytntprimed);}
