@@ -147,7 +147,7 @@ public class GT_TileEntity_Ores extends TileEntity {
         Materials aMaterial = GregTech_API.sGeneratedMaterials[(aMetaData % 1000)];
         if(aMaterial != null) {
             boolean gravelAlike = aBlock.isGravelAlike(aMetaData);
-            int toolQuality = Math.max(7, aMaterial.mToolQuality);
+            int toolQuality = Math.min(7, aMaterial.mToolQuality);
             return gravelAlike ? 8 + toolQuality : toolQuality;
         }
         return 0;
