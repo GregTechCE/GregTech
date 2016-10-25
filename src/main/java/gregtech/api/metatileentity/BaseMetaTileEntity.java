@@ -12,6 +12,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachin
 import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.*;
+import gregtech.common.GT_Pollution;
 import ic2.api.Direction;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
@@ -25,6 +26,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -1118,6 +1120,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     }
                 }
             }
+            GT_Pollution.addPollution(new ChunkPosition(getXCoord(), getYCoord(), getZCoord()), 100000);
             mMetaTileEntity.doExplosion(aAmount);
         }
     }

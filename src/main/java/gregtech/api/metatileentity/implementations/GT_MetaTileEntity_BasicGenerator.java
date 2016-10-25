@@ -210,7 +210,7 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
             }
             if(tProducedEU>0&&getPollution()>0){            	
             	GT_Pollution.addPollution(new ChunkPosition(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()), 
-            			(int) ((tProducedEU * getPollution()/500)+1));                
+            			(int) ((tProducedEU * getPollution()/(500*mTier))+1));                
             }
         }
 

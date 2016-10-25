@@ -209,7 +209,7 @@ public class GT_MetaTileEntity_BronzeBlastFurnace
                 }
             }
             if(this.mMaxProgresstime>0 && (aTimer % 20L == 0L)){
-            	GT_Pollution.addPollution(new ChunkPosition(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()), 200);
+            	GT_Pollution.addPollution(new ChunkPosition(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()), 50);
             }
             
             aBaseMetaTileEntity.setActive((this.mMaxProgresstime > 0) && (this.mMachine));

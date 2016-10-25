@@ -120,7 +120,7 @@ public class GT_MetaTileEntity_Boiler_Lava
             }
 
             if(this.mProcessingEnergy>0 && (aTick % 20L == 0L)){
-            	GT_Pollution.addPollution(new ChunkPosition(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()), 30);
+            	GT_Pollution.addPollution(new ChunkPosition(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()), 20);
             }
             aBaseMetaTileEntity.setActive(this.mProcessingEnergy > 0);
         }
