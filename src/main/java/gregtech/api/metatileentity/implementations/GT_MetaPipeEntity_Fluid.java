@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.implementations;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -203,7 +204,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
                                     continue;
                                 }
                             }
-                        }
+                        }   
                         FluidTankInfo[] tInfo = tTileEntity.getTankInfo(ForgeDirection.getOrientation(tSide).getOpposite());
                         if (tInfo != null && tInfo.length > 0) {
                             if (tTileEntity instanceof ICoverable && ((ICoverable) tTileEntity).getCoverBehaviorAtSide(GT_Utility.getOppositeSide(tSide)).alwaysLookConnected(GT_Utility.getOppositeSide(tSide), ((ICoverable) tTileEntity).getCoverIDAtSide(GT_Utility.getOppositeSide(tSide)), ((ICoverable) tTileEntity).getCoverDataAtSide(GT_Utility.getOppositeSide(tSide)), ((ICoverable) tTileEntity))) {
@@ -217,9 +218,22 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
                                 if (((1 << tSide) & mLastReceivedFrom) == 0)
                                     tTanks.put(tTileEntity, ForgeDirection.getOrientation(tSide).getOpposite());
                             }
+
                             if (aBaseMetaTileEntity.getCoverBehaviorAtSide(tSide).alwaysLookConnected(tSide, aBaseMetaTileEntity.getCoverIDAtSide(tSide), aBaseMetaTileEntity.getCoverDataAtSide(tSide), aBaseMetaTileEntity)) {
                                 mConnections |= (1 << tSide);
                             }
+                        }else if(tInfo != null && tInfo.length == 0){  
+                        	IGregTechTileEntity tSideTile = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(tSide);
+                            if(tSideTile!=null){
+                            	ItemStack tCover = tSideTile.getCoverItemAtSide(GT_Utility.getOppositeSide(tSide));
+                            	if (tCover!=null &&(GT_Utility.areStacksEqual(tCover, ItemList.FluidRegulator_LV.get(1, new Object[]{},true)) || 
+                            			GT_Utility.areStacksEqual(tCover, ItemList.FluidRegulator_MV.get(1, new Object[]{},true)) || 
+                            			GT_Utility.areStacksEqual(tCover, ItemList.FluidRegulator_HV.get(1, new Object[]{},true)) || 
+                            			GT_Utility.areStacksEqual(tCover, ItemList.FluidRegulator_EV.get(1, new Object[]{},true)) || 
+                            			GT_Utility.areStacksEqual(tCover, ItemList.FluidRegulator_IV.get(1, new Object[]{},true)))) {
+                            		mConnections |= (1 << tSide);
+                            	}
+                            }                        	
                         }
                     }
                 }
