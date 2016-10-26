@@ -22,6 +22,7 @@ import java.util.ArrayList;
 public abstract class GT_MetaTileEntity_LargeBoiler
         extends GT_MetaTileEntity_MultiBlockBase {
     private boolean firstRun = true;
+    private int mSuperEfficencyIncrease = 0;
 
     public GT_MetaTileEntity_LargeBoiler(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -87,6 +88,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
     }
 
     public boolean checkRecipe(ItemStack aStack) {
+        this.mSuperEfficencyIncrease=0;
         for (GT_Recipe tRecipe : GT_Recipe.GT_Recipe_Map.sDieselFuels.mRecipeList) {
             FluidStack tFluid = GT_Utility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
             if ((tFluid != null) && (tRecipe.mSpecialValue > 1)) {
@@ -120,6 +122,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
                     this.mOutputItems = new ItemStack[]{GT_Utility.getContainerItem(tInput, true)};
                     tInput.stackSize -= 1;
                     updateSlots();
+                    if(this.mEfficiencyIncrease>5000){ this.mEfficiencyIncrease=0;this.mSuperEfficencyIncrease=20;}
                     return true;
                 }
             }
@@ -133,6 +136,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
 
     public boolean onRunningTick(ItemStack aStack) {
         if (this.mEUt > 0) {
+        	if(this.mSuperEfficencyIncrease>0)this.mEfficiency = Math.min(10000, this.mEfficiency + this.mSuperEfficencyIncrease);
             int tGeneratedEU = (int) (this.mEUt * 2L * this.mEfficiency / 10000L);
             if (tGeneratedEU > 0) {
                 long amount = (tGeneratedEU + 160) / 160;
