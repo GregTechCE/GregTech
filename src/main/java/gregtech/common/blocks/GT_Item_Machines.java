@@ -45,8 +45,14 @@ public class GT_Item_Machines
                     int i = 0;
                     for (String tDescription : tTileEntity.getDescription()) {
                         if (GT_Utility.isStringValid(tDescription)) {
-                            aList.add(GT_LanguageManager.addStringLocalization("TileEntity_DESCRIPTION_" + tDamage + "_Index_" + i++, tDescription, !GregTech_API.sPostloadFinished ));
-                        }
+                        	if(tDescription.contains("%%%")){
+                        		String[] tString = tDescription.split("%%%");
+                        		if(tString.length>=2){
+                                    aList.add(GT_LanguageManager.addStringLocalization("TileEntity_DESCRIPTION_" + tDamage + "_Index_" + i++, tString[0], !GregTech_API.sPostloadFinished )+" "+tString[1]);
+                        		}
+                        	}else{String tTranslated = GT_LanguageManager.addStringLocalization("TileEntity_DESCRIPTION_" + tDamage + "_Index_" + i++, tDescription, !GregTech_API.sPostloadFinished );
+                            aList.add(tTranslated.equals("") ? tDescription : tTranslated);}
+                        }else i++;
                     }
                 }
                 if (tTileEntity.getEUCapacity() > 0L) {

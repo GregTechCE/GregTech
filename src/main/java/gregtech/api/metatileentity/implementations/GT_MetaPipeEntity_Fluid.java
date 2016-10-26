@@ -379,8 +379,8 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
     @Override
     public String[] getDescription() {
         return new String[]{
-                EnumChatFormatting.BLUE + "Fluid Capacity: " + (mCapacity * 20) + "L/sec" + EnumChatFormatting.GRAY,
-                EnumChatFormatting.RED + "Heat Limit: " + mHeatResistance + " K" + EnumChatFormatting.GRAY
+                EnumChatFormatting.BLUE + "Fluid Capacity: %%%" + (mCapacity * 20) + "L/sec" + EnumChatFormatting.GRAY,
+                EnumChatFormatting.RED + "Heat Limit: %%%" + mHeatResistance + " K" + EnumChatFormatting.GRAY
         };
     }
 
