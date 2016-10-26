@@ -14,8 +14,9 @@ import java.util.Map.Entry;
 import static gregtech.api.enums.GT_Values.E;
 
 public class GT_LanguageManager {
-    public static final HashMap<String, String> TEMPMAP = new HashMap<String, String>(), BUFFERMAP = new HashMap<String, String>();
+    public static final HashMap<String, String> TEMPMAP = new HashMap<String, String>(), BUFFERMAP = new HashMap<String, String>(), LANGMAP = new HashMap<String, String>();
     public static Configuration sEnglishFile;
+    public static boolean sUseEnglishFile = false;
 
     public static String addStringLocalization(String aKey, String aEnglish) {
         return addStringLocalization(aKey, aEnglish, true);
@@ -23,10 +24,17 @@ public class GT_LanguageManager {
 
     public static String addStringLocalization(String aKey, String aEnglish, boolean aWriteIntoLangFile) {
         if (aKey == null) return E;
-        if (aWriteIntoLangFile) aEnglish = writeToLangFile(aKey, aEnglish);
+        if (aWriteIntoLangFile){ aEnglish = writeToLangFile(aKey, aEnglish);
+        if(!LANGMAP.containsKey(aKey)){
+        	LANGMAP.put(aKey, aEnglish);
+        	}
+        }
         TEMPMAP.put(aKey.trim(), aEnglish);
         LanguageRegistry.instance().injectLanguage("en_US", TEMPMAP);
         TEMPMAP.clear();
+        if(sUseEnglishFile && !aWriteIntoLangFile && LANGMAP.containsKey(aKey)){
+        	aEnglish = LANGMAP.get(aKey);
+        }
         return aEnglish;
     }
 
@@ -44,8 +52,10 @@ public class GT_LanguageManager {
             }
             Property tProperty = sEnglishFile.get("LanguageFile", aKey.trim(), aEnglish);
             if (!tProperty.wasRead() && GregTech_API.sPostloadFinished) sEnglishFile.save();
-            if (sEnglishFile.get("EnableLangFile", "UseThisFileAsLanguageFile", false).getBoolean(false))
+            if (sEnglishFile.get("EnableLangFile", "UseThisFileAsLanguageFile", false).getBoolean(false)){
                 aEnglish = tProperty.getString();
+                sUseEnglishFile = true;
+            }
         }
         return aEnglish;
     }
