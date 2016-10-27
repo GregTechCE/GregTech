@@ -206,7 +206,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
                     for (GT_MetaTileEntity_Hatch_Maintenance tHatch : mMaintenanceHatches) {
                         if (isValidMetaTileEntity(tHatch)) {
                             if (!this.disableMaintenance) {
-                            	tHatch.setController((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity);
+                            	if(tHatch.mAuto && (!mWrench||!mScrewdriver||!mSoftHammer||!mHardHammer||!mSolderingTool||!mCrowbar))tHatch.autoMaintainance();
                                 if (tHatch.mWrench) mWrench = true;
                                 if (tHatch.mScrewdriver) mScrewdriver = true;
                                 if (tHatch.mSoftHammer) mSoftHammer = true;
@@ -714,8 +714,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity).setController((GT_MetaTileEntity_MultiBlockBase) aTileEntity);
             return mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
         }
         return false;

@@ -30,7 +30,6 @@ import scala.actors.threadpool.Arrays;
 
 public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch {
     public boolean mWrench = false, mScrewdriver = false, mSoftHammer = false, mHardHammer = false, mSolderingTool = false, mCrowbar = false, mAuto;
-    public GT_MetaTileEntity_MultiBlockBase mController = null;
 
     public GT_MetaTileEntity_Hatch_Maintenance(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 1, "For maintaining Multiblocks");
@@ -113,10 +112,7 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
         return new GT_GUIContainer_MaintenanceHatch(aPlayerInventory, aBaseMetaTileEntity);
     }
     
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        if (aBaseMetaTileEntity.isServerSide() && aTimer % 100 == 0 && mController != null) {
-        	if(!mController.mCrowbar || !mController.mHardHammer || !mController.mScrewdriver || !mController.mSoftHammer || !mController.mSolderingTool || !mController.mWrench){
+    public boolean autoMaintainance() {
         		boolean tSuccess = true;
         		ItemStack[] mInputs = new ItemStack[]{ItemList.Duct_Tape.get(4, new Object[]{}),GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Lubricant, 2),GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 4),GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 2)};
         		List<ItemStack> aInputs = Arrays.asList(mInventory);
@@ -161,11 +157,10 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
                 this.mScrewdriver = true;
                 this.mSoftHammer = true;
                 this.mSolderingTool = true;
-                this.mWrench = true;                
+                this.mWrench = true;  
+                return true;
                 }
-        	}
-        }
-        super.onPostTick(aBaseMetaTileEntity, aTimer);
+                return false;
     }
 
     public void onToolClick(ItemStack aStack, EntityLivingBase aPlayer) {
@@ -200,9 +195,5 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return false;
-    }
-    
-    public void setController(GT_MetaTileEntity_MultiBlockBase aController){
-    	mController = aController;
     }
 }
