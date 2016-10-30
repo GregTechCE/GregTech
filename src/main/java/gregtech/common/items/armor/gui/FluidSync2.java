@@ -1,6 +1,7 @@
-package gregtech.common.items.armor;
+package gregtech.common.items.armor.gui;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
@@ -12,34 +13,28 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 
-public class FluidSync /**implements IPacket**/ {
+public class FluidSync2 /**implements IPacket**/ {
 	String playerName;
-	int amount;
-	String fluid;
 
 //	@Override
 	public byte getPacketID() {
-		return 0;
+		return 1;
 	}
 
-	public FluidSync(String player, int amount, String fluid) {
+	public FluidSync2(String player) {
 		this.playerName = player;
-		this.amount = amount;
-		this.fluid = fluid.toLowerCase();
 	}
 
 //	@Override
 	public ByteArrayDataOutput encode() {
 		ByteArrayDataOutput rOut = ByteStreams.newDataOutput(4);
-		rOut.writeUTF(playerName + ";" + amount + ";" + fluid);
+		rOut.writeUTF(playerName);
 		return rOut;
 	}
 
 //	@Override
 //	public IPacket decode(ByteArrayDataInput aData) {
-//		String tmp = aData.readUTF();
-//		String[] tmp2 = tmp.split(";");
-//		return new FluidSync(tmp2[0], Integer.parseInt(tmp2[1]), tmp2[2].toLowerCase());
+//		return new FluidSync2(aData.readUTF());
 //	}
 //
 //	@Override
@@ -50,12 +45,17 @@ public class FluidSync /**implements IPacket**/ {
 //			tmp = worlds[i].getPlayerEntityByName(playerName);
 //			if (tmp != null) {
 //				try {
-//					if (fluid.equals("null")) {
-//						tmp.openContainer.getSlot(12).putStack(null);
-//					} else {
-//						tmp.openContainer.getSlot(12).putStack(UT.Fluids.display(new FluidStack(FluidRegistry.getFluid(fluid), amount), true));
-//					}
-//					tmp.openContainer.detectAndSendChanges();
+//						ItemStack tmp2 = tmp.inventory.getItemStack();
+//						ItemStack tmp3 = UT.Fluids.getContainerForFilledItem(tmp2, true);
+//						if (tmp2.stackSize <= 1) {
+//							tmp2 = null;
+//						} else {
+//							tmp2.stackSize--;
+//						}
+//						tmp.inventory.setItemStack(tmp2);
+//						if(tmp3!=null){
+//						tmp3.stackSize=1;	
+//						tmp.inventory.addItemStackToInventory(tmp3);}
 //				} catch (Exception e) {
 //					e.printStackTrace();
 //				}

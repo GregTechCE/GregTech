@@ -1,6 +1,8 @@
-package gregtech.common.items.armor;
+package gregtech.common.items.armor.gui;
 
 import gregtech.api.util.GT_Utility;
+import gregtech.common.items.armor.ArmorData;
+import gregtech.common.items.armor.ModularArmor_Item;
 
 import java.util.Random;
 

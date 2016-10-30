@@ -1,7 +1,8 @@
-package gregtech.common.items.armor;
+package gregtech.common.items.armor.gui;
 
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.items.armor.components.StatType;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -97,42 +98,42 @@ public class GuiElectricArmor1 extends GuiContainer {
 			break;
 		}
 		
-		if(cont.mInvArmor.data.tankCap>0){
+		if(cont.mInvArmor.data.mStat.get(StatType.TANKCAP)>0){
 			drawTexturedModalRect(xStart + 94, yStart + 32, 231, 69, 16, 34);
 		}
 		
-		int bar = (int) Math.floor(18 * (cont.mInvArmor.data.weight/(float)1000));
+		int bar = (int) Math.floor(18 * (cont.mInvArmor.data.mStat.get(StatType.WEIGHT)/(float)1000));
 		drawTexturedModalRect(xStart + 15, yStart + 7, 217, 26, bar, 5);
 		drawTexturedModalRect(xStart + bar + 15, yStart + 7, 197+bar, 26, 18-bar, 5);
 		
 		if(tab==0){
 			//processing power bar
-			bar = Math.min((int) Math.floor(52 * ((float)cont.mInvArmor.data.processingPowerUsed/(float)cont.mInvArmor.data.processingPower)),52);
+			bar = Math.min((int) Math.floor(52 * ((float)cont.mInvArmor.data.mStat.get(StatType.PROCESSINGPOWERUSED)/(float)cont.mInvArmor.data.mStat.get(StatType.PROCESSINGPOWER))),52);
 			drawTexturedModalRect(xStart + 17, yStart + 17, 177, 146, bar, 5);
 			drawTexturedModalRect(xStart + bar + 17, yStart + 17, 177+bar, 139, 52-bar, 5);
 		}else if(tab==1){
 			
 		}else{
 			//Def tab values
-			if(cont.mInvArmor.data.physicalDef>0)drawTexturedModalRect(xStart + 30, yStart + 20, 186, 33, 7, 7);
-			drawBars(31, 20, cont.mInvArmor.data.physicalDef);
-			if(cont.mInvArmor.data.projectileDef>0)drawTexturedModalRect(xStart + 30, yStart + 29, 186, 42, 7, 7);
-			drawBars(31, 29, cont.mInvArmor.data.projectileDef);
-			if(cont.mInvArmor.data.fireDef>0)drawTexturedModalRect(xStart + 30, yStart + 38, 186, 51, 7, 7);
-			drawBars(31, 38, cont.mInvArmor.data.fireDef);
-			if(cont.mInvArmor.data.magicDef>0)drawTexturedModalRect(xStart + 30, yStart + 47, 186, 60, 7, 7);
-			drawBars(31, 47, cont.mInvArmor.data.magicDef);
-			if(cont.mInvArmor.data.explosionDef>0)drawTexturedModalRect(xStart + 30, yStart + 56, 186, 69, 7, 7);
-			drawBars(31, 56, cont.mInvArmor.data.explosionDef);
-			if(cont.mInvArmor.data.radiationDef>0)drawTexturedModalRect(xStart + 61, yStart + 20, 186, 87, 7, 7);
-			drawBars(62, 20, cont.mInvArmor.data.radiationDef);
-			if(cont.mInvArmor.data.electricDef>0)drawTexturedModalRect(xStart + 61, yStart + 29, 186, 96, 7, 7);
-			drawBars(62, 29, cont.mInvArmor.data.electricDef);
-			if(cont.mInvArmor.data.witherDef>0)drawTexturedModalRect(xStart + 61, yStart + 38, 186, 105, 7, 7);
-			drawBars(62, 38, cont.mInvArmor.data.witherDef);
-			if(cont.mInvArmor.data.fallDef>0)drawTexturedModalRect(xStart + 61, yStart + 47, 186, 114, 7, 7);
-			if(cont.mInvArmor.data.thorns>0)drawTexturedModalRect(xStart + 61, yStart + 56, 186, 123, 7, 7);
-			if(cont.mInvArmor.data.magnet>0)drawTexturedModalRect(xStart + 70, yStart + 56, 186, 78, 7, 7);
+			if(cont.mInvArmor.data.mStat.get(StatType.PHYSICALDEFENCE)>0)drawTexturedModalRect(xStart + 30, yStart + 20, 186, 33, 7, 7);
+			drawBars(31, 20, cont.mInvArmor.data.mStat.get(StatType.PHYSICALDEFENCE));
+			if(cont.mInvArmor.data.mStat.get(StatType.PROJECTILEDEFENCE)>0)drawTexturedModalRect(xStart + 30, yStart + 29, 186, 42, 7, 7);
+			drawBars(31, 29, cont.mInvArmor.data.mStat.get(StatType.PROJECTILEDEFENCE));
+			if(cont.mInvArmor.data.mStat.get(StatType.FIREDEFENCE)>0)drawTexturedModalRect(xStart + 30, yStart + 38, 186, 51, 7, 7);
+			drawBars(31, 38, cont.mInvArmor.data.mStat.get(StatType.FIREDEFENCE));
+			if(cont.mInvArmor.data.mStat.get(StatType.MAGICDEFENCE)>0)drawTexturedModalRect(xStart + 30, yStart + 47, 186, 60, 7, 7);
+			drawBars(31, 47, cont.mInvArmor.data.mStat.get(StatType.MAGICDEFENCE));
+			if(cont.mInvArmor.data.mStat.get(StatType.EXPLOSIONDEFENCE)>0)drawTexturedModalRect(xStart + 30, yStart + 56, 186, 69, 7, 7);
+			drawBars(31, 56, cont.mInvArmor.data.mStat.get(StatType.EXPLOSIONDEFENCE));
+			if(cont.mInvArmor.data.mStat.get(StatType.RADIATIONDEFENCE)>0)drawTexturedModalRect(xStart + 61, yStart + 20, 186, 87, 7, 7);
+			drawBars(62, 20, cont.mInvArmor.data.mStat.get(StatType.RADIATIONDEFENCE));
+			if(cont.mInvArmor.data.mStat.get(StatType.ELECTRICALDEFENCE)>0)drawTexturedModalRect(xStart + 61, yStart + 29, 186, 96, 7, 7);
+			drawBars(62, 29, cont.mInvArmor.data.mStat.get(StatType.ELECTRICALDEFENCE));
+			if(cont.mInvArmor.data.mStat.get(StatType.WITHERDEFENCE)>0)drawTexturedModalRect(xStart + 61, yStart + 38, 186, 105, 7, 7);
+			drawBars(62, 38, cont.mInvArmor.data.mStat.get(StatType.WITHERDEFENCE));
+			if(cont.mInvArmor.data.mStat.get(StatType.FALLDEFENCE)>0)drawTexturedModalRect(xStart + 61, yStart + 47, 186, 114, 7, 7);
+			if(cont.mInvArmor.data.mStat.get(StatType.THORNS)>0)drawTexturedModalRect(xStart + 61, yStart + 56, 186, 123, 7, 7);
+			if(cont.mInvArmor.data.mStat.get(StatType.MAGNET)>0)drawTexturedModalRect(xStart + 70, yStart + 56, 186, 78, 7, 7);
 		}
 		
 		
@@ -208,9 +209,9 @@ public class GuiElectricArmor1 extends GuiContainer {
 		List<String> list = new ArrayList<String>();
 		//General tooltips
 		if(x>=7&&y>=11&&x<=33&&y<=17){
-				list.add(GT_LanguageManager.getTranslation("weight") + ": " + cont.mInvArmor.data.weight);
+				list.add(GT_LanguageManager.getTranslation("Weight") + ": " + cont.mInvArmor.data.mStat.get(StatType.WEIGHT));
 				list.add("Total Weight: "+cont.mInvArmor.data.maxWeight);
-				if (cont.mInvArmor.data.weight > 1000)
+				if (cont.mInvArmor.data.mStat.get(StatType.WEIGHT) > 1000)
 					list.add("Too Heavy!");
 		}
 		if(x>=56&&y>=11&&x<=112&&y<=17){
@@ -232,50 +233,50 @@ public class GuiElectricArmor1 extends GuiContainer {
 			}
 		}
 		if(tab==0){
-			if(x>=93&&y>=36&&x<=110&&y<=71){list.add("Tank Capacity: "+cont.mInvArmor.data.tankCap+"L");
+			if(x>=93&&y>=36&&x<=110&&y<=71){list.add("Tank Capacity: "+cont.mInvArmor.data.mStat.get(StatType.TANKCAP)+"L");
 			}
-			if(x>=7&&y>=22&&x<=70&&y<=28){list.add("Processing Power Provided: "+cont.mInvArmor.data.processingPower);
-										  list.add("Processing Power Used: "+cont.mInvArmor.data.processingPowerUsed);
+			if(x>=7&&y>=22&&x<=70&&y<=28){list.add("Processing Power Provided: "+cont.mInvArmor.data.mStat.get(StatType.PROCESSINGPOWER));
+										  list.add("Processing Power Used: "+cont.mInvArmor.data.mStat.get(StatType.PROCESSINGPOWERUSED));
 			}
 		}else if(tab==1){
 			
 		}else{
 					if (x >= 28 && x <= 58) {
 			if (y >= 25 && y <= 32) {
-				list.add(GT_LanguageManager.getTranslation("phydef") + ": " + (Math.round(cont.mInvArmor.data.physicalDef * 1000) / 10.0) + "%");
+				list.add(GT_LanguageManager.getTranslation("Physical Defence") + ": " + (Math.round(cont.mInvArmor.data.mStat.get(StatType.PHYSICALDEFENCE) * 1000) / 10.0) + "%");
 			} else if (y >= 33 && y <= 41) {
-				list.add(GT_LanguageManager.getTranslation("prodef") + ": " + (Math.round(cont.mInvArmor.data.projectileDef * 1000) / 10.0) + "%");
+				list.add(GT_LanguageManager.getTranslation("Projectile Defence") + ": " + (Math.round(cont.mInvArmor.data.mStat.get(StatType.PROJECTILEDEFENCE) * 1000) / 10.0) + "%");
 			} else if (y >= 42 && y <= 50) {
-				list.add(GT_LanguageManager.getTranslation("firedef") + ": " + (Math.round(cont.mInvArmor.data.fireDef * 1000) / 10.0) + "%");
+				list.add(GT_LanguageManager.getTranslation("Fire Defence") + ": " + (Math.round(cont.mInvArmor.data.mStat.get(StatType.FIREDEFENCE) * 1000) / 10.0) + "%");
 			} else if (y >= 51 && y <= 59) {
-				list.add(GT_LanguageManager.getTranslation("magdef") + ": " + (Math.round(cont.mInvArmor.data.magicDef * 1000) / 10.0) + "%");
+				list.add(GT_LanguageManager.getTranslation("Magical Defence") + ": " + (Math.round(cont.mInvArmor.data.mStat.get(StatType.MAGICDEFENCE) * 1000) / 10.0) + "%");
 			} else if (y >= 60 && y <= 68) {
-				list.add(GT_LanguageManager.getTranslation("expdef") + ": " + (Math.round(cont.mInvArmor.data.explosionDef * 1000) / 10.0) + "%");
+				list.add(GT_LanguageManager.getTranslation("Explosion Defence") + ": " + (Math.round(cont.mInvArmor.data.mStat.get(StatType.EXPLOSIONDEFENCE) * 1000) / 10.0) + "%");
 			}
 		} else if (x >= 59 && x <= 90) {
 			if (y >= 25 && y <= 32) {
-				list.add(GT_LanguageManager.getTranslation("raddef") + ": " + (Math.round(cont.mInvArmor.data.radiationDef * 1000) / 10.0) + "%");
-				if(cont.mInvArmor.data.fullRadiationDef){
-				list.add("Radiation Immunity");}
+				list.add(GT_LanguageManager.getTranslation("Radiation Defence") + ": " + (Math.round(cont.mInvArmor.data.mStat.get(StatType.RADIATIONDEFENCE) * 1000) / 10.0) + "%");
+				if(cont.mInvArmor.data.mBStat.get(StatType.FULLRADIATIONARMOR)){
+				list.add(GT_LanguageManager.getTranslation("Radiation Immunity"));}
 			} else if (y >= 33 && y <= 41) {
-				list.add(GT_LanguageManager.getTranslation("eledef") + ": " + (Math.round(cont.mInvArmor.data.electricDef * 1000) / 10.0) + "%");
-				if(cont.mInvArmor.data.fullElectricDef){
-					list.add("Electric Immunity");}
+				list.add(GT_LanguageManager.getTranslation("Electrical Defence") + ": " + (Math.round(cont.mInvArmor.data.mStat.get(StatType.ELECTRICALDEFENCE) * 1000) / 10.0) + "%");
+				if(cont.mInvArmor.data.mBStat.get(StatType.FULLELECTRICARMOR)){
+					list.add(GT_LanguageManager.getTranslation("Electric Immunity"));}
 			} else if (y >= 42 && y <= 50) {
-				list.add(GT_LanguageManager.getTranslation("whidef") + ": " + (Math.round(cont.mInvArmor.data.witherDef * 1000) / 10.0) + "%");
+				list.add(GT_LanguageManager.getTranslation("Wither Defence") + ": " + (Math.round(cont.mInvArmor.data.mStat.get(StatType.WITHERDEFENCE) * 1000) / 10.0) + "%");
 			} else if (y >= 51 && y <= 59) {
 				if(cont.mInvArmor.data.type!=3){
-					list.add("Fall Damage absorbtion");
-					list.add("Only for Boots");
+					list.add(GT_LanguageManager.getTranslation("Fall Damage absorbtion"));
+					list.add(GT_LanguageManager.getTranslation("Only for Boots"));
 				}else{
-				list.add(GT_LanguageManager.getTranslation("abs1") + " " + (int) Math.round(cont.mInvArmor.data.fallDef) + GT_LanguageManager.getTranslation("abs2"));}
+				list.add(GT_LanguageManager.getTranslation("Absorbs") + " " + (int) Math.round(cont.mInvArmor.data.mStat.get(StatType.FALLDEFENCE)) + GT_LanguageManager.getTranslation("m of Fall Damage"));}
 			} else if (y >= 60 && y <= 68) {
 				if(x<69){
-				list.add(GT_LanguageManager.getTranslation("thorns") + ": " + (int) Math.round(cont.mInvArmor.data.thornsSingle) + " Dmg");
-				list.add("Total "+GT_LanguageManager.getTranslation("thorns") + ": " + (int) Math.round(cont.mInvArmor.data.thorns) + " Dmg");
+				list.add(GT_LanguageManager.getTranslation("Thorns") + ": " + (int) Math.round(cont.mInvArmor.data.mStat.get(StatType.THORNSSINGLE)) + " Dmg");
+				list.add(GT_LanguageManager.getTranslation("Total Thorns") + ": " + (int) Math.round(cont.mInvArmor.data.mStat.get(StatType.THORNS)) + " Dmg");
 				}else{
-				list.add(GT_LanguageManager.getTranslation("magnet") + ": " + cont.mInvArmor.data.magnetSingle + " m");
-				list.add("Total "+GT_LanguageManager.getTranslation("magnet") + ": " + cont.mInvArmor.data.magnet + " m");}
+				list.add(GT_LanguageManager.getTranslation("Magnet") + ": " + cont.mInvArmor.data.mStat.get(StatType.MAGNETSINGLE) + " m");
+				list.add(GT_LanguageManager.getTranslation("Total Magnet") + ": " + cont.mInvArmor.data.mStat.get(StatType.MAGNET) + " m");}
 			}
 		}
 		}

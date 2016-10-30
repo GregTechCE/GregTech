@@ -1,4 +1,4 @@
-package gregtech.common.items.armor;
+package gregtech.common.items.armor.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

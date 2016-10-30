@@ -37,7 +37,7 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
     }
     
     public GT_MetaTileEntity_Hatch_Maintenance(int aID, String aName, String aNameRegional, int aTier, boolean aAuto) {
-        super(aID, aName, aNameRegional, aTier, 4, "For automaticly maintaining Multiblocks");
+        super(aID, aName, aNameRegional, aTier, 4, "For automatically maintaining Multiblocks");
         mAuto = aAuto;
     }
 
@@ -48,7 +48,7 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
 
     @Override
     public String[] getDescription() {
-    	if(mAuto)return new String[]{mDescription, "Cannot be shared between Multiblocks!","4 Ducttape, 2 Lubricant Cells","4 Steel Screws, 2 Adv Circuits","For each autorepair"};
+    	if(mAuto)return new String[]{mDescription,"4 Ducttape, 2 Lubricant Cells","4 Steel Screws, 2 Adv Circuits","For each autorepair"};
         return new String[]{mDescription, "Cannot be shared between Multiblocks!"};
     }
 

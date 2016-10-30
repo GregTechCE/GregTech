@@ -21,6 +21,7 @@ import gregtech.common.GT_Proxy;
 import gregtech.common.GT_RecipeAdder;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
+import gregtech.common.items.armor.components.LoadArmorComponents;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import gregtech.loaders.load.GT_CoverBehaviorLoader;
 import gregtech.loaders.load.GT_FuelLoader;
@@ -537,6 +538,7 @@ public class GT_Mod implements IGT_Mod {
         new GT_CropLoader().run();
         new GT_Worldgenloader().run();
         new GT_CoverLoader().run();
+        LoadArmorComponents.init();
 
         GT_RecipeRegistrator.registerUsagesForMaterials(new ItemStack(Blocks.planks, 1), null, false);
         GT_RecipeRegistrator.registerUsagesForMaterials(new ItemStack(Blocks.cobblestone, 1), null, false);

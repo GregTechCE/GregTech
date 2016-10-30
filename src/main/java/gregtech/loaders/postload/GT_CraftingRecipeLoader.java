@@ -740,6 +740,21 @@ public class GT_CraftingRecipeLoader implements Runnable {
         if(Loader.isModLoaded("GraviSuite")){
         	GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, GT_Values.W));
         	GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, GT_Values.W), new Object[]{"CJC","CNC","WPW",'C',OrePrefixes.plateAlloy.get(Materials.Carbon),'J',GT_ModHandler.getModItem("GraviSuite", "advJetpack", 1, GT_Values.W),'N',GT_ModHandler.getIC2Item("nanoBodyarmor", 1L),'W',OrePrefixes.wireGt04.get(Materials.Platinum),'P',OrePrefixes.circuit.get(Materials.Elite)});
-        }
+        }        
+
+		long bits =  GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE;
+		GT_ModHandler.addCraftingRecipe(ItemList.ModularBasicHelmet.		getWildcard(1, new Object[0]),bits, new Object[] { "AAA", "B B", 'A', 			new ItemStack(Items.leather, 1, 32767), 'B', OrePrefixes.ring.get(Materials.AnyIron)} );
+		GT_ModHandler.addCraftingRecipe(ItemList.ModularBasicChestplate.	getWildcard(1, new Object[0]),bits, new Object[] { "A A", "BAB", "AAA", 'A', 	new ItemStack(Items.leather, 1, 32767), 'B', OrePrefixes.ring.get(Materials.AnyIron)} );
+		GT_ModHandler.addCraftingRecipe(ItemList.ModularBasicLeggings.		getWildcard(1, new Object[0]),bits, new Object[] { "BAB", "A A", "A A", 'A', 	new ItemStack(Items.leather, 1, 32767), 'B', OrePrefixes.ring.get(Materials.AnyIron)} );
+		GT_ModHandler.addCraftingRecipe(ItemList.ModularBasicBoots.			getWildcard(1, new Object[0]),bits, new Object[] { "A A", "B B", "A A", 'A', 	new ItemStack(Items.leather, 1, 32767), 'B', OrePrefixes.ring.get(Materials.AnyIron)} );
+		GT_ModHandler.addCraftingRecipe(ItemList.ModularElectric1Helmet.	getWildcard(1, new Object[0]),bits, new Object[] { "ACA", "B B", 'A', 			OrePrefixes.stick.get(Materials.Aluminium), 'B', OrePrefixes.plate.get(Materials.Steel), 'C', OrePrefixes.battery.get(Materials.Advanced)});
+		GT_ModHandler.addCraftingRecipe(ItemList.ModularElectric1Chestplate.getWildcard(1, new Object[0]),bits, new Object[] { "A A", "BCB", "AAA", 'A', 	OrePrefixes.stick.get(Materials.Aluminium), 'B', OrePrefixes.plate.get(Materials.Steel), 'C', OrePrefixes.battery.get(Materials.Advanced)});
+		GT_ModHandler.addCraftingRecipe(ItemList.ModularElectric1Leggings.	getWildcard(1, new Object[0]),bits, new Object[] { "BCB", "A A", "A A", 'A', 	OrePrefixes.stick.get(Materials.Aluminium), 'B', OrePrefixes.plate.get(Materials.Steel), 'C', OrePrefixes.battery.get(Materials.Advanced)});
+		GT_ModHandler.addCraftingRecipe(ItemList.ModularElectric1Boots.		getWildcard(1, new Object[0]),bits, new Object[] { "A A", "BCB", "A A", 'A', 	OrePrefixes.stick.get(Materials.Aluminium), 'B', OrePrefixes.plate.get(Materials.Steel), 'C', OrePrefixes.battery.get(Materials.Advanced)});
+		GT_ModHandler.addCraftingRecipe(ItemList.ModularElectric2Helmet.	getWildcard(1, new Object[0]),bits, new Object[] { "ACA", "B B", 'A', 			OrePrefixes.stick.get(Materials.TungstenSteel), 'B', OrePrefixes.plateAlloy.get(Materials.Carbon),'C',OrePrefixes.battery.get(Materials.Master)});
+		GT_ModHandler.addCraftingRecipe(ItemList.ModularElectric2Chestplate.getWildcard(1, new Object[0]),bits, new Object[] { "A A", "BCB", "AAA", 'A', 	OrePrefixes.stick.get(Materials.TungstenSteel), 'B', OrePrefixes.plateAlloy.get(Materials.Carbon),'C',OrePrefixes.battery.get(Materials.Master)});
+		GT_ModHandler.addCraftingRecipe(ItemList.ModularElectric2Leggings.	getWildcard(1, new Object[0]),bits, new Object[] { "BCB", "A A", "A A", 'A', 	OrePrefixes.stick.get(Materials.TungstenSteel), 'B', OrePrefixes.plateAlloy.get(Materials.Carbon),'C',OrePrefixes.battery.get(Materials.Master)});
+		GT_ModHandler.addCraftingRecipe(ItemList.ModularElectric2Boots.		getWildcard(1, new Object[0]),bits, new Object[] { "A A", "BCB", "A A", 'A', 	OrePrefixes.stick.get(Materials.TungstenSteel), 'B', OrePrefixes.plateAlloy.get(Materials.Carbon),'C',OrePrefixes.battery.get(Materials.Master)});
+
     }
 }
