@@ -1,30 +1,67 @@
 package gregtech.common.items.armor.components;
 
+import gregtech.api.GregTech_API;
 import gregtech.common.items.armor.ArmorData;
 import net.minecraft.item.ItemStack;
 
 public class ArmorPlating extends ArmorComponent{
 	StatType mType;
-	public ArmorPlating(ItemStack aStack, float aWeight, float aPhysicalDef, float aProjectileDef, float aFireDef, float aMagicDef, float aExplosionDef, float aFallDef, float aRadiationDef, float aElectricDef, float aWitherDef) {
-		super(aStack, false, aWeight);
+	public ArmorPlating(String aName, ItemStack aStack, float aWeight, float aPhysicalDef, float aProjectileDef, float aFireDef, float aMagicDef, float aExplosionDef, float aFallDef, float aRadiationDef, float aElectricDef, float aWitherDef) {		
+		super(aName, aStack, false, aWeight);
+		aPhysicalDef = (float) GregTech_API.sModularArmor.get( mConfigName, "PhysicalDef", aPhysicalDef);
+		aProjectileDef = (float) GregTech_API.sModularArmor.get( mConfigName, "ProjectileDef", aProjectileDef);
+		aFireDef = (float) GregTech_API.sModularArmor.get( mConfigName, "FireDef", aFireDef);
+		aMagicDef = (float) GregTech_API.sModularArmor.get( mConfigName, "MagicDef", aMagicDef);
+		aExplosionDef = (float) GregTech_API.sModularArmor.get( mConfigName, "ExplosionDef", aExplosionDef);
+		aFallDef = (float) GregTech_API.sModularArmor.get( mConfigName, "FallDef", aFallDef);
+		aRadiationDef = (float) GregTech_API.sModularArmor.get( mConfigName, "RadiationDef", aRadiationDef);
+		aElectricDef = (float) GregTech_API.sModularArmor.get( mConfigName, "ElectricalDef", aElectricDef);
+		aWitherDef = (float) GregTech_API.sModularArmor.get( mConfigName, "WitherDef", aWitherDef);
 		addStats(aPhysicalDef, aProjectileDef, aFireDef, aMagicDef, aExplosionDef, aFallDef, aRadiationDef, aElectricDef, aWitherDef);
 	}
 	
-	public ArmorPlating(String aOreDict, float aWeight, float aPhysicalDef, float aProjectileDef, float aFireDef, float aMagicDef, float aExplosionDef, float aFallDef, float aRadiationDef, float aElectricDef, float aWitherDef) {
-		super(aOreDict, false, aWeight);
+	public ArmorPlating(String aName, String aOreDict, float aWeight, float aPhysicalDef, float aProjectileDef, float aFireDef, float aMagicDef, float aExplosionDef, float aFallDef, float aRadiationDef, float aElectricDef, float aWitherDef) {
+		super(aName, aOreDict, false, aWeight);
+		aPhysicalDef = (float) GregTech_API.sModularArmor.get( mConfigName, "PhysicalDef", aPhysicalDef);
+		aProjectileDef = (float) GregTech_API.sModularArmor.get( mConfigName, "ProjectileDef", aProjectileDef);
+		aFireDef = (float) GregTech_API.sModularArmor.get( mConfigName, "FireDef", aFireDef);
+		aMagicDef = (float) GregTech_API.sModularArmor.get( mConfigName, "MagicDef", aMagicDef);
+		aExplosionDef = (float) GregTech_API.sModularArmor.get( mConfigName, "ExplosionDef", aExplosionDef);
+		aFallDef = (float) GregTech_API.sModularArmor.get( mConfigName, "FallDef", aFallDef);
+		aRadiationDef = (float) GregTech_API.sModularArmor.get( mConfigName, "RadiationDef", aRadiationDef);
+		aElectricDef = (float) GregTech_API.sModularArmor.get( mConfigName, "ElectricalDef", aElectricDef);
+		aWitherDef = (float) GregTech_API.sModularArmor.get( mConfigName, "WitherDef", aWitherDef);
 		addStats(aPhysicalDef, aProjectileDef, aFireDef, aMagicDef, aExplosionDef, aFallDef, aRadiationDef, aElectricDef, aWitherDef);
 	}
 	
-	public ArmorPlating(String aOreDict, float aWeight, float aPhysicalDef, float aProjectileDef, float aFireDef, float aMagicDef, float aExplosionDef, float aFallDef, float aRadiationDef, float aElectricDef, float aWitherDef, StatType aType, float aSpecial) {
-		super(aOreDict, false, aWeight);
+	public ArmorPlating(String aName, String aOreDict, float aWeight, float aPhysicalDef, float aProjectileDef, float aFireDef, float aMagicDef, float aExplosionDef, float aFallDef, float aRadiationDef, float aElectricDef, float aWitherDef, StatType aType, float aSpecial) {
+		super(aName, aOreDict, false, aWeight);
+		aPhysicalDef = (float) GregTech_API.sModularArmor.get( mConfigName, "PhysicalDef", aPhysicalDef);
+		aProjectileDef = (float) GregTech_API.sModularArmor.get( mConfigName, "ProjectileDef", aProjectileDef);
+		aFireDef = (float) GregTech_API.sModularArmor.get( mConfigName, "FireDef", aFireDef);
+		aMagicDef = (float) GregTech_API.sModularArmor.get( mConfigName, "MagicDef", aMagicDef);
+		aExplosionDef = (float) GregTech_API.sModularArmor.get( mConfigName, "ExplosionDef", aExplosionDef);
+		aFallDef = (float) GregTech_API.sModularArmor.get( mConfigName, "FallDef", aFallDef);
+		aRadiationDef = (float) GregTech_API.sModularArmor.get( mConfigName, "RadiationDef", aRadiationDef);
+		aElectricDef = (float) GregTech_API.sModularArmor.get( mConfigName, "ElectricalDef", aElectricDef);
+		aWitherDef = (float) GregTech_API.sModularArmor.get( mConfigName, "WitherDef", aWitherDef);
 		addStats(aPhysicalDef, aProjectileDef, aFireDef, aMagicDef, aExplosionDef, aFallDef, aRadiationDef, aElectricDef, aWitherDef);
-		mType = aType;
-		mStat.put(mType, aSpecial);
+		mType = StatType.valueOf(GregTech_API.sModularArmor.get(mConfigName, "StatType", aType.toString()));
+		mStat.put(mType, (float) GregTech_API.sModularArmor.get( mConfigName, "SpecialType", aSpecial));
 	}
 	
-	public ArmorPlating(String aOreDict,float aWeight, float aPhysicalDef, float aProjectileDef, float aFireDef, float aMagicDef, float aExplosionDef) {
-		super(aOreDict, false, aWeight);
-		addStats(aPhysicalDef, aProjectileDef, aFireDef, aMagicDef, aExplosionDef, 0, 0, 0, 0);
+	public ArmorPlating(String aName, String aOreDict,float aWeight, float aPhysicalDef, float aProjectileDef, float aFireDef, float aMagicDef, float aExplosionDef) {
+		super(aName, aOreDict, false, aWeight);
+		aPhysicalDef = (float) GregTech_API.sModularArmor.get( mConfigName, "PhysicalDef", aPhysicalDef);
+		aProjectileDef = (float) GregTech_API.sModularArmor.get( mConfigName, "ProjectileDef", aProjectileDef);
+		aFireDef = (float) GregTech_API.sModularArmor.get( mConfigName, "FireDef", aFireDef);
+		aMagicDef = (float) GregTech_API.sModularArmor.get( mConfigName, "MagicDef", aMagicDef);
+		aExplosionDef = (float) GregTech_API.sModularArmor.get( mConfigName, "ExplosionDef", aExplosionDef);
+		float aFallDef = (float) GregTech_API.sModularArmor.get( mConfigName, "FallDef", 0.0f);
+		float aRadiationDef = (float) GregTech_API.sModularArmor.get( mConfigName, "RadiationDef", 0.0f);
+		float aElectricDef = (float) GregTech_API.sModularArmor.get( mConfigName, "ElectricalDef", 0.0f);
+		float aWitherDef = (float) GregTech_API.sModularArmor.get( mConfigName, "WitherDef", 0.0f);
+		addStats(aPhysicalDef, aProjectileDef, aFireDef, aMagicDef, aExplosionDef, aFallDef, aRadiationDef, aElectricDef, aWitherDef);
 	}
 	
 	public void addStats(float aPhysicalDef, float aProjectileDef, float aFireDef, float aMagicDef, float aExplosionDef, float aFallDef, float aRadiationDef, float aElectricDef, float aWitherDef){
@@ -61,7 +98,6 @@ public class ArmorPlating extends ArmorComponent{
 		aArmorData.mStat.remove(aType);}
 		float tComponentDef = mStat.get(aType);
 		aArmorData.mStat.put(aType, tArmorDef + ((1.0f -tArmorDef) * tComponentDef));
-//		System.out.println("calDef: "+aType.name()+" "+tArmorDef+" "+(tArmorDef + ((1.0f -tArmorDef) * tComponentDef)));
 	}
 
 }
