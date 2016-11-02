@@ -128,6 +128,7 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
                         moveOneDown();
                     }
                 }else{
+                	stopMachine();
                     return false;
                 }
             }
@@ -213,19 +214,23 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
     private boolean moveOneDown() {
         if ((this.mInventory[1] == null) || (this.mInventory[1].stackSize < 1)
                 || (!GT_Utility.areStacksEqual(this.mInventory[1], GT_ModHandler.getIC2Item("miningPipe", 1L)))) {
+        	stopMachine();
             return false;
         }
         int xDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetX;
         int zDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetZ;
         int yHead = getYOfPumpHead();
         if (yHead <= 0) {
+        	stopMachine();
             return false;
         }
         if (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, yHead - 1, getBaseMetaTileEntity().getZCoord() + zDir) == Blocks.bedrock) {
+        	stopMachine();
             return false;
         }
         if (!(getBaseMetaTileEntity().getWorld().setBlock(getBaseMetaTileEntity().getXCoord() + xDir, yHead - 1, getBaseMetaTileEntity().getZCoord() + zDir, GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L))))) {
-            return false;
+            stopMachine();
+        	return false;
         }
         if (yHead != getBaseMetaTileEntity().getYCoord()) {
             getBaseMetaTileEntity().getWorld().setBlock(getBaseMetaTileEntity().getXCoord() + xDir, yHead, getBaseMetaTileEntity().getZCoord() + zDir, GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipe", 1L)));

@@ -85,6 +85,7 @@ public class GT_MetaTileEntity_OilDrill extends GT_MetaTileEntity_MultiBlockBase
             if (mEnergyHatches.size() > 0 && mEnergyHatches.get(0).getEUVar() > (512 + getMaxInputVoltage() * 4))
                 completedCycle = true;
         } else if (tFluid.amount < 5000) {
+        	stopMachine();
             return false;
         } else {
             tFluid.amount = tFluid.amount / 5000;
