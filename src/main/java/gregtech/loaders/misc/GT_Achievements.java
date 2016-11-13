@@ -74,7 +74,7 @@ public class GT_Achievements {
                 registerOreAchievement(oreList.get(i));
             }
         }
-        registerAchievement("flintpick", 0, 0, GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(2, 1, Materials.Flint, Materials.Wood, null), "", false);
+        registerAchievement("flintpick", 0, 0, GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(GT_MetaGenerated_Tool_01.PICKAXE, 1, Materials.Flint, Materials.Wood, null), "", false);
         registerAchievement("crops", -4, 0, GT_ModHandler.getIC2Item("crop", 1L), "flintpick", false);
         registerAchievement("havestlead", -4, 2, ItemList.Crop_Drop_Plumbilia.get(1, new Object[]{}), "crops", false);
         registerAchievement("havestcopper", -2, 1, ItemList.Crop_Drop_Coppon.get(1, new Object[]{}), "crops", false);
@@ -85,14 +85,14 @@ public class GT_Achievements {
         registerAchievement("havestsilver", -4, -5, ItemList.Crop_Drop_Argentia.get(1, new Object[]{}), "havestiron", false);
         registerAchievement("havestemeralds", -2, -8, ItemList.Crop_Drop_BobsYerUncleRanks.get(1, new Object[]{}), "havestgold", false);
 
-        registerAchievement("tools", 0, 4, GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(12, 1, Materials.Iron, Materials.Wood, null), "flintpick", false);
-        registerAchievement("driltime", 2, 4, GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(100, 1, Materials.BlueSteel, Materials.StainlessSteel, null), "tools", false);
-        registerAchievement("brrrr", 2, 6, GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(110, 1, Materials.BlueSteel, Materials.StainlessSteel, null), "driltime", false);
-        registerAchievement("highpowerdrill", 3, 5, GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(104, 1, Materials.TungstenSteel, Materials.TungstenSteel, null), "driltime", false);
-        registerAchievement("hammertime", 3, 7, GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(130, 1, Materials.TungstenSteel, Materials.TungstenSteel, null), "highpowerdrill", false);
+        registerAchievement("tools", 0, 4, GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(GT_MetaGenerated_Tool_01.HARDHAMMER, 1, Materials.Iron, Materials.Wood, null), "flintpick", false);
+        registerAchievement("driltime", 2, 4, GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(GT_MetaGenerated_Tool_01.DRILL_LV, 1, Materials.BlueSteel, Materials.StainlessSteel, null), "tools", false);
+        registerAchievement("brrrr", 2, 6, GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(GT_MetaGenerated_Tool_01.CHAINSAW_LV, 1, Materials.BlueSteel, Materials.StainlessSteel, null), "driltime", false);
+        registerAchievement("highpowerdrill", 3, 5, GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(GT_MetaGenerated_Tool_01.DRILL_HV, 1, Materials.TungstenSteel, Materials.TungstenSteel, null), "driltime", false);
+        registerAchievement("hammertime", 3, 7, GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(GT_MetaGenerated_Tool_01.JACKHAMMER, 1, Materials.TungstenSteel, Materials.TungstenSteel, null), "highpowerdrill", false);
         registerAchievement("repair", 4, 5, ItemList.Machine_HV_Disassembler.get(1, new Object[]{}), "highpowerdrill", false);
 
-        registerAchievement("unitool", -2, 4, GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(32, 1, Materials.Steel, Materials.Iron, null), "tools", false);
+        registerAchievement("unitool", -2, 4, GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(GT_MetaGenerated_Tool_01.UNIVERSALSPADE, 1, Materials.Steel, Materials.Iron, null), "tools", false);
         registerAchievement("recycling", -4, 4, ItemList.Machine_LV_ArcFurnace.get(1, new Object[]{}), "unitool", false);
 
         registerAchievement("crushed", 0, 6, GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Tin, 1L), "tools", false);
