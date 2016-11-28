@@ -28,11 +28,11 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
     public boolean mNatural = false;
     public boolean mBlocked = true;
 
-    public static byte getHarvestData(short aMetaData) {
+    public static byte getHarvestData(short aMetaData, int aBaseBlockHarvestLevel) {
         Materials aMaterial = GregTech_API.sGeneratedMaterials[(aMetaData % 1000)];
-        byte tByte = aMaterial == null ? 0 : (byte) Math.max((aMetaData % 16000 / 1000 == 3) || (aMetaData % 16000 / 1000 == 4) ? 3 : 0, Math.min(7, aMaterial.mToolQuality - (aMetaData < 16000 ? 0 : 1)));
+        byte tByte = aMaterial == null ? 0 : (byte) Math.max(aBaseBlockHarvestLevel, Math.min(7, aMaterial.mToolQuality - (aMetaData < 16000 ? 0 : 1)));
         if(GT_Mod.gregtechproxy.mChangeHarvestLevels ){
-            tByte = aMaterial == null ? 0 : (byte) Math.max((aMetaData % 16000 / 1000 == 3) || (aMetaData % 16000 / 1000 == 4) ? GT_Mod.gregtechproxy.mGraniteHavestLevel : 0, Math.min(GT_Mod.gregtechproxy.mMaxHarvestLevel, GT_Mod.gregtechproxy.mHarvestLevel[aMaterial.mMetaItemSubID] - (aMetaData < 16000 ? 0 : 1)));
+            tByte = aMaterial == null ? 0 : (byte) Math.max(aBaseBlockHarvestLevel, Math.min(GT_Mod.gregtechproxy.mMaxHarvestLevel, GT_Mod.gregtechproxy.mHarvestLevel[aMaterial.mMetaItemSubID] - (aMetaData < 16000 ? 0 : 1)));
         }
         return tByte;
     }
@@ -107,7 +107,7 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
             } else if (!tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.stone)) {
                 return false;
             }
-            aWorld.setBlock(aX, aY, aZ, tOreBlock, getHarvestData((short) aMetaData), 0);
+            aWorld.setBlock(aX, aY, aZ, tOreBlock, getHarvestData((short) aMetaData, ((GT_Block_Ores_Abstract) tOreBlock).getBaseBlockHarvestLevel(aMetaData % 16000 / 1000)), 0);
             TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
             if ((tTileEntity instanceof GT_TileEntity_Ores)) {
                 ((GT_TileEntity_Ores) tTileEntity).mMetaData = ((short) aMetaData);
@@ -173,7 +173,7 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
                     this.mMetaData = ((short) (this.mMetaData + 5000));
                 }
             }
-            this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, getHarvestData(this.mMetaData), 0);
+            this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, getHarvestData(this.mMetaData, ((GT_Block_Ores_Abstract) blockType).getBaseBlockHarvestLevel(mMetaData % 16000 / 1000)), 0);
     }
 
     public void convertOreBlock(World aWorld, int aX, int aY, int aZ) {
@@ -182,7 +182,7 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof GT_TileEntity_Ores) {
             ((GT_TileEntity_Ores) tTileEntity).mMetaData = aMeta;
-            this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, getHarvestData(aMeta), 0);
+            this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, getHarvestData(aMeta, ((GT_Block_Ores_Abstract) tTileEntity.blockType).getBaseBlockHarvestLevel(aMeta % 16000 / 1000)), 0);
         }
     }
 

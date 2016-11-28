@@ -29,6 +29,11 @@ public class GT_Block_Ores_UB1 extends GT_Block_Ores_Abstract {
     }
 
     @Override
+    public int getBaseBlockHarvestLevel(int aMeta) {
+        return aUBBlock.getHarvestLevel(aMeta);
+    }
+
+    @Override
     public Block getDroppedBlock() {
         return GregTech_API.sBlockOresUb1;
     }

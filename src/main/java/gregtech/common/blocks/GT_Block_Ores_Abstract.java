@@ -70,6 +70,10 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
         }
     }
 
+    public int getBaseBlockHarvestLevel(int aMeta) {
+        return 0;
+    }
+
     public void onNeighborChange(IBlockAccess aWorld, int aX, int aY, int aZ, int aTileX, int aTileY, int aTileZ) {
         if (!FUCKING_LOCK) {
             FUCKING_LOCK = true;

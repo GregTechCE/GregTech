@@ -27,6 +27,20 @@ public class GT_Block_Ores extends GT_Block_Ores_Abstract {
     }
 
     @Override
+    public int getBaseBlockHarvestLevel(int aMeta) {
+        switch (aMeta) {
+            case 3:
+            case 4:return 3;
+            case 0:
+            case 1:
+            case 2:
+            case 5:
+            case 6:
+            default:return 0;
+        }
+    }
+
+    @Override
     public Block getDroppedBlock() {
         return GregTech_API.sBlockOres1;
     }
