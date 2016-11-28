@@ -11,14 +11,9 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
-import ic2.core.Ic2Items;
-import ic2.core.item.ItemFluidCell;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GT_FuelLoader
         implements Runnable {
@@ -39,13 +34,7 @@ public class GT_FuelLoader
         GT_Values.RA.addFuel(new ItemStack(Items.ghast_tear, 1), null, 50, 5);
         GT_Values.RA.addFuel(new ItemStack(Blocks.beacon, 1), null, Materials.NetherStar.mFuelPower * 2, Materials.NetherStar.mFuelType);
         GT_Values.RA.addFuel(GT_ModHandler.getModItem("EnderIO", "bucketRocket_fuel", 1), null, 250, 1);
-        if(!GregTech_API.mIC2Classic){
-        	GT_Values.RA.addFuel(ItemFluidCell.getUniversalFluidCell(new FluidStack(ItemList.sRocketFuel,1000)), Ic2Items.FluidCell.copy(), 250, 1);
-        }
         if(GregTech_API.mMagneticraft){
-        	Fluid tFluid = FluidRegistry.getFluid("naturalgas");
-        	if(tFluid!=null)
-        	GT_Values.RA.addFuel(ItemFluidCell.getUniversalFluidCell(new FluidStack(tFluid,1000)), Ic2Items.FluidCell.copy(), 250, 1);
         	 GT_Values.RA.addFuel(GT_ModHandler.getModItem("Magneticraft", "item.bucket_light_oil", 1), null, 256, 0);
         	 GT_Values.RA.addFuel(GT_ModHandler.getModItem("Magneticraft", "item.bucket_heavy_oil", 1), null, 192, 3);
         }
