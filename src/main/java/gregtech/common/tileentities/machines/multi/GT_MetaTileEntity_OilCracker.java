@@ -35,11 +35,11 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_MultiBlockBa
                 "Cracks heavy oil into lighter parts",
                 "Size(WxHxD): 5x3x3 (Hollow), Controller (Front center)",
                 "Ring of 8 Cupronickel Coils (Each side of Controller)",
-                "1x Input Hatch (Left side middle)",
+                "1x Input Hatch (Any left side casing)",
                 "1x Input Hatch (Any middle ring casing)",
-                "1x Output Hatch (Right side middle)",
-                "1x Maintenance Hatch (Any casing)",
-                "1x Energy Hatch (Any casing)",
+                "1x Output Hatch (Any right side casing)",
+                "1x Maintenance Hatch (Any middle ring casing)",
+                "1x Energy Hatch (Any middle ring casing)",
                 "Clean Stainless Steel Casings for the rest (18 at least!)",
                 "Optional Steam(50% less EU/t) or Hydrogen(30% more output)"};
     }
@@ -207,7 +207,7 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_MultiBlockBa
                 }
             }
         }
-        if (amount < 19) return false;
+        if (amount < 18) return false;
         return true;
     }
 
