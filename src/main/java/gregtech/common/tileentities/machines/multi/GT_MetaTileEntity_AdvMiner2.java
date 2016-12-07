@@ -134,7 +134,8 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
             }
             ArrayList<ItemStack> tDrops = new ArrayList();
             Block tMineBlock = null;
-            ChunkPosition mle = null;;
+            ChunkPosition mle = null;
+            int posX, posY, posZ, offX, offY, offZ;
             while ((tMineBlock==null || tMineBlock == Blocks.air) && !mMineList.isEmpty()) {
                 mle = mMineList.get(0);
                 mMineList.remove(0);
@@ -142,8 +143,15 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
             }
             
             if (tMineBlock!=null && tMineBlock!=Blocks.air) {
-                int metadata = getBaseMetaTileEntity().getMetaIDOffset(mle.chunkPosX, mle.chunkPosY, mle.chunkPosZ);
-                boolean silkTouch = tMineBlock.canSilkHarvest(getBaseMetaTileEntity().getWorld(), null, mle.chunkPosX, mle.chunkPosY, mle.chunkPosZ, metadata);
+                posX = mle.chunkPosX + getBaseMetaTileEntity().getXCoord();
+                posY = mle.chunkPosY + getBaseMetaTileEntity().getYCoord();
+                posZ = mle.chunkPosZ + getBaseMetaTileEntity().getZCoord();
+                offX = mle.chunkPosX;
+                offY = mle.chunkPosY;
+                offZ = mle.chunkPosZ;
+
+                int metadata = getBaseMetaTileEntity().getMetaIDOffset(offX, offY, offZ);
+                boolean silkTouch = tMineBlock.canSilkHarvest(getBaseMetaTileEntity().getWorld(), null, posX, posY, posZ, metadata);
                 if (silkTouch){
                     ItemStack IS = new ItemStack(tMineBlock);
                     IS.setItemDamage(metadata);
@@ -151,10 +159,10 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
                     tDrops.add(IS);
                 }
                 else{
-                    tDrops = tMineBlock.getDrops(getBaseMetaTileEntity().getWorld(), mle.chunkPosX, mle.chunkPosY, mle.chunkPosZ, metadata, 1);
+                    tDrops = tMineBlock.getDrops(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, metadata, 1);
                 }
 
-                getBaseMetaTileEntity().getWorld().setBlockToAir(mle.chunkPosX + getBaseMetaTileEntity().getXCoord(), mle.chunkPosY + getBaseMetaTileEntity().getYCoord(), mle.chunkPosZ + getBaseMetaTileEntity().getZCoord());
+                getBaseMetaTileEntity().getWorld().setBlockToAir(posX, posY, posZ);
                 if (!tDrops.isEmpty()) {
                     ItemData tData = GT_OreDictUnificator.getItemData(tDrops.get(0).copy());
                     if (tData.mPrefix != OrePrefixes.crushed && tData.mMaterial.mMaterial != Materials.Oilsands) {
