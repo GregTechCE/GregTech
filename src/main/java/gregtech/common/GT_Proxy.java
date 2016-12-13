@@ -1690,6 +1690,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             
             progressBar.step(tEvent.mMaterial == null ? "" : tEvent.mMaterial.toString());
         }
+        ProgressManager.pop(progressBar);
     }
 
     public static final HashMap<ChunkPosition, int[]>  chunkData = new HashMap<ChunkPosition, int[]>(5000);
