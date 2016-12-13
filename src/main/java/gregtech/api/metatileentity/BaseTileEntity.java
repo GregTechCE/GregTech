@@ -434,4 +434,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     public final void setToFire() {
         worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.fire);
     }
+    
+    @Override 
+    public void markDirty() {/* Do not do the super Function */} 
 }
