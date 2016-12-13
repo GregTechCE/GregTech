@@ -1687,7 +1687,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         OreDictEventContainer tEvent;
         for (Iterator i$ = this.mEvents.iterator(); i$.hasNext(); registerRecipes(tEvent)) {
             tEvent = (OreDictEventContainer) i$.next();
-            progressBar.step(tEvent.mMaterial.toString());
+            
+            progressBar.step(tEvent.mMaterial == null ? "" : tEvent.mMaterial.toString());
         }
     }
 
