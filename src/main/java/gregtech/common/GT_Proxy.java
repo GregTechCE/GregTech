@@ -4,6 +4,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IFuelHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
+import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -1682,9 +1683,12 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     public void activateOreDictHandler() {
         this.mOreDictActivated = true;
+        ProgressManager.ProgressBar progressBar = ProgressManager.push("Register materials", mEvents.size());
         OreDictEventContainer tEvent;
         for (Iterator i$ = this.mEvents.iterator(); i$.hasNext(); registerRecipes(tEvent)) {
             tEvent = (OreDictEventContainer) i$.next();
+            
+            progressBar.step(tEvent.mMaterial == null ? "" : tEvent.mMaterial.toString());
         }
     }
 
