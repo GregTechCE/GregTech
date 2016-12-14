@@ -43,7 +43,7 @@ public class ArmorData {
 
 	public Map<StatType,Float> mStat = new HashMap<StatType,Float>();
 	public Map<StatType,Boolean> mBStat = new HashMap<StatType,Boolean>();
-
+	static ArrayList<StatType> updateArmorStatTypeList;
 //	public boolean fullArmor;
 //	public boolean fullRadiationDef;
 //	public boolean fullElectricDef;
@@ -94,6 +94,14 @@ public class ArmorData {
 //	public int antiGravMaxWeight;
 
 	public ArmorData(EntityPlayer player, ItemStack stack, int type, int tier) {
+		if(updateArmorStatTypeList == null)
+		{
+			updateArmorStatTypeList = new ArrayList<StatType>();
+			updateArmorStatTypeList.add(StatType.MAGNET);
+			updateArmorStatTypeList.add(StatType.THORNS);
+			updateArmorStatTypeList.add(StatType.PROCESSINGPOWER);
+			updateArmorStatTypeList.add(StatType.PROCESSINGPOWERUSED);
+		}
 		this.type = type;
 		this.armorTier = tier;
 		ContainerModularArmor tmp = new ContainerBasicArmor((EntityPlayer) player, new InventoryArmor(ModularArmor_Item.class, stack));
@@ -259,29 +267,30 @@ public class ArmorData {
 		set(mBStat, StatType.THORNS, 0);
 		set(mBStat, StatType.PROCESSINGPOWER, 0);
 		set(mBStat, StatType.PROCESSINGPOWERUSED, 0);
-		if (helmet != null) {
-			change(mStat, StatType.MAGNET, helmet.mStat.get(StatType.MAGNET));
-			change(mStat, StatType.THORNS, helmet.mStat.get(StatType.THORNS));
-			change(mStat, StatType.PROCESSINGPOWER, helmet.mStat.get(StatType.PROCESSINGPOWER));
-			change(mStat, StatType.PROCESSINGPOWERUSED, helmet.mStat.get(StatType.PROCESSINGPOWERUSED));
+		
+		if (helmet != null) {			
+			updateArmorStats(helmet,updateArmorStatTypeList );
 		}
 		if (chestplate != null) {
-			change(mStat, StatType.MAGNET, chestplate.mStat.get(StatType.MAGNET));
-			change(mStat, StatType.THORNS, chestplate.mStat.get(StatType.THORNS));
-			change(mStat, StatType.PROCESSINGPOWER, chestplate.mStat.get(StatType.PROCESSINGPOWER));
-			change(mStat, StatType.PROCESSINGPOWERUSED, chestplate.mStat.get(StatType.PROCESSINGPOWERUSED));
+			updateArmorStats(chestplate,updateArmorStatTypeList );
+//			change(mStat, StatType.MAGNET, chestplate.mStat.get(StatType.MAGNET));
+//			change(mStat, StatType.THORNS, chestplate.mStat.get(StatType.THORNS));
+//			change(mStat, StatType.PROCESSINGPOWER, chestplate.mStat.get(StatType.PROCESSINGPOWER));
+//			change(mStat, StatType.PROCESSINGPOWERUSED, chestplate.mStat.get(StatType.PROCESSINGPOWERUSED));
 		}
 		if (leggings != null) {
-			change(mStat, StatType.MAGNET, leggings.mStat.get(StatType.MAGNET));
-			change(mStat, StatType.THORNS, leggings.mStat.get(StatType.THORNS));
-			change(mStat, StatType.PROCESSINGPOWER, leggings.mStat.get(StatType.PROCESSINGPOWER));
-			change(mStat, StatType.PROCESSINGPOWERUSED, leggings.mStat.get(StatType.PROCESSINGPOWERUSED));
+			updateArmorStats(leggings,updateArmorStatTypeList );
+//			change(mStat, StatType.MAGNET, leggings.mStat.get(StatType.MAGNET));
+//			change(mStat, StatType.THORNS, leggings.mStat.get(StatType.THORNS));
+//			change(mStat, StatType.PROCESSINGPOWER, leggings.mStat.get(StatType.PROCESSINGPOWER));
+//			change(mStat, StatType.PROCESSINGPOWERUSED, leggings.mStat.get(StatType.PROCESSINGPOWERUSED));
 		}
 		if (boots != null) {
-			change(mStat, StatType.MAGNET, boots.mStat.get(StatType.MAGNET));
-			change(mStat, StatType.THORNS, boots.mStat.get(StatType.THORNS));
-			change(mStat, StatType.PROCESSINGPOWER, boots.mStat.get(StatType.PROCESSINGPOWER));
-			change(mStat, StatType.PROCESSINGPOWERUSED, boots.mStat.get(StatType.PROCESSINGPOWERUSED));
+			updateArmorStats(boots,updateArmorStatTypeList );
+//			change(mStat, StatType.MAGNET, boots.mStat.get(StatType.MAGNET));
+//			change(mStat, StatType.THORNS, boots.mStat.get(StatType.THORNS));
+//			change(mStat, StatType.PROCESSINGPOWER, boots.mStat.get(StatType.PROCESSINGPOWER));
+//			change(mStat, StatType.PROCESSINGPOWERUSED, boots.mStat.get(StatType.PROCESSINGPOWERUSED));
 		}
 		isTopItem = false;
 		if (type == 0) {
@@ -305,6 +314,23 @@ public class ArmorData {
 		if (boots != null) {
 			maxWeight += boots.mStat.get(StatType.WEIGHT);
 		}
+	}
+
+	private void updateArmorStats(ArmorData armorData, ArrayList<StatType> statTypes) {
+		for (StatType statType : statTypes) {
+			if(armorData == null || armorData.mStat == null || !armorData.mStat.containsKey(statType))
+				continue;
+//			if(armorData != null && armorData.mStat != null && armorData.mStat.containsKey(statType))
+//			{
+				change(mStat, statType, armorData.mStat.get(statType));
+//			}
+			/*change(mStat, StatType.MAGNET, armorData.mStat.get(StatType.MAGNET));
+			change(mStat, StatType.THORNS, armorData.mStat.get(StatType.THORNS));
+			change(mStat, StatType.PROCESSINGPOWER, armorData.mStat.get(StatType.PROCESSINGPOWER));
+			change(mStat, StatType.PROCESSINGPOWERUSED, armorData.mStat.get(StatType.PROCESSINGPOWERUSED));*/			
+		}
+		
+		
 	}
 	
 	public void set(Map aMap, StatType aType, boolean aSet){
