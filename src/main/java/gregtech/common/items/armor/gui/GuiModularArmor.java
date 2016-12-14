@@ -191,10 +191,10 @@ public class GuiModularArmor extends GuiContainer {
 		int yStart = mouseY-((height - ySize) / 2);
 		if(yStart>67&&yStart<77){
 			if(xStart>124&&xStart<163){
-				if(xStart>124&&xStart<133&&cont.mInvArmor.data.helmet!=null){cont.mInvArmor.data.helmet.openGui=true;player.closeScreen();}
-				if(xStart>134&&xStart<143&&cont.mInvArmor.data.chestplate!=null){cont.mInvArmor.data.chestplate.openGui=true;player.closeScreen();}
-				if(xStart>144&&xStart<153&&cont.mInvArmor.data.leggings!=null){cont.mInvArmor.data.leggings.openGui=true;player.closeScreen();}
-				if(xStart>154&&xStart<163&&cont.mInvArmor.data.boots!=null){cont.mInvArmor.data.boots.openGui=true;player.closeScreen();}
+				if(xStart>124&&xStart<133&&cont.mInvArmor.data.helmet!=null){cont.mInvArmor.data.helmet.openGui=true;}
+				if(xStart>134&&xStart<143&&cont.mInvArmor.data.chestplate!=null){cont.mInvArmor.data.chestplate.openGui=true;}
+				if(xStart>144&&xStart<153&&cont.mInvArmor.data.leggings!=null){cont.mInvArmor.data.leggings.openGui=true;}
+				if(xStart>154&&xStart<163&&cont.mInvArmor.data.boots!=null){cont.mInvArmor.data.boots.openGui=true;}
 			}
 		}
 		super.mouseClicked(mouseX, mouseY, mouseBtn);
