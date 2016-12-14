@@ -40,7 +40,12 @@ public class GuiElectricArmor1 extends GuiContainer {
 		cont = containerModularArmor;
 		tab = 0;
 	}
-	
+	@Override
+	public void onGuiClosed() 
+	{
+		cont.saveInventory(player);
+		super.onGuiClosed();
+	};
 	public String seperateNumber(long number){
 		DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
 		DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
