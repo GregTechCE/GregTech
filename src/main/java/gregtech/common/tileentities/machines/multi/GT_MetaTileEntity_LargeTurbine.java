@@ -94,6 +94,8 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_M
                 } else {
                     return false;
                 }
+            } else {
+                return false;
             }
         } else {
             return false;
