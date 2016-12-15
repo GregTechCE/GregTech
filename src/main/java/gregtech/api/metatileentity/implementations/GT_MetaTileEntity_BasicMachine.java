@@ -683,7 +683,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     @Override
     public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCoverID) {
-        return (aSide != mMainFacing || GregTech_API.getCoverBehavior(aCoverID.toStack()).isGUIClickable(aSide, GT_Utility.stackToInt(aCoverID.toStack()), 0, getBaseMetaTileEntity()));
+        return (aSide != mMainFacing || GregTech_API.getCoverBehavior(aCoverID.toStack()).isGUIClickable(aSide, GregTech_API.getCoverId(aCoverID), 0, getBaseMetaTileEntity()));
     }
 
     @Override

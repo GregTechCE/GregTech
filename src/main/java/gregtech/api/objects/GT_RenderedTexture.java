@@ -1,104 +1,176 @@
 package gregtech.api.objects;
 
-import com.google.common.collect.ImmutableList;
+import gregtech.api.enums.Dyes;
+import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
-import gregtech.common.render.RenderUtil;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.EnumFacing;
+import gregtech.common.render.RenderBlocks;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.awt.*;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-
-public class GT_RenderedTexture implements ITexture {
-
+public class GT_RenderedTexture implements ITexture, IColorModulationContainer {
     private final IIconContainer mIconContainer;
-    public int mRGBa = -1;
+    private final boolean mAllowAlpha;
+    /**
+     * DO NOT MANIPULATE THE VALUES INSIDE THIS ARRAY!!!
+     * <p/>
+     * Just set this variable to another different Array instead.
+     * Otherwise some colored things will get Problems.
+     */
+    public short[] mRGBa;
 
-    private HashMap<Integer, EnumMap<EnumFacing, ImmutableList<BakedQuad>>> cache = new HashMap<>();
+    public GT_RenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean aAllowAlpha) {
+        if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GT_RenderedTexture");
+        mIconContainer = aIcon;
+        mAllowAlpha = aAllowAlpha;
+        mRGBa = aRGBa;
+    }
 
     public GT_RenderedTexture(IIconContainer aIcon, short[] aRGBa) {
-        mIconContainer = aIcon;
-        if(aRGBa != null) {
-            this.mRGBa = makeColor(aRGBa);
-        }
-    }
-
-    public GT_RenderedTexture(String spriteName, short[] aRGBa) {
-        this(new LazyCopiedIconContainer(spriteName), aRGBa);
-    }
-
-    public static int makeColor(short[] rgba) {
-        try {
-            for(int i = 0; i < 4; i++)
-                rgba[i] = (short) Math.max(0, rgba[i]);
-            return new Color(rgba[0], rgba[1], rgba[2], rgba[3]).getRGB();
-        } catch (IllegalArgumentException err) {
-            return Color.WHITE.getRGB();
-        }
-    }
-
-    public GT_RenderedTexture(IIconContainer aIcon, int aRGBa) {
-        mIconContainer = aIcon;
-        this.mRGBa = aRGBa;
+        this(aIcon, aRGBa, true);
     }
 
     public GT_RenderedTexture(IIconContainer aIcon) {
-        this.mIconContainer = aIcon;
-    }
-
-    public static int offset2key(float offset) {
-        //precision: x.xx
-        return (int) (offset * 100);
+        this(aIcon, Dyes._NULL.mRGBa);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public List<BakedQuad> getQuads(Block aBlock, BlockPos blockPos, EnumFacing side, float offset) {
-        int offsetKey = offset2key(offset);
-        EnumMap<EnumFacing, ImmutableList<BakedQuad>> offsetCache = cache.get(offsetKey);
-        if(offsetCache == null) {
-            offsetCache = new EnumMap<>(EnumFacing.class);
-            cache.put(offsetKey, offsetCache);
+    public void renderXPos(RenderBlocks aRenderer, IBlockState aState, BlockPos aPos, int lightning, boolean item, VertexBuffer buf) {
+        if(mIconContainer.getIcon() == null) {
+            System.out.println("Container with null icon " + mIconContainer);
+            return;
         }
-        ImmutableList<BakedQuad> quads = offsetCache.get(side);
-        if(quads == null) {
-            quads = generate9(side, offset);
-            offsetCache.put(side, quads);
+        int color = ITexture.color(mRGBa, mAllowAlpha);
+        if(!item) {
+            aRenderer.renderXPos(mIconContainer.getIcon(), aPos.getX(), aPos.getY(), aPos.getZ(), color, lightning, buf);
+            if (mIconContainer.getOverlayIcon() != null) {
+                aRenderer.renderXPos(mIconContainer.getIcon(), aPos.getX(), aPos.getY(), aPos.getZ(), 0xFF999999, lightning, buf);
+            }
+        } else {
+            aRenderer.renderXPosItem(mIconContainer.getIcon(), 0f, 0f, 0f, color, buf);
+            if (mIconContainer.getOverlayIcon() != null) {
+                aRenderer.renderXPosItem(mIconContainer.getIcon(), 0f, 0f, 0f, 0xFF999999, buf);
+            }
         }
-        return quads;
     }
 
-    private ImmutableList<BakedQuad> generate9(EnumFacing side, float offset) {
-        ImmutableList.Builder<BakedQuad> quads = ImmutableList.builder();
-        TextureAtlasSprite sprite = mIconContainer.getIcon();
-        TextureAtlasSprite overlay = mIconContainer.getOverlayIcon();
-        if(sprite != null) {
-            quads.add(RenderUtil.renderSide(sprite, side, offset, mRGBa));
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void renderXNeg(RenderBlocks aRenderer, IBlockState aState, BlockPos aPos, int lightning, boolean item, VertexBuffer buf) {
+        if(mIconContainer.getIcon() == null) {
+            System.out.println("Container with null icon " + mIconContainer);
+            return;
         }
-        if(overlay != null) {
-            quads.add(RenderUtil.renderSide(overlay, side, offset + 0.01F, mRGBa));
+        int color = ITexture.color(mRGBa, mAllowAlpha);
+        if(!item) {
+            aRenderer.renderXNeg(mIconContainer.getIcon(), aPos.getX(), aPos.getY(), aPos.getZ(), color, lightning, buf);
+            if (mIconContainer.getOverlayIcon() != null) {
+                aRenderer.renderXNeg(mIconContainer.getIcon(), aPos.getX(), aPos.getY(), aPos.getZ(), 0xFF999999, lightning, buf);
+            }
+        } else {
+            aRenderer.renderXNegItem(mIconContainer.getIcon(), 0f, 0f, 0f, color, buf);
+            if (mIconContainer.getOverlayIcon() != null) {
+                aRenderer.renderXNegItem(mIconContainer.getIcon(), 0f, 0f, 0f, 0xFF999999, buf);
+            }
         }
-        return quads.build();
     }
 
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void renderZPos(RenderBlocks aRenderer, IBlockState aState, BlockPos aPos, int lightning, boolean item, VertexBuffer buf) {
+        if(mIconContainer.getIcon() == null) {
+            System.out.println("Container with null icon " + mIconContainer);
+            return;
+        }
+        int color = ITexture.color(mRGBa, mAllowAlpha);
+        if(!item) {
+            aRenderer.renderZPos(mIconContainer.getIcon(), aPos.getX(), aPos.getY(), aPos.getZ(), color, lightning, buf);
+            if (mIconContainer.getOverlayIcon() != null) {
+                aRenderer.renderZPos(mIconContainer.getIcon(), aPos.getX(), aPos.getY(), aPos.getZ(), 0xFF999999, lightning, buf);
+            }
+        } else {
+            aRenderer.renderZPosItem(mIconContainer.getIcon(), 0f, 0f, 0f, color, buf);
+            if (mIconContainer.getOverlayIcon() != null) {
+                aRenderer.renderZPosItem(mIconContainer.getIcon(), 0f, 0f, 0f, 0xFF999999, buf);
+            }
+        }
+    }
 
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void renderZNeg(RenderBlocks aRenderer, IBlockState aState, BlockPos aPos, int lightning, boolean item, VertexBuffer buf) {
+        if(mIconContainer.getIcon() == null) {
+            System.out.println("Container with null icon " + mIconContainer);
+            return;
+        }
+        int color = ITexture.color(mRGBa, mAllowAlpha);
+        if(!item) {
+            aRenderer.renderZNeg(mIconContainer.getIcon(), aPos.getX(), aPos.getY(), aPos.getZ(), color, lightning, buf);
+            if (mIconContainer.getOverlayIcon() != null) {
+                aRenderer.renderZNeg(mIconContainer.getIcon(), aPos.getX(), aPos.getY(), aPos.getZ(), 0xFF999999, lightning, buf);
+            }
+        } else {
+            aRenderer.renderZNegItem(mIconContainer.getIcon(), 0f, 0f, 0f, color, buf);
+            if (mIconContainer.getOverlayIcon() != null) {
+                aRenderer.renderZNegItem(mIconContainer.getIcon(), 0f, 0f, 0f, 0xFF999999, buf);
+            }
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void renderYPos(RenderBlocks aRenderer, IBlockState aState, BlockPos aPos, int lightning, boolean item, VertexBuffer buf) {
+        if(mIconContainer.getIcon() == null) {
+            System.out.println("Container with null icon " + mIconContainer);
+            return;
+        }
+        int color = ITexture.color(mRGBa, mAllowAlpha);
+        if(!item) {
+            aRenderer.renderYPos(mIconContainer.getIcon(), aPos.getX(), aPos.getY(), aPos.getZ(), color, lightning, buf);
+            if (mIconContainer.getOverlayIcon() != null) {
+                aRenderer.renderYPos(mIconContainer.getIcon(), aPos.getX(), aPos.getY(), aPos.getZ(), 0xFF999999, lightning, buf);
+            }
+        } else {
+            aRenderer.renderYPosItem(mIconContainer.getIcon(), 0f, 0f, 0f, color, buf);
+            if (mIconContainer.getOverlayIcon() != null) {
+                aRenderer.renderYPosItem(mIconContainer.getIcon(), 0f, 0f, 0f, 0xFF999999, buf);
+            }
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void renderYNeg(RenderBlocks aRenderer, IBlockState aState, BlockPos aPos, int lightning, boolean item, VertexBuffer buf) {
+        if(mIconContainer.getIcon() == null) {
+            System.out.println("Container with null icon " + mIconContainer);
+            return;
+        }
+        int color = ITexture.color(mRGBa, mAllowAlpha);
+        if(!item) {
+            aRenderer.renderYNeg(mIconContainer.getIcon(), aPos.getX(), aPos.getY(), aPos.getZ(), color, lightning, buf);
+            if (mIconContainer.getOverlayIcon() != null) {
+                aRenderer.renderYNeg(mIconContainer.getIcon(), aPos.getX(), aPos.getY(), aPos.getZ(), 0xFF999999, lightning, buf);
+            }
+        } else {
+            aRenderer.renderYNegItem(mIconContainer.getIcon(), 0f, 0f, 0f, color, buf);
+            if (mIconContainer.getOverlayIcon() != null) {
+                aRenderer.renderYNegItem(mIconContainer.getIcon(), 0f, 0f, 0f, 0xFF999999, buf);
+            }
+        }
+    }
+
+    @Override
+    public short[] getRGBA() {
+        return mRGBa;
+    }
 
     @Override
     public boolean isValidTexture() {
         return mIconContainer != null;
     }
-
-    @Override
-    public boolean needsNonSidedRendering() {
-        return false;
-    }
-
 }

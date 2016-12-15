@@ -303,7 +303,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                             oZ = getZCoord();
                             if (isServerSide()) for (byte i = 0; i < 6; i++)
                                 if (getCoverIDAtSide(i) != 0)
-                                    if (!mMetaTileEntity.allowCoverOnSide(i, new GT_ItemStack(getCoverIDAtSide(i))))
+                                    if (!mMetaTileEntity.allowCoverOnSide(i, GregTech_API.getCoverItem(getCoverIDAtSide(i))))
                                         dropCover(i, i, true);
 
                             worldObj.markChunkDirty(getPos(), this);
@@ -401,7 +401,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                                 oFacing = mFacing;
                                 for (byte i = 0; i < 6; i++)
                                     if (getCoverIDAtSide(i) != 0)
-                                        if (!mMetaTileEntity.allowCoverOnSide(i, new GT_ItemStack(getCoverIDAtSide(i))))
+                                        if (!mMetaTileEntity.allowCoverOnSide(i, GregTech_API.getCoverItem(getCoverIDAtSide(i))))
                                             dropCover(i, i, true);
                                 issueBlockUpdate();
                             }
@@ -594,6 +594,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
             createNewMetatileEntity(mID);
         }
 
+
         mCoverSides[0] = aCover0;
         mCoverSides[1] = aCover1;
         mCoverSides[2] = aCover2;
@@ -728,7 +729,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     public ITexture getCoverTexture(byte aSide) {
-        return GregTech_API.sCovers.get(new GT_ItemStack(getCoverIDAtSide(aSide)));
+        return GregTech_API.sCovers.get(getCoverIDAtSide(aSide));
     }
 
     @Override
@@ -1183,6 +1184,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sScrewdriverList)) {
                         if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 200, aPlayer)) {
+                            System.out.println("Screwdriver click");
                             setCoverDataAtSide(aSide, getCoverBehaviorAtSide(aSide).onCoverScrewdriverclick(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this, aPlayer, aX, aY, aZ));
                             mMetaTileEntity.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
                             GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, getXCoord(), getYCoord(), getZCoord());
@@ -1221,8 +1223,10 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     }
 
                     if (getCoverIDAtSide(aSide) == 0) {
-                        if (GregTech_API.sCovers.containsKey(new GT_ItemStack(tCurrentItem))) {
-                            if (GregTech_API.getCoverBehavior(tCurrentItem).isCoverPlaceable(aSide, new GT_ItemStack(tCurrentItem), this) && mMetaTileEntity.allowCoverOnSide(aSide, new GT_ItemStack(tCurrentItem))) {
+                        GT_ItemStack gtItemStack = new GT_ItemStack(tCurrentItem);
+                        if (GregTech_API.sCoverItems.containsKey(gtItemStack)) {
+                            GT_CoverBehavior behavior = GregTech_API.getCoverBehavior(gtItemStack);
+                            if (behavior.isCoverPlaceable(aSide, gtItemStack, this) && mMetaTileEntity.allowCoverOnSide(aSide, gtItemStack)) {
                                 setCoverItemAtSide(aSide, tCurrentItem);
                                 if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
                                 GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, getXCoord(), getYCoord(), getZCoord());
@@ -1492,19 +1496,16 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
-    public void setCoverItemAtSide(byte aSide, ItemStack aCover) {
-        GregTech_API.getCoverBehavior(aCover).placeCover(aSide, aCover, this);
+    public void setCoverItemAtSide(byte aSide, ItemStack aStack) {
+        int coverId = GregTech_API.getCoverId(new GT_ItemStack(aStack));
+        GT_CoverBehavior behavior = GregTech_API.getCoverBehavior(coverId);
+        behavior.placeCover(aSide, coverId, aStack, this);
     }
 
     @Override
     public int getCoverIDAtSide(byte aSide) {
         if (aSide >= 0 && aSide < 6) return mCoverSides[aSide];
         return 0;
-    }
-
-    @Override
-    public ItemStack getCoverItemAtSide(byte aSide) {
-        return GT_Utility.intToStack(getCoverIDAtSide(aSide));
     }
 
     @Override

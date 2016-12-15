@@ -13,8 +13,6 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.render.IItemColorMultiplier;
-import gregtech.common.render.items.IItemIconProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -65,7 +63,7 @@ import java.util.Random;
         //@Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = "BuildCraft"),
         //@Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = "EnderIO")
 })
-public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements IDamagableItem, IToolGrafter, IItemIconProvider, IItemColorMultiplier {//, IToolGrafter, IToolCrowbar, IToolWrench, ITool {
+public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements IDamagableItem, IToolGrafter {//, IToolGrafter, IToolCrowbar, IToolWrench, ITool {
     /**
      * All instances of this Item Class are listed here.
      * This gets used to register the Renderer to all Items of this Type, if useStandardMetaItemRenderer() returns true.
@@ -710,7 +708,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
 
     @Override
     @SideOnly(Side.CLIENT)
-    public int getColorFromItemstack(ItemStack stack, int tintIndex) {
+    public int getColorFromItemStack(ItemStack stack, int tintIndex) {
         IToolStats toolStats = getToolStats(stack);
         switch (tintIndex) {
             case 2:
@@ -766,7 +764,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
     @Override
     @SideOnly(Side.CLIENT)
     public int getRenderPasses(ItemStack stack) {
-        return 3;
+        return 4;
     }
 
     @Override

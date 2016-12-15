@@ -2,7 +2,6 @@ package gregtech.common.blocks;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IDebugableBlock;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -13,8 +12,7 @@ import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.render.data.IIconRegister;
-import gregtech.common.render.blocks.IBlockTextureProvider;
+import gregtech.common.render.GT_Renderer_Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
@@ -31,6 +29,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -40,7 +39,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -50,7 +48,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlock, ITileEntityProvider, IIconRegister, IBlockTextureProvider {
+public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlock, ITileEntityProvider {
 
     public GT_Block_Machines() {
         super(GT_Item_Machines.class, "gt.blockmachines", new GT_Material_Machines());
@@ -181,28 +179,6 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     }
 
     @Override
-    public ITexture[] getTexture(World world, BlockPos blockPos, IExtendedBlockState blockState, EnumFacing side) {
-        IGregTechTileEntity gregTechTileEntity = getGregTile(world, blockPos);
-        if(gregTechTileEntity != null) {
-            return gregTechTileEntity.getTexture(this, (byte) side.getIndex());
-        }
-        return new ITexture[0];
-    }
-
-    @Override
-    public ITexture[] getItemblockTexture(EntityPlayer player, ItemStack itemStack, EnumFacing side) {
-        int tDamage = itemStack.getItemDamage();
-        if(GregTech_API.METATILEENTITIES.length > tDamage) {
-            if (GregTech_API.METATILEENTITIES[tDamage] != null) {
-                return GregTech_API.METATILEENTITIES[tDamage].getTexture(null, (byte) side.getIndex(), (byte) 2, (byte) -1, false, false);
-            } else {
-                System.out.println("METATILEENTITY WAS NULL FOR MACHINE " + tDamage);
-            }
-        }
-        return new ITexture[0];
-    }
-
-    @Override
     public boolean eventReceived(IBlockState state, World worldIn, BlockPos pos, int id, int param) {
         TileEntity tTileEntity = worldIn.getTileEntity(pos);
         return tTileEntity != null && tTileEntity.receiveClientEvent(id, param);
@@ -286,7 +262,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
             return false;
         }
         if(playerIn.isSneaking()) {
-            ItemStack handItem = playerIn.getHeldItem(hand);
+            ItemStack handItem = playerIn.inventory.getCurrentItem();
             if(handItem != null && GT_Utility.isStackInList(handItem, GregTech_API.sScrewdriverList)) {
                 return true;
             }
@@ -519,20 +495,17 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     }
 
     @Override
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
-
-    @Override
     public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
     @Override
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-        IGregTechTileEntity tileEntity = getGregTile(blockAccess, pos);
-        return super.shouldSideBeRendered(blockState, blockAccess, pos, side) ||
-                tileEntity != null && tileEntity instanceof BaseMetaPipeEntity;
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return GT_Renderer_Block.INSTANCE.renderType;
     }
 
+    @Override
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
+    }
 }

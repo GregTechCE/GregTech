@@ -1,10 +1,10 @@
 package gregtech.common.items;
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.render.IItemColorMultiplier;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,10 +19,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class GT_FluidDisplayItem extends GT_Generic_Item implements IItemColorMultiplier {
+public class GT_FluidDisplayItem extends GT_Generic_Item {
     public GT_FluidDisplayItem() {
         super("GregTech_FluidDisplay", "Fluid Display", null);
         ItemList.Display_Fluid.set(this);
+        setCreativeTab(GregTech_API.TAB_GREGTECH_MATERIALS);
     }
 
     @Override
@@ -53,12 +54,10 @@ public class GT_FluidDisplayItem extends GT_Generic_Item implements IItemColorMu
 
     @Override
     @SideOnly(Side.CLIENT)
-    public int getColorFromItemstack(ItemStack stack, int tintIndex) {
+    public int getColorFromItemStack(ItemStack stack, int tintIndex) {
         Fluid tFluid = FluidRegistry.getFluid(stack.getItemDamage());
         return tFluid == null ? 16777215 : tFluid.getColor();
     }
-    
-
 
     @Override
     public String getUnlocalizedName(ItemStack aStack) {

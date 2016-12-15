@@ -1,36 +1,32 @@
 package gregtech.common.items;
 
-import ic2.core.item.type.CraftingItemType;
-import ic2.core.ref.ItemName;
-import net.minecraft.block.BlockCauldron;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Enchantments;
-import net.minecraft.init.MobEffects;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.IItemBehaviour;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.items.GT_MetaGenerated_Item_X32;
 import gregtech.api.objects.GT_MultiTexture;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.ItemData;
-import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.*;
 import gregtech.common.covers.*;
 import gregtech.common.items.behaviors.*;
-import net.minecraft.block.Block;
-import net.minecraft.enchantment.Enchantment;
+import ic2.core.item.type.CraftingItemType;
+import ic2.core.ref.ItemName;
+import net.minecraft.block.BlockCauldron;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.common.Loader;
 
 import java.util.Collection;
 import java.util.List;
@@ -43,6 +39,15 @@ public class GT_MetaGenerated_Item_01
     public GT_MetaGenerated_Item_01() {
         super("metaitem.01", OrePrefixes.dustTiny, OrePrefixes.dustSmall, OrePrefixes.dust, OrePrefixes.dustImpure, OrePrefixes.dustPure, OrePrefixes.crushed, OrePrefixes.crushedPurified, OrePrefixes.crushedCentrifuged, OrePrefixes.gem, OrePrefixes.nugget, null, OrePrefixes.ingot, OrePrefixes.ingotHot, OrePrefixes.ingotDouble, OrePrefixes.ingotTriple, OrePrefixes.ingotQuadruple, OrePrefixes.ingotQuintuple, OrePrefixes.plate, OrePrefixes.plateDouble, OrePrefixes.plateTriple, OrePrefixes.plateQuadruple, OrePrefixes.plateQuintuple, OrePrefixes.plateDense, OrePrefixes.stick, OrePrefixes.lens, OrePrefixes.round, OrePrefixes.bolt, OrePrefixes.screw, OrePrefixes.ring, OrePrefixes.foil, OrePrefixes.cell, OrePrefixes.cellPlasma);
         INSTANCE = this;
+
+        //it's here because OrePrefixes.cell is handled by gt.metaitem.01
+        ItemList.Cell_Empty.set(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1));
+        ItemList.Cell_Air.set(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Air, 1));
+        ItemList.Cell_Water.set(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1));
+        ItemList.Cell_Lava.set(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Lava, 1));
+
+        OrePrefixes.cellPlasma.mContainerItem = ItemList.Cell_Empty.get(1);
+        OrePrefixes.cell.mContainerItem = ItemList.Cell_Empty.get(1);
 
         int tLastID = 0;
 

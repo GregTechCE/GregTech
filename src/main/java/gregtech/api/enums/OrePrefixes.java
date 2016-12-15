@@ -428,13 +428,17 @@ public enum OrePrefixes {
         ingot.mNotGeneratedItems.add(Materials.Wood);
         nugget.mNotGeneratedItems.add(Materials.Gold);
         plate.mNotGeneratedItems.add(Materials.Paper);
-        cell.mNotGeneratedItems.add(Materials.Empty);
+
+        /*cell.mNotGeneratedItems.add(Materials.Empty);
         cell.mNotGeneratedItems.add(Materials.Water);
         cell.mNotGeneratedItems.add(Materials.Lava);
         cell.mNotGeneratedItems.add(Materials.ConstructionFoam);
         cell.mNotGeneratedItems.add(Materials.UUMatter);
         cell.mNotGeneratedItems.add(Materials.BioFuel);
-        cell.mNotGeneratedItems.add(Materials.CoalFuel);
+        cell.mNotGeneratedItems.add(Materials.CoalFuel);*/
+        //Now all of these need to be generated
+        //because IC2 removed normal cells
+
         bucket.mNotGeneratedItems.add(Materials.Empty);
         bucket.mNotGeneratedItems.add(Materials.Lava);
         bucket.mNotGeneratedItems.add(Materials.Milk);

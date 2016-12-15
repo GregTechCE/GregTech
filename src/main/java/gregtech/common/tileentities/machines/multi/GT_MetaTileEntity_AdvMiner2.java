@@ -16,8 +16,6 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
-import gregtech.common.blocks.GT_TileEntity_Ores;
 import ic2.core.block.machine.BlockMiningPipe;
 import ic2.core.ref.BlockName;
 import net.minecraft.block.Block;
@@ -113,13 +111,13 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
                     for (int f = -48; f < 49; f++) {
                         Block tBlock = getBaseMetaTileEntity().getBlockOffset(i, yLevel - getBaseMetaTileEntity().getYCoord(), f);
                         int tMetaID = getBaseMetaTileEntity().getMetaIDOffset(i, yLevel - getBaseMetaTileEntity().getYCoord(), f);
-                        if (tBlock instanceof GT_Block_Ores_Abstract) {
-                            TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityOffset(i, yLevel - getBaseMetaTileEntity().getYCoord(), f);
-                            if ((tTileEntity!=null) && (tTileEntity instanceof GT_TileEntity_Ores) && ((GT_TileEntity_Ores) tTileEntity).mNatural == true && !mMineList.contains(new BlockPos(i, yLevel - getBaseMetaTileEntity().getYCoord(), f))) {
-                                mMineList.add(new BlockPos(i, yLevel - getBaseMetaTileEntity().getYCoord(), f));
-                            }
-                        }
-                        else {
+                       // if (tBlock instanceof GT_Block_Ores_Abstract) {
+                       //     TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityOffset(i, yLevel - getBaseMetaTileEntity().getYCoord(), f);
+                       //     if ((tTileEntity!=null) && (tTileEntity instanceof GT_TileEntity_Ores) && ((GT_TileEntity_Ores) tTileEntity).mNatural == true && !mMineList.contains(new BlockPos(i, yLevel - getBaseMetaTileEntity().getYCoord(), f))) {
+                       //         mMineList.add(new BlockPos(i, yLevel - getBaseMetaTileEntity().getYCoord(), f));
+                       //     }
+                       // }
+                        //else {
                             ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
                             if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {
                                 BlockPos cp = new BlockPos(i, yLevel - getBaseMetaTileEntity().getYCoord(), f);
@@ -127,7 +125,7 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
                                     mMineList.add(cp);
                                 }
                             }
-                        }
+                       // }
                     }
                 }
             }

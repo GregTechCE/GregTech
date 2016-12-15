@@ -11,10 +11,10 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
-import gregtech.common.render.entity.GT_CapeRenderer;
-import gregtech.common.render.entity.GT_Renderer_Entity_Arrow;
-import gregtech.common.render.GT_RenderDispatcher;
+import gregtech.common.render.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentString;
@@ -36,7 +36,6 @@ public class GT_Client extends GT_Proxy
         implements Runnable {
 
     private final HashSet<String> mCapeList = new HashSet<>();
-    private final GT_CapeRenderer mCapeRenderer;
     private final List<Materials> mPosR;
     private final List<Materials> mPosG;
     private final List<Materials> mPosB;
@@ -59,7 +58,6 @@ public class GT_Client extends GT_Proxy
     private String mMessage;
 
     public GT_Client() {
-        mCapeRenderer = new GT_CapeRenderer(mCapeList);
         mAnimationTick = 0L;
         mAnimationDirection = false;
         isFirstClientPlayerTick = true;
@@ -146,7 +144,7 @@ public class GT_Client extends GT_Proxy
                 "Abouttabs", "Johnstaal", "djshiny99", "megatronp", "DZCreeper", "Kane_Hart", "Truculent", "vidplace7", "simon6689", "MomoNasty",
                 "UnknownXLV", "goreacraft", "Fluttermine", "Daddy_Cecil", "MrMaleficus", "TigersFangs", "cublikefoot", "chainman564", "NikitaBuker", "Misha999777",
                 "25FiveDetail", "AntiCivilBoy", "michaelbrady", "xXxIceFirexXx", "Speedynutty68", "GarretSidzaka", "HallowCharm977", "mastermind1919", "The_Hypersonic", "diamondguy2798",
-                "zF4ll3nPr3d4t0r", "CrafterOfMines57", "XxELIT3xSNIP3RxX", "SuterusuKusanagi", "xavier0014", "adamros", "alexbegt"
+                "zF4ll3nPr3d4t0r", "CrafterOfMines57", "XxELIT3xSNIP3RxX", "SuterusuKusanagi", "xavier0014", "adamros", "alexbegt", "Archengius"
         };
         for (String tName : arr$) {
             mCapeList.add(tName.toLowerCase());
@@ -158,11 +156,11 @@ public class GT_Client extends GT_Proxy
         super.onLoad();
 
         RenderingRegistry.registerEntityRenderingHandler(GT_Entity_Arrow.class, manager -> {
-            return new GT_Renderer_Entity_Arrow(GT_Entity_Arrow.class, "arrow", manager);
+            return new GT_Renderer_Entity_Arrow(manager, GT_Entity_Arrow.class, "arrow");
         });
 
         RenderingRegistry.registerEntityRenderingHandler(GT_Entity_Arrow.class, manager -> {
-            return new GT_Renderer_Entity_Arrow(GT_Entity_Arrow_Potion.class, "arrow_potions", manager);
+            return new GT_Renderer_Entity_Arrow(manager, GT_Entity_Arrow_Potion.class, "arrow_potions");
         });
     }
 
@@ -175,7 +173,15 @@ public class GT_Client extends GT_Proxy
         Textures.ItemIcons.BUTCHERYKNIFE.getClass();
         TextureSet.SET_DIAMOND.getClass();
 
-        new GT_RenderDispatcher();
+        RenderBlocks.INSTANCE.init();
+        RenderGeneratedOres.INSTANCE.init();
+        GT_Renderer_Block.INSTANCE.init();
+        ItemRenderer.INSTANCE.init();
+
+        RenderManager manager = Minecraft.getMinecraft().getRenderManager();
+        Map<String, RenderPlayer> map = manager.getSkinMap();
+        map.get("default").addLayer(new GT_CapeRendererLayer(mCapeList, map.get("default")));
+        map.get("slim").addLayer(new GT_CapeRendererLayer(mCapeList, map.get("slim")));
     }
 
     public void run() {
@@ -193,13 +199,13 @@ public class GT_Client extends GT_Proxy
                 }
             }
         } catch (Throwable e) {}
-        try {
+        /*try {
             GT_Log.out.println("GT_Mod: Downloading News.");
             Scanner tScanner = new Scanner(new URL("http://files.minecraftforge.net/maven/com/gregoriust/gregtech/message.txt").openStream());
             while (tScanner.hasNextLine()) {
                 this.mMessage = (this.mMessage + tScanner.nextLine() + " ");
             }
-        } catch (Throwable e) {}
+        } catch (Throwable e) {}*/
     }
 
     @SubscribeEvent
@@ -242,11 +248,6 @@ public class GT_Client extends GT_Proxy
         if (GT_Utility.getFullInvisibility(aEvent.getEntityPlayer())) {
             aEvent.setCanceled(true);
         }
-    }
-
-    @SubscribeEvent
-    public void receiveRenderSpecialsEvent(net.minecraftforge.client.event.RenderPlayerEvent.Specials.Pre aEvent) {
-        mCapeRenderer.receiveRenderSpecialsEvent(aEvent);
     }
 
     @SubscribeEvent

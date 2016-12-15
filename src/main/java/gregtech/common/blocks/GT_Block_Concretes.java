@@ -65,11 +65,11 @@ public class GT_Block_Concretes extends GT_Block_Stones_Abstract {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public ImmutableList<BakedQuad> getIcon(EnumFacing aSide, int aMeta) {
+    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
-            return gregtech.api.enums.Textures.BlockIcons.CONCRETES[aMeta].getQuads(aSide);
+            return gregtech.api.enums.Textures.BlockIcons.CONCRETES[aMeta].getIcon();
         }
-        return gregtech.api.enums.Textures.BlockIcons.CONCRETES[0].getQuads(aSide);
+        return gregtech.api.enums.Textures.BlockIcons.CONCRETES[0].getIcon();
     }
 
     @Override

@@ -8,45 +8,33 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.render.IItemColorMultiplier;
-import gregtech.common.render.data.IIconRegister;
-import gregtech.common.render.items.IItemIconProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-import static gregtech.api.enums.GT_Values.MOD_ID;
-
-public class ItemComb extends Item implements IItemIconProvider, IIconRegister, IItemColorMultiplier {
+public class ItemComb extends GT_Generic_Item {
 
     @SideOnly(Side.CLIENT)
 	private TextureAtlasSprite itemIcon, secondIcon;
 
 	public ItemComb() {
-		super();
+		super("gt.comb", "Comb", "");
 		this.setCreativeTab(Tabs.tabApiculture);
 		this.setHasSubtypes(true);
-		this.setUnlocalizedName("gt.comb");
-        setRegistryName(MOD_ID, "gt.comb");
-		GameRegistry.registerItem(this);
 	}
 
 	public ItemStack getStackForType(CombType type) {
 		return new ItemStack(this, 1, type.ordinal());
-	}
-
-	public ItemStack getStackForType(CombType type, int count) {
-		return new ItemStack(this, count, type.ordinal());
 	}
 
 	@Override
@@ -79,7 +67,7 @@ public class ItemComb extends Item implements IItemIconProvider, IIconRegister, 
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public int getColorFromItemstack(ItemStack stack, int pass) {
+	public int getColorFromItemStack(ItemStack stack, int pass) {
 		int meta = Math.max(0, Math.min(CombType.values().length - 1, stack.getItemDamage()));
 		int colour = CombType.values()[meta].getColours()[0];
 

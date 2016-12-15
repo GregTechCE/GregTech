@@ -3,8 +3,7 @@ package gregtech.common;
 import gregtech.api.GregTech_API;
 import gregtech.api.world.GT_Worldgen_Ore;
 import gregtech.api.world.GT_Worldgen_Constants;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.rework.GT_Block_GeneratedOres;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -22,6 +21,8 @@ public class GT_Worldgen_Stone
     public GT_Worldgen_Stone(String aName, boolean aDefault, Block aBlock, int aBlockMeta, int aDimensionType, int aAmount, int aSize, int aProbability, int aMinY, int aMaxY, Collection<String> aBiomeList, boolean aAllowToGenerateinVoid) {
         super(aName, aDefault, aBlock, aBlockMeta, aDimensionType, aAmount, aSize, aProbability, aMinY, aMaxY, aBiomeList, aAllowToGenerateinVoid);
     }
+    
+    private BlockPos.MutableBlockPos temp = new BlockPos.MutableBlockPos();
 
     @Override
     public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX, int aChunkZ, IChunkGenerator aChunkGenerator, IChunkProvider aChunkProvider) {
@@ -30,7 +31,8 @@ public class GT_Worldgen_Stone
                 int tX = aChunkX + aRandom.nextInt(16);
                 int tY = this.mMinY + aRandom.nextInt(this.mMaxY - this.mMinY);
                 int tZ = aChunkZ + aRandom.nextInt(16);
-                if ((this.mAllowToGenerateinVoid) || (!aWorld.isAirBlock(new BlockPos(tX, tY, tZ)))) {
+                temp.setPos(tX, tY, tZ);
+                if ((this.mAllowToGenerateinVoid) || !aWorld.isAirBlock(temp)) {
                     float var6 = aRandom.nextFloat() * 3.141593F;
                     double var7 = tX + 8 + MathHelper.sin(var6) * this.mSize / 8.0F;
                     double var9 = tX + 8 - MathHelper.sin(var6) * this.mSize / 8.0F;
@@ -60,19 +62,13 @@ public class GT_Worldgen_Stone
                                         for (int eZ = tMinZ; eZ <= tMaxZ; eZ++) {
                                             double var45 = (eZ + 0.5D - var24) / (var28 / 2.0D);
                                             if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D) {
-                                                BlockPos randPos = new BlockPos(eX, eY, eZ);
-                                                IBlockState tTargetedBlock = aWorld.getBlockState(randPos);
-                                                if (tTargetedBlock instanceof GT_Block_Ores_Abstract) {
-                                                    TileEntity tTileEntity = aWorld.getTileEntity(randPos);
-                                                    if ((tTileEntity instanceof GT_TileEntity_Ores)) {
-                                                        if (tTargetedBlock != GregTech_API.sBlockOres1) {
-                                                            //((GT_TileEntity_Ores) tTileEntity).convertOreBlock(aWorld, eX, eY, eZ);
-                                                        }
-                                                        ((GT_TileEntity_Ores)tTileEntity).overrideOreBlockMaterial(this.mBlock, (byte) this.mBlockMeta);
-                                                    }
-                                                } else if ((this.mAllowToGenerateinVoid && aWorld.isAirBlock(randPos)) ||
-                                                        (tTargetedBlock != null && tTargetedBlock.getBlock().isReplaceableOreGen(tTargetedBlock, aWorld, randPos, GT_Worldgen_Constants.ANY))) {
-                                                    aWorld.setBlockState(randPos, this.mBlock.getStateFromMeta(mBlockMeta));
+                                                temp.setPos(eX, eY, eZ);
+                                                IBlockState tTargetedBlock = aWorld.getBlockState(temp);
+                                                if (tTargetedBlock.getBlock() instanceof GT_Block_GeneratedOres) {
+
+                                                } else if ((this.mAllowToGenerateinVoid && aWorld.isAirBlock(temp)) ||
+                                                        (tTargetedBlock != null && tTargetedBlock.getBlock().isReplaceableOreGen(tTargetedBlock, aWorld, temp, GT_Worldgen_Constants.ANY))) {
+                                                    aWorld.setBlockState(temp, this.mBlock.getStateFromMeta(mBlockMeta));
                                                 }
                                             }
                                         }

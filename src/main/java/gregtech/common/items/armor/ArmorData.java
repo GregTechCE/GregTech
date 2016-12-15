@@ -251,7 +251,7 @@ public class ArmorData {
 					tmp.data.partsCharge -= loaded;
 
 				}
-				switch (tmp.armorType) {
+				switch (tmp.mType) {
                     case HEAD:
 					helmet = tmp.data;
 					break;

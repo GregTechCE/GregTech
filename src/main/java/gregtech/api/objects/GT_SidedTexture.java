@@ -1,50 +1,30 @@
 package gregtech.api.objects;
 
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.util.EnumFacing;
+import gregtech.common.render.RenderBlocks;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.awt.*;
-import java.util.*;
-import java.util.List;
-
 public class GT_SidedTexture implements ITexture {
 
-    private EnumMap<EnumFacing, ITexture> sidedTextures;
+    public final GT_RenderedTexture[] mSides;
 
-    private final IIconContainer[] mIconContainer;
-    public int mRGBa;
+    public GT_SidedTexture(IIconContainer aIcon0, IIconContainer aIcon1, IIconContainer aIcon2, IIconContainer aIcon3, IIconContainer aIcon4, IIconContainer aIcon5, short[] aRGBa, boolean aAllowAlpha) {
+        if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GT_RenderedTexture");
+        IIconContainer[] mIconContainer = new IIconContainer[]{aIcon0, aIcon1, aIcon2, aIcon3, aIcon4, aIcon5};
+        mSides = new GT_RenderedTexture[6];
+        for(int i = 0; i < 6; i++) {
+            mSides[i] = new GT_RenderedTexture(mIconContainer[i], aRGBa);
+        }
+    }
 
     public GT_SidedTexture(IIconContainer aIcon0, IIconContainer aIcon1, IIconContainer aIcon2, IIconContainer aIcon3, IIconContainer aIcon4, IIconContainer aIcon5, short[] aRGBa) {
-        if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GT_RenderedTexture");
-        mIconContainer = new IIconContainer[]{aIcon0, aIcon1, aIcon2, aIcon3, aIcon4, aIcon5};
-        mRGBa = makeColor(aRGBa);
-        generate9();
-    }
-
-    private void generate9() {
-        sidedTextures = new EnumMap<>(EnumFacing.class);
-        for(EnumFacing side : EnumFacing.VALUES) {
-            GT_RenderedTexture texture = new GT_RenderedTexture(mIconContainer[side.getIndex()], mRGBa);
-            sidedTextures.put(side, texture);
-        }
-    }
-
-    private int makeColor(short[] rgba) {
-        try {
-            for(int i = 0; i < 4; i++)
-                rgba[i] = (short) Math.max(0, rgba[i]);
-            return new Color(rgba[0], rgba[1], rgba[2], rgba[3]).getRGB();
-        } catch (IllegalArgumentException err) {
-            return Color.WHITE.getRGB();
-        }
+        this(aIcon0, aIcon1, aIcon2, aIcon3, aIcon4, aIcon5, aRGBa, true);
     }
 
     public GT_SidedTexture(IIconContainer aIcon0, IIconContainer aIcon1, IIconContainer aIcon2, IIconContainer aIcon3, IIconContainer aIcon4, IIconContainer aIcon5) {
@@ -61,27 +41,44 @@ public class GT_SidedTexture implements ITexture {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public List<BakedQuad> getQuads(Block aBlock, BlockPos blockPos, EnumFacing side, float offset) {
-        if(side != null) {
-            return sidedTextures.get(side).getQuads(aBlock, blockPos, side, offset);
-        }
-        return Collections.emptyList();
+    public void renderXPos(RenderBlocks aRenderer, IBlockState aState, BlockPos aPos, int lightning, boolean aItem, VertexBuffer buf) {
+        mSides[5].renderXPos(aRenderer, aState, aPos, lightning, aItem, buf);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void renderXNeg(RenderBlocks aRenderer, IBlockState aState, BlockPos aPos, int lightning, boolean aItem, VertexBuffer buf) {
+        mSides[4].renderXNeg(aRenderer, aState, aPos, lightning, aItem, buf);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void renderYPos(RenderBlocks aRenderer, IBlockState aState, BlockPos aPos, int lightning, boolean aItem, VertexBuffer buf) {
+        mSides[1].renderYPos(aRenderer, aState, aPos, lightning, aItem, buf);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void renderYNeg(RenderBlocks aRenderer, IBlockState aState, BlockPos aPos, int lightning, boolean aItem, VertexBuffer buf) {
+        mSides[0].renderYNeg(aRenderer, aState, aPos, lightning, aItem, buf);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void renderZPos(RenderBlocks aRenderer, IBlockState aState, BlockPos aPos, int lightning, boolean aItem, VertexBuffer buf) {
+        mSides[3].renderZPos(aRenderer, aState, aPos, lightning, aItem, buf);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void renderZNeg(RenderBlocks aRenderer, IBlockState aState, BlockPos aPos, int lightning, boolean aItem, VertexBuffer buf) {
+        mSides[2].renderZNeg(aRenderer, aState, aPos, lightning, aItem, buf);
     }
 
     @Override
     public boolean isValidTexture() {
-        return mIconContainer != null &&
-                mIconContainer[0] != null &&
-                mIconContainer[1] != null &&
-                mIconContainer[2] != null &&
-                mIconContainer[3] != null &&
-                mIconContainer[4] != null &&
-                mIconContainer[5] != null;
+        return true;
     }
 
-    @Override
-    public boolean needsNonSidedRendering() {
-        return false;
-    }
 
 }

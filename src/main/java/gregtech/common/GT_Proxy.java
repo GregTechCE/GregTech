@@ -277,10 +277,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         ItemList.Bottle_Empty.set(new ItemStack(Items.GLASS_BOTTLE, 1));
 
         ItemList.Cell_Universal_Fluid.set(GT_ModHandler.getIC2Item(ItemName.fluid_cell, "", 1));
-        ItemList.Cell_Empty.set(GT_ModHandler.getIC2Item(ItemName.fluid_cell, "", 1));
-        ItemList.Cell_Water.set(GT_ModHandler.getIC2Item(ItemName.fluid_cell, FluidRegistry.WATER.getName(), 1));
-        ItemList.Cell_Lava.set(GT_ModHandler.getIC2Item(ItemName.fluid_cell, FluidRegistry.LAVA.getName(), 1));
-        ItemList.Cell_Air.set(GT_ModHandler.getIC2Item(ItemName.fluid_cell, FluidName.air, 1));
 
         ItemList.IC2_Item_Casing_Iron.set(GT_ModHandler.getIC2Item(ItemName.casing, CasingResourceType.iron, 1));
         ItemList.IC2_Item_Casing_Gold.set(GT_ModHandler.getIC2Item(ItemName.casing, CasingResourceType.gold, 1));
@@ -352,10 +348,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         ItemList.Food_Baked_Potato.set(new ItemStack(Items.BAKED_POTATO, 1, 0));
         ItemList.Food_Poisonous_Potato.set(new ItemStack(Items.POISONOUS_POTATO, 1, 0));
 
+
         OrePrefixes.bottle.mContainerItem = ItemList.Bottle_Empty.get(1);
         OrePrefixes.bucket.mContainerItem = new ItemStack(Items.BUCKET, 1);
-        OrePrefixes.cellPlasma.mContainerItem = ItemList.Cell_Empty.get(1);
-        OrePrefixes.cell.mContainerItem = ItemList.Cell_Empty.get(1);
 
         GregTech_API.sFrostHazmatList.add(ItemName.hazmat_helmet.getItemStack());
         GregTech_API.sFrostHazmatList.add(ItemName.hazmat_chestplate.getItemStack());
@@ -1816,11 +1811,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                     aMaterial.mStandardMoltenFluid = rFluid;
             }
         }
+        registerFluidContainer(aFullContainer, aEmptyContainer, rFluid, aFluidAmount);
+        return rFluid;
+    }
+
+    public void registerFluidContainer(ItemStack aFullContainer, ItemStack aEmptyContainer, Fluid rFluid, int aFluidAmount) {
         if ((aFullContainer != null) && (aEmptyContainer != null)
                 && (!FluidContainerRegistry.registerFluidContainer(new FluidStack(rFluid, aFluidAmount), aFullContainer, aEmptyContainer))) {
             GT_Values.RA.addFluidCannerRecipe(aFullContainer, GT_Utility.getContainerItem(aFullContainer, false), null, new FluidStack(rFluid, aFluidAmount));
         }
-        return rFluid;
     }
 
     public File getSaveDirectory() {

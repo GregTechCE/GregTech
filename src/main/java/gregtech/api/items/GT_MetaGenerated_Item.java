@@ -1,17 +1,5 @@
 package gregtech.api.items;
 
-import gregtech.common.render.IItemColorMultiplier;
-import gregtech.common.render.data.IIconRegister;
-import gregtech.common.render.items.IItemIconProvider;
-import ic2.api.item.IElectricItem;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -25,12 +13,21 @@ import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import ic2.api.item.IElectricItem;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.awt.*;
 import java.util.*;
@@ -50,7 +47,7 @@ import static gregtech.api.enums.GT_Values.*;
  *         <p/>
  *         These Items can also have special RightClick abilities, electric Charge or even be set to become a Food alike Item.
  */
-public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements IElectricItem, IItemIconProvider, IIconRegister, IItemColorMultiplier {
+public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements IElectricItem {
     /**
      * All instances of this Item Class are listed here.
      * This gets used to register the Renderer to all Items of this Type, if useStandardMetaItemRenderer() returns true.
@@ -245,8 +242,8 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
 
     @Override
     @SideOnly(Side.CLIENT)
-    public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-        return makeColor(getRGBa(stack, tintIndex));
+    public int getColorFromItemStack(ItemStack stack, int pass) {
+        return makeColor(getRGBa(stack, pass));
     }
 
     private int makeColor(short[] rgba) {
@@ -349,6 +346,8 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
                 mIconList[i][0] = aIconRegister.registerSprite(new ResourceLocation(RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i)));
             }
     }
+
+
 
     @Override
     public final Long[] getElectricStats(ItemStack aStack) {

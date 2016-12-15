@@ -83,7 +83,7 @@ dependencies {
     //provided ("appeng:appliedenergistics2:${config.ae2.version}:dev") {
     //    exclude module: '*'
     //}
-    //provided "codechicken:CodeChickenLib:${config.minecraft.version}-${config.codechickenlib.version}:dev"
+    provided "codechicken:CodeChickenLib:${config.minecraft.version}-${config.codechickenlib.version}:deobf"
 	//provided "codechicken:CodeChickenCore:${config.minecraft.version}-${config.codechickencore.version}:dev"
     //provided "codechicken:NotEnoughItems:${config.minecraft.version}-${config.nei.version}:dev"
     provided "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"

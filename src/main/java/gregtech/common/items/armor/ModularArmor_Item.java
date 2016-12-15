@@ -2,8 +2,7 @@ package gregtech.common.items.armor;
 
 import gregtech.api.damagesources.GT_DamageSources;
 import gregtech.api.enums.GT_Values;
-import gregtech.common.render.data.IIconRegister;
-import gregtech.common.render.items.IItemIconProvider;
+import gregtech.api.items.GT_Generic_Item;
 import ic2.core.IC2;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -16,7 +15,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -28,7 +26,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -36,7 +33,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class ModularArmor_Item extends ItemArmor implements ISpecialArmor, IIconRegister, IItemIconProvider {
+public class ModularArmor_Item extends GT_Generic_Item implements ISpecialArmor {
 
     private static final Potion NIGHT_VISION = Potion.getPotionFromResourceLocation("night_vision");
 
@@ -51,19 +48,23 @@ public class ModularArmor_Item extends ItemArmor implements ISpecialArmor, IIcon
     public int jumpticks;
 
     // public int maxEU;
+    public final EntityEquipmentSlot mType;
 
-    public ModularArmor_Item(EntityEquipmentSlot aType, String name, int gui) {
-        super(ArmorMaterial.DIAMOND, 0, aType);
+    public ModularArmor_Item(EntityEquipmentSlot aType, String name, int gui, String aEnglishName) {
+        super(name, aEnglishName, "");
         MinecraftForge.EVENT_BUS.register(this);
-        setUnlocalizedName("gregtech:" + name);
-        setRegistryName(GT_Values.MOD_ID, name);
-        mName = name;
+        this.mType = aType;
+        this.mName = name;
         int mMaxDamage = (gui + 1) * 1024;
         mMaxDamage *= getBaseAbsorptionRatio() * 2.5;
         setMaxDamage(mMaxDamage);
-        repairMaterial = Items.LEATHER;
-        openGuiNr = gui;
-        GameRegistry.register(this);
+        this.repairMaterial = Items.LEATHER;
+        this.openGuiNr = gui;
+    }
+
+    @Override
+    public boolean isValidArmor(ItemStack stack, EntityEquipmentSlot armorType, Entity entity) {
+        return armorType == mType;
     }
 
     @Override
@@ -374,13 +375,12 @@ public class ModularArmor_Item extends ItemArmor implements ISpecialArmor, IIcon
         return true;
     }
 
-    @Override
+
     @SideOnly(Side.CLIENT)
     public void registerIcons(TextureMap aIconRegister) {
         this.itemIcon = aIconRegister.registerSprite(new ResourceLocation(GT_Values.MOD_ID + ":" + mName));
     }
 
-    @Override
     @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getIcon(ItemStack stack, int pass) {
         return itemIcon;
@@ -429,11 +429,11 @@ public class ModularArmor_Item extends ItemArmor implements ISpecialArmor, IIcon
 	}*/
 
     public ArmorData fillArmorData(EntityPlayer player, ItemStack stack) {
-        return new ArmorData(player, stack, this.armorType.getIndex(), openGuiNr);
+        return new ArmorData(player, stack, this.mType.getIndex(), openGuiNr);
     }
 
     public double getBaseAbsorptionRatio() {
-        switch (this.armorType) {
+        switch (this.mType) {
             case HEAD:
                 return 0.15;
             case CHEST:

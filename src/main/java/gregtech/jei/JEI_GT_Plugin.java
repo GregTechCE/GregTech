@@ -1,8 +1,12 @@
 package gregtech.jei;
 
+import gregtech.api.GregTech_API;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.util.GT_Recipe;
 import mezz.jei.api.*;
 import mezz.jei.api.ingredients.IModIngredientRegistration;
+import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.stream.Collectors;
@@ -28,6 +32,17 @@ public class JEI_GT_Plugin implements IModPlugin {
                 registry.addRecipes(recipe_map.mRecipeList.stream()
                         .map(recipe -> new JEIGregtechRecipe(recipe_map, recipe))
                         .collect(Collectors.toList()));
+            }
+        }
+        for(int i = 0; i < GregTech_API.METATILEENTITIES.length; i++) {
+            IMetaTileEntity metaTileEntity = GregTech_API.METATILEENTITIES[i];
+            if(metaTileEntity instanceof GT_MetaTileEntity_BasicMachine) {
+                GT_MetaTileEntity_BasicMachine basicMachine = (GT_MetaTileEntity_BasicMachine) metaTileEntity;
+                GT_Recipe.GT_Recipe_Map recipe_map = basicMachine.getRecipeList();
+                if(recipe_map != null && recipe_map.mNEIAllowed) {
+                    ItemStack rStack = new ItemStack(GregTech_API.sBlockMachines, 1, i);
+                    registry.addRecipeCategoryCraftingItem(rStack, recipe_map.mUnlocalizedName);
+                }
             }
         }
     }

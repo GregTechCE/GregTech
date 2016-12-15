@@ -90,7 +90,7 @@ public class GT_Packet_TileEntity extends GT_Packet {
                 tTileEntity.setPos(new BlockPos(mX, mY, mZ));
                 aWorld.setTileEntity(new BlockPos(mX, mY, mZ), tTileEntity);
             }
-
+            //System.out.println("GTTileEntity process(World) " + tTileEntity);
             if (tTileEntity instanceof BaseMetaTileEntity)
                 ((BaseMetaTileEntity) tTileEntity).receiveMetaTileEntityData(mID, mC0, mC1, mC2, mC3, mC4, mC5, mTexture, mUpdate, mRedstone, mColor);
             else if (tTileEntity instanceof BaseMetaPipeEntity)

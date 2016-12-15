@@ -12,6 +12,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.*;
+import gregtech.common.blocks.rework.GT_Block_GeneratedOres;
 import gregtech.common.items.*;
 import gregtech.common.items.armor.ElectricModularArmor1;
 import gregtech.common.items.armor.ModularArmor_Item;
@@ -73,6 +74,10 @@ public class GT_Loader_Item_Block_And_Fluid
         new GT_MetaGenerated_Item_03();
         new GT_MetaGenerated_Tool_01();
         new GT_FluidDisplayItem();
+
+        new GT_Loader_OreDictionary().run();
+        new GT_Loader_ItemData().run();
+        new GT_Loader_OreProcessing().run();
 
         ItemList.Rotor_LV.set(GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Tin, 1));
         ItemList.Rotor_MV.set(GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Bronze, 1));
@@ -137,13 +142,8 @@ public class GT_Loader_Item_Block_And_Fluid
         GregTech_API.sBlockGranites = new GT_Block_Granites();
         GregTech_API.sBlockConcretes = new GT_Block_Concretes();
         GregTech_API.sBlockStones = new GT_Block_Stones();
-        GregTech_API.sBlockOres1 = new GT_Block_Ores();
-        if(Loader.isModLoaded("UndergroundBiomes")) {
-            GregTech_API.sBlockOresUb1 = new GT_Block_Ores_UB1();
-            GregTech_API.sBlockOresUb2 = new GT_Block_Ores_UB2();
-            GregTech_API.sBlockOresUb3 = new GT_Block_Ores_UB3();
-        }
-        //new GT_TickHandler_Ores();
+        GT_Block_GeneratedOres.doOreThings();
+
         GregTech_API.sBlockMetal1 = new GT_Block_Metal("gt.blockmetal1", new Materials[]{
                 Materials.Adamantium,
                 Materials.Aluminium,
@@ -359,13 +359,15 @@ public class GT_Loader_Item_Block_And_Fluid
         FMLInterModComms.sendMessage("appliedenergistics2", "whitelist-spatial", BaseMetaPipeEntity.class.getName());
 
         GT_Log.out.println("GT_Mod: Registering the Ore TileEntity.");
-        GameRegistry.registerTileEntity(GT_TileEntity_Ores.class, "GT_TileEntity_Ores");
-        FMLInterModComms.sendMessage("appliedenergistics2", "whitelist-spatial", GT_TileEntity_Ores.class.getName());
 
         GT_Log.out.println("GT_Mod: Registering Fluids.");
         Materials.ConstructionFoam.mFluid = FluidName.construction_foam.getInstance();
         Materials.UUMatter.mFluid = FluidName.uu_matter.getInstance();
 
+
+        //manually register fluid containers for vanilla liquids
+        GT_Mod.gregtechproxy.registerFluidContainer(ItemList.Cell_Water.get(1), ItemList.Cell_Empty.get(1), FluidRegistry.WATER, 10000);
+        GT_Mod.gregtechproxy.registerFluidContainer(ItemList.Cell_Lava.get(1), ItemList.Cell_Empty.get(1), FluidRegistry.LAVA, 10000);
 
         GT_Mod.gregtechproxy.addFluid("Air", "Air", Materials.Air, 2, 295, ItemList.Cell_Air.get(1), ItemList.Cell_Empty.get(1), 2000);
         GT_Mod.gregtechproxy.addFluid("Oxygen", "Oxygen", Materials.Oxygen, 2, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1), ItemList.Cell_Empty.get(1), 1000);
@@ -435,6 +437,7 @@ public class GT_Loader_Item_Block_And_Fluid
         if (ItemList.TF_Vial_FieryBlood.get(1) != null) {
             FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(Materials.FierySteel.getFluid(250L), ItemList.TF_Vial_FieryBlood.get(1), ItemList.Bottle_Empty.get(1)));
         }
+
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(Materials.Milk.getFluid(1000L), GT_OreDictUnificator.get(OrePrefixes.bucket, Materials.Milk, 1), GT_OreDictUnificator.get(OrePrefixes.bucket, Materials.Empty, 1)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(Materials.Milk.getFluid(250L), ItemList.Bottle_Milk.get(1), ItemList.Bottle_Empty.get(1)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(Materials.HolyWater.getFluid(250L), ItemList.Bottle_Holy_Water.get(1), ItemList.Bottle_Empty.get(1)));
@@ -631,18 +634,18 @@ public class GT_Loader_Item_Block_And_Fluid
         GT_OreDictUnificator.set(OrePrefixes.gem, Materials.Firestone, GT_ModHandler.getModItem("Railcraft", "firestone.raw", 1));
 
         new Values();
-		ItemList.ModularBasicHelmet.set(new ModularArmor_Item(EntityEquipmentSlot.HEAD, "modulararmor_helmet",0));
-		ItemList.ModularBasicChestplate.set(new ModularArmor_Item(EntityEquipmentSlot.CHEST, "modulararmor_chestplate",0));
-		ItemList.ModularBasicLeggings.set(new ModularArmor_Item(EntityEquipmentSlot.LEGS, "modulararmor_leggings",0));
-		ItemList.ModularBasicBoots.set(new ModularArmor_Item(EntityEquipmentSlot.FEET, "modulararmor_boots",0));
-		ItemList.ModularElectric1Helmet.set(new ElectricModularArmor1(EntityEquipmentSlot.HEAD, "modularelectric1_helmet",1));
-		ItemList.ModularElectric1Chestplate.set(new ElectricModularArmor1(EntityEquipmentSlot.CHEST, "modularelectric1_chestplate",1));
-		ItemList.ModularElectric1Leggings.set(new ElectricModularArmor1(EntityEquipmentSlot.LEGS, "modularelectric1_leggings",1));
-		ItemList.ModularElectric1Boots.set(new ElectricModularArmor1(EntityEquipmentSlot.FEET, "modularelectric1_boots",1));
-		ItemList.ModularElectric2Helmet.set(new ElectricModularArmor1(EntityEquipmentSlot.HEAD, "modularelectric2_helmet",2));
-		ItemList.ModularElectric2Chestplate.set(new ElectricModularArmor1(EntityEquipmentSlot.CHEST, "modularelectric2_chestplate",2));
-		ItemList.ModularElectric2Leggings.set(new ElectricModularArmor1(EntityEquipmentSlot.LEGS, "modularelectric2_leggings",2));
-		ItemList.ModularElectric2Boots.set(new ElectricModularArmor1(EntityEquipmentSlot.FEET, "modularelectric2_boots",2));
+		ItemList.ModularBasicHelmet.set(new ModularArmor_Item(EntityEquipmentSlot.HEAD, "modulararmor_helmet",0, "Modular Helmet"));
+		ItemList.ModularBasicChestplate.set(new ModularArmor_Item(EntityEquipmentSlot.CHEST, "modulararmor_chestplate",0, "Modular Chestplate"));
+		ItemList.ModularBasicLeggings.set(new ModularArmor_Item(EntityEquipmentSlot.LEGS, "modulararmor_leggings",0, "Modular Leggins"));
+		ItemList.ModularBasicBoots.set(new ModularArmor_Item(EntityEquipmentSlot.FEET, "modulararmor_boots", 0, "Modular Boots"));
+		ItemList.ModularElectric1Helmet.set(new ElectricModularArmor1(EntityEquipmentSlot.HEAD, "modularelectric1_helmet",1, "Modular Electric Helmet"));
+		ItemList.ModularElectric1Chestplate.set(new ElectricModularArmor1(EntityEquipmentSlot.CHEST, "modularelectric1_chestplate",1, "Modular Electric Chestplate"));
+		ItemList.ModularElectric1Leggings.set(new ElectricModularArmor1(EntityEquipmentSlot.LEGS, "modularelectric1_leggings",1, "Modular Electric Leggings"));
+		ItemList.ModularElectric1Boots.set(new ElectricModularArmor1(EntityEquipmentSlot.FEET, "modularelectric1_boots",1, "Modular Electric Boots"));
+		ItemList.ModularElectric2Helmet.set(new ElectricModularArmor1(EntityEquipmentSlot.HEAD, "modularelectric2_helmet",2, "Modular Electric Helmet (Tier 2)"));
+		ItemList.ModularElectric2Chestplate.set(new ElectricModularArmor1(EntityEquipmentSlot.CHEST, "modularelectric2_chestplate",2, "Modular Electric Chestplate (Tier 2)"));
+		ItemList.ModularElectric2Leggings.set(new ElectricModularArmor1(EntityEquipmentSlot.LEGS, "modularelectric2_leggings",2, "Modular Electric Leggings (Tier 2)"));
+		ItemList.ModularElectric2Boots.set(new ElectricModularArmor1(EntityEquipmentSlot.FEET, "modularelectric2_boots",2, "Modular Electric Boots (Tier 2)"));
 
 //		long bits =  GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE;
 //		GT_ModHandler.addCraftingRecipe(ItemList.ModularBasicHelmet.		getWildcard(1, new Object[0]),bits, new Object[] { "AAA", "B B", 'A', 			new ItemStack(Items.leather, 1, 32767), 'B', OrePrefixes.ring.get(Materials.AnyIron)} );

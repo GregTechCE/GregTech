@@ -1,6 +1,9 @@
 package gregtech.api.util;
 
+import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.objects.GT_Cover_Default;
+import gregtech.api.objects.GT_Cover_None;
 import gregtech.api.objects.GT_ItemStack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -206,13 +209,16 @@ public abstract class GT_CoverBehavior {
      * @return the ItemStack dropped by this Cover
      */
     public ItemStack getDrop(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        return GT_OreDictUnificator.get(true, aTileEntity.getCoverItemAtSide(aSide));
+        GT_ItemStack stack = GregTech_API.getCoverItem(aCoverID);
+        if(stack == null) return null;
+        return stack.toStack();
     }
 
     /**
      * @return sets the Cover upon placement.
      */
-    public void placeCover(byte aSide, ItemStack aCover, ICoverable aTileEntity) {
-        aTileEntity.setCoverIDAtSide(aSide, GT_Utility.stackToInt(aCover));
+    public void placeCover(byte aSide, int aCoverID, ItemStack aCover, ICoverable aTileEntity) {
+        aTileEntity.setCoverIDAtSide(aSide, aCoverID);
     }
+
 }

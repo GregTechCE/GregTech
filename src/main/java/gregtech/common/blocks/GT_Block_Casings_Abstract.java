@@ -4,10 +4,8 @@ import com.google.common.collect.Lists;
 import gregtech.api.GregTech_API;
 import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.render.blocks.IBlockIconProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -26,7 +24,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block implements IBlockIconProvider {
+public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block {
 
 
     public GT_Block_Casings_Abstract(Class<? extends ItemBlock> aItemClass, String aName, Material aMaterial) {

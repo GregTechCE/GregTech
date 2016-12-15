@@ -1,11 +1,9 @@
 package gregtech.common.blocks;
 
-import com.google.common.collect.ImmutableList;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.objects.GT_CopiedBlockTexture;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GT_LanguageManager;
-import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -16,9 +14,7 @@ public class GT_Block_Casings3 extends GT_Block_Casings_Abstract {
 
     public GT_Block_Casings3() {
         super(GT_Item_Casings3.class, "gt.blockcasings3", GT_Material_Casings.INSTANCE);
-        for (byte i = 0; i < 16; i = (byte) (i + 1)) {
-            Textures.BlockIcons.CASING_BLOCKS[(i + 32)] = new GT_CopiedBlockTexture(this, 6, i);
-        }
+
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Yellow Stripes Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Yellow Stripes Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Radioactive Hazard Sign Block");
@@ -55,41 +51,46 @@ public class GT_Block_Casings3 extends GT_Block_Casings_Abstract {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public ImmutableList<BakedQuad> getIcon(EnumFacing aSide, int aMeta) {
+    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
+        return getIconContainer(aSide, aMeta).getIcon();
+    }
+    
+    public static IIconContainer getIconContainer(EnumFacing aSide, int aMeta) {
         switch (aMeta) {
             case 0:
-                return Textures.BlockIcons.MACHINE_CASING_STRIPES_A.getQuads(aSide);
+                return Textures.BlockIcons.MACHINE_CASING_STRIPES_A;
             case 1:
-                return Textures.BlockIcons.MACHINE_CASING_STRIPES_B.getQuads(aSide);
+                return Textures.BlockIcons.MACHINE_CASING_STRIPES_B;
             case 2:
-                return Textures.BlockIcons.MACHINE_CASING_RADIOACTIVEHAZARD.getQuads(aSide);
+                return Textures.BlockIcons.MACHINE_CASING_RADIOACTIVEHAZARD;
             case 3:
-                return Textures.BlockIcons.MACHINE_CASING_BIOHAZARD.getQuads(aSide);
+                return Textures.BlockIcons.MACHINE_CASING_BIOHAZARD;
             case 4:
-                return Textures.BlockIcons.MACHINE_CASING_EXPLOSIONHAZARD.getQuads(aSide);
+                return Textures.BlockIcons.MACHINE_CASING_EXPLOSIONHAZARD;
             case 5:
-                return Textures.BlockIcons.MACHINE_CASING_FIREHAZARD.getQuads(aSide);
+                return Textures.BlockIcons.MACHINE_CASING_FIREHAZARD;
             case 6:
-                return Textures.BlockIcons.MACHINE_CASING_ACIDHAZARD.getQuads(aSide);
+                return Textures.BlockIcons.MACHINE_CASING_ACIDHAZARD;
             case 7:
-                return Textures.BlockIcons.MACHINE_CASING_MAGICHAZARD.getQuads(aSide);
+                return Textures.BlockIcons.MACHINE_CASING_MAGICHAZARD;
             case 8:
-                return Textures.BlockIcons.MACHINE_CASING_FROSTHAZARD.getQuads(aSide);
+                return Textures.BlockIcons.MACHINE_CASING_FROSTHAZARD;
             case 9:
-                return Textures.BlockIcons.MACHINE_CASING_NOISEHAZARD.getQuads(aSide);
+                return Textures.BlockIcons.MACHINE_CASING_NOISEHAZARD;
             case 10:
-                return Textures.BlockIcons.MACHINE_CASING_GRATE.getQuads(aSide);
+                return Textures.BlockIcons.MACHINE_CASING_GRATE;
             case 11:
-                return Textures.BlockIcons.MACHINE_CASING_VENT.getQuads(aSide);
+                return Textures.BlockIcons.MACHINE_CASING_VENT;
             case 12:
-                return Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF.getQuads(aSide);
+                return Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF;
             case 13:
-                return aSide.getIndex() > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_BRONZE.getQuads(aSide) : Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS.getQuads(aSide);
+                return aSide.getIndex() > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_BRONZE : Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS;
             case 14:
-                return aSide.getIndex() > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_STEEL.getQuads(aSide) : Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getQuads(aSide);
+                return aSide.getIndex() > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_STEEL : Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL;
             case 15:
-                return aSide.getIndex() > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_TUNGSTENSTEEL.getQuads(aSide) : Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getQuads(aSide);
+                return aSide.getIndex() > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_TUNGSTENSTEEL : Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL;
         }
-        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getQuads(aSide);
+        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL;
     }
+    
 }

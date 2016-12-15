@@ -5,13 +5,12 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.objects.RegIconContainer;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import ic2.api.recipe.Recipes;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 public class ProcessingPlate1 implements gregtech.api.interfaces.IOreRecipeRegistrator {
@@ -31,37 +30,37 @@ public class ProcessingPlate1 implements gregtech.api.interfaces.IOreRecipeRegis
         }
         switch (aMaterial) {
             case Iron:
-                GregTech_API.registerCover(aStack, new GT_CopiedBlockTexture(Blocks.IRON_BLOCK, 1, 0), null);
+                GregTech_API.registerCover(aStack, new GT_RenderedTexture(new RegIconContainer("blocks/iron_block")), null);
                 break;
             case Gold:
-                GregTech_API.registerCover(aStack, new GT_CopiedBlockTexture(Blocks.GOLD_BLOCK, 1, 0), null);
+                GregTech_API.registerCover(aStack, new GT_RenderedTexture(new RegIconContainer("blocks/gold_block")), null);
                 break;
             case Diamond:
-                GregTech_API.registerCover(aStack, new GT_CopiedBlockTexture(Blocks.DIAMOND_BLOCK, 1, 0), null);
+                GregTech_API.registerCover(aStack, new GT_RenderedTexture(new RegIconContainer("blocks/diamond_block")), null);
                 break;
             case Emerald:
-                GregTech_API.registerCover(aStack, new GT_CopiedBlockTexture(Blocks.EMERALD_BLOCK, 1, 0), null);
+                GregTech_API.registerCover(aStack, new GT_RenderedTexture(new RegIconContainer("blocks/emerald_block")), null);
                 break;
             case Lapis:
-                GregTech_API.registerCover(aStack, new GT_CopiedBlockTexture(Blocks.LAPIS_BLOCK, 1, 0), null);
+                GregTech_API.registerCover(aStack, new GT_RenderedTexture(new RegIconContainer("blocks/lapis_block")), null);
                 break;
             case Coal:
-                GregTech_API.registerCover(aStack, new GT_CopiedBlockTexture(Blocks.COAL_BLOCK, 1, 0), null);
+                GregTech_API.registerCover(aStack, new GT_RenderedTexture(new RegIconContainer("blocks/coal_block")), null);
                 break;
             case Redstone:
-                GregTech_API.registerCover(aStack, new GT_CopiedBlockTexture(Blocks.REDSTONE_BLOCK, 1, 0), null);
+                GregTech_API.registerCover(aStack, new GT_RenderedTexture(new RegIconContainer("blocks/redstone_block")), null);
                 break;
             case Glowstone:
-                GregTech_API.registerCover(aStack, new GT_CopiedBlockTexture(Blocks.GLOWSTONE, 1, 0), null);
+                GregTech_API.registerCover(aStack, new GT_RenderedTexture(new RegIconContainer("blocks/glowstone")), null);
                 break;
             case NetherQuartz:
-                GregTech_API.registerCover(aStack, new GT_CopiedBlockTexture(Blocks.QUARTZ_BLOCK, 1, 0), null);
+                GregTech_API.registerCover(aStack, new GT_RenderedTexture(new RegIconContainer("blocks/quartz_block_side")), null);
                 break;
             case Obsidian:
-                GregTech_API.registerCover(aStack, new GT_CopiedBlockTexture(Blocks.OBSIDIAN, 1, 0), null);
+                GregTech_API.registerCover(aStack, new GT_RenderedTexture(new RegIconContainer("blocks/obsidian")), null);
                 break;
             case Stone:
-                GregTech_API.registerCover(aStack, new GT_CopiedBlockTexture(Blocks.STONE, 1, 0), null);
+                GregTech_API.registerCover(aStack, new GT_RenderedTexture(new RegIconContainer("blocks/stone")), null);
                 break;
             case GraniteBlack:
                 GregTech_API.registerCover(aStack, new GT_RenderedTexture(gregtech.api.enums.Textures.BlockIcons.GRANITE_BLACK_SMOOTH), null);

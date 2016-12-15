@@ -1,24 +1,22 @@
 package gregtech.common.blocks;
 
-import com.google.common.collect.ImmutableList;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.objects.GT_CopiedBlockTexture;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GT_LanguageManager;
-import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
     public GT_Block_Casings1() {
         super(GT_Item_Casings1.class, "gt.blockcasings", GT_Material_Casings.INSTANCE);
-        for (byte i = 0; i < 16; i = (byte) (i + 1)) {
-            Textures.BlockIcons.CASING_BLOCKS[i] = new GT_CopiedBlockTexture(this, 6, i);
-        }
-        Textures.BlockIcons.CASING_BLOCKS[120] = new GT_CopiedBlockTexture(this, 6, 0);
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "ULV Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "LV Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "MV Machine Casing");
@@ -55,38 +53,43 @@ public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public ImmutableList<BakedQuad> getIcon(EnumFacing aSide, int aMeta) {
+    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
+        return getIconContainer(aSide, aMeta).getIcon();
+    }
+    
+    public static IIconContainer getIconContainer(EnumFacing aSide, int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
             switch (aMeta) {
                 case 10:
-                    return Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS.getQuads(aSide);
+                    return Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS;
                 case 11:
-                    return Textures.BlockIcons.MACHINE_HEATPROOFCASING.getQuads(aSide);
+                    return Textures.BlockIcons.MACHINE_HEATPROOFCASING;
                 case 12:
-                    return Textures.BlockIcons.RENDERING_ERROR.getQuads(aSide);
+                    return Textures.BlockIcons.RENDERING_ERROR;
                 case 13:
-                    return Textures.BlockIcons.RENDERING_ERROR.getQuads(aSide);
+                    return Textures.BlockIcons.RENDERING_ERROR;
                 case 14:
-                    return Textures.BlockIcons.RENDERING_ERROR.getQuads(aSide);
+                    return Textures.BlockIcons.RENDERING_ERROR;
                 case 15:
-                    return Textures.BlockIcons.MACHINE_COIL_SUPERCONDUCTOR.getQuads(aSide);
+                    return Textures.BlockIcons.MACHINE_COIL_SUPERCONDUCTOR;
             }
             if (aSide == EnumFacing.DOWN) {
-                return Textures.BlockIcons.MACHINECASINGS_BOTTOM[aMeta].getQuads(aSide);
+                return Textures.BlockIcons.MACHINECASINGS_BOTTOM[aMeta];
             }
             if (aSide == EnumFacing.UP) {
-                return Textures.BlockIcons.MACHINECASINGS_TOP[aMeta].getQuads(aSide);
+                return Textures.BlockIcons.MACHINECASINGS_TOP[aMeta];
             }
-            return Textures.BlockIcons.MACHINECASINGS_SIDE[aMeta].getQuads(aSide);
+            return Textures.BlockIcons.MACHINECASINGS_SIDE[aMeta];
         }
-        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getQuads(aSide);
+        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL;
     }
 
 
-    //@Override
-    //public int colorMultiplier(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) {
-    //   int metadata = state.getValue(METADATA);
-    //   return metadata > 9 ? Dyes._NULL.getRGBAInt() : Dyes.MACHINE_METAL.getRGBAInt();
-    //}
+
+    @Override
+    public int getColorMultiplier(IBlockAccess worldIn, BlockPos pos, IBlockState state) {
+       int metadata = state.getValue(METADATA);
+       return metadata > 9 ? Dyes._NULL.getRGBAInt() : Dyes.MACHINE_METAL.getRGBAInt();
+    }
 
 }

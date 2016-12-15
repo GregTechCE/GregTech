@@ -2,15 +2,11 @@ package gregtech.api.items;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.SubTag;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.render.items.IItemIconContainerProvider;
-import gregtech.common.render.data.IIconRegister;
-import gregtech.common.render.items.IItemIconProvider;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -46,7 +42,7 @@ import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
 /**
  * Extended by most Items, also used as a fallback Item, to prevent the accidental deletion when Errors occur.
  */
-public class GT_Generic_Item extends Item implements IProjectileItem, IIconRegister, IItemIconProvider {
+public class GT_Generic_Item extends Item implements IProjectileItem {
 
     private final String mName, mTooltip;
 
@@ -88,12 +84,6 @@ public class GT_Generic_Item extends Item implements IProjectileItem, IIconRegis
     @Override
     public String getUnlocalizedNameInefficiently(ItemStack stack) {
         return getUnlocalizedName(stack);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(TextureMap aIconRegister) {
-        mIcon = aIconRegister.registerSprite(new ResourceLocation(RES_PATH_ITEM + (GT_Config.troll ? "troll" : mName)));
     }
 
     public int getTier(ItemStack aStack) {
@@ -156,32 +146,28 @@ public class GT_Generic_Item extends Item implements IProjectileItem, IIconRegis
         return getContainerItem(aStack) != null;
     }
 
-    @Override
+
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(TextureMap aIconRegister) {
+        mIcon = aIconRegister.registerSprite(new ResourceLocation(RES_PATH_ITEM + (GT_Config.troll ? "troll" : mName)));
+    }
+
     @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getIcon(ItemStack stack, int pass) {
-        if(this instanceof IItemIconContainerProvider) {
-            IItemIconContainerProvider iItemIconContainerProvider = (IItemIconContainerProvider) this;
-            IIconContainer iconContainer = iItemIconContainerProvider.getIconContainer(stack);
-            if(iconContainer != null) {
-                switch (pass) {
-                    case 0:
-                        return iconContainer.getIcon();
-                    case 1:
-                        return iconContainer.getOverlayIcon();
-                }
-            }
-            return null;
-        }
         return mIcon;
     }
 
-    @Override
     @SideOnly(Side.CLIENT)
     public int getRenderPasses(ItemStack stack) {
-        if(this instanceof IItemIconContainerProvider) {
-            return 1;
-        }
-        return 0;
+        return 1;
+    }
+
+    public int getColorFromItemStack(ItemStack itemStack, int pass) {
+        return 0xFFFFFFFF;
+    }
+
+    public boolean isHandheld(ItemStack itemStack) {
+        return false;
     }
 
     public static class GT_Item_Dispense extends BehaviorProjectileDispense {

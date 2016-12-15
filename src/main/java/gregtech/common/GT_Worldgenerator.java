@@ -1,28 +1,24 @@
 package gregtech.common;
 
-import gregtech.api.objects.XSTR;
-import net.minecraft.init.Biomes;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.IChunkGenerator;
-import net.minecraftforge.fml.common.IWorldGenerator;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
+import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.rework.GT_Block_GeneratedOres;
+import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderEnd;
 import net.minecraft.world.gen.ChunkProviderHell;
+import net.minecraftforge.fml.common.IWorldGenerator;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GT_Worldgenerator implements IWorldGenerator {
 
@@ -172,13 +168,13 @@ public class GT_Worldgenerator implements IWorldGenerator {
                                         if ((var39 * var39 + var42 * var42 + var45 * var45 < 1.0D) && mWorld.isAirBlock(randPos)) {
                                             int ranOre = aRandom.nextInt(50);
                                             if (ranOre < 3) {
-                                                GT_TileEntity_Ores.setOreBlock(mWorld, randPos, primaryMeta, true);
+                                                GT_Block_GeneratedOres.setOreBlock(mWorld, randPos, primaryMeta, true);
                                             } else if (ranOre < 6) {
-                                                GT_TileEntity_Ores.setOreBlock(mWorld, randPos, secondaryMeta, true);
+                                                GT_Block_GeneratedOres.setOreBlock(mWorld, randPos, secondaryMeta, true);
                                             } else if (ranOre < 8) {
-                                                GT_TileEntity_Ores.setOreBlock(mWorld, randPos, betweenMeta, true);
+                                                GT_Block_GeneratedOres.setOreBlock(mWorld, randPos, betweenMeta, true);
                                             } else if (ranOre < 10) {
-                                                GT_TileEntity_Ores.setOreBlock(mWorld, randPos, sporadicMeta, true);
+                                                GT_Block_GeneratedOres.setOreBlock(mWorld, randPos, sporadicMeta, true);
                                             } else {
                                                 mWorld.setBlockState(randPos, Blocks.END_STONE.getDefaultState());
                                             }

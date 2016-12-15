@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.basic;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -12,16 +11,12 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
-import gregtech.common.blocks.GT_TileEntity_Ores;
-import ic2.core.Ic2Items;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
@@ -68,7 +63,7 @@ public class GT_MetaTileEntity_SeismicProspector extends GT_MetaTileEntity_Basic
                             BlockPos blockPos = aBaseMetaTileEntity.getPos().add(f, -i, g);
                             IBlockState blockState = aBaseMetaTileEntity.getWorld().getBlockState(blockPos);
                             Block tBlock = blockState.getBlock();
-                            if ((tBlock instanceof GT_Block_Ores_Abstract)) {
+                            /*if ((tBlock instanceof GT_Block_Ores_Abstract)) {
                                 TileEntity tTileEntity = getBaseMetaTileEntity().getWorld().getTileEntity(aBaseMetaTileEntity.getPos().add(f, -i, g));
                                 if ((tTileEntity instanceof GT_TileEntity_Ores)) {
                                 	if(((GT_TileEntity_Ores) tTileEntity).mMetaData < 16000){
@@ -80,7 +75,7 @@ public class GT_MetaTileEntity_SeismicProspector extends GT_MetaTileEntity_Basic
                                     }
                                   }
                                 }
-                            } else {
+                            } else*/ {
                                 int tMetaID = blockState.getBlock().getMetaFromState(blockState);
                                 ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
                                 if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {

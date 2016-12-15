@@ -1,5 +1,7 @@
 package gregtech.api;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import gregtech.common.blocks.GT_Block_Machines;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -94,11 +96,13 @@ public class GregTech_API {
     /**
      * The Icon List for Covers
      */
-    public static final Map<GT_ItemStack, ITexture> sCovers = new HashMap<GT_ItemStack, ITexture>();
+    public static final Map<Integer, ITexture> sCovers = new HashMap<>();
     /**
      * The List of Cover Behaviors for the Covers
      */
-    public static final Map<GT_ItemStack, GT_CoverBehavior> sCoverBehaviors = new HashMap<GT_ItemStack, GT_CoverBehavior>();
+    public static final BiMap<Integer, GT_CoverBehavior> sCoverBehaviors = HashBiMap.create();
+
+    public static final BiMap<GT_ItemStack, Integer> sCoverItems = HashBiMap.create();
     /**
      * The List of Circuit Behaviors for the Redstone Circuit Block
      */
@@ -162,7 +166,7 @@ public class GregTech_API {
     /**
      * These Lists are getting executed at their respective timings. Useful if you have to do things right before/after I do them, without having to control the load order. Add your "Commands" in the Constructor or in a static Code Block of your Mods Main Class. These are not Threaded, I just use a native Java Interface for their execution. Implement just the Method run() and everything should work
      */
-    public static List<Runnable> sBeforeGTPreload = new ArrayList<Runnable>(), sAfterGTPreload = new ArrayList<Runnable>(), sBeforeGTLoad = new ArrayList<Runnable>(), sAfterGTLoad = new ArrayList<Runnable>(), sBeforeGTPostload = new ArrayList<Runnable>(), sAfterGTPostload = new ArrayList<Runnable>(), sBeforeGTServerstart = new ArrayList<Runnable>(), sAfterGTServerstart = new ArrayList<Runnable>(), sBeforeGTServerstop = new ArrayList<Runnable>(), sAfterGTServerstop = new ArrayList<Runnable>(), sGTBlockIconload = new ArrayList<Runnable>(), sGTItemIconload = new ArrayList<Runnable>(), sAfterGTIconload = new ArrayList<Runnable>();
+    public static List<Runnable> sBeforeGTPreload = new ArrayList<Runnable>(), sAfterGTPreload = new ArrayList<Runnable>(), sBeforeGTLoad = new ArrayList<Runnable>(), sAfterGTLoad = new ArrayList<Runnable>(), sBeforeGTPostload = new ArrayList<Runnable>(), sAfterGTPostload = new ArrayList<Runnable>(), sBeforeGTServerstart = new ArrayList<Runnable>(), sAfterGTServerstart = new ArrayList<Runnable>(), sBeforeGTServerstop = new ArrayList<Runnable>(), sAfterGTServerstop = new ArrayList<Runnable>(), sGTBlockIconload = new ArrayList<Runnable>(), sGTItemIconload = new ArrayList<Runnable>();
     /**
      * The Icon Registers from Blocks and Items. They will get set right before the corresponding Icon Load Phase as executed in the Runnable List above.
      */
@@ -178,7 +182,19 @@ public class GregTech_API {
      */
     public static GT_Block_Machines sBlockMachines;
 
-    public static Block sBlockOres1, sBlockOresUb1, sBlockOresUb2, sBlockOresUb3, sBlockGem, sBlockMetal1, sBlockMetal2, sBlockMetal3, sBlockMetal4, sBlockMetal5, sBlockMetal6, sBlockMetal7, sBlockMetal8, sBlockGem1, sBlockGem2, sBlockGem3, sBlockReinforced;
+    public static Block sBlockOres1;
+    public static Block sBlockMetal1;
+    public static Block sBlockMetal2;
+    public static Block sBlockMetal3;
+    public static Block sBlockMetal4;
+    public static Block sBlockMetal5;
+    public static Block sBlockMetal6;
+    public static Block sBlockMetal7;
+    public static Block sBlockMetal8;
+    public static Block sBlockGem1;
+    public static Block sBlockGem2;
+    public static Block sBlockGem3;
+    public static Block sBlockReinforced;
     public static Block sBlockGranites, sBlockConcretes, sBlockStones;
     public static Block sBlockCasings1, sBlockCasings2, sBlockCasings3, sBlockCasings4, sBlockCasings5;
     /**
@@ -198,12 +214,13 @@ public class GregTech_API {
     public static boolean sUnificationEntriesRegistered = false, sPreloadStarted = false, sPreloadFinished = false, sLoadStarted = false, sLoadFinished = false, sPostloadStarted = false, sPostloadFinished = false;
     private static Class sBaseMetaTileEntityClass = null;
 
+    private static int sNextCoverId;
+
     /**
      * Adds Biomes to the Biome Lists for World Generation
      */
     static {
-        sItemStackMappings.add(sCovers);
-        sItemStackMappings.add(sCoverBehaviors);
+        sItemStackMappings.add(sCoverItems);
 
         sDimensionalList.add(-1);
         sDimensionalList.add(0);
@@ -353,14 +370,15 @@ public class GregTech_API {
     }
 
     public static void registerCover(ItemStack aStack, ITexture aCover, GT_CoverBehavior aBehavior) {
-        if (!sCovers.containsKey(new GT_ItemStack(aStack)))
-            sCovers.put(new GT_ItemStack(aStack), aCover == null || !aCover.isValidTexture() ? Textures.BlockIcons.ERROR_RENDERING[0] : aCover);
-        if (aBehavior != null) sCoverBehaviors.put(new GT_ItemStack(aStack), aBehavior);
+        GT_ItemStack stack = new GT_ItemStack(aStack);
+        int coverId = ++sNextCoverId;
+
+        sCoverItems.put(stack, coverId);
+        System.out.println();
+        sCovers.put(coverId, aCover == null || !aCover.isValidTexture() ? Textures.BlockIcons.ERROR_RENDERING[0] : aCover);
+        if (aBehavior != null) sCoverBehaviors.put(coverId, aBehavior);
     }
 
-    public static void registerCoverBehavior(ItemStack aStack, GT_CoverBehavior aBehavior) {
-        sCoverBehaviors.put(new GT_ItemStack(aStack), aBehavior == null ? sDefaultBehavior : aBehavior);
-    }
 
     /**
      * Registers multiple Cover Items. I use that for the OreDict Functionality.
@@ -376,9 +394,29 @@ public class GregTech_API {
      */
     public static GT_CoverBehavior getCoverBehavior(ItemStack aStack) {
         if (aStack == null || aStack.getItem() == null) return sNoBehavior;
-        GT_CoverBehavior rCover = sCoverBehaviors.get(new GT_ItemStack(aStack));
+        GT_CoverBehavior rCover = sCoverBehaviors.get(sCoverItems.get(new GT_ItemStack(aStack)));
         if (rCover == null) return sDefaultBehavior;
         return rCover;
+    }
+
+    public static GT_CoverBehavior getCoverBehavior(GT_ItemStack aStack) {
+        GT_CoverBehavior rCover = sCoverBehaviors.get(sCoverItems.get(aStack));
+        if (rCover == null) return sDefaultBehavior;
+        return rCover;
+    }
+
+    public static GT_ItemStack getCoverItem(int coverId) {
+        GT_ItemStack stack = sCoverItems.inverse().get(coverId);
+        if(stack == null) return null;
+        return stack;
+    }
+
+    public static int getCoverId(GT_CoverBehavior behavior) {
+        return sCoverBehaviors.inverse().get(behavior);
+    }
+
+    public static int getCoverId(GT_ItemStack stack) {
+        return sCoverItems.get(stack);
     }
 
     /**
@@ -386,7 +424,9 @@ public class GregTech_API {
      */
     public static GT_CoverBehavior getCoverBehavior(int aStack) {
         if (aStack == 0) return sNoBehavior;
-        return getCoverBehavior(GT_Utility.intToStack(aStack));
+        GT_CoverBehavior rCover = sCoverBehaviors.get(aStack);
+        if (rCover == null) return sDefaultBehavior;
+        return rCover;
     }
 
     /**

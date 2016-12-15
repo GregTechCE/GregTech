@@ -1,10 +1,9 @@
 package gregtech.common;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.world.GT_Worldgen;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.rework.GT_Block_GeneratedOres;
 import gregtech.loaders.misc.GT_Achievements;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -33,6 +32,8 @@ public class GT_Worldgen_GT_Ore_Layer
     public final boolean mNether;
     public final boolean mEnd;
     public final boolean mEndAsteroid;
+
+    private BlockPos.MutableBlockPos temp = new BlockPos.MutableBlockPos();
 
     public GT_Worldgen_GT_Ore_Layer(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity, int aSize, boolean aOverworld, boolean aNether, boolean aEnd, Materials aPrimary, Materials aSecondary, Materials aBetween, Materials aSporadic) {
         super(aName, sList, aDefault);
@@ -80,31 +81,31 @@ public class GT_Worldgen_GT_Ore_Layer
             for (int tZ = cZ; tZ <= eZ; tZ++) {
                 for (int i = tMinY + 3; i < tMinY + 6; i++) {
                     if ((aRandom.nextInt(Math.max(1, Math.max(Math.abs(cZ - tZ), Math.abs(eZ - tZ)) / this.mDensity)) == 0) || (aRandom.nextInt(Math.max(1, Math.max(Math.abs(cX - tX), Math.abs(eX - tX)) / this.mDensity)) == 0)) {
-                        BlockPos blockPos = new BlockPos(tX, i, tZ);
-                        GT_TileEntity_Ores.setOreBlock(aWorld, blockPos, this.mPrimaryMeta, false);
+                        temp.setPos(tX, i, tZ);
+                        GT_Block_GeneratedOres.setOreBlock(aWorld, temp, this.mPrimaryMeta, false);
                     }
                 }
                 if (this.mSecondaryMeta > 0) {
                     for (int i = tMinY - 1; i < tMinY + 2; i++) {
                         if ((aRandom.nextInt(Math.max(1, Math.max(Math.abs(cZ - tZ), Math.abs(eZ - tZ)) / this.mDensity)) == 0) || (aRandom.nextInt(Math.max(1, Math.max(Math.abs(cX - tX), Math.abs(eX - tX)) / this.mDensity)) == 0)) {
-                            BlockPos blockPos = new BlockPos(tX, i, tZ);
-                            GT_TileEntity_Ores.setOreBlock(aWorld, blockPos, this.mSecondaryMeta, false);
+                            temp.setPos(tX, i, tZ);
+                            GT_Block_GeneratedOres.setOreBlock(aWorld, temp, this.mSecondaryMeta, false);
                         }
                     }
                 }
                 if (this.mBetweenMeta > 0 && ((aRandom.nextInt(Math.max(1, Math.max(Math.abs(cZ - tZ), Math.abs(eZ - tZ)) / this.mDensity)) == 0) || (aRandom.nextInt(Math.max(1, Math.max(Math.abs(cX - tX), Math.abs(eX - tX)) / this.mDensity)) == 0))) {
-                    BlockPos blockPos = new BlockPos(tX, tMinY + 2 + aRandom.nextInt(2), tZ);
-                    GT_TileEntity_Ores.setOreBlock(aWorld, blockPos, this.mBetweenMeta, false);
+                    temp.setPos(tX, tMinY + 2 + aRandom.nextInt(2), tZ);
+                    GT_Block_GeneratedOres.setOreBlock(aWorld, temp, this.mBetweenMeta, false);
                 }
                 if (this.mSporadicMeta > 0 && ((aRandom.nextInt(Math.max(1, Math.max(Math.abs(cZ - tZ), Math.abs(eZ - tZ)) / this.mDensity)) == 0) || (aRandom.nextInt(Math.max(1, Math.max(Math.abs(cX - tX), Math.abs(eX - tX)) / this.mDensity)) == 0))) {
-                    BlockPos blockPos = new BlockPos(tX, tMinY - 1 + aRandom.nextInt(7), tZ);
-                    GT_TileEntity_Ores.setOreBlock(aWorld, blockPos, this.mSporadicMeta, false);
+                    temp.setPos(tX, tMinY - 1 + aRandom.nextInt(7), tZ);
+                    GT_Block_GeneratedOres.setOreBlock(aWorld, temp, this.mSporadicMeta, false);
                 }
             }
         }
         //watch.stop();
         //if (GT_Values.D1) {
-            //System.out.println("Generated Orevein: " + watch.getTime() + " ms " + this.mWorldGenName + " X: " + (aChunkX * 16) + " Z: " + (aChunkZ * 16));
+        //    System.out.println("Generated Orevein: " + watch.getTime() + " ms " + this.mWorldGenName + " X: " + (aChunkX * 16) + " Z: " + (aChunkZ * 16));
         //}
         return true;
     }

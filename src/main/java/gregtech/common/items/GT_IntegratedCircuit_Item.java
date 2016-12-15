@@ -1,8 +1,5 @@
 package gregtech.common.items;
 
-import gregtech.common.render.data.IIconRegister;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -13,10 +10,12 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements IIconRegister {
+public class GT_IntegratedCircuit_Item extends GT_Generic_Item {
     public GT_IntegratedCircuit_Item() {
         super("integrated_circuit", "Integrated Circuit", "");
         setHasSubtypes(true);

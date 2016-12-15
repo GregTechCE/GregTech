@@ -14,7 +14,6 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.*;
-import gregtech.api.items.GT_EnergyArmor_Item;
 import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.net.GT_Packet_Sound;
 import gregtech.api.objects.GT_ItemStack;
@@ -319,13 +318,13 @@ public class GT_Utility {
             if (aPlayer.isInvisible()) {
                 for (int i = 0; i < 4; i++) {
                     if (aPlayer.inventory.armorInventory[i] != null) {
-                        if (aPlayer.inventory.armorInventory[i].getItem() instanceof GT_EnergyArmor_Item) {
-                            if ((((GT_EnergyArmor_Item) aPlayer.inventory.armorInventory[i].getItem()).mSpecials & 512) != 0) {
-                                if (GT_ModHandler.canUseElectricItem(aPlayer.inventory.armorInventory[i], 10000)) {
-                                    return true;
-                                }
-                            }
-                        }
+                        //if (aPlayer.inventory.armorInventory[i].getItem() instanceof GT_EnergyArmor_Item) {
+                            //if ((((GT_EnergyArmor_Item) aPlayer.inventory.armorInventory[i].getItem()).mSpecials & 512) != 0) {
+                            //    if (GT_ModHandler.canUseElectricItem(aPlayer.inventory.armorInventory[i], 10000)) {
+                            //        return true;
+                            //    }
+                            //}
+                        //}
                     }
                 }
             }
@@ -945,37 +944,9 @@ public class GT_Utility {
     }
 
 
-    public static int stackToInt(ItemStack aStack) {
+    public static int stackToIntHash(ItemStack aStack) {
         if (isStackInvalid(aStack)) return 0;
         return Item.getIdFromItem(aStack.getItem()) | (Items.FEATHER.getDamage(aStack) << 16);
-    }
-
-    public static int stackToWildcard(ItemStack aStack) {
-        if (isStackInvalid(aStack)) return 0;
-        return Item.getIdFromItem(aStack.getItem()) | (W << 16);
-    }
-
-    public static ItemStack intToStack(int aStack) {
-        int tID = aStack, tMeta = aStack >>> 16;
-        Item tItem = Item.getItemById(tID);
-        if (tItem != null) return new ItemStack(tItem, 1, tMeta);
-        return null;
-    }
-
-    public static Integer[] stacksToIntegerArray(ItemStack... aStacks) {
-        Integer[] rArray = new Integer[aStacks.length];
-        for (int i = 0; i < rArray.length; i++) {
-            rArray[i] = stackToInt(aStacks[i]);
-        }
-        return rArray;
-    }
-
-    public static int[] stacksToIntArray(ItemStack... aStacks) {
-        int[] rArray = new int[aStacks.length];
-        for (int i = 0; i < rArray.length; i++) {
-            rArray[i] = stackToInt(aStacks[i]);
-        }
-        return rArray;
     }
 
     public static boolean arrayContains(Object aObject, Object... aObjects) {

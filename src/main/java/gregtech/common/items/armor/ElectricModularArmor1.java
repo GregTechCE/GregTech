@@ -8,8 +8,8 @@ public class ElectricModularArmor1 extends ModularArmor_Item{
 	
 	public boolean mChargeProvider=false;
 
-	public ElectricModularArmor1(EntityEquipmentSlot aType, String name, int gui) {
-		super(aType, name,gui);
+	public ElectricModularArmor1(EntityEquipmentSlot aType, String name, int gui, String aName) {
+		super(aType, name,gui, aName);
 	}
 	
 	public boolean canProvideEnergy(ItemStack aStack) {

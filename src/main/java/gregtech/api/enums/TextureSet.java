@@ -11,14 +11,21 @@ public class TextureSet {
      * For the Indices of OrePrefixes you need to look into the OrePrefix Enum.
      */
     public static final short
-            INDEX_wire = 69, INDEX_foil = 70, INDEX_block1 = 71, INDEX_block2 = 72, INDEX_block3 = 73, INDEX_block4 = 74, INDEX_block5 = 75, INDEX_block6 = 76;
+            INDEX_ore = 68, INDEX_oreSmall = 67, INDEX_wire = 69, INDEX_foil = 70, INDEX_block1 = 71, INDEX_block2 = 72, INDEX_block3 = 73, INDEX_block4 = 74, INDEX_block5 = 75, INDEX_block6 = 76;
 
     public final IIconContainer[] mTextures = new IIconContainer[128];
 
+    private static int sNextId;
+
     public final String mSetName;
+    /**
+     * For array mapping
+     */
+    public final int mSetId;
 
     public TextureSet(String aSetName) {
         mSetName = aSetName;
+        this.mSetId = sNextId++;
         mTextures[0] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/dustTiny");
         mTextures[1] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/dustSmall");
         mTextures[2] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/dust");
@@ -90,12 +97,12 @@ public class TextureSet {
         mTextures[68] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/ore");
         mTextures[69] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/wire");
         mTextures[70] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/foil");
-        //mTextures[71] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/block1");
-        //mTextures[72] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/block2");
-        //mTextures[73] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/block3");
-        //mTextures[74] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/block4");
-        //mTextures[75] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/block5");
-        //mTextures[76] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/block6");
+        mTextures[71] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/block1");
+        mTextures[72] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/block2");
+        mTextures[73] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/block3");
+        mTextures[74] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/block4");
+        mTextures[75] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/block5");
+        mTextures[76] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/block6");
         mTextures[77] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/pipeSide");
         mTextures[78] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/pipeTiny");
         mTextures[79] = new Textures.BlockIcons.CustomIcon("materialicons/" + mSetName + "/pipeSmall");

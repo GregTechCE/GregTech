@@ -7,9 +7,13 @@ import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
+import mezz.jei.gui.DrawableBlank;
 import mezz.jei.gui.DrawableResource;
 import net.minecraft.client.Minecraft;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.config.GuiUtils;
 
 import javax.annotation.Nonnull;
 
@@ -21,9 +25,15 @@ public class JEIGregtehRecipeCategory implements IRecipeCategory<JEIGregtechReci
     public JEIGregtehRecipeCategory(GT_Recipe.GT_Recipe_Map mRecipeMap) {
         this.mRecipeMap = mRecipeMap;
 
-        this.background = Internal.getHelpers().getGuiHelper().createDrawable(
-                new ResourceLocation(mRecipeMap.mNEIGUIPath),
-                1, 3, 174, 78, -4, 0, -8, 0);
+        this.background = new DrawableResource(new ResourceLocation(mRecipeMap.mNEIGUIPath),
+                3, 3, 170, 78, -7, 0, -0, 0) {
+
+
+            @Override
+            public int getHeight() {
+                return super.getHeight() + 50;
+            }
+        };
     }
 
     @Nonnull
@@ -41,15 +51,7 @@ public class JEIGregtehRecipeCategory implements IRecipeCategory<JEIGregtechReci
     @Nonnull
     @Override
     public IDrawable getBackground() {
-        return new DrawableResource(new ResourceLocation(mRecipeMap.mNEIGUIPath),
-                1, 3, 174, 78, -7, 0, -0, 0) {
-
-
-            @Override
-            public int getHeight() {
-                return super.getHeight() + 50;
-            }
-        };
+        return background;
     }
 
     @Override
@@ -66,6 +68,10 @@ public class JEIGregtehRecipeCategory implements IRecipeCategory<JEIGregtechReci
     @Override
     public void setRecipe(IRecipeLayout recipeLayout, JEIGregtechRecipe recipeWrapper, IIngredients ingredients) {
         recipeWrapper.init(recipeLayout);
+    }
+
+    public IDrawable getIcon() {
+        return null;
     }
 
 }

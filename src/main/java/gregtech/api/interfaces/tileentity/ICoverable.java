@@ -20,8 +20,6 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
 
     public int getCoverIDAtSide(byte aSide);
 
-    public ItemStack getCoverItemAtSide(byte aSide);
-
     public GT_CoverBehavior getCoverBehaviorAtSide(byte aSide);
 
     /**

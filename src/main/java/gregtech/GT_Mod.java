@@ -9,9 +9,11 @@ import ic2.core.block.type.ResourceBlock;
 import ic2.core.item.type.CraftingItemType;
 import ic2.core.ref.BlockName;
 import ic2.core.ref.ItemName;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.Item;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -53,6 +55,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
+import org.lwjgl.input.Keyboard;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -72,21 +75,16 @@ public class GT_Mod implements IGT_Mod {
 
     public static GT_Achievements achievements;
 
-    //@SubscribeEvent
-    //public void onOreDictReg(OreDictionary.OreRegisterEvent event) {
-    //    if(event.getOre().getItem() == Item.getItemFromBlock(Blocks.STONE)) {
-    //        System.out.println("Register stone as " + event.getName());
-    //       new Throwable().printStackTrace();
-    //    }
-    //}
-
     @Mod.EventHandler
     public void onPreLoad(FMLPreInitializationEvent aEvent) {
         if (GregTech_API.sPreloadStarted) {
             return;
         }
 
-        //MinecraftForge.EVENT_BUS.register(this);
+        Thread mainThread = Thread.currentThread();
+
+
+
 
         GT_Values.GT = this;
         GT_Values.DW = new GT_DummyWorld();
@@ -95,6 +93,8 @@ public class GT_Mod implements IGT_Mod {
 
         Textures.BlockIcons.VOID.name();
         Textures.ItemIcons.VOID.name();
+
+
 
         GT_Log.out.println("GT_Mod: Replacing IC2 recipes managers");
         try {
@@ -300,9 +300,6 @@ public class GT_Mod implements IGT_Mod {
 
         new OreProcessingConfiguration(aEvent.getModConfigurationDirectory()).run();
 
-        new GT_Loader_OreProcessing().run();
-        new GT_Loader_OreDictionary().run();
-        new GT_Loader_ItemData().run();
         new GT_Loader_Item_Block_And_Fluid().run();
         new GT_Loader_MetaTileEntities().run();
 

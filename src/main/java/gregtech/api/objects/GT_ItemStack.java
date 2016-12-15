@@ -20,10 +20,6 @@ public class GT_ItemStack {
         this(aStack == null ? null : aStack.getItem(), aStack == null ? 0 : aStack.stackSize, aStack == null ? 0 : Items.FEATHER.getDamage(aStack));
     }
 
-    public GT_ItemStack(int aHashCode) {
-        this(GT_Utility.intToStack(aHashCode));
-    }
-
     public ItemStack toStack() {
         if (mItem == null) return null;
         return new ItemStack(mItem, 1, mMetaData);
@@ -44,6 +40,6 @@ public class GT_ItemStack {
 
     @Override
     public int hashCode() {
-        return GT_Utility.stackToInt(toStack());
+        return GT_Utility.stackToIntHash(toStack());
     }
 }

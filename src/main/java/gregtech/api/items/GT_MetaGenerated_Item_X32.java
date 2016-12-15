@@ -1,5 +1,6 @@
 package gregtech.api.items;
 
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.IIconContainer;
@@ -50,6 +51,7 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
             Materials tMaterial = GregTech_API.sGeneratedMaterials[i % 1000];
             if (tMaterial == null) continue;
             if (doesMaterialAllowGeneration(tPrefix, tMaterial)) {
+
                 ItemStack tStack = new ItemStack(this, 1, i);
                 GT_LanguageManager.addStringLocalization(getUnlocalizedName(tStack) + ".name", getDefaultLocalization(tPrefix, tMaterial, i));
                 GT_LanguageManager.addStringLocalization(getUnlocalizedName(tStack) + ".tooltip", tMaterial.getToolTip(tPrefix.mMaterialAmount / M));
@@ -171,6 +173,10 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
         int tDamage = stack.getItemDamage();
         if (tDamage < 32000) {
             IIconContainer iconContainer = getMaterialIcon(tDamage);
+            if(iconContainer == null) {
+                System.out.println("Null IIconContainer for item " + getItemStackDisplayName(stack));
+                return null;
+            }
             switch (pass) {
                 case 0:
                     return iconContainer.getIcon();
@@ -184,7 +190,7 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
     @Override
     @SideOnly(Side.CLIENT)
     public int getRenderPasses(ItemStack stack) {
-        return stack.getItemDamage() < 32000 ? 1 : 0 ;
+        return stack.getItemDamage() < 32000 ? 2 : 1 ;
     }
 
     @Override

@@ -97,6 +97,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     }
                 }
                 if ((aMaterial.mExtraData & 0x1) != 0)
+                    System.out.println("Electrolyzer for " + aMaterial + " " + tList.size());
                     GT_Values.RA.addElectrolyzerRecipe(GT_Utility.copyAmount(tItemAmount, aStack), tCapsuleCount > 0L ? ItemList.Cell_Empty.get(tCapsuleCount) : null, null, tFluid, tList.get(0), tList.size() < 2 ? null : tList.get(1), tList.size() < 3 ? null : tList.get(2), tList.size() < 4 ? null : tList.get(3), tList.size() < 5 ? null : tList.get(4), tList.size() < 6 ? null : tList.get(5), null, (int) Math.max(1L, Math.abs(aMaterial.getProtons() * 2L * tItemAmount)), Math.min(4, tList.size()) * 30);
                 if ((aMaterial.mExtraData & 0x2) != 0) {
                     GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(tItemAmount, aStack), tCapsuleCount > 0L ? ItemList.Cell_Empty.get(tCapsuleCount) : null, null, tFluid, tList.get(0), tList.size() < 2 ? null : tList.get(1), tList.size() < 3 ? null : tList.get(2), tList.size() < 4 ? null : tList.get(3), tList.size() < 5 ? null : tList.get(4), tList.size() < 6 ? null : tList.get(5), null, (int) Math.max(1L, Math.abs(aMaterial.getMass() * 4L * tItemAmount)), Math.min(4, tList.size()) * 5);

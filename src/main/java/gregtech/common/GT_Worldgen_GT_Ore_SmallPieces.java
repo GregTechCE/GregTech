@@ -3,7 +3,7 @@ package gregtech.common;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.world.GT_Worldgen;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.rework.GT_Block_GeneratedOres;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkGenerator;
@@ -21,6 +21,8 @@ public class GT_Worldgen_GT_Ore_SmallPieces
     public final boolean mNether;
     public final boolean mEnd;
     public final String mBiome;
+
+    private BlockPos.MutableBlockPos temp = new BlockPos.MutableBlockPos();
 
     public GT_Worldgen_GT_Ore_SmallPieces(String aName, boolean aDefault, int aMinY, int aMaxY, int aAmount, boolean aOverworld, boolean aNether, boolean aEnd, Materials aPrimary) {
         super(aName, GregTech_API.sWorldgenList, aDefault);
@@ -45,8 +47,8 @@ public class GT_Worldgen_GT_Ore_SmallPieces
         if (this.mMeta > 0) {
             int i = 0;
             for (int j = Math.max(1, this.mAmount / 2 + aRandom.nextInt(this.mAmount) / 2); i < j; i++) {
-                BlockPos blockPos = new BlockPos(aChunkX + aRandom.nextInt(16), this.mMinY + aRandom.nextInt(Math.max(1, this.mMaxY - this.mMinY)), aChunkZ + aRandom.nextInt(16));
-                GT_TileEntity_Ores.setOreBlock(aWorld, blockPos, this.mMeta, true);
+                temp.setPos(aChunkX + aRandom.nextInt(16), this.mMinY + aRandom.nextInt(Math.max(1, this.mMaxY - this.mMinY)), aChunkZ + aRandom.nextInt(16));
+                GT_Block_GeneratedOres.setOreBlock(aWorld, temp, this.mMeta, true);
             }
         }
         return true;

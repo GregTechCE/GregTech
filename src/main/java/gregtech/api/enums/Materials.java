@@ -422,7 +422,7 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 	Methane				( 715, TextureSet.SET_FLUID				,   1.0F,      0,  1,         16                            , 255, 255, 255,   0,	"Methane"						,    1,      45,         -1,    0, false, false,   3,   1,   1, Dyes.dyeMagenta		, 1, Arrays.asList(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 4))),
 	CarbonDioxide		( 497, TextureSet.SET_FLUID				,   1.0F,      0,  2,         16|32                         , 169, 208, 245, 240,	"Carbon Dioxide"				,    0,       0,         25,    1, false, true,   1,   1,   1, Dyes.dyeLightBlue	, 1, Arrays.asList(new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 2))),
 	NobleGases			( 496, TextureSet.SET_FLUID				,   1.0F,      0,  2,         16|32                         , 169, 208, 245, 240,	"Noble Gases"					,    0,       0,          4,    0, false, true,   1,   1,   1, Dyes.dyeLightBlue	, 2, Arrays.asList(new MaterialStack(CarbonDioxide,21),new MaterialStack(Helium, 9), new MaterialStack(Methane, 3), new MaterialStack(Deuterium, 1))),
-	Air					(  -1, TextureSet.SET_FLUID				,   1.0F,      0,  2,         16|32                         , 169, 208, 245, 240,	"Air"							,    0,       0,         -1,    0, false, true,   1,   1,   1, Dyes.dyeLightBlue	, 0, Arrays.asList(new MaterialStack(Nitrogen, 40), new MaterialStack(Oxygen, 11), new MaterialStack(Argon, 1),new MaterialStack(NobleGases,1))),
+	Air					( 120, TextureSet.SET_FLUID				,   1.0F,      0,  2,         16|32                         , 169, 208, 245, 240,	"Air"							,    0,       0,         -1,    0, false, true,   1,   1,   1, Dyes.dyeLightBlue	, 0, Arrays.asList(new MaterialStack(Nitrogen, 40), new MaterialStack(Oxygen, 11), new MaterialStack(Argon, 1),new MaterialStack(NobleGases,1))),
 	LiquidAir			( 495, TextureSet.SET_FLUID				,   1.0F,      0,  2,         16|32                         , 169, 208, 245, 240,	"Liquid Air"					,    0,       0,          4,    0, false, true,   1,   1,   1, Dyes.dyeLightBlue	, 2, Arrays.asList(new MaterialStack(Nitrogen, 40), new MaterialStack(Oxygen, 11), new MaterialStack(Argon, 1),new MaterialStack(NobleGases,1))),
 	Almandine			( 820, TextureSet.SET_ROUGH				,   1.0F,      0,  1, 1    |8                               , 255,   0,   0,   0,	"Almandine"						,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeRed			, 1, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Iron, 3), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12))),
 	Andradite			( 821, TextureSet.SET_ROUGH				,   1.0F,      0,  1, 1    |8                               , 150, 120,   0,   0,	"Andradite"						,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeYellow		, 1, Arrays.asList(new MaterialStack(Calcium, 3), new MaterialStack(Iron, 2), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12))),
@@ -1246,7 +1246,7 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
     public final short[] mRGBa = new short[]{255, 255, 255, 0}, mMoltenRGBa = new short[]{255, 255, 255, 0};
 
     public final TextureSet mIconSet;
-    public final GT_RenderedTexture[] mOreTextureSet;
+    //public final GT_RenderedTexture[] mOreTextureSet;
 
     public final int mMetaItemSubID;
     public final boolean mUnificatable;
@@ -1283,9 +1283,9 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
         mToolSpeed = aToolSpeed;
 
         mIconSet = aIconSet;
-        mOreTextureSet = new GT_RenderedTexture[2];
-        mOreTextureSet[0] = new GT_RenderedTexture(mIconSet.mTextures[68], mRGBa); //normal ore
-        mOreTextureSet[1] = new GT_RenderedTexture(mIconSet.mTextures[67], mRGBa); //small ore
+        //mOreTextureSet = new GT_RenderedTexture[2];
+        //mOreTextureSet[0] = new GT_RenderedTexture(mIconSet.mTextures[68], mRGBa); //normal ore
+        //mOreTextureSet[1] = new GT_RenderedTexture(mIconSet.mTextures[67], mRGBa); //small ore
 
         if (aMetaItemSubID >= 0) {
             if (GregTech_API.sGeneratedMaterials[aMetaItemSubID] == null) {
@@ -1305,9 +1305,9 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
         mMetaItemSubID = -1;
         mIconSet = TextureSet.SET_NONE;
 
-        mOreTextureSet = new GT_RenderedTexture[2];
-        mOreTextureSet[0] = new GT_RenderedTexture(mIconSet.mTextures[68], mRGBa); //normal ore
-        mOreTextureSet[1] = new GT_RenderedTexture(mIconSet.mTextures[67], mRGBa); //small ore
+        //mOreTextureSet = new GT_RenderedTexture[2];
+        //mOreTextureSet[0] = new GT_RenderedTexture(mIconSet.mTextures[68], mRGBa); //normal ore
+        //mOreTextureSet[1] = new GT_RenderedTexture(mIconSet.mTextures[67], mRGBa); //small ore
     }
 
     /**

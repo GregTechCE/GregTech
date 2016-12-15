@@ -1,6 +1,5 @@
 package gregtech.common.blocks;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
@@ -9,11 +8,9 @@ import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.render.blocks.IBlockIconProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLiving;
@@ -30,7 +27,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public abstract class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRecipeRegistrator, IBlockIconProvider {
+public abstract class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRecipeRegistrator {
 
     public GT_Block_Stones_Abstract(Class<? extends ItemBlock> aItemClass, String aName) {
         super(aItemClass, aName, Material.ROCK);
@@ -105,9 +102,9 @@ public abstract class GT_Block_Stones_Abstract extends GT_Generic_Block implemen
 
     @Override
     @SideOnly(Side.CLIENT)
-    public ImmutableList<BakedQuad> getIcon(EnumFacing aSide, int aMeta) {
+    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
-            return gregtech.api.enums.Textures.BlockIcons.GRANITES[aMeta].getQuads(aSide);
+            return gregtech.api.enums.Textures.BlockIcons.GRANITES[aMeta].getIcon();
         }
         return null;
     }

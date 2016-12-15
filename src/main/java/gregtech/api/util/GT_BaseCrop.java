@@ -1,25 +1,20 @@
 package gregtech.api.util;
 
-import ic2.api.crops.CropProperties;
-import net.minecraft.block.state.IBlockState;
-import net.minecraftforge.fml.common.Loader;
-import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.ItemData;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
-import gregtech.common.blocks.GT_TileEntity_Ores;
 import ic2.api.crops.CropCard;
+import ic2.api.crops.CropProperties;
 import ic2.api.crops.Crops;
 import ic2.api.crops.ICropTile;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import speiger.src.crops.api.ICropCardInfo;
+import net.minecraftforge.fml.common.Loader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +22,7 @@ import java.util.Random;
 
 import static gregtech.api.enums.GT_Values.E;
 
-public class GT_BaseCrop extends CropCard implements ICropCardInfo {
+public class GT_BaseCrop extends CropCard {
     public static ArrayList<GT_BaseCrop> sCropList = new ArrayList<GT_BaseCrop>();
     private String mName = E, mDiscoveredBy = "Gregorius Techneticies", mAttributes[];
     private int mTier = 0, mMaxSize = 0, mAfterHarvestSize = 0, mHarvestSize = 0, mStats[] = new int[5], mGrowthSpeed = 0;
@@ -176,7 +171,7 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
         }
         for (int i = 1; i < this.getrootslength(aCrop); i++) {
             Block tBlock = aCrop.getWorld().getBlockState(aCrop.getLocation().down()).getBlock();
-            if ((tBlock instanceof GT_Block_Ores_Abstract)) {
+            /*if ((tBlock instanceof GT_Block_Ores_Abstract)) {
                 TileEntity tTileEntity = aCrop.getWorld().getTileEntity(aCrop.getLocation().down());
                 if ((tTileEntity instanceof GT_TileEntity_Ores)) {
                     Materials tMaterial = GregTech_API.sGeneratedMaterials[(((GT_TileEntity_Ores) tTileEntity).mMetaData % 1000)];
@@ -184,7 +179,7 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
                         return tMaterial == mBlock;
                     }
                 }
-            } else {
+            } else*/ {
                 IBlockState downState = aCrop.getWorld().getBlockState(aCrop.getLocation().down());
                 int tMetaID = downState.getBlock().getMetaFromState(downState);
                 ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));

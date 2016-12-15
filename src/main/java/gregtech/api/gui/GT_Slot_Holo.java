@@ -28,10 +28,10 @@ public class GT_Slot_Holo extends Slot {
         return mMaxStacksize;
     }
 
-    @Override
-    public boolean getHasStack() {
-        return false;
-    }
+    //@Override
+    //public boolean getHasStack() {
+    //    return true;
+    //}
 
     @Override
     public ItemStack decrStackSize(int par1) {

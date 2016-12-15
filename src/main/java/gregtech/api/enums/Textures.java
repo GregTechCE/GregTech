@@ -6,11 +6,9 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.GT_SidedTexture;
-import gregtech.common.render.RenderUtil;
-import gregtech.common.render.data.IIconData;
+import gregtech.common.blocks.*;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -22,7 +20,7 @@ import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
 import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
 
 public class Textures {
-    public enum BlockIcons implements IIconContainer, Runnable, IIconData {
+    public enum BlockIcons implements IIconContainer, Runnable {
         VOID // The Empty Texture
         , RENDERING_ERROR, PIPE_RESTRICTOR, INSULATION_FULL, INSULATION_TINY, INSULATION_SMALL, INSULATION_MEDIUM,
         INSULATION_LARGE, INSULATION_HUGE, CFOAM_FRESH, CFOAM_HARDENED, SOLARPANEL, SOLARPANEL_8V, SOLARPANEL_LV, SOLARPANEL_MV, SOLARPANEL_HV, SOLARPANEL_EV, SOLARPANEL_IV, SOLARPANEL_LuV, SOLARPANEL_ZPM, SOLARPANEL_UV,
@@ -547,14 +545,35 @@ public class Textures {
                             MACHINECASINGS_TOP[i],
                             MACHINECASINGS_SIDE[i],
                             Dyes.MACHINE_METAL.mRGBa);
+
+            for (byte i = 0; i < 16; i = (byte) (i + 1)) {
+                Textures.BlockIcons.CASING_BLOCKS[i] = new GT_RenderedTexture(GT_Block_Casings1.getIconContainer(EnumFacing.EAST, i));
+            }
+            Textures.BlockIcons.CASING_BLOCKS[120] = new GT_RenderedTexture(GT_Block_Casings1.getIconContainer(EnumFacing.EAST, 0));
+
+            for (byte i = 0; i < 16; i = (byte) (i + 1)) {
+                Textures.BlockIcons.CASING_BLOCKS[(i + 16)] = new GT_RenderedTexture(GT_Block_Casings2.getIconContainer(EnumFacing.EAST, i));
+            }
+
+            for (byte i = 0; i < 16; i = (byte) (i + 1)) {
+                Textures.BlockIcons.CASING_BLOCKS[(i + 32)] = new GT_RenderedTexture(GT_Block_Casings3.getIconContainer(EnumFacing.EAST, i));
+            }
+
+            for (byte i = 0; i < 16; i = (byte) (i + 1)) {
+                Textures.BlockIcons.CASING_BLOCKS[(i + 48)] = new GT_RenderedTexture(GT_Block_Casings4.getIconContainer(EnumFacing.EAST, i));
+            }
+
+            for (byte i = 0; i < 16; i = (byte) (i + 1)) {
+                Textures.BlockIcons.CASING_BLOCKS[(i + 64)] = new GT_RenderedTexture(GT_Block_Casings5.getIconContainer(EnumFacing.EAST, i));
+            }
+
         }
 
         protected TextureAtlasSprite mIcon;
         protected EnumMap<EnumFacing, ImmutableList<BakedQuad>> mQuadData = new EnumMap<>(EnumFacing.class);
 
         BlockIcons() {
-            GregTech_API.sGTBlockIconload.add(this::run);
-            GregTech_API.sAfterGTIconload.add(this::afterRun);
+            GregTech_API.sGTBlockIconload.add(this);
         }
 
         @Override
@@ -571,20 +590,7 @@ public class Textures {
 
         @Override
         public void run() {
-            mIcon = GregTech_API.sBlockIcons.registerSprite(new ResourceLocation(RES_PATH_BLOCK + "iconsets/" + this));
-        }
-
-        public void afterRun() {
-            for(EnumFacing facing : EnumFacing.VALUES) {
-                ImmutableList<BakedQuad> bakedQuads = ImmutableList.of(
-                        RenderUtil.renderSide(mIcon, facing, 0.0f, 0xffffff));
-                mQuadData.put(facing, bakedQuads);
-            }
-        }
-
-        @Override
-        public ImmutableList<BakedQuad> getQuads(EnumFacing side) {
-            return mQuadData.get(side);
+            mIcon = GregTech_API.sBlockIcons.registerSprite(new ResourceLocation(RES_PATH_BLOCK + "iconsets/" +  this));
         }
 
         public static class CustomIcon implements IIconContainer, Runnable {

@@ -42,249 +42,249 @@ public class JEIGregtechRecipe implements IRecipeWrapper {
                 break;
             case 1:
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 48 + 3, 14);
+                    mInputs.init(tStartIndex, true, 48 + 1, 14);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 break;
             case 2:
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 30 + 3, 14);
+                    mInputs.init(tStartIndex, true, 30 + 1, 14);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));;
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 48 + 3, 14);
+                    mInputs.init(tStartIndex, true, 48 + 1, 14);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 break;
             case 3:
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 12 + 3, 14);
+                    mInputs.init(tStartIndex, true, 12 + 1, 14);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 30 + 3, 14);
+                    mInputs.init(tStartIndex, true, 30 + 1, 14);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 48 + 3, 14);
+                    mInputs.init(tStartIndex, true, 48 + 1, 14);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 break;
             case 4:
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 30 + 3, 5);
+                    mInputs.init(tStartIndex, true, 30 + 1, 5);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 48 + 3, 5);
+                    mInputs.init(tStartIndex, true, 48 + 1, 5);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 30 + 3, 23);
+                    mInputs.init(tStartIndex, true, 30 + 1, 23);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 48 + 3, 23);
+                    mInputs.init(tStartIndex, true, 48 + 1, 23);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 break;
             case 5:
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 12 + 3, 5);
+                    mInputs.init(tStartIndex, true, 12 + 1, 5);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 30 + 3, 5);
+                    mInputs.init(tStartIndex, true, 30 + 1, 5);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 48 + 3, 5);
+                    mInputs.init(tStartIndex, true, 48 + 1, 5);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 30 + 3, 23);
+                    mInputs.init(tStartIndex, true, 30 + 1, 23);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 48 + 3, 23);
+                    mInputs.init(tStartIndex, true, 48 + 1, 23);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 break;
             case 6:
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 12 + 3, 5);
+                    mInputs.init(tStartIndex, true, 12 + 1, 5);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 30 + 3, 5);
+                    mInputs.init(tStartIndex, true, 30 + 1, 5);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 48 + 3, 5);
+                    mInputs.init(tStartIndex, true, 48 + 1, 5);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 12 + 3, 23);
+                    mInputs.init(tStartIndex, true, 12 + 1, 23);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 30 + 3, 23);
+                    mInputs.init(tStartIndex, true, 30 + 1, 23);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 48 + 3, 23);
+                    mInputs.init(tStartIndex, true, 48 + 1, 23);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 break;
             case 7:
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 12 + 3, -4);
+                    mInputs.init(tStartIndex, true, 12 + 1, -4);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 30 + 3, -4);
+                    mInputs.init(tStartIndex, true, 30 + 1, -4);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 48 + 3, -4);
+                    mInputs.init(tStartIndex, true, 48 + 1, -4);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 12 + 3, 14);
+                    mInputs.init(tStartIndex, true, 12 + 1, 14);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 30 + 3, 14);
+                    mInputs.init(tStartIndex, true, 30 + 1, 14);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 48 + 3, 14);
+                    mInputs.init(tStartIndex, true, 48 + 1, 14);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 12 + 3, 32);
+                    mInputs.init(tStartIndex, true, 12 + 1, 32);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 break;
             case 8:
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 12 + 3, -4);
+                    mInputs.init(tStartIndex, true, 12 + 1, -4);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 30 + 3, -4);
+                    mInputs.init(tStartIndex, true, 30 + 1, -4);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 48 + 3, -4);
+                    mInputs.init(tStartIndex, true, 48 + 1, -4);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 12 + 3, 14);
+                    mInputs.init(tStartIndex, true, 12 + 1, 14);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 30 + 3, 32);
+                    mInputs.init(tStartIndex, true, 30 + 1, 32);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 48 + 3, 32);
+                    mInputs.init(tStartIndex, true, 48 + 1, 32);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 12 + 3, 32);
+                    mInputs.init(tStartIndex, true, 12 + 1, 32);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 30 + 3, 32);
+                    mInputs.init(tStartIndex, true, 30 + 1, 32);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 break;
             default:
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 12 + 3, -4);
+                    mInputs.init(tStartIndex, true, 12 + 1, -4);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 30 + 3, -4);
+                    mInputs.init(tStartIndex, true, 30 + 1, -4);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 48 + 3, -4);
+                    mInputs.init(tStartIndex, true, 48 + 1, -4);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 12 + 3, 14);
+                    mInputs.init(tStartIndex, true, 12 + 1, 14);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 30 + 3, 14);
+                    mInputs.init(tStartIndex, true, 30 + 1, 14);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 48 + 3, 14);
+                    mInputs.init(tStartIndex, true, 48 + 1, 14);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 12 + 3, 32);
+                    mInputs.init(tStartIndex, true, 12 + 1, 32);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 30 + 3, 32);
+                    mInputs.init(tStartIndex, true, 30 + 1, 32);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
                 if (mRecipe.getNEIAdaptedInput(tStartIndex) != null) {
-                    mInputs.init(tStartIndex, true, 48 + 3, 32);
+                    mInputs.init(tStartIndex, true, 48 + 1, 32);
                     mInputs.set(tStartIndex, mRecipe.getNEIAdaptedInput(tStartIndex));
                 }
                 tStartIndex++;
         }
         if (mRecipe.mSpecialItems != null) {
-            mInputs.init(100, false, 120 + 3, 52);
+            mInputs.init(100, false, 120 + 1, 52);
             if(mRecipe.mSpecialItems instanceof Collection)
                 mInputs.set(100, (Collection<ItemStack>) mRecipe.mSpecialItems);
             else if(mRecipe.mSpecialItems instanceof ItemStack)
@@ -296,243 +296,243 @@ public class JEIGregtechRecipe implements IRecipeWrapper {
                 break;
             case 1:
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 105, 14);
+                    mInputs.init(tStartIndex, false, 102 + 1, 14);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 break;
             case 2:
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 102 + 3, 14);
+                    mInputs.init(tStartIndex, false, 102 + 1, 14);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 120 + 3, 14);
+                    mInputs.init(tStartIndex, false, 120 + 1, 14);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 break;
             case 3:
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 102 + 3, 14);
+                    mInputs.init(tStartIndex, false, 102 + 1, 14);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 120 + 3, 14);
+                    mInputs.init(tStartIndex, false, 120 + 1, 14);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 138 + 3, 14);
+                    mInputs.init(tStartIndex, false, 138 + 1, 14);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 break;
             case 4:
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 102 + 3, 5);
+                    mInputs.init(tStartIndex, false, 102 + 1, 5);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 120 + 3, 5);
+                    mInputs.init(tStartIndex, false, 120 + 1, 5);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 102 + 3, 23);
+                    mInputs.init(tStartIndex, false, 102 + 1, 23);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 120 + 3, 23);
+                    mInputs.init(tStartIndex, false, 120 + 1, 23);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 break;
             case 5:
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 102 + 3, 5);
+                    mInputs.init(tStartIndex, false, 102 + 1, 5);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 120 + 3, 5);
+                    mInputs.init(tStartIndex, false, 120 + 1, 5);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 138 + 3, 5);
+                    mInputs.init(tStartIndex, false, 138 + 1, 5);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 102 + 3, 23);
+                    mInputs.init(tStartIndex, false, 102 + 1, 23);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 120 + 3, 23);
+                    mInputs.init(tStartIndex, false, 120 + 1, 23);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 break;
             case 6:
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 102 + 3, 5);
+                    mInputs.init(tStartIndex, false, 102 + 1, 5);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 120 + 3, 5);
+                    mInputs.init(tStartIndex, false, 120 + 1, 5);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 138 + 3, 5);
+                    mInputs.init(tStartIndex, false, 138 + 1, 5);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 102 + 3, 23);
+                    mInputs.init(tStartIndex, false, 102 + 1, 23);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 120 + 3, 23);
+                    mInputs.init(tStartIndex, false, 120 + 1, 23);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 138 + 3, 23);
+                    mInputs.init(tStartIndex, false, 138 + 1, 23);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 break;
             case 7:
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 102 + 3, -4);
+                    mInputs.init(tStartIndex, false, 102 + 1, -4);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 120 + 3, -4);
+                    mInputs.init(tStartIndex, false, 120 + 1, -4);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 138 + 3, -4);
+                    mInputs.init(tStartIndex, false, 138 + 1, -4);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 102 + 3, 14);
+                    mInputs.init(tStartIndex, false, 102 + 1, 14);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 120 + 3, 14);
+                    mInputs.init(tStartIndex, false, 120 + 1, 14);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 138 + 3, 14);
+                    mInputs.init(tStartIndex, false, 138 + 1, 14);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 102 + 3, 32);
+                    mInputs.init(tStartIndex, false, 102 + 1, 32);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 break;
             case 8:
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 102 + 3, -4);
+                    mInputs.init(tStartIndex, false, 102 + 1, -4);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 120 + 3, -4);
+                    mInputs.init(tStartIndex, false, 120 + 1, -4);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 138 + 3, -4);
+                    mInputs.init(tStartIndex, false, 138 + 1, -4);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 102 + 3, 24);
+                    mInputs.init(tStartIndex, false, 102 + 1, 24);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 120 + 3, 14);
+                    mInputs.init(tStartIndex, false, 120 + 1, 14);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 138 + 3, 14);
+                    mInputs.init(tStartIndex, false, 138 + 1, 14);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 102 + 3, 32);
+                    mInputs.init(tStartIndex, false, 102 + 1, 32);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 120 + 3, 32);
+                    mInputs.init(tStartIndex, false, 120 + 1, 32);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 break;
             default:
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 102 + 3, -4);
+                    mInputs.init(tStartIndex, false, 102 + 1, -4);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 120 + 3, -4);
+                    mInputs.init(tStartIndex, false, 120 + 1, -4);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 138 + 3, -4);
+                    mInputs.init(tStartIndex, false, 138 + 1, -4);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 102 + 3, 14);
+                    mInputs.init(tStartIndex, false, 102 + 1, 14);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 120 + 3, 14);
+                    mInputs.init(tStartIndex, false, 120 + 1, 14);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 138 + 3, 14);
+                    mInputs.init(tStartIndex, false, 138 + 1, 14);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 102 + 3, 32);
+                    mInputs.init(tStartIndex, false, 102 + 1, 32);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 120 + 3, 32);
+                    mInputs.init(tStartIndex, false, 120 + 1, 32);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
                 if (mRecipe.getOutput(tStartIndex - 1000) != null) {
-                    mInputs.init(tStartIndex, false, 138 + 3, 32);
+                    mInputs.init(tStartIndex, false, 138 + 1, 32);
                     mInputs.set(tStartIndex, mRecipe.getOutput(tStartIndex - 1000));
                 }
                 tStartIndex++;
@@ -541,36 +541,36 @@ public class JEIGregtechRecipe implements IRecipeWrapper {
 
 
         if ((mRecipe.mFluidInputs.length > 0) && (mRecipe.mFluidInputs[0] != null) && (mRecipe.mFluidInputs[0].getFluid() != null)) {
-            mFluids.init(0, true, 48 + 4, 52 + 1, 16, 16, mRecipe.mFluidInputs[0].amount, true, null);
+            mFluids.init(0, true, 49 + 1, 52 + 1, 16, 16, mRecipe.mFluidInputs[0].amount, true, null);
             mFluids.set(0, mRecipe.mFluidInputs[0]);
             if ((mRecipe.mFluidInputs.length > 1) && (mRecipe.mFluidInputs[1] != null) && (mRecipe.mFluidInputs[1].getFluid() != null)) {
-                mFluids.init(1, true, 30 + 4, 52 + 1, 16, 16, mRecipe.mFluidInputs[1].amount, true, null);
+                mFluids.init(1, true, 30 + 2, 52 + 1, 16, 16, mRecipe.mFluidInputs[1].amount, true, null);
                 mFluids.set(1, mRecipe.mFluidInputs[1]);
             }
         }
         if (mRecipe.mFluidOutputs.length > 1) {
             if (mRecipe.mFluidOutputs[0] != null && (mRecipe.mFluidOutputs[0].getFluid() != null)) {
-                mFluids.init(2, false, 120 + 4, 5 + 1, 16, 16, mRecipe.mFluidOutputs[0].amount, true, null);
+                mFluids.init(2, false, 120 + 2, 5 + 1, 16, 16, mRecipe.mFluidOutputs[0].amount, true, null);
                 mFluids.set(2, mRecipe.mFluidOutputs[0]);
             }
             if (mRecipe.mFluidOutputs[1] != null && (mRecipe.mFluidOutputs[1].getFluid() != null)) {
-                mFluids.init(3, false, 138 + 4, 5 + 1, 16, 16, mRecipe.mFluidOutputs[1].amount, true, null);
+                mFluids.init(3, false, 138 + 2, 5 + 1, 16, 16, mRecipe.mFluidOutputs[1].amount, true, null);
                 mFluids.set(3, mRecipe.mFluidOutputs[1]);
             }
             if (mRecipe.mFluidOutputs.length > 2 && mRecipe.mFluidOutputs[2] != null && (mRecipe.mFluidOutputs[2].getFluid() != null)) {
-                mFluids.init(4, false, 102 + 4, 23 + 1, 16, 16, mRecipe.mFluidOutputs[2].amount, true, null);
+                mFluids.init(4, false, 102 + 2, 23 + 1, 16, 16, mRecipe.mFluidOutputs[2].amount, true, null);
                 mFluids.set(4, mRecipe.mFluidOutputs[2]);
             }
             if (mRecipe.mFluidOutputs.length > 3 && mRecipe.mFluidOutputs[3] != null && (mRecipe.mFluidOutputs[3].getFluid() != null)) {
-                mFluids.init(5, false, 120 + 4, 23 + 1, 16, 16, mRecipe.mFluidOutputs[3].amount, true, null);
+                mFluids.init(5, false, 120 + 2, 23 + 1, 16, 16, mRecipe.mFluidOutputs[3].amount, true, null);
                 mFluids.set(5, mRecipe.mFluidOutputs[3]);
             }
             if (mRecipe.mFluidOutputs.length > 4 && mRecipe.mFluidOutputs[4] != null && (mRecipe.mFluidOutputs[4].getFluid() != null)) {
-                mFluids.init(6, false, 138 + 4, 23 + 1, 16, 16, mRecipe.mFluidOutputs[4].amount, true, null);
+                mFluids.init(6, false, 138 + 2, 23 + 1, 16, 16, mRecipe.mFluidOutputs[4].amount, true, null);
                 mFluids.set(6, mRecipe.mFluidOutputs[4]);
             }
         } else if ((mRecipe.mFluidOutputs.length > 0) && (mRecipe.mFluidOutputs[0] != null) && (mRecipe.mFluidOutputs[0].getFluid() != null)) {
-            mFluids.init(7, false, 102 + 4, 52 + 1, 16, 16, mRecipe.mFluidOutputs[0].amount, true, null);
+            mFluids.init(7, false, 102 + 2, 52 + 1, 16, 16, mRecipe.mFluidOutputs[0].amount, true, null);
             mFluids.set(7, mRecipe.mFluidOutputs[0]);
         }
 
