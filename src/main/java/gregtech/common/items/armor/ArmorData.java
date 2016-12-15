@@ -373,7 +373,7 @@ public class ArmorData {
 				continue;
 //			if(armorData != null && armorData.mStat != null && armorData.mStat.containsKey(statType))
 //			{
-				change(mStat, statType, armorData.mStat.get(statType));
+				set(mStat, statType, armorData.mStat.get(statType));
 //			}
 			/*change(mStat, StatType.MAGNET, armorData.mStat.get(StatType.MAGNET));
 			change(mStat, StatType.THORNS, armorData.mStat.get(StatType.THORNS));
