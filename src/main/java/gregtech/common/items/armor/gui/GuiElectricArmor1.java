@@ -1,7 +1,10 @@
 package gregtech.common.items.armor.gui;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.GT_Network;
+import gregtech.common.items.armor.ArmorData;
 import gregtech.common.items.armor.components.StatType;
 
 import java.text.DecimalFormat;
@@ -168,27 +171,39 @@ public class GuiElectricArmor1 extends GuiContainer {
 			}
 		}
 //		Slot slot = getSlotAtPosition(mouseX, mouseY);
-//		if (slot != null && slot instanceof SlotFluid && player != null) {
+//		if (slot != null && slot instanceof SlotFluid && player != null && cont.mInvArmor.data.helmet!=null) {
 //			ItemStack tmp = player.inventory.getItemStack();
+//			//GT_Network gtn = new GT_Network();
 //			if (tmp == null) {
-//				GTExtras.NET.sendToServer(new FluidSync(player.getCommandSenderName(), 0, "null"));
+//				//GT_Values.NW.sendToServer(new FluidSync(player.getCommandSenderName(), 0, "null"));				
 //			}
+//			//ArmorData armorData = new ArmorData(player,);
 //			if (tmp != null && tmp.getItem() instanceof IFluidContainerItem) {
 //				FluidStack tmp2 = ((IFluidContainerItem) tmp.getItem()).getFluid(tmp);
 //				if (!slot.getHasStack() && tmp2 != null) {
-//					slot.putStack(UT.Fluids.display(tmp2, true));
-//					GTExtras.NET.sendToServer(new FluidSync(player.getCommandSenderName(), tmp2.amount, UT.Fluids.name(tmp2, false)));
-//					ItemStack tmp4 = UT.Fluids.getContainerForFilledItem(tmp, true);
+//					slot.putStack(GT_Utility.getFluidDisplayStack(tmp2, true));					
+//					
+//					if(cont.mInvArmor.data.helmet.fluid == null)
+//					{
+//						cont.mInvArmor.data.helmet.fluid = new FluidStack(tmp2.getFluid(), tmp2.amount);
+//					}
+//					else
+//					{
+//						cont.mInvArmor.data.helmet.fluid.amount += tmp2.amount;
+//					}
+//					
+//					//GT_Values.NW.sendToServer(new FluidSync(player.getCommandSenderName(), tmp2.amount, GT_Utility.getFluidName(tmp2, false)));
+//					ItemStack tmp4 = GT_Utility.getContainerForFilledItem(tmp, true);					
 //					tmp4.stackSize = 1;
 //					if (tmp.stackSize > 1) {
 //						player.inventory.addItemStackToInventory(tmp4);
 //						tmp.stackSize--;
 //						player.inventory.setItemStack(tmp);
-//						GTExtras.NET.sendToServer(new FluidSync2(player.getCommandSenderName()));
+//						//GT_Values.NW.sendToServer(new FluidSync2(player.getCommandSenderName()));
 //					} else {
 //						player.inventory.setItemStack(null);
 //						player.inventory.addItemStackToInventory(tmp4);
-//						GTExtras.NET.sendToServer(new FluidSync2(player.getCommandSenderName()));
+//						//GT_Values.NW.sendToServer(new FluidSync2(player.getCommandSenderName()));
 //					}
 //
 //				} else if (slot.getHasStack() && tmp2 != null) {
@@ -204,9 +219,17 @@ public class GuiElectricArmor1 extends GuiContainer {
 //								tmp3.stackSize--;
 //							}
 //							player.inventory.setItemStack(tmp3);
-//							GTExtras.NET.sendToServer(new FluidSync2(player.getCommandSenderName()));
-//							slot.putStack(UT.Fluids.display(tmp2, true));
-//							GTExtras.NET.sendToServer(new FluidSync(player.getCommandSenderName(), tmp2.amount, UT.Fluids.name(tmp2, false)));
+//							//GT_Values.NW.sendToServer(new FluidSync2(player.getCommandSenderName()));
+//							slot.putStack(GT_Utility.getFluidDisplayStack(tmp2, true));
+//							if(cont.mInvArmor.data.helmet.fluid == null)
+//							{
+//								cont.mInvArmor.data.helmet.fluid = new FluidStack(tmp2.getFluid(), tmp2.amount);
+//							}
+//							else
+//							{
+//								cont.mInvArmor.data.helmet.fluid.amount += tmp2.amount;
+//							}
+//							//GT_Values.NW.sendToServer(new FluidSync(player.getCommandSenderName(), tmp2.amount, GT_Utility.getFluidName(tmp2, false)));
 //						}
 //					}
 //				}

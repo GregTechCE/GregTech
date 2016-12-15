@@ -210,8 +210,8 @@ public class ModularArmor_Item extends ItemArmor implements ISpecialArmor, IGogg
 		}
 
 		// Breathing
-		if (data.type == 0 && aPlayer.getAir() < 100) {
-			int air = 0;
+		if (data.type == 0 && aPlayer.getAir() < 100 && data.fluid != null) {
+			int air = 0;			
 			if (data.fluid.getUnlocalizedName().equals("fluid.oxygen") && data.fluid.amount >= 150) {
 				aPlayer.setAir(aPlayer.getAir() + 150);
 				air = 150;
