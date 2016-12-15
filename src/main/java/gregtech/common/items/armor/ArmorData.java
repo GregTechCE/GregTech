@@ -397,7 +397,9 @@ public class ArmorData {
 	public void change(Map aMap, StatType aType, float aChange){
 		float tChange = 0;
 		if(aMap==null)System.out.println("changeMapnull");
-		if(aMap.containsKey(aType)){tChange = (float) aMap.get(aType);
+		if(aMap.containsKey(aType)){
+			Object value = aMap.get(aType);
+			tChange = value != null ? (float) aMap.get(aType) : 0.0f;
 		aMap.remove(aType);
 		}
 		aMap.put(aType, (tChange + aChange));		
