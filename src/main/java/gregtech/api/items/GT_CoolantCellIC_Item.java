@@ -94,4 +94,9 @@ public class GT_CoolantCellIC_Item extends GT_CoolantCell_Item implements IReact
     public float influenceExplosion(ItemStack itemStack, IReactor iReactor) {
         return influenceExplosion(iReactor, itemStack);
     }
+
+    @Override
+    public boolean canBePlacedIn(ItemStack stack, IReactor reactor) {
+        return true;
+    }
 }

@@ -126,11 +126,6 @@ public class GT_BaseCrop extends CropCard {
         return aCrop.getCurrentSize() + 2 > getMaxSize();
     }
 
-    @Override
-    public String getName() {
-        return mName;
-    }
-
     public int getTier() {
         return mTier;
     }
@@ -138,6 +133,11 @@ public class GT_BaseCrop extends CropCard {
     @Override
     public int getMaxSize() {
         return mMaxSize;
+    }
+
+    @Override
+    public String getId() {
+        return mName;
     }
 
     @Override

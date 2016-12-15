@@ -36,4 +36,10 @@ public class GT_DepletetCell_Item extends GT_RadioactiveCellIC_Item {
     public float influenceExplosion(IReactor paramIReactor, ItemStack paramItemStack) {
         return 0.0F;
     }
+
+    @Override
+    public boolean canBePlacedIn(ItemStack stack, IReactor reactor) {
+        return true;
+    }
+
 }

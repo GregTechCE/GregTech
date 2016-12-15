@@ -59,6 +59,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
@@ -1693,7 +1694,7 @@ public class GT_Utility {
                     if (cropTile.getCrop() != null) {
                         rEUAmount += 1000;
                         CropProperties properties = cropTile.getCrop().getProperties();
-                        tList.add("Type -- Crop-Name: " + cropTile.getCrop().getDisplayName()
+                        tList.add("Type -- Crop-Name: " + I18n.translateToLocal(cropTile.getCrop().getUnlocalizedName())
                                         + "  Growth: " + cropTile.getCurrentSize()
                                         + "  Gain: " + cropTile.getCrop().getGain(cropTile)
                                         + "  Resistance: " + properties.getDefensive()

@@ -63,4 +63,8 @@ public class GT_NeutronReflector_Item
     public void processChamber(ItemStack aStack, IReactor reactor, int x, int y, boolean aHeatRun) {
     }
 
+    @Override
+    public boolean canBePlacedIn(ItemStack stack, IReactor reactor) {
+        return true;
+    }
 }

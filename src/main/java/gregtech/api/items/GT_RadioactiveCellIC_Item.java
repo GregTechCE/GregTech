@@ -150,6 +150,11 @@ public class GT_RadioactiveCellIC_Item extends GT_RadioactiveCell_Item implement
         }
     }
 
+    @Override
+    public boolean canBePlacedIn(ItemStack stack, IReactor reactor) {
+        return true;
+    }
+
 
     private class ItemStackCoord {
         public ItemStack stack;

@@ -298,38 +298,34 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     public void breakBlock(World aWorld, BlockPos pos, IBlockState blockState) {
         GregTech_API.causeMachineUpdate(aWorld, pos.getX(), pos.getY(), pos.getZ());
         TileEntity tTileEntity = aWorld.getTileEntity(pos);
-        if ((tTileEntity instanceof IGregTechTileEntity)) {
-            IGregTechTileEntity tGregTechTileEntity = (IGregTechTileEntity) tTileEntity;
-            Random tRandom = new Random();
-            for (int i = 0; i < tGregTechTileEntity.getSizeInventory(); i++) {
-                ItemStack tItem = tGregTechTileEntity.getStackInSlot(i);
-                if ((tItem != null) && (tItem.stackSize > 0) && (tGregTechTileEntity.isValidSlot(i))) {
-                    EntityItem tItemEntity = new EntityItem(aWorld,
-                            pos.getX() + tRandom.nextFloat() * 0.8F + 0.1F,
-                            pos.getY() + tRandom.nextFloat() * 0.8F + 0.1F,
-                            pos.getZ() + tRandom.nextFloat() * 0.8F + 0.1F,
-                            new ItemStack(tItem.getItem(), tItem.stackSize, tItem.getItemDamage()));
-                    if (tItem.hasTagCompound()) {
-                        tItemEntity.getEntityItem().setTagCompound((NBTTagCompound) tItem.getTagCompound().copy());
-                    }
-                    tItemEntity.motionX = (tRandom.nextGaussian() * 0.0500000007450581D);
-                    tItemEntity.motionY = (tRandom.nextGaussian() * 0.0500000007450581D + 0.2000000029802322D);
-                    tItemEntity.motionZ = (tRandom.nextGaussian() * 0.0500000007450581D);
-                    aWorld.spawnEntityInWorld(tItemEntity);
-                    tItem.stackSize = 0;
-                    tGregTechTileEntity.setInventorySlotContents(i, null);
-                }
+        if(tTileEntity instanceof IGregTechTileEntity) {
+            List<ItemStack> drops = getDrops((IGregTechTileEntity) tTileEntity);
+            for(ItemStack itemStack : drops) {
+                spawnAsEntity(aWorld, pos, itemStack);
             }
         }
+        System.out.println("Break");
         super.breakBlock(aWorld, pos, blockState);
         aWorld.removeTileEntity(pos);
     }
 
     @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        IGregTechTileEntity gregTechTileEntity = getGregTile(world, pos);
-        if(gregTechTileEntity != null) {
-            return gregTechTileEntity.getDrops();
+        return Collections.emptyList();
+    }
+
+    public List<ItemStack> getDrops(IGregTechTileEntity tGregTechTileEntity) {
+        if (tGregTechTileEntity != null) {
+            ArrayList<ItemStack> aDrops = new ArrayList<>();
+            aDrops.addAll(tGregTechTileEntity.getDrops());
+            for (int i = 0; i < tGregTechTileEntity.getSizeInventory(); i++) {
+                ItemStack tItem = tGregTechTileEntity.getStackInSlot(i);
+                if ((tItem != null) && (tItem.stackSize > 0) && (tGregTechTileEntity.isValidSlot(i))) {
+                    aDrops.add(tItem);
+                    tGregTechTileEntity.setInventorySlotContents(i, null);
+                }
+            }
+            return aDrops;
         }
         return Collections.EMPTY_LIST;
     }
