@@ -98,6 +98,8 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
                     GT_Mod.instance.achievements.issueAchievement(this.getBaseMetaTileEntity().getWorld().getPlayerEntityByName(this.getBaseMetaTileEntity().getOwnerName()), "muchsteam");
                     achievement = true;
                 }
+            }else if(fluidName.equals("ic2.fluidSuperheatedSteam")){
+                depleteInput(new FluidStack(aFluids.get(i), aFluids.get(i).amount));            	
             }
         }
 
