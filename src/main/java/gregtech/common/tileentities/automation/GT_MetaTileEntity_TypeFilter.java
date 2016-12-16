@@ -125,7 +125,9 @@ public class GT_MetaTileEntity_TypeFilter
                         tFix == OrePrefixes.orePoor ||
                         tFix == OrePrefixes.oreRedgranite ||
                         tFix == OrePrefixes.oreRich ||
-                        tFix == OrePrefixes.oreSmall) tAllowPrefix = true;
+                        tFix == OrePrefixes.oreSmall ||
+                        tFix == OrePrefixes.oreBasalt ||
+                        tFix == OrePrefixes.oreMarble) tAllowPrefix = true;
             }
         }
         return (super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack)) && ((this.bNBTAllowed) || (!aStack.hasTagCompound())) && (tAllowPrefix != this.bInvertFilter);
