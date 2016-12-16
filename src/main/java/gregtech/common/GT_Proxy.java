@@ -19,7 +19,6 @@ import gregtech.common.items.armor.*;
 import ic2.core.block.type.ResourceBlock;
 import ic2.core.block.wiring.CableType;
 import ic2.core.item.ItemFluidCell;
-import ic2.core.item.ItemUpgradeModule;
 import ic2.core.item.type.*;
 import ic2.core.ref.BlockName;
 import ic2.core.ref.FluidName;
@@ -334,8 +333,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         ItemList.Circuit_Basic.set(GT_ModHandler.getIC2Item(ItemName.crafting, CraftingItemType.circuit, 1));
         ItemList.Circuit_Advanced.set(GT_ModHandler.getIC2Item(ItemName.crafting, CraftingItemType.advanced_circuit, 1));
 
-        ItemList.Upgrade_Overclocker.set(GT_ModHandler.getIC2Item(ItemName.upgrade, ItemUpgradeModule.UpgradeType.overclocker, 1));
-        ItemList.Upgrade_Battery.set(GT_ModHandler.getIC2Item(ItemName.upgrade, ItemUpgradeModule.UpgradeType.energy_storage, 1));
+        //ItemList.Upgrade_Overclocker.set(GT_ModHandler.getIC2Item(ItemName.upgrade, ItemUpgradeModule.UpgradeType.overclocker, 1));
+        //ItemList.Upgrade_Battery.set(GT_ModHandler.getIC2Item(ItemName.upgrade, ItemUpgradeModule.UpgradeType.energy_storage, 1));
 
         ItemList.Dye_Bonemeal.set(new ItemStack(Items.DYE, 1, 15));
         ItemList.Dye_SquidInk.set(new ItemStack(Items.DYE, 1, 0));
