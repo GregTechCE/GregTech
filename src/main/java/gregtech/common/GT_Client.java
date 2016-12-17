@@ -28,6 +28,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -225,17 +226,20 @@ public class GT_Client extends GT_Proxy
 
     @SubscribeEvent
     public void onDrawBlockHighlight(DrawBlockHighlightEvent aEvent) {
-        EntityPlayer aPlayer = aEvent.getPlayer();
-        ItemStack currentItem = aPlayer.getHeldItemMainhand();
-        BlockPos aPos = aEvent.getTarget().getBlockPos();
-        Block block = aPlayer.worldObj.getBlockState(aPos).getBlock();
-        if (GT_Utility.isStackValid(currentItem)) {
-            TileEntity aTileEntity = aPlayer.worldObj.getTileEntity(aPos);
-            if (((aTileEntity instanceof BaseMetaPipeEntity)) && (((ICoverable) aTileEntity).getCoverIDAtSide((byte) aEvent.getTarget().sideHit.getIndex()) == 0) && ((GT_Utility.isStackInList(currentItem, GregTech_API.sCoverItems.keySet())) || (GT_Utility.isStackInList(currentItem, GregTech_API.sCrowbarList)) || (GT_Utility.isStackInList(currentItem, GregTech_API.sScrewdriverList)))) {
-                drawGrid(aEvent);
-            }
-            else if ((aTileEntity instanceof ITurnable || aTileEntity instanceof IWrenchable || ROTATABLE_VANILLA_BLOCKS.contains(block)) && GT_Utility.isStackInList(currentItem, GregTech_API.sWrenchList)) {
-                drawGrid(aEvent);
+        if(aEvent.getPlayer() != null && aEvent.getTarget().typeOfHit == RayTraceResult.Type.BLOCK &&
+                aEvent.getTarget().getBlockPos() != null) {
+            EntityPlayer aPlayer = aEvent.getPlayer();
+            ItemStack currentItem = aPlayer.getHeldItemMainhand();
+            BlockPos aPos = aEvent.getTarget().getBlockPos();
+            Block block = aPlayer.worldObj.getBlockState(aPos).getBlock();
+            if (GT_Utility.isStackValid(currentItem)) {
+                TileEntity aTileEntity = aPlayer.worldObj.getTileEntity(aPos);
+                if (((aTileEntity instanceof BaseMetaPipeEntity)) && (((ICoverable) aTileEntity).getCoverIDAtSide((byte) aEvent.getTarget().sideHit.getIndex()) == 0) && ((GT_Utility.isStackInList(currentItem, GregTech_API.sCoverItems.keySet())) || (GT_Utility.isStackInList(currentItem, GregTech_API.sCrowbarList)) || (GT_Utility.isStackInList(currentItem, GregTech_API.sScrewdriverList)))) {
+                    drawGrid(aEvent);
+                }
+                else if ((aTileEntity instanceof ITurnable || aTileEntity instanceof IWrenchable || ROTATABLE_VANILLA_BLOCKS.contains(block)) && GT_Utility.isStackInList(currentItem, GregTech_API.sWrenchList)) {
+                    drawGrid(aEvent);
+                }
             }
         }
     }
