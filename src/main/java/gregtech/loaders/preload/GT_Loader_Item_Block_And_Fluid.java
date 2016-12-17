@@ -12,7 +12,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.*;
-import gregtech.common.blocks.rework.GT_Block_GeneratedOres;
+import gregtech.common.blocks.GT_Block_GeneratedOres;
 import gregtech.common.items.*;
 import gregtech.common.items.armor.ElectricModularArmor1;
 import gregtech.common.items.armor.ModularArmor_Item;
@@ -28,7 +28,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 

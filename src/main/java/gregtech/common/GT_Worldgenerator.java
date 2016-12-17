@@ -4,7 +4,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
-import gregtech.common.blocks.rework.GT_Block_GeneratedOres;
+import gregtech.common.blocks.GT_Block_GeneratedOres;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;

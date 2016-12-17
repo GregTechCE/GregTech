@@ -5,15 +5,18 @@ import codechicken.lib.render.block.ICCBlockRenderer;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.StoneTypes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.GT_Generic_Block;
-import gregtech.common.blocks.rework.GT_Block_GeneratedOres;
+import gregtech.common.blocks.GT_Block_GeneratedOres;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
@@ -39,7 +42,10 @@ public class RenderBlocks implements ICCBlockRenderer {
     }
 
     @Override
-    public void handleRenderBlockDamage(IBlockAccess world, BlockPos pos, IBlockState state, TextureAtlasSprite sprite, VertexBuffer buffer) {}
+    public void handleRenderBlockDamage(IBlockAccess world, BlockPos pos, IBlockState state, TextureAtlasSprite sprite, VertexBuffer buffer) {
+        IBlockState stone = Blocks.STONE.getDefaultState();
+        Minecraft.getMinecraft().getBlockRendererDispatcher().renderBlockDamage(stone, pos, sprite, world);
+    }
 
     @Override
     public boolean renderBlock(IBlockAccess world, BlockPos pos, IBlockState state, VertexBuffer buffer) {
@@ -47,7 +53,10 @@ public class RenderBlocks implements ICCBlockRenderer {
         double y = pos.getY();
         double z = pos.getZ();
 
+
         GT_Generic_Block aOres = (GT_Generic_Block) state.getBlock();
+        aOres.setBlockBoundsBasedOnState(world, pos, state);
+        setRenderBoundsFromBlock1(aOres);
 
         int lightmap;
         int color;
@@ -176,6 +185,9 @@ public class RenderBlocks implements ICCBlockRenderer {
         VertexBuffer buf = tes.getBuffer();
 
         GT_Generic_Block aBlock = (GT_Generic_Block) ((ItemBlock) itemStack.getItem()).block;
+        aBlock.setBlockBoundsForItemRender();
+        setRenderBoundsFromBlock1(aBlock);
+
         TextureAtlasSprite sprite;
 
         buf.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
@@ -399,8 +411,8 @@ public class RenderBlocks implements ICCBlockRenderer {
         float a = ((color >> 24) & 0xFF) / 255.0f;
 
 
-        int light1 = lightmap >> 16 & 65535;
-        int light2 = lightmap & 65535;
+        int light1 = Math.max(0, (lightmap >> 16 & 65535) - 26);
+        int light2 = Math.max(0, (lightmap & 65535) - 26);
 
         double minU = sprite.getMinU();
         double minV = sprite.getMinV();
@@ -421,8 +433,8 @@ public class RenderBlocks implements ICCBlockRenderer {
         float a = ((color >> 24) & 0xFF) / 255.0f;
 
 
-        int light1 = lightmap >> 16 & 65535;
-        int light2 = lightmap & 65535;
+        int light1 = Math.max(0, (lightmap >> 16 & 65535) - 26);
+        int light2 = Math.max(0, (lightmap & 65535) - 26);
 
         double minU = sprite.getMinU();
         double minV = sprite.getMinV();
@@ -442,8 +454,8 @@ public class RenderBlocks implements ICCBlockRenderer {
         float a = ((color >> 24) & 0xFF) / 255.0f;
 
 
-        int light1 = lightmap >> 16 & 65535;
-        int light2 = lightmap & 65535;
+        int light1 = Math.max(0, (lightmap >> 16 & 65535) - 26);
+        int light2 = Math.max(0, (lightmap & 65535) - 26);
 
         double minU = sprite.getMinU();
         double minV = sprite.getMinV();
@@ -463,8 +475,8 @@ public class RenderBlocks implements ICCBlockRenderer {
         float a = ((color >> 24) & 0xFF) / 255.0f;
 
 
-        int light1 = lightmap >> 16 & 65535;
-        int light2 = lightmap & 65535;
+        int light1 = Math.max(0, (lightmap >> 16 & 65535) - 26);
+        int light2 = Math.max(0, (lightmap & 65535) - 26);
 
         double minU = sprite.getMinU();
         double minV = sprite.getMinV();
@@ -484,8 +496,8 @@ public class RenderBlocks implements ICCBlockRenderer {
         float a = ((color >> 24) & 0xFF) / 255.0f;
 
 
-        int light1 = lightmap >> 16 & 65535;
-        int light2 = lightmap & 65535;
+        int light1 = Math.max(0, (lightmap >> 16 & 65535) - 26);
+        int light2 = Math.max(0, (lightmap & 65535) - 26);
 
         double minU = sprite.getMinU();
         double minV = sprite.getMinV();
@@ -504,8 +516,8 @@ public class RenderBlocks implements ICCBlockRenderer {
         float b = ((color) & 0xFF) / 255.0f;
         float a = ((color >> 24) & 0xFF) / 255.0f;
 
-        int light1 = lightmap >> 16 & 65535;
-        int light2 = lightmap & 65535;
+        int light1 = Math.max(0, (lightmap >> 16 & 65535) - 26);
+        int light2 = Math.max(0, (lightmap & 65535) - 26);
 
         double minU = sprite.getMinU();
         double minV = sprite.getMinV();

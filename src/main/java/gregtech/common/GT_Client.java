@@ -244,12 +244,6 @@ public class GT_Client extends GT_Proxy
         }
     }
 
-    @SubscribeEvent
-    public void receiveRenderEvent(net.minecraftforge.client.event.RenderPlayerEvent.Pre aEvent) {
-        if (GT_Utility.getFullInvisibility(aEvent.getEntityPlayer())) {
-            aEvent.setCanceled(true);
-        }
-    }
 
     @SubscribeEvent
     public void onClientTickEvent(net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent aEvent) {

@@ -327,7 +327,6 @@ public class ItemRenderer implements IItemRenderer, IStackPerspectiveAwareModel 
         return ItemOverrideList.NONE;
     }
 
-
     @Override
     public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemStack stack, ItemCameraTransforms.TransformType cameraTransformType) {
         Matrix4f mat = new Matrix4f();

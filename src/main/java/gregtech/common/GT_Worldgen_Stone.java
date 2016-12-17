@@ -1,12 +1,10 @@
 package gregtech.common;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.world.GT_Worldgen_Ore;
 import gregtech.api.world.GT_Worldgen_Constants;
-import gregtech.common.blocks.rework.GT_Block_GeneratedOres;
+import gregtech.common.blocks.GT_Block_GeneratedOres;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;

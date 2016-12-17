@@ -1,4 +1,4 @@
-package gregtech.common.blocks.rework;
+package gregtech.common.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;

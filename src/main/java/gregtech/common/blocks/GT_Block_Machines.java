@@ -2,13 +2,16 @@ package gregtech.common.blocks;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IDebugableBlock;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
@@ -16,6 +19,7 @@ import gregtech.common.render.GT_Renderer_Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -274,12 +278,27 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         return false;
     }
 
+
+
     @Override
     public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn) {
         IGregTechTileEntity gregTechTileEntity = getGregTile(worldIn, pos);
         if(gregTechTileEntity != null) {
             gregTechTileEntity.onLeftclick(playerIn);
         }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public TextureAtlasSprite getParticleSprite(World worldObj, BlockPos aPos, EnumFacing side) {
+        TileEntity tileEntity = worldObj.getTileEntity(aPos);
+        if(tileEntity instanceof ITexturedTileEntity) {
+            ITexture[] textures = ((ITexturedTileEntity) tileEntity).getTexture(this, (byte) 1);
+            if(textures.length > 0 && textures[0].isValidTexture() && textures[0] instanceof GT_RenderedTexture) {
+                return ((GT_RenderedTexture) textures[0]).mIconContainer.getIcon();
+            }
+        }
+        return null;
     }
 
     @Override

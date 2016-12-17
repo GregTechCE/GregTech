@@ -1,4 +1,4 @@
-package gregtech.common.blocks.rework;
+package gregtech.common.blocks;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,10 +22,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -159,18 +163,21 @@ public class GT_Block_GeneratedOres extends GT_Generic_Block {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    public TextureAtlasSprite getParticleSprite(World worldObj, BlockPos aPos, EnumFacing side) {
+        return StoneTypes.mTypes[worldObj.getBlockState(aPos).getValue(METADATA) % MATERIALS_META_OFFSET].mIconContainer.getIcon();
+    }
+
+    @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
         ArrayList<ItemStack> rList = new ArrayList<>();
         int aMetaData = state.getValue(METADATA);
-        if (aMetaData <= 0) {
-            rList.add(new ItemStack(Blocks.COBBLESTONE, 1, 0));
-            return rList;
-        }
         if (!mSmall) {
             rList.add(new ItemStack(this, 1, aMetaData));
             return rList;
         }
-        Materials aMaterial = GregTech_API.sGeneratedMaterials[(aMetaData % 1000)];
+        Materials aMaterial = mMaterials[aMetaData / MATERIALS_META_OFFSET];
+        Materials aBaseMaterial = StoneTypes.mTypes[aMetaData % MATERIALS_META_OFFSET].stoneMaterial;
         if (aMaterial != null) {
             Random tRandom = new Random(pos.hashCode());
             ArrayList<ItemStack> tSelector = new ArrayList<>();
@@ -217,9 +224,13 @@ public class GT_Block_GeneratedOres extends GT_Generic_Block {
                     tSelector.add(tStack);
                 }
             }
-            if (tSelector.size() > 0) {
-                rList.add(GT_Utility.copyAmount(1L, tSelector.get(tRandom.nextInt(tSelector.size()))));
+
+            tStack = GT_OreDictUnificator.get(OrePrefixes.dustImpure, aBaseMaterial, 1L);
+            if(tStack != null && tRandom.nextInt(4) == 0) {
+                rList.add(tStack);
             }
+
+            rList.add(GT_Utility.copyAmount(1L, tSelector.get(tRandom.nextInt(tSelector.size()))));
         }
         return rList;
     }

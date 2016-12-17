@@ -13,8 +13,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GT_RenderedTexture implements ITexture, IColorModulationContainer {
-    private final IIconContainer mIconContainer;
-    private final boolean mAllowAlpha;
+    public final IIconContainer mIconContainer;
+    public final boolean mAllowAlpha;
     /**
      * DO NOT MANIPULATE THE VALUES INSIDE THIS ARRAY!!!
      * <p/>

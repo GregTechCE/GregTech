@@ -3,7 +3,7 @@ package gregtech.common;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.world.GT_Worldgen;
-import gregtech.common.blocks.rework.GT_Block_GeneratedOres;
+import gregtech.common.blocks.GT_Block_GeneratedOres;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkGenerator;
