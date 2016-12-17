@@ -7,11 +7,14 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import ic2.api.tile.IWrenchable;
 import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -29,14 +32,15 @@ public class Behaviour_Wrench
     @Override
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, BlockPos blockPos, EnumFacing aSide, float hitX, float hitY, float hitZ, EnumHand hand) {
         if(!aWorld.isRemote && !aWorld.isAirBlock(blockPos)) {
+
             TileEntity tileEntity = aWorld.getTileEntity(blockPos);
-            if(tileEntity instanceof IWrenchable) {
+            if (tileEntity instanceof IWrenchable) {
                 IWrenchable wrenchable = (IWrenchable) tileEntity;
-                if(aPlayer.isSneaking()) {
+                if (aPlayer.isSneaking()) {
                     if (wrenchable.wrenchCanRemove(aWorld, blockPos, aPlayer)) {
                         List<ItemStack> wrenchDrops = wrenchable.getWrenchDrops(aWorld, blockPos, aWorld.getBlockState(blockPos), tileEntity, aPlayer, 0);
-                        for(ItemStack wrenchDrop : wrenchDrops) {
-                            if(!aPlayer.inventory.addItemStackToInventory(wrenchDrop)) {
+                        for (ItemStack wrenchDrop : wrenchDrops) {
+                            if (!aPlayer.inventory.addItemStackToInventory(wrenchDrop)) {
                                 Block.spawnAsEntity(aWorld, blockPos, wrenchDrop);
                             }
                         }
@@ -47,13 +51,24 @@ public class Behaviour_Wrench
                         return true;
                     }
                 } else {
-                    if(wrenchable.getFacing(aWorld, blockPos) != aSide) {
-                        if(wrenchable.setFacing(aWorld, blockPos, aSide, aPlayer)) {
+                    if (wrenchable.getFacing(aWorld, blockPos) != aSide) {
+                        if (wrenchable.setFacing(aWorld, blockPos, aSide, aPlayer)) {
                             ((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts);
                             GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(100), 1.0F, -1.0F, blockPos);
                             return true;
                         }
                     }
+                }
+            }
+
+            IBlockState blockState = aWorld.getBlockState(blockPos);
+            for (IProperty property : blockState.getPropertyNames()) {
+                if (property.getName().equals("facing")) {
+                    if(property.getAllowedValues().contains(aSide)) {
+                        aWorld.setBlockState(blockPos, blockState.withProperty(property, aSide));
+                        return true;
+                    }
+                    return false;
                 }
             }
         }

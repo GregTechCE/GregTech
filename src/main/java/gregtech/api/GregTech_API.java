@@ -214,8 +214,6 @@ public class GregTech_API {
     public static boolean sUnificationEntriesRegistered = false, sPreloadStarted = false, sPreloadFinished = false, sLoadStarted = false, sLoadFinished = false, sPostloadStarted = false, sPostloadFinished = false;
     private static Class sBaseMetaTileEntityClass = null;
 
-    private static int sNextCoverId;
-
     /**
      * Adds Biomes to the Biome Lists for World Generation
      */
@@ -371,8 +369,8 @@ public class GregTech_API {
 
     public static void registerCover(ItemStack aStack, ITexture aCover, GT_CoverBehavior aBehavior) {
         GT_ItemStack stack = new GT_ItemStack(aStack);
-        int coverId = ++sNextCoverId;
-
+        int coverId = stack.hashCode();
+        System.out.println("Cover " + aStack + " with id " + coverId);
         sCoverItems.put(stack, coverId);
         System.out.println();
         sCovers.put(coverId, aCover == null || !aCover.isValidTexture() ? Textures.BlockIcons.ERROR_RENDERING[0] : aCover);

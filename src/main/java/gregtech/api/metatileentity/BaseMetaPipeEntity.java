@@ -851,8 +851,10 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                 if (getCoverIDAtSide(aSide) != 0) cSide = aSide;
 
                 if (getCoverIDAtSide(cSide) == 0) {
-                    if (GregTech_API.sCovers.containsKey(new GT_ItemStack(tCurrentItem))) {
-                        if (GregTech_API.getCoverBehavior(tCurrentItem).isCoverPlaceable(cSide, new GT_ItemStack(tCurrentItem), this) && mMetaTileEntity.allowCoverOnSide(cSide, new GT_ItemStack(tCurrentItem))) {
+                    GT_ItemStack gtItemStack = new GT_ItemStack(tCurrentItem);
+                    if (GregTech_API.sCoverItems.containsKey(gtItemStack)) {
+                        GT_CoverBehavior behavior = GregTech_API.getCoverBehavior(gtItemStack);
+                        if (behavior.isCoverPlaceable(cSide, gtItemStack, this) && mMetaTileEntity.allowCoverOnSide(cSide, gtItemStack)) {
                             setCoverItemAtSide(cSide, tCurrentItem);
                             if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
                             GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, getXCoord(), getYCoord(), getZCoord());
@@ -1076,7 +1078,8 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     @Override
     public void setCoverItemAtSide(byte aSide, ItemStack aCover) {
         int coverId = GregTech_API.getCoverId(new GT_ItemStack(aCover));
-        GregTech_API.getCoverBehavior(coverId).placeCover(aSide, coverId, aCover, this);
+        GT_CoverBehavior behavior = GregTech_API.getCoverBehavior(coverId);
+        behavior.placeCover(aSide, coverId, aCover, this);
     }
 
     @Override

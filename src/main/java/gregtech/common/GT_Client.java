@@ -5,25 +5,36 @@
 
 package gregtech.common;
 
+import codechicken.lib.vec.Rotation;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.interfaces.tileentity.ITurnable;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.render.*;
+import ic2.api.tile.IWrenchable;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 
 import java.net.URL;
 import java.util.*;
@@ -34,6 +45,14 @@ import java.util.*;
 @SideOnly(Side.CLIENT)
 public class GT_Client extends GT_Proxy
         implements Runnable {
+
+    private static List<Block> ROTATABLE_VANILLA_BLOCKS;
+
+    static {
+        ROTATABLE_VANILLA_BLOCKS = Arrays.asList(Blocks.PISTON, Blocks.STICKY_PISTON, Blocks.FURNACE, Blocks.LIT_FURNACE,
+                Blocks.DROPPER, Blocks.DISPENSER, Blocks.CHEST, Blocks.TRAPPED_CHEST, Blocks.ENDER_CHEST, Blocks.HOPPER,
+                Blocks.PUMPKIN, Blocks.LIT_PUMPKIN);
+    }
 
     private final HashSet<String> mCapeList = new HashSet<>();
     private final List<Materials> mPosR;
@@ -54,14 +73,11 @@ public class GT_Client extends GT_Proxy
     private final List<Materials> mMoltenNegA = new ArrayList<>();
     private long mAnimationTick;
     private boolean mAnimationDirection;
-    private boolean isFirstClientPlayerTick;
-    private String mMessage;
 
     public GT_Client() {
         mAnimationTick = 0L;
         mAnimationDirection = false;
-        isFirstClientPlayerTick = true;
-        mMessage = "";
+
         mPosR = Arrays.asList( /**Materials.ChargedCertusQuartz, **/Materials.Enderium, Materials.Vinteum, Materials.Uranium235, Materials.InfusedGold, Materials.Plutonium241, Materials.NaquadahEnriched, Materials.Naquadria, Materials.InfusedOrder, Materials.Force,
                 Materials.Pyrotheum, Materials.Sunnarium, Materials.Glowstone, Materials.Thaumium, Materials.InfusedVis, Materials.InfusedAir, Materials.InfusedFire, Materials.FierySteel, Materials.Firestone);
 
@@ -92,11 +108,17 @@ public class GT_Client extends GT_Proxy
 
     }
 
-    /*private static void drawGrid(DrawBlockHighlightEvent aEvent) {
+    private static void drawGrid(DrawBlockHighlightEvent aEvent) {
         GL11.glPushMatrix();
-        GL11.glTranslated(-(aEvent.player.lastTickPosX + (aEvent.player.posX - aEvent.player.lastTickPosX) * (double) aEvent.partialTicks), -(aEvent.player.lastTickPosY + (aEvent.player.posY - aEvent.player.lastTickPosY) * (double) aEvent.partialTicks), -(aEvent.player.lastTickPosZ + (aEvent.player.posZ - aEvent.player.lastTickPosZ) * (double) aEvent.partialTicks));
-        GL11.glTranslated((float) aEvent.target.blockX + 0.5F, (float) aEvent.target.blockY + 0.5F, (float) aEvent.target.blockZ + 0.5F);
-        Rotation.sideRotations[aEvent.target.sideHit].glApply();
+        EntityPlayer player = aEvent.getPlayer();
+        float partialTicks = aEvent.getPartialTicks();
+        double d0 = player.lastTickPosX + (player.posX - player.lastTickPosX) * (double)partialTicks;
+        double d1 = player.lastTickPosY + (player.posY - player.lastTickPosY) * (double)partialTicks;
+        double d2 = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * (double)partialTicks;
+        BlockPos pos = aEvent.getTarget().getBlockPos();
+        GL11.glTranslated(-d0, -d1, -d2);
+        GL11.glTranslated(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+        Rotation.sideRotations[aEvent.getTarget().sideHit.getIndex()].glApply();
         GL11.glTranslated(0.0D, -0.501D, 0.0D);
         GL11.glLineWidth(2.0F);
         GL11.glColor4f(0.0F, 0.0F, 0.0F, 0.5F);
@@ -111,7 +133,7 @@ public class GT_Client extends GT_Proxy
         GL11.glVertex3d(-0.25D, 0.0D, 0.5D);
         GL11.glEnd();
         GL11.glPopMatrix();
-    }*/
+    }
 
     public boolean isServerSide() {
         return true;
@@ -199,49 +221,24 @@ public class GT_Client extends GT_Proxy
                 }
             }
         } catch (Throwable e) {}
-        /*try {
-            GT_Log.out.println("GT_Mod: Downloading News.");
-            Scanner tScanner = new Scanner(new URL("http://files.minecraftforge.net/maven/com/gregoriust/gregtech/message.txt").openStream());
-            while (tScanner.hasNextLine()) {
-                this.mMessage = (this.mMessage + tScanner.nextLine() + " ");
-            }
-        } catch (Throwable e) {}*/
     }
 
     @SubscribeEvent
-    public void onPlayerTickEventClient(TickEvent.PlayerTickEvent aEvent) {
-        if ((!aEvent.player.isDead) && (aEvent.phase == TickEvent.Phase.END) && (aEvent.side.isClient())) {
-            if ((this.isFirstClientPlayerTick) && (aEvent.player == GT_Values.GT.getThePlayer())) {
-                this.isFirstClientPlayerTick = false;
-                if ((this.mMessage.length() > 5) && (GregTech_API.sSpecialFile.get(ConfigCategories.news, this.mMessage, true))) {
-                    aEvent.player.addChatComponentMessage(new TextComponentString(this.mMessage));
-                }
+    public void onDrawBlockHighlight(DrawBlockHighlightEvent aEvent) {
+        EntityPlayer aPlayer = aEvent.getPlayer();
+        ItemStack currentItem = aPlayer.getHeldItemMainhand();
+        BlockPos aPos = aEvent.getTarget().getBlockPos();
+        Block block = aPlayer.worldObj.getBlockState(aPos).getBlock();
+        if (GT_Utility.isStackValid(currentItem)) {
+            TileEntity aTileEntity = aPlayer.worldObj.getTileEntity(aPos);
+            if (((aTileEntity instanceof BaseMetaPipeEntity)) && (((ICoverable) aTileEntity).getCoverIDAtSide((byte) aEvent.getTarget().sideHit.getIndex()) == 0) && ((GT_Utility.isStackInList(currentItem, GregTech_API.sCoverItems.keySet())) || (GT_Utility.isStackInList(currentItem, GregTech_API.sCrowbarList)) || (GT_Utility.isStackInList(currentItem, GregTech_API.sScrewdriverList)))) {
+                drawGrid(aEvent);
+            }
+            else if ((aTileEntity instanceof ITurnable || aTileEntity instanceof IWrenchable || ROTATABLE_VANILLA_BLOCKS.contains(block)) && GT_Utility.isStackInList(currentItem, GregTech_API.sWrenchList)) {
+                drawGrid(aEvent);
             }
         }
     }
-
-    /*@SubscribeEvent
-    public void onDrawBlockHighlight(DrawBlockHighlightEvent aEvent) {
-        if (GT_Utility.isStackValid(aEvent.currentItem)) {
-            Block aBlock = aEvent.player.worldObj.getBlock(aEvent.target.blockX, aEvent.target.blockY, aEvent.target.blockZ);
-            TileEntity aTileEntity = aEvent.player.worldObj.getTileEntity(aEvent.target.blockX, aEvent.target.blockY, aEvent.target.blockZ);
-            try {
-                Class.forName("codechicken.lib.vec.Rotation");
-                if (((aTileEntity instanceof BaseMetaPipeEntity)) && (((ICoverable) aTileEntity).getCoverIDAtSide((byte) aEvent.target.sideHit) == 0) && ((GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sCovers.keySet())) || (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sCrowbarList)) || (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sScrewdriverList)))) {
-                    drawGrid(aEvent);
-                    return;
-                }
-                if ((((aTileEntity instanceof ITurnable)) || (ROTATABLE_VANILLA_BLOCKS.contains(aBlock)) || ((aTileEntity instanceof IWrenchable))) && (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sWrenchList))) {
-                    drawGrid(aEvent);
-                    return;
-                }
-            } catch (Throwable e) {
-                if (GT_Values.D1) {
-                    e.printStackTrace(GT_Log.err);
-                }
-            }
-        }
-    }*/
 
     @SubscribeEvent
     public void receiveRenderEvent(net.minecraftforge.client.event.RenderPlayerEvent.Pre aEvent) {

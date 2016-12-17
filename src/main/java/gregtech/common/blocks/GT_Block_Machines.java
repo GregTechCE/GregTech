@@ -258,21 +258,18 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
         IGregTechTileEntity gregTechTileEntity = getGregTile(worldIn, pos);
-        if(gregTechTileEntity == null) {
+        if (gregTechTileEntity == null) {
             return false;
         }
-        if(playerIn.isSneaking()) {
+        if (playerIn.isSneaking()) {
             ItemStack handItem = playerIn.inventory.getCurrentItem();
-            if(handItem != null && GT_Utility.isStackInList(handItem, GregTech_API.sScrewdriverList)) {
-                return true;
-            }
+            return handItem != null && GT_Utility.isStackInList(handItem, GregTech_API.sScrewdriverList);
+        }
+        if (gregTechTileEntity.getTimer() < 50L) {
             return false;
         }
-        if(gregTechTileEntity.getTimer() < 50L) {
-            return false;
-        }
-        if(!worldIn.isRemote && gregTechTileEntity.isUseableByPlayer(playerIn)) {
-            return gregTechTileEntity.onRightclick(playerIn, (byte) side.getIndex(), hitX, hitY, hitZ, hand);
+        if (!worldIn.isRemote && gregTechTileEntity.isUseableByPlayer(playerIn)) {
+            return gregTechTileEntity.onRightclick(playerIn, (byte) side.getIndex(), hitX, hitY, hitZ, EnumHand.MAIN_HAND);
         }
         return false;
     }

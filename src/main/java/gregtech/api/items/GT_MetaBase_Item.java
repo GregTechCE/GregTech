@@ -29,6 +29,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +46,6 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
      * Creates the Item using these Parameters.
      *
      * @param aUnlocalized         The Unlocalized Name of this Item.
-     * @param aGeneratedPrefixList The OreDict Prefixes you want to have generated.
      */
     public GT_MetaBase_Item(String aUnlocalized) {
         super(aUnlocalized, "Generated Item", null, false);
@@ -159,22 +159,28 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
     }
 
 
+    @Override
+    public int getMaxItemUseDuration(ItemStack stack) {
+        return 5;
+    }
 
     @Override
     public EnumActionResult onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
-        use(aStack, 0, aPlayer);
-        isItemStackUsable(aStack);
-        ArrayList<IItemBehaviour<GT_MetaBase_Item>> tList = mItemBehaviors.get((short) getDamage(aStack));
-        if (tList != null) for (IItemBehaviour<GT_MetaBase_Item> tBehavior : tList)
-            if (tBehavior.onItemUseFirst(this, aStack, aPlayer, aWorld, pos, side, hitX, hitY, hitZ, hand)) {
-                if (aStack.stackSize <= 0) aPlayer.setHeldItem(hand, null);
+        if(!aWorld.isRemote) {
+            use(aStack, 0, aPlayer);
+            ArrayList<IItemBehaviour<GT_MetaBase_Item>> tList = mItemBehaviors.get((short) getDamage(aStack));
+            if (tList != null) for (IItemBehaviour<GT_MetaBase_Item> tBehavior : tList)
+                if (tBehavior.onItemUseFirst(this, aStack, aPlayer, aWorld, pos, side, hitX, hitY, hitZ, hand)) {
+                    if (aStack.stackSize <= 0) aPlayer.setHeldItem(hand, null);
+                    return EnumActionResult.SUCCESS;
+                }
+            if (aStack.stackSize <= 0) {
+                aPlayer.setHeldItem(hand, null);
                 return EnumActionResult.SUCCESS;
             }
-        if (aStack.stackSize <= 0) {
-            aPlayer.setHeldItem(hand, null);
-            return EnumActionResult.FAIL;
+            return EnumActionResult.SUCCESS;
         }
-        return EnumActionResult.FAIL;
+        return EnumActionResult.PASS;
     }
 
 

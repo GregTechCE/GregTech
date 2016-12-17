@@ -22,6 +22,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 
 public class GT_MetaTileEntity_BronzeBlastFurnace extends MetaTileEntity {
@@ -143,7 +144,8 @@ public class GT_MetaTileEntity_BronzeBlastFurnace extends MetaTileEntity {
         this.mOutputItem2 = GT_Utility.loadItem(aNBT, "mOutputItem2");
     }
 
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, EnumHand aHand) {
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         }
