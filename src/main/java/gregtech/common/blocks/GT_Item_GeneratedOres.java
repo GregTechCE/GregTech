@@ -19,7 +19,7 @@ public class GT_Item_GeneratedOres extends ItemBlock {
 
     @Override
     public int getMetadata(int damage) {
-        return damage;
+        return Math.max(0, Math.min(16, damage)); //checks to prevent outofbounds
     }
 
 }

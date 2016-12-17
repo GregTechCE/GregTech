@@ -125,14 +125,12 @@ public class RenderBlocks implements ICCBlockRenderer {
         double z = pos.getZ();
 
         GT_Block_GeneratedOres aOres = (GT_Block_GeneratedOres) state.getBlock();
-        int meta = state.getValue(GT_Generic_Block.METADATA);
-        Materials mats = aOres.mMaterials[meta / GT_Block_GeneratedOres.MATERIALS_META_OFFSET];
+        Materials mats = aOres.getMaterialSafe(state);
         boolean small = aOres.mSmall;
-
         int lightmap;
 
         int color = ITexture.color(mats.mRGBa, false);
-        TextureAtlasSprite sprite1 = StoneTypes.mTypes[meta % GT_Block_GeneratedOres.MATERIALS_META_OFFSET].mIconContainer.getIcon();
+        TextureAtlasSprite sprite1 = aOres.getStoneTypeSafe(state).mIconContainer.getIcon();
         TextureAtlasSprite sprite2 = mats.mIconSet.mTextures[small ? TextureSet.INDEX_oreSmall : TextureSet.INDEX_ore].getIcon();
 
         if(state.shouldSideBeRendered(world, pos, EnumFacing.UP)) {
@@ -232,12 +230,11 @@ public class RenderBlocks implements ICCBlockRenderer {
         VertexBuffer buf = tes.getBuffer();
 
         GT_Block_GeneratedOres aOres = (GT_Block_GeneratedOres) ((ItemBlock) stack.getItem()).block;
-        int meta = stack.getItem().getMetadata(stack);
-        Materials mats = aOres.mMaterials[meta / GT_Block_GeneratedOres.MATERIALS_META_OFFSET];
+        Materials mats = aOres.getMaterialSafe(stack);
         boolean small = aOres.mSmall;
 
         int color = ITexture.color(mats.mRGBa, false);
-        TextureAtlasSprite sprite1 = StoneTypes.mTypes[meta % GT_Block_GeneratedOres.MATERIALS_META_OFFSET].mIconContainer.getIcon();
+        TextureAtlasSprite sprite1 = aOres.getStoneTypeSafe(stack).mIconContainer.getIcon();
         TextureAtlasSprite sprite2 = mats.mIconSet.mTextures[small ? TextureSet.INDEX_oreSmall : TextureSet.INDEX_ore].getIcon();
 
         buf.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);

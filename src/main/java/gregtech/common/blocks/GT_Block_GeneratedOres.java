@@ -10,6 +10,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.RenderGeneratedOres;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockObsidian;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -128,6 +129,38 @@ public class GT_Block_GeneratedOres extends GT_Generic_Block {
         sNextId++;
     }
 
+    public Materials getMaterialSafe(IBlockState state) {
+        int index = state.getValue(METADATA) / MATERIALS_META_OFFSET;
+        if(mMaterials.length > index) {
+            return mMaterials[index];
+        }
+        return Materials.Air;
+    }
+
+    public StoneTypes getStoneTypeSafe(IBlockState state) {
+        int index = state.getValue(METADATA) % MATERIALS_META_OFFSET;
+        if(StoneTypes.mTypes.length > index) {
+            return StoneTypes.mTypes[index];
+        }
+        return StoneTypes.STONE;
+    }
+
+    public Materials getMaterialSafe(ItemStack state) {
+        int index =  state.getMetadata() / MATERIALS_META_OFFSET;
+        if(mMaterials.length > index) {
+            return mMaterials[index];
+        }
+        return Materials.Air;
+    }
+
+    public StoneTypes getStoneTypeSafe(ItemStack state) {
+        int index = state.getMetadata() % MATERIALS_META_OFFSET;
+        if(StoneTypes.mTypes.length > index) {
+            return StoneTypes.mTypes[index];
+        }
+        return StoneTypes.STONE;
+    }
+
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
         for(int i = 0; i < mMaterials.length; i++) {
@@ -144,17 +177,17 @@ public class GT_Block_GeneratedOres extends GT_Generic_Block {
 
     @Override
     public int getHarvestLevel(IBlockState state) {
-        return this.mMaterials[state.getValue(METADATA) / 5].mToolQuality;
+        return Math.max(0, getMaterialSafe(state).mToolQuality - 1);
     }
 
     @Override
     public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-        return 1.0F + getHarvestLevel(blockState);
+        return 1.0F * Math.max(1, getHarvestLevel(blockState));
     }
 
     @Override
     public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
-        return 1.0F + getHarvestLevel(world.getBlockState(pos));
+        return 1.0F * Math.max(1, getHarvestLevel(world.getBlockState(pos)));
     }
 
     @Override
@@ -165,7 +198,7 @@ public class GT_Block_GeneratedOres extends GT_Generic_Block {
     @Override
     @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getParticleSprite(World worldObj, BlockPos aPos, EnumFacing side) {
-        return StoneTypes.mTypes[worldObj.getBlockState(aPos).getValue(METADATA) % MATERIALS_META_OFFSET].mIconContainer.getIcon();
+        return getStoneTypeSafe(worldObj.getBlockState(aPos)).mIconContainer.getIcon();
     }
 
     @Override
@@ -176,8 +209,8 @@ public class GT_Block_GeneratedOres extends GT_Generic_Block {
             rList.add(new ItemStack(this, 1, aMetaData));
             return rList;
         }
-        Materials aMaterial = mMaterials[aMetaData / MATERIALS_META_OFFSET];
-        Materials aBaseMaterial = StoneTypes.mTypes[aMetaData % MATERIALS_META_OFFSET].stoneMaterial;
+        Materials aMaterial = getMaterialSafe(state);
+        Materials aBaseMaterial = getStoneTypeSafe(state).stoneMaterial;
         if (aMaterial != null) {
             Random tRandom = new Random(pos.hashCode());
             ArrayList<ItemStack> tSelector = new ArrayList<>();
