@@ -43,7 +43,7 @@ public class ArmorData {
 
 	public Map<StatType,Float> mStat = new HashMap<StatType,Float>();
 	public Map<StatType,Boolean> mBStat = new HashMap<StatType,Boolean>();
-
+	static ArrayList<StatType> updateArmorStatTypeList;
 //	public boolean fullArmor;
 //	public boolean fullRadiationDef;
 //	public boolean fullElectricDef;
@@ -94,6 +94,14 @@ public class ArmorData {
 //	public int antiGravMaxWeight;
 
 	public ArmorData(EntityPlayer player, ItemStack stack, int type, int tier) {
+		if(updateArmorStatTypeList == null)
+		{
+			updateArmorStatTypeList = new ArrayList<StatType>();
+			updateArmorStatTypeList.add(StatType.MAGNET);
+			updateArmorStatTypeList.add(StatType.THORNS);
+			updateArmorStatTypeList.add(StatType.PROCESSINGPOWER);
+			updateArmorStatTypeList.add(StatType.PROCESSINGPOWERUSED);
+		}
 		this.type = type;
 		this.armorTier = tier;
 		ContainerModularArmor tmp = new ContainerBasicArmor((EntityPlayer) player, new InventoryArmor(ModularArmor_Item.class, stack));
@@ -250,38 +258,90 @@ public class ArmorData {
 		}
 		if (helmet != null && chestplate != null && leggings != null && boots != null) {
 			set(mBStat, StatType.FULLARMOR, true);
+			boolean helmHasFullRadiationDefence=false;			
+			boolean chestplateHasFullRadiationDefence=false;
+			boolean leggingsHasFullRadiationDefence=false;
+			boolean bootsHasFullRadiationDefence=false;
+			
+			boolean helmHasFullElectricalDefenceDefence=false;
+			boolean chestplateHasFullElectricalDefenceDefence=false;
+			boolean leggingsHasFullElectricalDefenceDefence=false;
+			boolean bootsHasFullElectricalDefenceDefence=false;
+			//Check each armor pieces for valid mStat value and verify that the Hash contains the StatType key
+			if(helmet.mStat!= null)
+			{
+				if(helmet.mStat.containsKey(StatType.RADIATIONDEFENCE))
+				{
+					helmHasFullRadiationDefence = helmet.mStat.get(StatType.RADIATIONDEFENCE)> 0.9f;
+				}
+				if(helmet.mStat.containsKey(StatType.ELECTRICALDEFENCE))
+				{
+					helmHasFullElectricalDefenceDefence = helmet.mStat.get(StatType.RADIATIONDEFENCE)> 0.9f;
+				}
+			}
+			if(chestplate.mStat!= null)
+			{
+				if(chestplate.mStat.containsKey(StatType.RADIATIONDEFENCE))
+				{
+					chestplateHasFullRadiationDefence = chestplate.mStat.get(StatType.RADIATIONDEFENCE)> 0.9f;
+				}
+				if(chestplate.mStat.containsKey(StatType.ELECTRICALDEFENCE))
+				{
+					chestplateHasFullElectricalDefenceDefence = chestplate.mStat.get(StatType.RADIATIONDEFENCE)> 0.9f;
+				}
+			}
+			if(leggings.mStat!= null)
+			{
+				if(leggings.mStat.containsKey(StatType.RADIATIONDEFENCE))
+				{
+					leggingsHasFullRadiationDefence = leggings.mStat.get(StatType.RADIATIONDEFENCE)> 0.9f;
+				}
+				if(leggings.mStat.containsKey(StatType.ELECTRICALDEFENCE))
+				{
+					leggingsHasFullElectricalDefenceDefence = leggings.mStat.get(StatType.RADIATIONDEFENCE)> 0.9f;
+				}
+			}
+			if(boots.mStat!= null)
+			{
+				if(boots.mStat.containsKey(StatType.RADIATIONDEFENCE))
+				{
+					bootsHasFullRadiationDefence = boots.mStat.get(StatType.RADIATIONDEFENCE)> 0.9f;
+				}
+				if(boots.mStat.containsKey(StatType.ELECTRICALDEFENCE))
+				{
+					bootsHasFullElectricalDefenceDefence = boots.mStat.get(StatType.RADIATIONDEFENCE)> 0.9f;
+				}
+			}
+			//Set Status of Full Armor types
+			set(mBStat, StatType.FULLRADIATIONARMOR, helmHasFullRadiationDefence&&chestplateHasFullRadiationDefence&&leggingsHasFullRadiationDefence &&bootsHasFullRadiationDefence);
+			set(mBStat, StatType.FULLELECTRICARMOR, helmHasFullElectricalDefenceDefence&&chestplateHasFullElectricalDefenceDefence&&leggingsHasFullElectricalDefenceDefence &&bootsHasFullElectricalDefenceDefence);	
 		} else {
+			//Reset Full armor type status to false for all types if StatType.FULLARMOR is false
 			set(mBStat, StatType.FULLARMOR, false);
+			set(mBStat, StatType.FULLRADIATIONARMOR, false);
+			set(mBStat, StatType.FULLELECTRICARMOR, false);
 		}
-		set(mBStat, StatType.FULLRADIATIONARMOR, mBStat.get(StatType.FULLARMOR) && helmet.mStat.get(StatType.RADIATIONDEFENCE) > 0.9f && chestplate.mStat.get(StatType.RADIATIONDEFENCE) > 0.9f && leggings.mStat.get(StatType.RADIATIONDEFENCE) > 0.9f && boots.mStat.get(StatType.RADIATIONDEFENCE) > 0.9f);
-		set(mBStat, StatType.FULLELECTRICARMOR, mBStat.get(StatType.FULLARMOR) && chestplate.mStat.get(StatType.ELECTRICALDEFENCE) > 0.9f && chestplate.mStat.get(StatType.ELECTRICALDEFENCE) > 0.9f && leggings.mStat.get(StatType.ELECTRICALDEFENCE) > 0.9f && boots.mStat.get(StatType.ELECTRICALDEFENCE) > 0.9f);
+		
+		
 		set(mBStat, StatType.MAGNET, 0);
 		set(mBStat, StatType.THORNS, 0);
 		set(mBStat, StatType.PROCESSINGPOWER, 0);
 		set(mBStat, StatType.PROCESSINGPOWERUSED, 0);
-		if (helmet != null) {
-			change(mStat, StatType.MAGNET, helmet.mStat.get(StatType.MAGNET));
-			change(mStat, StatType.THORNS, helmet.mStat.get(StatType.THORNS));
-			change(mStat, StatType.PROCESSINGPOWER, helmet.mStat.get(StatType.PROCESSINGPOWER));
-			change(mStat, StatType.PROCESSINGPOWERUSED, helmet.mStat.get(StatType.PROCESSINGPOWERUSED));
+		
+		if (helmet != null) {			
+			updateArmorStats(helmet,updateArmorStatTypeList );
 		}
 		if (chestplate != null) {
-			change(mStat, StatType.MAGNET, chestplate.mStat.get(StatType.MAGNET));
-			change(mStat, StatType.THORNS, chestplate.mStat.get(StatType.THORNS));
-			change(mStat, StatType.PROCESSINGPOWER, chestplate.mStat.get(StatType.PROCESSINGPOWER));
-			change(mStat, StatType.PROCESSINGPOWERUSED, chestplate.mStat.get(StatType.PROCESSINGPOWERUSED));
+			updateArmorStats(chestplate,updateArmorStatTypeList );
+
 		}
 		if (leggings != null) {
-			change(mStat, StatType.MAGNET, leggings.mStat.get(StatType.MAGNET));
-			change(mStat, StatType.THORNS, leggings.mStat.get(StatType.THORNS));
-			change(mStat, StatType.PROCESSINGPOWER, leggings.mStat.get(StatType.PROCESSINGPOWER));
-			change(mStat, StatType.PROCESSINGPOWERUSED, leggings.mStat.get(StatType.PROCESSINGPOWERUSED));
+			updateArmorStats(leggings,updateArmorStatTypeList );
+
 		}
 		if (boots != null) {
-			change(mStat, StatType.MAGNET, boots.mStat.get(StatType.MAGNET));
-			change(mStat, StatType.THORNS, boots.mStat.get(StatType.THORNS));
-			change(mStat, StatType.PROCESSINGPOWER, boots.mStat.get(StatType.PROCESSINGPOWER));
-			change(mStat, StatType.PROCESSINGPOWERUSED, boots.mStat.get(StatType.PROCESSINGPOWERUSED));
+			updateArmorStats(boots,updateArmorStatTypeList );
+
 		}
 		isTopItem = false;
 		if (type == 0) {
@@ -306,6 +366,23 @@ public class ArmorData {
 			maxWeight += boots.mStat.get(StatType.WEIGHT);
 		}
 	}
+
+	private void updateArmorStats(ArmorData armorData, ArrayList<StatType> statTypes) {
+		for (StatType statType : statTypes) {
+			if(armorData == null || armorData.mStat == null || !armorData.mStat.containsKey(statType))
+				continue;
+//			if(armorData != null && armorData.mStat != null && armorData.mStat.containsKey(statType))
+//			{
+				set(mStat, statType, armorData.mStat.get(statType));
+//			}
+			/*change(mStat, StatType.MAGNET, armorData.mStat.get(StatType.MAGNET));
+			change(mStat, StatType.THORNS, armorData.mStat.get(StatType.THORNS));
+			change(mStat, StatType.PROCESSINGPOWER, armorData.mStat.get(StatType.PROCESSINGPOWER));
+			change(mStat, StatType.PROCESSINGPOWERUSED, armorData.mStat.get(StatType.PROCESSINGPOWERUSED));*/			
+		}
+		
+		
+	}
 	
 	public void set(Map aMap, StatType aType, boolean aSet){
 		if(aMap.containsKey(aType))aMap.remove(aType);
@@ -320,7 +397,9 @@ public class ArmorData {
 	public void change(Map aMap, StatType aType, float aChange){
 		float tChange = 0;
 		if(aMap==null)System.out.println("changeMapnull");
-		if(aMap.containsKey(aType)){tChange = (float) aMap.get(aType);
+		if(aMap.containsKey(aType)){
+			Object value = aMap.get(aType);
+			tChange = value != null ? (float) aMap.get(aType) : 0.0f;
 		aMap.remove(aType);
 		}
 		aMap.put(aType, (tChange + aChange));		

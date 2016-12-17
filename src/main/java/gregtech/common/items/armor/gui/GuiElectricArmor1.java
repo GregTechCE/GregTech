@@ -1,7 +1,10 @@
 package gregtech.common.items.armor.gui;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.GT_Network;
+import gregtech.common.items.armor.ArmorData;
 import gregtech.common.items.armor.components.StatType;
 
 import java.text.DecimalFormat;
@@ -40,7 +43,12 @@ public class GuiElectricArmor1 extends GuiContainer {
 		cont = containerModularArmor;
 		tab = 0;
 	}
-	
+	@Override
+	public void onGuiClosed() 
+	{
+		cont.saveInventory(player);
+		super.onGuiClosed();
+	};
 	public String seperateNumber(long number){
 		DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
 		DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
@@ -97,12 +105,12 @@ public class GuiElectricArmor1 extends GuiContainer {
 		default:
 			break;
 		}
-		
-		if(cont.mInvArmor.data.mStat.get(StatType.TANKCAP)>0){
+		float tankCap = cont.mInvArmor.data.mStat.containsKey(StatType.TANKCAP) ? cont.mInvArmor.data.mStat.get(StatType.TANKCAP) :0.0f;
+		if(tankCap>0){
 			drawTexturedModalRect(xStart + 94, yStart + 32, 231, 69, 16, 34);
 		}
-		
-		int bar = (int) Math.floor(18 * (cont.mInvArmor.data.mStat.get(StatType.WEIGHT)/(float)1000));
+		float weight = cont.mInvArmor.data.mStat.containsKey(StatType.WEIGHT) ? cont.mInvArmor.data.mStat.get(StatType.WEIGHT) : 0.0f;
+		int bar = (int) Math.floor(18 * (weight)/(float)1000);
 		drawTexturedModalRect(xStart + 15, yStart + 7, 217, 26, bar, 5);
 		drawTexturedModalRect(xStart + bar + 15, yStart + 7, 197+bar, 26, 18-bar, 5);
 		
@@ -151,34 +159,51 @@ public class GuiElectricArmor1 extends GuiContainer {
 			if(tab>2){tab=0;}
 			if(tab<0){tab=2;}
 			if(xStart>72&&xStart<112){
-				if(xStart>72&&xStart<81&&cont.mInvArmor.data.helmet!=null){cont.mInvArmor.data.helmet.openGui=true;player.closeScreen();}
-				if(xStart>82&&xStart<91&&cont.mInvArmor.data.chestplate!=null){cont.mInvArmor.data.chestplate.openGui=true;player.closeScreen();}
-				if(xStart>92&&xStart<101&&cont.mInvArmor.data.leggings!=null){cont.mInvArmor.data.leggings.openGui=true;player.closeScreen();}
-				if(xStart>102&&xStart<112&&cont.mInvArmor.data.boots!=null){cont.mInvArmor.data.boots.openGui=true;player.closeScreen();}
+				if(xStart>72&&xStart<81&&cont.mInvArmor.data.helmet!=null){cont.mInvArmor.data.helmet.openGui=true;}
+				if(xStart>82&&xStart<91&&cont.mInvArmor.data.chestplate!=null){cont.mInvArmor.data.chestplate.openGui=true;}
+				if(xStart>92&&xStart<101&&cont.mInvArmor.data.leggings!=null){cont.mInvArmor.data.leggings.openGui=true;}
+				if(xStart>102&&xStart<112&&cont.mInvArmor.data.boots!=null){cont.mInvArmor.data.boots.openGui=true;}
+				
+//				if(xStart>72&&xStart<81&&cont.mInvArmor.data.helmet!=null){cont.mInvArmor.data.helmet.openGui=true;player.closeScreen();}
+//				if(xStart>82&&xStart<91&&cont.mInvArmor.data.chestplate!=null){cont.mInvArmor.data.chestplate.openGui=true;player.closeScreen();}
+//				if(xStart>92&&xStart<101&&cont.mInvArmor.data.leggings!=null){cont.mInvArmor.data.leggings.openGui=true;player.closeScreen();}
+//				if(xStart>102&&xStart<112&&cont.mInvArmor.data.boots!=null){cont.mInvArmor.data.boots.openGui=true;player.closeScreen();}
 			}
 		}
 //		Slot slot = getSlotAtPosition(mouseX, mouseY);
-//		if (slot != null && slot instanceof SlotFluid && player != null) {
+//		if (slot != null && slot instanceof SlotFluid && player != null && cont.mInvArmor.data.helmet!=null) {
 //			ItemStack tmp = player.inventory.getItemStack();
+//			//GT_Network gtn = new GT_Network();
 //			if (tmp == null) {
-//				GTExtras.NET.sendToServer(new FluidSync(player.getCommandSenderName(), 0, "null"));
+//				//GT_Values.NW.sendToServer(new FluidSync(player.getCommandSenderName(), 0, "null"));				
 //			}
+//			//ArmorData armorData = new ArmorData(player,);
 //			if (tmp != null && tmp.getItem() instanceof IFluidContainerItem) {
 //				FluidStack tmp2 = ((IFluidContainerItem) tmp.getItem()).getFluid(tmp);
 //				if (!slot.getHasStack() && tmp2 != null) {
-//					slot.putStack(UT.Fluids.display(tmp2, true));
-//					GTExtras.NET.sendToServer(new FluidSync(player.getCommandSenderName(), tmp2.amount, UT.Fluids.name(tmp2, false)));
-//					ItemStack tmp4 = UT.Fluids.getContainerForFilledItem(tmp, true);
+//					slot.putStack(GT_Utility.getFluidDisplayStack(tmp2, true));					
+//					
+//					if(cont.mInvArmor.data.helmet.fluid == null)
+//					{
+//						cont.mInvArmor.data.helmet.fluid = new FluidStack(tmp2.getFluid(), tmp2.amount);
+//					}
+//					else
+//					{
+//						cont.mInvArmor.data.helmet.fluid.amount += tmp2.amount;
+//					}
+//					
+//					//GT_Values.NW.sendToServer(new FluidSync(player.getCommandSenderName(), tmp2.amount, GT_Utility.getFluidName(tmp2, false)));
+//					ItemStack tmp4 = GT_Utility.getContainerForFilledItem(tmp, true);					
 //					tmp4.stackSize = 1;
 //					if (tmp.stackSize > 1) {
 //						player.inventory.addItemStackToInventory(tmp4);
 //						tmp.stackSize--;
 //						player.inventory.setItemStack(tmp);
-//						GTExtras.NET.sendToServer(new FluidSync2(player.getCommandSenderName()));
+//						//GT_Values.NW.sendToServer(new FluidSync2(player.getCommandSenderName()));
 //					} else {
 //						player.inventory.setItemStack(null);
 //						player.inventory.addItemStackToInventory(tmp4);
-//						GTExtras.NET.sendToServer(new FluidSync2(player.getCommandSenderName()));
+//						//GT_Values.NW.sendToServer(new FluidSync2(player.getCommandSenderName()));
 //					}
 //
 //				} else if (slot.getHasStack() && tmp2 != null) {
@@ -194,9 +219,17 @@ public class GuiElectricArmor1 extends GuiContainer {
 //								tmp3.stackSize--;
 //							}
 //							player.inventory.setItemStack(tmp3);
-//							GTExtras.NET.sendToServer(new FluidSync2(player.getCommandSenderName()));
-//							slot.putStack(UT.Fluids.display(tmp2, true));
-//							GTExtras.NET.sendToServer(new FluidSync(player.getCommandSenderName(), tmp2.amount, UT.Fluids.name(tmp2, false)));
+//							//GT_Values.NW.sendToServer(new FluidSync2(player.getCommandSenderName()));
+//							slot.putStack(GT_Utility.getFluidDisplayStack(tmp2, true));
+//							if(cont.mInvArmor.data.helmet.fluid == null)
+//							{
+//								cont.mInvArmor.data.helmet.fluid = new FluidStack(tmp2.getFluid(), tmp2.amount);
+//							}
+//							else
+//							{
+//								cont.mInvArmor.data.helmet.fluid.amount += tmp2.amount;
+//							}
+//							//GT_Values.NW.sendToServer(new FluidSync(player.getCommandSenderName(), tmp2.amount, GT_Utility.getFluidName(tmp2, false)));
 //						}
 //					}
 //				}
