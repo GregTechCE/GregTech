@@ -1739,7 +1739,7 @@ if(Loader.isModLoaded("Railcraft")){
                     Map.Entry<String, HeatExchangeProperty> tEntry = tIterator.next();
                     if(tEntry.getKey().equals("ic2hotcoolant")){
                     	tIterator.remove();
-                    	Recipes.liquidCooldownManager.addFluid("ic2hotcoolant", "ic2coolant", 80);
+                    	Recipes.liquidCooldownManager.addFluid("ic2hotcoolant", "ic2coolant", 100);
                     }
                 }
             } catch (Throwable e) {/*Do nothing*/}
@@ -1751,7 +1751,7 @@ if(Loader.isModLoaded("Railcraft")){
                     Map.Entry<String, HeatExchangeProperty> tEntry = tIterator.next();
                     if(tEntry.getKey().equals("ic2coolant")){
                     	tIterator.remove();
-                    	Recipes.liquidHeatupManager.addFluid("ic2coolant", "ic2hotcoolant", 80);
+                    	Recipes.liquidHeatupManager.addFluid("ic2coolant", "ic2hotcoolant", 100);
                     }
                 }
             } catch (Throwable e) {/*Do nothing*/}
