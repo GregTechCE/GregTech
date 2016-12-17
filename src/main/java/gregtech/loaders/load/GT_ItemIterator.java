@@ -46,9 +46,9 @@ public class GT_ItemIterator
         GregTech_API.registerScrewdriver(GT_ModHandler.getRecipeOutput(new ItemStack[]{new ItemStack(Items.iron_ingot, 1), null, null, null, new ItemStack(Items.stick, 1)}));
 
         GT_Log.out.println("GT_Mod: Adding Food Recipes to the Automatic Canning Machine. (also during the following Item Iteration)");
-        GT_Values.RA.addCannerRecipe(new ItemStack(Items.rotten_flesh, 1, 32767), ItemList.IC2_Food_Can_Empty.get(4L, new Object[0]), ItemList.IC2_Food_Can_Spoiled.get(4L, new Object[0]), null, 200, 1);
-        GT_Values.RA.addCannerRecipe(new ItemStack(Items.spider_eye, 1, 32767), ItemList.IC2_Food_Can_Empty.get(2L, new Object[0]), ItemList.IC2_Food_Can_Spoiled.get(2L, new Object[0]), null, 100, 1);
-        GT_Values.RA.addCannerRecipe(ItemList.Food_Poisonous_Potato.get(1L, new Object[0]), ItemList.IC2_Food_Can_Empty.get(2L, new Object[0]), ItemList.IC2_Food_Can_Spoiled.get(2L, new Object[0]), null, 100, 1);
+        GT_Values.RA.addCannerRecipe(new ItemStack(Items.rotten_flesh, 2, 32767), ItemList.IC2_Food_Can_Empty.get(1L, new Object[0]), ItemList.IC2_Food_Can_Spoiled.get(1L, new Object[0]), null, 200, 1);
+        GT_Values.RA.addCannerRecipe(new ItemStack(Items.spider_eye, 2, 32767), ItemList.IC2_Food_Can_Empty.get(1L, new Object[0]), ItemList.IC2_Food_Can_Spoiled.get(1L, new Object[0]), null, 100, 1);
+        GT_Values.RA.addCannerRecipe(ItemList.Food_Poisonous_Potato.get(2L, new Object[0]), ItemList.IC2_Food_Can_Empty.get(1L, new Object[0]), ItemList.IC2_Food_Can_Spoiled.get(1L, new Object[0]), null, 100, 1);
         GT_Values.RA.addCannerRecipe(new ItemStack(Items.cake, 1, 32767), ItemList.IC2_Food_Can_Empty.get(12L, new Object[0]), ItemList.IC2_Food_Can_Filled.get(12L, new Object[0]), null, 600, 1);
         GT_Values.RA.addCannerRecipe(new ItemStack(Items.mushroom_stew, 1, 32767), ItemList.IC2_Food_Can_Empty.get(6L, new Object[0]), ItemList.IC2_Food_Can_Filled.get(6L, new Object[0]), new ItemStack(Items.bowl, 1), 300, 1);
 
