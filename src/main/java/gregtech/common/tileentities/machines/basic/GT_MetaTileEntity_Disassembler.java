@@ -41,7 +41,7 @@ public class GT_MetaTileEntity_Disassembler
                         }
                     }
                     if(this.mTier>5){
-                    	this.mMaxProgresstime = this.mMaxProgresstime << (mTier-5);
+                    	this.mMaxProgresstime = this.mMaxProgresstime >> (mTier-5);
                     }
                     if(mMaxProgresstime==80){
                     	return 0;
