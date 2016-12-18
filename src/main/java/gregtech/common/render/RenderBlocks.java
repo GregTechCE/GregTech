@@ -23,6 +23,7 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.model.pipeline.LightUtil;
 import org.lwjgl.opengl.GL11;
 
 public class RenderBlocks implements ICCBlockRenderer {
@@ -62,57 +63,14 @@ public class RenderBlocks implements ICCBlockRenderer {
         int color;
         TextureAtlasSprite sprite;
 
-        if(state.shouldSideBeRendered(world, pos, EnumFacing.UP)) {
-            if((sprite = aOres.getWorldIcon(world, pos, state, EnumFacing.UP)) != null) {
-                color = aOres.getColorMultiplier(world, pos, state);
-                t.setPos(pos.getX(), pos.getY() + 1, pos.getZ());
-                lightmap = world.getBlockState(t).getPackedLightmapCoords(world, t);
-                renderYPos(sprite, x, y, z, color, lightmap, buffer);
-            }
-        }
-
-        if(state.shouldSideBeRendered(world, pos, EnumFacing.DOWN)) {
-            if((sprite = aOres.getWorldIcon(world, pos, state, EnumFacing.DOWN)) != null) {
-                color = aOres.getColorMultiplier(world, pos, state);
-                t.setPos(pos.getX(), pos.getY() - 1, pos.getZ());
-                lightmap = world.getBlockState(t).getPackedLightmapCoords(world, t);
-                renderYNeg(sprite, x, y, z, color, lightmap, buffer);
-            }
-        }
-
-        if(state.shouldSideBeRendered(world, pos, EnumFacing.NORTH)) {
-            if((sprite = aOres.getWorldIcon(world, pos, state, EnumFacing.NORTH)) != null) {
-                color = aOres.getColorMultiplier(world, pos, state);
-                t.setPos(pos.getX(), pos.getY(), pos.getZ() - 1);
-                lightmap = world.getBlockState(t).getPackedLightmapCoords(world, t);
-                renderZNeg(sprite, x, y, z, color, lightmap, buffer);
-            }
-        }
-
-        if(state.shouldSideBeRendered(world, pos, EnumFacing.SOUTH)) {
-            if((sprite = aOres.getWorldIcon(world, pos, state, EnumFacing.SOUTH)) != null) {
-                color = aOres.getColorMultiplier(world, pos, state);
-                t.setPos(pos.getX(), pos.getY(), pos.getZ() + 1);
-                lightmap = world.getBlockState(t).getPackedLightmapCoords(world, t);
-                renderZPos(sprite, x, y, z, color, lightmap, buffer);
-            }
-        }
-
-        if(state.shouldSideBeRendered(world, pos, EnumFacing.WEST)) {
-            if((sprite = aOres.getWorldIcon(world, pos, state, EnumFacing.WEST)) != null) {
-                color = aOres.getColorMultiplier(world, pos, state);
-                t.setPos(pos.getX() - 1, pos.getY(), pos.getZ());
-                lightmap = world.getBlockState(t).getPackedLightmapCoords(world, t);
-                renderXNeg(sprite, x, y, z, color, lightmap, buffer);
-            }
-        }
-
-        if(state.shouldSideBeRendered(world, pos, EnumFacing.EAST)) {
-            if((sprite = aOres.getWorldIcon(world, pos, state, EnumFacing.EAST)) != null) {
-                color = aOres.getColorMultiplier(world, pos, state);
-                t.setPos(pos.getX() + 1, pos.getY(), pos.getZ());
-                lightmap = world.getBlockState(t).getPackedLightmapCoords(world, t);
-                renderXPos(sprite, x, y, z, color, lightmap, buffer);
+        for(EnumFacing side : EnumFacing.VALUES) {
+            if(state.shouldSideBeRendered(world, pos, side)) {
+                if((sprite = aOres.getWorldIcon(world, pos, state, side)) != null) {
+                    color = aOres.getColorMultiplier(world, pos, state);
+                    t.setPos(pos.getX(), pos.getY(), pos.getZ()).move(side);
+                    lightmap = world.getBlockState(t).getPackedLightmapCoords(world, t);
+                    renderFace(sprite, x, y, z, color, lightmap, buffer, side);
+                }
             }
         }
 
@@ -133,48 +91,14 @@ public class RenderBlocks implements ICCBlockRenderer {
         TextureAtlasSprite sprite1 = aOres.getStoneTypeSafe(state).mIconContainer.getIcon();
         TextureAtlasSprite sprite2 = mats.mIconSet.mTextures[small ? TextureSet.INDEX_oreSmall : TextureSet.INDEX_ore].getIcon();
 
-        if(state.shouldSideBeRendered(world, pos, EnumFacing.UP)) {
-            t.setPos(pos.getX(), pos.getY() + 1, pos.getZ());
-            lightmap = world.getBlockState(t).getPackedLightmapCoords(world, t);
-            renderYPos(sprite1, x, y, z, 0xFFFFFFFF, lightmap, buffer);
-            renderYPos(sprite2, x, y, z, color, lightmap, buffer);
+        for (EnumFacing side : EnumFacing.VALUES) {
+            if (state.shouldSideBeRendered(world, pos, side)) {
+                t.setPos(pos.getX(), pos.getY(), pos.getZ()).move(side);
+                lightmap = world.getBlockState(t).getPackedLightmapCoords(world, t);
+                renderFace(sprite1, x, y, z, 0xFFFFFFFF, lightmap, buffer, side);
+                renderFace(sprite2, x, y, z, color, lightmap, buffer, side);
+            }
         }
-
-        if(state.shouldSideBeRendered(world, pos, EnumFacing.DOWN)) {
-            t.setPos(pos.getX(), pos.getY() - 1, pos.getZ());
-            lightmap = world.getBlockState(t).getPackedLightmapCoords(world, t);
-            renderYNeg(sprite1, x, y, z, 0xFFFFFFFF, lightmap, buffer);
-            renderYNeg(sprite2, x, y, z, color, lightmap, buffer);
-        }
-
-        if(state.shouldSideBeRendered(world, pos, EnumFacing.NORTH)) {
-            t.setPos(pos.getX(), pos.getY(), pos.getZ() - 1);
-            lightmap = world.getBlockState(t).getPackedLightmapCoords(world, t);
-            renderZNeg(sprite1, x, y, z, 0xFFFFFFFF, lightmap, buffer);
-            renderZNeg(sprite2, x, y, z, color, lightmap, buffer);
-        }
-
-        if(state.shouldSideBeRendered(world, pos, EnumFacing.SOUTH)) {
-            t.setPos(pos.getX(), pos.getY(), pos.getZ() + 1);
-            lightmap = world.getBlockState(t).getPackedLightmapCoords(world, t);
-            renderZPos(sprite1, x, y, z, 0xFFFFFFFF, lightmap, buffer);
-            renderZPos(sprite2, x, y, z, color, lightmap, buffer);
-        }
-
-        if(state.shouldSideBeRendered(world, pos, EnumFacing.WEST)) {
-            t.setPos(pos.getX() - 1, pos.getY(), pos.getZ());
-            lightmap = world.getBlockState(t).getPackedLightmapCoords(world, t);
-            renderXNeg(sprite1, x, y, z, 0xFFFFFFFF, lightmap, buffer);
-            renderXNeg(sprite2, x, y, z, color, lightmap, buffer);
-        }
-
-        if(state.shouldSideBeRendered(world, pos, EnumFacing.EAST)) {
-            t.setPos(pos.getX() + 1, pos.getY(), pos.getZ());
-            lightmap = world.getBlockState(t).getPackedLightmapCoords(world, t);
-            renderXPos(sprite1, x, y, z, 0xFFFFFFFF, lightmap, buffer);
-            renderXPos(sprite2, x, y, z, color, lightmap, buffer);
-        }
-
     }
 
     public void renderBlockAsItem(ItemStack itemStack) {
@@ -301,15 +225,17 @@ public class RenderBlocks implements ICCBlockRenderer {
         float b = ((color) & 0xFF) / 255.0f;
         float a = ((color >> 24) & 0xFF) / 255.0f;
 
+        float diffuse = LightUtil.diffuseLight(EnumFacing.UP);
+
         double minU = sprite.getMinU();
         double minV = sprite.getMinV();
         double maxU = sprite.getMaxU();
         double maxV = sprite.getMaxV();
 
-        buffer.pos(x + minX, y + maxY, z + maxZ).color(r, g, b, a).tex(minU, maxV).normal(0.0f, 1.0f, 0.0f).endVertex();
-        buffer.pos(x + maxX, y + maxY, z + maxZ).color(r, g, b, a).tex(maxU, maxV).normal(0.0f, 1.0f, 0.0f).endVertex();
-        buffer.pos(x + maxX, y + maxY, z + minZ).color(r, g, b, a).tex(maxU, minV).normal(0.0f, 1.0f, 0.0f).endVertex();
-        buffer.pos(x + minX, y + maxY, z + minZ).color(r, g, b, a).tex(minU, minV).normal(0.0f, 1.0f, 0.0f).endVertex();
+        buffer.pos(x + minX, y + maxY, z + maxZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(minU, maxV).normal(0.0f, 1.0f, 0.0f).endVertex();
+        buffer.pos(x + maxX, y + maxY, z + maxZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(maxU, maxV).normal(0.0f, 1.0f, 0.0f).endVertex();
+        buffer.pos(x + maxX, y + maxY, z + minZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(maxU, minV).normal(0.0f, 1.0f, 0.0f).endVertex();
+        buffer.pos(x + minX, y + maxY, z + minZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(minU, minV).normal(0.0f, 1.0f, 0.0f).endVertex();
 
     }
 
@@ -319,15 +245,17 @@ public class RenderBlocks implements ICCBlockRenderer {
         float b = ((color) & 0xFF) / 255.0f;
         float a = ((color >> 24) & 0xFF) / 255.0f;
 
+        float diffuse = LightUtil.diffuseLight(EnumFacing.DOWN);
+
         double minU = sprite.getMinU();
         double minV = sprite.getMinV();
         double maxU = sprite.getMaxU();
         double maxV = sprite.getMaxV();
 
-        buffer.pos(x + minX, y + minY, z + minZ).color(r, g, b, a).tex(minU, minV).normal(0.0f, -1.0f, 0.0f).endVertex();
-        buffer.pos(x + maxX, y + minY, z + minZ).color(r, g, b, a).tex(maxU, minV).normal(0.0f, -1.0f, 0.0f).endVertex();
-        buffer.pos(x + maxX, y + minY, z + maxZ).color(r, g, b, a).tex(maxU, maxV).normal(0.0f, -1.0f, 0.0f).endVertex();
-        buffer.pos(x + minX, y + minY, z + maxZ).color(r, g, b, a).tex(minU, maxV).normal(0.0f, -1.0f, 0.0f).endVertex();
+        buffer.pos(x + minX, y + minY, z + minZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(minU, minV).normal(0.0f, -1.0f, 0.0f).endVertex();
+        buffer.pos(x + maxX, y + minY, z + minZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(maxU, minV).normal(0.0f, -1.0f, 0.0f).endVertex();
+        buffer.pos(x + maxX, y + minY, z + maxZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(maxU, maxV).normal(0.0f, -1.0f, 0.0f).endVertex();
+        buffer.pos(x + minX, y + minY, z + maxZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(minU, maxV).normal(0.0f, -1.0f, 0.0f).endVertex();
     }
 
     public void renderZNegItem(TextureAtlasSprite sprite, double x, double y, double z, int color, VertexBuffer buffer) {
@@ -336,16 +264,17 @@ public class RenderBlocks implements ICCBlockRenderer {
         float b = ((color) & 0xFF) / 255.0f;
         float a = ((color >> 24) & 0xFF) / 255.0f;
 
+        float diffuse = LightUtil.diffuseLight(EnumFacing.NORTH);
 
         double minU = sprite.getMinU();
         double minV = sprite.getMinV();
         double maxU = sprite.getMaxU();
         double maxV = sprite.getMaxV();
 
-        buffer.pos(x + minX, y + minY, z + minZ).color(r, g, b, a).tex(flip ? maxU : minU, flip ? maxV : minV).normal(0.0f, 0.0f, -1.0f).endVertex();
-        buffer.pos(x + minX, y + maxY, z + minZ).color(r, g, b, a).tex(flip ? maxU : minU, flip ? minV : maxV).normal(0.0f, 0.0f, -1.0f).endVertex();
-        buffer.pos(x + maxX, y + maxY, z + minZ).color(r, g, b, a).tex(flip ? minU : maxU, flip ? minV : maxV).normal(0.0f, 0.0f, -1.0f).endVertex();
-        buffer.pos(x + maxX, y + minY, z + minZ).color(r, g, b, a).tex(flip ? minU : maxU, flip ? maxV : minV).normal(0.0f, 0.0f, -1.0f).endVertex();
+        buffer.pos(x + minX, y + minY, z + minZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? maxU : minU, flip ? maxV : minV).normal(0.0f, 0.0f, -1.0f).endVertex();
+        buffer.pos(x + minX, y + maxY, z + minZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? maxU : minU, flip ? minV : maxV).normal(0.0f, 0.0f, -1.0f).endVertex();
+        buffer.pos(x + maxX, y + maxY, z + minZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? minU : maxU, flip ? minV : maxV).normal(0.0f, 0.0f, -1.0f).endVertex();
+        buffer.pos(x + maxX, y + minY, z + minZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? minU : maxU, flip ? maxV : minV).normal(0.0f, 0.0f, -1.0f).endVertex();
     }
 
     public void renderZPosItem(TextureAtlasSprite sprite, double x, double y, double z, int color, VertexBuffer buffer) {
@@ -354,16 +283,17 @@ public class RenderBlocks implements ICCBlockRenderer {
         float b = ((color) & 0xFF) / 255.0f;
         float a = ((color >> 24) & 0xFF) / 255.0f;
 
+        float diffuse = LightUtil.diffuseLight(EnumFacing.SOUTH);
 
         double minU = sprite.getMinU();
         double minV = sprite.getMinV();
         double maxU = sprite.getMaxU();
         double maxV = sprite.getMaxV();
 
-        buffer.pos(x + maxX, y + minY, z + maxZ).color(r, g, b, a).tex(flip ? minU : maxU, flip ? maxV : minV).normal(0.0f, 0.0f, 1.0f).endVertex();
-        buffer.pos(x + maxX, y + maxY, z + maxZ).color(r, g, b, a).tex(flip ? minU : maxU, flip ? minV : maxV).normal(0.0f, 0.0f, 1.0f).endVertex();
-        buffer.pos(x + minX, y + maxY, z + maxZ).color(r, g, b, a).tex(flip ? maxU : minU, flip ? minV : maxV).normal(0.0f, 0.0f, 1.0f).endVertex();
-        buffer.pos(x + minX, y + minY, z + maxZ).color(r, g, b, a).tex(flip ? maxU : minU, flip ? maxV : minV).normal(0.0f, 0.0f, 1.0f).endVertex();
+        buffer.pos(x + maxX, y + minY, z + maxZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? minU : maxU, flip ? maxV : minV).normal(0.0f, 0.0f, 1.0f).endVertex();
+        buffer.pos(x + maxX, y + maxY, z + maxZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? minU : maxU, flip ? minV : maxV).normal(0.0f, 0.0f, 1.0f).endVertex();
+        buffer.pos(x + minX, y + maxY, z + maxZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? maxU : minU, flip ? minV : maxV).normal(0.0f, 0.0f, 1.0f).endVertex();
+        buffer.pos(x + minX, y + minY, z + maxZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? maxU : minU, flip ? maxV : minV).normal(0.0f, 0.0f, 1.0f).endVertex();
     }
 
     public void renderXNegItem(TextureAtlasSprite sprite, double x, double y, double z, int color, VertexBuffer buffer) {
@@ -372,15 +302,17 @@ public class RenderBlocks implements ICCBlockRenderer {
         float b = ((color) & 0xFF) / 255.0f;
         float a = ((color >> 24) & 0xFF) / 255.0f;
 
+        float diffuse = LightUtil.diffuseLight(EnumFacing.WEST);
+
         double minU = sprite.getMinU();
         double minV = sprite.getMinV();
         double maxU = sprite.getMaxU();
         double maxV = sprite.getMaxV();
 
-        buffer.pos(x + minX, y + minY, z + maxZ).color(r, g, b, a).tex(flip ? minU : maxU, flip ? maxV : minV).normal(-1.0f, 0.0f, 0.0f).endVertex();
-        buffer.pos(x + minX, y + maxY, z + maxZ).color(r, g, b, a).tex(flip ? minU : maxU, flip ? minV : maxV).normal(-1.0f, 0.0f, 0.0f).endVertex();
-        buffer.pos(x + minX, y + maxY, z + minZ).color(r, g, b, a).tex(flip ? maxU : minU, flip ? minV : maxV).normal(-1.0f, 0.0f, 0.0f).endVertex();
-        buffer.pos(x + minX, y + minY, z + minZ).color(r, g, b, a).tex(flip ? maxU : minU, flip ? maxV : minV).normal(-1.0f, 0.0f, 0.0f).endVertex();
+        buffer.pos(x + minX, y + minY, z + maxZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? minU : maxU, flip ? maxV : minV).normal(-1.0f, 0.0f, 0.0f).endVertex();
+        buffer.pos(x + minX, y + maxY, z + maxZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? minU : maxU, flip ? minV : maxV).normal(-1.0f, 0.0f, 0.0f).endVertex();
+        buffer.pos(x + minX, y + maxY, z + minZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? maxU : minU, flip ? minV : maxV).normal(-1.0f, 0.0f, 0.0f).endVertex();
+        buffer.pos(x + minX, y + minY, z + minZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? maxU : minU, flip ? maxV : minV).normal(-1.0f, 0.0f, 0.0f).endVertex();
     }
 
     public void renderXPosItem(TextureAtlasSprite sprite, double x, double y, double z, int color, VertexBuffer buffer) {
@@ -389,17 +321,41 @@ public class RenderBlocks implements ICCBlockRenderer {
         float b = ((color) & 0xFF) / 255.0f;
         float a = ((color >> 24) & 0xFF) / 255.0f;
 
+        float diffuse = LightUtil.diffuseLight(EnumFacing.EAST);
+
         double minU = sprite.getMinU();
         double minV = sprite.getMinV();
         double maxU = sprite.getMaxU();
         double maxV = sprite.getMaxV();
 
-        buffer.pos(x + maxX, y + minY, z + minZ).color(r, g, b, a).tex(flip ? maxU : minU, flip ? maxV : minV).normal(1.0f, 0.0f, 0.0f).endVertex();
-        buffer.pos(x + maxX, y + maxY, z + minZ).color(r, g, b, a).tex(flip ? maxU : minU, flip ? minV : maxV).normal(1.0f, 0.0f, 0.0f).endVertex();
-        buffer.pos(x + maxX, y + maxY, z + maxZ).color(r, g, b, a).tex(flip ? minU : maxU, flip ? minV : maxV).normal(1.0f, 0.0f, 0.0f).endVertex();
-        buffer.pos(x + maxX, y + minY, z + maxZ).color(r, g, b, a).tex(flip ? minU : maxU, flip ? maxV : minV).normal(1.0f, 0.0f, 0.0f).endVertex();
+        buffer.pos(x + maxX, y + minY, z + minZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? maxU : minU, flip ? maxV : minV).normal(1.0f, 0.0f, 0.0f).endVertex();
+        buffer.pos(x + maxX, y + maxY, z + minZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? maxU : minU, flip ? minV : maxV).normal(1.0f, 0.0f, 0.0f).endVertex();
+        buffer.pos(x + maxX, y + maxY, z + maxZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? minU : maxU, flip ? minV : maxV).normal(1.0f, 0.0f, 0.0f).endVertex();
+        buffer.pos(x + maxX, y + minY, z + maxZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? minU : maxU, flip ? maxV : minV).normal(1.0f, 0.0f, 0.0f).endVertex();
     }
 
+    public void renderFace(TextureAtlasSprite sprite, double x, double y, double z, int color, int lightmap, VertexBuffer buffer, EnumFacing side) {
+        switch (side) {
+            case DOWN:
+                renderYNeg(sprite, x, y, z, color, lightmap, buffer);
+                break;
+            case UP:
+                renderYPos(sprite, x, y, z, color, lightmap, buffer);
+                break;
+            case NORTH:
+                renderZNeg(sprite, x, y, z, color, lightmap, buffer);
+                break;
+            case SOUTH:
+                renderZPos(sprite, x, y, z, color, lightmap, buffer);
+                break;
+            case WEST:
+                renderXNeg(sprite, x, y, z, color, lightmap, buffer);
+                break;
+            case EAST:
+                renderXPos(sprite, x, y, z, color, lightmap, buffer);
+                break;
+        }
+    }
 
     public void renderYPos(TextureAtlasSprite sprite, double x, double y, double z, int color, int lightmap, VertexBuffer buffer) {
         float r = ((color >> 16) & 0xFF) / 255.0f;
@@ -407,19 +363,20 @@ public class RenderBlocks implements ICCBlockRenderer {
         float b = ((color) & 0xFF) / 255.0f;
         float a = ((color >> 24) & 0xFF) / 255.0f;
 
+        float diffuse = LightUtil.diffuseLight(EnumFacing.UP);
 
-        int light1 = Math.max(0, (lightmap >> 16 & 65535) - 26);
-        int light2 = Math.max(0, (lightmap & 65535) - 26);
+        int light1 = lightmap >> 16 & 65535;
+        int light2 = lightmap & 65535;
 
         double minU = sprite.getMinU();
         double minV = sprite.getMinV();
         double maxU = sprite.getMaxU();
         double maxV = sprite.getMaxV();
 
-        buffer.pos(x + minX, y + maxY, z + maxZ).color(r, g, b, a).tex(minU, maxV).lightmap(light1, light2).endVertex();
-        buffer.pos(x + maxX, y + maxY, z + maxZ).color(r, g, b, a).tex(maxU, maxV).lightmap(light1, light2).endVertex();
-        buffer.pos(x + maxX, y + maxY, z + minZ).color(r, g, b, a).tex(maxU, minV).lightmap(light1, light2).endVertex();
-        buffer.pos(x + minX, y + maxY, z + minZ).color(r, g, b, a).tex(minU, minV).lightmap(light1, light2).endVertex();
+        buffer.pos(x + minX, y + maxY, z + maxZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(minU, maxV).lightmap(light1, light2).endVertex();
+        buffer.pos(x + maxX, y + maxY, z + maxZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(maxU, maxV).lightmap(light1, light2).endVertex();
+        buffer.pos(x + maxX, y + maxY, z + minZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(maxU, minV).lightmap(light1, light2).endVertex();
+        buffer.pos(x + minX, y + maxY, z + minZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(minU, minV).lightmap(light1, light2).endVertex();
 
     }
 
@@ -429,19 +386,20 @@ public class RenderBlocks implements ICCBlockRenderer {
         float b = ((color) & 0xFF) / 255.0f;
         float a = ((color >> 24) & 0xFF) / 255.0f;
 
+        float diffuse = LightUtil.diffuseLight(EnumFacing.DOWN);
 
-        int light1 = Math.max(0, (lightmap >> 16 & 65535) - 26);
-        int light2 = Math.max(0, (lightmap & 65535) - 26);
+        int light1 = lightmap >> 16 & 65535;
+        int light2 = lightmap & 65535;
 
         double minU = sprite.getMinU();
         double minV = sprite.getMinV();
         double maxU = sprite.getMaxU();
         double maxV = sprite.getMaxV();
 
-        buffer.pos(x + minX, y + minY, z + minZ).color(r, g, b, a).tex(minU, minV).lightmap(light1, light2).endVertex();
-        buffer.pos(x + maxX, y + minY, z + minZ).color(r, g, b, a).tex(maxU, minV).lightmap(light1, light2).endVertex();
-        buffer.pos(x + maxX, y + minY, z + maxZ).color(r, g, b, a).tex(maxU, maxV).lightmap(light1, light2).endVertex();
-        buffer.pos(x + minX, y + minY, z + maxZ).color(r, g, b, a).tex(minU, maxV).lightmap(light1, light2).endVertex();
+        buffer.pos(x + minX, y + minY, z + minZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(minU, minV).lightmap(light1, light2).endVertex();
+        buffer.pos(x + maxX, y + minY, z + minZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(maxU, minV).lightmap(light1, light2).endVertex();
+        buffer.pos(x + maxX, y + minY, z + maxZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(maxU, maxV).lightmap(light1, light2).endVertex();
+        buffer.pos(x + minX, y + minY, z + maxZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(minU, maxV).lightmap(light1, light2).endVertex();
     }
 
     public void renderZNeg(TextureAtlasSprite sprite, double x, double y, double z, int color, int lightmap, VertexBuffer buffer) {
@@ -450,19 +408,20 @@ public class RenderBlocks implements ICCBlockRenderer {
         float b = ((color) & 0xFF) / 255.0f;
         float a = ((color >> 24) & 0xFF) / 255.0f;
 
+        float diffuse = LightUtil.diffuseLight(EnumFacing.NORTH);
 
-        int light1 = Math.max(0, (lightmap >> 16 & 65535) - 26);
-        int light2 = Math.max(0, (lightmap & 65535) - 26);
+        int light1 = lightmap >> 16 & 65535;
+        int light2 = lightmap & 65535;
 
         double minU = sprite.getMinU();
         double minV = sprite.getMinV();
         double maxU = sprite.getMaxU();
         double maxV = sprite.getMaxV();
 
-        buffer.pos(x + minX, y + minY, z + minZ).color(r, g, b, a).tex(flip ? maxU : minU, flip ? maxV : minV).lightmap(light1, light2).endVertex();
-        buffer.pos(x + minX, y + maxY, z + minZ).color(r, g, b, a).tex(flip ? maxU : minU, flip ? minV : maxV).lightmap(light1, light2).endVertex();
-        buffer.pos(x + maxX, y + maxY, z + minZ).color(r, g, b, a).tex(flip ? minU : maxU, flip ? minV : maxV).lightmap(light1, light2).endVertex();
-        buffer.pos(x + maxX, y + minY, z + minZ).color(r, g, b, a).tex(flip ? minU : maxU, flip ? maxV : minV).lightmap(light1, light2).endVertex();
+        buffer.pos(x + minX, y + minY, z + minZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? maxU : minU, flip ? maxV : minV).lightmap(light1, light2).endVertex();
+        buffer.pos(x + minX, y + maxY, z + minZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? maxU : minU, flip ? minV : maxV).lightmap(light1, light2).endVertex();
+        buffer.pos(x + maxX, y + maxY, z + minZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? minU : maxU, flip ? minV : maxV).lightmap(light1, light2).endVertex();
+        buffer.pos(x + maxX, y + minY, z + minZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? minU : maxU, flip ? maxV : minV).lightmap(light1, light2).endVertex();
     }
 
     public void renderZPos(TextureAtlasSprite sprite, double x, double y, double z, int color, int lightmap, VertexBuffer buffer) {
@@ -471,19 +430,20 @@ public class RenderBlocks implements ICCBlockRenderer {
         float b = ((color) & 0xFF) / 255.0f;
         float a = ((color >> 24) & 0xFF) / 255.0f;
 
+        float diffuse = LightUtil.diffuseLight(EnumFacing.SOUTH);
 
-        int light1 = Math.max(0, (lightmap >> 16 & 65535) - 26);
-        int light2 = Math.max(0, (lightmap & 65535) - 26);
+        int light1 = lightmap >> 16 & 65535;
+        int light2 = lightmap & 65535;
 
         double minU = sprite.getMinU();
         double minV = sprite.getMinV();
         double maxU = sprite.getMaxU();
         double maxV = sprite.getMaxV();
 
-        buffer.pos(x + maxX, y + minY, z + maxZ).color(r, g, b, a).tex(flip ? minU : maxU, flip ? maxV : minV).lightmap(light1, light2).endVertex();
-        buffer.pos(x + maxX, y + maxY, z + maxZ).color(r, g, b, a).tex(flip ? minU : maxU, flip ? minV : maxV).lightmap(light1, light2).endVertex();
-        buffer.pos(x + minX, y + maxY, z + maxZ).color(r, g, b, a).tex(flip ? maxU : minU, flip ? minV : maxV).lightmap(light1, light2).endVertex();
-        buffer.pos(x + minX, y + minY, z + maxZ).color(r, g, b, a).tex(flip ? maxU : minU, flip ? maxV : minV).lightmap(light1, light2).endVertex();
+        buffer.pos(x + maxX, y + minY, z + maxZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? minU : maxU, flip ? maxV : minV).lightmap(light1, light2).endVertex();
+        buffer.pos(x + maxX, y + maxY, z + maxZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? minU : maxU, flip ? minV : maxV).lightmap(light1, light2).endVertex();
+        buffer.pos(x + minX, y + maxY, z + maxZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? maxU : minU, flip ? minV : maxV).lightmap(light1, light2).endVertex();
+        buffer.pos(x + minX, y + minY, z + maxZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? maxU : minU, flip ? maxV : minV).lightmap(light1, light2).endVertex();
     }
 
     public void renderXNeg(TextureAtlasSprite sprite, double x, double y, double z, int color, int lightmap, VertexBuffer buffer) {
@@ -492,19 +452,20 @@ public class RenderBlocks implements ICCBlockRenderer {
         float b = ((color) & 0xFF) / 255.0f;
         float a = ((color >> 24) & 0xFF) / 255.0f;
 
+        float diffuse = LightUtil.diffuseLight(EnumFacing.WEST);
 
-        int light1 = Math.max(0, (lightmap >> 16 & 65535) - 26);
-        int light2 = Math.max(0, (lightmap & 65535) - 26);
+        int light1 = lightmap >> 16 & 65535;
+        int light2 = lightmap & 65535;
 
         double minU = sprite.getMinU();
         double minV = sprite.getMinV();
         double maxU = sprite.getMaxU();
         double maxV = sprite.getMaxV();
 
-        buffer.pos(x + minX, y + minY, z + maxZ).color(r, g, b, a).tex(flip ? minU : maxU, flip ? maxV : minV).lightmap(light1, light2).endVertex();
-        buffer.pos(x + minX, y + maxY, z + maxZ).color(r, g, b, a).tex(flip ? minU : maxU, flip ? minV : maxV).lightmap(light1, light2).endVertex();
-        buffer.pos(x + minX, y + maxY, z + minZ).color(r, g, b, a).tex(flip ? maxU : minU, flip ? minV : maxV).lightmap(light1, light2).endVertex();
-        buffer.pos(x + minX, y + minY, z + minZ).color(r, g, b, a).tex(flip ? maxU : minU, flip ? maxV : minV).lightmap(light1, light2).endVertex();
+        buffer.pos(x + minX, y + minY, z + maxZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? minU : maxU, flip ? maxV : minV).lightmap(light1, light2).endVertex();
+        buffer.pos(x + minX, y + maxY, z + maxZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? minU : maxU, flip ? minV : maxV).lightmap(light1, light2).endVertex();
+        buffer.pos(x + minX, y + maxY, z + minZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? maxU : minU, flip ? minV : maxV).lightmap(light1, light2).endVertex();
+        buffer.pos(x + minX, y + minY, z + minZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? maxU : minU, flip ? maxV : minV).lightmap(light1, light2).endVertex();
     }
 
     public void renderXPos(TextureAtlasSprite sprite, double x, double y, double z, int color, int lightmap, VertexBuffer buffer) {
@@ -513,18 +474,20 @@ public class RenderBlocks implements ICCBlockRenderer {
         float b = ((color) & 0xFF) / 255.0f;
         float a = ((color >> 24) & 0xFF) / 255.0f;
 
-        int light1 = Math.max(0, (lightmap >> 16 & 65535) - 26);
-        int light2 = Math.max(0, (lightmap & 65535) - 26);
+        float diffuse = LightUtil.diffuseLight(EnumFacing.EAST);
+
+        int light1 = lightmap >> 16 & 65535;
+        int light2 = lightmap & 65535;
 
         double minU = sprite.getMinU();
         double minV = sprite.getMinV();
         double maxU = sprite.getMaxU();
         double maxV = sprite.getMaxV();
 
-        buffer.pos(x + maxX, y + minY, z + minZ).color(r, g, b, a).tex(flip ? maxU : minU, flip ? maxV : minV).lightmap(light1, light2).endVertex();
-        buffer.pos(x + maxX, y + maxY, z + minZ).color(r, g, b, a).tex(flip ? maxU : minU, flip ? minV : maxV).lightmap(light1, light2).endVertex();
-        buffer.pos(x + maxX, y + maxY, z + maxZ).color(r, g, b, a).tex(flip ? minU : maxU, flip ? minV : maxV).lightmap(light1, light2).endVertex();
-        buffer.pos(x + maxX, y + minY, z + maxZ).color(r, g, b, a).tex(flip ? minU : maxU, flip ? maxV : minV).lightmap(light1, light2).endVertex();
+        buffer.pos(x + maxX, y + minY, z + minZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? maxU : minU, flip ? maxV : minV).lightmap(light1, light2).endVertex();
+        buffer.pos(x + maxX, y + maxY, z + minZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? maxU : minU, flip ? minV : maxV).lightmap(light1, light2).endVertex();
+        buffer.pos(x + maxX, y + maxY, z + maxZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? minU : maxU, flip ? minV : maxV).lightmap(light1, light2).endVertex();
+        buffer.pos(x + maxX, y + minY, z + maxZ).color(diffuse * r, diffuse * g, diffuse * b, a).tex(flip ? minU : maxU, flip ? maxV : minV).lightmap(light1, light2).endVertex();
     }
 
 }
