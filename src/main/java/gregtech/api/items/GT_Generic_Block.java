@@ -1,6 +1,8 @@
 package gregtech.api.items;
 
-import codechicken.lib.render.DigIconParticle;
+import codechicken.lib.render.particle.CustomParticleHandler;
+import codechicken.lib.vec.Cuboid6;
+import gregtech.api.enums.Textures;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.render.RenderBlocks;
 import net.minecraft.block.Block;
@@ -9,7 +11,6 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.particle.ParticleDigging;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -19,7 +20,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
@@ -29,7 +29,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Random;
+import java.util.Arrays;
 
 import static gregtech.api.enums.GT_Values.W;
 
@@ -56,70 +56,24 @@ public abstract class GT_Generic_Block extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public boolean addHitEffects(IBlockState state, World worldObj, RayTraceResult target, ParticleManager manager) {
-        addBlockHitEffects(worldObj, target.getBlockPos() != null ? target.getBlockPos() : BlockPos.ORIGIN,
-                target.sideHit != null ? target.sideHit : EnumFacing.UP, worldObj.rand, manager);
+        CustomParticleHandler.addBlockHitEffects(worldObj, getBlockBounds(target.getBlockPos()), target.sideHit, getParticleSprite(worldObj, target.getBlockPos(), target.sideHit), manager);
         return true;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager) {
-        int count = 14 + world.rand.nextInt(10);
-        for(int i = 0; i < count; i++) {
-            addBlockHitEffects(world, pos, EnumFacing.UP, world.rand, manager);
+        TextureAtlasSprite[] textures = new TextureAtlasSprite[6];
+        for(EnumFacing facing : EnumFacing.VALUES) {
+            textures[facing.getIndex()] = getParticleSprite(world, pos, facing);
         }
+        CustomParticleHandler.addBlockDestroyEffects(world, getBlockBounds(pos), textures, manager);
         return true;
     }
 
-    @SideOnly(Side.CLIENT)
-    public void addBlockHitEffects(World worldObj, BlockPos pos, EnumFacing side, Random rand, ParticleManager manager)
-    {
-        IBlockState iblockstate = worldObj.getBlockState(pos);
-
-        if (iblockstate.getRenderType() != EnumBlockRenderType.INVISIBLE) {
-            int i = pos.getX();
-            int j = pos.getY();
-            int k = pos.getZ();
-            float f = 0.1F;
-            AxisAlignedBB axisalignedbb = iblockstate.getBoundingBox(worldObj, pos);
-            double d0 = (double) i + rand.nextDouble() * (axisalignedbb.maxX - axisalignedbb.minX - 0.20000000298023224D) + 0.10000000149011612D + axisalignedbb.minX;
-            double d1 = (double) j + rand.nextDouble() * (axisalignedbb.maxY - axisalignedbb.minY - 0.20000000298023224D) + 0.10000000149011612D + axisalignedbb.minY;
-            double d2 = (double) k + rand.nextDouble() * (axisalignedbb.maxZ - axisalignedbb.minZ - 0.20000000298023224D) + 0.10000000149011612D + axisalignedbb.minZ;
-
-            if (side == EnumFacing.DOWN) {
-                d1 = (double) j + axisalignedbb.minY - 0.10000000149011612D;
-            }
-
-            if (side == EnumFacing.UP) {
-                d1 = (double) j + axisalignedbb.maxY + 0.10000000149011612D;
-            }
-
-            if (side == EnumFacing.NORTH) {
-                d2 = (double) k + axisalignedbb.minZ - 0.10000000149011612D;
-            }
-
-            if (side == EnumFacing.SOUTH) {
-                d2 = (double) k + axisalignedbb.maxZ + 0.10000000149011612D;
-            }
-
-            if (side == EnumFacing.WEST) {
-                d0 = (double) i + axisalignedbb.minX - 0.10000000149011612D;
-            }
-
-            if (side == EnumFacing.EAST) {
-                d0 = (double) i + axisalignedbb.maxX + 0.10000000149011612D;
-            }
-
-
-            TextureAtlasSprite sprite = getParticleSprite(worldObj, pos, side);
-            if (sprite != null) {
-                manager.addEffect((new DigIconParticle(worldObj, d0, d1, d2, 0.0D, 0.0D, 0.0D, sprite)).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
-            }
-        }
-    }
 
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getParticleSprite(World worldObj, BlockPos aPos, EnumFacing side) {
+    public TextureAtlasSprite getParticleSprite(IBlockAccess worldObj, BlockPos aPos, EnumFacing side) {
         return getWorldIcon(worldObj, aPos, worldObj.getBlockState(aPos), side);
     }
     
@@ -156,6 +110,10 @@ public abstract class GT_Generic_Block extends Block {
 
     public void setBlockBoundsForItemRender() {}
     public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos, IBlockState state) {}
+
+    public Cuboid6 getBlockBounds(BlockPos pos) {
+        return new Cuboid6(pos.getX() + minX, pos.getY() + minY, pos.getZ() + minZ, pos.getX() + maxX, pos.getY() + maxY, pos.getZ() + maxX);
+    }
 
     @Override
     protected BlockStateContainer createBlockState() {

@@ -2,6 +2,7 @@ package gregtech.common.render;
 
 import codechicken.lib.render.block.BlockRenderingRegistry;
 import codechicken.lib.render.block.ICCBlockRenderer;
+import ic2.core.block.RenderBlock;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -24,6 +25,7 @@ public class RenderGeneratedOres implements ICCBlockRenderer {
 
     @Override
     public void handleRenderBlockDamage(IBlockAccess world, BlockPos pos, IBlockState state, TextureAtlasSprite sprite, VertexBuffer buffer) {
+        RenderBlocks.INSTANCE.handleRenderBlockDamage(world, pos, state, sprite, buffer);
     }
 
     @Override

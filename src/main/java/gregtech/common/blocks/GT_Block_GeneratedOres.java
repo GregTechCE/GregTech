@@ -182,12 +182,12 @@ public class GT_Block_GeneratedOres extends GT_Generic_Block {
 
     @Override
     public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-        return 1.0F * Math.max(1, getHarvestLevel(blockState));
+        return 2.0F * (getHarvestLevel(blockState) + 1);
     }
 
     @Override
     public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
-        return 1.0F * Math.max(1, getHarvestLevel(world.getBlockState(pos)));
+        return 3.5F * (getHarvestLevel(world.getBlockState(pos)) + 1);
     }
 
     @Override
@@ -197,7 +197,7 @@ public class GT_Block_GeneratedOres extends GT_Generic_Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getParticleSprite(World worldObj, BlockPos aPos, EnumFacing side) {
+    public TextureAtlasSprite getParticleSprite(IBlockAccess worldObj, BlockPos aPos, EnumFacing side) {
         return getStoneTypeSafe(worldObj.getBlockState(aPos)).mIconContainer.getIcon();
     }
 

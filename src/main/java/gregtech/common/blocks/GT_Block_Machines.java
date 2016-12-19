@@ -290,7 +290,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
 
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getParticleSprite(World worldObj, BlockPos aPos, EnumFacing side) {
+    public TextureAtlasSprite getParticleSprite(IBlockAccess worldObj, BlockPos aPos, EnumFacing side) {
         TileEntity tileEntity = worldObj.getTileEntity(aPos);
         if(tileEntity instanceof ITexturedTileEntity) {
             ITexture[] textures = ((ITexturedTileEntity) tileEntity).getTexture(this, (byte) 1);

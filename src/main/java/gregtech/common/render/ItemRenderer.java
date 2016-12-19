@@ -319,7 +319,7 @@ public class ItemRenderer implements IItemRenderer, IStackPerspectiveAwareModel 
 
     @Override
     public ItemCameraTransforms getItemCameraTransforms() {
-        return ModelUtil.DEFAULT_TRANSFORMS;
+        return ModelUtil.BLOCK_TRANSFORMS; //RenderEntityItem calls it directly
     }
 
     @Override
