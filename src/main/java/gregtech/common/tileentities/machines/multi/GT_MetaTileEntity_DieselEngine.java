@@ -233,7 +233,7 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
     public String[] getInfoData() {
         return new String[]{
             "Diesel Engine",
-            "Current Output: "+mEUt+" EU/t",
+            "Current Output: "+mEUt*mEfficiency/10000 +" EU/t",
             "Fuel Consumption: "+fuelConsumption+"L/t",
             "Fuel Value: "+fuelValue+" EU/L",
             "Fuel Remaining: "+fuelRemaining+" Litres",
