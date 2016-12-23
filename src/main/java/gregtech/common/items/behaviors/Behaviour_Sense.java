@@ -30,7 +30,7 @@ public class Behaviour_Sense
                 for (int j = -2; j < 3; j++) {
                     for (int k = -2; k < 3; k++) {
                         if ((aStack.stackSize > 0) && (((tTileEntity = aWorld.getTileEntity(aX + i, aY + j, aZ + k)) instanceof ICropTile)) && (((ICropTile) tTileEntity).harvest(true)) && (!aPlayer.capabilities.isCreativeMode)) {
-                            ((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts);
+                            ((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts/20);
                         }
                     }
                 }
