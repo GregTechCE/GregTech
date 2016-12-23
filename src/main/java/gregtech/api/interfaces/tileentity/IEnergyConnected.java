@@ -1,10 +1,16 @@
 package gregtech.api.interfaces.tileentity;
 
+import cofh.api.energy.IEnergyReceiver;
+import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_Utility;
 import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergySink;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
+import static gregtech.api.enums.GT_Values.V;
 
 /**
  * Interface for getting Connected to the GregTech Energy Network.
@@ -55,35 +61,33 @@ public interface IEnergyConnected extends IColoredTileEntity, IHasWorldObjectAnd
                             if (tColor >= 0 && tColor != aEmitter.getColorization()) continue;
                         }
                         rUsedAmperes += ((IEnergyConnected) tTileEntity).injectEnergyUnits(j, aVoltage, aAmperage - rUsedAmperes);
-//				} else if (tTileEntity instanceof IEnergySink) {
-//	        		if (((IEnergySink)tTileEntity).acceptsEnergyFrom((TileEntity)aEmitter, EnumFacing.getOrientation(j))) {
-//	        			while (aAmperage > rUsedAmperes && ((IEnergySink)tTileEntity).demandedEnergyUnits() > 0 && ((IEnergySink)tTileEntity).injectEnergyUnits(EnumFacing.getOrientation(j), aVoltage) < aVoltage) rUsedAmperes++;
-//	        		}
                     } else if (tTileEntity instanceof IEnergySink) {
                         if (((IEnergySink) tTileEntity).acceptsEnergyFrom(aEmitter, EnumFacing.VALUES[j])) {
                             while (aAmperage > rUsedAmperes && ((IEnergySink) tTileEntity).getDemandedEnergy() > 0 && ((IEnergySink) tTileEntity).injectEnergy(EnumFacing.VALUES[j], aVoltage, aVoltage) < aVoltage)
                                 rUsedAmperes++;
                         }
-                    } /*else if (GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver) {
-                        EnumFacing tDirection = EnumFacing.getOrientation(i).getOpposite();
+                    } else if (tTileEntity instanceof IEnergyReceiver) {
+                        System.out.println("Receive");
+                        EnumFacing tDirection = EnumFacing.VALUES[i].getOpposite();
                         int rfOut = (int) (aVoltage * GregTech_API.mEUtoRF / 100);
                         if (((IEnergyReceiver) tTileEntity).receiveEnergy(tDirection, rfOut, true) == rfOut) {
                             ((IEnergyReceiver) tTileEntity).receiveEnergy(tDirection, rfOut, false);
                             rUsedAmperes++;
                         }
+                        System.out.println(rUsedAmperes);
                         if (GregTech_API.mRFExplosions && GregTech_API.sMachineExplosions && ((IEnergyReceiver) tTileEntity).getMaxEnergyStored(tDirection) < rfOut * 600) {
                             if (rfOut > 32 * GregTech_API.mEUtoRF / 100) {
                                 int aExplosionPower = rfOut;
                                 float tStrength = aExplosionPower < V[0] ? 1.0F : aExplosionPower < V[1] ? 2.0F : aExplosionPower < V[2] ? 3.0F : aExplosionPower < V[3] ? 4.0F : aExplosionPower < V[4] ? 5.0F : aExplosionPower < V[4] * 2 ? 6.0F : aExplosionPower < V[5] ? 7.0F : aExplosionPower < V[6] ? 8.0F : aExplosionPower < V[7] ? 9.0F : 10.0F;
-                                int tX = tTileEntity.xCoord, tY = tTileEntity.yCoord, tZ = tTileEntity.zCoord;
-                                World tWorld = tTileEntity.getWorldObj();
-                                GT_Utility.sendSoundToPlayers(tWorld, GregTech_API.sSoundList.get(209), 1.0F, -1, tX, tY, tZ);
-                                tWorld.setBlock(tX, tY, tZ, Blocks.air);
+                                BlockPos position = tTileEntity.getPos();
+                                World tWorld = tTileEntity.getWorld();
+                                GT_Utility.sendSoundToPlayers(tWorld, GregTech_API.sSoundList.get(209), 1.0F, -1, position.getX(), position.getY(), position.getZ());
+                                tWorld.setBlockToAir(position);
                                 if (GregTech_API.sMachineExplosions)
-                                    tWorld.createExplosion(null, tX + 0.5, tY + 0.5, tZ + 0.5, tStrength, true);
+                                    tWorld.createExplosion(null, position.getX() + 0.5, position.getY() + 0.5, position.getZ() + 0.5, tStrength, true);
                             }
                         }
-                    }*/
+                    }
                 }
             return rUsedAmperes;
         }

@@ -13,10 +13,10 @@ import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import ic2.api.item.IElectricItem;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
@@ -29,6 +29,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -47,8 +48,9 @@ import static gregtech.api.enums.GT_Values.*;
  *         <p/>
  *         These Items can also have special RightClick abilities, electric Charge or even be set to become a Food alike Item.
  */
-public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements IElectricItem {
+public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item {
     /**
+     public abstract class GT_MetaGenerated_Item extends GT_MetaB
      * All instances of this Item Class are listed here.
      * This gets used to register the Renderer to all Items of this Type, if useStandardMetaItemRenderer() returns true.
      * <p/>
@@ -302,17 +304,19 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
         return tStat == null ? EnumAction.NONE : tStat.getFoodAction(this, aStack);
     }
 
-
-
-    /*@Override
-    public final ItemStack onEaten(ItemStack aStack, World aWorld, EntityPlayer aPlayer, EnumHand hand) {
-        IFoodStat tStat = mFoodStats.get((short) getDamage(aStack));
-        if (tStat != null) {
-            aPlayer.getFoodStats().addStats(tStat.getFoodLevel(this, aStack, aPlayer), tStat.getSaturation(this, aStack, aPlayer));
-            tStat.onEaten(this, aStack, aPlayer);
+    @Nullable
+    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
+        if (entityLiving instanceof EntityPlayer) {
+            EntityPlayer entityplayer = (EntityPlayer) entityLiving;
+            IFoodStat tStat = mFoodStats.get((short) getDamage(stack));
+            if (tStat != null) {
+                --stack.stackSize;
+                entityplayer.getFoodStats().addStats(tStat.getFoodLevel(this, stack, entityplayer), tStat.getSaturation(this, stack, entityplayer));
+                tStat.onEaten(this, stack, entityplayer);
+            }
         }
-        return aStack;
-    }*/
+        return stack;
+    }
 
     @Override
     @SideOnly(Side.CLIENT)

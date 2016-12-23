@@ -6,6 +6,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -51,6 +52,9 @@ public class GT_FluidDisplayItem extends GT_Generic_Item {
         Fluid tFluid = FluidRegistry.getFluid(stack.getItemDamage());
         return GT_Utility.getTexture(tFluid.getStill());
     }
+
+    @Override
+    public void registerIcons(TextureMap aIconRegister) {}
 
     @Override
     @SideOnly(Side.CLIENT)

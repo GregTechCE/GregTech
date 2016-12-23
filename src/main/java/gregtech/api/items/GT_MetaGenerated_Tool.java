@@ -8,6 +8,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
@@ -710,34 +711,20 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int tintIndex) {
         IToolStats toolStats = getToolStats(stack);
-        switch (tintIndex) {
-            case 2:
-            case 3:
-                short[] colorsHead = toolStats.getRGBa(true, stack);
-                if(colorsHead != null)
-                    return makeColor(colorsHead);
-            case 0:
-            case 1:
-                short[] colors = toolStats.getRGBa(false, stack);
-                if(colors != null)
-                    return makeColor(colors);
-            default:
-                return makeColor(Materials._NULL.getRGBA());
+        if(tintIndex == 1) {
+            short[] colorsHead = toolStats.getRGBa(true, stack);
+            if(colorsHead != null)
+                return ITexture.color(colorsHead, true);
         }
+        short[] colors = toolStats.getRGBa(false, stack);
+        if(colors != null)
+            return ITexture.color(colors, true);
+        return 0xFFFFFF;
     }
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         return GT_LanguageManager.getTranslation(getUnlocalizedName(stack) + ".name");
-    }
-
-    private int makeColor(short[] rgba) {
-        short[] nullRGBA = Materials._NULL.getRGBA();
-        short red = rgba[0] > 0 && 255 > rgba[0] ? rgba[0] : nullRGBA[0];
-        short green = rgba[1] > 0 && 255 > rgba[1] ? rgba[1] : nullRGBA[1];
-        short blue = rgba[2] > 0 && 255 > rgba[2] ? rgba[2] : nullRGBA[2];
-        short alpha = rgba[3] > 0 && 255 > rgba[3] ? rgba[3] : nullRGBA[3];
-        return new Color(red, green, blue, alpha).getRGB();
     }
 
     @Override
@@ -746,25 +733,19 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
         IToolStats toolStats = getToolStats(stack);
         IIconContainer head = toolStats.getIcon(true, stack);
         IIconContainer handle = toolStats.getIcon(false, stack);
-        if((pass == 0 || pass == 1) && handle == null) {
-            return null;
+        if(pass == 0 && handle != null) {
+            return handle.getIcon();
         }
-        if((pass == 2 || pass == 3) && head == null) {
-            return null;
+        if(pass == 1 && head != null) {
+            return head.getIcon();
         }
-        switch (pass) {
-            case 2: return head.getIcon();
-            case 3: return head.getOverlayIcon();
-            case 0: return handle.getIcon();
-            case 1: return handle.getOverlayIcon();
-            default: return null;
-        }
+        return null;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public int getRenderPasses(ItemStack stack) {
-        return 4;
+        return 2;
     }
 
     @Override

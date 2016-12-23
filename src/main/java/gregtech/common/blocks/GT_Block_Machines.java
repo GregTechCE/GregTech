@@ -291,11 +291,12 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     @Override
     @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getParticleSprite(IBlockAccess worldObj, BlockPos aPos, EnumFacing side) {
-        TileEntity tileEntity = worldObj.getTileEntity(aPos);
-        if(tileEntity instanceof ITexturedTileEntity) {
-            ITexture[] textures = ((ITexturedTileEntity) tileEntity).getTexture(this, (byte) 1);
-            if(textures.length > 0 && textures[0].isValidTexture() && textures[0] instanceof GT_RenderedTexture) {
-                return ((GT_RenderedTexture) textures[0]).mIconContainer.getIcon();
+        IGregTechTileEntity tileEntity = getGregTile(worldObj, aPos);
+        if(tileEntity != null) {
+            ITexture[] textures = tileEntity.getTexture(this, (byte) side.getIndex());
+            for(int i = 0; i < textures.length; i++) {
+                if(textures[i] instanceof GT_RenderedTexture)
+                    return ((GT_RenderedTexture) textures[i]).mIconContainer.getIcon();
             }
         }
         return null;
@@ -310,24 +311,25 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         super.onBlockExploded(world, pos, explosion);
     }
 
+    private ThreadLocal<IGregTechTileEntity> tileEntity = new ThreadLocal<>();
+
     @Override
-    public void breakBlock(World aWorld, BlockPos pos, IBlockState blockState) {
-        GregTech_API.causeMachineUpdate(aWorld, pos.getX(), pos.getY(), pos.getZ());
-        TileEntity tTileEntity = aWorld.getTileEntity(pos);
-        if(tTileEntity instanceof IGregTechTileEntity) {
-            List<ItemStack> drops = getDrops((IGregTechTileEntity) tTileEntity);
-            for(ItemStack itemStack : drops) {
-                spawnAsEntity(aWorld, pos, itemStack);
-            }
-        }
-        System.out.println("Break");
-        super.breakBlock(aWorld, pos, blockState);
-        aWorld.removeTileEntity(pos);
+    public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
+        tileEntity.set(getGregTile(worldIn, pos));
+        super.onBlockHarvested(worldIn, pos, state, player);
     }
 
     @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        return Collections.emptyList();
+        IGregTechTileEntity gregTechTileEntity = getGregTile(world, pos);
+        if(gregTechTileEntity == null) {
+            gregTechTileEntity = tileEntity.get();
+            tileEntity.set(null);
+        }
+        if(gregTechTileEntity != null) {
+            return getDrops(gregTechTileEntity);
+        }
+        return Collections.EMPTY_LIST;
     }
 
     public List<ItemStack> getDrops(IGregTechTileEntity tGregTechTileEntity) {

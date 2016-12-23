@@ -1,14 +1,5 @@
 package gregtech.api.util;
 
-import ic2.api.recipe.*;
-import ic2.core.Ic2Items;
-import ic2.core.block.state.IIdProvider;
-import ic2.core.ref.BlockName;
-import ic2.core.ref.FluidName;
-import ic2.core.ref.ItemName;
-import ic2.core.ref.TeBlock;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.IDamagableItem;
@@ -18,9 +9,15 @@ import gregtech.api.objects.GT_HashSet;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import ic2.api.item.IBoxable;
-import ic2.api.item.IC2Items;
 import ic2.api.item.IElectricItem;
 import ic2.api.reactor.IReactorComponent;
+import ic2.api.recipe.*;
+import ic2.core.Ic2Items;
+import ic2.core.block.state.IIdProvider;
+import ic2.core.ref.BlockName;
+import ic2.core.ref.FluidName;
+import ic2.core.ref.ItemName;
+import ic2.core.ref.TeBlock;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
@@ -38,12 +35,13 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.*;
-import java.util.Map.Entry;
 
 import static gregtech.api.enums.GT_Values.*;
 
@@ -357,7 +355,7 @@ public class GT_ModHandler {
     public static boolean addValuableOre(Block aBlock, int aMeta, int aValue) {
         if (aValue <= 0) return false;
         try {
-            Class.forName("ic2.core.IC2").getMethod("addValuableOre", IRecipeInput.class, int.class).invoke(null, new RecipeInputItemStack(new ItemStack(aBlock, 1, aMeta)), aValue);
+            Class.forName("ic2.core.init.OreValues").getMethod("add", ItemStack.class, int.class).invoke(null, new ItemStack(aBlock, 1, aMeta), aValue);
         } catch (Throwable e) {/*Do nothing*/}
         return true;
     }

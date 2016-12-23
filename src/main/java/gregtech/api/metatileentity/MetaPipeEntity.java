@@ -1,19 +1,18 @@
 package gregtech.api.metatileentity;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -22,7 +21,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -116,6 +114,30 @@ public abstract class MetaPipeEntity implements IMetaTileEntity {
      * For Pipe Rendering
      */
     public abstract boolean renderInside(byte aSide);
+
+    public boolean isConductor() {
+        return false;
+    }
+
+    public long getMaxVoltage() {
+        return 0;
+    }
+
+    public long getMaxAmperage() {
+        return 0;
+    }
+
+    public long getLossPerMeter() {
+        return 0;
+    }
+
+    public Materials getCableMaterial() {
+        return Materials.Air;
+    }
+
+    public Materials getInsulationMaterial() {
+        return Materials.Air;
+    }
 
     @Override
     public IGregTechTileEntity getBaseMetaTileEntity() {

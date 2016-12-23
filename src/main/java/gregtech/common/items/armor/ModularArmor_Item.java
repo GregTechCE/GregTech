@@ -378,7 +378,7 @@ public class ModularArmor_Item extends GT_Generic_Item implements ISpecialArmor 
 
     @SideOnly(Side.CLIENT)
     public void registerIcons(TextureMap aIconRegister) {
-        this.itemIcon = aIconRegister.registerSprite(new ResourceLocation(GT_Values.MOD_ID + ":" + mName));
+        this.itemIcon = aIconRegister.registerSprite(new ResourceLocation(GT_Values.MOD_ID + ":items/" + mName));
     }
 
     @SideOnly(Side.CLIENT)

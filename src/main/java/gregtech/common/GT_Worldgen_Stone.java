@@ -1,5 +1,6 @@
 package gregtech.common;
 
+import gregtech.api.enums.StoneTypes;
 import gregtech.api.world.GT_Worldgen_Ore;
 import gregtech.api.world.GT_Worldgen_Constants;
 import gregtech.common.blocks.GT_Block_GeneratedOres;
@@ -63,10 +64,12 @@ public class GT_Worldgen_Stone
                                                 temp.setPos(eX, eY, eZ);
                                                 IBlockState tTargetedBlock = aWorld.getBlockState(temp);
                                                 if (tTargetedBlock.getBlock() instanceof GT_Block_GeneratedOres) {
-
+                                                    GT_Block_GeneratedOres block = (GT_Block_GeneratedOres) tTargetedBlock.getBlock();
+                                                    StoneTypes stoneTypes = StoneTypes.computeStoneType(mBlockState);
+                                                    aWorld.setBlockState(temp, block.overrideStoneType(tTargetedBlock, stoneTypes));
                                                 } else if ((this.mAllowToGenerateinVoid && aWorld.isAirBlock(temp)) ||
                                                         (tTargetedBlock != null && tTargetedBlock.getBlock().isReplaceableOreGen(tTargetedBlock, aWorld, temp, GT_Worldgen_Constants.ANY))) {
-                                                    aWorld.setBlockState(temp, this.mBlock.getStateFromMeta(mBlockMeta));
+                                                    aWorld.setBlockState(temp, mBlockState);
                                                 }
                                             }
                                         }

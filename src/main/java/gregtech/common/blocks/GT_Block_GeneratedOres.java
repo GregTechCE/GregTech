@@ -46,6 +46,10 @@ public class GT_Block_GeneratedOres extends GT_Generic_Block {
     public static IBlockState[][] sGeneratedBlocks;
     public static IBlockState[][] sGeneratedSmallBlocks;
 
+    public static IBlockState[][] getStates(boolean small) {
+        return small ? sGeneratedSmallBlocks : sGeneratedBlocks;
+    }
+
     public static void doOreThings() {
         System.out.println("MATERIALS META OFFSET: " + MATERIALS_META_OFFSET);
         System.out.println("MATERIALS/BLOCK: " + MATERIALS_PER_BLOCK);
@@ -100,7 +104,7 @@ public class GT_Block_GeneratedOres extends GT_Generic_Block {
             return false;
         }
 
-        IBlockState blockState = (small ? sGeneratedSmallBlocks : sGeneratedBlocks)[materialSubId][variantId];
+        IBlockState blockState = getStates(small)[materialSubId][variantId];
         return world.setBlockState(pos, blockState);
     }
 
@@ -161,6 +165,10 @@ public class GT_Block_GeneratedOres extends GT_Generic_Block {
         return StoneTypes.STONE;
     }
 
+    public IBlockState overrideStoneType(IBlockState state, StoneTypes stoneTypes) {
+        return getStates(mSmall)[getMaterialSafe(state).mMetaItemSubID][stoneTypes.mId];
+    }
+
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
         for(int i = 0; i < mMaterials.length; i++) {
@@ -182,12 +190,12 @@ public class GT_Block_GeneratedOres extends GT_Generic_Block {
 
     @Override
     public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-        return 2.0F * (getHarvestLevel(blockState) + 1);
+        return 1.25F * (getHarvestLevel(blockState) + 1);
     }
 
     @Override
     public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
-        return 3.5F * (getHarvestLevel(world.getBlockState(pos)) + 1);
+        return 1.75F * (getHarvestLevel(world.getBlockState(pos)) + 1);
     }
 
     @Override

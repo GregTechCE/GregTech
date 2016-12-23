@@ -101,6 +101,8 @@ dependencies {
     //provided name: 'IC2NuclearControl', version: config.nc.version, ext: 'jar'
 }
 
+jar.exclude("**.bat")
+
 compileJava {
     sourceCompatibility = "1.8"
     targetCompatibility = "1.8"

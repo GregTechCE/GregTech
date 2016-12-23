@@ -5,6 +5,7 @@ import com.google.common.collect.HashBiMap;
 import gregtech.common.blocks.GT_Block_Machines;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.init.SoundEvents;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
@@ -200,7 +201,7 @@ public class GregTech_API {
     /**
      * Getting assigned by the Config
      */
-    public static boolean sTimber = false, sDrinksAlwaysDrinkable = false, sMultiThreadedSounds = false, sDoShowAllItemsInCreative = false, sColoredGUI = true, sConstantEnergy = true, sMachineExplosions = true, sMachineFlammable = true, sMachineNonWrenchExplosions = true, sMachineRainExplosions = true, sMachineThunderExplosions = true, sMachineFireExplosions = true, sMachineWireFire = true;
+    public static boolean sTimber = false, sDrinksAlwaysDrinkable = false, sDoShowAllItemsInCreative = false, sColoredGUI = true, sConstantEnergy = true, sMachineExplosions = true, sMachineFlammable = true, sMachineNonWrenchExplosions = true, sMachineRainExplosions = true, sMachineThunderExplosions = true, sMachineFireExplosions = true, sMachineWireFire = true;
     public static boolean mOutputRF = false;
     public static boolean mInputRF = false;
     public static boolean meIOLoaded = false;
@@ -224,13 +225,13 @@ public class GregTech_API {
         sDimensionalList.add(0);
         sDimensionalList.add(1);
 
-        sSoundList.put(0, "random.break");
-        sSoundList.put(1, "random.anvil_use");
-        sSoundList.put(2, "random.anvil_break");
-        sSoundList.put(3, "random.click");
-        sSoundList.put(4, "random.fizz");
-        sSoundList.put(5, "random.explode");
-        sSoundList.put(6, "fire.ignite");
+        sSoundList.put(0, SoundEvents.ENTITY_ARROW_SHOOT.getSoundName().toString());
+        sSoundList.put(1, SoundEvents.BLOCK_ANVIL_USE.getSoundName().toString());
+        sSoundList.put(2, SoundEvents.BLOCK_ANVIL_BREAK.getSoundName().toString());
+        sSoundList.put(3, SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON.getSoundName().toString());
+        sSoundList.put(4, SoundEvents.ENTITY_ITEM_BREAK.getSoundName().toString());
+        sSoundList.put(5, SoundEvents.ENTITY_GENERIC_EXPLODE.getSoundName().toString());
+        sSoundList.put(6, SoundEvents.ITEM_FIRECHARGE_USE.getSoundName().toString());
 
         sSoundList.put(100, MOD_ID_IC2.toLowerCase() + ":" + "tools.Wrench");
         sSoundList.put(101, MOD_ID_IC2.toLowerCase() + ":" + "tools.RubberTrampoline");
@@ -370,7 +371,6 @@ public class GregTech_API {
     public static void registerCover(ItemStack aStack, ITexture aCover, GT_CoverBehavior aBehavior) {
         GT_ItemStack stack = new GT_ItemStack(aStack);
         int coverId = stack.hashCode();
-        System.out.println("Cover " + aStack + " with id " + coverId);
         sCoverItems.put(stack, coverId);
         System.out.println();
         sCovers.put(coverId, aCover == null || !aCover.isValidTexture() ? Textures.BlockIcons.ERROR_RENDERING[0] : aCover);

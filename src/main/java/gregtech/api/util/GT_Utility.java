@@ -375,9 +375,9 @@ public class GT_Utility {
                 //BC_CHECK = true;
             } catch (Throwable e) {/**/}
             try {
-                //Class tClass = cofh.api.energy.IEnergyReceiver.class;
-                //tClass.getCanonicalName();
-                //RF_CHECK = true;
+                Class tClass = cofh.api.energy.IEnergyReceiver.class;
+                tClass.getCanonicalName();
+                RF_CHECK = true;
             } catch (Throwable e) {/**/}
             CHECK_ALL = false;
         }
@@ -928,10 +928,7 @@ public class GT_Utility {
     public static boolean doSoundAtClient(String aSoundName, int aTimeUntilNextSound, float aSoundStrength, float aSoundModulation, double aX, double aY, double aZ) {
         if (isStringInvalid(aSoundName) || !FMLCommonHandler.instance().getEffectiveSide().isClient() || GT.getThePlayer() == null || !GT.getThePlayer().worldObj.isRemote)
             return false;
-        if (GregTech_API.sMultiThreadedSounds)
-            new Thread(new GT_Runnable_Sound(GT.getThePlayer().worldObj, MathHelper.floor_double(aX), MathHelper.floor_double(aY), MathHelper.floor_double(aZ), aTimeUntilNextSound, aSoundName, aSoundStrength, aSoundModulation), "Sound Effect").start();
-        else
-            new GT_Runnable_Sound(GT.getThePlayer().worldObj, MathHelper.floor_double(aX), MathHelper.floor_double(aY), MathHelper.floor_double(aZ), aTimeUntilNextSound, aSoundName, aSoundStrength, aSoundModulation).run();
+        new GT_Runnable_Sound(GT.getThePlayer().worldObj, MathHelper.floor_double(aX), MathHelper.floor_double(aY), MathHelper.floor_double(aZ), aTimeUntilNextSound, aSoundName, aSoundStrength, aSoundModulation).run();
         return true;
     }
 

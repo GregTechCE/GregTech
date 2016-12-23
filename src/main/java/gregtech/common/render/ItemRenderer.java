@@ -2,7 +2,6 @@ package gregtech.common.render;
 
 import codechicken.lib.render.item.CCRenderItem;
 import codechicken.lib.render.item.IItemRenderer;
-import codechicken.lib.render.item.IStackPerspectiveAwareModel;
 import gregtech.api.GregTech_API;
 import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.items.GT_Generic_Item;
@@ -20,16 +19,15 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.model.IPerspectiveAwareModel;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 import javax.annotation.Nullable;
 import javax.vecmath.*;
@@ -37,15 +35,19 @@ import javax.vecmath.Matrix4f;
 import java.util.Collections;
 import java.util.List;
 
-public class ItemRenderer implements IItemRenderer, IStackPerspectiveAwareModel {
+public class ItemRenderer {
 
     public static final ItemRenderer INSTANCE = new ItemRenderer();
 
-    private ModelResourceLocation LOCATION = new ModelResourceLocation("GT_ITEM", "inventory");
+    private ModelResourceLocation LOCATION_NORMAL = new ModelResourceLocation("gt/item/normal", "inventory");
+    private ModelResourceLocation LOCATION_HANDHELD = new ModelResourceLocation("gt/item/handheld", "inventory");
+    private ModelResourceLocation LOCATION_BLOCK = new ModelResourceLocation("gt/item/block", "inventory");
 
     @SubscribeEvent
     public void onModelsBake(ModelBakeEvent event) {
-        event.getModelRegistry().putObject(LOCATION, this);
+        event.getModelRegistry().putObject(LOCATION_NORMAL, new BakedModelItemRendererWrapper(ModelUtil.DEFAULT_TRANSFORMS));
+        event.getModelRegistry().putObject(LOCATION_HANDHELD, new BakedModelItemRendererWrapper(ModelUtil.HANDHELD_TRANSFORMS));
+        event.getModelRegistry().putObject(LOCATION_BLOCK, new BakedModelItemRendererWrapper(ModelUtil.BLOCK_TRANSFORMS));
     }
 
     @SubscribeEvent
@@ -82,7 +84,14 @@ public class ItemRenderer implements IItemRenderer, IStackPerspectiveAwareModel 
         ItemMeshDefinition definition = new ItemMeshDefinition() {
             @Override
             public ModelResourceLocation getModelLocation(ItemStack stack) {
-                return LOCATION;
+                if(stack.getItem() instanceof ItemBlock) {
+                    return LOCATION_BLOCK;
+                }
+                GT_Generic_Item generic_item = (GT_Generic_Item) stack.getItem();
+                if(generic_item.isHandheld(stack)) {
+                    return LOCATION_HANDHELD;
+                }
+                return LOCATION_NORMAL;
             }
         };
 
@@ -105,9 +114,9 @@ public class ItemRenderer implements IItemRenderer, IStackPerspectiveAwareModel 
 
             Block block = ((ItemBlock) item).block;
             EnumBlockRenderType layer = block.getRenderType(block.getDefaultState());
-            GL11.glEnable(GL11.GL_BLEND);
+            //GL11.glEnable(GL11.GL_BLEND);
             //GL11.glEnable(GL11.GL_CULL_FACE);
-            OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+            //OpenGlHelper.glBlendFunc(770, 771, 1, 0);
             texturemanager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
             //GL11.glDepthMask(false);
             //GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -123,7 +132,7 @@ public class ItemRenderer implements IItemRenderer, IStackPerspectiveAwareModel 
             //GL11.glDepthMask(true);
             //GL11.glEnable(GL11.GL_DEPTH_TEST);
             //GL11.glDisable(GL11.GL_CULL_FACE);
-            GL11.glDisable(GL11.GL_BLEND);
+            //GL11.glDisable(GL11.GL_BLEND);
         }
         else
         {
@@ -154,7 +163,9 @@ public class ItemRenderer implements IItemRenderer, IStackPerspectiveAwareModel 
             //GL11.glRotatef(50.0F, 0.0F, 1.0F, 0.0F);
             //GL11.glRotatef(335.0F, 0.0F, 0.0F, 1.0F);
             //GL11.glTranslatef(-0.9375F, -0.0625F, 0.0F);
-            GL11.glTranslatef(0f, 0f, 0.5f);
+            GL11.glRotatef(180f, 0f, 1f, 0f);
+            GL11.glTranslatef(-1f, 0f, -0.5f);
+
 
             renderItemIn2D(tessellator, f1, f2, f, f3, iicon.getIconWidth(), iicon.getIconHeight(), 0.0625F, colors);
 
@@ -279,8 +290,7 @@ public class ItemRenderer implements IItemRenderer, IStackPerspectiveAwareModel 
 
         tes.draw();
     }
-    
-    @Override
+
     public void renderItem(ItemStack item) {
         if(item.getItem() instanceof ItemBlock) {
             renderItem(item, 0);
@@ -292,53 +302,59 @@ public class ItemRenderer implements IItemRenderer, IStackPerspectiveAwareModel 
         }
     }
 
-    @Override
-    public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
-        return Collections.emptyList();
+    private final class BakedModelItemRendererWrapper implements IBakedModel, IPerspectiveAwareModel, IItemRenderer {
+
+        private ItemCameraTransforms transforms;
+
+        public BakedModelItemRendererWrapper(ItemCameraTransforms transforms) {
+            this.transforms = transforms;
+        }
+
+        @Override
+        public void renderItem(ItemStack item) {
+            ItemRenderer.this.renderItem(item);
+        }
+
+        @Override
+        public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
+            return Collections.EMPTY_LIST;
+        }
+
+        @Override
+        public boolean isAmbientOcclusion() {
+            return false;
+        }
+
+        @Override
+        public boolean isGui3d() {
+            return false;
+        }
+
+        @Override
+        public boolean isBuiltInRenderer() {
+            return true;
+        }
+
+        @Override
+        public TextureAtlasSprite getParticleTexture() {
+            return null;
+        }
+
+        @Override
+        public ItemCameraTransforms getItemCameraTransforms() {
+            return transforms;
+        }
+
+        @Override
+        public ItemOverrideList getOverrides() {
+            return ItemOverrideList.NONE;
+        }
+
+        @Override
+        public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType) {
+            return ImmutablePair.of(this, new TRSRTransformation(getItemCameraTransforms().getTransform(cameraTransformType)).getMatrix());
+        }
+
     }
 
-    @Override
-    public boolean isAmbientOcclusion() {
-        return false;
-    }
-
-    @Override
-    public boolean isGui3d() {
-        return false;
-    }
-
-    @Override
-    public boolean isBuiltInRenderer() {
-        return true;
-    }
-
-    @Override
-    public TextureAtlasSprite getParticleTexture() {
-        return null;
-    }
-
-    @Override
-    public ItemCameraTransforms getItemCameraTransforms() {
-        return ModelUtil.BLOCK_TRANSFORMS; //RenderEntityItem calls it directly
-    }
-
-    @Override
-    public ItemOverrideList getOverrides() {
-        return ItemOverrideList.NONE;
-    }
-
-    @Override
-    public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemStack stack, ItemCameraTransforms.TransformType cameraTransformType) {
-        Matrix4f mat = new Matrix4f();
-        mat.setIdentity();
-
-        ItemTransformVec3f vec =
-                (stack.getItem() instanceof ItemBlock ? ModelUtil.BLOCK_TRANSFORMS :
-                        ((GT_Generic_Item) stack.getItem()).isHandheld(stack) ? ModelUtil.HANDHELD_TRANSFORMS :
-                        ModelUtil.DEFAULT_TRANSFORMS)
-                .getTransform(cameraTransformType);
-        TRSRTransformation t = new TRSRTransformation(vec);
-
-        return ImmutablePair.of(this, t.getMatrix());
-    }
 }

@@ -1,19 +1,17 @@
 package gregtech.api.threads;
 
-import gregtech.api.util.GT_PlayedSound;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.ISound;
-import net.minecraft.client.audio.Sound;
-import net.minecraft.client.audio.SoundEventAccessor;
-import net.minecraft.client.audio.SoundHandler;
+import net.minecraft.client.audio.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
-public class GT_Runnable_Sound implements Runnable, ISound {
+public class GT_Runnable_Sound implements Runnable {
     private final int mX, mY, mZ, mTimeUntilNextSound;
     private final World mWorld;
     private final ResourceLocation mSoundLocation;
@@ -31,69 +29,14 @@ public class GT_Runnable_Sound implements Runnable, ISound {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void run() {
-        Minecraft.getMinecraft().getSoundHandler().playSound(this);
+        SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(mSoundLocation);
+        if(soundEvent != null) {
+            PositionedSound sound = new PositionedSound(soundEvent, SoundCategory.BLOCKS) {};
+            Minecraft.getMinecraft().getSoundHandler().playSound(sound);
+        }
     }
 
-    @Override
-    public ResourceLocation getSoundLocation() {
-        return mSoundLocation;
-    }
-
-    @Nullable
-    @Override
-    public SoundEventAccessor createAccessor(SoundHandler handler) {
-        return new SoundEventAccessor(mSoundLocation, "metal sound");
-    }
-
-    @Override
-    public Sound getSound() {
-        return new Sound(mSoundLocation.toString(), getVolume(), getPitch(), 1, Sound.Type.FILE, true);
-    }
-
-    @Override
-    public SoundCategory getCategory() {
-        return SoundCategory.AMBIENT;
-    }
-
-    @Override
-    public boolean canRepeat() {
-        return true;
-    }
-
-    @Override
-    public int getRepeatDelay() {
-        return mTimeUntilNextSound;
-    }
-
-    @Override
-    public float getVolume() {
-        return mSoundStrength;
-    }
-
-    @Override
-    public float getPitch() {
-        return mSoundModulation;
-    }
-
-    @Override
-    public float getXPosF() {
-        return mX;
-    }
-
-    @Override
-    public float getYPosF() {
-        return mY;
-    }
-
-    @Override
-    public float getZPosF() {
-        return mZ;
-    }
-
-    @Override
-    public AttenuationType getAttenuationType() {
-        return AttenuationType.NONE;
-    }
 
 }
