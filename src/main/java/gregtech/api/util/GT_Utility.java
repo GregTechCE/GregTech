@@ -1550,7 +1550,7 @@ public class GT_Utility {
     	if(GT_Proxy.chunkData.containsKey(tPos)){
     		tInts = GT_Proxy.chunkData.get(tPos);
     		if(tInts.length>0){
-    			if(tInts[0]>=0){tAmount = tInts[0];}
+    			if(tInts[0]>0){tAmount = tInts[0];}
     		}
     		GT_Proxy.chunkData.remove(tPos);
     	}
