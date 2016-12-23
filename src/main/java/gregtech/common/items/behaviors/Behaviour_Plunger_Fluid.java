@@ -51,6 +51,7 @@ public class Behaviour_Plunger_Fluid
           	GT_MetaTileEntity_BasicTank machine = (GT_MetaTileEntity_BasicTank) mTileEntity;
            	if(machine.mFluid!=null&&machine.mFluid.amount>0)
            	machine.mFluid.amount = machine.mFluid.amount - Math.min(machine.mFluid.amount, 1000);
+            GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(Integer.valueOf(101)), 1.0F, -1.0F, aX, aY, aZ);
            	return true;
                 }
             }
