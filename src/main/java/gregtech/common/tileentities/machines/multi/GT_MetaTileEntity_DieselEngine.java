@@ -39,13 +39,16 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
         return new String[]{
                 "Controller Block for the Large Diesel Engine",
                 "Size(WxHxD): 3x3x4, Controller (front centered)",
-                "3x3x4 of Stable Titanium Casing (hollow, Min 24!)",
+                "3x3x4 of Stable Titanium Casing (hollow, Min 16!)",
                 "2x Titanium Gear Box Casing inside the Hollow Casing",
-                "1x Input Hatch (one of the Casings)",
-                "1x Maintenance Hatch (one of the Casings)",
-                "1x Muffler Hatch (top middle back)",
+                "8x Engine Intake Casings (around controller)",
+                "2x Input Hatch (one of the Casings next to a Gear Box)",
+                "1x Maintenance Hatch (one of the Casings next to a Gear Box)",
+                "1x Muffler Hatch (top middle back, next to the rear Gear Box)",
                 "1x Dynamo Hatch (back centered)",
-                "Engine Intake Casings not obstructed (only air blocks)"};
+                "Engine Intake Casings not obstructed in front (only air blocks)",
+                "Supply Diesel Fuel and Lubricant to run. Supply Oxygen to boost output (optional).",
+                "2048EU/t default output, 6144EU/t boosted output"};
     }
 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
@@ -86,7 +89,7 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
 
                                 fuelValue = aFuel.mSpecialValue;
                                 fuelRemaining = hatchFluid1.amount; //Record available fuel
-                                this.mEUt = mEfficiency < 2000 ? 0 : (int) (2048 * ((float) mEfficiency / 10000)); //Output 0 if startup is less than 20%
+                                this.mEUt = mEfficiency < 2000 ? 0 : 2048; //Output 0 if startup is less than 20%
                                 this.mProgresstime = 1;
                                 this.mMaxProgresstime = 1;
                                 this.mEfficiencyIncrease = 15;
@@ -213,7 +216,7 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
 
     @Override
     public int getPollutionPerTick(ItemStack aStack) {
-        return 0;
+        return 15;
     }
 
     @Override
@@ -230,7 +233,7 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
     public String[] getInfoData() {
         return new String[]{
             "Diesel Engine",
-            "Current Output: "+mEUt+" EU/t",
+            "Current Output: "+mEUt*mEfficiency/10000 +" EU/t",
             "Fuel Consumption: "+fuelConsumption+"L/t",
             "Fuel Value: "+fuelValue+" EU/L",
             "Fuel Remaining: "+fuelRemaining+" Litres",

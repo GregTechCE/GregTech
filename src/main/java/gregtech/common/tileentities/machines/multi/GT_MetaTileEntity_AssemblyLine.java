@@ -175,8 +175,8 @@ public class GT_MetaTileEntity_AssemblyLine
                 }
                 tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, -2, i);
                 if (!addInputToMachineList(tTileEntity, 16)){
-                    if (!addOutputToMachineList(tTileEntity, 16)){;return false;
-                    }else{if(r>0){return true;}else{return false;}}
+                    if (!addOutputToMachineList(tTileEntity, 16)){
+                    }else{if(r>0){return mEnergyHatches.size()>0;}else{return false;}}
                 }
             }
         }else{
@@ -210,7 +210,7 @@ public class GT_MetaTileEntity_AssemblyLine
                 tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(i, -2, zDir);
                 if (!addInputToMachineList(tTileEntity, 16)){
                     if (!addOutputToMachineList(tTileEntity, 16)){
-                    }else{if(r>0){return true;}else{return false;}}
+                    }else{if(r>0){return mEnergyHatches.size()>0;}else{return false;}}
                 }
             }
         }

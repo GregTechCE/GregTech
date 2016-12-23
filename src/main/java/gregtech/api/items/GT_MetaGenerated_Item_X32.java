@@ -1,8 +1,9 @@
 package gregtech.api.items;
 
-import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -51,7 +52,6 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
             Materials tMaterial = GregTech_API.sGeneratedMaterials[i % 1000];
             if (tMaterial == null) continue;
             if (doesMaterialAllowGeneration(tPrefix, tMaterial)) {
-
                 ItemStack tStack = new ItemStack(this, 1, i);
                 GT_LanguageManager.addStringLocalization(getUnlocalizedName(tStack) + ".name", getDefaultLocalization(tPrefix, tMaterial, i));
                 GT_LanguageManager.addStringLocalization(getUnlocalizedName(tStack) + ".tooltip", tMaterial.getToolTip(tPrefix.mMaterialAmount / M));
@@ -60,13 +60,12 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
                 } else {
                     GT_OreDictUnificator.registerOre(tPrefix.get(tMaterial), tStack);
                 }
-                if(tPrefix == OrePrefixes.lens) {
+                if (tPrefix == OrePrefixes.lens) {
                     Dyes materialColor = tMaterial.mColor;
-                    if(materialColor != null) {
-                        GT_OreDictUnificator.registerOre("craftingLens" + materialColor.mName.replace(' ', '\0'), tStack);
+                    if (materialColor != null) {
+                            GT_OreDictUnificator.registerOre("craftingLens" + materialColor.mName.replace(' ', '\0'), tStack);
                     }
                 }
-
                 if ((tPrefix == OrePrefixes.stick || tPrefix == OrePrefixes.wireFine || tPrefix == OrePrefixes.ingot) && (tMaterial == Materials.Lead || tMaterial == Materials.Tin || tMaterial == Materials.SolderingAlloy)) {
                     GregTech_API.sSolderingMetalList.add(tStack);
                 }
@@ -84,7 +83,7 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
         if(aStack.getItemDamage() < 32000 && tint == 0) {
             Materials tMaterial = GregTech_API.sGeneratedMaterials[getDamage(aStack) % 1000];
             return tMaterial == null ? Materials._NULL.mRGBa : tMaterial.mRGBa;
-        }
+            }
         return super.getRGBa(aStack, tint);
     }
 
@@ -98,7 +97,7 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
         // if (!super.doesMaterialAllowGeneration(aPrefix, aMaterial)) return false;
         return aPrefix != null && aMaterial != null && aPrefix.doGenerateItem(aMaterial);
     }
-	
+
 	/* ---------- OVERRIDEABLE FUNCTIONS ---------- */
 
     /**
@@ -130,7 +129,7 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
     public boolean doesShowInCreative(OrePrefixes aPrefix, Materials aMaterial, boolean aDoShowAllItems) {
         return true;
     }
-	
+
 	/* ---------- INTERNAL OVERRIDES ---------- */
 
     @Override
@@ -146,25 +145,30 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
         return null;
     }
 
+    @SideOnly(Side.CLIENT)
+    public final IIconContainer getMaterialIcon(int aMetaData) {
+        Materials tMaterial = GregTech_API.sGeneratedMaterials[aMetaData % 1000];
+        if (tMaterial == null) return null;
+        IIconContainer tIcon = getIconContainer(aMetaData, tMaterial);
+        if (tIcon != null) return tIcon;
+        return null;
+    }
+
     @Override
     @SideOnly(Side.CLIENT)
     public final void getSubItems(Item var1, CreativeTabs aCreativeTab, List<ItemStack> aList) {
-        for (int i = 0; i < 32000; i++)
-            if (doesMaterialAllowGeneration(mGeneratedPrefixList[i / 1000], GregTech_API.sGeneratedMaterials[i % 1000]) && doesShowInCreative(mGeneratedPrefixList[i / 1000], GregTech_API.sGeneratedMaterials[i % 1000], GregTech_API.sDoShowAllItemsInCreative)) {
-                ItemStack tStack = new ItemStack(this, 1, i);
-                isItemStackUsable(tStack);
-                aList.add(tStack);
+        for (int i = 0; i < 32000; i++) {
+            OrePrefixes aPrefix = mGeneratedPrefixList[i / 1000];
+            Materials aMaterial = GregTech_API.sGeneratedMaterials[i % 1000];
+            if (aPrefix != null && aMaterial != null) {
+                if (doesMaterialAllowGeneration(aPrefix, aMaterial) && doesShowInCreative(aPrefix, aMaterial, GregTech_API.sDoShowAllItemsInCreative)) {
+                    ItemStack tStack = new ItemStack(this, 1, i);
+                    isItemStackUsable(tStack);
+                    aList.add(tStack);
+                }
             }
+        }
         super.getSubItems(var1, aCreativeTab, aList);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public final IIconContainer getMaterialIcon(int aMetaData) {
-            Materials tMaterial = GregTech_API.sGeneratedMaterials[aMetaData % 1000];
-            if (tMaterial == null) return null;
-            IIconContainer tIcon = getIconContainer(aMetaData, tMaterial);
-            if (tIcon != null) return tIcon;
-            return null;
     }
 
     @Override
@@ -189,8 +193,8 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public int getRenderPasses(ItemStack stack) {
-        return stack.getItemDamage() < 32000 ? 2 : 1 ;
+    public int getRenderPasses(ItemStack aStack) {
+        return aStack.getItemDamage() < 32000 ? 2 : 1 ;
     }
 
     @Override
@@ -200,5 +204,4 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
             return Math.min(super.getItemStackLimit(aStack), mGeneratedPrefixList[tDamage / 1000].mDefaultStackSize);
         return super.getItemStackLimit(aStack);
     }
-
 }

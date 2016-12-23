@@ -46,7 +46,7 @@ public class GT_MetaTileEntity_DistillationTower
                 "1x Output Bus (Any bottom layer casing)",
                 "1x Maintenance Hatch (Any casing)",
                 "1x Energy Hatch (Any casing)",
-                "Clean Stainless Steel Casings for the rest (26 at least!)"};
+                "Clean Stainless Steel Casings for the rest (36 at least!)"};
     }
 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
@@ -161,7 +161,8 @@ public class GT_MetaTileEntity_DistillationTower
             return false;
         }
         GT_MetaTileEntity_Hatch_Output[] tmpHatches = new GT_MetaTileEntity_Hatch_Output[5];
-        for (int i = 0; i < this.mOutputHatches.size(); i++) {
+        int mOutputHatches_sS=this.mOutputHatches.size();
+        for (int i = 0; i < mOutputHatches_sS; i++) {
             int hatchNumber = this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord() - 1 - height;
             if (tmpHatches[hatchNumber] == null) {
                 tmpHatches[hatchNumber] = this.mOutputHatches.get(i);
@@ -173,7 +174,8 @@ public class GT_MetaTileEntity_DistillationTower
         for (int i = 0; i < tmpHatches.length; i++) {
             this.mOutputHatches.add(tmpHatches[i]);
         }
-        return tAmount >= 26;
+        if(this.mMaintenanceHatches.size()!=1)return false;
+        return tAmount >= 36;
     }
 
     public boolean ignoreController(Block tTileEntity) {

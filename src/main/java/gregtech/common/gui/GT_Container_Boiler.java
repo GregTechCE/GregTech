@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GT_Container_Boiler
         extends GT_ContainerMetaTile_Machine {
-    private final int mSteamCapacity;
+    private int mSteamCapacity = 0;//FB: UR - UR_UNINIT_READ_CALLED_FROM_SUPER_CONSTRUCTOR
     public int mWaterAmount = 0;
     public int mSteamAmount = 0;
     public int mProcessingEnergy = 0;

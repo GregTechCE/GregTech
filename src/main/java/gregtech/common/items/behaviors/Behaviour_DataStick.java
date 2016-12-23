@@ -25,8 +25,8 @@ public class Behaviour_DataStick extends Behaviour_None {
         tString = GT_Utility.ItemNBT.getPunchCardData(aStack);
         if (GT_Utility.isStringValid(tString)) {
             aList.add("Punch Card Data");
-            int i = 0;
-            for (int j = tString.length(); i < j; i += 64) {
+            int i = 0;int j = tString.length();
+            for (; i < j; i += 64) {
                 aList.add(tString.substring(i, Math.min(i + 64, j)));
             }
         }

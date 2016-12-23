@@ -12,19 +12,20 @@ import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.objects.GT_Fluid;
 import gregtech.api.objects.ItemData;
+import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.*;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
-import gregtech.common.items.armor.*;
-import ic2.core.block.type.ResourceBlock;
+import gregtech.common.items.armor.GuiElectricArmor1;
+import gregtech.common.items.armor.ModularArmor_Item;
+import gregtech.common.items.armor.gui.ContainerBasicArmor;
+import gregtech.common.items.armor.gui.ContainerElectricArmor1;
+import gregtech.common.items.armor.gui.GuiModularArmor;
+import gregtech.common.items.armor.gui.InventoryArmor;
 import ic2.core.block.wiring.CableType;
-import ic2.core.item.ItemFluidCell;
 import ic2.core.item.type.*;
-import ic2.core.ref.BlockName;
-import ic2.core.ref.FluidName;
 import ic2.core.ref.ItemName;
 import ic2.core.util.Ic2Color;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -49,7 +50,6 @@ import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
@@ -62,10 +62,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.IFuelHandler;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -154,23 +151,43 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public boolean mDisableIC2Cables = false;
     public boolean mAchievements = true;
     public boolean mAE2Integration = true;
+    public boolean mArcSmeltIntoAnnealed = true;
+    public boolean mMagneticraftRecipes = true;
+    public boolean mImmersiveEngineeringRecipes = true;
+    private boolean isFirstServerWorldTick = true;
+    private boolean mOreDictActivated = false;
+    public boolean mChangeHarvestLevels=false;
+    public boolean mNerfedCombs = true;
+    public boolean mNerfedCrops = true;
+    public boolean mGTBees = true;
+    public boolean mHideUnusedOres = true;
+    public boolean mHideRecyclingRecipes = true;
+    public boolean mPollution = true;
+    public boolean mExplosionItemDrop = false;
     public int mSkeletonsShootGTArrows = 16;
     public int mMaxEqualEntitiesAtOneSpot = 3;
     public int mFlintChance = 30;
     public int mItemDespawnTime = 6000;
     public int mUpgradeCount = 4;
-    public boolean mGTBees = true;
-    private World mUniverse = null;
-    private boolean isFirstServerWorldTick = true;
-    private boolean mOreDictActivated = false;
     public int[] mHarvestLevel= new int[1000];
     public int mGraniteHavestLevel=3;
     public int mMaxHarvestLevel=7;
-    public boolean mChangeHarvestLevels=false;
-    public boolean mNerfedCombs = true;
     public int mWireHeatingTicks = 4;
-    public boolean mHideUnusedOres = true;
-    public boolean mHideRecyclingRecipes = true;
+    public int mPollutionSmogLimit = 500000;
+    public int mPollutionPoisonLimit = 750000;
+    public int mPollutionVegetationLimit = 1000000;
+    public int mPollutionSourRainLimit = 2000000;
+    public int mTicksUntilNextCraftSound = 0;
+    public double mMagneticraftBonusOutputPercent = 100.0d;
+    private World mUniverse = null;
+    private final String aTextThermalExpansion = "ThermalExpansion";
+    private final String aTextRailcraft = "Railcraft";
+    private final String aTextTwilightForest = "TwilightForest";
+    private final String aTextForestry = "Forestry";
+    private final String aTextArsmagica2 = "arsmagica2";
+    public boolean mTEMachineRecipes = false;
+    public boolean mEnableAllMaterials = false;
+    public boolean mEnableAllComponents = false;
 
     public GT_Proxy() {
         GameRegistry.registerFuelHandler(this);
@@ -181,12 +198,14 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
             onFluidContainerRegistration(new FluidContainerRegistry.FluidContainerRegisterEvent(tData));
         }
-        for (String tOreName : OreDictionary.getOreNames()) {
-            ItemStack tOreStack;
-            for (Iterator i$ = OreDictionary.getOres(tOreName).iterator(); i$.hasNext(); registerOre(new OreDictionary.OreRegisterEvent(tOreName, tOreStack))) {
-                tOreStack = (ItemStack) i$.next();
+        try {
+            for (String tOreName : OreDictionary.getOreNames()) {
+                ItemStack tOreStack;
+                for (Iterator i$ = OreDictionary.getOres(tOreName).iterator(); i$.hasNext(); registerOre(new OreDictionary.OreRegisterEvent(tOreName, tOreStack))) {
+                    tOreStack = (ItemStack) i$.next();
+                }
             }
-        }
+        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
     }
 
     private static void registerRecipes(OreDictEventContainer aOre) {
@@ -203,7 +222,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                         GT_Utility.copyAmount(1, aOre.mEvent.getOre()));
             }
         } else {
-			System.out.println("Thingy Name: "+ aOre.mEvent.getName() + " !!!Unknown 'Thingy' detected!!! This Object seems to probably not follow a valid OreDictionary Convention, or I missed a Convention. Please report to GregTech Intergalactical for additional compatiblity. This is not an Error, an Issue nor a Lag Source, it is just an Information, which you should pass to me.");
+            System.out.println("Thingy Name: "+ aOre.mEvent.getName() + " !!!Unknown 'Thingy' detected!!! This Object seems to probably not follow a valid OreDictionary Convention, or I missed a Convention. Please report to GregTech Intergalactical for additional compatiblity. This is not an Error, an Issue nor a Lag Source, it is just an Information, which you should pass to me.");
         }
     }
 
@@ -222,56 +241,56 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             }
         }
         GT_Log.out.println("GT_Mod: Getting required Items of other Mods.");
-        ItemList.TE_Slag.set(GT_ModHandler.getModItem("ThermalExpansion", "slag", 1));
-        ItemList.TE_Slag_Rich.set(GT_ModHandler.getModItem("ThermalExpansion", "slagRich", 1));
-        ItemList.TE_Rockwool.set(GT_ModHandler.getModItem("ThermalExpansion", "rockwool", 1));
-        ItemList.TE_Hardened_Glass.set(GT_ModHandler.getModItem("ThermalExpansion", "glassHardened", 1));
+        ItemList.TE_Slag.set(GT_ModHandler.getModItem(aTextThermalExpansion, "slag", 1));
+        ItemList.TE_Slag_Rich.set(GT_ModHandler.getModItem(aTextThermalExpansion, "slagRich", 1));
+        ItemList.TE_Rockwool.set(GT_ModHandler.getModItem(aTextThermalExpansion, "rockwool", 1));
+        ItemList.TE_Hardened_Glass.set(GT_ModHandler.getModItem(aTextThermalExpansion, "glassHardened", 1));
 
-        ItemList.RC_ShuntingWire.set(GT_ModHandler.getModItem("Railcraft", "tile.railcraft.machine.delta", 1, 0));
-        ItemList.RC_ShuntingWireFrame.set(GT_ModHandler.getModItem("Railcraft", "tile.railcraft.frame", 1, 0));
-        ItemList.RC_Rail_Standard.set(GT_ModHandler.getModItem("Railcraft", "part.rail", 1, 0));
-        ItemList.RC_Rail_Adv.set(GT_ModHandler.getModItem("Railcraft", "part.rail", 1, 1));
-        ItemList.RC_Rail_Wooden.set(GT_ModHandler.getModItem("Railcraft", "part.rail", 1, 2));
-        ItemList.RC_Rail_HS.set(GT_ModHandler.getModItem("Railcraft", "part.rail", 1, 3));
-        ItemList.RC_Rail_Reinforced.set(GT_ModHandler.getModItem("Railcraft", "part.rail", 1, 4));
-        ItemList.RC_Rail_Electric.set(GT_ModHandler.getModItem("Railcraft", "part.rail", 1, 5));
-        ItemList.RC_Tie_Wood.set(GT_ModHandler.getModItem("Railcraft", "part.tie", 1, 0));
-        ItemList.RC_Tie_Stone.set(GT_ModHandler.getModItem("Railcraft", "part.tie", 1, 1));
-        ItemList.RC_Bed_Wood.set(GT_ModHandler.getModItem("Railcraft", "part.railbed", 1, 0));
-        ItemList.RC_Bed_Stone.set(GT_ModHandler.getModItem("Railcraft", "part.railbed", 1, 1));
-        ItemList.RC_Rebar.set(GT_ModHandler.getModItem("Railcraft", "part.rebar", 1));
-        ItemList.Tool_Sword_Steel.set(GT_ModHandler.getModItem("Railcraft", "tool.steel.sword", 1));
-        ItemList.Tool_Pickaxe_Steel.set(GT_ModHandler.getModItem("Railcraft", "tool.steel.pickaxe", 1));
-        ItemList.Tool_Shovel_Steel.set(GT_ModHandler.getModItem("Railcraft", "tool.steel.shovel", 1));
-        ItemList.Tool_Axe_Steel.set(GT_ModHandler.getModItem("Railcraft", "tool.steel.axe", 1));
-        ItemList.Tool_Hoe_Steel.set(GT_ModHandler.getModItem("Railcraft", "tool.steel.hoe", 1));
+        ItemList.RC_ShuntingWire.set(GT_ModHandler.getModItem(aTextRailcraft, "tile.railcraft.machine.delta", 1, 0));
+        ItemList.RC_ShuntingWireFrame.set(GT_ModHandler.getModItem(aTextRailcraft, "tile.railcraft.frame", 1, 0));
+        ItemList.RC_Rail_Standard.set(GT_ModHandler.getModItem(aTextRailcraft, "part.rail", 1, 0));
+        ItemList.RC_Rail_Adv.set(GT_ModHandler.getModItem(aTextRailcraft, "part.rail", 1, 1));
+        ItemList.RC_Rail_Wooden.set(GT_ModHandler.getModItem(aTextRailcraft, "part.rail", 1, 2));
+        ItemList.RC_Rail_HS.set(GT_ModHandler.getModItem(aTextRailcraft, "part.rail", 1, 3));
+        ItemList.RC_Rail_Reinforced.set(GT_ModHandler.getModItem(aTextRailcraft, "part.rail", 1, 4));
+        ItemList.RC_Rail_Electric.set(GT_ModHandler.getModItem(aTextRailcraft, "part.rail", 1, 5));
+        ItemList.RC_Tie_Wood.set(GT_ModHandler.getModItem(aTextRailcraft, "part.tie", 1, 0));
+        ItemList.RC_Tie_Stone.set(GT_ModHandler.getModItem(aTextRailcraft, "part.tie", 1, 1));
+        ItemList.RC_Bed_Wood.set(GT_ModHandler.getModItem(aTextRailcraft, "part.railbed", 1, 0));
+        ItemList.RC_Bed_Stone.set(GT_ModHandler.getModItem(aTextRailcraft, "part.railbed", 1, 1));
+        ItemList.RC_Rebar.set(GT_ModHandler.getModItem(aTextRailcraft, "part.rebar", 1));
+        ItemList.Tool_Sword_Steel.set(GT_ModHandler.getModItem(aTextRailcraft, "tool.steel.sword", 1));
+        ItemList.Tool_Pickaxe_Steel.set(GT_ModHandler.getModItem(aTextRailcraft, "tool.steel.pickaxe", 1));
+        ItemList.Tool_Shovel_Steel.set(GT_ModHandler.getModItem(aTextRailcraft, "tool.steel.shovel", 1));
+        ItemList.Tool_Axe_Steel.set(GT_ModHandler.getModItem(aTextRailcraft, "tool.steel.axe", 1));
+        ItemList.Tool_Hoe_Steel.set(GT_ModHandler.getModItem(aTextRailcraft, "tool.steel.hoe", 1));
 
-        ItemList.TF_LiveRoot.set(GT_ModHandler.getModItem("TwilightForest", "item.liveRoot", 1, 0));
-        ItemList.TF_Vial_FieryBlood.set(GT_ModHandler.getModItem("TwilightForest", "item.fieryBlood", 1));
-        ItemList.TF_Vial_FieryTears.set(GT_ModHandler.getModItem("TwilightForest", "item.fieryTears", 1));
+        ItemList.TF_LiveRoot.set(GT_ModHandler.getModItem(aTextTwilightForest , "item.liveRoot", 1, 0));
+        ItemList.TF_Vial_FieryBlood.set(GT_ModHandler.getModItem(aTextTwilightForest , "item.fieryBlood", 1));
+        ItemList.TF_Vial_FieryTears.set(GT_ModHandler.getModItem(aTextTwilightForest , "item.fieryTears", 1));
 
-        ItemList.FR_Lemon.set(GT_ModHandler.getModItem("Forestry", "fruits", 1, 3));
-        ItemList.FR_Mulch.set(GT_ModHandler.getModItem("Forestry", "mulch", 1));
-        ItemList.FR_Fertilizer.set(GT_ModHandler.getModItem("Forestry", "fertilizerCompound", 1));
-        ItemList.FR_Compost.set(GT_ModHandler.getModItem("Forestry", "fertilizerBio", 1));
-        ItemList.FR_Silk.set(GT_ModHandler.getModItem("Forestry", "craftingMaterial", 1, 2));
-        ItemList.FR_Wax.set(GT_ModHandler.getModItem("Forestry", "beeswax", 1));
-        ItemList.FR_WaxCapsule.set(GT_ModHandler.getModItem("Forestry", "waxCapsule", 1));
-        ItemList.FR_RefractoryWax.set(GT_ModHandler.getModItem("Forestry", "refractoryWax", 1));
-        ItemList.FR_RefractoryCapsule.set(GT_ModHandler.getModItem("Forestry", "refractoryEmpty", 1));
-        ItemList.FR_Bee_Drone.set(GT_ModHandler.getModItem("Forestry", "beeDroneGE", 1));
-        ItemList.FR_Bee_Princess.set(GT_ModHandler.getModItem("Forestry", "beePrincessGE", 1));
-        ItemList.FR_Bee_Queen.set(GT_ModHandler.getModItem("Forestry", "beeQueenGE", 1));
-        ItemList.FR_Tree_Sapling.set(GT_ModHandler.getModItem("Forestry", "sapling", 1, GT_ModHandler.getModItem("Forestry", "saplingGE", 1)));
-        ItemList.FR_Butterfly.set(GT_ModHandler.getModItem("Forestry", "butterflyGE", 1));
-        ItemList.FR_Larvae.set(GT_ModHandler.getModItem("Forestry", "beeLarvaeGE", 1));
-        ItemList.FR_Serum.set(GT_ModHandler.getModItem("Forestry", "serumGE", 1));
-        ItemList.FR_Caterpillar.set(GT_ModHandler.getModItem("Forestry", "caterpillarGE", 1));
-        ItemList.FR_PollenFertile.set(GT_ModHandler.getModItem("Forestry", "pollenFertile", 1));
-        ItemList.FR_Stick.set(GT_ModHandler.getModItem("Forestry", "oakStick", 1));
-        ItemList.FR_Casing_Impregnated.set(GT_ModHandler.getModItem("Forestry", "impregnatedCasing", 1));
-        ItemList.FR_Casing_Sturdy.set(GT_ModHandler.getModItem("Forestry", "sturdyMachine", 1));
-        ItemList.FR_Casing_Hardened.set(GT_ModHandler.getModItem("Forestry", "hardenedMachine", 1));
+        ItemList.FR_Lemon.set(GT_ModHandler.getModItem(aTextForestry, "fruits", 1, 3));
+        ItemList.FR_Mulch.set(GT_ModHandler.getModItem(aTextForestry, "mulch", 1));
+        ItemList.FR_Fertilizer.set(GT_ModHandler.getModItem(aTextForestry, "fertilizerCompound", 1));
+        ItemList.FR_Compost.set(GT_ModHandler.getModItem(aTextForestry, "fertilizerBio", 1));
+        ItemList.FR_Silk.set(GT_ModHandler.getModItem(aTextForestry, "craftingMaterial", 1, 2));
+        ItemList.FR_Wax.set(GT_ModHandler.getModItem(aTextForestry, "beeswax", 1));
+        ItemList.FR_WaxCapsule.set(GT_ModHandler.getModItem(aTextForestry, "waxCapsule", 1));
+        ItemList.FR_RefractoryWax.set(GT_ModHandler.getModItem(aTextForestry, "refractoryWax", 1));
+        ItemList.FR_RefractoryCapsule.set(GT_ModHandler.getModItem(aTextForestry, "refractoryEmpty", 1));
+        ItemList.FR_Bee_Drone.set(GT_ModHandler.getModItem(aTextForestry, "beeDroneGE", 1));
+        ItemList.FR_Bee_Princess.set(GT_ModHandler.getModItem(aTextForestry, "beePrincessGE", 1));
+        ItemList.FR_Bee_Queen.set(GT_ModHandler.getModItem(aTextForestry, "beeQueenGE", 1));
+        ItemList.FR_Tree_Sapling.set(GT_ModHandler.getModItem(aTextForestry, "sapling", 1, GT_ModHandler.getModItem(aTextForestry, "saplingGE", 1)));
+        ItemList.FR_Butterfly.set(GT_ModHandler.getModItem(aTextForestry, "butterflyGE", 1));
+        ItemList.FR_Larvae.set(GT_ModHandler.getModItem(aTextForestry, "beeLarvaeGE", 1));
+        ItemList.FR_Serum.set(GT_ModHandler.getModItem(aTextForestry, "serumGE", 1));
+        ItemList.FR_Caterpillar.set(GT_ModHandler.getModItem(aTextForestry, "caterpillarGE", 1));
+        ItemList.FR_PollenFertile.set(GT_ModHandler.getModItem(aTextForestry, "pollenFertile", 1));
+        ItemList.FR_Stick.set(GT_ModHandler.getModItem(aTextForestry, "oakStick", 1));
+        ItemList.FR_Casing_Impregnated.set(GT_ModHandler.getModItem(aTextForestry, "impregnatedCasing", 1));
+        ItemList.FR_Casing_Sturdy.set(GT_ModHandler.getModItem(aTextForestry, "sturdyMachine", 1));
+        ItemList.FR_Casing_Hardened.set(GT_ModHandler.getModItem(aTextForestry, "hardenedMachine", 1));
 
         ItemList.Bottle_Empty.set(new ItemStack(Items.GLASS_BOTTLE, 1));
 
@@ -400,32 +419,32 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         GT_ModHandler.sNonReplaceableItems.add(ItemName.hazmat_chestplate.getItemStack());
         GT_ModHandler.sNonReplaceableItems.add(ItemName.hazmat_leggings.getItemStack());
         GT_ModHandler.sNonReplaceableItems.add(ItemName.rubber_boots.getItemStack());
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("Railcraft", "part.turbine.disk", 1, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("Railcraft", "part.turbine.blade", 1, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("Railcraft", "part.turbine.rotor", 1, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("Railcraft", "borehead.diamond", 1, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("Railcraft", "borehead.steel", 1, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("Railcraft", "borehead.iron", 1, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("TwilightForest", "item.plateNaga", 1, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("TwilightForest", "item.legsNaga", 1, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("TwilightForest", "item.arcticHelm", 1, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("TwilightForest", "item.arcticPlate", 1, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("TwilightForest", "item.arcticLegs", 1, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("TwilightForest", "item.arcticBoots", 1, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("TwilightForest", "item.yetiHelm", 1, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("TwilightForest", "item.yetiPlate", 1, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("TwilightForest", "item.yetiLegs", 1, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("TwilightForest", "item.yetiBoots", 1, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(aTextRailcraft, "part.turbine.disk", 1, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(aTextRailcraft, "part.turbine.blade", 1, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(aTextRailcraft, "part.turbine.rotor", 1, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(aTextRailcraft, "borehead.diamond", 1, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(aTextRailcraft, "borehead.steel", 1, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(aTextRailcraft, "borehead.iron", 1, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(aTextTwilightForest , "item.plateNaga", 1, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(aTextTwilightForest , "item.legsNaga", 1, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(aTextTwilightForest , "item.arcticHelm", 1, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(aTextTwilightForest , "item.arcticPlate", 1, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(aTextTwilightForest , "item.arcticLegs", 1, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(aTextTwilightForest , "item.arcticBoots", 1, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(aTextTwilightForest , "item.yetiHelm", 1, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(aTextTwilightForest , "item.yetiPlate", 1, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(aTextTwilightForest , "item.yetiLegs", 1, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(aTextTwilightForest , "item.yetiBoots", 1, 32767));
         GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("appliedenergistics2", "item.ToolCertusQuartzCuttingKnife", 1, 32767));
         GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("appliedenergistics2", "item.ToolNetherQuartzCuttingKnife", 1, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("Forestry", "apiaristHelmet", 1, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("Forestry", "apiaristChest", 1, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("Forestry", "apiaristLegs", 1, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("Forestry", "apiaristBoots", 1, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("Forestry", "frameUntreated", 1, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("Forestry", "frameImpregnated", 1, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("Forestry", "frameProven", 1, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("Forestry", "waxCast", 1, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(aTextForestry, "apiaristHelmet", 1, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(aTextForestry, "apiaristChest", 1, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(aTextForestry, "apiaristLegs", 1, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(aTextForestry, "apiaristBoots", 1, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(aTextForestry, "frameUntreated", 1, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(aTextForestry, "frameImpregnated", 1, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(aTextForestry, "frameProven", 1, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(aTextForestry, "waxCast", 1, 32767));
         GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("GalacticraftCore", "item.sensorGlasses", 1, 32767));
         GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("IC2NuclearControl", "ItemToolThermometer", 1, 32767));
 
@@ -457,6 +476,13 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             new Thread(new GT_PlayerActivityLogger()).start();
         }
         GregTech_API.sPostloadStarted = true;
+        GT_OreDictUnificator.addItemData(new ItemStack(Items.IRON_DOOR, 1), new ItemData(Materials.Iron, 21772800L, new MaterialStack[0]));
+        GT_OreDictUnificator.addItemData(new ItemStack(Items.ACACIA_DOOR, 1, 32767), new ItemData(Materials.Wood, 21772800L, new MaterialStack[0]));
+        GT_OreDictUnificator.addItemData(new ItemStack(Items.BIRCH_DOOR, 1, 32767), new ItemData(Materials.Wood, 21772800L, new MaterialStack[0]));
+        GT_OreDictUnificator.addItemData(new ItemStack(Items.JUNGLE_DOOR, 1, 32767), new ItemData(Materials.Wood, 21772800L, new MaterialStack[0]));
+        GT_OreDictUnificator.addItemData(new ItemStack(Items.OAK_DOOR, 1, 32767), new ItemData(Materials.Wood, 21772800L, new MaterialStack[0]));
+        GT_OreDictUnificator.addItemData(new ItemStack(Items.SPRUCE_DOOR, 1, 32767), new ItemData(Materials.Wood, 21772800L, new MaterialStack[0]));
+        GT_OreDictUnificator.addItemData(new ItemStack(Items.DARK_OAK_DOOR, 1, 32767), new ItemData(Materials.Wood, 21772800L, new MaterialStack[0]));
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.POTIONITEM) && (tData.filledContainer.getItemDamage() == 0)) {
                 tData.fluid.amount = 0;
@@ -464,23 +490,23 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             }
         }
         GT_Log.out.println("GT_Mod: Adding Configs specific for MetaTileEntities");
-        for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
-            try {
+        try {
+            for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
                 for (; i < GregTech_API.METATILEENTITIES.length; i++) {
                     if (GregTech_API.METATILEENTITIES[i] != null) {
                         GregTech_API.METATILEENTITIES[i].onConfigLoad(GregTech_API.sMachineFile);
                     }
                 }
-            } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
             }
+        } catch (Throwable e) {
+            e.printStackTrace(GT_Log.err);
         }
         GT_Log.out.println("GT_Mod: Adding Tool Usage Crafting Recipes for OreDict Items.");
         long tBits = GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED
                 | GT_ModHandler.RecipeBits.ONLY_ADD_IF_RESULT_IS_NOT_NULL | GT_ModHandler.RecipeBits.NOT_REMOVABLE;
-        for (Materials aMaterial : Materials.VALUES) {
+        for (Materials aMaterial : Materials.values()) {
             if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial)) {
-                if (!aMaterial.contains(SubTag.NO_SMASHING)) {
+                /*if (!aMaterial.contains(SubTag.NO_SMASHING)) {
                     if (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.hammerplating, aMaterial.toString(), true)) {
                         GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1), tBits, new Object[]{"h", "X", "X",
                                 Character.valueOf('X'), OrePrefixes.ingot.get(aMaterial)});
@@ -538,8 +564,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                             new Object[]{"h ", " X", 'X', OrePrefixes.stick.get(aMaterial)});
                     GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1), tBits,
                             new Object[]{"ShS", 'S', OrePrefixes.stick.get(aMaterial)});
-                }
-                if (!aMaterial.contains(SubTag.NO_WORKING)) {
+                }*/
+                /*if (!aMaterial.contains(SubTag.NO_WORKING)) {
                     GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 2L), tBits,
                             new Object[]{"s", "X", Character.valueOf('X'), OrePrefixes.stickLong.get(aMaterial)});
                     GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1), tBits,
@@ -609,12 +635,12 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                             Character.valueOf('R'), OrePrefixes.ring.get(Materials.Steel)});
                     GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, aMaterial, 1), tBits, new Object[]{"XSX", "XSX",
                             "ShS", Character.valueOf('X'), OrePrefixes.plate.get(aMaterial), Character.valueOf('S'), OrePrefixes.plate.get(Materials.Steel)});
-                    switch (aMaterial) {
-                        case Wood:
+                    switch (aMaterial.mName) {
+                        case "Wood":
                             GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1), tBits, new Object[]{"P ", " s",
                                     Character.valueOf('P'), OrePrefixes.plank.get(aMaterial)});
                             break;
-                        case Stone:
+                        case "Stone":
                             GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1), tBits, new Object[]{"P ", " f",
                                     Character.valueOf('P'), OrePrefixes.stoneSmooth});
                             break;
@@ -622,12 +648,12 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                             GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1), tBits,
                                     new Object[]{"P ", aMaterial.contains(SubTag.WOOD) ? " s" : " h", Character.valueOf('P'), OrePrefixes.plate.get(aMaterial)});
                     }
-                    switch (aMaterial) {
-                        case Wood:
+                    switch (aMaterial.mName) {
+                        case "Wood":
                             GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1), tBits, new Object[]{"SPS", "PsP", "SPS",
                                     Character.valueOf('P'), OrePrefixes.plank.get(aMaterial), Character.valueOf('S'), OrePrefixes.stick.get(aMaterial)});
                             break;
-                        case Stone:
+                        case "Stone":
                             GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1), tBits, new Object[]{"SPS", "PfP", "SPS",
                                     Character.valueOf('P'), OrePrefixes.stoneSmooth, Character.valueOf('S'), new ItemStack(Blocks.STONE_BUTTON, 1, 32767)});
                             break;
@@ -635,76 +661,76 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                             GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1), tBits, new Object[]{"SPS", "PwP", "SPS",
                                     Character.valueOf('P'), OrePrefixes.plate.get(aMaterial), Character.valueOf('S'), OrePrefixes.stick.get(aMaterial)});
                     }
-                }
-                if (aMaterial.contains(SubTag.SMELTING_TO_GEM)) {
+                }*/
+                /*if (aMaterial.contains(SubTag.SMELTING_TO_GEM)) {
                     GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1), tBits, new Object[]{"XXX", "XXX", "XXX",
                             Character.valueOf('X'), OrePrefixes.nugget.get(aMaterial)});
                 } else {
                     GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1), tBits, new Object[]{"XXX", "XXX", "XXX",
                             Character.valueOf('X'), OrePrefixes.nugget.get(aMaterial)});
-                }
+                }*/
                 GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
-                        Character.valueOf('X'), OrePrefixes.crushedCentrifuged.get(aMaterial)});
+                        'X', OrePrefixes.crushedCentrifuged.get(aMaterial)});
                 GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
-                        Character.valueOf('X'), OrePrefixes.crystalline.get(aMaterial)});
+                        'X', OrePrefixes.crystalline.get(aMaterial)});
                 GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
-                        Character.valueOf('X'), OrePrefixes.crystal.get(aMaterial)});
+                        'X', OrePrefixes.crystal.get(aMaterial)});
                 GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustPure, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
-                        Character.valueOf('X'), OrePrefixes.crushedPurified.get(aMaterial)});
+                        'X', OrePrefixes.crushedPurified.get(aMaterial)});
                 GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustPure, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
-                        Character.valueOf('X'), OrePrefixes.cleanGravel.get(aMaterial)});
+                        'X', OrePrefixes.cleanGravel.get(aMaterial)});
                 GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustPure, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
-                        Character.valueOf('X'), OrePrefixes.reduced.get(aMaterial)});
+                        'X', OrePrefixes.reduced.get(aMaterial)});
                 GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustImpure, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
-                        Character.valueOf('X'), OrePrefixes.clump.get(aMaterial)});
+                        'X', OrePrefixes.clump.get(aMaterial)});
                 GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustImpure, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
-                        Character.valueOf('X'), OrePrefixes.shard.get(aMaterial)});
+                        'X', OrePrefixes.shard.get(aMaterial)});
                 GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustImpure, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
-                        Character.valueOf('X'), OrePrefixes.crushed.get(aMaterial)});
+                        'X', OrePrefixes.crushed.get(aMaterial)});
                 GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustImpure, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
-                        Character.valueOf('X'), OrePrefixes.dirtyGravel.get(aMaterial)});
+                        'X', OrePrefixes.dirtyGravel.get(aMaterial)});
 
                 GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 4L), tBits,
-                        new Object[]{" X", "  ", Character.valueOf('X'), OrePrefixes.dust.get(aMaterial)});
+                        new Object[]{" X", "  ", 'X', OrePrefixes.dust.get(aMaterial)});
                 GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 9L), tBits,
-                        new Object[]{"X ", "  ", Character.valueOf('X'), OrePrefixes.dust.get(aMaterial)});
+                        new Object[]{"X ", "  ", 'X', OrePrefixes.dust.get(aMaterial)});
                 GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1), tBits,
-                        new Object[]{"XX", "XX", Character.valueOf('X'), OrePrefixes.dustSmall.get(aMaterial)});
+                        new Object[]{"XX", "XX", 'X', OrePrefixes.dustSmall.get(aMaterial)});
                 GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1), tBits,
-                        new Object[]{"XXX", "XXX", "XXX", Character.valueOf('X'), OrePrefixes.dustTiny.get(aMaterial)});
-                GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 16L), tBits, new Object[]{"Xc", Character.valueOf('X'),
-                        OrePrefixes.crateGtDust.get(aMaterial)});
-                GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 16L), tBits, new Object[]{"Xc", Character.valueOf('X'),
-                        OrePrefixes.crateGtGem.get(aMaterial)});
-                GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 16L), tBits, new Object[]{"Xc",
-                        Character.valueOf('X'), OrePrefixes.crateGtIngot.get(aMaterial)});
-                GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 16L), tBits, new Object[]{"Xc",
-                        Character.valueOf('X'), OrePrefixes.crateGtPlate.get(aMaterial)});
-
-                GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gemChipped, aMaterial, 2L), tBits,
-                        new Object[]{"h", "X", Character.valueOf('X'), OrePrefixes.gemFlawed.get(aMaterial)});
-                GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 2L), tBits,
-                        new Object[]{"h", "X", Character.valueOf('X'), OrePrefixes.gem.get(aMaterial)});
-                GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 2L), tBits,
-                        new Object[]{"h", "X", Character.valueOf('X'), OrePrefixes.gemFlawless.get(aMaterial)});
-                GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 2L), tBits,
-                        new Object[]{"h", "X", Character.valueOf('X'), OrePrefixes.gemExquisite.get(aMaterial)});
-                if ((aMaterial.contains(SubTag.MORTAR_GRINDABLE)) && (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, aMaterial.name(), true))) {
-                    GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 1), tBits,
-                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefixes.gemChipped.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 2L), tBits,
-                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefixes.gemFlawed.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1), tBits,
-                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefixes.gem.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 2L), tBits,
-                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefixes.gemFlawless.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 4L), tBits,
-                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefixes.gemExquisite.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1), tBits,
-                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefixes.ingot.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1), tBits,
-                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefixes.plate.get(aMaterial)});
-                }
+                        new Object[]{"XXX", "XXX", "XXX", 'X', OrePrefixes.dustTiny.get(aMaterial)});
+//                GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 16L), tBits, new Object[]{"Xc", Character.valueOf('X'),
+//                        OrePrefixes.crateGtDust.get(aMaterial)});
+//                GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 16L), tBits, new Object[]{"Xc", Character.valueOf('X'),
+//                        OrePrefixes.crateGtGem.get(aMaterial)});
+//                GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 16L), tBits, new Object[]{"Xc",
+//                        Character.valueOf('X'), OrePrefixes.crateGtIngot.get(aMaterial)});
+//                GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 16L), tBits, new Object[]{"Xc",
+//                        Character.valueOf('X'), OrePrefixes.crateGtPlate.get(aMaterial)});
+//
+//                GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gemChipped, aMaterial, 2L), tBits,
+//                        new Object[]{"h", "X", Character.valueOf('X'), OrePrefixes.gemFlawed.get(aMaterial)});
+//                GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 2L), tBits,
+//                        new Object[]{"h", "X", Character.valueOf('X'), OrePrefixes.gem.get(aMaterial)});
+//                GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 2L), tBits,
+//                        new Object[]{"h", "X", Character.valueOf('X'), OrePrefixes.gemFlawless.get(aMaterial)});
+//                GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 2L), tBits,
+//                        new Object[]{"h", "X", Character.valueOf('X'), OrePrefixes.gemExquisite.get(aMaterial)});
+//                if ((aMaterial.contains(SubTag.MORTAR_GRINDABLE)) && (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, aMaterial.mName, true))) {
+//                    GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 1), tBits,
+//                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefixes.gemChipped.get(aMaterial)});
+//                    GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 2L), tBits,
+//                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefixes.gemFlawed.get(aMaterial)});
+//                    GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1), tBits,
+//                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefixes.gem.get(aMaterial)});
+//                    GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 2L), tBits,
+//                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefixes.gemFlawless.get(aMaterial)});
+//                    GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 4L), tBits,
+//                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefixes.gemExquisite.get(aMaterial)});
+//                    GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1), tBits,
+//                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefixes.ingot.get(aMaterial)});
+//                    GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1), tBits,
+//                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefixes.plate.get(aMaterial)});
+//                }
             }
         }
     }
@@ -721,16 +747,16 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 break;
             }
         }
-        for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
-            try {
+        try {
+            for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
                 for (; i < GregTech_API.METATILEENTITIES.length; i++) {
                     if (GregTech_API.METATILEENTITIES[i] != null) {
                         GregTech_API.METATILEENTITIES[i].onServerStart();
                     }
                 }
-            } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
             }
+        } catch (Throwable e) {
+            e.printStackTrace(GT_Log.err);
         }
     }
 
@@ -765,16 +791,16 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         File tSaveDirectory = getSaveDirectory();
         GregTech_API.sWirelessRedstone.clear();
         if (tSaveDirectory != null) {
-            for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
-                try {
+            try {
+                for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
                     for (; i < GregTech_API.METATILEENTITIES.length; i++) {
                         if (GregTech_API.METATILEENTITIES[i] != null) {
                             GregTech_API.METATILEENTITIES[i].onWorldSave(tSaveDirectory);
                         }
                     }
-                } catch (Throwable e) {
-                    e.printStackTrace(GT_Log.err);
                 }
+            } catch (Throwable e) {
+                e.printStackTrace(GT_Log.err);
             }
         }
         this.mUniverse = null;
@@ -823,22 +849,22 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 tArrowEntity.setFire(tLevel * 100);
             }
             aEvent.getBow().damageItem(1, aEvent.getEntityPlayer());
-            aEvent.getEntityPlayer().worldObj.playSound(null, new BlockPos(aEvent.getEntity()), 
+            aEvent.getEntityPlayer().worldObj.playSound(null, new BlockPos(aEvent.getEntity()),
                     SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS,
-                    1.0F, 1.0F / (new Random().nextFloat() * 0.4F + 1.2F) + tSpeed * 0.5F);
-            
+                    1.0F, 0.64893958288F + tSpeed * 0.5F);
+
             if (!aEvent.getEntityPlayer().capabilities.isCreativeMode) {
                 aArrow.stackSize -= 1;
             }
-            
+
             if (aArrow.stackSize == 0) {
                 GT_Utility.removeNullStacksFromInventory(aEvent.getEntityPlayer().inventory);
             }
-            
+
             if (!aEvent.getEntityPlayer().worldObj.isRemote) {
                 aEvent.getEntityPlayer().worldObj.spawnEntityInWorld(tArrowEntity);
             }
-            
+
             aEvent.setCanceled(true);
         }
     }
@@ -863,7 +889,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 aEvent.getWorld().spawnEntityInWorld(new GT_Entity_Arrow(aEvent.getWorld(),
                         (EntityLivingBase) ((EntityArrow) aEvent.getEntity()).shootingEntity,
                         OrePrefixes.arrowGtWood.mPrefixedItems
-                        .get(aEvent.getWorld().rand.nextInt(OrePrefixes.arrowGtWood.mPrefixedItems.size()))));
+                                .get(aEvent.getWorld().rand.nextInt(OrePrefixes.arrowGtWood.mPrefixedItems.size()))));
                 aEvent.getEntity().setDead();
             }
         }
@@ -885,11 +911,11 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public void onPlayerInteraction(PlayerInteractEvent.RightClickBlock aEvent) {
         ItemStack aStack = aEvent.getItemStack();
         if (aStack != null && aStack.getItem() == Items.FLINT_AND_STEEL) {
-            if (!aEvent.getWorld().isRemote && 
-                    !aEvent.getEntityPlayer().capabilities.isCreativeMode && 
+            if (!aEvent.getWorld().isRemote &&
+                    !aEvent.getEntityPlayer().capabilities.isCreativeMode &&
                     aEvent.getWorld().rand.nextInt(100) >= this.mFlintChance) {
                 aStack.damageItem(1, aEvent.getEntityPlayer());
-                if (aStack.getItemDamage() >= aStack.getMaxDamage()) 
+                if (aStack.getItemDamage() >= aStack.getMaxDamage())
                     aStack.stackSize -= 1;
                 aEvent.setCanceled(true);
             }
@@ -946,8 +972,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         try {
             aEvent.getOre().stackSize = 1;
             if (this.mIgnoreTcon || aEvent.getOre().getUnlocalizedName().startsWith("item.oreberry")) {
-                if ((aOriginalMod.toLowerCase().contains("xycraft")) || (aOriginalMod.toLowerCase().contains("tconstruct"))
-                        || ((aOriginalMod.toLowerCase().contains("natura")) && (!aOriginalMod.toLowerCase().contains("natural")))) {
+                if ((aOriginalMod.toLowerCase(Locale.ENGLISH).contains("xycraft")) || (aOriginalMod.toLowerCase(Locale.ENGLISH).contains("tconstruct"))
+                        || ((aOriginalMod.toLowerCase(Locale.ENGLISH).contains("natura")) && (!aOriginalMod.toLowerCase(Locale.ENGLISH).contains("natural")))) {
                     if (GT_Values.D1) {
                         GT_Log.ore.println(aMod + " -> " + aEvent.getName() + " is getting ignored, because of racism. :P");
                     }
@@ -962,89 +988,78 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 GT_OreDictUnificator.addToBlacklist(aEvent.getOre());
             }
             this.mRegisteredOres.add(aEvent.getOre());
-            if ((aEvent.getName().startsWith("item")) && (this.mIgnoredItems.contains(aEvent.getName()))) {
-                GT_Log.ore.println(tModToName);
-                if (aEvent.getName().equals("itemCopperWire")) {
-                    GT_OreDictUnificator.registerOre(OreDictNames.craftingWireCopper, aEvent.getOre());
+
+            if (this.mIgnoredItems.contains(aEvent.getName())) {
+                if ((aEvent.getName().startsWith("item"))) {
+                    GT_Log.ore.println(tModToName);
+                    if (aEvent.getName().equals("itemCopperWire")) {
+                        GT_OreDictUnificator.registerOre(OreDictNames.craftingWireCopper, aEvent.getOre());
+                    }
+                    if (aEvent.getName().equals("itemRubber")) {
+                        GT_OreDictUnificator.registerOre(OrePrefixes.ingot, Materials.Rubber, aEvent.getOre());
+                    }
+                    return;
                 }
-                if (aEvent.getName().equals("itemRubber")) {
-                    GT_OreDictUnificator.registerOre(OrePrefixes.ingot, Materials.Rubber, aEvent.getOre());
-                }
-                return;
-            }
-            if (this.mIgnoredNames.contains(aEvent.getName())) {
+            } else if (this.mIgnoredNames.contains(aEvent.getName())){
                 GT_Log.ore.println(tModToName + " is getting ignored via hardcode.");
                 return;
-            }
-            if (aEvent.getName().equals("stone")) {
+            } else if (aEvent.getName().equals("stone")) {
                 GT_OreDictUnificator.registerOre("stoneSmooth", aEvent.getOre());
                 return;
-            }
-            if (aEvent.getName().equals("cobblestone")) {
+            } else if (aEvent.getName().equals("cobblestone")) {
                 GT_OreDictUnificator.registerOre("stoneCobble", aEvent.getOre());
                 return;
-            }
-            if ((aEvent.getName().contains("|")) || (aEvent.getName().contains("*")) || (aEvent.getName().contains(":")) || (aEvent.getName().contains("."))
+            } else if ((aEvent.getName().contains("|")) || (aEvent.getName().contains("*")) || (aEvent.getName().contains(":")) || (aEvent.getName().contains("."))
                     || (aEvent.getName().contains("$"))) {
                 GT_Log.ore.println(tModToName + " is using a private Prefix and is therefor getting ignored properly.");
                 return;
-            }
-            if (aEvent.getName().equals("copperWire")) {
+            } else if (aEvent.getName().equals("copperWire")) {
                 GT_OreDictUnificator.registerOre(OreDictNames.craftingWireCopper, aEvent.getOre());
-            }
-            if (aEvent.getName().equals("oreHeeEndrium")) {
+            } else if (aEvent.getName().equals("oreHeeEndrium")) {
                 GT_OreDictUnificator.registerOre(OrePrefixes.ore, Materials.Endium, aEvent.getOre());
-            }
-            if (aEvent.getName().equals("sheetPlastic")) {
+            } else if (aEvent.getName().equals("sheetPlastic")) {
                 GT_OreDictUnificator.registerOre(OrePrefixes.plate, Materials.Plastic, aEvent.getOre());
-            }
-            if (aEvent.getName().equals("shardAir")) {
-                GT_OreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedAir, aEvent.getOre());
-                return;
-            }
-            if (aEvent.getName().equals("shardWater")) {
-                GT_OreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedWater, aEvent.getOre());
-                return;
-            }
-            if (aEvent.getName().equals("shardFire")) {
-                GT_OreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedFire, aEvent.getOre());
-                return;
-            }
-            if (aEvent.getName().equals("shardEarth")) {
-                GT_OreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedEarth, aEvent.getOre());
-                return;
-            }
-            if (aEvent.getName().equals("shardOrder")) {
-                GT_OreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedOrder, aEvent.getOre());
-                return;
-            }
-            if (aEvent.getName().equals("shardEntropy")) {
-                GT_OreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedEntropy, aEvent.getOre());
-                return;
-            }
-            if (aEvent.getName().equals("fieryIngot")) {
+            } else if (aEvent.getName().equals("shard")) {
+                if (aEvent.getName().equals("shardAir")) {
+                    GT_OreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedAir, aEvent.getOre());
+                    return;
+                } else if (aEvent.getName().equals("shardWater")) {
+                    GT_OreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedWater, aEvent.getOre());
+                    return;
+                } else if (aEvent.getName().equals("shardFire")) {
+                    GT_OreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedFire, aEvent.getOre());
+                    return;
+                } else if (aEvent.getName().equals("shardEarth")) {
+                    GT_OreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedEarth, aEvent.getOre());
+                    return;
+                } else if (aEvent.getName().equals("shardOrder")) {
+                    GT_OreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedOrder, aEvent.getOre());
+                    return;
+                } else if (aEvent.getName().equals("shardEntropy")) {
+                    GT_OreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedEntropy, aEvent.getOre());
+                    return;
+                }
+            } else if (aEvent.getName().equals("fieryIngot")) {
                 GT_OreDictUnificator.registerOre(OrePrefixes.ingot, Materials.FierySteel, aEvent.getOre());
                 return;
-            }
-            if (aEvent.getName().equals("ironwood")) {
+            } else if (aEvent.getName().equals("ironwood")) {
                 GT_OreDictUnificator.registerOre(OrePrefixes.ingot, Materials.IronWood, aEvent.getOre());
                 return;
-            }
-            if (aEvent.getName().equals("steeleaf")) {
+            } else if (aEvent.getName().equals("steeleaf")) {
                 GT_OreDictUnificator.registerOre(OrePrefixes.ingot, Materials.Steeleaf, aEvent.getOre());
                 return;
-            }
-            if (aEvent.getName().equals("knightmetal")) {
+            } else if (aEvent.getName().equals("knightmetal")) {
                 GT_OreDictUnificator.registerOre(OrePrefixes.ingot, Materials.Knightmetal, aEvent.getOre());
                 return;
-            }
-            if (aEvent.getName().contains(" ")) {
+            } else if (aEvent.getName().equals("compressedAluminum")) {
+                GT_OreDictUnificator.registerOre(OrePrefixes.compressed, Materials.Aluminium, aEvent.getOre());
+                return;
+            } else if (aEvent.getName().contains(" ")) {
                 GT_Log.ore.println(tModToName + " is getting re-registered because the OreDict Name containing invalid spaces.");
                 GT_OreDictUnificator.registerOre(aEvent.getName().replaceAll(" ", ""), GT_Utility.copyAmount(1, aEvent.getOre()));
                 aEvent.getOre().setStackDisplayName("Invalid OreDictionary Tag");
                 return;
-            }
-            if (this.mInvalidNames.contains(aEvent.getName())) {
+            } else if (this.mInvalidNames.contains(aEvent.getName())) {
                 GT_Log.ore.println(tModToName + " is wrongly registered and therefor getting ignored.");
 
                 return;
@@ -1058,12 +1073,10 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 if (aEvent.getName().toLowerCase().equals(aEvent.getName())) {
                     GT_Log.ore.println(tModToName + " is invalid due to being solely lowercased.");
                     return;
-                }
-                if (aEvent.getName().toUpperCase().equals(aEvent.getName())) {
+                } else if (aEvent.getName().toUpperCase().equals(aEvent.getName())) {
                     GT_Log.ore.println(tModToName + " is invalid due to being solely uppercased.");
                     return;
-                }
-                if (Character.isUpperCase(aEvent.getName().charAt(0))) {
+                } else if (Character.isUpperCase(aEvent.getName().charAt(0))) {
                     GT_Log.ore.println(tModToName + " is invalid due to the first character being uppercased.");
                 }
             } else {
@@ -1103,12 +1116,12 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                                 }
                                 aMaterial.add(GT_Utility.copyAmount(1, new Object[]{aEvent.getOre()}));
 
-                    			if (GregTech_API.sThaumcraftCompat != null && aPrefix.doGenerateItem(aMaterial) && !aPrefix.isIgnored(aMaterial)) {
-                    	    	    List<TC_AspectStack> tAspects = new ArrayList<TC_AspectStack>();
-                    	    	    for (TC_AspectStack tAspect : aPrefix.mAspects) tAspect.addToAspectList(tAspects);
-                    	    	    if (aPrefix.mMaterialAmount >= 3628800 || aPrefix.mMaterialAmount < 0) for (TC_AspectStack tAspect : aMaterial.mAspects) tAspect.addToAspectList(tAspects);
-                    	    	    GregTech_API.sThaumcraftCompat.registerThaumcraftAspectsToItem(GT_Utility.copyAmount(1, aEvent.getOre()), tAspects, aEvent.getName());
-                        	    }
+                                if (GregTech_API.sThaumcraftCompat != null && aPrefix.doGenerateItem(aMaterial) && !aPrefix.isIgnored(aMaterial)) {
+                                    List<TC_AspectStack> tAspects = new ArrayList<TC_AspectStack>();
+                                    for (TC_AspectStack tAspect : aPrefix.mAspects) tAspect.addToAspectList(tAspects);
+                                    if (aPrefix.mMaterialAmount >= 3628800 || aPrefix.mMaterialAmount < 0) for (TC_AspectStack tAspect : aMaterial.mAspects) tAspect.addToAspectList(tAspects);
+                                    GregTech_API.sThaumcraftCompat.registerThaumcraftAspectsToItem(GT_Utility.copyAmount(1, aEvent.getOre()), tAspects, aEvent.getName());
+                                }
 
                                 switch (aPrefix) {
                                     case crystal:
@@ -1117,48 +1130,31 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                                         }
                                         break;
                                     case gem:
-                                        switch (aMaterial) {
-                                            case Lapis:
-                                            case Sodalite:
-                                                GT_OreDictUnificator.registerOre(Dyes.dyeBlue, aEvent.getOre());
-                                                break;
-                                            case Lazurite:
-                                                GT_OreDictUnificator.registerOre(Dyes.dyeCyan, aEvent.getOre());
-                                                break;
-                                            case InfusedAir:
-                                            case InfusedWater:
-                                            case InfusedFire:
-                                            case InfusedEarth:
-                                            case InfusedOrder:
-                                            case InfusedEntropy:
-                                                GT_OreDictUnificator.registerOre(aMaterial.name().replaceFirst("Infused", "shard"), aEvent.getOre());
-                                                break;
-                                            case Chocolate:
-                                                GT_OreDictUnificator.registerOre(Dyes.dyeBrown, aEvent.getOre());
-                                                break;
-                                            case CertusQuartz:
-                                            case NetherQuartz:
-                                                GT_OreDictUnificator.registerOre(OrePrefixes.item.get(aMaterial), aEvent.getOre());
-                                            case Fluix:
-                                            case Quartz:
-                                            case Quartzite:
-                                                GT_OreDictUnificator.registerOre(OrePrefixes.crystal, aMaterial, aEvent.getOre());
-                                                GT_OreDictUnificator.registerOre(OreDictNames.craftingQuartz, aEvent.getOre());
-                                            default:
-                                                break;
+                                        if (aMaterial == Materials.Lapis || aMaterial == Materials.Sodalite) {
+                                            GT_OreDictUnificator.registerOre(Dyes.dyeBlue, aEvent.getOre());
+                                        } else if (aMaterial == Materials.Lazurite) {
+                                            GT_OreDictUnificator.registerOre(Dyes.dyeCyan, aEvent.getOre());
+                                        } else if (aMaterial == Materials.InfusedAir || aMaterial == Materials.InfusedWater || aMaterial == Materials.InfusedFire || aMaterial == Materials.InfusedEarth || aMaterial == Materials.InfusedOrder || aMaterial == Materials.InfusedEntropy) {
+                                            GT_OreDictUnificator.registerOre(aMaterial.mName.replaceFirst("Infused", "shard"), aEvent.getOre());
+                                        } else if (aMaterial == Materials.Chocolate) {
+                                            GT_OreDictUnificator.registerOre(Dyes.dyeBrown, aEvent.getOre());
+                                        } else if (aMaterial == Materials.CertusQuartz || aMaterial == Materials.NetherQuartz) {
+                                            GT_OreDictUnificator.registerOre(OrePrefixes.item.get(aMaterial), aEvent.getOre());
+                                            GT_OreDictUnificator.registerOre(OrePrefixes.crystal, aMaterial, aEvent.getOre());
+                                            GT_OreDictUnificator.registerOre(OreDictNames.craftingQuartz, aEvent.getOre());
+                                        } else if (aMaterial == Materials.Fluix || aMaterial == Materials.Quartz || aMaterial == Materials.Quartzite) {
+                                            GT_OreDictUnificator.registerOre(OrePrefixes.crystal, aMaterial, aEvent.getOre());
+                                            GT_OreDictUnificator.registerOre(OreDictNames.craftingQuartz, aEvent.getOre());
                                         }
                                         break;
                                     case cableGt01:
                                         if (aMaterial == Materials.Tin) {
                                             GT_OreDictUnificator.registerOre(OreDictNames.craftingWireTin, aEvent.getOre());
-                                        }
-                                        if (aMaterial == Materials.AnyCopper) {
+                                        } else if (aMaterial == Materials.AnyCopper) {
                                             GT_OreDictUnificator.registerOre(OreDictNames.craftingWireCopper, aEvent.getOre());
-                                        }
-                                        if (aMaterial == Materials.Gold) {
+                                        } else if (aMaterial == Materials.Gold) {
                                             GT_OreDictUnificator.registerOre(OreDictNames.craftingWireGold, aEvent.getOre());
-                                        }
-                                        if (aMaterial == Materials.AnyIron) {
+                                        } else if (aMaterial == Materials.AnyIron) {
                                             GT_OreDictUnificator.registerOre(OreDictNames.craftingWireIron, aEvent.getOre());
                                         }
                                         break;
@@ -1170,11 +1166,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                                     case plate:
                                         if ((aMaterial == Materials.Plastic) || (aMaterial == Materials.Rubber)) {
                                             GT_OreDictUnificator.registerOre(OrePrefixes.sheet, aMaterial, aEvent.getOre());
-                                        }
-                                        if (aMaterial == Materials.Silicon) {
+                                        } else if (aMaterial == Materials.Silicon) {
                                             GT_OreDictUnificator.registerOre(OrePrefixes.item, aMaterial, aEvent.getOre());
-                                        }
-                                        if (aMaterial == Materials.Wood) {
+                                        } else if (aMaterial == Materials.Wood) {
                                             GT_OreDictUnificator.addToBlacklist(aEvent.getOre());
                                             GT_OreDictUnificator.registerOre(OrePrefixes.plank, aMaterial, aEvent.getOre());
                                         }
@@ -1190,64 +1184,48 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                                     case stick:
                                         if (!GT_RecipeRegistrator.sRodMaterialList.contains(aMaterial)) {
                                             GT_RecipeRegistrator.sRodMaterialList.add(aMaterial);
-                                        }
-                                        if (aMaterial == Materials.Wood) {
+                                        } else if (aMaterial == Materials.Wood) {
                                             GT_OreDictUnificator.addToBlacklist(aEvent.getOre());
-                                        }
-                                        if ((aMaterial == Materials.Tin) || (aMaterial == Materials.Lead) || (aMaterial == Materials.SolderingAlloy)) {
+                                        } else if ((aMaterial == Materials.Tin) || (aMaterial == Materials.Lead) || (aMaterial == Materials.SolderingAlloy)) {
                                             GT_OreDictUnificator.registerOre(ToolDictNames.craftingToolSolderingMetal, aEvent.getOre());
                                         }
                                         break;
                                     case dust:
                                         if (aMaterial == Materials.Salt) {
                                             GT_OreDictUnificator.registerOre("itemSalt", aEvent.getOre());
-                                        }
-                                        if (aMaterial == Materials.Wood) {
+                                        } else if (aMaterial == Materials.Wood) {
                                             GT_OreDictUnificator.registerOre("pulpWood", aEvent.getOre());
-                                        }
-                                        if (aMaterial == Materials.Wheat) {
+                                        } else if (aMaterial == Materials.Wheat) {
                                             GT_OreDictUnificator.registerOre("foodFlour", aEvent.getOre());
-                                        }
-                                        if (aMaterial == Materials.Lapis) {
+                                        } else if (aMaterial == Materials.Lapis) {
                                             GT_OreDictUnificator.registerOre(Dyes.dyeBlue, aEvent.getOre());
-                                        }
-                                        if (aMaterial == Materials.Lazurite) {
+                                        } else if (aMaterial == Materials.Lazurite) {
                                             GT_OreDictUnificator.registerOre(Dyes.dyeCyan, aEvent.getOre());
-                                        }
-                                        if (aMaterial == Materials.Sodalite) {
+                                        } else if (aMaterial == Materials.Sodalite) {
                                             GT_OreDictUnificator.registerOre(Dyes.dyeBlue, aEvent.getOre());
-                                        }
-                                        if (aMaterial == Materials.Cocoa) {
+                                        } else if (aMaterial == Materials.Cocoa) {
                                             GT_OreDictUnificator.registerOre(Dyes.dyeBrown, aEvent.getOre());
                                             GT_OreDictUnificator.registerOre("foodCocoapowder", aEvent.getOre());
-                                        }
-                                        if (aMaterial == Materials.Coffee) {
+                                        } else if (aMaterial == Materials.Coffee) {
                                             GT_OreDictUnificator.registerOre(Dyes.dyeBrown, aEvent.getOre());
-                                        }
-                                        if (aMaterial == Materials.BrownLimonite) {
+                                        } else if (aMaterial == Materials.BrownLimonite) {
                                             GT_OreDictUnificator.registerOre(Dyes.dyeBrown, aEvent.getOre());
-                                        }
-                                        if (aMaterial == Materials.YellowLimonite) {
+                                        } else if (aMaterial == Materials.YellowLimonite) {
                                             GT_OreDictUnificator.registerOre(Dyes.dyeYellow, aEvent.getOre());
                                         }
                                         break;
                                     case ingot:
                                         if (aMaterial == Materials.Rubber) {
                                             GT_OreDictUnificator.registerOre("itemRubber", aEvent.getOre());
-                                        }
-                                        if (aMaterial == Materials.FierySteel) {
+                                        } else if (aMaterial == Materials.FierySteel) {
                                             GT_OreDictUnificator.registerOre("fieryIngot", aEvent.getOre());
-                                        }
-                                        if (aMaterial == Materials.IronWood) {
+                                        } else if (aMaterial == Materials.IronWood) {
                                             GT_OreDictUnificator.registerOre("ironwood", aEvent.getOre());
-                                        }
-                                        if (aMaterial == Materials.Steeleaf) {
+                                        } else if (aMaterial == Materials.Steeleaf) {
                                             GT_OreDictUnificator.registerOre("steeleaf", aEvent.getOre());
-                                        }
-                                        if (aMaterial == Materials.Knightmetal) {
+                                        } else if (aMaterial == Materials.Knightmetal) {
                                             GT_OreDictUnificator.registerOre("knightmetal", aEvent.getOre());
-                                        }
-                                        if ((aMaterial == Materials.Brass) && (aEvent.getOre().getItemDamage() == 2)
+                                        } else if ((aMaterial == Materials.Brass) && (aEvent.getOre().getItemDamage() == 2)
                                                 && (aEvent.getOre().getUnlocalizedName().equals("item.ingotBrass"))
                                                 && (new ItemStack(aEvent.getOre().getItem(), 1, 0).getUnlocalizedName().contains("red"))) {
                                             GT_OreDictUnificator.set(OrePrefixes.ingot, Materials.RedAlloy, new ItemStack(aEvent.getOre().getItem(), 1, 0));
@@ -1257,7 +1235,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                                                 GT_Values.RA.addWiremillRecipe(
                                                         GT_ModHandler.getIC2Item(ItemName.cable, CableType.copper, 3),
                                                         new ItemStack(aEvent.getOre().getItem(), 1,
-                                                        8), 400, 1);
+                                                                8), 400, 1);
                                                 GT_Values.RA.addWiremillRecipe(
                                                         GT_ModHandler.getIC2Item(ItemName.cable, CableType.iron, 6),
                                                         new ItemStack(aEvent.getOre().getItem(), 1, 9), 400, 2);
@@ -1280,8 +1258,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                                         return;
                                     }
                                 }
-								System.out.println("Material Name: "+aEvent.getName()+ " !!!Unknown Material detected!!! Please report to GregTech Intergalactical for additional compatiblity. This is not an Error, an Issue nor a Lag Source, it is just an Information, which you should pass to me.");
-								GT_Log.ore.println(tModToName + " uses an unknown Material. Report this to GregTech.");
+                                //System.out.println("Material Name: "+aEvent.getName()+ " !!!Unknown Material detected!!! Please report to GregTech Intergalactical for additional compatiblity. This is not an Error, an Issue nor a Lag Source, it is just an Information, which you should pass to me.");
+                                //GT_Log.ore.println(tModToName + " uses an unknown Material. Report this to GregTech.");
+                                GT_Log.ore.println(tModToName + " uses an unknown Material.");
                                 return;
                             }
                         } else {
@@ -1320,19 +1299,16 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                     case sheet:
                         if (tName.equals("Plastic")) {
                             GT_OreDictUnificator.registerOre(OrePrefixes.plate, Materials.Plastic, aEvent.getOre());
-                        }
-                        if (tName.equals("Rubber")) {
+                        } else if (tName.equals("Rubber")) {
                             GT_OreDictUnificator.registerOre(OrePrefixes.plate, Materials.Rubber, aEvent.getOre());
                         }
                         break;
                     case crafting:
                         if (tName.equals("ToolSolderingMetal")) {
                             GregTech_API.registerSolderingMetal(aEvent.getOre());
-                        }
-                        if (tName.equals("IndustrialDiamond")) {
+                        } else if (tName.equals("IndustrialDiamond")) {
                             GT_OreDictUnificator.addToBlacklist(aEvent.getOre());
-                        }
-                        if (tName.equals("WireCopper")) {
+                        } else if (tName.equals("WireCopper")) {
                             GT_OreDictUnificator.registerOre(OrePrefixes.wire, Materials.Copper, aEvent.getOre());
                         }
                         break;
@@ -1382,6 +1358,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     @SubscribeEvent
     public void onWorldTickEvent(TickEvent.WorldTickEvent aEvent) {
+        if(aEvent.world.provider.getDimension() == 0)
+            mTicksUntilNextCraftSound--;
         if (aEvent.side.isServer()) {
             if (this.mUniverse == null) {
                 this.mUniverse = aEvent.world;
@@ -1390,14 +1368,14 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 File tSaveDiretory = getSaveDirectory();
                 if (tSaveDiretory != null) {
                     this.isFirstServerWorldTick = false;
-                    for (IMetaTileEntity tMetaTileEntity : GregTech_API.METATILEENTITIES) {
-                        try {
+                    try {
+                        for (IMetaTileEntity tMetaTileEntity : GregTech_API.METATILEENTITIES) {
                             if (tMetaTileEntity != null) {
                                 tMetaTileEntity.onWorldLoad(tSaveDiretory);
                             }
-                        } catch (Throwable e) {
-                            e.printStackTrace(GT_Log.err);
                         }
+                    } catch (Throwable e) {
+                        e.printStackTrace(GT_Log.err);
                     }
                 }
             }
@@ -1429,13 +1407,14 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                     }
                 }
             }
-            GT_Pollution.onWorldTick((int) (aEvent.world.getTotalWorldTime() % 1200));            
+            if (aEvent.world.provider.getDimension() == 0)
+                GT_Pollution.onWorldTick(aEvent.world, (int) (aEvent.world.getTotalWorldTime() % 1200));
         }
     }
 
     @SubscribeEvent
     public void onPlayerTickEventServer(TickEvent.PlayerTickEvent aEvent) {
-        if ((!aEvent.player.isDead) && (aEvent.phase == TickEvent.Phase.END) && (aEvent.side.isServer())) {
+        if ((aEvent.side.isServer()) && (aEvent.phase == TickEvent.Phase.END) && (!aEvent.player.isDead)) {
             if ((aEvent.player.ticksExisted % 200 == 0) && (aEvent.player.capabilities.allowEdit) && (!aEvent.player.capabilities.isCreativeMode)
                     && (this.mSurvivalIntoAdventure)) {
                 aEvent.player.setGameType(GameType.ADVENTURE);
@@ -1443,7 +1422,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 if (this.mAxeWhenAdventure) {
                     GT_Utility.sendChatToPlayer(aEvent.player, "It's dangerous to go alone! Take this.");
                     aEvent.player.worldObj.spawnEntityInWorld(new EntityItem(aEvent.player.worldObj, aEvent.player.posX, aEvent.player.posY,
-                            aEvent.player.posZ, GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(6, 1, Materials.Flint, Materials.Wood, null)));
+                            aEvent.player.posZ, GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(GT_MetaGenerated_Tool_01.AXE, 1, Materials.Flint, Materials.Wood, null)));
                 }
             }
             boolean tHungerEffect = (this.mHungerEffect) && (aEvent.player.ticksExisted % 2400 == 1200);
@@ -1498,19 +1477,33 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     }
 
     public Object getServerGuiElement(int aID, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
-    	if(aID>=1000){
-    		int ID = aID - 1000;
-    		switch(ID){
-    		case 0:
-    			return new ContainerBasicArmor(aPlayer, new InventoryArmor(ModularArmor_Item.class, aPlayer.getHeldItemMainhand()));
-    		case 1:
-    			return new ContainerElectricArmor1(aPlayer, new InventoryArmor(ModularArmor_Item.class, aPlayer.getHeldItemMainhand()));
-    		case 2:
-    			return new ContainerElectricArmor1(aPlayer, new InventoryArmor(ModularArmor_Item.class, aPlayer.getHeldItemMainhand()));
-    		default:
-    			return getRightItem(aPlayer, ID);
-    		}
-    	}
+        if(aID>=1000){
+            int ID = aID - 1000;
+            switch(ID){
+                case 0:
+                    return new ContainerBasicArmor(aPlayer, new InventoryArmor(ModularArmor_Item.class, aPlayer.getHeldItemMainhand()));
+                case 1:
+                    return new ContainerElectricArmor1(aPlayer, new InventoryArmor(ModularArmor_Item.class, aPlayer.getHeldItemMainhand()));
+                case 2:
+                    return new ContainerElectricArmor1(aPlayer, new InventoryArmor(ModularArmor_Item.class, aPlayer.getHeldItemMainhand()));
+                default:
+                    return getRightItem(aPlayer, ID);
+            }
+        }
+        if(aID>=100){
+            int tSlot = aID / 100;
+            int ID = aID%100;
+            switch(ID){
+                case 0:
+                    return new ContainerBasicArmor(aPlayer, new InventoryArmor(ModularArmor_Item.class, aPlayer.getEquipmentInSlot(tSlot)));
+                case 1:
+                    return new ContainerElectricArmor1(aPlayer, new InventoryArmor(ModularArmor_Item.class, aPlayer.getEquipmentInSlot(tSlot)));
+                case 2:
+                    return new ContainerElectricArmor1(aPlayer, new InventoryArmor(ModularArmor_Item.class, aPlayer.getEquipmentInSlot(tSlot)));
+                default:
+                    return getRightItem(aPlayer, ID);
+            }
+        }
         TileEntity tTileEntity = aWorld.getTileEntity(new BlockPos(aX, aY, aZ));
         if ((tTileEntity instanceof IGregTechTileEntity)) {
             IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
@@ -1521,37 +1514,51 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         return null;
     }
 
-	public Object getRightItem(EntityPlayer player, int ID){
-		ItemStack mStack = player.getItemStackFromSlot(EntityEquipmentSlot.values()[ID/100]);
-		if(mStack==null||!(mStack.getItem() instanceof ModularArmor_Item))
+    public Object getRightItem(EntityPlayer player, int ID){
+        ItemStack mStack = player.getItemStackFromSlot(EntityEquipmentSlot.values()[ID/100]);
+        if(mStack==null||!(mStack.getItem() instanceof ModularArmor_Item))
             return null;
 
-		switch(ID % 100){
-		case 0:
-			return new ContainerBasicArmor(player, new InventoryArmor(ModularArmor_Item.class, mStack));
-		case 1:
-			return new ContainerElectricArmor1(player, new InventoryArmor(ModularArmor_Item.class, mStack));
-		case 2:
-			return new ContainerElectricArmor1(player, new InventoryArmor(ModularArmor_Item.class, mStack));
-		}
-		return null;
+        switch(ID % 100){
+            case 0:
+                return new ContainerBasicArmor(player, new InventoryArmor(ModularArmor_Item.class, mStack));
+            case 1:
+                return new ContainerElectricArmor1(player, new InventoryArmor(ModularArmor_Item.class, mStack));
+            case 2:
+                return new ContainerElectricArmor1(player, new InventoryArmor(ModularArmor_Item.class, mStack));
+        }
+        return null;
 
-	}
+    }
 
     public Object getClientGuiElement(int aID, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
-    	if(aID>=1000){
-    		int ID = aID-1000;
-    		switch(ID){
-    		case 0:
-    			return new GuiModularArmor(new ContainerBasicArmor(aPlayer, new InventoryArmor(ModularArmor_Item.class, aPlayer.getHeldItemMainhand())), aPlayer);
-    		case 1:
-    			return new GuiElectricArmor1(new ContainerElectricArmor1(aPlayer, new InventoryArmor(ModularArmor_Item.class, aPlayer.getHeldItemMainhand())), aPlayer);
-    		case 2:
-    			return new GuiElectricArmor1(new ContainerElectricArmor1(aPlayer, new InventoryArmor(ModularArmor_Item.class, aPlayer.getHeldItemMainhand())), aPlayer);
-    		default:
-    			return getRightItemGui(aPlayer, ID);
-    		}
-    	}
+        if(aID>=1000){
+            int ID = aID-1000;
+            switch(ID){
+                case 0:
+                    return new GuiModularArmor(new ContainerBasicArmor(aPlayer, new InventoryArmor(ModularArmor_Item.class, aPlayer.getHeldItemMainhand())), aPlayer);
+                case 1:
+                    return new GuiElectricArmor1(new ContainerElectricArmor1(aPlayer, new InventoryArmor(ModularArmor_Item.class, aPlayer.getHeldItemMainhand())), aPlayer);
+                case 2:
+                    return new GuiElectricArmor1(new ContainerElectricArmor1(aPlayer, new InventoryArmor(ModularArmor_Item.class, aPlayer.getHeldItemMainhand())), aPlayer);
+                default:
+                    return getRightItemGui(aPlayer, ID);
+            }
+        }
+        if(aID>=100){
+            int tSlot = aID / 100;
+            int ID = aID%100;
+            switch(ID){
+                case 0:
+                    return new GuiModularArmor(new ContainerBasicArmor(aPlayer, new InventoryArmor(ModularArmor_Item.class, aPlayer.getEquipmentInSlot(tSlot))), aPlayer);
+                case 1:
+                    return new GuiElectricArmor1(new ContainerElectricArmor1(aPlayer, new InventoryArmor(ModularArmor_Item.class, aPlayer.getEquipmentInSlot(tSlot))), aPlayer);
+                case 2:
+                    return new GuiElectricArmor1(new ContainerElectricArmor1(aPlayer, new InventoryArmor(ModularArmor_Item.class, aPlayer.getEquipmentInSlot(tSlot))), aPlayer);
+                default:
+                    return getRightItem(aPlayer, ID);
+            }
+        }
         TileEntity tTileEntity = aWorld.getTileEntity(new BlockPos(aX, aY, aZ));
         if ((tTileEntity instanceof IGregTechTileEntity)) {
             IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
@@ -1562,21 +1569,21 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         return null;
     }
 
-	public Object getRightItemGui(EntityPlayer player, int ID){
-		ItemStack mStack = player.getItemStackFromSlot(EntityEquipmentSlot.values()[ID/100]);
-		if(mStack==null||!(mStack.getItem() instanceof ModularArmor_Item))return null;
+    public Object getRightItemGui(EntityPlayer player, int ID){
+        ItemStack mStack = player.getItemStackFromSlot(EntityEquipmentSlot.values()[ID/100]);
+        if(mStack==null||!(mStack.getItem() instanceof ModularArmor_Item))return null;
 
-		switch(ID % 100){
-		case 0:
-			return new GuiModularArmor(new ContainerBasicArmor(player, new InventoryArmor(ModularArmor_Item.class, mStack)),player);
-		case 1:
-			return new GuiElectricArmor1(new ContainerElectricArmor1(player, new InventoryArmor(ModularArmor_Item.class, mStack)), player);
-		case 2:
-			return new GuiElectricArmor1(new ContainerElectricArmor1(player, new InventoryArmor(ModularArmor_Item.class, mStack)), player);
-		}
-		return null;
+        switch(ID % 100){
+            case 0:
+                return new GuiModularArmor(new ContainerBasicArmor(player, new InventoryArmor(ModularArmor_Item.class, mStack)),player);
+            case 1:
+                return new GuiElectricArmor1(new ContainerElectricArmor1(player, new InventoryArmor(ModularArmor_Item.class, mStack)), player);
+            case 2:
+                return new GuiElectricArmor1(new ContainerElectricArmor1(player, new InventoryArmor(ModularArmor_Item.class, mStack)), player);
+        }
+        return null;
 
-	}
+    }
 
     public int getBurnTime(ItemStack aFuel) {
         if ((aFuel == null) || (aFuel.getItem() == null)) {
@@ -1592,163 +1599,115 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         NBTTagCompound tNBT = aFuel.getTagCompound();
         if (tNBT != null) {
             short tValue = tNBT.getShort("GT.ItemFuelValue");
-            rFuelValue = (short) Math.max(rFuelValue, tValue);
+            rFuelValue = Math.max(rFuelValue, tValue);
         }
         if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "gemSodium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 4000);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "crushedSodium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 4000);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustImpureSodium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 4000);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustSodium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 4000);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustSmallSodium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 1000);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustTinySodium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 444);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "gemLithium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 6000);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "crushedLithium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 6000);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustImpureLithium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 6000);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustLithium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 6000);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustSmallLithium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 2000);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustTinyLithium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 888);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "gemCaesium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 6000);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "crushedCaesium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 6000);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustImpureCaesium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 6000);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustCaesium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 6000);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustSmallCaesium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 2000);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustTinyCaesium")) {
-            rFuelValue = (short) Math.max(rFuelValue, 888);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "gemLignite")) {
-            rFuelValue = (short) Math.max(rFuelValue, 1200);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "crushedLignite")) {
-            rFuelValue = (short) Math.max(rFuelValue, 1200);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustImpureLignite")) {
-            rFuelValue = (short) Math.max(rFuelValue, 1200);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustLignite")) {
-            rFuelValue = (short) Math.max(rFuelValue, 1200);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustSmallLignite")) {
-            rFuelValue = (short) Math.max(rFuelValue, 375);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustTinyLignite")) {
-            rFuelValue = (short) Math.max(rFuelValue, 166);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "gemCoal")) {
-            rFuelValue = (short) Math.max(rFuelValue, 1600);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "crushedCoal")) {
-            rFuelValue = (short) Math.max(rFuelValue, 1600);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustImpureCoal")) {
-            rFuelValue = (short) Math.max(rFuelValue, 1600);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustCoal")) {
-            rFuelValue = (short) Math.max(rFuelValue, 1600);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustSmallCoal")) {
-            rFuelValue = (short) Math.max(rFuelValue, 400);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustTinyCoal")) {
-            rFuelValue = (short) Math.max(rFuelValue, 177);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "gemCharcoal")) {
-            rFuelValue = (short) Math.max(rFuelValue, 1600);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "crushedCharcoal")) {
-            rFuelValue = (short) Math.max(rFuelValue, 1600);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustImpureCharcoal")) {
-            rFuelValue = (short) Math.max(rFuelValue, 1600);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustCharcoal")) {
-            rFuelValue = (short) Math.max(rFuelValue, 1600);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustSmallCharcoal")) {
-            rFuelValue = (short) Math.max(rFuelValue, 400);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustTinyCharcoal")) {
-            rFuelValue = (short) Math.max(rFuelValue, 177);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustWood")) {
-            rFuelValue = (short) Math.max(rFuelValue, 100);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustSmallWood")) {
-            rFuelValue = (short) Math.max(rFuelValue, 25);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustTinyWood")) {
-            rFuelValue = (short) Math.max(rFuelValue, 11);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "plateWood")) {
-            rFuelValue = (short) Math.min(rFuelValue, 300);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "blockLignite")) {
-            rFuelValue = (short) Math.max(rFuelValue, 12000);
-        }
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "blockCharcoal")) {
-            rFuelValue = (short) Math.max(rFuelValue, 16000);
-        }
-        if (GT_Utility.areStacksEqual(aFuel, new ItemStack(Blocks.WOODEN_BUTTON, 1))) {
-            rFuelValue = (short) Math.max(rFuelValue, 150);
-        }
-        if (GT_Utility.areStacksEqual(aFuel, new ItemStack(Blocks.LADDER, 1))) {
-            rFuelValue = (short) Math.max(rFuelValue, 100);
-        }
-        if (GT_Utility.areStacksEqual(aFuel, new ItemStack(Items.SIGN, 1))) {
-            rFuelValue = (short) Math.max(rFuelValue, 600);
-        }
-        if (GT_Utility.areStacksEqual(aFuel, new ItemStack(Items.OAK_DOOR, 1))) {
-            rFuelValue = (short) Math.max(rFuelValue, 600);
-        }
-        if (GT_Utility.areStacksEqual(aFuel, ItemList.Block_MSSFUEL.get(1))) {
+            rFuelValue = Math.max(rFuelValue, 4000);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "crushedSodium")) {
+            rFuelValue = Math.max(rFuelValue, 4000);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustImpureSodium")) {
+            rFuelValue = Math.max(rFuelValue, 4000);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustSodium")) {
+            rFuelValue = Math.max(rFuelValue, 4000);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustSmallSodium")) {
+            rFuelValue = Math.max(rFuelValue, 1000);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustTinySodium")) {
+            rFuelValue = Math.max(rFuelValue, 444);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "gemLithium")) {
+            rFuelValue = Math.max(rFuelValue, 6000);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "crushedLithium")) {
+            rFuelValue = Math.max(rFuelValue, 6000);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustImpureLithium")) {
+            rFuelValue = Math.max(rFuelValue, 6000);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustLithium")) {
+            rFuelValue = Math.max(rFuelValue, 6000);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustSmallLithium")) {
+            rFuelValue = Math.max(rFuelValue, 2000);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustTinyLithium")) {
+            rFuelValue = Math.max(rFuelValue, 888);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "gemCaesium")) {
+            rFuelValue = Math.max(rFuelValue, 6000);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "crushedCaesium")) {
+            rFuelValue = Math.max(rFuelValue, 6000);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustImpureCaesium")) {
+            rFuelValue = Math.max(rFuelValue, 6000);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustCaesium")) {
+            rFuelValue = Math.max(rFuelValue, 6000);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustSmallCaesium")) {
+            rFuelValue = Math.max(rFuelValue, 2000);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustTinyCaesium")) {
+            rFuelValue = Math.max(rFuelValue, 888);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "gemLignite")) {
+            rFuelValue = Math.max(rFuelValue, 1200);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "crushedLignite")) {
+            rFuelValue = Math.max(rFuelValue, 1200);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustImpureLignite")) {
+            rFuelValue = Math.max(rFuelValue, 1200);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustLignite")) {
+            rFuelValue = Math.max(rFuelValue, 1200);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustSmallLignite")) {
+            rFuelValue = Math.max(rFuelValue, 375);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustTinyLignite")) {
+            rFuelValue = Math.max(rFuelValue, 166);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "gemCoal")) {
+            rFuelValue = Math.max(rFuelValue, 1600);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "crushedCoal")) {
+            rFuelValue = Math.max(rFuelValue, 1600);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustImpureCoal")) {
+            rFuelValue = Math.max(rFuelValue, 1600);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustCoal")) {
+            rFuelValue = Math.max(rFuelValue, 1600);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustSmallCoal")) {
+            rFuelValue = Math.max(rFuelValue, 400);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustTinyCoal")) {
+            rFuelValue = Math.max(rFuelValue, 177);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "gemCharcoal")) {
+            rFuelValue = Math.max(rFuelValue, 1600);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "crushedCharcoal")) {
+            rFuelValue = Math.max(rFuelValue, 1600);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustImpureCharcoal")) {
+            rFuelValue = Math.max(rFuelValue, 1600);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustCharcoal")) {
+            rFuelValue = Math.max(rFuelValue, 1600);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustSmallCharcoal")) {
+            rFuelValue = Math.max(rFuelValue, 400);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustTinyCharcoal")) {
+            rFuelValue = Math.max(rFuelValue, 177);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustWood")) {
+            rFuelValue = Math.max(rFuelValue, 100);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustSmallWood")) {
+            rFuelValue = Math.max(rFuelValue, 25);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "dustTinyWood")) {
+            rFuelValue = Math.max(rFuelValue, 11);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "plateWood")) {
+            rFuelValue = Math.min(rFuelValue, 300);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "blockLignite")) {
+            rFuelValue = Math.max(rFuelValue, 12000);
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "blockCharcoal")) {
+            rFuelValue = Math.max(rFuelValue, 16000);
+        } else if (GT_Utility.areStacksEqual(aFuel, new ItemStack(Blocks.WOODEN_BUTTON, 1))) {
+            rFuelValue = Math.max(rFuelValue, 150);
+        } else if (GT_Utility.areStacksEqual(aFuel, new ItemStack(Blocks.LADDER, 1))) {
+            rFuelValue = Math.max(rFuelValue, 100);
+        } else if (GT_Utility.areStacksEqual(aFuel, new ItemStack(Items.SIGN, 1))) {
+            rFuelValue = Math.max(rFuelValue, 600);
+        } else if (GT_Utility.areStacksEqual(aFuel, new ItemStack(Items.OAK_DOOR, 1))) {
+            rFuelValue = Math.max(rFuelValue, 600);
+        } else if (GT_Utility.areStacksEqual(aFuel, ItemList.Block_MSSFUEL.get(1))) {
             rFuelValue = Math.max(rFuelValue, 150000);
-        }
-        if (GT_Utility.areStacksEqual(aFuel, ItemList.Block_SSFUEL.get(1))) {
+        } else if (GT_Utility.areStacksEqual(aFuel, ItemList.Block_SSFUEL.get(1))) {
             rFuelValue = Math.max(rFuelValue, 100000);
         }
-
         return rFuelValue;
     }
 
     public Fluid addAutogeneratedMoltenFluid(Materials aMaterial) {
-        return addFluid("molten." + aMaterial.name().toLowerCase(), "molten.autogenerated", "Molten " + aMaterial.mDefaultLocalName, aMaterial,
+        return addFluid("molten." + aMaterial.mName.toLowerCase(Locale.ENGLISH), "molten.autogenerated", "Molten " + aMaterial.mDefaultLocalName, aMaterial,
                 aMaterial.mMoltenRGBa, 4, aMaterial.mMeltingPoint <= 0 ? 1000 : aMaterial.mMeltingPoint, null, null, 0);
     }
 
     public Fluid addAutogeneratedPlasmaFluid(Materials aMaterial) {
-        return addFluid("plasma." + aMaterial.name().toLowerCase(), "plasma.autogenerated", aMaterial.mDefaultLocalName + " Plasma", aMaterial,
+        return addFluid("plasma." + aMaterial.mName.toLowerCase(Locale.ENGLISH), "plasma.autogenerated", aMaterial.mDefaultLocalName + " Plasma", aMaterial,
                 aMaterial.mMoltenRGBa, 3, 10000, GT_OreDictUnificator.get(OrePrefixes.cellPlasma, aMaterial, 1), ItemList.Cell_Empty.get(1),
                 1000);
     }
@@ -1759,12 +1718,12 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     public Fluid addFluid(String aName, String aLocalized, Materials aMaterial, int aState, int aTemperatureK, ItemStack aFullContainer,
                           ItemStack aEmptyContainer, int aFluidAmount) {
-        return addFluid(aName, aName.toLowerCase(), aLocalized, aMaterial, null, aState, aTemperatureK, aFullContainer, aEmptyContainer, aFluidAmount);
+        return addFluid(aName, aName.toLowerCase(Locale.ENGLISH), aLocalized, aMaterial, null, aState, aTemperatureK, aFullContainer, aEmptyContainer, aFluidAmount);
     }
 
     public Fluid addFluid(String aName, String aTexture, String aLocalized, Materials aMaterial, short[] aRGBa, int aState, int aTemperatureK,
                           ItemStack aFullContainer, ItemStack aEmptyContainer, int aFluidAmount) {
-        aName = aName.toLowerCase();
+        aName = aName.toLowerCase(Locale.ENGLISH);
         Fluid rFluid = new GT_Fluid(aName, aTexture, aRGBa != null ? aRGBa : Dyes._NULL.getRGBA());
         GT_LanguageManager.addStringLocalization(rFluid.getUnlocalizedName(), aLocalized == null ? aName : aLocalized);
         if (FluidRegistry.registerFluid(rFluid)) {
@@ -1830,49 +1789,49 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         GregTech_API.sUnification.mConfig.load();
         GT_OreDictUnificator.resetUnificationEntries();
         for (OreDictEventContainer tOre : this.mEvents) {
-            if ((!(tOre.mEvent.getOre().getItem() instanceof GT_MetaGenerated_Item)) && (tOre.mPrefix != null) && (tOre.mPrefix.mIsUnificatable)
-                    && (tOre.mMaterial != null)) {
-                if (tOre.mModID != null && tOre.mModID.toLowerCase().equals("enderio") && tOre.mPrefix == OrePrefixes.ingot && tOre.mMaterial == Materials.DarkSteel) {
-                    GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
-                    GT_OreDictUnificator.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (tOre.mModID != null) && (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.getName(), true)), true);
-                } else if (tOre.mModID != null && tOre.mModID.toLowerCase().equals("thermalfoundation") && tOre.mPrefix == OrePrefixes.dust && tOre.mMaterial == Materials.Blizz) {
-                    GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
-                    GT_OreDictUnificator.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (tOre.mModID != null) && (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.getName(), true)), true);
-                } else if (tOre.mModID != null && tOre.mModID.toLowerCase().equals("thermalfoundation") && tOre.mPrefix == OrePrefixes.dust && tOre.mMaterial == Materials.Pyrotheum) {
-                    GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
-                    GT_OreDictUnificator.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (tOre.mModID != null) && (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.getName(), true)), true);
-                } else if (tOre.mModID != null && tOre.mModID.toLowerCase().equals("arsmagica2") && tOre.mPrefix == OrePrefixes.dust && tOre.mMaterial == Materials.Vinteum) {
-                    GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
-                    GT_OreDictUnificator.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (tOre.mModID != null) && (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.getName(), true)), true);
-                } else if (tOre.mModID != null && tOre.mModID.toLowerCase().equals("arsmagica2") && tOre.mPrefix == OrePrefixes.gem && tOre.mMaterial == Materials.BlueTopaz) {
-                    GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
-                    GT_OreDictUnificator.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (tOre.mModID != null) && (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.getName(), true)), true);
-                } else if (tOre.mModID != null && tOre.mModID.toLowerCase().equals("arsmagica2") && tOre.mPrefix == OrePrefixes.gem && tOre.mMaterial == Materials.Chimerite) {
-                    GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
-                    GT_OreDictUnificator.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (tOre.mModID != null) && (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.getName(), true)), true);
-                } else if (tOre.mModID != null && tOre.mModID.toLowerCase().equals("arsmagica2") && tOre.mPrefix == OrePrefixes.gem && tOre.mMaterial == Materials.Moonstone) {
-                    GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
-                    GT_OreDictUnificator.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (tOre.mModID != null) && (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.getName(), true)), true);
-                } else if (tOre.mModID != null && tOre.mModID.toLowerCase().equals("arsmagica2") && tOre.mPrefix == OrePrefixes.gem && tOre.mMaterial == Materials.Sunstone) {
-                    GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
-                    GT_OreDictUnificator.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (tOre.mModID != null) && (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.getName(), true)), true);
-                } else if (tOre.mModID != null && tOre.mModID.toLowerCase().equals("rotarycraft") && tOre.mPrefix == OrePrefixes.ingot && tOre.mMaterial == Materials.HSLA) {
-                    GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
-                    GT_OreDictUnificator.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (tOre.mModID != null) && (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.getName(), true)), true);
-                } else if (tOre.mModID != null && tOre.mModID.toLowerCase().equals("appliedenergistics2") && tOre.mPrefix == OrePrefixes.gem && tOre.mMaterial == Materials.CertusQuartz) {
-                    GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
-                    GT_OreDictUnificator.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (tOre.mModID != null) && (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.getName(), true)), true);
-                } else if (tOre.mModID != null && tOre.mModID.toLowerCase().equals("appliedenergistics2") && tOre.mPrefix == OrePrefixes.dust && tOre.mMaterial == Materials.CertusQuartz) {
-                    GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
-                    GT_OreDictUnificator.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (tOre.mModID != null) && (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.getName(), true)), true);
-                } else if (tOre.mModID != null && tOre.mModID.toLowerCase().equals(GT_Values.MOD_ID_TC) && tOre.mPrefix == OrePrefixes.block && tOre.mMaterial == Materials.Thaumium) {
-                    GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
-                    GT_OreDictUnificator.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (tOre.mModID != null) && (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.getName(), true)), true);
-                } else if (GT_OreDictUnificator.isBlacklisted(tOre.mEvent.getOre())) {
+            if ((!(tOre.mEvent.getOre().getItem() instanceof GT_MetaGenerated_Item)) && (tOre.mPrefix != null) && (tOre.mPrefix.mIsUnificatable) && (tOre.mMaterial != null)) {
+                boolean chkmi = tOre.mModID != null;
+                if (chkmi) {
+                    if (tOre.mModID.equalsIgnoreCase("enderio") && tOre.mPrefix == OrePrefixes.ingot && tOre.mMaterial == Materials.DarkSteel) {
+                        GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
+                        GT_OreDictUnificator.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTech_API.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
+                    } else if (tOre.mModID.equalsIgnoreCase("thermalfoundation") && tOre.mPrefix == OrePrefixes.dust && tOre.mMaterial == Materials.Blizz) {
+                        GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
+                        GT_OreDictUnificator.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTech_API.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
+                    } else if (tOre.mModID.equalsIgnoreCase("thermalfoundation") && tOre.mPrefix == OrePrefixes.dust && tOre.mMaterial == Materials.Pyrotheum) {
+                        GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
+                        GT_OreDictUnificator.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTech_API.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
+                    } else if (tOre.mModID.equalsIgnoreCase(aTextArsmagica2) && tOre.mPrefix == OrePrefixes.dust && tOre.mMaterial == Materials.Vinteum) {
+                        GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
+                        GT_OreDictUnificator.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTech_API.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
+                    } else if (tOre.mModID.equalsIgnoreCase(aTextArsmagica2) && tOre.mPrefix == OrePrefixes.gem && tOre.mMaterial == Materials.BlueTopaz) {
+                        GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
+                        GT_OreDictUnificator.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTech_API.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
+                    } else if (tOre.mModID.equalsIgnoreCase(aTextArsmagica2) && tOre.mPrefix == OrePrefixes.gem && tOre.mMaterial == Materials.Chimerite) {
+                        GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
+                        GT_OreDictUnificator.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTech_API.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
+                    } else if (tOre.mModID.equalsIgnoreCase(aTextArsmagica2) && tOre.mPrefix == OrePrefixes.gem && tOre.mMaterial == Materials.Moonstone) {
+                        GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
+                        GT_OreDictUnificator.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTech_API.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
+                    } else if (tOre.mModID.equalsIgnoreCase(aTextArsmagica2) && tOre.mPrefix == OrePrefixes.gem && tOre.mMaterial == Materials.Sunstone) {
+                        GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
+                        GT_OreDictUnificator.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTech_API.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
+                    } else if (tOre.mModID.equalsIgnoreCase("rotarycraft") && tOre.mPrefix == OrePrefixes.ingot && tOre.mMaterial == Materials.HSLA) {
+                        GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
+                        GT_OreDictUnificator.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTech_API.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
+                    } else if (tOre.mModID.equalsIgnoreCase("appliedenergistics2") && tOre.mPrefix == OrePrefixes.gem && tOre.mMaterial == Materials.CertusQuartz) {
+                        GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
+                        GT_OreDictUnificator.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTech_API.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
+                    } else if (tOre.mModID.equalsIgnoreCase("appliedenergistics2") && tOre.mPrefix == OrePrefixes.dust && tOre.mMaterial == Materials.CertusQuartz) {
+                        GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
+                        GT_OreDictUnificator.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTech_API.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
+                    }
+                }
+                if (GT_OreDictUnificator.isBlacklisted(tOre.mEvent.getOre())) {
                     GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), true);
                 } else {
                     GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
-                    GT_OreDictUnificator.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (tOre.mModID != null) && (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.getName(), false)), true);
+                    GT_OreDictUnificator.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (chkmi) && (GregTech_API.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), false)), true);
                 }
             }
         }
@@ -1884,7 +1843,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 } else {
                     GT_OreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
                     GT_OreDictUnificator.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (tOre.mModID != null) &&
-                            (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + tOre.mModID, tOre.mEvent.getName(), false)), true);
+                            (GregTech_API.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID), tOre.mEvent.getName(), false)), true);
                 }
             }
         }
@@ -1895,62 +1854,65 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     public void activateOreDictHandler() {
         this.mOreDictActivated = true;
+        ProgressManager.ProgressBar progressBar = ProgressManager.push("Register materials", mEvents.size());
         OreDictEventContainer tEvent;
         for (Iterator i$ = this.mEvents.iterator(); i$.hasNext(); registerRecipes(tEvent)) {
             tEvent = (OreDictEventContainer) i$.next();
+            progressBar.step(tEvent.mMaterial == null ? "" : tEvent.mMaterial.toString());
         }
+        ProgressManager.pop(progressBar);
     }
 
     public static final HashMap<BlockPos, int[]>  chunkData = new HashMap<>(5000);
 
     @SubscribeEvent
     public void handleChunkSaveEvent(ChunkDataEvent.Save event)
-    {    	
-    	BlockPos tPos = new BlockPos(event.getChunk().xPosition,1,event.getChunk().zPosition);
-    	if(chunkData.containsKey(tPos)){
-    		int[] tInts = chunkData.get(tPos);
-    		if(tInts.length>0){event.getData().setInteger("GTOIL", tInts[0]);}
-			if(tInts.length>1){event.getData().setInteger("GTPOLLUTION", tInts[1]);}}
+    {
+        BlockPos tPos = new BlockPos(event.getChunk().xPosition,1,event.getChunk().zPosition);
+        if(chunkData.containsKey(tPos)){
+            int[] tInts = chunkData.get(tPos);
+            if(tInts.length>0){event.getData().setInteger("GTOIL", tInts[0]);}
+            if(tInts.length>1){event.getData().setInteger("GTPOLLUTION", tInts[1]);}}
     }
 
     @SubscribeEvent
     public void handleChunkLoadEvent(ChunkDataEvent.Load event)
     {
-    	int tOil = 0;
-    	int tPollution = 0;
-    	
-    	BlockPos tPos = new BlockPos(event.getChunk().xPosition,1,event.getChunk().zPosition);
-    	int[] tData = new int[2];
-    	if(chunkData.containsKey(tPos)){
-    		tData = chunkData.get(tPos);
-    		chunkData.remove(tPos);
-    	}
-    	    
-    	if(event.getData().hasKey("GTOIL")){
-    		if(tData.length>2){
-    			tOil = tData[0];
-    	}else{
-        	tOil += event.getData().getInteger("GTOIL");
-    		}
-    	}else{
-    		if(tData[0]!=0){
-    			tOil = tData[0];
-    		}
-    	}
-    	    
-    	if(event.getData().hasKey("GTPOLLUTION")){
-    		if(tData.length>2){
-    			tPollution = tData[1];
-    		}else{
-    		tPollution += event.getData().getInteger("GTPOLLUTION");    			
-    		}
-    	}else{
-    		if(tData[1]!=0){
-    			tPollution = tData[1];
-    		}
-    	}
-    	
-    	chunkData.put(tPos, new int[]{ tOil,tPollution,-1});
+        int tOil = 0;
+        int tPollution = 0;
+
+        BlockPos tPos = new BlockPos(event.getChunk().xPosition,1,event.getChunk().zPosition);
+        int[] tData = new int[2];
+        if(chunkData.containsKey(tPos)){
+            tData = chunkData.get(tPos);
+            chunkData.remove(tPos);
+        }
+
+        if(event.getData().hasKey("GTOIL")){
+            if(tData.length>2){
+                tOil = tData[0];
+            }else{
+                tOil += event.getData().getInteger("GTOIL");
+            }
+        }else{
+            if(tData[0]!=0){
+                tOil = tData[0];
+            }
+        }
+
+        if(event.getData().hasKey("GTPOLLUTION")){
+            if(tData.length>2){
+                tPollution = tData[1];
+            }else{
+                tPollution += event.getData().getInteger("GTPOLLUTION");
+            }
+        }else{
+            if(tData[1]!=0){
+                tPollution = tData[1];
+            }
+        }
+
+        chunkData.put(tPos, new int[]{ tOil,tPollution,-1});
     }
 
     public static class OreDictEventContainer {

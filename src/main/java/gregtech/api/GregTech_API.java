@@ -2,11 +2,6 @@ package gregtech.api;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import gregtech.common.blocks.GT_Block_Machines;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDamagableItem;
@@ -14,9 +9,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.items.GT_CoolantCellIC_Item;
-import gregtech.api.items.GT_CoolantCell_Item;
-import gregtech.api.items.GT_Tool_Item;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.objects.GT_Cover_Default;
 import gregtech.api.objects.GT_Cover_None;
@@ -25,12 +17,16 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.*;
 import gregtech.api.world.GT_Worldgen;
+import gregtech.common.blocks.GT_Block_Machines;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.*;
 
@@ -86,8 +82,9 @@ public class GregTech_API {
      * 9728 - 10239 are reserved for 28Smiles.
      * 10240 - 10751 are reserved for VirMan.
      * 10752 - 11263 are reserved for Briareos81.
-     * 11264 - 12000 are reserved for the next one who asks me.
-     * 9728 - 32766 are currently free.
+     * 11264 - 12000 are reserved for Quantum64.
+     * 12001 - 12200 are reserved for the next one who asks me.
+     * 12001 - 32766 are currently free.
      * <p/>
      * Contact me if you need a free ID-Range, which doesn't conflict with other Addons.
      * You could make an ID-Config, but we all know, what "stupid" customers think about conflicting ID's
@@ -175,7 +172,7 @@ public class GregTech_API {
     /**
      * The Configuration Objects
      */
-    public static GT_Config sRecipeFile = null, sMachineFile = null, sWorldgenFile = null, sMaterialProperties = null, sUnification = null, sSpecialFile = null, sClientDataFile, sOPStuff = null;
+    public static GT_Config sRecipeFile = null, sMachineFile = null, sWorldgenFile = null, sModularArmor = null, sMaterialProperties = null, sMaterialComponents = null, sUnification = null, sSpecialFile = null, sClientDataFile, sOPStuff = null;
     public static int TICKS_FOR_LAG_AVERAGING = 25, MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = 100;
     /**
      * Initialized by the Block creation.
@@ -200,7 +197,7 @@ public class GregTech_API {
     /**
      * Getting assigned by the Config
      */
-    public static boolean sTimber = false, sDrinksAlwaysDrinkable = false, sMultiThreadedSounds = false, sDoShowAllItemsInCreative = false, sColoredGUI = true, sConstantEnergy = true, sMachineExplosions = true, sMachineFlammable = true, sMachineNonWrenchExplosions = true, sMachineRainExplosions = true, sMachineThunderExplosions = true, sMachineFireExplosions = true, sMachineWireFire = true;
+    public static boolean sTimber = true, sDrinksAlwaysDrinkable = false, sMultiThreadedSounds = false, sDoShowAllItemsInCreative = false, sColoredGUI = true, sConstantEnergy = true, sMachineExplosions = true, sMachineFlammable = true, sMachineNonWrenchExplosions = true, sMachineRainExplosions = true, sMachineThunderExplosions = true, sMachineFireExplosions = true, sMachineWireFire = true;
     public static boolean mOutputRF = false;
     public static boolean mInputRF = false;
     public static boolean meIOLoaded = false;
@@ -208,6 +205,11 @@ public class GregTech_API {
     public static int mRFtoEU = 20;
     public static boolean mRFExplosions = true;
     public static boolean mServerStarted = false;
+    public static boolean mIC2Classic = false;
+    public static boolean mMagneticraft = false;
+    public static boolean mImmersiveEngineering = false;
+    public static boolean mGTPlusPlus = false;
+    private static final String aTextIC2Lower = MOD_ID_IC2.toLowerCase(Locale.ENGLISH);
     /**
      * Getting assigned by the Mod loading
      */
@@ -232,29 +234,29 @@ public class GregTech_API {
         sSoundList.put(5, "random.explode");
         sSoundList.put(6, "fire.ignite");
 
-        sSoundList.put(100, MOD_ID_IC2.toLowerCase() + ":" + "tools.Wrench");
-        sSoundList.put(101, MOD_ID_IC2.toLowerCase() + ":" + "tools.RubberTrampoline");
-        sSoundList.put(102, MOD_ID_IC2.toLowerCase() + ":" + "tools.Painter");
-        sSoundList.put(103, MOD_ID_IC2.toLowerCase() + ":" + "tools.BatteryUse");
-        sSoundList.put(104, MOD_ID_IC2.toLowerCase() + ":" + "tools.chainsaw.ChainsawUseOne");
-        sSoundList.put(105, MOD_ID_IC2.toLowerCase() + ":" + "tools.chainsaw.ChainsawUseTwo");
-        sSoundList.put(106, MOD_ID_IC2.toLowerCase() + ":" + "tools.drill.DrillSoft");
-        sSoundList.put(107, MOD_ID_IC2.toLowerCase() + ":" + "tools.drill.DrillHard");
-        sSoundList.put(108, MOD_ID_IC2.toLowerCase() + ":" + "tools.ODScanner");
+        sSoundList.put(100, aTextIC2Lower + ":" + "tools.Wrench");
+        sSoundList.put(101, aTextIC2Lower + ":" + "tools.RubberTrampoline");
+        sSoundList.put(102, aTextIC2Lower + ":" + "tools.Painter");
+        sSoundList.put(103, aTextIC2Lower + ":" + "tools.BatteryUse");
+        sSoundList.put(104, aTextIC2Lower + ":" + "tools.chainsaw.ChainsawUseOne");
+        sSoundList.put(105, aTextIC2Lower + ":" + "tools.chainsaw.ChainsawUseTwo");
+        sSoundList.put(106, aTextIC2Lower + ":" + "tools.drill.DrillSoft");
+        sSoundList.put(107, aTextIC2Lower + ":" + "tools.drill.DrillHard");
+        sSoundList.put(108, aTextIC2Lower + ":" + "tools.ODScanner");
 
-        sSoundList.put(200, MOD_ID_IC2.toLowerCase() + ":" + "machines.ExtractorOp");
-        sSoundList.put(201, MOD_ID_IC2.toLowerCase() + ":" + "machines.MaceratorOp");
-        sSoundList.put(202, MOD_ID_IC2.toLowerCase() + ":" + "machines.InductionLoop");
-        sSoundList.put(203, MOD_ID_IC2.toLowerCase() + ":" + "machines.CompressorOp");
-        sSoundList.put(204, MOD_ID_IC2.toLowerCase() + ":" + "machines.RecyclerOp");
-        sSoundList.put(205, MOD_ID_IC2.toLowerCase() + ":" + "machines.MinerOp");
-        sSoundList.put(206, MOD_ID_IC2.toLowerCase() + ":" + "machines.PumpOp");
-        sSoundList.put(207, MOD_ID_IC2.toLowerCase() + ":" + "machines.ElectroFurnaceLoop");
-        sSoundList.put(208, MOD_ID_IC2.toLowerCase() + ":" + "machines.InductionLoop");
-        sSoundList.put(209, MOD_ID_IC2.toLowerCase() + ":" + "machines.MachineOverload");
-        sSoundList.put(210, MOD_ID_IC2.toLowerCase() + ":" + "machines.InterruptOne");
-        sSoundList.put(211, MOD_ID_IC2.toLowerCase() + ":" + "machines.KaChing");
-        sSoundList.put(212, MOD_ID_IC2.toLowerCase() + ":" + "machines.MagnetizerLoop");
+        sSoundList.put(200, aTextIC2Lower + ":" + "machines.ExtractorOp");
+        sSoundList.put(201, aTextIC2Lower + ":" + "machines.MaceratorOp");
+        sSoundList.put(202, aTextIC2Lower + ":" + "machines.InductionLoop");
+        sSoundList.put(203, aTextIC2Lower + ":" + "machines.CompressorOp");
+        sSoundList.put(204, aTextIC2Lower + ":" + "machines.RecyclerOp");
+        sSoundList.put(205, aTextIC2Lower + ":" + "machines.MinerOp");
+        sSoundList.put(206, aTextIC2Lower + ":" + "machines.PumpOp");
+        sSoundList.put(207, aTextIC2Lower + ":" + "machines.ElectroFurnaceLoop");
+        sSoundList.put(208, aTextIC2Lower + ":" + "machines.InductionLoop");
+        sSoundList.put(209, aTextIC2Lower + ":" + "machines.MachineOverload");
+        sSoundList.put(210, aTextIC2Lower + ":" + "machines.InterruptOne");
+        sSoundList.put(211, aTextIC2Lower + ":" + "machines.KaChing");
+        sSoundList.put(212, aTextIC2Lower + ":" + "machines.MagnetizerLoop");
     }
 
     /**
@@ -319,7 +321,7 @@ public class GregTech_API {
         if (GregTech_API.sThaumcraftCompat != null)
             GregTech_API.sThaumcraftCompat.registerPortholeBlacklistedBlock(aBlock);
         int rMeta = 0;
-        for (byte i = 0; i < aMeta.length && i < 16; i++) if (aMeta[i]) rMeta |= B[i];
+        for (byte i = 0; i < 16 && i < aMeta.length; i++) if (aMeta[i]) rMeta |= B[i];
         sMachineIDs.put(aBlock, rMeta);
         return true;
     }

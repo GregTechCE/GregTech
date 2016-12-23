@@ -36,7 +36,7 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
                         tLiquid = tLiquid.copy();
                         tLiquid.amount = tTank2.fill(aSideDirection.getOpposite(), tLiquid, false);
                         if (tLiquid.amount > 0) {
-                            if (((aCoverVariable % 2 != 1) || (aSide != 1)) && ((aCoverVariable % 2 != 0) || (aSide != 0)) && (aTileEntity.getUniversalEnergyCapacity() >= Math.min(1, tLiquid.amount / 10))) {
+                            if (((aCoverVariable % 2 == 0) || (aSide != 1)) && ((aCoverVariable % 2 != 0) || (aSide != 0)) && (aTileEntity.getUniversalEnergyCapacity() >= Math.min(1, tLiquid.amount / 10))) {
                                 if (aTileEntity.isUniversalEnergyStored(Math.min(1, tLiquid.amount / 10))) {
                                     aTileEntity.decreaseStoredEnergyUnits(Math.min(1, tLiquid.amount / 10), true);
                                     tTank2.fill(aSideDirection.getOpposite(), tTank1.drain(aSideDirection, tLiquid.amount, true), true);
@@ -52,7 +52,7 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
                         tLiquid = tLiquid.copy();
                         tLiquid.amount = tTank1.fill(aSideDirection, tLiquid, false);
                         if (tLiquid.amount > 0) {
-                            if (((aCoverVariable % 2 != 1) || (aSide != 1)) && ((aCoverVariable % 2 != 0) || (aSide != 0)) && (aTileEntity.getUniversalEnergyCapacity() >= Math.min(1, tLiquid.amount / 10))) {
+                            if (((aCoverVariable % 2 == 0) || (aSide != 1)) && ((aCoverVariable % 2 != 0) || (aSide != 0)) && (aTileEntity.getUniversalEnergyCapacity() >= Math.min(1, tLiquid.amount / 10))) {
                                 if (aTileEntity.isUniversalEnergyStored(Math.min(1, tLiquid.amount / 10))) {
                                     aTileEntity.decreaseStoredEnergyUnits(Math.min(1, tLiquid.amount / 10), true);
                                     tTank1.fill(aSideDirection, tTank2.drain(aSideDirection.getOpposite(), tLiquid.amount, true), true);

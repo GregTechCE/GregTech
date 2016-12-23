@@ -88,6 +88,16 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mGUIName = aGUIName;
         mNEIName = aNEIName;
     }
+    
+    public boolean setMainFacing(byte aDirection){
+    	mMainFacing = aDirection;
+    	if(getBaseMetaTileEntity().getFrontFacing() == mMainFacing){
+    		getBaseMetaTileEntity().setFrontFacing(GT_Utility.getOppositeSide(aDirection));
+    	}
+        onFacingChange();
+        onMachineBlockUpdate();
+    	return true;
+    }
 
     @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {

@@ -22,6 +22,7 @@ import java.util.ArrayList;
 public abstract class GT_MetaTileEntity_LargeBoiler
         extends GT_MetaTileEntity_MultiBlockBase {
     private boolean firstRun = true;
+    private int mSuperEfficencyIncrease = 0;
 
     public GT_MetaTileEntity_LargeBoiler(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -34,7 +35,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
     public String[] getDescription() {
         return new String[]{
                 "Controller Block for the Large Boiler",
-                "Produces "+(getEUt()*40)*(runtimeBoost(20)/20f)+"L of Steam/sec for 1 Coal",
+                "Produces "+(getEUt()*40)*(runtimeBoost(20)/20f)+"L of Steam with 1 Coal in "+runtimeBoost(20)+" ticks",
                 "Size(WxHxD): 3x5x3, Controller (Front middle in Fireboxes)",
                 "3x1x3 of Fire Boxes (Bottom layer, Min 3)",
                 "3x4x3 of Casings (Above Fireboxes, hollow, Min 24!)",
@@ -87,6 +88,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
     }
 
     public boolean checkRecipe(ItemStack aStack) {
+        this.mSuperEfficencyIncrease=0;
         for (GT_Recipe tRecipe : GT_Recipe.GT_Recipe_Map.sDieselFuels.mRecipeList) {
             FluidStack tFluid = GT_Utility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
             if ((tFluid != null) && (tRecipe.mSpecialValue > 1)) {
@@ -120,6 +122,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
                     this.mOutputItems = new ItemStack[]{GT_Utility.getContainerItem(tInput, true)};
                     tInput.stackSize -= 1;
                     updateSlots();
+                    if(this.mEfficiencyIncrease>5000){ this.mEfficiencyIncrease=0;this.mSuperEfficencyIncrease=20;}
                     return true;
                 }
             }
@@ -133,6 +136,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
 
     public boolean onRunningTick(ItemStack aStack) {
         if (this.mEUt > 0) {
+        	if(this.mSuperEfficencyIncrease>0)this.mEfficiency = Math.min(10000, this.mEfficiency + this.mSuperEfficencyIncrease);
             int tGeneratedEU = (int) (this.mEUt * 2L * this.mEfficiency / 10000L);
             if (tGeneratedEU > 0) {
                 long amount = (tGeneratedEU + 160) / 160;
@@ -151,10 +155,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (mProgresstime > 0 && firstRun) {
             firstRun = false;
-            try {
-                GT_Mod.instance.achievements.issueAchievement(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "extremepressure");
-            } catch (Exception e) {
-            }
+            GT_Mod.instance.achievements.issueAchievement(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "extremepressure");
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }
@@ -225,7 +226,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
     }
 
     public int getPollutionPerTick(ItemStack aStack) {
-        return 10;
+        return 12;
     }
 
     public int getDamageToComponent(ItemStack aStack) {
