@@ -80,3 +80,5 @@ gradlew.bat
 # Linux
 *~
 
+build/
+run/
