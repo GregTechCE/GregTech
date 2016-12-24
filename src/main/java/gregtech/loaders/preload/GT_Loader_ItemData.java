@@ -139,10 +139,19 @@ public class GT_Loader_ItemData
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.STONE_SLAB, 1, 13), new ItemData(Materials.Stone, 1814400L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.DOUBLE_STONE_SLAB, 1, 5), new ItemData(Materials.Stone, 3628800L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.DOUBLE_STONE_SLAB, 1, 13), new ItemData(Materials.Stone, 3628800L));
-        GT_OreDictUnificator.addItemData(new ItemStack(Blocks.STONE, 1, 32767), new ItemData(Materials.Stone, 3628800L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.FURNACE, 1, 32767), new ItemData(Materials.Stone, 29030400L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.LIT_FURNACE, 1, 32767), new ItemData(Materials.Stone, 29030400L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.STONEBRICK, 1, 32767), new ItemData(Materials.Stone, 3628800L));
+
+        GT_OreDictUnificator.addItemData(new ItemStack(Blocks.STONE, 1, 0), new ItemData(Materials.Stone, 3628800L));
+        //added automatically in Loader_OreDictionary
+        //GT_OreDictUnificator.addItemData(new ItemStack(Blocks.STONE, 1, 1), new ItemData(Materials.GraniteBlack, 3628800L));
+        //GT_OreDictUnificator.addItemData(new ItemStack(Blocks.STONE, 1, 2), new ItemData(Materials.GraniteBlack, 3628800L));
+        //GT_OreDictUnificator.addItemData(new ItemStack(Blocks.STONE, 1, 5), new ItemData(Materials.Diorite, 3628800L));
+        //GT_OreDictUnificator.addItemData(new ItemStack(Blocks.STONE, 1, 6), new ItemData(Materials.Diorite, 3628800L));
+        //GT_OreDictUnificator.addItemData(new ItemStack(Blocks.STONE, 1, 3), new ItemData(Materials.Andesite, 3628800L));
+        //GT_OreDictUnificator.addItemData(new ItemStack(Blocks.STONE, 1, 4), new ItemData(Materials.Andesite, 3628800L));
+
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.COBBLESTONE, 1, 32767), new ItemData(Materials.Stone, 3628800L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.MOSSY_COBBLESTONE, 1, 32767), new ItemData(Materials.Stone, 3628800L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.STONE_BUTTON, 1, 32767), new ItemData(Materials.Stone, 3628800L));

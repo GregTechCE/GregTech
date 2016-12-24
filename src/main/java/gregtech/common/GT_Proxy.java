@@ -16,15 +16,12 @@ import gregtech.api.util.*;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.armor.*;
-import ic2.core.block.type.ResourceBlock;
 import ic2.core.block.wiring.CableType;
-import ic2.core.item.ItemFluidCell;
+import ic2.core.item.ItemIC2FluidContainer;
 import ic2.core.item.type.*;
-import ic2.core.ref.BlockName;
-import ic2.core.ref.FluidName;
 import ic2.core.ref.ItemName;
 import ic2.core.util.Ic2Color;
-import net.minecraft.enchantment.Enchantment;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -35,6 +32,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.*;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
@@ -49,7 +47,6 @@ import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
@@ -62,16 +59,14 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.IFuelHandler;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.GameData;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
@@ -139,6 +134,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public ArrayList<String> mBufferedPlayerActivity = new ArrayList();
     public boolean mHardcoreCables = false;
     public boolean mDisableVanillaOres = true;
+    public boolean mDisableModdedOres = true;
     public boolean mNerfDustCrafting = true;
     public boolean mSortToTheEnd = true;
     public boolean mCraftingUnification = true;
@@ -872,9 +868,21 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     @SubscribeEvent
     public void onOreGenEvent(OreGenEvent.GenerateMinable aGenerator) {
-        if ((this.mDisableVanillaOres) && ((aGenerator.getGenerator() instanceof WorldGenMinable))
-                && (PREVENTED_ORES.contains(aGenerator.getType()))) {
-            aGenerator.setResult(Result.DENY);
+        if (aGenerator.getGenerator() instanceof WorldGenMinable) {
+            if (PREVENTED_ORES.contains(aGenerator.getType())) {
+                if (mDisableVanillaOres) {
+                    aGenerator.setResult(Result.DENY);
+                }
+                return;
+            }
+            if (mDisableModdedOres) {
+                WorldGenMinable worldGenMinable = (WorldGenMinable) aGenerator.getGenerator();
+                IBlockState oreBlock = ObfuscationReflectionHelper.getPrivateValue(WorldGenMinable.class, worldGenMinable, 0);
+                ItemData itemData = GT_OreDictUnificator.getAssociation(oreBlock);
+                if(itemData != null && itemData.mPrefix.toString().startsWith("ore") && (itemData.mMaterial.mMaterial.mTypes & 0x08) != 0) {
+                    aGenerator.setResult(Result.DENY);
+                }
+            }
         }
     }
 
@@ -955,11 +963,16 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                     return;
                 }
             }
+            if(aEvent.getOre().getItem() instanceof ItemIC2FluidContainer) {
+                System.out.println("Ignoring IC2 fluid container " + aEvent.getOre() + " registration as " + aEvent.getName() + " because ic2 fluid containers are mad.");
+                GT_OreDictUnificator.addToBlacklist(aEvent.getOre());
+                return;
+            }
             String tModToName = aMod + " -> " + aEvent.getName();
             if ((this.mOreDictActivated) || (GregTech_API.sPostloadStarted) || ((this.mSortToTheEnd) && (GregTech_API.sLoadFinished))) {
                 tModToName = aOriginalMod + " --Late--> " + aEvent.getName();
             }
-            if (((aEvent.getOre().getItem() instanceof ItemBlock)) || (GT_Utility.getBlockFromStack(aEvent.getOre()) != Blocks.AIR)) {
+            if (((aEvent.getOre().getItem() instanceof ItemBlock)) || (GT_Utility.getBlockFromStack(aEvent.getOre()) != null)) {
                 GT_OreDictUnificator.addToBlacklist(aEvent.getOre());
             }
             this.mRegisteredOres.add(aEvent.getOre());
@@ -1274,15 +1287,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                                     return;
                                 }
                             } else {
-                                for (Dyes tDye : Dyes.VALUES) {
-                                    if (aEvent.getName().endsWith(tDye.name().replaceFirst("dye", ""))) {
-                                        GT_OreDictUnificator.addToBlacklist(aEvent.getOre());
-                                        GT_Log.ore.println(tModToName + " Oh man, why the fuck would anyone need a OreDictified Color for this, that is even too much for GregTech... do not report this, this is just a random Comment about how ridiculous this is.");
-                                        return;
-                                    }
-                                }
-								System.out.println("Material Name: "+aEvent.getName()+ " !!!Unknown Material detected!!! Please report to GregTech Intergalactical for additional compatiblity. This is not an Error, an Issue nor a Lag Source, it is just an Information, which you should pass to me.");
-								GT_Log.ore.println(tModToName + " uses an unknown Material. Report this to GregTech.");
+                                //for (Dyes tDye : Dyes.VALUES) {
+                                //    if (aEvent.getName().endsWith(tDye.name().replaceFirst("dye", ""))) {
+                                //        GT_OreDictUnificator.addToBlacklist(aEvent.getOre());
+                                //        GT_Log.ore.println(tModToName + " Oh man, why the fuck would anyone need a OreDictified Color for this, that is even too much for GregTech... do not report this, this is just a random Comment about how ridiculous this is.");
+                                //        return;
+                                //    }
+                                //}
+								//System.out.println("Material Name: "+aEvent.getName()+ " !!!Unknown Material detected!!! Please report to GregTech Intergalactical for additional compatiblity. This is not an Error, an Issue nor a Lag Source, it is just an Information, which you should pass to me.");
+								//GT_Log.ore.println(tModToName + " uses an unknown Material. Report this to GregTech.");
                                 return;
                             }
                         } else {

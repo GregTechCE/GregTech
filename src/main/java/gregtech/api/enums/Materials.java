@@ -711,7 +711,7 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 	@Deprecated Wolframite			(Tungstate, false),
 	@Deprecated Wolframium			(Tungsten, false),
 	@Deprecated Wolfram				(Tungsten, false),
-	;
+    ;
 
 	/** List of all Materials. */
 	public static final Collection<Materials> VALUES = new HashSet<Materials>(Arrays.asList(values()));
@@ -1036,6 +1036,8 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 		Silicon					.addOreByProducts(SiliconDioxide		);
 		Salt					.addOreByProducts(RockSalt				);
 		RockSalt				.addOreByProducts(Salt					);
+        Andesite                .addOreByProducts(Basalt                );
+        Diorite                 .addOreByProducts(NetherQuartz          );
 
 		Glue.mChemicalFormula = "No Horses were harmed for the Production";
 		UUAmplifier.mChemicalFormula = "Accelerates the Mass Fabricator";
@@ -1144,6 +1146,8 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
 		GraniteBlack			.add(SubTag.STONE, SubTag.NO_SMASHING);
 		Salt					.add(SubTag.STONE, SubTag.NO_SMASHING);
 		RockSalt				.add(SubTag.STONE, SubTag.NO_SMASHING);
+        Andesite                .add(SubTag.STONE, SubTag.NO_SMASHING);
+        Diorite                 .add(SubTag.STONE, SubTag.NO_SMASHING);
 
 		Sand					.add(SubTag.NO_RECYCLING);
 
@@ -1284,10 +1288,6 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
         mToolSpeed = aToolSpeed;
 
         mIconSet = aIconSet;
-        //mOreTextureSet = new GT_RenderedTexture[2];
-        //mOreTextureSet[0] = new GT_RenderedTexture(mIconSet.mTextures[68], mRGBa); //normal ore
-        //mOreTextureSet[1] = new GT_RenderedTexture(mIconSet.mTextures[67], mRGBa); //small ore
-
         if (aMetaItemSubID >= 0) {
             if (GregTech_API.sGeneratedMaterials[aMetaItemSubID] == null) {
                 GregTech_API.sGeneratedMaterials[aMetaItemSubID] = this;
@@ -1305,10 +1305,6 @@ public enum Materials implements IColorModulationContainer, ISubTagContainer {
         mChemicalFormula = aMaterialInto.mChemicalFormula;
         mMetaItemSubID = -1;
         mIconSet = TextureSet.SET_NONE;
-
-        //mOreTextureSet = new GT_RenderedTexture[2];
-        //mOreTextureSet[0] = new GT_RenderedTexture(mIconSet.mTextures[68], mRGBa); //normal ore
-        //mOreTextureSet[1] = new GT_RenderedTexture(mIconSet.mTextures[67], mRGBa); //small ore
     }
 
     /**

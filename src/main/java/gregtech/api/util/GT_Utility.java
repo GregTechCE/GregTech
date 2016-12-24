@@ -980,7 +980,7 @@ public class GT_Utility {
     }
 
     public static Block getBlockFromStack(Object aStack) {
-        if (isStackInvalid(aStack)) return Blocks.AIR;
+        if (isStackInvalid(aStack)) return null;
         return Block.getBlockFromItem(((ItemStack) aStack).getItem());
     }
 

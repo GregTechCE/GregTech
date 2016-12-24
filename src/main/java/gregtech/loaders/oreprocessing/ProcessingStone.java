@@ -57,7 +57,6 @@ public class ProcessingStone
             	GT_ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1, aStack), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Biotite, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Uranium, 1), 5, false);
             break;
             case Dacite:
-            case Andesite:
             	GT_ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1, aStack), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 1), 20, false);
             break;
             case Gabbro:
@@ -93,6 +92,11 @@ public class ProcessingStone
             case GraniteRed:
                 GT_Values.RA.addCutterRecipe(GT_Utility.copyAmount(1, aStack), GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1), null, 200, 32);
                 GT_ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1, aStack), GT_OreDictUnificator.get(OrePrefixes.dustImpure, aMaterial, 1), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Uranium, 1), 1, false);
+            case Andesite:
+            case Diorite:
+                GT_Values.RA.addCutterRecipe(GT_Utility.copyAmount(1, aStack), GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1), null, 200, 32);
+                GT_ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1, aStack), GT_OreDictUnificator.get(OrePrefixes.dustImpure, aMaterial, 1), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Stone, 1), 1, false);
+                break;
         }
     }
 }

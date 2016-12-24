@@ -3,6 +3,7 @@ package gregtech.loaders.load;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.items.GT_Generic_Item;
+import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -98,7 +99,7 @@ public class GT_ItemIterator
                             GT_Values.RA.addCannerRecipe(new ItemStack(tItem, 1, 32767), ItemList.IC2_Food_Can_Empty.get(tFoodValue, new Object[0]), ItemList.IC2_Food_Can_Filled.get(tFoodValue, new Object[0]), GT_Utility.getContainerItem(new ItemStack(tItem, 1, 0), true), tFoodValue * 100, 1);
                         }
                     }
-                    if ((tItem instanceof IFluidContainerItem)) {
+                    if (tItem instanceof IFluidContainerItem) {
                         GT_OreDictUnificator.addToBlacklist(new ItemStack(tItem, 1, 32767));
                     }
                     if ((tName.equals("item.ItemSensorLocationCard")) || (tName.equals("item.ItemEnergySensorLocationCard")) || (tName.equals("item.ItemEnergyArrayLocationCard")) || (tName.equals("item.ItemTextCard"))) {

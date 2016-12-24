@@ -19,6 +19,7 @@ import ic2.core.ref.FluidName;
 import ic2.core.ref.ItemName;
 import ic2.core.ref.TeBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -109,6 +110,10 @@ public class GT_ModHandler {
         sSpecialRecipeClasses.add("forestry.lepidopterology.MatingRecipe");
         sSpecialRecipeClasses.add("micdoodle8.mods.galacticraft.planets.asteroids.recipe.CanisterRecipes");
         sSpecialRecipeClasses.add("shedar.mods.ic2.nuclearcontrol.StorageArrayRecipe");
+    }
+
+    public static <T extends IIdProvider> IBlockState getIC2BlockState(BlockName blockName, T type) {
+        return blockName.getBlockState(type);
     }
 
     public static ItemStack getIC2Item(ItemName itemName, int amount) {

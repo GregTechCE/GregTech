@@ -68,6 +68,12 @@ public class ProcessingPlate1 implements gregtech.api.interfaces.IOreRecipeRegis
             case GraniteRed:
                 GregTech_API.registerCover(aStack, new GT_RenderedTexture(gregtech.api.enums.Textures.BlockIcons.GRANITE_RED_SMOOTH), null);
                 break;
+            case Andesite:
+                GregTech_API.registerCover(aStack, new GT_RenderedTexture(new RegIconContainer("blocks/stone_andesite")), null);
+                break;
+            case Diorite:
+                GregTech_API.registerCover(aStack, new GT_RenderedTexture(new RegIconContainer("blocks/stone_diorite")), null);
+                break;
             case Concrete:
                 GregTech_API.registerCover(aStack, new GT_RenderedTexture(gregtech.api.enums.Textures.BlockIcons.CONCRETE_LIGHT_SMOOTH), null);
                 break;
