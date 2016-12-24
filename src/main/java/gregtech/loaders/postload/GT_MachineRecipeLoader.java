@@ -1446,296 +1446,6 @@ if(Loader.isModLoaded("Railcraft")){
         	GT_ModHandler.removeFurnaceSmelting(GT_ModHandler.getModItem("Magneticraft", "item.rubble", 1, 21));
         }
 
-        if (GregTech_API.sThaumcraftCompat != null) {
-            String tKey = "GT_WOOD_TO_CHARCOAL";
-            GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "You have discovered a way of making charcoal magically instead of using regular ovens for this purpose.<BR><BR>To create charcoal from wood you first need an air-free environment, some vacuus essentia is needed for that, then you need to incinerate the wood using ignis essentia and wait until all the water inside the wood is burned away.<BR><BR>This method however doesn't create creosote oil as byproduct.");
-
-            GregTech_API.sThaumcraftCompat.addResearch(tKey, "Charcoal Transmutation", "Turning wood into charcoal", new String[]{"ALUMENTUM"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 1L), 2, 0, 13, 5, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 10L), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 8L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.log.get(Materials.Wood), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 1L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}))});
-
-            tKey = "GT_FILL_WATER_BUCKET";
-            GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "You have discovered a way of filling a bucket with aqua essentia in order to simply get water.");
-            GregTech_API.sThaumcraftCompat.addResearch(tKey, "Water Transmutation", "Filling buckets with water", null, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.bucket, Materials.Water, 1L), 2, 0, 16, 5, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 4L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, GT_OreDictUnificator.get(OrePrefixes.bucket, Materials.Empty, 1L), GT_OreDictUnificator.get(OrePrefixes.bucket, Materials.Water, 1L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 4L)})), GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, GT_OreDictUnificator.get(OrePrefixes.capsule, Materials.Empty, 1L), GT_OreDictUnificator.get(OrePrefixes.capsule, Materials.Water, 1L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 4L)})), GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 4L)}))});
-
-            tKey = "GT_TRANSZINC";
-            GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "You have discovered a way to multiply zinc by steeping zinc nuggets in metallum harvested from other metals.");
-            GregTech_API.sThaumcraftCompat.addResearch(tKey, "Zinc Transmutation", "Transformation of metals into zinc", new String[]{"TRANSTIN"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Zinc, 1L), 2, 1, 9, 13, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.SANO, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.Zinc), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Zinc, 3L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.SANO, 1L)}))});
-
-            tKey = "GT_TRANSANTIMONY";
-            GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "You have discovered a way to multiply antimony by steeping antimony nuggets in metallum harvested from other metals.");
-            GregTech_API.sThaumcraftCompat.addResearch(tKey, "Antimony Transmutation", "Transformation of metals into antimony", new String[]{"GT_TRANSZINC", "TRANSLEAD"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Antimony, 1L), 2, 1, 9, 14, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.Antimony), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Antimony, 3L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)}))});
-
-            tKey = "GT_TRANSNICKEL";
-            GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "You have discovered a way to multiply nickel by steeping nickel nuggets in metallum harvested from other metals.");
-            GregTech_API.sThaumcraftCompat.addResearch(tKey, "Nickel Transmutation", "Transformation of metals into nickel", new String[]{"TRANSLEAD"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Nickel, 1L), 2, 1, 9, 15, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.Nickel), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Nickel, 3L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}))});
-
-            tKey = "GT_TRANSCOBALT";
-            GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "You have discovered a way to multiply cobalt by steeping cobalt nuggets in metallum harvested from other metals.");
-            GregTech_API.sThaumcraftCompat.addResearch(tKey, "Cobalt Transmutation", "Transformation of metals into cobalt", new String[]{"GT_TRANSNICKEL"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Cobalt, 1L), 2, 1, 9, 16, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.Cobalt), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Cobalt, 3L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 1L)}))});
-
-            tKey = "GT_TRANSBISMUTH";
-            GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "You have discovered a way to multiply bismuth by steeping bismuth nuggets in metallum harvested from other metals.");
-            GregTech_API.sThaumcraftCompat.addResearch(tKey, "Bismuth Transmutation", "Transformation of metals into bismuth", new String[]{"GT_TRANSCOBALT"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Bismuth, 1L), 2, 1, 11, 17, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.Bismuth), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Bismuth, 3L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 1L)}))});
-
-            tKey = "GT_IRON_TO_STEEL";
-            GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "You have discovered a way of making Iron harder by just re-ordering its components.<BR><BR>This Method can be used to create a Material called Steel, which is used in many non-Thaumaturgic applications.");
-            GregTech_API.sThaumcraftCompat.addResearch(tKey, "Steel Transmutation", "Transforming iron to steel", new String[]{"TRANSIRON", "GT_WOOD_TO_CHARCOAL"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Steel, 1L), 3, 0, 13, 8, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.Iron), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Steel, 1L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 1L)}))});
-
-            tKey = "GT_TRANSBRONZE";
-            GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "You have discovered a way of creating Alloys using the already known transmutations of Copper and Tin.<BR><BR>This Method can be used to create a Bronze directly without having to go through an alloying process.");
-            GregTech_API.sThaumcraftCompat.addResearch(tKey, "Bronze Transmutation", "Transformation of metals into bronze", new String[]{"TRANSTIN", "TRANSCOPPER"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Bronze, 1L), 2, 0, 13, 11, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.Bronze), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Bronze, 3L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 1L)}))});
-
-            tKey = "GT_TRANSELECTRUM";
-            GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "Your discovery of Bronze Transmutation has lead you to the conclusion it works with other Alloys such as Electrum as well.");
-            GregTech_API.sThaumcraftCompat.addResearch(tKey, "Electrum Transmutation", "Transformation of metals into electrum", new String[]{"GT_TRANSBRONZE", "TRANSGOLD", "TRANSSILVER"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Electrum, 1L), 2, 1, 11, 11, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.Electrum), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Electrum, 3L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 1L)}))});
-
-            tKey = "GT_TRANSBRASS";
-            GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "Your discovery of Bronze Transmutation has lead you to the conclusion it works with other Alloys such as Brass as well.");
-            GregTech_API.sThaumcraftCompat.addResearch(tKey, "Brass Transmutation", "Transformation of metals into brass", new String[]{"GT_TRANSBRONZE", "GT_TRANSZINC"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Brass, 1L), 2, 1, 11, 12, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.Brass), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Brass, 3L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 1L)}))});
-
-            tKey = "GT_TRANSINVAR";
-            GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "Your discovery of Bronze Transmutation has lead you to the conclusion it works with other Alloys such as Invar as well.");
-            GregTech_API.sThaumcraftCompat.addResearch(tKey, "Invar Transmutation", "Transformation of metals into invar", new String[]{"GT_TRANSBRONZE", "GT_TRANSNICKEL"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Invar, 1L), 2, 1, 11, 15, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.GELUM, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.Invar), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Invar, 3L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.GELUM, 1L)}))});
-
-            tKey = "GT_TRANSCUPRONICKEL";
-            GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "Your discovery of Bronze Transmutation has lead you to the conclusion it works with other Alloys such as Cupronickel as well.");
-            GregTech_API.sThaumcraftCompat.addResearch(tKey, "Cupronickel Transmutation", "Transformation of metals into cupronickel", new String[]{"GT_TRANSBRONZE", "GT_TRANSNICKEL"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Cupronickel, 1L), 2, 1, 11, 16, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.Cupronickel), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Cupronickel, 3L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}))});
-
-            tKey = "GT_TRANSBATTERYALLOY";
-            GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "Your discovery of Bronze Transmutation has lead you to the conclusion it works with other Alloys such as Battery Alloy as well.");
-            GregTech_API.sThaumcraftCompat.addResearch(tKey, "Battery Alloy Transmutation", "Transformation of metals into battery alloy", new String[]{"GT_TRANSBRONZE", "GT_TRANSANTIMONY"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.BatteryAlloy, 1L), 2, 1, 11, 13, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.BatteryAlloy), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.BatteryAlloy, 3L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 1L)}))});
-
-            tKey = "GT_TRANSSOLDERINGALLOY";
-            GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "Your discovery of Bronze Transmutation has lead you to the conclusion it works with other Alloys such as Soldering Alloy as well.");
-            GregTech_API.sThaumcraftCompat.addResearch(tKey, "Soldering Alloy Transmutation", "Transformation of metals into soldering alloy", new String[]{"GT_TRANSBRONZE", "GT_TRANSANTIMONY"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.SolderingAlloy, 1L), 2, 1, 11, 14, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.SolderingAlloy), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.SolderingAlloy, 3L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 1L)}))});
-
-            tKey = "GT_ADVANCEDMETALLURGY";
-            GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "Now that you have discovered all the basic metals, you can finally move on to the next Level of magic metallurgy and create more advanced metals");
-            GregTech_API.sThaumcraftCompat.addResearch(tKey, "Advanced Metallurgic Transmutation", "Mastering the basic metals", new String[]{"GT_TRANSBISMUTH", "GT_IRON_TO_STEEL", "GT_TRANSSOLDERINGALLOY", "GT_TRANSBATTERYALLOY", "GT_TRANSBRASS", "GT_TRANSELECTRUM", "GT_TRANSCUPRONICKEL", "GT_TRANSINVAR"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L), 3, 0, 16, 14, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 50L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 20L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 20L), new TC_Aspects.TC_AspectStack(TC_Aspects.PRAECANTATIO, 20L), new TC_Aspects.TC_AspectStack(TC_Aspects.NEBRISUM, 20L), new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 20L)}), null, new Object[]{aTextTCGTPage + tKey});
-
-            tKey = "GT_TRANSALUMINIUM";
-            GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "You have discovered a way to multiply aluminium by steeping aluminium nuggets in metallum harvested from other metals.<BR><BR>This transmutation is slightly harder to achieve, because aluminium has special properties, which require more order to achieve the desired result.");
-            GregTech_API.sThaumcraftCompat.addResearch(tKey, "Aluminium Transmutation", "Transformation of metals into aluminium", new String[]{"GT_ADVANCEDMETALLURGY"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Aluminium, 1L), 4, 0, 19, 14, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.VOLATUS, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.Aluminium), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Aluminium, 3L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.VOLATUS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}))});
-
-            tKey = "GT_CRYSTALLISATION";
-            GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "Sometimes when processing your Crystal Shards they become a pile of Dust instead of the mostly required Shard.<BR><BR>You have finally found a way to reverse this Process by using Vitreus Essentia for recrystallising the Shards.");
-            GregTech_API.sThaumcraftCompat.addResearch(tKey, "Shard Recrystallisation", "Fixing your precious crystals", new String[]{"ALCHEMICALMANUFACTURE"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedOrder, 1L), 3, 0, -11, -3, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.dust.get(Materials.Amber), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Amber, 1L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L)})), GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.dust.get(Materials.InfusedOrder), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedOrder, 1L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L)})), GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.dust.get(Materials.InfusedEntropy), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedEntropy, 1L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L)})), GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.dust.get(Materials.InfusedAir), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedAir, 1L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L)})), GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.dust.get(Materials.InfusedEarth), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedEarth, 1L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L)})), GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.dust.get(Materials.InfusedFire), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedFire, 1L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L)})), GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.dust.get(Materials.InfusedWater), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedWater, 1L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L)}))});
-
-            tKey = "GT_MAGICENERGY";
-            GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey,
-                    "While trying to find new ways to integrate magic into your industrial factories, you have discovered a way to convert magical energy into electrical power.");
-            GregTech_API.sThaumcraftCompat.addResearch(tKey,
-                    "Magic Energy Conversion",
-                    "Magic to Power",
-                    new String[]{"ARCANEBORE"},
-                    "ARTIFICE",
-                    ItemList.MagicEnergyConverter_LV.get(1L, new Object[0]),
-                    3, 0, -3, 10,
-                    Arrays.asList(new TC_Aspects.TC_AspectStack[]{
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 10L),
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 10L),
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 20L),
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 10L)}),
-                    null, new Object[]{aTextTCGTPage + tKey,
-                            GregTech_API.sThaumcraftCompat.addInfusionRecipe(tKey,
-                                    ItemList.Hull_LV.get(1L, new Object[0]),
-                                    new ItemStack[]{
-                                            new ItemStack(Blocks.beacon),
-                                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1L),
-                                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Thaumium, 1L),
-                                            ItemList.Sensor_MV.get(2L, new Object[0]),
-                                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1L),
-                                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Thaumium, 1L),
-                                            ItemList.Sensor_MV.get(2L, new Object[0])
-                                    },
-                                    ItemList.MagicEnergyConverter_LV.get(1L, new Object[0]),
-                                    5,
-                                    Arrays.asList(new TC_Aspects.TC_AspectStack[]{
-                                            new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L),
-                                            new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
-                                            new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 32L)}))});
-
-            tKey = "GT_MAGICENERGY2";
-            GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey,
-                    "Attempts to increase the output of your Magic Energy generators have resulted in significant improvements.");
-            GregTech_API.sThaumcraftCompat.addResearch(tKey,
-                    "Adept Magic Energy Conversion",
-                    "Magic to Power",
-                    new String[]{"GT_MAGICENERGY"},
-                    "ARTIFICE",
-                    ItemList.MagicEnergyConverter_MV.get(1L, new Object[0]),
-                    1, 1, -4, 12,
-                    Arrays.asList(new TC_Aspects.TC_AspectStack[]{
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 10L),
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 10L),
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 20L),
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 10L)}),
-                    null, new Object[]{aTextTCGTPage + tKey,
-                            GregTech_API.sThaumcraftCompat.addInfusionRecipe(tKey,
-                                    ItemList.Hull_MV.get(1L, new Object[0]),
-                                    new ItemStack[]{
-                                            new ItemStack(Blocks.beacon),
-                                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1L),
-                                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Thaumium, 1L),
-                                            ItemList.Sensor_HV.get(2L, new Object[0]),
-                                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1L),
-                                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 1L),
-                                            ItemList.Sensor_HV.get(2L, new Object[0])
-                                    },
-                                    ItemList.MagicEnergyConverter_MV.get(1L, new Object[0]),
-                                    6,
-                                    Arrays.asList(new TC_Aspects.TC_AspectStack[]{
-                                            new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L),
-                                            new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 32L),
-                                            new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 64L)}))});
-
-            tKey = "GT_MAGICENERGY3";
-            GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey,
-                    "Attempts to further increase the output of your Magic Energy generators have resulted in great improvements.");
-            GregTech_API.sThaumcraftCompat.addResearch(tKey,
-                    "Master Magic Energy Conversion",
-                    "Magic to Power",
-                    new String[]{"GT_MAGICENERGY2"},
-                    "ARTIFICE",
-                    ItemList.MagicEnergyConverter_HV.get(1L, new Object[0]),
-                    1, 1, -4, 14,
-                    Arrays.asList(new TC_Aspects.TC_AspectStack[]{
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 20L),
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 20L),
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 40L),
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 20L)}),
-                    null, new Object[]{aTextTCGTPage + tKey,
-                            GregTech_API.sThaumcraftCompat.addInfusionRecipe(tKey,
-                                    ItemList.Hull_HV.get(1L, new Object[0]),
-                                    new ItemStack[]{
-                                            new ItemStack(Blocks.beacon),
-                                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1L),
-                                            GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Thaumium, 1L),
-                                            ItemList.Field_Generator_MV.get(1L, new Object[0]),
-                                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1L),
-                                            GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Osmium, 1L),
-                                            ItemList.Field_Generator_MV.get(1L, new Object[0])
-                                    },
-                                    ItemList.MagicEnergyConverter_HV.get(1L, new Object[0]),
-                                    8,
-                                    Arrays.asList(new TC_Aspects.TC_AspectStack[]{
-                                            new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 128L),
-                                            new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
-                                            new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 128L)}))});
-
-
-            tKey = "GT_MAGICABSORB";
-            GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey,
-                    "Research into magical energy conversion methods has identified a way to convert surrounding energies into electrical power.");
-            GregTech_API.sThaumcraftCompat.addResearch(tKey,
-                    "Magic Energy Absorption",
-                    "Harvesting Magic",
-                    new String[]{"GT_MAGICENERGY"},
-                    "ARTIFICE",
-                    ItemList.MagicEnergyAbsorber_LV.get(1L, new Object[0]),
-                    3, 0, -2, 12,
-                    Arrays.asList(new TC_Aspects.TC_AspectStack[]{
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 10L),
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 10L),
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 20L),
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 10L)}),
-                    null, new Object[]{aTextTCGTPage + tKey,
-                            GregTech_API.sThaumcraftCompat.addInfusionRecipe(tKey,
-                                    ItemList.Hull_LV.get(1L, new Object[0]),
-                                    new ItemStack[]{
-                                            ItemList.MagicEnergyConverter_LV.get(1L, new Object[0]),
-                                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1L),
-                                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Thaumium, 1L),
-                                            ItemList.Sensor_MV.get(2L, new Object[0])
-                                    },
-                                    ItemList.MagicEnergyAbsorber_LV.get(1L, new Object[0]),
-                                    6,
-                                    Arrays.asList(new TC_Aspects.TC_AspectStack[]{
-                                            new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L),
-                                            new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
-                                            new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 32L),
-                                            new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 16L),
-                                            new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 32L),
-                                            new TC_Aspects.TC_AspectStack(TC_Aspects.STRONTIO, 4L)}))});
-
-            tKey = "GT_MAGICABSORB2";
-            GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey,
-                    "Moar output! Drain all the Magic!");
-            GregTech_API.sThaumcraftCompat.addResearch(tKey,
-                    "Improved Magic Energy Absorption",
-                    "Harvesting Magic",
-                    new String[]{"GT_MAGICABSORB"},
-                    "ARTIFICE",
-                    ItemList.MagicEnergyAbsorber_EV.get(1L, new Object[0]),
-                    3, 1, -2, 14,
-                    Arrays.asList(new TC_Aspects.TC_AspectStack[]{
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 10L),
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 10L),
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 20L),
-                            new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 10L)}),
-                    null, new Object[]{aTextTCGTPage + tKey,
-                            GregTech_API.sThaumcraftCompat.addInfusionRecipe(tKey,
-                                    ItemList.Hull_MV.get(1L, new Object[0]),
-                                    new ItemStack[]{
-                                            ItemList.MagicEnergyConverter_MV.get(1L, new Object[0]),
-                                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1L),
-                                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Thaumium, 1L),
-                                            ItemList.Sensor_HV.get(2L, new Object[0]),
-                                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1L),
-                                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Thaumium, 1L)
-                                    },
-                                    ItemList.MagicEnergyAbsorber_MV.get(1L, new Object[0]),
-                                    6,
-                                    Arrays.asList(new TC_Aspects.TC_AspectStack[]{
-                                            new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L),
-                                            new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 32L),
-                                            new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 64L),
-                                            new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 32L),
-                                            new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 64L),
-                                            new TC_Aspects.TC_AspectStack(TC_Aspects.STRONTIO, 8L)}))
-
-
-                            , GregTech_API.sThaumcraftCompat.addInfusionRecipe(tKey,
-                            ItemList.Hull_HV.get(1L, new Object[0]),
-                            new ItemStack[]{
-                                    ItemList.MagicEnergyConverter_MV.get(1L, new Object[0]),
-                                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1L),
-                                    GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 1, 16),
-                                    ItemList.Field_Generator_MV.get(1L, new Object[0]),
-                                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1L),
-                                    GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 1, 16)
-                            },
-                            ItemList.MagicEnergyAbsorber_HV.get(1L, new Object[0]),
-                            8,
-                            Arrays.asList(new TC_Aspects.TC_AspectStack[]{
-                                    new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 128L),
-                                    new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
-                                    new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 128L),
-                                    new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 64L),
-                                    new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 128L),
-                                    new TC_Aspects.TC_AspectStack(TC_Aspects.STRONTIO, 16L)}))
-
-
-                            , GregTech_API.sThaumcraftCompat.addInfusionRecipe(tKey,
-                            ItemList.Hull_EV.get(1L, new Object[0]),
-                            new ItemStack[]{
-                                    ItemList.MagicEnergyConverter_HV.get(1L, new Object[0]),
-                                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 1L),
-                                    GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 1, 16),
-                                    ItemList.Field_Generator_HV.get(1L, new Object[0]),
-                                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 1L),
-                                    GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 1, 16)
-                            },
-                            ItemList.MagicEnergyAbsorber_EV.get(1L, new Object[0]),
-                            10,
-                            Arrays.asList(new TC_Aspects.TC_AspectStack[]{
-                                    new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 256L),
-                                    new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 128L),
-                                    new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 256L),
-                                    new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 128L),
-                                    new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 256L),
-                                    new TC_Aspects.TC_AspectStack(TC_Aspects.STRONTIO, 64L)}))
-                    });
-        }
         for (MaterialStack[] tMats : this.mAlloySmelterList) {
             ItemStack tDust1 = GT_OreDictUnificator.get(OrePrefixes.dust, tMats[0].mMaterial, tMats[0].mAmount);
             ItemStack tDust2 = GT_OreDictUnificator.get(OrePrefixes.dust, tMats[1].mMaterial, tMats[1].mAmount);
@@ -2301,6 +2011,297 @@ if(Loader.isModLoaded("Railcraft")){
                     	Materials.SolderingAlloy.getMolten(2304),
                     	Materials.Tritanium.getMolten(1440)
                     	}, GT_ModHandler.getModItem("GraviSuite", "graviChestPlate", 1, 27), 1500, 16388);   
+            }
+
+            if (GregTech_API.sThaumcraftCompat != null) {
+                String tKey = "GT_WOOD_TO_CHARCOAL";
+                GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "You have discovered a way of making charcoal magically instead of using regular ovens for this purpose.<BR><BR>To create charcoal from wood you first need an air-free environment, some vacuus essentia is needed for that, then you need to incinerate the wood using ignis essentia and wait until all the water inside the wood is burned away.<BR><BR>This method however doesn't create creosote oil as byproduct.");
+
+                GregTech_API.sThaumcraftCompat.addResearch(tKey, "Charcoal Transmutation", "Turning wood into charcoal", new String[]{"ALUMENTUM"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 1L), 2, 0, 13, 5, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 10L), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 8L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.log.get(Materials.Wood), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 1L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}))});
+
+                tKey = "GT_FILL_WATER_BUCKET";
+                GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "You have discovered a way of filling a bucket with aqua essentia in order to simply get water.");
+                GregTech_API.sThaumcraftCompat.addResearch(tKey, "Water Transmutation", "Filling buckets with water", null, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.bucket, Materials.Water, 1L), 2, 0, 16, 5, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 4L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, GT_OreDictUnificator.get(OrePrefixes.bucket, Materials.Empty, 1L), GT_OreDictUnificator.get(OrePrefixes.bucket, Materials.Water, 1L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 4L)})), GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, GT_OreDictUnificator.get(OrePrefixes.capsule, Materials.Empty, 1L), GT_OreDictUnificator.get(OrePrefixes.capsule, Materials.Water, 1L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 4L)})), GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 4L)}))});
+
+                tKey = "GT_TRANSZINC";
+                GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "You have discovered a way to multiply zinc by steeping zinc nuggets in metallum harvested from other metals.");
+                GregTech_API.sThaumcraftCompat.addResearch(tKey, "Zinc Transmutation", "Transformation of metals into zinc", new String[]{"TRANSTIN"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Zinc, 1L), 2, 1, 9, 13, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.SANO, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.Zinc), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Zinc, 3L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.SANO, 1L)}))});
+
+                tKey = "GT_TRANSANTIMONY";
+                GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "You have discovered a way to multiply antimony by steeping antimony nuggets in metallum harvested from other metals.");
+                GregTech_API.sThaumcraftCompat.addResearch(tKey, "Antimony Transmutation", "Transformation of metals into antimony", new String[]{"GT_TRANSZINC", "TRANSLEAD"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Antimony, 1L), 2, 1, 9, 14, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.Antimony), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Antimony, 3L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)}))});
+
+                tKey = "GT_TRANSNICKEL";
+                GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "You have discovered a way to multiply nickel by steeping nickel nuggets in metallum harvested from other metals.");
+                GregTech_API.sThaumcraftCompat.addResearch(tKey, "Nickel Transmutation", "Transformation of metals into nickel", new String[]{"TRANSLEAD"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Nickel, 1L), 2, 1, 9, 15, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.Nickel), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Nickel, 3L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}))});
+
+                tKey = "GT_TRANSCOBALT";
+                GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "You have discovered a way to multiply cobalt by steeping cobalt nuggets in metallum harvested from other metals.");
+                GregTech_API.sThaumcraftCompat.addResearch(tKey, "Cobalt Transmutation", "Transformation of metals into cobalt", new String[]{"GT_TRANSNICKEL"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Cobalt, 1L), 2, 1, 9, 16, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.Cobalt), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Cobalt, 3L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 1L)}))});
+
+                tKey = "GT_TRANSBISMUTH";
+                GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "You have discovered a way to multiply bismuth by steeping bismuth nuggets in metallum harvested from other metals.");
+                GregTech_API.sThaumcraftCompat.addResearch(tKey, "Bismuth Transmutation", "Transformation of metals into bismuth", new String[]{"GT_TRANSCOBALT"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Bismuth, 1L), 2, 1, 11, 17, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.Bismuth), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Bismuth, 3L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 1L)}))});
+
+                tKey = "GT_IRON_TO_STEEL";
+                GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "You have discovered a way of making Iron harder by just re-ordering its components.<BR><BR>This Method can be used to create a Material called Steel, which is used in many non-Thaumaturgic applications.");
+                GregTech_API.sThaumcraftCompat.addResearch(tKey, "Steel Transmutation", "Transforming iron to steel", new String[]{"TRANSIRON", "GT_WOOD_TO_CHARCOAL"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Steel, 1L), 3, 0, 13, 8, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.Iron), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Steel, 1L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 1L)}))});
+
+                tKey = "GT_TRANSBRONZE";
+                GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "You have discovered a way of creating Alloys using the already known transmutations of Copper and Tin.<BR><BR>This Method can be used to create a Bronze directly without having to go through an alloying process.");
+                GregTech_API.sThaumcraftCompat.addResearch(tKey, "Bronze Transmutation", "Transformation of metals into bronze", new String[]{"TRANSTIN", "TRANSCOPPER"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Bronze, 1L), 2, 0, 13, 11, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.Bronze), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Bronze, 3L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 1L)}))});
+
+                tKey = "GT_TRANSELECTRUM";
+                GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "Your discovery of Bronze Transmutation has lead you to the conclusion it works with other Alloys such as Electrum as well.");
+                GregTech_API.sThaumcraftCompat.addResearch(tKey, "Electrum Transmutation", "Transformation of metals into electrum", new String[]{"GT_TRANSBRONZE", "TRANSGOLD", "TRANSSILVER"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Electrum, 1L), 2, 1, 11, 11, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.Electrum), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Electrum, 3L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 1L)}))});
+
+                tKey = "GT_TRANSBRASS";
+                GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "Your discovery of Bronze Transmutation has lead you to the conclusion it works with other Alloys such as Brass as well.");
+                GregTech_API.sThaumcraftCompat.addResearch(tKey, "Brass Transmutation", "Transformation of metals into brass", new String[]{"GT_TRANSBRONZE", "GT_TRANSZINC"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Brass, 1L), 2, 1, 11, 12, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.Brass), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Brass, 3L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 1L)}))});
+
+                tKey = "GT_TRANSINVAR";
+                GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "Your discovery of Bronze Transmutation has lead you to the conclusion it works with other Alloys such as Invar as well.");
+                GregTech_API.sThaumcraftCompat.addResearch(tKey, "Invar Transmutation", "Transformation of metals into invar", new String[]{"GT_TRANSBRONZE", "GT_TRANSNICKEL"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Invar, 1L), 2, 1, 11, 15, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.GELUM, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.Invar), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Invar, 3L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.GELUM, 1L)}))});
+
+                tKey = "GT_TRANSCUPRONICKEL";
+                GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "Your discovery of Bronze Transmutation has lead you to the conclusion it works with other Alloys such as Cupronickel as well.");
+                GregTech_API.sThaumcraftCompat.addResearch(tKey, "Cupronickel Transmutation", "Transformation of metals into cupronickel", new String[]{"GT_TRANSBRONZE", "GT_TRANSNICKEL"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Cupronickel, 1L), 2, 1, 11, 16, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.Cupronickel), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Cupronickel, 3L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}))});
+
+                tKey = "GT_TRANSBATTERYALLOY";
+                GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "Your discovery of Bronze Transmutation has lead you to the conclusion it works with other Alloys such as Battery Alloy as well.");
+                GregTech_API.sThaumcraftCompat.addResearch(tKey, "Battery Alloy Transmutation", "Transformation of metals into battery alloy", new String[]{"GT_TRANSBRONZE", "GT_TRANSANTIMONY"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.BatteryAlloy, 1L), 2, 1, 11, 13, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.BatteryAlloy), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.BatteryAlloy, 3L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 1L)}))});
+
+                tKey = "GT_TRANSSOLDERINGALLOY";
+                GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "Your discovery of Bronze Transmutation has lead you to the conclusion it works with other Alloys such as Soldering Alloy as well.");
+                GregTech_API.sThaumcraftCompat.addResearch(tKey, "Soldering Alloy Transmutation", "Transformation of metals into soldering alloy", new String[]{"GT_TRANSBRONZE", "GT_TRANSANTIMONY"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.SolderingAlloy, 1L), 2, 1, 11, 14, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.SolderingAlloy), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.SolderingAlloy, 3L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 1L)}))});
+
+                tKey = "GT_ADVANCEDMETALLURGY";
+                GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "Now that you have discovered all the basic metals, you can finally move on to the next Level of magic metallurgy and create more advanced metals");
+                GregTech_API.sThaumcraftCompat.addResearch(tKey, "Advanced Metallurgic Transmutation", "Mastering the basic metals", new String[]{"GT_TRANSBISMUTH", "GT_IRON_TO_STEEL", "GT_TRANSSOLDERINGALLOY", "GT_TRANSBATTERYALLOY", "GT_TRANSBRASS", "GT_TRANSELECTRUM", "GT_TRANSCUPRONICKEL", "GT_TRANSINVAR"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L), 3, 0, 16, 14, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 50L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 20L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 20L), new TC_Aspects.TC_AspectStack(TC_Aspects.PRAECANTATIO, 20L), new TC_Aspects.TC_AspectStack(TC_Aspects.NEBRISUM, 20L), new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 20L)}), null, new Object[]{aTextTCGTPage + tKey});
+
+                tKey = "GT_TRANSALUMINIUM";
+                GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "You have discovered a way to multiply aluminium by steeping aluminium nuggets in metallum harvested from other metals.<BR><BR>This transmutation is slightly harder to achieve, because aluminium has special properties, which require more order to achieve the desired result.");
+                GregTech_API.sThaumcraftCompat.addResearch(tKey, "Aluminium Transmutation", "Transformation of metals into aluminium", new String[]{"GT_ADVANCEDMETALLURGY"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Aluminium, 1L), 4, 0, 19, 14, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.VOLATUS, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.Aluminium), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Aluminium, 3L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.VOLATUS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}))});
+
+                tKey = "GT_CRYSTALLISATION";
+                GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey, "Sometimes when processing your Crystal Shards they become a pile of Dust instead of the mostly required Shard.<BR><BR>You have finally found a way to reverse this Process by using Vitreus Essentia for recrystallising the Shards.");
+                GregTech_API.sThaumcraftCompat.addResearch(tKey, "Shard Recrystallisation", "Fixing your precious crystals", new String[]{"ALCHEMICALMANUFACTURE"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedOrder, 1L), 3, 0, -11, -3, Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 3L)}), null, new Object[]{aTextTCGTPage + tKey, GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.dust.get(Materials.Amber), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Amber, 1L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L)})), GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.dust.get(Materials.InfusedOrder), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedOrder, 1L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L)})), GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.dust.get(Materials.InfusedEntropy), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedEntropy, 1L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L)})), GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.dust.get(Materials.InfusedAir), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedAir, 1L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L)})), GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.dust.get(Materials.InfusedEarth), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedEarth, 1L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L)})), GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.dust.get(Materials.InfusedFire), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedFire, 1L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L)})), GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.dust.get(Materials.InfusedWater), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedWater, 1L), Arrays.asList(new TC_Aspects.TC_AspectStack[]{new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L)}))});
+
+                tKey = "GT_MAGICENERGY";
+                GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey,
+                        "While trying to find new ways to integrate magic into your industrial factories, you have discovered a way to convert magical energy into electrical power.");
+                GregTech_API.sThaumcraftCompat.addResearch(tKey,
+                        "Magic Energy Conversion",
+                        "Magic to Power",
+                        new String[]{"ARCANEBORE"},
+                        "ARTIFICE",
+                        ItemList.MagicEnergyConverter_LV.get(1L, new Object[0]),
+                        3, 0, -3, 10,
+                        Arrays.asList(new TC_Aspects.TC_AspectStack[]{
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 10L),
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 10L),
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 20L),
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 10L)}),
+                        null, new Object[]{aTextTCGTPage + tKey,
+                                GregTech_API.sThaumcraftCompat.addInfusionRecipe(tKey,
+                                        ItemList.Hull_LV.get(1L, new Object[0]),
+                                        new ItemStack[]{
+                                                new ItemStack(Blocks.beacon),
+                                                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1L),
+                                                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Thaumium, 1L),
+                                                ItemList.Sensor_MV.get(2L, new Object[0]),
+                                                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1L),
+                                                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Thaumium, 1L),
+                                                ItemList.Sensor_MV.get(2L, new Object[0])
+                                        },
+                                        ItemList.MagicEnergyConverter_LV.get(1L, new Object[0]),
+                                        5,
+                                        Arrays.asList(new TC_Aspects.TC_AspectStack[]{
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L),
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 32L)}))});
+
+                tKey = "GT_MAGICENERGY2";
+                GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey,
+                        "Attempts to increase the output of your Magic Energy generators have resulted in significant improvements.");
+                GregTech_API.sThaumcraftCompat.addResearch(tKey,
+                        "Adept Magic Energy Conversion",
+                        "Magic to Power",
+                        new String[]{"GT_MAGICENERGY"},
+                        "ARTIFICE",
+                        ItemList.MagicEnergyConverter_MV.get(1L, new Object[0]),
+                        1, 1, -4, 12,
+                        Arrays.asList(new TC_Aspects.TC_AspectStack[]{
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 10L),
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 10L),
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 20L),
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 10L)}),
+                        null, new Object[]{aTextTCGTPage + tKey,
+                                GregTech_API.sThaumcraftCompat.addInfusionRecipe(tKey,
+                                        ItemList.Hull_MV.get(1L, new Object[0]),
+                                        new ItemStack[]{
+                                                new ItemStack(Blocks.beacon),
+                                                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1L),
+                                                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Thaumium, 1L),
+                                                ItemList.Sensor_HV.get(2L, new Object[0]),
+                                                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1L),
+                                                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 1L),
+                                                ItemList.Sensor_HV.get(2L, new Object[0])
+                                        },
+                                        ItemList.MagicEnergyConverter_MV.get(1L, new Object[0]),
+                                        6,
+                                        Arrays.asList(new TC_Aspects.TC_AspectStack[]{
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L),
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 32L),
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 64L)}))});
+
+                tKey = "GT_MAGICENERGY3";
+                GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey,
+                        "Attempts to further increase the output of your Magic Energy generators have resulted in great improvements.");
+                GregTech_API.sThaumcraftCompat.addResearch(tKey,
+                        "Master Magic Energy Conversion",
+                        "Magic to Power",
+                        new String[]{"GT_MAGICENERGY2"},
+                        "ARTIFICE",
+                        ItemList.MagicEnergyConverter_HV.get(1L, new Object[0]),
+                        1, 1, -4, 14,
+                        Arrays.asList(new TC_Aspects.TC_AspectStack[]{
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 20L),
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 20L),
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 40L),
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 20L)}),
+                        null, new Object[]{aTextTCGTPage + tKey,
+                                GregTech_API.sThaumcraftCompat.addInfusionRecipe(tKey,
+                                        ItemList.Hull_HV.get(1L, new Object[0]),
+                                        new ItemStack[]{
+                                                new ItemStack(Blocks.beacon),
+                                                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1L),
+                                                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Thaumium, 1L),
+                                                ItemList.Field_Generator_MV.get(1L, new Object[0]),
+                                                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1L),
+                                                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Osmium, 1L),
+                                                ItemList.Field_Generator_MV.get(1L, new Object[0])
+                                        },
+                                        ItemList.MagicEnergyConverter_HV.get(1L, new Object[0]),
+                                        8,
+                                        Arrays.asList(new TC_Aspects.TC_AspectStack[]{
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 128L),
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 128L)}))});
+
+
+                tKey = "GT_MAGICABSORB";
+                GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey,
+                        "Research into magical energy conversion methods has identified a way to convert surrounding energies into electrical power.");
+                GregTech_API.sThaumcraftCompat.addResearch(tKey,
+                        "Magic Energy Absorption",
+                        "Harvesting Magic",
+                        new String[]{"GT_MAGICENERGY"},
+                        "ARTIFICE",
+                        ItemList.MagicEnergyAbsorber_LV.get(1L, new Object[0]),
+                        3, 0, -2, 12,
+                        Arrays.asList(new TC_Aspects.TC_AspectStack[]{
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 10L),
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 10L),
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 20L),
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 10L)}),
+                        null, new Object[]{aTextTCGTPage + tKey,
+                                GregTech_API.sThaumcraftCompat.addInfusionRecipe(tKey,
+                                        ItemList.Hull_LV.get(1L, new Object[0]),
+                                        new ItemStack[]{
+                                                ItemList.MagicEnergyConverter_LV.get(1L, new Object[0]),
+                                                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1L),
+                                                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Thaumium, 1L),
+                                                ItemList.Sensor_MV.get(2L, new Object[0])
+                                        },
+                                        ItemList.MagicEnergyAbsorber_LV.get(1L, new Object[0]),
+                                        6,
+                                        Arrays.asList(new TC_Aspects.TC_AspectStack[]{
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L),
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 32L),
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 16L),
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 32L),
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.STRONTIO, 4L)}))});
+
+                tKey = "GT_MAGICABSORB2";
+                GT_LanguageManager.addStringLocalization(aTextTCGTPage + tKey,
+                        "Moar output! Drain all the Magic!");
+                GregTech_API.sThaumcraftCompat.addResearch(tKey,
+                        "Improved Magic Energy Absorption",
+                        "Harvesting Magic",
+                        new String[]{"GT_MAGICABSORB"},
+                        "ARTIFICE",
+                        ItemList.MagicEnergyAbsorber_EV.get(1L, new Object[0]),
+                        3, 1, -2, 14,
+                        Arrays.asList(new TC_Aspects.TC_AspectStack[]{
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 10L),
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 10L),
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 20L),
+                                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 10L)}),
+                        null, new Object[]{aTextTCGTPage + tKey,
+                                GregTech_API.sThaumcraftCompat.addInfusionRecipe(tKey,
+                                        ItemList.Hull_MV.get(1L, new Object[0]),
+                                        new ItemStack[]{
+                                                ItemList.MagicEnergyConverter_MV.get(1L, new Object[0]),
+                                                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1L),
+                                                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Thaumium, 1L),
+                                                ItemList.Sensor_HV.get(2L, new Object[0]),
+                                                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1L),
+                                                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Thaumium, 1L)
+                                        },
+                                        ItemList.MagicEnergyAbsorber_MV.get(1L, new Object[0]),
+                                        6,
+                                        Arrays.asList(new TC_Aspects.TC_AspectStack[]{
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L),
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 32L),
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 64L),
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 32L),
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 64L),
+                                                new TC_Aspects.TC_AspectStack(TC_Aspects.STRONTIO, 8L)}))
+
+
+                                , GregTech_API.sThaumcraftCompat.addInfusionRecipe(tKey,
+                                ItemList.Hull_HV.get(1L, new Object[0]),
+                                new ItemStack[]{
+                                        ItemList.MagicEnergyConverter_MV.get(1L, new Object[0]),
+                                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1L),
+                                        GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 1, 16),
+                                        ItemList.Field_Generator_MV.get(1L, new Object[0]),
+                                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1L),
+                                        GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 1, 16)
+                                },
+                                ItemList.MagicEnergyAbsorber_HV.get(1L, new Object[0]),
+                                8,
+                                Arrays.asList(new TC_Aspects.TC_AspectStack[]{
+                                        new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 128L),
+                                        new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
+                                        new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 128L),
+                                        new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 64L),
+                                        new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 128L),
+                                        new TC_Aspects.TC_AspectStack(TC_Aspects.STRONTIO, 16L)}))
+
+
+                                , GregTech_API.sThaumcraftCompat.addInfusionRecipe(tKey,
+                                ItemList.Hull_EV.get(1L, new Object[0]),
+                                new ItemStack[]{
+                                        ItemList.MagicEnergyConverter_HV.get(1L, new Object[0]),
+                                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 1L),
+                                        GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 1, 16),
+                                        ItemList.Field_Generator_HV.get(1L, new Object[0]),
+                                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 1L),
+                                        GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 1, 16)
+                                },
+                                ItemList.MagicEnergyAbsorber_EV.get(1L, new Object[0]),
+                                10,
+                                Arrays.asList(new TC_Aspects.TC_AspectStack[]{
+                                        new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 256L),
+                                        new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 128L),
+                                        new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 256L),
+                                        new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 128L),
+                                        new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 256L),
+                                        new TC_Aspects.TC_AspectStack(TC_Aspects.STRONTIO, 64L)}))
+                        });
             }
 
 	}
