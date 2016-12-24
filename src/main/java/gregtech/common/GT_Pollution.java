@@ -102,7 +102,7 @@ public class GT_Pollution {
 				//Create Pollution effects
 //				Smog filter TODO
 				if(tPollution > GT_Mod.gregtechproxy.mPollutionSmogLimit){
-				AxisAlignedBB chunk = AxisAlignedBB.getBoundingBox(tPos.chunkPosX<<4, 0, tPos.chunkPosZ<<4, tPos.chunkPosX<<4+16, 256, tPos.chunkPosZ<<4+16);
+				AxisAlignedBB chunk = AxisAlignedBB.getBoundingBox(tPos.chunkPosX<<4, 0, tPos.chunkPosZ<<4, (tPos.chunkPosX<<4)+16, 256, (tPos.chunkPosZ<<4)+16);
 				List<EntityLivingBase> tEntitys = aWorld.getEntitiesWithinAABB(EntityLivingBase.class, chunk);
 					for(EntityLivingBase tEnt : tEntitys){
 						if(!GT_Utility.isWearingFullGasHazmat(tEnt) && tRan.nextInt(tPollution/2000) > 40){
