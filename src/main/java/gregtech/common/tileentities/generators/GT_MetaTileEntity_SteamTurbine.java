@@ -56,7 +56,8 @@ public class GT_MetaTileEntity_SteamTurbine extends GT_MetaTileEntity_BasicGener
     }
 
     public int getFuelValue(FluidStack aLiquid) {
-        return GT_ModHandler.isSteam(aLiquid) ? 3 : 0;
+    	String fluidName = aLiquid.getFluid().getUnlocalizedName(aLiquid);
+        return GT_ModHandler.isSteam(aLiquid) || fluidName.equals("fluid.steam") || fluidName.equals("ic2.fluidSteam") || fluidName.equals("fluid.mfr.steam.still.name") ? 3 : 0;
     }
 
     public int consumedFluidPerOperation(FluidStack aLiquid) {
@@ -109,4 +110,14 @@ public class GT_MetaTileEntity_SteamTurbine extends GT_MetaTileEntity_BasicGener
 	public int getPollution() {
 		return 0;
 	}
+	
+    @Override
+    public boolean isFluidInputAllowed(FluidStack aFluid) {
+    		if(aFluid.getFluid().getUnlocalizedName(aFluid).equals("ic2.fluidSuperheatedSteam")){
+                aFluid.amount=0;
+                aFluid = null;
+                return false;
+            }
+        return super.isFluidInputAllowed(aFluid);
+    }
 }

@@ -30,11 +30,11 @@ public class Behaviour_Sense
         }
         TileEntity tTileEntity = aWorld.getTileEntity(blockPos);
         if ((tTileEntity instanceof ICropTile)) {
-            for (int i = -1; i < 2; i++) {
-                for (int j = -1; j < 2; j++) {
-                    for (int k = -1; k < 2; k++) {
+            for (int i = -2; i < 3; i++) {
+                for (int j = -2; j < 3; j++) {
+                    for (int k = -2; k < 3; k++) {
                         if ((aStack.stackSize > 0) && (((tTileEntity = aWorld.getTileEntity(blockPos.add(i, j, k))) instanceof ICropTile)) && (((ICropTile) tTileEntity).performManualHarvest()) && (!aPlayer.capabilities.isCreativeMode)) {
-                            ((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts);
+                            ((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts / 20);
                         }
                     }
                 }

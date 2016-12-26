@@ -78,7 +78,7 @@ public class GT_Container_Regulator
                 }
                 return null;
             }
-            if ((aSlotIndex >= 9) && (aSlotIndex < 18)) {
+            if ((aSlotIndex < 18)) {
                 ItemStack tStack = aPlayer.inventory.getItemStack();
                 if (tStack != null) {
                     tSlot.putStack(GT_Utility.copy(tStack));
@@ -97,7 +97,7 @@ public class GT_Container_Regulator
                 }
                 return null;
             }
-            if ((aSlotIndex >= 18) && (aSlotIndex < 27)) {
+            if ((aSlotIndex < 27)) {
                 ((GT_MetaTileEntity_Regulator) this.mTileEntity.getMetaTileEntity()).mTargetSlots[(aSlotIndex - 18)] = Math.min(99, Math.max(0, ((GT_MetaTileEntity_Regulator) this.mTileEntity.getMetaTileEntity()).mTargetSlots[(aSlotIndex - 18)] + (aMouseclick == 0 ? -1 : 1) * (aShifthold == ClickType.QUICK_CRAFT ? 1 : 16)));
                 return null;
             }

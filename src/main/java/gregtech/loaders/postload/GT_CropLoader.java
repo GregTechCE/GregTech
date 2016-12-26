@@ -58,12 +58,20 @@ public class GT_CropLoader
             new GT_BaseCrop(163, "Evil Ore", "unknown", 			null,  8, 4,    0, 3, 4, 4, 0, 2, 1, 3, new String[]{"Crystal", "Fire", "Nether"}, 										GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.NetherQuartz, 1L), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.gem, Materials.NetherQuartz, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.CertusQuartz, 1L),});
             new GT_BaseCrop(164, "Olivia", "unknown", 				null,  2, 4,    0, 3, 4, 1, 0, 1, 4, 0, new String[]{"Crystal", "Shiny", "Processing", "Olivine"}, Materials.Olivine, 	GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Olivine, 1L), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Olivine, 1L),});
             new GT_BaseCrop(165, "Sapphirum", "unknown", 			null,  4, 4,    0, 3, 4, 1, 0, 1, 5, 0, new String[]{"Crystal", "Shiny", "Metal", "Sapphire"}, Materials.Sapphire, 		GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Sapphire, 1L), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Sapphire, 1L),});
-            new GT_BaseCrop(166, "Pyrolusium", "unknown", 			null, 12, 3,    0, 2, 3, 1, 0, 1, 1, 0, new String[]{"Metal", "Clean", "Bush", "Manganese"}, Materials.Manganese, 		ItemList.Crop_Drop_Manganese.get(1), null);
-            new GT_BaseCrop(167, "Scheelinium", "unknown", 			null, 12, 3,    0, 2, 3, 3, 0, 1, 1, 0, new String[]{"Metal", "Hard", "Bush", "Tungsten"}, Materials.Tungsten, 			ItemList.Crop_Drop_Scheelite.get(1), null);
-            new GT_BaseCrop(168, "Platina", "unknown", 				null, 11, 4,    0, 1, 4, 3, 0, 0, 3, 0, new String[]{"Metal", "Shiny", "Reed", "Platinum"}, Materials.Platinum, 		ItemList.Crop_Drop_Platinum.get(1), null);
-            new GT_BaseCrop(169, "Quantaria", "unknown", 			null, 12, 4, 1000, 1, 4, 4, 0, 0, 1, 0, new String[]{"Metal", "Iridium", "Reed"}, Materials.Iridium, 		ItemList.Crop_Drop_Iridium.get(1), new ItemStack[]{ItemList.Crop_Drop_Osmium.get(1)});
-            new GT_BaseCrop(170, "Stargatium", "unknown", 			null, 12, 4, 1500, 1, 4, 4, 0, 0, 2, 0, new String[]{"Metal", "Heavy", "Alien", "Naquadah"}, Materials.Naquadah, 		GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Endstone, 1L), new ItemStack[]{ItemList.Crop_Drop_Naquadah.get(1)});
-        } catch (Throwable e) {
+            new GT_BaseCrop(166, "Pyrolusium", "unknown", 			null, 12, 3,    0, 2, 3, 1, 0, 1, 1, 0, new String[]{"Metal", "Clean", "Bush", "Manganese"}, Materials.Manganese, 		ItemList.Crop_Drop_Manganese.get(1, new Object[0]), null);
+            new GT_BaseCrop(167, "Scheelinium", "unknown", 			null, 12, 3,    0, 2, 3, 3, 0, 1, 1, 0, new String[]{"Metal", "Hard", "Bush", "Tungsten"}, Materials.Tungsten, 			ItemList.Crop_Drop_Scheelite.get(1, new Object[0]), null);
+            new GT_BaseCrop(168, "Platina", "unknown", 				null, 11, 4,    0, 1, 4, 3, 0, 0, 3, 0, new String[]{"Metal", "Shiny", "Reed", "Platinum"}, Materials.Platinum, 		ItemList.Crop_Drop_Platinum.get(1, new Object[0]), null);
+            new GT_BaseCrop(169, "Quantaria", "unknown", 			null, 12, 4, 1000, 1, 4, 4, 0, 0, 1, 0, new String[]{"Metal", "Iridium", "Reed"}, Materials.Iridium, 					ItemList.Crop_Drop_Iridium.get(1, new Object[0]), new ItemStack[]{ItemList.Crop_Drop_Osmium.get(1, new Object[0])});
+            new GT_BaseCrop(170, "Stargatium", "unknown", 			null, 12, 4, 1500, 1, 4, 4, 0, 0, 2, 0, new String[]{"Metal", "Heavy", "Alien", "Naquadah"}, Materials.Naquadah, 		GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Endstone, 1L), new ItemStack[]{ItemList.Crop_Drop_Naquadah.get(1, new Object[0])});
+            new GT_BaseCrop(171, "Lemon", "unknown",	 			null,  4, 4,    0, 1, 4, 1, 1, 0, 2, 0, new String[]{"Food", "Tree", "Sour"}, 							 				ItemList.Crop_Drop_Lemon.get(1, new Object[0]), null);
+            new GT_BaseCrop(172, "Chilly", "unknown",		null,  4, 4,    0, 1, 4, 1, 1, 0, 2, 0, new String[]{"Food", "Spicy"}, 							 						ItemList.Crop_Drop_Chilly.get(1, new Object[0]), null);
+            new GT_BaseCrop(173, "Tomato", "unknown",	 			null,  4, 4,    0, 1, 4, 1, 1, 0, 2, 0, new String[]{"Food"}, 							 								ItemList.Crop_Drop_Tomato.get(1, new Object[0]), new ItemStack[]{ItemList.Crop_Drop_MTomato.get(1, new Object[0])});
+            new GT_BaseCrop(174, "Grape", "unknown",	 			null,  4, 4,    0, 1, 4, 1, 1, 0, 2, 0, new String[]{"Food"}, 							 								ItemList.Crop_Drop_Grapes.get(1, new Object[0]), null);
+            new GT_BaseCrop(175, "Onion", "unknown",	 			null,  4, 4,    0, 1, 4, 1, 1, 0, 2, 0, new String[]{"Food"}, 							 								ItemList.Crop_Drop_Onion.get(1, new Object[0]), null);
+            new GT_BaseCrop(176, "Cucumber", "unknown",	 			null,  4, 4,    0, 1, 4, 1, 1, 0, 2, 0, new String[]{"Food"}, 							 								ItemList.Crop_Drop_Cucumber.get(1, new Object[0]), null);
+            new GT_BaseCrop(177, "Tea", "unknown",	 				null,  4, 4,    0, 1, 4, 1, 1, 0, 2, 0, new String[]{"Food"}, 							 									ItemList.Crop_Drop_TeaLeaf.get(1, new Object[0]), null);
+            } catch (Throwable e) {
+
             GT_Log.err.println("GT_Mod: Failed to register Crops to IC2.");
             e.printStackTrace(GT_Log.err);
         }

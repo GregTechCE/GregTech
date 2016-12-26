@@ -3,12 +3,9 @@ package gregtech.common.tools;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_Plunger_Fluid;
 import gregtech.common.items.behaviors.Behaviour_Plunger_Item;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -50,9 +47,6 @@ public class GT_Tool_Plunger extends GT_Tool {
 
     @Override
     public boolean isMinableBlock(IBlockState aBlock) {
-        //String tTool = aBlock.getHarvestTool(aMetaData);
-        //return (tTool != null) && (tTool.equals("plunger"));
-        //Really?
         return false;
     }
 

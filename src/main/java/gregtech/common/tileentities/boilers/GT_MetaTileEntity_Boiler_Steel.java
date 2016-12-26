@@ -16,8 +16,6 @@ import gregtech.common.gui.GT_Container_Boiler;
 import gregtech.common.gui.GT_GUIContainer_Boiler;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidHandler;
 
 public class GT_MetaTileEntity_Boiler_Steel extends GT_MetaTileEntity_Boiler {
 
@@ -153,7 +151,7 @@ public class GT_MetaTileEntity_Boiler_Steel extends GT_MetaTileEntity_Boiler {
                 this.mTemperature += 1;
             }
             if(this.mProcessingEnergy>0 && (aTick % 20L == 0L)){
-            	GT_Pollution.addPollution(getBaseMetaTileEntity().getPos(), 30);
+            	GT_Pollution.addPollution(getBaseMetaTileEntity().getPos(), 20);
             }
             aBaseMetaTileEntity.setActive(this.mProcessingEnergy > 0);
         }

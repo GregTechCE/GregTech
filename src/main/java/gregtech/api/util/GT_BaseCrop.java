@@ -13,12 +13,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.Loader;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import static gregtech.api.enums.GT_Values.E;
 
@@ -153,7 +151,7 @@ public class GT_BaseCrop extends CropCard {
     @Override
     public ItemStack getGain(ICropTile aCrop) {
         int tDrop = 0;
-        if (mSpecialDrops != null && (tDrop = new Random().nextInt((mSpecialDrops.length*2) + 2)) < mSpecialDrops.length && mSpecialDrops[tDrop] != null) {
+        if (mSpecialDrops != null && (tDrop = java.util.concurrent.ThreadLocalRandom.current().nextInt(0, (mSpecialDrops.length*2) + 2)) < mSpecialDrops.length && mSpecialDrops[tDrop] != null) {
             return GT_Utility.copy(mSpecialDrops[tDrop]);
         }
         return GT_Utility.copy(mDrop);
@@ -206,7 +204,7 @@ public class GT_BaseCrop extends CropCard {
     public List<String> getCropInformation() {
         if (mBlock != null) {
             ArrayList<String> result = new ArrayList<String>(1);
-            result.add(String.format("Requires %s Ore or Block of %s as soil block to reach full growth.", mBlock.name(), mBlock.name()));
+            result.add(String.format("Requires %s Ore or Block of %s as soil block to reach full growth.", mBlock.mName, mBlock.mName));
             return result;
         }
         return null;

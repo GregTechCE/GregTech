@@ -126,7 +126,7 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
             }
 
             if(this.mProcessingEnergy>0 && (aTick % 20L == 0L)){
-            	GT_Pollution.addPollution(getBaseMetaTileEntity().getPos(), 30);
+            	GT_Pollution.addPollution(getBaseMetaTileEntity().getPos(), 20);
             }
             aBaseMetaTileEntity.setActive(this.mProcessingEnergy > 0);
         }

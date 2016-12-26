@@ -42,11 +42,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                         GT_ModHandler.removeRecipe(tStack, tStack, tStack);
                         GT_ModHandler.addCraftingRecipe(GT_Utility.copyAmount(tOutput.stackSize / 3, tOutput), new Object[]{"sP", Character.valueOf('P'), tStack});
                     }
-                    if(tStack==null){
-                    	if(i>=16){
-                    		break;
-                    	}
-                    }
+                    if((tStack == null) && (i >= 16)) break;
                 }
             } else {
                 ItemStack tOutput = GT_ModHandler.getRecipeOutput(aStack, aStack, aStack);

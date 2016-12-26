@@ -47,7 +47,7 @@ public class GT_SensorCard_Item extends GT_Generic_Item {
         ChunkCoordinates target = aCard.getTarget();
 
         TileEntity tTileEntity = world.getTileEntity(target.posX, target.posY, target.posZ);
-        if ((tTileEntity != null) && ((tTileEntity instanceof IGregTechDeviceInformation)) && (((IGregTechDeviceInformation) tTileEntity).isGivingInformation())) {
+        if (((tTileEntity instanceof IGregTechDeviceInformation)) && (((IGregTechDeviceInformation) tTileEntity).isGivingInformation())) {
             String[] tInfoData = ((IGregTechDeviceInformation) tTileEntity).getInfoData();
             for (int i = 0; i < tInfoData.length; i++) {
                 aCard.setString("mString" + i, tInfoData[i]);
@@ -72,7 +72,7 @@ public class GT_SensorCard_Item extends GT_Generic_Item {
     public List<PanelSetting> getSettingsList() {
         List<PanelSetting> rList = new ArrayList(30);
         for (int i = 0; i < 8; i++) {
-            rList.add(new PanelSetting("" + (i + 1), 1 << i, getCardType()));
+            rList.add(new PanelSetting(String.valueOf((i + 1)), 1 << i, getCardType()));
         }
         return rList;
     }
