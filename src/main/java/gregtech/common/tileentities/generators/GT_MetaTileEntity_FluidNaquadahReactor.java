@@ -2,6 +2,7 @@ package gregtech.common.tileentities.generators;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -42,6 +43,11 @@ public class GT_MetaTileEntity_FluidNaquadahReactor
 
     public int getEfficiency() {
         return mEfficiency;
+    }
+    
+    @Override
+    public long maxEUStore() {
+        return Math.max(getEUVar(), GT_Values.V[mTier] * 120 + getMinimumStoredEU());
     }
 
     public void onConfigLoad() {
