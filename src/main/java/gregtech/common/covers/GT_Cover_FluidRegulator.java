@@ -10,7 +10,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
 public class GT_Cover_FluidRegulator extends GT_CoverBehavior {
-
     public final int mTransferRate;
 
     public GT_Cover_FluidRegulator(int aTransferRate) {
@@ -18,44 +17,38 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehavior {
     }
 
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        EnumFacing aSideDirection = EnumFacing.VALUES[aSide];
         if (aCoverVariable == 0) {
             return aCoverVariable;
         }
         if ((aTileEntity instanceof IFluidHandler)) {
-            IFluidHandler tTank2 = aTileEntity.getITankContainerAtSide(aSide);
-            if (tTank2 != null) {
-                IFluidHandler tTank1 = (IFluidHandler) aTileEntity;
-                if (aCoverVariable > 0) {
-                    FluidStack tLiquid = tTank1.drain(aSideDirection, aCoverVariable, false);
-                    if (tLiquid != null) {
-                        tLiquid = tLiquid.copy();
-                        tLiquid.amount = tTank2.fill(aSideDirection.getOpposite(), tLiquid, false);
-                        if (tLiquid.amount > 0) {
-                            if (aTileEntity.getUniversalEnergyCapacity() >= Math.min(1, tLiquid.amount / 10)) {
-                                if (aTileEntity.isUniversalEnergyStored(Math.min(1, tLiquid.amount / 10))) {
-                                    aTileEntity.decreaseStoredEnergyUnits(Math.min(1, tLiquid.amount / 10), true);
-                                    tTank2.fill(aSideDirection.getOpposite(), tTank1.drain(aSideDirection, tLiquid.amount, true), true);
-                                }
-                            } else {
-                                tTank2.fill(aSideDirection.getOpposite(), tTank1.drain(aSideDirection, tLiquid.amount, true), true);
+            IFluidHandler tTank1;
+            IFluidHandler tTank2;
+            EnumFacing directionFrom;
+            EnumFacing directionTo;
+            if (aCoverVariable > 0) {
+                tTank2 = aTileEntity.getITankContainerAtSide(aSide);
+                tTank1 = (IFluidHandler) aTileEntity;
+                directionFrom = EnumFacing.VALUES[aSide];
+                directionTo = EnumFacing.VALUES[aSide].getOpposite();
+            } else {
+                tTank1 = aTileEntity.getITankContainerAtSide(aSide);
+                tTank2 = (IFluidHandler) aTileEntity;
+                directionFrom = EnumFacing.VALUES[aSide].getOpposite();
+                directionTo = EnumFacing.VALUES[aSide];
+            }
+            if (tTank1 != null && tTank2 != null) {
+                FluidStack tLiquid = tTank1.drain(directionFrom, Math.abs(aCoverVariable), false);
+                if (tLiquid != null) {
+                    tLiquid = tLiquid.copy();
+                    tLiquid.amount = tTank2.fill(directionTo, tLiquid, false);
+                    if (tLiquid.amount > 0) {
+                        if (aTileEntity.getUniversalEnergyCapacity() >= Math.min(1, tLiquid.amount / 10)) {
+                            if (aTileEntity.isUniversalEnergyStored(Math.min(1, tLiquid.amount / 10))) {
+                                aTileEntity.decreaseStoredEnergyUnits(Math.min(1, tLiquid.amount / 10), true);
+                                tTank2.fill(directionTo, tTank1.drain(directionFrom, tLiquid.amount, true), true);
                             }
-                        }
-                    }
-                } else {
-                    FluidStack tLiquid = tTank2.drain(aSideDirection.getOpposite(), Math.abs(aCoverVariable), false);
-                    if (tLiquid != null) {
-                        tLiquid = tLiquid.copy();
-                        tLiquid.amount = tTank1.fill(aSideDirection, tLiquid, false);
-                        if (tLiquid.amount > 0) {
-                            if (aTileEntity.getUniversalEnergyCapacity() >= Math.min(1, tLiquid.amount / 10)) {
-                                if (aTileEntity.isUniversalEnergyStored(Math.min(1, tLiquid.amount / 10))) {
-                                    aTileEntity.decreaseStoredEnergyUnits(Math.min(1, tLiquid.amount / 10), true);
-                                    tTank1.fill(aSideDirection, tTank2.drain(aSideDirection.getOpposite(), tLiquid.amount, true), true);
-                                }
-                            } else {
-                                tTank1.fill(aSideDirection, tTank2.drain(aSideDirection.getOpposite(), tLiquid.amount, true), true);
-                            }
+                        } else {
+                            tTank2.fill(directionTo, tTank1.drain(directionFrom, tLiquid.amount, true), true);
                         }
                     }
                 }
@@ -64,7 +57,8 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehavior {
         return aCoverVariable;
     }
 
-    public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+                                       EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ)[0] >= 0.5F) {
             aCoverVariable += 16;
         } else {
@@ -76,11 +70,13 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehavior {
         if (aCoverVariable < (0 - mTransferRate)) {
             aCoverVariable = (0 - mTransferRate);
         }
-        GT_Utility.sendChatToPlayer(aPlayer, "Pump speed: " + aCoverVariable + "L/tick " + aCoverVariable * 20 + "L/sec");
+        GT_Utility.sendChatToPlayer(aPlayer,
+                "Pump speed: " + aCoverVariable + "L/tick " + aCoverVariable * 20 + "L/sec");
         return aCoverVariable;
     }
 
-    public boolean onCoverRightclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onCoverRightclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+                                     EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ)[0] >= 0.5F) {
             aCoverVariable++;
         } else {
@@ -92,7 +88,8 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehavior {
         if (aCoverVariable < (0 - mTransferRate)) {
             aCoverVariable = (0 - mTransferRate);
         }
-        GT_Utility.sendChatToPlayer(aPlayer, "Pump speed: " + aCoverVariable + "L/tick " + aCoverVariable * 20 + "L/sec");
+        GT_Utility.sendChatToPlayer(aPlayer,
+                "Pump speed: " + aCoverVariable + "L/tick " + aCoverVariable * 20 + "L/sec");
         aTileEntity.setCoverDataAtSide(aSide, aCoverVariable);
         return true;
     }

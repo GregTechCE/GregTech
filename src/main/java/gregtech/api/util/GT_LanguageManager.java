@@ -3,10 +3,7 @@ package gregtech.api.util;
 
 import gregtech.api.GregTech_API;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.Locale;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.translation.LanguageMap;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
@@ -30,6 +27,7 @@ public class GT_LanguageManager {
             BUFFERMAP = new HashMap<>();
 
     public static Configuration sEnglishFile;
+    //TODO implement 03f6c9e
 
     public static String addStringLocalization(String aKey, String aEnglish) {
         return addStringLocalization(aKey, aEnglish, false);

@@ -1,10 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
+import gregtech.api.enums.*;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -12,6 +9,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.Entity;
@@ -29,8 +27,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static gregtech.api.enums.GT_Values.D1;
 
@@ -196,7 +194,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
             }
 
             if (mLastReceivedFrom == oLastReceivedFrom) {
-                HashMap<IFluidHandler, EnumFacing> tTanks = new HashMap<IFluidHandler, EnumFacing>();
+                ConcurrentHashMap<IFluidHandler, EnumFacing> tTanks = new ConcurrentHashMap<IFluidHandler, EnumFacing>();
 
                 mConnections = 0;
 
@@ -228,6 +226,18 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
                             }
                             if (aBaseMetaTileEntity.getCoverBehaviorAtSide(tSide).alwaysLookConnected(tSide, aBaseMetaTileEntity.getCoverIDAtSide(tSide), aBaseMetaTileEntity.getCoverDataAtSide(tSide), aBaseMetaTileEntity)) {
                                 mConnections |= (1 << tSide);
+                            }
+                        } else if (tInfo != null && tInfo.length == 0) {
+                            IGregTechTileEntity tSideTile = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(tSide);
+                            if (tSideTile != null) {
+                                ItemStack tCover = tSideTile.getCoverItemAtSide(GT_Utility.getOppositeSide(tSide));
+                                if (tCover != null && (GT_Utility.areStacksEqual(tCover, ItemList.FluidRegulator_LV.get(1, new Object[]{}, true)) ||
+                                        GT_Utility.areStacksEqual(tCover, ItemList.FluidRegulator_MV.get(1, new Object[]{}, true)) ||
+                                        GT_Utility.areStacksEqual(tCover, ItemList.FluidRegulator_HV.get(1, new Object[]{}, true)) ||
+                                        GT_Utility.areStacksEqual(tCover, ItemList.FluidRegulator_EV.get(1, new Object[]{}, true)) ||
+                                        GT_Utility.areStacksEqual(tCover, ItemList.FluidRegulator_IV.get(1, new Object[]{}, true)))) {
+                                    mConnections |= (1 << tSide);
+                                }
                             }
                         }
                     }
@@ -275,7 +285,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
             for (byte i = 0; i < 6; i++) {
                 EnumFacing facing = EnumFacing.VALUES[i];
                 for (int l = 0; l < 2; ++l)
-                    getBaseMetaTileEntity().getWorld().spawnParticle(EnumParticleTypes.SMOKE_LARGE, aX - 0.5 + Math.random(), aY - 0.5 + Math.random(), aZ - 0.5 + Math.random(), facing.getFrontOffsetX() / 5.0, 0, facing.getFrontOffsetZ() / 5.0);
+                    getBaseMetaTileEntity().getWorld().spawnParticle(EnumParticleTypes.SMOKE_LARGE, aX - 0.5 + (new XSTR()).nextFloat(), aY - 0.5 + (new XSTR()).nextFloat(), aZ - 0.5 + (new XSTR()).nextFloat(), facing.getFrontOffsetX() / 5.0, 0, facing.getFrontOffsetZ() / 5.0);
             }
         }
     }
@@ -376,8 +386,8 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
     @Override
     public String[] getDescription() {
         return new String[]{
-                TextFormatting.BLUE + "Fluid Capacity: " + (mCapacity * 20) + "L/sec" + TextFormatting.GRAY,
-                TextFormatting.RED + "Heat Limit: " + mHeatResistance + " K" + TextFormatting.GRAY
+                TextFormatting.BLUE + "Fluid Capacity: %%%" + (mCapacity * 20) + "L/sec" + TextFormatting.GRAY,
+                TextFormatting.RED + "Heat Limit: %%%" + mHeatResistance + " K" + TextFormatting.GRAY
         };
     }
 

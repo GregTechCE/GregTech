@@ -6,7 +6,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
@@ -25,12 +24,10 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
@@ -50,7 +47,6 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlock, ITileEntityProvider {
 
@@ -291,11 +287,12 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     @Override
     @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getParticleSprite(IBlockAccess worldObj, BlockPos aPos, EnumFacing side) {
-        TileEntity tileEntity = worldObj.getTileEntity(aPos);
-        if(tileEntity instanceof ITexturedTileEntity) {
-            ITexture[] textures = ((ITexturedTileEntity) tileEntity).getTexture(this, (byte) 1);
-            if(textures.length > 0 && textures[0].isValidTexture() && textures[0] instanceof GT_RenderedTexture) {
-                return ((GT_RenderedTexture) textures[0]).mIconContainer.getIcon();
+        IGregTechTileEntity tileEntity = getGregTile(worldObj, aPos);
+        if(tileEntity != null) {
+            ITexture[] textures = tileEntity.getTexture(this, (byte) side.getIndex());
+            for(int i = 0; i < textures.length; i++) {
+                if(textures[i] instanceof GT_RenderedTexture)
+                    return ((GT_RenderedTexture) textures[i]).mIconContainer.getIcon();
             }
         }
         return null;
@@ -310,24 +307,25 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         super.onBlockExploded(world, pos, explosion);
     }
 
+    private ThreadLocal<IGregTechTileEntity> tileEntity = new ThreadLocal<>();
+
     @Override
-    public void breakBlock(World aWorld, BlockPos pos, IBlockState blockState) {
-        GregTech_API.causeMachineUpdate(aWorld, pos.getX(), pos.getY(), pos.getZ());
-        TileEntity tTileEntity = aWorld.getTileEntity(pos);
-        if(tTileEntity instanceof IGregTechTileEntity) {
-            List<ItemStack> drops = getDrops((IGregTechTileEntity) tTileEntity);
-            for(ItemStack itemStack : drops) {
-                spawnAsEntity(aWorld, pos, itemStack);
-            }
-        }
-        System.out.println("Break");
-        super.breakBlock(aWorld, pos, blockState);
-        aWorld.removeTileEntity(pos);
+    public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
+        tileEntity.set(getGregTile(worldIn, pos));
+        super.onBlockHarvested(worldIn, pos, state, player);
     }
 
     @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        return Collections.emptyList();
+        IGregTechTileEntity gregTechTileEntity = getGregTile(world, pos);
+        if(gregTechTileEntity == null) {
+            gregTechTileEntity = tileEntity.get();
+            tileEntity.set(null);
+        }
+        if(gregTechTileEntity != null) {
+            return getDrops(gregTechTileEntity);
+        }
+        return Collections.EMPTY_LIST;
     }
 
     public List<ItemStack> getDrops(IGregTechTileEntity tGregTechTileEntity) {

@@ -54,7 +54,7 @@ public class GT_Block_Stones extends GT_Block_Stones_Abstract {
 
     @Override
     public int getHarvestLevel(IBlockState aMeta) {
-        return 2;
+        return 1;
     }
 
     @Override

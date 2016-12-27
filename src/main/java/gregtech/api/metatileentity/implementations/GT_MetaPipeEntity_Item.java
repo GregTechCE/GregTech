@@ -20,7 +20,7 @@ import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.EnumFacing;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileEntityItemPipe {
     public final float mThickNess;
@@ -206,12 +206,12 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
                 for (boolean temp = true; temp && !isInventoryEmpty() && pipeCapacityCheck(); ) {
                     temp = false;
                     tPipeList.clear();
-                    for (IMetaTileEntityItemPipe tTileEntity : GT_Utility.sortMapByValuesAcending(IMetaTileEntityItemPipe.Util.scanPipes(this, new HashMap<IMetaTileEntityItemPipe, Long>(), 0, false, false)).keySet()) {
+                    for (IMetaTileEntityItemPipe tTileEntity : GT_Utility.sortMapByValuesAcending(IMetaTileEntityItemPipe.Util.scanPipes(this, new ConcurrentHashMap<IMetaTileEntityItemPipe, Long>(), 0, false, false)).keySet()) {
                         if (temp) break;
                         tPipeList.add(tTileEntity);
                         while (!temp && !isInventoryEmpty() && tTileEntity.sendItemStack(aBaseMetaTileEntity))
                             for (IMetaTileEntityItemPipe tPipe : tPipeList)
-                                if (!tPipe.incrementTransferCounter(1)) temp = true;
+                                if (!tPipe.incrementTransferCounter(1)) temp = false;
                     }
                 }
             }

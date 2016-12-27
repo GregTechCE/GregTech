@@ -15,6 +15,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import static gregtech.api.enums.GT_Values.*;
@@ -29,8 +30,8 @@ import static gregtech.api.enums.GT_Values.*;
  * P.S. It is intended to be named "Unificator" and not "Unifier", because that sounds more awesome.
  */
 public class GT_OreDictUnificator {
-    private static final HashMap<String, ItemStack> sName2StackMap = new HashMap<String, ItemStack>();
-    private static final HashMap<GT_ItemStack, ItemData> sItemStack2DataMap = new HashMap<GT_ItemStack, ItemData>();
+    private static final Map<String, ItemStack> sName2StackMap = new HashMap<String, ItemStack>();
+    private static final Map<GT_ItemStack, ItemData> sItemStack2DataMap = new HashMap<GT_ItemStack, ItemData>();
     private static final GT_HashSet<GT_ItemStack> sNoUnificationList = new GT_HashSet<GT_ItemStack>();
     public static volatile int VERSION = 509;
     private static int isRegisteringOre = 0, isAddingOre = 0;
@@ -93,6 +94,8 @@ public class GT_OreDictUnificator {
     }
 
     public static ItemStack get(OrePrefixes aPrefix, Object aMaterial, ItemStack aReplacement, long aAmount) {
+        //if (Materials.mDefaultComponents.contains(aPrefix) && !aPrefix.mDynamicItems.contains((Materials)aMaterial)) aPrefix.mDynamicItems.add((Materials) aMaterial);
+        if (OrePrefixes.mPreventableComponents.contains(aPrefix) && aPrefix.mDisabledItems.contains(aMaterial)) return aReplacement;
         return get(aPrefix.get(aMaterial), aReplacement, aAmount, false, true);
     }
 
@@ -259,12 +262,14 @@ public class GT_OreDictUnificator {
 
     public static ItemStack getGem(Materials aMaterial, long aMaterialAmount) {
         ItemStack rStack = null;
-        if (((aMaterialAmount >= M) || aMaterialAmount >= M * 32))
+        if (((aMaterialAmount >= M)))
             rStack = get(OrePrefixes.gem, aMaterial, aMaterialAmount / M);
-        if (rStack == null && (((aMaterialAmount * 2) % M == 0) || aMaterialAmount >= M * 16))
-            rStack = get(OrePrefixes.gemFlawed, aMaterial, (aMaterialAmount * 2) / M);
-        if (rStack == null && (((aMaterialAmount * 4) >= M)))
-            rStack = get(OrePrefixes.gemChipped, aMaterial, (aMaterialAmount * 4) / M);
+        if (rStack == null) {
+            if ((((aMaterialAmount * 2) % M == 0) || aMaterialAmount >= M * 16))
+                rStack = get(OrePrefixes.gemFlawed, aMaterial, (aMaterialAmount * 2) / M);
+            if ((((aMaterialAmount * 4) >= M)))
+                rStack = get(OrePrefixes.gemChipped, aMaterial, (aMaterialAmount * 4) / M);
+        }
         return rStack;
     }
 
