@@ -33,7 +33,7 @@ public enum StoneTypes {
 
     StoneTypes(IIconContainer mIconContainer, OrePrefixes processingPrefix, Materials stoneMaterial) {
         this.mIconContainer = mIconContainer;
-        this.processingPrefix= processingPrefix;
+        this.processingPrefix = processingPrefix;
         this.stoneMaterial = stoneMaterial;
     }
 
@@ -43,24 +43,23 @@ public enum StoneTypes {
 
         StoneTypes variantId = StoneTypes.STONE;
 
-        if(block == Blocks.STONE) {
+        if (block == Blocks.STONE) {
             variantId = StoneTypes.STONE;
-        } else if(block == GregTech_API.sBlockGranites) {
-            if(metadata == 0)
+        } else if (block == GregTech_API.sBlockGranites) {
+            if (metadata == 0)
                 variantId = StoneTypes.BLACK_GRANITE;
-            else if(metadata == 8)
+            else if (metadata == 8)
                 variantId = StoneTypes.RED_GRANITE;
-        } else if(block == GregTech_API.sBlockStones) {
-            if(metadata == 0)
+        } else if (block == GregTech_API.sBlockStones) {
+            if (metadata == 0)
                 variantId = StoneTypes.MARBLE;
-            else if(metadata == 8)
+            else if (metadata == 8)
                 variantId = StoneTypes.BASALT;
-        } else if(block == Blocks.NETHERRACK) {
+        } else if (block == Blocks.NETHERRACK) {
             variantId = StoneTypes.NETHERRACK;
-        } else if(block == Blocks.END_STONE) {
+        } else if (block == Blocks.END_STONE) {
             variantId = StoneTypes.ENDSTONE;
         }
         return variantId;
     }
-
 }

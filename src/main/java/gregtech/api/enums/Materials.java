@@ -202,7 +202,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 	public static Materials Amber = new Materials(514, TextureSet.SET_RUBY, 		4.0F, 128, 2, 1|4|8 |64, 255, 128, 0, 127, "Amber", "Amber", 5, 3, -1, 0, false, true, 1, 1, 1, Dyes.dyeOrange, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.VINCULUM, 2), new TC_AspectStack(TC_Aspects.VITREUS, 1)));
 	public static Materials Ammonium = new Materials(-1, TextureSet.SET_NONE, 		1.0F, 0, 2, 1, 255, 255, 255, 0, "Ammonium", "Ammonium", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes._NULL);
 	public static Materials Amordrine = new Materials(-1, TextureSet.SET_NONE, 		6.0F, 64, 2, 1 | 2 | 8 | 16 | 64, 255, 255, 255, 0, "Amordrine", "Amordrine", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes._NULL);
-	public static Materials Andesite = new Materials(-1, TextureSet.SET_NONE, 		1.0F, 0, 2, 1, 255, 255, 255, 0, "Andesite", "Andesite", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes._NULL);
 	public static Materials Angmallen = new Materials(958, TextureSet.SET_METALLIC, 10.0F, 128, 2, 1 | 2 | 8 | 16 | 64, 215, 225, 138, 0, "Angmallen", "Angmallen", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes._NULL);
 	public static Materials Ardite = new Materials(-1, TextureSet.SET_NONE, 		6.0F, 64, 2, 1|2|8 |64, 255, 0, 0, 0, "Ardite", "Ardite", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeYellow);
 	public static Materials Aredrite = new Materials(-1, TextureSet.SET_NONE, 		6.0F, 64, 2, 1|2|64, 255, 0, 0, 0, "Aredrite", "Aredrite", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeYellow);
@@ -603,6 +602,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 	public static Materials CobaltBrass = new Materials( 343, TextureSet.SET_METALLIC, 	8.0F, 256, 2, 1|2|64|128, 180, 180, 160, 0, "CobaltBrass", "Cobalt Brass", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeOrange, 2, Arrays.asList(new MaterialStack(Brass, 7), new MaterialStack(Aluminium, 1), new MaterialStack(Cobalt, 1)));
 	public static Materials Phosphorus = new Materials( 534, TextureSet.SET_FLINT, 		1.0F, 0, 2, 1|4|8|16, 255, 255, 0, 0, "Phosphorus", "Phosphorus", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeYellow, 2, Arrays.asList(new MaterialStack(Calcium, 3), new MaterialStack(Phosphate, 2)));
 	public static Materials Basalt = new Materials( 844, TextureSet.SET_ROUGH, 			1.0F, 0, 1, 1, 30, 20, 20, 0, "Basalt", "Basalt", 0, 0, -1, 0, false, false, 2, 1, 1, Dyes.dyeBlack, 2, Arrays.asList(new MaterialStack(Olivine, 1), new MaterialStack(Calcite, 3), new MaterialStack(Flint, 8), new MaterialStack(DarkAsh, 4)), Arrays.asList(new TC_AspectStack(TC_Aspects.TENEBRAE, 1)));
+	public static Materials Andesite = new Materials( 298, TextureSet.SET_ROUGH,   4.0F,     32,  1, 1|64|128, 190, 190, 190,   0,	"Andesite", "Andesite"	, 0, 0, -1,    0, false, false,   0,   1,   1, Dyes.dyeLightGray	, 1, Arrays.asList(new MaterialStack(Aluminium, 4), new MaterialStack(SiliconDioxide, 12), new MaterialStack(Magnesium, 1), new MaterialStack(Calcium, 2), new MaterialStack(Iron, 2), new MaterialStack(Sodium, 1)), Arrays.asList(new TC_AspectStack(TC_Aspects.TERRA, 1)));
+	public static Materials Diorite = new Materials( 297, TextureSet.SET_ROUGH,   4.0F,     32,  1, 1|64|128, 255, 255, 255,   0,	"Diorite", "Diorite", 0, 0, -1,    0, false, false,   0,   1,   1, Dyes.dyeWhite   	, 1, Arrays.asList(new MaterialStack(Aluminium, 3), new MaterialStack(SiliconDioxide, 10), new MaterialStack(Magnesium, 2), new MaterialStack(Calcium, 3), new MaterialStack(Iron, 2), new MaterialStack(Sodium, 1)), Arrays.asList(new TC_AspectStack(TC_Aspects.TERRA, 1)));
 	public static Materials GarnetRed = new Materials( 527, TextureSet.SET_RUBY, 		7.0F, 128, 2, 1|4|8 |64, 200, 80, 80, 127, "GarnetRed", "Red Garnet", 0, 0, -1, 0, false, true, 4, 1, 1, Dyes.dyeRed, 2, Arrays.asList(new MaterialStack(Pyrope, 3), new MaterialStack(Almandine, 5), new MaterialStack(Spessartine, 8)), Arrays.asList(new TC_AspectStack(TC_Aspects.VITREUS, 3)));
 	public static Materials GarnetYellow = new Materials( 528, TextureSet.SET_RUBY, 	7.0F, 128, 2, 1|4|8 |64, 200, 200, 80, 127, "GarnetYellow", "Yellow Garnet", 0, 0, -1, 0, false, true, 4, 1, 1, Dyes.dyeYellow, 2, Arrays.asList(new MaterialStack(Andradite, 5), new MaterialStack(Grossular, 8), new MaterialStack(Uvarovite, 3)), Arrays.asList(new TC_AspectStack(TC_Aspects.VITREUS, 3)));
 	public static Materials Marble = new Materials( 845, TextureSet.SET_FINE, 			1.0F, 0, 1, 1, 200, 200, 200, 0, "Marble", "Marble", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeWhite, 2, Arrays.asList(new MaterialStack(Magnesium, 1), new MaterialStack(Calcite, 7)), Arrays.asList(new TC_AspectStack(TC_Aspects.PERFODIO, 1)));
@@ -1067,6 +1068,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 		Silicon					.addOreByProducts(SiliconDioxide		);
 		Salt					.addOreByProducts(RockSalt				);
 		RockSalt				.addOreByProducts(Salt					);
+		Andesite                .addOreByProducts(Basalt                );
+		Diorite                 .addOreByProducts(NetherQuartz          );
 
 		Glue.mChemicalFormula = "No Horses were harmed for the Production";
 		UUAmplifier.mChemicalFormula = "Accelerates the Mass Fabricator";
@@ -1176,6 +1179,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 		GraniteBlack.add(SubTag.STONE, SubTag.NO_SMASHING);
 		Salt.add(SubTag.STONE, SubTag.NO_SMASHING);
 		RockSalt.add(SubTag.STONE, SubTag.NO_SMASHING);
+		Andesite.add(SubTag.STONE, SubTag.NO_SMASHING);
+		Diorite.add(SubTag.STONE, SubTag.NO_SMASHING);
 
 		Sand.add(SubTag.NO_RECYCLING);
 
@@ -1459,9 +1464,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 		mToolQuality = (byte) aToolQuality;
 		mMaterialInto = this;
 		mIconSet = aIconSet;
-		//mOreTextureSet = new GT_RenderedTexture[2];
-        //mOreTextureSet[0] = new GT_RenderedTexture(mIconSet.mTextures[68], mRGBa); //normal ore
-		//mOreTextureSet[1] = new GT_RenderedTexture(mIconSet.mTextures[67], mRGBa); //small ore
 	}
 
 	public Materials(Materials aMaterialInto, boolean aReRegisterIntoThis) {
@@ -1473,9 +1475,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 		mChemicalFormula = aMaterialInto.mChemicalFormula;
 		mMetaItemSubID = -1;
 		mIconSet = TextureSet.SET_NONE;
-		//mOreTextureSet = new GT_RenderedTexture[2];
-		//mOreTextureSet[0] = new GT_RenderedTexture(mIconSet.mTextures[68], mRGBa); //normal ore
-		//mOreTextureSet[1] = new GT_RenderedTexture(mIconSet.mTextures[67], mRGBa); //small ore
 	}
 
 	public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality, int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType, int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent, int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor) {
@@ -1623,7 +1622,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 				((mRGBa[0] & 0xFF) << 16) |
 				((mRGBa[1] & 0xFF) << 8)  |
 				((mRGBa[2] & 0xFF));
-		}
+	}
 
 	public boolean isRadioactive() {
 		if (mElement != null) return mElement.mHalfLifeSeconds >= 0;
@@ -1900,7 +1899,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 	}
 
 	public static Enchantment getEnchantment(String name) {
-        return Enchantment.getEnchantmentByLocation(name);
+		return Enchantment.getEnchantmentByLocation(name);
 	}
 
 	public static volatile int VERSION = 509;

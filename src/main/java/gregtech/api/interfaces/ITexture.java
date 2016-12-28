@@ -30,9 +30,9 @@ public interface ITexture {
     public boolean isValidTexture();
 
     static int color(short[] mRGBa, boolean mAllowAlpha) {
-        int r = (int) (mRGBa[0] * 0.6F);
-        int g = (int) (mRGBa[1] * 0.6F);
-        int b = (int) (mRGBa[2] * 0.6F);
+        int r = (int) (mRGBa[0]);
+        int g = (int) (mRGBa[1]);
+        int b = (int) (mRGBa[2]);
         int a = mAllowAlpha ? 255 - mRGBa[3] : 255;
         return (r << 16) | (g << 8) | (b) | (a << 24);
     }

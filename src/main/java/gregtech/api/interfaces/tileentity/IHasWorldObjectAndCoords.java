@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -19,6 +20,9 @@ import net.minecraftforge.fluids.IFluidHandler;
  * Note: It doesn't have to be a TileEntity in certain cases! And only certain cases, such as the Recipe checking of the findRecipe Function.
  */
 public interface IHasWorldObjectAndCoords {
+
+    static BlockPos.MutableBlockPos t = new BlockPos.MutableBlockPos();
+
     public World getWorld();
 
     public BlockPos getPos();
@@ -67,27 +71,61 @@ public interface IHasWorldObjectAndCoords {
 
     public IGregTechTileEntity getIGregTechTileEntityAtSideAndDistance(byte aSide, int aDistance);
 
-    public Block getBlock(int aX, int aY, int aZ);
+    public default Block getBlock(int aX, int aY, int aZ) {
+        return getBlockState(t.setPos(aX, aY, aZ)).getBlock();
+    }
+
+    public default IBlockState getBlockState(BlockPos pos) {
+        return getWorld().getBlockState(pos);
+    }
+
+    public default boolean setBlockState(BlockPos pos, IBlockState state) {
+        return getWorld().setBlockState(pos, state);
+    }
+
+    public default boolean setBlockToAir(BlockPos pos) {
+        return getWorld().setBlockToAir(pos);
+    }
 
     public default Block getBlockOffset(int aX, int aY, int aZ) {
         return getBlockStateOffset(aX, aY, aZ).getBlock();
     }
 
     public default IBlockState getBlockStateOffset(int aX, int aY, int aZ) {
-        return getWorld().getBlockState(new BlockPos(getXCoord() + aX, getYCoord() + aY, getZCoord() + aZ));
+        return getBlockState(t.setPos(getPos()).add(aX, aY, aZ));
     }
 
-    public Block getBlockAtSide(byte aSide);
+    public default Block getBlockAtSide(byte aSide) {
+        return getBlockState(t.setPos(getPos()).offset(EnumFacing.VALUES[aSide])).getBlock();
+    }
 
-    public Block getBlockAtSideAndDistance(byte aSide, int aDistance);
+    public default Block getBlockAtSideAndDistance(byte aSide, int aDistance) {
+         return getBlockState(t.setPos(getPos()).offset(EnumFacing.VALUES[aSide], aDistance)).getBlock();
+    }
 
-    public byte getMetaID(int aX, int aY, int aZ);
+    public default byte getMetaID(int aX, int aY, int aZ) {
+        IBlockState state = getBlockState(t.setPos(aX, aY, aZ));
+        return (byte) state.getBlock().getMetaFromState(state);
+    }
 
-    public byte getMetaIDOffset(int aX, int aY, int aZ);
+    public default byte getMetaIDOffset(int aX, int aY, int aZ) {
+        IBlockState state = getBlockStateOffset(aX, aY, aZ);
+        return (byte) state.getBlock().getMetaFromState(state);
+    }
 
-    public byte getMetaIDAtSide(byte aSide);
+    public default byte getMetaIDAtSide(byte aSide) {
+        IBlockState state = getBlockState(t.setPos(getPos()).offset(EnumFacing.VALUES[aSide]));
+        return (byte) state.getBlock().getMetaFromState(state);
+    }
 
-    public byte getMetaIDAtSideAndDistance(byte aSide, int aDistance);
+    public default byte getMetaIDAtSideAndDistance(byte aSide, int aDistance) {
+        IBlockState state = getBlockState(t.setPos(getPos()).offset(EnumFacing.VALUES[aSide], aDistance));
+        return (byte) state.getBlock().getMetaFromState(state);
+    }
+
+    public default boolean isAir(BlockPos pos) {
+        return getWorld().isAirBlock(pos);
+    }
 
     public byte getLightLevel(int aX, int aY, int aZ);
 

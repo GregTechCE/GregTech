@@ -18,9 +18,11 @@ import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.armor.*;
 import ic2.core.block.wiring.CableType;
+import ic2.core.item.ItemIC2FluidContainer;
 import ic2.core.item.type.*;
 import ic2.core.ref.ItemName;
 import ic2.core.util.Ic2Color;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -112,7 +114,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             "unfinishedTank", "valvePart", "aquaRegia", "leatherSeal", "leatherSlimeSeal", "hambone", "slimeball", "clay", "enrichedUranium", "camoPaste",
             "antiBlock", "burntQuartz", "salmonRaw", "blockHopper", "blockEnderObsidian", "blockIcestone", "blockMagicWood", "blockEnderCore", "blockHeeEndium",
             "oreHeeEndPowder", "oreHeeStardust", "oreHeeIgneousRock", "oreHeeInstabilityOrb", "crystalPureFluix", "shardNether", "gemFluorite",
-            "stickObsidian", "caveCrystal", "shardCrystal", "DYECrystal","shardFire","shardWater","shardAir","shardEarth","ingotRefinedIron","blockMarble","ingotUnstable"}));
+            "stickObsidian", "caveCrystal", "shardCrystal", "DYECrystal","shardFire","shardWater","shardAir","shardEarth","ingotRefinedIron","blockMarble","ingotUnstable",
+            "blockCactus", "blockPrismarineBrick", "blockPrismarineDark", "stoneGranitePolished", "stoneDioritePolished", "stoneAndesitePolished", "doorWood", "doorIron"}));
     private final Collection<String> mInvalidNames = new HashSet<String>(Arrays.asList(new String[]{"diamondShard", "redstoneRoot", "obsidianStick", "bloodstoneOre",
             "universalCable", "bronzeTube", "ironTube", "netherTube", "obbyTube", "infiniteBattery", "eliteBattery", "advancedBattery", "10kEUStore",
             "blueDye", "MonazitOre", "quartzCrystal", "whiteLuminiteCrystal", "darkStoneIngot", "invisiumIngot", "demoniteOrb", "enderGem", "starconiumGem",
@@ -130,6 +133,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public ArrayList<String> mBufferedPlayerActivity = new ArrayList();
     public boolean mHardcoreCables = false;
     public boolean mDisableVanillaOres = true;
+    public boolean mDisableModdedOres = true;
     public boolean mNerfDustCrafting = true;
     public boolean mSortToTheEnd = true;
     public boolean mCraftingUnification = true;
@@ -891,9 +895,21 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     @SubscribeEvent
     public void onOreGenEvent(OreGenEvent.GenerateMinable aGenerator) {
-        if ((this.mDisableVanillaOres) && ((aGenerator.getGenerator() instanceof WorldGenMinable))
-                && (PREVENTED_ORES.contains(aGenerator.getType()))) {
-            aGenerator.setResult(Result.DENY);
+        if (aGenerator.getGenerator() instanceof WorldGenMinable) {
+            if (PREVENTED_ORES.contains(aGenerator.getType())) {
+                if (mDisableVanillaOres) {
+                    aGenerator.setResult(Result.DENY);
+                }
+                return;
+            }
+            if (mDisableModdedOres) {
+                WorldGenMinable worldGenMinable = (WorldGenMinable) aGenerator.getGenerator();
+                IBlockState oreBlock = ObfuscationReflectionHelper.getPrivateValue(WorldGenMinable.class, worldGenMinable, 0);
+                ItemData itemData = GT_OreDictUnificator.getAssociation(oreBlock);
+                if(itemData != null && itemData.mPrefix.toString().startsWith("ore") && (itemData.mMaterial.mMaterial.mTypes & 0x08) != 0) {
+                    aGenerator.setResult(Result.DENY);
+                }
+            }
         }
     }
 
@@ -974,11 +990,16 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                     return;
                 }
             }
+            if(aEvent.getOre().getItem() instanceof ItemIC2FluidContainer) {
+                System.out.println("Ignoring IC2 fluid container " + aEvent.getOre() + " registration as " + aEvent.getName() + " because ic2 fluid containers are mad.");
+                GT_OreDictUnificator.addToBlacklist(aEvent.getOre());
+                return;
+            }
             String tModToName = aMod + " -> " + aEvent.getName();
             if ((this.mOreDictActivated) || (GregTech_API.sPostloadStarted) || ((this.mSortToTheEnd) && (GregTech_API.sLoadFinished))) {
                 tModToName = aOriginalMod + " --Late--> " + aEvent.getName();
             }
-            if (((aEvent.getOre().getItem() instanceof ItemBlock)) || (GT_Utility.getBlockFromStack(aEvent.getOre()) != Blocks.AIR)) {
+            if (((aEvent.getOre().getItem() instanceof ItemBlock)) || (GT_Utility.getBlockFromStack(aEvent.getOre()) != null)) {
                 GT_OreDictUnificator.addToBlacklist(aEvent.getOre());
             }
             this.mRegisteredOres.add(aEvent.getOre());
@@ -1245,16 +1266,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                                     return;
                                 }
                             } else {
-                                for (Dyes tDye : Dyes.VALUES) {
-                                    if (aEvent.getName().endsWith(tDye.name().replaceFirst("dye", ""))) {
-                                        GT_OreDictUnificator.addToBlacklist(aEvent.getOre());
-                                        GT_Log.ore.println(tModToName + " Oh man, why the fuck would anyone need a OreDictified Color for this, that is even too much for GregTech... do not report this, this is just a random Comment about how ridiculous this is.");
-                                        return;
-                                    }
-                                }
-                                //System.out.println("Material Name: "+aEvent.getName()+ " !!!Unknown Material detected!!! Please report to GregTech Intergalactical for additional compatiblity. This is not an Error, an Issue nor a Lag Source, it is just an Information, which you should pass to me.");
-                                //GT_Log.ore.println(tModToName + " uses an unknown Material. Report this to GregTech.");
-                                GT_Log.ore.println(tModToName + " uses an unknown Material.");
+                                //for (Dyes tDye : Dyes.VALUES) {
+                                //    if (aEvent.getName().endsWith(tDye.name().replaceFirst("dye", ""))) {
+                                //        GT_OreDictUnificator.addToBlacklist(aEvent.getOre());
+                                //        GT_Log.ore.println(tModToName + " Oh man, why the fuck would anyone need a OreDictified Color for this, that is even too much for GregTech... do not report this, this is just a random Comment about how ridiculous this is.");
+                                //        return;
+                                //    }
+                                //}
+								//System.out.println("Material Name: "+aEvent.getName()+ " !!!Unknown Material detected!!! Please report to GregTech Intergalactical for additional compatiblity. This is not an Error, an Issue nor a Lag Source, it is just an Information, which you should pass to me.");
+								//GT_Log.ore.println(tModToName + " uses an unknown Material. Report this to GregTech.");
                                 return;
                             }
                         } else {

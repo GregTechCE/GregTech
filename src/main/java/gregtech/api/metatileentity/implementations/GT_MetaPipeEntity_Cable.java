@@ -104,6 +104,36 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     }
 
     @Override
+    public boolean isConductor() {
+        return true;
+    }
+
+    @Override
+    public long getMaxVoltage() {
+        return mVoltage;
+    }
+
+    @Override
+    public long getMaxAmperage() {
+        return mAmperage;
+    }
+
+    @Override
+    public long getLossPerMeter() {
+        return mCableLossPerMeter;
+    }
+
+    @Override
+    public Materials getCableMaterial() {
+        return mMaterial;
+    }
+
+    @Override
+    public Materials getInsulationMaterial() {
+        return mInsulated ? Materials.Rubber : Materials.Air;
+    }
+
+    @Override
     public boolean isSimpleMachine() {
         return true;
     }

@@ -9,6 +9,7 @@ import gregtech.api.objects.GT_HashSet;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -70,7 +71,7 @@ public class GT_OreDictUnificator {
         if (!aAlreadyRegistered) registerOre(aPrefix.get(aMaterial), aStack);
         addAssociation(aPrefix, aMaterial, aStack, isBlacklisted(aStack));
         if (aOverwrite || GT_Utility.isStackInvalid(sName2StackMap.get(aPrefix.get(aMaterial).toString())))
-            sName2StackMap.put(aPrefix.get(aMaterial).toString(), aStack);
+            if(!isBlacklisted(aStack)) sName2StackMap.put(aPrefix.get(aMaterial).toString(), aStack);
         isAddingOre--;
     }
 
@@ -138,8 +139,10 @@ public class GT_OreDictUnificator {
         if (GT_Utility.isStackInvalid(aStack)) return null;
         ItemData tPrefixMaterial = getAssociation(aStack);
         ItemStack rStack = null;
+
         if (tPrefixMaterial == null || !tPrefixMaterial.hasValidPrefixMaterialData() || (aUseBlackList && tPrefixMaterial.mBlackListed))
             return GT_Utility.copy(aStack);
+
         if (aUseBlackList && !GregTech_API.sUnificationEntriesRegistered && isBlacklisted(aStack)) {
             tPrefixMaterial.mBlackListed = true;
             return GT_Utility.copy(aStack);
@@ -204,6 +207,11 @@ public class GT_OreDictUnificator {
         ItemData rData = sItemStack2DataMap.get(new GT_ItemStack(aStack));
         if (rData == null) rData = sItemStack2DataMap.get(new GT_ItemStack(GT_Utility.copyMetaData(W, aStack)));
         return rData;
+    }
+
+    public static ItemData getAssociation(IBlockState blockState) {
+        ItemStack itemStack = new ItemStack(blockState.getBlock(), 1, blockState.getBlock().getMetaFromState(blockState));
+        return getAssociation(itemStack);
     }
 
     public static ItemData getAssociation(ItemStack aStack) {

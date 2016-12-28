@@ -467,6 +467,8 @@ public enum OrePrefixes {
         dustImpure.mGeneratedItems.add(Materials.Netherrack);
         dustImpure.mGeneratedItems.add(Materials.Endstone);
         dustImpure.mGeneratedItems.add(Materials.Stone);
+        dustImpure.mGeneratedItems.add(Materials.Andesite);
+        dustImpure.mGeneratedItems.add(Materials.Diorite);
 
         plate.mGeneratedItems.add(Materials.Redstone);
         plate.mGeneratedItems.add(Materials.Concrete);
@@ -475,6 +477,8 @@ public enum OrePrefixes {
         plate.mGeneratedItems.add(Materials.Glowstone);
         plate.mGeneratedItems.add(Materials.Nikolite);
         plate.mGeneratedItems.add(Materials.Obsidian);
+        plate.mGeneratedItems.add(Materials.Andesite);
+        plate.mGeneratedItems.add(Materials.Diorite);
 
         plate.mGeneratedItems.add(Materials.Paper);
         plateDouble.mGeneratedItems.add(Materials.Paper);

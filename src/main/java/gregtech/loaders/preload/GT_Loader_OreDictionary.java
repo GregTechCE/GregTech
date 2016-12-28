@@ -96,6 +96,13 @@ public class GT_Loader_OreDictionary
         if (Blocks.ENDER_CHEST != null) {
             GT_OreDictUnificator.registerOre(OreDictNames.enderChest, new ItemStack(Blocks.ENDER_CHEST, 1));
         }
+        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.GraniteBlack, new ItemStack(Blocks.STONE, 1, 1));
+        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.GraniteBlack, new ItemStack(Blocks.STONE, 1, 2));
+        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Andesite, new ItemStack(Blocks.STONE, 1, 5));
+        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Andesite, new ItemStack(Blocks.STONE, 1, 6));
+        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Diorite, new ItemStack(Blocks.STONE, 1, 3));
+        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Diorite, new ItemStack(Blocks.STONE, 1, 4));
+
         GT_OreDictUnificator.registerOre(OreDictNames.craftingAnvil, new ItemStack(Blocks.ANVIL, 1));
         GT_OreDictUnificator.registerOre(OreDictNames.craftingAnvil, GT_ModHandler.getModItem("Railcraft", "tile.railcraft.anvil", 1, 0));
         GT_OreDictUnificator.registerOre(OreDictNames.craftingIndustrialDiamond, ItemList.IC2_Industrial_Diamond.get(1));

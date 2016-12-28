@@ -3,6 +3,7 @@ package gregtech.loaders.load;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.items.GT_Generic_Item;
+import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;

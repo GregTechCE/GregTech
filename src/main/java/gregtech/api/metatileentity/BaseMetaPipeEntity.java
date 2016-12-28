@@ -1,9 +1,11 @@
 package gregtech.api.metatileentity;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IEnergyConductor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.net.GT_Packet_TileEntity;
@@ -45,7 +47,7 @@ import static gregtech.api.enums.GT_Values.NW;
  * <p/>
  * This is the main TileEntity for EVERYTHING.
  */
-public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileEntity, IPipeRenderedTileEntity {
+public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileEntity, IPipeRenderedTileEntity, IEnergyConductor {
     private final GT_CoverBehavior[] mCoverBehaviors = new GT_CoverBehavior[]{GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior};
     public byte mConnections = 0;
     protected MetaPipeEntity mMetaTileEntity;
@@ -444,6 +446,36 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     @Override
     public void issueCoverUpdate(byte aSide) {
         issueClientUpdate();
+    }
+
+    @Override
+    public boolean isConductor() {
+        return mMetaTileEntity.isConductor();
+    }
+
+    @Override
+    public long getMaxVoltage() {
+        return mMetaTileEntity.getMaxVoltage();
+    }
+
+    @Override
+    public long getMaxAmperage() {
+        return mMetaTileEntity.getMaxAmperage();
+    }
+
+    @Override
+    public long getLossPerMeter() {
+        return mMetaTileEntity.getLossPerMeter();
+    }
+
+    @Override
+    public Materials getCableMaterial() {
+        return mMetaTileEntity.getCableMaterial();
+    }
+
+    @Override
+    public Materials getInsulationMaterial() {
+        return mMetaTileEntity.getInsulationMaterial();
     }
 
     @Override

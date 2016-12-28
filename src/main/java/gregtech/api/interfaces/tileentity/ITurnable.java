@@ -15,7 +15,7 @@ public interface ITurnable {
     /**
      * Set the block's facing
      *
-     * @param facing facing to set the block to
+     * @param aSide facing to set the block to
      */
     void setFrontFacing(byte aSide);
 

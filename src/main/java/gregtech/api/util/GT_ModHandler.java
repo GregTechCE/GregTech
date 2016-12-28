@@ -20,6 +20,7 @@ import ic2.core.ref.FluidName;
 import ic2.core.ref.ItemName;
 import ic2.core.ref.TeBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -166,6 +167,10 @@ public class GT_ModHandler {
         sSpecialRecipeClasses.add("forestry.lepidopterology.MatingRecipe");
         sSpecialRecipeClasses.add("micdoodle8.mods.galacticraft.planets.asteroids.recipe.CanisterRecipes");
         sSpecialRecipeClasses.add("shedar.mods.ic2.nuclearcontrol.StorageArrayRecipe");
+    }
+
+    public static <T extends IIdProvider> IBlockState getIC2BlockState(BlockName blockName, T type) {
+        return blockName.getBlockState(type);
     }
 
     public static ItemStack getIC2Item(ItemName itemName, int amount) {
@@ -362,7 +367,7 @@ public class GT_ModHandler {
         if(stack != null) {
             stack.stackSize = (int) aAmount;
             return stack;
-            }
+        }
         return null;
     }
 
@@ -413,7 +418,7 @@ public class GT_ModHandler {
     public static boolean addValuableOre(Block aBlock, int aMeta, int aValue) {
         if (aValue <= 0) return false;
         try {
-            Class.forName("ic2.core.IC2").getMethod("addValuableOre", IRecipeInput.class, int.class).invoke(null, new RecipeInputItemStack(new ItemStack(aBlock, 1, aMeta)), aValue);
+            Class.forName("ic2.core.init.OreValues").getMethod("add", ItemStack.class, int.class).invoke(null, new ItemStack(aBlock, 1, aMeta), aValue);
         } catch (Throwable e) {/*Do nothing*/}
         return true;
     }
