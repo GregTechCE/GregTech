@@ -110,17 +110,21 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
             if ((tRecipe != null) && (this.mHeatingCapacity >= tRecipe.mSpecialValue) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
                 this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
+                int tHeatCapacityDivTiers = (mHeatingCapacity - tRecipe.mSpecialValue)/900;
                 if (tRecipe.mEUt <= 16) {
                     this.mEUt = (tRecipe.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
                     this.mMaxProgresstime = (tRecipe.mDuration / (1 << tTier - 1));
                 } else {
                     this.mEUt = tRecipe.mEUt;
                     this.mMaxProgresstime = tRecipe.mDuration;
+                    int i = 2;
                     while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
                         this.mEUt *= 4;
-                        this.mMaxProgresstime /= 2;
+                        this.mMaxProgresstime /= (tHeatCapacityDivTiers>=i ? 4 : 2);
+                        i+=2;
                     }
                 }
+                if(tHeatCapacityDivTiers>0)this.mEUt = (int) (this.mEUt * (Math.pow(0.95, tHeatCapacityDivTiers)));
                 if (this.mEUt > 0) {
                     this.mEUt = (-this.mEUt);
                 }

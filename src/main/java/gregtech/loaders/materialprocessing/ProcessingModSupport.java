@@ -142,7 +142,9 @@ public class ProcessingModSupport implements gregtech.api.interfaces.IMaterialHa
             OrePrefixes.ring.enableComponent(Materials.NiobiumTitanium);
             OrePrefixes.foil.enableComponent(Materials.StainlessSteel);
             OrePrefixes.foil.enableComponent(Materials.ChromiumDioxide);
+            OrePrefixes.foil.enableComponent(Materials.Iron);
             OrePrefixes.plate.enableComponent(Materials.ChromiumDioxide);
+            OrePrefixes.screw.enableComponent(Materials.Copper);
         }
     }
 
