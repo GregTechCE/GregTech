@@ -1,9 +1,9 @@
 package gregtech.loaders.materialprocessing;
 
-import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import net.minecraftforge.fml.common.Loader;
 
 public class ProcessingModSupport implements gregtech.api.interfaces.IMaterialHandler {
     public static boolean aTGregSupport = Loader.isModLoaded("TGregworks");

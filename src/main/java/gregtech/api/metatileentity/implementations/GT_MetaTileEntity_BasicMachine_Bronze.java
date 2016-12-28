@@ -6,6 +6,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,8 +15,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-
-import java.util.ArrayList;
 
 import static gregtech.api.enums.GT_Values.D1;
 
@@ -151,7 +150,7 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
         if (aIndex == 9) {
             GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(4), 5, 1.0F, aX, aY, aZ);
             for (int l = 0; l < 8; ++l)
-                getBaseMetaTileEntity().getWorld().spawnParticle(EnumParticleTypes.SMOKE_LARGE, aX - 0.5 + Math.random(), aY - 0.5 + Math.random(), aZ - 0.5 + Math.random(), EnumFacing.VALUES[getBaseMetaTileEntity().getFrontFacing()].getFrontOffsetX() / 5.0, EnumFacing.VALUES[getBaseMetaTileEntity().getFrontFacing()].getFrontOffsetY() / 5.0, EnumFacing.VALUES[getBaseMetaTileEntity().getFrontFacing()].getFrontOffsetZ() / 5.0);
+                getBaseMetaTileEntity().getWorld().spawnParticle(EnumParticleTypes.SMOKE_LARGE, aX - 0.5 + Math.random(), aY - 0.5 + Math.random(), aZ - 0.5 + (new XSTR()).nextFloat(), EnumFacing.VALUES[getBaseMetaTileEntity().getFrontFacing()].getFrontOffsetX() / 5.0, EnumFacing.VALUES[getBaseMetaTileEntity().getFrontFacing()].getFrontOffsetY() / 5.0, EnumFacing.VALUES[getBaseMetaTileEntity().getFrontFacing()].getFrontOffsetZ() / 5.0);
         }
     }
 

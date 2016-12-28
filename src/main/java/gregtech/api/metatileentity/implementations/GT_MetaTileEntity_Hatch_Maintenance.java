@@ -2,8 +2,13 @@ package gregtech.api.metatileentity.implementations;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.GT_Container_2by2;
 import gregtech.api.gui.GT_Container_MaintenanceHatch;
+import gregtech.api.gui.GT_GUIContainer_2by2;
 import gregtech.api.gui.GT_GUIContainer_MaintenanceHatch;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -20,19 +25,30 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch {
-    public boolean mWrench = false, mScrewdriver = false, mSoftHammer = false, mHardHammer = false, mSolderingTool = false, mCrowbar = false;
+    public boolean mWrench = false, mScrewdriver = false, mSoftHammer = false, mHardHammer = false, mSolderingTool = false, mCrowbar = false, mAuto;
 
     public GT_MetaTileEntity_Hatch_Maintenance(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 1, "For maintaining Multiblocks");
+        mAuto = false;
     }
 
-    public GT_MetaTileEntity_Hatch_Maintenance(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_Maintenance(int aID, String aName, String aNameRegional, int aTier, boolean aAuto) {
+        super(aID, aName, aNameRegional, aTier, 4, "For automatically maintaining Multiblocks");
+        mAuto = aAuto;
+    }
+
+    public GT_MetaTileEntity_Hatch_Maintenance(String aName, int aTier, String aDescription, ITexture[][][] aTextures, boolean aAuto) {
         super(aName, aTier, 1, aDescription, aTextures);
+        mAuto = aAuto;
     }
 
     @Override
     public String[] getDescription() {
+        if(mAuto)return new String[]{mDescription,"4 Ducttape, 2 Lubricant Cells","4 Steel Screws, 2 Adv Circuits","For each autorepair"};
         return new String[]{mDescription, "Cannot be shared between Multiblocks!"};
     }
 
@@ -73,7 +89,8 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_Maintenance(mName, mTier, mDescription, mTextures);
+        if(aTileEntity.getMetaTileID()==111) return new GT_MetaTileEntity_Hatch_Maintenance(mName, mTier, mDescription, mTextures, true);
+        return new GT_MetaTileEntity_Hatch_Maintenance(mName, mTier, mDescription, mTextures, false);
     }
 
     @Override
@@ -85,12 +102,65 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        if(mAuto) return new GT_Container_2by2(aPlayerInventory, aBaseMetaTileEntity);
         return new GT_Container_MaintenanceHatch(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        if(mAuto) return new GT_GUIContainer_2by2(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
         return new GT_GUIContainer_MaintenanceHatch(aPlayerInventory, aBaseMetaTileEntity);
+    }
+
+    public boolean autoMaintainance() {
+        boolean tSuccess = true;
+        ItemStack[] mInputs = new ItemStack[]{ItemList.Duct_Tape.get(4, new Object[]{}),GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Lubricant, 2),GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 4),GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 2)};
+        List<ItemStack> aInputs = Arrays.asList(mInventory);
+        if (mInputs.length > 0 && aInputs == null) tSuccess = false;
+        int amt = 0;
+        for (ItemStack tStack : mInputs) {
+            if (tStack != null) {
+                amt = tStack.stackSize;
+                boolean temp = true;
+                for (ItemStack aStack : aInputs) {
+                    if ((GT_Utility.areUnificationsEqual(aStack, tStack, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, aStack), tStack, true))) {
+                        amt -= aStack.stackSize;
+                        if (amt < 1) {
+                            temp = false;
+                            break;
+                        }
+                    }
+                }
+                if (temp) tSuccess = false;
+            }
+        }
+        if(tSuccess){
+            for (ItemStack tStack : mInputs) {
+                if (tStack != null) {
+                    amt = tStack.stackSize;
+                    for (ItemStack aStack : aInputs) {
+                        if ((GT_Utility.areUnificationsEqual(aStack, tStack, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, aStack), tStack, true))) {
+                            if (aStack.stackSize < amt){
+                                amt -= aStack.stackSize;
+                                aStack.stackSize = 0;
+                            }else{
+                                aStack.stackSize -= amt;
+                                amt = 0;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            this.mCrowbar = true;
+            this.mHardHammer = true;
+            this.mScrewdriver = true;
+            this.mSoftHammer = true;
+            this.mSolderingTool = true;
+            this.mWrench = true;
+            return true;
+        }
+        return false;
     }
 
     public void onToolClick(ItemStack aStack, EntityLivingBase aPlayer) {
@@ -114,7 +184,7 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
         if (mSolderingTool && aPlayer instanceof EntityPlayerMP) {
             EntityPlayerMP tPlayer = (EntityPlayerMP) aPlayer;
             try {
-                GT_Mod.instance.achievements.issueAchievement(tPlayer, "maintainance");
+                GT_Mod.achievements.issueAchievement(tPlayer, "maintainance");
             } catch (Exception e) {
             }
         }

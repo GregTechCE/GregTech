@@ -13,10 +13,10 @@ import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import ic2.api.item.IElectricItem;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
@@ -29,9 +29,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static gregtech.api.enums.GT_Values.*;
 
@@ -47,14 +49,15 @@ import static gregtech.api.enums.GT_Values.*;
  *         <p/>
  *         These Items can also have special RightClick abilities, electric Charge or even be set to become a Food alike Item.
  */
-public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements IElectricItem {
+public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item {
     /**
+     public abstract class GT_MetaGenerated_Item extends GT_MetaB
      * All instances of this Item Class are listed here.
      * This gets used to register the Renderer to all Items of this Type, if useStandardMetaItemRenderer() returns true.
      * <p/>
      * You can also use the unlocalized Name gotten from getUnlocalizedName() as Key if you want to get a specific Item.
      */
-    public static final HashMap<String, GT_MetaGenerated_Item> sInstances = new HashMap<String, GT_MetaGenerated_Item>();
+    public static final ConcurrentHashMap<String, GT_MetaGenerated_Item> sInstances = new ConcurrentHashMap<String, GT_MetaGenerated_Item>();
 
 	/* ---------- CONSTRUCTOR AND MEMBER VARIABLES ---------- */
 
@@ -65,10 +68,10 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
     @SideOnly(Side.CLIENT)
     public TextureAtlasSprite[][] mIconList;
 
-    public final HashMap<Short, IFoodStat> mFoodStats = new HashMap<Short, IFoodStat>();
-    public final HashMap<Short, Long[]> mElectricStats = new HashMap<Short, Long[]>();
-    public final HashMap<Short, Long[]> mFluidContainerStats = new HashMap<Short, Long[]>();
-    public final HashMap<Short, Short> mBurnValues = new HashMap<Short, Short>();
+    public final ConcurrentHashMap<Short, IFoodStat> mFoodStats = new ConcurrentHashMap<Short, IFoodStat>();
+    public final ConcurrentHashMap<Short, Long[]> mElectricStats = new ConcurrentHashMap<Short, Long[]>();
+    public final ConcurrentHashMap<Short, Long[]> mFluidContainerStats = new ConcurrentHashMap<Short, Long[]>();
+    public final ConcurrentHashMap<Short, Short> mBurnValues = new ConcurrentHashMap<Short, Short>();
 
     /**
      * Creates the Item using these Parameters.
@@ -302,22 +305,25 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
         return tStat == null ? EnumAction.NONE : tStat.getFoodAction(this, aStack);
     }
 
-
-
-    /*@Override
-    public final ItemStack onEaten(ItemStack aStack, World aWorld, EntityPlayer aPlayer, EnumHand hand) {
-        IFoodStat tStat = mFoodStats.get((short) getDamage(aStack));
-        if (tStat != null) {
-            aPlayer.getFoodStats().addStats(tStat.getFoodLevel(this, aStack, aPlayer), tStat.getSaturation(this, aStack, aPlayer));
-            tStat.onEaten(this, aStack, aPlayer);
+    @Nullable
+    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
+        if (entityLiving instanceof EntityPlayer) {
+            EntityPlayer entityplayer = (EntityPlayer) entityLiving;
+            IFoodStat tStat = mFoodStats.get((short) getDamage(stack));
+            if (tStat != null) {
+                --stack.stackSize;
+                entityplayer.getFoodStats().addStats(tStat.getFoodLevel(this, stack, entityplayer), tStat.getSaturation(this, stack, entityplayer));
+                tStat.onEaten(this, stack, entityplayer);
+            }
         }
-        return aStack;
-    }*/
+        return stack;
+    }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item var1, CreativeTabs aCreativeTab, List<ItemStack> aList) {
-        for (int i = 0, j = mEnabledItems.length(); i < j; i++)
+        int j = mEnabledItems.length();
+        for (int i = 0; i < j; i++)
             if (mVisibleItems.get(i) || (D1 && mEnabledItems.get(i))) {
                 Long[] tStats = mElectricStats.get((short) (mOffset + i));
                 if (tStats != null && tStats[3] < 0) {
@@ -338,7 +344,8 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
     @SideOnly(Side.CLIENT)
     public final void registerIcons(TextureMap aIconRegister) {
         System.out.println("Registering item icons");
-        for (short i = 0, j = (short) mEnabledItems.length(); i < j; i++)
+        short j = (short) mEnabledItems.length();
+        for (short i = 0; i < j; i++)
             if (mEnabledItems.get(i)) {
                 for (byte k = 1; k < mIconList[i].length; k++) {
                     mIconList[i][k] = aIconRegister.registerSprite(new ResourceLocation(RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i + "/" + k)));

@@ -1,4 +1,4 @@
-package gregtech.common.items.armor.gui;
+package gregtech.common.items.armor;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;

@@ -3,7 +3,6 @@ package gregtech.api.items;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import ic2.api.item.ElectricItem;
@@ -29,18 +28,16 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
-import static gregtech.api.enums.GT_Values.D1;
 import static gregtech.api.enums.GT_Values.V;
 
 public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpecialElectricItem, IElectricItemManager, IFluidContainerItem {
     /* ---------- CONSTRUCTOR AND MEMBER VARIABLES ---------- */
-    private final HashMap<Short, ArrayList<IItemBehaviour<GT_MetaBase_Item>>> mItemBehaviors = new HashMap<>();
+    private final ConcurrentHashMap<Short, ArrayList<IItemBehaviour<GT_MetaBase_Item>>> mItemBehaviors = new ConcurrentHashMap<>();
 
     /**
      * Creates the Item using these Parameters.
@@ -210,7 +207,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
                 if (tStats[3] == -2 && tCharge <= 0) {
                     aList.add(TextFormatting.AQUA + "Empty. You should recycle it properly." + TextFormatting.GRAY);
                 } else {
-                    aList.add(TextFormatting.AQUA + "" + GT_Utility.formatNumbers(tCharge) + " / " + GT_Utility.formatNumbers(Math.abs(tStats[0])) + " EU - Voltage: " + V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)] + TextFormatting.GRAY);
+                    aList.add(String.valueOf(TextFormatting.AQUA) + GT_Utility.formatNumbers(tCharge) + " / " + GT_Utility.formatNumbers(Math.abs(tStats[0])) + " EU - Voltage: " + V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)] + TextFormatting.GRAY);
                 }
             }
         }
@@ -235,7 +232,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         if (tList != null) for (IItemBehaviour<GT_MetaBase_Item> tBehavior : tList)
             tBehavior.onUpdate(this, aStack, aWorld, aPlayer, aTimer, aIsInHand);
     }
-    
+
     public final boolean canProvideEnergy(ItemStack aStack) {
         Long[] tStats = getElectricStats(aStack);
         return tStats != null && (tStats[3] > 0 || (aStack.stackSize == 1 && (tStats[3] == -2 || tStats[3] == -3)));
@@ -248,7 +245,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         return Math.abs(tStats[0]);
     }
 
-    
+
     public final double getTransferLimit(ItemStack aStack) {
         Long[] tStats = getElectricStats(aStack);
         if (tStats == null) return 0;
@@ -295,7 +292,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         chargeFromArmor(aStack, aPlayer);
         if (aPlayer instanceof EntityPlayer && ((EntityPlayer) aPlayer).capabilities.isCreativeMode) return true;
         double tTransfer = discharge(aStack, aAmount, Integer.MAX_VALUE, true, false, true);
-        if (tTransfer == aAmount) {
+        if (Math.abs(tTransfer - aAmount) < .0000001) {
             discharge(aStack, aAmount, Integer.MAX_VALUE, true, false, false);
             chargeFromArmor(aStack, aPlayer);
             return true;

@@ -1,4 +1,4 @@
-package gregtech.common.items.armor.gui;
+package gregtech.common.items.armor;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -13,18 +13,18 @@ public class ContainerElectricArmor1 extends ContainerBasicArmor {
 
     @Override
 	public void addSlots(InventoryPlayer aInventoryPlayer) {
-		addSlotToContainer(new SlotArmor(mInvArmor, 0, 118, 6));
-		addSlotToContainer(new SlotArmor(mInvArmor, 1, 136, 6));
-		addSlotToContainer(new SlotArmor(mInvArmor, 2, 154, 6));
-		addSlotToContainer(new SlotArmor(mInvArmor, 3, 118, 24));
-		addSlotToContainer(new SlotArmor(mInvArmor, 4, 136, 24));
-		addSlotToContainer(new SlotArmor(mInvArmor, 5, 154, 24));
-		addSlotToContainer(new SlotArmor(mInvArmor, 6, 118, 42));
-		addSlotToContainer(new SlotArmor(mInvArmor, 7, 136, 42));
-		addSlotToContainer(new SlotArmor(mInvArmor, 8, 154, 42));
-		addSlotToContainer(new SlotArmor(mInvArmor, 9, 118, 60));
-		addSlotToContainer(new SlotArmor(mInvArmor, 10, 136, 60));
-		addSlotToContainer(new SlotArmor(mInvArmor, 11, 154, 60));
+		addSlotToContainer(new Slot(mInvArmor, 0, 118, 6));
+		addSlotToContainer(new Slot(mInvArmor, 1, 136, 6));
+		addSlotToContainer(new Slot(mInvArmor, 2, 154, 6));
+		addSlotToContainer(new Slot(mInvArmor, 3, 118, 24));
+		addSlotToContainer(new Slot(mInvArmor, 4, 136, 24));
+		addSlotToContainer(new Slot(mInvArmor, 5, 154, 24));
+		addSlotToContainer(new Slot(mInvArmor, 6, 118, 42));
+		addSlotToContainer(new Slot(mInvArmor, 7, 136, 42));
+		addSlotToContainer(new Slot(mInvArmor, 8, 154, 42));
+		addSlotToContainer(new Slot(mInvArmor, 9, 118, 60));
+		addSlotToContainer(new Slot(mInvArmor, 10, 136, 60));
+		addSlotToContainer(new Slot(mInvArmor, 11, 154, 60));
 		
 		addSlotToContainer(new SlotFluid(mInvArmor,12,94,32));
 

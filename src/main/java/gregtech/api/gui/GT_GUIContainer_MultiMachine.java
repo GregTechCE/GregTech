@@ -4,6 +4,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import ic2.core.block.machine.BlockMiningPipe;
+import ic2.core.ref.BlockName;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -56,7 +58,7 @@ public class GT_GUIContainer_MultiMachine extends GT_GUIContainerMetaTile_Machin
                 	int id = mContainer.mTileEntity.getMetaTileID();
                    if(id == 1157 || id == 1158){
                     	ItemStack tItem = mContainer.mTileEntity.getMetaTileEntity().getStackInSlot(1);
-                    	if(tItem==null || !GT_Utility.areStacksEqual(tItem, GT_ModHandler.getIC2Item("miningPipe", 1L))){
+                    	if(tItem==null || !GT_Utility.areStacksEqual(tItem, GT_ModHandler.getIC2Item(BlockName.mining_pipe, BlockMiningPipe.MiningPipeType.pipe, 1))){
                     		fontRendererObj.drawString("Missing Mining Pipe", 10,((GT_Container_MultiMachine) mContainer).mActive == 0 ? 40 : 24, 16448255);
                     	}
                     }else if(id == 1131 || id == 1151 || id == 1152 || id == 1153){

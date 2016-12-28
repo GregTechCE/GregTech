@@ -107,7 +107,7 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
             this.mPumpCountBelow = 0;
             IGregTechTileEntity tTileEntity;
             for (int i = 1; (i < 21) && ((tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntityAtSideAndDistance((byte) 0, i)) != null)
-                    && (tTileEntity.getMetaTileEntity() != null) && ((tTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Pump)); i++) {
+                    && ((tTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Pump)); i++) {
                 getBaseMetaTileEntity().setActive(tTileEntity.isActive());
                 this.mPumpCountBelow += 1;
                 ((GT_MetaTileEntity_Pump) tTileEntity.getMetaTileEntity()).mPumpTimer -= 1;
@@ -143,9 +143,10 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
                         }
                         if ((!tMovedOneDown) && (this.mPumpTimer <= 0)) {
                             while ((!this.mPumpList.isEmpty())
-                                    && (!consumeFluid(((ChunkPos) this.mPumpList.get(this.mPumpList.size() - 1)).chunkXPos,
-                                    0,
-                                    this.mPumpList.remove(this.mPumpList.size() - 1).chunkZPos))) {
+                                    && (!consumeFluid(((ChunkPosition) this.mPumpList.get(this.mPumpList.size() - 1)).chunkPosX,
+                                    ((ChunkPosition) this.mPumpList.get(this.mPumpList.size() - 1)).chunkPosY,
+                                    ((ChunkPosition) this.mPumpList.remove(this.mPumpList.size() - 1)).chunkPosZ))) {
+                                //Should this be empty?
                             }
                             this.mPumpTimer = 160 / ((int) Math.pow(2, this.mTier));
                         }

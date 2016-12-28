@@ -1,6 +1,5 @@
-package gregtech.common.items.armor.gui;
+package gregtech.common.items.armor;
 
-import gregtech.common.items.armor.ArmorData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -19,7 +18,10 @@ public abstract class ContainerModularArmor extends Container {
 		addSlots(player.inventory);
 	}
 	
-	public ArmorData getData(EntityPlayer aPlayer){	
+	public ArmorData getData(EntityPlayer aPlayer){
+		
+		
+		
 		return null;
 	}
 

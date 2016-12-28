@@ -10,7 +10,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.RenderGeneratedOres;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockObsidian;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -45,6 +44,10 @@ public class GT_Block_GeneratedOres extends GT_Generic_Block {
 
     public static IBlockState[][] sGeneratedBlocks;
     public static IBlockState[][] sGeneratedSmallBlocks;
+
+    public static IBlockState[][] getStates(boolean small) {
+        return small ? sGeneratedSmallBlocks : sGeneratedBlocks;
+    }
 
     public static void doOreThings() {
         System.out.println("MATERIALS META OFFSET: " + MATERIALS_META_OFFSET);
@@ -100,7 +103,7 @@ public class GT_Block_GeneratedOres extends GT_Generic_Block {
             return false;
         }
 
-        IBlockState blockState = (small ? sGeneratedSmallBlocks : sGeneratedBlocks)[materialSubId][variantId];
+        IBlockState blockState = getStates(small)[materialSubId][variantId];
         return world.setBlockState(pos, blockState);
     }
 
@@ -161,6 +164,10 @@ public class GT_Block_GeneratedOres extends GT_Generic_Block {
         return StoneTypes.STONE;
     }
 
+    public IBlockState overrideStoneType(IBlockState state, StoneTypes stoneTypes) {
+        return getStates(mSmall)[getMaterialSafe(state).mMetaItemSubID][stoneTypes.mId];
+    }
+
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
         for(int i = 0; i < mMaterials.length; i++) {
@@ -182,12 +189,12 @@ public class GT_Block_GeneratedOres extends GT_Generic_Block {
 
     @Override
     public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-        return 2.0F * (getHarvestLevel(blockState) + 1);
+        return 1.25F * (getHarvestLevel(blockState) + 1);
     }
 
     @Override
     public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
-        return 3.5F * (getHarvestLevel(world.getBlockState(pos)) + 1);
+        return 1.75F * (getHarvestLevel(world.getBlockState(pos)) + 1);
     }
 
     @Override
@@ -269,30 +276,30 @@ public class GT_Block_GeneratedOres extends GT_Generic_Block {
     }
 
     public String getLocalizedName(Materials aMaterial) {
-        switch (aMaterial) {
+        switch (aMaterial.mName) {
 
-            case InfusedAir:
-            case InfusedDull:
-            case InfusedEarth:
-            case InfusedEntropy:
-            case InfusedFire:
-            case InfusedOrder:
-            case InfusedVis:
-            case InfusedWater:
+            case "InfusedAir":
+            case "InfusedDull":
+            case "InfusedEarth":
+            case "InfusedEntropy":
+            case "InfusedFire":
+            case "InfusedOrder":
+            case "InfusedVis":
+            case "InfusedWater":
                 return aMaterial.mDefaultLocalName + " Infused Stone";
 
-            case Vermiculite:
-            case Bentonite:
-            case Kaolinite:
-            case Talc:
-            case BasalticMineralSand:
-            case GraniticMineralSand:
-            case GlauconiteSand:
-            case CassiteriteSand:
-            case GarnetSand:
-            case QuartzSand:
-            case Pitchblende:
-            case FullersEarth:
+            case "Vermiculite":
+            case "Bentonite":
+            case "Kaolinite":
+            case "Talc":
+            case "BasalticMineralSand":
+            case "GraniticMineralSand":
+            case "GlauconiteSand":
+            case "CassiteriteSand":
+            case "GarnetSand":
+            case "QuartzSand":
+            case "Pitchblende":
+            case "FullersEarth":
                 return aMaterial.mDefaultLocalName;
 
             default:

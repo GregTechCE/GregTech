@@ -230,7 +230,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
                         } else if (tInfo != null && tInfo.length == 0) {
                             IGregTechTileEntity tSideTile = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(tSide);
                             if (tSideTile != null) {
-                                ItemStack tCover = tSideTile.getCoverItemAtSide(GT_Utility.getOppositeSide(tSide));
+                                ItemStack tCover = GregTech_API.getCoverItem(GregTech_API.getCoverId(tSideTile.getCoverBehaviorAtSide(GT_Utility.getOppositeSide(tSide)))).toStack();
                                 if (tCover != null && (GT_Utility.areStacksEqual(tCover, ItemList.FluidRegulator_LV.get(1, new Object[]{}, true)) ||
                                         GT_Utility.areStacksEqual(tCover, ItemList.FluidRegulator_MV.get(1, new Object[]{}, true)) ||
                                         GT_Utility.areStacksEqual(tCover, ItemList.FluidRegulator_HV.get(1, new Object[]{}, true)) ||

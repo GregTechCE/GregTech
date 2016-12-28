@@ -44,9 +44,9 @@ public class GT_ItemIterator
         GregTech_API.registerScrewdriver(GT_ModHandler.getRecipeOutput(new ItemStack(Items.IRON_INGOT, 1), null, null, null, new ItemStack(Items.STICK, 1)));
 
         GT_Log.out.println("GT_Mod: Adding Food Recipes to the Automatic Canning Machine. (also during the following Item Iteration)");
-        GT_Values.RA.addCannerRecipe(new ItemStack(Items.ROTTEN_FLESH, 1, 32767), ItemList.IC2_Food_Can_Empty.get(4L), ItemList.IC2_Food_Can_Spoiled.get(4L), null, 200, 1);
-        GT_Values.RA.addCannerRecipe(new ItemStack(Items.SPIDER_EYE, 1, 32767), ItemList.IC2_Food_Can_Empty.get(2L), ItemList.IC2_Food_Can_Spoiled.get(2L), null, 100, 1);
-        GT_Values.RA.addCannerRecipe(ItemList.Food_Poisonous_Potato.get(1L), ItemList.IC2_Food_Can_Empty.get(2L), ItemList.IC2_Food_Can_Spoiled.get(2L), null, 100, 1);
+        GT_Values.RA.addCannerRecipe(new ItemStack(Items.ROTTEN_FLESH, 2, 32767), ItemList.IC2_Food_Can_Empty.get(1L, new Object[0]), ItemList.IC2_Food_Can_Spoiled.get(1L, new Object[0]), null, 200, 1);
+        GT_Values.RA.addCannerRecipe(new ItemStack(Items.SPIDER_EYE, 2, 32767), ItemList.IC2_Food_Can_Empty.get(1L, new Object[0]), ItemList.IC2_Food_Can_Spoiled.get(1L, new Object[0]), null, 100, 1);
+        GT_Values.RA.addCannerRecipe(ItemList.Food_Poisonous_Potato.get(2L, new Object[0]), ItemList.IC2_Food_Can_Empty.get(1L, new Object[0]), ItemList.IC2_Food_Can_Spoiled.get(1L, new Object[0]), null, 100, 1);
         GT_Values.RA.addCannerRecipe(new ItemStack(Items.CAKE, 1, 32767), ItemList.IC2_Food_Can_Empty.get(12L), ItemList.IC2_Food_Can_Filled.get(12L), null, 600, 1);
         GT_Values.RA.addCannerRecipe(new ItemStack(Items.MUSHROOM_STEW, 1, 32767), ItemList.IC2_Food_Can_Empty.get(6L), ItemList.IC2_Food_Can_Filled.get(6L), new ItemStack(Items.BOWL, 1), 300, 1);
 
@@ -55,7 +55,7 @@ public class GT_ItemIterator
         Iterator<Item> tIterator = Item.REGISTRY.iterator();
         while (tIterator.hasNext()) {
             Object tObject;
-            if (((tObject = tIterator.next()) != null) && ((tObject instanceof Item)) && (!(tObject instanceof GT_Generic_Item))) {
+            if (((tObject = tIterator.next()) instanceof Item) && (!(tObject instanceof GT_Generic_Item))) {
                 Item tItem = (Item) tObject;
                 String tName;
                 if ((tName = tItem.getUnlocalizedName()) != null) {
@@ -98,7 +98,7 @@ public class GT_ItemIterator
                             GT_Values.RA.addCannerRecipe(new ItemStack(tItem, 1, 32767), ItemList.IC2_Food_Can_Empty.get(tFoodValue, new Object[0]), ItemList.IC2_Food_Can_Filled.get(tFoodValue, new Object[0]), GT_Utility.getContainerItem(new ItemStack(tItem, 1, 0), true), tFoodValue * 100, 1);
                         }
                     }
-                    if ((tItem instanceof IFluidContainerItem)) {
+                    if (tItem instanceof IFluidContainerItem) {
                         GT_OreDictUnificator.addToBlacklist(new ItemStack(tItem, 1, 32767));
                     }
                     if ((tName.equals("item.ItemSensorLocationCard")) || (tName.equals("item.ItemEnergySensorLocationCard")) || (tName.equals("item.ItemEnergyArrayLocationCard")) || (tName.equals("item.ItemTextCard"))) {
