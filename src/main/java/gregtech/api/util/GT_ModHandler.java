@@ -9,8 +9,10 @@ import gregtech.api.interfaces.internal.IGT_CraftingRecipe;
 import gregtech.api.objects.GT_HashSet;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
+import ic2.api.item.ElectricItem;
 import ic2.api.item.IBoxable;
 import ic2.api.item.IElectricItem;
+import ic2.api.item.ISpecialElectricItem;
 import ic2.api.reactor.IReactorComponent;
 import ic2.api.recipe.*;
 import ic2.core.Ic2Items;
@@ -274,7 +276,7 @@ public class GT_ModHandler {
      * Returns a Liquid Stack with given amount of Steam.
      */
     public static FluidStack getSteam(long aAmount) {
-        return new FluidStack(FluidName.steam.getInstance(), (int) aAmount);
+        return Materials.Water.getGas(aAmount);
     }
 
     /**
@@ -1537,12 +1539,12 @@ public class GT_ModHandler {
     public static int chargeElectricItem(ItemStack aStack, int aCharge, int aTier, boolean aIgnoreLimit, boolean aSimulate) {
         try {
             if (isElectricItem(aStack)) {
-                int tTier = ((ic2.api.item.IElectricItem) aStack.getItem()).getTier(aStack);
+                int tTier = ElectricItem.manager.getTier(aStack);
                 if (tTier < 0 || tTier == aTier || aTier == Integer.MAX_VALUE) {
                     if (!aIgnoreLimit && tTier >= 0)
                         aCharge = (int) Math.min(aCharge, V[Math.max(0, Math.min(V.length - 1, tTier))]);
                     if (aCharge > 0) {
-                        int rCharge = (int) Math.max(0.0, ic2.api.item.ElectricItem.manager.charge(aStack, aCharge, tTier, true, aSimulate));
+                        int rCharge = (int) Math.max(0.0, ElectricItem.manager.charge(aStack, aCharge, tTier, true, aSimulate));
                         return rCharge + (rCharge * 4 > aTier ? aTier : 0);
                     }
                 }
@@ -1560,15 +1562,13 @@ public class GT_ModHandler {
      */
     public static int dischargeElectricItem(ItemStack aStack, int aCharge, int aTier, boolean aIgnoreLimit, boolean aSimulate, boolean aIgnoreDischargability) {
         try {
-//			if (isElectricItem(aStack) &&  (aIgnoreDischargability || ((ic2.api.item.IElectricItem)aStack.getItem()).canProvideEnergy(aStack))) {
             if (isElectricItem(aStack)) {
-                int tTier = ((ic2.api.item.IElectricItem) aStack.getItem()).getTier(aStack);
+                int tTier = ElectricItem.manager.getTier(aStack);
                 if (tTier < 0 || tTier == aTier || aTier == Integer.MAX_VALUE) {
                     if (!aIgnoreLimit && tTier >= 0)
                         aCharge = (int) Math.min(aCharge, V[Math.max(0, Math.min(V.length - 1, tTier))]);
                     if (aCharge > 0) {
-//						int rCharge = Math.max(0, ic2.api.item.ElectricItem.manager.discharge(aStack, aCharge + (aCharge * 4 > aTier ? aTier : 0), tTier, T, aSimulate));
-                        int rCharge = (int) Math.max(0, ic2.api.item.ElectricItem.manager.discharge(aStack, aCharge + (aCharge * 4 > aTier ? aTier : 0), tTier, true, !aIgnoreDischargability, aSimulate));
+                        int rCharge = (int) Math.max(0, ElectricItem.manager.discharge(aStack, aCharge + (aCharge * 4 > aTier ? aTier : 0), tTier, true, !aIgnoreDischargability, aSimulate));
                         return rCharge - (rCharge * 4 > aTier ? aTier : 0);
                     }
                 }
@@ -1584,9 +1584,7 @@ public class GT_ModHandler {
      */
     public static boolean canUseElectricItem(ItemStack aStack, int aCharge) {
         try {
-            if (isElectricItem(aStack)) {
-                return ic2.api.item.ElectricItem.manager.canUse(aStack, aCharge);
-            }
+            return isElectricItem(aStack) && ElectricItem.manager.canUse(aStack, aCharge);
         } catch (Throwable e) {/*Do nothing*/}
         return false;
     }
@@ -1598,12 +1596,7 @@ public class GT_ModHandler {
      */
     public static boolean useElectricItem(ItemStack aStack, int aCharge, EntityPlayer aPlayer) {
         try {
-            if (isElectricItem(aStack)) {
-                ic2.api.item.ElectricItem.manager.use(aStack, 0, aPlayer);
-                if (ic2.api.item.ElectricItem.manager.canUse(aStack, aCharge)) {
-                    return ic2.api.item.ElectricItem.manager.use(aStack, aCharge, aPlayer);
-                }
-            }
+            return isElectricItem(aStack) && ElectricItem.manager.use(aStack, aCharge, aPlayer);
         } catch (Throwable e) {/*Do nothing*/}
         return false;
     }
@@ -1685,8 +1678,12 @@ public class GT_ModHandler {
      */
     public static boolean isChargerItem(ItemStack aStack) {
         try {
-            if (isElectricItem(aStack)) {
-                return ((ic2.api.item.IElectricItem) aStack.getItem()).canProvideEnergy(aStack);
+            if (aStack != null && isElectricItem(aStack)) {
+                if (aStack.getItem() instanceof ISpecialElectricItem) {
+                    return true;
+                } else if (aStack.getItem() instanceof IElectricItem) {
+                    return ((IElectricItem) aStack.getItem()).canProvideEnergy(aStack);
+                }
             }
         } catch (Throwable e) {/*Do nothing*/}
         return false;
@@ -1697,28 +1694,24 @@ public class GT_ModHandler {
      */
     public static boolean isElectricItem(ItemStack aStack) {
         try {
-            return aStack != null && aStack.getItem() instanceof ic2.api.item.IElectricItem && ((IElectricItem) aStack.getItem()).getTier(aStack) < Integer.MAX_VALUE;
+            return aStack != null && (aStack.getItem() instanceof IElectricItem || aStack.getItem() instanceof ISpecialElectricItem);
         } catch (Throwable e) {/*Do nothing*/}
         return false;
     }
 
     public static boolean isElectricItem(ItemStack aStack, byte aTier) {
         try {
-            return aStack != null && aStack.getItem() instanceof ic2.api.item.IElectricItem && ((IElectricItem) aStack.getItem()).getTier(aStack) == aTier;
+            return aStack != null && isElectricItem(aStack) && ElectricItem.manager.getTier(aStack) == aTier;
         } catch (Throwable e) {/*Do nothing*/}
         return false;
     }
 
-    public static void registerBoxableItemToToolBox(ItemStack aStack) {
-        if (aStack != null) registerBoxableItemToToolBox(aStack.getItem());
-    }
-
     public static void registerBoxableItemToToolBox(Item aItem) {
-        if (aItem != null && sBoxableWrapper != null) {
-            try {
+        try {
+            if (aItem != null && sBoxableWrapper != null) {
                 ic2.api.item.ItemWrapper.registerBoxable(aItem, (IBoxable) sBoxableWrapper);
-            } catch (Throwable e) {/*Do nothing*/}
-        }
+            }
+        } catch (Throwable e) {/*Do nothing*/}
     }
 
     public static int getCapsuleCellContainerCountMultipliedWithStackSize(ItemStack... aStacks) {

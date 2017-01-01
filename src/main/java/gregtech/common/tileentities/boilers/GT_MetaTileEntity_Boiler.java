@@ -18,6 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTank {
@@ -96,14 +97,20 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         }
-        if (aPlayer != null) {
-            if (GT_Utility.areStacksEqual(aPlayer.getHeldItem(hand), new ItemStack(Items.WATER_BUCKET, 1))) {
-                fill(Materials.Water.getFluid(1000 * aPlayer.getHeldItem(hand).stackSize), true);
-                aPlayer.getHeldItem(hand).setItem(Items.BUCKET);
-            } else {
-                aBaseMetaTileEntity.openGUI(aPlayer);
+        ItemStack stack = aPlayer != null ? aPlayer.getHeldItem(hand) : null;
+        if (stack != null) {
+            FluidStack fluidStack = GT_Utility.getFluidForFilledItem(stack, true);
+            int capacity = getFillableStack() == null ? getCapacity() : getCapacity() - getFillableStack().amount;
+            if(fluidStack != null && fluidStack.getFluid() == FluidRegistry.WATER && fluidStack.amount <= capacity) {
+                ItemStack empty = GT_Utility.getContainerForFilledItem(stack, true);
+                if(aPlayer.inventory.addItemStackToInventory(empty)) {
+                    stack.stackSize--;
+                    fill(fluidStack, true);
+                    return true;
+                }
             }
         }
+        aBaseMetaTileEntity.openGUI(aPlayer);
         return true;
     }
 

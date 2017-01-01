@@ -308,8 +308,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         for (EntityEquipmentSlot i : EntityEquipmentSlot.values()) {
             ItemStack tArmor = aPlayer.getItemStackFromSlot(i);
             if (GT_ModHandler.isElectricItem(tArmor)) {
-                IElectricItem tArmorItem = (IElectricItem) tArmor.getItem();
-                if (tArmorItem.canProvideEnergy(tArmor) && tArmorItem.getTier(tArmor) >= getTier(aStack)) {
+                if (GT_ModHandler.isChargerItem(tArmor) && ElectricItem.manager.getTier(tArmor) >= getTier(aStack)) {
                     double tCharge = ElectricItem.manager.discharge(tArmor, charge(aStack, Integer.MAX_VALUE - 1, Integer.MAX_VALUE, true, true), Integer.MAX_VALUE, true, true, false);
                     if (tCharge > 0) {
                         charge(aStack, tCharge, Integer.MAX_VALUE, true, false);

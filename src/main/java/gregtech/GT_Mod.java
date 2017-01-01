@@ -39,6 +39,7 @@ import ic2.core.block.type.ResourceBlock;
 import ic2.core.item.type.CraftingItemType;
 import ic2.core.ref.BlockName;
 import ic2.core.ref.ItemName;
+import ic2.core.ref.TeBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -615,62 +616,62 @@ public class GT_Mod implements IGT_Mod {
                 e.printStackTrace(GT_Log.err);
             }
         }
-        /*идите нахуй короче
-        String tName = "";
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "blastfurnace"), true)) {
-            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1));
+
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + "blastfurnace", true)) {
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2TEItem(TeBlock.blast_furnace, 1));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "blockcutter"), true)) {
-            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1));
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + "blockcutter", true)) {
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2TEItem(TeBlock.block_cutter, 1));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "inductionFurnace"), true)) {
-            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1));
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + "inductionFurnace", true)) {
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2TEItem(TeBlock.induction_furnace, 1));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "generator"), false)) {
-            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1));
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + "generator", false)) {
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2TEItem(TeBlock.generator, 1));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "windMill"), true)) {
-            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1));
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + "windMill", true)) {
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2TEItem(TeBlock.wind_generator, 1));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "waterMill"), true)) {
-            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1));
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + "waterMill", true)) {
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2TEItem(TeBlock.water_generator, 1));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "solarPanel"), true)) {
-            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1));
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + "solarPanel", true)) {
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2TEItem(TeBlock.solar_generator, 1));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "centrifuge"), true)) {
-            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1));
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + "centrifuge", true)) {
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2TEItem(TeBlock.centrifuge, 1));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "electrolyzer"), false)) {
-            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1));
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + "electrolyzer", false)) {
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2TEItem(TeBlock.electrolyzer, 1));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "compressor"), true)) {
-            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1));
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + "compressor", true)) {
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2TEItem(TeBlock.compressor, 1));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "electroFurnace"), true)) {
-            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1));
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + "electroFurnace", true)) {
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2TEItem(TeBlock.electric_furnace, 1));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "extractor"), true)) {
-            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1));
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + "extractor", true)) {
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2TEItem(TeBlock.extractor, 1));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "macerator"), true)) {
-            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1));
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + "macerator", true)) {
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2TEItem(TeBlock.macerator, 1));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "recycler"), true)) {
-            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1));
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + "recycler", true)) {
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2TEItem(TeBlock.recycler, 1));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "metalformer"), true)) {
-            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1));
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + "metalformer", true)) {
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2TEItem(TeBlock.metal_former, 1));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "orewashingplant"), true)) {
-            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1));
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + "orewashingplant", true)) {
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2TEItem(TeBlock.ore_washing_plant, 1));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "massFabricator"), true)) {
-            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1));
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + "massFabricator", true)) {
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2TEItem(TeBlock.matter_generator, 1));
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + (tName = "replicator"), true)) {
-            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(tName, 1));
-        }*/
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + "replicator", true)) {
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2TEItem(TeBlock.replicator, 1));
+        }
+        
         if (gregtechproxy.mNerfedVanillaTools) {
             GT_Log.out.println("GT_Mod: Nerfing Vanilla Tool Durability");
             Items.WOODEN_SWORD.setMaxDamage(12);

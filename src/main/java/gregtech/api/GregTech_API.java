@@ -2,11 +2,6 @@ package gregtech.api;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import gregtech.common.blocks.GT_Block_Machines;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.init.SoundEvents;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDamagableItem;
@@ -22,12 +17,16 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.*;
 import gregtech.api.world.GT_Worldgen;
+import gregtech.common.blocks.GT_Block_Machines;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.*;
 
@@ -227,13 +226,13 @@ public class GregTech_API {
         sDimensionalList.add(0);
         sDimensionalList.add(1);
 
-        sSoundList.put(0, SoundEvents.ENTITY_ARROW_SHOOT.getSoundName().toString());
-        sSoundList.put(1, SoundEvents.BLOCK_ANVIL_USE.getSoundName().toString());
-        sSoundList.put(2, SoundEvents.BLOCK_ANVIL_BREAK.getSoundName().toString());
-        sSoundList.put(3, SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON.getSoundName().toString());
-        sSoundList.put(4, SoundEvents.ENTITY_ITEM_BREAK.getSoundName().toString());
-        sSoundList.put(5, SoundEvents.ENTITY_GENERIC_EXPLODE.getSoundName().toString());
-        sSoundList.put(6, SoundEvents.ITEM_FIRECHARGE_USE.getSoundName().toString());
+        sSoundList.put(0, "entity.arrow.shoot"); //SoundEvents.ENTITY_ARROW_SHOOT.getSoundName().toString());
+        sSoundList.put(1, "block.anvil.use");//SoundEvents.BLOCK_ANVIL_USE.getSoundName().toString());
+        sSoundList.put(2, "block.anvil.break");//SoundEvents.BLOCK_ANVIL_BREAK.getSoundName().toString());
+        sSoundList.put(3, "block.stone_button.click_on");//SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON.getSoundName().toString());
+        sSoundList.put(4, "entity.item.break");//SoundEvents.ENTITY_ITEM_BREAK.getSoundName().toString());
+        sSoundList.put(5, "entity.generic.explode");//SoundEvents.ENTITY_GENERIC_EXPLODE.getSoundName().toString());
+        sSoundList.put(6, "item.firecharge.use");//SoundEvents.ITEM_FIRECHARGE_USE.getSoundName().toString());
 
         sSoundList.put(100, aTextIC2Lower + ":" + "tools.Wrench");
         sSoundList.put(101, aTextIC2Lower + ":" + "tools.RubberTrampoline");

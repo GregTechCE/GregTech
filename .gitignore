@@ -74,10 +74,8 @@ local.properties
 gradle/wrapper/gradle-wrapper.properties
 gradlew
 gradlew.bat
-!build/libs/*
 
 # Linux
 *~
 
-build/
 run/

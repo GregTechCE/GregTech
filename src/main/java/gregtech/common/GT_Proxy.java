@@ -221,7 +221,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                         GT_Utility.copyAmount(1, aOre.mEvent.getOre()));
             }
         } else {
-            System.out.println("Thingy Name: "+ aOre.mEvent.getName() + " !!!Unknown 'Thingy' detected!!! This Object seems to probably not follow a valid OreDictionary Convention, or I missed a Convention. Please report to GregTech Intergalactical for additional compatiblity. This is not an Error, an Issue nor a Lag Source, it is just an Information, which you should pass to me.");
+            //System.out.println("Thingy Name: "+ aOre.mEvent.getName() + " !!!Unknown 'Thingy' detected!!! This Object seems to probably not follow a valid OreDictionary Convention, or I missed a Convention. Please report to GregTech Intergalactical for additional compatiblity. This is not an Error, an Issue nor a Lag Source, it is just an Information, which you should pass to me.");
         }
     }
 
@@ -1266,13 +1266,13 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                                     return;
                                 }
                             } else {
-                                //for (Dyes tDye : Dyes.VALUES) {
-                                //    if (aEvent.getName().endsWith(tDye.name().replaceFirst("dye", ""))) {
-                                //        GT_OreDictUnificator.addToBlacklist(aEvent.getOre());
-                                //        GT_Log.ore.println(tModToName + " Oh man, why the fuck would anyone need a OreDictified Color for this, that is even too much for GregTech... do not report this, this is just a random Comment about how ridiculous this is.");
-                                //        return;
-                                //    }
-                                //}
+                                for (Dyes tDye : Dyes.VALUES) {
+                                    if (aEvent.getName().endsWith(tDye.name().replaceFirst("dye", ""))) {
+                                        GT_OreDictUnificator.addToBlacklist(aEvent.getOre());
+                                        GT_Log.ore.println(tModToName + " Oh man, why the fuck would anyone need a OreDictified Color for this, that is even too much for GregTech... do not report this, this is just a random Comment about how ridiculous this is.");
+                                        return;
+                                    }
+                                }
 								//System.out.println("Material Name: "+aEvent.getName()+ " !!!Unknown Material detected!!! Please report to GregTech Intergalactical for additional compatiblity. This is not an Error, an Issue nor a Lag Source, it is just an Information, which you should pass to me.");
 								//GT_Log.ore.println(tModToName + " uses an unknown Material. Report this to GregTech.");
                                 return;
