@@ -25,7 +25,7 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
             }
             placer = ((IGregTechTileEntity) aTileEntity).getOwnerName();
         }
-        for (Object tObject : aTileEntity.getWorld().playerEntities) {
+        for (Object tObject : aTileEntity.getWorldObj().playerEntities) {
             if ((tObject instanceof EntityPlayerMP)) {
                 EntityPlayerMP tEntity = (EntityPlayerMP) tObject;
                 int dist = Math.max(1, (int) tEntity.getDistance(aTileEntity.getXCoord() + 0.5D, aTileEntity.getYCoord() + 0.5D, aTileEntity.getZCoord() + 0.5D));

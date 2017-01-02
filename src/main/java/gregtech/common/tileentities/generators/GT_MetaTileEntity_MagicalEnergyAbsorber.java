@@ -92,7 +92,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
             // Energyzed node
             /*if (isThaumcraftLoaded) {
                 try {
-                    World tmpWorld = this.getBaseMetaTileEntity().getWorld();
+                    World tmpWorld = this.getBaseMetaTileEntity().getWorldObj();
                     int tmpX = this.getBaseMetaTileEntity().getXCoord();
                     int tmpY = this.getBaseMetaTileEntity().getYCoord();
                     int tmpZ = this.getBaseMetaTileEntity().getZCoord();
@@ -125,7 +125,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
             // EnderCrystal
             if (sEnergyPerEnderCrystal > 0) {
                 if (this.mTargetedCrystal == null) {
-                    List<EntityEnderCrystal> tList = getBaseMetaTileEntity().getWorld().getEntitiesWithinAABB(
+                    List<EntityEnderCrystal> tList = getBaseMetaTileEntity().getWorldObj().getEntitiesWithinAABB(
                             EntityEnderCrystal.class,
                             new AxisAlignedBB(
                                     getBaseMetaTileEntity().getXCoord() - 64,
@@ -144,7 +144,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
                         }
                     }
                 } else if (this.mTargetedCrystal.isEntityAlive()) {
-                    this.mTargetedCrystal.setBeamTarget(getBaseMetaTileEntity().getPos());
+                    this.mTargetedCrystal.setBeamTarget(getBaseMetaTileEntity().getWorldPos());
                     getBaseMetaTileEntity().increaseStoredEnergyUnits(sEnergyPerEnderCrystal * 10, false);
                 } else {
                     sUsedDragonCrystalList.remove(this.mTargetedCrystal);

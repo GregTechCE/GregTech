@@ -36,7 +36,7 @@ public class GT_MetaTileEntity_MonsterRepellent extends GT_MetaTileEntity_Tiered
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (aBaseMetaTileEntity.isAllowedToWork() && aBaseMetaTileEntity.isServerSide()) {
-            int[] tCoords = new int[]{aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(), aBaseMetaTileEntity.getWorld().provider.getDimension()};
+            int[] tCoords = new int[]{aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(), aBaseMetaTileEntity.getWorldObj().provider.getDimension()};
             if ((aTimer % 600 == 0) && !GT_SpawnEventHandler.mobReps.contains(tCoords)) {
                 GT_SpawnEventHandler.mobReps.add(tCoords);
             }
@@ -50,13 +50,13 @@ public class GT_MetaTileEntity_MonsterRepellent extends GT_MetaTileEntity_Tiered
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        int[] tCoords = new int[]{aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(), aBaseMetaTileEntity.getWorld().provider.getDimension()};
+        int[] tCoords = new int[]{aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(), aBaseMetaTileEntity.getWorldObj().provider.getDimension()};
         GT_SpawnEventHandler.mobReps.add(tCoords);
     }
 
     @Override
     public void onRemoval() {
-        int[] tCoords = new int[]{this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord(), this.getBaseMetaTileEntity().getWorld().provider.getDimension()};
+        int[] tCoords = new int[]{this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord(), this.getBaseMetaTileEntity().getWorldObj().provider.getDimension()};
         GT_SpawnEventHandler.mobReps.remove(tCoords);
     }
 

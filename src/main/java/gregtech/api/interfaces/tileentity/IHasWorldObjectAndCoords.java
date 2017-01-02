@@ -21,11 +21,9 @@ import net.minecraftforge.fluids.IFluidHandler;
  */
 public interface IHasWorldObjectAndCoords {
 
-    static BlockPos.MutableBlockPos t = new BlockPos.MutableBlockPos();
+    public World getWorldObj();
 
-    public World getWorld();
-
-    public BlockPos getPos();
+    public BlockPos getWorldPos();
 
     public int getXCoord();
 
@@ -71,61 +69,30 @@ public interface IHasWorldObjectAndCoords {
 
     public IGregTechTileEntity getIGregTechTileEntityAtSideAndDistance(byte aSide, int aDistance);
 
-    public default Block getBlock(int aX, int aY, int aZ) {
-        return getBlockState(t.setPos(aX, aY, aZ)).getBlock();
-    }
+    public Block getBlock(int aX, int aY, int aZ);
+    
+    public IBlockState getBlockState(BlockPos pos);
+    
+    public boolean setBlockState(BlockPos pos, IBlockState state);
 
-    public default IBlockState getBlockState(BlockPos pos) {
-        return getWorld().getBlockState(pos);
-    }
+    public boolean setBlockToAir(BlockPos pos);
+    
+    public Block getBlockOffset(int aX, int aY, int aZ);
+    
+    public IBlockState getBlockStateOffset(int aX, int aY, int aZ);
 
-    public default boolean setBlockState(BlockPos pos, IBlockState state) {
-        return getWorld().setBlockState(pos, state);
-    }
+    public Block getBlockAtSide(byte aSide);
 
-    public default boolean setBlockToAir(BlockPos pos) {
-        return getWorld().setBlockToAir(pos);
-    }
+    public Block getBlockAtSideAndDistance(byte aSide, int aDistance);
 
-    public default Block getBlockOffset(int aX, int aY, int aZ) {
-        return getBlockStateOffset(aX, aY, aZ).getBlock();
-    }
+    public byte getMetaID(int aX, int aY, int aZ);
+    
+    public byte getMetaIDOffset(int aX, int aY, int aZ);
 
-    public default IBlockState getBlockStateOffset(int aX, int aY, int aZ) {
-        return getBlockState(t.setPos(getPos()).add(aX, aY, aZ));
-    }
+    public byte getMetaIDAtSide(byte aSide);
 
-    public default Block getBlockAtSide(byte aSide) {
-        return getBlockState(t.setPos(getPos()).offset(EnumFacing.VALUES[aSide])).getBlock();
-    }
-
-    public default Block getBlockAtSideAndDistance(byte aSide, int aDistance) {
-         return getBlockState(t.setPos(getPos()).offset(EnumFacing.VALUES[aSide], aDistance)).getBlock();
-    }
-
-    public default byte getMetaID(int aX, int aY, int aZ) {
-        IBlockState state = getBlockState(t.setPos(aX, aY, aZ));
-        return (byte) state.getBlock().getMetaFromState(state);
-    }
-
-    public default byte getMetaIDOffset(int aX, int aY, int aZ) {
-        IBlockState state = getBlockStateOffset(aX, aY, aZ);
-        return (byte) state.getBlock().getMetaFromState(state);
-    }
-
-    public default byte getMetaIDAtSide(byte aSide) {
-        IBlockState state = getBlockState(t.setPos(getPos()).offset(EnumFacing.VALUES[aSide]));
-        return (byte) state.getBlock().getMetaFromState(state);
-    }
-
-    public default byte getMetaIDAtSideAndDistance(byte aSide, int aDistance) {
-        IBlockState state = getBlockState(t.setPos(getPos()).offset(EnumFacing.VALUES[aSide], aDistance));
-        return (byte) state.getBlock().getMetaFromState(state);
-    }
-
-    public default boolean isAir(BlockPos pos) {
-        return getWorld().isAirBlock(pos);
-    }
+    public byte getMetaIDAtSideAndDistance(byte aSide, int aDistance);
+    public boolean isAir(BlockPos pos);
 
     public byte getLightLevel(int aX, int aY, int aZ);
 

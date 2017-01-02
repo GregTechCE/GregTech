@@ -50,6 +50,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.translation.I18n;
@@ -1522,7 +1523,7 @@ public class GT_Utility {
                 tFluid = Materials.Oil.mFluid;
         }
         int tAmount = (int) (Math.pow(amount, 5) / 100);
-        BlockPos tPos = new BlockPos(aX/16, 1, aZ/16);
+        ChunkPos tPos = new ChunkPos(aX/16, aZ/16);
         int[] tInts = new int[2];
     	if(GT_Proxy.chunkData.containsKey(tPos)){
     		tInts = GT_Proxy.chunkData.get(tPos);
@@ -1725,8 +1726,9 @@ public class GT_Utility {
             tList.add("Oil in Chunk: " + tFluid.amount + " " + tFluid.getLocalizedName());
         }
         //if(aPlayer.capabilities.isCreativeMode){
-            if(GT_Proxy.chunkData.containsKey(blockPos)){
-                int[] tPollution = GT_Proxy.chunkData.get(blockPos);
+        ChunkPos pos = new ChunkPos(blockPos.getX() / 16, blockPos.getZ() / 16);
+            if(GT_Proxy.chunkData.containsKey(pos)){
+                int[] tPollution = GT_Proxy.chunkData.get(pos);
                 if(tPollution.length>1){
                     tList.add("Pollution in Chunk: "+tPollution[1]);
                 }else{

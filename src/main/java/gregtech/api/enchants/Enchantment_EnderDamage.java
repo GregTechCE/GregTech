@@ -9,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -47,9 +48,9 @@ public class Enchantment_EnderDamage extends EnchantmentDamage {
     public void onEntityDamaged(EntityLivingBase aHurtEntity, Entity aDamagingEntity, int aLevel) {
         if ((aHurtEntity instanceof EntityEnderman || aHurtEntity instanceof EntityDragon || (aHurtEntity.getClass().getName().indexOf(".") >= 0 && aHurtEntity.getClass().getName().substring(aHurtEntity.getClass().getName().lastIndexOf(".")).contains("Ender")))) {
             // Weakness causes Endermen to not be able to teleport with GT being installed.
-            aHurtEntity.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("weakness"), aLevel * 200, Math.max(1, (5 * aLevel) / 7)));
+            aHurtEntity.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, aLevel * 200, Math.max(1, (5 * aLevel) / 7)));
             // They also get Poisoned. If you have this Enchant on an Arrow, you can kill the Ender Dragon easier.
-            aHurtEntity.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("poison"), aLevel * 200, Math.max(1, (5 * aLevel) / 7)));
+            aHurtEntity.addPotionEffect(new PotionEffect(MobEffects.POISON, aLevel * 200, Math.max(1, (5 * aLevel) / 7)));
         }
     }
 

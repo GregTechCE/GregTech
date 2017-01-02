@@ -104,7 +104,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
         }
         //Asteroid Worldgen
         int tDimensionType = mWorld.provider.getDimension();
-        String tDimensionName = mWorld.getProviderName();
+        String tDimensionName = mWorld.getChunkProvider().makeString();
         Random aRandom = new Random();
         if (((tDimensionType == 1) && endAsteroids && ((mEndAsteroidProbability <= 1) || (aRandom.nextInt(mEndAsteroidProbability) == 0))) || ((tDimensionName.equals("Asteroids")) && gcAsteroids && ((mGCAsteroidProbability <= 1) || (aRandom.nextInt(mGCAsteroidProbability) == 0)))) {
             short primaryMeta = 0;

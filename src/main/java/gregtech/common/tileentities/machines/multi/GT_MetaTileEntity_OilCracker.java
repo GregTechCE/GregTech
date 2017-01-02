@@ -260,7 +260,7 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_MultiBlockBa
                     }
                     if (aBaseMetaTileEntity.getBlock(xPos, yPos, zPos) == GregTech_API.sBlockCasings1 &&
                         aBaseMetaTileEntity.getMetaID(xPos, yPos, zPos) == 12) {
-                        aBaseMetaTileEntity.getWorld().setBlockState(
+                        aBaseMetaTileEntity.getWorldObj().setBlockState(
                                 new BlockPos(xPos, yPos, zPos),
                                 GregTech_API.sBlockCasings5.getDefaultState(), 3);
                     }

@@ -38,7 +38,7 @@ public class GT_MetaTileEntity_LightningRod extends GT_MetaTileEntity_TieredMach
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        World aWorld = aBaseMetaTileEntity.getWorld();
+        World aWorld = aBaseMetaTileEntity.getWorldObj();
         XSTR aXSTR = new XSTR();
         if (!aWorld.isRemote) {
             if (aTick % 256 == 0 && (aWorld.isThundering() || (aWorld.isRaining() && aXSTR.nextInt(10) == 0))) {

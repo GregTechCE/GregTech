@@ -174,7 +174,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
                     sendSound((byte) 9);
                     if (tTemperature > 320) {
                         try {
-                            for (EntityLivingBase tLiving : getBaseMetaTileEntity().getWorld().getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(getBaseMetaTileEntity().getXCoord() - 2, getBaseMetaTileEntity().getYCoord() - 2, getBaseMetaTileEntity().getZCoord() - 2, getBaseMetaTileEntity().getXCoord() + 3, getBaseMetaTileEntity().getYCoord() + 3, getBaseMetaTileEntity().getZCoord() + 3))) {
+                            for (EntityLivingBase tLiving : getBaseMetaTileEntity().getWorldObj().getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(getBaseMetaTileEntity().getXCoord() - 2, getBaseMetaTileEntity().getYCoord() - 2, getBaseMetaTileEntity().getZCoord() - 2, getBaseMetaTileEntity().getXCoord() + 3, getBaseMetaTileEntity().getYCoord() + 3, getBaseMetaTileEntity().getZCoord() + 3))) {
                                 GT_Utility.applyHeatDamage(tLiving, (tTemperature - 300) / 25.0F);
                             }
                         } catch (Throwable e) {
@@ -182,7 +182,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
                         }
                     } else if (tTemperature < 260) {
                         try {
-                            for (EntityLivingBase tLiving : getBaseMetaTileEntity().getWorld().getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(getBaseMetaTileEntity().getXCoord() - 2, getBaseMetaTileEntity().getYCoord() - 2, getBaseMetaTileEntity().getZCoord() - 2, getBaseMetaTileEntity().getXCoord() + 3, getBaseMetaTileEntity().getYCoord() + 3, getBaseMetaTileEntity().getZCoord() + 3))) {
+                            for (EntityLivingBase tLiving : getBaseMetaTileEntity().getWorldObj().getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(getBaseMetaTileEntity().getXCoord() - 2, getBaseMetaTileEntity().getYCoord() - 2, getBaseMetaTileEntity().getZCoord() - 2, getBaseMetaTileEntity().getXCoord() + 3, getBaseMetaTileEntity().getYCoord() + 3, getBaseMetaTileEntity().getZCoord() + 3))) {
                                 GT_Utility.applyFrostDamage(tLiving, (270 - tTemperature) / 12.5F);
                             }
                         } catch (Throwable e) {
@@ -285,7 +285,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
             for (byte i = 0; i < 6; i++) {
                 EnumFacing facing = EnumFacing.VALUES[i];
                 for (int l = 0; l < 2; ++l)
-                    getBaseMetaTileEntity().getWorld().spawnParticle(EnumParticleTypes.SMOKE_LARGE, aX - 0.5 + (new XSTR()).nextFloat(), aY - 0.5 + (new XSTR()).nextFloat(), aZ - 0.5 + (new XSTR()).nextFloat(), facing.getFrontOffsetX() / 5.0, 0, facing.getFrontOffsetZ() / 5.0);
+                    getBaseMetaTileEntity().getWorldObj().spawnParticle(EnumParticleTypes.SMOKE_LARGE, aX - 0.5 + (new XSTR()).nextFloat(), aY - 0.5 + (new XSTR()).nextFloat(), aZ - 0.5 + (new XSTR()).nextFloat(), facing.getFrontOffsetX() / 5.0, 0, facing.getFrontOffsetZ() / 5.0);
             }
         }
     }

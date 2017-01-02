@@ -17,7 +17,7 @@ public class GT_Cover_Vent
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         if ((aTileEntity instanceof IMachineProgress)) {
             if ((((IMachineProgress) aTileEntity).hasThingsToDo()) && (aCoverVariable != ((IMachineProgress) aTileEntity).getProgress()) &&
-                    (!GT_Utility.hasBlockHitBox(aTileEntity.getWorld(), aTileEntity.getPos().offset(EnumFacing.VALUES[aSide])))) {
+                    (!GT_Utility.hasBlockHitBox(aTileEntity.getWorldObj(), aTileEntity.getWorldPos().offset(EnumFacing.VALUES[aSide])))) {
                 ((IMachineProgress) aTileEntity).increaseProgress(this.mEfficiency);
             }
             return ((IMachineProgress) aTileEntity).getProgress();

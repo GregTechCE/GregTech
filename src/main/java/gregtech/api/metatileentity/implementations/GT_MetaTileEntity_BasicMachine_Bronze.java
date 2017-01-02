@@ -125,11 +125,11 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
 
     @Override
     public boolean allowToCheckRecipe() {
-        if (mNeedsSteamVenting && getBaseMetaTileEntity().getCoverIDAtSide(getBaseMetaTileEntity().getFrontFacing()) == 0 && !GT_Utility.hasBlockHitBox(getBaseMetaTileEntity().getWorld(), new BlockPos(getBaseMetaTileEntity().getOffsetX(getBaseMetaTileEntity().getFrontFacing(), 1), getBaseMetaTileEntity().getOffsetY(getBaseMetaTileEntity().getFrontFacing(), 1), getBaseMetaTileEntity().getOffsetZ(getBaseMetaTileEntity().getFrontFacing(), 1)))) {
+        if (mNeedsSteamVenting && getBaseMetaTileEntity().getCoverIDAtSide(getBaseMetaTileEntity().getFrontFacing()) == 0 && !GT_Utility.hasBlockHitBox(getBaseMetaTileEntity().getWorldObj(), new BlockPos(getBaseMetaTileEntity().getOffsetX(getBaseMetaTileEntity().getFrontFacing(), 1), getBaseMetaTileEntity().getOffsetY(getBaseMetaTileEntity().getFrontFacing(), 1), getBaseMetaTileEntity().getOffsetZ(getBaseMetaTileEntity().getFrontFacing(), 1)))) {
             sendSound((byte) 9);
             mNeedsSteamVenting = false;
             try {
-                for (EntityLivingBase tLiving : getBaseMetaTileEntity().getWorld().getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(getBaseMetaTileEntity().getOffsetX(getBaseMetaTileEntity().getFrontFacing(), 1), getBaseMetaTileEntity().getOffsetY(getBaseMetaTileEntity().getFrontFacing(), 1), getBaseMetaTileEntity().getOffsetZ(getBaseMetaTileEntity().getFrontFacing(), 1), getBaseMetaTileEntity().getOffsetX(getBaseMetaTileEntity().getFrontFacing(), 1) + 1, getBaseMetaTileEntity().getOffsetY(getBaseMetaTileEntity().getFrontFacing(), 1) + 1, getBaseMetaTileEntity().getOffsetZ(getBaseMetaTileEntity().getFrontFacing(), 1) + 1))) {
+                for (EntityLivingBase tLiving : getBaseMetaTileEntity().getWorldObj().getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(getBaseMetaTileEntity().getOffsetX(getBaseMetaTileEntity().getFrontFacing(), 1), getBaseMetaTileEntity().getOffsetY(getBaseMetaTileEntity().getFrontFacing(), 1), getBaseMetaTileEntity().getOffsetZ(getBaseMetaTileEntity().getFrontFacing(), 1), getBaseMetaTileEntity().getOffsetX(getBaseMetaTileEntity().getFrontFacing(), 1) + 1, getBaseMetaTileEntity().getOffsetY(getBaseMetaTileEntity().getFrontFacing(), 1) + 1, getBaseMetaTileEntity().getOffsetZ(getBaseMetaTileEntity().getFrontFacing(), 1) + 1))) {
                     GT_Utility.applyHeatDamage(tLiving, getSteamDamage());
                 }
             } catch (Throwable e) {
@@ -150,7 +150,7 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
         if (aIndex == 9) {
             GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(4), 5, 1.0F, aX, aY, aZ);
             for (int l = 0; l < 8; ++l)
-                getBaseMetaTileEntity().getWorld().spawnParticle(EnumParticleTypes.SMOKE_LARGE, aX - 0.5 + Math.random(), aY - 0.5 + Math.random(), aZ - 0.5 + (new XSTR()).nextFloat(), EnumFacing.VALUES[getBaseMetaTileEntity().getFrontFacing()].getFrontOffsetX() / 5.0, EnumFacing.VALUES[getBaseMetaTileEntity().getFrontFacing()].getFrontOffsetY() / 5.0, EnumFacing.VALUES[getBaseMetaTileEntity().getFrontFacing()].getFrontOffsetZ() / 5.0);
+                getBaseMetaTileEntity().getWorldObj().spawnParticle(EnumParticleTypes.SMOKE_LARGE, aX - 0.5 + Math.random(), aY - 0.5 + Math.random(), aZ - 0.5 + (new XSTR()).nextFloat(), EnumFacing.VALUES[getBaseMetaTileEntity().getFrontFacing()].getFrontOffsetX() / 5.0, EnumFacing.VALUES[getBaseMetaTileEntity().getFrontFacing()].getFrontOffsetY() / 5.0, EnumFacing.VALUES[getBaseMetaTileEntity().getFrontFacing()].getFrontOffsetZ() / 5.0);
         }
     }
 

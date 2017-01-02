@@ -80,8 +80,8 @@ public class GT_MetaTileEntity_Boiler_Steel extends GT_MetaTileEntity_Boiler {
                 for (EnumFacing side : EnumFacing.VALUES) {
                     if (side.getIndex() != aBaseMetaTileEntity.getFrontFacing()) {
                         int drain = GT_Utility.fillFluidTank(
-                                aBaseMetaTileEntity.getWorld(),
-                                aBaseMetaTileEntity.getPos(), side,
+                                aBaseMetaTileEntity.getWorldObj(),
+                                aBaseMetaTileEntity.getWorldPos(), side,
                                 getDrainableStack());
                         if (drain != 0) {
                             drain(side, drain, true);
@@ -151,7 +151,7 @@ public class GT_MetaTileEntity_Boiler_Steel extends GT_MetaTileEntity_Boiler {
                 this.mTemperature += 1;
             }
             if(this.mProcessingEnergy>0 && (aTick % 20L == 0L)){
-            	GT_Pollution.addPollution(getBaseMetaTileEntity().getPos(), 20);
+            	GT_Pollution.addPollution(getBaseMetaTileEntity().getWorldPos(), 20);
             }
             aBaseMetaTileEntity.setActive(this.mProcessingEnergy > 0);
         }

@@ -18,16 +18,16 @@ public class GT_BookAndLootLoader
         new ChestGenHooks();
 
         if (GT_Mod.gregtechproxy.mIncreaseDungeonLoot) {
-            ChestGenHooks.addRolls(LootTableList.CHESTS_SPAWN_BONUS_CHEST, 1, 2);
-            ChestGenHooks.addRolls(LootTableList.CHESTS_SIMPLE_DUNGEON, 0, 1);
-            ChestGenHooks.addRolls(LootTableList.CHESTS_DESERT_PYRAMID, 1, 2);
-            ChestGenHooks.addRolls(LootTableList.CHESTS_JUNGLE_TEMPLE, 2, 4);
-            ChestGenHooks.addRolls(LootTableList.CHESTS_JUNGLE_TEMPLE_DISPENSER, 0, 1);
-            ChestGenHooks.addRolls(LootTableList.CHESTS_ABANDONED_MINESHAFT, 0, 1);
-            ChestGenHooks.addRolls(LootTableList.CHESTS_VILLAGE_BLACKSMITH, 1, 3);
-            ChestGenHooks.addRolls(LootTableList.CHESTS_STRONGHOLD_CROSSING, 1, 2);
-            ChestGenHooks.addRolls(LootTableList.CHESTS_STRONGHOLD_CORRIDOR, 0, 2);
-            ChestGenHooks.addRolls(LootTableList.CHESTS_STRONGHOLD_LIBRARY, 2, 4);
+            ChestGenHooks.addRolls(LootTableList.CHESTS_SPAWN_BONUS_CHEST, 2, 4);
+            ChestGenHooks.addRolls(LootTableList.CHESTS_SIMPLE_DUNGEON, 1, 3);
+            ChestGenHooks.addRolls(LootTableList.CHESTS_DESERT_PYRAMID, 2, 4);
+            ChestGenHooks.addRolls(LootTableList.CHESTS_JUNGLE_TEMPLE, 4, 8);
+            ChestGenHooks.addRolls(LootTableList.CHESTS_JUNGLE_TEMPLE_DISPENSER, 0, 2);
+            ChestGenHooks.addRolls(LootTableList.CHESTS_ABANDONED_MINESHAFT, 1, 3);
+            ChestGenHooks.addRolls(LootTableList.CHESTS_VILLAGE_BLACKSMITH, 2, 6);
+            ChestGenHooks.addRolls(LootTableList.CHESTS_STRONGHOLD_CROSSING, 2, 4);
+            ChestGenHooks.addRolls(LootTableList.CHESTS_STRONGHOLD_CORRIDOR, 2, 4);
+            ChestGenHooks.addRolls(LootTableList.CHESTS_STRONGHOLD_LIBRARY, 4, 8);
         }
         
         ChestGenHooks.addItem(LootTableList.CHESTS_SPAWN_BONUS_CHEST, ItemList.Bottle_Purple_Drink.get(1L), 8, 16, 2);

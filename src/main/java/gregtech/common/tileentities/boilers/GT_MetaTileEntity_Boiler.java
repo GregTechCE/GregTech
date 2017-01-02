@@ -8,6 +8,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.XSTR;
+import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -96,19 +97,6 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, EnumHand hand) {
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
-        }
-        ItemStack stack = aPlayer != null ? aPlayer.getHeldItem(hand) : null;
-        if (stack != null) {
-            FluidStack fluidStack = GT_Utility.getFluidForFilledItem(stack, true);
-            int capacity = getFillableStack() == null ? getCapacity() : getCapacity() - getFillableStack().amount;
-            if(fluidStack != null && fluidStack.getFluid() == FluidRegistry.WATER && fluidStack.amount <= capacity) {
-                ItemStack empty = GT_Utility.getContainerForFilledItem(stack, true);
-                if(aPlayer.inventory.addItemStackToInventory(empty)) {
-                    stack.stackSize--;
-                    fill(fluidStack, true);
-                    return true;
-                }
-            }
         }
         aBaseMetaTileEntity.openGUI(aPlayer);
         return true;
@@ -200,8 +188,8 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
                 for (EnumFacing side : EnumFacing.VALUES) {
                     if (side.getIndex() != aBaseMetaTileEntity.getFrontFacing()) {
                         int drain = GT_Utility.fillFluidTank(
-                                aBaseMetaTileEntity.getWorld(),
-                                aBaseMetaTileEntity.getPos(), side,
+                                aBaseMetaTileEntity.getWorldObj(),
+                                aBaseMetaTileEntity.getWorldPos(), side,
                                 getDrainableStack());
                         if (drain != 0) {
                             drain(side, drain, true);
@@ -289,7 +277,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
         if (aIndex == 1) {
             GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(4), 2, 1.0F, aX, aY, aZ);
             for (int l = 0; l < 8; l++) {
-                getBaseMetaTileEntity().getWorld().spawnParticle(EnumParticleTypes.SMOKE_LARGE, aX - 0.5D + (new XSTR()).nextFloat(), aY, aZ - 0.5D + (new XSTR()).nextFloat(), 0.0D, 0.0D, 0.0D);
+                getBaseMetaTileEntity().getWorldObj().spawnParticle(EnumParticleTypes.SMOKE_LARGE, aX - 0.5D + (new XSTR()).nextFloat(), aY, aZ - 0.5D + (new XSTR()).nextFloat(), 0.0D, 0.0D, 0.0D);
             }
         }
     }

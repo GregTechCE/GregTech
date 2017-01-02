@@ -96,8 +96,8 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
                 for (EnumFacing side : EnumFacing.VALUES) {
                     if (side.getIndex() != aBaseMetaTileEntity.getFrontFacing()) {
                         int drain = GT_Utility.fillFluidTank(
-                                aBaseMetaTileEntity.getWorld(),
-                                aBaseMetaTileEntity.getPos(), side,
+                                aBaseMetaTileEntity.getWorldObj(),
+                                aBaseMetaTileEntity.getWorldPos(), side,
                                 getDrainableStack());
                         if (drain != 0) {
                             drain(side, drain, true);
@@ -139,9 +139,9 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
                 sendSound((byte) 1);
                 this.mSteam.amount = 12000;
             }
-            if ((this.mProcessingEnergy <= 0) && (aBaseMetaTileEntity.isAllowedToWork()) && (aTick % 256L == 0L) && (!aBaseMetaTileEntity.getWorld().isThundering())) {
-                boolean bRain = aBaseMetaTileEntity.getWorld().isRaining() && aBaseMetaTileEntity.getBiome().getRainfall() > 0.0F;
-                mProcessingEnergy += bRain && aBaseMetaTileEntity.getWorld().getSkylightSubtracted() >= 4 || !aBaseMetaTileEntity.getSkyAtSide((byte) 1) ? 0 : !bRain && aBaseMetaTileEntity.getWorld().isDaytime() ? 8 : 1;
+            if ((this.mProcessingEnergy <= 0) && (aBaseMetaTileEntity.isAllowedToWork()) && (aTick % 256L == 0L) && (!aBaseMetaTileEntity.getWorldObj().isThundering())) {
+                boolean bRain = aBaseMetaTileEntity.getWorldObj().isRaining() && aBaseMetaTileEntity.getBiome().getRainfall() > 0.0F;
+                mProcessingEnergy += bRain && aBaseMetaTileEntity.getWorldObj().getSkylightSubtracted() >= 4 || !aBaseMetaTileEntity.getSkyAtSide((byte) 1) ? 0 : !bRain && aBaseMetaTileEntity.getWorldObj().isDaytime() ? 8 : 1;
             }
             if ((this.mTemperature < 500) && (this.mProcessingEnergy > 0) && (aTick % 12L == 0L)) {
                 this.mProcessingEnergy -= 1;

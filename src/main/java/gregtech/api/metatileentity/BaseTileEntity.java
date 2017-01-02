@@ -56,8 +56,13 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     @Override
-    public final World getWorld() {
+    public World getWorldObj() {
         return worldObj;
+    }
+
+    @Override
+    public BlockPos getWorldPos() {
+        return pos;
     }
 
     @Override
@@ -73,21 +78,6 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     @Override
     public final int getZCoord() {
         return getPos().getZ();
-    }
-
-    @Override
-    public final int getOffsetX(byte aSide, int aMultiplier) {
-        return getXCoord() + EnumFacing.VALUES[aSide].getFrontOffsetX() * aMultiplier;
-    }
-
-    @Override
-    public final short getOffsetY(byte aSide, int aMultiplier) {
-        return (short) (getYCoord() + EnumFacing.VALUES[aSide].getFrontOffsetY() * aMultiplier);
-    }
-
-    @Override
-    public final int getOffsetZ(byte aSide, int aMultiplier) {
-        return getZCoord() + EnumFacing.VALUES[aSide].getFrontOffsetZ() * aMultiplier;
     }
 
     @Override
@@ -117,19 +107,28 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         return worldObj.rand.nextInt(aRange);
     }
 
+    private BlockPos.MutableBlockPos M = new BlockPos.MutableBlockPos();
+
+
+
     @Override
     public final Biome getBiome(int aX, int aZ) {
-        return worldObj.getBiomeGenForCoords(new BlockPos(aX, 1, aZ));
+        return worldObj.getBiomeGenForCoords(M.setPos(aX, 1, aZ));
     }
 
     @Override
     public final Biome getBiome() {
-        return getBiome(getXCoord(), getZCoord());
+        return worldObj.getBiomeGenForCoords(getPos());
+    }
+
+    @Override
+    public final IBlockState getBlockStateOffset(int aX, int aY, int aZ) {
+        return worldObj.getBlockState(M.setPos(getXCoord() + aX, getYCoord() + aY, getZCoord() + aZ));
     }
 
     @Override
     public final Block getBlockOffset(int aX, int aY, int aZ) {
-        return getBlock(getXCoord() + aX, getYCoord() + aY, getZCoord() + aZ);
+        return getBlockStateOffset(aX, aY, aZ).getBlock();
     }
 
     @Override
@@ -137,14 +136,20 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         return getBlockAtSideAndDistance(aSide, 1);
     }
 
+    public final IBlockState getBlockStateAtSideAndDistance(byte aSide, int aDistance) {
+        EnumFacing side = EnumFacing.VALUES[aSide];
+        return getBlockStateOffset(side.getFrontOffsetX() * aDistance, side.getFrontOffsetY() * aDistance, side.getFrontOffsetZ() * aDistance);
+    }
+
     @Override
     public final Block getBlockAtSideAndDistance(byte aSide, int aDistance) {
-        return getBlock(getOffsetX(aSide, aDistance), getOffsetY(aSide, aDistance), getOffsetZ(aSide, aDistance));
+        return getBlockStateAtSideAndDistance(aSide, aDistance).getBlock();
     }
 
     @Override
     public final byte getMetaIDOffset(int aX, int aY, int aZ) {
-        return getMetaID(getXCoord() + aX, getYCoord() + aY, getZCoord() + aZ);
+        IBlockState blockState = getBlockStateOffset(aX, aY, aZ);
+        return (byte) blockState.getBlock().getMetaFromState(blockState);
     }
 
     @Override
@@ -154,12 +159,13 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public final byte getMetaIDAtSideAndDistance(byte aSide, int aDistance) {
-        return getMetaID(getOffsetX(aSide, aDistance), getOffsetY(aSide, aDistance), getOffsetZ(aSide, aDistance));
+        IBlockState blockState = getBlockStateAtSideAndDistance(aSide, aDistance);
+        return (byte) blockState.getBlock().getMetaFromState(blockState);
     }
 
     @Override
     public final byte getLightLevelOffset(int aX, int aY, int aZ) {
-        return getLightLevel(getXCoord() + aX, getYCoord() + aY, getZCoord() + aZ);
+        return (byte) worldObj.getLight(M.setPos(getXCoord() + aX, getYCoord() + aY, getZCoord() + aZ));
     }
 
     @Override
@@ -169,12 +175,13 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public final byte getLightLevelAtSideAndDistance(byte aSide, int aDistance) {
-        return getLightLevel(getOffsetX(aSide, aDistance), getOffsetY(aSide, aDistance), getOffsetZ(aSide, aDistance));
+        EnumFacing side = EnumFacing.VALUES[aSide];
+        return getLightLevelOffset(side.getFrontOffsetX() * aDistance, side.getFrontOffsetY() * aDistance, side.getFrontOffsetZ() * aDistance);
     }
 
     @Override
     public final boolean getOpacityOffset(int aX, int aY, int aZ) {
-        return getOpacity(getXCoord() + aX, getYCoord() + aY, getZCoord() + aZ);
+        return getBlockStateOffset(aX, aY, aZ).isOpaqueCube();
     }
 
     @Override
@@ -184,12 +191,12 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public final boolean getOpacityAtSideAndDistance(byte aSide, int aDistance) {
-        return getOpacity(getOffsetX(aSide, aDistance), getOffsetY(aSide, aDistance), getOffsetZ(aSide, aDistance));
+        return getBlockStateAtSideAndDistance(aSide, aDistance).isOpaqueCube();
     }
 
     @Override
     public final boolean getSkyOffset(int aX, int aY, int aZ) {
-        return getSky(getXCoord() + aX, getYCoord() + aY, getZCoord() + aZ);
+        return worldObj.canSeeSky(M.setPos(getXCoord() + aX, getYCoord() + aY, getZCoord() + aZ));
     }
 
     @Override
@@ -199,12 +206,13 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public final boolean getSkyAtSideAndDistance(byte aSide, int aDistance) {
-        return getSky(getOffsetX(aSide, aDistance), getOffsetY(aSide, aDistance), getOffsetZ(aSide, aDistance));
+        EnumFacing side = EnumFacing.VALUES[aSide];
+        return getSkyOffset(side.getFrontOffsetX() * aDistance, side.getFrontOffsetY() * aDistance, side.getFrontOffsetZ() * aDistance);
     }
 
     @Override
     public final boolean getAirOffset(int aX, int aY, int aZ) {
-        return getAir(getXCoord() + aX, getYCoord() + aY, getZCoord() + aZ);
+        return worldObj.isAirBlock(M.setPos(getXCoord() + aX, getYCoord() + aY, getZCoord() + aZ));
     }
 
     @Override
@@ -214,157 +222,161 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public final boolean getAirAtSideAndDistance(byte aSide, int aDistance) {
-        return getAir(getOffsetX(aSide, aDistance), getOffsetY(aSide, aDistance), getOffsetZ(aSide, aDistance));
+        EnumFacing side = EnumFacing.VALUES[aSide];
+        return getAirOffset(side.getFrontOffsetX() * aDistance, side.getFrontOffsetY() * aDistance, side.getFrontOffsetZ() * aDistance);
     }
 
     @Override
     public final TileEntity getTileEntityOffset(int aX, int aY, int aZ) {
-        return getTileEntity(getXCoord() + aX, getYCoord() + aY, getZCoord() + aZ);
+        return worldObj.getTileEntity(M.setPos(getXCoord() + aX, getYCoord() + aY, getZCoord() + aZ));
     }
 
     @Override
     public final TileEntity getTileEntityAtSideAndDistance(byte aSide, int aDistance) {
-        if (aDistance == 1) return getTileEntityAtSide(aSide);
-        return getTileEntity(getOffsetX(aSide, aDistance), getOffsetY(aSide, aDistance), getOffsetZ(aSide, aDistance));
+        EnumFacing side = EnumFacing.VALUES[aSide];
+        return getTileEntityOffset(side.getFrontOffsetX() * aDistance, side.getFrontOffsetY() * aDistance, side.getFrontOffsetZ() * aDistance);
     }
 
     @Override
     public final IInventory getIInventory(int aX, int aY, int aZ) {
-        TileEntity tTileEntity = getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof IInventory) return (IInventory) tTileEntity;
-        return null;
+        TileEntity tileEntity = getTileEntity(aX, aY, aZ);
+        return tileEntity instanceof IInventory ? (IInventory) tileEntity : null;
     }
 
     @Override
     public final IInventory getIInventoryOffset(int aX, int aY, int aZ) {
-        TileEntity tTileEntity = getTileEntityOffset(aX, aY, aZ);
-        if (tTileEntity instanceof IInventory) return (IInventory) tTileEntity;
-        return null;
+        TileEntity tileEntity = getTileEntityOffset(aX, aY, aZ);
+        return tileEntity instanceof IInventory ? (IInventory) tileEntity : null;
     }
 
     @Override
     public final IInventory getIInventoryAtSide(byte aSide) {
-        TileEntity tTileEntity = getTileEntityAtSide(aSide);
-        if (tTileEntity instanceof IInventory) return (IInventory) tTileEntity;
-        return null;
+        return getIInventoryAtSideAndDistance(aSide, 1);
     }
 
     @Override
     public final IInventory getIInventoryAtSideAndDistance(byte aSide, int aDistance) {
-        TileEntity tTileEntity = getTileEntityAtSideAndDistance(aSide, aDistance);
-        if (tTileEntity instanceof IInventory) return (IInventory) tTileEntity;
-        return null;
+        TileEntity tileEntity = getTileEntityAtSideAndDistance(aSide, aDistance);
+        return tileEntity instanceof IInventory ? (IInventory) tileEntity : null;
     }
 
     @Override
     public final IFluidHandler getITankContainer(int aX, int aY, int aZ) {
-        TileEntity tTileEntity = getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof IFluidHandler) return (IFluidHandler) tTileEntity;
-        return null;
+        TileEntity tileEntity = getTileEntity(aX, aY, aZ);
+        return tileEntity instanceof IFluidHandler ? (IFluidHandler) tileEntity : null;
     }
 
     @Override
     public final IFluidHandler getITankContainerOffset(int aX, int aY, int aZ) {
-        TileEntity tTileEntity = getTileEntityOffset(aX, aY, aZ);
-        if (tTileEntity instanceof IFluidHandler) return (IFluidHandler) tTileEntity;
-        return null;
+        TileEntity tileEntity = getTileEntityOffset(aX, aY, aZ);
+        return tileEntity instanceof IFluidHandler ? (IFluidHandler) tileEntity : null;
     }
 
     @Override
     public final IFluidHandler getITankContainerAtSide(byte aSide) {
-        TileEntity tTileEntity = getTileEntityAtSide(aSide);
-        if (tTileEntity instanceof IFluidHandler) return (IFluidHandler) tTileEntity;
-        return null;
+        return getITankContainerAtSideAndDistance(aSide, 1);
     }
 
     @Override
     public final IFluidHandler getITankContainerAtSideAndDistance(byte aSide, int aDistance) {
-        TileEntity tTileEntity = getTileEntityAtSideAndDistance(aSide, aDistance);
-        if (tTileEntity instanceof IFluidHandler) return (IFluidHandler) tTileEntity;
-        return null;
+        TileEntity tileEntity = getTileEntityAtSideAndDistance(aSide, aDistance);
+        return tileEntity instanceof IFluidHandler ? (IFluidHandler) tileEntity : null;
     }
 
     @Override
     public final IGregTechTileEntity getIGregTechTileEntity(int aX, int aY, int aZ) {
-        TileEntity tTileEntity = getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof IGregTechTileEntity) return (IGregTechTileEntity) tTileEntity;
-        return null;
+        TileEntity tileEntity = getTileEntity(aX, aY, aZ);
+        return tileEntity instanceof IGregTechTileEntity ? (IGregTechTileEntity) tileEntity : null;
     }
 
     @Override
     public final IGregTechTileEntity getIGregTechTileEntityOffset(int aX, int aY, int aZ) {
-        TileEntity tTileEntity = getTileEntityOffset(aX, aY, aZ);
-        if (tTileEntity instanceof IGregTechTileEntity) return (IGregTechTileEntity) tTileEntity;
-        return null;
+        TileEntity tileEntity = getTileEntityOffset(aX, aY, aZ);
+        return tileEntity instanceof IGregTechTileEntity ? (IGregTechTileEntity) tileEntity : null;
     }
 
     @Override
     public final IGregTechTileEntity getIGregTechTileEntityAtSide(byte aSide) {
-        TileEntity tTileEntity = getTileEntityAtSide(aSide);
-        if (tTileEntity instanceof IGregTechTileEntity) return (IGregTechTileEntity) tTileEntity;
-        return null;
+        return getIGregTechTileEntityAtSideAndDistance(aSide, 1);
     }
 
     @Override
     public final IGregTechTileEntity getIGregTechTileEntityAtSideAndDistance(byte aSide, int aDistance) {
-        TileEntity tTileEntity = getTileEntityAtSideAndDistance(aSide, aDistance);
-        if (tTileEntity instanceof IGregTechTileEntity) return (IGregTechTileEntity) tTileEntity;
-        return null;
+        TileEntity tileEntity = getTileEntityAtSideAndDistance(aSide, aDistance);
+        return tileEntity instanceof IGregTechTileEntity ? (IGregTechTileEntity) tileEntity : null;
     }
 
     @Override
     public final Block getBlock(int aX, int aY, int aZ) {
-        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.isBlockLoaded(new BlockPos(aX, aY, aZ))) return Blocks.AIR;
-        return worldObj.getBlockState(new BlockPos(aX, aY, aZ)).getBlock();
+        M.setPos(aX, aY, aZ);
+        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.isBlockLoaded(M))
+            return Blocks.AIR;
+        return worldObj.getBlockState(M).getBlock();
     }
 
     @Override
     public final byte getMetaID(int aX, int aY, int aZ) {
-        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.isBlockLoaded(new BlockPos(aX, aY, aZ))) return 0;
-        IBlockState blockState = worldObj.getBlockState(new BlockPos(aX, aY, aZ));
+        M.setPos(aX, aY, aZ);
+        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.isBlockLoaded(M))
+            return 0;
+        IBlockState blockState = worldObj.getBlockState(M);
         return (byte) blockState.getBlock().getMetaFromState(blockState);
     }
 
     @Override
     public final byte getLightLevel(int aX, int aY, int aZ) {
-        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.isBlockLoaded(new BlockPos(aX, aY, aZ))) return 0;
-        return (byte) (worldObj.getLightBrightness(new BlockPos(aX, aY, aZ)) * 15);
+        M.setPos(aX, aY, aZ);
+        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.isBlockLoaded(M))
+            return 0;
+        return (byte) worldObj.getLight(M);
     }
 
     @Override
     public final boolean getSky(int aX, int aY, int aZ) {
-        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.isBlockLoaded(new BlockPos(aX, aY, aZ))) return true;
-        return worldObj.canSeeSky(new BlockPos(aX, aY, aZ));
+        M.setPos(aX, aY, aZ);
+        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.isBlockLoaded(M))
+            return false;
+        return worldObj.canSeeSky(M);
     }
 
     @Override
     public final boolean getOpacity(int aX, int aY, int aZ) {
-        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.isBlockLoaded(new BlockPos(aX, aY, aZ))) return false;
-        return GT_Utility.isOpaqueBlock(worldObj, aX, aY, aZ);
+        M.setPos(aX, aY, aZ);
+        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.isBlockLoaded(M))
+            return false;
+        IBlockState blockState = worldObj.getBlockState(M);
+        return blockState.isOpaqueCube();
     }
 
     @Override
     public final boolean getAir(int aX, int aY, int aZ) {
-        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.isBlockLoaded(new BlockPos(aX, aY, aZ))) return true;
-        return GT_Utility.isBlockAir(worldObj, aX, aY, aZ);
+        M.setPos(aX, aY, aZ);
+        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.isBlockLoaded(M))
+            return false;
+        return worldObj.isAirBlock(M);
     }
 
     @Override
     public final TileEntity getTileEntity(int aX, int aY, int aZ) {
-        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.isBlockLoaded(new BlockPos(aX, aY, aZ))) return null;
-        return worldObj.getTileEntity(new BlockPos(aX, aY, aZ));
+        M.setPos(aX, aY, aZ);
+        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.isBlockLoaded(M))
+            return null;
+        return worldObj.getTileEntity(M);
     }
 
     @Override
     public final TileEntity getTileEntityAtSide(byte aSide) {
+        EnumFacing side = EnumFacing.VALUES[aSide];
+        M.setPos(getXCoord() + side.getFrontOffsetX(), getYCoord() + side.getFrontOffsetY(), getZCoord() + side.getFrontOffsetZ());
+        
         if (aSide < 0 || aSide >= 6 || mBufferedTileEntities[aSide] == this) return null;
         int tX = getOffsetX(aSide, 1), tY = getOffsetY(aSide, 1), tZ = getOffsetZ(aSide, 1);
         if (crossedChunkBorder(tX, tZ)) {
             mBufferedTileEntities[aSide] = null;
-            if (ignoreUnloadedChunks && !worldObj.isBlockLoaded(new BlockPos(tX, tY, tZ))) return null;
+            if (ignoreUnloadedChunks && !worldObj.isBlockLoaded(M)) return null;
         }
         if (mBufferedTileEntities[aSide] == null) {
-            mBufferedTileEntities[aSide] = worldObj.getTileEntity(new BlockPos(tX, tY, tZ));
+            mBufferedTileEntities[aSide] = worldObj.getTileEntity(M);
             if (mBufferedTileEntities[aSide] == null) {
                 mBufferedTileEntities[aSide] = this;
                 return null;
@@ -380,6 +392,42 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         }
         return null;
     }
+
+    @Override
+    public IBlockState getBlockState(BlockPos pos) {
+        return worldObj.getBlockState(pos);
+    }
+
+    @Override
+    public boolean setBlockState(BlockPos pos, IBlockState state) {
+        return worldObj.setBlockState(pos, state);
+    }
+
+    @Override
+    public boolean setBlockToAir(BlockPos pos) {
+        return worldObj.setBlockToAir(pos);
+    }
+
+    @Override
+    public boolean isAir(BlockPos pos) {
+        return worldObj.isAirBlock(pos);
+    }
+
+    @Override
+    public int getOffsetX(byte aSide, int aMultiplier) {
+        return EnumFacing.VALUES[aSide].getFrontOffsetX() * aMultiplier;
+    }
+
+    @Override
+    public short getOffsetY(byte aSide, int aMultiplier) {
+        return (short) (EnumFacing.VALUES[aSide].getFrontOffsetY() * aMultiplier);
+    }
+
+    @Override
+    public int getOffsetZ(byte aSide, int aMultiplier) {
+        return EnumFacing.VALUES[aSide].getFrontOffsetZ() * aMultiplier;
+    }
+
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound aNBT) {

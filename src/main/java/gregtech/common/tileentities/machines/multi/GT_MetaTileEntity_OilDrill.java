@@ -79,7 +79,7 @@ public class GT_MetaTileEntity_OilDrill extends GT_MetaTileEntity_MultiBlockBase
                 }
             }
         }
-        FluidStack tFluid = GT_Utility.getUndergroundOil(getBaseMetaTileEntity().getWorld(), getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getZCoord());
+        FluidStack tFluid = GT_Utility.getUndergroundOil(getBaseMetaTileEntity().getWorldObj(), getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getZCoord());
         if (tFluid == null) {
             return false;
         }
@@ -138,13 +138,13 @@ public class GT_MetaTileEntity_OilDrill extends GT_MetaTileEntity_MultiBlockBase
         if (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, yHead - 1, getBaseMetaTileEntity().getZCoord() + zDir) == Blocks.BEDROCK) {
             return false;
         }
-        if (!(getBaseMetaTileEntity().getWorld().setBlockState(
+        if (!(getBaseMetaTileEntity().getWorldObj().setBlockState(
                 new BlockPos(getBaseMetaTileEntity().getXCoord() + xDir, yHead - 1, getBaseMetaTileEntity().getZCoord() + zDir),
                 GT_Utility.getBlockFromStack(mining_pipe_tip).getDefaultState()))) {
             return false;
         }
         if (yHead != getBaseMetaTileEntity().getYCoord()) {
-            getBaseMetaTileEntity().getWorld().setBlockState(
+            getBaseMetaTileEntity().getWorldObj().setBlockState(
                     new BlockPos(getBaseMetaTileEntity().getXCoord() + xDir, yHead, getBaseMetaTileEntity().getZCoord() + zDir),
                     GT_Utility.getBlockFromStack(mining_pipe).getDefaultState());
         }
@@ -165,7 +165,7 @@ public class GT_MetaTileEntity_OilDrill extends GT_MetaTileEntity_MultiBlockBase
             }
         } else if (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir) != GT_Utility
                 .getBlockFromStack(mining_pipe_tip) && this.mInventory[1] != null && this.mInventory[1].stackSize > 0 && GT_Utility.areStacksEqual(this.mInventory[1], mining_pipe)) {
-            getBaseMetaTileEntity().getWorld().setBlockState(
+            getBaseMetaTileEntity().getWorldObj().setBlockState(
                     new BlockPos(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir),
                     GT_Utility.getBlockFromStack(mining_pipe_tip).getDefaultState());
             getBaseMetaTileEntity().decrStackSize(0, 1);

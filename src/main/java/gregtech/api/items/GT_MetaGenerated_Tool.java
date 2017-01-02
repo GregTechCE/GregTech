@@ -26,6 +26,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
@@ -274,7 +275,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
                 boolean tCriticalHit = aPlayer.fallDistance > 0.0F &&
                         !aPlayer.onGround && !aPlayer.isOnLadder() &&
                         !aPlayer.isInWater() &&
-                        !aPlayer.isPotionActive(Potion.getPotionFromResourceLocation("blindness")) &&
+                        !aPlayer.isPotionActive(MobEffects.BLINDNESS) &&
                         aPlayer.getRidingEntity() == null && aEntity instanceof EntityLivingBase;
                 if (tCriticalHit && tDamage > 0.0F) tDamage *= 1.5F;
                 tDamage += tMagicDamage;

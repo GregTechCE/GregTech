@@ -154,8 +154,8 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
                 offY = mle.getY();
                 offZ = mle.getZ();
 
-                IBlockState metadata = getBaseMetaTileEntity().getWorld().getBlockState(mle);
-                boolean silkTouch = tMineBlock.canSilkHarvest(getBaseMetaTileEntity().getWorld(), new BlockPos(posX, posY, posZ), metadata, null);
+                IBlockState metadata = getBaseMetaTileEntity().getWorldObj().getBlockState(mle);
+                boolean silkTouch = tMineBlock.canSilkHarvest(getBaseMetaTileEntity().getWorldObj(), new BlockPos(posX, posY, posZ), metadata, null);
                 if (silkTouch){
                     ItemStack IS = new ItemStack(tMineBlock);
                     IS.setItemDamage(metadata.getBlock().getMetaFromState(metadata));
@@ -163,10 +163,10 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
                     tDrops.add(IS);
                 }
                 else{
-                    tDrops = tMineBlock.getDrops(getBaseMetaTileEntity().getWorld(), new BlockPos(posX, posY, posZ), metadata, 1);
+                    tDrops = tMineBlock.getDrops(getBaseMetaTileEntity().getWorldObj(), new BlockPos(posX, posY, posZ), metadata, 1);
                 }
 
-                getBaseMetaTileEntity().getWorld().setBlockToAir(getBaseMetaTileEntity().getPos().add(posX, posY, posZ));
+                getBaseMetaTileEntity().getWorldObj().setBlockToAir(getBaseMetaTileEntity().getWorldPos().add(posX, posY, posZ));
                 if (!tDrops.isEmpty()) {
                     ItemData tData = GT_OreDictUnificator.getItemData(tDrops.get(0).copy());
                     if (tData.mPrefix != OrePrefixes.crushed && tData.mMaterial.mMaterial != Materials.Oilsands) {
@@ -240,14 +240,14 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
             stopMachine();
             return false;
         }
-        if (!(getBaseMetaTileEntity().getWorld().setBlockState(
+        if (!(getBaseMetaTileEntity().getWorldObj().setBlockState(
                 new BlockPos(getBaseMetaTileEntity().getXCoord() + xDir, yHead - 1, getBaseMetaTileEntity().getZCoord() + zDir),
                 GT_Utility.getBlockFromStack(mining_pipe_tip).getDefaultState()))) {
             stopMachine();
             return false;
         }
         if (yHead != getBaseMetaTileEntity().getYCoord()) {
-            getBaseMetaTileEntity().getWorld().setBlockState(
+            getBaseMetaTileEntity().getWorldObj().setBlockState(
                     new BlockPos(getBaseMetaTileEntity().getXCoord() + xDir, yHead, getBaseMetaTileEntity().getZCoord() + zDir),
                     GT_Utility.getBlockFromStack(mining_pipe).getDefaultState());
         }
@@ -268,7 +268,7 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
             }
         } else if (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir) != GT_Utility
                 .getBlockFromStack(mining_pipe_tip) && this.mInventory[1] != null && this.mInventory[1].stackSize > 0 && GT_Utility.areStacksEqual(this.mInventory[1], mining_pipe)) {
-            getBaseMetaTileEntity().getWorld().setBlockState(
+            getBaseMetaTileEntity().getWorldObj().setBlockState(
                     new BlockPos(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir),
                     GT_Utility.getBlockFromStack(mining_pipe_tip).getDefaultState());
             getBaseMetaTileEntity().decrStackSize(0, 1);

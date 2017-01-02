@@ -253,7 +253,7 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
                 for (int yPos = tY + 1; yPos <= tY + 2; yPos++) {
                     tUsedMeta = aBaseMetaTileEntity.getMetaID(xPos, yPos, zPos);
                     if (tUsedMeta >= 12 && tUsedMeta <= 14 && aBaseMetaTileEntity.getBlock(xPos, yPos, zPos) == GregTech_API.sBlockCasings1) {
-                        aBaseMetaTileEntity.getWorld().setBlockState(
+                        aBaseMetaTileEntity.getWorldObj().setBlockState(
                                 new BlockPos(xPos, yPos, zPos),
                                 GregTech_API.sBlockCasings5.getStateFromMeta(tUsedMeta - 12),
                                 3);

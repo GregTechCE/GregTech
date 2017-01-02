@@ -155,7 +155,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (mProgresstime > 0 && firstRun) {
             firstRun = false;
-            GT_Mod.instance.achievements.issueAchievement(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "extremepressure");
+            GT_Mod.instance.achievements.issueAchievement(aBaseMetaTileEntity.getWorldObj().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "extremepressure");
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }

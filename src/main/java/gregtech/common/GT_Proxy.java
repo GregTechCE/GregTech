@@ -43,6 +43,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenMinable;
@@ -188,23 +189,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public boolean mEnableAllMaterials = false;
     public boolean mEnableAllComponents = false;
 
+    //IT IS NOT INTENDED TO CALL ANYTHING FROM FORGE DURING PROXY CONSTRUCTION
     public GT_Proxy() {
-        GameRegistry.registerFuelHandler(this);
-        MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.ORE_GEN_BUS.register(this);
-        FMLCommonHandler.instance().bus().register(this);
-        GregTech_API.sThaumcraftCompat = (IThaumcraftCompat) GT_Utility.callConstructor("gregtech.common.GT_ThaumcraftCompat", 0, null, GT_Values.D1);
-        for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
-            onFluidContainerRegistration(new FluidContainerRegistry.FluidContainerRegisterEvent(tData));
-        }
-        try {
-            for (String tOreName : OreDictionary.getOreNames()) {
-                ItemStack tOreStack;
-                for (Iterator i$ = OreDictionary.getOres(tOreName).iterator(); i$.hasNext(); registerOre(new OreDictionary.OreRegisterEvent(tOreName, tOreStack))) {
-                    tOreStack = (ItemStack) i$.next();
-                }
-            }
-        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
     }
 
     private static void registerRecipes(OreDictEventContainer aOre) {
@@ -230,6 +216,24 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         GT_Log.ore.println("GT_Mod: Preload-Phase started!");
 
         GregTech_API.sPreloadStarted = true;
+
+        GameRegistry.registerFuelHandler(this);
+        MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.ORE_GEN_BUS.register(this);
+        FMLCommonHandler.instance().bus().register(this);
+        GregTech_API.sThaumcraftCompat = (IThaumcraftCompat) GT_Utility.callConstructor("gregtech.common.GT_ThaumcraftCompat", 0, null, GT_Values.D1);
+        for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
+            onFluidContainerRegistration(new FluidContainerRegistry.FluidContainerRegisterEvent(tData));
+        }
+        try {
+            for (String tOreName : OreDictionary.getOreNames()) {
+                ItemStack tOreStack;
+                for (Iterator i$ = OreDictionary.getOres(tOreName).iterator(); i$.hasNext(); registerOre(new OreDictionary.OreRegisterEvent(tOreName, tOreStack))) {
+                    tOreStack = (ItemStack) i$.next();
+                }
+            }
+        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
+
         this.mIgnoreTcon = GregTech_API.sOPStuff.get(ConfigCategories.general, "ignoreTConstruct", true);
         this.mWireHeatingTicks = GregTech_API.sOPStuff.get(ConfigCategories.general, "WireHeatingTicks", 4);
         NetworkRegistry.INSTANCE.registerGuiHandler(GT_Values.GT, this);
@@ -1849,12 +1853,12 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         ProgressManager.pop(progressBar);
     }
 
-    public static final HashMap<BlockPos, int[]>  chunkData = new HashMap<>(5000);
+    public static final HashMap<ChunkPos, int[]>  chunkData = new HashMap<>(5000);
 
     @SubscribeEvent
     public void handleChunkSaveEvent(ChunkDataEvent.Save event)
     {
-        BlockPos tPos = new BlockPos(event.getChunk().xPosition,1,event.getChunk().zPosition);
+        ChunkPos tPos = new ChunkPos(event.getChunk().xPosition, event.getChunk().zPosition);
         if(chunkData.containsKey(tPos)){
             int[] tInts = chunkData.get(tPos);
             if(tInts.length>0){event.getData().setInteger("GTOIL", tInts[0]);}
@@ -1867,7 +1871,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         int tOil = 0;
         int tPollution = 0;
 
-        BlockPos tPos = new BlockPos(event.getChunk().xPosition,1,event.getChunk().zPosition);
+        ChunkPos tPos = new ChunkPos(event.getChunk().xPosition, event.getChunk().zPosition);
         int[] tData = new int[2];
         if(chunkData.containsKey(tPos)){
             tData = chunkData.get(tPos);
@@ -1898,7 +1902,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             }
         }
 
-        chunkData.put(tPos, new int[]{ tOil,tPollution,-1});
+        chunkData.put(tPos, new int[]{ tOil, tPollution,-1});
     }
 
     public static class OreDictEventContainer {

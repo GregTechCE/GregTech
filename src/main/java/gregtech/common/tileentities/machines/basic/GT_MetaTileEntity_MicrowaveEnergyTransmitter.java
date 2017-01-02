@@ -116,7 +116,7 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
                 this.mTargetX = aBaseMetaTileEntity.getXCoord();
                 this.mTargetY = aBaseMetaTileEntity.getYCoord();
                 this.mTargetZ = aBaseMetaTileEntity.getZCoord();
-                this.mTargetD = aBaseMetaTileEntity.getWorld().provider.getDimension();
+                this.mTargetD = aBaseMetaTileEntity.getWorldObj().provider.getDimension();
             }
             this.hasEgg = checkForEgg();
         }
@@ -140,7 +140,7 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
     }
 
     public boolean isDimensionalTeleportAvailable() {
-        return (this.mDebug) || ((hasDimensionalTeleportCapability()) && (GT_Utility.isRealDimension(this.mTargetD)) && (GT_Utility.isRealDimension(getBaseMetaTileEntity().getWorld().provider.getDimension())));
+        return (this.mDebug) || ((hasDimensionalTeleportCapability()) && (GT_Utility.isRealDimension(this.mTargetD)) && (GT_Utility.isRealDimension(getBaseMetaTileEntity().getWorldObj().provider.getDimension())));
     }
 
     @Override
@@ -158,7 +158,7 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
                     if (mPassiveEnergyUse) {
                         getBaseMetaTileEntity().decreaseStoredEnergyUnits((long) Math.pow(2, mTier), false);
                     }
-                    if (hasDimensionalTeleportCapability() && this.mTargetD != getBaseMetaTileEntity().getWorld().provider.getDimension() && mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1))) {
+                    if (hasDimensionalTeleportCapability() && this.mTargetD != getBaseMetaTileEntity().getWorldObj().provider.getDimension() && mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1))) {
                         mFluid.amount--;
                         if (mFluid.amount < 1) {
                             mFluid = null;
@@ -169,7 +169,7 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
                         tTargetX = mTargetX;
                         tTargetY = mTargetY;
                         tTargetZ = mTargetZ;
-                        if (this.mTargetD == getBaseMetaTileEntity().getWorld().provider.getDimension()) {
+                        if (this.mTargetD == getBaseMetaTileEntity().getWorldObj().provider.getDimension()) {
                             tTile = getBaseMetaTileEntity().getTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ);
                         } else {
                             World tWorld = DimensionManager.getWorld(this.mTargetD);
@@ -198,7 +198,7 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
     }
 
     private int distanceCalculation() {
-        return Math.abs(((this.mTargetD != getBaseMetaTileEntity().getWorld().provider.getDimension()) && (isDimensionalTeleportAvailable()) ? 100 : 1) * (int) Math.sqrt(Math.pow(getBaseMetaTileEntity().getXCoord() - this.mTargetX, 2.0D) + Math.pow(getBaseMetaTileEntity().getYCoord() - this.mTargetY, 2.0D) + Math.pow(getBaseMetaTileEntity().getZCoord() - this.mTargetZ, 2.0D)));
+        return Math.abs(((this.mTargetD != getBaseMetaTileEntity().getWorldObj().provider.getDimension()) && (isDimensionalTeleportAvailable()) ? 100 : 1) * (int) Math.sqrt(Math.pow(getBaseMetaTileEntity().getXCoord() - this.mTargetX, 2.0D) + Math.pow(getBaseMetaTileEntity().getYCoord() - this.mTargetY, 2.0D) + Math.pow(getBaseMetaTileEntity().getZCoord() - this.mTargetZ, 2.0D)));
     }
 
     @Override

@@ -645,8 +645,8 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                     break;
                 case 1:
                     if (aBaseMetaTileEntity.getFrontFacing() != 1 && aBaseMetaTileEntity.getCoverIDAtSide((byte) 1) == 0 && !aBaseMetaTileEntity.getOpacityAtSide((byte) 1)) {
-                        Random tRandom = aBaseMetaTileEntity.getWorld().rand;
-                        aBaseMetaTileEntity.getWorld().spawnParticle(EnumParticleTypes.SMOKE_NORMAL, aBaseMetaTileEntity.getXCoord() + 0.8F - tRandom.nextFloat() * 0.6F, aBaseMetaTileEntity.getYCoord() + 0.9F + tRandom.nextFloat() * 0.2F, aBaseMetaTileEntity.getZCoord() + 0.8F - tRandom.nextFloat() * 0.6F, 0.0D, 0.0D, 0.0D);
+                        Random tRandom = aBaseMetaTileEntity.getWorldObj().rand;
+                        aBaseMetaTileEntity.getWorldObj().spawnParticle(EnumParticleTypes.SMOKE_NORMAL, aBaseMetaTileEntity.getXCoord() + 0.8F - tRandom.nextFloat() * 0.6F, aBaseMetaTileEntity.getYCoord() + 0.9F + tRandom.nextFloat() * 0.2F, aBaseMetaTileEntity.getZCoord() + 0.8F - tRandom.nextFloat() * 0.6F, 0.0D, 0.0D, 0.0D);
                     }
                     break;
             }

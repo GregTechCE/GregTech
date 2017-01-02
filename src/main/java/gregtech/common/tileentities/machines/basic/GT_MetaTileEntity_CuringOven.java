@@ -60,7 +60,7 @@ public class GT_MetaTileEntity_CuringOven
                     NBTTagCompound aNBT = tStack.getTagCompound();
                     if (aNBT != null) {
                 	int tHeat = 300;
-                	long tWorldTime = getBaseMetaTileEntity().getWorld().getTotalWorldTime();
+                	long tWorldTime = getBaseMetaTileEntity().getWorldObj().getTotalWorldTime();
                         aNBT = aNBT.getCompoundTag("GT.ToolStats");
                         if (aNBT != null&&aNBT.hasKey("Heat")) {
                         	tHeat = aNBT.getInteger("Heat");

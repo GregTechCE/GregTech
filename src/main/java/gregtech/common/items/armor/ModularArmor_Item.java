@@ -13,6 +13,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -34,8 +35,6 @@ import java.util.List;
 import java.util.Random;
 
 public class ModularArmor_Item extends GT_Generic_Item implements ISpecialArmor {
-
-    private static final Potion NIGHT_VISION = Potion.getPotionFromResourceLocation("night_vision");
 
     @SideOnly(Side.CLIENT)
     private TextureAtlasSprite itemIcon;
@@ -260,15 +259,15 @@ public class ModularArmor_Item extends GT_Generic_Item implements ISpecialArmor 
             if (timer >= 200) {
                 timer = 0;
                 if (data.processingPower > data.processingPowerUsed && data.helmet != null && data.helmet.nightVision && data.charge > 3) {
-                    aPlayer.addPotionEffect(new PotionEffect(NIGHT_VISION, 500, -3));
+                    aPlayer.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 500, -3));
                     data.charge -= 4;
                 } else {
-                    PotionEffect nv = aPlayer.getActivePotionEffect(NIGHT_VISION);
+                    PotionEffect nv = aPlayer.getActivePotionEffect(MobEffects.NIGHT_VISION);
                     if (nv != null && nv.getAmplifier() == -3) {
                         if (aPlayer.worldObj.isRemote) {
-                            aPlayer.removeActivePotionEffect(NIGHT_VISION);
+                            aPlayer.removeActivePotionEffect(MobEffects.NIGHT_VISION);
                         } else {
-                            aPlayer.removePotionEffect(NIGHT_VISION);
+                            aPlayer.removePotionEffect(MobEffects.NIGHT_VISION);
                         }
                     }
                 }

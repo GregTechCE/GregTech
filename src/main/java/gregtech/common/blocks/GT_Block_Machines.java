@@ -1,6 +1,7 @@
 package gregtech.common.blocks;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDebugableBlock;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -10,6 +11,7 @@ import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
@@ -28,6 +30,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
@@ -289,11 +292,13 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     public TextureAtlasSprite getParticleSprite(IBlockAccess worldObj, BlockPos aPos, EnumFacing side) {
         IGregTechTileEntity tileEntity = getGregTile(worldObj, aPos);
         if(tileEntity != null) {
-            ITexture[] textures = tileEntity.getTexture(this, (byte) side.getIndex());
-            for(int i = 0; i < textures.length; i++) {
-                if(textures[i] instanceof GT_RenderedTexture)
-                    return ((GT_RenderedTexture) textures[i]).mIconContainer.getIcon();
+            IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
+            if(metaTileEntity instanceof GT_MetaTileEntity_TieredMachineBlock) {
+                return Textures.BlockIcons.MACHINECASINGS_TOP[((GT_MetaTileEntity_TieredMachineBlock) metaTileEntity).mTier].getIcon();
+            } else {
+                return Textures.BlockIcons.MACHINECASINGS_TOP[1].getIcon();
             }
+
         }
         return null;
     }
@@ -307,41 +312,35 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         super.onBlockExploded(world, pos, explosion);
     }
 
-    private ThreadLocal<IGregTechTileEntity> tileEntity = new ThreadLocal<>();
-
     @Override
-    public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
-        tileEntity.set(getGregTile(worldIn, pos));
-        super.onBlockHarvested(worldIn, pos, state, player);
+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, @Nullable ItemStack stack) {
+        player.addStat(StatList.getBlockStats(this));
+        player.addExhaustion(0.025F);
+
+        if(te instanceof IGregTechTileEntity) {
+            List<ItemStack> itemstacks = getDrops((IGregTechTileEntity) te);
+            for(ItemStack itemStack : itemstacks) {
+                spawnAsEntity(worldIn, pos, itemStack);
+            }
+        }
     }
 
     @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        IGregTechTileEntity gregTechTileEntity = getGregTile(world, pos);
-        if(gregTechTileEntity == null) {
-            gregTechTileEntity = tileEntity.get();
-            tileEntity.set(null);
-        }
-        if(gregTechTileEntity != null) {
-            return getDrops(gregTechTileEntity);
-        }
         return Collections.EMPTY_LIST;
     }
 
     public List<ItemStack> getDrops(IGregTechTileEntity tGregTechTileEntity) {
-        if (tGregTechTileEntity != null) {
-            ArrayList<ItemStack> aDrops = new ArrayList<>();
-            aDrops.addAll(tGregTechTileEntity.getDrops());
-            for (int i = 0; i < tGregTechTileEntity.getSizeInventory(); i++) {
-                ItemStack tItem = tGregTechTileEntity.getStackInSlot(i);
-                if ((tItem != null) && (tItem.stackSize > 0) && (tGregTechTileEntity.isValidSlot(i))) {
-                    aDrops.add(tItem);
-                    tGregTechTileEntity.setInventorySlotContents(i, null);
-                }
+        ArrayList<ItemStack> aDrops = new ArrayList<>();
+        for (int i = 0; i < tGregTechTileEntity.getSizeInventory(); i++) {
+            ItemStack tItem = tGregTechTileEntity.getStackInSlot(i);
+            if ((tItem != null) && (tItem.stackSize > 0) && (tGregTechTileEntity.isValidSlot(i))) {
+                aDrops.add(tItem);
+                tGregTechTileEntity.setInventorySlotContents(i, null);
             }
-            return aDrops;
         }
-        return Collections.EMPTY_LIST;
+        aDrops.addAll(tGregTechTileEntity.getDrops());
+        return aDrops;
     }
 
     @Override

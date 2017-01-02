@@ -86,6 +86,8 @@ public class GT_Mod implements IGT_Mod {
             return;
         }
 
+        GT_Log.init(aEvent.getModLog(), aEvent.getModConfigurationDirectory().getParentFile());
+
         GT_Values.GT = this;
         GT_Values.DW = new GT_DummyWorld();
         GT_Values.NW = new GT_PacketHandler();
@@ -136,51 +138,11 @@ public class GT_Mod implements IGT_Mod {
         GregTech_API.mMagneticraft = Loader.isModLoaded("Magneticraft");
         GregTech_API.mImmersiveEngineering = Loader.isModLoaded("ImmersiveEngineering");
         GregTech_API.mGTPlusPlus = Loader.isModLoaded("miscutils");
-        GT_Log.mLogFile = new File(aEvent.getModConfigurationDirectory().getParentFile(), "logs/GregTech.log");
-        if (!GT_Log.mLogFile.exists()) {
-            try {
-                GT_Log.mLogFile.createNewFile();
-            } catch (Throwable e) {
-            }
+
+        if(tMainConfig.get(aTextGeneral, "ActivityLogger", false).getBoolean(false)) {
+            GT_Log.enablePlayerActivityLogger();
         }
-        try {
-            GT_Log.out = GT_Log.err = new PrintStream(GT_Log.mLogFile);
-        } catch (FileNotFoundException e) {
-        }
-        GT_Log.mOreDictLogFile = new File(aEvent.getModConfigurationDirectory().getParentFile(), "logs/OreDict.log");
-        if (!GT_Log.mOreDictLogFile.exists()) {
-            try {
-                GT_Log.mOreDictLogFile.createNewFile();
-            } catch (Throwable e) {
-            }
-        }
-        if (tMainConfig.get(aTextGeneral, "LoggingPlayerActivity", true).getBoolean(true)) {
-            GT_Log.mPlayerActivityLogFile = new File(aEvent.getModConfigurationDirectory().getParentFile(), "logs/PlayerActivity.log");
-            if (!GT_Log.mPlayerActivityLogFile.exists()) {
-                try {
-                    GT_Log.mPlayerActivityLogFile.createNewFile();
-                } catch (Throwable e) {
-                }
-            }
-            try {
-                GT_Log.pal = new PrintStream(GT_Log.mPlayerActivityLogFile);
-            } catch (Throwable e) {
-            }
-        }
-        try {
-            List<String> tList = ((GT_Log.LogBuffer) GT_Log.ore).mBufferedOreDictLog;
-            GT_Log.ore.println("******************************************************************************");
-            GT_Log.ore.println("* This is the complete log of the GT5-Unofficial OreDictionary Handler. It   *");
-            GT_Log.ore.println("* processes all OreDictionary entries and can sometimes cause errors. All    *");
-            GT_Log.ore.println("* entries and errors are being logged. If you see an error please raise an   *");
-            GT_Log.ore.println("* issue at https://github.com/Blood-Asp/GT5-Unofficial.                      *");
-            GT_Log.ore.println("******************************************************************************");
-            String tString;
-            for (Iterator i$ = tList.iterator(); i$.hasNext(); GT_Log.ore.println(tString)) {
-                tString = (String) i$.next();
-            }
-        } catch (Throwable e) {
-        }
+
         gregtechproxy.onPreLoad();
 
         GT_Log.out.println("GT_Mod: Setting Configs");

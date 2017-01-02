@@ -789,7 +789,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public int getInventoryStackLimit() {
-        if (canAccessData()) return mMetaTileEntity.getInventoryStackLimit();
+        if (hasValidMetaTileEntity()) return mMetaTileEntity.getInventoryStackLimit();
         return 64;
     }
 
@@ -819,7 +819,9 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         tileEntityInvalid = false;
         if (canAccessData()) {
             mMetaTileEntity.onRemoval();
-            mMetaTileEntity.setBaseMetaTileEntity(null);
+            //no need to detach metatileentity
+            //mMetaTileEntity.setBaseMetaTileEntity(null);
+
         }
         super.invalidate();
     }
@@ -1052,8 +1054,9 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         return mMetaTileEntity != null && mMetaTileEntity.getBaseMetaTileEntity() == this;
     }
 
+    //we can access dead tile entities data
     protected boolean canAccessData() {
-        return !isDead && hasValidMetaTileEntity();
+        return hasValidMetaTileEntity();
     }
 
     public boolean setStoredEU(long aEnergy) {
