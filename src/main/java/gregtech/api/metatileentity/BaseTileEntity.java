@@ -415,17 +415,17 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public int getOffsetX(byte aSide, int aMultiplier) {
-        return EnumFacing.VALUES[aSide].getFrontOffsetX() * aMultiplier;
+        return getXCoord() + EnumFacing.VALUES[aSide].getFrontOffsetX() * aMultiplier;
     }
 
     @Override
     public short getOffsetY(byte aSide, int aMultiplier) {
-        return (short) (EnumFacing.VALUES[aSide].getFrontOffsetY() * aMultiplier);
+        return (short) (getYCoord() + EnumFacing.VALUES[aSide].getFrontOffsetY() * aMultiplier);
     }
 
     @Override
     public int getOffsetZ(byte aSide, int aMultiplier) {
-        return EnumFacing.VALUES[aSide].getFrontOffsetZ() * aMultiplier;
+        return getZCoord() + EnumFacing.VALUES[aSide].getFrontOffsetZ() * aMultiplier;
     }
 
 
