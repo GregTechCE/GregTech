@@ -734,11 +734,19 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
         IToolStats toolStats = getToolStats(stack);
         IIconContainer head = toolStats.getIcon(true, stack);
         IIconContainer handle = toolStats.getIcon(false, stack);
-        if(pass == 0 && handle != null) {
-            return handle.getIcon();
+        if(handle != null) {
+            if(pass == 0) {
+                return handle.getIcon();
+            } else if(pass == 1) {
+                return handle.getOverlayIcon();
+            }
         }
-        if(pass == 1 && head != null) {
-            return head.getIcon();
+        if(head != null) {
+            if(pass == 2) {
+                return head.getIcon();
+            } else if(pass == 3) {
+                return head.getOverlayIcon();
+            }
         }
         return null;
     }
@@ -746,7 +754,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
     @Override
     @SideOnly(Side.CLIENT)
     public int getRenderPasses(ItemStack stack) {
-        return 2;
+        return 4;
     }
 
     @Override

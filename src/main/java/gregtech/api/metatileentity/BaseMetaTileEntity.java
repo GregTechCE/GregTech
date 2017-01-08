@@ -14,6 +14,7 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.*;
 import gregtech.common.GT_Pollution;
 import ic2.api.energy.tile.IEnergyAcceptor;
+import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.info.Info;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
@@ -25,12 +26,12 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -279,7 +280,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         boolean aSideServer = isServerSide();
         boolean aSideClient = isClientSide();
 
-        if (aSideServer && mTickTimer % 10 == 0) {
+        if (aSideServer && mTickTimer % 40 == 0) {
             NW.sendToAllAround(worldObj, new GT_Packet_TileEntity(
                             getXCoord(), getYCoord(), getZCoord(), mID,
                             mCoverSides[0], mCoverSides[1], mCoverSides[2],
@@ -1232,7 +1233,6 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sScrewdriverList)) {
                         if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 200, aPlayer)) {
-                            System.out.println("Screwdriver click");
                             setCoverDataAtSide(aSide, getCoverBehaviorAtSide(aSide).onCoverScrewdriverclick(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this, aPlayer, aX, aY, aZ));
                             mMetaTileEntity.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
                             GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, getXCoord(), getYCoord(), getZCoord());
@@ -1605,7 +1605,6 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         if (getCoverBehaviorAtSide(aSide).onCoverRemoval(aSide, getCoverIDAtSide(aSide), mCoverData[aSide], this, aForced) || aForced) {
             ItemStack tStack = getCoverBehaviorAtSide(aSide).getDrop(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this);
             if (tStack != null) {
-                tStack.setTagCompound(null);
                 EntityItem tEntity = new EntityItem(worldObj, getOffsetX(aDroppedSide, 1) + 0.5, getOffsetY(aDroppedSide, 1) + 0.5, getOffsetZ(aDroppedSide, 1) + 0.5, tStack);
                 tEntity.motionX = 0;
                 tEntity.motionY = 0;
@@ -1764,13 +1763,16 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         return injectEnergyUnits((byte) aDirection.ordinal(), (int) aAmount, 1) > 0 ? 0 : aAmount;
     }
 
-    public boolean acceptsEnergyFrom(TileEntity aEmitter, EnumFacing aDirection) {
+    @Override
+    public boolean acceptsEnergyFrom(IEnergyEmitter aEmitter, EnumFacing aDirection) {
         return inputEnergyFrom((byte) aDirection.ordinal());
     }
 
-    public boolean emitsEnergyTo(TileEntity aReceiver, EnumFacing aDirection) {
+    @Override
+    public boolean emitsEnergyTo(IEnergyAcceptor aReceiver, EnumFacing aDirection) {
         return outputsEnergyTo((byte) aDirection.ordinal());
     }
+
 
     public double getOfferedEnergy() {
         return (canAccessData() && getStoredEU() - mMetaTileEntity.getMinimumStoredEU() >= oOutput) ? Math.max(0, oOutput) : 0;
@@ -1779,10 +1781,6 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     public void drawEnergy(double amount) {
         mAverageEUOutput[mAverageEUOutputIndex] += amount;
         decreaseStoredEU((int) amount, true);
-    }
-
-    public int injectEnergy(EnumFacing aEnumFacing, int aAmount) {
-        return injectEnergyUnits((byte) aEnumFacing.ordinal(), aAmount, 1) > 0 ? 0 : aAmount;
     }
 
     public int addEnergy(int aEnergy) {
@@ -1912,11 +1910,6 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     @Override
     public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity collider) {
         mMetaTileEntity.onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
-    }
-
-    @Override
-    public boolean emitsEnergyTo(IEnergyAcceptor iEnergyAcceptor, EnumFacing enumFacing) {
-        return true;
     }
 
     @Override

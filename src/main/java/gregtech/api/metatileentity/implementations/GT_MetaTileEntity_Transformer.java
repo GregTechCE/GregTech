@@ -1,5 +1,8 @@
 package gregtech.api.metatileentity.implementations;
 
+import cofh.api.energy.IEnergyProvider;
+import cofh.api.energy.IEnergyStorage;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -7,10 +10,12 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
 import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergySource;
+import ic2.core.block.wiring.TileEntityElectricCESU;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 
 import static gregtech.api.enums.GT_Values.V;
 
@@ -136,39 +141,23 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
             for (byte i = 0; i < 6 && aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity(); i++)
                 if (aBaseMetaTileEntity.inputEnergyFrom(i)) {
                     TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(i);
-                    if (tTileEntity instanceof IEnergySource && ((IEnergySource) tTileEntity).emitsEnergyTo((IEnergyAcceptor) aBaseMetaTileEntity, facing(GT_Utility.getOppositeSide(i)))) {
+                    if (tTileEntity instanceof IEnergySource && ((IEnergySource) tTileEntity).emitsEnergyTo(aBaseMetaTileEntity, EnumFacing.VALUES[i].getOpposite())) {
                         long tEU = Math.min(maxEUInput(), (long) ((IEnergySource) tTileEntity).getOfferedEnergy());
                         ((IEnergySource) tTileEntity).drawEnergy(tEU);
                         aBaseMetaTileEntity.injectEnergyUnits((byte) 6, tEU, 1);
-                    } /*else if (GregTech_API.mInputRF && tTileEntity instanceof IEnergyProvider && ((IEnergyProvider) tTileEntity).extractEnergy(ForgeDirection.getOrientation(GT_Utility.getOppositeSide(i)), 1, true) == 1) {
-                        long tEU = (long) ((IEnergyProvider) tTileEntity).extractEnergy(ForgeDirection.getOrientation(GT_Utility.getOppositeSide(i)), (int) maxEUInput() * 100 / GregTech_API.mRFtoEU, false);
+                    } else if (tTileEntity instanceof ic2.api.tile.IEnergyStorage) {
+                        long tEU = Math.min(maxEUInput(), (long) ((ic2.api.tile.IEnergyStorage) tTileEntity).getOutput());
+                        ((ic2.api.tile.IEnergyStorage) tTileEntity).addEnergy((int) -tEU);
+                        aBaseMetaTileEntity.injectEnergyUnits((byte) 6, tEU, 1);
+                    } else if (GregTech_API.mInputRF && tTileEntity instanceof IEnergyProvider && ((IEnergyProvider) tTileEntity).extractEnergy(EnumFacing.VALUES[i].getOpposite(), 1, true) == 1) {
+                        long tEU = (long) ((IEnergyProvider) tTileEntity).extractEnergy(EnumFacing.VALUES[i].getOpposite(), (int) maxEUInput() * 100 / GregTech_API.mRFtoEU, false);
                         tEU = tEU * GregTech_API.mRFtoEU / 100;
                         aBaseMetaTileEntity.injectEnergyUnits((byte) 6, Math.min(tEU, maxEUInput()), 1);
                     } else if (GregTech_API.mInputRF && tTileEntity instanceof IEnergyStorage && ((IEnergyStorage) tTileEntity).extractEnergy(1, true) == 1) {
                         long tEU = (long) ((IEnergyStorage) tTileEntity).extractEnergy((int) maxEUInput() * 100 / GregTech_API.mRFtoEU, false);
                         tEU = tEU * GregTech_API.mRFtoEU / 100;
                         aBaseMetaTileEntity.injectEnergyUnits((byte) 6, Math.min(tEU, maxEUInput()), 1);
-                    } else if (GregTech_API.mInputRF && GregTech_API.meIOLoaded && tTileEntity instanceof IPowerContainer && ((IPowerContainer) tTileEntity).getEnergyStored() > 0) {
-                        int storedRF = ((IPowerContainer) tTileEntity).getEnergyStored();
-                        int extractRF = (int) maxEUInput() * 100 / GregTech_API.mRFtoEU;
-                        long tEU = 0;
-                        if (tTileEntity instanceof TileCapBank) {
-                            ICapBankNetwork network = ((TileCapBank) tTileEntity).getNetwork();
-                            if (network != null && network.getEnergyStoredL() > 0) {
-                                tEU = Math.min((Math.min(Math.min(network.getEnergyStoredL(), storedRF - extractRF), network.getMaxOutput())) * GregTech_API.mRFtoEU / 100, maxEUInput());
-                                network.addEnergy((int) -(tEU * 100 / GregTech_API.mRFtoEU));
-                            }
-                        } else {
-                            if (storedRF > extractRF) {
-                                ((IPowerContainer) tTileEntity).setEnergyStored(storedRF - extractRF);
-                                tEU = maxEUInput();
-                            } else {
-                                ((IPowerContainer) tTileEntity).setEnergyStored(0);
-                                tEU = storedRF * GregTech_API.mRFtoEU / 100;
-                            }
-                        }
-                        aBaseMetaTileEntity.injectEnergyUnits((byte) 6, Math.min(tEU, maxEUInput()), 1);
-                    }*/
+                    }
                 }
         }
     }

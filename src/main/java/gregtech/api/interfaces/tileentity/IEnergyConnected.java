@@ -3,8 +3,11 @@ package gregtech.api.interfaces.tileentity;
 import cofh.api.energy.IEnergyReceiver;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_Utility;
+import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergySink;
+import ic2.api.energy.tile.IEnergySource;
+import ic2.api.tile.IEnergyStorage;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -19,7 +22,7 @@ import static gregtech.api.enums.GT_Values.V;
  * IColoredTileEntity is needed for not connecting differently coloured Blocks to each other.
  * IHasWorldObjectAndCoords is needed for the InWorld related Stuff. @BaseTileEntity does implement most of that Interface.
  */
-public interface IEnergyConnected extends IColoredTileEntity, IHasWorldObjectAndCoords, IEnergyEmitter {
+public interface IEnergyConnected extends IColoredTileEntity, IHasWorldObjectAndCoords, IEnergyAcceptor, IEnergyEmitter {
     /**
      * Inject Energy Call for Electricity. Gets called by EnergyEmitters to inject Energy into your Block
      * <p/>
@@ -67,14 +70,12 @@ public interface IEnergyConnected extends IColoredTileEntity, IHasWorldObjectAnd
                                 rUsedAmperes++;
                         }
                     } else if (tTileEntity instanceof IEnergyReceiver) {
-                        System.out.println("Receive");
                         EnumFacing tDirection = EnumFacing.VALUES[i].getOpposite();
                         int rfOut = (int) (aVoltage * GregTech_API.mEUtoRF / 100);
                         if (((IEnergyReceiver) tTileEntity).receiveEnergy(tDirection, rfOut, true) == rfOut) {
                             ((IEnergyReceiver) tTileEntity).receiveEnergy(tDirection, rfOut, false);
                             rUsedAmperes++;
                         }
-                        System.out.println(rUsedAmperes);
                         if (GregTech_API.mRFExplosions && GregTech_API.sMachineExplosions && ((IEnergyReceiver) tTileEntity).getMaxEnergyStored(tDirection) < rfOut * 600) {
                             if (rfOut > 32 * GregTech_API.mEUtoRF / 100) {
                                 int aExplosionPower = rfOut;

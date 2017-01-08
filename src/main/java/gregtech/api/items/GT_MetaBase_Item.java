@@ -150,9 +150,9 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
             }
         if (aStack.stackSize <= 0) {
             aPlayer.setHeldItem(hand, null);
-            return EnumActionResult.FAIL;
+            return EnumActionResult.SUCCESS;
         }
-        return EnumActionResult.FAIL;
+        return EnumActionResult.SUCCESS;
     }
 
 
@@ -169,13 +169,13 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
             if (tList != null) for (IItemBehaviour<GT_MetaBase_Item> tBehavior : tList)
                 if (tBehavior.onItemUseFirst(this, aStack, aPlayer, aWorld, pos, side, hitX, hitY, hitZ, hand)) {
                     if (aStack.stackSize <= 0) aPlayer.setHeldItem(hand, null);
-                    return EnumActionResult.SUCCESS;
+                    return EnumActionResult.PASS;
                 }
             if (aStack.stackSize <= 0) {
                 aPlayer.setHeldItem(hand, null);
-                return EnumActionResult.SUCCESS;
+                return EnumActionResult.PASS;
             }
-            return EnumActionResult.SUCCESS;
+            return EnumActionResult.PASS;
         }
         return EnumActionResult.PASS;
     }

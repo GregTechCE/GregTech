@@ -1,6 +1,8 @@
 package gregtech.api.metatileentity.implementations;
 
+import cofh.api.energy.IEnergyReceiver;
 import gregtech.GT_Mod;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
@@ -15,6 +17,7 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
+import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergySink;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -190,26 +193,21 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
                         } else {
                             rUsedAmperes += ((IEnergyConnected) tTileEntity).injectEnergyUnits(GT_Utility.getOppositeSide(i), aVoltage, aAmperage - rUsedAmperes);
                         }
-//        		} else if (tTileEntity instanceof IEnergySink) {
-//            		EnumFacing tDirection = EnumFacing.getOrientation(i).getOpposite();
-//            		if (((IEnergySink)tTileEntity).acceptsEnergyFrom((TileEntity)getBaseMetaTileEntity(), tDirection)) {
-//            			if (((IEnergySink)tTileEntity).demandedEnergyUnits() > 0 && ((IEnergySink)tTileEntity).injectEnergyUnits(tDirection, aVoltage) < aVoltage) rUsedAmperes++;
-//            		}
                     } else if (tTileEntity instanceof IEnergySink) {
                         EnumFacing tDirection = EnumFacing.VALUES[i].getOpposite();
                         if (((IEnergySink) tTileEntity).acceptsEnergyFrom(getBaseMetaTileEntity(), tDirection)) {
                             if (((IEnergySink) tTileEntity).getDemandedEnergy() > 0 && ((IEnergySink) tTileEntity).injectEnergy(tDirection, aVoltage, aVoltage) < aVoltage)
                                 rUsedAmperes++;
                         }
-                    } /*else if (GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver) {
-                        EnumFacing tDirection = EnumFacing.getOrientation(i).getOpposite();
+                    } else if (GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver) {
+                        EnumFacing tDirection = EnumFacing.VALUES[i].getOpposite();
                         int rfOut = (int) (aVoltage * GregTech_API.mEUtoRF / 100);
                         if (((IEnergyReceiver) tTileEntity).receiveEnergy(tDirection, rfOut, true) == rfOut) {
                             ((IEnergyReceiver) tTileEntity).receiveEnergy(tDirection, rfOut, false);
                             rUsedAmperes++;
                         } else if (((IEnergyReceiver) tTileEntity).receiveEnergy(tDirection, rfOut, true) > 0) {
                             if (mRestRF == 0) {
-                                int RFtrans = ((IEnergyReceiver) tTileEntity).receiveEnergy(tDirection, (int) rfOut, false);
+                                int RFtrans = ((IEnergyReceiver) tTileEntity).receiveEnergy(tDirection, rfOut, false);
                                 rUsedAmperes++;
                                 mRestRF = rfOut - RFtrans;
                             } else {
@@ -220,7 +218,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
                         if (GregTech_API.mRFExplosions && ((IEnergyReceiver) tTileEntity).getMaxEnergyStored(tDirection) < rfOut * 600) {
                             if (rfOut > 32 * GregTech_API.mEUtoRF / 100) this.doExplosion(rfOut);
                         }
-                    }*/
+                    }
                 }
             }
         mTransferredAmperage += rUsedAmperes;
@@ -267,16 +265,15 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
                             mConnections |= (1 << i);
                         }
                         
-                        //if (GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver && ((IEnergyReceiver) tTileEntity).canConnectEnergy(EnumFacing.getOrientation(j))) {
-                        //    mConnections |= (1 << i);
-                        //    continue;
-                        //}
-                        /*
+                        if (GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver && ((IEnergyReceiver) tTileEntity).canConnectEnergy(EnumFacing.VALUES[j])) {
+                            mConnections |= (1 << i);
+                            continue;
+                        }
                         
-					    if (tTileEntity instanceof IEnergyEmitter && ((IEnergyEmitter)tTileEntity).emitsEnergyTo((TileEntity)aBaseMetaTileEntity, EnumFacing.getOrientation(j))) {
+					    if (tTileEntity instanceof IEnergyEmitter && ((IEnergyEmitter)tTileEntity).emitsEnergyTo(aBaseMetaTileEntity, EnumFacing.VALUES[j])) {
 				    		mConnections |= (1<<i);
 				    		continue;
-					    }*/
+					    }
                     }
                 }
             }

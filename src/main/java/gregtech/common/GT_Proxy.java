@@ -62,6 +62,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
@@ -921,7 +922,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         return this.mDateFormat.format(new Date());
     }
 
-    @SubscribeEvent
     public void onPlayerInteraction(PlayerInteractEvent.RightClickBlock aEvent) {
         ItemStack aStack = aEvent.getItemStack();
         if (aStack != null && aStack.getItem() == Items.FLINT_AND_STEEL) {

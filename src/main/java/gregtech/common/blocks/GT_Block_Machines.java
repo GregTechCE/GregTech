@@ -271,10 +271,10 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         if (gregTechTileEntity.getTimer() < 50L) {
             return false;
         }
-        if (!worldIn.isRemote && gregTechTileEntity.isUseableByPlayer(playerIn)) {
-            gregTechTileEntity.onRightclick(playerIn, (byte) side.getIndex(), hitX, hitY, hitZ, EnumHand.MAIN_HAND);
+        if (gregTechTileEntity.isUseableByPlayer(playerIn)) {
+            return gregTechTileEntity.onRightclick(playerIn, (byte) side.getIndex(), hitX, hitY, hitZ, EnumHand.MAIN_HAND);
         }
-        return true;
+        return false;
     }
 
 
