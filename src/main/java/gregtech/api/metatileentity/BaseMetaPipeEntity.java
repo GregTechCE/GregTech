@@ -350,6 +350,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public boolean receiveClientEvent(int aEventID, int aValue) {
+        boolean tNeedsRedraw = false;
         super.receiveClientEvent(aEventID, aValue);
 
         if (hasValidMetaTileEntity()) {
@@ -362,10 +363,13 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         }
 
         if (isClientSide()) {
-            issueTextureUpdate();
+
             switch (aEventID) {
                 case 0:
-                    mConnections = (byte) aValue;
+                    if (mConnections != (byte) aValue) {
+                        mConnections = (byte) aValue;
+                        tNeedsRedraw = true;
+                    }
                     break;
                 case 1:
                     if (hasValidMetaTileEntity()) mMetaTileEntity.onValueUpdate((byte) aValue);
@@ -395,6 +399,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                         mMetaTileEntity.stopSoundLoop((byte) aValue, getXCoord() + 0.5, getYCoord() + 0.5, getZCoord() + 0.5);
                     break;
             }
+            if (tNeedsRedraw) issueTextureUpdate();
         }
         return true;
     }

@@ -618,6 +618,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public boolean receiveClientEvent(int aEventID, int aValue) {
+        boolean tNeedsRedraw = false;
         super.receiveClientEvent(aEventID, aValue);
 
         if (hasValidMetaTileEntity()) {
@@ -630,13 +631,25 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         }
 
         if (isClientSide()) {
-            issueTextureUpdate();
+
             switch (aEventID) {
                 case 0:
-                    mFacing = (byte) (aValue & 7);
-                    mActive = ((aValue & 8) != 0);
-                    mRedstone = ((aValue & 16) != 0);
-     				mLockUpgrade = ((aValue&32) != 0);
+                    if (mFacing != (byte) (aValue & 0x07)) {
+                        mFacing = (byte) (aValue & 0x07);
+                        tNeedsRedraw = true;
+                    }
+                    if (mActive != ((aValue & 0x08) != 0)) {
+                        mActive = ((aValue & 0x08) != 0);
+                        tNeedsRedraw = true;
+                    }
+                    if (mRedstone != ((aValue & 0x10) != 0)) {
+                        mRedstone = ((aValue & 0x10) != 0);
+                        tNeedsRedraw = true;
+                    }
+                    if (mLockUpgrade != ((aValue & 0x20) != 0)) {
+                        mLockUpgrade = ((aValue & 0x20) != 0);
+                        tNeedsRedraw = true;
+                    }
                     break;
                 case 1:
                     if (hasValidMetaTileEntity()) mMetaTileEntity.onValueUpdate((byte) aValue);
@@ -669,6 +682,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     mLightValue = (byte) aValue;
                     break;
             }
+            if (tNeedsRedraw) issueTextureUpdate();
         }
         return true;
     }
