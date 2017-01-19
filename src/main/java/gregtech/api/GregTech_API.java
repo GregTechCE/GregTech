@@ -373,7 +373,6 @@ public class GregTech_API {
         GT_ItemStack stack = new GT_ItemStack(aStack);
         int coverId = stack.hashCode();
         sCoverItems.put(stack, coverId);
-        System.out.println();
         sCovers.put(coverId, aCover == null || !aCover.isValidTexture() ? Textures.BlockIcons.ERROR_RENDERING[0] : aCover);
         if (aBehavior != null) sCoverBehaviors.put(coverId, aBehavior);
     }
