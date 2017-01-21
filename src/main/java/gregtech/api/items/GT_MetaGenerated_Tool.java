@@ -511,10 +511,8 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
     }
 
     public IToolStats getToolStats(ItemStack aStack) {
-        if(isItemStackUsable(aStack)) {
-            return getToolStatsInternal(aStack);
-        }
-        return null;
+        // if(isItemStackUsable(aStack)) { // why?
+        return getToolStatsInternal(aStack);
     }
 
     private IToolStats getToolStatsInternal(ItemStack aStack) {
