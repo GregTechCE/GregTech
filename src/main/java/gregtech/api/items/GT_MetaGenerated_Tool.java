@@ -511,10 +511,8 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
     }
 
     public IToolStats getToolStats(ItemStack aStack) {
-        if(isItemStackUsable(aStack)) {
-            return getToolStatsInternal(aStack);
-        }
-        return null;
+        // if(isItemStackUsable(aStack)) { // why?
+        return getToolStatsInternal(aStack);
     }
 
     private IToolStats getToolStatsInternal(ItemStack aStack) {
@@ -712,7 +710,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int tintIndex) {
         IToolStats toolStats = getToolStats(stack);
-        if(tintIndex == 1) {
+        if(tintIndex > 1) {
             short[] colorsHead = toolStats.getRGBa(true, stack);
             if(colorsHead != null)
                 return ITexture.color(colorsHead, true);
