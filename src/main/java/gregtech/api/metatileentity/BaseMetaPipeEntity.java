@@ -293,7 +293,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                             }
 
                             if (mNeedsBlockUpdate) {
-                                worldObj.notifyBlockOfStateChange(getPos(), getBlockType());
+                                worldObj.notifyNeighborsOfStateChange(getPos(), getBlockType());
                                 mNeedsBlockUpdate = false;
                             }
                         }
@@ -492,6 +492,12 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     @Override
     public boolean getRedstone(byte aSide) {
         return getInternalInputRedstoneSignal(aSide) > 0;
+    }
+
+    @Override
+    public boolean canOutputRedstone(byte aSide) {
+        return (getCoverBehaviorAtSide(aSide).manipulatesSidedRedstoneOutput(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this)
+                || getCoverBehaviorAtSide(aSide).letsRedstoneGoOut(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this));
     }
 
     public ITexture getCoverTexture(byte aSide) {
@@ -1017,7 +1023,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public byte getInputRedstoneSignal(byte aSide) {
-        return (byte) (worldObj.getRedstonePower(getPos(), EnumFacing.VALUES[aSide]) & 15);
+        return (byte) (worldObj.getRedstonePower(getPos().offset(EnumFacing.VALUES[aSide]), EnumFacing.VALUES[aSide]) & 15);
     }
 
     @Override
