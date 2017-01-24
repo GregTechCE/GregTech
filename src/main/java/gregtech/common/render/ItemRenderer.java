@@ -294,11 +294,13 @@ public class ItemRenderer {
     public void renderItem(ItemStack item) {
         if(item.getItem() instanceof ItemBlock) {
             renderItem(item, 0);
-        } else {
+        } else if (item.getItem() instanceof GT_Generic_Item) {
             GT_Generic_Item generic_item = (GT_Generic_Item) item.getItem();
             for(int i = 0; i < generic_item.getRenderPasses(item); i++) {
                 renderItem(item, i);
             }
+        } else {
+            return;
         }
     }
 
