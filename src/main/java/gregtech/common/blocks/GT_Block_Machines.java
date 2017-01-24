@@ -137,9 +137,15 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         return false;
     }
 
+    /**
+     * NB: Vanilla redstone behavior is that wires will connect to redstone emitters but not consumers.
+     * Thus we only say we can connect if we are an emitter. (This is usually delegated to a cover behavior.)
+     *
+     */
     @Override
     public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-        return true;
+        IGregTechTileEntity gregTechTileEntity = getGregTile(world, pos);
+        return gregTechTileEntity != null && gregTechTileEntity.canOutputRedstone((byte) side.getOpposite().getIndex());
     }
 
     @Override
@@ -356,7 +362,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
         IGregTechTileEntity gregTechTileEntity = getGregTile(blockAccess, pos);
         if(gregTechTileEntity != null) {
-            gregTechTileEntity.getOutputRedstoneSignal((byte) side.getIndex());
+            return gregTechTileEntity.getOutputRedstoneSignal((byte) side.getOpposite().getIndex());
         }
         return 0;
     }
@@ -365,7 +371,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
         IGregTechTileEntity gregTechTileEntity = getGregTile(blockAccess, pos);
         if(gregTechTileEntity != null) {
-            gregTechTileEntity.getStrongOutputRedstoneSignal((byte) side.getIndex());
+            return gregTechTileEntity.getStrongOutputRedstoneSignal((byte) side.getOpposite().getIndex());
         }
         return 0;
     }
