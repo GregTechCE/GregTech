@@ -33,8 +33,7 @@ public class GT_Runnable_Sound implements Runnable {
     public void run() {
         SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(mSoundLocation);
         if(soundEvent != null) {
-            PositionedSound sound = new PositionedSound(soundEvent, SoundCategory.BLOCKS) {};
-            Minecraft.getMinecraft().getSoundHandler().playSound(sound);
+            mWorld.playSound((double)mX, (double)mY, (double)mZ, soundEvent, SoundCategory.BLOCKS, 1.0f, 1.0f, false);
         }
     }
 
