@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
 
 import java.util.ArrayList;
@@ -160,6 +161,15 @@ public class GT_BaseCrop extends CropCard {
     @Override
     public boolean onRightClick(ICropTile cropTile, EntityPlayer player) {
         return canBeHarvested(cropTile) && super.onRightClick(cropTile, player);
+    }
+    
+    @Override
+    public List<ResourceLocation> getTexturesLocation() {
+        List<ResourceLocation> list = new ArrayList<ResourceLocation>();
+        for (int size = 1; size <= getMaxSize(); size++) {
+            list.add(new ResourceLocation("ic2", "blocks/crop/blockCrop." + getId() + "." + size));
+        }
+        return list;
     }
 
 

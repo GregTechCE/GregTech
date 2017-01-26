@@ -1705,14 +1705,14 @@ public class GT_Utility {
                                 + "  Gain: " + cropTile.getCrop().getGain(cropTile)
                                 + "  Resistance: " + properties.getDefensive()
                         );
-                        tList.add("Plant -- Fertilizer: " + cropTile.getNutrients()
-                                + "  Water: " + cropTile.getHumidity()
+                        tList.add("Plant -- Fertilizer: " + cropTile.getTerrainNutrients()
+                                + "  Water: " + cropTile.getTerrainHumidity()
                                 + "  Weed-Ex: " + cropTile.getStorageWeedEX()
                                 + "  Scan-Level: " + cropTile.getScanLevel()
                         );
-                        tList.add("Environment -- Nutrients: " + cropTile.getNutrients()
-                                + "  Humidity: " + cropTile.getHumidity()
-                                + "  Air-Quality: " + cropTile.getAirQuality()
+                        tList.add("Environment -- Nutrients: " + cropTile.getTerrainNutrients()
+                                + "  Humidity: " + cropTile.getTerrainHumidity()
+                                + "  Air-Quality: " + cropTile.getTerrainAirQuality()
                         );
                         tList.add("Discovered by: " + cropTile.getCrop().getDiscoveredBy());
                     }

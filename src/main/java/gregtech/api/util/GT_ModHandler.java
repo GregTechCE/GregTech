@@ -11,11 +11,11 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IBoxable;
+import ic2.api.item.IC2Items;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.ISpecialElectricItem;
 import ic2.api.reactor.IReactorComponent;
 import ic2.api.recipe.*;
-import ic2.core.Ic2Items;
 import ic2.core.block.state.IIdProvider;
 import ic2.core.ref.BlockName;
 import ic2.core.ref.FluidName;
@@ -1723,7 +1723,7 @@ public class GT_ModHandler {
 
     public static int getCapsuleCellContainerCount(ItemStack aStack) {
         if (aStack == null) return 0;
-        return GT_Utility.areStacksEqual(GT_Utility.getContainerForFilledItem(aStack, true), ItemList.Cell_Empty.get(1)) || OrePrefixes.cell.contains(aStack) || OrePrefixes.cellPlasma.contains(aStack) || GT_Utility.areStacksEqual(aStack, Ic2Items.waterCell) ? 1 : 0;
+        return GT_Utility.areStacksEqual(GT_Utility.getContainerForFilledItem(aStack, true), ItemList.Cell_Empty.get(1)) || OrePrefixes.cell.contains(aStack) || OrePrefixes.cellPlasma.contains(aStack) || GT_Utility.areStacksEqual(aStack, IC2Items.getItem("fluid_cell", "water")) ? 1 : 0;
     }
 
     public static class RecipeBits {
