@@ -1,6 +1,8 @@
 package gregtech.api.net;
 
 import gregtech.GT_Mod;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.IThreadListener;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -14,6 +16,7 @@ public class GT_PacketHandler extends SimpleNetworkWrapper {
         super("gregtech_network");
         registerMessage(0, GT_Packet_TileEntity.class, Side.CLIENT);
         registerMessage(2, GT_Packet_Sound.class, Side.CLIENT);
+        registerMessage(3, GT_Packet_Block_Event.class, Side.CLIENT);
     }
 
     public void registerMessage(int discriminator, Class packet, Side handleSide) {
@@ -32,11 +35,19 @@ public class GT_PacketHandler extends SimpleNetworkWrapper {
 
         @Override
         public GT_Packet onMessage(GT_Packet message, MessageContext ctx) {
+            IThreadListener listener;
+            World world;
             if(ctx.side == Side.SERVER) {
-                message.process(ctx.getServerHandler().playerEntity.worldObj);
+                world = ctx.getServerHandler().playerEntity.worldObj;
+                listener = world.getMinecraftServer();
             } else {
-                message.process(GT_Mod.gregtechproxy.getThePlayer().worldObj);
+                world = GT_Mod.gregtechproxy.getThePlayer().worldObj;
+                listener = Minecraft.getMinecraft();
             }
+            listener.addScheduledTask(() -> {
+                message.process(world);
+            });
+
             return null;
         }
     }

@@ -11,6 +11,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.tools.GT_Tool;
 import gregtech.common.GT_Pollution;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -140,7 +141,7 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlock
         if (aX + 1 < 6 && (isWoodLog(tBlock))) {
             if (!aList1.contains(new BlockPos(aX + 1, aY, aZ)) && (!aList2.contains(new BlockPos(aX + 1, aY, aZ))))
                 p1 = true;
-        } else if (!(tBlock == Blocks.DIRT || tBlock == Blocks.GRASS)) {
+        } else if (!isDirt(tBlock)) {
             return false;
         }
 
@@ -148,7 +149,7 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlock
         if (aX - 1 > -6 && (isWoodLog(tBlock))) {
             if (!aList1.contains(new BlockPos(aX - 1, aY, aZ)) && (!aList2.contains(new BlockPos(aX - 1, aY, aZ))))
                 p2 = true;
-        } else if (!(tBlock == Blocks.DIRT || tBlock == Blocks.GRASS)) {
+        } else if (!isDirt(tBlock)) {
             return false;
         }
 
@@ -156,7 +157,7 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlock
         if (aY + 1 < 1 && (isWoodLog(tBlock))) {
             if (!aList1.contains(new BlockPos(aX, aY + 1, aZ)) && (!aList2.contains(new BlockPos(aX, aY + 1, aZ))))
                 p3 = true;
-        } else if (!(tBlock == Blocks.DIRT || tBlock == Blocks.GRASS || (aX == 0 && aY == -1 && aZ == 0 && tBlock == GregTech_API.sBlockMachines))) {
+        } else if (!(isDirt(tBlock) || (aX == 0 && aY == -1 && aZ == 0 && tBlock.getBlock() == GregTech_API.sBlockMachines))) {
             return false;
         }
 
@@ -164,7 +165,7 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlock
         if (aY - 1 > -6 && (isWoodLog(tBlock))) {
             if (!aList1.contains(new BlockPos(aX, aY - 1, aZ)) && (!aList2.contains(new BlockPos(aX, aY - 1, aZ))))
                 p4 = true;
-        } else if (tBlock != Blocks.BRICK_BLOCK) {
+        } else if (tBlock.getBlock() != Blocks.BRICK_BLOCK) {
             return false;
         }
 
@@ -172,7 +173,7 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlock
         if (aZ + 1 < 6 && (isWoodLog(tBlock))) {
             if (!aList1.contains(new BlockPos(aX, aY, aZ + 1)) && (!aList2.contains(new BlockPos(aX, aY, aZ + 1))))
                 p5 = true;
-        } else if (!(tBlock == Blocks.DIRT || tBlock == Blocks.GRASS)) {
+        } else if (!isDirt(tBlock)) {
             return false;
         }
 
@@ -180,7 +181,7 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlock
         if (aZ - 1 > -6 && (isWoodLog(tBlock))) {
             if (!aList1.contains(new BlockPos(aX, aY, aZ - 1)) && (!aList2.contains(new BlockPos(aX, aY, aZ - 1))))
                 p6 = true;
-        } else if (!(tBlock == Blocks.DIRT || tBlock == Blocks.GRASS)) {
+        } else if (!isDirt(tBlock)) {
             return false;
         }
         aList1.add(new BlockPos(aX, aY, aZ));
@@ -198,6 +199,11 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlock
         return  OrePrefixes.log.contains(GT_Tool.getBlockStack(log))
                 && ((tTool != null) && (tTool.equals("axe"))) ||
                 (log.getMaterial() == Material.WOOD);
+    }
+
+    private boolean isDirt(IBlockState dirt) {
+        Block b = dirt.getBlock();
+        return (b == Blocks.DIRT || b == Blocks.GRASS);
     }
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {

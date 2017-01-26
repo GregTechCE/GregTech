@@ -34,8 +34,9 @@ import java.util.List;
 
 public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBase {
 
-    private static final ItemStack mining_pipe = GT_ModHandler.getIC2Item(BlockName.mining_pipe, BlockMiningPipe.MiningPipeType.pipe, 1);
-    private static final ItemStack mining_pipe_tip = GT_ModHandler.getIC2Item(BlockName.mining_pipe, BlockMiningPipe.MiningPipeType.tip, 1);
+    private static final ItemStack mining_pipe_item = GT_ModHandler.getIC2Item(BlockName.mining_pipe, BlockMiningPipe.MiningPipeType.pipe, 1);
+    private static final IBlockState mining_pipe = GT_ModHandler.getIC2BlockState(BlockName.mining_pipe, BlockMiningPipe.MiningPipeType.pipe);
+    private static final IBlockState mining_pipe_tip = GT_ModHandler.getIC2BlockState(BlockName.mining_pipe, BlockMiningPipe.MiningPipeType.tip);
 
 
     private final ArrayList<BlockPos> mMineList = new ArrayList();
@@ -74,15 +75,15 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
 
     @Override
     public boolean checkRecipe(ItemStack aStack) {
-        if (mInventory[1] == null || (mInventory[1].isItemEqual(mining_pipe) && mInventory[1].stackSize < mInventory[1].getMaxStackSize())) {
+        if (mInventory[1] == null || (mInventory[1].isItemEqual(mining_pipe_item) && mInventory[1].stackSize < mInventory[1].getMaxStackSize())) {
             ArrayList<ItemStack> tItems = getStoredInputs();
             for (ItemStack tStack : tItems) {
-                if (tStack.isItemEqual(mining_pipe)) {
+                if (tStack.isItemEqual(mining_pipe_item)) {
                     tStack.stackSize--;
                     if (tStack.stackSize < 1) {
                     }
                     if (mInventory[1] == null) {
-                        mInventory[1] = mining_pipe;
+                        mInventory[1] = mining_pipe_item;
                     } else {
                         mInventory[1].stackSize++;
                     }
@@ -139,7 +140,6 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
             List<ItemStack> tDrops = new ArrayList();
             Block tMineBlock = null;
             BlockPos mle = null;
-            int posX, posY, posZ, offX, offY, offZ;
             while ((tMineBlock==null || tMineBlock == Blocks.AIR) && !mMineList.isEmpty()) {
                 mle = mMineList.get(0);
                 mMineList.remove(0);
@@ -147,26 +147,24 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
             }
 
             if (tMineBlock!=null && tMineBlock!=Blocks.AIR) {
-                posX = mle.getX() + getBaseMetaTileEntity().getXCoord();
-                posY = mle.getY() + getBaseMetaTileEntity().getYCoord();
-                posZ = mle.getZ() + getBaseMetaTileEntity().getZCoord();
-                offX = mle.getX();
-                offY = mle.getY();
-                offZ = mle.getZ();
+                BlockPos pos = new BlockPos(mle.getX() + getBaseMetaTileEntity().getXCoord(),
+                                            mle.getY() + getBaseMetaTileEntity().getYCoord(),
+                                            mle.getZ() + getBaseMetaTileEntity().getZCoord());
 
-                IBlockState metadata = getBaseMetaTileEntity().getWorldObj().getBlockState(mle);
-                boolean silkTouch = tMineBlock.canSilkHarvest(getBaseMetaTileEntity().getWorldObj(), new BlockPos(posX, posY, posZ), metadata, null);
+
+                IBlockState blockState = getBaseMetaTileEntity().getWorldObj().getBlockState(pos);
+                boolean silkTouch = tMineBlock.canSilkHarvest(getBaseMetaTileEntity().getWorldObj(), pos, blockState, null);
                 if (silkTouch){
                     ItemStack IS = new ItemStack(tMineBlock);
-                    IS.setItemDamage(metadata.getBlock().getMetaFromState(metadata));
+                    IS.setItemDamage(blockState.getBlock().getMetaFromState(blockState));
                     IS.stackSize=1;
                     tDrops.add(IS);
                 }
                 else{
-                    tDrops = tMineBlock.getDrops(getBaseMetaTileEntity().getWorldObj(), new BlockPos(posX, posY, posZ), metadata, 1);
+                    tDrops = tMineBlock.getDrops(getBaseMetaTileEntity().getWorldObj(), pos, blockState, 1);
                 }
 
-                getBaseMetaTileEntity().getWorldObj().setBlockToAir(getBaseMetaTileEntity().getWorldPos().add(posX, posY, posZ));
+                getBaseMetaTileEntity().getWorldObj().setBlockToAir(pos);
                 if (!tDrops.isEmpty()) {
                     ItemData tData = GT_OreDictUnificator.getItemData(tDrops.get(0).copy());
                     if (tData.mPrefix != OrePrefixes.crushed && tData.mMaterial.mMaterial != Materials.Oilsands) {
@@ -225,7 +223,7 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
 
     private boolean moveOneDown() {
         if ((this.mInventory[1] == null) || (this.mInventory[1].stackSize < 1)
-                || (!GT_Utility.areStacksEqual(this.mInventory[1], mining_pipe))) {
+                || (!GT_Utility.areStacksEqual(this.mInventory[1], mining_pipe_item))) {
             stopMachine();
             return false;
         }
@@ -241,39 +239,38 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
             return false;
         }
         if (!(getBaseMetaTileEntity().getWorldObj().setBlockState(
-                new BlockPos(getBaseMetaTileEntity().getXCoord() + xDir, yHead - 1, getBaseMetaTileEntity().getZCoord() + zDir),
-                GT_Utility.getBlockFromStack(mining_pipe_tip).getDefaultState()))) {
+                new BlockPos(getBaseMetaTileEntity().getXCoord() + xDir, yHead - 1, getBaseMetaTileEntity().getZCoord() + zDir), mining_pipe_tip))) {
             stopMachine();
             return false;
         }
         if (yHead != getBaseMetaTileEntity().getYCoord()) {
             getBaseMetaTileEntity().getWorldObj().setBlockState(
-                    new BlockPos(getBaseMetaTileEntity().getXCoord() + xDir, yHead, getBaseMetaTileEntity().getZCoord() + zDir),
-                    GT_Utility.getBlockFromStack(mining_pipe).getDefaultState());
+                    new BlockPos(getBaseMetaTileEntity().getXCoord() + xDir, yHead, getBaseMetaTileEntity().getZCoord() + zDir), mining_pipe);
         }
         getBaseMetaTileEntity().decrStackSize(1, 1);
         return true;
     }
 
     private int getYOfPumpHead() {
-        int xDir = EnumFacing.VALUES[getBaseMetaTileEntity().getBackFacing()].getFrontOffsetX();
-        int zDir = EnumFacing.VALUES[getBaseMetaTileEntity().getBackFacing()].getFrontOffsetZ();
-        int y = getBaseMetaTileEntity().getYCoord() - 1;
-        while (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir) == GT_Utility.getBlockFromStack(mining_pipe)) {
-            y--;
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(getBaseMetaTileEntity().getWorldPos());
+        pos.move(EnumFacing.VALUES[getBaseMetaTileEntity().getBackFacing()]);
+        pos.move(EnumFacing.DOWN);
+
+        while (getBaseMetaTileEntity().getBlockState(pos).equals(mining_pipe)) {
+            pos.move(EnumFacing.DOWN);
         }
-        if (y == getBaseMetaTileEntity().getYCoord() - 1) {
-            if (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir) != GT_Utility.getBlockFromStack(mining_pipe_tip)) {
-                return y + 1;
+        if (pos.getY() == getBaseMetaTileEntity().getYCoord() - 1) {
+            if (!getBaseMetaTileEntity().getBlockState(pos).equals(mining_pipe_tip)) {
+                return pos.getY() + 1;
             }
-        } else if (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir) != GT_Utility
-                .getBlockFromStack(mining_pipe_tip) && this.mInventory[1] != null && this.mInventory[1].stackSize > 0 && GT_Utility.areStacksEqual(this.mInventory[1], mining_pipe)) {
-            getBaseMetaTileEntity().getWorldObj().setBlockState(
-                    new BlockPos(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir),
-                    GT_Utility.getBlockFromStack(mining_pipe_tip).getDefaultState());
+        } else if (!getBaseMetaTileEntity().getBlockState(pos).equals(mining_pipe_tip)
+                && this.mInventory[1] != null
+                && this.mInventory[1].stackSize > 0
+                && GT_Utility.areStacksEqual(this.mInventory[1], mining_pipe_item)) {
+            getBaseMetaTileEntity().getWorldObj().setBlockState(pos, mining_pipe_tip);
             getBaseMetaTileEntity().decrStackSize(0, 1);
         }
-        return y;
+        return pos.getY();
     }
 
     @Override

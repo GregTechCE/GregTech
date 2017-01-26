@@ -34,4 +34,10 @@ public interface IRedstoneEmitter extends IHasWorldObjectAndCoords {
      * Gets the Output for the comparator on the given Side
      */
     byte getComparatorValue(byte aSide);
+
+    /**
+     * Return whether the TileEntity can output redstone to the given side. Used to visually connect
+     * vanilla redstone wires.
+     */
+    boolean canOutputRedstone(byte aSide);
 }

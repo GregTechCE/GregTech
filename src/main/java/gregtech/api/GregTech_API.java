@@ -23,6 +23,8 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.relauncher.Side;
@@ -219,8 +221,11 @@ public class GregTech_API {
     /**
      * Adds Biomes to the Biome Lists for World Generation
      */
+
+    private static int size = 0; /* Used to assign Minecraft IDs to our SoundEvents. We don't use them. */
     static {
         sItemStackMappings.add(sCoverItems);
+        size = SoundEvent.REGISTRY.getKeys().size();
 
         sDimensionalList.add(-1);
         sDimensionalList.add(0);
@@ -230,33 +235,42 @@ public class GregTech_API {
         sSoundList.put(1, "block.anvil.use");//SoundEvents.BLOCK_ANVIL_USE.getSoundName().toString());
         sSoundList.put(2, "block.anvil.break");//SoundEvents.BLOCK_ANVIL_BREAK.getSoundName().toString());
         sSoundList.put(3, "block.stone_button.click_on");//SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON.getSoundName().toString());
-        sSoundList.put(4, "entity.item.break");//SoundEvents.ENTITY_ITEM_BREAK.getSoundName().toString());
+        sSoundList.put(4, "block.fire.extinguish");//SoundEvents.ENTITY_ITEM_BREAK.getSoundName().toString());
         sSoundList.put(5, "entity.generic.explode");//SoundEvents.ENTITY_GENERIC_EXPLODE.getSoundName().toString());
         sSoundList.put(6, "item.firecharge.use");//SoundEvents.ITEM_FIRECHARGE_USE.getSoundName().toString());
 
-        sSoundList.put(100, aTextIC2Lower + ":" + "tools.Wrench");
-        sSoundList.put(101, aTextIC2Lower + ":" + "tools.RubberTrampoline");
-        sSoundList.put(102, aTextIC2Lower + ":" + "tools.Painter");
-        sSoundList.put(103, aTextIC2Lower + ":" + "tools.BatteryUse");
-        sSoundList.put(104, aTextIC2Lower + ":" + "tools.chainsaw.ChainsawUseOne");
-        sSoundList.put(105, aTextIC2Lower + ":" + "tools.chainsaw.ChainsawUseTwo");
-        sSoundList.put(106, aTextIC2Lower + ":" + "tools.drill.DrillSoft");
-        sSoundList.put(107, aTextIC2Lower + ":" + "tools.drill.DrillHard");
-        sSoundList.put(108, aTextIC2Lower + ":" + "tools.ODScanner");
+        registerSound(100, aTextIC2Lower + ":" + "tools.Wrench");
+        registerSound(101, aTextIC2Lower + ":" + "tools.RubberTrampoline");
+        registerSound(102, aTextIC2Lower + ":" + "tools.Painter");
+        registerSound(103, aTextIC2Lower + ":" + "tools.BatteryUse");
+        registerSound(104, aTextIC2Lower + ":" + "tools.chainsaw.ChainsawUseOne");
+        registerSound(105, aTextIC2Lower + ":" + "tools.chainsaw.ChainsawUseTwo");
+        registerSound(106, aTextIC2Lower + ":" + "tools.drill.DrillSoft");
+        registerSound(107, aTextIC2Lower + ":" + "tools.drill.DrillHard");
+        registerSound(108, aTextIC2Lower + ":" + "tools.ODScanner");
 
-        sSoundList.put(200, aTextIC2Lower + ":" + "machines.ExtractorOp");
-        sSoundList.put(201, aTextIC2Lower + ":" + "machines.MaceratorOp");
-        sSoundList.put(202, aTextIC2Lower + ":" + "machines.InductionLoop");
-        sSoundList.put(203, aTextIC2Lower + ":" + "machines.CompressorOp");
-        sSoundList.put(204, aTextIC2Lower + ":" + "machines.RecyclerOp");
-        sSoundList.put(205, aTextIC2Lower + ":" + "machines.MinerOp");
-        sSoundList.put(206, aTextIC2Lower + ":" + "machines.PumpOp");
-        sSoundList.put(207, aTextIC2Lower + ":" + "machines.ElectroFurnaceLoop");
-        sSoundList.put(208, aTextIC2Lower + ":" + "machines.InductionLoop");
-        sSoundList.put(209, aTextIC2Lower + ":" + "machines.MachineOverload");
-        sSoundList.put(210, aTextIC2Lower + ":" + "machines.InterruptOne");
-        sSoundList.put(211, aTextIC2Lower + ":" + "machines.KaChing");
-        sSoundList.put(212, aTextIC2Lower + ":" + "machines.MagnetizerLoop");
+        registerSound(200, aTextIC2Lower + ":" + "machines.ExtractorOp");
+        registerSound(201, aTextIC2Lower + ":" + "machines.MaceratorOp");
+        registerSound(202, aTextIC2Lower + ":" + "machines.InductionLoop");
+        registerSound(203, aTextIC2Lower + ":" + "machines.CompressorOp");
+        registerSound(204, aTextIC2Lower + ":" + "machines.RecyclerOp");
+        registerSound(205, aTextIC2Lower + ":" + "machines.MinerOp");
+        registerSound(206, aTextIC2Lower + ":" + "machines.PumpOp");
+        registerSound(207, aTextIC2Lower + ":" + "machines.ElectroFurnaceLoop");
+        registerSound(208, aTextIC2Lower + ":" + "machines.InductionLoop");
+        registerSound(209, aTextIC2Lower + ":" + "machines.MachineOverload");
+        registerSound(210, aTextIC2Lower + ":" + "machines.InterruptOne");
+        registerSound(211, aTextIC2Lower + ":" + "machines.KaChing");
+        registerSound(212, aTextIC2Lower + ":" + "machines.MagnetizerLoop");
+    }
+
+    public static void registerSound(int id, String name) {
+        ResourceLocation loc = new ResourceLocation(name);
+        SoundEvent e = new SoundEvent(loc);
+        if(!SoundEvent.REGISTRY.containsKey(loc)) {
+            SoundEvent.REGISTRY.register(size++, loc, e);
+        }
+        sSoundList.put(id, name);
     }
 
     /**
@@ -373,7 +387,6 @@ public class GregTech_API {
         GT_ItemStack stack = new GT_ItemStack(aStack);
         int coverId = stack.hashCode();
         sCoverItems.put(stack, coverId);
-        System.out.println();
         sCovers.put(coverId, aCover == null || !aCover.isValidTexture() ? Textures.BlockIcons.ERROR_RENDERING[0] : aCover);
         if (aBehavior != null) sCoverBehaviors.put(coverId, aBehavior);
     }
