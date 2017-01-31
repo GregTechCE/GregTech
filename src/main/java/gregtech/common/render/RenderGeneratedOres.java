@@ -1,8 +1,8 @@
 package gregtech.common.render;
 
+import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.block.BlockRenderingRegistry;
 import codechicken.lib.render.block.ICCBlockRenderer;
-import ic2.core.block.RenderBlock;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -38,8 +38,8 @@ public class RenderGeneratedOres implements ICCBlockRenderer {
     public void renderBrightness(IBlockState state, float brightness) {
     }
 
-    public void renderBlockAsItem(ItemStack stack) {
-        RenderBlocks.INSTANCE.renderOresAsItem(stack);
+    public void renderBlockAsItem(CCRenderState ccrs, ItemStack stack) {
+        RenderBlocks.INSTANCE.renderOresAsItem(ccrs, stack);
     }
 
     @Override

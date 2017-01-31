@@ -1,5 +1,6 @@
 package gregtech.common.render;
 
+import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.item.CCRenderItem;
 import codechicken.lib.render.item.IItemRenderer;
 import gregtech.api.GregTech_API;
@@ -8,7 +9,10 @@ import gregtech.api.items.GT_Generic_Item;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.ItemModelMesher;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
@@ -30,7 +34,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nullable;
-import javax.vecmath.*;
 import javax.vecmath.Matrix4f;
 import java.util.Collections;
 import java.util.List;
@@ -104,38 +107,29 @@ public class ItemRenderer {
     }
 
     public void renderItem(ItemStack p_78443_2_, int p_78443_3_) {
-
-        GL11.glPushMatrix();
         Minecraft mc = Minecraft.getMinecraft();
         TextureManager texturemanager = mc.getTextureManager();
         Item item = p_78443_2_.getItem();
+        CCRenderState ccrs = CCRenderState.instance();
 
         if (item instanceof ItemBlock) {
-
             Block block = ((ItemBlock) item).block;
             EnumBlockRenderType layer = block.getRenderType(block.getDefaultState());
-            //GL11.glEnable(GL11.GL_BLEND);
-            //GL11.glEnable(GL11.GL_CULL_FACE);
-            //OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-            texturemanager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-            //GL11.glDepthMask(false);
-            //GL11.glDisable(GL11.GL_DEPTH_TEST);
+            ccrs.reset();
+            ccrs.pullLightmap();
             if(layer == RenderBlocks.INSTANCE.renderType) {
-                RenderBlocks.INSTANCE.renderBlockAsItem(p_78443_2_);
+                RenderBlocks.INSTANCE.renderBlockAsItem(ccrs, p_78443_2_);
             }
             if(layer == GT_Renderer_Block.INSTANCE.renderType) {
-                GT_Renderer_Block.INSTANCE.renderInventoryBlock(p_78443_2_);
+                GT_Renderer_Block.INSTANCE.renderInventoryBlock(ccrs, p_78443_2_);
             }
             if(layer == RenderGeneratedOres.INSTANCE.renderType) {
-                RenderGeneratedOres.INSTANCE.renderBlockAsItem(p_78443_2_);
+                RenderGeneratedOres.INSTANCE.renderBlockAsItem(ccrs, p_78443_2_);
             }
-            //GL11.glDepthMask(true);
-            //GL11.glEnable(GL11.GL_DEPTH_TEST);
-            //GL11.glDisable(GL11.GL_CULL_FACE);
-            //GL11.glDisable(GL11.GL_BLEND);
         }
         else
         {
+            GL11.glPushMatrix();
             GT_Generic_Item generic_item = (GT_Generic_Item) item;
             TextureAtlasSprite iicon = generic_item.getIcon(p_78443_2_, p_78443_3_);
             int color = generic_item.getColorFromItemStack(p_78443_2_, p_78443_3_);
@@ -203,9 +197,8 @@ public class ItemRenderer {
             //GL11.glDisable(GL12.GL_RESCALE_NORMAL);
             //texturemanager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
             //TextureUtil.func_147945_b();
+            GL11.glPopMatrix();
         }
-
-        GL11.glPopMatrix();
     }
 
     /**
@@ -324,12 +317,12 @@ public class ItemRenderer {
 
         @Override
         public boolean isAmbientOcclusion() {
-            return false;
+            return true;
         }
 
         @Override
         public boolean isGui3d() {
-            return false;
+            return true;
         }
 
         @Override

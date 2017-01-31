@@ -1,12 +1,13 @@
 package gregtech.api.objects;
 
+import codechicken.lib.render.CCRenderState;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.common.render.RenderBlocks;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -41,38 +42,38 @@ public class GT_SidedTexture implements ITexture {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderXPos(RenderBlocks aRenderer, IBlockState aState, BlockPos aPos, int lightning, boolean aItem, VertexBuffer buf) {
-        mSides[5].renderXPos(aRenderer, aState, aPos, lightning, aItem, buf);
+    public void renderXPos(IBlockAccess aWorld, RenderBlocks aRenderer, IBlockState aState, BlockPos aPos, boolean aFullBlock, boolean aItem, CCRenderState ccrs) {
+        mSides[5].renderXPos(aWorld, aRenderer, aState, aPos, aFullBlock, aItem, ccrs);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderXNeg(RenderBlocks aRenderer, IBlockState aState, BlockPos aPos, int lightning, boolean aItem, VertexBuffer buf) {
-        mSides[4].renderXNeg(aRenderer, aState, aPos, lightning, aItem, buf);
+    public void renderXNeg(IBlockAccess aWorld, RenderBlocks aRenderer, IBlockState aState, BlockPos aPos, boolean aFullBlock, boolean aItem, CCRenderState ccrs) {
+        mSides[4].renderXNeg(aWorld, aRenderer, aState, aPos, aFullBlock, aItem, ccrs);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderYPos(RenderBlocks aRenderer, IBlockState aState, BlockPos aPos, int lightning, boolean aItem, VertexBuffer buf) {
-        mSides[1].renderYPos(aRenderer, aState, aPos, lightning, aItem, buf);
+    public void renderYPos(IBlockAccess aWorld, RenderBlocks aRenderer, IBlockState aState, BlockPos aPos, boolean aFullBlock, boolean aItem, CCRenderState ccrs) {
+        mSides[1].renderYPos(aWorld, aRenderer, aState, aPos, aFullBlock, aItem, ccrs);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderYNeg(RenderBlocks aRenderer, IBlockState aState, BlockPos aPos, int lightning, boolean aItem, VertexBuffer buf) {
-        mSides[0].renderYNeg(aRenderer, aState, aPos, lightning, aItem, buf);
+    public void renderYNeg(IBlockAccess aWorld, RenderBlocks aRenderer, IBlockState aState, BlockPos aPos, boolean aFullBlock, boolean aItem, CCRenderState ccrs) {
+        mSides[0].renderYNeg(aWorld, aRenderer, aState, aPos, aFullBlock, aItem, ccrs);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderZPos(RenderBlocks aRenderer, IBlockState aState, BlockPos aPos, int lightning, boolean aItem, VertexBuffer buf) {
-        mSides[3].renderZPos(aRenderer, aState, aPos, lightning, aItem, buf);
+    public void renderZPos(IBlockAccess aWorld, RenderBlocks aRenderer, IBlockState aState, BlockPos aPos, boolean aFullBlock, boolean aItem, CCRenderState ccrs) {
+        mSides[3].renderZPos(aWorld, aRenderer, aState, aPos, aFullBlock, aItem, ccrs);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderZNeg(RenderBlocks aRenderer, IBlockState aState, BlockPos aPos, int lightning, boolean aItem, VertexBuffer buf) {
-        mSides[2].renderZNeg(aRenderer, aState, aPos, lightning, aItem, buf);
+    public void renderZNeg(IBlockAccess aWorld, RenderBlocks aRenderer, IBlockState aState, BlockPos aPos, boolean aFullBlock, boolean aItem, CCRenderState ccrs) {
+        mSides[2].renderZNeg(aWorld, aRenderer, aState, aPos, aFullBlock, aItem, ccrs);
     }
 
     @Override
