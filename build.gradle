@@ -132,26 +132,11 @@ processResources
 task source(type: Jar) {
     from sourceSets.main.allSource
     classifier = 'sources'
-    manifest {
-        attributes 'FMLCorePlugin': 'gregtech.asm.ASM'
-        attributes 'FMLCorePluginContainsFMLMod': 'true'
-    }
-}
-
-jar {
-    manifest {
-        attributes 'FMLCorePlugin': 'gregtech.asm.ASM'
-        attributes 'FMLCorePluginContainsFMLMod': 'true'
-    }
 }
 
 task dev(type: Jar) {
     from sourceSets.main.output
     classifier = 'dev'
-    manifest {
-        attributes 'FMLCorePlugin': 'gregtech.asm.ASM'
-        attributes 'FMLCorePluginContainsFMLMod': 'true'
-    }
 }
 
 artifacts {

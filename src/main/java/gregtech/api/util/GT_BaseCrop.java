@@ -18,16 +18,18 @@ import net.minecraftforge.fml.common.Loader;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static gregtech.api.enums.GT_Values.E;
 
 public class GT_BaseCrop extends CropCard {
+
     public static ArrayList<GT_BaseCrop> sCropList = new ArrayList<GT_BaseCrop>();
-    private String mName = E, mDiscoveredBy = "Gregorius Techneticies", mAttributes[];
+    private String mName = E, mDiscoveredBy = "Gregorius Techneticies";
     private int mTier = 0, mMaxSize = 0, mAfterHarvestSize = 0, mHarvestSize = 0, mStats[] = new int[5], mGrowthSpeed = 0;
+    private String[] mAttributes = new String[0];
     private ItemStack mDrop = null, mSpecialDrops[] = null;
     private Materials mBlock = null;
-    private static boolean bIc2NeiLoaded = Loader.isModLoaded("Ic2Nei");
 
     /**
      * To create new Crops
@@ -76,18 +78,14 @@ public class GT_BaseCrop extends CropCard {
             mStats[2] = aStatDefensive;
             mStats[3] = aStatColor;
             mStats[4] = aStatWeed;
+            mGrowthSpeed = aGrowthSpeed;
             mAttributes = aAttributes;
             mBlock = aBlock;
-            if(GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.crops, aCropName, true)){
-            Crops.instance.registerCrop(this);
-            if (aBaseSeed != null) Crops.instance.registerBaseSeed(aBaseSeed, this, 1, 1, 1, 1);
-            sCropList.add(this);}
-        }
-        if (bIc2NeiLoaded) {
-            try {
-                Class.forName("speiger.src.crops.api.CropPluginAPI").getMethod("registerCropInfo", Class.forName("speiger.src.crops.api.ICropCardInfo")).invoke(Class.forName("speiger.src.crops.api.CropPluginAPI").getField("instance"), this);
-            } catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException | java.lang.reflect.InvocationTargetException | ClassNotFoundException | NoSuchMethodException | SecurityException ex) {
-                bIc2NeiLoaded = false;
+            if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.crops, aCropName, true)) {
+                GT_LanguageManager.addStringLocalization(getUnlocalizedName(), aCropName);
+                Crops.instance.registerCrop(this);
+                if (aBaseSeed != null) Crops.instance.registerBaseSeed(aBaseSeed, this, 1, 1, 1, 1);
+                sCropList.add(this);
             }
         }
     }
@@ -103,7 +101,8 @@ public class GT_BaseCrop extends CropCard {
         return getTier() * mGrowthSpeed;
     }
 
-    public int getrootslength(ICropTile crop) {
+    @Override
+    public int getRootsLength(ICropTile cropTile) {
         return 5;
     }
 
@@ -140,19 +139,37 @@ public class GT_BaseCrop extends CropCard {
     }
 
     @Override
-    public String getOwner() {
+    public String getDiscoveredBy() {
         return mDiscoveredBy;
     }
 
     @Override
-    public CropProperties getProperties() {
-        return new CropProperties(getTier(), 0, 0, 1, 0, 1);
+    public String getOwner() {
+        return "gregtech";
     }
 
     @Override
+    public CropProperties getProperties() {
+        return new CropProperties(getTier(), mStats[0], mStats[1], mStats[2], mStats[3], mStats[4]);
+    }
+
+    @Override
+    public String[] getAttributes() {
+        return mAttributes;
+    }
+
+    /*@Override
+    public String getCropInformation() {
+        if(mBlock != null) {
+            return String.format("Requires %s Ore or Block of %s as soil block to reach full growth.", mBlock.mName, mBlock.mName);
+        }
+        return "";
+    }*/
+
+    @Override
     public ItemStack getGain(ICropTile aCrop) {
-        int tDrop = 0;
-        if (mSpecialDrops != null && (tDrop = java.util.concurrent.ThreadLocalRandom.current().nextInt(0, (mSpecialDrops.length*2) + 2)) < mSpecialDrops.length && mSpecialDrops[tDrop] != null) {
+        int tDrop;
+        if (mSpecialDrops != null && (tDrop = aCrop.getWorld().rand.nextInt((mSpecialDrops.length*2) + 2)) < mSpecialDrops.length && mSpecialDrops[tDrop] != null) {
             return GT_Utility.copy(mSpecialDrops[tDrop]);
         }
         return GT_Utility.copy(mDrop);
@@ -164,10 +181,10 @@ public class GT_BaseCrop extends CropCard {
     }
     
     @Override
-    public List<ResourceLocation> getTexturesLocation() {
-        List<ResourceLocation> list = new ArrayList<ResourceLocation>();
+    public List<ResourceLocation> getModelLocation() {
+        List<ResourceLocation> list = new ArrayList<>();
         for (int size = 1; size <= getMaxSize(); size++) {
-            list.add(new ResourceLocation("ic2", "blocks/crop/blockCrop." + getId() + "." + size));
+            list.add(new ResourceLocation(getOwner(), "blocks/crop/blockCrop." + getId() + "." + size));
         }
         return list;
     }
@@ -177,54 +194,18 @@ public class GT_BaseCrop extends CropCard {
         if (aCrop == null) {
             return false;
         }
-        for (int i = 1; i < this.getrootslength(aCrop); i++) {
-            Block tBlock = aCrop.getWorld().getBlockState(aCrop.getLocation().down()).getBlock();
-            /*if ((tBlock instanceof GT_Block_Ores_Abstract)) {
-                TileEntity tTileEntity = aCrop.getWorld().getTileEntity(aCrop.getLocation().down());
-                if ((tTileEntity instanceof GT_TileEntity_Ores)) {
-                    Materials tMaterial = GregTech_API.sGeneratedMaterials[(((GT_TileEntity_Ores) tTileEntity).mMetaData % 1000)];
-                    if ((tMaterial != null) && (tMaterial != Materials._NULL)) {
-                        return tMaterial == mBlock;
-                    }
-                }
-            } else*/ {
-                IBlockState downState = aCrop.getWorld().getBlockState(aCrop.getLocation().down());
-                int tMetaID = downState.getBlock().getMetaFromState(downState);
-                ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
-                if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore")) && (tAssotiation.mMaterial.mMaterial == mBlock)) {
-                    return true;
-                }
-                if ((tAssotiation != null) && (tAssotiation.mPrefix == OrePrefixes.block) && (tAssotiation.mMaterial.mMaterial == mBlock)) {
-                    return true;
-                }
+        for (int i = 1; i < this.getRootsLength(aCrop); i++) {
+            IBlockState downState = aCrop.getWorld().getBlockState(aCrop.getLocation().down());
+            int tMetaID = downState.getBlock().getMetaFromState(downState);
+            ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(downState.getBlock(), 1, tMetaID));
+            if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore")) && (tAssotiation.mMaterial.mMaterial == mBlock)) {
+                return true;
             }
-//	      Block block = aCrop.getWorld().getBlock(aCrop.getLocation().posX, aCrop.getLocation().posY - i, aCrop.getLocation().posZ);
-//	      if (block.isAir(aCrop.getWorld(), aCrop.getLocation().posX, aCrop.getLocation().posY - i, aCrop.getLocation().posZ)) {
-//	        return false;
-//	      }
-//	      if (block == mBlock) {
-//	    	  int tMeta = aCrop.getWorld().getBlockMetadata(aCrop.getLocation().posX, aCrop.getLocation().posY - i, aCrop.getLocation().posZ);
-//	    	  if(mMeta < 0 || tMeta == mMeta){
-//	        return true;}
-//	      }
+            if ((tAssotiation != null) && (tAssotiation.mPrefix == OrePrefixes.block) && (tAssotiation.mMaterial.mMaterial == mBlock)) {
+                return true;
+            }
         }
         return false;
-    }
-
-    public List<String> getCropInformation() {
-        if (mBlock != null) {
-            ArrayList<String> result = new ArrayList<String>(1);
-            result.add(String.format("Requires %s Ore or Block of %s as soil block to reach full growth.", mBlock.mName, mBlock.mName));
-            return result;
-        }
-        return null;
-    }
-
-    public ItemStack getDisplayItem() {
-        if (mSpecialDrops != null && mSpecialDrops[mSpecialDrops.length - 1] != null) {
-            return GT_Utility.copy(mSpecialDrops[mSpecialDrops.length - 1]);
-        }
-        return GT_Utility.copy(mDrop);
     }
 
 }

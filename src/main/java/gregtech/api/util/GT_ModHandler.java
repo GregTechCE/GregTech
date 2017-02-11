@@ -11,12 +11,12 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IBoxable;
-import ic2.api.item.IC2Items;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.ISpecialElectricItem;
 import ic2.api.reactor.IReactorComponent;
 import ic2.api.recipe.*;
 import ic2.core.block.state.IIdProvider;
+import ic2.core.init.OreValues;
 import ic2.core.ref.BlockName;
 import ic2.core.ref.FluidName;
 import ic2.core.ref.ItemName;
@@ -394,33 +394,12 @@ public class GT_ModHandler {
     }
 
     /**
-     * OUT OF ORDER
-     */
-    public static boolean getModeKeyDown(EntityPlayer aPlayer) {
-        return false;
-    }
-
-    /**
-     * OUT OF ORDER
-     */
-    public static boolean getBoostKeyDown(EntityPlayer aPlayer) {
-        return false;
-    }
-
-    /**
-     * OUT OF ORDER
-     */
-    public static boolean getJumpKeyDown(EntityPlayer aPlayer) {
-        return false;
-    }
-
-    /**
      * Adds a Valuable Ore to the Miner
      */
     public static boolean addValuableOre(Block aBlock, int aMeta, int aValue) {
         if (aValue <= 0) return false;
         try {
-            Class.forName("ic2.core.init.OreValues").getMethod("add", ItemStack.class, int.class).invoke(null, new ItemStack(aBlock, 1, aMeta), aValue);
+            OreValues.add(new ItemStack(aBlock, 1, aMeta), aValue);
         } catch (Throwable e) {/*Do nothing*/}
         return true;
     }
@@ -436,8 +415,7 @@ public class GT_ModHandler {
         aChance = (float) GregTech_API.sRecipeFile.get(ConfigCategories.Machines.scrapboxdrops, aOutput, aChance);
         if (aChance <= 0) return false;
         try {
-            GT_Utility.callMethod(GT_Utility.getFieldContent("ic2.api.recipe.Recipes", "scrapboxDrops", true, true), "addDrop", true, false, true, GT_Utility.copy(aOutput), aChance);
-            GT_Utility.callMethod(GT_Utility.getFieldContent("ic2.api.recipe.Recipes", "scrapboxDrops", true, true), "addRecipe", true, true, false, GT_Utility.copy(aOutput), aChance);
+            Recipes.scrapboxDrops.addDrop(GT_Utility.copy(aOutput), aChance);
         } catch (Throwable e) {/*Do nothing*/}
         return true;
     }
@@ -448,7 +426,7 @@ public class GT_ModHandler {
     public static boolean addToRecyclerBlackList(ItemStack aRecycledStack) {
         if (aRecycledStack == null) return false;
         try {
-            ic2.api.recipe.Recipes.recyclerBlacklist.add(new RecipeInputItemStack(aRecycledStack));
+            Recipes.recyclerBlacklist.add(new RecipeInputItemStack(aRecycledStack));
         } catch (Throwable e) {/*Do nothing*/}
         return true;
     }

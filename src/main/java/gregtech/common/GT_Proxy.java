@@ -351,7 +351,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         ItemList.IC2_ForgeHammer.set(GT_ModHandler.getIC2Item(ItemName.forge_hammer, 1));
         ItemList.IC2_WireCutter.set(GT_ModHandler.getIC2Item(ItemName.cutter, 1));
 
-        ItemList.Credit_Iron.set(GT_ModHandler.getIC2Item(ItemName.crafting, CraftingItemType.iron_shaft, 1));
+        ItemList.Credit_Iron.set(GT_ModHandler.getIC2Item(ItemName.crafting, CraftingItemType.coin, 1));
 
         ItemList.Circuit_Basic.set(GT_ModHandler.getIC2Item(ItemName.crafting, CraftingItemType.circuit, 1));
         ItemList.Circuit_Advanced.set(GT_ModHandler.getIC2Item(ItemName.crafting, CraftingItemType.advanced_circuit, 1));
