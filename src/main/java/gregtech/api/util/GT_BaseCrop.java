@@ -181,7 +181,7 @@ public class GT_BaseCrop extends CropCard {
     }
     
     @Override
-    public List<ResourceLocation> getModelLocation() {
+    public List<ResourceLocation> getTexturesLocation() {
         List<ResourceLocation> list = new ArrayList<>();
         for (int size = 1; size <= getMaxSize(); size++) {
             list.add(new ResourceLocation(getOwner(), "blocks/crop/blockCrop." + getId() + "." + size));
