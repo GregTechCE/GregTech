@@ -16,6 +16,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.config.GuiUtils;
 
 import javax.annotation.Nonnull;
+import java.util.Collections;
+import java.util.List;
 
 public class JEIGregtehRecipeCategory implements IRecipeCategory<JEIGregtechRecipe> {
 
@@ -68,6 +70,11 @@ public class JEIGregtehRecipeCategory implements IRecipeCategory<JEIGregtechReci
     @Override
     public void setRecipe(IRecipeLayout recipeLayout, JEIGregtechRecipe recipeWrapper, IIngredients ingredients) {
         recipeWrapper.init(recipeLayout);
+    }
+
+    @Override
+    public List<String> getTooltipStrings(int mouseX, int mouseY) {
+        return Collections.emptyList();
     }
 
     public IDrawable getIcon() {

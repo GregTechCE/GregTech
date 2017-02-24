@@ -318,7 +318,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         ItemList.IC2_Resin.set(GT_ModHandler.getIC2Item(ItemName.misc_resource, MiscResourceType.resin, 1));
         ItemList.IC2_Plantball.set(GT_ModHandler.getIC2Item(ItemName.crafting, CraftingItemType.plant_ball, 1));
         ItemList.IC2_PlantballCompressed.set(GT_ModHandler.getIC2Item(ItemName.crafting, CraftingItemType.plant_ball, 1));
-        ItemList.IC2_Crop_Seeds.set(GT_ModHandler.getIC2Item(ItemName.crop_res, CropResItemType.coffee_beans, 1));
+        ItemList.IC2_Crop_Seeds.set(GT_ModHandler.getIC2Item(ItemName.crop_seed_bag, 1));
         ItemList.IC2_Grin_Powder.set(GT_ModHandler.getIC2Item(ItemName.crop_res, CropResItemType.grin_powder, 1));
         ItemList.IC2_Energium_Dust.set(GT_ModHandler.getIC2Item(ItemName.dust, DustResourceType.energium, 1));
         ItemList.IC2_Scrap.set(GT_ModHandler.getIC2Item(ItemName.crafting, CraftingItemType.scrap, 1));
