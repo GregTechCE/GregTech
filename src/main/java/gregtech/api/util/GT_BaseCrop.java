@@ -169,7 +169,7 @@ public class GT_BaseCrop extends CropCard {
     @Override
     public ItemStack getGain(ICropTile aCrop) {
         int tDrop;
-        if (mSpecialDrops != null && (tDrop = aCrop.getWorld().rand.nextInt((mSpecialDrops.length*2) + 2)) < mSpecialDrops.length && mSpecialDrops[tDrop] != null) {
+        if (mSpecialDrops != null && (tDrop = aCrop.getWorldObj().rand.nextInt((mSpecialDrops.length*2) + 2)) < mSpecialDrops.length && mSpecialDrops[tDrop] != null) {
             return GT_Utility.copy(mSpecialDrops[tDrop]);
         }
         return GT_Utility.copy(mDrop);
@@ -195,14 +195,13 @@ public class GT_BaseCrop extends CropCard {
             return false;
         }
         for (int i = 1; i < this.getRootsLength(aCrop); i++) {
-            IBlockState downState = aCrop.getWorld().getBlockState(aCrop.getLocation().down());
+            IBlockState downState = aCrop.getWorldObj().getBlockState(aCrop.getPosition().down(i));
             int tMetaID = downState.getBlock().getMetaFromState(downState);
             ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(downState.getBlock(), 1, tMetaID));
-            if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore")) && (tAssotiation.mMaterial.mMaterial == mBlock)) {
-                return true;
-            }
-            if ((tAssotiation != null) && (tAssotiation.mPrefix == OrePrefixes.block) && (tAssotiation.mMaterial.mMaterial == mBlock)) {
-                return true;
+            if (tAssotiation != null && tAssotiation.mMaterial.mMaterial == mBlock) {
+                if (tAssotiation.mPrefix.toString().startsWith("ore") || tAssotiation.mPrefix == OrePrefixes.block) {
+                    return true;
+                }
             }
         }
         return false;
