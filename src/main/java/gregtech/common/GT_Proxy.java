@@ -944,7 +944,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 if ((aStack.getItem() instanceof GT_MetaGenerated_Tool)) {
                     ((GT_MetaGenerated_Tool) aStack.getItem())
                             .onHarvestBlockEvent(new ArrayList<>(aEvent.getDrops()), aStack, aEvent.getHarvester(),
-                                    aEvent.getWorld().getBlockState(aEvent.getPos()), aEvent.getPos(),
+                                    aEvent.getState(), aEvent.getPos(),
                                     aEvent.getFortuneLevel(), aEvent.isSilkTouching(), aEvent);
                 }
                 if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, aStack) > 2) {
