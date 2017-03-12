@@ -116,7 +116,11 @@ public abstract class GT_Block_Stones_Abstract extends GT_Generic_Block implemen
 
     @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        return Lists.newArrayList(new ItemStack(this, 1, state.getValue(METADATA)));
+        int metadata = (int) state.getValue(METADATA);
+        if (metadata % 8 == 0) {
+            metadata++;
+        }
+        return Lists.newArrayList(new ItemStack(this, 1, metadata));
     }
 
     @SideOnly(Side.CLIENT)
