@@ -576,7 +576,7 @@ public class JEIGregtechRecipe implements IRecipeWrapper {
 
         mInputs.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
             int slotType = slotIndex / 1000;
-            int inputIndex = slotType % 1000;
+            int inputIndex = slotIndex % 1000;
             switch (slotType) {
                 case 1:
                     //it's output
