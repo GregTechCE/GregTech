@@ -186,7 +186,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
             }
             if (getFluidAmount() != 0) {
                 for (EnumFacing side : EnumFacing.VALUES) {
-                    if (side.getIndex() != aBaseMetaTileEntity.getFrontFacing()) {
+                    if (side.getIndex() != aBaseMetaTileEntity.getFrontFacing() && side != EnumFacing.DOWN) {
                         int drain = GT_Utility.fillFluidTank(
                                 aBaseMetaTileEntity.getWorldObj(),
                                 aBaseMetaTileEntity.getWorldPos(), side,
