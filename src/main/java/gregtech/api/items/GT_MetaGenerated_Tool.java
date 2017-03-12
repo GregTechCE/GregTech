@@ -456,7 +456,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
         if (isItemStackUsable(aStack)) {
             IToolStats toolStats = getToolStats(aStack);
             if(toolStats != null && toolStats.isMinableBlock(state)) {
-                if(getHarvestLevel(aStack, null) > state.getBlock().getHarvestLevel(state)) {
+                if(getHarvestLevel(aStack, null) >= state.getBlock().getHarvestLevel(state)) {
                     float toolSpeed = toolStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed;
                     return Math.max(defSpeed, toolSpeed);
                 }

@@ -261,7 +261,7 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         GT_Values.RA.addChemicalBathRecipe(ItemList.Food_Raw_Fries.get(1), Materials.FryingOilHot.getFluid(10L), ItemList.Food_Fries.get(1), GT_Values.NI, GT_Values.NI, null, 16, 4);
         GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getIC2Item(BlockName.te, TeBlock.itnt, 1), Materials.Glue.getFluid(10L), GT_ModHandler.getIC2Item(ItemName.dynamite_sticky, 1), GT_Values.NI, GT_Values.NI, null, 16, 4);
-        GT_Values.RA.addChemicalRecipe(new ItemStack(Items.PAPER,1), new ItemStack(Items.STRING,1), Materials.Glyceryl.getFluid(150), GT_Values.NF, GT_ModHandler.getIC2Item(BlockName.te, TeBlock.itnt, 1), 160, 4);
+        GT_Values.RA.addChemicalRecipe(new ItemStack(Items.PAPER,1), new ItemStack(Items.STRING,1), Materials.Glyceryl.getFluid(150), GT_Values.NF, GT_ModHandler.getIC2Item(ItemName.dynamite, 1), 160, 4);
         GT_Values.RA.addChemicalBathRecipe(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1), Materials.Concrete.getMolten(144L), GT_ModHandler.getIC2Item(BlockName.resource, ResourceBlock.reinforced_stone, 1), GT_Values.NI, GT_Values.NI, null, 200, 4);
         GT_Values.RA.addChemicalBathRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1), Materials.Water.getFluid(125L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HydratedCoal, 1), GT_Values.NI, GT_Values.NI, null, 12, 4);
         GT_Values.RA.addChemicalBathRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1), Materials.Water.getFluid(100L), new ItemStack(Items.PAPER, 1, 0), GT_Values.NI, GT_Values.NI, null, 200, 4);
