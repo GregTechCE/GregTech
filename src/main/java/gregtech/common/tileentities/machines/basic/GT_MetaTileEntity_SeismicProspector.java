@@ -11,6 +11,10 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GT_ModHandler;
+import ic2.core.ref.BlockName;
+import ic2.core.ref.ItemName;
+import ic2.core.ref.TeBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,11 +49,21 @@ public class GT_MetaTileEntity_SeismicProspector extends GT_MetaTileEntity_Basic
         if (aBaseMetaTileEntity.isServerSide()) {
             ItemStack aStack = aPlayer.getHeldItem(hand);
             if (!ready && (aStack != null) && (
-            		(aStack.getItem() == Item.getItemFromBlock(Blocks.TNT) && aStack.stackSize > 3 ) ||
-            		(GT_OreDictUnificator.getItemData(aStack).mMaterial.mMaterial == Materials.Glyceryl && aStack.stackSize > 0 )
+            		(aStack.getItem() == Item.getItemFromBlock(Blocks.TNT) && aStack.stackSize > 3 ) || 
+            		(aStack.getItem() == GT_ModHandler.getIC2Item(BlockName.te, TeBlock.itnt, 1).getItem() && aStack.stackSize > 1 ) ||
+            		(aStack.getItem() == GT_ModHandler.getIC2Item(ItemName.dynamite, 1).getItem() && aStack.stackSize > 7 ) ||
+            		(GT_OreDictUnificator.getItemData(aStack).mMaterial.mMaterial == Materials.Glyceryl  && aStack.stackSize > 0 )
             		) ) {
                 if ((!aPlayer.capabilities.isCreativeMode) && (aStack.stackSize != 111)) {
+                	if(aStack.getItem() == Item.getItemFromBlock(Blocks.TNT)){
                     aStack.stackSize -= 4;
+                	}else if(aStack.getItem() == GT_ModHandler.getIC2Item(BlockName.te, TeBlock.itnt, 1).getItem()){
+                    aStack.stackSize -= 2;
+                    }else if(aStack.getItem() == GT_ModHandler.getIC2Item(ItemName.dynamite, 1).getItem()){
+                    aStack.stackSize -= 8;
+                    }else{
+                    aStack.stackSize -= 1;
+                    }
                 }
                 this.ready = true;
                 this.mMaxProgresstime = 200;
