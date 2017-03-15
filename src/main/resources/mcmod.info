@@ -1,9 +1,9 @@
 [{
-  "modid": "gregtech_addon",
-  "name": "GregTech-Addon",
+  "modid": "gregtech",
+  "name": "GregTech",
   "description": "This Mod adds the awesome Technology of GregTech-Intergalactical to your World!",
-  "mcversion": "1.7.10",
-  "version": "5.09",
+  "mcversion": "1.10.2",
+  "version": "5.10",
   "logoFile": "/assets/gregtech_addon/textures/LogoGTI_Long.png",
   "url": "http://forum.industrial-craft.net/index.php?page=Thread&threadID=11488",
   "updateUrl": "",
@@ -11,5 +11,5 @@
   "credits": "Notch and Mojang for Minecraft, Alblaka and his Team for IndustrialCraft, Mr. Brain for many of the Crop Textures, OvermindDL for helping me with Code, TheSirusKing and matix for a few Textures",
   "parent": "",
   "screenshots": [],
-  "dependencies": ["Industrialcraft"]
+  "dependencies": ["IC2", "CodeChickenLib"]
 }]
