@@ -68,7 +68,7 @@ public abstract class GT_Worldgen {
             return tValue;
         }
         return tAllowed;*/
-        return aDimensionType == 0 || aDimensionType == -1 || aDimensionType == 1 || aDimensionType == exceptedDimension;
+        return aDimensionType == exceptedDimension;
     }
 
     public boolean isGenerationAllowed(World aWorld, BlockPos blockPos) {

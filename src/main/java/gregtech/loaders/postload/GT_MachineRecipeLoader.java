@@ -1063,7 +1063,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addVacuumFreezerRecipe(ItemList.Reactor_Coolant_NaK_3.getWildcard(1), ItemList.Reactor_Coolant_NaK_3.get(1), 1800);
         GT_Values.RA.addVacuumFreezerRecipe(ItemList.Reactor_Coolant_NaK_6.getWildcard(1), ItemList.Reactor_Coolant_NaK_6.get(1), 3600);
         GT_Values.RA.addVacuumFreezerRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Ice, 1), 50);
-        GT_Values.RA.addVacuumFreezerRecipe(ItemList.Cell_Water.get(1L), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.LiquidAir, 1), 25);
+        GT_Values.RA.addVacuumFreezerRecipe(ItemList.Cell_Air.get(1L), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.LiquidAir, 1), 25);
 
         GT_Values.RA.addAlloySmelterRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 2L), ItemList.TE_Hardened_Glass.get(2L), 200, 16);
         GT_Values.RA.addAlloySmelterRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Lead, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 2L), ItemList.TE_Hardened_Glass.get(2L), 200, 16);

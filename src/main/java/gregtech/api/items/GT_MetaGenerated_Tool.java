@@ -730,20 +730,54 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
     @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getIcon(ItemStack stack, int pass) {
         IToolStats toolStats = getToolStats(stack);
-        IIconContainer head = toolStats.getIcon(true, stack);
-        IIconContainer handle = toolStats.getIcon(false, stack);
-        if(handle != null) {
-            if(pass == 0) {
-                return handle.getIcon();
-            } else if(pass == 1) {
-                return handle.getOverlayIcon();
-            }
+        IIconContainer icon = null;
+        switch (pass) {
+            case 0:
+            case 1:
+                // Handle
+                icon = toolStats.getIcon(false, stack);
+                break;
+            case 2:
+            case 3:
+                // Head
+                icon = toolStats.getIcon(true, stack);
+                break;
+            case 4:
+            case 5:
+                // Durability Bar
+                long tDamage = getToolDamage(stack);
+                long tMaxDamage = getToolMaxDamage(stack);
+                if (tDamage <= 0L) {
+                    icon = gregtech.api.enums.Textures.ItemIcons.DURABILITY_BAR[8];
+                } else if (tDamage >= tMaxDamage) {
+                    icon = gregtech.api.enums.Textures.ItemIcons.DURABILITY_BAR[0];
+                } else {
+                    icon = gregtech.api.enums.Textures.ItemIcons.DURABILITY_BAR[((int) java.lang.Math.max(0L, java.lang.Math.min(7L, (tMaxDamage - tDamage) * 8L / tMaxDamage)))];
+                }
+                break;
+            case 6:
+            case 7:
+                // Energy Bar
+                Long[] tStats = getElectricStats(stack);
+                if ((tStats != null) && (tStats[3].longValue() < 0L)) {
+                long tCharge = getRealCharge(stack);
+                    if (tCharge <= 0L) {
+                        icon = gregtech.api.enums.Textures.ItemIcons.ENERGY_BAR[0];
+                    } else if (tCharge >= tStats[0].longValue()) {
+                        icon = gregtech.api.enums.Textures.ItemIcons.ENERGY_BAR[8];
+                    } else {
+                        icon = gregtech.api.enums.Textures.ItemIcons.ENERGY_BAR[(7 - (int) java.lang.Math.max(0L, java.lang.Math.min(6L, (tStats[0].longValue() - tCharge) * 7L / tStats[0].longValue())))];
+                    }
+                }
+                break;
+            default:
+                break;
         }
-        if(head != null) {
-            if(pass == 2) {
-                return head.getIcon();
-            } else if(pass == 3) {
-                return head.getOverlayIcon();
+        if (icon != null) {
+            if ((pass & 1) == 0) {
+                return icon.getIcon();
+            } else {
+                return icon.getOverlayIcon();
             }
         }
         return null;
@@ -752,7 +786,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
     @Override
     @SideOnly(Side.CLIENT)
     public int getRenderPasses(ItemStack stack) {
-        return 4;
+        return 8;
     }
 
     @Override

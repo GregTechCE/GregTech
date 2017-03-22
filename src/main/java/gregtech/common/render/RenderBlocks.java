@@ -102,7 +102,7 @@ public class RenderBlocks implements ICCBlockRenderer {
 
     public static void renderFace(CCRenderState state, EnumFacing side, IVertexOperation... ops)
     {
-        if (bounds != null) {
+        if (bounds != null && bounds.min != null && bounds.max != null) {
             face.loadCuboidFace(bounds, side.ordinal());
         }
         state.setPipeline(face, 0, face.verts.length, ops);
