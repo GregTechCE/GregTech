@@ -289,8 +289,14 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item {
     @Override
     public ActionResult<ItemStack> onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer, EnumHand hand) {
         IFoodStat tStat = mFoodStats.get((short) getDamage(aStack));
-        if (tStat != null && aPlayer.canEat(tStat.alwaysEdible(this, aStack, aPlayer)))
-            return ActionResult.newResult(EnumActionResult.PASS, aStack);
+        if (tStat != null) {
+            if (aPlayer.canEat(tStat.alwaysEdible(this, aStack, aPlayer))) {
+                aPlayer.setActiveHand(hand);
+                return ActionResult.newResult(EnumActionResult.SUCCESS, aStack);
+            } else {
+                return ActionResult.newResult(EnumActionResult.FAIL, aStack);
+            }
+        }
         return super.onItemRightClick(aStack, aWorld, aPlayer, hand);
     }
 

@@ -123,12 +123,14 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         use(aStack, 0, aPlayer);
         isItemStackUsable(aStack);
         ArrayList<IItemBehaviour<GT_MetaBase_Item>> tList = mItemBehaviors.get((short) getDamage(aStack));
-        if (tList != null)
-            for (IItemBehaviour<GT_MetaBase_Item> tBehavior : tList)
+        if (tList != null) {
+            for (IItemBehaviour<GT_MetaBase_Item> tBehavior : tList) {
                 if (tBehavior.onLeftClickEntity(this, aStack, aPlayer, aEntity, aPlayer.getActiveHand())) {
                     if (aStack.stackSize <= 0) aPlayer.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, null);
                     return true;
                 }
+            }
+        }
         if (aStack.stackSize <= 0) {
             aPlayer.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, null);
             return false;
@@ -143,16 +145,19 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         use(aStack, 0, aPlayer);
         isItemStackUsable(aStack);
         ArrayList<IItemBehaviour<GT_MetaBase_Item>> tList = mItemBehaviors.get((short) getDamage(aStack));
-        if (tList != null) for (IItemBehaviour<GT_MetaBase_Item> tBehavior : tList)
-            if (tBehavior.onItemUse(this, aStack, aPlayer, aWorld, blockPos, aSide, hitX, hitY, hitZ, hand)) {
-                if (aStack.stackSize <= 0) aPlayer.setHeldItem(hand, null);
-                return EnumActionResult.SUCCESS;
+        if (tList != null) {
+            for (IItemBehaviour<GT_MetaBase_Item> tBehavior : tList) {
+                if (tBehavior.onItemUse(this, aStack, aPlayer, aWorld, blockPos, aSide, hitX, hitY, hitZ, hand)) {
+                    if (aStack.stackSize <= 0) aPlayer.setHeldItem(hand, null);
+                    return EnumActionResult.SUCCESS;
+                }
             }
+        }
         if (aStack.stackSize <= 0) {
             aPlayer.setHeldItem(hand, null);
             return EnumActionResult.SUCCESS;
         }
-        return EnumActionResult.SUCCESS;
+        return EnumActionResult.PASS;
     }
 
 
@@ -163,19 +168,19 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
 
     @Override
     public EnumActionResult onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
-        if(!aWorld.isRemote) {
-            use(aStack, 0, aPlayer);
-            ArrayList<IItemBehaviour<GT_MetaBase_Item>> tList = mItemBehaviors.get((short) getDamage(aStack));
-            if (tList != null) for (IItemBehaviour<GT_MetaBase_Item> tBehavior : tList)
+        use(aStack, 0, aPlayer);
+        ArrayList<IItemBehaviour<GT_MetaBase_Item>> tList = mItemBehaviors.get((short) getDamage(aStack));
+        if (tList != null) {
+            for (IItemBehaviour<GT_MetaBase_Item> tBehavior : tList) {
                 if (tBehavior.onItemUseFirst(this, aStack, aPlayer, aWorld, pos, side, hitX, hitY, hitZ, hand)) {
                     if (aStack.stackSize <= 0) aPlayer.setHeldItem(hand, null);
-                    return EnumActionResult.PASS;
+                    return EnumActionResult.SUCCESS;
                 }
-            if (aStack.stackSize <= 0) {
-                aPlayer.setHeldItem(hand, null);
-                return EnumActionResult.PASS;
             }
-            return EnumActionResult.PASS;
+        }
+        if (aStack.stackSize <= 0) {
+            aPlayer.setHeldItem(hand, null);
+            return EnumActionResult.SUCCESS;
         }
         return EnumActionResult.PASS;
     }
@@ -187,8 +192,11 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         use(aStack, 0, aPlayer);
         isItemStackUsable(aStack);
         ArrayList<IItemBehaviour<GT_MetaBase_Item>> tList = mItemBehaviors.get((short) getDamage(aStack));
-        if (tList != null) for (IItemBehaviour<GT_MetaBase_Item> tBehavior : tList)
-            aStack = tBehavior.onItemRightClick(this, aStack, aWorld, aPlayer, hand);
+        if (tList != null) {
+            for (IItemBehaviour<GT_MetaBase_Item> tBehavior : tList) {
+                aStack = tBehavior.onItemRightClick(this, aStack, aWorld, aPlayer, hand);
+            }
+        }
         return ActionResult.newResult(EnumActionResult.PASS, aStack);
     }
 
@@ -197,8 +205,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         String tKey = getUnlocalizedName(aStack) + ".tooltip", tString = GT_LanguageManager.getTranslation(tKey);
         if (GT_Utility.isStringValid(tString) && !tKey.equals(tString)) aList.add(tString);
 
-        Long[]
-                tStats = getElectricStats(aStack);
+        Long[] tStats = getElectricStats(aStack);
         if (tStats != null) {
             if (tStats[3] > 0) {
                 aList.add(TextFormatting.AQUA + "Contains " + GT_Utility.formatNumbers(tStats[3]) + " EU   Tier: " + (tStats[2] >= 0 ? tStats[2] : 0) + TextFormatting.GRAY);
