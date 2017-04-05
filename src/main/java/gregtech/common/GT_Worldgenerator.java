@@ -50,7 +50,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
         if(mRandom == null) {
             mRandom = new XSTR(aRandom.nextLong() ^ System.nanoTime());
         }
-        Biome biome = aWorld.getBiomeGenForCoords(new BlockPos(aX * 16, 64, aZ * 16));
+        Biome biome = aWorld.getBiome(new BlockPos(aX * 16, 64, aZ * 16));
         generateInternal(aX * 16, aZ * 16,
                 getDimensionType(aChunkGenerator, biome),
                 aWorld, aChunkGenerator, aChunkProvider,
@@ -89,7 +89,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
             for (int tX = mX - 16; i < 3; tX += 16) {
                 int j = 0;
                 for (int tZ = mZ - 16; j < 3; tZ += 16) {
-                    String tBiome = mWorld.getBiomeGenForCoords(new BlockPos(tX + 8, 0, tZ + 8)).getBiomeName();
+                    String tBiome = mWorld.getBiome(new BlockPos(tX + 8, 0, tZ + 8)).getBiomeName();
                     try {
                         for (GT_Worldgen tWorldGen : GregTech_API.sWorldgenList) {
                             tWorldGen.executeWorldgen(mWorld, mRandom, mBiome, mDimensionType, tX, tZ, mChunkGenerator, mChunkProvider);

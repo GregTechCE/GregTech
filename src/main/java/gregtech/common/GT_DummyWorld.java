@@ -174,11 +174,11 @@ public class GT_DummyWorld extends World {
 
     @Override
     public Biome getBiomeForCoordsBody(BlockPos pos) {
-        return getBiomeGenForCoords(pos);
+        return getBiome(pos);
     }
 
     @Override
-    public Biome getBiomeGenForCoords(BlockPos pos) {
+    public Biome getBiome(BlockPos pos) {
         return Biomes.PLAINS;
     }
 
