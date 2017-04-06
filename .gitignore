@@ -71,6 +71,7 @@ local.properties
 .idea_modules/
 
 /out/
+/build/
 gradle/wrapper/gradle-wrapper.properties
 gradlew
 gradlew.bat

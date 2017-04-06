@@ -114,12 +114,12 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public final Biome getBiome(int aX, int aZ) {
-        return worldObj.getBiomeGenForCoords(M.setPos(aX, 1, aZ));
+        return worldObj.getBiome(M.setPos(aX, 1, aZ));
     }
 
     @Override
     public final Biome getBiome() {
-        return worldObj.getBiomeGenForCoords(getPos());
+        return worldObj.getBiome(getPos());
     }
 
     @Override
