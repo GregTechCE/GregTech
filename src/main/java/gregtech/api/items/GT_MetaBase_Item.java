@@ -138,8 +138,6 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         return false;
     }
 
-
-
     @Override
     public EnumActionResult onItemUse(ItemStack aStack, EntityPlayer aPlayer, World aWorld, BlockPos blockPos, EnumHand hand, EnumFacing aSide, float hitX, float hitY, float hitZ) {
         use(aStack, 0, aPlayer);
@@ -159,7 +157,6 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         }
         return EnumActionResult.PASS;
     }
-
 
     @Override
     public int getMaxItemUseDuration(ItemStack stack) {
@@ -184,8 +181,6 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         }
         return EnumActionResult.PASS;
     }
-
-
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer, EnumHand hand) {
@@ -250,13 +245,6 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         Long[] tStats = getElectricStats(aStack);
         if (tStats == null) return 0;
         return Math.abs(tStats[0]);
-    }
-
-
-    public final double getTransferLimit(ItemStack aStack) {
-        Long[] tStats = getElectricStats(aStack);
-        if (tStats == null) return 0;
-        return Math.max(tStats[1], tStats[3]);
     }
 
     @Override
@@ -329,91 +317,6 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         }
     }
 
-    /*
-
-    @Override
-    public final int getMaxCharge(ItemStack aStack) {
-        Long[] tStats = getElectricStats(aStack);
-        if (tStats == null) return 0;
-        return (int)Math.abs(tStats[0]);
-    }
-
-    @Override
-    public final int getTransferLimit(ItemStack aStack) {
-        Long[] tStats = getElectricStats(aStack);
-        if (tStats == null) return 0;
-        return (int)Math.max(tStats[1], tStats[3]);
-    }
-
-    @Override
-    public final int charge(ItemStack aStack, int aCharge, int aTier, boolean aIgnoreTransferLimit, boolean aSimulate) {
-        Long[] tStats = getElectricStats(aStack);
-        if (tStats == null || tStats[2] > aTier || !(tStats[3] == -1 || tStats[3] == -3 || (tStats[3] < 0 && aCharge == Integer.MAX_VALUE)) || aStack.stackSize != 1) return 0;
-        long tChargeBefore = getRealCharge(aStack), tNewCharge = aCharge==Integer.MAX_VALUE?Long.MAX_VALUE:Math.min(Math.abs(tStats[0]), tChargeBefore + (aIgnoreTransferLimit?aCharge:Math.min(tStats[1], aCharge)));
-        if (!aSimulate) setCharge(aStack, tNewCharge);
-        return (int)(tNewCharge-tChargeBefore);
-    }
-
-    @Override
-    public final int discharge(ItemStack aStack, int aCharge, int aTier, boolean aIgnoreTransferLimit, boolean aSimulate) {
-        Long[] tStats = getElectricStats(aStack);
-        if (tStats == null || tStats[2] > aTier) return 0;
-        if (tStats[3] > 0) {
-            if (aCharge < tStats[3] || aStack.stackSize < 1) return 0;
-            if (!aSimulate) aStack.stackSize--;
-            return (int)(long)tStats[3];
-        }
-        long tChargeBefore = getRealCharge(aStack), tNewCharge = Math.max(0, tChargeBefore - (aIgnoreTransferLimit?aCharge:Math.min(tStats[1], aCharge)));
-        if (!aSimulate) setCharge(aStack, tNewCharge);
-        return (int)(tChargeBefore-tNewCharge);
-    }
-
-    @Override
-    public final int getCharge(ItemStack aStack) {
-        return (int)Math.min(Integer.MAX_VALUE, getRealCharge(aStack));
-    }
-
-    @Override
-    public final boolean canUse(ItemStack aStack, int aAmount) {
-        return getRealCharge(aStack) >= aAmount;
-    }
-
-    @Override
-    public final boolean use(ItemStack aStack, int aAmount, EntityLivingBase aPlayer) {
-        chargeFromArmor(aStack, aPlayer);
-        if (aPlayer instanceof EntityPlayer && ((EntityPlayer)aPlayer).capabilities.isCreativeMode) return true;
-        int tTransfer = discharge(aStack, aAmount, Integer.MAX_VALUE, true, true);
-        if (tTransfer == aAmount) {
-            discharge(aStack, aAmount, Integer.MAX_VALUE, true, false);
-            chargeFromArmor(aStack, aPlayer);
-            return true;
-        }
-        discharge(aStack, aAmount, Integer.MAX_VALUE, true, false);
-        chargeFromArmor(aStack, aPlayer);
-        return false;
-    }
-
-    @Override
-    public final void chargeFromArmor(ItemStack aStack, EntityLivingBase aPlayer) {
-        if (aPlayer == null || aPlayer.worldObj.isRemote) return;
-        for (int i = 1; i < 5; i++) {
-            ItemStack tArmor = aPlayer.getEquipmentInSlot(i);
-            if (GT_ModHandler.isElectricItem(tArmor)) {
-                IElectricItem tArmorItem = (IElectricItem)tArmor.getItem();
-                if (tArmorItem.canProvideEnergy(tArmor) && tArmorItem.getTier(tArmor) >= getTier(aStack)) {
-                    int tCharge = ElectricItem.manager.discharge(tArmor, charge(aStack, Integer.MAX_VALUE-1, Integer.MAX_VALUE, true, true), Integer.MAX_VALUE, true, false);
-                    if (tCharge > 0) {
-                        charge(aStack, tCharge, Integer.MAX_VALUE, true, false);
-                        if (aPlayer instanceof EntityPlayer) {
-                            Container tContainer = ((EntityPlayer)aPlayer).openContainer;
-                            if (tContainer != null) tContainer.detectAndSendChanges();
-                        }
-                    }
-                }
-            }
-        }
-    }
-    */
     public final long getRealCharge(ItemStack aStack) {
         Long[] tStats = getElectricStats(aStack);
         if (tStats == null) return 0;
@@ -569,14 +472,6 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         if (tStats != null) return (int) (long) tStats[1];
         if(getDamage(aStack)==32763)return 1;
         return 64;
-    }
-
-    public final Item getChargedItem(ItemStack itemStack) {
-        return this;
-    }
-
-    public final Item getEmptyItem(ItemStack itemStack) {
-        return this;
     }
 
     @Override

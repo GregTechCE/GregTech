@@ -1228,11 +1228,6 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
-    public boolean drainEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
-        return false;
-    }
-
-    @Override
     public boolean acceptsRotationalEnergy(byte aSide) {
         if (!canAccessData() || getCoverIDAtSide(aSide) != 0) return false;
         return mMetaTileEntity.acceptsRotationalEnergy(aSide);
@@ -1329,11 +1324,6 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     public float getThickNess() {
         if (canAccessData()) return mMetaTileEntity.getThickNess();
         return 1.0F;
-    }
-
-    public boolean renderInside(byte aSide) {
-        if (canAccessData()) return mMetaTileEntity.renderInside(aSide);
-        return false;
     }
 
     @Override
