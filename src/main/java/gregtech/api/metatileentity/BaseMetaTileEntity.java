@@ -1688,17 +1688,6 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
-    public boolean drainEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
-        if (!canAccessData() || !mMetaTileEntity.isElectric() || !outputsEnergyTo(aSide) || getStoredEU() - (aVoltage * aAmperage) < mMetaTileEntity.getMinimumStoredEU())
-            return false;
-        if (decreaseStoredEU(aVoltage * aAmperage, false)) {
-            mAverageEUOutput[mAverageEUOutputIndex] += aVoltage * aAmperage;
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public boolean acceptsRotationalEnergy(byte aSide) {
         if (!canAccessData() || getCoverIDAtSide(aSide) != 0) return false;
         return mMetaTileEntity.acceptsRotationalEnergy(aSide);

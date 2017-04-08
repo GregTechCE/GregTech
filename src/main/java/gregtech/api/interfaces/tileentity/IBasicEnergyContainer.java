@@ -53,11 +53,6 @@ public interface IBasicEnergyContainer extends IEnergyConnected {
     public boolean increaseStoredEnergyUnits(long aEnergy, boolean aIgnoreTooMuchEnergy);
 
     /**
-     * Drain Energy Call for Electricity.
-     */
-    public boolean drainEnergyUnits(byte aSide, long aVoltage, long aAmperage);
-
-    /**
      * returns the amount of Electricity, accepted by this Block the last 5 ticks as Average.
      */
     public long getAverageElectricInput();

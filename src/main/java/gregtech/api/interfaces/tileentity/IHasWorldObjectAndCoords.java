@@ -45,14 +45,6 @@ public interface IHasWorldObjectAndCoords {
 
     public TileEntity getTileEntityAtSideAndDistance(byte aSide, int aDistance);
 
-    public IInventory getIInventory(int aX, int aY, int aZ);
-
-    public IInventory getIInventoryOffset(int aX, int aY, int aZ);
-
-    public IInventory getIInventoryAtSide(byte aSide);
-
-    public IInventory getIInventoryAtSideAndDistance(byte aSide, int aDistance);
-
     public IFluidHandler getITankContainer(int aX, int aY, int aZ);
 
     public IFluidHandler getITankContainerOffset(int aX, int aY, int aZ);
@@ -92,15 +84,8 @@ public interface IHasWorldObjectAndCoords {
     public byte getMetaIDAtSide(byte aSide);
 
     public byte getMetaIDAtSideAndDistance(byte aSide, int aDistance);
+
     public boolean isAir(BlockPos pos);
-
-    public byte getLightLevel(int aX, int aY, int aZ);
-
-    public byte getLightLevelOffset(int aX, int aY, int aZ);
-
-    public byte getLightLevelAtSide(byte aSide);
-
-    public byte getLightLevelAtSideAndDistance(byte aSide, int aDistance);
 
     public boolean getOpacity(int aX, int aY, int aZ);
 
@@ -128,8 +113,6 @@ public interface IHasWorldObjectAndCoords {
 
     public Biome getBiome();
 
-    public Biome getBiome(int aX, int aZ);
-
     public int getOffsetX(byte aSide, int aMultiplier);
 
     public short getOffsetY(byte aSide, int aMultiplier);
@@ -156,16 +139,6 @@ public interface IHasWorldObjectAndCoords {
      * It could be that it doesn't work. This is just for convenience.
      */
     public void setLightValue(byte aLightValue);
-
-    /**
-     * Function of the regular TileEntity
-     */
-    public NBTTagCompound writeToNBT(NBTTagCompound aNBT);
-
-    /**
-     * Function of the regular TileEntity
-     */
-    public void readFromNBT(NBTTagCompound aNBT);
 
     /**
      * Function of the regular TileEntity

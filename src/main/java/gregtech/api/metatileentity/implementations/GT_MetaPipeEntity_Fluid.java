@@ -109,11 +109,6 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
     public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, EnumHand hand) {}
 
     @Override
-    public final boolean renderInside(byte aSide) {
-        return false;
-    }
-
-    @Override
     public int getProgresstime() {
         return getFluidAmount();
     }

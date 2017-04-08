@@ -130,10 +130,4 @@ public class GT_MetaTileEntity_QuantumTank
     public int getCapacity() {
         return (int) (Math.pow(6, mTier) * 267000);
     }
-
-    @Override
-    public int getTankPressure() {
-        return 100;
-    }
-
 }

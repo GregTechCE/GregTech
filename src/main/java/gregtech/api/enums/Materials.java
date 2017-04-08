@@ -27,12 +27,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 	public static final List<IMaterialHandler> mMaterialHandlers = new ArrayList<IMaterialHandler>();
 
 	/**
-	 * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc) that looped over the old materials enum
-	 */
-	@Deprecated
-	public static Collection<Materials> VALUES = new LinkedHashSet<Materials>();
-
-	/**
 	 * This is the Default Material returned in case no Material has been found or a NullPointer has been inserted at a location where it shouldn't happen.
 	 */
 	public static Materials _NULL = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0,	"NULL", "NULL", 0, 0, 0, 0, false, false, 1, 1, 1, Dyes._NULL, Element._NULL, Arrays.asList(new TC_AspectStack(TC_Aspects.VACUOS, 1)));
@@ -1286,7 +1280,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 		}
 		initMaterialProperties(); //No more material addition or manipulation should be done past this point!
 		MATERIALS_ARRAY = MATERIALS_MAP.values().toArray(new Materials[MATERIALS_MAP.size()]); //Generate standard object array. This is a lot faster to loop over.
-		VALUES = Arrays.asList(MATERIALS_ARRAY);
 		if (!GT_Mod.gregtechproxy.mEnableAllComponents) OrePrefixes.initMaterialComponents();
 		for (Materials aMaterial : MATERIALS_ARRAY) {
 			if (aMaterial.mMetaItemSubID >= 0) {

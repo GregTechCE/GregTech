@@ -111,11 +111,6 @@ public abstract class MetaPipeEntity implements IMetaTileEntity {
      */
     public abstract float getThickNess();
 
-    /**
-     * For Pipe Rendering
-     */
-    public abstract boolean renderInside(byte aSide);
-
     public boolean isConductor() {
         return false;
     }

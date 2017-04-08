@@ -207,16 +207,6 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
     }
 
     @Override
-    public boolean isOverclockerUpgradable() {
-        return false;
-    }
-
-    @Override
-    public boolean isTransformerUpgradable() {
-        return false;
-    }
-
-    @Override
     public boolean isElectric() {
         return true;
     }

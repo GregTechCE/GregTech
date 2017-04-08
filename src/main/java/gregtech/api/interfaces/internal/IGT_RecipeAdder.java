@@ -5,12 +5,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 public interface IGT_RecipeAdder {
-    /**
-     * Adds a FusionreactorRecipe
-     * Does not work anymore!
-     */
-    @Deprecated
-    public boolean addFusionReactorRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, int aFusionDurationInTicks, int aFusionEnergyPerTick, int aEnergyNeededForStartingFusion);
 
     /**
      * Adds a FusionreactorRecipe

@@ -110,13 +110,6 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     private BlockPos.MutableBlockPos M = new BlockPos.MutableBlockPos();
 
-
-
-    @Override
-    public final Biome getBiome(int aX, int aZ) {
-        return worldObj.getBiome(M.setPos(aX, 1, aZ));
-    }
-
     @Override
     public final Biome getBiome() {
         return worldObj.getBiome(getPos());
@@ -162,22 +155,6 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     public final byte getMetaIDAtSideAndDistance(byte aSide, int aDistance) {
         IBlockState blockState = getBlockStateAtSideAndDistance(aSide, aDistance);
         return (byte) blockState.getBlock().getMetaFromState(blockState);
-    }
-
-    @Override
-    public final byte getLightLevelOffset(int aX, int aY, int aZ) {
-        return (byte) worldObj.getLight(M.setPos(getXCoord() + aX, getYCoord() + aY, getZCoord() + aZ));
-    }
-
-    @Override
-    public final byte getLightLevelAtSide(byte aSide) {
-        return getLightLevelAtSideAndDistance(aSide, 1);
-    }
-
-    @Override
-    public final byte getLightLevelAtSideAndDistance(byte aSide, int aDistance) {
-        EnumFacing side = EnumFacing.VALUES[aSide];
-        return getLightLevelOffset(side.getFrontOffsetX() * aDistance, side.getFrontOffsetY() * aDistance, side.getFrontOffsetZ() * aDistance);
     }
 
     @Override
@@ -236,29 +213,6 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     public final TileEntity getTileEntityAtSideAndDistance(byte aSide, int aDistance) {
         EnumFacing side = EnumFacing.VALUES[aSide];
         return getTileEntityOffset(side.getFrontOffsetX() * aDistance, side.getFrontOffsetY() * aDistance, side.getFrontOffsetZ() * aDistance);
-    }
-
-    @Override
-    public final IInventory getIInventory(int aX, int aY, int aZ) {
-        TileEntity tileEntity = getTileEntity(aX, aY, aZ);
-        return tileEntity instanceof IInventory ? (IInventory) tileEntity : null;
-    }
-
-    @Override
-    public final IInventory getIInventoryOffset(int aX, int aY, int aZ) {
-        TileEntity tileEntity = getTileEntityOffset(aX, aY, aZ);
-        return tileEntity instanceof IInventory ? (IInventory) tileEntity : null;
-    }
-
-    @Override
-    public final IInventory getIInventoryAtSide(byte aSide) {
-        return getIInventoryAtSideAndDistance(aSide, 1);
-    }
-
-    @Override
-    public final IInventory getIInventoryAtSideAndDistance(byte aSide, int aDistance) {
-        TileEntity tileEntity = getTileEntityAtSideAndDistance(aSide, aDistance);
-        return tileEntity instanceof IInventory ? (IInventory) tileEntity : null;
     }
 
     @Override
@@ -322,14 +276,6 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
             return 0;
         IBlockState blockState = worldObj.getBlockState(M);
         return (byte) blockState.getBlock().getMetaFromState(blockState);
-    }
-
-    @Override
-    public final byte getLightLevel(int aX, int aY, int aZ) {
-        M.setPos(aX, aY, aZ);
-        if (ignoreUnloadedChunks && crossedChunkBorder(aX, aZ) && !worldObj.isBlockLoaded(M))
-            return 0;
-        return (byte) worldObj.getLight(M);
     }
 
     @Override

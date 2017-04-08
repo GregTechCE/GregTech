@@ -286,10 +286,4 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     public int getCapacity() {
         return 16000;
     }
-
-    @Override
-    public int getTankPressure() {
-        return 100;
-    }
-
 }

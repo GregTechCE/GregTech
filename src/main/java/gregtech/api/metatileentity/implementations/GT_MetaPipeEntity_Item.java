@@ -116,11 +116,6 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
     }
 
     @Override
-    public final boolean renderInside(byte aSide) {
-        return false;
-    }
-
-    @Override
     public int getProgresstime() {
         return getPipeContent() * 64;
     }

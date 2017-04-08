@@ -188,9 +188,4 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
     public boolean outputsItems() {
         return mMode % 4 < 2;
     }
-
-    @Override
-    public int getTankPressure() {
-        return +100;
-    }
 }

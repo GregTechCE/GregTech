@@ -114,9 +114,4 @@ public class GT_MetaTileEntity_Hatch_Input extends GT_MetaTileEntity_Hatch {
     public int getCapacity() {
         return 8000 * (mTier + 1);
     }
-
-    @Override
-    public int getTankPressure() {
-        return -100;
-    }
 }

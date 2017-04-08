@@ -331,13 +331,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
         return false;
     }
 
-    /**
-     * @return true if Transformer Upgrades increase Packet Amount.
-     */
-    public boolean isTransformingLowEnergy() {
-        return true;
-    }
-
     @Override
     public boolean isFacingValid(byte aFacing) {
         return false;
@@ -490,13 +483,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     }
 
     /**
-     * Tank pressure
-     */
-    public int getTankPressure() {
-        return 0;
-    }
-
-    /**
      * Liquid Capacity
      */
     @Override
@@ -512,20 +498,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     @Override
     public boolean isSimpleMachine() {
-        return false;
-    }
-
-    /**
-     * If this accepts up to 4 Overclockers
-     */
-    public boolean isOverclockerUpgradable() {
-        return false;
-    }
-
-    /**
-     * If this accepts Transformer Upgrades
-     */
-    public boolean isTransformerUpgradable() {
         return false;
     }
 
@@ -666,8 +638,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
         for (int i = 0; i < rArray.length; i++) rArray[i] = tList.get(i);
         return rArray;
     }
-
-
 
     @Override
     public boolean canInsertItem(int aIndex, ItemStack aStack, EnumFacing aSide) {

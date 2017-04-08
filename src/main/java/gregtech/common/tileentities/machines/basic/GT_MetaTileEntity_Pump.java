@@ -335,19 +335,8 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
         return true;
     }
 
-
     @Override
     public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
-    public boolean isOverclockerUpgradable() {
-        return false;
-    }
-
-    @Override
-    public boolean isTransformerUpgradable() {
         return false;
     }
 
@@ -416,15 +405,9 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
         return true;
     }
 
-
     @Override
     public int getCapacity() {
         return 16000 * this.mTier;
-    }
-
-    @Override
-    public int getTankPressure() {
-        return 100;
     }
 
     @Override

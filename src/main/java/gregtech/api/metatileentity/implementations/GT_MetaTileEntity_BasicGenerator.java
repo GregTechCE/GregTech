@@ -261,9 +261,4 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
     public int getCapacity() {
         return 16000;
     }
-
-    @Override
-    public int getTankPressure() {
-        return -100;
-    }
 }

@@ -67,10 +67,6 @@ public enum Dyes implements IColorModulationContainer {
         return aDefaultModulation;
     }
 
-    public static short[] getOrDef(int get, Dyes def) {
-        return getModulation(get, def);
-    }
-
     public static Dyes get(String aColor) {
         Object tObject = GT_Utility.getFieldContent(Dyes.class, aColor, false, false);
         if (tObject instanceof Dyes) return (Dyes) tObject;
