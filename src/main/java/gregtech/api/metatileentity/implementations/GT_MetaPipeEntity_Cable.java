@@ -152,11 +152,6 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     }
 
     @Override
-    public final boolean renderInside(byte aSide) {
-        return false;
-    }
-
-    @Override
     public int getProgresstime() {
         return (int) mTransferredAmperage * 64;
     }
