@@ -67,11 +67,6 @@ public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
     }
 
     @Override
-    public final boolean renderInside(byte aSide) {
-        return true;
-    }
-
-    @Override
     public final float getThickNess() {
         return 1.0F;
     }
