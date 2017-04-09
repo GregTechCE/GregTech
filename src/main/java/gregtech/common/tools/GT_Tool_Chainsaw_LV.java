@@ -87,11 +87,6 @@ public class GT_Tool_Chainsaw_LV extends GT_Tool_Saw {
     }
 
     @Override
-    public boolean canBlock() {
-        return false;
-    }
-
-    @Override
     public boolean isChainsaw(){
     	return true;
     }
