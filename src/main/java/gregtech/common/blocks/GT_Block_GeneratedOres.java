@@ -273,7 +273,9 @@ public class GT_Block_GeneratedOres extends GT_Generic_Block {
                 rList.add(tStack);
             }
 
-            rList.add(GT_Utility.copyAmount(1L, tSelector.get(tRandom.nextInt(tSelector.size()))));
+            if(tSelector.size() > 0) {
+                rList.add(GT_Utility.copyAmount(1L, tSelector.get(tRandom.nextInt(tSelector.size()))));
+            }
         }
         return rList;
     }
