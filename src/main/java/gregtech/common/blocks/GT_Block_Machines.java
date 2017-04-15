@@ -144,6 +144,9 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
      */
     @Override
     public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+        if (side == null ) {
+            return false;
+        }
         IGregTechTileEntity gregTechTileEntity = getGregTile(world, pos);
         return gregTechTileEntity != null && gregTechTileEntity.canOutputRedstone((byte) side.getOpposite().getIndex());
     }
