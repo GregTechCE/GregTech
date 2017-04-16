@@ -237,7 +237,7 @@ public class GregTech_API {
         sSoundList.put(3, "block.stone_button.click_on");//SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON.getSoundName().toString());
         sSoundList.put(4, "block.fire.extinguish");//SoundEvents.ENTITY_ITEM_BREAK.getSoundName().toString());
         sSoundList.put(5, "entity.generic.explode");//SoundEvents.ENTITY_GENERIC_EXPLODE.getSoundName().toString());
-        sSoundList.put(6, "item.firecharge.use");//SoundEvents.ITEM_FIRECHARGE_USE.getSoundName().toString());
+        sSoundList.put(6, "item.flintandsteel.use");//SoundEvents.ITEM_FIRECHARGE_USE.getSoundName().toString());
 
         registerSound(100, aTextIC2Lower + ":" + "tools.Wrench");
         registerSound(101, aTextIC2Lower + ":" + "tools.RubberTrampoline");
