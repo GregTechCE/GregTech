@@ -48,11 +48,6 @@ public class GT_Tool_Wrench_HV extends GT_Tool_Wrench_LV {
     }
 
     @Override
-    public boolean canBlock() {
-        return false;
-    }
-
-    @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadWrench.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_HV;
     }

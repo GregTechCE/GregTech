@@ -317,7 +317,6 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item {
             EntityPlayer entityplayer = (EntityPlayer) entityLiving;
             IFoodStat tStat = mFoodStats.get((short) getDamage(stack));
             if (tStat != null) {
-                --stack.stackSize;
                 entityplayer.getFoodStats().addStats(tStat.getFoodLevel(this, stack, entityplayer), tStat.getSaturation(this, stack, entityplayer));
                 tStat.onEaten(this, stack, entityplayer);
             }

@@ -90,11 +90,6 @@ public interface IToolStats {
     public int[] getEnchantmentLevels(ItemStack aStack);
 
     /**
-     * @return If this Tool can be used for blocking Damage like a Sword.
-     */
-    public boolean canBlock();
-
-    /**
      * @return If this Tool can be used as an RC Crowbar.
      */
     public boolean isCrowbar();

@@ -76,11 +76,6 @@ public class GT_Tool_Mortar extends GT_Tool {
     }
 
     @Override
-    public boolean canBlock() {
-        return false;
-    }
-
-    @Override
     public boolean isCrowbar() {
         return false;
     }

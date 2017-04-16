@@ -74,11 +74,6 @@ public class GT_Tool_Sword extends GT_Tool {
     }
 
     @Override
-    public boolean canBlock() {
-        return true;
-    }
-
-    @Override
     public boolean isCrowbar() {
         return false;
     }

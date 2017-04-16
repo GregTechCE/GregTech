@@ -87,10 +87,6 @@ public abstract class GT_Tool
         return 0;
     }
 
-    public boolean canBlock() {
-        return false;
-    }
-
     public boolean isCrowbar() {
         return false;
     }

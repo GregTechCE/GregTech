@@ -92,11 +92,6 @@ public class GT_Tool_Screwdriver extends GT_Tool {
     }
 
     @Override
-    public boolean canBlock() {
-        return true;
-    }
-
-    @Override
     public boolean isCrowbar() {
         return false;
     }

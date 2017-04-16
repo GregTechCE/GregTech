@@ -311,22 +311,8 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer, EnumHand hand) {
-        IToolStats tStats = getToolStats(aStack);
-        if (tStats != null && tStats.canBlock()) return ActionResult.newResult(EnumActionResult.PASS, aStack);
-        return super.onItemRightClick(aStack, aWorld, aPlayer, hand);
-    }
-
-    @Override
     public final int getMaxItemUseDuration(ItemStack aStack) {
         return 72000;
-    }
-
-    @Override
-    public final EnumAction getItemUseAction(ItemStack aStack) {
-        IToolStats tStats = getToolStats(aStack);
-        if (tStats != null && tStats.canBlock()) return EnumAction.BLOCK;
-        return EnumAction.NONE;
     }
 
     @Override

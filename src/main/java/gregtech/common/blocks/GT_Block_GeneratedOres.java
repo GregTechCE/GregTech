@@ -268,12 +268,16 @@ public class GT_Block_GeneratedOres extends GT_Generic_Block {
                 }
             }
 
-            tStack = GT_OreDictUnificator.get(OrePrefixes.dustImpure, aBaseMaterial, 1L);
-            if(tStack != null && tRandom.nextInt(4) == 0) {
+            tStack = GT_OreDictUnificator.get(tRandom.nextInt(3) > 0 ? OrePrefixes.dustImpure : OrePrefixes.dust, aBaseMaterial, 1L);
+            if(tStack != null && tRandom.nextInt(3 + fortune) > 1) {
                 rList.add(tStack);
             }
 
-            rList.add(GT_Utility.copyAmount(1L, tSelector.get(tRandom.nextInt(tSelector.size()))));
+            if(tSelector.size() > 0) {
+                for (int i = 0, j = Math.max(1, aMaterial.mOreMultiplier + (fortune > 0 ? tRandom.nextInt(1 + fortune * aMaterial.mOreMultiplier) : 0) / 2); i < j; i++) {
+                    rList.add(GT_Utility.copyAmount(1L, tSelector.get(tRandom.nextInt(tSelector.size()))));
+                }
+            }
         }
         return rList;
     }
