@@ -49,7 +49,10 @@ public abstract class GT_MetaTileEntity_Hatch extends GT_MetaTileEntity_BasicTan
 
     @Override
     public final void onValueUpdate(byte aValue) {
-        mMachineBlock = (byte) (aValue & 127);
+        if (mMachineBlock != (byte) (aValue & 127)) {
+            mMachineBlock = (byte) (aValue & 127);
+            this.getBaseMetaTileEntity().issueTextureUpdate();
+        }
     }
 
     @Override

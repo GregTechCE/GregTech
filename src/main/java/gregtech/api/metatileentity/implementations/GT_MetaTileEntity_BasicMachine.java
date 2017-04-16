@@ -588,7 +588,10 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     @Override
     public void onValueUpdate(byte aValue) {
-        mMainFacing = aValue;
+        if (mMainFacing != aValue) {
+            mMainFacing = aValue;
+            this.getBaseMetaTileEntity().issueTextureUpdate();
+        }
     }
 
     @Override

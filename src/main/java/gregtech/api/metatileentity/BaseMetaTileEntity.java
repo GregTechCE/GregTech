@@ -594,19 +594,38 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     public final void receiveMetaTileEntityData(short aID, int aCover0, int aCover1, int aCover2, int aCover3, int aCover4, int aCover5, byte aTextureData, byte aUpdateData, byte aRedstoneData, byte aColorData) {
-        issueTextureUpdate();
+        boolean tNeedsRedraw = false;
         if (mID != aID && aID > 0) {
             mID = aID;
             createNewMetatileEntity(mID);
+            tNeedsRedraw = true;
         }
 
 
-        mCoverSides[0] = aCover0;
-        mCoverSides[1] = aCover1;
-        mCoverSides[2] = aCover2;
-        mCoverSides[3] = aCover3;
-        mCoverSides[4] = aCover4;
-        mCoverSides[5] = aCover5;
+        if (mCoverSides[0] != aCover0) {
+            mCoverSides[0] = aCover0;
+            tNeedsRedraw = true;
+        }
+        if (mCoverSides[1] != aCover1) {
+            mCoverSides[1] = aCover1;
+            tNeedsRedraw = true;
+        }
+        if (mCoverSides[2] != aCover2) {
+            mCoverSides[2] = aCover2;
+            tNeedsRedraw = true;
+        }
+        if (mCoverSides[3] != aCover3) {
+            mCoverSides[3] = aCover3;
+            tNeedsRedraw = true;
+        }
+        if (mCoverSides[4] != aCover4) {
+            mCoverSides[4] = aCover4;
+            tNeedsRedraw = true;
+        }
+        if (mCoverSides[5] != aCover5) {
+            mCoverSides[5] = aCover5;
+            tNeedsRedraw = true;
+        }
 
         for (byte i = 0; i < 6; i++) mCoverBehaviors[i] = GregTech_API.getCoverBehavior(mCoverSides[i]);
 
@@ -614,10 +633,14 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         receiveClientEvent(1, aUpdateData);
         receiveClientEvent(2, aColorData);
         receiveClientEvent(3, aRedstoneData);
+
+        if (tNeedsRedraw) issueTextureUpdate();
+
     }
 
     @Override
     public boolean receiveClientEvent(int aEventID, int aValue) {
+        boolean tNeedsRedraw = false;
         super.receiveClientEvent(aEventID, aValue);
 
         if (hasValidMetaTileEntity()) {
@@ -630,13 +653,25 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         }
 
         if (isClientSide()) {
-            issueTextureUpdate();
+
             switch (aEventID) {
                 case 0:
-                    mFacing = (byte) (aValue & 7);
-                    mActive = ((aValue & 8) != 0);
-                    mRedstone = ((aValue & 16) != 0);
-     				mLockUpgrade = ((aValue&32) != 0);
+                    if (mFacing != (byte) (aValue & 0x07)) {
+                        mFacing = (byte) (aValue & 0x07);
+                        tNeedsRedraw = true;
+                    }
+                    if (mActive != ((aValue & 0x08) != 0)) {
+                        mActive = ((aValue & 0x08) != 0);
+                        tNeedsRedraw = true;
+                    }
+                    if (mRedstone != ((aValue & 0x10) != 0)) {
+                        mRedstone = ((aValue & 0x10) != 0);
+                        tNeedsRedraw = true;
+                    }
+                    if (mLockUpgrade != ((aValue & 0x20) != 0)) {
+                        mLockUpgrade = ((aValue & 0x20) != 0);
+                        tNeedsRedraw = true;
+                    }
                     break;
                 case 1:
                     if (hasValidMetaTileEntity()) mMetaTileEntity.onValueUpdate((byte) aValue);
@@ -669,6 +704,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     mLightValue = (byte) aValue;
                     break;
             }
+            if (tNeedsRedraw) issueTextureUpdate();
         }
         return true;
     }

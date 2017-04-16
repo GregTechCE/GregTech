@@ -114,7 +114,10 @@ public class GT_MetaTileEntity_Locker
     }
 
     public void onValueUpdate(byte aValue) {
-        this.mType = aValue;
+        if (this.mType != aValue) {
+            this.mType = aValue;
+            this.getBaseMetaTileEntity().issueTextureUpdate();
+        }
     }
 
     public byte getUpdateData() {
