@@ -42,7 +42,7 @@ public class Behaviour_Lighter
             return false;
         }
         boolean rOutput = false;
-        if ((aEntity instanceof EntityCreeper)) {
+        if (aEntity instanceof EntityCreeper) {
             prepare(aStack);
             long tFuelAmount = GT_Utility.ItemNBT.getLighterFuel(aStack);
             if (GT_Utility.areStacksEqual(aStack, this.mUsedLighter, true)) {
@@ -68,24 +68,28 @@ public class Behaviour_Lighter
 
     @Override
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, BlockPos blockPos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
-        if ((aWorld.isRemote) || (aStack.stackSize != 1) || !aPlayer.canPlayerEdit(blockPos, side, aStack)) {
+        if (aWorld.isRemote || aStack.stackSize != 1) {
             return false;
         }
 
-        long tFuelAmount = GT_Utility.ItemNBT.getLighterFuel(aStack);
         BlockPos clickedBlock = blockPos.offset(side);
-        if(Blocks.FIRE.canCatchFire(aWorld, blockPos, side)) {
+        if(!aPlayer.canPlayerEdit(clickedBlock, side, aStack)) {
+            return false;
+        }
+
+        if (aWorld.isAirBlock(clickedBlock))
+        {
             prepare(aStack);
-            aWorld.setBlockState(clickedBlock, Blocks.FIRE.getDefaultState());
-            GT_Utility.ItemNBT.setLighterFuel(aStack, --tFuelAmount);
-            if(tFuelAmount == 0L) {
-                useUp(aStack);
+            long tFuelAmount = GT_Utility.ItemNBT.getLighterFuel(aStack);
+
+            GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(6), 1.0F, 1.0F, clickedBlock.getX(), clickedBlock.getY(), clickedBlock.getZ());
+            aWorld.setBlockState(clickedBlock, Blocks.FIRE.getDefaultState(), 11);
+
+            if (!aPlayer.capabilities.isCreativeMode) {
+                tFuelAmount -= 1L;
             }
-        } else if(Blocks.FIRE.canCatchFire(aWorld, clickedBlock, EnumFacing.UP)) {
-            prepare(aStack);
-            aWorld.setBlockState(clickedBlock, Blocks.FIRE.getDefaultState());
-            GT_Utility.ItemNBT.setLighterFuel(aStack, --tFuelAmount);
-            if(tFuelAmount == 0L) {
+            GT_Utility.ItemNBT.setLighterFuel(aStack, tFuelAmount);
+            if(tFuelAmount <= 0L) {
                 useUp(aStack);
             }
         }
@@ -113,7 +117,7 @@ public class Behaviour_Lighter
     public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
         aList.add(this.mTooltip);
         NBTTagCompound tNBT = aStack.getTagCompound();
-        long tFuelAmount = tNBT == null ? 0L : GT_Utility.areStacksEqual(aStack, this.mFullLighter, true) ? this.mFuelAmount : tNBT.getLong("GT.LighterFuel");
+        long tFuelAmount = tNBT == null ? this.mFuelAmount : tNBT.getLong("GT.LighterFuel");
         aList.add(this.mTooltipUses + " " + tFuelAmount);
         aList.add(this.mTooltipUnstackable);
         return aList;

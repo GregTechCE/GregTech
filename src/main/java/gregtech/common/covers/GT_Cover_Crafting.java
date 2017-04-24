@@ -23,6 +23,8 @@ public class GT_Cover_Crafting extends GT_CoverBehavior {
                     return true;
                 }
             };
+            playerMP.openContainer.windowId = playerMP.currentWindowId;
+            playerMP.openContainer.addListener(playerMP);
         }
         return true;
     }
