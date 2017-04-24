@@ -1,6 +1,7 @@
 package gregtech.api.interfaces;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.ArrayList;
 
@@ -23,5 +24,5 @@ public interface IDebugableBlock {
      *                  3 = Debug ONLY
      * @return a String-Array containing the DebugInfo, every Index is a separate line (0 = first Line)
      */
-    public ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aX, int aY, int aZ, int aLogLevel);
+    public ArrayList<String> getDebugInfo(EntityPlayer aPlayer, BlockPos aPos, int aLogLevel);
 }

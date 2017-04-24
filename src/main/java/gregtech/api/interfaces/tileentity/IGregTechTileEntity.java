@@ -6,8 +6,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidHandler;
 
@@ -109,9 +111,9 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTil
     /**
      * Called when rightclicking the TileEntity
      */
-    public boolean onRightclick(EntityPlayer aPlayer, byte aSide, float xOff, float yOff, float zOff, EnumHand hand);
+    public boolean onRightclick(EntityPlayer aPlayer, EnumFacing aSide, float xOff, float yOff, float zOff, EnumHand hand);
 
-    public float getBlastResistance(byte aSide);
+    public float getBlastResistance(EnumFacing aSide);
 
     public ArrayList<ItemStack> getDrops();
 
@@ -120,9 +122,9 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTil
      */
     public int getLightOpacity();
 
-    public void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB, List<AxisAlignedBB> outputAABB, Entity collider);
+    public void addCollisionBoxesToList(World aWorld, BlockPos aPos, AxisAlignedBB inputAABB, List<AxisAlignedBB> outputAABB, Entity collider);
 
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ);
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, BlockPos aPos);
 
-    public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity collider);
+    public void onEntityCollidedWithBlock(World aWorld, BlockPos aPos, Entity collider);
 }

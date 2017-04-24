@@ -31,17 +31,17 @@ public interface IEnergyConnected extends IColoredTileEntity, IHasWorldObjectAnd
      * @param aSide 0 - 5 = Vanilla Directions of YOUR Block the Energy gets inserted to. 6 = No specific Side (don't do Side checks for this Side)
      * @return amount of used Amperes. 0 if not accepted anything.
      */
-    public long injectEnergyUnits(byte aSide, long aVoltage, long aAmperage);
+    public long injectEnergyUnits(EnumFacing aSide, long aVoltage, long aAmperage);
 
     /**
      * Sided Energy Input
      */
-    public boolean inputEnergyFrom(byte aSide);
+    public boolean inputEnergyFrom(EnumFacing aSide);
 
     /**
      * Sided Energy Output
      */
-    public boolean outputsEnergyTo(byte aSide);
+    public boolean outputsEnergyTo(EnumFacing aSide);
 
     /**
      * Utility for the Network

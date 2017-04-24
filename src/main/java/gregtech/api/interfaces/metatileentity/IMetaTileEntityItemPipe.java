@@ -3,6 +3,7 @@ package gregtech.api.interfaces.metatileentity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.util.EnumFacing;
 
 import java.util.Map;
 
@@ -32,7 +33,7 @@ public interface IMetaTileEntityItemPipe extends IMetaTileEntity {
      * @param aSide   the Side of the PIPE facing the TileEntity.
      * @return if this Side was allowed to Output into the Block.
      */
-    public boolean insertItemStackIntoTileEntity(Object aSender, byte aSide);
+    public boolean insertItemStackIntoTileEntity(Object aSender, EnumFacing aSide);
 
     /**
      * Can be used to make flow control Pipes, like Redpowers Restriction Tubes.

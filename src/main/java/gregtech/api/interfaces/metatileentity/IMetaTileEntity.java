@@ -1,28 +1,22 @@
 package gregtech.api.interfaces.metatileentity;
 
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGearEnergyTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Config;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.IFluidHandler;
-import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
-import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +26,7 @@ import java.util.List;
  * <p/>
  * Don't implement this yourself and expect it to work. Extend @MetaTileEntity itself.
  */
-public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHandler, IGearEnergyTileEntity {
+public interface IMetaTileEntity extends ISidedInventory, IFluidHandler, IGearEnergyTileEntity {
     /**
      * This determines the BaseMetaTileEntity belonging to this MetaTileEntity by using the Meta ID of the Block itself.
      * <p/>
@@ -122,17 +116,17 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * If a Cover of that Type can be placed on this Side.
      * Also Called when the Facing of the Block Changes and a Cover is on said Side.
      */
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aStack);
+    public boolean allowCoverOnSide(EnumFacing aSide, GT_ItemStack aStack);
 
     /**
      * When a Player rightclicks the Facing with a Screwdriver.
      */
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ);
+    public void onScrewdriverRightClick(EnumFacing aSide, EntityPlayer aPlayer, float aX, float aY, float aZ);
 
     /**
      * When a Player rightclicks the Facing with a Wrench.
      */
-    public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ);
+    public boolean onWrenchRightClick(EnumFacing aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ);
 
     /**
      * Called right before this Machine explodes
@@ -172,7 +166,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * @param aFacing
      * @return if aFacing would be a valid Facing for this Device. Used for wrenching.
      */
-    public boolean isFacingValid(byte aFacing);
+    public boolean isFacingValid(EnumFacing aFacing);
 
     /**
      * @return the Server Side Container
@@ -187,32 +181,32 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     /**
      * From new ISidedInventory
      */
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack);
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, EnumFacing aSide, ItemStack aStack);
 
     /**
      * From new ISidedInventory
      */
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack);
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, EnumFacing aSide, ItemStack aStack);
 
     /**
      * @return if aIndex is a valid Slot. false for things like HoloSlots. Is used for determining if an Item is dropped upon Block destruction and for Inventory Access Management
      */
-    public boolean isValidSlot(int aIndex);
+    public boolean isValidSlot(EnumFacing aIndex);
 
     /**
      * @return if aIndex can be set to Zero stackSize, when being removed.
      */
-    public boolean setStackToZeroInsteadOfNull(int aIndex);
+    public boolean setStackToZeroInsteadOfNull(EnumFacing aIndex);
 
     /**
      * If this Side can connect to inputting pipes
      */
-    public boolean isLiquidInput(byte aSide);
+    public boolean isLiquidInput(EnumFacing aSide);
 
     /**
      * If this Side can connect to outputting pipes
      */
-    public boolean isLiquidOutput(byte aSide);
+    public boolean isLiquidOutput(EnumFacing aSide);
 
     /**
      * Just an Accessor for the Name variable.
@@ -235,7 +229,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      *
      * @return
      */
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ, EnumHand hand);
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, EnumFacing aSide, float aX, float aY, float aZ, EnumHand hand);
 
     /**
      * a Player leftclicks the Machine
@@ -267,11 +261,11 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * Do not insert Client/Server checks. That is already done for you.
      * Do not use @playSoundEffect, Minecraft doesn't like that at all. Use @playSound instead.
      */
-    public void doSound(byte aIndex, double aX, double aY, double aZ);
+    public void doSound(byte aIndex, BlockPos pos);
 
-    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ);
+    public void startSoundLoop(byte aIndex, BlockPos pos);
 
-    public void stopSoundLoop(byte aValue, double aX, double aY, double aZ);
+    public void stopSoundLoop(byte aValue, BlockPos pos);
 
     /**
      * Sends the Event for the Sound Triggers, only usable Server Side!
@@ -318,32 +312,13 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      */
     public String[] getDescription();
 
-    /**
-     * Icon of the Texture. If this returns null then it falls back to getTextureIndex.
-     *
-     * @param aSide       is the Side of the Block
-     * @param aFacing     is the direction the Block is facing (or a Bitmask of all Connections in case of Pipes)
-     * @param aColorIndex The Minecraft Color the Block is having
-     * @param aActive     if the Machine is currently active (use this instead of calling mBaseMetaTileEntity.mActive!!!). Note: In case of Pipes this means if this Side is connected to something or not.
-     * @param aRedstone   if the Machine is currently outputting a RedstoneSignal (use this instead of calling mBaseMetaTileEntity.mRedstone!!!)
-     */
-    public ITexture[] getTexture(@Nullable IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone);
-
-    /**
-     * Register Icons here. This gets called when the Icons get initialized by the Base Block
-     * Best is you put your Icons in a static Array for quick and easy access without relying on the MetaTileList.
-     *
-     * @param aBlockIconRegister The Block Icon Register
-     */
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(TextureMap aBlockIconRegister);
 
     /**
      * Gets the Output for the comparator on the given Side
      */
-    public byte getComparatorValue(byte aSide);
+    public byte getComparatorValue(EnumFacing aSide);
 
-    public float getExplosionResistance(byte aSide);
+    public float getExplosionResistance(EnumFacing aSide);
 
     public String[] getInfoData();
 
@@ -351,7 +326,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
 
     public ItemStack[] getRealInventory();
 
-    public boolean connectsToItemPipe(byte aSide);
+    public boolean connectsToItemPipe(EnumFacing aSide);
 
     public void onColorChangeServer(byte aColor);
 
@@ -359,11 +334,11 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
 
     public int getLightOpacity();
 
-    public void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB, List<AxisAlignedBB> outputAABB, Entity collider);
+    public void addCollisionBoxesToList(World aWorld, BlockPos aPos, AxisAlignedBB inputAABB, List<AxisAlignedBB> outputAABB, Entity collider);
 
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ);
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, BlockPos aPos);
 
-    public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity collider);
+    public void onEntityCollidedWithBlock(World aWorld, BlockPos aPos, Entity collider);
 
     /**
      * The onCreated Function of the Item Class redirects here

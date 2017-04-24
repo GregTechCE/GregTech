@@ -1,11 +1,13 @@
 package gregtech.api.interfaces.tileentity;
 
+import net.minecraft.util.EnumFacing;
+
 public interface IGearEnergyTileEntity {
     /**
      * If Rotation Energy can be accepted on this Side.
      * This means that the Gear/Axle will connect to this Side, and can cause the Gear/Axle to stop if the Energy isn't accepted.
      */
-    public boolean acceptsRotationalEnergy(byte aSide);
+    public boolean acceptsRotationalEnergy(EnumFacing aSide);
 
     /**
      * Inject Energy Call for Rotational Energy.
@@ -13,5 +15,5 @@ public interface IGearEnergyTileEntity {
      *
      * @param aSpeed Positive = Clockwise, Negative = Counterclockwise
      */
-    public boolean injectRotationalEnergy(byte aSide, long aSpeed, long aEnergy);
+    public boolean injectRotationalEnergy(EnumFacing aSide, long aSpeed, long aEnergy);
 }

@@ -21,9 +21,9 @@ public interface IGT_Mod {
     public boolean isClientSide();
 
     /**
-     * This means that Bukkit specific Basefiles are definitely existing! Not if the World is actually bukkit server or not!
+     * This means that Sponge specific Basefiles are definitely existing! Not if the World is actually bukkit server or not!
      */
-    public boolean isBukkitSide();
+    public boolean isSpongeSide();
 
     /**
      * works only ClientSide otherwise returns null

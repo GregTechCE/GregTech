@@ -150,7 +150,5 @@ public interface IToolStats {
      */
     public float getMagicDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack, EntityPlayer aPlayer);
 
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack);
-
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack);
 }
