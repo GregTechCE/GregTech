@@ -23,7 +23,7 @@ import java.util.List;
  * <p/>
  * It can cause Problems to include this Interface!
  */
-public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTileEntity, ICoverable, net.minecraftforge.fluids.capability.IFluidHandler, IFluidHandler, ITurnable, IGregTechDeviceInformation, IUpgradableMachine, IDigitalChest, IDescribable, IMachineBlockUpdateable {
+public interface IGregTechTileEntity extends IGearEnergyTileEntity, ICoverable, net.minecraftforge.fluids.capability.IFluidHandler, IFluidHandler, ITurnable, IGregTechDeviceInformation, IUpgradableMachine, IDigitalChest, IDescribable, IMachineBlockUpdateable {
     /**
      * gets the Error displayed on the GUI
      */

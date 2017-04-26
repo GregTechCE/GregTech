@@ -3,6 +3,7 @@ package gregtech.api.interfaces.internal;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface IThaumcraftCompat {
     public static final String
             IRON_TO_STEEL = "GT_IRON_TO_STEEL", FILL_WATER_BUCKET = "GT_FILL_WATER_BUCKET", WOOD_TO_CHARCOAL = "GT_WOOD_TO_CHARCOAL", TRANSZINC = "GT_TRANSZINC", TRANSNICKEL = "GT_TRANSNICKEL", TRANSCOBALT = "GT_TRANSCOBALT", TRANSBISMUTH = "GT_TRANSBISMUTH", TRANSANTIMONY = "GT_TRANSANTIMONY", TRANSCUPRONICKEL = "GT_TRANSCUPRONICKEL", TRANSBATTERYALLOY = "GT_TRANSBATTERYALLOY", TRANSSOLDERINGALLOY = "GT_TRANSSOLDERINGALLOY", TRANSBRASS = "GT_TRANSBRASS", TRANSBRONZE = "GT_TRANSBRONZE", TRANSINVAR = "GT_TRANSINVAR", TRANSELECTRUM = "GT_TRANSELECTRUM", TRANSALUMINIUM = "GT_TRANSALUMINIUM", CRYSTALLISATION = "GT_CRYSTALLISATION", ADVANCEDENTROPICPROCESSING = "GT_ADVANCEDENTROPICPROCESSING", ADVANCEDMETALLURGY = "GT_ADVANCEDMETALLURGY";
 
-    public boolean registerPortholeBlacklistedBlock(Block aBlock);
+    public boolean registerPortholeBlacklistedBlock(IBlockState blockState);
 
     public boolean registerThaumcraftAspectsToItem(ItemStack aStack, List<TC_AspectStack> aAspects, boolean aAdditive);
 

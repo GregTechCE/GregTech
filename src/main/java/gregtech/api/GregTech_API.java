@@ -3,10 +3,7 @@ package gregtech.api;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDamagableItem;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
@@ -19,12 +16,14 @@ import gregtech.api.util.*;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.blocks.GT_Block_Machines;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.relauncher.Side;
@@ -40,7 +39,6 @@ import static gregtech.api.enums.GT_Values.*;
  * <p/>
  * The whole API is the basic construct of my Mod. Everything is dependent on it.
  * I change things quite often so please don't include any File inside your Mod, even if it is an Interface.
- * Since some Authors were stupid enough to break this simple Rule, I added Version checks to enforce it.
  * <p/>
  * In these Folders are many useful Functions. You can use them via reflection if you want.
  * I know not everything is compilable due to API's of other Mods, but these are easy to fix in your Setup.
@@ -51,13 +49,12 @@ import static gregtech.api.enums.GT_Values.*;
  * @author Gregorius Techneticies
  */
 public class GregTech_API {
-    @Deprecated
-    public static final long MATERIAL_UNIT = M, FLUID_MATERIAL_UNIT = L;
+
     /**
      * Fixes the HashMap Mappings for ItemStacks once the Server started
      */
-    public static final Collection<Map<GT_ItemStack, ?>> sItemStackMappings = new ArrayList<Map<GT_ItemStack, ?>>();
-    public static final Collection<Map<Fluid, ?>> sFluidMappings = new ArrayList<Map<Fluid, ?>>();
+    public static final Collection<Map<GT_ItemStack, ?>> sItemStackMappings = new ArrayList<>();
+    public static final Collection<Map<Fluid, ?>> sFluidMappings = new ArrayList<>();
     /**
      * The MetaTileEntity-ID-List-Length
      */
@@ -65,28 +62,19 @@ public class GregTech_API {
     /**
      * My Creative Tab
      */
-    public static final CreativeTabs TAB_GREGTECH = new GT_CreativeTab("Main", "Main"), TAB_GREGTECH_MATERIALS = new GT_CreativeTab("Materials", "Materials"), TAB_GREGTECH_ORES = new GT_CreativeTab("Ores", "Ores");
+    public static final CreativeTabs TAB_GREGTECH = new GT_CreativeTab("Main", "Main"),
+            TAB_GREGTECH_MATERIALS = new GT_CreativeTab("Materials", "Materials"),
+            TAB_GREGTECH_ORES = new GT_CreativeTab("Ores", "Ores");
     /**
      * A List of all registered MetaTileEntities
      * <p/>
      * 0 -  1199 are used by GregTech.
      * 1200 -  2047 are used for GregTech Cables.
-     * 2048 -  2559 are reserved for OvermindDL.
-     * 2560 -  3071 are reserved for Immibis.
-     * 3072 -  3583 are reserved for LinusPhoenix.
-     * 3584 -  4095 are reserved for BloodyAsp.
      * 4096 -  5095 are used for GregTech Frames.
      * 5096 -  6099 are used for GregTech Pipes.
      * 6100 -  8191 are used for GregTech Decoration Blocks.
-     * 8192 -  8703 are reserved for ZL123.
-     * 8704 -  9215 are reserved for Mr10Movie.
-     * 9216 -  9727 are used for GregTech Automation Machines.
-     * 9728 - 10239 are reserved for 28Smiles.
-     * 10240 - 10751 are reserved for VirMan.
-     * 10752 - 11263 are reserved for Briareos81.
-     * 11264 - 12000 are reserved for Quantum64.
-     * 12001 - 12200 are reserved for the next one who asks me.
-     * 12001 - 32766 are currently free.
+     * 9216 -  10000 are used for GregTech Automation Machines.
+     * 10000 - 32766 are currently free.
      * <p/>
      * Contact me if you need a free ID-Range, which doesn't conflict with other Addons.
      * You could make an ID-Config, but we all know, what "stupid" customers think about conflicting ID's
@@ -95,7 +83,7 @@ public class GregTech_API {
     /**
      * The Icon List for Covers
      */
-    public static final Map<Integer, ITexture> sCovers = new HashMap<>();
+    public static final Map<Integer, ResourceLocation> sCovers = new HashMap<>();
     /**
      * The List of Cover Behaviors for the Covers
      */
@@ -105,19 +93,15 @@ public class GregTech_API {
     /**
      * The List of Circuit Behaviors for the Redstone Circuit Block
      */
-    public static final Map<Integer, GT_CircuitryBehavior> sCircuitryBehaviors = new HashMap<Integer, GT_CircuitryBehavior>();
+    public static final Map<Integer, GT_CircuitryBehavior> sCircuitryBehaviors = new HashMap<>();
     /**
      * The List of Blocks, which can conduct Machine Block Updates
      */
-    public static final Map<Block, Integer> sMachineIDs = new HashMap<Block, Integer>();
+    public static final List<IBlockState> sMachineIDs = new ArrayList<>();
     /**
      * The Redstone Frequencies
      */
     public static final Map<Integer, Byte> sWirelessRedstone = new HashMap<Integer, Byte>();
-    /**
-     * The IDSU Frequencies
-     */
-    public static final Map<Integer, Integer> sIDSUList = new HashMap<Integer, Integer>();
     /**
      * A List of all Books, which were created using @GT_Utility.getWrittenBook the original Title is the Key Value
      */
@@ -129,11 +113,24 @@ public class GregTech_API {
     /**
      * The List of Tools, which can be used. Accepts regular damageable Items and Electric Items
      */
-    public static final GT_HashSet<GT_ItemStack> sToolList = new GT_HashSet<GT_ItemStack>(), sCrowbarList = new GT_HashSet<GT_ItemStack>(), sScrewdriverList = new GT_HashSet<GT_ItemStack>(), sWrenchList = new GT_HashSet<GT_ItemStack>(), sSoftHammerList = new GT_HashSet<GT_ItemStack>(), sHardHammerList = new GT_HashSet<GT_ItemStack>(), sSolderingToolList = new GT_HashSet<GT_ItemStack>(), sSolderingMetalList = new GT_HashSet<GT_ItemStack>();
+    public static final GT_HashSet<GT_ItemStack> sToolList = new GT_HashSet<>(),
+            sCrowbarList = new GT_HashSet<>(),
+            sScrewdriverList = new GT_HashSet<>(),
+            sWrenchList = new GT_HashSet<>(),
+            sSoftHammerList = new GT_HashSet<>(),
+            sHardHammerList = new GT_HashSet<>(),
+            sSolderingToolList = new GT_HashSet<>(),
+            sSolderingMetalList = new GT_HashSet<>();
+
     /**
      * The List of Hazmat Armors
      */
-    public static final GT_HashSet<GT_ItemStack> sGasHazmatList = new GT_HashSet<GT_ItemStack>(), sBioHazmatList = new GT_HashSet<GT_ItemStack>(), sFrostHazmatList = new GT_HashSet<GT_ItemStack>(), sHeatHazmatList = new GT_HashSet<GT_ItemStack>(), sRadioHazmatList = new GT_HashSet<GT_ItemStack>(), sElectroHazmatList = new GT_HashSet<GT_ItemStack>();
+    public static final GT_HashSet<GT_ItemStack> sGasHazmatList = new GT_HashSet<>(),
+            sBioHazmatList = new GT_HashSet<>(),
+            sFrostHazmatList = new GT_HashSet<>(),
+            sHeatHazmatList = new GT_HashSet<>(),
+            sRadioHazmatList = new GT_HashSet<>(),
+            sElectroHazmatList = new GT_HashSet<>();
     /**
      * The List of Dimensions, which are Whitelisted for the Teleporter. This list should not contain other Planets.
      * Mystcraft Dimensions and other Dimensional Things should be allowed.
@@ -152,12 +149,7 @@ public class GregTech_API {
      * This is the generic Cover behavior. Used for the default Covers, which have no Behavior.
      */
     public static final GT_CoverBehavior sDefaultBehavior = new GT_Cover_Default(), sNoBehavior = new GT_Cover_None();
-    /**
-     * For the API Version check
-     */
-    public static volatile int VERSION = 509;
-    @Deprecated
-    public static IGT_RecipeAdder sRecipeAdder;
+
     /**
      * Used to register Aspects to ThaumCraft, this Object might be null if ThaumCraft isn't installed
      */
@@ -165,16 +157,29 @@ public class GregTech_API {
     /**
      * These Lists are getting executed at their respective timings. Useful if you have to do things right before/after I do them, without having to control the load order. Add your "Commands" in the Constructor or in a static Code Block of your Mods Main Class. These are not Threaded, I just use a native Java Interface for their execution. Implement just the Method run() and everything should work
      */
-    public static List<Runnable> sBeforeGTPreload = new ArrayList<Runnable>(), sAfterGTPreload = new ArrayList<Runnable>(), sBeforeGTLoad = new ArrayList<Runnable>(), sAfterGTLoad = new ArrayList<Runnable>(), sBeforeGTPostload = new ArrayList<Runnable>(), sAfterGTPostload = new ArrayList<Runnable>(), sBeforeGTServerstart = new ArrayList<Runnable>(), sAfterGTServerstart = new ArrayList<Runnable>(), sBeforeGTServerstop = new ArrayList<Runnable>(), sAfterGTServerstop = new ArrayList<Runnable>(), sGTBlockIconload = new ArrayList<Runnable>(), sGTItemIconload = new ArrayList<Runnable>();
-    /**
-     * The Icon Registers from Blocks and Items. They will get set right before the corresponding Icon Load Phase as executed in the Runnable List above.
-     */
-    @SideOnly(Side.CLIENT)
-    public static TextureMap sBlockIcons;
+    public static List<Runnable> sBeforeGTPreload = new ArrayList<>(),
+            sAfterGTPreload = new ArrayList<>(),
+            sBeforeGTLoad = new ArrayList<>(),
+            sAfterGTLoad = new ArrayList<>(),
+            sBeforeGTPostload = new ArrayList<>(),
+            sAfterGTPostload = new ArrayList<>(),
+            sBeforeGTServerstart = new ArrayList<>(),
+            sAfterGTServerstart = new ArrayList<>(),
+            sBeforeGTServerstop = new ArrayList<>(),
+            sAfterGTServerstop = new ArrayList<>();
     /**
      * The Configuration Objects
      */
-    public static GT_Config sRecipeFile = null, sMachineFile = null, sWorldgenFile = null, sModularArmor = null, sMaterialProperties = null, sMaterialComponents = null, sUnification = null, sSpecialFile = null, sClientDataFile, sOPStuff = null;
+    public static GT_Config sRecipeFile = null,
+            sMachineFile = null,
+            sWorldgenFile = null,
+            sModularArmor = null,
+            sMaterialProperties = null,
+            sMaterialComponents = null,
+            sUnification = null,
+            sSpecialFile = null,
+            sClientDataFile, sOPStuff = null;
+
     public static int TICKS_FOR_LAG_AVERAGING = 25, MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = 100;
     /**
      * Initialized by the Block creation.
@@ -207,16 +212,17 @@ public class GregTech_API {
     public static int mRFtoEU = 20;
     public static boolean mRFExplosions = true;
     public static boolean mServerStarted = false;
-    public static boolean mIC2Classic = false;
-    public static boolean mMagneticraft = false;
-    public static boolean mImmersiveEngineering = false;
-    public static boolean mGTPlusPlus = false;
     private static final String aTextIC2Lower = MOD_ID_IC2.toLowerCase(Locale.ENGLISH);
     /**
      * Getting assigned by the Mod loading
      */
-    public static boolean sUnificationEntriesRegistered = false, sPreloadStarted = false, sPreloadFinished = false, sLoadStarted = false, sLoadFinished = false, sPostloadStarted = false, sPostloadFinished = false;
-    private static Class sBaseMetaTileEntityClass = null;
+    public static boolean sUnificationEntriesRegistered = false,
+            sPreloadStarted = false,
+            sPreloadFinished = false,
+            sLoadStarted = false,
+            sLoadFinished = false,
+            sPostloadStarted = false,
+            sPostloadFinished = false;
 
     /**
      * Adds Biomes to the Biome Lists for World Generation
@@ -301,13 +307,11 @@ public class GregTech_API {
      * You should call this Function in @Block.breakBlock and in @Block.onBlockAdded of your Machine.
      *
      * @param aWorld is being the World
-     * @param aX     is the X-Coord of the update causing Block
-     * @param aY     is the Y-Coord of the update causing Block
-     * @param aZ     is the Z-Coord of the update causing Block
+     * @param pos a block pos
      */
-    public static boolean causeMachineUpdate(World aWorld, int aX, int aY, int aZ) {
+    public static boolean causeMachineUpdate(World aWorld, BlockPos pos) {
         if (!aWorld.isRemote)
-            new Thread(new GT_Runnable_MachineBlockUpdate(aWorld, aX, aY, aZ), "Machine Block Updating").start();
+            new Thread(new GT_Runnable_MachineBlockUpdate(aWorld, pos), "Machine Block Updating").start();
         return true;
     }
 
@@ -316,36 +320,20 @@ public class GregTech_API {
      * You should call @causeMachineUpdate in @Block.breakBlock and in @Block.onBlockAdded of your registered Block.
      * You don't need to register TileEntities which implement @IMachineBlockUpdateable
      *
-     * @param aBlock   the block
-     * @param aMeta the Metadata of the Blocks as Bitmask! -1 or ~0 for all Metavalues
+     * @param blockState the block state
      */
-    public static boolean registerMachineBlock(Block aBlock, int aMeta) {
-        if (GT_Utility.isBlockInvalid(aBlock)) return false;
+    public static boolean registerMachineBlock(IBlockState blockState) {
         if (GregTech_API.sThaumcraftCompat != null)
-            GregTech_API.sThaumcraftCompat.registerPortholeBlacklistedBlock(aBlock);
-        sMachineIDs.put(aBlock, aMeta);
-        return true;
-    }
-
-    /**
-     * Like above but with boolean Parameters instead of a BitMask
-     */
-    public static boolean registerMachineBlock(Block aBlock, boolean... aMeta) {
-        if (GT_Utility.isBlockInvalid(aBlock) || aMeta == null || aMeta.length == 0) return false;
-        if (GregTech_API.sThaumcraftCompat != null)
-            GregTech_API.sThaumcraftCompat.registerPortholeBlacklistedBlock(aBlock);
-        int rMeta = 0;
-        for (byte i = 0; i < 16 && i < aMeta.length; i++) if (aMeta[i]) rMeta |= B[i];
-        sMachineIDs.put(aBlock, rMeta);
+            GregTech_API.sThaumcraftCompat.registerPortholeBlacklistedBlock(blockState);
+        sMachineIDs.add(blockState);
         return true;
     }
 
     /**
      * if this Block is a Machine Update Conducting Block
      */
-    public static boolean isMachineBlock(Block aBlock, int aMeta) {
-        if (GT_Utility.isBlockInvalid(aBlock)) return false;
-        return (sMachineIDs.containsKey(aBlock) && (sMachineIDs.get(aBlock) & B[aMeta]) != 0);
+    public static boolean isMachineBlock(IBlockState blockState) {
+        return sMachineIDs.contains(blockState);
     }
 
     /**
@@ -363,31 +351,10 @@ public class GregTech_API {
         return new gregtech.api.items.GT_Generic_Item(aUnlocalized, aEnglish, "Doesn't work as intended, this is a Bug", false);
     }
 
-
-    /**
-     * This gives you a new BaseMetaTileEntity. As some Interfaces are not always loaded (Buildcraft, Univeral Electricity) I have to use Invocation at the Constructor of the BaseMetaTileEntity
-     */
-    public static BaseMetaTileEntity constructBaseMetaTileEntity() {
-        if (sBaseMetaTileEntityClass == null) {
-            try {
-                return (BaseMetaTileEntity) (sBaseMetaTileEntityClass = BaseMetaTileEntity.class).newInstance();
-            } catch (Throwable e) {/*Do nothing*/}
-        }
-
-        try {
-            return (BaseMetaTileEntity) (sBaseMetaTileEntityClass.newInstance());
-        } catch (Throwable e) {
-            GT_Log.err.println("GT_Mod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
-            e.printStackTrace(GT_Log.err);
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static void registerCover(ItemStack aStack, ITexture aCover, GT_CoverBehavior aBehavior) {
+    public static void registerCover(int coverId, ItemStack aStack, ResourceLocation aCover, GT_CoverBehavior aBehavior) {
         GT_ItemStack stack = new GT_ItemStack(aStack);
-        int coverId = stack.hashCode();
         sCoverItems.put(stack, coverId);
-        sCovers.put(coverId, aCover == null || !aCover.isValidTexture() ? Textures.BlockIcons.ERROR_RENDERING[0] : aCover);
+        sCovers.put(coverId, aCover);
         if (aBehavior != null) sCoverBehaviors.put(coverId, aBehavior);
     }
 
@@ -397,15 +364,17 @@ public class GregTech_API {
      *
      * @param aBehavior can be null
      */
-    public static void registerCover(Collection<ItemStack> aStackList, ITexture aCover, GT_CoverBehavior aBehavior) {
-        if (aCover.isValidTexture()) for (ItemStack tStack : aStackList) registerCover(tStack, aCover, aBehavior);
+    public static void registerCover(int coverId, Collection<ItemStack> aStackList, ResourceLocation aCover, GT_CoverBehavior aBehavior) {
+        for (ItemStack tStack : aStackList) {
+            registerCover(coverId, tStack, aCover, aBehavior);
+        }
     }
 
     /**
      * returns a Cover behavior, guaranteed to not return null after preload
      */
     public static GT_CoverBehavior getCoverBehavior(ItemStack aStack) {
-        if (aStack == null || aStack.getItem() == null) return sNoBehavior;
+        if (aStack == null) return sNoBehavior;
         GT_CoverBehavior rCover = sCoverBehaviors.get(sCoverItems.get(new GT_ItemStack(aStack)));
         if (rCover == null) return sDefaultBehavior;
         return rCover;

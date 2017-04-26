@@ -1,14 +1,12 @@
 package gregtech.api.enums;
 
-import gregtech.api.interfaces.IColorModulationContainer;
-import gregtech.api.objects.GT_ArrayList;
 import gregtech.api.util.GT_Utility;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 
-public enum Dyes implements IColorModulationContainer {
+public enum Dyes {
     /**
      * The valid Colors, see VALUES Array below
      */
@@ -44,7 +42,7 @@ public enum Dyes implements IColorModulationContainer {
     public final byte mIndex;
     public final String mName;
     public final short[] mRGBa;
-    private final ArrayList<Fluid> mFluidDyes = new GT_ArrayList<Fluid>(false, 1);
+    private final ArrayList<Fluid> mFluidDyes = new ArrayList<>(1);
 
     private Dyes(int aIndex, int aR, int aG, int aB, String aName) {
         mIndex = (byte) aIndex;
@@ -112,8 +110,4 @@ public enum Dyes implements IColorModulationContainer {
         return GT_Utility.shortsToIntColor(mRGBa);
     }
 
-    @Override
-    public short[] getRGBA() {
-        return mRGBa;
-    }
 }

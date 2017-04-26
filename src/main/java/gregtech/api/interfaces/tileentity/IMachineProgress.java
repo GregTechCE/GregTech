@@ -17,7 +17,7 @@ public interface IMachineProgress extends IHasWorldObjectAndCoords {
     /**
      * increases the Progress of the Machine
      */
-    public boolean increaseProgress(int aProgressAmountInTicks);
+    public void increaseProgress(int aProgressAmountInTicks);
 
     /**
      * returns if the Machine currently does something.

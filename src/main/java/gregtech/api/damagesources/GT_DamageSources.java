@@ -7,6 +7,11 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 
 public class GT_DamageSources {
+
+    private static DamageSource EXPLOSION = new DamageSource("explosion");
+    private static DamageSource HEAT = new DamageSource("heat");
+    private static DamageSource FROST = new DamageSource("frost");
+
     public static DamageSource getElectricDamage() {
         return ic2.api.info.Info.DMG_ELECTRIC;
     }
@@ -15,83 +20,20 @@ public class GT_DamageSources {
         return ic2.api.info.Info.DMG_RADIATION;
     }
 
-    public static DamageSource getNukeExplosionDamage() {
-        return ic2.api.info.Info.DMG_NUKE_EXPLOSION;
-    }
-
     public static DamageSource getExplodingDamage() {
-        return new DamageSourceExploding();
-    }
-
-    public static DamageSource getCombatDamage(String aType, EntityLivingBase aPlayer, ITextComponent aDeathMessage) {
-        return new DamageSourceCombat(aType, aPlayer, aDeathMessage);
+        return EXPLOSION;
     }
 
     public static DamageSource getHeatDamage() {
-        return new DamageSourceHeat();
+        return HEAT;
     }
 
     public static DamageSource getFrostDamage() {
-        return new DamageSourceFrost();
+        return FROST;
     }
 
-    private static class DamageSourceCombat extends EntityDamageSource {
-        private ITextComponent mDeathMessage;
-
-        public DamageSourceCombat(String aType, EntityLivingBase aPlayer, ITextComponent aDeathMessage) {
-            super(aType, aPlayer);
-            mDeathMessage = aDeathMessage;
-        }
-
-        @Override
-        public ITextComponent getDeathMessage(EntityLivingBase entityLivingBaseIn) {
-            return mDeathMessage == null ? super.getDeathMessage(entityLivingBaseIn) : mDeathMessage;
-        }
+    public static DamageSource causeCombatDamage(String aType, EntityLivingBase aDamager) {
+        return new EntityDamageSource(aType, aDamager);
     }
 
-    private static class DamageSourceFrost extends DamageSource {
-        public DamageSourceFrost() {
-            super("frost");
-            setDifficultyScaled();
-        }
-
-        @Override
-        public ITextComponent getDeathMessage(EntityLivingBase aTarget) {
-            return new TextComponentString(TextFormatting.RED.toString())
-                    .appendSibling(aTarget.getDisplayName())
-                    .appendText(TextFormatting.WHITE + " got frozen");
-        }
-
-    }
-
-    private static class DamageSourceHeat extends DamageSource {
-        public DamageSourceHeat() {
-            super("steam");
-            setDifficultyScaled();
-        }
-
-        @Override
-        public ITextComponent getDeathMessage(EntityLivingBase aTarget) {
-            return new TextComponentString(TextFormatting.RED.toString())
-                    .appendSibling(aTarget.getDisplayName())
-                    .appendText(TextFormatting.WHITE + " was boiled alive");
-        }
-    }
-
-    public static class DamageSourceExploding extends DamageSource {
-        public DamageSourceExploding() {
-            super("exploded");
-            setDamageAllowedInCreativeMode();
-            setDamageBypassesArmor();
-            setDamageIsAbsolute();
-        }
-
-        @Override
-        public ITextComponent getDeathMessage(EntityLivingBase aTarget) {
-            return new TextComponentString(TextFormatting.RED.toString())
-                    .appendSibling(aTarget.getDisplayName())
-                    .appendText(TextFormatting.WHITE + " exploded");
-        }
-
-    }
 }

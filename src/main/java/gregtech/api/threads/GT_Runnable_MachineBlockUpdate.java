@@ -4,43 +4,39 @@ import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
 
 public class GT_Runnable_MachineBlockUpdate implements Runnable {
-    private final int mX, mY, mZ;
+    private final BlockPos pos;
     private final World mWorld;
 
-    public GT_Runnable_MachineBlockUpdate(World aWorld, int aX, int aY, int aZ) {
+    public GT_Runnable_MachineBlockUpdate(World aWorld, BlockPos pos) {
         mWorld = aWorld;
-        mX = aX;
-        mY = aY;
-        mZ = aZ;
+        this.pos = pos.toImmutable();
     }
 
-    private static void stepToUpdateMachine(World aWorld, int aX, int aY, int aZ, ArrayList<BlockPos> aList) {
-        aList.add(new BlockPos(aX, aY, aZ));
-        TileEntity tTileEntity = aWorld.getTileEntity(new BlockPos(aX, aY, aZ));
+    private static void stepToUpdateMachine(World aWorld, BlockPos nextPos, ArrayList<BlockPos> aList) {
+        if(aList.contains(nextPos)) return;
+        aList.add(nextPos);
+        TileEntity tTileEntity = aWorld.getTileEntity(nextPos);
         if (tTileEntity instanceof IMachineBlockUpdateable)
             ((IMachineBlockUpdateable) tTileEntity).onMachineBlockUpdate();
-        BlockPos pos = new BlockPos(aX, aY, aZ);
-        IBlockState block = aWorld.getBlockState(pos);
-        if (aList.size() < 5 || (tTileEntity instanceof IMachineBlockUpdateable) || GregTech_API.isMachineBlock(block.getBlock(), block.getBlock().getMetaFromState(block))) {
-            if (!aList.contains(new BlockPos(aX + 1, aY, aZ))) stepToUpdateMachine(aWorld, aX + 1, aY, aZ, aList);
-            if (!aList.contains(new BlockPos(aX - 1, aY, aZ))) stepToUpdateMachine(aWorld, aX - 1, aY, aZ, aList);
-            if (!aList.contains(new BlockPos(aX, aY + 1, aZ))) stepToUpdateMachine(aWorld, aX, aY + 1, aZ, aList);
-            if (!aList.contains(new BlockPos(aX, aY - 1, aZ))) stepToUpdateMachine(aWorld, aX, aY - 1, aZ, aList);
-            if (!aList.contains(new BlockPos(aX, aY, aZ + 1))) stepToUpdateMachine(aWorld, aX, aY, aZ + 1, aList);
-            if (!aList.contains(new BlockPos(aX, aY, aZ - 1))) stepToUpdateMachine(aWorld, aX, aY, aZ - 1, aList);
+        IBlockState block = aWorld.getBlockState(nextPos);
+        if (aList.size() < 5 || (tTileEntity instanceof IMachineBlockUpdateable) || GregTech_API.isMachineBlock(block)) {
+            for(EnumFacing facing : EnumFacing.VALUES) {
+                stepToUpdateMachine(aWorld, nextPos.offset(facing), aList);
+            }
         }
     }
 
     @Override
     public void run() {
         try {
-            stepToUpdateMachine(mWorld, mX, mY, mZ, new ArrayList<BlockPos>());
+            stepToUpdateMachine(mWorld, pos, new ArrayList<BlockPos>());
         } catch (Throwable e) {/**/}
     }
 }

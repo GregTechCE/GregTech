@@ -9,10 +9,14 @@ import gregtech.api.interfaces.IFoodStat;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.objects.ItemData;
+import gregtech.api.render.SimpleItemModelLoader;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
@@ -26,6 +30,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -57,7 +62,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item {
      * <p/>
      * You can also use the unlocalized Name gotten from getUnlocalizedName() as Key if you want to get a specific Item.
      */
-    public static final ConcurrentHashMap<String, GT_MetaGenerated_Item> sInstances = new ConcurrentHashMap<String, GT_MetaGenerated_Item>();
+    public static final ConcurrentHashMap<String, GT_MetaGenerated_Item> sInstances = new ConcurrentHashMap<>();
 
 	/* ---------- CONSTRUCTOR AND MEMBER VARIABLES ---------- */
 
@@ -65,13 +70,11 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item {
     public final BitSet mEnabledItems;
     public final BitSet mVisibleItems;
 
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite[][] mIconList;
-
-    public final ConcurrentHashMap<Short, IFoodStat> mFoodStats = new ConcurrentHashMap<Short, IFoodStat>();
-    public final ConcurrentHashMap<Short, Long[]> mElectricStats = new ConcurrentHashMap<Short, Long[]>();
-    public final ConcurrentHashMap<Short, Long[]> mFluidContainerStats = new ConcurrentHashMap<Short, Long[]>();
-    public final ConcurrentHashMap<Short, Short> mBurnValues = new ConcurrentHashMap<Short, Short>();
+    public final ConcurrentHashMap<Short, ItemMeshDefinition> mModelDefinitions = new ConcurrentHashMap<>();
+    public final ConcurrentHashMap<Short, IFoodStat> mFoodStats = new ConcurrentHashMap<>();
+    public final ConcurrentHashMap<Short, Long[]> mElectricStats = new ConcurrentHashMap<>();
+    public final ConcurrentHashMap<Short, Long[]> mFluidContainerStats = new ConcurrentHashMap<>();
+    public final ConcurrentHashMap<Short, Short> mBurnValues = new ConcurrentHashMap<>();
 
     /**
      * Creates the Item using these Parameters.
@@ -90,14 +93,27 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item {
         mItemAmount = (short) Math.min(aItemAmount, 32766 - mOffset);
 
         sInstances.put(getUnlocalizedName(), this);
-        invokeOnClient(() -> initClient());
     }
 
 
 
     @SideOnly(Side.CLIENT)
     public void initClient() {
-        mIconList = new TextureAtlasSprite[mItemAmount][1];
+        short j = (short) mEnabledItems.length();
+        for (short i = 0; i < j; i++)
+            if (mEnabledItems.get(i)) {
+                if(!mModelDefinitions.containsKey(i)) {
+                    ModelResourceLocation location = SimpleItemModelLoader.registerModelForGeneration(this, GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i);
+                    mModelDefinitions.put((short) (mOffset + i), (itemstack) -> location);
+                }
+            }
+        ModelLoader.setCustomMeshDefinition(this, (itemStack) -> {
+            if(mModelDefinitions.containsKey((short) itemStack.getItemDamage())) {
+                return mModelDefinitions.get((short) itemStack.getItemDamage()).getModelLocation(itemStack);
+            }
+            return new ModelResourceLocation("diamond", "inventory");
+        });
+        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(this::getRGBa, this);
     }
 
     /**
@@ -225,8 +241,16 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item {
 
     @SideOnly(Side.CLIENT)
     public void setElectricStatsIcon(int aMetaValue, boolean aUseAnimations) {
-        if (aMetaValue >= mOffset && aUseAnimations)
-            mIconList[aMetaValue - mOffset] = Arrays.copyOf(mIconList[aMetaValue - mOffset], Math.max(9, mIconList[aMetaValue - mOffset].length));
+        if (aMetaValue >= mOffset && aUseAnimations) {
+            ModelResourceLocation[] locations = new ModelResourceLocation[8];
+            for(int j = 0; j < locations.length; j++) {
+                locations[j] = SimpleItemModelLoader.registerModelForGeneration(this, GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + (aMetaValue - mOffset) + "/" + (j + 1));
+            }
+            mModelDefinitions.put((short) aMetaValue, (itemStack) -> {
+                double chargePercent = getCharge(itemStack) / getMaxCharge(itemStack);
+                return locations[(int) ((locations.length - 1) * chargePercent)];
+            });
+        }
     }
 
     /**
@@ -243,45 +267,11 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item {
         return this;
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int getColorFromItemStack(ItemStack stack, int pass) {
-        return makeColor(getRGBa(stack, pass));
-    }
-
-    private int makeColor(short[] rgba) {
-        try {
-            for(int i = 0; i < 4; i++)
-                rgba[i] = (short) Math.max(0, rgba[i]);
-            return new Color(rgba[0], rgba[1], rgba[2], rgba[3]).getRGB();
-        } catch (IllegalArgumentException err) {
-            return Color.WHITE.getRGB();
-        }
-    }
-
-
     /**
      * @return the Color Modulation the Material is going to be rendered with.
      */
-    public short[] getRGBa(ItemStack aStack, int tint) {
-        return Materials._NULL.getRGBA();
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(ItemStack stack, int pass) {
-        double maxCharge = getMaxCharge(stack);
-        if(maxCharge != 0) {
-            double currentCharge = getCharge(stack);
-            double chargePercentage = currentCharge / maxCharge;
-            TextureAtlasSprite[] icons = mIconList[stack.getItemDamage() - mOffset];
-            if(icons.length > 1) {
-                int maxIcons = icons.length - 2;
-                int iconIndex = (int) Math.ceil(maxIcons * chargePercentage);
-                return icons[1 + iconIndex];
-            }
-        }
-        return mIconList[stack.getItemDamage() - mOffset][0];
+    public int getRGBa(ItemStack aStack, int tint) {
+        return Materials._NULL.getColorInt();
     }
 
     /* ---------- INTERNAL OVERRIDES ---------- */
@@ -344,21 +334,6 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item {
                 }
             }
     }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public final void registerIcons(TextureMap aIconRegister) {
-        System.out.println("Registering item icons");
-        short j = (short) mEnabledItems.length();
-        for (short i = 0; i < j; i++)
-            if (mEnabledItems.get(i)) {
-                for (byte k = 1; k < mIconList[i].length; k++) {
-                    mIconList[i][k] = aIconRegister.registerSprite(new ResourceLocation(RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i + "/" + k)));
-                }
-                mIconList[i][0] = aIconRegister.registerSprite(new ResourceLocation(RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i)));
-            }
-    }
-
 
 
     @Override

@@ -1,8 +1,10 @@
 package gregtech.api.events;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -11,19 +13,20 @@ import java.util.ArrayList;
 public class BlockScanningEvent extends net.minecraftforge.event.world.WorldEvent {
 
     public final EntityPlayer mPlayer;
-    public final int mX, mY, mZ, mScanLevel;
+    public final int mScanLevel;
+    public final BlockPos mPos;
     public final ArrayList<String> mList;
-    public final byte mSide;
+    public final EnumFacing mSide;
     public final float mClickX, mClickY, mClickZ;
     public final TileEntity mTileEntity;
-    public final Block mBlock;
+    public final IBlockState mBlock;
 
     /**
      * used to determine the amount of Energy this Scan is costing.
      */
     public int mEUCost = 0;
 
-    public BlockScanningEvent(World aWorld, EntityPlayer aPlayer, int aX, int aY, int aZ, byte aSide, int aScanLevel, Block aBlock, TileEntity aTileEntity, ArrayList<String> aList, float aClickX, float aClickY, float aClickZ) {
+    public BlockScanningEvent(World aWorld, EntityPlayer aPlayer, BlockPos aPos, EnumFacing aSide, int aScanLevel, IBlockState aBlock, TileEntity aTileEntity, ArrayList<String> aList, float aClickX, float aClickY, float aClickZ) {
         super(aWorld);
         mPlayer = aPlayer;
         mScanLevel = aScanLevel;
@@ -31,9 +34,7 @@ public class BlockScanningEvent extends net.minecraftforge.event.world.WorldEven
         mBlock = aBlock;
         mList = aList;
         mSide = aSide;
-        mX = aX;
-        mY = aY;
-        mZ = aZ;
+        mPos = aPos.toImmutable();
         mClickX = aClickX;
         mClickY = aClickY;
         mClickZ = aClickZ;

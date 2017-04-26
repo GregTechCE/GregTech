@@ -1,3 +1,15 @@
+death.attack.explosion=%s exploded.
+death.attack.explosion.player=%s exploded with help of %s.
+
+death.attack.heat=%s was boiled alive.
+death.attack.heat.player=%s was boiled alive with help of %s.
+
+death.attack.frost=%s was frozen.
+death.attack.frost=%s was frozen with help of %s.
+
+enchantment.damage.endermen=Disjunction
+enchantment.damage.radioactivity=Radioactivity
+
 item.gregtech:modulararmor_helmet.name=Basic Modular Armor Helmet
 item.gregtech:modulararmor_chestplate.name=Basic Modular Armor Chestplate
 item.gregtech:modulararmor_leggings.name=Basic Modular Armor Leggings

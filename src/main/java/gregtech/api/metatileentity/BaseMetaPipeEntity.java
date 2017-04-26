@@ -49,6 +49,7 @@ import static gregtech.api.enums.GT_Values.NW;
  * This is the main TileEntity for EVERYTHING.
  */
 public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileEntity, IPipeRenderedTileEntity, IEnergyConductor {
+
     private final GT_CoverBehavior[] mCoverBehaviors = new GT_CoverBehavior[]{GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior};
     public byte mConnections = 0;
     protected MetaPipeEntity mMetaTileEntity;
@@ -638,8 +639,8 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
-    public boolean increaseProgress(int aProgressAmountInTicks) {
-        return canAccessData() ? mMetaTileEntity.increaseProgress(aProgressAmountInTicks) != aProgressAmountInTicks : false;
+    public void increaseProgress(int aProgressAmountInTicks) {
+        canAccessData() ? mMetaTileEntity.increaseProgress(aProgressAmountInTicks) != aProgressAmountInTicks : false;
     }
 
     @Override

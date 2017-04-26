@@ -52,7 +52,7 @@ public interface IEnergyConnected extends IColoredTileEntity, IHasWorldObjectAnd
          *
          * @return the used Amperage.
          */
-        public static final long emitEnergyToNetwork(long aVoltage, long aAmperage, IEnergyConnected aEmitter) {
+        public static final long emitEnergyToNetwork(long aVoltage, long aAmperage, IEnergyConnected aEmitter, boolean aIgnore) {
             long rUsedAmperes = 0;
             for (byte i = 0, j = 0; i < 6 && aAmperage > rUsedAmperes; i++)
                 if (aEmitter.outputsEnergyTo(i)) {

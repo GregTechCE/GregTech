@@ -16,10 +16,10 @@ public abstract class GT_Worldgen_Ore extends GT_Worldgen {
 
     public final boolean mAllowToGenerateinVoid;
 
-    public GT_Worldgen_Ore(String aName, boolean aDefault, Block aBlock, int aBlockMeta, int aDimensionType, int aAmount, int aSize, int aProbability, int aMinY, int aMaxY, Collection<String> aBiomeList, boolean aAllowToGenerateinVoid) {
+    public GT_Worldgen_Ore(String aName, boolean aDefault, IBlockState blockState, int aDimensionType, int aAmount, int aSize, int aProbability, int aMinY, int aMaxY, Collection<String> aBiomeList, boolean aAllowToGenerateinVoid) {
         super(aName, GregTech_API.sWorldgenList, aDefault);
         mDimensionType = aDimensionType;
-        mBlockState = aBlock.getStateFromMeta(aBlockMeta);
+        mBlockState = blockState;
         mProbability = GregTech_API.sWorldgenFile.get("worldgen." + mWorldGenName, "Probability", aProbability);
         mAmount = GregTech_API.sWorldgenFile.get("worldgen." + mWorldGenName, "Amount", aAmount);
         mSize = GregTech_API.sWorldgenFile.get("worldgen." + mWorldGenName, "Size", aSize);

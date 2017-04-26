@@ -4,11 +4,11 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.render.SimpleItemModelLoader;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -55,6 +55,8 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
                 ItemStack tStack = new ItemStack(this, 1, i);
                 GT_LanguageManager.addStringLocalization(getUnlocalizedName(tStack) + ".name", getDefaultLocalization(tPrefix, tMaterial, i));
                 GT_LanguageManager.addStringLocalization(getUnlocalizedName(tStack) + ".tooltip", tMaterial.getToolTip(tPrefix.mMaterialAmount / M));
+                final int aMetaData = i;
+                invokeOnClient(() -> assignRenderer(aMetaData, tMaterial, tPrefix));
                 if (tPrefix.mIsUnificatable) {
                     GT_OreDictUnificator.set(tPrefix, tMaterial, tStack);
                 } else {
@@ -73,16 +75,22 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
         }
     }
 
+    @SideOnly(Side.CLIENT)
+    private void assignRenderer(int aMetaData, Materials material, OrePrefixes prefixes) {
+        ModelResourceLocation location = SimpleItemModelLoader.registerX32ModelForGeneration(this, material.mIconSet, prefixes);
+        mModelDefinitions.put((short) aMetaData, (itemstack) -> location);
+    }
+
 	/* ---------- OVERRIDEABLE FUNCTIONS ---------- */
 
     /**
      * @return the Color Modulation the Material is going to be rendered with.
      */
     @Override
-    public short[] getRGBa(ItemStack aStack, int tint) {
+    public int getRGBa(ItemStack aStack, int tint) {
         if(aStack.getItemDamage() < 32000 && tint == 0) {
             Materials tMaterial = GregTech_API.sGeneratedMaterials[getDamage(aStack) % 1000];
-            return tMaterial == null ? Materials._NULL.mRGBa : tMaterial.mRGBa;
+            return tMaterial == null ? Materials._NULL.getColorInt() : tMaterial.getColorInt();
             }
         return super.getRGBa(aStack, tint);
     }
@@ -111,16 +119,6 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
     }
 
     /**
-     * @param aMetaData a Index from [0 - 31999]
-     * @param aMaterial the Material
-     * @return an Icon Container for the Item Display.
-     */
-    @SideOnly(Side.CLIENT)
-    public final IIconContainer getIconContainer(int aMetaData, Materials aMaterial) {
-        return aMaterial.mIconSet.mTextures[mGeneratedPrefixList[aMetaData / 1000].mTextureIndex];
-    }
-
-    /**
      * @param aPrefix         always != null
      * @param aMaterial       always != null
      * @param aDoShowAllItems this is the Configuration Setting of the User, if he wants to see all the Stuff like Tiny Dusts or Crushed Ores as well.
@@ -145,15 +143,6 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
         return null;
     }
 
-    @SideOnly(Side.CLIENT)
-    public final IIconContainer getMaterialIcon(int aMetaData) {
-        Materials tMaterial = GregTech_API.sGeneratedMaterials[aMetaData % 1000];
-        if (tMaterial == null) return null;
-        IIconContainer tIcon = getIconContainer(aMetaData, tMaterial);
-        if (tIcon != null) return tIcon;
-        return null;
-    }
-
     @Override
     @SideOnly(Side.CLIENT)
     public final void getSubItems(Item var1, CreativeTabs aCreativeTab, List<ItemStack> aList) {
@@ -172,36 +161,11 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(ItemStack stack, int pass) {
-        int tDamage = stack.getItemDamage();
-        if (tDamage < 32000) {
-            IIconContainer iconContainer = getMaterialIcon(tDamage);
-            if(iconContainer == null) {
-                System.out.println("Null IIconContainer for item " + getItemStackDisplayName(stack));
-                return null;
-            }
-            switch (pass) {
-                case 0:
-                    return iconContainer.getIcon();
-                case 1:
-                    return iconContainer.getOverlayIcon();
-            }
-        }
-        return super.getIcon(stack, pass);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int getRenderPasses(ItemStack aStack) {
-        return aStack.getItemDamage() < 32000 ? 2 : 1 ;
-    }
-
-    @Override
     public int getItemStackLimit(ItemStack aStack) {
         int tDamage = getDamage(aStack);
         if (tDamage < 32000 && mGeneratedPrefixList[tDamage / 1000] != null)
             return Math.min(super.getItemStackLimit(aStack), mGeneratedPrefixList[tDamage / 1000].mDefaultStackSize);
         return super.getItemStackLimit(aStack);
     }
+
 }

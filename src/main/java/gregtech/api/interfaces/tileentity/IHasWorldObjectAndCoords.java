@@ -25,12 +25,6 @@ public interface IHasWorldObjectAndCoords {
 
     public BlockPos getWorldPos();
 
-    public int getXCoord();
-
-    public short getYCoord();
-
-    public int getZCoord();
-
     public boolean isServerSide();
 
     public boolean isClientSide();
