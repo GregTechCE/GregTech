@@ -18,7 +18,7 @@ public class GT_Block_Metal extends GT_Block_Storage {
     public Textures.BlockIcons[] mBlockIcons;
 
     public GT_Block_Metal(String aName, Materials[] aMats, OrePrefixes aPrefix, Textures.BlockIcons[] aBlockIcons) {
-        super(GT_Item_Storage.class, aName, Material.IRON);
+        super(aName, GT_Item_Storage.class, Material.IRON);
         mMats = aMats;
         mPrefix = aPrefix;
         mBlockIcons = aBlockIcons;

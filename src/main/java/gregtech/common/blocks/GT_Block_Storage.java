@@ -24,8 +24,8 @@ import java.util.List;
 
 public class GT_Block_Storage extends GT_Generic_Block {
 
-    protected GT_Block_Storage(Class<? extends ItemBlock> aItemClass, String aName, Material aMaterial) {
-        super(aItemClass, aName, aMaterial);
+    protected GT_Block_Storage(String aName, Class<? extends ItemBlock> aItemClass, Material aMaterial) {
+        super(aName, aItemClass, aMaterial);
         setSoundType(SoundType.METAL);
         setCreativeTab(GregTech_API.TAB_GREGTECH_MATERIALS);
     }
@@ -51,13 +51,8 @@ public class GT_Block_Storage extends GT_Generic_Block {
     }
 
     @Override
-    public String getUnlocalizedName() {
-        return this.mUnlocalizedName;
-    }
-
-    @Override
     public String getLocalizedName() {
-        return GT_LanguageManager.getTranslation(this.mUnlocalizedName + ".name");
+        return GT_LanguageManager.getTranslation(this.getUnlocalizedName() + ".name");
     }
 
     @Override

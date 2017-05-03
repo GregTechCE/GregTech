@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
     public GT_Block_Casings1() {
-        super(GT_Item_Casings1.class, "gt.blockcasings", GT_Material_Casings.INSTANCE);
+        super("blockcasings", GT_Item_Casings1.class, GT_Material_Casings.INSTANCE);
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "ULV Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "LV Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "MV Machine Casing");

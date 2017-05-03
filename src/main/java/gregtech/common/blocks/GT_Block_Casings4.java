@@ -22,7 +22,7 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
     public static boolean mConnectedMachineTextures = true;
 
     public GT_Block_Casings4() {
-        super(GT_Item_Casings4.class, "gt.blockcasings4", GT_Material_Casings.INSTANCE);
+        super("blockcasings4", GT_Item_Casings4.class, GT_Material_Casings.INSTANCE);
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Robust Tungstensteel Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Clean Stainless Steel Casing");

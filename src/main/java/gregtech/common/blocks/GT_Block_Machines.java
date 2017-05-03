@@ -54,7 +54,7 @@ import java.util.List;
 public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlock, ITileEntityProvider {
 
     public GT_Block_Machines() {
-        super(GT_Item_Machines.class, "gt.blockmachines", new GT_Material_Machines());
+        super("blockmachines", GT_Item_Machines.class, new GT_Material_Machines());
         GregTech_API.registerMachineBlock(this, -1);
         setHardness(1.0F);
         setResistance(10.0F);

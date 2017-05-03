@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 
 public class GT_Item_GeneratedOres extends ItemBlock {
 
-
     public GT_Item_GeneratedOres(Block block) {
         super(block);
         setHasSubtypes(true);
@@ -14,7 +13,7 @@ public class GT_Item_GeneratedOres extends ItemBlock {
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return ((GT_Block_GeneratedOres) block).mUnlocalizedName + "." + stack.getItemDamage();
+        return block.getUnlocalizedName() + "." + stack.getItemDamage();
     }
 
     @Override

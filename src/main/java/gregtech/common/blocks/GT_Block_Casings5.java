@@ -13,7 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class GT_Block_Casings5 extends GT_Block_Casings_Abstract {
 
     public GT_Block_Casings5() {
-        super(GT_Item_Casings5.class, "gt.blockcasings5", GT_Material_Casings.INSTANCE);
+        super("blockcasings5", GT_Item_Casings5.class, GT_Material_Casings.INSTANCE);
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Cupronickel Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Kanthal Coil Block");

@@ -8,8 +8,10 @@ import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.blocks.properties.PropertyMaterial;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
@@ -19,6 +21,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -29,11 +32,25 @@ import java.util.List;
 
 public abstract class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRecipeRegistrator {
 
-    public GT_Block_Stones_Abstract(Class<? extends ItemBlock> aItemClass, String aName) {
-        super(aItemClass, aName, Material.ROCK);
+    public static final PropertyEnum<EnumStoneVariant> STONE_VARIANT = PropertyEnum.create("stone_variant", EnumStoneVariant.class);
+    public final PropertyMaterial MATERIAL;
+
+    public GT_Block_Stones_Abstract(String aName, Class<? extends ItemBlock> aItemClass, Materials[] materials) {
+        super(aName, aItemClass, Material.ROCK);
+
+        if (materials.length > 2 )
+            throw new IllegalArgumentException("Materials.length must not be > 2");
+
+        MATERIAL = PropertyMaterial.create("material", materials);
+
+        this.setDefaultState(this.blockState.getBaseState()
+                .withProperty(STONE_VARIANT, EnumStoneVariant.NORMAL)
+                .withProperty(MATERIAL, MATERIAL.getFirstType()));
+
         OrePrefixes.crafting.add(this);
         setSoundType(SoundType.STONE);
         setCreativeTab(GregTech_API.TAB_GREGTECH_MATERIALS);
+
         GT_ModHandler.addSmeltingRecipe(new ItemStack(this, 1, 0), new ItemStack(this, 1, 7));
         GT_ModHandler.addSmeltingRecipe(new ItemStack(this, 1, 1), new ItemStack(this, 1, 0));
         GT_ModHandler.addSmeltingRecipe(new ItemStack(this, 1, 2), new ItemStack(this, 1, 0));
@@ -91,13 +108,8 @@ public abstract class GT_Block_Stones_Abstract extends GT_Generic_Block implemen
     }
 
     @Override
-    public String getUnlocalizedName() {
-        return this.mUnlocalizedName;
-    }
-
-    @Override
     public String getLocalizedName() {
-        return GT_LanguageManager.getTranslation(this.mUnlocalizedName + ".name");
+        return GT_LanguageManager.getTranslation(this.getUnlocalizedName() + ".name");
     }
 
     @Override
@@ -111,7 +123,7 @@ public abstract class GT_Block_Stones_Abstract extends GT_Generic_Block implemen
 
     @Override
     public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
-        return state.getValue(METADATA) % 8 < 3;
+        return state.getValue(STONE_VARIANT).getMetadata() % 8 < 3;
     }
 
     @Override
@@ -127,6 +139,51 @@ public abstract class GT_Block_Stones_Abstract extends GT_Generic_Block implemen
     public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List<ItemStack> aList) {
         for (int i = 0; i < 16; i++) {
             aList.add(new ItemStack(aItem, 1, i));
+        }
+    }
+
+    public static enum EnumStoneVariant implements IStringSerializable {
+        NORMAL("normal"),
+        COBBLESTONE("cobblestone"),
+        MOSSY_COBBLESTONE("mossy_cobblestone"),
+        BRICKS("bricks"),
+        CRACKED_BRICKS("cracked_bricks"),
+        MOSSY_BRICKS("mossy_bricks"),
+        CHISELED("chiseled"),
+        SMOOTH("smooth");
+
+        private final int meta = ordinal();;
+        private final String name;
+
+        EnumStoneVariant(String name) {
+            this.name = name;
+        }
+
+        public int getMetadata()
+        {
+            return this.meta;
+        }
+
+        @Override
+        public String toString()
+        {
+            return this.name;
+        }
+
+        public static EnumStoneVariant byMetadata(int meta)
+        {
+            if (meta < 0 || meta >= values().length)
+            {
+                meta = 0;
+            }
+
+            return values()[meta];
+        }
+
+        @Override
+        public String getName()
+        {
+            return this.name;
         }
     }
 }

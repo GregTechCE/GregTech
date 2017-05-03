@@ -27,8 +27,8 @@ import java.util.List;
 public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block {
 
 
-    public GT_Block_Casings_Abstract(Class<? extends ItemBlock> aItemClass, String aName, Material aMaterial) {
-        super(aItemClass, aName, aMaterial);
+    public GT_Block_Casings_Abstract(String aName, Class<? extends ItemBlock> aItemClass, Material aMaterial) {
+        super(aName, aItemClass, aMaterial);
         setSoundType(SoundType.METAL);
         setCreativeTab(GregTech_API.TAB_GREGTECH);
         GregTech_API.registerMachineBlock(this, -1);

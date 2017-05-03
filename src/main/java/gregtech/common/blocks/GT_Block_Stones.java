@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GT_Block_Stones extends GT_Block_Stones_Abstract {
     public GT_Block_Stones() {
-        super(GT_Item_Granites.class, "gt.blockstones");
+        super("blockstones", GT_Item_Granites.class, new Materials[]{Materials.Marble, Materials.Basalt});
         setResistance(60.0F);
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Marble");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Marble Cobblestone");

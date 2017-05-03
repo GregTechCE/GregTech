@@ -6,32 +6,35 @@ import gregtech.api.objects.RegIconContainer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.IStringSerializable;
 
 /**
  * For ore generation
  */
-public enum StoneTypes {
+public enum StoneTypes implements IStringSerializable {
 
     //vanilla ones
-    STONE(new RegIconContainer("blocks/stone"), OrePrefixes.ore, Materials.Stone),
-    NETHERRACK(new RegIconContainer("blocks/netherrack"), OrePrefixes.oreNetherrack, Materials.Netherrack),
-    ENDSTONE(new RegIconContainer("blocks/end_stone"), OrePrefixes.oreEndstone, Materials.Endstone),
+    STONE("stone", new RegIconContainer("blocks/stone"), OrePrefixes.ore, Materials.Stone),
+    NETHERRACK("netherrack", new RegIconContainer("blocks/netherrack"), OrePrefixes.oreNetherrack, Materials.Netherrack),
+    ENDSTONE("endstone", new RegIconContainer("blocks/end_stone"), OrePrefixes.oreEndstone, Materials.Endstone),
 
     //gt ones
-    BLACK_GRANITE(Textures.BlockIcons.GRANITE_BLACK_STONE, OrePrefixes.oreBlackgranite, Materials.BlackGranite),
-    RED_GRANITE(Textures.BlockIcons.GRANITE_RED_STONE, OrePrefixes.oreRedgranite, Materials.RedGranite),
-    MARBLE(Textures.BlockIcons.MARBLE_STONE, OrePrefixes.oreMarble, Materials.Marble),
-    BASALT(Textures.BlockIcons.BASALT_STONE, OrePrefixes.oreBasalt, Materials.Basalt);
+    BLACK_GRANITE("black_granite", Textures.BlockIcons.GRANITE_BLACK_STONE, OrePrefixes.oreBlackgranite, Materials.GraniteBlack),
+    RED_GRANITE("red_granite", Textures.BlockIcons.GRANITE_RED_STONE, OrePrefixes.oreRedgranite, Materials.GraniteRed),
+    MARBLE("marble", Textures.BlockIcons.MARBLE_STONE, OrePrefixes.oreMarble, Materials.Marble),
+    BASALT("basalt", Textures.BlockIcons.BASALT_STONE, OrePrefixes.oreBasalt, Materials.Basalt);
 
 
     public final int mId = ordinal();
+    public final String name;
     public final IIconContainer mIconContainer;
     public final OrePrefixes processingPrefix;
     public final Materials stoneMaterial;
 
     public static StoneTypes[] mTypes = values();
 
-    StoneTypes(IIconContainer mIconContainer, OrePrefixes processingPrefix, Materials stoneMaterial) {
+    StoneTypes(String name, IIconContainer mIconContainer, OrePrefixes processingPrefix, Materials stoneMaterial) {
+        this.name = name;
         this.mIconContainer = mIconContainer;
         this.processingPrefix = processingPrefix;
         this.stoneMaterial = stoneMaterial;
@@ -61,5 +64,10 @@ public enum StoneTypes {
             variantId = StoneTypes.ENDSTONE;
         }
         return variantId;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

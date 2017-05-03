@@ -13,7 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class GT_Block_Casings3 extends GT_Block_Casings_Abstract {
 
     public GT_Block_Casings3() {
-        super(GT_Item_Casings3.class, "gt.blockcasings3", GT_Material_Casings.INSTANCE);
+        super("blockcasings3", GT_Item_Casings3.class, GT_Material_Casings.INSTANCE);
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Yellow Stripes Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Yellow Stripes Block");

@@ -13,6 +13,7 @@ import gregtech.loaders.materialprocessing.ProcessingModSupport;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IStringSerializable;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
@@ -21,7 +22,7 @@ import java.util.*;
 
 import static gregtech.api.enums.GT_Values.M;
 
-public class Materials implements ISubTagContainer {
+public class Materials implements ISubTagContainer, Comparable<Materials> {
 	private static Materials[] MATERIALS_ARRAY = new Materials[]{};
 	private static final Map<String, Materials> MATERIALS_MAP = new LinkedHashMap<String, Materials>();
 	public static final List<IMaterialHandler> mMaterialHandlers = new ArrayList<IMaterialHandler>();
@@ -1570,25 +1571,6 @@ public class Materials implements ISubTagContainer {
 		else mAspects.addAll(aAspects);
 	}
 
-	/**
-	 * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc) that looped over the old materials enum
-	 */
-	@Deprecated
-	public String name() {
-		return mName;
-	}
-
-	/**
-	 * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc) that looped over the old materials enum
-	 */
-	@Deprecated
-	public static Materials valueOf(String aMaterialName) {
-		return getMaterialsMap().get(aMaterialName);
-	}
-
-	/**
-	 * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc) that looped over the old materials enum
-	 */
 	public static Materials[] values() {
 		return MATERIALS_ARRAY;
 	}
@@ -1890,4 +1872,8 @@ public class Materials implements ISubTagContainer {
 		return this.mName;
 	}
 
+	@Override
+	public int compareTo(Materials o) {
+		return Integer.compare(mMetaItemSubID, o.mMetaItemSubID);
+	}
 }

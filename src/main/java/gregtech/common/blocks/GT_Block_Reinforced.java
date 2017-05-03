@@ -45,7 +45,7 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
     private TextureAtlasSprite COAL_BLOCK_ICON_DATA;
 
     public GT_Block_Reinforced(String aName) {
-        super(GT_Item_Storage.class, aName, new GT_Material_Reinforced());
+        super(aName, GT_Item_Storage.class, new GT_Material_Reinforced());
         setSoundType(SoundType.STONE);
         setCreativeTab(GregTech_API.TAB_GREGTECH);
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Bronzeplate Reinforced Block");
