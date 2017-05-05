@@ -1,4 +1,4 @@
-package gregtech.common.blocks;
+package gregtech.common.blocks.itemblocks;
 
 import java.util.List;
 

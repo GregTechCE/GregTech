@@ -2,17 +2,26 @@ package gregtech.common.blocks;
 
 import com.google.common.collect.Lists;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.common.blocks.itemblocks.GT_Item_Storage;
+import gregtech.common.blocks.properties.PropertyMaterial;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
@@ -24,10 +33,57 @@ import java.util.List;
 
 public class GT_Block_Storage extends GT_Generic_Block {
 
-    protected GT_Block_Storage(String aName, Class<? extends ItemBlock> aItemClass, Material aMaterial) {
-        super(aName, aItemClass, aMaterial);
+    public final PropertyMaterial MATERIAL;
+
+    public Materials[] mMats;
+    public OrePrefixes mPrefix;
+    public Textures.BlockIcons[] mBlockIcons;
+
+    public GT_Block_Storage(String aName, Materials[] aMats, OrePrefixes aPrefix, Textures.BlockIcons[] aBlockIcons) {
+        super(aName, GT_Item_Storage.class, Material.IRON);
+        mMats = aMats;
+        mPrefix = aPrefix;
+        mBlockIcons = aBlockIcons;
+
+        MATERIAL = PropertyMaterial.create("material", aMats);
+
+        for (int i = 0; i < aMats.length; i++) {
+            if (aMats[i].mMetaItemSubID > 0 && aMats[i].mHasParentMod) {
+                GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + i + ".name", "Block of " + aMats[i].mDefaultLocalName);
+                GT_OreDictUnificator.registerOre(aPrefix, aMats[i], new ItemStack(this, 1, i));
+            }
+        }
+        setHardness(5.0F); //Blocks.IRON_BLOCK
+        setResistance(10.0F); //Blocks.IRON_BLOCK
         setSoundType(SoundType.METAL);
         setCreativeTab(GregTech_API.TAB_GREGTECH_MATERIALS);
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, MATERIAL);
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return this.getDefaultState()
+                .withProperty(MATERIAL, mMats[meta & 15]);
+    }
+
+    /**
+     * @see Block#getMetaFromState(IBlockState)
+     */
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        Materials material = state.getValue(MATERIAL);
+
+        int meta = 0;
+        for (int i = 0; i < mMats.length; i++) {
+            if (material == mMats[i]) {
+                meta |= i;
+            }
+        }
+        return meta;
     }
 
     @Override
@@ -41,23 +97,8 @@ public class GT_Block_Storage extends GT_Generic_Block {
     }
 
     @Override
-    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-        return Blocks.IRON_BLOCK.getBlockHardness(blockState, worldIn, pos);
-    }
-
-    @Override
-    public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
-        return Blocks.IRON_BLOCK.getExplosionResistance(world, pos, exploder, explosion);
-    }
-
-    @Override
-    public String getLocalizedName() {
-        return GT_LanguageManager.getTranslation(this.getUnlocalizedName() + ".name");
-    }
-
-    @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        return Lists.newArrayList(new ItemStack(this, 1, state.getValue(METADATA)));
+        return Lists.newArrayList(new ItemStack(this, 1, getMetaFromState(state)));
     }
 
     @SideOnly(Side.CLIENT)
@@ -67,4 +108,12 @@ public class GT_Block_Storage extends GT_Generic_Block {
         }
     }
 
+    @Override
+    @SideOnly(Side.CLIENT)
+    public TextureAtlasSprite getIcon(EnumFacing aSide, int aDamage) {
+        if ((aDamage >= 0) && (aDamage < 16) && aDamage < mMats.length) {
+            return mBlockIcons[aDamage].getIcon();
+        }
+        return mBlockIcons[0].getIcon();
+    }
 }

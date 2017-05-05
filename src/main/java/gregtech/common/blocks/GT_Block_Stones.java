@@ -4,6 +4,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.common.blocks.itemblocks.GT_Item_Granites;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.init.Blocks;
@@ -50,16 +51,6 @@ public class GT_Block_Stones extends GT_Block_Stones_Abstract {
         GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(this, 1, 13));
         GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(this, 1, 14));
         GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(this, 1, 15));
-    }
-
-    @Override
-    public int getHarvestLevel(IBlockState aMeta) {
-        return 1;
-    }
-
-    @Override
-    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-        return Blocks.STONE.getBlockHardness(blockState, worldIn, pos);
     }
 
     @Override

@@ -4,16 +4,27 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.common.blocks.itemblocks.GT_Item_Casings3;
+import gregtech.common.blocks.materials.GT_Material_Casings;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GT_Block_Casings3 extends GT_Block_Casings_Abstract {
 
+    public static final PropertyEnum<EnumCasingVariant> CASING_VARIANT = PropertyEnum.create("casing_variant", EnumCasingVariant.class);
+
     public GT_Block_Casings3() {
         super("blockcasings3", GT_Item_Casings3.class, GT_Material_Casings.INSTANCE);
+
+        this.setDefaultState(this.blockState.getBaseState()
+                .withProperty(CASING_VARIANT, EnumCasingVariant.STRIPES_A));
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Yellow Stripes Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Yellow Stripes Block");
@@ -31,6 +42,7 @@ public class GT_Block_Casings3 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Bronze Firebox Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Steel Firebox Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Tungstensteel Firebox Casing");
+
         ItemList.Casing_Stripes_A.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Stripes_B.set(new ItemStack(this, 1, 1));
         ItemList.Casing_RadioactiveHazard.set(new ItemStack(this, 1, 2));
@@ -47,6 +59,27 @@ public class GT_Block_Casings3 extends GT_Block_Casings_Abstract {
         ItemList.Casing_Firebox_Bronze.set(new ItemStack(this, 1, 13));
         ItemList.Casing_Firebox_Steel.set(new ItemStack(this, 1, 14));
         ItemList.Casing_Firebox_TungstenSteel.set(new ItemStack(this, 1, 15));
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, CASING_VARIANT);
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return this.getDefaultState()
+                .withProperty(CASING_VARIANT, EnumCasingVariant.byMetadata(meta & 15));
+    }
+
+    /**
+     * @see Block#getMetaFromState(IBlockState)
+     */
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        int meta = 0;
+        meta |= state.getValue(CASING_VARIANT).getMetadata();
+        return meta;
     }
 
     @Override
@@ -92,5 +125,53 @@ public class GT_Block_Casings3 extends GT_Block_Casings_Abstract {
         }
         return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL;
     }
-    
+
+    public static enum EnumCasingVariant implements IStringSerializable {
+        STRIPES_A("stripes_a"),
+        STRIPES_B("stripes_b"),
+        RADIOACTIVEHAZARD("radioactivehazard"),
+        BIOHAZARD("biohazard"),
+        EXPLOSIONHAZARD("explosionhazard"),
+        FIREHAZARD("firehazard"),
+        ACIDHAZARD("acidhazard"),
+        MAGICHAZARD("magichazard"),
+        FROSTHAZARD("frosthazard"),
+        NOISEHAZARD("noisehazard"),
+        GRATE("grate"),
+        VENT("vent"),
+        RADIATIONPROOF("radiationproof"),
+        FIREBOX_BRONZE("firebox_bronze"),
+        FIREBOX_STEEL("firebox_steel"),
+        FIREBOX_TSTEEL("firebox_tsteel");
+
+        private final int meta = ordinal();
+        private final String name;
+
+        EnumCasingVariant(String name) {
+            this.name = name;
+        }
+
+        public int getMetadata() {
+            return this.meta;
+        }
+
+        @Override
+        public String toString() {
+            return this.name;
+        }
+
+        public static EnumCasingVariant byMetadata(int meta) {
+            if (meta < 0 || meta >= values().length) {
+                meta = 0;
+            }
+
+            return values()[meta];
+        }
+
+        @Override
+        public String getName()
+        {
+            return this.name;
+        }
+    }
 }

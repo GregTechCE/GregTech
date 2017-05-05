@@ -1,6 +1,5 @@
 package gregtech.common.blocks;
 
-import com.google.common.base.*;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
@@ -10,6 +9,7 @@ import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.blocks.itemblocks.GT_Item_GeneratedOres;
 import gregtech.common.blocks.properties.PropertyMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -28,20 +28,22 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 import static gregtech.api.enums.GT_Values.B;
 
 public class GT_Block_GeneratedOres extends GT_Generic_Block {
 
+    // We have only 1 bit to store material
     public static final int MATERIALS_PER_BLOCK = 2;
 
     public static final PropertyEnum<StoneTypes> STONE_TYPE = PropertyEnum.create("stone_type", StoneTypes.class);
@@ -60,8 +62,8 @@ public class GT_Block_GeneratedOres extends GT_Generic_Block {
 
         Materials[] lastMats = new Materials[MATERIALS_PER_BLOCK];
         int length = 0;
-        for(Materials aMaterial : Materials.values()) {
-            if(aMaterial != null && aMaterial.mMetaItemSubID >= 0 && (aMaterial.mTypes & 0x08) != 0) {
+        for(Materials aMaterial : GregTech_API.sGeneratedMaterials) {
+            if(aMaterial != null && (aMaterial.mTypes & 0x08) != 0) {
                 lastMats[length++] = aMaterial;
                 if(length == MATERIALS_PER_BLOCK) {
                     new GT_Block_GeneratedOres(lastMats, false);
@@ -79,7 +81,7 @@ public class GT_Block_GeneratedOres extends GT_Generic_Block {
         System.out.println("ORE BLOCKS REGISTERED: " + sNextId);
     }
 
-    public static boolean setOreBlock(World world, BlockPos pos, Materials material, boolean small) {
+    public static boolean setOreBlock(World world, BlockPos pos, int materialSubId, boolean small) {
         IBlockState prevState = world.getBlockState(pos);
         Block block = prevState.getBlock();
         int metadata = block.getMetaFromState(prevState);
@@ -104,11 +106,11 @@ public class GT_Block_GeneratedOres extends GT_Generic_Block {
             return false;
         }
 
-        GT_Block_GeneratedOres oreBlock = (small ? sGeneratedSmallBlocks : sGeneratedBlocks)[material.mMetaItemSubID];
+        GT_Block_GeneratedOres oreBlock = (small ? sGeneratedSmallBlocks : sGeneratedBlocks)[materialSubId];
 
         IBlockState blockState = oreBlock.getDefaultState()
                 .withProperty(STONE_TYPE, StoneTypes.mTypes[variantId])
-                .withProperty(oreBlock.MATERIAL, material);
+                .withProperty(oreBlock.MATERIAL, GregTech_API.sGeneratedMaterials[materialSubId]);
 
         return world.setBlockState(pos, blockState);
     }
@@ -118,7 +120,7 @@ public class GT_Block_GeneratedOres extends GT_Generic_Block {
     public int mId;
 
     /**
-     * @param materials Materials for which ore will be created. Works for materials.length <= 2
+     * @param materials Materials for which ore will be created. Works for materials.length <= MATERIALS_PER_BLOCK
      * @param flag
      */
     protected GT_Block_GeneratedOres(Materials[] materials, boolean small) {
@@ -128,8 +130,8 @@ public class GT_Block_GeneratedOres extends GT_Generic_Block {
         this.mMaterials = materials;
         this.mSmall = small;
 
-        if (materials.length > 2 )
-            throw new IllegalArgumentException("Materials.length must not be > 2");
+        if (materials.length > MATERIALS_PER_BLOCK)
+            throw new IllegalArgumentException("Materials.length must not be > MATERIALS_PER_BLOCK");
 
         for (int i = 0; i < MATERIALS_PER_BLOCK; i++) {
             (small ? sGeneratedSmallBlocks : sGeneratedBlocks)[materials[i].mMetaItemSubID] = this;
@@ -221,16 +223,6 @@ public class GT_Block_GeneratedOres extends GT_Generic_Block {
     }
 
     @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        return new ItemStack(this, 1, getMetaFromState(state));
-    }
-
-//    protected ItemStack createStackedBlock(IBlockState state) {
-//
-//    }
-
-
-    @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
         for(int i = 0; i < mMaterials.length; i++) {
             for(int j = 0; j < StoneTypes.mTypes.length; j++) {
@@ -272,7 +264,7 @@ public class GT_Block_GeneratedOres extends GT_Generic_Block {
 
     @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        ArrayList<ItemStack> rList = new ArrayList<>();
+        List<ItemStack> rList = new ArrayList<>();
         if (!mSmall) {
             rList.add(createStackedBlock(state));
             return rList;
@@ -281,7 +273,7 @@ public class GT_Block_GeneratedOres extends GT_Generic_Block {
         Materials aBaseMaterial = getStoneTypeSafe(state).stoneMaterial;
         if (aMaterial != null) {
             Random tRandom = new Random(pos.hashCode());
-            ArrayList<ItemStack> tSelector = new ArrayList<>();
+            List<ItemStack> tSelector = new ArrayList<>();
 
             ItemStack tStack = GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 1L);
             if (tStack != null) {

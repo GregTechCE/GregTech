@@ -16,6 +16,8 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.blocks.itemblocks.GT_Item_Machines;
+import gregtech.common.blocks.materials.GT_Material_Machines;
 import gregtech.common.render.GT_Renderer_Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -54,7 +56,7 @@ import java.util.List;
 public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlock, ITileEntityProvider {
 
     public GT_Block_Machines() {
-        super("blockmachines", GT_Item_Machines.class, new GT_Material_Machines());
+        super("blockmachines", GT_Item_Machines.class, GT_Material_Machines.INSTANCE);
         GregTech_API.registerMachineBlock(this, -1);
         setHardness(1.0F);
         setResistance(10.0F);
@@ -97,19 +99,9 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
 
     @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
-        if(GregTech_API.isMachineBlock(this, state.getValue(METADATA))) {
-            GregTech_API.causeMachineUpdate(worldIn, pos.getX(), pos.getY(), pos.getZ());
+        if(GregTech_API.isMachineBlock(state)) {
+            GregTech_API.causeMachineUpdate(worldIn, pos);
         }
-    }
-
-    @Override
-    public String getUnlocalizedName() {
-        return "gt.blockmachines";
-    }
-
-    @Override
-    public String getLocalizedName() {
-        return GT_LanguageManager.getTranslation(getUnlocalizedName() + ".name");
     }
 
     @Override

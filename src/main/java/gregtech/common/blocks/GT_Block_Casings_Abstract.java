@@ -2,6 +2,7 @@ package gregtech.common.blocks;
 
 import com.google.common.collect.Lists;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.block.SoundType;
@@ -26,13 +27,19 @@ import java.util.List;
 
 public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block {
 
-
     public GT_Block_Casings_Abstract(String aName, Class<? extends ItemBlock> aItemClass, Material aMaterial) {
         super(aName, aItemClass, aMaterial);
         setSoundType(SoundType.METAL);
         setCreativeTab(GregTech_API.TAB_GREGTECH);
+        setHardness(5.0F); //Blocks.IRON_BLOCK
+        setResistance(10.0F); //Blocks.IRON_BLOCK
         GregTech_API.registerMachineBlock(this, -1);
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + 32767 + ".name", "Any Sub Block of this");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + GT_Values.W + ".name", "Any Sub Block of this");
+    }
+
+    @Override
+    public int damageDropped(IBlockState state) {
+        return super.damageDropped(state); //TODO
     }
 
     @Override
@@ -46,16 +53,6 @@ public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block {
     }
 
     @Override
-    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-        return Blocks.IRON_BLOCK.getBlockHardness(blockState, worldIn, pos);
-    }
-
-    @Override
-    public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
-        return Blocks.IRON_BLOCK.getExplosionResistance(world, pos, exploder, explosion);
-    }
-
-    @Override
     public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
         return false;
     }
@@ -66,26 +63,16 @@ public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block {
 
     @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
-        if(GregTech_API.isMachineBlock(this, state.getValue(METADATA))) {
-            GregTech_API.causeMachineUpdate(worldIn, pos.getX(), pos.getY(), pos.getZ());
+        if(GregTech_API.isMachineBlock(state)) {
+            GregTech_API.causeMachineUpdate(worldIn, pos);
         }
     }
 
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-        if(GregTech_API.isMachineBlock(this, state.getValue(METADATA))) {
-            GregTech_API.causeMachineUpdate(worldIn, pos.getX(), pos.getY(), pos.getZ());
+        if(GregTech_API.isMachineBlock(state)) {
+            GregTech_API.causeMachineUpdate(worldIn, pos);
         }
-    }
-
-    @Override
-    public String getUnlocalizedName() {
-        return this.mUnlocalizedName;
-    }
-
-    @Override
-    public String getLocalizedName() {
-        return GT_LanguageManager.getTranslation(this.mUnlocalizedName + ".name");
     }
 
     @Override
@@ -95,7 +82,7 @@ public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block {
 
     @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        return Lists.newArrayList(new ItemStack(this, 1, state.getValue(METADATA)));
+        return Lists.newArrayList(new ItemStack(this, 1, this.damageDropped(state)));
     }
 
     @SideOnly(Side.CLIENT)

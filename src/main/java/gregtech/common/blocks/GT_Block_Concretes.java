@@ -1,18 +1,16 @@
 package gregtech.common.blocks;
 
-import com.google.common.collect.ImmutableList;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.common.blocks.itemblocks.GT_Item_Concretes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -26,8 +24,10 @@ import javax.annotation.Nullable;
 
 public class GT_Block_Concretes extends GT_Block_Stones_Abstract {
 
+    public static final AxisAlignedBB CONCRETE_BLOCK_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D);
+
     public GT_Block_Concretes() {
-        super("blockconcretes", GT_Item_Concretes.class, new Materials[]{Materials.Concrete, Materials.Concrete});
+        super("blockconcretes", GT_Item_Concretes.class, new Materials[]{Materials.Concrete});
         setResistance(20.0F);
         this.slipperiness = 0.9F;
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Dark Concrete");
@@ -80,7 +80,6 @@ public class GT_Block_Concretes extends GT_Block_Stones_Abstract {
         if (tBlock instanceof IFluidBlock || tBlock instanceof BlockLiquid) {
             return Block.FULL_BLOCK_AABB;
         }
-        return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D);
+        return CONCRETE_BLOCK_AABB;
     }
-
 }

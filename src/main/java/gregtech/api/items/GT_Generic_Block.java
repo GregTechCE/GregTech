@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
@@ -43,6 +44,11 @@ public abstract class GT_Generic_Block extends Block {
         this.setUnlocalizedName("gt." + aName);
         GameRegistry.registerBlock(this, aItemClass, getUnlocalizedName());
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + W + ".name", "Unnamed");
+    }
+
+    @Override
+    public String getLocalizedName() {
+        return GT_LanguageManager.getTranslation(this.getUnlocalizedName() + ".name");
     }
 
     @Override
