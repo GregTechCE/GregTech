@@ -31,7 +31,6 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
     public GT_Block_Casings4() {
         super("blockcasings4", GT_Item_Casings4.class, GT_Material_Casings.INSTANCE);
 
-
         this.setDefaultState(this.blockState.getBaseState()
                 .withProperty(CASING_VARIANT, EnumCasingVariant.ROBUST_TSTEEL));
 
@@ -39,31 +38,29 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Clean Stainless Steel Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Stable Titanium Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Titanium Firebox Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Fusion Coil");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Fusion Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Fusion Casing MK II");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Turbine Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Stainless Steel Turbine Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Titanium Turbine Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Tungstensteel Turbine Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Engine Intake Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Bronze Plated Bricks");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Heat Proof Machine Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Fusion Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Fusion Casing");// not used
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Fusion Casing");// not used
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Fusion Coil");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Fusion Casing MK II");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Turbine Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Stainless Steel Turbine Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Titanium Turbine Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Tungstensteel Turbine Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Engine Intake Casing");
 
         ItemList.Casing_RobustTungstenSteel.set(new ItemStack(this, 1, 0));
         ItemList.Casing_CleanStainlessSteel.set(new ItemStack(this, 1, 1));
         ItemList.Casing_StableTitanium.set(new ItemStack(this, 1, 2));
         ItemList.Casing_Firebox_Titanium.set(new ItemStack(this, 1, 3));
-        ItemList.Casing_Fusion_Coil.set(new ItemStack(this, 1, 4));
-        ItemList.Casing_Fusion.set(new ItemStack(this, 1, 5));
-        ItemList.Casing_Fusion2.set(new ItemStack(this, 1, 6));
-        ItemList.Casing_Turbine.set(new ItemStack(this, 1, 7));
-        ItemList.Casing_Turbine1.set(new ItemStack(this, 1, 8));
-        ItemList.Casing_Turbine2.set(new ItemStack(this, 1, 9));
-        ItemList.Casing_Turbine3.set(new ItemStack(this, 1, 10));
-        ItemList.Casing_EngineIntake.set(new ItemStack(this, 1, 11));
-        ItemList.Casing_BronzePlatedBricks.set(new ItemStack(this, 1, 12));
-        ItemList.Casing_HeatProof.set(new ItemStack(this, 1, 13));
+        ItemList.Casing_Fusion.set(new ItemStack(this, 1, 6));
+        ItemList.Casing_Fusion_Coil.set(new ItemStack(this, 1, 7));
+        ItemList.Casing_Fusion2.set(new ItemStack(this, 1, 8));
+        ItemList.Casing_Turbine.set(new ItemStack(this, 1, 9));
+        ItemList.Casing_Turbine1.set(new ItemStack(this, 1, 10));
+        ItemList.Casing_Turbine2.set(new ItemStack(this, 1, 11));
+        ItemList.Casing_Turbine3.set(new ItemStack(this, 1, 12));
+        ItemList.Casing_EngineIntake.set(new ItemStack(this, 1, 13));
     }
 
     @Override
@@ -124,9 +121,9 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
             case 13:
                 return Textures.BlockIcons.MACHINE_CASING_ENGINE_INTAKE;
             case 14:
-                return Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS;
+                return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL;
             case 15:
-                return Textures.BlockIcons.MACHINE_HEATPROOFCASING;
+                return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL;
         }
         return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL;
     }
@@ -538,16 +535,16 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
         CLEAN_SSTEEL("clean_ssteel"),
         STABLE_TITANIUM("stable_titanium"),
         FIREBOX_TITANIUM("titanium_firebox"),
-        FUSION_COIL("fusion_coil"),
         FUSION("fusion_casing"),
+        _FUSION("fusion_casing"),// TODO delete not used metas
+        __FUSION("fusion_casing"),// TODO delete not used metas
+        FUSION_COIL("fusion_coil"),
         FUSION2("fusion_casing_mk2"),
         TURBINE("turbine"),
         TURBINE1("ssteel_turbine"),
         TURBINE2("titanium_turbine"),
         TURBINE3("tsteel_turbine"),
-        ENGINE_INTAKE("engine_intake"),
-        BRONZE_PLATED_BRICKS("bplated_bricks"),
-        HEAT_PROOF("heat_proof");
+        ENGINE_INTAKE("engine_intake");
 
         private final int meta = ordinal();
         private final String name;

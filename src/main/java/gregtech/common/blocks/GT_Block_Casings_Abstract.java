@@ -38,11 +38,6 @@ public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block {
     }
 
     @Override
-    public int damageDropped(IBlockState state) {
-        return super.damageDropped(state); //TODO
-    }
-
-    @Override
     public String getHarvestTool(IBlockState state) {
         return "wrench";
     }

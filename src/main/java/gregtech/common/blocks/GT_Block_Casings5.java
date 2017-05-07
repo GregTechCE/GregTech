@@ -33,7 +33,6 @@ public class GT_Block_Casings5 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "HSS-G Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Naquadah Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Naquadah Alloy Coil Block");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Superconducting Coil Block");
 
         ItemList.Casing_Coil_Cupronickel.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Coil_Kanthal.set(new ItemStack(this, 1, 1));
@@ -42,8 +41,6 @@ public class GT_Block_Casings5 extends GT_Block_Casings_Abstract {
         ItemList.Casing_Coil_HSSG.set(new ItemStack(this, 1, 4));
         ItemList.Casing_Coil_Naquadah.set(new ItemStack(this, 1, 5));
         ItemList.Casing_Coil_NaquadahAlloy.set(new ItemStack(this, 1, 6));
-        ItemList.Casing_Coil_Superconductor.set(new ItemStack(this, 1, 7));
-
     }
 
     @Override
@@ -90,8 +87,6 @@ public class GT_Block_Casings5 extends GT_Block_Casings_Abstract {
                 return Textures.BlockIcons.MACHINE_COIL_NAQUADAH;
             case 6:
                 return Textures.BlockIcons.MACHINE_COIL_NAQUADAHALLOY;
-            case 7:
-                return Textures.BlockIcons.MACHINE_COIL_SUPERCONDUCTOR;
         }
         return Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL;
     }
@@ -103,8 +98,7 @@ public class GT_Block_Casings5 extends GT_Block_Casings_Abstract {
         TUNGSTENSTEEL("tungstensteel"),
         HSSG("hssg"),
         NAQUADAH("naquadah"),
-        NAQUADAH_ALLOY("naquadah_alloy"),
-        SUPERCONDUCTING("superconducting");
+        NAQUADAH_ALLOY("naquadah_alloy");
 
         private final int meta = ordinal();
         private final String name;

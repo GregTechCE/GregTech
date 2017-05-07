@@ -2,8 +2,11 @@ package gregtech.api.items;
 
 import codechicken.lib.render.particle.CustomParticleHandler;
 import codechicken.lib.vec.Cuboid6;
+import com.google.common.collect.ObjectArrays;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Log;
 import gregtech.common.render.RenderBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -27,12 +30,15 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.LoaderException;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNullableByDefault;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
 import static gregtech.api.enums.GT_Values.W;
@@ -41,8 +47,22 @@ public abstract class GT_Generic_Block extends Block {
 
     protected GT_Generic_Block(String aName, @Nullable Class<? extends ItemBlock> aItemClass, Material aMaterial) {
         super(aMaterial);
-        this.setUnlocalizedName("gt." + aName);
-        GameRegistry.registerBlock(this, aItemClass, getUnlocalizedName());
+
+        setUnlocalizedName("gt." + aName);
+        setRegistryName(aName);
+        GameRegistry.register(this);
+
+        if (aItemClass != null) {
+            ItemBlock itemBlock = null;
+            try {
+                itemBlock = aItemClass.getConstructor(Block.class).newInstance(this);
+            } catch(ReflectiveOperationException e){
+                e.printStackTrace(GT_Log.err);
+                throw new LoaderException(e);
+            }
+            GameRegistry.register(itemBlock, getRegistryName());
+        }
+
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + W + ".name", "Unnamed");
     }
 

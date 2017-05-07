@@ -38,7 +38,7 @@ public class GT_Block_Casings3 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Noise Hazard Sign Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Grate Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Vent Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Radiation Proof Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Radiation Proof Casing");// does not have a recipe
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Bronze Firebox Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Steel Firebox Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Tungstensteel Firebox Casing");
