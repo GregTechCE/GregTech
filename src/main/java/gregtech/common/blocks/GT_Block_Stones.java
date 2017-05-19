@@ -17,7 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GT_Block_Stones extends GT_Block_Stones_Abstract {
     public GT_Block_Stones() {
-        super("blockstones", GT_Item_Granites.class, new Materials[]{Materials.Marble, Materials.Basalt});
+        super("blockstones", GT_Item_Granites.class);
         setResistance(60.0F);
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Marble");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Marble Cobblestone");
@@ -54,12 +54,11 @@ public class GT_Block_Stones extends GT_Block_Stones_Abstract {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
-        if ((aMeta >= 0) && (aMeta < 16)) {
-            return gregtech.api.enums.Textures.BlockIcons.STONES[aMeta].getIcon();
+    public Materials[] getMaterials() {
+        if (mMaterials == null) {
+            mMaterials = new Materials[]{Materials.Marble, Materials.Basalt};
         }
-        return gregtech.api.enums.Textures.BlockIcons.STONES[0].getIcon();
+        return mMaterials;
     }
 
 }

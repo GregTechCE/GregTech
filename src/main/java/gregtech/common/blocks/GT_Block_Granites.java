@@ -19,7 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class GT_Block_Granites extends GT_Block_Stones_Abstract {
 
     public GT_Block_Granites() {
-        super("blockgranites", GT_Item_Granites.class, new Materials[]{Materials.GraniteBlack, Materials.GraniteRed});
+        super("blockgranites", GT_Item_Granites.class);
         setResistance(60.0F);
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Black Granite");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Black Granite Cobblestone");
@@ -53,6 +53,14 @@ public class GT_Block_Granites extends GT_Block_Stones_Abstract {
         GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(this, 1, 13));
         GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(this, 1, 14));
         GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(this, 1, 15));
+    }
+
+    @Override
+    public Materials[] getMaterials() {
+        if (mMaterials == null) {
+            mMaterials = new Materials[]{Materials.GraniteBlack, Materials.GraniteRed};
+        }
+        return mMaterials;
     }
 
     @Override

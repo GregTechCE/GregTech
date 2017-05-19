@@ -5,7 +5,6 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.items.GT_Generic_Block;
-import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.properties.PropertyMaterial;
@@ -15,20 +14,14 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -42,9 +35,9 @@ public abstract class GT_Block_Stones_Abstract extends GT_Generic_Block implemen
     public static final int MATERIALS_PER_BLOCK = 2;
 
     public static final PropertyEnum<EnumStoneVariant> STONE_VARIANT = PropertyEnum.create("stone_variant", EnumStoneVariant.class);
-    public final PropertyMaterial MATERIAL;
+    private PropertyMaterial MATERIAL;
 
-    public final Materials[] mMaterials;
+    protected Materials[] mMaterials;
 
     /**
      *
@@ -52,19 +45,15 @@ public abstract class GT_Block_Stones_Abstract extends GT_Generic_Block implemen
      * @param aItemClass
      * @param materials Materials for which ore will be created. Works for materials.length <= MATERIALS_PER_BLOCK
      */
-    public GT_Block_Stones_Abstract(String aName, Class<? extends ItemBlock> aItemClass, Materials[] materials) {
+    public GT_Block_Stones_Abstract(String aName, Class<? extends ItemBlock> aItemClass) {
         super(aName, aItemClass, Material.ROCK);
 
-        this.mMaterials = materials;
-
-        if (materials.length > MATERIALS_PER_BLOCK)
-            throw new IllegalArgumentException("Materials.length must not be > 2");
-
-        MATERIAL = PropertyMaterial.create("material", materials);
+        if (getMaterials().length > MATERIALS_PER_BLOCK)
+            throw new IllegalArgumentException("Materials.length must not be > MATERIALS_PER_BLOCK");
 
         this.setDefaultState(this.blockState.getBaseState()
                 .withProperty(STONE_VARIANT, EnumStoneVariant.NORMAL)
-                .withProperty(MATERIAL, MATERIAL.getFirstType()));
+                .withProperty(getMaterialProperty(), getMaterialProperty().getFirstType()));
 
         OrePrefixes.crafting.add(this);
         setSoundType(SoundType.STONE);
@@ -112,16 +101,25 @@ public abstract class GT_Block_Stones_Abstract extends GT_Generic_Block implemen
         }
     }
 
+    public abstract Materials[] getMaterials();
+
+    public PropertyMaterial getMaterialProperty() {
+        if (this.MATERIAL == null) {
+            this.MATERIAL = PropertyMaterial.create("material", getMaterials());
+        }
+        return this.MATERIAL;
+    }
+
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, STONE_VARIANT, MATERIAL);
+        return new BlockStateContainer(this, STONE_VARIANT, getMaterialProperty());
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState()
                 .withProperty(STONE_VARIANT, EnumStoneVariant.byMetadata((meta & 15) >> 1))
-                .withProperty(MATERIAL, mMaterials[meta & B[0]]);
+                .withProperty(getMaterialProperty(), getMaterials()[meta & B[0]]);
     }
 
     /**
@@ -134,9 +132,9 @@ public abstract class GT_Block_Stones_Abstract extends GT_Generic_Block implemen
     public int getMetaFromState(IBlockState state) {
         int meta = 0;
 
-        Materials material = state.getValue(MATERIAL);
-        for (int i = 0; i < mMaterials.length; i++) {
-            if (material.equals(mMaterials[i])){
+        Materials material = state.getValue(getMaterialProperty());
+        for (int i = 0; i < getMaterials().length; i++) {
+            if (material.equals(getMaterials()[i])){
                 meta |= i;
             }
         }

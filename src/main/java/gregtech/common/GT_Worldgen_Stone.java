@@ -1,8 +1,9 @@
 package gregtech.common;
 
+import com.google.common.base.Predicate;
 import gregtech.api.enums.StoneTypes;
+import gregtech.api.world.GT_Worldgen;
 import gregtech.api.world.GT_Worldgen_Ore;
-import gregtech.api.world.GT_Worldgen_Constants;
 import gregtech.common.blocks.GT_Block_GeneratedOres;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -17,8 +18,8 @@ import java.util.Random;
 
 public class GT_Worldgen_Stone
         extends GT_Worldgen_Ore {
-    public GT_Worldgen_Stone(String aName, boolean aDefault, Block aBlock, int aBlockMeta, int aDimensionType, int aAmount, int aSize, int aProbability, int aMinY, int aMaxY, Collection<String> aBiomeList, boolean aAllowToGenerateinVoid) {
-        super(aName, aDefault, aBlock, aBlockMeta, aDimensionType, aAmount, aSize, aProbability, aMinY, aMaxY, aBiomeList, aAllowToGenerateinVoid);
+    public GT_Worldgen_Stone(String aName, boolean aDefault, IBlockState aBlockState, int aDimensionType, int aAmount, int aSize, int aProbability, int aMinY, int aMaxY, Collection<String> aBiomeList, boolean aAllowToGenerateinVoid) {
+        super(aName, aDefault, aBlockState, aDimensionType, aAmount, aSize, aProbability, aMinY, aMaxY, aBiomeList, aAllowToGenerateinVoid);
     }
 
     private BlockPos.MutableBlockPos temp = new BlockPos.MutableBlockPos();
@@ -74,7 +75,7 @@ public class GT_Worldgen_Stone
                                                     StoneTypes stoneTypes = StoneTypes.computeStoneType(mBlockState);
                                                     aWorld.setBlockState(temp, block.overrideStoneType(tTargetedBlock, stoneTypes));
                                                 } else if ((this.mAllowToGenerateinVoid && aWorld.isAirBlock(temp)) ||
-                                                        (tTargetedBlock != null && tTargetedBlock.getBlock().isReplaceableOreGen(tTargetedBlock, aWorld, temp, GT_Worldgen_Constants.ANY))) {
+                                                        (tTargetedBlock != null && tTargetedBlock.getBlock().isReplaceableOreGen(tTargetedBlock, aWorld, temp, (Predicate<IBlockState>) GT_Worldgen.ANY))) {
                                                     aWorld.setBlockState(temp, mBlockState);
                                                 }
                                             }

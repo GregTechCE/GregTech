@@ -51,7 +51,7 @@ public class PropertyMaterial extends PropertyHelper<Materials> {
 
 	@Override
 	public String getName(Materials material) {
-		return material.mName;
+		return material.mName.toLowerCase();
 	}
 
 	@Override

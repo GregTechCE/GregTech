@@ -1,8 +1,6 @@
 package gregtech.common.blocks;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.itemblocks.GT_Item_Casings3;
 import gregtech.common.blocks.materials.GT_Material_Casings;

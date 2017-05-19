@@ -13,6 +13,7 @@ import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class GT_Worldgen_GT_Ore_Layer

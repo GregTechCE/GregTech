@@ -5,7 +5,6 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.Textures;
 import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;

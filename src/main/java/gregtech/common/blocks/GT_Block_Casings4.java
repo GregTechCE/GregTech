@@ -1,8 +1,6 @@
 package gregtech.common.blocks;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_LanguageManager;
@@ -536,8 +534,8 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
         STABLE_TITANIUM("stable_titanium"),
         FIREBOX_TITANIUM("titanium_firebox"),
         FUSION("fusion_casing"),
-        _FUSION("fusion_casing"),// TODO delete not used metas
-        __FUSION("fusion_casing"),// TODO delete not used metas
+        _FUSION("fusion_casing2"),// TODO delete not used metas
+        __FUSION("fusion_casing3"),// TODO delete not used metas
         FUSION_COIL("fusion_coil"),
         FUSION2("fusion_casing_mk2"),
         TURBINE("turbine"),

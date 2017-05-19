@@ -27,7 +27,7 @@ public class GT_Block_Concretes extends GT_Block_Stones_Abstract {
     public static final AxisAlignedBB CONCRETE_BLOCK_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D);
 
     public GT_Block_Concretes() {
-        super("blockconcretes", GT_Item_Concretes.class, new Materials[]{Materials.Concrete});
+        super("blockconcretes", GT_Item_Concretes.class);
         setResistance(20.0F);
         this.slipperiness = 0.9F;
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Dark Concrete");
@@ -50,12 +50,11 @@ public class GT_Block_Concretes extends GT_Block_Stones_Abstract {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
-        if ((aMeta >= 0) && (aMeta < 16)) {
-            return gregtech.api.enums.Textures.BlockIcons.CONCRETES[aMeta].getIcon();
+    public Materials[] getMaterials() {
+        if (mMaterials == null) {
+            mMaterials = new Materials[]{Materials.Concrete};
         }
-        return gregtech.api.enums.Textures.BlockIcons.CONCRETES[0].getIcon();
+        return mMaterials;
     }
 
     @Override
