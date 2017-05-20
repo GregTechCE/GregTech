@@ -1,5 +1,6 @@
 package gregtech.api.world;
 
+import com.google.common.base.Predicate;
 import gregtech.api.GregTech_API;
 import gregtech.common.blocks.GT_Block_Granites;
 import gregtech.common.blocks.GT_Block_Stones;
@@ -13,7 +14,6 @@ import net.minecraft.world.chunk.IChunkProvider;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Predicate;
 
 public abstract class GT_Worldgen {
 
@@ -21,7 +21,7 @@ public abstract class GT_Worldgen {
     public final String mWorldGenName;
     public final boolean mEnabled;
 
-    public GT_Worldgen(String aName, List<GT_Worldgen> aList, boolean aDefault) {
+    public GT_Worldgen(String aName, List aList, boolean aDefault) {
         mWorldGenName = aName;
         mEnabled = GregTech_API.sWorldgenFile.get("worldgen", mWorldGenName, aDefault);
         if (mEnabled) aList.add(this);
@@ -64,7 +64,7 @@ public abstract class GT_Worldgen {
 
     public boolean isGenerationAllowed(World aWorld, BlockPos blockPos) {
         IBlockState blockState = aWorld.getBlockState(blockPos);
-        return ANY.test(blockState);
+        return ANY.apply(blockState);
     }
 
 
@@ -87,7 +87,7 @@ public abstract class GT_Worldgen {
 
 
     public static Predicate<IBlockState> ANY = input ->
-            STONES.test(input) || NETHERRACK.test(input) || ENDSTONE.test(input) || GRAVEL.test(input) || SAND.test(input);
+            STONES.apply(input) || NETHERRACK.apply(input) || ENDSTONE.apply(input) || GRAVEL.apply(input) || SAND.apply(input);
 
 
 }

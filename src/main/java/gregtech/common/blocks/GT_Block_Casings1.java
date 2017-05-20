@@ -71,7 +71,7 @@ public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState()
-                .withProperty(CASING_VARIANT, EnumCasingVariant.byMetadata(meta & 15));
+                .withProperty(CASING_VARIANT, EnumCasingVariant.byMetadata(meta & 0b1111));
     }
 
     /**
@@ -84,38 +84,38 @@ public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
         return meta;
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
-        return getIconContainer(aSide, aMeta).getIcon();
-    }
-    
-    public static IIconContainer getIconContainer(EnumFacing aSide, int aMeta) {
-        if ((aMeta >= 0) && (aMeta < 16)) {
-            switch (aMeta) {
-                case 10:
-                    return Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS;
-                case 11:
-                    return Textures.BlockIcons.MACHINE_HEATPROOFCASING;
-                case 12:
-                    return Textures.BlockIcons.RENDERING_ERROR;
-                case 13:
-                    return Textures.BlockIcons.RENDERING_ERROR;
-                case 14:
-                    return Textures.BlockIcons.RENDERING_ERROR;
-                case 15:
-                    return Textures.BlockIcons.MACHINE_COIL_SUPERCONDUCTOR;
-            }
-            if (aSide == EnumFacing.DOWN) {
-                return Textures.BlockIcons.MACHINECASINGS_BOTTOM[aMeta];
-            }
-            if (aSide == EnumFacing.UP) {
-                return Textures.BlockIcons.MACHINECASINGS_TOP[aMeta];
-            }
-            return Textures.BlockIcons.MACHINECASINGS_SIDE[aMeta];
-        }
-        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL;
-    }
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
+//        return getIconContainer(aSide, aMeta).getIcon();
+//    }
+//
+//    public static IIconContainer getIconContainer(EnumFacing aSide, int aMeta) {
+//        if ((aMeta >= 0) && (aMeta < 16)) {
+//            switch (aMeta) {
+//                case 10:
+//                    return Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS;
+//                case 11:
+//                    return Textures.BlockIcons.MACHINE_HEATPROOFCASING;
+//                case 12:
+//                    return Textures.BlockIcons.RENDERING_ERROR;
+//                case 13:
+//                    return Textures.BlockIcons.RENDERING_ERROR;
+//                case 14:
+//                    return Textures.BlockIcons.RENDERING_ERROR;
+//                case 15:
+//                    return Textures.BlockIcons.MACHINE_COIL_SUPERCONDUCTOR;
+//            }
+//            if (aSide == EnumFacing.DOWN) {
+//                return Textures.BlockIcons.MACHINECASINGS_BOTTOM[aMeta];
+//            }
+//            if (aSide == EnumFacing.UP) {
+//                return Textures.BlockIcons.MACHINECASINGS_TOP[aMeta];
+//            }
+//            return Textures.BlockIcons.MACHINECASINGS_SIDE[aMeta];
+//        }
+//        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL;
+//    }
 
     @Override
     public int getColorMultiplier(IBlockAccess worldIn, BlockPos pos, IBlockState state) {

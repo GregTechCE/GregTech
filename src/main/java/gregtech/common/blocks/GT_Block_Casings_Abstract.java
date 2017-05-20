@@ -33,8 +33,7 @@ public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block {
         setCreativeTab(GregTech_API.TAB_GREGTECH);
         setHardness(5.0F); //Blocks.IRON_BLOCK
         setResistance(10.0F); //Blocks.IRON_BLOCK
-        GregTech_API.registerMachineBlock(this, -1);
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + GT_Values.W + ".name", "Any Sub Block of this");
+//        GregTech_API.registerMachineBlock(this, -1);
     }
 
     @Override
@@ -77,7 +76,7 @@ public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block {
 
     @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        return Lists.newArrayList(new ItemStack(this, 1, this.damageDropped(state)));
+        return Lists.newArrayList(createStackedBlock(state));
     }
 
     @SideOnly(Side.CLIENT)

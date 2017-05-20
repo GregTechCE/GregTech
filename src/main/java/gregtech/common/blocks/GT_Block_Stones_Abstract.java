@@ -118,13 +118,13 @@ public abstract class GT_Block_Stones_Abstract extends GT_Generic_Block implemen
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState()
-                .withProperty(STONE_VARIANT, EnumStoneVariant.byMetadata((meta & 15) >> 1))
-                .withProperty(getMaterialProperty(), getMaterials()[meta & B[0]]);
+                .withProperty(STONE_VARIANT, EnumStoneVariant.byMetadata(meta & 0b0111))
+                .withProperty(getMaterialProperty(), getMaterials()[(meta & 0b1000) >> 3]);
     }
 
     /**
-     * First bit for MATERIAL
-     * rest - STONE_VARIANT
+     * 0b0111 - STONE_VARIANT mask
+     * 0b1000 - MATERIAL mask
      *
      * @see Block#getMetaFromState(IBlockState)
      */
@@ -132,13 +132,14 @@ public abstract class GT_Block_Stones_Abstract extends GT_Generic_Block implemen
     public int getMetaFromState(IBlockState state) {
         int meta = 0;
 
+        meta |= state.getValue(STONE_VARIANT).getMetadata();
+
         Materials material = state.getValue(getMaterialProperty());
         for (int i = 0; i < getMaterials().length; i++) {
-            if (material.equals(getMaterials()[i])){
-                meta |= i;
+            if (material == getMaterials()[i]){
+                meta |= i << 3;
             }
         }
-        meta |= state.getValue(STONE_VARIANT).getMetadata() << 1;
         return meta;
     }
 
@@ -152,14 +153,14 @@ public abstract class GT_Block_Stones_Abstract extends GT_Generic_Block implemen
         return 1;
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
-        if ((aMeta >= 0) && (aMeta < 16)) {
-            return gregtech.api.enums.Textures.BlockIcons.GRANITES[aMeta].getIcon();
-        }
-        return null;
-    }
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
+//        if ((aMeta >= 0) && (aMeta < 16)) {
+//            return gregtech.api.enums.Textures.BlockIcons.GRANITES[aMeta].getIcon();
+//        }
+//        return null;
+//    }
 
     @Override
     public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
@@ -170,9 +171,9 @@ public abstract class GT_Block_Stones_Abstract extends GT_Generic_Block implemen
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
         EnumStoneVariant stoneVariant = state.getValue(STONE_VARIANT);
         if (stoneVariant == EnumStoneVariant.NORMAL) {
-            return Lists.newArrayList(new ItemStack(this, 1, this.damageDropped(state.cycleProperty(STONE_VARIANT))));
+            return Lists.newArrayList(createStackedBlock(state.cycleProperty(STONE_VARIANT)));
         }
-        return Lists.newArrayList(new ItemStack(this, 1, this.damageDropped(state)));
+        return Lists.newArrayList(createStackedBlock(state));
     }
 
     @SideOnly(Side.CLIENT)

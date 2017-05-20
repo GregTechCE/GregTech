@@ -72,7 +72,7 @@ public class GT_Block_Casings2 extends GT_Block_Casings_Abstract {
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState()
-                .withProperty(CASING_VARIANT, EnumCasingVariant.byMetadata(meta & 15));
+                .withProperty(CASING_VARIANT, EnumCasingVariant.byMetadata(meta & 0b1111));
     }
 
     /**
@@ -84,50 +84,50 @@ public class GT_Block_Casings2 extends GT_Block_Casings_Abstract {
         meta |= state.getValue(CASING_VARIANT).getMetadata();
         return meta;
     }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
-        return getIconContainer(aSide, aMeta).getIcon();
-    }
-
-    public static IIconContainer getIconContainer(EnumFacing aSide, int aMeta) {
-        switch (aMeta) {
-            case 0:
-                return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL;
-            case 1:
-                return Textures.BlockIcons.MACHINE_CASING_FROST_PROOF;
-            case 2:
-                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_BRONZE;
-            case 3:
-                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_STEEL;
-            case 4:
-                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_TITANIUM;
-            case 5:
-                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_TUNGSTENSTEEL;
-            case 6:
-                return Textures.BlockIcons.MACHINE_CASING_PROCESSOR;
-            case 7:
-                return Textures.BlockIcons.MACHINE_CASING_DATA_DRIVE;
-            case 8:
-                return Textures.BlockIcons.MACHINE_CASING_CONTAINMENT_FIELD;
-            case 9:
-                return Textures.BlockIcons.MACHINE_CASING_ASSEMBLER;
-            case 10:
-                return Textures.BlockIcons.MACHINE_CASING_PUMP;
-            case 11:
-                return Textures.BlockIcons.MACHINE_CASING_MOTOR;
-            case 12:
-                return Textures.BlockIcons.MACHINE_CASING_PIPE_BRONZE;
-            case 13:
-                return Textures.BlockIcons.MACHINE_CASING_PIPE_STEEL;
-            case 14:
-                return Textures.BlockIcons.MACHINE_CASING_PIPE_TITANIUM;
-            case 15:
-                return Textures.BlockIcons.MACHINE_CASING_PIPE_TUNGSTENSTEEL;
-        }
-        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL;
-    }
+//
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
+//        return getIconContainer(aSide, aMeta).getIcon();
+//    }
+//
+//    public static IIconContainer getIconContainer(EnumFacing aSide, int aMeta) {
+//        switch (aMeta) {
+//            case 0:
+//                return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL;
+//            case 1:
+//                return Textures.BlockIcons.MACHINE_CASING_FROST_PROOF;
+//            case 2:
+//                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_BRONZE;
+//            case 3:
+//                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_STEEL;
+//            case 4:
+//                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_TITANIUM;
+//            case 5:
+//                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_TUNGSTENSTEEL;
+//            case 6:
+//                return Textures.BlockIcons.MACHINE_CASING_PROCESSOR;
+//            case 7:
+//                return Textures.BlockIcons.MACHINE_CASING_DATA_DRIVE;
+//            case 8:
+//                return Textures.BlockIcons.MACHINE_CASING_CONTAINMENT_FIELD;
+//            case 9:
+//                return Textures.BlockIcons.MACHINE_CASING_ASSEMBLER;
+//            case 10:
+//                return Textures.BlockIcons.MACHINE_CASING_PUMP;
+//            case 11:
+//                return Textures.BlockIcons.MACHINE_CASING_MOTOR;
+//            case 12:
+//                return Textures.BlockIcons.MACHINE_CASING_PIPE_BRONZE;
+//            case 13:
+//                return Textures.BlockIcons.MACHINE_CASING_PIPE_STEEL;
+//            case 14:
+//                return Textures.BlockIcons.MACHINE_CASING_PIPE_TITANIUM;
+//            case 15:
+//                return Textures.BlockIcons.MACHINE_CASING_PIPE_TUNGSTENSTEEL;
+//        }
+//        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL;
+//    }
 
     @Override
     public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {

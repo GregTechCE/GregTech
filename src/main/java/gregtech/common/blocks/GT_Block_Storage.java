@@ -29,28 +29,39 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Arrays;
 import java.util.List;
 
-public class GT_Block_Storage extends GT_Generic_Block {
+public abstract class GT_Block_Storage extends GT_Generic_Block {
 
-    public final PropertyMaterial MATERIAL;
+    private PropertyMaterial MATERIAL;
 
-    public Materials[] mMats;
+    public static Block createStorageBlock(String aName, Materials[] materials, OrePrefixes aPrefix/*, Textures.BlockIcons[] aBlockIcons*/){
+        return new GT_Block_Storage(aName, aPrefix/*, aBlockIcons*/){
+            @Override
+            public Materials[] getMaterials() {
+                if (mMaterials == null) {
+                    mMaterials = materials;
+
+                }
+                return mMaterials;
+            }
+        };
+    }
+
+    protected Materials[] mMaterials;
     public OrePrefixes mPrefix;
-    public Textures.BlockIcons[] mBlockIcons;
+//    public Textures.BlockIcons[] mBlockIcons;
 
-    public GT_Block_Storage(String aName, Materials[] aMats, OrePrefixes aPrefix, Textures.BlockIcons[] aBlockIcons) {
+    private GT_Block_Storage(String aName, OrePrefixes aPrefix/*, Textures.BlockIcons[] aBlockIcons*/) {
         super(aName, GT_Item_Storage.class, Material.IRON);
-        mMats = aMats;
         mPrefix = aPrefix;
-        mBlockIcons = aBlockIcons;
+//        mBlockIcons = aBlockIcons;
 
-        MATERIAL = PropertyMaterial.create("material", aMats);
-
-        for (int i = 0; i < aMats.length; i++) {
-            if (aMats[i].mMetaItemSubID > 0 && aMats[i].mHasParentMod) {
-                GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + i + ".name", "Block of " + aMats[i].mDefaultLocalName);
-                GT_OreDictUnificator.registerOre(aPrefix, aMats[i], new ItemStack(this, 1, i));
+        for (int i = 0; i < getMaterials().length; i++) {
+            if (getMaterials()[i].mMetaItemSubID > 0 && getMaterials()[i].mHasParentMod) {
+                GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + i + ".name", "Block of " + getMaterials()[i].mDefaultLocalName);
+                GT_OreDictUnificator.registerOre(aPrefix, getMaterials()[i], new ItemStack(this, 1, i));
             }
         }
         setHardness(5.0F); //Blocks.IRON_BLOCK
@@ -59,15 +70,25 @@ public class GT_Block_Storage extends GT_Generic_Block {
         setCreativeTab(GregTech_API.TAB_GREGTECH_MATERIALS);
     }
 
+    public abstract Materials[] getMaterials();
+
+    public PropertyMaterial getMaterialProperty() {
+        if (this.MATERIAL == null) {
+            this.MATERIAL = PropertyMaterial.create("material", getMaterials());
+        }
+        return this.MATERIAL;
+    }
+
+
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, MATERIAL);
+        return new BlockStateContainer(this, getMaterialProperty());
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState()
-                .withProperty(MATERIAL, mMats[meta & 15]);
+                .withProperty(getMaterialProperty(), getMaterials()[meta & 0b1111]);
     }
 
     /**
@@ -75,11 +96,11 @@ public class GT_Block_Storage extends GT_Generic_Block {
      */
     @Override
     public int getMetaFromState(IBlockState state) {
-        Materials material = state.getValue(MATERIAL);
+        Materials material = state.getValue(getMaterialProperty());
 
         int meta = 0;
-        for (int i = 0; i < mMats.length; i++) {
-            if (material == mMats[i]) {
+        for (int i = 0; i < getMaterials().length; i++) {
+            if (material == getMaterials()[i]) {
                 meta |= i;
             }
         }
@@ -108,12 +129,12 @@ public class GT_Block_Storage extends GT_Generic_Block {
         }
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing aSide, int aDamage) {
-        if ((aDamage >= 0) && (aDamage < 16) && aDamage < mMats.length) {
-            return mBlockIcons[aDamage].getIcon();
-        }
-        return mBlockIcons[0].getIcon();
-    }
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public TextureAtlasSprite getIcon(EnumFacing aSide, int aDamage) {
+//        if ((aDamage >= 0) && (aDamage < 16) && aDamage < mMats.length) {
+//            return mBlockIcons[aDamage].getIcon();
+//        }
+//        return mBlockIcons[0].getIcon();
+//    }
 }

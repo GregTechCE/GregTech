@@ -39,8 +39,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import static gregtech.api.enums.GT_Values.B;
-
 public abstract class GT_Block_GeneratedOres extends GT_Generic_Block {
 
     // We have only 1 bit to store material
@@ -66,55 +64,32 @@ public abstract class GT_Block_GeneratedOres extends GT_Generic_Block {
             if(aMaterial != null && (aMaterial.mTypes & 0x08) != 0) {
                 lastMats[length++] = aMaterial;
                 if(length == MATERIALS_PER_BLOCK) {
-
-                    Materials[] materials = lastMats;
-                    new GT_Block_GeneratedOres(false) {
-                        @Override
-                        public Materials[] getMaterials() {
-                            if (mMaterials == null) {
-                                mMaterials = materials;
-                            }
-                            return mMaterials;
-                        }
-                    };
-                    new GT_Block_GeneratedOres(true) {
-                        @Override
-                        public Materials[] getMaterials() {
-                            if (mMaterials == null) {
-                                mMaterials = materials;
-                            }
-                            return mMaterials;
-                        }
-                    };
+                    createOreBlock(lastMats);
                     lastMats = new Materials[MATERIALS_PER_BLOCK];
                     length = 0;
                 }
             }
         }
         if(length != 0) {
-            Arrays.stream(lastMats).filter(material -> material != null).toArray(Materials[]::new);
-
-            Materials[] materials = lastMats;
-            new GT_Block_GeneratedOres(false) {
-                @Override
-                public Materials[] getMaterials() {
-                    if (mMaterials == null) {
-                        mMaterials = materials;
-                    }
-                    return mMaterials;
-                }
-            };
-            new GT_Block_GeneratedOres(true) {
-                @Override
-                public Materials[] getMaterials() {
-                    if (mMaterials == null) {
-                        mMaterials = materials;
-                    }
-                    return mMaterials;
-                }
-            };
+            Materials[] materials = Arrays.stream(lastMats).filter(material -> material != null).toArray(Materials[]::new);
+            createOreBlock(materials);
         }
         System.out.println("ORE BLOCKS REGISTERED: " + sNextId);
+    }
+
+    private static void createOreBlock(Materials[] materials){
+        new GT_Block_GeneratedOres(false) {
+            @Override
+            public Materials[] getMaterials() {
+                return materials;
+            }
+        };
+        new GT_Block_GeneratedOres(true) {
+            @Override
+            public Materials[] getMaterials() {
+                return materials;
+            }
+        };
     }
 
     public static boolean setOreBlock(World world, BlockPos pos, int materialSubId, boolean small) {
@@ -146,12 +121,11 @@ public abstract class GT_Block_GeneratedOres extends GT_Generic_Block {
 
         IBlockState blockState = oreBlock.getDefaultState()
                 .withProperty(STONE_TYPE, StoneTypes.mTypes[variantId])
-                .withProperty(oreBlock.MATERIAL, GregTech_API.sGeneratedMaterials[materialSubId]);
+                .withProperty(oreBlock.getMaterialProperty(), GregTech_API.sGeneratedMaterials[materialSubId]);
 
         return world.setBlockState(pos, blockState);
     }
 
-    protected Materials[] mMaterials;
     public final boolean mSmall;
     public int mId;
 
@@ -174,18 +148,20 @@ public abstract class GT_Block_GeneratedOres extends GT_Generic_Block {
 
         this.setDefaultState(this.blockState.getBaseState()
                 .withProperty(STONE_TYPE, StoneTypes.STONE)
-                .withProperty(MATERIAL, MATERIAL.getFirstType()));
+                .withProperty(getMaterialProperty(), getMaterialProperty().getFirstType()));
 
-        for (int i = 0, j = 0; i < StoneTypes.mTypes.length && j < getMaterials().length; i++, j++) {
-            Materials aMaterial = getMaterials()[j];
+        for (int i = 0; i < StoneTypes.mTypes.length; i++) {
+            for (int j = 0; j < getMaterials().length; j++) {
+                Materials aMaterial = getMaterials()[j];
 
-            IBlockState blockState = this.getDefaultState()
-                    .withProperty(STONE_TYPE, StoneTypes.mTypes[0])
-                    .withProperty(MATERIAL, aMaterial);
+                IBlockState blockState = this.getDefaultState()
+                        .withProperty(STONE_TYPE, StoneTypes.mTypes[i])
+                        .withProperty(getMaterialProperty(), aMaterial);
 
-            ItemStack itemStack = createStackedBlock(blockState);
-            GT_OreDictUnificator.registerOre(StoneTypes.mTypes[i].processingPrefix.get(this.getMaterials()[j]), itemStack);
-            GT_LanguageManager.addStringLocalization(itemStack.getUnlocalizedName() + ".name", (small ? "Small " : "") + getLocalizedName(aMaterial));
+                ItemStack itemStack = createStackedBlock(blockState);
+                GT_OreDictUnificator.registerOre(StoneTypes.mTypes[i].processingPrefix.get(this.getMaterials()[j]), itemStack);
+                GT_LanguageManager.addStringLocalization(itemStack.getUnlocalizedName() + ".name", (small ? "Small " : "") + getLocalizedName(aMaterial));
+            }
         }
 
         setSoundType(SoundType.STONE);
@@ -203,7 +179,7 @@ public abstract class GT_Block_GeneratedOres extends GT_Generic_Block {
     }
 
     public Materials getMaterialSafe(IBlockState state) {
-        Materials material = state.getValue(MATERIAL);
+        Materials material = state.getValue(getMaterialProperty());
         for (int i = 0; i < getMaterials().length; i++) {
             if (material == getMaterials()[i]) {
                 return material;
@@ -238,13 +214,13 @@ public abstract class GT_Block_GeneratedOres extends GT_Generic_Block {
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState()
-                .withProperty(STONE_TYPE, StoneTypes.mTypes[(meta & 15) >> 1])
-                .withProperty(getMaterialProperty(), getMaterials()[meta & B[0]]);
+                .withProperty(STONE_TYPE, StoneTypes.mTypes[meta & 0b0111])
+                .withProperty(getMaterialProperty(), getMaterials()[(meta & 0b1000) >> 3]);
     }
 
     /**
-     * First bit for MATERIAL
-     * rest - STONE_TYPE
+     * 0b0111 - STONE_TYPE mask
+     * 0b1000 - MATERIAL mask
      *
      * One more stone type can be added
      *
@@ -254,21 +230,25 @@ public abstract class GT_Block_GeneratedOres extends GT_Generic_Block {
     public int getMetaFromState(IBlockState state) {
         int meta = 0;
 
-        Materials material = state.getValue(MATERIAL);
+        meta |= state.getValue(STONE_TYPE).mId;
+
+        Materials material = state.getValue(getMaterialProperty());
         for (int i = 0; i < getMaterials().length; i++) {
-            if (material.equals(getMaterials()[i])){
-                meta |= i;
+            if (material == getMaterials()[i]){
+                meta |= i << 3;
             }
         }
-        meta |= state.getValue(STONE_TYPE).mId << 1;
         return meta;
     }
 
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-        for(int i = 0; i < getMaterials().length; i++) {
-            for(int j = 0; j < StoneTypes.mTypes.length; j++) {
-                list.add(new ItemStack(this, 1, i * 7 + j));
+        for (Materials material : getMaterials()) {
+            for (StoneTypes type : StoneTypes.mTypes) {
+                IBlockState blockState = this.getDefaultState()
+                        .withProperty(getMaterialProperty(), material)
+                        .withProperty(STONE_TYPE, type);
+                list.add(createStackedBlock(blockState));
             }
         }
     }
@@ -297,12 +277,12 @@ public abstract class GT_Block_GeneratedOres extends GT_Generic_Block {
     public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
         return false; //never allow silk touch
     }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getParticleSprite(IBlockAccess worldObj, BlockPos aPos, EnumFacing side) {
-        return getStoneTypeSafe(worldObj.getBlockState(aPos)).mIconContainer.getIcon();
-    }
+//
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public TextureAtlasSprite getParticleSprite(IBlockAccess worldObj, BlockPos aPos, EnumFacing side) {
+//        return getStoneTypeSafe(worldObj.getBlockState(aPos)).mIconContainer.getIcon();
+//    }
 
     @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
@@ -406,13 +386,9 @@ public abstract class GT_Block_GeneratedOres extends GT_Generic_Block {
         }
     }
 
-    @Override
-    public EnumBlockRenderType getRenderType(IBlockState state) {
-        return RenderGeneratedOres.INSTANCE.renderType;
-    }
+//    @Override
+//    public EnumBlockRenderType getRenderType(IBlockState state) {
+//        return RenderGeneratedOres.INSTANCE.renderType;
+//    }
 
-    @Override
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
 }

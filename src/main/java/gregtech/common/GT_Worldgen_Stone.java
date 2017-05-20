@@ -75,7 +75,7 @@ public class GT_Worldgen_Stone
                                                     StoneTypes stoneTypes = StoneTypes.computeStoneType(mBlockState);
                                                     aWorld.setBlockState(temp, block.overrideStoneType(tTargetedBlock, stoneTypes));
                                                 } else if ((this.mAllowToGenerateinVoid && aWorld.isAirBlock(temp)) ||
-                                                        (tTargetedBlock != null && tTargetedBlock.getBlock().isReplaceableOreGen(tTargetedBlock, aWorld, temp, (Predicate<IBlockState>) GT_Worldgen.ANY))) {
+                                                        (tTargetedBlock != null && tTargetedBlock.getBlock().isReplaceableOreGen(tTargetedBlock, aWorld, temp, GT_Worldgen.ANY))) {
                                                     aWorld.setBlockState(temp, mBlockState);
                                                 }
                                             }

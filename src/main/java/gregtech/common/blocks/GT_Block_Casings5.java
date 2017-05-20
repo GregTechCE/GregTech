@@ -49,7 +49,7 @@ public class GT_Block_Casings5 extends GT_Block_Casings_Abstract {
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState()
-                .withProperty(COIL_VARIANT, EnumCoilVariant.byMetadata(meta & 15));
+                .withProperty(COIL_VARIANT, EnumCoilVariant.byMetadata(meta & 0b1111));
     }
 
     /**
@@ -62,32 +62,32 @@ public class GT_Block_Casings5 extends GT_Block_Casings_Abstract {
         return meta;
     }
 
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
-        return getIconContainer(aSide, aMeta).getIcon();
-    }
-    
-    public static IIconContainer getIconContainer(EnumFacing aSide, int aMeta) {
-        switch (aMeta) {
-            case 0:
-                return Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL;
-            case 1:
-                return Textures.BlockIcons.MACHINE_COIL_KANTHAL;
-            case 2:
-                return Textures.BlockIcons.MACHINE_COIL_NICHROME;
-            case 3:
-                return Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL;
-            case 4:
-                return Textures.BlockIcons.MACHINE_COIL_HSSG;
-            case 5:
-                return Textures.BlockIcons.MACHINE_COIL_NAQUADAH;
-            case 6:
-                return Textures.BlockIcons.MACHINE_COIL_NAQUADAHALLOY;
-        }
-        return Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL;
-    }
+//
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
+//        return getIconContainer(aSide, aMeta).getIcon();
+//    }
+//
+//    public static IIconContainer getIconContainer(EnumFacing aSide, int aMeta) {
+//        switch (aMeta) {
+//            case 0:
+//                return Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL;
+//            case 1:
+//                return Textures.BlockIcons.MACHINE_COIL_KANTHAL;
+//            case 2:
+//                return Textures.BlockIcons.MACHINE_COIL_NICHROME;
+//            case 3:
+//                return Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL;
+//            case 4:
+//                return Textures.BlockIcons.MACHINE_COIL_HSSG;
+//            case 5:
+//                return Textures.BlockIcons.MACHINE_COIL_NAQUADAH;
+//            case 6:
+//                return Textures.BlockIcons.MACHINE_COIL_NAQUADAHALLOY;
+//        }
+//        return Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL;
+//    }
 
     public static enum EnumCoilVariant implements IStringSerializable {
         CUPRONICKEL("cupronickel"),

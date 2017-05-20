@@ -90,7 +90,7 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState()
-                .withProperty(VARIANT, EnumReinforcedVariant.byMetadata(meta & 15));
+                .withProperty(VARIANT, EnumReinforcedVariant.byMetadata(meta & 0b1111));
     }
 
     /**
@@ -131,35 +131,35 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         return 4;
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
-        if ((aMeta >= 0) && (aMeta < 16)) {
-            switch (aMeta) {
-                case 0:
-                    return Textures.BlockIcons.BLOCK_BRONZEPREIN.getIcon();
-                case 1:
-                    return Textures.BlockIcons.BLOCK_IRREIN.getIcon();
-                case 2:
-                    return Textures.BlockIcons.BLOCK_PLASCRETE.getIcon();
-                case 3:
-                    return Textures.BlockIcons.BLOCK_TSREIN.getIcon();
-                case 4:
-                    return COAL_BLOCK_ICON_DATA;
-                case 5:
-                	return Textures.BlockIcons.COVER_WOOD_PLATE.getIcon();
-                case 6:
-                case 7:
-                	return COAL_BLOCK_ICON_DATA;
-            }
-        }
-        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
-    }
-
-    @Override
-    public void registerIcons(TextureMap map) {
-        COAL_BLOCK_ICON_DATA = map.registerSprite(new ResourceLocation("minecraft:blocks/coal_block"));
-    }
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
+//        if ((aMeta >= 0) && (aMeta < 16)) {
+//            switch (aMeta) {
+//                case 0:
+//                    return Textures.BlockIcons.BLOCK_BRONZEPREIN.getIcon();
+//                case 1:
+//                    return Textures.BlockIcons.BLOCK_IRREIN.getIcon();
+//                case 2:
+//                    return Textures.BlockIcons.BLOCK_PLASCRETE.getIcon();
+//                case 3:
+//                    return Textures.BlockIcons.BLOCK_TSREIN.getIcon();
+//                case 4:
+//                    return COAL_BLOCK_ICON_DATA;
+//                case 5:
+//                	return Textures.BlockIcons.COVER_WOOD_PLATE.getIcon();
+//                case 6:
+//                case 7:
+//                	return COAL_BLOCK_ICON_DATA;
+//            }
+//        }
+//        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+//    }
+//
+//    @Override
+//    public void registerIcons(TextureMap map) {
+//        COAL_BLOCK_ICON_DATA = map.registerSprite(new ResourceLocation("minecraft:blocks/coal_block"));
+//    }
 
     @Override
     public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {

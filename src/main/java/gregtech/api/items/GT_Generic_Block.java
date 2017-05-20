@@ -4,10 +4,8 @@ import codechicken.lib.render.particle.CustomParticleHandler;
 import codechicken.lib.vec.Cuboid6;
 import com.google.common.collect.ObjectArrays;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Textures;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
-import gregtech.common.render.RenderBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -62,56 +60,58 @@ public abstract class GT_Generic_Block extends Block {
             }
             GameRegistry.register(itemBlock, getRegistryName());
         }
-
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + W + ".name", "Unnamed");
     }
 
     @Override
     public String getLocalizedName() {
         return GT_LanguageManager.getTranslation(this.getUnlocalizedName() + ".name");
     }
+//
+//    @Override
+//    public boolean addLandingEffects(IBlockState state, WorldServer worldObj, BlockPos blockPosition, IBlockState iblockstate, EntityLivingBase entity, int numberOfParticles) {
+//        return true;
+//    }
+//
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public boolean addHitEffects(IBlockState state, World worldObj, RayTraceResult target, ParticleManager manager) {
+//        CustomParticleHandler.addBlockHitEffects(worldObj, getBlockBounds(target.getBlockPos()), target.sideHit, getParticleSprite(worldObj, target.getBlockPos(), target.sideHit), manager);
+//        return true;
+//    }
+//
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager) {
+//        TextureAtlasSprite[] textures = new TextureAtlasSprite[6];
+//        for(EnumFacing facing : EnumFacing.VALUES) {
+//            textures[facing.getIndex()] = getParticleSprite(world, pos, facing);
+//        }
+//        CustomParticleHandler.addBlockDestroyEffects(world, getBlockBounds(pos), textures, manager);
+//        return true;
+//    }
+//
+//
+//    @SideOnly(Side.CLIENT)
+//    public TextureAtlasSprite getParticleSprite(IBlockAccess worldObj, BlockPos aPos, EnumFacing side) {
+//        return getWorldIcon(worldObj, aPos, worldObj.getBlockState(aPos), side);
+//    }
 
-    @Override
-    public boolean addLandingEffects(IBlockState state, WorldServer worldObj, BlockPos blockPosition, IBlockState iblockstate, EntityLivingBase entity, int numberOfParticles) {
-        return true;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean addHitEffects(IBlockState state, World worldObj, RayTraceResult target, ParticleManager manager) {
-        CustomParticleHandler.addBlockHitEffects(worldObj, getBlockBounds(target.getBlockPos()), target.sideHit, getParticleSprite(worldObj, target.getBlockPos(), target.sideHit), manager);
-        return true;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager) {
-        TextureAtlasSprite[] textures = new TextureAtlasSprite[6];
-        for(EnumFacing facing : EnumFacing.VALUES) {
-            textures[facing.getIndex()] = getParticleSprite(world, pos, facing);
-        }
-        CustomParticleHandler.addBlockDestroyEffects(world, getBlockBounds(pos), textures, manager);
-        return true;
-    }
-
-
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getParticleSprite(IBlockAccess worldObj, BlockPos aPos, EnumFacing side) {
-        return getWorldIcon(worldObj, aPos, worldObj.getBlockState(aPos), side);
-    }
-    
     @SideOnly(Side.CLIENT)
     public void registerIcons(TextureMap textureMap) {}
+
+    public int damageDropped(IBlockState state) {
+        return createStackedBlock(state).getMetadata();
+    }
 
     @SideOnly(Side.CLIENT)
     public int getColorMultiplier(IBlockAccess aWorld, BlockPos aPos, IBlockState aState) {
         return 0xFFFFFFFF;
     }
 
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getWorldIcon(IBlockAccess aWorld, BlockPos aPos, IBlockState aState, EnumFacing aSide) {
-        return getIcon(aSide, aState.getValue(METADATA));
-    }
+//    @SideOnly(Side.CLIENT)
+//    public TextureAtlasSprite getWorldIcon(IBlockAccess aWorld, BlockPos aPos, IBlockState aState, EnumFacing aSide) {
+//        return getIcon(aSide, aState.getValue(METADATA));
+//    }
 
     @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getItemIcon(ItemStack itemStack, EnumFacing aSide) {
@@ -121,9 +121,9 @@ public abstract class GT_Generic_Block extends Block {
     public TextureAtlasSprite getIcon(EnumFacing aSide, int metadata) {
         return null;
     }
-
-    @Override
-    public EnumBlockRenderType getRenderType(IBlockState state) {
-        return RenderBlocks.INSTANCE.renderType;
-    }
+//
+//    @Override
+//    public EnumBlockRenderType getRenderType(IBlockState state) {
+//        return RenderBlocks.INSTANCE.renderType;
+//    }
 }
