@@ -340,10 +340,6 @@ public class GT_Utility {
         return null;
     }
 
-    public static byte getOppositeSide(int aSide) {
-        return (byte) EnumFacing.VALUES[aSide].getOpposite().getIndex();
-    }
-
     public static byte getTier(long l) {
         byte i = -1;
         while (++i < V.length) if (l <= V[i]) return i;
@@ -1026,40 +1022,28 @@ public class GT_Utility {
         return aStack;
     }
 
-    public static boolean isOpaqueBlock(World aWorld, int aX, int aY, int aZ) {
-        return aWorld.getBlockState(new BlockPos(aX, aY, aZ)).isOpaqueCube();
-    }
-
-    public static boolean isOpaqueBlock(World aWorld, BlockPos blockPos) {
-        return aWorld.getBlockState(blockPos).isOpaqueCube();
-    }
-
-    public static boolean isBlockAir(World aWorld, int aX, int aY, int aZ) {
-        return aWorld.isAirBlock(new BlockPos(aX, aY, aZ));
-    }
-
     public static boolean hasBlockHitBox(World aWorld, BlockPos blockPos) {
         AxisAlignedBB box = aWorld.getBlockState(blockPos).getCollisionBoundingBox(aWorld, blockPos);
         return box != null && (box.maxX != box.minX && box.maxZ != box.minZ && box.maxY != box.minY);
     }
 
-    public static void setCoordsOnFire(World aWorld, int aX, int aY, int aZ, boolean aReplaceCenter) {
-        BlockPos blockPos = new BlockPos(aX, aY, aZ);
+    public static void setCoordsOnFire(World aWorld, BlockPos blockPos, boolean aReplaceCenter) {
+        IBlockState fire = Blocks.FIRE.getDefaultState();
         if (aReplaceCenter)
             if (aWorld.getBlockState(blockPos).getCollisionBoundingBox(aWorld, blockPos) == null)
-                aWorld.setBlockState(blockPos, Blocks.FIRE.getDefaultState());
+                aWorld.setBlockState(blockPos, fire);
         if (aWorld.getBlockState(blockPos.east()).getCollisionBoundingBox(aWorld, blockPos.east()) == null)
-            aWorld.setBlockState(blockPos.east(), Blocks.FIRE.getDefaultState());
+            aWorld.setBlockState(blockPos.east(), fire);
         if (aWorld.getBlockState(blockPos.south()).getCollisionBoundingBox(aWorld, blockPos.south()) == null)
-            aWorld.setBlockState(blockPos.south(), Blocks.FIRE.getDefaultState());
+            aWorld.setBlockState(blockPos.south(), fire);
         if (aWorld.getBlockState(blockPos.west()).getCollisionBoundingBox(aWorld, blockPos.west()) == null)
-            aWorld.setBlockState(blockPos.west(), Blocks.FIRE.getDefaultState());
+            aWorld.setBlockState(blockPos.west(), fire);
         if (aWorld.getBlockState(blockPos.north()).getCollisionBoundingBox(aWorld, blockPos.north()) == null)
-            aWorld.setBlockState(blockPos.north(), Blocks.FIRE.getDefaultState());
+            aWorld.setBlockState(blockPos.north(), fire);
         if (aWorld.getBlockState(blockPos.up()).getCollisionBoundingBox(aWorld, blockPos.up()) == null)
-            aWorld.setBlockState(blockPos.up(), Blocks.FIRE.getDefaultState());
+            aWorld.setBlockState(blockPos.up(), fire);
         if (aWorld.getBlockState(blockPos.down()).getCollisionBoundingBox(aWorld, blockPos.down()) == null)
-            aWorld.setBlockState(blockPos.down(), Blocks.FIRE.getDefaultState());
+            aWorld.setBlockState(blockPos.down(), fire);
     }
 
     public static ItemStack getProjectile(SubTag aProjectileType, IInventory aInventory) {
@@ -1320,13 +1304,6 @@ public class GT_Utility {
     public static ItemStack loadItem(NBTTagCompound aNBT) {
         if (aNBT == null) return null;
         ItemStack rStack = ItemStack.loadItemStackFromNBT(aNBT);
-        try {
-            if (rStack != null && (rStack.getItem().getClass().getName().startsWith("ic2.core.migration"))) {
-                rStack.getItem().onUpdate(rStack, DW, null, 0, false);
-            }
-        } catch (Throwable e) {
-            e.printStackTrace(GT_Log.err);
-        }
         return GT_OreDictUnificator.get(true, rStack);
     }
 

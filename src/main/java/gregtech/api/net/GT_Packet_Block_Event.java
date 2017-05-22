@@ -19,7 +19,7 @@ public class GT_Packet_Block_Event extends GT_Packet {
 
     public GT_Packet_Block_Event() {}
 
-    public GT_Packet_Block_Event(int aX, short aY, int aZ, byte aID, byte aValue) {
+    public GT_Packet_Block_Event(BlockPos pos, byte aID, byte aValue) {
         mX = aX;
         mY = aY;
         mZ = aZ;

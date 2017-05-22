@@ -16,11 +16,10 @@ public class GT_Packet_TileEntity extends GT_Packet {
     private int mX, mZ, mC0, mC1, mC2, mC3, mC4, mC5;
     private short mY, mID;
     private byte mTexture, mUpdate, mRedstone, mColor;
-    private boolean isPipeBaseTile;
 
     public GT_Packet_TileEntity() {}
 
-    public GT_Packet_TileEntity(int aX, short aY, int aZ, short aID, int aC0, int aC1, int aC2, int aC3, int aC4, int aC5, byte aTexture, byte aUpdate, byte aRedstone, byte aColor, boolean isPipeBaseTile) {
+    public GT_Packet_TileEntity(BlockPos aPos, short aID, int aC0, int aC1, int aC2, int aC3, int aC4, int aC5, byte aTexture, byte aUpdate, byte aRedstone, byte aColor) {
         mX = aX;
         mY = aY;
         mZ = aZ;
@@ -35,7 +34,6 @@ public class GT_Packet_TileEntity extends GT_Packet {
         mUpdate = aUpdate;
         mRedstone = aRedstone;
         mColor = aColor;
-        this.isPipeBaseTile = isPipeBaseTile;
     }
 
     @Override

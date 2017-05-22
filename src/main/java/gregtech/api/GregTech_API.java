@@ -77,7 +77,6 @@ public class GregTech_API {
      * 10000 - 32766 are currently free.
      * <p/>
      * Contact me if you need a free ID-Range, which doesn't conflict with other Addons.
-     * You could make an ID-Config, but we all know, what "stupid" customers think about conflicting ID's
      */
     public static final IMetaTileEntity[] METATILEENTITIES = new IMetaTileEntity[MAXIMUM_METATILE_IDS];
     /**

@@ -223,13 +223,13 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     }
 
     @Override
-    public void doSound(byte aIndex, double aX, double aY, double aZ) {/*Do nothing*/}
+    public void doSound(byte aIndex) {/*Do nothing*/}
 
     @Override
-    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {/*Do nothing*/}
+    public void startSoundLoop(byte aIndex) {/*Do nothing*/}
 
     @Override
-    public void stopSoundLoop(byte aValue, double aX, double aY, double aZ) {/*Do nothing*/}
+    public void stopSoundLoop(byte aValue) {/*Do nothing*/}
 
     @Override
     public final void sendSound(byte aIndex) {
