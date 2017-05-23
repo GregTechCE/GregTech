@@ -2,25 +2,24 @@ package gregtech.api.net;
 
 import gregtech.api.util.GT_Utility;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 public class GT_Packet_Sound extends GT_Packet {
 
-    private int mX, mZ, mY;
+    private Vec3d mPosition;
     private String mSoundName;
     private float mSoundStrength, mSoundPitch;
 
     public GT_Packet_Sound() {}
 
-    public GT_Packet_Sound(String aSoundName, float aSoundStrength, float aSoundPitch, int aX, short aY, int aZ) {
-        mX = aX;
-        mY = aY;
-        mZ = aZ;
-        mSoundName = aSoundName;
-        mSoundStrength = aSoundStrength;
-        mSoundPitch = aSoundPitch;
+    public GT_Packet_Sound(String soundName, float soundStrength, float soundPitch, Vec3d soundPosition) {
+        this.mPosition = soundPosition;
+        this.mSoundName = soundName;
+        this.mSoundStrength = soundStrength;
+        this.mSoundPitch = soundPitch;
     }
 
     @Override
@@ -28,9 +27,9 @@ public class GT_Packet_Sound extends GT_Packet {
         ByteBufUtils.writeUTF8String(buf, mSoundName);
         buf.writeFloat(mSoundStrength);
         buf.writeFloat(mSoundPitch);
-        buf.writeInt(mX);
-        buf.writeShort(mY);
-        buf.writeInt(mZ);
+        buf.writeDouble(mPosition.xCoord);
+        buf.writeDouble(mPosition.yCoord);
+        buf.writeDouble(mPosition.zCoord);
     }
 
     @Override
@@ -38,9 +37,7 @@ public class GT_Packet_Sound extends GT_Packet {
         mSoundName = ByteBufUtils.readUTF8String(buf);
         mSoundStrength = buf.readFloat();
         mSoundPitch = buf.readFloat();
-        mX = buf.readInt();
-        mY = buf.readShort();
-        mZ = buf.readInt();
+        mPosition = new Vec3d(buf.readDouble(), buf.readDouble(), buf.readDouble());
     }
 
     @Override

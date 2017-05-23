@@ -816,7 +816,12 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public byte getStrongestRedstone() {
-        return (byte) Math.max(getInternalInputRedstoneSignal((byte) 0), Math.max(getInternalInputRedstoneSignal((byte) 1), Math.max(getInternalInputRedstoneSignal((byte) 2), Math.max(getInternalInputRedstoneSignal((byte) 3), Math.max(getInternalInputRedstoneSignal((byte) 4), getInternalInputRedstoneSignal((byte) 5))))));
+        byte strongest = 0;
+        for(EnumFacing side : EnumFacing.VALUES) {
+            byte signal = getInternalInputRedstoneSignal(side);
+            if(signal > strongest) strongest = signal;
+        }
+        return strongest;
     }
 
     @Override
