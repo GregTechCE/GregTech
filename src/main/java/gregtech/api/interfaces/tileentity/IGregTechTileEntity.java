@@ -15,6 +15,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * A simple compound Interface for all my TileEntities.
@@ -86,14 +87,14 @@ public interface IGregTechTileEntity extends IGearEnergyTileEntity, ICoverable, 
     public void setToFire();
 
     /**
-     * Sets the Owner of the Machine. Returns the set Name.
+     * Sets the Owner of the Machine. Returns the set uuid.
      */
-    public String setOwnerName(String aName);
+    public UUID setOwnerId(UUID ownerId);
 
     /**
-     * gets the Name of the Machines Owner or "Player" if not set.
+     * gets the uuid of the Machines Owner or null if not set.
      */
-    public String getOwnerName();
+    public UUID getOwnerId();
 
     /**
      * Sets initial Values from NBT

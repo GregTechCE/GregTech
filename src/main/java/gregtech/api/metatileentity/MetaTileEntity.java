@@ -320,19 +320,19 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     /**
      * @return true if that Side is an Output.
      */
-    public boolean isOutputFacing(byte aSide) {
+    public boolean isOutputFacing(EnumFacing aSide) {
         return false;
     }
 
     /**
      * @return true if that Side is an Input.
      */
-    public boolean isInputFacing(byte aSide) {
+    public boolean isInputFacing(EnumFacing aSide) {
         return false;
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(EnumFacing aFacing) {
         return false;
     }
 
