@@ -36,27 +36,22 @@ public abstract class GT_Block_Storage extends GT_Generic_Block {
 
     private PropertyMaterial MATERIAL;
 
-    public static Block createStorageBlock(String aName, Materials[] materials, OrePrefixes aPrefix/*, Textures.BlockIcons[] aBlockIcons*/){
-        return new GT_Block_Storage(aName, aPrefix/*, aBlockIcons*/){
+    public static Block createStorageBlock(String aName, Materials[] materials, OrePrefixes aPrefix, Textures.BlockIcons[] aBlockIcons){
+        return new GT_Block_Storage(aName, aPrefix, aBlockIcons){
             @Override
             public Materials[] getMaterials() {
-                if (mMaterials == null) {
-                    mMaterials = materials;
-
-                }
-                return mMaterials;
+                return materials;
             }
         };
     }
 
-    protected Materials[] mMaterials;
     public OrePrefixes mPrefix;
-//    public Textures.BlockIcons[] mBlockIcons;
+    public Textures.BlockIcons[] mBlockIcons;
 
-    private GT_Block_Storage(String aName, OrePrefixes aPrefix/*, Textures.BlockIcons[] aBlockIcons*/) {
+    private GT_Block_Storage(String aName, OrePrefixes aPrefix, Textures.BlockIcons[] aBlockIcons) {
         super(aName, GT_Item_Storage.class, Material.IRON);
         mPrefix = aPrefix;
-//        mBlockIcons = aBlockIcons;
+        mBlockIcons = aBlockIcons;
 
         for (int i = 0; i < getMaterials().length; i++) {
             if (getMaterials()[i].mMetaItemSubID > 0 && getMaterials()[i].mHasParentMod) {
@@ -78,7 +73,6 @@ public abstract class GT_Block_Storage extends GT_Generic_Block {
         }
         return this.MATERIAL;
     }
-
 
     @Override
     protected BlockStateContainer createBlockState() {
@@ -129,12 +123,12 @@ public abstract class GT_Block_Storage extends GT_Generic_Block {
         }
     }
 
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public TextureAtlasSprite getIcon(EnumFacing aSide, int aDamage) {
-//        if ((aDamage >= 0) && (aDamage < 16) && aDamage < mMats.length) {
-//            return mBlockIcons[aDamage].getIcon();
-//        }
-//        return mBlockIcons[0].getIcon();
-//    }
+    @Override
+    @SideOnly(Side.CLIENT)
+    public TextureAtlasSprite getIcon(EnumFacing aSide, int aDamage) {
+        if ((aDamage >= 0) && (aDamage < 16) && aDamage < mMats.length) {
+            return mBlockIcons[aDamage].getIcon();
+        }
+        return mBlockIcons[0].getIcon();
+    }
 }

@@ -57,14 +57,14 @@ public class GT_Block_Concretes extends GT_Block_Stones_Abstract {
         return mMaterials;
     }
 
-    //    @Override
-//    @SideOnly(Side.CLIENT)
-//    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
-//        if ((aMeta >= 0) && (aMeta < 16)) {
-//            return gregtech.api.enums.Textures.BlockIcons.CONCRETES[aMeta].getIcon();
-//        }
-//        return gregtech.api.enums.Textures.BlockIcons.CONCRETES[0].getIcon();
-//    }
+        @Override
+    @SideOnly(Side.CLIENT)
+    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
+        if ((aMeta >= 0) && (aMeta < 16)) {
+            return gregtech.api.enums.Textures.BlockIcons.CONCRETES[aMeta].getIcon();
+        }
+        return gregtech.api.enums.Textures.BlockIcons.CONCRETES[0].getIcon();
+    }
 
     @Override
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity aEntity) {

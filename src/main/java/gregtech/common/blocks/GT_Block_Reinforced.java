@@ -131,35 +131,35 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         return 4;
     }
 
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
-//        if ((aMeta >= 0) && (aMeta < 16)) {
-//            switch (aMeta) {
-//                case 0:
-//                    return Textures.BlockIcons.BLOCK_BRONZEPREIN.getIcon();
-//                case 1:
-//                    return Textures.BlockIcons.BLOCK_IRREIN.getIcon();
-//                case 2:
-//                    return Textures.BlockIcons.BLOCK_PLASCRETE.getIcon();
-//                case 3:
-//                    return Textures.BlockIcons.BLOCK_TSREIN.getIcon();
-//                case 4:
-//                    return COAL_BLOCK_ICON_DATA;
-//                case 5:
-//                	return Textures.BlockIcons.COVER_WOOD_PLATE.getIcon();
-//                case 6:
-//                case 7:
-//                	return COAL_BLOCK_ICON_DATA;
-//            }
-//        }
-//        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
-//    }
-//
-//    @Override
-//    public void registerIcons(TextureMap map) {
-//        COAL_BLOCK_ICON_DATA = map.registerSprite(new ResourceLocation("minecraft:blocks/coal_block"));
-//    }
+    @Override
+    @SideOnly(Side.CLIENT)
+    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
+        if ((aMeta >= 0) && (aMeta < 16)) {
+            switch (aMeta) {
+                case 0:
+                    return Textures.BlockIcons.BLOCK_BRONZEPREIN.getIcon();
+                case 1:
+                    return Textures.BlockIcons.BLOCK_IRREIN.getIcon();
+                case 2:
+                    return Textures.BlockIcons.BLOCK_PLASCRETE.getIcon();
+                case 3:
+                    return Textures.BlockIcons.BLOCK_TSREIN.getIcon();
+                case 4:
+                    return COAL_BLOCK_ICON_DATA;
+                case 5:
+                	return Textures.BlockIcons.COVER_WOOD_PLATE.getIcon();
+                case 6:
+                case 7:
+                	return COAL_BLOCK_ICON_DATA;
+            }
+        }
+        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+    }
+
+    @Override
+    public void registerIcons(TextureMap map) {
+        COAL_BLOCK_ICON_DATA = map.registerSprite(new ResourceLocation("minecraft:blocks/coal_block"));
+    }
 
     @Override
     public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
@@ -284,7 +284,7 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         }
     }
 
-    public static enum EnumReinforcedVariant implements IStringSerializable {
+    public enum EnumReinforcedVariant implements IStringSerializable {
         BPLATE_REINF("bplate_reinf"),
         ITS_REINF("its_reinf"),
         PLASCRETE("plascrete"),
@@ -293,6 +293,8 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         POWDERBARREL("powderbarrel"),
         SSFUEL("ssfuel"),
         MSSFUEL("mssfuel");
+
+        private static final EnumReinforcedVariant[] META_LOOKUP = new EnumReinforcedVariant[values().length];
 
         private final int meta = ordinal();
         private final String name;
@@ -311,16 +313,22 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         }
 
         public static EnumReinforcedVariant byMetadata(int meta) {
-            if (meta < 0 || meta >= values().length) {
+            if (meta < 0 || meta >= META_LOOKUP.length) {
                 meta = 0;
             }
 
-            return values()[meta];
+            return META_LOOKUP[meta];
         }
 
         @Override
         public String getName() {
             return this.name;
+        }
+
+        static {
+            for (EnumReinforcedVariant variant : values()) {
+                META_LOOKUP[variant.getMetadata()] = variant;
+            }
         }
     }
 }

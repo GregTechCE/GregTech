@@ -68,14 +68,14 @@ public class GT_Block_Granites extends GT_Block_Stones_Abstract {
         return 3;
     }
 
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
-//        if ((aMeta >= 0) && (aMeta < 16)) {
-//            return gregtech.api.enums.Textures.BlockIcons.GRANITES[aMeta].getIcon();
-//        }
-//        return gregtech.api.enums.Textures.BlockIcons.GRANITES[0].getIcon();
-//    }
+    @Override
+    @SideOnly(Side.CLIENT)
+    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
+        if ((aMeta >= 0) && (aMeta < 16)) {
+            return gregtech.api.enums.Textures.BlockIcons.GRANITES[aMeta].getIcon();
+        }
+        return gregtech.api.enums.Textures.BlockIcons.GRANITES[0].getIcon();
+    }
 
     @Override
     public boolean canEntityDestroy(IBlockState state, IBlockAccess world, BlockPos pos, Entity entity) {

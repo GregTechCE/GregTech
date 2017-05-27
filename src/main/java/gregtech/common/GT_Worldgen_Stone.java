@@ -1,11 +1,9 @@
 package gregtech.common;
 
-import com.google.common.base.Predicate;
 import gregtech.api.enums.StoneTypes;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.api.world.GT_Worldgen_Ore;
 import gregtech.common.blocks.GT_Block_GeneratedOres;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;

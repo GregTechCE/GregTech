@@ -37,6 +37,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public abstract class GT_Block_GeneratedOres extends GT_Generic_Block {
@@ -71,7 +72,7 @@ public abstract class GT_Block_GeneratedOres extends GT_Generic_Block {
             }
         }
         if(length != 0) {
-            Materials[] materials = Arrays.stream(lastMats).filter(material -> material != null).toArray(Materials[]::new);
+            Materials[] materials = Arrays.stream(lastMats).filter(Objects::nonNull).toArray(Materials[]::new);
             createOreBlock(materials);
         }
         System.out.println("ORE BLOCKS REGISTERED: " + sNextId);
@@ -129,10 +130,6 @@ public abstract class GT_Block_GeneratedOres extends GT_Generic_Block {
     public final boolean mSmall;
     public int mId;
 
-    /**
-     * @param materials Materials for which ore will be created. Works for materials.length <= MATERIALS_PER_BLOCK
-     * @param flag
-     */
     protected GT_Block_GeneratedOres(boolean small) {
         super("blockores." + sNextId, GT_Item_GeneratedOres.class, Material.ROCK);
 
@@ -189,7 +186,7 @@ public abstract class GT_Block_GeneratedOres extends GT_Generic_Block {
     }
 
     public StoneTypes getStoneTypeSafe(IBlockState state) {
-        return (StoneTypes) state.getValue(STONE_TYPE);
+        return state.getValue(STONE_TYPE);
     }
 
     public Materials getMaterialSafe(ItemStack stack) {
@@ -277,12 +274,12 @@ public abstract class GT_Block_GeneratedOres extends GT_Generic_Block {
     public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
         return false; //never allow silk touch
     }
-//
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public TextureAtlasSprite getParticleSprite(IBlockAccess worldObj, BlockPos aPos, EnumFacing side) {
-//        return getStoneTypeSafe(worldObj.getBlockState(aPos)).mIconContainer.getIcon();
-//    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public TextureAtlasSprite getParticleSprite(IBlockAccess worldObj, BlockPos aPos, EnumFacing side) {
+        return getStoneTypeSafe(worldObj.getBlockState(aPos)).mIconContainer.getIcon();
+    }
 
     @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
@@ -386,9 +383,13 @@ public abstract class GT_Block_GeneratedOres extends GT_Generic_Block {
         }
     }
 
-//    @Override
-//    public EnumBlockRenderType getRenderType(IBlockState state) {
-//        return RenderGeneratedOres.INSTANCE.renderType;
-//    }
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return RenderGeneratedOres.INSTANCE.renderType;
+    }
 
+    @Override
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
+    }
 }

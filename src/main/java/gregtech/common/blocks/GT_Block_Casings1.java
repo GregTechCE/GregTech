@@ -5,6 +5,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.itemblocks.GT_Item_Casings1;
 import gregtech.common.blocks.materials.GT_Material_Casings;
+import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -84,38 +85,38 @@ public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
         return meta;
     }
 
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
-//        return getIconContainer(aSide, aMeta).getIcon();
-//    }
-//
-//    public static IIconContainer getIconContainer(EnumFacing aSide, int aMeta) {
-//        if ((aMeta >= 0) && (aMeta < 16)) {
-//            switch (aMeta) {
-//                case 10:
-//                    return Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS;
-//                case 11:
-//                    return Textures.BlockIcons.MACHINE_HEATPROOFCASING;
-//                case 12:
-//                    return Textures.BlockIcons.RENDERING_ERROR;
-//                case 13:
-//                    return Textures.BlockIcons.RENDERING_ERROR;
-//                case 14:
-//                    return Textures.BlockIcons.RENDERING_ERROR;
-//                case 15:
-//                    return Textures.BlockIcons.MACHINE_COIL_SUPERCONDUCTOR;
-//            }
-//            if (aSide == EnumFacing.DOWN) {
-//                return Textures.BlockIcons.MACHINECASINGS_BOTTOM[aMeta];
-//            }
-//            if (aSide == EnumFacing.UP) {
-//                return Textures.BlockIcons.MACHINECASINGS_TOP[aMeta];
-//            }
-//            return Textures.BlockIcons.MACHINECASINGS_SIDE[aMeta];
-//        }
-//        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL;
-//    }
+    @Override
+    @SideOnly(Side.CLIENT)
+    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
+        return getIconContainer(aSide, aMeta).getIcon();
+    }
+
+    public static IIconContainer getIconContainer(EnumFacing aSide, int aMeta) {
+        if ((aMeta >= 0) && (aMeta < 16)) {
+            switch (aMeta) {
+                case 10:
+                    return Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS;
+                case 11:
+                    return Textures.BlockIcons.MACHINE_HEATPROOFCASING;
+                case 12:
+                    return Textures.BlockIcons.RENDERING_ERROR;
+                case 13:
+                    return Textures.BlockIcons.RENDERING_ERROR;
+                case 14:
+                    return Textures.BlockIcons.RENDERING_ERROR;
+                case 15:
+                    return Textures.BlockIcons.MACHINE_COIL_SUPERCONDUCTOR;
+            }
+            if (aSide == EnumFacing.DOWN) {
+                return Textures.BlockIcons.MACHINECASINGS_BOTTOM[aMeta];
+            }
+            if (aSide == EnumFacing.UP) {
+                return Textures.BlockIcons.MACHINECASINGS_TOP[aMeta];
+            }
+            return Textures.BlockIcons.MACHINECASINGS_SIDE[aMeta];
+        }
+        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL;
+    }
 
     @Override
     public int getColorMultiplier(IBlockAccess worldIn, BlockPos pos, IBlockState state) {
@@ -123,7 +124,7 @@ public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
         return metadata > 9 ? Dyes._NULL.getRGBAInt() : Dyes.MACHINE_METAL.getRGBAInt();
     }
 
-    public static enum EnumCasingVariant implements IStringSerializable {
+    public enum EnumCasingVariant implements IStringSerializable {
         ULV("ulv"),
         LV("lv"),
         MV("mv"),
@@ -140,6 +141,8 @@ public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
         __DEPR_CASING("depr2"),// TODO delete not used metas
         ___DEPR_CASING("depr3"),// TODO delete not used metas
         SUPERCONDUCTING("superconducting");
+
+        private static final EnumCasingVariant[] META_LOOKUP = new EnumCasingVariant[values().length];
 
         private final int meta = ordinal();
         private final String name;
@@ -158,17 +161,23 @@ public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
         }
 
         public static EnumCasingVariant byMetadata(int meta) {
-            if (meta < 0 || meta >= values().length) {
+            if (meta < 0 || meta >= META_LOOKUP.length) {
                 meta = 0;
             }
 
-            return values()[meta];
+            return META_LOOKUP[meta];
         }
 
         @Override
         public String getName()
         {
             return this.name;
+        }
+
+        static {
+            for (EnumCasingVariant casingVariant : values()) {
+                META_LOOKUP[casingVariant.getMetadata()] = casingVariant;
+            }
         }
     }
 }

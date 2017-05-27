@@ -4,6 +4,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.itemblocks.GT_Item_Casings2;
 import gregtech.common.blocks.materials.GT_Material_Casings;
+import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -84,50 +85,50 @@ public class GT_Block_Casings2 extends GT_Block_Casings_Abstract {
         meta |= state.getValue(CASING_VARIANT).getMetadata();
         return meta;
     }
-//
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
-//        return getIconContainer(aSide, aMeta).getIcon();
-//    }
-//
-//    public static IIconContainer getIconContainer(EnumFacing aSide, int aMeta) {
-//        switch (aMeta) {
-//            case 0:
-//                return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL;
-//            case 1:
-//                return Textures.BlockIcons.MACHINE_CASING_FROST_PROOF;
-//            case 2:
-//                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_BRONZE;
-//            case 3:
-//                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_STEEL;
-//            case 4:
-//                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_TITANIUM;
-//            case 5:
-//                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_TUNGSTENSTEEL;
-//            case 6:
-//                return Textures.BlockIcons.MACHINE_CASING_PROCESSOR;
-//            case 7:
-//                return Textures.BlockIcons.MACHINE_CASING_DATA_DRIVE;
-//            case 8:
-//                return Textures.BlockIcons.MACHINE_CASING_CONTAINMENT_FIELD;
-//            case 9:
-//                return Textures.BlockIcons.MACHINE_CASING_ASSEMBLER;
-//            case 10:
-//                return Textures.BlockIcons.MACHINE_CASING_PUMP;
-//            case 11:
-//                return Textures.BlockIcons.MACHINE_CASING_MOTOR;
-//            case 12:
-//                return Textures.BlockIcons.MACHINE_CASING_PIPE_BRONZE;
-//            case 13:
-//                return Textures.BlockIcons.MACHINE_CASING_PIPE_STEEL;
-//            case 14:
-//                return Textures.BlockIcons.MACHINE_CASING_PIPE_TITANIUM;
-//            case 15:
-//                return Textures.BlockIcons.MACHINE_CASING_PIPE_TUNGSTENSTEEL;
-//        }
-//        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL;
-//    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
+        return getIconContainer(aSide, aMeta).getIcon();
+    }
+
+    public static IIconContainer getIconContainer(EnumFacing aSide, int aMeta) {
+        switch (aMeta) {
+            case 0:
+                return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL;
+            case 1:
+                return Textures.BlockIcons.MACHINE_CASING_FROST_PROOF;
+            case 2:
+                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_BRONZE;
+            case 3:
+                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_STEEL;
+            case 4:
+                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_TITANIUM;
+            case 5:
+                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_TUNGSTENSTEEL;
+            case 6:
+                return Textures.BlockIcons.MACHINE_CASING_PROCESSOR;
+            case 7:
+                return Textures.BlockIcons.MACHINE_CASING_DATA_DRIVE;
+            case 8:
+                return Textures.BlockIcons.MACHINE_CASING_CONTAINMENT_FIELD;
+            case 9:
+                return Textures.BlockIcons.MACHINE_CASING_ASSEMBLER;
+            case 10:
+                return Textures.BlockIcons.MACHINE_CASING_PUMP;
+            case 11:
+                return Textures.BlockIcons.MACHINE_CASING_MOTOR;
+            case 12:
+                return Textures.BlockIcons.MACHINE_CASING_PIPE_BRONZE;
+            case 13:
+                return Textures.BlockIcons.MACHINE_CASING_PIPE_STEEL;
+            case 14:
+                return Textures.BlockIcons.MACHINE_CASING_PIPE_TITANIUM;
+            case 15:
+                return Textures.BlockIcons.MACHINE_CASING_PIPE_TUNGSTENSTEEL;
+        }
+        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL;
+    }
 
     @Override
     public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
@@ -136,7 +137,7 @@ public class GT_Block_Casings2 extends GT_Block_Casings_Abstract {
                 super.getExplosionResistance(world, pos, exploder, explosion);
     }
 
-    public static enum EnumCasingVariant implements IStringSerializable {
+    public enum EnumCasingVariant implements IStringSerializable {
         SOLIDSTEEL("solidsteel"),
         FROSTPROOF("frostproof"),
         GEARBOX_BRONZE("gearbox_bronze"),
@@ -153,6 +154,8 @@ public class GT_Block_Casings2 extends GT_Block_Casings_Abstract {
         PIPE_STEEL("pipe_steel"),
         PIPE_TITANIUM("pipe_titanium"),
         PIPE_TSTEEL("pipe_tsteel");
+
+        private static final EnumCasingVariant[] META_LOOKUP = new EnumCasingVariant[values().length];
 
         private final int meta = ordinal();
         private final String name;
@@ -171,17 +174,23 @@ public class GT_Block_Casings2 extends GT_Block_Casings_Abstract {
         }
 
         public static EnumCasingVariant byMetadata(int meta) {
-            if (meta < 0 || meta >= values().length) {
+            if (meta < 0 || meta >= META_LOOKUP.length) {
                 meta = 0;
             }
 
-            return values()[meta];
+            return META_LOOKUP[meta];
         }
 
         @Override
         public String getName()
         {
             return this.name;
+        }
+
+        static {
+            for (EnumCasingVariant casingVariant : values()) {
+                META_LOOKUP[casingVariant.getMetadata()] = casingVariant;
+            }
         }
     }
 }

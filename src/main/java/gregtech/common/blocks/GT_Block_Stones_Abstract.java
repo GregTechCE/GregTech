@@ -43,7 +43,6 @@ public abstract class GT_Block_Stones_Abstract extends GT_Generic_Block implemen
      *
      * @param aName
      * @param aItemClass
-     * @param materials Materials for which ore will be created. Works for materials.length <= MATERIALS_PER_BLOCK
      */
     public GT_Block_Stones_Abstract(String aName, Class<? extends ItemBlock> aItemClass) {
         super(aName, aItemClass, Material.ROCK);
@@ -153,14 +152,14 @@ public abstract class GT_Block_Stones_Abstract extends GT_Generic_Block implemen
         return 1;
     }
 
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
-//        if ((aMeta >= 0) && (aMeta < 16)) {
-//            return gregtech.api.enums.Textures.BlockIcons.GRANITES[aMeta].getIcon();
-//        }
-//        return null;
-//    }
+    @Override
+    @SideOnly(Side.CLIENT)
+    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
+        if ((aMeta >= 0) && (aMeta < 16)) {
+            return gregtech.api.enums.Textures.BlockIcons.GRANITES[aMeta].getIcon();
+        }
+        return null;
+    }
 
     @Override
     public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
@@ -183,7 +182,7 @@ public abstract class GT_Block_Stones_Abstract extends GT_Generic_Block implemen
         }
     }
 
-    public static enum EnumStoneVariant implements IStringSerializable {
+    public enum EnumStoneVariant implements IStringSerializable {
         NORMAL("normal"),
         COBBLESTONE("cobblestone"),
         MOSSY_COBBLESTONE("mossy_cobblestone"),
@@ -192,6 +191,8 @@ public abstract class GT_Block_Stones_Abstract extends GT_Generic_Block implemen
         MOSSY_BRICKS("mossy_bricks"),
         CHISELED("chiseled"),
         SMOOTH("smooth");
+
+        private static final EnumStoneVariant[] META_LOOKUP = new EnumStoneVariant[values().length];
 
         private final int meta = ordinal();
         private final String name;
@@ -210,16 +211,22 @@ public abstract class GT_Block_Stones_Abstract extends GT_Generic_Block implemen
         }
 
         public static EnumStoneVariant byMetadata(int meta) {
-            if (meta < 0 || meta >= values().length) {
+            if (meta < 0 || meta >= META_LOOKUP.length) {
                 meta = 0;
             }
 
-            return values()[meta];
+            return META_LOOKUP[meta];
         }
 
         @Override
         public String getName() {
             return this.name;
+        }
+
+        static {
+            for (EnumStoneVariant stoneVariant : values()) {
+                META_LOOKUP[stoneVariant.getMetadata()] = stoneVariant;
+            }
         }
     }
 }

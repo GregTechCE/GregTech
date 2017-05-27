@@ -324,10 +324,10 @@ public class GregTech_API {
      *
      * @param blockState the block state
      */
-    public static boolean registerMachineBlock(IBlockState blockState) {
-        if (GregTech_API.sThaumcraftCompat != null)
-            GregTech_API.sThaumcraftCompat.registerPortholeBlacklistedBlock(blockState);
-        sMachineIDs.add(blockState);
+    public static boolean registerMachineBlock(Collection<IBlockState> blockState) {
+//        if (GregTech_API.sThaumcraftCompat != null)
+//            GregTech_API.sThaumcraftCompat.registerPortholeBlacklistedBlock(blockState);
+        sMachineIDs.addAll(blockState);
         return true;
     }
 

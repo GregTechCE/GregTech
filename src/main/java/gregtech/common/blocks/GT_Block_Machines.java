@@ -57,7 +57,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
 
     public GT_Block_Machines() {
         super("blockmachines", GT_Item_Machines.class, GT_Material_Machines.INSTANCE);
-        GregTech_API.registerMachineBlock(this, -1);
+        GregTech_API.registerMachineBlock(this.getBlockState().getValidStates());
         setHardness(1.0F);
         setResistance(10.0F);
         setSoundType(SoundType.METAL);

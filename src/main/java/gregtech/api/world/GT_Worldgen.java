@@ -21,7 +21,7 @@ public abstract class GT_Worldgen {
     public final String mWorldGenName;
     public final boolean mEnabled;
 
-    public GT_Worldgen(String aName, List aList, boolean aDefault) {
+    public GT_Worldgen(String aName, List<GT_Worldgen> aList, boolean aDefault) {
         mWorldGenName = aName;
         mEnabled = GregTech_API.sWorldgenFile.get("worldgen", mWorldGenName, aDefault);
         if (mEnabled) aList.add(this);

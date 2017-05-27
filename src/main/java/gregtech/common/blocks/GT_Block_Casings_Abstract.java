@@ -33,7 +33,7 @@ public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block {
         setCreativeTab(GregTech_API.TAB_GREGTECH);
         setHardness(5.0F); //Blocks.IRON_BLOCK
         setResistance(10.0F); //Blocks.IRON_BLOCK
-//        GregTech_API.registerMachineBlock(this, -1);
+        GregTech_API.registerMachineBlock(this.getBlockState().getValidStates());
     }
 
     @Override
