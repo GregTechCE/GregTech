@@ -87,13 +87,13 @@ public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
-        return getIconContainer(aSide, aMeta).getIcon();
+    public TextureAtlasSprite getIcon(EnumFacing side, int meta) {
+        return getIconContainer(side, meta).getIcon();
     }
 
-    public static IIconContainer getIconContainer(EnumFacing aSide, int aMeta) {
-        if ((aMeta >= 0) && (aMeta < 16)) {
-            switch (aMeta) {
+    public static IIconContainer getIconContainer(EnumFacing side, int meta) {
+        if ((meta >= 0) && (meta < 16)) {
+            switch (meta) {
                 case 10:
                     return Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS;
                 case 11:
@@ -107,13 +107,13 @@ public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
                 case 15:
                     return Textures.BlockIcons.MACHINE_COIL_SUPERCONDUCTOR;
             }
-            if (aSide == EnumFacing.DOWN) {
-                return Textures.BlockIcons.MACHINECASINGS_BOTTOM[aMeta];
+            if (side == EnumFacing.DOWN) {
+                return Textures.BlockIcons.MACHINECASINGS_BOTTOM[meta];
             }
-            if (aSide == EnumFacing.UP) {
-                return Textures.BlockIcons.MACHINECASINGS_TOP[aMeta];
+            if (side == EnumFacing.UP) {
+                return Textures.BlockIcons.MACHINECASINGS_TOP[meta];
             }
-            return Textures.BlockIcons.MACHINECASINGS_SIDE[aMeta];
+            return Textures.BlockIcons.MACHINECASINGS_SIDE[meta];
         }
         return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL;
     }

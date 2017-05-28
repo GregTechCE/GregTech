@@ -3,6 +3,8 @@ package gregtech.common.blocks;
 import gregtech.api.enums.ItemList;
 //import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 //import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.itemblocks.GT_Item_Casings4;
 import gregtech.common.blocks.materials.GT_Material_Casings;
@@ -85,12 +87,12 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
-        return getIconContainer(aSide, aMeta).getIcon();
+    public TextureAtlasSprite getIcon(EnumFacing side, int meta) {
+        return getIconContainer(side, meta).getIcon();
     }
 
-    public static IIconContainer getIconContainer(EnumFacing aSide, int aMeta) {
-        switch (aMeta) {
+    public static IIconContainer getIconContainer(EnumFacing side, int meta) {
+        switch (meta) {
             case 0:
                 return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL;
             case 1:
@@ -98,7 +100,7 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
             case 2:
                 return Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM;
             case 3:
-                return aSide.getIndex() > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_TITANIUM : Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM;
+                return side.getIndex() > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_TITANIUM : Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM;
             case 4:
                 return Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW;
             case 5:
@@ -128,7 +130,7 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
     }
 
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getTurbineCasing(int meta, int iconIndex, boolean active, EnumFacing aSide) {
+    public TextureAtlasSprite getTurbineCasing(int meta, int iconIndex, boolean active, EnumFacing side) {
         switch (meta) {
             case 9:
                 return active ? Textures.BlockIcons.TURBINE_ACTIVE[iconIndex].getIcon() : Textures.BlockIcons.TURBINE[iconIndex].getIcon();
@@ -145,120 +147,120 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public TextureAtlasSprite getWorldIcon(IBlockAccess aWorld, BlockPos pos, IBlockState aState, EnumFacing aSide) {
-        int tMeta = aState.getValue(METADATA);
+    public TextureAtlasSprite getWorldIcon(IBlockAccess world, BlockPos pos, IBlockState state, EnumFacing side) {
+        int meta = state.getValue(METADATA);
         if(pos == null) {
-            return getIcon(aSide, tMeta);
+            return getIcon(side, meta);
         }
-        if ((tMeta != 6) && (tMeta != 8) && (tMeta != 9) && (tMeta != 10) && (tMeta != 11) && (tMeta != 12) || (!mConnectedMachineTextures)) {
-            return getIcon(aSide, tMeta);
+        if ((meta != 6) && (meta != 8) && (meta != 9) && (meta != 10) && (meta != 11) && (meta != 12) || (!mConnectedMachineTextures)) {
+            return getIcon(side, meta);
         }
-        int tStartIndex = tMeta == 6 ? 1 : 13;
-        if ((tMeta == 9) || (tMeta == 10) || (tMeta == 11) || (tMeta == 12)) {
-            if ((aSide == EnumFacing.NORTH) || (aSide == EnumFacing.SOUTH)) {
-                TileEntity tTileEntity;
-                IMetaTileEntity tMetaTileEntity;
-                if ((null != (tTileEntity = aWorld.getTileEntity(pos.add(aSide == EnumFacing.SOUTH ? 1 : -1, -1, 0)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
-                    if (((IGregTechTileEntity) tTileEntity).isActive()) {
-                        return getTurbineCasing(tMeta, 0, true, aSide);
+        int startIndex = meta == 6 ? 1 : 13;
+        if ((meta == 9) || (meta == 10) || (meta == 11) || (meta == 12)) {
+            if ((side == EnumFacing.NORTH) || (side == EnumFacing.SOUTH)) {
+                TileEntity tileEntity;
+                IMetaTileEntity metaTileEntity;
+                if ((null != (tileEntity = world.getTileEntity(pos.add(side == EnumFacing.SOUTH ? 1 : -1, -1, 0)))) && ((tileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tileEntity).getFrontFacing() == side.getIndex()) && (null != (metaTileEntity = ((IGregTechTileEntity) tileEntity).getMetaTileEntity())) && ((metaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                    if (((IGregTechTileEntity) tileEntity).isActive()) {
+                        return getTurbineCasing(meta, 0, true, side);
                     }
-                    return getTurbineCasing(tMeta, 0, false, aSide);
+                    return getTurbineCasing(meta, 0, false, side);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(pos.add(aSide == EnumFacing.SOUTH ? 1 : -1, 0, 0)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
-                    if (((IGregTechTileEntity) tTileEntity).isActive()) {
-                        return getTurbineCasing(tMeta, 3, true, aSide);
+                if ((null != (tileEntity = world.getTileEntity(pos.add(side == EnumFacing.SOUTH ? 1 : -1, 0, 0)))) && ((tileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tileEntity).getFrontFacing() == side.getIndex()) && (null != (metaTileEntity = ((IGregTechTileEntity) tileEntity).getMetaTileEntity())) && ((metaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                    if (((IGregTechTileEntity) tileEntity).isActive()) {
+                        return getTurbineCasing(meta, 3, true, side);
                     }
-                    return getTurbineCasing(tMeta, 3, false, aSide);
+                    return getTurbineCasing(meta, 3, false, side);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(pos.add(aSide == EnumFacing.SOUTH ? 1 : -1, 1, 0)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
-                    if (((IGregTechTileEntity) tTileEntity).isActive()) {
-                        return getTurbineCasing(tMeta, 6, true, aSide);
+                if ((null != (tileEntity = world.getTileEntity(pos.add(side == EnumFacing.SOUTH ? 1 : -1, 1, 0)))) && ((tileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tileEntity).getFrontFacing() == side.getIndex()) && (null != (metaTileEntity = ((IGregTechTileEntity) tileEntity).getMetaTileEntity())) && ((metaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                    if (((IGregTechTileEntity) tileEntity).isActive()) {
+                        return getTurbineCasing(meta, 6, true, side);
                     }
-                    return getTurbineCasing(tMeta, 6, false, aSide);
+                    return getTurbineCasing(meta, 6, false, side);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(pos.down()))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
-                    if (((IGregTechTileEntity) tTileEntity).isActive()) {
-                        return getTurbineCasing(tMeta, 1, true, aSide);
+                if ((null != (tileEntity = world.getTileEntity(pos.down()))) && ((tileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tileEntity).getFrontFacing() == side.getIndex()) && (null != (metaTileEntity = ((IGregTechTileEntity) tileEntity).getMetaTileEntity())) && ((metaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                    if (((IGregTechTileEntity) tileEntity).isActive()) {
+                        return getTurbineCasing(meta, 1, true, side);
                     }
-                    return getTurbineCasing(tMeta, 1, false, aSide);
+                    return getTurbineCasing(meta, 1, false, side);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(pos.up()))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
-                    if (((IGregTechTileEntity) tTileEntity).isActive()) {
-                        return getTurbineCasing(tMeta, 7, true, aSide);
+                if ((null != (tileEntity = world.getTileEntity(pos.up()))) && ((tileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tileEntity).getFrontFacing() == side.getIndex()) && (null != (metaTileEntity = ((IGregTechTileEntity) tileEntity).getMetaTileEntity())) && ((metaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                    if (((IGregTechTileEntity) tileEntity).isActive()) {
+                        return getTurbineCasing(meta, 7, true, side);
                     }
-                    return getTurbineCasing(tMeta, 7, false, aSide);
+                    return getTurbineCasing(meta, 7, false, side);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(pos.add(aSide == EnumFacing.NORTH ? 1 : -1, 1, 0)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
-                    if (((IGregTechTileEntity) tTileEntity).isActive()) {
-                        return getTurbineCasing(tMeta, 8, true, aSide);
+                if ((null != (tileEntity = world.getTileEntity(pos.add(side == EnumFacing.NORTH ? 1 : -1, 1, 0)))) && ((tileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tileEntity).getFrontFacing() == side.getIndex()) && (null != (metaTileEntity = ((IGregTechTileEntity) tileEntity).getMetaTileEntity())) && ((metaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                    if (((IGregTechTileEntity) tileEntity).isActive()) {
+                        return getTurbineCasing(meta, 8, true, side);
                     }
-                    return getTurbineCasing(tMeta, 8, false, aSide);
+                    return getTurbineCasing(meta, 8, false, side);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(pos.add(aSide == EnumFacing.NORTH ? 1 : -1, 0, 0)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
-                    if (((IGregTechTileEntity) tTileEntity).isActive()) {
-                        return getTurbineCasing(tMeta, 5, true, aSide);
+                if ((null != (tileEntity = world.getTileEntity(pos.add(side == EnumFacing.NORTH ? 1 : -1, 0, 0)))) && ((tileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tileEntity).getFrontFacing() == side.getIndex()) && (null != (metaTileEntity = ((IGregTechTileEntity) tileEntity).getMetaTileEntity())) && ((metaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                    if (((IGregTechTileEntity) tileEntity).isActive()) {
+                        return getTurbineCasing(meta, 5, true, side);
                     }
-                    return getTurbineCasing(tMeta, 5, false, aSide);
+                    return getTurbineCasing(meta, 5, false, side);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(pos.add(aSide == EnumFacing.NORTH ? 1 : -1, -1, 0)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
-                    if (((IGregTechTileEntity) tTileEntity).isActive()) {
-                        return getTurbineCasing(tMeta, 2, true, aSide);
+                if ((null != (tileEntity = world.getTileEntity(pos.add(side == EnumFacing.NORTH ? 1 : -1, -1, 0)))) && ((tileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tileEntity).getFrontFacing() == side.getIndex()) && (null != (metaTileEntity = ((IGregTechTileEntity) tileEntity).getMetaTileEntity())) && ((metaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                    if (((IGregTechTileEntity) tileEntity).isActive()) {
+                        return getTurbineCasing(meta, 2, true, side);
                     }
-                    return getTurbineCasing(tMeta, 2, false, aSide);
+                    return getTurbineCasing(meta, 2, false, side);
                 }
-            } else if ((aSide == EnumFacing.WEST) || (aSide == EnumFacing.EAST)) {
-                TileEntity tTileEntity;
-                Object tMetaTileEntity;
-                if ((null != (tTileEntity = aWorld.getTileEntity(pos.add(0, -1, aSide == EnumFacing.WEST ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
-                    if (((IGregTechTileEntity) tTileEntity).isActive()) {
-                        return getTurbineCasing(tMeta, 0, true, aSide);
+            } else if ((side == EnumFacing.WEST) || (side == EnumFacing.EAST)) {
+                TileEntity tileEntity;
+                Object metaTileEntity;
+                if ((null != (tileEntity = world.getTileEntity(pos.add(0, -1, side == EnumFacing.WEST ? 1 : -1)))) && ((tileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tileEntity).getFrontFacing() == side.getIndex()) && (null != (metaTileEntity = ((IGregTechTileEntity) tileEntity).getMetaTileEntity())) && ((metaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                    if (((IGregTechTileEntity) tileEntity).isActive()) {
+                        return getTurbineCasing(meta, 0, true, side);
                     }
-                    return getTurbineCasing(tMeta, 0, false, aSide);
+                    return getTurbineCasing(meta, 0, false, side);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(pos.add(0, 0, aSide == EnumFacing.WEST ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
-                    if (((IGregTechTileEntity) tTileEntity).isActive()) {
-                        return getTurbineCasing(tMeta, 3, true, aSide);
+                if ((null != (tileEntity = world.getTileEntity(pos.add(0, 0, side == EnumFacing.WEST ? 1 : -1)))) && ((tileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tileEntity).getFrontFacing() == side.getIndex()) && (null != (metaTileEntity = ((IGregTechTileEntity) tileEntity).getMetaTileEntity())) && ((metaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                    if (((IGregTechTileEntity) tileEntity).isActive()) {
+                        return getTurbineCasing(meta, 3, true, side);
                     }
-                    return getTurbineCasing(tMeta, 3, false, aSide);
+                    return getTurbineCasing(meta, 3, false, side);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(pos.add(0, 1, aSide == EnumFacing.WEST ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
-                    if (((IGregTechTileEntity) tTileEntity).isActive()) {
-                        return getTurbineCasing(tMeta, 6, true, aSide);
+                if ((null != (tileEntity = world.getTileEntity(pos.add(0, 1, side == EnumFacing.WEST ? 1 : -1)))) && ((tileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tileEntity).getFrontFacing() == side.getIndex()) && (null != (metaTileEntity = ((IGregTechTileEntity) tileEntity).getMetaTileEntity())) && ((metaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                    if (((IGregTechTileEntity) tileEntity).isActive()) {
+                        return getTurbineCasing(meta, 6, true, side);
                     }
-                    return getTurbineCasing(tMeta, 6, false, aSide);
+                    return getTurbineCasing(meta, 6, false, side);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(pos.down()))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
-                    if (((IGregTechTileEntity) tTileEntity).isActive()) {
-                        return getTurbineCasing(tMeta, 1, true, aSide);
+                if ((null != (tileEntity = world.getTileEntity(pos.down()))) && ((tileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tileEntity).getFrontFacing() == side.getIndex()) && (null != (metaTileEntity = ((IGregTechTileEntity) tileEntity).getMetaTileEntity())) && ((metaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                    if (((IGregTechTileEntity) tileEntity).isActive()) {
+                        return getTurbineCasing(meta, 1, true, side);
                     }
-                    return getTurbineCasing(tMeta, 1, false, aSide);
+                    return getTurbineCasing(meta, 1, false, side);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(pos.up()))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
-                    if (((IGregTechTileEntity) tTileEntity).isActive()) {
-                        return getTurbineCasing(tMeta, 7, true, aSide);
+                if ((null != (tileEntity = world.getTileEntity(pos.up()))) && ((tileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tileEntity).getFrontFacing() == side.getIndex()) && (null != (metaTileEntity = ((IGregTechTileEntity) tileEntity).getMetaTileEntity())) && ((metaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                    if (((IGregTechTileEntity) tileEntity).isActive()) {
+                        return getTurbineCasing(meta, 7, true, side);
                     }
-                    return getTurbineCasing(tMeta, 7, false, aSide);
+                    return getTurbineCasing(meta, 7, false, side);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(pos.add(0, 1, aSide == EnumFacing.EAST ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
-                    if (((IGregTechTileEntity) tTileEntity).isActive()) {
-                        return getTurbineCasing(tMeta, 8, true, aSide);
+                if ((null != (tileEntity = world.getTileEntity(pos.add(0, 1, side == EnumFacing.EAST ? 1 : -1)))) && ((tileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tileEntity).getFrontFacing() == side.getIndex()) && (null != (metaTileEntity = ((IGregTechTileEntity) tileEntity).getMetaTileEntity())) && ((metaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                    if (((IGregTechTileEntity) tileEntity).isActive()) {
+                        return getTurbineCasing(meta, 8, true, side);
                     }
-                    return getTurbineCasing(tMeta, 8, false, aSide);
+                    return getTurbineCasing(meta, 8, false, side);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(pos.add(0, 0, aSide == EnumFacing.EAST ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
-                    if (((IGregTechTileEntity) tTileEntity).isActive()) {
-                        return getTurbineCasing(tMeta, 5, true, aSide);
+                if ((null != (tileEntity = world.getTileEntity(pos.add(0, 0, side == EnumFacing.EAST ? 1 : -1)))) && ((tileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tileEntity).getFrontFacing() == side.getIndex()) && (null != (metaTileEntity = ((IGregTechTileEntity) tileEntity).getMetaTileEntity())) && ((metaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                    if (((IGregTechTileEntity) tileEntity).isActive()) {
+                        return getTurbineCasing(meta, 5, true, side);
                     }
-                    return getTurbineCasing(tMeta, 5, false, aSide);
+                    return getTurbineCasing(meta, 5, false, side);
                 }
-                if ((null != (tTileEntity = aWorld.getTileEntity(pos.add(0, -1, aSide == EnumFacing.EAST ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide.getIndex()) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
-                    if (((IGregTechTileEntity) tTileEntity).isActive()) {
-                        return getTurbineCasing(tMeta, 2, true, aSide);
+                if ((null != (tileEntity = world.getTileEntity(pos.add(0, -1, side == EnumFacing.EAST ? 1 : -1)))) && ((tileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tileEntity).getFrontFacing() == side.getIndex()) && (null != (metaTileEntity = ((IGregTechTileEntity) tileEntity).getMetaTileEntity())) && ((metaTileEntity instanceof GT_MetaTileEntity_LargeTurbine))) {
+                    if (((IGregTechTileEntity) tileEntity).isActive()) {
+                        return getTurbineCasing(meta, 2, true, side);
                     }
-                    return getTurbineCasing(tMeta, 2, false, aSide);
+                    return getTurbineCasing(meta, 2, false, side);
                 }
             }
-            switch (tMeta) {
+            switch (meta) {
                 case 9:
                     return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
                 case 10:
@@ -271,257 +273,257 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
                     return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
             }
         }
-        boolean[] tConnectedSides = {
-                stateAndMetaEquals(aWorld, pos.down(), tMeta),
-                stateAndMetaEquals(aWorld, pos.up(), tMeta),
-                stateAndMetaEquals(aWorld, pos.north(), tMeta),
-                stateAndMetaEquals(aWorld, pos.south(), tMeta),
-                stateAndMetaEquals(aWorld, pos.west(), tMeta),
-                stateAndMetaEquals(aWorld, pos.east(), tMeta)};
-        switch (aSide) {
+        boolean[] connectedSides = {
+                stateAndMetaEquals(world, pos.down(), meta),
+                stateAndMetaEquals(world, pos.up(), meta),
+                stateAndMetaEquals(world, pos.north(), meta),
+                stateAndMetaEquals(world, pos.south(), meta),
+                stateAndMetaEquals(world, pos.west(), meta),
+                stateAndMetaEquals(world, pos.east(), meta)};
+        switch (side) {
             case DOWN:
-                if (tConnectedSides[0]) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 7)].getIcon();
+                if (connectedSides[0]) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 7)].getIcon();
                 }
-                if ((tConnectedSides[4]) && (tConnectedSides[5]) && (tConnectedSides[2]) && (tConnectedSides[3])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 6)].getIcon();
+                if ((connectedSides[4]) && (connectedSides[5]) && (connectedSides[2]) && (connectedSides[3])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 6)].getIcon();
                 }
-                if ((!tConnectedSides[4]) && (tConnectedSides[5]) && (tConnectedSides[2]) && (tConnectedSides[3])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 2)].getIcon();
+                if ((!connectedSides[4]) && (connectedSides[5]) && (connectedSides[2]) && (connectedSides[3])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 2)].getIcon();
                 }
-                if ((tConnectedSides[4]) && (!tConnectedSides[5]) && (tConnectedSides[2]) && (tConnectedSides[3])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 3)].getIcon();
+                if ((connectedSides[4]) && (!connectedSides[5]) && (connectedSides[2]) && (connectedSides[3])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 3)].getIcon();
                 }
-                if ((tConnectedSides[4]) && (tConnectedSides[5]) && (!tConnectedSides[2]) && (tConnectedSides[3])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 4)].getIcon();
+                if ((connectedSides[4]) && (connectedSides[5]) && (!connectedSides[2]) && (connectedSides[3])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 4)].getIcon();
                 }
-                if ((tConnectedSides[4]) && (tConnectedSides[5]) && (tConnectedSides[2]) && (!tConnectedSides[3])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 5)].getIcon();
+                if ((connectedSides[4]) && (connectedSides[5]) && (connectedSides[2]) && (!connectedSides[3])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 5)].getIcon();
                 }
-                if ((!tConnectedSides[4]) && (!tConnectedSides[5]) && (tConnectedSides[2]) && (tConnectedSides[3])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 8)].getIcon();
+                if ((!connectedSides[4]) && (!connectedSides[5]) && (connectedSides[2]) && (connectedSides[3])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 8)].getIcon();
                 }
-                if ((tConnectedSides[4]) && (!tConnectedSides[5]) && (!tConnectedSides[2]) && (tConnectedSides[3])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 9)].getIcon();
+                if ((connectedSides[4]) && (!connectedSides[5]) && (!connectedSides[2]) && (connectedSides[3])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 9)].getIcon();
                 }
-                if ((tConnectedSides[4]) && (tConnectedSides[5]) && (!tConnectedSides[2]) && (!tConnectedSides[3])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 10)].getIcon();
+                if ((connectedSides[4]) && (connectedSides[5]) && (!connectedSides[2]) && (!connectedSides[3])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 10)].getIcon();
                 }
-                if ((!tConnectedSides[4]) && (tConnectedSides[5]) && (tConnectedSides[2]) && (!tConnectedSides[3])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 11)].getIcon();
+                if ((!connectedSides[4]) && (connectedSides[5]) && (connectedSides[2]) && (!connectedSides[3])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 11)].getIcon();
                 }
-                if ((!tConnectedSides[4]) && (!tConnectedSides[5]) && (!tConnectedSides[2]) && (!tConnectedSides[3])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 7)].getIcon();
+                if ((!connectedSides[4]) && (!connectedSides[5]) && (!connectedSides[2]) && (!connectedSides[3])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 7)].getIcon();
                 }
-                if ((!tConnectedSides[4]) && (!tConnectedSides[2])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 1)].getIcon();
+                if ((!connectedSides[4]) && (!connectedSides[2])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 1)].getIcon();
                 }
-                if ((!tConnectedSides[5]) && (!tConnectedSides[3])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex)].getIcon();
+                if ((!connectedSides[5]) && (!connectedSides[3])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex)].getIcon();
                 }
             case UP:
-                if (tConnectedSides[1]) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 7)].getIcon();
+                if (connectedSides[1]) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 7)].getIcon();
                 }
-                if ((tConnectedSides[4]) && (tConnectedSides[5]) && (tConnectedSides[2]) && (tConnectedSides[3])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 6)].getIcon();
+                if ((connectedSides[4]) && (connectedSides[5]) && (connectedSides[2]) && (connectedSides[3])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 6)].getIcon();
                 }
-                if ((!tConnectedSides[4]) && (tConnectedSides[5]) && (tConnectedSides[2]) && (tConnectedSides[3])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 2)].getIcon();
+                if ((!connectedSides[4]) && (connectedSides[5]) && (connectedSides[2]) && (connectedSides[3])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 2)].getIcon();
                 }
-                if ((tConnectedSides[4]) && (!tConnectedSides[5]) && (tConnectedSides[2]) && (tConnectedSides[3])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 3)].getIcon();
+                if ((connectedSides[4]) && (!connectedSides[5]) && (connectedSides[2]) && (connectedSides[3])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 3)].getIcon();
                 }
-                if ((tConnectedSides[4]) && (tConnectedSides[5]) && (!tConnectedSides[2]) && (tConnectedSides[3])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 4)].getIcon();
+                if ((connectedSides[4]) && (connectedSides[5]) && (!connectedSides[2]) && (connectedSides[3])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 4)].getIcon();
                 }
-                if ((tConnectedSides[4]) && (tConnectedSides[5]) && (tConnectedSides[2]) && (!tConnectedSides[3])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 5)].getIcon();
+                if ((connectedSides[4]) && (connectedSides[5]) && (connectedSides[2]) && (!connectedSides[3])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 5)].getIcon();
                 }
-                if ((!tConnectedSides[4]) && (!tConnectedSides[5]) && (tConnectedSides[2]) && (tConnectedSides[3])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 8)].getIcon();
+                if ((!connectedSides[4]) && (!connectedSides[5]) && (connectedSides[2]) && (connectedSides[3])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 8)].getIcon();
                 }
-                if ((tConnectedSides[4]) && (!tConnectedSides[5]) && (!tConnectedSides[2]) && (tConnectedSides[3])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 9)].getIcon();
+                if ((connectedSides[4]) && (!connectedSides[5]) && (!connectedSides[2]) && (connectedSides[3])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 9)].getIcon();
                 }
-                if ((tConnectedSides[4]) && (tConnectedSides[5]) && (!tConnectedSides[2]) && (!tConnectedSides[3])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 10)].getIcon();
+                if ((connectedSides[4]) && (connectedSides[5]) && (!connectedSides[2]) && (!connectedSides[3])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 10)].getIcon();
                 }
-                if ((!tConnectedSides[4]) && (tConnectedSides[5]) && (tConnectedSides[2]) && (!tConnectedSides[3])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 11)].getIcon();
+                if ((!connectedSides[4]) && (connectedSides[5]) && (connectedSides[2]) && (!connectedSides[3])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 11)].getIcon();
                 }
-                if ((!tConnectedSides[4]) && (!tConnectedSides[5]) && (!tConnectedSides[2]) && (!tConnectedSides[3])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 7)].getIcon();
+                if ((!connectedSides[4]) && (!connectedSides[5]) && (!connectedSides[2]) && (!connectedSides[3])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 7)].getIcon();
                 }
-                if ((!tConnectedSides[2]) && (!tConnectedSides[4])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 1)].getIcon();
+                if ((!connectedSides[2]) && (!connectedSides[4])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 1)].getIcon();
                 }
-                if ((!tConnectedSides[3]) && (!tConnectedSides[5])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex)].getIcon();
+                if ((!connectedSides[3]) && (!connectedSides[5])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex)].getIcon();
                 }
             case NORTH:
-                if (tConnectedSides[5]) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 7)].getIcon();
+                if (connectedSides[5]) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 7)].getIcon();
                 }
-                if ((tConnectedSides[2]) && (tConnectedSides[0]) && (tConnectedSides[4]) && (tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 6)].getIcon();
+                if ((connectedSides[2]) && (connectedSides[0]) && (connectedSides[4]) && (connectedSides[1])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 6)].getIcon();
                 }
-                if ((!tConnectedSides[2]) && (tConnectedSides[0]) && (tConnectedSides[4]) && (tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 2)].getIcon();
+                if ((!connectedSides[2]) && (connectedSides[0]) && (connectedSides[4]) && (connectedSides[1])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 2)].getIcon();
                 }
-                if ((tConnectedSides[2]) && (!tConnectedSides[0]) && (tConnectedSides[4]) && (tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 5)].getIcon();
+                if ((connectedSides[2]) && (!connectedSides[0]) && (connectedSides[4]) && (connectedSides[1])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 5)].getIcon();
                 }
-                if ((tConnectedSides[2]) && (tConnectedSides[0]) && (!tConnectedSides[4]) && (tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 4)].getIcon();
+                if ((connectedSides[2]) && (connectedSides[0]) && (!connectedSides[4]) && (connectedSides[1])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 4)].getIcon();
                 }
-                if ((tConnectedSides[2]) && (tConnectedSides[0]) && (tConnectedSides[4]) && (!tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 3)].getIcon();
+                if ((connectedSides[2]) && (connectedSides[0]) && (connectedSides[4]) && (!connectedSides[1])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 3)].getIcon();
                 }
-                if ((!tConnectedSides[2]) && (!tConnectedSides[0]) && (tConnectedSides[4]) && (tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 11)].getIcon();
+                if ((!connectedSides[2]) && (!connectedSides[0]) && (connectedSides[4]) && (connectedSides[1])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 11)].getIcon();
                 }
-                if ((tConnectedSides[2]) && (!tConnectedSides[0]) && (!tConnectedSides[4]) && (tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 10)].getIcon();
+                if ((connectedSides[2]) && (!connectedSides[0]) && (!connectedSides[4]) && (connectedSides[1])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 10)].getIcon();
                 }
-                if ((tConnectedSides[2]) && (tConnectedSides[0]) && (!tConnectedSides[4]) && (!tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 9)].getIcon();
+                if ((connectedSides[2]) && (connectedSides[0]) && (!connectedSides[4]) && (!connectedSides[1])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 9)].getIcon();
                 }
-                if ((!tConnectedSides[2]) && (tConnectedSides[0]) && (tConnectedSides[4]) && (!tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 8)].getIcon();
+                if ((!connectedSides[2]) && (connectedSides[0]) && (connectedSides[4]) && (!connectedSides[1])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 8)].getIcon();
                 }
-                if ((!tConnectedSides[2]) && (!tConnectedSides[0]) && (!tConnectedSides[4]) && (!tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 7)].getIcon();
+                if ((!connectedSides[2]) && (!connectedSides[0]) && (!connectedSides[4]) && (!connectedSides[1])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 7)].getIcon();
                 }
-                if ((!tConnectedSides[2]) && (!tConnectedSides[4])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 1)].getIcon();
+                if ((!connectedSides[2]) && (!connectedSides[4])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 1)].getIcon();
                 }
-                if ((!tConnectedSides[0]) && (!tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex)].getIcon();
+                if ((!connectedSides[0]) && (!connectedSides[1])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex)].getIcon();
                 }
             case SOUTH:
-                if (tConnectedSides[3]) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 7)].getIcon();
+                if (connectedSides[3]) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 7)].getIcon();
                 }
-                if ((tConnectedSides[2]) && (tConnectedSides[0]) && (tConnectedSides[4]) && (tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 6)].getIcon();
+                if ((connectedSides[2]) && (connectedSides[0]) && (connectedSides[4]) && (connectedSides[1])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 6)].getIcon();
                 }
-                if ((!tConnectedSides[2]) && (tConnectedSides[0]) && (tConnectedSides[4]) && (tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 4)].getIcon();
+                if ((!connectedSides[2]) && (connectedSides[0]) && (connectedSides[4]) && (connectedSides[1])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 4)].getIcon();
                 }
-                if ((tConnectedSides[2]) && (!tConnectedSides[0]) && (tConnectedSides[4]) && (tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 5)].getIcon();
+                if ((connectedSides[2]) && (!connectedSides[0]) && (connectedSides[4]) && (connectedSides[1])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 5)].getIcon();
                 }
-                if ((tConnectedSides[2]) && (tConnectedSides[0]) && (!tConnectedSides[4]) && (tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 2)].getIcon();
+                if ((connectedSides[2]) && (connectedSides[0]) && (!connectedSides[4]) && (connectedSides[1])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 2)].getIcon();
                 }
-                if ((tConnectedSides[2]) && (tConnectedSides[0]) && (tConnectedSides[4]) && (!tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 3)].getIcon();
+                if ((connectedSides[2]) && (connectedSides[0]) && (connectedSides[4]) && (!connectedSides[1])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 3)].getIcon();
                 }
-                if ((!tConnectedSides[2]) && (!tConnectedSides[0]) && (tConnectedSides[4]) && (tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 10)].getIcon();
+                if ((!connectedSides[2]) && (!connectedSides[0]) && (connectedSides[4]) && (connectedSides[1])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 10)].getIcon();
                 }
-                if ((tConnectedSides[2]) && (!tConnectedSides[0]) && (!tConnectedSides[4]) && (tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 11)].getIcon();
+                if ((connectedSides[2]) && (!connectedSides[0]) && (!connectedSides[4]) && (connectedSides[1])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 11)].getIcon();
                 }
-                if ((tConnectedSides[2]) && (tConnectedSides[0]) && (!tConnectedSides[4]) && (!tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 8)].getIcon();
+                if ((connectedSides[2]) && (connectedSides[0]) && (!connectedSides[4]) && (!connectedSides[1])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 8)].getIcon();
                 }
-                if ((!tConnectedSides[2]) && (tConnectedSides[0]) && (tConnectedSides[4]) && (!tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 9)].getIcon();
+                if ((!connectedSides[2]) && (connectedSides[0]) && (connectedSides[4]) && (!connectedSides[1])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 9)].getIcon();
                 }
-                if ((!tConnectedSides[2]) && (!tConnectedSides[0]) && (!tConnectedSides[4]) && (!tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 7)].getIcon();
+                if ((!connectedSides[2]) && (!connectedSides[0]) && (!connectedSides[4]) && (!connectedSides[1])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 7)].getIcon();
                 }
-                if ((!tConnectedSides[2]) && (!tConnectedSides[4])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 1)].getIcon();
+                if ((!connectedSides[2]) && (!connectedSides[4])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 1)].getIcon();
                 }
-                if ((!tConnectedSides[0]) && (!tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex)].getIcon();
+                if ((!connectedSides[0]) && (!connectedSides[1])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex)].getIcon();
                 }
             case WEST:
-                if (tConnectedSides[4]) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 7)].getIcon();
+                if (connectedSides[4]) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 7)].getIcon();
                 }
-                if ((tConnectedSides[0]) && (tConnectedSides[3]) && (tConnectedSides[1]) && (tConnectedSides[5])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 6)].getIcon();
+                if ((connectedSides[0]) && (connectedSides[3]) && (connectedSides[1]) && (connectedSides[5])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 6)].getIcon();
                 }
-                if ((!tConnectedSides[0]) && (tConnectedSides[3]) && (tConnectedSides[1]) && (tConnectedSides[5])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 5)].getIcon();
+                if ((!connectedSides[0]) && (connectedSides[3]) && (connectedSides[1]) && (connectedSides[5])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 5)].getIcon();
                 }
-                if ((tConnectedSides[0]) && (!tConnectedSides[3]) && (tConnectedSides[1]) && (tConnectedSides[5])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 4)].getIcon();
+                if ((connectedSides[0]) && (!connectedSides[3]) && (connectedSides[1]) && (connectedSides[5])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 4)].getIcon();
                 }
-                if ((tConnectedSides[0]) && (tConnectedSides[3]) && (!tConnectedSides[1]) && (tConnectedSides[5])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 3)].getIcon();
+                if ((connectedSides[0]) && (connectedSides[3]) && (!connectedSides[1]) && (connectedSides[5])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 3)].getIcon();
                 }
-                if ((tConnectedSides[0]) && (tConnectedSides[3]) && (tConnectedSides[1]) && (!tConnectedSides[5])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 2)].getIcon();
+                if ((connectedSides[0]) && (connectedSides[3]) && (connectedSides[1]) && (!connectedSides[5])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 2)].getIcon();
                 }
-                if ((!tConnectedSides[0]) && (!tConnectedSides[3]) && (tConnectedSides[1]) && (tConnectedSides[5])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 10)].getIcon();
+                if ((!connectedSides[0]) && (!connectedSides[3]) && (connectedSides[1]) && (connectedSides[5])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 10)].getIcon();
                 }
-                if ((tConnectedSides[0]) && (!tConnectedSides[3]) && (!tConnectedSides[1]) && (tConnectedSides[5])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 9)].getIcon();
+                if ((connectedSides[0]) && (!connectedSides[3]) && (!connectedSides[1]) && (connectedSides[5])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 9)].getIcon();
                 }
-                if ((tConnectedSides[0]) && (tConnectedSides[3]) && (!tConnectedSides[1]) && (!tConnectedSides[5])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 8)].getIcon();
+                if ((connectedSides[0]) && (connectedSides[3]) && (!connectedSides[1]) && (!connectedSides[5])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 8)].getIcon();
                 }
-                if ((!tConnectedSides[0]) && (tConnectedSides[3]) && (tConnectedSides[1]) && (!tConnectedSides[5])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 11)].getIcon();
+                if ((!connectedSides[0]) && (connectedSides[3]) && (connectedSides[1]) && (!connectedSides[5])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 11)].getIcon();
                 }
-                if ((!tConnectedSides[0]) && (!tConnectedSides[3]) && (!tConnectedSides[1]) && (!tConnectedSides[5])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 7)].getIcon();
+                if ((!connectedSides[0]) && (!connectedSides[3]) && (!connectedSides[1]) && (!connectedSides[5])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 7)].getIcon();
                 }
-                if ((!tConnectedSides[0]) && (!tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex)].getIcon();
+                if ((!connectedSides[0]) && (!connectedSides[1])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex)].getIcon();
                 }
-                if ((!tConnectedSides[3]) && (!tConnectedSides[5])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 1)].getIcon();
+                if ((!connectedSides[3]) && (!connectedSides[5])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 1)].getIcon();
                 }
             case EAST:
-                if (tConnectedSides[2]) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 7)].getIcon();
+                if (connectedSides[2]) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 7)].getIcon();
                 }
-                if ((tConnectedSides[0]) && (tConnectedSides[3]) && (tConnectedSides[1]) && (tConnectedSides[5])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 6)].getIcon();
+                if ((connectedSides[0]) && (connectedSides[3]) && (connectedSides[1]) && (connectedSides[5])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 6)].getIcon();
                 }
-                if ((!tConnectedSides[0]) && (tConnectedSides[3]) && (tConnectedSides[1]) && (tConnectedSides[5])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 5)].getIcon();
+                if ((!connectedSides[0]) && (connectedSides[3]) && (connectedSides[1]) && (connectedSides[5])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 5)].getIcon();
                 }
-                if ((tConnectedSides[0]) && (!tConnectedSides[3]) && (tConnectedSides[1]) && (tConnectedSides[5])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 2)].getIcon();
+                if ((connectedSides[0]) && (!connectedSides[3]) && (connectedSides[1]) && (connectedSides[5])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 2)].getIcon();
                 }
-                if ((tConnectedSides[0]) && (tConnectedSides[3]) && (!tConnectedSides[1]) && (tConnectedSides[5])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 3)].getIcon();
+                if ((connectedSides[0]) && (connectedSides[3]) && (!connectedSides[1]) && (connectedSides[5])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 3)].getIcon();
                 }
-                if ((tConnectedSides[0]) && (tConnectedSides[3]) && (tConnectedSides[1]) && (!tConnectedSides[5])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 4)].getIcon();
+                if ((connectedSides[0]) && (connectedSides[3]) && (connectedSides[1]) && (!connectedSides[5])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 4)].getIcon();
                 }
-                if ((!tConnectedSides[0]) && (!tConnectedSides[3]) && (tConnectedSides[1]) && (tConnectedSides[5])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 11)].getIcon();
+                if ((!connectedSides[0]) && (!connectedSides[3]) && (connectedSides[1]) && (connectedSides[5])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 11)].getIcon();
                 }
-                if ((tConnectedSides[0]) && (!tConnectedSides[3]) && (!tConnectedSides[1]) && (tConnectedSides[5])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 8)].getIcon();
+                if ((connectedSides[0]) && (!connectedSides[3]) && (!connectedSides[1]) && (connectedSides[5])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 8)].getIcon();
                 }
-                if ((tConnectedSides[0]) && (tConnectedSides[3]) && (!tConnectedSides[1]) && (!tConnectedSides[5])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 9)].getIcon();
+                if ((connectedSides[0]) && (connectedSides[3]) && (!connectedSides[1]) && (!connectedSides[5])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 9)].getIcon();
                 }
-                if ((!tConnectedSides[0]) && (tConnectedSides[3]) && (tConnectedSides[1]) && (!tConnectedSides[5])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 10)].getIcon();
+                if ((!connectedSides[0]) && (connectedSides[3]) && (connectedSides[1]) && (!connectedSides[5])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 10)].getIcon();
                 }
-                if ((!tConnectedSides[0]) && (!tConnectedSides[3]) && (!tConnectedSides[1]) && (!tConnectedSides[5])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 7)].getIcon();
+                if ((!connectedSides[0]) && (!connectedSides[3]) && (!connectedSides[1]) && (!connectedSides[5])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 7)].getIcon();
                 }
-                if ((!tConnectedSides[0]) && (!tConnectedSides[1])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex)].getIcon();
+                if ((!connectedSides[0]) && (!connectedSides[1])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex)].getIcon();
                 }
-                if ((!tConnectedSides[3]) && (!tConnectedSides[5])) {
-                    return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 1)].getIcon();
+                if ((!connectedSides[3]) && (!connectedSides[5])) {
+                    return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 1)].getIcon();
                 }
                 break;
         }
-        return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 7)].getIcon();
+        return Textures.BlockIcons.CONNECTED_HULLS[(startIndex + 7)].getIcon();
     }
 
     public boolean stateAndMetaEquals(IBlockAccess access, BlockPos blockPos, int meta) {

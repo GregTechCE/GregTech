@@ -88,12 +88,12 @@ public class GT_Block_Casings2 extends GT_Block_Casings_Abstract {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
-        return getIconContainer(aSide, aMeta).getIcon();
+    public TextureAtlasSprite getIcon(EnumFacing side, int meta) {
+        return getIconContainer(side, meta).getIcon();
     }
 
-    public static IIconContainer getIconContainer(EnumFacing aSide, int aMeta) {
-        switch (aMeta) {
+    public static IIconContainer getIconContainer(EnumFacing side, int meta) {
+        switch (meta) {
             case 0:
                 return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL;
             case 1:

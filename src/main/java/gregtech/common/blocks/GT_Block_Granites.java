@@ -70,9 +70,9 @@ public class GT_Block_Granites extends GT_Block_Stones_Abstract {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
-        if ((aMeta >= 0) && (aMeta < 16)) {
-            return gregtech.api.enums.Textures.BlockIcons.GRANITES[aMeta].getIcon();
+    public TextureAtlasSprite getIcon(EnumFacing side, int meta) {
+        if ((meta >= 0) && (meta < 16)) {
+            return gregtech.api.enums.Textures.BlockIcons.GRANITES[meta].getIcon();
         }
         return gregtech.api.enums.Textures.BlockIcons.GRANITES[0].getIcon();
     }

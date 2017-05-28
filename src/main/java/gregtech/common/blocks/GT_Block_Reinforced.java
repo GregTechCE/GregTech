@@ -50,8 +50,8 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
 
     private TextureAtlasSprite COAL_BLOCK_ICON_DATA;
 
-    public GT_Block_Reinforced(String aName) {
-        super(aName, GT_Item_Storage.class, GT_Material_Reinforced.INSTANCE);
+    public GT_Block_Reinforced(String name) {
+        super(name, GT_Item_Storage.class, GT_Material_Reinforced.INSTANCE);
         setSoundType(SoundType.STONE);
         setCreativeTab(GregTech_API.TAB_GREGTECH);
 
@@ -133,9 +133,9 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
-        if ((aMeta >= 0) && (aMeta < 16)) {
-            switch (aMeta) {
+    public TextureAtlasSprite getIcon(EnumFacing side, int meta) {
+        if ((meta >= 0) && (meta < 16)) {
+            switch (meta) {
                 case 0:
                     return Textures.BlockIcons.BLOCK_BRONZEPREIN.getIcon();
                 case 1:
@@ -276,11 +276,12 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         return super.onBlockActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List<ItemStack> aList) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < 16; i++) {
-            ItemStack aStack = new ItemStack(aItem, 1, i);
-            if (!aStack.getDisplayName().contains(".name")) aList.add(aStack);
+            ItemStack stack = new ItemStack(item, 1, i);
+            if (!stack.getDisplayName().contains(".name")) list.add(stack);
         }
     }
 

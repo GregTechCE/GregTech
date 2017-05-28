@@ -13,8 +13,8 @@ public class GT_Item_Stones_Abstract extends ItemBlock {
 
     private final String mNoMobsToolTip = GT_LanguageManager.addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
 
-    public GT_Item_Stones_Abstract(Block par1) {
-        super(par1);
+    public GT_Item_Stones_Abstract(Block block) {
+        super(block);
         setMaxDamage(0);
         setHasSubtypes(true);
         setCreativeTab(GregTech_API.TAB_GREGTECH_MATERIALS);
@@ -26,20 +26,20 @@ public class GT_Item_Stones_Abstract extends ItemBlock {
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack aStack) {
-        return this.block.getUnlocalizedName() + "." + getDamage(aStack);
+    public String getUnlocalizedName(ItemStack stack) {
+        return this.block.getUnlocalizedName() + "." + getDamage(stack);
     }
 
     @Override
-    public int getMetadata(int aMeta) {
-        return aMeta;
+    public int getMetadata(int damage) {
+        return damage;
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        super.addInformation(aStack, aPlayer, aList, aF3_H);
-        if (aStack.getItemDamage() % 8 >= 3) {
-            aList.add(this.mNoMobsToolTip);
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+        super.addInformation(stack, player, tooltip, advanced);
+        if (stack.getItemDamage() % 8 >= 3) {
+            tooltip.add(this.mNoMobsToolTip);
         }
     }
 }

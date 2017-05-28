@@ -59,23 +59,23 @@ public class GT_Block_Concretes extends GT_Block_Stones_Abstract {
 
         @Override
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
-        if ((aMeta >= 0) && (aMeta < 16)) {
-            return gregtech.api.enums.Textures.BlockIcons.CONCRETES[aMeta].getIcon();
+    public TextureAtlasSprite getIcon(EnumFacing side, int meta) {
+        if ((meta >= 0) && (meta < 16)) {
+            return gregtech.api.enums.Textures.BlockIcons.CONCRETES[meta].getIcon();
         }
         return gregtech.api.enums.Textures.BlockIcons.CONCRETES[0].getIcon();
     }
 
     @Override
-    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity aEntity) {
-        if (aEntity.onGround && !aEntity.isInWater()) {
-            if (aEntity.isSneaking()) {
-                aEntity.motionX *= 0.8999999761581421D;
-                aEntity.motionZ *= 0.8999999761581421D;
+    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entity) {
+        if (entity.onGround && !entity.isInWater()) {
+            if (entity.isSneaking()) {
+                entity.motionX *= 0.8999999761581421D;
+                entity.motionZ *= 0.8999999761581421D;
             } else {
-                if (aEntity.motionX < 6.0 && aEntity.motionZ < 6.0) {
-                    aEntity.motionX *= 1.100000023841858D;
-                    aEntity.motionZ *= 1.100000023841858D;
+                if (entity.motionX < 6.0 && entity.motionZ < 6.0) {
+                    entity.motionX *= 1.100000023841858D;
+                    entity.motionZ *= 1.100000023841858D;
                 }
             }
         }
@@ -83,9 +83,9 @@ public class GT_Block_Concretes extends GT_Block_Stones_Abstract {
 
     @Nullable
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World aWorld, BlockPos pos) {
-        Block tBlock = aWorld.getBlockState(pos.up()).getBlock();
-        if (tBlock instanceof IFluidBlock || tBlock instanceof BlockLiquid) {
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World world, BlockPos pos) {
+        Block block = world.getBlockState(pos.up()).getBlock();
+        if (block instanceof IFluidBlock || block instanceof BlockLiquid) {
             return Block.FULL_BLOCK_AABB;
         }
         return CONCRETE_BLOCK_AABB;

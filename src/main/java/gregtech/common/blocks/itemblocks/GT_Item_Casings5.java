@@ -10,35 +10,35 @@ import net.minecraft.item.ItemStack;
 
 public class GT_Item_Casings5 extends GT_Item_Casings_Abstract {
 
-    public GT_Item_Casings5(Block par1) {
-        super(par1);
+    public GT_Item_Casings5(Block block) {
+        super(block);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        super.addInformation(aStack, aPlayer, aList, aF3_H);
-        switch (getDamage(aStack)) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+        super.addInformation(stack, player, tooltip, advanced);
+        switch (getDamage(stack)) {
             case 0:
-                aList.add(this.mCoil01Tooltip);
+                tooltip.add(this.mCoil01Tooltip);
                 break;
             case 1:
-                aList.add(this.mCoil02Tooltip);
+                tooltip.add(this.mCoil02Tooltip);
                 break;
             case 2:
-                aList.add(this.mCoil03Tooltip);
+                tooltip.add(this.mCoil03Tooltip);
                 break;
             case 3:
-                aList.add(this.mCoil04Tooltip);
+                tooltip.add(this.mCoil04Tooltip);
                 break;
             case 4:
-                aList.add(this.mCoil05Tooltip);
+                tooltip.add(this.mCoil05Tooltip);
                 break;
             case 5:
-                aList.add(this.mCoil06Tooltip);
+                tooltip.add(this.mCoil06Tooltip);
                 break;
             case 6:
-                aList.add(this.mCoil07Tooltip);
+                tooltip.add(this.mCoil07Tooltip);
                 break;
         }
     }

@@ -10,8 +10,8 @@ import net.minecraft.item.ItemStack;
 import java.util.List;
 
 public class GT_Item_Storage extends ItemBlock {
-    public GT_Item_Storage(Block par1) {
-        super(par1);
+    public GT_Item_Storage(Block block) {
+        super(block);
         setMaxDamage(0);
         setHasSubtypes(true);
         setCreativeTab(GregTech_API.TAB_GREGTECH_MATERIALS);
@@ -23,13 +23,13 @@ public class GT_Item_Storage extends ItemBlock {
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack aStack) {
-        return this.block.getUnlocalizedName() + "." + getDamage(aStack);
+    public String getUnlocalizedName(ItemStack stack) {
+        return this.block.getUnlocalizedName() + "." + getDamage(stack);
     }
 
     @Override
-    public int getMetadata(int aMeta) {
-        return aMeta;
+    public int getMetadata(int damage) {
+        return damage;
     }
 
 }

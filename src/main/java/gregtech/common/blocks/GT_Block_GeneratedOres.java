@@ -61,9 +61,9 @@ public abstract class GT_Block_GeneratedOres extends GT_Generic_Block {
 
         Materials[] lastMats = new Materials[MATERIALS_PER_BLOCK];
         int length = 0;
-        for(Materials aMaterial : GregTech_API.sGeneratedMaterials) {
-            if(aMaterial != null && (aMaterial.mTypes & 0x08) != 0) {
-                lastMats[length++] = aMaterial;
+        for(Materials material : GregTech_API.sGeneratedMaterials) {
+            if(material != null && (material.mTypes & 0x08) != 0) {
+                lastMats[length++] = material;
                 if(length == MATERIALS_PER_BLOCK) {
                     createOreBlock(lastMats);
                     lastMats = new Materials[MATERIALS_PER_BLOCK];
@@ -149,15 +149,15 @@ public abstract class GT_Block_GeneratedOres extends GT_Generic_Block {
 
         for (int i = 0; i < StoneTypes.mTypes.length; i++) {
             for (int j = 0; j < getMaterials().length; j++) {
-                Materials aMaterial = getMaterials()[j];
+                Materials material = getMaterials()[j];
 
                 IBlockState blockState = this.getDefaultState()
                         .withProperty(STONE_TYPE, StoneTypes.mTypes[i])
-                        .withProperty(getMaterialProperty(), aMaterial);
+                        .withProperty(getMaterialProperty(), material);
 
                 ItemStack itemStack = createStackedBlock(blockState);
                 GT_OreDictUnificator.registerOre(StoneTypes.mTypes[i].processingPrefix.get(this.getMaterials()[j]), itemStack);
-                GT_LanguageManager.addStringLocalization(itemStack.getUnlocalizedName() + ".name", (small ? "Small " : "") + getLocalizedName(aMaterial));
+                GT_LanguageManager.addStringLocalization(itemStack.getUnlocalizedName() + ".name", (small ? "Small " : "") + getLocalizedName(material));
             }
         }
 
@@ -277,82 +277,82 @@ public abstract class GT_Block_GeneratedOres extends GT_Generic_Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getParticleSprite(IBlockAccess worldObj, BlockPos aPos, EnumFacing side) {
-        return getStoneTypeSafe(worldObj.getBlockState(aPos)).mIconContainer.getIcon();
+    public TextureAtlasSprite getParticleSprite(IBlockAccess worldObj, BlockPos pos, EnumFacing side) {
+        return getStoneTypeSafe(worldObj.getBlockState(pos)).mIconContainer.getIcon();
     }
 
     @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        List<ItemStack> rList = new ArrayList<>();
+        List<ItemStack> dropList = new ArrayList<>();
         if (!mSmall) {
-            rList.add(createStackedBlock(state));
-            return rList;
+            dropList.add(createStackedBlock(state));
+            return dropList;
         }
-        Materials aMaterial = getMaterialSafe(state);
-        Materials aBaseMaterial = getStoneTypeSafe(state).stoneMaterial;
-        if (aMaterial != null) {
-            Random tRandom = new Random(pos.hashCode());
-            List<ItemStack> tSelector = new ArrayList<>();
+        Materials material = getMaterialSafe(state);
+        Materials baseMaterial = getStoneTypeSafe(state).stoneMaterial;
+        if (material != null) {
+            Random random = new Random(pos.hashCode());
+            List<ItemStack> selector = new ArrayList<>();
 
-            ItemStack tStack = GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 1L);
-            if (tStack != null) {
+            ItemStack stack = GT_OreDictUnificator.get(OrePrefixes.gemExquisite, material, GT_OreDictUnificator.get(OrePrefixes.gem, material, 1L), 1L);
+            if (stack != null) {
                 for (int i = 0; i < 1; i++) {
-                    tSelector.add(tStack);
+                    selector.add(stack);
                 }
             }
-            tStack = GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 1L);
-            if (tStack != null) {
+            stack = GT_OreDictUnificator.get(OrePrefixes.gemFlawless, material, GT_OreDictUnificator.get(OrePrefixes.gem, material, 1L), 1L);
+            if (stack != null) {
                 for (int i = 0; i < 2; i++) {
-                    tSelector.add(tStack);
+                    selector.add(stack);
                 }
             }
-            tStack = GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L);
-            if (tStack != null) {
+            stack = GT_OreDictUnificator.get(OrePrefixes.gem, material, 1L);
+            if (stack != null) {
                 for (int i = 0; i < 12; i++) {
-                    tSelector.add(tStack);
+                    selector.add(stack);
                 }
             }
-            tStack = GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1L), 1L);
-            if (tStack != null) {
+            stack = GT_OreDictUnificator.get(OrePrefixes.gemFlawed, material, GT_OreDictUnificator.get(OrePrefixes.crushed, material, 1L), 1L);
+            if (stack != null) {
                 for (int i = 0; i < 5; i++) {
-                    tSelector.add(tStack);
+                    selector.add(stack);
                 }
             }
-            tStack = GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1L);
-            if (tStack != null) {
+            stack = GT_OreDictUnificator.get(OrePrefixes.crushed, material, 1L);
+            if (stack != null) {
                 for (int i = 0; i < 10; i++) {
-                    tSelector.add(tStack);
+                    selector.add(stack);
                 }
             }
-            tStack = GT_OreDictUnificator.get(OrePrefixes.gemChipped, aMaterial, GT_OreDictUnificator.get(OrePrefixes.dustImpure, aMaterial, 1L), 1L);
-            if (tStack != null) {
+            stack = GT_OreDictUnificator.get(OrePrefixes.gemChipped, material, GT_OreDictUnificator.get(OrePrefixes.dustImpure, material, 1L), 1L);
+            if (stack != null) {
                 for (int i = 0; i < 5; i++) {
-                    tSelector.add(tStack);
+                    selector.add(stack);
                 }
             }
-            tStack = GT_OreDictUnificator.get(OrePrefixes.dustImpure, aMaterial, 1L);
-            if (tStack != null) {
+            stack = GT_OreDictUnificator.get(OrePrefixes.dustImpure, material, 1L);
+            if (stack != null) {
                 for (int i = 0; i < 10; i++) {
-                    tSelector.add(tStack);
+                    selector.add(stack);
                 }
             }
 
-            tStack = GT_OreDictUnificator.get(tRandom.nextInt(3) > 0 ? OrePrefixes.dustImpure : OrePrefixes.dust, aBaseMaterial, 1L);
-            if(tStack != null && tRandom.nextInt(3 + fortune) > 1) {
-                rList.add(tStack);
+            stack = GT_OreDictUnificator.get(random.nextInt(3) > 0 ? OrePrefixes.dustImpure : OrePrefixes.dust, baseMaterial, 1L);
+            if(stack != null && random.nextInt(3 + fortune) > 1) {
+                dropList.add(stack);
             }
 
-            if(tSelector.size() > 0) {
-                for (int i = 0, j = Math.max(1, aMaterial.mOreMultiplier + (fortune > 0 ? tRandom.nextInt(1 + fortune * aMaterial.mOreMultiplier) : 0) / 2); i < j; i++) {
-                    rList.add(GT_Utility.copyAmount(1L, tSelector.get(tRandom.nextInt(tSelector.size()))));
+            if(selector.size() > 0) {
+                for (int i = 0, j = Math.max(1, material.mOreMultiplier + (fortune > 0 ? random.nextInt(1 + fortune * material.mOreMultiplier) : 0) / 2); i < j; i++) {
+                    dropList.add(GT_Utility.copyAmount(1L, selector.get(random.nextInt(selector.size()))));
                 }
             }
         }
-        return rList;
+        return dropList;
     }
 
-    public String getLocalizedName(Materials aMaterial) {
-        switch (aMaterial.mName) {
+    public String getLocalizedName(Materials material) {
+        switch (material.mName) {
 
             case "InfusedAir":
             case "InfusedDull":
@@ -362,7 +362,7 @@ public abstract class GT_Block_GeneratedOres extends GT_Generic_Block {
             case "InfusedOrder":
             case "InfusedVis":
             case "InfusedWater":
-                return aMaterial.mDefaultLocalName + " Infused Stone";
+                return material.mDefaultLocalName + " Infused Stone";
 
             case "Vermiculite":
             case "Bentonite":
@@ -376,10 +376,10 @@ public abstract class GT_Block_GeneratedOres extends GT_Generic_Block {
             case "QuartzSand":
             case "Pitchblende":
             case "FullersEarth":
-                return aMaterial.mDefaultLocalName;
+                return material.mDefaultLocalName;
 
             default:
-                return aMaterial.mDefaultLocalName + OrePrefixes.ore.mLocalizedMaterialPost;
+                return material.mDefaultLocalName + OrePrefixes.ore.mLocalizedMaterialPost;
         }
     }
 

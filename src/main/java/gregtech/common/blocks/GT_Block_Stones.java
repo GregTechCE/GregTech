@@ -63,9 +63,9 @@ public class GT_Block_Stones extends GT_Block_Stones_Abstract {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
-        if ((aMeta >= 0) && (aMeta < 16)) {
-            return gregtech.api.enums.Textures.BlockIcons.STONES[aMeta].getIcon();
+    public TextureAtlasSprite getIcon(EnumFacing side, int meta) {
+        if ((meta >= 0) && (meta < 16)) {
+            return gregtech.api.enums.Textures.BlockIcons.STONES[meta].getIcon();
         }
         return gregtech.api.enums.Textures.BlockIcons.STONES[0].getIcon();
     }

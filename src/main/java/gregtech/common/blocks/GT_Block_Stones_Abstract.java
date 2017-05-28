@@ -14,11 +14,13 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -41,11 +43,11 @@ public abstract class GT_Block_Stones_Abstract extends GT_Generic_Block implemen
 
     /**
      *
-     * @param aName
-     * @param aItemClass
+     * @param name
+     * @param itemClass
      */
-    public GT_Block_Stones_Abstract(String aName, Class<? extends ItemBlock> aItemClass) {
-        super(aName, aItemClass, Material.ROCK);
+    public GT_Block_Stones_Abstract(String name, Class<? extends ItemBlock> itemClass) {
+        super(name, itemClass, Material.ROCK);
 
         if (getMaterials().length > MATERIALS_PER_BLOCK)
             throw new IllegalArgumentException("Materials.length must not be > MATERIALS_PER_BLOCK");
@@ -93,10 +95,10 @@ public abstract class GT_Block_Stones_Abstract extends GT_Generic_Block implemen
         GT_ModHandler.addCraftingRecipe(new ItemStack(this, 4, 11), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"XX", "XX", 'X', new ItemStack(this, 4, 15)});
     }
 
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        if (aOreDictName.equals(OreDictNames.craftingLensWhite.toString())) {
-            GT_Values.RA.addLaserEngraverRecipe(new ItemStack(this, 1, 7), GT_Utility.copyAmount(0L, aStack), new ItemStack(this, 1, 6), 50, 16);
-            GT_Values.RA.addLaserEngraverRecipe(new ItemStack(this, 1, 15), GT_Utility.copyAmount(0L, aStack), new ItemStack(this, 1, 14), 50, 16);
+    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName, ItemStack stack) {
+        if (oreDictName.equals(OreDictNames.craftingLensWhite.toString())) {
+            GT_Values.RA.addLaserEngraverRecipe(new ItemStack(this, 1, 7), GT_Utility.copyAmount(0L, stack), new ItemStack(this, 1, 6), 50, 16);
+            GT_Values.RA.addLaserEngraverRecipe(new ItemStack(this, 1, 15), GT_Utility.copyAmount(0L, stack), new ItemStack(this, 1, 14), 50, 16);
         }
     }
 
@@ -154,9 +156,9 @@ public abstract class GT_Block_Stones_Abstract extends GT_Generic_Block implemen
 
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing aSide, int aMeta) {
-        if ((aMeta >= 0) && (aMeta < 16)) {
-            return gregtech.api.enums.Textures.BlockIcons.GRANITES[aMeta].getIcon();
+    public TextureAtlasSprite getIcon(EnumFacing side, int meta) {
+        if ((meta >= 0) && (meta < 16)) {
+            return gregtech.api.enums.Textures.BlockIcons.GRANITES[meta].getIcon();
         }
         return null;
     }
@@ -175,10 +177,11 @@ public abstract class GT_Block_Stones_Abstract extends GT_Generic_Block implemen
         return Lists.newArrayList(createStackedBlock(state));
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List<ItemStack> aList) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < 16; i++) {
-            aList.add(new ItemStack(aItem, 1, i));
+            list.add(new ItemStack(item, 1, i));
         }
     }
 

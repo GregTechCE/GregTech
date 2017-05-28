@@ -27,8 +27,8 @@ import java.util.List;
 
 public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block {
 
-    public GT_Block_Casings_Abstract(String aName, Class<? extends ItemBlock> aItemClass, Material aMaterial) {
-        super(aName, aItemClass, aMaterial);
+    public GT_Block_Casings_Abstract(String name, Class<? extends ItemBlock> itemClass, Material material) {
+        super(name, itemClass, material);
         setSoundType(SoundType.METAL);
         setCreativeTab(GregTech_API.TAB_GREGTECH);
         setHardness(5.0F); //Blocks.IRON_BLOCK
@@ -81,10 +81,10 @@ public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List<ItemStack> aList) {
+    public void getSubBlocks(Item item, CreativeTabs par2CreativeTabs, List<ItemStack> list) {
         for (int i = 0; i < 16; i++) {
-            ItemStack aStack = new ItemStack(aItem, 1, i);
-            if (!aStack.getDisplayName().contains(".name")) aList.add(aStack);
+            ItemStack stack = new ItemStack(item, 1, i);
+            if (!stack.getDisplayName().contains(".name")) list.add(stack);
         }
     }
 

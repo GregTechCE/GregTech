@@ -22,16 +22,16 @@ public abstract class GT_Item_Casings_Abstract extends ItemBlock {
     protected final String mCoil07Tooltip = GT_LanguageManager.addStringLocalization("gt.coil07tooltip", "Base Heating Capacity = 9001 Kelvin");
     protected final String mBlastProofTooltip = GT_LanguageManager.addStringLocalization("gt.blastprooftooltip", "This Block is Blast Proof");
 
-    public GT_Item_Casings_Abstract(Block par1) {
-        super(par1);
+    public GT_Item_Casings_Abstract(Block block) {
+        super(block);
         setMaxDamage(0);
         setHasSubtypes(true);
         setCreativeTab(GregTech_API.TAB_GREGTECH_MATERIALS);
     }
 
     @Override
-    public int getMetadata(int aMeta) {
-        return aMeta;
+    public int getMetadata(int damage) {
+        return damage;
     }
 
     @Override
@@ -40,14 +40,14 @@ public abstract class GT_Item_Casings_Abstract extends ItemBlock {
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack aStack) {
-        return this.block.getUnlocalizedName() + "." + getDamage(aStack);
+    public String getUnlocalizedName(ItemStack stack) {
+        return this.block.getUnlocalizedName() + "." + getDamage(stack);
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        super.addInformation(aStack, aPlayer, aList, aF3_H);
-        aList.add(this.mNoMobsToolTip);
-        aList.add(this.mNoTileEntityToolTip);
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+        super.addInformation(stack, player, tooltip, advanced);
+        tooltip.add(this.mNoMobsToolTip);
+        tooltip.add(this.mNoTileEntityToolTip);
     }
 }

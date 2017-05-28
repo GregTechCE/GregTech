@@ -25,68 +25,68 @@ import net.minecraft.world.World;
 import java.util.List;
 
 public class GT_Item_Machines extends ItemBlock {
-    public GT_Item_Machines(Block par1) {
-        super(par1);
+    public GT_Item_Machines(Block block) {
+        super(block);
         setMaxDamage(0);
         setHasSubtypes(true);
         setCreativeTab(GregTech_API.TAB_GREGTECH);
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean par4) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         try {
-            int tDamage = getDamage(aStack);
-            if ((tDamage <= 0) || (tDamage >= GregTech_API.METATILEENTITIES.length)) {
+            int damage = getDamage(stack);
+            if ((damage <= 0) || (damage >= GregTech_API.METATILEENTITIES.length)) {
                 return;
             }
-            TileEntity temp = GregTech_API.sBlockMachines.createNewTileEntity(aPlayer == null ? GT_Values.DW : aPlayer.worldObj, GregTech_API.METATILEENTITIES[tDamage] == null ? 0 : GregTech_API.METATILEENTITIES[tDamage].getTileEntityBaseType());
+            TileEntity temp = GregTech_API.sBlockMachines.createNewTileEntity(player == null ? GT_Values.DW : player.worldObj, GregTech_API.METATILEENTITIES[damage] == null ? 0 : GregTech_API.METATILEENTITIES[damage].getTileEntityBaseType());
             if (temp != null) {
-                temp.setWorldObj(aPlayer == null ? GT_Values.DW : aPlayer.worldObj);
+                temp.setWorldObj(player == null ? GT_Values.DW : player.worldObj);
                 temp.setPos(BlockPos.ORIGIN);
                 if ((temp instanceof IGregTechTileEntity)) {
-                    IGregTechTileEntity tTileEntity = (IGregTechTileEntity) temp;
-                    tTileEntity.setInitialValuesAsNBT(new NBTTagCompound(), (short) tDamage);
-                    if (tTileEntity.getDescription() != null) {
+                    IGregTechTileEntity tileEntity = (IGregTechTileEntity) temp;
+                    tileEntity.setInitialValuesAsNBT(new NBTTagCompound(), (short) damage);
+                    if (tileEntity.getDescription() != null) {
                         int i = 0;
-                        for (String tDescription : tTileEntity.getDescription()) {
-                            if (GT_Utility.isStringValid(tDescription)) {
-                                if (tDescription.contains("%%%")) {
-                                    String[] tString = tDescription.split("%%%");
-                                    if (tString.length>=2) {
-                                        aList.add(GT_LanguageManager.addStringLocalization("TileEntity_DESCRIPTION_" + tDamage + "_Index_" + i++, tString[0], !GregTech_API.sPostloadFinished )+" "+tString[1]);
+                        for (String description : tileEntity.getDescription()) {
+                            if (GT_Utility.isStringValid(description)) {
+                                if (description.contains("%%%")) {
+                                    String[] split = description.split("%%%");
+                                    if (split.length>=2) {
+                                        tooltip.add(GT_LanguageManager.addStringLocalization("TileEntity_DESCRIPTION_" + damage + "_Index_" + i++, split[0], !GregTech_API.sPostloadFinished )+" "+split[1]);
                                     }
                                 } else {
-                                    String tTranslated = GT_LanguageManager.addStringLocalization("TileEntity_DESCRIPTION_" + tDamage + "_Index_" + i++, tDescription, !GregTech_API.sPostloadFinished );
-                                    aList.add(tTranslated.equals("") ? tDescription : tTranslated);
+                                    String translated = GT_LanguageManager.addStringLocalization("TileEntity_DESCRIPTION_" + damage + "_Index_" + i++, description, !GregTech_API.sPostloadFinished );
+                                    tooltip.add(translated.equals("") ? description : translated);
                                 }
                             } else i++;
                         }
                     }
-                    if (tTileEntity.getEUCapacity() > 0L) {
-                        if (tTileEntity.getInputVoltage() > 0L) {
-                            aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_IN", "Voltage IN: ", !GregTech_API.sPostloadFinished) + TextFormatting.GREEN + tTileEntity.getInputVoltage() + " (" + GT_Values.VN[GT_Utility.getTier(tTileEntity.getInputVoltage())] + ")" + TextFormatting.GRAY);
+                    if (tileEntity.getEUCapacity() > 0L) {
+                        if (tileEntity.getInputVoltage() > 0L) {
+                            tooltip.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_IN", "Voltage IN: ", !GregTech_API.sPostloadFinished) + TextFormatting.GREEN + tileEntity.getInputVoltage() + " (" + GT_Values.VN[GT_Utility.getTier(tileEntity.getInputVoltage())] + ")" + TextFormatting.GRAY);
                         }
-                        if (tTileEntity.getOutputVoltage() > 0L) {
-                            aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_OUT", "Voltage OUT: ", !GregTech_API.sPostloadFinished) + TextFormatting.GREEN + tTileEntity.getOutputVoltage() + " (" + GT_Values.VN[GT_Utility.getTier(tTileEntity.getOutputVoltage())] + ")" + TextFormatting.GRAY);
+                        if (tileEntity.getOutputVoltage() > 0L) {
+                            tooltip.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_OUT", "Voltage OUT: ", !GregTech_API.sPostloadFinished) + TextFormatting.GREEN + tileEntity.getOutputVoltage() + " (" + GT_Values.VN[GT_Utility.getTier(tileEntity.getOutputVoltage())] + ")" + TextFormatting.GRAY);
                         }
-                        if (tTileEntity.getOutputAmperage() > 1L) {
-                            aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_AMOUNT", "Amperage: ", !GregTech_API.sPostloadFinished) + TextFormatting.YELLOW + tTileEntity.getOutputAmperage() + TextFormatting.GRAY);
+                        if (tileEntity.getOutputAmperage() > 1L) {
+                            tooltip.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_AMOUNT", "Amperage: ", !GregTech_API.sPostloadFinished) + TextFormatting.YELLOW + tileEntity.getOutputAmperage() + TextFormatting.GRAY);
                         }
-                        aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_STORE", "Capacity: ", !GregTech_API.sPostloadFinished) + TextFormatting.BLUE + tTileEntity.getEUCapacity() + TextFormatting.GRAY);
+                        tooltip.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_STORE", "Capacity: ", !GregTech_API.sPostloadFinished) + TextFormatting.BLUE + tileEntity.getEUCapacity() + TextFormatting.GRAY);
                     }
                 }
             }
-            NBTTagCompound aNBT = aStack.getTagCompound();
-            if (aNBT != null) {
-                if (aNBT.getBoolean("mMuffler")) {
-                    aList.add(GT_LanguageManager.addStringLocalization("GT_TileEntity_MUFFLER", "has Muffler Upgrade", !GregTech_API.sPostloadFinished));
+            NBTTagCompound tag = stack.getTagCompound();
+            if (tag != null) {
+                if (tag.getBoolean("mMuffler")) {
+                    tooltip.add(GT_LanguageManager.addStringLocalization("GT_TileEntity_MUFFLER", "has Muffler Upgrade", !GregTech_API.sPostloadFinished));
                 }
-                if (aNBT.getBoolean("mSteamConverter")) {
-                    aList.add(GT_LanguageManager.addStringLocalization("GT_TileEntity_STEAMCONVERTER", "has Steam Upgrade", !GregTech_API.sPostloadFinished));
+                if (tag.getBoolean("mSteamConverter")) {
+                    tooltip.add(GT_LanguageManager.addStringLocalization("GT_TileEntity_STEAMCONVERTER", "has Steam Upgrade", !GregTech_API.sPostloadFinished));
                 }
-                int tAmount = 0;
-                if ((tAmount = aNBT.getByte("mSteamTanks")) > 0) {
-                    aList.add(tAmount + " " + GT_LanguageManager.addStringLocalization("GT_TileEntity_STEAMTANKS", "Steam Tank Upgrades", !GregTech_API.sPostloadFinished));
+                int amount;
+                if ((amount = tag.getByte("mSteamTanks")) > 0) {
+                    tooltip.add(amount + " " + GT_LanguageManager.addStringLocalization("GT_TileEntity_STEAMTANKS", "Steam Tank Upgrades", !GregTech_API.sPostloadFinished));
                 }
             }
         } catch (Throwable e) {
@@ -105,54 +105,54 @@ public class GT_Item_Machines extends ItemBlock {
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack aStack) {
-        short tDamage = (short) getDamage(aStack);
-        if ((tDamage < 0) || (tDamage >= GregTech_API.METATILEENTITIES.length)) {
+    public String getUnlocalizedName(ItemStack stack) {
+        short damage = (short) getDamage(stack);
+        if ((damage < 0) || (damage >= GregTech_API.METATILEENTITIES.length)) {
             return "";
         }
-        if (GregTech_API.METATILEENTITIES[tDamage] != null) {
-            return getUnlocalizedName() + "." + GregTech_API.METATILEENTITIES[tDamage].getMetaName();
+        if (GregTech_API.METATILEENTITIES[damage] != null) {
+            return getUnlocalizedName() + "." + GregTech_API.METATILEENTITIES[damage].getMetaName();
         }
         return "";
     }
 
     @Override
-    public void onCreated(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
-        super.onCreated(aStack, aWorld, aPlayer);
-        short tDamage = (short) getDamage(aStack);
-        if ((tDamage < 0) || ((tDamage >= GregTech_API.METATILEENTITIES.length) && (GregTech_API.METATILEENTITIES[tDamage] != null))) {
-            GregTech_API.METATILEENTITIES[tDamage].onCreated(aStack, aWorld, aPlayer);
+    public void onCreated(ItemStack stack, World world, EntityPlayer player) {
+        super.onCreated(stack, world, player);
+        short damage = (short) getDamage(stack);
+        if ((damage < 0) || ((damage >= GregTech_API.METATILEENTITIES.length) && (GregTech_API.METATILEENTITIES[damage] != null))) {
+            GregTech_API.METATILEENTITIES[damage].onCreated(stack, world, player);
         }
     }
 
     @Override
     public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
-        short tDamage = (short) getDamage(stack);
-        System.out.println("Place block " + block + " " + tDamage);
-        if (tDamage > 0) {
-            if (GregTech_API.METATILEENTITIES[tDamage] == null) {
+        short damage = (short) getDamage(stack);
+        System.out.println("Place block " + block + " " + damage);
+        if (damage > 0) {
+            if (GregTech_API.METATILEENTITIES[damage] == null) {
                 return false;
             }
-            int tMetaData = GregTech_API.METATILEENTITIES[tDamage].getTileEntityBaseType();
-            if (!world.setBlockState(pos, block.getStateFromMeta(tMetaData))) {
+            int metaData = GregTech_API.METATILEENTITIES[damage].getTileEntityBaseType();
+            if (!world.setBlockState(pos, block.getStateFromMeta(metaData))) {
                 return false;
             }
             IBlockState placed = world.getBlockState(pos);
-            if (placed != block.getStateFromMeta(tMetaData)) {
+            if (placed != block.getStateFromMeta(metaData)) {
                 throw new GT_ItsNotMyFaultException("Failed to place Block even though World.setBlockState returned true. It COULD be MCPC/Bukkit causing that. In case you really have that installed, don't report this Bug to me, I don't know how to fix it.");
             }
-            if (placed.getValue(GT_Generic_Block.METADATA) != tMetaData) {
+            if (placed.getValue(GT_Generic_Block.METADATA) != metaData) {
                 throw new GT_ItsNotMyFaultException("Failed to set the MetaValue of the Block even though World.setBlock returned true. It COULD be MCPC/Bukkit causing that. In case you really have that installed, don't report this Bug to me, I don't know how to fix it.");
             }
-            IGregTechTileEntity tTileEntity = (IGregTechTileEntity) world.getTileEntity(pos);
-            if (tTileEntity != null) {
-                tTileEntity.setInitialValuesAsNBT(tTileEntity.isServerSide() ? stack.getTagCompound() : null, tDamage);
+            IGregTechTileEntity tileEntity = (IGregTechTileEntity) world.getTileEntity(pos);
+            if (tileEntity != null) {
+                tileEntity.setInitialValuesAsNBT(tileEntity.isServerSide() ? stack.getTagCompound() : null, damage);
                 if (player != null) {
-                    tTileEntity.setOwnerName(player.getName());
+                    tileEntity.setOwnerName(player.getName());
                 }
-                tTileEntity.getMetaTileEntity().initDefaultModes(stack.getTagCompound());
+                tileEntity.getMetaTileEntity().initDefaultModes(stack.getTagCompound());
             }
-        } else if (!world.setBlockState(pos, block.getStateFromMeta(tDamage))) {
+        } else if (!world.setBlockState(pos, block.getStateFromMeta(damage))) {
             return false;
         }
         IBlockState state = world.getBlockState(pos);

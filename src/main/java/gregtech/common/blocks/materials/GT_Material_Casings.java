@@ -12,6 +12,7 @@ public class GT_Material_Casings extends Material {
         setRequiresTool();
     }
 
+    @Override
     public boolean isOpaque() {
         return false;
     }

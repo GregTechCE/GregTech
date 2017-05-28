@@ -80,8 +80,8 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     }
 
     @Override
-    public int getHarvestLevel(IBlockState aMeta) {
-        return aMeta.getValue(METADATA) % 4;
+    public int getHarvestLevel(IBlockState state) {
+        return state.getValue(METADATA) % 4;
     }
 
     @Override
@@ -91,9 +91,9 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
 
     @Override
     public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-        TileEntity tTileEntity = world.getTileEntity(pos);
-        if ((tTileEntity instanceof BaseTileEntity)) {
-            ((BaseTileEntity) tTileEntity).onAdjacentBlockChange(neighbor.getX(), neighbor.getY(), neighbor.getZ());
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if ((tileEntity instanceof BaseTileEntity)) {
+            ((BaseTileEntity) tileEntity).onAdjacentBlockChange(neighbor.getX(), neighbor.getY(), neighbor.getZ());
         }
     }
 
@@ -184,8 +184,8 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
 
     @Override
     public boolean eventReceived(IBlockState state, World worldIn, BlockPos pos, int id, int param) {
-        TileEntity tTileEntity = worldIn.getTileEntity(pos);
-        return tTileEntity != null && tTileEntity.receiveClientEvent(id, param);
+        TileEntity tileEntity = worldIn.getTileEntity(pos);
+        return tileEntity != null && tileEntity.receiveClientEvent(id, param);
     }
 
     @Override
@@ -231,13 +231,13 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerIcons(TextureMap aIconRegister) {
+    public void registerIcons(TextureMap iconRegister) {
         if (GregTech_API.sPostloadFinished) {
             GT_Log.out.println("GT_Mod: Registering MetaTileEntity specific Textures");
             for (IMetaTileEntity tMetaTileEntity : GregTech_API.METATILEENTITIES) {
                 try {
                     if (tMetaTileEntity != null) {
-                        tMetaTileEntity.registerIcons(aIconRegister);
+                        tMetaTileEntity.registerIcons(iconRegister);
                     }
                 } catch (Throwable e) {
                     e.printStackTrace(GT_Log.err);
@@ -290,8 +290,8 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
 
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getParticleSprite(IBlockAccess worldObj, BlockPos aPos, EnumFacing side) {
-        IGregTechTileEntity tileEntity = getGregTile(worldObj, aPos);
+    public TextureAtlasSprite getParticleSprite(IBlockAccess worldObj, BlockPos pos, EnumFacing side) {
+        IGregTechTileEntity tileEntity = getGregTile(worldObj, pos);
         if(tileEntity != null) {
             IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
             if(metaTileEntity instanceof GT_MetaTileEntity_TieredMachineBlock) {
@@ -328,20 +328,20 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
 
     @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
-    public List<ItemStack> getDrops(IGregTechTileEntity tGregTechTileEntity) {
-        ArrayList<ItemStack> aDrops = new ArrayList<>();
-        for (int i = 0; i < tGregTechTileEntity.getSizeInventory(); i++) {
-            ItemStack tItem = tGregTechTileEntity.getStackInSlot(i);
-            if ((tItem != null) && (tItem.stackSize > 0) && (tGregTechTileEntity.isValidSlot(i))) {
-                aDrops.add(tItem);
-                tGregTechTileEntity.setInventorySlotContents(i, null);
+    public List<ItemStack> getDrops(IGregTechTileEntity gregTechTileEntity) {
+        ArrayList<ItemStack> drops = new ArrayList<>();
+        for (int i = 0; i < gregTechTileEntity.getSizeInventory(); i++) {
+            ItemStack stack = gregTechTileEntity.getStackInSlot(i);
+            if ((stack != null) && (stack.stackSize > 0) && (gregTechTileEntity.isValidSlot(i))) {
+                drops.add(stack);
+                gregTechTileEntity.setInventorySlotContents(i, null);
             }
         }
-        aDrops.addAll(tGregTechTileEntity.getDrops());
-        return aDrops;
+        drops.addAll(gregTechTileEntity.getDrops());
+        return drops;
     }
 
     @Override
@@ -386,15 +386,15 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         if (base_state.getValue(METADATA) == 0) {
             return true;
         }
-        TileEntity tTileEntity = world.getTileEntity(pos);
-        if (tTileEntity != null) {
-            if ((tTileEntity instanceof BaseMetaTileEntity)) {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity != null) {
+            if ((tileEntity instanceof BaseMetaTileEntity)) {
                 return true;
             }
-            if (((tTileEntity instanceof BaseMetaPipeEntity)) && ((((BaseMetaPipeEntity) tTileEntity).mConnections & 0xFFFFFFC0) != 0)) {
+            if (((tileEntity instanceof BaseMetaPipeEntity)) && ((((BaseMetaPipeEntity) tileEntity).mConnections & 0xFFFFFFC0) != 0)) {
                 return true;
             }
-            if (((tTileEntity instanceof ICoverable)) && (((ICoverable) tTileEntity).getCoverIDAtSide((byte) side.getIndex()) != 0)) {
+            if (((tileEntity instanceof ICoverable)) && (((ICoverable) tileEntity).getCoverIDAtSide((byte) side.getIndex()) != 0)) {
                 return true;
             }
         }
@@ -420,8 +420,8 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     }
 
     @Override
-    public TileEntity createNewTileEntity(World aWorld, int aMeta) {
-        if (aMeta < 4) {
+    public TileEntity createNewTileEntity(World world, int meta) {
+        if (meta < 4) {
             return GregTech_API.constructBaseMetaTileEntity();
         }
         return new BaseMetaPipeEntity();
@@ -436,12 +436,12 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         return 10.0F;
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
+    @SideOnly(Side.CLIENT)
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
             if (GregTech_API.METATILEENTITIES[i] != null) {
-                par3List.add(new ItemStack(par1, 1, i));
+                list.add(new ItemStack(item, 1, i));
             }
         }
     }
@@ -479,26 +479,26 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     }
 
     @Override
-    public ArrayList<String> getDebugInfo(EntityPlayer placer, int aX, int aY, int aZ, int aLogLevel) {
-        TileEntity tTileEntity = placer.worldObj.getTileEntity(new BlockPos(aX, aY, aZ));
-        if ((tTileEntity instanceof BaseMetaTileEntity)) {
-            return ((BaseMetaTileEntity) tTileEntity).getDebugInfo(placer, aLogLevel);
+    public ArrayList<String> getDebugInfo(EntityPlayer placer, int x, int y, int z, int logLevel) {
+        TileEntity tileEntity = placer.worldObj.getTileEntity(new BlockPos(x, y, z));
+        if ((tileEntity instanceof BaseMetaTileEntity)) {
+            return ((BaseMetaTileEntity) tileEntity).getDebugInfo(placer, logLevel);
         }
-        if ((tTileEntity instanceof BaseMetaPipeEntity)) {
-            return ((BaseMetaPipeEntity) tTileEntity).getDebugInfo(placer, aLogLevel);
+        if ((tileEntity instanceof BaseMetaPipeEntity)) {
+            return ((BaseMetaPipeEntity) tileEntity).getDebugInfo(placer, logLevel);
         }
         return null;
     }
 
     @Override
-    public boolean recolorBlock(World aWorld, BlockPos blockPos, EnumFacing aSide, EnumDyeColor colorDye) {
-        int aColor = colorDye.getMetadata();
-        TileEntity tTileEntity = aWorld.getTileEntity(blockPos);
-        if ((tTileEntity instanceof IGregTechTileEntity)) {
-            if (((IGregTechTileEntity) tTileEntity).getColorization() == (byte) ((~aColor) & 0xF)) {
+    public boolean recolorBlock(World world, BlockPos blockPos, EnumFacing side, EnumDyeColor colorDye) {
+        int color = colorDye.getMetadata();
+        TileEntity tileEntity = world.getTileEntity(blockPos);
+        if ((tileEntity instanceof IGregTechTileEntity)) {
+            if (((IGregTechTileEntity) tileEntity).getColorization() == (byte) ((~color) & 0xF)) {
                 return false;
             }
-            ((IGregTechTileEntity) tTileEntity).setColorization((byte) ((~aColor) & 0xF));
+            ((IGregTechTileEntity) tileEntity).setColorization((byte) ((~color) & 0xF));
             return true;
         }
         return false;
