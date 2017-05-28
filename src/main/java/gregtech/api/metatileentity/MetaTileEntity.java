@@ -159,7 +159,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {/*Do nothing*/}
 
     @Override
-    public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onWrenchRightClick(EnumFacing aSide, EnumFacing aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (getBaseMetaTileEntity().isValidFacing(aWrenchingSide)) {
             getBaseMetaTileEntity().setFrontFacing(aWrenchingSide);
             return true;
@@ -548,16 +548,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     @Override
     public byte getComparatorValue(byte aSide) {
         return 0;
-    }
-
-    @Override
-    public boolean acceptsRotationalEnergy(byte aSide) {
-        return false;
-    }
-
-    @Override
-    public boolean injectRotationalEnergy(byte aSide, long aSpeed, long aEnergy) {
-        return false;
     }
 
     @Override

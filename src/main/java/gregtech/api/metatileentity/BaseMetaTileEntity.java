@@ -4,10 +4,7 @@ import com.google.common.collect.Lists;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
@@ -18,21 +15,25 @@ import gregtech.common.GT_Pollution;
 import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.info.Info;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -48,7 +49,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 import static gregtech.api.enums.GT_Values.NW;
 import static gregtech.api.enums.GT_Values.V;
@@ -1277,169 +1281,169 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public ArrayList<ItemStack> getDrops() {
-        ItemStack rStack = new ItemStack(GregTech_API.sBlockMachines, 1, mID);
-        NBTTagCompound tNBT = new NBTTagCompound();
-        if (mRecipeStuff != null && !mRecipeStuff.hasNoTags()) tNBT.setTag("GT.CraftingComponents", mRecipeStuff);
-        if (mMuffler) tNBT.setBoolean("mMuffler", mMuffler);
-        if (mLockUpgrade) tNBT.setBoolean("mLockUpgrade", mLockUpgrade);
-        if (mColor > 0) tNBT.setByte("mColor", mColor);
-        if (mStrongRedstone > 0) tNBT.setByte("mStrongRedstone", mStrongRedstone);
+        ItemStack stack = new ItemStack(GregTech_API.sBlockMachines, 1, mID);
+        NBTTagCompound tag = new NBTTagCompound();
+        if (mRecipeStuff != null && !mRecipeStuff.hasNoTags()) tag.setTag("GT.CraftingComponents", mRecipeStuff);
+        if (mMuffler) tag.setBoolean("mMuffler", mMuffler);
+        if (mLockUpgrade) tag.setBoolean("mLockUpgrade", mLockUpgrade);
+        if (mColor > 0) tag.setByte("mColor", mColor);
+        if (mStrongRedstone > 0) tag.setByte("mStrongRedstone", mStrongRedstone);
         for (byte i = 0; i < mCoverSides.length; i++) {
             if (mCoverSides[i] != 0) {
-                tNBT.setIntArray("mCoverData", mCoverData);
-                tNBT.setIntArray("mCoverSides", mCoverSides);
+                tag.setIntArray("mCoverData", mCoverData);
+                tag.setIntArray("mCoverSides", mCoverSides);
                 break;
             }
         }
-        if (hasValidMetaTileEntity()) mMetaTileEntity.setItemNBT(tNBT);
-        if (!tNBT.hasNoTags()) rStack.setTagCompound(tNBT);
-        return Lists.newArrayList(rStack);
-    }
-
-    public int getUpgradeCount() {
-        return (mMuffler ? 1 : 0) + (mLockUpgrade ? 1 : 0);
+        if (hasValidMetaTileEntity()) mMetaTileEntity.setItemNBT(tag);
+        if (!tag.hasNoTags()) stack.setTagCompound(tag);
+        return Lists.newArrayList(stack);
     }
 
     @Override
-    public boolean onRightclick(EntityPlayer aPlayer, EnumFacing side, float aX, float aY, float aZ, EnumHand hand) {
+    public boolean onRightclick(EntityPlayer player, EnumFacing side, float clickX, float clickY, float clickZ, EnumHand hand) {
+        int coverIdAtSide = getCoverIDAtSide(side);
+        int coverDataAtSide = getCoverDataAtSide(side);
+        GT_CoverBehavior coverBehavior = GregTech_API.getCoverBehavior(coverIdAtSide);
         if (isClientSide()) {
-            if (getCoverBehaviorAtSide(side).onCoverRightclickClient(side, this, aPlayer, aX, aY, aZ)) return true;
-            if (!getCoverBehaviorAtSide(side).isGUIClickable(side, getCoverIDAtSide(side), getCoverDataAtSide(side), this))
-                return false;
+            if (coverBehavior.onCoverRightclickClient(side, this, player, clickX, clickY, clickZ))
+                return true;
+            return coverBehavior.isGUIClickable(side, coverIdAtSide, coverDataAtSide, this);
         }
         if (isServerSide()) {
-            if (!privateAccess() || (mOwnerId != null && mOwnerId.equals(aPlayer.getPersistentID()))) {
-                ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
-                if (tCurrentItem != null) {
-                    if (getColorization() >= 0 && GT_Utility.areStacksEqual(new ItemStack(Items.WATER_BUCKET, 1), tCurrentItem)) {
-                        tCurrentItem.setItem(Items.BUCKET);
+            if (!privateAccess() || (mOwnerId != null && mOwnerId.equals(player.getPersistentID()))) {
+                ItemStack currentItem = player.inventory.getCurrentItem();
+                if (currentItem != null) {
+                    //colorization
+                    if (getColorization() >= 0 && GT_Utility.areStacksEqual(new ItemStack(Items.WATER_BUCKET, 1), currentItem)) {
+                        currentItem.setItem(Items.BUCKET);
                         setColorization((byte) (getColorization() >= 16 ? -2 : -1));
                         return true;
                     }
-                    if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWrenchList)) {
-                        if(aPlayer.isSneaking() && mMetaTileEntity instanceof GT_MetaTileEntity_BasicMachine && ((GT_MetaTileEntity_BasicMachine)mMetaTileEntity).setMainFacing(GT_Utility.determineWrenchingSide(side, aX, aY, aZ))){
-                            GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
-                            GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, getXCoord(), getYCoord(), getZCoord());
-                        } else if (mMetaTileEntity.onWrenchRightClick(side, GT_Utility.determineWrenchingSide(side, aX, aY, aZ), aPlayer, aX, aY, aZ)) {
-                            GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
-                            GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, getXCoord(), getYCoord(), getZCoord());
+                    //wrench interaction
+                    if (GT_Utility.isStackInList(currentItem, GregTech_API.sWrenchList)) {
+                        EnumFacing wrenchDirection = GT_Utility.determineWrenchingSide(side, clickX, clickY, clickZ);
+                        if (player.isSneaking() && mMetaTileEntity instanceof GT_MetaTileEntity_BasicMachine &&
+                                ((GT_MetaTileEntity_BasicMachine) mMetaTileEntity).setMainFacing(wrenchDirection)) {
+                            GT_ModHandler.damageOrDechargeItem(currentItem, 1, 1000, player);
+                            playSound(GregTech_API.sSoundList.get(100));
+                        } else if (mMetaTileEntity.onWrenchRightClick(side, wrenchDirection, player, clickX, clickY, clickZ)) {
+                            GT_ModHandler.damageOrDechargeItem(currentItem, 1, 1000, player);
+                            playSound(GregTech_API.sSoundList.get(100));
                         }
                         return true;
                     }
-
-                    if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sScrewdriverList)) {
-                        if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 200, aPlayer)) {
-                            setCoverDataAtSide(side, getCoverBehaviorAtSide(side).onCoverScrewdriverclick(side, getCoverIDAtSide(side), getCoverDataAtSide(side), this, aPlayer, aX, aY, aZ));
-                            mMetaTileEntity.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
-                            GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, getXCoord(), getYCoord(), getZCoord());
+                    //screwdriver interaction
+                    if (GT_Utility.isStackInList(currentItem, GregTech_API.sScrewdriverList)) {
+                        if (GT_ModHandler.damageOrDechargeItem(currentItem, 1, 200, player)) {
+                            setCoverDataAtSide(side, coverBehavior.onCoverScrewdriverclick(side, coverIdAtSide, coverDataAtSide,
+                                    this, player, clickX, clickY, clickZ));
+                            mMetaTileEntity.onScrewdriverRightClick(side, player, clickX, clickY, clickZ);
+                            playSound(GregTech_API.sSoundList.get(100));
                         }
                         return true;
                     }
-
-                    if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sHardHammerList)) {
-                        if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
+                    //hammer interaction
+                    if (GT_Utility.isStackInList(currentItem, GregTech_API.sHardHammerList)) {
+                        if (GT_ModHandler.damageOrDechargeItem(currentItem, 1, 1000, player)) {
                             mInputDisabled = !mInputDisabled;
                             if (mInputDisabled) mOutputDisabled = !mOutputDisabled;
-                            GT_Utility.sendChatToPlayer(aPlayer, "Auto-Input: " + (mInputDisabled ? "Disabled" : "Enabled") + "  Auto-Output: " + (mOutputDisabled ? "Disabled" : "Enabled"));
-                            GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(1), 1.0F, -1, getXCoord(), getYCoord(), getZCoord());
+                            player.addChatMessage(new TextComponentString(
+                                    "Auto-Input: " + (mInputDisabled ? "Disabled" : "Enabled") + "  " +
+                                            "Auto-Output: " + (mOutputDisabled ? "Disabled" : "Enabled")));
+                            playSound(GregTech_API.sSoundList.get(1));
                         }
                         return true;
                     }
-
-                    if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSoftHammerList)) {
-                        if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
+                    //soft hammer interaction
+                    if (GT_Utility.isStackInList(currentItem, GregTech_API.sSoftHammerList)) {
+                        if (GT_ModHandler.damageOrDechargeItem(currentItem, 1, 1000, player)) {
                             if (mWorks) disableWorking();
                             else enableWorking();
-                            GT_Utility.sendChatToPlayer(aPlayer, "Machine Processing: " + (isAllowedToWork() ? "Enabled" : "Disabled"));
-                            GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(101), 1.0F, -1, getXCoord(), getYCoord(), getZCoord());
+                            player.addChatMessage(new TextComponentString(
+                                    "Machine Processing: " + (isAllowedToWork() ? "Enabled" : "Disabled")));
+                            playSound(GregTech_API.sSoundList.get(101));
                         }
                         return true;
                     }
-
-                    if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSolderingToolList)) {
-                        byte tSide = GT_Utility.determineWrenchingSide(side, aX, aY, aZ);
-                        if (GT_ModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
-                            mStrongRedstone ^= (1 << tSide);
-                            GT_Utility.sendChatToPlayer(aPlayer, "Redstone Output at Side " + tSide + " set to: " + ((mStrongRedstone & (1 << tSide)) != 0 ? "Strong" : "Weak"));
-                            GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(103), 3.0F, -1, getXCoord(), getYCoord(), getZCoord());
+                    //soldering iron interaction
+                    if (GT_Utility.isStackInList(currentItem, GregTech_API.sSolderingToolList)) {
+                        EnumFacing wrenchSide = GT_Utility.determineWrenchingSide(side, clickX, clickY, clickZ);
+                        if (GT_ModHandler.useSolderingIron(currentItem, player)) {
+                            mStrongRedstone ^= (1 << wrenchSide.getIndex());
+                            player.addChatMessage(new TextComponentString(
+                                    "Redstone Output at Side " + wrenchSide.name().toLowerCase() + " set to: " +
+                                            ((mStrongRedstone & (1 << wrenchSide.getIndex())) != 0 ? "Strong" : "Weak")));
+                            playSound(GregTech_API.sSoundList.get(103));
                         }
                         return true;
                     }
-
-                    if (getCoverIDAtSide(side) == 0) {
-                        GT_ItemStack gtItemStack = new GT_ItemStack(tCurrentItem);
+                    //cover interaction
+                    if (coverIdAtSide == 0) {
+                        GT_ItemStack gtItemStack = new GT_ItemStack(currentItem);
                         if (GregTech_API.sCoverItems.containsKey(gtItemStack)) {
                             GT_CoverBehavior behavior = GregTech_API.getCoverBehavior(gtItemStack);
                             if (behavior.isCoverPlaceable(side, gtItemStack, this) && mMetaTileEntity.allowCoverOnSide(side, gtItemStack)) {
-                                setCoverItemAtSide(side, tCurrentItem);
-                                if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
-                                GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, getXCoord(), getYCoord(), getZCoord());
+                                setCoverItemAtSide(side, currentItem);
+                                if (!player.capabilities.isCreativeMode) currentItem.stackSize--;
+                                playSound(GregTech_API.sSoundList.get(100));
                             }
                             return true;
                         }
                     } else {
-                        if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCrowbarList)) {
-                            if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                                GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(0), 1.0F, -1, getXCoord(), getYCoord(), getZCoord());
+                        //crowbar interaction
+                        if (GT_Utility.isStackInList(currentItem, GregTech_API.sCrowbarList)) {
+                            if (GT_ModHandler.damageOrDechargeItem(currentItem, 1, 1000, player)) {
                                 dropCover(side, side, false);
+                                playSound(GregTech_API.sSoundList.get(0));
                             }
                             return true;
                         }
                     }
                 }
 
-                if (getCoverBehaviorAtSide(side).onCoverRightclick(side, getCoverIDAtSide(side), getCoverDataAtSide(side), this, aPlayer, aX, aY, aZ))
+                if (coverBehavior.onCoverRightclick(side, coverIdAtSide, coverDataAtSide, this, player, clickX, clickY, clickZ))
                     return true;
 
-                if (!getCoverBehaviorAtSide(side).isGUIClickable(side, getCoverIDAtSide(side), getCoverDataAtSide(side), this))
+                if (!coverBehavior.isGUIClickable(side, coverIdAtSide, coverDataAtSide, this))
                     return false;
 
-                if (isUpgradable() && aPlayer.inventory.getCurrentItem() != null) {/*
-                    if (ItemList.Upgrade_SteamEngine.isStackEqual(aPlayer.inventory.getCurrentItem())) {
-						if (addSteamEngineUpgrade()) {
-							GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(3), 1.0F, -1, getXCoord(), getYCoord(), getZCoord());
-							if (!aPlayer.capabilities.isCreativeMode) aPlayer.inventory.getCurrentItem().stackSize--;
-						}
-						return true;
-					}*/
-                    if (ItemList.Upgrade_Muffler.isStackEqual(aPlayer.inventory.getCurrentItem())) {
+                if (currentItem != null) {
+                    if (ItemList.Upgrade_Muffler.isStackEqual(currentItem)) {
                         if (addMufflerUpgrade()) {
-                            GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(3), 1.0F, -1, getXCoord(), getYCoord(), getZCoord());
-                            if (!aPlayer.capabilities.isCreativeMode) aPlayer.inventory.getCurrentItem().stackSize--;
+                            if (!player.capabilities.isCreativeMode) currentItem.stackSize--;
+                            playSound(GregTech_API.sSoundList.get(3));
                         }
                         return true;
                     }
-                    if (ItemList.Upgrade_Lock.isStackEqual(aPlayer.inventory.getCurrentItem())) {
-                        if (isUpgradable() && !mLockUpgrade) {
+                    if (ItemList.Upgrade_Lock.isStackEqual(currentItem)) {
+                        if (!mLockUpgrade) {
                             mLockUpgrade = true;
-                            setOwnerName(aPlayer.getName());
-                            GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(3), 1.0F, -1, getXCoord(), getYCoord(), getZCoord());
-                            if (!aPlayer.capabilities.isCreativeMode) aPlayer.inventory.getCurrentItem().stackSize--;
+                            setOwnerId(player.getPersistentID());
+                            if (!player.capabilities.isCreativeMode) currentItem.stackSize--;
+                            playSound(GregTech_API.sSoundList.get(3));
                         }
                         return true;
                     }
                 }
+
             }
         }
 
-        try {
-            if (hasValidMetaTileEntity())
-                return mMetaTileEntity.onRightclick(this, aPlayer, side, aX, aY, aZ, hand);
-        } catch (Throwable e) {
-            GT_Log.err.println("Encountered Exception while rightclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immidietly to GregTech Intergalactical!!!");
-            e.printStackTrace(GT_Log.err);
+        if (hasValidMetaTileEntity()) {
+            return mMetaTileEntity.onRightclick(this, player, side, clickX, clickY, clickZ, hand);
         }
-
         return true;
+    }
+    
+    public void playSound(ResourceLocation soundEvent) {
+        GT_Utility.playSound(worldObj, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, soundEvent, SoundCategory.BLOCKS, 1.0F, -1f);
     }
 
     @Override
     public void onLeftclick(EntityPlayer aPlayer) {
-        try {
-            if (aPlayer != null && hasValidMetaTileEntity()) mMetaTileEntity.onLeftclick(this, aPlayer, EnumHand.MAIN_HAND);
-        } catch (Throwable e) {
-            GT_Log.err.println("Encountered Exception while leftclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immidietly to GregTech Intergalactical!!!");
-            e.printStackTrace(GT_Log.err);
+        if (hasValidMetaTileEntity()) {
+            mMetaTileEntity.onLeftclick(this, aPlayer, EnumHand.MAIN_HAND);
         }
     }
 
@@ -1481,7 +1485,6 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public void setField(int id, int value) {
-
     }
 
     @Override
@@ -1491,7 +1494,6 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public void clear() {
-
     }
 
     /**
@@ -1500,7 +1502,13 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
      */
     @Override
     public int[] getSlotsForFace(EnumFacing side) {
-        if (hasValidMetaTileEntity() && (getCoverBehaviorAtSide((byte) side.getIndex()).letsItemsOut((byte) side.getIndex(), getCoverIDAtSide((byte) side.getIndex()), getCoverDataAtSide((byte) side.getIndex()), -1, this) || getCoverBehaviorAtSide((byte) side.getIndex()).letsItemsIn((byte) side.getIndex(), getCoverIDAtSide((byte) side.getIndex()), getCoverDataAtSide((byte) side.getIndex()), -1, this)))
+        int coverIdAtSide = getCoverIDAtSide(side);
+        int coverDataAtSide = getCoverDataAtSide(side);
+        GT_CoverBehavior coverBehavior = GregTech_API.getCoverBehavior(coverIdAtSide);
+
+        if(hasValidMetaTileEntity() &&
+                coverBehavior.letsItemsIn(side, coverIdAtSide, coverDataAtSide, -1, this) ||
+                coverBehavior.letsItemsOut(side, coverIdAtSide, coverDataAtSide, -1, this))
             return mMetaTileEntity.getSlotsForFace(side);
         return new int[0];
     }
@@ -1509,49 +1517,72 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
      * Can put aStack into Slot at Side
      */
     @Override
-    public boolean canInsertItem(int aIndex, ItemStack aStack, EnumFacing side) {
-        return hasValidMetaTileEntity() && !mInputDisabled && getCoverBehaviorAtSide((byte) side.getIndex()).letsItemsIn((byte) side.getIndex(), getCoverIDAtSide((byte) side.getIndex()), getCoverDataAtSide((byte) side.getIndex()), aIndex, this) && mMetaTileEntity.canInsertItem(aIndex, aStack, side);
+    public boolean canInsertItem(int index, ItemStack stack, EnumFacing side) {
+        int coverIdAtSide = getCoverIDAtSide(side);
+        int coverDataAtSide = getCoverDataAtSide(side);
+        GT_CoverBehavior coverBehavior = GregTech_API.getCoverBehavior(coverIdAtSide);
+
+        return hasValidMetaTileEntity() && !mInputDisabled &&
+                coverBehavior.letsItemsIn(side, coverIdAtSide, coverDataAtSide, index, this) &&
+                mMetaTileEntity.canInsertItem(index, stack, side);
     }
 
     /**
      * Can pull aStack out of Slot from Side
      */
     @Override
-    public boolean canExtractItem(int aIndex, ItemStack aStack, EnumFacing side) {
-        return hasValidMetaTileEntity() && !mOutputDisabled && getCoverBehaviorAtSide((byte) side.getIndex()).letsItemsOut((byte) side.getIndex(), getCoverIDAtSide((byte) side.getIndex()), getCoverDataAtSide((byte) side.getIndex()), aIndex, this) && mMetaTileEntity.canExtractItem(aIndex, aStack, side);
-    }
+    public boolean canExtractItem(int index, ItemStack stack, EnumFacing side) {
+        int coverIdAtSide = getCoverIDAtSide(side);
+        int coverDataAtSide = getCoverDataAtSide(side);
+        GT_CoverBehavior coverBehavior = GregTech_API.getCoverBehavior(coverIdAtSide);
 
-    @Override
-    public boolean isUpgradable() {
-        return hasValidMetaTileEntity() && getUpgradeCount() < 8;
+        return hasValidMetaTileEntity() && !mOutputDisabled &&
+                coverBehavior.letsItemsOut(side, coverIdAtSide, coverDataAtSide, index, this) &&
+                mMetaTileEntity.canExtractItem(index, stack, side);
     }
 
     @Override
     public byte getInternalInputRedstoneSignal(EnumFacing side) {
-        return (byte) (getCoverBehaviorAtSide(side).getRedstoneInput(side, getInputRedstoneSignal(side), getCoverIDAtSide(side), getCoverDataAtSide(side), this) & 15);
+        int coverIdAtSide = getCoverIDAtSide(side);
+        int coverDataAtSide = getCoverDataAtSide(side);
+        GT_CoverBehavior coverBehavior = GregTech_API.getCoverBehavior(coverIdAtSide);
+
+        return coverBehavior.getRedstoneInput(side, getInputRedstoneSignal(side), coverIdAtSide, coverDataAtSide, this);
     }
 
     @Override
     public byte getInputRedstoneSignal(EnumFacing side) {
-        return (byte) (worldObj.getRedstonePower(getPos().offset(EnumFacing.VALUES[side]), EnumFacing.VALUES[side]) & 15);
+        return (byte) worldObj.getRedstonePower(getPos().offset(side), side.getOpposite());
     }
 
     @Override
     public byte getOutputRedstoneSignal(EnumFacing side) {
-        return getCoverBehaviorAtSide(side).manipulatesSidedRedstoneOutput(side, getCoverIDAtSide(side), getCoverDataAtSide(side), this) ? mSidedRedstone[side] : 0;
+        int coverIdAtSide = getCoverIDAtSide(side);
+        int coverDataAtSide = getCoverDataAtSide(side);
+        GT_CoverBehavior coverBehavior = GregTech_API.getCoverBehavior(coverIdAtSide);
+
+        if(coverBehavior.manipulatesSidedRedstoneOutput(side, coverIdAtSide, coverDataAtSide, this)) {
+            return mSidedRedstone[side.getIndex()];
+        }
+        return 0;
     }
 
     @Override
     public void setInternalOutputRedstoneSignal(EnumFacing side, byte aStrength) {
-        if (!getCoverBehaviorAtSide(side).manipulatesSidedRedstoneOutput(side, getCoverIDAtSide(side), getCoverDataAtSide(side), this))
+        int coverIdAtSide = getCoverIDAtSide(side);
+        int coverDataAtSide = getCoverDataAtSide(side);
+        GT_CoverBehavior coverBehavior = GregTech_API.getCoverBehavior(coverIdAtSide);
+
+        if(coverBehavior.manipulatesSidedRedstoneOutput(side, coverIdAtSide, coverDataAtSide, this)) {
             setOutputRedstoneSignal(side, aStrength);
+        }
     }
 
     @Override
-    public void setOutputRedstoneSignal(byte side, byte aStrength) {
+    public void setOutputRedstoneSignal(EnumFacing side, byte aStrength) {
         aStrength = (byte) Math.min(Math.max(0, aStrength), 15);
-        if (side >= 0 && side < 6 && mSidedRedstone[side] != aStrength) {
-            mSidedRedstone[side] = aStrength;
+        if (mSidedRedstone[side.getIndex()] != aStrength) {
+            mSidedRedstone[side.getIndex()] = aStrength;
             issueBlockUpdate();
         }
     }
@@ -1563,7 +1594,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public boolean isMufflerUpgradable() {
-        return isUpgradable() && !hasMufflerUpgrade();
+        return !hasMufflerUpgrade();
     }
 
     @Override
@@ -1603,19 +1634,11 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
-    public GT_CoverBehavior getCoverBehaviorAtSide(byte side) {
-        return side >= 0 && side < mCoverBehaviors.length ? mCoverBehaviors[side] : GregTech_API.sNoBehavior;
-    }
-
-    @Override
-    public void setCoverIDAtSide(byte side, int aID) {
-        if (side >= 0 && side < 6) {
-            mCoverSides[side] = aID;
-            mCoverData[side] = 0;
-            mCoverBehaviors[side] = GregTech_API.getCoverBehavior(aID);
-            issueCoverUpdate(side);
-            issueBlockUpdate();
-        }
+    public void setCoverIDAtSide(EnumFacing side, int aID) {
+        mCoverSides[side.getIndex()] = aID;
+        mCoverData[side.getIndex()] = 0;
+        issueCoverUpdate(side);
+        issueBlockUpdate();
     }
 
     @Override
@@ -1660,24 +1683,29 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public long getAverageElectricInput() {
-        int rEU = 0;
-        for (int tEU : mAverageEUInput) rEU += tEU;
-        return rEU / mAverageEUInput.length;
+        //int rEU = 0;
+        //for (int tEU : mAverageEUInput) rEU += tEU;
+        //return rEU / mAverageEUInput.length;
+        return getInputVoltage();
     }
 
     @Override
     public long getAverageElectricOutput() {
-        int rEU = 0;
-        for (int tEU : mAverageEUOutput) rEU += tEU;
-        return rEU / mAverageEUOutput.length;
+        //int rEU = 0;
+        //for (int tEU : mAverageEUOutput) rEU += tEU;
+        //return rEU / mAverageEUOutput.length;
+        return getOutputVoltage();
     }
 
     @Override
-    public boolean dropCover(byte side, byte aDroppedSide, boolean aForced) {
-        if (getCoverBehaviorAtSide(side).onCoverRemoval(side, getCoverIDAtSide(side), mCoverData[side], this, aForced) || aForced) {
+    public boolean dropCover(EnumFacing side, EnumFacing aDroppedSide, boolean aForced) {
+        int coverIdAtSide = getCoverIDAtSide(side);
+        if (GregTech_API.getCoverBehavior(coverIdAtSide)
+                .onCoverRemoval(side, coverIdAtSide, mCoverData[side.getIndex()], this, aForced) || aForced) {
             ItemStack tStack = getCoverBehaviorAtSide(side).getDrop(side, getCoverIDAtSide(side), getCoverDataAtSide(side), this);
             if (tStack != null) {
-                EntityItem tEntity = new EntityItem(worldObj, getOffsetX(aDroppedSide, 1) + 0.5, getOffsetY(aDroppedSide, 1) + 0.5, getOffsetZ(aDroppedSide, 1) + 0.5, tStack);
+                Vec3d dropCoords = new Vec3d(pos.offset(aDroppedSide)).add(new Vec3d(0.5f, 0.5f, 0.5f));
+                EntityItem tEntity = new EntityItem(worldObj, dropCoords.xCoord, dropCoords.yCoord, dropCoords.zCoord, tStack);
                 tEntity.motionX = 0;
                 tEntity.motionY = 0;
                 tEntity.motionZ = 0;
@@ -1695,31 +1723,32 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
-    public String getOwnerId() {
-        if (GT_Utility.isStringInvalid(mOwnerName)) return "Player";
-        return mOwnerName;
+    public UUID getOwnerId() {
+        return mOwnerId;
     }
 
     @Override
-    public String setOwnerId(String aName) {
-        if (GT_Utility.isStringInvalid(aName)) return mOwnerName = "Player";
-        return mOwnerName = aName;
+    public UUID setOwnerId(UUID ownerId) {
+        this.mOwnerId = ownerId;
+        return mOwnerId;
     }
 
     @Override
-    public byte getComparatorValue(byte side) {
-        return hasValidMetaTileEntity() ? mMetaTileEntity.getComparatorValue(side) : 0;
+    public byte getComparatorValue(EnumFacing side) {
+        return hasValidMetaTileEntity() && side != null ? mMetaTileEntity.getComparatorValue(side) : 0;
     }
 
     @Override
-    public byte getStrongOutputRedstoneSignal(byte side) {
-        return side >= 0 && side < 6 && (mStrongRedstone & (1 << side)) != 0 ? (byte) (mSidedRedstone[side] & 15) : 0;
+    public byte getStrongOutputRedstoneSignal(EnumFacing side) {
+        return side != null && (mStrongRedstone & (1 << side.getIndex())) != 0 ? (byte) (mSidedRedstone[side.getIndex()] & 15) : 0;
     }
 
     @Override
-    public void setStrongOutputRedstoneSignal(byte side, byte aStrength) {
-        mStrongRedstone |= (1 << side);
-        setOutputRedstoneSignal(side, aStrength);
+    public void setStrongOutputRedstoneSignal(EnumFacing side, byte aStrength) {
+        if(side != null) {
+            mStrongRedstone |= (1 << side.getIndex());
+            setOutputRedstoneSignal(side, aStrength);
+        }
     }
 
     @Override
@@ -1738,15 +1767,20 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
-    public long injectEnergyUnits(byte side, long aVoltage, long aAmperage) {
-        if (!hasValidMetaTileEntity() || !mMetaTileEntity.isElectric() || !inputEnergyFrom(side) || aAmperage <= 0 || aVoltage <= 0 || getStoredEU() >= getEUCapacity() || mMetaTileEntity.maxAmperesIn() <= mAcceptedAmperes)
+    public long injectEnergyUnits(EnumFacing side, long aVoltage, long aAmperage) {
+        if (!hasValidMetaTileEntity() || !mMetaTileEntity.isElectric() ||
+                !inputEnergyFrom(side) ||
+                aAmperage <= 0 ||
+                aVoltage <= 0 ||
+                getStoredEU() >= getEUCapacity() ||
+                mMetaTileEntity.maxAmperesIn() <= mAcceptedAmperes)
             return 0;
         if (aVoltage > getInputVoltage()) {
             doExplosion(aVoltage);
             return 0;
         }
         if (increaseStoredEnergyUnits(aVoltage * (aAmperage = Math.min(aAmperage, Math.min(mMetaTileEntity.maxAmperesIn() - mAcceptedAmperes, 1 + ((getEUCapacity() - getStoredEU()) / aVoltage)))), true)) {
-            mAverageEUInput[mAverageEUInputIndex] += aVoltage * aAmperage;
+            //mAverageEUInput[mAverageEUInputIndex] += aVoltage * aAmperage;
             mAcceptedAmperes += aAmperage;
             return aAmperage;
         }
@@ -1754,34 +1788,26 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
-    public boolean acceptsRotationalEnergy(byte side) {
-        if (!hasValidMetaTileEntity() || getCoverIDAtSide(side) != 0) return false;
-        return mMetaTileEntity.acceptsRotationalEnergy(side);
-    }
-
-    @Override
-    public boolean injectRotationalEnergy(byte side, long aSpeed, long aEnergy) {
-        if (!hasValidMetaTileEntity() || getCoverIDAtSide(side) != 0) return false;
-        return mMetaTileEntity.injectRotationalEnergy(side, aSpeed, aEnergy);
-    }
-
-    @Override
     public int fill(EnumFacing side, FluidStack aFluid, boolean doFill) {
-        if (mTickTimer > 5 && hasValidMetaTileEntity() && (mRunningThroughTick || !mInputDisabled) && (side == null || (mMetaTileEntity.isLiquidInput((byte) side.ordinal()) && getCoverBehaviorAtSide((byte) side.ordinal()).letsFluidIn((byte) side.ordinal(), getCoverIDAtSide((byte) side.ordinal()), getCoverDataAtSide((byte) side.ordinal()), aFluid == null ? null : aFluid.getFluid(), this))))
+        if (mTickTimer > 5 && hasValidMetaTileEntity() && !mInputDisabled && (side == null || (mMetaTileEntity.isLiquidInput((byte) side.ordinal()) && getCoverBehaviorAtSide((byte) side.ordinal()).letsFluidIn((byte) side.ordinal(), getCoverIDAtSide((byte) side.ordinal()), getCoverDataAtSide((byte) side.ordinal()), aFluid == null ? null : aFluid.getFluid(), this))))
             return mMetaTileEntity.fill(side, aFluid, doFill);
         return 0;
     }
 
     @Override
     public FluidStack drain(EnumFacing side, int maxDrain, boolean doDrain) {
-        if (mTickTimer > 5 && hasValidMetaTileEntity() && (mRunningThroughTick || !mOutputDisabled) && (side == null || (mMetaTileEntity.isLiquidOutput((byte) side.ordinal()) && getCoverBehaviorAtSide((byte) side.ordinal()).letsFluidOut((byte) side.ordinal(), getCoverIDAtSide((byte) side.ordinal()), getCoverDataAtSide((byte) side.ordinal()), mMetaTileEntity.getFluid() == null ? null : mMetaTileEntity.getFluid().getFluid(), this))))
+        if (mTickTimer > 5 && hasValidMetaTileEntity() && !mOutputDisabled &&
+                (side == null || (mMetaTileEntity.isLiquidOutput((byte) side.ordinal()) &&
+                        getCoverBehaviorAtSide((byte) side.ordinal()).letsFluidOut((byte) side.ordinal(), getCoverIDAtSide((byte) side.ordinal()), getCoverDataAtSide((byte) side.ordinal()), mMetaTileEntity.getFluid() == null ? null : mMetaTileEntity.getFluid().getFluid(), this))))
             return mMetaTileEntity.drain(side, maxDrain, doDrain);
         return null;
     }
 
     @Override
     public FluidStack drain(EnumFacing side, FluidStack aFluid, boolean doDrain) {
-        if (mTickTimer > 5 && hasValidMetaTileEntity() && (mRunningThroughTick || !mOutputDisabled) && (side == null || (mMetaTileEntity.isLiquidOutput((byte) side.ordinal()) && getCoverBehaviorAtSide((byte) side.ordinal()).letsFluidOut((byte) side.ordinal(), getCoverIDAtSide((byte) side.ordinal()), getCoverDataAtSide((byte) side.ordinal()), aFluid == null ? null : aFluid.getFluid(), this))))
+        if (mTickTimer > 5 && hasValidMetaTileEntity() && !mOutputDisabled &&
+                (side == null || (mMetaTileEntity.isLiquidOutput((byte) side.ordinal()) &&
+                        getCoverBehaviorAtSide((byte) side.ordinal()).letsFluidOut((byte) side.ordinal(), getCoverIDAtSide((byte) side.ordinal()), getCoverDataAtSide((byte) side.ordinal()), aFluid == null ? null : aFluid.getFluid(), this))))
             return mMetaTileEntity.drain(side, aFluid, doDrain);
         return null;
     }

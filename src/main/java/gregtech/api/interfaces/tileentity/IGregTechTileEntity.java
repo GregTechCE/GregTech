@@ -24,7 +24,7 @@ import java.util.UUID;
  * <p/>
  * It can cause Problems to include this Interface!
  */
-public interface IGregTechTileEntity extends IGearEnergyTileEntity, ICoverable, net.minecraftforge.fluids.capability.IFluidHandler, IFluidHandler, ITurnable, IGregTechDeviceInformation, IUpgradableMachine, IDigitalChest, IDescribable, IMachineBlockUpdateable {
+public interface IGregTechTileEntity extends IGearEnergyTileEntity, ICoverable, IFluidHandler, ITurnable, IGregTechDeviceInformation, IUpgradableMachine, IDigitalChest, IDescribable, IMachineBlockUpdateable {
     /**
      * gets the Error displayed on the GUI
      */
@@ -80,11 +80,6 @@ public interface IGregTechTileEntity extends IGearEnergyTileEntity, ICoverable, 
      * Sets the Block on Fire in all 6 Directions
      */
     public void setOnFire();
-
-    /**
-     * Sets the Block to Fire
-     */
-    public void setToFire();
 
     /**
      * Sets the Owner of the Machine. Returns the set uuid.
