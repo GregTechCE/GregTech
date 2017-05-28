@@ -126,7 +126,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidHandler, IGearEn
     /**
      * When a Player rightclicks the Facing with a Wrench.
      */
-    public boolean onWrenchRightClick(EnumFacing aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ);
+    public boolean onWrenchRightClick(EnumFacing aSide, EnumFacing aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ);
 
     /**
      * Called right before this Machine explodes
@@ -255,32 +255,6 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidHandler, IGearEn
      * For the rare case you need this Function
      */
     public void receiveClientEvent(byte aEventID, byte aValue);
-
-    /**
-     * Called to actually play the Sound.
-     * Do not insert Client/Server checks. That is already done for you.
-     * Do not use @playSoundEffect, Minecraft doesn't like that at all. Use @playSound instead.
-     */
-    public void doSound(byte aIndex, BlockPos pos);
-
-    public void startSoundLoop(byte aIndex, BlockPos pos);
-
-    public void stopSoundLoop(byte aValue, BlockPos pos);
-
-    /**
-     * Sends the Event for the Sound Triggers, only usable Server Side!
-     */
-    public void sendSound(byte aIndex);
-
-    /**
-     * Sends the Event for the Sound Triggers, only usable Server Side!
-     */
-    public void sendLoopStart(byte aIndex);
-
-    /**
-     * Sends the Event for the Sound Triggers, only usable Server Side!
-     */
-    public void sendLoopEnd(byte aIndex);
 
     /**
      * Called when the Machine explodes, override Explosion Code here.

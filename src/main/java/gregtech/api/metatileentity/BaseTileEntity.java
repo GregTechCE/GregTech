@@ -1,24 +1,14 @@
 package gregtech.api.metatileentity;
 
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.net.GT_Packet_Block_Event;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraftforge.fluids.IFluidHandler;
 
-import static gregtech.api.enums.GT_Values.GT;
 import static gregtech.api.enums.GT_Values.NW;
 
 /**
@@ -47,13 +37,6 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     private final void clearNullMarkersFromTileEntityBuffer() {
         for (int i = 0; i < mBufferedTileEntities.length; i++)
             if (mBufferedTileEntities[i] == this) mBufferedTileEntities[i] = null;
-    }
-
-    /**
-     * Called automatically when the Coordinates of this TileEntity have been changed
-     */
-    protected final void clearTileEntityBuffer() {
-        for (int i = 0; i < mBufferedTileEntities.length; i++) mBufferedTileEntities[i] = null;
     }
 
     @Override
@@ -103,30 +86,22 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         isDead = false;
     }
 
-    public final void onAdjacentBlockChange(int aX, int aY, int aZ) {
+    public final void onAdjacentBlockChange(BlockPos pos) {
         clearNullMarkersFromTileEntityBuffer();
     }
 
     @Override
     public final void sendBlockEvent(byte aID, byte aValue) {
-        NW.sendToAllAround(worldObj, new GT_Packet_Block_Event(getXCoord(),
-                        (short) getYCoord(),
-                        getZCoord(),
-                        aID,
-                        aValue),
-                getXCoord(),
-                getYCoord(),
-                getZCoord());
+        NW.sendToAllAround(worldObj, new GT_Packet_Block_Event(pos, aID, aValue), pos.getX(), pos.getY(), pos.getZ());
     }
 
     public final void setOnFire() {
-        GT_Utility.setCoordsOnFire(worldObj, getXCoord(), getYCoord(), getZCoord(), false);
-    }
-
-    public final void setToFire() {
-        worldObj.setBlockState(getPos(), Blocks.FIRE.getDefaultState());
+        GT_Utility.setCoordsOnFire(worldObj, pos, false);
     }
 
     @Override
-    public void markDirty() {/* Do not do the super Function */}
+    public void markDirty() {
+        /* Do not do the super Function */
+    }
+
 }

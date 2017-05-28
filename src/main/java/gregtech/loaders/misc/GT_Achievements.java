@@ -263,19 +263,12 @@ public class GT_Achievements {
         if (entityplayer == null || !GT_Mod.gregtechproxy.mAchievements) {
             return;
         }
-//		if (this.achievementList.containsKey(textId)) {
-//			if(this.issuedAchievements.containsKey((entityplayer.getDisplayName()+textId))){
-//			return;
-//			}else{
-//			this.issuedAchievements.put((entityplayer.getDisplayName()+textId), true);
         entityplayer.addStat(this.achievementList.get(textId));
-//			}
-//		}
     }
 
     public Achievement getAchievement(String textId) {
         if (this.achievementList.containsKey(textId)) {
-            return (Achievement) this.achievementList.get(textId);
+            return this.achievementList.get(textId);
         }
         return null;
     }

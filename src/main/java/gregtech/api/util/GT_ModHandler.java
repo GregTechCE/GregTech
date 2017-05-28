@@ -1583,7 +1583,7 @@ public class GT_ModHandler {
      * Uses an Item. Tries to discharge in case of Electric Items
      */
     public static boolean damageOrDechargeItem(ItemStack aStack, int aDamage, int aDecharge, EntityLivingBase aPlayer) {
-        if (GT_Utility.isStackInvalid(aStack) || (aStack.getMaxStackSize() <= 1 && aStack.stackSize > 1)) return false;
+        if (!GT_Utility.isStackValid(aStack) || (aStack.getMaxStackSize() <= 1 && aStack.stackSize > 1)) return false;
         if (aPlayer != null && aPlayer instanceof EntityPlayer && ((EntityPlayer) aPlayer).capabilities.isCreativeMode)
             return true;
         if (aStack.getItem() instanceof IDamagableItem) {

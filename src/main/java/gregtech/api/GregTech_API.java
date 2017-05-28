@@ -79,7 +79,6 @@ public class GregTech_API {
      * 10000 - 32766 are currently free.
      * <p/>
      * Contact me if you need a free ID-Range, which doesn't conflict with other Addons.
-     * You could make an ID-Config, but we all know, what "stupid" customers think about conflicting ID's
      */
     public static final IMetaTileEntity[] METATILEENTITIES = new IMetaTileEntity[MAXIMUM_METATILE_IDS];
     /**
@@ -111,7 +110,7 @@ public class GregTech_API {
     /**
      * The List of all Sounds used in GT, indices are in the static Block at the bottom
      */
-    public static final Map<Integer, String> sSoundList = new HashMap<>();
+    public static final Map<Integer, ResourceLocation> sSoundList = new HashMap<>();
     /**
      * The List of Tools, which can be used. Accepts regular damageable Items and Electric Items
      */
@@ -239,46 +238,45 @@ public class GregTech_API {
         sDimensionalList.add(0);
         sDimensionalList.add(1);
 
-        sSoundList.put(0, "entity.arrow.shoot"); //SoundEvents.ENTITY_ARROW_SHOOT.getSoundName().toString());
-        sSoundList.put(1, "block.anvil.use");//SoundEvents.BLOCK_ANVIL_USE.getSoundName().toString());
-        sSoundList.put(2, "block.anvil.break");//SoundEvents.BLOCK_ANVIL_BREAK.getSoundName().toString());
-        sSoundList.put(3, "block.stone_button.click_on");//SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON.getSoundName().toString());
-        sSoundList.put(4, "block.fire.extinguish");//SoundEvents.ENTITY_ITEM_BREAK.getSoundName().toString());
-        sSoundList.put(5, "entity.generic.explode");//SoundEvents.ENTITY_GENERIC_EXPLODE.getSoundName().toString());
-        sSoundList.put(6, "item.flintandsteel.use");//SoundEvents.ITEM_FIRECHARGE_USE.getSoundName().toString());
+        sSoundList.put(0, new ResourceLocation("entity.arrow.shoot"));
+        sSoundList.put(1, new ResourceLocation("block.anvil.use"));
+        sSoundList.put(2, new ResourceLocation("block.anvil.break"));
+        sSoundList.put(3, new ResourceLocation("block.stone_button.click_on"));
+        sSoundList.put(4, new ResourceLocation("block.fire.extinguish"));
+        sSoundList.put(5, new ResourceLocation("entity.generic.explode"));
+        sSoundList.put(6, new ResourceLocation("item.flintandsteel.use"));
 
-        registerSound(100, aTextIC2Lower + ":" + "tools.Wrench");
-        registerSound(101, aTextIC2Lower + ":" + "tools.RubberTrampoline");
-        registerSound(102, aTextIC2Lower + ":" + "tools.Painter");
-        registerSound(103, aTextIC2Lower + ":" + "tools.BatteryUse");
-        registerSound(104, aTextIC2Lower + ":" + "tools.chainsaw.ChainsawUseOne");
-        registerSound(105, aTextIC2Lower + ":" + "tools.chainsaw.ChainsawUseTwo");
-        registerSound(106, aTextIC2Lower + ":" + "tools.drill.DrillSoft");
-        registerSound(107, aTextIC2Lower + ":" + "tools.drill.DrillHard");
-        registerSound(108, aTextIC2Lower + ":" + "tools.ODScanner");
+        registerSound(100, new ResourceLocation(aTextIC2Lower, "tools.Wrench"));
+        registerSound(101, new ResourceLocation(aTextIC2Lower, "tools.RubberTrampoline"));
+        registerSound(102, new ResourceLocation(aTextIC2Lower, "tools.Painter"));
+        registerSound(103, new ResourceLocation(aTextIC2Lower, "tools.BatteryUse"));
+        registerSound(104, new ResourceLocation(aTextIC2Lower, "tools.chainsaw.ChainsawUseOne"));
+        registerSound(105, new ResourceLocation(aTextIC2Lower, "tools.chainsaw.ChainsawUseTwo"));
+        registerSound(106, new ResourceLocation(aTextIC2Lower, "tools.drill.DrillSoft"));
+        registerSound(107, new ResourceLocation(aTextIC2Lower, "tools.drill.DrillHard"));
+        registerSound(108, new ResourceLocation(aTextIC2Lower, "tools.ODScanner"));
 
-        registerSound(200, aTextIC2Lower + ":" + "machines.ExtractorOp");
-        registerSound(201, aTextIC2Lower + ":" + "machines.MaceratorOp");
-        registerSound(202, aTextIC2Lower + ":" + "machines.InductionLoop");
-        registerSound(203, aTextIC2Lower + ":" + "machines.CompressorOp");
-        registerSound(204, aTextIC2Lower + ":" + "machines.RecyclerOp");
-        registerSound(205, aTextIC2Lower + ":" + "machines.MinerOp");
-        registerSound(206, aTextIC2Lower + ":" + "machines.PumpOp");
-        registerSound(207, aTextIC2Lower + ":" + "machines.ElectroFurnaceLoop");
-        registerSound(208, aTextIC2Lower + ":" + "machines.InductionLoop");
-        registerSound(209, aTextIC2Lower + ":" + "machines.MachineOverload");
-        registerSound(210, aTextIC2Lower + ":" + "machines.InterruptOne");
-        registerSound(211, aTextIC2Lower + ":" + "machines.KaChing");
-        registerSound(212, aTextIC2Lower + ":" + "machines.MagnetizerLoop");
+        registerSound(200, new ResourceLocation(aTextIC2Lower, "machines.ExtractorOp"));
+        registerSound(201, new ResourceLocation(aTextIC2Lower, "machines.MaceratorOp"));
+        registerSound(202, new ResourceLocation(aTextIC2Lower, "machines.InductionLoop"));
+        registerSound(203, new ResourceLocation(aTextIC2Lower, "machines.CompressorOp"));
+        registerSound(204, new ResourceLocation(aTextIC2Lower, "machines.RecyclerOp"));
+        registerSound(205, new ResourceLocation(aTextIC2Lower, "machines.MinerOp"));
+        registerSound(206, new ResourceLocation(aTextIC2Lower, "machines.PumpOp"));
+        registerSound(207, new ResourceLocation(aTextIC2Lower, "machines.ElectroFurnaceLoop"));
+        registerSound(208, new ResourceLocation(aTextIC2Lower, "machines.InductionLoop"));
+        registerSound(209, new ResourceLocation(aTextIC2Lower, "machines.MachineOverload"));
+        registerSound(210, new ResourceLocation(aTextIC2Lower, "machines.InterruptOne"));
+        registerSound(211, new ResourceLocation(aTextIC2Lower, "machines.KaChing"));
+        registerSound(212, new ResourceLocation(aTextIC2Lower, "machines.MagnetizerLoop"));
     }
 
-    public static void registerSound(int id, String name) {
-        ResourceLocation loc = new ResourceLocation(name);
+    public static void registerSound(int id, ResourceLocation loc) {
         SoundEvent e = new SoundEvent(loc);
         if(!SoundEvent.REGISTRY.containsKey(loc)) {
             SoundEvent.REGISTRY.register(size++, loc, e);
         }
-        sSoundList.put(id, name);
+        sSoundList.put(id, loc);
     }
 
     /**

@@ -15,6 +15,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * A simple compound Interface for all my TileEntities.
@@ -23,7 +24,7 @@ import java.util.List;
  * <p/>
  * It can cause Problems to include this Interface!
  */
-public interface IGregTechTileEntity extends IGearEnergyTileEntity, ICoverable, net.minecraftforge.fluids.capability.IFluidHandler, IFluidHandler, ITurnable, IGregTechDeviceInformation, IUpgradableMachine, IDigitalChest, IDescribable, IMachineBlockUpdateable {
+public interface IGregTechTileEntity extends IGearEnergyTileEntity, ICoverable, IFluidHandler, ITurnable, IGregTechDeviceInformation, IUpgradableMachine, IDigitalChest, IDescribable, IMachineBlockUpdateable {
     /**
      * gets the Error displayed on the GUI
      */
@@ -81,19 +82,14 @@ public interface IGregTechTileEntity extends IGearEnergyTileEntity, ICoverable, 
     public void setOnFire();
 
     /**
-     * Sets the Block to Fire
+     * Sets the Owner of the Machine. Returns the set uuid.
      */
-    public void setToFire();
+    public UUID setOwnerId(UUID ownerId);
 
     /**
-     * Sets the Owner of the Machine. Returns the set Name.
+     * gets the uuid of the Machines Owner or null if not set.
      */
-    public String setOwnerName(String aName);
-
-    /**
-     * gets the Name of the Machines Owner or "Player" if not set.
-     */
-    public String getOwnerName();
+    public UUID getOwnerId();
 
     /**
      * Sets initial Values from NBT

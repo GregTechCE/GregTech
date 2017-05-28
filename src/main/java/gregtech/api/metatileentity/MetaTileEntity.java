@@ -159,7 +159,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {/*Do nothing*/}
 
     @Override
-    public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onWrenchRightClick(EnumFacing aSide, EnumFacing aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (getBaseMetaTileEntity().isValidFacing(aWrenchingSide)) {
             getBaseMetaTileEntity().setFrontFacing(aWrenchingSide);
             return true;
@@ -223,13 +223,13 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     }
 
     @Override
-    public void doSound(byte aIndex, double aX, double aY, double aZ) {/*Do nothing*/}
+    public void doSound(byte aIndex) {/*Do nothing*/}
 
     @Override
-    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {/*Do nothing*/}
+    public void startSoundLoop(byte aIndex) {/*Do nothing*/}
 
     @Override
-    public void stopSoundLoop(byte aValue, double aX, double aY, double aZ) {/*Do nothing*/}
+    public void stopSoundLoop(byte aValue) {/*Do nothing*/}
 
     @Override
     public final void sendSound(byte aIndex) {
@@ -320,19 +320,19 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     /**
      * @return true if that Side is an Output.
      */
-    public boolean isOutputFacing(byte aSide) {
+    public boolean isOutputFacing(EnumFacing aSide) {
         return false;
     }
 
     /**
      * @return true if that Side is an Input.
      */
-    public boolean isInputFacing(byte aSide) {
+    public boolean isInputFacing(EnumFacing aSide) {
         return false;
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(EnumFacing aFacing) {
         return false;
     }
 
@@ -548,16 +548,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     @Override
     public byte getComparatorValue(byte aSide) {
         return 0;
-    }
-
-    @Override
-    public boolean acceptsRotationalEnergy(byte aSide) {
-        return false;
-    }
-
-    @Override
-    public boolean injectRotationalEnergy(byte aSide, long aSpeed, long aEnergy) {
-        return false;
     }
 
     @Override

@@ -102,4 +102,5 @@ public class GT_FoodStat implements IFoodStat {
     public boolean isRotten(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer) {
         return mIsRotten;
     }
+
 }
