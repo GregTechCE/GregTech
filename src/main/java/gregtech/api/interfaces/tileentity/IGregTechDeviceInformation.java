@@ -1,9 +1,7 @@
 package gregtech.api.interfaces.tileentity;
 
-/**
- * You are allowed to include this File in your Download, as i will not change it.
- */
 public interface IGregTechDeviceInformation {
+
     /**
      * Is this even a TileEntity which allows GregTech Sensor Kits?
      * I need things like this Function for MetaTileEntities, you MUST check this!!!
@@ -17,5 +15,6 @@ public interface IGregTechDeviceInformation {
      *
      * @return an Array of Information Strings. Don't return null!
      */
-    public String[] getInfoData();
+    String[] getInfoData();
+
 }
