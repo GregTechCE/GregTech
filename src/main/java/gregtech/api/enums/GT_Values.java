@@ -12,27 +12,15 @@ import java.util.Locale;
 
 /**
  * Made for static imports, this Class is just a Helper.
- * <p/>
- * I am doing this to have a better Table alike view on my Code, so I can change things faster using the Block Selection Mode of eclipse.
- * <p/>
- * Go to "Window > Preferences > Java > Editor > Content Assist > Favorites" to set static importable Constant Classes such as this one as AutoCompleteable.
  */
 public class GT_Values {
+
     // unused: A, C, D, G, H, I, J, K, N, O, Q, R, S, T
-
-    // TODO: Rename Material Units to 'U'
-    // TODO: Rename OrePrefixes Class to 'P'
-    // TODO: Rename Materials Class to 'M'
-
-    /**
-     * Empty String for an easier Call Hierarchy
-     */
-    public static final String E = "";
 
     /**
      * The first 32 Bits
      */
-    public static final int[] B = new int[]{1 << 0, 1 << 1, 1 << 2, 1 << 3, 1 << 4, 1 << 5, 1 << 6, 1 << 7, 1 << 8, 1 << 9, 1 << 10, 1 << 11, 1 << 12, 1 << 13, 1 << 14, 1 << 15, 1 << 16, 1 << 17, 1 << 18, 1 << 19, 1 << 20, 1 << 21, 1 << 22, 1 << 23, 1 << 24, 1 << 25, 1 << 26, 1 << 27, 1 << 28, 1 << 29, 1 << 30, 1 << 31};
+    public static final int[] B = new int[]{1, 1 << 1, 1 << 2, 1 << 3, 1 << 4, 1 << 5, 1 << 6, 1 << 7, 1 << 8, 1 << 9, 1 << 10, 1 << 11, 1 << 12, 1 << 13, 1 << 14, 1 << 15, 1 << 16, 1 << 17, 1 << 18, 1 << 19, 1 << 20, 1 << 21, 1 << 22, 1 << 23, 1 << 24, 1 << 25, 1 << 26, 1 << 27, 1 << 28, 1 << 29, 1 << 30, 1 << 31};
 
     /**
      * Renamed from "MATERIAL_UNIT" to just "M"
@@ -105,11 +93,12 @@ public class GT_Values {
      */
     public static GT_PacketHandler NW;
     /**
-     * Not really Constants, but they set using the Config and therefore should be constant (those are for the Debug Mode)
+     * Not really Constant, but it set using the Config and therefore should be constant (this is for the Debug Mode)
      */
-    public static boolean D1 = false, D2 = false;
+    public static boolean D1 = false;
     /**
      * If you have to give something a World Parameter but there is no World... (Dummy World)
      */
     public static World DW;
+
 }

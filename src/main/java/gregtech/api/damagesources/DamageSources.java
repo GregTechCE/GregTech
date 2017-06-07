@@ -6,7 +6,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 
-public class GT_DamageSources {
+public class DamageSources {
 
     private static DamageSource EXPLOSION = new DamageSource("explosion");
     private static DamageSource HEAT = new DamageSource("heat");

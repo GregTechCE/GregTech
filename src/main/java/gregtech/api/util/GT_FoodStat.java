@@ -1,6 +1,6 @@
 package gregtech.api.util;
 
-import gregtech.api.damagesources.GT_DamageSources;
+import gregtech.api.damagesources.DamageSources;
 import gregtech.api.interfaces.IFoodStat;
 import gregtech.api.items.GT_MetaBase_Item;
 import net.minecraft.entity.player.EntityPlayer;
@@ -83,7 +83,7 @@ public class GT_FoodStat implements IFoodStat {
             }
             if (mExplosive) {
                 aPlayer.worldObj.newExplosion(aPlayer, aPlayer.posX, aPlayer.posY, aPlayer.posZ, 4, true, true);
-                aPlayer.attackEntityFrom(GT_DamageSources.getExplodingDamage(), Float.MAX_VALUE);
+                aPlayer.attackEntityFrom(DamageSources.getExplodingDamage(), Float.MAX_VALUE);
             }
         }
     }

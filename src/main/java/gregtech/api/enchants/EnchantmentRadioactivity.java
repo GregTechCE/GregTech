@@ -4,7 +4,6 @@ import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Config;
-import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.enchantment.EnchantmentDamage;
 import net.minecraft.entity.Entity;
@@ -12,11 +11,11 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class Enchantment_Radioactivity extends EnchantmentDamage {
+public class EnchantmentRadioactivity extends EnchantmentDamage {
 
-    public static Enchantment_Radioactivity INSTANCE;
+    public static EnchantmentRadioactivity INSTANCE;
 
-    public Enchantment_Radioactivity() {
+    public EnchantmentRadioactivity() {
         super(Rarity.VERY_RARE, 0);
         Materials.Plutonium.setEnchantmentForTools(this, 1).setEnchantmentForArmors(this, 1);
         Materials.Uranium235.setEnchantmentForTools(this, 2).setEnchantmentForArmors(this, 2);
@@ -54,8 +53,8 @@ public class Enchantment_Radioactivity extends EnchantmentDamage {
     }
 
     @Override
-    public void onEntityDamaged(EntityLivingBase aHurtEntity, Entity aDamagingEntity, int aLevel) {
-        GT_Utility.applyRadioactivity(aHurtEntity, aLevel, 1);
+    public void onEntityDamaged(EntityLivingBase hurtEntity, Entity damagingEntity, int level) {
+        GT_Utility.applyRadioactivity(hurtEntity, level, 1);
     }
 
     @Override

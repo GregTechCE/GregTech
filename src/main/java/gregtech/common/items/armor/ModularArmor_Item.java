@@ -1,6 +1,6 @@
 package gregtech.common.items.armor;
 
-import gregtech.api.damagesources.GT_DamageSources;
+import gregtech.api.damagesources.DamageSources;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.items.GT_Generic_Item;
 import ic2.core.IC2;
@@ -86,13 +86,13 @@ public class ModularArmor_Item extends GT_Generic_Item implements ISpecialArmor 
             double tmp = 0.0d;
             if (source.isMagicDamage()) {
                 tmp = data.magicDef;
-            } else if (source == GT_DamageSources.getRadioactiveDamage()) {
+            } else if (source == DamageSources.getRadioactiveDamage()) {
                 tmp = data.radiationDef;
-            } else if (source == GT_DamageSources.getElectricDamage()) {
+            } else if (source == DamageSources.getElectricDamage()) {
                 tmp = data.electricDef;
             } else if (source == DamageSource.wither) {
                 tmp = data.witherDef;
-            } else if (source.isFireDamage() || source == GT_DamageSources.getHeatDamage()) {
+            } else if (source.isFireDamage() || source == DamageSources.getHeatDamage()) {
                 tmp = data.fireDef;
             } else if (source.isExplosion()) {
                 tmp = data.explosionDef;

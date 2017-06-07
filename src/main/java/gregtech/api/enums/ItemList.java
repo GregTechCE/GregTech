@@ -15,37 +15,10 @@ import static gregtech.api.enums.GT_Values.W;
  * Class containing all non-OreDict Items of GregTech.
  */
 public enum ItemList implements IItemContainer {
-    Display_ITS_FREE,
+
     Display_Fluid,
-    TE_Slag,
-    TE_Slag_Rich,
-    TE_Rockwool,
-    TE_Hardened_Glass,
-    FR_Lemon,
-    FR_Mulch,
-    FR_Fertilizer,
-    FR_Compost,
-    FR_Silk,
-    FR_Wax,
-    FR_RefractoryWax,
-    FR_WaxCapsule,
-    FR_RefractoryCapsule,
-    FR_Stick,
-    FR_Casing_Impregnated,
-    FR_Casing_Sturdy,
-    FR_Casing_Hardened,
-    FR_Bee_Drone,
-    FR_Bee_Princess,
-    FR_Bee_Queen,
-    FR_Tree_Sapling,
-    FR_Butterfly,
-    FR_Larvae,
-    FR_Serum,
-    FR_Caterpillar,
-    FR_PollenFertile,
-    TF_LiveRoot,
-    TF_Vial_FieryBlood,
-    TF_Vial_FieryTears,
+
+    //Railcraft Items
     RC_ShuntingWire,
     RC_ShuntingWireFrame,
     RC_Rail_Reinforced,
@@ -59,6 +32,8 @@ public enum ItemList implements IItemContainer {
     RC_Bed_Wood,
     RC_Bed_Stone,
     RC_Rebar,
+
+    //Industrial Craft 2 Items
     IC2_Item_Casing_Tin,
     IC2_Item_Casing_Copper,
     IC2_Item_Casing_Iron,
@@ -98,6 +73,8 @@ public enum ItemList implements IItemContainer {
     IC2_AdvBattery,
     IC2_EnergyCrystal,
     IC2_LapotronCrystal,
+
+    //Arow Heads
     Arrow_Head_Glass_Emtpy,
     Arrow_Head_Glass_Poison,
     Arrow_Head_Glass_Poison_Long,
@@ -125,6 +102,8 @@ public enum ItemList implements IItemContainer {
     Arrow_Plastic_Glass_Weakness,
     Arrow_Plastic_Glass_Weakness_Long,
     Arrow_Plastic_Glass_Holy_Water,
+
+    //Shapes
     Shape_Empty,
     Shape_Mold_Bottle,
     Shape_Mold_Plate,
@@ -169,7 +148,8 @@ public enum ItemList implements IItemContainer {
     Shape_Extruder_File,
     Shape_Extruder_Saw,
     Shape_Extruder_Gear,
-    Crate_Empty,
+
+    //Credits
     Credit_Copper,
     Credit_Iron,
     Credit_Silver,
@@ -187,13 +167,20 @@ public enum ItemList implements IItemContainer {
     Coin_Gold_Ancient,
     Coin_Doge,
     Coin_Chocolate,
+
+    //Cells, Cans
     Cell_Universal_Fluid,
     Cell_Empty,
     Cell_Water,
     Cell_Lava,
     Cell_Air,
+    Bottle_Empty,
     Large_Fluid_Cell_Steel,
     Large_Fluid_Cell_TungstenSteel,
+    Fuel_Can_Plastic_Empty,
+    Fuel_Can_Plastic_Filled,
+
+    //Food Bottles
     ThermosCan_Empty,
     ThermosCan_Dark_Coffee,
     ThermosCan_Dark_Cafe_au_lait,
@@ -205,7 +192,6 @@ public enum ItemList implements IItemContainer {
     ThermosCan_Tea,
     ThermosCan_Sweet_Tea,
     ThermosCan_Ice_Tea,
-    Bottle_Empty,
     Bottle_Milk,
     Bottle_Holy_Water,
     Bottle_Purple_Drink,
@@ -244,6 +230,8 @@ public enum ItemList implements IItemContainer {
     Bottle_Lemonade,
     Bottle_Alcopops,
     Bottle_Cave_Johnsons_Grenade_Juice,
+
+    //Foods
     Food_Potato_On_Stick,
     Food_Potato_On_Stick_Roasted,
     Food_Fries,
@@ -302,6 +290,8 @@ public enum ItemList implements IItemContainer {
     Food_Baked_Pizza_Veggie,
     Food_Baked_Pizza_Cheese,
     Food_Baked_Pizza_Meat,
+
+    //Crop Drops
     Crop_Drop_Argentia,
     Crop_Drop_Plumbilia,
     Crop_Drop_Indigo,
@@ -320,12 +310,16 @@ public enum ItemList implements IItemContainer {
     Crop_Drop_Grapes,
     Crop_Drop_TeaLeaf,
     Crop_Drop_Cucumber,
+
+    //Schematics
     Schematic,
     Schematic_Crafting,
     Schematic_1by1,
     Schematic_2by2,
     Schematic_3by3,
     Schematic_Dust,
+
+    //Circuits
     Circuit_Integrated,
     Circuit_Board_Basic,
     Circuit_Board_Advanced,
@@ -344,6 +338,8 @@ public enum ItemList implements IItemContainer {
     Circuit_Elite,
     Circuit_Master,
     Circuit_Ultimate,
+
+    //Tiered Machine Parts
     Rotor_LV, Rotor_MV, Rotor_HV, Rotor_EV, Rotor_IV, Rotor_LuV, Rotor_ZPM, Rotor_UV,
     Electric_Motor_LV, Electric_Motor_MV, Electric_Motor_HV, Electric_Motor_EV, Electric_Motor_IV, Electric_Motor_LuV, Electric_Motor_ZPM, Electric_Motor_UV,
     Electric_Pump_LV, Electric_Pump_MV, Electric_Pump_HV, Electric_Pump_EV, Electric_Pump_IV, Electric_Pump_LuV, Electric_Pump_ZPM, Electric_Pump_UV,
@@ -353,6 +349,8 @@ public enum ItemList implements IItemContainer {
     Robot_Arm_LV, Robot_Arm_MV, Robot_Arm_HV, Robot_Arm_EV, Robot_Arm_IV, Robot_Arm_LuV, Robot_Arm_ZPM, Robot_Arm_UV,
     Emitter_LV, Emitter_MV, Emitter_HV, Emitter_EV, Emitter_IV, Emitter_LuV, Emitter_ZPM, Emitter_UV,
     Sensor_LV, Sensor_MV, Sensor_HV, Sensor_EV, Sensor_IV, Sensor_LuV, Sensor_ZPM, Sensor_UV,
+
+    //Battery Hulls And Batteries
     Battery_Hull_LV, Battery_Hull_MV, Battery_Hull_HV,
     Battery_SU_LV_SulfuricAcid,
     Battery_SU_LV_Mercury,
@@ -371,10 +369,12 @@ public enum ItemList implements IItemContainer {
     Battery_RE_HV_Lithium,
     Battery_RE_HV_Sodium,
     ZPM,
-    Fuel_Can_Plastic_Empty,
-    Fuel_Can_Plastic_Filled,
+
+    //Upgrades
     Upgrade_Muffler,
     Upgrade_Lock,
+
+    //Covers
     Cover_Controller,
     Cover_ActivityDetector,
     Cover_FluidDetector,
@@ -395,30 +395,47 @@ public enum ItemList implements IItemContainer {
     Cover_SolarPanel_ZPM,
     Cover_SolarPanel_UV,
     Ingot_IridiumAlloy,
+
+    //Planks
     Plank_Oak,
     Plank_Spruce,
     Plank_Birch,
     Plank_Jungle,
     Plank_Acacia,
     Plank_DarkOak,
+
+    //Dye Items
     Dye_Indigo,
     Dye_SquidInk,
     Dye_Bonemeal,
     Dye_Cocoa,
+
+    //Generic
     Duct_Tape,
+    Crate_Empty,
+
+    //Writtern books
     Book_Written_00,
     Book_Written_01,
     Book_Written_02,
     Book_Written_03,
+
+    //Paper Stuff
     Paper_Printed_Pages,
     Paper_Magic_Empty,
     Paper_Magic_Page,
     Paper_Magic_Pages,
     Paper_Punch_Card_Empty,
     Paper_Punch_Card_Encoded,
+
+    //Generic
     McGuffium_239,
+
+    //Nuclear Control Cards TODO
     NC_SensorCard,
     NC_SensorKit,
+
+    //Tools
     Tool_Matches,
     Tool_MatchBox_Used,
     Tool_MatchBox_Full,
@@ -444,17 +461,13 @@ public enum ItemList implements IItemContainer {
     Tool_Axe_Steel,
     Tool_Hoe_Steel,
 
+    //Sprays
     Spray_Empty, Spray_Bug, Spray_Ice, Spray_Hardener, Spray_CFoam, Spray_Pepper, Spray_Hydration,
     Color_00, Color_01, Color_02, Color_03, Color_04, Color_05, Color_06, Color_07, Color_08, Color_09, Color_10, Color_11, Color_12, Color_13, Color_14, Color_15,
     Spray_Color_00, Spray_Color_01, Spray_Color_02, Spray_Color_03, Spray_Color_04, Spray_Color_05, Spray_Color_06, Spray_Color_07, Spray_Color_08, Spray_Color_09, Spray_Color_10, Spray_Color_11, Spray_Color_12, Spray_Color_13, Spray_Color_14, Spray_Color_15,
     Spray_Color_Used_00, Spray_Color_Used_01, Spray_Color_Used_02, Spray_Color_Used_03, Spray_Color_Used_04, Spray_Color_Used_05, Spray_Color_Used_06, Spray_Color_Used_07, Spray_Color_Used_08, Spray_Color_Used_09, Spray_Color_Used_10, Spray_Color_Used_11, Spray_Color_Used_12, Spray_Color_Used_13, Spray_Color_Used_14, Spray_Color_Used_15,
 
-    Armor_Cheat,
-    Armor_Cloaking,
-    Armor_Lamp,
-    Armor_LithiumPack,
-    Armor_LapotronicPack,
-    Armor_ForceField,
+
     Energy_LapotronicOrb,
     Reactor_NeutronReflector,
     Component_Turbine_Bronze,
@@ -470,6 +483,7 @@ public enum ItemList implements IItemContainer {
     Component_Minecart_Wheels_Iron,
     Component_Minecart_Wheels_Steel,
 
+    //Generators
     Generator_Diesel_LV,
     Generator_Diesel_MV,
     Generator_Diesel_HV,
@@ -483,6 +497,7 @@ public enum ItemList implements IItemContainer {
     Generator_Naquadah_Mark_II,
     Generator_Naquadah_Fluid,
 
+    //Bronze Age
     Machine_Bronze_Boiler,
     Machine_Bronze_Boiler_Solar,
     Machine_Bronze_CraftingTable,
@@ -501,23 +516,26 @@ public enum ItemList implements IItemContainer {
     Machine_Steel_Hammer,
     Machine_Steel_Compressor,
     Machine_Steel_AlloySmelter,
-
     Hull_Bronze, Hull_Steel, Hull_Bronze_Bricks, Hull_Steel_Bricks,
 
+    //Transformers
     Transformer_LV_ULV, Transformer_MV_LV, Transformer_HV_MV, Transformer_EV_HV, Transformer_IV_EV, Transformer_LuV_IV, Transformer_ZPM_LuV, Transformer_UV_ZPM, Transformer_MAX_UV,
 
+    //Casings & Hulls
     Casing_ULV, Casing_LV, Casing_MV, Casing_HV, Casing_EV, Casing_IV, Casing_LuV, Casing_ZPM, Casing_UV, Casing_MAX, Casing_BronzePlatedBricks, Casing_HeatProof, Casing_Coil_Cupronickel_Deprecated, Casing_Coil_Kanthal_Deprecated, Casing_Coil_Nichrome_Deprecated, Casing_Coil_Superconductor,
     Casing_SolidSteel, Casing_FrostProof, Casing_Gearbox_Bronze, Casing_Gearbox_Steel, Casing_Gearbox_Titanium, Casing_Gearbox_TungstenSteel, Casing_Processor, Casing_DataDrive, Casing_ContainmentField, Casing_Assembler, Casing_Pump, Casing_Motor, Casing_Pipe_Bronze, Casing_Pipe_Steel, Casing_Pipe_Titanium, Casing_Pipe_TungstenSteel,
     Casing_Stripes_A, Casing_Stripes_B, Casing_RadioactiveHazard, Casing_BioHazard, Casing_ExplosionHazard, Casing_FireHazard, Casing_AcidHazard, Casing_MagicHazard, Casing_FrostHazard, Casing_NoiseHazard, Casing_Grate, Casing_Vent, Casing_RadiationProof, Casing_Firebox_Bronze, Casing_Firebox_Steel, Casing_Firebox_TungstenSteel,
     Casing_RobustTungstenSteel, Casing_CleanStainlessSteel, Casing_StableTitanium, Casing_Firebox_Titanium,
     Hull_ULV, Hull_LV, Hull_MV, Hull_HV, Hull_EV, Hull_IV, Hull_LuV, Hull_ZPM, Hull_UV, Hull_MAX,
 
+    //Automaion Machines
     Automation_Filter_ULV, Automation_Filter_LV, Automation_Filter_MV, Automation_Filter_HV, Automation_Filter_EV, Automation_Filter_IV, Automation_Filter_LuV, Automation_Filter_ZPM, Automation_Filter_UV, Automation_Filter_MAX,
     Automation_TypeFilter_ULV, Automation_TypeFilter_LV, Automation_TypeFilter_MV, Automation_TypeFilter_HV, Automation_TypeFilter_EV, Automation_TypeFilter_IV, Automation_TypeFilter_LuV, Automation_TypeFilter_ZPM, Automation_TypeFilter_UV, Automation_TypeFilter_MAX,
     Automation_ChestBuffer_ULV, Automation_ChestBuffer_LV, Automation_ChestBuffer_MV, Automation_ChestBuffer_HV, Automation_ChestBuffer_EV, Automation_ChestBuffer_IV, Automation_ChestBuffer_LuV, Automation_ChestBuffer_ZPM, Automation_ChestBuffer_UV, Automation_ChestBuffer_MAX,
     Automation_SuperBuffer_ULV, Automation_SuperBuffer_LV, Automation_SuperBuffer_MV, Automation_SuperBuffer_HV, Automation_SuperBuffer_EV, Automation_SuperBuffer_IV, Automation_SuperBuffer_LuV, Automation_SuperBuffer_ZPM, Automation_SuperBuffer_UV, Automation_SuperBuffer_MAX,
     Automation_Regulator_ULV, Automation_Regulator_LV, Automation_Regulator_MV, Automation_Regulator_HV, Automation_Regulator_EV, Automation_Regulator_IV, Automation_Regulator_LuV, Automation_Regulator_ZPM, Automation_Regulator_UV, Automation_Regulator_MAX,
 
+    //Hatchees
     Hatch_Dynamo_ULV, Hatch_Dynamo_LV, Hatch_Dynamo_MV, Hatch_Dynamo_HV, Hatch_Dynamo_EV, Hatch_Dynamo_IV, Hatch_Dynamo_LuV, Hatch_Dynamo_ZPM, Hatch_Dynamo_UV, Hatch_Dynamo_MAX,
     Hatch_Energy_ULV, Hatch_Energy_LV, Hatch_Energy_MV, Hatch_Energy_HV, Hatch_Energy_EV, Hatch_Energy_IV, Hatch_Energy_LuV, Hatch_Energy_ZPM, Hatch_Energy_UV, Hatch_Energy_MAX,
     Hatch_Input_ULV, Hatch_Input_LV, Hatch_Input_MV, Hatch_Input_HV, Hatch_Input_EV, Hatch_Input_IV, Hatch_Input_LuV, Hatch_Input_ZPM, Hatch_Input_UV, Hatch_Input_MAX,
@@ -527,13 +545,16 @@ public enum ItemList implements IItemContainer {
     Hatch_Muffler_LV, Hatch_Muffler_MV, Hatch_Muffler_HV, Hatch_Muffler_EV, Hatch_Muffler_IV, Hatch_Muffler_LuV, Hatch_Muffler_ZPM, Hatch_Muffler_UV, Hatch_Muffler_MAX,
     Hatch_Maintenance,
 
+    //Battery Buffers
     Battery_Buffer_1by1_ULV, Battery_Buffer_1by1_LV, Battery_Buffer_1by1_MV, Battery_Buffer_1by1_HV, Battery_Buffer_1by1_EV, Battery_Buffer_1by1_IV, Battery_Buffer_1by1_LuV, Battery_Buffer_1by1_ZPM, Battery_Buffer_1by1_UV, Battery_Buffer_1by1_MAX,
     Battery_Buffer_2by2_ULV, Battery_Buffer_2by2_LV, Battery_Buffer_2by2_MV, Battery_Buffer_2by2_HV, Battery_Buffer_2by2_EV, Battery_Buffer_2by2_IV, Battery_Buffer_2by2_LuV, Battery_Buffer_2by2_ZPM, Battery_Buffer_2by2_UV, Battery_Buffer_2by2_MAX,
     Battery_Buffer_3by3_ULV, Battery_Buffer_3by3_LV, Battery_Buffer_3by3_MV, Battery_Buffer_3by3_HV, Battery_Buffer_3by3_EV, Battery_Buffer_3by3_IV, Battery_Buffer_3by3_LuV, Battery_Buffer_3by3_ZPM, Battery_Buffer_3by3_UV, Battery_Buffer_3by3_MAX,
     Battery_Buffer_4by4_ULV, Battery_Buffer_4by4_LV, Battery_Buffer_4by4_MV, Battery_Buffer_4by4_HV, Battery_Buffer_4by4_EV, Battery_Buffer_4by4_IV, Battery_Buffer_4by4_LuV, Battery_Buffer_4by4_ZPM, Battery_Buffer_4by4_UV, Battery_Buffer_4by4_MAX,
 
+    //Lockers
     Locker_ULV, Locker_LV, Locker_MV, Locker_HV, Locker_EV, Locker_IV, Locker_LuV, Locker_ZPM, Locker_UV, Locker_MAX,
 
+    //Machines... a lot of them...
     Machine_Multi_LargeBoiler_Bronze, Machine_Multi_LargeBoiler_Steel, Machine_Multi_LargeBoiler_Titanium, Machine_Multi_LargeBoiler_TungstenSteel, Machine_Multi_BlastFurnace, Machine_Multi_ImplosionCompressor, Machine_Multi_VacuumFreezer, Machine_Multi_Furnace,
     Machine_LV_AlloySmelter, Machine_MV_AlloySmelter, Machine_HV_AlloySmelter, Machine_EV_AlloySmelter, Machine_IV_AlloySmelter, Machine_LuV_AlloySmelter, Machine_ZPM_AlloySmelter, Machine_UV_AlloySmelter,
     Machine_LV_Assembler, Machine_MV_Assembler, Machine_HV_Assembler, Machine_EV_Assembler, Machine_IV_Assembler, Machine_LuV_Assembler, Machine_ZPM_Assembler, Machine_UV_Assembler,
@@ -585,6 +606,7 @@ public enum ItemList implements IItemContainer {
     Machine_LV_Hammer, Machine_MV_Hammer, Machine_HV_Hammer, Machine_EV_Hammer, Machine_IV_Hammer, Machine_LuV_Hammer, Machine_ZPM_Hammer, Machine_UV_Hammer,
     Machine_LV_FluidHeater, Machine_MV_FluidHeater, Machine_HV_FluidHeater, Machine_EV_FluidHeater, Machine_IV_FluidHeater, Machine_LuV_FluidHeater, Machine_ZPM_FluidHeater, Machine_UV_FluidHeater,
 
+    //Reactor Stuff
     Neutron_Reflector,
     Reactor_Coolant_He_1, Reactor_Coolant_He_3, Reactor_Coolant_He_6, Reactor_Coolant_NaK_1, Reactor_Coolant_NaK_3, Reactor_Coolant_NaK_6,
     ThoriumCell_1, ThoriumCell_2, ThoriumCell_4,
@@ -597,6 +619,7 @@ public enum ItemList implements IItemContainer {
     Processing_Array, Distillation_Tower, Energy_LapotronicOrb2,
     ZPM2, Quantum_Tank_LV, Quantum_Tank_MV, Quantum_Tank_HV, Quantum_Tank_EV, Quantum_Tank_IV, Quantum_Chest_LV, Quantum_Chest_MV, Quantum_Chest_HV, Quantum_Chest_EV, Quantum_Chest_IV,
 
+    //Covers, Crop Drops, Machines, Blocks, Ingots - Generic Stuff again.
     NULL, Cover_RedstoneTransmitterExternal, Cover_RedstoneTransmitterInternal, Cover_RedstoneReceiverExternal, Cover_RedstoneReceiverInternal,
     LargeSteamTurbine, LargeGasTurbine, LargeHPSteamTurbine, LargePlasmaTurbine,
     Ingot_Heavy1, Ingot_Heavy2, Ingot_Heavy3,
@@ -615,24 +638,33 @@ public enum ItemList implements IItemContainer {
     FluidRegulator_LV, FluidRegulator_MV, FluidRegulator_HV, FluidRegulator_EV, FluidRegulator_IV, FluidRegulator_LuV, FluidRegulator_ZPM, FluidRegulator_UV, FluidFilter, CuringOven, Machine_Multi_Assemblyline, Machine_Multi_DieselEngine, QuantumEye, QuantumStar, Gravistar, Block_SSFUEL, Block_MSSFUEL, SFMixture, MSFMixture, Depleted_Naquadah_1, Depleted_Naquadah_2, Depleted_Naquadah_4, NaquadahCell_1, NaquadahCell_2, NaquadahCell_4, Hatch_AutoMaintenance;
 
     public static final ItemList[]
-            DYE_ONLY_ITEMS = {Color_00, Color_01, Color_02, Color_03, Color_04, Color_05, Color_06, Color_07, Color_08, Color_09, Color_10, Color_11, Color_12, Color_13, Color_14, Color_15}, SPRAY_CAN_DYES = {Spray_Color_00, Spray_Color_01, Spray_Color_02, Spray_Color_03, Spray_Color_04, Spray_Color_05, Spray_Color_06, Spray_Color_07, Spray_Color_08, Spray_Color_09, Spray_Color_10, Spray_Color_11, Spray_Color_12, Spray_Color_13, Spray_Color_14, Spray_Color_15}, SPRAY_CAN_DYES_USED = {Spray_Color_Used_00, Spray_Color_Used_01, Spray_Color_Used_02, Spray_Color_Used_03, Spray_Color_Used_04, Spray_Color_Used_05, Spray_Color_Used_06, Spray_Color_Used_07, Spray_Color_Used_08, Spray_Color_Used_09, Spray_Color_Used_10, Spray_Color_Used_11, Spray_Color_Used_12, Spray_Color_Used_13, Spray_Color_Used_14, Spray_Color_Used_15}, TRANSFORMERS = {Transformer_LV_ULV, Transformer_MV_LV, Transformer_HV_MV, Transformer_EV_HV, Transformer_IV_EV, Transformer_LuV_IV, Transformer_ZPM_LuV, Transformer_UV_ZPM, Transformer_MAX_UV}, MACHINE_HULLS = {Hull_ULV, Hull_LV, Hull_MV, Hull_HV, Hull_EV, Hull_IV, Hull_LuV, Hull_ZPM, Hull_UV, Hull_MAX}, HATCHES_DYNAMO = {Hatch_Dynamo_ULV, Hatch_Dynamo_LV, Hatch_Dynamo_MV, Hatch_Dynamo_HV, Hatch_Dynamo_EV, Hatch_Dynamo_IV, Hatch_Dynamo_LuV, Hatch_Dynamo_ZPM, Hatch_Dynamo_UV, Hatch_Dynamo_MAX}, HATCHES_ENERGY = {Hatch_Energy_ULV, Hatch_Energy_LV, Hatch_Energy_MV, Hatch_Energy_HV, Hatch_Energy_EV, Hatch_Energy_IV, Hatch_Energy_LuV, Hatch_Energy_ZPM, Hatch_Energy_UV, Hatch_Energy_MAX}, HATCHES_INPUT = {Hatch_Input_ULV, Hatch_Input_LV, Hatch_Input_MV, Hatch_Input_HV, Hatch_Input_EV, Hatch_Input_IV, Hatch_Input_LuV, Hatch_Input_ZPM, Hatch_Input_UV, Hatch_Input_MAX}, HATCHES_INPUT_BUS = {Hatch_Input_Bus_ULV, Hatch_Input_Bus_LV, Hatch_Input_Bus_MV, Hatch_Input_Bus_HV, Hatch_Input_Bus_EV, Hatch_Input_Bus_IV, Hatch_Input_Bus_LuV, Hatch_Input_Bus_ZPM, Hatch_Input_Bus_UV, Hatch_Input_Bus_MAX}, HATCHES_OUTPUT = {Hatch_Output_ULV, Hatch_Output_LV, Hatch_Output_MV, Hatch_Output_HV, Hatch_Output_EV, Hatch_Output_IV, Hatch_Output_LuV, Hatch_Output_ZPM, Hatch_Output_UV, Hatch_Output_MAX}, HATCHES_OUTPUT_BUS = {Hatch_Output_Bus_ULV, Hatch_Output_Bus_LV, Hatch_Output_Bus_MV, Hatch_Output_Bus_HV, Hatch_Output_Bus_EV, Hatch_Output_Bus_IV, Hatch_Output_Bus_LuV, Hatch_Output_Bus_ZPM, Hatch_Output_Bus_UV, Hatch_Output_Bus_MAX}, HATCHES_MUFFLER = {Hatch_Muffler_LV, Hatch_Muffler_LV, Hatch_Muffler_MV, Hatch_Muffler_HV, Hatch_Muffler_EV, Hatch_Muffler_IV, Hatch_Muffler_LuV, Hatch_Muffler_ZPM, Hatch_Muffler_UV, Hatch_Muffler_MAX};
+            DYE_ONLY_ITEMS = {Color_00, Color_01, Color_02, Color_03, Color_04, Color_05, Color_06, Color_07, Color_08, Color_09, Color_10, Color_11, Color_12, Color_13, Color_14, Color_15}, SPRAY_CAN_DYES = {Spray_Color_00, Spray_Color_01, Spray_Color_02, Spray_Color_03, Spray_Color_04, Spray_Color_05, Spray_Color_06, Spray_Color_07, Spray_Color_08, Spray_Color_09, Spray_Color_10, Spray_Color_11, Spray_Color_12, Spray_Color_13, Spray_Color_14, Spray_Color_15},
+            SPRAY_CAN_DYES_USED = {Spray_Color_Used_00, Spray_Color_Used_01, Spray_Color_Used_02, Spray_Color_Used_03, Spray_Color_Used_04, Spray_Color_Used_05, Spray_Color_Used_06, Spray_Color_Used_07, Spray_Color_Used_08, Spray_Color_Used_09, Spray_Color_Used_10, Spray_Color_Used_11, Spray_Color_Used_12, Spray_Color_Used_13, Spray_Color_Used_14, Spray_Color_Used_15},
+            TRANSFORMERS = {Transformer_LV_ULV, Transformer_MV_LV, Transformer_HV_MV, Transformer_EV_HV, Transformer_IV_EV, Transformer_LuV_IV, Transformer_ZPM_LuV, Transformer_UV_ZPM, Transformer_MAX_UV},
+            MACHINE_HULLS = {Hull_ULV, Hull_LV, Hull_MV, Hull_HV, Hull_EV, Hull_IV, Hull_LuV, Hull_ZPM, Hull_UV, Hull_MAX}, HATCHES_DYNAMO = {Hatch_Dynamo_ULV, Hatch_Dynamo_LV, Hatch_Dynamo_MV, Hatch_Dynamo_HV, Hatch_Dynamo_EV, Hatch_Dynamo_IV, Hatch_Dynamo_LuV, Hatch_Dynamo_ZPM, Hatch_Dynamo_UV, Hatch_Dynamo_MAX},
+            HATCHES_ENERGY = {Hatch_Energy_ULV, Hatch_Energy_LV, Hatch_Energy_MV, Hatch_Energy_HV, Hatch_Energy_EV, Hatch_Energy_IV, Hatch_Energy_LuV, Hatch_Energy_ZPM, Hatch_Energy_UV, Hatch_Energy_MAX},
+            HATCHES_INPUT = {Hatch_Input_ULV, Hatch_Input_LV, Hatch_Input_MV, Hatch_Input_HV, Hatch_Input_EV, Hatch_Input_IV, Hatch_Input_LuV, Hatch_Input_ZPM, Hatch_Input_UV, Hatch_Input_MAX}, HATCHES_INPUT_BUS = {Hatch_Input_Bus_ULV, Hatch_Input_Bus_LV, Hatch_Input_Bus_MV, Hatch_Input_Bus_HV, Hatch_Input_Bus_EV, Hatch_Input_Bus_IV, Hatch_Input_Bus_LuV, Hatch_Input_Bus_ZPM, Hatch_Input_Bus_UV, Hatch_Input_Bus_MAX},
+            HATCHES_OUTPUT = {Hatch_Output_ULV, Hatch_Output_LV, Hatch_Output_MV, Hatch_Output_HV, Hatch_Output_EV, Hatch_Output_IV, Hatch_Output_LuV, Hatch_Output_ZPM, Hatch_Output_UV, Hatch_Output_MAX}, HATCHES_OUTPUT_BUS = {Hatch_Output_Bus_ULV, Hatch_Output_Bus_LV, Hatch_Output_Bus_MV, Hatch_Output_Bus_HV, Hatch_Output_Bus_EV, Hatch_Output_Bus_IV, Hatch_Output_Bus_LuV, Hatch_Output_Bus_ZPM, Hatch_Output_Bus_UV, Hatch_Output_Bus_MAX},
+            HATCHES_MUFFLER = {Hatch_Muffler_LV, Hatch_Muffler_LV, Hatch_Muffler_MV, Hatch_Muffler_HV, Hatch_Muffler_EV, Hatch_Muffler_IV, Hatch_Muffler_LuV, Hatch_Muffler_ZPM, Hatch_Muffler_UV, Hatch_Muffler_MAX};
+
     public static Fluid sOilExtraHeavy, sEpichlorhydrin, sDrillingFluid, sNitricAcid, sBlueVitriol, sNickelSulfate, sToluene, sNitrationMixture, sRocketFuel, sHydricSulfur;
+
     private ItemStack mStack;
     private boolean mHasNotBeenSet = true;
 
     @Override
-    public IItemContainer set(Item aItem) {
+    public IItemContainer set(Item item) {
         mHasNotBeenSet = false;
-        if (aItem == null) return this;
-        ItemStack aStack = new ItemStack(aItem, 1, 0);
+        if (item == null) return this;
+        ItemStack aStack = new ItemStack(item, 1, 0);
         mStack = GT_Utility.copyAmount(1, aStack);
         return this;
     }
 
     @Override
-    public IItemContainer set(ItemStack aStack) {
+    public IItemContainer set(ItemStack stack) {
         mHasNotBeenSet = false;
-        mStack = GT_Utility.copyAmount(1, aStack);
+        mStack = GT_Utility.copyAmount(1, stack);
         return this;
     }
 
@@ -640,7 +672,7 @@ public enum ItemList implements IItemContainer {
     public Item getItem() {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
-        if (GT_Utility.isStackInvalid(mStack)) return null;
+        if (!GT_Utility.isStackValid(mStack)) return null;
         return mStack.getItem();
     }
 
@@ -648,7 +680,7 @@ public enum ItemList implements IItemContainer {
     public Block getBlock() {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
-        return GT_Utility.getBlockFromStack(getItem());
+        return Block.getBlockFromItem(mStack.getItem());
     }
 
     @Override
@@ -657,70 +689,69 @@ public enum ItemList implements IItemContainer {
     }
 
     @Override
-    public boolean isStackEqual(Object aStack) {
-        return isStackEqual(aStack, false, false);
+    public boolean isStackEqual(ItemStack stack) {
+        return isStackEqual(stack, false, false);
     }
 
     @Override
-    public boolean isStackEqual(Object aStack, boolean aWildcard, boolean aIgnoreNBT) {
-        if (GT_Utility.isStackInvalid(aStack)) return false;
-        return GT_Utility.areUnificationsEqual((ItemStack) aStack, aWildcard ? getWildcard(1) : get(1), aIgnoreNBT);
+    public boolean isStackEqual(ItemStack stack, boolean wildcard, boolean ignoreNBT) {
+        return GT_Utility.isStackValid(stack) && GT_Utility.areUnificationsEqual(stack, wildcard ? getWildcard(1) : get(1), ignoreNBT);
     }
 
     @Override
-    public ItemStack get(long aAmount, Object... aReplacements) {
+    public ItemStack get(int amount, ItemStack... replacements) {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
-        if (GT_Utility.isStackInvalid(mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
-        return GT_Utility.copyAmount(aAmount, GT_OreDictUnificator.get(mStack));
+        if (!GT_Utility.isStackValid(mStack)) return GT_Utility.copyAmount(amount, replacements);
+        return GT_Utility.copyAmount(amount, GT_OreDictUnificator.get(mStack));
     }
 
     @Override
-    public ItemStack getWildcard(long aAmount, Object... aReplacements) {
+    public ItemStack getWildcard(int amount, ItemStack... replacements) {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
-        if (GT_Utility.isStackInvalid(mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
-        return GT_Utility.copyAmountAndMetaData(aAmount, W, GT_OreDictUnificator.get(mStack));
+        if (!GT_Utility.isStackValid(mStack)) return GT_Utility.copyAmount(amount, replacements);
+        return GT_Utility.copyAmountAndMetaData(amount, W, GT_OreDictUnificator.get(mStack));
     }
 
     @Override
-    public ItemStack getUndamaged(long aAmount, Object... aReplacements) {
+    public ItemStack getUndamaged(int amount, ItemStack... replacements) {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
-        if (GT_Utility.isStackInvalid(mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
-        return GT_Utility.copyAmountAndMetaData(aAmount, 0, GT_OreDictUnificator.get(mStack));
+        if (!GT_Utility.isStackValid(mStack)) return GT_Utility.copyAmount(amount, replacements);
+        return GT_Utility.copyAmountAndMetaData(amount, 0, GT_OreDictUnificator.get(mStack));
     }
 
     @Override
-    public ItemStack getAlmostBroken(long aAmount, Object... aReplacements) {
+    public ItemStack getAlmostBroken(int amount, ItemStack... replacements) {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
-        if (GT_Utility.isStackInvalid(mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
-        return GT_Utility.copyAmountAndMetaData(aAmount, mStack.getMaxDamage() - 1, GT_OreDictUnificator.get(mStack));
+        if (!GT_Utility.isStackValid(mStack)) return GT_Utility.copyAmount(amount, replacements);
+        return GT_Utility.copyAmountAndMetaData(amount, mStack.getMaxDamage() - 1, GT_OreDictUnificator.get(mStack));
     }
 
     @Override
-    public ItemStack getWithName(long aAmount, String aDisplayName, Object... aReplacements) {
-        ItemStack rStack = get(1, aReplacements);
-        if (GT_Utility.isStackInvalid(rStack)) return null;
-        rStack.setStackDisplayName(aDisplayName);
-        return GT_Utility.copyAmount(aAmount, rStack);
+    public ItemStack getWithName(int amount, String displayName, ItemStack... replacements) {
+        ItemStack rStack = get(1, replacements);
+        if (!!GT_Utility.isStackValid(rStack)) return null;
+        rStack.setStackDisplayName(displayName);
+        return GT_Utility.copyAmount(amount, rStack);
     }
 
     @Override
-    public ItemStack getWithCharge(long aAmount, int aEnergy, Object... aReplacements) {
-        ItemStack rStack = get(1, aReplacements);
-        if (GT_Utility.isStackInvalid(rStack)) return null;
-        GT_ModHandler.chargeElectricItem(rStack, aEnergy, Integer.MAX_VALUE, true, false);
-        return GT_Utility.copyAmount(aAmount, rStack);
+    public ItemStack getWithCharge(int amount, int energy, ItemStack... replacements) {
+        ItemStack rStack = get(1, replacements);
+        if (!GT_Utility.isStackValid(rStack)) return null;
+        GT_ModHandler.chargeElectricItem(rStack, energy, Integer.MAX_VALUE, true, false);
+        return GT_Utility.copyAmount(amount, rStack);
     }
 
     @Override
-    public ItemStack getWithDamage(long aAmount, long aMetaValue, Object... aReplacements) {
+    public ItemStack getWithDamage(int amount, long metaValue, ItemStack... replacements) {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
-        if (GT_Utility.isStackInvalid(mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
-        return GT_Utility.copyAmountAndMetaData(aAmount, aMetaValue, GT_OreDictUnificator.get(mStack));
+        if (!GT_Utility.isStackValid(mStack)) return GT_Utility.copyAmount(amount, replacements);
+        return GT_Utility.copyAmountAndMetaData(amount, metaValue, GT_OreDictUnificator.get(mStack));
     }
 
     @Override
@@ -738,4 +769,5 @@ public enum ItemList implements IItemContainer {
         for (Object tOreName : aOreNames) GT_OreDictUnificator.registerOre(tOreName, getWildcard(1));
         return this;
     }
+
 }

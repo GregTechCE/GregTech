@@ -2,8 +2,8 @@ package gregtech.api.util;
 
 
 import gregtech.api.GregTech_API;
-import gregtech.api.damagesources.GT_DamageSources;
-import gregtech.api.enchants.Enchantment_Radioactivity;
+import gregtech.api.damagesources.DamageSources;
+import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
@@ -755,12 +755,12 @@ public class GT_Utility {
     public static int getRadioactivityLevel(ItemStack aStack) {
         ItemData tData = GT_OreDictUnificator.getItemData(aStack);
         if (tData != null && tData.hasValidMaterialData()) {
-            if (tData.mMaterial.mMaterial.mEnchantmentArmors instanceof Enchantment_Radioactivity)
+            if (tData.mMaterial.mMaterial.mEnchantmentArmors instanceof EnchantmentRadioactivity)
                 return tData.mMaterial.mMaterial.mEnchantmentArmorsLevel;
-            if (tData.mMaterial.mMaterial.mEnchantmentTools instanceof Enchantment_Radioactivity)
+            if (tData.mMaterial.mMaterial.mEnchantmentTools instanceof EnchantmentRadioactivity)
                 return tData.mMaterial.mMaterial.mEnchantmentToolsLevel;
         }
-        return EnchantmentHelper.getEnchantmentLevel(Enchantment_Radioactivity.INSTANCE, aStack);
+        return EnchantmentHelper.getEnchantmentLevel(EnchantmentRadioactivity.INSTANCE, aStack);
     }
 
     @SuppressWarnings("unused")
@@ -770,7 +770,7 @@ public class GT_Utility {
 
     public static boolean applyHeatDamage(EntityLivingBase aEntity, float aDamage) {
         if (aDamage > 0 && aEntity != null && aEntity.getActivePotionEffect(MobEffects.FIRE_RESISTANCE) == null && !isWearingFullHeatHazmat(aEntity)) {
-            aEntity.attackEntityFrom(GT_DamageSources.getHeatDamage(), aDamage);
+            aEntity.attackEntityFrom(DamageSources.getHeatDamage(), aDamage);
             return true;
         }
         return false;
@@ -778,7 +778,7 @@ public class GT_Utility {
 
     public static boolean applyFrostDamage(EntityLivingBase aEntity, float aDamage) {
         if (aDamage > 0 && aEntity != null && !isWearingFullFrostHazmat(aEntity)) {
-            aEntity.attackEntityFrom(GT_DamageSources.getFrostDamage(), aDamage);
+            aEntity.attackEntityFrom(DamageSources.getFrostDamage(), aDamage);
             return true;
         }
         return false;
@@ -787,7 +787,7 @@ public class GT_Utility {
     public static boolean applyElectricityDamage(EntityLivingBase aEntity, long aVoltage, long aAmperage) {
         long aDamage = getTier(aVoltage) * aAmperage * 4;
         if (aDamage > 0 && aEntity != null && !isWearingFullElectroHazmat(aEntity)) {
-            aEntity.attackEntityFrom(GT_DamageSources.getElectricDamage(), aDamage);
+            aEntity.attackEntityFrom(DamageSources.getElectricDamage(), aDamage);
             return true;
         }
         return false;
@@ -827,7 +827,7 @@ public class GT_Utility {
         return null;
     }
 
-    public static ItemStack copyAmount(long aAmount, ItemStack... aStacks) {
+    public static ItemStack copyAmount(int aAmount, ItemStack... aStacks) {
         ItemStack rStack = copy(aStacks);
         if (!isStackValid(rStack)) return null;
         if (aAmount > 64) aAmount = 64;

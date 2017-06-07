@@ -3,7 +3,7 @@ package gregtech.api.items;
 import forestry.api.arboriculture.IToolGrafter;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enchants.Enchantment_Radioactivity;
+import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
@@ -28,16 +28,11 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.stats.StatList;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
@@ -48,7 +43,6 @@ import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -633,7 +627,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
             }
         for (Entry<Enchantment, Integer> tEntry : tMap.entrySet()) {
             int id = Enchantment.getEnchantmentID(tEntry.getKey());
-            if (id == 33 || (id == 20 && id > 2) || id == Enchantment.getEnchantmentID(Enchantment_Radioactivity.INSTANCE))
+            if (id == 33 || (id == 20 && id > 2) || id == Enchantment.getEnchantmentID(EnchantmentRadioactivity.INSTANCE))
                 tResult.put(tEntry.getKey(), tEntry.getValue());
             else
                 switch (tEntry.getKey().type) {

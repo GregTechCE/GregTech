@@ -110,7 +110,6 @@ public interface IGregTechTileEntity extends ICoverable, IFluidHandler, ITurnabl
      * 255 = 100%
      */
     int getLightOpacity();
-    void setLightOpacity(int lightOpacity);
 
 
 

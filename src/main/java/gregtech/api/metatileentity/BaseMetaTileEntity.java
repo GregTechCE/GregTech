@@ -43,6 +43,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.wrappers.FluidHandlerWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -399,15 +400,15 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     /**
      * Called when trying to charge Items
      */
-    public void chargeItem(ItemStack aStack) {
-        decreaseStoredEU(GT_ModHandler.chargeElectricItem(aStack, (int) Math.min(Integer.MAX_VALUE, getStoredEU()), (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getOutputTier()), false, false), true);
+    public void chargeItem(ItemStack stack) {
+        decreaseStoredEU(GT_ModHandler.chargeElectricItem(stack, (int) Math.min(Integer.MAX_VALUE, getStoredEU()), (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getOutputTier()), false, false), true);
     }
 
     /**
      * Called when trying to discharge Items
      */
-    public void dischargeItem(ItemStack aStack) {
-        increaseStoredEnergyUnits(GT_ModHandler.dischargeElectricItem(aStack, (int) Math.min(Integer.MAX_VALUE, getEUCapacity() - getStoredEU()), (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getInputTier()), false, false, false), true);
+    public void dischargeItem(ItemStack stack) {
+        increaseStoredEnergyUnits(GT_ModHandler.dischargeElectricItem(stack, (int) Math.min(Integer.MAX_VALUE, getEUCapacity() - getStoredEU()), (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getInputTier()), false, false, false), true);
     }
 
     @Override
@@ -419,7 +420,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     @SuppressWarnings("unchecked")
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
         if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-            return (T) this;
+            return (T) new FluidHandlerWrapper(this, facing);
         }
         return super.getCapability(capability, facing);
     }
@@ -673,6 +674,21 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
+    public boolean isServerSide() {
+        return !worldObj.isRemote;
+    }
+
+    @Override
+    public boolean isClientSide() {
+        return worldObj.isRemote;
+    }
+
+    @Override
+    public int getRandomNumber(int range) {
+        return worldObj.rand.nextInt(range);
+    }
+
+    @Override
     public String getName() {
         return mMetaTileEntity.getName();
     }
@@ -712,10 +728,8 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public String[] getInfoData() {
-        {
-            if (hasValidMetaTileEntity()) return getMetaTileEntity().getInfoData();
-            return new String[]{};
-        }
+        if (hasValidMetaTileEntity()) return getMetaTileEntity().getInfoData();
+        return new String[]{};
     }
 
     @Override
@@ -1781,12 +1795,12 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         return mCoverData[side.getIndex()];
     }
 
-    @Override
+
     public byte getLightValue() {
         return mLightValue;
     }
 
-    @Override
+
     public void setLightValue(byte lightValue) {
         mLightValue = (byte) (lightValue & 15);
     }
@@ -1806,13 +1820,14 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
-    public boolean dropCover(EnumFacing side, EnumFacing aDroppedSide, boolean aForced) {
+    public boolean dropCover(EnumFacing side, EnumFacing droppedSide, boolean forced) {
         int coverIdAtSide = getCoverIDAtSide(side);
-        if (GregTech_API.getCoverBehavior(coverIdAtSide)
-                .onCoverRemoval(side, coverIdAtSide, mCoverData[side.getIndex()], this, aForced) || aForced) {
-            ItemStack tStack = getCoverBehaviorAtSide(side).getDrop(side, getCoverIDAtSide(side), getCoverDataAtSide(side), this);
+        int coverDataAtSide = getCoverDataAtSide(side);
+        GT_CoverBehavior behavior = GregTech_API.getCoverBehavior(coverIdAtSide);
+        if (behavior.onCoverRemoval(side, coverIdAtSide, coverDataAtSide, this, forced) || forced) {
+            ItemStack tStack = behavior.getDrop(side, coverIdAtSide, coverDataAtSide, this);
             if (tStack != null) {
-                Vec3d dropCoords = new Vec3d(pos.offset(aDroppedSide)).add(new Vec3d(0.5f, 0.5f, 0.5f));
+                Vec3d dropCoords = new Vec3d(pos.offset(droppedSide)).add(new Vec3d(0.5f, 0.5f, 0.5f));
                 EntityItem tEntity = new EntityItem(worldObj, dropCoords.xCoord, dropCoords.yCoord, dropCoords.zCoord, tStack);
                 tEntity.motionX = 0;
                 tEntity.motionY = 0;
@@ -2031,8 +2046,8 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
-    public boolean emitsEnergyTo(IEnergyAcceptor aReceiver, EnumFacing aDirection) {
-        return outputsEnergyTo(aDirection);
+    public boolean emitsEnergyTo(IEnergyAcceptor receiver, EnumFacing direction) {
+        return outputsEnergyTo(direction);
     }
 
 
@@ -2046,17 +2061,17 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
-    public void setStored(int aEU) {
-        if (hasValidMetaTileEntity()) setStoredEU(aEU);
+    public void setStored(int euStored) {
+        if (hasValidMetaTileEntity()) setStoredEU(euStored);
     }
 
     @Override
-    public int addEnergy(int aEnergy) {
+    public int addEnergy(int energy) {
         if (!hasValidMetaTileEntity()) return 0;
-        if (aEnergy > 0)
-            increaseStoredEnergyUnits(aEnergy, true);
+        if (energy > 0)
+            increaseStoredEnergyUnits(energy, true);
         else
-            decreaseStoredEU(-aEnergy, true);
+            decreaseStoredEU(-energy, true);
         return (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getEUVar());
     }
 
