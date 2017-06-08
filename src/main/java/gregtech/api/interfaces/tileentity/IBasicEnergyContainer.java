@@ -10,7 +10,7 @@ public interface IBasicEnergyContainer extends IEnergyConnected {
      * It is used for checking the contained Energy before consuming it.
      * If this returns false, it will also give a Message inside the Scanner, that this Machine doesn't have enough Energy.
      */
-    boolean isUniversalEnergyStored(long aEnergyAmount);
+    boolean isUniversalEnergyStored(long energyAmount);
 
     /**
      * Gets the stored electric, kinetic or steam Energy (with EU as reference Value)
@@ -44,14 +44,14 @@ public interface IBasicEnergyContainer extends IEnergyConnected {
     long getInputVoltage();
 
     /**
-     * Decreases the Amount of stored universal Energy. If ignoring too less Energy, then it just sets the Energy to 0 and returns false.
+     * Decreases the Amount of stored universal Energy. If ignoring too less Energy, then it just sets the Energy to 0 and returns true.
      */
-    boolean decreaseStoredEnergyUnits(long aEnergy, boolean aIgnoreTooLessEnergy);
+    boolean decreaseStoredEnergyUnits(long energy, boolean ignoreTooLessEnergy);
 
     /**
      * Increases the Amount of stored electric Energy. If ignoring too much Energy, then the Energy Limit is just being ignored.
      */
-    boolean increaseStoredEnergyUnits(long aEnergy, boolean aIgnoreTooMuchEnergy);
+    boolean increaseStoredEnergyUnits(long energy, boolean ignoreTooMuchEnergy);
 
     /**
      * returns the amount of Electricity, accepted by this Block the last 5 ticks as Average.
@@ -86,11 +86,12 @@ public interface IBasicEnergyContainer extends IEnergyConnected {
     /**
      * Increases stored Energy. Energy Base Value is in EU, even though it's Steam!
      *
-     * @param aEnergy              The Energy to add to the Machine.
-     * @param aIgnoreTooMuchEnergy if it shall ignore if it has too much Energy.
+     * @param energy              The Energy to add to the Machine.
+     * @param ignoreTooMuchEnergy if it shall ignore if it has too much Energy.
      * @return if it was successful
      * <p/>
      * And yes, you can't directly decrease the Steam of a Machine. That is done by decreaseStoredEnergyUnits
      */
-    boolean increaseStoredSteam(long aEnergy, boolean aIgnoreTooMuchEnergy);
+    boolean increaseStoredSteam(long energy, boolean ignoreTooMuchEnergy);
+
 }

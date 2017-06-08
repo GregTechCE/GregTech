@@ -28,20 +28,20 @@ public interface IEnergyConnected extends IColoredTileEntity, IHasWorldObjectAnd
      * <p/>
      * Note: you have to check for @inputEnergyFrom because the Network won't check for that by itself.
      *
-     * @param aSide 0 - 5 = Vanilla Directions of YOUR Block the Energy gets inserted to. 6 = No specific Side (don't do Side checks for this Side)
+     * @param side Vanilla Directions of YOUR Block the Energy gets inserted to. 6 = No specific Side (don't do Side checks for this Side)
      * @return amount of used Amperes. 0 if not accepted anything.
      */
-    long injectEnergyUnits(EnumFacing aSide, long aVoltage, long aAmperage);
+    long injectEnergyUnits(EnumFacing side, long voltage, long amperage);
 
     /**
      * Sided Energy Input
      */
-    boolean inputEnergyFrom(EnumFacing aSide);
+    boolean inputEnergyFrom(EnumFacing side);
 
     /**
      * Sided Energy Output
      */
-    boolean outputsEnergyTo(EnumFacing aSide);
+    boolean outputsEnergyTo(EnumFacing side);
 
     /**
      * Utility for the Network

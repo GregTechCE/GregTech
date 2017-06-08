@@ -10,31 +10,31 @@ public interface IItemContainer {
 
     Block getBlock();
 
-    boolean isStackEqual(Object aStack);
+    boolean isStackEqual(ItemStack stack);
 
-    boolean isStackEqual(Object aStack, boolean aWildcard, boolean aIgnoreNBT);
+    boolean isStackEqual(ItemStack stack, boolean wildcard, boolean ignoreNBT);
 
-    ItemStack get(long aAmount, Object... aReplacements);
+    ItemStack get(int amount, ItemStack... replacements);
 
-    ItemStack getWildcard(long aAmount, Object... aReplacements);
+    ItemStack getWildcard(int amount, ItemStack... replacements);
 
-    ItemStack getUndamaged(long aAmount, Object... aReplacements);
+    ItemStack getUndamaged(int amount, ItemStack... replacements);
 
-    ItemStack getAlmostBroken(long aAmount, Object... aReplacements);
+    ItemStack getAlmostBroken(int amount, ItemStack... replacements);
 
-    ItemStack getWithDamage(long aAmount, long aMetaValue, Object... aReplacements);
+    ItemStack getWithDamage(int amount, long metaValue, ItemStack... replacements);
 
-    IItemContainer set(Item aItem);
+    IItemContainer set(Item item);
 
-    IItemContainer set(ItemStack aStack);
+    IItemContainer set(ItemStack stack);
 
-    IItemContainer registerOre(Object... aOreNames);
+    IItemContainer registerOre(ItemStack... oreNames);
 
-    IItemContainer registerWildcardAsOre(Object... aOreNames);
+    IItemContainer registerWildcardAsOre(ItemStack... oreNames);
 
-    ItemStack getWithCharge(long aAmount, int aEnergy, Object... aReplacements);
+    ItemStack getWithCharge(int amount, int energy, ItemStack... replacements);
 
-    ItemStack getWithName(long aAmount, String aDisplayName, Object... aReplacements);
+    ItemStack getWithName(int amount, String displayName, ItemStack... replacements);
 
     boolean hasBeenSet();
 

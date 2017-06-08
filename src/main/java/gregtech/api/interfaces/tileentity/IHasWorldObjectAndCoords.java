@@ -29,7 +29,7 @@ public interface IHasWorldObjectAndCoords {
 
     boolean isClientSide();
 
-    int getRandomNumber(int aRange);
+    int getRandomNumber(int range);
 
     /**
      * Checks if the TileEntity is Invalid or Unloaded. Stupid Minecraft cannot do that btw.
@@ -39,7 +39,7 @@ public interface IHasWorldObjectAndCoords {
     /**
      * Sends a Block Event to the Client TileEntity, the byte Parameters are only for validation as Minecraft doesn't properly write Packet Data.
      */
-    void sendBlockEvent(byte aID, byte aValue);
+    void sendBlockEvent(byte ID, byte value);
 
     /**
      * @return the Time this TileEntity has been loaded.

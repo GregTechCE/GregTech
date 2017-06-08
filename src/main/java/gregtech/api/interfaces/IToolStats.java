@@ -9,8 +9,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.world.BlockEvent;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.List;
 
@@ -24,12 +26,12 @@ public interface IToolStats {
     /**
      * Called when aPlayer crafts this Tool
      */
-    void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer);
+    void onToolCrafted(ItemStack stack, EntityPlayer player);
 
     /**
      * Called when this gets added to a Tool Item
      */
-    void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID);
+    void onStatsAddedToTool(GT_MetaGenerated_Tool item, int ID);
 
     /**
      * @return Damage the Tool receives when breaking a Block. 100 is one Damage Point (or 100 EU).
@@ -64,7 +66,7 @@ public interface IToolStats {
     /**
      * @return This gets the Hurt Resistance time for Entities getting hit. (always does 1 as minimum)
      */
-    int getHurtResistanceTime(int aOriginalHurtResistance, Entity aEntity);
+    int getHurtResistanceTime(int originalHurtResistance, Entity entity);
 
     /**
      * @return This is a multiplier for the Tool Speed. 1.0F = no special Speed.
@@ -76,19 +78,17 @@ public interface IToolStats {
      */
     float getMaxDurabilityMultiplier();
 
-    DamageSource getDamageSource(EntityLivingBase aPlayer, Entity aEntity);
+    DamageSource getDamageSource(EntityLivingBase player, Entity entity);
 
-    String getMiningSound();
+    ResourceLocation getMiningSound();
 
-    String getCraftingSound();
+    ResourceLocation getCraftingSound();
 
-    String getEntityHitSound();
+    ResourceLocation getEntityHitSound();
 
-    String getBreakingSound();
+    ResourceLocation getBreakingSound();
 
-    Enchantment[] getEnchantments(ItemStack aStack);
-
-    int[] getEnchantmentLevels(ItemStack aStack);
+    ImmutablePair<Enchantment, Integer>[] getEnchantments(ItemStack stack);
 
     /**
      * @return If this Tool can be used as an RC Crowbar.
@@ -100,7 +100,11 @@ public interface IToolStats {
      */
     boolean isGrafter();
 
+    /**
+     * @return If this Tool can be used as an Chainsaw.
+     */
     boolean isChainsaw();
+
     /**
      * @return If this Tool can be used as an BC Wrench.
      */
@@ -127,30 +131,30 @@ public interface IToolStats {
      *
      * @return If this is a minable Block. Tool Quality checks (like Diamond Tier or something) are separate from this check.
      */
-    boolean isMinableBlock(IBlockState aBlock);
+    boolean isMinableBlock(IBlockState block);
 
     /**
      * This lets you modify the Drop List, when this type of Tool has been used.
      *
      * @return the Amount of modified Items.
      */
-    int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, IBlockState aBlock, BlockPos blockPos, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent);
+    int convertBlockDrops(List<ItemStack> drops, ItemStack stack, EntityPlayer player, IBlockState block, BlockPos blockPos, int fortune, boolean silkTouch, BlockEvent.HarvestDropsEvent event);
 
     /**
      * @return Returns a broken Version of the Item.
      */
-    ItemStack getBrokenItem(ItemStack aStack);
+    ItemStack getBrokenItem(ItemStack stack);
 
     /**
      * @return the Damage actually done to the Mob.
      */
-    float getNormalDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack, EntityPlayer aPlayer);
+    float getNormalDamageAgainstEntity(float originalDamage, Entity entity, ItemStack stack, EntityPlayer player);
 
     /**
      * @return the Damage actually done to the Mob.
      */
-    float getMagicDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack, EntityPlayer aPlayer);
+    float getMagicDamageAgainstEntity(float originalDamage, Entity entity, ItemStack stack, EntityPlayer player);
 
-    short[] getRGBa(boolean aIsToolHead, ItemStack aStack);
+    short[] getRGBa(boolean isToolHead, ItemStack stack);
 
 }

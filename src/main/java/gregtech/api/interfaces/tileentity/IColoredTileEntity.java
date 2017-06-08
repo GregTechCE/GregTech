@@ -10,8 +10,9 @@ public interface IColoredTileEntity {
     /**
      * Sets the Color Modulation of the Block
      *
-     * @param aColor the Color you want to set it to. -1 for reset.
+     * @param color the Color you want to set it to. -1 for reset.
      */
-    byte setColorization(byte aColor);
+    byte setColorization(byte color);
+
 
 }

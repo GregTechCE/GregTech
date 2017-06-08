@@ -20,7 +20,7 @@ public interface IDigitalChest extends IHasWorldObjectAndCoords {
     /**
      * A generic Interface for just setting the amount of contained Items
      */
-    void setItemCount(int aCount);
+    void setItemCount(int count);
 
     /**
      * Gets the maximum Item count for this QChest alike Storage. This applies to the Data-Storage, not for the up to 192 buffered Items!

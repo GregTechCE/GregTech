@@ -18,28 +18,28 @@ import java.util.List;
 
 public interface IItemBehaviour<E extends Item> {
 
-    boolean onLeftClickEntity(E aItem, ItemStack aStack, EntityPlayer aPlayer, Entity aEntity, EnumHand hand);
+    boolean onLeftClickEntity(E item, ItemStack itemStack, EntityPlayer player, Entity entity);
 
-    boolean onItemUse(E aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, BlockPos blockPos, EnumFacing aSide, float hitX, float hitY, float hitZ, EnumHand hand);
+    boolean onItemUse(E item, ItemStack itemStack, EntityPlayer player, World world, BlockPos blockPos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand);
 
-    boolean onItemUseFirst(E aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, BlockPos blockPos, EnumFacing aSide, float hitX, float hitY, float hitZ, EnumHand hand);
+    boolean onItemUseFirst(E item, ItemStack itemStack, EntityPlayer player, World world, BlockPos blockPos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand);
 
-    ItemStack onItemRightClick(E aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer, EnumHand hand);
+    ItemStack onItemRightClick(E item, ItemStack itemStack, World world, EntityPlayer player, EnumHand hand);
 
-    List<String> getAdditionalToolTips(E aItem, List<String> aList, ItemStack aStack);
+    List<String> getAdditionalToolTips(E item, List<String> list, ItemStack itemStack);
 
-    void onUpdate(E aItem, ItemStack aStack, World aWorld, Entity aPlayer, int aTimer, boolean aIsInHand);
+    void onUpdate(E item, ItemStack itemStack, World world, Entity player, int timer, boolean isInHand);
 
-    boolean isItemStackUsable(E aItem, ItemStack aStack);
+    boolean isItemStackUsable(E item, ItemStack itemStack);
 
-    boolean canDispense(E aItem, IBlockSource aSource, ItemStack aStack);
+    boolean canDispense(E item, IBlockSource source, ItemStack itemStack);
 
-    ItemStack onDispense(E aItem, IBlockSource aSource, ItemStack aStack);
+    ItemStack onDispense(E item, IBlockSource source, ItemStack itemStack);
 
-    boolean hasProjectile(GT_MetaBase_Item aItem, SubTag aProjectileType, ItemStack aStack);
+    boolean hasProjectile(GT_MetaBase_Item item, SubTag projectileType, ItemStack itemStack);
 
-    EntityArrow getProjectile(E aItem, SubTag aProjectileType, ItemStack aStack, World aWorld, double aX, double aY, double aZ);
+    EntityArrow getProjectile(E item, SubTag aProjectileType, ItemStack itemStack, World world, double x, double y, double z);
 
-    EntityArrow getProjectile(E aItem, SubTag aProjectileType, ItemStack aStack, World aWorld, EntityLivingBase aEntity, float aSpeed);
+    EntityArrow getProjectile(E item, SubTag aProjectileType, ItemStack itemStack, World world, EntityLivingBase entity, float speed);
 
 }

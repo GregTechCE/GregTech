@@ -18,20 +18,13 @@ public interface ITurnable {
     /**
      * Set the block's facing
      *
-     * @param aSide facing to set the block to
+     * @param side facing to set the block to
      */
-    void setFrontFacing(EnumFacing aSide);
-
-    /**
-     * Get the block's back facing.
-     *
-     * @return opposite Block facing
-     */
-    EnumFacing getBackFacing();
+    void setFrontFacing(EnumFacing side);
 
     /**
      * Determine if the wrench can be used to set the block's facing.
      */
-    boolean isValidFacing(EnumFacing aSide);
+    boolean isValidFacing(EnumFacing side);
 
 }

@@ -14,15 +14,15 @@ public interface IDebugableBlock {
      * Returns a Debug Message, for a generic DebugItem
      * Blocks have to implement this interface NOT TileEntities!
      *
-     * @param aPlayer   the Player, who rightclicked with his Debug Item
-     * @param aPos block position in world
-     * @param aLogLevel the Log Level of the Debug Item.
+     * @param player   the Player, who rightclicked with his Debug Item
+     * @param pos block position in world
+     * @param logLevel the Log Level of the Debug Item.
      *                  0 = Obvious
      *                  1 = Visible for the regular Scanner
      *                  2 = Only visible to more advanced Scanners
      *                  3 = Debug ONLY
      * @return a String-Array containing the DebugInfo, every Index is a separate line (0 = first Line)
      */
-    public ArrayList<String> getDebugInfo(EntityPlayer aPlayer, BlockPos aPos, int aLogLevel);
+    ArrayList<String> getDebugInfo(EntityPlayer player, BlockPos pos, int logLevel);
 
 }

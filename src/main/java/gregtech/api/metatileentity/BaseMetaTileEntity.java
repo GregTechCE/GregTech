@@ -389,7 +389,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
             GT_Log.err.println("MetaID " + aID + " not loadable => locking TileEntity!");
         } else {
             if (hasValidMetaTileEntity()) mMetaTileEntity.setBaseMetaTileEntity(null);
-            GregTech_API.METATILEENTITIES[aID].newMetaEntity(this).setBaseMetaTileEntity(this);
+            GregTech_API.METATILEENTITIES[aID].newMetaEntity(this).setTile(this);
             mTickTimer = 0;
             mID = aID;
             return true;
@@ -468,7 +468,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     private void onFirstTick() {
         validateCovers();
-        mMetaTileEntity.onFirstTick(this);
+        mMetaTileEntity.onFirstTick();
         worldObj.markChunkDirty(getPos(), this);
     }
 

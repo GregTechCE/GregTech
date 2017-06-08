@@ -19,36 +19,28 @@ public interface IRedstoneCircuitBlock {
     /**
      * sets Output Redstone State at Side
      */
-    boolean setRedstone(byte aStrength, EnumFacing aSide);
+    boolean setRedstone(byte strength, EnumFacing side);
 
     /**
      * returns Output Redstone State at Side
      * Note that setRedstone checks if there is a Difference between the old and the new Setting before consuming any Energy
      */
-    byte getOutputRedstone(EnumFacing aSide);
+    byte getOutputRedstone(EnumFacing side);
 
     /**
      * returns Input Redstone Signal at Side
      */
-    byte getInputRedstone(EnumFacing aSide);
+    byte getInputRedstone(EnumFacing side);
 
-    /**
-     * If this Side is Covered up and therefor not doing any Redstone
-     */
-    GT_CoverBehavior getCover(EnumFacing aSide);
+    int getCoverID(EnumFacing side);
 
-    int getCoverID(EnumFacing aSide);
-
-    int getCoverVariable(EnumFacing aSide);
+    int getCoverData(EnumFacing side);
 
     /**
      * returns whatever TileEntity is used by the Redstone Circuit Block
      */
     ICoverable getOwnTileEntity();
 
-    /**
-     * returns worldObj.rand.nextInt(aRange)
-     */
-    int getRandom(int aRange);
+    int getRandom(int range);
 
 }

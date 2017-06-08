@@ -11,9 +11,9 @@ public interface IHasInventory extends ISidedInventory, IHasWorldObjectAndCoords
     boolean hasInventoryBeenModified();
 
     /**
-     * if this is just a Holoslot
+     * @return true if this is not a Holoslot
      */
-    boolean isValidSlot(int aIndex);
+    boolean isValidSlot(int index);
 
     /**
      * Tries to add a Stack to the Slot.
@@ -21,7 +21,7 @@ public interface IHasInventory extends ISidedInventory, IHasWorldObjectAndCoords
      *
      * @return true if aStack == null, then false if aIndex is out of bounds, then false if aStack cannot be added, and then true if aStack has been added
      */
-    boolean addStackToSlot(int aIndex, ItemStack aStack);
+    boolean addStackToSlot(int index, ItemStack stack);
 
     /**
      * Tries to add X Items of a Stack to the Slot.
@@ -29,6 +29,6 @@ public interface IHasInventory extends ISidedInventory, IHasWorldObjectAndCoords
      *
      * @return true if aStack == null, then false if aIndex is out of bounds, then false if aStack cannot be added, and then true if aStack has been added
      */
-    boolean addStackToSlot(int aIndex, ItemStack aStack, int aAmount);
+    boolean addStackToSlot(int index, ItemStack stack, int amount);
 
 }

@@ -8,7 +8,7 @@ public interface IRedstoneTileEntity extends IRedstoneEmitter, IRedstoneReceiver
     /**
      * enables/disables Redstone Output in general.
      */
-    void setGenericRedstoneOutput(boolean aOnOff);
+    void setGenericRedstoneOutput(boolean onOff);
 
     /**
      * Causes a general Block update.

@@ -8,6 +8,6 @@ public interface IMaterialHandler {
 
     void onComponentInit();
 
-    void onComponentIteration(Materials aMaterial);
+    void onComponentIteration(Materials material);
 
 }

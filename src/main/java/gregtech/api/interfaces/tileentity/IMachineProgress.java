@@ -18,7 +18,7 @@ public interface IMachineProgress extends IHasWorldObjectAndCoords {
     /**
      * increases the Progress of the Machine
      */
-    void increaseProgress(int aProgressAmountInTicks);
+    void increaseProgress(int progressAmountInTicks);
 
     /**
      * returns if the Machine currently does something.
@@ -66,6 +66,6 @@ public interface IMachineProgress extends IHasWorldObjectAndCoords {
     /**
      * sets the visible Active Status of the Machine
      */
-    void setActive(boolean aActive);
+    void setActive(boolean active);
 
 }

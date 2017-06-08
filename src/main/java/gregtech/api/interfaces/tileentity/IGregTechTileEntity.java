@@ -27,7 +27,7 @@ public interface IGregTechTileEntity extends ICoverable, IFluidHandler, ITurnabl
     /**
      * sets the Error displayed on the GUI
      */
-    void setErrorDisplayID(int aErrorID);
+    void setErrorDisplayID(int errorID);
 
     /**
      * @return the MetaID of the Block or the MetaTileEntity ID.
@@ -37,7 +37,7 @@ public interface IGregTechTileEntity extends ICoverable, IFluidHandler, ITurnabl
     /**
      * Internal Usage only!
      */
-    int setMetaTileID(short aID);
+    int setMetaTileID(short ID);
 
     /**
      * @return the MetaTileEntity which is belonging to this, or null if it doesnt has one.
@@ -67,7 +67,7 @@ public interface IGregTechTileEntity extends ICoverable, IFluidHandler, ITurnabl
     /**
      * causes Explosion. Strength in Overload-EU
      */
-    void doExplosion(long aExplosionEU);
+    void doExplosion(long explosionEU);
 
     /**
      * Sets the Block on Fire in all 6 Directions
@@ -87,10 +87,10 @@ public interface IGregTechTileEntity extends ICoverable, IFluidHandler, ITurnabl
     /**
      * Sets initial Values from NBT
      *
-     * @param aNBT is the NBTTag of readFromNBT
-     * @param aID  is the MetaTileEntityID
+     * @param data is the NBTTag of readFromNBT
+     * @param ID  is the MetaTileEntityID
      */
-    void setInitialValuesAsNBT(NBTTagCompound aNBT, short aID);
+    void setInitialValuesAsNBT(NBTTagCompound data, short ID);
 
     /**
      * Called when leftclicking the TileEntity
@@ -100,9 +100,9 @@ public interface IGregTechTileEntity extends ICoverable, IFluidHandler, ITurnabl
     /**
      * Called when rightclicking the TileEntity
      */
-    boolean onRightclick(EntityPlayer aPlayer, EnumFacing aSide, float xOff, float yOff, float zOff, EnumHand hand);
+    boolean onRightclick(EntityPlayer player, EnumFacing side, float clickX, float clickY, float clickZ);
 
-    float getBlastResistance(EnumFacing aSide);
+    float getBlastResistance(EnumFacing side);
 
     ArrayList<ItemStack> getDrops();
 
