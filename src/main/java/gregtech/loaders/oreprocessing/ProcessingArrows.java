@@ -1,5 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
+import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -38,7 +39,7 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
 
         tOutput = GT_Utility.copyAmount(1L, aStack);
         GT_Utility.updateItemStack(tOutput);
-        GT_Utility.ItemNBT.addEnchantment(tOutput, gregtech.api.enchants.Enchantment_EnderDamage.INSTANCE, EnchantmentHelper.getEnchantmentLevel(gregtech.api.enchants.Enchantment_EnderDamage.INSTANCE, tOutput) + 1);
+        GT_Utility.ItemNBT.addEnchantment(tOutput, EnchantmentEnderDamage.INSTANCE, EnchantmentHelper.getEnchantmentLevel(EnchantmentEnderDamage.INSTANCE, tOutput) + 1);
         GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1L, aStack), Materials.Mercury.getFluid(25L), tOutput, null, null, null, 100, 2);
 
         if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial) && !aMaterial.contains(SubTag.NO_WORKING)) {

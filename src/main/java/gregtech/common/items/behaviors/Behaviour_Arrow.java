@@ -1,7 +1,6 @@
 package gregtech.common.items.behaviors;
 
 import gregtech.api.enums.SubTag;
-import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.entities.GT_Entity_Arrow;
 import net.minecraft.block.BlockDispenser;

@@ -2,10 +2,8 @@ package gregtech.common.tools;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import ic2.core.block.Ic2Leaves;
 import ic2.core.ref.BlockName;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;

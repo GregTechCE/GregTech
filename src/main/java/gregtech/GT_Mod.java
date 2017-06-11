@@ -4,8 +4,8 @@ import forestry.api.recipes.ICentrifugeRecipe;
 import forestry.api.recipes.ISqueezerRecipe;
 import forestry.api.recipes.RecipeManagers;
 import gregtech.api.GregTech_API;
-import gregtech.api.enchants.Enchantment_EnderDamage;
-import gregtech.api.enchants.Enchantment_Radioactivity;
+import gregtech.api.enchants.EnchantmentEnderDamage;
+import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.net.GT_PacketHandler;
@@ -367,8 +367,8 @@ public class GT_Mod implements IGT_Mod {
                 }else{System.out.println("noMaterial "+reEnable);}
             }else{System.out.println("noPrefix "+reEnable);}}
 
-        new Enchantment_EnderDamage();
-        new Enchantment_Radioactivity();
+        new EnchantmentEnderDamage();
+        new EnchantmentRadioactivity();
 
         //new GT_Loader_OreProcessing().run();
         //new GT_Loader_OreDictionary().run();

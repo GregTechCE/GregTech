@@ -6,34 +6,33 @@ import net.minecraft.world.World;
 
 /**
  * Interface used by the Mods Main Class to reference to internals.
- * <p/>
- * Don't even think about including this File in your Mod.
  */
 public interface IGT_Mod {
-    /**
-     * This means that Server specific Basefiles are definitely existing! Not if the World is actually server side or not!
-     */
-    public boolean isServerSide();
 
     /**
-     * This means that Client specific Basefiles are definitely existing! Not if the World is actually client side or not!
+     * @return true if this is dedicated server side, false otherwise
      */
-    public boolean isClientSide();
+    boolean isServerSide();
 
     /**
-     * This means that Sponge specific Basefiles are definitely existing! Not if the World is actually bukkit server or not!
+     * @return true if this is client side, false otherwise
      */
-    public boolean isSpongeSide();
+    boolean isClientSide();
 
     /**
-     * works only ClientSide otherwise returns null
+     * @return true if we are running on sponge server, false otherwise
      */
-    public EntityPlayer getThePlayer();
+    boolean isSpongeSide();
+
+    /**
+     * @return player on clientside, null on serverside
+     */
+    EntityPlayer getThePlayer();
 
     //---------- Internal Usage Only ----------
     /**
      * Plays the Sonictron Sound for the ItemStack on the Client Side
      */
-    public void doSonictronSound(ItemStack aStack, World aWorld, double aX, double aY, double aZ);
+    void doSonictronSound(ItemStack stack, World world, double x, double y, double z);
 
 }

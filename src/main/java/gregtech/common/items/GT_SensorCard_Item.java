@@ -1,6 +1,6 @@
 package gregtech.common.items;
 
-import gregtech.api.items.GT_Generic_Item;
+import gregtech.api.items.GenericItem;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -12,7 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 import java.util.UUID;
 
-public class GT_SensorCard_Item extends GT_Generic_Item {
+public class GT_SensorCard_Item extends GenericItem {
         //implements IRemoteSensor, IPanelDataSource {
     private static final UUID CARD_TYPE = new UUID(0L, 41L);
 

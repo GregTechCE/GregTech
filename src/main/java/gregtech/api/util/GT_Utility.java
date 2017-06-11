@@ -1,9 +1,10 @@
 package gregtech.api.util;
 
 
+import com.google.common.collect.Lists;
 import gregtech.api.GregTech_API;
-import gregtech.api.damagesources.GT_DamageSources;
-import gregtech.api.enchants.Enchantment_Radioactivity;
+import gregtech.api.damagesources.DamageSources;
+import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
@@ -11,7 +12,7 @@ import gregtech.api.events.BlockScanningEvent;
 import gregtech.api.interfaces.IDebugableBlock;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.tileentity.*;
-import gregtech.api.items.GT_Generic_Item;
+import gregtech.api.items.GenericItem;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.common.GT_Proxy;
@@ -29,6 +30,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -41,12 +44,14 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.*;
+import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -195,10 +200,72 @@ public class GT_Utility {
         return aReplacementObject;
     }
 
+    public static PotionEffect copyPotionEffect(PotionEffect sample) {
+        PotionEffect potionEffect = new PotionEffect(sample.getPotion(), sample.getDuration(), sample.getAmplifier(), sample.getIsAmbient(), sample.doesShowParticles());
+        potionEffect.setCurativeItems(sample.getCurativeItems());
+        return potionEffect;
+    }
+    
+    @SuppressWarnings("deprecation")
+    public static void addPotionTooltip(Iterable<PotionEffect> potions, List<String> lines) {
+        ArrayList<Tuple<String, AttributeModifier>> attributeLines = new ArrayList<>();
+        
+        for (PotionEffect potionEffect : potions) {
+            String line = I18n.translateToLocal(potionEffect.getEffectName()).trim();
+            Potion potion = potionEffect.getPotion();
+            Map<IAttribute, AttributeModifier> attributes = potionEffect.getPotion().getAttributeModifierMap();
+            if (!attributes.isEmpty()) {
+                for (Map.Entry<IAttribute, AttributeModifier> entry : attributes.entrySet()) {
+                    AttributeModifier modifier = entry.getValue();
+                    attributeLines.add(new Tuple<>(entry.getKey().getAttributeUnlocalizedName(),  
+                            new AttributeModifier(modifier.getName(),
+                            potion.getAttributeModifierAmount(potionEffect.getAmplifier(), modifier),
+                            modifier.getOperation())));
+                }
+            }
+            if (potionEffect.getAmplifier() > 0) {
+                line = line + " " + I18n.translateToLocal("potion.potency." + potionEffect.getAmplifier()).trim();
+            }
+            if (potionEffect.getDuration() > 20) {
+                line = line + " (" + Potion.getPotionDurationString(potionEffect, 1.0f) + ")";
+            }
+            if (potion.isBadEffect()) {
+                lines.add(TextFormatting.RED + line);
+            }
+            else {
+                lines.add(TextFormatting.BLUE + line);
+            }
+        }
+        if (!attributeLines.isEmpty()) {
+            lines.add("");
+            lines.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal("potion.whenDrank"));
+            
+            for (Tuple<String, AttributeModifier> tuple : attributeLines) {
+                AttributeModifier modifier = tuple.getSecond();
+                double d0 = modifier.getAmount();
+                double d1;
+                if (modifier.getOperation() != 1 && modifier.getOperation() != 2) {
+                    d1 = modifier.getAmount();
+                }
+                else {
+                    d1 = modifier.getAmount() * 100.0D;
+                }
+                if (d0 > 0.0D) {
+                    lines.add(TextFormatting.BLUE + I18n.translateToLocalFormatted("attribute.modifier.plus." + modifier.getOperation(), ItemStack.DECIMALFORMAT.format(d1), I18n.translateToLocal("attribute.name." + tuple.getFirst())));
+                }
+                else if (d0 < 0.0D) {
+                    d1 = d1 * -1.0D;
+                    lines.add(TextFormatting.RED + I18n.translateToLocalFormatted("attribute.modifier.take." + modifier.getOperation(), ItemStack.DECIMALFORMAT.format(d1), I18n.translateToLocal("attribute.name." + tuple.getFirst())));
+                }
+            }
+
+        }
+    }
+
     public static String capitalizeString(String aString) {
         if (aString != null && aString.length() > 0)
             return aString.substring(0, 1).toUpperCase() + aString.substring(1);
-        return E;
+        return "";
     }
 
     public static int fillFluidTank(World world, BlockPos blockPos, EnumFacing side, FluidStack fill) {
@@ -637,8 +704,8 @@ public class GT_Utility {
     }
 
     public static ItemStack updateItemStack(ItemStack aStack) {
-        if (isStackValid(aStack) && aStack.getItem() instanceof GT_Generic_Item)
-            ((GT_Generic_Item) aStack.getItem()).isItemStackUsable(aStack);
+        if (isStackValid(aStack) && aStack.getItem() instanceof GenericItem)
+            ((GenericItem) aStack.getItem()).isItemStackUsable(aStack);
         return aStack;
     }
 
@@ -755,12 +822,12 @@ public class GT_Utility {
     public static int getRadioactivityLevel(ItemStack aStack) {
         ItemData tData = GT_OreDictUnificator.getItemData(aStack);
         if (tData != null && tData.hasValidMaterialData()) {
-            if (tData.mMaterial.mMaterial.mEnchantmentArmors instanceof Enchantment_Radioactivity)
+            if (tData.mMaterial.mMaterial.mEnchantmentArmors instanceof EnchantmentRadioactivity)
                 return tData.mMaterial.mMaterial.mEnchantmentArmorsLevel;
-            if (tData.mMaterial.mMaterial.mEnchantmentTools instanceof Enchantment_Radioactivity)
+            if (tData.mMaterial.mMaterial.mEnchantmentTools instanceof EnchantmentRadioactivity)
                 return tData.mMaterial.mMaterial.mEnchantmentToolsLevel;
         }
-        return EnchantmentHelper.getEnchantmentLevel(Enchantment_Radioactivity.INSTANCE, aStack);
+        return EnchantmentHelper.getEnchantmentLevel(EnchantmentRadioactivity.INSTANCE, aStack);
     }
 
     @SuppressWarnings("unused")
@@ -770,7 +837,7 @@ public class GT_Utility {
 
     public static boolean applyHeatDamage(EntityLivingBase aEntity, float aDamage) {
         if (aDamage > 0 && aEntity != null && aEntity.getActivePotionEffect(MobEffects.FIRE_RESISTANCE) == null && !isWearingFullHeatHazmat(aEntity)) {
-            aEntity.attackEntityFrom(GT_DamageSources.getHeatDamage(), aDamage);
+            aEntity.attackEntityFrom(DamageSources.getHeatDamage(), aDamage);
             return true;
         }
         return false;
@@ -778,7 +845,7 @@ public class GT_Utility {
 
     public static boolean applyFrostDamage(EntityLivingBase aEntity, float aDamage) {
         if (aDamage > 0 && aEntity != null && !isWearingFullFrostHazmat(aEntity)) {
-            aEntity.attackEntityFrom(GT_DamageSources.getFrostDamage(), aDamage);
+            aEntity.attackEntityFrom(DamageSources.getFrostDamage(), aDamage);
             return true;
         }
         return false;
@@ -787,7 +854,7 @@ public class GT_Utility {
     public static boolean applyElectricityDamage(EntityLivingBase aEntity, long aVoltage, long aAmperage) {
         long aDamage = getTier(aVoltage) * aAmperage * 4;
         if (aDamage > 0 && aEntity != null && !isWearingFullElectroHazmat(aEntity)) {
-            aEntity.attackEntityFrom(GT_DamageSources.getElectricDamage(), aDamage);
+            aEntity.attackEntityFrom(DamageSources.getElectricDamage(), aDamage);
             return true;
         }
         return false;
@@ -827,7 +894,7 @@ public class GT_Utility {
         return null;
     }
 
-    public static ItemStack copyAmount(long aAmount, ItemStack... aStacks) {
+    public static ItemStack copyAmount(int aAmount, ItemStack... aStacks) {
         ItemStack rStack = copy(aStacks);
         if (!isStackValid(rStack)) return null;
         if (aAmount > 64) aAmount = 64;

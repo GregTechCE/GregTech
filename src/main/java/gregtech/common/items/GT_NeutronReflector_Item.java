@@ -1,14 +1,13 @@
 package gregtech.common.items;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.items.GT_Generic_Item;
-import gregtech.api.items.GT_RadioactiveCellIC_Item;
+import gregtech.api.items.GenericItem;
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
 import net.minecraft.item.ItemStack;
 
 public class GT_NeutronReflector_Item
-        extends GT_Generic_Item
+        extends GenericItem
         implements IReactorComponent {
     public GT_NeutronReflector_Item(String aUnlocalized, String aEnglish, int aMaxDamage) {
         super(aUnlocalized, aEnglish, "Undestructable");

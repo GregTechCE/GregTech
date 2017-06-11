@@ -3,7 +3,7 @@ package gregtech.common.items;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
-import gregtech.api.items.GT_Generic_Item;
+import gregtech.api.items.GenericItem;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class GT_FluidDisplayItem extends GT_Generic_Item {
+public class GT_FluidDisplayItem extends GenericItem {
     public GT_FluidDisplayItem() {
         super("GregTech_FluidDisplay", "Fluid Display", null);
         ItemList.Display_Fluid.set(this);

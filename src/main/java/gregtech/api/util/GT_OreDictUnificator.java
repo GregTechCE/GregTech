@@ -236,12 +236,14 @@ public class GT_OreDictUnificator {
         return registerOre(aPrefix.get(aMaterial), aStack);
     }
 
-    public static boolean registerOre(Object aName, ItemStack aStack) {
-        if (aName == null || GT_Utility.isStackInvalid(aStack)) return false;
+    public static boolean registerOre(String aName, ItemStack aStack) {
+        if (aName == null || !GT_Utility.isStackValid(aStack)) return false;
         String tName = aName.toString();
-        if (GT_Utility.isStringInvalid(tName)) return false;
+        if (!GT_Utility.isStringValid(tName)) return false;
         ArrayList<ItemStack> tList = getOres(tName);
-        for (int i = 0; i < tList.size(); i++) if (GT_Utility.areStacksEqual(tList.get(i), aStack, true)) return false;
+        for (int i = 0; i < tList.size(); i++)
+            if (GT_Utility.areStacksEqual(tList.get(i), aStack, true))
+                return false;
         isRegisteringOre++;
         OreDictionary.registerOre(tName, GT_Utility.copyAmount(1, aStack));
         isRegisteringOre--;

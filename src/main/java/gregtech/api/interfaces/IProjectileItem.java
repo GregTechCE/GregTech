@@ -2,23 +2,26 @@ package gregtech.api.interfaces;
 
 import gregtech.api.enums.SubTag;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public interface IProjectileItem {
+
     /**
      * @return if this Item has an Arrow Entity
      */
-    public boolean hasProjectile(SubTag aProjectileType, ItemStack aStack);
+    boolean hasProjectile(SubTag projectileType, ItemStack itemStack);
 
     /**
      * @return an Arrow Entity to be spawned. If null then this is not an Arrow. Note: Other Projectiles still extend EntityArrow
      */
-    public EntityArrow getProjectile(SubTag aProjectileType, ItemStack aStack, World aWorld, double aX, double aY, double aZ);
+    IProjectile getProjectile(SubTag projectileType, ItemStack itemStack, World world, double x, double y, double z);
 
     /**
      * @return an Arrow Entity to be spawned. If null then this is not an Arrow. Note: Other Projectiles still extend EntityArrow
      */
-    public EntityArrow getProjectile(SubTag aProjectileType, ItemStack aStack, World aWorld, EntityLivingBase aEntity, float aSpeed);
+    IProjectile getProjectile(SubTag projectileType, ItemStack itemStack, World world, EntityLivingBase entity, float speed);
+
 }

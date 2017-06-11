@@ -1,104 +1,127 @@
 package gregtech.api.interfaces;
 
-public interface ICondition<O> {
-    public boolean isTrue(O aObject);
+public interface ICondition<T> {
+
+    boolean isTrue(T object);
 
     // Utility Classes for adding relations between Conditions.
 
-    public static class Not<O> implements ICondition<O> {
-        private final ICondition<O> mCondition;
+    class Not<T> implements ICondition<T> {
 
-        public Not(ICondition<O> aCondition) {
-            mCondition = aCondition;
+        private final ICondition<T> condition;
+
+        public Not(ICondition<T> condition) {
+            this.condition = condition;
         }
 
         @Override
-        public boolean isTrue(O aObject) {
-            return !mCondition.isTrue(aObject);
+        public boolean isTrue(T object) {
+            return !condition.isTrue(object);
         }
+
     }
 
-    public static class Or<O> implements ICondition<O> {
-        private final ICondition<O>[] mConditions;
+    class Or<T> implements ICondition<T> {
 
-        public Or(ICondition<O>... aConditions) {
-            mConditions = aConditions;
+        private final ICondition<T>[] conditions;
+
+        @SafeVarargs
+        public Or(ICondition<T>... conditions) {
+            this.conditions = conditions;
         }
 
         @Override
-        public boolean isTrue(O aObject) {
-            for (ICondition<O> tCondition : mConditions) if (tCondition.isTrue(aObject)) return true;
+        public boolean isTrue(T object) {
+            for (ICondition<T> condition : conditions)
+                if (condition.isTrue(object)) return true;
             return false;
         }
+
     }
 
-    public static class Nor<O> implements ICondition<O> {
-        private final ICondition<O>[] mConditions;
+    class Nor<T> implements ICondition<T> {
 
-        public Nor(ICondition<O>... aConditions) {
-            mConditions = aConditions;
+        private final ICondition<T>[] conditions;
+
+        @SafeVarargs
+        public Nor(ICondition<T>... conditions) {
+            this.conditions = conditions;
         }
 
         @Override
-        public boolean isTrue(O aObject) {
-            for (ICondition<O> tCondition : mConditions) if (tCondition.isTrue(aObject)) return false;
+        public boolean isTrue(T object) {
+            for (ICondition<T> condition : conditions)
+                if (condition.isTrue(object)) return false;
             return true;
         }
+
     }
 
-    public static class And<O> implements ICondition<O> {
-        private final ICondition<O>[] mConditions;
+    class And<T> implements ICondition<T> {
 
-        public And(ICondition<O>... aConditions) {
-            mConditions = aConditions;
+        private final ICondition<T>[] conditions;
+
+        @SafeVarargs
+        public And(ICondition<T>... aConditions) {
+            this.conditions = aConditions;
         }
 
         @Override
-        public boolean isTrue(O aObject) {
-            for (ICondition<O> tCondition : mConditions) if (!tCondition.isTrue(aObject)) return false;
+        public boolean isTrue(T object) {
+            for (ICondition<T> condition : conditions)
+                if (!condition.isTrue(object)) return false;
             return true;
         }
+
     }
 
-    public static class Nand<O> implements ICondition<O> {
-        private final ICondition<O>[] mConditions;
+    class Nand<T> implements ICondition<T> {
 
-        public Nand(ICondition<O>... aConditions) {
-            mConditions = aConditions;
+        private final ICondition<T>[] conditions;
+
+        @SafeVarargs
+        public Nand(ICondition<T>... conditions) {
+            this.conditions = conditions;
         }
 
         @Override
-        public boolean isTrue(O aObject) {
-            for (ICondition<O> tCondition : mConditions) if (!tCondition.isTrue(aObject)) return true;
+        public boolean isTrue(T object) {
+            for (ICondition<T> condition : conditions)
+                if (!condition.isTrue(object)) return true;
             return false;
         }
+
     }
 
-    public static class Xor<O> implements ICondition<O> {
-        private final ICondition<O> mCondition1, mCondition2;
+    class Xor<T> implements ICondition<T> {
 
-        public Xor(ICondition<O> aCondition1, ICondition<O> aCondition2) {
-            mCondition1 = aCondition1;
-            mCondition2 = aCondition2;
+        private final ICondition<T> firstCondition, secondCondition;
+
+        public Xor(ICondition<T> firstCondition, ICondition<T> secondCondition) {
+            this.firstCondition = firstCondition;
+            this.secondCondition = secondCondition;
         }
 
         @Override
-        public boolean isTrue(O aObject) {
-            return mCondition1.isTrue(aObject) != mCondition2.isTrue(aObject);
+        public boolean isTrue(T object) {
+            return firstCondition.isTrue(object) != secondCondition.isTrue(object);
         }
     }
 
-    public static class Equal<O> implements ICondition<O> {
-        private final ICondition<O> mCondition1, mCondition2;
+    class Equal<T> implements ICondition<T> {
 
-        public Equal(ICondition<O> aCondition1, ICondition<O> aCondition2) {
-            mCondition1 = aCondition1;
-            mCondition2 = aCondition2;
+        private final ICondition<T> firstCondition, secondCondition;
+
+        public Equal(ICondition<T> firstCondition, ICondition<T> secondCondition) {
+            this.firstCondition = firstCondition;
+            this.secondCondition = secondCondition;
         }
 
         @Override
-        public boolean isTrue(O aObject) {
-            return mCondition1.isTrue(aObject) == mCondition2.isTrue(aObject);
+        public boolean isTrue(T aObject) {
+            return firstCondition.isTrue(aObject) == secondCondition.isTrue(aObject);
         }
+
     }
+
 }

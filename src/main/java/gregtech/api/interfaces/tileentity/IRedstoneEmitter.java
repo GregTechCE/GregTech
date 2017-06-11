@@ -6,10 +6,11 @@ import net.minecraft.util.EnumFacing;
  * This File has just internal Information about the Redstone State of a TileEntity
  */
 public interface IRedstoneEmitter extends IHasWorldObjectAndCoords {
+
     /**
      * gets the Redstone Level the TileEntity should emit to the given Output Side
      */
-    byte getOutputRedstoneSignal(EnumFacing aSide);
+    byte getOutputRedstoneSignal(EnumFacing side);
 
     /**
      * sets the Redstone Level the TileEntity should emit to the given Output Side
@@ -17,12 +18,12 @@ public interface IRedstoneEmitter extends IHasWorldObjectAndCoords {
      * Do not use this if ICoverable is implemented. ICoverable has @getInternalOutputRedstoneSignal for Machine internal Output Redstone, so that it doesnt conflict with Cover Redstone.
      * This sets the true Redstone Output Signal. Only Cover Behaviors should use it, not MetaTileEntities.
      */
-    void setOutputRedstoneSignal(EnumFacing aSide, byte aStrength);
+    void setOutputRedstoneSignal(EnumFacing side, byte strength);
 
     /**
      * gets the Redstone Level the TileEntity should emit to the given Output Side
      */
-    byte getStrongOutputRedstoneSignal(EnumFacing aSide);
+    byte getStrongOutputRedstoneSignal(EnumFacing side);
 
     /**
      * sets the Redstone Level the TileEntity should emit to the given Output Side
@@ -30,16 +31,17 @@ public interface IRedstoneEmitter extends IHasWorldObjectAndCoords {
      * Do not use this if ICoverable is implemented. ICoverable has @getInternalOutputRedstoneSignal for Machine internal Output Redstone, so that it doesnt conflict with Cover Redstone.
      * This sets the true Redstone Output Signal. Only Cover Behaviors should use it, not MetaTileEntities.
      */
-    void setStrongOutputRedstoneSignal(EnumFacing aSide, byte aStrength);
+    void setStrongOutputRedstoneSignal(EnumFacing aide, byte strength);
 
     /**
      * Gets the Output for the comparator on the given Side
      */
-    byte getComparatorValue(EnumFacing aSide);
+    byte getComparatorValue(EnumFacing side);
 
     /**
      * Return whether the TileEntity can output redstone to the given side. Used to visually connect
      * vanilla redstone wires.
      */
-    boolean canOutputRedstone(EnumFacing aSide);
+    boolean canOutputRedstone(EnumFacing side);
+
 }

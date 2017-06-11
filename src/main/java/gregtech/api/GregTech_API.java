@@ -4,9 +4,8 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IDamagableItem;
-import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.items.GenericItem;
 import gregtech.api.objects.GT_Cover_Default;
 import gregtech.api.objects.GT_Cover_None;
 import gregtech.api.objects.GT_HashSet;
@@ -19,7 +18,6 @@ import gregtech.common.blocks.GT_Block_Stones;
 import gregtech.common.blocks.GT_Block_Stones_Abstract;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -28,12 +26,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.*;
-
-import static gregtech.api.enums.GT_Values.*;
 
 /**
  * Please do not include this File in your Mod-download as it ruins compatiblity, like with the IC2-API
@@ -345,10 +339,10 @@ public class GregTech_API {
                     .newInstance(aUnlocalized, aEnglish, aMaxStore);
         } catch (Throwable e) {/*Do nothing*/}
         try {
-            return (Item) Class.forName("gregtech.api.items.GT_CoolantCell_Item").getConstructors()[0]
+            return (Item) Class.forName("gregtech.api.items.CoolantCellItem").getConstructors()[0]
                     .newInstance(aUnlocalized, aEnglish, aMaxStore);
         } catch (Throwable e) {/*Do nothing*/}
-        return new gregtech.api.items.GT_Generic_Item(aUnlocalized, aEnglish, "Doesn't work as intended, this is a Bug", false);
+        return new GenericItem(aUnlocalized, aEnglish, "Doesn't work as intended, this is a Bug", false);
     }
 
     public static void registerCover(int coverId, ItemStack aStack, ResourceLocation aCover, GT_CoverBehavior aBehavior) {

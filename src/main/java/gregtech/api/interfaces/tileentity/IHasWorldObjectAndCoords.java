@@ -21,35 +21,34 @@ import net.minecraftforge.fluids.IFluidHandler;
  */
 public interface IHasWorldObjectAndCoords {
 
-    public World getWorldObj();
+    World getWorldObj();
 
-    public BlockPos getWorldPos();
+    BlockPos getWorldPos();
 
-    public boolean isServerSide();
+    boolean isServerSide();
 
-    public boolean isClientSide();
+    boolean isClientSide();
 
-    public int getRandomNumber(int aRange);
+    int getRandomNumber(int range);
 
     /**
      * Checks if the TileEntity is Invalid or Unloaded. Stupid Minecraft cannot do that btw.
      */
-    public boolean isDead();
+    boolean isDead();
 
     /**
      * Sends a Block Event to the Client TileEntity, the byte Parameters are only for validation as Minecraft doesn't properly write Packet Data.
      */
-    public void sendBlockEvent(byte aID, byte aValue);
+    void sendBlockEvent(byte ID, byte value);
 
     /**
      * @return the Time this TileEntity has been loaded.
      */
-    public long getTimer();
+    long getTimer();
 
     /**
      * Function of the regular TileEntity
      */
-    public boolean isInvalidTileEntity();
-
+    boolean isInvalidTileEntity();
 
 }

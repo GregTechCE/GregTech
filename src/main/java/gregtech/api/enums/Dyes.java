@@ -4,6 +4,7 @@ import gregtech.api.util.GT_Utility;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public enum Dyes {
@@ -41,56 +42,58 @@ public enum Dyes {
 
     public final byte mIndex;
     public final String mName;
-    public final short[] mRGBa;
+    public final int mRGBa;
     private final ArrayList<Fluid> mFluidDyes = new ArrayList<>(1);
 
-    private Dyes(int aIndex, int aR, int aG, int aB, String aName) {
+    private Dyes(int aIndex, int r, int g, int b, String name) {
         mIndex = (byte) aIndex;
-        mName = aName;
-        mRGBa = new short[]{(short) aR, (short) aG, (short) aB, 0};
+        mName = name;
+        mRGBa = ((r & 0xFF) << 16) |
+                ((g & 0xFF) << 8)  |
+                ((b & 0xFF));
     }
 
-    public static Dyes get(int aColor) {
-        if (aColor >= 0 && aColor < 16) return VALUES[aColor];
+    public static Dyes get(int color) {
+        if (color >= 0 && color < 16) return VALUES[color];
         return _NULL;
     }
 
-    public static short[] getModulation(int aColor, Dyes aDefaultModulation) {
-        return getModulation(aColor, aDefaultModulation.mRGBa);
+    public static int getModulation(int colorIndex, Dyes defaultModulation) {
+        return getModulation(colorIndex, defaultModulation.mRGBa);
     }
 
-    public static short[] getModulation(int aColor, short[] aDefaultModulation) {
-        if (aColor >= 0 && aColor < VALUES.length)
-            return VALUES[aColor].mRGBa;
-        return aDefaultModulation;
+    public static int getModulation(int colorIndex, int defaultModulation) {
+        if (colorIndex >= 0 && colorIndex < VALUES.length)
+            return VALUES[colorIndex].mRGBa;
+        return defaultModulation;
     }
 
-    public static Dyes get(String aColor) {
-        Object tObject = GT_Utility.getFieldContent(Dyes.class, aColor, false, false);
+    public static Dyes get(String color) {
+        Object tObject = GT_Utility.getFieldContent(Dyes.class, color, false, false);
         if (tObject instanceof Dyes) return (Dyes) tObject;
         return _NULL;
     }
 
-    public static boolean isAnyFluidDye(FluidStack aFluid) {
-        return aFluid != null && isAnyFluidDye(aFluid.getFluid());
+    public static boolean isAnyFluidDye(FluidStack fluid) {
+        return fluid != null && isAnyFluidDye(fluid.getFluid());
     }
 
-    public static boolean isAnyFluidDye(Fluid aFluid) {
-        if (aFluid != null) for (Dyes tDye : VALUES) if (tDye.isFluidDye(aFluid)) return true;
+    public static boolean isAnyFluidDye(Fluid fluid) {
+        if (fluid != null) for (Dyes tDye : VALUES) if (tDye.isFluidDye(fluid)) return true;
         return false;
     }
 
-    public boolean isFluidDye(FluidStack aFluid) {
-        return aFluid != null && isFluidDye(aFluid.getFluid());
+    public boolean isFluidDye(FluidStack fluid) {
+        return fluid != null && isFluidDye(fluid.getFluid());
     }
 
-    public boolean isFluidDye(Fluid aFluid) {
-        return aFluid != null && mFluidDyes.contains(aFluid);
+    public boolean isFluidDye(Fluid fluid) {
+        return fluid != null && mFluidDyes.contains(fluid);
     }
 
-    public boolean addFluidDye(Fluid aDye) {
-        if (aDye == null || mFluidDyes.contains(aDye)) return false;
-        mFluidDyes.add(aDye);
+    public boolean addFluidDye(Fluid dye) {
+        if (dye == null || mFluidDyes.contains(dye)) return false;
+        mFluidDyes.add(dye);
         return true;
     }
 
@@ -99,15 +102,11 @@ public enum Dyes {
     }
 
     /**
-     * @param aAmount 1 Fluid Material Unit (144) = 1 Dye Item
+     * @param amount 1 Fluid Material Unit (144) = 1 Dye Item
      */
-    public FluidStack getFluidDye(int aIndex, long aAmount) {
-        if (aIndex >= mFluidDyes.size() || aIndex < 0) return null;
-        return new FluidStack(mFluidDyes.get(aIndex), (int) aAmount);
-    }
-
-    public int getRGBAInt() {
-        return GT_Utility.shortsToIntColor(mRGBa);
+    public FluidStack getFluidDye(int index, int amount) {
+        if (index >= mFluidDyes.size() || index < 0) return null;
+        return new FluidStack(mFluidDyes.get(index), amount);
     }
 
 }

@@ -3,8 +3,6 @@ package gregtech.common.items.behaviors;
 import forestry.api.lepidopterology.EnumFlutterType;
 import forestry.api.lepidopterology.IButterfly;
 import forestry.api.lepidopterology.IEntityButterfly;
-import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;

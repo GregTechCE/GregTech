@@ -1,6 +1,5 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 

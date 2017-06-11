@@ -1,10 +1,8 @@
 package gregtech.common.tools;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.damagesources.GT_DamageSources;
+import gregtech.api.damagesources.DamageSources;
 import gregtech.api.interfaces.IToolStats;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
@@ -116,7 +114,7 @@ public abstract class GT_Tool
     }
 
     public DamageSource getDamageSource(EntityLivingBase aPlayer, Entity aEntity) {
-        return GT_DamageSources.getCombatDamage((aPlayer instanceof EntityPlayer) ? "player" : "mob", aPlayer, (aEntity instanceof EntityLivingBase) ? getDeathMessage(aPlayer, (EntityLivingBase) aEntity) : null);
+        return DamageSources.getCombatDamage((aPlayer instanceof EntityPlayer) ? "player" : "mob", aPlayer, (aEntity instanceof EntityLivingBase) ? getDeathMessage(aPlayer, (EntityLivingBase) aEntity) : null);
     }
 
     public ITextComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {

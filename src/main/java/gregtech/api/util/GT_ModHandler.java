@@ -1655,15 +1655,13 @@ public class GT_ModHandler {
      * Is this an electric Item, which can charge other Items?
      */
     public static boolean isChargerItem(ItemStack aStack) {
-        try {
-            if (aStack != null && isElectricItem(aStack)) {
-                if (aStack.getItem() instanceof ISpecialElectricItem) {
-                    return true;
-                } else if (aStack.getItem() instanceof IElectricItem) {
-                    return ((IElectricItem) aStack.getItem()).canProvideEnergy(aStack);
-                }
+        if (aStack != null && isElectricItem(aStack)) {
+            if (aStack.getItem() instanceof ISpecialElectricItem) {
+                return true;
+            } else if (aStack.getItem() instanceof IElectricItem) {
+                return ((IElectricItem) aStack.getItem()).canProvideEnergy(aStack);
             }
-        } catch (Throwable e) {/*Do nothing*/}
+        }
         return false;
     }
 
@@ -1671,17 +1669,11 @@ public class GT_ModHandler {
      * Is this an electric Item?
      */
     public static boolean isElectricItem(ItemStack aStack) {
-        try {
-            return aStack != null && (aStack.getItem() instanceof IElectricItem || aStack.getItem() instanceof ISpecialElectricItem);
-        } catch (Throwable e) {/*Do nothing*/}
-        return false;
+        return aStack != null && (aStack.getItem() instanceof IElectricItem || aStack.getItem() instanceof ISpecialElectricItem);
     }
 
-    public static boolean isElectricItem(ItemStack aStack, byte aTier) {
-        try {
-            return aStack != null && isElectricItem(aStack) && ElectricItem.manager.getTier(aStack) == aTier;
-        } catch (Throwable e) {/*Do nothing*/}
-        return false;
+    public static boolean isElectricItem(ItemStack aStack, int aTier) {
+        return aStack != null && isElectricItem(aStack) && ElectricItem.manager.getTier(aStack) == aTier;
     }
 
     public static void registerBoxableItemToToolBox(Item aItem) {

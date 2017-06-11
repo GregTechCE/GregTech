@@ -2,11 +2,9 @@ package gregtech.common.items;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
-import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.tools.*;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;

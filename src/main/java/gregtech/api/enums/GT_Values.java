@@ -12,27 +12,15 @@ import java.util.Locale;
 
 /**
  * Made for static imports, this Class is just a Helper.
- * <p/>
- * I am doing this to have a better Table alike view on my Code, so I can change things faster using the Block Selection Mode of eclipse.
- * <p/>
- * Go to "Window > Preferences > Java > Editor > Content Assist > Favorites" to set static importable Constant Classes such as this one as AutoCompleteable.
  */
 public class GT_Values {
+
     // unused: A, C, D, G, H, I, J, K, N, O, Q, R, S, T
-
-    // TODO: Rename Material Units to 'U'
-    // TODO: Rename OrePrefixes Class to 'P'
-    // TODO: Rename Materials Class to 'M'
-
-    /**
-     * Empty String for an easier Call Hierarchy
-     */
-    public static final String E = "";
 
     /**
      * The first 32 Bits
      */
-    public static final int[] B = new int[]{1 << 0, 1 << 1, 1 << 2, 1 << 3, 1 << 4, 1 << 5, 1 << 6, 1 << 7, 1 << 8, 1 << 9, 1 << 10, 1 << 11, 1 << 12, 1 << 13, 1 << 14, 1 << 15, 1 << 16, 1 << 17, 1 << 18, 1 << 19, 1 << 20, 1 << 21, 1 << 22, 1 << 23, 1 << 24, 1 << 25, 1 << 26, 1 << 27, 1 << 28, 1 << 29, 1 << 30, 1 << 31};
+    public static final int[] B = new int[]{1, 1 << 1, 1 << 2, 1 << 3, 1 << 4, 1 << 5, 1 << 6, 1 << 7, 1 << 8, 1 << 9, 1 << 10, 1 << 11, 1 << 12, 1 << 13, 1 << 14, 1 << 15, 1 << 16, 1 << 17, 1 << 18, 1 << 19, 1 << 20, 1 << 21, 1 << 22, 1 << 23, 1 << 24, 1 << 25, 1 << 26, 1 << 27, 1 << 28, 1 << 29, 1 << 30, 1 << 31};
 
     /**
      * Renamed from "MATERIAL_UNIT" to just "M"
@@ -74,24 +62,16 @@ public class GT_Values {
      * The long Names for the Voltages
      */
     public static final String[] VOLTAGE_NAMES = new String[]{"Ultra Low Voltage", "Low Voltage", "Medium Voltage", "High Voltage", "Extreme Voltage", "Insane Voltage", "Ludicrous Voltage", "ZPM Voltage", "Ultimate Voltage", "Maximum Voltage", "Maximum Voltage", "Maximum Voltage", "Maximum Voltage", "Maximum Voltage", "Maximum Voltage", "Maximum Voltage"};
-    /**
-     * This way it is possible to have a Call Hierarchy of NullPointers in ItemStack based Functions, and also because most of the time I don't know what kind of Data Type the "null" stands for
-     */
-    public static final ItemStack NI = null;
-    /**
-     * This way it is possible to have a Call Hierarchy of NullPointers in FluidStack based Functions, and also because most of the time I don't know what kind of Data Type the "null" stands for
-     */
-    public static final FluidStack NF = null;
+
     /**
      * MOD ID Strings, since they are very common Parameters.
      */
-    public static final String
-            MOD_ID = "gregtech", MOD_ID_IC2 = "IC2", MOD_ID_NC = "IC2NuclearControl", MOD_ID_TC = "Thaumcraft", MOD_ID_TF = "TwilightForest", MOD_ID_RC = "Railcraft", MOD_ID_TE = "ThermalExpansion", MOD_ID_AE = "appliedenergistics2", MOD_ID_TFC = "terrafirmacraft", MOD_ID_PFAA = "PFAAGeologica", MOD_ID_FR = "Forestry", MOD_ID_HaC = "harvestcraft", MOD_ID_APC = "AppleCore", MOD_ID_MaCr = "magicalcrops", MOD_ID_GaEn = "ganysend", MOD_ID_GaSu = "ganyssurface", MOD_ID_GaNe = "ganysnether", MOD_ID_BC_SILICON = "BuildCraft|Silicon", MOD_ID_BC_TRANSPORT = "BuildCraft|Transport", MOD_ID_BC_FACTORY = "BuildCraft|Factory", MOD_ID_BC_ENERGY = "BuildCraft|Energy", MOD_ID_BC_BUILDERS = "BuildCraft|Builders", MOD_ID_BC_CORE = "BuildCraft|Core", MOD_ID_GC_CORE = "GalacticraftCore", MOD_ID_GC_MARS = "GalacticraftMars", MOD_ID_GC_PLANETS = "GalacticraftPlanets";
-    /**
-     * File Paths and Resource Paths
-     */
-    public static final String
-            TEX_DIR = "textures/", TEX_DIR_GUI = TEX_DIR + "gui/", TEX_DIR_ITEM = TEX_DIR + "items/", TEX_DIR_BLOCK = TEX_DIR + "blocks/", TEX_DIR_ENTITY = TEX_DIR + "entity/", TEX_DIR_ASPECTS = TEX_DIR + "aspects/", RES_PATH = MOD_ID + ":" + TEX_DIR, RES_PATH_GUI = MOD_ID + ":" + TEX_DIR_GUI, RES_PATH_ITEM = MOD_ID + ":items/", RES_PATH_BLOCK = MOD_ID + ":blocks/", RES_PATH_ENTITY = MOD_ID + ":" + TEX_DIR_ENTITY, RES_PATH_ASPECTS = MOD_ID + ":" + TEX_DIR_ASPECTS, RES_PATH_IC2 = MOD_ID_IC2.toLowerCase(Locale.ENGLISH) + ":", RES_PATH_MODEL = MOD_ID + ":" + TEX_DIR + "models/";
+    public static final String MODID = "gregtech",
+            MODID_IC2 = "IC2",
+            MODID_NC = "IC2NuclearControl",
+            MODID_RC = "Railcraft",
+            MODID_FR = "Forestry";
+
     /**
      * The Mod Object itself. That is the GT_Mod-Object. It's needed to open GUI's and similar.
      */
@@ -105,11 +85,12 @@ public class GT_Values {
      */
     public static GT_PacketHandler NW;
     /**
-     * Not really Constants, but they set using the Config and therefore should be constant (those are for the Debug Mode)
+     * Not really Constant, but it set using the Config and therefore should be constant (this is for the Debug Mode)
      */
-    public static boolean D1 = false, D2 = false;
+    public static boolean D1 = false;
     /**
      * If you have to give something a World Parameter but there is no World... (Dummy World)
      */
     public static World DW;
+
 }

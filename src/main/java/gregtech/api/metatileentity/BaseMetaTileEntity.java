@@ -14,13 +14,15 @@ import gregtech.api.util.*;
 import gregtech.common.GT_Pollution;
 import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergyEmitter;
+import ic2.api.energy.tile.IEnergySink;
+import ic2.api.energy.tile.IEnergySource;
 import ic2.api.info.Info;
+import ic2.api.tile.IEnergyStorage;
 import net.minecraft.block.BlockFire;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,7 +31,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -42,15 +43,13 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.FluidTankProperties;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fluids.capability.wrappers.FluidHandlerWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -62,7 +61,7 @@ import static gregtech.api.enums.GT_Values.V;
  * <p/>
  * This is the main TileEntity for EVERYTHING.
  */
-public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileEntity {
+public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileEntity, IEnergySink, IEnergySource, IEnergyStorage {
 
     /**
      * Id of MetaTileEntity this machine holds
@@ -255,10 +254,19 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
      */
     private NBTTagCompound mRecipeStuff = new NBTTagCompound();
 
+    /**
+     * Indexes of average EU input and output
+     */
+    protected int mAverageEUInputIndex = 0, mAverageEUOutputIndex = 0;
+
+    /**
+     * Arrays of average EU inputs and outputs by sides (in D-U-N-S-W-E order)
+     */
+    protected int[] mAverageEUInput = new int[]{0, 0, 0, 0, 0}, mAverageEUOutput = new int[]{0, 0, 0, 0, 0};
+
 
     //fields for update detection
 
-    private boolean oRedstone = false; //last value of mRedstone
     private byte oColor = 0, //last value of mColor
             oRedstoneData = 63, //last sided redstone data
             oTextureData = 0, //last texture data
@@ -381,7 +389,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
             GT_Log.err.println("MetaID " + aID + " not loadable => locking TileEntity!");
         } else {
             if (hasValidMetaTileEntity()) mMetaTileEntity.setBaseMetaTileEntity(null);
-            GregTech_API.METATILEENTITIES[aID].newMetaEntity(this).setBaseMetaTileEntity(this);
+            GregTech_API.METATILEENTITIES[aID].newMetaEntity(this).setTile(this);
             mTickTimer = 0;
             mID = aID;
             return true;
@@ -392,15 +400,15 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     /**
      * Called when trying to charge Items
      */
-    public void chargeItem(ItemStack aStack) {
-        decreaseStoredEU(GT_ModHandler.chargeElectricItem(aStack, (int) Math.min(Integer.MAX_VALUE, getStoredEU()), (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getOutputTier()), false, false), true);
+    public void chargeItem(ItemStack stack) {
+        decreaseStoredEU(GT_ModHandler.chargeElectricItem(stack, (int) Math.min(Integer.MAX_VALUE, getStoredEU()), (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getOutputTier()), false, false), true);
     }
 
     /**
      * Called when trying to discharge Items
      */
-    public void dischargeItem(ItemStack aStack) {
-        increaseStoredEnergyUnits(GT_ModHandler.dischargeElectricItem(aStack, (int) Math.min(Integer.MAX_VALUE, getEUCapacity() - getStoredEU()), (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getInputTier()), false, false, false), true);
+    public void dischargeItem(ItemStack stack) {
+        increaseStoredEnergyUnits(GT_ModHandler.dischargeElectricItem(stack, (int) Math.min(Integer.MAX_VALUE, getEUCapacity() - getStoredEU()), (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getInputTier()), false, false, false), true);
     }
 
     @Override
@@ -412,7 +420,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     @SuppressWarnings("unchecked")
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
         if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-            return (T) this;
+            return (T) new FluidHandlerWrapper(this, facing);
         }
         return super.getCapability(capability, facing);
     }
@@ -442,20 +450,25 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         }
     }
 
+    @Override
+    public void issueCoverUpdate(EnumFacing side) {
+        int coverIdAtSide = getCoverIDAtSide(side);
+        if(coverIdAtSide != 0) {
+            if(mMetaTileEntity.allowCoverOnSide(side, GregTech_API.getCoverItem(coverIdAtSide))) {
+                dropCover(side, side, true);
+            }
+        }
+    }
+
     public void validateCovers() {
         for(EnumFacing side : EnumFacing.VALUES) {
-            int coverIdAtSide = getCoverIDAtSide(side);
-            if(coverIdAtSide != 0) {
-                if(mMetaTileEntity.allowCoverOnSide(side, GregTech_API.getCoverItem(coverIdAtSide))) {
-                    dropCover(side, side, true);
-                }
-            }
+            issueCoverUpdate(side);
         }
     }
 
     private void onFirstTick() {
         validateCovers();
-        mMetaTileEntity.onFirstTick(this);
+        mMetaTileEntity.onFirstTick();
         worldObj.markChunkDirty(getPos(), this);
     }
 
@@ -491,6 +504,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                 sendBlockEvent((byte) 3, oRedstoneData = tData);
                 issueBlockUpdate();
             }
+
             if (mLightValue != oLightValue) {
                 worldObj.setLightFor(EnumSkyBlock.BLOCK, getPos(), mLightValue);
                 worldObj.notifyLightSet(getPos());
@@ -533,6 +547,12 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     private void updateElectric() {
         mAcceptedAmperes = 0;
+
+        if (++mAverageEUInputIndex >= mAverageEUInput.length) mAverageEUInputIndex = 0;
+        if (++mAverageEUOutputIndex >= mAverageEUOutput.length) mAverageEUOutputIndex = 0;
+
+        mAverageEUInput[mAverageEUInputIndex] = 0;
+        mAverageEUOutput[mAverageEUOutputIndex] = 0;
 
         long outputVoltage = getOutputVoltage();
         if (mMetaTileEntity.isEnetOutput() && outputVoltage > 0) {
@@ -647,8 +667,106 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         mWorkUpdate = mInventoryChanged = false;
     }
 
+
+    @Override
+    public boolean isInvalidTileEntity() {
+        return isInvalid();
+    }
+
+    @Override
+    public boolean isServerSide() {
+        return !worldObj.isRemote;
+    }
+
+    @Override
+    public boolean isClientSide() {
+        return worldObj.isRemote;
+    }
+
+    @Override
+    public int getRandomNumber(int range) {
+        return worldObj.rand.nextInt(range);
+    }
+
+    @Override
+    public String getName() {
+        return mMetaTileEntity.getName();
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return false;
+    }
+
+    @Override
+    public boolean addStackToSlot(int index, ItemStack stack) {
+        if (index < 0 || index >= getSizeInventory() || !GT_Utility.isStackValid(stack)) return false;
+        stack = GT_OreDictUnificator.get(stack);
+        ItemStack tStack = getStackInSlot(index);
+        if (!GT_Utility.isStackValid(tStack)) {
+            setInventorySlotContents(index, stack);
+            return true;
+        }
+        if (GT_Utility.areStacksEqual(tStack, stack) && tStack.stackSize + stack.stackSize <= Math.min(stack.getMaxStackSize(), getInventoryStackLimit())) {
+            tStack.stackSize += stack.stackSize;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean addStackToSlot(int index, ItemStack stack, int amount) {
+        return addStackToSlot(index, GT_Utility.copyAmount(amount, stack));
+    }
+
+    @Override
+    public boolean isUniversalEnergyStored(long aEnergyAmount) {
+        if (getUniversalEnergyStored() >= aEnergyAmount) return true;
+        mHasEnoughEnergy = false;
+        return false;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        if (hasValidMetaTileEntity()) return getMetaTileEntity().getInfoData();
+        return new String[]{};
+    }
+
+    @Override
+    public void markDirty() {
+        super.markDirty();
+        mInventoryChanged = true;
+    }
+
+    @Override
+    public int getLightOpacity() {
+        return mMetaTileEntity == null ? getLightValue() > 0 ? 0 : 255 : mMetaTileEntity.getLightOpacity();
+    }
+
+    @Override
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity collider) {
+        mMetaTileEntity.onEntityCollidedWithBlock(world, pos, collider);
+    }
+
+    @Override
+    public byte getColorization() {
+        return (byte) (mColor - 1);
+    }
+
+    @Override
+    public byte setColorization(byte aColor) {
+        if (aColor > 15 || aColor < -1) aColor = -1;
+        if (hasValidMetaTileEntity()) mMetaTileEntity.onColorChangeServer(aColor);
+        return mColor = (byte) (aColor + 1);
+    }
+
+    @Override
+    public float getBlastResistance(EnumFacing side) {
+        return hasValidMetaTileEntity() ? Math.max(0, getMetaTileEntity().getExplosionResistance(side)) : 10.0F;
+    }
+
     @SideOnly(Side.CLIENT)
-    public void causeChunkUpdate() {
+    private void causeChunkUpdate() {
         int minX = pos.getX() - 5;
         int minY = pos.getY() - 5;
         int minZ = pos.getZ() - 5;
@@ -922,7 +1040,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer aPlayer) {
-        return hasValidMetaTileEntity() && playerOwnsThis(aPlayer, false) && mTickTimer > 40 &&
+        return hasValidMetaTileEntity() && playerOwnsThis(aPlayer) && mTickTimer > 40 &&
                 aPlayer.getDistanceSq(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) < 64 &&
                 mMetaTileEntity.isAccessAllowed(aPlayer);
     }
@@ -1094,8 +1212,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public boolean isValidSlot(int aIndex) {
-        if (hasValidMetaTileEntity()) return mMetaTileEntity.isValidSlot(aIndex);
-        return false;
+        return hasValidMetaTileEntity() && mMetaTileEntity.isValidSlot(aIndex);
     }
 
     @Override
@@ -1134,11 +1251,9 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     private boolean isEnergyInputSide(EnumFacing side) {
         int coverIdAtSide = getCoverIDAtSide(side);
-        if (!GregTech_API.getCoverBehavior(coverIdAtSide).letsEnergyIn(side, coverIdAtSide, getCoverDataAtSide(side), this))
-            return false;
-        if (isInvalid() || mReleaseEnergy) return false;
-        return hasValidMetaTileEntity() && mMetaTileEntity.isElectric() &&
-                mMetaTileEntity.isEnetInput() && mMetaTileEntity.isInputFacing(side);
+        return GregTech_API.getCoverBehavior(coverIdAtSide).letsEnergyIn(side, coverIdAtSide, getCoverDataAtSide(side), this) &&
+                !(isInvalid() || mReleaseEnergy) && hasValidMetaTileEntity() &&
+                mMetaTileEntity.isElectric() && mMetaTileEntity.isEnetInput() && mMetaTileEntity.isInputFacing(side);
     }
 
     private boolean isEnergyOutputSide(EnumFacing side) {
@@ -1154,26 +1269,27 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         return mMetaTileEntity != null && mMetaTileEntity.getBaseMetaTileEntity() == this;
     }
 
-    public boolean setStoredEU(long aEnergy) {
+    public boolean setStoredEU(long energy) {
         if (!hasValidMetaTileEntity()) return false;
-        if (aEnergy < 0) aEnergy = 0;
-        mMetaTileEntity.setEUVar(aEnergy);
+        if (energy < 0) energy = 0;
+        mMetaTileEntity.setEUVar(energy);
         return true;
     }
 
-    public boolean setStoredSteam(long aEnergy) {
+    public boolean setStoredSteam(long energy) {
         if (!hasValidMetaTileEntity()) return false;
-        if (aEnergy < 0) aEnergy = 0;
-        mMetaTileEntity.setSteamVar(aEnergy);
+        if (energy < 0) energy = 0;
+        mMetaTileEntity.setSteamVar(energy);
         return true;
     }
 
-    public boolean decreaseStoredEU(long aEnergy, boolean aIgnoreTooLessEnergy) {
+    public boolean decreaseStoredEU(long energy, boolean ignoreTooLessEnergy) {
         if (!hasValidMetaTileEntity()) {
             return false;
         }
-        if (mMetaTileEntity.getEUVar() - aEnergy >= 0 || aIgnoreTooLessEnergy) {
-            setStoredEU(mMetaTileEntity.getEUVar() - aEnergy);
+        if (mMetaTileEntity.getEUVar() - energy >= 0 || ignoreTooLessEnergy) {
+            mAverageEUOutput[mAverageEUOutputIndex] = (int) Math.min(mMetaTileEntity.getEUVar(), energy);
+            setStoredEU(mMetaTileEntity.getEUVar() - energy);
             if (mMetaTileEntity.getEUVar() < 0) {
                 setStoredEU(0);
                 return false;
@@ -1196,9 +1312,9 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         return false;
     }
 
-    public boolean playerOwnsThis(EntityPlayer aPlayer, boolean aCheckPrecicely) {
+    public boolean playerOwnsThis(EntityPlayer aPlayer) {
         if (!hasValidMetaTileEntity()) return false;
-        if (aCheckPrecicely || privateAccess() || mOwnerId == null)
+        if (privateAccess() || mOwnerId == null)
             if (mOwnerId == null && isServerSide()) setOwnerId(aPlayer.getPersistentID());
             else if (privateAccess() && mOwnerId != null && mOwnerId.equals(aPlayer.getPersistentID()))
                 return false;
@@ -1288,8 +1404,8 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         if (mLockUpgrade) tag.setBoolean("mLockUpgrade", mLockUpgrade);
         if (mColor > 0) tag.setByte("mColor", mColor);
         if (mStrongRedstone > 0) tag.setByte("mStrongRedstone", mStrongRedstone);
-        for (byte i = 0; i < mCoverSides.length; i++) {
-            if (mCoverSides[i] != 0) {
+        for (int mCoverSide : mCoverSides) {
+            if (mCoverSide != 0) {
                 tag.setIntArray("mCoverData", mCoverData);
                 tag.setIntArray("mCoverSides", mCoverSides);
                 break;
@@ -1301,14 +1417,14 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public boolean onRightclick(EntityPlayer player, EnumFacing side, float clickX, float clickY, float clickZ, EnumHand hand) {
         int coverIdAtSide = getCoverIDAtSide(side);
         int coverDataAtSide = getCoverDataAtSide(side);
         GT_CoverBehavior coverBehavior = GregTech_API.getCoverBehavior(coverIdAtSide);
         if (isClientSide()) {
-            if (coverBehavior.onCoverRightclickClient(side, this, player, clickX, clickY, clickZ))
-                return true;
-            return coverBehavior.isGUIClickable(side, coverIdAtSide, coverDataAtSide, this);
+            return coverBehavior.onCoverRightclickClient(side, this, player, clickX, clickY, clickZ) ||
+                    coverBehavior.isGUIClickable(side, coverIdAtSide, coverDataAtSide, this);
         }
         if (isServerSide()) {
             if (!privateAccess() || (mOwnerId != null && mOwnerId.equals(player.getPersistentID()))) {
@@ -1430,10 +1546,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
             }
         }
 
-        if (hasValidMetaTileEntity()) {
-            return mMetaTileEntity.onRightclick(this, player, side, clickX, clickY, clickZ, hand);
-        }
-        return true;
+        return !hasValidMetaTileEntity() || mMetaTileEntity.onRightclick(this, player, side, clickX, clickY, clickZ, hand);
     }
     
     public void playSound(ResourceLocation soundEvent) {
@@ -1449,8 +1562,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public boolean isDigitalChest() {
-        if (hasValidMetaTileEntity()) return mMetaTileEntity.isDigitalChest();
-        return false;
+        return hasValidMetaTileEntity() && mMetaTileEntity.isDigitalChest();
     }
 
     @Override
@@ -1557,33 +1669,39 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public byte getOutputRedstoneSignal(EnumFacing side) {
-        int coverIdAtSide = getCoverIDAtSide(side);
-        int coverDataAtSide = getCoverDataAtSide(side);
-        GT_CoverBehavior coverBehavior = GregTech_API.getCoverBehavior(coverIdAtSide);
+        if(side != null) {
+            int coverIdAtSide = getCoverIDAtSide(side);
+            int coverDataAtSide = getCoverDataAtSide(side);
+            GT_CoverBehavior coverBehavior = GregTech_API.getCoverBehavior(coverIdAtSide);
 
-        if(coverBehavior.manipulatesSidedRedstoneOutput(side, coverIdAtSide, coverDataAtSide, this)) {
-            return mSidedRedstone[side.getIndex()];
+            if(coverBehavior.manipulatesSidedRedstoneOutput(side, coverIdAtSide, coverDataAtSide, this)) {
+                return mSidedRedstone[side.getIndex()];
+            }
         }
         return 0;
     }
 
     @Override
     public void setInternalOutputRedstoneSignal(EnumFacing side, byte aStrength) {
-        int coverIdAtSide = getCoverIDAtSide(side);
-        int coverDataAtSide = getCoverDataAtSide(side);
-        GT_CoverBehavior coverBehavior = GregTech_API.getCoverBehavior(coverIdAtSide);
+        if(side != null) {
+            int coverIdAtSide = getCoverIDAtSide(side);
+            int coverDataAtSide = getCoverDataAtSide(side);
+            GT_CoverBehavior coverBehavior = GregTech_API.getCoverBehavior(coverIdAtSide);
 
-        if(coverBehavior.manipulatesSidedRedstoneOutput(side, coverIdAtSide, coverDataAtSide, this)) {
-            setOutputRedstoneSignal(side, aStrength);
+            if(coverBehavior.manipulatesSidedRedstoneOutput(side, coverIdAtSide, coverDataAtSide, this)) {
+                setOutputRedstoneSignal(side, aStrength);
+            }
         }
     }
 
     @Override
     public void setOutputRedstoneSignal(EnumFacing side, byte aStrength) {
-        aStrength = (byte) Math.min(Math.max(0, aStrength), 15);
-        if (mSidedRedstone[side.getIndex()] != aStrength) {
-            mSidedRedstone[side.getIndex()] = aStrength;
-            issueBlockUpdate();
+        if(side != null) {
+            aStrength = (byte) Math.min(Math.max(0, aStrength), 15);
+            if (mSidedRedstone[side.getIndex()] != aStrength) {
+                mSidedRedstone[side.getIndex()] = aStrength;
+                issueBlockUpdate();
+            }
         }
     }
 
@@ -1599,8 +1717,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public boolean addMufflerUpgrade() {
-        if (isMufflerUpgradable()) return mMuffler = true;
-        return false;
+        return isMufflerUpgradable() && (mMuffler = true);
     }
 
     @Override
@@ -1635,6 +1752,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public void setCoverIDAtSide(EnumFacing side, int aID) {
+        if(side == null) return;
         mCoverSides[side.getIndex()] = aID;
         mCoverData[side.getIndex()] = 0;
         issueCoverUpdate(side);
@@ -1643,6 +1761,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public void setCoverItemAtSide(EnumFacing side, ItemStack aStack) {
+        if(side == null) return;
         int coverId = GregTech_API.getCoverId(new GT_ItemStack(aStack));
         GT_CoverBehavior behavior = GregTech_API.getCoverBehavior(coverId);
         behavior.placeCover(side, coverId, aStack, this);
@@ -1650,61 +1769,65 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public int getCoverIDAtSide(EnumFacing side) {
+        if(side == null) return 0;
         return mCoverSides[side.getIndex()];
     }
 
     @Override
     public boolean canPlaceCoverIDAtSide(EnumFacing side, int aID) {
-        return getCoverIDAtSide(side) == 0;
+        return side != null && getCoverIDAtSide(side) == 0;
     }
 
     @Override
     public boolean canPlaceCoverItemAtSide(EnumFacing side, ItemStack aCover) {
-        return getCoverIDAtSide(side) == 0;
+        return side != null && getCoverIDAtSide(side) == 0;
     }
 
     @Override
     public void setCoverDataAtSide(EnumFacing side, int aData) {
+        if(side == null) return;
         mCoverData[side.getIndex()] = aData;
     }
 
     @Override
     public int getCoverDataAtSide(EnumFacing side) {
+        if(side == null) return 0;
         return mCoverData[side.getIndex()];
     }
+
 
     public byte getLightValue() {
         return mLightValue;
     }
 
-    public void setLightValue(byte aLightValue) {
-        mLightValue = (byte) (aLightValue & 15);
+
+    public void setLightValue(byte lightValue) {
+        mLightValue = (byte) (lightValue & 15);
     }
 
     @Override
     public long getAverageElectricInput() {
-        //int rEU = 0;
-        //for (int tEU : mAverageEUInput) rEU += tEU;
-        //return rEU / mAverageEUInput.length;
-        return getInputVoltage();
+        int rEU = 0;
+        for (int tEU : mAverageEUInput) rEU += tEU;
+        return rEU / mAverageEUInput.length;
     }
 
     @Override
     public long getAverageElectricOutput() {
-        //int rEU = 0;
-        //for (int tEU : mAverageEUOutput) rEU += tEU;
-        //return rEU / mAverageEUOutput.length;
-        return getOutputVoltage();
+        int rEU = 0;
+        for (int tEU : mAverageEUOutput) rEU += tEU;
+        return rEU / mAverageEUOutput.length;
     }
 
     @Override
-    public boolean dropCover(EnumFacing side, EnumFacing aDroppedSide, boolean aForced) {
+    public boolean dropCover(EnumFacing side, EnumFacing droppedSide, boolean forced) {
         int coverIdAtSide = getCoverIDAtSide(side);
-        if (GregTech_API.getCoverBehavior(coverIdAtSide)
-                .onCoverRemoval(side, coverIdAtSide, mCoverData[side.getIndex()], this, aForced) || aForced) {
-            ItemStack tStack = getCoverBehaviorAtSide(side).getDrop(side, getCoverIDAtSide(side), getCoverDataAtSide(side), this);
+        int coverDataAtSide = getCoverDataAtSide(side);
+        GT_CoverBehavior behavior = GregTech_API.getCoverBehavior(coverIdAtSide);
+        if (behavior.onCoverRemoval(side, coverIdAtSide, coverDataAtSide, this, forced) || forced) {
+            ItemStack tStack = behavior.getDrop(side, coverIdAtSide, coverDataAtSide, this);
             if (tStack != null) {
-                Vec3d dropCoords = new Vec3d(pos.offset(aDroppedSide)).add(new Vec3d(0.5f, 0.5f, 0.5f));
+                Vec3d dropCoords = new Vec3d(pos.offset(droppedSide)).add(new Vec3d(0.5f, 0.5f, 0.5f));
                 EntityItem tEntity = new EntityItem(worldObj, dropCoords.xCoord, dropCoords.yCoord, dropCoords.zCoord, tStack);
                 tEntity.motionX = 0;
                 tEntity.motionY = 0;
@@ -1744,18 +1867,18 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
-    public void setStrongOutputRedstoneSignal(EnumFacing side, byte aStrength) {
+    public void setStrongOutputRedstoneSignal(EnumFacing side, byte strength) {
         if(side != null) {
             mStrongRedstone |= (1 << side.getIndex());
-            setOutputRedstoneSignal(side, aStrength);
+            setOutputRedstoneSignal(side, strength);
         }
     }
 
     @Override
-    public ItemStack decrStackSize(int aIndex, int aAmount) {
+    public ItemStack decrStackSize(int index, int amount) {
         if (hasValidMetaTileEntity()) {
             mInventoryChanged = true;
-            return mMetaTileEntity.decrStackSize(aIndex, aAmount);
+            return mMetaTileEntity.decrStackSize(index, amount);
         }
         return null;
     }
@@ -1767,276 +1890,208 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
-    public long injectEnergyUnits(EnumFacing side, long aVoltage, long aAmperage) {
+    public long injectEnergyUnits(EnumFacing side, long voltage, long amperage) {
         if (!hasValidMetaTileEntity() || !mMetaTileEntity.isElectric() ||
                 !inputEnergyFrom(side) ||
-                aAmperage <= 0 ||
-                aVoltage <= 0 ||
+                amperage <= 0 ||
+                voltage <= 0 ||
                 getStoredEU() >= getEUCapacity() ||
                 mMetaTileEntity.maxAmperesIn() <= mAcceptedAmperes)
             return 0;
-        if (aVoltage > getInputVoltage()) {
-            doExplosion(aVoltage);
+        if (voltage > getInputVoltage()) {
+            doExplosion(voltage);
             return 0;
         }
-        if (increaseStoredEnergyUnits(aVoltage * (aAmperage = Math.min(aAmperage, Math.min(mMetaTileEntity.maxAmperesIn() - mAcceptedAmperes, 1 + ((getEUCapacity() - getStoredEU()) / aVoltage)))), true)) {
-            //mAverageEUInput[mAverageEUInputIndex] += aVoltage * aAmperage;
-            mAcceptedAmperes += aAmperage;
-            return aAmperage;
+        amperage = Math.min(amperage, Math.min(mMetaTileEntity.maxAmperesIn() - mAcceptedAmperes, 1 + ((getEUCapacity() - getStoredEU()) / voltage)));
+
+        if (increaseStoredEnergyUnits(voltage * amperage, true)) {
+            mAverageEUInput[mAverageEUInputIndex] += voltage * amperage;
+            mAcceptedAmperes += amperage;
+            return amperage;
         }
         return 0;
     }
 
+
+
     @Override
-    public int fill(EnumFacing side, FluidStack aFluid, boolean doFill) {
-        if (mTickTimer > 5 && hasValidMetaTileEntity() && !mInputDisabled && (side == null || (mMetaTileEntity.isLiquidInput((byte) side.ordinal()) && getCoverBehaviorAtSide((byte) side.ordinal()).letsFluidIn((byte) side.ordinal(), getCoverIDAtSide((byte) side.ordinal()), getCoverDataAtSide((byte) side.ordinal()), aFluid == null ? null : aFluid.getFluid(), this))))
-            return mMetaTileEntity.fill(side, aFluid, doFill);
+    public int fill(EnumFacing side, FluidStack fluid, boolean doFill) {
+        int coverIdAtSide = getCoverIDAtSide(side);
+        int coverDataAtSide = getCoverDataAtSide(side);
+        GT_CoverBehavior coverBehavior = GregTech_API.getCoverBehavior(coverIdAtSide);
+
+        if(hasValidMetaTileEntity() && !mInputDisabled &&
+                coverBehavior.letsFluidIn(side, coverIdAtSide, coverDataAtSide,
+                        fluid.getFluid(), this) &&
+                mMetaTileEntity.isLiquidOutput(side))
+            return mMetaTileEntity.fill(side, fluid, doFill);
+
         return 0;
     }
 
     @Override
     public FluidStack drain(EnumFacing side, int maxDrain, boolean doDrain) {
-        if (mTickTimer > 5 && hasValidMetaTileEntity() && !mOutputDisabled &&
-                (side == null || (mMetaTileEntity.isLiquidOutput((byte) side.ordinal()) &&
-                        getCoverBehaviorAtSide((byte) side.ordinal()).letsFluidOut((byte) side.ordinal(), getCoverIDAtSide((byte) side.ordinal()), getCoverDataAtSide((byte) side.ordinal()), mMetaTileEntity.getFluid() == null ? null : mMetaTileEntity.getFluid().getFluid(), this))))
+        int coverIdAtSide = getCoverIDAtSide(side);
+        int coverDataAtSide = getCoverDataAtSide(side);
+        GT_CoverBehavior coverBehavior = GregTech_API.getCoverBehavior(coverIdAtSide);
+
+        if (hasValidMetaTileEntity() && !mOutputDisabled &&
+                coverBehavior.letsFluidOut(side, coverIdAtSide, coverDataAtSide,
+                        mMetaTileEntity.getFluid() == null ? null : mMetaTileEntity.getFluid().getFluid(), this) &&
+                mMetaTileEntity.isLiquidOutput(side))
             return mMetaTileEntity.drain(side, maxDrain, doDrain);
+
         return null;
     }
 
     @Override
-    public FluidStack drain(EnumFacing side, FluidStack aFluid, boolean doDrain) {
-        if (mTickTimer > 5 && hasValidMetaTileEntity() && !mOutputDisabled &&
-                (side == null || (mMetaTileEntity.isLiquidOutput((byte) side.ordinal()) &&
-                        getCoverBehaviorAtSide((byte) side.ordinal()).letsFluidOut((byte) side.ordinal(), getCoverIDAtSide((byte) side.ordinal()), getCoverDataAtSide((byte) side.ordinal()), aFluid == null ? null : aFluid.getFluid(), this))))
-            return mMetaTileEntity.drain(side, aFluid, doDrain);
+    public FluidStack drain(EnumFacing side, FluidStack fluid, boolean doDrain) {
+        int coverIdAtSide = getCoverIDAtSide(side);
+        int coverDataAtSide = getCoverDataAtSide(side);
+        GT_CoverBehavior coverBehavior = GregTech_API.getCoverBehavior(coverIdAtSide);
+
+        if (hasValidMetaTileEntity() && !mOutputDisabled &&
+                coverBehavior.letsFluidOut(side, coverIdAtSide, coverDataAtSide,
+                        fluid.getFluid(), this) &&
+                mMetaTileEntity.isLiquidOutput(side))
+            return mMetaTileEntity.drain(side, fluid, doDrain);
+
         return null;
     }
 
     @Override
-    public boolean canFill(EnumFacing side, Fluid aFluid) {
-        if (mTickTimer > 5 && hasValidMetaTileEntity() && (mRunningThroughTick || !mInputDisabled) && (side == null || (mMetaTileEntity.isLiquidInput((byte) side.ordinal()) && getCoverBehaviorAtSide((byte) side.ordinal()).letsFluidIn((byte) side.ordinal(), getCoverIDAtSide((byte) side.ordinal()), getCoverDataAtSide((byte) side.ordinal()), aFluid, this))))
-            return mMetaTileEntity.canFill(side, aFluid);
-        return false;
+    public boolean canFill(EnumFacing side, Fluid fluid) {
+        int coverIdAtSide = getCoverIDAtSide(side);
+        int coverDataAtSide = getCoverDataAtSide(side);
+        GT_CoverBehavior coverBehavior = GregTech_API.getCoverBehavior(coverIdAtSide);
+
+        return hasValidMetaTileEntity() && !mInputDisabled &&
+                coverBehavior.letsFluidIn(side, coverIdAtSide, coverDataAtSide, fluid, this) &&
+                mMetaTileEntity.isLiquidInput(side) && mMetaTileEntity.canFill(side, fluid);
+
     }
 
     @Override
-    public boolean canDrain(EnumFacing side, Fluid aFluid) {
-        if (mTickTimer > 5 && hasValidMetaTileEntity() && (mRunningThroughTick || !mOutputDisabled) && (side == null || (mMetaTileEntity.isLiquidOutput((byte) side.ordinal()) && getCoverBehaviorAtSide((byte) side.ordinal()).letsFluidOut((byte) side.ordinal(), getCoverIDAtSide((byte) side.ordinal()), getCoverDataAtSide((byte) side.ordinal()), aFluid, this))))
-            return mMetaTileEntity.canDrain(side, aFluid);
-        return false;
+    public boolean canDrain(EnumFacing side, Fluid fluid) {
+        int coverIdAtSide = getCoverIDAtSide(side);
+        int coverDataAtSide = getCoverDataAtSide(side);
+        GT_CoverBehavior coverBehavior = GregTech_API.getCoverBehavior(coverIdAtSide);
+
+        return hasValidMetaTileEntity() && !mOutputDisabled &&
+                coverBehavior.letsFluidOut(side, coverIdAtSide, coverDataAtSide, fluid, this) &&
+                mMetaTileEntity.isLiquidOutput(side) && mMetaTileEntity.canDrain(side, fluid);
+
     }
 
     @Override
     public FluidTankInfo[] getTankInfo(EnumFacing side) {
-        if (hasValidMetaTileEntity() && ((mMetaTileEntity.isLiquidInput((byte) side.ordinal()) && getCoverBehaviorAtSide((byte) side.ordinal()).letsFluidIn((byte) side.ordinal(), getCoverIDAtSide((byte) side.ordinal()), getCoverDataAtSide((byte) side.ordinal()), null, this)) || (mMetaTileEntity.isLiquidOutput((byte) side.ordinal()) && getCoverBehaviorAtSide((byte) side.ordinal()).letsFluidOut((byte) side.ordinal(), getCoverIDAtSide((byte) side.ordinal()), getCoverDataAtSide((byte) side.ordinal()), null, this))))
+        int coverIdAtSide = getCoverIDAtSide(side);
+        int coverDataAtSide = getCoverDataAtSide(side);
+        GT_CoverBehavior coverBehavior = GregTech_API.getCoverBehavior(coverIdAtSide);
+
+        if (hasValidMetaTileEntity() && (
+                (!mOutputDisabled && mMetaTileEntity.isLiquidOutput(side) && coverBehavior.letsFluidOut(side, coverIdAtSide, coverDataAtSide, null, this) ||
+                        (!mInputDisabled && mMetaTileEntity.isLiquidInput(side) && coverBehavior.letsFluidIn(side, coverIdAtSide, coverDataAtSide, null, this)))))
             return mMetaTileEntity.getTankInfo(side);
+
         return new FluidTankInfo[]{};
     }
 
-    public double getOutputEnergyUnitsPerTick() {
-        return oOutput;
-    }
 
-    public boolean isTeleporterCompatible(EnumFacing side) {
-        return hasValidMetaTileEntity() && mMetaTileEntity.isTeleporterCompatible();
-    }
+    ////////////////////////////////////////////////////////////////////////////////
+    //                  IEnergySink Implementation                               //
+    ///////////////////////////////////////////////////////////////////////////////
 
-    public double demandedEnergyUnits() {
+    @Override
+    public double getDemandedEnergy() {
         if (mReleaseEnergy || !hasValidMetaTileEntity() || !mMetaTileEntity.isEnetInput()) return 0;
         return getEUCapacity() - getStoredEU();
     }
 
-    public double injectEnergyUnits(EnumFacing aDirection, double aAmount) {
-        return injectEnergyUnits((byte) aDirection.ordinal(), (int) aAmount, 1) > 0 ? 0 : aAmount;
+    @Override
+    public int getSinkTier() {
+        return GT_Utility.getTier(getOutputVoltage());
     }
 
     @Override
-    public boolean acceptsEnergyFrom(IEnergyEmitter aEmitter, EnumFacing aDirection) {
-        return inputEnergyFrom((byte) aDirection.ordinal());
+    public double injectEnergy(EnumFacing direction, double amount, double voltage) {
+        return injectEnergyUnits(direction, (int) amount, 1) > 0 ? 0 : amount;
     }
 
     @Override
-    public boolean emitsEnergyTo(IEnergyAcceptor aReceiver, EnumFacing aDirection) {
-        return outputsEnergyTo((byte) aDirection.ordinal());
+    public boolean acceptsEnergyFrom(IEnergyEmitter emitter, EnumFacing direction) {
+        return inputEnergyFrom(direction);
     }
 
 
+    ////////////////////////////////////////////////////////////////////////////////
+    //                  IEnergySource Implementation                             //
+    ///////////////////////////////////////////////////////////////////////////////
+
+    @Override
     public double getOfferedEnergy() {
-        return (hasValidMetaTileEntity() && getStoredEU() - mMetaTileEntity.getMinimumStoredEU() >= oOutput) ? Math.max(0, oOutput) : 0;
+        long outputVoltage = getOutputVoltage();
+        return (hasValidMetaTileEntity() && getStoredEU() - mMetaTileEntity.getMinimumStoredEU() >= outputVoltage) ? outputVoltage : 0;
     }
 
+    @Override
     public void drawEnergy(double amount) {
         mAverageEUOutput[mAverageEUOutputIndex] += amount;
         decreaseStoredEU((int) amount, true);
     }
 
-    public int addEnergy(int aEnergy) {
-        if (!hasValidMetaTileEntity()) return 0;
-        if (aEnergy > 0)
-            increaseStoredEnergyUnits(aEnergy, true);
-        else
-            decreaseStoredEU(-aEnergy, true);
-        return (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getEUVar());
+    @Override
+    public int getSourceTier() {
+        return GT_Utility.getTier(getOutputVoltage());
     }
 
-    public boolean isAddedToEnergyNet() {
-        return false;
+    @Override
+    public boolean emitsEnergyTo(IEnergyAcceptor receiver, EnumFacing direction) {
+        return outputsEnergyTo(direction);
     }
 
-    public int demandsEnergy() {
-        if (mReleaseEnergy || !hasValidMetaTileEntity() || !mMetaTileEntity.isEnetInput()) return 0;
-        return getCapacity() - getStored();
-    }
 
-    public int getCapacity() {
-        return (int) Math.min(Integer.MAX_VALUE, getEUCapacity());
-    }
+    ////////////////////////////////////////////////////////////////////////////////
+    //                  IEnergyStorage Implementation                            //
+    ///////////////////////////////////////////////////////////////////////////////
 
+    @Override
     public int getStored() {
         return (int) Math.min(Integer.MAX_VALUE, Math.min(getStoredEU(), getCapacity()));
     }
 
-    public void setStored(int aEU) {
-        if (hasValidMetaTileEntity()) setStoredEU(aEU);
+    @Override
+    public void setStored(int euStored) {
+        if (hasValidMetaTileEntity()) setStoredEU(euStored);
     }
 
-    public int getMaxSafeInput() {
-        return (int) Math.min(Integer.MAX_VALUE, getInputVoltage());
+    @Override
+    public int addEnergy(int energy) {
+        if (!hasValidMetaTileEntity()) return 0;
+        if (energy > 0)
+            increaseStoredEnergyUnits(energy, true);
+        else
+            decreaseStoredEU(-energy, true);
+        return (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getEUVar());
     }
 
-    public int getMaxEnergyOutput() {
-        if (mReleaseEnergy) return Integer.MAX_VALUE;
-        return getOutput();
+    @Override
+    public int getCapacity() {
+        return (int) Math.min(Integer.MAX_VALUE, getEUCapacity());
     }
 
+    @Override
     public int getOutput() {
-        return (int) Math.min(Integer.MAX_VALUE, oOutput);
-    }
-
-
-    @Override
-    public boolean isInvalidTileEntity() {
-        return isInvalid();
+        return (int) getOutputVoltage();
     }
 
     @Override
-    public boolean addStackToSlot(int aIndex, ItemStack aStack) {
-        if (GT_Utility.isStackInvalid(aStack)) return true;
-        if (aIndex < 0 || aIndex >= getSizeInventory()) return false;
-        ItemStack tStack = getStackInSlot(aIndex);
-        if (GT_Utility.isStackInvalid(tStack)) {
-            setInventorySlotContents(aIndex, aStack);
-            return true;
-        }
-        aStack = GT_OreDictUnificator.get(aStack);
-        if (GT_Utility.areStacksEqual(tStack, aStack) && tStack.stackSize + aStack.stackSize <= Math.min(aStack.getMaxStackSize(), getInventoryStackLimit())) {
-            tStack.stackSize += aStack.stackSize;
-            return true;
-        }
-        return false;
+    public double getOutputEnergyUnitsPerTick() {
+        return getOutputVoltage();
     }
 
-    @Override
-    public boolean addStackToSlot(int aIndex, ItemStack aStack, int aAmount) {
-        return addStackToSlot(aIndex, GT_Utility.copyAmount(aAmount, aStack));
-    }
-
-    @Override
-    public byte getColorization() {
-        return (byte) (mColor - 1);
-    }
-
-    @Override
-    public byte setColorization(byte aColor) {
-        if (aColor > 15 || aColor < -1) aColor = -1;
-        if (hasValidMetaTileEntity()) mMetaTileEntity.onColorChangeServer(aColor);
-        return mColor = (byte) (aColor + 1);
-    }
-
-    @Override
-    public float getBlastResistance(byte side) {
-        return hasValidMetaTileEntity() ? Math.max(0, getMetaTileEntity().getExplosionResistance(side)) : 10.0F;
-    }
-
-    @Override
-    public boolean isUniversalEnergyStored(long aEnergyAmount) {
-        if (getUniversalEnergyStored() >= aEnergyAmount) return true;
-        mHasEnoughEnergy = false;
-        return false;
-    }
-
-    @Override
-    public String[] getInfoData() {
-        {
-            if (hasValidMetaTileEntity()) return getMetaTileEntity().getInfoData();
-            return new String[]{};
-        }
-    }
-
-    @Override
-    public void markDirty() {
-        super.markDirty();
-        mInventoryChanged = true;
-    }
-
-    @Override
-    public int getLightOpacity() {
-        return mMetaTileEntity == null ? getLightValue() > 0 ? 0 : 255 : mMetaTileEntity.getLightOpacity();
-    }
-
-    @Override
-    public void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB, List<AxisAlignedBB> outputAABB, Entity collider) {
-        mMetaTileEntity.addCollisionBoxesToList(aWorld, aX, aY, aZ, inputAABB, outputAABB, collider);
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        return mMetaTileEntity.getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
-    }
-
-    @Override
-    public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity collider) {
-        mMetaTileEntity.onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
-    }
-
-    @Override
-    public String getName() {
-        return mMetaTileEntity.getName();
-    }
-
-    @Override
-    public boolean hasCustomName() {
-        return false;
-    }
-
-    @Override
-    public IFluidTankProperties[] getTankProperties() {
-        if(mMetaTileEntity != null) {
-            return new IFluidTankProperties[]{
-                    new FluidTankProperties(mMetaTileEntity.getFluid(), mMetaTileEntity.getCapacity())
-            };
-        }
-        return new IFluidTankProperties[0];
-    }
-
-    @Override
-    public int fill(FluidStack resource, boolean doFill) {
-        return this.fill(EnumFacing.DOWN, resource, doFill);
-    }
-
-    @Nullable
-    @Override
-    public FluidStack drain(FluidStack resource, boolean doDrain) {
-        if(resource != null && resource.isFluidEqual(mMetaTileEntity.getFluid())) {
-            return this.drain(resource.amount, doDrain);
-        }
-        return null;
-    }
-
-    @Nullable
-    @Override
-    public FluidStack drain(int maxDrain, boolean doDrain) {
-        return this.drain(EnumFacing.DOWN, maxDrain, doDrain);
+    public boolean isTeleporterCompatible(EnumFacing side) {
+        return hasValidMetaTileEntity() && mMetaTileEntity.isTeleporterCompatible();
     }
 
 }

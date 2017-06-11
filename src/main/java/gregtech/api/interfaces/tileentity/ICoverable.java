@@ -1,43 +1,41 @@
 package gregtech.api.interfaces.tileentity;
 
-import gregtech.api.util.GT_CoverBehavior;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 
 public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEnergyContainer {
-    public boolean canPlaceCoverIDAtSide(EnumFacing aSide, int aID);
 
-    public boolean canPlaceCoverItemAtSide(EnumFacing aSide, ItemStack aCover);
+    /**
+     * If a Cover of that Type can be placed on this Side.
+     */
+    boolean allowCoverOnSide(EnumFacing side, int coverId);
 
-    public boolean dropCover(EnumFacing aSide, EnumFacing aDroppedSide, boolean aForced);
+    boolean dropCover(EnumFacing side, EnumFacing droppedSide, boolean forced);
 
-    public void setCoverDataAtSide(EnumFacing aSide, int aData);
+    void setCoverDataAtSide(EnumFacing side, int coverData);
 
-    public void setCoverIDAtSide(EnumFacing aSide, int aID);
+    void setCoverIDAtSide(EnumFacing side, int coverId);
 
-    public void setCoverItemAtSide(EnumFacing aSide, ItemStack aCover);
+    int getCoverDataAtSide(EnumFacing side);
 
-    public int getCoverDataAtSide(EnumFacing aSide);
-
-    public int getCoverIDAtSide(EnumFacing aSide);
-
-    public GT_CoverBehavior getCoverBehaviorAtSide(EnumFacing aSide);
+    int getCoverIDAtSide(EnumFacing side);
 
     /**
      * For use by the regular MetaTileEntities. Returns the Cover Manipulated input Redstone.
      * Don't use this if you are a Cover Behavior. Only for MetaTileEntities.
      */
-    public byte getInternalInputRedstoneSignal(EnumFacing aSide);
+    byte getInternalInputRedstoneSignal(EnumFacing side);
 
     /**
      * For use by the regular MetaTileEntities. This makes it not conflict with Cover based Redstone Signals.
      * Don't use this if you are a Cover Behavior. Only for MetaTileEntities.
      */
-    public void setInternalOutputRedstoneSignal(EnumFacing aSide, byte aStrength);
+    void setInternalOutputRedstoneSignal(EnumFacing side, byte strength);
 
     /**
      * Causes a general Cover Texture update.
      * Sends 6 Integers to Client + causes @issueTextureUpdate()
      */
-    public void issueCoverUpdate(EnumFacing aSide);
+    void issueCoverUpdate();
+
+
 }

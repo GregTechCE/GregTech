@@ -3,7 +3,7 @@ package gregtech.common.items;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.items.GT_Generic_Item;
+import gregtech.api.items.GenericItem;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import net.minecraft.creativetab.CreativeTabs;
@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class GT_IntegratedCircuit_Item extends GT_Generic_Item {
+public class GT_IntegratedCircuit_Item extends GenericItem {
     public GT_IntegratedCircuit_Item() {
         super("integrated_circuit", "Integrated Circuit", "");
         setHasSubtypes(true);

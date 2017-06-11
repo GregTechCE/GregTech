@@ -1,7 +1,7 @@
 package gregtech.api.enums;
 
 public enum ConfigCategories {
-    news,
+
     general,
     machineconfig,
     specialunificationtargets;
@@ -49,10 +49,6 @@ public enum ConfigCategories {
         pulverization;
     }
 
-    public enum Fuels {
-        boilerfuels;
-    }
-
     public enum Tools {
         mortar,
         hammerplating,
@@ -62,4 +58,5 @@ public enum ConfigCategories {
         hammerquadrupleplate,
         hammerquintupleplate;
     }
+
 }

@@ -1,8 +1,8 @@
 package gregtech.common.items.armor;
 
-import gregtech.api.damagesources.GT_DamageSources;
+import gregtech.api.damagesources.DamageSources;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.items.GT_Generic_Item;
+import gregtech.api.items.GenericItem;
 import ic2.core.IC2;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -34,7 +34,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class ModularArmor_Item extends GT_Generic_Item implements ISpecialArmor {
+public class ModularArmor_Item extends GenericItem implements ISpecialArmor {
 
     @SideOnly(Side.CLIENT)
     private TextureAtlasSprite itemIcon;
@@ -86,13 +86,13 @@ public class ModularArmor_Item extends GT_Generic_Item implements ISpecialArmor 
             double tmp = 0.0d;
             if (source.isMagicDamage()) {
                 tmp = data.magicDef;
-            } else if (source == GT_DamageSources.getRadioactiveDamage()) {
+            } else if (source == DamageSources.getRadioactiveDamage()) {
                 tmp = data.radiationDef;
-            } else if (source == GT_DamageSources.getElectricDamage()) {
+            } else if (source == DamageSources.getElectricDamage()) {
                 tmp = data.electricDef;
             } else if (source == DamageSource.wither) {
                 tmp = data.witherDef;
-            } else if (source.isFireDamage() || source == GT_DamageSources.getHeatDamage()) {
+            } else if (source.isFireDamage() || source == DamageSources.getHeatDamage()) {
                 tmp = data.fireDef;
             } else if (source.isExplosion()) {
                 tmp = data.explosionDef;

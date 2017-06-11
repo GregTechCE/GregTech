@@ -4,66 +4,68 @@ package gregtech.api.interfaces.tileentity;
  * For Machines which have Progress
  */
 public interface IMachineProgress extends IHasWorldObjectAndCoords {
+
     /**
      * returns the Progress this Machine has made. Warning, this can also be negative!
      */
-    public int getProgress();
+    int getProgress();
 
     /**
      * returns the Progress the Machine needs to complete its task.
      */
-    public int getMaxProgress();
+    int getMaxProgress();
 
     /**
      * increases the Progress of the Machine
      */
-    public void increaseProgress(int aProgressAmountInTicks);
+    void increaseProgress(int progressAmountInTicks);
 
     /**
      * returns if the Machine currently does something.
      */
-    public boolean hasThingsToDo();
+    boolean hasThingsToDo();
 
     /**
      * returns if the Machine just got enableWorking called after being disabled.
      * Used for Translocators, which need to check if they need to transfer immediately.
      */
-    public boolean hasWorkJustBeenEnabled();
+    boolean hasWorkJustBeenEnabled();
 
     /**
      * allows Machine to work
      */
-    public void enableWorking();
+    void enableWorking();
 
     /**
      * disallows Machine to work
      */
-    public void disableWorking();
+    void disableWorking();
 
     /**
      * if the Machine is allowed to Work
      */
-    public boolean isAllowedToWork();
+    boolean isAllowedToWork();
 
     /**
      * used to control Machines via Redstone Signal Strength by special Covers
      * In case of 0 the Machine is very likely doing nothing, or is just not being controlled at all.
      */
-    public byte getWorkDataValue();
+    byte getWorkDataValue();
 
     /**
      * used to control Machines via Redstone Signal Strength by special Covers
      * only Values between 0 and 15!
      */
-    public void setWorkDataValue(byte aValue);
+    void setWorkDataValue(byte aValue);
 
     /**
      * gives you the Active Status of the Machine
      */
-    public boolean isActive();
+    boolean isActive();
 
     /**
      * sets the visible Active Status of the Machine
      */
-    public void setActive(boolean aActive);
+    void setActive(boolean active);
+
 }

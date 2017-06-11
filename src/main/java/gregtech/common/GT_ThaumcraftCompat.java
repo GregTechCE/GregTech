@@ -1,7 +1,6 @@
 package gregtech.common;
 
 import gregtech.api.enums.TC_Aspects;
-import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 

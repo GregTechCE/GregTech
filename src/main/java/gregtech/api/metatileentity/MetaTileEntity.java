@@ -449,12 +449,12 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     }
 
     @Override
-    public boolean isLiquidInput(byte aSide) {
+    public boolean isLiquidInput(EnumFacing aSide) {
         return true;
     }
 
     @Override
-    public boolean isLiquidOutput(byte aSide) {
+    public boolean isLiquidOutput(EnumFacing aSide) {
         return true;
     }
 
@@ -769,17 +769,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     @Override
     public int getLightOpacity() {
         return ((BaseMetaTileEntity) getBaseMetaTileEntity()).getLightValue() > 0 ? 0 : 255;
-    }
-
-    @Override
-    public void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB, List<AxisAlignedBB> outputAABB, Entity collider) {
-        AxisAlignedBB axisalignedbb1 = getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
-        if (axisalignedbb1 != null && inputAABB.intersectsWith(axisalignedbb1)) outputAABB.add(axisalignedbb1);
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        return new AxisAlignedBB(aX, aY, aZ, aX + 1, aY + 1, aZ + 1);
     }
 
     @Override

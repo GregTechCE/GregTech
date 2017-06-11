@@ -5,35 +5,37 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public interface IItemContainer {
-    public Item getItem();
 
-    public Block getBlock();
+    Item getItem();
 
-    public boolean isStackEqual(Object aStack);
+    Block getBlock();
 
-    public boolean isStackEqual(Object aStack, boolean aWildcard, boolean aIgnoreNBT);
+    boolean isStackEqual(ItemStack stack);
 
-    public ItemStack get(long aAmount, Object... aReplacements);
+    boolean isStackEqual(ItemStack stack, boolean wildcard, boolean ignoreNBT);
 
-    public ItemStack getWildcard(long aAmount, Object... aReplacements);
+    ItemStack get(int amount, ItemStack... replacements);
 
-    public ItemStack getUndamaged(long aAmount, Object... aReplacements);
+    ItemStack getWildcard(int amount, ItemStack... replacements);
 
-    public ItemStack getAlmostBroken(long aAmount, Object... aReplacements);
+    ItemStack getUndamaged(int amount, ItemStack... replacements);
 
-    public ItemStack getWithDamage(long aAmount, long aMetaValue, Object... aReplacements);
+    ItemStack getAlmostBroken(int amount, ItemStack... replacements);
 
-    public IItemContainer set(Item aItem);
+    ItemStack getWithDamage(int amount, long metaValue, ItemStack... replacements);
 
-    public IItemContainer set(ItemStack aStack);
+    IItemContainer set(Item item);
 
-    public IItemContainer registerOre(Object... aOreNames);
+    IItemContainer set(ItemStack stack);
 
-    public IItemContainer registerWildcardAsOre(Object... aOreNames);
+    IItemContainer registerOre(ItemStack... oreNames);
 
-    public ItemStack getWithCharge(long aAmount, int aEnergy, Object... aReplacements);
+    IItemContainer registerWildcardAsOre(ItemStack... oreNames);
 
-    public ItemStack getWithName(long aAmount, String aDisplayName, Object... aReplacements);
+    ItemStack getWithCharge(int amount, int energy, ItemStack... replacements);
 
-    public boolean hasBeenSet();
+    ItemStack getWithName(int amount, String displayName, ItemStack... replacements);
+
+    boolean hasBeenSet();
+
 }
