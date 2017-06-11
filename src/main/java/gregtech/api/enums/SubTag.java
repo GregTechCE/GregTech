@@ -155,10 +155,6 @@ public final class SubTag implements ICondition<ISubTagContainer> {
      */
     public static final SubTag BOUNCY = getNewSubTag("BOUNCY");
     /**
-     * If this Material is invisible
-     */
-    public static final SubTag INVISIBLE = getNewSubTag("INVISIBLE");
-    /**
      * If this Material is transparent
      */
     public static final SubTag TRANSPARENT = getNewSubTag("TRANSPARENT");

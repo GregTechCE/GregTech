@@ -7,8 +7,6 @@ import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.GT_MetaGenerated_Item;
-import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.objects.GT_Fluid;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;

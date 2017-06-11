@@ -5,6 +5,7 @@ import com.google.common.collect.HashBiMap;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.items.GenericItem;
 import gregtech.api.objects.GT_Cover_Default;
 import gregtech.api.objects.GT_Cover_None;
 import gregtech.api.objects.GT_HashSet;
@@ -25,8 +26,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 
 import java.util.*;
-
-import static gregtech.api.enums.GT_Values.*;
 
 /**
  * Please do not include this File in your Mod-download as it ruins compatiblity, like with the IC2-API
@@ -338,10 +337,10 @@ public class GregTech_API {
                     .newInstance(aUnlocalized, aEnglish, aMaxStore);
         } catch (Throwable e) {/*Do nothing*/}
         try {
-            return (Item) Class.forName("gregtech.api.items.GT_CoolantCell_Item").getConstructors()[0]
+            return (Item) Class.forName("gregtech.api.items.CoolantCellItem").getConstructors()[0]
                     .newInstance(aUnlocalized, aEnglish, aMaxStore);
         } catch (Throwable e) {/*Do nothing*/}
-        return new gregtech.api.items.GT_Generic_Item(aUnlocalized, aEnglish, "Doesn't work as intended, this is a Bug", false);
+        return new GenericItem(aUnlocalized, aEnglish, "Doesn't work as intended, this is a Bug", false);
     }
 
     public static void registerCover(int coverId, ItemStack aStack, ResourceLocation aCover, GT_CoverBehavior aBehavior) {

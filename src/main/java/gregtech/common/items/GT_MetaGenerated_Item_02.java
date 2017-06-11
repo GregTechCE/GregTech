@@ -6,7 +6,6 @@ import gregtech.api.items.GT_MetaGenerated_Item_X32;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.RegIconContainer;
-import gregtech.api.util.GT_FoodStat;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;

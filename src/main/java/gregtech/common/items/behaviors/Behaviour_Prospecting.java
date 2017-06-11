@@ -1,8 +1,6 @@
 package gregtech.common.items.behaviors;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;

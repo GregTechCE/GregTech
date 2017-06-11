@@ -1,8 +1,7 @@
 package gregtech.common.items.behaviors;
 
 import gregtech.api.enums.GT_Values;
-import gregtech.api.interfaces.IItemBehaviour;
-import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.interfaces.metaitem.IItemBehaviour;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;

@@ -1,7 +1,5 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_LanguageManager;
 import ic2.api.crops.ICropTile;
 import net.minecraft.entity.player.EntityPlayer;

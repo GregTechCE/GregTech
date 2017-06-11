@@ -8,7 +8,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.items.GT_Generic_Item;
+import gregtech.api.items.GenericItem;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
@@ -23,7 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class ItemComb extends GT_Generic_Item {
+public class ItemComb extends GenericItem {
 
     @SideOnly(Side.CLIENT)
 	private TextureAtlasSprite itemIcon, secondIcon;

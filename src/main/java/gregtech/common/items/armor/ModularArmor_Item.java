@@ -2,7 +2,7 @@ package gregtech.common.items.armor;
 
 import gregtech.api.damagesources.DamageSources;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.items.GT_Generic_Item;
+import gregtech.api.items.GenericItem;
 import ic2.core.IC2;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -34,7 +34,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class ModularArmor_Item extends GT_Generic_Item implements ISpecialArmor {
+public class ModularArmor_Item extends GenericItem implements ISpecialArmor {
 
     @SideOnly(Side.CLIENT)
     private TextureAtlasSprite itemIcon;

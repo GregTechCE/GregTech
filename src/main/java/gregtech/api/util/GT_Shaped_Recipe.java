@@ -1,7 +1,6 @@
 package gregtech.api.util;
 
 import gregtech.api.interfaces.internal.IGT_CraftingRecipe;
-import gregtech.api.items.GT_MetaGenerated_Tool;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.inventory.InventoryCrafting;

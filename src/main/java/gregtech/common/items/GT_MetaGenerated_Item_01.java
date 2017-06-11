@@ -2,8 +2,7 @@ package gregtech.common.items;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
-import gregtech.api.interfaces.IItemBehaviour;
-import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.interfaces.metaitem.IItemBehaviour;
 import gregtech.api.items.GT_MetaGenerated_Item_X32;
 import gregtech.api.objects.GT_MultiTexture;
 import gregtech.api.objects.GT_RenderedTexture;

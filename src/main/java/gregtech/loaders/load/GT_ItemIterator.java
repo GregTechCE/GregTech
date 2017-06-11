@@ -2,8 +2,7 @@ package gregtech.loaders.load;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
-import gregtech.api.items.GT_Generic_Item;
-import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.items.GenericItem;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -56,7 +55,7 @@ public class GT_ItemIterator
         Iterator<Item> tIterator = Item.REGISTRY.iterator();
         while (tIterator.hasNext()) {
             Object tObject;
-            if (((tObject = tIterator.next()) instanceof Item) && (!(tObject instanceof GT_Generic_Item))) {
+            if (((tObject = tIterator.next()) instanceof Item) && (!(tObject instanceof GenericItem))) {
                 Item tItem = (Item) tObject;
                 String tName;
                 if ((tName = tItem.getUnlocalizedName()) != null) {

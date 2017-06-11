@@ -1,15 +1,6 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRedstoneComparator;
-import net.minecraft.block.BlockRedstoneRepeater;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;

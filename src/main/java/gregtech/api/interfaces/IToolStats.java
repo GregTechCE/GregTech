@@ -1,7 +1,7 @@
 package gregtech.api.interfaces;
 
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import net.minecraft.block.Block;
+import gregtech.api.items.toolitem.ToolMetaItem;
+import ic2.api.tile.IWrenchable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public interface IToolStats {
     /**
      * Called when this gets added to a Tool Item
      */
-    void onStatsAddedToTool(GT_MetaGenerated_Tool item, int ID);
+    void onStatsAddedToTool(ToolMetaItem item, int ID);
 
     /**
      * @return Damage the Tool receives when breaking a Block. 100 is one Damage Point (or 100 EU).
@@ -74,7 +74,7 @@ public interface IToolStats {
     float getSpeedMultiplier();
 
     /**
-     * @return This is a multiplier for the Tool Speed. 1.0F = no special Durability.
+     * @return This is a multiplier for the Tool Durability. 1.0F = no special Durability.
      */
     float getMaxDurabilityMultiplier();
 
@@ -101,29 +101,9 @@ public interface IToolStats {
     boolean isGrafter();
 
     /**
-     * @return If this Tool can be used as an Chainsaw.
-     */
-    boolean isChainsaw();
-
-    /**
      * @return If this Tool can be used as an BC Wrench.
      */
     boolean isWrench();
-    
-    /**
-     * @return If this Tool can be used as Weapon i.e. if that is the main purpose.
-     */
-    boolean isWeapon();
-
-    /**
-     * @return If this Tool is a Ranged Weapon. Return false at isWeapon unless you have a Blade attached to your Bow/Gun or something
-     */
-    boolean isRangedWeapon();
-
-    /**
-     * @return If this Tool can be used as Weapon i.e. if that is the main purpose.
-     */
-    boolean isMiningTool();
 
     /**
      * aBlock.getHarvestTool(aMetaData) can return the following Values for example.
@@ -136,9 +116,8 @@ public interface IToolStats {
     /**
      * This lets you modify the Drop List, when this type of Tool has been used.
      *
-     * @return the Amount of modified Items.
      */
-    int convertBlockDrops(List<ItemStack> drops, ItemStack stack, EntityPlayer player, IBlockState block, BlockPos blockPos, int fortune, boolean silkTouch, BlockEvent.HarvestDropsEvent event);
+    int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops);
 
     /**
      * @return Returns a broken Version of the Item.
@@ -155,6 +134,6 @@ public interface IToolStats {
      */
     float getMagicDamageAgainstEntity(float originalDamage, Entity entity, ItemStack stack, EntityPlayer player);
 
-    short[] getRGBa(boolean isToolHead, ItemStack stack);
+    int getColor(boolean isToolHead, ItemStack stack);
 
 }

@@ -1,7 +1,6 @@
 package gregtech.common.tools;
 
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.common.items.behaviors.Behaviour_Sense;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

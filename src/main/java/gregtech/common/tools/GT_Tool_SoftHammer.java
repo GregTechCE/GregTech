@@ -2,7 +2,6 @@ package gregtech.common.tools;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.common.items.behaviors.Behaviour_SoftHammer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;

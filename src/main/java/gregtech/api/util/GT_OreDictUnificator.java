@@ -236,7 +236,7 @@ public class GT_OreDictUnificator {
         return registerOre(aPrefix.get(aMaterial), aStack);
     }
 
-    public static boolean registerOre(Object aName, ItemStack aStack) {
+    public static boolean registerOre(String aName, ItemStack aStack) {
         if (aName == null || !GT_Utility.isStackValid(aStack)) return false;
         String tName = aName.toString();
         if (!GT_Utility.isStringValid(tName)) return false;
