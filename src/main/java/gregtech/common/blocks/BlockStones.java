@@ -4,20 +4,16 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.common.blocks.itemblocks.GT_Item_Granites;
-import net.minecraft.block.state.IBlockState;
+import gregtech.common.blocks.itemblocks.ItemGranites;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class GT_Block_Stones extends GT_Block_Stones_Abstract {
-    public GT_Block_Stones() {
-        super("blockstones", GT_Item_Granites.class);
+public class BlockStones extends BlockStonesAbstract {
+    public BlockStones() {
+        super("blockstones", ItemGranites.class);
         setResistance(60.0F);
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Marble");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Marble Cobblestone");
@@ -55,10 +51,10 @@ public class GT_Block_Stones extends GT_Block_Stones_Abstract {
 
     @Override
     public Materials[] getMaterials() {
-        if (mMaterials == null) {
-            mMaterials = new Materials[]{Materials.Marble, Materials.Basalt};
+        if (materials == null) {
+            materials = new Materials[]{Materials.Marble, Materials.Basalt};
         }
-        return mMaterials;
+        return materials;
     }
 
     @Override

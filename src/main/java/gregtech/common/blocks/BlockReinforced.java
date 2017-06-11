@@ -5,14 +5,14 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.items.GT_Generic_Block;
+import gregtech.api.items.GenericBlock;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.common.blocks.itemblocks.GT_Item_Storage;
-import gregtech.common.blocks.materials.GT_Material_Reinforced;
+import gregtech.common.blocks.itemblocks.ItemStorage;
+import gregtech.common.blocks.materials.MaterialReinforced;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyEnum;
@@ -24,7 +24,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
@@ -44,14 +43,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class GT_Block_Reinforced extends GT_Generic_Block {
+public class BlockReinforced extends GenericBlock {
 
     public static final PropertyEnum<EnumReinforcedVariant> VARIANT = PropertyEnum.<EnumReinforcedVariant>create("variant", EnumReinforcedVariant.class);
 
     private TextureAtlasSprite COAL_BLOCK_ICON_DATA;
 
-    public GT_Block_Reinforced(String name) {
-        super(name, GT_Item_Storage.class, GT_Material_Reinforced.INSTANCE);
+    public BlockReinforced(String name) {
+        super(name, ItemStorage.class, MaterialReinforced.INSTANCE);
         setSoundType(SoundType.STONE);
         setCreativeTab(GregTech_API.TAB_GREGTECH);
 

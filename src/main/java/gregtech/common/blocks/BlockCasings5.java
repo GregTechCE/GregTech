@@ -2,8 +2,8 @@ package gregtech.common.blocks;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.itemblocks.GT_Item_Casings5;
-import gregtech.common.blocks.materials.GT_Material_Casings;
+import gregtech.common.blocks.itemblocks.ItemCasings5;
+import gregtech.common.blocks.materials.MaterialCasings;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -15,12 +15,12 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class GT_Block_Casings5 extends GT_Block_Casings_Abstract {
+public class BlockCasings5 extends BlockCasingsAbstract {
 
     public static final PropertyEnum<EnumCoilVariant> COIL_VARIANT = PropertyEnum.create("coil_variant", EnumCoilVariant.class);
 
-    public GT_Block_Casings5() {
-        super("blockcasings5", GT_Item_Casings5.class, GT_Material_Casings.INSTANCE);
+    public BlockCasings5() {
+        super("blockcasings5", ItemCasings5.class, MaterialCasings.INSTANCE);
 
         this.setDefaultState(this.blockState.getBaseState()
                 .withProperty(COIL_VARIANT, EnumCoilVariant.CUPRONICKEL));

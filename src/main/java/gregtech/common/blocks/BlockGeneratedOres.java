@@ -5,11 +5,11 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneTypes;
-import gregtech.api.items.GT_Generic_Block;
+import gregtech.api.items.GenericBlock;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.itemblocks.GT_Item_GeneratedOres;
+import gregtech.common.blocks.itemblocks.ItemGeneratedOres;
 import gregtech.common.blocks.properties.PropertyMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -40,7 +40,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-public abstract class GT_Block_GeneratedOres extends GT_Generic_Block {
+public abstract class BlockGeneratedOres extends GenericBlock {
 
     // We have only 1 bit to store material
     public static final int MATERIALS_PER_BLOCK = 2;
@@ -48,16 +48,16 @@ public abstract class GT_Block_GeneratedOres extends GT_Generic_Block {
     public static final PropertyEnum<StoneTypes> STONE_TYPE = PropertyEnum.create("stone_type", StoneTypes.class);
     private PropertyMaterial MATERIAL;
 
-    private static int sNextId;
+    private static int nextId;
 
-    public static GT_Block_GeneratedOres[] sGeneratedBlocks;
-    public static GT_Block_GeneratedOres[] sGeneratedSmallBlocks;
+    public static BlockGeneratedOres[] generatedOres;
+    public static BlockGeneratedOres[] generatedOresSmall;
 
     public static void registerOreBlocks() {
         System.out.println("REGISTERING ORE BLOCKS...");
 
-        sGeneratedBlocks = new GT_Block_GeneratedOres[GregTech_API.sGeneratedMaterials.length];
-        sGeneratedSmallBlocks = new GT_Block_GeneratedOres[GregTech_API.sGeneratedMaterials.length];
+        generatedOres = new BlockGeneratedOres[GregTech_API.sGeneratedMaterials.length];
+        generatedOresSmall = new BlockGeneratedOres[GregTech_API.sGeneratedMaterials.length];
 
         Materials[] lastMats = new Materials[MATERIALS_PER_BLOCK];
         int length = 0;
@@ -75,17 +75,17 @@ public abstract class GT_Block_GeneratedOres extends GT_Generic_Block {
             Materials[] materials = Arrays.stream(lastMats).filter(Objects::nonNull).toArray(Materials[]::new);
             createOreBlock(materials);
         }
-        System.out.println("ORE BLOCKS REGISTERED: " + sNextId);
+        System.out.println("ORE BLOCKS REGISTERED: " + nextId);
     }
 
     private static void createOreBlock(Materials[] materials){
-        new GT_Block_GeneratedOres(false) {
+        new BlockGeneratedOres(false) {
             @Override
             public Materials[] getMaterials() {
                 return materials;
             }
         };
-        new GT_Block_GeneratedOres(true) {
+        new BlockGeneratedOres(true) {
             @Override
             public Materials[] getMaterials() {
                 return materials;
@@ -118,7 +118,7 @@ public abstract class GT_Block_GeneratedOres extends GT_Generic_Block {
             return false;
         }
 
-        GT_Block_GeneratedOres oreBlock = (small ? sGeneratedSmallBlocks : sGeneratedBlocks)[materialSubId];
+        BlockGeneratedOres oreBlock = (small ? generatedOresSmall : generatedOres)[materialSubId];
 
         IBlockState blockState = oreBlock.getDefaultState()
                 .withProperty(STONE_TYPE, StoneTypes.mTypes[variantId])
@@ -127,20 +127,20 @@ public abstract class GT_Block_GeneratedOres extends GT_Generic_Block {
         return world.setBlockState(pos, blockState);
     }
 
-    public final boolean mSmall;
-    public int mId;
+    public final boolean small;
+    public int id;
 
-    protected GT_Block_GeneratedOres(boolean small) {
-        super("blockores." + sNextId, GT_Item_GeneratedOres.class, Material.ROCK);
+    protected BlockGeneratedOres(boolean small) {
+        super("blockores." + nextId, ItemGeneratedOres.class, Material.ROCK);
 
-        this.mId = sNextId;
-        this.mSmall = small;
+        this.id = nextId;
+        this.small = small;
 
         if (getMaterials().length > MATERIALS_PER_BLOCK)
             throw new IllegalArgumentException("Materials.length must not be > MATERIALS_PER_BLOCK");
 
         for (int i = 0; i < MATERIALS_PER_BLOCK; i++) {
-            (small ? sGeneratedSmallBlocks : sGeneratedBlocks)[getMaterials()[i].mMetaItemSubID] = this;
+            (small ? generatedOresSmall : generatedOres)[getMaterials()[i].mMetaItemSubID] = this;
         }
 
         this.setDefaultState(this.blockState.getBaseState()
@@ -163,7 +163,7 @@ public abstract class GT_Block_GeneratedOres extends GT_Generic_Block {
 
         setSoundType(SoundType.STONE);
         setCreativeTab(GregTech_API.TAB_GREGTECH_ORES);
-        sNextId++;
+        nextId++;
     }
 
     public abstract Materials[] getMaterials();
@@ -284,7 +284,7 @@ public abstract class GT_Block_GeneratedOres extends GT_Generic_Block {
     @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
         List<ItemStack> dropList = new ArrayList<>();
-        if (!mSmall) {
+        if (!small) {
             dropList.add(createStackedBlock(state));
             return dropList;
         }

@@ -4,10 +4,10 @@ import com.google.common.collect.Lists;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.items.GT_Generic_Block;
+import gregtech.api.items.GenericBlock;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.common.blocks.itemblocks.GT_Item_Storage;
+import gregtech.common.blocks.itemblocks.ItemStorage;
 import gregtech.common.blocks.properties.PropertyMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -16,28 +16,22 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Arrays;
 import java.util.List;
 
-public abstract class GT_Block_Storage extends GT_Generic_Block {
+public abstract class BlockStorage extends GenericBlock {
 
     private PropertyMaterial MATERIAL;
 
     public static Block createStorageBlock(String name, Materials[] materials, OrePrefixes prefix, Textures.BlockIcons[] blockIcons){
-        return new GT_Block_Storage(name, prefix, blockIcons){
+        return new BlockStorage(name, prefix, blockIcons){
             @Override
             public Materials[] getMaterials() {
                 return materials;
@@ -45,13 +39,13 @@ public abstract class GT_Block_Storage extends GT_Generic_Block {
         };
     }
 
-    public OrePrefixes mPrefix;
-    public Textures.BlockIcons[] mBlockIcons;
+    public OrePrefixes prefix;
+    public Textures.BlockIcons[] blockIcons;
 
-    private GT_Block_Storage(String name, OrePrefixes prefix, Textures.BlockIcons[] blockIcons) {
-        super(name, GT_Item_Storage.class, Material.IRON);
-        mPrefix = prefix;
-        mBlockIcons = blockIcons;
+    private BlockStorage(String name, OrePrefixes prefix, Textures.BlockIcons[] blockIcons) {
+        super(name, ItemStorage.class, Material.IRON);
+        this.prefix = prefix;
+        this.blockIcons = blockIcons;
 
         for (int i = 0; i < getMaterials().length; i++) {
             if (getMaterials()[i].mMetaItemSubID > 0 && getMaterials()[i].mHasParentMod) {
@@ -128,8 +122,8 @@ public abstract class GT_Block_Storage extends GT_Generic_Block {
     @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getIcon(EnumFacing side, int meta) {
         if ((meta >= 0) && (meta < 16) && meta < mMats.length) {
-            return mBlockIcons[meta].getIcon();
+            return blockIcons[meta].getIcon();
         }
-        return mBlockIcons[0].getIcon();
+        return blockIcons[0].getIcon();
     }
 }

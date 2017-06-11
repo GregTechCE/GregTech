@@ -4,6 +4,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
+import gregtech.common.blocks.BlockGeneratedOres;
 import gregtech.common.blocks.GT_Block_GeneratedOres;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
@@ -176,13 +177,13 @@ public class GT_Worldgenerator implements IWorldGenerator {
                                         if ((var39 * var39 + var42 * var42 + var45 * var45 < 1.0D) && mWorld.isAirBlock(randPos)) {
                                             int ranOre = aRandom.nextInt(50);
                                             if (ranOre < 3) {
-                                                GT_Block_GeneratedOres.setOreBlock(mWorld, randPos, primaryMeta, false);
+                                                BlockGeneratedOres.setOreBlock(mWorld, randPos, primaryMeta, false);
                                             } else if (ranOre < 6) {
-                                                GT_Block_GeneratedOres.setOreBlock(mWorld, randPos, secondaryMeta, false);
+                                                BlockGeneratedOres.setOreBlock(mWorld, randPos, secondaryMeta, false);
                                             } else if (ranOre < 8) {
-                                                GT_Block_GeneratedOres.setOreBlock(mWorld, randPos, betweenMeta, false);
+                                                BlockGeneratedOres.setOreBlock(mWorld, randPos, betweenMeta, false);
                                             } else if (ranOre < 10) {
-                                                GT_Block_GeneratedOres.setOreBlock(mWorld, randPos, sporadicMeta, false);
+                                                BlockGeneratedOres.setOreBlock(mWorld, randPos, sporadicMeta, false);
                                             } else {
                                                 if (tDimensionType == -1) {
                                                     mWorld.setBlockState(randPos, Blocks.END_STONE.getDefaultState());

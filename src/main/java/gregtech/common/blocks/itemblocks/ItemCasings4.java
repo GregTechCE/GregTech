@@ -2,8 +2,8 @@ package gregtech.common.blocks.itemblocks;
 
 import net.minecraft.block.Block;
 
-public class GT_Item_Granites extends GT_Item_Stones_Abstract {
-    public GT_Item_Granites(Block block) {
+public class ItemCasings4 extends ItemCasingsAbstract {
+    public ItemCasings4(Block block) {
         super(block);
     }
 }

@@ -1,28 +1,19 @@
 package gregtech.api.items;
 
 import codechicken.lib.render.particle.CustomParticleHandler;
-import codechicken.lib.vec.Cuboid6;
-import com.google.common.collect.ObjectArrays;
-import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
@@ -34,26 +25,22 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNullableByDefault;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 
-import static gregtech.api.enums.GT_Values.W;
+public abstract class GenericBlock extends Block {
 
-public abstract class GT_Generic_Block extends Block {
+    private String unlocalizedName;
 
-    protected GT_Generic_Block(String aName, @Nullable Class<? extends ItemBlock> aItemClass, Material aMaterial) {
-        super(aMaterial);
+    protected GenericBlock(String name, @Nullable Class<? extends ItemBlock> itemClass, Material material) {
+        super(material);
 
-        setUnlocalizedName("gt." + aName);
-        setRegistryName(aName);
+        setUnlocalizedName("gt." + name);
+        setRegistryName(name);
         GameRegistry.register(this);
 
-        if (aItemClass != null) {
+        if (itemClass != null) {
             ItemBlock itemBlock = null;
             try {
-                itemBlock = aItemClass.getConstructor(Block.class).newInstance(this);
+                itemBlock = itemClass.getConstructor(Block.class).newInstance(this);
             } catch(ReflectiveOperationException e){
                 e.printStackTrace(GT_Log.err);
                 throw new LoaderException(e);
@@ -66,6 +53,22 @@ public abstract class GT_Generic_Block extends Block {
     public String getLocalizedName() {
         return GT_LanguageManager.getTranslation(this.getUnlocalizedName() + ".name");
     }
+
+    @Override
+    public final Block setUnlocalizedName(String unlocalizedName) {
+        this.unlocalizedName = unlocalizedName;
+        return this;
+    }
+
+    public final String getUnlocalizedNameWithoutPrefix() {
+        return unlocalizedName;
+    }
+
+    @Override
+    public final String getUnlocalizedName() {
+        return "block." + unlocalizedName;
+    }
+
 
     @Override
     public boolean addLandingEffects(IBlockState state, WorldServer worldObj, BlockPos blockPosition, IBlockState iblockstate, EntityLivingBase entity, int numberOfParticles) {
@@ -92,8 +95,8 @@ public abstract class GT_Generic_Block extends Block {
 
 
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getParticleSprite(IBlockAccess worldObj, BlockPos aPos, EnumFacing side) {
-        return getWorldIcon(worldObj, aPos, worldObj.getBlockState(aPos), side);
+    public TextureAtlasSprite getParticleSprite(IBlockAccess worldObj, BlockPos pos, EnumFacing side) {
+        return getWorldIcon(worldObj, pos, worldObj.getBlockState(pos), side);
     }
 
     @SideOnly(Side.CLIENT)
@@ -104,21 +107,21 @@ public abstract class GT_Generic_Block extends Block {
     }
 
     @SideOnly(Side.CLIENT)
-    public int getColorMultiplier(IBlockAccess aWorld, BlockPos aPos, IBlockState aState) {
+    public int getColorMultiplier(IBlockAccess world, BlockPos pos, IBlockState state) {
         return 0xFFFFFFFF;
     }
 
    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getWorldIcon(IBlockAccess aWorld, BlockPos aPos, IBlockState aState, EnumFacing aSide) {
-        return getIcon(aSide, aState.getValue(METADATA));
+    public TextureAtlasSprite getWorldIcon(IBlockAccess world, BlockPos pos, IBlockState state, EnumFacing side) {
+        return getIcon(side, state.getValue(METADATA));
     }
 
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getItemIcon(ItemStack itemStack, EnumFacing aSide) {
-        return getIcon(aSide, itemStack.getItemDamage());
+    public TextureAtlasSprite getItemIcon(ItemStack itemStack, EnumFacing side) {
+        return getIcon(side, itemStack.getItemDamage());
     }
 
-    public TextureAtlasSprite getIcon(EnumFacing aSide, int metadata) {
+    public TextureAtlasSprite getIcon(EnumFacing side, int metadata) {
         return null;
     }
 

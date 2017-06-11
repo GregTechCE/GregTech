@@ -6,8 +6,8 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class GT_Item_Casings2 extends GT_Item_Casings_Abstract {
-    public GT_Item_Casings2(Block block) {
+public class ItemCasings2 extends ItemCasingsAbstract {
+    public ItemCasings2(Block block) {
         super(block);
     }
 
@@ -16,7 +16,7 @@ public class GT_Item_Casings2 extends GT_Item_Casings_Abstract {
         super.addInformation(stack, player, tooltip, advanced);
         switch (getDamage(stack)) {
             case 8:
-                tooltip.add(this.mBlastProofTooltip);
+                tooltip.add(this.blastProofTooltip);
         }
     }
 }

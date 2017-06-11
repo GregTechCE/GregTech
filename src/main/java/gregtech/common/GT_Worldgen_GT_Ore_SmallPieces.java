@@ -3,6 +3,7 @@ package gregtech.common;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.world.GT_Worldgen;
+import gregtech.common.blocks.BlockGeneratedOres;
 import gregtech.common.blocks.GT_Block_GeneratedOres;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -54,7 +55,7 @@ public class GT_Worldgen_GT_Ore_SmallPieces
             int i = 0;
             for (int j = Math.max(1, this.mAmount / 2 + aRandom.nextInt(this.mAmount) / 2); i < j; i++) {
                 temp.setPos(aChunkX + aRandom.nextInt(16), this.mMinY + aRandom.nextInt(Math.max(1, this.mMaxY - this.mMinY)), aChunkZ + aRandom.nextInt(16));
-                GT_Block_GeneratedOres.setOreBlock(aWorld, temp, this.mMeta, true);
+                BlockGeneratedOres.setOreBlock(aWorld, temp, this.mMeta, true);
             }
         }
         return true;

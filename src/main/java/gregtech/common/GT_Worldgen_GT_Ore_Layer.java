@@ -1,9 +1,9 @@
 package gregtech.common;
 
-import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.world.GT_Worldgen;
+import gregtech.common.blocks.BlockGeneratedOres;
 import gregtech.common.blocks.GT_Block_GeneratedOres;
 import gregtech.loaders.misc.GT_Achievements;
 import net.minecraft.util.math.BlockPos;
@@ -13,7 +13,6 @@ import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class GT_Worldgen_GT_Ore_Layer
@@ -94,24 +93,24 @@ public class GT_Worldgen_GT_Ore_Layer
                 for (int i = tMinY + 3; i < tMinY + 6; i++) {
                     if ((aRandom.nextInt(Math.max(1, Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ)) / this.mDensity)) == 0) || (aRandom.nextInt(Math.max(1, Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX)) / this.mDensity)) == 0)) {
                         temp.setPos(tX, i, tZ);
-                        GT_Block_GeneratedOres.setOreBlock(aWorld, temp, this.mPrimaryMeta, false);
+                        BlockGeneratedOres.setOreBlock(aWorld, temp, this.mPrimaryMeta, false);
                     }
                 }
                 if (this.mSecondaryMeta > 0) {
                     for (int i = tMinY - 1; i < tMinY + 2; i++) {
                         if ((aRandom.nextInt(Math.max(1, Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ)) / this.mDensity)) == 0) || (aRandom.nextInt(Math.max(1, Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX)) / this.mDensity)) == 0)) {
                             temp.setPos(tX, i, tZ);
-                            GT_Block_GeneratedOres.setOreBlock(aWorld, temp, this.mSecondaryMeta, false);
+                            BlockGeneratedOres.setOreBlock(aWorld, temp, this.mSecondaryMeta, false);
                         }
                     }
                 }
                 if (this.mBetweenMeta > 0 && ((aRandom.nextInt(Math.max(1, Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ)) / this.mDensity)) == 0) || (aRandom.nextInt(Math.max(1, Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX)) / this.mDensity)) == 0))) {
                     temp.setPos(tX, tMinY + 2 + aRandom.nextInt(2), tZ);
-                    GT_Block_GeneratedOres.setOreBlock(aWorld, temp, this.mBetweenMeta, false);
+                    BlockGeneratedOres.setOreBlock(aWorld, temp, this.mBetweenMeta, false);
                 }
                 if (this.mSporadicMeta > 0 && ((aRandom.nextInt(Math.max(1, Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ)) / this.mDensity)) == 0) || (aRandom.nextInt(Math.max(1, Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX)) / this.mDensity)) == 0))) {
                     temp.setPos(tX, tMinY - 1 + aRandom.nextInt(7), tZ);
-                    GT_Block_GeneratedOres.setOreBlock(aWorld, temp, this.mSporadicMeta, false);
+                    BlockGeneratedOres.setOreBlock(aWorld, temp, this.mSporadicMeta, false);
                 }
             }
         }

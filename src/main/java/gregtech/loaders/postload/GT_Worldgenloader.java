@@ -7,7 +7,7 @@ import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 import gregtech.common.GT_Worldgen_GT_Ore_SmallPieces;
 import gregtech.common.GT_Worldgen_Stone;
 import gregtech.common.GT_Worldgenerator;
-import gregtech.common.blocks.GT_Block_Stones_Abstract;
+import gregtech.common.blocks.BlockStonesAbstract;
 import net.minecraft.block.state.IBlockState;
 import net.minecraftforge.fml.common.Loader;
 
@@ -19,7 +19,7 @@ public class GT_Worldgenloader
         new GT_Worldgenerator();
 
         IBlockState blockState = GregTech_API.sBlockGranites.getDefaultState()
-                .withProperty(GT_Block_Stones_Abstract.STONE_VARIANT, GT_Block_Stones_Abstract.EnumStoneVariant.NORMAL)
+                .withProperty(BlockStonesAbstract.STONE_VARIANT, BlockStonesAbstract.EnumStoneVariant.NORMAL)
                 .withProperty(GregTech_API.sBlockGranites.getMaterialProperty(), Materials.GraniteBlack);
         new GT_Worldgen_Stone("overworld.stone.blackgranite.tiny", true, blockState, 0, 1, 50, 48, 0, 120, null, false);
         new GT_Worldgen_Stone("overworld.stone.blackgranite.small", true, blockState, 0, 1, 100, 96, 0, 120, null, false);

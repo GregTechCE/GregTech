@@ -8,9 +8,9 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
-public class GT_Item_Casings5 extends GT_Item_Casings_Abstract {
+public class ItemCasings5 extends ItemCasingsAbstract {
 
-    public GT_Item_Casings5(Block block) {
+    public ItemCasings5(Block block) {
         super(block);
     }
 
@@ -20,25 +20,25 @@ public class GT_Item_Casings5 extends GT_Item_Casings_Abstract {
         super.addInformation(stack, player, tooltip, advanced);
         switch (getDamage(stack)) {
             case 0:
-                tooltip.add(this.mCoil01Tooltip);
+                tooltip.add(this.coil01Tooltip);
                 break;
             case 1:
-                tooltip.add(this.mCoil02Tooltip);
+                tooltip.add(this.coil02Tooltip);
                 break;
             case 2:
-                tooltip.add(this.mCoil03Tooltip);
+                tooltip.add(this.coil03Tooltip);
                 break;
             case 3:
-                tooltip.add(this.mCoil04Tooltip);
+                tooltip.add(this.coil04Tooltip);
                 break;
             case 4:
-                tooltip.add(this.mCoil05Tooltip);
+                tooltip.add(this.coil05Tooltip);
                 break;
             case 5:
-                tooltip.add(this.mCoil06Tooltip);
+                tooltip.add(this.coil06Tooltip);
                 break;
             case 6:
-                tooltip.add(this.mCoil07Tooltip);
+                tooltip.add(this.coil07Tooltip);
                 break;
         }
     }

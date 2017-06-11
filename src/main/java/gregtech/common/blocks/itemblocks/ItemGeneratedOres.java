@@ -4,9 +4,9 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class GT_Item_GeneratedOres extends ItemBlock {
+public class ItemGeneratedOres extends ItemBlock {
 
-    public GT_Item_GeneratedOres(Block block) {
+    public ItemGeneratedOres(Block block) {
         super(block);
         setHasSubtypes(true);
     }

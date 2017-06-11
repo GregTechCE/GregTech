@@ -11,13 +11,12 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.*;
-import gregtech.common.blocks.GT_Block_GeneratedOres;
+import gregtech.common.blocks.BlockGeneratedOres;
 import gregtech.common.items.*;
 import gregtech.common.items.armor.ElectricModularArmor1;
 import gregtech.common.items.armor.ModularArmor_Item;
 import ic2.core.ref.FluidName;
 import ic2.core.ref.ItemName;
-import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -152,18 +151,18 @@ public class GT_Loader_Item_Block_And_Fluid
         }
 
         GT_Log.out.println("GT_Mod: Adding Blocks.");
-        GregTech_API.sBlockMachines = new GT_Block_Machines();
-        GregTech_API.sBlockCasings1 = new GT_Block_Casings1();
-        GregTech_API.sBlockCasings2 = new GT_Block_Casings2();
-        GregTech_API.sBlockCasings3 = new GT_Block_Casings3();
-        GregTech_API.sBlockCasings4 = new GT_Block_Casings4();
-        GregTech_API.sBlockCasings5 = new GT_Block_Casings5();
-        GregTech_API.sBlockGranites = new GT_Block_Granites();
-        GregTech_API.sBlockConcretes = new GT_Block_Concretes();
-        GregTech_API.sBlockStones = new GT_Block_Stones();
-        GT_Block_GeneratedOres.registerOreBlocks();
+        GregTech_API.sBlockMachines = new BlockMachines();
+        GregTech_API.sBlockCasings1 = new BlockCasings1();
+        GregTech_API.sBlockCasings2 = new BlockCasings2();
+        GregTech_API.sBlockCasings3 = new BlockCasings3();
+        GregTech_API.sBlockCasings4 = new BlockCasings4();
+        GregTech_API.sBlockCasings5 = new BlockCasings5();
+        GregTech_API.sBlockGranites = new BlockGranites();
+        GregTech_API.sBlockConcretes = new BlockConcretes();
+        GregTech_API.sBlockStones = new BlockStones();
+        BlockGeneratedOres.registerOreBlocks();
 
-        GregTech_API.sBlockMetal1 = GT_Block_Storage.createStorageBlock("blockmetal1", new Materials[]{
+        GregTech_API.sBlockMetal1 = BlockStorage.createStorageBlock("blockmetal1", new Materials[]{
                 Materials.Adamantium,
                 Materials.Aluminium,
                 Materials.Americium,
@@ -181,7 +180,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.BlueSteel,
                 Materials.Brass}, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS1);
 
-        GregTech_API.sBlockMetal2 = GT_Block_Storage.createStorageBlock("blockmetal2", new Materials[]{
+        GregTech_API.sBlockMetal2 = BlockStorage.createStorageBlock("blockmetal2", new Materials[]{
                 Materials.Bronze,
                 Materials.Caesium,
                 Materials.Cerium,
@@ -200,7 +199,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.Electrum
         }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS2);
 
-        GregTech_API.sBlockMetal3 = GT_Block_Storage.createStorageBlock("blockmetal3", new Materials[]{
+        GregTech_API.sBlockMetal3 = BlockStorage.createStorageBlock("blockmetal3", new Materials[]{
                 Materials.ElectrumFlux,
                 Materials.Enderium,
                 Materials.Erbium,
@@ -219,7 +218,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.Kanthal
         }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS3);
 
-        GregTech_API.sBlockMetal4 = GT_Block_Storage.createStorageBlock("blockmetal4", new Materials[]{
+        GregTech_API.sBlockMetal4 = BlockStorage.createStorageBlock("blockmetal4", new Materials[]{
                 Materials.Knightmetal,
                 Materials.Lanthanum,
                 Materials.Lead,
@@ -238,7 +237,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.Naquadria
         }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS4);
 
-        GregTech_API.sBlockMetal5 = GT_Block_Storage.createStorageBlock("blockmetal5", new Materials[]{
+        GregTech_API.sBlockMetal5 = BlockStorage.createStorageBlock("blockmetal5", new Materials[]{
                 Materials.Neodymium,
                 Materials.NeodymiumMagnetic,
                 Materials.Neutronium,
@@ -257,7 +256,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.Praseodymium
         }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS5);
 
-        GregTech_API.sBlockMetal6 = GT_Block_Storage.createStorageBlock("blockmetal6", new Materials[]{
+        GregTech_API.sBlockMetal6 = BlockStorage.createStorageBlock("blockmetal6", new Materials[]{
                 Materials.Promethium,
                 Materials.RedAlloy,
                 Materials.RedSteel,
@@ -276,7 +275,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.SterlingSilver
         }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS6);
 
-        GregTech_API.sBlockMetal7 = GT_Block_Storage.createStorageBlock("blockmetal7", new Materials[]{
+        GregTech_API.sBlockMetal7 = BlockStorage.createStorageBlock("blockmetal7", new Materials[]{
                 Materials.Sunnarium,
                 Materials.Tantalum,
                 Materials.Tellurium,
@@ -295,7 +294,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.Uranium235
         }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS7);
 
-        GregTech_API.sBlockMetal8 = GT_Block_Storage.createStorageBlock("blockmetal8", new Materials[]{
+        GregTech_API.sBlockMetal8 = BlockStorage.createStorageBlock("blockmetal8", new Materials[]{
                 Materials.Vanadium,
                 Materials.VanadiumGallium,
                 Materials.WroughtIron,
@@ -310,7 +309,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.HSSS
         }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS8);
 
-        GregTech_API.sBlockGem1 = GT_Block_Storage.createStorageBlock("blockgem1", new Materials[]{
+        GregTech_API.sBlockGem1 = BlockStorage.createStorageBlock("blockgem1", new Materials[]{
                 Materials.InfusedAir,
                 Materials.Amber,
                 Materials.Amethyst,
@@ -329,7 +328,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.Jasper
         }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS9);
 
-        GregTech_API.sBlockGem2 = GT_Block_Storage.createStorageBlock("blockgem2", new Materials[]{
+        GregTech_API.sBlockGem2 = BlockStorage.createStorageBlock("blockgem2", new Materials[]{
                 Materials.Lazurite,
                 Materials.Lignite,
                 Materials.Monazite,
@@ -348,7 +347,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.InfusedEarth
         }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS10);
 
-        GregTech_API.sBlockGem3 = GT_Block_Storage.createStorageBlock("blockgem3", new Materials[]{
+        GregTech_API.sBlockGem3 = BlockStorage.createStorageBlock("blockgem3", new Materials[]{
                 Materials.Topaz,
                 Materials.Vinteum,
                 Materials.GarnetYellow,
@@ -356,7 +355,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.Charcoal
         }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS11);
 
-        GregTech_API.sBlockReinforced = new GT_Block_Reinforced("blockreinforced");
+        GregTech_API.sBlockReinforced = new BlockReinforced("blockreinforced");
 
 
         GT_Log.out.println("GT_Mod: Register TileEntities.");

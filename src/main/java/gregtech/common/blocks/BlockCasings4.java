@@ -6,8 +6,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.itemblocks.GT_Item_Casings4;
-import gregtech.common.blocks.materials.GT_Material_Casings;
+import gregtech.common.blocks.itemblocks.ItemCasings4;
+import gregtech.common.blocks.materials.MaterialCasings;
 //import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyEnum;
@@ -23,14 +23,14 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
+public class BlockCasings4 extends BlockCasingsAbstract {
 
     public static final PropertyEnum<EnumCasingVariant> CASING_VARIANT = PropertyEnum.create("casing_variant", EnumCasingVariant.class);
 
-    public static boolean mConnectedMachineTextures = true;
+    public static boolean connectedMachineTextures = true;
 
-    public GT_Block_Casings4() {
-        super("blockcasings4", GT_Item_Casings4.class, GT_Material_Casings.INSTANCE);
+    public BlockCasings4() {
+        super("blockcasings4", ItemCasings4.class, MaterialCasings.INSTANCE);
 
         this.setDefaultState(this.blockState.getBaseState()
                 .withProperty(CASING_VARIANT, EnumCasingVariant.ROBUST_TSTEEL));
@@ -152,7 +152,7 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
         if(pos == null) {
             return getIcon(side, meta);
         }
-        if ((meta != 6) && (meta != 8) && (meta != 9) && (meta != 10) && (meta != 11) && (meta != 12) || (!mConnectedMachineTextures)) {
+        if ((meta != 6) && (meta != 8) && (meta != 9) && (meta != 10) && (meta != 11) && (meta != 12) || (!connectedMachineTextures)) {
             return getIcon(side, meta);
         }
         int startIndex = meta == 6 ? 1 : 13;

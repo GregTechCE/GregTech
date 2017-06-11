@@ -9,8 +9,8 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class GT_Item_Storage extends ItemBlock {
-    public GT_Item_Storage(Block block) {
+public class ItemStorage extends ItemBlock {
+    public ItemStorage(Block block) {
         super(block);
         setMaxDamage(0);
         setHasSubtypes(true);

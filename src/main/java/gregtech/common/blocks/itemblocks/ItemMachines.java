@@ -3,7 +3,7 @@ package gregtech.common.blocks.itemblocks;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.GT_Generic_Block;
+import gregtech.api.items.GenericBlock;
 import gregtech.api.util.GT_ItsNotMyFaultException;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
@@ -24,8 +24,8 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class GT_Item_Machines extends ItemBlock {
-    public GT_Item_Machines(Block block) {
+public class ItemMachines extends ItemBlock {
+    public ItemMachines(Block block) {
         super(block);
         setMaxDamage(0);
         setHasSubtypes(true);
@@ -141,7 +141,7 @@ public class GT_Item_Machines extends ItemBlock {
             if (placed != block.getStateFromMeta(metaData)) {
                 throw new GT_ItsNotMyFaultException("Failed to place Block even though World.setBlockState returned true. It COULD be MCPC/Bukkit causing that. In case you really have that installed, don't report this Bug to me, I don't know how to fix it.");
             }
-            if (placed.getValue(GT_Generic_Block.METADATA) != metaData) {
+            if (placed.getValue(GenericBlock.METADATA) != metaData) {
                 throw new GT_ItsNotMyFaultException("Failed to set the MetaValue of the Block even though World.setBlock returned true. It COULD be MCPC/Bukkit causing that. In case you really have that installed, don't report this Bug to me, I don't know how to fix it.");
             }
             IGregTechTileEntity tileEntity = (IGregTechTileEntity) world.getTileEntity(pos);
