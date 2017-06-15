@@ -47,61 +47,35 @@ repositories {
         name = "ic2, forestry"
         url = "http://maven.ic2.player.to/"
     }
-    maven { // EnderIO & EnderCore
-        name 'tterrag Repo'
-        url "http://maven.tterrag.com"
-    }
-    maven { // AppleCore
-        url "http://www.ryanliptak.com/maven/"
-    }
     maven { //JEI
         url "http://dvs1.progwml6.com/files/maven/"
-    }
-    ivy {
-        name "BuildCraft"
-        artifactPattern "http://www.mod-buildcraft.com/releases/BuildCraft/[revision]/[module]-[revision]-[classifier].[ext]"
-    }
-    ivy {
-        name 'CoFHLib'
-        artifactPattern "http://addons-origin.cursecdn.com/files/${config.cofhlib.cf}/[module]-[revision].[ext]"
-    }
-    ivy {
-        name 'CoFHCore'
-        artifactPattern "http://addons-origin.cursecdn.com/files/${config.cofhcore.cf}/[module]-[revision].[ext]"
     }
     ivy {
         name 'Railcraft'
         artifactPattern "http://addons-origin.cursecdn.com/files/${config.railcraft.cf}/[module]_[revision].[ext]"
     }
 	ivy {
-        name 'IC2NuclearControl'
-        artifactPattern "http://addons-origin.cursecdn.com/files/${config.nc.cf}/[module]-[revision].[ext]"
+        name 'WorldControl'
+        artifactPattern "http://addons-origin.cursecdn.com/files/${config.worldcontrol.cf}/[module]-[revision].[ext]"
+    }
+    ivy {
+        name 'CoFHCore'
+        artifactPattern "http://addons-origin.cursecdn.com/files/${config.cofh.cf}/[module]-[revision].[ext]"
     }
 }
 
 dependencies {
-    //provided ("appeng:appliedenergistics2:${config.ae2.version}:dev") {
-    //    exclude module: '*'
-    //}
-    provided "codechicken:CodeChickenLib:${config.minecraft.version}-${config.codechickenlib.version}:deobf"
-	//provided "codechicken:CodeChickenCore:${config.minecraft.version}-${config.codechickencore.version}:dev"
-    //provided "codechicken:NotEnoughItems:${config.minecraft.version}-${config.nei.version}:dev"
+    compile "codechicken:CodeChickenLib:${config.minecraft.version}-${config.codechickenlib.version}:deobf"
     deobfCompile "net.industrial-craft:industrialcraft-2:${config.ic2.version}"
     deobfCompile "net.sengir.forestry:forestry_${config.minecraft.version}:${config.forestry.version}"
     deobfCompile "mezz.jei:jei_${config.minecraft.version}:+"
-    //provided "applecore:AppleCore:${config.applecore.version}:api"
-    //provided "com.enderio.core:EnderCore:${config.enderiocore.version}:dev"
-    //provided ("com.enderio:EnderIO:${config.enderio.version}:dev") {
-    //    transitive = false
-    //}
-    //provided name: 'buildcraft', version: config.buildcraft.version, classifier: "dev", ext: 'jar'
-    //provided name: 'CoFHLib', version: config.cofhlib.version, ext: 'jar'
-    //provided name: 'CoFHCore', version: config.cofhcore.version, ext: 'jar'
-    //provided name: 'Railcraft', version: config.railcraft.version, ext: 'jar'
-    //provided name: 'IC2NuclearControl', version: config.nc.version, ext: 'jar'
+    deobfCompile name: 'Railcraft', version: config.railcraft.version, ext: 'jar'
+    deobfCompile name: 'worldcontrol', version: config.worldcontrol.version, ext: 'jar'
+    deobfCompile name: 'CoFHCore', version: config.cofh.version, ext: 'jar'
 }
 
 jar.exclude("**.bat")
+jar.exclude("**.sh")
 
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
