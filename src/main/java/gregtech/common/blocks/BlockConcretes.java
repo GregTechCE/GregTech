@@ -3,11 +3,16 @@ package gregtech.common.blocks;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.items.GenericBlock;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
+//import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.blocks.itemblocks.ItemConcretes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
@@ -26,10 +31,18 @@ public class BlockConcretes extends BlockStonesAbstract {
 
     public static final AxisAlignedBB CONCRETE_BLOCK_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D);
 
+    public static final PropertyEnum<BlockStonesAbstract.EnumStoneVariant> STONE_VARIANT = PropertyEnum.create("stone_variant", BlockStonesAbstract.EnumStoneVariant.class);
+    public static final PropertyBool LIGHT_CONCRETE = PropertyBool.create("light_concrete");
+
     public BlockConcretes() {
         super("blockconcretes", ItemConcretes.class);
         setResistance(20.0F);
         this.slipperiness = 0.9F;
+
+        this.setDefaultState(this.blockState.getBaseState()
+                .withProperty(STONE_VARIANT, EnumStoneVariant.NORMAL)
+                .withProperty(LIGHT_CONCRETE, false));
+
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Dark Concrete");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Dark Concrete Cobblestone");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Mossy Dark Concrete Cobblestone");
@@ -46,24 +59,43 @@ public class BlockConcretes extends BlockStonesAbstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Mossy Light Concrete Bricks");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Chiseled Light Concrete");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Smooth Light Concrete");
-        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Concrete, new ItemStack(this, 1, GT_Values.W));
+//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Concrete, new ItemStack(this, 1, GT_Values.W));
+    }
+
+    /**
+     * This block does not use material but extends BlockStonesAbstract
+     */
+    @Override
+    public Materials[] getMaterials() {
+        return new Materials[0];
     }
 
     @Override
-    public Materials[] getMaterials() {
-        if (materials == null) {
-            materials = new Materials[]{Materials.Concrete};
-        }
-        return materials;
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, STONE_VARIANT, LIGHT_CONCRETE);
     }
 
-        @Override
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing side, int meta) {
-        if ((meta >= 0) && (meta < 16)) {
-            return gregtech.api.enums.Textures.BlockIcons.CONCRETES[meta].getIcon();
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return this.getDefaultState()
+                .withProperty(STONE_VARIANT, BlockStonesAbstract.EnumStoneVariant.byMetadata(meta & 0b0111))
+                .withProperty(LIGHT_CONCRETE, (meta & 0b1000) == 0b1000);
+    }
+
+    /**
+     * @see Block#getMetaFromState(IBlockState)
+     */
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        int meta = 0;
+
+        meta |= state.getValue(STONE_VARIANT).getMetadata();
+
+        if (state.getValue(LIGHT_CONCRETE)){
+            meta |= 1 << 3;
         }
-        return gregtech.api.enums.Textures.BlockIcons.CONCRETES[0].getIcon();
+
+        return meta;
     }
 
     @Override

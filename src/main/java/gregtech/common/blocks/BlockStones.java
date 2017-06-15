@@ -3,7 +3,7 @@ package gregtech.common.blocks;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
+//import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.blocks.itemblocks.ItemGranites;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
@@ -31,22 +31,22 @@ public class BlockStones extends BlockStonesAbstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Mossy Basalt Bricks");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Chiseled Basalt");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Smooth Basalt");
-        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(this, 1, 0));
-        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(this, 1, 1));
-        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(this, 1, 2));
-        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(this, 1, 3));
-        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(this, 1, 4));
-        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(this, 1, 5));
-        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(this, 1, 6));
-        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(this, 1, 7));
-        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(this, 1, 8));
-        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(this, 1, 9));
-        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(this, 1, 10));
-        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(this, 1, 11));
-        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(this, 1, 12));
-        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(this, 1, 13));
-        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(this, 1, 14));
-        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(this, 1, 15));
+//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(this, 1, 0));
+//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(this, 1, 1));
+//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(this, 1, 2));
+//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(this, 1, 3));
+//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(this, 1, 4));
+//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(this, 1, 5));
+//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(this, 1, 6));
+//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(this, 1, 7));
+//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(this, 1, 8));
+//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(this, 1, 9));
+//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(this, 1, 10));
+//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(this, 1, 11));
+//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(this, 1, 12));
+//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(this, 1, 13));
+//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(this, 1, 14));
+//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(this, 1, 15));
     }
 
     @Override
@@ -56,14 +56,4 @@ public class BlockStones extends BlockStonesAbstract {
         }
         return materials;
     }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing side, int meta) {
-        if ((meta >= 0) && (meta < 16)) {
-            return gregtech.api.enums.Textures.BlockIcons.STONES[meta].getIcon();
-        }
-        return gregtech.api.enums.Textures.BlockIcons.STONES[0].getIcon();
-    }
-
 }

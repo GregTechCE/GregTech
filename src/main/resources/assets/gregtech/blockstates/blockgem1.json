@@ -1,0 +1,90 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cube_all"
+  },
+  "variants": {
+    "material": {
+      "infusedair": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_AERCRYSTAL"
+        }
+      },
+      "amber": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_AMBER"
+        }
+      },
+      "amethyst": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_AMETHYST"
+        }
+      },
+      "infusedwater": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_AQUACRYSTAL"
+        }
+      },
+      "bluetopaz": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_BLUETOPAZ"
+        }
+      },
+      "certusquartz": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_CERTUSQUARTZ"
+        }
+      },
+      "dilithium": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_DILITHIUM"
+        }
+      },
+      "endereye": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_ENDEREYE"
+        }
+      },
+      "enderpearl": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_ENDERPEARL"
+        }
+      },
+      "foolsruby": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_FOOLSRUBY"
+        }
+      },
+      "force": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_FORCE"
+        }
+      },
+      "forcicium": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_FORCICIUM"
+        }
+      },
+      "forcillium": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_FORCILLIUM"
+        }
+      },
+      "greensapphire": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_GREENSAPPHIRE"
+        }
+      },
+      "infusedfire": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_IGNISCRYSTAL"
+        }
+      },
+      "jasper": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_JASPER"
+        }
+      }
+    }
+  }
+}

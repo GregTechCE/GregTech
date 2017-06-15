@@ -87,50 +87,6 @@ public class BlockCasings2 extends BlockCasingsAbstract {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing side, int meta) {
-        return getIconContainer(side, meta).getIcon();
-    }
-
-    public static IIconContainer getIconContainer(EnumFacing side, int meta) {
-        switch (meta) {
-            case 0:
-                return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL;
-            case 1:
-                return Textures.BlockIcons.MACHINE_CASING_FROST_PROOF;
-            case 2:
-                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_BRONZE;
-            case 3:
-                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_STEEL;
-            case 4:
-                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_TITANIUM;
-            case 5:
-                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_TUNGSTENSTEEL;
-            case 6:
-                return Textures.BlockIcons.MACHINE_CASING_PROCESSOR;
-            case 7:
-                return Textures.BlockIcons.MACHINE_CASING_DATA_DRIVE;
-            case 8:
-                return Textures.BlockIcons.MACHINE_CASING_CONTAINMENT_FIELD;
-            case 9:
-                return Textures.BlockIcons.MACHINE_CASING_ASSEMBLER;
-            case 10:
-                return Textures.BlockIcons.MACHINE_CASING_PUMP;
-            case 11:
-                return Textures.BlockIcons.MACHINE_CASING_MOTOR;
-            case 12:
-                return Textures.BlockIcons.MACHINE_CASING_PIPE_BRONZE;
-            case 13:
-                return Textures.BlockIcons.MACHINE_CASING_PIPE_STEEL;
-            case 14:
-                return Textures.BlockIcons.MACHINE_CASING_PIPE_TITANIUM;
-            case 15:
-                return Textures.BlockIcons.MACHINE_CASING_PIPE_TUNGSTENSTEEL;
-        }
-        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL;
-    }
-
-    @Override
     public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
         return world.getBlockState(pos).getValue(CASING_VARIANT) == EnumCasingVariant.CONTAINMENTFIELD ?
                 Blocks.BEDROCK.getExplosionResistance(world, pos, exploder, explosion) :

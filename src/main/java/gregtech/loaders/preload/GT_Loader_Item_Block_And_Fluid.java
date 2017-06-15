@@ -160,6 +160,7 @@ public class GT_Loader_Item_Block_And_Fluid
         GregTech_API.sBlockGranites = new BlockGranites();
         GregTech_API.sBlockConcretes = new BlockConcretes();
         GregTech_API.sBlockStones = new BlockStones();
+        GregTech_API.sBlockReinforced = new BlockReinforced();
         BlockGeneratedOres.registerOreBlocks();
 
         GregTech_API.sBlockMetal1 = BlockStorage.createStorageBlock("blockmetal1", new Materials[]{
@@ -178,7 +179,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.BlackSteel,
                 Materials.BlueAlloy,
                 Materials.BlueSteel,
-                Materials.Brass}, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS1);
+                Materials.Brass}, OrePrefixes.block);
 
         GregTech_API.sBlockMetal2 = BlockStorage.createStorageBlock("blockmetal2", new Materials[]{
                 Materials.Bronze,
@@ -197,7 +198,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.Duranium,
                 Materials.Dysprosium,
                 Materials.Electrum
-        }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS2);
+        }, OrePrefixes.block);
 
         GregTech_API.sBlockMetal3 = BlockStorage.createStorageBlock("blockmetal3", new Materials[]{
                 Materials.ElectrumFlux,
@@ -216,7 +217,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.IronMagnetic,
                 Materials.IronWood,
                 Materials.Kanthal
-        }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS3);
+        }, OrePrefixes.block);
 
         GregTech_API.sBlockMetal4 = BlockStorage.createStorageBlock("blockmetal4", new Materials[]{
                 Materials.Knightmetal,
@@ -235,7 +236,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.NaquadahAlloy,
                 Materials.NaquadahEnriched,
                 Materials.Naquadria
-        }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS4);
+        }, OrePrefixes.block);
 
         GregTech_API.sBlockMetal5 = BlockStorage.createStorageBlock("blockmetal5", new Materials[]{
                 Materials.Neodymium,
@@ -254,7 +255,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.Plutonium,
                 Materials.Plutonium241,
                 Materials.Praseodymium
-        }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS5);
+        }, OrePrefixes.block);
 
         GregTech_API.sBlockMetal6 = BlockStorage.createStorageBlock("blockmetal6", new Materials[]{
                 Materials.Promethium,
@@ -273,7 +274,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.Steel,
                 Materials.SteelMagnetic,
                 Materials.SterlingSilver
-        }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS6);
+        }, OrePrefixes.block);
 
         GregTech_API.sBlockMetal7 = BlockStorage.createStorageBlock("blockmetal7", new Materials[]{
                 Materials.Sunnarium,
@@ -292,7 +293,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.Ultimet,
                 Materials.Uranium,
                 Materials.Uranium235
-        }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS7);
+        }, OrePrefixes.block);
 
         GregTech_API.sBlockMetal8 = BlockStorage.createStorageBlock("blockmetal8", new Materials[]{
                 Materials.Vanadium,
@@ -307,7 +308,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.HSSG,
                 Materials.HSSE,
                 Materials.HSSS
-        }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS8);
+        }, OrePrefixes.block);
 
         GregTech_API.sBlockGem1 = BlockStorage.createStorageBlock("blockgem1", new Materials[]{
                 Materials.InfusedAir,
@@ -326,7 +327,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.GreenSapphire,
                 Materials.InfusedFire,
                 Materials.Jasper
-        }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS9);
+        }, OrePrefixes.block);
 
         GregTech_API.sBlockGem2 = BlockStorage.createStorageBlock("blockgem2", new Materials[]{
                 Materials.Lazurite,
@@ -345,7 +346,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.Sodalite,
                 Materials.Tanzanite,
                 Materials.InfusedEarth
-        }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS10);
+        }, OrePrefixes.block);
 
         GregTech_API.sBlockGem3 = BlockStorage.createStorageBlock("blockgem3", new Materials[]{
                 Materials.Topaz,
@@ -353,10 +354,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.GarnetYellow,
                 Materials.NetherStar,
                 Materials.Charcoal
-        }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS11);
-
-        GregTech_API.sBlockReinforced = new BlockReinforced("blockreinforced");
-
+        }, OrePrefixes.block);
 
         GT_Log.out.println("GT_Mod: Register TileEntities.");
 

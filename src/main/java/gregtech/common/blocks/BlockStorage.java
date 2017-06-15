@@ -6,7 +6,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.items.GenericBlock;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
+//import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.blocks.itemblocks.ItemStorage;
 import gregtech.common.blocks.properties.PropertyMaterial;
 import net.minecraft.block.Block;
@@ -30,8 +30,8 @@ public abstract class BlockStorage extends GenericBlock {
 
     private PropertyMaterial MATERIAL;
 
-    public static Block createStorageBlock(String name, Materials[] materials, OrePrefixes prefix, Textures.BlockIcons[] blockIcons){
-        return new BlockStorage(name, prefix, blockIcons){
+    public static Block createStorageBlock(String name, Materials[] materials, OrePrefixes prefix){
+        return new BlockStorage(name, prefix){
             @Override
             public Materials[] getMaterials() {
                 return materials;
@@ -40,17 +40,15 @@ public abstract class BlockStorage extends GenericBlock {
     }
 
     public OrePrefixes prefix;
-    public Textures.BlockIcons[] blockIcons;
 
-    private BlockStorage(String name, OrePrefixes prefix, Textures.BlockIcons[] blockIcons) {
+    private BlockStorage(String name, OrePrefixes prefix) {
         super(name, ItemStorage.class, Material.IRON);
         this.prefix = prefix;
-        this.blockIcons = blockIcons;
 
         for (int i = 0; i < getMaterials().length; i++) {
             if (getMaterials()[i].mMetaItemSubID > 0 && getMaterials()[i].mHasParentMod) {
                 GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + i + ".name", "Block of " + getMaterials()[i].mDefaultLocalName);
-                GT_OreDictUnificator.registerOre(prefix, getMaterials()[i], new ItemStack(this, 1, i));
+//                GT_OreDictUnificator.registerOre(prefix, getMaterials()[i], new ItemStack(this, 1, i));
             }
         }
         setHardness(5.0F); //Blocks.IRON_BLOCK
@@ -116,14 +114,5 @@ public abstract class BlockStorage extends GenericBlock {
         for (int i = 0; i < 16; i++) {
             if (!(new ItemStack(item, 1, i).getDisplayName().contains(".name"))) list.add(new ItemStack(item, 1, i));
         }
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing side, int meta) {
-        if ((meta >= 0) && (meta < 16) && meta < mMats.length) {
-            return blockIcons[meta].getIcon();
-        }
-        return blockIcons[0].getIcon();
     }
 }

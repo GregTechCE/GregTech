@@ -1,0 +1,90 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cube_all"
+  },
+  "variants": {
+    "casing_variant": {
+      "solidsteel": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_SOLID_STEEL"
+        }
+      },
+      "frostproof": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_FROST_PROOF"
+        }
+      },
+      "gearbox_bronze": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_GEARBOX_BRONZE"
+        }
+      },
+      "gearbox_steel": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_GEARBOX_STEEL"
+        }
+      },
+      "gearbox_titanium": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_GEARBOX_TITANIUM"
+        }
+      },
+      "gearbox_tsteel": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_GEARBOX_TUNGSTENSTEEL"
+        }
+      },
+      "processor": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_PROCESSOR"
+        }
+      },
+      "datadrive": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_DATA_DRIVE"
+        }
+      },
+      "containmentfield": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_CONTAINMENT_FIELD"
+        }
+      },
+      "assembler": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_ASSEMBLER"
+        }
+      },
+      "pump": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_PUMP"
+        }
+      },
+      "motor": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_MOTOR"
+        }
+      },
+      "pipe_bronze": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_PIPE_BRONZE"
+        }
+      },
+      "pipe_steel": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_PIPE_STEEL"
+        }
+      },
+      "pipe_titanium": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_PIPE_TITANIUM"
+        }
+      },
+      "pipe_tsteel": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_PIPE_TUNGSTENSTEEL"
+        }
+      }
+    }
+  }
+}

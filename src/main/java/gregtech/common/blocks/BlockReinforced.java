@@ -10,7 +10,7 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+//import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.blocks.itemblocks.ItemStorage;
 import gregtech.common.blocks.materials.MaterialReinforced;
 import net.minecraft.block.Block;
@@ -18,6 +18,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
@@ -37,6 +38,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -47,10 +49,8 @@ public class BlockReinforced extends GenericBlock {
 
     public static final PropertyEnum<EnumReinforcedVariant> VARIANT = PropertyEnum.<EnumReinforcedVariant>create("variant", EnumReinforcedVariant.class);
 
-    private TextureAtlasSprite COAL_BLOCK_ICON_DATA;
-
-    public BlockReinforced(String name) {
-        super(name, ItemStorage.class, MaterialReinforced.INSTANCE);
+    public BlockReinforced() {
+        super("blockreinforced", ItemStorage.class, MaterialReinforced.INSTANCE);
         setSoundType(SoundType.STONE);
         setCreativeTab(GregTech_API.TAB_GREGTECH);
 
@@ -73,12 +73,12 @@ public class BlockReinforced extends GenericBlock {
         ItemList.Block_Powderbarrel.set(new ItemStack(this, 1, 5));
         ItemList.Block_SSFUEL.set(new ItemStack(this, 1, 6));
         ItemList.Block_MSSFUEL.set(new ItemStack(this, 1, 7));
-        GT_ModHandler.addCraftingRecipe(ItemList.Block_BronzePlate.get(1L),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hP ", "PBP", " P ", 'P', OrePrefixes.plate.get(Materials.Bronze), 'B', OrePrefixes.stone.get(Materials.GraniteBlack)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Block_BronzePlate.get(1L),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hP ", "PBP", " P ", 'P', OrePrefixes.plate.get(Materials.Bronze), 'B', OrePrefixes.stone.get(Materials.GraniteRed)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Block_IridiumTungstensteel.get(1L),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hBP", 'P', OrePrefixes.plate.get(Materials.Iridium), 'B', ItemList.Block_TungstenSteelReinforced.get(1L)});
-        GT_OreDictUnificator.setItemData(ItemList.Block_IridiumTungstensteel.get(1), new ItemData(new MaterialStack(Materials.Iridium, OrePrefixes.plate.mMaterialAmount), new MaterialStack(Materials.TungstenSteel, 2*OrePrefixes.plate.mMaterialAmount),new MaterialStack(Materials.Concrete, OrePrefixes.dust.mMaterialAmount)));
-        GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(Items.COAL, 1, 1), new Object[]{ItemList.Block_BrittleCharcoal.get(1)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Block_Powderbarrel.get(1L),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"WSW","GGG","WGW", 'W', OrePrefixes.plank.get(Materials.Wood), 'G', new ItemStack(Items.GUNPOWDER,1),'S',new ItemStack(Items.STRING ,1)});
+//        GT_ModHandler.addCraftingRecipe(ItemList.Block_BronzePlate.get(1L),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hP ", "PBP", " P ", 'P', OrePrefixes.plate.get(Materials.Bronze), 'B', OrePrefixes.stone.get(Materials.GraniteBlack)});
+//        GT_ModHandler.addCraftingRecipe(ItemList.Block_BronzePlate.get(1L),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hP ", "PBP", " P ", 'P', OrePrefixes.plate.get(Materials.Bronze), 'B', OrePrefixes.stone.get(Materials.GraniteRed)});
+//        GT_ModHandler.addCraftingRecipe(ItemList.Block_IridiumTungstensteel.get(1L),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hBP", 'P', OrePrefixes.plate.get(Materials.Iridium), 'B', ItemList.Block_TungstenSteelReinforced.get(1L)});
+//        GT_OreDictUnificator.setItemData(ItemList.Block_IridiumTungstensteel.get(1), new ItemData(new MaterialStack(Materials.Iridium, OrePrefixes.plate.mMaterialAmount), new MaterialStack(Materials.TungstenSteel, 2*OrePrefixes.plate.mMaterialAmount),new MaterialStack(Materials.Concrete, OrePrefixes.dust.mMaterialAmount)));
+//        GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(Items.COAL, 1, 1), new Object[]{ItemList.Block_BrittleCharcoal.get(1)});
+//        GT_ModHandler.addCraftingRecipe(ItemList.Block_Powderbarrel.get(1L),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"WSW","GGG","WGW", 'W', OrePrefixes.plank.get(Materials.Wood), 'G', new ItemStack(Items.GUNPOWDER,1),'S',new ItemStack(Items.STRING ,1)});
     }
 
     @Override
@@ -128,36 +128,6 @@ public class BlockReinforced extends GenericBlock {
                 return 2;
         }
         return 4;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing side, int meta) {
-        if ((meta >= 0) && (meta < 16)) {
-            switch (meta) {
-                case 0:
-                    return Textures.BlockIcons.BLOCK_BRONZEPREIN.getIcon();
-                case 1:
-                    return Textures.BlockIcons.BLOCK_IRREIN.getIcon();
-                case 2:
-                    return Textures.BlockIcons.BLOCK_PLASCRETE.getIcon();
-                case 3:
-                    return Textures.BlockIcons.BLOCK_TSREIN.getIcon();
-                case 4:
-                    return COAL_BLOCK_ICON_DATA;
-                case 5:
-                	return Textures.BlockIcons.COVER_WOOD_PLATE.getIcon();
-                case 6:
-                case 7:
-                	return COAL_BLOCK_ICON_DATA;
-            }
-        }
-        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
-    }
-
-    @Override
-    public void registerIcons(TextureMap map) {
-        COAL_BLOCK_ICON_DATA = map.registerSprite(new ResourceLocation("minecraft:blocks/coal_block"));
     }
 
     @Override

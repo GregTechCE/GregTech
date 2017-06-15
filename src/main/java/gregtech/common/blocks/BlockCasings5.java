@@ -63,33 +63,6 @@ public class BlockCasings5 extends BlockCasingsAbstract {
         return meta;
     }
 
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing side, int meta) {
-        return getIconContainer(side, meta).getIcon();
-    }
-
-    public static IIconContainer getIconContainer(EnumFacing side, int meta) {
-        switch (meta) {
-            case 0:
-                return Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL;
-            case 1:
-                return Textures.BlockIcons.MACHINE_COIL_KANTHAL;
-            case 2:
-                return Textures.BlockIcons.MACHINE_COIL_NICHROME;
-            case 3:
-                return Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL;
-            case 4:
-                return Textures.BlockIcons.MACHINE_COIL_HSSG;
-            case 5:
-                return Textures.BlockIcons.MACHINE_COIL_NAQUADAH;
-            case 6:
-                return Textures.BlockIcons.MACHINE_COIL_NAQUADAHALLOY;
-        }
-        return Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL;
-    }
-
     public enum EnumCoilVariant implements IStringSerializable {
         CUPRONICKEL("cupronickel"),
         KANTHAL("kanthal"),

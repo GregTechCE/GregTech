@@ -85,44 +85,11 @@ public class BlockCasings1 extends BlockCasingsAbstract {
         return meta;
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing side, int meta) {
-        return getIconContainer(side, meta).getIcon();
-    }
-
-    public static IIconContainer getIconContainer(EnumFacing side, int meta) {
-        if ((meta >= 0) && (meta < 16)) {
-            switch (meta) {
-                case 10:
-                    return Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS;
-                case 11:
-                    return Textures.BlockIcons.MACHINE_HEATPROOFCASING;
-                case 12:
-                    return Textures.BlockIcons.RENDERING_ERROR;
-                case 13:
-                    return Textures.BlockIcons.RENDERING_ERROR;
-                case 14:
-                    return Textures.BlockIcons.RENDERING_ERROR;
-                case 15:
-                    return Textures.BlockIcons.MACHINE_COIL_SUPERCONDUCTOR;
-            }
-            if (side == EnumFacing.DOWN) {
-                return Textures.BlockIcons.MACHINECASINGS_BOTTOM[meta];
-            }
-            if (side == EnumFacing.UP) {
-                return Textures.BlockIcons.MACHINECASINGS_TOP[meta];
-            }
-            return Textures.BlockIcons.MACHINECASINGS_SIDE[meta];
-        }
-        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL;
-    }
-
-    @Override
-    public int getColorMultiplier(IBlockAccess worldIn, BlockPos pos, IBlockState state) {
-        int metadata = state.getValue(CASING_VARIANT).getMetadata();
-        return metadata > 9 ? Dyes._NULL.getRGBAInt() : Dyes.MACHINE_METAL.getRGBAInt();
-    }
+//    @Override
+//    public int getColorMultiplier(IBlockAccess worldIn, BlockPos pos, IBlockState state) {
+//        int metadata = state.getValue(CASING_VARIANT).getMetadata();
+//        return metadata > 9 ? Dyes._NULL.getRGBAInt() : Dyes.MACHINE_METAL.getRGBAInt();
+//    }
 
     public enum EnumCasingVariant implements IStringSerializable {
         ULV("ulv"),

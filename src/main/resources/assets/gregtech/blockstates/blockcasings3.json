@@ -1,0 +1,102 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cube_all"
+  },
+  "variants": {
+    "casing_variant": {
+      "stripes_a": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_STRIPES_A"
+        }
+      },
+      "stripes_b": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_STRIPES_B"
+        }
+      },
+      "radioactivehazard": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_RADIOACTIVEHAZARD"
+        }
+      },
+      "biohazard": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_BIOHAZARD"
+        }
+      },
+      "explosionhazard": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_EXPLOSIONHAZARD"
+        }
+      },
+      "firehazard": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_FIREHAZARD"
+        }
+      },
+      "acidhazard": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_ACIDHAZARD"
+        }
+      },
+      "magichazard": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_MAGICHAZARD"
+        }
+      },
+      "frosthazard": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_FROSTHAZARD"
+        }
+      },
+      "noisehazard": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_NOISEHAZARD"
+        }
+      },
+      "grate": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_GRATE"
+        }
+      },
+      "vent": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_VENT"
+        }
+      },
+      "radiationproof": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_RADIATIONPROOF"
+        }
+      },
+      "firebox_bronze": {
+        "model": "minecraft:cube_bottom_top",
+        "textures": {
+          "bottom": "gregtech:blocks/iconsets/MACHINE_BRONZEPLATEDBRICKS",
+          "top": "gregtech:blocks/iconsets/MACHINE_CASING_FIREBOX_BRONZE",
+          "side": "gregtech:blocks/iconsets/MACHINE_CASING_FIREBOX_BRONZE"
+        }
+      },
+      "firebox_steel": {
+        "model": "minecraft:cube_bottom_top",
+        "textures": {
+          "bottom": "gregtech:blocks/iconsets/MACHINE_CASING_SOLID_STEEL",
+          "top": "gregtech:blocks/iconsets/MACHINE_CASING_FIREBOX_STEEL",
+          "side": "gregtech:blocks/iconsets/MACHINE_CASING_FIREBOX_STEEL"
+        }
+      },
+      "firebox_tsteel": {
+        "model": "minecraft:cube_bottom_top",
+        "textures": {
+          "bottom": "gregtech:blocks/iconsets/MACHINE_CASING_ROBUST_TUNGSTENSTEEL",
+          "top": "gregtech:blocks/iconsets/MACHINE_CASING_FIREBOX_TUNGSTENSTEEL",
+          "side": "gregtech:blocks/iconsets/MACHINE_CASING_FIREBOX_TUNGSTENSTEEL"
+        }
+      }
+    }
+  }
+}
+
+
+

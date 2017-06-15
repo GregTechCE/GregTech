@@ -81,50 +81,6 @@ public class BlockCasings3 extends BlockCasingsAbstract {
         return meta;
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(EnumFacing side, int meta) {
-        return getIconContainer(side, meta).getIcon();
-    }
-
-    public static IIconContainer getIconContainer(EnumFacing side, int meta) {
-        switch (meta) {
-            case 0:
-                return Textures.BlockIcons.MACHINE_CASING_STRIPES_A;
-            case 1:
-                return Textures.BlockIcons.MACHINE_CASING_STRIPES_B;
-            case 2:
-                return Textures.BlockIcons.MACHINE_CASING_RADIOACTIVEHAZARD;
-            case 3:
-                return Textures.BlockIcons.MACHINE_CASING_BIOHAZARD;
-            case 4:
-                return Textures.BlockIcons.MACHINE_CASING_EXPLOSIONHAZARD;
-            case 5:
-                return Textures.BlockIcons.MACHINE_CASING_FIREHAZARD;
-            case 6:
-                return Textures.BlockIcons.MACHINE_CASING_ACIDHAZARD;
-            case 7:
-                return Textures.BlockIcons.MACHINE_CASING_MAGICHAZARD;
-            case 8:
-                return Textures.BlockIcons.MACHINE_CASING_FROSTHAZARD;
-            case 9:
-                return Textures.BlockIcons.MACHINE_CASING_NOISEHAZARD;
-            case 10:
-                return Textures.BlockIcons.MACHINE_CASING_GRATE;
-            case 11:
-                return Textures.BlockIcons.MACHINE_CASING_VENT;
-            case 12:
-                return Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF;
-            case 13:
-                return side.getIndex() > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_BRONZE : Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS;
-            case 14:
-                return side.getIndex() > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_STEEL : Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL;
-            case 15:
-                return side.getIndex() > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_TUNGSTENSTEEL : Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL;
-        }
-        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL;
-    }
-
     public enum EnumCasingVariant implements IStringSerializable {
         STRIPES_A("stripes_a"),
         STRIPES_B("stripes_b"),
