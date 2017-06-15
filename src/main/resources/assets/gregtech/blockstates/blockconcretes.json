@@ -1,0 +1,89 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cube_all"
+  },
+  "variants": {
+    "light_concrete=false,stone_variant=normal": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/CONCRETE_DARK_STONE"
+      }
+    }],
+    "light_concrete=false,stone_variant=cobblestone": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/CONCRETE_DARK_COBBLE"
+      }
+    }],
+    "light_concrete=false,stone_variant=mossy_cobblestone": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/CONCRETE_DARK_COBBLE_MOSSY"
+      }
+    }],
+    "light_concrete=false,stone_variant=bricks": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/CONCRETE_DARK_BRICKS"
+      }
+    }],
+    "light_concrete=false,stone_variant=cracked_bricks": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/CONCRETE_DARK_BRICKS_CRACKED"
+      }
+    }],
+    "light_concrete=false,stone_variant=mossy_bricks": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/CONCRETE_DARK_BRICKS_MOSSY"
+      }
+    }],
+    "light_concrete=false,stone_variant=chiseled": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/CONCRETE_DARK_BRICKS_CHISELED"
+      }
+    }],
+    "light_concrete=false,stone_variant=smooth": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/CONCRETE_DARK_SMOOTH"
+      }
+    }],
+
+    "light_concrete=true,stone_variant=normal": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/CONCRETE_LIGHT_STONE"
+      }
+    }],
+    "light_concrete=true,stone_variant=cobblestone": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/CONCRETE_LIGHT_COBBLE"
+      }
+    }],
+    "light_concrete=true,stone_variant=mossy_cobblestone": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/CONCRETE_LIGHT_COBBLE_MOSSY"
+      }
+    }],
+    "light_concrete=true,stone_variant=bricks": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/CONCRETE_LIGHT_BRICKS"
+      }
+    }],
+    "light_concrete=true,stone_variant=cracked_bricks": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/CONCRETE_LIGHT_BRICKS_CRACKED"
+      }
+    }],
+    "light_concrete=true,stone_variant=mossy_bricks": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/CONCRETE_LIGHT_BRICKS_MOSSY"
+      }
+    }],
+    "light_concrete=true,stone_variant=chiseled": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/CONCRETE_LIGHT_BRICKS_CHISELED"
+      }
+    }],
+    "light_concrete=true,stone_variant=smooth": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/CONCRETE_LIGHT_SMOOTH"
+      }
+    }]
+  }
+}

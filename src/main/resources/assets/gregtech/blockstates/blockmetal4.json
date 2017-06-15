@@ -1,0 +1,90 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cube_all"
+  },
+  "variants": {
+    "material": {
+      "knightmetal": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_KNIGHTMETAL"
+        }
+      },
+      "lanthanum": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_LANTHANUM"
+        }
+      },
+      "lead": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_LEAD"
+        }
+      },
+      "lutetium": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_LUTETIUM"
+        }
+      },
+      "magnalium": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_MAGNALIUM"
+        }
+      },
+      "magnesium": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_MAGNESIUM"
+        }
+      },
+      "manganese": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_MANGANESE"
+        }
+      },
+      "meteoriciron": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_METEORICIRON"
+        }
+      },
+      "meteoricsteel": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_METEORICSTEEL"
+        }
+      },
+      "midasium": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_MIDASIUM"
+        }
+      },
+      "mithril": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_MITHRIL"
+        }
+      },
+      "molybdenum": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_MOLYBDENUM"
+        }
+      },
+      "naquadah": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_NAQUADAH"
+        }
+      },
+      "naquadahalloy": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_NAQUADAHALLOY"
+        }
+      },
+      "naquadahenriched": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_NAQUADAHENRICHED"
+        }
+      },
+      "naquadria": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_NAQUADRIA"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cube_all"
+  },
+  "variants": {
+    "casing_variant": {
+      "ulv": {
+        "model": "minecraft:cube_bottom_top",
+        "textures": {
+          "bottom": "gregtech:blocks/iconsets/MACHINE_8V_BOTTOM",
+          "top": "gregtech:blocks/iconsets/MACHINE_8V_TOP",
+          "side": "gregtech:blocks/iconsets/MACHINE_8V_SIDE"
+        }
+      },
+      "lv": {
+        "model": "minecraft:cube_bottom_top",
+        "textures": {
+          "bottom": "gregtech:blocks/iconsets/MACHINE_LV_BOTTOM",
+          "top": "gregtech:blocks/iconsets/MACHINE_LV_TOP",
+          "side": "gregtech:blocks/iconsets/MACHINE_LV_SIDE"
+        }
+      },
+      "mv": {
+        "model": "minecraft:cube_bottom_top",
+        "textures": {
+          "bottom": "gregtech:blocks/iconsets/MACHINE_MV_BOTTOM",
+          "top": "gregtech:blocks/iconsets/MACHINE_MV_TOP",
+          "side": "gregtech:blocks/iconsets/MACHINE_MV_SIDE"
+        }
+      },
+      "hv": {
+        "model": "minecraft:cube_bottom_top",
+        "textures": {
+          "bottom": "gregtech:blocks/iconsets/MACHINE_HV_BOTTOM",
+          "top": "gregtech:blocks/iconsets/MACHINE_HV_TOP",
+          "side": "gregtech:blocks/iconsets/MACHINE_HV_SIDE"
+        }
+      },
+      "ev": {
+        "model": "minecraft:cube_bottom_top",
+        "textures": {
+          "bottom": "gregtech:blocks/iconsets/MACHINE_EV_BOTTOM",
+          "top": "gregtech:blocks/iconsets/MACHINE_EV_TOP",
+          "side": "gregtech:blocks/iconsets/MACHINE_EV_SIDE"
+        }
+      },
+      "iv": {
+        "model": "minecraft:cube_bottom_top",
+        "textures": {
+          "bottom": "gregtech:blocks/iconsets/MACHINE_IV_BOTTOM",
+          "top": "gregtech:blocks/iconsets/MACHINE_IV_TOP",
+          "side": "gregtech:blocks/iconsets/MACHINE_IV_SIDE"
+        }
+      },
+      "luv": {
+        "model": "minecraft:cube_bottom_top",
+        "textures": {
+          "bottom": "gregtech:blocks/iconsets/MACHINE_LuV_BOTTOM",
+          "top": "gregtech:blocks/iconsets/MACHINE_LuV_TOP",
+          "side": "gregtech:blocks/iconsets/MACHINE_LuV_SIDE"
+        }
+      },
+      "zpm": {
+        "model": "minecraft:cube_bottom_top",
+        "textures": {
+          "bottom": "gregtech:blocks/iconsets/MACHINE_ZPM_BOTTOM",
+          "top": "gregtech:blocks/iconsets/MACHINE_ZPM_TOP",
+          "side": "gregtech:blocks/iconsets/MACHINE_ZPM_SIDE"
+        }
+      },
+      "uv": {
+        "model": "minecraft:cube_bottom_top",
+        "textures": {
+          "bottom": "gregtech:blocks/iconsets/MACHINE_UV_BOTTOM",
+          "top": "gregtech:blocks/iconsets/MACHINE_UV_TOP",
+          "side": "gregtech:blocks/iconsets/MACHINE_UV_SIDE"
+        }
+      },
+      "max": {
+        "model": "minecraft:cube_bottom_top",
+        "textures": {
+          "bottom": "gregtech:blocks/iconsets/MACHINE_MAX_BOTTOM",
+          "top": "gregtech:blocks/iconsets/MACHINE_MAX_TOP",
+          "side": "gregtech:blocks/iconsets/MACHINE_MAX_SIDE"
+        }
+      },
+
+      "bplated_bricks": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_BRONZEPLATEDBRICKS"
+        }
+      },
+      "heat_proof": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_HEATPROOFCASING"
+        }
+      },
+      "depr": {},
+      "depr2": {},
+      "depr3": {},
+      "superconducting": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_COIL_SUPERCONDUCTOR"
+        }
+      }
+    }
+  }
+}

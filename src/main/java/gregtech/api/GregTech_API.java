@@ -13,7 +13,8 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.*;
 import gregtech.api.world.GT_Worldgen;
-import gregtech.common.blocks.GT_Block_Machines;
+import gregtech.common.blocks.BlockMachines;
+import gregtech.common.blocks.BlockStonesAbstract;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -177,7 +178,7 @@ public class GregTech_API {
     /**
      * Initialized by the Block creation.
      */
-    public static GT_Block_Machines sBlockMachines;
+    public static BlockMachines sBlockMachines;
 
     public static Block sBlockOres1;
     public static Block sBlockMetal1;
@@ -192,7 +193,7 @@ public class GregTech_API {
     public static Block sBlockGem2;
     public static Block sBlockGem3;
     public static Block sBlockReinforced;
-    public static Block sBlockGranites, sBlockConcretes, sBlockStones;
+    public static BlockStonesAbstract sBlockGranites, sBlockConcretes, sBlockStones;
     public static Block sBlockCasings1, sBlockCasings2, sBlockCasings3, sBlockCasings4, sBlockCasings5;
     /**
      * Getting assigned by the Config
@@ -314,10 +315,10 @@ public class GregTech_API {
      *
      * @param blockState the block state
      */
-    public static boolean registerMachineBlock(IBlockState blockState) {
-        if (GregTech_API.sThaumcraftCompat != null)
-            GregTech_API.sThaumcraftCompat.registerPortholeBlacklistedBlock(blockState);
-        sMachineIDs.add(blockState);
+    public static boolean registerMachineBlock(Collection<IBlockState> blockState) {
+//        if (GregTech_API.sThaumcraftCompat != null)
+//            GregTech_API.sThaumcraftCompat.registerPortholeBlacklistedBlock(blockState);
+        sMachineIDs.addAll(blockState);
         return true;
     }
 

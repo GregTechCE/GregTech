@@ -1,0 +1,90 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cube_all"
+  },
+  "variants": {
+    "material": {
+      "lazurite": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_LAZURITE"
+        }
+      },
+      "lignite": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_LIGNITE"
+        }
+      },
+      "monazite": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_MONAZITE"
+        }
+      },
+      "niter": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_NITER"
+        }
+      },
+      "olivine": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_OLIVINE"
+        }
+      },
+      "opal": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_OPAL"
+        }
+      },
+      "infusedorder": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_ORDOCRYSTAL"
+        }
+      },
+      "infusedentropy": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_PERDITIOCRYSTAL"
+        }
+      },
+      "phosphorus": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_PHOSPHORUS"
+        }
+      },
+      "quartzite": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_QUARTZITE"
+        }
+      },
+      "garnetred": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_REDGARNET"
+        }
+      },
+      "ruby": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_RUBY"
+        }
+      },
+      "sapphire": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_SAPPHIRE"
+        }
+      },
+      "sodalite": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_SODALITE"
+        }
+      },
+      "tanzanite": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_TANZANITE"
+        }
+      },
+      "infusedearth": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_TERRACRYSTAL"
+        }
+      }
+    }
+  }
+}

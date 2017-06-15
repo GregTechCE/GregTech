@@ -1,0 +1,90 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cube_all"
+  },
+  "variants": {
+    "material": {
+      "neodymium": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_NEODYMIUM"
+        }
+      },
+      "neodymiummagnetic": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_NEODYMIUMMAGNETIC"
+        }
+      },
+      "neutronium": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_NEUTRONIUM"
+        }
+      },
+      "nichrome": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_NICHROME"
+        }
+      },
+      "nickel": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_NICKEL"
+        }
+      },
+      "niobium": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_NIOBIUM"
+        }
+      },
+      "niobiumnitride": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_NIOBIUMNITRIDE"
+        }
+      },
+      "niobiumtitanium": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_NIOBIUMTITANIUM"
+        }
+      },
+      "osmiridium": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_OSMIRIDIUM"
+        }
+      },
+      "osmium": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_OSMIUM"
+        }
+      },
+      "palladium": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_PALLADIUM"
+        }
+      },
+      "pigiron": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_PIGIRON"
+        }
+      },
+      "platinum": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_PLATINUM"
+        }
+      },
+      "plutonium": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_PLUTONIUM"
+        }
+      },
+      "plutonium241": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_PLUTONIUM241"
+        }
+      },
+      "praseodymium": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_PRASEODYMIUM"
+        }
+      }
+    }
+  }
+}

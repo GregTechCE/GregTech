@@ -1,0 +1,70 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cube_all"
+  },
+  "variants": {
+    "material": {
+      "vanadium": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_VANADIUM"
+        }
+      },
+      "vanadiumgallium": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_VANADIUMGALLIUM"
+        }
+      },
+      "wroughtiron": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_WROUGHTIRON"
+        }
+      },
+      "ytterbium": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_YTTRBIUM"
+        }
+      },
+      "yttrium": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_YTTRIUM"
+        }
+      },
+      "yttriumbariumcuprate": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_YTTRIUMBARIUMCUPRATE"
+        }
+      },
+      "zinc": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_ZINC"
+        }
+      },
+      "tungstencarbide": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_TUNGSTENCARBIDE"
+        }
+      },
+      "vanadiumsteel": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_VANADIUMSTEEL"
+        }
+      },
+      "hssg": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_HSSG"
+        }
+      },
+      "hsse": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_HSSE"
+        }
+      },
+      "hsss": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/BLOCK_HSSS"
+        }
+      }
+    }
+  }
+}
