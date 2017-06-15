@@ -54,13 +54,13 @@ import static gregtech.api.enums.GT_Values.MODID;
  * You can also extend this class and occupy some of it's MetaData, and just pass an meta offset in constructor, and everything will work properly.
  *
  * Items are added in MetaItem via {@link #addItem(short)}. You will get {@link MetaValueItem} instance, which you can configure in builder-alike pattern:
- * {@code addItem(0).setHandheld().setElectricStats(new ElectricStats(10000, 1,  false)) }
+ * {@code addItem(0).setHandheld().addStats(new ElectricStats(10000, 1,  false)) }
  * This will add single-use handheld-rendered (unchargeable) LV battery with initial capacity 10000 EU
  */
 @SuppressWarnings("deprecation")
-public class MetaItem extends GenericItem implements ISpecialElectricItem, IFluidContainerItem, IFuelHandler, IReactorComponent, IBoxable {
+public class MetaItem<T extends MetaItem.MetaValueItem> extends GenericItem implements ISpecialElectricItem, IFluidContainerItem, IFuelHandler, IReactorComponent, IBoxable {
 
-    private TShortObjectMap<MetaValueItem> metaItems = new TShortObjectHashMap<>();
+    private TShortObjectMap<T> metaItems = new TShortObjectHashMap<>();
 
     private final short metaItemOffset;
 
@@ -71,17 +71,21 @@ public class MetaItem extends GenericItem implements ISpecialElectricItem, IFlui
         this.metaItemOffset = metaItemOffset;
     }
 
-    public MetaValueItem addItem(short metaValue) {
-        MetaValueItem metaValueItem = new MetaValueItem(metaValue);
+    protected T constructMetaValueItem(short metaValue) {
+        return (T) new MetaValueItem(metaValue);
+    }
+
+    public final T addItem(short metaValue) {
+        T metaValueItem = constructMetaValueItem(metaValue);
         metaItems.put(metaValue, metaValueItem);
         return metaValueItem;
     }
 
-    public MetaValueItem getItem(short metaValue) {
+    public final T getItem(short metaValue) {
         return metaItems.get(metaValue);
     }
 
-    public MetaValueItem getItem(ItemStack itemStack) {
+    public final T getItem(ItemStack itemStack) {
         return getItem((short) (itemStack.getItemDamage() - metaItemOffset));
     }
 
@@ -470,10 +474,10 @@ public class MetaItem extends GenericItem implements ISpecialElectricItem, IFlui
     }
 
     @Override
-    public int getColor(ItemStack itemStack) {
+    public int getColor(ItemStack itemStack, int pass) {
         MetaValueItem metaValueItem = getItem(itemStack);
         if(metaValueItem != null) {
-            return metaValueItem.getColor(itemStack);
+            return metaValueItem.getColor(itemStack, pass);
         }
         return 0xFFFFFF;
     }
@@ -486,7 +490,11 @@ public class MetaItem extends GenericItem implements ISpecialElectricItem, IFlui
         return false;
     }
 
-    public final class MetaValueItem {
+    public class MetaValueItem {
+
+        public MetaItem<T> getMetaItem() {
+            return MetaItem.this;
+        }
 
         public final int metaValue;
 
@@ -504,12 +512,12 @@ public class MetaItem extends GenericItem implements ISpecialElectricItem, IFlui
         @SideOnly(Side.CLIENT)
         private TextureAtlasSprite[] icons;
 
-        private MetaValueItem(int metaValue) {
+        protected MetaValueItem(int metaValue) {
             this.metaValue = metaValue;
         }
 
         @SideOnly(Side.CLIENT)
-        private void registerIcons(TextureMap textureMap) {
+        protected void registerIcons(TextureMap textureMap) {
             if(electricStats != null) {
                 this.icons = new TextureAtlasSprite[fluidStats != null ? 9 : 8];
                 for(int i = 0; i < 8; i++) {
@@ -529,7 +537,7 @@ public class MetaItem extends GenericItem implements ISpecialElectricItem, IFlui
         }
 
         @SideOnly(Side.CLIENT)
-        private TextureAtlasSprite getIcon(ItemStack itemStack, int renderPass) {
+        protected TextureAtlasSprite getIcon(ItemStack itemStack, int renderPass) {
             switch (renderPass) {
                 case 0:
                     if(electricStats != null) {
@@ -546,12 +554,12 @@ public class MetaItem extends GenericItem implements ISpecialElectricItem, IFlui
         }
 
         @SideOnly(Side.CLIENT)
-        private int getRenderPasses(ItemStack itemStack) {
+        protected int getRenderPasses(ItemStack itemStack) {
             return fluidStats != null ? 2 : 1;
         }
 
         @SideOnly(Side.CLIENT)
-        private int getColor(ItemStack itemStack) {
+        protected int getColor(ItemStack itemStack, int pass) {
             if(fluidStats != null) {
                 FluidStack fluidInside = getFluid(itemStack);
                 if(fluidInside != null)
@@ -559,8 +567,8 @@ public class MetaItem extends GenericItem implements ISpecialElectricItem, IFlui
             }
             return 0xFFFFFF;
         }
-        
-        public boolean isHandheld() {
+
+        protected boolean isHandheld() {
             return handheld;
         }
 
@@ -627,11 +635,11 @@ public class MetaItem extends GenericItem implements ISpecialElectricItem, IFlui
             return this;
         }
 
-        private void setFoodStats(IFoodStats foodStats) {
+        protected void setFoodStats(IFoodStats foodStats) {
             addBehaviour(new FoodUseManager(foodStats));
         }
 
-        private void setDurabilityManager(IItemDurabilityManager durabilityManager) {
+        protected void setDurabilityManager(IItemDurabilityManager durabilityManager) {
             if(durabilityManager == null) {
                 throw new IllegalArgumentException("Cannot set Durability Manager to null.");
             }
@@ -641,7 +649,7 @@ public class MetaItem extends GenericItem implements ISpecialElectricItem, IFlui
             this.durabilityManager = durabilityManager;
         }
 
-        private void setElectricStats(IElectricStats electricStats) {
+        protected void setElectricStats(IElectricStats electricStats) {
             if(electricStats == null) {
                 throw new IllegalArgumentException("Cannot set Electric Stats to null.");
             }
@@ -651,7 +659,7 @@ public class MetaItem extends GenericItem implements ISpecialElectricItem, IFlui
             this.electricStats = electricStats;
         }
 
-        private MetaValueItem setFluidStats(IFluidStats fluidStats) {
+        protected MetaValueItem setFluidStats(IFluidStats fluidStats) {
             if(fluidStats == null) {
                 throw new IllegalArgumentException("Cannot set Fluid Stats to null.");
             }
@@ -662,7 +670,7 @@ public class MetaItem extends GenericItem implements ISpecialElectricItem, IFlui
             return this;
         }
         
-        private void setNuclearStats(INuclearStats nuclearStats) {
+        protected void setNuclearStats(INuclearStats nuclearStats) {
             if(nuclearStats == null) {
                 throw new IllegalArgumentException("Cannot set Nuclear Stats to null.");
             }
@@ -670,14 +678,14 @@ public class MetaItem extends GenericItem implements ISpecialElectricItem, IFlui
             setMaxStackSize(1);
         }
 
-        private void setUseManager(IItemUseManager useManager) {
+        protected void setUseManager(IItemUseManager useManager) {
             if(this.useManager != null) {
                 throw new IllegalStateException("Tried to set Use Manager to " + useManager + ", but it's already set to " + this.useManager);
             }
             this.useManager = useManager;
         }
 
-        private void addBehaviour(IItemBehaviour behaviour) {
+        protected void addBehaviour(IItemBehaviour behaviour) {
             if (behaviour == null) {
                 throw new IllegalArgumentException("Cannot add null behaviour.");
             }

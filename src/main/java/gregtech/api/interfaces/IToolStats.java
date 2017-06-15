@@ -1,20 +1,17 @@
 package gregtech.api.interfaces;
 
-import gregtech.api.items.toolitem.ToolMetaItem;
-import ic2.api.tile.IWrenchable;
+import gregtech.api.items.metaitem.MetaItem;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * The Stats for GT Tools. Not including any Material Modifiers.
@@ -31,79 +28,67 @@ public interface IToolStats {
     /**
      * Called when this gets added to a Tool Item
      */
-    void onStatsAddedToTool(ToolMetaItem item, int ID);
+    void onStatsAddedToTool(MetaItem.MetaValueItem metaValueItem, int ID);
 
     /**
      * @return Damage the Tool receives when breaking a Block. 100 is one Damage Point (or 100 EU).
      */
-    int getToolDamagePerBlockBreak();
+    int getToolDamagePerBlockBreak(ItemStack stack);
 
     /**
      * @return Damage the Tool receives when converting the drops of a Block. 100 is one Damage Point (or 100 EU).
      */
-    int getToolDamagePerDropConversion();
+    int getToolDamagePerDropConversion(ItemStack stack);
 
     /**
      * @return Damage the Tool receives when being used as Container Item. 100 is one use, however it is usually 8 times more than normal.
      */
-    int getToolDamagePerContainerCraft();
+    int getToolDamagePerContainerCraft(ItemStack stack);
 
     /**
      * @return Damage the Tool receives when being used as Weapon, 200 is the normal Value, 100 for actual Weapons.
      */
-    int getToolDamagePerEntityAttack();
+    int getToolDamagePerEntityAttack(ItemStack stack);
 
     /**
      * @return Basic Quality of the Tool, 0 is normal. If increased, it will increase the general quality of all Tools of this Type. Decreasing is also possible.
      */
-    int getBaseQuality();
+    int getBaseQuality(ItemStack stack);
 
     /**
      * @return The Damage Bonus for this Type of Tool against Mobs. 1.0F is normal punch.
      */
-    float getBaseDamage();
-
-    /**
-     * @return This gets the Hurt Resistance time for Entities getting hit. (always does 1 as minimum)
-     */
-    int getHurtResistanceTime(int originalHurtResistance, Entity entity);
+    float getBaseDamage(ItemStack stack);
 
     /**
      * @return This is a multiplier for the Tool Speed. 1.0F = no special Speed.
      */
-    float getSpeedMultiplier();
+    float getSpeedMultiplier(ItemStack stack);
 
     /**
      * @return This is a multiplier for the Tool Durability. 1.0F = no special Durability.
      */
-    float getMaxDurabilityMultiplier();
+    float getMaxDurabilityMultiplier(ItemStack stack);
 
-    DamageSource getDamageSource(EntityLivingBase player, Entity entity);
+    ResourceLocation getMiningSound(ItemStack stack);
 
-    ResourceLocation getMiningSound();
+    ResourceLocation getCraftingSound(ItemStack stack);
 
-    ResourceLocation getCraftingSound();
+    ResourceLocation getEntityHitSound(ItemStack stack);
 
-    ResourceLocation getEntityHitSound();
+    ResourceLocation getBreakingSound(ItemStack stack);
 
-    ResourceLocation getBreakingSound();
-
-    ImmutablePair<Enchantment, Integer>[] getEnchantments(ItemStack stack);
+    Map<Enchantment, Integer> getEnchantments(ItemStack stack);
 
     /**
      * @return If this Tool can be used as an RC Crowbar.
      */
-    boolean isCrowbar();
+    boolean isCrowbar(ItemStack stack);
 
     /**
      * @return If this Tool can be used as an FR Grafter.
      */
-    boolean isGrafter();
-
-    /**
-     * @return If this Tool can be used as an BC Wrench.
-     */
-    boolean isWrench();
+    boolean isGrafter(ItemStack stack);
 
     /**
      * aBlock.getHarvestTool(aMetaData) can return the following Values for example.
@@ -111,7 +96,7 @@ public interface IToolStats {
      *
      * @return If this is a minable Block. Tool Quality checks (like Diamond Tier or something) are separate from this check.
      */
-    boolean isMinableBlock(IBlockState block);
+    boolean isMinableBlock(IBlockState block, ItemStack stack);
 
     /**
      * This lets you modify the Drop List, when this type of Tool has been used.
@@ -127,13 +112,20 @@ public interface IToolStats {
     /**
      * @return the Damage actually done to the Mob.
      */
-    float getNormalDamageAgainstEntity(float originalDamage, Entity entity, ItemStack stack, EntityPlayer player);
+    float getNormalDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase attacker);
 
     /**
      * @return the Damage actually done to the Mob.
      */
-    float getMagicDamageAgainstEntity(float originalDamage, Entity entity, ItemStack stack, EntityPlayer player);
+    float getMagicDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase player);
+
+    /**
+     * @return attack speed of weapon
+     */
+    float getAttackSpeed(ItemStack stack);
 
     int getColor(boolean isToolHead, ItemStack stack);
+
+    IIconContainer getIcon(boolean isToolHead, ItemStack stack);
 
 }

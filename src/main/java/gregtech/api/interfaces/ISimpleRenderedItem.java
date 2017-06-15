@@ -34,7 +34,7 @@ public interface ISimpleRenderedItem {
      * @return RGB color for ItemStack rendering.
      * Default color modifier is absolute white (i.e has no effect)
      */
-    default int getColor(ItemStack itemStack) {
+    default int getColor(ItemStack itemStack, int pass) {
         return 0xFFFFFF;
     }
 

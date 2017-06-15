@@ -721,20 +721,20 @@ public class Materials implements ISubTagContainer, Comparable<Materials> {
 	public List<TC_Aspects.TC_AspectStack> mAspects = new ArrayList<TC_Aspects.TC_AspectStack>();
 	public ArrayList<ItemStack> mMaterialItems = new ArrayList<ItemStack>();
 	public Collection<SubTag> mSubTags = new LinkedHashSet<SubTag>();
-	public Enchantment mEnchantmentTools = null, mEnchantmentArmors = null;
-	public byte mEnchantmentToolsLevel = 0, mEnchantmentArmorsLevel = 0;
+	public Enchantment toolEnchantment = null;
+	public int toolEnchantmentLevel = 0;
 	public boolean mBlastFurnaceRequired = false, mTransparent = false;
-	public float mToolSpeed = 1.0F, mHeatDamage = 0.0F;
+	public float toolSpeed = 1.0F, heatDamage = 0.0F;
 	public String mChemicalFormula = "?", mName = "null", mDefaultLocalName = "null", mCustomID = "null", mConfigSection = "null";
 	public Dyes mColor = Dyes._NULL;
 	public short mMeltingPoint = 0, mBlastFurnaceTemp = 0, mGasTemp = 0;
 	public int mTypes = 0;
-	public int mDurability = 16, mFuelPower = 0, mFuelType = 0, mExtraData = 0, mOreValue = 0, mOreMultiplier = 1, mByProductMultiplier = 1, mSmeltingMultiplier = 1;
+	public int durability = 16, mFuelPower = 0, mFuelType = 0, mExtraData = 0, mOreValue = 0, mOreMultiplier = 1, mByProductMultiplier = 1, mSmeltingMultiplier = 1;
 	public int mDensityMultiplier = 1, mDensityDivider = 1;
 	public long mDensity = M;
 	public Element mElement = null;
 	public Materials mDirectSmelting = this, mOreReplacement = this, mMacerateInto = this, mSmeltInto = this, mArcSmeltInto = this, mHandleMaterial = this;
-	public byte mToolQuality = 0;
+	public byte toolQuality = 0;
 	public boolean mHasParentMod = true, mHasPlasma = false, mHasGas = false, mCustomOre = false;
 	public Fluid mSolid = null, mFluid = null, mGas = null, mPlasma = null;
 
@@ -1322,9 +1322,9 @@ public class Materials implements ISubTagContainer, Comparable<Materials> {
 				aMaterial.mDensityMultiplier = GregTech_API.sMaterialProperties.get(aConfigPath, "DensityMultiplier", aMaterial.mDensityMultiplier);
 				aMaterial.mDensityDivider = GregTech_API.sMaterialProperties.get(aConfigPath, "DensityDivider", aMaterial.mDensityDivider);
 				aMaterial.mDensity = (long) GregTech_API.sMaterialProperties.get(aConfigPath, "Density", (M * aMaterial.mDensityMultiplier) / aMaterial.mDensityDivider);
-				aMaterial.mDurability = GregTech_API.sMaterialProperties.get(aConfigPath, "ToolDurability", aMaterial.mDurability);
-				aMaterial.mToolSpeed = (float) GregTech_API.sMaterialProperties.get(aConfigPath, "ToolSpeed", aMaterial.mToolSpeed);
-				aMaterial.mToolQuality = (byte) GregTech_API.sMaterialProperties.get(aConfigPath, "ToolQuality", aMaterial.mToolQuality);
+				aMaterial.durability = GregTech_API.sMaterialProperties.get(aConfigPath, "ToolDurability", aMaterial.durability);
+				aMaterial.toolSpeed = (float) GregTech_API.sMaterialProperties.get(aConfigPath, "ToolSpeed", aMaterial.toolSpeed);
+				aMaterial.toolQuality = (byte) GregTech_API.sMaterialProperties.get(aConfigPath, "ToolQuality", aMaterial.toolQuality);
 				//aMaterial.mIconSet = MaterialSet.valueOf(GregTech_API.sMaterialProperties.get(aConfigPath.toString(), "IconSet", aMaterial.mIconSet.mSetName));
 				aMaterial.mTransparent = GregTech_API.sMaterialProperties.get(aConfigPath, "Transparent", aMaterial.mTransparent);
 				String aColor = GregTech_API.sMaterialProperties.get(aConfigPath, "DyeColor", aMaterial.mColor == Dyes._NULL ? "None" : aMaterial.mColor.toString());
@@ -1341,7 +1341,7 @@ public class Materials implements ISubTagContainer, Comparable<Materials> {
 				aMaterial.setOreMultiplier(GregTech_API.sMaterialProperties.get(aConfigPath, "OreMultiplier", aMaterial.mOreMultiplier));
 				aMaterial.setSmeltingMultiplier(GregTech_API.sMaterialProperties.get(aConfigPath, "OreSmeltingMultiplier", aMaterial.mSmeltingMultiplier));
 				aMaterial.setByProductMultiplier(GregTech_API.sMaterialProperties.get(aConfigPath, "OreByProductMultiplier", aMaterial.mByProductMultiplier));
-				aMaterial.setHeatDamage((float) GregTech_API.sMaterialProperties.get(aConfigPath, "HeatDamage", aMaterial.mHeatDamage));
+				aMaterial.setHeatDamage((float) GregTech_API.sMaterialProperties.get(aConfigPath, "HeatDamage", aMaterial.heatDamage));
 				aMaterial.mSmeltInto = MATERIALS_MAP.get(GregTech_API.sMaterialProperties.get(aConfigPath, "MaterialSmeltInto", aMaterial.mSmeltInto.mName));
 				aMaterial.mMacerateInto = MATERIALS_MAP.get(GregTech_API.sMaterialProperties.get(aConfigPath, "MaterialMacerateInto", aMaterial.mMacerateInto.mName));
 				aMaterial.mArcSmeltInto = MATERIALS_MAP.get(GregTech_API.sMaterialProperties.get(aConfigPath, "MaterialArcSmeltInto", aMaterial.mArcSmeltInto.mName));
@@ -1350,11 +1350,11 @@ public class Materials implements ISubTagContainer, Comparable<Materials> {
 				if (aMaterial.mHasPlasma = GregTech_API.sMaterialProperties.get(aConfigPath, "AddPlasma", aMaterial.mHasPlasma)) GT_Mod.gregtechproxy.addAutogeneratedPlasmaFluid(aMaterial);
 				if (aMaterial.mHasGas = GregTech_API.sMaterialProperties.get(aConfigPath, "AddGas", aMaterial.mHasGas)) GT_Mod.gregtechproxy.addFluid(aMaterial.mName.toLowerCase(), aMaterial.mDefaultLocalName, aMaterial, 2, aMaterial.mGasTemp);
 				//TODO
-				/*aMaterial.mEnchantmentToolsLevel = (byte) GregTech_API.sMaterialProperties.get(aConfigPath, "EnchantmentLevel", aMaterial.mEnchantmentToolsLevel);
-				String aEnchantmentName = GregTech_API.sMaterialProperties.get(aConfigPath, "Enchantment", aMaterial.mEnchantmentTools != null ? aMaterial.mEnchantmentTools.getName() : "");
-				if (aMaterial.mEnchantmentTools != null && !aEnchantmentName.equals(aMaterial.mEnchantmentTools.getName())) {
+				/*aMaterial.toolEnchantmentLevel = (byte) GregTech_API.sMaterialProperties.get(aConfigPath, "EnchantmentLevel", aMaterial.toolEnchantmentLevel);
+				String aEnchantmentName = GregTech_API.sMaterialProperties.get(aConfigPath, "Enchantment", aMaterial.toolEnchantment != null ? aMaterial.toolEnchantment.getName() : "");
+				if (aMaterial.toolEnchantment != null && !aEnchantmentName.equals(aMaterial.toolEnchantment.getName())) {
 					for (int i = 0; i < getEnchantment(enchantmentsList.length; i++) {
-						if (aEnchantmentName.equals(getEnchantment(enchantmentsList[i].getName())) aMaterial.mEnchantmentTools = getEnchantment(enchantmentsList[i]);
+						if (aEnchantmentName.equals(getEnchantment(enchantmentsList[i].getName())) aMaterial.toolEnchantment = getEnchantment(enchantmentsList[i]);
 					}
 				}*/
 				/**
@@ -1430,8 +1430,8 @@ public class Materials implements ISubTagContainer, Comparable<Materials> {
 					}
 				}
 				/** Moved the harvest level changes from GT_Mod to have less things iterating over MATERIALS_ARRAY **/
-				if (GT_Mod.gregtechproxy.mChangeHarvestLevels && aMaterial.mToolQuality > 0 && aMaterial.mMetaItemSubID < GT_Mod.gregtechproxy.mHarvestLevel.length && aMaterial.mMetaItemSubID >= 0) {
-					GT_Mod.gregtechproxy.mHarvestLevel[aMaterial.mMetaItemSubID] = GregTech_API.sMaterialProperties.get(aConfigPath, "HarvestLevel", aMaterial.mToolQuality);
+				if (GT_Mod.gregtechproxy.mChangeHarvestLevels && aMaterial.toolQuality > 0 && aMaterial.mMetaItemSubID < GT_Mod.gregtechproxy.mHarvestLevel.length && aMaterial.mMetaItemSubID >= 0) {
+					GT_Mod.gregtechproxy.mHarvestLevel[aMaterial.mMetaItemSubID] = GregTech_API.sMaterialProperties.get(aConfigPath, "HarvestLevel", aMaterial.toolQuality);
 				}
 				/** Moved from GT_Proxy? (Not sure)**/
 				aMaterial.mHandleMaterial = (aMaterial == Desh ? aMaterial.mHandleMaterial : aMaterial == Diamond || aMaterial == Thaumium ? Wood : aMaterial.contains(SubTag.BURNING) ? Blaze : aMaterial.contains(SubTag.MAGICAL) && aMaterial.contains(SubTag.CRYSTAL) && Loader.isModLoaded(GT_Values.MOD_ID_TC) ? Thaumium : aMaterial.getMass() > Element.Tc.getMass() * 2 ? TungstenSteel : aMaterial.getMass() > Element.Tc.getMass() ? Steel : Wood);
@@ -1453,9 +1453,9 @@ public class Materials implements ISubTagContainer, Comparable<Materials> {
 		mCustomID = aCustomID;
 		mConfigSection = aConfigSection;
 		mUnificatable = aUnificatable;
-		mDurability = aDurability;
-		mToolSpeed = aToolSpeed;
-		mToolQuality = (byte) aToolQuality;
+		durability = aDurability;
+		toolSpeed = aToolSpeed;
+		toolQuality = (byte) aToolQuality;
 		mMaterialInto = this;
 		mIconSet = aIconSet;
 	}
@@ -1756,7 +1756,7 @@ public class Materials implements ISubTagContainer, Comparable<Materials> {
 	 * Sets the Heat Damage for this Material (negative = frost)
 	 */
 	public Materials setHeatDamage(float aHeatDamage) {
-		mHeatDamage = aHeatDamage;
+		heatDamage = aHeatDamage;
 		return this;
 	}
 
@@ -1846,8 +1846,8 @@ public class Materials implements ISubTagContainer, Comparable<Materials> {
 	}
 
 	public Materials setEnchantmentForTools(Enchantment aEnchantment, int aEnchantmentLevel) {
-		mEnchantmentTools = aEnchantment;
-		mEnchantmentToolsLevel = (byte) aEnchantmentLevel;
+		toolEnchantment = aEnchantment;
+		toolEnchantmentLevel = (byte) aEnchantmentLevel;
 		return this;
 	}
 
