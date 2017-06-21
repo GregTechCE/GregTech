@@ -154,6 +154,10 @@ public class GT_Client extends GT_Proxy
 
     public void onPreLoad() {
         super.onPreLoad();
+
+        ModelLoaderRegistry.registerLoader(CasingModel.CasingBakedModelLoader.INSTANCE);
+        ModelLoaderRegistry.registerLoader(TurbineModel.TurbineBakedModelLoader.INSTANCE);
+
         String arr$[] = {
                 "renadi", "hanakocz", "MysteryDump", "Flaver4", "x_Fame", "Peluche321", "Goshen_Ithilien", "manf", "Bimgo", "leagris",
                 "IAmMinecrafter02", "Cerous", "Devilin_Pixy", "Bkarlsson87", "BadAlchemy", "CaballoCraft", "melanclock", "Resursator", "demanzke", "AndrewAmmerlaan",

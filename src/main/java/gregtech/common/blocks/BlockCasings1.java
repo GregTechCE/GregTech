@@ -75,9 +75,6 @@ public class BlockCasings1 extends BlockCasingsAbstract {
                 .withProperty(CASING_VARIANT, EnumCasingVariant.byMetadata(meta & 0b1111));
     }
 
-    /**
-     * @see Block#getMetaFromState(IBlockState)
-     */
     @Override
     public int getMetaFromState(IBlockState state) {
         int meta = 0;

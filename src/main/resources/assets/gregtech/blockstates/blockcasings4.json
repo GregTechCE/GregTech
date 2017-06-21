@@ -1,78 +1,80 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "minecraft:cube_all"
+    "model": "minecraft:cube_all",
+    "textures": {
+      "all": "gregtech:blocks/iconsets/RENDERING_ERROR"
+    }
   },
   "variants": {
     "casing_variant": {
       "robust_tsteel": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE"
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_ROBUST_TUNGSTENSTEEL"
         }
       },
       "clean_ssteel": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE"
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_CLEAN_STAINLESSSTEEL"
         }
       },
       "stable_titanium": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE"
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_STABLE_TITANIUM"
         }
       },
       "titanium_firebox": {
+        "model": "minecraft:cube_column",
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE"
+          "end": "gregtech:blocks/iconsets/MACHINE_CASING_STABLE_TITANIUM",
+          "side": "gregtech:blocks/iconsets/MACHINE_CASING_FIREBOX_TITANIUM"
         }
       },
-      "fusion_casing": {
-        "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE"
-        }
-      },
-      "fusion_casing2": {
-        "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE"
-        }
-      },
+
+      "fusion_casing": {},
+      "fusion_casing2": {},
       "fusion_casing3": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE"
+          "all": "gregtech:blocks/iconsets/FUSIONI_8"
         }
       },
+
       "fusion_coil": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE"
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_FUSION_COIL"
         }
       },
+
       "fusion_casing_mk2": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE"
+          "all": "gregtech:blocks/iconsets/FUSIONII_8"
         }
       },
+
       "turbine": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE"
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_TURBINE"
         }
       },
       "ssteel_turbine": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE"
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_CLEAN_STAINLESSSTEEL"
         }
       },
       "titanium_turbine": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE"
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_STABLE_TITANIUM"
         }
       },
       "tsteel_turbine": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE"
+          "all": "gregtech:blocks/iconsets/FUSIONII_8"
         }
       },
+
       "engine_intake": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE"
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_ENGINE_INTAKE"
         }
       }
     }

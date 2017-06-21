@@ -1,0 +1,334 @@
+package gregtech.common.blocks.models;
+
+import com.google.common.base.Function;
+import com.google.common.collect.ImmutableSet;
+import gregtech.api.enums.GT_Values;
+import gregtech.common.blocks.properties.UnlistedBlockAccess;
+import gregtech.common.blocks.properties.UnlistedBlockPos;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.ItemOverrideList;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.VertexFormat;
+import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.model.ICustomModelLoader;
+import net.minecraftforge.client.model.IModel;
+import net.minecraftforge.common.model.IModelState;
+import net.minecraftforge.common.model.TRSRTransformation;
+import net.minecraftforge.common.property.IExtendedBlockState;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+public class TurbineModel implements IModel {
+
+	public static final ModelResourceLocation BAKED_TURBINE_MODEL = new ModelResourceLocation(new ResourceLocation(GT_Values.MODID, "turbine"), "normal");
+	public static final ModelResourceLocation BAKED_SSTEEL_TURBINE_MODEL = new ModelResourceLocation(new ResourceLocation(GT_Values.MODID, "ssteel_turbine"), "normal");
+	public static final ModelResourceLocation BAKED_TITANIUM_TURBINE_MODEL = new ModelResourceLocation(new ResourceLocation(GT_Values.MODID, "titanium_turbine"), "normal");
+	public static final ModelResourceLocation BAKED_TSTEEL_TURBINE_MODEL = new ModelResourceLocation(new ResourceLocation(GT_Values.MODID, "tsteel_turbine"), "normal");
+
+	public static final IModel TURBINE_MODEL = create("LARGETURBINE_ST_ACTIVE", "LARGETURBINE_ST", "MACHINE_CASING_TURBINE", 9);
+	public static final IModel SSTEEL_TURBINE_MODEL = create("LARGETURBINE_SS_ACTIVE", "LARGETURBINE_SS", "MACHINE_CASING_CLEAN_STAINLESSSTEEL", 9);
+	public static final IModel TITANIUM_TURBINE_MODEL = create("LARGETURBINE_TI_ACTIVE", "LARGETURBINE_TI", "MACHINE_CASING_STABLE_TITANIUM", 9);
+	public static final IModel TSTEEL_TURBINE_MODEL = create("LARGETURBINE_TU_ACTIVE", "LARGETURBINE_TU", "MACHINE_CASING_ROBUST_TUNGSTENSTEEL", 9);
+
+	private static IModel create(String textureNamePrefixActive, String textureNamePrefixInactive, String defaultTexture, int amount) {
+		List<ResourceLocation> texturesActive = new ArrayList<>(amount);
+		for (int i = 0; i < amount; i++) {
+			texturesActive.add(i, new ResourceLocation(GT_Values.MODID, "blocks/iconsets/" + textureNamePrefixActive + (i + 1)));
+		}
+
+		List<ResourceLocation> texturesInactive = new ArrayList<>(amount);
+		for (int i = 0; i < amount; i++) {
+			texturesInactive.add(i, new ResourceLocation(GT_Values.MODID, "blocks/iconsets/" + textureNamePrefixInactive + (i + 1)));
+		}
+		return new TurbineModel(texturesActive, texturesInactive, new ResourceLocation(GT_Values.MODID, "blocks/iconsets/" + defaultTexture));
+	}
+
+	private final List<ResourceLocation> active;
+	private final List<ResourceLocation> inactive;
+	private final ResourceLocation defaultTexture;
+
+	public TurbineModel(List<ResourceLocation> active, List<ResourceLocation> inactive, ResourceLocation defaultTexture) {
+		this.active = active;
+		this.inactive = inactive;
+		this.defaultTexture = defaultTexture;
+	}
+
+	@Override
+	public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
+		List<TextureAtlasSprite> activeTextures = new ArrayList<>(9);
+		for (ResourceLocation resourceLocation : this.active) {
+			activeTextures.add(bakedTextureGetter.apply(resourceLocation));
+		}
+		List<TextureAtlasSprite> inactiveTextures = new ArrayList<>(9);
+		for (ResourceLocation resourceLocation : this.inactive) {
+			inactiveTextures.add(bakedTextureGetter.apply(resourceLocation));
+		}
+		return new TurbineBakedModel(state, format, activeTextures, inactiveTextures, bakedTextureGetter.apply(defaultTexture));
+	}
+
+	@Override
+	public Collection<ResourceLocation> getDependencies() {
+		return Collections.emptySet();
+	}
+
+	@Override
+	public Collection<ResourceLocation> getTextures() {
+		return new ImmutableSet.Builder<ResourceLocation>().addAll(active).addAll(inactive).build();
+	}
+
+	@Override
+	public IModelState getDefaultState() {
+		return TRSRTransformation.identity();
+	}
+
+	public enum TurbineBakedModelLoader implements ICustomModelLoader {
+		INSTANCE;
+
+		@Override
+		public boolean accepts(ResourceLocation modelLocation) {
+			return modelLocation.getResourceDomain().equals(GT_Values.MODID)
+					&& ("turbine".equals(modelLocation.getResourcePath())
+					|| "ssteel_turbine".equals(modelLocation.getResourcePath())
+					|| "titanium_turbine".equals(modelLocation.getResourcePath())
+					|| "tsteel_turbine".equals(modelLocation.getResourcePath()));
+		}
+
+		@Override
+		public IModel loadModel(ResourceLocation modelLocation) throws Exception {
+			switch (modelLocation.getResourcePath()) {
+				case "turbine":
+					return TURBINE_MODEL;
+				case "ssteel_turbine":
+					return SSTEEL_TURBINE_MODEL;
+				case "titanium_turbine":
+					return TITANIUM_TURBINE_MODEL;
+				case "tsteel_turbine":
+					return TSTEEL_TURBINE_MODEL;
+			}
+			return null;
+		}
+
+		@Override
+		public void onResourceManagerReload(IResourceManager resourceManager) {
+		}
+	}
+
+	public static class TurbineBakedModel extends AbstractBakedModel {
+
+		private List<TextureAtlasSprite> texturesActive;
+		private List<TextureAtlasSprite> texturesInactive;
+		private TextureAtlasSprite defaultTexture;
+
+		public TurbineBakedModel(IModelState state, VertexFormat format, List<TextureAtlasSprite> texturesActive, List<TextureAtlasSprite> texturesInactive, TextureAtlasSprite defaultTexture) {
+			super(format);
+			this.texturesActive = texturesActive;
+			this.texturesInactive = texturesInactive;
+			this.defaultTexture = defaultTexture;
+		}
+
+//		@Nullable
+//		private static IGregTechTileEntity getTurbineTileEntity(IBlockAccess world, BlockPos pos, EnumFacing side) {
+//			TileEntity tileEntity;
+//			IMetaTileEntity metaTileEntity;
+//			if (null != (tileEntity = world.getTileEntity(pos)) &&
+//					tileEntity instanceof IGregTechTileEntity &&
+//					((IGregTechTileEntity) tileEntity).getFrontFacing() == side &&
+//					null != (metaTileEntity = ((IGregTechTileEntity) tileEntity).getMetaTileEntity()) &&
+//					metaTileEntity instanceof GT_MetaTileEntity_LargeTurbine) {
+//				return (IGregTechTileEntity) metaTileEntity;
+//			}
+//			return null;
+//		}
+
+		//To test things before we get working TEs
+		private static DummyClass getTurbineTileEntity(IBlockAccess world, BlockPos pos, EnumFacing side) {
+			if (world.getBlockState(pos).getBlock() == Blocks.WOOL && side == EnumFacing.NORTH) {
+				return new DummyClass(false);
+			}
+			else if (world.getBlockState(pos).getBlock() == Blocks.BOOKSHELF && side == EnumFacing.EAST) {
+				return new DummyClass(false);
+			}
+			else if (world.getBlockState(pos).getBlock() == Blocks.CLAY && side == EnumFacing.SOUTH) {
+				return new DummyClass(false);
+			}
+			else if (world.getBlockState(pos).getBlock() == Blocks.IRON_BLOCK && side == EnumFacing.WEST) {
+				return new DummyClass(false);
+			}
+			return null;
+		}
+
+		//To test things before we get working TEs
+		private static class DummyClass {
+			private boolean isActive;
+
+			public DummyClass(boolean isActive) {
+				this.isActive = isActive;
+			}
+
+			public boolean isActive() {
+				return isActive;
+			}
+		}
+
+    	private TextureAtlasSprite getTurbineSprite(int iconIndex, boolean active) {
+			return active ? texturesActive.get(iconIndex) : texturesInactive.get(iconIndex);
+		}
+
+
+		@Override
+		public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
+
+			if (side != null) {
+				return Collections.emptyList();
+			}
+
+			IExtendedBlockState extendedBlockState = (IExtendedBlockState) state;
+
+			TextureAtlasSprite[] sides = new TextureAtlasSprite[6];
+
+			if (extendedBlockState != null) {
+				IBlockAccess blockAccess = extendedBlockState.getValue(UnlistedBlockAccess.BLOCKACCESS);
+				BlockPos pos = extendedBlockState.getValue(UnlistedBlockPos.POS);
+
+				for (EnumFacing facing : EnumFacing.HORIZONTALS) {
+
+//					IGregTechTileEntity metaTileEntity;
+					DummyClass metaTileEntity;
+					TextureAtlasSprite sprite = null;
+
+					if (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH) {
+						if (null != (metaTileEntity = getTurbineTileEntity(blockAccess, pos.add(facing == EnumFacing.SOUTH ? 1 : -1, -1, 0), facing))) {
+							sprite = getTurbineSprite(0, metaTileEntity.isActive());
+						}
+						else if (null != (metaTileEntity = getTurbineTileEntity(blockAccess, pos.add(facing == EnumFacing.SOUTH ? 1 : -1, 0, 0), facing))) {
+							sprite = getTurbineSprite(3, metaTileEntity.isActive());
+						}
+						else if (null != (metaTileEntity = getTurbineTileEntity(blockAccess, pos.add(facing == EnumFacing.SOUTH ? 1 : -1, 1, 0), facing))) {
+							sprite = getTurbineSprite(6, metaTileEntity.isActive());
+						}
+						else if (null != (metaTileEntity = getTurbineTileEntity(blockAccess, pos.down(), facing))) {
+							sprite = getTurbineSprite(1, metaTileEntity.isActive());
+						}
+						else if (null != (metaTileEntity = getTurbineTileEntity(blockAccess, pos.up(), facing))) {
+							sprite = getTurbineSprite(7, metaTileEntity.isActive());
+						}
+						else if (null != (metaTileEntity = getTurbineTileEntity(blockAccess, pos.add(facing == EnumFacing.NORTH ? 1 : -1, 1, 0), facing))) {
+							sprite = getTurbineSprite(8, metaTileEntity.isActive());
+						}
+						else if (null != (metaTileEntity = getTurbineTileEntity(blockAccess, pos.add(facing == EnumFacing.NORTH ? 1 : -1, 0, 0), facing))) {
+							sprite = getTurbineSprite(5, metaTileEntity.isActive());
+						}
+						else if (null != (metaTileEntity = getTurbineTileEntity(blockAccess, pos.add(facing == EnumFacing.NORTH ? 1 : -1, -1, 0), facing))) {
+							sprite = getTurbineSprite(2, metaTileEntity.isActive());
+						}
+
+						if (facing == EnumFacing.NORTH) {
+							sides[2] = sprite;
+						} else if (facing == EnumFacing.SOUTH) {
+							sides[3] = sprite;
+						}
+
+					} else if (facing == EnumFacing.WEST || facing == EnumFacing.EAST) {
+
+						if (null != (metaTileEntity = getTurbineTileEntity(blockAccess, pos.add(0, -1, facing == EnumFacing.WEST ? 1 : -1), facing))) {
+							sprite = getTurbineSprite(0, metaTileEntity.isActive());
+						}
+						else if (null != (metaTileEntity = getTurbineTileEntity(blockAccess, pos.add(0, 0, facing == EnumFacing.WEST ? 1 : -1), facing))) {
+							sprite = getTurbineSprite(3, metaTileEntity.isActive());
+						}
+						else if (null != (metaTileEntity = getTurbineTileEntity(blockAccess, pos.add(0, 1, facing == EnumFacing.WEST ? 1 : -1), facing))) {
+							sprite = getTurbineSprite(6, metaTileEntity.isActive());
+						}
+						else if (null != (metaTileEntity = getTurbineTileEntity(blockAccess, pos.down(), facing))) {
+							sprite = getTurbineSprite(1, metaTileEntity.isActive());
+						}
+						else if (null != (metaTileEntity = getTurbineTileEntity(blockAccess, pos.up(), facing))) {
+							sprite = getTurbineSprite(7, metaTileEntity.isActive());
+						}
+						else if (null != (metaTileEntity = getTurbineTileEntity(blockAccess, pos.add(0, 1, facing == EnumFacing.EAST ? 1 : -1), facing))) {
+							sprite = getTurbineSprite(8, metaTileEntity.isActive());
+						}
+						else if (null != (metaTileEntity = getTurbineTileEntity(blockAccess, pos.add(0, 0, facing == EnumFacing.EAST ? 1 : -1), facing))) {
+							sprite = getTurbineSprite(5, metaTileEntity.isActive());
+						}
+						else if (null != (metaTileEntity = getTurbineTileEntity(blockAccess, pos.add(0, -1, facing == EnumFacing.EAST ? 1 : -1), facing))) {
+							sprite = getTurbineSprite(2, metaTileEntity.isActive());
+						}
+
+						if (facing == EnumFacing.WEST) {
+							sides[4] = sprite;
+						} else if (facing == EnumFacing.EAST) {
+							sides[5] = sprite;
+						}
+					}
+				}
+
+			}
+
+			for (int i = 0; i < 6; i++) {
+				if (sides[i] == null) {
+					sides[i] = defaultTexture;
+				}
+			}
+
+			List<BakedQuad> quads = new ArrayList<>();
+			//down
+			quads.add(createQuad(new Vec3d(0, 0, 1), new Vec3d(0, 0, 0), new Vec3d(1, 0, 0), new Vec3d(1, 0, 1), sides[0]));
+			// up
+			quads.add(createQuad(new Vec3d(0, 1, 0), new Vec3d(0, 1, 1), new Vec3d(1, 1, 1), new Vec3d(1, 1, 0), sides[1]));
+			//north
+			quads.add(createQuad(new Vec3d(1, 1, 0), new Vec3d(1, 0, 0), new Vec3d(0, 0, 0), new Vec3d(0, 1, 0), sides[2]));
+			//south
+			quads.add(createQuad(new Vec3d(0, 1, 1), new Vec3d(0, 0, 1), new Vec3d(1, 0, 1), new Vec3d(1, 1, 1), sides[3]));
+			//west
+			quads.add(createQuad(new Vec3d(0, 1, 0), new Vec3d(0, 0, 0), new Vec3d(0, 0, 1), new Vec3d(0, 1, 1), sides[4]));
+			//east
+			quads.add(createQuad(new Vec3d(1, 1, 1), new Vec3d(1, 0, 1), new Vec3d(1, 0, 0), new Vec3d(1, 1, 0), sides[5]));
+
+			return quads;
+		}
+
+		@Override
+		public ItemOverrideList getOverrides() {
+			return ItemOverrideList.NONE;
+		}
+
+		@Override
+		public boolean isAmbientOcclusion() {
+			return true;
+		}
+
+		@Override
+		public boolean isGui3d() {
+			return false;
+		}
+
+		@Override
+		public boolean isBuiltInRenderer() {
+			return false;
+		}
+
+		@Override
+		public TextureAtlasSprite getParticleTexture() {
+			return defaultTexture;
+		}
+
+		@Override
+		public ItemCameraTransforms getItemCameraTransforms() {
+			return ItemCameraTransforms.DEFAULT;
+		}
+	}
+}
