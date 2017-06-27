@@ -1,20 +1,22 @@
-package gregtech.api.util;
+package gregtech.api.recipes;
 
 import gregtech.api.interfaces.internal.IGT_CraftingRecipe;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-public class GT_Shaped_Recipe extends ShapedOreRecipe implements IGT_CraftingRecipe {
+public class GT_Shapeless_Recipe extends ShapelessOreRecipe implements IGT_CraftingRecipe {
     public final boolean mDismantleable, mRemovableByGT, mKeepingNBT;
     private final Enchantment[] mEnchantmentsAdded;
     private final int[] mEnchantmentLevelsAdded;
 
-    public GT_Shaped_Recipe(ItemStack aResult, boolean aDismantleAble, boolean aRemovableByGT, boolean aKeepingNBT, Enchantment[] aEnchantmentsAdded, int[] aEnchantmentLevelsAdded, Object... aRecipe) {
+    public GT_Shapeless_Recipe(ItemStack aResult, boolean aDismantleAble, boolean aRemovableByGT, boolean aKeepingNBT, Enchantment[] aEnchantmentsAdded, int[] aEnchantmentLevelsAdded, Object... aRecipe) {
         super(aResult, aRecipe);
         mEnchantmentsAdded = aEnchantmentsAdded;
         mEnchantmentLevelsAdded = aEnchantmentLevelsAdded;
@@ -72,9 +74,8 @@ public class GT_Shaped_Recipe extends ShapedOreRecipe implements IGT_CraftingRec
                     ItemStack tStack = aGrid.getStackInSlot(i);
                     if (tStack != null && GT_Utility.getContainerItem(tStack, true) == null && !(tStack.getItem() instanceof GT_MetaGenerated_Tool)) {
                         tStack = GT_Utility.copyAmount(1, tStack);
-                        if(GT_Utility.isStackValid(tStack)){
                         GT_ModHandler.dischargeElectricItem(tStack, Integer.MAX_VALUE, Integer.MAX_VALUE, true, false, true);
-                        tNBT.setTag("Ingredient." + i, tStack.writeToNBT(new NBTTagCompound()));}
+                        tNBT.setTag("Ingredient." + i, tStack.writeToNBT(new NBTTagCompound()));
                     }
                 }
                 rNBT.setTag("GT.CraftingComponents", tNBT);

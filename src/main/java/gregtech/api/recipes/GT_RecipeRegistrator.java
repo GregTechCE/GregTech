@@ -1,4 +1,4 @@
-package gregtech.api.util;
+package gregtech.api.recipes;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -6,6 +6,9 @@ import gregtech.api.enums.*;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
