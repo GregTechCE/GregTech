@@ -53,9 +53,6 @@ public class BlockCasings5 extends BlockCasingsAbstract {
                 .withProperty(COIL_VARIANT, EnumCoilVariant.byMetadata(meta & 0b1111));
     }
 
-    /**
-     * @see Block#getMetaFromState(IBlockState)
-     */
     @Override
     public int getMetaFromState(IBlockState state) {
         int meta = 0;

@@ -131,7 +131,7 @@ public abstract class BlockGeneratedOres extends GenericBlock {
     public int id;
 
     protected BlockGeneratedOres(boolean small) {
-        super("blockores." + nextId, ItemGeneratedOres.class, Material.ROCK);
+        super("blockores." + nextId, ItemGeneratedOres.class, Material.ROCK, false);
 
         this.id = nextId;
         this.small = small;
