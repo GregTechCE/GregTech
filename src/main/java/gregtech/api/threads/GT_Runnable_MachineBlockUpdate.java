@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 
 public class GT_Runnable_MachineBlockUpdate implements Runnable {
+
     private final BlockPos pos;
     private final World mWorld;
 
@@ -39,4 +40,5 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
             stepToUpdateMachine(mWorld, pos, new ArrayList<BlockPos>());
         } catch (Throwable e) {/**/}
     }
+
 }

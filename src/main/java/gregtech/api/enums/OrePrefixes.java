@@ -84,11 +84,9 @@ public enum OrePrefixes {
     nugget("Nuggets", "", " Nugget", true, true, false, false, false, false, false, true, false, false, B[1], M / 9, 64, 9), // A Nugget. Introduced by Eloraam
 
     plateAlloy("Alloy Plates", "", "", true, false, false, false, false, false, false, false, false, false, B[1], -1, 64, 17), // Special Alloys have this prefix.
-    plateSteamcraft("Steamcraft Plates", "", "", false, false, false, false, false, false, false, false, false, false, B[1], -1, 64, 17),
     plateDense("Dense Plates", "Dense ", " Plate", true, true, false, false, false, false, true, true, false, false, B[1], M * 9, 8, 22), // 9 Plates combined in one Item.
     plateQuintuple("5x Plates", "Quintuple ", " Plate", true, true, false, false, false, false, true, true, false, false, B[1], M * 5, 12, 21),
     plateQuadruple("4x Plates", "Quadruple ", " Plate", true, true, false, false, false, false, true, true, false, false, B[1], M * 4, 16, 20),
-    @Deprecated plateQuad("4x Plates", "", "", false, false, false, false, false, false, false, false, false, false, B[1], -1, 16, 20),
     plateTriple("3x Plates", "Triple ", " Plate", true, true, false, false, false, false, true, true, false, false, B[1], M * 3, 21, 19),
     plateDouble("2x Plates", "Double ", " Plate", true, true, false, false, false, false, true, true, false, false, B[1], M * 2, 32, 18),
     plate("Plates", "", " Plate", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M * 1, 64, 17), // Regular Plate made of one Ingot/Dust. Introduced by Calclavia
@@ -597,7 +595,7 @@ public enum OrePrefixes {
     }
 
     public final ArrayList<ItemStack> mPrefixedItems = new ArrayList<ItemStack>();
-    public final short mTextureIndex;
+    public final MaterialTypeTexture typeTexture;
     public final String mRegularLocalName, mLocalizedMaterialPre, mLocalizedMaterialPost;
     public final boolean mIsUsedForOreProcessing, mIsEnchantable, mIsUnificatable, mIsMaterialBased, mIsSelfReferencing, mIsContainer, mDontUnificateActively, mIsUsedForBlocks, mAllowNormalRecycling, mGenerateDefaultItem;
     public final List<TC_AspectStack> mAspects = new ArrayList<TC_AspectStack>();
@@ -609,7 +607,11 @@ public enum OrePrefixes {
      * Negative = Undefined Amount
      */
     public final long mMaterialAmount;
-    public final Collection<Materials> mDisabledItems = new HashSet<Materials>(), mNotGeneratedItems = new HashSet<Materials>(), mIgnoredMaterials = new HashSet<Materials>(), mGeneratedItems = new HashSet<Materials>();
+    public final Collection<Materials>
+            disabledItems = new HashSet<Materials>(),
+            notGeneratedItems = new HashSet<Materials>(),
+            ignoredMaterials = new HashSet<Materials>(),
+            generatedItems = new HashSet<Materials>();
     private final ArrayList<IOreRecipeRegistrator> mOreProcessing = new ArrayList<IOreRecipeRegistrator>();
     public ItemStack mContainerItem = null;
     public ICondition<ISubTagContainer> mCondition = null;
@@ -923,7 +925,9 @@ public enum OrePrefixes {
     }
 
     public boolean doGenerateItem(Materials aMaterial) {
-        return aMaterial != null && aMaterial != Materials._NULL && ((aMaterial.mTypes & mMaterialGenerationBits) != 0 || mGeneratedItems.contains(aMaterial) /*|| mDynamicItems.contains(aMaterial)*/) && !mNotGeneratedItems.contains(aMaterial) && !mDisabledItems.contains(aMaterial) && (mCondition == null || mCondition.isTrue(aMaterial));
+        return aMaterial != null && aMaterial != Materials._NULL && ((aMaterial.mTypes & mMaterialGenerationBits) != 0 ||
+                generatedItems.contains(aMaterial)) && !notGeneratedItems.contains(aMaterial) && !disabledItems.contains(aMaterial) &&
+                (mCondition == null || mCondition.isTrue(aMaterial));
     }
 
     public boolean ignoreMaterials(Materials... aMaterials) {
@@ -1032,7 +1036,7 @@ public enum OrePrefixes {
                 }
                 break;
             case "MeatRaw":
-                if (name().startsWith("dust")) return mLocalizedMaterialPre + "Mince Meat";
+                if (name().startsWith("dust")) return mLocalizedMaterialPre + " Mince Meat";
                 break;
             case "MeatCooked":
                 if (name().startsWith("dust")) return mLocalizedMaterialPre + "Cooked Mince Meat";
@@ -1068,31 +1072,6 @@ public enum OrePrefixes {
                         return "Ground " + aMaterial.mDefaultLocalName;
                 }
                 break;
-        }
-        if (ProcessingModSupport.aEnableThaumcraftMats) {
-            switch (aMaterial.mName) {
-                case "InfusedAir":
-                case "InfusedDull":
-                case "InfusedEarth":
-                case "InfusedEntropy":
-                case "InfusedFire":
-                case "InfusedOrder":
-                case "InfusedVis":
-                case "InfusedWater":
-                    if (name().startsWith("gem")) return mLocalizedMaterialPre + "Shard of " + aMaterial.mDefaultLocalName;
-                    if (name().startsWith("crystal")) return mLocalizedMaterialPre + "Shard of " + aMaterial.mDefaultLocalName;
-                    if (name().startsWith("plate"))
-                        return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Crystal Plate";
-                    if (name().startsWith("dust"))
-                        return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Crystal Powder";
-                    switch (this) {
-                        case crushedCentrifuged:
-                        case crushedPurified:
-                        case crushed:
-                            return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Crystals";
-                    }
-                    break;
-            }
         }
         // Use Standard Localization
         return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + mLocalizedMaterialPost;

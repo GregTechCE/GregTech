@@ -62,7 +62,7 @@ public class MetaItem<T extends MetaItem.MetaValueItem> extends GenericItem impl
 
     private TShortObjectMap<T> metaItems = new TShortObjectHashMap<>();
 
-    private final short metaItemOffset;
+    protected final short metaItemOffset;
 
     public MetaItem(String unlocalizedName, short metaItemOffset) {
         super(unlocalizedName);
