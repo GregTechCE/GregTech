@@ -51,48 +51,6 @@ public class ProcessingModSupport implements gregtech.api.interfaces.IMaterialHa
             Materials.Vinteum.mHasParentMod = false;
             Materials.ChromiumDioxide.mHasParentMod = false;
         }
-        if (!aEnableMetallurgyMats) {
-            Materials.Angmallen.mHasParentMod = false;
-            Materials.Atlarus.mHasParentMod = false;
-            Materials.Carmot.mHasParentMod = false;
-            Materials.Celenegil.mHasParentMod = false;
-            Materials.Ceruclase.mHasParentMod = false;
-            Materials.Eximite.mHasParentMod = false;
-            Materials.Haderoth.mHasParentMod = false;
-            Materials.Hepatizon.mHasParentMod = false;
-            Materials.Ignatius.mHasParentMod = false;
-            Materials.Infuscolium.mHasParentMod = false;
-            Materials.Inolashite.mHasParentMod = false;
-            Materials.Kalendrite.mHasParentMod = false;
-            Materials.Lemurite.mHasParentMod = false;
-            Materials.Meutoite.mHasParentMod = false;
-            Materials.Orichalcum.mHasParentMod = false;
-            Materials.Oureclase.mHasParentMod = false;
-            Materials.Prometheum.mHasParentMod = false;
-            Materials.Rubracium.mHasParentMod = false;
-            Materials.Sanguinite.mHasParentMod = false;
-            Materials.Tartarite.mHasParentMod = false;
-            Materials.Vulcanite.mHasParentMod = false;
-            Materials.Vyroxeres.mHasParentMod = false;
-            Materials.DeepIron.mHasParentMod = false;
-            Materials.ShadowIron.mHasParentMod = false;
-            Materials.ShadowSteel.mHasParentMod = false;
-            Materials.AstralSilver.mHasParentMod = false;
-            Materials.Midasium.mHasParentMod = false;
-        }
-        if (!aEnableThaumcraftMats) {
-            Materials.Amber.mHasParentMod = false;
-            Materials.Thaumium.mHasParentMod = false;
-            Materials.InfusedGold.mHasParentMod = false;
-            Materials.InfusedAir.mHasParentMod = false;
-            Materials.InfusedFire.mHasParentMod = false;
-            Materials.InfusedEarth.mHasParentMod = false;
-            Materials.InfusedWater.mHasParentMod = false;
-            Materials.InfusedEntropy.mHasParentMod = false;
-            Materials.InfusedOrder.mHasParentMod = false;
-            Materials.InfusedVis.mHasParentMod = false;
-            Materials.InfusedDull.mHasParentMod = false;
-        }
         if (!aEnableUBCMats) {
             Materials.Blueschist.mHasParentMod = false;
             Materials.Chert.mHasParentMod = false;
@@ -105,13 +63,6 @@ public class ProcessingModSupport implements gregtech.api.interfaces.IMaterialHa
             Materials.Komatiite.mHasParentMod = false;
             Materials.Rhyolite.mHasParentMod = false;
         }
-        if (!aEnableTwilightMats) {
-            Materials.FierySteel.mHasParentMod = false;
-            Materials.LiveRoot.mHasParentMod = false;
-            Materials.IronWood.mHasParentMod = false;
-            Materials.Steeleaf.mHasParentMod = false;
-            Materials.Knightmetal.mHasParentMod = false;
-        }
         if (!aEnableGCMarsMats) {
             Materials.Desh.mHasParentMod = false;
             Materials.MeteoricIron.mHasParentMod = false;
@@ -120,12 +71,6 @@ public class ProcessingModSupport implements gregtech.api.interfaces.IMaterialHa
         if (!aEnableThermalFoundationMats) {
             Materials.Blizz.mHasParentMod = false;
             Materials.Enderium.mHasParentMod = false;
-        }
-        if (!aEnableRotaryCraftMats) {
-            Materials.HSLA.mHasParentMod = false;
-        }
-        if (!aEnableEnderIOMats) {
-            Materials.DarkSteel.mHasParentMod = false;
         }
         if (!aEnableRailcraftMats) {
             Materials.Firestone.mHasParentMod = false;
