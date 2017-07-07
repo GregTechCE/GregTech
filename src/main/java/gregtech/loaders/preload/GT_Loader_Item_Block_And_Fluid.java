@@ -3,6 +3,7 @@ package gregtech.loaders.preload;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
+import gregtech.api.enums.material.Materials;
 import gregtech.api.items.GenericItem;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;

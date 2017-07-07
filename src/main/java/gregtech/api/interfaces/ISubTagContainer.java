@@ -9,14 +9,5 @@ public interface ISubTagContainer {
      */
     boolean contains(SubTag tag);
 
-    /**
-     * @return The ISubTagContainer you called this Function on, for convenience.
-     */
-    ISubTagContainer add(SubTag... tags);
-
-    /**
-     * @return if the Tag was there before it has been removed.
-     */
-    boolean remove(SubTag tag);
 
 }

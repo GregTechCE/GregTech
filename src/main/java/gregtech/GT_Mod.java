@@ -7,6 +7,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.*;
+import gregtech.api.enums.material.Materials;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.net.GT_PacketHandler;
 import gregtech.api.objects.GT_ItemStack;

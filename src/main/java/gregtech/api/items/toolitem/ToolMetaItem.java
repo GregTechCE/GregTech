@@ -2,7 +2,7 @@ package gregtech.api.items.toolitem;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.material.Materials;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;

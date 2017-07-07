@@ -2,7 +2,7 @@ package gregtech.api.util;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.material.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.objects.GT_HashSet;

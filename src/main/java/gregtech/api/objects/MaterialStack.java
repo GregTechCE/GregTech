@@ -1,7 +1,7 @@
 package gregtech.api.objects;
 
-import gregtech.api.enums.Material;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.material.Material;
+import gregtech.api.enums.material.Materials;
 
 public class MaterialStack implements Cloneable {
     public long mAmount;

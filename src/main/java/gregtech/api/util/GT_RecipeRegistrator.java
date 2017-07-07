@@ -4,6 +4,7 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
+import gregtech.api.enums.material.Materials;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import net.minecraft.init.Blocks;

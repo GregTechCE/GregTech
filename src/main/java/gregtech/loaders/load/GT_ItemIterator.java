@@ -2,6 +2,7 @@ package gregtech.loaders.load;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
+import gregtech.api.enums.material.Materials;
 import gregtech.api.items.GenericItem;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;

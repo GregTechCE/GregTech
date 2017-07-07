@@ -2,7 +2,7 @@ package gregtech.loaders.oreprocessing;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.material.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.objects.MaterialStack;
@@ -21,7 +21,7 @@ public class ProcessingCell
         OrePrefixes.cellPlasma.add(this);
     }
 
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+    public void registerOre(OrePrefixes aPrefix, Material aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         switch (aPrefix) {
             case cell:
                 if (aMaterial == Materials.Empty) {
@@ -38,9 +38,9 @@ public class ProcessingCell
                         for (Iterator i$ = aMaterial.mMaterialList.iterator(); i$.hasNext(); tAllAmount = (int) (tAllAmount + tMat2.mAmount)) {
                             tMat2 = (MaterialStack) i$.next();
                         }
-                        long tItemAmount = 0L;
-                        long tCapsuleCount = GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(aStack) * -tAllAmount;
-                        long tDensityMultiplier = aMaterial.getDensity() > 3628800L ? aMaterial.getDensity() / 3628800L : 1L;
+                        int tItemAmount = 0L;
+                        int tCapsuleCount = GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(aStack) * -tAllAmount;
+                        int tDensityMultiplier = aMaterial.getDensity() > 3628800L ? aMaterial.getDensity() / 3628800L : 1L;
                         ArrayList<ItemStack> tList = new ArrayList<>();
                         for (MaterialStack tMat : aMaterial.mMaterialList) {
                             if (tMat.mAmount > 0L) {

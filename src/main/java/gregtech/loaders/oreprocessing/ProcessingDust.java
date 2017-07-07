@@ -2,6 +2,7 @@ package gregtech.loaders.oreprocessing;
 
 import gregtech.GT_Mod;
 import gregtech.api.enums.*;
+import gregtech.api.enums.material.Materials;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;

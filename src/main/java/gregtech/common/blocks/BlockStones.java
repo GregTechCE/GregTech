@@ -1,15 +1,9 @@
 package gregtech.common.blocks;
 
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.material.Materials;
 import gregtech.api.util.GT_LanguageManager;
 //import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.blocks.itemblocks.ItemGranites;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockStones extends BlockStonesAbstract {
     public BlockStones() {

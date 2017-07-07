@@ -1,8 +1,9 @@
-package gregtech.api.enums;
+package gregtech.api.enums.material;
 
+import gregtech.api.enums.GT_Values;
 import net.minecraft.util.ResourceLocation;
 
-public enum MaterialTypeTexture {
+public enum MaterialIconType {
 
     //ITEM TEXTURES
     dustTiny,
@@ -87,16 +88,16 @@ public enum MaterialTypeTexture {
 
     private boolean isBlock;
 
-    MaterialTypeTexture() {
+    MaterialIconType() {
         this.isBlock = false;
     }
 
-    MaterialTypeTexture(boolean isBlock) {
+    MaterialIconType(boolean isBlock) {
         this.isBlock = isBlock;
     }
 
-    public ResourceLocation getTexturePath(MaterialType materialType) {
-        return new ResourceLocation(GT_Values.MODID, String.format("%s/%s/%s", isBlock ? "blocks" : "items", materialType.name(), name()));
+    public ResourceLocation getTexturePath(MaterialIconSet materialIconSet) {
+        return new ResourceLocation(GT_Values.MODID, String.format("%s/%s/%s", isBlock ? "blocks" : "items", materialIconSet.name(), name()));
     }
 
 }

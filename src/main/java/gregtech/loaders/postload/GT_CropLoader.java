@@ -1,7 +1,7 @@
 package gregtech.loaders.postload;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.material.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_BaseCrop;
 import gregtech.api.util.GT_Log;

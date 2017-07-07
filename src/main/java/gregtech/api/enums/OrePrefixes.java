@@ -2,6 +2,8 @@ package gregtech.api.enums;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
+import gregtech.api.enums.material.MaterialIconType;
+import gregtech.api.enums.material.Materials;
 import gregtech.api.interfaces.ICondition;
 import gregtech.api.interfaces.IMaterialHandler;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
@@ -10,7 +12,6 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
-import gregtech.loaders.materialprocessing.ProcessingModSupport;
 import net.minecraft.item.ItemStack;
 
 import java.util.*;
@@ -595,7 +596,7 @@ public enum OrePrefixes {
     }
 
     public final ArrayList<ItemStack> mPrefixedItems = new ArrayList<ItemStack>();
-    public final MaterialTypeTexture typeTexture;
+    public final MaterialIconType typeTexture;
     public final String mRegularLocalName, mLocalizedMaterialPre, mLocalizedMaterialPost;
     public final boolean mIsUsedForOreProcessing, mIsEnchantable, mIsUnificatable, mIsMaterialBased, mIsSelfReferencing, mIsContainer, mDontUnificateActively, mIsUsedForBlocks, mAllowNormalRecycling, mGenerateDefaultItem;
     public final List<TC_AspectStack> mAspects = new ArrayList<TC_AspectStack>();

@@ -1,6 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
 import gregtech.api.enums.*;
+import gregtech.api.enums.material.Materials;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import net.minecraft.init.Blocks;

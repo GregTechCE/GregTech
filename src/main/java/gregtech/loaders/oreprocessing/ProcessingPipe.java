@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.material.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.ToolDictNames;

@@ -1,6 +1,7 @@
 package gregtech.api.enums;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.material.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;

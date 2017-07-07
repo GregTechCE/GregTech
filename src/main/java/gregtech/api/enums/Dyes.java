@@ -28,9 +28,9 @@ public enum Dyes {
     dyeOrange(14, 255, 128, 0, "Orange"),
     dyeWhite(15, 255, 255, 255, "White"),
     /**
-     * The NULL Color
+     * The Clear White Color
      */
-    _NULL(-1, 255, 255, 255, "INVALID COLOR"),
+    CLEAR(-1, 255, 255, 255, "Clear White"),
     /**
      * Additional Colors only used for direct Color referencing
      */
