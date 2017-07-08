@@ -3,7 +3,7 @@ package gregtech.common.items.armor;
 import java.util.HashMap;
 import java.util.Map;
 
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.material.Materials;
 
 public class Values {
 	public static Values INSTANCE;

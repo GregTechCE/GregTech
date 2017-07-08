@@ -2,7 +2,8 @@ package gregtech.api;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.material.Material;
+import gregtech.api.enums.material.Materials;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.items.GenericItem;
@@ -136,18 +137,9 @@ public class GregTech_API {
      */
     public static final List<GT_Worldgen> sWorldgenList = new ArrayList<GT_Worldgen>();
     /**
-     * A List containing all the Materials, which are somehow in use by GT and therefor receive a specific Set of Items.
-     */
-    public static final Materials[] generatedMaterials = new Materials[1000];
-    /**
      * This is the generic Cover behavior. Used for the default Covers, which have no Behavior.
      */
     public static final GT_CoverBehavior sDefaultBehavior = new GT_Cover_Default(), sNoBehavior = new GT_Cover_None();
-
-    /**
-     * Used to register Aspects to ThaumCraft, this Object might be null if ThaumCraft isn't installed
-     */
-    public static IThaumcraftCompat sThaumcraftCompat;
     /**
      * These Lists are getting executed at their respective timings. Useful if you have to do things right before/after I do them, without having to control the load order. Add your "Commands" in the Constructor or in a static Code Block of your Mods Main Class. These are not Threaded, I just use a native Java Interface for their execution. Implement just the Method run() and everything should work
      */

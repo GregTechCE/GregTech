@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import gnu.trove.list.array.TShortArrayList;
 import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.DamageSources;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.material.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.metaitem.MetaItem;

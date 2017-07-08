@@ -3,6 +3,7 @@ package gregtech.loaders.postload;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
+import gregtech.api.enums.material.Materials;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.*;
 import ic2.api.recipe.ILiquidHeatExchangerManager.HeatExchangeProperty;

@@ -1,5 +1,7 @@
 package gregtech.api.enums;
 
+import gregtech.api.enums.material.Materials;
+
 /**
  * Experimental Class for later
  */

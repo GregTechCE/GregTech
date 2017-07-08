@@ -1,12 +1,11 @@
 package gregtech.api.util;
 
 
-import com.google.common.collect.Lists;
 import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.DamageSources;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.material.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.events.BlockScanningEvent;
 import gregtech.api.interfaces.IDebugableBlock;

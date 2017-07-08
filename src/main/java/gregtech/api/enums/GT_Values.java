@@ -15,8 +15,6 @@ import java.util.Locale;
  */
 public class GT_Values {
 
-    // unused: A, C, D, G, H, I, J, K, N, O, Q, R, S, T
-
     /**
      * The first 32 Bits
      */

@@ -1,14 +1,13 @@
-package gregtech.api.enums;
+package gregtech.api.enums.material;
 
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.objects.CachedIconContainer;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.EnumMap;
 
-public enum MaterialType {
+public enum MaterialIconSet {
 
     NONE,
     METALLIC,
@@ -38,24 +37,25 @@ public enum MaterialType {
     PAPER,
     NETHERSTAR;
 
-    MaterialType() {
-        if(FMLCommonHandler.instance().getSide().isClient()) {
-            initTextures();
+    @SideOnly(Side.CLIENT)
+    public static void init() {
+        for(MaterialIconSet iconSet : values()) {
+            iconSet.initTextures();
         }
     }
 
     @SideOnly(Side.CLIENT)
-    private EnumMap<MaterialTypeTexture, IIconContainer> textures;
+    private EnumMap<MaterialIconType, IIconContainer> textures;
 
     @SideOnly(Side.CLIENT)
-    public IIconContainer getTexture(MaterialTypeTexture texture) {
+    public IIconContainer getTexture(MaterialIconType texture) {
         return textures.get(texture);
     }
 
     @SideOnly(Side.CLIENT)
     private void initTextures() {
-        textures = new EnumMap<>(MaterialTypeTexture.class);
-        for(MaterialTypeTexture texture : MaterialTypeTexture.values()) {
+        textures = new EnumMap<>(MaterialIconType.class);
+        for(MaterialIconType texture : MaterialIconType.values()) {
             textures.put(texture, CachedIconContainer.createWithOverlay(texture.getTexturePath(this)));
         }
     }
