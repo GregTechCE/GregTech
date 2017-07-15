@@ -3,11 +3,18 @@ package gregtech.api.recipes;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.material.Materials;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import ic2.core.ref.BlockName;
+import ic2.core.ref.ItemName;
+import ic2.core.ref.TeBlock;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.Validate;
 
@@ -77,7 +84,7 @@ public class Recipe {
 	 */
 	private final boolean needsEmptyOutput;
 
-	private Recipe(List<ItemStack> inputs, List<ItemStack> outputs, Map<ItemStack, Integer> chancedOutputs,
+	protected Recipe(List<ItemStack> inputs, List<ItemStack> outputs, Map<ItemStack, Integer> chancedOutputs,
 				   List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs, ItemStack specialItem,
 				   int duration, int EUt, boolean hidden, boolean canBeBuffered, boolean needsEmptyOutput) {
 		this.inputs = ImmutableList.copyOf(inputs);
@@ -281,7 +288,7 @@ public class Recipe {
 	}
 
 	@Nullable
-	public Object getSpecialItem() {
+	public ItemStack getSpecialItem() {
 		return specialItem;
 	}
 
@@ -301,418 +308,100 @@ public class Recipe {
 		return canBeBuffered;
 	}
 
-	public boolean doesNeedEmptyOutput() {
+	public boolean needsEmptyOutput() {
 		return needsEmptyOutput;
 	}
 
-	public static abstract class RecipeBuilder<E extends Recipe, R extends RecipeBuilder<E,R>> {
+	public static class BlastRecipe extends Recipe {
+		private final int blastFurnaceTemp;
 
-		@Nullable
-		protected RecipeMap<?,?> recipeMap;
+		protected BlastRecipe(List<ItemStack> inputs, List<ItemStack> outputs, Map<ItemStack, Integer> chancedOutputs, List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs, ItemStack specialItem, int duration, int EUt, boolean hidden, boolean canBeBuffered, boolean needsEmptyOutput, int blastFurnaceTemp) {
+			super(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, specialItem, duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
 
-		protected List<ItemStack> inputs = new ArrayList<>(0);
-		protected List<ItemStack> outputs = new ArrayList<>(0);
-		protected Map<ItemStack, Integer> chancedOutputs = new HashMap<>(0);
-
-		protected List<FluidStack> fluidInputs = new ArrayList<>(0);
-		protected List<FluidStack> fluidOutputs = new ArrayList<>(0);
-
-		protected ItemStack specialItem;
-
-		protected int duration, EUt;
-
-		protected boolean hidden = false;
-
-		protected boolean canBeBuffered = true;
-
-		protected boolean needsEmptyOutput = false;
-
-		protected boolean optimized = true;
-
-		public RecipeBuilder() {
-			this.inputs = new ArrayList<>(0);
-			this.outputs = new ArrayList<>(0);
-			this.chancedOutputs = new HashMap<>(0);
-
-			this.fluidInputs = new ArrayList<>(0);
-			this.fluidOutputs = new ArrayList<>(0);
+			this.blastFurnaceTemp = blastFurnaceTemp;
 		}
 
-		public RecipeBuilder(Recipe recipe) {
-			this.inputs = new ArrayList<>(recipe.inputs);
-			this.outputs = new ArrayList<>(recipe.outputs);
-			this.chancedOutputs = new HashMap<>(recipe.chancedOutputs);
-			this.fluidInputs = new ArrayList<>(recipe.fluidInputs);
-			this.fluidOutputs = new ArrayList<>(recipe.fluidOutputs);
+		public int getBlastFurnaceTemp() {
+			return blastFurnaceTemp;
+		}
+	}
 
-			this.specialItem = recipe.specialItem;
-			this.duration = recipe.duration;
-			this.EUt = recipe.EUt;
-			this.hidden = recipe.hidden;
-			this.canBeBuffered = recipe.canBeBuffered;
-			this.needsEmptyOutput = recipe.needsEmptyOutput;
+	public static class AmplifierRecipe extends Recipe {
+		private final int amplifierAmountOutputted;
+
+		protected AmplifierRecipe(List<ItemStack> inputs, List<ItemStack> outputs, Map<ItemStack, Integer> chancedOutputs, List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs, ItemStack specialItem, int duration, int EUt, boolean hidden, boolean canBeBuffered, boolean needsEmptyOutput, int amplifierAmountOutputted) {
+			super(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, specialItem, duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
+
+			this.amplifierAmountOutputted = amplifierAmountOutputted;
 		}
 
-		public RecipeBuilder(RecipeBuilder<?,?> recipeBuilder) {
-			this.recipeMap = recipeBuilder.recipeMap;
-			this.inputs = new ArrayList<>(recipeBuilder.inputs);
-			this.outputs = new ArrayList<>(recipeBuilder.outputs);
-			this.chancedOutputs = new HashMap<>(recipeBuilder.chancedOutputs);
-			this.fluidInputs = new ArrayList<>(recipeBuilder.fluidInputs);
-			this.fluidOutputs = new ArrayList<>(recipeBuilder.fluidOutputs);
-			this.specialItem = recipeBuilder.specialItem;
-			this.duration = recipeBuilder.duration;
-			this.EUt = recipeBuilder.EUt;
-			this.hidden = recipeBuilder.hidden;
-			this.canBeBuffered = recipeBuilder.canBeBuffered;
-			this.needsEmptyOutput = recipeBuilder.needsEmptyOutput;
-			this.optimized = recipeBuilder.optimized;
+		public int getAmplifierAmountOutputted() {
+			return amplifierAmountOutputted;
+		}
+	}
+
+	public static class FusionRecipe extends Recipe {
+		private final int EUToStart;
+
+		protected FusionRecipe(List<ItemStack> inputs, List<ItemStack> outputs, Map<ItemStack, Integer> chancedOutputs, List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs, ItemStack specialItem, int duration, int EUt, boolean hidden, boolean canBeBuffered, boolean needsEmptyOutput, int EUToStart) {
+			super(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, specialItem, duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
+
+			this.EUToStart = EUToStart;
 		}
 
-		/**
-		 * Calling this method second time will override existing item inputs
-		 */
-		public R inputs(@Nonnull ItemStack... inputs) {
-			Validate.notNull(inputs, "Input array cannot be null");
-			Validate.noNullElements(inputs, "Input cannot contain null ItemStacks");
-
-			this.inputs.clear();
-
-			Collections.addAll(this.inputs, inputs);
-			return getThis();
+		public int getEUToStart() {
+			return EUToStart;
 		}
+	}
 
-		/**
-		 * Calling this method second time will override existing item outputs
-		 */
-		public R outputs(@Nonnull ItemStack... outputs) {
-			Validate.notNull(outputs, "Input array cannot be null");
-			Validate.noNullElements(outputs, "Output cannot contain null ItemStacks");
+	public static class AssemblyLineRecipe {
 
-			this.outputs.clear();
+		private final ItemStack researchItem;
+		private final int researchTime;
 
-			Collections.addAll(this.outputs, outputs);
-			return getThis();
-		}
+		private final List<ItemStack> inputs;
+		private final List<FluidStack> fluidInputs;
+		private final ItemStack output;
 
-		/**
-		 * Calling this method second time will override existing fluid inputs
-		 */
-		public R fluidInputs(@Nonnull FluidStack... inputs) {
-			Validate.notNull(inputs, "Input array cannot be null");
-			Validate.noNullElements(inputs, "Fluid input cannot contain null FluidStacks");
+		private final int duration;
+		private final int EUt;
 
-			this.fluidInputs.clear();
-
-			Collections.addAll(this.fluidInputs, inputs);
-			return getThis();
-		}
-
-		/**
-		 * Calling this method second time will override existing fluid outputs
-		 */
-		public R fluidOutputs(@Nonnull FluidStack... outputs) {
-			Validate.notNull(outputs, "Input array cannot be null");
-			Validate.noNullElements(outputs, "Fluid output cannot contain null FluidStacks");
-
-			this.fluidOutputs.clear();
-
-			Collections.addAll(this.fluidOutputs, outputs);
-			return getThis();
-		}
-
-		public R chancedOutput(@Nonnull ItemStack stack, int chance) {
-			Validate.notNull(stack, "Chanced output ItemStack cannot be null");
-			Validate.exclusiveBetween(0, 10001, chance, "Chance cannot be less or equal to 0 or more than 10000");
-
-			if (this.chancedOutputs.containsKey(stack)) {
-				throw new IllegalArgumentException("Chanced output map already contains " + stack);
-			}
-
-			this.chancedOutputs.put(stack, chance);
-			return getThis();
-		}
-
-		public R clearChancedOutputs() {
-			this.chancedOutputs.clear();
-			return getThis();
-		}
-
-		public R specialItem(ItemStack specialItem) {
-			this.specialItem = specialItem;
-			return getThis();
-		}
-
-		public R duration(int duration) {
-			if (duration <= 0) {
-				throw new IllegalArgumentException("Duration cannot be less or equal to 0");
-			}
-
+		public AssemblyLineRecipe(ItemStack researchItem, int researchTime, List<ItemStack> inputs, List<FluidStack> fluidInputs, ItemStack output, int duration, int EUt) {
+			this.researchItem = researchItem;
+			this.researchTime = researchTime;
+			this.inputs = ImmutableList.copyOf(inputs);
+			this.fluidInputs = ImmutableList.copyOf(fluidInputs);
+			this.output = output;
 			this.duration = duration;
-			return getThis();
-		}
-
-		public R EUt(int EUt) {
-//			if (EUt <= 0) {
-//				throw new IllegalArgumentException("EUt cannot be less or equal to 0");
-//			}
-
 			this.EUt = EUt;
-			return getThis();
 		}
 
-		public R hidden() {
-			this.hidden = true;
-			return getThis();
+		public ItemStack getResearchItem() {
+			return researchItem;
 		}
 
-		public R cannotBeBuffered() {
-			this.canBeBuffered = false;
-			return getThis();
+		public int getResearchTime() {
+			return researchTime;
 		}
 
-		public R nonOptimized() {
-			this.optimized = false;
-			return getThis();
+		public List<ItemStack> getInputs() {
+			return inputs;
 		}
 
-		public R needsEmptyOutput() {
-			this.needsEmptyOutput = true;
-			return getThis();
+		public List<FluidStack> getFluidInputs() {
+			return fluidInputs;
 		}
 
-		public R setRecipeMap(RecipeMap<?,?> recipeMap) {
-			this.recipeMap = recipeMap;
-			return getThis();
+		public ItemStack getOutput() {
+			return output;
 		}
 
-		public abstract R copy();
-
-		// To get rid of "unchecked cast" warning
-		protected abstract R getThis();
-
-		// todo better name?
-		protected void fill() {
-//			GT_OreDictUnificator.setStackArray(true, inputs);
-//			GT_OreDictUnificator.setStackArray(true, outputs);
-//			GT_OreDictUnificator.setStackArray(true, chancedOutputs);
-
-//			for (ItemStack tStack : outputs) GT_Utility.updateItemStack(tStack);
-
-			for (ItemStack stack : inputs) {
-				if (Items.FEATHER.getDamage(stack) != W) {
-					for (int j = 0; j < outputs.size(); j++) {
-						if (GT_Utility.areStacksEqual(stack, outputs.get(j))) {
-							if (stack.stackSize >= outputs.get(j).stackSize) {
-								stack.stackSize -= outputs.get(j).stackSize;
-								outputs.remove(j);
-							} else {
-								outputs.get(j).stackSize -= stack.stackSize;
-							}
-						}
-					}
-				}
-			}
-
-			if (optimized && duration >= 32) {
-				ArrayList<ItemStack> itemStacks = new ArrayList<>();
-				itemStacks.addAll(inputs);
-				itemStacks.addAll(outputs);
-
-				for (byte i = (byte) Math.min(64, duration / 16); i > 1; i--)
-					if (duration / i >= 16) {
-						boolean temp = true;
-						for (int j = 0, k = itemStacks.size(); temp && j < k; j++)
-							if (itemStacks.get(j).stackSize % i != 0) temp = false;
-						for (int j = 0; temp && j < fluidInputs.size(); j++)
-							if (fluidInputs.get(j).amount % i != 0) temp = false;
-						for (int j = 0; temp && j < fluidOutputs.size(); j++)
-							if (fluidOutputs.get(j).amount % i != 0) temp = false;
-						if (temp) {
-							for (ItemStack stack : itemStacks) stack.stackSize /= i;
-							for (FluidStack fluidInput : fluidInputs) fluidInput.amount /= i;
-							for (FluidStack fluidOutput : fluidOutputs) fluidOutput.amount /= i;
-							duration /= i;
-						}
-					}
-			}
+		public int getDuration() {
+			return duration;
 		}
 
-		public Recipe build() {
-			fill();
-			return new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
-					specialItem, duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
-		}
-
-		protected R validate() {
-			Validate.exclusiveBetween(recipeMap.getMinInputs(), recipeMap.getMaxInputs(), inputs.size());
-			Validate.exclusiveBetween(recipeMap.getMinOutputs(), recipeMap.getMaxOutputs(), outputs.size() + chancedOutputs.size());
-			Validate.exclusiveBetween(recipeMap.getMinFluidInputs(), recipeMap.getMaxFluidInputs(), fluidInputs.size());
-			Validate.exclusiveBetween(recipeMap.getMinFluidOutputs(), recipeMap.getMaxFluidOutputs(), fluidOutputs.size());
-
-			//For fakeRecipes don't do check for collisions, regular recipes do check, do not check for recipes that are not registered(i.e. created after postinit stage)
-			Validate.isTrue(!(recipeMap instanceof RecipeMap.FakeRecipeMap) &&
-							recipeMap.findRecipe(null, false, Long.MAX_VALUE, this.fluidInputs.toArray(new FluidStack[0]), this.inputs.toArray(new ItemStack[0])) != null,
-					"Found recipe with same input (inputs: {}, fluid inputs: {}, recipe map: {}) as another one.",
-					this.inputs, this.fluidInputs, recipeMap.unlocalizedName);
-
-			return getThis();
-		}
-
-		public void buildAndRegister() {
-			recipeMap.addRecipe(validate().build());
-		}
-	}
-
-	public static class DefaultRecipeBuilder extends RecipeBuilder<Recipe, DefaultRecipeBuilder> {
-
-		public DefaultRecipeBuilder() {}
-
-		public DefaultRecipeBuilder(Recipe recipe) {
-			super(recipe);
-		}
-
-		public DefaultRecipeBuilder(RecipeBuilder<?,?> recipeBuilder) {
-			super(recipeBuilder);
-		}
-
-		@Override
-		protected DefaultRecipeBuilder getThis() {
-			return this;
-		}
-
-		@Override
-		public DefaultRecipeBuilder copy() {
-			return new DefaultRecipeBuilder(this);
-		}
-	}
-
-//	RecipeMap.BENDER_RECIPES.recipeBuilder().inputs(new ItemStack(Items.APPLE)).circuitMeta(1).outputs(new ItemStack(Items.GOLDEN_APPLE)).buildAndRegister();
-	public static class IntCircuitRecipeBuilder extends RecipeBuilder<Recipe, IntCircuitRecipeBuilder> {
-
-		protected int circuitMeta;
-
-		public IntCircuitRecipeBuilder() {
-		}
-
-		public IntCircuitRecipeBuilder(Recipe recipe) {
-			super(recipe);
-		}
-
-		public IntCircuitRecipeBuilder(RecipeBuilder<?,?> recipeBuilder) {
-			super(recipeBuilder);
-		}
-
-		@Override
-		protected IntCircuitRecipeBuilder getThis() {
-			return this;
-		}
-
-		@Override
-		public IntCircuitRecipeBuilder copy() {
-			return new IntCircuitRecipeBuilder(this);
-		}
-
-		public IntCircuitRecipeBuilder circuitMeta(int meta) {
-			if (meta < 0) {
-				throw new IllegalArgumentException("Integrated Circuit Metadata cannot be less than 0"); // TODO cannot be more than what?
-			}
-
-			this.circuitMeta = meta;
-			return this;
-		}
-
-		@Override
-		protected void fill() {
-			inputs.add(ItemList.Circuit_Integrated.getWithDamage(0, circuitMeta));
-			super.fill();
-		}
-	}
-
-	//	RecipeMap.EXTRUDER_RECIPES.recipeBuilder().inputs(new ItemStack(Items.APPLE)).notConsumable(ItemList.Shape_Extruder_Ring).outputs(new ItemStack(Items.GOLDEN_APPLE)).buildAndRegister();
-	public static class NotConsumableInputRecipeBuilder extends RecipeBuilder<Recipe, NotConsumableInputRecipeBuilder> {
-
-		public NotConsumableInputRecipeBuilder() {
-		}
-
-		public NotConsumableInputRecipeBuilder(Recipe recipe) {
-			super(recipe);
-		}
-
-		public NotConsumableInputRecipeBuilder(RecipeBuilder<?,?> recipeBuilder) {
-			super(recipeBuilder);
-		}
-
-		@Override
-		protected NotConsumableInputRecipeBuilder getThis() {
-			return this;
-		}
-
-		@Override
-		public NotConsumableInputRecipeBuilder copy() {
-			return new NotConsumableInputRecipeBuilder(this);
-		}
-
-		public NotConsumableInputRecipeBuilder notConsumable(Item item) {
-			return notConsumable(item, 0);
-		}
-
-		public NotConsumableInputRecipeBuilder notConsumable(Item item, int metadata) {
-			Validate.notNull(item, "Not consumable Item cannot be null");
-			Validate.exclusiveBetween(0, Short.MAX_VALUE, metadata, "Metadata cannot be less or equal to 0 or more than Short.MAX_VALUE");
-			inputs.add(new ItemStack(item, 0, metadata));
-			return this;
-		}
-
-		public NotConsumableInputRecipeBuilder notConsumable(ItemList item) {
-			Validate.notNull(item, "Not consumable Item cannot be null");
-			inputs.add(item.get(0));
-			return this;
-		}
-	}
-
-	public static class GT_Recipe_AssemblyLine {
-		public static final ArrayList<GT_Recipe_AssemblyLine> ASSEMBLYLINE_RECIPES = new ArrayList<>();
-
-		public ItemStack researchItem;
-		public int researchTime;
-		public ItemStack[] inputs;
-		public FluidStack[] fluidInputs;
-		public ItemStack output;
-		public int duration;
-		public int EUt;
-
-		public GT_Recipe_AssemblyLine(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt) {
-			researchItem = aResearchItem;
-			researchTime = aResearchTime;
-			inputs = aInputs;
-			fluidInputs = aFluidInputs;
-			output = aOutput;
-			duration = aDuration;
-			EUt = aEUt;
-		}
-
-	}
-
-	//TODO delete these
-	public static class DistillationTowerRecipe extends Recipe {
-
-		public DistillationTowerRecipe(FluidStack aInput, FluidStack[] aOutputs, ItemStack aOutput2, int aDuration, int aEUt) {
-			super(false, null, new ItemStack[]{aOutput2}, null, null, new FluidStack[]{aInput}, aOutputs, Math.max(1, aDuration), Math.max(1, aEUt), 0);
-
-			if (inputs.length > 0 && outputs[0] != null) {
-				RecipeMap.DISTILLATION_RECIPES.addRecipe(this);
-			}
-		}
-	}
-
-	public static class ImplosionRecipe extends Recipe {
-
-		public ImplosionRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, ItemStack aOutput2) {
-			super(true, new ItemStack[]{aInput1, aInput2}, new ItemStack[]{aOutput1, aOutput2}, null, null, null, null, 20, 30, 0);
-			if (inputs.length > 0 && outputs[0] != null) {
-				RecipeMap.IMPLOSION_RECIPES.addRecipe(this);
-			}
+		public int getEUt() {
+			return EUt;
 		}
 	}
 }
