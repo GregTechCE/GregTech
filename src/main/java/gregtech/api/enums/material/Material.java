@@ -3,15 +3,16 @@ package gregtech.api.enums.material;
 import com.google.common.collect.ImmutableList;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.SubTag;
+import gregtech.api.enums.material.types.DustMaterial;
 import gregtech.api.interfaces.IMaterialHandler;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTControlledRegistry;
 import gregtech.api.util.GT_Log;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidStack;
 
 import static gregtech.api.enums.GT_Values.M;
+import static gregtech.api.enums.SubTag.getNewSubTag;
 
 public abstract class  Material implements ISubTagContainer, Comparable<Material> {
 
@@ -42,15 +43,21 @@ public abstract class  Material implements ISubTagContainer, Comparable<Material
 	}
 
 	public static final class MatFlags {
-		/**
-		 * When specified, this material will have plasma fluid generated for it
-		 * Note that this option is handled differently for solid materials and liquid materials, and cannot be applied to rough and dust material kinds
-		 */
-		public static final int GENERATE_PLASMA =                createFlag(1);
 
-		public static final int GENERATE_DECOMPOSITION_RECIPES = createFlag(2);
-		public static final int DECOMPOSITION_BY_ELECTROLYZING = createFlag(3);
-		public static final int DECOMPOSITION_BY_CENTRIFUGING =  createFlag(4);
+		public static final int GENERATE_DECOMPOSITION_RECIPES = createFlag(0);
+		public static final int DECOMPOSITION_BY_ELECTROLYZING = createFlag(1);
+		public static final int DECOMPOSITION_BY_CENTRIFUGING =  createFlag(2);
+
+		/**
+		 * This Material cannot be unificated
+		 */
+		public static final SubTag NO_UNIFICATION = getNewSubTag("NO_UNIFICATION");
+
+		/**
+		 * This Material cannot be used in any Recycler. Already listed are:
+		 * Stone, Glass, Water
+		 */
+		public static final SubTag NO_RECYCLING = getNewSubTag("NO_RECYCLING");
 
 		public static int createFlag(int id) {
 			return (int) Math.pow(2, id);
@@ -80,12 +87,6 @@ public abstract class  Material implements ISubTagContainer, Comparable<Material
 	public final MaterialIconSet materialIconSet;
 
 	/**
-	 * True if this material can be safely unified by OreDictionary
-	 * False for generic materials like AnyIron or AnyBronze
-	 */
-	public final boolean unifiable;
-
-	/**
 	 * List of this material component
 	 */
 	public final ImmutableList<MaterialStack> materialComponents;
@@ -104,9 +105,9 @@ public abstract class  Material implements ISubTagContainer, Comparable<Material
 	/**
 	 * Generation flags of this material
 	 * @see MatFlags
-	 * @see gregtech.api.enums.material.SolidMaterial.MatFlags
+	 * @see DustMaterial.MatFlags
 	 */
-	private int materialGenerationFlags;
+	private final int materialGenerationFlags;
 
 	/**
 	 * Number to multiply standard Material Unit by
@@ -118,36 +119,24 @@ public abstract class  Material implements ISubTagContainer, Comparable<Material
 	 */
 	public final Element element;
 
-	/**
-	 * True if this material should be initialized and loaded
-	 * False otherwise
-	 */
-	public final boolean mHasParentMod;
-
-	/**
-	 * Material kind is type of material
-	 */
-	public abstract MaterialKind getKind();
-
-	public abstract FluidStack getFluid(int amount);
-	public abstract FluidStack getPlasma(int amount);
-
-	protected Material(String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, boolean unifiable, ImmutableList<MaterialStack> materialComponents, ImmutableList<Material> oreReRegistrations, ImmutableList<SubTag> subTags, float densityMultiplier, Element element, boolean mHasParentMod, String chemicalFormula) {
+	public Material(String defaultLocalName, int materialRGB, String chemicalFormula, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, ImmutableList<Material> oreReRegistrations, ImmutableList<SubTag> subTags, int materialGenerationFlags, float densityMultiplier, Element element) {
 		this.defaultLocalName = defaultLocalName;
 		this.materialRGB = materialRGB;
+		this.chemicalFormula = chemicalFormula;
 		this.materialIconSet = materialIconSet;
-		this.unifiable = unifiable;
 		this.materialComponents = materialComponents;
 		this.oreReRegistrations = oreReRegistrations;
 		this.subTags = subTags;
+		this.materialGenerationFlags = materialGenerationFlags;
 		this.densityMultiplier = densityMultiplier;
 		this.element = element;
-		this.mHasParentMod = mHasParentMod;
-		this.chemicalFormula = chemicalFormula;
+	}
+
+	public boolean hasFlag(int generationFlag) {
+		return (materialGenerationFlags & generationFlag) != 0;
 	}
 
 	protected void initMaterial(ResourceLocation resourceLocation) {
-
 	}
 
 	public boolean isRadioactive() {

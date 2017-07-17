@@ -1,12 +1,18 @@
 package gregtech.api.enums.material;
 
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Element;
-import gregtech.api.enums.TC_Aspects;
-import gregtech.api.objects.MaterialStack;
+import net.minecraftforge.fluids.FluidStack;
 
-import java.util.List;
+public interface FluidMaterial {
 
-public class FluidMaterial extends Material {
+    default boolean hasFluid() {
+        return getFluid(1) != null;
+    }
+
+    default boolean hasPlasma() {
+        return getPlasma(1) != null;
+    }
+
+    FluidStack getFluid(int amount);
+    FluidStack getPlasma(int amount);
 
 }
