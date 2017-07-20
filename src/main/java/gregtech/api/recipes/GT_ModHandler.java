@@ -1,4 +1,4 @@
-package gregtech.api.util;
+package gregtech.api.recipes;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -10,6 +10,11 @@ import gregtech.api.interfaces.internal.IGT_CraftingRecipe;
 import gregtech.api.objects.GT_HashSet;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
+import gregtech.api.util.GT_Config;
+import gregtech.api.util.GT_ItsNotMyFaultException;
+import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IBoxable;
 import ic2.api.item.IElectricItem;

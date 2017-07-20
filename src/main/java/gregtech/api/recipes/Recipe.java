@@ -2,31 +2,14 @@ package gregtech.api.recipes;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.material.Materials;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import ic2.core.ref.BlockName;
-import ic2.core.ref.ItemName;
-import ic2.core.ref.TeBlock;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import org.apache.commons.lang3.Validate;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static gregtech.api.enums.GT_Values.W;
 
 /**
  * Class that represent machine recipe.<p>
@@ -157,30 +140,27 @@ public class Recipe {
 		return isRecipeInputEqual(decreaseStacksizeBySuccess, false, fluidInputs, inputs);
 	}
 
-	//TODO check this
 	public boolean isRecipeInputEqual(boolean decreaseStacksizeBySuccess, boolean dontCheckStackSizes, FluidStack[] fluidInputs, ItemStack[] inputs) {
 		if (this.fluidInputs.size() > 0 && fluidInputs == null) return false;
 		int amount;
 		for (FluidStack fluidInput : this.fluidInputs) {
-			if (fluidInput != null) {
-				boolean temp = true;
-				amount = fluidInput.amount;
-				for (FluidStack fluid : fluidInputs) {
-					if (fluid != null && fluid.isFluidEqual(fluidInput)) {
-						if (dontCheckStackSizes) {
-							temp = false;
-							break;
-						}
-						amount -= fluid.amount;
-						if (amount < 1) {
-							temp = false;
-							break;
-						}
+			boolean temp = true;
+			amount = fluidInput.amount;
+			for (FluidStack fluid : fluidInputs) {
+				if (fluid != null && fluid.isFluidEqual(fluidInput)) {
+					if (dontCheckStackSizes) {
+						temp = false;
+						break;
+					}
+					amount -= fluid.amount;
+					if (amount < 1) {
+						temp = false;
+						break;
 					}
 				}
-				if (temp) {
-					return false;
-				}
+			}
+			if (temp) {
+				return false;
 			}
 		}
 
@@ -189,46 +169,42 @@ public class Recipe {
 		}
 
 		for (ItemStack stackInput : this.inputs) {
-			if (stackInput != null) {
-				amount = stackInput.stackSize;
-				boolean temp = true;
-				for (ItemStack stack : inputs) {
-					if ((GT_Utility.areUnificationsEqual(stack, stackInput, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, stack), stackInput, true))) {
-						if (dontCheckStackSizes) {
-							temp = false;
-							break;
-						}
-						amount -= stack.stackSize;
-						if (amount < 1) {
-							temp = false;
-							break;
-						}
+			amount = stackInput.stackSize;
+			boolean temp = true;
+			for (ItemStack stack : inputs) {
+				if ((GT_Utility.areUnificationsEqual(stack, stackInput, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, stack), stackInput, true))) {
+					if (dontCheckStackSizes) {
+						temp = false;
+						break;
+					}
+					amount -= stack.stackSize;
+					if (amount < 1) {
+						temp = false;
+						break;
 					}
 				}
-				if (temp) {
-					return false;
-				}
+			}
+			if (temp) {
+				return false;
 			}
 		}
 		if (decreaseStacksizeBySuccess) {
 			if (fluidInputs != null) {
 				for (FluidStack fluid : this.fluidInputs) {
-					if (fluid != null) {
-						amount = fluid.amount;
-						for (FluidStack tmpFluid : fluidInputs) {
-							if (tmpFluid != null && tmpFluid.isFluidEqual(fluid)) {
-								if (dontCheckStackSizes) {
-									tmpFluid.amount -= amount;
-									break;
-								}
-								if (tmpFluid.amount < amount) {
-									amount -= tmpFluid.amount;
-									tmpFluid.amount = 0;
-								} else {
-									tmpFluid.amount -= amount;
-									amount = 0;
-									break;
-								}
+					amount = fluid.amount;
+					for (FluidStack tmpFluid : fluidInputs) {
+						if (tmpFluid != null && tmpFluid.isFluidEqual(fluid)) {
+							if (dontCheckStackSizes) {
+								tmpFluid.amount -= amount;
+								break;
+							}
+							if (tmpFluid.amount < amount) {
+								amount -= tmpFluid.amount;
+								tmpFluid.amount = 0;
+							} else {
+								tmpFluid.amount -= amount;
+								amount = 0;
+								break;
 							}
 						}
 					}
@@ -237,22 +213,20 @@ public class Recipe {
 
 			if (inputs != null) {
 				for (ItemStack stack : this.inputs) {
-					if (stack != null) {
-						amount = stack.stackSize;
-						for (ItemStack tmpStack : inputs) {
-							if ((GT_Utility.areUnificationsEqual(tmpStack, stack, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, tmpStack), stack, true))) {
-								if (dontCheckStackSizes) {
-									tmpStack.stackSize -= amount;
-									break;
-								}
-								if (tmpStack.stackSize < amount) {
-									amount -= tmpStack.stackSize;
-									tmpStack.stackSize = 0;
-								} else {
-									tmpStack.stackSize -= amount;
-									amount = 0;
-									break;
-								}
+					amount = stack.stackSize;
+					for (ItemStack tmpStack : inputs) {
+						if ((GT_Utility.areUnificationsEqual(tmpStack, stack, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, tmpStack), stack, true))) {
+							if (dontCheckStackSizes) {
+								tmpStack.stackSize -= amount;
+								break;
+							}
+							if (tmpStack.stackSize < amount) {
+								amount -= tmpStack.stackSize;
+								tmpStack.stackSize = 0;
+							} else {
+								tmpStack.stackSize -= amount;
+								amount = 0;
+								break;
 							}
 						}
 					}

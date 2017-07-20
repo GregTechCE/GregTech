@@ -881,6 +881,20 @@ public class GT_Utility {
         return aSetStack;
     }
 
+    public static List<ItemStack> copyStackList(List<ItemStack> itemStacks) {
+        List<ItemStack> stacks = new ArrayList<>(itemStacks.size());
+        for (int i = 0; i < itemStacks.size(); i++) {
+            stacks.set(i, copy(itemStacks.get(i)));
+        }
+        return stacks;
+    }
+
+    public static List<FluidStack> copyFluidList(List<FluidStack> fluidStacks) {
+        List<FluidStack> stacks = new ArrayList<>(fluidStacks.size());
+        for (int i = 0; i < fluidStacks.size(); i++) stacks.set(i, fluidStacks.get(i).copy());
+        return stacks;
+    }
+
     public static FluidStack[] copyFluidArray(FluidStack... aStacks) {
         FluidStack[] rStacks = new FluidStack[aStacks.length];
         for (int i = 0; i < aStacks.length; i++) if (aStacks[i] != null) rStacks[i] = aStacks[i].copy();

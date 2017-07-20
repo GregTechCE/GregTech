@@ -75,10 +75,6 @@ public class GT_Values {
      */
     public static IGT_Mod GT;
     /**
-     * Use this Object to add Recipes. (Recipe Adder)
-     */
-    public static IGT_RecipeAdder RA;
-    /**
      * For Internal Usage (Network)
      */
     public static GT_PacketHandler NW;
