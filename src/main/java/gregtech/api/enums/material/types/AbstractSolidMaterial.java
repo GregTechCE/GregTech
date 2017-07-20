@@ -1,7 +1,6 @@
 package gregtech.api.enums.material.types;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.material.*;
@@ -9,6 +8,8 @@ import gregtech.api.objects.MaterialStack;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+
+import java.util.List;
 
 import static gregtech.api.enums.SubTag.getNewSubTag;
 import static gregtech.api.enums.material.Material.MatFlags.createFlag;
@@ -127,8 +128,8 @@ public class AbstractSolidMaterial extends DustMaterial implements gregtech.api.
     private Fluid materialFluid;
     private Fluid materialPlasma;
 
-    public AbstractSolidMaterial(String defaultLocalName, int materialRGB, String chemicalFormula, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, ImmutableList<Material> oreReRegistrations, ImmutableList<SubTag> subTags, int materialGenerationFlags, float densityMultiplier, Element element, int mOreValue, int oreMultiplier, int mByProductMultiplier, int mSmeltingMultiplier, AbstractSolidMaterial directSmelting, AbstractSolidMaterial smeltInto, AbstractSolidMaterial arcSmeltInto, float toolSpeed, byte toolQuality, int toolDurability, Enchantment toolEnchantment, int toolEnchantmentLevel, int blastFurnaceTemp, AbstractSolidMaterial handleMaterial, DustMaterial macerateInto) {
-        super(defaultLocalName, materialRGB, chemicalFormula, materialIconSet, materialComponents, oreReRegistrations, subTags, materialGenerationFlags, densityMultiplier, element, mOreValue, oreMultiplier, mByProductMultiplier, mSmeltingMultiplier, directSmelting, smeltInto, arcSmeltInto);
+    public AbstractSolidMaterial(String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, List<MaterialStack> materialComponents, List<Material> oreReRegistrations, List<SubTag> subTags, int materialGenerationFlags, float densityMultiplier, Element element, int mOreValue, int oreMultiplier, int mByProductMultiplier, int mSmeltingMultiplier, AbstractSolidMaterial directSmelting, AbstractSolidMaterial smeltInto, AbstractSolidMaterial arcSmeltInto, float toolSpeed, byte toolQuality, int toolDurability, Enchantment toolEnchantment, int toolEnchantmentLevel, int blastFurnaceTemp, AbstractSolidMaterial handleMaterial, DustMaterial macerateInto) {
+        super(defaultLocalName, materialRGB, materialIconSet, materialComponents, oreReRegistrations, subTags, materialGenerationFlags, densityMultiplier, element, mOreValue, oreMultiplier, mByProductMultiplier, mSmeltingMultiplier, directSmelting, smeltInto, arcSmeltInto);
         this.toolSpeed = toolSpeed;
         this.toolQuality = toolQuality;
         this.toolDurability = toolDurability;

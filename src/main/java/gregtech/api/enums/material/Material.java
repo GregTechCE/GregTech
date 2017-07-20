@@ -49,6 +49,31 @@ public abstract class  Material implements ISubTagContainer, Comparable<Material
 		public static final int DECOMPOSITION_BY_CENTRIFUGING =  createFlag(2);
 
 		/**
+		 * If this Material is some kind of Magical
+		 */
+		public static final SubTag MAGICAL = getNewSubTag("MAGICAL");
+
+		/**
+		 * If this Material is having a constantly burning Aura
+		 */
+		public static final SubTag BURNING = getNewSubTag("BURNING");
+
+		/**
+		 * If this Material is some kind of flammable
+		 */
+		public static final SubTag FLAMMABLE = getNewSubTag("FLAMMABLE");
+
+		/**
+		 * If this Material is not burnable at all
+		 */
+		public static final SubTag UNBURNABLE = getNewSubTag("UNBURNABLE");
+
+		/**
+		 * If this Material is some kind of explosive
+		 */
+		public static final SubTag EXPLOSIVE = getNewSubTag("EXPLOSIVE");
+
+		/**
 		 * This Material cannot be unificated
 		 */
 		public static final SubTag NO_UNIFICATION = getNewSubTag("NO_UNIFICATION");
@@ -119,10 +144,23 @@ public abstract class  Material implements ISubTagContainer, Comparable<Material
 	 */
 	public final Element element;
 
-	public Material(String defaultLocalName, int materialRGB, String chemicalFormula, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, ImmutableList<Material> oreReRegistrations, ImmutableList<SubTag> subTags, int materialGenerationFlags, float densityMultiplier, Element element) {
+	private String calculateChemicalFormula() {
+	    if(element != null) {
+	        return element.name();
+        }
+        if(!materialComponents.isEmpty()) {
+	        StringBuilder components = new StringBuilder();
+	        for(MaterialStack component : materialComponents)
+	            components.append(component.toString());
+	        return components.toString();
+        }
+        return "";
+    }
+
+	public Material(String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, ImmutableList<Material> oreReRegistrations, ImmutableList<SubTag> subTags, int materialGenerationFlags, float densityMultiplier, Element element) {
 		this.defaultLocalName = defaultLocalName;
 		this.materialRGB = materialRGB;
-		this.chemicalFormula = chemicalFormula;
+		this.chemicalFormula = calculateChemicalFormula();
 		this.materialIconSet = materialIconSet;
 		this.materialComponents = materialComponents;
 		this.oreReRegistrations = oreReRegistrations;
@@ -141,7 +179,7 @@ public abstract class  Material implements ISubTagContainer, Comparable<Material
 
 	public boolean isRadioactive() {
 		if (element != null)
-			return element.mHalfLifeSeconds >= 0;
+			return element.halfLifeSeconds >= 0;
 		for (MaterialStack tMaterial : materialComponents)
 			if (tMaterial.mMaterial.isRadioactive()) return true;
 		return false;

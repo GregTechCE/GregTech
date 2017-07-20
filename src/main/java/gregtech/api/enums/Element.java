@@ -9,8 +9,7 @@ import java.util.ArrayList;
  * This is some kind of Periodic Table, which I use to determine Properties of the Materials.
  */
 public enum Element {
-    
-    _NULL(0, 0, -1, null, "", false),
+
     H(1, 0, -1, null, "Hydrogen", false),
     D(1, 1, -1, "H", "Deuterium", true),
     T(1, 2, -1, "D", "Tritium", true),
@@ -132,13 +131,10 @@ public enum Element {
     Fl(114, 175, -1, null, "Flerovium", false),
     Uup(115, 173, -1, null, "Ununpentium", false),
     Lv(116, 177, -1, null, "Livermorium", false),
-    Fa(117, 177, -1, null, "Farnsium", false), // Uus, Ununseptium
-    Uuo(118, 176, -1, null, "Ununoctium", false),
+    Fa(117, 177, -1, null, "Farnsium", false),
+    Uuo(118, 176, -1, null, "Ununoctium", false);
 
-    Ma(0, 100, -1, null, "Magic", false),
-    Nt(0, 100000, -1, null, "Neutronium", false),
-
-    $H(-1, -0, -1, null, "Anti-Hydrogen", false),
+    /*$H(-1, -0, -1, null, "Anti-Hydrogen", false),
     $D(-1, -1, -1, "H", "Anti-Deuterium", true),
     $T(-1, -2, -1, "D", "Anti-Tritium", true),
     $He(-2, -2, -1, null, "Anti-Helium", false),
@@ -259,15 +255,12 @@ public enum Element {
     $Fl(-114, -175, -1, null, "Anti-Flerovium", false),
     $Uup(-115, -173, -1, null, "Anti-Ununpentium", false),
     $Lv(-116, -177, -1, null, "Anti-Livermorium", false),
-    $Uus(-117, -177, -1, null, "Anti-Ununseptium", false),
-    $Uuo(-118, -176, -1, null, "Anti-Ununoctium", false),
+    $Fa(-117, -177, -1, null, "Anti-Ununseptium", false),
+    $Uuo(-118, -176, -1, null, "Anti-Ununoctium", false);*/
 
-    $Ma(0, -100, -1, null, "Anti-Magic", false),
-    $Nt(0, -10000, -1, null, "Anti-Neutronium", false);
-    
-    public final long mProtons, mNeutrons, mHalfLifeSeconds;
-    public final String mName, mDecayTo;
-    public final boolean mIsIsotope;
+    public final long protons, neutrons, halfLifeSeconds;
+    public final String name, decayTo;
+    public final boolean isIsotope;
 
     /**
      * Links to every pure Material containing just this Element.
@@ -275,37 +268,37 @@ public enum Element {
     public ArrayList<Materials> mLinkedMaterials = new ArrayList<Materials>();
 
     /**
-     * @param protons         Amount of Protons. Antiprotons if negative.
-     * @param neutrons        Amount of Neutrons. Antineutrons if negative. (I could have made mistakes with the Neutron amount calculation, please tell me if I did something wrong)
-     * @param halfLifeSeconds Amount of Half Life this Material has in Seconds. -1 for stable Materials.
-     * @param decayTo         String representing the Elements it decays to. Separated by an '&' Character.
+     * @param protons         Amount of Protons
+     * @param neutrons        Amount of Neutrons (I could have made mistakes with the Neutron amount calculation, please tell me if I did something wrong)
+     * @param halfLifeSeconds Amount of Half Life this Material has in Seconds. -1 for stable Materials
+     * @param decayTo         String representing the Elements it decays to. Separated by an '&' Character
      * @param name            Name of the Element
      */
     private Element(long protons, long neutrons, long halfLifeSeconds, String decayTo, String name, boolean isIsotope) {
-        mProtons = protons;
-        mNeutrons = neutrons;
-        mHalfLifeSeconds = halfLifeSeconds;
-        mDecayTo = decayTo;
-        mName = name;
-        mIsIsotope = isIsotope;
+        this.protons = protons;
+        this.neutrons = neutrons;
+        this.halfLifeSeconds = halfLifeSeconds;
+        this.decayTo = decayTo;
+        this.name = name;
+        this.isIsotope = isIsotope;
     }
 
     public static Element get(String materialName) {
         Object tObject = GT_Utility.getFieldContent(Element.class, materialName, false, false);
         if (tObject != null && tObject instanceof Element) return (Element) tObject;
-        return _NULL;
+        return H;
     }
 
     public long getProtons() {
-        return mProtons;
+        return protons;
     }
 
     public long getNeutrons() {
-        return mNeutrons;
+        return neutrons;
     }
 
     public long getMass() {
-        return mProtons + mNeutrons;
+        return protons + neutrons;
     }
 
 }
