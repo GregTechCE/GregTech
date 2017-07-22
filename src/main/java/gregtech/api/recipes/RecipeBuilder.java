@@ -2,7 +2,6 @@ package gregtech.api.recipes;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.material.Materials;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import ic2.core.ref.BlockName;
 import ic2.core.ref.ItemName;
@@ -16,19 +15,22 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.Validate;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static gregtech.api.enums.GT_Values.W;
 
+/**
+ * @see Recipe
+ */
 @SuppressWarnings({"unused", "WeakerAccess"})
 public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
-	@Nullable
 	protected RecipeMap<T, R> recipeMap;
 
 	protected List<ItemStack> inputs = new ArrayList<>(0);
@@ -50,7 +52,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 
 	protected boolean optimized = true;
 
-	public RecipeBuilder() {
+	protected RecipeBuilder() {
 		this.inputs = new ArrayList<>(0);
 		this.outputs = new ArrayList<>(0);
 		this.chancedOutputs = new HashMap<>(0);
@@ -59,15 +61,20 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		this.fluidOutputs = new ArrayList<>(0);
 	}
 
-	public RecipeBuilder(T recipe, RecipeMap<T, R> recipeMap) {
+	protected RecipeBuilder(T recipe, RecipeMap<T, R> recipeMap) {
 		this.recipeMap = recipeMap;
-		this.inputs = new ArrayList<>(recipe.getInputs());
-		this.outputs = new ArrayList<>(recipe.getOutputs());
-		this.chancedOutputs = new HashMap<>(recipe.getChancedOutputs());
-		this.fluidInputs = new ArrayList<>(recipe.getFluidInputs());
-		this.fluidOutputs = new ArrayList<>(recipe.getFluidOutputs());
+		this.inputs = GT_Utility.copyStackList(recipe.getInputs());
+		this.outputs = GT_Utility.copyStackList(recipe.getOutputs());
 
-		this.specialItem = recipe.getSpecialItem();
+		this.chancedOutputs = new HashMap<>();
+		for (Map.Entry<ItemStack, Integer> entry : recipe.getChancedOutputs().entrySet()) {
+			chancedOutputs.put(entry.getKey().copy(), entry.getValue());
+		}
+
+		this.fluidInputs = GT_Utility.copyFluidList(recipe.getFluidInputs());
+		this.fluidOutputs = GT_Utility.copyFluidList(recipe.getFluidOutputs());
+
+		this.specialItem = recipe.getSpecialItem().copy();
 		this.duration = recipe.getDuration();
 		this.EUt = recipe.getEUt();
 		this.hidden = recipe.isHidden();
@@ -75,14 +82,19 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		this.needsEmptyOutput = recipe.needsEmptyOutput();
 	}
 
-	public RecipeBuilder(RecipeBuilder<T, R> recipeBuilder) {
+	protected RecipeBuilder(RecipeBuilder<T, R> recipeBuilder) {
 		this.recipeMap = recipeBuilder.recipeMap;
-		this.inputs = new ArrayList<>(recipeBuilder.inputs);
-		this.outputs = new ArrayList<>(recipeBuilder.outputs);
-		this.chancedOutputs = new HashMap<>(recipeBuilder.chancedOutputs);
-		this.fluidInputs = new ArrayList<>(recipeBuilder.fluidInputs);
-		this.fluidOutputs = new ArrayList<>(recipeBuilder.fluidOutputs);
-		this.specialItem = recipeBuilder.specialItem;
+		this.inputs = GT_Utility.copyStackList(recipeBuilder.getInputs());
+		this.outputs = GT_Utility.copyStackList(recipeBuilder.getOutputs());
+
+		this.chancedOutputs = new HashMap<>();
+		for (Map.Entry<ItemStack, Integer> entry : recipeBuilder.getChancedOutputs().entrySet()) {
+			chancedOutputs.put(entry.getKey().copy(), entry.getValue());
+		}
+
+		this.fluidInputs = GT_Utility.copyFluidList(recipeBuilder.getFluidInputs());
+		this.fluidOutputs = GT_Utility.copyFluidList(recipeBuilder.getFluidOutputs());
+		this.specialItem = recipeBuilder.specialItem.copy();
 		this.duration = recipeBuilder.duration;
 		this.EUt = recipeBuilder.EUt;
 		this.hidden = recipeBuilder.hidden;
@@ -91,57 +103,41 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		this.optimized = recipeBuilder.optimized;
 	}
 
-	/**
-	 * Calling this method second time will override existing item inputs
-	 */
 	public R inputs(@Nonnull ItemStack... inputs) {
 		Validate.notNull(inputs, "Input array cannot be null");
 		if (inputs.length != 0) {
 			Validate.noNullElements(inputs, "Input cannot contain null ItemStacks");
 
-			this.inputs.clear();
 			Collections.addAll(this.inputs, inputs);
 		}
 		return getThis();
 	}
 
-	/**
-	 * Calling this method second time will override existing item outputs
-	 */
 	public R outputs(@Nonnull ItemStack... outputs) {
-		Validate.notNull(outputs, "Input array cannot be null");
+		Validate.notNull(outputs, "Output array cannot be null");
 		if (outputs.length != 0) {
 			Validate.noNullElements(outputs, "Output cannot contain null ItemStacks");
 
-			this.outputs.clear();
 			Collections.addAll(this.outputs, outputs);
 		}
 		return getThis();
 	}
 
-	/**
-	 * Calling this method second time will override existing fluid inputs
-	 */
 	public R fluidInputs(@Nonnull FluidStack... inputs) {
-		Validate.notNull(inputs, "Input array cannot be null");
+		Validate.notNull(inputs, "Fluid input array cannot be null");
 		if (inputs.length != 0) {
 			Validate.noNullElements(inputs, "Fluid input cannot contain null FluidStacks");
 
-			this.fluidInputs.clear();
 			Collections.addAll(this.fluidInputs, inputs);
 		}
 		return getThis();
 	}
 
-	/**
-	 * Calling this method second time will override existing fluid outputs
-	 */
 	public R fluidOutputs(@Nonnull FluidStack... outputs) {
-		Validate.notNull(outputs, "Input array cannot be null");
+		Validate.notNull(outputs, "Fluid output array cannot be null");
 		if (outputs.length != 0) {
 			Validate.noNullElements(outputs, "Fluid output cannot contain null FluidStacks");
 
-			this.fluidOutputs.clear();
 			Collections.addAll(this.fluidOutputs, outputs);
 		}
 		return getThis();
@@ -159,13 +155,8 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		return getThis();
 	}
 
-	public R clearChancedOutputs() {
-		this.chancedOutputs.clear();
-		return getThis();
-	}
-
 	public R specialItem(ItemStack specialItem) {
-		Validate.notNull(specialItem, "Spetial item cannot be null");
+		Validate.notNull(specialItem, "Special item cannot be null");
 		this.specialItem = specialItem;
 		return getThis();
 	}
@@ -209,13 +200,28 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		return getThis();
 	}
 
+	public R fromRecipe(T recipe) {
+		this.inputs = new ArrayList<>(recipe.getInputs());
+		this.outputs = new ArrayList<>(recipe.getOutputs());
+		this.chancedOutputs = new HashMap<>(recipe.getChancedOutputs());
+		this.fluidInputs = new ArrayList<>(recipe.getFluidInputs());
+		this.fluidOutputs = new ArrayList<>(recipe.getFluidOutputs());
+
+		this.specialItem = recipe.getSpecialItem();
+		this.duration = recipe.getDuration();
+		this.EUt = recipe.getEUt();
+		this.hidden = recipe.isHidden();
+		this.canBeBuffered = recipe.canBeBuffered();
+		this.needsEmptyOutput = recipe.needsEmptyOutput();
+		return getThis();
+	}
+
 	public abstract R copy();
 
 	// To get rid of "unchecked cast" warning
 	protected abstract R getThis();
 
-	// todo better name?
-	protected void fill() {
+	protected void finalizeAndValidate() {
 //			GT_OreDictUnificator.setStackArray(true, inputs);
 //			GT_OreDictUnificator.setStackArray(true, outputs);
 //			GT_OreDictUnificator.setStackArray(true, chancedOutputs);
@@ -288,6 +294,30 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		recipeMap.addRecipe(build());
 	}
 
+	///////////////////
+	//    Getters    //
+	///////////////////
+
+	public List<ItemStack> getInputs() {
+		return inputs;
+	}
+
+	public List<ItemStack> getOutputs() {
+		return outputs;
+	}
+
+	public Map<ItemStack, Integer> getChancedOutputs() {
+		return chancedOutputs;
+	}
+
+	public List<FluidStack> getFluidInputs() {
+		return fluidInputs;
+	}
+
+	public List<FluidStack> getFluidOutputs() {
+		return fluidOutputs;
+	}
+
 	public static class DefaultRecipeBuilder extends RecipeBuilder<Recipe, DefaultRecipeBuilder> {
 
 		public DefaultRecipeBuilder() {
@@ -312,7 +342,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		public Recipe build() {
-			fill();
+			finalizeAndValidate();
 			return new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
 					specialItem, duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
 		}
@@ -353,13 +383,13 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		@Override
-		protected void fill() {
+		protected void finalizeAndValidate() {
 			inputs.add(ItemList.Circuit_Integrated.getWithDamage(0, circuitMeta));
-			super.fill();
+			super.finalizeAndValidate();
 		}
 
 		public Recipe build() {
-			fill();
+			finalizeAndValidate();
 			return new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
 					specialItem, duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
 		}
@@ -406,7 +436,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		public Recipe build() {
-			fill();
+			finalizeAndValidate();
 			return new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
 					specialItem, duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
 		}
@@ -458,7 +488,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		@Override
-		protected void fill() {
+		protected void finalizeAndValidate() {
 			if (fuelCanAmount > 0 && cellAmount > 0) {
 				throw new IllegalArgumentException("Recipe cannot contain both cells and Fuel Cans at the time");
 			}
@@ -468,11 +498,11 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 			} else if (fuelCanAmount > 0) {
 				inputs.add(ItemList.IC2_Fuel_Can_Empty.get(fuelCanAmount));
 			}
-			super.fill();
+			super.finalizeAndValidate();
 		}
 
 		public Recipe build() {
-			fill();
+			finalizeAndValidate();
 			return new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
 					specialItem, duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
 		}
@@ -514,7 +544,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		public Recipe.BlastRecipe build() {
-			fill();
+			finalizeAndValidate();
 			return new Recipe.BlastRecipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
 					specialItem, duration, EUt, hidden, canBeBuffered, needsEmptyOutput, blastFurnaceTemp);
 		}
@@ -572,7 +602,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		public Recipe build() {
-			fill();
+			finalizeAndValidate();
 			return new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
 					specialItem, duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
 		}
@@ -629,7 +659,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		public Recipe build() {
-			fill();
+			finalizeAndValidate();
 			return new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
 					specialItem, duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
 		}
@@ -679,7 +709,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		public Recipe build() {
-			fill();
+			finalizeAndValidate();
 			return new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
 					specialItem, duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
 		}
@@ -719,13 +749,13 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		@Override
-		protected void fill() {
+		protected void finalizeAndValidate() {
 			this.fluidOutputs(Materials.UUAmplifier.getFluid(amplifierAmountOutputted));
-			super.fill();
+			super.finalizeAndValidate();
 		}
 
 		public Recipe.AmplifierRecipe build() {
-			fill();
+			finalizeAndValidate();
 			return new Recipe.AmplifierRecipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
 					specialItem, duration, EUt, hidden, canBeBuffered, needsEmptyOutput, amplifierAmountOutputted);
 		}
@@ -784,7 +814,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		public Recipe build() {
-			fill();
+			finalizeAndValidate();
 			return new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
 					specialItem, duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
 		}
@@ -826,7 +856,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		public Recipe.FusionRecipe build() {
-			fill();
+			finalizeAndValidate();
 			return new Recipe.FusionRecipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
 					specialItem, duration, EUt, hidden, canBeBuffered, needsEmptyOutput, EUToStart);
 		}

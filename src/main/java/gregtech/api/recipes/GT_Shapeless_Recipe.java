@@ -1,7 +1,6 @@
 package gregtech.api.recipes;
 
 import gregtech.api.interfaces.internal.IGT_CraftingRecipe;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;

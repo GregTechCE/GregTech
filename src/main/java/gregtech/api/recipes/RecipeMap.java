@@ -4,10 +4,11 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.material.Material;
 import gregtech.api.enums.material.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
-import gregtech.api.enums.material.Materials;
+import gregtech.api.enums.material.types.DustMaterial;
+import gregtech.api.enums.material.types.MetalMaterial;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.objects.GT_ItemStack;
@@ -15,7 +16,6 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.init.Blocks;
@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import static gregtech.api.enums.GT_Values.D1;
@@ -47,13 +48,13 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 */
 	public static final Collection<RecipeMap<?, ?>> RECIPE_MAPS = new ArrayList<>();
 
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> ORE_WASHER_RECIPES = new GT_Recipe_Map_OreWasher(new HashSet<>(0), "ic.recipe.orewasher", "Ore Washer", "ic2.blockOreWashingPlant", "basicmachines/OreWasher", 1, 1, 3, 3, 0, 1, 0, 0, 1, "", 1, "", true, false, new RecipeBuilder.DefaultRecipeBuilder());
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> THERMAL_CENTRIFUGE_RECIPES = new GT_Recipe_Map_ThermalCentrifuge(new HashSet<>(0), "ic.recipe.thermalcentrifuge", "Thermal Centrifuge", "ic2.blockCentrifuge", "basicmachines/ThermalCentrifuge", 1, 1, 1, 3, 0, 0, 0, 0, 2, "", 1, "", true, false, new RecipeBuilder.DefaultRecipeBuilder());
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> COMPRESSOR_RECIPES = new GT_Recipe_Map_Compressor(new HashSet<>(0), "ic.recipe.compressor", "Compressor", "ic2.compressor", "basicmachines/Compressor", 1, 1, 1, 1, 0, 0, 0, 0, 1, "", 1, "", true, false, new RecipeBuilder.DefaultRecipeBuilder());
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> EXTRACTOR_RECIPES = new GT_Recipe_Map_Extractor(new HashSet<>(0), "ic.recipe.extractor", "Extractor", "ic2.extractor", "basicmachines/Extractor", 1, 1, 1, 1, 0, 0, 0, 0, 1, "", 1, "", true, false, new RecipeBuilder.DefaultRecipeBuilder());
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> RECYCLER_RECIPES = new GT_Recipe_Map_Recycler(new HashSet<>(0), "ic.recipe.recycler", "Recycler", "ic2.recycler", "basicmachines/Recycler", 1, 0, 0, 0, 0, 0, 0, 0, 1, "", 1, "", true, false, new RecipeBuilder.DefaultRecipeBuilder()); //TODO min max amounts
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> FURNACE_RECIPES = new GT_Recipe_Map_Furnace(new HashSet<>(0), "mc.recipe.furnace", "Furnace", "smelting", "basicmachines/E_Furnace", 1, 0, 0, 0, 0, 0, 0, 0, 1, "", 1, "", true, false, new RecipeBuilder.DefaultRecipeBuilder()); //TODO min max amounts
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> MICROWAVE_RECIPES = new GT_Recipe_Map_Microwave(new HashSet<>(0), "gt.recipe.microwave", "Microwave", "smelting", "basicmachines/E_Furnace", 1, 0, 0, 0, 0, 0, 0, 0, 1, "", 1, "", true, false, new RecipeBuilder.DefaultRecipeBuilder()); //TODO min max amounts
+	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> ORE_WASHER_RECIPES = new RecipeMapOreWasher(new HashSet<>(0), "ic.recipe.orewasher", "Ore Washer", "ic2.blockOreWashingPlant", "basicmachines/OreWasher", 1, 1, 3, 3, 0, 1, 0, 0, 1, "", 1, "", true, false, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> THERMAL_CENTRIFUGE_RECIPES = new RecipeMapThermalCentrifuge(new HashSet<>(0), "ic.recipe.thermalcentrifuge", "Thermal Centrifuge", "ic2.blockCentrifuge", "basicmachines/ThermalCentrifuge", 1, 1, 1, 3, 0, 0, 0, 0, 2, "", 1, "", true, false, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> COMPRESSOR_RECIPES = new RecipeMapCompressor(new HashSet<>(0), "ic.recipe.compressor", "Compressor", "ic2.compressor", "basicmachines/Compressor", 1, 1, 1, 1, 0, 0, 0, 0, 1, "", 1, "", true, false, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> EXTRACTOR_RECIPES = new RecipeMapExtractor(new HashSet<>(0), "ic.recipe.extractor", "Extractor", "ic2.extractor", "basicmachines/Extractor", 1, 1, 1, 1, 0, 0, 0, 0, 1, "", 1, "", true, false, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> RECYCLER_RECIPES = new RecipeMapRecycler(new HashSet<>(0), "ic.recipe.recycler", "Recycler", "ic2.recycler", "basicmachines/Recycler", 1, 1, 1, 1, 0, 0, 0, 0, 1, "", 1, "", true, false, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> FURNACE_RECIPES = new RecipeMapFurnace(new HashSet<>(0), "mc.recipe.furnace", "Furnace", "smelting", "basicmachines/E_Furnace", 1, 1, 1, 1, 0, 0, 0, 0, 1, "", 1, "", true, false, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> MICROWAVE_RECIPES = new RecipeMapMicrowave(new HashSet<>(0), "gt.recipe.microwave", "Microwave", "smelting", "basicmachines/E_Furnace", 1, 1, 1, 1, 0, 0, 0, 0, 1, "", 1, "", true, false, new RecipeBuilder.DefaultRecipeBuilder());
 
 	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> SCANNER_FAKE_RECIPES = new FakeRecipeMap<>(new HashSet<>(300), "gt.recipe.scanner", "Scanner", null, "basicmachines/Scanner", 1, 0, 0, 0, 0, 0, 0, 0, 1, "", 1, "", true, true, new RecipeBuilder.DefaultRecipeBuilder());//TODO min max amounts
 	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> ROCK_BREAKER_FAKE_RECIPES = new FakeRecipeMap<>(new HashSet<>(3), "gt.recipe.rockbreaker", "Rock Breaker", null, "basicmachines/RockBreaker", 0, 0, 0, 0, 0, 0, 0, 0, 1, "", 1, "", true, true, new RecipeBuilder.DefaultRecipeBuilder());//TODO min max amounts
@@ -72,7 +73,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *			.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> ASSEMBLER_RECIPES = new GT_Recipe_Map_Assembler(new HashSet<>(300), "gt.recipe.assembler", "Assembler", null, "basicmachines/Assembler", 1, 2, 1, 1, 0, 1, 0, 0, 1, "", 1, "", true, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> ASSEMBLER_RECIPES = new RecipeMapAssembler(new HashSet<>(300), "gt.recipe.assembler", "Assembler", null, "basicmachines/Assembler", 1, 2, 1, 1, 0, 1, 0, 0, 1, "", 1, "", true, true, new RecipeBuilder.DefaultRecipeBuilder());
 
 	/**
 	 * Example:
@@ -87,7 +88,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> PRINTER_RECIPES = new GT_Recipe_Map_Printer(new HashSet<>(100), "gt.recipe.printer", "Printer", null, "basicmachines/Printer", 1, 1, 1, 1, 1, 1, 0, 0, 1, "", 1, "", true, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> PRINTER_RECIPES = new RecipeMapPrinter(new HashSet<>(100), "gt.recipe.printer", "Printer", null, "basicmachines/Printer", 1, 1, 1, 1, 1, 1, 0, 0, 1, "", 1, "", true, true, new RecipeBuilder.DefaultRecipeBuilder());
 
 	/**
 	 * Examples:
@@ -107,7 +108,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * 				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.NotConsumableInputRecipeBuilder> PRESS_RECIPES = new GT_Recipe_Map_FormingPress(new HashSet<>(100), "gt.recipe.press", "Forming Press", null, "basicmachines/Press", 2, 2, 1, 1, 0, 0, 0, 0, 1, "", 1, "", true, true, new RecipeBuilder.NotConsumableInputRecipeBuilder());
+	public static final RecipeMap<Recipe, RecipeBuilder.NotConsumableInputRecipeBuilder> PRESS_RECIPES = new RecipeMapFormingPress(new HashSet<>(100), "gt.recipe.press", "Forming Press", null, "basicmachines/Press", 2, 2, 1, 1, 0, 0, 0, 0, 1, "", 1, "", true, true, new RecipeBuilder.NotConsumableInputRecipeBuilder());
 
 	/**
 	 * Example:
@@ -120,7 +121,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *	   			.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> MACERATOR_RECIPES = new GT_Recipe_Map_Macerator(new HashSet<>(10000), "gt.recipe.macerator", "Pulverization", null, "basicmachines/Macerator4", 1, 1, 1, 4, 0, 0, 0, 0, 1, "", 1, "", true, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> MACERATOR_RECIPES = new RecipeMapMacerator(new HashSet<>(10000), "gt.recipe.macerator", "Pulverization", null, "basicmachines/Macerator4", 1, 1, 1, 4, 0, 0, 0, 0, 1, "", 1, "", true, true, new RecipeBuilder.DefaultRecipeBuilder());
 
 	/**
 	 * Input full box, output item and empty box.
@@ -134,7 +135,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> UNBOXINATOR_RECIPES = new GT_Recipe_Map_Unboxinator(new HashSet<>(2500), "gt.recipe.unpackager", "Unpackager", null, "basicmachines/Unpackager", 1, 1, 1, 2, 0, 0, 0, 0, 1, "", 1, "", true, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> UNBOXINATOR_RECIPES = new RecipeMapUnboxinator(new HashSet<>(2500), "gt.recipe.unpackager", "Unpackager", null, "basicmachines/Unpackager", 1, 1, 1, 2, 0, 0, 0, 0, 1, "", 1, "", true, true, new RecipeBuilder.DefaultRecipeBuilder());
 
 	/**
 	 * Example:
@@ -146,11 +147,11 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * 				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> FLUID_CANNER_RECIPES = new GT_Recipe_Map_FluidCanner(new HashSet<>(100), "gt.recipe.fluidcanner", "Fluid Canning Machine", null, "basicmachines/FluidCannerJEI", 1, 1, 1, 1, 0, 1, 0, 1, 1, "", 1, "", true, true, new RecipeBuilder.DefaultRecipeBuilder() {
+	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> FLUID_CANNER_RECIPES = new RecipeMapFluidCanner(new HashSet<>(100), "gt.recipe.fluidcanner", "Fluid Canning Machine", null, "basicmachines/FluidCannerJEI", 1, 1, 1, 1, 0, 1, 0, 1, 1, "", 1, "", true, true, new RecipeBuilder.DefaultRecipeBuilder() {
 		@Override
-		protected void fill() {
+		protected void finalizeAndValidate() {
 			duration(fluidOutputs.isEmpty() ? fluidInputs.get(0).amount / 62 : fluidOutputs.get(0).amount / 62);
-			super.fill();
+			super.finalizeAndValidate();
 		}
 	}.EUt(1));
 
@@ -560,8 +561,8 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 			super.buildAndRegister();
 			FluidStack fluidInput = fluidInputs.get(0);
 			FluidStack fluidOutput = fluidInputs.get(0);
-//			recipeMap.addRecipe(this.copy().fluidInputs(fluidInput, GT_ModHandler.getSteam(fluidInput.amount)).fluidOutputs(fluidOutput, Materials.Hydrogen.getGas(fluidInput.amount)).validate().build());
-//			recipeMap.addRecipe(this.copy().fluidInputs(fluidInput, Materials.Hydrogen.getGas(fluidInput.amount)).fluidOutputs(new FluidStack(fluidOutput.getFluid(), (int) (fluidOutput.amount * 1.3))).validate().build());
+			recipeMap.addRecipe(this.copy().fluidInputs(fluidInput, GT_ModHandler.getSteam(fluidInput.amount)).fluidOutputs(fluidOutput, Materials.Hydrogen.getGas(fluidInput.amount)).build());
+			recipeMap.addRecipe(this.copy().fluidInputs(fluidInput, Materials.Hydrogen.getGas(fluidInput.amount)).fluidOutputs(new FluidStack(fluidOutput.getFluid(), (int) (fluidOutput.amount * 1.3))).build());
 		}
 	});
 
@@ -607,9 +608,9 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 */
 	public static final RecipeMap<Recipe, RecipeBuilder.IntCircuitRecipeBuilder> BENDER_RECIPES = new RecipeMap<>(new HashSet<>(400), "gt.recipe.metalbender", "Metal Bender", null, "basicmachines/Bender", 2, 2, 1, 1, 0, 0, 0, 0, 1, "", 1, "", true, true, new RecipeBuilder.IntCircuitRecipeBuilder() {
 		@Override
-		protected void fill() {
+		protected void finalizeAndValidate() {
 			this.circuitMeta(this.inputs.get(0).stackSize);
-			super.fill();
+			super.finalizeAndValidate();
 		}
 	});
 
@@ -748,13 +749,13 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	////
 
 	/**
-	 * Use EUt(int) to set EU/t produced
+	 * Use {@link RecipeBuilder#EUt(int)} to set EU/t produced
 	 */
 	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> MAGIC_FUELS = new RecipeMap<>(new HashSet<>(10), "gt.recipe.magicfuels", "Magic Fuels", null, "basicmachines/Default", 1, 1, 0, 1, 0, 0, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true, new RecipeBuilder.DefaultRecipeBuilder() {
 		@Override
-		protected void fill() {
-			this.EUt = EUt > 0 ? -EUt : EUt;
-			super.fill();
+		protected void finalizeAndValidate() {
+			this.EUt = -EUt;
+			super.finalizeAndValidate();
 		}
 	});
 
@@ -919,7 +920,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * Finds a Recipe matching the Fluid and ItemStack Inputs.
 	 *
 	 * @param tileEntity    an Object representing the current coordinates of the executing Block/Entity/Whatever. This may be null, especially during Startup.
-	 * @param recipe        in case this is != null it will try to use this Recipe first when looking things up.
+	 * @param inputRecipe        in case this is != null it will try to use this Recipe first when looking things up.
 	 * @param notUnificated if this is true the Recipe searcher will unificate the ItemStack Inputs
 	 * @param voltage       Voltage of the Machine or Long.MAX_VALUE if it has no Voltage
 	 * @param fluidInputs   the Fluid Inputs
@@ -927,7 +928,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * @param inputs        the Item Inputs
 	 * @return the Recipe it has found or null for no matching Recipe
 	 */
-	public T findRecipe(@Nullable IHasWorldObjectAndCoords tileEntity, @Nullable T recipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
+	public T findRecipe(@Nullable IHasWorldObjectAndCoords tileEntity, @Nullable T inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
 		// No Recipes? Well, nothing to be found then.
 		if (recipeList.isEmpty()) return null;
 
@@ -971,9 +972,9 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		}
 
 		// Check the Recipe which has been used last time in order to not have to search for it again, if possible.
-		if (recipe != null) {
-			if (recipe.canBeBuffered() && recipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) {
-				return voltage * amperage >= recipe.getEUt() ? recipe : null;
+		if (inputRecipe != null) {
+			if (inputRecipe.canBeBuffered() && inputRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) {
+				return voltage * amperage >= inputRecipe.getEUt() ? inputRecipe : null;
 			}
 		}
 
@@ -1099,7 +1100,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 	public static class FakeRecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> extends RecipeMap<T, R> {
 
-		public FakeRecipeMap(Collection<T> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder defaultRecipe) {
+		public FakeRecipeMap(Collection<T> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, R defaultRecipe) {
 			super(recipeList, unlocalizedName, localName, JEIName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, amperage, JEISpecialValuePre, JEISpecialValueMultiplier, JEISpecialValuePost, showVoltageAmperageInJEI, JEIAllowed, defaultRecipe);
 		}
 
@@ -1119,7 +1120,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		}
 
 		@Override
-		public T findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe recipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
+		public T findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
 			throw new UnsupportedOperationException("This should not get called on fake recipe map");
 		}
 	}
@@ -1127,9 +1128,9 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	/**
 	 * Abstract Class for general Recipe Handling of non GT Recipes
 	 */
-	public static abstract class GT_Recipe_Map_NonGTRecipes<T extends Recipe, R extends RecipeBuilder<T, R>> extends RecipeMap<T, R> {
+	public static abstract class RecipeMapNonGTRecipes<T extends Recipe, R extends RecipeBuilder<T, R>> extends RecipeMap<T, R> {
 
-		public GT_Recipe_Map_NonGTRecipes(Collection<T> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder defaultRecipe) {
+		public RecipeMapNonGTRecipes(Collection<T> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, R defaultRecipe) {
 			super(recipeList, unlocalizedName, localName, JEIName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, amperage, JEISpecialValuePre, JEISpecialValueMultiplier, JEISpecialValuePost, showVoltageAmperageInJEI, JEIAllowed, defaultRecipe);
 		}
 
@@ -1157,18 +1158,24 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	/**
 	 * Special Class for Furnace Recipe handling.
 	 */
-	public static class GT_Recipe_Map_Furnace extends GT_Recipe_Map_NonGTRecipes<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
+	public static class RecipeMapFurnace extends RecipeMapNonGTRecipes<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
 
-		public GT_Recipe_Map_Furnace(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder defaultRecipe) {
+		public RecipeMapFurnace(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder.DefaultRecipeBuilder defaultRecipe) {
 			super(recipeList, unlocalizedName, localName, JEIName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, amperage, JEISpecialValuePre, JEISpecialValueMultiplier, JEISpecialValuePost, showVoltageAmperageInJEI, JEIAllowed, defaultRecipe);
 		}
 
 		@Override
-		public Recipe findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe recipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
+		public Recipe findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
 			if (inputs == null || inputs.length <= 0 || inputs[0] == null) return null;
-			if (recipe != null && recipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) return recipe;
+			if (inputRecipe != null && inputRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) return inputRecipe;
 			ItemStack output = GT_ModHandler.getSmeltingOutput(inputs[0], false, null);
-			return output == null ? null : new Recipe(false, new ItemStack[]{GT_Utility.copyAmount(1, inputs[0])}, new ItemStack[]{output}, null, null, null, null, 128, 4, 0);
+			return output == null ? null : this.recipeBuilder()
+					.nonOptimized()
+					.inputs(GT_Utility.copyAmount(1, inputs[0]))
+					.outputs(output)
+					.duration(128)
+					.EUt(4)
+					.build();
 		}
 
 		@Override
@@ -1180,24 +1187,29 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	/**
 	 * Special Class for Microwave Recipe handling.
 	 */
-	public static class GT_Recipe_Map_Microwave extends GT_Recipe_Map_NonGTRecipes<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
+	public static class RecipeMapMicrowave extends RecipeMapNonGTRecipes<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
 
-		public GT_Recipe_Map_Microwave(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder defaultRecipe) {
+		public RecipeMapMicrowave(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder.DefaultRecipeBuilder defaultRecipe) {
 			super(recipeList, unlocalizedName, localName, JEIName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, amperage, JEISpecialValuePre, JEISpecialValueMultiplier, JEISpecialValuePost, showVoltageAmperageInJEI, JEIAllowed, defaultRecipe);
 		}
 
 		@Override
-		public Recipe findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe recipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
+		public Recipe findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
 			if (inputs == null || inputs.length <= 0 || inputs[0] == null) return null;
-			if (recipe != null && recipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) return recipe;
+			if (inputRecipe != null && inputRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) return inputRecipe;
 			ItemStack output = GT_ModHandler.getSmeltingOutput(inputs[0], false, null);
 
 			if (GT_Utility.areStacksEqual(inputs[0], new ItemStack(Items.BOOK, 1, W))) {
-				return new Recipe(false, new ItemStack[]{GT_Utility.copyAmount(1, inputs[0])}, new ItemStack[]{GT_Utility.getWrittenBook("Manual_Microwave", ItemList.Book_Written_03.get(1))}, null, null, null, null, 32, 4, 0);
+				return this.recipeBuilder()
+						.nonOptimized()
+						.inputs(GT_Utility.copyAmount(1, inputs[0]))
+						.outputs(GT_Utility.getWrittenBook("Manual_Microwave", ItemList.Book_Written_03.get(1)))
+						.duration(32)
+						.EUt(4).build();
 			}
 
 			// Check Container Item of Input since it is around the Input, then the Input itself, then Container Item of Output and last check the Output itself
-			for (ItemStack stack : new ItemStack[]{GT_Utility.getContainerItem(inputs[0], true), inputs[0], GT_Utility.getContainerItem(output, true), output})
+			for (ItemStack stack : new ItemStack[]{GT_Utility.getContainerItem(inputs[0], true), inputs[0], GT_Utility.getContainerItem(output, true), output}) {
 				if (stack != null) {
 					if (GT_Utility.areStacksEqual(stack, new ItemStack(Blocks.NETHERRACK, 1, W), true)
 							|| GT_Utility.areStacksEqual(stack, new ItemStack(Blocks.TNT, 1, W), true)
@@ -1215,12 +1227,12 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 					if (data != null) {
 						if (data.mMaterial != null && data.mMaterial.mMaterial != null) {
-							if (data.mMaterial.mMaterial.contains(SubTag.METAL) || data.mMaterial.mMaterial.contains(SubTag.EXPLOSIVE)) {
+							if (data.mMaterial.mMaterial instanceof MetalMaterial || data.mMaterial.mMaterial.contains(Material.MatFlags.EXPLOSIVE)) {
 								if (tileEntity instanceof IGregTechTileEntity)
 									((IGregTechTileEntity) tileEntity).doExplosion(voltage * 4);
 								return null;
 							}
-							if (data.mMaterial.mMaterial.contains(SubTag.FLAMMABLE)) {
+							if (data.mMaterial.mMaterial.contains(Material.MatFlags.FLAMMABLE)) {
 								if (tileEntity instanceof IGregTechTileEntity)
 									((IGregTechTileEntity) tileEntity).setOnFire();
 								return null;
@@ -1228,12 +1240,12 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 						}
 						for (MaterialStack material : data.mByProducts)
 							if (material != null) {
-								if (material.mMaterial.contains(SubTag.METAL) || material.mMaterial.contains(SubTag.EXPLOSIVE)) {
+								if (material.mMaterial instanceof MetalMaterial || material.mMaterial.contains(Material.MatFlags.EXPLOSIVE)) {
 									if (tileEntity instanceof IGregTechTileEntity)
 										((IGregTechTileEntity) tileEntity).doExplosion(voltage * 4);
 									return null;
 								}
-								if (material.mMaterial.contains(SubTag.FLAMMABLE)) {
+								if (material.mMaterial.contains(Material.MatFlags.FLAMMABLE)) {
 									if (tileEntity instanceof IGregTechTileEntity)
 										((IGregTechTileEntity) tileEntity).setOnFire();
 									return null;
@@ -1246,8 +1258,15 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 					}
 
 				}
+			}
 
-			return output == null ? null : new Recipe(false, new ItemStack[]{GT_Utility.copyAmount(1, inputs[0])}, new ItemStack[]{output}, null, null, null, null, 32, 4, 0);
+			return output == null ? null : new RecipeBuilder.DefaultRecipeBuilder(this.defaultRecipe)
+					.nonOptimized()
+					.inputs(GT_Utility.copyAmount(1, inputs[0]))
+					.outputs(output)
+					.duration(32)
+					.EUt(4)
+					.build();
 		}
 
 		@Override
@@ -1259,25 +1278,29 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	/**
 	 * Special Class for Unboxinator handling.
 	 */
-	public static class GT_Recipe_Map_Unboxinator extends RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
+	public static class RecipeMapUnboxinator extends RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
 
-		public GT_Recipe_Map_Unboxinator(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder defaultRecipe) {
+		public RecipeMapUnboxinator(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder.DefaultRecipeBuilder defaultRecipe) {
 			super(recipeList, unlocalizedName, localName, JEIName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, amperage, JEISpecialValuePre, JEISpecialValueMultiplier, JEISpecialValuePost, showVoltageAmperageInJEI, JEIAllowed, defaultRecipe);
 		}
 
 		@Override
-		public Recipe findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe recipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
+		public Recipe findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
 			if (inputs == null || inputs.length <= 0 || !ItemList.IC2_Scrapbox.isStackEqual(inputs[0], false, true))
-				return super.findRecipe(tileEntity, recipe, notUnificated, voltage, fluidInputs, specialSlot, inputs);
-			ItemStack tOutput = GT_ModHandler.getRandomScrapboxDrop();
-			if (tOutput == null)
-				return super.findRecipe(tileEntity, recipe, notUnificated, voltage, fluidInputs, specialSlot, inputs);
-			Recipe rRecipe = new Recipe(false, new ItemStack[]{ItemList.IC2_Scrapbox.get(1)}, new ItemStack[]{tOutput}, null, null, null, null, 16, 1, 0);
-			// It is not allowed to be buffered due to the random Output
-			rRecipe.canBeBuffered = false;
-			// Due to its randomness it is not good if there are Items in the Output Slot, because those Items could manipulate the outcome.
-			rRecipe.needsEmptyOutput = true;
-			return rRecipe;
+				return super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, fluidInputs, specialSlot, inputs);
+			ItemStack output = GT_ModHandler.getRandomScrapboxDrop();
+			if (output == null) {
+				return super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, fluidInputs, specialSlot, inputs);
+			}
+			return this.recipeBuilder()
+					.nonOptimized()
+					.cannotBeBuffered() // It is not allowed to be buffered due to the random Output
+					.needsEmptyOutput() // Due to its randomness it is not good if there are Items in the Output Slot, because those Items could manipulate the outcome.
+					.inputs(ItemList.IC2_Scrapbox.get(1))
+					.outputs(output)
+					.duration(16)
+					.EUt(1)
+					.build();
 		}
 
 		@Override
@@ -1289,30 +1312,47 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	/**
 	 * Special Class for Fluid Canner handling.
 	 */
-	public static class GT_Recipe_Map_FluidCanner extends RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
+	public static class RecipeMapFluidCanner extends RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
 
-		public GT_Recipe_Map_FluidCanner(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder defaultRecipe) {
+		public RecipeMapFluidCanner(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder.DefaultRecipeBuilder defaultRecipe) {
 			super(recipeList, unlocalizedName, localName, JEIName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, amperage, JEISpecialValuePre, JEISpecialValueMultiplier, JEISpecialValuePost, showVoltageAmperageInJEI, JEIAllowed, defaultRecipe);
 		}
 
 		@Override
-		public Recipe findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe recipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
-			Recipe tmpRecipe = super.findRecipe(tileEntity, recipe, notUnificated, voltage, fluidInputs, specialSlot, inputs);
-			if (inputs == null || inputs.length <= 0 || inputs[0] == null || tmpRecipe != null || !GregTech_API.sPostloadFinished)
-				return tmpRecipe;
+		public Recipe findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
+			Recipe recipe = super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, fluidInputs, specialSlot, inputs);
+			if (inputs == null || inputs.length <= 0 || inputs[0] == null || recipe != null || !GregTech_API.sPostloadFinished)
+				return recipe;
 			if (fluidInputs != null && fluidInputs.length > 0 && fluidInputs[0] != null) {
 				ItemStack output = GT_Utility.fillFluidContainer(fluidInputs[0], inputs[0], false, true);
 				FluidStack fluid = GT_Utility.getFluidForFilledItem(output, true);
-				if (fluid != null)
-					tmpRecipe = new Recipe(false, new ItemStack[]{GT_Utility.copyAmount(1, inputs[0])}, new ItemStack[]{output}, null, null, new FluidStack[]{fluid}, null, Math.max(fluid.amount / 64, 16), 1, 0);
+				if (fluid != null) {
+					recipe = this.recipeBuilder()
+							.cannotBeBuffered()
+							.nonOptimized()
+							.inputs(GT_Utility.copyAmount(1, inputs[0]))
+							.outputs(output)
+							.fluidInputs(fluidInputs)
+							.duration(Math.max(fluid.amount / 64, 16))
+							.EUt(1)
+							.build();
+				}
 			}
-			if (tmpRecipe == null) {
+			if (recipe == null) {
 				FluidStack fluid = GT_Utility.getFluidForFilledItem(inputs[0], true);
-				if (fluid != null)
-					tmpRecipe = new Recipe(false, new ItemStack[]{GT_Utility.copyAmount(1, inputs[0])}, new ItemStack[]{GT_Utility.getContainerItem(inputs[0], true)}, null, null, null, new FluidStack[]{fluid}, Math.max(fluid.amount / 64, 16), 1, 0);
+				if (fluid != null) {
+					recipe = this.recipeBuilder()
+							.cannotBeBuffered()
+							.nonOptimized()
+							.inputs(GT_Utility.copyAmount(1, inputs[0]))
+							.outputs(GT_Utility.getContainerItem(inputs[0], true))
+							.fluidOutputs(fluidInputs)
+							.duration(Math.max(fluid.amount / 64, 16))
+							.EUt(1)
+							.build();
+				}
 			}
-			if (tmpRecipe != null) tmpRecipe.canBeBuffered = false;
-			return tmpRecipe;
+			return recipe;
 		}
 
 		@Override
@@ -1334,17 +1374,28 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	/**
 	 * Special Class for Recycler Recipe handling.
 	 */
-	public static class GT_Recipe_Map_Recycler extends GT_Recipe_Map_NonGTRecipes<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
+	public static class RecipeMapRecycler extends RecipeMapNonGTRecipes<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
 
-		public GT_Recipe_Map_Recycler(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder defaultRecipe) {
+		public RecipeMapRecycler(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder.DefaultRecipeBuilder defaultRecipe) {
 			super(recipeList, unlocalizedName, localName, JEIName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, amperage, JEISpecialValuePre, JEISpecialValueMultiplier, JEISpecialValuePost, showVoltageAmperageInJEI, JEIAllowed, defaultRecipe);
 		}
 
 		@Override
-		public Recipe findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe recipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
+		public Recipe findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
 			if (inputs == null || inputs.length <= 0 || inputs[0] == null) return null;
-			if (recipe != null && recipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) return recipe;
-			return new Recipe(false, new ItemStack[]{GT_Utility.copyAmount(1, inputs[0])}, GT_ModHandler.getRecyclerOutput(GT_Utility.copyAmount(64, inputs[0]), 0) == null ? null : new ItemStack[]{ItemList.IC2_Scrap.get(1)}, null, new int[]{1250}, null, null, 45, 1, 0);
+			if (inputRecipe != null && inputRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) return inputRecipe;
+
+			RecipeBuilder builder = this.recipeBuilder()
+					.nonOptimized()
+					.inputs(GT_Utility.copyAmount(1, inputs[0]))
+					.duration(45)
+					.EUt(1);
+
+			if (GT_ModHandler.getRecyclerOutput(GT_Utility.copyAmount(64, inputs[0]), 0) != null) {
+				builder.chancedOutput(ItemList.IC2_Scrap.get(1), 1250);
+			}
+
+			return builder.build();
 		}
 
 		@Override
@@ -1356,19 +1407,28 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	/**
 	 * Special Class for Compressor Recipe handling.
 	 */
-	public static class GT_Recipe_Map_Compressor extends GT_Recipe_Map_NonGTRecipes<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
+	public static class RecipeMapCompressor extends RecipeMapNonGTRecipes<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
 
-		public GT_Recipe_Map_Compressor(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder defaultRecipe) {
+		public RecipeMapCompressor(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder.DefaultRecipeBuilder defaultRecipe) {
 			super(recipeList, unlocalizedName, localName, JEIName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, amperage, JEISpecialValuePre, JEISpecialValueMultiplier, JEISpecialValuePost, showVoltageAmperageInJEI, JEIAllowed, defaultRecipe);
 		}
 
 		@Override
-		public Recipe findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe recipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
+		public Recipe findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
 			if (inputs == null || inputs.length <= 0 || inputs[0] == null) return null;
-			if (recipe != null && recipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) return recipe;
+			if (inputRecipe != null && inputRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) return inputRecipe;
 			ItemStack comparedInput = GT_Utility.copy(inputs[0]);
 			ItemStack[] outputItems = GT_ModHandler.getMachineOutput(comparedInput, ic2.api.recipe.Recipes.compressor.getRecipes(), true, new NBTTagCompound(), null, null, null);
-			return GT_Utility.arrayContainsNonNull(outputItems) ? new Recipe(false, new ItemStack[]{GT_Utility.copyAmount(inputs[0].stackSize - comparedInput.stackSize, inputs[0])}, outputItems, null, null, null, null, 400, 2, 0) : null;
+			if (GT_Utility.arrayContainsNonNull(outputItems)) {
+				return this.recipeBuilder()
+						.nonOptimized()
+						.inputs(GT_Utility.copyAmount(inputs[0].stackSize - comparedInput.stackSize, inputs[0]))
+						.outputs(outputItems)
+						.duration(400)
+						.EUt(2)
+						.build();
+			}
+			return null;
 		}
 
 		@Override
@@ -1380,19 +1440,29 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	/**
 	 * Special Class for Extractor Recipe handling.
 	 */
-	public static class GT_Recipe_Map_Extractor extends GT_Recipe_Map_NonGTRecipes<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
+	public static class RecipeMapExtractor extends RecipeMapNonGTRecipes<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
 
-		public GT_Recipe_Map_Extractor(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder defaultRecipe) {
+		public RecipeMapExtractor(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder.DefaultRecipeBuilder defaultRecipe) {
 			super(recipeList, unlocalizedName, localName, JEIName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, amperage, JEISpecialValuePre, JEISpecialValueMultiplier, JEISpecialValuePost, showVoltageAmperageInJEI, JEIAllowed, defaultRecipe);
 		}
 
 		@Override
-		public Recipe findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe recipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
+		public Recipe findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
 			if (inputs == null || inputs.length <= 0 || inputs[0] == null) return null;
-			if (recipe != null && recipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) return recipe;
-			ItemStack tComparedInput = GT_Utility.copy(inputs[0]);
-			ItemStack[] tOutputItems = GT_ModHandler.getMachineOutput(tComparedInput, ic2.api.recipe.Recipes.extractor.getRecipes(), true, new NBTTagCompound(), null, null, null);
-			return GT_Utility.arrayContainsNonNull(tOutputItems) ? new Recipe(false, new ItemStack[]{GT_Utility.copyAmount(inputs[0].stackSize - tComparedInput.stackSize, inputs[0])}, tOutputItems, null, null, null, null, 400, 2, 0) : null;
+			if (inputRecipe != null && inputRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) return inputRecipe;
+			ItemStack comparedInput = GT_Utility.copy(inputs[0]);
+			ItemStack[] outputItems = GT_ModHandler.getMachineOutput(comparedInput, ic2.api.recipe.Recipes.extractor.getRecipes(), true, new NBTTagCompound(), null, null, null);
+
+			if (GT_Utility.arrayContainsNonNull(outputItems)) {
+				return this.recipeBuilder()
+						.nonOptimized()
+						.inputs(GT_Utility.copyAmount(inputs[0].stackSize - comparedInput.stackSize, inputs[0]))
+						.outputs(outputItems)
+						.duration(400)
+						.EUt(2)
+						.build();
+			}
+			return null;
 		}
 
 		@Override
@@ -1404,19 +1474,29 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	/**
 	 * Special Class for Thermal Centrifuge Recipe handling.
 	 */
-	public static class GT_Recipe_Map_ThermalCentrifuge extends GT_Recipe_Map_NonGTRecipes<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
+	public static class RecipeMapThermalCentrifuge extends RecipeMapNonGTRecipes<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
 
-		public GT_Recipe_Map_ThermalCentrifuge(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder defaultRecipe) {
+		public RecipeMapThermalCentrifuge(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder.DefaultRecipeBuilder defaultRecipe) {
 			super(recipeList, unlocalizedName, localName, JEIName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, amperage, JEISpecialValuePre, JEISpecialValueMultiplier, JEISpecialValuePost, showVoltageAmperageInJEI, JEIAllowed, defaultRecipe);
 		}
 
 		@Override
-		public Recipe findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe recipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
+		public Recipe findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
 			if (inputs == null || inputs.length <= 0 || inputs[0] == null) return null;
-			if (recipe != null && recipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) return recipe;
-			ItemStack tComparedInput = GT_Utility.copy(inputs[0]);
-			ItemStack[] tOutputItems = GT_ModHandler.getMachineOutput(tComparedInput, ic2.api.recipe.Recipes.centrifuge.getRecipes(), true, new NBTTagCompound(), null, null, null);
-			return GT_Utility.arrayContainsNonNull(tOutputItems) ? new Recipe(false, new ItemStack[]{GT_Utility.copyAmount(inputs[0].stackSize - tComparedInput.stackSize, inputs[0])}, tOutputItems, null, null, null, null, 400, 48, 0) : null;
+			if (inputRecipe != null && inputRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) return inputRecipe;
+			ItemStack comparedInput = GT_Utility.copy(inputs[0]);
+			ItemStack[] outputItems = GT_ModHandler.getMachineOutput(comparedInput, ic2.api.recipe.Recipes.centrifuge.getRecipes(), true, new NBTTagCompound(), null, null, null);
+
+			if (GT_Utility.arrayContainsNonNull(outputItems)) {
+				return this.recipeBuilder()
+						.nonOptimized()
+						.inputs(GT_Utility.copyAmount(inputs[0].stackSize - comparedInput.stackSize, inputs[0]))
+						.outputs(outputItems)
+						.duration(400)
+						.EUt(48)
+						.build();
+			}
+			return null;
 		}
 
 		@Override
@@ -1428,21 +1508,32 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	/**
 	 * Special Class for Ore Washer Recipe handling.
 	 */
-	public static class GT_Recipe_Map_OreWasher extends GT_Recipe_Map_NonGTRecipes<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
+	public static class RecipeMapOreWasher extends RecipeMapNonGTRecipes<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
 
-		public GT_Recipe_Map_OreWasher(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder defaultRecipe) {
+		public RecipeMapOreWasher(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder.DefaultRecipeBuilder defaultRecipe) {
 			super(recipeList, unlocalizedName, localName, JEIName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, amperage, JEISpecialValuePre, JEISpecialValueMultiplier, JEISpecialValuePost, showVoltageAmperageInJEI, JEIAllowed, defaultRecipe);
 		}
 
 		@Override
-		public Recipe findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe recipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
+		public Recipe findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
 			if (inputs == null || inputs.length <= 0 || inputs[0] == null || fluidInputs == null || fluidInputs.length < 1 || !GT_ModHandler.isWater(fluidInputs[0]))
 				return null;
-			if (recipe != null && recipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) return recipe;
-			ItemStack tComparedInput = GT_Utility.copy(inputs[0]);
-			NBTTagCompound aRecipeMetaData = new NBTTagCompound();
-			ItemStack[] tOutputItems = GT_ModHandler.getMachineOutput(tComparedInput, ic2.api.recipe.Recipes.oreWashing.getRecipes(), true, aRecipeMetaData, null, null, null);
-			return GT_Utility.arrayContainsNonNull(tOutputItems) ? new Recipe(false, new ItemStack[]{GT_Utility.copyAmount(inputs[0].stackSize - tComparedInput.stackSize, inputs[0])}, tOutputItems, null, null, new FluidStack[]{new FluidStack(fluidInputs[0].getFluid(), ((NBTTagCompound) aRecipeMetaData.getTag("return")).getInteger("amount"))}, null, 400, 16, 0) : null;
+			if (inputRecipe != null && inputRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) return inputRecipe;
+			ItemStack comparedInput = GT_Utility.copy(inputs[0]);
+			NBTTagCompound recipeMetaData = new NBTTagCompound();
+			ItemStack[] outputItems = GT_ModHandler.getMachineOutput(comparedInput, ic2.api.recipe.Recipes.oreWashing.getRecipes(), true, recipeMetaData, null, null, null);
+
+			if (GT_Utility.arrayContainsNonNull(outputItems)) {
+				return this.recipeBuilder()
+						.nonOptimized()
+						.inputs(GT_Utility.copyAmount(inputs[0].stackSize - comparedInput.stackSize, inputs[0]))
+						.outputs(outputItems)
+						.fluidInputs(new FluidStack(fluidInputs[0].getFluid(), ((NBTTagCompound) recipeMetaData.getTag("return")).getInteger("amount")))
+						.duration(400)
+						.EUt(16)
+						.build();
+			}
+			return null;
 		}
 
 		@Override
@@ -1464,18 +1555,18 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	/**
 	 * Special Class for Macerator/RockCrusher Recipe handling.
 	 */
-	public static class GT_Recipe_Map_Macerator extends RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
+	public static class RecipeMapMacerator extends RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
 
-		public GT_Recipe_Map_Macerator(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder defaultRecipe) {
+		public RecipeMapMacerator(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder.DefaultRecipeBuilder defaultRecipe) {
 			super(recipeList, unlocalizedName, localName, JEIName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, amperage, JEISpecialValuePre, JEISpecialValueMultiplier, JEISpecialValuePost, showVoltageAmperageInJEI, JEIAllowed, defaultRecipe);
 		}
 
 		@Override
-		public Recipe findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe recipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
+		public Recipe findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
 			if (inputs == null || inputs.length <= 0 || inputs[0] == null || !GregTech_API.sPostloadFinished)
-				return super.findRecipe(tileEntity, recipe, notUnificated, voltage, fluidInputs, specialSlot, inputs);
-			recipe = super.findRecipe(tileEntity, recipe, notUnificated, voltage, fluidInputs, specialSlot, inputs);
-			if (recipe != null) return recipe;
+				return super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, fluidInputs, specialSlot, inputs);
+			inputRecipe = super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, fluidInputs, specialSlot, inputs);
+			if (inputRecipe != null) return inputRecipe;
 
 			try {
 				//TODO: railcraft on 1.9
@@ -1492,7 +1583,17 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 			ItemStack comparedInput = GT_Utility.copy(inputs[0]);
 			ItemStack[] outputItems = GT_ModHandler.getMachineOutput(comparedInput, ic2.api.recipe.Recipes.macerator.getRecipes(), true, new NBTTagCompound(), null, null, null);
-			return GT_Utility.arrayContainsNonNull(outputItems) ? new Recipe(false, new ItemStack[]{GT_Utility.copyAmount(inputs[0].stackSize - comparedInput.stackSize, inputs[0])}, outputItems, null, null, null, null, 400, 2, 0) : null;
+
+			if (GT_Utility.arrayContainsNonNull(outputItems)) {
+				return this.recipeBuilder()
+						.nonOptimized()
+						.inputs(GT_Utility.copyAmount(inputs[0].stackSize - comparedInput.stackSize, inputs[0]))
+						.outputs(outputItems)
+						.duration(400)
+						.EUt(2)
+						.build();
+			}
+			return null;
 		}
 
 		@Override
@@ -1504,56 +1605,77 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	/**
 	 * Special Class for Assembler handling.
 	 */
-	public static class GT_Recipe_Map_Assembler extends RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
+	public static class RecipeMapAssembler extends RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
 
-		public GT_Recipe_Map_Assembler(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder defaultRecipe) {
+		public RecipeMapAssembler(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder.DefaultRecipeBuilder defaultRecipe) {
 			super(recipeList, unlocalizedName, localName, JEIName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, amperage, JEISpecialValuePre, JEISpecialValueMultiplier, JEISpecialValuePost, showVoltageAmperageInJEI, JEIAllowed, defaultRecipe);
 		}
 
 		@Override
-		public Recipe findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe recipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
-			Recipe tmpRecipe = super.findRecipe(tileEntity, recipe, notUnificated, voltage, fluidInputs, specialSlot, inputs);
-			if (inputs == null || inputs.length <= 0 || inputs[0] == null || tmpRecipe == null || !GregTech_API.sPostloadFinished)
-				return tmpRecipe;
+		public Recipe findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
+			Recipe recipe = super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, fluidInputs, specialSlot, inputs);
+			if (inputs == null || inputs.length <= 0 || inputs[0] == null || recipe == null || !GregTech_API.sPostloadFinished)
+				return recipe;
 			for (ItemStack stack : inputs) {
 				if (ItemList.Paper_Printed_Pages.isStackEqual(stack, false, true)) {
-					tmpRecipe = tmpRecipe.copy();
-					tmpRecipe.canBeBuffered = false;
-					tmpRecipe.outputs[0].setTagCompound(stack.getTagCompound());
+					RecipeBuilder builder = this.recipeBuilder()
+							.fromRecipe(recipe)
+							.cannotBeBuffered();
+
+					List<ItemStack> outputs = builder.getOutputs();
+					ItemStack itemStack = outputs.get(0);
+					itemStack.setTagCompound(itemStack.getTagCompound());
+					outputs.set(0, itemStack);
+
+					recipe = builder.build();
 				}
 			}
-			return tmpRecipe;
+			return recipe;
 		}
 	}
 
 	/**
 	 * Special Class for Forming Press handling.
 	 */
-	public static class GT_Recipe_Map_FormingPress extends RecipeMap<Recipe, RecipeBuilder.NotConsumableInputRecipeBuilder> {
+	public static class RecipeMapFormingPress extends RecipeMap<Recipe, RecipeBuilder.NotConsumableInputRecipeBuilder> {
 
-		public GT_Recipe_Map_FormingPress(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder defaultRecipe) {
+		public RecipeMapFormingPress(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder.NotConsumableInputRecipeBuilder defaultRecipe) {
 			super(recipeList, unlocalizedName, localName, JEIName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, amperage, JEISpecialValuePre, JEISpecialValueMultiplier, JEISpecialValuePost, showVoltageAmperageInJEI, JEIAllowed, defaultRecipe);
 		}
 
 		@Override
-		public Recipe findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe recipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
-			Recipe tmpRecipe = super.findRecipe(tileEntity, recipe, notUnificated, voltage, fluidInputs, specialSlot, inputs);
+		public Recipe findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
+			Recipe recipe = super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, fluidInputs, specialSlot, inputs);
 			if (inputs == null || inputs.length < 2 || inputs[0] == null || inputs[1] == null || !GregTech_API.sPostloadFinished)
-				return tmpRecipe;
-			if (tmpRecipe == null) {
+				return recipe;
+			if (recipe == null) {
 				if (ItemList.Shape_Mold_Name.isStackEqual(inputs[0], false, true)) {
 					ItemStack output = GT_Utility.copyAmount(1, inputs[1]);
 					output.setStackDisplayName(inputs[0].getDisplayName());
-					tmpRecipe = new Recipe(false, new ItemStack[]{ItemList.Shape_Mold_Name.get(0), GT_Utility.copyAmount(1, inputs[1])}, new ItemStack[]{output}, null, null, null, null, 128, 8, 0);
-					tmpRecipe.canBeBuffered = false;
-					return tmpRecipe;
+
+					return this.recipeBuilder()
+							.cannotBeBuffered()
+							.nonOptimized()
+							.notConsumable(ItemList.Shape_Mold_Name)
+							.inputs(GT_Utility.copyAmount(1, inputs[1]))
+							.outputs(output)
+							.duration(128)
+							.EUt(8)
+							.build();
 				}
 				if (ItemList.Shape_Mold_Name.isStackEqual(inputs[1], false, true)) {
 					ItemStack output = GT_Utility.copyAmount(1, inputs[0]);
 					output.setStackDisplayName(inputs[1].getDisplayName());
-					tmpRecipe = new Recipe(false, new ItemStack[]{ItemList.Shape_Mold_Name.get(0), GT_Utility.copyAmount(1, inputs[0])}, new ItemStack[]{output}, null, null, null, null, 128, 8, 0);
-					tmpRecipe.canBeBuffered = false;
-					return tmpRecipe;
+
+					return this.recipeBuilder()
+							.cannotBeBuffered()
+							.nonOptimized()
+							.notConsumable(ItemList.Shape_Mold_Name)
+							.inputs(GT_Utility.copyAmount(1, inputs[0]))
+							.outputs(output)
+							.duration(128)
+							.EUt(8)
+							.build();
 				}
 				return null;
 			}
@@ -1564,30 +1686,36 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 					if (!tag.hasKey("credit_security_id")) tag.setLong("credit_security_id", System.nanoTime());
 					mold.setTagCompound(tag);
 
-					tmpRecipe = tmpRecipe.copy();
-					tmpRecipe.canBeBuffered = false;
-					tmpRecipe.outputs[0].setTagCompound(tag);
-					return tmpRecipe;
+					RecipeBuilder builder = this.recipeBuilder()
+							.fromRecipe(recipe)
+							.cannotBeBuffered();
+
+					List<ItemStack> outputs = builder.getOutputs();
+					ItemStack stack = outputs.get(0);
+					stack.setTagCompound(tag);
+					outputs.set(0, stack);
+
+					return builder.build();
 				}
 			}
-			return tmpRecipe;
+			return recipe;
 		}
 	}
 
 	/**
 	 * Special Class for Printer handling.
 	 */
-	public static class GT_Recipe_Map_Printer extends RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
+	public static class RecipeMapPrinter extends RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
 
-		public GT_Recipe_Map_Printer(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder defaultRecipe) {
+		public RecipeMapPrinter(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder.DefaultRecipeBuilder defaultRecipe) {
 			super(recipeList, unlocalizedName, localName, JEIName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, amperage, JEISpecialValuePre, JEISpecialValueMultiplier, JEISpecialValuePost, showVoltageAmperageInJEI, JEIAllowed, defaultRecipe);
 		}
 
 		@Override
-		public Recipe findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe recipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
-			Recipe tmpRecipe = super.findRecipe(tileEntity, recipe, notUnificated, voltage, fluidInputs, specialSlot, inputs);
+		public Recipe findRecipe(IHasWorldObjectAndCoords tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack specialSlot, ItemStack[] inputs) {
+			Recipe recipe = super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, fluidInputs, specialSlot, inputs);
 			if (inputs == null || inputs.length <= 0 || inputs[0] == null || fluidInputs == null || fluidInputs.length <= 0 || fluidInputs[0] == null || !GregTech_API.sPostloadFinished)
-				return tmpRecipe;
+				return recipe;
 
 			Dyes dye = null;
 			for (Dyes tmpDye : Dyes.VALUES)
@@ -1596,16 +1724,34 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 					break;
 				}
 
-			if (dye == null) return tmpRecipe;
+			if (dye == null) return recipe;
 
-			if (tmpRecipe == null) {
+			if (recipe == null) {
 				ItemStack output = GT_ModHandler.getAllRecipeOutput(tileEntity == null ? null : tileEntity.getWorldObj(), inputs[0], inputs[0], inputs[0], inputs[0], ItemList.DYE_ONLY_ITEMS[dye.mIndex].get(1), inputs[0], inputs[0], inputs[0], inputs[0]);
-				if (output != null)
-					return addRecipe(new Recipe(true, new ItemStack[]{GT_Utility.copyAmount(8, inputs[0])}, new ItemStack[]{output}, null, null, new FluidStack[]{new FluidStack(fluidInputs[0].getFluid(), (int) L)}, null, 256, 2, 0), false, false, true);
+				if (output != null) {
+					Recipe outputRecipe = this.recipeBuilder()
+							.inputs(GT_Utility.copyAmount(8, inputs[0]))
+							.outputs(output)
+							.fluidInputs(new FluidStack(fluidInputs[0].getFluid(), (int) L))
+							.duration(256)
+							.EUt(2)
+							.build();
+
+					return this.addRecipe(outputRecipe);
+				}
 
 				output = GT_ModHandler.getAllRecipeOutput(tileEntity == null ? null : tileEntity.getWorldObj(), inputs[0], ItemList.DYE_ONLY_ITEMS[dye.mIndex].get(1));
-				if (output != null)
-					return addRecipe(new Recipe(true, new ItemStack[]{GT_Utility.copyAmount(1, inputs[0])}, new ItemStack[]{output}, null, null, new FluidStack[]{new FluidStack(fluidInputs[0].getFluid(), (int) L)}, null, 32, 2, 0), false, false, true);
+				if (output != null) {
+					Recipe outputRecipe = this.recipeBuilder()
+							.inputs(GT_Utility.copyAmount(1, inputs[0]))
+							.outputs(output)
+							.fluidInputs(new FluidStack(fluidInputs[0].getFluid(), (int) L))
+							.duration(32)
+							.EUt(2)
+							.build();
+					return this.addRecipe(recipe);
+
+				}
 			} else {
 				if (inputs[0].getItem() == Items.WRITTEN_BOOK) {
 					if (!ItemList.Tool_DataStick.isStackEqual(specialSlot, false, true)) return null;
@@ -1613,33 +1759,52 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 					if (tag == null || !GT_Utility.isStringValid(tag.getString("title")) || !GT_Utility.isStringValid(tag.getString("author")))
 						return null;
 
-					tmpRecipe = tmpRecipe.copy();
-					tmpRecipe.canBeBuffered = false;
-					tmpRecipe.outputs[0].setTagCompound(tag);
-					return tmpRecipe;
+					RecipeBuilder builder = this.recipeBuilder()
+							.fromRecipe(recipe)
+							.cannotBeBuffered();
+
+					List<ItemStack> outputs = builder.getOutputs();
+					ItemStack stack = outputs.get(0);
+					stack.setTagCompound(tag);
+					outputs.set(0, stack);
+
+					return builder.build();
+
 				}
 				if (inputs[0].getItem() == Items.FILLED_MAP) {
 					if (!ItemList.Tool_DataStick.isStackEqual(specialSlot, false, true)) return null;
 					NBTTagCompound tag = specialSlot.getTagCompound();
 					if (tag == null || !tag.hasKey("map_id")) return null;
 
-					tmpRecipe = tmpRecipe.copy();
-					tmpRecipe.canBeBuffered = false;
-					tmpRecipe.outputs[0].setItemDamage(tag.getShort("map_id"));
-					return tmpRecipe;
+					RecipeBuilder builder = this.recipeBuilder()
+							.fromRecipe(recipe)
+							.cannotBeBuffered();
+
+					List<ItemStack> outputs = builder.getOutputs();
+					ItemStack stack = outputs.get(0);
+					stack.setItemDamage(tag.getShort("map_id"));
+					outputs.set(0, stack);
+
+					return builder.build();
 				}
 				if (ItemList.Paper_Punch_Card_Empty.isStackEqual(inputs[0], false, true)) {
 					if (!ItemList.Tool_DataStick.isStackEqual(specialSlot, false, true)) return null;
 					NBTTagCompound tag = specialSlot.getTagCompound();
 					if (tag == null || !tag.hasKey("GT.PunchCardData")) return null;
 
-					tmpRecipe = tmpRecipe.copy();
-					tmpRecipe.canBeBuffered = false;
-					tmpRecipe.outputs[0].setTagCompound(GT_Utility.getNBTContainingString(new NBTTagCompound(), "GT.PunchCardData", tag.getString("GT.PunchCardData")));
-					return tmpRecipe;
+					RecipeBuilder builder = this.recipeBuilder()
+							.fromRecipe(recipe)
+							.cannotBeBuffered();
+
+					List<ItemStack> outputs = builder.getOutputs();
+					ItemStack stack = outputs.get(0);
+					stack.setTagCompound(GT_Utility.getNBTContainingString(new NBTTagCompound(), "GT.PunchCardData", tag.getString("GT.PunchCardData")));
+					outputs.set(0, stack);
+
+					return builder.build();
 				}
 			}
-			return tmpRecipe;
+			return recipe;
 		}
 
 		@Override

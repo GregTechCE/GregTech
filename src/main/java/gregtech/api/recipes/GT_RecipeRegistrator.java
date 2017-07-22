@@ -7,7 +7,6 @@ import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.enums.material.Materials;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.init.Blocks;
