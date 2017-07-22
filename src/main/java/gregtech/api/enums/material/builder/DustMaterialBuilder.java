@@ -156,24 +156,18 @@ public class DustMaterialBuilder<T extends DustMaterial, Self extends DustMateri
 
     @Override
     protected T build() {
-        //java, fuck off, please
-        ImmutableList<MaterialStack> materialStacks1 = ImmutableList.copyOf(materialCompounds);
-        ImmutableList<SubTag> subTags1 = ImmutableList.copyOf(subTags);
-        ImmutableList<Material> reRegistrations = ImmutableList.of();
-        ImmutableList<DustMaterial> byProducts = ImmutableList.copyOf(oreByProducts);
-
         return (T) new DustMaterial(
                 defaultLocalizedName,
                 rgbColor,
                 iconSet,
-                materialStacks1,
-                reRegistrations,
-                subTags1,
+                ImmutableList.copyOf(materialCompounds),
+                ImmutableList.copyOf(oreReRegistrations),
+                ImmutableList.copyOf(subTags),
                 materialGenerationBits,
                 densityMultiplier,
                 directElement,
                 oreValue,
-                byProducts,
+                ImmutableList.copyOf(oreByProducts),
                 oreMultiplier,
                 byProductMultiplier,
                 smeltingMultiplier,
