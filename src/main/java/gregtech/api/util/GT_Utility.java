@@ -702,12 +702,6 @@ public class GT_Utility {
         return areStacksEqual(GT_ModHandler.getIC2Item(ItemName.debug_item, 1), aStack, true);
     }
 
-    public static ItemStack updateItemStack(ItemStack aStack) {
-        if (isStackValid(aStack) && aStack.getItem() instanceof GenericItem)
-            ((GenericItem) aStack.getItem()).isItemStackUsable(aStack);
-        return aStack;
-    }
-
     public static boolean hasBlockHitBox(World aWorld, BlockPos blockPos) {
         AxisAlignedBB box = aWorld.getBlockState(blockPos).getCollisionBoundingBox(aWorld, blockPos);
         return box != null && (box.maxX != box.minX && box.maxZ != box.minZ && box.maxY != box.minY);

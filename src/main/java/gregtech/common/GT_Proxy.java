@@ -1583,11 +1583,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 rFuelValue = Math.max(rFuelValue, tFuelValue);
             }
         }
-        NBTTagCompound tNBT = aFuel.getTagCompound();
-        if (tNBT != null) {
-            short tValue = tNBT.getShort("GT.ItemFuelValue");
-            rFuelValue = Math.max(rFuelValue, tValue);
-        }
+
         if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "gemSodium")) {
             rFuelValue = Math.max(rFuelValue, 4000);
         } else if (GT_OreDictUnificator.isItemStackInstanceOf(aFuel, "crushedSodium")) {

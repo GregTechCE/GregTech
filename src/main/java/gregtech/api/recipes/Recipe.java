@@ -37,13 +37,6 @@ public class Recipe {
 	private final List<FluidStack> fluidInputs;
 	private final List<FluidStack> fluidOutputs;
 
-	/**
-	 * An Item that needs to be inside the Special Slot, like for example the Copy Slot inside the Printer.
-	 * This is only useful for Fake Recipes in JEI, since findRecipe() and containsInput() don't care about this field.
-	 */
-	@Nullable
-	private final ItemStack specialItem;
-
 	private final int duration;
 
 	/**
@@ -68,14 +61,13 @@ public class Recipe {
 	private final boolean needsEmptyOutput;
 
 	protected Recipe(List<ItemStack> inputs, List<ItemStack> outputs, Map<ItemStack, Integer> chancedOutputs,
-				   List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs, ItemStack specialItem,
+				   List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs,
 				   int duration, int EUt, boolean hidden, boolean canBeBuffered, boolean needsEmptyOutput) {
 		this.inputs = ImmutableList.copyOf(inputs);
 		this.outputs = ImmutableList.copyOf(outputs);
 		this.chancedOutputs = ImmutableMap.copyOf(chancedOutputs);
 		this.fluidInputs = ImmutableList.copyOf(fluidInputs);
 		this.fluidOutputs = ImmutableList.copyOf(fluidOutputs);
-		this.specialItem = specialItem;
 		this.duration = duration;
 		this.EUt = EUt;
 		this.hidden = hidden;
@@ -261,11 +253,6 @@ public class Recipe {
 		return fluidOutputs;
 	}
 
-	@Nullable
-	public ItemStack getSpecialItem() {
-		return specialItem;
-	}
-
 	public int getDuration() {
 		return duration;
 	}
@@ -289,8 +276,8 @@ public class Recipe {
 	public static class BlastRecipe extends Recipe {
 		private final int blastFurnaceTemp;
 
-		protected BlastRecipe(List<ItemStack> inputs, List<ItemStack> outputs, Map<ItemStack, Integer> chancedOutputs, List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs, ItemStack specialItem, int duration, int EUt, boolean hidden, boolean canBeBuffered, boolean needsEmptyOutput, int blastFurnaceTemp) {
-			super(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, specialItem, duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
+		protected BlastRecipe(List<ItemStack> inputs, List<ItemStack> outputs, Map<ItemStack, Integer> chancedOutputs, List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs, int duration, int EUt, boolean hidden, boolean canBeBuffered, boolean needsEmptyOutput, int blastFurnaceTemp) {
+			super(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
 
 			this.blastFurnaceTemp = blastFurnaceTemp;
 		}
@@ -303,8 +290,8 @@ public class Recipe {
 	public static class AmplifierRecipe extends Recipe {
 		private final int amplifierAmountOutputted;
 
-		protected AmplifierRecipe(List<ItemStack> inputs, List<ItemStack> outputs, Map<ItemStack, Integer> chancedOutputs, List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs, ItemStack specialItem, int duration, int EUt, boolean hidden, boolean canBeBuffered, boolean needsEmptyOutput, int amplifierAmountOutputted) {
-			super(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, specialItem, duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
+		protected AmplifierRecipe(List<ItemStack> inputs, List<ItemStack> outputs, Map<ItemStack, Integer> chancedOutputs, List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs, int duration, int EUt, boolean hidden, boolean canBeBuffered, boolean needsEmptyOutput, int amplifierAmountOutputted) {
+			super(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
 
 			this.amplifierAmountOutputted = amplifierAmountOutputted;
 		}
@@ -317,8 +304,8 @@ public class Recipe {
 	public static class FusionRecipe extends Recipe {
 		private final int EUToStart;
 
-		protected FusionRecipe(List<ItemStack> inputs, List<ItemStack> outputs, Map<ItemStack, Integer> chancedOutputs, List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs, ItemStack specialItem, int duration, int EUt, boolean hidden, boolean canBeBuffered, boolean needsEmptyOutput, int EUToStart) {
-			super(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, specialItem, duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
+		protected FusionRecipe(List<ItemStack> inputs, List<ItemStack> outputs, Map<ItemStack, Integer> chancedOutputs, List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs, int duration, int EUt, boolean hidden, boolean canBeBuffered, boolean needsEmptyOutput, int EUToStart) {
+			super(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
 
 			this.EUToStart = EUToStart;
 		}
@@ -341,10 +328,10 @@ public class Recipe {
 		private final int EUt;
 
 		public AssemblyLineRecipe(ItemStack researchItem, int researchTime, List<ItemStack> inputs, List<FluidStack> fluidInputs, ItemStack output, int duration, int EUt) {
-			this.researchItem = researchItem;
+			this.researchItem = researchItem.copy();
 			this.researchTime = researchTime;
-			this.inputs = ImmutableList.copyOf(inputs);
-			this.fluidInputs = ImmutableList.copyOf(fluidInputs);
+			this.inputs = ImmutableList.copyOf(GT_Utility.copyStackList(inputs));
+			this.fluidInputs = ImmutableList.copyOf(GT_Utility.copyFluidList(fluidInputs));
 			this.output = output;
 			this.duration = duration;
 			this.EUt = EUt;
