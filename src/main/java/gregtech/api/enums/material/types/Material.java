@@ -1,23 +1,26 @@
-package gregtech.api.enums.material;
+package gregtech.api.enums.material.types;
 
 import com.google.common.collect.ImmutableList;
 import gregtech.api.enums.Element;
-import gregtech.api.enums.SubTag;
-import gregtech.api.enums.material.types.DustMaterial;
+import gregtech.api.enums.material.MaterialIconSet;
 import gregtech.api.interfaces.IMaterialHandler;
-import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.MaterialStack;
+import gregtech.api.util.DelayedFunction;
 import gregtech.api.util.GTControlledRegistry;
 import gregtech.api.util.GT_Log;
 import net.minecraft.util.ResourceLocation;
 
-import static gregtech.api.enums.GT_Values.M;
-import static gregtech.api.enums.SubTag.getNewSubTag;
+import java.util.ArrayList;
+import java.util.function.Function;
 
-public abstract class  Material implements ISubTagContainer, Comparable<Material> {
+import static gregtech.api.enums.GT_Values.M;
+
+public abstract class  Material implements Comparable<Material> {
 
 	public static GTControlledRegistry<Material> MATERIAL_REGISTRY = new GTControlledRegistry<>();
 	public static GTControlledRegistry<IMaterialHandler> MATERIAL_HANDLER_REGISTRY = new GTControlledRegistry<>();
+
+    public static final Function<String, Material> RESOLVE_MATERIAL = (name) -> Material.MATERIAL_REGISTRY.getObject(name);
 
 	/**
 	 * Initializes material and also creates fluid instances
@@ -37,52 +40,47 @@ public abstract class  Material implements ISubTagContainer, Comparable<Material
 		MATERIAL_REGISTRY.freezeRegistry();
 		for(String name : MATERIAL_REGISTRY.getKeys()) {
 			Material material = MATERIAL_REGISTRY.getObject(name);
-			ResourceLocation resourceLocation = MATERIAL_REGISTRY.getFullNameForObject(material);
-			material.initMaterial(resourceLocation);
+			material.initMaterial(name);
 		}
 	}
 
 	public static final class MatFlags {
 
-		public static final int GENERATE_DECOMPOSITION_RECIPES = createFlag(0);
-		public static final int DECOMPOSITION_BY_ELECTROLYZING = createFlag(1);
-		public static final int DECOMPOSITION_BY_CENTRIFUGING =  createFlag(2);
+		/**
+		 * Enables electrolyzer decomposition recipe generation
+		 */
+		public static final int DECOMPOSITION_BY_ELECTROLYZING = createFlag(0);
 
 		/**
-		 * If this Material is some kind of Magical
+		 * Enables centrifuge decomposition recipe generation
 		 */
-		public static final SubTag MAGICAL = getNewSubTag("MAGICAL");
+		public static final int DECOMPOSITION_BY_CENTRIFUGING = createFlag(1);
+
+        /**
+         * Add to material if it has constantly burning aura
+         */
+        public static final int BURNING = createFlag(7);
 
 		/**
-		 * If this Material is having a constantly burning Aura
+		 * Add to material if it is some kind of flammable
 		 */
-		public static final SubTag BURNING = getNewSubTag("BURNING");
+		public static final int FLAMMABLE = createFlag(2);
 
 		/**
-		 * If this Material is some kind of flammable
+		 * Add to material if it is some kind of explosive
 		 */
-		public static final SubTag FLAMMABLE = getNewSubTag("FLAMMABLE");
+		public static final int EXPLOSIVE = createFlag(4);
 
 		/**
-		 * If this Material is not burnable at all
+		 * Add to material to disable it's unification fully
 		 */
-		public static final SubTag UNBURNABLE = getNewSubTag("UNBURNABLE");
+		public static final int NO_UNIFICATION = createFlag(5);
 
 		/**
-		 * If this Material is some kind of explosive
+		 * Add to material if any of it's items cannot be recycled to get scrap
 		 */
-		public static final SubTag EXPLOSIVE = getNewSubTag("EXPLOSIVE");
+		public static final int NO_RECYCLING = createFlag(6);
 
-		/**
-		 * This Material cannot be unificated
-		 */
-		public static final SubTag NO_UNIFICATION = getNewSubTag("NO_UNIFICATION");
-
-		/**
-		 * This Material cannot be used in any Recycler. Already listed are:
-		 * Stone, Glass, Water
-		 */
-		public static final SubTag NO_RECYCLING = getNewSubTag("NO_RECYCLING");
 
 		public static int createFlag(int id) {
 			return (int) Math.pow(2, id);
@@ -120,19 +118,14 @@ public abstract class  Material implements ISubTagContainer, Comparable<Material
 	 * List of materials to re-register this material into
 	 * As example, all Iron materials are re-registered into generic material AnyIron
 	 */
-	public final ImmutableList<Material> oreReRegistrations;
-
-	/**
-	 * List of SubTags added to this material
-	 */
-	public final ImmutableList<SubTag> subTags;
+	public final ArrayList<MarkerMaterial> oreReRegistrations = new ArrayList<>();
 
 	/**
 	 * Generation flags of this material
 	 * @see MatFlags
 	 * @see DustMaterial.MatFlags
 	 */
-	private final int materialGenerationFlags;
+	protected int materialGenerationFlags;
 
 	/**
 	 * Number to multiply standard Material Unit by
@@ -157,31 +150,41 @@ public abstract class  Material implements ISubTagContainer, Comparable<Material
         return "";
     }
 
-	public Material(String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, ImmutableList<Material> oreReRegistrations, ImmutableList<SubTag> subTags, int materialGenerationFlags, float densityMultiplier, Element element) {
+	public Material(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, int materialGenerationFlags, Element element, float densityMultiplier) {
 		this.defaultLocalName = defaultLocalName;
 		this.materialRGB = materialRGB;
-		this.chemicalFormula = calculateChemicalFormula();
 		this.materialIconSet = materialIconSet;
 		this.materialComponents = materialComponents;
-		this.oreReRegistrations = oreReRegistrations;
-		this.subTags = subTags;
-		this.materialGenerationFlags = materialGenerationFlags;
+		this.materialGenerationFlags = verifyMaterialBits(materialGenerationFlags);
 		this.densityMultiplier = densityMultiplier;
 		this.element = element;
+        this.chemicalFormula = calculateChemicalFormula();
+        if(metaItemSubId > -1) {
+        	MATERIAL_REGISTRY.register(metaItemSubId, name, this);
+		} else MATERIAL_REGISTRY.putObject(name, this);
+	}
+
+	protected int verifyMaterialBits(int materialBits) {
+		return materialBits;
+	}
+
+	public void add(int materialGenerationFlags) {
+		this.materialGenerationFlags |= verifyMaterialBits(materialGenerationFlags);
 	}
 
 	public boolean hasFlag(int generationFlag) {
 		return (materialGenerationFlags & generationFlag) != 0;
 	}
 
-	protected void initMaterial(ResourceLocation resourceLocation) {
+	protected void initMaterial(String name) {
+
 	}
 
 	public boolean isRadioactive() {
 		if (element != null)
 			return element.halfLifeSeconds >= 0;
 		for (MaterialStack tMaterial : materialComponents)
-			if (tMaterial.mMaterial.isRadioactive()) return true;
+			if (tMaterial.material.isRadioactive()) return true;
 		return false;
 	}
 
@@ -192,8 +195,8 @@ public abstract class  Material implements ISubTagContainer, Comparable<Material
 			return Element.Tc.getProtons();
 		long totalProtons = 0, totalAmount = 0;
 		for (MaterialStack tMaterial : materialComponents) {
-			totalAmount += tMaterial.mAmount;
-			totalProtons += tMaterial.mAmount * tMaterial.mMaterial.getProtons();
+			totalAmount += tMaterial.amount;
+			totalProtons += tMaterial.amount * tMaterial.material.getProtons();
 		}
 		return (getDensity() * totalProtons) / (totalAmount * M);
 	}
@@ -204,9 +207,9 @@ public abstract class  Material implements ISubTagContainer, Comparable<Material
 		if (materialComponents.size() <= 0)
 			return Element.Tc.getNeutrons();
 		long totalProtons = 0, totalAmount = 0;
-		for (MaterialStack tMaterial : materialComponents) {
-			totalAmount += tMaterial.mAmount;
-			totalProtons += tMaterial.mAmount * tMaterial.mMaterial.getNeutrons();
+		for (MaterialStack material : materialComponents) {
+			totalAmount += material.amount;
+			totalProtons += material.amount * material.material.getNeutrons();
 		}
 		return (getDensity() * totalProtons) / (totalAmount * M);
 	}
@@ -217,24 +220,15 @@ public abstract class  Material implements ISubTagContainer, Comparable<Material
 		if (materialComponents.size() <= 0)
 			return Element.Tc.getMass();
 		long totalProtons = 0, totalAmount = 0;
-		for (MaterialStack tMaterial : materialComponents) {
-			totalAmount += tMaterial.mAmount;
-			totalProtons += tMaterial.mAmount * tMaterial.mMaterial.getMass();
+		for (MaterialStack material : materialComponents) {
+			totalAmount += material.amount;
+			totalProtons += material.amount * material.material.getMass();
 		}
 		return (getDensity() * totalProtons) / (totalAmount * M);
 	}
 
 	public long getDensity() {
 		return (long) (M * densityMultiplier);
-	}
-
-	@Override
-	public boolean contains(SubTag subTag) {
-		return subTags.contains(subTag);
-	}
-
-	public boolean hasGenerationFlag(int flag) {
-		return (materialGenerationFlags & flag) > 0;
 	}
 
 	@Override

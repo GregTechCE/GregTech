@@ -1,51 +1,49 @@
 package gregtech.api.objects;
 
-import gregtech.api.enums.material.Material;
+import gregtech.api.enums.material.types.Material;
 import gregtech.api.enums.material.Materials;
 
-public class MaterialStack implements Cloneable {
-    public long mAmount;
-    public Material mMaterial;
+public class MaterialStack {
 
-    public MaterialStack(Material aMaterial, long aAmount) {
-        mMaterial = aMaterial == null ? Materials.Empty : aMaterial;
-        mAmount = aAmount;
+    public Material material;
+    public long amount;
+
+    public MaterialStack(Material material, long amount) {
+        this.material = material;
+        this.amount = amount;
     }
 
-    public MaterialStack copy(long aAmount) {
-        return new MaterialStack(mMaterial, aAmount);
+    public MaterialStack copy(long amount) {
+        return new MaterialStack(material, amount);
     }
 
-    @Override
-    public MaterialStack clone() {
-        try { return (MaterialStack) super.clone(); } catch (Exception e) { return new MaterialStack(mMaterial, mAmount); }
-    }
-
-    @Override
-    public boolean equals(Object aObject) {
-        if (aObject == this) return true;
-        if (aObject == null) return false;
-        if (aObject instanceof Materials) return aObject == mMaterial;
-        if (aObject instanceof MaterialStack)
-            return ((MaterialStack) aObject).mMaterial == mMaterial && (mAmount < 0 || ((MaterialStack) aObject).mAmount < 0 || ((MaterialStack) aObject).mAmount == mAmount);
-        return false;
+    public MaterialStack copy() {
+        return new MaterialStack(material, amount);
     }
 
     @Override
-    public String toString() {
-         String temp1 = "", temp2 = mMaterial.getToolTip(true), temp3 = "", temp4 = "";
-         if (mAmount > 1) {
-             temp4 = String.valueOf(mAmount);
-             if (mMaterial.mMaterialList.size() > 1) {
-                temp1 = "(";
-                temp3 = ")";
-             }
-         }
-        return String.valueOf(new StringBuilder().append(temp1).append(temp2).append(temp3).append(temp4));
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MaterialStack that = (MaterialStack) o;
+
+        if (amount != that.amount) return false;
+        return material.equals(that.material);
     }
 
     @Override
     public int hashCode() {
-        return mMaterial.hashCode();
+        return material.hashCode();
     }
+
+    @Override
+    public String toString() {
+        String string = Long.toString(amount);
+        if(material.materialComponents.size() > 1) {
+            string += '(' + material.chemicalFormula.get() + ')';
+        } else string += material.chemicalFormula.get();
+        return string;
+    }
+
 }

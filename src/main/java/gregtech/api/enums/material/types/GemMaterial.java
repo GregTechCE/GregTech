@@ -2,23 +2,26 @@ package gregtech.api.enums.material.types;
 
 import com.google.common.collect.ImmutableList;
 import gregtech.api.enums.Element;
-import gregtech.api.enums.SubTag;
-import gregtech.api.enums.material.Material;
 import gregtech.api.enums.material.MaterialIconSet;
 import gregtech.api.objects.MaterialStack;
-import net.minecraft.enchantment.Enchantment;
+import gregtech.api.util.EnchantmentData;
 
-import static gregtech.api.enums.SubTag.getNewSubTag;
+import static gregtech.api.enums.material.types.Material.MatFlags.createFlag;
 
-public class GemMaterial extends AbstractSolidMaterial {
+public class GemMaterial extends SolidMaterial {
 
-    /**
-     * If this Material is Crystallisable
-     */
-    public static final SubTag CRYSTALLISABLE = getNewSubTag("CRYSTALLISABLE");
+    public static final class MatFlags {
 
-    public GemMaterial(String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, ImmutableList<Material> oreReRegistrations, ImmutableList<SubTag> subTags, int materialGenerationFlags, float densityMultiplier, Element element, int mOreValue, int oreMultiplier, int mByProductMultiplier, int mSmeltingMultiplier, AbstractSolidMaterial directSmelting, AbstractSolidMaterial smeltInto, AbstractSolidMaterial arcSmeltInto, float toolSpeed, byte toolQuality, int toolDurability, Enchantment toolEnchantment, int toolEnchantmentLevel, int blastFurnaceTemp, AbstractSolidMaterial handleMaterial, DustMaterial macerateInto) {
-        super(defaultLocalName, materialRGB, materialIconSet, materialComponents, oreReRegistrations, subTags, materialGenerationFlags, densityMultiplier, element, mOreValue, oreMultiplier, mByProductMultiplier, mSmeltingMultiplier, directSmelting, smeltInto, arcSmeltInto, toolSpeed, toolQuality, toolDurability, toolEnchantment, toolEnchantmentLevel, blastFurnaceTemp, handleMaterial, macerateInto);
+        /**
+         * If this material is crystallisable
+         */
+        public static final int CRYSTALLISABLE = createFlag(25);
+
+    }
+
+    public GemMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, int materialGenerationFlags, Element element, float densityMultiplier, float toolSpeed, int toolQuality, int toolDurability) {
+        super(metaItemSubId, name, defaultLocalName, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, element, densityMultiplier, toolSpeed, toolQuality, toolDurability);
     }
 
 }
+

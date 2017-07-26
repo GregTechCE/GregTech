@@ -1,10 +1,7 @@
 package gregtech.api.enums.material.types;
 
 import com.google.common.collect.ImmutableList;
-import gregtech.api.enums.SubTag;
-import gregtech.api.enums.material.Material;
 import gregtech.api.enums.material.MaterialIconSet;
-import gregtech.api.objects.MaterialStack;
 
 /**
  * MarkerMaterial is type of material used for generic things like material re-registration and use in recipes
@@ -13,16 +10,13 @@ import gregtech.api.objects.MaterialStack;
  */
 public final class MarkerMaterial extends Material {
 
-    public MarkerMaterial(String defaultLocalName, int materialRGB) {
-        super(defaultLocalName,
-                materialRGB,
+    public MarkerMaterial(String name, String defaultLocalName) {
+        super(-1, name, defaultLocalName,
+                0xFFFFFF,
                 MaterialIconSet.NONE,
                 ImmutableList.of(),
-                ImmutableList.of(),
-                ImmutableList.of(),
                 0,
-                1.0f,
-                null);
+                1.0f);
     }
 
 }

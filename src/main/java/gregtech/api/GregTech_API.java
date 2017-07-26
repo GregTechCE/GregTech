@@ -2,8 +2,6 @@ package gregtech.api;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import gregtech.api.enums.material.Material;
-import gregtech.api.enums.material.Materials;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.items.GenericItem;
