@@ -29,11 +29,6 @@ public class SolidMaterial extends DustMaterial {
         public static final int GENERATE_LONG_ROD = createFlag(22);
 
         /**
-         * This Material can be molten into a Fluid
-         */
-        public static final int SMELTING_TO_FLUID = createFlag(23);
-
-        /**
          * If this Material is grindable with a simple Mortar
          */
         public static final int MORTAR_GRINDABLE = createFlag(24);
@@ -75,12 +70,20 @@ public class SolidMaterial extends DustMaterial {
      */
     public DustMaterial macerateInto = this;
 
-    public SolidMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, int materialGenerationFlags, Element element, float densityMultiplier, float toolSpeed, int toolQuality, int toolDurability) {
+    /**
+     * Associated chemical constants of this material
+     * Note that all of them are in Kelvins
+     */
+    public final int meltingPoint, boilingPoint;
+
+    public SolidMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, int materialGenerationFlags, Element element, float densityMultiplier, float toolSpeed, int toolQuality, int toolDurability, int meltingPoint, int boilingPoint) {
         super(metaItemSubId, name, defaultLocalName, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, element, densityMultiplier);
         this.toolSpeed = toolSpeed;
         this.toolQuality = toolQuality;
         this.toolDurability = toolDurability;
         this.directSmelting = this;
+        this.meltingPoint = meltingPoint;
+        this.boilingPoint = boilingPoint;
     }
 
     @Override

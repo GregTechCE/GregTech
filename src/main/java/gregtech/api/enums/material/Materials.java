@@ -22,24 +22,23 @@ import static gregtech.api.enums.material.types.SolidMaterial.MatFlags.SMELTING_
 
 public class Materials {
 
-    private static final int DEF_METAL_SET = GENERATE_PLATE | SMELTING_TO_FLUID;
-    private static final int EXT_METAL_SET = DEF_METAL_SET | GENERATE_ROD | GENERATE_BOLT_SCREW;
+    private static final int EXT_METAL_SET = GENERATE_ROD | GENERATE_BOLT_SCREW;
 
     /**
      * Direct Elements
      */
-    public static MetalMaterial Aluminium = new MetalMaterial(1, "aluminium", "Aluminium", 0xCCCCFF, MaterialIconSet.DULL, of(), EXT_METAL_SET | GENERATE_SMALL_GEAR | GENERATE_GEAR, Element.Al, 1.0f, 1.0f, 0, 0, 1700);
-    public static MetalMaterial Americium = new MetalMaterial(2, "americium", "Americium", 0xDDDDDD, MaterialIconSet.METALLIC, of(), DEF_METAL_SET, Element.Am, 1.0f, 1.0f, 0, 0, 2100);
-    public static MetalMaterial Antimony = new MetalMaterial(3, "antimony", "Antimony", 0xCCCCDD, MaterialIconSet.SHINY, of(), EXT_METAL_SET, Element.Sb, 1.0f, 1.0f, 0, 0, 0);
+    public static MetalMaterial Aluminium = new MetalMaterial(1, "aluminium", "Aluminium", 0xCCCCFF, MaterialIconSet.DULL, of(), EXT_METAL_SET | GENERATE_SMALL_GEAR | GENERATE_GEAR, Element.Al, 1.0f, 0, 0, 0, 934, 2743, 1700, 2.82f);
+    public static MetalMaterial Americium = new MetalMaterial(2, "americium", "Americium", 0xDDDDDD, MaterialIconSet.METALLIC, of(), 0, Element.Am, 1.0f, 8.0f, 4, 256000, 1449, 2880,0, 0.69f);
+    public static MetalMaterial Antimony = new MetalMaterial(3, "antimony", "Antimony", 0xCCCCDD, MaterialIconSet.SHINY, of(), EXT_METAL_SET, Element.Sb, 1.0f, 1.0f, 0, 0, 903, 1908, 0, 40.0f);
     public static FluidMaterial Argon = new FluidMaterial(4, "argon", "Argon", 0xBBBB00, MaterialIconSet.FLUID, of(), 0, Element.Ar, 1.0f);
     public static DustMaterial Arsenic = new DustMaterial(5, "arsenic", "Arsenic", 0xFFFFFF, MaterialIconSet.DULL, of(), 0, Element.As, 1.0f);
-    public static MetalMaterial Barium = new MetalMaterial(6, "barium", "Barium", 0xFFFFFF, MaterialIconSet.SHINY, of(), DEF_METAL_SET, Element.Ba, 1.0f, 1.0f, 0, 0, 0);
-    public static MetalMaterial Beryllium = new MetalMaterial(7, "beryllium", "Beryllium", 0xAAFFAA, MaterialIconSet.METALLIC, of(), DEF_METAL_SET, Element.Be, 1.0f, 7.0f, 2, 25600, 0);
-    public static MetalMaterial Bismuth = new MetalMaterial(8, "bismuth", "Bismuth", 0xAADDDD, MaterialIconSet.METALLIC, of(), DEF_METAL_SET, Element.Bi, 1.0f, 4.0f, 1, 8000, 0);
+    public static MetalMaterial Barium = new MetalMaterial(6, "barium", "Barium", 0xFFFFFF, MaterialIconSet.SHINY, of(), 0, Element.Ba, 1.0f, 0, 0, 0, 1000, 	2143,0, 35.0f);
+    public static MetalMaterial Beryllium = new MetalMaterial(7, "beryllium", "Beryllium", 0xAAFFAA, MaterialIconSet.METALLIC, of(), 0, Element.Be, 1.0f, 7.2f, 2, 52000, 1560, 2743,0, 4.0f);
+    public static MetalMaterial Bismuth = new MetalMaterial(8, "bismuth", "Bismuth", 0xAADDDD, MaterialIconSet.METALLIC, of(), 0, Element.Bi, 1.0f, 5.0f, 1, 9000, 544, 1837, 0, 130.0f);
+    public static DustMaterial Boron = new DustMaterial(9, "boron", "Boron", 0xFCFCFC, MaterialIconSet.DULL, of(), 0, Element.B, 1.0f);
+    public static MetalMaterial Caesium = new MetalMaterial(10, "caesium", "Caesium", 0xFFFFFC, MaterialIconSet.DULL, of(), 0, Element.Cs, 1.0f, 0, 0, 0, 302, 944, 0, 20.0f);
 
 
-    public static Material Boron = new Material(9, MaterialIconSet.DULL, 			1.0F, 0, 2, 1|32, 250, 250, 250, 0, "Boron", "Boron", 0, 0, 2349, 0, false, false, 1, 1, 1, Dyes.dyeWhite, Element.B)
-    public static Material Caesium = new Material(62, MaterialIconSet.METALLIC, 	1.0F, 0, 2, 1|2|32, 255, 255, 255, 0, "Caesium", "Caesium", 0, 0, 301, 0, false, false, 4, 1, 1, Dyes._NULL, Element.Cs)
     public static Material Calcium = new Material(26, MaterialIconSet.METALLIC, 	1.0F, 0, 2, 1 |32, 255, 245, 245, 0, "Calcium", "Calcium", 0, 0, 1115, 0, false, false, 4, 1, 1, Dyes.dyePink, Element.Ca)
     public static Material Carbon = new Material(10, MaterialIconSet.DULL, 		1.0F, 64, 2, 1|2|32|64|128, 20, 20, 20, 0, "Carbon", "Carbon", 0, 0, 3800, 0, false, false, 2, 1, 1, Dyes.dyeBlack, Element.C)
     public static Material Cadmium = new Material(55, MaterialIconSet.SHINY, 		1.0F, 0, 2, 1|32, 50, 50, 60, 0, "Cadmium", "Cadmium", 0, 0, 594, 0, false, false, 3, 1, 1, Dyes.dyeGray, Element.Cd)

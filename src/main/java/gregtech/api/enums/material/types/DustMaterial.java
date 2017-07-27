@@ -1,14 +1,10 @@
 package gregtech.api.enums.material.types;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.material.MaterialIconSet;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.DelayedFunction;
 import gregtech.api.util.FPUtil;
-
-import javax.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.function.Function;

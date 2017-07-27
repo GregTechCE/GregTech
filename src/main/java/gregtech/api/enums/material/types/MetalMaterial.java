@@ -11,6 +11,7 @@ import gregtech.api.util.FPUtil;
 import java.util.function.Function;
 
 import static gregtech.api.enums.material.types.DustMaterial.MatFlags.GENERATE_PLATE;
+import static gregtech.api.enums.material.types.DustMaterial.MatFlags.SMELT_INTO_FLUID;
 import static gregtech.api.enums.material.types.Material.MatFlags.createFlag;
 import static gregtech.api.enums.material.types.MetalMaterial.MatFlags.*;
 import static gregtech.api.enums.material.types.SolidMaterial.MatFlags.GENERATE_ROD;
@@ -58,11 +59,18 @@ public class MetalMaterial extends SolidMaterial {
      */
     public final int blastFurnaceTemperature;
 
-    public MetalMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, int materialGenerationFlags, Element element, float densityMultiplier, float toolSpeed, int toolQuality, int toolDurability, int blastFurnaceTemperature) {
-        super(metaItemSubId, name, defaultLocalName, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, element, densityMultiplier, toolSpeed, toolQuality, toolDurability);
+    /**
+     * Note: it's in μΩ·cm (microhm centimeter)
+     */
+    public final float electricalResistivity;
+
+    public MetalMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, int materialGenerationFlags, Element element, float densityMultiplier, float toolSpeed, int toolQuality, int toolDurability, int meltingPoint, int boilingPoint, int blastFurnaceTemperature, float electricalResistivity) {
+        super(metaItemSubId, name, defaultLocalName, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, element, densityMultiplier, toolSpeed, toolQuality, toolDurability, meltingPoint, boilingPoint);
         this.blastFurnaceTemperature = blastFurnaceTemperature;
         this.smeltInto = this;
         this.arcSmeltInto = this;
+        this.electricalResistivity = electricalResistivity;
+        add(SMELT_INTO_FLUID | GENERATE_PLATE);
     }
 
     @Override
