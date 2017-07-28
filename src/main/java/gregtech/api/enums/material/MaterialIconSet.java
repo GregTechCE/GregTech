@@ -26,6 +26,7 @@ public enum MaterialIconSet {
     LAPIS,
     POWDER,
     FLUID,
+    GAS,
     LIGNITE,
     OPAL,
     GLASS,

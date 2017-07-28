@@ -24,6 +24,12 @@ public class FluidMaterial extends Material {
          */
         public static final int GENERATE_PLASMA = Material.MatFlags.createFlag(10);
 
+        /**
+         * Marks material state as gas
+         * Examples: Air, Argon, Refinery Gas, Oxygen, Hydrogen
+         */
+        public static final int STATE_GAS = Material.MatFlags.createFlag(11);
+
     }
 
     /**
@@ -44,6 +50,14 @@ public class FluidMaterial extends Material {
 
     public boolean shouldGenerateFluid() {
         return true;
+    }
+
+    public boolean isGas() {
+        return hasFlag(MatFlags.STATE_GAS);
+    }
+
+    public boolean isFluid() {
+        return !hasFlag(MatFlags.STATE_GAS) && !isGas();
     }
 
     public boolean shouldGeneratePlasma() {

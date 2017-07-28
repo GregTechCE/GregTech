@@ -6,12 +6,15 @@ import gregtech.api.enums.material.types.DustMaterial;
 import gregtech.api.enums.material.types.FluidMaterial;
 import gregtech.api.enums.material.types.Material;
 import gregtech.api.enums.material.types.MetalMaterial;
+import mods.railcraft.common.items.Metal;
 import net.minecraft.init.Enchantments;
 
 import static com.google.common.collect.ImmutableList.of;
+import static gregtech.api.enums.material.types.DustMaterial.MatFlags.GENERATE_ORE;
 import static gregtech.api.enums.material.types.DustMaterial.MatFlags.GENERATE_PLATE;
-import static gregtech.api.enums.material.types.MetalMaterial.MatFlags.GENERATE_BOLT_SCREW;
-import static gregtech.api.enums.material.types.MetalMaterial.MatFlags.GENERATE_SMALL_GEAR;
+import static gregtech.api.enums.material.types.FluidMaterial.MatFlags.GENERATE_PLASMA;
+import static gregtech.api.enums.material.types.FluidMaterial.MatFlags.STATE_GAS;
+import static gregtech.api.enums.material.types.MetalMaterial.MatFlags.*;
 import static gregtech.api.enums.material.types.SolidMaterial.MatFlags.*;
 import static gregtech.api.enums.material.MaterialIconSet.*;
 
@@ -19,60 +22,60 @@ public class Materials {
 
     private static final int STD_METAL = GENERATE_PLATE;
     private static final int EXT_METAL = STD_METAL | GENERATE_ROD | GENERATE_BOLT_SCREW;
+    public static final int EXT2_METAL = EXT_METAL | GENERATE_GEAR | GENERATE_FOIL | GENERATE_FINE_WIRE;
 
     /**
      * Direct Elements
      */
-    public static MetalMaterial Aluminium = new MetalMaterial(1, "aluminium", "Aluminium", 0xCCCCFF, DULL, of(), EXT_METAL | GENERATE_SMALL_GEAR | GENERATE_GEAR, Element.Al, 0, 0, 0, 1700);
-    public static MetalMaterial Americium = new MetalMaterial(2, "americium", "Americium", 0xDDDDDD, METALLIC, of(), 0, Element.Am, 8.0f, 4, 512000);
+    public static MetalMaterial Aluminium = new MetalMaterial(1, "aluminium", "Aluminium", 0xCCCCFF, DULL, of(), EXT2_METAL | GENERATE_SMALL_GEAR | GENERATE_ORE, Element.Al, 0, 0, 0, 1700);
+    public static MetalMaterial Americium = new MetalMaterial(2, "americium", "Americium", 0xDDDDDD, METALLIC, of(), 0, Element.Am, 8.0f, 3, 480000);
     public static MetalMaterial Antimony = new MetalMaterial(3, "antimony", "Antimony", 0xCCCCDD, SHINY, of(), EXT_METAL, Element.Sb);
-    public static FluidMaterial Argon = new FluidMaterial(4, "argon", "Argon", 0xBBBB00, FLUID, of(), 0, Element.Ar);
+    public static FluidMaterial Argon = new FluidMaterial(4, "argon", "Argon", 0xBBBB00, FLUID, of(), STATE_GAS | GENERATE_PLASMA, Element.Ar);
     public static DustMaterial Arsenic = new DustMaterial(5, "arsenic", "Arsenic", 0xFFFFFF, DULL, of(), 0, Element.As);
     public static MetalMaterial Barium = new MetalMaterial(6, "barium", "Barium", 0xFFFFFF, SHINY, of(), 0, Element.Ba);
-    public static MetalMaterial Beryllium = new MetalMaterial(7, "beryllium", "Beryllium", 0xAAFFAA, METALLIC, of(), STD_METAL, Element.Be, 7.2f, 2, 56000);
-    public static MetalMaterial Bismuth = new MetalMaterial(8, "bismuth", "Bismuth", 0xAADDDD, METALLIC, of(), 0, Element.Bi, 5.0f, 1, 9000);
+    public static MetalMaterial Beryllium = new MetalMaterial(7, "beryllium", "Beryllium", 0xAAFFAA, METALLIC, of(), STD_METAL | GENERATE_ORE, Element.Be, 7.2f, 2, 56000);
+    public static MetalMaterial Bismuth = new MetalMaterial(8, "bismuth", "Bismuth", 0xAADDDD, METALLIC, of(), GENERATE_ORE, Element.Bi, 5.0f, 1, 9000);
     public static DustMaterial Boron = new DustMaterial(9, "boron", "Boron", 0xFCFCFC, DULL, of(), 0, Element.B);
     public static MetalMaterial Caesium = new MetalMaterial(10, "caesium", "Caesium", 0xFFFFFC, DULL, of(), 0, Element.Cs);
     public static MetalMaterial Calcium = new MetalMaterial(11, "calcium", "Calcium", 0xDDDDAA, METALLIC, of(), 0, Element.Ca);
     public static MetalMaterial Carbon = new MetalMaterial(12, "carbon", "Carbon", 0x555555, DULL, of(), 0, Element.C);
     public static MetalMaterial Cadmium = new MetalMaterial(13, "cadmium", "Cadmium", 0x505060, SHINY, of(), 0, Element.Ca);
     public static MetalMaterial Cerium = new MetalMaterial(14, "cerium", "Cerium", 0xEEEEEE, METALLIC, of(), 0, Element.Ce);
-    public static FluidMaterial Chlorine = new FluidMaterial(15, "chlorine", "Chlorine", 0xEEEECC, FLUID, of(), 0, Element.Cl);
+    public static FluidMaterial Chlorine = new FluidMaterial(15, "chlorine", "Chlorine", 0xEEEECC, GAS, of(), STATE_GAS, Element.Cl);
     public static MetalMaterial Chrome = new MetalMaterial(16, "chrome", "Chrome", 0xFFAAAB, SHINY, of(), STD_METAL, Element.Cr, 8.0f, 4, 396000, 2300);
-    public static MetalMaterial Cobalt = new MetalMaterial(17, "cobalt", "Cobalt", 0xAAAAFF, METALLIC, of(), STD_METAL, Element.Co, 9.0f, 3, 256000);
-    public static MetalMaterial Copper = new MetalMaterial(18, "copper", "Copper", 0xFF8000, SHINY, of(), STD_METAL | GENERATE_GEAR, Element.Cu);
-    public static FluidMaterial Deuterium = new FluidMaterial(19, "deuterium", "Deuterium", 0xEEEE00, FLUID, of(), 0, Element.D);
+    public static MetalMaterial Cobalt = new MetalMaterial(17, "cobalt", "Cobalt", 0xAAAAFF, METALLIC, of(), STD_METAL | GENERATE_ORE, Element.Co, 9.0f, 3, 256000);
+    public static MetalMaterial Copper = new MetalMaterial(18, "copper", "Copper", 0xFF8000, SHINY, of(), EXT2_METAL | GENERATE_ORE, Element.Cu);
+    public static FluidMaterial Deuterium = new FluidMaterial(19, "deuterium", "Deuterium", 0xEEEE00, FLUID, of(), STATE_GAS | GENERATE_PLASMA, Element.D);
     public static MetalMaterial Dysprosium = new MetalMaterial(20, "dysprosium", "Dysprosium", 0xFFFFEE, SHINY, of(), 0, Element.Dy);
+    public static MetalMaterial Erbium = new MetalMaterial(21, "erbium", "Erbium", 0xEEEEEE, METALLIC, of(), STD_METAL, Element.Er, 8.4f, 3, 300000);
+    public static MetalMaterial Europium = new MetalMaterial(22, "europium", "Europium", 0xFFFFFF, METALLIC, of(), STD_METAL, Element.Eu, 7.0f, 4, 600000);
+    public static FluidMaterial Fluorine = new FluidMaterial(23, "fluorine", "Fluorine", 0xFFFFAA, GAS, of(), STATE_GAS, Element.F);
+    public static MetalMaterial Gadolinium = new MetalMaterial(24, "gadolinium", "Gadolinium", 0xDDDDFF, METALLIC, of(), 0, Element.Gd);
+    public static MetalMaterial Gallium = new MetalMaterial(25, "gallium", "Gallium", 0xEEEEFF, SHINY, of(), 0, Element.Ga);
+    public static MetalMaterial Gold = new MetalMaterial(26, "gold", "Gold", 0xFFFF00, SHINY, of(), EXT2_METAL | GENERATE_ORE, Element.Au);
+    public static MetalMaterial Holmium = new MetalMaterial(27, "holmium", "Holmium", 0xFFFFFF, METALLIC, of(), 0, Element.Ho);
+    public static FluidMaterial Hydrogen = new MetalMaterial(28, "hydrogen", "Hydrogen", 0x00FFAA, GAS, of(), STATE_GAS, Element.H);
+    public static FluidMaterial Helium = new FluidMaterial(29, "helium", "Helium", 0xDDDD00, GAS, of(), STATE_GAS, Element.He);
+    public static FluidMaterial Helium_3 = new FluidMaterial(30, "helium_3", "Helium 3", 0xDDDD00, GAS, of(), STATE_GAS, Element.He_3);
+    public static MetalMaterial Indium = new MetalMaterial(31, "indium", "Indium", 0x6600BB, METALLIC, of(), 0, Element.In);
+    public static MetalMaterial Iridium = new MetalMaterial(32, "iridium", "Iridium", 0xFFFFFF, DULL, of(), STD_METAL | GENERATE_ORE, Element.Ir, 7.0f, 3, 480000);
+    public static MetalMaterial Iron = new MetalMaterial(33, "iron", "Iron", 0xAAAAAA, METALLIC, of(), EXT2_METAL | GENERATE_ORE, Element.Fe, 6.0f, 2, 48000);
+    public static MetalMaterial Lanthanum = new MetalMaterial(34, "lanthanum", "Lanthanum", 0xFFFFFF, METALLIC, of(), 0, Element.La);
+    public static MetalMaterial Lead = new MetalMaterial(35, "lead", "Lead", 0x770077, DULL, of(), STD_METAL | GENERATE_ORE, Element.Pb, 4.0f, 2, 25000);
+    public static MetalMaterial Lithium = new MetalMaterial(36, "lithium", "Lithium", 0x553355, DULL, of(), STD_METAL | GENERATE_ORE, Element.Li);
+    public static MetalMaterial Lutetium = new MetalMaterial(37, "lutetium", "Lutetium", 0xFFFFFF, METALLIC, of(), 0, Element.Lu);
+    public static MetalMaterial Magnesium = new MetalMaterial(38, "magnesium", "Magnesium", 0xFFBBBB, METALLIC, of(), 0, Element.Mg);
+    public static MetalMaterial Manganese = new MetalMaterial(39, "manganese", "Manganese", 0xEEEEEE, DULL, of(), 0, Element.Mn);
+    public static FluidMaterial Mercury = new FluidMaterial(40, "mercury", "Mercury", 0xFFDDDD, FLUID, of(), 0, Element.Hg);
+    public static MetalMaterial Molybdenum = new MetalMaterial(41, "molybdenum", "Molybdenum", 0xAAAADD, DULL, of(), 0, Element.Mo);
+    public static MetalMaterial Neodymium = new MetalMaterial(42, "neodymium", "Neodymium", 0x999999, METALLIC, of(), STD_METAL, Element.Nd, 0, 0, 0, 1297);
+    public static MetalMaterial Darmstadtium = new MetalMaterial(43, "darmstadtium", "Darmstadtium", 0xAAAAAA, METALLIC, of(), STD_METAL, Element.Ds, 8.0f, 4, 1024000, 2100);
+    public static MetalMaterial Nickel = new MetalMaterial(44, "nickel", "Nickel", 0xAAAAFF, METALLIC, of(), STD_METAL | GENERATE_ORE, Element.Ni);
+    public static MetalMaterial Niobium = new MetalMaterial(45, "niobium", "Niobium", 0x9486AA, METALLIC, of(), STD_METAL | GENERATE_ORE, Element.Nb);
+    public static FluidMaterial Nitrogen = new FluidMaterial(46, "nitrogen", "Nitrogen", 0x7090AF, FLUID, of(), STATE_GAS, Element.N);
+    public static MetalMaterial Osmium = new MetalMaterial(47, "osmium", "Osmium", 0x5050FF, METALLIC, of(), STD_METAL, Element.Os);
+    public static FluidMaterial Oxygen = new FluidMaterial(48, "oxygen", "Oxygen", 0x90AAEE, FLUID, of(), STATE_GAS, Element.O);
 
-    public static Material Erbium = new Material(75, MaterialIconSet.METALLIC, 	1.0F, 0, 2, 1|2|32, 255, 255, 255, 0, "Erbium", "Erbium", 0, 0, 1802, 1802, true, false, 4, 1, 1, Dyes._NULL, Element.Er)
-    public static Material Europium = new Material(70, MaterialIconSet.METALLIC, 	1.0F, 0, 2, 1|2|32, 255, 255, 255, 0, "Europium", "Europium", 0, 0, 1099, 1099, true, false, 4, 1, 1, Dyes._NULL, Element.Eu)
-    public static Material Fluorine = new Material(14, MaterialIconSet.FLUID, 		1.0F, 0, 2, 16|32, 255, 255, 255, 127, "Fluorine", "Fluorine", 0, 0, 53, 0, false, true, 2, 1, 1, Dyes.dyeGreen, Element.F)
-    public static Material Gadolinium = new Material(71, MaterialIconSet.METALLIC, 1.0F, 0, 2, 1|2|32, 255, 255, 255, 0, "Gadolinium", "Gadolinium", 0, 0, 1585, 1585, true, false, 4, 1, 1, Dyes._NULL, Element.Gd)
-    public static Material Gallium = new Material(37, MaterialIconSet.SHINY, 		1.0F, 64, 2, 1|2|32, 220, 220, 255, 0, "Gallium", "Gallium", 0, 0, 302, 0, false, false, 5, 1, 1, Dyes.dyeLightGray, Element.Ga)
-    public static Material Gold = new Material(86, MaterialIconSet.SHINY, 		   12.0F, 64, 2, 1|2|8|32|64|128, 255, 255, 30, 0, "Gold", "Gold", 0, 0, 1337, 0, false, false, 4, 1, 1, Dyes.dyeYellow, Element.Au)
-    public static Material Holmium = new Material(74, MaterialIconSet.METALLIC, 	1.0F, 0, 2, 1|2|32, 255, 255, 255, 0, "Holmium", "Holmium", 0, 0, 1734, 1734, true, false, 4, 1, 1, Dyes._NULL, Element.Ho)
-    public static Material Hydrogen = new Material(1, MaterialIconSet.FLUID, 		1.0F, 0, 2, 16|32, 0, 0, 255, 240, "Hydrogen", "Hydrogen", 1, 15, 14, 0, false, true, 2, 1, 1, Dyes.dyeBlue, Element.H)
-    public static Material Helium = new Material(4, MaterialIconSet.FLUID, 		1.0F, 0, 2, 16|32, 255, 255, 0, 240, "Helium", "Helium", 0, 0, 1, 0, false, true, 5, 1, 1, Dyes.dyeYellow, Element.He)
-    public static Material Helium_3 = new Material(5, MaterialIconSet.FLUID, 		1.0F, 0, 2, 16|32, 255, 255, 0, 240, "Helium_3", "Helium-3", 0, 0, 1, 0, false, true, 10, 1, 1, Dyes.dyeYellow, Element.He_3)
-    public static Material Indium = new Material(56, MaterialIconSet.METALLIC, 	1.0F, 0, 2, 1|2|32, 64, 0, 128, 0, "Indium", "Indium", 0, 0, 429, 0, false, false, 4, 1, 1, Dyes.dyeGray, Element.In)
-    public static Material Iridium = new Material(84, MaterialIconSet.DULL, 		6.0F, 2560, 3, 1|2|8|32|64|128, 240, 240, 245, 0, "Iridium", "Iridium", 0, 0, 2719, 2719, true, false, 10, 1, 1, Dyes.dyeWhite, Element.Ir)
-    public static Material Iron = new Material(32, MaterialIconSet.METALLIC, 		6.0F, 256, 2, 1|2|8|32|64|128, 200, 200, 200, 0, "Iron", "Iron", 0, 0, 1811, 0, false, false, 3, 1, 1, Dyes.dyeLightGray, Element.Fe)
-    public static Material Lanthanum = new Material(64, MaterialIconSet.METALLIC, 	1.0F, 0, 2, 1|2|32, 255, 255, 255, 0, "Lanthanum", "Lanthanum", 0, 0, 1193, 1193, true, false, 4, 1, 1, Dyes._NULL, Element.La)
-    public static Material Lead = new Material(89, MaterialIconSet.DULL, 			8.0F, 64, 1, 1|2|8|32|64|128, 140, 100, 140, 0, "Lead", "Lead", 0, 0, 600, 0, false, false, 3, 1, 1, Dyes.dyePurple, Element.Pb)
-    public static Material Lithium = new Material(6, MaterialIconSet.DULL, 		1.0F, 0, 2, 1|2|8|32, 225, 220, 255, 0, "Lithium", "Lithium", 0, 0, 454, 0, false, false, 4, 1, 1, Dyes.dyeLightBlue, Element.Li)
-    public static Material Lutetium = new Material(78, MaterialIconSet.METALLIC, 	1.0F, 0, 2, 1|2|32, 255, 255, 255, 0, "Lutetium", "Lutetium", 0, 0, 1925, 1925, true, false, 4, 1, 1, Dyes._NULL, Element.Lu)
-    public static Material Magic = new Material(-128, MaterialIconSet.SHINY, 		8.0F, 5120, 5, 1|2|4|16|32|64|128, 100, 0, 200, 0, "Magic", "Magic", 5, 32, 5000, 0, false, false, 7, 1, 1, Dyes.dyePurple, Element.Ma)
-    public static Material Magnesium = new Material(18, MaterialIconSet.METALLIC, 	1.0F, 0, 2, 1|2|32, 255, 200, 200, 0, "Magnesium", "Magnesium", 0, 0, 923, 0, false, false, 3, 1, 1, Dyes.dyePink, Element.Mg)
-    public static Material Manganese = new Material(31, MaterialIconSet.DULL, 		7.0F, 512, 2, 1|2|8|32|64, 250, 250, 250, 0, "Manganese", "Manganese", 0, 0, 1519, 0, false, false, 3, 1, 1, Dyes.dyeWhite, Element.Mn)
-    public static Material Mercury = new Material(87, MaterialIconSet.SHINY, 		1.0F, 0, 0, 16|32, 255, 220, 220, 0, "Mercury", "Mercury", 5, 32, 234, 0, false, false, 3, 1, 1, Dyes.dyeLightGray, Element.Hg)
-    public static Material Molybdenum = new Material(48, MaterialIconSet.SHINY, 	7.0F, 512, 2, 1|2|8|32|64, 180, 180, 220, 0, "Molybdenum", "Molybdenum", 0, 0, 2896, 0, false, false, 1, 1, 1, Dyes.dyeBlue, Element.Mo)
-    public static Material Neodymium = new Material(67, MaterialIconSet.METALLIC, 	7.0F, 512, 2, 1|2|8|32|64|128, 100, 100, 100, 0, "Neodymium", "Neodymium", 0, 0, 1297, 1297, true, false, 4, 1, 1, Dyes._NULL, Element.Nd)
-    public static Material Neutronium = new Material(129, MaterialIconSet.DULL,   24.0F, 655360, 6, 1|2|32|64|128, 250, 250, 250, 0, "Neutronium", "Neutronium", 0, 0, 10000, 0, false, false, 20, 1, 1, Dyes.dyeWhite, Element.Nt)
-    public static Material Nickel = new Material(34, MaterialIconSet.METALLIC, 	6.0F, 64, 2, 1|2|8|32|64|128, 200, 200, 250, 0, "Nickel", "Nickel", 0, 0, 1728, 0, false, false, 4, 1, 1, Dyes.dyeLightBlue, Element.Ni)
-    public static Material Niobium = new Material(47, MaterialIconSet.METALLIC, 	1.0F, 0, 2, 1|2|32, 190, 180, 200, 0, "Niobium", "Niobium", 0, 0, 2750, 2750, true, false, 5, 1, 1, Dyes._NULL, Element.Nb)
-    public static Material Nitrogen = new Material(12, MaterialIconSet.FLUID, 		1.0F, 0, 2, 16|32, 0, 150, 200, 240, "Nitrogen", "Nitrogen", 0, 0, 63, 0, false, true, 2, 1, 1, Dyes.dyeCyan, Element.N)
-    public static Material Osmium = new Material(83, MaterialIconSet.METALLIC, 	16.0F, 1280, 4, 1|2|8|32|64|128, 50, 50, 255, 0, "Osmium", "Osmium", 0, 0, 3306, 3306, true, false, 10, 1, 1, Dyes.dyeBlue, Element.Os)
-    public static Material Oxygen = new Material(13, MaterialIconSet.FLUID, 		1.0F, 0, 2, 16|32, 0, 100, 200, 240, "Oxygen", "Oxygen", 0, 0, 54, 0, false, true, 1, 1, 1, Dyes.dyeWhite, Element.O)
     public static Material Palladium = new Material(52, MaterialIconSet.SHINY, 	8.0F, 512, 2, 1|2|8|32|64|128, 128, 128, 128, 0, "Palladium", "Palladium", 0, 0, 1828, 1828, true, false, 4, 1, 1, Dyes.dyeGray, Element.Pd)
     public static Material Phosphor = new Material(21, MaterialIconSet.DULL, 		1.0F, 0, 2, 1|32, 255, 255, 0, 0, "Phosphor", "Phosphor", 0, 0, 317, 0, false, false, 2, 1, 1, Dyes.dyeYellow, Element.P)
     public static Material Platinum = new Material(85, MaterialIconSet.SHINY, 		12.0F, 64, 2, 1|2|8|32|64|128, 255, 255, 200, 0, "Platinum", "Platinum", 0, 0, 2041, 0, false, false, 6, 1, 1, Dyes.dyeOrange, Element.Pt)
