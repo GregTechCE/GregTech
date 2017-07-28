@@ -127,12 +127,12 @@ public enum Element {
     Ds(110, 171, -1, null, "Darmstadtium", false),
     Rg(111, 169, -1, null, "Roentgenium", false),
     Cn(112, 173, -1, null, "Copernicium", false),
-    Uut(113, 171, -1, null, "Ununtrium", false),
+    Nh(113, 171, -1, null, "Nihonium", false),
     Fl(114, 175, -1, null, "Flerovium", false),
-    Uup(115, 173, -1, null, "Ununpentium", false),
+    Mc(115, 173, -1, null, "Moscovium", false),
     Lv(116, 177, -1, null, "Livermorium", false),
-    Fa(117, 177, -1, null, "Farnsium", false),
-    Uuo(118, 176, -1, null, "Ununoctium", false);
+    Ts(117, 177, -1, null, "Tennessine", false),
+    Og(118, 176, -1, null, "Oganesson", false);
 
     /*$H(-1, -0, -1, null, "Anti-Hydrogen", false),
     $D(-1, -1, -1, "H", "Anti-Deuterium", true),

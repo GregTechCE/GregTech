@@ -70,20 +70,12 @@ public class SolidMaterial extends DustMaterial {
      */
     public DustMaterial macerateInto = this;
 
-    /**
-     * Associated chemical constants of this material
-     * Note that all of them are in Kelvins
-     */
-    public final int meltingPoint, boilingPoint;
-
-    public SolidMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, int materialGenerationFlags, Element element, float densityMultiplier, float toolSpeed, int toolQuality, int toolDurability, int meltingPoint, int boilingPoint) {
-        super(metaItemSubId, name, defaultLocalName, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, element, densityMultiplier);
+    public SolidMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, int materialGenerationFlags, Element element, float toolSpeed, int toolQuality, int toolDurability) {
+        super(metaItemSubId, name, defaultLocalName, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, element);
         this.toolSpeed = toolSpeed;
         this.toolQuality = toolQuality;
         this.toolDurability = toolDurability;
         this.directSmelting = this;
-        this.meltingPoint = meltingPoint;
-        this.boilingPoint = boilingPoint;
     }
 
     @Override

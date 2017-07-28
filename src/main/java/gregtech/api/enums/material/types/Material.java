@@ -128,11 +128,6 @@ public abstract class  Material implements Comparable<Material> {
 	protected int materialGenerationFlags;
 
 	/**
-	 * Number to multiply standard Material Unit by
-	 */
-	private final float densityMultiplier;
-
-	/**
 	 * Element of this material consist of
 	 */
 	public final Element element;
@@ -150,13 +145,12 @@ public abstract class  Material implements Comparable<Material> {
         return "";
     }
 
-	public Material(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, int materialGenerationFlags, Element element, float densityMultiplier) {
+	public Material(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, int materialGenerationFlags, Element element) {
 		this.defaultLocalName = defaultLocalName;
 		this.materialRGB = materialRGB;
 		this.materialIconSet = materialIconSet;
 		this.materialComponents = materialComponents;
 		this.materialGenerationFlags = verifyMaterialBits(materialGenerationFlags);
-		this.densityMultiplier = densityMultiplier;
 		this.element = element;
         this.chemicalFormula = calculateChemicalFormula();
         if(metaItemSubId > -1) {
