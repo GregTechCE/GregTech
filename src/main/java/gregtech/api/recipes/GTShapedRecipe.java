@@ -13,12 +13,12 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 public class GTShapedRecipe extends ShapedOreRecipe implements IRemovableRecipe {
     public final boolean dismantleable, removableByGT, keepingNBT;
     private final Enchantment[] enchantmentsAdded;
-    private final int[] mEnchantmentLevelsAdded;
+    private final int[] enchantmentLevelsAdded;
 
     public GTShapedRecipe(ItemStack result, boolean dismantleAble, boolean removableByGT, boolean keepingNBT, Enchantment[] enchantmentsAdded, int[] enchantmentLevelsAdded, Object... recipe) {
         super(result, recipe);
         this.enchantmentsAdded = enchantmentsAdded;
-        this.mEnchantmentLevelsAdded = enchantmentLevelsAdded;
+        this.enchantmentLevelsAdded = enchantmentLevelsAdded;
         this.removableByGT = removableByGT;
         this.keepingNBT = keepingNBT;
         this.dismantleable = dismantleAble;
@@ -83,7 +83,7 @@ public class GTShapedRecipe extends ShapedOreRecipe implements IRemovableRecipe 
 
             // Add Enchantments
             for (int i = 0; i < enchantmentsAdded.length; i++)
-                GT_Utility.ItemNBT.addEnchantment(stack, enchantmentsAdded[i], EnchantmentHelper.getEnchantmentLevel(enchantmentsAdded[i], stack) + mEnchantmentLevelsAdded[i]);
+                GT_Utility.ItemNBT.addEnchantment(stack, enchantmentsAdded[i], EnchantmentHelper.getEnchantmentLevel(enchantmentsAdded[i], stack) + enchantmentLevelsAdded[i]);
 
         }
         return stack;

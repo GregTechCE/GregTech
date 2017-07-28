@@ -15,7 +15,7 @@ import java.util.function.Function;
 
 import static gregtech.api.enums.GT_Values.M;
 
-public abstract class  Material implements Comparable<Material> {
+public abstract class Material implements Comparable<Material> {
 
 	public static GTControlledRegistry<Material> MATERIAL_REGISTRY = new GTControlledRegistry<>();
 	public static GTControlledRegistry<IMaterialHandler> MATERIAL_HANDLER_REGISTRY = new GTControlledRegistry<>();
