@@ -93,6 +93,10 @@ public class DustMaterial extends FluidMaterial {
         super(metaItemSubId, name, defaultLocalName, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, element);
     }
 
+    public DustMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, int materialGenerationFlags) {
+        super(metaItemSubId, name, defaultLocalName, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, null);
+    }
+
     @Override
     public boolean shouldGenerateFluid() {
         return hasFlag(MatFlags.SMELT_INTO_FLUID);

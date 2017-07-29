@@ -4,9 +4,12 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.material.types.DustMaterial;
 import gregtech.api.enums.material.types.FluidMaterial;
+import gregtech.api.enums.material.types.GemMaterial;
 import gregtech.api.enums.material.types.Material;
 import gregtech.api.enums.material.types.MetalMaterial;
-import mods.railcraft.common.items.Metal;
+import gregtech.api.enums.material.types.RoughMaterial;
+import gregtech.api.enums.material.types.SolidMaterial;
+import gregtech.api.objects.MaterialStack;
 import net.minecraft.init.Enchantments;
 
 import static com.google.common.collect.ImmutableList.of;
@@ -14,6 +17,7 @@ import static gregtech.api.enums.material.types.DustMaterial.MatFlags.GENERATE_O
 import static gregtech.api.enums.material.types.DustMaterial.MatFlags.GENERATE_PLATE;
 import static gregtech.api.enums.material.types.FluidMaterial.MatFlags.GENERATE_PLASMA;
 import static gregtech.api.enums.material.types.FluidMaterial.MatFlags.STATE_GAS;
+import static gregtech.api.enums.material.types.GemMaterial.MatFlags.GENERATE_LENSE;
 import static gregtech.api.enums.material.types.MetalMaterial.MatFlags.*;
 import static gregtech.api.enums.material.types.SolidMaterial.MatFlags.*;
 import static gregtech.api.enums.material.MaterialIconSet.*;
@@ -69,7 +73,7 @@ public class Materials {
     public static FluidMaterial Mercury = new FluidMaterial(40, "mercury", "Mercury", 0xFFDDDD, FLUID, of(), 0, Element.Hg);
     public static MetalMaterial Molybdenum = new MetalMaterial(41, "molybdenum", "Molybdenum", 0xAAAADD, DULL, of(), 0, Element.Mo, 7.0F, 512, 2);
     public static MetalMaterial Neodymium = new MetalMaterial(42, "neodymium", "Neodymium", 0x999999, METALLIC, of(), STD_METAL, Element.Nd, 7.0F, 2, 512, 1297);
-    public static MetalMaterial Darmstadtium = new MetalMaterial(43, "darmstadtium", "Darmstadtium", 0xAAAAAA, METALLIC, of(), STD_METAL, Element.Ds);
+    public static MetalMaterial Darmstadtium = new MetalMaterial(43, "darmstadtium", "Darmstadtium", 0xAAAAAA, METALLIC, of(), STD_METAL, Element.Ds, 24.0F, 6, 655360);
     public static MetalMaterial Nickel = new MetalMaterial(44, "nickel", "Nickel", 0xAAAAFF, METALLIC, of(), STD_METAL | GENERATE_ORE, Element.Ni, 6.0F, 2, 64);
     public static MetalMaterial Niobium = new MetalMaterial(45, "niobium", "Niobium", 0x9486AA, METALLIC, of(), STD_METAL | GENERATE_ORE, Element.Nb, 2750);
     public static FluidMaterial Nitrogen = new FluidMaterial(46, "nitrogen", "Nitrogen", 0x7090AF, FLUID, of(), STATE_GAS, Element.N);
@@ -111,64 +115,63 @@ public class Materials {
     /**
      * First Degree Compounds
      */
-    public static Material Methane = new Material(715, MaterialIconSet.FLUID, 			1.0F, 0, 1, 16, 255, 255, 255, 0, "Methane", "Methane", 1, 45, -1, 0, false, false, 3, 1, 1, Dyes.dyeMagenta, 1)
-    public static Material CarbonDioxide = new Material(497, MaterialIconSet.FLUID, 	1.0F, 0, 2, 16|32, 169, 208, 245, 240, "CarbonDioxide", "Carbon Dioxide", 0, 0, 25, 1, false, true, 1, 1, 1, Dyes.dyeLightBlue, 1)
-    public static Material NobleGases = new Material(496, MaterialIconSet.FLUID, 		1.0F, 0, 2, 16|32, 169, 208, 245, 240, "NobleGases", "Noble Gases", 0, 0, 4, 0, false, true, 1, 1, 1, Dyes.dyeLightBlue, 2)
-    public static Material Air = new Material(120, MaterialIconSet.FLUID, 				1.0F, 0, 2, 16|32, 169, 208, 245, 240, "Air", "Air", 0, 0, -1, 0, false, true, 1, 1, 1, Dyes.dyeLightBlue, 0)
-    public static Material LiquidAir = new Material(495, MaterialIconSet.FLUID, 		1.0F, 0, 2, 16|32, 169, 208, 245, 240, "LiquidAir", "Liquid Air", 0, 0, 4, 0, false, true, 1, 1, 1, Dyes.dyeLightBlue, 2)
-    public static Material Almandine = new Material(820, MaterialIconSet.ROUGH, 		1.0F, 0, 1, 1 |8 , 255, 0, 0, 0, "Almandine", "Almandine", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeRed, 1)
-    public static Material Andradite = new Material(821, MaterialIconSet.ROUGH, 		1.0F, 0, 1, 1, 150, 120, 0, 0, "Andradite", "Andradite", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeYellow, 1)
-    public static Material AnnealedCopper = new Material(345, MaterialIconSet.SHINY, 	1.0F, 0, 2, 1|2|128, 255, 120, 20, 0, "AnnealedCopper", "Annealed Copper", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeOrange, 2)
-    public static Material Asbestos = new Material(946, MaterialIconSet.DULL, 			1.0F, 0, 1, 1, 230, 230, 230, 0, "Asbestos", "Asbestos", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeWhite, 1)
-    public static Material Ash = new Material(815, MaterialIconSet.DULL, 				1.0F, 0, 1, 1, 150, 150, 150, 0, "Ash", "Ashes", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, 2)
-    public static Material BandedIron = new Material(917, MaterialIconSet.DULL, 		1.0F, 0, 2, 1 |8 , 145, 90, 90, 0, "BandedIron", "Banded Iron", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeBrown, 1)
-    public static Material BatteryAlloy = new Material(315, MaterialIconSet.DULL, 		1.0F, 0, 1, 1|2, 156, 124, 160, 0, "BatteryAlloy", "Battery Alloy", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyePurple, 2)
-    public static Material BlueTopaz = new Material(513, MaterialIconSet.GEM_HORIZONTAL,7.0F, 256, 3, 1|4|8 |64, 0, 0, 255, 127, "BlueTopaz", "Blue Topaz", 0, 0, -1, 0, false, true, 3, 1, 1, Dyes.dyeBlue, 1)
-    public static Material Bone = new Material(806, MaterialIconSet.DULL, 				1.0F, 0, 1, 1, 250, 250, 250, 0, "Bone", "Bone", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeWhite, 0)
-    public static Material Brass = new Material(301, MaterialIconSet.METALLIC, 		7.0F, 96, 1, 1|2|64|128, 255, 180, 0, 0, "Brass", "Brass", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeYellow, 2)
-    public static Material Bronze = new Material(300, MaterialIconSet.METALLIC, 		6.0F, 192, 2, 1|2|64|128, 255, 128, 0, 0, "Bronze", "Bronze", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeOrange, 2)
-    public static Material BrownLimonite = new Material(930, MaterialIconSet.METALLIC, 1.0F, 0, 1, 1 |8 , 200, 100, 0, 0, "BrownLimonite", "Brown Limonite", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeBrown, 2)
-    public static Material Calcite = new Material(823, MaterialIconSet.DULL, 			1.0F, 0, 1, 1 |8 , 250, 230, 220, 0, "Calcite", "Calcite", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeOrange, 1)
-    public static Material Cassiterite = new Material(824, MaterialIconSet.METALLIC, 	1.0F, 0, 1, 8 , 220, 220, 220, 0, "Cassiterite", "Cassiterite", 0, 0, -1, 0, false, false, 4, 3, 1, Dyes.dyeWhite, 1)
-    public static Material CassiteriteSand = new Material(937, MaterialIconSet.SAND, 	1.0F, 0, 1, 8 , 220, 220, 220, 0, "CassiteriteSand", "Cassiterite Sand", 0, 0, -1, 0, false, false, 4, 3, 1, Dyes.dyeWhite, 1)
-    public static Material Chalcopyrite = new Material(855, MaterialIconSet.DULL, 		1.0F, 0, 1, 1 |8 , 160, 120, 40, 0, "Chalcopyrite", "Chalcopyrite", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeYellow, 1)
-    public static Material Charcoal = new Material(536, MaterialIconSet.FINE, 			1.0F, 0, 1, 1|4, 100, 70, 70, 0, "Charcoal", "Charcoal", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeBlack, 1)
-    public static Material Chromite = new Material(825, MaterialIconSet.METALLIC, 		1.0F, 0, 1, 1|8, 35, 20, 15, 0, "Chromite", "Chromite", 0, 0, 1700, 1700, true, false, 6, 1, 1, Dyes.dyePink, 1)
-    public static Material ChromiumDioxide  = new Material(361, MaterialIconSet.DULL, 11.0F, 256, 3, 1|2, 230, 200, 200, 0, "ChromiumDioxide", "Chromium Dioxide", 0, 0, 650, 650, false, false, 5, 3, 1, Dyes.dyePink , 1)
-    public static Material Cinnabar = new Material(826, MaterialIconSet.ROUGH, 		1.0F, 0, 1, 1 |8 , 150, 0, 0, 0, "Cinnabar", "Cinnabar", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeBrown, 2)
-    public static Material Water = new Material(701, MaterialIconSet.FLUID, 			1.0F, 0, 0, 16, 0, 0, 255, 0, "Water", "Water", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeBlue, 0)
-    public static Material Clay = new Material(805, MaterialIconSet.ROUGH, 			1.0F, 0, 1, 1, 200, 200, 220, 0, "Clay", "Clay", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeLightBlue, 1)
-    public static Material Coal = new Material(535, MaterialIconSet.ROUGH, 			1.0F, 0, 1, 1|4|8, 70, 70, 70, 0, "Coal", "Coal", 0, 0, -1, 0, false, false, 2, 2, 1, Dyes.dyeBlack, 1)
-    public static Material Cobaltite = new Material(827, MaterialIconSet.METALLIC, 	1.0F, 0, 1, 1 |8 , 80, 80, 250, 0, "Cobaltite", "Cobaltite", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeBlue, 1)
-    public static Material Cooperite = new Material(828, MaterialIconSet.METALLIC, 	1.0F, 0, 1, 1 |8 , 255, 255, 200, 0, "Cooperite", "Sheldonite", 0, 0, -1, 0, false, false, 5, 1, 1, Dyes.dyeYellow, 2)
-    public static Material Cupronickel = new Material(310, MaterialIconSet.METALLIC, 	6.0F, 64, 1, 1|2|64, 227, 150, 128, 0, "Cupronickel", "Cupronickel", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeOrange, 2)
-    public static Material DarkAsh = new Material(816, MaterialIconSet.DULL, 			1.0F, 0, 1, 1, 50, 50, 50, 0, "DarkAsh", "Dark Ashes", 0, 0, -1, 0, false, false, 1, 2, 1, Dyes.dyeGray, 1)
-    public static Material Diamond = new Material(500, MaterialIconSet.DIAMOND, 		8.0F, 1280, 3, 1|4|8 |64|128, 200, 255, 255, 127, "Diamond", "Diamond", 0, 0, -1, 0, false, true, 5, 64, 1, Dyes.dyeWhite, 1)
-    public static Material Electrum = new Material(303, MaterialIconSet.SHINY, 	   12.0F, 64, 2, 1|2|64|128, 255, 255, 100, 0, "Electrum", "Electrum", 0, 0, -1, 0, false, false, 4, 1, 1, Dyes.dyeYellow, 2)
-    public static Material Emerald = new Material(501, MaterialIconSet.EMERALD, 		7.0F, 256, 2, 1|4|8 |64, 80, 255, 80, 127, "Emerald", "Emerald", 0, 0, -1, 0, false, true, 5, 1, 1, Dyes.dyeGreen, 1)
-    public static Material FreshWater = new Material(-1, MaterialIconSet.FLUID, 		1.0F, 0, 0, 16, 0, 0, 255, 0, "FreshWater", "Fresh Water", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeBlue, 0)
-    public static Material Galena = new Material(830, MaterialIconSet.DULL, 			1.0F, 0, 3, 1 |8 , 100, 60, 100, 0, "Galena", "Galena", 0, 0, -1, 0, false, false, 4, 1, 1, Dyes.dyePurple, 1)
-    public static Material Garnierite = new Material(906, MaterialIconSet.METALLIC, 	1.0F, 0, 3, 1 |8 , 50, 200, 70, 0, "Garnierite", "Garnierite", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightBlue, 1)
-    public static Material Glyceryl = new Material(714, MaterialIconSet.FLUID, 		1.0F, 0, 1, 16, 0, 150, 150, 0, "Glyceryl", "Glyceryl Trinitrate", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeCyan, 1)
-    public static Material GreenSapphire = new Material(504, MaterialIconSet.GEM_HORIZONTAL, 7.0F, 256, 2, 1|4|8 |64, 100, 200, 130, 127, "GreenSapphire", "Green Sapphire", 0, 0, -1, 0, false, true, 5, 1, 1, Dyes.dyeCyan, 1)
-    public static Material Grossular = new Material(831, MaterialIconSet.ROUGH, 		1.0F, 0, 1, 1 |8 , 200, 100, 0, 0, "Grossular", "Grossular", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeOrange, 1)
-    public static Material HolyWater = new Material(729, MaterialIconSet.FLUID, 		1.0F, 0, 0, 16, 0, 0, 255, 0, "HolyWater", "Holy Water", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeBlue, 0)
-    public static Material Ice = new Material(702, MaterialIconSet.SHINY, 				1.0F, 0, 0, 1| 16, 200, 200, 255, 0, "Ice", "Ice", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeBlue, 0)
-    public static Material Ilmenite = new Material(918, MaterialIconSet.METALLIC, 		1.0F, 0, 3, 1 |8 , 70, 55, 50, 0, "Ilmenite", "Ilmenite", 0, 0, -1, 0, false, false, 1, 2, 1, Dyes.dyePurple, 0)
-    public static Material Rutile = new Material(375, MaterialIconSet.GEM_HORIZONTAL, 	1.0F, 0, 2, 1, 212, 13, 92, 0, "Rutile", "Rutile", 0, 0, -1, 0, false, false, 1, 2, 1, Dyes.dyeRed, 0)
-    public static Material Bauxite = new Material(822, MaterialIconSet.DULL, 			1.0F, 0, 1, 1 |8 , 200, 100, 0, 0, "Bauxite", "Bauxite", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeBrown, 1)
-    public static Material Titaniumtetrachloride =new Material(376, MaterialIconSet.FLUID,1.0F, 0, 2, 16 , 212, 13, 92, 0, "Titaniumtetrachloride", "Titaniumtetrachloride", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeRed, 0)
-    public static Material Magnesiumchloride = new Material(377, MaterialIconSet.DULL, 1.0F, 0, 2, 1|16 , 212, 13, 92, 0, "Magnesiumchloride", "Magnesiumchloride", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeRed, 0)
-    public static Material Invar = new Material(302, MaterialIconSet.METALLIC, 		6.0F, 256, 2, 1|2|64|128, 180, 180, 120, 0, "Invar", "Invar", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeBrown, 2)
-    public static Material IronCompressed = new Material(-1, MaterialIconSet.METALLIC, 7.0F, 96, 1, 1|2|64|128, 128, 128, 128, 0, "IronCompressed", "Compressed Iron", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeGray, 2)
-    public static Material Kanthal = new Material(312, MaterialIconSet.METALLIC, 		6.0F, 64, 2, 1|2|64, 194, 210, 223, 0, "Kanthal", "Kanthal", 0, 0, 1800, 1800, true, false, 1, 1, 1, Dyes.dyeYellow, 2)
-    public static Material Lazurite = new Material(524, MaterialIconSet.LAPIS, 		1.0F, 0, 1, 1|4|8 , 100, 120, 255, 0, "Lazurite", "Lazurite", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeCyan, 1)
-    public static Material Magnalium = new Material(313, MaterialIconSet.DULL, 		6.0F, 256, 2, 1|2|64|128, 200, 190, 255, 0, "Magnalium", "Magnalium", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightBlue, 2)
-    public static Material Magnesite = new Material(908, MaterialIconSet.METALLIC, 	1.0F, 0, 2, 1 |8 , 250, 250, 180, 0, "Magnesite", "Magnesite", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyePink, 1)
-    public static Material Magnetite = new Material(870, MaterialIconSet.METALLIC, 	1.0F, 0, 2, 1 |8 , 30, 30, 30, 0, "Magnetite", "Magnetite", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeGray, 1)
-    public static Material Molybdenite = new Material(942, MaterialIconSet.METALLIC, 	1.0F, 0, 2, 1 |8 , 25, 25, 25, 0, "Molybdenite", "Molybdenite", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeBlue, 1)
-    public static Material Nichrome = new Material(311, MaterialIconSet.METALLIC, 		6.0F, 64, 2, 1|2|64, 205, 206, 246, 0, "Nichrome", "Nichrome", 0, 0, 2700, 2700, true, false, 1, 1, 1, Dyes.dyeRed, 2)
-    public static Material NiobiumNitride = new Material(359, MaterialIconSet.DULL, 	1.0F, 0, 2, 1|2, 29, 41, 29, 0, "NiobiumNitride", "Niobium Nitride", 0, 0, 2573, 2573, true, false, 1, 1, 1, Dyes.dyeBlack, 1)
+    public static FluidMaterial Methane = new FluidMaterial(80, "methane", "Methane", 0xFFFFFF, FLUID, of(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 4)), 0);
+    public static FluidMaterial CarbonDioxide = new FluidMaterial(81, "carbon_dioxide", "Carbon Dioxide", 0xA9D0F5, FLUID, of(new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 2)), GENERATE_PLASMA);
+    public static FluidMaterial NobleGases = new FluidMaterial(82, "noble_gases", "Noble Gases", 0xA9D0F5, FLUID, of(new MaterialStack(CarbonDioxide, 21), new MaterialStack(Helium, 9), new MaterialStack(Methane, 3), new MaterialStack(Deuterium, 1)), GENERATE_PLASMA);
+    public static FluidMaterial Air = new FluidMaterial(83, "air", "Air", 0xA9D0F5, FLUID, of(new MaterialStack(Nitrogen, 40), new MaterialStack(Oxygen, 11), new MaterialStack(Argon, 1), new MaterialStack(NobleGases, 1)), GENERATE_PLASMA);
+    public static FluidMaterial LiquidAir = new FluidMaterial(84, "liquid_air", "Liquid Air", 0xA9D0F5, FLUID, of(new MaterialStack(Nitrogen, 40), new MaterialStack(Oxygen, 11), new MaterialStack(Argon, 1), new MaterialStack(NobleGases, 1)), GENERATE_PLASMA);
+    public static GemMaterial Almandine = new GemMaterial(85, "almandine", "Almandine", 0xFF0000, ROUGH, of(new MaterialStack(Aluminium, 2), new MaterialStack(Iron, 3), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)), GENERATE_ORE);
+    public static DustMaterial Andradite = new DustMaterial(86, "andradite", "Andradite", 0x967800, ROUGH, of(new MaterialStack(Calcium, 3), new MaterialStack(Iron, 2), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)), 0);
+    public static MetalMaterial AnnealedCopper = new MetalMaterial(87, "annealed_copper", "Annealed Copper", 0xFF7814, SHINY, of(new MaterialStack(Copper, 1)), EXT2_METAL);
+    public static SolidMaterial Asbestos = new SolidMaterial(88, "asbestos", "Asbestos", 0xE6E6E6, DULL, of(new MaterialStack(Magnesium, 3), new MaterialStack(Silicon, 2), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 9)), 0);
+    public static DustMaterial Ash = new DustMaterial(89, "ash", "Ashes", 0x969696, DULL, of(new MaterialStack(Carbon, 1)), 0);
+    public static MetalMaterial BandedIron = new MetalMaterial(90, "banded_iron", "Banded Iron", 0x915A5A, DULL, of(new MaterialStack(Iron, 2), new MaterialStack(Oxygen, 3)), STD_METAL | GENERATE_ORE);
+    public static MetalMaterial BatteryAlloy = new MetalMaterial(91, "battery_alloy", "Battery Alloy", 0x9C7CA0, DULL, of(new MaterialStack(Lead, 4), new MaterialStack(Antimony, 1)), EXT_METAL);
+    public static GemMaterial BlueTopaz = new GemMaterial(92, "blue_topaz", "Blue Topaz", 0x0000FF, GEM_HORIZONTAL, of(new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 1), new MaterialStack(Fluorine, 2), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 6)), GENERATE_LENSE | GENERATE_ORE, 7.0F, 3, 256);
+    public static SolidMaterial Bone = new SolidMaterial(93, "bone", "Bone", 0xFFFFFF, DULL, of(new MaterialStack(Calcium, 1)), 0);
+    public static MetalMaterial Brass = new MetalMaterial(94, "brass", "Brass", 0xFFB400, METALLIC, of(new MaterialStack(Zinc, 1), new MaterialStack(Copper, 3)), EXT2_METAL, 7.0F, 1, 96);
+    public static MetalMaterial Bronze = new MetalMaterial(95, "bronze", "Bronze", 0xFF8000, METALLIC, of(new MaterialStack(Tin, 1), new MaterialStack(Copper, 3)), EXT2_METAL, 6.0F, 2, 192);
+    public static DustMaterial BrownLimonite = new DustMaterial(96, "brown_limonite", "Brown Limonite", 0xC86400, METALLIC, of(new MaterialStack(Iron, 1), new MaterialStack(Hydrogen, 1), new MaterialStack(Oxygen, 2)), GENERATE_ORE);
+    public static DustMaterial Calcite = new DustMaterial(97, "calcite", "Calcite", 0xFAE6DC, DULL, of(new MaterialStack(Calcium, 1), new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 3)), GENERATE_ORE);
+    public static DustMaterial Cassiterite = new DustMaterial(98, "cassiterite", "Cassiterite", 0xDCDCDC, METALLIC, of(new MaterialStack(Tin, 1), new MaterialStack(Oxygen, 2)), GENERATE_ORE);
+    public static DustMaterial CassiteriteSand = new DustMaterial(99, "cassiterite_sand", "Cassiterite Sand", 0xDCDCDC, SAND, of(new MaterialStack(Tin, 1), new MaterialStack(Oxygen, 2)), GENERATE_ORE);
+    public static DustMaterial Chalcopyrite = new DustMaterial(100, "chalcopyrite", "Chalcopyrite", 0xA07828, DULL, of(new MaterialStack(Copper, 1), new MaterialStack(Iron, 1), new MaterialStack(Sulfur, 2)), GENERATE_ORE);
+    public static RoughMaterial Charcoal = new RoughMaterial(101, "charcoal", "Charcoal", 0x644646, FINE, of(new MaterialStack(Carbon, 1)), 0);
+    public static MetalMaterial Chromite = new MetalMaterial(102, "chromite", "Chromite", 0x23140F, METALLIC, of(new MaterialStack(Iron, 1), new MaterialStack(Chrome, 2), new MaterialStack(Oxygen, 4)), GENERATE_ORE, null, 1700);
+    public static MetalMaterial ChromiumDioxide  = new MetalMaterial(103, "chromium_dioxide", "Chromium Dioxide", 0xE6C8C8, DULL, of(new MaterialStack(Chrome, 1), new MaterialStack(Oxygen, 2)), EXT_METAL, null, 11.0F, 3, 256, 650);
+    public static RoughMaterial Cinnabar = new RoughMaterial(103, "cinnabar", "Cinnabar", 0x960000, ROUGH, of(new MaterialStack(Mercury, 1), new MaterialStack(Sulfur, 1)), GENERATE_ORE);
+    public static FluidMaterial Water = new FluidMaterial(104, "water", "Water", 0x0000FF, FLUID, of(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), 0);
+    public static RoughMaterial Clay = new RoughMaterial(105, "clay", "Clay", 0xC8C8DC, ROUGH, of(new MaterialStack(Sodium, 2), new MaterialStack(Lithium, 1), new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 2), new MaterialStack(Water, 6)), 0);
+    public static RoughMaterial Coal = new RoughMaterial(106, "coal", "Coal", 0x464646, ROUGH, of(new MaterialStack(Carbon, 1)), 0);
+    public static DustMaterial Cobaltite = new DustMaterial(107, "cobaltite", "Cobaltite", 0x5050FA, METALLIC, of(new MaterialStack(Cobalt, 1), new MaterialStack(Arsenic, 1), new MaterialStack(Sulfur, 1)), GENERATE_ORE);
+    public static DustMaterial Cooperite = new DustMaterial(108, "cooperite", "Sheldonite", 0xFFFFC8, METALLIC, of(new MaterialStack(Platinum, 3), new MaterialStack(Nickel, 1), new MaterialStack(Sulfur, 1), new MaterialStack(Palladium, 1)), GENERATE_ORE);
+    public static MetalMaterial Cupronickel = new MetalMaterial(109, "cupronickel", "Cupronickel", 0xE39680, METALLIC, of(new MaterialStack(Copper, 1), new MaterialStack(Nickel, 1)), EXT_METAL,  6.0F, 1, 64);
+    public static DustMaterial DarkAsh = new DustMaterial(110, "dark_ash", "Dark Ashes", 0x323232, DULL, of(new MaterialStack(Carbon, 1)), 0);
+    public static GemMaterial Diamond = new GemMaterial(111, "diamond", "Diamond", 0xC8FFFF, DIAMOND, of(new MaterialStack(Carbon, 1)), GENERATE_ROD | GENERATE_BOLT_SCREW | GENERATE_LENSE | GENERATE_GEAR, 8.0F, 3, 1280);
+    public static MetalMaterial Electrum = new MetalMaterial(112, "electrum", "Electrum", 0xFFFF64, SHINY, of(new MaterialStack(Silver, 1), new MaterialStack(Gold, 1)), EXT2_METAL, 12.0F, 2, 64);
+    public static GemMaterial Emerald = new GemMaterial(113, "emerald", "Emerald", 0x50FF50, EMERALD, of(new MaterialStack(Beryllium, 3), new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 6), new MaterialStack(Oxygen, 18)), 0, 7.0F, 2, 256);
+    public static DustMaterial Galena = new DustMaterial(114, "galena", "Galena", 0x643C64, DULL, of(new MaterialStack(Lead, 3), new MaterialStack(Silver, 3), new MaterialStack(Sulfur, 2)), GENERATE_ORE);
+    public static DustMaterial Garnierite = new DustMaterial(115, "garnierite", "Garnierite", 0x32C846, METALLIC, of(new MaterialStack(Nickel, 1), new MaterialStack(Oxygen, 1)), GENERATE_ORE);
+    public static FluidMaterial Glyceryl = new FluidMaterial(116, "glyceryl", "Glyceryl Trinitrate", 0x009696, FLUID, of(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 5), new MaterialStack(Nitrogen, 3), new MaterialStack(Oxygen, 9)), 0);
+    public static GemMaterial GreenSapphire = new GemMaterial(117, "green_sapphire", "Green Sapphire", 0x64C882, GEM_HORIZONTAL, of(new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 3)), GENERATE_ORE, 7.0F, 2, 256);
+    public static DustMaterial Grossular = new DustMaterial(118, "grossular", "Grossular", 0xC86400, ROUGH, of(new MaterialStack(Calcium, 3), new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)), GENERATE_ORE);
+    public static FluidMaterial HolyWater = new FluidMaterial(119, "holy_water", "Holy Water", 0x0000FF, FLUID, of(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), 0);
+    public static SolidMaterial Ice = new SolidMaterial(120, "ice", "Ice", 0xC8C8FF, SHINY, of(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), 0);
+    public static DustMaterial Ilmenite = new DustMaterial(121, "ilmenite", "Ilmenite", 0x463732, METALLIC, of(new MaterialStack(Iron, 1), new MaterialStack(Titanium, 1), new MaterialStack(Oxygen, 3)), GENERATE_ORE);
+    public static GemMaterial Rutile = new GemMaterial(122, "rutile", "Rutile", 0xD40D5C, GEM_HORIZONTAL, of(new MaterialStack(Titanium, 1), new MaterialStack(Oxygen, 2)), 0);
+    public static DustMaterial Bauxite = new DustMaterial(123, "bauxite", "Bauxite", 0xC86400, DULL, of(new MaterialStack(Rutile, 2), new MaterialStack(Aluminium, 16), new MaterialStack(Hydrogen, 10), new MaterialStack(Oxygen, 11)), GENERATE_ORE);
+    public static FluidMaterial Titaniumtetrachloride = new FluidMaterial(124, "titaniumtetrachloride", "Titaniumtetrachloride", 0xD40D5C, FLUID, of(new MaterialStack(Titanium, 1), new MaterialStack(Carbon, 2), new MaterialStack(Chlorine, 2)), 0);
+    public static DustMaterial Magnesiumchloride = new DustMaterial(125, "magnesiumchloride", "Magnesiumchloride", 0xD40D5C, DULL, of(new MaterialStack(Magnesium, 1), new MaterialStack(Chlorine, 2)), 0);
+    public static MetalMaterial Invar = new MetalMaterial(126, "invar", "Invar", 0xB4B478, METALLIC, of(new MaterialStack(Iron, 2), new MaterialStack(Nickel, 1)), EXT2_METAL, 6.0F, 2, 256);
+    public static MetalMaterial Kanthal = new MetalMaterial(127, "kanthal", "Kanthal", 0xC2D2DF, METALLIC, of(new MaterialStack(Iron, 1), new MaterialStack(Aluminium, 1), new MaterialStack(Chrome, 1)), EXT_METAL, null, 6.0F, 2, 64, 1800);
+    public static GemMaterial Lazurite = new GemMaterial(128, "lazurite", "Lazurite", 0x6478FF, LAPIS, of(new MaterialStack(Aluminium, 6), new MaterialStack(Silicon, 6), new MaterialStack(Calcium, 8), new MaterialStack(Sodium, 8)), GENERATE_ORE);
+    public static MetalMaterial Magnalium = new MetalMaterial(129, "magnalium", "Magnalium", 0xC8BEFF, DULL, of(new MaterialStack(Magnesium, 1), new MaterialStack(Aluminium, 2)), EXT2_METAL, 6.0F, 2, 256);
+    public static DustMaterial Magnesite = new DustMaterial(130, "magnesite", "Magnesite", 0xFAFAB4, METALLIC, of(new MaterialStack(Magnesium, 1), new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 3)), GENERATE_ORE);
+    public static DustMaterial Magnetite = new DustMaterial(131, "magnetite", "Magnetite", 0x1E1E1E, METALLIC, of(new MaterialStack(Iron, 3), new MaterialStack(Oxygen, 4)), GENERATE_ORE);
+    public static DustMaterial Molybdenite = new DustMaterial(132, "molybdenite", "Molybdenite", 0x191919, METALLIC, of(new MaterialStack(Molybdenum, 1), new MaterialStack(Sulfur, 2)), GENERATE_ORE);
+    public static MetalMaterial Nichrome = new MetalMaterial(133, "nichrome", "Nichrome", 0xCDCEF6, METALLIC, of(new MaterialStack(Nickel, 4), new MaterialStack(Chrome, 1)), EXT_METAL, null, 6.0F, 2, 64, 2700);
+    public static MetalMaterial NiobiumNitride = new MetalMaterial(134, "niobium_nitride", "Niobium Nitride", 0x1D291D, DULL, of(new MaterialStack(Niobium, 1), new MaterialStack(Nitrogen, 1)), EXT_METAL, null, 2573);
+
     public static Material NiobiumTitanium = new Material(360, MaterialIconSet.DULL, 	1.0F, 0, 2, 1|2, 29, 29, 41, 0, "NiobiumTitanium", "Niobium-Titanium", 0, 0, 4500, 4500, true, false, 1, 1, 1, Dyes.dyeBlack, 2)
     public static Material NitroCarbon = new Material(716, MaterialIconSet.FLUID, 		1.0F, 0, 1, 16, 0, 75, 100, 0, "NitroCarbon", "Nitro-Carbon", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeCyan, 1)
     public static Material NitrogenDioxide = new Material(717, MaterialIconSet.FLUID, 	1.0F, 0, 1, 16, 100, 175, 255, 0, "NitrogenDioxide", "Nitrogen Dioxide", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeCyan, 1)
@@ -191,7 +194,6 @@ public class Materials {
     public static Material Ruby = new Material(502, MaterialIconSet.RUBY, 				7.0F, 256, 2, 1|4|8 |64, 255, 100, 100, 127, "Ruby", "Ruby", 0, 0, -1, 0, false, true, 5, 1, 1, Dyes.dyeRed, 1)
     public static Material Salt = new Material(817, MaterialIconSet.FINE, 				1.0F, 0, 1, 1 |8 , 250, 250, 250, 0, "Salt", "Salt", 0, 0, -1, 0, false, false, 2, 1, 1, Dyes.dyeWhite, 1)
     public static Material Saltpeter = new Material(836, MaterialIconSet.FINE, 		1.0F, 0, 1, 1 |8 , 230, 230, 230, 0, "Saltpeter", "Saltpeter", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeWhite, 1)
-    public static Material SaltWater = new Material(-1, MaterialIconSet.FLUID, 		1.0F, 0, 0, 16, 0, 0, 255, 0, "SaltWater", "Salt Water", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeBlue, 0)
     public static Material Sapphire = new Material(503, MaterialIconSet.GEM_VERTICAL, 	7.0F, 256, 2, 1|4|8 |64, 100, 100, 200, 127, "Sapphire", "Sapphire", 0, 0, -1, 0, false, true, 5, 1, 1, Dyes.dyeBlue, 1)
     public static Material Scheelite = new Material(910, MaterialIconSet.DULL, 		1.0F, 0, 3, 1 |8 , 200, 140, 20, 0, "Scheelite", "Scheelite", 0, 0, 2500, 2500, false, false, 4, 1, 1, Dyes.dyeBlack, 0)
     public static Material SiliconDioxide = new Material(837, MaterialIconSet.QUARTZ, 	1.0F, 0, 1, 1 |16, 200, 200, 200, 0, "SiliconDioxide", "Silicon Dioxide", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, 1)
@@ -242,8 +244,12 @@ public class Materials {
     public static Material Graphite = new Material(865, MaterialIconSet.DULL, 		5.0F, 32, 2, 1 |8|16|64, 128, 128, 128, 0, "Graphite", "Graphite", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeGray)
     public static Material Graphene = new Material(819, MaterialIconSet.DULL, 		6.0F, 32, 1, 1|64, 128, 128, 128, 0, "Graphene", "Graphene", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeGray)
     public static Material Jasper = new Material(511, MaterialIconSet.EMERALD, 	1.0F, 0, 2, 1|4|8, 200, 80, 80, 100, "Jasper", "Jasper", 0, 0, -1, 0, false, true, 3, 1, 1, Dyes.dyeRed)
-    public static Material AluminiumBrass = new Material(-1, MaterialIconSet.METALLIC, 6.0F, 64, 2, 1|2|64, 255, 255, 255, 0, "AluminiumBrass", "Aluminium Brass", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeYellow);
     public static Material Osmiridium = new Material(317, MaterialIconSet.METALLIC, 	7.0F, 1600, 3, 1|2|64|128, 100, 100, 255, 0, "Osmiridium", "Osmiridium", 0, 0, 3333, 2500, true, false, 1, 1, 1, Dyes.dyeLightBlue, 1)
+
+    public static Material FreshWater = new Material(-1, MaterialIconSet.FLUID, 		1.0F, 0, 0, 16, 0, 0, 255, 0, "FreshWater", "Fresh Water", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeBlue, 0)
+    public static Material IronCompressed = new Material(-1, MaterialIconSet.METALLIC, 7.0F, 96, 1, 1|2|64|128, 128, 128, 128, 0, "IronCompressed", "Compressed Iron", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeGray, 2)
+    public static Material SaltWater = new Material(-1, MaterialIconSet.FLUID, 		1.0F, 0, 0, 16, 0, 0, 255, 0, "SaltWater", "Salt Water", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeBlue, 0)
+    public static Material AluminiumBrass = new Material(-1, MaterialIconSet.METALLIC, 6.0F, 64, 2, 1|2|64, 255, 255, 255, 0, "AluminiumBrass", "Aluminium Brass", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeYellow);
 
     /**
      * Second Degree Compounds
