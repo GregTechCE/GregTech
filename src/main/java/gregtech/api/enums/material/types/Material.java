@@ -6,13 +6,10 @@ import gregtech.api.enums.Element;
 import gregtech.api.enums.material.MaterialIconSet;
 import gregtech.api.interfaces.IMaterialHandler;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.DelayedFunction;
 import gregtech.api.util.GTControlledRegistry;
 import gregtech.api.util.GT_Log;
-import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
-import java.util.function.Function;
 
 import static gregtech.api.enums.GT_Values.M;
 
@@ -20,8 +17,6 @@ public abstract class Material implements Comparable<Material> {
 
 	public static GTControlledRegistry<Material> MATERIAL_REGISTRY = new GTControlledRegistry<>();
 	public static GTControlledRegistry<IMaterialHandler> MATERIAL_HANDLER_REGISTRY = new GTControlledRegistry<>();
-
-    public static final Function<String, Material> RESOLVE_MATERIAL = (name) -> Material.MATERIAL_REGISTRY.getObject(name);
 
 	/**
 	 * Initializes material and also creates fluid instances
@@ -178,8 +173,8 @@ public abstract class Material implements Comparable<Material> {
 	public boolean isRadioactive() {
 		if (element != null)
 			return element.halfLifeSeconds >= 0;
-		for (MaterialStack tMaterial : materialComponents)
-			if (tMaterial.material.isRadioactive()) return true;
+		for (MaterialStack material : materialComponents)
+			if (material.material.isRadioactive()) return true;
 		return false;
 	}
 
@@ -189,9 +184,9 @@ public abstract class Material implements Comparable<Material> {
 		if (materialComponents.size() <= 0)
 			return Element.Tc.getProtons();
 		long totalProtons = 0, totalAmount = 0;
-		for (MaterialStack tMaterial : materialComponents) {
-			totalAmount += tMaterial.amount;
-			totalProtons += tMaterial.amount * tMaterial.material.getProtons();
+		for (MaterialStack material : materialComponents) {
+			totalAmount += material.amount;
+			totalProtons += material.amount * material.material.getProtons();
 		}
 		return (getDensity() * totalProtons) / (totalAmount * M);
 	}

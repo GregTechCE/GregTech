@@ -15,8 +15,6 @@ import java.util.function.Function;
 
 public class FluidMaterial extends Material {
 
-    public static final Function<String, FluidMaterial> RESOLVE_MATERIAL_FLUID = FPUtil.wrapCasting(RESOLVE_MATERIAL, FluidMaterial.class);
-
     public static final class MatFlags {
 
         /**

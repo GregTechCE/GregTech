@@ -18,8 +18,6 @@ import static gregtech.api.enums.material.types.SolidMaterial.MatFlags.GENERATE_
 
 public class MetalMaterial extends SolidMaterial {
 
-    public static final Function<String, MetalMaterial> RESOLVE_MATERIAL_METAL = FPUtil.wrapCasting(RESOLVE_MATERIAL, MetalMaterial.class);
-
     public static final class MatFlags {
 
         public static final int GENERATE_FOIL = createFlag(25);
@@ -64,7 +62,7 @@ public class MetalMaterial extends SolidMaterial {
         this.blastFurnaceTemperature = blastFurnaceTemperature;
         this.smeltInto = this;
         this.arcSmeltInto = this;
-        add(SMELT_INTO_FLUID | GENERATE_PLATE);
+        add(SMELT_INTO_FLUID);
     }
 
     public MetalMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, int materialGenerationFlags, Element element) {

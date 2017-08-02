@@ -115,7 +115,32 @@ public class Materials {
     public static MetalMaterial Yttrium = new MetalMaterial(78, "yttrium", "Yttrium", 0xDCFADC, METALLIC, of(), STD_METAL, Element.Y, 1799);
     public static MetalMaterial Zinc = new MetalMaterial(79, "zinc", "Zinc", 0xFAF0F0, METALLIC, of(), STD_METAL | GENERATE_ORE, Element.Zn);
 
-    /**
+	/**
+	 * Not possible to determine exact Components
+	 */
+	public static DustMaterial ConstructionFoam = new DustMaterial(313, "construction_foam", "Construction Foam", 0x808080, DULL, of(), 0);
+	public static FluidMaterial BioFuel = new FluidMaterial(314, "bio_fuel", "Biofuel", 0xFF8000, FLUID, of(), 0);
+	public static FluidMaterial Biomass = new FluidMaterial(315, "biomass", "Biomass", 0x00FF00, FLUID, of(), 0);
+	public static FluidMaterial Creosote = new FluidMaterial(316, "creosote", "Creosote", 0x804000, FLUID, of(), 0);
+	public static FluidMaterial Ethanol = new FluidMaterial(317, "ethanol", "Ethanol", 0xFF8000, FLUID, of(), 0);
+	public static FluidMaterial Fuel = new FluidMaterial(318, "fuel", "Diesel", 0xFFFF00, FLUID, of(), 0);
+	public static FluidMaterial Glue = new FluidMaterial(319, "glue", "Glue", 0xC8C400, FLUID, of(), 0_0);
+	public static DustMaterial Gunpowder = new DustMaterial(320, "gunpowder", "Gunpowder", 0x808080, DULL, of(), 0);
+	public static FluidMaterial Lubricant = new FluidMaterial(321, "lubricant", "Lubricant", 0xFFC400, FLUID, of(), 0);
+	public static FluidMaterial McGuffium239 = new FluidMaterial(322, "mc_guffium239", "Mc Guffium 239", 0xC83296, FLUID, of(), 0);
+	public static FluidMaterial Oil = new FluidMaterial(323, "oil", "Oil", 0x0A0A0A, FLUID,	of(), 0);
+	public static DustMaterial Oilsands = new DustMaterial(324, "oilsands", "Oilsands", 0x0A0A0A, NONE, of(), GENERATE_ORE);
+	public static DustMaterial Paper = new DustMaterial(325, "paper", "Paper", 0xFFFFFF, PAPER, of(), 0);
+	public static DustMaterial RareEarth = new DustMaterial(326, "rare_earth", "Rare Earth", 0x808064, FINE, of(), 0);
+	public static FluidMaterial SeedOil = new FluidMaterial(327, "seed_oil", "Seed Oil", 0xC4FF00, FLUID, of(), 0);
+	public static SolidMaterial Stone = new SolidMaterial(328, "stone", "Stone", 0xCDCDCD, ROUGH, of(), 0, null, 4.0F, 1, 32);
+	public static FluidMaterial Lava = new FluidMaterial(329, "lava", "Lava", 0xFF4000, FLUID, of(), 0);
+	public static DustMaterial Glowstone = new DustMaterial(330, "glowstone", "Glowstone", 0xFFFF00, SHINY, of(), 0);
+	public static GemMaterial NetherStar = new GemMaterial(331, "nether_star", "Nether Star", 0xFFFFFF, NETHERSTAR, of(), STD_SOLID | GENERATE_LENSE, null, 1.0F, 4, 5120);
+	public static DustMaterial Endstone = new DustMaterial(332, "endstone", "Endstone", 0xFFFFFF, DULL, of(), 0);
+	public static DustMaterial Netherrack = new DustMaterial(333, "netherrack", "Netherrack", 0xC80000, DULL, of(), 0);
+
+	/**
      * First Degree Compounds
      */
     public static FluidMaterial Methane = new FluidMaterial(80, "methane", "Methane", 0xFFFFFF, FLUID, of(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 4)), 0);
@@ -283,7 +308,7 @@ public class Materials {
     public static MetalMaterial DamascusSteel = new MetalMaterial(234, "damascus_steel", "Damascus Steel", 0x6E6E6E, METALLIC, of(new MaterialStack(Steel, 1)), EXT_METAL, null, 8.0F, 2, 1280, 1500);
     public static MetalMaterial TungstenSteel = new MetalMaterial(235, "tungsten_steel", "Tungstensteel", 0x6464A0, METALLIC, of(new MaterialStack(Steel, 1), new MaterialStack(Tungsten, 1)), EXT2_METAL, null, 8.0F, 4, 2560, 3000);
     public static FluidMaterial NitroFuel = new FluidMaterial(236, "nitro_fuel", "Nitro-Diesel", 0xC8FF00, FLUID, of(new MaterialStack(Glyceryl, 1), new MaterialStack(Fuel, 4)), 0);
-    public static MetalMaterial RedAlloy = new MetalMaterial(237, "red_alloy", "Red Alloy", 0xC80000, DULL, of(new MaterialStack(Metal, 1), new MaterialStack(Redstone, 4)), GENERATE_PLATE | GENERATE_FINE_WIRE);
+    public static MetalMaterial RedAlloy = new MetalMaterial(237, "red_alloy", "Red Alloy", 0xC80000, DULL, of(new MaterialStack(Copper, 1), new MaterialStack(Redstone, 4)), GENERATE_PLATE | GENERATE_FINE_WIRE);
     public static MetalMaterial CobaltBrass = new MetalMaterial(238, "cobalt_brass", "Cobalt Brass", 0xB4B4A0, METALLIC, of(new MaterialStack(Brass, 7), new MaterialStack(Aluminium, 1), new MaterialStack(Cobalt, 1)), EXT2_METAL, null, 8.0F, 2, 256);
     public static RoughMaterial Phosphorus = new RoughMaterial(239, "phosphorus", "Phosphorus", 0xFFFF00, FLINT, of(new MaterialStack(Calcium, 3), new MaterialStack(Phosphate, 2)), GENERATE_ORE);
     public static DustMaterial Basalt = new DustMaterial(240, "basalt", "Basalt", 0x1E1414, ROUGH, of(new MaterialStack(Olivine, 1), new MaterialStack(Calcite, 3), new MaterialStack(Flint, 8), new MaterialStack(DarkAsh, 4)), 0);
@@ -373,72 +398,48 @@ public class Materials {
     /**
      * Stargate materials
      */
-    public static Material Naquadah = new Material(324, METALLIC, 	6.0F, 1280, 4, 1|2|8|16|64, 50, 50, 50, 0, "naquadah", "Naquadah", 0, 0, 5400, 5400, true, false, 10, 1, 1, Dyes.dyeBlack)
-    public static Material NaquadahAlloy = new Material(325, METALLIC,8.0F, 5120, 5, 1|2|64|128, 40, 40, 40, 0, "naquadah_alloy", "Naquadah Alloy", 0, 0, 7200, 7200, true, false, 10, 1, 1, Dyes.dyeBlack)
-    public static Material NaquadahEnriched = new Material(326, METALLIC,6.0F, 1280, 4, 1|2|8|16|64, 50, 50, 50, 0, "naquadah_enriched", "Enriched Naquadah", 0, 0, 4500, 4500, true, false, 15, 1, 1, Dyes.dyeBlack)
-    public static Material Naquadria = new Material(327, SHINY, 	1.0F, 512, 4, 1|2|8|16|64, 30, 30, 30, 0, "naquadria", "Naquadria", 0, 0, 9000, 9000, true, false, 20, 1, 1, Dyes.dyeBlack)
-    public static Material Tritanium = new Material(329, METALLIC,20.0F, 10240, 6, 1|2|64, 255, 255, 255, 0, "tritanium", "Tritanium", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeWhite)
-    public static Material Duranium = new Material(328, METALLIC, 16.0F, 5120, 5, 1|2|64, 255, 255, 255, 0, "duranium", "Duranium", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray);
-
-
-    /**
-     * Not possible to determine exact Components
-     */
-    public static Material Sand = new Material(-1, NONE, 			1.0F, 0, 1, 0, 255, 255, 255, 0, "sand", "Sand", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeYellow);
-    public static Material ConstructionFoam = new Material(854, DULL, 1.0F, 0, 2, 1 |16, 128, 128, 128, 0, "construction_foam", "Construction Foam", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeGray);
-    public static Material BioFuel = new Material(705, FLUID, 		1.0F, 0, 0, 16, 255, 128, 0, 0, "bio_fuel", "Biofuel", 0, 6, -1, 0, false, false, 1, 1, 1, Dyes.dyeOrange);
-    public static Material Biomass = new Material(704, FLUID, 		1.0F, 0, 0, 16, 0, 255, 0, 0, "biomass", "Biomass", 3, 8, -1, 0, false, false, 1, 1, 1, Dyes.dyeGreen);
-    public static Material Creosote = new Material(712, FLUID, 	1.0F, 0, 0, 16, 128, 64, 0, 0, "creosote", "Creosote", 3, 8, -1, 0, false, false, 1, 1, 1, Dyes.dyeBrown);
-    public static Material Ethanol = new Material(706, FLUID, 		1.0F, 0, 0, 16, 255, 128, 0, 0, "ethanol", "Ethanol", 0, 128, -1, 0, false, false, 1, 1, 1, Dyes.dyePurple);
-    public static Material Fuel = new Material(708, FLUID, 		1.0F, 0, 0, 16, 255, 255, 0, 0, "fuel", "Diesel", 0, 128, -1, 0, false, false, 1, 1, 1, Dyes.dyeYellow);
-    public static Material Glue = new Material(726, FLUID, 		1.0F, 0, 0, 16, 200, 196, 0, 0, "glue", "Glue", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeOrange)
-    public static Material Gunpowder = new Material(800, DULL, 	1.0F, 0, 0, 1, 128, 128, 128, 0, "gunpowder", "Gunpowder", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeGray)
-    public static Material Leather = new Material(-1, ROUGH, 		1.0F, 0, 0, 1, 150, 150, 80, 127, "leather", "Leather", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeOrange);
-    public static Material Lubricant = new Material(724, FLUID, 	1.0F, 0, 0, 16, 255, 196, 0, 0, "lubricant", "Lubricant", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeOrange)
-    public static Material McGuffium239 = new Material(999, FLUID, 1.0F, 0, 0, 16, 200, 50, 150, 0, "mc_guffium239", "Mc Guffium 239", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyePink)
-    public static Material Oil = new Material(707, FLUID, 			1.0F, 0, 0, 16, 10, 10, 10, 0, "oil", "Oil", 3, 16, -1, 0, false, false, 1, 1, 1, Dyes.dyeBlack);
-    public static Material Oilsands = new Material(878, NONE, 		1.0F, 0, 1, 1|8 , 10, 10, 10, 0, "oilsands", "Oilsands", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes._NULL);
-    public static Material Paper = new Material(879, PAPER, 		1.0F, 0, 0, 1, 250, 250, 250, 0, "paper", "Paper", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeWhite)
-    public static Material RareEarth = new Material(891, FINE, 	1.0F, 0, 0, 1, 128, 128, 100, 0, "rare_earth", "Rare Earth", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeGray)
-    public static Material SeedOil = new Material(713, FLUID,		1.0F, 0, 0, 16, 196, 255, 0, 0, "seed_oil", "Seed Oil", 3, 2, -1, 0, false, false, 1, 1, 1, Dyes.dyeLime)
-    public static Material Stone = new Material(299, ROUGH, 		4.0F, 32, 1, 1|64|128, 205, 205, 205, 0, "stone", "Stone", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray)
-    public static Material Lava = new Material(700, FLUID, 		1.0F, 0, 1, 16, 255, 64, 0, 0, "lava", "Lava", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeOrange);
-    public static Material Glowstone = new Material(811, SHINY, 	1.0F, 0, 1, 1 |16, 255, 255, 0, 0, "glowstone", "Glowstone", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeYellow)
-    public static Material NetherStar = new Material(506, NETHERSTAR,1.0F, 5120, 4, 1|4|64, 255, 255, 255, 0, "nether_star", "Nether Star", 5, 50000, -1, 0, false, false, 15, 1, 1, Dyes.dyeWhite);
-    public static Material Endstone = new Material(808, DULL, 			1.0F, 0, 1, 1, 255, 255, 255, 0, "endstone", "Endstone", 0, 0, -1, 0, false, false, 0, 1, 1, Dyes.dyeYellow);
-    public static Material Netherrack = new Material(807, DULL, 		1.0F, 0, 0, 1, 200, 0, 0, 0, "netherrack", "Netherrack", 0, 0, -1, 0, false, false, 0, 1, 1, Dyes.dyeRed);
-    public static Material SoulSand = new Material(-1, DULL, 			1.0F, 0, 0, 1, 255, 255, 255, 0, "soulsand", "Soulsand", 0, 0, -1, 0, false, false, 0, 1, 1, Dyes.dyeBrown);
+    public static MetalMaterial Naquadah = new MetalMaterial(307, "naquadah", "Naquadah", 0x323232, METALLIC, of(), EXT_METAL, null, 6.0F, 4, 1280, 5400);
+    public static MetalMaterial NaquadahAlloy = new MetalMaterial(308, "naquadah_alloy", "Naquadah Alloy", 0x282828, METALLIC, of(), EXT2_METAL, null, 8.0F, 5, 5120, 7200);
+    public static MetalMaterial NaquadahEnriched = new MetalMaterial(309, "naquadah_enriched", "Enriched Naquadah", 0x282828, METALLIC, of(), EXT_METAL, null, 6.0F, 4, 1280, 4500);
+    public static MetalMaterial Naquadria = new MetalMaterial(310, "naquadria", "Naquadria", 0x1E1E1E, SHINY, of(), EXT_METAL, null, 1.0F, 4, 512, 9000);
+    public static MetalMaterial Tritanium = new MetalMaterial(311, "tritanium", "Tritanium", 0xFFFFFF, METALLIC, of(), EXT_METAL, null, 20.0F, 6, 10240);
+    public static MetalMaterial Duranium = new MetalMaterial(312, "duranium", "Duranium", 0xFFFFFF, METALLIC, of(), EXT_METAL, null, 16.0F, 5, 5120);
 
     /**
      * Actual food
      */
-    public static Material Cheese = new Material(894, FINE, 		1.0F, 0, 0, 1, 255, 255, 0, 0, "cheese", "Cheese", 0, 0, 320, 0, false, false, 1, 1, 1, Dyes.dyeYellow);
-    public static Material Chili = new Material(895, FINE, 		1.0F, 0, 0, 1, 200, 0, 0, 0, "chili", "Chili", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeRed);
-    public static Material Chocolate = new Material(886, FINE, 	1.0F, 0, 0, 1, 190, 95, 0, 0, "chocolate", "Chocolate", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeBrown);
-    public static Material MeatRaw = new Material(892, FINE, 		1.0F, 0, 0, 1, 255, 100, 100, 0, "meat_raw", "Raw Meat", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyePink);
-    public static Material MeatCooked = new Material(893, FINE, 	1.0F, 0, 0, 1, 150, 60, 20, 0, "meat_cooked", "Cooked Meat", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyePink);
-    public static Material Milk = new Material(885, FINE, 			1.0F, 0, 0, 1 |16, 254, 254, 254, 0, "milk", "Milk", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeWhite)
-    public static Material FryingOilHot = new Material(727, FLUID, 1.0F, 0, 0, 16, 200, 196, 0, 0, "frying_oil_hot", "Hot Frying Oil", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeOrange)
-    public static Material Honey = new Material(725, FLUID, 		1.0F, 0, 0, 16, 210, 200, 0, 0, "honey", "Honey", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeYellow);
-    public static Material FishOil = new Material(711, FLUID, 		1.0F, 0, 0, 16, 255, 196, 0, 0, "fish_oil", "Fish Oil", 3, 2, -1, 0, false, false, 1, 1, 1, Dyes.dyeYellow)
-    public static Material Cocoa = new Material(887, FINE, 		1.0F, 0, 0, 1, 190, 95, 0, 0, "cocoa", "Cocoa", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeBrown);
-    public static Material Coffee = new Material(888, FINE, 		1.0F, 0, 0, 1, 150, 75, 0, 0, "coffee", "Coffee", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeBrown);
+    public static Material Cheese = new DustMaterial(334,  "cheese", "Cheese", 0xFFFF00, FINE, of(), 0);
+    public static Material Chili = new DustMaterial(335, "chili", "Chili", 0xC80000, FINE, of(), 0);
+    public static Material Chocolate = new DustMaterial(886, "chocolate", "Chocolate", 0xBE5F00, FINE, of(), 0);
+    public static Material MeatRaw = new DustMaterial(892, "meat_raw", "Raw Meat", 0xFFC8C8, FINE, of(), 0);
+    public static Material MeatCooked = new DustMaterial(893, "meat_cooked", "Cooked Meat", 0x963C14, FINE, of(), 0);
+    public static FluidMaterial Milk = new FluidMaterial(885, "milk", "Milk", 0xFEFEFE, FINE, of(), 0);
+    public static FluidMaterial FryingOilHot = new FluidMaterial(727, "frying_oil_hot", "Hot Frying Oil", 0xC8C400, FLUID, of(), 0);
+    public static FluidMaterial Honey = new FluidMaterial(725, "honey", "Honey", 0xD2C800, FLUID, of(), 0);
+    public static FluidMaterial FishOil = new FluidMaterial(711, "fish_oil", "Fish Oil", 0xFFC400, FLUID, of(), 0);
+    public static Material Cocoa = new DustMaterial(887, "cocoa", "Cocoa", 0xBE5F00, FINE, of(), 0);
+    public static Material Coffee = new DustMaterial(888, "coffee", "Coffee", 0x964B00, FINE, of(), 0);
 
     static {
         initSubTags();
-        Iron					.mOreReRegistrations.add(AnyIron	);
-        PigIron					.mOreReRegistrations.add(AnyIron	);
-        WroughtIron				.mOreReRegistrations.add(AnyIron	);
+        Iron.oreReRegistrations.add(AnyIron);
+        PigIron.oreReRegistrations.add(AnyIron);
+        WroughtIron.oreReRegistrations.add(AnyIron);
 
-        Copper					.mOreReRegistrations.add(AnyCopper	);
-        AnnealedCopper			.mOreReRegistrations.add(AnyCopper	);
+        Copper.oreReRegistrations.add(AnyCopper);
+        AnnealedCopper.oreReRegistrations.add(AnyCopper);
 
-        Bronze					.mOreReRegistrations.add(AnyBronze	);
+        Bronze.oreReRegistrations.add(AnyBronze);
 
-        WoodSealed				.setMaceratingInto(Wood				);
+        WoodSealed.macerateInto = Wood;
 
-        NeodymiumMagnetic		.setSmeltingInto(Neodymium			).setMaceratingInto(Neodymium		).setArcSmeltingInto(Neodymium			);
-        SteelMagnetic			.setSmeltingInto(Steel				).setMaceratingInto(Steel			).setArcSmeltingInto(Steel				);
+        NeodymiumMagnetic.smeltInto = Neodymium;
+        NeodymiumMagnetic.macerateInto = Neodymium;
+        NeodymiumMagnetic.arcSmeltInto = Neodymium;
+
+        SteelMagnetic.smeltInto = Steel;
+        SteelMagnetic.macerateInto = Steel;
+        SteelMagnetic.arcSmeltInto = Steel;
         Iron					.setSmeltingInto(Iron				).setMaceratingInto(Iron			).setArcSmeltingInto(WroughtIron		);
         AnyIron					.setSmeltingInto(Iron				).setMaceratingInto(Iron			).setArcSmeltingInto(WroughtIron		);
         PigIron					.setSmeltingInto(Iron				).setMaceratingInto(Iron			).setArcSmeltingInto(WroughtIron		);
@@ -448,7 +449,6 @@ public class Materials {
         AnyCopper				.setSmeltingInto(Copper				).setMaceratingInto(Copper			).setArcSmeltingInto(AnnealedCopper		);
         AnnealedCopper			.setSmeltingInto(Copper				).setMaceratingInto(Copper			).setArcSmeltingInto(AnnealedCopper		);
         MeatRaw					.setSmeltingInto(MeatCooked			);
-        Sand					.setSmeltingInto(Glass				);
         Ice						.setSmeltingInto(Water				);
         Snow					.setSmeltingInto(Water				);
 
@@ -642,7 +642,7 @@ public class Materials {
         Cobalt					.addOreByProducts(Cobaltite				);
         Sulfur					.addOreByProducts(Sulfur				);
         Saltpeter				.addOreByProducts(Saltpeter				);
-        Endstone				.addOreByProducts(Helium_3				);
+        Endstone				.addOreByProducts(Helium3				);
         Osmium					.addOreByProducts(Iridium				);
         Magnesium				.addOreByProducts(Olivine				);
         Aluminium				.addOreByProducts(Bauxite				);
@@ -666,7 +666,6 @@ public class Materials {
         BlueTopaz				.addOreByProducts(Topaz					);
         Niter					.addOreByProducts(Saltpeter				);
         Vinteum					.addOreByProducts(Vinteum				);
-        Neutronium				.addOreByProducts(Neutronium			);
         Lithium					.addOreByProducts(Lithium				);
         Silicon					.addOreByProducts(SiliconDioxide		);
         Salt					.addOreByProducts(RockSalt				);
@@ -674,13 +673,13 @@ public class Materials {
         Andesite                .addOreByProducts(Basalt                );
         Diorite                 .addOreByProducts(NetherQuartz          );
 
-        Glue.mChemicalFormula = "No Horses were harmed for the Production";
-        UUAmplifier.mChemicalFormula = "Accelerates the Mass Fabricator";
-        WoodSealed.mChemicalFormula = "";
-        Wood.mChemicalFormula = "";
-        NaquadahEnriched.mChemicalFormula = "Nq+";
-        Naquadah.mChemicalFormula = "Nq";
-        Naquadria.mChemicalFormula = "NqX";
+        Glue.chemicalFormula = "No Horses were harmed for the Production";
+        UUAmplifier.chemicalFormula = "Accelerates the Mass Fabricator";
+        WoodSealed.chemicalFormula = "";
+        Wood.chemicalFormula = "";
+        NaquadahEnriched.chemicalFormula = "Nq+";
+        Naquadah.chemicalFormula = "Nq";
+        Naquadria.chemicalFormula = "NqX";
     }
 
     private static void initSubTags() {
@@ -753,8 +752,6 @@ public class Materials {
         RockSalt.add(SubTag.STONE, SubTag.NO_SMASHING);
         Andesite.add(SubTag.STONE, SubTag.NO_SMASHING);
         Diorite.add(SubTag.STONE, SubTag.NO_SMASHING);
-
-        Sand.add(SubTag.NO_RECYCLING);
 
         Gold.add(SubTag.MORTAR_GRINDABLE);
         Silver.add(SubTag.MORTAR_GRINDABLE);

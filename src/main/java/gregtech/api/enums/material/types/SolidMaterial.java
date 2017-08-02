@@ -20,8 +20,6 @@ import static gregtech.api.enums.material.types.SolidMaterial.MatFlags.GENERATE_
 
 public class SolidMaterial extends DustMaterial {
 
-    public static final Function<String, SolidMaterial> RESOLVE_MATERIAL_SOLID = FPUtil.wrapCasting(RESOLVE_MATERIAL, SolidMaterial.class);
-
     public static final class MatFlags {
 
         public static final int GENERATE_ROD = createFlag(20);

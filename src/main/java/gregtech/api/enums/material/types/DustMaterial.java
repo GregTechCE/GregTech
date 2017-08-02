@@ -13,8 +13,6 @@ import static gregtech.api.enums.material.types.Material.MatFlags.createFlag;
 
 public class DustMaterial extends FluidMaterial {
 
-    public static final Function<String, DustMaterial> RESOLVE_MATERIAL_DUST = FPUtil.wrapCasting(RESOLVE_MATERIAL, DustMaterial.class);
-
     public static final class MatFlags {
 
         public static final int GENERATE_ORE = createFlag(11);
