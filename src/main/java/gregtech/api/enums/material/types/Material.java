@@ -1,5 +1,6 @@
 package gregtech.api.enums.material.types;
 
+import com.google.common.base.CaseFormat;
 import com.google.common.collect.ImmutableList;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.material.MaterialIconSet;
@@ -222,7 +223,11 @@ public abstract class Material implements Comparable<Material> {
 	}
 
 	public long getDensity() {
-		return (long) (M * densityMultiplier);
+		return M;
+	}
+
+	public String toCamelCaseString() {
+		return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, toString());
 	}
 
 	@Override

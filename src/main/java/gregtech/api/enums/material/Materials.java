@@ -250,11 +250,6 @@ public class Materials {
     public static GemMaterial Jasper = new GemMaterial(206, "jasper", "Jasper", 0xC85050, EMERALD, of(), STD_GEM);
     public static MetalMaterial Osmiridium = new MetalMaterial(207, "osmiridium", "Osmiridium", 0x6464FF, METALLIC, of(new MaterialStack(Iridium, 3), new MaterialStack(Osmium, 1)), EXT2_METAL, null,	7.0F, 3, 1600, 2500);
 
-    public static Material FreshWater = new Material(-1, FLUID, 		1.0F, 0, 0, 16, 0, 0, 255, 0, "freshWater", "Fresh Water", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeBlue, 0)
-    public static Material IronCompressed = new Material(-1, METALLIC, 7.0F, 96, 1, 1|2|64|128, 128, 128, 128, 0, "iron_compressed", "Compressed Iron", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeGray, 2)
-    public static Material SaltWater = new Material(-1, FLUID, 		1.0F, 0, 0, 16, 0, 0, 255, 0, "salt_water", "Salt Water", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeBlue, 0)
-    public static Material AluminiumBrass = new Material(-1, METALLIC, 6.0F, 64, 2, 1|2|64, 255, 255, 255, 0, "aluminium_brass", "Aluminium Brass", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeYellow);
-
     /**
      * Second Degree Compounds
      */
@@ -278,10 +273,6 @@ public class Materials {
     public static DustMaterial Pyrotheum = new DustMaterial(224, "pyrotheum", "Pyrotheum", 0xFF8000, FIERY, of(new MaterialStack(Coal, 1), new MaterialStack(Redstone, 1), new MaterialStack(Blaze, 1)), 0);
     public static DustMaterial HydratedCoal = new DustMaterial(225, "hydrated_coal", "Hydrated Coal", 0x464664, ROUGH, of(new MaterialStack(Coal, 8), new MaterialStack(Water, 1)), 0);
     public static GemMaterial Apatite = new GemMaterial(226, "apatite", "Apatite", 0xC8C8FF, DIAMOND, of(new MaterialStack(Calcium, 5), new MaterialStack(Phosphate, 3), new MaterialStack(Chlorine, 1)), GENERATE_ORE);
-
-    public static Material Alumite = new Material(-1, METALLIC, 		1.5F, 64, 0, 1|2|64, 255, 255, 255, 0, "alumite", "Alumite", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyePink, 2)
-    public static Material Manyullyn = new Material(-1, METALLIC, 		1.5F, 64, 0, 1|2|64, 255, 255, 255, 0, "manyullyn", "Manyullyn", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyePurple, 2)
-
     public static MetalMaterial SterlingSilver = new MetalMaterial(227, "sterling_silver", "Sterling Silver", 0xFADCE1, SHINY, of(new MaterialStack(Copper, 1), new MaterialStack(Silver, 4)), EXT2_METAL, null, 13.0F, 2, 128, 1700);
     public static MetalMaterial RoseGold = new MetalMaterial(228, "rose_gold", "Rose Gold", 0xFFE61E, SHINY, of(new MaterialStack(Copper, 1), new MaterialStack(Gold, 4)), EXT2_METAL, null, 14.0F, 2, 128, 1600);
     public static MetalMaterial BlackBronze = new MetalMaterial(229, "black_bronze", "Black Bronze", 0x64327D, DULL, of(new MaterialStack(Gold, 1), new MaterialStack(Silver, 1), new MaterialStack(Copper, 3)), EXT2_METAL, null, 12.0F, 2, 256, 2000);
@@ -353,18 +344,42 @@ public class Materials {
     public static MetalMaterial HSSS = new MetalMaterial(304, "hsss", "HSS-S", 0x660033, METALLIC, of(new MaterialStack(HSSG, 6), new MaterialStack(Iridium, 2), new MaterialStack(Osmium, 1)), EXT2_METAL, null, 14.0F, 4, 3000, 5400);
 
     /**
-     * The "Random Material" ones.
+     * Marker materials
      */
-    public static Material AnyCopper = new MarkerMaterial("any_copper", "AnyCopper");
-    public static Material AnyBronze = new MarkerMaterial("any_bronze", "AnyBronze");
-    public static Material AnyIron = new MarkerMaterial("any_iron", "AnyIron");
+    public static MarkerMaterial AnyCopper = new MarkerMaterial("any_copper", "AnyCopper");
+    public static MarkerMaterial AnyBronze = new MarkerMaterial("any_bronze", "AnyBronze");
+    public static MarkerMaterial AnyIron = new MarkerMaterial("any_iron", "AnyIron");
+    /**
+     * Circuitry, Batteries and other Technical things
+     * OrePrefix is type of thing, Material is tier of it
+     */
+    public static Material Primitive = new MarkerMaterial("primitive", "Primitive");
+    public static Material Basic = new MarkerMaterial("basic", "Basic");
+    public static Material Good = new MarkerMaterial("good", "Good");
+    public static Material Advanced = new MarkerMaterial("advanced", "Advanced");
+    public static Material Data = new MarkerMaterial("data", "Data");
+    public static Material Elite = new MarkerMaterial("elite", "Elite");
+    public static Material Master = new MarkerMaterial("master", "Master");
+    public static Material Ultimate = new MarkerMaterial("ultimate", "Ultimate");
+    public static Material Superconductor = new MarkerMaterial("superconductor", "Superconductor");
+    public static Material Infinite = new MarkerMaterial("infinite", "Infinite");
 
     /**
      * Clear matter materials
      */
-    public static Material Antimatter = new Material(-1, NONE, 	1.0F, 0, 0, 0, 255, 255, 255, 0, "antimatter", "Antimatter", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyePink)
-    public static Material UUAmplifier = new Material(721, FLUID, 	1.0F, 0, 1, 16, 96, 0, 128, 0, "uuamplifier", "UU-Amplifier", 0, 0, -1, 0, false, false, 10, 1, 1, Dyes.dyePink);
-    public static Material UUMatter = new Material(703, FLUID, 	1.0F, 0, 1, 16, 128, 0, 196, 0, "uumatter", "UU-Matter", 0, 0, -1, 0, false, false, 10, 1, 1, Dyes.dyePink);
+    public static FluidMaterial UUAmplifier = new FluidMaterial(305, "uuamplifier", "UU-Amplifier", 0xAA00AA, FLUID, of(), 0);
+    public static FluidMaterial UUMatter = new FluidMaterial(306, "uumatter", "UU-Matter", 0x770077, FLUID, of(), 0);
+
+    /**
+     * Stargate materials
+     */
+    public static Material Naquadah = new Material(324, METALLIC, 	6.0F, 1280, 4, 1|2|8|16|64, 50, 50, 50, 0, "naquadah", "Naquadah", 0, 0, 5400, 5400, true, false, 10, 1, 1, Dyes.dyeBlack)
+    public static Material NaquadahAlloy = new Material(325, METALLIC,8.0F, 5120, 5, 1|2|64|128, 40, 40, 40, 0, "naquadah_alloy", "Naquadah Alloy", 0, 0, 7200, 7200, true, false, 10, 1, 1, Dyes.dyeBlack)
+    public static Material NaquadahEnriched = new Material(326, METALLIC,6.0F, 1280, 4, 1|2|8|16|64, 50, 50, 50, 0, "naquadah_enriched", "Enriched Naquadah", 0, 0, 4500, 4500, true, false, 15, 1, 1, Dyes.dyeBlack)
+    public static Material Naquadria = new Material(327, SHINY, 	1.0F, 512, 4, 1|2|8|16|64, 30, 30, 30, 0, "naquadria", "Naquadria", 0, 0, 9000, 9000, true, false, 20, 1, 1, Dyes.dyeBlack)
+    public static Material Tritanium = new Material(329, METALLIC,20.0F, 10240, 6, 1|2|64, 255, 255, 255, 0, "tritanium", "Tritanium", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeWhite)
+    public static Material Duranium = new Material(328, METALLIC, 16.0F, 5120, 5, 1|2|64, 255, 255, 255, 0, "duranium", "Duranium", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray);
+
 
     /**
      * Not possible to determine exact Components
@@ -395,16 +410,6 @@ public class Materials {
     public static Material SoulSand = new Material(-1, DULL, 			1.0F, 0, 0, 1, 255, 255, 255, 0, "soulsand", "Soulsand", 0, 0, -1, 0, false, false, 0, 1, 1, Dyes.dyeBrown);
 
     /**
-     * Startrek materials
-     */
-    public static Material Naquadah = new Material(324, METALLIC, 	6.0F, 1280, 4, 1|2|8|16|64, 50, 50, 50, 0, "naquadah", "Naquadah", 0, 0, 5400, 5400, true, false, 10, 1, 1, Dyes.dyeBlack)
-    public static Material NaquadahAlloy = new Material(325, METALLIC,8.0F, 5120, 5, 1|2|64|128, 40, 40, 40, 0, "naquadah_alloy", "Naquadah Alloy", 0, 0, 7200, 7200, true, false, 10, 1, 1, Dyes.dyeBlack)
-    public static Material NaquadahEnriched = new Material(326, METALLIC,6.0F, 1280, 4, 1|2|8|16|64, 50, 50, 50, 0, "naquadah_enriched", "Enriched Naquadah", 0, 0, 4500, 4500, true, false, 15, 1, 1, Dyes.dyeBlack)
-    public static Material Naquadria = new Material(327, SHINY, 	1.0F, 512, 4, 1|2|8|16|64, 30, 30, 30, 0, "naquadria", "Naquadria", 0, 0, 9000, 9000, true, false, 20, 1, 1, Dyes.dyeBlack)
-    public static Material Tritanium = new Material(329, METALLIC,20.0F, 10240, 6, 1|2|64, 255, 255, 255, 0, "tritanium", "Tritanium", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeWhite)
-    public static Material Duranium = new Material(328, METALLIC, 16.0F, 5120, 5, 1|2|64, 255, 255, 255, 0, "duranium", "Duranium", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray);
-
-    /**
      * Actual food
      */
     public static Material Cheese = new Material(894, FINE, 		1.0F, 0, 0, 1, 255, 255, 0, 0, "cheese", "Cheese", 0, 0, 320, 0, false, false, 1, 1, 1, Dyes.dyeYellow);
@@ -418,22 +423,6 @@ public class Materials {
     public static Material FishOil = new Material(711, FLUID, 		1.0F, 0, 0, 16, 255, 196, 0, 0, "fish_oil", "Fish Oil", 3, 2, -1, 0, false, false, 1, 1, 1, Dyes.dyeYellow)
     public static Material Cocoa = new Material(887, FINE, 		1.0F, 0, 0, 1, 190, 95, 0, 0, "cocoa", "Cocoa", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeBrown);
     public static Material Coffee = new Material(888, FINE, 		1.0F, 0, 0, 1, 150, 75, 0, 0, "coffee", "Coffee", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeBrown);
-
-
-    /**
-     * Circuitry, Batteries and other Technical things
-     * To be exact, it's their tags. OrePrefix is type of thing, Material is tier of it
-     */
-    public static Material Primitive = new Material(-1, NONE, 		1.0F, 0, 0, 0, 255, 255, 255, 0, "primitive", "Primitive", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray)
-    public static Material Basic = new Material(-1, NONE, 			1.0F, 0, 0, 0, 255, 255, 255, 0, "basic", "Basic", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray)
-    public static Material Good = new Material(-1, NONE, 			1.0F, 0, 0, 0, 255, 255, 255, 0, "good", "Good", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray)
-    public static Material Advanced = new Material(-1, NONE, 		1.0F, 0, 0, 0, 255, 255, 255, 0, "advanced", "Advanced", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray)
-    public static Material Data = new Material(-1, NONE, 			1.0F, 0, 0, 0, 255, 255, 255, 0, "data", "Data", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray)
-    public static Material Elite = new Material(-1, NONE, 			1.0F, 0, 0, 0, 255, 255, 255, 0, "elite", "Elite", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray)
-    public static Material Master = new Material(-1, NONE, 		1.0F, 0, 0, 0, 255, 255, 255, 0, "master", "Master", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray)
-    public static Material Ultimate = new Material(-1, NONE, 		1.0F, 0, 0, 0, 255, 255, 255, 0, "ultimate", "Ultimate", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray)
-    public static Material Superconductor = new Material(-1, NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "superconductor", "Superconductor", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray)
-    public static Material Infinite = new Material(-1, NONE, 		1.0F, 0, 0, 0, 255, 255, 255, 0, "infinite", "Infinite", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray);
 
     static {
         initSubTags();
