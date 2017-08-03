@@ -14,11 +14,12 @@ import gregtech.api.objects.MaterialStack;
 import net.minecraft.init.Enchantments;
 
 import static com.google.common.collect.ImmutableList.of;
-import static gregtech.api.enums.material.types.DustMaterial.MatFlags.GENERATE_ORE;
-import static gregtech.api.enums.material.types.DustMaterial.MatFlags.GENERATE_PLATE;
+import static gregtech.api.enums.material.types.DustMaterial.MatFlags.*;
 import static gregtech.api.enums.material.types.FluidMaterial.MatFlags.GENERATE_PLASMA;
 import static gregtech.api.enums.material.types.FluidMaterial.MatFlags.STATE_GAS;
+import static gregtech.api.enums.material.types.GemMaterial.MatFlags.CRYSTALLISABLE;
 import static gregtech.api.enums.material.types.GemMaterial.MatFlags.GENERATE_LENSE;
+import static gregtech.api.enums.material.types.Material.MatFlags.*;
 import static gregtech.api.enums.material.types.MetalMaterial.MatFlags.*;
 import static gregtech.api.enums.material.types.SolidMaterial.MatFlags.*;
 import static gregtech.api.enums.material.MaterialIconSet.*;
@@ -73,7 +74,7 @@ public class Materials {
     public static MetalMaterial Lutetium = new MetalMaterial(37, "lutetium", "Lutetium", 0xFFFFFF, METALLIC, of(), 0, Element.Lu, 1925);
     public static MetalMaterial Magnesium = new MetalMaterial(38, "magnesium", "Magnesium", 0xFFBBBB, METALLIC, of(), 0, Element.Mg);
     public static MetalMaterial Manganese = new MetalMaterial(39, "manganese", "Manganese", 0xEEEEEE, DULL, of(), 0, Element.Mn, 7.0F, 2, 512);
-    public static FluidMaterial Mercury = new FluidMaterial(40, "mercury", "Mercury", 0xFFDDDD, FLUID, of(), 0, Element.Hg);
+    public static GemMaterial Mercury = new GemMaterial(40, "mercury", "Mercury", 0xFFDDDD, FLUID, of(), SMELT_INTO_FLUID, Element.Hg);
     public static MetalMaterial Molybdenum = new MetalMaterial(41, "molybdenum", "Molybdenum", 0xAAAADD, DULL, of(), 0, Element.Mo, 7.0F, 512, 2);
     public static MetalMaterial Neodymium = new MetalMaterial(42, "neodymium", "Neodymium", 0x999999, METALLIC, of(), STD_METAL, Element.Nd, 7.0F, 2, 512, 1297);
     public static MetalMaterial Darmstadtium = new MetalMaterial(43, "darmstadtium", "Darmstadtium", 0xAAAAAA, METALLIC, of(), STD_METAL, Element.Ds, 24.0F, 6, 655360);
@@ -98,7 +99,7 @@ public class Materials {
     public static MetalMaterial Silver = new MetalMaterial(62, "silver", "Silver", 0xDCDCFF, SHINY, of(), EXT2_METAL | GENERATE_ORE, Element.Ag, 10.0F, 2, 64);
     public static MetalMaterial Sodium = new MetalMaterial(63, "sodium", "Sodium", 0x000096, METALLIC, of(), STD_METAL, Element.Na);
     public static MetalMaterial Strontium = new MetalMaterial(64, "strontium", "Strontium", 0xC8C896, METALLIC, of(), STD_METAL, Element.Sr);
-    public static DustMaterial Sulfur = new DustMaterial(65, "sulfur", "Sulfur", 0xC8C800, DULL, of(), 0, Element.S);
+    public static DustMaterial Sulfur = new DustMaterial(65, "sulfur", "Sulfur", 0xC8C800, DULL, of(), NO_SMASHING |NO_SMELTING |FLAMMABLE, Element.S);
     public static MetalMaterial Tantalum = new MetalMaterial(66, "tantalum", "Tantalum", 0xFFFFFF, METALLIC, of(), STD_METAL, Element.Ta);
     public static MetalMaterial Tellurium = new MetalMaterial(67, "tellurium", "Tellurium", 0xFFFFFF, METALLIC, of(), STD_METAL, Element.Te);
     public static MetalMaterial Terbium = new MetalMaterial(68, "terbium", "Terbium", 0xFFFFFF, METALLIC, of(), STD_METAL, Element.Tb, 1629);
@@ -168,7 +169,7 @@ public class Materials {
     public static MetalMaterial Chromite = new MetalMaterial(102, "chromite", "Chromite", 0x23140F, METALLIC, of(new MaterialStack(Iron, 1), new MaterialStack(Chrome, 2), new MaterialStack(Oxygen, 4)), GENERATE_ORE, null, 1700);
     public static MetalMaterial ChromiumDioxide  = new MetalMaterial(103, "chromium_dioxide", "Chromium Dioxide", 0xE6C8C8, DULL, of(new MaterialStack(Chrome, 1), new MaterialStack(Oxygen, 2)), EXT_METAL, null, 11.0F, 3, 256, 650);
     public static RoughMaterial Cinnabar = new RoughMaterial(103, "cinnabar", "Cinnabar", 0x960000, ROUGH, of(new MaterialStack(Mercury, 1), new MaterialStack(Sulfur, 1)), GENERATE_ORE);
-    public static FluidMaterial Water = new FluidMaterial(104, "water", "Water", 0x0000FF, FLUID, of(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), 0);
+    public static FluidMaterial Water = new FluidMaterial(104, "water", "Water", 0x0000FF, FLUID, of(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), NO_RECYCLING);
     public static RoughMaterial Clay = new RoughMaterial(105, "clay", "Clay", 0xC8C8DC, ROUGH, of(new MaterialStack(Sodium, 2), new MaterialStack(Lithium, 1), new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 2), new MaterialStack(Water, 6)), 0);
     public static RoughMaterial Coal = new RoughMaterial(106, "coal", "Coal", 0x464646, ROUGH, of(new MaterialStack(Carbon, 1)), 0);
     public static DustMaterial Cobaltite = new DustMaterial(107, "cobaltite", "Cobaltite", 0x5050FA, METALLIC, of(new MaterialStack(Cobalt, 1), new MaterialStack(Arsenic, 1), new MaterialStack(Sulfur, 1)), GENERATE_ORE);
@@ -183,8 +184,8 @@ public class Materials {
     public static FluidMaterial Glyceryl = new FluidMaterial(116, "glyceryl", "Glyceryl Trinitrate", 0x009696, FLUID, of(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 5), new MaterialStack(Nitrogen, 3), new MaterialStack(Oxygen, 9)), 0);
     public static GemMaterial GreenSapphire = new GemMaterial(117, "green_sapphire", "Green Sapphire", 0x64C882, GEM_HORIZONTAL, of(new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 3)), GENERATE_ORE, 7.0F, 2, 256);
     public static DustMaterial Grossular = new DustMaterial(118, "grossular", "Grossular", 0xC86400, ROUGH, of(new MaterialStack(Calcium, 3), new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)), GENERATE_ORE);
-    public static FluidMaterial HolyWater = new FluidMaterial(119, "holy_water", "Holy Water", 0x0000FF, FLUID, of(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), 0);
-    public static SolidMaterial Ice = new SolidMaterial(120, "ice", "Ice", 0xC8C8FF, SHINY, of(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), 0);
+    public static FluidMaterial HolyWater = new FluidMaterial(119, "holy_water", "Holy Water", 0x0000FF, FLUID, of(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), NO_RECYCLING);
+    public static SolidMaterial Ice = new SolidMaterial(120, "ice", "Ice", 0xC8C8FF, SHINY, of(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), NO_SMASHING | NO_RECYCLING);
     public static DustMaterial Ilmenite = new DustMaterial(121, "ilmenite", "Ilmenite", 0x463732, METALLIC, of(new MaterialStack(Iron, 1), new MaterialStack(Titanium, 1), new MaterialStack(Oxygen, 3)), GENERATE_ORE);
     public static GemMaterial Rutile = new GemMaterial(122, "rutile", "Rutile", 0xD40D5C, GEM_HORIZONTAL, of(new MaterialStack(Titanium, 1), new MaterialStack(Oxygen, 2)), 0);
     public static DustMaterial Bauxite = new DustMaterial(123, "bauxite", "Bauxite", 0xC86400, DULL, of(new MaterialStack(Rutile, 2), new MaterialStack(Aluminium, 16), new MaterialStack(Hydrogen, 10), new MaterialStack(Oxygen, 11)), GENERATE_ORE);
@@ -220,11 +221,11 @@ public class Materials {
     public static DustMaterial RawRubber = new DustMaterial(153, "raw_rubber", "Raw Rubber", 0xCCC789, DULL, of(new MaterialStack(Carbon, 5), new MaterialStack(Hydrogen, 8)), 0);
     public static GemMaterial Ruby = new GemMaterial(154, "ruby", "Ruby", 0xFF6464, RUBY, of(new MaterialStack(Chrome, 1), new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 3)), STD_GEM, 7.0F, 2, 256);
     public static DustMaterial Salt = new DustMaterial(155, "salt", "Salt", 0xFFFFFF, FINE, of(new MaterialStack(Sodium, 1), new MaterialStack(Chlorine, 1)), GENERATE_ORE);
-    public static DustMaterial Saltpeter = new DustMaterial(156, "saltpeter", "Saltpeter", 0xE6E6E6, FINE, of(new MaterialStack(Potassium, 1), new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 3)), GENERATE_ORE);
+    public static DustMaterial Saltpeter = new DustMaterial(156, "saltpeter", "Saltpeter", 0xE6E6E6, FINE, of(new MaterialStack(Potassium, 1), new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 3)), GENERATE_ORE | NO_SMASHING |NO_SMELTING |FLAMMABLE);
     public static GemMaterial Sapphire = new GemMaterial(157, "sapphire", "Sapphire", 0x6464C8, GEM_VERTICAL, of(new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 3)), STD_GEM, null, 7.0F, 2, 256);
     public static DustMaterial Scheelite = new DustMaterial(158, "scheelite", "Scheelite", 0xC88C14, DULL, of(new MaterialStack(Tungsten, 1), new MaterialStack(Calcium, 2), new MaterialStack(Oxygen, 4)), GENERATE_ORE);
     public static DustMaterial SiliconDioxide = new DustMaterial(159, "silicon_dioxide", "Silicon Dioxide", 0xC8C8C8, QUARTZ, of(new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 2)), 0);
-    public static RoughMaterial Snow = new RoughMaterial(160, "snow", "Snow", 0xFFFFFF, FINE, of(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), 0);
+    public static RoughMaterial Snow = new RoughMaterial(160, "snow", "Snow", 0xFFFFFF, FINE, of(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), NO_SMASHING |NO_RECYCLING);
     public static GemMaterial Sodalite = new GemMaterial(161, "sodalite", "Sodalite", 0x1414FF, LAPIS, of(new MaterialStack(Aluminium, 3), new MaterialStack(Silicon, 3), new MaterialStack(Sodium, 4), new MaterialStack(Chlorine, 1)), GENERATE_ORE | GENERATE_PLATE | GENERATE_ROD);
     public static FluidMaterial SodiumPersulfate = new FluidMaterial(162, "sodium_persulfate", "Sodium Persulfate", 0xFFFFFF, FLUID, of(new MaterialStack(Sodium, 1), new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 4)), 0);
     public static FluidMaterial SodiumSulfide = new FluidMaterial(163, "sodium_sulfide", "Sodium Sulfide", 0xFFFFFF, FLUID, of(new MaterialStack(Sodium, 2), new MaterialStack(Sulfur, 1)), 0);
@@ -262,7 +263,7 @@ public class Materials {
     public static DustMaterial Uraninite = new DustMaterial(193, "uraninite", "Uraninite", 0x232323, METALLIC, of(new MaterialStack(Uranium, 1), new MaterialStack(Oxygen, 2)), 0);
     public static DustMaterial Uvarovite = new DustMaterial(194, "uvarovite", "Uvarovite", 0xB4FFB4, DIAMOND, of(new MaterialStack(Calcium, 3), new MaterialStack(Chrome, 2), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)), 0);
     public static MetalMaterial VanadiumGallium = new MetalMaterial(195, "vanadium_gallium", "Vanadium-Gallium", 0x80808C, SHINY, of(new MaterialStack(Vanadium, 3), new MaterialStack(Gallium, 1)), 0, null, 4500);
-    public static SolidMaterial Wood = new SolidMaterial(196, "wood", "Wood", 0x643200, WOOD, of(new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 1), new MaterialStack(Hydrogen, 1)), STD_SOLID, null, 2.0F, 0, 16);
+    public static SolidMaterial Wood = new SolidMaterial(196, "wood", "Wood", 0x643200, WOOD, of(new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 1), new MaterialStack(Hydrogen, 1)), STD_SOLID | FLAMMABLE | NO_SMELTING | NO_SMASHING, null, 2.0F, 0, 16);
     public static MetalMaterial WroughtIron = new MetalMaterial(197, "wrought_iron", "Wrought Iron", 0xC8B4B4, METALLIC, of(new MaterialStack(Iron, 1)), EXT2_METAL, null, 6.0F, 2, 384);
     public static DustMaterial Wulfenite = new DustMaterial(198, "wulfenite", "Wulfenite", 0xFF8000, DULL, of(new MaterialStack(Lead, 1), new MaterialStack(Molybdenum, 1), new MaterialStack(Oxygen, 4)), GENERATE_ORE);
     public static DustMaterial YellowLimonite = new DustMaterial(199, "yellow_limonite", "Yellow Limonite", 0xC8C800, METALLIC, of(new MaterialStack(Iron, 1), new MaterialStack(Hydrogen, 1), new MaterialStack(Oxygen, 2)), GENERATE_ORE);
@@ -270,7 +271,7 @@ public class Materials {
     public static SolidMaterial NetherQuartz = new SolidMaterial(201, "nether_quartz", "Nether Quartz", 0xE6D2D2, QUARTZ, of(), STD_SOLID, null, 1.0F, 1, 32);
     public static SolidMaterial CertusQuartz = new SolidMaterial(202, "certus_quartz", "Certus Quartz", 0xD2D2E6, QUARTZ, of(), STD_SOLID, null, 5.0F, 1, 32);
     public static SolidMaterial Quartzite = new SolidMaterial(203, "quartzite", "Quartzite", 0xD2E6D2, QUARTZ, of(), 0);
-    public static SolidMaterial Graphite = new SolidMaterial(204, "graphite", "Graphite", 0x808080, DULL, of(), GENERATE_ORE, null, 5.0F, 2, 32);
+    public static SolidMaterial Graphite = new SolidMaterial(204, "graphite", "Graphite", 0x808080, DULL, of(), GENERATE_ORE | NO_SMASHING |NO_SMELTING |FLAMMABLE, null, 5.0F, 2, 32);
     public static SolidMaterial Graphene = new SolidMaterial(205, "graphene", "Graphene", 0x808080, DULL, of(), 0, null, 6.0F, 1, 32);
     public static GemMaterial Jasper = new GemMaterial(206, "jasper", "Jasper", 0xC85050, EMERALD, of(), STD_GEM);
     public static MetalMaterial Osmiridium = new MetalMaterial(207, "osmiridium", "Osmiridium", 0x6464FF, METALLIC, of(new MaterialStack(Iridium, 3), new MaterialStack(Osmium, 1)), EXT2_METAL, null,	7.0F, 3, 1600, 2500);
@@ -278,7 +279,7 @@ public class Materials {
     /**
      * Second Degree Compounds
      */
-    public static SolidMaterial WoodSealed = new SolidMaterial(208, "wood_sealed", "Sealed Wood", 0x502800, WOOD, of(new MaterialStack(Wood, 1)), STD_SOLID, null, 3.0F, 0, 24);
+    public static SolidMaterial WoodSealed = new SolidMaterial(208, "wood_sealed", "Sealed Wood", 0x502800, WOOD, of(new MaterialStack(Wood, 1)), STD_SOLID | FLAMMABLE | NO_SMELTING | NO_SMASHING | NO_WORKING, null, 3.0F, 0, 24);
     public static GemMaterial Glass = new GemMaterial(209, "glass", "Glass", 0xFFFFFF, GLASS, of(new MaterialStack(SiliconDioxide, 1)), GENERATE_PLATE | GENERATE_LENSE);
     public static DustMaterial Perlite = new DustMaterial(210, "perlite", "Perlite", 0x1E141E, DULL, of(new MaterialStack(Obsidian, 2), new MaterialStack(Water, 1)), 0);
     public static DustMaterial Borax = new DustMaterial(210, "borax", "Borax", 0xFFFFFF, FINE, of(new MaterialStack(Sodium, 2), new MaterialStack(Boron, 4), new MaterialStack(Water, 10), new MaterialStack(Oxygen, 7)), 0);
@@ -399,7 +400,7 @@ public class Materials {
      * Stargate materials
      */
     public static MetalMaterial Naquadah = new MetalMaterial(307, "naquadah", "Naquadah", 0x323232, METALLIC, of(), EXT_METAL, null, 6.0F, 4, 1280, 5400);
-    public static MetalMaterial NaquadahAlloy = new MetalMaterial(308, "naquadah_alloy", "Naquadah Alloy", 0x282828, METALLIC, of(), EXT2_METAL, null, 8.0F, 5, 5120, 7200);
+    public static MetalMaterial NaquadahAlloy = new MetalMaterial(308, "naquadah_alloy", "Naquadah Alloy", 0x282828, METALLIC, of(new MaterialStack(Naquadah, 1), new MaterialStack(Osmiridium, 1)), EXT2_METAL, null, 8.0F, 5, 5120, 7200);
     public static MetalMaterial NaquadahEnriched = new MetalMaterial(309, "naquadah_enriched", "Enriched Naquadah", 0x282828, METALLIC, of(), EXT_METAL, null, 6.0F, 4, 1280, 4500);
     public static MetalMaterial Naquadria = new MetalMaterial(310, "naquadria", "Naquadria", 0x1E1E1E, SHINY, of(), EXT_METAL, null, 1.0F, 4, 512, 9000);
     public static MetalMaterial Tritanium = new MetalMaterial(311, "tritanium", "Tritanium", 0xFFFFFF, METALLIC, of(), EXT_METAL, null, 20.0F, 6, 10240);
@@ -408,17 +409,17 @@ public class Materials {
     /**
      * Actual food
      */
-    public static Material Cheese = new DustMaterial(334,  "cheese", "Cheese", 0xFFFF00, FINE, of(), 0);
-    public static Material Chili = new DustMaterial(335, "chili", "Chili", 0xC80000, FINE, of(), 0);
-    public static Material Chocolate = new DustMaterial(886, "chocolate", "Chocolate", 0xBE5F00, FINE, of(), 0);
-    public static Material MeatRaw = new DustMaterial(892, "meat_raw", "Raw Meat", 0xFFC8C8, FINE, of(), 0);
-    public static Material MeatCooked = new DustMaterial(893, "meat_cooked", "Cooked Meat", 0x963C14, FINE, of(), 0);
+    public static DustMaterial Cheese = new DustMaterial(334,  "cheese", "Cheese", 0xFFFF00, FINE, of(), 0);
+    public static DustMaterial Chili = new DustMaterial(335, "chili", "Chili", 0xC80000, FINE, of(), 0);
+    public static DustMaterial Chocolate = new DustMaterial(886, "chocolate", "Chocolate", 0xBE5F00, FINE, of(), 0);
+    public static DustMaterial MeatRaw = new DustMaterial(892, "meat_raw", "Raw Meat", 0xFFC8C8, FINE, of(), NO_SMASHING);
+    public static DustMaterial MeatCooked = new DustMaterial(893, "meat_cooked", "Cooked Meat", 0x963C14, FINE, of(), NO_SMASHING | NO_SMELTING);
     public static FluidMaterial Milk = new FluidMaterial(885, "milk", "Milk", 0xFEFEFE, FINE, of(), 0);
     public static FluidMaterial FryingOilHot = new FluidMaterial(727, "frying_oil_hot", "Hot Frying Oil", 0xC8C400, FLUID, of(), 0);
     public static FluidMaterial Honey = new FluidMaterial(725, "honey", "Honey", 0xD2C800, FLUID, of(), 0);
     public static FluidMaterial FishOil = new FluidMaterial(711, "fish_oil", "Fish Oil", 0xFFC400, FLUID, of(), 0);
-    public static Material Cocoa = new DustMaterial(887, "cocoa", "Cocoa", 0xBE5F00, FINE, of(), 0);
-    public static Material Coffee = new DustMaterial(888, "coffee", "Coffee", 0x964B00, FINE, of(), 0);
+    public static DustMaterial Cocoa = new DustMaterial(887, "cocoa", "Cocoa", 0xBE5F00, FINE, of(), 0);
+    public static DustMaterial Coffee = new DustMaterial(888, "coffee", "Coffee", 0x964B00, FINE, of(), 0);
 
     static {
         initSubTags();
@@ -440,29 +441,23 @@ public class Materials {
         SteelMagnetic.smeltInto = Steel;
         SteelMagnetic.macerateInto = Steel;
         SteelMagnetic.arcSmeltInto = Steel;
-        Iron					.setSmeltingInto(Iron				).setMaceratingInto(Iron			).setArcSmeltingInto(WroughtIron		);
-        AnyIron					.setSmeltingInto(Iron				).setMaceratingInto(Iron			).setArcSmeltingInto(WroughtIron		);
-        PigIron					.setSmeltingInto(Iron				).setMaceratingInto(Iron			).setArcSmeltingInto(WroughtIron		);
-        WroughtIron				.setSmeltingInto(Iron				).setMaceratingInto(Iron			).setArcSmeltingInto(WroughtIron		);
-        IronMagnetic			.setSmeltingInto(Iron				).setMaceratingInto(Iron			).setArcSmeltingInto(WroughtIron		);
-        Copper					.setSmeltingInto(Copper				).setMaceratingInto(Copper			).setArcSmeltingInto(AnnealedCopper		);
-        AnyCopper				.setSmeltingInto(Copper				).setMaceratingInto(Copper			).setArcSmeltingInto(AnnealedCopper		);
-        AnnealedCopper			.setSmeltingInto(Copper				).setMaceratingInto(Copper			).setArcSmeltingInto(AnnealedCopper		);
-        MeatRaw					.setSmeltingInto(MeatCooked			);
-        Ice						.setSmeltingInto(Water				);
-        Snow					.setSmeltingInto(Water				);
+        Iron					.setSmeltingInto(Iron				).setArcSmeltingInto(WroughtIron		).setMaceratingInto(Iron			);
+        PigIron					.setSmeltingInto(Iron				).setArcSmeltingInto(WroughtIron		).setMaceratingInto(Iron			);
+        WroughtIron				.setSmeltingInto(Iron				).setArcSmeltingInto(WroughtIron		).setMaceratingInto(Iron			);
+        IronMagnetic			.setSmeltingInto(Iron				).setArcSmeltingInto(WroughtIron		).setMaceratingInto(Iron			);
+        Copper					.setSmeltingInto(Copper				).setArcSmeltingInto(AnnealedCopper		).setMaceratingInto(Copper			);
+        AnnealedCopper			.setSmeltingInto(Copper				).setArcSmeltingInto(AnnealedCopper		).setMaceratingInto(Copper			);
 
-        Mercury					.add(SubTag.SMELTING_TO_GEM);
-        Cinnabar				.setDirectSmelting(Mercury		).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT).add(SubTag.SMELTING_TO_GEM);
-        Tetrahedrite			.setDirectSmelting(Copper		).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
-        Chalcopyrite			.setDirectSmelting(Copper		).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
-        Malachite				.setDirectSmelting(Copper		).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
-        Pentlandite				.setDirectSmelting(Nickel		).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
-        Sphalerite				.setDirectSmelting(Zinc			).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
-        Pyrite					.setDirectSmelting(Iron			).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
-        BasalticMineralSand		.setDirectSmelting(Iron			).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
-        GraniticMineralSand		.setDirectSmelting(Iron			).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
-        YellowLimonite			.setDirectSmelting(Iron			).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
+        Cinnabar				.setDirectSmelting(Mercury		).add(INDUCTION_SMELTING_LOW_OUTPUT);
+        Tetrahedrite			.setDirectSmelting(Copper		).add(INDUCTION_SMELTING_LOW_OUTPUT);
+        Chalcopyrite			.setDirectSmelting(Copper		).add(INDUCTION_SMELTING_LOW_OUTPUT);
+        Malachite				.setDirectSmelting(Copper		).add(INDUCTION_SMELTING_LOW_OUTPUT);
+        Pentlandite				.setDirectSmelting(Nickel		).add(INDUCTION_SMELTING_LOW_OUTPUT);
+        Sphalerite				.setDirectSmelting(Zinc			).add(INDUCTION_SMELTING_LOW_OUTPUT);
+        Pyrite					.setDirectSmelting(Iron			).add(INDUCTION_SMELTING_LOW_OUTPUT);
+        BasalticMineralSand		.setDirectSmelting(Iron			).add(INDUCTION_SMELTING_LOW_OUTPUT);
+        GraniticMineralSand		.setDirectSmelting(Iron			).add(INDUCTION_SMELTING_LOW_OUTPUT);
+        YellowLimonite			.setDirectSmelting(Iron			).add(INDUCTION_SMELTING_LOW_OUTPUT);
         BrownLimonite			.setDirectSmelting(Iron			);
         BandedIron				.setDirectSmelting(Iron			);
         Cassiterite				.setDirectSmelting(Tin			);
@@ -494,49 +489,42 @@ public class Materials {
         Lazurite				.setOreMultiplier( 6).setSmeltingMultiplier( 6).setByProductMultiplier(4);
         Monazite				.setOreMultiplier( 8).setSmeltingMultiplier( 8).setByProductMultiplier(2);
 
-        Plastic					.setEnchantmentForTools(Enchantments.KNOCKBACK, 1);
-        Rubber					.setEnchantmentForTools(Enchantments.KNOCKBACK, 2);
+        Plastic					.addEnchantmentForTools(Enchantments.KNOCKBACK, 1);
+        Rubber					.addEnchantmentForTools(Enchantments.KNOCKBACK, 2);
 
-        Vinteum					.setEnchantmentForTools(Enchantments.FORTUNE, 1);
+        Vinteum					.addEnchantmentForTools(Enchantments.FORTUNE, 1);
 
-        Flint					.setEnchantmentForTools(Enchantments.FIRE_ASPECT, 1);
-        Pyrotheum				.setEnchantmentForTools(Enchantments.FIRE_ASPECT, 3);
-        Blaze					.setEnchantmentForTools(Enchantments.FIRE_ASPECT, 3);
+        Flint					.addEnchantmentForTools(Enchantments.FIRE_ASPECT, 1);
+        EnderPearl				.addEnchantmentForTools(Enchantments.SILK_TOUCH, 1);
+        NetherStar				.addEnchantmentForTools(Enchantments.SILK_TOUCH, 1);
 
-        EnderPearl				.setEnchantmentForTools(Enchantments.SILK_TOUCH, 1);
-        NetherStar				.setEnchantmentForTools(Enchantments.SILK_TOUCH, 1);
+        BlackBronze				.addEnchantmentForTools(Enchantments.SMITE, 2);
+        Gold					.addEnchantmentForTools(Enchantments.SMITE, 3);
+        RoseGold				.addEnchantmentForTools(Enchantments.SMITE, 4);
+        Platinum				.addEnchantmentForTools(Enchantments.SMITE, 5);
 
-        BlackBronze				.setEnchantmentForTools(Enchantments.SMITE, 2);
-        Gold					.setEnchantmentForTools(Enchantments.SMITE, 3);
-        RoseGold				.setEnchantmentForTools(Enchantments.SMITE, 4);
-        Platinum				.setEnchantmentForTools(Enchantments.SMITE, 5);
+        Lead					.addEnchantmentForTools(Enchantments.BANE_OF_ARTHROPODS, 2);
+        Nickel					.addEnchantmentForTools(Enchantments.BANE_OF_ARTHROPODS, 2);
+        Invar					.addEnchantmentForTools(Enchantments.BANE_OF_ARTHROPODS, 3);
+        Antimony				.addEnchantmentForTools(Enchantments.BANE_OF_ARTHROPODS, 3);
+        BatteryAlloy			.addEnchantmentForTools(Enchantments.BANE_OF_ARTHROPODS, 4);
+        Bismuth					.addEnchantmentForTools(Enchantments.BANE_OF_ARTHROPODS, 4);
+        BismuthBronze			.addEnchantmentForTools(Enchantments.BANE_OF_ARTHROPODS, 5);
 
-        Lead					.setEnchantmentForTools(Enchantments.BANE_OF_ARTHROPODS, 2);
-        Nickel					.setEnchantmentForTools(Enchantments.BANE_OF_ARTHROPODS, 2);
-        Invar					.setEnchantmentForTools(Enchantments.BANE_OF_ARTHROPODS, 3);
-        Antimony				.setEnchantmentForTools(Enchantments.BANE_OF_ARTHROPODS, 3);
-        BatteryAlloy			.setEnchantmentForTools(Enchantments.BANE_OF_ARTHROPODS, 4);
-        Bismuth					.setEnchantmentForTools(Enchantments.BANE_OF_ARTHROPODS, 4);
-        BismuthBronze			.setEnchantmentForTools(Enchantments.BANE_OF_ARTHROPODS, 5);
-
-        Iron					.setEnchantmentForTools(Enchantments.SHARPNESS, 1);
-        Bronze					.setEnchantmentForTools(Enchantments.SHARPNESS, 1);
-        Brass					.setEnchantmentForTools(Enchantments.SHARPNESS, 2);
-        Steel					.setEnchantmentForTools(Enchantments.SHARPNESS, 2);
-        WroughtIron				.setEnchantmentForTools(Enchantments.SHARPNESS, 2);
-        StainlessSteel			.setEnchantmentForTools(Enchantments.SHARPNESS, 3);
-        BlackSteel				.setEnchantmentForTools(Enchantments.SHARPNESS, 4);
-        RedSteel				.setEnchantmentForTools(Enchantments.SHARPNESS, 4);
-        BlueSteel				.setEnchantmentForTools(Enchantments.SHARPNESS, 5);
-        DamascusSteel			.setEnchantmentForTools(Enchantments.SHARPNESS, 5);
-        TungstenCarbide			.setEnchantmentForTools(Enchantments.SHARPNESS, 5);
-        HSSE					.setEnchantmentForTools(Enchantments.SHARPNESS, 5);
-        HSSG					.setEnchantmentForTools(Enchantments.SHARPNESS, 4);
-        HSSS					.setEnchantmentForTools(Enchantments.SHARPNESS, 5);
-
-        FryingOilHot			.setHeatDamage(1.0F);
-        Lava					.setHeatDamage(3.0F);
-        Pyrotheum				.setHeatDamage(5.0F);
+        Iron					.addEnchantmentForTools(Enchantments.SHARPNESS, 1);
+        Bronze					.addEnchantmentForTools(Enchantments.SHARPNESS, 1);
+        Brass					.addEnchantmentForTools(Enchantments.SHARPNESS, 2);
+        Steel					.addEnchantmentForTools(Enchantments.SHARPNESS, 2);
+        WroughtIron				.addEnchantmentForTools(Enchantments.SHARPNESS, 2);
+        StainlessSteel			.addEnchantmentForTools(Enchantments.SHARPNESS, 3);
+        BlackSteel				.addEnchantmentForTools(Enchantments.SHARPNESS, 4);
+        RedSteel				.addEnchantmentForTools(Enchantments.SHARPNESS, 4);
+        BlueSteel				.addEnchantmentForTools(Enchantments.SHARPNESS, 5);
+        DamascusSteel			.addEnchantmentForTools(Enchantments.SHARPNESS, 5);
+        TungstenCarbide			.addEnchantmentForTools(Enchantments.SHARPNESS, 5);
+        HSSE					.addEnchantmentForTools(Enchantments.SHARPNESS, 5);
+        HSSG					.addEnchantmentForTools(Enchantments.SHARPNESS, 4);
+        HSSS					.addEnchantmentForTools(Enchantments.SHARPNESS, 5);
 
         Chalcopyrite			.addOreByProducts(Pyrite				, Cobalt				, Cadmium				, Gold			);
         Sphalerite				.addOreByProducts(GarnetYellow			, Cadmium				, Gallium				, Zinc			);
@@ -672,149 +660,121 @@ public class Materials {
         RockSalt				.addOreByProducts(Salt					);
         Andesite                .addOreByProducts(Basalt                );
         Diorite                 .addOreByProducts(NetherQuartz          );
-
-        Glue.chemicalFormula = "No Horses were harmed for the Production";
-        UUAmplifier.chemicalFormula = "Accelerates the Mass Fabricator";
-        WoodSealed.chemicalFormula = "";
-        Wood.chemicalFormula = "";
-        NaquadahEnriched.chemicalFormula = "Nq+";
-        Naquadah.chemicalFormula = "Nq";
-        Naquadria.chemicalFormula = "NqX";
     }
 
     private static void initSubTags() {
-        SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM.addTo(Bastnasite, Monazite);
-        SubTag.ELECTROMAGNETIC_SEPERATION_GOLD.addTo(Magnetite, VanadiumMagnetite, BasalticMineralSand, GraniticMineralSand);
-        SubTag.ELECTROMAGNETIC_SEPERATION_IRON.addTo(YellowLimonite, BrownLimonite, Pyrite, BandedIron, Nickel, Vermiculite, Glauconite, GlauconiteSand, Pentlandite, Tin, Antimony, Ilmenite, Manganese, Chrome, Chromite, Andradite);
-        SubTag.BLASTFURNACE_CALCITE_DOUBLE.addTo(Pyrite, YellowLimonite, BasalticMineralSand, GraniticMineralSand);
-        SubTag.BLASTFURNACE_CALCITE_TRIPLE.addTo(Iron, PigIron, WroughtIron, BrownLimonite);
-        SubTag.WASHING_MERCURY.addTo(Gold, Silver, Osmium, Platinum, Cooperite);
-        SubTag.WASHING_SODIUMPERSULFATE.addTo(Zinc, Nickel, Copper, Cobalt, Cobaltite, Tetrahedrite);
-        SubTag.METAL.addTo(AnyIron, AnyCopper, AnyBronze, Aluminium, Americium, Antimony, Beryllium, Bismuth, Caesium, Cerium, Chrome, Cobalt, Copper, Dysprosium, Erbium, Europium, Gadolinium, Gallium, Gold,
-                Holmium, Indium, Iridium, Iron, Lanthanum, Lead, Lutetium, Magnesium, Manganese, Mercury, Niobium, Molybdenum, Neodymium, Neutronium, Nickel, Osmium, Palladium, Platinum, Plutonium, Plutonium241,
-                Praseodymium, Promethium, Rubidium, Samarium, Scandium, Silicon, Silver, Tantalum, Tellurium, Terbium, Thorium, Thulium, Tin, Titanium, Tungsten, Uranium, Uranium235, Vanadium, Ytterbium, Yttrium,
-                Zinc, TinAlloy, Duranium, Naquadah, NaquadahAlloy, NaquadahEnriched, Naquadria, Tritanium, AluminiumBrass, Osmiridium, AnnealedCopper, BatteryAlloy, Brass, Bronze, ChromiumDioxide, Cupronickel,
-                Electrum, Invar, IronCompressed, Kanthal, Magnalium, Nichrome, NiobiumNitride, NiobiumTitanium, PigIron, SolderingAlloy, StainlessSteel, Steel, Ultimet, VanadiumGallium, WroughtIron,
-                YttriumBariumCuprate, Alumite, Manyullyn, SterlingSilver, RoseGold, BlackBronze, BismuthBronze, BlackSteel, RedSteel, BlueSteel, DamascusSteel,
-                TungstenSteel, BlueAlloy, RedAlloy, CobaltBrass, IronMagnetic, SteelMagnetic, NeodymiumMagnetic, HSSG, HSSE, HSSS, TungstenCarbide,
-                VanadiumSteel);
+        for(DustMaterial dustMaterial : new DustMaterial[] {Bastnasite, Monazite}) {
+            dustMaterial.separatedOnto = Neodymium;
+        }
+        for(DustMaterial dustMaterial : new DustMaterial[] {Magnetite, VanadiumMagnetite, BasalticMineralSand, GraniticMineralSand}) {
+            dustMaterial.separatedOnto = Gold;
+        }
+        for(DustMaterial dustMaterial : new DustMaterial[] {YellowLimonite, BrownLimonite, Pyrite, BandedIron, Nickel, Vermiculite, Glauconite, GlauconiteSand, Pentlandite, Tin, Antimony, Ilmenite, Manganese, Chrome, Chromite, Andradite}) {
+            dustMaterial.separatedOnto = Iron;
+        }
+        for(DustMaterial dustMaterial : new DustMaterial[] {Pyrite, YellowLimonite, BasalticMineralSand, GraniticMineralSand}) {
+            dustMaterial.add(BLAST_FURNACE_CALCITE_DOUBLE);
+        }
+        for(DustMaterial dustMaterial : new DustMaterial[] {Iron, PigIron, WroughtIron, BrownLimonite}) {
+            dustMaterial.add(BLAST_FURNACE_CALCITE_TRIPLE);
+        }
+        for(DustMaterial dustMaterial : new DustMaterial[] {Gold, Silver, Osmium, Platinum, Cooperite}) {
+            dustMaterial.washedIn = Mercury;
+        }
+        for(DustMaterial dustMaterial : new DustMaterial[] {Zinc, Nickel, Copper, Cobalt, Cobaltite, Tetrahedrite}) {
+            dustMaterial.washedIn = SodiumPersulfate;
+        }
+        
+        Paper.add(FLAMMABLE | NO_SMELTING | NO_SMASHING | MORTAR_GRINDABLE);
+        Coal.add(FLAMMABLE |NO_SMELTING |NO_SMASHING |MORTAR_GRINDABLE);
+        Charcoal.add(FLAMMABLE |NO_SMELTING |NO_SMASHING |MORTAR_GRINDABLE);
+        Lignite.add(FLAMMABLE |NO_SMELTING |NO_SMASHING |MORTAR_GRINDABLE);
 
-        SubTag.FOOD.addTo(MeatRaw, MeatCooked, Ice, Water, Salt, Chili, Cocoa, Cheese, Coffee, Chocolate, Milk, Honey, FryingOilHot, FishOil, SeedOil, Sugar, FreshWater);
+        Rubber.add(FLAMMABLE | NO_SMASHING);
+        Plastic.add(FLAMMABLE | NO_SMASHING);
+        Silicone.add(FLAMMABLE | NO_SMASHING);
 
-        Wood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
-        WoodSealed.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING, SubTag.NO_WORKING);
+        Gunpowder.add(FLAMMABLE | EXPLOSIVE | NO_SMELTING | NO_SMASHING);
+        Glyceryl.add(FLAMMABLE | EXPLOSIVE | NO_SMELTING | NO_SMASHING);
+        NitroFuel.add(FLAMMABLE | EXPLOSIVE | NO_SMELTING | NO_SMASHING);
+        NitroCarbon.add(FLAMMABLE | EXPLOSIVE | NO_SMELTING | NO_SMASHING);
 
-        MeatRaw.add(SubTag.NO_SMASHING);
-        MeatCooked.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        Snow.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.NO_RECYCLING);
-        Ice.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.NO_RECYCLING);
-        Water.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.NO_RECYCLING);
-        Sulfur.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE);
-        Saltpeter.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE);
-        Graphite.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE, SubTag.NO_SMELTING);
+        Lead.add(MORTAR_GRINDABLE);
+        Tin.add(MORTAR_GRINDABLE);
+        SolderingAlloy.add(MORTAR_GRINDABLE);
 
-        Paper.add(SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING, SubTag.MORTAR_GRINDABLE, SubTag.PAPER);
-        Coal.add(SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING, SubTag.MORTAR_GRINDABLE);
-        Charcoal.add(SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING, SubTag.MORTAR_GRINDABLE);
-        Lignite.add(SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING, SubTag.MORTAR_GRINDABLE);
+        Cheese.add(SMELT_INTO_FLUID);
+        Sugar.add(SMELT_INTO_FLUID);
 
-        Rubber.add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.BOUNCY, SubTag.STRETCHY);
-        Plastic.add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.BOUNCY);
-        Silicone.add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.BOUNCY, SubTag.STRETCHY);
+        Concrete.add(NO_SMASHING | SMELT_INTO_FLUID);
+        ConstructionFoam.add(NO_SMASHING |EXPLOSIVE |NO_SMELTING);
+        Redstone.add(NO_SMASHING |SMELT_INTO_FLUID);
+        Glowstone.add(NO_SMASHING | SMELT_INTO_FLUID);
+        Netherrack.add(NO_SMASHING | FLAMMABLE);
+        Stone.add(NO_SMASHING |NO_RECYCLING);
+        Endstone.add(NO_SMASHING);
+        Marble.add(NO_SMASHING);
+        Basalt.add(NO_SMASHING);
+        Redrock.add(NO_SMASHING);
+        Obsidian.add(NO_SMASHING);
+        Flint.add(NO_SMASHING |MORTAR_GRINDABLE);
+        GraniteRed.add(NO_SMASHING);
+        GraniteBlack.add(NO_SMASHING);
+        Salt.add(NO_SMASHING);
+        RockSalt.add(NO_SMASHING);
+        Andesite.add(NO_SMASHING);
+        Diorite.add(NO_SMASHING);
 
-        Gunpowder.add(SubTag.FLAMMABLE, SubTag.EXPLOSIVE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
-        Glyceryl.add(SubTag.FLAMMABLE, SubTag.EXPLOSIVE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
-        NitroFuel.add(SubTag.FLAMMABLE, SubTag.EXPLOSIVE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
-        NitroCarbon.add(SubTag.FLAMMABLE, SubTag.EXPLOSIVE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
+        Gold.add(MORTAR_GRINDABLE);
+        Silver.add(MORTAR_GRINDABLE);
+        Iron.add(MORTAR_GRINDABLE);
+        IronMagnetic.add(MORTAR_GRINDABLE);
+        Steel.add(MORTAR_GRINDABLE);
+        SteelMagnetic.add(MORTAR_GRINDABLE);
+        Zinc.add(MORTAR_GRINDABLE);
+        Antimony.add(MORTAR_GRINDABLE);
+        Copper.add(MORTAR_GRINDABLE);
+        AnnealedCopper.add(MORTAR_GRINDABLE);
+        Bronze.add(MORTAR_GRINDABLE);
+        Nickel.add(MORTAR_GRINDABLE);
+        Invar.add(MORTAR_GRINDABLE);
+        Brass.add(MORTAR_GRINDABLE);
+        WroughtIron.add(MORTAR_GRINDABLE);
+        Electrum.add(MORTAR_GRINDABLE);
+        Clay.add(MORTAR_GRINDABLE);
 
-        Lead.add(SubTag.MORTAR_GRINDABLE, SubTag.SOLDERING_MATERIAL, SubTag.SOLDERING_MATERIAL_BAD);
-        Tin.add(SubTag.MORTAR_GRINDABLE, SubTag.SOLDERING_MATERIAL);
-        SolderingAlloy.add(SubTag.MORTAR_GRINDABLE, SubTag.SOLDERING_MATERIAL, SubTag.SOLDERING_MATERIAL_GOOD);
-
-        Cheese.add(SubTag.SMELTING_TO_FLUID);
-        Sugar.add(SubTag.SMELTING_TO_FLUID);
-
-        Concrete.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.SMELTING_TO_FLUID);
-        ConstructionFoam.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.EXPLOSIVE, SubTag.NO_SMELTING);
-        Redstone.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE, SubTag.SMELTING_TO_FLUID, SubTag.PULVERIZING_CINNABAR);
-        Glowstone.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE, SubTag.SMELTING_TO_FLUID);
-        Netherrack.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE, SubTag.FLAMMABLE);
-        Stone.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.NO_RECYCLING);
-        Endstone.add(SubTag.STONE, SubTag.NO_SMASHING);
-        Marble.add(SubTag.STONE, SubTag.NO_SMASHING);
-        Basalt.add(SubTag.STONE, SubTag.NO_SMASHING);
-        Redrock.add(SubTag.STONE, SubTag.NO_SMASHING);
-        Obsidian.add(SubTag.STONE, SubTag.NO_SMASHING);
-        Flint.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.MORTAR_GRINDABLE);
-        GraniteRed.add(SubTag.STONE, SubTag.NO_SMASHING);
-        GraniteBlack.add(SubTag.STONE, SubTag.NO_SMASHING);
-        Salt.add(SubTag.STONE, SubTag.NO_SMASHING);
-        RockSalt.add(SubTag.STONE, SubTag.NO_SMASHING);
-        Andesite.add(SubTag.STONE, SubTag.NO_SMASHING);
-        Diorite.add(SubTag.STONE, SubTag.NO_SMASHING);
-
-        Gold.add(SubTag.MORTAR_GRINDABLE);
-        Silver.add(SubTag.MORTAR_GRINDABLE);
-        Iron.add(SubTag.MORTAR_GRINDABLE);
-        IronMagnetic.add(SubTag.MORTAR_GRINDABLE);
-        Steel.add(SubTag.MORTAR_GRINDABLE);
-        SteelMagnetic.add(SubTag.MORTAR_GRINDABLE);
-        Zinc.add(SubTag.MORTAR_GRINDABLE);
-        Antimony.add(SubTag.MORTAR_GRINDABLE);
-        Copper.add(SubTag.MORTAR_GRINDABLE);
-        AnnealedCopper.add(SubTag.MORTAR_GRINDABLE);
-        Bronze.add(SubTag.MORTAR_GRINDABLE);
-        Nickel.add(SubTag.MORTAR_GRINDABLE);
-        Invar.add(SubTag.MORTAR_GRINDABLE);
-        Brass.add(SubTag.MORTAR_GRINDABLE);
-        WroughtIron.add(SubTag.MORTAR_GRINDABLE);
-        Electrum.add(SubTag.MORTAR_GRINDABLE);
-        Clay.add(SubTag.MORTAR_GRINDABLE);
-
-        Glass.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_RECYCLING, SubTag.SMELTING_TO_FLUID);
-        Diamond.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE);
-        Emerald.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        Amethyst.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        Tanzanite.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        Topaz.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        BlueTopaz.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        GreenSapphire.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        Sapphire.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        Ruby.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        Opal.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        Olivine.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        Jasper.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        GarnetRed.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        GarnetYellow.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        Niter.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        Apatite.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE);
-        Lapis.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE);
-        Sodalite.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE);
-        Lazurite.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE);
-        Monazite.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE);
-        Quartzite.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
-        SiliconDioxide.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
-        NetherQuartz.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
-        CertusQuartz.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
-        Phosphorus.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE, SubTag.EXPLOSIVE);
-        Phosphate.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE, SubTag.EXPLOSIVE);
-        Vinteum.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
-        NetherStar.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
-        EnderPearl.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.PEARL);
-        EnderEye.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.PEARL);
-        Magic.add(SubTag.CRYSTAL, SubTag.MAGICAL, SubTag.UNBURNABLE);
-        Blaze.add(SubTag.MAGICAL, SubTag.NO_SMELTING, SubTag.SMELTING_TO_FLUID, SubTag.MORTAR_GRINDABLE, SubTag.UNBURNABLE, SubTag.BURNING);
-
-        Primitive.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        Basic.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        Good.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        Advanced.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        Data.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        Elite.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        Master.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        Ultimate.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        Superconductor.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        Infinite.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        Glass.add( NO_SMASHING | NO_RECYCLING | SMELT_INTO_FLUID);
+        Diamond.add(NO_SMASHING |NO_SMELTING |FLAMMABLE);
+        Emerald.add(NO_SMASHING |NO_SMELTING);
+        Amethyst.add(NO_SMASHING |NO_SMELTING);
+        Tanzanite.add(NO_SMASHING |NO_SMELTING);
+        Topaz.add(NO_SMASHING |NO_SMELTING);
+        BlueTopaz.add(NO_SMASHING |NO_SMELTING);
+        GreenSapphire.add(NO_SMASHING |NO_SMELTING);
+        Sapphire.add(NO_SMASHING |NO_SMELTING);
+        Ruby.add(NO_SMASHING |NO_SMELTING);
+        Opal.add(NO_SMASHING |NO_SMELTING);
+        Olivine.add(NO_SMASHING |NO_SMELTING);
+        Jasper.add(NO_SMASHING |NO_SMELTING);
+        GarnetRed.add(NO_SMASHING |NO_SMELTING);
+        GarnetYellow.add(NO_SMASHING |NO_SMELTING);
+        Niter.add(NO_SMASHING |NO_SMELTING);
+        Apatite.add(NO_SMASHING |NO_SMELTING |CRYSTALLISABLE);
+        Lapis.add(NO_SMASHING |NO_SMELTING |CRYSTALLISABLE);
+        Sodalite.add(NO_SMASHING |NO_SMELTING |CRYSTALLISABLE);
+        Lazurite.add(NO_SMASHING |NO_SMELTING |CRYSTALLISABLE);
+        Monazite.add(NO_SMASHING |NO_SMELTING |CRYSTALLISABLE);
+        Quartzite.add(NO_SMASHING |NO_SMELTING |CRYSTALLISABLE);
+        SiliconDioxide.add(NO_SMASHING |NO_SMELTING |CRYSTALLISABLE);
+        NetherQuartz.add(NO_SMASHING |NO_SMELTING |CRYSTALLISABLE);
+        CertusQuartz.add(NO_SMASHING |NO_SMELTING |CRYSTALLISABLE);
+        Phosphorus.add(NO_SMASHING |NO_SMELTING |FLAMMABLE |EXPLOSIVE);
+        Phosphate.add(NO_SMASHING |NO_SMELTING |FLAMMABLE |EXPLOSIVE);
+        Vinteum.add(NO_SMASHING |NO_SMELTING);
+        NetherStar.add(NO_SMASHING |NO_SMELTING);
+        EnderPearl.add(NO_SMASHING |NO_SMELTING);
+        EnderEye.add(NO_SMASHING |NO_SMELTING);
+        Blaze.add(NO_SMELTING |SMELT_INTO_FLUID |MORTAR_GRINDABLE | BURNING);
     }
 
 }

@@ -116,4 +116,14 @@ public class MetalMaterial extends SolidMaterial {
         return super.verifyMaterialBits(generationBits);
     }
 
+    public MetalMaterial setSmeltingInto(MetalMaterial smeltInto) {
+        this.smeltInto = smeltInto;
+        return this;
+    }
+
+    public MetalMaterial setArcSmeltingInto(MetalMaterial arcSmeltingInto) {
+        this.arcSmeltInto = arcSmeltingInto;
+        return this;
+    }
+
 }

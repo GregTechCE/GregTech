@@ -158,8 +158,12 @@ public abstract class Material implements Comparable<Material> {
 		return materialBits;
 	}
 
-	public void add(int materialGenerationFlags) {
-		this.materialGenerationFlags |= verifyMaterialBits(materialGenerationFlags);
+	public void add(int... materialGenerationFlags) {
+		int combined = 0;
+		for (int materialGenerationFlag : materialGenerationFlags) {
+			combined |= materialGenerationFlag;
+		}
+		this.materialGenerationFlags |= verifyMaterialBits(combined);
 	}
 
 	public boolean hasFlag(int generationFlag) {

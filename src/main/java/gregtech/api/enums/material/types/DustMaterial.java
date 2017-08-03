@@ -7,6 +7,7 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.FPUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.function.Function;
 
 import static gregtech.api.enums.material.types.Material.MatFlags.createFlag;
@@ -55,7 +56,7 @@ public class DustMaterial extends FluidMaterial {
     /**
      * List of ore by products
      */
-    public final ArrayList<DustMaterial> oreByProducts = new ArrayList<>();
+    public final ArrayList<FluidMaterial> oreByProducts = new ArrayList<>();
 
     /**
      * Crushed ore output amount multiplier during maceration
@@ -98,6 +99,30 @@ public class DustMaterial extends FluidMaterial {
     @Override
     public boolean shouldGenerateFluid() {
         return hasFlag(MatFlags.SMELT_INTO_FLUID);
+    }
+
+    public void addOreByProducts(FluidMaterial... byProducts) {
+        this.oreByProducts.addAll(Arrays.asList(byProducts));
+    }
+
+    public DustMaterial setDirectSmelting(SolidMaterial directSmelting) {
+        this.directSmelting = directSmelting;
+        return this;
+    }
+
+    public DustMaterial setOreMultiplier(int oreMultiplier) {
+        this.oreMultiplier = oreMultiplier;
+        return this;
+    }
+
+    public DustMaterial setSmeltingMultiplier(int smeltingMultiplier) {
+        this.smeltingMultiplier = smeltingMultiplier;
+        return this;
+    }
+
+    public DustMaterial setByProductMultiplier(int byProductMultiplier) {
+        this.byProductMultiplier = byProductMultiplier;
+        return this;
     }
 
 }

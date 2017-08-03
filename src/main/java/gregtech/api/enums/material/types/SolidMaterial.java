@@ -96,4 +96,13 @@ public class SolidMaterial extends DustMaterial {
         return super.verifyMaterialBits(generationBits);
     }
 
+    public SolidMaterial setMaceratingInto(DustMaterial macerateInto) {
+        this.macerateInto = macerateInto;
+        return this;
+    }
+
+    public void addEnchantmentForTools(Enchantment enchantment, int level) {
+        toolEnchantments.add(new EnchantmentData(enchantment, level));
+    }
+
 }
