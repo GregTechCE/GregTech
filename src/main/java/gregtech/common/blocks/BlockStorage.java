@@ -2,16 +2,14 @@ package gregtech.common.blocks;
 
 import com.google.common.collect.Lists;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.material.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.material.types.Material;
 import gregtech.api.items.GenericBlock;
 import gregtech.api.util.GT_LanguageManager;
-//import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.blocks.itemblocks.ItemStorage;
 import gregtech.common.blocks.properties.PropertyMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -28,10 +26,10 @@ public abstract class BlockStorage extends GenericBlock {
 
     private PropertyMaterial MATERIAL;
 
-    public static Block createStorageBlock(String name, Materials[] materials, OrePrefixes prefix){
+    public static Block createStorageBlock(String name, Material[] materials, OrePrefixes prefix){
         return new BlockStorage(name, prefix){
             @Override
-            public Materials[] getMaterials() {
+            public Material[] getMaterials() {
                 return materials;
             }
         };
@@ -40,12 +38,12 @@ public abstract class BlockStorage extends GenericBlock {
     public OrePrefixes prefix;
 
     private BlockStorage(String name, OrePrefixes prefix) {
-        super(name, ItemStorage.class, Material.IRON);
+        super(name, ItemStorage.class, net.minecraft.block.material.Material.IRON);
         this.prefix = prefix;
 
         for (int i = 0; i < getMaterials().length; i++) {
-            if (getMaterials()[i].mMetaItemSubID > 0 && getMaterials()[i].mHasParentMod) {
-                GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + i + ".name", "Block of " + getMaterials()[i].mDefaultLocalName);
+            if (Material.MATERIAL_REGISTRY.containsKey(getMaterials()[i].toString())) {
+                GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + i + ".name", "Block of " + getMaterials()[i].defaultLocalName);
 //                GT_OreDictUnificator.registerOre(prefix, getMaterials()[i], new ItemStack(this, 1, i));
             }
         }
@@ -55,7 +53,7 @@ public abstract class BlockStorage extends GenericBlock {
         setCreativeTab(GregTech_API.TAB_GREGTECH_MATERIALS);
     }
 
-    public abstract Materials[] getMaterials();
+    public abstract Material[] getMaterials();
 
     public PropertyMaterial getMaterialProperty() {
         if (this.MATERIAL == null) {
@@ -80,7 +78,7 @@ public abstract class BlockStorage extends GenericBlock {
      */
     @Override
     public int getMetaFromState(IBlockState state) {
-        Materials material = state.getValue(getMaterialProperty());
+        Material material = state.getValue(getMaterialProperty());
 
         int meta = 0;
         for (int i = 0; i < getMaterials().length; i++) {

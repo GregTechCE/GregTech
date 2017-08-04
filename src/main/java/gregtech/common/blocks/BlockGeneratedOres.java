@@ -2,17 +2,17 @@ package gregtech.common.blocks;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.material.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneTypes;
+import gregtech.api.enums.material.Materials;
+import gregtech.api.enums.material.types.DustMaterial;
+import gregtech.api.enums.material.types.Material;
 import gregtech.api.items.GenericBlock;
 import gregtech.api.util.GT_LanguageManager;
-//import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.blocks.itemblocks.ItemGeneratedOres;
-import gregtech.common.blocks.properties.PropertyMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -27,64 +27,32 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 
-public abstract class BlockGeneratedOres extends GenericBlock {
-
-    // We have only 1 bit to store material
-    public static final int MATERIALS_PER_BLOCK = 2;
+public class BlockGeneratedOres extends GenericBlock {
 
     public static final PropertyEnum<StoneTypes> STONE_TYPE = PropertyEnum.create("stone_type", StoneTypes.class);
-    private PropertyMaterial MATERIAL;
+    public static final PropertyBool SMALL = PropertyBool.create("small");
 
-    private static int nextId;
-
-    public static BlockGeneratedOres[] generatedOres;
-    public static BlockGeneratedOres[] generatedOresSmall;
+    public static final Map<Material, BlockGeneratedOres> GENERATED_ORES = new HashMap<>();
 
     public static void registerOreBlocks() {
         System.out.println("REGISTERING ORE BLOCKS...");
 
-        generatedOres = new BlockGeneratedOres[GregTech_API.sGeneratedMaterials.length];
-        generatedOresSmall = new BlockGeneratedOres[GregTech_API.sGeneratedMaterials.length];
-
-        Materials[] lastMats = new Materials[MATERIALS_PER_BLOCK];
-        int length = 0;
-        for(Materials material : GregTech_API.sGeneratedMaterials) {
-            if(material != null && (material.mTypes & 0x08) != 0) {
-                lastMats[length++] = material;
-                if(length == MATERIALS_PER_BLOCK) {
-                    createOreBlock(lastMats);
-                    lastMats = new Materials[MATERIALS_PER_BLOCK];
-                    length = 0;
-                }
+        int oreAmount = 0;
+        for(Material material : Material.MATERIAL_REGISTRY) {
+            if(material.hasFlag(DustMaterial.MatFlags.GENERATE_ORE)) {
+                new BlockGeneratedOres(material);
+                oreAmount++;
             }
         }
-        if(length != 0) {
-            Materials[] materials = Arrays.stream(lastMats).filter(Objects::nonNull).toArray(Materials[]::new);
-            createOreBlock(materials);
-        }
-        System.out.println("ORE BLOCKS REGISTERED: " + nextId);
+
+        System.out.println("ORE BLOCKS REGISTERED: " + oreAmount);
     }
 
-    private static void createOreBlock(Materials[] materials){
-        new BlockGeneratedOres(false) {
-            @Override
-            public Materials[] getMaterials() {
-                return materials;
-            }
-        };
-        new BlockGeneratedOres(true) {
-            @Override
-            public Materials[] getMaterials() {
-                return materials;
-            }
-        };
-    }
-
-    public static boolean setOreBlock(World world, BlockPos pos, int materialSubId, boolean small) {
+    public static boolean setOreBlock(World world, BlockPos pos, Material material, boolean small) {
         IBlockState prevState = world.getBlockState(pos);
         Block block = prevState.getBlock();
         int metadata = block.getMetaFromState(prevState);
@@ -92,59 +60,50 @@ public abstract class BlockGeneratedOres extends GenericBlock {
         int variantId = 0;
 
         if(block == Blocks.STONE) {
-            variantId = StoneTypes.STONE.mId;
+            variantId = StoneTypes.STONE.id;
         } else if(block == GregTech_API.sBlockGranites) {
             if(metadata == 0)
-                variantId = StoneTypes.BLACK_GRANITE.mId;
-            else if(metadata == 8) variantId = StoneTypes.RED_GRANITE.mId;
+                variantId = StoneTypes.BLACK_GRANITE.id;
+            else if(metadata == 8) variantId = StoneTypes.RED_GRANITE.id;
         } else if(block == GregTech_API.sBlockStones) {
             if(metadata == 0)
-                variantId = StoneTypes.MARBLE.mId;
-            else if(metadata == 8) variantId = StoneTypes.BASALT.mId;
+                variantId = StoneTypes.MARBLE.id;
+            else if(metadata == 8) variantId = StoneTypes.BASALT.id;
         } else if(block == Blocks.NETHERRACK) {
-            variantId = StoneTypes.NETHERRACK.mId;
+            variantId = StoneTypes.NETHERRACK.id;
         } else if(block == Blocks.END_STONE) {
-            variantId = StoneTypes.ENDSTONE.mId;
+            variantId = StoneTypes.ENDSTONE.id;
         } else {
             return false;
         }
 
-        BlockGeneratedOres oreBlock = (small ? generatedOresSmall : generatedOres)[materialSubId];
-
-        IBlockState blockState = oreBlock.getDefaultState()
-                .withProperty(STONE_TYPE, StoneTypes.mTypes[variantId])
-                .withProperty(oreBlock.getMaterialProperty(), GregTech_API.sGeneratedMaterials[materialSubId]);
+        IBlockState blockState = GENERATED_ORES.get(material)
+                .getDefaultState()
+                .withProperty(STONE_TYPE, StoneTypes.TYPES[variantId])
+                .withProperty(SMALL, small);
 
         return world.setBlockState(pos, blockState);
     }
 
-    public final boolean small;
-    public int id;
+    public final Material material;
 
-    protected BlockGeneratedOres(boolean small) {
-        super("blockores." + nextId, ItemGeneratedOres.class, Material.ROCK, false);
+    protected BlockGeneratedOres(Material material) {
+        super("blockores." + material, ItemGeneratedOres.class, net.minecraft.block.material.Material.ROCK, false);
 
-        this.id = nextId;
-        this.small = small;
+        this.material = material;
 
-        if (getMaterials().length > MATERIALS_PER_BLOCK)
-            throw new IllegalArgumentException("Materials.length must not be > MATERIALS_PER_BLOCK");
-
-        for (int i = 0; i < getMaterials().length; i++) {
-            (small ? generatedOresSmall : generatedOres)[getMaterials()[i].mMetaItemSubID] = this;
-        }
+        GENERATED_ORES.put(material, this);
 
         this.setDefaultState(this.blockState.getBaseState()
                 .withProperty(STONE_TYPE, StoneTypes.STONE)
-                .withProperty(getMaterialProperty(), getMaterialProperty().getFirstType()));
+                .withProperty(SMALL, false));
 
-        for (int i = 0; i < StoneTypes.mTypes.length; i++) {
-            for (int j = 0; j < getMaterials().length; j++) {
-                Materials material = getMaterials()[j];
+        for (int i = 0; i < StoneTypes.TYPES.length; i++) {
+            for (boolean small : new boolean[]{true, false}) {
 
                 IBlockState blockState = this.getDefaultState()
-                        .withProperty(STONE_TYPE, StoneTypes.mTypes[i])
-                        .withProperty(getMaterialProperty(), material);
+                        .withProperty(STONE_TYPE, StoneTypes.TYPES[i])
+                        .withProperty(SMALL, small);
 
                 ItemStack itemStack = createStackedBlock(blockState);
 //                GT_OreDictUnificator.registerOre(StoneTypes.mTypes[i].processingPrefix.get(this.getMaterials()[j]), itemStack);
@@ -154,25 +113,14 @@ public abstract class BlockGeneratedOres extends GenericBlock {
 
         setSoundType(SoundType.STONE);
         setCreativeTab(GregTech_API.TAB_GREGTECH_ORES);
-        nextId++;
     }
 
-    public abstract Materials[] getMaterials();
-
-    public PropertyMaterial getMaterialProperty() {
-        if (this.MATERIAL == null) {
-            this.MATERIAL = PropertyMaterial.create("material", getMaterials());
+    public Material getMaterialSafe(IBlockState state) {
+        Block block = state.getBlock();
+        if (block instanceof BlockGeneratedOres) {
+            return ((BlockGeneratedOres) block).material;
         }
-        return this.MATERIAL;
-    }
 
-    public Materials getMaterialSafe(IBlockState state) {
-        Materials material = state.getValue(getMaterialProperty());
-        for (int i = 0; i < getMaterials().length; i++) {
-            if (material == getMaterials()[i]) {
-                return material;
-            }
-        }
         return Materials.Air;
     }
 
@@ -180,7 +128,7 @@ public abstract class BlockGeneratedOres extends GenericBlock {
         return state.getValue(STONE_TYPE);
     }
 
-    public Materials getMaterialSafe(ItemStack stack) {
+    public Material getMaterialSafe(ItemStack stack) {
         IBlockState state = getStateFromMeta(stack.getMetadata());
         return getMaterialSafe(state);
     }
@@ -196,19 +144,19 @@ public abstract class BlockGeneratedOres extends GenericBlock {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, STONE_TYPE, getMaterialProperty());
+        return new BlockStateContainer(this, STONE_TYPE, SMALL);
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState()
-                .withProperty(STONE_TYPE, StoneTypes.mTypes[meta & 0b0111])
-                .withProperty(getMaterialProperty(), getMaterials()[(meta & 0b1000) >> 3]);
+                .withProperty(STONE_TYPE, StoneTypes.TYPES[meta & 0b0111])
+                .withProperty(SMALL, (meta & 0b1000) != 0);
     }
 
     /**
      * 0b0111 - STONE_TYPE mask
-     * 0b1000 - MATERIAL mask
+     * 0b1000 - SMALL mask
      *
      * One more stone type can be added
      *
@@ -218,24 +166,20 @@ public abstract class BlockGeneratedOres extends GenericBlock {
     public int getMetaFromState(IBlockState state) {
         int meta = 0;
 
-        meta |= state.getValue(STONE_TYPE).mId;
-
-        Materials material = state.getValue(getMaterialProperty());
-        for (int i = 0; i < getMaterials().length; i++) {
-            if (material == getMaterials()[i]){
-                meta |= i << 3;
-            }
+        meta |= state.getValue(STONE_TYPE).id;
+        if (state.getValue(SMALL)) {
+            meta |= 1 << 3;
         }
         return meta;
     }
 
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-        for (Materials material : getMaterials()) {
-            for (StoneTypes type : StoneTypes.mTypes) {
+        for (boolean small : new boolean[]{true, false}) {
+            for (StoneTypes type : StoneTypes.TYPES) {
                 IBlockState blockState = this.getDefaultState()
-                        .withProperty(getMaterialProperty(), material)
-                        .withProperty(STONE_TYPE, type);
+                        .withProperty(STONE_TYPE, type)
+                        .withProperty(SMALL, small);
                 list.add(createStackedBlock(blockState));
             }
         }
@@ -342,19 +286,8 @@ public abstract class BlockGeneratedOres extends GenericBlock {
 //        return dropList;
 //    }
 
-    public String getLocalizedName(Materials material) {
-        switch (material.mName) {
-
-            case "InfusedAir":
-            case "InfusedDull":
-            case "InfusedEarth":
-            case "InfusedEntropy":
-            case "InfusedFire":
-            case "InfusedOrder":
-            case "InfusedVis":
-            case "InfusedWater":
-                return material.mDefaultLocalName + " Infused Stone";
-
+    public String getLocalizedName(Material material) {
+        switch (material.defaultLocalName) {
             case "Vermiculite":
             case "Bentonite":
             case "Kaolinite":
@@ -367,10 +300,10 @@ public abstract class BlockGeneratedOres extends GenericBlock {
             case "QuartzSand":
             case "Pitchblende":
             case "FullersEarth":
-                return material.mDefaultLocalName;
+                return material.defaultLocalName;
 
             default:
-                return material.mDefaultLocalName + OrePrefixes.ore.mLocalizedMaterialPost;
+                return material.defaultLocalName + OrePrefixes.ore.mLocalizedMaterialPost;
         }
     }
 

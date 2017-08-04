@@ -457,18 +457,14 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		public CellInputRecipeBuilder cellAmount(int emptyCellCount) {
-			if (emptyCellCount <= 0) {
-				throw new IllegalArgumentException("Cell amount cannot be less than or equal to 0");
-			}
+			Validate.isTrue(emptyCellCount > 0, "Cell amount cannot be less than or equal to 0");
 
 			this.cellAmount = emptyCellCount;
 			return this;
 		}
 
 		public CellInputRecipeBuilder fuelCanAmount(int emptyCanCount) {
-			if (emptyCanCount <= 0) {
-				throw new IllegalArgumentException("Fuel Can amount cannot be less than or equal to 0");
-			}
+			Validate.isTrue(emptyCanCount > 0, "Fuel Can amount cannot be less than or equal to 0");
 
 			this.fuelCanAmount = emptyCanCount;
 			return this;
@@ -522,9 +518,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		public BlastRecipeBuilder blastFurnaceTemp(int blastFurnaceTemp) {
-			if (blastFurnaceTemp <= 0) {
-				throw new IllegalArgumentException("Blast Furnace Temperature cannot be less than or equal to 0");
-			}
+			Validate.isTrue(blastFurnaceTemp > 0, "Blast Furnace Temperature cannot be less than or equal to 0");
 
 			this.blastFurnaceTemp = blastFurnaceTemp;
 			return getThis();
@@ -790,7 +784,6 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		public BrewingRecipeBuilder fluidInput(@Nonnull Fluid input) {
 			Validate.notNull(inputs, "Fluid input cannot be null");
 
-			this.fluidInputs.clear();
 			this.fluidInputs.add(new FluidStack(input, 750));
 
 			return getThis();
@@ -799,7 +792,6 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		public BrewingRecipeBuilder fluidOutput(@Nonnull Fluid output) {
 			Validate.notNull(inputs, "Fluid output cannot be null");
 
-			this.fluidOutputs.clear();
 			this.fluidOutputs.add(new FluidStack(output, 750));
 
 			return getThis();
@@ -876,9 +868,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		public AssemblyLineRecipeBuilder researchTime(int researchTime) {
-			if (researchTime <= 0) {
-				throw new IllegalArgumentException("Research Time cannot be less or equal to 0");
-			}
+			Validate.isTrue(researchTime > 0, "Research Time cannot be less or equal to 0");
 
 			this.researchTime = researchTime;
 			return this;

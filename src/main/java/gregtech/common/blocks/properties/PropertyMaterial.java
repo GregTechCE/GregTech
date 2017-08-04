@@ -4,6 +4,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import gregtech.api.enums.material.Materials;
+import gregtech.api.enums.material.types.Material;
 import net.minecraft.block.properties.PropertyHelper;
 
 import javax.annotation.Nonnull;
@@ -13,31 +14,31 @@ import java.util.Collection;
  * @author exidex.
  * @since 03.05.2017.
  */
-public class PropertyMaterial extends PropertyHelper<Materials> {
+public class PropertyMaterial extends PropertyHelper<Material> {
 
-	private final ImmutableSet<Materials> allowedValues;
+	private final ImmutableSet<Material> allowedValues;
 
-	protected PropertyMaterial(String name, Collection<Materials> allowedValues) {
-		super(name, Materials.class);
+	protected PropertyMaterial(String name, Collection<Material> allowedValues) {
+		super(name, Material.class);
 		this.allowedValues = ImmutableSet.copyOf(allowedValues);
 	}
 
-	public static PropertyMaterial create(String name, Collection<Materials> allowedValues) {
+	public static PropertyMaterial create(String name, Collection<Material> allowedValues) {
 		return new PropertyMaterial(name, allowedValues);
 	}
 
-	public static PropertyMaterial create(String name, Materials... allowedValues) {
+	public static PropertyMaterial create(String name, Material... allowedValues) {
 		return new PropertyMaterial(name, Lists.newArrayList(allowedValues));
 	}
 
 	@Override
-	public Collection<Materials> getAllowedValues() {
+	public Collection<Material> getAllowedValues() {
 		return ImmutableSet.copyOf(this.allowedValues);
 	}
 
 	@Override
-	public Optional<Materials> parseValue(String value) {
-		Materials material = Materials.get(value);
+	public Optional<Material> parseValue(String value) {
+		Material material = Material.MATERIAL_REGISTRY.getObject(value);
 		if (this.allowedValues.contains(material)) {
 			return Optional.of(material);
 		}
@@ -45,13 +46,13 @@ public class PropertyMaterial extends PropertyHelper<Materials> {
 	}
 
 	@Nonnull
-	public Materials getFirstType() {
+	public Material getFirstType() {
 		return getAllowedValues().iterator().next();
 	}
 
 	@Override
-	public String getName(Materials material) {
-		return material.mName.toLowerCase();
+	public String getName(Material material) {
+		return material.toString();
 	}
 
 	@Override

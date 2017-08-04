@@ -2,6 +2,7 @@ package gregtech.api.enums;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.material.Materials;
+import gregtech.api.enums.material.types.Material;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -24,14 +25,14 @@ public enum StoneTypes implements IStringSerializable {
     BASALT("basalt", OrePrefixes.oreBasalt, Materials.Basalt);
 
 
-    public final int mId = ordinal();
+    public final int id = ordinal();
     public final String name;
     public final OrePrefixes processingPrefix;
-    public final Materials stoneMaterial;
+    public final Material stoneMaterial;
 
-    public static StoneTypes[] mTypes = values();
+    public static final StoneTypes[] TYPES = values();
 
-    StoneTypes(String name, OrePrefixes processingPrefix, Materials stoneMaterial) {
+    StoneTypes(String name, OrePrefixes processingPrefix, Material stoneMaterial) {
         this.name = name;
         this.processingPrefix = processingPrefix;
         this.stoneMaterial = stoneMaterial;

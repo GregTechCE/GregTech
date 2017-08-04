@@ -46,6 +46,7 @@ import static gregtech.api.enums.GT_Values.MODID;
  * @see IToolStats
  * @see MetaItem
  */
+@SuppressWarnings("unchecked")
 public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends MetaItem<T> implements IDamagableItem {
 
     public ToolMetaItem(String unlocalizedName) {

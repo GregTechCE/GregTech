@@ -1,14 +1,16 @@
 package gregtech.common.blocks;
 
 import gregtech.api.enums.material.Materials;
+import gregtech.api.enums.material.types.Material;
 import gregtech.api.util.GT_LanguageManager;
-//import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.blocks.itemblocks.ItemGranites;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+
+//import gregtech.api.util.GT_OreDictUnificator;
 
 
 public class BlockGranites extends BlockStonesAbstract {
@@ -51,9 +53,9 @@ public class BlockGranites extends BlockStonesAbstract {
     }
 
     @Override
-    public Materials[] getMaterials() {
+    public Material[] getMaterials() {
         if (materials == null) {
-            materials = new Materials[]{Materials.GraniteBlack, Materials.GraniteRed};
+            materials = new Material[]{Materials.GraniteBlack, Materials.GraniteRed};
         }
         return materials;
     }

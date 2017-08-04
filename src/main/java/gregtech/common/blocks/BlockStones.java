@@ -1,6 +1,7 @@
 package gregtech.common.blocks;
 
 import gregtech.api.enums.material.Materials;
+import gregtech.api.enums.material.types.Material;
 import gregtech.api.util.GT_LanguageManager;
 //import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.blocks.itemblocks.ItemGranites;
@@ -44,9 +45,9 @@ public class BlockStones extends BlockStonesAbstract {
     }
 
     @Override
-    public Materials[] getMaterials() {
+    public Material[] getMaterials() {
         if (materials == null) {
-            materials = new Materials[]{Materials.Marble, Materials.Basalt};
+            materials = new Material[]{Materials.Marble, Materials.Basalt};
         }
         return materials;
     }

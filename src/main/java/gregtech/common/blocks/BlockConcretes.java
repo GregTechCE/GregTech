@@ -1,8 +1,7 @@
 package gregtech.common.blocks;
 
-import gregtech.api.enums.material.Materials;
+import gregtech.api.enums.material.types.Material;
 import gregtech.api.util.GT_LanguageManager;
-//import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.blocks.itemblocks.ItemConcretes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
@@ -57,8 +56,8 @@ public class BlockConcretes extends BlockStonesAbstract {
      * This block does not use material but extends BlockStonesAbstract
      */
     @Override
-    public Materials[] getMaterials() {
-        return new Materials[0];
+    public Material[] getMaterials() {
+        return new Material[0];
     }
 
     @Override

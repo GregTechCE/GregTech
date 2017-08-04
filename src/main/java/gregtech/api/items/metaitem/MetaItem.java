@@ -57,7 +57,7 @@ import static gregtech.api.enums.GT_Values.MODID;
  * {@code addItem(0).setHandheld().addStats(new ElectricStats(10000, 1,  false)) }
  * This will add single-use handheld-rendered (unchargeable) LV battery with initial capacity 10000 EU
  */
-@SuppressWarnings("deprecation")
+@SuppressWarnings({"deprecation", "unchecked"})
 public class MetaItem<T extends MetaItem.MetaValueItem> extends GenericItem implements ISpecialElectricItem, IFluidContainerItem, IFuelHandler, IReactorComponent, IBoxable {
 
     private TShortObjectMap<T> metaItems = new TShortObjectHashMap<>();
@@ -456,6 +456,7 @@ public class MetaItem<T extends MetaItem.MetaValueItem> extends GenericItem impl
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getIcon(ItemStack itemStack, int renderPass) {
         MetaValueItem metaValueItem = getItem(itemStack);
         if(metaValueItem != null) {
@@ -465,6 +466,7 @@ public class MetaItem<T extends MetaItem.MetaValueItem> extends GenericItem impl
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public int getRenderPasses(ItemStack itemStack) {
         MetaValueItem metaValueItem = getItem(itemStack);
         if(metaValueItem != null) {
@@ -474,6 +476,7 @@ public class MetaItem<T extends MetaItem.MetaValueItem> extends GenericItem impl
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public int getColor(ItemStack itemStack, int pass) {
         MetaValueItem metaValueItem = getItem(itemStack);
         if(metaValueItem != null) {
