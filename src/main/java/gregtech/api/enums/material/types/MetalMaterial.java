@@ -30,6 +30,8 @@ public class MetalMaterial extends SolidMaterial {
         public static final int GENERATE_TRIPLE = createFlag(32);
         public static final int GENERATE_QUADRUPLE = createFlag(33);
         public static final int GENERATE_SMALL_GEAR = createFlag(34);
+        public static final int GENERATE_QUINTUPLE = createFlag(38);
+        public static final int GENERATE_DENSE = createFlag(39);
 
         /**
          * Add this to your Material if you want to have its Ore Calcite heated in a Blast Furnace for more output. Already listed are:
