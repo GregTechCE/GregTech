@@ -1,10 +1,9 @@
 package gregtech.api.metatileentity;
 
-import net.minecraft.client.renderer.EnumFaceDirection;
+import gregtech.api.objects.SimpleItemStack;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
@@ -13,19 +12,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -34,11 +29,10 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
-import static gregtech.api.enums.GT_Values.GT;
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.GT_Values.GT;
+import static gregtech.api.GT_Values.V;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -151,7 +145,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     public void registerIcons(TextureMap aBlockIconRegister) {/*Do nothing*/}
 
     @Override
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aStack) {
+    public boolean allowCoverOnSide(byte aSide, SimpleItemStack aStack) {
         return true;
     }
 

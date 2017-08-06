@@ -1,8 +1,11 @@
 package gregtech.loaders.oreprocessing;
 
 import gregtech.GT_Mod;
-import gregtech.api.enums.*;
-import gregtech.api.enums.material.Materials;
+import gregtech.api.ConfigCategories;
+import gregtech.api.GT_Values;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
+import gregtech.api.items.ItemList;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -25,7 +28,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
         if (aMaterial == Materials.Oilsands) {
             GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(1L, aStack), null, null, Materials.Oil.getFluid(tIsRich ? 1000L : 500L), new ItemStack(net.minecraft.init.Blocks.SAND, 1, 0), null, null, null, null, null, new int[]{tIsRich ? '?' : '?'}, tIsRich ? 2000 : 1000, 5);
         } else {
-            registerStandardOreRecipes(aPrefix, aMaterial, GT_Utility.copyAmount(1L, aStack), Math.max(1, gregtech.api.GregTech_API.sOPStuff.get(gregtech.api.enums.ConfigCategories.Materials.oreprocessingoutputmultiplier, aMaterial.toString(), 1)) * (tIsRich ? 2 : 1));
+            registerStandardOreRecipes(aPrefix, aMaterial, GT_Utility.copyAmount(1L, aStack), Math.max(1, gregtech.api.GregTech_API.sOPStuff.get(ConfigCategories.Materials.oreprocessingoutputmultiplier, aMaterial.toString(), 1)) * (tIsRich ? 2 : 1));
         }
     }
 

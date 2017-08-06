@@ -1,8 +1,9 @@
 package gregtech.common.tileentities.machines.basic;
 
-import gregtech.api.enums.ConfigCategories;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.material.Materials;
+import gregtech.api.GT_Values;
+import gregtech.api.ConfigCategories;
+import gregtech.api.items.ItemList;
+import gregtech.api.material.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -12,7 +13,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Config;
 import net.minecraftforge.fluids.FluidStack;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.GT_Values.V;
 
 public class GT_MetaTileEntity_Massfabricator
         extends GT_MetaTileEntity_BasicMachine {
@@ -56,7 +57,7 @@ public class GT_MetaTileEntity_Massfabricator
         FluidStack tFluid = getDrainableStack();
         if ((tFluid == null) || (tFluid.amount < getCapacity())) {
             this.mOutputFluid = Materials.UUMatter.getFluid(1L);
-            this.mEUt =  (((int) gregtech.api.enums.GT_Values.V[1]) * (int)Math.pow(2, this.mTier + 2));
+            this.mEUt =  (((int) GT_Values.V[1]) * (int)Math.pow(2, this.mTier + 2));
             this.mMaxProgresstime = (sDurationMultiplier / (1 << this.mTier - 1));
             if (((tFluid = getFillableStack()) != null) && (tFluid.amount >= sUUAperUUM) && (tFluid.isFluidEqual(Materials.UUAmplifier.getFluid(1L)))) {
                 tFluid.amount -= sUUAperUUM;

@@ -2,10 +2,10 @@ package gregtech.loaders.misc;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.material.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.GT_Values;
+import gregtech.api.items.ItemList;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;

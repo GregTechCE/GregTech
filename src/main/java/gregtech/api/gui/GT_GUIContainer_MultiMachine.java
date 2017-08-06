@@ -9,7 +9,7 @@ import ic2.core.ref.BlockName;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
-import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
+import static gregtech.api.GT_Values.RES_PATH_GUI;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!

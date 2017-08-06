@@ -7,7 +7,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.GT_Values.V;
 
 public class GT_MetaTileEntity_Hatch_Dynamo extends GT_MetaTileEntity_Hatch {
     public GT_MetaTileEntity_Hatch_Dynamo(int aID, String aName, String aNameRegional, int aTier) {

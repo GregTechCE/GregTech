@@ -1,9 +1,13 @@
 package gregtech.loaders.postload;
 
 import gregtech.GT_Mod;
+import gregtech.api.ConfigCategories;
+import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
-import gregtech.api.enums.material.Materials;
+import gregtech.api.material.Dyes;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
+import gregtech.api.items.ItemList;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.*;
 import ic2.api.recipe.ILiquidHeatExchangerManager.HeatExchangeProperty;

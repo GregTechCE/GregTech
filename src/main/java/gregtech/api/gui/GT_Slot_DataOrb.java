@@ -1,6 +1,6 @@
 package gregtech.api.gui;
 
-import gregtech.api.enums.ItemList;
+import gregtech.api.items.ItemList;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;

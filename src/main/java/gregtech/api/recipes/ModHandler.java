@@ -2,18 +2,18 @@ package gregtech.api.recipes;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OreDictNames;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.ToolDictNames;
-import gregtech.api.enums.material.Material;
-import gregtech.api.enums.material.Materials;
+import gregtech.api.ConfigCategories;
+import gregtech.api.items.ItemList;
+import gregtech.api.items.OreDictNames;
+import gregtech.api.material.OrePrefixes;
+import gregtech.api.items.ToolDictNames;
+import gregtech.api.material.Material;
+import gregtech.api.material.Materials;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.internal.IRemovableRecipe;
 import gregtech.api.objects.GT_HashSet;
-import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.SimpleItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_IBoxableWrapper;
@@ -73,12 +73,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import static gregtech.api.enums.GT_Values.B;
-import static gregtech.api.enums.GT_Values.D1;
-import static gregtech.api.enums.GT_Values.DW;
-import static gregtech.api.enums.GT_Values.M;
-import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.GT_Values.W;
+import static gregtech.api.GT_Values.B;
+import static gregtech.api.GT_Values.D1;
+import static gregtech.api.GT_Values.DW;
+import static gregtech.api.GT_Values.M;
+import static gregtech.api.GT_Values.V;
+import static gregtech.api.GT_Values.W;
 
 public class ModHandler {
     public static final List<IRecipe> SINGLE_NON_BLOCK_DAMAGABLE_RECIPE_LIST = new ArrayList<>(1000);
@@ -87,7 +87,7 @@ public class ModHandler {
 
     public static Collection<String> nativeRecipeClasses = new HashSet<>(), specialRecipeClasses = new HashSet<>();
 
-    public static GT_HashSet<GT_ItemStack> nonReplaceableItems = new GT_HashSet<>();
+    public static GT_HashSet<SimpleItemStack> nonReplaceableItems = new GT_HashSet<>();
 
     private static boolean bufferCraftingRecipes = true;
     private static final List<IRecipe> bufferRecipeList = new ArrayList<>(1000);

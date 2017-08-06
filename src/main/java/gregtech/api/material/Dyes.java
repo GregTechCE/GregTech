@@ -1,10 +1,9 @@
-package gregtech.api.enums;
+package gregtech.api.material;
 
 import gregtech.api.util.GT_Utility;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public enum Dyes {
@@ -55,7 +54,7 @@ public enum Dyes {
 
     public static Dyes get(int color) {
         if (color >= 0 && color < 16) return VALUES[color];
-        return _NULL;
+        return CLEAR;
     }
 
     public static int getModulation(int colorIndex, Dyes defaultModulation) {
@@ -71,7 +70,7 @@ public enum Dyes {
     public static Dyes get(String color) {
         Object tObject = GT_Utility.getFieldContent(Dyes.class, color, false, false);
         if (tObject instanceof Dyes) return (Dyes) tObject;
-        return _NULL;
+        return CLEAR;
     }
 
     public static boolean isAnyFluidDye(FluidStack fluid) {

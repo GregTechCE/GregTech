@@ -1,12 +1,13 @@
 package gregtech.common.tileentities.storage;
 
+import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
-import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.SimpleItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
@@ -82,11 +83,11 @@ public class GT_MetaTileEntity_Locker
     }
 
     public long maxEUStore() {
-        return gregtech.api.enums.GT_Values.V[this.mTier] * maxAmperesIn();
+        return GT_Values.V[this.mTier] * maxAmperesIn();
     }
 
     public long maxEUInput() {
-        return gregtech.api.enums.GT_Values.V[this.mTier];
+        return GT_Values.V[this.mTier];
     }
 
     public long maxAmperesIn() {
@@ -136,7 +137,7 @@ public class GT_MetaTileEntity_Locker
         }
     }
 
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aStack) {
+    public boolean allowCoverOnSide(byte aSide, SimpleItemStack aStack) {
         return aSide != getBaseMetaTileEntity().getFrontFacing();
     }
 

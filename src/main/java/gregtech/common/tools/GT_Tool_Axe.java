@@ -1,7 +1,7 @@
 package gregtech.common.tools;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

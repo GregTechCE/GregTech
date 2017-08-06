@@ -1,6 +1,7 @@
 package gregtech.common.tools;
 
 import gregtech.api.enums.Textures;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
 import net.minecraft.item.ItemStack;
 
@@ -48,7 +49,7 @@ public class GT_Tool_Chainsaw_MV extends GT_Tool_Chainsaw_LV {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? gregtech.api.items.GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadChainsaw.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_MV;
+        return aIsToolHead ? gregtech.api.items.GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadChainsaw.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_MV;
     }
 
 }

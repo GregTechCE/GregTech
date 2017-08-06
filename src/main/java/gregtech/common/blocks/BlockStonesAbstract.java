@@ -2,9 +2,10 @@ package gregtech.common.blocks;
 
 import com.google.common.collect.Lists;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
-import gregtech.api.enums.material.Materials;
-import gregtech.api.enums.material.types.Material;
+import gregtech.api.items.OreDictNames;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
+import gregtech.api.material.type.Material;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.items.GenericBlock;
 import gregtech.common.blocks.properties.PropertyMaterial;

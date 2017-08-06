@@ -1,12 +1,10 @@
 package gregtech.api.objects;
 
 import gregtech.api.GregTech_API;
-import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 
-import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
+import static gregtech.api.GT_Values.RES_PATH_BLOCK;
 
 public class GT_Fluid extends Fluid implements Runnable {
 

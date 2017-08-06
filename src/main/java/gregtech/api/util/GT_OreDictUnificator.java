@@ -1,12 +1,12 @@
 package gregtech.api.util;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.material.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.material.Dyes;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.objects.GT_HashSet;
-import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.SimpleItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import net.minecraft.block.state.IBlockState;
@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.GT_Values.*;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -32,8 +32,8 @@ import static gregtech.api.enums.GT_Values.*;
  */
 public class GT_OreDictUnificator {
     private static final Map<String, ItemStack> sName2StackMap = new HashMap<String, ItemStack>();
-    private static final Map<GT_ItemStack, ItemData> sItemStack2DataMap = new HashMap<GT_ItemStack, ItemData>();
-    private static final GT_HashSet<GT_ItemStack> sNoUnificationList = new GT_HashSet<GT_ItemStack>();
+    private static final Map<SimpleItemStack, ItemData> sItemStack2DataMap = new HashMap<SimpleItemStack, ItemData>();
+    private static final GT_HashSet<SimpleItemStack> sNoUnificationList = new GT_HashSet<SimpleItemStack>();
     public static volatile int VERSION = 509;
     private static int isRegisteringOre = 0, isAddingOre = 0;
     private static boolean mRunThroughTheList = true;
@@ -171,7 +171,7 @@ public class GT_OreDictUnificator {
                 for (MaterialStack tMaterial : aData.mByProducts) tMaterial.mAmount /= aStack.stackSize;
                 aStack = GT_Utility.copyAmount(1, aStack);
             }
-            sItemStack2DataMap.put(new GT_ItemStack(aStack), aData);
+            sItemStack2DataMap.put(new SimpleItemStack(aStack), aData);
             if (aData.hasValidMaterialData()) {
                 long tValidMaterialAmount = aData.mMaterial.mMaterial.contains(SubTag.NO_RECYCLING) ? 0 : aData.mMaterial.mAmount >= 0 ? aData.mMaterial.mAmount : M;
                 for (MaterialStack tMaterial : aData.mByProducts)
@@ -181,7 +181,7 @@ public class GT_OreDictUnificator {
             if (mRunThroughTheList) {
                 if (GregTech_API.sLoadStarted) {
                     mRunThroughTheList = false;
-                    for (Entry<GT_ItemStack, ItemData> tEntry : sItemStack2DataMap.entrySet())
+                    for (Entry<SimpleItemStack, ItemData> tEntry : sItemStack2DataMap.entrySet())
                         if (!tEntry.getValue().hasValidPrefixData() || tEntry.getValue().mPrefix.mAllowNormalRecycling)
                             GT_RecipeRegistrator.registerMaterialRecycling(tEntry.getKey().toStack(), tEntry.getValue());
                 }
@@ -204,8 +204,8 @@ public class GT_OreDictUnificator {
 
     public static ItemData getItemData(ItemStack aStack) {
         if (GT_Utility.isStackInvalid(aStack)) return null;
-        ItemData rData = sItemStack2DataMap.get(new GT_ItemStack(aStack));
-        if (rData == null) rData = sItemStack2DataMap.get(new GT_ItemStack(GT_Utility.copyMetaData(W, aStack)));
+        ItemData rData = sItemStack2DataMap.get(new SimpleItemStack(aStack));
+        if (rData == null) rData = sItemStack2DataMap.get(new SimpleItemStack(GT_Utility.copyMetaData(W, aStack)));
         return rData;
     }
 

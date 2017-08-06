@@ -1,22 +1,19 @@
-package gregtech.api.enums.material.types;
+package gregtech.api.material.type;
 
 import com.google.common.collect.ImmutableList;
-import gregtech.api.enums.Element;
-import gregtech.api.enums.material.MaterialIconSet;
+import gregtech.api.material.Element;
+import gregtech.api.material.MaterialIconSet;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.DelayedFunction;
 import gregtech.api.util.EnchantmentData;
-import gregtech.api.util.FPUtil;
 import net.minecraft.enchantment.Enchantment;
 
 import java.util.ArrayList;
-import java.util.function.Function;
 
-import static gregtech.api.enums.material.types.DustMaterial.MatFlags.GENERATE_PLATE;
-import static gregtech.api.enums.material.types.Material.MatFlags.createFlag;
-import static gregtech.api.enums.material.types.SolidMaterial.MatFlags.GENERATE_GEAR;
-import static gregtech.api.enums.material.types.SolidMaterial.MatFlags.GENERATE_LONG_ROD;
-import static gregtech.api.enums.material.types.SolidMaterial.MatFlags.GENERATE_ROD;
+import static gregtech.api.material.type.DustMaterial.MatFlags.GENERATE_PLATE;
+import static gregtech.api.material.type.Material.MatFlags.createFlag;
+import static gregtech.api.material.type.SolidMaterial.MatFlags.GENERATE_GEAR;
+import static gregtech.api.material.type.SolidMaterial.MatFlags.GENERATE_LONG_ROD;
+import static gregtech.api.material.type.SolidMaterial.MatFlags.GENERATE_ROD;
 
 public class SolidMaterial extends DustMaterial {
 

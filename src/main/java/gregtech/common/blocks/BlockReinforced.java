@@ -2,7 +2,7 @@ package gregtech.common.blocks;
 
 import com.google.common.collect.Lists;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ItemList;
+import gregtech.api.items.ItemList;
 import gregtech.api.items.GenericBlock;
 import gregtech.api.util.GT_LanguageManager;
 //import gregtech.api.util.GT_OreDictUnificator;

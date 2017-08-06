@@ -1,9 +1,9 @@
 package gregtech.api.util;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
-import gregtech.api.enums.material.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.ConfigCategories;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.objects.ItemData;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.CropProperties;
@@ -17,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 import java.util.ArrayList;
 import java.util.List;
 
-import static gregtech.api.enums.GT_Values.E;
+import static gregtech.api.GT_Values.E;
 
 public class GT_BaseCrop extends CropCard {
 

@@ -1,9 +1,15 @@
 package gregtech.loaders.postload;
 
 import gregtech.GT_Mod;
+import gregtech.api.ConfigCategories;
+import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
-import gregtech.api.enums.material.Materials;
+import gregtech.api.items.OreDictNames;
+import gregtech.api.items.ToolDictNames;
+import gregtech.api.material.Dyes;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
+import gregtech.api.items.ItemList;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -592,7 +598,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
                         GT_ModHandler.addCraftingRecipe(ItemList.Moxcell_4.get(1, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"RPR", "CPC", "RPR", 'R', ItemList.Moxcell_1, 'P', OrePrefixes.plate.get(Materials.Iron), 'C', OrePrefixes.plate.get(Materials.Copper)});
 
                         GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(ItemName.mining_laser, 1).copy());
-                        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item(ItemName.mining_laser, 1).copy(), new Object[]{"PPP","GEC","SBd",'P',OrePrefixes.plate.get(Materials.Titanium),'G',OrePrefixes.gemExquisite.get(Materials.Diamond),'E',ItemList.Emitter_HV,'C',OrePrefixes.circuit.get(Materials.Master),'S',OrePrefixes.screw.get(Materials.Titanium),'B',new ItemStack(GT_ModHandler.getIC2Item(ItemName.charging_lapotron_crystal, 1).copy().getItem(),1,GT_Values.W)});
+                        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item(ItemName.mining_laser, 1).copy(), new Object[]{"PPP","GEC","SBd",'P',OrePrefixes.plate.get(Materials.Titanium),'G',OrePrefixes.gemExquisite.get(Materials.Diamond),'E',ItemList.Emitter_HV,'C',OrePrefixes.circuit.get(Materials.Master),'S',OrePrefixes.screw.get(Materials.Titanium),'B',new ItemStack(GT_ModHandler.getIC2Item(ItemName.charging_lapotron_crystal, 1).copy().getItem(),1, GT_Values.W)});
                         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item(ItemName.mining_laser, 1).copy(), new Object[]{"PPP","GEC","SBd",'P',OrePrefixes.plate.get(Materials.Titanium),'G',OrePrefixes.gemExquisite.get(Materials.Ruby),'E',ItemList.Emitter_HV,'C',OrePrefixes.circuit.get(Materials.Master),'S',OrePrefixes.screw.get(Materials.Titanium),'B',new ItemStack(GT_ModHandler.getIC2Item(ItemName.charging_lapotron_crystal, 1).copy().getItem(),1,GT_Values.W)});
                         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item(ItemName.mining_laser, 1).copy(), new Object[]{"PPP","GEC","SBd",'P',OrePrefixes.plate.get(Materials.Titanium),'G',OrePrefixes.gemExquisite.get(Materials.Jasper),'E',ItemList.Emitter_HV,'C',OrePrefixes.circuit.get(Materials.Master),'S',OrePrefixes.screw.get(Materials.Titanium),'B',new ItemStack(GT_ModHandler.getIC2Item(ItemName.charging_lapotron_crystal, 1).copy().getItem(),1,GT_Values.W)});
                         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item(ItemName.mining_laser, 1).copy(), new Object[]{"PPP","GEC","SBd",'P',OrePrefixes.plate.get(Materials.Titanium),'G',OrePrefixes.gemExquisite.get(Materials.GarnetRed),'E',ItemList.Emitter_HV,'C',OrePrefixes.circuit.get(Materials.Master),'S',OrePrefixes.screw.get(Materials.Titanium),'B',new ItemStack(GT_ModHandler.getIC2Item(ItemName.charging_lapotron_crystal, 1).copy().getItem(),1,GT_Values.W)});

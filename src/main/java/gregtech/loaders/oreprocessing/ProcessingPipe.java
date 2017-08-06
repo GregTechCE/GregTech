@@ -1,9 +1,10 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.enums.material.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.GT_Values;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.enums.SubTag;
-import gregtech.api.enums.ToolDictNames;
+import gregtech.api.items.ToolDictNames;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -42,7 +43,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
             case pipeRestrictiveMedium:
             case pipeRestrictiveSmall:
             case pipeRestrictiveTiny:
-                gregtech.api.enums.GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(aOreDictName.replaceFirst("Restrictive", ""), null, 1L, false, true), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Steel, aPrefix.mSecondaryMaterial.mAmount / OrePrefixes.ring.mMaterialAmount), GT_Utility.copyAmount(1L, new Object[]{aStack}), (int) (aPrefix.mSecondaryMaterial.mAmount * 400L / OrePrefixes.ring.mMaterialAmount), 4);
+                GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(aOreDictName.replaceFirst("Restrictive", ""), null, 1L, false, true), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Steel, aPrefix.mSecondaryMaterial.mAmount / OrePrefixes.ring.mMaterialAmount), GT_Utility.copyAmount(1L, new Object[]{aStack}), (int) (aPrefix.mSecondaryMaterial.mAmount * 400L / OrePrefixes.ring.mMaterialAmount), 4);
                 break;
         }
     }

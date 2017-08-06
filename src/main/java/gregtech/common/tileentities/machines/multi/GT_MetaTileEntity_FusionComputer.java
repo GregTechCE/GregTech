@@ -1,8 +1,8 @@
 package gregtech.common.tileentities.machines.multi;
 
 import gregtech.GT_Mod;
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.material.Dyes;
+import gregtech.api.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_Container_MultiMachine;
 import gregtech.api.interfaces.IIconContainer;
@@ -10,7 +10,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.*;
-import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.SimpleItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -53,7 +53,7 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
 
     public abstract MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity);
 
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aStack) {
+    public boolean allowCoverOnSide(byte aSide, SimpleItemStack aStack) {
 
         return aSide != getBaseMetaTileEntity().getFrontFacing();
     }

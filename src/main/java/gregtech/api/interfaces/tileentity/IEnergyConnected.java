@@ -2,17 +2,11 @@ package gregtech.api.interfaces.tileentity;
 
 import cofh.api.energy.IEnergyReceiver;
 import gregtech.api.GregTech_API;
-import gregtech.api.util.GT_Utility;
 import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergySink;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-
-import static gregtech.api.enums.GT_Values.V;
 
 /**
  * Interface for getting Connected to the GregTech Energy Network.

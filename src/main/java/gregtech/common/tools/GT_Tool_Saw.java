@@ -2,6 +2,7 @@ package gregtech.common.tools;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -120,7 +121,7 @@ public class GT_Tool_Saw extends GT_Tool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadSaw.mTextureIndex] : Textures.ItemIcons.HANDLE_SAW;
+        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadSaw.mTextureIndex] : Textures.ItemIcons.HANDLE_SAW;
     }
 
     @Override

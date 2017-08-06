@@ -2,6 +2,7 @@ package gregtech.common.tools;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.common.items.behaviors.Behaviour_Screwdriver;
 import net.minecraft.block.material.Material;
@@ -114,7 +115,7 @@ public class GT_Tool_Screwdriver extends GT_Tool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadScrewdriver.mTextureIndex] : Textures.ItemIcons.HANDLE_SCREWDRIVER;
+        return !aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadScrewdriver.mTextureIndex] : Textures.ItemIcons.HANDLE_SCREWDRIVER;
     }
 
     @Override

@@ -1,8 +1,10 @@
 package gregtech.common.items;
 
+import gregtech.api.ConfigCategories;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
-import gregtech.api.enums.material.Materials;
+import gregtech.api.items.ToolDictNames;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.tools.*;

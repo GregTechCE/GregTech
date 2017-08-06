@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.automation;
 
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;

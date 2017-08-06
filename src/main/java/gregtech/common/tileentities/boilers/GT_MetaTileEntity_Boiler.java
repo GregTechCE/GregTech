@@ -1,12 +1,12 @@
 package gregtech.common.tileentities.boilers;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.material.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
-import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.SimpleItemStack;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -146,7 +146,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     }
 
     @Override
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCover) {
+    public boolean allowCoverOnSide(byte aSide, SimpleItemStack aCover) {
         return GregTech_API.getCoverBehavior(aCover.toStack()).isSimpleCover();
     }
 

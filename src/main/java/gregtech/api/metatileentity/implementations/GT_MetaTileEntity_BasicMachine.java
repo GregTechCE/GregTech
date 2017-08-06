@@ -1,13 +1,13 @@
 package gregtech.api.metatileentity.implementations;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ItemList;
+import gregtech.api.items.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_Container_BasicMachine;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.SimpleItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
@@ -25,7 +25,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.Arrays;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.GT_Values.V;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -685,7 +685,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     @Override
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCoverID) {
+    public boolean allowCoverOnSide(byte aSide, SimpleItemStack aCoverID) {
         return (aSide != mMainFacing || GregTech_API.getCoverBehavior(aCoverID.toStack()).isGUIClickable(aSide, GregTech_API.getCoverId(aCoverID), 0, getBaseMetaTileEntity()));
     }
 

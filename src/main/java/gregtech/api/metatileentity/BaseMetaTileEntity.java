@@ -3,13 +3,14 @@ package gregtech.api.metatileentity;
 import com.google.common.collect.Lists;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ItemList;
+import gregtech.api.items.ItemList;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.Dyes;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.net.GT_Packet_TileEntity;
-import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.SimpleItemStack;
 import gregtech.api.util.*;
 import gregtech.common.GT_Pollution;
 import ic2.api.energy.tile.IEnergyAcceptor;
@@ -53,8 +54,8 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.UUID;
 
-import static gregtech.api.enums.GT_Values.NW;
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.GT_Values.NW;
+import static gregtech.api.GT_Values.V;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -199,7 +200,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     /**
      * Color of machine
-     * @see gregtech.api.enums.Dyes
+     * @see Dyes
      */
     private byte mColor = 0;
 
@@ -1496,7 +1497,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     }
                     //cover interaction
                     if (coverIdAtSide == 0) {
-                        GT_ItemStack gtItemStack = new GT_ItemStack(currentItem);
+                        SimpleItemStack gtItemStack = new SimpleItemStack(currentItem);
                         if (GregTech_API.sCoverItems.containsKey(gtItemStack)) {
                             GT_CoverBehavior behavior = GregTech_API.getCoverBehavior(gtItemStack);
                             if (behavior.isCoverPlaceable(side, gtItemStack, this) && mMetaTileEntity.allowCoverOnSide(side, gtItemStack)) {
@@ -1762,7 +1763,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     @Override
     public void setCoverItemAtSide(EnumFacing side, ItemStack aStack) {
         if(side == null) return;
-        int coverId = GregTech_API.getCoverId(new GT_ItemStack(aStack));
+        int coverId = GregTech_API.getCoverId(new SimpleItemStack(aStack));
         GT_CoverBehavior behavior = GregTech_API.getCoverBehavior(coverId);
         behavior.placeCover(side, coverId, aStack, this);
     }

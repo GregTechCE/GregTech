@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-import static gregtech.api.enums.GT_Values.MODID;
+import static gregtech.api.GT_Values.MODID;
 
 /**
  * Extended by GT items.

@@ -2,6 +2,7 @@ package gregtech.common.tools;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -59,7 +60,7 @@ public class GT_Tool_BuzzSaw extends GT_Tool_Saw {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadBuzzSaw.mTextureIndex] : Textures.ItemIcons.HANDLE_BUZZSAW;
+        return !aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadBuzzSaw.mTextureIndex] : Textures.ItemIcons.HANDLE_BUZZSAW;
     }
 
     @Override

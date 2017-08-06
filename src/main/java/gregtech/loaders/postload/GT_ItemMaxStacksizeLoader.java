@@ -1,6 +1,6 @@
 package gregtech.loaders.postload;
 
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.util.GT_Log;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;

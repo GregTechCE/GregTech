@@ -1,7 +1,7 @@
 package gregtech.common.tileentities.generators;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
+import gregtech.api.ConfigCategories;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.Loader;
 import java.util.ArrayList;
 import java.util.List;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.GT_Values.V;
 
 public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_BasicGenerator {
 

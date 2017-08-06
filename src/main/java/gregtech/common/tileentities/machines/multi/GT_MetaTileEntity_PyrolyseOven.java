@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi;
 
 import java.util.ArrayList;
 
+import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
@@ -62,7 +63,7 @@ public class GT_MetaTileEntity_PyrolyseOven extends GT_MetaTileEntity_MultiBlock
         for (ItemStack tInput : tInputList) {
             long tVoltage = getMaxInputVoltage();
             byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sPyrolyseRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluidInputs.isEmpty() ? null : new FluidStack[]{tFluidInputs.get(0)}, new ItemStack[]{mInventory[1], tInput});
+            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sPyrolyseRecipes.findRecipe(getBaseMetaTileEntity(), false, GT_Values.V[tTier], tFluidInputs.isEmpty() ? null : new FluidStack[]{tFluidInputs.get(0)}, new ItemStack[]{mInventory[1], tInput});
             if (tRecipe != null) {
                 if (tRecipe.isRecipeInputEqual(true, tFluidInputs.isEmpty() ? null : new FluidStack[]{tFluidInputs.get(0)}, new ItemStack[]{tInput, mInventory[1]})) {
                     this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
@@ -76,7 +77,7 @@ public class GT_MetaTileEntity_PyrolyseOven extends GT_MetaTileEntity_MultiBlock
                     } else {
                         this.mEUt = tRecipe.mEUt;
                         this.mMaxProgresstime = tRecipe.mDuration;
-                        while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+                        while (this.mEUt <= GT_Values.V[(tTier - 1)]) {
                             this.mEUt *= 4;
                             this.mMaxProgresstime /= 2;
                         }

@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.GT_Values.V;
 
 public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredMachineBlock {
     public boolean bOutput = false, bRedstoneIfFull = false, bInvert = false;

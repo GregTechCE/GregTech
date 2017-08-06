@@ -1,9 +1,14 @@
 package gregtech.loaders.load;
 
+import gregtech.api.ConfigCategories;
+import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
-import gregtech.api.enums.material.Materials;
+import gregtech.api.items.OreDictNames;
+import gregtech.api.items.ToolDictNames;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.items.GenericItem;
+import gregtech.api.items.ItemList;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;

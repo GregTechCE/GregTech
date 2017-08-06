@@ -3,14 +3,18 @@ package gregtech;
 import forestry.api.recipes.ICentrifugeRecipe;
 import forestry.api.recipes.ISqueezerRecipe;
 import forestry.api.recipes.RecipeManagers;
+import gregtech.api.ConfigCategories;
+import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.enchants.EnchantmentRadioactivity;
-import gregtech.api.enums.*;
-import gregtech.api.enums.material.Materials;
+import gregtech.api.material.Dyes;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.interfaces.internal.IGT_Mod;
+import gregtech.api.items.ItemList;
 import gregtech.api.net.GT_PacketHandler;
-import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.SimpleItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.*;
@@ -925,7 +929,7 @@ public class GT_Mod implements IGT_Mod {
     public void onIDChangingEvent(FMLModIdMappingEvent aEvent) {
         GT_Utility.reInit();
         GT_Recipe.reInit();
-        for (Map<GT_ItemStack, ?> sItemStackMapping : GregTech_API.sItemStackMappings) {
+        for (Map<SimpleItemStack, ?> sItemStackMapping : GregTech_API.sItemStackMappings) {
             try {
                 GT_Utility.reMap(sItemStackMapping);
             } catch (Throwable e) {
@@ -938,7 +942,7 @@ public class GT_Mod implements IGT_Mod {
 //  {
 //    GT_Utility.reInit();
 //    GT_Recipe.reInit();
-//    Map<GT_ItemStack, ?> tMap;
+//    Map<SimpleItemStack, ?> tMap;
 //    for (Iterator i$ = GregTech_API.sItemStackMappings.iterator(); i$.hasNext(); ) {
 //      tMap = (Map)i$.next();
 //    }

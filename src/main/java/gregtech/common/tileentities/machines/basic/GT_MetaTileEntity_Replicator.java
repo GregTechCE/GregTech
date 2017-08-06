@@ -1,10 +1,13 @@
 package gregtech.common.tileentities.machines.basic;
 
+import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
-import gregtech.api.enums.material.Materials;
+import gregtech.api.material.Element;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.items.ItemList;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.objects.GT_RenderedTexture;
@@ -41,7 +44,7 @@ public class GT_MetaTileEntity_Replicator
                 Materials tMaterial = (Materials) Element.get(Behaviour_DataOrb.getDataName(tDataOrb)).mLinkedMaterials.get(0);
                 long tMass = tMaterial.getMass();
                 if ((tFluid.amount >= tMass) && (tMass > 0L)) {
-                    this.mEUt = ((int) gregtech.api.enums.GT_Values.V[this.mTier]);
+                    this.mEUt = ((int) GT_Values.V[this.mTier]);
                     this.mMaxProgresstime = ((int) (tMass * 512L / (1 << this.mTier - 1)));
                     if ((this.mOutputItems[0] = GT_OreDictUnificator.get(OrePrefixes.dust, tMaterial, 1L)) == null) {
                         if ((this.mOutputItems[0] = GT_OreDictUnificator.get(OrePrefixes.cell, tMaterial, 1L)) != null) {

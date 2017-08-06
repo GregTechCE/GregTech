@@ -10,7 +10,7 @@ import gregtech.api.util.GT_SpawnEventHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.GT_Values.V;
 
 public class GT_MetaTileEntity_MonsterRepellent extends GT_MetaTileEntity_TieredMachineBlock {
 

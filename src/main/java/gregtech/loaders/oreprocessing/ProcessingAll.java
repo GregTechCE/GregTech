@@ -1,7 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.enums.material.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
 import net.minecraft.item.ItemStack;
 
 public class ProcessingAll implements gregtech.api.interfaces.IOreRecipeRegistrator {

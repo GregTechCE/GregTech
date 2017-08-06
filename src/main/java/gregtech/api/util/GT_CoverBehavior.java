@@ -2,15 +2,13 @@ package gregtech.api.util;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.objects.GT_Cover_Default;
-import gregtech.api.objects.GT_Cover_None;
-import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.SimpleItemStack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.Fluid;
 
-import static gregtech.api.enums.GT_Values.E;
+import static gregtech.api.GT_Values.E;
 
 /**
  * For Covers with a special behavior.
@@ -53,7 +51,7 @@ public abstract class GT_CoverBehavior {
     /**
      * Checks if the Cover can be placed on this.
      */
-    public boolean isCoverPlaceable(EnumFacing aSide, GT_ItemStack aStack, ICoverable aTileEntity) {
+    public boolean isCoverPlaceable(EnumFacing aSide, SimpleItemStack aStack, ICoverable aTileEntity) {
         return true;
     }
 
@@ -194,7 +192,7 @@ public abstract class GT_CoverBehavior {
      * @return the ItemStack dropped by this Cover
      */
     public ItemStack getDrop(EnumFacing aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        GT_ItemStack stack = GregTech_API.getCoverItem(aCoverID);
+        SimpleItemStack stack = GregTech_API.getCoverItem(aCoverID);
         if(stack == null) return null;
         return stack.toStack();
     }

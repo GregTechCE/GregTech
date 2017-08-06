@@ -3,7 +3,7 @@ package gregtech.api.gui;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 
-import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
+import static gregtech.api.GT_Values.RES_PATH_GUI;
 
 public class GT_GUIContainer_4by4 extends GT_GUIContainerMetaTile_Machine {
 

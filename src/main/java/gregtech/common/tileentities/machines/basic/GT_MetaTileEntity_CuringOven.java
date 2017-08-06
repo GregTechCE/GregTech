@@ -1,7 +1,7 @@
 package gregtech.common.tileentities.machines.basic;
 
 
-import gregtech.api.enums.ItemList;
+import gregtech.api.items.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_Container_1by1;
 import gregtech.api.gui.GT_GUIContainer_1by1;

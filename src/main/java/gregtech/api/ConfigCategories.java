@@ -1,4 +1,4 @@
-package gregtech.api.enums;
+package gregtech.api;
 
 public enum ConfigCategories {
 

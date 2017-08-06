@@ -2,11 +2,11 @@ package gregtech.common.blocks;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.StoneTypes;
-import gregtech.api.enums.material.Materials;
-import gregtech.api.enums.material.types.DustMaterial;
-import gregtech.api.enums.material.types.Material;
+import gregtech.api.material.OrePrefixes;
+import gregtech.api.material.StoneTypes;
+import gregtech.api.material.Materials;
+import gregtech.api.material.type.DustMaterial;
+import gregtech.api.material.type.Material;
 import gregtech.api.items.GenericBlock;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.itemblocks.ItemGeneratedOres;

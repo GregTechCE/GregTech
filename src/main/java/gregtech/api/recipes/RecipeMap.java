@@ -1,16 +1,16 @@
 package gregtech.api.recipes;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.material.types.Material;
-import gregtech.api.enums.material.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.material.types.MetalMaterial;
+import gregtech.api.material.Dyes;
+import gregtech.api.GT_Values;
+import gregtech.api.items.ItemList;
+import gregtech.api.material.type.Material;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
+import gregtech.api.material.type.MetalMaterial;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
-import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.SimpleItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_LanguageManager;
@@ -34,8 +34,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import static gregtech.api.enums.GT_Values.L;
-import static gregtech.api.enums.GT_Values.W;
+import static gregtech.api.GT_Values.L;
+import static gregtech.api.GT_Values.W;
 
 //todo update examples after materials/oredictunificator/itemlist update
 public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
@@ -787,7 +787,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	/**
 	 * HashMap of Recipes based on their Item inputs
 	 */
-	protected final Map<GT_ItemStack, Collection<T>> recipeItemMap = new HashMap<>();
+	protected final Map<SimpleItemStack, Collection<T>> recipeItemMap = new HashMap<>();
 	/**
 	 * HashMap of Recipes based on their Fluid inputs
 	 */
@@ -874,7 +874,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		recipeList.add(recipe);
 
 		for (ItemStack stack : recipe.getInputs()) {
-			recipeItemMap.computeIfAbsent(new GT_ItemStack(stack), k -> new HashSet<>(1)).add(recipe);
+			recipeItemMap.computeIfAbsent(new SimpleItemStack(stack), k -> new HashSet<>(1)).add(recipe);
 		}
 
 		for (FluidStack fluid : recipe.getFluidInputs()) {
@@ -888,7 +888,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * @return if this Item is a valid Input for any for the Recipes
 	 */
 	public boolean containsInput(ItemStack stack) {
-		return stack != null && (recipeItemMap.containsKey(new GT_ItemStack(stack)) || recipeItemMap.containsKey(new GT_ItemStack(GT_Utility.copyMetaData(W, stack))));
+		return stack != null && (recipeItemMap.containsKey(new SimpleItemStack(stack)) || recipeItemMap.containsKey(new SimpleItemStack(GT_Utility.copyMetaData(W, stack))));
 	}
 
 	/**
@@ -974,7 +974,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		if (maxInputs > 0 && inputs != null) {
 			for (ItemStack stack : inputs) {
 				if (stack != null) {
-					Collection<T> recipes = recipeItemMap.get(new GT_ItemStack(stack));
+					Collection<T> recipes = recipeItemMap.get(new SimpleItemStack(stack));
 					if (recipes != null) {
 						for (T tmpRecipe : recipes) {
 							if (tmpRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) {
@@ -982,7 +982,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 							}
 						}
 					}
-					recipes = recipeItemMap.get(new GT_ItemStack(GT_Utility.copyMetaData(W, stack)));
+					recipes = recipeItemMap.get(new SimpleItemStack(GT_Utility.copyMetaData(W, stack)));
 					if (recipes != null) {
 						for (T tmpRecipe : recipes) {
 							if (tmpRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) {

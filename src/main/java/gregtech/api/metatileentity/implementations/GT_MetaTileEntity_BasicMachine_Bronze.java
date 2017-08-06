@@ -1,10 +1,10 @@
 package gregtech.api.metatileentity.implementations;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Dyes;
+import gregtech.api.material.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.SimpleItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
@@ -16,7 +16,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
-import static gregtech.api.enums.GT_Values.D1;
+import static gregtech.api.GT_Values.D1;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -160,7 +160,7 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     @Override
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCoverID) {
+    public boolean allowCoverOnSide(byte aSide, SimpleItemStack aCoverID) {
         return GregTech_API.getCoverBehavior(aCoverID.toStack()).isSimpleCover() && super.allowCoverOnSide(aSide, aCoverID);
     }
 

@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
@@ -182,7 +183,7 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
         
         FluidStack[] tFluids = (FluidStack[]) tFluidList.toArray(new FluidStack[tFluidList.size()]); 
         if (tInputList.size() > 0 || tFluids.length > 0) {
-            GT_Recipe tRecipe = map.findRecipe(getBaseMetaTileEntity(), mLastRecipe, false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
+            GT_Recipe tRecipe = map.findRecipe(getBaseMetaTileEntity(), mLastRecipe, false, GT_Values.V[tTier], tFluids, tInputs);
             if (tRecipe != null) {
                 mLastRecipe = tRecipe;
                 this.mEUt = 0;
@@ -207,7 +208,7 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
                 } else {
                     this.mEUt = tRecipe.mEUt;
                     this.mMaxProgresstime = tRecipe.mDuration;
-                    while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+                    while (this.mEUt <= GT_Values.V[(tTier - 1)]) {
                         this.mEUt *= 4;
                         this.mMaxProgresstime /= 2;
                     }

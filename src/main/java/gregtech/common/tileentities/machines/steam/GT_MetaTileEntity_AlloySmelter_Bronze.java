@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.steam;
 
+import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
@@ -31,7 +32,7 @@ public class GT_MetaTileEntity_AlloySmelter_Bronze
     }
 
     public int checkRecipe() {
-        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[1], null, getAllInputs());
+        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes.findRecipe(getBaseMetaTileEntity(), false, GT_Values.V[1], null, getAllInputs());
         if ((tRecipe != null) && (canOutput(tRecipe.mOutputs)) && (tRecipe.isRecipeInputEqual(true, null, getAllInputs()))) {
             this.mOutputItems[0] = tRecipe.getOutput(0);
             this.mEUt = tRecipe.mEUt;

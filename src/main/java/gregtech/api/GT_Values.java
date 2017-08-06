@@ -1,14 +1,9 @@
-package gregtech.api.enums;
+package gregtech.api;
 
 import gregtech.api.interfaces.internal.IGT_Mod;
-import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.net.GT_PacketHandler;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
-
-import java.util.Locale;
 
 /**
  * Made for static imports, this Class is just a Helper.

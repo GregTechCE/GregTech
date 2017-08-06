@@ -1,9 +1,9 @@
-package gregtech.api.enums.material.types;
+package gregtech.api.material.type;
 
 import com.google.common.base.CaseFormat;
 import com.google.common.collect.ImmutableList;
-import gregtech.api.enums.Element;
-import gregtech.api.enums.material.MaterialIconSet;
+import gregtech.api.material.Element;
+import gregtech.api.material.MaterialIconSet;
 import gregtech.api.interfaces.IMaterialHandler;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTControlledRegistry;
@@ -11,7 +11,7 @@ import gregtech.api.util.GT_Log;
 
 import java.util.ArrayList;
 
-import static gregtech.api.enums.GT_Values.M;
+import static gregtech.api.GT_Values.M;
 
 public abstract class Material implements Comparable<Material> {
 
@@ -226,7 +226,7 @@ public abstract class Material implements Comparable<Material> {
 	}
 
 	public String toCamelCaseString() {
-		return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, toString());
+		return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, toString());
 	}
 
 	@Override

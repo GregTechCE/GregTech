@@ -1,12 +1,11 @@
-package gregtech.api.enums.material.types;
+package gregtech.api.material.type;
 
 import com.google.common.collect.ImmutableList;
-import gregtech.api.enums.Element;
-import gregtech.api.enums.material.MaterialIconSet;
+import gregtech.api.material.Element;
+import gregtech.api.material.MaterialIconSet;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.EnchantmentData;
 
-import static gregtech.api.enums.material.types.Material.MatFlags.createFlag;
+import static gregtech.api.material.type.Material.MatFlags.createFlag;
 
 public class GemMaterial extends SolidMaterial {
 

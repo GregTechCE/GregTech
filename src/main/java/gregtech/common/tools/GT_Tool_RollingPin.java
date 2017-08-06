@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import gregtech.api.enums.Dyes;
+import gregtech.api.material.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import net.minecraft.block.state.IBlockState;

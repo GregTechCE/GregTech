@@ -1,6 +1,8 @@
-package gregtech.api.enums;
+package gregtech.api.interfaces;
 
-import gregtech.api.enums.material.Materials;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
+import gregtech.api.items.ItemList;
 
 /**
  * Experimental Class for later

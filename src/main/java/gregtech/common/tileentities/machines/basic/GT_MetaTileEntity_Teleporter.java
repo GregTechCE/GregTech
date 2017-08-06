@@ -1,7 +1,7 @@
 package gregtech.common.tileentities.machines.basic;
 
-import gregtech.api.enums.ConfigCategories;
-import gregtech.api.enums.material.Materials;
+import gregtech.api.ConfigCategories;
+import gregtech.api.material.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -37,7 +37,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.FluidStack;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.GT_Values.V;
 
 public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank {
 

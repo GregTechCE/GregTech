@@ -1,8 +1,8 @@
 package gregtech.loaders.postload;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
-import gregtech.api.enums.ItemList;
+import gregtech.api.ConfigCategories;
+import gregtech.api.items.ItemList;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import net.minecraft.init.Blocks;

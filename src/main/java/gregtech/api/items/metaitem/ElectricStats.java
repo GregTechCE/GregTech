@@ -1,10 +1,9 @@
 package gregtech.api.items.metaitem;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.GT_Values;
 import gregtech.api.interfaces.metaitem.IElectricStats;
 import gregtech.api.util.GT_ModHandler;
 import ic2.api.item.ElectricItem;
-import ic2.api.item.IElectricItemManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

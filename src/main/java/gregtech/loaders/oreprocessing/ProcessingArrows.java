@@ -1,8 +1,10 @@
 package gregtech.loaders.oreprocessing;
 
+import gregtech.api.GT_Values;
 import gregtech.api.enchants.EnchantmentEnderDamage;
-import gregtech.api.enums.*;
-import gregtech.api.enums.material.Materials;
+import gregtech.api.items.OreDictNames;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;

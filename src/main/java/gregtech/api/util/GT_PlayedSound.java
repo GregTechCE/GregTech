@@ -1,6 +1,6 @@
 package gregtech.api.util;
 
-import static gregtech.api.enums.GT_Values.E;
+import static gregtech.api.GT_Values.E;
 
 public class GT_PlayedSound {
     public final String mSoundName;

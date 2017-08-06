@@ -6,9 +6,9 @@ import net.minecraft.item.ItemStack;
 
 import java.util.*;
 
-public class GT_HashSet<E extends GT_ItemStack> extends AbstractSet<E> {
+public class GT_HashSet<E extends SimpleItemStack> extends AbstractSet<E> {
     private static final Object OBJECT = new Object();
-    private transient HashMap<GT_ItemStack, Object> map;
+    private transient HashMap<SimpleItemStack, Object> map;
 
     public GT_HashSet() {
         map = new HashMap<>();
@@ -61,7 +61,7 @@ public class GT_HashSet<E extends GT_ItemStack> extends AbstractSet<E> {
     }
 
     public boolean add(ItemStack aStack) {
-        return !GT_Utility.isStackInvalid(aStack) && map.put(new GT_ItemStack(aStack), OBJECT) == null;
+        return !GT_Utility.isStackInvalid(aStack) && map.put(new SimpleItemStack(aStack), OBJECT) == null;
     }
 
     @Override

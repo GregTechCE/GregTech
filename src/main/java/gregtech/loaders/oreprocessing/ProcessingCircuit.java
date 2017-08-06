@@ -1,9 +1,9 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.material.Materials;
-import gregtech.api.enums.OreDictNames;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.items.ItemList;
+import gregtech.api.material.Materials;
+import gregtech.api.items.OreDictNames;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import ic2.core.item.type.CasingResourceType;
 import ic2.core.ref.ItemName;

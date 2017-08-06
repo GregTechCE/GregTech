@@ -6,7 +6,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import java.util.ArrayList;
 import java.util.List;
 
-import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
+import static gregtech.api.GT_Values.RES_PATH_GUI;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!

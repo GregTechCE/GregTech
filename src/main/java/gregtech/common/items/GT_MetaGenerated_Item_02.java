@@ -1,9 +1,11 @@
 package gregtech.common.items;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
-import gregtech.api.enums.material.Materials;
+import gregtech.api.material.Dyes;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.items.GT_MetaGenerated_Item_X32;
+import gregtech.api.items.ItemList;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.RegIconContainer;

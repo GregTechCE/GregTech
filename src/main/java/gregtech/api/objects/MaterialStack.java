@@ -1,7 +1,6 @@
 package gregtech.api.objects;
 
-import gregtech.api.enums.material.types.Material;
-import gregtech.api.enums.material.Materials;
+import gregtech.api.material.type.Material;
 
 public class MaterialStack {
 

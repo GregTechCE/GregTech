@@ -1,6 +1,6 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.enums.ItemList;
+import gregtech.api.items.ItemList;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;

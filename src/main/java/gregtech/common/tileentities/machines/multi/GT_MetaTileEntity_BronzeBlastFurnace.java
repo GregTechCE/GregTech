@@ -2,13 +2,13 @@ package gregtech.common.tileentities.machines.multi;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.material.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.SimpleItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -114,7 +114,7 @@ public class GT_MetaTileEntity_BronzeBlastFurnace extends MetaTileEntity {
         return this.mMaxProgresstime - this.mProgresstime;
     }
 
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCoverID) {
+    public boolean allowCoverOnSide(byte aSide, SimpleItemStack aCoverID) {
         return (GregTech_API.getCoverBehavior(aCoverID.toStack()).isSimpleCover()) && (super.allowCoverOnSide(aSide, aCoverID));
     }
 

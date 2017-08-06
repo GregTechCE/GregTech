@@ -2,9 +2,9 @@ package gregtech.common.items.armor;
 
 //import thaumcraft.api.nodes.IRevealer;
 //import net.minecraftforge.fml.common.Loader;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.material.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.items.ItemList;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;

@@ -1,7 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
 import gregtech.GT_Mod;
-import gregtech.api.enums.material.Materials;
+import gregtech.api.material.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;

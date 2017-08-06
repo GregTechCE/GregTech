@@ -4,14 +4,13 @@ import com.google.common.collect.ImmutableList;
 import gnu.trove.map.TShortObjectMap;
 import gnu.trove.map.hash.TShortObjectHashMap;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.OreDictNames;
+import gregtech.api.GT_Values;
+import gregtech.api.items.OreDictNames;
 import gregtech.api.interfaces.metaitem.*;
 import gregtech.api.items.GenericItem;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_OreDictUnificator;
 import ic2.api.item.IBoxable;
-import ic2.api.item.IElectricItemManager;
 import ic2.api.item.ISpecialElectricItem;
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
@@ -43,7 +42,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static gregtech.api.enums.GT_Values.MODID;
+import static gregtech.api.GT_Values.MODID;
 
 /**
  * MetaItem is item that can have up to Short.MAX_VALUE items inside one id.

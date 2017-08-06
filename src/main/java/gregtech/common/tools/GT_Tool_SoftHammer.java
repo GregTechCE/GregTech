@@ -1,6 +1,7 @@
 package gregtech.common.tools;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.common.items.behaviors.Behaviour_SoftHammer;
 import net.minecraft.block.state.IBlockState;
@@ -105,7 +106,7 @@ public class GT_Tool_SoftHammer extends GT_Tool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadMallet.mTextureIndex] : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.handleMallet.mTextureIndex];
+        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadMallet.mTextureIndex] : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.handleMallet.mTextureIndex];
     }
 
     @Override

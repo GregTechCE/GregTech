@@ -1,8 +1,11 @@
 package gregtech.loaders.oreprocessing;
 
 import gregtech.GT_Mod;
-import gregtech.api.enums.*;
-import gregtech.api.enums.material.Materials;
+import gregtech.api.ConfigCategories;
+import gregtech.api.GT_Values;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
+import gregtech.api.items.ItemList;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -120,7 +123,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, aStack), new ItemStack(net.minecraft.init.Blocks.GLASS));
                         break;
                     case "NetherQuartz": case "Quartz": case "CertusQuartz":
-                        if (gregtech.api.GregTech_API.sRecipeFile.get(gregtech.api.enums.ConfigCategories.Recipes.disabledrecipes, "QuartzDustSmeltingIntoAESilicon", true))
+                        if (gregtech.api.GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "QuartzDustSmeltingIntoAESilicon", true))
                             GT_ModHandler.removeFurnaceSmelting(aStack);
                         break;
                     case "MeatRaw":

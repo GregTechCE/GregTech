@@ -1,36 +1,34 @@
-package gregtech.api.enums;
+package gregtech.api.material;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.material.MaterialIconType;
-import gregtech.api.enums.material.Materials;
-import gregtech.api.enums.material.types.DustMaterial;
-import gregtech.api.enums.material.types.GemMaterial;
-import gregtech.api.enums.material.types.Material;
-import gregtech.api.enums.material.types.MetalMaterial;
-import gregtech.api.enums.material.types.SolidMaterial;
+import com.google.common.base.Preconditions;
+import gregtech.api.material.type.DustMaterial;
+import gregtech.api.material.type.GemMaterial;
+import gregtech.api.material.type.Material;
+import gregtech.api.material.type.MetalMaterial;
+import gregtech.api.material.type.SolidMaterial;
 import gregtech.api.interfaces.ICondition;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
+import gregtech.api.objects.SimpleItemStack;
+import gregtech.api.objects.UnificationEntry;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
-import static gregtech.api.enums.GT_Values.*;
-import static gregtech.api.enums.material.types.DustMaterial.MatFlags.*;
-import static gregtech.api.enums.material.types.MetalMaterial.MatFlags.*;
-import static gregtech.api.enums.material.types.SolidMaterial.MatFlags.GENERATE_GEAR;
-import static gregtech.api.enums.material.types.SolidMaterial.MatFlags.GENERATE_LONG_ROD;
-import static gregtech.api.enums.material.types.SolidMaterial.MatFlags.GENERATE_ROD;
+import static gregtech.api.GT_Values.*;
+import static gregtech.api.material.type.DustMaterial.MatFlags.*;
+import static gregtech.api.material.type.MetalMaterial.MatFlags.*;
+import static gregtech.api.material.type.SolidMaterial.MatFlags.GENERATE_GEAR;
+import static gregtech.api.material.type.SolidMaterial.MatFlags.GENERATE_LONG_ROD;
+import static gregtech.api.material.type.SolidMaterial.MatFlags.GENERATE_ROD;
 
 public enum OrePrefixes {
-    @Deprecated pulp("Pulps", "", "", false, false, false, false, false, false, false, false, false, false, B[0] | B[1] | B[2] | B[3], -1, 64, -1),
-    @Deprecated leaves("Leaves", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    @Deprecated sapling("Saplings", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    @Deprecated itemDust("Dusts", "", "", false, false, false, false, false, false, false, false, false, false, B[0] | B[1] | B[2] | B[3], -1, 64, -1),
 
     oreBlackgranite("Black Granite Ores", "Granite ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1), // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!
     oreRedgranite("Red Granite Ores", "Granite ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1), // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!
@@ -53,7 +51,6 @@ public enum OrePrefixes {
     oreEndstone("Endstone Ores", "End ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1), // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!
     oreEnd("End Ores", "End ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1), // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!
 
-    @Deprecated oreGem("Ores", "", "", false, false, false, false, false, true, false, false, false, true, B[3], -1, 64, -1),
     ore("Ores", "", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, 68), // Regular Ore Prefix. Ore -> Material is a Oneway Operation! Introduced by Eloraam
 
     crushedCentrifuged("Centrifuged Ores", "Centrifuged ", " Ore", true, true, false, false, false, false, false, true, false, true, B[3], -1, 64, 7),
@@ -208,9 +205,7 @@ public enum OrePrefixes {
     stoneSmooth("Smoothstones", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1), // Smoothstone Prefix.
     stoneMossyBricks("mossy Stone Bricks", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1), // Mossy Stone Bricks.
     stoneMossy("Mossy Stones", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1), // Mossy Cobble.
-    @Deprecated stoneBricksMossy("Mossy Stone Bricks", "", "", false, false, false, false, false, true, false, false, false, false, 0, -1, 64, -1),
     stoneBricks("Stone Bricks", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1), // Stone Bricks.
-    @Deprecated stoneBrick("Stone Bricks", "", "", false, false, false, false, false, true, false, false, false, false, 0, -1, 64, -1),
     stoneCracked("Cracked Stones", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1), // Cracked Bricks.
     stoneChiseled("Chiseled Stones", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1), // Chiseled Stone.
     stone("Stones", "", "", false, true, true, false, true, true, false, false, false, false, 0, -1, 64, -1), // Prefix to determine which kind of Rock this is.
@@ -220,8 +215,7 @@ public enum OrePrefixes {
     rubble("Rubbles", "", "", true, true, true, false, false, false, false, false, false, false, 0, -1, 64, -1),
     scraps("Scraps", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
     scrap("Scraps", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    item_("Items", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // IGNORE
-    item("Items", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Random Item. Introduced by Alblaka
+
     book("Books", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Used for Books of any kind.
     paper("Papers", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Used for Papers of any kind.
     dye("Dyes", "", "", false, false, true, false, false, false, false, false, false, false, 0, -1, 64, -1), // Used for the 16 dyes. Introduced by Eloraam
@@ -238,144 +232,45 @@ public enum OrePrefixes {
     pipeLarge("Large pipes", "Large ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 6, 64, 81),
     pipeHuge("Huge Pipes", "Huge ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 12, 64, 82),
     pipeRestrictiveTiny("Tiny Restrictive Pipes", "Tiny Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M / 2, 64, 78),
-    pipeRestrictiveSmall("Small Restrictive Pipes", "Small Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 1, 64, 79),
+    pipeRestrictiveSmall("Small Restrictive Pipes", "Small Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M, 64, 79),
     pipeRestrictiveMedium("Medium Restrictive Pipes", "Medium Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 3, 64, 80),
     pipeRestrictiveLarge("Large Restrictive Pipes", "Large Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 6, 64, 81),
     pipeRestrictiveHuge("Huge Restrictive Pipes", "Huge Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 12, 64, 82),
     pipe("Pipes", "", " Pipe", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, 77),
+
     wireGt16("16x Wires", "16x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 8, 64, -1),
     wireGt12("12x Wires", "12x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 6, 64, -1),
     wireGt08("8x Wires", "8x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 4, 64, -1),
     wireGt04("4x Wires", "4x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 2, 64, -1),
-    wireGt02("2x Wires", "2x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 1, 64, -1),
+    wireGt02("2x Wires", "2x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M, 64, -1),
     wireGt01("1x Wires", "1x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M / 2, 64, -1),
     cableGt12("12x Cables", "12x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0, M * 6, 64, -1),
     cableGt08("8x Cables", "8x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0, M * 4, 64, -1),
     cableGt04("4x Cables", "4x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0, M * 2, 64, -1),
-    cableGt02("2x Cables", "2x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0, M * 1, 64, -1),
+    cableGt02("2x Cables", "2x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0, M, 64, -1),
     cableGt01("1x Cables", "1x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0, M / 2, 64, -1),
 
     /* Electric Components.
      *
 	 * usual Materials for this are:
 	 * Primitive (Tier 1)
-	 * Basic (Tier 2) as used by UE as well : IC2 Circuit and RE-Battery
+	 * Basic (Tier 2)
 	 * Good (Tier 3)
-	 * Advanced (Tier 4) as used by UE as well : Advanced Circuit, Advanced Battery and Lithium Battery
-	 * Data (Tier 5) : Data Storage Circuit
-	 * Elite (Tier 6) as used by UE as well : Energy Crystal and Data Control Circuit
-	 * Master (Tier 7) : Energy Flow Circuit and Lapotron Crystal
-	 * Ultimate (Tier 8) : Data Orb and Lapotronic Energy Orb
-	 * Infinite (Cheaty)
+	 * Advanced (Tier 4)
+	 * Data (Tier 5)
+	 * Elite (Tier 6)
+	 * Master (Tier 7)
+	 * Ultimate (Tier 8)
+	 * Infinite
 	 */
-    batterySingleuse("Single Use Batteries", "", "", false, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
+    batterySingleUse("Single Use Batteries", "", "", false, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
     battery("Reusable Batteries", "", "", false, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Introduced by Calclavia
     circuit("Circuits", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Introduced by Calclavia
     chipset("Chipsets", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Introduced by Buildcraft
     computer("Computers", "", "", true, true, false, false, true, false, false, false, false, false, 0, -1, 64, -1); // A whole Computer. "computerMaster" = ComputerCube
 
-    /*
-    // random known prefixes without special abilities.
-    skull("Skulls", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    plating("Platings", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    dinosaur("Dinosaurs", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    travelgear("Travel Gear", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    bauble("Baubles", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    cluster("Clusters", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    grafter("Grafters", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    scoop("Scoops", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    frame("Frames", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    tome("Tomes", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    junk("Junk", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    bee("Bees", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    rod("Rods", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    dirt("Dirts", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    sand("Sands", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1),
-    grass("Grasses", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    gravel("Gravels", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    mushroom("Mushrooms", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    wood("Woods", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Introduced by Eloraam
-    drop("Drops", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    fuel("Fuels", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    panel("Panels", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    brick("Bricks", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    chunk("Chunks", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    wire("Wires", "", "", false, false, false, false, true, false, false, false, false, false, 0, -1, 64, -1),
-    seed("Seeds", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    reed("Reeds", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    sheetDouble("2x Sheets", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    sheet("Sheets", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    crop("Crops", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    plant("Plants", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    coin("Coins", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    lumar("Lumars", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    ground("Grounded Stuff", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    cable("Cables", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    component("Components", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    wax("Waxes", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    wall("Walls", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    tube("Tubes", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    list("Lists", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    food("Foods", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    gear("Gears", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Introduced by SirSengir
-    coral("Corals", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    flower("Flowers", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    storage("Storages", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    material("Materials", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    plasma("Plasmas", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    element("Elements", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    molecule("Molecules", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    wafer("Wafers", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    orb("Orbs", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    handle("Handles", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    blade("Blades", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    head("Heads", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    motor("Motors", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    bit("Bits", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    shears("Shears", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    turbine("Turbines", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    fertilizer("Fertilizers", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    chest("Chests", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    raw("Raw Things", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    stainedGlass("Stained Glasses", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    mystic("Mystic Stuff", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    mana("Mana Stuff", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    rune("Runes", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    petal("Petals", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    pearl("Pearls", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    powder("Powders", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    soulsand("Soulsands", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    obsidian("Obsidians", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    glowstone("Glowstones", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    beans("Beans", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    br("br", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    essence("Essences", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    alloy("Alloys", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    cooking("Cooked Things", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    elven("Elven Stuff", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    reactor("Reactors", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    mffs("MFFS", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    projred("Project Red", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    ganys("Ganys Stuff", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    liquid("Liquids", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    bars("Bars", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    bar("Bars", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-	toolHeadMallet("Mallet Heads", "", " Mallet Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 6, 16, 127), // Reverse Head consisting out of 6 Ingots.
-	handleMallet("Mallet Handle", "", " Handle", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 2, 64, 126); // Reverse Stick made of half an Ingot. Introduced by Eloraam
-	*/
 
     static {
-        pulp.mPrefixInto = dust;
-        oreGem.mPrefixInto = ore;
-        leaves.mPrefixInto = treeLeaves;
-        sapling.mPrefixInto = treeSapling;
-        itemDust.mPrefixInto = dust;
-        dustDirty.mPrefixInto = dustImpure;
-        ingotQuad.mPrefixInto = ingotQuadruple;
-        plateQuad.mPrefixInto = plateQuadruple;
-        stoneBrick.mPrefixInto = stoneBricks;
-        stoneBricksMossy.mPrefixInto = stoneMossyBricks;
-
         ingotHot.mHeatDamage = 3.0F;
         cellPlasma.mHeatDamage = 6.0F;
 
@@ -601,402 +496,84 @@ public enum OrePrefixes {
         bulletGtLarge.mSecondaryMaterial = new MaterialStack(Materials.Brass, ingot.mMaterialAmount / 3);
     }
 
-    public final ArrayList<ItemStack> prefixedItems = new ArrayList<>();
-    public final MaterialIconType typeTexture;
-    public final String mRegularLocalName, mLocalizedMaterialPre, mLocalizedMaterialPost;
-    public final boolean mIsUsedForOreProcessing,
-            mIsEnchantable,
-            mIsUnificatable,
-            mIsMaterialBased,
-            mIsSelfReferencing,
-            mIsContainer,
-            mDontUnificateActively,
-            mIsUsedForBlocks,
-            mAllowNormalRecycling,
-            mGenerateDefaultItem;
-    public final Collection<OrePrefixes> mFamiliarPrefixes = new HashSet<>();
-    /**
-     * Used to determine the amount of Material this Prefix contains.
-     * Multiply or Divide GregTech_API.MATERIAL_UNIT to get the Amounts in comparision to one Ingot.
-     * 0 = Null
-     * Negative = Undefined Amount
-     */
-    public final long mMaterialAmount;
-    public final Collection<Materials>
-            disabledItems = new HashSet<Materials>(),
-            notGeneratedItems = new HashSet<Materials>(),
-            ignoredMaterials = new HashSet<Materials>(),
-            generatedItems = new HashSet<Materials>();
-    private final ArrayList<IOreRecipeRegistrator> mOreProcessing = new ArrayList<IOreRecipeRegistrator>();
-    public ItemStack mContainerItem = null;
-    public ICondition<ISubTagContainer> mCondition = null;
-    public byte mDefaultStackSize = 64;
-    public MaterialStack mSecondaryMaterial = null;
-    public float mHeatDamage = 0.0F; // Negative for Frost Damage
-    public static List<OrePrefixes> mPreventableComponents = new LinkedList<>(Arrays.asList(OrePrefixes.gem, OrePrefixes.ingotHot, OrePrefixes.ingotDouble, OrePrefixes.ingotTriple, OrePrefixes.ingotQuadruple, OrePrefixes.ingotQuintuple, OrePrefixes.plate, OrePrefixes.plateDouble, OrePrefixes.plateTriple, OrePrefixes.plateQuadruple, OrePrefixes.plateQuintuple, OrePrefixes.plateDense, OrePrefixes.stick, OrePrefixes.round, OrePrefixes.bolt, OrePrefixes.screw, OrePrefixes.ring, OrePrefixes.foil, OrePrefixes.toolHeadSword, OrePrefixes.toolHeadPickaxe, OrePrefixes.toolHeadShovel, OrePrefixes.toolHeadAxe, OrePrefixes.toolHeadHoe, OrePrefixes.toolHeadHammer, OrePrefixes.toolHeadFile, OrePrefixes.toolHeadSaw, OrePrefixes.toolHeadDrill, OrePrefixes.toolHeadChainsaw, OrePrefixes.toolHeadWrench, OrePrefixes.toolHeadUniversalSpade, OrePrefixes.toolHeadSense, OrePrefixes.toolHeadPlow, OrePrefixes.toolHeadArrow, OrePrefixes.toolHeadBuzzSaw, OrePrefixes.turbineBlade, OrePrefixes.wireFine, OrePrefixes.gearGtSmall, OrePrefixes.rotor, OrePrefixes.stickLong, OrePrefixes.springSmall, OrePrefixes.spring, OrePrefixes.arrowGtWood, OrePrefixes.arrowGtPlastic, OrePrefixes.gemChipped, OrePrefixes.gemFlawed, OrePrefixes.gemFlawless, OrePrefixes.gemExquisite, OrePrefixes.gearGt, OrePrefixes.crateGtDust, OrePrefixes.crateGtIngot, OrePrefixes.crateGtGem, OrePrefixes.crateGtPlate));
-    /**
-     * Yes this Value can be changed to add Bits for the MetaGenerated-Item-Check.
-     */
-    public int mMaterialGenerationBits = 0;
+    public static final int ENABLE_UNIFICATION = Material.MatFlags.createFlag(0);
+    public static final int SELF_REFERENCING = Material.MatFlags.createFlag(1);
+    public static final int DISALLOW_RECYCLING = Material.MatFlags.createFlag(2);
+    public static final int FLUID_CONTAINER = Material.MatFlags.createFlag(3);
 
+    public final String categoryName;
 
-    public final Collection<Material> generateItems = new HashSet<>();
+    public final boolean isSelfReferencing;
+    private final @Nullable String materialNameLocale;
+    public final @Nullable ICondition<Material> generationCondition;
+    public final @Nullable MaterialIconType materialIconType;
 
+    public final long materialAmount;
 
+    private final ArrayList<IOreRecipeRegistrator> oreProcessingHandlers = new ArrayList<>();
 
-    OrePrefixes(String aRegularLocalName, String aLocalizedMaterialPre, String aLocalizedMaterialPost, boolean aIsUnificatable, boolean aIsMaterialBased, boolean aIsSelfReferencing, boolean aIsContainer, boolean aDontUnificateActively, boolean aIsUsedForBlocks, boolean aAllowNormalRecycling, boolean aGenerateDefaultItem, boolean aIsEnchantable, boolean aIsUsedForOreProcessing, int aMaterialGenerationBits, long aMaterialAmount, int aDefaultStackSize, int aTextureindex) {
-        mIsUnificatable = aIsUnificatable;
-        mIsMaterialBased = aIsMaterialBased;
-        mIsSelfReferencing = aIsSelfReferencing;
-        mIsContainer = aIsContainer;
-        mDontUnificateActively = aDontUnificateActively;
-        mIsUsedForBlocks = aIsUsedForBlocks;
-        mAllowNormalRecycling = aAllowNormalRecycling;
-        mGenerateDefaultItem = aGenerateDefaultItem;
-        mIsEnchantable = aIsEnchantable;
-        mIsUsedForOreProcessing = aIsUsedForOreProcessing;
-        mMaterialGenerationBits = aMaterialGenerationBits;
-        mMaterialAmount = aMaterialAmount;
-        mRegularLocalName = aRegularLocalName;
-        mLocalizedMaterialPre = aLocalizedMaterialPre;
-        mLocalizedMaterialPost = aLocalizedMaterialPost;
-        mDefaultStackSize = (byte) aDefaultStackSize;
-        mTextureIndex = (short) aTextureindex;
+    public @Nullable ItemStack containerItem = null;
+    public byte defaultStackSize = 64;
+    public @Nullable MaterialStack secondaryMaterial = null;
+    public float heatDamage = 0.0F; // Negative for Frost Damage
+
+    OrePrefixes(String categoryName, long materialAmount) {
+        this.categoryName = categoryName;
+        this.materialAmount = materialAmount;
+        this.isSelfReferencing = true;
+        this.materialNameLocale = null;
+        this.generationCondition = null;
+        this.materialIconType = null;
     }
 
-    public static void initMaterialComponents() {
-        for (Material material : Material.MATERIAL_REGISTRY) {
-            boolean isToolMaterial = material instanceof SolidMaterial && ((SolidMaterial) material).toolDurability != 0;
+    OrePrefixes(String categoryName, long materialAmount, String materialNameLocale, MaterialIconType materialIconType, ICondition<Material> condition) {
+        this.categoryName = categoryName;
+        this.materialAmount = materialAmount;
+        this.isSelfReferencing = false;
+        this.materialNameLocale = materialNameLocale;
+        this.materialIconType = materialIconType;
+        this.generationCondition = condition;
+    }
 
-            if (material.hasFlag(GENERATE_ORE)) {
-                for (OrePrefixes prefix : new OrePrefixes[]{dustImpure, dustPure, crushed, crushedCentrifuged, crushedPurified}) {
-                    prefix.generateItems.add(material);
-                }
-//                ore.generateItems.add(material);
-            }
-            if (material instanceof DustMaterial) {
-                dust.generateItems.add(material);
-                dustSmall.generateItems.add(material);
-                dustTiny.generateItems.add(material);
+    public static OrePrefixes getPrefix(String prefixName) {
+        return getPrefix(prefixName, null);
+    }
 
-                if (material instanceof MetalMaterial) {
-                    ingot.generateItems.add(material);
-                } else if (material instanceof GemMaterial) {
-                    for (OrePrefixes prefix : new OrePrefixes[]{gem, gemChipped, gemFlawless, gemFlawed, gemExquisite}) {
-                        prefix.generateItems.add(material);
-                    }
-                } else if (material instanceof SolidMaterial) {
-
-                }
-            }
-            if (material instanceof MetalMaterial && ((MetalMaterial) material).blastFurnaceTemperature > 1750) {
-                ingotHot.generateItems.add(material);
-            }
-            if (material.hasFlag(GENERATE_SPRING)) { //separate flags?
-                spring.generateItems.add(material); // Materials.Titanium
-                springSmall.generateItems.add(material);
-                round.generateItems.add(material); // Materials.HSSE Materials.Neutronium Materials.HSSG
-            }
-            if (material.hasFlag(GENERATE_PLATE) || isToolMaterial) {
-                plate.generateItems.add(material);
-            }
-            if (material.hasFlag(GENERATE_DOUBLE) || isToolMaterial) {
-                if (material instanceof MetalMaterial) {
-                    ingotDouble.generateItems.add(material);
-                }
-                plateDouble.generateItems.add(material);
-            }
-            if (material.hasFlag(GENERATE_TRIPLE)) {
-                if (material instanceof MetalMaterial) {
-                    ingotTriple.generateItems.add(material);
-                }
-                plateTriple.generateItems.add(material);
-            }
-            if (material.hasFlag(GENERATE_QUADRUPLE)) {
-                if (material instanceof MetalMaterial) {
-                    ingotQuadruple.generateItems.add(material);
-                }
-                plateQuadruple.generateItems.add(material);
-            }
-            if (material.hasFlag(GENERATE_QUINTUPLE)) {
-                if (material instanceof MetalMaterial) {
-                    ingotQuintuple.generateItems.add(material);
-                }
-                plateQuintuple.generateItems.add(material);
-            }
-            if (material.hasFlag(GENERATE_DENSE)) {
-                plateDense.generateItems.add(material);
-            }
-            if (material.hasFlag(GENERATE_ROTOR)) {
-                rotor.generateItems.add(material);
-            }
-            if (material.hasFlag(GENERATE_RING)) {
-                ring.generateItems.add(material);
-            }
-            if (material.hasFlag(GENERATE_FOIL)) {
-                foil.generateItems.add(material);
-            }
-            if (material.hasFlag(GENERATE_GEAR)) {
-                gearGt.generateItems.add(material);
-            }
-            if (material.hasFlag(GENERATE_SMALL_GEAR)) {
-                gearGtSmall.generateItems.add(material);
-            }
-            if (material.hasFlag(GENERATE_BOLT_SCREW) || isToolMaterial) {
-                bolt.generateItems.add(material);
-                screw.generateItems.add(material);
-            }
-            if (material.hasFlag(GENERATE_ROD) || isToolMaterial) {
-                stick.generateItems.add(material);
-            }
-            if (material.hasFlag(GENERATE_LONG_ROD) || isToolMaterial) {
-                stickLong.generateItems.add(material);
-            }
-        }
-
-        for (Material material : Material.MATERIAL_REGISTRY) {
-                if (!enableUnusedCrates) {
-                    if (!(material == Materials.DamascusSteel || material == Materials.Steel || material == Materials.Bronze || material == Materials.Manganese))
-                        crateGtIngot.disabledItems.add(material);
-                    if (!(material == Materials.Neodymium || material == Materials.Chrome))
-                        crateGtDust.disabledItems.add(material);
-                    crateGtGem.disabledItems.add(material);
-                    crateGtPlate.disabledItems.add(material);
-                }
-                if (!enableUnusedArrows) {
-                    toolHeadArrow.disabledItems.add(material);
-                    arrowGtPlastic.disabledItems.add(material);
-                    if (!(material == Materials.DamascusSteel || material == Materials.SterlingSilver))
-                        arrowGtWood.disabledItems.add(material);
-                }
+    public static OrePrefixes getPrefix(String prefixName, @Nullable OrePrefixes replacement) {
+        try {
+            return Enum.valueOf(OrePrefixes.class, prefixName);
+        } catch (IllegalArgumentException invalidPrefixName) {
+            return replacement;
         }
     }
 
-    public void enableComponent(Materials aMaterial) {
-        if (this.mDisabledItems.contains(aMaterial)) this.mDisabledItems.remove(aMaterial);
+    public boolean doGenerateItem(Material material) {
+        return !isSelfReferencing && generationCondition != null && materialIconType != null && generationCondition.isTrue(material);
     }
 
-    public void disableComponent(Materials aMaterial) {
-        if (!this.mDisabledItems.contains(aMaterial)) this.mDisabledItems.add(aMaterial);
+    public boolean addProcessingHandler(IOreRecipeRegistrator processingHandler) {
+        Preconditions.checkNotNull(processingHandler);
+        return oreProcessingHandlers.add(processingHandler);
     }
 
-    public static OrePrefixes getOrePrefix(String aOre) {
-        for (OrePrefixes tPrefix : values())
-            if (aOre.startsWith(tPrefix.toString())) {
-                if (tPrefix == oreNether && aOre.equals("oreNetherQuartz")) return ore;
-                return tPrefix;
-            }
-        return null;
-    }
-
-    public static String stripPrefix(String aOre) {
-        for (OrePrefixes tPrefix : values()) {
-            if (aOre.startsWith(tPrefix.toString())) {
-                return aOre.replaceFirst(tPrefix.toString(), "");
-            }
+    public void processOreRegistration(Material material, String modName, SimpleItemStack itemStack) {
+        //tracking bad oredict registrations
+        if(isSelfReferencing && material != null) {
+            GT_Log.logger.warn("Mod %s attempted to register %s with prefix %s and material %s, but prefix is self resolving!", modName, itemStack, this, material.toString());
+            material = null; //truncate material
         }
-        return aOre;
-    }
-
-    public static String replacePrefix(String aOre, OrePrefixes aPrefix) {
-        for (OrePrefixes tPrefix : values()) {
-            if (aOre.startsWith(tPrefix.toString())) {
-                return aOre.replaceFirst(tPrefix.toString(), aPrefix.toString());
-            }
+        if(!isSelfReferencing && material == null) {
+            GT_Log.logger.warn("Mod %s attempted to register %s with prefix %s, but prefix is not self resolving!", modName, itemStack, this);
+            return; //there is nothing we can do -- return to avoid further problems with invalid registration
         }
-        return "";
-    }
-
-    public static OrePrefixes getPrefix(String aPrefixName) {
-        return getPrefix(aPrefixName, null);
-    }
-
-    public static OrePrefixes getPrefix(String aPrefixName, OrePrefixes aReplacement) {
-        Object tObject = GT_Utility.getFieldContent(OrePrefixes.class, aPrefixName, false, false);
-        if (tObject instanceof OrePrefixes) return (OrePrefixes) tObject;
-        return aReplacement;
-    }
-
-    public static Materials getMaterial(String aOre) {
-        return Materials.get(stripPrefix(aOre));
-    }
-
-    public static Materials getMaterial(String aOre, OrePrefixes aPrefix) {
-        return Materials.get(aOre.replaceFirst(aPrefix.toString(), ""));
-    }
-
-    public static Materials getRealMaterial(String aOre, OrePrefixes aPrefix) {
-        return Materials.getRealMaterial(aOre.replaceFirst(aPrefix.toString(), ""));
-    }
-
-    public static boolean isInstanceOf(String aName, OrePrefixes aPrefix) {
-        return aName != null && aName.startsWith(aPrefix.toString());
-    }
-
-    public boolean add(ItemStack aStack) {
-        if (aStack == null) return false;
-        if (!contains(aStack)) mPrefixedItems.add(aStack);
-        while (mPrefixedItems.contains(null)) mPrefixedItems.remove(null);
-        return true;
-    }
-
-    public boolean contains(ItemStack aStack) {
-        if (aStack == null) return false;
-        for (ItemStack tStack : mPrefixedItems)
-            if (GT_Utility.areStacksEqual(aStack, tStack, !tStack.hasTagCompound())) return true;
-        return false;
-    }
-
-    public boolean doGenerateItem(Materials aMaterial) {
-        return aMaterial != null && aMaterial != Materials._NULL && ((aMaterial.mTypes & mMaterialGenerationBits) != 0 ||
-                generatedItems.contains(aMaterial)) && !notGeneratedItems.contains(aMaterial) && !disabledItems.contains(aMaterial) &&
-                (mCondition == null || mCondition.isTrue(aMaterial));
-    }
-
-    public boolean ignoreMaterials(Materials... aMaterials) {
-        for (Materials tMaterial : aMaterials) if (tMaterial != null) mIgnoredMaterials.add(tMaterial);
-        return true;
-    }
-
-    public boolean isIgnored(Materials aMaterial) {
-        if (aMaterial != null && (!aMaterial.mUnificatable || aMaterial != aMaterial.mMaterialInto)) return true;
-        return mIgnoredMaterials.contains(aMaterial);
-    }
-
-    public boolean addFamiliarPrefix(OrePrefixes aPrefix) {
-        if (aPrefix == null || mFamiliarPrefixes.contains(aPrefix) || aPrefix == this) return false;
-        return mFamiliarPrefixes.add(aPrefix);
-    }
-
-    public boolean add(IOreRecipeRegistrator aRegistrator) {
-        if (aRegistrator == null) return false;
-        return mOreProcessing.add(aRegistrator);
-    }
-
-    public void processOre(Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        if (aMaterial != null && (aMaterial != Materials._NULL || mIsSelfReferencing || !mIsMaterialBased) && GT_Utility.isStackValid(aStack)) {
-            //if (Materials.mPreventableComponents.contains(this) && !this.mDynamicItems.contains(aMaterial)) return;
-            for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
-                if (D2) GT_Log.ore.println("Processing '" + aOreDictName + "' with the Prefix '" + name() + "' and the Material '" + aMaterial.mName + "' at " + GT_Utility.getClassName(tRegistrator));
-                tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GT_Utility.copyAmount(1, aStack));
-            }
+        UnificationEntry unificationEntry = new UnificationEntry(this, material);
+        for(IOreRecipeRegistrator handler : oreProcessingHandlers) {
+            handler.registerOre(unificationEntry, modName, itemStack);
         }
     }
 
-    public Object get(Object aMaterial) {
-        if (aMaterial instanceof Materials) return new ItemData(this, (Materials) aMaterial);
-        return name() + aMaterial;
+    public String getDefaultLocalNameForItem(Material material) {
+        return String.format(materialNameLocale, material.defaultLocalName);
     }
 
-    @SuppressWarnings("incomplete-switch")
-    public String getDefaultLocalNameForItem(Materials aMaterial) {
-        // Certain Materials have slightly different Localizations.
-        switch (this) {
-            case crateGtDust:
-                return mLocalizedMaterialPre + OrePrefixes.dust.getDefaultLocalNameForItem(aMaterial);
-            case crateGtIngot:
-                return mLocalizedMaterialPre + OrePrefixes.ingot.getDefaultLocalNameForItem(aMaterial);
-            case crateGtGem:
-                return mLocalizedMaterialPre + OrePrefixes.gem.getDefaultLocalNameForItem(aMaterial);
-            case crateGtPlate:
-                return mLocalizedMaterialPre + OrePrefixes.plate.getDefaultLocalNameForItem(aMaterial);
-        }
-        switch (aMaterial.mName) {
-            case "Glass":
-                if (name().startsWith("gem")) return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Crystal";
-                if (name().startsWith("plate")) return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Pane";
-                break;
-            case "Wheat":
-                if (name().startsWith("dust")) return mLocalizedMaterialPre + "Flour";
-                break;
-            case "Ice":
-                if (name().startsWith("dust")) return mLocalizedMaterialPre + "Crushed Ice";
-                break;
-            case "Wood":
-            case "WoodSealed":
-                if (name().startsWith("bolt")) return "Short " + aMaterial.mDefaultLocalName + " Stick";
-                if (name().startsWith("stick")) return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Stick";
-                if (name().startsWith("dust")) return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Pulp";
-                if (name().startsWith("nugget")) return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Chip";
-                if (name().startsWith("plate")) return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Plank";
-                break;
-            case "Plastic":
-            case "Rubber":
-                if (name().startsWith("dust")) return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Pulp";
-                if (name().startsWith("plate")) return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Sheet";
-                if (name().startsWith("ingot")) return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Bar";
-                if (name().startsWith("nugget")) return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Chip";
-                if (name().startsWith("foil")) return "Thin " + aMaterial.mDefaultLocalName + " Sheet";
-                break;
-            case "FierySteel":
-                if (mIsContainer) return mLocalizedMaterialPre + "Fiery Blood" + mLocalizedMaterialPost;
-                break;
-            case "Steeleaf":
-                if (name().startsWith("ingot")) return mLocalizedMaterialPre + aMaterial.mDefaultLocalName;
-                break;
-            case "Bone":
-                if (name().startsWith("dust")) return mLocalizedMaterialPre + "Bone Meal";
-                break;
-            case "Blaze":
-            case "Milk":
-            case "Cocoa":
-            case "Chocolate":
-            case "Coffee":
-            case "Chili":
-            case "Cheese":
-            case "Snow":
-                if (name().startsWith("dust")) return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + " Powder";
-                break;
-            case "Paper":
-                if (name().startsWith("dust")) return mLocalizedMaterialPre + "Chad";
-                switch (this) {
-                    case plate: return "Sheet of Paper";
-                    case plateDouble: return "Paperboard";
-                    case plateTriple: return "Carton";
-                    case plateQuadruple: return "Cardboard";
-                    case plateQuintuple: return "Thick Cardboard";
-                    case plateDense: return "Strong Cardboard";
-                }
-                break;
-            case "MeatRaw":
-                if (name().startsWith("dust")) return mLocalizedMaterialPre + " Mince Meat";
-                break;
-            case "MeatCooked":
-                if (name().startsWith("dust")) return mLocalizedMaterialPre + "Cooked Mince Meat";
-                break;
-            case "Ash":
-            case "DarkAsh":
-            case "Gunpowder":
-            case "Sugar":
-            case "Salt":
-            case "RockSalt":
-            case "VolcanicAsh":
-            case "RareEarth":
-                if (name().startsWith("dust")) return mLocalizedMaterialPre + aMaterial.mDefaultLocalName;
-                break;
-            case "Vermiculite":
-            case "Bentonite":
-            case "Kaolinite":
-            case "Talc":
-            case "BasalticMineralSand":
-            case "GraniticMineralSand":
-            case "GlauconiteSand":
-            case "CassiteriteSand":
-            case "GarnetSand":
-            case "QuartzSand":
-            case "Pitchblende":
-            case "FullersEarth":
-                if (name().startsWith("dust")) return mLocalizedMaterialPre + aMaterial.mDefaultLocalName;
-                switch (this) {
-                    case crushedCentrifuged:
-                    case crushedPurified:
-                        return mLocalizedMaterialPre + aMaterial.mDefaultLocalName;
-                    case crushed:
-                        return "Ground " + aMaterial.mDefaultLocalName;
-                }
-                break;
-        }
-        // Use Standard Localization
-        return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + mLocalizedMaterialPost;
-    }
 }

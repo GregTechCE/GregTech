@@ -1,6 +1,6 @@
-package gregtech.api.enums.material;
+package gregtech.api.material;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.GT_Values;
 import net.minecraft.util.ResourceLocation;
 
 public enum MaterialIconType {

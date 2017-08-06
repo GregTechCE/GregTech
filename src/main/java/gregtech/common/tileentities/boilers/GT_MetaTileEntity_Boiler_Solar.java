@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.boilers;
 
-import gregtech.api.enums.Dyes;
+import gregtech.api.material.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -13,8 +13,6 @@ import gregtech.common.gui.GT_GUIContainer_Boiler;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidHandler;
 
 public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
 

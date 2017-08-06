@@ -1,9 +1,10 @@
 package gregtech.common.tileentities.machines.multi;
 
+import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.material.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.items.ItemList;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
@@ -208,7 +209,7 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
         } else {
             this.mEUt = tEU;
             this.mMaxProgresstime = tDuration;
-            while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+            while (this.mEUt <= GT_Values.V[(tTier - 1)]) {
                 this.mEUt *= 4;
                 this.mMaxProgresstime /= 2;
             }

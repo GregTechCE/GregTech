@@ -4,15 +4,14 @@ package gregtech.api.util;
 import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.DamageSources;
 import gregtech.api.enchants.EnchantmentRadioactivity;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.material.Materials;
+import gregtech.api.items.ItemList;
+import gregtech.api.material.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.events.BlockScanningEvent;
 import gregtech.api.interfaces.IDebugableBlock;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.tileentity.*;
-import gregtech.api.items.GenericItem;
-import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.SimpleItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.common.GT_Proxy;
 import ic2.api.crops.CropProperties;
@@ -68,7 +67,7 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.*;
 
-import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.GT_Values.*;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -80,8 +79,8 @@ public class GT_Utility {
      * Forge screwed the Fluid Registry up again, so I make my own, which is also much more efficient than the stupid Stuff over there.
      */
     private static final List<FluidContainerData> sFluidContainerList = new ArrayList<>();
-    private static final Map<GT_ItemStack, FluidContainerData> sFilledContainerToData = new HashMap<>();
-    private static final Map<GT_ItemStack, Map<Fluid, FluidContainerData>> sEmptyContainerToFluidToData = new HashMap<>();
+    private static final Map<SimpleItemStack, FluidContainerData> sFilledContainerToData = new HashMap<>();
+    private static final Map<SimpleItemStack, Map<Fluid, FluidContainerData>> sEmptyContainerToFluidToData = new HashMap<>();
 
     public static boolean CHECK_ALL = true, RF_CHECK = false;
 
@@ -437,10 +436,10 @@ public class GT_Utility {
         sFilledContainerToData.clear();
         sEmptyContainerToFluidToData.clear();
         for (FluidContainerData tData : sFluidContainerList) {
-            sFilledContainerToData.put(new GT_ItemStack(tData.filledContainer), tData);
-            Map<Fluid, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData.get(new GT_ItemStack(tData.emptyContainer));
+            sFilledContainerToData.put(new SimpleItemStack(tData.filledContainer), tData);
+            Map<Fluid, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData.get(new SimpleItemStack(tData.emptyContainer));
             if (tFluidToContainer == null) {
-                sEmptyContainerToFluidToData.put(new GT_ItemStack(tData.emptyContainer), tFluidToContainer = new HashMap<Fluid, FluidContainerData>());
+                sEmptyContainerToFluidToData.put(new SimpleItemStack(tData.emptyContainer), tFluidToContainer = new HashMap<Fluid, FluidContainerData>());
                 GregTech_API.sFluidMappings.add(tFluidToContainer);
             }
             tFluidToContainer.put(tData.fluid.getFluid(), tData);
@@ -449,10 +448,10 @@ public class GT_Utility {
 
     public static void addFluidContainerData(FluidContainerData aData) {
         sFluidContainerList.add(aData);
-        sFilledContainerToData.put(new GT_ItemStack(aData.filledContainer), aData);
-        Map<Fluid, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData.get(new GT_ItemStack(aData.emptyContainer));
+        sFilledContainerToData.put(new SimpleItemStack(aData.filledContainer), aData);
+        Map<Fluid, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData.get(new SimpleItemStack(aData.emptyContainer));
         if (tFluidToContainer == null) {
-            sEmptyContainerToFluidToData.put(new GT_ItemStack(aData.emptyContainer), tFluidToContainer = new HashMap<>());
+            sEmptyContainerToFluidToData.put(new SimpleItemStack(aData.emptyContainer), tFluidToContainer = new HashMap<>());
             GregTech_API.sFluidMappings.add(tFluidToContainer);
         }
         tFluidToContainer.put(aData.fluid.getFluid(), aData);
@@ -467,7 +466,7 @@ public class GT_Utility {
             }
             return null;
         }
-        Map<Fluid, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData.get(new GT_ItemStack(aStack));
+        Map<Fluid, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData.get(new SimpleItemStack(aStack));
         if(tFluidToContainer != null) {
             FluidContainerData tData = tFluidToContainer.get(aFluid.getFluid());
             if(tData != null && tData.fluid.amount <= aFluid.amount) {
@@ -523,7 +522,7 @@ public class GT_Utility {
 
     public static FluidStack getFluidForFilledItem(ItemStack aStack, boolean aCheckIFluidContainerItems) {
         if (!isStackValid(aStack)) return null;
-        FluidContainerData tData = sFilledContainerToData.get(new GT_ItemStack(aStack));
+        FluidContainerData tData = sFilledContainerToData.get(new SimpleItemStack(aStack));
         if(tData != null) return tData.fluid.copy();
         if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem &&
                 ((IFluidContainerItem) aStack.getItem()).getFluid(aStack) != null &&
@@ -540,7 +539,7 @@ public class GT_Utility {
 
     public static ItemStack getContainerForFilledItem(ItemStack aStack, boolean aCheckIFluidContainerItems) {
         if (!isStackValid(aStack)) return null;
-        FluidContainerData tData = sFilledContainerToData.get(new GT_ItemStack(aStack));
+        FluidContainerData tData = sFilledContainerToData.get(new SimpleItemStack(aStack));
         if (tData != null) return copyAmount(1, tData.emptyContainer);
         if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem &&
                 ((IFluidContainerItem) aStack.getItem()).getFluid(aStack) != null &&
@@ -958,15 +957,15 @@ public class GT_Utility {
         return aList.get(aIndex);
     }
 
-    public static boolean isStackInList(ItemStack aStack, Collection<GT_ItemStack> aList) {
+    public static boolean isStackInList(ItemStack aStack, Collection<SimpleItemStack> aList) {
         if (aStack == null) {
             return false;
         }
-        return isStackInList(new GT_ItemStack(aStack), aList);
+        return isStackInList(new SimpleItemStack(aStack), aList);
     }
 
-    public static boolean isStackInList(GT_ItemStack aStack, Collection<GT_ItemStack> aList) {
-        return aStack != null && (aList.contains(aStack) || aList.contains(new GT_ItemStack(aStack.mItem, aStack.mStackSize, W)));
+    public static boolean isStackInList(SimpleItemStack aStack, Collection<SimpleItemStack> aList) {
+        return aStack != null && (aList.contains(aStack) || aList.contains(new SimpleItemStack(aStack.mItem, aStack.mStackSize, W)));
     }
 
     /**

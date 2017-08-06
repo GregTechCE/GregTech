@@ -1,7 +1,8 @@
 package gregtech.api.metatileentity.implementations;
 
-import gregtech.api.enums.*;
-import gregtech.api.enums.material.Materials;
+import gregtech.api.material.Dyes;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;

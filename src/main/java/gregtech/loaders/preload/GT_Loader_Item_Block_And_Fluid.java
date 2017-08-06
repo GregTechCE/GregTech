@@ -1,10 +1,13 @@
 package gregtech.loaders.preload;
 
 import gregtech.GT_Mod;
+import gregtech.api.ConfigCategories;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
-import gregtech.api.enums.material.Materials;
+import gregtech.api.material.Dyes;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.items.GenericItem;
+import gregtech.api.items.ItemList;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GT_Log;

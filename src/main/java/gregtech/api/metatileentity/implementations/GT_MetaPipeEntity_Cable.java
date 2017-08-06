@@ -3,8 +3,8 @@ package gregtech.api.metatileentity.implementations;
 import cofh.api.energy.IEnergyReceiver;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.material.Materials;
+import gregtech.api.material.Dyes;
+import gregtech.api.material.Materials;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -32,7 +32,7 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.GT_Values.VN;
 
 public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTileEntityCable {
     public final float mThickNess;

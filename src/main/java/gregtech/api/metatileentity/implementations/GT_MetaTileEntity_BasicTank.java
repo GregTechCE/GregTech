@@ -1,6 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
-import gregtech.api.enums.ItemList;
+import gregtech.api.items.ItemList;
 import gregtech.api.gui.GT_Container_BasicTank;
 import gregtech.api.gui.GT_GUIContainer_BasicTank;
 import gregtech.api.interfaces.ITexture;

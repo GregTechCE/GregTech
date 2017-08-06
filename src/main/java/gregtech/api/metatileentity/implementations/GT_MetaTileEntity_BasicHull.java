@@ -7,7 +7,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.GT_Values.V;
 
 public class GT_MetaTileEntity_BasicHull extends GT_MetaTileEntity_BasicTank {
     public GT_MetaTileEntity_BasicHull(int aID, String aName, String aNameRegional, int aTier, String aDescription, ITexture... aTextures) {

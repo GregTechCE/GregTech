@@ -1,6 +1,6 @@
 package gregtech.api.util;
 
-import gregtech.api.enums.ItemList;
+import gregtech.api.items.ItemList;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;

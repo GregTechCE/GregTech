@@ -18,7 +18,7 @@ import net.minecraft.util.EnumParticleTypes;
 
 import java.util.Random;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.GT_Values.V;
 
 public class GT_MetaTileEntity_Macerator_Bronze
         extends GT_MetaTileEntity_BasicMachine_Bronze {

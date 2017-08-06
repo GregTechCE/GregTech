@@ -1,7 +1,7 @@
-package gregtech.api.enums.material.types;
+package gregtech.api.material.type;
 
 import com.google.common.collect.ImmutableList;
-import gregtech.api.enums.material.MaterialIconSet;
+import gregtech.api.material.MaterialIconSet;
 
 /**
  * MarkerMaterial is type of material used for generic things like material re-registration and use in recipes

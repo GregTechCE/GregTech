@@ -1,10 +1,10 @@
 package gregtech.api.metatileentity;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.material.Materials;
+import gregtech.api.material.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.SimpleItemStack;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
@@ -34,8 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static gregtech.api.enums.GT_Values.GT;
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.GT_Values.GT;
+import static gregtech.api.GT_Values.V;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -212,7 +212,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity {
     public void registerIcons(TextureMap aBlockIconRegister) {/*Do nothing*/}
 
     @Override
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCoverID) {
+    public boolean allowCoverOnSide(byte aSide, SimpleItemStack aCoverID) {
         return true;
     }
 

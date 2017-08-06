@@ -1,7 +1,7 @@
 package gregtech.common.items.armor;
 
 import gregtech.api.damagesources.DamageSources;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.GT_Values;
 import gregtech.api.items.GenericItem;
 import ic2.core.IC2;
 import net.minecraft.client.Minecraft;

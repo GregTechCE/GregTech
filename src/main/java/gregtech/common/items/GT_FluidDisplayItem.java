@@ -1,8 +1,8 @@
 package gregtech.common.items;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
+import gregtech.api.GT_Values;
+import gregtech.api.items.ItemList;
 import gregtech.api.items.GenericItem;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

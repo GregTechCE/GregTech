@@ -2,6 +2,7 @@ package gregtech.common.tools;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -95,7 +96,7 @@ public class GT_Tool_File extends GT_Tool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadFile.mTextureIndex] : Textures.ItemIcons.HANDLE_FILE;
+        return !aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadFile.mTextureIndex] : Textures.ItemIcons.HANDLE_FILE;
     }
 
     @Override

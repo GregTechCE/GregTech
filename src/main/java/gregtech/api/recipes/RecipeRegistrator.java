@@ -2,14 +2,14 @@ package gregtech.api.recipes;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.material.Material;
-import gregtech.api.enums.material.Materials;
-import gregtech.api.enums.material.types.AbstractSolidMaterial;
-import gregtech.api.enums.material.types.DustMaterial;
-import gregtech.api.enums.material.types.GemMaterial;
-import gregtech.api.enums.material.types.MetalMaterial;
+import gregtech.api.ConfigCategories;
+import gregtech.api.material.OrePrefixes;
+import gregtech.api.material.Material;
+import gregtech.api.material.Materials;
+import gregtech.api.material.type.AbstractSolidMaterial;
+import gregtech.api.material.type.DustMaterial;
+import gregtech.api.material.type.GemMaterial;
+import gregtech.api.material.type.MetalMaterial;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -21,8 +21,8 @@ import net.minecraft.item.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-import static gregtech.api.enums.GT_Values.L;
-import static gregtech.api.enums.GT_Values.M;
+import static gregtech.api.GT_Values.L;
+import static gregtech.api.GT_Values.M;
 
 /**
  * Class for Automatic Recipe registering.

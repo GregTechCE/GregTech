@@ -1,10 +1,14 @@
 package gregtech.loaders.preload;
 
 import gregtech.GT_Mod;
+import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
-import gregtech.api.enums.material.Materials;
+import gregtech.api.items.OreDictNames;
+import gregtech.api.material.Dyes;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.items.ItemList;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
@@ -1246,49 +1250,49 @@ public class GT_Loader_MetaTileEntities implements Runnable {
                 }
                 boolean bEC = !GT_Mod.gregtechproxy.mHardcoreCables;
 
-                makeWires(Materials.RedAlloy, 2000, 0L, 1L, 1L, gregtech.api.enums.GT_Values.V[0], true, aBoolConst_0);
+                makeWires(Materials.RedAlloy, 2000, 0L, 1L, 1L, GT_Values.V[0], true, aBoolConst_0);
 
-                makeWires(Materials.Cobalt, 1200, bEC ? 2L : 2L, bEC ? 4L : 4L, 2L, gregtech.api.enums.GT_Values.V[1], true, aBoolConst_0);
-                makeWires(Materials.Lead, 1220, bEC ? 2L : 2L, bEC ? 4L : 4L, 2L, gregtech.api.enums.GT_Values.V[1], true, aBoolConst_0);
-                makeWires(Materials.Tin, 1240, bEC ? 1L : 1L, bEC ? 2L : 2L, 1L, gregtech.api.enums.GT_Values.V[1], true, aBoolConst_0);
-                makeWires(Materials.Zinc, 1260, bEC ? 1L : 1L, bEC ? 2L : 2L, 1L, gregtech.api.enums.GT_Values.V[1], true, aBoolConst_0);
-                makeWires(Materials.SolderingAlloy, 1280, bEC ? 1L : 1L, bEC ? 2L : 2L, 1L, gregtech.api.enums.GT_Values.V[1], true, aBoolConst_0);
+                makeWires(Materials.Cobalt, 1200, bEC ? 2L : 2L, bEC ? 4L : 4L, 2L, GT_Values.V[1], true, aBoolConst_0);
+                makeWires(Materials.Lead, 1220, bEC ? 2L : 2L, bEC ? 4L : 4L, 2L, GT_Values.V[1], true, aBoolConst_0);
+                makeWires(Materials.Tin, 1240, bEC ? 1L : 1L, bEC ? 2L : 2L, 1L, GT_Values.V[1], true, aBoolConst_0);
+                makeWires(Materials.Zinc, 1260, bEC ? 1L : 1L, bEC ? 2L : 2L, 1L, GT_Values.V[1], true, aBoolConst_0);
+                makeWires(Materials.SolderingAlloy, 1280, bEC ? 1L : 1L, bEC ? 2L : 2L, 1L, GT_Values.V[1], true, aBoolConst_0);
 
-                makeWires(Materials.Iron, 1300, bEC ? 3L : 4L, bEC ? 6L : 8L, 2L, gregtech.api.enums.GT_Values.V[2], true, aBoolConst_0);
-                makeWires(Materials.Nickel, 1320, bEC ? 3L : 5L, bEC ? 6L : 10L, 3L, gregtech.api.enums.GT_Values.V[2], true, aBoolConst_0);
-                makeWires(Materials.Cupronickel, 1340, bEC ? 3L : 4L, bEC ? 6L : 8L, 2L, gregtech.api.enums.GT_Values.V[2], true, aBoolConst_0);
-                makeWires(Materials.Copper, 1360, bEC ? 2L : 3L, bEC ? 4L : 6L, 1L, gregtech.api.enums.GT_Values.V[2], true, aBoolConst_0);
-                makeWires(Materials.AnnealedCopper, 1380, bEC ? 1L : 2L, bEC ? 2L : 4L, 1L, gregtech.api.enums.GT_Values.V[2], true, aBoolConst_0);
+                makeWires(Materials.Iron, 1300, bEC ? 3L : 4L, bEC ? 6L : 8L, 2L, GT_Values.V[2], true, aBoolConst_0);
+                makeWires(Materials.Nickel, 1320, bEC ? 3L : 5L, bEC ? 6L : 10L, 3L, GT_Values.V[2], true, aBoolConst_0);
+                makeWires(Materials.Cupronickel, 1340, bEC ? 3L : 4L, bEC ? 6L : 8L, 2L, GT_Values.V[2], true, aBoolConst_0);
+                makeWires(Materials.Copper, 1360, bEC ? 2L : 3L, bEC ? 4L : 6L, 1L, GT_Values.V[2], true, aBoolConst_0);
+                makeWires(Materials.AnnealedCopper, 1380, bEC ? 1L : 2L, bEC ? 2L : 4L, 1L, GT_Values.V[2], true, aBoolConst_0);
 
-                makeWires(Materials.Kanthal, 1400, bEC ? 3L : 8L, bEC ? 6L : 16L, 4L, gregtech.api.enums.GT_Values.V[3], true, aBoolConst_0);
-                makeWires(Materials.Gold, 1420, bEC ? 2L : 6L, bEC ? 4L : 12L, 3L, gregtech.api.enums.GT_Values.V[3], true, aBoolConst_0);
-                makeWires(Materials.Electrum, 1440, bEC ? 2L : 5L, bEC ? 4L : 10L, 2L, gregtech.api.enums.GT_Values.V[3], true, aBoolConst_0);
-                makeWires(Materials.Silver, 1460, bEC ? 1L : 4L, bEC ? 2L : 8L, 1L, gregtech.api.enums.GT_Values.V[3], true, aBoolConst_0);
-                makeWires(Materials.BlueAlloy, 1480, bEC ? 1L : 4L, bEC ? 2L : 8L, 2L, gregtech.api.enums.GT_Values.V[3], true, aBoolConst_0);
+                makeWires(Materials.Kanthal, 1400, bEC ? 3L : 8L, bEC ? 6L : 16L, 4L, GT_Values.V[3], true, aBoolConst_0);
+                makeWires(Materials.Gold, 1420, bEC ? 2L : 6L, bEC ? 4L : 12L, 3L, GT_Values.V[3], true, aBoolConst_0);
+                makeWires(Materials.Electrum, 1440, bEC ? 2L : 5L, bEC ? 4L : 10L, 2L, GT_Values.V[3], true, aBoolConst_0);
+                makeWires(Materials.Silver, 1460, bEC ? 1L : 4L, bEC ? 2L : 8L, 1L, GT_Values.V[3], true, aBoolConst_0);
+                makeWires(Materials.BlueAlloy, 1480, bEC ? 1L : 4L, bEC ? 2L : 8L, 2L, GT_Values.V[3], true, aBoolConst_0);
 
-                makeWires(Materials.Nichrome, 1500, bEC ? 4L : 32L, bEC ? 8L : 64L, 3L, gregtech.api.enums.GT_Values.V[4], true, aBoolConst_0);
-                makeWires(Materials.Steel, 1520, bEC ? 2L : 16L, bEC ? 4L : 32L, 2L, gregtech.api.enums.GT_Values.V[4], true, aBoolConst_0);
-                makeWires(Materials.BlackSteel, 1540, bEC ? 2L : 14L, bEC ? 4L : 28L, 3L, gregtech.api.enums.GT_Values.V[4], true, aBoolConst_0);
-                makeWires(Materials.Titanium, 1560, bEC ? 2L : 12L, bEC ? 4L : 24L, 4L, gregtech.api.enums.GT_Values.V[4], true, aBoolConst_0);
-                makeWires(Materials.Aluminium, 1580, bEC ? 1L : 8L, bEC ? 2L : 16L, 1L, gregtech.api.enums.GT_Values.V[4], true, aBoolConst_0);
+                makeWires(Materials.Nichrome, 1500, bEC ? 4L : 32L, bEC ? 8L : 64L, 3L, GT_Values.V[4], true, aBoolConst_0);
+                makeWires(Materials.Steel, 1520, bEC ? 2L : 16L, bEC ? 4L : 32L, 2L, GT_Values.V[4], true, aBoolConst_0);
+                makeWires(Materials.BlackSteel, 1540, bEC ? 2L : 14L, bEC ? 4L : 28L, 3L, GT_Values.V[4], true, aBoolConst_0);
+                makeWires(Materials.Titanium, 1560, bEC ? 2L : 12L, bEC ? 4L : 24L, 4L, GT_Values.V[4], true, aBoolConst_0);
+                makeWires(Materials.Aluminium, 1580, bEC ? 1L : 8L, bEC ? 2L : 16L, 1L, GT_Values.V[4], true, aBoolConst_0);
 
-                makeWires(Materials.Graphene, 1600, bEC ? 1L : 16L, bEC ? 2L : 32L, 1L, gregtech.api.enums.GT_Values.V[5], aBoolConst_0, true);
-                makeWires(Materials.Osmium, 1620, bEC ? 2L : 32L, bEC ? 4L : 64L, 4L, gregtech.api.enums.GT_Values.V[5], true, aBoolConst_0);
-                makeWires(Materials.Platinum, 1640, bEC ? 1L : 16L, bEC ? 2L : 32L, 2L, gregtech.api.enums.GT_Values.V[5], true, aBoolConst_0);
-                makeWires(Materials.TungstenSteel, 1660, bEC ? 2L : 14L, bEC ? 4L : 28L, 3L, gregtech.api.enums.GT_Values.V[5], true, aBoolConst_0);
-                makeWires(Materials.Tungsten, 1680, bEC ? 2L : 12L, bEC ? 4L : 24L, 2L, gregtech.api.enums.GT_Values.V[5], true, aBoolConst_0);
+                makeWires(Materials.Graphene, 1600, bEC ? 1L : 16L, bEC ? 2L : 32L, 1L, GT_Values.V[5], aBoolConst_0, true);
+                makeWires(Materials.Osmium, 1620, bEC ? 2L : 32L, bEC ? 4L : 64L, 4L, GT_Values.V[5], true, aBoolConst_0);
+                makeWires(Materials.Platinum, 1640, bEC ? 1L : 16L, bEC ? 2L : 32L, 2L, GT_Values.V[5], true, aBoolConst_0);
+                makeWires(Materials.TungstenSteel, 1660, bEC ? 2L : 14L, bEC ? 4L : 28L, 3L, GT_Values.V[5], true, aBoolConst_0);
+                makeWires(Materials.Tungsten, 1680, bEC ? 2L : 12L, bEC ? 4L : 24L, 2L, GT_Values.V[5], true, aBoolConst_0);
 
-                makeWires(Materials.HSSG, 1700, bEC ? 2L : 128L, bEC ? 4L : 256L, 4L, gregtech.api.enums.GT_Values.V[6], true, aBoolConst_0);
-                makeWires(Materials.NiobiumTitanium, 1720, bEC ? 2L : 128L, bEC ? 4L : 256L, 4L, gregtech.api.enums.GT_Values.V[6], true, aBoolConst_0);
-                makeWires(Materials.VanadiumGallium, 1740, bEC ? 2L : 128L, bEC ? 4L : 256L, 4L, gregtech.api.enums.GT_Values.V[6], true, aBoolConst_0);
-                makeWires(Materials.YttriumBariumCuprate, 1760, bEC ? 4L : 256L, bEC ? 8L : 512L, 4L, gregtech.api.enums.GT_Values.V[6], true, aBoolConst_0);
+                makeWires(Materials.HSSG, 1700, bEC ? 2L : 128L, bEC ? 4L : 256L, 4L, GT_Values.V[6], true, aBoolConst_0);
+                makeWires(Materials.NiobiumTitanium, 1720, bEC ? 2L : 128L, bEC ? 4L : 256L, 4L, GT_Values.V[6], true, aBoolConst_0);
+                makeWires(Materials.VanadiumGallium, 1740, bEC ? 2L : 128L, bEC ? 4L : 256L, 4L, GT_Values.V[6], true, aBoolConst_0);
+                makeWires(Materials.YttriumBariumCuprate, 1760, bEC ? 4L : 256L, bEC ? 8L : 512L, 4L, GT_Values.V[6], true, aBoolConst_0);
 
-                makeWires(Materials.Naquadah, 1780, bEC ? 2L : 64L, bEC ? 4L : 128L, 2L, gregtech.api.enums.GT_Values.V[7], true, aBoolConst_0);
+                makeWires(Materials.Naquadah, 1780, bEC ? 2L : 64L, bEC ? 4L : 128L, 2L, GT_Values.V[7], true, aBoolConst_0);
 
-                makeWires(Materials.NaquadahAlloy, 1800, bEC ? 4L : 64L, bEC ? 8L : 128L, 2L, gregtech.api.enums.GT_Values.V[8], true, aBoolConst_0);
-                makeWires(Materials.Duranium, 1820, bEC ? 8L : 64L, bEC ? 16L : 128L, 1L, gregtech.api.enums.GT_Values.V[8], true, aBoolConst_0);
+                makeWires(Materials.NaquadahAlloy, 1800, bEC ? 4L : 64L, bEC ? 8L : 128L, 2L, GT_Values.V[8], true, aBoolConst_0);
+                makeWires(Materials.Duranium, 1820, bEC ? 8L : 64L, bEC ? 16L : 128L, 1L, GT_Values.V[8], true, aBoolConst_0);
 
-                makeWires(Materials.Superconductor, 2020, 1L, 1L, 4L, gregtech.api.enums.GT_Values.V[9], aBoolConst_0, true);
+                makeWires(Materials.Superconductor, 2020, 1L, 1L, 4L, GT_Values.V[9], aBoolConst_0, true);
                 if (!GT_Mod.gregtechproxy.mDisableIC2Cables) {
                         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item(ItemName.cable, CableType.copper, 2), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"xP", 'P', OrePrefixes.plate.get(Materials.AnyCopper)});
                         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item(ItemName.cable, CableType.gold, 4), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"xP", 'P', OrePrefixes.plate.get(Materials.Gold)});

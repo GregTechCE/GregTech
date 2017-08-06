@@ -1,8 +1,8 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.material.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.GT_Values;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;

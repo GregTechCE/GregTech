@@ -1,7 +1,7 @@
 package gregtech.common.blocks;
 
-import gregtech.api.enums.material.Materials;
-import gregtech.api.enums.material.types.Material;
+import gregtech.api.material.Materials;
+import gregtech.api.material.type.Material;
 import gregtech.api.util.GT_LanguageManager;
 //import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.blocks.itemblocks.ItemGranites;

@@ -2,8 +2,9 @@ package gregtech.common.tileentities.machines.multi;
 
 import java.util.ArrayList;
 
+import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.material.Materials;
+import gregtech.api.material.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
@@ -64,7 +65,7 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_MultiBlockBa
             long tVoltage = getMaxInputVoltage();
             byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
-            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sCrakingRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], new FluidStack[]{tInput}, new ItemStack[]{});
+            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sCrakingRecipes.findRecipe(getBaseMetaTileEntity(), false, GT_Values.V[tTier], new FluidStack[]{tInput}, new ItemStack[]{});
             if (tRecipe != null) {
                 if (tRecipe.isRecipeInputEqual(true, new FluidStack[]{tInput}, new ItemStack[]{})) {
                     boolean steam = false;
@@ -90,7 +91,7 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_MultiBlockBa
                     } else {
                         this.mEUt = tRecipe.mEUt;
                         this.mMaxProgresstime = tRecipe.mDuration;
-                        while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+                        while (this.mEUt <= GT_Values.V[(tTier - 1)]) {
                             this.mEUt *= 4;
                             this.mMaxProgresstime /= 2;
                         }

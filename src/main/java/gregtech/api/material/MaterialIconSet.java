@@ -1,4 +1,4 @@
-package gregtech.api.enums.material;
+package gregtech.api.material;
 
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.objects.CachedIconContainer;

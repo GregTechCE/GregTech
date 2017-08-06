@@ -2,7 +2,7 @@ package gregtech.api.items.toolitem;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import gregtech.api.enums.material.Materials;
+import gregtech.api.material.Materials;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
@@ -32,7 +32,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 
-import static gregtech.api.enums.GT_Values.MODID;
+import static gregtech.api.GT_Values.MODID;
 
 /**
  * ToolMetaItem is item that can have up to Short.MAX_VALUE tools inside it

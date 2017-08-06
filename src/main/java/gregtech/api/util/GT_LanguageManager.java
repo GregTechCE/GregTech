@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import static gregtech.api.enums.GT_Values.E;
+import static gregtech.api.GT_Values.E;
 
 public class GT_LanguageManager {
 

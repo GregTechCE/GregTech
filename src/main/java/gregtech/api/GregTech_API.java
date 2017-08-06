@@ -8,7 +8,7 @@ import gregtech.api.items.GenericItem;
 import gregtech.api.objects.GT_Cover_Default;
 import gregtech.api.objects.GT_Cover_None;
 import gregtech.api.objects.GT_HashSet;
-import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.SimpleItemStack;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.*;
 import gregtech.api.world.GT_Worldgen;
@@ -47,7 +47,7 @@ public class GregTech_API {
     /**
      * Fixes the HashMap Mappings for ItemStacks once the Server started
      */
-    public static final Collection<Map<GT_ItemStack, ?>> sItemStackMappings = new ArrayList<>();
+    public static final Collection<Map<SimpleItemStack, ?>> sItemStackMappings = new ArrayList<>();
     public static final Collection<Map<Fluid, ?>> sFluidMappings = new ArrayList<>();
     /**
      * The MetaTileEntity-ID-List-Length
@@ -82,7 +82,7 @@ public class GregTech_API {
      */
     public static final BiMap<Integer, GT_CoverBehavior> sCoverBehaviors = HashBiMap.create();
 
-    public static final BiMap<GT_ItemStack, Integer> sCoverItems = HashBiMap.create();
+    public static final BiMap<SimpleItemStack, Integer> sCoverItems = HashBiMap.create();
     /**
      * The List of Circuit Behaviors for the Redstone Circuit Block
      */
@@ -106,7 +106,7 @@ public class GregTech_API {
     /**
      * The List of Tools, which can be used. Accepts regular damageable Items and Electric Items
      */
-    public static final GT_HashSet<GT_ItemStack> sToolList = new GT_HashSet<>(),
+    public static final GT_HashSet<SimpleItemStack> sToolList = new GT_HashSet<>(),
             sCrowbarList = new GT_HashSet<>(),
             sScrewdriverList = new GT_HashSet<>(),
             sWrenchList = new GT_HashSet<>(),
@@ -118,7 +118,7 @@ public class GregTech_API {
     /**
      * The List of Hazmat Armors
      */
-    public static final GT_HashSet<GT_ItemStack> sGasHazmatList = new GT_HashSet<>(),
+    public static final GT_HashSet<SimpleItemStack> sGasHazmatList = new GT_HashSet<>(),
             sBioHazmatList = new GT_HashSet<>(),
             sFrostHazmatList = new GT_HashSet<>(),
             sHeatHazmatList = new GT_HashSet<>(),
@@ -335,7 +335,7 @@ public class GregTech_API {
     }
 
     public static void registerCover(int coverId, ItemStack aStack, ResourceLocation aCover, GT_CoverBehavior aBehavior) {
-        GT_ItemStack stack = new GT_ItemStack(aStack);
+        SimpleItemStack stack = new SimpleItemStack(aStack);
         sCoverItems.put(stack, coverId);
         sCovers.put(coverId, aCover);
         if (aBehavior != null) sCoverBehaviors.put(coverId, aBehavior);
@@ -358,19 +358,19 @@ public class GregTech_API {
      */
     public static GT_CoverBehavior getCoverBehavior(ItemStack aStack) {
         if (aStack == null) return sNoBehavior;
-        GT_CoverBehavior rCover = sCoverBehaviors.get(sCoverItems.get(new GT_ItemStack(aStack)));
+        GT_CoverBehavior rCover = sCoverBehaviors.get(sCoverItems.get(new SimpleItemStack(aStack)));
         if (rCover == null) return sDefaultBehavior;
         return rCover;
     }
 
-    public static GT_CoverBehavior getCoverBehavior(GT_ItemStack aStack) {
+    public static GT_CoverBehavior getCoverBehavior(SimpleItemStack aStack) {
         GT_CoverBehavior rCover = sCoverBehaviors.get(sCoverItems.get(aStack));
         if (rCover == null) return sDefaultBehavior;
         return rCover;
     }
 
-    public static GT_ItemStack getCoverItem(int coverId) {
-        GT_ItemStack stack = sCoverItems.inverse().get(coverId);
+    public static SimpleItemStack getCoverItem(int coverId) {
+        SimpleItemStack stack = sCoverItems.inverse().get(coverId);
         if(stack == null) return null;
         return stack;
     }
@@ -379,7 +379,7 @@ public class GregTech_API {
         return sCoverBehaviors.inverse().get(behavior);
     }
 
-    public static int getCoverId(GT_ItemStack stack) {
+    public static int getCoverId(SimpleItemStack stack) {
         return sCoverItems.get(stack);
     }
 
@@ -474,11 +474,11 @@ public class GregTech_API {
      * Generic Function to add Tools to the Lists.
      * Contains all sanity Checks for Tools, like preventing one Tool from being registered for multiple purposes as controls would override each other.
      */
-    public static boolean registerTool(ItemStack aTool, Collection<GT_ItemStack> aToolList) {
+    public static boolean registerTool(ItemStack aTool, Collection<SimpleItemStack> aToolList) {
         if (aTool == null || GT_Utility.isStackInList(aTool, sToolList) || (!aTool.getItem().isDamageable() && !GT_ModHandler.isElectricItem(aTool) && !(aTool.getItem() instanceof IDamagableItem)))
             return false;
-        aToolList.add(new GT_ItemStack(GT_Utility.copyAmount(1, aTool)));
-        sToolList.add(new GT_ItemStack(GT_Utility.copyAmount(1, aTool)));
+        aToolList.add(new SimpleItemStack(GT_Utility.copyAmount(1, aTool)));
+        sToolList.add(new SimpleItemStack(GT_Utility.copyAmount(1, aTool)));
         return true;
     }
 }

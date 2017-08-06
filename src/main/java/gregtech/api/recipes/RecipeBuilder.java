@@ -1,7 +1,7 @@
 package gregtech.api.recipes;
 
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.material.Materials;
+import gregtech.api.items.ItemList;
+import gregtech.api.material.Materials;
 import gregtech.api.util.GT_Utility;
 import ic2.core.ref.BlockName;
 import ic2.core.ref.ItemName;
@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static gregtech.api.enums.GT_Values.W;
+import static gregtech.api.GT_Values.W;
 
 /**
  * @see Recipe

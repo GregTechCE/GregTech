@@ -1,7 +1,7 @@
 package gregtech.api.objects;
 
-import gregtech.api.enums.material.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
 import net.minecraft.item.ItemStack;
 
 import java.util.*;

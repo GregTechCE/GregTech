@@ -2,15 +2,15 @@ package gregtech.api.metatileentity.implementations;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
-import gregtech.api.enums.material.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.ConfigCategories;
+import gregtech.api.material.Materials;
+import gregtech.api.material.OrePrefixes;
 import gregtech.api.gui.GT_Container_MultiMachine;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.SimpleItemStack;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
@@ -25,7 +25,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.GT_Values.V;
 
 public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 
@@ -67,7 +67,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
     }
 
     @Override
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCoverID) {
+    public boolean allowCoverOnSide(byte aSide, SimpleItemStack aCoverID) {
         return aSide != getBaseMetaTileEntity().getFrontFacing();
     }
 

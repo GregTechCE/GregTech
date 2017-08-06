@@ -15,7 +15,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.Collection;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.GT_Values.V;
 
 public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity_BasicTank {
     public GT_MetaTileEntity_BasicGenerator(int aID, String aName, String aNameRegional, int aTier, String aDescription, ITexture... aTextures) {

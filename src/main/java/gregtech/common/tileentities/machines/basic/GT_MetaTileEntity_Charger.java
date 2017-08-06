@@ -8,7 +8,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
 import gregtech.api.util.GT_ModHandler;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.GT_Values.V;
 
 public class GT_MetaTileEntity_Charger extends GT_MetaTileEntity_BasicBatteryBuffer {
 

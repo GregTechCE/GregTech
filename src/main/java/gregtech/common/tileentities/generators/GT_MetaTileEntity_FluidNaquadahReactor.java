@@ -1,8 +1,8 @@
 package gregtech.common.tileentities.generators;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.ConfigCategories;
+import gregtech.api.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;

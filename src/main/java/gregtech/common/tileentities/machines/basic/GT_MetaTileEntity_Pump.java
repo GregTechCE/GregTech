@@ -27,7 +27,7 @@ import net.minecraftforge.fluids.IFluidBlock;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.GT_Values.V;
 
 public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
 

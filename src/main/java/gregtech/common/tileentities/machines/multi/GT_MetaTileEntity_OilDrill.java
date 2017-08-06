@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
@@ -113,7 +114,7 @@ public class GT_MetaTileEntity_OilDrill extends GT_MetaTileEntity_MultiBlockBase
         } else {
             this.mEUt = tEU;
             this.mMaxProgresstime = tDuration;
-            while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+            while (this.mEUt <= GT_Values.V[(tTier - 1)]) {
                 this.mEUt *= 4;
                 this.mMaxProgresstime /= 2;
             }

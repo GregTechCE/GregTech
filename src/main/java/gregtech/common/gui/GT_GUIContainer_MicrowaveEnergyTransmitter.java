@@ -5,7 +5,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
 
-import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
+import static gregtech.api.GT_Values.RES_PATH_GUI;
 
 public class GT_GUIContainer_MicrowaveEnergyTransmitter
         extends GT_GUIContainerMetaTile_Machine {

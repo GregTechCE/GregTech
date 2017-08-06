@@ -1,6 +1,5 @@
-package gregtech.api.enums;
+package gregtech.api.material;
 
-import gregtech.api.enums.material.Materials;
 import gregtech.api.util.GT_Utility;
 
 import java.util.ArrayList;

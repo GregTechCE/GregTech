@@ -9,7 +9,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import static gregtech.api.enums.GT_Values.NW;
+import static gregtech.api.GT_Values.NW;
 
 /**
  * The Functions my old TileEntities and my BaseMetaTileEntities have in common.
