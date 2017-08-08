@@ -4,7 +4,7 @@ import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import gregtech.api.gui.GT_ContainerMetaTile_Machine;
+import gregtech.api.gui.ContainerMetaTileEntity;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_MicrowaveEnergyTransmitter;
@@ -13,10 +13,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-import java.util.Iterator;
-
 public class GT_Container_MicrowaveEnergyTransmitter
-        extends GT_ContainerMetaTile_Machine {
+        extends ContainerMetaTileEntity {
     public int mEgg = 0;
     public int mTargetD = 0;
     public int mTargetZ = 0;

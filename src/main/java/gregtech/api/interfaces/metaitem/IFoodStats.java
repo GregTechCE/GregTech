@@ -4,24 +4,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public interface IFoodStats extends IMetaItemStats {
 
-    /**
-     * Warning the "player" Parameter may be null!
-     */
-    int getFoodLevel(ItemStack itemStack, EntityPlayer player);
+    int getFoodLevel(ItemStack itemStack, @Nullable EntityPlayer player);
 
-    /**
-     * Warning the "player" Parameter may be null!
-     */
-    float getSaturation(ItemStack itemStack, EntityPlayer player);
+    float getSaturation(ItemStack itemStack, @Nullable EntityPlayer player);
 
-    /**
-     * Warning the "player" Parameter may be null!
-     */
-    boolean alwaysEdible(ItemStack itemStack, EntityPlayer player);
+    boolean alwaysEdible(ItemStack itemStack, @Nullable EntityPlayer player);
 
     EnumAction getFoodAction(ItemStack itemStack);
 

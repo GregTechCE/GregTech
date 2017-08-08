@@ -2,7 +2,7 @@ package gregtech.jei;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gregtech.api.metatileentity.implementations.MetaTileEntityBasicMachine;
 import gregtech.api.util.GT_Recipe;
 import mezz.jei.api.*;
 import mezz.jei.api.ingredients.IModIngredientRegistration;
@@ -36,8 +36,8 @@ public class JEI_GT_Plugin implements IModPlugin {
         }
         for(int i = 0; i < GregTech_API.METATILEENTITIES.length; i++) {
             IMetaTileEntity metaTileEntity = GregTech_API.METATILEENTITIES[i];
-            if(metaTileEntity instanceof GT_MetaTileEntity_BasicMachine) {
-                GT_MetaTileEntity_BasicMachine basicMachine = (GT_MetaTileEntity_BasicMachine) metaTileEntity;
+            if(metaTileEntity instanceof MetaTileEntityBasicMachine) {
+                MetaTileEntityBasicMachine basicMachine = (MetaTileEntityBasicMachine) metaTileEntity;
                 GT_Recipe.GT_Recipe_Map recipe_map = basicMachine.getRecipeList();
                 if(recipe_map != null && recipe_map.mNEIAllowed) {
                     ItemStack rStack = new ItemStack(GregTech_API.sBlockMachines, 1, i);

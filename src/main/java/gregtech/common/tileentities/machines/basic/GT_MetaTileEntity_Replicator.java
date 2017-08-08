@@ -9,7 +9,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.ItemList;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gregtech.api.metatileentity.implementations.MetaTileEntityBasicMachine;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 public class GT_MetaTileEntity_Replicator
-        extends GT_MetaTileEntity_BasicMachine {
+        extends MetaTileEntityBasicMachine {
     private static int sHeaviestElementMass = 0;
 
     public GT_MetaTileEntity_Replicator(int aID, String aName, String aNameRegional, int aTier) {

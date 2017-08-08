@@ -4,7 +4,7 @@ import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import gregtech.api.gui.GT_ContainerMetaTile_Machine;
+import gregtech.api.gui.ContainerMetaTileEntity;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
@@ -15,7 +15,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class GT_Container_Regulator
-        extends GT_ContainerMetaTile_Machine {
+        extends ContainerMetaTileEntity {
     public int[] mTargetSlots = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     public GT_Container_Regulator(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {

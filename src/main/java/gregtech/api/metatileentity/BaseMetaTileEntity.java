@@ -8,7 +8,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.material.Dyes;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gregtech.api.metatileentity.implementations.MetaTileEntityBasicMachine;
 import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.objects.SimpleItemStack;
 import gregtech.api.util.*;
@@ -1440,8 +1440,8 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     //wrench interaction
                     if (GT_Utility.isStackInList(currentItem, GregTech_API.sWrenchList)) {
                         EnumFacing wrenchDirection = GT_Utility.determineWrenchingSide(side, clickX, clickY, clickZ);
-                        if (player.isSneaking() && mMetaTileEntity instanceof GT_MetaTileEntity_BasicMachine &&
-                                ((GT_MetaTileEntity_BasicMachine) mMetaTileEntity).setMainFacing(wrenchDirection)) {
+                        if (player.isSneaking() && mMetaTileEntity instanceof MetaTileEntityBasicMachine &&
+                                ((MetaTileEntityBasicMachine) mMetaTileEntity).setMainFacing(wrenchDirection)) {
                             GT_ModHandler.damageOrDechargeItem(currentItem, 1, 1000, player);
                             playSound(GregTech_API.sSoundList.get(100));
                         } else if (mMetaTileEntity.onWrenchRightClick(side, wrenchDirection, player, clickX, clickY, clickZ)) {

@@ -19,6 +19,9 @@ import java.util.UUID;
  * <p/>
  */
 public interface IGregTechTileEntity extends ICoverable, IFluidHandler, ITurnable, IGregTechDeviceInformation, IUpgradableMachine, IDigitalChest, IDescribable, IMachineBlockUpdateable {
+
+    boolean canPlayerAccess(EntityPlayer player);
+
     /**
      * gets the Error displayed on the GUI
      */

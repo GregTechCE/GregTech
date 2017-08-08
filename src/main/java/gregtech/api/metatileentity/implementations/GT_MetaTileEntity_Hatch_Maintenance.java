@@ -6,7 +6,7 @@ import gregtech.api.items.ItemList;
 import gregtech.api.material.Materials;
 import gregtech.api.material.OrePrefixes;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_Container_2by2;
+import gregtech.api.gui.ContainerTileFourSlots;
 import gregtech.api.gui.GT_Container_MaintenanceHatch;
 import gregtech.api.gui.GT_GUIContainer_2by2;
 import gregtech.api.gui.GT_GUIContainer_MaintenanceHatch;
@@ -102,7 +102,7 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        if(mAuto) return new GT_Container_2by2(aPlayerInventory, aBaseMetaTileEntity);
+        if(mAuto) return new ContainerTileFourSlots(aPlayerInventory, aBaseMetaTileEntity);
         return new GT_Container_MaintenanceHatch(aPlayerInventory, aBaseMetaTileEntity);
     }
 

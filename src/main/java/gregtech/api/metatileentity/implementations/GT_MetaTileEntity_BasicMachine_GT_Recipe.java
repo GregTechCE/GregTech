@@ -34,7 +34,7 @@ import static gregtech.api.GT_Values.W;
  * This is the main construct for my Basic Machines such as the Automatic Extractor
  * Extend this class to make a simple Machine
  */
-public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_BasicMachine {
+public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends MetaTileEntityBasicMachine {
     private final GT_Recipe_Map mRecipes;
     private final int mTankCapacity, mSpecialEffect;
     private final String mSound;

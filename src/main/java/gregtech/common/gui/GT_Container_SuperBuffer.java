@@ -1,6 +1,6 @@
 package gregtech.common.gui;
 
-import gregtech.api.gui.GT_ContainerMetaTile_Machine;
+import gregtech.api.gui.ContainerMetaTileEntity;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
@@ -12,7 +12,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class GT_Container_SuperBuffer
-        extends GT_ContainerMetaTile_Machine {
+        extends ContainerMetaTileEntity {
     public GT_Container_SuperBuffer(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
     }

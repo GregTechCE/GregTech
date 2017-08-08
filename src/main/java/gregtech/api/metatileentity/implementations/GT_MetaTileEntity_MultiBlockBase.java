@@ -5,7 +5,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.ConfigCategories;
 import gregtech.api.material.Materials;
 import gregtech.api.material.OrePrefixes;
-import gregtech.api.gui.GT_Container_MultiMachine;
+import gregtech.api.gui.ContainerMultiMachine;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -168,7 +168,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachine(aPlayerInventory, aBaseMetaTileEntity);
+        return new ContainerMultiMachine(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override

@@ -745,7 +745,7 @@ public class GT_Utility {
     /**
      * Converts a Number to a String
      */
-    public static String parseNumberToString(int aNumber) {
+    public static String makeFancyNumberString(int aNumber) {
         boolean temp = true, negative = false;
 
         if (aNumber < 0) {
@@ -764,7 +764,7 @@ public class GT_Utility {
         }
         String tString = tStringB.toString();
 
-        if (tString.equals(E)) tString = "0";
+        if (tString.equals("")) tString = "0";
 
         return negative ? "-" + tString : tString;
     }

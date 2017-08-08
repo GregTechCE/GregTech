@@ -193,15 +193,15 @@ public class   GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Ti
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         switch (mInventory.length) {
             case 1:
-                return new GT_Container_1by1(aPlayerInventory, aBaseMetaTileEntity);
+                return new ContainerTileSingleSlot(aPlayerInventory, aBaseMetaTileEntity);
             case 4:
-                return new GT_Container_2by2(aPlayerInventory, aBaseMetaTileEntity);
+                return new ContainerTileFourSlots(aPlayerInventory, aBaseMetaTileEntity);
             case 9:
-                return new GT_Container_3by3(aPlayerInventory, aBaseMetaTileEntity);
+                return new ContainerTileNineSlots(aPlayerInventory, aBaseMetaTileEntity);
             case 16:
-                return new GT_Container_4by4(aPlayerInventory, aBaseMetaTileEntity);
+                return new ContainerTileTwelveSlots(aPlayerInventory, aBaseMetaTileEntity);
         }
-        return new GT_Container_1by1(aPlayerInventory, aBaseMetaTileEntity);
+        return new ContainerTileSingleSlot(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override

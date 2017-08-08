@@ -70,13 +70,13 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch {
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         switch (mTier) {
             case 0:
-                return new GT_Container_1by1(aPlayerInventory, aBaseMetaTileEntity);
+                return new ContainerTileSingleSlot(aPlayerInventory, aBaseMetaTileEntity);
             case 1:
-                return new GT_Container_2by2(aPlayerInventory, aBaseMetaTileEntity);
+                return new ContainerTileFourSlots(aPlayerInventory, aBaseMetaTileEntity);
             case 2:
-                return new GT_Container_3by3(aPlayerInventory, aBaseMetaTileEntity);
+                return new ContainerTileNineSlots(aPlayerInventory, aBaseMetaTileEntity);
             default:
-                return new GT_Container_4by4(aPlayerInventory, aBaseMetaTileEntity);
+                return new ContainerTileTwelveSlots(aPlayerInventory, aBaseMetaTileEntity);
         }
     }
 

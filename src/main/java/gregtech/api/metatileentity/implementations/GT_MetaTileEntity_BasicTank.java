@@ -18,7 +18,7 @@ import net.minecraftforge.fluids.FluidStack;
  */
 public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_TieredMachineBlock {
 
-    public FluidStack mFluid;
+    protected FluidStack[] fluidInventory;
 
     /**
      * @param aInvSlotCount should be 3
@@ -32,18 +32,8 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return aIndex != getStackDisplaySlot();
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        if (mFluid != null) aNBT.setTag("mFluid", mFluid.writeToNBT(new NBTTagCompound()));
+        for(int i = 0; i < fluidInventory.length; i++)
     }
 
     @Override
@@ -51,17 +41,18 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
         mFluid = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mFluid"));
     }
 
-    public abstract boolean doesFillContainers();
+    public final int getFluidTanksCount() {
+        return getFluidInputsCount() + getFluidOutputsCount();
+    }
 
-    public abstract boolean doesEmptyContainers();
+    public abstract int getFluidInputsCount();
+    public abstract int getFluidOutputsCount();
 
-    public abstract boolean canTankBeFilled();
+    public abstract boolean doesFillContainers(int tankIndex);
+    public abstract boolean doesEmptyContainers(int tankIndex);
 
-    public abstract boolean canTankBeEmptied();
-
-    public abstract boolean displaysItemStack();
-
-    public abstract boolean displaysStackSize();
+    public abstract boolean canTankBeFilled(int tankIndex);
+    public abstract boolean canTankBeEmptied(int tankIndex);
 
     public int getInputSlot() {
         return 0;
@@ -81,28 +72,6 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
 
     public boolean isFluidChangingAllowed() {
         return true;
-    }
-
-    public FluidStack getFillableStack() {
-        return mFluid;
-    }
-
-    public FluidStack setFillableStack(FluidStack aFluid) {
-        mFluid = aFluid;
-        return mFluid;
-    }
-
-    public FluidStack getDrainableStack() {
-        return mFluid;
-    }
-
-    public FluidStack setDrainableStack(FluidStack aFluid) {
-        mFluid = aFluid;
-        return mFluid;
-    }
-
-    public FluidStack getDisplayedFluid() {
-        return getDrainableStack();
     }
 
     @Override

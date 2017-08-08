@@ -13,22 +13,22 @@ import org.lwjgl.opengl.GL11;
  */
 public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer {
 
-    public final GT_ContainerMetaTile_Machine mContainer;
+    public final ContainerMetaTileEntity mContainer;
 
-    public GT_GUIContainerMetaTile_Machine(GT_ContainerMetaTile_Machine aContainer, String aGUIbackground) {
+    public GT_GUIContainerMetaTile_Machine(ContainerMetaTileEntity aContainer, String aGUIbackground) {
         super(aContainer, aGUIbackground);
         mContainer = aContainer;
     }
 
     public GT_GUIContainerMetaTile_Machine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aGUIbackground) {
-        this(new GT_ContainerMetaTile_Machine(aInventoryPlayer, aTileEntity), aGUIbackground);
+        this(new ContainerMetaTileEntity(aInventoryPlayer, aTileEntity), aGUIbackground);
     }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
         super.drawGuiContainerBackgroundLayer(par1, par2, par3);
         if (GregTech_API.sColoredGUI && mContainer != null && mContainer.mTileEntity != null) {
-            int tColor = mContainer.mTileEntity.getColorization() & 15;
+            int tColor = mContainer.tileEntity.getColorization() & 15;
             if (tColor < ItemDye.DYE_COLORS.length) {
                 tColor = ItemDye.DYE_COLORS[tColor];
                 GL11.glColor4f(((tColor >> 16) & 255) / 255.0F, ((tColor >> 8) & 255) / 255.0F, (tColor & 255) / 255.0F, 1.0F);

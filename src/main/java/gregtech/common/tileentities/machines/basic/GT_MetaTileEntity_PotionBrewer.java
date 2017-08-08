@@ -6,7 +6,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gregtech.api.metatileentity.implementations.MetaTileEntityBasicMachine;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
@@ -17,7 +17,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_PotionBrewer
-        extends GT_MetaTileEntity_BasicMachine {
+        extends MetaTileEntityBasicMachine {
     public GT_MetaTileEntity_PotionBrewer(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 1, "Brewing your Drinks", 1, 0, "PotionBrewer.png", "", new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER_ACTIVE), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER_ACTIVE), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TOP_POTIONBREWER_ACTIVE), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TOP_POTIONBREWER), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_POTIONBREWER_ACTIVE), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_POTIONBREWER));
     }

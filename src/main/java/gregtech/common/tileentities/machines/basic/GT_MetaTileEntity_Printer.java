@@ -4,7 +4,7 @@ import gregtech.api.material.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gregtech.api.metatileentity.implementations.MetaTileEntityBasicMachine;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 import java.util.ArrayList;
 
 public class GT_MetaTileEntity_Printer
-        extends GT_MetaTileEntity_BasicMachine {
+        extends MetaTileEntityBasicMachine {
     public GT_MetaTileEntity_Printer(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 1, "It can copy Books and paint Stuff", 1, 1, "Printer.png", GT_Recipe.GT_Recipe_Map.sPrinterRecipes.mNEIName, new ITexture[0]);
     }

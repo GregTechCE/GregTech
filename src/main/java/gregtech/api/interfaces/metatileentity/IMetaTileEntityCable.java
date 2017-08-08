@@ -12,7 +12,7 @@ public interface IMetaTileEntityCable extends IMetaTileEntity {
      *
      * @param sourceSide source side of electricity.
      * @param alreadyPassedTileEntityList list of tile entities which this network tick already passed.
-     * @return electricity transfered
+     * @return electricity transferred
      */
     long transferElectricity(byte sourceSide, long voltage, long amperage, ArrayList<TileEntity> alreadyPassedTileEntityList);
 

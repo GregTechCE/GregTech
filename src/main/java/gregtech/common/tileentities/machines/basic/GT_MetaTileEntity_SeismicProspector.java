@@ -6,7 +6,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gregtech.api.metatileentity.implementations.MetaTileEntityBasicMachine;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -28,7 +28,7 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GT_MetaTileEntity_SeismicProspector extends GT_MetaTileEntity_BasicMachine {
+public class GT_MetaTileEntity_SeismicProspector extends MetaTileEntityBasicMachine {
 
     boolean ready = false;
 

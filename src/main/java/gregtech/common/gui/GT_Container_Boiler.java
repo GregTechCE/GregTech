@@ -1,6 +1,6 @@
 package gregtech.common.gui;
 
-import gregtech.api.gui.GT_ContainerMetaTile_Machine;
+import gregtech.api.gui.ContainerMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.tileentities.boilers.GT_MetaTileEntity_Boiler;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GT_Container_Boiler
-        extends GT_ContainerMetaTile_Machine {
+        extends ContainerMetaTileEntity {
     private int mSteamCapacity = 0;//FB: UR - UR_UNINIT_READ_CALLED_FROM_SUPER_CONSTRUCTOR
     public int mWaterAmount = 0;
     public int mSteamAmount = 0;

@@ -1,6 +1,8 @@
 package gregtech.api.gui;
 
+import codechicken.lib.render.RenderUtils;
 import net.minecraft.inventory.IContainerListener;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -15,9 +17,9 @@ import java.util.Iterator;
  * <p/>
  * The Container I use for all my Basic Tanks
  */
-public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
+public class GT_Container_BasicTank extends ContainerMetaTileEntity {
 
-    public int mContent = 0;
+    public FluidStack[] fluids;
 
     public GT_Container_BasicTank(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
@@ -26,8 +28,10 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
     @Override
     public void addSlots(InventoryPlayer aInventoryPlayer) {
         addSlotToContainer(new Slot(mTileEntity, 0, 80, 17));
-        addSlotToContainer(new GT_Slot_Output(mTileEntity, 1, 80, 53));
+        addSlotToContainer(new SlotOutput(mTileEntity, 1, 80, 53));
         addSlotToContainer(new GT_Slot_Render(mTileEntity, 2, 59, 42));
+        RenderUtils.renderFluidQuad();
+        GT_MetaTileEntity_BasicTank
     }
 
     @Override

@@ -24,7 +24,7 @@ import static gregtech.api.GT_Values.D1;
  * This is the main construct for my Basic Machines such as the Automatic Extractor
  * Extend this class to make a simple Machine
  */
-public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileEntity_BasicMachine {
+public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends MetaTileEntityBasicMachine {
     /*
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {

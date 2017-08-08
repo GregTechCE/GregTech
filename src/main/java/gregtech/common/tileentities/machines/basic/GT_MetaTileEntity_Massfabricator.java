@@ -8,7 +8,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gregtech.api.metatileentity.implementations.MetaTileEntityBasicMachine;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Config;
 import net.minecraftforge.fluids.FluidStack;
@@ -16,7 +16,7 @@ import net.minecraftforge.fluids.FluidStack;
 import static gregtech.api.GT_Values.V;
 
 public class GT_MetaTileEntity_Massfabricator
-        extends GT_MetaTileEntity_BasicMachine {
+        extends MetaTileEntityBasicMachine {
     public static int sUUAperUUM = 1;
     public static int sUUASpeedBonus = 4;
     public static int sDurationMultiplier = 3215;

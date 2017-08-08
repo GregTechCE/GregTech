@@ -1,47 +1,52 @@
 package gregtech.api.interfaces.metatileentity;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.Dyes;
 import gregtech.api.util.GT_Config;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.File;
 import java.util.ArrayList;
 
-/**
- * Warning, this Interface has just been made to be able to add multiple kinds of MetaTileEntities (Cables, Pipes, Transformers, but not the regular Blocks)
- * <p/>
- * Don't implement this yourself and expect it to work. Extend @MetaTileEntity itself.
- */
-public interface IMetaTileEntity extends ISidedInventory, net.minecraftforge.fluids.IFluidHandler {
+public interface IMetaTileEntity {
+
+    String getMetaName();
+
+    String getLocalizedName();
 
     /**
-     * new getter for the BaseMetaTileEntity, which restricts usage to certain Functions.
+     * getter for the BaseMetaTileEntity, which restricts usage to certain Functions.
      */
-    IGregTechTileEntity getTile();
+    IGregTechTileEntity getHolder();
 
     /**
      * Sets the BaseMetaTileEntity of this
      */
-    void setTile(IGregTechTileEntity baseMetaTileEntity);
+    void setHolder(IGregTechTileEntity baseMetaTileEntity);
 
     /**
      * when placing a Machine in World, to initialize default Modes. data can be null!
      */
-    void initDefaultModes(NBTTagCompound data);
+    void initFromItemStackData(NBTTagCompound data);
 
     /**
      * Adds the NBT-Information to the ItemStack, when being dismanteled properly
      * Used to store Machine specific Upgrade Data.
      */
-    void setItemNBT(NBTTagCompound data);
+    void writeItemStackData(NBTTagCompound data);
 
     /**
      * writeToNBT
@@ -103,6 +108,10 @@ public interface IMetaTileEntity extends ISidedInventory, net.minecraftforge.flu
      */
     void onRemoval();
 
+    EnumFacing getFrontFacing();
+
+    void setFrontFacing(EnumFacing facing);
+
     /**
      * @return if facing would be a valid Facing for this Device. Used for wrenching.
      */
@@ -111,42 +120,39 @@ public interface IMetaTileEntity extends ISidedInventory, net.minecraftforge.flu
     /**
      * @return the Server Side Container
      */
-    Object getServerGUI(int ID, InventoryPlayer playerInventory);
+    Container getServerGUI(int ID, InventoryPlayer playerInventory);
 
     /**
      * @return the Client Side GUI Container
      */
-    Object getClientGUI(int ID, InventoryPlayer playerInventory);
+    @SideOnly(Side.CLIENT)
+    GuiContainer getClientGUI(int ID, InventoryPlayer playerInventory);
 
-    /**
-     * From new ISidedInventory
-     */
+    int getSlotsCount();
+    int[] getSlotsForFace(EnumFacing face);
+    //side == null - internal inventory change
     boolean allowPullStack(int index, EnumFacing side, ItemStack stack);
-
-    /**
-     * From new ISidedInventory
-     */
     boolean allowPutStack(int index, EnumFacing side, ItemStack stack);
 
     /**
-     * @return if aIndex is a valid Slot. false for things like HoloSlots. Is used for determining if an Item is dropped upon Block destruction and for Inventory Access Management
+     * @return a COPY of stack in slot. Actual stack won't change.
      */
+    ItemStack getStackInSlot(int index);
+    void setStackInSlot(int index, ItemStack stack);
     boolean isValidSlot(int index);
 
-    /**
-     * If this Side can connect to inputting pipes
-     */
-    boolean isLiquidInput(EnumFacing side);
+    int getTanksCount();
+    int[] getTanksForFace(EnumFacing face);
+    //side == null - internal tank change
+    boolean allowPullFluid(int tankIndex, EnumFacing side, FluidStack fluidStack);
+    boolean allowPutFluid(int tankIndex, EnumFacing side, FluidStack fluidStack);
 
     /**
-     * If this Side can connect to outputting pipes
+     * @return a COPY of stack in slot. Actual stack won't change.
      */
-    boolean isLiquidOutput(EnumFacing side);
-
-    /**
-     * Just an Accessor for the Name variable.
-     */
-    String getMetaName();
+    FluidStack getFluidInTank(int tankIndex);
+    void setFluidInTank(int index, FluidStack fluidStack);
+    boolean isValidFluidTank(int tankIndex);
 
     /**
      * @return true if the Machine can be accessed
@@ -154,22 +160,21 @@ public interface IMetaTileEntity extends ISidedInventory, net.minecraftforge.flu
     boolean isAccessAllowed(EntityPlayer player);
 
     /**
-     * When a Machine Update occurs
+     * Called when machine update occur
      */
     void onMachineBlockUpdate();
 
     /**
-     * a Player rightclicks the Machine
+     * Called when a player rightclicks the machine
      * Sneaky rightclicks are not getting passed to this!
-     *
      */
-    boolean onRightclick(EntityPlayer player, EnumFacing side, float clickX, float clickY, float clickZ);
+    boolean onRightClick(EntityPlayer player, EnumFacing side, float clickX, float clickY, float clickZ);
 
     /**
-     * a Player leftclicks the Machine
+     * Called when a player leftclicks the machine
      * Sneaky leftclicks are getting passed to this unlike with the rightclicks.
      */
-    void onLeftclick(EntityPlayer player);
+    void onLeftClick(EntityPlayer player);
 
     /**
      * Called Clientside with the Data got from @getUpdateData
@@ -177,7 +182,7 @@ public interface IMetaTileEntity extends ISidedInventory, net.minecraftforge.flu
     void onUpdateDataReceived(byte value);
 
     /**
-     * return a small bit of Data, like a secondary Facing for example with this Function, for the Client.
+     * Return a small bit of data, like a secondary facing for example with this Function, for the Client.
      * The BaseMetaTileEntity detects changes to this Value and will then send an Update.
      * This is only for Information, which is visible as Texture to the outside.
      * <p/>
@@ -196,26 +201,6 @@ public interface IMetaTileEntity extends ISidedInventory, net.minecraftforge.flu
     void doExplosion(long explosionPower);
 
     /**
-     * If there should be a Lag Warning if something laggy happens during this Tick.
-     * <p/>
-     * The Advanced Pump uses this to not cause the Lag Message, while it scans for all close Fluids.
-     * The Item Pipes and Retrievers neither send this Message, when scanning for Pipes.
-     */
-    boolean doTickProfilingMessageDuringThisTick();
-
-    /**
-     * returns the DebugLog
-     */
-    ArrayList<String> getSpecialDebugInfo(EntityPlayer player, int logLevel, ArrayList<String> list);
-
-    /**
-     * get a small Description
-     *
-     * CALLED ON SAMPLE TILE ENTITY. BASE TILE IS NULL!
-     */
-    String[] getDescription(ItemStack tileStack);
-
-    /**
      * Gets the Output for the comparator on the given Side
      */
     byte getComparatorValue(EnumFacing side);
@@ -224,81 +209,12 @@ public interface IMetaTileEntity extends ISidedInventory, net.minecraftforge.flu
 
     String[] getInfoData();
 
-    boolean isGivingInformation();
+    void onColorChangeServer(Dyes color);
 
-    ItemStack[] getRealInventory();
-
-    boolean connectsToItemPipe(EnumFacing side);
-
-    void onColorChangeServer(byte color);
-
-    void onColorChangeClient(byte color);
+    void onColorChangeClient(Dyes color);
 
     int getLightOpacity();
 
-    void onEntityCollidedWithBlock(World world, BlockPos pos, Entity collider);
-
-    /**
-     * This determines the BaseMetaTileEntity belonging to this MetaTileEntity by using the Meta ID of the Block itself.
-     * <p/>
-     * 0 = BaseMetaTileEntity, Wrench lvl 0 to dismantle
-     * 1 = BaseMetaTileEntity, Wrench lvl 1 to dismantle
-     * 2 = BaseMetaTileEntity, Wrench lvl 2 to dismantle
-     * 3 = BaseMetaTileEntity, Wrench lvl 3 to dismantle
-     *
-     * CALLED ON SAMPLE TILE ENTITY. BASE TILE IS NULL!
-     */
-    byte getTileEntityBaseType();
-
-    /**
-     * @param tileEntity is just because the internal Variable "mBaseMetaTileEntity" is set after this Call.
-     * @return a newly created and ready MetaTileEntity
-     *
-     * CALLED ON SAMPLE TILE ENTITY. BASE TILE IS NULL!
-     */
-    IMetaTileEntity newMetaEntity(IGregTechTileEntity tileEntity);
-
-    /**
-     * @return an ItemStack representing this MetaTileEntity.
-     *
-     * CALLED ON SAMPLE TILE ENTITY. BASE TILE IS NULL!
-     */
-    ItemStack getStackForm(long amount);
-
-    /**
-     * Called in the registered MetaTileEntity when the Server starts, to reset static variables
-     *
-     * CALLED ON SAMPLE TILE ENTITY. BASE TILE IS NULL!
-     */
-    void onServerStart();
-
-    /**
-     * Called in the registered MetaTileEntity when the Server ticks a World the first time, to load things from the World Save
-     *
-     * CALLED ON SAMPLE TILE ENTITY. BASE TILE IS NULL!
-     */
-    void onWorldLoad(File saveDirectory);
-
-    /**
-     * Called in the registered MetaTileEntity when the Server stops, to save the Game.
-     *
-     * CALLED ON SAMPLE TILE ENTITY. BASE TILE IS NULL!
-     */
-    void onWorldSave(File saveDirectory);
-
-    /**
-     * Called to set Configuration values for this MetaTileEntity.
-     * Use config.get(ConfigCategories.machineconfig, "MetaTileEntityName.Ability", DEFAULT_VALUE); to set the Values.
-     *
-     * CALLED ON SAMPLE TILE ENTITY. BASE TILE IS NULL!
-     */
-    void onConfigLoad(GT_Config config);
-
-    /**
-     * The onCreated Function of the Item Class redirects here
-     *
-     * CALLED ON SAMPLE TILE ENTITY. BASE TILE IS NULL!
-     */
-    void onCreated(ItemStack stack, World world, EntityPlayer player);
+    void onEntityCollidedWithBlock(Entity collider);
 
 }

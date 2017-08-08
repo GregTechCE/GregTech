@@ -7,7 +7,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.ItemStack;
 
-public class GT_Container_MaintenanceHatch extends GT_ContainerMetaTile_Machine {
+public class GT_Container_MaintenanceHatch extends ContainerMetaTileEntity {
 
     public GT_Container_MaintenanceHatch(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);

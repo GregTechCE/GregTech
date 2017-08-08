@@ -3,15 +3,15 @@ package gregtech.common.gui;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import gregtech.api.gui.GT_ContainerMetaTile_Machine;
-import gregtech.api.gui.GT_Slot_Output;
+import gregtech.api.gui.ContainerMetaTileEntity;
+import gregtech.api.gui.SlotOutput;
 import gregtech.api.gui.GT_Slot_Render;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumChest;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 
-public class GT_Container_QuantumChest extends GT_ContainerMetaTile_Machine {
+public class GT_Container_QuantumChest extends ContainerMetaTileEntity {
 
     public int mContent = 0;
 
@@ -22,7 +22,7 @@ public class GT_Container_QuantumChest extends GT_ContainerMetaTile_Machine {
     @Override
     public void addSlots(InventoryPlayer aInventoryPlayer) {
         addSlotToContainer(new Slot(mTileEntity, 0, 80, 17));
-        addSlotToContainer(new GT_Slot_Output(mTileEntity, 1, 80, 53));
+        addSlotToContainer(new SlotOutput(mTileEntity, 1, 80, 53));
         addSlotToContainer(new GT_Slot_Render(mTileEntity, 2, 59, 42));
     }
 
