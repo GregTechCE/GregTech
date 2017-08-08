@@ -45,41 +45,41 @@ public abstract class Material implements Comparable<Material> {
 		/**
 		 * Enables electrolyzer decomposition recipe generation
 		 */
-		public static final int DECOMPOSITION_BY_ELECTROLYZING = createFlag(0);
+		public static final long DECOMPOSITION_BY_ELECTROLYZING = createFlag(0);
 
 		/**
 		 * Enables centrifuge decomposition recipe generation
 		 */
-		public static final int DECOMPOSITION_BY_CENTRIFUGING = createFlag(1);
+		public static final long DECOMPOSITION_BY_CENTRIFUGING = createFlag(1);
 
         /**
          * Add to material if it has constantly burning aura
          */
-        public static final int BURNING = createFlag(7);
+        public static final long BURNING = createFlag(7);
 
 		/**
 		 * Add to material if it is some kind of flammable
 		 */
-		public static final int FLAMMABLE = createFlag(2);
+		public static final long FLAMMABLE = createFlag(2);
 
 		/**
 		 * Add to material if it is some kind of explosive
 		 */
-		public static final int EXPLOSIVE = createFlag(4);
+		public static final long EXPLOSIVE = createFlag(4);
 
 		/**
 		 * Add to material to disable it's unification fully
 		 */
-		public static final int NO_UNIFICATION = createFlag(5);
+		public static final long NO_UNIFICATION = createFlag(5);
 
 		/**
 		 * Add to material if any of it's items cannot be recycled to get scrap
 		 */
-		public static final int NO_RECYCLING = createFlag(6);
+		public static final long NO_RECYCLING = createFlag(6);
 
 
-		public static int createFlag(int id) {
-			return (int) Math.pow(2, id);
+		public static long createFlag(int id) {
+			return (long) Math.pow(2, id);
 		}
 
 	}
@@ -121,7 +121,7 @@ public abstract class Material implements Comparable<Material> {
 	 * @see MatFlags
 	 * @see DustMaterial.MatFlags
 	 */
-	protected int materialGenerationFlags;
+	protected long materialGenerationFlags;
 
 	/**
 	 * Element of this material consist of
@@ -141,7 +141,7 @@ public abstract class Material implements Comparable<Material> {
         return "";
     }
 
-	public Material(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, int materialGenerationFlags, Element element) {
+	public Material(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element) {
 		this.defaultLocalName = defaultLocalName;
 		this.materialRGB = materialRGB;
 		this.materialIconSet = materialIconSet;
@@ -154,19 +154,19 @@ public abstract class Material implements Comparable<Material> {
 		} else MATERIAL_REGISTRY.putObject(name, this);
 	}
 
-	protected int verifyMaterialBits(int materialBits) {
+	protected long verifyMaterialBits(long materialBits) {
 		return materialBits;
 	}
 
-	public void add(int... materialGenerationFlags) {
-		int combined = 0;
-		for (int materialGenerationFlag : materialGenerationFlags) {
+	public void add(long... materialGenerationFlags) {
+		long combined = 0;
+		for (long materialGenerationFlag : materialGenerationFlags) {
 			combined |= materialGenerationFlag;
 		}
 		this.materialGenerationFlags |= verifyMaterialBits(combined);
 	}
 
-	public boolean hasFlag(int generationFlag) {
+	public boolean hasFlag(long generationFlag) {
 		return (materialGenerationFlags & generationFlag) != 0;
 	}
 

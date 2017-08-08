@@ -15,25 +15,27 @@ public class MetalMaterial extends SolidMaterial {
 
     public static final class MatFlags {
 
-        public static final int GENERATE_FOIL = createFlag(25);
-        public static final int GENERATE_BOLT_SCREW = createFlag(26);
-        public static final int GENERATE_RING = createFlag(27);
-        public static final int GENERATE_SPRING = createFlag(28);
-        public static final int GENERATE_FINE_WIRE = createFlag(29);
-        public static final int GENERATE_ROTOR = createFlag(30);
-        public static final int GENERATE_DOUBLE = createFlag(31);
-        public static final int GENERATE_TRIPLE = createFlag(32);
-        public static final int GENERATE_QUADRUPLE = createFlag(33);
-        public static final int GENERATE_SMALL_GEAR = createFlag(34);
-        public static final int GENERATE_QUINTUPLE = createFlag(38);
-        public static final int GENERATE_DENSE = createFlag(39);
+        public static final long GENERATE_FOIL = createFlag(25);
+        public static final long GENERATE_BOLT_SCREW = createFlag(26);
+        public static final long GENERATE_RING = createFlag(27);
+        public static final long GENERATE_SPRING = createFlag(28);
+        public static final long GENERATE_FINE_WIRE = createFlag(29);
+        public static final long GENERATE_ROTOR = createFlag(30);
+        public static final long GENERATE_DOUBLE = createFlag(31);
+        public static final long GENERATE_TRIPLE = createFlag(32);
+        public static final long GENERATE_QUADRUPLE = createFlag(33);
+        public static final long GENERATE_SMALL_GEAR = createFlag(34);
+        public static final long GENERATE_QUINTUPLE = createFlag(38);
+        public static final long GENERATE_DENSE = createFlag(39);
+        public static final long GENERATE_SPRING_SMALL = createFlag(40);
+        public static final long GENERATE_ROUNDS = createFlag(41);
 
         /**
          * Add this to your Material if you want to have its Ore Calcite heated in a Blast Furnace for more output. Already listed are:
          * Iron, Pyrite, PigIron, WroughtIron.
          */
-        public static final int BLAST_FURNACE_CALCITE_DOUBLE = createFlag(35);
-        public static final int BLAST_FURNACE_CALCITE_TRIPLE = createFlag(36);
+        public static final long BLAST_FURNACE_CALCITE_DOUBLE = createFlag(35);
+        public static final long BLAST_FURNACE_CALCITE_TRIPLE = createFlag(36);
 
     }
 
@@ -54,7 +56,7 @@ public class MetalMaterial extends SolidMaterial {
      */
     public final int blastFurnaceTemperature;
 
-    public MetalMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, int materialGenerationFlags, Element element, float toolSpeed, int toolQuality, int toolDurability, int blastFurnaceTemperature) {
+    public MetalMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element, float toolSpeed, int toolQuality, int toolDurability, int blastFurnaceTemperature) {
         super(metaItemSubId, name, defaultLocalName, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, element, toolSpeed, toolQuality, toolDurability);
         this.blastFurnaceTemperature = blastFurnaceTemperature;
         this.smeltInto = this;
@@ -62,28 +64,28 @@ public class MetalMaterial extends SolidMaterial {
         add(SMELT_INTO_FLUID);
     }
 
-    public MetalMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, int materialGenerationFlags, Element element) {
+    public MetalMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element) {
         this(metaItemSubId, name, defaultLocalName, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, element, 0, 0, 0, 0);
     }
 
-    public MetalMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, int materialGenerationFlags) {
+    public MetalMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags) {
         this(metaItemSubId, name, defaultLocalName, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, null, 0, 0, 0, 0);
     }
 
-    public MetalMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, int materialGenerationFlags, Element element, int blastFurnaceTemperature) {
+    public MetalMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element, int blastFurnaceTemperature) {
         this(metaItemSubId, name, defaultLocalName, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, element, 0, 0, 0, blastFurnaceTemperature);
     }
 
-    public MetalMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, int materialGenerationFlags, Element element, float toolSpeed, int toolQuality, int toolDurability) {
+    public MetalMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element, float toolSpeed, int toolQuality, int toolDurability) {
         this(metaItemSubId, name, defaultLocalName, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, element, toolSpeed, toolQuality, toolDurability, 0);
     }
 
-    public MetalMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, int materialGenerationFlags, float toolSpeed, int toolQuality, int toolDurability) {
+    public MetalMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, float toolSpeed, int toolQuality, int toolDurability) {
         this(metaItemSubId, name, defaultLocalName, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, null, toolSpeed, toolQuality, toolDurability, 0);
     }
 
     @Override
-    protected int verifyMaterialBits(int generationBits) {
+    protected long verifyMaterialBits(long generationBits) {
         if((generationBits & GENERATE_QUADRUPLE) > 0) {
             generationBits |= GENERATE_TRIPLE;
         }

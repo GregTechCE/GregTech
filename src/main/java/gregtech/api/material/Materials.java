@@ -36,11 +36,11 @@ import static gregtech.api.material.type.SolidMaterial.MatFlags.MORTAR_GRINDABLE
 
 public class Materials {
 
-    private static final int STD_SOLID = GENERATE_PLATE | GENERATE_ROD | GENERATE_BOLT_SCREW;
-    private static final int STD_GEM = GENERATE_ORE | STD_SOLID | GENERATE_LENSE;
-    private static final int STD_METAL = GENERATE_PLATE;
-    private static final int EXT_METAL = STD_METAL | GENERATE_ROD | GENERATE_BOLT_SCREW;
-    private static final int EXT2_METAL = EXT_METAL | GENERATE_GEAR | GENERATE_FOIL | GENERATE_FINE_WIRE;
+    private static final long STD_SOLID = GENERATE_PLATE | GENERATE_ROD | GENERATE_BOLT_SCREW;
+    private static final long STD_GEM = GENERATE_ORE | STD_SOLID | GENERATE_LENSE;
+    private static final long STD_METAL = GENERATE_PLATE;
+    private static final long EXT_METAL = STD_METAL | GENERATE_ROD | GENERATE_BOLT_SCREW;
+    private static final long EXT2_METAL = EXT_METAL | GENERATE_GEAR | GENERATE_FOIL | GENERATE_FINE_WIRE;
 
     /**
      * Direct Elements
@@ -87,7 +87,7 @@ public class Materials {
     public static FluidMaterial Mercury = new FluidMaterial(40, "mercury", "Mercury", 0xFFDDDD, FLUID, of(), SMELT_INTO_FLUID, Element.Hg);
     public static MetalMaterial Molybdenum = new MetalMaterial(41, "molybdenum", "Molybdenum", 0xAAAADD, DULL, of(), 0, Element.Mo, 7.0F, 512, 2);
     public static MetalMaterial Neodymium = new MetalMaterial(42, "neodymium", "Neodymium", 0x999999, METALLIC, of(), STD_METAL | GENERATE_ROD, Element.Nd, 7.0F, 2, 512, 1297);
-    public static MetalMaterial Darmstadtium = new MetalMaterial(43, "darmstadtium", "Darmstadtium", 0xAAAAAA, METALLIC, of(), EXT2_METAL | GENERATE_RING | GENERATE_ROTOR | GENERATE_SMALL_GEAR | GENERATE_LONG_ROD, Element.Ds, 24.0F, 6, 655360);
+    public static MetalMaterial Darmstadtium = new MetalMaterial(43, "darmstadtium", "Darmstadtium", 0xAAAAAA, METALLIC, of(), EXT2_METAL | GENERATE_RING | GENERATE_ROTOR | GENERATE_SMALL_GEAR | GENERATE_LONG_ROD | GENERATE_ROUNDS, Element.Ds, 24.0F, 6, 655360);
     public static MetalMaterial Nickel = new MetalMaterial(44, "nickel", "Nickel", 0xAAAAFF, METALLIC, of(), STD_METAL | GENERATE_ORE | MORTAR_GRINDABLE, Element.Ni, 6.0F, 2, 64);
     public static MetalMaterial Niobium = new MetalMaterial(45, "niobium", "Niobium", 0x9486AA, METALLIC, of(), STD_METAL | GENERATE_ORE, Element.Nb, 2750);
     public static FluidMaterial Nitrogen = new FluidMaterial(46, "nitrogen", "Nitrogen", 0x7090AF, FLUID, of(), STATE_GAS, Element.N);
@@ -375,8 +375,8 @@ public class Materials {
     public static MetalMaterial NeodymiumMagnetic = new MetalMaterial(299, "neodymium_magnetic", "Magnetic Neodymium", 0x646464, MAGNETIC, of(new MaterialStack(Neodymium, 1)), EXT2_METAL | GENERATE_LONG_ROD, null, 7.0F, 2, 512, 1297);
     public static MetalMaterial TungstenCarbide = new MetalMaterial(300, "tungsten_carbide", "Tungstencarbide", 0x330066, METALLIC, of(new MaterialStack(Tungsten, 1)), EXT2_METAL, null, 14.0F, 4, 1280, 2460);
     public static MetalMaterial VanadiumSteel = new MetalMaterial(301, "vanadium_steel", "Vanadiumsteel", 0xC0C0C0, METALLIC, of(new MaterialStack(Vanadium, 1), new MaterialStack(Chrome, 1), new MaterialStack(Steel, 7)), EXT2_METAL, null, 3.0F, 3, 1920, 1453);
-    public static MetalMaterial HSSG = new MetalMaterial(302, "hssg", "HSS-G", 0x999900, METALLIC, of(new MaterialStack(TungstenSteel, 5), new MaterialStack(Chrome, 1), new MaterialStack(Molybdenum, 2), new MaterialStack(Vanadium, 1)), EXT2_METAL | GENERATE_RING | GENERATE_ROTOR | GENERATE_SMALL_GEAR | GENERATE_LONG_ROD, null, 10.0F, 3, 4000, 4500);
-    public static MetalMaterial HSSE = new MetalMaterial(303, "hsse", "HSS-E", 0x336600, METALLIC, of(new MaterialStack(HSSG, 6), new MaterialStack(Cobalt, 1), new MaterialStack(Manganese, 1), new MaterialStack(Silicon, 1)), EXT2_METAL | GENERATE_RING | GENERATE_ROTOR | GENERATE_SMALL_GEAR | GENERATE_LONG_ROD, null, 10.0F, 4, 5120, 5400);
+    public static MetalMaterial HSSG = new MetalMaterial(302, "hssg", "HSS-G", 0x999900, METALLIC, of(new MaterialStack(TungstenSteel, 5), new MaterialStack(Chrome, 1), new MaterialStack(Molybdenum, 2), new MaterialStack(Vanadium, 1)), EXT2_METAL | GENERATE_RING | GENERATE_ROTOR | GENERATE_SMALL_GEAR | GENERATE_LONG_ROD | GENERATE_ROUNDS, null, 10.0F, 3, 4000, 4500);
+    public static MetalMaterial HSSE = new MetalMaterial(303, "hsse", "HSS-E", 0x336600, METALLIC, of(new MaterialStack(HSSG, 6), new MaterialStack(Cobalt, 1), new MaterialStack(Manganese, 1), new MaterialStack(Silicon, 1)), EXT2_METAL | GENERATE_RING | GENERATE_ROTOR | GENERATE_SMALL_GEAR | GENERATE_LONG_ROD | GENERATE_ROUNDS, null, 10.0F, 4, 5120, 5400);
     public static MetalMaterial HSSS = new MetalMaterial(304, "hsss", "HSS-S", 0x660033, METALLIC, of(new MaterialStack(HSSG, 6), new MaterialStack(Iridium, 2), new MaterialStack(Osmium, 1)), EXT2_METAL, null, 14.0F, 4, 3000, 5400);
 
     /**
