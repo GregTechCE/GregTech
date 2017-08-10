@@ -4,7 +4,7 @@ package gregtech.api.interfaces.tileentity;
 import net.minecraft.util.EnumFacing;
 
 /**
- * Implemented by all my Machines. However without any security checks, if the Players are even allowed to rotate it.
+ * Implemented by all my Machines.
  */
 public interface ITurnable {
 

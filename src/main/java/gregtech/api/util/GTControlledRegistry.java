@@ -11,6 +11,11 @@ public class GTControlledRegistry<T> extends RegistryNamespaced<String, T> {
 
     private HashMap<String, String> modRegistryTracking = new HashMap<>();
     private boolean frozen = false;
+    private final int maxId;
+
+    public GTControlledRegistry(int maxId) {
+        this.maxId = maxId;
+    }
 
     public void freezeRegistry() {
         if(frozen) {
@@ -21,6 +26,9 @@ public class GTControlledRegistry<T> extends RegistryNamespaced<String, T> {
 
     @Override
     public void register(int id, String key, T value) {
+        if(id < 0 || id >= maxId) {
+            throw new IndexOutOfBoundsException("Id is out of range: " + id);
+        }
         this.putObject(key, value);
         underlyingIntegerMap.put(value, id);
     }
@@ -47,13 +55,6 @@ public class GTControlledRegistry<T> extends RegistryNamespaced<String, T> {
         String key = getNameForObject(value);
         String modId = modRegistryTracking.get(key);
         return new ResourceLocation(modId, key);
-    }
-
-    public T getObjectByFullName(ResourceLocation fullName) {
-        if(!fullName.getResourceDomain().equals(modRegistryTracking.get(fullName.getResourcePath()))) {
-            return null;
-        }
-        return getObject(fullName.getResourcePath());
     }
 
 }

@@ -1,19 +1,13 @@
 package gregtech.api.interfaces.tileentity;
 
-/**
- * This File has just internal Information about the Redstone State of a TileEntity
- */
-public interface IRedstoneTileEntity extends IRedstoneEmitter, IRedstoneReceiver {
+import net.minecraft.util.EnumFacing;
+
+public interface IRedstoneTileEntity {
 
     /**
-     * enables/disables Redstone Output in general.
+     * Return whether the TileEntity can output redstone to the given side. Used to visually connect
+     * vanilla redstone wires.
      */
-    void setGenericRedstoneOutput(boolean onOff);
-
-    /**
-     * Causes a general Block update.
-     * Sends nothing to Client, just causes a Block Update.
-     */
-    void issueBlockUpdate();
+    boolean canConnectRedstone(EnumFacing side);
 
 }

@@ -28,7 +28,7 @@ public interface IMetaTileEntityFactory {
     /**
      * @return a newly created and ready MetaTileEntity
      */
-    IMetaTileEntity constructMetaTileEntity(IGregTechTileEntity tileEntity);
+    IMetaTileEntity constructMetaTileEntity();
 
     /**
      * @return an ItemStack representing this MetaTileEntity.

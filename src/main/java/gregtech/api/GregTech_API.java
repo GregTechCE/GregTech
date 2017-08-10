@@ -4,6 +4,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntityFactory;
 import gregtech.api.items.GenericItem;
 import gregtech.api.objects.GT_Cover_Default;
 import gregtech.api.objects.GT_Cover_None;
@@ -45,15 +46,6 @@ import java.util.*;
 public class GregTech_API {
 
     /**
-     * Fixes the HashMap Mappings for ItemStacks once the Server started
-     */
-    public static final Collection<Map<SimpleItemStack, ?>> sItemStackMappings = new ArrayList<>();
-    public static final Collection<Map<Fluid, ?>> sFluidMappings = new ArrayList<>();
-    /**
-     * The MetaTileEntity-ID-List-Length
-     */
-    public static final short MAXIMUM_METATILE_IDS = Short.MAX_VALUE - 1;
-    /**
      * My Creative Tab
      */
     public static final CreativeTabs TAB_GREGTECH = new GT_CreativeTab("Main", "Main"),
@@ -70,9 +62,9 @@ public class GregTech_API {
      * 9216 -  10000 are used for GregTech Automation Machines.
      * 10000 - 32766 are currently free.
      * <p/>
-     * Contact me if you need a free ID-Range, which doesn't conflict with other Addons.
+     * Contact us if you need a free ID-Range, which doesn't conflict with other Addons.
      */
-    public static final IMetaTileEntity[] METATILEENTITIES = new IMetaTileEntity[MAXIMUM_METATILE_IDS];
+    public static final GTControlledRegistry<IMetaTileEntityFactory> METATILEENTITY_REGISTRY = new GTControlledRegistry<>(Short.MAX_VALUE);
     /**
      * The Icon List for Covers
      */

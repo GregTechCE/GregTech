@@ -1,24 +1,16 @@
 package gregtech.api.interfaces.tileentity;
 
+import gregtech.api.material.type.Material;
 
-/**
- * To access my Machines a bit easier
- */
 public interface IUpgradableMachine extends IMachineProgress {
 
-    /**
-     * Accepts Muffler Upgrades
-     */
-    boolean isMufflerUpgradable();
+    int UPGRADE_TYPE_LOCK = Material.MatFlags.createFlag(0);
+    int UPGRADE_TYPE_MUFFLER = Material.MatFlags.createFlag(1);
 
-    /**
-     * Adds Muffler Upgrade
-     */
-    boolean addMufflerUpgrade();
+    boolean isUpgradable(int upgradeBit);
 
-    /**
-     * Does this Machine have an Muffler
-     */
-    boolean hasMufflerUpgrade();
+    boolean addUpgrade(int upgradeBit);
+
+    boolean hasUpgrade(int upgradeBit);
 
 }

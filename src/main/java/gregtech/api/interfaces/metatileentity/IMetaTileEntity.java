@@ -1,8 +1,9 @@
 package gregtech.api.interfaces.metatileentity;
 
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.*;
 import gregtech.api.material.Dyes;
 import gregtech.api.util.GT_Config;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,8 +13,11 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -21,21 +25,23 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.io.File;
 import java.util.ArrayList;
 
-public interface IMetaTileEntity {
+public interface IMetaTileEntity extends ITurnable, IMachineBlockUpdateable, IRedstoneReceiver, IRedstoneEmitter {
+
+    IMetaTileEntityFactory getFactory();
 
     String getMetaName();
 
-    String getLocalizedName();
+    String getUnlocalizedName();
 
-    /**
-     * getter for the BaseMetaTileEntity, which restricts usage to certain Functions.
-     */
+    ITextComponent getLocalizedName();
+
     IGregTechTileEntity getHolder();
 
-    /**
-     * Sets the BaseMetaTileEntity of this
-     */
-    void setHolder(IGregTechTileEntity baseMetaTileEntity);
+    @SideOnly(Side.CLIENT)
+    ResourceLocation getModelLocation();
+
+    @SideOnly(Side.CLIENT)
+    IBlockState getModelState();
 
     /**
      * when placing a Machine in World, to initialize default Modes. data can be null!
@@ -129,6 +135,7 @@ public interface IMetaTileEntity {
     GuiContainer getClientGUI(int ID, InventoryPlayer playerInventory);
 
     int getSlotsCount();
+
     int[] getSlotsForFace(EnumFacing face);
     //side == null - internal inventory change
     boolean allowPullStack(int index, EnumFacing side, ItemStack stack);
@@ -142,10 +149,12 @@ public interface IMetaTileEntity {
     boolean isValidSlot(int index);
 
     int getTanksCount();
+    int getTankCapacity(int tankIndex);
+
     int[] getTanksForFace(EnumFacing face);
     //side == null - internal tank change
-    boolean allowPullFluid(int tankIndex, EnumFacing side, FluidStack fluidStack);
-    boolean allowPutFluid(int tankIndex, EnumFacing side, FluidStack fluidStack);
+    boolean allowPullFluid(int tankIndex, EnumFacing side, Fluid fluid);
+    boolean allowPutFluid(int tankIndex, EnumFacing side, Fluid fluid);
 
     /**
      * @return a COPY of stack in slot. Actual stack won't change.
@@ -203,7 +212,7 @@ public interface IMetaTileEntity {
     /**
      * Gets the Output for the comparator on the given Side
      */
-    byte getComparatorValue(EnumFacing side);
+    int getComparatorValue(EnumFacing side);
 
     float getExplosionResistance(EnumFacing side);
 
