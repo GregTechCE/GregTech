@@ -18,13 +18,13 @@ public class FluidMaterial extends Material {
         /**
          * Add this flag to enable plasma generation for this material
          */
-        public static final int GENERATE_PLASMA = Material.MatFlags.createFlag(10);
+        public static final long GENERATE_PLASMA = Material.MatFlags.createFlag(10);
 
         /**
          * Marks material state as gas
          * Examples: Air, Argon, Refinery Gas, Oxygen, Hydrogen
          */
-        public static final int STATE_GAS = Material.MatFlags.createFlag(11);
+        public static final long STATE_GAS = Material.MatFlags.createFlag(11);
 
     }
 
@@ -40,11 +40,11 @@ public class FluidMaterial extends Material {
     @Nullable
     private Fluid materialPlasma;
 
-    public FluidMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, int materialGenerationFlags, Element element) {
+    public FluidMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element) {
         super(metaItemSubId, name, defaultLocalName, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, element);
     }
 
-    public FluidMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, int materialGenerationFlags) {
+    public FluidMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags) {
         super(metaItemSubId, name, defaultLocalName, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, null);
     }
 

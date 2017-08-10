@@ -1,254 +1,253 @@
 package gregtech.api.material;
 
 import com.google.common.base.Preconditions;
+import gregtech.api.interfaces.ICondition;
+import gregtech.api.interfaces.IOreRecipeRegistrator;
+import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.material.type.DustMaterial;
 import gregtech.api.material.type.GemMaterial;
 import gregtech.api.material.type.Material;
 import gregtech.api.material.type.MetalMaterial;
 import gregtech.api.material.type.SolidMaterial;
-import gregtech.api.interfaces.ICondition;
-import gregtech.api.interfaces.IOreRecipeRegistrator;
-import gregtech.api.interfaces.ISubTagContainer;
-import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.objects.SimpleItemStack;
 import gregtech.api.objects.UnificationEntry;
 import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
 
-import static gregtech.api.GT_Values.*;
-import static gregtech.api.material.type.DustMaterial.MatFlags.*;
+import static gregtech.api.GT_Values.M;
+import static gregtech.api.material.Flags.DISALLOW_RECYCLING;
+import static gregtech.api.material.Flags.ENABLE_UNIFICATION;
+import static gregtech.api.material.Flags.FLUID_CONTAINER;
+import static gregtech.api.material.Flags.SELF_REFERENCING;
+import static gregtech.api.material.type.DustMaterial.MatFlags.GENERATE_ORE;
+import static gregtech.api.material.type.DustMaterial.MatFlags.GENERATE_PLATE;
+import static gregtech.api.material.type.DustMaterial.MatFlags.NO_SMASHING;
+import static gregtech.api.material.type.FluidMaterial.MatFlags.GENERATE_PLASMA;
+import static gregtech.api.material.type.GemMaterial.MatFlags.GENERATE_LENSE;
 import static gregtech.api.material.type.MetalMaterial.MatFlags.*;
 import static gregtech.api.material.type.SolidMaterial.MatFlags.GENERATE_GEAR;
-import static gregtech.api.material.type.SolidMaterial.MatFlags.GENERATE_LONG_ROD;
 import static gregtech.api.material.type.SolidMaterial.MatFlags.GENERATE_ROD;
 
 public enum OrePrefixes {
 
-    oreBlackgranite("Black Granite Ores", "Granite ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1), // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!
-    oreRedgranite("Red Granite Ores", "Granite ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1), // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!
+    oreBlackgranite("Black Granite Ores", -1, "Granite %s Ore", MaterialIconType.ore, ENABLE_UNIFICATION | DISALLOW_RECYCLING, hasFlag(GENERATE_ORE)), // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!
+    oreRedgranite("Red Granite Ores", -1, "Granite %s Ore", MaterialIconType.ore, ENABLE_UNIFICATION | DISALLOW_RECYCLING, hasFlag(GENERATE_ORE)), // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!
 
-    oreMarble("Marble Ores", "Marble ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1), // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!
-    oreBasalt("Basalt Ores", "Basalt ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1), // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!
+    oreMarble("Marble Ores", -1, "Marble %s Ore", MaterialIconType.ore, ENABLE_UNIFICATION | DISALLOW_RECYCLING, hasFlag(GENERATE_ORE)), // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!
+    oreBasalt("Basalt Ores", -1, "Basalt %s Ore", MaterialIconType.ore, ENABLE_UNIFICATION | DISALLOW_RECYCLING, hasFlag(GENERATE_ORE)), // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!
 
-    oreSand("Sand Ores", "Sand ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1), // In case of an Sand-Ores Mod. Ore -> Material is a Oneway Operation!
-    oreGravel("Gravel Ores", "Sand ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1), // In case of an Gravel-Ores Mod. Ore -> Material is a Oneway Operation!
+    oreSand("Sand Ores", -1, "Sand %s Ore", MaterialIconType.ore, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null), // In case of an Sand-Ores Mod. Ore -> Material is a Oneway Operation!
+    oreGravel("Gravel Ores", -1, "Sand %s Ore", MaterialIconType.ore, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null), // In case of an Gravel-Ores Mod. Ore -> Material is a Oneway Operation!
 
-    oreNetherrack("Netherrack Ores", "Nether ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1), // Prefix of the Nether-Ores Mod. Causes Ores to double. Ore -> Material is a Oneway Operation!
-    oreNether("Nether Ores", "Nether ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1), // Prefix of the Nether-Ores Mod. Causes Ores to double. Ore -> Material is a Oneway Operation!
+    oreNetherrack("Netherrack Ores", -1, "Nether %s Ore", MaterialIconType.ore, ENABLE_UNIFICATION | DISALLOW_RECYCLING, hasFlag(GENERATE_ORE)), // Prefix of the Nether-Ores Mod. Causes Ores to double. Ore -> Material is a Oneway Operation!
+    oreNether("Nether Ores", -1, "Nether %s Ore", MaterialIconType.ore, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null), // Prefix of the Nether-Ores Mod. Causes Ores to double. Ore -> Material is a Oneway Operation!
 
-    oreDense("Dense Ores", "Dense ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1), // Prefix of the Dense-Ores Mod. Causes Ores to double. Ore -> Material is a Oneway Operation!
-    oreRich("Rich Ores", "Rich ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1), // Prefix of TFC
-    oreNormal("Normal Ores", "Normal ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1), // Prefix of TFC
-    oreSmall("Small Ores", "Small ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, 67), // Prefix of Railcraft.
-    orePoor("Poor Ores", "Poor ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1), // Prefix of Railcraft.
+    oreDense("Dense Ores", -1, "Dense %s Ore", MaterialIconType.ore, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null), // Prefix of the Dense-Ores Mod. Causes Ores to double. Ore -> Material is a Oneway Operation!
+    oreRich("Rich Ores", -1, "Rich %s Ore", MaterialIconType.ore, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null), // Prefix of TFC
+    oreNormal("Normal Ores", -1, "Normal %s Ore", MaterialIconType.ore, ENABLE_UNIFICATION | DISALLOW_RECYCLING, hasFlag(GENERATE_ORE)), // Prefix of TFC
+    oreSmall("Small Ores", -1, "Small %s Ore", MaterialIconType.oreSmall, ENABLE_UNIFICATION | DISALLOW_RECYCLING, hasFlag(GENERATE_ORE)), // Prefix of Railcraft.
+    orePoor("Poor Ores", -1, "Poor %s Ore", MaterialIconType.oreSmall, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null), // Prefix of Railcraft.
 
-    oreEndstone("Endstone Ores", "End ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1), // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!
-    oreEnd("End Ores", "End ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1), // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!
+    oreEndstone("Endstone Ores", -1, "End %s Ore", MaterialIconType.ore, ENABLE_UNIFICATION | DISALLOW_RECYCLING, hasFlag(GENERATE_ORE)), // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!
+    oreEnd("End Ores", -1, "End %s Ore", MaterialIconType.ore, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null), // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!
 
-    ore("Ores", "", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, 68), // Regular Ore Prefix. Ore -> Material is a Oneway Operation! Introduced by Eloraam
+    ore("Ores", -1, "%s Ore", MaterialIconType.ore, ENABLE_UNIFICATION | DISALLOW_RECYCLING, hasFlag(GENERATE_ORE)), // Regular Ore Prefix. Ore -> Material is a Oneway Operation! Introduced by Eloraam
 
-    crushedCentrifuged("Centrifuged Ores", "Centrifuged ", " Ore", true, true, false, false, false, false, false, true, false, true, B[3], -1, 64, 7),
-    crushedPurified("Purified Ores", "Purified ", " Ore", true, true, false, false, false, false, false, true, false, true, B[3], -1, 64, 6),
-    crushed("Crushed Ores", "Crushed ", " Ore", true, true, false, false, false, false, false, true, false, true, B[3], -1, 64, 5),
+    crushedCentrifuged("Centrifuged Ores", -1, "Centrifuged %s Ore", MaterialIconType.crushedCentrifuged, ENABLE_UNIFICATION | DISALLOW_RECYCLING, hasFlag(GENERATE_ORE)),
+    crushedPurified("Purified Ores", -1, "Purified %s Ore", MaterialIconType.crushedPurified, ENABLE_UNIFICATION | DISALLOW_RECYCLING, hasFlag(GENERATE_ORE)),
+    crushed("Crushed Ores", -1, "Crushed %s Ore", MaterialIconType.crushed, ENABLE_UNIFICATION | DISALLOW_RECYCLING, hasFlag(GENERATE_ORE)),
 
-    shard("Crystallised Shards", "", "", true, true, false, false, false, false, false, false, false, true, B[3], -1, 64, -1), // Introduced by Mekanism
-    clump("Clumps", "", "", true, true, false, false, false, false, false, false, false, true, B[3], -1, 64, -1),
-    reduced("Reduced Gravels", "", "", true, true, false, false, false, false, false, false, false, true, B[3], -1, 64, -1),
-    crystalline("Crystallised Metals", "", "", true, true, false, false, false, false, false, false, false, true, B[3], -1, 64, -1),
+    shard("Crystallised Shards", -1, "%s", null, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null), // Introduced by Mekanism
+    clump("Clumps", -1, "%s", null, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null),
+    reduced("Reduced Gravels", -1, "%s", null, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null),
+    crystalline("Crystallised Metals", -1, "%s", null, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null),
 
-    cleanGravel("Clean Gravels", "", "", true, true, false, false, false, false, false, false, false, true, B[3], -1, 64, -1),
-    dirtyGravel("Dirty Gravels", "", "", true, true, false, false, false, false, false, false, false, true, B[3], -1, 64, -1),
+    cleanGravel("Clean Gravels", -1, "%s", null, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null),
+    dirtyGravel("Dirty Gravels", -1, "%s", null, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null),
 
-    ingotQuintuple("5x Ingots", "Quintuple ", " Ingot", true, true, false, false, false, false, true, true, false, false, B[1], M * 5, 12, 16), // A quintuple Ingot.
-    ingotQuadruple("4x Ingots", "Quadruple ", " Ingot", true, true, false, false, false, false, true, true, false, false, B[1], M * 4, 16, 15), // A quadruple Ingot.
-    ingotTriple("3x Ingots", "Triple ", " Ingot", true, true, false, false, false, false, true, false, false, false, B[1], M * 3, 21, 14), // A triple Ingot.
-    ingotDouble("2x Ingots", "Double ", " Ingot", true, true, false, false, false, false, true, true, false, false, B[1], M * 2, 32, 13), // A double Ingot. Introduced by TerraFirmaCraft
-    ingotHot("Hot Ingots", "Hot ", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1], M * 1, 16, 12), // A hot Ingot, which has to be cooled down by a Vacuum Freezer.
-    ingot("Ingots", "", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1], M * 1, 64, 11), // A regular Ingot. Introduced by Eloraam
+    ingotQuintuple("5x Ingots", M * 5, "Quintuple %s Ingot", MaterialIconType.ingotQuintuple, ENABLE_UNIFICATION, new ICondition.And<>(hasFlag(GENERATE_QUINTUPLE), noFlag(NO_SMASHING))), // A quintuple Ingot.
+    ingotQuadruple("4x Ingots", M * 4, "Quadruple %s Ingot", MaterialIconType.ingotQuadruple, ENABLE_UNIFICATION, new ICondition.And<>(hasFlag(GENERATE_QUADRUPLE), noFlag(NO_SMASHING))), // A quadruple Ingot.
+    ingotTriple("3x Ingots", M * 3, "Triple %s Ingot", MaterialIconType.ingotTriple, ENABLE_UNIFICATION, new ICondition.And<>(hasFlag(GENERATE_TRIPLE), noFlag(NO_SMASHING))), // A triple Ingot.
+    ingotDouble("2x Ingots", M * 2, "Double %s Ingot", MaterialIconType.ingotDouble, ENABLE_UNIFICATION, new ICondition.And<>(hasFlag(GENERATE_DOUBLE), noFlag(NO_SMASHING))), // A double Ingot. Introduced by TerraFirmaCraft
+    ingotHot("Hot Ingots", M, "Hot %s Ingot", MaterialIconType.ingotHot, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> (mat instanceof MetalMaterial) ? ((MetalMaterial) mat).blastFurnaceTemperature > 1750 : false), // A hot Ingot, which has to be cooled down by a Vacuum Freezer.
+    ingot("Ingots", M, "%s Ingot", MaterialIconType.ingot, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> mat instanceof MetalMaterial), // A regular Ingot. Introduced by Eloraam
 
-    gemChipped("Chipped Gemstones", "Chipped ", "", true, true, true, false, false, false, true, true, false, false, B[2], M / 4, 64, 59), // A regular Gem worth one small Dust. Introduced by TerraFirmaCraft
-    gemFlawed("Flawed Gemstones", "Flawed ", "", true, true, true, false, false, false, true, true, false, false, B[2], M / 2, 64, 60), // A regular Gem worth two small Dusts. Introduced by TerraFirmaCraft
-    gemFlawless("Flawless Gemstones", "Flawless ", "", true, true, true, false, false, false, true, true, false, false, B[2], M * 2, 32, 61), // A regular Gem worth two Dusts. Introduced by TerraFirmaCraft
-    gemExquisite("Exquisite Gemstones", "Exquisite ", "", true, true, true, false, false, false, true, true, false, false, B[2], M * 4, 16, 62), // A regular Gem worth four Dusts. Introduced by TerraFirmaCraft
-    gem("Gemstones", "", "", true, true, true, false, false, false, true, true, false, false, B[2], M * 1, 64, 8), // A regular Gem worth one Dust. Introduced by Eloraam
+    gemChipped("Chipped Gemstones", M / 4, "Chipped %s", MaterialIconType.gemChipped, ENABLE_UNIFICATION | SELF_REFERENCING, mat -> mat instanceof GemMaterial), // A regular Gem worth one small Dust. Introduced by TerraFirmaCraft
+    gemFlawed("Flawed Gemstones", M / 2, "Flawed %s", MaterialIconType.gemFlawed, ENABLE_UNIFICATION | SELF_REFERENCING, mat -> mat instanceof GemMaterial), // A regular Gem worth two small Dusts. Introduced by TerraFirmaCraft
+    gemFlawless("Flawless Gemstones", M * 2, "Flawless %s", MaterialIconType.gemFlawless, ENABLE_UNIFICATION | SELF_REFERENCING, mat -> mat instanceof GemMaterial), // A regular Gem worth two Dusts. Introduced by TerraFirmaCraft
+    gemExquisite("Exquisite Gemstones", M * 4, "Exquisite %s", MaterialIconType.gemExquisite, ENABLE_UNIFICATION | SELF_REFERENCING, mat -> mat instanceof GemMaterial), // A regular Gem worth four Dusts. Introduced by TerraFirmaCraft
+    gem("Gemstones", M, "%s", MaterialIconType.gem, ENABLE_UNIFICATION | SELF_REFERENCING, mat -> mat instanceof GemMaterial), // A regular Gem worth one Dust. Introduced by Eloraam
 
-    dustTiny("Tiny Dusts", "Tiny Pile of ", " Dust", true, true, false, false, false, false, false, true, false, false, B[0] | B[1] | B[2] | B[3], M / 9, 64, 0), // 1/9th of a Dust.
-    dustSmall("Small Dusts", "Small Pile of ", " Dust", true, true, false, false, false, false, false, true, false, false, B[0] | B[1] | B[2] | B[3], M / 4, 64, 1), // 1/4th of a Dust.
-    dustImpure("Impure Dusts", "Impure Pile of ", " Dust", true, true, false, false, false, false, false, true, false, true, B[3], M * 1, 64, 3), // Dust with impurities. 1 Unit of Main Material and 1/9 - 1/4 Unit of secondary Material
-    dustRefined("Refined Dusts", "Refined Pile of ", " Dust", true, true, false, false, false, false, false, true, false, true, B[3], M * 1, 64, 2),
-    dustPure("Purified Dusts", "Purified Pile of ", " Dust", true, true, false, false, false, false, false, true, false, true, B[3], M * 1, 64, 4),
-    dust("Dusts", "", " Dust", true, true, false, false, false, false, false, true, false, false, B[0] | B[1] | B[2] | B[3], M * 1, 64, 2), // Pure Dust worth of one Ingot or Gem. Introduced by Alblaka.
+    dustTiny("Tiny Dusts", M / 9, "Tiny Pile of %s Dust", MaterialIconType.dustTiny, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> mat instanceof DustMaterial), // 1/9th of a Dust.
+    dustSmall("Small Dusts", M / 4, "Small Pile of %s Dust", MaterialIconType.dustSmall, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> mat instanceof DustMaterial), // 1/4th of a Dust.
+    dustImpure("Impure Dusts", M, "Impure Pile of %s Dust", MaterialIconType.dustImpure, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> mat instanceof DustMaterial && mat.hasFlag(GENERATE_ORE)), // Dust with impurities. 1 Unit of Main Material and 1/9 - 1/4 Unit of secondary Material
+    dustRefined("Refined Dusts", M, "Refined Pile of %s Dust", MaterialIconType.dust, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null),
+    dustPure("Purified Dusts", M, "Purified Pile of %s Dust", MaterialIconType.dustPure, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> mat instanceof DustMaterial && mat.hasFlag(GENERATE_ORE)),
+    dust("Dusts", M, "%s Dust", MaterialIconType.dust, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> mat instanceof DustMaterial), // Pure Dust worth of one Ingot or Gem. Introduced by Alblaka.
 
-    nugget("Nuggets", "", " Nugget", true, true, false, false, false, false, false, true, false, false, B[1], M / 9, 64, 9), // A Nugget. Introduced by Eloraam
+    nugget("Nuggets", M / 9, "%s Nugget", MaterialIconType.nugget, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> mat instanceof MetalMaterial), // A Nugget. Introduced by Eloraam
 
-    plateAlloy("Alloy Plates", "", "", true, false, false, false, false, false, false, false, false, false, B[1], -1, 64, 17), // Special Alloys have this prefix.
-    plateDense("Dense Plates", "Dense ", " Plate", true, true, false, false, false, false, true, true, false, false, B[1], M * 9, 8, 22), // 9 Plates combined in one Item.
-    plateQuintuple("5x Plates", "Quintuple ", " Plate", true, true, false, false, false, false, true, true, false, false, B[1], M * 5, 12, 21),
-    plateQuadruple("4x Plates", "Quadruple ", " Plate", true, true, false, false, false, false, true, true, false, false, B[1], M * 4, 16, 20),
-    plateTriple("3x Plates", "Triple ", " Plate", true, true, false, false, false, false, true, true, false, false, B[1], M * 3, 21, 19),
-    plateDouble("2x Plates", "Double ", " Plate", true, true, false, false, false, false, true, true, false, false, B[1], M * 2, 32, 18),
-    plate("Plates", "", " Plate", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M * 1, 64, 17), // Regular Plate made of one Ingot/Dust. Introduced by Calclavia
+    plateAlloy("Alloy Plates", -1, "%s", MaterialIconType.plate, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null), // Special Alloys have this prefix.
+    plateDense("Dense Plates", M * 9, "Dense %s Plate", MaterialIconType.plateDense, ENABLE_UNIFICATION, new ICondition.And<>(hasFlag(GENERATE_PLATE | GENERATE_DENSE), noFlag(NO_SMASHING))), // 9 Plates combined in one Item.
+    plateQuintuple("5x Plates", M * 5, "Quintuple %s Plate", MaterialIconType.plateQuintuple, ENABLE_UNIFICATION, hasFlag(GENERATE_PLATE | GENERATE_QUINTUPLE)),
+    plateQuadruple("4x Plates", M * 4, "Quadruple %s Plate", MaterialIconType.plateQuadruple, ENABLE_UNIFICATION, hasFlag(GENERATE_PLATE | GENERATE_QUADRUPLE)),
+    plateTriple("3x Plates", M * 3, "Triple %s Plate", MaterialIconType.plateTriple, ENABLE_UNIFICATION, hasFlag(GENERATE_PLATE | GENERATE_TRIPLE)),
+    plateDouble("2x Plates", M * 2, "Double %s Plate", MaterialIconType.plateDouble, ENABLE_UNIFICATION, hasFlag(GENERATE_PLATE | GENERATE_DOUBLE)),
+    plate("Plates", M, "%s Plate", MaterialIconType.plate, ENABLE_UNIFICATION, hasFlag(GENERATE_PLATE)), // Regular Plate made of one Ingot/Dust. Introduced by Calclavia
 
-    foil("Foils", "", " Foil", true, true, false, false, false, false, true, true, false, false, B[1], M / 4, 64, 29), // Foil made of 1/4 Ingot/Dust.
+    foil("Foils", M / 4, "%s Foil", MaterialIconType.foil, ENABLE_UNIFICATION, hasFlag(GENERATE_FOIL)), // Foil made of 1/4 Ingot/Dust.
 
-    stickLong("Long Sticks/Rods", "Long ", " Rod", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M * 1, 64, 54), // Stick made of an Ingot.
-    stick("Sticks/Rods", "", " Rod", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 2, 64, 23), // Stick made of half an Ingot. Introduced by Eloraam
+    stickLong("Long Sticks/Rods", M, "Long %s Rod", MaterialIconType.stickLong, ENABLE_UNIFICATION, hasFlag(GENERATE_ROD)), // Stick made of an Ingot.
+    stick("Sticks/Rods", M / 2, "%s Rod", MaterialIconType.stick, ENABLE_UNIFICATION, hasFlag(GENERATE_ROD)), // Stick made of half an Ingot. Introduced by Eloraam
 
-    round("Rounds", "", " Round", true, true, false, false, false, false, true, true, false, false, B[1], M / 9, 64, 25), // consisting out of one Nugget.
+    round("Rounds", M / 9, "%s Round", MaterialIconType.round, ENABLE_UNIFICATION, hasFlag(GENERATE_ROUNDS)), // consisting out of one Nugget.
 
-    bolt("Bolts", "", " Bolt", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 8, 64, 26), // consisting out of 1/8 Ingot or 1/4 Stick.
+    bolt("Bolts", M / 8, "%s Bolt", MaterialIconType.bolt, ENABLE_UNIFICATION, hasFlag(GENERATE_BOLT_SCREW)), // consisting out of 1/8 Ingot or 1/4 Stick.
 
-    comb("Combs", "", " Comb", false, false, false, false, false, false, false, true, false, false, B[1] | B[2], M, 64, 101), // contain dusts
+    comb("Combs", M, "%s Comb", null, DISALLOW_RECYCLING, null), // contain dusts
 
-    screw("Screws", "", " Screw", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 9, 64, 27), // consisting out of a Bolt.
+    screw("Screws", M / 9, "%s Screw", MaterialIconType.screw, ENABLE_UNIFICATION, hasFlag(GENERATE_BOLT_SCREW)), // consisting out of a Bolt.
 
-    ring("Rings", "", " Ring", true, true, false, false, false, false, true, true, false, false, B[1], M / 4, 64, 28), // consisting out of 1/2 Stick.
+    ring("Rings", M / 4, "%s Ring", MaterialIconType.ring, ENABLE_UNIFICATION, hasFlag(GENERATE_RING)), // consisting out of 1/2 Stick.
 
-    springSmall("Small Springs", "Small ", " Spring", true, true, false, false, false, false, true, true, false, false, B[1], M / 4, 64, 55), // consisting out of 1 Fine Wire.
+    springSmall("Small Springs", M / 4, "Small %s Spring", MaterialIconType.springSmall, ENABLE_UNIFICATION, and(hasFlag(GENERATE_SPRING_SMALL), noFlag(NO_SMASHING))), // consisting out of 1 Fine Wire.
 
-    spring("Springs", "", " Spring", true, true, false, false, false, false, true, true, false, false, B[1], M * 1, 64, 56), // consisting out of 2 Sticks.
+    spring("Springs", M, "%s Spring", MaterialIconType.spring, ENABLE_UNIFICATION, and(hasFlag(GENERATE_SPRING), noFlag(NO_SMASHING))), // consisting out of 2 Sticks.
 
-    wireFine("Fine Wires", "Fine ", " Wire", true, true, false, false, false, false, true, true, false, false, B[1], M / 8, 64, 51), // consisting out of 1/8 Ingot or 1/4 Wire.
+    wireFine("Fine Wires", M / 8, "Fine %s Wire", MaterialIconType.wireFine, ENABLE_UNIFICATION, mat -> mat instanceof MetalMaterial && mat.hasFlag(GENERATE_FINE_WIRE)), // consisting out of 1/8 Ingot or 1/4 Wire.
 
-    rotor("Rotors", "", " Rotor", true, true, false, false, false, false, true, true, false, false, B[7], M * 4 + M / 4, 16, 53), // consisting out of 4 Plates, 1 Ring and 1 Screw.
+    rotor("Rotors", M * 4 + M / 4, "%s Rotor", MaterialIconType.rotor, ENABLE_UNIFICATION, hasFlag(GENERATE_ROTOR)), // consisting out of 4 Plates, 1 Ring and 1 Screw.
 
-    gearGtSmall("Small Gears", "Small ", " Gear", true, true, false, false, false, false, true, true, false, false, B[7], M * 1, 64, 52),
-    gearGt("Gears", "", " Gear", true, true, false, false, false, false, true, true, false, false, B[7], M * 4, 16, 63), // Introduced by me because BuildCraft has ruined the gear Prefix...
+    gearGtSmall("Small Gears", M, "Small %s Gear", MaterialIconType.gearGtSmall, ENABLE_UNIFICATION, hasFlag(GENERATE_SMALL_GEAR)),
+    gearGt("Gears", M * 4, "%s Gear", MaterialIconType.gearGt, ENABLE_UNIFICATION, hasFlag(GENERATE_GEAR)), // Introduced by me because BuildCraft has ruined the gear Prefix...
 
-    lens("Lenses", "", " Lens", true, true, false, false, false, false, true, true, false, false, B[2], (M * 3) / 4, 64, 24), // 3/4 of a Plate or Gem used to shape a Lense. Normally only used on Transparent Materials.
+    lens("Lenses", (M * 3) / 4, "%s Lens", MaterialIconType.lens, ENABLE_UNIFICATION, hasFlag(GENERATE_LENSE)), // 3/4 of a Plate or Gem used to shape a Lense. Normally only used on Transparent Materials.
 
-    crateGtDust("Crates of Dust", "Crate of ", " Dust", true, true, false, true, false, false, false, true, false, false, B[0] | B[1] | B[2] | B[3], -1, 64, 96), // consisting out of 16 Dusts.
-    crateGtPlate("Crates of Plates", "Crate of ", " Plate", true, true, false, true, false, false, false, true, false, false, B[1] | B[2], -1, 64, 99), // consisting out of 16 Plates.
-    crateGtIngot("Crates of Ingots", "Crate of ", " Ingot", true, true, false, true, false, false, false, true, false, false, B[1], -1, 64, 97), // consisting out of 16 Ingots.
-    crateGtGem("Crates of Gems", "Crate of ", " Gem", true, true, false, true, false, false, false, true, false, false, B[2], -1, 64, 98), // consisting out of 16 Gems.
+    cellPlasma("Cells of Plasma", M, "%s Plasma Cell", MaterialIconType.cellPlasma, ENABLE_UNIFICATION | SELF_REFERENCING | FLUID_CONTAINER | DISALLOW_RECYCLING, hasFlag(GENERATE_PLASMA)), // Hot Cell full of Plasma, which can be used in the Plasma Generator.
+    cell("Cells", M, "%s Cell", MaterialIconType.cell, ENABLE_UNIFICATION | SELF_REFERENCING | FLUID_CONTAINER, null), // Regular Gas/Fluid Cell. Introduced by Calclavia
 
-    cellPlasma("Cells of Plasma", "", " Plasma Cell", true, true, true, true, false, false, false, true, false, false, B[5], M * 1, 64, 31), // Hot Cell full of Plasma, which can be used in the Plasma Generator.
-    cell("Cells", "", " Cell", true, true, true, true, false, false, true, true, false, false, B[4] | B[8], M * 1, 64, 30), // Regular Gas/Fluid Cell. Introduced by Calclavia
+    bucket("Buckets", M, "%s Bucket", null, ENABLE_UNIFICATION | SELF_REFERENCING | FLUID_CONTAINER, null), // A vanilla Iron Bucket filled with the Material.
+    bottle("Bottles", -1, "%s Bottle", null, ENABLE_UNIFICATION | SELF_REFERENCING | FLUID_CONTAINER | DISALLOW_RECYCLING, null), // Glass Bottle containing a Fluid.
+    capsule("Capsules", M, "%s Capsule", null, SELF_REFERENCING | FLUID_CONTAINER | DISALLOW_RECYCLING, null),
 
-    bucket("Buckets", "", " Bucket", true, true, true, true, false, false, true, false, false, false, B[4] | B[8], M * 1, 16, -1), // A vanilla Iron Bucket filled with the Material.
-    bottle("Bottles", "", " Bottle", true, true, true, true, false, false, false, false, false, false, B[4] | B[8], -1, 16, -1), // Glass Bottle containing a Fluid.
-    capsule("Capsules", "", " Capsule", false, true, true, true, false, false, false, false, false, false, B[4] | B[8], M * 1, 16, -1),
+    crystal("Crystals", M, "%s Crystal", null, 0, null),
 
-    crystal("Crystals", "", " Crystal", false, true, false, false, false, false, true, false, false, false, B[2], M * 1, 64, -1),
+    bulletGtSmall("Small Bullets", M / 9, "Small %s Bullet", null, ENABLE_UNIFICATION, null),
+    bulletGtMedium("Medium Bullets", M / 6, "Medium %s Bullet", null, ENABLE_UNIFICATION, null),
+    bulletGtLarge("Large Bullets", M / 3, "Large %s Bullet", null, ENABLE_UNIFICATION, null),
 
-    bulletGtSmall("Small Bullets", "Small ", " Bullet", true, true, false, false, true, false, true, false, true, false, B[6] | B[8], M / 9, 64, -1),
-    bulletGtMedium("Medium Bullets", "Medium ", " Bullet", true, true, false, false, true, false, true, false, true, false, B[6] | B[8], M / 6, 64, -1),
-    bulletGtLarge("Large Bullets", "Large ", " Bullet", true, true, false, false, true, false, true, false, true, false, B[6] | B[8], M / 3, 64, -1),
+    arrowGtWood("Regular Arrows", M / 4, "%s Arrow", MaterialIconType.arrow, ENABLE_UNIFICATION, null), // Arrow made of 1/4 Ingot/Dust + Wooden Stick.
+    arrowGtPlastic("Light Arrows", M / 4, "Light %s Arrow", MaterialIconType.arrow, ENABLE_UNIFICATION, null), // Arrow made of 1/4 Ingot/Dust + Plastic Stick.
+    arrow("Arrows", -1, "%s", MaterialIconType.arrow, SELF_REFERENCING | DISALLOW_RECYCLING, null),
 
-    arrowGtWood("Regular Arrows", "", " Arrow", true, true, false, false, true, false, true, false, true, false, B[6], M / 4, 64, 57), // Arrow made of 1/4 Ingot/Dust + Wooden Stick.
-    arrowGtPlastic("Light Arrows", "Light ", " Arrow", true, true, false, false, true, false, true, false, true, false, B[6], M / 4, 64, 58), // Arrow made of 1/4 Ingot/Dust + Plastic Stick.
-    arrow("Arrows", "", "", false, false, true, false, false, false, false, false, true, false, B[6], -1, 64, 57),
+    toolHeadArrow("Arrow Heads", M / 4, "%s Arrow Head", MaterialIconType.toolHeadArrow, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 1/4 Ingot.
+    toolHeadSword("Sword Blades", M * 2, "%s Sword Blade", MaterialIconType.toolHeadSword, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 2 Ingots.
+    toolHeadPickaxe("Pickaxe Heads", M * 3, "%s Pickaxe Head", MaterialIconType.toolHeadPickaxe, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 3 Ingots.
+    toolHeadShovel("Shovel Heads", M, "%s Shovel Head", MaterialIconType.toolHeadShovel, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 1 Ingots.
+    toolHeadUniversalSpade("Universal Spade Heads", M, "%s Universal Spade Head", MaterialIconType.toolHeadUniversalSpade, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 1 Ingots.
+    toolHeadAxe("Axe Heads", M * 3, "%s Axe Head", MaterialIconType.toolHeadAxe, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 3 Ingots.
+    toolHeadHoe("Hoe Heads", M * 2, "%s Hoe Head", MaterialIconType.toolHeadHoe, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 2 Ingots.
+    toolHeadSense("Sense Blades", M * 3, "%s Sense Blade", MaterialIconType.toolHeadSense, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 3 Ingots.
+    toolHeadFile("File Heads", M * 2, "%s File Head", MaterialIconType.toolHeadFile, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 2 Ingots.
+    toolHeadHammer("Hammer Heads", M * 6, "%s Hammer Head", MaterialIconType.toolHeadHammer, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 6 Ingots.
+    toolHeadPlow("Plow Heads", M * 4, "%s Plow Head", MaterialIconType.toolHeadPlow, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 4 Ingots.
+    toolHeadSaw("Saw Blades", M * 2, "%s Saw Blade", MaterialIconType.toolHeadSaw, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 2 Ingots.
+    toolHeadBuzzSaw("Buzzsaw Blades", M * 4, "%s Buzzsaw Blade", MaterialIconType.toolHeadBuzzSaw, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 4 Ingots.
+    toolHeadScrewdriver("Screwdriver Tips", M, "%s Screwdriver Tip", MaterialIconType.toolHeadScrewdriver, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 1 Ingots.
+    toolHeadDrill("Drill Tips", M * 4, "%s Drill Tip", MaterialIconType.toolHeadDrill, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 4 Ingots.
+    toolHeadChainsaw("Chainsaw Tips", M * 2, "%s Chainsaw Tip", MaterialIconType.toolHeadChainsaw, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 2 Ingots.
+    toolHeadWrench("Wrench Tips", M * 4, "%s Wrench Tip", MaterialIconType.toolHeadWrench, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 4 Ingots.
 
-    toolHeadArrow("Arrow Heads", "", " Arrow Head", true, true, false, false, false, false, true, true, false, false, B[6], M / 4, 64, 46), // consisting out of 1/4 Ingot.
-    toolHeadSword("Sword Blades", "", " Sword Blade", true, true, false, false, false, false, true, true, false, false, B[6], M * 2, 16, 32), // consisting out of 2 Ingots.
-    toolHeadPickaxe("Pickaxe Heads", "", " Pickaxe Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 3, 16, 33), // consisting out of 3 Ingots.
-    toolHeadShovel("Shovel Heads", "", " Shovel Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 1, 16, 34), // consisting out of 1 Ingots.
-    toolHeadUniversalSpade("Universal Spade Heads", "", " Universal Spade Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 1, 16, 43), // consisting out of 1 Ingots.
-    toolHeadAxe("Axe Heads", "", " Axe Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 3, 16, 35), // consisting out of 3 Ingots.
-    toolHeadHoe("Hoe Heads", "", " Hoe Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 2, 16, 36), // consisting out of 2 Ingots.
-    toolHeadSense("Sense Blades", "", " Sense Blade", true, true, false, false, false, false, true, true, false, false, B[6], M * 3, 16, 44), // consisting out of 3 Ingots.
-    toolHeadFile("File Heads", "", " File Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 2, 16, 38), // consisting out of 2 Ingots.
-    toolHeadHammer("Hammer Heads", "", " Hammer Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 6, 16, 37), // consisting out of 6 Ingots.
-    toolHeadPlow("Plow Heads", "", " Plow Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 4, 16, 45), // consisting out of 4 Ingots.
-    toolHeadSaw("Saw Blades", "", " Saw Blade", true, true, false, false, false, false, true, true, false, false, B[6], M * 2, 16, 39), // consisting out of 2 Ingots.
-    toolHeadBuzzSaw("Buzzsaw Blades", "", " Buzzsaw Blade", true, true, false, false, false, false, true, true, false, false, B[6], M * 4, 16, 48), // consisting out of 4 Ingots.
-    toolHeadScrewdriver("Screwdriver Tips", "", " Screwdriver Tip", true, true, false, false, false, false, true, false, false, false, B[6], M * 1, 16, 47), // consisting out of 1 Ingots.
-    toolHeadDrill("Drill Tips", "", " Drill Tip", true, true, false, false, false, false, true, true, false, false, B[6], M * 4, 16, 40), // consisting out of 4 Ingots.
-    toolHeadChainsaw("Chainsaw Tips", "", " Chainsaw Tip", true, true, false, false, false, false, true, true, false, false, B[6], M * 2, 16, 41), // consisting out of 2 Ingots.
-    toolHeadWrench("Wrench Tips", "", " Wrench Tip", true, true, false, false, false, false, true, true, false, false, B[6], M * 4, 16, 42), // consisting out of 4 Ingots.
+    turbineBlade("Turbine Blades", M * 6, "%s Turbine Blade", MaterialIconType.turbineBlade, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 6 Ingots.
 
-    turbineBlade("Turbine Blades", "", " Turbine Blade", true, true, false, false, false, false, true, true, false, false, B[6], M * 6, 64, 100), // consisting out of 6 Ingots.
+    toolSword("Swords", M * 2, "%s", null, 0, null), // vanilly Sword
+    toolPickaxe("Pickaxes", M * 3, "%s", null, 0, null), // vanilly Pickaxe
+    toolShovel("Shovels", M, "%s", null, 0, null), // vanilly Shovel
+    toolAxe("Axes", M * 3, "%s", null, 0, null), // vanilly Axe
+    toolHoe("Hoes", M * 2, "%s", null, 0, null), // vanilly Hoe
+    toolShears("Shears", M * 2, "%s", null, 0, null), // vanilly Shears
+    tool("Tools", -1, "%s", null, DISALLOW_RECYCLING, null), // toolPot, toolSkillet, toolSaucepan, toolBakeware, toolCuttingboard, toolMortarandpestle, toolMixingbowl, toolJuicer
 
-    toolSword("Swords", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 2, 1, -1), // vanilly Sword
-    toolPickaxe("Pickaxes", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 3, 1, -1), // vanilly Pickaxe
-    toolShovel("Shovels", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 1, 1, -1), // vanilly Shovel
-    toolAxe("Axes", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 3, 1, -1), // vanilly Axe
-    toolHoe("Hoes", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 2, 1, -1), // vanilly Hoe
-    toolShears("Shears", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 2, 1, -1), // vanilly Shears
-    tool("Tools", "", "", false, false, false, false, false, false, false, false, true, false, B[6], -1, 1, -1), // toolPot, toolSkillet, toolSaucepan, toolBakeware, toolCuttingboard, toolMortarandpestle, toolMixingbowl, toolJuicer
+    compressedCobblestone("9^X Compressed Cobblestones", -1, "%s", null, DISALLOW_RECYCLING, null),
+    compressedStone("9^X Compressed Stones", -1, "%s", null, DISALLOW_RECYCLING, null),
+    compressedDirt("9^X Compressed Dirt", -1, "%s", null, DISALLOW_RECYCLING, null),
+    compressedGravel("9^X Compressed Gravel", -1, "%s", null, DISALLOW_RECYCLING, null),
+    compressedSand("9^X Compressed Sand", -1, "%s", null, DISALLOW_RECYCLING, null),
+    compressed("Compressed Materials", M * 2, "Compressed %s", null, ENABLE_UNIFICATION, null), // Compressed Material, worth 1 Unit. Introduced by Galacticraft
 
-    compressedCobblestone("9^X Compressed Cobblestones", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    compressedStone("9^X Compressed Stones", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    compressedDirt("9^X Compressed Dirt", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    compressedGravel("9^X Compressed Gravel", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    compressedSand("9^X Compressed Sand", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    compressed("Compressed Materials", "Compressed ", "", true, true, false, false, false, false, true, false, false, false, 0, M * 2, 64, -1), // Compressed Material, worth 1 Unit. Introduced by Galacticraft
+    glass("Glasses", -1, "%s", null, SELF_REFERENCING | DISALLOW_RECYCLING, null),
+    paneGlass("Glass Panes", -1, "%s", null, SELF_REFERENCING | DISALLOW_RECYCLING, null),
+    blockGlass("Glass Blocks", -1, "%s", null, SELF_REFERENCING | DISALLOW_RECYCLING, null),
 
-    glass("Glasses", "", "", false, false, true, false, true, false, false, false, false, false, 0, -1, 64, -1),
-    paneGlass("Glass Panes", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1),
-    blockGlass("Glass Blocks", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1),
+    blockWool("Wool Blocks", -1, "%s", null, SELF_REFERENCING | DISALLOW_RECYCLING, null),
 
-    blockWool("Wool Blocks", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1),
+    block_("Random Blocks", -1, "%s", MaterialIconType.block, DISALLOW_RECYCLING, null), // IGNORE
+    block("Storage Blocks", M * 9, "Block of %s", MaterialIconType.block, ENABLE_UNIFICATION, null), // Storage Block consisting out of 9 Ingots/Gems/Dusts. Introduced by CovertJaguar
 
-    block_("Random Blocks", "", "", false, false, false, false, false, true, false, false, false, false, 0, -1, 64, -1), // IGNORE
-    block("Storage Blocks", "Block of ", "", true, true, false, false, false, true, true, false, false, false, 0, M * 9, 64, 71), // Storage Block consisting out of 9 Ingots/Gems/Dusts. Introduced by CovertJaguar
+    craftingTool("Crafting Tools", -1, "%s", null, DISALLOW_RECYCLING, null), // Special Prefix used mainly for the Crafting Handler.
+    crafting("Crafting Ingredients", -1, "%s", null, DISALLOW_RECYCLING, null), // Special Prefix used mainly for the Crafting Handler.
+    craft("Crafting Stuff?", -1, "%s", null, DISALLOW_RECYCLING, null), // Special Prefix used mainly for the Crafting Handler.
 
-    craftingTool("Crafting Tools", "", "", false, false, false, false, false, false, false, false, true, false, 0, -1, 64, -1), // Special Prefix used mainly for the Crafting Handler.
-    crafting("Crafting Ingredients", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Special Prefix used mainly for the Crafting Handler.
-    craft("Crafting Stuff?", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Special Prefix used mainly for the Crafting Handler.
+    log("Logs", -1, "%s", null, DISALLOW_RECYCLING, null), // Prefix used for Logs. Usually as "logWood". Introduced by Eloraam
+    slab("Slabs", -1, "%s", null, DISALLOW_RECYCLING, null), // Prefix used for Slabs. Usually as "slabWood" or "slabStone". Introduced by SirSengir
+    stair("Stairs", -1, "%s", null, DISALLOW_RECYCLING, null), // Prefix used for Stairs. Usually as "stairWood" or "stairStone". Introduced by SirSengir
+    fence("Fences", -1, "%s", null, DISALLOW_RECYCLING, null), // Prefix used for Fences. Usually as "fenceWood". Introduced by Forge
+    plank("Planks", -1, "%s", null, DISALLOW_RECYCLING, null), // Prefix for Planks. Usually "plankWood". Introduced by Eloraam
+    treeSapling("Saplings", -1, "%s", null, SELF_REFERENCING | DISALLOW_RECYCLING, null), // Prefix for Saplings.
+    treeLeaves("Leaves", -1, "%s", null, SELF_REFERENCING | DISALLOW_RECYCLING, null), // Prefix for Leaves.
+    tree("Tree Parts", -1, "%s", null, DISALLOW_RECYCLING, null), // Prefix for Tree Parts.
+    stoneCobble("Cobblestones", -1, "%s", null, SELF_REFERENCING | DISALLOW_RECYCLING, null), // Cobblestone Prefix for all Cobblestones.
+    stoneSmooth("Smoothstones", -1, "%s", null, SELF_REFERENCING | DISALLOW_RECYCLING, null), // Smoothstone Prefix.
+    stoneMossyBricks("mossy Stone Bricks", -1, "%s", null, SELF_REFERENCING | DISALLOW_RECYCLING, null), // Mossy Stone Bricks.
+    stoneMossy("Mossy Stones", -1, "%s", null, SELF_REFERENCING | DISALLOW_RECYCLING, null), // Mossy Cobble.
+    stoneBricks("Stone Bricks", -1, "%s", null, SELF_REFERENCING | DISALLOW_RECYCLING, null), // Stone Bricks.
+    stoneCracked("Cracked Stones", -1, "%s", null, SELF_REFERENCING | DISALLOW_RECYCLING, null), // Cracked Bricks.
+    stoneChiseled("Chiseled Stones", -1, "%s", null, SELF_REFERENCING | DISALLOW_RECYCLING, null), // Chiseled Stone.
+    stone("Stones", -1, "%s", null, SELF_REFERENCING | DISALLOW_RECYCLING, null), // Prefix to determine which kind of Rock this is.
+    cobblestone("Cobblestones", -1, "%s", null, SELF_REFERENCING | DISALLOW_RECYCLING, null),
+    rock("Rocks", -1, "%s", null, SELF_REFERENCING | DISALLOW_RECYCLING, null), // Prefix to determine which kind of Rock this is.
+    record("Records", -1, "%s", null, SELF_REFERENCING | DISALLOW_RECYCLING, null),
+    rubble("Rubbles", -1, "%s", null, ENABLE_UNIFICATION | SELF_REFERENCING | DISALLOW_RECYCLING, null),
+    scraps("Scraps", -1, "%s", null, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null),
+    scrap("Scraps", -1, "%s", null, DISALLOW_RECYCLING, null),
 
-    log("Logs", "", "", false, false, false, false, false, true, false, false, false, false, 0, -1, 64, -1), // Prefix used for Logs. Usually as "logWood". Introduced by Eloraam
-    slab("Slabs", "", "", false, false, false, false, false, true, false, false, false, false, 0, -1, 64, -1), // Prefix used for Slabs. Usually as "slabWood" or "slabStone". Introduced by SirSengir
-    stair("Stairs", "", "", false, false, false, false, false, true, false, false, false, false, 0, -1, 64, -1), // Prefix used for Stairs. Usually as "stairWood" or "stairStone". Introduced by SirSengir
-    fence("Fences", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Prefix used for Fences. Usually as "fenceWood". Introduced by Forge
-    plank("Planks", "", "", false, false, false, false, false, true, false, false, false, false, 0, -1, 64, -1), // Prefix for Planks. Usually "plankWood". Introduced by Eloraam
-    treeSapling("Saplings", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1), // Prefix for Saplings.
-    treeLeaves("Leaves", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1), // Prefix for Leaves.
-    tree("Tree Parts", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Prefix for Tree Parts.
-    stoneCobble("Cobblestones", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1), // Cobblestone Prefix for all Cobblestones.
-    stoneSmooth("Smoothstones", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1), // Smoothstone Prefix.
-    stoneMossyBricks("mossy Stone Bricks", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1), // Mossy Stone Bricks.
-    stoneMossy("Mossy Stones", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1), // Mossy Cobble.
-    stoneBricks("Stone Bricks", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1), // Stone Bricks.
-    stoneCracked("Cracked Stones", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1), // Cracked Bricks.
-    stoneChiseled("Chiseled Stones", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1), // Chiseled Stone.
-    stone("Stones", "", "", false, true, true, false, true, true, false, false, false, false, 0, -1, 64, -1), // Prefix to determine which kind of Rock this is.
-    cobblestone("Cobblestones", "", "", false, true, true, false, false, true, false, false, false, false, 0, -1, 64, -1),
-    rock("Rocks", "", "", false, true, true, false, true, true, false, false, false, false, 0, -1, 64, -1), // Prefix to determine which kind of Rock this is.
-    record("Records", "", "", false, false, true, false, false, false, false, false, false, false, 0, -1, 1, -1),
-    rubble("Rubbles", "", "", true, true, true, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    scraps("Scraps", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    scrap("Scraps", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
+    book("Books", -1, "%s", null, DISALLOW_RECYCLING, null), // Used for Books of any kind.
+    paper("Papers", -1, "%s", null, DISALLOW_RECYCLING, null), // Used for Papers of any kind.
+    dye("Dyes", -1, "%s", null, SELF_REFERENCING | DISALLOW_RECYCLING, null), // Used for the 16 dyes. Introduced by Eloraam
+    stainedClay("Stained Clays", -1, "%s", null, SELF_REFERENCING | DISALLOW_RECYCLING, null), // Used for the 16 colors of Stained Clay. Introduced by Forge
+    armorHelmet("Helmets", M * 5, "%s", null, 0, null), // vanilly Helmet
+    armorChestplate("Chestplates", M * 8, "%s", null, 0, null), // vanilly Chestplate
+    armorLeggings("Leggings", M * 7, "%s", null, 0, null), // vanilly Pants
+    armorBoots("Boots", M * 4, "%s", null, 0, null), // vanilly Boots
+    armor("Armor Parts", -1, "%s", null, DISALLOW_RECYCLING, null),
+    frameGt("Frame Boxes", M * 2, "%s", null, ENABLE_UNIFICATION, null),
+    pipeTiny("Tiny Pipes", M / 2, "Tiny %s Pipe", MaterialIconType.pipeTiny, ENABLE_UNIFICATION, null),
+    pipeSmall("Small Pipes", M, "Small %s Pipe", MaterialIconType.pipeSmall, ENABLE_UNIFICATION, null),
+    pipeMedium("Medium Pipes", M * 3, "Medium %s Pipe", MaterialIconType.pipeMedium, ENABLE_UNIFICATION, null),
+    pipeLarge("Large pipes", M * 6, "Large %s Pipe", MaterialIconType.pipeLarge, ENABLE_UNIFICATION, null),
+    pipeHuge("Huge Pipes", M * 12, "Huge %s Pipe", MaterialIconType.pipeHuge, ENABLE_UNIFICATION, null),
+    pipeRestrictiveTiny("Tiny Restrictive Pipes", M / 2, "Tiny Restrictive %s Pipe", null, ENABLE_UNIFICATION, null),
+    pipeRestrictiveSmall("Small Restrictive Pipes", M, "Small Restrictive %s Pipe", null, ENABLE_UNIFICATION, null),
+    pipeRestrictiveMedium("Medium Restrictive Pipes", M * 3, "Medium Restrictive %s Pipe", null, ENABLE_UNIFICATION, null),
+    pipeRestrictiveLarge("Large Restrictive Pipes", M * 6, "Large Restrictive %s Pipe", null, ENABLE_UNIFICATION, null),
+    pipeRestrictiveHuge("Huge Restrictive Pipes", M * 12, "Huge Restrictive %s Pipe", null, ENABLE_UNIFICATION, null),
+    pipe("Pipes", -1, "%s Pipe", null, DISALLOW_RECYCLING, null),
 
-    book("Books", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Used for Books of any kind.
-    paper("Papers", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Used for Papers of any kind.
-    dye("Dyes", "", "", false, false, true, false, false, false, false, false, false, false, 0, -1, 64, -1), // Used for the 16 dyes. Introduced by Eloraam
-    stainedClay("Stained Clays", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1), // Used for the 16 colors of Stained Clay. Introduced by Forge
-    armorHelmet("Helmets", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 5, 1, -1), // vanilly Helmet
-    armorChestplate("Chestplates", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 8, 1, -1), // vanilly Chestplate
-    armorLeggings("Leggings", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 7, 1, -1), // vanilly Pants
-    armorBoots("Boots", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 4, 1, -1), // vanilly Boots
-    armor("Armor Parts", "", "", false, false, false, false, false, false, false, false, true, false, B[6], -1, 1, -1),
-    frameGt("Frame Boxes", "", "", true, true, false, false, true, false, true, false, false, false, 0, M * 2, 64, 83),
-    pipeTiny("Tiny Pipes", "Tiny ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M / 2, 64, 78),
-    pipeSmall("Small Pipes", "Small ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 1, 64, 79),
-    pipeMedium("Medium Pipes", "Medium ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 3, 64, 80),
-    pipeLarge("Large pipes", "Large ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 6, 64, 81),
-    pipeHuge("Huge Pipes", "Huge ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 12, 64, 82),
-    pipeRestrictiveTiny("Tiny Restrictive Pipes", "Tiny Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M / 2, 64, 78),
-    pipeRestrictiveSmall("Small Restrictive Pipes", "Small Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M, 64, 79),
-    pipeRestrictiveMedium("Medium Restrictive Pipes", "Medium Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 3, 64, 80),
-    pipeRestrictiveLarge("Large Restrictive Pipes", "Large Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 6, 64, 81),
-    pipeRestrictiveHuge("Huge Restrictive Pipes", "Huge Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 12, 64, 82),
-    pipe("Pipes", "", " Pipe", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, 77),
-
-    wireGt16("16x Wires", "16x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 8, 64, -1),
-    wireGt12("12x Wires", "12x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 6, 64, -1),
-    wireGt08("8x Wires", "8x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 4, 64, -1),
-    wireGt04("4x Wires", "4x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 2, 64, -1),
-    wireGt02("2x Wires", "2x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M, 64, -1),
-    wireGt01("1x Wires", "1x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M / 2, 64, -1),
-    cableGt12("12x Cables", "12x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0, M * 6, 64, -1),
-    cableGt08("8x Cables", "8x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0, M * 4, 64, -1),
-    cableGt04("4x Cables", "4x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0, M * 2, 64, -1),
-    cableGt02("2x Cables", "2x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0, M, 64, -1),
-    cableGt01("1x Cables", "1x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0, M / 2, 64, -1),
+    wireGt16("16x Wires", M * 8, "16x %s Wire", MaterialIconType.wire, ENABLE_UNIFICATION, null),
+    wireGt12("12x Wires", M * 6, "12x %s Wire", MaterialIconType.wire, ENABLE_UNIFICATION, null),
+    wireGt08("8x Wires", M * 4, "8x %s Wire", MaterialIconType.wire, ENABLE_UNIFICATION, null),
+    wireGt04("4x Wires", M * 2, "4x %s Wire", MaterialIconType.wire, ENABLE_UNIFICATION, null),
+    wireGt02("2x Wires", M, "2x %s Wire", MaterialIconType.wire, ENABLE_UNIFICATION, null),
+    wireGt01("1x Wires", M / 2, "1x %s Wire", MaterialIconType.wire, ENABLE_UNIFICATION, null),
+    cableGt12("12x Cables", M * 6, "12x %s Cable", null, ENABLE_UNIFICATION, null),
+    cableGt08("8x Cables", M * 4, "8x %s Cable", null, ENABLE_UNIFICATION, null),
+    cableGt04("4x Cables", M * 2, "4x %s Cable", null, ENABLE_UNIFICATION, null),
+    cableGt02("2x Cables", M, "2x %s Cable", null, ENABLE_UNIFICATION, null),
+    cableGt01("1x Cables", M / 2, "1x %s Cable", null, ENABLE_UNIFICATION, null),
 
     /* Electric Components.
      *
@@ -263,42 +262,71 @@ public enum OrePrefixes {
 	 * Ultimate (Tier 8)
 	 * Infinite
 	 */
-    batterySingleUse("Single Use Batteries", "", "", false, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    battery("Reusable Batteries", "", "", false, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Introduced by Calclavia
-    circuit("Circuits", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Introduced by Calclavia
-    chipset("Chipsets", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Introduced by Buildcraft
-    computer("Computers", "", "", true, true, false, false, true, false, false, false, false, false, 0, -1, 64, -1); // A whole Computer. "computerMaster" = ComputerCube
+    batterySingleUse("Single Use Batteries", -1, "%s", null, DISALLOW_RECYCLING, null),
+    battery("Reusable Batteries", -1, "%s", null, DISALLOW_RECYCLING, null), // Introduced by Calclavia
+    circuit("Circuits", -1, "%s", null, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null), // Introduced by Calclavia
+    chipset("Chipsets", -1, "%s", null, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null), // Introduced by Buildcraft
+    computer("Computers", -1, "%s", null, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null); // A whole Computer. "computerMaster" = ComputerCube
 
 
     static {
-        ingotHot.mHeatDamage = 3.0F;
-        cellPlasma.mHeatDamage = 6.0F;
+        ingotHot.heatDamage = 3.0F;
+        cellPlasma.heatDamage = 6.0F;
 
-        block.ignoreMaterials(Materials.Ice, Materials.Snow, Materials.Concrete, Materials.Glass, Materials.Glowstone, Materials.DarkIron, Materials.Marble, Materials.Quartz, Materials.CertusQuartz, Materials.Limestone);
-        ingot.ignoreMaterials(Materials.Brick, Materials.NetherBrick);
+        ingotQuintuple.defaultStackSize = 12;
+        ingotQuadruple.defaultStackSize = 16;
+        ingotTriple.defaultStackSize = 21;
+        ingotDouble.defaultStackSize = 32;
+        ingotHot.defaultStackSize = 16;
 
-        dust.addFamiliarPrefix(dustTiny);
-        dust.addFamiliarPrefix(dustSmall);
-        dustTiny.addFamiliarPrefix(dust);
-        dustTiny.addFamiliarPrefix(dustSmall);
-        dustSmall.addFamiliarPrefix(dust);
-        dustSmall.addFamiliarPrefix(dustTiny);
+        gemFlawless.defaultStackSize = 32;
+        gemExquisite.defaultStackSize = 16;
 
-        ingot.addFamiliarPrefix(nugget);
-        nugget.addFamiliarPrefix(ingot);
+        plateDense.defaultStackSize = 8;
+        plateQuintuple.defaultStackSize = 12;
+        plateQuadruple.defaultStackSize = 16;
+        plateTriple.defaultStackSize = 21;
+        plateDouble.defaultStackSize = 32;
 
-        for (OrePrefixes tPrefix1 : values())
-            if (tPrefix1.name().startsWith("ore")) for (OrePrefixes tPrefix2 : values())
-                if (tPrefix2.name().startsWith("ore")) tPrefix1.addFamiliarPrefix(tPrefix2);
-        for (OrePrefixes tPrefix1 : values())
-            if (tPrefix1.name().startsWith("pipe")) for (OrePrefixes tPrefix2 : values())
-                if (tPrefix2.name().startsWith("pipe")) tPrefix1.addFamiliarPrefix(tPrefix2);
-        for (OrePrefixes tPrefix1 : values())
-            if (tPrefix1.name().startsWith("wireGt")) for (OrePrefixes tPrefix2 : values())
-                if (tPrefix2.name().startsWith("wireGt")) tPrefix1.addFamiliarPrefix(tPrefix2);
-        for (OrePrefixes tPrefix1 : values())
-            if (tPrefix1.name().startsWith("cableGt")) for (OrePrefixes tPrefix2 : values())
-                if (tPrefix2.name().startsWith("cableGt")) tPrefix1.addFamiliarPrefix(tPrefix2);
+        rotor.defaultStackSize = 16;
+        gearGt.defaultStackSize = 16;
+
+        bucket.defaultStackSize = 16;
+        bottle.defaultStackSize = 16;
+        capsule.defaultStackSize = 16;
+
+        toolHeadSword.defaultStackSize = 16;
+        toolHeadPickaxe.defaultStackSize = 16;
+        toolHeadShovel.defaultStackSize = 16;
+        toolHeadUniversalSpade.defaultStackSize = 16;
+        toolHeadAxe.defaultStackSize = 16;
+        toolHeadHoe.defaultStackSize = 16;
+        toolHeadSense.defaultStackSize = 16;
+        toolHeadFile.defaultStackSize = 16;
+        toolHeadHammer.defaultStackSize = 16;
+        toolHeadPlow.defaultStackSize = 16;
+        toolHeadSaw.defaultStackSize = 16;
+        toolHeadBuzzSaw.defaultStackSize = 16;
+        toolHeadScrewdriver.defaultStackSize = 16;
+        toolHeadDrill.defaultStackSize = 16;
+        toolHeadChainsaw.defaultStackSize = 16;
+        toolHeadWrench.defaultStackSize = 16;
+
+        toolSword.defaultStackSize = 1;
+        toolPickaxe.defaultStackSize = 1;
+        toolShovel.defaultStackSize = 1;
+        toolAxe.defaultStackSize = 1;
+        toolHoe.defaultStackSize = 1;
+        toolShears.defaultStackSize = 1;
+        tool.defaultStackSize = 1;
+
+        record.defaultStackSize = 1;
+
+        armorHelmet.defaultStackSize = 1;
+        armorChestplate.defaultStackSize = 1;
+        armorLeggings.defaultStackSize = 1;
+        armorBoots.defaultStackSize = 1;
+        armor.defaultStackSize = 1;
 
         // These are only the important ones.
         gem.mNotGeneratedItems.add(Materials.Coal);
@@ -322,8 +350,6 @@ public enum OrePrefixes {
         stick.mNotGeneratedItems.add(Materials.Blaze);
         ingot.mNotGeneratedItems.add(Materials.Iron);
         ingot.mNotGeneratedItems.add(Materials.Gold);
-        ingot.mNotGeneratedItems.add(Materials.Brick);
-        ingot.mNotGeneratedItems.add(Materials.BrickNether);
         ingot.mNotGeneratedItems.add(Materials.WoodSealed);
         ingot.mNotGeneratedItems.add(Materials.Wood);
         nugget.mNotGeneratedItems.add(Materials.Gold);
@@ -339,11 +365,9 @@ public enum OrePrefixes {
         //Now all of these need to be generated
         //because IC2 removed normal cells
 
-        bucket.mNotGeneratedItems.add(Materials.Empty);
         bucket.mNotGeneratedItems.add(Materials.Lava);
         bucket.mNotGeneratedItems.add(Materials.Milk);
         bucket.mNotGeneratedItems.add(Materials.Water);
-        bottle.mNotGeneratedItems.add(Materials.Empty);
         bottle.mNotGeneratedItems.add(Materials.Water);
         bottle.mNotGeneratedItems.add(Materials.Milk);
         block.mNotGeneratedItems.add(Materials.Iron);
@@ -375,7 +399,6 @@ public enum OrePrefixes {
         plate.mGeneratedItems.add(Materials.GraniteRed);
         plate.mGeneratedItems.add(Materials.GraniteBlack);
         plate.mGeneratedItems.add(Materials.Glowstone);
-        plate.mGeneratedItems.add(Materials.Nikolite);
         plate.mGeneratedItems.add(Materials.Obsidian);
         plate.mGeneratedItems.add(Materials.Andesite);
         plate.mGeneratedItems.add(Materials.Diorite);
@@ -393,117 +416,91 @@ public enum OrePrefixes {
 
         //-----
 
-        dust.mGeneratedItems.addAll(dustPure.mGeneratedItems);
-        dust.mGeneratedItems.addAll(dustImpure.mGeneratedItems);
-        dust.mGeneratedItems.addAll(dustRefined.mGeneratedItems);
-        dustTiny.mGeneratedItems.addAll(dust.mGeneratedItems);
-        dustSmall.mGeneratedItems.addAll(dust.mGeneratedItems);
-        crateGtDust.mGeneratedItems.addAll(dust.mGeneratedItems);
-        crateGtIngot.mGeneratedItems.addAll(ingot.mGeneratedItems);
-        crateGtGem.mGeneratedItems.addAll(gem.mGeneratedItems);
-        crateGtPlate.mGeneratedItems.addAll(plate.mGeneratedItems);
+        gemChipped.generationCondition = new ICondition.And<>(SubTag.TRANSPARENT, SubTag.CRYSTAL, new ICondition.Not<>(SubTag.QUARTZ), new ICondition.Not<>(SubTag.PEARL));
+        gemFlawed.generationCondition = new ICondition.And<>(SubTag.TRANSPARENT, SubTag.CRYSTAL, new ICondition.Not<>(SubTag.QUARTZ), new ICondition.Not<>(SubTag.PEARL));
+        gemFlawless.generationCondition = new ICondition.And<>(SubTag.TRANSPARENT, SubTag.CRYSTAL, new ICondition.Not<>(SubTag.QUARTZ), new ICondition.Not<>(SubTag.PEARL));
+        gemExquisite.generationCondition = new ICondition.And<>(SubTag.TRANSPARENT, SubTag.CRYSTAL, new ICondition.Not<>(SubTag.QUARTZ), new ICondition.Not<>(SubTag.PEARL));
 
         //-----
 
-        toolHeadFile.mCondition = new ICondition.And<ISubTagContainer>(new ICondition.Not<ISubTagContainer>(SubTag.NO_SMASHING), new ICondition.Not<ISubTagContainer>(SubTag.BOUNCY));
-        toolHeadSaw.mCondition = new ICondition.And<ISubTagContainer>(new ICondition.Not<ISubTagContainer>(SubTag.NO_SMASHING), new ICondition.Not<ISubTagContainer>(SubTag.BOUNCY));
-        toolHeadDrill.mCondition = new ICondition.And<ISubTagContainer>(new ICondition.Not<ISubTagContainer>(SubTag.NO_SMASHING), new ICondition.Not<ISubTagContainer>(SubTag.BOUNCY));
-        toolHeadChainsaw.mCondition = new ICondition.And<ISubTagContainer>(new ICondition.Not<ISubTagContainer>(SubTag.NO_SMASHING), new ICondition.Not<ISubTagContainer>(SubTag.BOUNCY));
-        toolHeadWrench.mCondition = new ICondition.And<ISubTagContainer>(new ICondition.Not<ISubTagContainer>(SubTag.NO_SMASHING), new ICondition.Not<ISubTagContainer>(SubTag.BOUNCY));
-        toolHeadBuzzSaw.mCondition = new ICondition.And<ISubTagContainer>(new ICondition.Not<ISubTagContainer>(SubTag.NO_SMASHING), new ICondition.Not<ISubTagContainer>(SubTag.BOUNCY));
-        turbineBlade.mCondition = new ICondition.And<ISubTagContainer>(new ICondition.Not<ISubTagContainer>(SubTag.NO_SMASHING), new ICondition.Not<ISubTagContainer>(SubTag.BOUNCY));
+        pipeRestrictiveTiny.secondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount);
+        pipeRestrictiveSmall.secondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 2);
+        pipeRestrictiveMedium.secondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 3);
+        pipeRestrictiveLarge.secondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 4);
+        pipeRestrictiveHuge.secondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 5);
 
-        rotor.mCondition = new ICondition.Nor<ISubTagContainer>(SubTag.CRYSTAL, SubTag.STONE, SubTag.BOUNCY);
+        cableGt12.secondaryMaterial = new MaterialStack(Materials.Ash, dustSmall.materialAmount * 4);
+        cableGt08.secondaryMaterial = new MaterialStack(Materials.Ash, dustSmall.materialAmount * 3);
+        cableGt04.secondaryMaterial = new MaterialStack(Materials.Ash, dustSmall.materialAmount * 2);
+        cableGt02.secondaryMaterial = new MaterialStack(Materials.Ash, dustSmall.materialAmount);
+        cableGt01.secondaryMaterial = new MaterialStack(Materials.Ash, dustSmall.materialAmount);
 
-        spring.mCondition = new ICondition.Or<ISubTagContainer>(SubTag.STRETCHY, SubTag.BOUNCY, new ICondition.Not<ISubTagContainer>(SubTag.NO_SMASHING));
-        springSmall.mCondition = new ICondition.Or<ISubTagContainer>(SubTag.STRETCHY, SubTag.BOUNCY, new ICondition.Not<ISubTagContainer>(SubTag.NO_SMASHING));
+        bucket.secondaryMaterial = new MaterialStack(Materials.Iron, ingot.materialAmount * 3);
+        cell.secondaryMaterial = new MaterialStack(Materials.Tin, plate.materialAmount * 2);
+        cellPlasma.secondaryMaterial = new MaterialStack(Materials.Tin, plate.materialAmount * 2);
 
-        gemChipped.mCondition = new ICondition.And<>(SubTag.TRANSPARENT, SubTag.CRYSTAL, new ICondition.Not<ISubTagContainer>(SubTag.QUARTZ), new ICondition.Not<ISubTagContainer>(SubTag.PEARL), new ICondition.Not<ISubTagContainer>(SubTag.MAGICAL));
-        gemFlawed.mCondition = new ICondition.And<>(SubTag.TRANSPARENT, SubTag.CRYSTAL, new ICondition.Not<ISubTagContainer>(SubTag.QUARTZ), new ICondition.Not<ISubTagContainer>(SubTag.PEARL), new ICondition.Not<ISubTagContainer>(SubTag.MAGICAL));
-        gemFlawless.mCondition = new ICondition.And<>(SubTag.TRANSPARENT, SubTag.CRYSTAL, new ICondition.Not<ISubTagContainer>(SubTag.QUARTZ), new ICondition.Not<ISubTagContainer>(SubTag.PEARL), new ICondition.Not<ISubTagContainer>(SubTag.MAGICAL));
-        gemExquisite.mCondition = new ICondition.And<>(SubTag.TRANSPARENT, SubTag.CRYSTAL, new ICondition.Not<ISubTagContainer>(SubTag.QUARTZ), new ICondition.Not<ISubTagContainer>(SubTag.PEARL), new ICondition.Not<ISubTagContainer>(SubTag.MAGICAL));
+        oreRedgranite.secondaryMaterial = new MaterialStack(Materials.GraniteRed, dust.materialAmount);
+        oreBlackgranite.secondaryMaterial = new MaterialStack(Materials.GraniteBlack, dust.materialAmount);
 
-        lens.mCondition = new ICondition.Or<>(SubTag.MAGICAL, new ICondition.And<>(SubTag.TRANSPARENT, SubTag.HAS_COLOR));
+        oreBasalt.secondaryMaterial = new MaterialStack(Materials.Basalt, dust.materialAmount);
+        oreMarble.secondaryMaterial = new MaterialStack(Materials.Marble, dust.materialAmount);
 
-        plateDouble.mCondition = new ICondition.Or<>(SubTag.PAPER, new ICondition.Not<>(SubTag.NO_SMASHING));
-        plateTriple.mCondition = new ICondition.Or<>(SubTag.PAPER, new ICondition.Not<>(SubTag.NO_SMASHING));
-        plateQuadruple.mCondition = new ICondition.Or<>(SubTag.PAPER, new ICondition.Not<>(SubTag.NO_SMASHING));
-        plateQuintuple.mCondition = new ICondition.Or<>(SubTag.PAPER, new ICondition.Not<>(SubTag.NO_SMASHING));
+        oreSand.secondaryMaterial = new MaterialStack(Materials.SiliconDioxide, dustTiny.materialAmount);
+        oreGravel.secondaryMaterial = new MaterialStack(Materials.Flint, dustTiny.materialAmount);
 
-        plateDense.mCondition = new ICondition.Not<>(SubTag.NO_SMASHING);
+        oreNetherrack.secondaryMaterial = new MaterialStack(Materials.Netherrack, dust.materialAmount);
+        oreNether.secondaryMaterial = new MaterialStack(Materials.Netherrack, dust.materialAmount);
 
-        ingotDouble.mCondition = new ICondition.Not<>(SubTag.NO_SMASHING);
-        ingotTriple.mCondition = new ICondition.Not<>(SubTag.NO_SMASHING);
-        ingotQuadruple.mCondition = new ICondition.Not<>(SubTag.NO_SMASHING);
-        ingotQuintuple.mCondition = new ICondition.Not<>(SubTag.NO_SMASHING);
+        oreEndstone.secondaryMaterial = new MaterialStack(Materials.Endstone, dust.materialAmount);
+        oreEnd.secondaryMaterial = new MaterialStack(Materials.Endstone, dust.materialAmount);
 
-        wireFine.mCondition = SubTag.METAL;
+        oreMarble.secondaryMaterial = new MaterialStack(Materials.Marble, dust.materialAmount);
+        oreBasalt.secondaryMaterial = new MaterialStack(Materials.Basalt, dust.materialAmount);
 
-        //-----
+        oreDense.secondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount);
+        orePoor.secondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount * 2);
+        oreSmall.secondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount * 2);
+        oreNormal.secondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount * 2);
+        oreRich.secondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount * 2);
+        ore.secondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount);
 
-        pipeRestrictiveTiny.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.mMaterialAmount);
-        pipeRestrictiveSmall.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.mMaterialAmount * 2);
-        pipeRestrictiveMedium.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.mMaterialAmount * 3);
-        pipeRestrictiveLarge.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.mMaterialAmount * 4);
-        pipeRestrictiveHuge.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.mMaterialAmount * 5);
+        crushed.secondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount);
 
-        cableGt12.mSecondaryMaterial = new MaterialStack(Materials.Ash, dustSmall.mMaterialAmount * 4);
-        cableGt08.mSecondaryMaterial = new MaterialStack(Materials.Ash, dustSmall.mMaterialAmount * 3);
-        cableGt04.mSecondaryMaterial = new MaterialStack(Materials.Ash, dustSmall.mMaterialAmount * 2);
-        cableGt02.mSecondaryMaterial = new MaterialStack(Materials.Ash, dustSmall.mMaterialAmount);
-        cableGt01.mSecondaryMaterial = new MaterialStack(Materials.Ash, dustSmall.mMaterialAmount);
+        toolHeadDrill.secondaryMaterial = new MaterialStack(Materials.Steel, plate.materialAmount * 4);
+        toolHeadChainsaw.secondaryMaterial = new MaterialStack(Materials.Steel, plate.materialAmount * 4 + ring.materialAmount * 2);
+        toolHeadWrench.secondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount + screw.materialAmount * 2);
 
-        bucket.mSecondaryMaterial = new MaterialStack(Materials.Iron, ingot.mMaterialAmount * 3);
-        cell.mSecondaryMaterial = new MaterialStack(Materials.Tin, plate.mMaterialAmount * 2);
-        cellPlasma.mSecondaryMaterial = new MaterialStack(Materials.Tin, plate.mMaterialAmount * 2);
+        arrowGtWood.secondaryMaterial = new MaterialStack(Materials.Wood, stick.materialAmount);
+        arrowGtPlastic.secondaryMaterial = new MaterialStack(Materials.Plastic, stick.materialAmount);
 
-        oreRedgranite.mSecondaryMaterial = new MaterialStack(Materials.GraniteRed, dust.mMaterialAmount);
-        oreBlackgranite.mSecondaryMaterial = new MaterialStack(Materials.GraniteBlack, dust.mMaterialAmount);
-
-        oreBasalt.mSecondaryMaterial = new MaterialStack(Materials.Basalt, dust.mMaterialAmount);
-        oreMarble.mSecondaryMaterial = new MaterialStack(Materials.Marble, dust.mMaterialAmount);
-
-        oreSand.mSecondaryMaterial = new MaterialStack(Materials.SiliconDioxide, dustTiny.mMaterialAmount);
-        oreGravel.mSecondaryMaterial = new MaterialStack(Materials.Flint, dustTiny.mMaterialAmount);
-
-        oreNetherrack.mSecondaryMaterial = new MaterialStack(Materials.Netherrack, dust.mMaterialAmount);
-        oreNether.mSecondaryMaterial = new MaterialStack(Materials.Netherrack, dust.mMaterialAmount);
-
-        oreEndstone.mSecondaryMaterial = new MaterialStack(Materials.Endstone, dust.mMaterialAmount);
-        oreEnd.mSecondaryMaterial = new MaterialStack(Materials.Endstone, dust.mMaterialAmount);
-
-        oreMarble.mSecondaryMaterial = new MaterialStack(Materials.Marble, dust.mMaterialAmount);
-        oreBasalt.mSecondaryMaterial = new MaterialStack(Materials.Basalt, dust.mMaterialAmount);
-
-        oreDense.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount);
-        orePoor.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount * 2);
-        oreSmall.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount * 2);
-        oreNormal.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount * 2);
-        oreRich.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount * 2);
-        ore.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount);
-
-        crushed.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount);
-
-        toolHeadDrill.mSecondaryMaterial = new MaterialStack(Materials.Steel, plate.mMaterialAmount * 4);
-        toolHeadChainsaw.mSecondaryMaterial = new MaterialStack(Materials.Steel, plate.mMaterialAmount * 4 + ring.mMaterialAmount * 2);
-        toolHeadWrench.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.mMaterialAmount + screw.mMaterialAmount * 2);
-
-        arrowGtWood.mSecondaryMaterial = new MaterialStack(Materials.Wood, stick.mMaterialAmount);
-        arrowGtPlastic.mSecondaryMaterial = new MaterialStack(Materials.Plastic, stick.mMaterialAmount);
-
-        bulletGtSmall.mSecondaryMaterial = new MaterialStack(Materials.Brass, ingot.mMaterialAmount / 9);
-        bulletGtMedium.mSecondaryMaterial = new MaterialStack(Materials.Brass, ingot.mMaterialAmount / 6);
-        bulletGtLarge.mSecondaryMaterial = new MaterialStack(Materials.Brass, ingot.mMaterialAmount / 3);
+        bulletGtSmall.secondaryMaterial = new MaterialStack(Materials.Brass, ingot.materialAmount / 9);
+        bulletGtMedium.secondaryMaterial = new MaterialStack(Materials.Brass, ingot.materialAmount / 6);
+        bulletGtLarge.secondaryMaterial = new MaterialStack(Materials.Brass, ingot.materialAmount / 3);
     }
 
-    public static final int ENABLE_UNIFICATION = Material.MatFlags.createFlag(0);
-    public static final int SELF_REFERENCING = Material.MatFlags.createFlag(1);
-    public static final int DISALLOW_RECYCLING = Material.MatFlags.createFlag(2);
-    public static final int FLUID_CONTAINER = Material.MatFlags.createFlag(3);
+    private static ICondition<Material> and(ICondition<Material>... conditions) {
+        return new ICondition.And<>(conditions);
+    }
+
+    private static ICondition<Material> hasFlag(long generationFlags) {
+        return (material) -> material.hasFlag(generationFlags);
+    }
+
+    private static ICondition<Material> noFlag(long generationFlags) {
+        return (material) -> !material.hasFlag(generationFlags);
+    }
+
+    private static ICondition<Material> isToolMaterial() {
+        return mat -> mat instanceof SolidMaterial && ((SolidMaterial) mat).toolDurability > 0;
+    }
 
     public final String categoryName;
 
+    public final boolean isUnificationEnabled;
     public final boolean isSelfReferencing;
+    public final boolean isRecyclingDisallowed;
+    public final boolean isFluidContainer;
+
     private final @Nullable String materialNameLocale;
     public final @Nullable ICondition<Material> generationCondition;
     public final @Nullable MaterialIconType materialIconType;
@@ -517,19 +514,13 @@ public enum OrePrefixes {
     public @Nullable MaterialStack secondaryMaterial = null;
     public float heatDamage = 0.0F; // Negative for Frost Damage
 
-    OrePrefixes(String categoryName, long materialAmount) {
+    OrePrefixes(String categoryName, long materialAmount, String materialNameLocale, MaterialIconType materialIconType, long flags, ICondition<Material> condition) {
         this.categoryName = categoryName;
         this.materialAmount = materialAmount;
-        this.isSelfReferencing = true;
-        this.materialNameLocale = null;
-        this.generationCondition = null;
-        this.materialIconType = null;
-    }
-
-    OrePrefixes(String categoryName, long materialAmount, String materialNameLocale, MaterialIconType materialIconType, ICondition<Material> condition) {
-        this.categoryName = categoryName;
-        this.materialAmount = materialAmount;
-        this.isSelfReferencing = false;
+        this.isSelfReferencing = (flags & SELF_REFERENCING) != 0;
+        this.isUnificationEnabled = (flags & ENABLE_UNIFICATION) != 0;
+        this.isRecyclingDisallowed = (flags & DISALLOW_RECYCLING) != 0;
+        this.isFluidContainer = (flags & FLUID_CONTAINER) != 0;
         this.materialNameLocale = materialNameLocale;
         this.materialIconType = materialIconType;
         this.generationCondition = condition;
@@ -576,4 +567,12 @@ public enum OrePrefixes {
         return String.format(materialNameLocale, material.defaultLocalName);
     }
 
+}
+
+// Java plz!
+class Flags {
+    public static final long ENABLE_UNIFICATION = Material.MatFlags.createFlag(0);
+    public static final long SELF_REFERENCING = Material.MatFlags.createFlag(1);
+    public static final long FLUID_CONTAINER = Material.MatFlags.createFlag(2);
+    public static final long DISALLOW_RECYCLING = Material.MatFlags.createFlag(3);
 }

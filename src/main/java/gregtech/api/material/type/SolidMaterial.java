@@ -19,14 +19,14 @@ public class SolidMaterial extends DustMaterial {
 
     public static final class MatFlags {
 
-        public static final int GENERATE_ROD = createFlag(20);
-        public static final int GENERATE_GEAR = createFlag(21);
-        public static final int GENERATE_LONG_ROD = createFlag(22);
+        public static final long GENERATE_ROD = createFlag(20);
+        public static final long GENERATE_GEAR = createFlag(21);
+        public static final long GENERATE_LONG_ROD = createFlag(22);
 
         /**
          * If this Material is grindable with a simple Mortar
          */
-        public static final int MORTAR_GRINDABLE = createFlag(24);
+        public static final long MORTAR_GRINDABLE = createFlag(24);
 
     }
 
@@ -65,7 +65,7 @@ public class SolidMaterial extends DustMaterial {
      */
     public DustMaterial macerateInto = this;
 
-    public SolidMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, int materialGenerationFlags, Element element, float toolSpeed, int toolQuality, int toolDurability) {
+    public SolidMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element, float toolSpeed, int toolQuality, int toolDurability) {
         super(metaItemSubId, name, defaultLocalName, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, element);
         this.toolSpeed = toolSpeed;
         this.toolQuality = toolQuality;
@@ -73,16 +73,16 @@ public class SolidMaterial extends DustMaterial {
         this.directSmelting = this;
     }
 
-    public SolidMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, int materialGenerationFlags, Element element) {
+    public SolidMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element) {
         this(metaItemSubId, name, defaultLocalName, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, element, 0, 0, 0);
     }
 
-    public SolidMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, int materialGenerationFlags) {
+    public SolidMaterial(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags) {
         this(metaItemSubId, name, defaultLocalName, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, null, 0, 0, 0);
     }
 
     @Override
-    protected int verifyMaterialBits(int generationBits) {
+    protected long verifyMaterialBits(long generationBits) {
         if((generationBits & GENERATE_GEAR) > 0) {
             generationBits |= GENERATE_PLATE;
             generationBits |= GENERATE_ROD;
