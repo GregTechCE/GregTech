@@ -12,6 +12,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -64,11 +65,7 @@ public interface IMetaTileEntity extends ITurnable, IMachineBlockUpdateable, IRe
      */
     void loadNBTData(NBTTagCompound data);
 
-    /**
-     * If a Cover of that Type can be placed on this Side.
-     * Also Called when the Facing of the Block Changes and a Cover is on said Side.
-     */
-    boolean allowCoverOnSide(EnumFacing side, int coverId);
+    void receiveCustomData(int dataId, PacketBuffer buf);
 
     /**
      * When a Player rightclicks the Facing with a Screwdriver.

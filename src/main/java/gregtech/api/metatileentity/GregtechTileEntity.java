@@ -4,12 +4,19 @@ import com.google.common.base.Preconditions;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityFactory;
+import gregtech.api.interfaces.tileentity.ICustomDataTile;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.net.NetworkHandler;
+import gregtech.api.net.PacketCustomTileData;
+import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.server.management.PlayerChunkMapEntry;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.Fluid;
@@ -18,12 +25,14 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.wrappers.FluidHandlerWrapper;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
 import javax.annotation.Nullable;
+import java.util.function.Consumer;
 
-public class GregtechTileEntity extends BaseTileEntity implements IGregTechTileEntity, ISidedInventory, IFluidHandler {
+public class GregtechTileEntity extends TickableTileEntityBase implements IGregTechTileEntity, ICustomDataTile, ISidedInventory, IFluidHandler {
 
     private MetaTileEntity metaTileEntity;
 
@@ -38,7 +47,10 @@ public class GregtechTileEntity extends BaseTileEntity implements IGregTechTileE
         Preconditions.checkArgument(metaTileEntity instanceof MetaTileEntity, "GregtechTileEntity supports only MetaTileEntity child!");
         this.metaTileEntity = (MetaTileEntity) metaTileEntity;
         this.metaTileEntity.holder = this;
-        markDirty();
+        if(!worldObj.isRemote) {
+
+            markDirty();
+        }
     }
 
     @Override
@@ -65,8 +77,25 @@ public class GregtechTileEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
-    public boolean receiveClientEvent(int id, int type) {
-        return super.receiveClientEvent(id, type);
+    public void receiveCustomData(PacketBuffer buf) {
+        int dataId = buf.readInt();
+        switch (dataId) {
+            case 0:
+                IMetaTileEntityFactory factory = GregTech_API.METATILEENTITY_REGISTRY.getObjectById(buf.readShort());
+                this.metaTileEntity = factory.constructMetaTileEntity();
+
+        }
+    }
+
+    public void writeCustomData(int dataId, Consumer<PacketBuffer> dataWriter) {
+        PacketBuffer packetBuffer = new PacketBuffer(Unpooled.buffer());
+        packetBuffer.writeInt(dataId);
+        dataWriter.accept(packetBuffer);
+        WorldServer worldServer = (WorldServer) worldObj;
+        PlayerChunkMapEntry entry = worldServer.getPlayerChunkMap().getEntry(pos.getX() >> 4, pos.getZ() >> 4);
+        if(entry != null) {
+
+        }
     }
 
     @Override

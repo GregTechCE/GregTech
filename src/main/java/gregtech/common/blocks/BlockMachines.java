@@ -10,7 +10,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GenericBlock;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.metatileentity.BaseTileEntity;
+import gregtech.api.metatileentity.TickableTileEntityBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Log;
@@ -91,8 +91,8 @@ public class BlockMachines extends GenericBlock implements IDebugableBlock, ITil
     @Override
     public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
         TileEntity tileEntity = world.getTileEntity(pos);
-        if ((tileEntity instanceof BaseTileEntity)) {
-            ((BaseTileEntity) tileEntity).onAdjacentBlockChange(neighbor.getX(), neighbor.getY(), neighbor.getZ());
+        if ((tileEntity instanceof TickableTileEntityBase)) {
+            ((TickableTileEntityBase) tileEntity).onAdjacentBlockChange(neighbor.getX(), neighbor.getY(), neighbor.getZ());
         }
     }
 

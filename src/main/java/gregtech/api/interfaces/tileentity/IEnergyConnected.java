@@ -13,7 +13,7 @@ import net.minecraft.util.EnumFacing;
  * <p/>
  * This is all you need to connect to the GT Network.
  * IColoredTileEntity is needed for not connecting differently coloured Blocks to each other.
- * IHasWorldObjectAndCoords is needed for the InWorld related Stuff. @BaseTileEntity does implement most of that Interface.
+ * IHasWorldObjectAndCoords is needed for the InWorld related Stuff. @TickableTileEntityBase does implement most of that Interface.
  */
 public interface IEnergyConnected extends IColoredTileEntity, IHasWorldObjectAndCoords, IEnergyAcceptor, IEnergyEmitter {
 

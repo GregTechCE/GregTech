@@ -6,7 +6,7 @@ import gregtech.api.gui.GT_GUIContainer_BasicTank;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.BaseTileEntity;
+import gregtech.api.metatileentity.TickableTileEntityBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
@@ -115,8 +115,8 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (getBaseMetaTileEntity().isServerSide()) {
             this.mPumpTimer -= 1;
-            if ((getBaseMetaTileEntity() instanceof BaseTileEntity)) {
-                ((BaseTileEntity) getBaseMetaTileEntity()).ignoreUnloadedChunks = false;
+            if ((getBaseMetaTileEntity() instanceof TickableTileEntityBase)) {
+                ((TickableTileEntityBase) getBaseMetaTileEntity()).ignoreUnloadedChunks = false;
             }
             this.doTickProfilingInThisTick = true;
             this.mPumpCountBelow = 0;
