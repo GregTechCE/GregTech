@@ -1,7 +1,7 @@
 package gregtech.loaders.postload;
 
-import gregtech.api.material.OrePrefixes;
-import gregtech.api.util.GT_Log;
+import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.util.GTLog;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -9,7 +9,7 @@ import net.minecraft.item.Item;
 public class GT_ItemMaxStacksizeLoader
         implements Runnable {
     public void run() {
-        GT_Log.out.println("GT_Mod: Changing maximum Stacksizes if configured.");
+        GTLog.out.println("GT_Mod: Changing maximum Stacksizes if configured.");
 
         //ItemList.Upgrade_Overclocker.getItem().setMaxStackSize(GT_Mod.gregtechproxy.mUpgradeCount);
         Items.CAKE.setMaxStackSize(64);

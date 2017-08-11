@@ -1,14 +1,14 @@
 package gregtech.common.tileentities.automation;
 
-import gregtech.api.material.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.IMetaTileEntity;
+import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Buffer;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.objects.ItemData;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.unification.stack.ItemData;
+import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_Container_TypeFilter;
 import gregtech.common.gui.GT_GUIContainer_TypeFilter;

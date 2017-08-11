@@ -2,7 +2,7 @@ package gregtech.api.metatileentity.implementations;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.capability.internal.IGregTechTileEntity;
 import net.minecraft.nbt.NBTTagCompound;
 
 public abstract class GT_MetaTileEntity_Hatch extends GT_MetaTileEntity_BasicTank {

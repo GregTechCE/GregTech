@@ -1,7 +1,7 @@
 package gregtech.common.gui;
 
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.capability.internal.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GT_GUIContainer_Filter

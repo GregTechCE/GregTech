@@ -1,15 +1,15 @@
 package gregtech.common.tileentities.machines.basic;
 
 import gregtech.api.items.ItemList;
-import gregtech.api.material.Materials;
+import gregtech.api.unification.material.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MetaTileEntityBasicMachine;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.objects.ItemData;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.unification.stack.ItemData;
+import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_ModHandler;
 import ic2.core.ref.BlockName;

@@ -1,7 +1,7 @@
 package gregtech.api.items.metaitem;
 
 import gregtech.api.GT_Values;
-import gregtech.api.interfaces.metaitem.IElectricStats;
+import gregtech.api.items.metaitem.stats.IElectricStats;
 import gregtech.api.util.GT_ModHandler;
 import ic2.api.item.ElectricItem;
 import net.minecraft.entity.EntityLivingBase;

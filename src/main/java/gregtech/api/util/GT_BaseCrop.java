@@ -2,9 +2,10 @@ package gregtech.api.util;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.ConfigCategories;
-import gregtech.api.material.Materials;
-import gregtech.api.material.OrePrefixes;
-import gregtech.api.objects.ItemData;
+import gregtech.api.unification.GT_OreDictUnificator;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.stack.ItemData;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.CropProperties;
 import ic2.api.crops.Crops;

@@ -1,12 +1,12 @@
 package gregtech.common.tileentities.machines.multi;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.material.Materials;
+import gregtech.api.unification.material.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.IMetaTileEntity;
+import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;

@@ -2,10 +2,8 @@ package gregtech.api.metatileentity;
 
 import com.google.common.base.Preconditions;
 import gregtech.api.GregTech_API;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntityFactory;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.Dyes;
+import gregtech.api.capability.internal.IGregTechTileEntity;
+import gregtech.api.unification.Dyes;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.inventory.GuiContainer;

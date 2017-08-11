@@ -1,9 +1,9 @@
 package gregtech.common.blocks;
 
-import gregtech.api.material.Materials;
-import gregtech.api.material.type.Material;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.GT_LanguageManager;
-//import gregtech.api.util.GT_OreDictUnificator;
+//import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.common.blocks.itemblocks.ItemGranites;
 
 public class BlockStones extends BlockStonesAbstract {

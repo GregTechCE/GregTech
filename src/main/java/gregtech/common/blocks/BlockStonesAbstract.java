@@ -3,10 +3,10 @@ package gregtech.common.blocks;
 import com.google.common.collect.Lists;
 import gregtech.api.GregTech_API;
 import gregtech.api.items.OreDictNames;
-import gregtech.api.material.Materials;
-import gregtech.api.material.OrePrefixes;
-import gregtech.api.material.type.Material;
-import gregtech.api.interfaces.IOreRecipeRegistrator;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.items.GenericBlock;
 import gregtech.common.blocks.properties.PropertyMaterial;
 import net.minecraft.block.Block;
@@ -27,7 +27,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public abstract class BlockStonesAbstract extends GenericBlock implements IOreRecipeRegistrator {
+public abstract class BlockStonesAbstract extends GenericBlock implements IOreRegistrationHandler {
 
     // We have only 1 bit to store material
     public static final int MATERIALS_PER_BLOCK = 2;

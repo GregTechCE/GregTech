@@ -6,17 +6,18 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.items.OreDictNames;
 import gregtech.api.items.ToolDictNames;
-import gregtech.api.material.Dyes;
-import gregtech.api.material.Materials;
-import gregtech.api.material.OrePrefixes;
+import gregtech.api.unification.Dyes;
+import gregtech.api.unification.GT_OreDictUnificator;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.internal.IGT_Mod;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.IMetaTileEntity;
+import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.items.ItemList;
-import gregtech.api.objects.GT_Fluid;
-import gregtech.api.objects.ItemData;
-import gregtech.api.objects.MaterialStack;
+import gregtech.api.util.GT_Fluid;
+import gregtech.api.unification.stack.ItemData;
+import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.*;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
@@ -215,8 +216,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     }
 
     public void onPreLoad() {
-        GT_Log.out.println("GT_Mod: Preload-Phase started!");
-        GT_Log.ore.println("GT_Mod: Preload-Phase started!");
+        GTLog.out.println("GT_Mod: Preload-Phase started!");
+        GTLog.ore.println("GT_Mod: Preload-Phase started!");
 
         GregTech_API.sPreloadStarted = true;
 
@@ -235,7 +236,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                     tOreStack = (ItemStack) i$.next();
                 }
             }
-        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
+        } catch (Throwable e) {e.printStackTrace(GTLog.err);}
 
         this.mIgnoreTcon = GregTech_API.sOPStuff.get(ConfigCategories.general, "ignoreTConstruct", true);
         this.mWireHeatingTicks = GregTech_API.sOPStuff.get(ConfigCategories.general, "WireHeatingTicks", 4);
@@ -246,7 +247,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 break;
             }
         }
-        GT_Log.out.println("GT_Mod: Getting required Items of other Mods.");
+        GTLog.out.println("GT_Mod: Getting required Items of other Mods.");
         ItemList.TE_Slag.set(GT_ModHandler.getModItem(aTextThermalExpansion, "slag", 1));
         ItemList.TE_Slag_Rich.set(GT_ModHandler.getModItem(aTextThermalExpansion, "slagRich", 1));
         ItemList.TE_Rockwool.set(GT_ModHandler.getModItem(aTextThermalExpansion, "rockwool", 1));
@@ -459,8 +460,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     }
 
     public void onLoad() {
-        GT_Log.out.println("GT_Mod: Beginning Load-Phase.");
-        GT_Log.ore.println("GT_Mod: Beginning Load-Phase.");
+        GTLog.out.println("GT_Mod: Beginning Load-Phase.");
+        GTLog.ore.println("GT_Mod: Beginning Load-Phase.");
         GT_OreDictUnificator.registerOre("cropChilipepper", GT_ModHandler.getModItem("magicalcrops", "magicalcrops_CropProduce", 1, 2));
         GT_OreDictUnificator.registerOre("cropTomato", GT_ModHandler.getModItem("magicalcrops", "magicalcrops_CropProduce", 1, 8));
         GT_OreDictUnificator.registerOre("cropGrape", GT_ModHandler.getModItem("magicalcrops", "magicalcrops_CropProduce", 1, 4));
@@ -477,9 +478,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     public static long tBits = GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.ONLY_ADD_IF_RESULT_IS_NOT_NULL | GT_ModHandler.RecipeBits.NOT_REMOVABLE;
     public void onPostLoad() {
-        GT_Log.out.println("GT_Mod: Beginning PostLoad-Phase.");
-        GT_Log.ore.println("GT_Mod: Beginning PostLoad-Phase.");
-        if (GT_Log.pal != null) {
+        GTLog.out.println("GT_Mod: Beginning PostLoad-Phase.");
+        GTLog.ore.println("GT_Mod: Beginning PostLoad-Phase.");
+        if (GTLog.pal != null) {
             new Thread(new GT_PlayerActivityLogger()).start();
         }
         GregTech_API.sPostloadStarted = true;
@@ -496,7 +497,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 break;
             }
         }
-        GT_Log.out.println("GT_Mod: Adding Configs specific for MetaTileEntities");
+        GTLog.out.println("GT_Mod: Adding Configs specific for MetaTileEntities");
         try {
             for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
                 for (; i < GregTech_API.METATILEENTITIES.length; i++) {
@@ -506,9 +507,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 }
             }
         } catch (Throwable e) {
-            e.printStackTrace(GT_Log.err);
+            e.printStackTrace(GTLog.err);
         }
-        GT_Log.out.println("GT_Mod: Adding Tool Usage Crafting Recipes for OreDict Items.");
+        GTLog.out.println("GT_Mod: Adding Tool Usage Crafting Recipes for OreDict Items.");
         for (Materials aMaterial : Materials.values()) {
             if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial)) {
                 /*if (!aMaterial.contains(SubTag.NO_SMASHING)) {
@@ -741,8 +742,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     }
 
     public void onServerStarting() {
-        GT_Log.out.println("GT_Mod: ServerStarting-Phase started!");
-        GT_Log.ore.println("GT_Mod: ServerStarting-Phase started!");
+        GTLog.out.println("GT_Mod: ServerStarting-Phase started!");
+        GTLog.ore.println("GT_Mod: ServerStarting-Phase started!");
 
         this.mUniverse = null;
         this.isFirstServerWorldTick = true;
@@ -761,14 +762,14 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 }
             }
         } catch (Throwable e) {
-            e.printStackTrace(GT_Log.err);
+            e.printStackTrace(GTLog.err);
         }
     }
 
     public void onServerStarted() {
         GregTech_API.sWirelessRedstone.clear();
 
-        GT_Log.out.println("GT_Mod: Cleaning up all OreDict Crafting Recipes, which have an empty List in them, since they are never meeting any Condition.");
+        GTLog.out.println("GT_Mod: Cleaning up all OreDict Crafting Recipes, which have an empty List in them, since they are never meeting any Condition.");
         List tList = CraftingManager.getInstance().getRecipeList();
         for (int i = 0; i < tList.size(); i++) {
 
@@ -805,7 +806,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                     }
                 }
             } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
+                e.printStackTrace(GTLog.err);
             }
         }
         this.mUniverse = null;
@@ -978,7 +979,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             if (aOriginalMod.equals("gregtech")) {
                 aOriginalMod = "UNKNOWN";
             }
-            GT_Log.ore
+            GTLog.ore
                     .println(aOriginalMod
                             + " did something very bad! The registration is too invalid to even be shown properly. This happens only if you register null, invalid Items, empty Strings or even nonexisting Events to the OreDict.");
             throw new IllegalArgumentException(
@@ -991,7 +992,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 if ((aOriginalMod.toLowerCase(Locale.ENGLISH).contains("xycraft")) || (aOriginalMod.toLowerCase(Locale.ENGLISH).contains("tconstruct"))
                         || ((aOriginalMod.toLowerCase(Locale.ENGLISH).contains("natura")) && (!aOriginalMod.toLowerCase(Locale.ENGLISH).contains("natural")))) {
                     if (GT_Values.D1) {
-                        GT_Log.ore.println(aMod + " -> " + aEvent.getName() + " is getting ignored, because of racism. :P");
+                        GTLog.ore.println(aMod + " -> " + aEvent.getName() + " is getting ignored, because of racism. :P");
                     }
                     return;
                 }
@@ -1012,7 +1013,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
             if (this.mIgnoredItems.contains(aEvent.getName())) {
                 if ((aEvent.getName().startsWith("item"))) {
-                    GT_Log.ore.println(tModToName);
+                    GTLog.ore.println(tModToName);
                     if (aEvent.getName().equals("itemCopperWire")) {
                         GT_OreDictUnificator.registerOre(OreDictNames.craftingWireCopper, aEvent.getOre());
                     }
@@ -1022,7 +1023,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                     return;
                 }
             } else if (this.mIgnoredNames.contains(aEvent.getName())){
-                GT_Log.ore.println(tModToName + " is getting ignored via hardcode.");
+                GTLog.ore.println(tModToName + " is getting ignored via hardcode.");
                 return;
             } else if (aEvent.getName().equals("stone")) {
                 GT_OreDictUnificator.registerOre("stoneSmooth", aEvent.getOre());
@@ -1032,7 +1033,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 return;
             } else if ((aEvent.getName().contains("|")) || (aEvent.getName().contains("*")) || (aEvent.getName().contains(":")) || (aEvent.getName().contains("."))
                     || (aEvent.getName().contains("$"))) {
-                GT_Log.ore.println(tModToName + " is using a private Prefix and is therefor getting ignored properly.");
+                GTLog.ore.println(tModToName + " is using a private Prefix and is therefor getting ignored properly.");
                 return;
             } else if (aEvent.getName().equals("copperWire")) {
                 GT_OreDictUnificator.registerOre(OreDictNames.craftingWireCopper, aEvent.getOre());
@@ -1076,12 +1077,12 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 GT_OreDictUnificator.registerOre(OrePrefixes.compressed, Materials.Aluminium, aEvent.getOre());
                 return;
             } else if (aEvent.getName().contains(" ")) {
-                GT_Log.ore.println(tModToName + " is getting re-registered because the OreDict Name containing invalid spaces.");
+                GTLog.ore.println(tModToName + " is getting re-registered because the OreDict Name containing invalid spaces.");
                 GT_OreDictUnificator.registerOre(aEvent.getName().replaceAll(" ", ""), GT_Utility.copyAmount(1, aEvent.getOre()));
                 aEvent.getOre().setStackDisplayName("Invalid OreDictionary Tag");
                 return;
             } else if (this.mInvalidNames.contains(aEvent.getName())) {
-                GT_Log.ore.println(tModToName + " is wrongly registered and therefor getting ignored.");
+                GTLog.ore.println(tModToName + " is wrongly registered and therefor getting ignored.");
 
                 return;
             }
@@ -1092,13 +1093,13 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             }
             if (aPrefix == null) {
                 if (aEvent.getName().toLowerCase().equals(aEvent.getName())) {
-                    GT_Log.ore.println(tModToName + " is invalid due to being solely lowercased.");
+                    GTLog.ore.println(tModToName + " is invalid due to being solely lowercased.");
                     return;
                 } else if (aEvent.getName().toUpperCase().equals(aEvent.getName())) {
-                    GT_Log.ore.println(tModToName + " is invalid due to being solely uppercased.");
+                    GTLog.ore.println(tModToName + " is invalid due to being solely uppercased.");
                     return;
                 } else if (Character.isUpperCase(aEvent.getName().charAt(0))) {
-                    GT_Log.ore.println(tModToName + " is invalid due to the first character being uppercased.");
+                    GTLog.ore.println(tModToName + " is invalid due to the first character being uppercased.");
                 }
             } else {
                 if (aPrefix.mDontUnificateActively) {
@@ -1107,7 +1108,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 if (aPrefix != aPrefix.mPrefixInto) {
                     String tNewName = aEvent.getName().replaceFirst(aPrefix.toString(), aPrefix.mPrefixInto.toString());
                     if (!GT_OreDictUnificator.isRegisteringOres()) {
-                        GT_Log.ore.println(tModToName + " uses a depricated Prefix, and is getting re-registered as " + tNewName);
+                        GTLog.ore.println(tModToName + " uses a depricated Prefix, and is getting re-registered as " + tNewName);
                     }
                     GT_OreDictUnificator.registerOre(tNewName, aEvent.getOre());
                     return;
@@ -1121,7 +1122,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                             if (aMaterial != aMaterial.mMaterialInto) {
                                 GT_OreDictUnificator.registerOre(aPrefix, aMaterial.mMaterialInto, aEvent.getOre());
                                 if (!GT_OreDictUnificator.isRegisteringOres()) {
-                                    GT_Log.ore.println(tModToName + " uses a deprecated Material and is getting re-registered as "
+                                    GTLog.ore.println(tModToName + " uses a deprecated Material and is getting re-registered as "
                                             + aPrefix.get(aMaterial.mMaterialInto));
                                 }
                                 return;
@@ -1275,12 +1276,12 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                                 for (Dyes tDye : Dyes.VALUES) {
                                     if (aEvent.getName().endsWith(tDye.name().replaceFirst("dye", ""))) {
                                         GT_OreDictUnificator.addToBlacklist(aEvent.getOre());
-                                        GT_Log.ore.println(tModToName + " Oh man, why the fuck would anyone need a OreDictified Color for this, that is even too much for GregTech... do not report this, this is just a random Comment about how ridiculous this is.");
+                                        GTLog.ore.println(tModToName + " Oh man, why the fuck would anyone need a OreDictified Color for this, that is even too much for GregTech... do not report this, this is just a random Comment about how ridiculous this is.");
                                         return;
                                     }
                                 }
 								//System.out.println("Material Name: "+aEvent.getName()+ " !!!Unknown Material detected!!! Please report to GregTech Intergalactical for additional compatiblity. This is not an Error, an Issue nor a Lag Source, it is just an Information, which you should pass to me.");
-								//GT_Log.ore.println(tModToName + " uses an unknown Material. Report this to GregTech.");
+								//GTLog.ore.println(tModToName + " uses an unknown Material. Report this to GregTech.");
                                 return;
                             }
                         } else {
@@ -1290,7 +1291,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 } else if (aPrefix.mIsSelfReferencing) {
                     aPrefix.add(GT_Utility.copyAmount(1, new Object[]{aEvent.getOre()}));
                 } else {
-                    GT_Log.ore.println(tModToName + " uses a Prefix as full OreDict Name, and is therefor invalid.");
+                    GTLog.ore.println(tModToName + " uses a Prefix as full OreDict Name, and is therefor invalid.");
                     aEvent.getOre().setStackDisplayName("Invalid OreDictionary Tag");
                     return;
                 }
@@ -1346,7 +1347,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                         break;
                 }
             }
-            GT_Log.ore.println(tModToName);
+            GTLog.ore.println(tModToName);
 
             OreDictEventContainer tOre = new OreDictEventContainer(aEvent, aPrefix, aMaterial, aMod);
             if ((!this.mOreDictActivated) || (!GregTech_API.sUnificationEntriesRegistered)) {
@@ -1358,7 +1359,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 registerRecipes(tOre);
             }
         } catch (Throwable e) {
-            e.printStackTrace(GT_Log.err);
+            e.printStackTrace(GTLog.err);
         }
     }
 
@@ -1395,7 +1396,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                             }
                         }
                     } catch (Throwable e) {
-                        e.printStackTrace(GT_Log.err);
+                        e.printStackTrace(GTLog.err);
                     }
                 }
             }

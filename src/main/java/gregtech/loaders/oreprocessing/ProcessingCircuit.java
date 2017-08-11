@@ -1,15 +1,17 @@
 package gregtech.loaders.oreprocessing;
 
+import gregtech.api.unification.GT_OreDictUnificator;
+import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.items.ItemList;
-import gregtech.api.material.Materials;
+import gregtech.api.unification.material.Materials;
 import gregtech.api.items.OreDictNames;
-import gregtech.api.material.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import ic2.core.item.type.CasingResourceType;
 import ic2.core.ref.ItemName;
 import net.minecraft.item.ItemStack;
 
-public class ProcessingCircuit implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingCircuit implements IOreRegistrationHandler {
     public ProcessingCircuit() {
         OrePrefixes.circuit.add(this);
     }
@@ -22,7 +24,7 @@ public class ProcessingCircuit implements gregtech.api.interfaces.IOreRecipeRegi
             case "Elite":
             case "Master":
             case "Ultimate":
-                if (!gregtech.api.util.GT_OreDictUnificator.isBlacklisted(aStack))
+                if (!GT_OreDictUnificator.isBlacklisted(aStack))
                     GT_ModHandler.removeRecipeByOutput(aStack);
                 break;
             case "Primitive":

@@ -1,10 +1,10 @@
 package gregtech.common.covers;
 
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.IMetaTileEntity;
+import gregtech.api.capability.ICoverable;
+import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.metatileentity.GT_CoverBehavior;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import ic2.api.item.IElectricItem;

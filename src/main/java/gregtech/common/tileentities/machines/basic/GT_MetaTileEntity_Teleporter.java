@@ -1,14 +1,14 @@
 package gregtech.common.tileentities.machines.basic;
 
 import gregtech.api.ConfigCategories;
-import gregtech.api.material.Materials;
+import gregtech.api.unification.material.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.IMetaTileEntity;
+import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.objects.XSTR;
+import gregtech.api.util.XSTR;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_Container_Teleporter;

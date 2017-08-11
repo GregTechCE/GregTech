@@ -1,8 +1,8 @@
 package gregtech.common.covers;
 
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.capability.ICoverable;
+import gregtech.api.capability.IWorkable;
+import gregtech.api.metatileentity.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
@@ -51,8 +51,8 @@ public class GT_Cover_RedstoneSignalizer extends GT_CoverBehavior {
         if (aCoverVariable < 16) {
             return (byte) (aCoverVariable & 0xF);
         }
-        if ((aTileEntity instanceof IMachineProgress)) {
-            if (((IMachineProgress) aTileEntity).isAllowedToWork()) {
+        if ((aTileEntity instanceof IWorkable)) {
+            if (((IWorkable) aTileEntity).isAllowedToWork()) {
                 if (aCoverVariable / 16 == 1) {
                     return (byte) (aCoverVariable & 0xF);
                 }

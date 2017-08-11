@@ -3,7 +3,7 @@ package gregtech.common.gui;
 import gregtech.api.gui.ContainerMetaTileEntity;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.gui.GT_Slot_Render;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.automation.GT_MetaTileEntity_TypeFilter;
 import net.minecraft.entity.player.EntityPlayer;

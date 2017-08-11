@@ -1,16 +1,16 @@
 package gregtech.common.items;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.material.Dyes;
-import gregtech.api.material.Materials;
-import gregtech.api.material.OrePrefixes;
+import gregtech.api.unification.Dyes;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.items.GT_MetaGenerated_Item_X32;
 import gregtech.api.items.ItemList;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.objects.ItemData;
+import gregtech.api.unification.stack.ItemData;
 import gregtech.api.objects.RegIconContainer;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_Arrow;
 import net.minecraft.dispenser.IBlockSource;
@@ -293,7 +293,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             GT_Utility.getField(tCrop = ic2.api.crops.Crops.instance.getCropList()[14], "mDrop").set(tCrop, ItemList.Crop_Drop_Aurelia.get(1L));
         } catch (Throwable e) {
             if (GT_Values.D1) {
-                e.printStackTrace(GT_Log.err);
+                e.printStackTrace(GTLog.err);
             }
         }*/
         ItemList.Display_ITS_FREE.set(addItem(tLastID = 766, "ITS FREE", "(or at least almost free)", new Object[]{SubTag.INVISIBLE, new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 1L)}));

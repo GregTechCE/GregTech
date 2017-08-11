@@ -1,10 +1,10 @@
 package gregtech.common.items.behaviors;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.objects.ItemData;
+import gregtech.api.unification.stack.ItemData;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

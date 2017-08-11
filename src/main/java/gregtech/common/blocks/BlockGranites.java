@@ -1,7 +1,7 @@
 package gregtech.common.blocks;
 
-import gregtech.api.material.Materials;
-import gregtech.api.material.type.Material;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.itemblocks.ItemGranites;
 import net.minecraft.block.state.IBlockState;
@@ -10,7 +10,7 @@ import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
-//import gregtech.api.util.GT_OreDictUnificator;
+//import gregtech.api.unification.GT_OreDictUnificator;
 
 
 public class BlockGranites extends BlockStonesAbstract {

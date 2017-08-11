@@ -6,7 +6,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.gui.ContainerMetaTileEntity;
 import gregtech.api.gui.SlotOutput;
 import gregtech.api.gui.GT_Slot_Render;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumChest;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;

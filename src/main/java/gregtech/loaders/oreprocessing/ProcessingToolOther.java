@@ -1,15 +1,16 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.material.Dyes;
-import gregtech.api.material.Materials;
-import gregtech.api.material.OrePrefixes;
+import gregtech.api.unification.ore.IOreRegistrationHandler;
+import gregtech.api.unification.Dyes;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.items.ItemList;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
-public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingToolOther implements IOreRegistrationHandler {
     public ProcessingToolOther() {
         OrePrefixes.toolHeadHammer.add(this);
     }

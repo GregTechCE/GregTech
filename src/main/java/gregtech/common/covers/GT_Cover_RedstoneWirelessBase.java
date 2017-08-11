@@ -1,8 +1,8 @@
 package gregtech.common.covers;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.capability.ICoverable;
+import gregtech.api.metatileentity.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;

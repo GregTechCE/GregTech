@@ -3,14 +3,15 @@ package gregtech.loaders.oreprocessing;
 import gregtech.api.ConfigCategories;
 import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
+import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.items.ToolDictNames;
-import gregtech.api.material.Materials;
-import gregtech.api.material.OrePrefixes;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.items.ItemList;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.RegIconContainer;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
 import ic2.api.recipe.Recipes;
@@ -20,7 +21,7 @@ import ic2.core.ref.TeBlock;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
-public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingPlate implements IOreRegistrationHandler {
     public ProcessingPlate() {
         OrePrefixes.plate.add(this);
         OrePrefixes.plateDouble.add(this);
@@ -174,7 +175,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     }
                     GT_Values.RA.addBenderRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 5L), GT_Utility.copyAmount(1L, aStack), (int) Math.max(aMaterialMass * 5L, 1L), 96);
                 } else {
-                        GT_Values.RA.addAssemblerRecipe(gregtech.api.util.GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 5L), ItemList.Circuit_Integrated.getWithDamage(0L, 5L), Materials.Glue.getFluid(40L), GT_Utility.copyAmount(1L, aStack), 160, 8);
+                        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 5L), ItemList.Circuit_Integrated.getWithDamage(0L, 5L), Materials.Glue.getFluid(40L), GT_Utility.copyAmount(1L, aStack), 160, 8);
                     }
                 break;
             case plateDense:

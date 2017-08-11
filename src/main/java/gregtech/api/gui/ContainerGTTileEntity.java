@@ -1,15 +1,10 @@
 package gregtech.api.gui;
 
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.*;
-import net.minecraft.item.ItemStack;
-
-import java.util.List;
 
 public class ContainerGTTileEntity extends Container {
 

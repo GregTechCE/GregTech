@@ -3,16 +3,16 @@ package gregtech.api.metatileentity.implementations;
 import cofh.api.energy.IEnergyReceiver;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.material.Dyes;
-import gregtech.api.material.Materials;
+import gregtech.api.capability.IPaintable;
+import gregtech.api.unification.Dyes;
+import gregtech.api.unification.material.Materials;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityCable;
-import gregtech.api.interfaces.tileentity.IColoredTileEntity;
-import gregtech.api.interfaces.tileentity.IEnergyConnected;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.capability.IEnergyConnected;
+import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.GT_RenderedTexture;
@@ -240,9 +240,9 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
                     j = GT_Utility.getOppositeSide(i);
                     if (aBaseMetaTileEntity.getCoverBehaviorAtSide(i).alwaysLookConnected(i, aBaseMetaTileEntity.getCoverIDAtSide(i), aBaseMetaTileEntity.getCoverDataAtSide(i), aBaseMetaTileEntity) || aBaseMetaTileEntity.getCoverBehaviorAtSide(i).letsEnergyIn(i, aBaseMetaTileEntity.getCoverIDAtSide(i), aBaseMetaTileEntity.getCoverDataAtSide(i), aBaseMetaTileEntity) || aBaseMetaTileEntity.getCoverBehaviorAtSide(i).letsEnergyOut(i, aBaseMetaTileEntity.getCoverIDAtSide(i), aBaseMetaTileEntity.getCoverDataAtSide(i), aBaseMetaTileEntity)) {
                         TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(i);
-                        if (tTileEntity instanceof IColoredTileEntity) {
+                        if (tTileEntity instanceof IPaintable) {
                             if (aBaseMetaTileEntity.getColorization() >= 0) {
-                                byte tColor = ((IColoredTileEntity) tTileEntity).getColorization();
+                                byte tColor = ((IPaintable) tTileEntity).getColorization();
                                 if (tColor >= 0 && tColor != aBaseMetaTileEntity.getColorization()) continue;
                             }
                         }

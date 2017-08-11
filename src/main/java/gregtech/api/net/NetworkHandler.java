@@ -1,7 +1,7 @@
 package gregtech.api.net;
 
 import gregtech.api.GT_Values;
-import gregtech.api.interfaces.tileentity.ICustomDataTile;
+import gregtech.api.capability.internal.ICustomDataTile;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
@@ -10,6 +10,7 @@ import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IntIdentityHashBiMap;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLEventChannel;
@@ -20,7 +21,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
-import java.util.function.Consumer;
 
 public class NetworkHandler {
 
@@ -77,6 +77,7 @@ public class NetworkHandler {
                         new PacketBuffer(buf.readBytes(buf.readInt()))
                 )
         ));
+        MinecraftForge.EVENT_BUS.register(new ChunkWatchListener());
 
         if(FMLCommonHandler.instance().getSide().isClient()) {
             initClient();

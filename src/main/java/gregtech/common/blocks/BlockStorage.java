@@ -2,8 +2,8 @@ package gregtech.common.blocks;
 
 import com.google.common.collect.Lists;
 import gregtech.api.GregTech_API;
-import gregtech.api.material.OrePrefixes;
-import gregtech.api.material.type.Material;
+import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.material.type.Material;
 import gregtech.api.items.GenericBlock;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.itemblocks.ItemStorage;

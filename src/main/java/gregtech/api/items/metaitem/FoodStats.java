@@ -1,7 +1,7 @@
 package gregtech.api.items.metaitem;
 
 import com.google.common.collect.Iterables;
-import gregtech.api.interfaces.metaitem.IFoodStats;
+import gregtech.api.items.metaitem.stats.IFoodStats;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;

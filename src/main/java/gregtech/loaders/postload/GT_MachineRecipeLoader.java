@@ -4,11 +4,12 @@ import gregtech.GT_Mod;
 import gregtech.api.ConfigCategories;
 import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
-import gregtech.api.material.Dyes;
-import gregtech.api.material.Materials;
-import gregtech.api.material.OrePrefixes;
+import gregtech.api.unification.Dyes;
+import gregtech.api.unification.GT_OreDictUnificator;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.items.ItemList;
-import gregtech.api.objects.MaterialStack;
+import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.*;
 import ic2.api.recipe.ILiquidHeatExchangerManager.HeatExchangeProperty;
 import ic2.api.recipe.Recipes;
@@ -41,7 +42,7 @@ public class GT_MachineRecipeLoader implements Runnable {
     private final static String aTextEBXL = "ExtrabiomesXL"; private final static String aTextTCGTPage = "gt.research.page.1.";
 
     public void run() {
-        GT_Log.out.println("GT_Mod: Adding non-OreDict Machine Recipes.");
+        GTLog.out.println("GT_Mod: Adding non-OreDict Machine Recipes.");
         try {
             GT_Utility.removeSimpleIC2MachineRecipe(GT_Values.NI, ic2.api.recipe.Recipes.metalformerExtruding.getRecipes(), ItemList.Cell_Empty.get(3L));
             GT_Utility.removeSimpleIC2MachineRecipe(ItemList.IC2_Energium_Dust.get(1), ic2.api.recipe.Recipes.compressor.getRecipes(), GT_Values.NI);

@@ -1,8 +1,8 @@
 package gregtech.common.covers;
 
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.capability.ICoverable;
+import gregtech.api.capability.IWorkable;
+import gregtech.api.metatileentity.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
@@ -32,8 +32,8 @@ public class GT_Cover_EnergyOnly
     }
 
     public boolean letsEnergyIn(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        if ((aCoverVariable > 1) && ((aTileEntity instanceof IMachineProgress))) {
-            if (((IMachineProgress) aTileEntity).isAllowedToWork()) {
+        if ((aCoverVariable > 1) && ((aTileEntity instanceof IWorkable))) {
+            if (((IWorkable) aTileEntity).isAllowedToWork()) {
                 return false;
             }
         }
@@ -41,8 +41,8 @@ public class GT_Cover_EnergyOnly
     }
 
     public boolean letsEnergyOut(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        if ((aCoverVariable > 1) && ((aTileEntity instanceof IMachineProgress))) {
-            if (((IMachineProgress) aTileEntity).isAllowedToWork()) {
+        if ((aCoverVariable > 1) && ((aTileEntity instanceof IWorkable))) {
+            if (((IWorkable) aTileEntity).isAllowedToWork()) {
                 return false;
             }
         }

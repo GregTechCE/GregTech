@@ -2,7 +2,7 @@ package gregtech.common.tools;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.items.IIconContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;

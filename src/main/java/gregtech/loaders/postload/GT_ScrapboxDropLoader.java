@@ -1,11 +1,11 @@
 package gregtech.loaders.postload;
 
 import gregtech.api.items.ItemList;
-import gregtech.api.material.Materials;
-import gregtech.api.material.OrePrefixes;
-import gregtech.api.util.GT_Log;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.unification.GT_OreDictUnificator;
 import ic2.core.item.type.CraftingItemType;
 import ic2.core.ref.ItemName;
 import net.minecraft.init.Blocks;
@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 public class GT_ScrapboxDropLoader
         implements Runnable {
     public void run() {
-        GT_Log.out.println("GT_Mod: (re-)adding Scrapbox Drops.");
+        GTLog.out.println("GT_Mod: (re-)adding Scrapbox Drops.");
 
         GT_ModHandler.addScrapboxDrop(9.5F, new ItemStack(Items.WOODEN_HOE));
         GT_ModHandler.addScrapboxDrop(2.0F, new ItemStack(Items.SIGN));

@@ -1,8 +1,8 @@
 package gregtech.api.items.metaitem;
 
-import gregtech.api.interfaces.metaitem.IFoodStats;
-import gregtech.api.interfaces.metaitem.IItemBehaviour;
-import gregtech.api.interfaces.metaitem.IItemUseManager;
+import gregtech.api.items.metaitem.stats.IFoodStats;
+import gregtech.api.items.metaitem.stats.IItemBehaviour;
+import gregtech.api.items.metaitem.stats.IItemUseManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;

@@ -1,6 +1,6 @@
 package gregtech.common.items;
 
-import gregtech.api.material.Materials;
+import gregtech.api.unification.material.Materials;
 import gregtech.api.util.GT_LanguageManager;
 
 public enum CombType {

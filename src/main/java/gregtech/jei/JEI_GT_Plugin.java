@@ -1,7 +1,7 @@
 package gregtech.jei;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MetaTileEntityBasicMachine;
 import gregtech.api.util.GT_Recipe;
 import mezz.jei.api.*;

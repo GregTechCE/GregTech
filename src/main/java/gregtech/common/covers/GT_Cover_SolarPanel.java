@@ -1,7 +1,7 @@
 package gregtech.common.covers;
 
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.capability.ICoverable;
+import gregtech.api.metatileentity.GT_CoverBehavior;
 
 public class GT_Cover_SolarPanel
         extends GT_CoverBehavior {

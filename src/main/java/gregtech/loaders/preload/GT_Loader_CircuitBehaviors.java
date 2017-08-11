@@ -1,12 +1,12 @@
 package gregtech.loaders.preload;
 
-import gregtech.api.util.GT_Log;
+import gregtech.api.util.GTLog;
 import gregtech.common.redstonecircuits.*;
 
 public class GT_Loader_CircuitBehaviors
         implements Runnable {
     public void run() {
-        GT_Log.out.println("GT_Mod: Register Redstone Circuit behaviours.");
+        GTLog.out.println("GT_Mod: Register Redstone Circuit behaviours.");
         new GT_Circuit_Timer(0);
         new GT_Circuit_BasicLogic(1);
         new GT_Circuit_Repeater(2);

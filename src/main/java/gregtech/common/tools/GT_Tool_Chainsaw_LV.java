@@ -2,9 +2,9 @@ package gregtech.common.tools;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.material.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.items.IIconContainer;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

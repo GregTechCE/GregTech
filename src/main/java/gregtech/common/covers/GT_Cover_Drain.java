@@ -1,9 +1,9 @@
 package gregtech.common.covers;
 
-import gregtech.api.material.Materials;
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.capability.ICoverable;
+import gregtech.api.capability.IWorkable;
+import gregtech.api.metatileentity.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDynamicLiquid;
@@ -20,8 +20,8 @@ public class GT_Cover_Drain
         extends GT_CoverBehavior {
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         EnumFacing sideFacing = EnumFacing.VALUES[aSide];
-        if ((aCoverVariable % 3 > 1) && ((aTileEntity instanceof IMachineProgress))) {
-            if (((IMachineProgress) aTileEntity).isAllowedToWork() != aCoverVariable % 3 < 2) {
+        if ((aCoverVariable % 3 > 1) && ((aTileEntity instanceof IWorkable))) {
+            if (((IWorkable) aTileEntity).isAllowedToWork() != aCoverVariable % 3 < 2) {
                 return aCoverVariable;
             }
         }
@@ -74,7 +74,7 @@ public class GT_Cover_Drain
     }
 
     public boolean letsFluidIn(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
-        return ((IMachineProgress) aTileEntity).isAllowedToWork() == aCoverVariable < 2;
+        return ((IWorkable) aTileEntity).isAllowedToWork() == aCoverVariable < 2;
     }
 
     public boolean alwaysLookConnected(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {

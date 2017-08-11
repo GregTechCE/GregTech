@@ -1,8 +1,8 @@
 package gregtech.common.covers;
 
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.capability.ICoverable;
+import gregtech.api.capability.IWorkable;
+import gregtech.api.metatileentity.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
@@ -20,8 +20,8 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
 
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         EnumFacing aSideDirection = EnumFacing.VALUES[aSide];
-        if ((aCoverVariable % 6 > 1) && ((aTileEntity instanceof IMachineProgress))) {
-            if (((IMachineProgress) aTileEntity).isAllowedToWork() != aCoverVariable % 6 < 4) {
+        if ((aCoverVariable % 6 > 1) && ((aTileEntity instanceof IWorkable))) {
+            if (((IWorkable) aTileEntity).isAllowedToWork() != aCoverVariable % 6 < 4) {
                 return aCoverVariable;
             }
         }
@@ -139,8 +139,8 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
     }
 
     public boolean letsFluidIn(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
-        if ((aCoverVariable > 1) && ((aTileEntity instanceof IMachineProgress))) {
-            if (((IMachineProgress) aTileEntity).isAllowedToWork() != aCoverVariable % 6 < 4) {
+        if ((aCoverVariable > 1) && ((aTileEntity instanceof IWorkable))) {
+            if (((IWorkable) aTileEntity).isAllowedToWork() != aCoverVariable % 6 < 4) {
                 return false;
             }
         }
@@ -148,8 +148,8 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
     }
 
     public boolean letsFluidOut(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
-        if ((aCoverVariable > 1) && ((aTileEntity instanceof IMachineProgress))) {
-            if (((IMachineProgress) aTileEntity).isAllowedToWork() != aCoverVariable % 6 < 4) {
+        if ((aCoverVariable > 1) && ((aTileEntity instanceof IWorkable))) {
+            if (((IWorkable) aTileEntity).isAllowedToWork() != aCoverVariable % 6 < 4) {
                 return false;
             }
         }

@@ -1,10 +1,10 @@
 package gregtech.common.tileentities.machines;
 
-import gregtech.api.material.Dyes;
+import gregtech.api.unification.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.IMetaTileEntity;
+import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull_NonElectric;
 import gregtech.api.objects.GT_RenderedTexture;
 

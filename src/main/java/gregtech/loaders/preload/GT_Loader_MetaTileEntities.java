@@ -4,15 +4,15 @@ import gregtech.GT_Mod;
 import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
 import gregtech.api.items.OreDictNames;
-import gregtech.api.material.Dyes;
-import gregtech.api.material.Materials;
-import gregtech.api.material.OrePrefixes;
+import gregtech.api.unification.Dyes;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.ItemList;
 import gregtech.api.metatileentity.implementations.*;
-import gregtech.api.util.GT_Log;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.tileentities.automation.*;
 import gregtech.common.tileentities.boilers.GT_MetaTileEntity_Boiler_Bronze;
@@ -1506,7 +1506,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         }
 
         public void run() {
-                GT_Log.out.println("GT_Mod: Registering MetaTileEntities.");
+                GTLog.out.println("GT_Mod: Registering MetaTileEntities.");
                 run1();
                 run2();
                 run3();

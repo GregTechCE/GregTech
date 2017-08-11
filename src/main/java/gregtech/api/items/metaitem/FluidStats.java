@@ -1,6 +1,6 @@
 package gregtech.api.items.metaitem;
 
-import gregtech.api.interfaces.metaitem.IFluidStats;
+import gregtech.api.items.metaitem.stats.IFluidStats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.Constants;

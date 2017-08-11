@@ -1,10 +1,10 @@
 package gregtech.loaders.load;
 
-import gregtech.api.util.GT_Log;
+import gregtech.api.util.GTLog;
 
 public class GT_CoverBehaviorLoader
         implements Runnable {
     public void run() {
-        GT_Log.out.println("GT_Mod: Adding Cover Behaviors");
+        GTLog.out.println("GT_Mod: Adding Cover Behaviors");
     }
 }

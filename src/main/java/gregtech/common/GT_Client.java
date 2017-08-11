@@ -7,13 +7,13 @@ package gregtech.common;
 
 import codechicken.lib.vec.Rotation;
 import gregtech.api.GregTech_API;
-import gregtech.api.material.Materials;
+import gregtech.api.unification.material.Materials;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.ITurnable;
+import gregtech.api.capability.ICoverable;
+import gregtech.api.capability.ITurnable;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.util.GT_Log;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
@@ -217,7 +217,7 @@ public class GT_Client extends GT_Proxy
 
     public void downloadStuff() {
         try {
-            GT_Log.out.println("GT_Mod: Downloading Cape List.");
+            GTLog.out.println("GT_Mod: Downloading Cape List.");
             Scanner tScanner = new Scanner(new URL("http://gregtech.overminddl1.com/com/gregoriust/gregtech/supporterlist.txt").openStream());
             while (tScanner.hasNextLine()) {
                 String tName = tScanner.nextLine();

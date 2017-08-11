@@ -2,10 +2,9 @@ package gregtech.api.items.toolitem;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import gregtech.api.material.Materials;
-import gregtech.api.interfaces.IDamagableItem;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.IToolStats;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.items.IDamagableItem;
+import gregtech.api.items.IIconContainer;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.util.GT_Utility;
 import ic2.api.item.IElectricItemManager;

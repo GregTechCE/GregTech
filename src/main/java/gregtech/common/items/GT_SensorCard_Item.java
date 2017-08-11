@@ -47,8 +47,8 @@ public class GT_SensorCard_Item extends GenericItem {
         ChunkCoordinates target = aCard.getTarget();
 
         TileEntity tTileEntity = world.getTileEntity(target.posX, target.posY, target.posZ);
-        if (((tTileEntity instanceof IGregTechDeviceInformation)) && (((IGregTechDeviceInformation) tTileEntity).isGivingInformation())) {
-            String[] tInfoData = ((IGregTechDeviceInformation) tTileEntity).getInfoData();
+        if (((tTileEntity instanceof IDescribable)) && (((IDescribable) tTileEntity).isGivingInformation())) {
+            String[] tInfoData = ((IDescribable) tTileEntity).getInfoData();
             for (int i = 0; i < tInfoData.length; i++) {
                 aCard.setString("mString" + i, tInfoData[i]);
             }

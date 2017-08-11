@@ -5,18 +5,18 @@ import forestry.api.genetics.IIndividual;
 import gregtech.GT_Mod;
 import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
-import gregtech.api.material.Materials;
-import gregtech.api.material.OrePrefixes;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.items.ItemList;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MetaTileEntityBasicMachine;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.objects.ItemData;
+import gregtech.api.unification.stack.ItemData;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTLog;
+import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
@@ -68,7 +68,7 @@ public class GT_MetaTileEntity_Scanner
                     }
                 } catch (Throwable e) {
                     if (GT_Values.D1) {
-                        e.printStackTrace(GT_Log.err);
+                        e.printStackTrace(GTLog.err);
                     }
                 }
             }

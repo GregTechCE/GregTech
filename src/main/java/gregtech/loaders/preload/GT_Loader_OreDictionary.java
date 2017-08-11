@@ -2,12 +2,12 @@ package gregtech.loaders.preload;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.items.ItemList;
-import gregtech.api.material.Materials;
+import gregtech.api.unification.material.Materials;
 import gregtech.api.items.OreDictNames;
-import gregtech.api.material.OrePrefixes;
-import gregtech.api.util.GT_Log;
+import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.unification.GT_OreDictUnificator;
 import ic2.core.block.BlockTexGlass;
 import ic2.core.block.wiring.CableType;
 import ic2.core.item.block.ItemCable;
@@ -25,7 +25,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 public class GT_Loader_OreDictionary
         implements Runnable {
     public void run() {
-        GT_Log.out.println("GT_Mod: Register OreDict Entries of Non-GT-Items.");
+        GTLog.out.println("GT_Mod: Register OreDict Entries of Non-GT-Items.");
         GT_OreDictUnificator.set(OrePrefixes.cell, Materials.Empty, ItemList.Cell_Empty.get(1));
         GT_OreDictUnificator.set(OrePrefixes.cell, Materials.Lava, ItemList.Cell_Lava.get(1));
         GT_OreDictUnificator.set(OrePrefixes.cell, Materials.Lava, GT_ModHandler.getIC2Item(ItemName.fluid_cell, FluidRegistry.LAVA.getName(), 1));

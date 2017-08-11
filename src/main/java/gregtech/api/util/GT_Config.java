@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.unification.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;

@@ -1,10 +1,11 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.material.Materials;
-import gregtech.api.material.OrePrefixes;
+import gregtech.api.unification.ore.IOreRegistrationHandler;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefixes;
 import net.minecraft.item.ItemStack;
 
-public class ProcessingAll implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingAll implements IOreRegistrationHandler {
     public ProcessingAll() {
         for (OrePrefixes tPrefix : OrePrefixes.values()) tPrefix.add(this);
     }

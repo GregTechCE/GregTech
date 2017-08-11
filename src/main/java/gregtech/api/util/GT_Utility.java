@@ -2,17 +2,19 @@ package gregtech.api.util;
 
 
 import gregtech.api.GregTech_API;
+import gregtech.api.capability.*;
+import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.damagesources.DamageSources;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.items.ItemList;
-import gregtech.api.material.Materials;
+import gregtech.api.unification.GT_OreDictUnificator;
+import gregtech.api.unification.material.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.events.BlockScanningEvent;
-import gregtech.api.interfaces.IDebugableBlock;
+import gregtech.api.items.IDebugableBlock;
 import gregtech.api.interfaces.IProjectileItem;
-import gregtech.api.interfaces.tileentity.*;
-import gregtech.api.objects.SimpleItemStack;
-import gregtech.api.objects.ItemData;
+import gregtech.api.unification.stack.SimpleItemStack;
+import gregtech.api.unification.stack.ItemData;
 import gregtech.common.GT_Proxy;
 import ic2.api.crops.CropProperties;
 import ic2.api.crops.ICropTile;
@@ -75,21 +77,10 @@ import static gregtech.api.GT_Values.*;
  * Just a few Utility Functions I use.
  */
 public class GT_Utility {
-    /**
-     * Forge screwed the Fluid Registry up again, so I make my own, which is also much more efficient than the stupid Stuff over there.
-     */
-    private static final List<FluidContainerData> sFluidContainerList = new ArrayList<>();
-    private static final Map<SimpleItemStack, FluidContainerData> sFilledContainerToData = new HashMap<>();
-    private static final Map<SimpleItemStack, Map<Fluid, FluidContainerData>> sEmptyContainerToFluidToData = new HashMap<>();
 
     public static boolean CHECK_ALL = true, RF_CHECK = false;
 
     private static int sBookCount = 0;
-
-    static {
-        GregTech_API.sItemStackMappings.add(sFilledContainerToData);
-        GregTech_API.sItemStackMappings.add(sEmptyContainerToFluidToData);
-    }
 
     public static Field getField(Object aObject, String aField) {
         Field rField = null;
@@ -125,7 +116,7 @@ public class GT_Utility {
             return tField;
         } catch (Throwable throwable) {
             if (aLogErrors) {
-                throwable.printStackTrace(GT_Log.err);
+                throwable.printStackTrace(GTLog.err);
             }
         }
         return null;
@@ -137,7 +128,7 @@ public class GT_Utility {
             if (aPrivate) tField.setAccessible(true);
             return tField.get(aObject instanceof Class || aObject instanceof String ? null : aObject);
         } catch (Throwable e) {
-            if (aLogErrors) e.printStackTrace(GT_Log.err);
+            if (aLogErrors) e.printStackTrace(GTLog.err);
         }
         return null;
     }
@@ -169,7 +160,7 @@ public class GT_Utility {
             return tMethod.invoke(aObject, aParameters);
         } catch (Throwable throwable) {
             if (aLogErrors) {
-                throwable.printStackTrace(GT_Log.err);
+                throwable.printStackTrace(GTLog.err);
             }
         }
         return null;
@@ -184,14 +175,14 @@ public class GT_Utility {
                     } catch (Throwable throwable) {}
                 }
             } catch (Throwable e) {
-                if (aLogErrors) e.printStackTrace(GT_Log.err);
+                if (aLogErrors) e.printStackTrace(GTLog.err);
             }
         } else {
             try {
                 return Class.forName(aClass).getConstructors()[aConstructorIndex].newInstance(aParameters);
             } catch (Throwable throwable) {
                 if(aLogErrors) {
-                    throwable.printStackTrace(GT_Log.err);
+                    throwable.printStackTrace(GTLog.err);
                 }
             }
         }
@@ -617,7 +608,7 @@ public class GT_Utility {
         ItemData tOreName = GT_OreDictUnificator.getAssociation(aInput);
         for (int i = 0; i < aOutput.length; i++) {
             if (aOutput[i] == null) {
-                GT_Log.err.println("EmptyIC2Output!" + aInput.getUnlocalizedName());
+                GTLog.err.println("EmptyIC2Output!" + aInput.getUnlocalizedName());
                 return false;
             }
         }
@@ -662,16 +653,16 @@ public class GT_Utility {
                 if (aPages[i].length() < 256)
                     tNBTList.appendTag(new NBTTagString(aPages[i]));
                 else
-                    GT_Log.err.println("WARNING: String for written Book too long! -> " + aPages[i]);
+                    GTLog.err.println("WARNING: String for written Book too long! -> " + aPages[i]);
             } else {
-                GT_Log.err.println("WARNING: Too much Pages for written Book! -> " + aTitle);
+                GTLog.err.println("WARNING: Too much Pages for written Book! -> " + aTitle);
                 break;
             }
         }
         tNBTList.appendTag(new NBTTagString("Credits to " + aAuthor + " for writing this Book. This was Book Nr. " + sBookCount + " at its creation. Gotta get 'em all!"));
         tNBT.setTag("pages", tNBTList);
         rStack.setTagCompound(tNBT);
-        GT_Log.out.println("GT_Mod: Added Book to Book List  -  Mapping: '" + aMapping + "'  -  Name: '" + aTitle + "'  -  Author: '" + aAuthor + "'");
+        GTLog.out.println("GT_Mod: Added Book to Book List  -  Mapping: '" + aMapping + "'  -  Name: '" + aTitle + "'  -  Author: '" + aAuthor + "'");
         GregTech_API.sBookList.put(aMapping, rStack);
         return copy(rStack);
     }
@@ -1181,16 +1172,16 @@ public class GT_Utility {
                 aList.add(((ic2.api.tile.IEnergyStorage) tTileEntity).isTeleporterCompatible(EnumFacing.UP) ? "Teleporter Compatible" : "Not Teleporter Compatible");
             }
 
-            if (tTileEntity instanceof IUpgradableMachine) {
+            if (tTileEntity instanceof IUpgradable) {
                 rEUAmount += 500;
-                if (((IUpgradableMachine) tTileEntity).hasMufflerUpgrade()) tList.add("Has Muffler Upgrade");
+                if (((IUpgradable) tTileEntity).hasMufflerUpgrade()) tList.add("Has Muffler Upgrade");
             }
 
-            if (tTileEntity instanceof IMachineProgress) {
+            if (tTileEntity instanceof IWorkable) {
                 rEUAmount += 400;
                 int tValue;
-                if (0 < (tValue = ((IMachineProgress) tTileEntity).getMaxProgress()))
-                    tList.add("Progress: " + GT_Utility.formatNumbers(tValue) + " / " + GT_Utility.formatNumbers(((IMachineProgress) tTileEntity).getProgress()));
+                if (0 < (tValue = ((IWorkable) tTileEntity).getMaxProgress()))
+                    tList.add("Progress: " + GT_Utility.formatNumbers(tValue) + " / " + GT_Utility.formatNumbers(((IWorkable) tTileEntity).getProgress()));
             }
 
             if (tTileEntity instanceof ICoverable) {
@@ -1209,8 +1200,8 @@ public class GT_Utility {
                 tList.add("Owned by: " + ((IGregTechTileEntity) tTileEntity).getOwnerId());
             }
 
-            if (tTileEntity instanceof IGregTechDeviceInformation && ((IGregTechDeviceInformation) tTileEntity).isGivingInformation()) {
-                tList.addAll(Arrays.asList(((IGregTechDeviceInformation) tTileEntity).getInfoData()));
+            if (tTileEntity instanceof IDescribable && ((IDescribable) tTileEntity).isGivingInformation()) {
+                tList.addAll(Arrays.asList(((IDescribable) tTileEntity).getInfoData()));
             }
 
             if (tTileEntity instanceof ic2.api.crops.ICropTile) {

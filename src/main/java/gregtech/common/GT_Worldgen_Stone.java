@@ -1,6 +1,6 @@
 package gregtech.common;
 
-import gregtech.api.material.StoneTypes;
+import gregtech.api.unification.ore.StoneTypes;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.api.world.GT_Worldgen_Ore;
 import gregtech.common.blocks.BlockGeneratedOres;

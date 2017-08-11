@@ -2,7 +2,7 @@ package gregtech.api.enchants;
 
 import gregtech.api.ConfigCategories;
 import gregtech.api.GT_Values;
-import gregtech.api.material.Materials;
+import gregtech.api.unification.material.Materials;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.enchantment.EnchantmentDamage;

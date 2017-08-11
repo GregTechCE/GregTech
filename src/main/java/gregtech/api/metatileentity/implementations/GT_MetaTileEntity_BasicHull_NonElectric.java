@@ -1,7 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.capability.internal.IGregTechTileEntity;
 
 public abstract class GT_MetaTileEntity_BasicHull_NonElectric extends GT_MetaTileEntity_BasicHull {
     public GT_MetaTileEntity_BasicHull_NonElectric(int aID, String aName, String aNameRegional, int aTier, String aDescription) {

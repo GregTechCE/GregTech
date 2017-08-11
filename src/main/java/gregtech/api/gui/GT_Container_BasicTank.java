@@ -5,7 +5,7 @@ import net.minecraft.inventory.IContainerListener;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;

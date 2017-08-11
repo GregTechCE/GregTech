@@ -1,8 +1,8 @@
 package gregtech.common.covers;
 
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.capability.ICoverable;
+import gregtech.api.capability.IWorkable;
+import gregtech.api.metatileentity.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
@@ -10,12 +10,12 @@ import net.minecraftforge.fluids.Fluid;
 public class GT_Cover_ControlsWork
         extends GT_CoverBehavior {
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        if (aTileEntity instanceof IMachineProgress) {
+        if (aTileEntity instanceof IWorkable) {
             if ((aInputRedstone > 0) == (aCoverVariable == 0) && aCoverVariable != 2)
-                ((IMachineProgress) aTileEntity).enableWorking();
+                ((IWorkable) aTileEntity).enableWorking();
             else
-                ((IMachineProgress) aTileEntity).disableWorking();
-            ((IMachineProgress) aTileEntity).setWorkDataValue(aInputRedstone);
+                ((IWorkable) aTileEntity).disableWorking();
+            ((IWorkable) aTileEntity).setWorkDataValue(aInputRedstone);
         }
         return aCoverVariable;
     }
@@ -45,9 +45,9 @@ public class GT_Cover_ControlsWork
     }
 
     public boolean onCoverRemoval(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, boolean aForced) {
-        if ((aTileEntity instanceof IMachineProgress)) {
-            ((IMachineProgress) aTileEntity).enableWorking();
-            ((IMachineProgress) aTileEntity).setWorkDataValue((byte) 0);
+        if ((aTileEntity instanceof IWorkable)) {
+            ((IWorkable) aTileEntity).enableWorking();
+            ((IWorkable) aTileEntity).setWorkDataValue((byte) 0);
         }
         return true;
     }

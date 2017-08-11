@@ -2,7 +2,7 @@ package gregtech.common.gui;
 
 import gregtech.api.gui.ContainerMetaTileEntity;
 import gregtech.api.gui.GT_Slot_Holo;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Teleporter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

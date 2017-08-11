@@ -1,7 +1,7 @@
 package gregtech.common.tools;
 
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.items.IIconContainer;
 
 public class GT_Tool_Turbine_Large extends GT_Tool_Turbine {
     @Override

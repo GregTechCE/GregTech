@@ -1,16 +1,18 @@
 package gregtech.loaders.oreprocessing;
 
 import gregtech.api.GT_Values;
+import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.items.ItemList;
-import gregtech.api.material.Materials;
-import gregtech.api.material.OrePrefixes;
-import gregtech.api.objects.MaterialStack;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.stack.ItemData;
+import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
-public class ProcessingFood implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingFood implements IOreRegistrationHandler {
     public ProcessingFood() {
         OrePrefixes.food.add(this);
     }
@@ -19,7 +21,7 @@ public class ProcessingFood implements gregtech.api.interfaces.IOreRecipeRegistr
         switch (aOreDictName) {
             case "foodCheese":
                 GT_Values.RA.addSlicerRecipe(aStack, ItemList.Shape_Slicer_Flat.get(0L, new Object[0]), ItemList.Food_Sliced_Cheese.get(4L, new Object[0]), 64, 4);
-                GT_OreDictUnificator.addItemData(aStack, new gregtech.api.objects.ItemData(Materials.Cheese, 3628800L, new MaterialStack[0]));
+                GT_OreDictUnificator.addItemData(aStack, new ItemData(Materials.Cheese, 3628800L, new MaterialStack[0]));
             case "foodDough":
                 GT_ModHandler.removeFurnaceSmelting(aStack);
                 GT_Values.RA.addBenderRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), ItemList.Food_Flat_Dough.get(1L, new Object[0]), 16, 4);

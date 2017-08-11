@@ -2,8 +2,8 @@ package gregtech.common.tileentities.machines.multi;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.items.IIconContainer;
+import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import net.minecraft.block.Block;
 

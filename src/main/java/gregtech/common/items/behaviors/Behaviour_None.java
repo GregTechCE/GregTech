@@ -1,7 +1,7 @@
 package gregtech.common.items.behaviors;
 
 import gregtech.api.enums.SubTag;
-import gregtech.api.interfaces.metaitem.IItemBehaviour;
+import gregtech.api.items.metaitem.stats.IItemBehaviour;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
 import net.minecraft.dispenser.IBlockSource;

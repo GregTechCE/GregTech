@@ -2,8 +2,8 @@ package gregtech.common.tools;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.material.OrePrefixes;
-import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.items.IIconContainer;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_Prospecting;

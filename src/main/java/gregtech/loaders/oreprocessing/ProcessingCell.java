@@ -2,12 +2,12 @@ package gregtech.loaders.oreprocessing;
 
 import gregtech.api.GT_Values;
 import gregtech.api.items.ItemList;
-import gregtech.api.material.Materials;
-import gregtech.api.material.OrePrefixes;
-import gregtech.api.interfaces.IOreRecipeRegistrator;
-import gregtech.api.objects.MaterialStack;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.IOreRegistrationHandler;
+import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class ProcessingCell
-        implements IOreRecipeRegistrator {
+        implements IOreRegistrationHandler {
     public ProcessingCell() {
         OrePrefixes.cell.add(this);
         OrePrefixes.cellPlasma.add(this);
@@ -91,7 +91,7 @@ public class ProcessingCell
                     GT_ModHandler.removeRecipeByOutput(aStack);
                 } else {
                     GT_Values.RA.addFuel(GT_Utility.copyAmount(1L, aStack), GT_Utility.getFluidForFilledItem(aStack, true) == null ? GT_Utility.getContainerItem(aStack, true) : null, (int) Math.max(1024L, 1024L * aMaterial.getMass()), 4);
-                    GT_Values.RA.addVacuumFreezerRecipe(GT_Utility.copyAmount(1L, aStack), gregtech.api.util.GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L), (int) Math.max(aMaterial.getMass() * 2L, 1L));
+                    GT_Values.RA.addVacuumFreezerRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L), (int) Math.max(aMaterial.getMass() * 2L, 1L));
                 }
                 break;
         }

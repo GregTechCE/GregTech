@@ -1,7 +1,7 @@
 package gregtech.common.tools;
 
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.items.IIconContainer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;

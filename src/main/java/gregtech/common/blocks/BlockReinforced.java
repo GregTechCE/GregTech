@@ -5,7 +5,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.items.ItemList;
 import gregtech.api.items.GenericBlock;
 import gregtech.api.util.GT_LanguageManager;
-//import gregtech.api.util.GT_OreDictUnificator;
+//import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.common.blocks.itemblocks.ItemStorage;
 import gregtech.common.blocks.materials.MaterialReinforced;
 import net.minecraft.block.Block;

@@ -1,7 +1,7 @@
 package gregtech.api.recipes;
 
 import gregtech.api.items.ItemList;
-import gregtech.api.material.Materials;
+import gregtech.api.unification.material.Materials;
 import gregtech.api.util.GT_Utility;
 import ic2.core.ref.BlockName;
 import ic2.core.ref.ItemName;

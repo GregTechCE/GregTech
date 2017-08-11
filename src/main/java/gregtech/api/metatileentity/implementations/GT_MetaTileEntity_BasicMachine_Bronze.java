@@ -1,13 +1,13 @@
 package gregtech.api.metatileentity.implementations;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.material.Dyes;
+import gregtech.api.unification.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.objects.SimpleItemStack;
+import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.objects.XSTR;
-import gregtech.api.util.GT_Log;
+import gregtech.api.util.XSTR;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -133,7 +133,7 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends MetaTileEnti
                     GT_Utility.applyHeatDamage(tLiving, getSteamDamage());
                 }
             } catch (Throwable e) {
-                if (D1) e.printStackTrace(GT_Log.err);
+                if (D1) e.printStackTrace(GTLog.err);
             }
         }
         return !mNeedsSteamVenting;

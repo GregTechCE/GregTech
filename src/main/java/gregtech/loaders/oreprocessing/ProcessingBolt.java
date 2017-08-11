@@ -1,14 +1,15 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.material.Materials;
-import gregtech.api.material.OrePrefixes;
+import gregtech.api.unification.ore.IOreRegistrationHandler;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
 import net.minecraft.item.ItemStack;
 
-public class ProcessingBolt implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingBolt implements IOreRegistrationHandler {
     public ProcessingBolt() {
         OrePrefixes.bolt.add(this);
     }

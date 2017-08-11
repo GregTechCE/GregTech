@@ -1,7 +1,7 @@
 package gregtech.common.items.behaviors;
 
+import gregtech.api.capability.IDescribable;
 import gregtech.api.items.ItemList;
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,7 +28,7 @@ public class Behaviour_SensorKit
             if (((tTileEntity instanceof IInventory)) && (!((IInventory) tTileEntity).isUseableByPlayer(aPlayer))) {
                 return false;
             }
-            if (((tTileEntity instanceof IGregTechDeviceInformation)) && (((IGregTechDeviceInformation) tTileEntity).isGivingInformation())) {
+            if (((tTileEntity instanceof IDescribable)) && (((IDescribable) tTileEntity).isGivingInformation())) {
                 GT_Utility.setStack(aStack, ItemList.NC_SensorCard.get(aStack.stackSize));
                 NBTTagCompound tNBT = aStack.getTagCompound();
                 if (tNBT == null) {

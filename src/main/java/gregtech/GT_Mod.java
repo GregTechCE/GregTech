@@ -8,15 +8,16 @@ import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.enchants.EnchantmentRadioactivity;
-import gregtech.api.material.Dyes;
-import gregtech.api.material.Materials;
-import gregtech.api.material.OrePrefixes;
+import gregtech.api.unification.Dyes;
+import gregtech.api.unification.GT_OreDictUnificator;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.items.ItemList;
 import gregtech.api.net.GT_PacketHandler;
-import gregtech.api.objects.SimpleItemStack;
-import gregtech.api.objects.ItemData;
-import gregtech.api.objects.MaterialStack;
+import gregtech.api.unification.stack.SimpleItemStack;
+import gregtech.api.unification.stack.ItemData;
+import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.*;
 import gregtech.common.GT_DummyWorld;
 import gregtech.common.GT_IC2RecipesHandler;
@@ -91,7 +92,7 @@ public class GT_Mod implements IGT_Mod {
             return;
         }
 
-        GT_Log.init(aEvent.getModLog(), aEvent.getModConfigurationDirectory().getParentFile());
+        GTLog.init(aEvent.getModLog(), aEvent.getModConfigurationDirectory().getParentFile());
 
         GT_Values.GT = this;
         GT_Values.DW = new GT_DummyWorld();
@@ -101,7 +102,7 @@ public class GT_Mod implements IGT_Mod {
         Textures.BlockIcons.VOID.name();
         Textures.ItemIcons.VOID.name();
 
-        GT_Log.out.println("GT_Mod: Replacing IC2 recipes managers");
+        GTLog.out.println("GT_Mod: Replacing IC2 recipes managers");
         try {
             for (Field f : Recipes.class.getFields()) {
                 if (Modifier.isStatic(f.getModifiers()) && f.getType() == IMachineRecipeManager.class &&
@@ -120,7 +121,7 @@ public class GT_Mod implements IGT_Mod {
             for (Runnable tRunnable : GregTech_API.sBeforeGTPreload) {
                 tRunnable.run();
             }
-        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
+        } catch (Throwable e) {e.printStackTrace(GTLog.err);}
         File tFile = new File(new File(aEvent.getModConfigurationDirectory(), "GregTech"), "GregTech.cfg");
         Configuration tMainConfig = new Configuration(tFile);
         tMainConfig.load();
@@ -145,12 +146,12 @@ public class GT_Mod implements IGT_Mod {
         GregTech_API.mGTPlusPlus = Loader.isModLoaded("miscutils");
 
         if(tMainConfig.get(aTextGeneral, "ActivityLogger", false).getBoolean(false)) {
-            GT_Log.enablePlayerActivityLogger();
+            GTLog.enablePlayerActivityLogger();
         }
 
         gregtechproxy.onPreLoad();
 
-        GT_Log.out.println("GT_Mod: Setting Configs");
+        GTLog.out.println("GT_Mod: Setting Configs");
         GT_Values.D1 = tMainConfig.get(aTextGeneral, "Debug", false).getBoolean(false);
         GT_Values.D2 = tMainConfig.get(aTextGeneral, "Debug2", false).getBoolean(false);
 
@@ -249,23 +250,23 @@ public class GT_Mod implements IGT_Mod {
         //GT_Config.troll = (Calendar.getInstance().get(2) + 1 == 4) && (Calendar.getInstance().get(5) >= 1) && (Calendar.getInstance().get(5) <= 2);
         Materials.init();
 
-        GT_Log.out.println("GT_Mod: Saving Main Config");
+        GTLog.out.println("GT_Mod: Saving Main Config");
         tMainConfig.save();
 
-        GT_Log.out.println("GT_Mod: Generating Lang-File");
+        GTLog.out.println("GT_Mod: Generating Lang-File");
         GT_LanguageManager.sEnglishFile = new Configuration(new File(aEvent.getModConfigurationDirectory().getParentFile(), "GregTech.lang"));
         GT_LanguageManager.sEnglishFile.load();
 
-        GT_Log.out.println("GT_Mod: Removing all original Scrapbox Drops.");
+        GTLog.out.println("GT_Mod: Removing all original Scrapbox Drops.");
         try {
             GT_Utility.getField("ic2.core.item.ItemScrapbox$Drop", "topChance", true, true).set(null, Integer.valueOf(0));
             ((List) GT_Utility.getFieldContent(GT_Utility.getFieldContent("ic2.api.recipe.Recipes", "scrapboxDrops", true, true), "drops", true, true)).clear();
         } catch (Throwable e) {
             if (GT_Values.D1) {
-                e.printStackTrace(GT_Log.err);
+                e.printStackTrace(GTLog.err);
             }
         }
-        GT_Log.out.println("GT_Mod: Adding Scrap with a Weight of 200.0F to the Scrapbox Drops.");
+        GTLog.out.println("GT_Mod: Adding Scrap with a Weight of 200.0F to the Scrapbox Drops.");
         GT_ModHandler.addScrapboxDrop(200.0F, GT_ModHandler.getIC2Item(ItemName.crafting, CraftingItemType.scrap, 1));
 
         EntityRegistry.registerModEntity(GT_Entity_Arrow.class, "GT_Entity_Arrow", 1, GT_Values.GT, 160, 1, true);
@@ -419,7 +420,7 @@ public class GT_Mod implements IGT_Mod {
         }
         if (gregtechproxy.mSortToTheEnd) {
             try {
-                GT_Log.out.println("GT_Mod: Sorting GregTech to the end of the Mod List for further processing.");
+                GTLog.out.println("GT_Mod: Sorting GregTech to the end of the Mod List for further processing.");
                 LoadController tLoadController = (LoadController) GT_Utility.getFieldContent(Loader.instance(), "modController", true, true);
                 List<ModContainer> tModList = tLoadController.getActiveModList();
                 List<ModContainer> tNewModsList = new ArrayList();
@@ -439,18 +440,18 @@ public class GT_Mod implements IGT_Mod {
                 GT_Utility.getField(tLoadController, "activeModList", true, true).set(tLoadController, tNewModsList);
             } catch (Throwable e) {
                 if (GT_Values.D1) {
-                    e.printStackTrace(GT_Log.err);
+                    e.printStackTrace(GTLog.err);
                 }
             }
         }
         GregTech_API.sPreloadFinished = true;
-        GT_Log.out.println("GT_Mod: Preload-Phase finished!");
-        GT_Log.ore.println("GT_Mod: Preload-Phase finished!");
+        GTLog.out.println("GT_Mod: Preload-Phase finished!");
+        GTLog.ore.println("GT_Mod: Preload-Phase finished!");
         try {
             for (Runnable tRunnable : GregTech_API.sAfterGTPreload) {
                 tRunnable.run();
             }
-        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
+        } catch (Throwable e) {e.printStackTrace(GTLog.err);}
     }
 
     @Mod.EventHandler
@@ -462,7 +463,7 @@ public class GT_Mod implements IGT_Mod {
             for (Runnable tRunnable : GregTech_API.sBeforeGTLoad) {
                 tRunnable.run();
             }
-        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
+        } catch (Throwable e) {e.printStackTrace(GTLog.err);}
 
         new GT_Bees();
 
@@ -473,13 +474,13 @@ public class GT_Mod implements IGT_Mod {
             new GT_FuelLoader().run();
         }
         GregTech_API.sLoadFinished = true;
-        GT_Log.out.println("GT_Mod: Load-Phase finished!");
-        GT_Log.ore.println("GT_Mod: Load-Phase finished!");
+        GTLog.out.println("GT_Mod: Load-Phase finished!");
+        GTLog.ore.println("GT_Mod: Load-Phase finished!");
         try {
             for (Runnable tRunnable : GregTech_API.sAfterGTLoad) {
                 tRunnable.run();
             }
-        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
+        } catch (Throwable e) {e.printStackTrace(GTLog.err);}
     }
 
     @Mod.EventHandler
@@ -491,7 +492,7 @@ public class GT_Mod implements IGT_Mod {
             for (Runnable tRunnable : GregTech_API.sBeforeGTPostload) {
                 tRunnable.run();
             }
-        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
+        } catch (Throwable e) {e.printStackTrace(GTLog.err);}
         gregtechproxy.onPostLoad();
         if (gregtechproxy.mSortToTheEnd) {
             gregtechproxy.registerUnificationEntries();
@@ -523,17 +524,17 @@ public class GT_Mod implements IGT_Mod {
         GT_ModHandler.removeRecipe(new ItemStack[]{new ItemStack(Blocks.WOODEN_SLAB, 1, 0), new ItemStack(Blocks.WOODEN_SLAB, 1, 1), new ItemStack(Blocks.WOODEN_SLAB, 1, 2)});
         GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.WOODEN_SLAB, 6, 0), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"WWW", 'W', new ItemStack(Blocks.PLANKS, 1, 0)});
 
-        GT_Log.out.println("GT_Mod: Activating OreDictionary Handler, this can take some time, as it scans the whole OreDictionary");
+        GTLog.out.println("GT_Mod: Activating OreDictionary Handler, this can take some time, as it scans the whole OreDictionary");
         FMLLog.info("If your Log stops here, you were too impatient. Wait a bit more next time, before killing Minecraft with the Task Manager.");
         gregtechproxy.activateOreDictHandler();
         FMLLog.info("Congratulations, you have been waiting long enough. Have a Cake.");
-        GT_Log.out.println("GT_Mod: List of Lists of Tool Recipes: "+GT_ModHandler.sSingleNonBlockDamagableRecipeList_list.toString());
-        GT_Log.out.println("GT_Mod: Vanilla Recipe List -> Outputs null or stackSize <=0: " + GT_ModHandler.sVanillaRecipeList_warntOutput.toString());
-        GT_Log.out.println("GT_Mod: Single Non Block Damagable Recipe List -> Outputs null or stackSize <=0: " + GT_ModHandler.sSingleNonBlockDamagableRecipeList_warntOutput.toString());
-        //GT_Log.out.println("GT_Mod: ROD_MATERIAL_LIST cycles: " + GT_RecipeRegistrator.sRodMaterialList_cycles);
+        GTLog.out.println("GT_Mod: List of Lists of Tool Recipes: "+GT_ModHandler.sSingleNonBlockDamagableRecipeList_list.toString());
+        GTLog.out.println("GT_Mod: Vanilla Recipe List -> Outputs null or stackSize <=0: " + GT_ModHandler.sVanillaRecipeList_warntOutput.toString());
+        GTLog.out.println("GT_Mod: Single Non Block Damagable Recipe List -> Outputs null or stackSize <=0: " + GT_ModHandler.sSingleNonBlockDamagableRecipeList_warntOutput.toString());
+        //GTLog.out.println("GT_Mod: ROD_MATERIAL_LIST cycles: " + GT_RecipeRegistrator.sRodMaterialList_cycles);
         if (GT_Values.D1) {
             IRecipe tRecipe;
-            for (Iterator i$ = GT_ModHandler.sSingleNonBlockDamagableRecipeList.iterator(); i$.hasNext(); GT_Log.out.println("=> " + tRecipe.getRecipeOutput().getDisplayName())) {
+            for (Iterator i$ = GT_ModHandler.sSingleNonBlockDamagableRecipeList.iterator(); i$.hasNext(); GTLog.out.println("=> " + tRecipe.getRecipeOutput().getDisplayName())) {
                 tRecipe = (IRecipe) i$.next();
             }
         }
@@ -569,7 +570,7 @@ public class GT_Mod implements IGT_Mod {
             }
         } catch (Throwable e) {
             if (GT_Values.D1) {
-                e.printStackTrace(GT_Log.err);
+                e.printStackTrace(GTLog.err);
             }
         }
         try {
@@ -580,7 +581,7 @@ public class GT_Mod implements IGT_Mod {
             }
         } catch (Throwable e) {
             if (GT_Values.D1) {
-                e.printStackTrace(GT_Log.err);
+                e.printStackTrace(GTLog.err);
             }
         }
 
@@ -640,7 +641,7 @@ public class GT_Mod implements IGT_Mod {
         }
         
         if (gregtechproxy.mNerfedVanillaTools) {
-            GT_Log.out.println("GT_Mod: Nerfing Vanilla Tool Durability");
+            GTLog.out.println("GT_Mod: Nerfing Vanilla Tool Durability");
             Items.WOODEN_SWORD.setMaxDamage(12);
             Items.WOODEN_PICKAXE.setMaxDamage(12);
             Items.WOODEN_SHOVEL.setMaxDamage(12);
@@ -671,20 +672,20 @@ public class GT_Mod implements IGT_Mod {
             Items.DIAMOND_AXE.setMaxDamage(768);
             Items.DIAMOND_HOE.setMaxDamage(768);
         }
-        GT_Log.out.println("GT_Mod: Adding buffered Recipes.");
+        GTLog.out.println("GT_Mod: Adding buffered Recipes.");
         GT_ModHandler.stopBufferingCraftingRecipes();
 
-        GT_Log.out.println("GT_Mod: Saving Lang File.");
+        GTLog.out.println("GT_Mod: Saving Lang File.");
         GT_LanguageManager.sEnglishFile.save();
         GregTech_API.sPostloadFinished = true;
-        GT_Log.out.println("GT_Mod: PostLoad-Phase finished!");
-        GT_Log.ore.println("GT_Mod: PostLoad-Phase finished!");
+        GTLog.out.println("GT_Mod: PostLoad-Phase finished!");
+        GTLog.ore.println("GT_Mod: PostLoad-Phase finished!");
         try {
             for (Runnable tRunnable : GregTech_API.sAfterGTPostload) {
                 tRunnable.run();
             }
-        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
-        GT_Log.out.println("GT_Mod: Adding Fake Recipes for NEI");
+        } catch (Throwable e) {e.printStackTrace(GTLog.err);}
+        GTLog.out.println("GT_Mod: Adding Fake Recipes for NEI");
         if (ItemList.FR_Bee_Drone.get(1) != null) {
             GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[]{ItemList.FR_Bee_Drone.getWildcard(1)}, new ItemStack[]{ItemList.FR_Bee_Drone.getWithName(1, "Scanned Drone")}, null, new FluidStack[]{Materials.Honey.getFluid(100L)}, null, 500, 2, 0);
         }
@@ -764,7 +765,7 @@ public class GT_Mod implements IGT_Mod {
             }
         }
         achievements = new GT_Achievements();
-        GT_Log.out.println("GT_Mod: Loading finished, deallocating temporary Init Variables.");
+        GTLog.out.println("GT_Mod: Loading finished, deallocating temporary Init Variables.");
         GregTech_API.sBeforeGTPreload = null;
         GregTech_API.sAfterGTPreload = null;
         GregTech_API.sBeforeGTLoad = null;
@@ -779,11 +780,11 @@ public class GT_Mod implements IGT_Mod {
             for (Runnable tRunnable : GregTech_API.sBeforeGTServerstart) {
                 tRunnable.run();
             }
-        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
+        } catch (Throwable e) {e.printStackTrace(GTLog.err);}
         gregtechproxy.onServerStarting();
-        GT_Log.out.println("GT_Mod: Unificating outputs of all known Recipe Types.");
+        GTLog.out.println("GT_Mod: Unificating outputs of all known Recipe Types.");
         ArrayList<ItemStack> tStacks = new ArrayList(10000);
-        GT_Log.out.println("GT_Mod: IC2 Machines");
+        GTLog.out.println("GT_Mod: IC2 Machines");
         for (RecipeOutput tRecipe : getOutputs(Recipes.centrifuge)) {
             ItemStack tStack;
             for (Iterator i$ = tRecipe.items.iterator(); i$.hasNext(); tStacks.add(tStack)) {
@@ -844,7 +845,7 @@ public class GT_Mod implements IGT_Mod {
                 tStack = (ItemStack) i$.next();
             }
         }
-        GT_Log.out.println("GT_Mod: Dungeon Loot");
+        GTLog.out.println("GT_Mod: Dungeon Loot");
         /*for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("dungeonChest").getItems(new XSTR())) {
             tStacks.add(tContent.theItemId);
         }
@@ -875,13 +876,13 @@ public class GT_Mod implements IGT_Mod {
         for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("mineshaftCorridor").getItems(new XSTR())) {
             tStacks.add(tContent.theItemId);
         }*/
-        GT_Log.out.println("GT_Mod: Smelting");
+        GTLog.out.println("GT_Mod: Smelting");
         Object tStack;
         for (Iterator i$ = FurnaceRecipes.instance().getSmeltingList().values().iterator(); i$.hasNext(); tStacks.add((ItemStack) tStack)) {
             tStack = i$.next();
         }
         if (gregtechproxy.mCraftingUnification) {
-            GT_Log.out.println("GT_Mod: Crafting Recipes");
+            GTLog.out.println("GT_Mod: Crafting Recipes");
             for (Object tRecipe : CraftingManager.getInstance().getRecipeList()) {
                 if ((tRecipe instanceof IRecipe)) {
                     tStacks.add(((IRecipe) tRecipe).getRecipeOutput());
@@ -911,13 +912,13 @@ public class GT_Mod implements IGT_Mod {
             }
         }
         GregTech_API.mServerStarted = true;
-        GT_Log.out.println("GT_Mod: ServerStarting-Phase finished!");
-        GT_Log.ore.println("GT_Mod: ServerStarting-Phase finished!");
+        GTLog.out.println("GT_Mod: ServerStarting-Phase finished!");
+        GTLog.ore.println("GT_Mod: ServerStarting-Phase finished!");
         try {
             for (Runnable tRunnable : GregTech_API.sAfterGTServerstart) {
                 tRunnable.run();
             }
-        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
+        } catch (Throwable e) {e.printStackTrace(GTLog.err);}
     }
 
     @Mod.EventHandler
@@ -933,7 +934,7 @@ public class GT_Mod implements IGT_Mod {
             try {
                 GT_Utility.reMap(sItemStackMapping);
             } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
+                e.printStackTrace(GTLog.err);
             }
         }
 
@@ -954,77 +955,77 @@ public class GT_Mod implements IGT_Mod {
             for (Runnable tRunnable : GregTech_API.sBeforeGTServerstop) {
                 tRunnable.run();
             }
-        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
+        } catch (Throwable e) {e.printStackTrace(GTLog.err);}
         gregtechproxy.onServerStopping();
         try {
-            if ((GT_Values.D1) || (GT_Log.out != System.out)) {
-                GT_Log.out.println("*");
-                GT_Log.out.println("Printing List of all registered Objects inside the OreDictionary, now with free extra Sorting:");
-                GT_Log.out.println("*");
-                GT_Log.out.println("*");
-                GT_Log.out.println("*");
+            if ((GT_Values.D1) || (GTLog.out != System.out)) {
+                GTLog.out.println("*");
+                GTLog.out.println("Printing List of all registered Objects inside the OreDictionary, now with free extra Sorting:");
+                GTLog.out.println("*");
+                GTLog.out.println("*");
+                GTLog.out.println("*");
 
                 String[] tList = OreDictionary.getOreNames();
                 Arrays.sort(tList);
                 for (String tOreName : tList) {
                     int tAmount = OreDictionary.getOres(tOreName).size();
                     if (tAmount > 0) {
-                        GT_Log.out.println((tAmount < 10 ? " " : "") + tAmount + "x " + tOreName);
+                        GTLog.out.println((tAmount < 10 ? " " : "") + tAmount + "x " + tOreName);
                     }
                 }
-                GT_Log.out.println("*");
-                GT_Log.out.println("Printing List of all registered Objects inside the Fluid Registry, now with free extra Sorting:");
-                GT_Log.out.println("*");
-                GT_Log.out.println("*");
-                GT_Log.out.println("*");
+                GTLog.out.println("*");
+                GTLog.out.println("Printing List of all registered Objects inside the Fluid Registry, now with free extra Sorting:");
+                GTLog.out.println("*");
+                GTLog.out.println("*");
+                GTLog.out.println("*");
 
                 tList = FluidRegistry.getRegisteredFluids().keySet().toArray(new String[FluidRegistry.getRegisteredFluids().keySet().size()]);
                 Arrays.sort(tList);
                 for (String tFluidName : tList) {
-                    GT_Log.out.println(tFluidName);
+                    GTLog.out.println(tFluidName);
                 }
-                GT_Log.out.println("*");
-                GT_Log.out.println("*");
-                GT_Log.out.println("*");
-                GT_Log.out.println("Outputting all the Names inside the Biomeslist");
-                GT_Log.out.println("*");
-                GT_Log.out.println("*");
-                GT_Log.out.println("*");
+                GTLog.out.println("*");
+                GTLog.out.println("*");
+                GTLog.out.println("*");
+                GTLog.out.println("Outputting all the Names inside the Biomeslist");
+                GTLog.out.println("*");
+                GTLog.out.println("*");
+                GTLog.out.println("*");
                 for (Biome biome : Biome.REGISTRY) {
-                    GT_Log.out.println(Biome.getIdForBiome(biome) + " = " + biome.getBiomeName());
+                    GTLog.out.println(Biome.getIdForBiome(biome) + " = " + biome.getBiomeName());
                 }
-                GT_Log.out.println("*");
-                GT_Log.out.println("*");
-                GT_Log.out.println("*");
-                GT_Log.out.println("Printing List of generatable Materials");
-                GT_Log.out.println("*");
-                GT_Log.out.println("*");
-                GT_Log.out.println("*");
+                GTLog.out.println("*");
+                GTLog.out.println("*");
+                GTLog.out.println("*");
+                GTLog.out.println("Printing List of generatable Materials");
+                GTLog.out.println("*");
+                GTLog.out.println("*");
+                GTLog.out.println("*");
                 for (int i = 0; i < GregTech_API.sGeneratedMaterials.length; i++) {
                     if (GregTech_API.sGeneratedMaterials[i] == null) {
-                        GT_Log.out.println("Index " + i + ":" + null);
+                        GTLog.out.println("Index " + i + ":" + null);
                     } else {
-                        GT_Log.out.println("Index " + i + ":" + GregTech_API.sGeneratedMaterials[i]);
+                        GTLog.out.println("Index " + i + ":" + GregTech_API.sGeneratedMaterials[i]);
                     }
                 }
-                GT_Log.out.println("*");
-                GT_Log.out.println("*");
-                GT_Log.out.println("*");
-                GT_Log.out.println("END GregTech-Debug");
-                GT_Log.out.println("*");
-                GT_Log.out.println("*");
-                GT_Log.out.println("*");
+                GTLog.out.println("*");
+                GTLog.out.println("*");
+                GTLog.out.println("*");
+                GTLog.out.println("END GregTech-Debug");
+                GTLog.out.println("*");
+                GTLog.out.println("*");
+                GTLog.out.println("*");
             }
         } catch (Throwable e) {
             if (GT_Values.D1) {
-                e.printStackTrace(GT_Log.err);
+                e.printStackTrace(GTLog.err);
             }
         }
         try {
             for (Runnable tRunnable : GregTech_API.sAfterGTServerstop) {
                 tRunnable.run();
             }
-        } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
+        } catch (Throwable e) {e.printStackTrace(GTLog.err);}
     }
 
     public ArrayList<RecipeOutput> getOutputs(IMachineRecipeManager recipeManager) {

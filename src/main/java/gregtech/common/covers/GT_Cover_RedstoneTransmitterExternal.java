@@ -1,7 +1,7 @@
 package gregtech.common.covers;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.capability.ICoverable;
 
 public class GT_Cover_RedstoneTransmitterExternal extends GT_Cover_RedstoneWirelessBase {
 

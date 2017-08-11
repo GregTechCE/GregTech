@@ -1,8 +1,8 @@
 package gregtech.common.covers;
 
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.capability.ICoverable;
+import gregtech.api.capability.IWorkable;
+import gregtech.api.metatileentity.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
@@ -10,16 +10,16 @@ import net.minecraftforge.fluids.Fluid;
 public class GT_Cover_DoesWork
         extends GT_CoverBehavior {
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        if ((aTileEntity instanceof IMachineProgress)) {
+        if ((aTileEntity instanceof IWorkable)) {
             if (aCoverVariable < 2) {
-                int tScale = ((IMachineProgress) aTileEntity).getMaxProgress() / 15;
-                if ((tScale > 0) && (((IMachineProgress) aTileEntity).hasThingsToDo())) {
-                    aTileEntity.setOutputRedstoneSignal(aSide, aCoverVariable % 2 == 0 ? (byte) (((IMachineProgress) aTileEntity).getProgress() / tScale) : (byte) (15 - ((IMachineProgress) aTileEntity).getProgress() / tScale));
+                int tScale = ((IWorkable) aTileEntity).getMaxProgress() / 15;
+                if ((tScale > 0) && (((IWorkable) aTileEntity).hasThingsToDo())) {
+                    aTileEntity.setOutputRedstoneSignal(aSide, aCoverVariable % 2 == 0 ? (byte) (((IWorkable) aTileEntity).getProgress() / tScale) : (byte) (15 - ((IWorkable) aTileEntity).getProgress() / tScale));
                 } else {
                     aTileEntity.setOutputRedstoneSignal(aSide, (byte) (aCoverVariable % 2 == 0 ? 0 : 15));
                 }
             } else {
-                aTileEntity.setOutputRedstoneSignal(aSide, (byte) ((aCoverVariable % 2 == 0 ? 1 : 0) != (((IMachineProgress) aTileEntity).getMaxProgress() == 0 ? 1 : 0) ? 0 : 15));
+                aTileEntity.setOutputRedstoneSignal(aSide, (byte) ((aCoverVariable % 2 == 0 ? 1 : 0) != (((IWorkable) aTileEntity).getMaxProgress() == 0 ? 1 : 0) ? 0 : 15));
             }
         } else {
             aTileEntity.setOutputRedstoneSignal(aSide, (byte) 0);

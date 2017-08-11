@@ -1,6 +1,6 @@
 package gregtech.api.metatileentity;
 
-import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
+import gregtech.api.capability.internal.IHasWorldObjectAndCoords;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;

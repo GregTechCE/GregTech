@@ -4,12 +4,12 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.GT_Values;
 import gregtech.api.items.ItemList;
-import gregtech.api.material.Materials;
-import gregtech.api.material.OrePrefixes;
-import gregtech.api.objects.ItemData;
-import gregtech.api.util.GT_Log;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.stack.ItemData;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import ic2.core.ref.ItemName;
 import mezz.jei.Internal;
@@ -50,7 +50,7 @@ public class GT_Achievements {
         for (int i = 0; i < oreList_sS; i++) {
             if (oreList.get(i) != null) {
                 if (GT_Values.D1 && this.achievementList.get(oreList.get(i).mName) == null) {
-                    GT_Log.out.println("achievement." + oreList.get(i).mName + "=Find " + oreList.get(i).mName + " Ore");
+                    GTLog.out.println("achievement." + oreList.get(i).mName + "=Find " + oreList.get(i).mName + " Ore");
 
                     StringBuilder dimensions = new StringBuilder();
                     boolean isFirst = true;
@@ -68,7 +68,7 @@ public class GT_Achievements {
                         dimensions.append("End");
                         isFirst = false;
                     }
-                    //GT_Log.out.println("achievement." + oreList.get(i).mName + ".desc=Height: " + (oreStats.get(i)[0]) + "-" + (oreStats.get(i)[1]) + ", Chance: " + (oreStats.get(i)[2]) + ", " + dimensions.toString());
+                    //GTLog.out.println("achievement." + oreList.get(i).mName + ".desc=Height: " + (oreStats.get(i)[0]) + "-" + (oreStats.get(i)[1]) + ", Chance: " + (oreStats.get(i)[2]) + ", " + dimensions.toString());
                 }
                 registerOreAchievement(oreList.get(i));
             }
@@ -225,8 +225,8 @@ public class GT_Achievements {
         }
         achievement.registerStat();
         if (GT_Values.D2) {
-            GT_Log.out.println("achievement." + textId + "=");
-            GT_Log.out.println("achievement." + textId + ".desc=");
+            GTLog.out.println("achievement." + textId + "=");
+            GTLog.out.println("achievement." + textId + ".desc=");
         }
         this.achievementList.put(textId, achievement);
         return achievement;
@@ -243,8 +243,8 @@ public class GT_Achievements {
         }
         achievement.registerStat();
         if (GT_Values.D2) {
-            GT_Log.out.println("achievement." + textId + "=");
-            GT_Log.out.println("achievement." + textId + ".desc=");
+            GTLog.out.println("achievement." + textId + "=");
+            GTLog.out.println("achievement." + textId + ".desc=");
         }
         this.achievementList.put(textId, achievement);
         return achievement;

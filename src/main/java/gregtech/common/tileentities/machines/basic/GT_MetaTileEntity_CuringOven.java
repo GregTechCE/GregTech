@@ -6,7 +6,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.gui.ContainerTileSingleSlot;
 import gregtech.api.gui.GT_GUIContainer_1by1;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.metatileentity.implementations.MetaTileEntityBasicMachine;

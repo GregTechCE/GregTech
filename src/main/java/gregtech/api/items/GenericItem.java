@@ -1,7 +1,6 @@
 package gregtech.api.items;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.interfaces.ISimpleRenderedItem;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;

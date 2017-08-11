@@ -2,11 +2,11 @@ package gregtech.common.blocks.itemblocks;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.GT_Values;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.items.GenericBlock;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GT_ItsNotMyFaultException;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -90,7 +90,7 @@ public class ItemMachines extends ItemBlock {
                 }
             }
         } catch (Throwable e) {
-            e.printStackTrace(GT_Log.err);
+            e.printStackTrace(GTLog.err);
         }
     }
 

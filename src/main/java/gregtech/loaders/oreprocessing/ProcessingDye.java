@@ -1,12 +1,12 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.material.Dyes;
+import gregtech.api.unification.Dyes;
 import gregtech.api.GT_Values;
-import gregtech.api.material.Materials;
-import gregtech.api.material.OrePrefixes;
-import gregtech.api.interfaces.IOreRecipeRegistrator;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -14,7 +14,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import java.util.Locale;
 
-public class ProcessingDye implements IOreRecipeRegistrator {
+public class ProcessingDye implements IOreRegistrationHandler {
     public ProcessingDye() {
         OrePrefixes.dye.add(this);
     }

@@ -1,19 +1,19 @@
 package gregtech.api.metatileentity.implementations;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.material.Dyes;
-import gregtech.api.material.Materials;
-import gregtech.api.material.OrePrefixes;
+import gregtech.api.unification.Dyes;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.IMetaTileEntity;
+import gregtech.api.capability.ICoverable;
+import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.items.ItemList;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.objects.XSTR;
-import gregtech.api.util.GT_Log;
+import gregtech.api.util.XSTR;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -176,7 +176,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
                                 GT_Utility.applyHeatDamage(tLiving, (tTemperature - 300) / 25.0F);
                             }
                         } catch (Throwable e) {
-                            if (D1) e.printStackTrace(GT_Log.err);
+                            if (D1) e.printStackTrace(GTLog.err);
                         }
                     } else if (tTemperature < 260) {
                         try {
@@ -184,7 +184,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
                                 GT_Utility.applyFrostDamage(tLiving, (270 - tTemperature) / 12.5F);
                             }
                         } catch (Throwable e) {
-                            if (D1) e.printStackTrace(GT_Log.err);
+                            if (D1) e.printStackTrace(GTLog.err);
                         }
                     }
                     if (mFluid.amount <= 0) mFluid = null;

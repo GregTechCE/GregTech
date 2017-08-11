@@ -3,16 +3,16 @@ package gregtech.loaders.preload;
 import gregtech.GT_Mod;
 import gregtech.api.ConfigCategories;
 import gregtech.api.GregTech_API;
-import gregtech.api.material.Dyes;
-import gregtech.api.material.Materials;
-import gregtech.api.material.OrePrefixes;
+import gregtech.api.unification.Dyes;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.items.GenericItem;
 import gregtech.api.items.ItemList;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.util.GT_Log;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.*;
 import gregtech.common.blocks.BlockGeneratedOres;
@@ -41,7 +41,7 @@ public class GT_Loader_Item_Block_And_Fluid
         Materials.Water.mFluid = (Materials.Ice.mFluid = GT_ModHandler.getWater(1000L).getFluid());
         Materials.Lava.mFluid = GT_ModHandler.getLava(1000L).getFluid();
 
-        GT_Log.out.println("GT_Mod: Register Books.");
+        GTLog.out.println("GT_Mod: Register Books.");
 
         GT_Utility.getWrittenBook("Manual_Printer", "Printer Manual V2.0", "Gregorius Techneticies", "This Manual explains the different Functionalities the GregTech Printing Factory has built in, which are not in NEI. Most got NEI Support now, but there is still some left without it.",
                 "1. Coloring Items and Blocks: You know those Crafting Recipes, which have a dye surrounded by 8 Item to dye them? Or the ones which have just one Item and one Dye in the Grid? Those two Recipe Types can be cheaply automated using the Printer.",
@@ -69,7 +69,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 "Do not insert any Metals. It might result in an Explosion.", "Do not dry Animals with it. It will result in a Hot Dog, no matter which Animal you put into it.",
                 "Do not insert inflammable Objects. The Oven will catch on Fire.", "Do not insert Explosives such as Eggs. Just don't.");
 
-        GT_Log.out.println("GT_Mod: Register Items.");
+        GTLog.out.println("GT_Mod: Register Items.");
 
         new GT_IntegratedCircuit_Item();
         new GT_MetaGenerated_Item_01();
@@ -154,7 +154,7 @@ public class GT_Loader_Item_Block_And_Fluid
             GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_4.get(1), 5000, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 2L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 4L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 6L));
         }
 
-        GT_Log.out.println("GT_Mod: Adding Blocks.");
+        GTLog.out.println("GT_Mod: Adding Blocks.");
         GregTech_API.sBlockMachines = new BlockMachines();
         GregTech_API.sBlockCasings1 = new BlockCasings1();
         GregTech_API.sBlockCasings2 = new BlockCasings2();
@@ -360,28 +360,28 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.Charcoal
         }, OrePrefixes.block);
 
-        GT_Log.out.println("GT_Mod: Register TileEntities.");
+        GTLog.out.println("GT_Mod: Register TileEntities.");
 
 
         BaseMetaTileEntity tBaseMetaTileEntity = GregTech_API.constructBaseMetaTileEntity();
 
-        GT_Log.out.println("GT_Mod: Testing BaseMetaTileEntity.");
+        GTLog.out.println("GT_Mod: Testing BaseMetaTileEntity.");
         if (tBaseMetaTileEntity == null) {
-            GT_Log.out.println("GT_Mod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
+            GTLog.out.println("GT_Mod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
             throw new RuntimeException("");
         }
-        GT_Log.out.println("GT_Mod: Registering the BaseMetaTileEntity.");
+        GTLog.out.println("GT_Mod: Registering the BaseMetaTileEntity.");
         GameRegistry.registerTileEntity(tBaseMetaTileEntity.getClass(), "BaseMetaTileEntity");
         FMLInterModComms.sendMessage("appliedenergistics2", "whitelist-spatial", tBaseMetaTileEntity.getClass().getName());
 
-        GT_Log.out.println("GT_Mod: Registering the BaseMetaPipeEntity.");
+        GTLog.out.println("GT_Mod: Registering the BaseMetaPipeEntity.");
         GameRegistry.registerTileEntity(BaseMetaPipeEntity.class, "BaseMetaPipeEntity");
         FMLInterModComms.sendMessage("appliedenergistics2", "whitelist-spatial", BaseMetaPipeEntity.class.getName());
 
-        GT_Log.out.println("GT_Mod: Registering the Ore TileEntity.");
+        GTLog.out.println("GT_Mod: Registering the Ore TileEntity.");
 
         if (!GregTech_API.mIC2Classic) {
-            GT_Log.out.println("GT_Mod: Registering Fluids.");
+            GTLog.out.println("GT_Mod: Registering Fluids.");
             Materials.ConstructionFoam.mFluid = FluidName.construction_foam.getInstance();
             Materials.UUMatter.mFluid = FluidName.uu_matter.getInstance();
         }

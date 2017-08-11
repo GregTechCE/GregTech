@@ -2,16 +2,16 @@ package gregtech.loaders.oreprocessing;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.GT_Values;
-import gregtech.api.material.Materials;
-import gregtech.api.material.OrePrefixes;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.enums.SubTag;
-import gregtech.api.interfaces.IOreRecipeRegistrator;
+import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
-public class ProcessingFoil implements IOreRecipeRegistrator {
+public class ProcessingFoil implements IOreRegistrationHandler {
     public ProcessingFoil() {
         OrePrefixes.foil.add(this);
     }

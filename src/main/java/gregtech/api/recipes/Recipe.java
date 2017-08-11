@@ -2,12 +2,11 @@ package gregtech.api.recipes;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 
@@ -117,13 +116,13 @@ public class Recipe {
 //
 //        if (tInputAmount < tOutputAmount) {
 //            if (!Materials.Tin.contains(inputs)) {
-//                GT_Log.err.println("You get more Cells, than you put in? There must be something wrong.");
-//                new Exception().printStackTrace(GT_Log.err);
+//                GTLog.err.println("You get more Cells, than you put in? There must be something wrong.");
+//                new Exception().printStackTrace(GTLog.err);
 //            }
 //        } else if (tInputAmount > tOutputAmount) {
 //            if (!Materials.Tin.contains(outputs)) {
-//                GT_Log.err.println("You get less Cells, than you put in? GT Machines usually don't destroy Cells.");
-//                new Exception().printStackTrace(GT_Log.err);
+//                GTLog.err.println("You get less Cells, than you put in? GT Machines usually don't destroy Cells.");
+//                new Exception().printStackTrace(GTLog.err);
 //            }
 //        }
 //    }

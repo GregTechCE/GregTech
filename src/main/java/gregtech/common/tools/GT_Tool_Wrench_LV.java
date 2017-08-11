@@ -1,8 +1,8 @@
 package gregtech.common.tools;
 
 import gregtech.api.enums.Textures;
-import gregtech.api.material.OrePrefixes;
-import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.items.IIconContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

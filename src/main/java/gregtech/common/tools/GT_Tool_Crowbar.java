@@ -2,8 +2,8 @@ package gregtech.common.tools;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.IToolStats;
+import gregtech.api.items.IIconContainer;
+import gregtech.api.items.toolitem.IToolStats;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.behaviors.Behaviour_Crowbar;
 import net.minecraft.block.material.Material;

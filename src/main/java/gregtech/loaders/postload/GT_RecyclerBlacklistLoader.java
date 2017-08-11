@@ -3,7 +3,7 @@ package gregtech.loaders.postload;
 import gregtech.api.GregTech_API;
 import gregtech.api.ConfigCategories;
 import gregtech.api.items.ItemList;
-import gregtech.api.util.GT_Log;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GT_ModHandler;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 public class GT_RecyclerBlacklistLoader
         implements Runnable {
     public void run() {
-        GT_Log.out.println("GT_Mod: Adding Stuff to the Recycler Blacklist.");
+        GTLog.out.println("GT_Mod: Adding Stuff to the Recycler Blacklist.");
         if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "easymobgrinderrecycling", true)) {
             GT_ModHandler.addToRecyclerBlackList(new ItemStack(Items.ARROW, 1, 0));
             GT_ModHandler.addToRecyclerBlackList(new ItemStack(Items.BONE, 1, 0));

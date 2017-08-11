@@ -6,7 +6,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.gui.ContainerMetaTileEntity;
 import gregtech.api.gui.GT_Slot_Holo;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.automation.GT_MetaTileEntity_Regulator;
 import net.minecraft.entity.player.EntityPlayer;

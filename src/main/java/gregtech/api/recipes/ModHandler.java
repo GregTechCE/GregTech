@@ -5,21 +5,21 @@ import gregtech.api.GregTech_API;
 import gregtech.api.ConfigCategories;
 import gregtech.api.items.ItemList;
 import gregtech.api.items.OreDictNames;
-import gregtech.api.material.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.items.ToolDictNames;
-import gregtech.api.material.Material;
-import gregtech.api.material.Materials;
-import gregtech.api.interfaces.IDamagableItem;
-import gregtech.api.interfaces.IItemContainer;
+import gregtech.api.unification.Material;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.items.IDamagableItem;
+import gregtech.api.items.IItemContainer;
 import gregtech.api.interfaces.internal.IRemovableRecipe;
 import gregtech.api.objects.GT_HashSet;
-import gregtech.api.objects.SimpleItemStack;
-import gregtech.api.objects.ItemData;
+import gregtech.api.unification.stack.SimpleItemStack;
+import gregtech.api.unification.stack.ItemData;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_IBoxableWrapper;
 import gregtech.api.util.GT_ItsNotMyFaultException;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GTLog;
+import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
@@ -1001,8 +1001,8 @@ public class ModHandler {
 
             if (recipe[idx] == null || recipe[idx + 1] == null) {
                 if (D1) {
-                    GT_Log.err.println("WARNING: Missing Item for shaped Recipe: " + result.getDisplayName());
-                    for (Object content : recipe) GT_Log.err.println(content);
+                    GTLog.err.println("WARNING: Missing Item for shaped Recipe: " + result.getDisplayName());
+                    for (Object content : recipe) GTLog.err.println(content);
                 }
                 return;
             }
@@ -1182,8 +1182,8 @@ public class ModHandler {
         for (Object object : recipe) {
             if (object == null) {
                 if (D1)
-                    GT_Log.err.println("WARNING: Missing Item for shapeless Recipe: " + result.getDisplayName()));
-                for (Object content : recipe) GT_Log.err.println(content);
+                    GTLog.err.println("WARNING: Missing Item for shapeless Recipe: " + result.getDisplayName()));
+                for (Object content : recipe) GTLog.err.println(content);
                 return;
             }
 
@@ -1496,7 +1496,7 @@ public class ModHandler {
                     }
                 }
             }
-            GT_Log.out.println("GT_Mod: Created a List of Tool Recipes containing " + SINGLE_NON_BLOCK_DAMAGABLE_RECIPE_LIST.size() + " Recipes for recycling." + (SINGLE_NON_BLOCK_DAMAGABLE_RECIPE_LIST.size() > 1024 ? " Scanning all these Recipes is the reason for the startup Lag you receive right now." : ""));
+            GTLog.out.println("GT_Mod: Created a List of Tool Recipes containing " + SINGLE_NON_BLOCK_DAMAGABLE_RECIPE_LIST.size() + " Recipes for recycling." + (SINGLE_NON_BLOCK_DAMAGABLE_RECIPE_LIST.size() > 1024 ? " Scanning all these Recipes is the reason for the startup Lag you receive right now." : ""));
         }
 
         List<ItemStack> outputs = getRecipeOutputs(SINGLE_NON_BLOCK_DAMAGABLE_RECIPE_LIST, true, recipeIn);

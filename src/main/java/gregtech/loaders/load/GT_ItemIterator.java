@@ -5,13 +5,13 @@ import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
 import gregtech.api.items.OreDictNames;
 import gregtech.api.items.ToolDictNames;
-import gregtech.api.material.Materials;
-import gregtech.api.material.OrePrefixes;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.items.GenericItem;
 import gregtech.api.items.ItemList;
-import gregtech.api.util.GT_Log;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -26,7 +26,7 @@ import java.util.Iterator;
 public class GT_ItemIterator
         implements Runnable {
     public void run() {
-        GT_Log.out.println("GT_Mod: Scanning for certain kinds of compatible Machineblocks.");
+        GTLog.out.println("GT_Mod: Scanning for certain kinds of compatible Machineblocks.");
         ItemStack tStack2;
         ItemStack tStack;
         if (null != (tStack = GT_ModHandler.getRecipeOutput(tStack2 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 1L), tStack2, tStack2, tStack2, null, tStack2, tStack2, tStack2, tStack2))) {
@@ -45,18 +45,18 @@ public class GT_ItemIterator
         if (null != (tStack = GT_ModHandler.getRecipeOutput(tStack2 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L), tStack3 = new ItemStack(Blocks.GLASS, 1, 0), tStack2, tStack3, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L), tStack3, tStack2, tStack3, tStack2))) {
             GT_ModHandler.addPulverisationRecipe(tStack, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 4L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L), 0, false);
         }
-        GT_Log.out.println("GT_Mod: Registering various Tools to be usable on GregTech Machines");
+        GTLog.out.println("GT_Mod: Registering various Tools to be usable on GregTech Machines");
         GregTech_API.registerScrewdriver(GT_ModHandler.getRecipeOutput(null, new ItemStack(Items.IRON_INGOT, 1), null, new ItemStack(Items.STICK, 1)));
         GregTech_API.registerScrewdriver(GT_ModHandler.getRecipeOutput(new ItemStack(Items.IRON_INGOT, 1), null, null, null, new ItemStack(Items.STICK, 1)));
 
-        GT_Log.out.println("GT_Mod: Adding Food Recipes to the Automatic Canning Machine. (also during the following Item Iteration)");
+        GTLog.out.println("GT_Mod: Adding Food Recipes to the Automatic Canning Machine. (also during the following Item Iteration)");
         GT_Values.RA.addCannerRecipe(new ItemStack(Items.ROTTEN_FLESH, 2, 32767), ItemList.IC2_Food_Can_Empty.get(1L, new Object[0]), ItemList.IC2_Food_Can_Spoiled.get(1L, new Object[0]), null, 200, 1);
         GT_Values.RA.addCannerRecipe(new ItemStack(Items.SPIDER_EYE, 2, 32767), ItemList.IC2_Food_Can_Empty.get(1L, new Object[0]), ItemList.IC2_Food_Can_Spoiled.get(1L, new Object[0]), null, 100, 1);
         GT_Values.RA.addCannerRecipe(ItemList.Food_Poisonous_Potato.get(2L, new Object[0]), ItemList.IC2_Food_Can_Empty.get(1L, new Object[0]), ItemList.IC2_Food_Can_Spoiled.get(1L, new Object[0]), null, 100, 1);
         GT_Values.RA.addCannerRecipe(new ItemStack(Items.CAKE, 1, 32767), ItemList.IC2_Food_Can_Empty.get(12L), ItemList.IC2_Food_Can_Filled.get(12L), null, 600, 1);
         GT_Values.RA.addCannerRecipe(new ItemStack(Items.MUSHROOM_STEW, 1, 32767), ItemList.IC2_Food_Can_Empty.get(6L), ItemList.IC2_Food_Can_Filled.get(6L), new ItemStack(Items.BOWL, 1), 300, 1);
 
-        GT_Log.out.println("GT_Mod: Scanning ItemList.");
+        GTLog.out.println("GT_Mod: Scanning ItemList.");
 
         Iterator<Item> tIterator = Item.REGISTRY.iterator();
         while (tIterator.hasNext()) {
@@ -70,10 +70,10 @@ public class GT_ItemIterator
                             if ((!tItem.isDamageable()) && (!GT_ModHandler.isElectricItem(new ItemStack(tItem, 1, 0)))) {
                                 if ((GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "infiniteDurabilityRCCrowbars", false)) &&
                                         (GT_ModHandler.removeRecipeByOutput(new ItemStack(tItem, 1, 32767)))) {
-                                    GT_Log.out.println("GT_Mod: Removed infinite RC Crowbar: " + tName);
+                                    GTLog.out.println("GT_Mod: Removed infinite RC Crowbar: " + tName);
                                 }
                             } else if (GregTech_API.registerCrowbar(new ItemStack(tItem, 1, 32767))) {
-                                GT_Log.out.println("GT_Mod: Registered valid RC Crowbar: " + tName);
+                                GTLog.out.println("GT_Mod: Registered valid RC Crowbar: " + tName);
                             }
                         }
                     } catch (Throwable e) {
@@ -83,10 +83,10 @@ public class GT_ItemIterator
                             if ((!tItem.isDamageable()) && (!GT_ModHandler.isElectricItem(new ItemStack(tItem, 1, 0)))) {
                                 if ((GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "infiniteDurabilityBCWrenches", false)) &&
                                         (GT_ModHandler.removeRecipeByOutput(new ItemStack(tItem, 1, 32767)))) {
-                                    GT_Log.out.println("GT_Mod: Removed infinite BC Wrench: " + tName);
+                                    GTLog.out.println("GT_Mod: Removed infinite BC Wrench: " + tName);
                                 }
                             } else if (GregTech_API.registerWrench(new ItemStack(tItem, 1, 32767))) {
-                                GT_Log.out.println("GT_Mod: Registered valid BC Wrench: " + tName);
+                                GTLog.out.println("GT_Mod: Registered valid BC Wrench: " + tName);
                             }
                         }
                     } catch (Throwable e) {

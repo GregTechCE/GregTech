@@ -2,8 +2,8 @@ package gregtech.common.tools;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.metaitem.IItemBehaviour;
+import gregtech.api.items.IIconContainer;
+import gregtech.api.items.metaitem.stats.IItemBehaviour;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

@@ -2,8 +2,8 @@ package gregtech.common.tools;
 
 import gregtech.GT_Mod;
 import gregtech.api.enums.Textures;
-import gregtech.api.material.OrePrefixes;
-import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.items.IIconContainer;
 import net.minecraft.item.ItemStack;
 
 public class GT_Tool_Drill_MV extends GT_Tool_Drill_LV {

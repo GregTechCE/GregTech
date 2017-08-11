@@ -1,8 +1,8 @@
 package gregtech.common;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.objects.XSTR;
-import gregtech.api.util.GT_Log;
+import gregtech.api.util.XSTR;
+import gregtech.api.util.GTLog;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.blocks.BlockGeneratedOres;
 import gregtech.common.blocks.GT_Block_GeneratedOres;
@@ -80,7 +80,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                                 }
                                 break;
                             } catch (Throwable e) {
-                                e.printStackTrace(GT_Log.err);
+                                e.printStackTrace(GTLog.err);
                             }
                         }
                     }
@@ -96,7 +96,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                             tWorldGen.executeWorldgen(mWorld, mRandom, mBiome, mDimensionType, tX, tZ, mChunkGenerator, mChunkProvider);
                         }
                     } catch (Throwable e) {
-                        e.printStackTrace(GT_Log.err);
+                        e.printStackTrace(GTLog.err);
                     }
                     j++;
                 }
@@ -130,7 +130,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                                     break;
                                 }
                             } catch (Throwable e) {
-                                e.printStackTrace(GT_Log.err);
+                                e.printStackTrace(GTLog.err);
                             }
                         }
                     }

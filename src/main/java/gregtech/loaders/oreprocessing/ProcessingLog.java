@@ -4,18 +4,19 @@ import gregtech.GT_Mod;
 import gregtech.api.ConfigCategories;
 import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
-import gregtech.api.material.Materials;
-import gregtech.api.material.OrePrefixes;
+import gregtech.api.unification.ore.IOreRegistrationHandler;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.items.ItemList;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import ic2.core.item.type.CraftingItemType;
 import ic2.core.ref.ItemName;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingLog implements IOreRegistrationHandler {
     public ProcessingLog() {
         OrePrefixes.log.add(this);
     }

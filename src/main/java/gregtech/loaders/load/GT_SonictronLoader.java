@@ -1,7 +1,7 @@
 package gregtech.loaders.load;
 
 import gregtech.GT_Mod;
-import gregtech.api.util.GT_Log;
+import gregtech.api.util.GTLog;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 public class GT_SonictronLoader
         implements Runnable {
     public void run() {
-        GT_Log.out.println("GT_Mod: Loading Sonictron Sounds");
+        GTLog.out.println("GT_Mod: Loading Sonictron Sounds");
         GT_Mod.gregtechproxy.mSoundItems.add(new ItemStack(Blocks.IRON_BLOCK, 1));
         GT_Mod.gregtechproxy.mSoundNames.add("note.harp");
         GT_Mod.gregtechproxy.mSoundCounts.add(25);

@@ -1,8 +1,8 @@
 package gregtech.api.items.metaitem.nuclear;
 
-import gregtech.api.interfaces.metaitem.IItemBehaviour;
-import gregtech.api.interfaces.metaitem.IItemDurabilityManager;
-import gregtech.api.interfaces.metaitem.INuclearStats;
+import gregtech.api.items.metaitem.stats.IItemBehaviour;
+import gregtech.api.items.metaitem.stats.IItemDurabilityManager;
+import gregtech.api.items.metaitem.stats.INuclearStats;
 import ic2.api.reactor.IReactor;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;

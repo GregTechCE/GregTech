@@ -1,7 +1,7 @@
 package gregtech.common;
 
 import gregtech.GT_Mod;
-import gregtech.api.util.GT_Log;
+import gregtech.api.util.GTLog;
 
 import java.util.ArrayList;
 
@@ -10,7 +10,7 @@ public class GT_PlayerActivityLogger
     public void run() {
         try {
             for (; ; ) {
-                if (GT_Log.pal == null) {
+                if (GTLog.pal == null) {
                     return;
                 }
                 ArrayList<String> tList = GT_Mod.gregtechproxy.mBufferedPlayerActivity;
@@ -19,7 +19,7 @@ public class GT_PlayerActivityLogger
                 int i = 0;
                 for (int j = tList.size(); i < j; i++) {
                     if (!tLastOutput.equals(tList.get(i))) {
-                        GT_Log.pal.println((String) tList.get(i));
+                        GTLog.pal.println((String) tList.get(i));
                     }
                     tLastOutput = (String) tList.get(i);
                 }

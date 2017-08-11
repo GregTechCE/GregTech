@@ -2,15 +2,16 @@ package gregtech.api;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import gregtech.api.interfaces.IDamagableItem;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntityFactory;
+import gregtech.api.items.IDamagableItem;
+import gregtech.api.metatileentity.GT_CoverBehavior;
+import gregtech.api.metatileentity.IMetaTileEntityFactory;
 import gregtech.api.items.GenericItem;
 import gregtech.api.objects.GT_Cover_Default;
 import gregtech.api.objects.GT_Cover_None;
 import gregtech.api.objects.GT_HashSet;
-import gregtech.api.objects.SimpleItemStack;
+import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
+import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.*;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.blocks.BlockMachines;
@@ -24,7 +25,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
 
 import java.util.*;
 
@@ -272,7 +272,7 @@ public class GregTech_API {
      */
     public static ItemStack getUnificatedOreDictStack(ItemStack aOreStack) {
         if (!GregTech_API.sPreloadFinished)
-            GT_Log.err.println("GregTech_API ERROR: " + aOreStack.getItem() + "." + aOreStack.getItemDamage() + " - OreDict Unification Entries are not registered now, please call it in the postload phase.");
+            GTLog.err.println("GregTech_API ERROR: " + aOreStack.getItem() + "." + aOreStack.getItemDamage() + " - OreDict Unification Entries are not registered now, please call it in the postload phase.");
         return GT_OreDictUnificator.get(true, aOreStack);
     }
 

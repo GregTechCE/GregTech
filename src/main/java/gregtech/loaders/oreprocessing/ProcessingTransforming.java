@@ -1,15 +1,15 @@
 package gregtech.loaders.oreprocessing;
 
 import gregtech.api.GT_Values;
-import gregtech.api.material.Materials;
-import gregtech.api.material.OrePrefixes;
-import gregtech.api.interfaces.IOreRecipeRegistrator;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.IOreRegistrationHandler;
+import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
 public class ProcessingTransforming
-        implements IOreRecipeRegistrator {
+        implements IOreRegistrationHandler {
     public ProcessingTransforming() {
         for (OrePrefixes tPrefix : OrePrefixes.values())
             if (((tPrefix.mMaterialAmount > 0L) && (!tPrefix.mIsContainer) && (!tPrefix.mIsEnchantable)) || (tPrefix == OrePrefixes.plank))

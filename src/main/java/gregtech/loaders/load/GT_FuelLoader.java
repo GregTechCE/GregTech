@@ -4,11 +4,11 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.GT_Values;
 import gregtech.api.items.ItemList;
-import gregtech.api.material.Materials;
-import gregtech.api.material.OrePrefixes;
-import gregtech.api.util.GT_Log;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.Loader;
 public class GT_FuelLoader
         implements Runnable {
     public void run() {
-        GT_Log.out.println("GT_Mod: Initializing various Fuels.");
+        GTLog.out.println("GT_Mod: Initializing various Fuels.");
         ItemList.sNitricAcid = GT_Mod.gregtechproxy.addFluid("nitricacid", "Nitric acid ", null, 1, 295);
         ItemList.sBlueVitriol = GT_Mod.gregtechproxy.addFluid("solution.bluevitriol", "Blue Vitriol water solution", null, 1, 295);
         ItemList.sNickelSulfate = GT_Mod.gregtechproxy.addFluid("solution.nickelsulfate", "Nickel sulfate water solution", null, 1, 295);

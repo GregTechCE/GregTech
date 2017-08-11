@@ -2,7 +2,7 @@ package gregtech.common.gui;
 
 import gregtech.api.gui.ContainerMultiMachine;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
 

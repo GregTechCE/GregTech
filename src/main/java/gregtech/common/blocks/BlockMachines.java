@@ -2,18 +2,18 @@ package gregtech.common.blocks;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IDebugableBlock;
+import gregtech.api.items.IDebugableBlock;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.IMetaTileEntity;
+import gregtech.api.capability.ICoverable;
+import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.items.GenericBlock;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.TickableTileEntityBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Log;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.itemblocks.ItemMachines;
 import gregtech.common.blocks.materials.MaterialMachines;
@@ -232,14 +232,14 @@ public class BlockMachines extends GenericBlock implements IDebugableBlock, ITil
     @SideOnly(Side.CLIENT)
     public void registerIcons(TextureMap iconRegister) {
         if (GregTech_API.sPostloadFinished) {
-            GT_Log.out.println("GT_Mod: Registering MetaTileEntity specific Textures");
+            GTLog.out.println("GT_Mod: Registering MetaTileEntity specific Textures");
             for (IMetaTileEntity tMetaTileEntity : GregTech_API.METATILEENTITIES) {
                 try {
                     if (tMetaTileEntity != null) {
                         tMetaTileEntity.registerIcons(iconRegister);
                     }
                 } catch (Throwable e) {
-                    e.printStackTrace(GT_Log.err);
+                    e.printStackTrace(GTLog.err);
                 }
             }
         }

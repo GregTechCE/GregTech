@@ -1,13 +1,13 @@
 package gregtech.loaders.preload;
 
 import gregtech.api.items.ItemList;
-import gregtech.api.material.Materials;
-import gregtech.api.material.OrePrefixes;
-import gregtech.api.objects.ItemData;
-import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.GT_Log;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.stack.ItemData;
+import gregtech.api.unification.stack.MaterialStack;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import ic2.core.item.type.NuclearResourceType;
 import ic2.core.ref.ItemName;
@@ -20,7 +20,7 @@ import net.minecraftforge.oredict.OreDictionary;
 public class GT_Loader_ItemData
         implements Runnable {
     public void run() {
-        GT_Log.out.println("GT_Mod: Loading Item Data Tags");
+        GTLog.out.println("GT_Mod: Loading Item Data Tags");
         GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("TwilightForest", "item.giantPick", 1, 0), new ItemData(Materials.Stone, 696729600L, new MaterialStack(Materials.Wood, 464486400L)));
         GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("TwilightForest", "item.giantSword", 1, 0), new ItemData(Materials.Stone, 464486400L, new MaterialStack(Materials.Wood, 232243200L)));
         GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("TwilightForest", "tile.GiantLog", 1, 32767), new ItemData(Materials.Wood, 232243200L));

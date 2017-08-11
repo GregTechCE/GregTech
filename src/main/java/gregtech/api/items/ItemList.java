@@ -1,8 +1,7 @@
 package gregtech.api.items;
 
-import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;

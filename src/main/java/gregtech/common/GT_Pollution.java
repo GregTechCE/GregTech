@@ -1,7 +1,7 @@
 package gregtech.common;
 
 import gregtech.GT_Mod;
-import gregtech.api.objects.XSTR;
+import gregtech.api.util.XSTR;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockDoublePlant;
@@ -10,7 +10,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;

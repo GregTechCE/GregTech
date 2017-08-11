@@ -2,7 +2,7 @@ package gregtech.common.tools;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.DamageSources;
-import gregtech.api.interfaces.IToolStats;
+import gregtech.api.items.toolitem.IToolStats;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;

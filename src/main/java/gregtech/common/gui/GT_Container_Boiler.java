@@ -1,7 +1,7 @@
 package gregtech.common.gui;
 
 import gregtech.api.gui.ContainerMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.common.tileentities.boilers.GT_MetaTileEntity_Boiler;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IContainerListener;

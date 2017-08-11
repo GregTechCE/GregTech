@@ -1,7 +1,7 @@
 package gregtech.api.items;
 
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Log;
+import gregtech.api.util.GTLog;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -38,7 +38,7 @@ public abstract class GenericBlock extends Block {
             try {
                 itemBlock = itemClass.getConstructor(Block.class).newInstance(this);
             } catch(ReflectiveOperationException e){
-                e.printStackTrace(GT_Log.err);
+                e.printStackTrace(GTLog.err);
                 throw new LoaderException(e);
             }
             GameRegistry.register(itemBlock, getRegistryName());
