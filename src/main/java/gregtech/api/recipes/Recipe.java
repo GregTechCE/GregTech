@@ -74,59 +74,6 @@ public class Recipe {
 		this.needsEmptyOutput = needsEmptyOutput;
 	}
 
-//    public ItemStack getRepresentativeInput(int aIndex) {
-//        if (aIndex < 0 || aIndex >= inputs.length) return null;
-//        return GT_Utility.copy(inputs[aIndex]);
-//    }
-//
-//    public ItemStack getJEIAdaptedInput(int aIndex) {
-//        ItemStack input = getRepresentativeInput(aIndex);
-//        if(input != null && input.stackSize == 0) {
-//            input.stackSize = 1;
-//        }
-//        return input;
-//    }
-//
-//
-//    public ItemStack getOutput(int aIndex) {
-//        if (aIndex < 0 || aIndex >= outputs.length) return null;
-//        return GT_Utility.copy(outputs[aIndex]);
-//    }
-//
-//    public int getOutputChance(int aIndex) {
-//        if (aIndex < 0 || aIndex >= chances.length) return 10000;
-//        return chances[aIndex];
-//    }
-//
-//    public FluidStack getRepresentativeFluidInput(int aIndex) {
-//        if (aIndex < 0 || aIndex >= fluidInputs.length || fluidInputs[aIndex] == null) return null;
-//        return fluidInputs[aIndex].copy();
-//    }
-//
-//    public FluidStack getFluidOutput(int aIndex) {
-//        if (aIndex < 0 || aIndex >= fluidOutputs.length || fluidOutputs[aIndex] == null) return null;
-//        return fluidOutputs[aIndex].copy();
-//    }
-//
-//    public void checkCellBalance() {
-//        if (!D1 || inputs.length < 1) return;
-//
-//        int tInputAmount = GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(inputs);
-//        int tOutputAmount = GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(outputs);
-//
-//        if (tInputAmount < tOutputAmount) {
-//            if (!Materials.Tin.contains(inputs)) {
-//                GTLog.err.println("You get more Cells, than you put in? There must be something wrong.");
-//                new Exception().printStackTrace(GTLog.err);
-//            }
-//        } else if (tInputAmount > tOutputAmount) {
-//            if (!Materials.Tin.contains(outputs)) {
-//                GTLog.err.println("You get less Cells, than you put in? GT Machines usually don't destroy Cells.");
-//                new Exception().printStackTrace(GTLog.err);
-//            }
-//        }
-//    }
-
 	public boolean isRecipeInputEqual(boolean decreaseStacksizeBySuccess, FluidStack[] fluidInputs, ItemStack[] inputs) {
 		return isRecipeInputEqual(decreaseStacksizeBySuccess, false, fluidInputs, inputs);
 	}
@@ -163,7 +110,8 @@ public class Recipe {
 			amount = stackInput.stackSize;
 			boolean temp = true;
 			for (ItemStack stack : inputs) {
-				if ((GT_Utility.areUnificationsEqual(stack, stackInput, true) || GT_Utility.areUnificationsEqual(OreDictionaryUnifier.get(false, stack), stackInput, true))) {
+				if ((GT_Utility.areUnificationsEqual(stack, stackInput, true)
+						|| GT_Utility.areUnificationsEqual(OreDictionaryUnifier.getUnificated(stack), stackInput, true))) {
 					if (dontCheckStackSizes) {
 						temp = false;
 						break;
@@ -206,7 +154,8 @@ public class Recipe {
 				for (ItemStack stack : this.inputs) {
 					amount = stack.stackSize;
 					for (ItemStack tmpStack : inputs) {
-						if ((GT_Utility.areUnificationsEqual(tmpStack, stack, true) || GT_Utility.areUnificationsEqual(OreDictionaryUnifier.get(false, tmpStack), stack, true))) {
+						if ((GT_Utility.areUnificationsEqual(tmpStack, stack, true)
+								|| GT_Utility.areUnificationsEqual(OreDictionaryUnifier.getUnificated(tmpStack), stack, true))) {
 							if (dontCheckStackSizes) {
 								tmpStack.stackSize -= amount;
 								break;

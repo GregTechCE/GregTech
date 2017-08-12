@@ -399,7 +399,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     @Override
     public void onExplosion() {
-        doExplosion(1L);
+        //NO OP
     }
 
     @Override

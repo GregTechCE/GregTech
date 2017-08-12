@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
@@ -46,7 +47,7 @@ public class OreDictionaryUnifier {
         MinecraftForge.EVENT_BUS.register(new OreDictionaryUnifier());
     }
 
-    @Mod.EventHandler
+    @SubscribeEvent
     public void onItemRegistration(OreDictionary.OreRegisterEvent event) {
         if(event.getOre().getItem() instanceof ItemIC2FluidContainer) {
             //IC2 tries to register NBT-dependent items in ore dictionary

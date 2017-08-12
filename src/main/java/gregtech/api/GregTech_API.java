@@ -1,6 +1,8 @@
 package gregtech.api;
 
 import com.google.common.collect.BiMap;
+import com.google.common.collect.EnumBiMap;
+import com.google.common.collect.EnumHashBiMap;
 import com.google.common.collect.HashBiMap;
 import gregtech.api.items.IDamagableItem;
 import gregtech.api.metatileentity.GT_CoverBehavior;
@@ -19,12 +21,14 @@ import gregtech.common.blocks.BlockStonesAbstract;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.Fluid;
 
 import java.util.*;
 
@@ -65,6 +69,8 @@ public class GregTech_API {
      * Contact us if you need a free ID-Range, which doesn't conflict with other Addons.
      */
     public static final GTControlledRegistry<IMetaTileEntityFactory> METATILEENTITY_REGISTRY = new GTControlledRegistry<>(Short.MAX_VALUE);
+
+    public static final EnumHashBiMap<EnumDyeColor, Fluid> LIQUIDDYE_MAP = EnumHashBiMap.create(EnumDyeColor.class);
     /**
      * The Icon List for Covers
      */

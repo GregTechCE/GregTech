@@ -377,6 +377,12 @@ public class GT_Utility {
         return aInvertFilter;
     }
 
+    //TODO delete after ModHandler rewite
+    public static <T> boolean arrayContainsNonNull(T... aArray) {
+        if (aArray != null) for (Object tObject : aArray) if (tObject != null) return true;
+        return false;
+    }
+
     @SuppressWarnings("unused")
     public static boolean areStacksOrToolsEqual(ItemStack aStack1, ItemStack aStack2) {
         if (aStack1 != null && aStack2 != null && aStack1.getItem() == aStack2.getItem()) {
@@ -714,6 +720,21 @@ public class GT_Utility {
             aWorld.setBlockState(blockPos.up(), fire);
         if (aWorld.getBlockState(blockPos.down()).getCollisionBoundingBox(aWorld, blockPos.down()) == null)
             aWorld.setBlockState(blockPos.down(), fire);
+    }
+
+    public static void dropItemStackAsEntity(ItemStack items, World world, BlockPos pos) {
+        if (items == null || items.stackSize <= 0 || world.isRemote) {
+            return;
+        }
+
+        float f1 = 0.7F;
+        double d = world.rand.nextFloat() * f1 + (1.0F - f1) * 0.5D;
+        double d1 = world.rand.nextFloat() * f1 + (1.0F - f1) * 0.5D;
+        double d2 = world.rand.nextFloat() * f1 + (1.0F - f1) * 0.5D;
+        EntityItem entityitem = new EntityItem(world, pos.getX() + d, pos.getY() + d1, pos.getZ() + d2, items);
+        entityitem.setDefaultPickupDelay();
+
+        world.spawnEntityInWorld(entityitem);
     }
 
     public static ItemStack getProjectile(SubTag aProjectileType, IInventory aInventory) {

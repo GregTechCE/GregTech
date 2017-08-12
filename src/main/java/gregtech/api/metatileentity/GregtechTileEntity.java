@@ -1,12 +1,15 @@
 package gregtech.api.metatileentity;
 
 import com.google.common.base.Preconditions;
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.capability.internal.ICustomDataTile;
 import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.net.NetworkHandler;
 import gregtech.api.net.PacketCustomTileData;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.GT_Pollution;
 import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -372,4 +375,25 @@ public class GregtechTileEntity extends TickableTileEntityBase implements IGregT
         return new FluidTankInfo[0];
     }
 
+    public void doExplosion(long strength) {
+        if (metaTileEntity != null) {
+            // This is only for Electric Machines
+//            if (GregTech_API.sMachineWireFire && metaTileEntity instanceof EnergyMetaTileEntity) {
+//                IEnergyConnected.Util.emitEnergyToNetwork(GT_Values.V[5], Math.max(1, ((EnergyMetaTileEntity) metaTileEntity).getEnergyStored() / GT_Values.V[5]), this);
+//            }
+            // Normal Explosion Code
+            metaTileEntity.onExplosion();
+            if (GT_Mod.gregtechproxy.mExplosionItemDrop) {
+                for (int i = 0; i < this.getSizeInventory(); i++) {
+                    ItemStack stack = this.getStackInSlot(i);
+                    if (GT_Utility.isStackValid(stack)) {
+                        GT_Utility.dropItemStackAsEntity(stack, this.worldObj, this.pos);
+                        this.setInventorySlotContents(i, null);
+                    }
+                }
+            }
+            GT_Pollution.addPollution(this.pos, 100000);
+            metaTileEntity.doExplosion(strength);
+        }
+    }
 }
