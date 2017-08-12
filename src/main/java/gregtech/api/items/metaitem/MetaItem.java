@@ -158,7 +158,7 @@ public class MetaItem<T extends MetaItem.MetaValueItem> extends GenericItem impl
     public boolean canBeStoredInToolbox(ItemStack stack) {
         MetaValueItem metaValueItem = getItem(stack);
         INuclearStats nuclearStats = metaValueItem.getNuclearStats();
-        return metaValueItem != null && (metaValueItem.isHandheld() || nuclearStats != null);
+        return metaValueItem != null && nuclearStats != null;
     }
 
     @Override
@@ -446,52 +446,6 @@ public class MetaItem<T extends MetaItem.MetaValueItem> extends GenericItem impl
         }
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(TextureMap textureMap) {
-        for(MetaValueItem metaValueItem : metaItems.valueCollection()) {
-            metaValueItem.registerIcons(textureMap);
-        }
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(ItemStack itemStack, int renderPass) {
-        MetaValueItem metaValueItem = getItem(itemStack);
-        if(metaValueItem != null) {
-            return metaValueItem.getIcon(itemStack, renderPass);
-        }
-        return null;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int getRenderPasses(ItemStack itemStack) {
-        MetaValueItem metaValueItem = getItem(itemStack);
-        if(metaValueItem != null) {
-            return metaValueItem.getRenderPasses(itemStack);
-        }
-        return 0;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int getColor(ItemStack itemStack, int pass) {
-        MetaValueItem metaValueItem = getItem(itemStack);
-        if(metaValueItem != null) {
-            return metaValueItem.getColor(itemStack, pass);
-        }
-        return 0xFFFFFF;
-    }
-    @Override
-    public boolean isHandheld(ItemStack itemStack) {
-        MetaValueItem metaValueItem = getItem(itemStack);
-        if(metaValueItem != null) {
-            return metaValueItem.isHandheld();
-        }
-        return false;
-    }
-
     public class MetaValueItem {
 
         public MetaItem<T> getMetaItem() {
@@ -510,73 +464,8 @@ public class MetaItem<T extends MetaItem.MetaValueItem> extends GenericItem impl
         private boolean visible = true;
         private int maxStackSize = 64;
 
-        private boolean handheld = false;
-        @SideOnly(Side.CLIENT)
-        private TextureAtlasSprite[] icons;
-
         protected MetaValueItem(int metaValue) {
             this.metaValue = metaValue;
-        }
-
-        @SideOnly(Side.CLIENT)
-        protected void registerIcons(TextureMap textureMap) {
-            if(electricStats != null) {
-                this.icons = new TextureAtlasSprite[fluidStats != null ? 9 : 8];
-                for(int i = 0; i < 8; i++) {
-                    String path = String.format("items/%s/%d/%d", getUnlocalizedNameWithoutPrefix(), metaValue, i + 1);
-                    this.icons[i] = textureMap.registerSprite(new ResourceLocation(MODID, path));
-                }
-            } else {
-                this.icons = new TextureAtlasSprite[fluidStats != null ? 2 : 1];
-                String path = String.format("items/%s/%d", getUnlocalizedNameWithoutPrefix(), metaValue);
-                this.icons[0] = textureMap.registerSprite(new ResourceLocation(MODID, path));
-            }
-            if(fluidStats != null) {
-                String path = electricStats != null ? String.format("items/%s/%d/overlay", getUnlocalizedNameWithoutPrefix(), metaValue) :
-                        String.format("items/%s/%d_overlay", getUnlocalizedNameWithoutPrefix(), metaValue);
-                this.icons[this.icons.length - 1] = textureMap.registerSprite(new ResourceLocation(MODID, path));
-            }
-        }
-
-        @SideOnly(Side.CLIENT)
-        protected TextureAtlasSprite getIcon(ItemStack itemStack, int renderPass) {
-            switch (renderPass) {
-                case 0:
-                    if(electricStats != null) {
-                        double charge = electricStats.getCharge(itemStack) / electricStats.getMaxCharge(itemStack);
-                        return this.icons[(int) (7 * charge)];
-                    }
-                    return this.icons[0];
-                case 1:
-                    if(fluidStats != null && getFluid(itemStack) != null) {
-                        return this.icons[this.icons.length - 1];
-                    }
-            }
-            return null;
-        }
-
-        @SideOnly(Side.CLIENT)
-        protected int getRenderPasses(ItemStack itemStack) {
-            return fluidStats != null ? 2 : 1;
-        }
-
-        @SideOnly(Side.CLIENT)
-        protected int getColor(ItemStack itemStack, int pass) {
-            if(fluidStats != null) {
-                FluidStack fluidInside = getFluid(itemStack);
-                if(fluidInside != null)
-                    return fluidInside.getFluid().getColor(fluidInside);
-            }
-            return 0xFFFFFF;
-        }
-
-        protected boolean isHandheld() {
-            return handheld;
-        }
-
-        public MetaValueItem setHandheld() {
-            this.handheld = true;
-            return this;
         }
 
         public MetaValueItem setNoUnification() {

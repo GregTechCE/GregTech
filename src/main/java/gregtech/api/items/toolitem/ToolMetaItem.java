@@ -2,16 +2,15 @@ package gregtech.api.items.toolitem;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import gregtech.api.unification.material.Materials;
+import gregtech.api.enchants.EnchantmentData;
 import gregtech.api.items.IDamagableItem;
-import gregtech.api.items.IIconContainer;
 import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.util.GT_Utility;
 import ic2.api.item.IElectricItemManager;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -26,12 +25,9 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.HashMap;
-
-import static gregtech.api.GT_Values.MODID;
+import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  * ToolMetaItem is item that can have up to Short.MAX_VALUE tools inside it
@@ -63,15 +59,20 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
         if(metaToolValueItem != null) {
             IToolStats toolStats = metaToolValueItem.getToolStats();
             toolStats.onToolCrafted(stack, player);
-            HashMap<Enchantment, Integer> enchants = new HashMap<>(toolStats.getEnchantments(stack));
-            Materials material = getMaterial(stack);
-            if(material.toolEnchantment != null) {
-                if(enchants.containsKey(material.toolEnchantment)) {
-                    enchants.put(material.toolEnchantment, enchants.get(material.toolEnchantment) + material.toolEnchantmentLevel);
-                } else enchants.put(material.toolEnchantment, material.toolEnchantmentLevel);
+            ArrayList<EnchantmentData> enchantments = new ArrayList<>(toolStats.getEnchantments(stack));
+            SolidMaterial material = getMaterial(stack);
+            for(EnchantmentData enchantmentData : material.toolEnchantments) {
+                Optional<EnchantmentData> sameEnchantment = enchantments.stream().filter(it -> it.enchantment == enchantmentData.enchantment).findAny();
+                if(sameEnchantment.isPresent()) {
+                    enchantments.remove(sameEnchantment.get());
+                    int level = Math.min(enchantmentData.level + sameEnchantment.get().level, enchantmentData.enchantment.getMaxLevel());
+                    enchantments.add(new EnchantmentData(enchantmentData.enchantment, level));
+                } else {
+                    enchantments.add(enchantmentData);
+                }
             }
-            for(Enchantment enchantment : enchants.keySet()) {
-                stack.addEnchantment(enchantment, enchants.get(enchantment));
+            for(EnchantmentData enchantmentData : enchantments) {
+                stack.addEnchantment(enchantmentData.enchantment, enchantmentData.level);
             }
         }
     }
@@ -218,8 +219,8 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
     private int getMaxInternalDamage(ItemStack itemStack) {
         MetaToolValueItem metaToolValueItem = getItem(itemStack);
         if (metaToolValueItem != null) {
-            Materials toolMaterial = getMaterial(itemStack);
-            return (int) (toolMaterial.durability * metaToolValueItem.getToolStats().getMaxDurabilityMultiplier(itemStack));
+            SolidMaterial toolMaterial = getMaterial(itemStack);
+            return (int) (toolMaterial.toolDurability * metaToolValueItem.getToolStats().getMaxDurabilityMultiplier(itemStack));
         }
         return 0;
     }
@@ -238,26 +239,14 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
         tagCompound.setInteger("GT.ToolDamage", damage);
     }
 
-    public Materials getMaterial(ItemStack itemStack) {
+    public SolidMaterial getMaterial(ItemStack itemStack) {
         if(!itemStack.hasTagCompound() || !itemStack.getTagCompound().hasKey("GT.ToolMaterial", Constants.NBT.TAG_STRING))
-            return Materials._NULL;
-        return Materials.get(itemStack.getTagCompound().getString("GT.ToolMaterial"));
-    }
-
-    @SideOnly(Side.CLIENT)
-    private TextureAtlasSprite[] durabilityBar;
-    @SideOnly(Side.CLIENT)
-    private TextureAtlasSprite[] energyBar;
-
-    @Override
-    public void registerIcons(TextureMap textureMap) {
-        super.registerIcons(textureMap);
-        this.durabilityBar = new TextureAtlasSprite[9];
-        this.energyBar = new TextureAtlasSprite[9];
-        for(int i = 0; i < this.durabilityBar.length; i++) {
-            this.durabilityBar[i] = textureMap.registerSprite(new ResourceLocation(MODID, "items/durability_bar/DURABILITY_BAR_" + i));
-            this.energyBar[i] = textureMap.registerSprite(new ResourceLocation(MODID, "items/energy_bar/ENERGY_BAR_" + i));
+            return Materials.Iron;
+        Material material = Material.MATERIAL_REGISTRY.getObject(itemStack.getTagCompound().getString("GT.ToolMaterial"));
+        if(material instanceof SolidMaterial) {
+            return (SolidMaterial) material;
         }
+        return Materials.Iron;
     }
 
     public class MetaToolValueItem extends MetaValueItem {
@@ -267,7 +256,6 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
         private MetaToolValueItem(int metaValue) {
             super(metaValue);
             setNoUnification();
-            setHandheld();
         }
 
         public MetaToolValueItem setToolStats(IToolStats toolStats) {
@@ -276,54 +264,6 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
             }
             this.toolStats = toolStats;
             return this;
-        }
-
-        @Override
-        @SideOnly(Side.CLIENT)
-        protected void registerIcons(TextureMap textureMap) {}
-
-        @Override
-        @SideOnly(Side.CLIENT)
-        protected TextureAtlasSprite getIcon(ItemStack itemStack, int pass) {
-            if(pass == 4) {
-                float maxInternalDamage = getMaxInternalDamage(itemStack);
-                if(maxInternalDamage > 0) {
-                    return durabilityBar[(int) ((getInternalDamage(itemStack) / maxInternalDamage) * 8)];
-                }
-                return durabilityBar[0];
-            }
-
-            if(pass == 5) {
-                IElectricItemManager electricItemManager = getManager(itemStack);
-                double maxCharge = electricItemManager.getMaxCharge(itemStack);
-                if(maxCharge > 0) {
-                    return energyBar[(int) ((electricItemManager.getCharge(itemStack) / maxCharge) * 8)];
-                }
-                return energyBar[0];
-            }
-
-            IIconContainer container = toolStats.getIcon(pass / 2 == 1, itemStack);
-            if(container == null) {
-                return null;
-            }
-            if(pass % 2 == 0) {
-                return container.getIcon();
-            }
-            return container.getOverlayIcon();
-        }
-
-        @Override
-        @SideOnly(Side.CLIENT)
-        protected int getRenderPasses(ItemStack itemStack) {
-            return getManager(itemStack).getMaxCharge(itemStack) > 0 ? 6 : 5;
-        }
-
-        @Override
-        protected int getColor(ItemStack itemStack, int pass) {
-            if(pass % 2 == 0) {
-                return toolStats.getColor(pass / 2 == 1, itemStack);
-            }
-            return 0xFFFFFF;
         }
 
         public IToolStats getToolStats() {

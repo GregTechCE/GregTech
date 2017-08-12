@@ -5,6 +5,8 @@ import gnu.trove.list.array.TShortArrayList;
 import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.DamageSources;
 import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.MarkerMaterial;
+import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.items.IIconContainer;
 import gregtech.api.items.metaitem.MetaItem;
@@ -31,12 +33,13 @@ public class MaterialMetaItem extends MetaItem<MetaItem.MetaValueItem> {
         super(unlocalizedName, (short) (1000 * orePrefixes.length));
         Preconditions.checkArgument(orePrefixes.length <= 32, "Max allowed OrePrefixes count on MaterialMetaItem is 32.");
         this.orePrefixes = orePrefixes;
-        for(int i = 0; i < GregTech_API.generatedMaterials.length; i++) {
-            Materials material = GregTech_API.generatedMaterials[i];
-            if(material != null) {
+        for(String materialName : Material.MATERIAL_REGISTRY.getKeys()) {
+            Material material = Material.MATERIAL_REGISTRY.getObject(materialName);
+            if(material != null && !(material instanceof MarkerMaterial)) {
+                int i = Material.MATERIAL_REGISTRY.getIDForObject(material);
                 for(int j = 0; j < orePrefixes.length; j++) {
                     OrePrefixes orePrefix = orePrefixes[j];
-                    if(orePrefix != null && orePrefix.typeTexture != null && canGenerate(orePrefix, material)) {
+                    if(orePrefix != null && canGenerate(orePrefix, material)) {
                         short metadata = (short) (j * 1000 + i);
                         generatedItems.add(metadata);
                         GT_OreDictUnificator.registerOre(orePrefix, material, new ItemStack(this, 1, metadata));
@@ -46,17 +49,17 @@ public class MaterialMetaItem extends MetaItem<MetaItem.MetaValueItem> {
         }
     }
 
-    protected boolean canGenerate(OrePrefixes orePrefix, Materials material) {
-        return orePrefix.doGenerateItem(material) && !orePrefix.isIgnored(material);
+    protected boolean canGenerate(OrePrefixes orePrefix, Material material) {
+        return orePrefix.doGenerateItem(material);
     }
 
     @Override
     public String getItemStackDisplayName(ItemStack itemStack) {
         if(itemStack.getItemDamage() < metaItemOffset) {
             if (!generatedItems.contains((short) itemStack.getItemDamage())) {
-                return "Invalid Item.";
+                return "";
             }
-            Materials material = GregTech_API.generatedMaterials[itemStack.getItemDamage() % 1000];
+            Material material = Material.MATERIAL_REGISTRY.getObjectById(itemStack.getItemDamage() % 1000);
             OrePrefixes prefix = orePrefixes[itemStack.getItemDamage() / 1000];
             return prefix.getDefaultLocalNameForItem(material);
         }
@@ -84,63 +87,15 @@ public class MaterialMetaItem extends MetaItem<MetaItem.MetaValueItem> {
     }
 
     @Override
-    public int getColor(ItemStack itemStack, int pass) {
-        if(itemStack.getItemDamage() < metaItemOffset) {
-            if(!generatedItems.contains((short) itemStack.getItemDamage())) {
-                return Materials._NULL.getRGBA();
-            }
-            Materials material = GregTech_API.generatedMaterials[itemStack.getItemDamage() % 1000];
-            if(material == null) {
-                return Materials._NULL.getRGBA();
-            }
-            return material.getRGBA();
-        }
-        return super.getColor(itemStack, pass);
-    }
-
-    @Override
-    public int getRenderPasses(ItemStack itemStack) {
-        if(itemStack.getItemDamage() < metaItemOffset) {
-            if(!generatedItems.contains((short) itemStack.getItemDamage())) {
-                return 0;
-            }
-            return 2;
-        }
-        return super.getRenderPasses(itemStack);
-    }
-
-    @Override
-    public TextureAtlasSprite getIcon(ItemStack itemStack, int renderPass) {
-        if(itemStack.getItemDamage() < metaItemOffset) {
-            if(!generatedItems.contains((short) itemStack.getItemDamage())) {
-                return null;
-            }
-            Materials material = GregTech_API.generatedMaterials[itemStack.getItemDamage() % 1000];
-            OrePrefixes prefix = orePrefixes[itemStack.getItemDamage() / 1000];
-            if(material == null) {
-                return null;
-            }
-            IIconContainer container = material.materialType.getTexture(prefix.typeTexture);
-            if(container != null) {
-                switch (renderPass) {
-                    case 1: container.getIcon();
-                    case 2: container.getOverlayIcon();
-                }
-            }
-            return null;
-        }
-        return super.getIcon(itemStack, renderPass);
-    }
-
-    @Override
     public void onUpdate(ItemStack itemStack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         if(itemStack.getItemDamage() < metaItemOffset && generatedItems.contains((short) itemStack.getItemDamage()) && entityIn instanceof EntityLivingBase) {
             EntityLivingBase entity = (EntityLivingBase) entityIn;
-            Materials material = GregTech_API.generatedMaterials[itemStack.getItemDamage() % 1000];
+            Material material = Material.MATERIAL_REGISTRY.getObjectById(itemStack.getItemDamage() % 1000);
             OrePrefixes prefix = orePrefixes[itemStack.getItemDamage() / 1000];
-            if(prefix == OrePrefixes.ingotHot && GT_Utility.isWearingFullHeatHazmat(entity) && worldIn.getTotalWorldTime() % 20 == 0) {
-                float damage = material.mBlastFurnaceTemp / 500;
-                entity.attackEntityFrom(DamageSources.getHeatDamage(), damage);
+            if(prefix.heatDamage > 0.0 && GT_Utility.isWearingFullHeatHazmat(entity) && worldIn.getTotalWorldTime() % 20 == 0) {
+                entity.attackEntityFrom(DamageSources.getHeatDamage(), prefix.heatDamage);
+            } else if(prefix.heatDamage < 0.0 && GT_Utility.isWearingFullFrostHazmat(entity) && worldIn.getTotalWorldTime() % 20 == 0) {
+                entity.attackEntityFrom(DamageSources.getFrostDamage(), -prefix.heatDamage);
             }
             if(prefix.name().contains("Quintuple") || prefix.name().contains("Quadruple")) {
                 entity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 0));

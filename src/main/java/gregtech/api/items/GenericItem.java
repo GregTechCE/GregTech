@@ -19,13 +19,10 @@ import static gregtech.api.GT_Values.MODID;
 /**
  * Extended by GT items.
  */
-public class GenericItem extends Item implements ISimpleRenderedItem {
+public class GenericItem extends Item {
 
     private String unlocalizedName;
     private final String[] tooltip;
-
-    @SideOnly(Side.CLIENT)
-    protected TextureAtlasSprite icon;
 
     public GenericItem(String unlocalizedName, String... tooltip) {
         super();
@@ -80,18 +77,6 @@ public class GenericItem extends Item implements ISimpleRenderedItem {
     @Override
     public final boolean hasContainerItem(ItemStack itemStack) {
         return getContainerItem(itemStack) != null;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(TextureMap textureMap) {
-        icon = textureMap.registerSprite(new ResourceLocation(MODID, "items/" + unlocalizedName));
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getIcon(ItemStack itemStack, int renderPass) {
-        return icon;
     }
 
 }

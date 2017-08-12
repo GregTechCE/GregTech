@@ -1,9 +1,8 @@
 package gregtech.api.items.toolitem;
 
-import gregtech.api.items.IIconContainer;
+import gregtech.api.enchants.EnchantmentData;
 import gregtech.api.items.metaitem.MetaItem;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -12,7 +11,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * The Stats for GT Tools. Not including any Material Modifiers.
@@ -79,7 +77,7 @@ public interface IToolStats {
 
     ResourceLocation getBreakingSound(ItemStack stack);
 
-    Map<Enchantment, Integer> getEnchantments(ItemStack stack);
+    List<EnchantmentData> getEnchantments(ItemStack stack);
 
     /**
      * @return If this Tool can be used as an RC Crowbar.
@@ -126,7 +124,5 @@ public interface IToolStats {
     float getAttackSpeed(ItemStack stack);
 
     int getColor(boolean isToolHead, ItemStack stack);
-
-    IIconContainer getIcon(boolean isToolHead, ItemStack stack);
 
 }
