@@ -1,10 +1,9 @@
 package gregtech.api.metatileentity;
 
-import gregtech.api.capability.*;
+import gregtech.api.capability.ITurnable;
 import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.capability.internal.IRedstoneEmitter;
 import gregtech.api.capability.internal.IRedstoneReceiver;
-import gregtech.api.unification.Dyes;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
@@ -17,12 +16,13 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public interface IMetaTileEntity extends ITurnable, IMachineBlockUpdateable, IRedstoneReceiver, IRedstoneEmitter {
+public interface IMetaTileEntity extends ITurnable, IRedstoneReceiver, IRedstoneEmitter {
 
     IMetaTileEntityFactory getFactory();
 
@@ -65,6 +65,9 @@ public interface IMetaTileEntity extends ITurnable, IMachineBlockUpdateable, IRe
 
     void writeInitialData(PacketBuffer buf);
     void receiveInitialData(PacketBuffer buf);
+
+    <T> boolean hasCapability(Capability<T> capability, EnumFacing side);
+    <T> T getCapability(Capability<T> capability, EnumFacing side);
 
     /**
      * When a Player rightclicks the Facing with a Screwdriver.
@@ -109,15 +112,6 @@ public interface IMetaTileEntity extends ITurnable, IMachineBlockUpdateable, IRe
      * Called when the BaseMetaTileEntity gets invalidated, what happens right before the @inValidate above gets called
      */
     void onRemoval();
-
-    EnumFacing getFrontFacing();
-
-    void setFrontFacing(EnumFacing facing);
-
-    /**
-     * @return if facing would be a valid Facing for this Device. Used for wrenching.
-     */
-    boolean isFacingValid(EnumFacing facing);
 
     /**
      * @return the Server Side Container
@@ -165,11 +159,6 @@ public interface IMetaTileEntity extends ITurnable, IMachineBlockUpdateable, IRe
     boolean isAccessAllowed(EntityPlayer player);
 
     /**
-     * Called when machine update occur
-     */
-    void onMachineBlockUpdate();
-
-    /**
      * Called when a player rightclicks the machine
      * Sneaky rightclicks are not getting passed to this!
      */
@@ -182,25 +171,6 @@ public interface IMetaTileEntity extends ITurnable, IMachineBlockUpdateable, IRe
     void onLeftClick(EntityPlayer player);
 
     /**
-     * Called Clientside with the Data got from @getUpdateData
-     */
-    void onUpdateDataReceived(byte value);
-
-    /**
-     * Return a small bit of data, like a secondary facing for example with this Function, for the Client.
-     * The BaseMetaTileEntity detects changes to this Value and will then send an Update.
-     * This is only for Information, which is visible as Texture to the outside.
-     * <p/>
-     * If you just want to have an Active/Redstone State then set the Active State inside the BaseMetaTileEntity instead.
-     */
-    byte getUpdateData();
-
-    /**
-     * For the rare case you need this Function
-     */
-    void receiveClientEvent(byte eventID, byte value);
-
-    /**
      * Called when the Machine explodes, override Explosion Code here.
      */
     void doExplosion(long explosionPower);
@@ -211,14 +181,6 @@ public interface IMetaTileEntity extends ITurnable, IMachineBlockUpdateable, IRe
     int getComparatorValue(EnumFacing side);
 
     float getExplosionResistance(EnumFacing side);
-
-    String[] getInfoData();
-
-    void onColorChangeServer(Dyes color);
-
-    void onColorChangeClient(Dyes color);
-
-    int getLightOpacity();
 
     void onEntityCollidedWithBlock(Entity collider);
 

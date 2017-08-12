@@ -23,20 +23,13 @@ public interface IWorkable {
 
     /**
      * Increases current progress of machine
-     * @return amount of progress overflowed
      */
-    int increaseProgress(int progress);
+    void increaseProgress(int progress);
 
     /**
      * @return true if machine has some action in queue now (even if it is disallowed to work or inactive)
      */
     boolean hasWorkToDo();
-
-    /**
-     * @return true if machine just got enableWorking() in this tick
-     * Used for Translocators, which need to check if they need to transfer immediately.
-     */
-    boolean hasWorkJustBeenEnabled();
 
     /**
      * Allows machine to work

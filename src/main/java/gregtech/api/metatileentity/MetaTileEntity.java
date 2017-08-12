@@ -2,10 +2,9 @@ package gregtech.api.metatileentity;
 
 import com.google.common.base.Preconditions;
 import gregtech.api.GregTech_API;
+import gregtech.api.capability.ITurnable;
 import gregtech.api.capability.internal.IGregTechTileEntity;
-import gregtech.api.unification.Dyes;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,13 +12,15 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -37,12 +38,30 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     protected int[] sidedRedstoneOutput = new int[6];
 
-    IGregTechTileEntity holder;
+    GregtechTileEntity holder;
 
     public MetaTileEntity(IMetaTileEntityFactory factory) {
         this.factory = factory;
         this.itemInventory = new ItemStack[getSlotsCount()];
         this.fluidInventory = new FluidStack[getTanksCount()];
+    }
+
+    @Override
+    public IMetaTileEntityFactory getFactory() {
+        return factory;
+    }
+
+    @Override
+    public <T> boolean hasCapability(Capability<T> capability, EnumFacing side) {
+        return capability == ITurnable.CAPABILITY_TURNABLE;
+    }
+
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing side) {
+        if(capability == ITurnable.CAPABILITY_TURNABLE) {
+            return ITurnable.CAPABILITY_TURNABLE.cast(this);
+        }
+        return null;
     }
 
     @Override
@@ -90,6 +109,43 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
         holder.markDirty();
     }
 
+    public void markBlockForRenderUpdate() {
+        BlockPos pos = getWorldPos();
+        getWorldObj().markBlockRangeForRenderUpdate(
+                pos.getX() - 1, pos.getY() - 1, pos.getZ() - 1,
+                pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
+    }
+
+    @Override
+    public void receiveCustomData(int dataId, PacketBuffer buf) {
+        switch (dataId) {
+            case 1:
+                this.frontFacing = EnumFacing.VALUES[buf.readByte()];
+                markBlockForRenderUpdate();
+                break;
+            case 2:
+                this.sidedRedstoneOutput[buf.readByte()] = buf.readInt();
+                markBlockForRenderUpdate();
+                break;
+        }
+    }
+
+    @Override
+    public void writeInitialData(PacketBuffer buf) {
+        buf.writeByte(frontFacing.getIndex());
+        for(EnumFacing side : EnumFacing.VALUES) {
+            buf.writeInt(sidedRedstoneOutput[side.getIndex()]);
+        }
+    }
+
+    @Override
+    public void receiveInitialData(PacketBuffer buf) {
+        this.frontFacing = EnumFacing.VALUES[buf.readByte()];
+        for(EnumFacing side : EnumFacing.VALUES) {
+            this.sidedRedstoneOutput[side.getIndex()] = buf.readInt();
+        }
+    }
+
     @Override
     public int getOutputRedstoneSignal(@Nullable EnumFacing side) {
         return side == null ? Arrays.stream(sidedRedstoneOutput).sorted().findFirst().orElse(0) : sidedRedstoneOutput[side.getIndex()];
@@ -99,9 +155,13 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     public void setOutputRedstoneSignal(EnumFacing side, int strength) {
         Preconditions.checkNotNull(side);
         this.sidedRedstoneOutput[side.getIndex()] = strength;
-        BlockPos relative = getWorldPos().offset(side);
-        getWorldObj().markBlockRangeForRenderUpdate(relative, relative);
-        markDirty();
+        if(!getWorldObj().isRemote) {
+            markDirty();
+            holder.writeCustomData(2, buf -> {
+                buf.writeByte(side.getIndex());
+                buf.writeInt(strength);
+            });
+        }
     }
 
     @Override
@@ -110,27 +170,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     }
 
     @Override
-    public ResourceLocation getModelLocation() {
-        return null;
-    }
-
-    @Override
-    public IBlockState getModelState() {
-        return null;
-    }
-
-    @Override
-    public boolean allowCoverOnSide(EnumFacing side, int coverId) {
-        return false;
-    }
-
-    @Override
-    public int getSlotsCount() {
-        return 0;
-    }
-
-    @Override
-    public IGregTechTileEntity getHolder() {
+    public GregtechTileEntity getHolder() {
         return holder;
     }
 
@@ -142,7 +182,10 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     @Override
     public void setFrontFacing(EnumFacing facing) {
         this.frontFacing = facing;
-        onFacingChange();
+        if(!getWorldObj().isRemote) {
+            markDirty();
+            holder.writeCustomData(1, buf -> buf.writeByte(facing.getIndex()));
+        }
     }
 
     @Override
@@ -233,7 +276,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     @Override
     public boolean onWrenchRightClick(EnumFacing side, EnumFacing wrenchingSide, EntityPlayer player, float clickX, float clickY, float clickZ) {
-        if(isFacingValid(wrenchingSide)) {
+        if(isValidFacing(wrenchingSide)) {
             setFrontFacing(wrenchingSide);
             return true;
         }
@@ -271,31 +314,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     }
 
     @Override
-    public int getTanksCount() {
-        return 0;
-    }
-
-    @Override
     public boolean isAccessAllowed(EntityPlayer player) {
         return true; //default - to be overridden
-    }
-
-    @Override
-    public void onMachineBlockUpdate() {
-    }
-
-    @Override
-    public void onUpdateDataReceived(byte value) {
-
-    }
-
-    @Override
-    public byte getUpdateData() {
-        return 0;
-    }
-
-    @Override
-    public void receiveClientEvent(byte eventID, byte value) {
     }
 
     @Override
@@ -309,34 +329,11 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     }
 
     @Override
-    public String[] getInfoData() {
-        return new String[0];
-    }
-
-    @Override
-    public void onColorChangeServer(Dyes color) {
-    }
-
-    @Override
-    public void onColorChangeClient(Dyes color) {
-    }
-
-    @Override
-    public int getLightOpacity() {
-        return 0;
-    }
-
-    @Override
     public void onEntityCollidedWithBlock(Entity collider) {
     }
 
     @Override
     public boolean isValidFluidTank(int tankIndex) {
-        return true;
-    }
-
-    @Override
-    public boolean isFacingValid(EnumFacing facing) {
         return true;
     }
 
@@ -351,6 +348,26 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     @Override
     public void saveNBTData(NBTTagCompound data) {
         data.setInteger("Facing", frontFacing.getIndex());
+        NBTTagList itemInventory = new NBTTagList();
+        for(int i = 0; i < getSlotsCount(); i++) {
+            ItemStack stack = getStackInSlot(i);
+            if(stack != null) {
+                itemInventory.appendTag(stack.writeToNBT(new NBTTagCompound()));
+            } else itemInventory.appendTag(new NBTTagCompound());
+        }
+        NBTTagList fluidInventory = new NBTTagList();
+        for(int i = 0; i < getTanksCount(); i++) {
+            FluidStack stack = getFluidInTank(i);
+            if(stack != null) {
+                fluidInventory.appendTag(stack.writeToNBT(new NBTTagCompound()));
+            } else fluidInventory.appendTag(new NBTTagCompound());
+        }
+        if(!itemInventory.hasNoTags()) {
+            data.setTag("ItemInventory", itemInventory);
+        }
+        if(!fluidInventory.hasNoTags()) {
+            data.setTag("FluidInventory", fluidInventory);
+        }
     }
 
     @Override
@@ -358,12 +375,26 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
         if(data.hasKey("Facing", Constants.NBT.TAG_INT)) {
             this.frontFacing = EnumFacing.VALUES[data.getInteger("Facing")];
         }
-    }
-
-    /**
-     * Called when the facing gets changed
-     */
-    protected void onFacingChange() {
+        if(data.hasKey("ItemInventory", Constants.NBT.TAG_LIST)) {
+            NBTTagList itemInventory = data.getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
+            for(int i = 0; i < itemInventory.tagCount(); i++) {
+                NBTTagCompound stackTag = itemInventory.getCompoundTagAt(i);
+                if(!stackTag.hasNoTags()) {
+                    ItemStack itemStack = ItemStack.loadItemStackFromNBT(stackTag);
+                    if(i < getSlotsCount()) setStackInSlot(i, itemStack);
+                }
+            }
+        }
+        if(data.hasKey("FluidInventory", Constants.NBT.TAG_LIST)) {
+            NBTTagList fluidInventory = data.getTagList("FluidInventory", Constants.NBT.TAG_COMPOUND);
+            for(int i = 0; i < fluidInventory.tagCount(); i++) {
+                NBTTagCompound stackTag = fluidInventory.getCompoundTagAt(i);
+                if(!stackTag.hasNoTags()) {
+                    FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(stackTag);
+                    if(i < getTanksCount()) setFluidInTank(i, fluidStack);
+                }
+            }
+        }
     }
 
     @Override

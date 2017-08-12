@@ -143,7 +143,7 @@ public class GregtechTileEntity extends TickableTileEntityBase implements IGregT
         } else if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             return true;
         }
-        return super.hasCapability(capability, facing);
+        return (metaTileEntity != null && metaTileEntity.hasCapability(capability, facing)) || super.hasCapability(capability, facing);
     }
 
     @Override
@@ -152,6 +152,8 @@ public class GregtechTileEntity extends TickableTileEntityBase implements IGregT
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new FluidHandlerWrapper(this, facing));
         } else if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(new SidedInvWrapper(this, facing));
+        } else if(metaTileEntity != null && metaTileEntity.hasCapability(capability, facing)) {
+            return metaTileEntity.getCapability(capability, facing);
         }
         return super.getCapability(capability, facing);
     }
@@ -204,6 +206,15 @@ public class GregtechTileEntity extends TickableTileEntityBase implements IGregT
     @Override
     public boolean isUseableByPlayer(EntityPlayer player) {
         return metaTileEntity != null && metaTileEntity.isAccessAllowed(player);
+    }
+
+    @Override
+    public void update() {
+        super.update();
+        if(metaTileEntity != null) {
+            metaTileEntity.onPreTick(getTimer());
+            metaTileEntity.onPostTick(getTimer());
+        }
     }
 
     @Override

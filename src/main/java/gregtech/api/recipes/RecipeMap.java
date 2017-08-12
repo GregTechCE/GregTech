@@ -558,8 +558,8 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 			super.buildAndRegister();
 			FluidStack fluidInput = fluidInputs.get(0);
 			FluidStack fluidOutput = fluidInputs.get(0);
-			recipeMap.addRecipe(this.copy().fluidInputs(fluidInput, ModHandler.getSteam(fluidInput.amount)).fluidOutputs(fluidOutput, Materials.Hydrogen.getGas(fluidInput.amount)).build());
-			recipeMap.addRecipe(this.copy().fluidInputs(fluidInput, Materials.Hydrogen.getGas(fluidInput.amount)).fluidOutputs(new FluidStack(fluidOutput.getFluid(), (int) (fluidOutput.amount * 1.3))).build());
+			recipeMap.addRecipe(this.copy().fluidInputs(fluidInput, ModHandler.getSteam(fluidInput.amount)).fluidOutputs(fluidOutput, Materials.Hydrogen.getFluid(fluidInput.amount)).build());
+			recipeMap.addRecipe(this.copy().fluidInputs(fluidInput, Materials.Hydrogen.getFluid(fluidInput.amount)).fluidOutputs(new FluidStack(fluidOutput.getFluid(), (int) (fluidOutput.amount * 1.3))).build());
 		}
 	}.nonOptimized());
 

@@ -10,8 +10,7 @@ public interface IUpgradable {
 
     enum UpgradeType {
         MUFFLER,
-        LOCK,
-        TRANSFORMER
+        LOCK
     }
 
     boolean isUpgradable(UpgradeType upgradeType);

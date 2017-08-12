@@ -15,6 +15,12 @@ public final class SimpleItemStack {
         this.stackSize = stackSize;
     }
 
+    public SimpleItemStack(ItemStack itemStack) {
+        this.item = itemStack.getItem();
+        this.itemDamage = itemStack.getItemDamage();
+        this.stackSize = itemStack.stackSize;
+    }
+
     public SimpleItemStack(Item item, int itemDamage) {
         this(item, itemDamage, 1);
     }
