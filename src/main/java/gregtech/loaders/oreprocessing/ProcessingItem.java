@@ -1,13 +1,13 @@
 package gregtech.loaders.oreprocessing;
 
 import gregtech.api.GT_Values;
+import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefixes;
-import gregtech.api.unification.stack.ItemData;
+import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
@@ -17,29 +17,29 @@ public class ProcessingItem implements IOreRegistrationHandler {
     }
 
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        if (GT_OreDictUnificator.getItemData(aStack) == null && !aOreDictName.equals("itemCertusQuartz") && !aOreDictName.equals("itemNetherQuartz")) {
+        if (OreDictionaryUnifier.getItemData(aStack) == null && !aOreDictName.equals("itemCertusQuartz") && !aOreDictName.equals("itemNetherQuartz")) {
             switch (aOreDictName) {
                 case "itemSilicon":
-                    GT_OreDictUnificator.addItemData(aStack, new ItemData(Materials.Silicon, 3628800L, new MaterialStack[0]));
+                    OreDictionaryUnifier.addItemData(aStack, new ItemMaterialInfo(Materials.Silicon, 3628800L, new MaterialStack[0]));
                     GT_Values.RA.addFormingPressRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 0L, 19), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 20), 200, 16);
                 case "itemWheat":
-                    GT_OreDictUnificator.addItemData(aStack, new ItemData(Materials.Wheat, 3628800L, new MaterialStack[0]));
+                    OreDictionaryUnifier.addItemData(aStack, new ItemMaterialInfo(Materials.Wheat, 3628800L, new MaterialStack[0]));
                 case "itemManganese":
-                    GT_OreDictUnificator.addItemData(aStack, new ItemData(Materials.Manganese, 3628800L, new MaterialStack[0]));
+                    OreDictionaryUnifier.addItemData(aStack, new ItemMaterialInfo(Materials.Manganese, 3628800L, new MaterialStack[0]));
                 case "itemSalt":
-                    GT_OreDictUnificator.addItemData(aStack, new ItemData(Materials.Salt, 3628800L, new MaterialStack[0]));
+                    OreDictionaryUnifier.addItemData(aStack, new ItemMaterialInfo(Materials.Salt, 3628800L, new MaterialStack[0]));
                 case "itemMagnesium":
-                    GT_OreDictUnificator.addItemData(aStack, new ItemData(Materials.Magnesium, 3628800L, new MaterialStack[0]));
+                    OreDictionaryUnifier.addItemData(aStack, new ItemMaterialInfo(Materials.Magnesium, 3628800L, new MaterialStack[0]));
                 case "itemPhosphorite":
-                    GT_OreDictUnificator.addItemData(aStack, new ItemData(Materials.Phosphorus, 3628800L, new MaterialStack[0]));
+                    OreDictionaryUnifier.addItemData(aStack, new ItemMaterialInfo(Materials.Phosphorus, 3628800L, new MaterialStack[0]));
                 case "itemSulfur":
-                    GT_OreDictUnificator.addItemData(aStack, new ItemData(Materials.Sulfur, 3628800L, new MaterialStack[0]));
+                    OreDictionaryUnifier.addItemData(aStack, new ItemMaterialInfo(Materials.Sulfur, 3628800L, new MaterialStack[0]));
                 case "itemAluminum":
-                    GT_OreDictUnificator.addItemData(aStack, new ItemData(Materials.Aluminium, 3628800L, new MaterialStack[0]));
+                    OreDictionaryUnifier.addItemData(aStack, new ItemMaterialInfo(Materials.Aluminium, 3628800L, new MaterialStack[0]));
                 case "itemSaltpeter":
-                    GT_OreDictUnificator.addItemData(aStack, new ItemData(Materials.Saltpeter, 3628800L, new MaterialStack[0]));
+                    OreDictionaryUnifier.addItemData(aStack, new ItemMaterialInfo(Materials.Saltpeter, 3628800L, new MaterialStack[0]));
                 case "itemUranium":
-                    GT_OreDictUnificator.addItemData(aStack, new ItemData(Materials.Uranium, 3628800L, new MaterialStack[0]));
+                    OreDictionaryUnifier.addItemData(aStack, new ItemMaterialInfo(Materials.Uranium, 3628800L, new MaterialStack[0]));
             }
         }
     }

@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.boilers;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
@@ -9,7 +10,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.util.XSTR;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -225,29 +225,29 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
             }
             if ((this.mProcessingEnergy <= 0) && (aBaseMetaTileEntity.isAllowedToWork()) &&
                     (this.mInventory[2] != null)) {
-                if ((GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.gem.get(Materials.Coal))) || (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.dust.get(Materials.Coal))) || (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.dustImpure.get(Materials.Coal))) || (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.crushed.get(Materials.Coal)))) {
+                if ((OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.gem.get(Materials.Coal))) || (OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.dust.get(Materials.Coal))) || (OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.dustImpure.get(Materials.Coal))) || (OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.crushed.get(Materials.Coal)))) {
                     this.mProcessingEnergy += 160;
                     aBaseMetaTileEntity.decrStackSize(2, 1);
                     if (aBaseMetaTileEntity.getRandomNumber(3) == 0) {
-                        aBaseMetaTileEntity.addStackToSlot(3, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L));
+                        aBaseMetaTileEntity.addStackToSlot(3, OreDictionaryUnifier.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L));
                     }
-                } else if (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.gem.get(Materials.Charcoal))) {
+                } else if (OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.gem.get(Materials.Charcoal))) {
                     this.mProcessingEnergy += 160;
                     aBaseMetaTileEntity.decrStackSize(2, 1);
                     if (aBaseMetaTileEntity.getRandomNumber(3) == 0) {
-                        aBaseMetaTileEntity.addStackToSlot(3, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
+                        aBaseMetaTileEntity.addStackToSlot(3, OreDictionaryUnifier.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
                     }
-                } else if (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], "fuelCoke")) {
+                } else if (OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[2], "fuelCoke")) {
                     this.mProcessingEnergy += 640;
                     aBaseMetaTileEntity.decrStackSize(2, 1);
                     if (aBaseMetaTileEntity.getRandomNumber(2) == 0) {
-                        aBaseMetaTileEntity.addStackToSlot(3, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
+                        aBaseMetaTileEntity.addStackToSlot(3, OreDictionaryUnifier.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
                     }
-                } else if ((GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.gem.get(Materials.Lignite))) || (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.dust.get(Materials.Lignite))) || (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.dustImpure.get(Materials.Lignite))) || (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.crushed.get(Materials.Lignite)))) {
+                } else if ((OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.gem.get(Materials.Lignite))) || (OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.dust.get(Materials.Lignite))) || (OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.dustImpure.get(Materials.Lignite))) || (OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.crushed.get(Materials.Lignite)))) {
                     this.mProcessingEnergy += 120;
                     aBaseMetaTileEntity.decrStackSize(2, 1);
                     if (aBaseMetaTileEntity.getRandomNumber(8) == 0) {
-                        aBaseMetaTileEntity.addStackToSlot(3, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L));
+                        aBaseMetaTileEntity.addStackToSlot(3, OreDictionaryUnifier.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L));
                     }
                 }
             }

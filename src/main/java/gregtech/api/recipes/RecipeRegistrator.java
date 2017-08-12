@@ -3,6 +3,7 @@ package gregtech.api.recipes;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.ConfigCategories;
+import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.unification.Material;
 import gregtech.api.unification.material.Materials;
@@ -10,9 +11,8 @@ import gregtech.api.unification.material.type.AbstractSolidMaterial;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.GemMaterial;
 import gregtech.api.unification.material.type.MetalMaterial;
-import gregtech.api.unification.stack.ItemData;
+import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
-import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -139,10 +139,10 @@ public class RecipeRegistrator {
             byproduct.mAmount /= stack.stackSize;
         }
 
-        GT_OreDictUnificator.addItemData(GT_Utility.copyAmount(1, stack), new ItemData(material, materialAmount / stack.stackSize, byproduct));
+        OreDictionaryUnifier.addItemData(GT_Utility.copyAmount(1, stack), new ItemMaterialInfo(material, materialAmount / stack.stackSize, byproduct));
     }
 
-    public static void registerMaterialRecycling(ItemStack stack, ItemData data) {
+    public static void registerMaterialRecycling(ItemStack stack, ItemMaterialInfo data) {
         if (!GT_Utility.isStackValid(stack)
                 || GT_Utility.areStacksEqual(new ItemStack(Items.BLAZE_ROD), stack)
                 || data == null
@@ -170,7 +170,7 @@ public class RecipeRegistrator {
                 || (L * materialAmount) / (M * stack.stackSize) <= 0)
             return;
 
-        ItemData data = GT_OreDictUnificator.getItemData(stack);
+        ItemMaterialInfo data = OreDictionaryUnifier.getItemData(stack);
         boolean hide = stack.getUnlocalizedName().startsWith("gt.blockmachines") && (GT_Mod.gregtechproxy.mHideRecyclingRecipes);
         if (GT_Mod.gregtechproxy.mHideRecyclingRecipes && data != null && data.hasValidPrefixData() && !(data.mPrefix == OrePrefixes.dust || data.mPrefix == OrePrefixes.ingot || data.mPrefix == OrePrefixes.block | data.mPrefix == OrePrefixes.plate)) {
             hide = true;
@@ -186,12 +186,12 @@ public class RecipeRegistrator {
         if (byproduct != null) {
             if (byproduct.mMaterial.smeltInto.hasFluid() || !(byproduct.mMaterial instanceof MetalMaterial)) {
                 if (byproduct.mMaterial.contains(Material.MatFlags.FLAMMABLE)) {
-                    recipeBuilder.outputs(GT_OreDictUnificator.getDust(Materials.Ash, byproduct.mAmount / 2));
+                    recipeBuilder.outputs(OreDictionaryUnifier.getDust(Materials.Ash, byproduct.mAmount / 2));
                 } else if (byproduct.mMaterial.contains(Material.MatFlags.UNBURNABLE)) {
-                    recipeBuilder.outputs(GT_OreDictUnificator.getDustOrIngot(byproduct.mMaterial.smeltInto, byproduct.mAmount));
+                    recipeBuilder.outputs(OreDictionaryUnifier.getDustOrIngot(byproduct.mMaterial.smeltInto, byproduct.mAmount));
                 }
             } else {
-                recipeBuilder.outputs(GT_OreDictUnificator.getIngotOrDust(byproduct.mMaterial.smeltInto, byproduct.mAmount));
+                recipeBuilder.outputs(OreDictionaryUnifier.getIngotOrDust(byproduct.mMaterial.smeltInto, byproduct.mAmount));
             }
         }
 
@@ -217,18 +217,18 @@ public class RecipeRegistrator {
 
         boolean hide = (material != Materials.Iron) && (GT_Mod.gregtechproxy.mHideRecyclingRecipes);
         if (allowAlloySmelter)
-            ModHandler.addSmeltingAndAlloySmeltingRecipe(GT_Utility.copyAmount(1, stack), GT_OreDictUnificator.getIngot(material.smeltInto, materialAmount), hide);
+            ModHandler.addSmeltingAndAlloySmeltingRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.getIngot(material.smeltInto, materialAmount), hide);
         else
-            ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1, stack), GT_OreDictUnificator.getIngot(material.smeltInto, materialAmount));
+            ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.getIngot(material.smeltInto, materialAmount));
     }
 
     public static void registerReverseArcSmelting(ItemStack stack, Material material, long materialAmount, MaterialStack byProduct01, MaterialStack byProduct02, MaterialStack byProduct03) {
-        registerReverseArcSmelting(stack, new ItemData(material == null ? null : new MaterialStack(material, materialAmount), byProduct01, byProduct02, byProduct03));
+        registerReverseArcSmelting(stack, new ItemMaterialInfo(material == null ? null : new MaterialStack(material, materialAmount), byProduct01, byProduct02, byProduct03));
     }
 
-    public static void registerReverseArcSmelting(ItemStack stack, ItemData data) {
+    public static void registerReverseArcSmelting(ItemStack stack, ItemMaterialInfo data) {
         if (stack == null || data == null) return;
-        data = new ItemData(data);
+        data = new ItemMaterialInfo(data);
 
         if (!data.hasValidMaterialData()) return;
         boolean iron = false;
@@ -267,12 +267,12 @@ public class RecipeRegistrator {
             material.mAmount = 0;
         }
 
-        data = new ItemData(data);
+        data = new ItemMaterialInfo(data);
         if (data.mByProducts.length > 3) for (MaterialStack material : data.getAllMaterialStacks()){
             if (material.mMaterial == Materials.Ash) material.mAmount = 0;
         }
 
-        data = new ItemData(data);
+        data = new ItemMaterialInfo(data);
 
         if (!data.hasValidMaterialData()) return;
 
@@ -281,23 +281,23 @@ public class RecipeRegistrator {
             amount += material.mAmount * material.mMaterial.getMass();
 
         boolean hide = !iron && GT_Mod.gregtechproxy.mHideRecyclingRecipes;
-        RA.addArcFurnaceRecipe(stack, new ItemStack[]{GT_OreDictUnificator.getIngotOrDust(data.mMaterial), GT_OreDictUnificator.getIngotOrDust(data.getByProduct(0)), GT_OreDictUnificator.getIngotOrDust(data.getByProduct(1)), GT_OreDictUnificator.getIngotOrDust(data.getByProduct(2))}, null, (int) Math.max(16, amount / M), 96, hide);
+        RA.addArcFurnaceRecipe(stack, new ItemStack[]{OreDictionaryUnifier.getIngotOrDust(data.mMaterial), OreDictionaryUnifier.getIngotOrDust(data.getByProduct(0)), OreDictionaryUnifier.getIngotOrDust(data.getByProduct(1)), OreDictionaryUnifier.getIngotOrDust(data.getByProduct(2))}, null, (int) Math.max(16, amount / M), 96, hide);
     }
 
     public static void registerReverseMacerating(ItemStack stack, Material material, long materialAmount, MaterialStack byProduct01, MaterialStack byProduct02, MaterialStack byProduct03, boolean allowHammer) {
-        registerReverseMacerating(stack, new ItemData(material == null ? null : new MaterialStack(material, materialAmount), byProduct01, byProduct02, byProduct03), allowHammer);
+        registerReverseMacerating(stack, new ItemMaterialInfo(material == null ? null : new MaterialStack(material, materialAmount), byProduct01, byProduct02, byProduct03), allowHammer);
     }
 
-    public static void registerReverseMacerating(ItemStack stack, ItemData data, boolean allowHammer) {
+    public static void registerReverseMacerating(ItemStack stack, ItemMaterialInfo data, boolean allowHammer) {
         if (stack == null || data == null) return;
-        data = new ItemData(data);
+        data = new ItemMaterialInfo(data);
 
         if (!data.hasValidMaterialData()) return;
 
         for (MaterialStack material : data.getAllMaterialStacks())
             material.mMaterial = material.mMaterial.macerateInto;
 
-        data = new ItemData(data);
+        data = new ItemMaterialInfo(data);
 
         if (!data.hasValidMaterialData()) return;
 
@@ -306,19 +306,19 @@ public class RecipeRegistrator {
             amount += material.mAmount * material.mMaterial.getMass();
         }
         boolean hide = (data.mMaterial.mMaterial != Materials.Iron) && (GT_Mod.gregtechproxy.mHideRecyclingRecipes);
-        RA.addPulveriserRecipe(stack, new ItemStack[]{GT_OreDictUnificator.getDust(data.mMaterial), GT_OreDictUnificator.getDust(data.getByProduct(0)), GT_OreDictUnificator.getDust(data.getByProduct(1)), GT_OreDictUnificator.getDust(data.getByProduct(2))}, null, data.mMaterial.mMaterial == Materials.Marble ? 1 : (int) Math.max(16, amount / M), 4, hide);
+        RA.addPulveriserRecipe(stack, new ItemStack[]{OreDictionaryUnifier.getDust(data.mMaterial), OreDictionaryUnifier.getDust(data.getByProduct(0)), OreDictionaryUnifier.getDust(data.getByProduct(1)), OreDictionaryUnifier.getDust(data.getByProduct(2))}, null, data.mMaterial.mMaterial == Materials.Marble ? 1 : (int) Math.max(16, amount / M), 4, hide);
 
         if (allowHammer) {
             for (MaterialStack material : data.getAllMaterialStacks()) {
                 if (material.mMaterial instanceof GemMaterial) {
-                    RA.addForgeHammerRecipe(GT_Utility.copyAmount(1, stack), GT_OreDictUnificator.getDust(data.mMaterial), 200, 32);
+                    RA.addForgeHammerRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.getDust(data.mMaterial), 200, 32);
                     break;
                 }
             }
         }
-        ItemStack dust = GT_OreDictUnificator.getDust(data.mMaterial);
+        ItemStack dust = OreDictionaryUnifier.getDust(data.mMaterial);
         if (dust != null) {
-            ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1, stack), dust, GT_OreDictUnificator.getDust(data.getByProduct(0)), 100, GT_OreDictUnificator.getDust(data.getByProduct(1)), 100, true);
+            ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1, stack), dust, OreDictionaryUnifier.getDust(data.getByProduct(0)), 100, OreDictionaryUnifier.getDust(data.getByProduct(1)), 100, true);
         }
     }
 
@@ -332,9 +332,9 @@ public class RecipeRegistrator {
         if (stack == null) return;
         stack = GT_Utility.copy(stack);
         ItemStack itemStack;
-        ItemData data = GT_OreDictUnificator.getItemData(stack);
+        ItemMaterialInfo data = OreDictionaryUnifier.getItemData(stack);
         if (data == null || data.mPrefix != OrePrefixes.ingot) plate = null;
-        if (plate != null && GT_OreDictUnificator.getFirstOre(plate, 1) == null) plate = null;
+        if (plate != null && OreDictionaryUnifier.getFirstOre(plate, 1) == null) plate = null;
 
         MT_1.setItem(stack.getItem());
         MT_1.stackSize = 1;
@@ -351,12 +351,12 @@ public class RecipeRegistrator {
             }
             if (data != null && data.hasValidPrefixMaterialData())
                 for (ItemStack crafted : ModHandler.getRecipeOutputs(recipe)) {
-                    GT_OreDictUnificator.addItemData(crafted, new ItemData(data.mMaterial.mMaterial, data.mMaterial.mAmount * amount));
+                    OreDictionaryUnifier.addItemData(crafted, new ItemMaterialInfo(data.mMaterial.mMaterial, data.mMaterial.mAmount * amount));
                 }
         }
 
         for (Material material : ROD_MATERIAL_LIST) {
-            ItemStack Mt2 = GT_OreDictUnificator.get(OrePrefixes.stick, material, 1);
+            ItemStack Mt2 = OreDictionaryUnifier.get(OrePrefixes.stick, material, 1);
             if (Mt2 != null) {
                 MT_2.setItem(Mt2.getItem());
                 MT_2.stackSize = 1;
@@ -372,7 +372,7 @@ public class RecipeRegistrator {
                     }
                     for (ItemStack crafted : ModHandler.getVanillyToolRecipeOutputs(recipe)) {
                         if (data != null && data.hasValidPrefixMaterialData())
-                            GT_OreDictUnificator.addItemData(crafted, new ItemData(data.mMaterial.mMaterial, data.mMaterial.mAmount * amount1, new MaterialStack(material, OrePrefixes.stick.mMaterialAmount * amount2)));
+                            OreDictionaryUnifier.addItemData(crafted, new ItemMaterialInfo(data.mMaterial.mMaterial, data.mMaterial.mAmount * amount1, new MaterialStack(material, OrePrefixes.stick.mMaterialAmount * amount2)));
 
                         if (recipeReplacing && plate != null && SHAPES_A[i] != null && SHAPES_A[i].length > 1) {
                             assert data != null;

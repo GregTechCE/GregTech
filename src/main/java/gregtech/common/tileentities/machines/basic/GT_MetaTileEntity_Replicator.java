@@ -3,6 +3,7 @@ package gregtech.common.tileentities.machines.basic;
 import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
 import gregtech.api.unification.Element;
+import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
@@ -11,7 +12,6 @@ import gregtech.api.items.ItemList;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MetaTileEntityBasicMachine;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import net.minecraft.item.ItemStack;
@@ -46,8 +46,8 @@ public class GT_MetaTileEntity_Replicator
                 if ((tFluid.amount >= tMass) && (tMass > 0L)) {
                     this.mEUt = ((int) GT_Values.V[this.mTier]);
                     this.mMaxProgresstime = ((int) (tMass * 512L / (1 << this.mTier - 1)));
-                    if ((this.mOutputItems[0] = GT_OreDictUnificator.get(OrePrefixes.dust, tMaterial, 1L)) == null) {
-                        if ((this.mOutputItems[0] = GT_OreDictUnificator.get(OrePrefixes.cell, tMaterial, 1L)) != null) {
+                    if ((this.mOutputItems[0] = OreDictionaryUnifier.get(OrePrefixes.dust, tMaterial, 1L)) == null) {
+                        if ((this.mOutputItems[0] = OreDictionaryUnifier.get(OrePrefixes.cell, tMaterial, 1L)) != null) {
                             if ((this.mOutputFluid = GT_Utility.getFluidForFilledItem(this.mOutputItems[0], true)) == null) {
                                 if (ItemList.Cell_Empty.isStackEqual(getInputAt(0))) {
                                     if (canOutput(new ItemStack[]{this.mOutputItems[0]})) {

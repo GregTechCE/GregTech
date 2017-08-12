@@ -8,14 +8,12 @@ import gregtech.api.GT_Values;
 import gregtech.api.items.OreDictNames;
 import gregtech.api.items.metaitem.stats.*;
 import gregtech.api.items.GenericItem;
-import gregtech.api.unification.stack.ItemData;
-import gregtech.api.unification.GT_OreDictUnificator;
+import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.stack.ItemMaterialInfo;
 import ic2.api.item.IBoxable;
 import ic2.api.item.ISpecialElectricItem;
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -35,14 +33,10 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.capability.wrappers.FluidContainerItemWrapper;
 import net.minecraftforge.fml.common.IFuelHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-
-import static gregtech.api.GT_Values.MODID;
 
 /**
  * MetaItem is item that can have up to Short.MAX_VALUE items inside one id.
@@ -469,22 +463,22 @@ public class MetaItem<T extends MetaItem.MetaValueItem> extends GenericItem impl
         }
 
         public MetaValueItem setNoUnification() {
-            GT_OreDictUnificator.addToBlacklist(getStackForm());
+            OreDictionaryUnifier.addToBlacklist(getStackForm());
             return this;
         }
 
-        public void setItemData(ItemData itemData) {
-            if(itemData == null) {
-                throw new IllegalArgumentException("Cannot add null ItemData.");
+        public void setItemData(ItemMaterialInfo itemUnificationEntry) {
+            if(itemUnificationEntry == null) {
+                throw new IllegalArgumentException("Cannot add null ItemMaterialInfo.");
             }
-            GT_OreDictUnificator.setItemData(getStackForm(), itemData);
+            OreDictionaryUnifier.setItemData(getStackForm(), itemUnificationEntry);
         }
 
         public void setOreDictName(OreDictNames oreDictName) {
             if(oreDictName == null) {
                 throw new IllegalArgumentException("Cannot add null OreDictName.");
             }
-            GT_OreDictUnificator.registerOre(oreDictName.toString(), getStackForm());
+            OreDictionaryUnifier.registerOre(oreDictName.toString(), getStackForm());
         }
 
         public MetaValueItem setInvisible() {

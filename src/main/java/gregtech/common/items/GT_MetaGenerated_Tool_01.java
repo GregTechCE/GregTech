@@ -3,10 +3,10 @@ package gregtech.common.items;
 import gregtech.api.ConfigCategories;
 import gregtech.api.GregTech_API;
 import gregtech.api.items.ToolDictNames;
+import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.common.tools.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -156,13 +156,13 @@ public class GT_MetaGenerated_Tool_01  extends GT_MetaGenerated_Tool {
 
             }
             if (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, "Coal", true)) {
-                GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ToolDictNames.craftingToolMortar, new ItemStack(Items.COAL, 1)});
+                GT_ModHandler.addShapelessCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Coal, 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ToolDictNames.craftingToolMortar, new ItemStack(Items.COAL, 1)});
             }
             if (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, "Clay", true)) {
-                GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ToolDictNames.craftingToolMortar, new ItemStack(Blocks.CLAY, 1)});
+                GT_ModHandler.addShapelessCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Clay, 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ToolDictNames.craftingToolMortar, new ItemStack(Blocks.CLAY, 1)});
             }
             if (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, "Wheat", true)) {
-                GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ToolDictNames.craftingToolMortar, new ItemStack(Items.WHEAT, 1)});
+                GT_ModHandler.addShapelessCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Wheat, 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ToolDictNames.craftingToolMortar, new ItemStack(Items.WHEAT, 1)});
             }
             if (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, "Flint", true)) {
                 GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(Items.FLINT, 1), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ToolDictNames.craftingToolMortar, new ItemStack(Blocks.GRAVEL, 1)});

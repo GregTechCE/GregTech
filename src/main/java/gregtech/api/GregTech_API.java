@@ -11,7 +11,7 @@ import gregtech.api.objects.GT_Cover_None;
 import gregtech.api.objects.GT_HashSet;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
-import gregtech.api.unification.GT_OreDictUnificator;
+import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.util.*;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.blocks.BlockMachines;
@@ -273,7 +273,7 @@ public class GregTech_API {
     public static ItemStack getUnificatedOreDictStack(ItemStack aOreStack) {
         if (!GregTech_API.sPreloadFinished)
             GTLog.err.println("GregTech_API ERROR: " + aOreStack.getItem() + "." + aOreStack.getItemDamage() + " - OreDict Unification Entries are not registered now, please call it in the postload phase.");
-        return GT_OreDictUnificator.get(true, aOreStack);
+        return OreDictionaryUnifier.get(true, aOreStack);
     }
 
     /**

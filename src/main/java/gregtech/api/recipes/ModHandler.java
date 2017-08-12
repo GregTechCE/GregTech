@@ -5,6 +5,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.ConfigCategories;
 import gregtech.api.items.ItemList;
 import gregtech.api.items.OreDictNames;
+import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.items.ToolDictNames;
 import gregtech.api.unification.Material;
@@ -13,13 +14,12 @@ import gregtech.api.items.IDamagableItem;
 import gregtech.api.items.IItemContainer;
 import gregtech.api.interfaces.internal.IRemovableRecipe;
 import gregtech.api.objects.GT_HashSet;
+import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.SimpleItemStack;
-import gregtech.api.unification.stack.ItemData;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_IBoxableWrapper;
 import gregtech.api.util.GT_ItsNotMyFaultException;
 import gregtech.api.util.GTLog;
-import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
@@ -370,7 +370,7 @@ public class ModHandler {
      * Adds a Scrapbox Drop. Fails at April first for the "suddenly Hoes"-Feature of IC2
      */
     public static void addScrapboxDrop(float chance, ItemStack output) {
-        output = GT_OreDictUnificator.get(true, output);
+        output = OreDictionaryUnifier.get(true, output);
         Validate.notNull(output, "Output cannot be null");
         Validate.isTrue(chance > 0, "Chance cannot be less or equal to zero");
 
@@ -401,7 +401,7 @@ public class ModHandler {
      * Just simple Furnace smelting. Unbelievable how Minecraft fails at making a simple ItemStack->ItemStack mapping...
      */
     public static void addSmeltingRecipe(ItemStack input, ItemStack output) {
-        output = GT_OreDictUnificator.get(true, output);
+        output = OreDictionaryUnifier.get(true, output);
 
         Validate.notNull(input, "Input cannot be null");
         Validate.notNull(output, "Output cannot be null");
@@ -450,7 +450,7 @@ public class ModHandler {
      * LiquidTransposer Recipe for both directions
      */
     public static void addLiquidTransposerRecipe(ItemStack emptyContainer, FluidStack fluid, ItemStack fullContainer, int RF) {
-        fullContainer = GT_OreDictUnificator.get(true, fullContainer);
+        fullContainer = OreDictionaryUnifier.get(true, fullContainer);
         Validate.notNull(emptyContainer, "Empty Container cannot be null");
         Validate.notNull(fullContainer, "Full Container cannot be null");
         Validate.notNull(fluid, "Fluid Container cannot be null");
@@ -468,7 +468,7 @@ public class ModHandler {
      * LiquidTransposer Recipe for filling Containers
      */
     public static void addLiquidTransposerFillRecipe(ItemStack emptyContainer, FluidStack fluid, ItemStack fullContainer, int MJ) {
-        fullContainer = GT_OreDictUnificator.get(true, fullContainer);
+        fullContainer = OreDictionaryUnifier.get(true, fullContainer);
         Validate.notNull(emptyContainer, "Empty Container cannot be null");
         Validate.notNull(fullContainer, "Full Container cannot be null");
         Validate.notNull(fluid, "Fluid Container cannot be null");
@@ -486,7 +486,7 @@ public class ModHandler {
      * LiquidTransposer Recipe for emptying Containers
      */
     public static void addLiquidTransposerEmptyRecipe(ItemStack fullContainer, FluidStack fluid, ItemStack emptyContainer, int RF) {
-        emptyContainer = GT_OreDictUnificator.get(true, emptyContainer);
+        emptyContainer = OreDictionaryUnifier.get(true, emptyContainer);
         Validate.notNull(emptyContainer, "Empty Container cannot be null");
         Validate.notNull(fullContainer, "Full Container cannot be null");
         Validate.notNull(fluid, "Fluid Container cannot be null");
@@ -504,7 +504,7 @@ public class ModHandler {
      * IC2-Extractor Recipe. Overrides old Recipe
      */
     public static void addExtractionRecipe(ItemStack input, ItemStack output) {
-        output = GT_OreDictUnificator.get(true, output);
+        output = OreDictionaryUnifier.get(true, output);
 
         Validate.notNull(input, "Input cannot be null");
         Validate.notNull(output, "Output cannot be null");
@@ -518,7 +518,7 @@ public class ModHandler {
      * RC-BlastFurnace Recipes
      */
     public static boolean addRCBlastFurnaceRecipe(ItemStack input, ItemStack output, int time) {
-        output = GT_OreDictUnificator.get(true, output);
+        output = OreDictionaryUnifier.get(true, output);
         Validate.notNull(input, "Input cannot be null");
         Validate.notNull(output, "Output cannot be null");
         Validate.isTrue(time > 0, "Time cannot be less or equal to zero");
@@ -563,8 +563,8 @@ public class ModHandler {
      * Adds Several Pulverizer-Type Recipes.
      */
     public static void addPulverisationRecipe(ItemStack input, ItemStack output1, ItemStack output2, int chance2, ItemStack output3, int chance3, boolean overwrite) {
-        output1 = GT_OreDictUnificator.get(true, output1);
-        output2 = GT_OreDictUnificator.get(true, output2);
+        output1 = OreDictionaryUnifier.get(true, output1);
+        output2 = OreDictionaryUnifier.get(true, output2);
         Validate.isTrue(GT_Utility.isStackValid(input), "Input item stack is invalid");
         Validate.isTrue(GT_Utility.isStackValid(output1), "First output item stack is invalid");
 
@@ -589,7 +589,7 @@ public class ModHandler {
 
         if (!OrePrefixes.log.contains(input)) {
             boolean enableTEMachineRecipes = GT_Mod.gregtechproxy.mTEMachineRecipes;
-            if (GT_OreDictUnificator.getItemData(output1).mMaterial == Materials.Wood) {
+            if (OreDictionaryUnifier.getItemData(output1).mMaterial == Materials.Wood) {
                 if (enableTEMachineRecipes && GregTech_API.sRecipeFile.get(ConfigCategories.Machines.pulverization, input, true)) {
                     if (output2 == null)
                         ThermalExpansion.addSawmillRecipe(32000, GT_Utility.copy(input), GT_Utility.copy(output1));
@@ -628,7 +628,7 @@ public class ModHandler {
 
     public static void addMagneticraftRecipe(ItemStack input, ItemStack output1, ItemStack output2, int chance2, ItemStack output3, int chance3){
         if (GregTech_API.mMagneticraft && GT_Mod.gregtechproxy.mMagneticraftRecipes) {
-            ItemData data = GT_OreDictUnificator.getAssociation(input);
+            ItemMaterialInfo data = OreDictionaryUnifier.getAssociation(input);
             if (data != null && data.mPrefix != null) {
                 if (data.mPrefix == OrePrefixes.ore || data.mPrefix == OrePrefixes.oreBlackgranite || data.mPrefix == OrePrefixes.oreEndstone || data.mPrefix == OrePrefixes.oreNetherrack || data.mPrefix == OrePrefixes.oreRedgranite) {
                     //TODO com.cout970.magneticraft.api.access.MgRecipeRegister.registerCrusherRecipe(input, output1, output2,(float)((float)chance2/GT_Mod.gregtechproxy.mMagneticraftBonusOutputPercent), output3,(float)((float)chance3/GT_Mod.gregtechproxy.mMagneticraftBonusOutputPercent));
@@ -643,7 +643,7 @@ public class ModHandler {
      * Adds a Recipe to the Sawmills of GregTech and ThermalCraft
      */
     public static void addSawmillRecipe(ItemStack input1, ItemStack output1, ItemStack output2) {
-        output2 = GT_OreDictUnificator.get(true, output2);
+        output2 = OreDictionaryUnifier.get(true, output2);
         Validate.notNull(input1, "Input cannot be null");
         Validate.notNull(output1, "Output cannot be null");
 
@@ -660,7 +660,7 @@ public class ModHandler {
      * Induction Smelter Recipes and Alloy Smelter Recipes
      */
     public static void addAlloySmelterRecipe(ItemStack input1, ItemStack input2, ItemStack output1, int duration, int EUt, boolean allowSecondaryInputEmpty) {
-        output1 = GT_OreDictUnificator.get(true, output1);
+        output1 = OreDictionaryUnifier.get(true, output1);
         Validate.notNull(input1, "First input cannot be null");
         Validate.isTrue(input2 != null && allowSecondaryInputEmpty, "Second input cannot be null");
         Validate.notNull(output1, "Output cannot be null");
@@ -681,8 +681,8 @@ public class ModHandler {
      * Induction Smelter Recipes for TE
      */
     public static void addInductionSmelterRecipe(ItemStack input1, ItemStack input2, ItemStack output1, ItemStack output2, int energy, int chance) {
-        output1 = GT_OreDictUnificator.get(true, output1);
-        output2 = GT_OreDictUnificator.get(true, output2);
+        output1 = OreDictionaryUnifier.get(true, output1);
+        output2 = OreDictionaryUnifier.get(true, output2);
         Validate.notNull(input1, "Input cannot be null");
         Validate.notNull(output1, "Output cannot be null");
         Validate.isTrue(GT_Utility.getContainerItem(input1, false) != null, "Input item cannot have container item");
@@ -700,7 +700,7 @@ public class ModHandler {
      * Smelts Ores to Ingots
      */
     public static void addOreToIngotSmeltingRecipe(ItemStack input, ItemStack output) {
-        output = GT_OreDictUnificator.get(true, output);
+        output = OreDictionaryUnifier.get(true, output);
         Validate.notNull(input, "Input cannot be null");
         Validate.notNull(output, "Output cannot be null");
 
@@ -747,7 +747,7 @@ public class ModHandler {
      * IC2-Compressor Recipe. Overloads old Recipes automatically
      */
     public static void addCompressionRecipe(ItemStack input, ItemStack output) {
-        output = GT_OreDictUnificator.get(true, output);
+        output = OreDictionaryUnifier.get(true, output);
         Validate.notNull(input, "Input cannot be null");
         Validate.notNull(output, "Output cannot be null");
 
@@ -779,7 +779,7 @@ public class ModHandler {
      * Rolling Machine Crafting Recipe
      */
     public static void addRollingMachineRecipe(ItemStack result, Object[] recipe) {
-        result = GT_OreDictUnificator.get(true, result);
+        result = OreDictionaryUnifier.get(true, result);
         Validate.notNull(result, "Output cannot be null");
         Validate.notNull(recipe, "Recipe cannot be null");
         Validate.isTrue(recipe.length > 0, "Recipe cannot be empty");
@@ -886,7 +886,7 @@ public class ModHandler {
                                              boolean removeAllOtherNativeRecipes, boolean checkForCollisions,
                                              boolean onlyAddIfThereIsAnyRecipeOutputtingThis,
                                              Object[] recipe) {
-        result = GT_OreDictUnificator.get(true, result);
+        result = OreDictionaryUnifier.get(true, result);
         Validate.notNull(result, "Result cannot be null");
         Validate.notNull(recipe, "Recipe cannot be null");
         Validate.isTrue(recipe.length > 0, "Recipe cannot be empty");
@@ -902,7 +902,7 @@ public class ModHandler {
                 recipe[i] = ((Enum<?>) recipe[i]).name();
             } else if (!(recipe[i] == null ||
                     recipe[i] instanceof ItemStack ||
-                    recipe[i] instanceof ItemData ||
+                    recipe[i] instanceof ItemMaterialInfo ||
                     recipe[i] instanceof String ||
                     recipe[i] instanceof Character)) {
                 recipe[i] = recipe[i].toString();
@@ -992,7 +992,7 @@ public class ModHandler {
             idx++;
         }
         /*ConcurrentHash*/Map<Character, ItemStack> itemStackMap = new /*ConcurrentHash*/HashMap<>();
-        /*ConcurrentHash*/Map<Character, ItemData> itemDataMap = new /*ConcurrentHash*/HashMap<>();
+        /*ConcurrentHash*/Map<Character, ItemMaterialInfo> itemDataMap = new /*ConcurrentHash*/HashMap<>();
         itemStackMap.put(' ', null);
 
         boolean removeRecipe = true;
@@ -1012,48 +1012,48 @@ public class ModHandler {
             if (in instanceof ItemStack) {
 
                 itemStackMap.put(chr, GT_Utility.copy((ItemStack) in));
-                itemDataMap.put(chr, GT_OreDictUnificator.getItemData((ItemStack) in));
-            } else if (in instanceof ItemData) {
+                itemDataMap.put(chr, OreDictionaryUnifier.getItemData((ItemStack) in));
+            } else if (in instanceof ItemMaterialInfo) {
 
                 String string = in.toString();
                 switch (string) {
                     case "plankWood":
-                        itemDataMap.put(chr, new ItemData(Materials.Wood, M));
+                        itemDataMap.put(chr, new ItemMaterialInfo(Materials.Wood, M));
                         break;
                     case "stoneNetherrack":
-                        itemDataMap.put(chr, new ItemData(Materials.Netherrack, M));
+                        itemDataMap.put(chr, new ItemMaterialInfo(Materials.Netherrack, M));
                         break;
                     case "stoneObsidian":
-                        itemDataMap.put(chr, new ItemData(Materials.Obsidian, M));
+                        itemDataMap.put(chr, new ItemMaterialInfo(Materials.Obsidian, M));
                         break;
                     case "stoneEndstone":
-                        itemDataMap.put(chr, new ItemData(Materials.Endstone, M));
+                        itemDataMap.put(chr, new ItemMaterialInfo(Materials.Endstone, M));
                         break;
                     default:
-                        itemDataMap.put(chr, (ItemData) in);
+                        itemDataMap.put(chr, (ItemMaterialInfo) in);
                         break;
                 }
 
-                ItemStack stack = GT_OreDictUnificator.getFirstOre(in, 1);
+                ItemStack stack = OreDictionaryUnifier.getFirstOre(in, 1);
                 if (stack == null) removeRecipe = false;
                 else itemStackMap.put(chr, stack);
                 in = recipe[idx + 1] = in.toString();
             } else if (in instanceof String) {
 
                 if (in.equals(OreDictNames.craftingChest.toString()))
-                    itemDataMap.put(chr, new ItemData(Materials.Wood, M * 8));
+                    itemDataMap.put(chr, new ItemMaterialInfo(Materials.Wood, M * 8));
                 else if (in.equals(OreDictNames.craftingBook.toString()))
-                    itemDataMap.put(chr, new ItemData(Materials.Paper, M * 3));
+                    itemDataMap.put(chr, new ItemMaterialInfo(Materials.Paper, M * 3));
                 else if (in.equals(OreDictNames.craftingPiston.toString()))
-                    itemDataMap.put(chr, new ItemData(Materials.Stone, M * 4, Materials.Wood, M * 3));
+                    itemDataMap.put(chr, new ItemMaterialInfo(Materials.Stone, M * 4, Materials.Wood, M * 3));
                 else if (in.equals(OreDictNames.craftingFurnace.toString()))
-                    itemDataMap.put(chr, new ItemData(Materials.Stone, M * 8));
+                    itemDataMap.put(chr, new ItemMaterialInfo(Materials.Stone, M * 8));
                 else if (in.equals(OreDictNames.craftingIndustrialDiamond.toString()))
-                    itemDataMap.put(chr, new ItemData(Materials.Diamond, M));
+                    itemDataMap.put(chr, new ItemMaterialInfo(Materials.Diamond, M));
                 else if (in.equals(OreDictNames.craftingAnvil.toString()))
-                    itemDataMap.put(chr, new ItemData(Materials.Iron, M * 10));
+                    itemDataMap.put(chr, new ItemMaterialInfo(Materials.Iron, M * 10));
 
-                ItemStack stack = GT_OreDictUnificator.getFirstOre(in, 1);
+                ItemStack stack = OreDictionaryUnifier.getFirstOre(in, 1);
                 if (stack == null) removeRecipe = false;
                 else itemStackMap.put(chr, stack);
             } else {
@@ -1062,12 +1062,12 @@ public class ModHandler {
         }
 
         if (reversible && result != null) {
-            ItemData[] itemData = new ItemData[9];
+            ItemMaterialInfo[] itemData = new ItemMaterialInfo[9];
 
             int x = -1;
             boolean hasNulls = false;
             for (char chr : shape.toString().toCharArray()) {
-                ItemData data = itemDataMap.get(chr);
+                ItemMaterialInfo data = itemDataMap.get(chr);
                 if (data == null) {
                     hasNulls = true;
                     break;
@@ -1076,7 +1076,7 @@ public class ModHandler {
             }
 
             if (!hasNulls) {
-                GT_OreDictUnificator.addItemData(result, new ItemData(itemData));
+                OreDictionaryUnifier.addItemData(result, new ItemMaterialInfo(itemData));
             }
         }
 
@@ -1105,7 +1105,7 @@ public class ModHandler {
                 IRecipe tmpRecipe = list.get(i);
 
                 if (specialRecipeClasses.contains(tmpRecipe.getClass().getName())) continue;
-                if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(tmpRecipe.getRecipeOutput()), result, true)) {
+                if (GT_Utility.areStacksEqual(OreDictionaryUnifier.get(tmpRecipe.getRecipeOutput()), result, true)) {
                     list.remove(i--);
                     listSize = list.size();
                     thereWasARecipe = true;
@@ -1158,7 +1158,7 @@ public class ModHandler {
     private static void addShapelessCraftingRecipe(ItemStack result, Enchantment[] enchantmentsAdded, int[] enchantmentLevelsAdded,
                                                    boolean buffered, boolean keepNBT, boolean dismantleable, boolean removable,
                                                    Object[] recipe) {
-        result = GT_OreDictUnificator.get(true, result);
+        result = OreDictionaryUnifier.get(true, result);
         Validate.notNull(result, "Result cannot be null");
         Validate.notNull(recipe, "Recipe cannot be null");
         Validate.isTrue(recipe.length > 0, "Recipe cannot be empty");
@@ -1190,7 +1190,7 @@ public class ModHandler {
             if (object instanceof ItemStack) {
                 recipeStacks[i] = (ItemStack) object;
             } else if (object instanceof String) {
-                recipeStacks[i] = GT_OreDictUnificator.getFirstOre(object, 1);
+                recipeStacks[i] = OreDictionaryUnifier.getFirstOre(object, 1);
                 if (recipeStacks[i] == null) break;
             }/* else if (object instanceof Boolean) {
                 //
@@ -1284,7 +1284,7 @@ public class ModHandler {
         boolean removed = false;
 
         List<IRecipe> list = CraftingManager.getInstance().getRecipeList();
-        output = GT_OreDictUnificator.get(output);
+        output = OreDictionaryUnifier.get(output);
         int listSize = list.size();
 
         for (int i = 0; i < listSize; i++) {
@@ -1301,7 +1301,7 @@ public class ModHandler {
 
             ItemStack stack = recipe.getRecipeOutput();
             if ((!(recipe instanceof IRemovableRecipe) || ((IRemovableRecipe) recipe).isRemovable()) &&
-                    GT_Utility.areStacksEqual(GT_OreDictUnificator.get(stack), output, ignoreNBT)) {
+                    GT_Utility.areStacksEqual(OreDictionaryUnifier.get(stack), output, ignoreNBT)) {
                 list.remove(i--);
                 listSize=list.size();
                 removed = true;
@@ -1585,7 +1585,7 @@ public class ModHandler {
     public static ItemStack getSmeltingOutput(ItemStack input, boolean removeInput, ItemStack outputSlot) {
         if (input == null || input.stackSize < 1) return null;
 
-        ItemStack stack = GT_OreDictUnificator.get(FurnaceRecipes.instance().getSmeltingResult(input));
+        ItemStack stack = OreDictionaryUnifier.get(FurnaceRecipes.instance().getSmeltingResult(input));
         if (stack != null && (outputSlot == null || (GT_Utility.areStacksEqual(stack, outputSlot) && stack.stackSize + outputSlot.stackSize <= outputSlot.getMaxStackSize()))) {
             if (removeInput) input.stackSize--;
             return stack;

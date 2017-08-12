@@ -10,7 +10,7 @@ import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
-//import gregtech.api.unification.GT_OreDictUnificator;
+//import gregtech.api.unification.OreDictionaryUnifier;
 
 
 public class BlockGranites extends BlockStonesAbstract {
@@ -34,22 +34,22 @@ public class BlockGranites extends BlockStonesAbstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Mossy Red Granite Bricks");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Chiseled Red Granite");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Smooth Red Granite");
-//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.GraniteBlack, new ItemStack(this, 1, 0));
-//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.GraniteBlack, new ItemStack(this, 1, 1));
-//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.GraniteBlack, new ItemStack(this, 1, 2));
-//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.GraniteBlack, new ItemStack(this, 1, 3));
-//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.GraniteBlack, new ItemStack(this, 1, 4));
-//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.GraniteBlack, new ItemStack(this, 1, 5));
-//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.GraniteBlack, new ItemStack(this, 1, 6));
-//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.GraniteBlack, new ItemStack(this, 1, 7));
-//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(this, 1, 8));
-//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(this, 1, 9));
-//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(this, 1, 10));
-//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(this, 1, 11));
-//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(this, 1, 12));
-//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(this, 1, 13));
-//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(this, 1, 14));
-//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(this, 1, 15));
+//        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.GraniteBlack, new ItemStack(this, 1, 0));
+//        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.GraniteBlack, new ItemStack(this, 1, 1));
+//        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.GraniteBlack, new ItemStack(this, 1, 2));
+//        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.GraniteBlack, new ItemStack(this, 1, 3));
+//        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.GraniteBlack, new ItemStack(this, 1, 4));
+//        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.GraniteBlack, new ItemStack(this, 1, 5));
+//        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.GraniteBlack, new ItemStack(this, 1, 6));
+//        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.GraniteBlack, new ItemStack(this, 1, 7));
+//        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(this, 1, 8));
+//        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(this, 1, 9));
+//        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(this, 1, 10));
+//        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(this, 1, 11));
+//        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(this, 1, 12));
+//        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(this, 1, 13));
+//        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(this, 1, 14));
+//        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(this, 1, 15));
     }
 
     @Override

@@ -209,9 +209,9 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 	protected abstract R getThis();
 
 	protected void finalizeAndValidate() {
-//			GT_OreDictUnificator.setStackArray(true, inputs);
-//			GT_OreDictUnificator.setStackArray(true, outputs);
-//			GT_OreDictUnificator.setStackArray(true, chancedOutputs);
+//			OreDictionaryUnifier.setStackArray(true, inputs);
+//			OreDictionaryUnifier.setStackArray(true, outputs);
+//			OreDictionaryUnifier.setStackArray(true, chancedOutputs);
 
 		for (ItemStack stack : inputs) {
 			if (Items.FEATHER.getDamage(stack) != W) {

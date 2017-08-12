@@ -1,7 +1,7 @@
 package gregtech.api.items;
 
+import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -702,7 +702,7 @@ public enum ItemList implements IItemContainer {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         if (!GT_Utility.isStackValid(mStack)) return GT_Utility.copyAmount(amount, replacements);
-        return GT_Utility.copyAmount(amount, GT_OreDictUnificator.get(mStack));
+        return GT_Utility.copyAmount(amount, OreDictionaryUnifier.get(mStack));
     }
 
     @Override
@@ -710,7 +710,7 @@ public enum ItemList implements IItemContainer {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         if (!GT_Utility.isStackValid(mStack)) return GT_Utility.copyAmount(amount, replacements);
-        return GT_Utility.copyAmountAndMetaData(amount, W, GT_OreDictUnificator.get(mStack));
+        return GT_Utility.copyAmountAndMetaData(amount, W, OreDictionaryUnifier.get(mStack));
     }
 
     @Override
@@ -718,7 +718,7 @@ public enum ItemList implements IItemContainer {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         if (!GT_Utility.isStackValid(mStack)) return GT_Utility.copyAmount(amount, replacements);
-        return GT_Utility.copyAmountAndMetaData(amount, 0, GT_OreDictUnificator.get(mStack));
+        return GT_Utility.copyAmountAndMetaData(amount, 0, OreDictionaryUnifier.get(mStack));
     }
 
     @Override
@@ -726,7 +726,7 @@ public enum ItemList implements IItemContainer {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         if (!GT_Utility.isStackValid(mStack)) return GT_Utility.copyAmount(amount, replacements);
-        return GT_Utility.copyAmountAndMetaData(amount, mStack.getMaxDamage() - 1, GT_OreDictUnificator.get(mStack));
+        return GT_Utility.copyAmountAndMetaData(amount, mStack.getMaxDamage() - 1, OreDictionaryUnifier.get(mStack));
     }
 
     @Override
@@ -750,14 +750,14 @@ public enum ItemList implements IItemContainer {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         if (!GT_Utility.isStackValid(mStack)) return GT_Utility.copyAmount(amount, replacements);
-        return GT_Utility.copyAmountAndMetaData(amount, metaValue, GT_OreDictUnificator.get(mStack));
+        return GT_Utility.copyAmountAndMetaData(amount, metaValue, OreDictionaryUnifier.get(mStack));
     }
 
     @Override
     public IItemContainer registerOre(Object... aOreNames) {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
-        for (Object tOreName : aOreNames) GT_OreDictUnificator.registerOre(tOreName, get(1));
+        for (Object tOreName : aOreNames) OreDictionaryUnifier.registerOre(tOreName, get(1));
         return this;
     }
 
@@ -765,7 +765,7 @@ public enum ItemList implements IItemContainer {
     public IItemContainer registerWildcardAsOre(Object... aOreNames) {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
-        for (Object tOreName : aOreNames) GT_OreDictUnificator.registerOre(tOreName, getWildcard(1));
+        for (Object tOreName : aOreNames) OreDictionaryUnifier.registerOre(tOreName, getWildcard(1));
         return this;
     }
 

@@ -2,10 +2,10 @@ package gregtech.api.util;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.ConfigCategories;
-import gregtech.api.unification.GT_OreDictUnificator;
+import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefixes;
-import gregtech.api.unification.stack.ItemData;
+import gregtech.api.unification.stack.ItemMaterialInfo;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.CropProperties;
 import ic2.api.crops.Crops;
@@ -195,7 +195,7 @@ public class GT_BaseCrop extends CropCard {
         for (int i = 1; i < this.getRootsLength(aCrop); i++) {
             IBlockState downState = aCrop.getWorldObj().getBlockState(aCrop.getPosition().down(i));
             int tMetaID = downState.getBlock().getMetaFromState(downState);
-            ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(downState.getBlock(), 1, tMetaID));
+            ItemMaterialInfo tAssotiation = OreDictionaryUnifier.getAssociation(new ItemStack(downState.getBlock(), 1, tMetaID));
             if (tAssotiation != null && tAssotiation.mMaterial.mMaterial == mBlock) {
                 if (tAssotiation.mPrefix.toString().startsWith("ore") || tAssotiation.mPrefix == OrePrefixes.block) {
                     return true;

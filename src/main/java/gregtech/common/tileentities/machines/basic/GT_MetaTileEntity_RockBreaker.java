@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.enums.Textures;
@@ -8,7 +9,6 @@ import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MetaTileEntityBasicMachine;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.init.Blocks;
@@ -46,7 +46,7 @@ public class GT_MetaTileEntity_RockBreaker
                 tOutput = new ItemStack(Blocks.COBBLESTONE, 1);
             }
             if (tOutput != null) {
-                if (GT_Utility.areStacksEqual(getInputAt(0), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))) {
+                if (GT_Utility.areStacksEqual(getInputAt(0), OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Redstone, 1L))) {
                     tOutput = new ItemStack(Blocks.OBSIDIAN, 1);
                     if (canOutput(tOutput)) {
                         getInputAt(0).stackSize -= 1;

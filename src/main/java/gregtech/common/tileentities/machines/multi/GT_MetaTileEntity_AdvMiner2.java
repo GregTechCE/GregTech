@@ -3,6 +3,7 @@ package gregtech.common.tileentities.machines.multi;
 import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
 import gregtech.api.items.ItemList;
+import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.enums.Textures;
@@ -12,9 +13,8 @@ import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.unification.stack.ItemData;
+import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_GeneratedOres;
@@ -116,7 +116,7 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
                                 mMineList.add(new BlockPos(i, yLevel - getBaseMetaTileEntity().getYCoord(), f));
                             }
                         } else {
-                            ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
+                            ItemMaterialInfo tAssotiation = OreDictionaryUnifier.getAssociation(new ItemStack(tBlock, 1, tMetaID));
                             if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {
                                 BlockPos cp = new BlockPos(i, yLevel - getBaseMetaTileEntity().getYCoord(), f);
                                 if (!mMineList.contains(cp)) {
@@ -166,7 +166,7 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
 
                 getBaseMetaTileEntity().getWorldObj().setBlockToAir(pos);
                 if (!tDrops.isEmpty()) {
-                    ItemData tData = GT_OreDictUnificator.getItemData(tDrops.get(0).copy());
+                    ItemMaterialInfo tData = OreDictionaryUnifier.getItemData(tDrops.get(0).copy());
                     if (tData.mPrefix != OrePrefixes.crushed && tData.mMaterial.mMaterial != Materials.Oilsands) {
 
                         GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(getBaseMetaTileEntity(), false, tVoltage, null, tDrops.get(0).copy());

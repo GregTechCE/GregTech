@@ -1,10 +1,10 @@
 package gregtech.common.items.behaviors;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.unification.stack.ItemData;
+import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -39,7 +39,7 @@ public class Behaviour_Prospecting extends Behaviour_None {
         Block block = blockState.getBlock();
         int blockMeta = block.getMetaFromState(blockState);
 
-        ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(block, 1, blockMeta));
+        ItemMaterialInfo tAssotiation = OreDictionaryUnifier.getAssociation(new ItemStack(block, 1, blockMeta));
         if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {
             GT_Utility.sendChatToPlayer(aPlayer, "This is " + tAssotiation.mMaterial.mMaterial.mDefaultLocalName + " Ore.");
             GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(1), 1.0F, -1.0F, blockPos);

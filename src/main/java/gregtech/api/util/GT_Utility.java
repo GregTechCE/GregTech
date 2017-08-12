@@ -7,14 +7,14 @@ import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.damagesources.DamageSources;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.items.ItemList;
-import gregtech.api.unification.GT_OreDictUnificator;
+import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.events.BlockScanningEvent;
 import gregtech.api.items.IDebugableBlock;
 import gregtech.api.interfaces.IProjectileItem;
+import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.SimpleItemStack;
-import gregtech.api.unification.stack.ItemData;
 import gregtech.common.GT_Proxy;
 import ic2.api.crops.CropProperties;
 import ic2.api.crops.ICropTile;
@@ -407,7 +407,7 @@ public class GT_Utility {
     }
 
     public static boolean areUnificationsEqual(ItemStack aStack1, ItemStack aStack2, boolean aIgnoreNBT) {
-        return areStacksEqual(GT_OreDictUnificator.get(aStack1), GT_OreDictUnificator.get(aStack2), aIgnoreNBT);
+        return areStacksEqual(OreDictionaryUnifier.get(aStack1), OreDictionaryUnifier.get(aStack2), aIgnoreNBT);
     }
 
     public static String getFluidName(Fluid aFluid, boolean aLocalized) {
@@ -587,13 +587,13 @@ public class GT_Utility {
         if ((!isStackValid(aInput) && !isStackValid(aOutput)) || aRecipeList == null) return false;
         boolean rReturn = false;
         Iterator<IMachineRecipeManager.RecipeIoContainer> tIterator = aRecipeList.iterator();
-        aOutput = GT_OreDictUnificator.get(aOutput);
+        aOutput = OreDictionaryUnifier.get(aOutput);
         while (tIterator.hasNext()) {
             IMachineRecipeManager.RecipeIoContainer tEntry = tIterator.next();
             if (aInput == null || tEntry.input.matches(aInput)) {
                 List<ItemStack> tList = tEntry.output.items;
                 if (tList != null) for (ItemStack tOutput : tList)
-                    if (aOutput == null || areStacksEqual(GT_OreDictUnificator.get(tOutput), aOutput)) {
+                    if (aOutput == null || areStacksEqual(OreDictionaryUnifier.get(tOutput), aOutput)) {
                         tIterator.remove();
                         rReturn = true;
                         break;
@@ -605,14 +605,14 @@ public class GT_Utility {
 
     public static boolean addSimpleIC2MachineRecipe(ItemStack aInput, IMachineRecipeManager aRecipeList, NBTTagCompound aNBT, Object... aOutput) {
         if (!isStackValid(aInput) || aOutput.length == 0 || aRecipeList == null) return false;
-        ItemData tOreName = GT_OreDictUnificator.getAssociation(aInput);
+        ItemMaterialInfo tOreName = OreDictionaryUnifier.getAssociation(aInput);
         for (int i = 0; i < aOutput.length; i++) {
             if (aOutput[i] == null) {
                 GTLog.err.println("EmptyIC2Output!" + aInput.getUnlocalizedName());
                 return false;
             }
         }
-        ItemStack[] tStack = GT_OreDictUnificator.getStackArray(true, aOutput);
+        ItemStack[] tStack = OreDictionaryUnifier.getStackArray(true, aOutput);
         if (tStack == null || (tStack.length > 0 && GT_Utility.areStacksEqual(aInput, tStack[0]))) return false;
         if (tOreName != null) {
             //Catch Fossils Archeology Revival crash
@@ -798,12 +798,12 @@ public class GT_Utility {
     }
 
     public static float getHeatDamageFromItem(ItemStack aStack) {
-        ItemData tData = GT_OreDictUnificator.getItemData(aStack);
+        ItemMaterialInfo tData = OreDictionaryUnifier.getItemData(aStack);
         return tData == null ? 0 : (tData.mPrefix == null ? 0 : tData.mPrefix.mHeatDamage) + (tData.hasValidMaterialData() ? tData.mMaterial.mMaterial.mHeatDamage : 0);
     }
 
     public static int getRadioactivityLevel(ItemStack aStack) {
-        ItemData tData = GT_OreDictUnificator.getItemData(aStack);
+        ItemMaterialInfo tData = OreDictionaryUnifier.getItemData(aStack);
         if (tData != null && tData.hasValidMaterialData()) {
             if (tData.mMaterial.mMaterial.mEnchantmentArmors instanceof EnchantmentRadioactivity)
                 return tData.mMaterial.mMaterial.mEnchantmentArmorsLevel;
@@ -938,7 +938,7 @@ public class GT_Utility {
     public static ItemStack loadItem(NBTTagCompound aNBT) {
         if (aNBT == null) return null;
         ItemStack rStack = ItemStack.loadItemStackFromNBT(aNBT);
-        return GT_OreDictUnificator.get(true, rStack);
+        return OreDictionaryUnifier.get(true, rStack);
     }
 
     public static <E> E selectItemInList(int aIndex, E aReplacement, List<E> aList) {

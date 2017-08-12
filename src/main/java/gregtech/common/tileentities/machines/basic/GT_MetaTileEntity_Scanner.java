@@ -5,6 +5,7 @@ import forestry.api.genetics.IIndividual;
 import gregtech.GT_Mod;
 import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
+import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
@@ -13,10 +14,9 @@ import gregtech.api.items.ItemList;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MetaTileEntityBasicMachine;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.unification.stack.ItemData;
+import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GTLog;
-import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
@@ -98,7 +98,7 @@ public class GT_MetaTileEntity_Scanner
                     this.mEUt = (32 * (1 << this.mTier - 1) * (1 << this.mTier - 1));
                     return 2;
                 }
-                ItemData tData = GT_OreDictUnificator.getAssociation(aStack);
+                ItemMaterialInfo tData = OreDictionaryUnifier.getAssociation(aStack);
                 if ((tData != null) && ((tData.mPrefix == OrePrefixes.dust) || (tData.mPrefix == OrePrefixes.cell)) && (tData.mMaterial.mMaterial.mElement != null) && (!tData.mMaterial.mMaterial.mElement.mIsIsotope) && (tData.mMaterial.mMaterial != Materials.Magic) && (tData.mMaterial.mMaterial.getMass() > 0L)) {
                     getSpecialSlot().stackSize -= 1;
                     aStack.stackSize -= 1;

@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.basic;
 
 import gregtech.api.items.ItemList;
+import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -8,8 +9,7 @@ import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MetaTileEntityBasicMachine;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.unification.stack.ItemData;
-import gregtech.api.unification.GT_OreDictUnificator;
+import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_ModHandler;
 import ic2.core.ref.BlockName;
@@ -52,7 +52,7 @@ public class GT_MetaTileEntity_SeismicProspector extends MetaTileEntityBasicMach
             		(aStack.getItem() == Item.getItemFromBlock(Blocks.TNT) && aStack.stackSize > 3 ) || 
             		(aStack.getItem() == GT_ModHandler.getIC2Item(BlockName.te, TeBlock.itnt, 1).getItem() && aStack.stackSize > 1 ) ||
             		(aStack.getItem() == GT_ModHandler.getIC2Item(ItemName.dynamite, 1).getItem() && aStack.stackSize > 7 ) ||
-            		(GT_OreDictUnificator.getItemData(aStack).mMaterial.mMaterial == Materials.Glyceryl  && aStack.stackSize > 0 )
+            		(OreDictionaryUnifier.getItemData(aStack).mMaterial.mMaterial == Materials.Glyceryl  && aStack.stackSize > 0 )
             		) ) {
                 if ((!aPlayer.capabilities.isCreativeMode) && (aStack.stackSize != 111)) {
                 	if(aStack.getItem() == Item.getItemFromBlock(Blocks.TNT)){
@@ -91,7 +91,7 @@ public class GT_MetaTileEntity_SeismicProspector extends MetaTileEntityBasicMach
                                 }
                             } else*/ {
                                 int tMetaID = blockState.getBlock().getMetaFromState(blockState);
-                                ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
+                                ItemMaterialInfo tAssotiation = OreDictionaryUnifier.getAssociation(new ItemStack(tBlock, 1, tMetaID));
                                 if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {
                                     if (!tStringList.contains(tAssotiation.mMaterial.mMaterial.mDefaultLocalName)) {
                                         tStringList.add(tAssotiation.mMaterial.mMaterial.mDefaultLocalName);

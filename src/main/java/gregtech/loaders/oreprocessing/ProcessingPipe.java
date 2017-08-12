@@ -1,13 +1,13 @@
 package gregtech.loaders.oreprocessing;
 
 import gregtech.api.GT_Values;
+import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.items.ToolDictNames;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
@@ -44,7 +44,7 @@ public class ProcessingPipe implements IOreRegistrationHandler {
             case pipeRestrictiveMedium:
             case pipeRestrictiveSmall:
             case pipeRestrictiveTiny:
-                GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(aOreDictName.replaceFirst("Restrictive", ""), null, 1L, false, true), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Steel, aPrefix.mSecondaryMaterial.mAmount / OrePrefixes.ring.mMaterialAmount), GT_Utility.copyAmount(1L, new Object[]{aStack}), (int) (aPrefix.mSecondaryMaterial.mAmount * 400L / OrePrefixes.ring.mMaterialAmount), 4);
+                GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(aOreDictName.replaceFirst("Restrictive", ""), null, 1L, false, true), OreDictionaryUnifier.get(OrePrefixes.ring, Materials.Steel, aPrefix.mSecondaryMaterial.mAmount / OrePrefixes.ring.mMaterialAmount), GT_Utility.copyAmount(1L, new Object[]{aStack}), (int) (aPrefix.mSecondaryMaterial.mAmount * 400L / OrePrefixes.ring.mMaterialAmount), 4);
                 break;
         }
     }

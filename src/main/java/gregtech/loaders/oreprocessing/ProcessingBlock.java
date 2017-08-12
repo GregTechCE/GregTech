@@ -8,7 +8,7 @@ import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.items.ItemList;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.unification.GT_OreDictUnificator;
+import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
@@ -18,11 +18,11 @@ public class ProcessingBlock implements IOreRegistrationHandler {
     }
 
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        GT_Values.RA.addCutterRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L), null, (int) Math.max(aMaterial.getMass() * 10L, 1L), 30);
+        GT_Values.RA.addCutterRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), OreDictionaryUnifier.get(OrePrefixes.plate, aMaterial, 9L), null, (int) Math.max(aMaterial.getMass() * 10L, 1L), 30);
 
-        ItemStack tStack1 = GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L);
-        ItemStack tStack2 = GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L);
-        ItemStack tStack3 = GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L);
+        ItemStack tStack1 = OreDictionaryUnifier.get(OrePrefixes.ingot, aMaterial, 1L);
+        ItemStack tStack2 = OreDictionaryUnifier.get(OrePrefixes.gem, aMaterial, 1L);
+        ItemStack tStack3 = OreDictionaryUnifier.get(OrePrefixes.dust, aMaterial, 1L);
 
         GT_ModHandler.removeRecipe(new ItemStack[]{GT_Utility.copyAmount(1L, new Object[]{aStack})});
 
@@ -34,15 +34,15 @@ public class ProcessingBlock implements IOreRegistrationHandler {
             GT_ModHandler.removeRecipe(new ItemStack[]{tStack3, tStack3, tStack3, tStack3, tStack3, tStack3, tStack3, tStack3, tStack3});
         }
         if (aMaterial.mStandardMoltenFluid != null) {
-            GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Block.get(0L, new Object[0]), aMaterial.getMolten(1296L), GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L), 288, 8);
+            GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Block.get(0L, new Object[0]), aMaterial.getMolten(1296L), OreDictionaryUnifier.get(OrePrefixes.block, aMaterial, 1L), 288, 8);
         }
         if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.storageblockcrafting, OrePrefixes.block.get(aMaterial).toString(), false)) {
             if ((tStack1 == null) && (tStack2 == null) && (tStack3 != null))
-                GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L), new Object[]{"XXX", "XXX", "XXX", 'X', OrePrefixes.dust.get(aMaterial)});
+                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.block, aMaterial, 1L), new Object[]{"XXX", "XXX", "XXX", 'X', OrePrefixes.dust.get(aMaterial)});
             if (tStack2 != null)
-                GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L), new Object[]{"XXX", "XXX", "XXX", 'X', OrePrefixes.gem.get(aMaterial)});
+                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.block, aMaterial, 1L), new Object[]{"XXX", "XXX", "XXX", 'X', OrePrefixes.gem.get(aMaterial)});
             if (tStack1 != null) {
-                GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L), new Object[]{"XXX", "XXX", "XXX", 'X', OrePrefixes.ingot.get(aMaterial)});
+                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.block, aMaterial, 1L), new Object[]{"XXX", "XXX", "XXX", 'X', OrePrefixes.ingot.get(aMaterial)});
             }
         }
         if (tStack1 != null) tStack1.stackSize = 9;
@@ -62,7 +62,7 @@ public class ProcessingBlock implements IOreRegistrationHandler {
             }
         }
         if (!OrePrefixes.block.isIgnored(aMaterial))
-            GT_ModHandler.addCompressionRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 9L), GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L));
+            GT_ModHandler.addCompressionRecipe(OreDictionaryUnifier.get(OrePrefixes.ingot, aMaterial, 9L), OreDictionaryUnifier.get(OrePrefixes.block, aMaterial, 1L));
         switch (aMaterial.mName) {
             case "Mercury":
                 System.err.println("'blockQuickSilver'?, In which Ice Desert can you actually place this as a solid Block?");

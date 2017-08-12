@@ -5,9 +5,9 @@ package gregtech.common.items.armor;
 import gregtech.api.items.ItemList;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefixes;
-import gregtech.api.unification.stack.ItemData;
+import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.unification.GT_OreDictUnificator;
+import gregtech.api.unification.OreDictionaryUnifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
         import net.minecraftforge.fluids.FluidRegistry;
@@ -53,7 +53,7 @@ public class ArmorCalculation {
 			def[12] = 0.0f;
 			for (int i = 0; i < parts.length; i++) {
 				if (parts[i] != null) {
-					ItemData data = GT_OreDictUnificator.getItemData(parts[i]);
+					ItemMaterialInfo data = OreDictionaryUnifier.getItemData(parts[i]);
 					if (data != null && (data.mPrefix == OrePrefixes.plate || data.mPrefix == OrePrefixes.plateAlloy)) {
 						// Weight
 						def[0] = def[0] + Values.INSTANCE.getValues(data.mMaterial.mMaterial).weight;

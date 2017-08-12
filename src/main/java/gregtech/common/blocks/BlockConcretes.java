@@ -49,7 +49,7 @@ public class BlockConcretes extends BlockStonesAbstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Mossy Light Concrete Bricks");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Chiseled Light Concrete");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Smooth Light Concrete");
-//        GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Concrete, new ItemStack(this, 1, GT_Values.W));
+//        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Concrete, new ItemStack(this, 1, GT_Values.W));
     }
 
     /**

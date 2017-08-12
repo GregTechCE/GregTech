@@ -99,7 +99,7 @@ public class GT_Entity_Arrow extends EntityArrow {
             }
             if (tVector != null) {
                 if (tVector.entityHit != null) {
-                    ItemData tData = GT_OreDictUnificator.getItemData(this.mArrow);
+                    ItemMaterialInfo tData = OreDictionaryUnifier.getItemData(this.mArrow);
 
 
                     float tMagicDamage = (tVector.entityHit instanceof EntityLivingBase) ? EnchantmentHelper.func_152377_a(this.mArrow, ((EntityLivingBase) tVector.entityHit).getCreatureAttribute()) : 0.0F;

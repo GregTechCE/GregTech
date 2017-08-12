@@ -5,7 +5,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MetaTileEntityBasicMachine;
-import gregtech.api.unification.GT_OreDictUnificator;
+import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
@@ -28,7 +28,7 @@ public class GT_MetaTileEntity_Printer
         } else if ((GT_Utility.isStackValid(getInputAt(0))) && (getInputAt(0).stackSize > 0) &&
                 (GT_Utility.isStackInvalid(getSpecialSlot())) &&
                 (OrePrefixes.block.contains(getInputAt(0)))) {
-            ArrayList<ItemStack> tList = GT_OreDictUnificator.getOres(GT_OreDictUnificator.getAssociation(getInputAt(0)));
+            ArrayList<ItemStack> tList = OreDictionaryUnifier.getOres(OreDictionaryUnifier.getAssociation(getInputAt(0)));
             if (tList.size() > 1) {
                 tList.add(tList.get(0));
                 int i = 0;

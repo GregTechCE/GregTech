@@ -29,6 +29,10 @@ public final class SimpleItemStack {
         return new ItemStack(item, stackSize, itemDamage);
     }
 
+    public ItemStack asItemStack(int stackSize) {
+        return new ItemStack(item, stackSize, itemDamage);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -49,7 +53,7 @@ public final class SimpleItemStack {
 
     @Override
     public String toString() {
-        return (this.stackSize == 1 ? "" : this.stackSize + "x") + this.item.getItemStackDisplayName(asItemStack());
+        return this.item.getItemStackDisplayName(asItemStack());
     }
 
 }

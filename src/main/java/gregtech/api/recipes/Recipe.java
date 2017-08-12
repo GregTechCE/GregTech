@@ -2,7 +2,7 @@ package gregtech.api.recipes;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import gregtech.api.unification.GT_OreDictUnificator;
+import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -163,7 +163,7 @@ public class Recipe {
 			amount = stackInput.stackSize;
 			boolean temp = true;
 			for (ItemStack stack : inputs) {
-				if ((GT_Utility.areUnificationsEqual(stack, stackInput, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, stack), stackInput, true))) {
+				if ((GT_Utility.areUnificationsEqual(stack, stackInput, true) || GT_Utility.areUnificationsEqual(OreDictionaryUnifier.get(false, stack), stackInput, true))) {
 					if (dontCheckStackSizes) {
 						temp = false;
 						break;
@@ -206,7 +206,7 @@ public class Recipe {
 				for (ItemStack stack : this.inputs) {
 					amount = stack.stackSize;
 					for (ItemStack tmpStack : inputs) {
-						if ((GT_Utility.areUnificationsEqual(tmpStack, stack, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, tmpStack), stack, true))) {
+						if ((GT_Utility.areUnificationsEqual(tmpStack, stack, true) || GT_Utility.areUnificationsEqual(OreDictionaryUnifier.get(false, tmpStack), stack, true))) {
 							if (dontCheckStackSizes) {
 								tmpStack.stackSize -= amount;
 								break;

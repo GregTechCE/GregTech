@@ -2,15 +2,15 @@ package gregtech.common.items;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.unification.Dyes;
+import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.items.GT_MetaGenerated_Item_X32;
 import gregtech.api.items.ItemList;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.unification.stack.ItemData;
+import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.objects.RegIconContainer;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_Arrow;
 import net.minecraft.dispenser.IBlockSource;
@@ -99,15 +99,15 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         setFluidContainerStats(32000 + tLastID, 0L, 16L);
         ItemList.Food_Fries.set(addItem(tLastID = 203, "Fries", "Not to confuse with Fry the Delivery Boy", new Object[]{new GT_FoodStat(7, 0.5F, EnumAction.EAT, null, false, true, false), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}));
         setFluidContainerStats(32000 + tLastID, 0L, 16L);
-        ItemList.Food_Packaged_Fries.set(addItem(tLastID = 204, "Fries", "Ketchup not included", new Object[]{new GT_FoodStat(7, 0.5F, EnumAction.EAT, GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Paper, 1L), false, true, false), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}));
+        ItemList.Food_Packaged_Fries.set(addItem(tLastID = 204, "Fries", "Ketchup not included", new Object[]{new GT_FoodStat(7, 0.5F, EnumAction.EAT, OreDictionaryUnifier.get(OrePrefixes.plate, Materials.Paper, 1L), false, true, false), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}));
         ItemList.Food_Raw_PotatoChips.set(addItem(tLastID = 205, "Potato Chips (Raw)", "Just like a Potato", new Object[]{new GT_FoodStat(1, 0.3F, EnumAction.EAT, null, false, true, false), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L)}));
         setFluidContainerStats(32000 + tLastID, 0L, 16L);
         ItemList.Food_PotatoChips.set(addItem(tLastID = 206, "Potato Chips", "Crunchy", new Object[]{new GT_FoodStat(7, 0.5F, EnumAction.EAT, null, false, true, false), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}));
         setFluidContainerStats(32000 + tLastID, 0L, 16L);
         ItemList.Food_ChiliChips.set(addItem(tLastID = 207, "Chili Chips", "Spicy", new Object[]{new GT_FoodStat(7, 0.6F, EnumAction.EAT, null, false, true, false), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}));
         setFluidContainerStats(32000 + tLastID, 0L, 16L);
-        ItemList.Food_Packaged_PotatoChips.set(addItem(tLastID = 208, "Bag of Potato Chips", "Full of delicious Air", new Object[]{new GT_FoodStat(7, 0.5F, EnumAction.EAT, GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 1L), false, true, false), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}));
-        ItemList.Food_Packaged_ChiliChips.set(addItem(tLastID = 209, "Bag of Chili Chips", "Stop making noises Baj!", new Object[]{new GT_FoodStat(7, 0.6F, EnumAction.EAT, GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 1L), false, true, false), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}));
+        ItemList.Food_Packaged_PotatoChips.set(addItem(tLastID = 208, "Bag of Potato Chips", "Full of delicious Air", new Object[]{new GT_FoodStat(7, 0.5F, EnumAction.EAT, OreDictionaryUnifier.get(OrePrefixes.foil, Materials.Aluminium, 1L), false, true, false), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}));
+        ItemList.Food_Packaged_ChiliChips.set(addItem(tLastID = 209, "Bag of Chili Chips", "Stop making noises Baj!", new Object[]{new GT_FoodStat(7, 0.6F, EnumAction.EAT, OreDictionaryUnifier.get(OrePrefixes.foil, Materials.Aluminium, 1L), false, true, false), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}));
         ItemList.Food_Chum.set(addItem(tLastID = 210, "Chum", "Chum is Fum!", new Object[]{new GT_FoodStat(5, 0.2F, EnumAction.EAT, null, true, false, true, id(MobEffects.HUNGER), 1000, 4, 100, id(MobEffects.NAUSEA), 300, 1, 80), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}));
         ItemList.Food_Chum_On_Stick.set(addItem(tLastID = 211, "Chum on a Stick", "Don't forget to try our Chum-balaya", new Object[]{new GT_FoodStat(5, 0.2F, EnumAction.EAT, new ItemStack(Items.STICK, 1), true, false, true, id(MobEffects.HUNGER), 1000, 4, 100, id(MobEffects.NAUSEA), 300, 1, 80), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}));
         ItemList.Food_Dough_Sugar.set(addItem(tLastID = 212, "Sugary Dough", "Don't eat the Dough before it is baken", new Object[]{new GT_FoodStat(1, 0.1F, EnumAction.EAT, null, false, true, false), new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L)}));
@@ -116,7 +116,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Food_Sliced_Buns.set(addItem(tLastID = 220, "Buns", "Pre Sliced", new Object[]{new GT_FoodStat(3, 0.5F, EnumAction.EAT, null, false, true, false), new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}));
         ItemList.Food_Burger_Veggie.set(addItem(tLastID = 221, "Veggieburger", "No matter how you call this, this is NOT a Burger!", new Object[]{new GT_FoodStat(3, 0.5F, EnumAction.EAT, null, false, true, false), new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}));
-        ItemList.Food_Burger_Cheese.set(addItem(tLastID = 222, "Cheeseburger", "Cheesy!", new Object[]{new GT_FoodStat(3, 0.5F, EnumAction.EAT, null, false, true, false), new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L), new ItemData(Materials.Cheese, 907200L)}));
+        ItemList.Food_Burger_Cheese.set(addItem(tLastID = 222, "Cheeseburger", "Cheesy!", new Object[]{new GT_FoodStat(3, 0.5F, EnumAction.EAT, null, false, true, false), new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L), new ItemMaterialInfo(Materials.Cheese, 907200L)}));
         ItemList.Food_Burger_Meat.set(addItem(tLastID = 223, "Hamburger", "The Mc Burger Queen Burger", new Object[]{new GT_FoodStat(3, 0.5F, EnumAction.EAT, null, false, true, false), new TC_Aspects.TC_AspectStack(TC_Aspects.CORPUS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}));
         ItemList.Food_Burger_Chum.set(addItem(tLastID = 224, "Chumburger", "Fum is Chum!", new Object[]{new GT_FoodStat(5, 0.2F, EnumAction.EAT, null, true, false, true, id(MobEffects.SLOWNESS), 1000, 4, 100, id(MobEffects.NAUSEA), 300, 1, 80), new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}));
 
@@ -258,12 +258,12 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 1), new ItemStack(Items.DYE, 3, 13));
         GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 4), new ItemStack(Items.DYE, 3, 1));
         GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 5), new ItemStack(Items.DYE, 3, 9));
-        GT_ModHandler.addExtractionRecipe(ItemList.Crop_Drop_Plumbilia.get(1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lead, 1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Crop_Drop_Argentia.get(1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Silver, 1L));
+        GT_ModHandler.addExtractionRecipe(ItemList.Crop_Drop_Plumbilia.get(1L), OreDictionaryUnifier.get(OrePrefixes.dustTiny, Materials.Lead, 1L));
+        GT_ModHandler.addExtractionRecipe(ItemList.Crop_Drop_Argentia.get(1L), OreDictionaryUnifier.get(OrePrefixes.dustTiny, Materials.Silver, 1L));
         GT_ModHandler.addExtractionRecipe(ItemList.Crop_Drop_Indigo.get(1L), ItemList.Dye_Indigo.get(1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Crop_Drop_MilkWart.get(1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Milk, 1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Crop_Drop_Coppon.get(1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Copper, 1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Crop_Drop_Tine.get(1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Tin, 1L));
+        GT_ModHandler.addExtractionRecipe(ItemList.Crop_Drop_MilkWart.get(1L), OreDictionaryUnifier.get(OrePrefixes.dustSmall, Materials.Milk, 1L));
+        GT_ModHandler.addExtractionRecipe(ItemList.Crop_Drop_Coppon.get(1L), OreDictionaryUnifier.get(OrePrefixes.dustTiny, Materials.Copper, 1L));
+        GT_ModHandler.addExtractionRecipe(ItemList.Crop_Drop_Tine.get(1L), OreDictionaryUnifier.get(OrePrefixes.dustTiny, Materials.Tin, 1L));
 
         GT_ModHandler.addCompressionRecipe(ItemList.Crop_Drop_Coppon.get(4L), new ItemStack(Blocks.WOOL, 1, 1));
         GT_ModHandler.addCompressionRecipe(ItemList.Crop_Drop_Plumbilia.get(8L), ItemList.IC2_PlantballCompressed.get(1L));
@@ -277,15 +277,15 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         GT_ModHandler.addCompressionRecipe(new ItemStack(Blocks.RED_FLOWER, 8, 32767), ItemList.IC2_PlantballCompressed.get(1L));
         GT_ModHandler.addCompressionRecipe(new ItemStack(Blocks.YELLOW_FLOWER, 8, 32767), ItemList.IC2_PlantballCompressed.get(1L));
 
-        GT_ModHandler.addPulverisationRecipe(ItemList.Food_Sliced_Cheese.get(1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Cheese, 1L));
-        GT_ModHandler.addPulverisationRecipe(ItemList.Dye_Cocoa.get(1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cocoa, 1L));
-        GT_ModHandler.addPulverisationRecipe(ItemList.Crop_Drop_Tine.get(1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L));
+        GT_ModHandler.addPulverisationRecipe(ItemList.Food_Sliced_Cheese.get(1L), OreDictionaryUnifier.get(OrePrefixes.dustSmall, Materials.Cheese, 1L));
+        GT_ModHandler.addPulverisationRecipe(ItemList.Dye_Cocoa.get(1L), OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Cocoa, 1L));
+        GT_ModHandler.addPulverisationRecipe(ItemList.Crop_Drop_Tine.get(1L), OreDictionaryUnifier.get(OrePrefixes.dustSmall, Materials.Wood, 2L));
         GT_ModHandler.addPulverisationRecipe(new ItemStack(Items.REEDS, 1), new ItemStack(Items.SUGAR, 1), null, 0, false);
         GT_ModHandler.addPulverisationRecipe(new ItemStack(Blocks.MELON_BLOCK, 1, 0), new ItemStack(Items.MELON, 8, 0), new ItemStack(Items.MELON_SEEDS, 1), 80, false);
         GT_ModHandler.addPulverisationRecipe(new ItemStack(Blocks.PUMPKIN, 1, 0), new ItemStack(Items.PUMPKIN_SEEDS, 4, 0), null, 0, false);
         GT_ModHandler.addPulverisationRecipe(new ItemStack(Items.MELON, 1, 0), new ItemStack(Items.MELON_SEEDS, 1, 0), null, 0, false);
-        GT_ModHandler.addPulverisationRecipe(new ItemStack(Items.WHEAT, 1, 0), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 1L), null, 0, false);
-        GT_ModHandler.addPulverisationRecipe(new ItemStack(Items.STICK, 1), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L), null, 0, false);
+        GT_ModHandler.addPulverisationRecipe(new ItemStack(Items.WHEAT, 1, 0), OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Wheat, 1L), null, 0, false);
+        GT_ModHandler.addPulverisationRecipe(new ItemStack(Items.STICK, 1), OreDictionaryUnifier.get(OrePrefixes.dustSmall, Materials.Wood, 2L), null, 0, false);
         GT_ModHandler.addPulverisationRecipe(new ItemStack(Blocks.WOOL, 1, 32767), new ItemStack(Items.STRING, 2), new ItemStack(Items.STRING, 1), 50, false);
         /*try {
             Object tCrop;

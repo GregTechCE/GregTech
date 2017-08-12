@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.unification.GT_OreDictUnificator;
+import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.items.ItemList;
 import gregtech.api.unification.material.Materials;
@@ -24,7 +24,7 @@ public class ProcessingCircuit implements IOreRegistrationHandler {
             case "Elite":
             case "Master":
             case "Ultimate":
-                if (!GT_OreDictUnificator.isBlacklisted(aStack))
+                if (!OreDictionaryUnifier.isBlacklisted(aStack))
                     GT_ModHandler.removeRecipeByOutput(aStack);
                 break;
             case "Primitive":

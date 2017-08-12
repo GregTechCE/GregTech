@@ -7,9 +7,9 @@ import gregtech.api.gui.GT_Container_BasicMachine;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.capability.internal.IGregTechTileEntity;
+import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
@@ -460,7 +460,7 @@ public abstract class MetaTileEntityBasicMachine extends GT_MetaTileEntity_Basic
                             mOutputItems[i] = GT_Utility.copy(mOutputItems[i]);
                             if (mOutputItems[i] != null && mOutputItems[i].stackSize > 64)
                                 mOutputItems[i].stackSize = 64;
-                            mOutputItems[i] = GT_OreDictUnificator.get(true, mOutputItems[i]);
+                            mOutputItems[i] = OreDictionaryUnifier.get(true, mOutputItems[i]);
                         }
                         if (mFluid != null && mFluid.amount <= 0) mFluid = null;
                         mMaxProgresstime = Math.max(1, mMaxProgresstime);
@@ -699,7 +699,7 @@ public abstract class MetaTileEntityBasicMachine extends GT_MetaTileEntity_Basic
         if (aSide == mMainFacing || aIndex < getInputSlot() || aIndex >= getInputSlot() + mInputSlotCount || (!mAllowInputFromOutputSide && aSide == aBaseMetaTileEntity.getFrontFacing()))
             return false;
         for (int i = getInputSlot(), j = i + mInputSlotCount; i < j; i++)
-            if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(aStack), mInventory[i])) return i == aIndex;
+            if (GT_Utility.areStacksEqual(OreDictionaryUnifier.get(aStack), mInventory[i])) return i == aIndex;
         return true;
     }
 

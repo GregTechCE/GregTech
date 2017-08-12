@@ -44,7 +44,7 @@ public abstract class BlockStorage extends GenericBlock {
         for (int i = 0; i < getMaterials().length; i++) {
             if (Material.MATERIAL_REGISTRY.containsKey(getMaterials()[i].toString())) {
                 GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + i + ".name", "Block of " + getMaterials()[i].defaultLocalName);
-//                GT_OreDictUnificator.registerOre(prefix, getMaterials()[i], new ItemStack(this, 1, i));
+//                OreDictionaryUnifier.registerOre(prefix, getMaterials()[i], new ItemStack(this, 1, i));
             }
         }
         setHardness(5.0F); //Blocks.IRON_BLOCK

@@ -6,7 +6,7 @@ import gregtech.api.items.ItemList;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.unification.GT_OreDictUnificator;
+import gregtech.api.unification.OreDictionaryUnifier;
 import net.minecraftforge.fluids.FluidRegistry;
 
 public class ProcessingCrop implements IOreRegistrationHandler {
@@ -23,9 +23,9 @@ public class ProcessingCrop implements IOreRegistrationHandler {
             GT_Values.RA.addBrewingRecipe(aStack, FluidRegistry.WATER, FluidRegistry.getFluid("potion.grapejuice"), false);
             GT_Values.RA.addBrewingRecipe(aStack, GT_ModHandler.getDistilledWater(1L).getFluid(), FluidRegistry.getFluid("potion.grapejuice"), false);
         } else if (aOreDictName.equals("cropChilipepper")) {
-            GT_ModHandler.addPulverisationRecipe(aStack, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Chili, 1L));
+            GT_ModHandler.addPulverisationRecipe(aStack, OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Chili, 1L));
         } else if (aOreDictName.equals("cropCoffee")) {
-            GT_ModHandler.addPulverisationRecipe(aStack, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coffee, 1L));
+            GT_ModHandler.addPulverisationRecipe(aStack, OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Coffee, 1L));
         } else if (aOreDictName.equals("cropPotato")) {
             GT_Values.RA.addSlicerRecipe(aStack, ItemList.Shape_Slicer_Flat.get(0L, new Object[0]), ItemList.Food_Raw_PotatoChips.get(1L, new Object[0]), 64, 4);
             GT_Values.RA.addSlicerRecipe(aStack, ItemList.Shape_Slicer_Stripes.get(0L, new Object[0]), ItemList.Food_Raw_Fries.get(1L, new Object[0]), 64, 4);

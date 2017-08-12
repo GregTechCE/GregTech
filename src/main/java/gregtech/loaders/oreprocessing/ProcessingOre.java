@@ -3,12 +3,12 @@ package gregtech.loaders.oreprocessing;
 import gregtech.GT_Mod;
 import gregtech.api.ConfigCategories;
 import gregtech.api.GT_Values;
+import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.items.ItemList;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
@@ -43,37 +43,37 @@ public class ProcessingOre implements IOreRegistrationHandler {
         aOreStack.stackSize = 1;
 
 
-        ItemStack tIngot = GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mDirectSmelting, 1L);
-        ItemStack tGem = GT_OreDictUnificator.get(OrePrefixes.gem, tMaterial, 1L);
-        ItemStack tSmeltInto = tIngot == null ? null : aMaterial.contains(SubTag.SMELTING_TO_GEM) ? GT_OreDictUnificator.get(OrePrefixes.gem, tMaterial.mDirectSmelting, GT_OreDictUnificator.get(OrePrefixes.crystal, tMaterial.mDirectSmelting, GT_OreDictUnificator.get(OrePrefixes.gem, tMaterial, GT_OreDictUnificator.get(OrePrefixes.crystal, tMaterial, 1L), 1L), 1L), 1L) : tIngot;
+        ItemStack tIngot = OreDictionaryUnifier.get(OrePrefixes.ingot, aMaterial.mDirectSmelting, 1L);
+        ItemStack tGem = OreDictionaryUnifier.get(OrePrefixes.gem, tMaterial, 1L);
+        ItemStack tSmeltInto = tIngot == null ? null : aMaterial.contains(SubTag.SMELTING_TO_GEM) ? OreDictionaryUnifier.get(OrePrefixes.gem, tMaterial.mDirectSmelting, OreDictionaryUnifier.get(OrePrefixes.crystal, tMaterial.mDirectSmelting, OreDictionaryUnifier.get(OrePrefixes.gem, tMaterial, OreDictionaryUnifier.get(OrePrefixes.crystal, tMaterial, 1L), 1L), 1L), 1L) : tIngot;
 
-        ItemStack tDust = GT_OreDictUnificator.get(OrePrefixes.dust, tMaterial, tGem, 1L);
-        ItemStack tCleaned = GT_OreDictUnificator.get(OrePrefixes.crushedPurified, tMaterial, tDust, 1L);
-        ItemStack tCrushed = GT_OreDictUnificator.get(OrePrefixes.crushed, tMaterial, aMaterial.mOreMultiplier * aMultiplier);
+        ItemStack tDust = OreDictionaryUnifier.get(OrePrefixes.dust, tMaterial, tGem, 1L);
+        ItemStack tCleaned = OreDictionaryUnifier.get(OrePrefixes.crushedPurified, tMaterial, tDust, 1L);
+        ItemStack tCrushed = OreDictionaryUnifier.get(OrePrefixes.crushed, tMaterial, aMaterial.mOreMultiplier * aMultiplier);
         ItemStack tPrimaryByProduct = null;
 
         if (tCrushed == null) {
-            tCrushed = GT_OreDictUnificator.get(OrePrefixes.dustImpure, tMaterial, GT_Utility.copyAmount(aMaterial.mOreMultiplier * aMultiplier, tCleaned, tDust, tGem), aMaterial.mOreMultiplier * aMultiplier);
+            tCrushed = OreDictionaryUnifier.get(OrePrefixes.dustImpure, tMaterial, GT_Utility.copyAmount(aMaterial.mOreMultiplier * aMultiplier, tCleaned, tDust, tGem), aMaterial.mOreMultiplier * aMultiplier);
         }
 
         ArrayList<ItemStack> tByProductStacks = new ArrayList();
 
         for (Materials tMat : aMaterial.mOreByProducts) {
-            ItemStack tByProduct = GT_OreDictUnificator.get(OrePrefixes.dust, tMat, 1L);
+            ItemStack tByProduct = OreDictionaryUnifier.get(OrePrefixes.dust, tMat, 1L);
             if (tByProduct != null) tByProductStacks.add(tByProduct);
             if (tPrimaryByProduct == null) {
                 tPrimaryByMaterial = tMat;
-                tPrimaryByProduct = GT_OreDictUnificator.get(OrePrefixes.dust, tMat, 1L);
-                if (GT_OreDictUnificator.get(OrePrefixes.dustSmall, tMat, 1L) == null)
-                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, tMat, GT_OreDictUnificator.get(OrePrefixes.nugget, tMat, 2L), 2L);
+                tPrimaryByProduct = OreDictionaryUnifier.get(OrePrefixes.dust, tMat, 1L);
+                if (OreDictionaryUnifier.get(OrePrefixes.dustSmall, tMat, 1L) == null)
+                    OreDictionaryUnifier.get(OrePrefixes.dustTiny, tMat, OreDictionaryUnifier.get(OrePrefixes.nugget, tMat, 2L), 2L);
             }
-            GT_OreDictUnificator.get(OrePrefixes.dust, tMat, 1L);
-            if (GT_OreDictUnificator.get(OrePrefixes.dustSmall, tMat, 1L) == null)
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, tMat, GT_OreDictUnificator.get(OrePrefixes.nugget, tMat, 2L), 2L);
+            OreDictionaryUnifier.get(OrePrefixes.dust, tMat, 1L);
+            if (OreDictionaryUnifier.get(OrePrefixes.dustSmall, tMat, 1L) == null)
+                OreDictionaryUnifier.get(OrePrefixes.dustTiny, tMat, OreDictionaryUnifier.get(OrePrefixes.nugget, tMat, 2L), 2L);
         }
         if ((!tByProductStacks.isEmpty()) && (!this.mAlreadyListedOres.contains(aMaterial))) {
             this.mAlreadyListedOres.add(aMaterial);
-            gregtech.api.util.GT_Recipe.GT_Recipe_Map.sByProductList.addFakeRecipe(false, new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ore, aMaterial, aOreStack, 1L)}, tByProductStacks.toArray(new ItemStack[tByProductStacks.size()]), null, null, null, null, 0, 0, 0);
+            gregtech.api.util.GT_Recipe.GT_Recipe_Map.sByProductList.addFakeRecipe(false, new ItemStack[]{OreDictionaryUnifier.get(OrePrefixes.ore, aMaterial, aOreStack, 1L)}, tByProductStacks.toArray(new ItemStack[tByProductStacks.size()]), null, null, null, null, 0, 0, 0);
         }
 
         if (tPrimaryByMaterial == null) tPrimaryByMaterial = tMaterial;
@@ -92,19 +92,19 @@ public class ProcessingOre implements IOreRegistrationHandler {
             }
 
             if (aMaterial.contains(SubTag.BLASTFURNACE_CALCITE_TRIPLE)) {
-                GT_Values.RA.addBlastRecipe(aOreStack, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, aMultiplier), null, null, GT_Utility.mul(aMultiplier * 3 * aMaterial.mSmeltingMultiplier, tSmeltInto), ItemList.TE_Slag.get(1L, GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L)), tSmeltInto.stackSize * 500, 120, 1500);
+                GT_Values.RA.addBlastRecipe(aOreStack, OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Calcite, aMultiplier), null, null, GT_Utility.mul(aMultiplier * 3 * aMaterial.mSmeltingMultiplier, tSmeltInto), ItemList.TE_Slag.get(1L, OreDictionaryUnifier.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L)), tSmeltInto.stackSize * 500, 120, 1500);
             } else if (aMaterial.contains(SubTag.BLASTFURNACE_CALCITE_DOUBLE)) {
-                GT_Values.RA.addBlastRecipe(aOreStack, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, aMultiplier), null, null, GT_Utility.mul(aMultiplier * 2 * aMaterial.mSmeltingMultiplier, tSmeltInto), ItemList.TE_Slag.get(1L, GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L)), tSmeltInto.stackSize * 500, 120, 1500);
+                GT_Values.RA.addBlastRecipe(aOreStack, OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Calcite, aMultiplier), null, null, GT_Utility.mul(aMultiplier * 2 * aMaterial.mSmeltingMultiplier, tSmeltInto), ItemList.TE_Slag.get(1L, OreDictionaryUnifier.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L)), tSmeltInto.stackSize * 500, 120, 1500);
             }
         }
 
         if (!tHasSmelting) {
-            GT_ModHandler.addSmeltingRecipe(aOreStack, GT_OreDictUnificator.get(OrePrefixes.gem, tMaterial.mDirectSmelting, Math.max(1, aMultiplier * aMaterial.mSmeltingMultiplier / 2)));
+            GT_ModHandler.addSmeltingRecipe(aOreStack, OreDictionaryUnifier.get(OrePrefixes.gem, tMaterial.mDirectSmelting, Math.max(1, aMultiplier * aMaterial.mSmeltingMultiplier / 2)));
         }
 
         if (tCrushed != null) {
             GT_Values.RA.addForgeHammerRecipe(aOreStack, GT_Utility.copy(GT_Utility.copyAmount(tCrushed.stackSize, tGem), tCrushed), 16, 10);
-            GT_ModHandler.addPulverisationRecipe(aOreStack, GT_Utility.mul(2L, tCrushed), tMaterial.contains(SubTag.PULVERIZING_CINNABAR) ? GT_OreDictUnificator.get(OrePrefixes.crystal, Materials.Cinnabar, GT_OreDictUnificator.get(OrePrefixes.gem, tPrimaryByMaterial, GT_Utility.copyAmount(1L, tPrimaryByProduct), 1L), 1L) : GT_OreDictUnificator.get(OrePrefixes.gem, tPrimaryByMaterial, GT_Utility.copyAmount(1L, tPrimaryByProduct), 1L), tPrimaryByProduct == null ? 0 : tPrimaryByProduct.stackSize * 10 * aMultiplier * aMaterial.mByProductMultiplier, GT_OreDictUnificator.getDust(aPrefix.mSecondaryMaterial), 50, true);
+            GT_ModHandler.addPulverisationRecipe(aOreStack, GT_Utility.mul(2L, tCrushed), tMaterial.contains(SubTag.PULVERIZING_CINNABAR) ? OreDictionaryUnifier.get(OrePrefixes.crystal, Materials.Cinnabar, OreDictionaryUnifier.get(OrePrefixes.gem, tPrimaryByMaterial, GT_Utility.copyAmount(1L, tPrimaryByProduct), 1L), 1L) : OreDictionaryUnifier.get(OrePrefixes.gem, tPrimaryByMaterial, GT_Utility.copyAmount(1L, tPrimaryByProduct), 1L), tPrimaryByProduct == null ? 0 : tPrimaryByProduct.stackSize * 10 * aMultiplier * aMaterial.mByProductMultiplier, OreDictionaryUnifier.getDust(aPrefix.mSecondaryMaterial), 50, true);
         }
         return true;
     }

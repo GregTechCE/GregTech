@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.enums.Textures;
@@ -8,7 +9,6 @@ import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MetaTileEntityBasicMachine;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.init.Items;
@@ -76,7 +76,7 @@ public class GT_MetaTileEntity_PotionBrewer
                     }
                     return setOutput("potion.weakness");
                 }
-                if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L), getInputAt(0))) {
+                if (GT_Utility.areStacksEqual(OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Glowstone, 1L), getInputAt(0))) {
                     if (!tModifier.startsWith("strong")) {
                         return setOutput("potion." + tInputName + ".strong" + (tModifier.isEmpty() ? "" : new StringBuilder().append(".").append(tModifier).toString()));
                     }
@@ -85,7 +85,7 @@ public class GT_MetaTileEntity_PotionBrewer
                     }
                     return setOutput("potion.thick");
                 }
-                if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L), getInputAt(0))) {
+                if (GT_Utility.areStacksEqual(OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Redstone, 1L), getInputAt(0))) {
                     if (!tModifier.startsWith("long")) {
                         return setOutput("potion." + tInputName + ".long" + (tModifier.isEmpty() ? "" : new StringBuilder().append(".").append(tModifier).toString()));
                     }
@@ -94,7 +94,7 @@ public class GT_MetaTileEntity_PotionBrewer
                     }
                     return setOutput("potion.mundane");
                 }
-                if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gunpowder, 1L), getInputAt(0))) {
+                if (GT_Utility.areStacksEqual(OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Gunpowder, 1L), getInputAt(0))) {
                     if (!tInputName.endsWith(".splash")) {
                         return setOutput("potion." + tInputName + ".splash");
                     }
