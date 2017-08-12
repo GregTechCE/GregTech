@@ -3,6 +3,7 @@ package gregtech.api.metatileentity.implementations;
 import gregtech.api.GregTech_API;
 import gregtech.api.unification.Dyes;
 import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.IMetaTileEntity;
@@ -37,13 +38,13 @@ import static gregtech.api.GT_Values.D1;
 
 public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
     public final float mThickNess;
-    public final Materials mMaterial;
+    public final Material mMaterial;
     public final int mCapacity, mHeatResistance;
     public final boolean mGasProof;
     public FluidStack mFluid;
     public byte mLastReceivedFrom = 0, oLastReceivedFrom = 0;
 
-    public GT_MetaPipeEntity_Fluid(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial, int aCapacity, int aHeatResistance, boolean aGasProof) {
+    public GT_MetaPipeEntity_Fluid(int aID, String aName, String aNameRegional, float aThickNess, Material aMaterial, int aCapacity, int aHeatResistance, boolean aGasProof) {
         super(aID, aName, aNameRegional, 0);
         mThickNess = aThickNess;
         mMaterial = aMaterial;
@@ -52,7 +53,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         mHeatResistance = aHeatResistance;
     }
 
-    public GT_MetaPipeEntity_Fluid(String aName, float aThickNess, Materials aMaterial, int aCapacity, int aHeatResistance, boolean aGasProof) {
+    public GT_MetaPipeEntity_Fluid(String aName, float aThickNess, Material aMaterial, int aCapacity, int aHeatResistance, boolean aGasProof) {
         super(aName, 0);
         mThickNess = aThickNess;
         mMaterial = aMaterial;

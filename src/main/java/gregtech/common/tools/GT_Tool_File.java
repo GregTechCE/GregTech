@@ -1,75 +1,91 @@
 package gregtech.common.tools;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Textures;
+import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.unification.ore.OrePrefixes;
-import gregtech.api.items.IIconContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
+
+import java.util.List;
 
 public class GT_Tool_File extends GT_Tool {
 
     @Override
-    public int getToolDamagePerBlockBreak() {
+    public int getToolDamagePerBlockBreak(ItemStack stack) {
         return 50;
     }
 
     @Override
-    public int getToolDamagePerDropConversion() {
+    public int getToolDamagePerDropConversion(ItemStack stack) {
         return 100;
     }
 
     @Override
-    public int getToolDamagePerContainerCraft() {
+    public int getToolDamagePerContainerCraft(ItemStack stack) {
         return 400;
     }
 
     @Override
-    public int getToolDamagePerEntityAttack() {
+    public int getToolDamagePerEntityAttack(ItemStack stack) {
         return 200;
     }
 
     @Override
-    public int getBaseQuality() {
+    public int getBaseQuality(ItemStack stack) {
         return 0;
     }
 
     @Override
-    public float getBaseDamage() {
+    public float getBaseDamage(ItemStack stack) {
         return 1.5F;
     }
 
     @Override
-    public float getSpeedMultiplier() {
+    public float getSpeedMultiplier(ItemStack stack) {
         return 1.0F;
     }
 
     @Override
-    public float getMaxDurabilityMultiplier() {
+    public float getMaxDurabilityMultiplier(ItemStack stack) {
         return 1.0F;
     }
 
     @Override
-    public String getCraftingSound() {
+    public ResourceLocation getCraftingSound(ItemStack stack) {
         return null;
     }
 
     @Override
-    public String getEntityHitSound() {
+    public ResourceLocation getEntityHitSound(ItemStack stack) {
         return null;
     }
 
     @Override
-    public String getBreakingSound() {
+    public ResourceLocation getBreakingSound(ItemStack stack) {
         return GregTech_API.sSoundList.get(0);
     }
 
     @Override
-    public String getMiningSound() {
+    public boolean isCrowbar(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public boolean isGrafter(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public ResourceLocation getMiningSound(ItemStack stack) {
         return null;
     }
 
@@ -84,9 +100,14 @@ public class GT_Tool_File extends GT_Tool {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState aBlock) {
+    public boolean isMinableBlock(IBlockState aBlock, ItemStack stack) {
         String tTool = aBlock.getBlock().getHarvestTool(aBlock);
         return (tTool != null) && (tTool.equals("file"));
+    }
+
+    @Override
+    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops) {
+        return 0;
     }
 
     @Override
@@ -95,17 +116,32 @@ public class GT_Tool_File extends GT_Tool {
     }
 
     @Override
+    public float getNormalDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase attacker) {
+        return 0;
+    }
+
+    @Override
+    public float getMagicDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase player) {
+        return 0;
+    }
+
+    @Override
+    public float getAttackSpeed(ItemStack stack) {
+        return 0;
+    }
+
+    @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadFile.mTextureIndex] : Textures.ItemIcons.HANDLE_FILE;
+        return !aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadFile.mTextureIndex] : Textures.ItemIcons.HANDLE_FILE;
     }
 
     @Override
-    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+    public int getColor(boolean aIsToolHead, ItemStack aStack) {
+        return !aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mRGBa : ToolMetaItem.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override
-    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
+    public void onStatsAddedToTool(MetaItem.MetaValueItem aItem, int aID) {
     }
 
     @Override

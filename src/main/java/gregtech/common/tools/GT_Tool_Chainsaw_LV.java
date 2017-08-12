@@ -2,9 +2,10 @@ package gregtech.common.tools;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.items.IIconContainer;
+import gregtech.api.items.toolitem.ToolMetaItem;
+import gregtech.api.unification.ore.OrePrefixes;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -13,10 +14,12 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.event.world.BlockEvent;
 
@@ -26,62 +29,62 @@ import java.util.Random;
 public class GT_Tool_Chainsaw_LV extends GT_Tool_Saw {
 
     @Override
-    public int getToolDamagePerBlockBreak() {
+    public int getToolDamagePerBlockBreak(ItemStack stack) {
         return 50;
     }
 
     @Override
-    public int getToolDamagePerDropConversion() {
+    public int getToolDamagePerDropConversion(ItemStack stack) {
         return 100;
     }
 
     @Override
-    public int getToolDamagePerContainerCraft() {
+    public int getToolDamagePerContainerCraft(ItemStack stack) {
         return 800;
     }
 
     @Override
-    public int getToolDamagePerEntityAttack() {
+    public int getToolDamagePerEntityAttack(ItemStack stack) {
         return 200;
     }
 
     @Override
-    public int getBaseQuality() {
+    public int getBaseQuality(ItemStack stack) {
         return 0;
     }
 
     @Override
-    public float getBaseDamage() {
+    public float getBaseDamage(ItemStack stack) {
         return 3.0F;
     }
 
     @Override
-    public float getSpeedMultiplier() {
+    public float getSpeedMultiplier(ItemStack stack) {
         return 2.0F;
     }
 
     @Override
-    public float getMaxDurabilityMultiplier() {
+    public float getMaxDurabilityMultiplier(ItemStack stack) {
         return 1.0F;
     }
 
     @Override
-    public String getCraftingSound() {
+    public ResourceLocation getCraftingSound(ItemStack stack) {
         return GregTech_API.sSoundList.get(104);
     }
 
     @Override
-    public String getEntityHitSound() {
+    public ResourceLocation getEntityHitSound(ItemStack stack) {
         return GregTech_API.sSoundList.get(105);
     }
 
     @Override
-    public String getBreakingSound() {
+    public ResourceLocation getBreakingSound(ItemStack stack) {
         return GregTech_API.sSoundList.get(0);
     }
 
     @Override
-    public String getMiningSound() {
+    public ResourceLocation getMiningSound(ItemStack stack) {
         return GregTech_API.sSoundList.get(104);
     }
 
@@ -103,14 +106,14 @@ public class GT_Tool_Chainsaw_LV extends GT_Tool_Saw {
     }
     
     @Override
-    public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, IBlockState aBlock, BlockPos pos, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
+    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops) {
         int rAmount = 0;
-        if ((aBlock.getMaterial() == Material.LEAVES) && aBlock.getBlock() instanceof IShearable) {
-            IShearable shearable = (IShearable) aBlock.getBlock();
-            if (shearable.isShearable(aStack, aPlayer.worldObj, pos)) {
-                List<ItemStack> tDrops = shearable.onSheared(aStack, aPlayer.worldObj, pos, aFortune);
-                aDrops.clear();
-                aDrops.addAll(tDrops);
+        if ((blockState.getMaterial() == Material.LEAVES) && blockState.getBlock() instanceof IShearable) {
+            IShearable shearable = (IShearable) blockState.getBlock();
+            if (shearable.isShearable(aStack, harvester.worldObj, blockPos)) {
+                List<ItemStack> tDrops = shearable.onSheared(aStack, harvester.worldObj, blockPos, aFortune);
+                drops.clear();
+                drops.addAll(tDrops);
                 aEvent.setDropChance(1.0F);
                 for (ItemStack stack : tDrops) {
                     Random itemRand = new Random();
@@ -118,31 +121,31 @@ public class GT_Tool_Chainsaw_LV extends GT_Tool_Saw {
                     double d = itemRand.nextFloat() * f + (1.0F - f) * 0.5D;
                     double d1 = itemRand.nextFloat() * f + (1.0F - f) * 0.5D;
                     double d2 = itemRand.nextFloat() * f + (1.0F - f) * 0.5D;
-                    EntityItem entityitem = new EntityItem(aPlayer.worldObj,
-                            pos.getX() + d,
-                            pos.getY() + d1,
-                            pos.getZ() + d2, stack);
+                    EntityItem entityitem = new EntityItem(harvester.worldObj,
+                            blockPos.getX() + d,
+                            blockPos.getY() + d1,
+                            blockPos.getZ() + d2, stack);
                     entityitem.setDefaultPickupDelay();
-                    aPlayer.worldObj.spawnEntityInWorld(entityitem);
+                    harvester.worldObj.spawnEntityInWorld(entityitem);
                 }
-                aPlayer.addStat(StatList.MINE_BLOCK_STATS.get(Block.getIdFromBlock(aBlock.getBlock())), 1);
+                harvester.addStat(StatList.MINE_BLOCK_STATS.get(Block.getIdFromBlock(blockState.getBlock())), 1);
             }
-            aPlayer.worldObj.setBlockToAir(pos);
+            harvester.worldObj.setBlockToAir(blockPos);
         } else 
-        	if ((aBlock.getMaterial() == Material.ICE ||
-                    aBlock.getMaterial() == Material.PACKED_ICE) &&
-                    aDrops.isEmpty()) {
-            aDrops.add(getBlockStack(aBlock));
-            aPlayer.worldObj.setBlockToAir(pos);
+        	if ((blockState.getMaterial() == Material.ICE ||
+                    blockState.getMaterial() == Material.PACKED_ICE) &&
+                    drops.isEmpty()) {
+            drops.add(getBlockStack(blockState));
+            harvester.worldObj.setBlockToAir(blockPos);
             aEvent.setDropChance(1.0F);
             return 1;
         }
-        if (GregTech_API.sTimber && !aPlayer.isSneaking() &&
-                OrePrefixes.log.contains(getBlockStack(aBlock))) {
-            for (int y = 0; y < aPlayer.worldObj.getHeight() - pos.up().getY(); y++) {
-                BlockPos block = pos.up(y);
-                if (!isStateEqual(aPlayer.worldObj.getBlockState(block), aBlock) ||
-                        !aPlayer.worldObj.destroyBlock(block, true)) break;
+        if (GregTech_API.sTimber && !harvester.isSneaking() &&
+                OrePrefixes.log.contains(getBlockStack(blockState))) {
+            for (int y = 0; y < harvester.worldObj.getHeight() - blockPos.up().getY(); y++) {
+                BlockPos block = blockPos.up(y);
+                if (!isStateEqual(harvester.worldObj.getBlockState(block), blockState) ||
+                        !harvester.worldObj.destroyBlock(block, true)) break;
                 rAmount++;
             }
         }
@@ -151,12 +154,12 @@ public class GT_Tool_Chainsaw_LV extends GT_Tool_Saw {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadChainsaw.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_LV;
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadChainsaw.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_LV;
     }
 
     @Override
-    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+    public int getColor(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mRGBa : ToolMetaItem.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override

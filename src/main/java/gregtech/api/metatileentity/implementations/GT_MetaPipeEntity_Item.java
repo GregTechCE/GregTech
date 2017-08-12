@@ -1,15 +1,16 @@
 package gregtech.api.metatileentity.implementations;
 
-import gregtech.api.unification.Dyes;
-import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefixes;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.capability.ICoverable;
 import gregtech.api.capability.internal.IGregTechTileEntity;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.unification.Dyes;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -25,14 +26,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileEntityItemPipe {
     public final float mThickNess;
-    public final Materials mMaterial;
+    public final Material mMaterial;
     public final int mStepSize;
     public final int mTickTime;
     public int mTransferredItems = 0;
     public byte mLastReceivedFrom = 0, oLastReceivedFrom = 0;
     public boolean mIsRestrictive = false;
 
-    public GT_MetaPipeEntity_Item(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial, int aInvSlotCount, int aStepSize, boolean aIsRestrictive, int aTickTime) {
+    public GT_MetaPipeEntity_Item(int aID, String aName, String aNameRegional, float aThickNess, Material aMaterial, int aInvSlotCount, int aStepSize, boolean aIsRestrictive, int aTickTime) {
         super(aID, aName, aNameRegional, aInvSlotCount);
         mIsRestrictive = aIsRestrictive;
         mThickNess = aThickNess;
@@ -41,7 +42,7 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
         mTickTime = aTickTime;
     }
 
-    public GT_MetaPipeEntity_Item(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial, int aInvSlotCount, int aStepSize, boolean aIsRestrictive) {
+    public GT_MetaPipeEntity_Item(int aID, String aName, String aNameRegional, float aThickNess, Material aMaterial, int aInvSlotCount, int aStepSize, boolean aIsRestrictive) {
         super(aID, aName, aNameRegional, aInvSlotCount);
         mIsRestrictive = aIsRestrictive;
         mThickNess = aThickNess;
@@ -50,7 +51,7 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
         mTickTime = 20;
     }
 
-    public GT_MetaPipeEntity_Item(String aName, float aThickNess, Materials aMaterial, int aInvSlotCount, int aStepSize, boolean aIsRestrictive) {
+    public GT_MetaPipeEntity_Item(String aName, float aThickNess, Material aMaterial, int aInvSlotCount, int aStepSize, boolean aIsRestrictive) {
         super(aName, aInvSlotCount);
         mIsRestrictive = aIsRestrictive;
         mThickNess = aThickNess;

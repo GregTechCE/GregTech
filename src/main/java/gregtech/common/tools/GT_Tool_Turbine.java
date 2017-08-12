@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import gregtech.api.items.IIconContainer;
+import gregtech.api.items.toolitem.ToolMetaItem;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -10,10 +10,10 @@ import net.minecraft.util.text.TextFormatting;
 
 public abstract class GT_Tool_Turbine extends GT_Tool {
 
-    public abstract float getBaseDamage();
+    public abstract float getBaseDamage(ItemStack stack);
 
     @Override
-    public boolean isMinableBlock(IBlockState aBlock) {
+    public boolean isMinableBlock(IBlockState aBlock, ItemStack stack) {
         return false;
     }
 
@@ -23,8 +23,8 @@ public abstract class GT_Tool_Turbine extends GT_Tool {
     }
 
     @Override
-    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : null;
+    public int getColor(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mRGBa : null;
     }
 
     @Override

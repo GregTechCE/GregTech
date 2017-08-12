@@ -1,10 +1,9 @@
 package gregtech.common;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.Material;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.blocks.BlockGeneratedOres;
-import gregtech.common.blocks.GT_Block_GeneratedOres;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkGenerator;
@@ -28,7 +27,7 @@ public class GT_Worldgen_GT_Ore_SmallPieces
 
     private BlockPos.MutableBlockPos temp = new BlockPos.MutableBlockPos();
 
-    public GT_Worldgen_GT_Ore_SmallPieces(String aName, boolean aDefault, int aMinY, int aMaxY, int aAmount, boolean aOverworld, boolean aNether, boolean aEnd, boolean aMoon, boolean aMars, boolean aAsteroid, Materials aPrimary) {
+    public GT_Worldgen_GT_Ore_SmallPieces(String aName, boolean aDefault, int aMinY, int aMaxY, int aAmount, boolean aOverworld, boolean aNether, boolean aEnd, boolean aMoon, boolean aMars, boolean aAsteroid, Material aPrimary) {
         super(aName, GregTech_API.sWorldgenList, aDefault);
         this.mOverworld = GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Overworld", aOverworld);
         this.mNether = GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Nether", aNether);

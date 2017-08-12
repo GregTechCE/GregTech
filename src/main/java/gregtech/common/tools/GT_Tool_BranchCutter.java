@@ -1,11 +1,12 @@
 package gregtech.common.tools;
 
-import gregtech.api.enums.Textures;
-import gregtech.api.items.IIconContainer;
-import gregtech.api.util.GT_ModHandler;
+import gregtech.api.items.toolitem.ToolMetaItem;
+import gregtech.api.recipes.ModHandler;
 import gregtech.api.util.GT_Utility;
 import ic2.core.ref.BlockName;
-import net.minecraft.block.*;
+import net.minecraft.block.BlockNewLeaf;
+import net.minecraft.block.BlockOldLeaf;
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -24,22 +25,22 @@ import java.util.List;
 public class GT_Tool_BranchCutter extends GT_Tool {
 
     @Override
-    public float getBaseDamage() {
+    public float getBaseDamage(ItemStack stack) {
         return 2.5F;
     }
 
     @Override
-    public float getSpeedMultiplier() {
+    public float getSpeedMultiplier(ItemStack stack) {
         return 0.25F;
     }
 
     @Override
-    public float getMaxDurabilityMultiplier() {
+    public float getMaxDurabilityMultiplier(ItemStack stack) {
         return 0.25F;
     }
 
     @Override
-    public boolean isGrafter() {
+    public boolean isGrafter(ItemStack stack) {
         return true;
     }
 
@@ -60,9 +61,9 @@ public class GT_Tool_BranchCutter extends GT_Tool {
                 aDrops.clear();
                 aDrops.add(new ItemStack(Blocks.SAPLING, 1, aBlock
                         .getValue(BlockNewLeaf.VARIANT).getMetadata()));
-            } else if (aBlock == GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item(BlockName.leaves, 1))) {
+            } else if (aBlock == GT_Utility.getBlockFromStack(ModHandler.getIC2Item(BlockName.leaves, 1))) {
                 aDrops.clear();
-                aDrops.add(GT_ModHandler.getIC2Item(BlockName.sapling, 1));
+                aDrops.add(ModHandler.getIC2Item(BlockName.sapling, 1));
             }
         }
         return 0;
@@ -80,8 +81,8 @@ public class GT_Tool_BranchCutter extends GT_Tool {
     }
 
     @Override
-    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+    public int getColor(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).materialRGB : ToolMetaItem.getSecondaryMaterial(aStack).materialRGB;
     }
 
     @Override

@@ -1,7 +1,5 @@
 package gregtech.common.tools;
 
-import gregtech.api.enums.Textures;
-import gregtech.api.items.IIconContainer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
@@ -11,37 +9,37 @@ import net.minecraft.util.text.TextFormatting;
 public class GT_Tool_Knife extends GT_Tool_Sword {
 
     @Override
-    public int getToolDamagePerBlockBreak() {
+    public int getToolDamagePerBlockBreak(ItemStack stack) {
         return 100;
     }
 
     @Override
-    public int getToolDamagePerDropConversion() {
+    public int getToolDamagePerDropConversion(ItemStack stack) {
         return 100;
     }
 
     @Override
-    public int getToolDamagePerContainerCraft() {
+    public int getToolDamagePerContainerCraft(ItemStack stack) {
         return 100;
     }
 
     @Override
-    public int getToolDamagePerEntityAttack() {
+    public int getToolDamagePerEntityAttack(ItemStack stack) {
         return 200;
     }
 
     @Override
-    public float getBaseDamage() {
+    public float getBaseDamage(ItemStack stack) {
         return 2.0F;
     }
 
     @Override
-    public float getSpeedMultiplier() {
+    public float getSpeedMultiplier(ItemStack stack) {
         return 0.5F;
     }
 
     @Override
-    public float getMaxDurabilityMultiplier() {
+    public float getMaxDurabilityMultiplier(ItemStack stack) {
         return 1.0F;
     }
 

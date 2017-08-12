@@ -1,40 +1,52 @@
 package gregtech.common.tools;
 
-import gregtech.api.enums.Textures;
-import gregtech.api.items.IIconContainer;
+import gregtech.api.enchants.EnchantmentData;
+import gregtech.api.items.toolitem.ToolMetaItem;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
+import scala.actors.threadpool.Arrays;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GT_Tool_ButcheryKnife extends GT_Tool {
 
     @Override
-    public int getToolDamagePerBlockBreak() {
+    public int getToolDamagePerBlockBreak(ItemStack stack) {
         return 200;
     }
 
     @Override
-    public int getToolDamagePerDropConversion() {
+    public int getToolDamagePerDropConversion(ItemStack stack) {
         return 100;
     }
 
     @Override
-    public int getToolDamagePerContainerCraft() {
+    public int getToolDamagePerContainerCraft(ItemStack stack) {
         return 100;
     }
 
     @Override
-    public int getToolDamagePerEntityAttack() {
+    public int getToolDamagePerEntityAttack(ItemStack stack) {
         return 400;
     }
 
     @Override
-    public float getBaseDamage() {
+    public int getBaseQuality(ItemStack stack) {
+        return 0;
+    }
+
+    @Override
+    public float getBaseDamage(ItemStack stack) {
         return 1.0F;
     }
 
@@ -44,13 +56,33 @@ public class GT_Tool_ButcheryKnife extends GT_Tool {
     }
 
     @Override
-    public float getSpeedMultiplier() {
+    public float getSpeedMultiplier(ItemStack stack) {
         return 0.1F;
     }
 
     @Override
-    public float getMaxDurabilityMultiplier() {
+    public float getMaxDurabilityMultiplier(ItemStack stack) {
         return 1.0F;
+    }
+
+    @Override
+    public ResourceLocation getMiningSound(ItemStack stack) {
+        return null;
+    }
+
+    @Override
+    public ResourceLocation getCraftingSound(ItemStack stack) {
+        return null;
+    }
+
+    @Override
+    public ResourceLocation getEntityHitSound(ItemStack stack) {
+        return null;
+    }
+
+    @Override
+    public ResourceLocation getBreakingSound(ItemStack stack) {
+        return null;
     }
 
     @Override
@@ -64,13 +96,23 @@ public class GT_Tool_ButcheryKnife extends GT_Tool {
     }
 
     @Override
-    public Enchantment[] getEnchantments(ItemStack aStack) {
-        return LOOTING_ENCHANTMENT;
+    public List<EnchantmentData> getEnchantments(ItemStack aStack) {
+        return new ArrayList<EnchantmentData>(Arrays.asList(ZERO_ENCHANTMENTS));
+    }
+
+    @Override
+    public boolean isCrowbar(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public boolean isGrafter(ItemStack stack) {
+        return false;
     }
 
     @Override
     public int[] getEnchantmentLevels(ItemStack aStack) {
-        return new int[]{(2 + GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolQuality) / 2};
+        return new int[]{(2 + ToolMetaItem.getPrimaryMaterial(aStack).mToolQuality) / 2};
     }
 
     @Override
@@ -79,8 +121,8 @@ public class GT_Tool_ButcheryKnife extends GT_Tool {
     }
 
     @Override
-    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+    public int getColor(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).materialRGB : ToolMetaItem.getSecondaryMaterial(aStack).materialRGB;
     }
 
     @Override
@@ -92,8 +134,27 @@ public class GT_Tool_ButcheryKnife extends GT_Tool {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState blockState) {
+    public boolean isMinableBlock(IBlockState blockState, ItemStack stack) {
         return false;
     }
 
+    @Override
+    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops) {
+        return 0;
+    }
+
+    @Override
+    public float getNormalDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase attacker) {
+        return 0;
+    }
+
+    @Override
+    public float getMagicDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase player) {
+        return 0;
+    }
+
+    @Override
+    public float getAttackSpeed(ItemStack stack) {
+        return 0;
+    }
 }

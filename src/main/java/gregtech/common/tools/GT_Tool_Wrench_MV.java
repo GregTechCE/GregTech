@@ -1,8 +1,7 @@
 package gregtech.common.tools;
 
-import gregtech.api.enums.Textures;
+import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.unification.ore.OrePrefixes;
-import gregtech.api.items.IIconContainer;
 import net.minecraft.item.ItemStack;
 
 public class GT_Tool_Wrench_MV extends GT_Tool_Wrench_LV {
@@ -33,7 +32,7 @@ public class GT_Tool_Wrench_MV extends GT_Tool_Wrench_LV {
     }
 
     @Override
-    public float getBaseDamage() {
+    public float getBaseDamage(ItemStack stack) {
         return 1.5F;
     }
 
@@ -49,12 +48,12 @@ public class GT_Tool_Wrench_MV extends GT_Tool_Wrench_LV {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadWrench.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_MV;
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadWrench.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_MV;
     }
 
     @Override
-    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+    public int getColor(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mRGBa : ToolMetaItem.getSecondaryMaterial(aStack).mRGBa;
     }
 
 }
