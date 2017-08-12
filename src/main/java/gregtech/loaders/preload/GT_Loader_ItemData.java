@@ -1,12 +1,12 @@
 package gregtech.loaders.preload;
 
 import gregtech.api.items.ItemList;
+import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.unification.stack.ItemData;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.GTLog;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import ic2.core.item.type.NuclearResourceType;
@@ -21,22 +21,22 @@ public class GT_Loader_ItemData
         implements Runnable {
     public void run() {
         GTLog.out.println("GT_Mod: Loading Item Data Tags");
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("TwilightForest", "item.giantPick", 1, 0), new ItemData(Materials.Stone, 696729600L, new MaterialStack(Materials.Wood, 464486400L)));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("TwilightForest", "item.giantSword", 1, 0), new ItemData(Materials.Stone, 464486400L, new MaterialStack(Materials.Wood, 232243200L)));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("TwilightForest", "tile.GiantLog", 1, 32767), new ItemData(Materials.Wood, 232243200L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("TwilightForest", "tile.GiantCobble", 1, 32767), new ItemData(Materials.Stone, 232243200L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("TwilightForest", "tile.GiantObsidian", 1, 32767), new ItemData(Materials.Obsidian, 232243200L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("TwilightForest", "item.minotaurAxe", 1, 0), new ItemData(Materials.Diamond, 14515200L, new MaterialStack(Materials.Wood, OrePrefixes.stick.mMaterialAmount * 2L)));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("TwilightForest", "item.armorShards", 1, 0), new ItemData(Materials.Knightmetal, 403200L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("TwilightForest", "item.shardCluster", 1, 0), new ItemData(Materials.Knightmetal, 3628800L));
+        GT_OreDictUnificator.addItemData(ModHandler.getModItem("TwilightForest", "item.giantPick", 1, 0), new ItemData(Materials.Stone, 696729600L, new MaterialStack(Materials.Wood, 464486400L)));
+        GT_OreDictUnificator.addItemData(ModHandler.getModItem("TwilightForest", "item.giantSword", 1, 0), new ItemData(Materials.Stone, 464486400L, new MaterialStack(Materials.Wood, 232243200L)));
+        GT_OreDictUnificator.addItemData(ModHandler.getModItem("TwilightForest", "tile.GiantLog", 1, 32767), new ItemData(Materials.Wood, 232243200L));
+        GT_OreDictUnificator.addItemData(ModHandler.getModItem("TwilightForest", "tile.GiantCobble", 1, 32767), new ItemData(Materials.Stone, 232243200L));
+        GT_OreDictUnificator.addItemData(ModHandler.getModItem("TwilightForest", "tile.GiantObsidian", 1, 32767), new ItemData(Materials.Obsidian, 232243200L));
+        GT_OreDictUnificator.addItemData(ModHandler.getModItem("TwilightForest", "item.minotaurAxe", 1, 0), new ItemData(Materials.Diamond, 14515200L, new MaterialStack(Materials.Wood, OrePrefixes.stick.mMaterialAmount * 2L)));
+        GT_OreDictUnificator.addItemData(ModHandler.getModItem("TwilightForest", "item.armorShards", 1, 0), new ItemData(Materials.Knightmetal, 403200L));
+        GT_OreDictUnificator.addItemData(ModHandler.getModItem("TwilightForest", "item.shardCluster", 1, 0), new ItemData(Materials.Knightmetal, 3628800L));
         GT_OreDictUnificator.addItemData(ItemList.TF_LiveRoot.get(1), new ItemData(Materials.LiveRoot, 3628800L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1, 10), new ItemData(Materials.CertusQuartz, 1814400L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1, 11), new ItemData(Materials.NetherQuartz, 1814400L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1, 12), new ItemData(Materials.Fluix, 1814400L));
+        GT_OreDictUnificator.addItemData(ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1, 10), new ItemData(Materials.CertusQuartz, 1814400L));
+        GT_OreDictUnificator.addItemData(ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1, 11), new ItemData(Materials.NetherQuartz, 1814400L));
+        GT_OreDictUnificator.addItemData(ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1, 12), new ItemData(Materials.Fluix, 1814400L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.QUARTZ_BLOCK, 1, 32767), new ItemData(Materials.NetherQuartz, 14515200L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockQuartz", 1, 32767), new ItemData(Materials.CertusQuartz, 14515200L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockQuartzPillar", 1, 32767), new ItemData(Materials.CertusQuartz, 14515200L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockQuartzChiseled", 1, 32767), new ItemData(Materials.CertusQuartz, 14515200L));
+        GT_OreDictUnificator.addItemData(ModHandler.getModItem("appliedenergistics2", "tile.BlockQuartz", 1, 32767), new ItemData(Materials.CertusQuartz, 14515200L));
+        GT_OreDictUnificator.addItemData(ModHandler.getModItem("appliedenergistics2", "tile.BlockQuartzPillar", 1, 32767), new ItemData(Materials.CertusQuartz, 14515200L));
+        GT_OreDictUnificator.addItemData(ModHandler.getModItem("appliedenergistics2", "tile.BlockQuartzChiseled", 1, 32767), new ItemData(Materials.CertusQuartz, 14515200L));
         GT_OreDictUnificator.addItemData(new ItemStack(Items.WHEAT, 1, 32767), new ItemData(Materials.Wheat, 3628800L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.HAY_BLOCK, 1, 32767), new ItemData(Materials.Wheat, 32659200L));
         GT_OreDictUnificator.addItemData(new ItemStack(Items.SNOWBALL, 1, 32767), new ItemData(Materials.Snow, 907200L));
@@ -44,7 +44,7 @@ public class GT_Loader_ItemData
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.GLOWSTONE, 1, 32767), new ItemData(Materials.Glowstone, 14515200L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.REDSTONE_LAMP, 1, 32767), new ItemData(Materials.Glowstone, 14515200L, new MaterialStack(Materials.Redstone, OrePrefixes.dust.mMaterialAmount * 4L)));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.LIT_REDSTONE_LAMP, 1, 32767), new ItemData(Materials.Glowstone, 14515200L, new MaterialStack(Materials.Redstone, OrePrefixes.dust.mMaterialAmount * 4L)));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("Forestry", "craftingMaterial", 1, 5), new ItemData(Materials.Ice, 3628800L));
+        GT_OreDictUnificator.addItemData(ModHandler.getModItem("Forestry", "craftingMaterial", 1, 5), new ItemData(Materials.Ice, 3628800L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.ICE, 1, 32767), new ItemData(Materials.Ice, 3628800L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.PACKED_ICE, 1, 32767), new ItemData(Materials.Ice, 7257600L));
         GT_OreDictUnificator.addItemData(new ItemStack(Items.CLAY_BALL, 1, 32767), new ItemData(Materials.Clay, 1814400L));
@@ -52,11 +52,11 @@ public class GT_Loader_ItemData
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.HARDENED_CLAY, 1, 32767), new ItemData(Materials.Clay, 3628800L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.STAINED_HARDENED_CLAY, 1, 32767), new ItemData(Materials.Clay, 3628800L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.BRICK_BLOCK, 1, 32767), new ItemData(Materials.Clay, 3628800L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getIC2Item(ItemName.nuclear, NuclearResourceType.uranium_238, 1), new ItemData(Materials.Uranium, 3628800L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getIC2Item(ItemName.nuclear, NuclearResourceType.uranium_235, 1), new ItemData(Materials.Uranium235, 3628800L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getIC2Item(ItemName.nuclear, NuclearResourceType.plutonium, 1), new ItemData(Materials.Plutonium, 3628800L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getIC2Item(ItemName.nuclear, NuclearResourceType.small_uranium_235, 1), new ItemData(Materials.Uranium235, 403200L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getIC2Item(ItemName.nuclear, NuclearResourceType.small_plutonium, 1), new ItemData(Materials.Plutonium, 403200L));
+        GT_OreDictUnificator.addItemData(ModHandler.getIC2Item(ItemName.nuclear, NuclearResourceType.uranium_238, 1), new ItemData(Materials.Uranium, 3628800L));
+        GT_OreDictUnificator.addItemData(ModHandler.getIC2Item(ItemName.nuclear, NuclearResourceType.uranium_235, 1), new ItemData(Materials.Uranium235, 3628800L));
+        GT_OreDictUnificator.addItemData(ModHandler.getIC2Item(ItemName.nuclear, NuclearResourceType.plutonium, 1), new ItemData(Materials.Plutonium, 3628800L));
+        GT_OreDictUnificator.addItemData(ModHandler.getIC2Item(ItemName.nuclear, NuclearResourceType.small_uranium_235, 1), new ItemData(Materials.Uranium235, 403200L));
+        GT_OreDictUnificator.addItemData(ModHandler.getIC2Item(ItemName.nuclear, NuclearResourceType.small_plutonium, 1), new ItemData(Materials.Plutonium, 403200L));
         GT_OreDictUnificator.addItemData(ItemList.IC2_Item_Casing_Iron.get(1), new ItemData(Materials.Iron, 1814400L));
         GT_OreDictUnificator.addItemData(ItemList.IC2_Item_Casing_Gold.get(1), new ItemData(Materials.Gold, 1814400L));
         GT_OreDictUnificator.addItemData(ItemList.IC2_Item_Casing_Bronze.get(1), new ItemData(Materials.Bronze, 1814400L));
@@ -75,15 +75,15 @@ public class GT_Loader_ItemData
         GT_OreDictUnificator.addItemData(new ItemStack(Items.MINECART, 1), new ItemData(Materials.Iron, 18144000L));
         GT_OreDictUnificator.addItemData(new ItemStack(Items.CAULDRON, 1), new ItemData(Materials.Iron, 25401600L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.IRON_BARS, 8, 32767), new ItemData(Materials.Iron, 10886400L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getIC2TEItem(TeBlock.iron_furnace, 1), new ItemData(Materials.Iron, 18144000L));
+        GT_OreDictUnificator.addItemData(ModHandler.getIC2TEItem(TeBlock.iron_furnace, 1), new ItemData(Materials.Iron, 18144000L));
         GT_OreDictUnificator.addItemData(ItemList.IC2_Food_Can_Empty.get(1), new ItemData(Materials.Tin, 1814400L));
         GT_OreDictUnificator.addItemData(ItemList.IC2_Fuel_Rod_Empty.get(1), new ItemData(Materials.Iron, 3628800L));
         GT_OreDictUnificator.addItemData(ItemList.IC2_Fuel_Can_Empty.get(1), new ItemData(Materials.Tin, 25401600L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE, 1, 32767), new ItemData(Materials.Gold, 7257600L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE, 1, 32767), new ItemData(Materials.Iron, 7257600L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("Railcraft", "tile.railcraft.anvil", 1, 0), new ItemData(Materials.Steel, 108864000L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("Railcraft", "tile.railcraft.anvil", 1, 1), new ItemData(Materials.Steel, 72576000L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("Railcraft", "tile.railcraft.anvil", 1, 2), new ItemData(Materials.Steel, 36288000L));
+        GT_OreDictUnificator.addItemData(ModHandler.getModItem("Railcraft", "tile.railcraft.anvil", 1, 0), new ItemData(Materials.Steel, 108864000L));
+        GT_OreDictUnificator.addItemData(ModHandler.getModItem("Railcraft", "tile.railcraft.anvil", 1, 1), new ItemData(Materials.Steel, 72576000L));
+        GT_OreDictUnificator.addItemData(ModHandler.getModItem("Railcraft", "tile.railcraft.anvil", 1, 2), new ItemData(Materials.Steel, 36288000L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.ANVIL, 1, 0), new ItemData(Materials.Iron, 108864000L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.ANVIL, 1, 1), new ItemData(Materials.Iron, 72576000L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.ANVIL, 1, 2), new ItemData(Materials.Iron, 36288000L));
@@ -169,13 +169,13 @@ public class GT_Loader_ItemData
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.STICKY_PISTON, 1, 32767), new ItemData(Materials.Stone, 14515200L, new MaterialStack(Materials.Wood, 10886400L)));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.DISPENSER, 1, 32767), new ItemData(Materials.Stone, 25401600L, new MaterialStack(Materials.Redstone, 3628800L)));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.DROPPER, 1, 32767), new ItemData(Materials.Stone, 25401600L, new MaterialStack(Materials.Redstone, 3628800L)));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("Thaumcraft", "ItemNuggetChicken", 1, 32767), new ItemData(Materials.MeatCooked, 403200L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("Thaumcraft", "ItemNuggetBeef", 1, 32767), new ItemData(Materials.MeatCooked, 403200L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("Thaumcraft", "ItemNuggetPork", 1, 32767), new ItemData(Materials.MeatCooked, 403200L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("Thaumcraft", "ItemNuggetFish", 1, 32767), new ItemData(Materials.MeatCooked, 403200L));
+        GT_OreDictUnificator.addItemData(ModHandler.getModItem("Thaumcraft", "ItemNuggetChicken", 1, 32767), new ItemData(Materials.MeatCooked, 403200L));
+        GT_OreDictUnificator.addItemData(ModHandler.getModItem("Thaumcraft", "ItemNuggetBeef", 1, 32767), new ItemData(Materials.MeatCooked, 403200L));
+        GT_OreDictUnificator.addItemData(ModHandler.getModItem("Thaumcraft", "ItemNuggetPork", 1, 32767), new ItemData(Materials.MeatCooked, 403200L));
+        GT_OreDictUnificator.addItemData(ModHandler.getModItem("Thaumcraft", "ItemNuggetFish", 1, 32767), new ItemData(Materials.MeatCooked, 403200L));
         for (ItemStack tItem : new ItemStack[]{
-                GT_ModHandler.getModItem("TwilightForest", "item.meefRaw", 1, 0),
-                GT_ModHandler.getModItem("TwilightForest", "item.venisonRaw", 1, 0),
+                ModHandler.getModItem("TwilightForest", "item.meefRaw", 1, 0),
+                ModHandler.getModItem("TwilightForest", "item.venisonRaw", 1, 0),
                 new ItemStack(Items.PORKCHOP),
                 new ItemStack(Items.BEEF),
                 new ItemStack(Items.CHICKEN),
@@ -187,8 +187,8 @@ public class GT_Loader_ItemData
             }
         }
         for (ItemStack tItem : new ItemStack[]{
-                GT_ModHandler.getModItem("TwilightForest", "item.meefSteak", 1, 0),
-                GT_ModHandler.getModItem("TwilightForest", "item.venisonCooked", 1, 0),
+                ModHandler.getModItem("TwilightForest", "item.meefSteak", 1, 0),
+                ModHandler.getModItem("TwilightForest", "item.venisonCooked", 1, 0),
                 new ItemStack(Items.COOKED_PORKCHOP),
                 new ItemStack(Items.COOKED_BEEF),
                 new ItemStack(Items.COOKED_CHICKEN),

@@ -1,9 +1,10 @@
 package gregtech.api.util;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.ConfigCategories;
+import gregtech.api.GregTech_API;
 import gregtech.api.unification.GT_OreDictUnificator;
 import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.unification.stack.ItemData;
 import ic2.api.crops.CropCard;
@@ -60,7 +61,7 @@ public class GT_BaseCrop extends CropCard {
      * @param aHarvestSize  the size the Crop needs to be harvested. forced to be between 2 and max size
      * @param aBlock        the block below needed for crop to grow. If null no block needed
      */
-    public GT_BaseCrop(int aID, String aCropName, String aDiscoveredBy, ItemStack aBaseSeed, int aTier, int aMaxSize, int aGrowthSpeed, int aAfterHarvestSize, int aHarvestSize, int aStatChemical, int aStatFood, int aStatDefensive, int aStatColor, int aStatWeed, String[] aAttributes, Materials aBlock, ItemStack aDrop, ItemStack[] aSpecialDrops) {
+    public GT_BaseCrop(int aID, String aCropName, String aDiscoveredBy, ItemStack aBaseSeed, int aTier, int aMaxSize, int aGrowthSpeed, int aAfterHarvestSize, int aHarvestSize, int aStatChemical, int aStatFood, int aStatDefensive, int aStatColor, int aStatWeed, String[] aAttributes, Material aBlock, ItemStack aDrop, ItemStack[] aSpecialDrops) {
         mName = aCropName;
         aID = GT_Config.addIDConfig(ConfigCategories.IDs.crops, mName.replaceAll(" ", "_"), aID);
         if (aDiscoveredBy != null && !aDiscoveredBy.equals(E)) mDiscoveredBy = aDiscoveredBy;

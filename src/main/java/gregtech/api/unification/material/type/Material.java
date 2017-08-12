@@ -240,4 +240,11 @@ public abstract class Material implements Comparable<Material> {
 		return MATERIAL_REGISTRY.getNameForObject(this).compareTo(anotherId);
 	}
 
+	public static Material get(String matDefaultLocalName) {
+		for (String keyName : MATERIAL_REGISTRY.getKeys()) {
+			Material material = MATERIAL_REGISTRY.getObject(keyName);
+			if (material != null && material.defaultLocalName.equals(matDefaultLocalName)) return material;
+		}
+		return null;
+	}
 }

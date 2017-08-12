@@ -2,6 +2,8 @@ package gregtech.common.tools;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.DamageSources;
+import gregtech.api.enchants.EnchantmentData;
+import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.IToolStats;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
@@ -12,14 +14,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.event.world.BlockEvent;
+import scala.actors.threadpool.Arrays;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public abstract class GT_Tool
-        implements IToolStats {
+public abstract class GT_Tool implements IToolStats {
     public static final Enchantment[] FORTUNE_ENCHANTMENT = {Enchantment.getEnchantmentByLocation("fortune")};
     public static final Enchantment[] LOOTING_ENCHANTMENT = {Enchantment.getEnchantmentByLocation("looting")};
     public static final Enchantment[] ZERO_ENCHANTMENTS = new Enchantment[0];
@@ -65,19 +69,19 @@ public abstract class GT_Tool
         return aOriginalHurtResistance;
     }
 
-    public String getMiningSound() {
+    public ResourceLocation getMiningSound() {
         return null;
     }
 
-    public String getCraftingSound() {
+    public ResourceLocation getCraftingSound() {
         return null;
     }
 
-    public String getEntityHitSound() {
+    public ResourceLocation getEntityHitSound() {
         return null;
     }
 
-    public String getBreakingSound() {
+    public ResourceLocation getBreakingSound() {
         return GregTech_API.sSoundList.get(0);
     }
 
@@ -129,8 +133,8 @@ public abstract class GT_Tool
         return null;
     }
 
-    public Enchantment[] getEnchantments(ItemStack aStack) {
-        return ZERO_ENCHANTMENTS;
+    public List<EnchantmentData> getEnchantments(ItemStack aStack) {
+        return new ArrayList<EnchantmentData>(Arrays.asList(ZERO_ENCHANTMENTS));
     }
 
     public int[] getEnchantmentLevels(ItemStack aStack) {
@@ -143,7 +147,7 @@ public abstract class GT_Tool
         aPlayer.addStat(AchievementList.BUILD_WORK_BENCH);
     }
 
-    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
+    public void onStatsAddedToTool(MetaItem.MetaValueItem aItem, int aID) {
     }
 
     public float getNormalDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack, EntityPlayer aPlayer) {

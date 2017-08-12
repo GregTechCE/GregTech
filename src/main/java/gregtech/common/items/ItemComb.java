@@ -5,11 +5,12 @@ import forestry.api.core.Tabs;
 import forestry.api.recipes.RecipeManagers;
 import gregtech.GT_Mod;
 import gregtech.api.GT_Values;
-import gregtech.api.items.ItemList;
-import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.items.GenericItem;
+import gregtech.api.items.ItemList;
 import gregtech.api.unification.GT_OreDictUnificator;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.ore.OrePrefixes;
 import gregtech.api.util.GT_Utility;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -173,8 +174,8 @@ public class ItemComb extends GenericItem {
 		addProcess(tComb, Materials.VanadiumMagnetite, 100);
 		addProcess(tComb, Materials.BandedIron, 100);
 		addProcess(tComb, Materials.Pyrite, 100);
-		if (ProcessingModSupport.aEnableGCMarsMats)
-			addProcess(tComb, Materials.MeteoricIron, 100);
+		//TODO if (ProcessingModSupport.aEnableGCMarsMats)
+			//TODO addProcess(tComb, Materials.MeteoricIron, 100);
 		tComb = getStackForType(CombType.STEEL);
 		addProcess(tComb, Materials.Iron, Materials.Steel, 100);
 		addProcess(tComb, Materials.Magnetite, Materials.Steel, 100);
@@ -183,8 +184,8 @@ public class ItemComb extends GenericItem {
 		addProcess(tComb, Materials.VanadiumMagnetite, Materials.VanadiumSteel, 100);
 		addProcess(tComb, Materials.BandedIron, Materials.Steel, 100);
 		addProcess(tComb, Materials.Pyrite, Materials.Steel, 100);
-		if (ProcessingModSupport.aEnableGCMarsMats)
-			addProcess(tComb, Materials.MeteoricIron, Materials.MeteoricSteel, 100);
+		//TODO if (ProcessingModSupport.aEnableGCMarsMats)
+			//TODO addProcess(tComb, Materials.MeteoricIron, Materials.MeteoricSteel, 100);
 		addProcess(tComb, Materials.Molybdenite, 100);
 		addProcess(tComb, Materials.Molybdenum, 100);
 		tComb = getStackForType(CombType.NICKEL);
@@ -268,7 +269,7 @@ public class ItemComb extends GenericItem {
 		RecipeManagers.centrifugeManager.addRecipe(40, tComb, ImmutableMap.of(aOutput, chance * 0.01f, ItemList.FR_Wax.get(1, new Object[0]), 0.3f,aOutput2,chance2 * 0.01f,aOutput3,chance3*0.01f));
 	}
 	
-	public void addProcess(ItemStack tComb, Materials aMaterial, int chance){
+	public void addProcess(ItemStack tComb, Material aMaterial, int chance){
 		if(GT_Mod.gregtechproxy.mNerfedCombs){
 			GT_Values.RA.addChemicalRecipe(GT_Utility.copyAmount(9, tComb), GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1), Materials.Water.getFluid(1000), aMaterial.mOreByProducts.isEmpty() ? null : aMaterial.mOreByProducts.get(0).getMolten(144), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4), 96, 24);
 			GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(16, tComb), Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass()+9)/10))), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1), 10000, (int) (aMaterial.getMass() * 128), 384);
@@ -278,7 +279,7 @@ public class ItemComb extends GenericItem {
 		}
 	}
 	
-	public void addProcess(ItemStack tComb, Materials aInMaterial, Materials aOutMaterial, int chance){
+	public void addProcess(ItemStack tComb, Material aInMaterial, Material aOutMaterial, int chance){
 		if(GT_Mod.gregtechproxy.mNerfedCombs){
 			GT_Values.RA.addChemicalRecipe(GT_Utility.copyAmount(9, tComb), GT_OreDictUnificator.get(OrePrefixes.crushed, aInMaterial, 1), Materials.Water.getFluid(1000), aInMaterial.mOreByProducts.isEmpty() ? null : aInMaterial.mOreByProducts.get(0).getMolten(144), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aOutMaterial, 4), 96, 24);
 			GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(16, tComb), Materials.UUMatter.getFluid(Math.max(1, ((aOutMaterial.getMass()+9)/10))), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aOutMaterial, 1), 10000, (int) (aOutMaterial.getMass() * 128), 384);
