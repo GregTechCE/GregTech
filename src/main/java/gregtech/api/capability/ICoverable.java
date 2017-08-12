@@ -1,25 +1,22 @@
 package gregtech.api.capability;
 
-import gregtech.api.capability.internal.IRedstoneTileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
 
-public interface ICoverable extends IRedstoneTileEntity {
+public interface ICoverable {
 
-    /**
-     * If a Cover of that Type can be placed on this Side.
-     */
-    boolean allowCoverOnSide(EnumFacing side, int coverId);
+    @CapabilityInject(ICoverable.class)
+    public static final Capability<ICoverable> CAPABILITY_COVERABLE = null;
 
-    boolean dropCover(EnumFacing side, EnumFacing droppedSide, boolean forced);
+    boolean allowCoverOnSide(int coverId);
 
-    void setCoverDataAtSide(EnumFacing side, int coverData);
+    boolean dropCover(EnumFacing droppedSide, boolean forced);
 
-    void setCoverIDAtSide(EnumFacing side, int coverId);
+    void setCoverIDAtSide(int coverId);
 
-    int getCoverDataAtSide(EnumFacing side);
+    int getCoverID();
 
-    int getCoverIDAtSide(EnumFacing side);
-
-    void setCoverRedstoneOutput(EnumFacing side, byte strength);
+    void setCoverRedstoneOutput(byte strength);
 
 }

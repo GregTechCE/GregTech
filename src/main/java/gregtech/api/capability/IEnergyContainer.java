@@ -1,6 +1,22 @@
 package gregtech.api.capability;
 
-public interface IBasicEnergyContainer extends IEnergyConnected {
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+
+public interface IEnergyContainer {
+
+    @CapabilityInject(IEnergyContainer.class)
+    public static final Capability<IEnergyContainer> CAPABILITY_ENERGY_CONTAINER = null;
+
+    /**
+     * @return amount of used amperes. 0 if not accepted anything.
+     */
+    long acceptEnergyFromNetwork(long voltage, long amperage);
+
+    boolean inputsEnergy();
+
+    boolean outputsEnergy();
+
 
     /**
      * Gets if that amount of electric energy is stored inside the machine.

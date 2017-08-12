@@ -29,6 +29,12 @@ public class SimpleCapabilityManager {
 
     public static void init() {
         registerCapability(ITurnable.class);
+        registerCapability(IPaintable.class);
+        registerCapability(IDescribable.class);
+        registerCapability(IEnergyContainer.class);
+        registerCapability(IWorkable.class);
+        registerCapability(IUpgradable.class);
+        registerCapability(ICoverable.class);
     }
 
 }

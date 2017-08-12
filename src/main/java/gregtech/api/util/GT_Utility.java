@@ -1190,10 +1190,10 @@ public class GT_Utility {
                 if (tString != null && !tString.equals(E)) tList.add(tString);
             }
 
-            if (tTileEntity instanceof IBasicEnergyContainer && ((IBasicEnergyContainer) tTileEntity).getEUCapacity() > 0) {
-                tList.add("Max IN: " + ((IBasicEnergyContainer) tTileEntity).getInputVoltage() + " EU");
-                tList.add("Max OUT: " + ((IBasicEnergyContainer) tTileEntity).getOutputVoltage() + " EU at " + ((IBasicEnergyContainer) tTileEntity).getOutputAmperage() + " Amperes");
-                tList.add("Energy: " + GT_Utility.formatNumbers(((IBasicEnergyContainer) tTileEntity).getStoredEU()) + " / " + GT_Utility.formatNumbers(((IBasicEnergyContainer) tTileEntity).getEUCapacity()) + "EU");
+            if (tTileEntity instanceof IEnergyContainer && ((IEnergyContainer) tTileEntity).getEUCapacity() > 0) {
+                tList.add("Max IN: " + ((IEnergyContainer) tTileEntity).getInputVoltage() + " EU");
+                tList.add("Max OUT: " + ((IEnergyContainer) tTileEntity).getOutputVoltage() + " EU at " + ((IEnergyContainer) tTileEntity).getOutputAmperage() + " Amperes");
+                tList.add("Energy: " + GT_Utility.formatNumbers(((IEnergyContainer) tTileEntity).getStoredEU()) + " / " + GT_Utility.formatNumbers(((IEnergyContainer) tTileEntity).getEUCapacity()) + "EU");
             }
 
             if (tTileEntity instanceof IGregTechTileEntity) {
