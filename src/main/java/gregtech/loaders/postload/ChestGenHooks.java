@@ -2,6 +2,7 @@ package gregtech.loaders.postload;
 
 import com.google.common.collect.Lists;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.*;
@@ -25,8 +26,14 @@ public class ChestGenHooks {
 
     private static final LootCondition[] NO_CONDITIONS = new LootCondition[0];
 
-    public ChestGenHooks() {
-        MinecraftForge.EVENT_BUS.register(this);
+    private static ChestGenHooks instance = new ChestGenHooks();
+
+    private ChestGenHooks() {}
+
+    public static void init() {
+        MinecraftForge.EVENT_BUS.register(instance);
+
+        EntityPlayer
     }
 
     @SubscribeEvent

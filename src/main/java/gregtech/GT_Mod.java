@@ -28,10 +28,10 @@ import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import gregtech.loaders.load.GT_CoverBehaviorLoader;
 import gregtech.loaders.load.FuelLoader;
-import gregtech.loaders.load.GT_ItemIterator;
+import gregtech.loaders.load.ItemRegistryIterator;
 import gregtech.loaders.load.GT_SonictronLoader;
 import gregtech.loaders.misc.GT_Achievements;
-import gregtech.loaders.misc.GT_Bees;
+import gregtech.loaders.load.bees.BeeLoader;
 import gregtech.loaders.misc.GT_CoverLoader;
 import gregtech.loaders.postload.*;
 import gregtech.loaders.preload.GT_Loader_CircuitBehaviors;
@@ -465,11 +465,11 @@ public class GT_Mod implements IGT_Mod {
             }
         } catch (Throwable e) {e.printStackTrace(GTLog.err);}
 
-        new GT_Bees();
+        new BeeLoader();
 
         gregtechproxy.onLoad();
         if (gregtechproxy.mSortToTheEnd) {
-            new GT_ItemIterator().run();
+            new ItemRegistryIterator().run();
             gregtechproxy.registerUnificationEntries();
             new FuelLoader().run();
         }
@@ -497,7 +497,7 @@ public class GT_Mod implements IGT_Mod {
         if (gregtechproxy.mSortToTheEnd) {
             gregtechproxy.registerUnificationEntries();
         } else {
-            new GT_ItemIterator().run();
+            new ItemRegistryIterator().run();
             gregtechproxy.registerUnificationEntries();
             new FuelLoader().run();
         }
@@ -507,7 +507,7 @@ public class GT_Mod implements IGT_Mod {
         new GT_RecyclerBlacklistLoader().run();
         new GT_MinableRegistrator().run();
         new GT_MachineRecipeLoader().run();
-        new GT_ScrapboxDropLoader().run();
+        new ScrapboxRecipeLoader().run();
         new GT_CropLoader().run();
         new GT_Worldgenloader().run();
         new GT_CoverLoader().run();

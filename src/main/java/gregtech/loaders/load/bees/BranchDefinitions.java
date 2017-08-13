@@ -1,19 +1,17 @@
-package gregtech.loaders.misc;
+package gregtech.loaders.load.bees;
 
 import forestry.api.apiculture.BeeManager;
 import forestry.api.apiculture.EnumBeeChromosome;
-import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IAllele;
 import forestry.api.genetics.IClassification;
 import forestry.apiculture.genetics.alleles.AlleleEffect;
-import forestry.core.genetics.alleles.Allele;
 import forestry.core.genetics.alleles.AlleleHelper;
 import forestry.core.genetics.alleles.EnumAllele;
 
 import java.util.Arrays;
 
 
-public enum GT_BranchDefinition {
+public enum BranchDefinitions {
 
     ORGANIC("Fuelis") {
         @Override
@@ -64,7 +62,7 @@ public enum GT_BranchDefinition {
     private static IAllele[] defaultTemplate;
     private final IClassification branch;
 
-    GT_BranchDefinition(String scientific) {
+    BranchDefinitions(String scientific) {
         branch = BeeManager.beeFactory.createBranch(this.name().toLowerCase(), scientific);
     }
 
@@ -87,9 +85,7 @@ public enum GT_BranchDefinition {
         return Arrays.copyOf(defaultTemplate, defaultTemplate.length);
     }
 
-    protected void setBranchProperties(IAllele[] template) {
-
-    }
+    protected abstract void setBranchProperties(IAllele[] template);
 
     public final IAllele[] getTemplate() {
         IAllele[] template = getDefaultTemplate();

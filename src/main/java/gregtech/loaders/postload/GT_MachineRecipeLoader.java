@@ -24,6 +24,7 @@ import ic2.core.ref.BlockName;
 import ic2.core.ref.FluidName;
 import ic2.core.ref.ItemName;
 import ic2.core.ref.TeBlock;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -409,6 +410,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addSlicerRecipe(ItemList.Food_Baked_Bread.get(1), ItemList.Shape_Slicer_Flat.get(0L), ItemList.Food_Sliced_Bread.get(2L), 128, 4);
         GT_Values.RA.addSlicerRecipe(ItemList.Food_Baked_Baguette.get(1), ItemList.Shape_Slicer_Flat.get(0L), ItemList.Food_Sliced_Baguette.get(2L), 128, 4);
 
+        EntityPlayer
         GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.plate, Materials.Silicon, 1), OreDictionaryUnifier.get(OrePrefix.plate, Materials.Plastic, 1), ItemList.Empty_Board_Basic.get(1), 32, 16);
         GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.plate, Materials.Silicon, 2L), OreDictionaryUnifier.get(OrePrefix.plate, Materials.Polytetrafluoroethylene, 1), ItemList.Empty_Board_Elite.get(1), 32, 256);
 

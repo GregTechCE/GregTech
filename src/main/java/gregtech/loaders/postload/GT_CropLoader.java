@@ -10,8 +10,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-public class GT_CropLoader
-        implements Runnable {
+public class GT_CropLoader implements Runnable {
+
     public void run() {
         GTLog.out.println("GT_Mod: Register Crops to IC2.");
         try {
