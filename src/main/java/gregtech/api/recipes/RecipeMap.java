@@ -138,7 +138,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * 		RecipeMap.FLUID_CANNER_RECIPES.recipeBuilder()
 	 * 				.inputs(ItemList.Battery_Hull_LV.get(1))
 	 * 				.outputs(ItemList.IC2_ReBattery.get(1))
-	 * 				.fluidInputs(Materials.Redstone.getFluid(288L))
+	 * 				.fluidInputs(Materials.Redstone.getFluid(288))
 	 * 				.buildAndRegister();
 	 * </pre>
 	 */
@@ -214,7 +214,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * <pre>
 	 * 		RecipeMap.MIXER_RECIPES.recipeBuilder()
 	 * 				.inputs(new ItemStack(Blocks.SAND, 1, GT_Values.W), new ItemStack(Blocks.DIRT, 1, GT_Values.W))
-	 * 				.fluidInputs(Materials.Water.getFluid(250L))
+	 * 				.fluidInputs(Materials.Water.getFluid(250))
 	 * 				.outputs(GT_ModHandler.getModItem("Forestry", "soil", 2, 1))
 	 * 				.duration(16)
 	 * 				.EUt(16)
@@ -302,8 +302,8 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * <pre>
 	 * 		RecipeMap.FLUID_HEATER_RECIPES.recipeBuilder()
 	 * 				.circuitMeta(1)
-	 * 				.fluidInputs(Materials.Water.getFluid(6L))
-	 * 				.fluidOutputs(Materials.Water.getGas(960L))
+	 * 				.fluidInputs(Materials.Water.getFluid(6))
+	 * 				.fluidOutputs(Materials.Water.getGas(960))
 	 * 				.duration(30)
 	 * 				.EUt(32)
 	 * 				.buildAndRegister();
@@ -316,8 +316,8 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * <pre>
 	 *	 	RecipeMap.DISTILLERY_RECIPES.recipeBuilder()
 	 *	 			.circuitMeta(4)
-	 *	 			.fluidInputs(Materials.Creosote.getFluid(3L))
-	 *	 			.fluidOutputs(Materials.Lubricant.getFluid(1L))
+	 *	 			.fluidInputs(Materials.Creosote.getFluid(3))
+	 *	 			.fluidOutputs(Materials.Lubricant.getFluid(1))
 	 *	 			.duration(16)
 	 *	 			.EUt(24)
 	 *	 			.buildAndRegister();
@@ -342,7 +342,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * <pre>
 	 *  	RecipeMap.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
 	 *				.notConsumable(ItemList.Shape_Mold_Casing)
-	 *				.fluidInputs(Materials.Steel.getFluid(72L))
+	 *				.fluidInputs(Materials.Steel.getFluid(72))
 	 *				.outputs(ItemList.IC2_Item_Casing_Steel.get(1))
 	 *				.duration(16)
 	 *				.EUt(8)
@@ -356,15 +356,15 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * <pre>
 	 * 		RecipeMap.FLUID_EXTRACTION_RECIPES.recipeBuilder()
 	 * 				.inputs(new ItemStack(Blocks.SNOW))
-	 * 				.fluidOutputs(Materials.Water.getFluid(1000L))
+	 * 				.fluidOutputs(Materials.Water.getFluid(1000))
 	 * 				.duration(128)
 	 * 				.EUt(4)
 	 * 				.buildAndRegister();
 	 *
 	 * 		RecipeMap.FLUID_EXTRACTION_RECIPES.recipeBuilder()
-	 * 				.inputs(GT_ModHandler.getModItem("Forestry", "phosphor", 1L))
-	 * 				.chancedOutput(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphor, 1L), 1000)
-	 * 				.fluidOutputs(Materials.Lava.getFluid(800L))
+	 * 				.inputs(GT_ModHandler.getModItem("Forestry", "phosphor", 1))
+	 * 				.chancedOutput(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphor, 1), 1000)
+	 * 				.fluidOutputs(Materials.Lava.getFluid(800))
 	 * 				.duration(256)
 	 * 				.EUt(128)
 	 * 				.buildAndRegister();
@@ -412,7 +412,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *
 	 *		RecipeMap.CENTRIFUGE_RECIPES.recipeBuilder()
 	 *				.inputs(new ItemStack(Blocks.PUMPKIN, 16))
-	 *				.fluidOutputs(Materials.Methane.getGas(1152L))
+	 *				.fluidOutputs(Materials.Methane.getGas(1152))
 	 *				.duration(4608)
 	 *				.buildAndRegister();
 	 * </pre>
@@ -439,8 +439,8 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *
 	 *		RecipeMap.ELECTROLYZER_RECIPES.recipeBuilder()
 	 *				.inputs(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Tungstate, 7L))
-	 *				.fluidInputs(Materials.Hydrogen.getGas(7000L))
-	 *				.fluidOutputs(Materials.Oxygen.getGas(4000L))
+	 *				.fluidInputs(Materials.Hydrogen.getGas(7000))
+	 *				.fluidOutputs(Materials.Oxygen.getGas(4000))
 	 *				.outputs(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Tungsten, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Lithium, 2L))
 	 *				.duration(120)
 	 *				.EUt(1920)

@@ -9,7 +9,10 @@ import gregtech.api.items.OreDictNames;
 import gregtech.api.items.metaitem.stats.*;
 import gregtech.api.items.GenericItem;
 import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
+import gregtech.api.unification.stack.UnificationEntry;
 import ic2.api.item.IBoxable;
 import ic2.api.item.ISpecialElectricItem;
 import ic2.api.reactor.IReactor;
@@ -33,6 +36,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.capability.wrappers.FluidContainerItemWrapper;
 import net.minecraftforge.fml.common.IFuelHandler;
+import net.minecraftforge.oredict.OreDictionary;
+import org.apache.commons.lang3.Validate;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -46,7 +51,7 @@ import java.util.List;
  *
  * You can also extend this class and occupy some of it's MetaData, and just pass an meta offset in constructor, and everything will work properly.
  *
- * Items are added in MetaItem via {@link #addItem(short)}. You will get {@link MetaValueItem} instance, which you can configure in builder-alike pattern:
+ * Items are added in MetaItem via {@link #addItem(int)}. You will get {@link MetaValueItem} instance, which you can configure in builder-alike pattern:
  * {@code addItem(0).setHandheld().addStats(new ElectricStats(10000, 1,  false)) }
  * This will add single-use handheld-rendered (unchargeable) LV battery with initial capacity 10000 EU
  */
@@ -68,9 +73,10 @@ public class MetaItem<T extends MetaItem.MetaValueItem> extends GenericItem impl
         return (T) new MetaValueItem(metaValue);
     }
 
-    public final T addItem(short metaValue) {
-        T metaValueItem = constructMetaValueItem(metaValue);
-        metaItems.put(metaValue, metaValueItem);
+    public final T addItem(int metaValue) {
+        Validate.inclusiveBetween(0, Short.MAX_VALUE - 1, metaValue, "MetaItem ID should be in range from 0 to Short.MAX_VALUE-1");
+        T metaValueItem = constructMetaValueItem((short) metaValue);
+        metaItems.put((short) metaValue, metaValueItem);
         return metaValueItem;
     }
 
@@ -387,8 +393,8 @@ public class MetaItem<T extends MetaItem.MetaValueItem> extends GenericItem impl
     }
 
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer aPlayer, List<String> lines, boolean showAdditionalInfo) {
-        super.addInformation(itemStack, aPlayer, lines, showAdditionalInfo);
+    public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> lines, boolean showAdditionalInfo) {
+        super.addInformation(itemStack, player, lines, showAdditionalInfo);
         IElectricStats electricStats = getManager(itemStack);
         if(electricStats.getMaxCharge(itemStack) > 0) {
             lines.add(I18n.translateToLocalFormatted("item.gt.meta_item.electric_info",
@@ -462,23 +468,37 @@ public class MetaItem<T extends MetaItem.MetaValueItem> extends GenericItem impl
             this.metaValue = metaValue;
         }
 
-        public MetaValueItem setNoUnification() {
-            OreDictionaryUnifier.addToBlacklist(getStackForm());
+        public MetaValueItem setMaterialInfo(ItemMaterialInfo materialInfo) {
+            if(materialInfo == null) {
+                throw new IllegalArgumentException("Cannot add null ItemMaterialInfo.");
+            }
+            OreDictionaryUnifier.registerOre(getStackForm(), materialInfo);
             return this;
         }
 
-        public void setItemData(ItemMaterialInfo itemUnificationEntry) {
-            if(itemUnificationEntry == null) {
-                throw new IllegalArgumentException("Cannot add null ItemMaterialInfo.");
+        public MetaValueItem setUnificationData(OrePrefix prefix, @Nullable Material material) {
+            if(prefix == null) {
+                throw new IllegalArgumentException("Cannot add null OrePrefix.");
             }
-            OreDictionaryUnifier.setItemData(getStackForm(), itemUnificationEntry);
+
+            OreDictionaryUnifier.registerOre(getStackForm(), prefix, material);
+            return this;
         }
 
-        public void setOreDictName(OreDictNames oreDictName) {
+        public MetaValueItem addOreDict(String oreDictName) {
             if(oreDictName == null) {
                 throw new IllegalArgumentException("Cannot add null OreDictName.");
             }
-            OreDictionaryUnifier.registerOre(oreDictName.toString(), getStackForm());
+            OreDictionary.registerOre(oreDictName, getStackForm());
+            return this;
+        }
+
+        public MetaValueItem addOreDict(OreDictNames oreDictName) {
+            if(oreDictName == null) {
+                throw new IllegalArgumentException("Cannot add null OreDictName.");
+            }
+            OreDictionary.registerOre(oreDictName.name(), getStackForm());
+            return this;
         }
 
         public MetaValueItem setInvisible() {

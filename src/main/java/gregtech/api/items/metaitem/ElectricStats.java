@@ -2,7 +2,7 @@ package gregtech.api.items.metaitem;
 
 import gregtech.api.GT_Values;
 import gregtech.api.items.metaitem.stats.IElectricStats;
-import gregtech.api.util.GT_ModHandler;
+import gregtech.api.recipes.ModHandler;
 import ic2.api.item.ElectricItem;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -13,24 +13,24 @@ public class ElectricStats implements IElectricStats {
 
     public static final ElectricStats EMPTY = new ElectricStats(0, 0, false, false);
 
-    public final int maxCharge;
+    public final long maxCharge;
     public final int tier;
 
     public final boolean chargeable;
     public final boolean dischargeable;
 
-    public ElectricStats(int maxCharge, int tier, boolean chargeable, boolean dischargeable) {
+    public ElectricStats(long maxCharge, int tier, boolean chargeable, boolean dischargeable) {
         this.maxCharge = maxCharge;
         this.tier = tier;
         this.chargeable = chargeable;
         this.dischargeable = dischargeable;
     }
 
-    public ElectricStats(int maxCharge, int tier, boolean chargeable) {
+    public ElectricStats(long maxCharge, int tier, boolean chargeable) {
         this(maxCharge, tier, chargeable, true);
     }
 
-    public ElectricStats(int maxCharge, int tier) {
+    public ElectricStats(long maxCharge, int tier) {
         this(maxCharge, tier, true);
     }
 
@@ -108,7 +108,7 @@ public class ElectricStats implements IElectricStats {
         if(maxCharge > 0 && chargeable && getCharge(stack) != maxCharge) {
             int myTier = getTier(stack);
             entity.getEquipmentAndArmor().forEach(otherStack -> {
-                if(GT_ModHandler.isElectricItem(stack, myTier)) {
+                if(ModHandler.isElectricItem(stack, myTier)) {
                     double currentCharge = getCharge(stack);
                     setCharge(stack, currentCharge + ElectricItem.manager.discharge(stack,
                             maxCharge - currentCharge, myTier,
