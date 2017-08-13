@@ -34,7 +34,6 @@ public class SimpleCapabilityManager {
         registerCapability(IEnergyContainer.class);
         registerCapability(IWorkable.class);
         registerCapability(IUpgradable.class);
-        registerCapability(ICoverable.class);
     }
 
 }

@@ -4,7 +4,7 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.ConfigCategories;
 import gregtech.api.unification.OreDictionaryUnifier;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.Material;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.AbstractSolidMaterial;
@@ -172,7 +172,7 @@ public class RecipeRegistrator {
 
         ItemMaterialInfo data = OreDictionaryUnifier.getItemData(stack);
         boolean hide = stack.getUnlocalizedName().startsWith("gt.blockmachines") && (GT_Mod.gregtechproxy.mHideRecyclingRecipes);
-        if (GT_Mod.gregtechproxy.mHideRecyclingRecipes && data != null && data.hasValidPrefixData() && !(data.mPrefix == OrePrefixes.dust || data.mPrefix == OrePrefixes.ingot || data.mPrefix == OrePrefixes.block | data.mPrefix == OrePrefixes.plate)) {
+        if (GT_Mod.gregtechproxy.mHideRecyclingRecipes && data != null && data.hasValidPrefixData() && !(data.mPrefix == OrePrefix.dust || data.mPrefix == OrePrefix.ingot || data.mPrefix == OrePrefix.block | data.mPrefix == OrePrefix.plate)) {
             hide = true;
         }
 
@@ -333,7 +333,7 @@ public class RecipeRegistrator {
         stack = GT_Utility.copy(stack);
         ItemStack itemStack;
         ItemMaterialInfo data = OreDictionaryUnifier.getItemData(stack);
-        if (data == null || data.mPrefix != OrePrefixes.ingot) plate = null;
+        if (data == null || data.mPrefix != OrePrefix.ingot) plate = null;
         if (plate != null && OreDictionaryUnifier.getFirstOre(plate, 1) == null) plate = null;
 
         MT_1.setItem(stack.getItem());
@@ -356,7 +356,7 @@ public class RecipeRegistrator {
         }
 
         for (Material material : ROD_MATERIAL_LIST) {
-            ItemStack Mt2 = OreDictionaryUnifier.get(OrePrefixes.stick, material, 1);
+            ItemStack Mt2 = OreDictionaryUnifier.get(OrePrefix.stick, material, 1);
             if (Mt2 != null) {
                 MT_2.setItem(Mt2.getItem());
                 MT_2.stackSize = 1;
@@ -372,7 +372,7 @@ public class RecipeRegistrator {
                     }
                     for (ItemStack crafted : ModHandler.getVanillyToolRecipeOutputs(recipe)) {
                         if (data != null && data.hasValidPrefixMaterialData())
-                            OreDictionaryUnifier.addItemData(crafted, new ItemMaterialInfo(data.mMaterial.mMaterial, data.mMaterial.mAmount * amount1, new MaterialStack(material, OrePrefixes.stick.mMaterialAmount * amount2)));
+                            OreDictionaryUnifier.addItemData(crafted, new ItemMaterialInfo(data.mMaterial.mMaterial, data.mMaterial.mAmount * amount1, new MaterialStack(material, OrePrefix.stick.mMaterialAmount * amount2)));
 
                         if (recipeReplacing && plate != null && SHAPES_A[i] != null && SHAPES_A[i].length > 1) {
                             assert data != null;
@@ -380,13 +380,13 @@ public class RecipeRegistrator {
                                 if (null != (itemStack = ModHandler.removeRecipe(recipe))) {
                                     switch (SHAPES_A[i].length) {
                                         case 2:
-                                            ModHandler.addCraftingRecipe(itemStack, ModHandler.RecipeBits.BUFFERED, new Object[]{SHAPES_A[i][1], P.charAt(0), plate, R.charAt(0), OrePrefixes.stick.get(material), I.charAt(0), data});
+                                            ModHandler.addCraftingRecipe(itemStack, ModHandler.RecipeBits.BUFFERED, new Object[]{SHAPES_A[i][1], P.charAt(0), plate, R.charAt(0), OrePrefix.stick.get(material), I.charAt(0), data});
                                             break;
                                         case 3:
-                                            ModHandler.addCraftingRecipe(itemStack, ModHandler.RecipeBits.BUFFERED, new Object[]{SHAPES_A[i][1], SHAPES_A[i][2], P.charAt(0), plate, R.charAt(0), OrePrefixes.stick.get(material), I.charAt(0), data});
+                                            ModHandler.addCraftingRecipe(itemStack, ModHandler.RecipeBits.BUFFERED, new Object[]{SHAPES_A[i][1], SHAPES_A[i][2], P.charAt(0), plate, R.charAt(0), OrePrefix.stick.get(material), I.charAt(0), data});
                                             break;
                                         default:
-                                            ModHandler.addCraftingRecipe(itemStack, ModHandler.RecipeBits.BUFFERED, new Object[]{SHAPES_A[i][1], SHAPES_A[i][2], SHAPES_A[i][3], P.charAt(0), plate, R.charAt(0), OrePrefixes.stick.get(material), I.charAt(0), data});
+                                            ModHandler.addCraftingRecipe(itemStack, ModHandler.RecipeBits.BUFFERED, new Object[]{SHAPES_A[i][1], SHAPES_A[i][2], SHAPES_A[i][3], P.charAt(0), plate, R.charAt(0), OrePrefix.stick.get(material), I.charAt(0), data});
                                             break;
                                     }
                                 }

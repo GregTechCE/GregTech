@@ -6,7 +6,7 @@ import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_Prospecting;
 import net.minecraft.block.material.Material;
@@ -183,7 +183,7 @@ public class GT_Tool_HardHammer extends GT_Tool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadHammer.mTextureIndex] : ToolMetaItem.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.stick.mTextureIndex];
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefix.toolHeadHammer.mTextureIndex] : ToolMetaItem.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefix.stick.mTextureIndex];
     }
 
     @Override

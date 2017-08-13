@@ -7,7 +7,7 @@ import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.items.ItemList;
@@ -99,7 +99,7 @@ public class GT_MetaTileEntity_Scanner
                     return 2;
                 }
                 ItemMaterialInfo tData = OreDictionaryUnifier.getAssociation(aStack);
-                if ((tData != null) && ((tData.mPrefix == OrePrefixes.dust) || (tData.mPrefix == OrePrefixes.cell)) && (tData.mMaterial.mMaterial.mElement != null) && (!tData.mMaterial.mMaterial.mElement.mIsIsotope) && (tData.mMaterial.mMaterial != Materials.Magic) && (tData.mMaterial.mMaterial.getMass() > 0L)) {
+                if ((tData != null) && ((tData.mPrefix == OrePrefix.dust) || (tData.mPrefix == OrePrefix.cell)) && (tData.mMaterial.mMaterial.mElement != null) && (!tData.mMaterial.mMaterial.mElement.mIsIsotope) && (tData.mMaterial.mMaterial != Materials.Magic) && (tData.mMaterial.mMaterial.getMass() > 0L)) {
                     getSpecialSlot().stackSize -= 1;
                     aStack.stackSize -= 1;
 

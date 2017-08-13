@@ -4,7 +4,7 @@ import gregtech.api.GT_Values;
 import gregtech.api.items.ItemList;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.GT_ModHandler;
@@ -17,11 +17,11 @@ import java.util.Iterator;
 public class ProcessingCell
         implements IOreRegistrationHandler {
     public ProcessingCell() {
-        OrePrefixes.cell.add(this);
-        OrePrefixes.cellPlasma.add(this);
+        OrePrefix.cell.add(this);
+        OrePrefix.cellPlasma.add(this);
     }
 
-    public void registerOre(OrePrefixes aPrefix, Material aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+    public void registerOre(OrePrefix aPrefix, Material aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         switch (aPrefix) {
             case cell:
                 if (aMaterial == Materials.Empty) {
@@ -48,9 +48,9 @@ public class ProcessingCell
                                 if (tMat.mMaterial == Materials.Air) {
                                     tStack = ItemList.Cell_Air.get(tMat.mAmount * tDensityMultiplier / 2L);
                                 } else {
-                                    tStack = OreDictionaryUnifier.get(OrePrefixes.dust, tMat.mMaterial, tMat.mAmount);
+                                    tStack = OreDictionaryUnifier.get(OrePrefix.dust, tMat.mMaterial, tMat.mAmount);
                                     if (tStack == null) {
-                                        tStack = OreDictionaryUnifier.get(OrePrefixes.cell, tMat.mMaterial, tMat.mAmount);
+                                        tStack = OreDictionaryUnifier.get(OrePrefix.cell, tMat.mMaterial, tMat.mAmount);
                                     }
                                 }
                                 if (tItemAmount + tMat.mAmount * 3628800L <= aStack.getMaxStackSize() * aMaterial.getDensity()) {
@@ -91,7 +91,7 @@ public class ProcessingCell
                     GT_ModHandler.removeRecipeByOutput(aStack);
                 } else {
                     GT_Values.RA.addFuel(GT_Utility.copyAmount(1L, aStack), GT_Utility.getFluidForFilledItem(aStack, true) == null ? GT_Utility.getContainerItem(aStack, true) : null, (int) Math.max(1024L, 1024L * aMaterial.getMass()), 4);
-                    GT_Values.RA.addVacuumFreezerRecipe(GT_Utility.copyAmount(1L, aStack), OreDictionaryUnifier.get(OrePrefixes.cell, aMaterial, 1L), (int) Math.max(aMaterial.getMass() * 2L, 1L));
+                    GT_Values.RA.addVacuumFreezerRecipe(GT_Utility.copyAmount(1L, aStack), OreDictionaryUnifier.get(OrePrefix.cell, aMaterial, 1L), (int) Math.max(aMaterial.getMass() * 2L, 1L));
                 }
                 break;
         }

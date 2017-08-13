@@ -4,7 +4,7 @@ import gregtech.GT_Mod;
 import gregtech.api.enums.Textures;
 import gregtech.api.items.IIconContainer;
 import gregtech.api.items.toolitem.ToolMetaItem;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -59,7 +59,7 @@ public class GT_Tool_Drill_HV extends GT_Tool_Drill_LV {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadDrill.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_HV;
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefix.toolHeadDrill.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_HV;
     }
 
 }

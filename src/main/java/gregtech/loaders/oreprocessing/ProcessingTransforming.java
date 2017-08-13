@@ -3,7 +3,7 @@ package gregtech.loaders.oreprocessing;
 import gregtech.api.GT_Values;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
@@ -11,13 +11,13 @@ import net.minecraft.item.ItemStack;
 public class ProcessingTransforming
         implements IOreRegistrationHandler {
     public ProcessingTransforming() {
-        for (OrePrefixes tPrefix : OrePrefixes.values())
-            if (((tPrefix.mMaterialAmount > 0L) && (!tPrefix.mIsContainer) && (!tPrefix.mIsEnchantable)) || (tPrefix == OrePrefixes.plank))
+        for (OrePrefix tPrefix : OrePrefix.values())
+            if (((tPrefix.mMaterialAmount > 0L) && (!tPrefix.mIsContainer) && (!tPrefix.mIsEnchantable)) || (tPrefix == OrePrefix.plank))
                 tPrefix.add(this);
     }
 
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        if (aPrefix == OrePrefixes.plank) aPrefix = OrePrefixes.plate;
+    public void registerOre(OrePrefix aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+        if (aPrefix == OrePrefix.plank) aPrefix = OrePrefix.plate;
         switch (aMaterial.mName) {
             case "Wood":
                 GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), Materials.SeedOil.getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 120L, true)), OreDictionaryUnifier.get(aPrefix, Materials.WoodSealed, 1L), GT_Values.NI, GT_Values.NI, null, 100, 8);

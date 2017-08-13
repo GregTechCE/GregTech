@@ -5,7 +5,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.items.IIconContainer;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.common.items.behaviors.Behaviour_Screwdriver;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -150,7 +150,7 @@ public class GT_Tool_Screwdriver extends GT_Tool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadScrewdriver.mTextureIndex] : Textures.ItemIcons.HANDLE_SCREWDRIVER;
+        return !aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefix.toolHeadScrewdriver.mTextureIndex] : Textures.ItemIcons.HANDLE_SCREWDRIVER;
     }
 
     @Override

@@ -10,7 +10,7 @@ import gregtech.api.metatileentity.IMetaTileEntityFactory;
 import gregtech.api.items.GenericItem;
 import gregtech.api.objects.GT_Cover_Default;
 import gregtech.api.objects.GT_Cover_None;
-import gregtech.api.objects.GT_HashSet;
+import gregtech.api.objects.HashSet;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.unification.OreDictionaryUnifier;
@@ -71,28 +71,7 @@ public class GregTech_API {
     public static final GTControlledRegistry<IMetaTileEntityFactory> METATILEENTITY_REGISTRY = new GTControlledRegistry<>(Short.MAX_VALUE);
 
     public static final EnumHashBiMap<EnumDyeColor, Fluid> LIQUIDDYE_MAP = EnumHashBiMap.create(EnumDyeColor.class);
-    /**
-     * The Icon List for Covers
-     */
-    public static final Map<Integer, ResourceLocation> sCovers = new HashMap<>();
-    /**
-     * The List of Cover Behaviors for the Covers
-     */
-    public static final BiMap<Integer, GT_CoverBehavior> sCoverBehaviors = HashBiMap.create();
-
-    public static final BiMap<SimpleItemStack, Integer> sCoverItems = HashBiMap.create();
-    /**
-     * The List of Circuit Behaviors for the Redstone Circuit Block
-     */
-    public static final Map<Integer, GT_CircuitryBehavior> sCircuitryBehaviors = new HashMap<>();
-    /**
-     * The List of Blocks, which can conduct Machine Block Updates
-     */
-    public static final List<IBlockState> sMachineIDs = new ArrayList<>();
-    /**
-     * The Redstone Frequencies
-     */
-    public static final Map<Integer, Byte> sWirelessRedstone = new HashMap<Integer, Byte>();
+    
     /**
      * A List of all Books, which were created using @GT_Utility.getWrittenBook the original Title is the Key Value
      */
@@ -104,38 +83,35 @@ public class GregTech_API {
     /**
      * The List of Tools, which can be used. Accepts regular damageable Items and Electric Items
      */
-    public static final GT_HashSet<SimpleItemStack> sToolList = new GT_HashSet<>(),
-            sCrowbarList = new GT_HashSet<>(),
-            sScrewdriverList = new GT_HashSet<>(),
-            sWrenchList = new GT_HashSet<>(),
-            sSoftHammerList = new GT_HashSet<>(),
-            sHardHammerList = new GT_HashSet<>(),
-            sSolderingToolList = new GT_HashSet<>(),
-            sSolderingMetalList = new GT_HashSet<>();
+    public static final HashSet<SimpleItemStack> sToolList = new HashSet<>(),
+            sCrowbarList = new HashSet<>(),
+            sScrewdriverList = new HashSet<>(),
+            sWrenchList = new HashSet<>(),
+            sSoftHammerList = new HashSet<>(),
+            sHardHammerList = new HashSet<>(),
+            sSolderingToolList = new HashSet<>(),
+            sSolderingMetalList = new HashSet<>();
 
     /**
      * The List of Hazmat Armors
      */
-    public static final GT_HashSet<SimpleItemStack> sGasHazmatList = new GT_HashSet<>(),
-            sBioHazmatList = new GT_HashSet<>(),
-            sFrostHazmatList = new GT_HashSet<>(),
-            sHeatHazmatList = new GT_HashSet<>(),
-            sRadioHazmatList = new GT_HashSet<>(),
-            sElectroHazmatList = new GT_HashSet<>();
+    public static final HashSet<SimpleItemStack> sGasHazmatList = new HashSet<>(),
+            sBioHazmatList = new HashSet<>(),
+            sFrostHazmatList = new HashSet<>(),
+            sHeatHazmatList = new HashSet<>(),
+            sRadioHazmatList = new HashSet<>(),
+            sElectroHazmatList = new HashSet<>();
     /**
      * The List of Dimensions, which are Whitelisted for the Teleporter. This list should not contain other Planets.
      * Mystcraft Dimensions and other Dimensional Things should be allowed.
      * Mystcraft and Twilight Forest are automatically considered a Dimension, without being in this List.
      */
     public static final Collection<Integer> sDimensionalList = new HashSet<Integer>();
+
     /**
      * Lists of all the active World generation Features, these are getting Initialized in Postload!
      */
     public static final List<GT_Worldgen> sWorldgenList = new ArrayList<GT_Worldgen>();
-    /**
-     * This is the generic Cover behavior. Used for the default Covers, which have no Behavior.
-     */
-    public static final GT_CoverBehavior sDefaultBehavior = new GT_Cover_Default(), sNoBehavior = new GT_Cover_None();
     /**
      * These Lists are getting executed at their respective timings. Useful if you have to do things right before/after I do them, without having to control the load order. Add your "Commands" in the Constructor or in a static Code Block of your Mods Main Class. These are not Threaded, I just use a native Java Interface for their execution. Implement just the Method run() and everything should work
      */
@@ -212,7 +188,6 @@ public class GregTech_API {
 
     private static int size = 0; /* Used to assign Minecraft IDs to our SoundEvents. We don't use them. */
     static {
-        sItemStackMappings.add(sCoverItems);
         size = SoundEvent.REGISTRY.getKeys().size();
 
         sDimensionalList.add(-1);
@@ -260,137 +235,7 @@ public class GregTech_API {
         sSoundList.put(id, loc);
     }
 
-    /**
-     * You want OreDict-Unification for YOUR Mod/Addon, when GregTech is installed? This Function is especially for YOU.
-     * Call this Function after the load-Phase, as I register the the most of the Unification at that Phase (Redpowers Storageblocks are registered at postload).
-     * A recommended use of this Function is inside your Recipe-System itself (if you have one), as the unification then makes 100% sure, that every added non-unificated Output gets automatically unificated.
-     * <p/>
-     * I will personally make sure, that only common prefixes of Ores get registered at the Unificator, as of now there are:
-     * pulp, dust, dustSmall, ingot, nugget, gem, ore and block
-     * If another Mod-Author messes these up, then it's not my fault and it's especially not your fault. As these are commonly used prefixes.
-     * <p/>
-     * This Unificator-API-Function uses the same Functions I use, for unificating Items. So if there is something messed up (very unlikely), then everything is messed up.
-     * <p/>
-     * You shouldn't use this to unificate the Inputs of your Recipes, this is only meant for the Outputs.
-     *
-     * @param aOreStack the Stack you want to get unificated. It is stackSize Sensitive.
-     * @return Either an unificated Stack or the stack you toss in, but it should never be null, unless you throw a Nullpointer into it.
-     */
-    public static ItemStack getUnificatedOreDictStack(ItemStack aOreStack) {
-        if (!GregTech_API.sPreloadFinished)
-            GTLog.err.println("GregTech_API ERROR: " + aOreStack.getItem() + "." + aOreStack.getItemDamage() + " - OreDict Unification Entries are not registered now, please call it in the postload phase.");
-        return OreDictionaryUnifier.get(true, aOreStack);
-    }
-
-    /**
-     * Causes a Machineblock Update
-     * This update will cause surrounding MultiBlock Machines to update their Configuration.
-     * You should call this Function in @Block.breakBlock and in @Block.onBlockAdded of your Machine.
-     *
-     * @param aWorld is being the World
-     * @param pos a block pos
-     */
-    public static boolean causeMachineUpdate(World aWorld, BlockPos pos) {
-        if (!aWorld.isRemote)
-            new Thread(new GT_Runnable_MachineBlockUpdate(aWorld, pos), "Machine Block Updating").start();
-        return true;
-    }
-
-    /**
-     * Adds a Multi-Machine Block, like my Machine Casings for example.
-     * You should call @causeMachineUpdate in @Block.breakBlock and in @Block.onBlockAdded of your registered Block.
-     * You don't need to register TileEntities which implement @IMachineBlockUpdateable
-     *
-     * @param blockState the block state
-     */
-    public static boolean registerMachineBlock(Collection<IBlockState> blockState) {
-//        if (GregTech_API.sThaumcraftCompat != null)
-//            GregTech_API.sThaumcraftCompat.registerPortholeBlacklistedBlock(blockState);
-        sMachineIDs.addAll(blockState);
-        return true;
-    }
-
-    /**
-     * if this Block is a Machine Update Conducting Block
-     */
-    public static boolean isMachineBlock(IBlockState blockState) {
-        return sMachineIDs.contains(blockState);
-    }
-
-    /**
-     * Creates a new Coolant Cell Item for your Nuclear Reactor
-     */
-    public static Item constructCoolantCellItem(String aUnlocalized, String aEnglish, int aMaxStore) {
-        try {
-            return (Item) Class.forName("gregtech.api.items.GT_CoolantCellIC_Item").getConstructors()[0]
-                    .newInstance(aUnlocalized, aEnglish, aMaxStore);
-        } catch (Throwable e) {/*Do nothing*/}
-        try {
-            return (Item) Class.forName("gregtech.api.items.CoolantCellItem").getConstructors()[0]
-                    .newInstance(aUnlocalized, aEnglish, aMaxStore);
-        } catch (Throwable e) {/*Do nothing*/}
-        return new GenericItem(aUnlocalized, aEnglish, "Doesn't work as intended, this is a Bug", false);
-    }
-
-    public static void registerCover(int coverId, ItemStack aStack, ResourceLocation aCover, GT_CoverBehavior aBehavior) {
-        SimpleItemStack stack = new SimpleItemStack(aStack);
-        sCoverItems.put(stack, coverId);
-        sCovers.put(coverId, aCover);
-        if (aBehavior != null) sCoverBehaviors.put(coverId, aBehavior);
-    }
-
-
-    /**
-     * Registers multiple Cover Items. I use that for the OreDict Functionality.
-     *
-     * @param aBehavior can be null
-     */
-    public static void registerCover(int coverId, Collection<ItemStack> aStackList, ResourceLocation aCover, GT_CoverBehavior aBehavior) {
-        for (ItemStack tStack : aStackList) {
-            registerCover(coverId, tStack, aCover, aBehavior);
-        }
-    }
-
-    /**
-     * returns a Cover behavior, guaranteed to not return null after preload
-     */
-    public static GT_CoverBehavior getCoverBehavior(ItemStack aStack) {
-        if (aStack == null) return sNoBehavior;
-        GT_CoverBehavior rCover = sCoverBehaviors.get(sCoverItems.get(new SimpleItemStack(aStack)));
-        if (rCover == null) return sDefaultBehavior;
-        return rCover;
-    }
-
-    public static GT_CoverBehavior getCoverBehavior(SimpleItemStack aStack) {
-        GT_CoverBehavior rCover = sCoverBehaviors.get(sCoverItems.get(aStack));
-        if (rCover == null) return sDefaultBehavior;
-        return rCover;
-    }
-
-    public static SimpleItemStack getCoverItem(int coverId) {
-        SimpleItemStack stack = sCoverItems.inverse().get(coverId);
-        if(stack == null) return null;
-        return stack;
-    }
-
-    public static int getCoverId(GT_CoverBehavior behavior) {
-        return sCoverBehaviors.inverse().get(behavior);
-    }
-
-    public static int getCoverId(SimpleItemStack stack) {
-        return sCoverItems.get(stack);
-    }
-
-    /**
-     * returns a Cover behavior, guaranteed to not return null
-     */
-    public static GT_CoverBehavior getCoverBehavior(int aStack) {
-        if (aStack == 0) return sNoBehavior;
-        GT_CoverBehavior rCover = sCoverBehaviors.get(aStack);
-        if (rCover == null) return sDefaultBehavior;
-        return rCover;
-    }
-
+    
     /**
      * Register a Wrench to be usable on GregTech Machines.
      * The Wrench MUST have some kind of Durability unlike certain Buildcraft Wrenches.

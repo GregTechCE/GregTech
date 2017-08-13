@@ -21,9 +21,9 @@ import static gregtech.api.unification.material.type.GemMaterial.MatFlags.GENERA
 import static gregtech.api.unification.material.type.MetalMaterial.MatFlags.*;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_GEAR;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_ROD;
-import static gregtech.api.unification.ore.OrePrefixes.Flags.*;
+import static gregtech.api.unification.ore.OrePrefix.Flags.*;
 
-public enum OrePrefixes {
+public enum OrePrefix {
 
     oreBlackgranite("Black Granite Ores", -1, "Granite %s Ore", MaterialIconType.ore, ENABLE_UNIFICATION | DISALLOW_RECYCLING, hasFlag(GENERATE_ORE)), // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!
     oreRedgranite("Red Granite Ores", -1, "Granite %s Ore", MaterialIconType.ore, ENABLE_UNIFICATION | DISALLOW_RECYCLING, hasFlag(GENERATE_ORE)), // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!
@@ -64,7 +64,7 @@ public enum OrePrefixes {
     ingotQuadruple("4x Ingots", M * 4, "Quadruple %s Ingot", MaterialIconType.ingotQuadruple, ENABLE_UNIFICATION, new Condition.And<>(hasFlag(GENERATE_QUADRUPLE), noFlag(NO_SMASHING))), // A quadruple Ingot.
     ingotTriple("3x Ingots", M * 3, "Triple %s Ingot", MaterialIconType.ingotTriple, ENABLE_UNIFICATION, new Condition.And<>(hasFlag(GENERATE_TRIPLE), noFlag(NO_SMASHING))), // A triple Ingot.
     ingotDouble("2x Ingots", M * 2, "Double %s Ingot", MaterialIconType.ingotDouble, ENABLE_UNIFICATION, new Condition.And<>(hasFlag(GENERATE_DOUBLE), noFlag(NO_SMASHING))), // A double Ingot. Introduced by TerraFirmaCraft
-    ingotHot("Hot Ingots", M, "Hot %s Ingot", MaterialIconType.ingotHot, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> (mat instanceof MetalMaterial) ? ((MetalMaterial) mat).blastFurnaceTemperature > 1750 : false), // A hot Ingot, which has to be cooled down by a Vacuum Freezer.
+    ingotHot("Hot Ingots", M, "Hot %s Ingot", MaterialIconType.ingotHot, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> (mat instanceof MetalMaterial) && ((MetalMaterial) mat).blastFurnaceTemperature > 1750), // A hot Ingot, which has to be cooled down by a Vacuum Freezer.
     ingot("Ingots", M, "%s Ingot", MaterialIconType.ingot, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> mat instanceof MetalMaterial), // A regular Ingot. Introduced by Eloraam
 
     gem("Gemstones", M, "%s", MaterialIconType.gem, ENABLE_UNIFICATION | SELF_REFERENCING, mat -> mat instanceof GemMaterial), // A regular Gem worth one Dust. Introduced by Eloraam
@@ -442,7 +442,7 @@ public enum OrePrefixes {
     public @Nullable MaterialStack secondaryMaterial = null;
     public float heatDamage = 0.0F; // Negative for Frost Damage
 
-    OrePrefixes(String categoryName, long materialAmount, String materialNameLocale, MaterialIconType materialIconType, long flags, Condition<Material> condition) {
+    OrePrefix(String categoryName, long materialAmount, String materialNameLocale, MaterialIconType materialIconType, long flags, Condition<Material> condition) {
         this.categoryName = categoryName;
         this.materialAmount = materialAmount;
         this.isSelfReferencing = (flags & SELF_REFERENCING) != 0;
@@ -454,13 +454,13 @@ public enum OrePrefixes {
         this.generationCondition = condition;
     }
 
-    public static OrePrefixes getPrefix(String prefixName) {
+    public static OrePrefix getPrefix(String prefixName) {
         return getPrefix(prefixName, null);
     }
 
-    public static OrePrefixes getPrefix(String prefixName, @Nullable OrePrefixes replacement) {
+    public static OrePrefix getPrefix(String prefixName, @Nullable OrePrefix replacement) {
         try {
-            return Enum.valueOf(OrePrefixes.class, prefixName);
+            return Enum.valueOf(OrePrefix.class, prefixName);
         } catch (IllegalArgumentException invalidPrefixName) {
             return replacement;
         }

@@ -1,7 +1,7 @@
 package gregtech.common.tools;
 
 import gregtech.api.items.toolitem.ToolMetaItem;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import net.minecraft.item.ItemStack;
 
 public class GT_Tool_Wrench_HV extends GT_Tool_Wrench_LV {
@@ -48,7 +48,7 @@ public class GT_Tool_Wrench_HV extends GT_Tool_Wrench_LV {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadWrench.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_HV;
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefix.toolHeadWrench.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_HV;
     }
 
     @Override

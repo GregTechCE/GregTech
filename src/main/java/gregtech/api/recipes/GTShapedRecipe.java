@@ -1,6 +1,5 @@
 package gregtech.api.recipes;
 
-import gregtech.api.interfaces.internal.IRemovableRecipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -10,7 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-public class GTShapedRecipe extends ShapedOreRecipe implements IRemovableRecipe {
+public class GTShapedRecipe extends ShapedOreRecipe {
     public final boolean dismantleable, removableByGT, keepingNBT;
     private final Enchantment[] enchantmentsAdded;
     private final int[] enchantmentLevelsAdded;
@@ -89,8 +88,8 @@ public class GTShapedRecipe extends ShapedOreRecipe implements IRemovableRecipe 
         return stack;
     }
 
-    @Override
     public boolean isRemovable() {
         return removableByGT;
     }
+
 }

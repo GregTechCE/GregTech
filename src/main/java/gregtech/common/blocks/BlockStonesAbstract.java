@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import gregtech.api.GregTech_API;
 import gregtech.api.items.OreDictNames;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.items.GenericBlock;
@@ -49,7 +49,7 @@ public abstract class BlockStonesAbstract extends GenericBlock implements IOreRe
                     .withProperty(getMaterialProperty(), getMaterialProperty().getFirstType()));
         }
 
-        OrePrefixes.crafting.add(this);
+        OrePrefix.crafting.add(this);
         setSoundType(SoundType.STONE);
         setCreativeTab(GregTech_API.TAB_GREGTECH_MATERIALS);
         setHardness(1.5F);
@@ -88,7 +88,7 @@ public abstract class BlockStonesAbstract extends GenericBlock implements IOreRe
 //        GT_ModHandler.addCraftingRecipe(new ItemStack(this, 4, 11), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"XX", "XX", 'X', new ItemStack(this, 4, 15)});
     }
 
-    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName, ItemStack stack) {
+    public void registerOre(OrePrefix prefix, Materials material, String oreDictName, String modName, ItemStack stack) {
         if (oreDictName.equals(OreDictNames.craftingLensWhite.toString())) {
 //            GT_Values.RA.addLaserEngraverRecipe(new ItemStack(this, 1, 7), GT_Utility.copyAmount(0L, stack), new ItemStack(this, 1, 6), 50, 16);
 //            GT_Values.RA.addLaserEngraverRecipe(new ItemStack(this, 1, 15), GT_Utility.copyAmount(0L, stack), new ItemStack(this, 1, 14), 50, 16);

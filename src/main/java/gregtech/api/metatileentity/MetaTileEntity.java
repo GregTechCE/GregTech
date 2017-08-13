@@ -5,6 +5,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.capability.ITurnable;
 import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,7 +27,10 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 public abstract class MetaTileEntity implements IMetaTileEntity {
 
@@ -62,6 +66,21 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
             return ITurnable.CAPABILITY_TURNABLE.cast(this);
         }
         return null;
+    }
+
+    @Override
+    public IBlockState getModelState() {
+        return factory.getDefaultRenderState();
+    }
+
+    @Override
+    public int getMaxStackSize(int index) {
+        return 64;
+    }
+
+    @Override
+    public int getTankCapacity(int tankIndex) {
+        return 16000;
     }
 
     @Override
@@ -245,12 +264,75 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     @Override
     public boolean allowPutFluid(int tankIndex, @Nullable EnumFacing side, @Nullable Fluid fluid) {
+        //one tank for one fluid type
+        for(int i = 0; i < getTanksCount(); i++) {
+            if(i != tankIndex) {
+                FluidStack fluidStack = getFluidInTank(i);
+                if(fluidStack != null && fluidStack.getFluid() == fluid) {
+                    return false;
+                }
+            }
+        }
         return isValidFluidTank(tankIndex);
     }
 
     @Override
     public @Nullable FluidStack getFluidInTank(int tankIndex) {
         return this.fluidInventory[tankIndex];
+    }
+
+    public boolean addItemsToMachine(boolean simulate, List<ItemStack> items) {
+        items = new ArrayList<>(items); //copy collection
+        for(int i = 0; i < getSlotsCount(); i++) {
+            Iterator<ItemStack> iter = items.iterator();
+            while(iter.hasNext()) {
+                ItemStack itemStack = iter.next();
+                if(allowPutStack(i, null, itemStack)) {
+                    ItemStack stackInSlot = getStackInSlot(i);
+                    if(stackInSlot == null) {
+                        ItemStack toPut = itemStack.splitStack(getMaxStackSize(i));
+                        if(!simulate) setStackInSlot(i, toPut);
+                    } else if(ItemStack.areItemsEqual(itemStack, stackInSlot) &&
+                            ItemStack.areItemStackTagsEqual(itemStack, stackInSlot) &&
+                            stackInSlot.stackSize < getMaxStackSize(i)) {
+                        ItemStack toPut = itemStack.splitStack(getMaxStackSize(i) - stackInSlot.stackSize);
+                        if(!simulate) setStackInSlot(i, toPut);
+                    }
+                    if(itemStack.stackSize == 0) {
+                        iter.remove();
+                    }
+                }
+            }
+        }
+        return items.isEmpty();
+    }
+
+    public boolean addFluidsToMachine(boolean simulate, List<FluidStack> items) {
+        items = new ArrayList<>(items); //copy collection
+        for(int i = 0; i < getTanksCount(); i++) {
+            Iterator<FluidStack> iter = items.iterator();
+            while(iter.hasNext()) {
+                FluidStack fluidStack = iter.next();
+                if(allowPutFluid(i, null, fluidStack.getFluid())) {
+                    FluidStack stackInSlot = getFluidInTank(i);
+                    if(stackInSlot == null) {
+                        FluidStack toPut = fluidStack.copy();
+                        toPut.amount = Math.min(fluidStack.amount, getTankCapacity(i));
+                        fluidStack.amount -= toPut.amount;
+                        if(!simulate) setFluidInTank(i, toPut);
+                    } else if(fluidStack.isFluidEqual(stackInSlot) && stackInSlot.amount < getTankCapacity(i)) {
+                        FluidStack toPut = fluidStack.copy();
+                        toPut.amount = Math.min(fluidStack.amount, getTankCapacity(i) - stackInSlot.amount);
+                        fluidStack.amount -= toPut.amount;
+                        if(!simulate) setFluidInTank(i, toPut);
+                    }
+                    if(fluidStack.amount == 0) {
+                        iter.remove();
+                    }
+                }
+            }
+        }
+        return items.isEmpty();
     }
 
     @Override

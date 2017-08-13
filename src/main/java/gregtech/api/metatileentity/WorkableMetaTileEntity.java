@@ -7,6 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -33,21 +35,46 @@ public abstract class WorkableMetaTileEntity<T extends Recipe> extends TieredMet
     }
 
     @Override
+    public <R> boolean hasCapability(Capability<R> capability, EnumFacing side) {
+        return super.hasCapability(capability, side) || capability == IWorkable.CAPABILITY_WORKABLE;
+    }
+
+    @Override
+    public <R> R getCapability(Capability<R> capability, EnumFacing side) {
+        if(capability == IWorkable.CAPABILITY_WORKABLE) {
+            return IWorkable.CAPABILITY_WORKABLE.cast(this);
+        }
+        return super.getCapability(capability, side);
+    }
+
+    @Override
     public void onPostTick(long tickTimer) {
         super.onPostTick(tickTimer);
         if(progressTime == 0) {
             long maxVoltage = Math.max(getInputVoltage(), getOutputVoltage());
             T pickedRecipe = recipeMap.findRecipe(holder, previousRecipe, true, maxVoltage, fluidInventory, itemInventory);
-            if(pickedRecipe != null && pickedRecipe.getEUt() >= getEnergyStored() && pickedRecipe.isRecipeInputEqual(true, fluidInventory, itemInventory)) {
+            if(pickedRecipe != null && setupAndConsumeRecipeInputs(pickedRecipe)) {
                 if(pickedRecipe.canBeBuffered()) {
                     this.previousRecipe = pickedRecipe;
                 } else this.previousRecipe = null;
                 setupRecipe(pickedRecipe);
-                setActive(true);
             }
         } else if(workingEnabled) {
-            //TODO finish this
+            if(getEnergyStored() >= recipeEUt) {
+                setEnergyStored(getEnergyStored() - recipeEUt);
+                if(++progressTime >= maxProgressTime) {
+                    completeRecipe();
+                }
+            }
         }
+    }
+
+    protected boolean setupAndConsumeRecipeInputs(T recipe) {
+        int totalEUt = recipe.getEUt() * recipe.getDuration();
+        return (totalEUt >= 0 ? getEnergyStored() >= totalEUt : getEnergyStored() - totalEUt <= getEnergyCapacity()) &&
+                recipe.isRecipeInputEqual(true, fluidInventory, itemInventory) &&
+                addItemsToMachine(true, recipe.getOutputs()) &&
+                addFluidsToMachine(true, recipe.getFluidOutputs());
     }
 
     protected void setupRecipe(T recipe) {
@@ -56,16 +83,18 @@ public abstract class WorkableMetaTileEntity<T extends Recipe> extends TieredMet
         this.recipeEUt = recipe.getEUt();
         this.fluidOutputs = recipe.getFluidOutputs();
         this.itemOutputs = recipe.getOutputs();
+        setActive(true);
     }
 
     protected void completeRecipe() {
-        //TODO give outputs with preferring already filled tanks and slots
-
+        addItemsToMachine(false, itemOutputs);
+        addFluidsToMachine(false, fluidOutputs);
         this.progressTime = 0;
         this.maxProgressTime = 0;
         this.recipeEUt = 0;
         this.fluidOutputs = null;
         this.itemOutputs = null;
+        setActive(false);
     }
 
     @Override

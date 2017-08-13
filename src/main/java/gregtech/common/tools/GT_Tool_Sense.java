@@ -2,7 +2,7 @@ package gregtech.common.tools;
 
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.common.items.behaviors.Behaviour_Sense;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -114,7 +114,7 @@ public class GT_Tool_Sense extends GT_Tool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadSense.mTextureIndex] : ToolMetaItem.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.stick.mTextureIndex];
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefix.toolHeadSense.mTextureIndex] : ToolMetaItem.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefix.stick.mTextureIndex];
     }
 
     @Override

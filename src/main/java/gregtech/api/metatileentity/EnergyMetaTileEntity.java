@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 
 public abstract class EnergyMetaTileEntity extends PaintableMetaTileEntity implements IEnergyContainer {
 
@@ -13,6 +14,19 @@ public abstract class EnergyMetaTileEntity extends PaintableMetaTileEntity imple
 
     public EnergyMetaTileEntity(IMetaTileEntityFactory factory) {
         super(factory);
+    }
+
+    @Override
+    public <T> boolean hasCapability(Capability<T> capability, EnumFacing side) {
+        return super.hasCapability(capability, side) || capability == IEnergyContainer.CAPABILITY_ENERGY_CONTAINER;
+    }
+
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing side) {
+        if(capability == IEnergyContainer.CAPABILITY_ENERGY_CONTAINER) {
+            return IEnergyContainer.CAPABILITY_ENERGY_CONTAINER.cast(this);
+        }
+        return super.getCapability(capability, side);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.IMetaTileEntity;
@@ -196,7 +196,7 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlock
 
     public boolean isWoodLog(IBlockState log){
         String tTool = log.getBlock().getHarvestTool(log);
-        return  OrePrefixes.log.contains(GT_Tool.getBlockStack(log))
+        return  OrePrefix.log.contains(GT_Tool.getBlockStack(log))
                 && ((tTool != null) && (tTool.equals("axe"))) ||
                 (log.getMaterial() == Material.WOOD);
     }

@@ -7,7 +7,7 @@ import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.GemMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.MetalMaterial;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.SimpleItemStack;
@@ -16,7 +16,6 @@ import ic2.core.item.ItemIC2FluidContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -39,7 +38,7 @@ public class OreDictionaryUnifier {
         materialUnificationInfo.put(new SimpleItemStack(itemStack), new ItemMaterialInfo(component, byproducts));
     }
 
-    public static void registerOre(ItemStack itemStack, OrePrefixes orePrefix, @Nullable Material material) {
+    public static void registerOre(ItemStack itemStack, OrePrefix orePrefix, @Nullable Material material) {
         OreDictionary.registerOre(orePrefix.name() + (material == null ? "" : material.toCamelCaseString()), itemStack);
     }
 
@@ -55,7 +54,7 @@ public class OreDictionaryUnifier {
             return;
         }
         String oreName = event.getName();
-        OrePrefixes orePrefix = OrePrefixes.getPrefix(oreName);
+        OrePrefix orePrefix = OrePrefix.getPrefix(oreName);
         Material material = null;
         if(orePrefix == null) {
             //split ore dict name to parts
@@ -78,7 +77,7 @@ public class OreDictionaryUnifier {
             StringBuilder buffer = new StringBuilder();
             for(int i = 0; i < splits.size(); i++) {
                 buffer.append(splits.get(i));
-                OrePrefixes maybePrefix = OrePrefixes.getPrefix(buffer.toString()); //ore -> OrePrefixes.ore
+                OrePrefix maybePrefix = OrePrefix.getPrefix(buffer.toString()); //ore -> OrePrefix.ore
                 String possibleMaterialName = Joiner.on("").join(splits.subList(i + 1, splits.size())); //BasalticMineralSand
                 String underscoreName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, possibleMaterialName); //basaltic_mineral_sand
                 Material possibleMaterial = Material.MATERIAL_REGISTRY.getObject(underscoreName); //Materials.BasalticSand
@@ -116,7 +115,7 @@ public class OreDictionaryUnifier {
         return info == null ? null : info.byProducts;
     }
 
-    public static OrePrefixes getPrefix(ItemStack itemStack) {
+    public static OrePrefix getPrefix(ItemStack itemStack) {
         SimpleItemStack simpleItemStack = new SimpleItemStack(itemStack);
         UnificationEntry entry = stackUnificationInfo.get(simpleItemStack);
         if(entry != null) return entry.orePrefix;
@@ -136,7 +135,11 @@ public class OreDictionaryUnifier {
         return keys.size() > 0 ? keys.get(0).asItemStack() : itemStack;
     }
 
-    public static ItemStack get(OrePrefixes orePrefix, Material material, int stackSize) {
+    public static ItemStack get(OrePrefix orePrefix, Material material) {
+        return get(orePrefix, material, 1);
+    }
+
+    public static ItemStack get(OrePrefix orePrefix, Material material, int stackSize) {
         UnificationEntry unificationEntry = new UnificationEntry(orePrefix, material);
         if(unificationEntry == null || !stackUnificationItems.containsKey(unificationEntry) || !unificationEntry.orePrefix.isUnificationEnabled)
             return null;
@@ -148,12 +151,12 @@ public class OreDictionaryUnifier {
     public static ItemStack getGem(GemMaterial material, long materialAmount) {
         ItemStack stack = null;
         if (materialAmount >= M)
-            stack = get(OrePrefixes.gem, material, (int) (materialAmount / M));
+            stack = get(OrePrefix.gem, material, (int) (materialAmount / M));
         if (stack == null) {
             if ((materialAmount * 2) % M == 0 || materialAmount >= M * 16)
-                stack = get(OrePrefixes.gemFlawed, material, (int) ((materialAmount * 2) / M));
+                stack = get(OrePrefix.gemFlawed, material, (int) ((materialAmount * 2) / M));
             if (materialAmount * 4 >= M)
-                stack = get(OrePrefixes.gemChipped, material, (int) ((materialAmount * 4) / M));
+                stack = get(OrePrefix.gemChipped, material, (int) ((materialAmount * 4) / M));
         }
         return stack;
     }
@@ -162,11 +165,11 @@ public class OreDictionaryUnifier {
         if (materialAmount <= 0) return null;
         ItemStack stack = null;
         if (materialAmount % M == 0 || materialAmount >= M * 16)
-            stack = get(OrePrefixes.dust, material, (int) (materialAmount / M));
+            stack = get(OrePrefix.dust, material, (int) (materialAmount / M));
         if (stack == null && (materialAmount * 4) % M == 0 || materialAmount >= M * 8)
-            stack = get(OrePrefixes.dustSmall, material, (int) ((materialAmount * 4) / M));
+            stack = get(OrePrefix.dustSmall, material, (int) ((materialAmount * 4) / M));
         if (stack == null && (materialAmount * 9) >= M)
-            stack = get(OrePrefixes.dustTiny, material, (int) ((materialAmount * 9) / M));
+            stack = get(OrePrefix.dustTiny, material, (int) ((materialAmount * 9) / M));
         return stack;
     }
 
@@ -174,11 +177,11 @@ public class OreDictionaryUnifier {
         if (materialAmount <= 0) return null;
         ItemStack stack = null;
         if (((materialAmount % (M * 9) == 0 && materialAmount / (M * 9) > 1) || materialAmount >= M * 72))
-            stack = get(OrePrefixes.block, material, (int) (materialAmount / (M * 9)));
+            stack = get(OrePrefix.block, material, (int) (materialAmount / (M * 9)));
         if (stack == null && ((materialAmount % M == 0) || materialAmount >= M * 8))
-            stack = get(OrePrefixes.ingot, material, (int) (materialAmount / M));
+            stack = get(OrePrefix.ingot, material, (int) (materialAmount / M));
         if (stack == null && (materialAmount * 9) >= M)
-            stack = get(OrePrefixes.nugget, material, (int) ((materialAmount * 9) / M));
+            stack = get(OrePrefix.nugget, material, (int) ((materialAmount * 9) / M));
         return stack;
     }
 

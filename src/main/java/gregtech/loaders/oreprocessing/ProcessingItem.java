@@ -4,7 +4,7 @@ import gregtech.api.GT_Values;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.GT_ModHandler;
@@ -13,10 +13,10 @@ import net.minecraft.item.ItemStack;
 
 public class ProcessingItem implements IOreRegistrationHandler {
     public ProcessingItem() {
-        OrePrefixes.item.add(this);
+        OrePrefix.item.add(this);
     }
 
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+    public void registerOre(OrePrefix aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         if (OreDictionaryUnifier.getItemData(aStack) == null && !aOreDictName.equals("itemCertusQuartz") && !aOreDictName.equals("itemNetherQuartz")) {
             switch (aOreDictName) {
                 case "itemSilicon":

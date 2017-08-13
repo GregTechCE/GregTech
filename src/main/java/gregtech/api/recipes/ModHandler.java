@@ -6,7 +6,7 @@ import gregtech.api.ConfigCategories;
 import gregtech.api.items.ItemList;
 import gregtech.api.items.OreDictNames;
 import gregtech.api.unification.OreDictionaryUnifier;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.items.ToolDictNames;
 import gregtech.api.unification.Material;
 import gregtech.api.unification.material.Materials;
@@ -429,11 +429,11 @@ public class ModHandler {
                 .outputs(output)
                 .duration(130)
                 .EUt(3);
-        if (OrePrefixes.ingot.contains(output)) {
+        if (OrePrefix.ingot.contains(output)) {
             recipeBuilder.notConsumable(ItemList.Shape_Mold_Ingot);
-        } else if (OrePrefixes.block.contains(output)) {
+        } else if (OrePrefix.block.contains(output)) {
             recipeBuilder.notConsumable(ItemList.Shape_Mold_Block);
-        } else if (OrePrefixes.nugget.contains(output)) {
+        } else if (OrePrefix.nugget.contains(output)) {
             recipeBuilder.notConsumable(ItemList.Shape_Mold_Nugget);
         }
         if (hidden) {
@@ -587,7 +587,7 @@ public class ModHandler {
                 .EUt(2)
                 .buildAndRegister();
 
-        if (!OrePrefixes.log.contains(input)) {
+        if (!OrePrefix.log.contains(input)) {
             boolean enableTEMachineRecipes = GT_Mod.gregtechproxy.mTEMachineRecipes;
             if (OreDictionaryUnifier.getItemData(output1).mMaterial == Materials.Wood) {
                 if (enableTEMachineRecipes && GregTech_API.sRecipeFile.get(ConfigCategories.Machines.pulverization, input, true)) {
@@ -630,9 +630,9 @@ public class ModHandler {
         if (GregTech_API.mMagneticraft && GT_Mod.gregtechproxy.mMagneticraftRecipes) {
             ItemMaterialInfo data = OreDictionaryUnifier.getAssociation(input);
             if (data != null && data.mPrefix != null) {
-                if (data.mPrefix == OrePrefixes.ore || data.mPrefix == OrePrefixes.oreBlackgranite || data.mPrefix == OrePrefixes.oreEndstone || data.mPrefix == OrePrefixes.oreNetherrack || data.mPrefix == OrePrefixes.oreRedgranite) {
+                if (data.mPrefix == OrePrefix.ore || data.mPrefix == OrePrefix.oreBlackgranite || data.mPrefix == OrePrefix.oreEndstone || data.mPrefix == OrePrefix.oreNetherrack || data.mPrefix == OrePrefix.oreRedgranite) {
                     //TODO com.cout970.magneticraft.api.access.MgRecipeRegister.registerCrusherRecipe(input, output1, output2,(float)((float)chance2/GT_Mod.gregtechproxy.mMagneticraftBonusOutputPercent), output3,(float)((float)chance3/GT_Mod.gregtechproxy.mMagneticraftBonusOutputPercent));
-                } else if (data.mPrefix == OrePrefixes.crushed || data.mPrefix == OrePrefixes.crushedCentrifuged || data.mPrefix == OrePrefixes.crushedPurified) {
+                } else if (data.mPrefix == OrePrefix.crushed || data.mPrefix == OrePrefix.crushedCentrifuged || data.mPrefix == OrePrefix.crushedPurified) {
                     //TODO com.cout970.magneticraft.api.access.MgRecipeRegister.registerGrinderRecipe(input, output1, output2,(float)((float)chance2/GT_Mod.gregtechproxy.mMagneticraftBonusOutputPercent), output3,(float)((float)chance3/GT_Mod.gregtechproxy.mMagneticraftBonusOutputPercent));
                 }
             }
@@ -1846,7 +1846,7 @@ public class ModHandler {
 
     public static int getCapsuleCellContainerCount(ItemStack stack) {
         if (stack == null) return 0;
-        return GT_Utility.areStacksEqual(GT_Utility.getContainerForFilledItem(stack, true), ItemList.Cell_Empty.get(1)) || OrePrefixes.cell.contains(stack) || OrePrefixes.cellPlasma.contains(stack) ? 1 : 0;
+        return GT_Utility.areStacksEqual(GT_Utility.getContainerForFilledItem(stack, true), ItemList.Cell_Empty.get(1)) || OrePrefix.cell.contains(stack) || OrePrefix.cellPlasma.contains(stack) ? 1 : 0;
     }
 
     public static class RecipeBits {

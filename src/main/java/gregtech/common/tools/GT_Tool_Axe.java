@@ -4,7 +4,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enchants.EnchantmentData;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.items.IIconContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -17,7 +17,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.event.world.BlockEvent;
 import scala.actors.threadpool.Arrays;
 
 import java.util.ArrayList;
@@ -124,7 +123,7 @@ public class GT_Tool_Axe extends GT_Tool {
     @Override
     public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops) {
         int rAmount = 0;
-        if (GregTech_API.sTimber && !harvester.isSneaking() && OrePrefixes.log.contains(getBlockStack(blockState))) {
+        if (GregTech_API.sTimber && !harvester.isSneaking() && OrePrefix.log.contains(getBlockStack(blockState))) {
             int tY = blockPos.getY() + 1;
             for (int tH = harvester.worldObj.getHeight(); tY < tH; tY++) {
                 BlockPos block = new BlockPos(blockPos.getX(), tY, blockPos.getZ());
@@ -148,7 +147,7 @@ public class GT_Tool_Axe extends GT_Tool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadAxe.mTextureIndex] : ToolMetaItem.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.stick.mTextureIndex];
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefix.toolHeadAxe.mTextureIndex] : ToolMetaItem.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefix.stick.mTextureIndex];
     }
 
     @Override

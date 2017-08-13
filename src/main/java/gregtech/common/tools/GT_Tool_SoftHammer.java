@@ -4,7 +4,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.items.IIconContainer;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.common.items.behaviors.Behaviour_SoftHammer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -180,7 +180,7 @@ public class GT_Tool_SoftHammer extends GT_Tool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadMallet.mTextureIndex] : ToolMetaItem.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.handleMallet.mTextureIndex];
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefix.toolHeadMallet.mTextureIndex] : ToolMetaItem.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefix.handleMallet.mTextureIndex];
     }
 
     @Override

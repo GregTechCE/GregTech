@@ -2,7 +2,7 @@ package gregtech.common.items;
 
 import gregtech.api.items.ItemList;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.items.GenericItem;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
@@ -24,7 +24,7 @@ public class GT_IntegratedCircuit_Item extends GenericItem {
         ItemList.Circuit_Integrated.set(this);
 
 
-        GT_ModHandler.addShapelessCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 0L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{OrePrefixes.circuit.get(Materials.Basic)});
+        GT_ModHandler.addShapelessCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 0L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{OrePrefix.circuit.get(Materials.Basic)});
 
         GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 1L), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"d  ", " P ", "   ", 'P', ItemList.Circuit_Integrated.getWildcard(1L)});
         GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 2L), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{" d ", " P ", "   ", 'P', ItemList.Circuit_Integrated.getWildcard(1L)});

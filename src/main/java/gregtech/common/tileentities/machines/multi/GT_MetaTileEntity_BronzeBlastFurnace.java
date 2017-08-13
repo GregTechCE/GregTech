@@ -4,7 +4,7 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.capability.internal.IGregTechTileEntity;
@@ -249,57 +249,57 @@ public class GT_MetaTileEntity_BronzeBlastFurnace extends MetaTileEntity {
         }
         if ((this.mInventory[0] != null) && (this.mInventory[1] != null) && (this.mInventory[0].stackSize >= 1)) {
             if ((OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[0], "dustIron")) || (OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[0], "ingotIron"))) {
-                if ((this.mInventory[1].getItem() == Items.COAL) && (this.mInventory[1].stackSize >= 4) && (spaceForOutput(this.mOutputItem1 = OreDictionaryUnifier.get(OrePrefixes.ingot, Materials.Steel, 1L), this.mOutputItem2 = OreDictionaryUnifier.get(OrePrefixes.dustTiny, Materials.DarkAsh, 4L)))) {
+                if ((this.mInventory[1].getItem() == Items.COAL) && (this.mInventory[1].stackSize >= 4) && (spaceForOutput(this.mOutputItem1 = OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Steel, 1L), this.mOutputItem2 = OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh, 4L)))) {
                     getBaseMetaTileEntity().decrStackSize(0, 1);
                     getBaseMetaTileEntity().decrStackSize(1, 4);
                     this.mMaxProgresstime = 7200;
                     return true;
                 }
-                if ((OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[1], "fuelCoke")) && (this.mInventory[1].stackSize >= 2) && (spaceForOutput(this.mOutputItem1 = OreDictionaryUnifier.get(OrePrefixes.ingot, Materials.Steel, 1L), this.mOutputItem2 = OreDictionaryUnifier.get(OrePrefixes.dustTiny, Materials.Ash, 4L)))) {
+                if ((OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[1], "fuelCoke")) && (this.mInventory[1].stackSize >= 2) && (spaceForOutput(this.mOutputItem1 = OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Steel, 1L), this.mOutputItem2 = OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.Ash, 4L)))) {
                     getBaseMetaTileEntity().decrStackSize(0, 1);
                     getBaseMetaTileEntity().decrStackSize(1, 2);
                     this.mMaxProgresstime = 4800;
                     return true;
                 }
-                if ((this.mInventory[0].stackSize >= 9) && ((OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[1], "blockCoal")) || (OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[1], "blockCharcoal"))) && (this.mInventory[1].stackSize >= 4) && (spaceForOutput(this.mOutputItem1 = OreDictionaryUnifier.get(OrePrefixes.ingot, Materials.Steel, 9L), this.mOutputItem2 = OreDictionaryUnifier.get(OrePrefixes.dust, Materials.DarkAsh, 4L)))) {
+                if ((this.mInventory[0].stackSize >= 9) && ((OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[1], "blockCoal")) || (OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[1], "blockCharcoal"))) && (this.mInventory[1].stackSize >= 4) && (spaceForOutput(this.mOutputItem1 = OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Steel, 9L), this.mOutputItem2 = OreDictionaryUnifier.get(OrePrefix.dust, Materials.DarkAsh, 4L)))) {
                     getBaseMetaTileEntity().decrStackSize(0, 9);
                     getBaseMetaTileEntity().decrStackSize(1, 4);
                     this.mMaxProgresstime = 64800;
                     return true;
                 }
             } else if (OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[0], "dustSteel")) {
-                if ((this.mInventory[1].getItem() == Items.COAL) && (this.mInventory[1].stackSize >= 2) && (spaceForOutput(this.mOutputItem1 = OreDictionaryUnifier.get(OrePrefixes.ingot, Materials.Steel, 1L), this.mOutputItem2 = OreDictionaryUnifier.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2L)))) {
+                if ((this.mInventory[1].getItem() == Items.COAL) && (this.mInventory[1].stackSize >= 2) && (spaceForOutput(this.mOutputItem1 = OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Steel, 1L), this.mOutputItem2 = OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh, 2L)))) {
                     getBaseMetaTileEntity().decrStackSize(0, 1);
                     getBaseMetaTileEntity().decrStackSize(1, 2);
                     this.mMaxProgresstime = 3600;
                     return true;
                 }
-                if ((OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[1], "fuelCoke")) && (this.mInventory[1].stackSize >= 1) && (spaceForOutput(this.mOutputItem1 = OreDictionaryUnifier.get(OrePrefixes.ingot, Materials.Steel, 1L), this.mOutputItem2 = OreDictionaryUnifier.get(OrePrefixes.dustTiny, Materials.Ash, 2L)))) {
+                if ((OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[1], "fuelCoke")) && (this.mInventory[1].stackSize >= 1) && (spaceForOutput(this.mOutputItem1 = OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Steel, 1L), this.mOutputItem2 = OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.Ash, 2L)))) {
                     getBaseMetaTileEntity().decrStackSize(0, 1);
                     getBaseMetaTileEntity().decrStackSize(1, 1);
                     this.mMaxProgresstime = 2400;
                     return true;
                 }
-                if ((this.mInventory[0].stackSize >= 9) && ((OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[1], "blockCoal")) || (OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[1], "blockCharcoal"))) && (this.mInventory[1].stackSize >= 2) && (spaceForOutput(this.mOutputItem1 = OreDictionaryUnifier.get(OrePrefixes.ingot, Materials.Steel, 9L), this.mOutputItem2 = OreDictionaryUnifier.get(OrePrefixes.dust, Materials.DarkAsh, 2L)))) {
+                if ((this.mInventory[0].stackSize >= 9) && ((OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[1], "blockCoal")) || (OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[1], "blockCharcoal"))) && (this.mInventory[1].stackSize >= 2) && (spaceForOutput(this.mOutputItem1 = OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Steel, 9L), this.mOutputItem2 = OreDictionaryUnifier.get(OrePrefix.dust, Materials.DarkAsh, 2L)))) {
                     getBaseMetaTileEntity().decrStackSize(0, 9);
                     getBaseMetaTileEntity().decrStackSize(1, 2);
                     this.mMaxProgresstime = 32400;
                     return true;
                 }
             } else if (OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[0], "blockIron")) {
-                if ((this.mInventory[1].getItem() == Items.COAL) && (this.mInventory[1].stackSize >= 36) && (spaceForOutput(this.mOutputItem1 = OreDictionaryUnifier.get(OrePrefixes.ingot, Materials.Steel, 9L), this.mOutputItem2 = OreDictionaryUnifier.get(OrePrefixes.dust, Materials.DarkAsh, 4L)))) {
+                if ((this.mInventory[1].getItem() == Items.COAL) && (this.mInventory[1].stackSize >= 36) && (spaceForOutput(this.mOutputItem1 = OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Steel, 9L), this.mOutputItem2 = OreDictionaryUnifier.get(OrePrefix.dust, Materials.DarkAsh, 4L)))) {
                     getBaseMetaTileEntity().decrStackSize(0, 1);
                     getBaseMetaTileEntity().decrStackSize(1, 36);
                     this.mMaxProgresstime = 64800;
                     return true;
                 }
-                if ((OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[1], "fuelCoke")) && (this.mInventory[1].stackSize >= 18) && (spaceForOutput(this.mOutputItem1 = OreDictionaryUnifier.get(OrePrefixes.ingot, Materials.Steel, 9L), this.mOutputItem2 = OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Ash, 4L)))) {
+                if ((OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[1], "fuelCoke")) && (this.mInventory[1].stackSize >= 18) && (spaceForOutput(this.mOutputItem1 = OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Steel, 9L), this.mOutputItem2 = OreDictionaryUnifier.get(OrePrefix.dust, Materials.Ash, 4L)))) {
                     getBaseMetaTileEntity().decrStackSize(0, 1);
                     getBaseMetaTileEntity().decrStackSize(1, 18);
                     this.mMaxProgresstime = 43200;
                     return true;
                 }
-                if (((OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[1], "blockCoal")) || (OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[1], "blockCharcoal"))) && (this.mInventory[1].stackSize >= 4) && (spaceForOutput(this.mOutputItem1 = OreDictionaryUnifier.get(OrePrefixes.ingot, Materials.Steel, 9L), this.mOutputItem2 = OreDictionaryUnifier.get(OrePrefixes.dust, Materials.DarkAsh, 4L)))) {
+                if (((OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[1], "blockCoal")) || (OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[1], "blockCharcoal"))) && (this.mInventory[1].stackSize >= 4) && (spaceForOutput(this.mOutputItem1 = OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Steel, 9L), this.mOutputItem2 = OreDictionaryUnifier.get(OrePrefix.dust, Materials.DarkAsh, 4L)))) {
                     getBaseMetaTileEntity().decrStackSize(0, 1);
                     getBaseMetaTileEntity().decrStackSize(1, 4);
                     this.mMaxProgresstime = 64800;

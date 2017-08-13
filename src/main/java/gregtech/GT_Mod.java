@@ -11,7 +11,7 @@ import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.unification.Dyes;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.items.ItemList;
 import gregtech.api.net.GT_PacketHandler;
@@ -27,7 +27,7 @@ import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import gregtech.loaders.load.GT_CoverBehaviorLoader;
-import gregtech.loaders.load.GT_FuelLoader;
+import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.load.GT_ItemIterator;
 import gregtech.loaders.load.GT_SonictronLoader;
 import gregtech.loaders.misc.GT_Achievements;
@@ -236,12 +236,12 @@ public class GT_Mod implements IGT_Mod {
         gregtechproxy.mOnline = tMainConfig.get(aTextGeneral, "online", true).getBoolean(false);
 
         gregtechproxy.mUpgradeCount = Math.min(64, Math.max(1, tMainConfig.get("features", "UpgradeStacksize", 4).getInt()));
-        for (OrePrefixes tPrefix : OrePrefixes.values()) {
+        for (OrePrefix tPrefix : OrePrefix.values()) {
             if (tPrefix.mIsUsedForOreProcessing) {
                 tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(1, tMainConfig.get("features", "MaxOreStackSize", 64).getInt())));
-            } else if (tPrefix == OrePrefixes.plank) {
+            } else if (tPrefix == OrePrefix.plank) {
                 tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, tMainConfig.get("features", "MaxPlankStackSize", 64).getInt())));
-            } else if ((tPrefix == OrePrefixes.wood) || (tPrefix == OrePrefixes.treeLeaves) || (tPrefix == OrePrefixes.treeSapling) || (tPrefix == OrePrefixes.log)) {
+            } else if ((tPrefix == OrePrefix.wood) || (tPrefix == OrePrefix.treeLeaves) || (tPrefix == OrePrefix.treeSapling) || (tPrefix == OrePrefix.log)) {
                 tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, tMainConfig.get("features", "MaxLogStackSize", 64).getInt())));
             } else if (tPrefix.mIsUsedForBlocks) {
                 tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, tMainConfig.get("features", "MaxOtherBlockStackSize", 64).getInt())));
@@ -340,35 +340,35 @@ public class GT_Mod implements IGT_Mod {
 
         System.out.println("reenableMetaItems");
         for(String reEnable : mMTTags){
-            OrePrefixes tPrefix = OrePrefixes.getOrePrefix(reEnable);
+            OrePrefix tPrefix = OrePrefix.getOrePrefix(reEnable);
             if(tPrefix!=null){
                 Materials tName = Materials.get(reEnable.replaceFirst(tPrefix.toString(), ""));
                 if(tName!=null){
                     tPrefix.mDisabledItems.remove(tName);
                     tPrefix.mGeneratedItems.add(tName);
-                    if(tPrefix == OrePrefixes.screw){
-                        OrePrefixes.bolt.mDisabledItems.remove(tName);
-                        OrePrefixes.bolt.mGeneratedItems.add(tName);
-                        OrePrefixes.stick.mDisabledItems.remove(tName);
-                        OrePrefixes.stick.mGeneratedItems.add(tName);
+                    if(tPrefix == OrePrefix.screw){
+                        OrePrefix.bolt.mDisabledItems.remove(tName);
+                        OrePrefix.bolt.mGeneratedItems.add(tName);
+                        OrePrefix.stick.mDisabledItems.remove(tName);
+                        OrePrefix.stick.mGeneratedItems.add(tName);
                     }
-                    if(tPrefix == OrePrefixes.round){
-                        OrePrefixes.nugget.mDisabledItems.remove(tName);
-                        OrePrefixes.nugget.mGeneratedItems.add(tName);
+                    if(tPrefix == OrePrefix.round){
+                        OrePrefix.nugget.mDisabledItems.remove(tName);
+                        OrePrefix.nugget.mGeneratedItems.add(tName);
                     }
-                    if(tPrefix == OrePrefixes.spring){
-                        OrePrefixes.stickLong.mDisabledItems.remove(tName);
-                        OrePrefixes.stickLong.mGeneratedItems.add(tName);
-                        OrePrefixes.stick.mDisabledItems.remove(tName);
-                        OrePrefixes.stick.mGeneratedItems.add(tName);
+                    if(tPrefix == OrePrefix.spring){
+                        OrePrefix.stickLong.mDisabledItems.remove(tName);
+                        OrePrefix.stickLong.mGeneratedItems.add(tName);
+                        OrePrefix.stick.mDisabledItems.remove(tName);
+                        OrePrefix.stick.mGeneratedItems.add(tName);
                     }
-                    if(tPrefix == OrePrefixes.springSmall){
-                        OrePrefixes.stick.mDisabledItems.remove(tName);
-                        OrePrefixes.stick.mGeneratedItems.add(tName);
+                    if(tPrefix == OrePrefix.springSmall){
+                        OrePrefix.stick.mDisabledItems.remove(tName);
+                        OrePrefix.stick.mGeneratedItems.add(tName);
                     }
-                    if(tPrefix == OrePrefixes.stickLong){
-                        OrePrefixes.stick.mDisabledItems.remove(tName);
-                        OrePrefixes.stick.mGeneratedItems.add(tName);
+                    if(tPrefix == OrePrefix.stickLong){
+                        OrePrefix.stick.mDisabledItems.remove(tName);
+                        OrePrefix.stick.mGeneratedItems.add(tName);
                     }
                 }else{System.out.println("noMaterial "+reEnable);}
             }else{System.out.println("noPrefix "+reEnable);}}
@@ -387,12 +387,12 @@ public class GT_Mod implements IGT_Mod {
         new GT_SonictronLoader().run();
         new GT_SpawnEventHandler();
         if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.gregtechrecipes, "SolarPanel", true)) {
-            GT_ModHandler.addCraftingRecipe(ItemList.Cover_SolarPanel.get(1L, new Object[0]),    GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"SGS", "CPC", 'C', OrePrefixes.circuit.get(Materials.Basic), 'G', new ItemStack(Blocks.GLASS_PANE, 1), 'P', OrePrefixes.plateAlloy.get(Materials.Carbon), 'S', OrePrefixes.plate.get(Materials.Silicon)});
-            GT_ModHandler.addCraftingRecipe(ItemList.Cover_SolarPanel_8V.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"SGS", "CPC", 'C', OrePrefixes.circuit.get(Materials.Advanced), 'G', new ItemStack(Blocks.GLASS_PANE, 1), 'P', OrePrefixes.wireGt01.get(Materials.Graphene), 'S', OrePrefixes.plate.get(Materials.Silicon)});
-            GT_ModHandler.addCraftingRecipe(ItemList.Cover_SolarPanel_LV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"SGS", "CPC", 'C', OrePrefixes.circuit.get(Materials.Master), 'G', GT_ModHandler.getIC2Item(BlockName.glass, BlockTexGlass.GlassType.reinforced, 1), 'P', OrePrefixes.wireGt04.get(Materials.Graphene), 'S', OrePrefixes.plate.get(Materials.Gallium)});
+            GT_ModHandler.addCraftingRecipe(ItemList.Cover_SolarPanel.get(1L, new Object[0]),    GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"SGS", "CPC", 'C', OrePrefix.circuit.get(Materials.Basic), 'G', new ItemStack(Blocks.GLASS_PANE, 1), 'P', OrePrefix.plateAlloy.get(Materials.Carbon), 'S', OrePrefix.plate.get(Materials.Silicon)});
+            GT_ModHandler.addCraftingRecipe(ItemList.Cover_SolarPanel_8V.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"SGS", "CPC", 'C', OrePrefix.circuit.get(Materials.Advanced), 'G', new ItemStack(Blocks.GLASS_PANE, 1), 'P', OrePrefix.wireGt01.get(Materials.Graphene), 'S', OrePrefix.plate.get(Materials.Silicon)});
+            GT_ModHandler.addCraftingRecipe(ItemList.Cover_SolarPanel_LV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"SGS", "CPC", 'C', OrePrefix.circuit.get(Materials.Master), 'G', GT_ModHandler.getIC2Item(BlockName.glass, BlockTexGlass.GlassType.reinforced, 1), 'P', OrePrefix.wireGt04.get(Materials.Graphene), 'S', OrePrefix.plate.get(Materials.Gallium)});
        }
         if (GregTech_API.sOPStuff.get(ConfigCategories.Recipes.gregtechrecipes, "SolarPanel8V", false)) {
-            GT_ModHandler.addCraftingRecipe(ItemList.Cover_SolarPanel_8V.get(1), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"SSS", "STS", "SSS", 'S', ItemList.Cover_SolarPanel, 'T', OrePrefixes.circuit.get(Materials.Advanced)});
+            GT_ModHandler.addCraftingRecipe(ItemList.Cover_SolarPanel_8V.get(1), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"SSS", "STS", "SSS", 'S', ItemList.Cover_SolarPanel, 'T', OrePrefix.circuit.get(Materials.Advanced)});
         }
         if (GregTech_API.sOPStuff.get(ConfigCategories.Recipes.gregtechrecipes, "SolarPanelLV", false)) {
             GT_ModHandler.addCraftingRecipe(ItemList.Cover_SolarPanel_LV.get(1), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{" S ", "STS", " S ", 'S', ItemList.Cover_SolarPanel_8V, 'T', ItemList.Transformer_LV_ULV});
@@ -471,7 +471,7 @@ public class GT_Mod implements IGT_Mod {
         if (gregtechproxy.mSortToTheEnd) {
             new GT_ItemIterator().run();
             gregtechproxy.registerUnificationEntries();
-            new GT_FuelLoader().run();
+            new FuelLoader().run();
         }
         GregTech_API.sLoadFinished = true;
         GTLog.out.println("GT_Mod: Load-Phase finished!");
@@ -499,7 +499,7 @@ public class GT_Mod implements IGT_Mod {
         } else {
             new GT_ItemIterator().run();
             gregtechproxy.registerUnificationEntries();
-            new GT_FuelLoader().run();
+            new FuelLoader().run();
         }
         new GT_BookAndLootLoader().run();
         new GT_ItemMaxStacksizeLoader().run();
@@ -517,7 +517,7 @@ public class GT_Mod implements IGT_Mod {
         GT_RecipeRegistrator.registerUsagesForMaterials(new ItemStack(Blocks.STONE, 1), null, false);
         GT_RecipeRegistrator.registerUsagesForMaterials(new ItemStack(Items.LEATHER, 1), null, false);
 
-        OreDictionaryUnifier.addItemData(GT_ModHandler.getRecipeOutput(new ItemStack[]{null, OreDictionaryUnifier.get(OrePrefixes.ingot, Materials.Tin, 1L), null, OreDictionaryUnifier.get(OrePrefixes.ingot, Materials.Tin, 1L), null, OreDictionaryUnifier.get(OrePrefixes.ingot, Materials.Tin, 1L), null, null, null}), new ItemMaterialInfo(Materials.Tin, 10886400L, new MaterialStack[0]));
+        OreDictionaryUnifier.addItemData(GT_ModHandler.getRecipeOutput(new ItemStack[]{null, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Tin, 1L), null, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Tin, 1L), null, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Tin, 1L), null, null, null}), new ItemMaterialInfo(Materials.Tin, 10886400L, new MaterialStack[0]));
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.storageblockcrafting, "tile.glowstone", false)) {
             GT_ModHandler.removeRecipe(new ItemStack[]{new ItemStack(Items.GLOWSTONE_DUST, 1), new ItemStack(Items.GLOWSTONE_DUST, 1), null, new ItemStack(Items.GLOWSTONE_DUST, 1), new ItemStack(Items.GLOWSTONE_DUST, 1)});
         }
@@ -543,7 +543,7 @@ public class GT_Mod implements IGT_Mod {
             GT_ModHandler.removeRecipeByOutput(ItemList.IC2_ForgeHammer.getWildcard(1));
         }
         GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(BlockName.resource, ResourceBlock.machine, 1));
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item(BlockName.resource, ResourceBlock.machine, 1), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"RRR", "RwR", "RRR", Character.valueOf('R'), OrePrefixes.plate.get(Materials.Iron)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item(BlockName.resource, ResourceBlock.machine, 1), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"RRR", "RwR", "RRR", Character.valueOf('R'), OrePrefix.plate.get(Materials.Iron)});
         ItemStack ISdata0 = new ItemStack(Items.POTIONITEM, 1, 0);
         ItemStack ILdata0 = ItemList.Bottle_Empty.get(1L, new Object[0]);
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
@@ -726,7 +726,7 @@ public class GT_Mod implements IGT_Mod {
                 ItemStack tOutput = ItemList.Tool_DataOrb.get(1);
                 Behaviour_DataOrb.setDataTitle(tOutput, "Elemental-Scan");
                 Behaviour_DataOrb.setDataName(tOutput, tMaterial.mElement.name());
-                ItemStack tInput = OreDictionaryUnifier.get(OrePrefixes.dust, tMaterial, 1);
+                ItemStack tInput = OreDictionaryUnifier.get(OrePrefix.dust, tMaterial, 1);
                 ItemStack[] ISmat0 = new ItemStack[]{tInput};
                 ItemStack[] ISmat1 = new ItemStack[]{tOutput};
                 if (tInput != null) {
@@ -734,7 +734,7 @@ public class GT_Mod implements IGT_Mod {
                     GT_Recipe.GT_Recipe_Map.sRepicatorFakeRecipes.addFakeRecipe(false, null, ISmat0, ISmat1, new FluidStack[]{Materials.UUMatter.getFluid(tMaterial.getMass())}, null, (int) (tMaterial.getMass() * 512L), 32, 0);
 
                 }
-                tInput = OreDictionaryUnifier.get(OrePrefixes.cell, tMaterial, 1L);
+                tInput = OreDictionaryUnifier.get(OrePrefix.cell, tMaterial, 1L);
                 ISmat0 = new ItemStack[]{tInput};
                 if (tInput != null) {
                     GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, ISmat0, ISmat1, ItemList.Tool_DataOrb.get(1), null, null, (int) (tMaterial.getMass() * 8192L), 32, 0);
@@ -744,7 +744,7 @@ public class GT_Mod implements IGT_Mod {
         }
         GT_Recipe.GT_Recipe_Map.sRockBreakerFakeRecipes.addFakeRecipe(false, new ItemStack[]{ItemList.Display_ITS_FREE.getWithName(0L, "Place Lava on Side")}, new ItemStack[]{new ItemStack(Blocks.COBBLESTONE, 1)}, null, null, null, 16, 32, 0);
         GT_Recipe.GT_Recipe_Map.sRockBreakerFakeRecipes.addFakeRecipe(false, new ItemStack[]{ItemList.Display_ITS_FREE.getWithName(0L, "Place Lava on Top")}, new ItemStack[]{new ItemStack(Blocks.STONE, 1)}, null, null, null, 16, 32, 0);
-        GT_Recipe.GT_Recipe_Map.sRockBreakerFakeRecipes.addFakeRecipe(false, new ItemStack[]{OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Redstone, 1)}, new ItemStack[]{new ItemStack(Blocks.OBSIDIAN, 1)}, null, null, null, 128, 32, 0);
+        GT_Recipe.GT_Recipe_Map.sRockBreakerFakeRecipes.addFakeRecipe(false, new ItemStack[]{OreDictionaryUnifier.get(OrePrefix.dust, Materials.Redstone, 1)}, new ItemStack[]{new ItemStack(Blocks.OBSIDIAN, 1)}, null, null, null, 128, 32, 0);
         for (IMachineRecipeManager.RecipeIoContainer recipeIoContainer : Recipes.macerator.getRecipes()) {
             if (recipeIoContainer.output.items.size() > 0) {
                 for (ItemStack tStack : recipeIoContainer.input.getInputs()) {

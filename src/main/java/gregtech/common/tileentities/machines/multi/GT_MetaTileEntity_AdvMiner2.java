@@ -5,7 +5,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.items.ItemList;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
@@ -167,7 +167,7 @@ public class GT_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBas
                 getBaseMetaTileEntity().getWorldObj().setBlockToAir(pos);
                 if (!tDrops.isEmpty()) {
                     ItemMaterialInfo tData = OreDictionaryUnifier.getItemData(tDrops.get(0).copy());
-                    if (tData.mPrefix != OrePrefixes.crushed && tData.mMaterial.mMaterial != Materials.Oilsands) {
+                    if (tData.mPrefix != OrePrefix.crushed && tData.mMaterial.mMaterial != Materials.Oilsands) {
 
                         GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(getBaseMetaTileEntity(), false, tVoltage, null, tDrops.get(0).copy());
                         if (tRecipe != null) {

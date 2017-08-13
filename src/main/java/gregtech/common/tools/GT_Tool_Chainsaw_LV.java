@@ -5,7 +5,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.items.IIconContainer;
 import gregtech.api.items.toolitem.ToolMetaItem;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -21,7 +21,6 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
-import net.minecraftforge.event.world.BlockEvent;
 
 import java.util.List;
 import java.util.Random;
@@ -141,7 +140,7 @@ public class GT_Tool_Chainsaw_LV extends GT_Tool_Saw {
             return 1;
         }
         if (GregTech_API.sTimber && !harvester.isSneaking() &&
-                OrePrefixes.log.contains(getBlockStack(blockState))) {
+                OrePrefix.log.contains(getBlockStack(blockState))) {
             for (int y = 0; y < harvester.worldObj.getHeight() - blockPos.up().getY(); y++) {
                 BlockPos block = blockPos.up(y);
                 if (!isStateEqual(harvester.worldObj.getBlockState(block), blockState) ||
@@ -154,7 +153,7 @@ public class GT_Tool_Chainsaw_LV extends GT_Tool_Saw {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadChainsaw.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_LV;
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefix.toolHeadChainsaw.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_LV;
     }
 
     @Override

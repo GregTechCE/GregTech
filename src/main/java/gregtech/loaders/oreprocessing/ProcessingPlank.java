@@ -5,7 +5,7 @@ import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.items.ItemList;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.init.Blocks;
@@ -14,18 +14,18 @@ import net.minecraft.item.ItemStack;
 
 public class ProcessingPlank implements IOreRegistrationHandler {
     public ProcessingPlank() {
-        OrePrefixes.plank.add(this);
+        OrePrefix.plank.add(this);
     }
 
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+    public void registerOre(OrePrefix aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         if (aOreDictName.startsWith("plankWood")) {
-            GT_Values.RA.addLatheRecipe(GT_Utility.copyAmount(1L, aStack), OreDictionaryUnifier.get(OrePrefixes.stick, Materials.Wood, 2L), null, 10, 8);
-            GT_Values.RA.addCNCRecipe(GT_Utility.copyAmount(4L, aStack), OreDictionaryUnifier.get(OrePrefixes.gearGt, Materials.Wood, 1L), 800, 1);
-            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(8L, aStack), OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Redstone, 1L), new ItemStack(Blocks.NOTEBLOCK, 1), 200, 4);
-            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(8L, aStack), OreDictionaryUnifier.get(OrePrefixes.gem, Materials.Diamond, 1L), new ItemStack(Blocks.JUKEBOX, 1), 400, 4);
-            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(1L, aStack), OreDictionaryUnifier.get(OrePrefixes.screw, Materials.Iron, 1L), ItemList.Crate_Empty.get(1L), 200, 1);
-            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(1L, aStack), OreDictionaryUnifier.get(OrePrefixes.screw, Materials.WroughtIron, 1L), ItemList.Crate_Empty.get(1L), 200, 1);
-            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(1L, aStack), OreDictionaryUnifier.get(OrePrefixes.screw, Materials.Steel, 1L), ItemList.Crate_Empty.get(1L), 200, 1);
+            GT_Values.RA.addLatheRecipe(GT_Utility.copyAmount(1L, aStack), OreDictionaryUnifier.get(OrePrefix.stick, Materials.Wood, 2L), null, 10, 8);
+            GT_Values.RA.addCNCRecipe(GT_Utility.copyAmount(4L, aStack), OreDictionaryUnifier.get(OrePrefix.gearGt, Materials.Wood, 1L), 800, 1);
+            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(8L, aStack), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Redstone, 1L), new ItemStack(Blocks.NOTEBLOCK, 1), 200, 4);
+            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(8L, aStack), OreDictionaryUnifier.get(OrePrefix.gem, Materials.Diamond, 1L), new ItemStack(Blocks.JUKEBOX, 1), 400, 4);
+            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(1L, aStack), OreDictionaryUnifier.get(OrePrefix.screw, Materials.Iron, 1L), ItemList.Crate_Empty.get(1L), 200, 1);
+            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(1L, aStack), OreDictionaryUnifier.get(OrePrefix.screw, Materials.WroughtIron, 1L), ItemList.Crate_Empty.get(1L), 200, 1);
+            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(1L, aStack), OreDictionaryUnifier.get(OrePrefix.screw, Materials.Steel, 1L), ItemList.Crate_Empty.get(1L), 200, 1);
             GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Circuit_Integrated.getWithDamage(0L, 1L), new ItemStack(Blocks.WOODEN_BUTTON, 1), 100, 4);
             GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(2L, aStack), ItemList.Circuit_Integrated.getWithDamage(0L, 2L), new ItemStack(Blocks.WOODEN_PRESSURE_PLATE, 1), 200, 4);
             GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(3L, aStack), ItemList.Circuit_Integrated.getWithDamage(0L, 3L), new ItemStack(Blocks.TRAPDOOR, 1), 300, 4);

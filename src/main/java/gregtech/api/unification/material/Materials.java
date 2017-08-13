@@ -409,7 +409,7 @@ public class Materials {
     /**
      * Stargate materials
      */
-    public static MetalMaterial Naquadah = new MetalMaterial(307, "naquadah", "Naquadah", 0x323232, MaterialIconSet.METALLIC, of(), EXT_METAL | GENERATE_FOIL, null, 6.0F, 4, 1280, 5400);
+    public static MetalMaterial Naquadah = new MetalMaterial(307, "naquadah", "Naquadah", 0x323232, MaterialIconSet.METALLIC, of(), EXT_METAL, null, 6.0F, 4, 1280, 5400);
     public static MetalMaterial NaquadahAlloy = new MetalMaterial(308, "naquadah_alloy", "Naquadah Alloy", 0x282828, MaterialIconSet.METALLIC, of(new MaterialStack(Naquadah, 1), new MaterialStack(Osmiridium, 1)), EXT2_METAL, null, 8.0F, 5, 5120, 7200);
     public static MetalMaterial NaquadahEnriched = new MetalMaterial(309, "naquadah_enriched", "Enriched Naquadah", 0x282828, MaterialIconSet.METALLIC, of(), EXT_METAL, null, 6.0F, 4, 1280, 4500);
     public static MetalMaterial Naquadria = new MetalMaterial(310, "naquadria", "Naquadria", 0x1E1E1E, MaterialIconSet.SHINY, of(), EXT_METAL, null, 1.0F, 4, 512, 9000);

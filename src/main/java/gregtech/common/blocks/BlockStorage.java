@@ -2,7 +2,7 @@ package gregtech.common.blocks;
 
 import com.google.common.collect.Lists;
 import gregtech.api.GregTech_API;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.items.GenericBlock;
 import gregtech.api.util.GT_LanguageManager;
@@ -26,7 +26,7 @@ public abstract class BlockStorage extends GenericBlock {
 
     private PropertyMaterial MATERIAL;
 
-    public static Block createStorageBlock(String name, Material[] materials, OrePrefixes prefix){
+    public static Block createStorageBlock(String name, Material[] materials, OrePrefix prefix){
         return new BlockStorage(name, prefix){
             @Override
             public Material[] getMaterials() {
@@ -35,9 +35,9 @@ public abstract class BlockStorage extends GenericBlock {
         };
     }
 
-    public OrePrefixes prefix;
+    public OrePrefix prefix;
 
-    private BlockStorage(String name, OrePrefixes prefix) {
+    private BlockStorage(String name, OrePrefix prefix) {
         super(name, ItemStorage.class, net.minecraft.block.material.Material.IRON);
         this.prefix = prefix;
 

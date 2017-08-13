@@ -1,8 +1,10 @@
 package gregtech.api.metatileentity;
 
 import gregtech.api.util.GT_Config;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import java.io.File;
@@ -18,6 +20,10 @@ public interface IMetaTileEntityFactory {
      * 3 = BaseMetaTileEntity, Wrench lvl 3 to dismantle
      */
     byte getTileEntityBaseType();
+
+    ResourceLocation getModelLocation();
+
+    IBlockState getDefaultRenderState();
 
     /**
      * @return a short description of tile entity stack

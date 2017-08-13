@@ -3,7 +3,7 @@ package gregtech.common.tools;
 import gregtech.api.GregTech_API;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -132,7 +132,7 @@ public class GT_Tool_File extends GT_Tool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadFile.mTextureIndex] : Textures.ItemIcons.HANDLE_FILE;
+        return !aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefix.toolHeadFile.mTextureIndex] : Textures.ItemIcons.HANDLE_FILE;
     }
 
     @Override

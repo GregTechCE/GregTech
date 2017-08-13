@@ -6,7 +6,7 @@ import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.items.OreDictNames;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
@@ -16,11 +16,11 @@ import net.minecraft.item.ItemStack;
 
 public class ProcessingArrows implements IOreRegistrationHandler {
     public ProcessingArrows() {
-        OrePrefixes.arrowGtWood.add(this);
-        OrePrefixes.arrowGtPlastic.add(this);
+        OrePrefix.arrowGtWood.add(this);
+        OrePrefix.arrowGtPlastic.add(this);
     }
 
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+    public void registerOre(OrePrefix aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         ItemStack tOutput = GT_Utility.copyAmount(1L, aStack);
         GT_Utility.updateItemStack(tOutput);
         GT_Utility.ItemNBT.addEnchantment(tOutput, Enchantments.SMITE, EnchantmentHelper.getEnchantmentLevel(Enchantments.SMITE, tOutput) + 3);
@@ -49,9 +49,9 @@ public class ProcessingArrows implements IOreRegistrationHandler {
         if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial) && !aMaterial.contains(SubTag.NO_WORKING)) {
             switch (aPrefix) {
                 case arrowGtWood:
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.arrowGtWood, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"  A", " S ", "F  ", Character.valueOf('S'), OrePrefixes.stick.get(Materials.Wood), Character.valueOf('F'), OreDictNames.craftingFeather, Character.valueOf('A'), OrePrefixes.toolHeadArrow.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.arrowGtWood, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"  A", " S ", "F  ", Character.valueOf('S'), OrePrefix.stick.get(Materials.Wood), Character.valueOf('F'), OreDictNames.craftingFeather, Character.valueOf('A'), OrePrefix.toolHeadArrow.get(aMaterial)});
                 case arrowGtPlastic:
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.arrowGtPlastic, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"  A", " S ", "F  ", Character.valueOf('S'), OrePrefixes.stick.get(Materials.Plastic), Character.valueOf('F'), OreDictNames.craftingFeather, Character.valueOf('A'), OrePrefixes.toolHeadArrow.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.arrowGtPlastic, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"  A", " S ", "F  ", Character.valueOf('S'), OrePrefix.stick.get(Materials.Plastic), Character.valueOf('F'), OreDictNames.craftingFeather, Character.valueOf('A'), OrePrefix.toolHeadArrow.get(aMaterial)});
             }
         }
     }

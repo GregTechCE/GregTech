@@ -2,7 +2,7 @@ package gregtech.common.blocks;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.ore.StoneTypes;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;
@@ -229,50 +229,50 @@ public class BlockGeneratedOres extends GenericBlock {
 //            Random random = new Random(pos.hashCode());
 //            List<ItemStack> selector = new ArrayList<>();
 //
-//            ItemStack stack = OreDictionaryUnifier.get(OrePrefixes.gemExquisite, material, OreDictionaryUnifier.get(OrePrefixes.gem, material, 1L), 1L);
+//            ItemStack stack = OreDictionaryUnifier.get(OrePrefix.gemExquisite, material, OreDictionaryUnifier.get(OrePrefix.gem, material, 1L), 1L);
 //            if (stack != null) {
 //                for (int i = 0; i < 1; i++) {
 //                    selector.add(stack);
 //                }
 //            }
-//            stack = OreDictionaryUnifier.get(OrePrefixes.gemFlawless, material, OreDictionaryUnifier.get(OrePrefixes.gem, material, 1L), 1L);
+//            stack = OreDictionaryUnifier.get(OrePrefix.gemFlawless, material, OreDictionaryUnifier.get(OrePrefix.gem, material, 1L), 1L);
 //            if (stack != null) {
 //                for (int i = 0; i < 2; i++) {
 //                    selector.add(stack);
 //                }
 //            }
-//            stack = OreDictionaryUnifier.get(OrePrefixes.gem, material, 1L);
+//            stack = OreDictionaryUnifier.get(OrePrefix.gem, material, 1L);
 //            if (stack != null) {
 //                for (int i = 0; i < 12; i++) {
 //                    selector.add(stack);
 //                }
 //            }
-//            stack = OreDictionaryUnifier.get(OrePrefixes.gemFlawed, material, OreDictionaryUnifier.get(OrePrefixes.crushed, material, 1L), 1L);
+//            stack = OreDictionaryUnifier.get(OrePrefix.gemFlawed, material, OreDictionaryUnifier.get(OrePrefix.crushed, material, 1L), 1L);
 //            if (stack != null) {
 //                for (int i = 0; i < 5; i++) {
 //                    selector.add(stack);
 //                }
 //            }
-//            stack = OreDictionaryUnifier.get(OrePrefixes.crushed, material, 1L);
+//            stack = OreDictionaryUnifier.get(OrePrefix.crushed, material, 1L);
 //            if (stack != null) {
 //                for (int i = 0; i < 10; i++) {
 //                    selector.add(stack);
 //                }
 //            }
-//            stack = OreDictionaryUnifier.get(OrePrefixes.gemChipped, material, OreDictionaryUnifier.get(OrePrefixes.dustImpure, material, 1L), 1L);
+//            stack = OreDictionaryUnifier.get(OrePrefix.gemChipped, material, OreDictionaryUnifier.get(OrePrefix.dustImpure, material, 1L), 1L);
 //            if (stack != null) {
 //                for (int i = 0; i < 5; i++) {
 //                    selector.add(stack);
 //                }
 //            }
-//            stack = OreDictionaryUnifier.get(OrePrefixes.dustImpure, material, 1L);
+//            stack = OreDictionaryUnifier.get(OrePrefix.dustImpure, material, 1L);
 //            if (stack != null) {
 //                for (int i = 0; i < 10; i++) {
 //                    selector.add(stack);
 //                }
 //            }
 //
-//            stack = OreDictionaryUnifier.get(random.nextInt(3) > 0 ? OrePrefixes.dustImpure : OrePrefixes.dust, baseMaterial, 1L);
+//            stack = OreDictionaryUnifier.get(random.nextInt(3) > 0 ? OrePrefix.dustImpure : OrePrefix.dust, baseMaterial, 1L);
 //            if(stack != null && random.nextInt(3 + fortune) > 1) {
 //                dropList.add(stack);
 //            }
@@ -303,7 +303,7 @@ public class BlockGeneratedOres extends GenericBlock {
                 return material.defaultLocalName;
 
             default:
-                return material.defaultLocalName + OrePrefixes.ore.mLocalizedMaterialPost;
+                return material.defaultLocalName + OrePrefix.ore.mLocalizedMaterialPost;
         }
     }
 

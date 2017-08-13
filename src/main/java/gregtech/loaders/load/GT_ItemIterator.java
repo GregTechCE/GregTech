@@ -7,7 +7,7 @@ import gregtech.api.items.OreDictNames;
 import gregtech.api.items.ToolDictNames;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.items.GenericItem;
 import gregtech.api.items.ItemList;
 import gregtech.api.util.GTLog;
@@ -29,21 +29,21 @@ public class GT_ItemIterator
         GTLog.out.println("GT_Mod: Scanning for certain kinds of compatible Machineblocks.");
         ItemStack tStack2;
         ItemStack tStack;
-        if (null != (tStack = GT_ModHandler.getRecipeOutput(tStack2 = OreDictionaryUnifier.get(OrePrefixes.ingot, Materials.Bronze, 1L), tStack2, tStack2, tStack2, null, tStack2, tStack2, tStack2, tStack2))) {
-            GT_ModHandler.addPulverisationRecipe(tStack, OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Bronze, 8L), null, 0, false);
-            GT_ModHandler.addSmeltingRecipe(tStack, OreDictionaryUnifier.get(OrePrefixes.ingot, Materials.Bronze, 8L));
+        if (null != (tStack = GT_ModHandler.getRecipeOutput(tStack2 = OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Bronze, 1L), tStack2, tStack2, tStack2, null, tStack2, tStack2, tStack2, tStack2))) {
+            GT_ModHandler.addPulverisationRecipe(tStack, OreDictionaryUnifier.get(OrePrefix.dust, Materials.Bronze, 8L), null, 0, false);
+            GT_ModHandler.addSmeltingRecipe(tStack, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Bronze, 8L));
         }
-        if (null != (tStack = GT_ModHandler.getRecipeOutput(tStack2 = OreDictionaryUnifier.get(OrePrefixes.plate, Materials.Bronze, 1L), tStack2, tStack2, tStack2, null, tStack2, tStack2, tStack2, tStack2))) {
+        if (null != (tStack = GT_ModHandler.getRecipeOutput(tStack2 = OreDictionaryUnifier.get(OrePrefix.plate, Materials.Bronze, 1L), tStack2, tStack2, tStack2, null, tStack2, tStack2, tStack2, tStack2))) {
             OreDictionaryUnifier.registerOre(OreDictNames.craftingRawMachineTier00, tStack);
-            GT_ModHandler.addPulverisationRecipe(tStack, OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Bronze, 8L), null, 0, false);
-            GT_ModHandler.addSmeltingRecipe(tStack, OreDictionaryUnifier.get(OrePrefixes.ingot, Materials.Bronze, 8L));
+            GT_ModHandler.addPulverisationRecipe(tStack, OreDictionaryUnifier.get(OrePrefix.dust, Materials.Bronze, 8L), null, 0, false);
+            GT_ModHandler.addSmeltingRecipe(tStack, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Bronze, 8L));
         }
         ItemStack tStack3;
-        if (null != (tStack = GT_ModHandler.getRecipeOutput(tStack2 = OreDictionaryUnifier.get(OrePrefixes.ingot, Materials.Iron, 1L), tStack3 = new ItemStack(Blocks.GLASS, 1, 0), tStack2, tStack3, OreDictionaryUnifier.get(OrePrefixes.ingot, Materials.Gold, 1L), tStack3, tStack2, tStack3, tStack2))) {
-            GT_ModHandler.addPulverisationRecipe(tStack, OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Iron, 4L), OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Gold, 1L), 0, false);
+        if (null != (tStack = GT_ModHandler.getRecipeOutput(tStack2 = OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Iron, 1L), tStack3 = new ItemStack(Blocks.GLASS, 1, 0), tStack2, tStack3, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Gold, 1L), tStack3, tStack2, tStack3, tStack2))) {
+            GT_ModHandler.addPulverisationRecipe(tStack, OreDictionaryUnifier.get(OrePrefix.dust, Materials.Iron, 4L), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Gold, 1L), 0, false);
         }
-        if (null != (tStack = GT_ModHandler.getRecipeOutput(tStack2 = OreDictionaryUnifier.get(OrePrefixes.ingot, Materials.Steel, 1L), tStack3 = new ItemStack(Blocks.GLASS, 1, 0), tStack2, tStack3, OreDictionaryUnifier.get(OrePrefixes.ingot, Materials.Gold, 1L), tStack3, tStack2, tStack3, tStack2))) {
-            GT_ModHandler.addPulverisationRecipe(tStack, OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Steel, 4L), OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Gold, 1L), 0, false);
+        if (null != (tStack = GT_ModHandler.getRecipeOutput(tStack2 = OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Steel, 1L), tStack3 = new ItemStack(Blocks.GLASS, 1, 0), tStack2, tStack3, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Gold, 1L), tStack3, tStack2, tStack3, tStack2))) {
+            GT_ModHandler.addPulverisationRecipe(tStack, OreDictionaryUnifier.get(OrePrefix.dust, Materials.Steel, 4L), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Gold, 1L), 0, false);
         }
         GTLog.out.println("GT_Mod: Registering various Tools to be usable on GregTech Machines");
         GregTech_API.registerScrewdriver(GT_ModHandler.getRecipeOutput(null, new ItemStack(Items.IRON_INGOT, 1), null, new ItemStack(Items.STICK, 1)));
@@ -114,7 +114,7 @@ public class GT_ItemIterator
                         GT_Values.RA.addAssemblerRecipe(new ItemStack(tItem, 1, 32767), null, ItemList.Circuit_Basic.get(1L, new Object[0]), 100, 32);
                     }
                     if (tName.equals("tile.ArsMagica:ore_vinteum")) {
-                        OreDictionaryUnifier.set(OrePrefixes.ore, Materials.Vinteum, new ItemStack(tItem, 1, 0));
+                        OreDictionaryUnifier.set(OrePrefix.ore, Materials.Vinteum, new ItemStack(tItem, 1, 0));
                     }
                     if (tName.equals("item.ArsMagica:purified_vinteum")) {
                         GT_Values.RA.addFuel(new ItemStack(tItem, 1, 0), null, 256, 5);
@@ -175,64 +175,64 @@ public class GT_ItemIterator
                         OreDictionaryUnifier.registerOre("bookThaumonomicon", new ItemStack(tItem, 1, 32767));
                     }
                     if (tName.equals("item.ligniteCoal")) {
-                        OreDictionaryUnifier.set(OrePrefixes.gem, Materials.Lignite, new ItemStack(tItem, 1, 0));
+                        OreDictionaryUnifier.set(OrePrefix.gem, Materials.Lignite, new ItemStack(tItem, 1, 0));
                     }
                     if ((tName.equals("tile.extrabiomes.redrock")) || (tName.equals("tile.bop.redRocks"))) {
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 0));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 1));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 2));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Redrock, new ItemStack(tItem, 1, 0));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Redrock, new ItemStack(tItem, 1, 1));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Redrock, new ItemStack(tItem, 1, 2));
                     }
                     if (tName.equals("tile.rpstone")) {
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(tItem, 1, 0));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(tItem, 1, 1));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(tItem, 1, 2));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(tItem, 1, 3));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(tItem, 1, 4));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(tItem, 1, 5));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(tItem, 1, 6));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Marble, new ItemStack(tItem, 1, 0));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Basalt, new ItemStack(tItem, 1, 1));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Marble, new ItemStack(tItem, 1, 2));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Basalt, new ItemStack(tItem, 1, 3));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Basalt, new ItemStack(tItem, 1, 4));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Basalt, new ItemStack(tItem, 1, 5));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Basalt, new ItemStack(tItem, 1, 6));
                     }
                     if (/**(tName.equals("tile.sedimentaryStone")) ||**/ ((tName.equals("tile.igneousStone")) || (tName.equals("tile.igneousStoneBrick")) || (tName.equals("tile.igneousCobblestone")))) {
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(tItem, 1, 0));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.GraniteBlack, new ItemStack(tItem, 1, 1));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Rhyolite, new ItemStack(tItem, 1, 2));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Andesite, new ItemStack(tItem, 1, 3));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Gabbro, new ItemStack(tItem, 1, 4));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(tItem, 1, 5));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Komatiite, new ItemStack(tItem, 1, 6));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Dacite, new ItemStack(tItem, 1, 7));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.GraniteRed, new ItemStack(tItem, 1, 0));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.GraniteBlack, new ItemStack(tItem, 1, 1));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Rhyolite, new ItemStack(tItem, 1, 2));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Andesite, new ItemStack(tItem, 1, 3));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Gabbro, new ItemStack(tItem, 1, 4));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Basalt, new ItemStack(tItem, 1, 5));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Komatiite, new ItemStack(tItem, 1, 6));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Dacite, new ItemStack(tItem, 1, 7));
 
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(tItem, 1, 8));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.GraniteBlack, new ItemStack(tItem, 1, 9));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Rhyolite, new ItemStack(tItem, 1, 10));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Andesite, new ItemStack(tItem, 1, 11));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Gabbro, new ItemStack(tItem, 1, 12));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(tItem, 1, 13));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Komatiite, new ItemStack(tItem, 1, 14));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Dacite, new ItemStack(tItem, 1, 15));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.GraniteRed, new ItemStack(tItem, 1, 8));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.GraniteBlack, new ItemStack(tItem, 1, 9));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Rhyolite, new ItemStack(tItem, 1, 10));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Andesite, new ItemStack(tItem, 1, 11));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Gabbro, new ItemStack(tItem, 1, 12));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Basalt, new ItemStack(tItem, 1, 13));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Komatiite, new ItemStack(tItem, 1, 14));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Dacite, new ItemStack(tItem, 1, 15));
                     }
                     if ((tName.equals("tile.metamorphicStone")) || (tName.equals("tile.metamorphicStoneBrick")) || (tName.equals("tile.metamorphicCobblestone"))) {
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Gneiss, new ItemStack(tItem, 1, 0));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Eclogite, new ItemStack(tItem, 1, 1));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(tItem, 1, 2));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Quartzite, new ItemStack(tItem, 1, 3));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Blueschist, new ItemStack(tItem, 1, 4));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Greenschist, new ItemStack(tItem, 1, 5));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Soapstone, new ItemStack(tItem, 1, 6));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Migmatite, new ItemStack(tItem, 1, 7));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Gneiss, new ItemStack(tItem, 1, 0));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Eclogite, new ItemStack(tItem, 1, 1));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Marble, new ItemStack(tItem, 1, 2));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Quartzite, new ItemStack(tItem, 1, 3));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Blueschist, new ItemStack(tItem, 1, 4));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Greenschist, new ItemStack(tItem, 1, 5));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Soapstone, new ItemStack(tItem, 1, 6));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Migmatite, new ItemStack(tItem, 1, 7));
 
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Gneiss, new ItemStack(tItem, 1, 8));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Eclogite, new ItemStack(tItem, 1, 9));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(tItem, 1, 10));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Quartzite, new ItemStack(tItem, 1, 11));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Blueschist, new ItemStack(tItem, 1, 12));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Greenschist, new ItemStack(tItem, 1, 13));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Soapstone, new ItemStack(tItem, 1, 14));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Migmatite, new ItemStack(tItem, 1, 15));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Gneiss, new ItemStack(tItem, 1, 8));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Eclogite, new ItemStack(tItem, 1, 9));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Marble, new ItemStack(tItem, 1, 10));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Quartzite, new ItemStack(tItem, 1, 11));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Blueschist, new ItemStack(tItem, 1, 12));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Greenschist, new ItemStack(tItem, 1, 13));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Soapstone, new ItemStack(tItem, 1, 14));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Migmatite, new ItemStack(tItem, 1, 15));
                     }
                     if (tName.equals("tile.blockCosmeticSolid")) {
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Obsidian, new ItemStack(tItem, 1, 0));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.stone, Materials.Obsidian, new ItemStack(tItem, 1, 1));
-                        OreDictionaryUnifier.registerOre(OrePrefixes.block, Materials.Thaumium, new ItemStack(tItem, 1, 4));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Obsidian, new ItemStack(tItem, 1, 0));
+                        OreDictionaryUnifier.registerOre(OrePrefix.stone, Materials.Obsidian, new ItemStack(tItem, 1, 1));
+                        OreDictionaryUnifier.registerOre(OrePrefix.block, Materials.Thaumium, new ItemStack(tItem, 1, 4));
                     }
                     if (tName.equals("tile.enderchest")) {
                         OreDictionaryUnifier.registerOre(OreDictNames.enderChest, new ItemStack(tItem, 1, 32767));

@@ -4,7 +4,7 @@ package gregtech.common.items.armor;
 //import net.minecraftforge.fml.common.Loader;
 import gregtech.api.items.ItemList;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.unification.OreDictionaryUnifier;
@@ -54,15 +54,15 @@ public class ArmorCalculation {
 			for (int i = 0; i < parts.length; i++) {
 				if (parts[i] != null) {
 					ItemMaterialInfo data = OreDictionaryUnifier.getItemData(parts[i]);
-					if (data != null && (data.mPrefix == OrePrefixes.plate || data.mPrefix == OrePrefixes.plateAlloy)) {
+					if (data != null && (data.mPrefix == OrePrefix.plate || data.mPrefix == OrePrefix.plateAlloy)) {
 						// Weight
 						def[0] = def[0] + Values.INSTANCE.getValues(data.mMaterial.mMaterial).weight;
-						if (data.mPrefix == OrePrefixes.plateAlloy && data.mMaterial.mMaterial == Materials.Iridium) {
+						if (data.mPrefix == OrePrefix.plateAlloy && data.mMaterial.mMaterial == Materials.Iridium) {
 							def[0] = def[0] - 20;
 						}
 						// physicalDef
 						float tmp = Values.INSTANCE.getValues(data.mMaterial.mMaterial).physicalDef;
-						if (data.mPrefix == OrePrefixes.plateAlloy && data.mMaterial.mMaterial == Materials.Iridium) {
+						if (data.mPrefix == OrePrefix.plateAlloy && data.mMaterial.mMaterial == Materials.Iridium) {
 							tmp = 0.27f;
 						}
 						if (tmp > 0.0f) {
@@ -70,7 +70,7 @@ public class ArmorCalculation {
 						}
 						// projectileDef
 						tmp = Values.INSTANCE.getValues(data.mMaterial.mMaterial).projectileDef;
-						if (data.mPrefix == OrePrefixes.plateAlloy && data.mMaterial.mMaterial == Materials.Iridium) {
+						if (data.mPrefix == OrePrefix.plateAlloy && data.mMaterial.mMaterial == Materials.Iridium) {
 							tmp = 0.27f;
 						}
 						if (tmp > 0.0f) {
@@ -78,7 +78,7 @@ public class ArmorCalculation {
 						}
 						// fireDef
 						tmp = Values.INSTANCE.getValues(data.mMaterial.mMaterial).fireDef;
-						if (data.mPrefix == OrePrefixes.plateAlloy && data.mMaterial.mMaterial == Materials.Iridium) {
+						if (data.mPrefix == OrePrefix.plateAlloy && data.mMaterial.mMaterial == Materials.Iridium) {
 							tmp = 0.25f;
 						}
 						if (tmp > 0.0f) {
@@ -86,7 +86,7 @@ public class ArmorCalculation {
 						}
 						// magicDef
 						tmp = Values.INSTANCE.getValues(data.mMaterial.mMaterial).magicDef;
-						if (data.mPrefix == OrePrefixes.plateAlloy && data.mMaterial.mMaterial == Materials.Iridium) {
+						if (data.mPrefix == OrePrefix.plateAlloy && data.mMaterial.mMaterial == Materials.Iridium) {
 							tmp = 0.25f;
 						}
 						if (tmp > 0.0f) {
@@ -94,32 +94,32 @@ public class ArmorCalculation {
 						}
 						// explosionDef
 						tmp = Values.INSTANCE.getValues(data.mMaterial.mMaterial).explosionDef;
-						if (data.mPrefix == OrePrefixes.plateAlloy && data.mMaterial.mMaterial == Materials.Iridium) {
+						if (data.mPrefix == OrePrefix.plateAlloy && data.mMaterial.mMaterial == Materials.Iridium) {
 							tmp = 0.27f;
 						}
 						if (tmp > 0.0f) {
 							def[5] = def[5] - (tmp * def[5]);
 						}
-						if (data.mPrefix == OrePrefixes.plate && data.mMaterial.mMaterial == Materials.Rubber) {
+						if (data.mPrefix == OrePrefix.plate && data.mMaterial.mMaterial == Materials.Rubber) {
 							def[7] = def[7] + 0.25f;
 							def[9] = def[9] + 2.0f;
 						}
-						if (data.mPrefix == OrePrefixes.plate && data.mMaterial.mMaterial == Materials.Lead) {
+						if (data.mPrefix == OrePrefix.plate && data.mMaterial.mMaterial == Materials.Lead) {
 							def[6] = def[6] + 0.30f;
 						}
-						if (data.mPrefix == OrePrefixes.plate && data.mMaterial.mMaterial == Materials.Plastic) {
+						if (data.mPrefix == OrePrefix.plate && data.mMaterial.mMaterial == Materials.Plastic) {
 							def[7] = def[7] + 0.25f;
 						}
-						if (data.mPrefix == OrePrefixes.plate && data.mMaterial.mMaterial == Materials.NeodymiumMagnetic) {
+						if (data.mPrefix == OrePrefix.plate && data.mMaterial.mMaterial == Materials.NeodymiumMagnetic) {
 							def[11] = def[11] + 2.0f;
 						}
-						if (data.mPrefix == OrePrefixes.plate && data.mMaterial.mMaterial == Materials.NetherStar) {
+						if (data.mPrefix == OrePrefix.plate && data.mMaterial.mMaterial == Materials.NetherStar) {
 							def[8] = def[8] + 0.20f;
 						}
-						if (data.mPrefix == OrePrefixes.plate && data.mMaterial.mMaterial == Materials.InfusedFire) {
+						if (data.mPrefix == OrePrefix.plate && data.mMaterial.mMaterial == Materials.InfusedFire) {
 							def[10] = def[10] + 3.0f;
 						}
-						if (data.mPrefix == OrePrefixes.plate && data.mMaterial.mMaterial == Materials.InfusedEntropy) {
+						if (data.mPrefix == OrePrefix.plate && data.mMaterial.mMaterial == Materials.InfusedEntropy) {
 							def[10] = def[10] + 4.0f;
 						}
 					} else if (GT_ModHandler.isChargerItem(parts[i])) {
@@ -256,7 +256,7 @@ public class ArmorCalculation {
 							def[31] += 500;
 							break;
 						}
-					} else if (data !=null && data.mPrefix == OrePrefixes.circuit) {// processing power stuff
+					} else if (data !=null && data.mPrefix == OrePrefix.circuit) {// processing power stuff
 						if (data.mMaterial.mMaterial == Materials.Basic) {
 							def[30] += 100;
 						} else if (data.mMaterial.mMaterial == Materials.Good) {

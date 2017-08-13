@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.automation;
 
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.IMetaTileEntity;
@@ -21,7 +21,7 @@ public class GT_MetaTileEntity_TypeFilter
     public boolean bNBTAllowed = false;
     public boolean bInvertFilter = false;
     public int mRotationIndex = 0;
-    public OrePrefixes mPrefix = OrePrefixes.ore;
+    public OrePrefix mPrefix = OrePrefix.ore;
 
     public GT_MetaTileEntity_TypeFilter(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 11, "Filtering incoming Items by Type");
@@ -53,26 +53,26 @@ public class GT_MetaTileEntity_TypeFilter
 
     public void clickTypeIcon(boolean aRightClick) {
         if (getBaseMetaTileEntity().isServerSide()) {
-            for (int i = 0; i < OrePrefixes.values().length; i++) {
-                if (this.mPrefix == OrePrefixes.values()[i]) {
-                    for (this.mPrefix = null; this.mPrefix == null; this.mPrefix = OrePrefixes.values()[i]) {
+            for (int i = 0; i < OrePrefix.values().length; i++) {
+                if (this.mPrefix == OrePrefix.values()[i]) {
+                    for (this.mPrefix = null; this.mPrefix == null; this.mPrefix = OrePrefix.values()[i]) {
                         if (aRightClick) {
                             do {
                                 i--;
                                 if (i < 0) {
-                                    i = OrePrefixes.values().length - 1;
+                                    i = OrePrefix.values().length - 1;
                                 }
-                            } while (OrePrefixes.values()[i].mPrefixedItems.isEmpty());
+                            } while (OrePrefix.values()[i].mPrefixedItems.isEmpty());
                         } else {
                             do {
                                 i++;
-                                if (i >= OrePrefixes.values().length) {
+                                if (i >= OrePrefix.values().length) {
                                     i = 0;
                                 }
-                            } while (OrePrefixes.values()[i].mPrefixedItems.isEmpty());
+                            } while (OrePrefix.values()[i].mPrefixedItems.isEmpty());
                         }
-                        if (!OrePrefixes.values()[i].mPrefixedItems.isEmpty() && OrePrefixes.values()[i].mPrefixInto == OrePrefixes.values()[i])
-                            mPrefix = OrePrefixes.values()[i];
+                        if (!OrePrefix.values()[i].mPrefixedItems.isEmpty() && OrePrefix.values()[i].mPrefixInto == OrePrefix.values()[i])
+                            mPrefix = OrePrefix.values()[i];
                     }
                 }
             }
@@ -104,30 +104,30 @@ public class GT_MetaTileEntity_TypeFilter
 
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        this.mPrefix = OrePrefixes.getPrefix(aNBT.getString("mPrefix"), this.mPrefix);
+        this.mPrefix = OrePrefix.getPrefix(aNBT.getString("mPrefix"), this.mPrefix);
         this.bInvertFilter = aNBT.getBoolean("bInvertFilter");
         this.bNBTAllowed = aNBT.getBoolean("bNBTAllowed");
     }
 
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         boolean tAllowPrefix = this.mPrefix.contains(aStack);
-        if (this.mPrefix == OrePrefixes.ore) {
+        if (this.mPrefix == OrePrefix.ore) {
             ItemMaterialInfo tData = OreDictionaryUnifier.getItemData(aStack);
             if (tData != null && tData.mPrefix != null) {
-                OrePrefixes tFix = tData.mPrefix;
-                if (tFix == OrePrefixes.oreBlackgranite ||
-                        tFix == OrePrefixes.oreDense ||
-                        tFix == OrePrefixes.oreEnd ||
-                        tFix == OrePrefixes.oreEndstone ||
-                        tFix == OrePrefixes.oreNether ||
-                        tFix == OrePrefixes.oreNetherrack ||
-                        tFix == OrePrefixes.oreNormal ||
-                        tFix == OrePrefixes.orePoor ||
-                        tFix == OrePrefixes.oreRedgranite ||
-                        tFix == OrePrefixes.oreRich ||
-                        tFix == OrePrefixes.oreSmall ||
-                        tFix == OrePrefixes.oreBasalt ||
-                        tFix == OrePrefixes.oreMarble) tAllowPrefix = true;
+                OrePrefix tFix = tData.mPrefix;
+                if (tFix == OrePrefix.oreBlackgranite ||
+                        tFix == OrePrefix.oreDense ||
+                        tFix == OrePrefix.oreEnd ||
+                        tFix == OrePrefix.oreEndstone ||
+                        tFix == OrePrefix.oreNether ||
+                        tFix == OrePrefix.oreNetherrack ||
+                        tFix == OrePrefix.oreNormal ||
+                        tFix == OrePrefix.orePoor ||
+                        tFix == OrePrefix.oreRedgranite ||
+                        tFix == OrePrefix.oreRich ||
+                        tFix == OrePrefix.oreSmall ||
+                        tFix == OrePrefix.oreBasalt ||
+                        tFix == OrePrefix.oreMarble) tAllowPrefix = true;
             }
         }
         return (super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack)) && ((this.bNBTAllowed) || (!aStack.hasTagCompound())) && (tAllowPrefix != this.bInvertFilter);

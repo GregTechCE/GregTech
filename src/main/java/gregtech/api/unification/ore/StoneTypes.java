@@ -14,25 +14,25 @@ import net.minecraft.util.IStringSerializable;
 public enum StoneTypes implements IStringSerializable {
 
     //vanilla ones
-    STONE("stone", OrePrefixes.ore, Materials.Stone),
-    NETHERRACK("netherrack", OrePrefixes.oreNetherrack, Materials.Netherrack),
-    ENDSTONE("endstone", OrePrefixes.oreEndstone, Materials.Endstone),
+    STONE("stone", OrePrefix.ore, Materials.Stone),
+    NETHERRACK("netherrack", OrePrefix.oreNetherrack, Materials.Netherrack),
+    ENDSTONE("endstone", OrePrefix.oreEndstone, Materials.Endstone),
 
     //gt ones
-    BLACK_GRANITE("black_granite", OrePrefixes.oreBlackgranite, Materials.GraniteBlack),
-    RED_GRANITE("red_granite", OrePrefixes.oreRedgranite, Materials.GraniteRed),
-    MARBLE("marble", OrePrefixes.oreMarble, Materials.Marble),
-    BASALT("basalt", OrePrefixes.oreBasalt, Materials.Basalt);
+    BLACK_GRANITE("black_granite", OrePrefix.oreBlackgranite, Materials.GraniteBlack),
+    RED_GRANITE("red_granite", OrePrefix.oreRedgranite, Materials.GraniteRed),
+    MARBLE("marble", OrePrefix.oreMarble, Materials.Marble),
+    BASALT("basalt", OrePrefix.oreBasalt, Materials.Basalt);
 
 
     public final int id = ordinal();
     public final String name;
-    public final OrePrefixes processingPrefix;
+    public final OrePrefix processingPrefix;
     public final Material stoneMaterial;
 
     public static final StoneTypes[] TYPES = values();
 
-    StoneTypes(String name, OrePrefixes processingPrefix, Material stoneMaterial) {
+    StoneTypes(String name, OrePrefix processingPrefix, Material stoneMaterial) {
         this.name = name;
         this.processingPrefix = processingPrefix;
         this.stoneMaterial = stoneMaterial;

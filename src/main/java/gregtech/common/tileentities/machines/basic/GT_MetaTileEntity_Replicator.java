@@ -5,7 +5,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.unification.Element;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.items.ItemList;
@@ -46,8 +46,8 @@ public class GT_MetaTileEntity_Replicator
                 if ((tFluid.amount >= tMass) && (tMass > 0L)) {
                     this.mEUt = ((int) GT_Values.V[this.mTier]);
                     this.mMaxProgresstime = ((int) (tMass * 512L / (1 << this.mTier - 1)));
-                    if ((this.mOutputItems[0] = OreDictionaryUnifier.get(OrePrefixes.dust, tMaterial, 1L)) == null) {
-                        if ((this.mOutputItems[0] = OreDictionaryUnifier.get(OrePrefixes.cell, tMaterial, 1L)) != null) {
+                    if ((this.mOutputItems[0] = OreDictionaryUnifier.get(OrePrefix.dust, tMaterial, 1L)) == null) {
+                        if ((this.mOutputItems[0] = OreDictionaryUnifier.get(OrePrefix.cell, tMaterial, 1L)) != null) {
                             if ((this.mOutputFluid = GT_Utility.getFluidForFilledItem(this.mOutputItems[0], true)) == null) {
                                 if (ItemList.Cell_Empty.isStackEqual(getInputAt(0))) {
                                     if (canOutput(new ItemStack[]{this.mOutputItems[0]})) {

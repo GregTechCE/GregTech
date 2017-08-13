@@ -9,7 +9,7 @@ import gregtech.api.items.ToolDictNames;
 import gregtech.api.unification.Dyes;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.metatileentity.IMetaTileEntity;
@@ -374,8 +374,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         ItemList.Food_Poisonous_Potato.set(new ItemStack(Items.POISONOUS_POTATO, 1, 0));
 
 
-        OrePrefixes.bottle.mContainerItem = ItemList.Bottle_Empty.get(1);
-        OrePrefixes.bucket.mContainerItem = new ItemStack(Items.BUCKET, 1);
+        OrePrefix.bottle.mContainerItem = ItemList.Bottle_Empty.get(1);
+        OrePrefix.bucket.mContainerItem = new ItemStack(Items.BUCKET, 1);
 
         GregTech_API.sFrostHazmatList.add(ItemName.hazmat_helmet.getItemStack());
         GregTech_API.sFrostHazmatList.add(ItemName.hazmat_chestplate.getItemStack());
@@ -514,228 +514,228 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial)) {
                 /*if (!aMaterial.contains(SubTag.NO_SMASHING)) {
                     if (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.hammerplating, aMaterial.toString(), true)) {
-                        GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.plate, aMaterial, 1), tBits, new Object[]{"h", "X", "X",
-                                Character.valueOf('X'), OrePrefixes.ingot.get(aMaterial)});
-                        GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.plate, aMaterial, 1), tBits,
-                                new Object[]{"h", "X", Character.valueOf('X'), OrePrefixes.gem.get(aMaterial)});
-                        GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.plate, aMaterial, 1), tBits,
+                        GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, aMaterial, 1), tBits, new Object[]{"h", "X", "X",
+                                Character.valueOf('X'), OrePrefix.ingot.get(aMaterial)});
+                        GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, aMaterial, 1), tBits,
+                                new Object[]{"h", "X", Character.valueOf('X'), OrePrefix.gem.get(aMaterial)});
+                        GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, aMaterial, 1), tBits,
                                 new Object[]{"H", "X", Character.valueOf('H'), ToolDictNames.craftingToolForgeHammer, Character.valueOf('X'),
-                                        OrePrefixes.ingot.get(aMaterial)});
+                                        OrePrefix.ingot.get(aMaterial)});
                         GT_ModHandler.addCraftingRecipe(
-                                OreDictionaryUnifier.get(OrePrefixes.plate, aMaterial, 1),
+                                OreDictionaryUnifier.get(OrePrefix.plate, aMaterial, 1),
                                 tBits,
                                 new Object[]{"H", "X", Character.valueOf('H'), ToolDictNames.craftingToolForgeHammer, Character.valueOf('X'),
-                                        OrePrefixes.gem.get(aMaterial)});
-                        GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.plate, aMaterial, 1), tBits,
-                                new Object[]{"h", "X", Character.valueOf('X'), OrePrefixes.ingotDouble.get(aMaterial)});
-                        GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.plate, aMaterial, 2L), tBits,
+                                        OrePrefix.gem.get(aMaterial)});
+                        GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, aMaterial, 1), tBits,
+                                new Object[]{"h", "X", Character.valueOf('X'), OrePrefix.ingotDouble.get(aMaterial)});
+                        GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, aMaterial, 2L), tBits,
                                 new Object[]{"H", "X", Character.valueOf('H'), ToolDictNames.craftingToolForgeHammer, Character.valueOf('X'),
-                                        OrePrefixes.ingotDouble.get(aMaterial)});
+                                        OrePrefix.ingotDouble.get(aMaterial)});
                     }
                     if (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.hammermultiingot, aMaterial.toString(), true)) {
-                        GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.ingotDouble, aMaterial, 1), tBits, new Object[]{"I", "I", "h",
-                                Character.valueOf('I'), OrePrefixes.ingot.get(aMaterial)});
-                        GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.ingotTriple, aMaterial, 1), tBits, new Object[]{"I", "B", "h",
-                                Character.valueOf('I'), OrePrefixes.ingotDouble.get(aMaterial), Character.valueOf('B'), OrePrefixes.ingot.get(aMaterial)});
+                        GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.ingotDouble, aMaterial, 1), tBits, new Object[]{"I", "I", "h",
+                                Character.valueOf('I'), OrePrefix.ingot.get(aMaterial)});
+                        GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.ingotTriple, aMaterial, 1), tBits, new Object[]{"I", "B", "h",
+                                Character.valueOf('I'), OrePrefix.ingotDouble.get(aMaterial), Character.valueOf('B'), OrePrefix.ingot.get(aMaterial)});
                         GT_ModHandler
-                                .addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.ingotQuadruple, aMaterial, 1), tBits,
-                                        new Object[]{"I", "B", "h", Character.valueOf('I'), OrePrefixes.ingotTriple.get(aMaterial), Character.valueOf('B'),
-                                                OrePrefixes.ingot.get(aMaterial)});
-                        GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.ingotQuintuple, aMaterial, 1), tBits,
-                                new Object[]{"I", "B", "h", Character.valueOf('I'), OrePrefixes.ingotQuadruple.get(aMaterial), Character.valueOf('B'),
-                                        OrePrefixes.ingot.get(aMaterial)});
+                                .addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.ingotQuadruple, aMaterial, 1), tBits,
+                                        new Object[]{"I", "B", "h", Character.valueOf('I'), OrePrefix.ingotTriple.get(aMaterial), Character.valueOf('B'),
+                                                OrePrefix.ingot.get(aMaterial)});
+                        GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.ingotQuintuple, aMaterial, 1), tBits,
+                                new Object[]{"I", "B", "h", Character.valueOf('I'), OrePrefix.ingotQuadruple.get(aMaterial), Character.valueOf('B'),
+                                        OrePrefix.ingot.get(aMaterial)});
                     }
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.toolHeadAxe, aMaterial, 1), tBits, new Object[]{"PIh", "P  ",
-                            "f  ", Character.valueOf('P'), OrePrefixes.plate.get(aMaterial), Character.valueOf('I'), OrePrefixes.ingot.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.toolHeadHammer, aMaterial, 1), tBits, new Object[]{"II ", "IIh",
-                            "II ", Character.valueOf('P'), OrePrefixes.plate.get(aMaterial), Character.valueOf('I'), OrePrefixes.ingot.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.toolHeadHoe, aMaterial, 1), tBits, new Object[]{"PIh", "f  ",
-                            Character.valueOf('P'), OrePrefixes.plate.get(aMaterial), Character.valueOf('I'), OrePrefixes.ingot.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.toolHeadPickaxe, aMaterial, 1), tBits, new Object[]{"PII", "f h",
-                            Character.valueOf('P'), OrePrefixes.plate.get(aMaterial), Character.valueOf('I'), OrePrefixes.ingot.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.toolHeadPlow, aMaterial, 1), tBits, new Object[]{"PP", "PP", "hf",
-                            Character.valueOf('P'), OrePrefixes.plate.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.toolHeadSaw, aMaterial, 1), tBits, new Object[]{"PP ", "fh ",
-                            Character.valueOf('P'), OrePrefixes.plate.get(aMaterial), Character.valueOf('I'), OrePrefixes.ingot.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.toolHeadSense, aMaterial, 1), tBits, new Object[]{"PPI", "hf ",
-                            Character.valueOf('P'), OrePrefixes.plate.get(aMaterial), Character.valueOf('I'), OrePrefixes.ingot.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadAxe, aMaterial, 1), tBits, new Object[]{"PIh", "P  ",
+                            "f  ", Character.valueOf('P'), OrePrefix.plate.get(aMaterial), Character.valueOf('I'), OrePrefix.ingot.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadHammer, aMaterial, 1), tBits, new Object[]{"II ", "IIh",
+                            "II ", Character.valueOf('P'), OrePrefix.plate.get(aMaterial), Character.valueOf('I'), OrePrefix.ingot.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadHoe, aMaterial, 1), tBits, new Object[]{"PIh", "f  ",
+                            Character.valueOf('P'), OrePrefix.plate.get(aMaterial), Character.valueOf('I'), OrePrefix.ingot.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadPickaxe, aMaterial, 1), tBits, new Object[]{"PII", "f h",
+                            Character.valueOf('P'), OrePrefix.plate.get(aMaterial), Character.valueOf('I'), OrePrefix.ingot.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadPlow, aMaterial, 1), tBits, new Object[]{"PP", "PP", "hf",
+                            Character.valueOf('P'), OrePrefix.plate.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadSaw, aMaterial, 1), tBits, new Object[]{"PP ", "fh ",
+                            Character.valueOf('P'), OrePrefix.plate.get(aMaterial), Character.valueOf('I'), OrePrefix.ingot.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadSense, aMaterial, 1), tBits, new Object[]{"PPI", "hf ",
+                            Character.valueOf('P'), OrePrefix.plate.get(aMaterial), Character.valueOf('I'), OrePrefix.ingot.get(aMaterial)});
                     GT_ModHandler.addCraftingRecipe(
-                            OreDictionaryUnifier.get(OrePrefixes.toolHeadShovel, aMaterial, 1),
+                            OreDictionaryUnifier.get(OrePrefix.toolHeadShovel, aMaterial, 1),
                             tBits,
-                            new Object[]{"fPh", 'P', OrePrefixes.plate.get(aMaterial), 'I',
-                                    OrePrefixes.ingot.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.toolHeadSword, aMaterial, 1), tBits, new Object[]{" P ", "fPh",
-                            'P', OrePrefixes.plate.get(aMaterial), 'I', OrePrefixes.ingot.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.ring, aMaterial, 1), tBits,
-                            new Object[]{"h ", " X", 'X', OrePrefixes.stick.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.stickLong, aMaterial, 1), tBits,
-                            new Object[]{"ShS", 'S', OrePrefixes.stick.get(aMaterial)});
+                            new Object[]{"fPh", 'P', OrePrefix.plate.get(aMaterial), 'I',
+                                    OrePrefix.ingot.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadSword, aMaterial, 1), tBits, new Object[]{" P ", "fPh",
+                            'P', OrePrefix.plate.get(aMaterial), 'I', OrePrefix.ingot.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.ring, aMaterial, 1), tBits,
+                            new Object[]{"h ", " X", 'X', OrePrefix.stick.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.stickLong, aMaterial, 1), tBits,
+                            new Object[]{"ShS", 'S', OrePrefix.stick.get(aMaterial)});
                 }*/
                 /*if (!aMaterial.contains(SubTag.NO_WORKING)) {
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.stick, aMaterial, 2L), tBits,
-                            new Object[]{"s", "X", Character.valueOf('X'), OrePrefixes.stickLong.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.stick, aMaterial, 1), tBits,
-                            new Object[]{"f ", " X", Character.valueOf('X'), OrePrefixes.ingot.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.bolt, aMaterial, 2L), tBits,
-                            new Object[]{"s ", " X", Character.valueOf('X'), OrePrefixes.stick.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.screw, aMaterial, 1), tBits,
-                            new Object[]{"fX", "X ", Character.valueOf('X'), OrePrefixes.bolt.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.round, aMaterial, 1), tBits,
-                            new Object[]{"fX", "X ", Character.valueOf('X'), OrePrefixes.nugget.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.rotor, aMaterial, 1), tBits, new Object[]{"PhP", "SRf", "PdP",
-                            Character.valueOf('P'), aMaterial == Materials.Wood ? OrePrefixes.plank.get(aMaterial) : OrePrefixes.plate.get(aMaterial),
-                            Character.valueOf('R'), OrePrefixes.ring.get(aMaterial), Character.valueOf('S'), OrePrefixes.screw.get(aMaterial)});
-                    GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefixes.plate, aMaterial, 4L), OreDictionaryUnifier.get(OrePrefixes.ring, aMaterial, 1), Materials.Tin.getMolten(32), OreDictionaryUnifier.get(OrePrefixes.rotor, aMaterial, 1), 240, 24);
-                    GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefixes.plate, aMaterial, 4L), OreDictionaryUnifier.get(OrePrefixes.ring, aMaterial, 1), Materials.Lead.getMolten(48), OreDictionaryUnifier.get(OrePrefixes.rotor, aMaterial, 1), 240, 24);
-                    GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefixes.plate, aMaterial, 4L), OreDictionaryUnifier.get(OrePrefixes.ring, aMaterial, 1), Materials.SolderingAlloy.getMolten(16), OreDictionaryUnifier.get(OrePrefixes.rotor, aMaterial, 1), 240, 24);
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.stickLong, aMaterial, 1), tBits,
-                            new Object[]{"sf", "G ", Character.valueOf('G'), OrePrefixes.gemFlawless.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.stickLong, aMaterial, 2L), tBits,
-                            new Object[]{"sf", "G ", Character.valueOf('G'), OrePrefixes.gemExquisite.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.wireGt01, aMaterial, 1), tBits,
-                            new Object[]{"Xx", Character.valueOf('X'), OrePrefixes.plate.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.wireFine, aMaterial, 1), tBits,
-                            new Object[]{"Xx", Character.valueOf('X'), OrePrefixes.foil.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.stick, aMaterial, 2L), tBits,
+                            new Object[]{"s", "X", Character.valueOf('X'), OrePrefix.stickLong.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.stick, aMaterial, 1), tBits,
+                            new Object[]{"f ", " X", Character.valueOf('X'), OrePrefix.ingot.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.bolt, aMaterial, 2L), tBits,
+                            new Object[]{"s ", " X", Character.valueOf('X'), OrePrefix.stick.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.screw, aMaterial, 1), tBits,
+                            new Object[]{"fX", "X ", Character.valueOf('X'), OrePrefix.bolt.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.round, aMaterial, 1), tBits,
+                            new Object[]{"fX", "X ", Character.valueOf('X'), OrePrefix.nugget.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.rotor, aMaterial, 1), tBits, new Object[]{"PhP", "SRf", "PdP",
+                            Character.valueOf('P'), aMaterial == Materials.Wood ? OrePrefix.plank.get(aMaterial) : OrePrefix.plate.get(aMaterial),
+                            Character.valueOf('R'), OrePrefix.ring.get(aMaterial), Character.valueOf('S'), OrePrefix.screw.get(aMaterial)});
+                    GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.plate, aMaterial, 4L), OreDictionaryUnifier.get(OrePrefix.ring, aMaterial, 1), Materials.Tin.getMolten(32), OreDictionaryUnifier.get(OrePrefix.rotor, aMaterial, 1), 240, 24);
+                    GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.plate, aMaterial, 4L), OreDictionaryUnifier.get(OrePrefix.ring, aMaterial, 1), Materials.Lead.getMolten(48), OreDictionaryUnifier.get(OrePrefix.rotor, aMaterial, 1), 240, 24);
+                    GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.plate, aMaterial, 4L), OreDictionaryUnifier.get(OrePrefix.ring, aMaterial, 1), Materials.SolderingAlloy.getMolten(16), OreDictionaryUnifier.get(OrePrefix.rotor, aMaterial, 1), 240, 24);
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.stickLong, aMaterial, 1), tBits,
+                            new Object[]{"sf", "G ", Character.valueOf('G'), OrePrefix.gemFlawless.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.stickLong, aMaterial, 2L), tBits,
+                            new Object[]{"sf", "G ", Character.valueOf('G'), OrePrefix.gemExquisite.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.wireGt01, aMaterial, 1), tBits,
+                            new Object[]{"Xx", Character.valueOf('X'), OrePrefix.plate.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.wireFine, aMaterial, 1), tBits,
+                            new Object[]{"Xx", Character.valueOf('X'), OrePrefix.foil.get(aMaterial)});
 
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.turbineBlade, aMaterial, 1), tBits, new Object[]{"fPd", "SPS", " P ",
-                            Character.valueOf('P'), aMaterial == Materials.Wood ? OrePrefixes.plank.get(aMaterial) : OrePrefixes.plateDouble.get(aMaterial),
-                            Character.valueOf('R'), OrePrefixes.ring.get(aMaterial), Character.valueOf('S'), OrePrefixes.screw.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.turbineBlade, aMaterial, 1), tBits, new Object[]{"fPd", "SPS", " P ",
+                            Character.valueOf('P'), aMaterial == Materials.Wood ? OrePrefix.plank.get(aMaterial) : OrePrefix.plateDouble.get(aMaterial),
+                            Character.valueOf('R'), OrePrefix.ring.get(aMaterial), Character.valueOf('S'), OrePrefix.screw.get(aMaterial)});
 
 
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.arrowGtWood, aMaterial, 1), tBits, new Object[]{"  A", " S ",
-                            "F  ", Character.valueOf('S'), OrePrefixes.stick.get(Materials.Wood), Character.valueOf('F'), OreDictNames.craftingFeather,
-                            Character.valueOf('A'), OrePrefixes.toolHeadArrow.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.arrowGtPlastic, aMaterial, 1), tBits, new Object[]{"  A", " S ",
-                            "F  ", Character.valueOf('S'), OrePrefixes.stick.get(Materials.Plastic), Character.valueOf('F'), OreDictNames.craftingFeather,
-                            Character.valueOf('A'), OrePrefixes.toolHeadArrow.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.toolHeadArrow, aMaterial, 1), tBits,
-                            new Object[]{"Xf", Character.valueOf('X'), OrePrefixes.gemChipped.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.toolHeadArrow, aMaterial, 3L), tBits,
-                            new Object[]{(aMaterial.contains(SubTag.WOOD) ? 115 : 'x') + "Pf", Character.valueOf('P'), OrePrefixes.plate.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.toolHeadAxe, aMaterial, 1), tBits, new Object[]{"GG ", "G  ",
-                            "f  ", Character.valueOf('G'), OrePrefixes.gem.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.toolHeadHoe, aMaterial, 1), tBits, new Object[]{"GG ", "f  ",
-                            "   ", Character.valueOf('G'), OrePrefixes.gem.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.toolHeadPickaxe, aMaterial, 1), tBits, new Object[]{"GGG", "f  ",
-                            Character.valueOf('G'), OrePrefixes.gem.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.toolHeadPlow, aMaterial, 1), tBits, new Object[]{"GG", "GG", " f",
-                            Character.valueOf('G'), OrePrefixes.gem.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.toolHeadSaw, aMaterial, 1), tBits,
-                            new Object[]{"GGf", Character.valueOf('G'), OrePrefixes.gem.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.toolHeadSense, aMaterial, 1), tBits, new Object[]{"GGG", " f ",
-                            "   ", Character.valueOf('G'), OrePrefixes.gem.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.toolHeadShovel, aMaterial, 1), tBits,
-                            new Object[]{"fG", Character.valueOf('G'), OrePrefixes.gem.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.toolHeadSword, aMaterial, 1), tBits, new Object[]{" G", "fG",
-                            Character.valueOf('G'), OrePrefixes.gem.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.toolHeadUniversalSpade, aMaterial, 1), tBits, new Object[]{"fX",
-                            Character.valueOf('X'), OrePrefixes.toolHeadShovel.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.arrowGtWood, aMaterial, 1), tBits, new Object[]{"  A", " S ",
+                            "F  ", Character.valueOf('S'), OrePrefix.stick.get(Materials.Wood), Character.valueOf('F'), OreDictNames.craftingFeather,
+                            Character.valueOf('A'), OrePrefix.toolHeadArrow.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.arrowGtPlastic, aMaterial, 1), tBits, new Object[]{"  A", " S ",
+                            "F  ", Character.valueOf('S'), OrePrefix.stick.get(Materials.Plastic), Character.valueOf('F'), OreDictNames.craftingFeather,
+                            Character.valueOf('A'), OrePrefix.toolHeadArrow.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadArrow, aMaterial, 1), tBits,
+                            new Object[]{"Xf", Character.valueOf('X'), OrePrefix.gemChipped.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadArrow, aMaterial, 3L), tBits,
+                            new Object[]{(aMaterial.contains(SubTag.WOOD) ? 115 : 'x') + "Pf", Character.valueOf('P'), OrePrefix.plate.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadAxe, aMaterial, 1), tBits, new Object[]{"GG ", "G  ",
+                            "f  ", Character.valueOf('G'), OrePrefix.gem.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadHoe, aMaterial, 1), tBits, new Object[]{"GG ", "f  ",
+                            "   ", Character.valueOf('G'), OrePrefix.gem.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadPickaxe, aMaterial, 1), tBits, new Object[]{"GGG", "f  ",
+                            Character.valueOf('G'), OrePrefix.gem.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadPlow, aMaterial, 1), tBits, new Object[]{"GG", "GG", " f",
+                            Character.valueOf('G'), OrePrefix.gem.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadSaw, aMaterial, 1), tBits,
+                            new Object[]{"GGf", Character.valueOf('G'), OrePrefix.gem.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadSense, aMaterial, 1), tBits, new Object[]{"GGG", " f ",
+                            "   ", Character.valueOf('G'), OrePrefix.gem.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadShovel, aMaterial, 1), tBits,
+                            new Object[]{"fG", Character.valueOf('G'), OrePrefix.gem.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadSword, aMaterial, 1), tBits, new Object[]{" G", "fG",
+                            Character.valueOf('G'), OrePrefix.gem.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadUniversalSpade, aMaterial, 1), tBits, new Object[]{"fX",
+                            Character.valueOf('X'), OrePrefix.toolHeadShovel.get(aMaterial)});
 
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.toolHeadBuzzSaw, aMaterial, 1), tBits, new Object[]{"wXh", "X X",
-                            "fXx", Character.valueOf('X'), OrePrefixes.plate.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.toolHeadWrench, aMaterial, 1), tBits, new Object[]{"hXW", "XRX",
-                            "WXd", Character.valueOf('X'), OrePrefixes.plate.get(aMaterial), Character.valueOf('S'), OrePrefixes.plate.get(Materials.Steel),
-                            Character.valueOf('R'), OrePrefixes.ring.get(Materials.Steel), Character.valueOf('W'), OrePrefixes.screw.get(Materials.Steel)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.toolHeadChainsaw, aMaterial, 1), tBits, new Object[]{"SRS", "XhX",
-                            "SRS", Character.valueOf('X'), OrePrefixes.plate.get(aMaterial), Character.valueOf('S'), OrePrefixes.plate.get(Materials.Steel),
-                            Character.valueOf('R'), OrePrefixes.ring.get(Materials.Steel)});
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.toolHeadDrill, aMaterial, 1), tBits, new Object[]{"XSX", "XSX",
-                            "ShS", Character.valueOf('X'), OrePrefixes.plate.get(aMaterial), Character.valueOf('S'), OrePrefixes.plate.get(Materials.Steel)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadBuzzSaw, aMaterial, 1), tBits, new Object[]{"wXh", "X X",
+                            "fXx", Character.valueOf('X'), OrePrefix.plate.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadWrench, aMaterial, 1), tBits, new Object[]{"hXW", "XRX",
+                            "WXd", Character.valueOf('X'), OrePrefix.plate.get(aMaterial), Character.valueOf('S'), OrePrefix.plate.get(Materials.Steel),
+                            Character.valueOf('R'), OrePrefix.ring.get(Materials.Steel), Character.valueOf('W'), OrePrefix.screw.get(Materials.Steel)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadChainsaw, aMaterial, 1), tBits, new Object[]{"SRS", "XhX",
+                            "SRS", Character.valueOf('X'), OrePrefix.plate.get(aMaterial), Character.valueOf('S'), OrePrefix.plate.get(Materials.Steel),
+                            Character.valueOf('R'), OrePrefix.ring.get(Materials.Steel)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadDrill, aMaterial, 1), tBits, new Object[]{"XSX", "XSX",
+                            "ShS", Character.valueOf('X'), OrePrefix.plate.get(aMaterial), Character.valueOf('S'), OrePrefix.plate.get(Materials.Steel)});
                     switch (aMaterial.mName) {
                         case "Wood":
-                            GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.gearGtSmall, aMaterial, 1), tBits, new Object[]{"P ", " s",
-                                    Character.valueOf('P'), OrePrefixes.plank.get(aMaterial)});
+                            GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gearGtSmall, aMaterial, 1), tBits, new Object[]{"P ", " s",
+                                    Character.valueOf('P'), OrePrefix.plank.get(aMaterial)});
                             break;
                         case "Stone":
-                            GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.gearGtSmall, aMaterial, 1), tBits, new Object[]{"P ", " f",
-                                    Character.valueOf('P'), OrePrefixes.stoneSmooth});
+                            GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gearGtSmall, aMaterial, 1), tBits, new Object[]{"P ", " f",
+                                    Character.valueOf('P'), OrePrefix.stoneSmooth});
                             break;
                         default:
-                            GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.gearGtSmall, aMaterial, 1), tBits,
-                                    new Object[]{"P ", aMaterial.contains(SubTag.WOOD) ? " s" : " h", Character.valueOf('P'), OrePrefixes.plate.get(aMaterial)});
+                            GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gearGtSmall, aMaterial, 1), tBits,
+                                    new Object[]{"P ", aMaterial.contains(SubTag.WOOD) ? " s" : " h", Character.valueOf('P'), OrePrefix.plate.get(aMaterial)});
                     }
                     switch (aMaterial.mName) {
                         case "Wood":
-                            GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.gearGt, aMaterial, 1), tBits, new Object[]{"SPS", "PsP", "SPS",
-                                    Character.valueOf('P'), OrePrefixes.plank.get(aMaterial), Character.valueOf('S'), OrePrefixes.stick.get(aMaterial)});
+                            GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gearGt, aMaterial, 1), tBits, new Object[]{"SPS", "PsP", "SPS",
+                                    Character.valueOf('P'), OrePrefix.plank.get(aMaterial), Character.valueOf('S'), OrePrefix.stick.get(aMaterial)});
                             break;
                         case "Stone":
-                            GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.gearGt, aMaterial, 1), tBits, new Object[]{"SPS", "PfP", "SPS",
-                                    Character.valueOf('P'), OrePrefixes.stoneSmooth, Character.valueOf('S'), new ItemStack(Blocks.STONE_BUTTON, 1, 32767)});
+                            GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gearGt, aMaterial, 1), tBits, new Object[]{"SPS", "PfP", "SPS",
+                                    Character.valueOf('P'), OrePrefix.stoneSmooth, Character.valueOf('S'), new ItemStack(Blocks.STONE_BUTTON, 1, 32767)});
                             break;
                         default:
-                            GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.gearGt, aMaterial, 1), tBits, new Object[]{"SPS", "PwP", "SPS",
-                                    Character.valueOf('P'), OrePrefixes.plate.get(aMaterial), Character.valueOf('S'), OrePrefixes.stick.get(aMaterial)});
+                            GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gearGt, aMaterial, 1), tBits, new Object[]{"SPS", "PwP", "SPS",
+                                    Character.valueOf('P'), OrePrefix.plate.get(aMaterial), Character.valueOf('S'), OrePrefix.stick.get(aMaterial)});
                     }
                 }*/
                 /*if (aMaterial.contains(SubTag.SMELTING_TO_GEM)) {
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.gem, aMaterial, 1), tBits, new Object[]{"XXX", "XXX", "XXX",
-                            Character.valueOf('X'), OrePrefixes.nugget.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gem, aMaterial, 1), tBits, new Object[]{"XXX", "XXX", "XXX",
+                            Character.valueOf('X'), OrePrefix.nugget.get(aMaterial)});
                 } else {
-                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.ingot, aMaterial, 1), tBits, new Object[]{"XXX", "XXX", "XXX",
-                            Character.valueOf('X'), OrePrefixes.nugget.get(aMaterial)});
+                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.ingot, aMaterial, 1), tBits, new Object[]{"XXX", "XXX", "XXX",
+                            Character.valueOf('X'), OrePrefix.nugget.get(aMaterial)});
                 }*/
-                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
-                        'X', OrePrefixes.crushedCentrifuged.get(aMaterial)});
-                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
-                        'X', OrePrefixes.crystalline.get(aMaterial)});
-                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
-                        'X', OrePrefixes.crystal.get(aMaterial)});
-                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.dustPure, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
-                        'X', OrePrefixes.crushedPurified.get(aMaterial)});
-                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.dustPure, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
-                        'X', OrePrefixes.cleanGravel.get(aMaterial)});
-                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.dustPure, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
-                        'X', OrePrefixes.reduced.get(aMaterial)});
-                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.dustImpure, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
-                        'X', OrePrefixes.clump.get(aMaterial)});
-                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.dustImpure, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
-                        'X', OrePrefixes.shard.get(aMaterial)});
-                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.dustImpure, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
-                        'X', OrePrefixes.crushed.get(aMaterial)});
-                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.dustImpure, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
-                        'X', OrePrefixes.dirtyGravel.get(aMaterial)});
+                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dust, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
+                        'X', OrePrefix.crushedCentrifuged.get(aMaterial)});
+                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dust, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
+                        'X', OrePrefix.crystalline.get(aMaterial)});
+                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dust, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
+                        'X', OrePrefix.crystal.get(aMaterial)});
+                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dustPure, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
+                        'X', OrePrefix.crushedPurified.get(aMaterial)});
+                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dustPure, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
+                        'X', OrePrefix.cleanGravel.get(aMaterial)});
+                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dustPure, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
+                        'X', OrePrefix.reduced.get(aMaterial)});
+                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dustImpure, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
+                        'X', OrePrefix.clump.get(aMaterial)});
+                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dustImpure, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
+                        'X', OrePrefix.shard.get(aMaterial)});
+                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dustImpure, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
+                        'X', OrePrefix.crushed.get(aMaterial)});
+                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dustImpure, aMaterial.mMacerateInto, 1), tBits, new Object[]{"h", "X",
+                        'X', OrePrefix.dirtyGravel.get(aMaterial)});
 
-                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.dustSmall, aMaterial, 4L), tBits,
-                        new Object[]{" X", "  ", 'X', OrePrefixes.dust.get(aMaterial)});
-                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.dustTiny, aMaterial, 9L), tBits,
-                        new Object[]{"X ", "  ", 'X', OrePrefixes.dust.get(aMaterial)});
-                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.dust, aMaterial, 1), tBits,
-                        new Object[]{"XX", "XX", 'X', OrePrefixes.dustSmall.get(aMaterial)});
-                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.dust, aMaterial, 1), tBits,
-                        new Object[]{"XXX", "XXX", "XXX", 'X', OrePrefixes.dustTiny.get(aMaterial)});
-//                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.dust, aMaterial, 16L), tBits, new Object[]{"Xc", Character.valueOf('X'),
-//                        OrePrefixes.crateGtDust.get(aMaterial)});
-//                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.gem, aMaterial, 16L), tBits, new Object[]{"Xc", Character.valueOf('X'),
-//                        OrePrefixes.crateGtGem.get(aMaterial)});
-//                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.ingot, aMaterial, 16L), tBits, new Object[]{"Xc",
-//                        Character.valueOf('X'), OrePrefixes.crateGtIngot.get(aMaterial)});
-//                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.plate, aMaterial, 16L), tBits, new Object[]{"Xc",
-//                        Character.valueOf('X'), OrePrefixes.crateGtPlate.get(aMaterial)});
+                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dustSmall, aMaterial, 4L), tBits,
+                        new Object[]{" X", "  ", 'X', OrePrefix.dust.get(aMaterial)});
+                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dustTiny, aMaterial, 9L), tBits,
+                        new Object[]{"X ", "  ", 'X', OrePrefix.dust.get(aMaterial)});
+                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, 1), tBits,
+                        new Object[]{"XX", "XX", 'X', OrePrefix.dustSmall.get(aMaterial)});
+                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, 1), tBits,
+                        new Object[]{"XXX", "XXX", "XXX", 'X', OrePrefix.dustTiny.get(aMaterial)});
+//                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, 16L), tBits, new Object[]{"Xc", Character.valueOf('X'),
+//                        OrePrefix.crateGtDust.get(aMaterial)});
+//                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gem, aMaterial, 16L), tBits, new Object[]{"Xc", Character.valueOf('X'),
+//                        OrePrefix.crateGtGem.get(aMaterial)});
+//                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.ingot, aMaterial, 16L), tBits, new Object[]{"Xc",
+//                        Character.valueOf('X'), OrePrefix.crateGtIngot.get(aMaterial)});
+//                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, aMaterial, 16L), tBits, new Object[]{"Xc",
+//                        Character.valueOf('X'), OrePrefix.crateGtPlate.get(aMaterial)});
 //
-//                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.gemChipped, aMaterial, 2L), tBits,
-//                        new Object[]{"h", "X", Character.valueOf('X'), OrePrefixes.gemFlawed.get(aMaterial)});
-//                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.gemFlawed, aMaterial, 2L), tBits,
-//                        new Object[]{"h", "X", Character.valueOf('X'), OrePrefixes.gem.get(aMaterial)});
-//                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.gem, aMaterial, 2L), tBits,
-//                        new Object[]{"h", "X", Character.valueOf('X'), OrePrefixes.gemFlawless.get(aMaterial)});
-//                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.gemFlawless, aMaterial, 2L), tBits,
-//                        new Object[]{"h", "X", Character.valueOf('X'), OrePrefixes.gemExquisite.get(aMaterial)});
+//                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gemChipped, aMaterial, 2L), tBits,
+//                        new Object[]{"h", "X", Character.valueOf('X'), OrePrefix.gemFlawed.get(aMaterial)});
+//                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gemFlawed, aMaterial, 2L), tBits,
+//                        new Object[]{"h", "X", Character.valueOf('X'), OrePrefix.gem.get(aMaterial)});
+//                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gem, aMaterial, 2L), tBits,
+//                        new Object[]{"h", "X", Character.valueOf('X'), OrePrefix.gemFlawless.get(aMaterial)});
+//                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gemFlawless, aMaterial, 2L), tBits,
+//                        new Object[]{"h", "X", Character.valueOf('X'), OrePrefix.gemExquisite.get(aMaterial)});
 //                if ((aMaterial.contains(SubTag.MORTAR_GRINDABLE)) && (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, aMaterial.mName, true))) {
-//                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.dustSmall, aMaterial, 1), tBits,
-//                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefixes.gemChipped.get(aMaterial)});
-//                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.dustSmall, aMaterial, 2L), tBits,
-//                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefixes.gemFlawed.get(aMaterial)});
-//                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.dust, aMaterial, 1), tBits,
-//                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefixes.gem.get(aMaterial)});
-//                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.dust, aMaterial, 2L), tBits,
-//                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefixes.gemFlawless.get(aMaterial)});
-//                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.dust, aMaterial, 4L), tBits,
-//                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefixes.gemExquisite.get(aMaterial)});
-//                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.dust, aMaterial, 1), tBits,
-//                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefixes.ingot.get(aMaterial)});
-//                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.dust, aMaterial, 1), tBits,
-//                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefixes.plate.get(aMaterial)});
+//                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dustSmall, aMaterial, 1), tBits,
+//                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefix.gemChipped.get(aMaterial)});
+//                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dustSmall, aMaterial, 2L), tBits,
+//                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefix.gemFlawed.get(aMaterial)});
+//                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, 1), tBits,
+//                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefix.gem.get(aMaterial)});
+//                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, 2L), tBits,
+//                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefix.gemFlawless.get(aMaterial)});
+//                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, 4L), tBits,
+//                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefix.gemExquisite.get(aMaterial)});
+//                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, 1), tBits,
+//                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefix.ingot.get(aMaterial)});
+//                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, 1), tBits,
+//                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefix.plate.get(aMaterial)});
 //                }
             }
         }
@@ -894,8 +894,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                     && ((((EntityArrow) aEvent.getEntity()).shootingEntity instanceof EntitySkeleton))) {
                 aEvent.getWorld().spawnEntityInWorld(new GT_Entity_Arrow(aEvent.getWorld(),
                         (EntityLivingBase) ((EntityArrow) aEvent.getEntity()).shootingEntity,
-                        OrePrefixes.arrowGtWood.mPrefixedItems
-                                .get(aEvent.getWorld().rand.nextInt(OrePrefixes.arrowGtWood.mPrefixedItems.size()))));
+                        OrePrefix.arrowGtWood.mPrefixedItems
+                                .get(aEvent.getWorld().rand.nextInt(OrePrefix.arrowGtWood.mPrefixedItems.size()))));
                 aEvent.getEntity().setDead();
             }
         }
@@ -1018,7 +1018,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                         OreDictionaryUnifier.registerOre(OreDictNames.craftingWireCopper, aEvent.getOre());
                     }
                     if (aEvent.getName().equals("itemRubber")) {
-                        OreDictionaryUnifier.registerOre(OrePrefixes.ingot, Materials.Rubber, aEvent.getOre());
+                        OreDictionaryUnifier.registerOre(OrePrefix.ingot, Materials.Rubber, aEvent.getOre());
                     }
                     return;
                 }
@@ -1038,43 +1038,43 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             } else if (aEvent.getName().equals("copperWire")) {
                 OreDictionaryUnifier.registerOre(OreDictNames.craftingWireCopper, aEvent.getOre());
             } else if (aEvent.getName().equals("oreHeeEndrium")) {
-                OreDictionaryUnifier.registerOre(OrePrefixes.ore, Materials.Endium, aEvent.getOre());
+                OreDictionaryUnifier.registerOre(OrePrefix.ore, Materials.Endium, aEvent.getOre());
             } else if (aEvent.getName().equals("sheetPlastic")) {
-                OreDictionaryUnifier.registerOre(OrePrefixes.plate, Materials.Plastic, aEvent.getOre());
+                OreDictionaryUnifier.registerOre(OrePrefix.plate, Materials.Plastic, aEvent.getOre());
             } else if (aEvent.getName().equals("shard")) {
                 if (aEvent.getName().equals("shardAir")) {
-                    OreDictionaryUnifier.registerOre(OrePrefixes.gem, Materials.InfusedAir, aEvent.getOre());
+                    OreDictionaryUnifier.registerOre(OrePrefix.gem, Materials.InfusedAir, aEvent.getOre());
                     return;
                 } else if (aEvent.getName().equals("shardWater")) {
-                    OreDictionaryUnifier.registerOre(OrePrefixes.gem, Materials.InfusedWater, aEvent.getOre());
+                    OreDictionaryUnifier.registerOre(OrePrefix.gem, Materials.InfusedWater, aEvent.getOre());
                     return;
                 } else if (aEvent.getName().equals("shardFire")) {
-                    OreDictionaryUnifier.registerOre(OrePrefixes.gem, Materials.InfusedFire, aEvent.getOre());
+                    OreDictionaryUnifier.registerOre(OrePrefix.gem, Materials.InfusedFire, aEvent.getOre());
                     return;
                 } else if (aEvent.getName().equals("shardEarth")) {
-                    OreDictionaryUnifier.registerOre(OrePrefixes.gem, Materials.InfusedEarth, aEvent.getOre());
+                    OreDictionaryUnifier.registerOre(OrePrefix.gem, Materials.InfusedEarth, aEvent.getOre());
                     return;
                 } else if (aEvent.getName().equals("shardOrder")) {
-                    OreDictionaryUnifier.registerOre(OrePrefixes.gem, Materials.InfusedOrder, aEvent.getOre());
+                    OreDictionaryUnifier.registerOre(OrePrefix.gem, Materials.InfusedOrder, aEvent.getOre());
                     return;
                 } else if (aEvent.getName().equals("shardEntropy")) {
-                    OreDictionaryUnifier.registerOre(OrePrefixes.gem, Materials.InfusedEntropy, aEvent.getOre());
+                    OreDictionaryUnifier.registerOre(OrePrefix.gem, Materials.InfusedEntropy, aEvent.getOre());
                     return;
                 }
             } else if (aEvent.getName().equals("fieryIngot")) {
-                OreDictionaryUnifier.registerOre(OrePrefixes.ingot, Materials.FierySteel, aEvent.getOre());
+                OreDictionaryUnifier.registerOre(OrePrefix.ingot, Materials.FierySteel, aEvent.getOre());
                 return;
             } else if (aEvent.getName().equals("ironwood")) {
-                OreDictionaryUnifier.registerOre(OrePrefixes.ingot, Materials.IronWood, aEvent.getOre());
+                OreDictionaryUnifier.registerOre(OrePrefix.ingot, Materials.IronWood, aEvent.getOre());
                 return;
             } else if (aEvent.getName().equals("steeleaf")) {
-                OreDictionaryUnifier.registerOre(OrePrefixes.ingot, Materials.Steeleaf, aEvent.getOre());
+                OreDictionaryUnifier.registerOre(OrePrefix.ingot, Materials.Steeleaf, aEvent.getOre());
                 return;
             } else if (aEvent.getName().equals("knightmetal")) {
-                OreDictionaryUnifier.registerOre(OrePrefixes.ingot, Materials.Knightmetal, aEvent.getOre());
+                OreDictionaryUnifier.registerOre(OrePrefix.ingot, Materials.Knightmetal, aEvent.getOre());
                 return;
             } else if (aEvent.getName().equals("compressedAluminum")) {
-                OreDictionaryUnifier.registerOre(OrePrefixes.compressed, Materials.Aluminium, aEvent.getOre());
+                OreDictionaryUnifier.registerOre(OrePrefix.compressed, Materials.Aluminium, aEvent.getOre());
                 return;
             } else if (aEvent.getName().contains(" ")) {
                 GTLog.ore.println(tModToName + " is getting re-registered because the OreDict Name containing invalid spaces.");
@@ -1086,9 +1086,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
                 return;
             }
-            OrePrefixes aPrefix = OrePrefixes.getOrePrefix(aEvent.getName());
+            OrePrefix aPrefix = OrePrefix.getOrePrefix(aEvent.getName());
             Materials aMaterial = Materials._NULL;
-            if ((aPrefix == OrePrefixes.nugget) && (aMod.equals("Thaumcraft")) && (aEvent.getOre().getItem().getUnlocalizedName().contains("ItemResource"))) {
+            if ((aPrefix == OrePrefix.nugget) && (aMod.equals("Thaumcraft")) && (aEvent.getOre().getItem().getUnlocalizedName().contains("ItemResource"))) {
                 return;
             }
             if (aPrefix == null) {
@@ -1148,7 +1148,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                                 switch (aPrefix) {
                                     case crystal:
                                         if ((aMaterial == Materials.CertusQuartz) || (aMaterial == Materials.NetherQuartz) || (aMaterial == Materials.Fluix)) {
-                                            OreDictionaryUnifier.registerOre(OrePrefixes.gem, aMaterial, aEvent.getOre());
+                                            OreDictionaryUnifier.registerOre(OrePrefix.gem, aMaterial, aEvent.getOre());
                                         }
                                         break;
                                     case gem:
@@ -1161,11 +1161,11 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                                         } else if (aMaterial == Materials.Chocolate) {
                                             OreDictionaryUnifier.registerOre(Dyes.dyeBrown, aEvent.getOre());
                                         } else if (aMaterial == Materials.CertusQuartz || aMaterial == Materials.NetherQuartz) {
-                                            OreDictionaryUnifier.registerOre(OrePrefixes.item.get(aMaterial), aEvent.getOre());
-                                            OreDictionaryUnifier.registerOre(OrePrefixes.crystal, aMaterial, aEvent.getOre());
+                                            OreDictionaryUnifier.registerOre(OrePrefix.item.get(aMaterial), aEvent.getOre());
+                                            OreDictionaryUnifier.registerOre(OrePrefix.crystal, aMaterial, aEvent.getOre());
                                             OreDictionaryUnifier.registerOre(OreDictNames.craftingQuartz, aEvent.getOre());
                                         } else if (aMaterial == Materials.Fluix || aMaterial == Materials.Quartz || aMaterial == Materials.Quartzite) {
-                                            OreDictionaryUnifier.registerOre(OrePrefixes.crystal, aMaterial, aEvent.getOre());
+                                            OreDictionaryUnifier.registerOre(OrePrefix.crystal, aMaterial, aEvent.getOre());
                                             OreDictionaryUnifier.registerOre(OreDictNames.craftingQuartz, aEvent.getOre());
                                         }
                                         break;
@@ -1187,12 +1187,12 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                                         break;
                                     case plate:
                                         if ((aMaterial == Materials.Plastic) || (aMaterial == Materials.Rubber)) {
-                                            OreDictionaryUnifier.registerOre(OrePrefixes.sheet, aMaterial, aEvent.getOre());
+                                            OreDictionaryUnifier.registerOre(OrePrefix.sheet, aMaterial, aEvent.getOre());
                                         } else if (aMaterial == Materials.Silicon) {
-                                            OreDictionaryUnifier.registerOre(OrePrefixes.item, aMaterial, aEvent.getOre());
+                                            OreDictionaryUnifier.registerOre(OrePrefix.item, aMaterial, aEvent.getOre());
                                         } else if (aMaterial == Materials.Wood) {
                                             OreDictionaryUnifier.addToBlacklist(aEvent.getOre());
-                                            OreDictionaryUnifier.registerOre(OrePrefixes.plank, aMaterial, aEvent.getOre());
+                                            OreDictionaryUnifier.registerOre(OrePrefix.plank, aMaterial, aEvent.getOre());
                                         }
                                         break;
                                     case cell:
@@ -1201,7 +1201,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                                         }
                                         break;
                                     case gearGt:
-                                        OreDictionaryUnifier.registerOre(OrePrefixes.gear, aMaterial, aEvent.getOre());
+                                        OreDictionaryUnifier.registerOre(OrePrefix.gear, aMaterial, aEvent.getOre());
                                         break;
                                     case stick:
                                         if (!GT_RecipeRegistrator.sRodMaterialList.contains(aMaterial)) {
@@ -1250,9 +1250,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                                         } else if ((aMaterial == Materials.Brass) && (aEvent.getOre().getItemDamage() == 2)
                                                 && (aEvent.getOre().getUnlocalizedName().equals("item.ingotBrass"))
                                                 && (new ItemStack(aEvent.getOre().getItem(), 1, 0).getUnlocalizedName().contains("red"))) {
-                                            OreDictionaryUnifier.set(OrePrefixes.ingot, Materials.RedAlloy, new ItemStack(aEvent.getOre().getItem(), 1, 0));
-                                            OreDictionaryUnifier.set(OrePrefixes.ingot, Materials.BlueAlloy, new ItemStack(aEvent.getOre().getItem(), 1, 1));
-                                            OreDictionaryUnifier.set(OrePrefixes.ingot, Materials.Brass, new ItemStack(aEvent.getOre().getItem(), 1, 2));
+                                            OreDictionaryUnifier.set(OrePrefix.ingot, Materials.RedAlloy, new ItemStack(aEvent.getOre().getItem(), 1, 0));
+                                            OreDictionaryUnifier.set(OrePrefix.ingot, Materials.BlueAlloy, new ItemStack(aEvent.getOre().getItem(), 1, 1));
+                                            OreDictionaryUnifier.set(OrePrefix.ingot, Materials.Brass, new ItemStack(aEvent.getOre().getItem(), 1, 2));
                                             if (!mDisableIC2Cables) {
                                                 GT_Values.RA.addWiremillRecipe(
                                                         GT_ModHandler.getIC2Item(ItemName.cable, CableType.copper, 3),
@@ -1298,7 +1298,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 switch (aPrefix) {
                     case dye:
                         if (GT_Utility.isStringValid(tName)) {
-                            OreDictionaryUnifier.registerOre(OrePrefixes.dye, aEvent.getOre());
+                            OreDictionaryUnifier.registerOre(OrePrefix.dye, aEvent.getOre());
                         }
                         break;
                     case stoneSmooth:
@@ -1319,9 +1319,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                         break;
                     case sheet:
                         if (tName.equals("Plastic")) {
-                            OreDictionaryUnifier.registerOre(OrePrefixes.plate, Materials.Plastic, aEvent.getOre());
+                            OreDictionaryUnifier.registerOre(OrePrefix.plate, Materials.Plastic, aEvent.getOre());
                         } else if (tName.equals("Rubber")) {
-                            OreDictionaryUnifier.registerOre(OrePrefixes.plate, Materials.Rubber, aEvent.getOre());
+                            OreDictionaryUnifier.registerOre(OrePrefix.plate, Materials.Rubber, aEvent.getOre());
                         }
                         break;
                     case crafting:
@@ -1330,7 +1330,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                         } else if (tName.equals("IndustrialDiamond")) {
                             OreDictionaryUnifier.addToBlacklist(aEvent.getOre());
                         } else if (tName.equals("WireCopper")) {
-                            OreDictionaryUnifier.registerOre(OrePrefixes.wire, Materials.Copper, aEvent.getOre());
+                            OreDictionaryUnifier.registerOre(OrePrefix.wire, Materials.Copper, aEvent.getOre());
                         }
                         break;
                     case wood:
@@ -1340,7 +1340,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                         break;
                     case food:
                         if (tName.equals("Cocoapowder")) {
-                            OreDictionaryUnifier.registerOre(OrePrefixes.dust, Materials.Cocoa, aEvent.getOre());
+                            OreDictionaryUnifier.registerOre(OrePrefix.dust, Materials.Cocoa, aEvent.getOre());
                         }
                         break;
                     default:
@@ -1697,7 +1697,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     public Fluid addAutogeneratedPlasmaFluid(Materials aMaterial) {
         return addFluid("plasma." + aMaterial.mName.toLowerCase(Locale.ENGLISH), "plasma.autogenerated", aMaterial.mDefaultLocalName + " Plasma", aMaterial,
-                aMaterial.mMoltenRGBa, 3, 10000, OreDictionaryUnifier.get(OrePrefixes.cellPlasma, aMaterial, 1), ItemList.Cell_Empty.get(1),
+                aMaterial.mMoltenRGBa, 3, 10000, OreDictionaryUnifier.get(OrePrefix.cellPlasma, aMaterial, 1), ItemList.Cell_Empty.get(1),
                 1000);
     }
 
@@ -1782,22 +1782,22 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 boolean chkmi = tOre.mModID != null;
                 if (chkmi) {
                     IRecipe
-                    if (tOre.mModID.equalsIgnoreCase("enderio") && tOre.mPrefix == OrePrefixes.ingot && tOre.mMaterial == Materials.DarkSteel) {
+                    if (tOre.mModID.equalsIgnoreCase("enderio") && tOre.mPrefix == OrePrefix.ingot && tOre.mMaterial == Materials.DarkSteel) {
                         OreDictionaryUnifier.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
                         OreDictionaryUnifier.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTech_API.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
-                    } else if (tOre.mModID.equalsIgnoreCase("thermalfoundation") && tOre.mPrefix == OrePrefixes.dust && tOre.mMaterial == Materials.Blizz) {
+                    } else if (tOre.mModID.equalsIgnoreCase("thermalfoundation") && tOre.mPrefix == OrePrefix.dust && tOre.mMaterial == Materials.Blizz) {
                         OreDictionaryUnifier.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
                         OreDictionaryUnifier.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTech_API.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
-                    } else if (tOre.mModID.equalsIgnoreCase("thermalfoundation") && tOre.mPrefix == OrePrefixes.dust && tOre.mMaterial == Materials.Pyrotheum) {
+                    } else if (tOre.mModID.equalsIgnoreCase("thermalfoundation") && tOre.mPrefix == OrePrefix.dust && tOre.mMaterial == Materials.Pyrotheum) {
                         OreDictionaryUnifier.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
                         OreDictionaryUnifier.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTech_API.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
-                    } else if (tOre.mModID.equalsIgnoreCase("rotarycraft") && tOre.mPrefix == OrePrefixes.ingot && tOre.mMaterial == Materials.HSLA) {
+                    } else if (tOre.mModID.equalsIgnoreCase("rotarycraft") && tOre.mPrefix == OrePrefix.ingot && tOre.mMaterial == Materials.HSLA) {
                         OreDictionaryUnifier.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
                         OreDictionaryUnifier.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTech_API.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
-                    } else if (tOre.mModID.equalsIgnoreCase("appliedenergistics2") && tOre.mPrefix == OrePrefixes.gem && tOre.mMaterial == Materials.CertusQuartz) {
+                    } else if (tOre.mModID.equalsIgnoreCase("appliedenergistics2") && tOre.mPrefix == OrePrefix.gem && tOre.mMaterial == Materials.CertusQuartz) {
                         OreDictionaryUnifier.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
                         OreDictionaryUnifier.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTech_API.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
-                    } else if (tOre.mModID.equalsIgnoreCase("appliedenergistics2") && tOre.mPrefix == OrePrefixes.dust && tOre.mMaterial == Materials.CertusQuartz) {
+                    } else if (tOre.mModID.equalsIgnoreCase("appliedenergistics2") && tOre.mPrefix == OrePrefix.dust && tOre.mMaterial == Materials.CertusQuartz) {
                         OreDictionaryUnifier.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
                         OreDictionaryUnifier.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTech_API.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
                     }
@@ -1892,11 +1892,11 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     public static class OreDictEventContainer {
         public final OreDictionary.OreRegisterEvent mEvent;
-        public final OrePrefixes mPrefix;
+        public final OrePrefix mPrefix;
         public final Materials mMaterial;
         public final String mModID;
 
-        public OreDictEventContainer(OreDictionary.OreRegisterEvent aEvent, OrePrefixes aPrefix, Materials aMaterial, String aModID) {
+        public OreDictEventContainer(OreDictionary.OreRegisterEvent aEvent, OrePrefix aPrefix, Materials aMaterial, String aModID) {
             this.mEvent = aEvent;
             this.mPrefix = aPrefix;
             this.mMaterial = aMaterial;

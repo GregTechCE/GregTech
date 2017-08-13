@@ -35,9 +35,6 @@ public interface IMetaTileEntity extends ITurnable, IRedstoneReceiver, IRedstone
     IGregTechTileEntity getHolder();
 
     @SideOnly(Side.CLIENT)
-    ResourceLocation getModelLocation();
-
-    @SideOnly(Side.CLIENT)
     IBlockState getModelState();
 
     /**
@@ -135,6 +132,8 @@ public interface IMetaTileEntity extends ITurnable, IRedstoneReceiver, IRedstone
      * @return a COPY of stack in slot. Actual stack won't change.
      */
     ItemStack getStackInSlot(int index);
+    int getMaxStackSize(int index);
+
     void setStackInSlot(int index, ItemStack stack);
     boolean isValidSlot(int index);
 

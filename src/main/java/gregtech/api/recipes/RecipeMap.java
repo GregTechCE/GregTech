@@ -7,9 +7,8 @@ import gregtech.api.metatileentity.GregtechTileEntity;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.material.type.MetalMaterial;
-import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.GT_Utility;
@@ -33,7 +32,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import static gregtech.api.GT_Values.GT;
 import static gregtech.api.GT_Values.L;
 import static gregtech.api.GT_Values.W;
 
@@ -63,7 +61,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * Examples:
 	 * <pre>
 	 * 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-	 *			.inputs(OreDictionaryUnifier.get(OrePrefixes.stick, Materials.Wood, 1L), new ItemStack(Items.coal, 1, GT_Values.W))
+	 *			.inputs(OreDictionaryUnifier.get(OrePrefix.stick, Materials.Wood, 1L), new ItemStack(Items.coal, 1, GT_Values.W))
 	 *			.outputs(new ItemStack(Blocks.torch, 4))
 	 *			.duration(400)
 	 *			.EUt(1)
@@ -76,7 +74,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * Example:
 	 * <pre>
 	 * 	    RecipeMap.PRINTER_RECIPES.recipeBuilder()
-	 *				.inputs(OreDictionaryUnifier.get(OrePrefixes.plate, Materials.Paper, 3L))
+	 *				.inputs(OreDictionaryUnifier.get(OrePrefix.plate, Materials.Paper, 3L))
 	 *				.fluidInputs(FluidRegistry.getFluidStack("squidink", 144))
 	 *				.specialItem(ItemList.Tool_DataStick.getWithName(0, "With Scanned Book Data"))
 	 *				.outputs(ItemList.Paper_Printed_Pages.get(1))
@@ -97,7 +95,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * 				.EUt(16)
 	 * 				.buildAndRegister();
 	 * 		RecipeMap.PRESS_RECIPES.recipeBuilder()
-	 * 				.inputs(OreDictionaryUnifier.get(OrePrefixes.plate, Materials.Iron, 1))
+	 * 				.inputs(OreDictionaryUnifier.get(OrePrefix.plate, Materials.Iron, 1))
 	 * 				.notConsumable(ItemList.Shape_Mold_Credit)
 	 * 				.outputs(ItemList.Credit_Iron.get(4))
 	 * 				.duration(100)
@@ -111,8 +109,8 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * Example:
 	 * <pre>
 	 *	   RecipeMap.MACERATOR_RECIPES.recipeBuilder()
-	 *	   			.inputs(OreDictionaryUnifier.get(OrePrefixes.block, Materials.Marble, 1))
-	 *	   			.outputs(OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Marble, 1))
+	 *	   			.inputs(OreDictionaryUnifier.get(OrePrefix.block, Materials.Marble, 1))
+	 *	   			.outputs(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Marble, 1))
 	 *	   			.duration(160)
 	 *	   			.EUt(4)
 	 *	   			.buildAndRegister();
@@ -157,7 +155,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * <pre>
 	 * 		RecipeMap.PLASMA_ARC_FURNACE_RECIPES.recipeBuilder()
 	 * 				.inputs(ItemList.Block_TungstenSteelReinforced.get(1))
-	 * 				.outputs(OreDictionaryUnifier.get(OrePrefixes.ingot,Materials.TungstenSteel,2), OreDictionaryUnifier.get(OrePrefixes.dust,Materials.Concrete,1))
+	 * 				.outputs(OreDictionaryUnifier.get(OrePrefix.ingot,Materials.TungstenSteel,2), OreDictionaryUnifier.get(OrePrefix.dust,Materials.Concrete,1))
 	 * 				.fluidInputs(Materials.Argon.getPlasma(16))
 	 * 				.fluidOutputs(Materials.Argon.getGas(16))
 	 * 				.duration(160)
@@ -172,7 +170,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * Example:
 	 * 		RecipeMap.ARC_FURNACE_RECIPES.recipeBuilder()
 	 * 				.inputs(ItemList.Block_TungstenSteelReinforced.get(1))
-	 * 				.outputs(OreDictionaryUnifier.get(OrePrefixes.ingot,Materials.TungstenSteel,2), OreDictionaryUnifier.get(OrePrefixes.dust,Materials.Concrete,1))
+	 * 				.outputs(OreDictionaryUnifier.get(OrePrefix.ingot,Materials.TungstenSteel,2), OreDictionaryUnifier.get(OrePrefix.dust,Materials.Concrete,1))
 	 * 				.duration(160)
 	 * 				.EUt(96)
 	 * 				.buildAndRegister();
@@ -185,11 +183,11 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * <pre>
 	 *     RecipeMap.SIFTER_RECIPES.recipeBuilder()
 	 *     			.inputs(new ItemStack(Blocks.SAND))
-	 *     			.chancedOutput(OreDictionaryUnifier.get(OrePrefixes.gemExquisite, Materials.Ruby, 1L), 300)
-	 *     			.chancedOutput(OreDictionaryUnifier.get(OrePrefixes.gemFlawless, Materials.Ruby, 1L), 1200)
-	 *     			.chancedOutput(OreDictionaryUnifier.get(OrePrefixes.gemFlawed, Materials.Ruby, 1L), 4500)
-	 *     			.chancedOutput(OreDictionaryUnifier.get(OrePrefixes.gemChipped, Materials.Ruby, 1L), 1400)
-	 *     			.chancedOutput(OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Ruby, 1L), 2800)
+	 *     			.chancedOutput(OreDictionaryUnifier.get(OrePrefix.gemExquisite, Materials.Ruby, 1L), 300)
+	 *     			.chancedOutput(OreDictionaryUnifier.get(OrePrefix.gemFlawless, Materials.Ruby, 1L), 1200)
+	 *     			.chancedOutput(OreDictionaryUnifier.get(OrePrefix.gemFlawed, Materials.Ruby, 1L), 4500)
+	 *     			.chancedOutput(OreDictionaryUnifier.get(OrePrefix.gemChipped, Materials.Ruby, 1L), 1400)
+	 *     			.chancedOutput(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Ruby, 1L), 2800)
 	 *     			.duration(800)
 	 *     			.EUt(16)
 	 *     			.buildAndRegister();
@@ -235,7 +233,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * Example:
 	 * <pre>
 	 *	 	RecipeMap.AUTOCLAVE_RECIPES.recipeBuilder()
-	 * 				.inputs(OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Carbon, 16))
+	 * 				.inputs(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Carbon, 16))
 	 * 				.fluidInputs(Materials.Lutetium.getFluid(4))
 	 * 				.chancedOutput(GT_ModHandler.getIC2Item("carbonFiber", 8L), 3333)
 	 * 				.duration(600)
@@ -249,10 +247,10 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * Example:
 	 * <pre>
 	 * 	    RecipeMap.ELECTROMAGNETIC_SEPARATOR_RECIPES.recipeBuilder()
-	 * 				.inputs(OreDictionaryUnifier.get(OrePrefixes.dustPure, Materials.Iron, 1L))
-	 * 				.chancedOutput(OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Iron, 1L), 10000)
-	 * 				.chancedOutput(OreDictionaryUnifier.get(OrePrefixes.dustSmall, Materials.Iron, 1L), 4000)
-	 * 				.chancedOutput(OreDictionaryUnifier.get(OrePrefixes.nugget, Materials.Iron, 1L), 2000)
+	 * 				.inputs(OreDictionaryUnifier.get(OrePrefix.dustPure, Materials.Iron, 1L))
+	 * 				.chancedOutput(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Iron, 1L), 10000)
+	 * 				.chancedOutput(OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Iron, 1L), 4000)
+	 * 				.chancedOutput(OreDictionaryUnifier.get(OrePrefix.nugget, Materials.Iron, 1L), 2000)
 	 * 				.duration(400)
 	 * 				.EUt(24)
 	 * 				.buildAndRegister();
@@ -264,7 +262,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * Example:
 	 * <pre>
 	 * 		RecipeMap.POLARIZER_RECIPES.recipeBuilder()
-	 * 				.inputs(OreDictionaryUnifier.get(OrePrefixes.plate, Materials.Iron, 1L))
+	 * 				.inputs(OreDictionaryUnifier.get(OrePrefix.plate, Materials.Iron, 1L))
 	 * 				.outputs(OreDictionaryUnifier.get(aPrefix, Materials.IronMagnetic, 1L))
 	 * 				.duration(100)
 	 * 				.EUt(16)
@@ -365,7 +363,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *
 	 * 		RecipeMap.FLUID_EXTRACTION_RECIPES.recipeBuilder()
 	 * 				.inputs(GT_ModHandler.getModItem("Forestry", "phosphor", 1L))
-	 * 				.chancedOutput(OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Phosphor, 1L), 1000)
+	 * 				.chancedOutput(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphor, 1L), 1000)
 	 * 				.fluidOutputs(Materials.Lava.getFluid(800L))
 	 * 				.duration(256)
 	 * 				.EUt(128)
@@ -379,7 +377,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * Example:
 	 * <pre>
 	 *   	RecipeMap.BOXINATOR_RECIPES.recipeBuilder()
-	 *				.inputs(ItemList.Tool_Matches.get(16), OreDictionaryUnifier.get(OrePrefixes.plateDouble, Materials.Paper, 1L))
+	 *				.inputs(ItemList.Tool_Matches.get(16), OreDictionaryUnifier.get(OrePrefix.plateDouble, Materials.Paper, 1L))
 	 *				.outputs(ItemList.Tool_MatchBox_Full.get(1))
 	 *				.duration(64)
 	 *				.EUt(16)
@@ -408,7 +406,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *		RecipeMap.CENTRIFUGE_RECIPES.recipeBuilder()
 	 *				.inputs(new ItemStack(Blocks.SANDSTONE))
 	 *				.cellAmount(1)
-	 *				.outputs(OreDictionaryUnifier.get(OrePrefixes.cell, Materials.Oil, 1L), new ItemStack(Blocks.SAND, 1, 0))
+	 *				.outputs(OreDictionaryUnifier.get(OrePrefix.cell, Materials.Oil, 1L), new ItemStack(Blocks.SAND, 1, 0))
 	 *				.duration(1000)
 	 *				.buildAndRegister();
 	 *
@@ -434,16 +432,16 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *	   			.cellAmount(1)
 	 *	   			.fluidInputs(new FluidStack(ItemList.sBlueVitriol,9000))
 	 *	   			.fluidOutputs(Materials.SulfuricAcid.getFluid(8000))
-	 *	   			.outputs(OreDictionaryUnifier.get(OrePrefixes.dust,Materials.Copper,1), OreDictionaryUnifier.get(OrePrefixes.cell,Materials.Oxygen,1))
+	 *	   			.outputs(OreDictionaryUnifier.get(OrePrefix.dust,Materials.Copper,1), OreDictionaryUnifier.get(OrePrefix.cell,Materials.Oxygen,1))
 	 *	   			.duration(900)
 	 *	   			.EUt(30)
 	 *	   			.buildAndRegister();
 	 *
 	 *		RecipeMap.ELECTROLYZER_RECIPES.recipeBuilder()
-	 *				.inputs(OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Tungstate, 7L))
+	 *				.inputs(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Tungstate, 7L))
 	 *				.fluidInputs(Materials.Hydrogen.getGas(7000L))
 	 *				.fluidOutputs(Materials.Oxygen.getGas(4000L))
-	 *				.outputs(OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Tungsten, 1), OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Lithium, 2L))
+	 *				.outputs(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Tungsten, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Lithium, 2L))
 	 *				.duration(120)
 	 *				.EUt(1920)
 	 *				.buildAndRegister();
@@ -461,7 +459,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * Example:
 	 * <pre>
 	 *	    RecipeMap.BLAST_RECIPES.recipeBuilder()
-	 *				.inputs(OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Glass, 1), OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Carbon, 1))
+	 *				.inputs(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Glass, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Carbon, 1))
 	 *				.fluidInputs(Materials.Electrum.getFluid(16))
 	 *				.outputs(ItemList.Circuit_Board_Fiberglass.get(16))
 	 *				.duration(80)
@@ -478,7 +476,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *      RecipeMap.IMPLOSION_RECIPES.recipeBuilder()
 	 *         		.inputs(ItemList.Ingot_IridiumAlloy.get(1))
 	 *         		.explosivesAmount(8)
-	 *         		.outputs(OreDictionaryUnifier.get(OrePrefixes.plateAlloy, Materials.Iridium, 1), OreDictionaryUnifier.get(OrePrefixes.dustTiny, Materials.DarkAsh, 4L))
+	 *         		.outputs(OreDictionaryUnifier.get(OrePrefix.plateAlloy, Materials.Iridium, 1), OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh, 4L))
 	 *         		.buildAndRegister();
 	 * </pre>
 	 */
@@ -488,8 +486,8 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * Example:
 	 * <pre>
 	 * 		RecipeMap.VACUUM_RECIPES.recipeBuilder()
-	 *				.inputs(OreDictionaryUnifier.get(OrePrefixes.cell, Materials.Water, 1L))
-	 *				.outputs(OreDictionaryUnifier.get(OrePrefixes.cell, Materials.Ice, 1L))
+	 *				.inputs(OreDictionaryUnifier.get(OrePrefix.cell, Materials.Water, 1L))
+	 *				.outputs(OreDictionaryUnifier.get(OrePrefix.cell, Materials.Ice, 1L))
 	 *				.duration(50)
 	 *				.buildAndRegister();
 	 * </pre>
@@ -500,7 +498,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * Example:
 	 * <pre>
 	 *      RecipeMap.CHEMICAL_RECIPES.recipeBuilder()
-	 *				.inputs(OreDictionaryUnifier.get(OrePrefixes.cell, Materials.NitrogenDioxide, 4), OreDictionaryUnifier.get(OrePrefixes.cell, Materials.Oxygen, 1))
+	 *				.inputs(OreDictionaryUnifier.get(OrePrefix.cell, Materials.NitrogenDioxide, 4), OreDictionaryUnifier.get(OrePrefix.cell, Materials.Oxygen, 1))
 	 *				.fluidInputs(Materials.Water.getFluid(2000))
 	 *				.fluidOutputs( new FluidStack(ItemList.sNitricAcid,4000))
 	 *				.outputs(ItemList.Cell_Empty.get(5))
@@ -533,7 +531,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *				.universal()
 	 *				.fluidInputs(Materials.CrackedHeavyFuel.getFluid(100))
 	 *				.fluidOutputs(Materials.Gas.getGas(80), Materials.Naphtha.getFluid(10), Materials.LightFuel.getFluid(40), new FluidStack(ItemList.sToluene,30), Materials.Lubricant.getFluid(5))
-	 *				.outputs(OreDictionaryUnifier.get(OrePrefixes.dustTiny, Materials.HydratedCoal, 1))
+	 *				.outputs(OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.HydratedCoal, 1))
 	 *				.duration(16)
 	 *				.EUt(64)
 	 *				.buildAndRegister();
@@ -583,7 +581,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * Example:
 	 * <pre>
 	 * 		RecipeMap.WIREMILL_RECIPES.recipeBuilder()
-	 *				.inputs(OreDictionaryUnifier.get(OrePrefixes.plate, Materials.Iron, 1L))
+	 *				.inputs(OreDictionaryUnifier.get(OrePrefix.plate, Materials.Iron, 1L))
 	 *				.outputs(GT_ModHandler.getIC2Item("ironCableItem", 6L))
 	 *				.duration(200)
 	 *				.EUt(2)
@@ -596,7 +594,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * Example:
 	 * <pre>
 	 *		RecipeMap.BENDER_RECIPES.recipeBuilder()
-	 *				.inputs(OreDictionaryUnifier.get(OrePrefixes.plate, Materials.Tin, 12L))
+	 *				.inputs(OreDictionaryUnifier.get(OrePrefix.plate, Materials.Tin, 12L))
 	 *				.outputs(ItemList.Cell_Empty.get(6))
 	 *				.duration(1200)
 	 *				.EUt(8)
@@ -615,8 +613,8 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * Example:
 	 * <pre>
 	 *	 	RecipeMap.ALLOY_SMELTER_RECIPES.recipeBuilder()
-	 *				.inputs(OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Redstone, 1L), OreDictionaryUnifier.get(OrePrefixes.ingot, Materials.Iron, 1L))
-	 *				.outputs(OreDictionaryUnifier.get(OrePrefixes.ingot, Materials.ConductiveIron, 1L))
+	 *				.inputs(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Redstone, 1L), OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Iron, 1L))
+	 *				.outputs(OreDictionaryUnifier.get(OrePrefix.ingot, Materials.ConductiveIron, 1L))
 	 *				.duration(400)
 	 *				.EUt(24)
 	 *				.buildAndRegister();
@@ -628,9 +626,9 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 			ItemStack input = inputs.get(0);
 //			Validate.isTrue(Materials.Graphite.contains(input));
 			Validate.isTrue((inputs.size() == 1)
-					&& OreDictionaryUnifier.getPrefix(input) == OrePrefixes.ingot
-					|| OreDictionaryUnifier.getPrefix(input) == OrePrefixes.dust
-					|| OreDictionaryUnifier.getPrefix(input) == OrePrefixes.gem);
+					&& OreDictionaryUnifier.getPrefix(input) == OrePrefix.ingot
+					|| OreDictionaryUnifier.getPrefix(input) == OrePrefix.dust
+					|| OreDictionaryUnifier.getPrefix(input) == OrePrefix.gem);
 			super.validate();
 			return getThis();
 		}
@@ -653,8 +651,8 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * Example:
 	 * <pre>
 	 *	     RecipeMap.LATHE_RECIPES.recipeBuilder()
-	 * 				.inputs(OreDictionaryUnifier.get(OrePrefixes.gemExquisite, Materials.Ruby, 1L))
-	 * 				.outputs(OreDictionaryUnifier.get(OrePrefixes.lens, Materials.Ruby, 1L), OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Ruby, 2L))
+	 * 				.inputs(OreDictionaryUnifier.get(OrePrefix.gemExquisite, Materials.Ruby, 1L))
+	 * 				.outputs(OreDictionaryUnifier.get(OrePrefix.lens, Materials.Ruby, 1L), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Ruby, 2L))
 	 * 				.duration(Materials.Ruby.getMass())
 	 * 				.EUt(24)
 	 * 				.buildAndRegister();
@@ -668,7 +666,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *      RecipeMap.CUTTER_RECIPES.recipeBuilder()
 	 *				.inputs(new ItemStack(Blocks.LOG))
 	 *				.fluidInputs(Materials.Lubricant.getFluid(1))
-	 *				.outputs(new ItemStack(Blocks.PLANKS), OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Wood, 1L))
+	 *				.outputs(new ItemStack(Blocks.PLANKS), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Wood, 1L))
 	 *				.duration(200)
 	 *				.EUt(8)
 	 *				.buildAndRegister();
@@ -707,7 +705,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *      RecipeMap.EXTRUDER_RECIPES.recipeBuilder()
 	 *				.inputs(new ItemStack(Items.IRON_INGOT))
 	 *				.notConsumable(ItemList.Shape_Extruder_Rod)
-	 *				.outputs(OreDictionaryUnifier.get(OrePrefixes.stick, Materials.Iron.smeltInto, 2))
+	 *				.outputs(OreDictionaryUnifier.get(OrePrefix.stick, Materials.Iron.smeltInto, 2))
 	 *				.duration(64)
 	 *				.EUt(8)
 	 *				.buildAndRegister();
@@ -754,7 +752,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> MAGIC_FUELS = new RecipeMap<>(new HashSet<>(10), "gt.recipe.magicfuels", "Magic Fuels", null, "basicmachines/Default", 1, 1, 0, 1, 0, 0, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true, new RecipeBuilder.DefaultRecipeBuilder() {
 		@Override
 		protected void finalizeAndValidate() {
-			this.EUt = -EUt;
+			this.EUt = -Math.abs(EUt);
 			super.finalizeAndValidate();
 		}
 	});
@@ -769,15 +767,15 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * 			new RecipeBuilder.AssemblyLineRecipeBuilder()
 	 *					.researchItem(ItemList.Sensor_ZPM.get(1))
 	 *					.researchTime(288000)
-	 *					.inputs(OreDictionaryUnifier.get(OrePrefixes.frameGt, Materials.Neutronium, 1L),
+	 *					.inputs(OreDictionaryUnifier.get(OrePrefix.frameGt, Materials.Neutronium, 1L),
 	 *								ItemList.Sensor_ZPM.get(1),
 	 *								ItemList.Sensor_LuV.get(2),
 	 *								ItemList.Sensor_IV.get(4),
-	 *								OreDictionaryUnifier.get(OrePrefixes.circuit, Materials.Master, 7L),
-	 *								OreDictionaryUnifier.get(OrePrefixes.foil, Materials.Osmiridium, 64L),
-	 *								OreDictionaryUnifier.get(OrePrefixes.foil, Materials.Osmiridium, 64L),
-	 *								OreDictionaryUnifier.get(OrePrefixes.foil, Materials.Osmiridium, 64L),
-	 *								OreDictionaryUnifier.get(OrePrefixes.cableGt04, Materials.NiobiumTitanium, 7L))
+	 *								OreDictionaryUnifier.get(OrePrefix.circuit, Materials.Master, 7L),
+	 *								OreDictionaryUnifier.get(OrePrefix.foil, Materials.Osmiridium, 64L),
+	 *								OreDictionaryUnifier.get(OrePrefix.foil, Materials.Osmiridium, 64L),
+	 *								OreDictionaryUnifier.get(OrePrefix.foil, Materials.Osmiridium, 64L),
+	 *								OreDictionaryUnifier.get(OrePrefix.cableGt04, Materials.NiobiumTitanium, 7L))
 	 *					.fluidInputs(Materials.SolderingAlloy.getMolten(576))
 	 *					.output(ItemList.Sensor_UV.get(1))
 	 *					.duration(600)

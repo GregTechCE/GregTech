@@ -2,7 +2,7 @@ package gregtech.common.tileentities.boilers;
 
 import gregtech.api.unification.Dyes;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.capability.internal.IGregTechTileEntity;
@@ -115,10 +115,10 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
                 this.mSteam.amount = 24000;
             }
             if ((this.mProcessingEnergy <= 0) && (aBaseMetaTileEntity.isAllowedToWork()) &&
-                    (OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.bucket.get(Materials.Lava)))) {
+                    (OreDictionaryUnifier.isItemStackInstanceOf(this.mInventory[2], OrePrefix.bucket.get(Materials.Lava)))) {
                 this.mProcessingEnergy += 1000;
                 aBaseMetaTileEntity.decrStackSize(2, 1);
-                aBaseMetaTileEntity.addStackToSlot(3, OreDictionaryUnifier.get(OrePrefixes.bucket, Materials.Empty, 1L));
+                aBaseMetaTileEntity.addStackToSlot(3, OreDictionaryUnifier.get(OrePrefix.bucket, Materials.Empty, 1L));
             }
             if ((this.mTemperature < 1000) && (this.mProcessingEnergy > 0) && (aTick % 8L == 0L)) {
                 this.mProcessingEnergy -= 3;

@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
-import gregtech.api.unification.ore.OrePrefixes;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.capability.internal.IGregTechTileEntity;
@@ -27,7 +27,7 @@ public class GT_MetaTileEntity_Printer
             this.mOutputBlocked += 1;
         } else if ((GT_Utility.isStackValid(getInputAt(0))) && (getInputAt(0).stackSize > 0) &&
                 (GT_Utility.isStackInvalid(getSpecialSlot())) &&
-                (OrePrefixes.block.contains(getInputAt(0)))) {
+                (OrePrefix.block.contains(getInputAt(0)))) {
             ArrayList<ItemStack> tList = OreDictionaryUnifier.getOres(OreDictionaryUnifier.getAssociation(getInputAt(0)));
             if (tList.size() > 1) {
                 tList.add(tList.get(0));

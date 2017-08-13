@@ -4,6 +4,8 @@ import gregtech.api.capability.IPaintable;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
@@ -14,6 +16,19 @@ public abstract class PaintableMetaTileEntity extends MetaTileEntity implements 
 
     public PaintableMetaTileEntity(IMetaTileEntityFactory factory) {
         super(factory);
+    }
+
+    @Override
+    public <T> boolean hasCapability(Capability<T> capability, EnumFacing side) {
+        return super.hasCapability(capability, side) || capability == IPaintable.CAPABILITY_PAINTABLE;
+    }
+
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing side) {
+        if(capability == IPaintable.CAPABILITY_PAINTABLE) {
+            return IPaintable.CAPABILITY_PAINTABLE.cast(this);
+        }
+        return super.getCapability(capability, side);
     }
 
     @Override
