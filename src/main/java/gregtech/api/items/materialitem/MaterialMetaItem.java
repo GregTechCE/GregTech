@@ -30,8 +30,7 @@ public class MaterialMetaItem extends MetaItem<MetaItem.MetaValueItem> {
         super(unlocalizedName, (short) (1000 * orePrefixes.length));
         Preconditions.checkArgument(orePrefixes.length <= 32, "Max allowed OrePrefix count on MaterialMetaItem is 32.");
         this.orePrefixes = orePrefixes;
-        for(String materialName : Material.MATERIAL_REGISTRY.getKeys()) {
-            Material material = Material.MATERIAL_REGISTRY.getObject(materialName);
+        for(Material material : Material.MATERIAL_REGISTRY) {
             if(material != null && !(material instanceof MarkerMaterial)) {
                 int i = Material.MATERIAL_REGISTRY.getIDForObject(material);
                 for(int j = 0; j < orePrefixes.length; j++) {

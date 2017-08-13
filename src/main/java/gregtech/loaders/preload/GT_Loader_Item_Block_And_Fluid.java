@@ -73,7 +73,7 @@ public class GT_Loader_Item_Block_And_Fluid
 
         new GT_IntegratedCircuit_Item();
         new MetaItem1();
-        new GT_MetaGenerated_Item_02();
+        new MataItem2();
         new GT_MetaGenerated_Item_03();
         new GT_MetaGenerated_Tool_01();
         new GT_FluidDisplayItem();

@@ -19,6 +19,7 @@ import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.RandomPotionEffect;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import gregtech.common.items.behaviors.Behaviour_DataStick;
 import gregtech.common.items.behaviors.Behaviour_Lighter;
@@ -39,7 +40,6 @@ import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -56,12 +56,11 @@ public class MetaItem1 extends MaterialMetaItem {
 	public MetaItem1() {
 		super("metaitem.01",
 				OrePrefix.dustTiny, OrePrefix.dustSmall, OrePrefix.dust, OrePrefix.dustImpure, OrePrefix.dustPure,
-				OrePrefix.crushed, OrePrefix.crushedPurified, OrePrefix.crushedCentrifuged,
-				OrePrefix.gem, OrePrefix.nugget, null,
+				OrePrefix.crushed, OrePrefix.crushedPurified, OrePrefix.crushedCentrifuged, OrePrefix.gem, OrePrefix.nugget,
 				OrePrefix.ingot, OrePrefix.ingotHot, OrePrefix.ingotDouble, OrePrefix.ingotTriple, OrePrefix.ingotQuadruple, OrePrefix.ingotQuintuple,
 				OrePrefix.plate, OrePrefix.plateDouble, OrePrefix.plateTriple, OrePrefix.plateQuadruple, OrePrefix.plateQuintuple, OrePrefix.plateDense,
 				OrePrefix.stick, OrePrefix.lens, OrePrefix.round, OrePrefix.bolt, OrePrefix.screw, OrePrefix.ring, OrePrefix.foil,
-				OrePrefix.cell, OrePrefix.cellPlasma);
+				OrePrefix.cell, OrePrefix.cellPlasma, null);
 
 		//it's here because OrePrefix.cell is handled by gt.metaitem.01
 		ItemList.Cell_Empty.set(OreDictionaryUnifier.get(OrePrefix.cell, null));
@@ -81,9 +80,9 @@ public class MetaItem1 extends MaterialMetaItem {
 		stack.setStackDisplayName("The holy Planks of Sengir");
 		GT_Utility.ItemNBT.addEnchantment(stack, Enchantments.SMITE, 10);
 		ModHandler.addCraftingRecipe(stack, ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{"XXX", "XDX", "XXX",
-						'X', OreDictionaryUnifier.getGem(Materials.NetherStar, 1),
-						'D', new ItemStack(Blocks.DRAGON_EGG, 1, OreDictionary.WILDCARD_VALUE)});
+				"XXX", "XDX", "XXX",
+				'X', OreDictionaryUnifier.getGem(Materials.NetherStar, 1),
+				'D', new ItemStack(Blocks.DRAGON_EGG, 1, OreDictionary.WILDCARD_VALUE));
 
 		ItemList.Credit_Greg_Copper.set(addItem(0)); //"Copper GT Credit", "0.125 Credits"
 		ItemList.Credit_Greg_Cupronickel.set(addItem(1).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Cupronickel, 907200L)))); //"Cupronickel GT Credit", "1 Credit"
@@ -95,7 +94,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		ItemList.Credit_Greg_Neutronium.set(addItem(7)); //"Neutronium GT Credit", "262144 Credits"
 		ItemList.Coin_Gold_Ancient.set(addItem(8).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Gold, 907200L)))); //"Ancient Gold Coin", "Found in ancient Ruins"
 		ItemList.Coin_Doge.set(addItem(9).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Brass, 907200L)))); //"Doge Coin", "wow much coin how money so crypto plz mine v rich very currency wow",
-		ItemList.Coin_Chocolate.set(addItem(10).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Gold, OrePrefix.foil.materialAmount))).addStats(new FoodStats(1, 0.1F, false, true, new PotionEffect(MobEffects.SPEED, 200, 1)/*, 10, OreDictionaryUnifier.get(OrePrefix.foil, Materials.Gold, 1)*/))); //"Chocolate Coin", "Wrapped in Gold",
+		ItemList.Coin_Chocolate.set(addItem(10).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Gold, OrePrefix.foil.materialAmount))).addStats(new FoodStats(1, 0.1F, false, true, OreDictionaryUnifier.get(OrePrefix.foil, Materials.Gold, 1), new RandomPotionEffect(MobEffects.SPEED, 200, 1, 10)))); //"Chocolate Coin", "Wrapped in Gold",
 		ItemList.Credit_Copper.set(addItem(11)); //"Industrial Copper Credit", "0.125 Credits"
 
 		ItemList.Credit_Silver.set(addItem(13)); //"Industrial Silver Credit", "8 Credits"
@@ -104,193 +103,193 @@ public class MetaItem1 extends MaterialMetaItem {
 		ItemList.Credit_Osmium.set(addItem(16)); //"Industrial Osmium Credit", "4096 Credits"
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Coin_Chocolate.get(1),
-				new Object[]{new UnificationEntry(OrePrefix.dust, Materials.Cocoa),
-						new UnificationEntry(OrePrefix.dust, Materials.Milk),
-						new UnificationEntry(OrePrefix.dust, Materials.Sugar),
-						new UnificationEntry(OrePrefix.foil, Materials.Gold)});
+				new UnificationEntry(OrePrefix.dust, Materials.Cocoa),
+				new UnificationEntry(OrePrefix.dust, Materials.Milk),
+				new UnificationEntry(OrePrefix.dust, Materials.Sugar),
+				new UnificationEntry(OrePrefix.foil, Materials.Gold));
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Credit_Copper.get(8),
 				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Credit_Iron});
+				ItemList.Credit_Iron);
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Credit_Iron.get(8),
 				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Credit_Silver});
+				ItemList.Credit_Silver);
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Credit_Silver.get(8),
 				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Credit_Gold});
+				ItemList.Credit_Gold);
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Credit_Gold.get(8),
 				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Credit_Platinum});
+				ItemList.Credit_Platinum);
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Credit_Platinum.get(8),
 				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Credit_Osmium});
+				ItemList.Credit_Osmium);
 
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Credit_Iron.get(1),
 				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Credit_Copper,
-						ItemList.Credit_Copper,
-						ItemList.Credit_Copper,
-						ItemList.Credit_Copper,
-						ItemList.Credit_Copper,
-						ItemList.Credit_Copper,
-						ItemList.Credit_Copper,
-						ItemList.Credit_Copper});
+				ItemList.Credit_Copper,
+				ItemList.Credit_Copper,
+				ItemList.Credit_Copper,
+				ItemList.Credit_Copper,
+				ItemList.Credit_Copper,
+				ItemList.Credit_Copper,
+				ItemList.Credit_Copper,
+				ItemList.Credit_Copper);
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Credit_Silver.get(1),
 				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Credit_Iron,
-						ItemList.Credit_Iron,
-						ItemList.Credit_Iron,
-						ItemList.Credit_Iron,
-						ItemList.Credit_Iron,
-						ItemList.Credit_Iron,
-						ItemList.Credit_Iron,
-						ItemList.Credit_Iron});
+				ItemList.Credit_Iron,
+				ItemList.Credit_Iron,
+				ItemList.Credit_Iron,
+				ItemList.Credit_Iron,
+				ItemList.Credit_Iron,
+				ItemList.Credit_Iron,
+				ItemList.Credit_Iron,
+				ItemList.Credit_Iron);
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Credit_Gold.get(1),
 				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Credit_Silver,
-						ItemList.Credit_Silver,
-						ItemList.Credit_Silver,
-						ItemList.Credit_Silver,
-						ItemList.Credit_Silver,
-						ItemList.Credit_Silver,
-						ItemList.Credit_Silver,
-						ItemList.Credit_Silver});
+				ItemList.Credit_Silver,
+				ItemList.Credit_Silver,
+				ItemList.Credit_Silver,
+				ItemList.Credit_Silver,
+				ItemList.Credit_Silver,
+				ItemList.Credit_Silver,
+				ItemList.Credit_Silver,
+				ItemList.Credit_Silver);
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Credit_Platinum.get(1),
 				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Credit_Gold,
-						ItemList.Credit_Gold,
-						ItemList.Credit_Gold,
-						ItemList.Credit_Gold,
-						ItemList.Credit_Gold,
-						ItemList.Credit_Gold,
-						ItemList.Credit_Gold,
-						ItemList.Credit_Gold});
+				ItemList.Credit_Gold,
+				ItemList.Credit_Gold,
+				ItemList.Credit_Gold,
+				ItemList.Credit_Gold,
+				ItemList.Credit_Gold,
+				ItemList.Credit_Gold,
+				ItemList.Credit_Gold,
+				ItemList.Credit_Gold);
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Credit_Osmium.get(1),
 				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Credit_Platinum,
-						ItemList.Credit_Platinum,
-						ItemList.Credit_Platinum,
-						ItemList.Credit_Platinum,
-						ItemList.Credit_Platinum,
-						ItemList.Credit_Platinum,
-						ItemList.Credit_Platinum,
-						ItemList.Credit_Platinum});
+				ItemList.Credit_Platinum,
+				ItemList.Credit_Platinum,
+				ItemList.Credit_Platinum,
+				ItemList.Credit_Platinum,
+				ItemList.Credit_Platinum,
+				ItemList.Credit_Platinum,
+				ItemList.Credit_Platinum,
+				ItemList.Credit_Platinum);
 
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Credit_Greg_Copper.get(8),
 				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Credit_Greg_Cupronickel});
+				ItemList.Credit_Greg_Cupronickel);
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Credit_Greg_Cupronickel.get(8),
 				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Credit_Greg_Silver});
+				ItemList.Credit_Greg_Silver);
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Credit_Greg_Silver.get(8),
 				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Credit_Greg_Gold});
+				ItemList.Credit_Greg_Gold);
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Credit_Greg_Gold.get(8),
 				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Credit_Greg_Platinum});
+				ItemList.Credit_Greg_Platinum);
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Credit_Greg_Platinum.get(8),
 				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Credit_Greg_Osmium});
+				ItemList.Credit_Greg_Osmium);
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Credit_Greg_Osmium.get(8),
 				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Credit_Greg_Naquadah});
+				ItemList.Credit_Greg_Naquadah);
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Credit_Greg_Naquadah.get(8),
 				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Credit_Greg_Neutronium});
+				ItemList.Credit_Greg_Neutronium);
 
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Credit_Greg_Cupronickel.get(1),
 				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Credit_Greg_Copper,
-						ItemList.Credit_Greg_Copper,
-						ItemList.Credit_Greg_Copper,
-						ItemList.Credit_Greg_Copper,
-						ItemList.Credit_Greg_Copper,
-						ItemList.Credit_Greg_Copper,
-						ItemList.Credit_Greg_Copper,
-						ItemList.Credit_Greg_Copper});
+				ItemList.Credit_Greg_Copper,
+				ItemList.Credit_Greg_Copper,
+				ItemList.Credit_Greg_Copper,
+				ItemList.Credit_Greg_Copper,
+				ItemList.Credit_Greg_Copper,
+				ItemList.Credit_Greg_Copper,
+				ItemList.Credit_Greg_Copper,
+				ItemList.Credit_Greg_Copper);
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Credit_Greg_Silver.get(1),
 				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Credit_Greg_Cupronickel,
-						ItemList.Credit_Greg_Cupronickel,
-						ItemList.Credit_Greg_Cupronickel,
-						ItemList.Credit_Greg_Cupronickel,
-						ItemList.Credit_Greg_Cupronickel,
-						ItemList.Credit_Greg_Cupronickel,
-						ItemList.Credit_Greg_Cupronickel,
-						ItemList.Credit_Greg_Cupronickel});
+				ItemList.Credit_Greg_Cupronickel,
+				ItemList.Credit_Greg_Cupronickel,
+				ItemList.Credit_Greg_Cupronickel,
+				ItemList.Credit_Greg_Cupronickel,
+				ItemList.Credit_Greg_Cupronickel,
+				ItemList.Credit_Greg_Cupronickel,
+				ItemList.Credit_Greg_Cupronickel,
+				ItemList.Credit_Greg_Cupronickel);
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Credit_Greg_Gold.get(1),
 				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Credit_Greg_Silver,
-						ItemList.Credit_Greg_Silver,
-						ItemList.Credit_Greg_Silver,
-						ItemList.Credit_Greg_Silver,
-						ItemList.Credit_Greg_Silver,
-						ItemList.Credit_Greg_Silver,
-						ItemList.Credit_Greg_Silver,
-						ItemList.Credit_Greg_Silver});
+				ItemList.Credit_Greg_Silver,
+				ItemList.Credit_Greg_Silver,
+				ItemList.Credit_Greg_Silver,
+				ItemList.Credit_Greg_Silver,
+				ItemList.Credit_Greg_Silver,
+				ItemList.Credit_Greg_Silver,
+				ItemList.Credit_Greg_Silver,
+				ItemList.Credit_Greg_Silver);
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Credit_Greg_Platinum.get(1),
 				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Credit_Greg_Gold,
-						ItemList.Credit_Greg_Gold,
-						ItemList.Credit_Greg_Gold,
-						ItemList.Credit_Greg_Gold,
-						ItemList.Credit_Greg_Gold,
-						ItemList.Credit_Greg_Gold,
-						ItemList.Credit_Greg_Gold,
-						ItemList.Credit_Greg_Gold});
+				ItemList.Credit_Greg_Gold,
+				ItemList.Credit_Greg_Gold,
+				ItemList.Credit_Greg_Gold,
+				ItemList.Credit_Greg_Gold,
+				ItemList.Credit_Greg_Gold,
+				ItemList.Credit_Greg_Gold,
+				ItemList.Credit_Greg_Gold,
+				ItemList.Credit_Greg_Gold);
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Credit_Greg_Osmium.get(1),
 				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Credit_Greg_Platinum,
-						ItemList.Credit_Greg_Platinum,
-						ItemList.Credit_Greg_Platinum,
-						ItemList.Credit_Greg_Platinum,
-						ItemList.Credit_Greg_Platinum,
-						ItemList.Credit_Greg_Platinum,
-						ItemList.Credit_Greg_Platinum,
-						ItemList.Credit_Greg_Platinum});
+				ItemList.Credit_Greg_Platinum,
+				ItemList.Credit_Greg_Platinum,
+				ItemList.Credit_Greg_Platinum,
+				ItemList.Credit_Greg_Platinum,
+				ItemList.Credit_Greg_Platinum,
+				ItemList.Credit_Greg_Platinum,
+				ItemList.Credit_Greg_Platinum,
+				ItemList.Credit_Greg_Platinum);
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Credit_Greg_Naquadah.get(1),
 				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Credit_Greg_Osmium,
-						ItemList.Credit_Greg_Osmium,
-						ItemList.Credit_Greg_Osmium,
-						ItemList.Credit_Greg_Osmium,
-						ItemList.Credit_Greg_Osmium,
-						ItemList.Credit_Greg_Osmium,
-						ItemList.Credit_Greg_Osmium,
-						ItemList.Credit_Greg_Osmium});
+				ItemList.Credit_Greg_Osmium,
+				ItemList.Credit_Greg_Osmium,
+				ItemList.Credit_Greg_Osmium,
+				ItemList.Credit_Greg_Osmium,
+				ItemList.Credit_Greg_Osmium,
+				ItemList.Credit_Greg_Osmium,
+				ItemList.Credit_Greg_Osmium,
+				ItemList.Credit_Greg_Osmium);
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Credit_Greg_Neutronium.get(1),
 				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Credit_Greg_Naquadah,
-						ItemList.Credit_Greg_Naquadah,
-						ItemList.Credit_Greg_Naquadah,
-						ItemList.Credit_Greg_Naquadah,
-						ItemList.Credit_Greg_Naquadah,
-						ItemList.Credit_Greg_Naquadah,
-						ItemList.Credit_Greg_Naquadah,
-						ItemList.Credit_Greg_Naquadah});
+				ItemList.Credit_Greg_Naquadah,
+				ItemList.Credit_Greg_Naquadah,
+				ItemList.Credit_Greg_Naquadah,
+				ItemList.Credit_Greg_Naquadah,
+				ItemList.Credit_Greg_Naquadah,
+				ItemList.Credit_Greg_Naquadah,
+				ItemList.Credit_Greg_Naquadah,
+				ItemList.Credit_Greg_Naquadah);
 
 
 		ItemList.Component_Minecart_Wheels_Iron.set(addItem(100)); // "Iron Minecart Wheels", "To get things rolling"
@@ -298,23 +297,23 @@ public class MetaItem1 extends MaterialMetaItem {
 
 		ModHandler.addCraftingRecipe(ItemList.Component_Minecart_Wheels_Iron.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{" h ", "RSR", " w ",
-						'R', new UnificationEntry(OrePrefix.ring, Materials.AnyIron),
-						'S', new UnificationEntry(OrePrefix.stick, Materials.AnyIron)});
+				" h ", "RSR", " w ",
+				'R', new UnificationEntry(OrePrefix.ring, Materials.AnyIron),
+				'S', new UnificationEntry(OrePrefix.stick, Materials.AnyIron));
 
 		ModHandler.addCraftingRecipe(ItemList.Component_Minecart_Wheels_Steel.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{" h ", "RSR", " w ",
-						'R', new UnificationEntry(OrePrefix.ring, Materials.Steel),
-						'S', new UnificationEntry(OrePrefix.stick, Materials.Steel)});
+				" h ", "RSR", " w ",
+				'R', new UnificationEntry(OrePrefix.ring, Materials.Steel),
+				'S', new UnificationEntry(OrePrefix.stick, Materials.Steel));
 
 
 		ItemList.Shape_Empty.set(addItem(300)); // "Empty Shape Plate", "Raw Plate to make Molds and Extruder Shapes"
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Empty.get(1),
 				ModHandler.RecipeBits.MIRRORED | ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"hf", "PP", "PP",
-						'P', new UnificationEntry(OrePrefix.plate, Materials.Steel)});
+				"hf", "PP", "PP",
+				'P', new UnificationEntry(OrePrefix.plate, Materials.Steel));
 
 		ItemList.Shape_Mold_Plate.set(addItem(301)); //"Mold (Plate)", "Mold for making Plates"
 		ItemList.Shape_Mold_Casing.set(addItem(302)); //"Mold (Casing)", "Mold for making Item Casings"
@@ -337,84 +336,84 @@ public class MetaItem1 extends MaterialMetaItem {
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Mold_Credit.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"h  ", textShape, textEmptyRow,
-						'P', ItemList.Shape_Empty});
+				"h  ", textShape, textEmptyRow,
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Mold_Plate.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{" h ", textShape, textEmptyRow,
-						'P', ItemList.Shape_Empty});
+				" h ", textShape, textEmptyRow,
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Mold_Casing.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"  h", textShape, textEmptyRow,
-						'P', ItemList.Shape_Empty});
+				"  h", textShape, textEmptyRow,
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Mold_Gear.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{textEmptyRow, " Ph", textEmptyRow,
-						'P', ItemList.Shape_Empty});
+				textEmptyRow, " Ph", textEmptyRow,
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Mold_Bottle.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{textEmptyRow, textShape, "  h",
-						'P', ItemList.Shape_Empty});
+				textEmptyRow, textShape, "  h",
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Mold_Ingot.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{textEmptyRow, textShape, " h ",
-						'P', ItemList.Shape_Empty});
+				textEmptyRow, textShape, " h ",
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Mold_Ball.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{textEmptyRow, textShape, "h  ",
-						'P', ItemList.Shape_Empty});
+				textEmptyRow, textShape, "h  ",
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Mold_Block.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{textEmptyRow, "hP ", textEmptyRow,
-						'P', ItemList.Shape_Empty});
+				textEmptyRow, "hP ", textEmptyRow,
+				'P', ItemList.Shape_Empty);
 
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Mold_Nugget.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"P h", textEmptyRow, textEmptyRow,
-						'P', ItemList.Shape_Empty});
+				"P h", textEmptyRow, textEmptyRow,
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Mold_Bun.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"P  ", "  h", textEmptyRow,
-						'P', ItemList.Shape_Empty});
+				"P  ", "  h", textEmptyRow,
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Mold_Bread.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"P  ", textEmptyRow, "  h",
-						'P', ItemList.Shape_Empty});
+				"P  ", textEmptyRow, "  h",
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Mold_Baguette.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"P  ", textEmptyRow, " h ",
-						'P', ItemList.Shape_Empty});
+				"P  ", textEmptyRow, " h ",
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Mold_Cylinder.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"  P", textEmptyRow, "  h",
-						'P', ItemList.Shape_Empty});
+				"  P", textEmptyRow, "  h",
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Mold_Anvil.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"  P", textEmptyRow, " h ",
-						'P', ItemList.Shape_Empty});
+				"  P", textEmptyRow, " h ",
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Mold_Name.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"  P", textEmptyRow, "h  ",
-						'P', ItemList.Shape_Empty});
+				"  P", textEmptyRow, "h  ",
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Mold_Gear_Small.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{textEmptyRow, textEmptyRow, "h P",
-						'P', ItemList.Shape_Empty});
+				textEmptyRow, textEmptyRow, "h P",
+				'P', ItemList.Shape_Empty);
 
 
 		ItemList.Shape_Extruder_Plate.set(addItem(350)); //"Extruder Shape (Plate)", "Extruder Shape for making Plates"
@@ -444,124 +443,124 @@ public class MetaItem1 extends MaterialMetaItem {
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Extruder_Bolt.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"x  ", textShape, textEmptyRow,
-						'P', ItemList.Shape_Empty});
+				"x  ", textShape, textEmptyRow,
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Extruder_Cell.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{" x ", textShape, textEmptyRow,
-						'P', ItemList.Shape_Empty});
+				" x ", textShape, textEmptyRow,
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Extruder_Ingot.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"  x", textShape, textEmptyRow,
-						'P', ItemList.Shape_Empty});
+				"  x", textShape, textEmptyRow,
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Extruder_Ring.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{textEmptyRow, " Px", textEmptyRow,
-						'P', ItemList.Shape_Empty});
+				textEmptyRow, " Px", textEmptyRow,
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Extruder_Rod.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{textEmptyRow, textShape, "  x",
-						'P', ItemList.Shape_Empty});
+				textEmptyRow, textShape, "  x",
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Extruder_Wire.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{textEmptyRow, textShape, " x ",
-						'P', ItemList.Shape_Empty});
+				textEmptyRow, textShape, " x ",
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Extruder_Casing.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{textEmptyRow, textShape, "x  ",
-						'P', ItemList.Shape_Empty});
+				textEmptyRow, textShape, "x  ",
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Extruder_Plate.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{textEmptyRow, "xP ", textEmptyRow,
-						'P', ItemList.Shape_Empty});
+				textEmptyRow, "xP ", textEmptyRow,
+				'P', ItemList.Shape_Empty);
 
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Extruder_Block.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"P x", textEmptyRow, textEmptyRow,
-						'P', ItemList.Shape_Empty});
+				"P x", textEmptyRow, textEmptyRow,
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Extruder_Pipe_Small.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"P  ", "  x", textEmptyRow,
-						'P', ItemList.Shape_Empty});
+				"P  ", "  x", textEmptyRow,
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Extruder_Pipe_Large.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"P  ", textEmptyRow, "  x",
-						'P', ItemList.Shape_Empty});
+				"P  ", textEmptyRow, "  x",
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Extruder_Pipe_Medium.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"P  ", textEmptyRow, " x ",
-						'P', ItemList.Shape_Empty});
+				"P  ", textEmptyRow, " x ",
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Extruder_Sword.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"  P", textEmptyRow, "  x",
-						'P', ItemList.Shape_Empty});
+				"  P", textEmptyRow, "  x",
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Extruder_Pickaxe.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"  P", textEmptyRow, " x ",
-						'P', ItemList.Shape_Empty});
+				"  P", textEmptyRow, " x ",
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Extruder_Shovel.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"  P", textEmptyRow, "x  ",
-						'P', ItemList.Shape_Empty});
+				"  P", textEmptyRow, "x  ",
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Extruder_Axe.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"  P", "x  ", textEmptyRow,
-						'P', ItemList.Shape_Empty});
+				"  P", "x  ", textEmptyRow,
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Extruder_Hoe.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{textEmptyRow, textEmptyRow, "x P",
-						'P', ItemList.Shape_Empty});
+				textEmptyRow, textEmptyRow, "x P",
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Extruder_Hammer.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{textEmptyRow, "x  ", "  P",
-						'P', ItemList.Shape_Empty});
+				textEmptyRow, "x  ", "  P",
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Extruder_File.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"x  ", textEmptyRow, "  P",
-						'P', ItemList.Shape_Empty});
+				"x  ", textEmptyRow, "  P",
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Extruder_Saw.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{" x ", textEmptyRow, "  P",
-						'P', ItemList.Shape_Empty});
+				" x ", textEmptyRow, "  P",
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Extruder_Gear.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"x  ", textEmptyRow, "P  ",
-						'P', ItemList.Shape_Empty});
+				"x  ", textEmptyRow, "P  ",
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Extruder_Pipe_Tiny.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{" x ", textEmptyRow, "P  ",
-						'P', ItemList.Shape_Empty});
+				" x ", textEmptyRow, "P  ",
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Extruder_Pipe_Huge.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"  x", textEmptyRow, "P  ",
-						'P', ItemList.Shape_Empty});
+				"  x", textEmptyRow, "P  ",
+				'P', ItemList.Shape_Empty);
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Extruder_Bottle.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{textEmptyRow, "  x", "P  ",
-						'P', ItemList.Shape_Empty});
+				textEmptyRow, "  x", "P  ",
+				'P', ItemList.Shape_Empty);
 
 
 		ItemList.Shape_Slicer_Flat.set(addItem(398)); //"Slicer Blade (Flat)", "Slicer Blade for cutting Flat"
@@ -569,17 +568,17 @@ public class MetaItem1 extends MaterialMetaItem {
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Slicer_Flat.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"hXS", textShape, "fXd",
-						'P', ItemList.Shape_Extruder_Block,
-						'X', new UnificationEntry(OrePrefix.plate, Materials.StainlessSteel),
-						'S', new UnificationEntry(OrePrefix.screw, Materials.StainlessSteel)});
+				"hXS", textShape, "fXd",
+				'P', ItemList.Shape_Extruder_Block,
+				'X', new UnificationEntry(OrePrefix.plate, Materials.StainlessSteel),
+				'S', new UnificationEntry(OrePrefix.screw, Materials.StainlessSteel));
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Slicer_Stripes.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"hXS", "XPX", "fXd",
-						'P', ItemList.Shape_Extruder_Block,
-						'X', new UnificationEntry(OrePrefix.plate, Materials.StainlessSteel),
-						'S', new UnificationEntry(OrePrefix.screw, Materials.StainlessSteel)});
+				"hXS", "XPX", "fXd",
+				'P', ItemList.Shape_Extruder_Block,
+				'X', new UnificationEntry(OrePrefix.plate, Materials.StainlessSteel),
+				'S', new UnificationEntry(OrePrefix.screw, Materials.StainlessSteel));
 
 
 		ItemList.Fuel_Can_Plastic_Empty.set(addItem(400).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Plastic, OrePrefix.plate.materialAmount)))); // "Empty Plastic Fuel Can", "Used to store Fuels"
@@ -587,8 +586,8 @@ public class MetaItem1 extends MaterialMetaItem {
 
 		ModHandler.addCraftingRecipe(ItemList.Fuel_Can_Plastic_Empty.get(7),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{" PP", "P P", "PPP",
-						'P', new UnificationEntry(OrePrefix.plate, Materials.Plastic)});
+				" PP", "P P", "PPP",
+				'P', new UnificationEntry(OrePrefix.plate, Materials.Plastic));
 
 		ItemList.Spray_Empty.set(addItem(402).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Tin, OrePrefix.plate.materialAmount * 2L), new MaterialStack(Materials.Redstone, OrePrefix.dust.materialAmount)))); //"Empty Spray Can", "Used for making Sprays",
 
@@ -603,15 +602,15 @@ public class MetaItem1 extends MaterialMetaItem {
 
 		ModHandler.addCraftingRecipe(ItemList.Crate_Empty.get(4),
 				ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{"SWS", "WdW", "SWS",
-						'W', new UnificationEntry(OrePrefix.plank, Materials.Wood),
-						'S', new UnificationEntry(OrePrefix.screw, Materials.AnyIron)});
+				"SWS", "WdW", "SWS",
+				'W', new UnificationEntry(OrePrefix.plank, Materials.Wood),
+				'S', new UnificationEntry(OrePrefix.screw, Materials.AnyIron));
 
 		ModHandler.addCraftingRecipe(ItemList.Crate_Empty.get(4),
 				ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{"SWS", "WdW", "SWS",
-						'W', new UnificationEntry(OrePrefix.plank, Materials.Wood),
-						'S', new UnificationEntry(OrePrefix.screw, Materials.Steel)});
+				"SWS", "WdW", "SWS",
+				'W', new UnificationEntry(OrePrefix.plank, Materials.Wood),
+				'S', new UnificationEntry(OrePrefix.screw, Materials.Steel));
 
 
 		ItemList.ThermosCan_Empty.set(addItem(404).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Aluminium, OrePrefix.plate.materialAmount + 2L * OrePrefix.ring.materialAmount)))); //"Empty Thermos Can", "Keeping hot things hot and cold things cold",
@@ -737,10 +736,10 @@ public class MetaItem1 extends MaterialMetaItem {
 
 		ModHandler.addCraftingRecipe(ItemList.Ingot_IridiumAlloy.get(1),
 				ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{"IAI", "ADA", "IAI",
-						'D', GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "iridiumplate", true) ? OreDictNames.craftingIndustrialDiamond : new UnificationEntry(OrePrefix.dust, Materials.Diamond),
-						'A', OrePrefix.plateAlloy.name() + "Advanced",
-						'I', new UnificationEntry(OrePrefix.plate, Materials.Iridium)});
+				"IAI", "ADA", "IAI",
+				'D', GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "iridiumplate", true) ? OreDictNames.craftingIndustrialDiamond : new UnificationEntry(OrePrefix.dust, Materials.Diamond),
+				'A', OrePrefix.plateAlloy.name() + "Advanced",
+				'I', new UnificationEntry(OrePrefix.plate, Materials.Iridium));
 
 		ItemList.Paper_Printed_Pages.set(addItem(481).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Paper, 10886400L))).addStats(new Behaviour_PrintedPages())); // "Printed Pages", "Used to make written Books",
 		ItemList.Paper_Magic_Empty.set(addItem(482).setInvisible().setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Paper, 3628800L)))); //"Magic Paper", "",
@@ -761,52 +760,52 @@ public class MetaItem1 extends MaterialMetaItem {
 
 		ModHandler.addCraftingRecipe(ItemList.Schematic_1by1.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{"d  ", textShape, textEmptyRow,
-						'P', ItemList.Schematic});
+				"d  ", textShape, textEmptyRow,
+				'P', ItemList.Schematic);
 
 		ModHandler.addCraftingRecipe(ItemList.Schematic_2by2.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{" d ", textShape, textEmptyRow,
-						'P', ItemList.Schematic});
+				" d ", textShape, textEmptyRow,
+				'P', ItemList.Schematic);
 
 		ModHandler.addCraftingRecipe(ItemList.Schematic_3by3.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{"  d", textShape, textEmptyRow,
-						'P', ItemList.Schematic});
+				"  d", textShape, textEmptyRow,
+				'P', ItemList.Schematic);
 
 		ModHandler.addCraftingRecipe(ItemList.Schematic_Dust.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{textEmptyRow, textShape, "  d",
-						'P', ItemList.Schematic});
+				textEmptyRow, textShape, "  d",
+				'P', ItemList.Schematic);
 
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Schematic.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Schematic_Crafting});
+				ItemList.Schematic_Crafting);
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Schematic.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Schematic_1by1});
+				ItemList.Schematic_1by1);
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Schematic.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Schematic_2by2});
+				ItemList.Schematic_2by2);
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Schematic.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Schematic_3by3});
+				ItemList.Schematic_3by3);
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Schematic.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{ItemList.Schematic_Dust});
+				ItemList.Schematic_Dust);
 
 
 		ItemList.Battery_Hull_LV.set(addItem(500).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount)))); //"Small Battery Hull", "An empty LV Battery Hull",
 		ItemList.Battery_Hull_MV.set(addItem(501).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount * 3L)))); //"Medium Battery Hull", "An empty MV Battery Hull",
 		ItemList.Battery_Hull_HV.set(addItem(502).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount * 9L)))); //"Large Battery Hull", "An empty HV Battery Hull",
 
-		ModHandler.addCraftingRecipe(ItemList.Battery_Hull_LV.get(1), ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"C", "P", "P", 'P', new UnificationEntry(OrePrefix.plate, Materials.BatteryAlloy), 'C', OreDictNames.craftingWireTin});
-		ModHandler.addCraftingRecipe(ItemList.Battery_Hull_MV.get(1), ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"C C", "PPP", "PPP", 'P', new UnificationEntry(OrePrefix.plate, Materials.BatteryAlloy), 'C', OreDictNames.craftingWireCopper});
+		ModHandler.addCraftingRecipe(ItemList.Battery_Hull_LV.get(1), ModHandler.RecipeBits.NOT_REMOVABLE, "C", "P", "P", 'P', new UnificationEntry(OrePrefix.plate, Materials.BatteryAlloy), 'C', OreDictNames.craftingWireTin);
+		ModHandler.addCraftingRecipe(ItemList.Battery_Hull_MV.get(1), ModHandler.RecipeBits.NOT_REMOVABLE, "C C", "PPP", "PPP", 'P', new UnificationEntry(OrePrefix.plate, Materials.BatteryAlloy), 'C', OreDictNames.craftingWireCopper);
 
 		ItemList.Battery_RE_ULV_Tantalum.set(addItem(499).addStats(new ElectricStats(1000, 0))); // "Tantalum Capacitor", "Reusable"
 
@@ -921,51 +920,51 @@ public class MetaItem1 extends MaterialMetaItem {
 
 		ModHandler.addCraftingRecipe(ItemList.Electric_Motor_LV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"CWR", "WIW", "RWC",
-						'I', new UnificationEntry(OrePrefix.stick, Materials.IronMagnetic),
-						'R', new UnificationEntry(OrePrefix.stick, Materials.AnyIron),
-						'W', new UnificationEntry(OrePrefix.wireGt01, Materials.AnyCopper),
-						'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin)});
+				"CWR", "WIW", "RWC",
+				'I', new UnificationEntry(OrePrefix.stick, Materials.IronMagnetic),
+				'R', new UnificationEntry(OrePrefix.stick, Materials.AnyIron),
+				'W', new UnificationEntry(OrePrefix.wireGt01, Materials.AnyCopper),
+				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin));
 
 		ModHandler.addCraftingRecipe(ItemList.Electric_Motor_LV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{"CWR", "WIW", "RWC",
-						'I', new UnificationEntry(OrePrefix.stick, Materials.SteelMagnetic),
-						'R', new UnificationEntry(OrePrefix.stick, Materials.Steel),
-						'W', new UnificationEntry(OrePrefix.wireGt01, Materials.AnyCopper),
-						'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin)});
+				"CWR", "WIW", "RWC",
+				'I', new UnificationEntry(OrePrefix.stick, Materials.SteelMagnetic),
+				'R', new UnificationEntry(OrePrefix.stick, Materials.Steel),
+				'W', new UnificationEntry(OrePrefix.wireGt01, Materials.AnyCopper),
+				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin));
 
 		ModHandler.addCraftingRecipe(ItemList.Electric_Motor_MV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"CWR", "WIW", "RWC",
-						'I', new UnificationEntry(OrePrefix.stick, Materials.SteelMagnetic),
-						'R', new UnificationEntry(OrePrefix.stick, Materials.Aluminium),
-						'W', new UnificationEntry(OrePrefix.wireGt02, Materials.AnyCopper),
-						'C', new UnificationEntry(OrePrefix.cableGt01, Materials.AnyCopper)});
+				"CWR", "WIW", "RWC",
+				'I', new UnificationEntry(OrePrefix.stick, Materials.SteelMagnetic),
+				'R', new UnificationEntry(OrePrefix.stick, Materials.Aluminium),
+				'W', new UnificationEntry(OrePrefix.wireGt02, Materials.AnyCopper),
+				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.AnyCopper));
 
 		ModHandler.addCraftingRecipe(ItemList.Electric_Motor_HV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"CWR", "WIW", "RWC",
-						'I', new UnificationEntry(OrePrefix.stick, Materials.SteelMagnetic),
-						'R', new UnificationEntry(OrePrefix.stick, Materials.StainlessSteel),
-						'W', new UnificationEntry(OrePrefix.wireGt04, Materials.AnyCopper),
-						'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold)});
+				"CWR", "WIW", "RWC",
+				'I', new UnificationEntry(OrePrefix.stick, Materials.SteelMagnetic),
+				'R', new UnificationEntry(OrePrefix.stick, Materials.StainlessSteel),
+				'W', new UnificationEntry(OrePrefix.wireGt04, Materials.AnyCopper),
+				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold));
 
 		ModHandler.addCraftingRecipe(ItemList.Electric_Motor_EV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"CWR", "WIW", "RWC",
-						'I', new UnificationEntry(OrePrefix.stick, Materials.NeodymiumMagnetic),
-						'R', new UnificationEntry(OrePrefix.stick, Materials.Titanium),
-						'W', new UnificationEntry(OrePrefix.wireGt08, Materials.AnnealedCopper),
-						'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Aluminium)});
+				"CWR", "WIW", "RWC",
+				'I', new UnificationEntry(OrePrefix.stick, Materials.NeodymiumMagnetic),
+				'R', new UnificationEntry(OrePrefix.stick, Materials.Titanium),
+				'W', new UnificationEntry(OrePrefix.wireGt08, Materials.AnnealedCopper),
+				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Aluminium));
 
 		ModHandler.addCraftingRecipe(ItemList.Electric_Motor_IV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"CWR", "WIW", "RWC",
-						'I', new UnificationEntry(OrePrefix.stick, Materials.NeodymiumMagnetic),
-						'R', new UnificationEntry(OrePrefix.stick, Materials.TungstenSteel),
-						'W', new UnificationEntry(OrePrefix.wireGt16, Materials.AnnealedCopper),
-						'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tungsten)});
+				"CWR", "WIW", "RWC",
+				'I', new UnificationEntry(OrePrefix.stick, Materials.NeodymiumMagnetic),
+				'R', new UnificationEntry(OrePrefix.stick, Materials.TungstenSteel),
+				'W', new UnificationEntry(OrePrefix.wireGt16, Materials.AnnealedCopper),
+				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tungsten));
 
 
 		ItemList.Electric_Pump_LV.set(addItem(610)); //"Electric Pump (LV)", "640 L/sec (as Cover)"
@@ -996,53 +995,53 @@ public class MetaItem1 extends MaterialMetaItem {
 
 		ModHandler.addCraftingRecipe(ItemList.Electric_Pump_LV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"SXO", "dPw", "OMW",
-						'M', ItemList.Electric_Motor_LV,
-						'O', new UnificationEntry(OrePrefix.ring, Materials.Rubber),
-						'X', new UnificationEntry(OrePrefix.rotor, Materials.Tin),
-						'S', new UnificationEntry(OrePrefix.screw, Materials.Tin),
-						'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin),
-						'P', new UnificationEntry(OrePrefix.pipeMedium, Materials.Bronze)});
+				"SXO", "dPw", "OMW",
+				'M', ItemList.Electric_Motor_LV,
+				'O', new UnificationEntry(OrePrefix.ring, Materials.Rubber),
+				'X', new UnificationEntry(OrePrefix.rotor, Materials.Tin),
+				'S', new UnificationEntry(OrePrefix.screw, Materials.Tin),
+				'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin),
+				'P', new UnificationEntry(OrePrefix.pipeMedium, Materials.Bronze));
 
 		ModHandler.addCraftingRecipe(ItemList.Electric_Pump_MV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"SXO", "dPw", "OMW",
-						'M', ItemList.Electric_Motor_MV,
-						'O', new UnificationEntry(OrePrefix.ring, Materials.Rubber),
-						'X', new UnificationEntry(OrePrefix.rotor, Materials.Bronze),
-						'S', new UnificationEntry(OrePrefix.screw, Materials.Bronze),
-						'W', new UnificationEntry(OrePrefix.cableGt01, Materials.AnyCopper),
-						'P', new UnificationEntry(OrePrefix.pipeMedium, Materials.Steel)});
+				"SXO", "dPw", "OMW",
+				'M', ItemList.Electric_Motor_MV,
+				'O', new UnificationEntry(OrePrefix.ring, Materials.Rubber),
+				'X', new UnificationEntry(OrePrefix.rotor, Materials.Bronze),
+				'S', new UnificationEntry(OrePrefix.screw, Materials.Bronze),
+				'W', new UnificationEntry(OrePrefix.cableGt01, Materials.AnyCopper),
+				'P', new UnificationEntry(OrePrefix.pipeMedium, Materials.Steel));
 
 		ModHandler.addCraftingRecipe(ItemList.Electric_Pump_HV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"SXO", "dPw", "OMW",
-						'M', ItemList.Electric_Motor_HV,
-						'O', new UnificationEntry(OrePrefix.ring, Materials.Rubber),
-						'X', new UnificationEntry(OrePrefix.rotor, Materials.Steel),
-						'S', new UnificationEntry(OrePrefix.screw, Materials.Steel),
-						'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold),
-						'P', new UnificationEntry(OrePrefix.pipeMedium, Materials.StainlessSteel)});
+				"SXO", "dPw", "OMW",
+				'M', ItemList.Electric_Motor_HV,
+				'O', new UnificationEntry(OrePrefix.ring, Materials.Rubber),
+				'X', new UnificationEntry(OrePrefix.rotor, Materials.Steel),
+				'S', new UnificationEntry(OrePrefix.screw, Materials.Steel),
+				'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold),
+				'P', new UnificationEntry(OrePrefix.pipeMedium, Materials.StainlessSteel));
 
 		ModHandler.addCraftingRecipe(ItemList.Electric_Pump_EV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"SXO", "dPw", "OMW",
-						'M', ItemList.Electric_Motor_EV,
-						'O', new UnificationEntry(OrePrefix.ring, Materials.Rubber),
-						'X', new UnificationEntry(OrePrefix.rotor, Materials.StainlessSteel),
-						'S', new UnificationEntry(OrePrefix.screw, Materials.StainlessSteel),
-						'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Aluminium),
-						'P', new UnificationEntry(OrePrefix.pipeMedium, Materials.Titanium)});
+				"SXO", "dPw", "OMW",
+				'M', ItemList.Electric_Motor_EV,
+				'O', new UnificationEntry(OrePrefix.ring, Materials.Rubber),
+				'X', new UnificationEntry(OrePrefix.rotor, Materials.StainlessSteel),
+				'S', new UnificationEntry(OrePrefix.screw, Materials.StainlessSteel),
+				'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Aluminium),
+				'P', new UnificationEntry(OrePrefix.pipeMedium, Materials.Titanium));
 
 		ModHandler.addCraftingRecipe(ItemList.Electric_Pump_IV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"SXO", "dPw", "OMW",
-						'M', ItemList.Electric_Motor_IV,
-						'O', new UnificationEntry(OrePrefix.ring, Materials.Rubber),
-						'X', new UnificationEntry(OrePrefix.rotor, Materials.TungstenSteel),
-						'S', new UnificationEntry(OrePrefix.screw, Materials.TungstenSteel),
-						'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Tungsten),
-						'P', new UnificationEntry(OrePrefix.pipeMedium, Materials.TungstenSteel)});
+				"SXO", "dPw", "OMW",
+				'M', ItemList.Electric_Motor_IV,
+				'O', new UnificationEntry(OrePrefix.ring, Materials.Rubber),
+				'X', new UnificationEntry(OrePrefix.rotor, Materials.TungstenSteel),
+				'S', new UnificationEntry(OrePrefix.screw, Materials.TungstenSteel),
+				'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Tungsten),
+				'P', new UnificationEntry(OrePrefix.pipeMedium, Materials.TungstenSteel));
 
 
 		ItemList.Conveyor_Module_LV.set(addItem(630)); //"Conveyor Module (LV)", "1 Stack every 20 secs (as Cover)"
@@ -1056,38 +1055,38 @@ public class MetaItem1 extends MaterialMetaItem {
 
 		ModHandler.addCraftingRecipe(ItemList.Conveyor_Module_LV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"RRR", "MCM", "RRR",
-						'M', ItemList.Electric_Motor_LV,
-						'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin),
-						'R', new UnificationEntry(OrePrefix.plate, Materials.Rubber)});
+				"RRR", "MCM", "RRR",
+				'M', ItemList.Electric_Motor_LV,
+				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin),
+				'R', new UnificationEntry(OrePrefix.plate, Materials.Rubber));
 
 		ModHandler.addCraftingRecipe(ItemList.Conveyor_Module_MV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"RRR", "MCM", "RRR",
-						'M', ItemList.Electric_Motor_MV,
-						'C', new UnificationEntry(OrePrefix.cableGt01, Materials.AnyCopper),
-						'R', new UnificationEntry(OrePrefix.plate, Materials.Rubber)});
+				"RRR", "MCM", "RRR",
+				'M', ItemList.Electric_Motor_MV,
+				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.AnyCopper),
+				'R', new UnificationEntry(OrePrefix.plate, Materials.Rubber));
 
 		ModHandler.addCraftingRecipe(ItemList.Conveyor_Module_HV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"RRR", "MCM", "RRR",
-						'M', ItemList.Electric_Motor_HV,
-						'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold),
-						'R', new UnificationEntry(OrePrefix.plate, Materials.Rubber)});
+				"RRR", "MCM", "RRR",
+				'M', ItemList.Electric_Motor_HV,
+				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold),
+				'R', new UnificationEntry(OrePrefix.plate, Materials.Rubber));
 
 		ModHandler.addCraftingRecipe(ItemList.Conveyor_Module_EV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"RRR", "MCM", "RRR",
-						'M', ItemList.Electric_Motor_EV,
-						'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Aluminium),
-						'R', new UnificationEntry(OrePrefix.plate, Materials.Rubber)});
+				"RRR", "MCM", "RRR",
+				'M', ItemList.Electric_Motor_EV,
+				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Aluminium),
+				'R', new UnificationEntry(OrePrefix.plate, Materials.Rubber));
 
 		ModHandler.addCraftingRecipe(ItemList.Conveyor_Module_IV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"RRR", "MCM", "RRR",
-						'M', ItemList.Electric_Motor_IV,
-						'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tungsten),
-						'R', new UnificationEntry(OrePrefix.plate, Materials.Rubber)});
+				"RRR", "MCM", "RRR",
+				'M', ItemList.Electric_Motor_IV,
+				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tungsten),
+				'R', new UnificationEntry(OrePrefix.plate, Materials.Rubber));
 
 
 		ItemList.Electric_Piston_LV.set(addItem(640)); //"Electric Piston (LV)", ""
@@ -1101,48 +1100,48 @@ public class MetaItem1 extends MaterialMetaItem {
 
 		ModHandler.addCraftingRecipe(ItemList.Electric_Piston_LV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"PPP", "CSS", "CMG",
-						'P', new UnificationEntry(OrePrefix.plate, Materials.Steel),
-						'S', new UnificationEntry(OrePrefix.stick, Materials.Steel),
-						'G', new UnificationEntry(OrePrefix.gearGtSmall, Materials.Steel),
-						'M', ItemList.Electric_Motor_LV,
-						'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin)});
+				"PPP", "CSS", "CMG",
+				'P', new UnificationEntry(OrePrefix.plate, Materials.Steel),
+				'S', new UnificationEntry(OrePrefix.stick, Materials.Steel),
+				'G', new UnificationEntry(OrePrefix.gearGtSmall, Materials.Steel),
+				'M', ItemList.Electric_Motor_LV,
+				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin));
 
 		ModHandler.addCraftingRecipe(ItemList.Electric_Piston_MV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"PPP", "CSS", "CMG",
-						'P', new UnificationEntry(OrePrefix.plate, Materials.Aluminium),
-						'S', new UnificationEntry(OrePrefix.stick, Materials.Aluminium),
-						'G', new UnificationEntry(OrePrefix.gearGtSmall, Materials.Aluminium),
-						'M', ItemList.Electric_Motor_MV,
-						'C', new UnificationEntry(OrePrefix.cableGt01, Materials.AnyCopper)});
+				"PPP", "CSS", "CMG",
+				'P', new UnificationEntry(OrePrefix.plate, Materials.Aluminium),
+				'S', new UnificationEntry(OrePrefix.stick, Materials.Aluminium),
+				'G', new UnificationEntry(OrePrefix.gearGtSmall, Materials.Aluminium),
+				'M', ItemList.Electric_Motor_MV,
+				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.AnyCopper));
 
 		ModHandler.addCraftingRecipe(ItemList.Electric_Piston_HV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"PPP", "CSS", "CMG",
-						'P', new UnificationEntry(OrePrefix.plate, Materials.StainlessSteel),
-						'S', new UnificationEntry(OrePrefix.stick, Materials.StainlessSteel),
-						'G', new UnificationEntry(OrePrefix.gearGtSmall, Materials.StainlessSteel),
-						'M', ItemList.Electric_Motor_HV,
-						'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold)});
+				"PPP", "CSS", "CMG",
+				'P', new UnificationEntry(OrePrefix.plate, Materials.StainlessSteel),
+				'S', new UnificationEntry(OrePrefix.stick, Materials.StainlessSteel),
+				'G', new UnificationEntry(OrePrefix.gearGtSmall, Materials.StainlessSteel),
+				'M', ItemList.Electric_Motor_HV,
+				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold));
 
 		ModHandler.addCraftingRecipe(ItemList.Electric_Piston_EV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"PPP", "CSS", "CMG",
-						'P', new UnificationEntry(OrePrefix.plate, Materials.Titanium),
-						'S', new UnificationEntry(OrePrefix.stick, Materials.Titanium),
-						'G', new UnificationEntry(OrePrefix.gearGtSmall, Materials.Titanium),
-						'M', ItemList.Electric_Motor_EV,
-						'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Aluminium)});
+				"PPP", "CSS", "CMG",
+				'P', new UnificationEntry(OrePrefix.plate, Materials.Titanium),
+				'S', new UnificationEntry(OrePrefix.stick, Materials.Titanium),
+				'G', new UnificationEntry(OrePrefix.gearGtSmall, Materials.Titanium),
+				'M', ItemList.Electric_Motor_EV,
+				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Aluminium));
 
 		ModHandler.addCraftingRecipe(ItemList.Electric_Piston_IV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"PPP", "CSS", "CMG",
-						'P', new UnificationEntry(OrePrefix.plate, Materials.TungstenSteel),
-						'S', new UnificationEntry(OrePrefix.stick, Materials.TungstenSteel),
-						'G', new UnificationEntry(OrePrefix.gearGtSmall, Materials.TungstenSteel),
-						'M', ItemList.Electric_Motor_IV,
-						'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tungsten)});
+				"PPP", "CSS", "CMG",
+				'P', new UnificationEntry(OrePrefix.plate, Materials.TungstenSteel),
+				'S', new UnificationEntry(OrePrefix.stick, Materials.TungstenSteel),
+				'G', new UnificationEntry(OrePrefix.gearGtSmall, Materials.TungstenSteel),
+				'M', ItemList.Electric_Motor_IV,
+				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tungsten));
 
 
 		ItemList.Robot_Arm_LV.set(addItem(650)); //"Robot Arm (LV)", "Inserts into specific Slots (as Cover)"
@@ -1156,43 +1155,43 @@ public class MetaItem1 extends MaterialMetaItem {
 
 		ModHandler.addCraftingRecipe(ItemList.Robot_Arm_LV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"CCC", "MSM", "PES",
-						'S', new UnificationEntry(OrePrefix.stick, Materials.Steel),
-						'M', ItemList.Electric_Motor_LV, 'P', ItemList.Electric_Piston_LV,
-						'E', new UnificationEntry(OrePrefix.circuit, Materials.Basic),
-						'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin)});
+				"CCC", "MSM", "PES",
+				'S', new UnificationEntry(OrePrefix.stick, Materials.Steel),
+				'M', ItemList.Electric_Motor_LV, 'P', ItemList.Electric_Piston_LV,
+				'E', new UnificationEntry(OrePrefix.circuit, Materials.Basic),
+				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin));
 
 		ModHandler.addCraftingRecipe(ItemList.Robot_Arm_MV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"CCC", "MSM", "PES",
-						'S', new UnificationEntry(OrePrefix.stick, Materials.Aluminium),
-						'M', ItemList.Electric_Motor_MV, 'P', ItemList.Electric_Piston_MV,
-						'E', new UnificationEntry(OrePrefix.circuit, Materials.Good),
-						'C', new UnificationEntry(OrePrefix.cableGt01, Materials.AnyCopper)});
+				"CCC", "MSM", "PES",
+				'S', new UnificationEntry(OrePrefix.stick, Materials.Aluminium),
+				'M', ItemList.Electric_Motor_MV, 'P', ItemList.Electric_Piston_MV,
+				'E', new UnificationEntry(OrePrefix.circuit, Materials.Good),
+				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.AnyCopper));
 
 		ModHandler.addCraftingRecipe(ItemList.Robot_Arm_HV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"CCC", "MSM", "PES",
-						'S', new UnificationEntry(OrePrefix.stick, Materials.StainlessSteel),
-						'M', ItemList.Electric_Motor_HV, 'P', ItemList.Electric_Piston_HV,
-						'E', new UnificationEntry(OrePrefix.circuit, Materials.Advanced),
-						'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold)});
+				"CCC", "MSM", "PES",
+				'S', new UnificationEntry(OrePrefix.stick, Materials.StainlessSteel),
+				'M', ItemList.Electric_Motor_HV, 'P', ItemList.Electric_Piston_HV,
+				'E', new UnificationEntry(OrePrefix.circuit, Materials.Advanced),
+				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold));
 
 		ModHandler.addCraftingRecipe(ItemList.Robot_Arm_EV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"CCC", "MSM", "PES",
-						'S', new UnificationEntry(OrePrefix.stick, Materials.Titanium),
-						'M', ItemList.Electric_Motor_EV, 'P', ItemList.Electric_Piston_EV,
-						'E', new UnificationEntry(OrePrefix.circuit, Materials.Elite),
-						'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Aluminium)});
+				"CCC", "MSM", "PES",
+				'S', new UnificationEntry(OrePrefix.stick, Materials.Titanium),
+				'M', ItemList.Electric_Motor_EV, 'P', ItemList.Electric_Piston_EV,
+				'E', new UnificationEntry(OrePrefix.circuit, Materials.Elite),
+				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Aluminium));
 
 		ModHandler.addCraftingRecipe(ItemList.Robot_Arm_IV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"CCC", "MSM", "PES",
-						'S', new UnificationEntry(OrePrefix.stick, Materials.TungstenSteel),
-						'M', ItemList.Electric_Motor_IV, 'P', ItemList.Electric_Piston_IV,
-						'E', new UnificationEntry(OrePrefix.circuit, Materials.Master),
-						'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tungsten)});
+				"CCC", "MSM", "PES",
+				'S', new UnificationEntry(OrePrefix.stick, Materials.TungstenSteel),
+				'M', ItemList.Electric_Motor_IV, 'P', ItemList.Electric_Piston_IV,
+				'E', new UnificationEntry(OrePrefix.circuit, Materials.Master),
+				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tungsten));
 
 		ItemList.Field_Generator_LV.set(addItem(670)); //"Field Generator (LV)", ""
 		ItemList.Field_Generator_MV.set(addItem(671)); //"Field Generator (MV)", ""
@@ -1205,17 +1204,17 @@ public class MetaItem1 extends MaterialMetaItem {
 
 		ModHandler.addCraftingRecipe(ItemList.Field_Generator_LV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"WCW", "CGC", "WCW",
-						'G', new UnificationEntry(OrePrefix.gem, Materials.EnderPearl),
-						'C', new UnificationEntry(OrePrefix.circuit, Materials.Basic),
-						'W', new UnificationEntry(OrePrefix.wireGt01, Materials.Osmium)});
+				"WCW", "CGC", "WCW",
+				'G', new UnificationEntry(OrePrefix.gem, Materials.EnderPearl),
+				'C', new UnificationEntry(OrePrefix.circuit, Materials.Basic),
+				'W', new UnificationEntry(OrePrefix.wireGt01, Materials.Osmium));
 
 		ModHandler.addCraftingRecipe(ItemList.Field_Generator_MV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"WCW", "CGC", "WCW",
-						'G', new UnificationEntry(OrePrefix.gem, Materials.EnderEye),
-						'C', new UnificationEntry(OrePrefix.circuit, Materials.Good),
-						'W', new UnificationEntry(OrePrefix.wireGt02, Materials.Osmium)});
+				"WCW", "CGC", "WCW",
+				'G', new UnificationEntry(OrePrefix.gem, Materials.EnderEye),
+				'C', new UnificationEntry(OrePrefix.circuit, Materials.Good),
+				'W', new UnificationEntry(OrePrefix.wireGt02, Materials.Osmium));
 
 		ItemList.Emitter_LV.set(addItem(680)); //"Emitter (LV)", ""
 		ItemList.Emitter_MV.set(addItem(681)); //"Emitter (MV)", ""
@@ -1228,43 +1227,43 @@ public class MetaItem1 extends MaterialMetaItem {
 
 		ModHandler.addCraftingRecipe(ItemList.Emitter_LV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"SSC", "WQS", "CWS",
-						'Q', new UnificationEntry(OrePrefix.gem, Materials.Quartzite),
-						'S', new UnificationEntry(OrePrefix.stick, Materials.Brass),
-						'C', new UnificationEntry(OrePrefix.circuit, Materials.Basic),
-						'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin)});
+				"SSC", "WQS", "CWS",
+				'Q', new UnificationEntry(OrePrefix.gem, Materials.Quartzite),
+				'S', new UnificationEntry(OrePrefix.stick, Materials.Brass),
+				'C', new UnificationEntry(OrePrefix.circuit, Materials.Basic),
+				'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin));
 
 		ModHandler.addCraftingRecipe(ItemList.Emitter_MV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"SSC", "WQS", "CWS",
-						'Q', new UnificationEntry(OrePrefix.gem, Materials.NetherQuartz),
-						'S', new UnificationEntry(OrePrefix.stick, Materials.Electrum),
-						'C', new UnificationEntry(OrePrefix.circuit, Materials.Good),
-						'W', new UnificationEntry(OrePrefix.cableGt01, Materials.AnyCopper)});
+				"SSC", "WQS", "CWS",
+				'Q', new UnificationEntry(OrePrefix.gem, Materials.NetherQuartz),
+				'S', new UnificationEntry(OrePrefix.stick, Materials.Electrum),
+				'C', new UnificationEntry(OrePrefix.circuit, Materials.Good),
+				'W', new UnificationEntry(OrePrefix.cableGt01, Materials.AnyCopper));
 
 		ModHandler.addCraftingRecipe(ItemList.Emitter_HV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"SSC", "WQS", "CWS",
-						'Q', new UnificationEntry(OrePrefix.gem, Materials.Emerald),
-						'S', new UnificationEntry(OrePrefix.stick, Materials.Chrome),
-						'C', new UnificationEntry(OrePrefix.circuit, Materials.Advanced),
-						'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold)});
+				"SSC", "WQS", "CWS",
+				'Q', new UnificationEntry(OrePrefix.gem, Materials.Emerald),
+				'S', new UnificationEntry(OrePrefix.stick, Materials.Chrome),
+				'C', new UnificationEntry(OrePrefix.circuit, Materials.Advanced),
+				'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold));
 
 		ModHandler.addCraftingRecipe(ItemList.Emitter_EV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"SSC", "WQS", "CWS",
-						'Q', new UnificationEntry(OrePrefix.gem, Materials.EnderPearl),
-						'S', new UnificationEntry(OrePrefix.stick, Materials.Platinum),
-						'C', new UnificationEntry(OrePrefix.circuit, Materials.Elite),
-						'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Aluminium)});
+				"SSC", "WQS", "CWS",
+				'Q', new UnificationEntry(OrePrefix.gem, Materials.EnderPearl),
+				'S', new UnificationEntry(OrePrefix.stick, Materials.Platinum),
+				'C', new UnificationEntry(OrePrefix.circuit, Materials.Elite),
+				'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Aluminium));
 
 		ModHandler.addCraftingRecipe(ItemList.Emitter_IV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"SSC", "WQS", "CWS",
-						'Q', new UnificationEntry(OrePrefix.gem, Materials.EnderEye),
-						'S', new UnificationEntry(OrePrefix.stick, Materials.Osmium),
-						'C', new UnificationEntry(OrePrefix.circuit, Materials.Master),
-						'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Tungsten)});
+				"SSC", "WQS", "CWS",
+				'Q', new UnificationEntry(OrePrefix.gem, Materials.EnderEye),
+				'S', new UnificationEntry(OrePrefix.stick, Materials.Osmium),
+				'C', new UnificationEntry(OrePrefix.circuit, Materials.Master),
+				'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Tungsten));
 
 
 		ItemList.Sensor_LV.set(addItem(690)); //"Sensor (LV)", ""
@@ -1278,43 +1277,43 @@ public class MetaItem1 extends MaterialMetaItem {
 
 		ModHandler.addCraftingRecipe(ItemList.Sensor_LV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"P Q", "PS ", "CPP",
-						'Q', new UnificationEntry(OrePrefix.gem, Materials.Quartzite),
-						'S', new UnificationEntry(OrePrefix.stick, Materials.Brass),
-						'P', new UnificationEntry(OrePrefix.plate, Materials.Steel),
-						'C', new UnificationEntry(OrePrefix.circuit, Materials.Basic)});
+				"P Q", "PS ", "CPP",
+				'Q', new UnificationEntry(OrePrefix.gem, Materials.Quartzite),
+				'S', new UnificationEntry(OrePrefix.stick, Materials.Brass),
+				'P', new UnificationEntry(OrePrefix.plate, Materials.Steel),
+				'C', new UnificationEntry(OrePrefix.circuit, Materials.Basic));
 
 		ModHandler.addCraftingRecipe(ItemList.Sensor_MV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"P Q", "PS ", "CPP",
-						'Q', new UnificationEntry(OrePrefix.gem, Materials.NetherQuartz),
-						'S', new UnificationEntry(OrePrefix.stick, Materials.Electrum),
-						'P', new UnificationEntry(OrePrefix.plate, Materials.Aluminium),
-						'C', new UnificationEntry(OrePrefix.circuit, Materials.Good)});
+				"P Q", "PS ", "CPP",
+				'Q', new UnificationEntry(OrePrefix.gem, Materials.NetherQuartz),
+				'S', new UnificationEntry(OrePrefix.stick, Materials.Electrum),
+				'P', new UnificationEntry(OrePrefix.plate, Materials.Aluminium),
+				'C', new UnificationEntry(OrePrefix.circuit, Materials.Good));
 
 		ModHandler.addCraftingRecipe(ItemList.Sensor_HV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"P Q", "PS ", "CPP",
-						'Q', new UnificationEntry(OrePrefix.gem, Materials.Emerald),
-						'S', new UnificationEntry(OrePrefix.stick, Materials.Chrome),
-						'P', new UnificationEntry(OrePrefix.plate, Materials.StainlessSteel),
-						'C', new UnificationEntry(OrePrefix.circuit, Materials.Advanced)});
+				"P Q", "PS ", "CPP",
+				'Q', new UnificationEntry(OrePrefix.gem, Materials.Emerald),
+				'S', new UnificationEntry(OrePrefix.stick, Materials.Chrome),
+				'P', new UnificationEntry(OrePrefix.plate, Materials.StainlessSteel),
+				'C', new UnificationEntry(OrePrefix.circuit, Materials.Advanced));
 
 		ModHandler.addCraftingRecipe(ItemList.Sensor_EV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"P Q", "PS ", "CPP",
-						'Q', new UnificationEntry(OrePrefix.gem, Materials.EnderPearl),
-						'S', new UnificationEntry(OrePrefix.stick, Materials.Platinum),
-						'P', new UnificationEntry(OrePrefix.plate, Materials.Titanium),
-						'C', new UnificationEntry(OrePrefix.circuit, Materials.Elite)});
+				"P Q", "PS ", "CPP",
+				'Q', new UnificationEntry(OrePrefix.gem, Materials.EnderPearl),
+				'S', new UnificationEntry(OrePrefix.stick, Materials.Platinum),
+				'P', new UnificationEntry(OrePrefix.plate, Materials.Titanium),
+				'C', new UnificationEntry(OrePrefix.circuit, Materials.Elite));
 
 		ModHandler.addCraftingRecipe(ItemList.Sensor_IV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"P Q", "PS ", "CPP",
-						'Q', new UnificationEntry(OrePrefix.gem, Materials.EnderEye),
-						'S', new UnificationEntry(OrePrefix.stick, Materials.Osmium),
-						'P', new UnificationEntry(OrePrefix.plate, Materials.TungstenSteel),
-						'C', new UnificationEntry(OrePrefix.circuit, Materials.Master)});
+				"P Q", "PS ", "CPP",
+				'Q', new UnificationEntry(OrePrefix.gem, Materials.EnderEye),
+				'S', new UnificationEntry(OrePrefix.stick, Materials.Osmium),
+				'P', new UnificationEntry(OrePrefix.plate, Materials.TungstenSteel),
+				'C', new UnificationEntry(OrePrefix.circuit, Materials.Master));
 
 
 		ItemList.Circuit_Primitive.set(addItem(700).setUnificationData(OrePrefix.circuit, Materials.Primitive)); // "NAND Chip", "A very simple Circuit",
@@ -1326,9 +1325,9 @@ public class MetaItem1 extends MaterialMetaItem {
 		ItemList.Circuit_Master.set(addItem(706).setUnificationData(OrePrefix.circuit, Materials.Master)); //"Energy Flow Circuit", "A High Voltage Processor"
 		ItemList.Tool_DataOrb.set(addItem(707).setUnificationData(OrePrefix.circuit, Materials.Ultimate).addStats(new Behaviour_DataOrb())); //"Data Orb", "A High Capacity Data Storage"
 		ItemList.Circuit_Ultimate.set(ItemList.Tool_DataOrb.get(1));
-		ModHandler.addShapelessCraftingRecipe(ItemList.Tool_DataOrb.get(1), ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ItemList.Tool_DataOrb.get(1)});
+		ModHandler.addShapelessCraftingRecipe(ItemList.Tool_DataOrb.get(1), ModHandler.RecipeBits.NOT_REMOVABLE, ItemList.Tool_DataOrb.get(1));
 		ItemList.Tool_DataStick.set(addItem(708).setUnificationData(OrePrefix.circuit, Materials.Data).addStats(new Behaviour_DataStick())); //"Data Stick", "A Low Capacity Data Storage",
-		ModHandler.addShapelessCraftingRecipe(ItemList.Tool_DataStick.get(1), ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ItemList.Tool_DataStick.get(1)});
+		ModHandler.addShapelessCraftingRecipe(ItemList.Tool_DataStick.get(1), ModHandler.RecipeBits.NOT_REMOVABLE, ItemList.Tool_DataStick.get(1));
 
 
 		ItemList.Circuit_Board_Basic.set(addItem(710)); //"Basic Circuit Board", "A basic Board"
@@ -1354,45 +1353,45 @@ public class MetaItem1 extends MaterialMetaItem {
 
 		ModHandler.addCraftingRecipe(ItemList.Field_Generator_HV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"WCW", "CGC", "WCW",
-						'G', ItemList.QuantumEye.get(1),
-						'C', new UnificationEntry(OrePrefix.circuit, Materials.Advanced),
-						'W', new UnificationEntry(OrePrefix.wireGt04, Materials.Osmium)});
+				"WCW", "CGC", "WCW",
+				'G', ItemList.QuantumEye.get(1),
+				'C', new UnificationEntry(OrePrefix.circuit, Materials.Advanced),
+				'W', new UnificationEntry(OrePrefix.wireGt04, Materials.Osmium));
 
 		ModHandler.addCraftingRecipe(ItemList.Field_Generator_EV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"WCW", "CGC", "WCW",
-						'G', new UnificationEntry(OrePrefix.gem, Materials.NetherStar),
-						'C', new UnificationEntry(OrePrefix.circuit, Materials.Elite),
-						'W', new UnificationEntry(OrePrefix.wireGt08, Materials.Osmium)});
+				"WCW", "CGC", "WCW",
+				'G', new UnificationEntry(OrePrefix.gem, Materials.NetherStar),
+				'C', new UnificationEntry(OrePrefix.circuit, Materials.Elite),
+				'W', new UnificationEntry(OrePrefix.wireGt08, Materials.Osmium));
 
 		ModHandler.addCraftingRecipe(ItemList.Field_Generator_IV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"WCW", "CGC", "WCW",
-						'G', ItemList.QuantumStar.get(1),
-						'C', new UnificationEntry(OrePrefix.circuit, Materials.Master),
-						'W', new UnificationEntry(OrePrefix.wireGt16, Materials.Osmium)});
+				"WCW", "CGC", "WCW",
+				'G', ItemList.QuantumStar.get(1),
+				'C', new UnificationEntry(OrePrefix.circuit, Materials.Master),
+				'W', new UnificationEntry(OrePrefix.wireGt16, Materials.Osmium));
 
 
 		ModHandler.addCraftingRecipe(ItemList.Component_Sawblade_Diamond.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{" D ", "DGD", " D ",
-						'D', new UnificationEntry(OrePrefix.dustSmall, Materials.Diamond),
-						'G', new UnificationEntry(OrePrefix.gearGt, Materials.CobaltBrass)});
+				" D ", "DGD", " D ",
+				'D', new UnificationEntry(OrePrefix.dustSmall, Materials.Diamond),
+				'G', new UnificationEntry(OrePrefix.gearGt, Materials.CobaltBrass));
 
 		ModHandler.addCraftingRecipe(ItemList.Component_Grinder_Diamond.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"DSD", "SIS", "DSD",
-						'I', OreDictNames.craftingIndustrialDiamond,
-						'D', new UnificationEntry(OrePrefix.dust, Materials.Diamond),
-						'S', new UnificationEntry(OrePrefix.plate, Materials.Steel)});
+				"DSD", "SIS", "DSD",
+				'I', OreDictNames.craftingIndustrialDiamond,
+				'D', new UnificationEntry(OrePrefix.dust, Materials.Diamond),
+				'S', new UnificationEntry(OrePrefix.plate, Materials.Steel));
 
 		ModHandler.addCraftingRecipe(ItemList.Component_Grinder_Tungsten.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"TST", "SIS", "TST",
-						'I', OreDictNames.craftingIndustrialDiamond,
-						'T', new UnificationEntry(OrePrefix.plate, Materials.Tungsten),
-						'S', new UnificationEntry(OrePrefix.plate, Materials.Steel)});
+				"TST", "SIS", "TST",
+				'I', OreDictNames.craftingIndustrialDiamond,
+				'T', new UnificationEntry(OrePrefix.plate, Materials.Tungsten),
+				'S', new UnificationEntry(OrePrefix.plate, Materials.Steel));
 
 		ItemList.Upgrade_Muffler.set(addItem(727)); //"Muffler Upgrade", "Makes Machines silent"
 		ItemList.Upgrade_Lock.set(addItem(728)); //"Lock Upgrade", "Protects your Machines"
@@ -1466,13 +1465,13 @@ public class MetaItem1 extends MaterialMetaItem {
 		ItemList.Tool_Scanner.set(addItem(762).addStats(new Behaviour_Scanner(), new ElectricStats(400000, 2, true, false))); // "Portable Scanner", "Tricorder",
 		ModHandler.addCraftingRecipe(ItemList.Tool_Scanner.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
-				new Object[]{"EPR", "CSC", "PBP",
-						'C', new UnificationEntry(OrePrefix.circuit, Materials.Advanced),
-						'P', new UnificationEntry(OrePrefix.plate, Materials.Aluminium),
-						'E', ItemList.Emitter_MV,
-						'R', ItemList.Sensor_MV,
-						'S', Items.DIAMOND,
-						'B', ItemList.Battery_RE_MV_Lithium});
+				"EPR", "CSC", "PBP",
+				'C', new UnificationEntry(OrePrefix.circuit, Materials.Advanced),
+				'P', new UnificationEntry(OrePrefix.plate, Materials.Aluminium),
+				'E', ItemList.Emitter_MV,
+				'R', ItemList.Sensor_MV,
+				'S', Items.DIAMOND,
+				'B', ItemList.Battery_RE_MV_Lithium);
 
 		ItemList.NC_SensorKit.set(addItem(763).addStats(new Behaviour_SensorKit())); //"GregTech Sensor Kit", "",
 		ItemList.Duct_Tape.set(addItem(764).addOreDict(OreDictNames.craftingDuctTape)); //"BrainTech Aerospace Advanced Reinforced Duct Tape FAL-84", "If you can't fix it with this, use more of it!",
