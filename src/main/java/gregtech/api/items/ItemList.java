@@ -15,8 +15,6 @@ import static gregtech.api.GT_Values.W;
  */
 public enum ItemList implements IItemContainer {
 
-    Display_Fluid,
-
     //Railcraft Items
     RC_ShuntingWire,
     RC_ShuntingWireFrame,
@@ -72,35 +70,6 @@ public enum ItemList implements IItemContainer {
     IC2_AdvBattery,
     IC2_EnergyCrystal,
     IC2_LapotronCrystal,
-
-    //Arow Heads
-    Arrow_Head_Glass_Emtpy,
-    Arrow_Head_Glass_Poison,
-    Arrow_Head_Glass_Poison_Long,
-    Arrow_Head_Glass_Poison_Strong,
-    Arrow_Head_Glass_Slowness,
-    Arrow_Head_Glass_Slowness_Long,
-    Arrow_Head_Glass_Weakness,
-    Arrow_Head_Glass_Weakness_Long,
-    Arrow_Head_Glass_Holy_Water,
-    Arrow_Wooden_Glass_Emtpy,
-    Arrow_Wooden_Glass_Poison,
-    Arrow_Wooden_Glass_Poison_Long,
-    Arrow_Wooden_Glass_Poison_Strong,
-    Arrow_Wooden_Glass_Slowness,
-    Arrow_Wooden_Glass_Slowness_Long,
-    Arrow_Wooden_Glass_Weakness,
-    Arrow_Wooden_Glass_Weakness_Long,
-    Arrow_Wooden_Glass_Holy_Water,
-    Arrow_Plastic_Glass_Emtpy,
-    Arrow_Plastic_Glass_Poison,
-    Arrow_Plastic_Glass_Poison_Long,
-    Arrow_Plastic_Glass_Poison_Strong,
-    Arrow_Plastic_Glass_Slowness,
-    Arrow_Plastic_Glass_Slowness_Long,
-    Arrow_Plastic_Glass_Weakness,
-    Arrow_Plastic_Glass_Weakness_Long,
-    Arrow_Plastic_Glass_Holy_Water,
 
     //Shapes
     Shape_Empty,
@@ -519,12 +488,6 @@ public enum ItemList implements IItemContainer {
 
     //Transformers
     Transformer_LV_ULV, Transformer_MV_LV, Transformer_HV_MV, Transformer_EV_HV, Transformer_IV_EV, Transformer_LuV_IV, Transformer_ZPM_LuV, Transformer_UV_ZPM, Transformer_MAX_UV,
-
-    //Casings & Hulls
-    Casing_ULV, Casing_LV, Casing_MV, Casing_HV, Casing_EV, Casing_IV, Casing_LuV, Casing_ZPM, Casing_UV, Casing_MAX, Casing_BronzePlatedBricks, Casing_HeatProof, Casing_Coil_Cupronickel_Deprecated, Casing_Coil_Kanthal_Deprecated, Casing_Coil_Nichrome_Deprecated, Casing_Coil_Superconductor,
-    Casing_SolidSteel, Casing_FrostProof, Casing_Gearbox_Bronze, Casing_Gearbox_Steel, Casing_Gearbox_Titanium, Casing_Gearbox_TungstenSteel, Casing_Processor, Casing_DataDrive, Casing_ContainmentField, Casing_Assembler, Casing_Pump, Casing_Motor, Casing_Pipe_Bronze, Casing_Pipe_Steel, Casing_Pipe_Titanium, Casing_Pipe_TungstenSteel,
-    Casing_Stripes_A, Casing_Stripes_B, Casing_RadioactiveHazard, Casing_BioHazard, Casing_ExplosionHazard, Casing_FireHazard, Casing_AcidHazard, Casing_MagicHazard, Casing_FrostHazard, Casing_NoiseHazard, Casing_Grate, Casing_Vent, Casing_RadiationProof, Casing_Firebox_Bronze, Casing_Firebox_Steel, Casing_Firebox_TungstenSteel,
-    Casing_RobustTungstenSteel, Casing_CleanStainlessSteel, Casing_StableTitanium, Casing_Firebox_Titanium,
     Hull_ULV, Hull_LV, Hull_MV, Hull_HV, Hull_EV, Hull_IV, Hull_LuV, Hull_ZPM, Hull_UV, Hull_MAX,
 
     //Automaion Machines
