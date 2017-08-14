@@ -56,13 +56,8 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addFluidExtractionRecipe(new ItemStack(Items.MELON_SEEDS, 1, 32767), GT_Values.NI, Materials.SeedOil.getFluid(3L), 10000, 32, 2);
         GT_Values.RA.addFluidExtractionRecipe(new ItemStack(Items.PUMPKIN_SEEDS, 1, 32767), GT_Values.NI, Materials.SeedOil.getFluid(6L), 10000, 32, 2);
 
-<<<<<<< Updated upstream
 //        GT_Values.RA.addArcFurnaceRecipe(ItemList.Block_BronzePlate.get(1, new Object[]{}), new ItemStack[]{ OreDictionaryUnifier.get(OrePrefix.ingot,Materials.Bronze,4), OreDictionaryUnifier.get(OrePrefix.dust,Materials.Stone,1)}, null, 160, 96);
 //        GT_Values.RA.addArcFurnaceRecipe(ItemList.Block_IridiumTungstensteel.get(1, new Object[]{}), new ItemStack[]{ OreDictionaryUnifier.get(OrePrefix.ingot,Materials.Bronze,4), OreDictionaryUnifier.get(OrePrefix.dust,Materials.Stone,1)}, null, 160, 96);
-=======
-//        GT_Values.RA.addArcFurnaceRecipe(ItemList.Block_BronzePlate.get(1, new Object[]{}), new ItemStack[]{ OreDictionaryUnifier.get(OrePrefixes.ingot,Materials.Bronze,4), OreDictionaryUnifier.get(OrePrefixes.dust,Materials.Stone,1)}, null, 160, 96);
-//        GT_Values.RA.addArcFurnaceRecipe(ItemList.Block_IridiumTungstensteel.get(1, new Object[]{}), new ItemStack[]{ OreDictionaryUnifier.get(OrePrefixes.ingot,Materials.Bronze,4), OreDictionaryUnifier.get(OrePrefixes.dust,Materials.Stone,1)}, null, 160, 96);
->>>>>>> Stashed changes
         GT_Values.RA.addArcFurnaceRecipe(ItemList.Block_TungstenSteelReinforced.get(1), new ItemStack[]{ OreDictionaryUnifier.get(OrePrefix.ingot,Materials.TungstenSteel,2), OreDictionaryUnifier.get(OrePrefix.dust,Materials.Concrete,1)}, null, 160, 96);
 
         //Temporary until circuit overhaul
@@ -415,10 +410,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addSlicerRecipe(ItemList.Food_Baked_Bread.get(1), ItemList.Shape_Slicer_Flat.get(0L), ItemList.Food_Sliced_Bread.get(2L), 128, 4);
         GT_Values.RA.addSlicerRecipe(ItemList.Food_Baked_Baguette.get(1), ItemList.Shape_Slicer_Flat.get(0L), ItemList.Food_Sliced_Baguette.get(2L), 128, 4);
 
-<<<<<<< Updated upstream
         EntityPlayer
-=======
->>>>>>> Stashed changes
         GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.plate, Materials.Silicon, 1), OreDictionaryUnifier.get(OrePrefix.plate, Materials.Plastic, 1), ItemList.Empty_Board_Basic.get(1), 32, 16);
         GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.plate, Materials.Silicon, 2L), OreDictionaryUnifier.get(OrePrefix.plate, Materials.Polytetrafluoroethylene, 1), ItemList.Empty_Board_Elite.get(1), 32, 256);
 
@@ -963,11 +955,7 @@ public class GT_MachineRecipeLoader implements Runnable {
             GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("GalacticraftMars", "tile.asteroidsBlock", 1L, 0), null, null, Materials.Nitrogen.getGas(33), new ItemStack(Blocks.SAND,1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Aluminium, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Nickel, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Iron, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Gallium, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Platinum, 1), new int[]{5000,400,400,100,100,100}, 400, 8);
         }
 
-<<<<<<< Updated upstream
         GT_Values.RA.addFluidExtractionRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Quartzite, 1), null, Materials.Glass.getMolten(72), 10000, 600, 28);//(OreDictionaryUnifier.get(OrePrefix.cell, Materials.SiliconDioxide,1), OreDictionaryUnifier.get(OrePrefix.dust,Materials.SiliconDioxide,2L),OreDictionaryUnifier.get(OrePrefix.cell, Materials.Glass,1)/** GT_Utility.fillFluidContainer(Materials.Glass.getMolten(1000), ItemList.Cell_Empty.get(1, new Object[0]), true, true)**/, 600, 16);
-=======
-        GT_Values.RA.addFluidExtractionRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Quartzite, 1), null, Materials.Glass.getMolten(72), 10000, 600, 28);//(OreDictionaryUnifier.get(OrePrefixes.cell, Materials.SiliconDioxide,1), OreDictionaryUnifier.get(OrePrefixes.dust,Materials.SiliconDioxide,2L),OreDictionaryUnifier.get(OrePrefixes.cell, Materials.Glass,1)/** GT_Utility.fillFluidContainer(Materials.Glass.getMolten(1000), ItemList.Cell_Empty.get(1, new Object[0]), true, true)**/, 600, 16);
->>>>>>> Stashed changes
 
         GT_Values.RA.addDistillationTowerRecipe(Materials.Creosote.getFluid(24L), new FluidStack[]{Materials.Lubricant.getFluid(12L)}, null, 16, 96);
         GT_Values.RA.addDistillationTowerRecipe(Materials.SeedOil.getFluid(32L), new FluidStack[]{Materials.Lubricant.getFluid(12L)}, null, 16, 96);
@@ -1001,21 +989,14 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         GT_Values.RA.addElectrolyzerRecipe(GT_Values.NI, ItemList.Cell_Empty.get(1), Materials.Water.getFluid(3000L), Materials.Hydrogen.getGas(2000L), OreDictionaryUnifier.get(OrePrefix.cell, Materials.Oxygen, 1), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 1500, 30);
         GT_Values.RA.addElectrolyzerRecipe(GT_Values.NI, ItemList.Cell_Empty.get(1), GT_ModHandler.getDistilledWater(3000L), Materials.Hydrogen.getGas(2000L), OreDictionaryUnifier.get(OrePrefix.cell, Materials.Oxygen, 1), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 1500, 30);
-<<<<<<< Updated upstream
+
         //GT_Values.RA.addElectrolyzerRecipe(GT_ModHandler.getIC2Item(ItemName.fluid_cell, FluidName.heavy_water, 3), 0, OreDictionaryUnifier.get(OrePrefix.cell, Materials.Hydrogen, 2L), OreDictionaryUnifier.get(OrePrefix.cell, Materials.Oxygen, 1), GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 30, 30); TODO GT Heavy Water Cell
-=======
-        //GT_Values.RA.addElectrolyzerRecipe(GT_ModHandler.getIC2Item(ItemName.fluid_cell, FluidName.heavy_water, 3), 0, OreDictionaryUnifier.get(OrePrefixes.cell, Materials.Hydrogen, 2L), OreDictionaryUnifier.get(OrePrefixes.cell, Materials.Oxygen, 1), GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 30, 30); TODO GT Heavy Water Cell
->>>>>>> Stashed changes
         GT_Values.RA.addElectrolyzerRecipe(OreDictionaryUnifier.get(OrePrefix.cell, Materials.Water, 1), 0, GT_ModHandler.getIC2Item(ItemName.fluid_cell, FluidName.heavy_water, 1), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, 490, 30);
         GT_Values.RA.addElectrolyzerRecipe(ItemList.Dye_Bonemeal.get(3L), 0, OreDictionaryUnifier.get(OrePrefix.dust, Materials.Calcium, 1), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, 98, 26);
         GT_Values.RA.addElectrolyzerRecipe(new ItemStack(Blocks.SAND, 8), 0, OreDictionaryUnifier.get(OrePrefix.dust, Materials.SiliconDioxide, 1), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, 500, 25);
         GT_Values.RA.addElectrolyzerRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Tungstate, 7L), GT_Values.NI, Materials.Hydrogen.getGas(7000L), Materials.Oxygen.getGas(4000L), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Tungsten, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Lithium, 2L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[]{10000, 10000, 0, 0, 0, 0}, 120, 1920);
         GT_Values.RA.addElectrolyzerRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Scheelite, 7L), GT_Values.NI, Materials.Hydrogen.getGas(7000L), Materials.Oxygen.getGas(4000L), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Tungsten, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Calcium, 2L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[]{10000, 10000, 0, 0, 0, 0}, 120, 1920);
-<<<<<<< Updated upstream
         //GT_Values.RA.addElectrolyzerRecipe(OreDictionaryUnifier.get(OrePrefix.cell, Materials.CarbonDioxide, 4), GT_Values.NI, GT_Values.NF,GT_Values.NF,									   OreDictionaryUnifier.get(OrePrefix.dust, Materials.Carbon, 3),   OreDictionaryUnifier.get(OrePrefix.cell, Materials.Oxygen, 1), ItemList.Cell_Empty.get(3, new Object[0]), GT_Values.NI, GT_Values.NI, GT_Values.NI,new int[]{10000,10000,10000,0,0,0}, 180, 60);
-=======
-        //GT_Values.RA.addElectrolyzerRecipe(OreDictionaryUnifier.get(OrePrefixes.cell, Materials.CarbonDioxide, 4), GT_Values.NI, GT_Values.NF,GT_Values.NF,									   OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Carbon, 3),   OreDictionaryUnifier.get(OrePrefixes.cell, Materials.Oxygen, 1), ItemList.Cell_Empty.get(3, new Object[0]), GT_Values.NI, GT_Values.NI, GT_Values.NI,new int[]{10000,10000,10000,0,0,0}, 180, 60);
->>>>>>> Stashed changes
 
         GT_Values.RA.addElectrolyzerRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Graphite, 1), 0, OreDictionaryUnifier.get(OrePrefix.dust, Materials.Carbon, 4), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, 100, 64);
 
@@ -1277,13 +1258,8 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.gem, Materials.EnderPearl, 1), new ItemStack(Items.BLAZE_POWDER, 1, 0), new ItemStack(Items.ENDER_EYE, 1, 0), 400, 2);
         GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.gem, Materials.EnderPearl, 6L), new ItemStack(Items.BLAZE_ROD, 1, 0), new ItemStack(Items.ENDER_EYE, 6, 0), 2500, 2);
         GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.gear, Materials.CobaltBrass, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Diamond, 1), ItemList.Component_Sawblade_Diamond.get(1), 1600, 2);
-<<<<<<< Updated upstream
 //        GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Flint, 5L), new ItemStack(Blocks.tnt, 3, 32767), GT_ModHandler.getIC2Item("industrialTnt", 5L), 800, 2);
 //        GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Gunpowder, 4L), new ItemStack(Blocks.SAND, 4, 32767), new ItemStack(Blocks.tnt, 1), 400, 1);
-=======
-//        GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Flint, 5L), new ItemStack(Blocks.tnt, 3, 32767), GT_ModHandler.getIC2Item("industrialTnt", 5L), 800, 2);
-//        GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Gunpowder, 4L), new ItemStack(Blocks.SAND, 4, 32767), new ItemStack(Blocks.tnt, 1), 400, 1);
->>>>>>> Stashed changes
         GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Redstone, 4L), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Glowstone, 4L), new ItemStack(Blocks.REDSTONE_LAMP, 1), 400, 1);
         GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Redstone, 1), OreDictionaryUnifier.get(OrePrefix.stick, Materials.Wood, 1), new ItemStack(Blocks.REDSTONE_TORCH, 1), 400, 1);
         GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Redstone, 1), OreDictionaryUnifier.get(OrePrefix.plate, Materials.Iron, 4L), new ItemStack(Items.COMPASS, 1), 400, 4);

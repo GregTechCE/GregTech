@@ -30,7 +30,6 @@ public class GT_BookAndLootLoader implements Runnable {
         
         ChestGenHooks.addItem(LootTableList.CHESTS_SPAWN_BONUS_CHEST, ItemList.Bottle_Purple_Drink.get(1), 8, 16, 2);
 
-<<<<<<< Updated upstream
         ChestGenHooks.addItem(LootTableList.CHESTS_SIMPLE_DUNGEON, ItemList.Bottle_Holy_Water.get(1), 4, 8, 10);
         ChestGenHooks.addItem(LootTableList.CHESTS_SIMPLE_DUNGEON, ItemList.Bottle_Purple_Drink.get(1), 8, 16, 40);
         ChestGenHooks.addItem(LootTableList.CHESTS_SIMPLE_DUNGEON, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Silver, 1), 1, 6, 30);
@@ -98,88 +97,6 @@ public class GT_BookAndLootLoader implements Runnable {
         ChestGenHooks.addItem(LootTableList.CHESTS_STRONGHOLD_CROSSING, ItemList.McGuffium_239.get(1), 1, 1, 8);
         ChestGenHooks.addItem(LootTableList.CHESTS_STRONGHOLD_CORRIDOR, OreDictionaryUnifier.get(OrePrefix.toolHeadSword, Materials.DamascusSteel, 1), 1, 4, 4);
         ChestGenHooks.addItem(LootTableList.CHESTS_STRONGHOLD_CORRIDOR, OreDictionaryUnifier.get(OrePrefix.toolHeadAxe, Materials.DamascusSteel, 1), 1, 4, 4);
-       
-=======
-        ChestGenHooks.addItem(LootTableList.CHESTS_SIMPLE_DUNGEON, ItemList.Bottle_Holy_Water.get(1L), 4, 8, 10);
-        ChestGenHooks.addItem(LootTableList.CHESTS_SIMPLE_DUNGEON, ItemList.Bottle_Purple_Drink.get(1L), 8, 16, 40);
-        ChestGenHooks.addItem(LootTableList.CHESTS_SIMPLE_DUNGEON, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Silver, 1L), 1, 6, 30);
-        ChestGenHooks.addItem(LootTableList.CHESTS_SIMPLE_DUNGEON, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Lead, 1L), 1, 6, 7);
-        ChestGenHooks.addItem(LootTableList.CHESTS_SIMPLE_DUNGEON, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Steel, 1L), 1, 6, 15);
-        ChestGenHooks.addItem(LootTableList.CHESTS_SIMPLE_DUNGEON, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Bronze, 1L), 1, 6, 15);
-        ChestGenHooks.addItem(LootTableList.CHESTS_SIMPLE_DUNGEON, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Manganese, 1L), 1, 6, 15);
-        ChestGenHooks.addItem(LootTableList.CHESTS_SIMPLE_DUNGEON, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.DamascusSteel, 1L), 1, 6, 3);
-        ChestGenHooks.addItem(LootTableList.CHESTS_SIMPLE_DUNGEON, OreDictionaryUnifier.get(OrePrefix.gem, Materials.Emerald, 1L), 1, 6, 5);
-        ChestGenHooks.addItem(LootTableList.CHESTS_SIMPLE_DUNGEON, OreDictionaryUnifier.get(OrePrefix.gem, Materials.Ruby, 1L), 1, 6, 5);
-        ChestGenHooks.addItem(LootTableList.CHESTS_SIMPLE_DUNGEON, OreDictionaryUnifier.get(OrePrefix.gem, Materials.Sapphire, 1L), 1, 6, 5);
-        ChestGenHooks.addItem(LootTableList.CHESTS_SIMPLE_DUNGEON, OreDictionaryUnifier.get(OrePrefix.gem, Materials.GreenSapphire, 1L), 1, 6, 5);
-        ChestGenHooks.addItem(LootTableList.CHESTS_SIMPLE_DUNGEON, OreDictionaryUnifier.get(OrePrefix.gem, Materials.Olivine, 1L), 1, 6, 5);
-        ChestGenHooks.addItem(LootTableList.CHESTS_SIMPLE_DUNGEON, OreDictionaryUnifier.get(OrePrefix.gem, Materials.GarnetRed, 1L), 1, 6, 10);
-        ChestGenHooks.addItem(LootTableList.CHESTS_SIMPLE_DUNGEON, OreDictionaryUnifier.get(OrePrefix.gem, Materials.GarnetYellow, 1L), 1, 6, 10);
-        ChestGenHooks.addItem(LootTableList.CHESTS_SIMPLE_DUNGEON, OreDictionaryUnifier.get(OrePrefix.dust, Materials.Neodymium, 1L), 1, 6, 10);
-        ChestGenHooks.addItem(LootTableList.CHESTS_SIMPLE_DUNGEON, OreDictionaryUnifier.get(OrePrefix.dust, Materials.Chrome, 1L), 1, 3, 10);
-
-        ChestGenHooks.addItem(LootTableList.CHESTS_DESERT_PYRAMID, ItemList.Bottle_Holy_Water.get(1L), 4, 8, 2);
-        ChestGenHooks.addItem(LootTableList.CHESTS_DESERT_PYRAMID, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Silver, 1L), 4, 16, 6);
-        ChestGenHooks.addItem(LootTableList.CHESTS_DESERT_PYRAMID, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Platinum, 1L), 2, 8, 3);
-        ChestGenHooks.addItem(LootTableList.CHESTS_DESERT_PYRAMID, OreDictionaryUnifier.get(OrePrefix.gem, Materials.Ruby, 1L), 2, 8, 1);
-        ChestGenHooks.addItem(LootTableList.CHESTS_DESERT_PYRAMID, OreDictionaryUnifier.get(OrePrefix.gem, Materials.Sapphire, 1L), 2, 8, 3);
-        ChestGenHooks.addItem(LootTableList.CHESTS_DESERT_PYRAMID, OreDictionaryUnifier.get(OrePrefix.gem, Materials.GreenSapphire, 1L), 2, 8, 4);
-        ChestGenHooks.addItem(LootTableList.CHESTS_DESERT_PYRAMID, OreDictionaryUnifier.get(OrePrefix.gem, Materials.Olivine, 1L), 2, 8, 4);
-        ChestGenHooks.addItem(LootTableList.CHESTS_DESERT_PYRAMID, OreDictionaryUnifier.get(OrePrefix.gem, Materials.GarnetRed, 1L), 2, 8, 3);
-        ChestGenHooks.addItem(LootTableList.CHESTS_DESERT_PYRAMID, OreDictionaryUnifier.get(OrePrefix.gem, Materials.GarnetYellow, 1L), 2, 8, 3);
-
-        ChestGenHooks.addItem(LootTableList.CHESTS_JUNGLE_TEMPLE, ItemList.Coin_Gold_Ancient.get(1L), 16, 64, 5);
-        ChestGenHooks.addItem(LootTableList.CHESTS_JUNGLE_TEMPLE, ItemList.ZPM.getWithCharge(1L, 2147483647), 1, 1, 1);
-        ChestGenHooks.addItem(LootTableList.CHESTS_JUNGLE_TEMPLE, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Bronze, 1L), 4, 16, 12);
-        ChestGenHooks.addItem(LootTableList.CHESTS_JUNGLE_TEMPLE, OreDictionaryUnifier.get(OrePrefix.gem, Materials.Ruby, 1L), 2, 8, 2);
-        ChestGenHooks.addItem(LootTableList.CHESTS_JUNGLE_TEMPLE, OreDictionaryUnifier.get(OrePrefix.gem, Materials.Sapphire, 1L), 2, 8, 2);
-        ChestGenHooks.addItem(LootTableList.CHESTS_JUNGLE_TEMPLE, OreDictionaryUnifier.get(OrePrefix.gem, Materials.GreenSapphire, 1L), 2, 8, 2);
-        ChestGenHooks.addItem(LootTableList.CHESTS_JUNGLE_TEMPLE, OreDictionaryUnifier.get(OrePrefix.gem, Materials.Olivine, 1L), 2, 8, 2);
-        ChestGenHooks.addItem(LootTableList.CHESTS_JUNGLE_TEMPLE, OreDictionaryUnifier.get(OrePrefix.gem, Materials.GarnetRed, 1L), 2, 8, 4);
-        ChestGenHooks.addItem(LootTableList.CHESTS_JUNGLE_TEMPLE, OreDictionaryUnifier.get(OrePrefix.gem, Materials.GarnetYellow, 1L), 2, 8, 4);
-
-        ChestGenHooks.addItem(LootTableList.CHESTS_JUNGLE_TEMPLE_DISPENSER, new ItemStack(Items.FIRE_CHARGE, 1), 2, 8, 15);
-        ChestGenHooks.addItem(LootTableList.CHESTS_JUNGLE_TEMPLE_DISPENSER, OreDictionaryUnifier.get(OrePrefix.arrowGtWood, Materials.DamascusSteel, 1L), 8, 16, 10);
-
-
-        ChestGenHooks.addItem(LootTableList.CHESTS_ABANDONED_MINESHAFT, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Silver, 1L), 1, 4, 6);
-        ChestGenHooks.addItem(LootTableList.CHESTS_ABANDONED_MINESHAFT, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Lead, 1L), 1, 4, 3);
-        ChestGenHooks.addItem(LootTableList.CHESTS_ABANDONED_MINESHAFT, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Steel, 1L), 1, 4, 6);
-        ChestGenHooks.addItem(LootTableList.CHESTS_ABANDONED_MINESHAFT, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Bronze, 1L), 1, 4, 6);
-        ChestGenHooks.addItem(LootTableList.CHESTS_ABANDONED_MINESHAFT, OreDictionaryUnifier.get(OrePrefix.gem, Materials.Sapphire, 1L), 1, 4, 2);
-        ChestGenHooks.addItem(LootTableList.CHESTS_ABANDONED_MINESHAFT, OreDictionaryUnifier.get(OrePrefix.gem, Materials.GreenSapphire, 1L), 1, 4, 2);
-        ChestGenHooks.addItem(LootTableList.CHESTS_ABANDONED_MINESHAFT, OreDictionaryUnifier.get(OrePrefix.gem, Materials.Olivine, 1L), 1, 4, 2);
-        ChestGenHooks.addItem(LootTableList.CHESTS_ABANDONED_MINESHAFT, OreDictionaryUnifier.get(OrePrefix.gem, Materials.GarnetRed, 1L), 1, 4, 4);
-        ChestGenHooks.addItem(LootTableList.CHESTS_ABANDONED_MINESHAFT, OreDictionaryUnifier.get(OrePrefix.gem, Materials.GarnetYellow, 1L), 1, 4, 4);
-        ChestGenHooks.addItem(LootTableList.CHESTS_ABANDONED_MINESHAFT, OreDictionaryUnifier.get(OrePrefix.gem, Materials.Ruby, 1L), 1, 4, 2);
-        ChestGenHooks.addItem(LootTableList.CHESTS_ABANDONED_MINESHAFT, OreDictionaryUnifier.get(OrePrefix.gem, Materials.Emerald, 1L), 1, 4, 2);
-        ChestGenHooks.addItem(LootTableList.CHESTS_ABANDONED_MINESHAFT, OreDictionaryUnifier.get(OrePrefix.toolHeadPickaxe, Materials.DamascusSteel, 1L), 1, 4, 1);
-        ChestGenHooks.addItem(LootTableList.CHESTS_ABANDONED_MINESHAFT, OreDictionaryUnifier.get(OrePrefix.toolHeadShovel, Materials.DamascusSteel, 1L), 1, 4, 1);
-
-        ChestGenHooks.addItem(LootTableList.CHESTS_VILLAGE_BLACKSMITH, ItemList.McGuffium_239.get(1L), 1, 1, 1);
-        ChestGenHooks.addItem(LootTableList.CHESTS_VILLAGE_BLACKSMITH, OreDictionaryUnifier.get(OrePrefix.dust, Materials.Chrome, 1L), 1, 4, 3);
-        ChestGenHooks.addItem(LootTableList.CHESTS_VILLAGE_BLACKSMITH, OreDictionaryUnifier.get(OrePrefix.dust, Materials.Neodymium, 1L), 2, 8, 3);
-        ChestGenHooks.addItem(LootTableList.CHESTS_VILLAGE_BLACKSMITH, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Manganese, 1L), 2, 8, 6);
-        ChestGenHooks.addItem(LootTableList.CHESTS_VILLAGE_BLACKSMITH, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Steel, 1L), 4, 12, 6);
-        ChestGenHooks.addItem(LootTableList.CHESTS_VILLAGE_BLACKSMITH, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Bronze, 1L), 4, 12, 6);
-        ChestGenHooks.addItem(LootTableList.CHESTS_VILLAGE_BLACKSMITH, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Brass, 1L), 4, 12, 6);
-        ChestGenHooks.addItem(LootTableList.CHESTS_VILLAGE_BLACKSMITH, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.DamascusSteel, 1L), 4, 12, 1);
-
-        ChestGenHooks.addItem(LootTableList.CHESTS_STRONGHOLD_CROSSING, ItemList.Bottle_Holy_Water.get(1L), 4, 8, 6);
-        ChestGenHooks.addItem(LootTableList.CHESTS_STRONGHOLD_CROSSING, ItemList.McGuffium_239.get(1L), 1, 1, 8);
-
-        ChestGenHooks.addItem(LootTableList.CHESTS_STRONGHOLD_CROSSING, OreDictionaryUnifier.get(OrePrefix.crateGtIngot, Materials.DamascusSteel, 1L), 4, 8, 4);
-        ChestGenHooks.addItem(LootTableList.CHESTS_STRONGHOLD_CROSSING, OreDictionaryUnifier.get(OrePrefix.crateGtIngot, Materials.Steel, 1L), 8, 16, 6);
-        ChestGenHooks.addItem(LootTableList.CHESTS_STRONGHOLD_CROSSING, OreDictionaryUnifier.get(OrePrefix.crateGtIngot, Materials.Bronze, 1L), 8, 16, 6);
-        ChestGenHooks.addItem(LootTableList.CHESTS_STRONGHOLD_CROSSING, OreDictionaryUnifier.get(OrePrefix.crateGtIngot, Materials.Manganese, 1L), 4, 8, 4);
-        ChestGenHooks.addItem(LootTableList.CHESTS_STRONGHOLD_CROSSING, OreDictionaryUnifier.get(OrePrefix.crateGtDust, Materials.Neodymium, 1L), 4, 8, 4);
-        ChestGenHooks.addItem(LootTableList.CHESTS_STRONGHOLD_CROSSING, OreDictionaryUnifier.get(OrePrefix.crateGtDust, Materials.Chrome, 1L), 2, 4, 4);
-
-        ChestGenHooks.addItem(LootTableList.CHESTS_STRONGHOLD_CORRIDOR, OreDictionaryUnifier.get(OrePrefix.toolHeadSword, Materials.DamascusSteel, 1L), 1, 4, 4);
-        ChestGenHooks.addItem(LootTableList.CHESTS_STRONGHOLD_CORRIDOR, OreDictionaryUnifier.get(OrePrefix.toolHeadAxe, Materials.DamascusSteel, 1L), 1, 4, 4);
-        ChestGenHooks.addItem(LootTableList.CHESTS_STRONGHOLD_CORRIDOR, OreDictionaryUnifier.get(OrePrefix.arrowGtWood, Materials.DamascusSteel, 1L), 16, 48, 4);
-        ChestGenHooks.addItem(LootTableList.CHESTS_STRONGHOLD_CORRIDOR, OreDictionaryUnifier.get(OrePrefix.arrowGtWood, Materials.SterlingSilver, 1L), 8, 24, 4);
->>>>>>> Stashed changes
     }
 
 }

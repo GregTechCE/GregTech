@@ -7,10 +7,6 @@ import gregtech.api.damagesources.DamageSources;
 import gregtech.api.unification.material.type.MarkerMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
-<<<<<<< Updated upstream
-=======
-import gregtech.api.items.IIconContainer;
->>>>>>> Stashed changes
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.util.GT_Utility;
@@ -27,11 +23,7 @@ import java.util.List;
 
 public class MaterialMetaItem extends MetaItem<MetaItem.MetaValueItem> {
 
-<<<<<<< Updated upstream
     protected OrePrefix[] orePrefixes;
-=======
-    private OrePrefix[] orePrefixes;
->>>>>>> Stashed changes
     private TShortArrayList generatedItems = new TShortArrayList();
 
     public MaterialMetaItem(String unlocalizedName, OrePrefix... orePrefixes) {

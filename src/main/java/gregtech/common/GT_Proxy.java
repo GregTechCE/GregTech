@@ -704,7 +704,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                         new Object[]{"XX", "XX", 'X', OrePrefix.dustSmall.get(aMaterial)});
                 GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, 1), tBits,
                         new Object[]{"XXX", "XXX", "XXX", 'X', OrePrefix.dustTiny.get(aMaterial)});
-<<<<<<< Updated upstream
 //                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, 16L), tBits, new Object[]{"Xc", Character.valueOf('X'),
 //                        OrePrefix.crateGtDust.get(aMaterial)});
 //                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gem, aMaterial, 16L), tBits, new Object[]{"Xc", Character.valueOf('X'),
@@ -713,16 +712,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 //                        Character.valueOf('X'), OrePrefix.crateGtIngot.get(aMaterial)});
 //                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, aMaterial, 16L), tBits, new Object[]{"Xc",
 //                        Character.valueOf('X'), OrePrefix.crateGtPlate.get(aMaterial)});
-=======
-//                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.dust, aMaterial, 16L), tBits, new Object[]{"Xc", Character.valueOf('X'),
-//                        OrePrefixes.crateGtDust.get(aMaterial)});
-//                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.gem, aMaterial, 16L), tBits, new Object[]{"Xc", Character.valueOf('X'),
-//                        OrePrefixes.crateGtGem.get(aMaterial)});
-//                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.ingot, aMaterial, 16L), tBits, new Object[]{"Xc",
-//                        Character.valueOf('X'), OrePrefixes.crateGtIngot.get(aMaterial)});
-//                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.plate, aMaterial, 16L), tBits, new Object[]{"Xc",
-//                        Character.valueOf('X'), OrePrefixes.crateGtPlate.get(aMaterial)});
->>>>>>> Stashed changes
 //
 //                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gemChipped, aMaterial, 2L), tBits,
 //                        new Object[]{"h", "X", Character.valueOf('X'), OrePrefix.gemFlawed.get(aMaterial)});
