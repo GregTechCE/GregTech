@@ -1,13 +1,12 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
-import gregtech.api.GT_Values;
+import gregtech.api.recipes.ModHandler;
+import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
-import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
-import gregtech.api.util.GT_ModHandler;
+import gregtech.api.unification.stack.SimpleItemStack;
+import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
@@ -17,31 +16,35 @@ public class ProcessingCrushedOre implements IOreRegistrationHandler {
         OrePrefix.crushedPurified.add(this);
     }
 
-    public void registerOre(OrePrefix aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-		switch (aPrefix) {
+    public void registerOre(UnificationEntry uEntry, String modName, SimpleItemStack simpleStack) {
+		ItemStack stack = simpleStack.asItemStack();
+		switch (uEntry.orePrefix) {
 			case crushedCentrifuged:
-				GT_Values.RA.addForgeHammerRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), OreDictionaryUnifier.get(OrePrefix.dust, aMaterial.mMacerateInto, 1L), 10, 16);
-				GT_ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), OreDictionaryUnifier.get(OrePrefix.dust, aMaterial.mMacerateInto, 1L), OreDictionaryUnifier.get(OrePrefix.dust, GT_Utility.selectItemInList(2, aMaterial.mMacerateInto, aMaterial.mOreByProducts), 1L), 10, false);
+				RecipeMap.HAMMER_RECIPES.recipeBuilder().inputs(GT_Utility.copyAmount(1, stack)).outputs(OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material.mMacerateInto)).duration(10).EUt(16);
+				ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material.mMacerateInto, 1L), OreDictionaryUnifier.get(OrePrefix.dust, GT_Utility.selectItemInList(2, uEntry.material.mMacerateInto, uEntry.material.mOreByProducts), 1L), 10, false);
 				break;
 			case crushedPurified:
-				GT_ModHandler.addThermalCentrifugeRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), (int) Math.min(5000L, Math.abs(aMaterial.getMass() * 20L)), new Object[]{OreDictionaryUnifier.get(OrePrefix.crushedCentrifuged, aMaterial.mMacerateInto, OreDictionaryUnifier.get(OrePrefix.dust, aMaterial.mMacerateInto, 1L), 1L), OreDictionaryUnifier.get(OrePrefix.dustTiny, GT_Utility.selectItemInList(1, aMaterial.mMacerateInto, aMaterial.mOreByProducts), 1L)});
+				ModHandler.addThermalCentrifugeRecipe(GT_Utility.copyAmount(1, stack), (int) Math.min(5000L, Math.abs(uEntry.material.getMass() * 20L)), OreDictionaryUnifier.get(OrePrefix.crushedCentrifuged, uEntry.material.mMacerateInto, OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material.mMacerateInto, 1L), 1L), OreDictionaryUnifier.get(OrePrefix.dustTiny, GT_Utility.selectItemInList(1, uEntry.material.mMacerateInto, uEntry.material.mOreByProducts), 1L));
 
-				ItemStack tGem = OreDictionaryUnifier.get(OrePrefix.gem, aMaterial, 1L);
+				ItemStack tGem = OreDictionaryUnifier.get(OrePrefix.gem, uEntry.material, 1);
 				if(tGem!=null){
-				switch (aMaterial.mName) {
-					case "Tanzanite": case "Sapphire": case "Olivine": case "GreenSapphire": case "Opal": case "Amethyst": case "Emerald": case "Ruby":
-					case "Amber": case "Diamond": case "FoolsRuby": case "BlueTopaz": case "GarnetRed": case "Topaz": case "Jasper": case "GarnetYellow":
-						GT_Values.RA.addSifterRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), new ItemStack[]{OreDictionaryUnifier.get(OrePrefix.gemExquisite, aMaterial, tGem, 1L), OreDictionaryUnifier.get(OrePrefix.gemFlawless, aMaterial, tGem, 1L), tGem, OreDictionaryUnifier.get(OrePrefix.gemFlawed, aMaterial, tGem, 1L), OreDictionaryUnifier.get(OrePrefix.gemChipped, aMaterial, tGem, 1L), OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, tGem, 1L)}, new int[]{300, 1200, 4500, 1400, 2800, 3500}, 800, 16);
-				        if(GT_Mod.gregtechproxy.mMagneticraftRecipes && GregTech_API.mMagneticraft){
-				        	//TODO com.cout970.magneticraft.api.access.MgRecipeRegister.registerSifterRecipe(OreDictionaryUnifier.get(OrePrefix.crushedPurified, aMaterial, tGem, 1), OreDictionaryUnifier.get(OrePrefix.gem, aMaterial, tGem, 1), OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, tGem, 1), 0.2f);
-				        }
-						break;
-					default:
-						GT_Values.RA.addSifterRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), new ItemStack[]{OreDictionaryUnifier.get(OrePrefix.gemExquisite, aMaterial, tGem, 1L), OreDictionaryUnifier.get(OrePrefix.gemFlawless, aMaterial, tGem, 1L), tGem, OreDictionaryUnifier.get(OrePrefix.gemFlawed, aMaterial, tGem, 1L), OreDictionaryUnifier.get(OrePrefix.gemChipped, aMaterial, tGem, 1L), OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, tGem, 1L)}, new int[]{100, 400, 1500, 2000, 4000, 5000}, 800, 16);
-						if(GT_Mod.gregtechproxy.mMagneticraftRecipes && GregTech_API.mMagneticraft){
-							//TODO com.cout970.magneticraft.api.access.MgRecipeRegister.registerSifterRecipe(OreDictionaryUnifier.get(OrePrefix.crushedPurified, aMaterial, tGem, 1), OreDictionaryUnifier.get(OrePrefix.gem, aMaterial, tGem, 1), OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, tGem, 1), 0.2f);
-				        }
-				}}
+					switch (uEntry.material.toString()) {
+						case "Tanzanite": case "Sapphire": case "Olivine": case "GreenSapphire": case "Opal": case "Amethyst": case "Emerald": case "Ruby":
+						case "Amber": case "Diamond": case "FoolsRuby": case "BlueTopaz": case "GarnetRed": case "Topaz": case "Jasper": case "GarnetYellow":
+							RecipeMap.SIFTER_RECIPES.recipeBuilder().inputs(GT_Utility.copyAmount(1, stack)).chancedOutput(OreDictionaryUnifier.get(OrePrefix.gemExquisite, uEntry.material), 300).chancedOutput(OreDictionaryUnifier.get(OrePrefix.gemFlawless, uEntry.material), 1200).chancedOutput(tGem, 4500).chancedOutput(OreDictionaryUnifier.get(OrePrefix.gemFlawed, uEntry.material), 1400).chancedOutput(OreDictionaryUnifier.get(OrePrefix.gemChipped, uEntry.material), 2800).chancedOutput(OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material), 3500).duration(800).EUt(16);
+							//TODO Magneticraft
+							//if(GT_Mod.gregtechproxy.mMagneticraftRecipes && GregTech_API.mMagneticraft){
+								//com.cout970.magneticraft.api.access.MgRecipeRegister.registerSifterRecipe(OreDictionaryUnifier.get(OrePrefixes.crushedPurified, uEntry.material, tGem, 1), OreDictionaryUnifier.get(OrePrefixes.gem, uEntry.material, tGem, 1), OreDictionaryUnifier.get(OrePrefixes.dust, uEntry.material, tGem, 1), 0.2f);
+							//}
+							break;
+						default:
+							RecipeMap.SIFTER_RECIPES.recipeBuilder().inputs(GT_Utility.copyAmount(1, stack)).chancedOutput(OreDictionaryUnifier.get(OrePrefix.gemExquisite, uEntry.material), 100).chancedOutput(OreDictionaryUnifier.get(OrePrefix.gemFlawless, uEntry.material), 400).chancedOutput(tGem, 1500).chancedOutput(OreDictionaryUnifier.get(OrePrefix.gemFlawed, uEntry.material), 2000).chancedOutput(OreDictionaryUnifier.get(OrePrefix.gemChipped, uEntry.material), 4000).chancedOutput(OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material), 5000).duration(800).EUt(16);
+							//TODO Magneticraft
+							//if(GT_Mod.gregtechproxy.mMagneticraftRecipes && GregTech_API.mMagneticraft){
+								//com.cout970.magneticraft.api.access.MgRecipeRegister.registerSifterRecipe(OreDictionaryUnifier.get(OrePrefixes.crushedPurified, uEntry.material, tGem, 1), OreDictionaryUnifier.get(OrePrefixes.gem, uEntry.material, tGem, 1), OreDictionaryUnifier.get(OrePrefixes.dust, uEntry.material, tGem, 1), 0.2f);
+							//}
+					}
+				}
 				break;
 		}
 	}

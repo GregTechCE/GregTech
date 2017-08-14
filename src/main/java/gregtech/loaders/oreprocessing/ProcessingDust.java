@@ -3,14 +3,16 @@ package gregtech.loaders.oreprocessing;
 import gregtech.GT_Mod;
 import gregtech.api.ConfigCategories;
 import gregtech.api.GT_Values;
-import gregtech.api.unification.OreDictionaryUnifier;
-import gregtech.api.unification.ore.IOreRegistrationHandler;
-import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.items.ItemList;
+import gregtech.api.recipes.ModHandler;
+import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.ore.IOreRegistrationHandler;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.MaterialStack;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_RecipeRegistrator;
+import gregtech.api.unification.stack.SimpleItemStack;
+import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -27,47 +29,48 @@ public class ProcessingDust implements IOreRegistrationHandler {
         OrePrefix.dustTiny.add(this);
     }
 
-    public void registerOre(OrePrefix aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        switch (aPrefix) {
+    public void registerOre(UnificationEntry uEntry, String modName, SimpleItemStack simpleStack) {
+        ItemStack stack = simpleStack.asItemStack();
+        switch (uEntry.orePrefix) {
             case dust:
-                if (aMaterial.mFuelPower > 0)
-                    GT_Values.RA.addFuel(GT_Utility.copyAmount(1L, aStack), null, aMaterial.mFuelPower, aMaterial.mFuelType);
-                if (GT_Utility.getFluidForFilledItem(OreDictionaryUnifier.get(OrePrefix.cell, aMaterial, 1L), true) == null)
-                    GT_Values.RA.addCannerRecipe(aStack, ItemList.Cell_Empty.get(1L), OreDictionaryUnifier.get(OrePrefix.cell, aMaterial, 1L), null, 100, 1);
-                if (!aMaterial.mBlastFurnaceRequired) {
-                    GT_RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
-                    if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
-                        GT_RecipeRegistrator.registerReverseArcSmelting(GT_Utility.copyAmount(1L, aStack), aMaterial, aPrefix.mMaterialAmount, null, null, null);
+                if (uEntry.material.mFuelPower > 0)
+                    GT_Values.RA.addFuel(GT_Utility.copyAmount(1, stack), null, uEntry.material.mFuelPower, uEntry.material.mFuelType);
+                if (GT_Utility.getFluidForFilledItem(OreDictionaryUnifier.get(OrePrefix.cell, uEntry.material, 1), true) == null)
+                    GT_Values.RA.addCannerRecipe(stack, ItemList.Cell_Empty.get(1), OreDictionaryUnifier.get(OrePrefix.cell, uEntry.material, 1), null, 100, 1);
+                if (!uEntry.material.mBlastFurnaceRequired) {
+                    GT_RecipeRegistrator.registerReverseFluidSmelting(stack, uEntry.material, uEntry.orePrefix.mMaterialAmount, null);
+                    if (uEntry.material.mSmeltInto.mArcSmeltInto != uEntry.material) {
+                        GT_RecipeRegistrator.registerReverseArcSmelting(GT_Utility.copyAmount(1, stack), uEntry.material, uEntry.orePrefix.mMaterialAmount, null, null, null);
                     }
                 }
 
                 ItemStack tDustStack;
-                if ((null != (tDustStack = OreDictionaryUnifier.get(OrePrefix.ingot, aMaterial.mSmeltInto, 1L))) && (!aMaterial.contains(SubTag.NO_SMELTING))) {
-                    if (aMaterial.mBlastFurnaceRequired) {
-                        GT_ModHandler.removeFurnaceSmelting(aStack);
-                        GT_Values.RA.addBlastRecipe(GT_Utility.copyAmount(1L, aStack), null, null, null, aMaterial.mBlastFurnaceTemp > 1750 ? OreDictionaryUnifier.get(OrePrefix.ingotHot, aMaterial.mSmeltInto, tDustStack, 1L) : GT_Utility.copyAmount(1L, new Object[]{tDustStack}), null, (int) Math.max(aMaterial.getMass() / 40L, 1L) * aMaterial.mBlastFurnaceTemp, 120, aMaterial.mBlastFurnaceTemp);
-                        if (aMaterial.mBlastFurnaceTemp <= 1000) {
-                            GT_ModHandler.addRCBlastFurnaceRecipe(GT_Utility.copyAmount(1L, aStack), GT_Utility.copyAmount(1L, new Object[]{tDustStack}), aMaterial.mBlastFurnaceTemp);
+                if ((null != (tDustStack = OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material.mSmeltInto, 1L))) && (!uEntry.material.contains(SubTag.NO_SMELTING))) {
+                    if (uEntry.material.mBlastFurnaceRequired) {
+                        ModHandler.removeFurnaceSmelting(stack);
+                        GT_Values.RA.addBlastRecipe(GT_Utility.copyAmount(1, stack), null, null, null, uEntry.material.mBlastFurnaceTemp > 1750 ? OreDictionaryUnifier.get(OrePrefix.ingotHot, uEntry.material.mSmeltInto, tDustStack, 1L) : GT_Utility.copyAmount(1L, new Object[]{tDustStack}), null, (int) Math.max(uEntry.material.getMass() / 40L, 1L) * uEntry.material.mBlastFurnaceTemp, 120, uEntry.material.mBlastFurnaceTemp);
+                        if (uEntry.material.mBlastFurnaceTemp <= 1000) {
+                            ModHandler.addRCBlastFurnaceRecipe(GT_Utility.copyAmount(1, stack), GT_Utility.copyAmount(1L tDustStack), uEntry.material.mBlastFurnaceTemp);
                         }
                     } else {
-                        GT_ModHandler.addSmeltingRecipe(aStack, tDustStack);
+                        ModHandler.addSmeltingRecipe(stack, tDustStack);
                     }
-                } else if (!aMaterial.contains(SubTag.NO_WORKING)) {
-                    if ((!OrePrefix.block.isIgnored(aMaterial)) && (null == OreDictionaryUnifier.get(OrePrefix.gem, aMaterial, 1L))) {
-                        GT_ModHandler.addCompressionRecipe(GT_Utility.copyAmount(9L, aStack), OreDictionaryUnifier.get(OrePrefix.block, aMaterial, 1L));
+                } else if (!uEntry.material.contains(SubTag.NO_WORKING)) {
+                    if ((!OrePrefix.block.isIgnored(uEntry.material)) && (null == OreDictionaryUnifier.get(OrePrefix.gem, uEntry.material, 1))) {
+                        ModHandler.addCompressionRecipe(GT_Utility.copyAmount(9, stack), OreDictionaryUnifier.get(OrePrefix.block, uEntry.material, 1));
                     }
-                    if (((OrePrefix.block.isIgnored(aMaterial)) || (null == OreDictionaryUnifier.get(OrePrefix.block, aMaterial, 1L))) && (aMaterial != Materials.GraniteRed) && (aMaterial != Materials.GraniteBlack) && (aMaterial != Materials.Glass) && (aMaterial != Materials.Obsidian) && (aMaterial != Materials.Glowstone) && (aMaterial != Materials.Paper)) {
-                        GT_ModHandler.addCompressionRecipe(GT_Utility.copyAmount(1L, aStack), OreDictionaryUnifier.get(OrePrefix.plate, aMaterial, 1L));
+                    if (((OrePrefix.block.isIgnored(uEntry.material)) || (null == OreDictionaryUnifier.get(OrePrefix.block, uEntry.material, 1))) && (uEntry.material != Materials.GraniteRed) && (uEntry.material != Materials.GraniteBlack) && (uEntry.material != Materials.Glass) && (uEntry.material != Materials.Obsidian) && (uEntry.material != Materials.Glowstone) && (uEntry.material != Materials.Paper)) {
+                        ModHandler.addCompressionRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 1));
                     }
                 }
 
 
-                if ((aMaterial.mMaterialList.size() > 0) && ((aMaterial.mExtraData & 0x3) != 0)) {
-                    long tItemAmount = 0L;
-                    long tCapsuleCount = 0L;
-                    long tDensityMultiplier = aMaterial.getDensity() > 3628800L ? aMaterial.getDensity() / 3628800L : 1L;
+                if ((uEntry.material.mMaterialList.size() > 0) && ((uEntry.material.mExtraData & 0x3) != 0)) {
+                    int tItemAmount = 0;
+                    int tCapsuleCount = 0;
+                    long tDensityMultiplier = uEntry.material.getDensity() > 3628800L ? uEntry.material.getDensity() / 3628800L : 1L;
                     ArrayList<ItemStack> tList = new ArrayList();
-                    for (MaterialStack tMat : aMaterial.mMaterialList)
+                    for (MaterialStack tMat : uEntry.material.mMaterialList)
                         if (tMat.mAmount > 0L) {
                             if (tMat.mMaterial == Materials.Air) {
                                 tDustStack = ItemList.Cell_Air.get(tMat.mAmount / 2L);
@@ -76,174 +79,174 @@ public class ProcessingDust implements IOreRegistrationHandler {
                                 if (tDustStack == null)
                                     tDustStack = OreDictionaryUnifier.get(OrePrefix.cell, tMat.mMaterial, tMat.mAmount);
                             }
-                            if (tItemAmount + tMat.mAmount * 3628800L <= aStack.getMaxStackSize() * aMaterial.getDensity()) {
+                            if (tItemAmount + tMat.mAmount * 3628800L <= stack.getMaxStackSize() * uEntry.material.getDensity()) {
                                 tItemAmount += tMat.mAmount * 3628800L;
                                 if (tDustStack != null) {
                                     ItemStack tmp793_791 = tDustStack;
                                     tmp793_791.stackSize = ((int) (tmp793_791.stackSize * tDensityMultiplier));
-                                    while ((tDustStack.stackSize > 64) && (tList.size() < 6) && (tCapsuleCount + GT_ModHandler.getCapsuleCellContainerCount(tDustStack) * 64 <= 64L)) {
-                                        tCapsuleCount += GT_ModHandler.getCapsuleCellContainerCount(tDustStack) * 64;
-                                        tList.add(GT_Utility.copyAmount(64L, tDustStack));
+                                    while ((tDustStack.stackSize > 64) && (tList.size() < 6) && (tCapsuleCount + ModHandler.getCapsuleCellContainerCount(tDustStack) * 64 <= 64L)) {
+                                        tCapsuleCount += ModHandler.getCapsuleCellContainerCount(tDustStack) * 64;
+                                        tList.add(GT_Utility.copyAmount(64, tDustStack));
                                         tDustStack.stackSize -= 64;
                                     }
-                                    if ((tDustStack.stackSize > 0) && (tList.size() < 6) && (tCapsuleCount + GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(tDustStack) <= 64L)) {
-                                        tCapsuleCount += GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(tDustStack);
+                                    if ((tDustStack.stackSize > 0) && (tList.size() < 6) && (tCapsuleCount + ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(tDustStack) <= 64L)) {
+                                        tCapsuleCount += ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(tDustStack);
                                         tList.add(tDustStack);
                                     }
                                 }
                             }
                         }
-                    tItemAmount = (tItemAmount * tDensityMultiplier % aMaterial.getDensity() > 0L ? 1 : 0) + tItemAmount * tDensityMultiplier / aMaterial.getDensity();
+                    tItemAmount = (tItemAmount * tDensityMultiplier % uEntry.material.getDensity() > 0 ? 1 : 0) + tItemAmount * tDensityMultiplier / uEntry.material.getDensity();
                     if (tList.size() > 0) {
                         FluidStack tFluid = null;
                         int tList_sS = tList.size();
                         for (int i = 0; i < tList_sS; i++) {
                             if ((!ItemList.Cell_Air.isStackEqual(tList.get(i))) && ((tFluid = GT_Utility.getFluidForFilledItem((ItemStack) tList.get(i), true)) != null)) {
                                 tFluid.amount *= ((ItemStack) tList.get(i)).stackSize;
-                                tCapsuleCount -= GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(tList.get(i));
+                                tCapsuleCount -= ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(tList.get(i));
                                 tList.remove(i);
                                 break;
                             }
                         }
-                        if ((aMaterial.mExtraData & 0x1) != 0)
-                            GT_Values.RA.addElectrolyzerRecipe(GT_Utility.copyAmount(tItemAmount, aStack), tCapsuleCount > 0L ? ItemList.Cell_Empty.get(tCapsuleCount) : null, null, tFluid, tList.size() < 1 ? null : (ItemStack) tList.get(0), tList.size() < 2 ? null : (ItemStack) tList.get(1), tList.size() < 3 ? null : (ItemStack) tList.get(2), tList.size() < 4 ? null : (ItemStack) tList.get(3), tList.size() < 5 ? null : (ItemStack) tList.get(4), tList.size() < 6 ? null : (ItemStack) tList.get(5), null, (int) Math.max(1L, Math.abs(aMaterial.getProtons() * 2L * tItemAmount)), Math.min(4, tList.size()) * 30);
-                        if ((aMaterial.mExtraData & 0x2) != 0) {
-                            GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(tItemAmount, aStack), tCapsuleCount > 0L ? ItemList.Cell_Empty.get(tCapsuleCount) : null, null, tFluid, tList.size() < 1 ? null : (ItemStack) tList.get(0), tList.size() < 2 ? null : (ItemStack) tList.get(1), tList.size() < 3 ? null : (ItemStack) tList.get(2), tList.size() < 4 ? null : (ItemStack) tList.get(3), tList.size() < 5 ? null : (ItemStack) tList.get(4), tList.size() < 6 ? null : (ItemStack) tList.get(5), null, (int) Math.max(1L, Math.abs(aMaterial.getMass() * 4L * tItemAmount)), Math.min(4, tList.size()) * 5);
+                        if ((uEntry.material.mExtraData & 0x1) != 0)
+                            GT_Values.RA.addElectrolyzerRecipe(GT_Utility.copyAmount(tItemAmount, stack), tCapsuleCount > 0L ? ItemList.Cell_Empty.get(tCapsuleCount) : null, null, tFluid, tList.size() < 1 ? null : (ItemStack) tList.get(0), tList.size() < 2 ? null : (ItemStack) tList.get(1), tList.size() < 3 ? null : (ItemStack) tList.get(2), tList.size() < 4 ? null : (ItemStack) tList.get(3), tList.size() < 5 ? null : (ItemStack) tList.get(4), tList.size() < 6 ? null : (ItemStack) tList.get(5), null, (int) Math.max(1L, Math.abs(uEntry.material.getProtons() * 2L * tItemAmount)), Math.min(4, tList.size()) * 30);
+                        if ((uEntry.material.mExtraData & 0x2) != 0) {
+                            GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(tItemAmount, stack), tCapsuleCount > 0L ? ItemList.Cell_Empty.get(tCapsuleCount) : null, null, tFluid, tList.size() < 1 ? null : (ItemStack) tList.get(0), tList.size() < 2 ? null : (ItemStack) tList.get(1), tList.size() < 3 ? null : (ItemStack) tList.get(2), tList.size() < 4 ? null : (ItemStack) tList.get(3), tList.size() < 5 ? null : (ItemStack) tList.get(4), tList.size() < 6 ? null : (ItemStack) tList.get(5), null, (int) Math.max(1L, Math.abs(uEntry.material.getMass() * 4L * tItemAmount)), Math.min(4, tList.size()) * 5);
                         }
                     }
                 }
-                if (aMaterial.contains(SubTag.CRYSTALLISABLE)) {
-                    GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(1L, aStack), Materials.Water.getFluid(200L), OreDictionaryUnifier.get(OrePrefix.gem, aMaterial, 1L), 7000, 2000, 24);
-                    GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(1L, aStack), GT_ModHandler.getDistilledWater(200L), OreDictionaryUnifier.get(OrePrefix.gem, aMaterial, 1L), 9000, 1500, 24);
+                if (uEntry.material.contains(SubTag.CRYSTALLISABLE)) {
+                    GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(1, stack), Materials.Water.getFluid(200), OreDictionaryUnifier.get(OrePrefix.gem, uEntry.material, 1), 7000, 2000, 24);
+                    GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(1, stack), ModHandler.getDistilledWater(200), OreDictionaryUnifier.get(OrePrefix.gem, uEntry.material, 1), 9000, 1500, 24);
                 }
 
-                switch (aMaterial.mName) {
+                switch (uEntry.material.defaultLocalName) {
                     case "NULL":
                         break;
                     case "Glass":
-                        GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, aStack), new ItemStack(net.minecraft.init.Blocks.GLASS));
+                        ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1, stack), new ItemStack(net.minecraft.init.Blocks.GLASS));
                         break;
-                    case "NetherQuartz": case "Quartz": case "CertusQuartz":
+                    case "Nether Quartz": case "Quartz": case "Certus Quartz":
                         if (gregtech.api.GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "QuartzDustSmeltingIntoAESilicon", true))
-                            GT_ModHandler.removeFurnaceSmelting(aStack);
+                            ModHandler.removeFurnaceSmelting(stack);
                         break;
-                    case "MeatRaw":
-                        GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, aStack), OreDictionaryUnifier.get(OrePrefix.dust, Materials.MeatCooked, 1L));
+                    case "Meat Raw":
+                        ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.dust, Materials.MeatCooked, 1));
                         break;
                     case "Mercury":
                         System.err.println("Quicksilver Dust?, To melt that, you don't even need a Furnace...");
                         break;
                     case "Tetrahedrite": case "Chalcopyrite": case "Malachite":
-                        GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, aStack), OreDictionaryUnifier.get(OrePrefix.nugget, Materials.Copper, 6L));
+                        ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.nugget, Materials.Copper, 6));
                         break;
                     case "Pentlandite":
-                        GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, aStack), OreDictionaryUnifier.get(OrePrefix.nugget, Materials.Nickel, 6L));
+                        ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.nugget, Materials.Nickel, 6));
                         break;
                     case "Garnierite":
-                        GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, aStack), OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Nickel, 1L));
+                        ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Nickel, 1));
                         break;
-                    case "Cassiterite": case "CassiteriteSand":
-                        GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, aStack), OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Tin, 1L));
+                    case "Cassiterite": case "Cassiterite Sand":
+                        ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Tin, 1));
                         break;
-                    case "Magnetite": case "VanadiumMagnetite": case "BasalticMineralSand": case "GraniticMineralSand":
-                        GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, aStack), OreDictionaryUnifier.get(OrePrefix.nugget, Materials.Iron, 3L));
+                    case "Magnetite": case "Vanadium Magnetite": case "Basaltic Mineral Sand": case "Granitic Mineral Sand":
+                        ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.nugget, Materials.Iron, 3));
                         break;
-                    case "YellowLimonite": case "BrownLimonite": case "BandedIron":
-                        GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, aStack), OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Iron, 1L));
+                    case "Yellow Limonite": case "Brown Limonite": case "Banded Iron":
+                        ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Iron, 1));
                         break;
                     case "Coal":
                         if (GT_Mod.gregtechproxy.mTEMachineRecipes)
-                            GT_ModHandler.addLiquidTransposerFillRecipe(GT_Utility.copyAmount(1L, aStack), Materials.Water.getFluid(125L), OreDictionaryUnifier.get(OrePrefix.dust, Materials.HydratedCoal, 1L), 125);
+                            ModHandler.addLiquidTransposerFillRecipe(GT_Utility.copyAmount(1, stack), Materials.Water.getFluid(125), OreDictionaryUnifier.get(OrePrefix.dust, Materials.HydratedCoal, 1), 125);
                         break;
-                    case "HydratedCoal":
+                    case "Hydrated Coal":
                         if (GT_Mod.gregtechproxy.mTEMachineRecipes)
-                            GT_ModHandler.addLiquidTransposerEmptyRecipe(GT_Utility.copyAmount(1L, aStack), Materials.Water.getFluid(125L), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Coal, 1L), 125);
-                        GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, aStack), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Coal, 1L));
+                            ModHandler.addLiquidTransposerEmptyRecipe(GT_Utility.copyAmount(1, stack), Materials.Water.getFluid(125), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Coal, 1), 125);
+                        ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Coal, 1));
                         break;
                     case "Diamond":
-                        GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(4L, aStack), 32, ItemList.IC2_Industrial_Diamond.get(3L), OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh, 16L));
+                        GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(4, stack), 32, ItemList.IC2_Industrial_Diamond.get(3), OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh, 16));
                         break;
-                    case "Opal": case "Olivine": case "Emerald": case "Ruby": case "Sapphire": case "GreenSapphire": case "Topaz": case "BlueTopaz": case "Tanzanite":
-                        GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(4L, aStack), 24, OreDictionaryUnifier.get(OrePrefix.gem, aMaterial, 3L), OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh, 12L));
+                    case "Opal": case "Olivine": case "Emerald": case "Ruby": case "Sapphire": case "Green Sapphire": case "Topaz": case "Blue Topaz": case "Tanzanite":
+                        GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(4, stack), 24, OreDictionaryUnifier.get(OrePrefix.gem, uEntry.material, 3), OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh, 12));
                         break;
-                    case "FoolsRuby": case "GarnetRed": case "GarnetYellow": case "Jasper": case "Amber": case "Monazite": case "Forcicium": case "Forcillium": case "Force":
-                        GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(4L, aStack), 16, OreDictionaryUnifier.get(OrePrefix.gem, aMaterial, 3L), OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh, 8L));
+                    case "Fools Ruby": case "Garnet Red": case "Garnet Yellow": case "Jasper": case "Amber": case "Monazite": case "Forcicium": case "Forcillium": case "Force":
+                        GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(4, stack), 16, OreDictionaryUnifier.get(OrePrefix.gem, uEntry.material, 3), OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh, 8));
                 }
                 break;
             case dustPure: case dustImpure:case dustRefined:
-                Materials tByProduct = (Materials) GT_Utility.selectItemInList(aPrefix == OrePrefix.dustRefined ? 2 : aPrefix == OrePrefix.dustPure ? 1 : 0, aMaterial, aMaterial.mOreByProducts);
+                Material tByProduct = GT_Utility.selectItemInList(uEntry.orePrefix == OrePrefix.dustRefined ? 2 : uEntry.orePrefix == OrePrefix.dustPure ? 1 : 0, uEntry.material, uEntry.material.mOreByProducts);
 
-                if (aPrefix == OrePrefix.dustPure) {
-                    if (aMaterial.contains(SubTag.ELECTROMAGNETIC_SEPERATION_GOLD))
-                        GT_Values.RA.addElectromagneticSeparatorRecipe(GT_Utility.copyAmount(1L, aStack), OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, 1L), OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Gold, 1L), OreDictionaryUnifier.get(OrePrefix.nugget, Materials.Gold, 1L), new int[]{10000, 4000, 2000}, 400, 24);
-                    if (aMaterial.contains(SubTag.ELECTROMAGNETIC_SEPERATION_IRON))
-                        GT_Values.RA.addElectromagneticSeparatorRecipe(GT_Utility.copyAmount(1L, aStack), OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, 1L), OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Iron, 1L), OreDictionaryUnifier.get(OrePrefix.nugget, Materials.Iron, 1L), new int[]{10000, 4000, 2000}, 400, 24);
-                    if (aMaterial.contains(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM)) {
-                        GT_Values.RA.addElectromagneticSeparatorRecipe(GT_Utility.copyAmount(1L, aStack), OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, 1L), OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Neodymium, 1L), OreDictionaryUnifier.get(OrePrefix.nugget, Materials.Neodymium, 1L), new int[]{10000, 4000, 2000}, 400, 24);
+                if (uEntry.orePrefix == OrePrefix.dustPure) {
+                    if (uEntry.material.contains(SubTag.ELECTROMAGNETIC_SEPERATION_GOLD))
+                        GT_Values.RA.addElectromagneticSeparatorRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material, 1), OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Gold, 1L), OreDictionaryUnifier.get(OrePrefix.nugget, Materials.Gold, 1L), new int[]{10000, 4000, 2000}, 400, 24);
+                    if (uEntry.material.contains(SubTag.ELECTROMAGNETIC_SEPERATION_IRON))
+                        GT_Values.RA.addElectromagneticSeparatorRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material, 1), OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Iron, 1L), OreDictionaryUnifier.get(OrePrefix.nugget, Materials.Iron, 1L), new int[]{10000, 4000, 2000}, 400, 24);
+                    if (uEntry.material.contains(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM)) {
+                        GT_Values.RA.addElectromagneticSeparatorRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material, 1), OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Neodymium, 1L), OreDictionaryUnifier.get(OrePrefix.nugget, Materials.Neodymium, 1L), new int[]{10000, 4000, 2000}, 400, 24);
                     }
                 }
-                if (aMaterial.contains(SubTag.CRYSTALLISABLE)) {
-                    GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(1L, aStack), Materials.Water.getFluid(200L), OreDictionaryUnifier.get(OrePrefix.gem, aMaterial, 1L), 9000, 2000, 24);
-                    GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(1L, aStack), gregtech.api.util.GT_ModHandler.getDistilledWater(200L), OreDictionaryUnifier.get(OrePrefix.gem, aMaterial, 1L), 9500, 1500, 24);
+                if (uEntry.material.contains(SubTag.CRYSTALLISABLE)) {
+                    GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(1, stack), Materials.Water.getFluid(200), OreDictionaryUnifier.get(OrePrefix.gem, uEntry.material, 1), 9000, 2000, 24);
+                    GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(1, stack), ModHandler.getDistilledWater(200), OreDictionaryUnifier.get(OrePrefix.gem, uEntry.material, 1), 9500, 1500, 24);
                 }
 
-                ItemStack tImpureStack = OreDictionaryUnifier.get(OrePrefix.dustTiny, tByProduct, OreDictionaryUnifier.get(OrePrefix.nugget, tByProduct, 1L), 1L);
+                ItemStack tImpureStack = OreDictionaryUnifier.get(OrePrefix.dustTiny, tByProduct, OreDictionaryUnifier.get(OrePrefix.nugget, tByProduct, 1), 1);
                 if (tImpureStack == null) {
-                    tImpureStack = OreDictionaryUnifier.get(OrePrefix.dustSmall, tByProduct, 1L);
+                    tImpureStack = OreDictionaryUnifier.get(OrePrefix.dustSmall, tByProduct, 1);
                     if (tImpureStack == null) {
-                        tImpureStack = OreDictionaryUnifier.get(OrePrefix.dust, tByProduct, OreDictionaryUnifier.get(OrePrefix.gem, tByProduct, 1L), 1L);
+                        tImpureStack = OreDictionaryUnifier.get(OrePrefix.dust, tByProduct, OreDictionaryUnifier.get(OrePrefix.gem, tByProduct, 1), 1);
                         if (tImpureStack == null) {
-                            tImpureStack = OreDictionaryUnifier.get(OrePrefix.cell, tByProduct, 1L);
+                            tImpureStack = OreDictionaryUnifier.get(OrePrefix.cell, tByProduct, 1);
                             if (tImpureStack == null) {
-                                GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(1L, aStack), 0, OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, 1L), null, null, null, null, null, (int) Math.max(1L, aMaterial.getMass()));
+                                GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(1, stack), 0, OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material, 1), null, null, null, null, null, (int) Math.max(1L, uEntry.material.getMass()));
                             } else {
                                 FluidStack tFluid = GT_Utility.getFluidForFilledItem(tImpureStack, true);
                                 if (tFluid == null) {
-                                    GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(9L, aStack), 1, OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, 9L), tImpureStack, null, null, null, null, (int) Math.max(1L, aMaterial.getMass() * 72L));
+                                    GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(9, stack), 1, OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material, 9L), tImpureStack, null, null, null, null, (int) Math.max(1L, uEntry.material.getMass() * 72L));
                                 } else {
                                     tFluid.amount /= 10;
-                                    GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(1L, aStack), null, null, tFluid, OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, 1L), null, null, null, null, null, null, (int) Math.max(1L, aMaterial.getMass() * 8L), 5);
+                                    GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(1, stack), null, null, tFluid, OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material, 1L), null, null, null, null, null, null, (int) Math.max(1L, uEntry.material.getMass() * 8L), 5);
                                 }
                             }
                         } else {
-                            GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(9L, aStack), 0, OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, 9L), tImpureStack, null, null, null, null, (int) Math.max(1L, aMaterial.getMass() * 72L));
+                            GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(9, stack), 0, OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material, 9), tImpureStack, null, null, null, null, (int) Math.max(1L, uEntry.material.getMass() * 72L));
                         }
                     } else {
-                        GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(2L, aStack), 0, OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, 2L), tImpureStack, null, null, null, null, (int) Math.max(1L, aMaterial.getMass() * 16L));
+                        GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(2, stack), 0, OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material, 2), tImpureStack, null, null, null, null, (int) Math.max(1L, uEntry.material.getMass() * 16L));
                     }
                 } else {
-                    GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(1L, aStack), 0, OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, 1L), tImpureStack, null, null, null, null, (int) Math.max(1L, aMaterial.getMass() * 8L));
+                    GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(1, stack), 0, OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material, 1), tImpureStack, null, null, null, null, (int) Math.max(1L, uEntry.material.getMass() * 8L));
                 }
                 break;
             case dustSmall:
-                GT_Values.RA.addBoxingRecipe(GT_Utility.copyAmount(4L, aStack), ItemList.Schematic_Dust.get(0L), OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, 1L), 100, 4);
-                if (!aMaterial.mBlastFurnaceRequired) {
-                    GT_RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
-                    if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
-                        GT_RecipeRegistrator.registerReverseArcSmelting(GT_Utility.copyAmount(1L, aStack), aMaterial, aPrefix.mMaterialAmount, null, null, null);
+                GT_Values.RA.addBoxingRecipe(GT_Utility.copyAmount(4, stack), ItemList.Schematic_Dust.get(0), OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material, 1), 100, 4);
+                if (!uEntry.material.mBlastFurnaceRequired) {
+                    GT_RecipeRegistrator.registerReverseFluidSmelting(stack, uEntry.material, uEntry.orePrefix.mMaterialAmount, null);
+                    if (uEntry.material.mSmeltInto.mArcSmeltInto != uEntry.material) {
+                        GT_RecipeRegistrator.registerReverseArcSmelting(GT_Utility.copyAmount(1, stack), uEntry.material, uEntry.orePrefix.mMaterialAmount, null, null, null);
                     }
                 }
-                if (aMaterial.mBlastFurnaceRequired) {
-                    GT_Values.RA.addBlastRecipe(GT_Utility.copyAmount(4L, aStack), null, null, null, aMaterial.mBlastFurnaceTemp > 1750 ? OreDictionaryUnifier.get(OrePrefix.ingotHot, aMaterial.mSmeltInto, OreDictionaryUnifier.get(OrePrefix.ingot, aMaterial.mSmeltInto, 1L), 1L) : OreDictionaryUnifier.get(OrePrefix.ingot, aMaterial.mSmeltInto, 1L), null, (int) Math.max(aMaterial.getMass() / 40L, 1L) * aMaterial.mBlastFurnaceTemp, 120, aMaterial.mBlastFurnaceTemp);
+                if (uEntry.material.mBlastFurnaceRequired) {
+                    GT_Values.RA.addBlastRecipe(GT_Utility.copyAmount(4, stack), null, null, null, uEntry.material.mBlastFurnaceTemp > 1750 ? OreDictionaryUnifier.get(OrePrefix.ingotHot, uEntry.material.mSmeltInto, OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material.mSmeltInto, 1L), 1L) : OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material.mSmeltInto, 1L), null, (int) Math.max(uEntry.material.getMass() / 40L, 1L) * uEntry.material.mBlastFurnaceTemp, 120, uEntry.material.mBlastFurnaceTemp);
                 } else {
-                    gregtech.api.util.GT_ModHandler.addAlloySmelterRecipe(GT_Utility.copyAmount(4L, aStack), ItemList.Shape_Mold_Ingot.get(0L), OreDictionaryUnifier.get(OrePrefix.ingot, aMaterial.mSmeltInto, 1L), 130, 3, true);
+                    ModHandler.addAlloySmelterRecipe(GT_Utility.copyAmount(4, stack), ItemList.Shape_Mold_Ingot.get(0), OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material.mSmeltInto, 1L), 130, 3, true);
                 }
                 break;
             case dustTiny:
-                GT_Values.RA.addBoxingRecipe(GT_Utility.copyAmount(9L, aStack), ItemList.Schematic_Dust.get(0L), OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, 1L), 100, 4);
-                if (!aMaterial.mBlastFurnaceRequired) {
-                    GT_RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
-                    if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
-                        GT_RecipeRegistrator.registerReverseArcSmelting(GT_Utility.copyAmount(1L, aStack), aMaterial, aPrefix.mMaterialAmount, null, null, null);
+                GT_Values.RA.addBoxingRecipe(GT_Utility.copyAmount(9, stack), ItemList.Schematic_Dust.get(0), OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material, 1L), 100, 4);
+                if (!uEntry.material.mBlastFurnaceRequired) {
+                    GT_RecipeRegistrator.registerReverseFluidSmelting(stack, uEntry.material, uEntry.orePrefix.mMaterialAmount, null);
+                    if (uEntry.material.mSmeltInto.mArcSmeltInto != uEntry.material) {
+                        GT_RecipeRegistrator.registerReverseArcSmelting(GT_Utility.copyAmount(1, stack), uEntry.material, uEntry.orePrefix.mMaterialAmount, null, null, null);
                     }
                 }
-                if (!aMaterial.contains(gregtech.api.enums.SubTag.NO_SMELTING)) {
-                    if (aMaterial.mBlastFurnaceRequired) {
-                        GT_Values.RA.addBlastRecipe(GT_Utility.copyAmount(9L, aStack), null, null, null, aMaterial.mBlastFurnaceTemp > 1750 ? OreDictionaryUnifier.get(OrePrefix.ingotHot, aMaterial.mSmeltInto, OreDictionaryUnifier.get(OrePrefix.ingot, aMaterial.mSmeltInto, 1L), 1L) : OreDictionaryUnifier.get(OrePrefix.ingot, aMaterial.mSmeltInto, 1L), null, (int) Math.max(aMaterial.getMass() / 40L, 1L) * aMaterial.mBlastFurnaceTemp, 120, aMaterial.mBlastFurnaceTemp);
-                        GT_ModHandler.removeFurnaceSmelting(aStack);
+                if (!uEntry.material.contains(SubTag.NO_SMELTING)) {
+                    if (uEntry.material.mBlastFurnaceRequired) {
+                        GT_Values.RA.addBlastRecipe(GT_Utility.copyAmount(9, stack), null, null, null, uEntry.material.mBlastFurnaceTemp > 1750 ? OreDictionaryUnifier.get(OrePrefix.ingotHot, uEntry.material.mSmeltInto, OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material.mSmeltInto, 1L), 1L) : OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material.mSmeltInto, 1L), null, (int) Math.max(uEntry.material.getMass() / 40L, 1L) * uEntry.material.mBlastFurnaceTemp, 120, uEntry.material.mBlastFurnaceTemp);
+                        ModHandler.removeFurnaceSmelting(stack);
                     } else {
-                        GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, aStack), OreDictionaryUnifier.get(OrePrefix.nugget, aMaterial.mSmeltInto, 1L));
-                        GT_ModHandler.addAlloySmelterRecipe(GT_Utility.copyAmount(9L, aStack), ItemList.Shape_Mold_Ingot.get(0L), OreDictionaryUnifier.get(OrePrefix.ingot, aMaterial.mSmeltInto, 1L), 130, 3, true);
+                        ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.nugget, uEntry.material.mSmeltInto, 1L));
+                        ModHandler.addAlloySmelterRecipe(GT_Utility.copyAmount(9, stack), ItemList.Shape_Mold_Ingot.get(0), OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material.mSmeltInto, 1L), 130, 3, true);
                     }
                 }
                 break;

@@ -989,6 +989,7 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         GT_Values.RA.addElectrolyzerRecipe(GT_Values.NI, ItemList.Cell_Empty.get(1), Materials.Water.getFluid(3000L), Materials.Hydrogen.getGas(2000L), OreDictionaryUnifier.get(OrePrefix.cell, Materials.Oxygen, 1), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 1500, 30);
         GT_Values.RA.addElectrolyzerRecipe(GT_Values.NI, ItemList.Cell_Empty.get(1), GT_ModHandler.getDistilledWater(3000L), Materials.Hydrogen.getGas(2000L), OreDictionaryUnifier.get(OrePrefix.cell, Materials.Oxygen, 1), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 1500, 30);
+
         //GT_Values.RA.addElectrolyzerRecipe(GT_ModHandler.getIC2Item(ItemName.fluid_cell, FluidName.heavy_water, 3), 0, OreDictionaryUnifier.get(OrePrefix.cell, Materials.Hydrogen, 2L), OreDictionaryUnifier.get(OrePrefix.cell, Materials.Oxygen, 1), GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 30, 30); TODO GT Heavy Water Cell
         GT_Values.RA.addElectrolyzerRecipe(OreDictionaryUnifier.get(OrePrefix.cell, Materials.Water, 1), 0, GT_ModHandler.getIC2Item(ItemName.fluid_cell, FluidName.heavy_water, 1), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, 490, 30);
         GT_Values.RA.addElectrolyzerRecipe(ItemList.Dye_Bonemeal.get(3L), 0, OreDictionaryUnifier.get(OrePrefix.dust, Materials.Calcium, 1), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, 98, 26);

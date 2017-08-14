@@ -1,43 +1,49 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.unification.OreDictionaryUnifier;
-import gregtech.api.unification.ore.IOreRegistrationHandler;
+import com.enderio.core.common.OreDict;
 import gregtech.api.items.ItemList;
-import gregtech.api.unification.material.Materials;
 import gregtech.api.items.OreDictNames;
+import gregtech.api.recipes.ModHandler;
+import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
-import gregtech.api.util.GT_ModHandler;
+import gregtech.api.unification.stack.SimpleItemStack;
+import gregtech.api.unification.stack.UnificationEntry;
 import ic2.core.item.type.CasingResourceType;
 import ic2.core.ref.ItemName;
 import net.minecraft.item.ItemStack;
 
 public class ProcessingCircuit implements IOreRegistrationHandler {
     public ProcessingCircuit() {
-        OrePrefix.circuit.add(this);
+        OrePrefix.circuit.addProcessingHandler(this);
     }
 
-    public void registerOre(OrePrefix aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        switch (aMaterial.mName) {
+    public void registerOre(UnificationEntry uEntry, String modName, SimpleItemStack simpleStack) {
+        ItemStack stack = simpleStack.asItemStack();
+        switch (uEntry.material.toString()) {
             case "Good":
             case "Advanced":
             case "Data":
             case "Elite":
             case "Master":
             case "Ultimate":
-                if (!OreDictionaryUnifier.isBlacklisted(aStack))
-                    GT_ModHandler.removeRecipeByOutput(aStack);
+                if (!OreDictionaryUnifier.isBlacklisted(stack)) {
+                    ModHandler.removeRecipeByOutput(stack);
+                }
                 break;
             case "Primitive":
-                GT_ModHandler.removeRecipeByOutput(aStack);
-                GT_ModHandler.addShapelessCraftingRecipe(ItemList.Circuit_Primitive.get(1L), new Object[]{GT_ModHandler.getIC2Item(ItemName.casing, CasingResourceType.steel, 1), OrePrefix.wireGt01.get(Materials.RedAlloy), OrePrefix.wireGt01.get(Materials.RedAlloy), OrePrefix.wireGt01.get(Materials.Tin)});
+                ModHandler.removeRecipeByOutput(stack);
+                ModHandler.addShapelessCraftingRecipe(ItemList.Circuit_Primitive.get(1), ModHandler.getIC2Item(ItemName.casing, CasingResourceType.steel, 1), OreDictionaryUnifier.get(OrePrefix.wireGt01, Materials.RedAlloy), OreDictionaryUnifier.get(OrePrefix.wireGt01, Materials.RedAlloy), OreDictionaryUnifier.get(OrePrefix.wireGt01, Materials.Tin));
                 break;
             case "Basic":
-                GT_ModHandler.removeRecipeByOutput(aStack);
-                GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Basic.get(1L), new Object[]{"WWW", "CPC", "WWW", 'C', OrePrefix.circuit.get(Materials.Primitive), 'W', OreDictNames.craftingWireCopper, 'P', OrePrefix.plate.get(Materials.Steel)});
-                GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Basic.get(1L), new Object[]{"WCW", "WPW", "WCW", 'C', OrePrefix.circuit.get(Materials.Primitive), 'W', OreDictNames.craftingWireCopper, 'P', OrePrefix.plate.get(Materials.Steel)});
-                GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Basic.get(1L), new Object[]{"WWW", "CPC", "WWW", 'C', OrePrefix.circuit.get(Materials.Primitive), 'W', OrePrefix.cableGt01.get(Materials.RedAlloy), 'P', OrePrefix.plate.get(Materials.Steel)});
-                GT_ModHandler.addCraftingRecipe(ItemList.Circuit_Basic.get(1L), new Object[]{"WCW", "WPW", "WCW", 'C', OrePrefix.circuit.get(Materials.Primitive), 'W', OrePrefix.cableGt01.get(Materials.RedAlloy), 'P', OrePrefix.plate.get(Materials.Steel)});
-                GT_ModHandler.addShapelessCraftingRecipe(ItemList.Circuit_Basic.get(1L), new Object[]{ItemList.Circuit_Integrated.getWildcard(1L)});
+                ModHandler.removeRecipeByOutput(stack);
+                ModHandler.addCraftingRecipe(ItemList.Circuit_Basic.get(1), "WWW", "CPC", "WWW", 'C', OreDictionaryUnifier.get(OrePrefix.circuit, Materials.Primitive), 'W', OreDictNames.craftingWireCopper, 'P', OreDictionaryUnifier.get(OrePrefix.plate, Materials.Steel));
+                ModHandler.addCraftingRecipe(ItemList.Circuit_Basic.get(1), "WCW", "WPW", "WCW", 'C', OreDictionaryUnifier.get(OrePrefix.circuit, Materials.Primitive), 'W', OreDictNames.craftingWireCopper, 'P', OreDictionaryUnifier.get(OrePrefix.plate, Materials.Steel));
+                ModHandler.addCraftingRecipe(ItemList.Circuit_Basic.get(1), "WWW", "CPC", "WWW", 'C', OreDictionaryUnifier.get(OrePrefix.circuit, Materials.Primitive), 'W', OreDictionaryUnifier.get(OrePrefix.cableGt01, Materials.RedAlloy), 'P', OreDictionaryUnifier.get(OrePrefix.plate, Materials.Steel));
+                ModHandler.addCraftingRecipe(ItemList.Circuit_Basic.get(1), "WCW", "WPW", "WCW", 'C', OreDictionaryUnifier.get(OrePrefix.circuit, Materials.Primitive), 'W', OreDictionaryUnifier.get(OrePrefix.cableGt01, Materials.RedAlloy), 'P', OreDictionaryUnifier.get(OrePrefix.plate, Materials.Steel));
+                ModHandler.addShapelessCraftingRecipe(ItemList.Circuit_Basic.get(1), ItemList.Circuit_Integrated.getWildcard(1));
         }
     }
 }

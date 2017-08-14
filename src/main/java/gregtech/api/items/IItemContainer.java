@@ -1,5 +1,6 @@
 package gregtech.api.items;
 
+import gregtech.api.items.metaitem.MetaItem;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -27,6 +28,8 @@ public interface IItemContainer {
     IItemContainer set(Item item);
 
     IItemContainer set(ItemStack stack);
+
+    IItemContainer set(MetaItem.MetaValueItem stack);
 
     IItemContainer registerOre(ItemStack... oreNames);
 

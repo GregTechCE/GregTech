@@ -7,7 +7,6 @@ import gregtech.api.damagesources.DamageSources;
 import gregtech.api.unification.material.type.MarkerMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
-import gregtech.api.items.IIconContainer;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.util.GT_Utility;
@@ -24,15 +23,14 @@ import java.util.List;
 
 public class MaterialMetaItem extends MetaItem<MetaItem.MetaValueItem> {
 
-    private OrePrefix[] orePrefixes;
+    protected OrePrefix[] orePrefixes;
     private TShortArrayList generatedItems = new TShortArrayList();
 
     public MaterialMetaItem(String unlocalizedName, OrePrefix... orePrefixes) {
         super(unlocalizedName, (short) (1000 * orePrefixes.length));
         Preconditions.checkArgument(orePrefixes.length <= 32, "Max allowed OrePrefix count on MaterialMetaItem is 32.");
         this.orePrefixes = orePrefixes;
-        for(String materialName : Material.MATERIAL_REGISTRY.getKeys()) {
-            Material material = Material.MATERIAL_REGISTRY.getObject(materialName);
+        for(Material material : Material.MATERIAL_REGISTRY) {
             if(material != null && !(material instanceof MarkerMaterial)) {
                 int i = Material.MATERIAL_REGISTRY.getIDForObject(material);
                 for(int j = 0; j < orePrefixes.length; j++) {
@@ -40,7 +38,7 @@ public class MaterialMetaItem extends MetaItem<MetaItem.MetaValueItem> {
                     if(orePrefix != null && canGenerate(orePrefix, material)) {
                         short metadata = (short) (j * 1000 + i);
                         generatedItems.add(metadata);
-                        OreDictionaryUnifier.registerOre(orePrefix, material, new ItemStack(this, 1, metadata));
+                        OreDictionaryUnifier.registerOre(new ItemStack(this, 1, metadata), orePrefix, material);
                     }
                 }
             }

@@ -72,10 +72,10 @@ public class GT_Loader_Item_Block_And_Fluid
         GTLog.out.println("GT_Mod: Register Items.");
 
         new GT_IntegratedCircuit_Item();
-        new GT_MetaGenerated_Item_01();
-        new GT_MetaGenerated_Item_02();
+        new MetaItem1();
+        new MataItem2();
         new GT_MetaGenerated_Item_03();
-        new GT_MetaGenerated_Tool_01();
+        new MetaTool();
         new GT_FluidDisplayItem();
 
         new GT_Loader_OreDictionary().run();

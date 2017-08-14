@@ -3,78 +3,84 @@ package gregtech.loaders.oreprocessing;
 import gregtech.api.ConfigCategories;
 import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
-import gregtech.api.unification.ore.IOreRegistrationHandler;
-import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.items.ItemList;
-import gregtech.api.util.GT_ModHandler;
+import gregtech.api.recipes.ModHandler;
+import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.material.type.FluidMaterial;
+import gregtech.api.unification.ore.IOreRegistrationHandler;
+import gregtech.api.unification.ore.OrePrefix;
+import gregtech.api.unification.stack.SimpleItemStack;
+import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
 public class ProcessingBlock implements IOreRegistrationHandler {
     public ProcessingBlock() {
-        OrePrefix.block.add(this);
+        OrePrefix.block.addProcessingHandler(this);
     }
 
-    public void registerOre(OrePrefix aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        GT_Values.RA.addCutterRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), OreDictionaryUnifier.get(OrePrefix.plate, aMaterial, 9L), null, (int) Math.max(aMaterial.getMass() * 10L, 1L), 30);
+    public void registerOre(UnificationEntry uEntry, String modName, SimpleItemStack simpleStack) {
+        ItemStack stack = simpleStack.asItemStack();
+        RecipeMap.CUTTER_RECIPES.recipeBuilder().inputs(GT_Utility.copyAmount(1, stack)).outputs(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 9)).duration((int) Math.max(uEntry.material.getMass() * 10L, 1L)).EUt(30).buildAndRegister();
 
-        ItemStack tStack1 = OreDictionaryUnifier.get(OrePrefix.ingot, aMaterial, 1L);
-        ItemStack tStack2 = OreDictionaryUnifier.get(OrePrefix.gem, aMaterial, 1L);
-        ItemStack tStack3 = OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, 1L);
+        ItemStack ingotStack = OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material, 1);
+        ItemStack gemStack = OreDictionaryUnifier.get(OrePrefix.gem, uEntry.material, 1);
+        ItemStack dustStack = OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material, 1);
+        ModHandler.removeRecipe(GT_Utility.copyAmount(1, stack));
 
-        GT_ModHandler.removeRecipe(new ItemStack[]{GT_Utility.copyAmount(1L, new Object[]{aStack})});
-
-        if (tStack1 != null)
-            GT_ModHandler.removeRecipe(new ItemStack[]{tStack1, tStack1, tStack1, tStack1, tStack1, tStack1, tStack1, tStack1, tStack1});
-        if (tStack2 != null)
-            GT_ModHandler.removeRecipe(new ItemStack[]{tStack2, tStack2, tStack2, tStack2, tStack2, tStack2, tStack2, tStack2, tStack2});
-        if (tStack3 != null) {
-            GT_ModHandler.removeRecipe(new ItemStack[]{tStack3, tStack3, tStack3, tStack3, tStack3, tStack3, tStack3, tStack3, tStack3});
+        if (ingotStack != null)
+            ModHandler.removeRecipe(ingotStack, ingotStack, ingotStack, ingotStack, ingotStack, ingotStack, ingotStack, ingotStack, ingotStack);
+        if (gemStack != null)
+            ModHandler.removeRecipe(gemStack, gemStack, gemStack, gemStack, gemStack, gemStack, gemStack, gemStack, gemStack);
+        if (dustStack != null) {
+            ModHandler.removeRecipe(dustStack, dustStack, dustStack, dustStack, dustStack, dustStack, dustStack, dustStack, dustStack);
         }
-        if (aMaterial.mStandardMoltenFluid != null) {
-            GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Block.get(0L, new Object[0]), aMaterial.getMolten(1296L), OreDictionaryUnifier.get(OrePrefix.block, aMaterial, 1L), 288, 8);
+        if (uEntry.material instanceof FluidMaterial) {
+            FluidMaterial fluidMaterial = (FluidMaterial) uEntry.material;
+            RecipeMap.FLUID_SOLIDFICATION_RECIPES.recipeBuilder().inputs(ItemList.Shape_Mold_Block.get(0)).fluidInputs(fluidMaterial.getFluid(1296)).outputs(OreDictionaryUnifier.get(OrePrefix.block, uEntry.material)).duration(288).EUt(8);
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.storageblockcrafting, OrePrefix.block.get(aMaterial).toString(), false)) {
-            if ((tStack1 == null) && (tStack2 == null) && (tStack3 != null))
-                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.block, aMaterial, 1L), new Object[]{"XXX", "XXX", "XXX", 'X', OrePrefix.dust.get(aMaterial)});
-            if (tStack2 != null)
-                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.block, aMaterial, 1L), new Object[]{"XXX", "XXX", "XXX", 'X', OrePrefix.gem.get(aMaterial)});
-            if (tStack1 != null) {
-                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.block, aMaterial, 1L), new Object[]{"XXX", "XXX", "XXX", 'X', OrePrefix.ingot.get(aMaterial)});
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.storageblockcrafting, OreDictionaryUnifier.get(OrePrefix.block, uEntry.material).toString(), false)) {
+            if ((ingotStack == null) && (gemStack == null) && (dustStack != null))
+                ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.block, uEntry.material, 1), "XXX", "XXX", "XXX", 'X', OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material));
+            if (gemStack != null)
+                ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.block, uEntry.material, 1), "XXX", "XXX", "XXX", 'X', OreDictionaryUnifier.get(OrePrefix.gem, uEntry.material));
+            if (ingotStack != null) {
+                ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.block, uEntry.material, 1), "XXX", "XXX", "XXX", 'X', OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material));
             }
         }
-        if (tStack1 != null) tStack1.stackSize = 9;
-        if (tStack2 != null) tStack2.stackSize = 9;
-        if (tStack3 != null) {
-            tStack3.stackSize = 9;
+        if (ingotStack != null) ingotStack.stackSize = 9;
+        if (gemStack != null) gemStack.stackSize = 9;
+        if (dustStack != null) {
+            dustStack.stackSize = 9;
         }
-        GT_Values.RA.addForgeHammerRecipe(aStack, tStack2, 100, 24);
+        GT_Values.RA.addForgeHammerRecipe(stack, gemStack, 100, 24);
+        RecipeMap.HAMMER_RECIPES.recipeBuilder().inputs(stack).outputs(gemStack).duration(100).EUt(24);
 
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.storageblockdecrafting, OrePrefix.block.get(aMaterial).toString(), tStack2 != null)) {
-            if (tStack3 != null)
-                GT_ModHandler.addShapelessCraftingRecipe(tStack3, new Object[]{OrePrefix.block.get(aMaterial)});
-            if (tStack2 != null)
-                GT_ModHandler.addShapelessCraftingRecipe(tStack2, new Object[]{OrePrefix.block.get(aMaterial)});
-            if (tStack1 != null) {
-                GT_ModHandler.addShapelessCraftingRecipe(tStack1, new Object[]{OrePrefix.block.get(aMaterial)});
+        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.storageblockdecrafting, OreDictionaryUnifier.get(OrePrefix.block, uEntry.material).toString(), gemStack != null)) {
+            if (dustStack != null)
+                ModHandler.addShapelessCraftingRecipe(dustStack, OreDictionaryUnifier.get(OrePrefix.block, uEntry.material));
+            if (gemStack != null)
+                ModHandler.addShapelessCraftingRecipe(gemStack, OreDictionaryUnifier.get(OrePrefix.block, uEntry.material));
+            if (ingotStack != null) {
+                ModHandler.addShapelessCraftingRecipe(ingotStack, OreDictionaryUnifier.get(OrePrefix.block, uEntry.material));
             }
         }
-        if (!OrePrefix.block.isIgnored(aMaterial))
-            GT_ModHandler.addCompressionRecipe(OreDictionaryUnifier.get(OrePrefix.ingot, aMaterial, 9L), OreDictionaryUnifier.get(OrePrefix.block, aMaterial, 1L));
-        switch (aMaterial.mName) {
+        if (!OrePrefix.block.isIgnored(uEntry.material)) {
+            ModHandler.addCompressionRecipe(OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material, 9), OreDictionaryUnifier.get(OrePrefix.block, uEntry.material, 1));
+        }
+        switch (uEntry.material.toString()) {
             case "Mercury":
                 System.err.println("'blockQuickSilver'?, In which Ice Desert can you actually place this as a solid Block?");
                 break;
             case "Iron":
             case "WroughtIron":
-                GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), ItemList.Shape_Extruder_Rod.get(0L, new Object[0]), ItemList.IC2_ShaftIron.get(1L, new Object[0]), 640, 120);
-                GT_Values.RA.addAssemblerRecipe(ItemList.IC2_Compressed_Coal_Ball.get(8L, new Object[0]), GT_Utility.copyAmount(1L, new Object[]{aStack}), ItemList.IC2_Compressed_Coal_Chunk.get(1L, new Object[0]), 400, 4);
+                RecipeMap.EXTRUDER_RECIPES.recipeBuilder().inputs(GT_Utility.copyAmount(1, stack), ItemList.Shape_Extruder_Rod.get(0)).outputs(ItemList.IC2_ShaftIron.get(1)).duration(640).EUt(120);
+                RecipeMap.ASSEMBLER_RECIPES.recipeBuilder().inputs(ItemList.IC2_Compressed_Coal_Ball.get(8), GT_Utility.copyAmount(1, stack)).outputs(ItemList.IC2_Compressed_Coal_Chunk.get(1)).duration(400).EUt(4);
                 break;
             case "Steel":
-                GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), ItemList.Shape_Extruder_Rod.get(0L, new Object[0]), ItemList.IC2_ShaftSteel.get(1L, new Object[0]), 1280, 120);
-                GT_Values.RA.addAssemblerRecipe(ItemList.IC2_Compressed_Coal_Ball.get(8L, new Object[0]), GT_Utility.copyAmount(1L, new Object[]{aStack}), ItemList.IC2_Compressed_Coal_Chunk.get(1L, new Object[0]), 400, 4);
+                RecipeMap.EXTRUDER_RECIPES.recipeBuilder().inputs(GT_Utility.copyAmount(1, stack), ItemList.Shape_Extruder_Rod.get(0)).outputs(ItemList.IC2_ShaftSteel.get(1)).duration(1280).EUt(120);
+                RecipeMap.ASSEMBLER_RECIPES.recipeBuilder().inputs(ItemList.IC2_Compressed_Coal_Ball.get(8), GT_Utility.copyAmount(1, stack)).outputs(ItemList.IC2_Compressed_Coal_Chunk.get(1)).duration(400).EUt(4);
         }
     }
 }

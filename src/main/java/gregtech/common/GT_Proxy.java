@@ -20,7 +20,7 @@ import gregtech.api.util.GT_Fluid;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.*;
 import gregtech.common.entities.GT_Entity_Arrow;
-import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.items.MetaTool;
 import gregtech.common.items.armor.*;
 import ic2.core.block.wiring.CableType;
 import ic2.core.item.ItemIC2FluidContainer;
@@ -1443,7 +1443,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 if (this.mAxeWhenAdventure) {
                     GT_Utility.sendChatToPlayer(aEvent.player, "It's dangerous to go alone! Take this.");
                     aEvent.player.worldObj.spawnEntityInWorld(new EntityItem(aEvent.player.worldObj, aEvent.player.posX, aEvent.player.posY,
-                            aEvent.player.posZ, GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(GT_MetaGenerated_Tool_01.AXE, 1, Materials.Flint, Materials.Wood, null)));
+                            aEvent.player.posZ, MetaTool.INSTANCE.getToolWithStats(MetaTool.AXE, 1, Materials.Flint, Materials.Wood, null)));
                 }
             }
             boolean tHungerEffect = (this.mHungerEffect) && (aEvent.player.ticksExisted % 2400 == 1200);

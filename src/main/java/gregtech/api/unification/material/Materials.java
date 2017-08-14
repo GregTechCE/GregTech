@@ -430,6 +430,8 @@ public class Materials {
     public static FluidMaterial FishOil = new FluidMaterial(342, "fish_oil", "Fish Oil", 0xFFC400, MaterialIconSet.FLUID, of(), 0);
     public static DustMaterial Cocoa = new DustMaterial(343, "cocoa", "Cocoa", 0xBE5F00, MaterialIconSet.FINE, of(), 0);
     public static DustMaterial Coffee = new DustMaterial(345, "coffee", "Coffee", 0x964B00, MaterialIconSet.FINE, of(), 0);
+    public static DustMaterial Wheat = new DustMaterial(345, "wheat", "Wheat", 0xFFFFC4, MaterialIconSet.POWDER, of(), 0);
+
 
     static {
         for (DustMaterial dustMaterial : new DustMaterial[]{Bastnasite, Monazite}) {

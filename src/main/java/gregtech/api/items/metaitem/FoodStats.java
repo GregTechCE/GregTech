@@ -3,11 +3,13 @@ package gregtech.api.items.metaitem;
 import com.google.common.collect.Iterables;
 import gregtech.api.items.metaitem.stats.IFoodStats;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.RandomPotionEffect;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -21,18 +23,22 @@ public class FoodStats implements IFoodStats {
     public final float saturation;
     public final boolean isDrink;
     public final boolean alwaysEdible;
-    public final PotionEffect[] potionEffects;
+    public final RandomPotionEffect[] potionEffects;
 
-    public FoodStats(int foodLevel, float saturation, boolean isDrink, boolean alwaysEdible, PotionEffect... potionEffects) {
+    @Nullable
+    public final ItemStack containerItem;
+
+    public FoodStats(int foodLevel, float saturation, boolean isDrink, boolean alwaysEdible, ItemStack containerItem, RandomPotionEffect... potionEffects) {
         this.foodLevel = foodLevel;
         this.saturation = saturation;
         this.isDrink = isDrink;
         this.alwaysEdible = alwaysEdible;
+        this.containerItem = containerItem;
         this.potionEffects = potionEffects;
     }
 
     public FoodStats(int foodLevel, float saturation, boolean isDrink) {
-        this(foodLevel, saturation, isDrink, false);
+        this(foodLevel, saturation, isDrink, false, null);
     }
 
     public FoodStats(int foodLevel, float saturation) {
@@ -61,15 +67,21 @@ public class FoodStats implements IFoodStats {
 
     @Override
     public void onEaten(ItemStack itemStack, EntityPlayer player) {
-        for(PotionEffect potionEffect : potionEffects) {
-            player.addPotionEffect(GT_Utility.copyPotionEffect(potionEffect));
+        for(RandomPotionEffect potionEffect : potionEffects) {
+            if (Math.random() * 100 > potionEffect.chance) {
+                player.addPotionEffect(GT_Utility.copyPotionEffect(potionEffect.effect));
+            }
         }
     }
 
     @Override
     public void addInformation(ItemStack itemStack, List<String> lines) {
         if(potionEffects.length > 0) {
-            GT_Utility.addPotionTooltip(Iterables.cycle(potionEffects), lines);
+            PotionEffect[] effects = new PotionEffect[potionEffects.length];
+            for (int i = 0; i < potionEffects.length; i++) {
+                effects[i] = potionEffects[i].effect;
+            }
+            GT_Utility.addPotionTooltip(Iterables.cycle(effects), lines);
         }
     }
 

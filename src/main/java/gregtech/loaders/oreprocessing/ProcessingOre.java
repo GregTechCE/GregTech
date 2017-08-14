@@ -3,12 +3,14 @@ package gregtech.loaders.oreprocessing;
 import gregtech.GT_Mod;
 import gregtech.api.ConfigCategories;
 import gregtech.api.GT_Values;
-import gregtech.api.unification.OreDictionaryUnifier;
-import gregtech.api.unification.ore.IOreRegistrationHandler;
-import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.items.ItemList;
-import gregtech.api.util.GT_ModHandler;
+import gregtech.api.recipes.ModHandler;
+import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.IOreRegistrationHandler;
+import gregtech.api.unification.ore.OrePrefix;
+import gregtech.api.unification.stack.SimpleItemStack;
+import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
@@ -23,7 +25,7 @@ public class ProcessingOre implements IOreRegistrationHandler {
                 tPrefix.add(this);
     }
 
-    public void registerOre(OrePrefix aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+    public void registerOre(UnificationEntry uEntry, String modName, SimpleItemStack simpleStack) {
         boolean tIsRich = (aPrefix == OrePrefix.oreNether) || (aPrefix == OrePrefix.oreEnd) || (aPrefix == OrePrefix.oreDense);
 
         if (aMaterial == Materials.Oilsands) {
@@ -35,7 +37,7 @@ public class ProcessingOre implements IOreRegistrationHandler {
 
     private boolean registerStandardOreRecipes(OrePrefix aPrefix, Materials aMaterial, ItemStack aOreStack, int aMultiplier) {
         if ((aOreStack == null) || (aMaterial == null)) return false;
-        GT_ModHandler.addValuableOre(GT_Utility.getBlockFromStack(aOreStack), aOreStack.getItemDamage(), aMaterial.mOreValue);
+        ModHandler.addValuableOre(GT_Utility.getBlockFromStack(aOreStack), aOreStack.getItemDamage(), aMaterial.mOreValue);
         Materials tMaterial = aMaterial.mOreReplacement;
         Materials tPrimaryByMaterial = null;
         aMultiplier = Math.max(1, aMultiplier);
@@ -64,11 +66,11 @@ public class ProcessingOre implements IOreRegistrationHandler {
             if (tPrimaryByProduct == null) {
                 tPrimaryByMaterial = tMat;
                 tPrimaryByProduct = OreDictionaryUnifier.get(OrePrefix.dust, tMat, 1L);
-                if (OreDictionaryUnifier.get(OrePrefix.dustSmall, tMat, 1L) == null)
+                if (OreDictionaryUnifier.get(OrePrefix.dustSmall, tMat, 1) == null)
                     OreDictionaryUnifier.get(OrePrefix.dustTiny, tMat, OreDictionaryUnifier.get(OrePrefix.nugget, tMat, 2L), 2L);
             }
             OreDictionaryUnifier.get(OrePrefix.dust, tMat, 1L);
-            if (OreDictionaryUnifier.get(OrePrefix.dustSmall, tMat, 1L) == null)
+            if (OreDictionaryUnifier.get(OrePrefix.dustSmall, tMat, 1) == null)
                 OreDictionaryUnifier.get(OrePrefix.dustTiny, tMat, OreDictionaryUnifier.get(OrePrefix.nugget, tMat, 2L), 2L);
         }
         if ((!tByProductStacks.isEmpty()) && (!this.mAlreadyListedOres.contains(aMaterial))) {
@@ -82,13 +84,13 @@ public class ProcessingOre implements IOreRegistrationHandler {
 
         if (tSmeltInto != null) {
             if ((aMaterial.mBlastFurnaceRequired) || (aMaterial.mDirectSmelting.mBlastFurnaceRequired)) {
-                GT_ModHandler.removeFurnaceSmelting(aOreStack);
+                ModHandler.removeFurnaceSmelting(aOreStack);
             } else {
                 if (GT_Mod.gregtechproxy.mTEMachineRecipes) {
-                    GT_ModHandler.addInductionSmelterRecipe(aOreStack, new ItemStack(net.minecraft.init.Blocks.SAND, 1), GT_Utility.mul(aMultiplier * (aMaterial.contains(SubTag.INDUCTIONSMELTING_LOW_OUTPUT) ? 1 : 2) * aMaterial.mSmeltingMultiplier, tSmeltInto), ItemList.TE_Slag_Rich.get(1L), 300 * aMultiplier, 10 * aMultiplier);
-                    GT_ModHandler.addInductionSmelterRecipe(aOreStack, ItemList.TE_Slag_Rich.get(aMultiplier), GT_Utility.mul(aMultiplier * (aMaterial.contains(SubTag.INDUCTIONSMELTING_LOW_OUTPUT) ? 2 : 3) * aMaterial.mSmeltingMultiplier, tSmeltInto), ItemList.TE_Slag.get(aMultiplier), 300 * aMultiplier, 95);
+                    ModHandler.addInductionSmelterRecipe(aOreStack, new ItemStack(net.minecraft.init.Blocks.SAND, 1), GT_Utility.mul(aMultiplier * (aMaterial.contains(SubTag.INDUCTIONSMELTING_LOW_OUTPUT) ? 1 : 2) * aMaterial.mSmeltingMultiplier, tSmeltInto), ItemList.TE_Slag_Rich.get(1L), 300 * aMultiplier, 10 * aMultiplier);
+                    ModHandler.addInductionSmelterRecipe(aOreStack, ItemList.TE_Slag_Rich.get(aMultiplier), GT_Utility.mul(aMultiplier * (aMaterial.contains(SubTag.INDUCTIONSMELTING_LOW_OUTPUT) ? 2 : 3) * aMaterial.mSmeltingMultiplier, tSmeltInto), ItemList.TE_Slag.get(aMultiplier), 300 * aMultiplier, 95);
                 }
-                tHasSmelting = GT_ModHandler.addSmeltingRecipe(aOreStack, GT_Utility.copyAmount(aMultiplier * aMaterial.mSmeltingMultiplier, tSmeltInto));
+                tHasSmelting = ModHandler.addSmeltingRecipe(aOreStack, GT_Utility.copyAmount(aMultiplier * aMaterial.mSmeltingMultiplier, tSmeltInto));
             }
 
             if (aMaterial.contains(SubTag.BLASTFURNACE_CALCITE_TRIPLE)) {
@@ -99,12 +101,12 @@ public class ProcessingOre implements IOreRegistrationHandler {
         }
 
         if (!tHasSmelting) {
-            GT_ModHandler.addSmeltingRecipe(aOreStack, OreDictionaryUnifier.get(OrePrefix.gem, tMaterial.mDirectSmelting, Math.max(1, aMultiplier * aMaterial.mSmeltingMultiplier / 2)));
+            ModHandler.addSmeltingRecipe(aOreStack, OreDictionaryUnifier.get(OrePrefix.gem, tMaterial.mDirectSmelting, Math.max(1, aMultiplier * aMaterial.mSmeltingMultiplier / 2)));
         }
 
         if (tCrushed != null) {
             GT_Values.RA.addForgeHammerRecipe(aOreStack, GT_Utility.copy(GT_Utility.copyAmount(tCrushed.stackSize, tGem), tCrushed), 16, 10);
-            GT_ModHandler.addPulverisationRecipe(aOreStack, GT_Utility.mul(2L, tCrushed), tMaterial.contains(SubTag.PULVERIZING_CINNABAR) ? OreDictionaryUnifier.get(OrePrefix.crystal, Materials.Cinnabar, OreDictionaryUnifier.get(OrePrefix.gem, tPrimaryByMaterial, GT_Utility.copyAmount(1L, tPrimaryByProduct), 1L), 1L) : OreDictionaryUnifier.get(OrePrefix.gem, tPrimaryByMaterial, GT_Utility.copyAmount(1L, tPrimaryByProduct), 1L), tPrimaryByProduct == null ? 0 : tPrimaryByProduct.stackSize * 10 * aMultiplier * aMaterial.mByProductMultiplier, OreDictionaryUnifier.getDust(aPrefix.mSecondaryMaterial), 50, true);
+            ModHandler.addPulverisationRecipe(aOreStack, GT_Utility.mul(2L, tCrushed), tMaterial.contains(SubTag.PULVERIZING_CINNABAR) ? OreDictionaryUnifier.get(OrePrefix.crystal, Materials.Cinnabar, OreDictionaryUnifier.get(OrePrefix.gem, tPrimaryByMaterial, GT_Utility.copyAmount(1L, tPrimaryByProduct), 1L), 1L) : OreDictionaryUnifier.get(OrePrefix.gem, tPrimaryByMaterial, GT_Utility.copyAmount(1L, tPrimaryByProduct), 1L), tPrimaryByProduct == null ? 0 : tPrimaryByProduct.stackSize * 10 * aMultiplier * aMaterial.mByProductMultiplier, OreDictionaryUnifier.getDust(aPrefix.mSecondaryMaterial), 50, true);
         }
         return true;
     }

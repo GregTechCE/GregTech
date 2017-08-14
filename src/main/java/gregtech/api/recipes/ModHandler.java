@@ -801,7 +801,7 @@ public class ModHandler {
     /**
      * Shapeless Crafting Recipes. Deletes conflicting Recipes too.
      */
-    public static void addCraftingRecipe(ItemStack result, Enchantment[] enchantmentsAdded, int[] enchantmentLevelsAdded, Object[] recipe) {
+    public static void addCraftingRecipe(ItemStack result, Enchantment[] enchantmentsAdded, int[] enchantmentLevelsAdded, Object... recipe) {
         addCraftingRecipe(result, enchantmentsAdded, enchantmentLevelsAdded, false, true, false, false, false, false, false, false, false, false, false, false, recipe);
     }
 
@@ -829,7 +829,7 @@ public class ModHandler {
      * 'w' ToolDictNames.craftingToolWrench,
      * 'x' ToolDictNames.craftingToolWireCutter,
      */
-    public static void addCraftingRecipe(ItemStack result, Object[] recipe) {
+    public static void addCraftingRecipe(ItemStack result, Object... recipe) {
         addCraftingRecipe(result, 0, recipe);
     }
 
@@ -857,7 +857,7 @@ public class ModHandler {
      * 'w' ToolDictNames.craftingToolWrench,
      * 'x' ToolDictNames.craftingToolWireCutter,
      */
-    public static void addCraftingRecipe(ItemStack result, long bitMask, Object[] recipe) {
+    public static void addCraftingRecipe(ItemStack result, long bitMask, Object... recipe) {
         addCraftingRecipe(result,
             new Enchantment[0],
             new int[0],
@@ -1134,14 +1134,14 @@ public class ModHandler {
     /**
      * Shapeless Crafting Recipes. Deletes conflicting Recipes too.
      */
-    public static void addShapelessCraftingRecipe(ItemStack result, Object[] recipe) {
+    public static void addShapelessCraftingRecipe(ItemStack result, Object... recipe) {
         addShapelessCraftingRecipe(result, RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | RecipeBits.BUFFERED, recipe);
     }
 
     /**
      * Shapeless Crafting Recipes. Deletes conflicting Recipes too.
      */
-    public static void addShapelessCraftingRecipe(ItemStack result, long bitMask, Object[] recipe) {
+    public static void addShapelessCraftingRecipe(ItemStack result, long bitMask, Object... recipe) {
         addShapelessCraftingRecipe(result,
                 new Enchantment[0],
                 new int[0],

@@ -3,7 +3,7 @@ package gregtech.api.gui;
 import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.items.MetaTool;
 import ic2.core.block.machine.BlockMiningPipe;
 import ic2.core.ref.BlockName;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -63,7 +63,7 @@ public class GT_GUIContainer_MultiMachine extends GT_GUIContainerMetaTile_Machin
                     	}
                     }else if(id == 1131 || id == 1151 || id == 1152 || id == 1153){
                     	ItemStack tItem = mContainer.mTileEntity.getMetaTileEntity().getStackInSlot(1);
-                    	if(tItem==null || !(tItem.getItem()==GT_MetaGenerated_Tool_01.INSTANCE&&tItem.getItemDamage()>=170&&tItem.getItemDamage()<=177)){
+                    	if(tItem==null || !(tItem.getItem()== MetaTool.INSTANCE&&tItem.getItemDamage()>=170&&tItem.getItemDamage()<=177)){
                     		fontRendererObj.drawString("Missing Turbine Rotor", 10, ((ContainerMultiMachine) mContainer).mActive == 0 ? 40 : 24, 16448255);
                     	}
                     }                

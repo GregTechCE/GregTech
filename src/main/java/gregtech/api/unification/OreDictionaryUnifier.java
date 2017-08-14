@@ -3,6 +3,7 @@ package gregtech.api.unification;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
+import gregtech.api.items.OreDictNames;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.GemMaterial;
 import gregtech.api.unification.material.type.Material;
@@ -36,6 +37,10 @@ public class OreDictionaryUnifier {
 
     public static void registerOre(ItemStack itemStack, MaterialStack component, MaterialStack... byproducts) {
         materialUnificationInfo.put(new SimpleItemStack(itemStack), new ItemMaterialInfo(component, byproducts));
+    }
+
+    public static void registerOre(ItemStack itemStack, ItemMaterialInfo materialInfo) {
+        materialUnificationInfo.put(new SimpleItemStack(itemStack), materialInfo);
     }
 
     public static void registerOre(ItemStack itemStack, OrePrefix orePrefix, @Nullable Material material) {

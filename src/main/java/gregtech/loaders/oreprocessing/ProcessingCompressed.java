@@ -1,23 +1,23 @@
 package gregtech.loaders.oreprocessing;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefix;
+import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_RecipeRegistrator;
+import gregtech.api.unification.ore.OrePrefix;
+import gregtech.api.unification.stack.SimpleItemStack;
+import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
 public class ProcessingCompressed implements IOreRegistrationHandler {
     public ProcessingCompressed() {
-        OrePrefix.compressed.add(this);
+        OrePrefix.compressed.addProcessingHandler(this);
     }
 
-    public void registerOre(OrePrefix aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        GT_ModHandler.removeRecipeByOutput(aStack);
-        GregTech_API.registerCover(aStack, new GT_RenderedTexture(aMaterial.mIconSet.mTextures[72], aMaterial.mRGBa), null);
-        GT_RecipeRegistrator.registerUsagesForMaterials(GT_Utility.copyAmount(1L, aStack), null, false);
+    public void registerOre(UnificationEntry uEntry, String modName, SimpleItemStack simpleStack) {
+        ItemStack stack = simpleStack.asItemStack();
+        ModHandler.removeRecipeByOutput(stack);
+        GregTech_API.registerCover(stack, new GT_RenderedTexture(uEntry.material.mIconSet.mTextures[72], uEntry.material.materialRGB), null);
+        GT_RecipeRegistrator.registerUsagesForMaterials(GT_Utility.copyAmount(1, stack), null, false);
     }
 }

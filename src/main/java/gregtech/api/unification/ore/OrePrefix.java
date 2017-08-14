@@ -495,4 +495,8 @@ public enum OrePrefix {
         return String.format(materialNameLocale, material.defaultLocalName);
     }
 
+    public boolean isIgnored(Material material) {
+        return ignoredMaterials.contains(material);
+    }
+
 }

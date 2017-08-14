@@ -97,7 +97,6 @@ public class GT_BookAndLootLoader implements Runnable {
         ChestGenHooks.addItem(LootTableList.CHESTS_STRONGHOLD_CROSSING, ItemList.McGuffium_239.get(1), 1, 1, 8);
         ChestGenHooks.addItem(LootTableList.CHESTS_STRONGHOLD_CORRIDOR, OreDictionaryUnifier.get(OrePrefix.toolHeadSword, Materials.DamascusSteel, 1), 1, 4, 4);
         ChestGenHooks.addItem(LootTableList.CHESTS_STRONGHOLD_CORRIDOR, OreDictionaryUnifier.get(OrePrefix.toolHeadAxe, Materials.DamascusSteel, 1), 1, 4, 4);
-       
     }
 
 }

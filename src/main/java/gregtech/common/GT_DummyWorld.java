@@ -1,6 +1,6 @@
 package gregtech.common;
 
-import gregtech.common.tools.GT_Tool;
+import gregtech.common.tools.ToolBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -163,7 +163,7 @@ public class GT_DummyWorld extends World {
 
     @Override
     public boolean setBlockState(BlockPos pos, IBlockState newState, int flags) {
-        this.mLastSetBlock = GT_Tool.getBlockStack(newState);
+        this.mLastSetBlock = ToolBase.getBlockStack(newState);
         return true;
     }
 
