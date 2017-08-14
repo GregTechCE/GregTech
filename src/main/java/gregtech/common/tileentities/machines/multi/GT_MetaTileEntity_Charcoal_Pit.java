@@ -9,7 +9,7 @@ import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
-import gregtech.common.tools.GT_Tool;
+import gregtech.common.tools.ToolBase;
 import gregtech.common.GT_Pollution;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -196,7 +196,7 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlock
 
     public boolean isWoodLog(IBlockState log){
         String tTool = log.getBlock().getHarvestTool(log);
-        return  OrePrefix.log.contains(GT_Tool.getBlockStack(log))
+        return  OrePrefix.log.contains(ToolBase.getBlockStack(log))
                 && ((tTool != null) && (tTool.equals("axe"))) ||
                 (log.getMaterial() == Material.WOOD);
     }

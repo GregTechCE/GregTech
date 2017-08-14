@@ -15,7 +15,7 @@ public class ProcessingBeans implements IOreRegistrationHandler {
         OrePrefix.beans.add(this);
     }
 
-    public void registerOre(UnificationEntry uEntry, String oreName, String modName, SimpleItemStack simpleStack) {
+    public void registerOre(UnificationEntry uEntry, String modName, SimpleItemStack simpleStack) {
         ItemStack stack = simpleStack.asItemStack();
         if (oreName.equals("beansCocoa")) {
             ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Cocoa, 1));

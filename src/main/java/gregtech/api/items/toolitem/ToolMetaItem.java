@@ -5,9 +5,11 @@ import com.google.common.collect.Multimap;
 import gregtech.api.enchants.EnchantmentData;
 import gregtech.api.items.IDamagableItem;
 import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.SolidMaterial;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.GT_Utility;
 import ic2.api.item.IElectricItemManager;
 import net.minecraft.block.state.IBlockState;
@@ -257,6 +259,26 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
             return (SolidMaterial) material;
         }
         return Materials.Iron;
+    }
+
+    public final ItemStack addTool(int id, String english, String tooltip, IToolStats toolStats, OrePrefix orePrefix) {
+        if (tooltip == null) tooltip = "";
+        if (id >= 0 && id < 32766 && id % 2 == 0) {
+            //GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + id + ".name", english);
+            //GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + id + ".tooltip", tooltip);
+            //GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (id + 1) + ".name", english + " (Empty)");
+            //GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (id + 1) + ".tooltip", "You need to recharge it");
+
+            ItemStack stack = new ItemStack(this, 1, id);
+            toolStats.onStatsAddedToTool(getItem(stack), id);
+
+            mToolStats.put((short) id, toolStats);
+            mToolStats.put((short) (id + 1), toolStats);
+
+            OreDictionaryUnifier.registerOre(stack, orePrefix, Materials.Air);
+            return stack;
+        }
+        return null;
     }
 
     public class MetaToolValueItem extends MetaValueItem {
