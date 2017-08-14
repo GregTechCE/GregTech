@@ -90,20 +90,20 @@ public class GT_Tool_Plunger extends GT_Tool {
         return 0;
     }
 
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? Textures.ItemIcons.PLUNGER : null;
-    }
+//    @Override
+//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+//        return aIsToolHead ? Textures.ItemIcons.PLUNGER : null;
+//    }
 
     @Override
     public int getColor(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mRGBa : ToolMetaItem.getSecondaryMaterial(aStack).mRGBa;
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).materialRGB : ToolMetaItem.getSecondaryMaterial(aStack).materialRGB;
     }
 
     @Override
     public void onStatsAddedToTool(MetaItem.MetaValueItem aItem, int aID) {
-        aItem.addItemBehavior(aID, new Behaviour_Plunger_Item(getToolDamagePerDropConversion()));
-        aItem.addItemBehavior(aID, new Behaviour_Plunger_Fluid(getToolDamagePerDropConversion()));
+        aItem.addStats(new Behaviour_Plunger_Item(getToolDamagePerDropConversion()));
+        aItem.addStats(new Behaviour_Plunger_Fluid(getToolDamagePerDropConversion()));
     }
 
     @Override
@@ -131,7 +131,6 @@ public class GT_Tool_Plunger extends GT_Tool {
         return 0;
     }
 
-
     @Override
     public ITextComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
         return new TextComponentString(TextFormatting.RED + "")
@@ -139,6 +138,4 @@ public class GT_Tool_Plunger extends GT_Tool {
                 .appendText(TextFormatting.WHITE + " got stuck trying to escape through a Pipe while fighting " + TextFormatting.GREEN)
                 .appendSibling(aPlayer.getDisplayName());
     }
-
-
 }

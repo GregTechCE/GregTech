@@ -14,15 +14,42 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraft.world.World;
 
 import java.util.List;
 
 public class GT_Tool_BranchCutter extends GT_Tool {
+
+    @Override
+    public int getToolDamagePerBlockBreak(ItemStack stack) {
+        return 0;
+    }
+
+    @Override
+    public int getToolDamagePerDropConversion(ItemStack stack) {
+        return 0;
+    }
+
+    @Override
+    public int getToolDamagePerContainerCraft(ItemStack stack) {
+        return 0;
+    }
+
+    @Override
+    public int getToolDamagePerEntityAttack(ItemStack stack) {
+        return 0;
+    }
+
+    @Override
+    public int getBaseQuality(ItemStack stack) {
+        return 0;
+    }
 
     @Override
     public float getBaseDamage(ItemStack stack) {
@@ -40,45 +67,86 @@ public class GT_Tool_BranchCutter extends GT_Tool {
     }
 
     @Override
+    public ResourceLocation getMiningSound(ItemStack stack) {
+        return null;
+    }
+
+    @Override
+    public ResourceLocation getCraftingSound(ItemStack stack) {
+        return null;
+    }
+
+    @Override
+    public ResourceLocation getEntityHitSound(ItemStack stack) {
+        return null;
+    }
+
+    @Override
+    public ResourceLocation getBreakingSound(ItemStack stack) {
+        return null;
+    }
+
+    @Override
+    public boolean isCrowbar(ItemStack stack) {
+        return false;
+    }
+
+    @Override
     public boolean isGrafter(ItemStack stack) {
         return true;
     }
 
     @Override
-    public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, IBlockState aBlock, BlockPos blockPos, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
-        if (aBlock.getMaterial() == Material.LEAVES) {
-            aEvent.setDropChance(Math.min(1.0F, Math.max(aEvent.getDropChance(), (aStack.getItem().getHarvestLevel(aStack, "") + 1) * 0.2F)));
-            if (aBlock.getBlock() == Blocks.LEAVES) {
-                aDrops.clear();
-                if ((aBlock.getValue(BlockOldLeaf.VARIANT) == BlockPlanks.EnumType.OAK &&
-                        aPlayer.worldObj.rand.nextInt(9) <= aFortune * 2)) {
-                    aDrops.add(new ItemStack(Items.APPLE, 1, 0));
+    public float getNormalDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase attacker) {
+        return 0;
+    }
+
+    @Override
+    public float getMagicDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase player) {
+        return 0;
+    }
+
+    @Override
+    public float getAttackSpeed(ItemStack stack) {
+        return 0;
+    }
+
+    @Override
+    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops) {
+        ItemStack stack = harvester.getHeldItem(EnumHand.MAIN_HAND);
+        if (blockState.getMaterial() == Material.LEAVES) {
+            aEvent.setDropChance(Math.min(1.0F, Math.max(aEvent.getDropChance(), (stack.getItem().getHarvestLevel(stack, "") + 1) * 0.2F)));
+            if (blockState.getBlock() == Blocks.LEAVES) {
+                drops.clear();
+                if ((blockState.getValue(BlockOldLeaf.VARIANT) == BlockPlanks.EnumType.OAK &&
+                        harvester.worldObj.rand.nextInt(9) <= aFortune * 2)) {
+                    drops.add(new ItemStack(Items.APPLE, 1, 0));
                 } else {
-                    aDrops.add(new ItemStack(Blocks.SAPLING, 1, aBlock
+                    drops.add(new ItemStack(Blocks.SAPLING, 1, blockState
                             .getValue(BlockOldLeaf.VARIANT).getMetadata()));
                 }
-            } else if (aBlock == Blocks.LEAVES2) {
-                aDrops.clear();
-                aDrops.add(new ItemStack(Blocks.SAPLING, 1, aBlock
+            } else if (blockState == Blocks.LEAVES2) {
+                drops.clear();
+                drops.add(new ItemStack(Blocks.SAPLING, 1, blockState
                         .getValue(BlockNewLeaf.VARIANT).getMetadata()));
-            } else if (aBlock == GT_Utility.getBlockFromStack(ModHandler.getIC2Item(BlockName.leaves, 1))) {
-                aDrops.clear();
-                aDrops.add(ModHandler.getIC2Item(BlockName.sapling, 1));
+            } else if (blockState == GT_Utility.getBlockFromStack(ModHandler.getIC2Item(BlockName.leaves, 1))) {
+                drops.clear();
+                drops.add(ModHandler.getIC2Item(BlockName.sapling, 1));
             }
         }
         return 0;
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState aBlock) {
+    public boolean isMinableBlock(IBlockState aBlock, ItemStack stack) {
         String tTool = aBlock.getBlock().getHarvestTool(aBlock);
         return ((tTool != null) && (tTool.equals("grafter"))) || (aBlock.getMaterial() == Material.LEAVES);
     }
 
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? Textures.ItemIcons.GRAFTER : null;
-    }
+//    @Override
+//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+//        return aIsToolHead ? Textures.ItemIcons.GRAFTER : null;
+//    }
 
     @Override
     public int getColor(boolean aIsToolHead, ItemStack aStack) {

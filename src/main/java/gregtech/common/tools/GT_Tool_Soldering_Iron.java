@@ -143,19 +143,19 @@ public class GT_Tool_Soldering_Iron extends GT_Tool {
         return 0;
     }
 
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[49] : Textures.ItemIcons.HANDLE_SOLDERING;
-    }
+//    @Override
+//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+//        return !aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[49] : Textures.ItemIcons.HANDLE_SOLDERING;
+//    }
 
     @Override
     public int getColor(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mRGBa : ToolMetaItem.getSecondaryMaterial(aStack).mRGBa;
+        return !aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).materialRGB : ToolMetaItem.getSecondaryMaterial(aStack).materialRGB;
     }
 
     @Override
     public void onStatsAddedToTool(MetaItem.MetaValueItem aItem, int aID) {
-        aItem.addItemBehavior(aID, new Behaviour_Screwdriver(1, 200));
+        aItem.addStats(new Behaviour_Screwdriver(1, 200));
     }
 
     @Override

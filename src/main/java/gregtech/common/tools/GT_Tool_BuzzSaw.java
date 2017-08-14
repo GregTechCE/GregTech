@@ -2,7 +2,6 @@ package gregtech.common.tools;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.items.toolitem.ToolMetaItem;
-import gregtech.api.unification.ore.OrePrefix;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -58,10 +57,10 @@ public class GT_Tool_BuzzSaw extends GT_Tool_Saw {
         return false;
     }
 
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefix.toolHeadBuzzSaw.mTextureIndex] : Textures.ItemIcons.HANDLE_BUZZSAW;
-    }
+//    @Override
+//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+//        return !aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadBuzzSaw.mTextureIndex] : Textures.ItemIcons.HANDLE_BUZZSAW;
+//    }
 
     @Override
     public int getColor(boolean aIsToolHead, ItemStack aStack) {

@@ -17,14 +17,14 @@ public abstract class GT_Tool_Turbine extends GT_Tool {
         return false;
     }
 
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? getTurbineIcon() : null;
-    }
+//    @Override
+//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+//        return aIsToolHead ? getTurbineIcon() : null;
+//    }
 
     @Override
     public int getColor(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mRGBa : null;
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).materialRGB : null;
     }
 
     @Override

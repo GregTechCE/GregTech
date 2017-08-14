@@ -2,7 +2,6 @@ package gregtech.common.tools;
 
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
-import gregtech.api.unification.ore.OrePrefix;
 import gregtech.common.items.behaviors.Behaviour_Sense;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -10,6 +9,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -79,6 +79,7 @@ public class GT_Tool_Sense extends GT_Tool {
     @Override
     public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops) {
         int rConversions = 0;
+        ItemStack aStack = harvester.getHeldItem(EnumHand.MAIN_HAND);
         if (this.sIsHarvestingRightNow.get() == null && !harvester.worldObj.isRemote) {
             this.sIsHarvestingRightNow.set(this);
             for (int i = -2; i < 3; i++) {
@@ -111,11 +112,10 @@ public class GT_Tool_Sense extends GT_Tool {
         return 0;
     }
 
-
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefix.toolHeadSense.mTextureIndex] : ToolMetaItem.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefix.stick.mTextureIndex];
-    }
+//    @Override
+//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+//        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadSense.mTextureIndex] : ToolMetaItem.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.stick.mTextureIndex];
+//    }
 
     @Override
     public int getColor(boolean aIsToolHead, ItemStack aStack) {
@@ -124,7 +124,7 @@ public class GT_Tool_Sense extends GT_Tool {
 
     @Override
     public void onStatsAddedToTool(MetaItem.MetaValueItem aItem, int aID) {
-        aItem.addItemBehavior(aID, new Behaviour_Sense(getToolDamagePerBlockBreak()));
+        aItem.addStats(new Behaviour_Sense(getToolDamagePerBlockBreak()));
     }
 
     @Override

@@ -2,6 +2,7 @@ package gregtech.common.tools;
 
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
+import gregtech.api.unification.material.Materials;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -114,17 +115,17 @@ public class GT_Tool_RollingPin extends GT_Tool {
 
     @Override
     public int getColor(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mRGBa : Dyes._NULL.mRGBa;
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).materialRGB : Materials.Iron.materialRGB;
     }
 
     @Override
     public void onStatsAddedToTool(MetaItem.MetaValueItem aItem, int aID) {
     }
 
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? Textures.ItemIcons.ROLLING_PIN : null;
-    }
+//    @Override
+//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+//        return aIsToolHead ? Textures.ItemIcons.ROLLING_PIN : null;
+//    }
 
     @Override
     public ITextComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
@@ -133,5 +134,4 @@ public class GT_Tool_RollingPin extends GT_Tool {
                 .appendText(TextFormatting.WHITE + " got flattened by " + TextFormatting.GREEN)
                 .appendSibling(aPlayer.getDisplayName());
     }
-
 }

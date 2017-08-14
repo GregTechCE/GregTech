@@ -3,6 +3,7 @@ package gregtech.common.tools;
 import gregtech.api.GregTech_API;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
+import gregtech.api.unification.material.Materials;
 import gregtech.common.items.behaviors.Behaviour_Wrench;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -13,9 +14,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 
 import java.util.Arrays;
 import java.util.List;
@@ -92,6 +95,16 @@ public class GT_Tool_Wrench extends GT_Tool {
     }
 
     @Override
+    public boolean isCrowbar(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public boolean isGrafter(ItemStack stack) {
+        return false;
+    }
+
+    @Override
     public ResourceLocation getMiningSound(ItemStack stack) {
         return GregTech_API.sSoundList.get(100);
     }
@@ -118,23 +131,43 @@ public class GT_Tool_Wrench extends GT_Tool {
     }
 
     @Override
+    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops) {
+        return 0;
+    }
+
+    @Override
     public ItemStack getBrokenItem(ItemStack aStack) {
         return null;
     }
 
     @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? Textures.ItemIcons.WRENCH : null;
+    public float getNormalDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase attacker) {
+        return 0;
     }
 
     @Override
+    public float getMagicDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase player) {
+        return 0;
+    }
+
+    @Override
+    public float getAttackSpeed(ItemStack stack) {
+        return 0;
+    }
+
+//    @Override
+//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+//        return aIsToolHead ? Textures.ItemIcons.WRENCH : null;
+//    }
+
+    @Override
     public int getColor(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mRGBa : null;
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).materialRGB : Materials.Iron.materialRGB;
     }
 
     @Override
     public void onStatsAddedToTool(MetaItem.MetaValueItem aItem, int aID) {
-        aItem.addItemBehavior(aID, new Behaviour_Wrench(100));
+        aItem.addStats(new Behaviour_Wrench(100));
     }
 
     @Override

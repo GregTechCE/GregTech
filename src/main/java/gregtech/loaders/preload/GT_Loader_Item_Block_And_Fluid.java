@@ -75,7 +75,7 @@ public class GT_Loader_Item_Block_And_Fluid
         new MetaItem1();
         new MataItem2();
         new GT_MetaGenerated_Item_03();
-        new GT_MetaGenerated_Tool_01();
+        new MetaTool();
         new GT_FluidDisplayItem();
 
         new GT_Loader_OreDictionary().run();

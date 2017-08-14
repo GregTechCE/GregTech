@@ -3,7 +3,6 @@ package gregtech.common.tools;
 import gregtech.api.GregTech_API;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
-import gregtech.api.unification.ore.OrePrefix;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -130,14 +129,14 @@ public class GT_Tool_File extends GT_Tool {
         return 0;
     }
 
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefix.toolHeadFile.mTextureIndex] : Textures.ItemIcons.HANDLE_FILE;
-    }
+//    @Override
+//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+//        return !aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadFile.mTextureIndex] : Textures.ItemIcons.HANDLE_FILE;
+//    }
 
     @Override
     public int getColor(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mRGBa : ToolMetaItem.getSecondaryMaterial(aStack).mRGBa;
+        return !aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).materialRGB : ToolMetaItem.getSecondaryMaterial(aStack).materialRGB;
     }
 
     @Override
@@ -151,6 +150,4 @@ public class GT_Tool_File extends GT_Tool {
                 .appendText(TextFormatting.WHITE + " has been filled 'D' for Dead by " + TextFormatting.GREEN)
                 .appendSibling(aPlayer.getDisplayName());
     }
-
-
 }

@@ -1,7 +1,6 @@
 package gregtech.common.tools;
 
 import gregtech.api.items.toolitem.ToolMetaItem;
-import gregtech.api.unification.ore.OrePrefix;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -10,6 +9,7 @@ import net.minecraft.entity.monster.EntitySnowman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -106,6 +106,7 @@ public class GT_Tool_Plow extends GT_Tool {
     @Override
     public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops) {
         int rConversions = 0;
+        ItemStack stack = harvester.getHeldItem(EnumHand.MAIN_HAND);
         if ((this.sIsHarvestingRightNow.get() == null) && ((harvester instanceof EntityPlayerMP))) {
             this.sIsHarvestingRightNow.set(this);
             for (int i = -1; i < 2; i++) {
@@ -114,7 +115,7 @@ public class GT_Tool_Plow extends GT_Tool {
                         BlockPos block = blockPos.add(i, j, k);
                         IBlockState state = harvester.worldObj.getBlockState(block);
                         if (((i != 0) || (j != 0) || (k != 0)) &&
-                                aStack.getStrVsBlock(state) > 0.0F &&
+                                stack.getStrVsBlock(state) > 0.0F &&
                                 ((EntityPlayerMP) harvester).interactionManager.tryHarvestBlock(block)) {
                               rConversions++;
                         }
@@ -141,14 +142,13 @@ public class GT_Tool_Plow extends GT_Tool {
         return 0;
     }
 
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefix.toolHeadPlow.mTextureIndex] : ToolMetaItem.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefix.stick.mTextureIndex];
-    }
+//    @Override
+//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+//        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadPlow.mTextureIndex] : ToolMetaItem.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.stick.mTextureIndex];
+//    }
 
     @Override
     public int getColor(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mRGBa : ToolMetaItem.getSecondaryMaterial(aStack).mRGBa;
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).materialRGB : ToolMetaItem.getSecondaryMaterial(aStack).materialRGB;
     }
-
 }

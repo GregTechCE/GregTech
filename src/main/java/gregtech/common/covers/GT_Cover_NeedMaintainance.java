@@ -6,7 +6,7 @@ import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.metatileentity.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.items.MetaTool;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -38,7 +38,7 @@ public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
                     needsRepair = true;
                 }
                 if(aCoverVariable == 10 || aCoverVariable == 11){
-                	if(multi.getRealInventory()[1]==null || multi.getRealInventory()[1].getItem()!=GT_MetaGenerated_Tool_01.INSTANCE && multi.getRealInventory()[1].getItemDamage()<170){needsRepair = true;}
+                	if(multi.getRealInventory()[1]==null || multi.getRealInventory()[1].getItem()!= MetaTool.INSTANCE && multi.getRealInventory()[1].getItemDamage()<170){needsRepair = true;}
                 	else{
                 		ItemStack tTurbine = multi.getRealInventory()[1];
                 		long tMax = GT_MetaGenerated_Tool.getToolMaxDamage(tTurbine);

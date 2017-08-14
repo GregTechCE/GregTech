@@ -2,8 +2,6 @@ package gregtech.common.tools;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Textures;
-import gregtech.api.items.IIconContainer;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.unification.ore.OrePrefix;
 import net.minecraft.block.Block;
@@ -14,6 +12,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -107,14 +106,15 @@ public class GT_Tool_Chainsaw_LV extends GT_Tool_Saw {
     @Override
     public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops) {
         int rAmount = 0;
+        ItemStack stack = harvester.getHeldItem(EnumHand.MAIN_HAND);
         if ((blockState.getMaterial() == Material.LEAVES) && blockState.getBlock() instanceof IShearable) {
             IShearable shearable = (IShearable) blockState.getBlock();
-            if (shearable.isShearable(aStack, harvester.worldObj, blockPos)) {
-                List<ItemStack> tDrops = shearable.onSheared(aStack, harvester.worldObj, blockPos, aFortune);
+            if (shearable.isShearable(stack, harvester.worldObj, blockPos)) {
+                List<ItemStack> tDrops = shearable.onSheared(stack, harvester.worldObj, blockPos, aFortune);
                 drops.clear();
                 drops.addAll(tDrops);
                 aEvent.setDropChance(1.0F);
-                for (ItemStack stack : tDrops) {
+                for (ItemStack dropStack : tDrops) {
                     Random itemRand = new Random();
                     float f = 0.7F;
                     double d = itemRand.nextFloat() * f + (1.0F - f) * 0.5D;
@@ -123,7 +123,7 @@ public class GT_Tool_Chainsaw_LV extends GT_Tool_Saw {
                     EntityItem entityitem = new EntityItem(harvester.worldObj,
                             blockPos.getX() + d,
                             blockPos.getY() + d1,
-                            blockPos.getZ() + d2, stack);
+                            blockPos.getZ() + d2, dropStack);
                     entityitem.setDefaultPickupDelay();
                     harvester.worldObj.spawnEntityInWorld(entityitem);
                 }
@@ -151,14 +151,14 @@ public class GT_Tool_Chainsaw_LV extends GT_Tool_Saw {
         return rAmount;
     }
 
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefix.toolHeadChainsaw.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_LV;
-    }
+//    @Override
+//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+//        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadChainsaw.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_LV;
+//    }
 
     @Override
     public int getColor(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mRGBa : ToolMetaItem.getSecondaryMaterial(aStack).mRGBa;
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).materialRGB : ToolMetaItem.getSecondaryMaterial(aStack).materialRGB;
     }
 
     @Override

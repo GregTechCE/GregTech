@@ -1,10 +1,8 @@
 package gregtech.common.tools;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.items.IIconContainer;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
-import gregtech.api.unification.ore.OrePrefix;
 import gregtech.common.items.behaviors.Behaviour_SoftHammer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -94,11 +92,6 @@ public class GT_Tool_SoftHammer extends GT_Tool {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
-        return false;
-    }
-
-    @Override
     public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops) {
         return 0;
     }
@@ -154,7 +147,7 @@ public class GT_Tool_SoftHammer extends GT_Tool {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState aBlock) {
+    public boolean isMinableBlock(IBlockState aBlock, ItemStack stack) {
         return false;
     }
 
@@ -178,19 +171,19 @@ public class GT_Tool_SoftHammer extends GT_Tool {
         return 0;
     }
 
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefix.toolHeadMallet.mTextureIndex] : ToolMetaItem.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefix.handleMallet.mTextureIndex];
-    }
+//    @Override
+//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+//        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadMallet.mTextureIndex] : ToolMetaItem.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.handleMallet.mTextureIndex];
+//    }
 
     @Override
     public int getColor(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mRGBa : ToolMetaItem.getSecondaryMaterial(aStack).mRGBa;
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).materialRGB : ToolMetaItem.getSecondaryMaterial(aStack).materialRGB;
     }
 
     @Override
     public void onStatsAddedToTool(MetaItem.MetaValueItem aItem, int aID) {
-        aItem.addItemBehavior(aID, new Behaviour_SoftHammer(100));
+        aItem.addStats(new Behaviour_SoftHammer(100));
     }
 
     @Override

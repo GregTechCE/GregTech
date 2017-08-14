@@ -699,9 +699,15 @@ public class GT_CraftingRecipeLoader implements Runnable {
                         GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Paper, 2), new Object[]{"SSS", " m ", 'S', new ItemStack(Items.REEDS)});
                         GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Sugar, 1), new Object[]{"Sm ", 'S', new ItemStack(Items.REEDS)});
                         //ItemStack brick = new ItemStack(new ItemStack(Blocks.stone_slab).getItem().setContainerItem(new ItemStack(Blocks.stone_slab).getItem()));
+<<<<<<< Updated upstream
                         //GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.paper, Materials.Empty, 2), new Object[]{" C ", "SSS", " C ", 'S', OreDictionaryUnifier.get(OrePrefix.dust, Materials.Paper, 1), 'C', brick});
                         GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.paper, Materials.Empty, 2), new Object[]{" C ", "SSS", " C ", 'S', OreDictionaryUnifier.get(OrePrefix.dust, Materials.Paper, 1), 'C', new ItemStack(Blocks.STONE_SLAB)});
                         //GameRegistry.addRecipe(OreDictionaryUnifier.get(OrePrefix.paper, Materials.Empty, 2), " C ", "SSS", " C ", 'S', OreDictionaryUnifier.get(OrePrefix.dust, Materials.Paper, 1), 'C', brick);
+=======
+                        //GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.paper, Materials.Empty, 2), new Object[]{" C ", "SSS", " C ", 'S', OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Paper, 1), 'C', brick});
+                        GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.paper, Materials.Empty, 2), new Object[]{" C ", "SSS", " C ", 'S', OreDictionaryUnifier.get(OrePrefix.dust, Materials.Paper, 1), 'C', new ItemStack(Blocks.STONE_SLAB)});
+                        //GameRegistry.addRecipe(OreDictionaryUnifier.get(OrePrefixes.paper, Materials.Empty, 2), " C ", "SSS", " C ", 'S', OreDictionaryUnifier.get(OrePrefixes.dust, Materials.Paper, 1), 'C', brick);
+>>>>>>> Stashed changes
                 }
 
                 GTLog.out.println("GT_Mod: Applying Recipes for Tools");

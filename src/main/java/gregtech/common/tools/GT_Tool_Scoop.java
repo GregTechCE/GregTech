@@ -2,17 +2,21 @@ package gregtech.common.tools;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.items.metaitem.MetaItem;
-import gregtech.api.items.metaitem.stats.IItemBehaviour;
 import gregtech.api.items.toolitem.ToolMetaItem;
-import gregtech.api.util.GT_Utility;
+import gregtech.common.items.behaviors.Behaviour_Scoop;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
+
+import java.util.List;
 
 public class GT_Tool_Scoop extends GT_Tool {
 
@@ -74,6 +78,16 @@ public class GT_Tool_Scoop extends GT_Tool {
     }
 
     @Override
+    public boolean isCrowbar(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public boolean isGrafter(ItemStack stack) {
+        return false;
+    }
+
+    @Override
     public ResourceLocation getMiningSound(ItemStack stack) {
         return null;
     }
@@ -91,26 +105,43 @@ public class GT_Tool_Scoop extends GT_Tool {
     }
 
     @Override
+    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops) {
+        return 0;
+    }
+
+    @Override
     public ItemStack getBrokenItem(ItemStack aStack) {
         return null;
     }
 
     @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? Textures.ItemIcons.SCOOP : null;
+    public float getNormalDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase attacker) {
+        return 0;
     }
 
     @Override
+    public float getMagicDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase player) {
+        return 0;
+    }
+
+    @Override
+    public float getAttackSpeed(ItemStack stack) {
+        return 0;
+    }
+
+//    @Override
+//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+//        return aIsToolHead ? Textures.ItemIcons.SCOOP : null;
+//    }
+
+    @Override
     public int getColor(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mRGBa : ToolMetaItem.getSecondaryMaterial(aStack).mRGBa;
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).materialRGB : ToolMetaItem.getSecondaryMaterial(aStack).materialRGB;
     }
 
     @Override
     public void onStatsAddedToTool(MetaItem.MetaValueItem aItem, int aID) {
-        Object tObject = GT_Utility.callConstructor("gregtech.common.items.behaviors.Behaviour_Scoop", 0, null, false, new Object[]{Integer.valueOf(200)});
-        if ((tObject instanceof IItemBehaviour)) {
-            aItem.addItemBehavior(aID, (IItemBehaviour) tObject);
-        }
+        aItem.addStats(new Behaviour_Scoop(200));
     }
 
     @Override
@@ -120,5 +151,4 @@ public class GT_Tool_Scoop extends GT_Tool {
                 .appendText(TextFormatting.WHITE + " got scooped by " + TextFormatting.GREEN)
                 .appendSibling(aPlayer.getDisplayName());
     }
-
 }

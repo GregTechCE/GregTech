@@ -3,12 +3,12 @@ package gregtech.common.tools;
 import gregtech.api.GregTech_API;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
-import gregtech.api.unification.ore.OrePrefix;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -93,10 +93,11 @@ public class GT_Tool_Saw extends GT_Tool {
 
     @Override
     public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops) {
+        ItemStack stack = harvester.getHeldItem(EnumHand.MAIN_HAND);
         if (blockState.getMaterial() == Material.LEAVES && blockState.getBlock() instanceof IShearable) {
             IShearable shearable = (IShearable) blockState.getBlock();
-            if (shearable.isShearable(aStack, harvester.worldObj, blockPos)) {
-                List<ItemStack> tDrops = shearable.onSheared(aStack, harvester.worldObj, blockPos, aFortune);
+            if (shearable.isShearable(stack, harvester.worldObj, blockPos)) {
+                List<ItemStack> tDrops = shearable.onSheared(stack, harvester.worldObj, blockPos, aFortune);
                 drops.clear();
                 drops.addAll(tDrops);
                 aEvent.setDropChance(1.0F);
@@ -145,10 +146,10 @@ public class GT_Tool_Saw extends GT_Tool {
         return 0;
     }
 
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefix.toolHeadSaw.mTextureIndex] : Textures.ItemIcons.HANDLE_SAW;
-    }
+//    @Override
+//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+//        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadSaw.mTextureIndex] : Textures.ItemIcons.HANDLE_SAW;
+//    }
 
     @Override
     public int getColor(boolean aIsToolHead, ItemStack aStack) {
@@ -166,6 +167,4 @@ public class GT_Tool_Saw extends GT_Tool {
                 .appendText(TextFormatting.WHITE + " was getting cut down " + TextFormatting.RED)
                 .appendSibling(aEntity.getDisplayName());
     }
-
-
 }

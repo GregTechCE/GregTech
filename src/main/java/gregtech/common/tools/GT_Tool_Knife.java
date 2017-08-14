@@ -43,10 +43,10 @@ public class GT_Tool_Knife extends GT_Tool_Sword {
         return 1.0F;
     }
 
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? Textures.ItemIcons.KNIFE : null;
-    }
+//    @Override
+//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+//        return aIsToolHead ? Textures.ItemIcons.KNIFE : null;
+//    }
 
     @Override
     public ITextComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {

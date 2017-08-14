@@ -1,13 +1,14 @@
 package gregtech.loaders.oreprocessing;
 
 import gregtech.api.GT_Values;
-import gregtech.api.unification.OreDictionaryUnifier;
-import gregtech.api.unification.ore.IOreRegistrationHandler;
-import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefix;
-import gregtech.api.enums.SubTag;
 import gregtech.api.items.ToolDictNames;
-import gregtech.api.util.GT_ModHandler;
+import gregtech.api.recipes.ModHandler;
+import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.IOreRegistrationHandler;
+import gregtech.api.unification.ore.OrePrefix;
+import gregtech.api.unification.stack.SimpleItemStack;
+import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
@@ -24,18 +25,19 @@ public class ProcessingPipe implements IOreRegistrationHandler {
     }
 
     @Override
-    public void registerOre(OrePrefix aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        switch (aPrefix) {
+    public void registerOre(UnificationEntry uEntry, String modName, SimpleItemStack simpleStack) {
+        ItemStack stack = simpleStack.asItemStack();
+        switch (uEntry.orePrefix) {
             case pipeLarge:
             case pipeMedium:
             case pipeSmall:
-                if ((!aMaterial.contains(SubTag.NO_WORKING)) && ((aMaterial.contains(SubTag.WOOD)) || (!aMaterial.contains(SubTag.NO_SMASHING)))) {
-                    if (!(aMaterial == Materials.Redstone || aMaterial == Materials.Glowstone)) {
-                        long aAmount = aPrefix == OrePrefix.pipeLarge ? 1L : aPrefix == OrePrefix.pipeMedium ? 2L : 6L;
-                        String aRecipeString1 = aPrefix == OrePrefix.pipeLarge ? "PHP" : aPrefix == OrePrefix.pipeMedium ? "PPP" : "PWP";
-                        String aRecipeString2 = aPrefix == OrePrefix.pipeLarge || aPrefix == OrePrefix.pipeSmall ? "P P" : "W H";
-                        String aRecipeString3 = aPrefix == OrePrefix.pipeLarge ? "PWP" : aPrefix == OrePrefix.pipeMedium ? "PPP" : "PHP";
-                        GT_ModHandler.addCraftingRecipe(GT_Utility.copyAmount(aAmount, new Object[]{aStack}), GT_ModHandler.RecipeBits.MIRRORED | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{aRecipeString1, aRecipeString2, aRecipeString3, 'P', aMaterial == Materials.Wood ? OrePrefix.plank.get(aMaterial) : OrePrefix.plate.get(aMaterial), 'H', aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftHammer : ToolDictNames.craftingToolHardHammer, 'W', aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw : ToolDictNames.craftingToolWrench});
+                if ((!uEntry.material.contains(SubTag.NO_WORKING)) && ((uEntry.material.contains(SubTag.WOOD)) || (!uEntry.material.contains(SubTag.NO_SMASHING)))) {
+                    if (!(uEntry.material == Materials.Redstone || uEntry.material == Materials.Glowstone)) {
+                        int aAmount = uEntry.orePrefix == OrePrefix.pipeLarge ? 1 : uEntry.orePrefix == OrePrefix.pipeMedium ? 2 : 6;
+                        String aRecipeString1 = uEntry.orePrefix == OrePrefix.pipeLarge ? "PHP" : uEntry.orePrefix == OrePrefix.pipeMedium ? "PPP" : "PWP";
+                        String aRecipeString2 = uEntry.orePrefix == OrePrefix.pipeLarge || uEntry.orePrefix == OrePrefix.pipeSmall ? "P P" : "W H";
+                        String aRecipeString3 = uEntry.orePrefix == OrePrefix.pipeLarge ? "PWP" : uEntry.orePrefix == OrePrefix.pipeMedium ? "PPP" : "PHP";
+                        ModHandler.addCraftingRecipe(GT_Utility.copyAmount(aAmount, stack), ModHandler.RecipeBits.MIRRORED | ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{aRecipeString1, aRecipeString2, aRecipeString3, 'P', uEntry.material == Materials.Wood ? OrePrefix.plank.get(uEntry.material) : OrePrefix.plate.get(uEntry.material), 'H', uEntry.material.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftHammer : ToolDictNames.craftingToolHardHammer, 'W', uEntry.material.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw : ToolDictNames.craftingToolWrench});
                     }
                 }
                 break;
@@ -44,7 +46,7 @@ public class ProcessingPipe implements IOreRegistrationHandler {
             case pipeRestrictiveMedium:
             case pipeRestrictiveSmall:
             case pipeRestrictiveTiny:
-                GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(aOreDictName.replaceFirst("Restrictive", ""), null, 1L, false, true), OreDictionaryUnifier.get(OrePrefix.ring, Materials.Steel, aPrefix.mSecondaryMaterial.mAmount / OrePrefix.ring.mMaterialAmount), GT_Utility.copyAmount(1L, new Object[]{aStack}), (int) (aPrefix.mSecondaryMaterial.mAmount * 400L / OrePrefix.ring.mMaterialAmount), 4);
+                GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(aOreDictName.replaceFirst("Restrictive", ""), null, 1L, false, true), OreDictionaryUnifier.get(OrePrefix.ring, Materials.Steel, uEntry.orePrefix.mSecondaryMaterial.mAmount / OrePrefix.ring.mMaterialAmount), GT_Utility.copyAmount(1, stack), (int) (uEntry.orePrefix.mSecondaryMaterial.mAmount * 400L / OrePrefix.ring.mMaterialAmount), 4);
                 break;
         }
     }

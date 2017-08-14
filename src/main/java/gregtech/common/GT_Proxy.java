@@ -20,7 +20,7 @@ import gregtech.api.util.GT_Fluid;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.*;
 import gregtech.common.entities.GT_Entity_Arrow;
-import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.items.MetaTool;
 import gregtech.common.items.armor.*;
 import ic2.core.block.wiring.CableType;
 import ic2.core.item.ItemIC2FluidContainer;
@@ -704,6 +704,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                         new Object[]{"XX", "XX", 'X', OrePrefix.dustSmall.get(aMaterial)});
                 GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, 1), tBits,
                         new Object[]{"XXX", "XXX", "XXX", 'X', OrePrefix.dustTiny.get(aMaterial)});
+<<<<<<< Updated upstream
 //                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dust, aMaterial, 16L), tBits, new Object[]{"Xc", Character.valueOf('X'),
 //                        OrePrefix.crateGtDust.get(aMaterial)});
 //                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gem, aMaterial, 16L), tBits, new Object[]{"Xc", Character.valueOf('X'),
@@ -712,6 +713,16 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 //                        Character.valueOf('X'), OrePrefix.crateGtIngot.get(aMaterial)});
 //                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, aMaterial, 16L), tBits, new Object[]{"Xc",
 //                        Character.valueOf('X'), OrePrefix.crateGtPlate.get(aMaterial)});
+=======
+//                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.dust, aMaterial, 16L), tBits, new Object[]{"Xc", Character.valueOf('X'),
+//                        OrePrefixes.crateGtDust.get(aMaterial)});
+//                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.gem, aMaterial, 16L), tBits, new Object[]{"Xc", Character.valueOf('X'),
+//                        OrePrefixes.crateGtGem.get(aMaterial)});
+//                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.ingot, aMaterial, 16L), tBits, new Object[]{"Xc",
+//                        Character.valueOf('X'), OrePrefixes.crateGtIngot.get(aMaterial)});
+//                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefixes.plate, aMaterial, 16L), tBits, new Object[]{"Xc",
+//                        Character.valueOf('X'), OrePrefixes.crateGtPlate.get(aMaterial)});
+>>>>>>> Stashed changes
 //
 //                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gemChipped, aMaterial, 2L), tBits,
 //                        new Object[]{"h", "X", Character.valueOf('X'), OrePrefix.gemFlawed.get(aMaterial)});
@@ -1443,7 +1454,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 if (this.mAxeWhenAdventure) {
                     GT_Utility.sendChatToPlayer(aEvent.player, "It's dangerous to go alone! Take this.");
                     aEvent.player.worldObj.spawnEntityInWorld(new EntityItem(aEvent.player.worldObj, aEvent.player.posX, aEvent.player.posY,
-                            aEvent.player.posZ, GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(GT_MetaGenerated_Tool_01.AXE, 1, Materials.Flint, Materials.Wood, null)));
+                            aEvent.player.posZ, MetaTool.INSTANCE.getToolWithStats(MetaTool.AXE, 1, Materials.Flint, Materials.Wood, null)));
                 }
             }
             boolean tHungerEffect = (this.mHungerEffect) && (aEvent.player.ticksExisted % 2400 == 1200);

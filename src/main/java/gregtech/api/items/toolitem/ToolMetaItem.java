@@ -60,7 +60,7 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
             IToolStats toolStats = metaToolValueItem.getToolStats();
             toolStats.onToolCrafted(stack, player);
             ArrayList<EnchantmentData> enchantments = new ArrayList<>(toolStats.getEnchantments(stack));
-            SolidMaterial material = getMaterial(stack);
+            SolidMaterial material = getPrimaryMaterial(stack);
             for(EnchantmentData enchantmentData : material.toolEnchantments) {
                 Optional<EnchantmentData> sameEnchantment = enchantments.stream().filter(it -> it.enchantment == enchantmentData.enchantment).findAny();
                 if(sameEnchantment.isPresent()) {
@@ -117,7 +117,7 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
         if(metaToolValueItem != null) {
             IToolStats toolStats = metaToolValueItem.getToolStats();
             if(isUsable(stack, toolStats.getToolDamagePerBlockBreak(stack)) && toolStats.isMinableBlock(state, stack)) {
-                return getMaterial(stack).toolSpeed * toolStats.getSpeedMultiplier(stack);
+                return getPrimaryMaterial(stack).toolSpeed * toolStats.getSpeedMultiplier(stack);
             }
         }
         return 1.0f;
@@ -129,7 +129,7 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
         if(metaToolValueItem != null) {
             IToolStats toolStats = metaToolValueItem.getToolStats();
             if(isUsable(stack, toolStats.getToolDamagePerBlockBreak(stack)) && toolStats.isMinableBlock(blockState, stack)) {
-                return toolStats.getBaseQuality(stack) + getMaterial(stack).toolQuality;
+                return toolStats.getBaseQuality(stack) + getPrimaryMaterial(stack).toolQuality;
             }
         }
         return 0;
@@ -219,7 +219,7 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
     private int getMaxInternalDamage(ItemStack itemStack) {
         MetaToolValueItem metaToolValueItem = getItem(itemStack);
         if (metaToolValueItem != null) {
-            SolidMaterial toolMaterial = getMaterial(itemStack);
+            SolidMaterial toolMaterial = getPrimaryMaterial(itemStack);
             return (int) (toolMaterial.toolDurability * metaToolValueItem.getToolStats().getMaxDurabilityMultiplier(itemStack));
         }
         return 0;
@@ -239,10 +239,20 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
         tagCompound.setInteger("GT.ToolDamage", damage);
     }
 
-    public SolidMaterial getMaterial(ItemStack itemStack) {
-        if(!itemStack.hasTagCompound() || !itemStack.getTagCompound().hasKey("GT.ToolMaterial", Constants.NBT.TAG_STRING))
+    public static SolidMaterial getPrimaryMaterial(ItemStack itemStack) {
+        if(!itemStack.hasTagCompound() || !itemStack.getTagCompound().hasKey("GT.ToolPrimaryMaterial", Constants.NBT.TAG_STRING))
             return Materials.Iron;
-        Material material = Material.MATERIAL_REGISTRY.getObject(itemStack.getTagCompound().getString("GT.ToolMaterial"));
+        Material material = Material.MATERIAL_REGISTRY.getObject(itemStack.getTagCompound().getString("GT.ToolPrimaryMaterial"));
+        if(material instanceof SolidMaterial) {
+            return (SolidMaterial) material;
+        }
+        return Materials.Iron;
+    }
+
+    public static SolidMaterial getSecondaryMaterial(ItemStack itemStack) {
+        if(!itemStack.hasTagCompound() || !itemStack.getTagCompound().hasKey("GT.ToolSecondaryMaterial", Constants.NBT.TAG_STRING))
+            return Materials.Iron;
+        Material material = Material.MATERIAL_REGISTRY.getObject(itemStack.getTagCompound().getString("GT.ToolSecondaryMaterial"));
         if(material instanceof SolidMaterial) {
             return (SolidMaterial) material;
         }

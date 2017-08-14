@@ -475,7 +475,7 @@ public enum OrePrefix {
         return oreProcessingHandlers.add(processingHandler);
     }
 
-    public void processOreRegistration(Material material, String modName, SimpleItemStack itemStack) {
+    public void processOreRegistration(Material material, String oreName, String modName, SimpleItemStack itemStack) {
         //tracking bad oredict registrations
         if(isSelfReferencing && material != null) {
             GTLog.logger.warn("Mod %s attempted to register %s with prefix %s and material %s, but prefix is self resolving!", modName, itemStack, this, material.toString());
@@ -487,7 +487,7 @@ public enum OrePrefix {
         }
         UnificationEntry unificationEntry = new UnificationEntry(this, material);
         for(IOreRegistrationHandler handler : oreProcessingHandlers) {
-            handler.registerOre(unificationEntry, modName, itemStack);
+            handler.registerOre(unificationEntry, oreName, modName, itemStack);
         }
     }
 

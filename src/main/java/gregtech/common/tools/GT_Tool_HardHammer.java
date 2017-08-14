@@ -6,7 +6,6 @@ import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_Prospecting;
 import net.minecraft.block.material.Material;
@@ -181,10 +180,10 @@ public class GT_Tool_HardHammer extends GT_Tool {
         return 0;
     }
 
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefix.toolHeadHammer.mTextureIndex] : ToolMetaItem.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefix.stick.mTextureIndex];
-    }
+//    @Override
+//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+//        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadHammer.mTextureIndex] : ToolMetaItem.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.stick.mTextureIndex];
+//    }
 
     @Override
     public int getColor(boolean aIsToolHead, ItemStack aStack) {
@@ -193,7 +192,7 @@ public class GT_Tool_HardHammer extends GT_Tool {
 
     @Override
     public void onStatsAddedToTool(MetaItem.MetaValueItem aItem, int aID) {
-        aItem.addItemBehavior(aID, new Behaviour_Prospecting(1, 1000));
+        aItem.addStats(new Behaviour_Prospecting(1, 1000));
     }
 
        @Override

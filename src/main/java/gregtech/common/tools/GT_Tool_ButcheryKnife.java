@@ -1,6 +1,5 @@
 package gregtech.common.tools;
 
-import gregtech.api.enchants.EnchantmentData;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -13,9 +12,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import scala.actors.threadpool.Arrays;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GT_Tool_ButcheryKnife extends GT_Tool {
@@ -96,11 +93,6 @@ public class GT_Tool_ButcheryKnife extends GT_Tool {
     }
 
     @Override
-    public List<EnchantmentData> getEnchantments(ItemStack aStack) {
-        return new ArrayList<EnchantmentData>(Arrays.asList(ZERO_ENCHANTMENTS));
-    }
-
-    @Override
     public boolean isCrowbar(ItemStack stack) {
         return false;
     }
@@ -112,13 +104,13 @@ public class GT_Tool_ButcheryKnife extends GT_Tool {
 
     @Override
     public int[] getEnchantmentLevels(ItemStack aStack) {
-        return new int[]{(2 + ToolMetaItem.getPrimaryMaterial(aStack).mToolQuality) / 2};
+        return new int[]{(2 + ToolMetaItem.getPrimaryMaterial(aStack).toolQuality) / 2};
     }
 
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? Textures.ItemIcons.BUTCHERYKNIFE : null;
-    }
+//    @Override
+//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+//        return aIsToolHead ? Textures.ItemIcons.BUTCHERYKNIFE : null;
+//    }
 
     @Override
     public int getColor(boolean aIsToolHead, ItemStack aStack) {

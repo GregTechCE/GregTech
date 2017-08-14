@@ -1,11 +1,8 @@
 package gregtech.common.tools;
 
 import gregtech.GT_Mod;
-import gregtech.api.enums.Textures;
-import gregtech.api.items.IIconContainer;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -17,7 +14,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.event.world.BlockEvent;
 
 import java.util.List;
 
@@ -105,11 +101,10 @@ public class GT_Tool_JackHammer extends GT_Tool_Drill_LV {
 
     }
 
-
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? Textures.ItemIcons.JACKHAMMER : null;
-    }
+//    @Override
+//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+//        return aIsToolHead ? Textures.ItemIcons.JACKHAMMER : null;
+//    }
 
     @Override
     public ITextComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
@@ -118,5 +113,4 @@ public class GT_Tool_JackHammer extends GT_Tool_Drill_LV {
                 .appendText(TextFormatting.WHITE + " has been jackhammered into pieces by " + TextFormatting.GREEN)
                 .appendSibling(aPlayer.getDisplayName());
     }
-
 }
