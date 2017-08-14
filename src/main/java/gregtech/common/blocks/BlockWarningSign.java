@@ -1,64 +1,19 @@
 package gregtech.common.blocks;
 
-import net.minecraft.block.Block;
+import gregtech.api.GregTech_API;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
-import java.util.List;
-
-public class BlockWarningSign extends Block {
-
-    public static final PropertyEnum<SignType> VARIANT = PropertyEnum.create("variant", SignType.class);
+public class BlockWarningSign extends VariantBlock<BlockWarningSign.SignType> {
 
     public BlockWarningSign() {
-        super(Material.IRON);
+        super(Material.IRON, SignType.class);
         setHardness(2.0f);
         setResistance(1.0f);
         setSoundType(SoundType.METAL);
         setHarvestLevel("pickaxe", 2);
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, VARIANT);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(VARIANT, SignType.values()[meta]);
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(VARIANT).ordinal();
-    }
-
-    @Override
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-        for(SignType signType : SignType.values()) {
-            list.add(getItem(signType));
-        }
-    }
-
-    public ItemStack getItem(SignType signType) {
-        return new ItemStack(this, 1, signType.ordinal());
-    }
-
-    @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, ItemStack stack) {
-        return getDefaultState().withProperty(VARIANT, SignType.values()[stack.getItemDamage()]);
+        setCreativeTab(GregTech_API.TAB_GREGTECH);
     }
 
     public enum SignType implements IStringSerializable {
