@@ -1,6 +1,5 @@
 package gregtech.common.blocks;
 
-import gregtech.api.GregTech_API;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.IStringSerializable;
@@ -8,12 +7,11 @@ import net.minecraft.util.IStringSerializable;
 public class BlockWarningSign extends VariantBlock<BlockWarningSign.SignType> {
 
     public BlockWarningSign() {
-        super(Material.IRON, SignType.class);
+        super(Material.IRON);
         setHardness(2.0f);
         setResistance(1.0f);
         setSoundType(SoundType.METAL);
-        setHarvestLevel("pickaxe", 2);
-        setCreativeTab(GregTech_API.TAB_GREGTECH);
+        setHarvestLevel("pickaxe", 1);
     }
 
     public enum SignType implements IStringSerializable {

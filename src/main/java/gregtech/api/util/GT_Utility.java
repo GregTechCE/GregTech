@@ -61,9 +61,7 @@ import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -71,16 +69,24 @@ import java.util.*;
 
 import static gregtech.api.GT_Values.*;
 
-/**
- * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
- * <p/>
- * Just a few Utility Functions I use.
- */
 public class GT_Utility {
 
-    public static boolean CHECK_ALL = true, RF_CHECK = false;
-
     private static int sBookCount = 0;
+
+    //magic is here
+    public static <T, R> Class<T> getActualTypeParameter(Class<? extends R> thisClass, Class<R> declaringClass, int index) {
+        Type type = thisClass.getGenericSuperclass();
+
+        while (!(type instanceof ParameterizedType) || ((ParameterizedType) type).getRawType() != declaringClass) {
+            if (type instanceof ParameterizedType) {
+                type = ((Class<?>) ((ParameterizedType) type).getRawType()).getGenericSuperclass();
+            } else {
+                type = ((Class<?>) type).getGenericSuperclass();
+            }
+        }
+
+        return (Class<T>) ((ParameterizedType) type).getActualTypeArguments()[index];
+    }
 
     public static Field getField(Object aObject, String aField) {
         Field rField = null;

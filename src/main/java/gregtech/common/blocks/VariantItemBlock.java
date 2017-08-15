@@ -1,18 +1,17 @@
 package gregtech.common.blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IStringSerializable;
 
-public class VariantItemBlock extends ItemBlock {
+public class VariantItemBlock<R extends Enum<R> & IStringSerializable, T extends VariantBlock<R>> extends ItemBlock {
 
-    private PropertyEnum<?> variant;
+    private final T genericBlock;
 
-    public VariantItemBlock(Block block) {
+    public VariantItemBlock(T block) {
         super(block);
-        this.variant = (PropertyEnum<?>) block.getBlockState().getProperty("variant");
+        this.genericBlock = block;
     }
 
     @Override
@@ -27,7 +26,7 @@ public class VariantItemBlock extends ItemBlock {
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return super.getUnlocalizedName(stack) + '.' + getBlockState(stack).getValue(variant).getName();
+        return super.getUnlocalizedName(stack) + '.' + genericBlock.getVariant(getBlockState(stack)).getName();
     }
 
 }

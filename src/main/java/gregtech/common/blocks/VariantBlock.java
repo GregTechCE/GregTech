@@ -1,5 +1,8 @@
 package gregtech.common.blocks;
 
+import gregtech.api.GT_Values;
+import gregtech.api.GregTech_API;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -9,18 +12,27 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.List;
 
 public class VariantBlock<T extends Enum<T> & IStringSerializable> extends Block {
 
-    public final PropertyEnum<T> VARIANT;
-    private final T[] VALUES;
+    private PropertyEnum<T> VARIANT;
+    private T[] VALUES;
 
-    public VariantBlock(Material materialIn, Class<T> enumClass) {
+    public VariantBlock(Material materialIn) {
         super(materialIn);
-        this.VARIANT = PropertyEnum.create("variant", enumClass);
-        this.VALUES = enumClass.getEnumConstants();
+        setCreativeTab(GregTech_API.TAB_GREGTECH);
+    }
+
+    public void registerVariantBlock(String blockName) {
+        setUnlocalizedName(blockName);
+        setRegistryName(GT_Values.MODID, blockName);
+        GameRegistry.register(this);
+        VariantItemBlock itemBlock = new VariantItemBlock<>(this);
+        itemBlock.setRegistryName(GT_Values.MODID, blockName);
+        GameRegistry.register(itemBlock);
     }
 
     @Override
@@ -44,6 +56,9 @@ public class VariantBlock<T extends Enum<T> & IStringSerializable> extends Block
 
     @Override
     protected BlockStateContainer createBlockState() {
+        Class<T> enumClass = GT_Utility.getActualTypeParameter(getClass(), VariantBlock.class, 0);
+        this.VARIANT = PropertyEnum.create("variant", enumClass);
+        this.VALUES = enumClass.getEnumConstants();
         return new BlockStateContainer(this, VARIANT);
     }
 

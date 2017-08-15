@@ -1,6 +1,5 @@
 package gregtech.common.blocks;
 
-import gregtech.api.GregTech_API;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.IStringSerializable;
@@ -8,12 +7,11 @@ import net.minecraft.util.IStringSerializable;
 public class BlockMetalCasing extends VariantBlock<BlockMetalCasing.MetalCasingType> {
 
     public BlockMetalCasing() {
-        super(Material.IRON, MetalCasingType.class);
-        setHardness(8.0f);
+        super(Material.IRON);
+        setHardness(7.0f);
         setResistance(6.0f);
         setSoundType(SoundType.METAL);
         setHarvestLevel("wrench", 2);
-        setCreativeTab(GregTech_API.TAB_GREGTECH);
     }
 
     public enum MetalCasingType implements IStringSerializable {
