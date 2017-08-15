@@ -1,0 +1,37 @@
+package gregtech.common.blocks;
+
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.util.IStringSerializable;
+
+public class BlockMineral extends StoneBlock<BlockMineral.MineralVariant> {
+
+    public BlockMineral() {
+        super(Material.ROCK);
+        setHardness(3.0f);
+        setResistance(2.0f);
+        setSoundType(SoundType.STONE);
+        setHarvestLevel("pickaxe", 1);
+    }
+
+    public enum MineralVariant implements IStringSerializable {
+
+        MARBLE("marble"),
+        MARBLE_BRICKS("marble_bricks"),
+        BASALT("basalt"),
+        BASALT_BRICKS("basalt_bricks");
+
+        private final String name;
+
+        MineralVariant(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String getName() {
+            return this.name;
+        }
+
+    }
+
+}

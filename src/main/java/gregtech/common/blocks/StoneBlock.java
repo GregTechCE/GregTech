@@ -16,12 +16,14 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.List;
 
-public class VariantBlock<T extends Enum<T> & IStringSerializable> extends Block {
+public class StoneBlock<T extends Enum<T> & IStringSerializable> extends Block {
+
+    private static PropertyEnum<ChiselingVariant> CHISELING_VARIANT = PropertyEnum.create("chiseling", ChiselingVariant.class);
 
     private PropertyEnum<T> VARIANT;
     private T[] VALUES;
 
-    public VariantBlock(Material materialIn) {
+    public StoneBlock(Material materialIn) {
         super(materialIn);
         setCreativeTab(GregTech_API.TAB_GREGTECH);
     }
@@ -30,7 +32,7 @@ public class VariantBlock<T extends Enum<T> & IStringSerializable> extends Block
         setUnlocalizedName(blockName);
         setRegistryName(GT_Values.MODID, blockName);
         GameRegistry.register(this);
-        VariantItemBlock itemBlock = new VariantItemBlock<>(this);
+        StoneItemBlock itemBlock = new StoneItemBlock<>(this);
         itemBlock.setRegistryName(GT_Values.MODID, blockName);
         GameRegistry.register(itemBlock);
     }
@@ -38,7 +40,9 @@ public class VariantBlock<T extends Enum<T> & IStringSerializable> extends Block
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
         for(T variant : VALUES) {
-            list.add(getItemVariant(variant));
+            for(ChiselingVariant chiselingVariant : ChiselingVariant.values()) {
+                list.add(getItemVariant(variant, chiselingVariant));
+            }
         }
     }
 
@@ -46,17 +50,21 @@ public class VariantBlock<T extends Enum<T> & IStringSerializable> extends Block
         return blockState.getValue(VARIANT);
     }
 
-    public IBlockState withVariant(T variant) {
-        return getDefaultState().withProperty(VARIANT, variant);
+    public ChiselingVariant getChiselingVariant(IBlockState blockState) {
+        return blockState.getValue(CHISELING_VARIANT);
     }
 
-    public ItemStack getItemVariant(T variant) {
-        return new ItemStack(this, 1, variant.ordinal());
+    public IBlockState withVariant(T variant, ChiselingVariant chiselingVariant) {
+        return getDefaultState().withProperty(VARIANT, variant).withProperty(CHISELING_VARIANT, chiselingVariant);
+    }
+
+    public ItemStack getItemVariant(T variant, ChiselingVariant chiselingVariant) {
+        return new ItemStack(this, 1, chiselingVariant.ordinal() * 4 + variant.ordinal());
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
-        Class<T> enumClass = GT_Utility.getActualTypeParameter(getClass(), VariantBlock.class, 0);
+        Class<T> enumClass = GT_Utility.getActualTypeParameter(getClass(), StoneBlock.class, 0);
         this.VARIANT = PropertyEnum.create("variant", enumClass);
         this.VALUES = enumClass.getEnumConstants();
         return new BlockStateContainer(this, VARIANT);
@@ -65,12 +73,32 @@ public class VariantBlock<T extends Enum<T> & IStringSerializable> extends Block
     @Override
     @SuppressWarnings("deprecation")
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(VARIANT, VALUES[meta]);
+        return getDefaultState().withProperty(CHISELING_VARIANT, ChiselingVariant.values()[meta / 4]).withProperty(VARIANT, VALUES[meta % 4]);
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(VARIANT).ordinal();
+        return state.getValue(CHISELING_VARIANT).ordinal() * 4 + state.getValue(VARIANT).ordinal();
+    }
+
+    public enum ChiselingVariant implements IStringSerializable {
+
+        NORMAL("normal"),
+        CRACKED("cracked"),
+        MOSSY("mossy"),
+        CHISELED("chiseled");
+
+        private final String name;
+
+        ChiselingVariant(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String getName() {
+            return name;
+        }
+
     }
 
 }
