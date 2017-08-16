@@ -1,7 +1,6 @@
 package gregtech.common.tools;
 
 import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.common.items.behaviors.Behaviour_Crowbar;
@@ -11,25 +10,15 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.AchievementList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
-
-import java.util.List;
 
 public class ToolUniversalSpade extends ToolBase {
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
         return 50;
-    }
-
-    @Override
-    public int getToolDamagePerDropConversion(ItemStack stack) {
-        return 100;
     }
 
     @Override
@@ -43,11 +32,6 @@ public class ToolUniversalSpade extends ToolBase {
     }
 
     @Override
-    public int getBaseQuality(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
     public float getBaseDamage(ItemStack stack) {
         return 3.0F;
     }
@@ -58,133 +42,57 @@ public class ToolUniversalSpade extends ToolBase {
     }
 
     @Override
-    public float getMaxDurabilityMultiplier(ItemStack stack) {
-        return 1.0F;
-    }
-
-    @Override
-    public ResourceLocation getCraftingSound(ItemStack stack) {
-        return null;
-    }
-
-    @Override
-    public ResourceLocation getEntityHitSound(ItemStack stack) {
-        return null;
-    }
-
-    @Override
-    public ResourceLocation getBreakingSound(ItemStack stack) {
-        return GregTech_API.sSoundList.get(0);
-    }
-
-    @Override
-    public boolean isCrowbar(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public boolean isGrafter(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public ResourceLocation getMiningSound(ItemStack stack) {
-        return null;
-    }
-
-    @Override
-    public boolean isCrowbar() {
-        return true;
-    }
-
-    @Override
-    public boolean isWeapon() {
-        return true;
-    }
-
-    @Override
-    public boolean isMinableBlock(IBlockState aBlock, ItemStack stack) {
-        String tTool = aBlock.getBlock().getHarvestTool(aBlock);
+    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
+        String tTool = block.getBlock().getHarvestTool(block);
         return (tTool != null && (
                         tTool.equals("shovel") ||
                         tTool.equals("axe") ||
                         tTool.equals("saw") ||
                         tTool.equals("sword") ||
                         tTool.equals("crowbar"))) ||
-                aBlock.getMaterial() == Material.SAND ||
-                aBlock.getMaterial() == Material.GRASS ||
-                aBlock.getMaterial() == Material.GROUND ||
-                aBlock.getMaterial() == Material.SNOW ||
-                aBlock.getMaterial() == Material.CLAY ||
-                aBlock.getMaterial() == Material.CRAFTED_SNOW ||
-                aBlock.getMaterial() == Material.LEAVES ||
-                aBlock.getMaterial() == Material.VINE ||
-                aBlock.getMaterial() == Material.WOOD ||
-                aBlock.getMaterial() == Material.CACTUS ||
-                aBlock.getMaterial() == Material.CIRCUITS ||
-                aBlock.getMaterial() == Material.GOURD ||
-                aBlock.getMaterial() == Material.WEB ||
-                aBlock.getMaterial() == Material.CLOTH ||
-                aBlock.getMaterial() == Material.CARPET ||
-                aBlock.getMaterial() == Material.PLANTS ||
-                aBlock.getMaterial() == Material.CAKE ||
-                aBlock.getMaterial() == Material.TNT ||
-                aBlock.getMaterial() == Material.SPONGE;
+                block.getMaterial() == Material.SAND ||
+                block.getMaterial() == Material.GRASS ||
+                block.getMaterial() == Material.GROUND ||
+                block.getMaterial() == Material.SNOW ||
+                block.getMaterial() == Material.CLAY ||
+                block.getMaterial() == Material.CRAFTED_SNOW ||
+                block.getMaterial() == Material.LEAVES ||
+                block.getMaterial() == Material.VINE ||
+                block.getMaterial() == Material.WOOD ||
+                block.getMaterial() == Material.CACTUS ||
+                block.getMaterial() == Material.CIRCUITS ||
+                block.getMaterial() == Material.GOURD ||
+                block.getMaterial() == Material.WEB ||
+                block.getMaterial() == Material.CLOTH ||
+                block.getMaterial() == Material.CARPET ||
+                block.getMaterial() == Material.PLANTS ||
+                block.getMaterial() == Material.CAKE ||
+                block.getMaterial() == Material.TNT ||
+                block.getMaterial() == Material.SPONGE;
     }
 
     @Override
-    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops) {
-        return 0;
+    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadUniversalSpade.mTextureIndex] : ToolMetaItem.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.stick.mTextureIndex];
     }
 
     @Override
-    public ItemStack getBrokenItem(ItemStack aStack) {
-        return null;
+    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
+        item.addStats(new Behaviour_Crowbar(2, 2000));
     }
 
     @Override
-    public float getNormalDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase attacker) {
-        return 0;
+    public void onToolCrafted(ItemStack stack, EntityPlayer player) {
+        super.onToolCrafted(stack, player);
+        player.addStat(AchievementList.BUILD_SWORD);
+        GT_Mod.achievements.issueAchievement(player, "unitool");
     }
 
     @Override
-    public float getMagicDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase player) {
-        return 0;
-    }
-
-    @Override
-    public float getAttackSpeed(ItemStack stack) {
-        return 0;
-    }
-
-//    @Override
-//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-//        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadUniversalSpade.mTextureIndex] : ToolMetaItem.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.stick.mTextureIndex];
-//    }
-
-    @Override
-    public int getColor(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).materialRGB : ToolMetaItem.getSecondaryMaterial(aStack).materialRGB;
-    }
-
-    @Override
-    public void onStatsAddedToTool(MetaItem.MetaValueItem aItem, int aID) {
-        aItem.addStats(new Behaviour_Crowbar(2, 2000));
-    }
-
-    @Override
-    public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {
-        super.onToolCrafted(aStack, aPlayer);
-        aPlayer.addStat(AchievementList.BUILD_SWORD);
-        GT_Mod.achievements.issueAchievement(aPlayer, "unitool");
-    }
-
-    @Override
-    public ITextComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
+    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
         return new TextComponentString(TextFormatting.RED + "")
-                .appendSibling(aEntity.getDisplayName())
+                .appendSibling(entity.getDisplayName())
                 .appendText(TextFormatting.WHITE + " has been universal digged by " + TextFormatting.GREEN)
-                .appendSibling(aPlayer.getDisplayName());
+                .appendSibling(player.getDisplayName());
     }
-
 }

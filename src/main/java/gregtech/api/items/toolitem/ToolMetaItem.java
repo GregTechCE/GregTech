@@ -261,24 +261,53 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
         return Materials.Iron;
     }
 
-    public final ItemStack addTool(int id, String english, String tooltip, IToolStats toolStats, OrePrefix orePrefix) {
+    public final ItemStack addTool(int toolID, String english, String tooltip, IToolStats toolStats, String... craftingNames) {
         if (tooltip == null) tooltip = "";
-        if (id >= 0 && id < 32766 && id % 2 == 0) {
-            //GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + id + ".name", english);
-            //GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + id + ".tooltip", tooltip);
-            //GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (id + 1) + ".name", english + " (Empty)");
-            //GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (id + 1) + ".tooltip", "You need to recharge it");
+        if (toolID >= 0 && toolID < 32766 && toolID % 2 == 0) {
+            //GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + toolID + ".name", english);
+            //GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + toolID + ".tooltip", tooltip);
+            //GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (toolID + 1) + ".name", english + " (Empty)");
+            //GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (toolID + 1) + ".tooltip", "You need to recharge it");
 
-            ItemStack stack = new ItemStack(this, 1, id);
-            toolStats.onStatsAddedToTool(getItem(stack), id);
-
-            mToolStats.put((short) id, toolStats);
-            mToolStats.put((short) (id + 1), toolStats);
-
-            OreDictionaryUnifier.registerOre(stack, orePrefix, Materials.Air);
+            ItemStack stack = new ItemStack(this, 1, toolID);
+            toolStats.onStatsAddedToTool(getItem(stack), toolID);
+            mToolStats.put((short) toolID, toolStats);
+            mToolStats.put((short) (toolID + 1), toolStats);
+            for (String oreName : craftingNames) {
+                OreDictionaryUnifier.registerOre(oreName, stack);
+            }
             return stack;
         }
         return null;
+    }
+
+    public final ItemStack getToolWithStats(int toolID, int amount, Material primaryMaterial, Material secondaryMaterial, long[] electricData) {
+        ItemStack stack = new ItemStack(this, amount, toolID);
+        MetaToolValueItem metaToolValueItem = getItem(stack);
+        if (metaToolValueItem != null) {
+            if (metaToolValueItem.toolStats != null) {
+                NBTTagCompound tMainNBT = new NBTTagCompound(), tToolNBT = new NBTTagCompound();
+                if (primaryMaterial != null && primaryMaterial instanceof SolidMaterial) {
+                    tToolNBT.setString("GT.ToolPrimaryMaterial", primaryMaterial.toString());
+                    tToolNBT.setLong("GT.MaxDamage", 100L * (long) ((((SolidMaterial) primaryMaterial).toolDurability) * metaToolValueItem.toolStats.getMaxDurabilityMultiplier(stack)));
+                }
+                if (secondaryMaterial != null)
+                    tToolNBT.setString("GT.ToolSecondaryMaterial", secondaryMaterial.toString());
+
+                if (electricData != null) {
+                    tToolNBT.setBoolean("GT.Electric", true);
+                    tToolNBT.setLong("GT.MaxCharge", electricData[0]);
+                    tToolNBT.setLong("GT.Voltage", electricData[1]);
+                    tToolNBT.setLong("GT.Tier", electricData[2]);
+                    tToolNBT.setLong("GT.SpecialData", electricData[3]);
+                }
+
+                tMainNBT.setTag("GT.ToolStats", tToolNBT);
+                stack.setTagCompound(tMainNBT);
+            }
+        }
+        isItemStackUsable(stack);
+        return stack;
     }
 
     public class MetaToolValueItem extends MetaValueItem {

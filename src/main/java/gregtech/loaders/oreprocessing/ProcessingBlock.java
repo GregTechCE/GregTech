@@ -1,7 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
 import gregtech.api.ConfigCategories;
-import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
 import gregtech.api.items.ItemList;
 import gregtech.api.recipes.ModHandler;
@@ -22,7 +21,12 @@ public class ProcessingBlock implements IOreRegistrationHandler {
 
     public void registerOre(UnificationEntry uEntry, String modName, SimpleItemStack simpleStack) {
         ItemStack stack = simpleStack.asItemStack();
-        RecipeMap.CUTTER_RECIPES.recipeBuilder().inputs(GT_Utility.copyAmount(1, stack)).outputs(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 9)).duration((int) Math.max(uEntry.material.getMass() * 10L, 1L)).EUt(30).buildAndRegister();
+        RecipeMap.CUTTER_RECIPES.recipeBuilder()
+                .inputs(GT_Utility.copyAmount(1, stack))
+                .outputs(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 9))
+                .duration((int) Math.max(uEntry.material.getMass() * 10L, 1L))
+                .EUt(30)
+                .buildAndRegister();
 
         ItemStack ingotStack = OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material, 1);
         ItemStack gemStack = OreDictionaryUnifier.get(OrePrefix.gem, uEntry.material, 1);
@@ -38,7 +42,13 @@ public class ProcessingBlock implements IOreRegistrationHandler {
         }
         if (uEntry.material instanceof FluidMaterial) {
             FluidMaterial fluidMaterial = (FluidMaterial) uEntry.material;
-            RecipeMap.FLUID_SOLIDFICATION_RECIPES.recipeBuilder().inputs(ItemList.Shape_Mold_Block.get(0)).fluidInputs(fluidMaterial.getFluid(1296)).outputs(OreDictionaryUnifier.get(OrePrefix.block, uEntry.material)).duration(288).EUt(8);
+            RecipeMap.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
+                    .inputs(ItemList.Shape_Mold_Block.get(0))
+                    .fluidInputs(fluidMaterial.getFluid(1296))
+                    .outputs(OreDictionaryUnifier.get(OrePrefix.block, uEntry.material))
+                    .duration(288)
+                    .EUt(8)
+                    .buildAndRegister();
         }
         if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.storageblockcrafting, OreDictionaryUnifier.get(OrePrefix.block, uEntry.material).toString(), false)) {
             if ((ingotStack == null) && (gemStack == null) && (dustStack != null))
@@ -54,8 +64,11 @@ public class ProcessingBlock implements IOreRegistrationHandler {
         if (dustStack != null) {
             dustStack.stackSize = 9;
         }
-        GT_Values.RA.addForgeHammerRecipe(stack, gemStack, 100, 24);
-        RecipeMap.HAMMER_RECIPES.recipeBuilder().inputs(stack).outputs(gemStack).duration(100).EUt(24);
+        RecipeMap.HAMMER_RECIPES.recipeBuilder()
+                .inputs(stack).outputs(gemStack)
+                .duration(100)
+                .EUt(24)
+                .buildAndRegister();
 
         if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.storageblockdecrafting, OreDictionaryUnifier.get(OrePrefix.block, uEntry.material).toString(), gemStack != null)) {
             if (dustStack != null)
@@ -75,12 +88,32 @@ public class ProcessingBlock implements IOreRegistrationHandler {
                 break;
             case "Iron":
             case "WroughtIron":
-                RecipeMap.EXTRUDER_RECIPES.recipeBuilder().inputs(GT_Utility.copyAmount(1, stack), ItemList.Shape_Extruder_Rod.get(0)).outputs(ItemList.IC2_ShaftIron.get(1)).duration(640).EUt(120);
-                RecipeMap.ASSEMBLER_RECIPES.recipeBuilder().inputs(ItemList.IC2_Compressed_Coal_Ball.get(8), GT_Utility.copyAmount(1, stack)).outputs(ItemList.IC2_Compressed_Coal_Chunk.get(1)).duration(400).EUt(4);
+                RecipeMap.EXTRUDER_RECIPES.recipeBuilder()
+                        .inputs(GT_Utility.copyAmount(1, stack), ItemList.Shape_Extruder_Rod.get(0))
+                        .outputs(ItemList.IC2_ShaftIron.get(1))
+                        .duration(640)
+                        .EUt(120)
+                        .buildAndRegister();
+                RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
+                        .inputs(ItemList.IC2_Compressed_Coal_Ball.get(8), GT_Utility.copyAmount(1, stack))
+                        .outputs(ItemList.IC2_Compressed_Coal_Chunk.get(1))
+                        .duration(400)
+                        .EUt(4)
+                        .buildAndRegister();
                 break;
             case "Steel":
-                RecipeMap.EXTRUDER_RECIPES.recipeBuilder().inputs(GT_Utility.copyAmount(1, stack), ItemList.Shape_Extruder_Rod.get(0)).outputs(ItemList.IC2_ShaftSteel.get(1)).duration(1280).EUt(120);
-                RecipeMap.ASSEMBLER_RECIPES.recipeBuilder().inputs(ItemList.IC2_Compressed_Coal_Ball.get(8), GT_Utility.copyAmount(1, stack)).outputs(ItemList.IC2_Compressed_Coal_Chunk.get(1)).duration(400).EUt(4);
+                RecipeMap.EXTRUDER_RECIPES.recipeBuilder()
+                        .inputs(GT_Utility.copyAmount(1, stack), ItemList.Shape_Extruder_Rod.get(0))
+                        .outputs(ItemList.IC2_ShaftSteel.get(1))
+                        .duration(1280)
+                        .EUt(120)
+                        .buildAndRegister();
+                RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
+                        .inputs(ItemList.IC2_Compressed_Coal_Ball.get(8), GT_Utility.copyAmount(1, stack))
+                        .outputs(ItemList.IC2_Compressed_Coal_Chunk.get(1))
+                        .duration(400)
+                        .EUt(4)
+                        .buildAndRegister();
         }
     }
 }

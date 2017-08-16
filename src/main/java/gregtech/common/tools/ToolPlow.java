@@ -3,14 +3,12 @@ package gregtech.common.tools;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntitySnowman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -21,86 +19,16 @@ public class ToolPlow extends ToolBase {
     private ThreadLocal<Object> sIsHarvestingRightNow = new ThreadLocal();
 
     @Override
-    public float getNormalDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack, EntityPlayer aPlayer) {
-        return (aEntity instanceof EntitySnowman) ? aOriginalDamage * 4.0F : aOriginalDamage;
+    public float getNormalDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase attacker) {
+        return (entity instanceof EntitySnowman) ? 4.0F : 1.0F;
     }
 
     @Override
-    public int getToolDamagePerBlockBreak(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
-    public int getToolDamagePerDropConversion(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
-    public int getToolDamagePerContainerCraft(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
-    public int getToolDamagePerEntityAttack(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
-    public int getBaseQuality(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
-    public float getBaseDamage(ItemStack stack) {
-        return 1.0F;
-    }
-
-    @Override
-    public float getSpeedMultiplier(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
-    public float getMaxDurabilityMultiplier(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
-    public ResourceLocation getMiningSound(ItemStack stack) {
-        return null;
-    }
-
-    @Override
-    public ResourceLocation getCraftingSound(ItemStack stack) {
-        return null;
-    }
-
-    @Override
-    public ResourceLocation getEntityHitSound(ItemStack stack) {
-        return null;
-    }
-
-    @Override
-    public ResourceLocation getBreakingSound(ItemStack stack) {
-        return null;
-    }
-
-    @Override
-    public boolean isCrowbar(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public boolean isGrafter(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public boolean isMinableBlock(IBlockState aBlock, ItemStack stack) {
-        String tTool = aBlock.getBlock().getHarvestTool(aBlock);
+    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
+        String tTool = block.getBlock().getHarvestTool(block);
         return ((tTool != null) && (tTool.equals("plow"))) ||
-                (aBlock.getMaterial() == Material.SNOW) ||
-                (aBlock.getMaterial() == Material.CRAFTED_SNOW);
+                (block.getMaterial() == Material.SNOW) ||
+                (block.getMaterial() == Material.CRAFTED_SNOW);
     }
 
     @Override
@@ -128,27 +56,7 @@ public class ToolPlow extends ToolBase {
     }
 
     @Override
-    public float getNormalDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase attacker) {
-        return 0;
-    }
-
-    @Override
-    public float getMagicDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase player) {
-        return 0;
-    }
-
-    @Override
-    public float getAttackSpeed(ItemStack stack) {
-        return 0;
-    }
-
-//    @Override
-//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-//        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadPlow.mTextureIndex] : ToolMetaItem.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.stick.mTextureIndex];
-//    }
-
-    @Override
-    public int getColor(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).materialRGB : ToolMetaItem.getSecondaryMaterial(aStack).materialRGB;
+    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadPlow.mTextureIndex] : ToolMetaItem.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.stick.mTextureIndex];
     }
 }

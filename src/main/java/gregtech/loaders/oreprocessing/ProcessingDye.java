@@ -17,7 +17,7 @@ import java.util.Locale;
 
 public class ProcessingDye implements IOreRegistrationHandler {
     public ProcessingDye() {
-        OrePrefix.dye.add(this);
+        OrePrefix.dye.addProcessingHandler(this);
     }
 
     public void registerOre(UnificationEntry uEntry, String modName, SimpleItemStack simpleStack) {

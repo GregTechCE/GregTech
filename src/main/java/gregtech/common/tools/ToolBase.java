@@ -5,6 +5,7 @@ import gregtech.api.damagesources.DamageSources;
 import gregtech.api.enchants.EnchantmentData;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.IToolStats;
+import gregtech.api.items.toolitem.ToolMetaItem;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
@@ -17,7 +18,7 @@ import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraft.world.World;
 import scala.actors.threadpool.Arrays;
 
 import java.util.ArrayList;
@@ -41,120 +42,143 @@ public abstract class ToolBase implements IToolStats {
         return true;
     }
 
-    public int getToolDamagePerBlockBreak() {
+    public int getToolDamagePerBlockBreak(ItemStack stack) {
         return 100;
     }
 
-    public int getToolDamagePerDropConversion() {
+    public int getToolDamagePerDropConversion(ItemStack stack) {
         return 100;
     }
 
-    public int getToolDamagePerContainerCraft() {
+    public int getToolDamagePerContainerCraft(ItemStack stack) {
         return 800;
     }
 
-    public int getToolDamagePerEntityAttack() {
+    public int getToolDamagePerEntityAttack(ItemStack stack) {
         return 200;
     }
 
-    public float getSpeedMultiplier() {
+    public float getSpeedMultiplier(ItemStack stack) {
         return 1.0F;
     }
 
-    public float getMaxDurabilityMultiplier() {
+    public float getMaxDurabilityMultiplier(ItemStack stack) {
         return 1.0F;
     }
 
-    public int getHurtResistanceTime(int aOriginalHurtResistance, Entity aEntity) {
-        return aOriginalHurtResistance;
+    public int getHurtResistanceTime(int originalHurtResistance, Entity entity) {
+        return originalHurtResistance;
     }
 
-    public ResourceLocation getMiningSound() {
+    public ResourceLocation getMiningSound(ItemStack stack) {
         return null;
     }
 
-    public ResourceLocation getCraftingSound() {
+    public ResourceLocation getCraftingSound(ItemStack stack) {
         return null;
     }
 
-    public ResourceLocation getEntityHitSound() {
+    public ResourceLocation getEntityHitSound(ItemStack stack) {
         return null;
     }
 
-    public ResourceLocation getBreakingSound() {
+    public ResourceLocation getBreakingSound(ItemStack stack) {
         return GregTech_API.sSoundList.get(0);
     }
 
-    public int getBaseQuality() {
+    public int getBaseQuality(ItemStack stack) {
         return 0;
     }
 
-    public boolean isCrowbar() {
+    public boolean isCrowbar(ItemStack stack) {
         return false;
     }
 
-    public boolean isGrafter() {
+    public boolean isGrafter(ItemStack stack) {
         return false;
     }
     
-    public boolean isChainsaw(){
+    public boolean isChainsaw(ItemStack stack){
     	return false;
     }
     
-    public boolean isWrench() {
+    public boolean isWrench(ItemStack stack) {
         return false;
     }
 
-    public boolean isWeapon() {
-        return false;
-    }
-
-    public boolean isRangedWeapon() {
-        return false;
-    }
-
-    public boolean isMiningTool() {
+    public boolean isWeapon(ItemStack stack) {
         return true;
     }
 
-    public DamageSource getDamageSource(EntityLivingBase aPlayer, Entity aEntity) {
-        return DamageSources.getCombatDamage((aPlayer instanceof EntityPlayer) ? "player" : "mob", aPlayer, (aEntity instanceof EntityLivingBase) ? getDeathMessage(aPlayer, (EntityLivingBase) aEntity) : null);
+    public boolean isRangedWeapon(ItemStack stack) {
+        return false;
     }
 
-    public ITextComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new EntityDamageSource((aPlayer instanceof EntityPlayer) ? "player" : "mob", aPlayer).getDeathMessage(aEntity);
+    public boolean isMiningTool(ItemStack stack) {
+        return true;
     }
 
-    public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, IBlockState aBlock, BlockPos blockPos, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
-        return 0;
+    public DamageSource getDamageSource(EntityLivingBase player, Entity entity) {
+        return DamageSources.getCombatDamage((player instanceof EntityPlayer) ? "player" : "mob", player, (entity instanceof EntityLivingBase) ? getDeathMessage(player, (EntityLivingBase) entity) : null);
     }
 
-    public ItemStack getBrokenItem(ItemStack aStack) {
+    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
+        return new EntityDamageSource((player instanceof EntityPlayer) ? "player" : "mob", player).getDeathMessage(entity);
+    }
+
+    public ItemStack getBrokenItem(ItemStack stack) {
         return null;
     }
 
-    public List<EnchantmentData> getEnchantments(ItemStack aStack) {
+    public List<EnchantmentData> getEnchantments(ItemStack stack) {
         return new ArrayList<EnchantmentData>(Arrays.asList(ZERO_ENCHANTMENTS));
     }
 
-    public int[] getEnchantmentLevels(ItemStack aStack) {
+    public int[] getEnchantmentLevels(ItemStack stack) {
         return ZERO_ENCHANTMENT_LEVELS;
     }
 
-    public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {
-        aPlayer.addStat(AchievementList.OPEN_INVENTORY);
-        aPlayer.addStat(AchievementList.MINE_WOOD);
-        aPlayer.addStat(AchievementList.BUILD_WORK_BENCH);
+    public void onToolCrafted(ItemStack stack, EntityPlayer player) {
+        player.addStat(AchievementList.OPEN_INVENTORY);
+        player.addStat(AchievementList.MINE_WOOD);
+        player.addStat(AchievementList.BUILD_WORK_BENCH);
     }
 
-    public void onStatsAddedToTool(MetaItem.MetaValueItem aItem, int aID) {
+    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
     }
 
-    public float getNormalDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack, EntityPlayer aPlayer) {
-        return aOriginalDamage;
+    @Override
+    public float getNormalDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase attacker) {
+        return 0;
     }
 
-    public float getMagicDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack, EntityPlayer aPlayer) {
-        return aOriginalDamage;
+    @Override
+    public float getMagicDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase player) {
+        return 0;
+    }
+
+    @Override
+    public float getAttackSpeed(ItemStack stack) {
+        return 1.0F;
+    }
+
+    @Override
+    public int getColor(boolean isToolHead, ItemStack stack) {
+        return isToolHead ? ToolMetaItem.getPrimaryMaterial(stack).materialRGB : ToolMetaItem.getSecondaryMaterial(stack).materialRGB;
+    }
+
+    @Override
+    public float getBaseDamage(ItemStack stack) {
+        return 1.0F;
+    }
+
+    @Override
+    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops) {
+        return 0;
     }
 }

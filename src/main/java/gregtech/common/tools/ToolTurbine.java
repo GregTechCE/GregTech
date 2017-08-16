@@ -1,7 +1,5 @@
 package gregtech.common.tools;
 
-import gregtech.api.items.toolitem.ToolMetaItem;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
@@ -13,36 +11,22 @@ public abstract class ToolTurbine extends ToolBase {
     public abstract float getBaseDamage(ItemStack stack);
 
     @Override
-    public boolean isMinableBlock(IBlockState aBlock, ItemStack stack) {
-        return false;
-    }
-
-//    @Override
-//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-//        return aIsToolHead ? getTurbineIcon() : null;
-//    }
-
-    @Override
-    public int getColor(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).materialRGB : null;
+    public IIconContainer getIcon(boolean isToolHead, ItemStack stack) {
+        return isToolhead ? getTurbineIcon() : null;
     }
 
     @Override
-    public ITextComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
+    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
         return new TextComponentString(TextFormatting.GREEN + "")
-                .appendSibling(aPlayer.getDisplayName())
+                .appendSibling(player.getDisplayName())
                 .appendText(TextFormatting.WHITE + " put " + TextFormatting.RED)
-                .appendSibling(aPlayer.getDisplayName())
+                .appendSibling(player.getDisplayName())
                 .appendText(TextFormatting.WHITE + " head into turbine");
     }
 
     public abstract IIconContainer getTurbineIcon();
 
-    public abstract float getSpeedMultiplier();
+    public abstract float getSpeedMultiplier(ItemStack stack);
 
-    public abstract float getMaxDurabilityMultiplier();
-
-    public ItemStack getBrokenItem(ItemStack aStack) {
-        return null;
-    }
+    public abstract float getMaxDurabilityMultiplier(ItemStack stack);
 }

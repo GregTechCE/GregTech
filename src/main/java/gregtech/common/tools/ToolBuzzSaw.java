@@ -2,7 +2,6 @@ package gregtech.common.tools;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.items.toolitem.ToolMetaItem;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -28,11 +27,6 @@ public class ToolBuzzSaw extends ToolSaw {
     }
 
     @Override
-    public float getMaxDurabilityMultiplier(ItemStack stack) {
-        return 1.0F;
-    }
-
-    @Override
     public ResourceLocation getCraftingSound(ItemStack stack) {
         return GregTech_API.sSoundList.get(104);
     }
@@ -43,36 +37,20 @@ public class ToolBuzzSaw extends ToolSaw {
     }
 
     @Override
-    public ResourceLocation getBreakingSound(ItemStack stack) {
-        return GregTech_API.sSoundList.get(0);
-    }
-
-    @Override
     public ResourceLocation getMiningSound(ItemStack stack) {
         return GregTech_API.sSoundList.get(104);
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState blockState, ItemStack stack) {
-        return false;
-    }
-
-//    @Override
-//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-//        return !aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadBuzzSaw.mTextureIndex] : Textures.ItemIcons.HANDLE_BUZZSAW;
-//    }
-
-    @Override
-    public int getColor(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).materialRGB : ToolMetaItem.getSecondaryMaterial(aStack).materialRGB;
+    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+        return !aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadBuzzSaw.mTextureIndex] : Textures.ItemIcons.HANDLE_BUZZSAW;
     }
 
     @Override
-    public ITextComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
+    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
         return new TextComponentString(TextFormatting.GREEN + "")
-                .appendSibling(aPlayer.getDisplayName())
+                .appendSibling(player.getDisplayName())
                 .appendText(TextFormatting.WHITE + " got buzzed " + TextFormatting.RED)
-                .appendSibling(aEntity.getDisplayName());
+                .appendSibling(entity.getDisplayName());
     }
-
 }

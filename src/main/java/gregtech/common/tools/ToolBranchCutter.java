@@ -1,6 +1,5 @@
 package gregtech.common.tools;
 
-import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.util.GT_Utility;
 import ic2.core.ref.BlockName;
@@ -15,7 +14,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
@@ -25,31 +23,6 @@ import net.minecraft.world.World;
 import java.util.List;
 
 public class ToolBranchCutter extends ToolBase {
-
-    @Override
-    public int getToolDamagePerBlockBreak(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
-    public int getToolDamagePerDropConversion(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
-    public int getToolDamagePerContainerCraft(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
-    public int getToolDamagePerEntityAttack(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
-    public int getBaseQuality(ItemStack stack) {
-        return 0;
-    }
 
     @Override
     public float getBaseDamage(ItemStack stack) {
@@ -67,48 +40,8 @@ public class ToolBranchCutter extends ToolBase {
     }
 
     @Override
-    public ResourceLocation getMiningSound(ItemStack stack) {
-        return null;
-    }
-
-    @Override
-    public ResourceLocation getCraftingSound(ItemStack stack) {
-        return null;
-    }
-
-    @Override
-    public ResourceLocation getEntityHitSound(ItemStack stack) {
-        return null;
-    }
-
-    @Override
-    public ResourceLocation getBreakingSound(ItemStack stack) {
-        return null;
-    }
-
-    @Override
-    public boolean isCrowbar(ItemStack stack) {
-        return false;
-    }
-
-    @Override
     public boolean isGrafter(ItemStack stack) {
         return true;
-    }
-
-    @Override
-    public float getNormalDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase attacker) {
-        return 0;
-    }
-
-    @Override
-    public float getMagicDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase player) {
-        return 0;
-    }
-
-    @Override
-    public float getAttackSpeed(ItemStack stack) {
-        return 0;
     }
 
     @Override
@@ -138,27 +71,21 @@ public class ToolBranchCutter extends ToolBase {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState aBlock, ItemStack stack) {
-        String tTool = aBlock.getBlock().getHarvestTool(aBlock);
-        return ((tTool != null) && (tTool.equals("grafter"))) || (aBlock.getMaterial() == Material.LEAVES);
-    }
-
-//    @Override
-//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-//        return aIsToolHead ? Textures.ItemIcons.GRAFTER : null;
-//    }
-
-    @Override
-    public int getColor(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).materialRGB : ToolMetaItem.getSecondaryMaterial(aStack).materialRGB;
+    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
+        String tTool = block.getBlock().getHarvestTool(block);
+        return ((tTool != null) && (tTool.equals("grafter"))) || (block.getMaterial() == Material.LEAVES);
     }
 
     @Override
-    public ITextComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
+    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? Textures.ItemIcons.GRAFTER : null;
+    }
+
+    @Override
+    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
         return new TextComponentString(TextFormatting.RED + "")
-                .appendSibling(aEntity.getDisplayName())
+                .appendSibling(entity.getDisplayName())
                 .appendText(TextFormatting.WHITE + " has been trimmed by " + TextFormatting.GREEN)
-                .appendSibling(aPlayer.getDisplayName());
+                .appendSibling(player.getDisplayName());
     }
-
 }

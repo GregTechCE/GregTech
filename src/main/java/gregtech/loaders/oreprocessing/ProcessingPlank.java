@@ -16,7 +16,7 @@ import net.minecraft.item.ItemStack;
 
 public class ProcessingPlank implements IOreRegistrationHandler {
     public ProcessingPlank() {
-        OrePrefix.plank.add(this);
+        OrePrefix.plank.addProcessingHandler(this);
     }
 
     public void registerOre(UnificationEntry uEntry, String modName, SimpleItemStack simpleStack) {

@@ -5,6 +5,7 @@ import gregtech.api.items.ToolDictNames;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
@@ -14,14 +15,14 @@ import net.minecraft.item.ItemStack;
 
 public class ProcessingPipe implements IOreRegistrationHandler {
     public ProcessingPipe() {
-        OrePrefix.pipeLarge.add(this);
-        OrePrefix.pipeMedium.add(this);
-        OrePrefix.pipeSmall.add(this);
-        OrePrefix.pipeRestrictiveHuge.add(this);
-        OrePrefix.pipeRestrictiveLarge.add(this);
-        OrePrefix.pipeRestrictiveMedium.add(this);
-        OrePrefix.pipeRestrictiveSmall.add(this);
-        OrePrefix.pipeRestrictiveTiny.add(this);
+        OrePrefix.pipeLarge.addProcessingHandler(this);
+        OrePrefix.pipeMedium.addProcessingHandler(this);
+        OrePrefix.pipeSmall.addProcessingHandler(this);
+        OrePrefix.pipeRestrictiveHuge.addProcessingHandler(this);
+        OrePrefix.pipeRestrictiveLarge.addProcessingHandler(this);
+        OrePrefix.pipeRestrictiveMedium.addProcessingHandler(this);
+        OrePrefix.pipeRestrictiveSmall.addProcessingHandler(this);
+        OrePrefix.pipeRestrictiveTiny.addProcessingHandler(this);
     }
 
     @Override
@@ -31,7 +32,7 @@ public class ProcessingPipe implements IOreRegistrationHandler {
             case pipeLarge:
             case pipeMedium:
             case pipeSmall:
-                if ((!uEntry.material.contains(SubTag.NO_WORKING)) && ((uEntry.material.contains(SubTag.WOOD)) || (!uEntry.material.contains(SubTag.NO_SMASHING)))) {
+                if ((!uEntry.material.hasFlag(DustMaterial.MatFlags.NO_WORKING)) && ((uEntry.material.contains(SubTag.WOOD)) || (!uEntry.material.hasFlag(DustMaterial.MatFlags.NO_SMASHING)))) {
                     if (!(uEntry.material == Materials.Redstone || uEntry.material == Materials.Glowstone)) {
                         int aAmount = uEntry.orePrefix == OrePrefix.pipeLarge ? 1 : uEntry.orePrefix == OrePrefix.pipeMedium ? 2 : 6;
                         String aRecipeString1 = uEntry.orePrefix == OrePrefix.pipeLarge ? "PHP" : uEntry.orePrefix == OrePrefix.pipeMedium ? "PPP" : "PWP";
