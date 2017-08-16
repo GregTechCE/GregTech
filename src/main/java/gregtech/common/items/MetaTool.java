@@ -13,55 +13,55 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-public class MetaTool extends ToolMetaItem {
+public class MetaTool extends ToolMetaItem<ToolMetaItem.MetaToolValueItem> {
+
     public static final short SWORD = 0;
-    public static final short PICKAXE = 2;
-    public static final short SHOVEL = 4;
-    public static final short AXE = 6;
-    public static final short HOE = 8;
-    public static final short SAW = 10;
-    public static final short HARDHAMMER = 12;
-    public static final short SOFTHAMMER = 14;
-    public static final short WRENCH = 16;
-    public static final short FILE = 18;
-    public static final short CROWBAR = 20;
-    public static final short SCREWDRIVER = 22;
-    public static final short MORTAR = 24;
-    public static final short WIRECUTTER = 26;
-    public static final short SCOOP = 28;
-    public static final short BRANCHCUTTER = 30;
-    public static final short UNIVERSALSPADE = 32;
-    public static final short KNIFE = 34;
-    public static final short BUTCHERYKNIFE = 36;
-    public static final short SENSE = 38;
-    public static final short PLOW = 40;
-    public static final short PLUNGER = 42;
-    public static final short ROLLING_PIN = 44;
-    public static final short DRILL_LV = 100;
-    public static final short DRILL_MV = 102;
-    public static final short DRILL_HV = 104;
-    public static final short CHAINSAW_LV = 110;
-    public static final short CHAINSAW_MV = 112;
-    public static final short CHAINSAW_HV = 114;
-    public static final short WRENCH_LV = 120;
-    public static final short WRENCH_MV = 122;
-    public static final short WRENCH_HV = 124;
-    public static final short JACKHAMMER = 130;
-    public static final short BUZZSAW = 140;
-    public static final short SCREWDRIVER_LV = 150;
-    public static final short SOLDERING_IRON_LV = 160;
-    public static final short TURBINE_SMALL = 170;
-    public static final short TURBINE_NORMAL = 172;
-    public static final short TURBINE_LARGE = 174;
-    public static final short TURBINE_HUGE = 176;
-    public static MetaTool INSTANCE;
+    public static final short PICKAXE = 1;
+    public static final short SHOVEL = 2;
+    public static final short AXE = 3;
+    public static final short HOE = 4;
+    public static final short SAW = 5;
+    public static final short HARDHAMMER = 6;
+    public static final short SOFTHAMMER = 7;
+    public static final short WRENCH = 8;
+    public static final short FILE = 9;
+    public static final short CROWBAR = 10;
+    public static final short SCREWDRIVER = 11;
+    public static final short MORTAR = 12;
+    public static final short WIRECUTTER = 13;
+    public static final short SCOOP = 14;
+    public static final short BRANCHCUTTER = 15;
+    public static final short UNIVERSALSPADE = 16;
+    public static final short KNIFE = 17;
+    public static final short BUTCHERYKNIFE = 18;
+    public static final short SENSE = 19;
+    public static final short PLOW = 20;
+    public static final short PLUNGER = 21;
+    public static final short ROLLING_PIN = 22;
+    public static final short DRILL_LV = 23;
+    public static final short DRILL_MV = 24;
+    public static final short DRILL_HV = 25;
+    public static final short CHAINSAW_LV = 26;
+    public static final short CHAINSAW_MV = 27;
+    public static final short CHAINSAW_HV = 28;
+    public static final short WRENCH_LV = 29;
+    public static final short WRENCH_MV = 30;
+    public static final short WRENCH_HV = 31;
+    public static final short JACKHAMMER = 32;
+    public static final short BUZZSAW = 33;
+    public static final short SCREWDRIVER_LV = 34;
+    public static final short SOLDERING_IRON_LV = 35;
+    public static final short TURBINE_SMALL = 36;
+    public static final short TURBINE_NORMAL = 37;
+    public static final short TURBINE_LARGE = 38;
+    public static final short TURBINE_HUGE = 39;
 
     public MetaTool() {
-        super("metatool.01");
-        INSTANCE = this;
-        addTool(SWORD, "Sword", "", new ToolSword(), ToolDictNames.craftingToolSword.name());
-        addTool(PICKAXE, "Pickaxe", "", new ToolPickaxe(), ToolDictNames.craftingToolPickaxe.name());
-        addTool(SHOVEL, "Shovel", "", new ToolShovel(), ToolDictNames.craftingToolShovel.name());
+        super("metatool");
+
+        addItem(SWORD).setToolStats(new ToolSword()).addOreDict(ToolDictNames.craftingToolSword); //"Sword", "",
+        addItem(PICKAXE).setToolStats(new ToolPickaxe()).addOreDict(ToolDictNames.craftingToolPickaxe); //"Pickaxe", "",
+        addItem(SHOVEL).setToolStats(new ToolShovel()).addOreDict(ToolDictNames.craftingToolShovel); // "Shovel", "",
         addTool(AXE, "Axe", "", new ToolAxe(), ToolDictNames.craftingToolAxe.name());
         addTool(HOE, "Hoe", "", new ToolHoe(), ToolDictNames.craftingToolHoe.name());
         addTool(SAW, "Saw", "Can also harvest Ice", new ToolSaw(), ToolDictNames.craftingToolSaw.name());
