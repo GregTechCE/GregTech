@@ -1,6 +1,7 @@
 package gregtech.common.tools;
 
 import gregtech.GT_Mod;
+import gregtech.api.items.toolitem.ToolMetaItem;
 import net.minecraft.item.ItemStack;
 
 public class ToolDrillMV extends ToolDrillLV {
@@ -45,8 +46,8 @@ public class ToolDrillMV extends ToolDrillLV {
         return 2.0F;
     }
 
-//    @Override
-//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-//        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadDrill.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_MV;
-//    }
+    @Override
+    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadDrill.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_MV;
+    }
 }

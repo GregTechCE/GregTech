@@ -1,6 +1,5 @@
 package gregtech.common.tools;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.common.items.behaviors.Behaviour_Hoe;
@@ -10,14 +9,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.AchievementList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
-
-import java.util.List;
 
 public class ToolHoe extends ToolBase {
 
@@ -27,89 +21,15 @@ public class ToolHoe extends ToolBase {
     }
 
     @Override
-    public int getToolDamagePerDropConversion(ItemStack stack) {
-        return 100;
-    }
-
-    @Override
-    public int getToolDamagePerContainerCraft(ItemStack stack) {
-        return 100;
-    }
-
-    @Override
-    public int getToolDamagePerEntityAttack(ItemStack stack) {
-        return 200;
-    }
-
-    @Override
-    public int getBaseQuality(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
     public float getBaseDamage(ItemStack stack) {
         return 1.75F;
     }
 
-    @Override
-    public float getSpeedMultiplier(ItemStack stack) {
-        return 1.0F;
-    }
 
     @Override
-    public float getMaxDurabilityMultiplier(ItemStack stack) {
-        return 1.0F;
-    }
-
-    @Override
-    public ResourceLocation getCraftingSound(ItemStack stack) {
-        return null;
-    }
-
-    @Override
-    public ResourceLocation getEntityHitSound(ItemStack stack) {
-        return null;
-    }
-
-    @Override
-    public ResourceLocation getBreakingSound(ItemStack stack) {
-        return GregTech_API.sSoundList.get(0);
-    }
-
-    @Override
-    public boolean isCrowbar(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public boolean isGrafter(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public ResourceLocation getMiningSound(ItemStack stack) {
-        return null;
-    }
-
-    @Override
-    public boolean isCrowbar() {
-        return false;
-    }
-
-    @Override
-    public boolean isMinableBlock(IBlockState aBlock, ItemStack stack) {
-        String tTool = aBlock.getBlock().getHarvestTool(aBlock);
-        return ((tTool != null) && (tTool.equals("hoe"))) || (aBlock.getMaterial() == Material.GROUND);
-    }
-
-    @Override
-    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops) {
-        return 0;
-    }
-
-    @Override
-    public ItemStack getBrokenItem(ItemStack aStack) {
-        return null;
+    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
+        String tTool = block.getBlock().getHarvestTool(block);
+        return ((tTool != null) && (tTool.equals("hoe"))) || (block.getMaterial() == Material.GROUND);
     }
 
     @Override
@@ -123,37 +43,26 @@ public class ToolHoe extends ToolBase {
     }
 
     @Override
-    public float getAttackSpeed(ItemStack stack) {
-        return 0;
-    }
-
-//    @Override
-//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-//        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadHoe.mTextureIndex] : ToolMetaItem.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.stick.mTextureIndex];
-//    }
-
-    @Override
-    public int getColor(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).materialRGB : ToolMetaItem.getSecondaryMaterial(aStack).materialRGB;
+    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadHoe.mTextureIndex] : ToolMetaItem.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.stick.mTextureIndex];
     }
 
     @Override
-    public void onStatsAddedToTool(MetaItem.MetaValueItem aItem, int aID) {
-        aItem.addStats(new Behaviour_Hoe(100));
+    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
+        item.addStats(new Behaviour_Hoe(100));
     }
 
     @Override
-    public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {
-        super.onToolCrafted(aStack, aPlayer);
-        aPlayer.addStat(AchievementList.BUILD_HOE);
+    public void onToolCrafted(ItemStack stack, EntityPlayer player) {
+        super.onToolCrafted(stack, player);
+        player.addStat(AchievementList.BUILD_HOE);
     }
 
     @Override
-    public ITextComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
+    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
         return new TextComponentString(TextFormatting.RED + "")
-                .appendSibling(aEntity.getDisplayName())
+                .appendSibling(entity.getDisplayName())
                 .appendText(TextFormatting.WHITE + " has been called a stupid Hoe by " + TextFormatting.GREEN)
-                .appendSibling(aPlayer.getDisplayName());
+                .appendSibling(player.getDisplayName());
     }
-
 }

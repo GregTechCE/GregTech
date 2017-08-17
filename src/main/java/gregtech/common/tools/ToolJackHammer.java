@@ -60,13 +60,13 @@ public class ToolJackHammer extends ToolDrillLV {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState aBlock, ItemStack stack) {
-        String tTool = aBlock.getBlock().getHarvestTool(aBlock);
+    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
+        String tTool = block.getBlock().getHarvestTool(block);
         return ((tTool != null) && (tTool.equals("pickaxe"))) ||
-                (aBlock.getMaterial() == Material.ROCK) ||
-                (aBlock.getMaterial() == Material.GLASS) ||
-                (aBlock.getMaterial() == Material.ICE) ||
-                (aBlock.getMaterial() == Material.PACKED_ICE);
+                (block.getMaterial() == Material.ROCK) ||
+                (block.getMaterial() == Material.GLASS) ||
+                (block.getMaterial() == Material.ICE) ||
+                (block.getMaterial() == Material.PACKED_ICE);
     }
 
     @Override
@@ -95,22 +95,22 @@ public class ToolJackHammer extends ToolDrillLV {
     }
 
     @Override
-    public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {
-        super.onToolCrafted(aStack, aPlayer);
-        GT_Mod.achievements.issueAchievement(aPlayer, "hammertime");
+    public void onToolCrafted(ItemStack stack, EntityPlayer player) {
+        super.onToolCrafted(stack, player);
+        GT_Mod.achievements.issueAchievement(player, "hammertime");
 
     }
 
-//    @Override
-//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-//        return aIsToolHead ? Textures.ItemIcons.JACKHAMMER : null;
-//    }
+    @Override
+    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? Textures.ItemIcons.JACKHAMMER : null;
+    }
 
     @Override
-    public ITextComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
+    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
         return new TextComponentString(TextFormatting.RED + "")
-                .appendSibling(aEntity.getDisplayName())
+                .appendSibling(entity.getDisplayName())
                 .appendText(TextFormatting.WHITE + " has been jackhammered into pieces by " + TextFormatting.GREEN)
-                .appendSibling(aPlayer.getDisplayName());
+                .appendSibling(player.getDisplayName());
     }
 }

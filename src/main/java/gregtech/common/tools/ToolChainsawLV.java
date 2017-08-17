@@ -32,23 +32,8 @@ public class ToolChainsawLV extends ToolSaw {
     }
 
     @Override
-    public int getToolDamagePerDropConversion(ItemStack stack) {
-        return 100;
-    }
-
-    @Override
     public int getToolDamagePerContainerCraft(ItemStack stack) {
         return 800;
-    }
-
-    @Override
-    public int getToolDamagePerEntityAttack(ItemStack stack) {
-        return 200;
-    }
-
-    @Override
-    public int getBaseQuality(ItemStack stack) {
-        return 0;
     }
 
     @Override
@@ -62,11 +47,6 @@ public class ToolChainsawLV extends ToolSaw {
     }
 
     @Override
-    public float getMaxDurabilityMultiplier(ItemStack stack) {
-        return 1.0F;
-    }
-
-    @Override
     public ResourceLocation getCraftingSound(ItemStack stack) {
         return GregTech_API.sSoundList.get(104);
     }
@@ -77,30 +57,20 @@ public class ToolChainsawLV extends ToolSaw {
     }
 
     @Override
-    public ResourceLocation getBreakingSound(ItemStack stack) {
-        return GregTech_API.sSoundList.get(0);
-    }
-
-    @Override
     public ResourceLocation getMiningSound(ItemStack stack) {
         return GregTech_API.sSoundList.get(104);
     }
 
     @Override
-    public boolean isChainsaw(){
+    public boolean isChainsaw(ItemStack stack){
     	return true;
-    }
-    
-    @Override
-    public boolean isWeapon() {
-        return true;
     }
 
     @Override
-    public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {
-        super.onToolCrafted(aStack, aPlayer);
-        GT_Mod.achievements.issueAchievement(aPlayer, "brrrr");
-        GT_Mod.achievements.issueAchievement(aPlayer, "buildChainsaw");
+    public void onToolCrafted(ItemStack stack, EntityPlayer player) {
+        super.onToolCrafted(stack, player);
+        GT_Mod.achievements.issueAchievement(player, "brrrr");
+        GT_Mod.achievements.issueAchievement(player, "buildChainsaw");
     }
     
     @Override
@@ -151,22 +121,16 @@ public class ToolChainsawLV extends ToolSaw {
         return rAmount;
     }
 
-//    @Override
-//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-//        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadChainsaw.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_LV;
-//    }
-
     @Override
-    public int getColor(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).materialRGB : ToolMetaItem.getSecondaryMaterial(aStack).materialRGB;
+    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadChainsaw.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_LV;
     }
 
     @Override
-    public ITextComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
+    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
         return new TextComponentString(TextFormatting.GREEN + "")
-                .appendSibling(aPlayer.getDisplayName())
+                .appendSibling(player.getDisplayName())
                 .appendText(TextFormatting.WHITE + " was massacred " + TextFormatting.RED)
-                .appendSibling(aEntity.getDisplayName());
+                .appendSibling(entity.getDisplayName());
     }
-    
 }

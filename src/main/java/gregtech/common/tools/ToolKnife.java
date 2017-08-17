@@ -9,23 +9,8 @@ import net.minecraft.util.text.TextFormatting;
 public class ToolKnife extends ToolSword {
 
     @Override
-    public int getToolDamagePerBlockBreak(ItemStack stack) {
-        return 100;
-    }
-
-    @Override
-    public int getToolDamagePerDropConversion(ItemStack stack) {
-        return 100;
-    }
-
-    @Override
     public int getToolDamagePerContainerCraft(ItemStack stack) {
         return 100;
-    }
-
-    @Override
-    public int getToolDamagePerEntityAttack(ItemStack stack) {
-        return 200;
     }
 
     @Override
@@ -39,21 +24,15 @@ public class ToolKnife extends ToolSword {
     }
 
     @Override
-    public float getMaxDurabilityMultiplier(ItemStack stack) {
-        return 1.0F;
+    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? Textures.ItemIcons.KNIFE : null;
     }
-
-//    @Override
-//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-//        return aIsToolHead ? Textures.ItemIcons.KNIFE : null;
-//    }
 
     @Override
-    public ITextComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
+    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
         return new TextComponentString(TextFormatting.RED + "")
-                .appendSibling(aPlayer.getDisplayName())
+                .appendSibling(player.getDisplayName())
                 .appendText(TextFormatting.WHITE + " has been murdered by " + TextFormatting.GREEN)
-                .appendSibling(aPlayer.getDisplayName());
+                .appendSibling(player.getDisplayName());
     }
-
 }

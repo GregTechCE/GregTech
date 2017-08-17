@@ -3,6 +3,8 @@ package gregtech.loaders.oreprocessing;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
@@ -18,7 +20,15 @@ public class ProcessingCrystallized implements IOreRegistrationHandler {
     
     public void registerOre(UnificationEntry uEntry, String modName, SimpleItemStack simpleStack) {
         ItemStack stack = simpleStack.asItemStack();
-        RecipeMap.HAMMER_RECIPES.recipeBuilder().inputs(GT_Utility.copyAmount(1, stack)).outputs(OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material.mMacerateInto)).duration(10).EUt(16);
-        ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material.mMacerateInto, 1L), null, 10, false);
+        if (uEntry.material instanceof SolidMaterial) {
+            Material macerateInto = ((SolidMaterial) uEntry.material).macerateInto;
+            RecipeMap.HAMMER_RECIPES.recipeBuilder()
+                    .inputs(GT_Utility.copyAmount(1, stack))
+                    .outputs(OreDictionaryUnifier.get(OrePrefix.dust, macerateInto))
+                    .duration(10)
+                    .EUt(16)
+                    .buildAndRegister();
+            ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.dust, macerateInto, 1), null, 10, false);
+        }
     }
 }

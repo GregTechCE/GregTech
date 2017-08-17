@@ -5,8 +5,12 @@ import gregtech.api.ConfigCategories;
 import gregtech.api.GT_Values;
 import gregtech.api.items.ItemList;
 import gregtech.api.recipes.ModHandler;
+import gregtech.api.recipes.RecipeMap;
+import gregtech.api.recipes.RecipeRegistrator;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.DustMaterial;
+import gregtech.api.unification.material.type.GemMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
@@ -21,12 +25,12 @@ import java.util.ArrayList;
 
 public class ProcessingDust implements IOreRegistrationHandler {
     public ProcessingDust() {
-        OrePrefix.dust.add(this);
-        OrePrefix.dustPure.add(this);
-        OrePrefix.dustImpure.add(this);
-        OrePrefix.dustRefined.add(this);
-        OrePrefix.dustSmall.add(this);
-        OrePrefix.dustTiny.add(this);
+        OrePrefix.dust.addProcessingHandler(this);
+        OrePrefix.dustPure.addProcessingHandler(this);
+        OrePrefix.dustImpure.addProcessingHandler(this);
+        OrePrefix.dustRefined.addProcessingHandler(this);
+        OrePrefix.dustSmall.addProcessingHandler(this);
+        OrePrefix.dustTiny.addProcessingHandler(this);
     }
 
     public void registerOre(UnificationEntry uEntry, String modName, SimpleItemStack simpleStack) {
@@ -36,26 +40,31 @@ public class ProcessingDust implements IOreRegistrationHandler {
                 if (uEntry.material.mFuelPower > 0)
                     GT_Values.RA.addFuel(GT_Utility.copyAmount(1, stack), null, uEntry.material.mFuelPower, uEntry.material.mFuelType);
                 if (GT_Utility.getFluidForFilledItem(OreDictionaryUnifier.get(OrePrefix.cell, uEntry.material, 1), true) == null)
-                    GT_Values.RA.addCannerRecipe(stack, ItemList.Cell_Empty.get(1), OreDictionaryUnifier.get(OrePrefix.cell, uEntry.material, 1), null, 100, 1);
+                    RecipeMap.CANNER_RECIPES.recipeBuilder()
+                            .inputs(stack, ItemList.Cell_Empty.get(1))
+                            .outputs(OreDictionaryUnifier.get(OrePrefix.cell, uEntry.material, 1))
+                            .duration(100)
+                            .EUt(1)
+                            .buildAndRegister();
                 if (!uEntry.material.mBlastFurnaceRequired) {
-                    GT_RecipeRegistrator.registerReverseFluidSmelting(stack, uEntry.material, uEntry.orePrefix.mMaterialAmount, null);
+                    RecipeRegistrator.registerReverseFluidSmelting(stack, uEntry.material, uEntry.orePrefix.mMaterialAmount, null);
                     if (uEntry.material.mSmeltInto.mArcSmeltInto != uEntry.material) {
-                        GT_RecipeRegistrator.registerReverseArcSmelting(GT_Utility.copyAmount(1, stack), uEntry.material, uEntry.orePrefix.mMaterialAmount, null, null, null);
+                        RecipeRegistrator.registerReverseArcSmelting(GT_Utility.copyAmount(1, stack), uEntry.material, uEntry.orePrefix.mMaterialAmount, null, null, null);
                     }
                 }
 
-                ItemStack tDustStack;
-                if ((null != (tDustStack = OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material.mSmeltInto, 1L))) && (!uEntry.material.contains(SubTag.NO_SMELTING))) {
+                ItemStack dustStack;
+                if ((null != (dustStack = OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material.mSmeltInto, 1L))) && (!uEntry.material.contains(SubTag.NO_SMELTING))) {
                     if (uEntry.material.mBlastFurnaceRequired) {
                         ModHandler.removeFurnaceSmelting(stack);
-                        GT_Values.RA.addBlastRecipe(GT_Utility.copyAmount(1, stack), null, null, null, uEntry.material.mBlastFurnaceTemp > 1750 ? OreDictionaryUnifier.get(OrePrefix.ingotHot, uEntry.material.mSmeltInto, tDustStack, 1L) : GT_Utility.copyAmount(1L, new Object[]{tDustStack}), null, (int) Math.max(uEntry.material.getMass() / 40L, 1L) * uEntry.material.mBlastFurnaceTemp, 120, uEntry.material.mBlastFurnaceTemp);
+                        GT_Values.RA.addBlastRecipe(GT_Utility.copyAmount(1, stack), null, null, null, uEntry.material.mBlastFurnaceTemp > 1750 ? OreDictionaryUnifier.get(OrePrefix.ingotHot, uEntry.material.mSmeltInto, dustStack, 1L) : GT_Utility.copyAmount(1L, new Object[]{dustStack}), null, (int) Math.max(uEntry.material.getMass() / 40L, 1L) * uEntry.material.mBlastFurnaceTemp, 120, uEntry.material.mBlastFurnaceTemp);
                         if (uEntry.material.mBlastFurnaceTemp <= 1000) {
-                            ModHandler.addRCBlastFurnaceRecipe(GT_Utility.copyAmount(1, stack), GT_Utility.copyAmount(1L tDustStack), uEntry.material.mBlastFurnaceTemp);
+                            ModHandler.addRCBlastFurnaceRecipe(GT_Utility.copyAmount(1, stack), GT_Utility.copyAmount(1, dustStack), uEntry.material.mBlastFurnaceTemp);
                         }
                     } else {
-                        ModHandler.addSmeltingRecipe(stack, tDustStack);
+                        ModHandler.addSmeltingRecipe(stack, dustStack);
                     }
-                } else if (!uEntry.material.contains(SubTag.NO_WORKING)) {
+                } else if (!uEntry.material.hasFlag(DustMaterial.MatFlags.NO_WORKING)) {
                     if ((!OrePrefix.block.isIgnored(uEntry.material)) && (null == OreDictionaryUnifier.get(OrePrefix.gem, uEntry.material, 1))) {
                         ModHandler.addCompressionRecipe(GT_Utility.copyAmount(9, stack), OreDictionaryUnifier.get(OrePrefix.block, uEntry.material, 1));
                     }
@@ -66,32 +75,32 @@ public class ProcessingDust implements IOreRegistrationHandler {
 
 
                 if ((uEntry.material.mMaterialList.size() > 0) && ((uEntry.material.mExtraData & 0x3) != 0)) {
-                    int tItemAmount = 0;
+                    long tItemAmount = 0;
                     int tCapsuleCount = 0;
                     long tDensityMultiplier = uEntry.material.getDensity() > 3628800L ? uEntry.material.getDensity() / 3628800L : 1L;
                     ArrayList<ItemStack> tList = new ArrayList();
                     for (MaterialStack tMat : uEntry.material.mMaterialList)
                         if (tMat.mAmount > 0L) {
                             if (tMat.mMaterial == Materials.Air) {
-                                tDustStack = ItemList.Cell_Air.get(tMat.mAmount / 2L);
+                                dustStack = ItemList.Cell_Air.get(tMat.mAmount / 2L);
                             } else {
-                                tDustStack = OreDictionaryUnifier.get(OrePrefix.dust, tMat.mMaterial, tMat.mAmount);
-                                if (tDustStack == null)
-                                    tDustStack = OreDictionaryUnifier.get(OrePrefix.cell, tMat.mMaterial, tMat.mAmount);
+                                dustStack = OreDictionaryUnifier.get(OrePrefix.dust, tMat.mMaterial, tMat.mAmount);
+                                if (dustStack == null)
+                                    dustStack = OreDictionaryUnifier.get(OrePrefix.cell, tMat.mMaterial, tMat.mAmount);
                             }
                             if (tItemAmount + tMat.mAmount * 3628800L <= stack.getMaxStackSize() * uEntry.material.getDensity()) {
                                 tItemAmount += tMat.mAmount * 3628800L;
-                                if (tDustStack != null) {
-                                    ItemStack tmp793_791 = tDustStack;
+                                if (dustStack != null) {
+                                    ItemStack tmp793_791 = dustStack;
                                     tmp793_791.stackSize = ((int) (tmp793_791.stackSize * tDensityMultiplier));
-                                    while ((tDustStack.stackSize > 64) && (tList.size() < 6) && (tCapsuleCount + ModHandler.getCapsuleCellContainerCount(tDustStack) * 64 <= 64L)) {
-                                        tCapsuleCount += ModHandler.getCapsuleCellContainerCount(tDustStack) * 64;
-                                        tList.add(GT_Utility.copyAmount(64, tDustStack));
-                                        tDustStack.stackSize -= 64;
+                                    while ((dustStack.stackSize > 64) && (tList.size() < 6) && (tCapsuleCount + ModHandler.getCapsuleCellContainerCount(dustStack) * 64 <= 64L)) {
+                                        tCapsuleCount += ModHandler.getCapsuleCellContainerCount(dustStack) * 64;
+                                        tList.add(GT_Utility.copyAmount(64, dustStack));
+                                        dustStack.stackSize -= 64;
                                     }
-                                    if ((tDustStack.stackSize > 0) && (tList.size() < 6) && (tCapsuleCount + ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(tDustStack) <= 64L)) {
-                                        tCapsuleCount += ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(tDustStack);
-                                        tList.add(tDustStack);
+                                    if ((dustStack.stackSize > 0) && (tList.size() < 6) && (tCapsuleCount + ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(dustStack) <= 64L)) {
+                                        tCapsuleCount += ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(dustStack);
+                                        tList.add(dustStack);
                                     }
                                 }
                             }
@@ -101,8 +110,8 @@ public class ProcessingDust implements IOreRegistrationHandler {
                         FluidStack tFluid = null;
                         int tList_sS = tList.size();
                         for (int i = 0; i < tList_sS; i++) {
-                            if ((!ItemList.Cell_Air.isStackEqual(tList.get(i))) && ((tFluid = GT_Utility.getFluidForFilledItem((ItemStack) tList.get(i), true)) != null)) {
-                                tFluid.amount *= ((ItemStack) tList.get(i)).stackSize;
+                            if ((!ItemList.Cell_Air.isStackEqual(tList.get(i))) && ((tFluid = GT_Utility.getFluidForFilledItem(tList.get(i), true)) != null)) {
+                                tFluid.amount *=  tList.get(i).stackSize;
                                 tCapsuleCount -= ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(tList.get(i));
                                 tList.remove(i);
                                 break;
@@ -115,22 +124,34 @@ public class ProcessingDust implements IOreRegistrationHandler {
                         }
                     }
                 }
-                if (uEntry.material.contains(SubTag.CRYSTALLISABLE)) {
-                    GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(1, stack), Materials.Water.getFluid(200), OreDictionaryUnifier.get(OrePrefix.gem, uEntry.material, 1), 7000, 2000, 24);
-                    GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(1, stack), ModHandler.getDistilledWater(200), OreDictionaryUnifier.get(OrePrefix.gem, uEntry.material, 1), 9000, 1500, 24);
+                if (uEntry.material.hasFlag(GemMaterial.MatFlags.CRYSTALLISABLE)) {
+                    RecipeMap.AUTOCLAVE_RECIPES.recipeBuilder()
+                            .inputs(GT_Utility.copyAmount(1, stack))
+                            .fluidInputs(Materials.Water.getFluid(200))
+                            .chancedOutput(OreDictionaryUnifier.get(OrePrefix.gem, uEntry.material, 1), 7000)
+                            .duration(2000)
+                            .EUt(24)
+                            .buildAndRegister();
+                    RecipeMap.AUTOCLAVE_RECIPES.recipeBuilder()
+                            .inputs(GT_Utility.copyAmount(1, stack))
+                            .fluidInputs(ModHandler.getDistilledWater(200))
+                            .chancedOutput(OreDictionaryUnifier.get(OrePrefix.gem, uEntry.material, 1), 9000)
+                            .duration(1500)
+                            .EUt(24)
+                            .buildAndRegister();
                 }
 
-                switch (uEntry.material.defaultLocalName) {
+                switch (uEntry.material.toString()) {
                     case "NULL":
                         break;
                     case "Glass":
                         ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1, stack), new ItemStack(net.minecraft.init.Blocks.GLASS));
                         break;
-                    case "Nether Quartz": case "Quartz": case "Certus Quartz":
+                    case "NetherQuartz": case "Quartz": case "CertusQuartz":
                         if (gregtech.api.GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "QuartzDustSmeltingIntoAESilicon", true))
                             ModHandler.removeFurnaceSmelting(stack);
                         break;
-                    case "Meat Raw":
+                    case "MeatRaw":
                         ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.dust, Materials.MeatCooked, 1));
                         break;
                     case "Mercury":
@@ -145,32 +166,44 @@ public class ProcessingDust implements IOreRegistrationHandler {
                     case "Garnierite":
                         ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Nickel, 1));
                         break;
-                    case "Cassiterite": case "Cassiterite Sand":
+                    case "Cassiterite": case "CassiteriteSand":
                         ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Tin, 1));
                         break;
-                    case "Magnetite": case "Vanadium Magnetite": case "Basaltic Mineral Sand": case "Granitic Mineral Sand":
+                    case "Magnetite": case "VanadiumMagnetite": case "BasalticMineral Sand": case "GraniticMineral Sand":
                         ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.nugget, Materials.Iron, 3));
                         break;
-                    case "Yellow Limonite": case "Brown Limonite": case "Banded Iron":
+                    case "YellowLimonite": case "BrownLimonite": case "BandedIron":
                         ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Iron, 1));
                         break;
                     case "Coal":
                         if (GT_Mod.gregtechproxy.mTEMachineRecipes)
                             ModHandler.addLiquidTransposerFillRecipe(GT_Utility.copyAmount(1, stack), Materials.Water.getFluid(125), OreDictionaryUnifier.get(OrePrefix.dust, Materials.HydratedCoal, 1), 125);
                         break;
-                    case "Hydrated Coal":
+                    case "HydratedCoal":
                         if (GT_Mod.gregtechproxy.mTEMachineRecipes)
                             ModHandler.addLiquidTransposerEmptyRecipe(GT_Utility.copyAmount(1, stack), Materials.Water.getFluid(125), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Coal, 1), 125);
                         ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Coal, 1));
                         break;
                     case "Diamond":
-                        GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(4, stack), 32, ItemList.IC2_Industrial_Diamond.get(3), OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh, 16));
+                        RecipeMap.IMPLOSION_RECIPES.recipeBuilder()
+                                .inputs(GT_Utility.copyAmount(4, stack))
+                                .explosivesAmount(32)
+                                .outputs(ItemList.IC2_Industrial_Diamond.get(3), OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh, 16))
+                                .buildAndRegister();
                         break;
-                    case "Opal": case "Olivine": case "Emerald": case "Ruby": case "Sapphire": case "Green Sapphire": case "Topaz": case "Blue Topaz": case "Tanzanite":
-                        GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(4, stack), 24, OreDictionaryUnifier.get(OrePrefix.gem, uEntry.material, 3), OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh, 12));
+                    case "Opal": case "Olivine": case "Emerald": case "Ruby": case "Sapphire": case "GreenSapphire": case "Topaz": case "BlueTopaz": case "Tanzanite":
+                        RecipeMap.IMPLOSION_RECIPES.recipeBuilder()
+                                .inputs(GT_Utility.copyAmount(4, stack))
+                                .explosivesAmount(24)
+                                .outputs(OreDictionaryUnifier.get(OrePrefix.gem, uEntry.material, 3), OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh, 12))
+                                .buildAndRegister();
                         break;
-                    case "Fools Ruby": case "Garnet Red": case "Garnet Yellow": case "Jasper": case "Amber": case "Monazite": case "Forcicium": case "Forcillium": case "Force":
-                        GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(4, stack), 16, OreDictionaryUnifier.get(OrePrefix.gem, uEntry.material, 3), OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh, 8));
+                    case "FoolsRuby": case "GarnetRed": case "GarnetYellow": case "Jasper": case "Amber": case "Monazite": case "Forcicium": case "Forcillium": case "Force":
+                        RecipeMap.IMPLOSION_RECIPES.recipeBuilder()
+                                .inputs(GT_Utility.copyAmount(4, stack))
+                                .explosivesAmount(16)
+                                .outputs(OreDictionaryUnifier.get(OrePrefix.gem, uEntry.material, 3), OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh, 8))
+                                .buildAndRegister();
                 }
                 break;
             case dustPure: case dustImpure:case dustRefined:
@@ -185,7 +218,7 @@ public class ProcessingDust implements IOreRegistrationHandler {
                         GT_Values.RA.addElectromagneticSeparatorRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material, 1), OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Neodymium, 1L), OreDictionaryUnifier.get(OrePrefix.nugget, Materials.Neodymium, 1L), new int[]{10000, 4000, 2000}, 400, 24);
                     }
                 }
-                if (uEntry.material.contains(SubTag.CRYSTALLISABLE)) {
+                if (uEntry.material.hasFlag(GemMaterial.MatFlags.CRYSTALLISABLE)) {
                     GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(1, stack), Materials.Water.getFluid(200), OreDictionaryUnifier.get(OrePrefix.gem, uEntry.material, 1), 9000, 2000, 24);
                     GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(1, stack), ModHandler.getDistilledWater(200), OreDictionaryUnifier.get(OrePrefix.gem, uEntry.material, 1), 9500, 1500, 24);
                 }
@@ -221,9 +254,9 @@ public class ProcessingDust implements IOreRegistrationHandler {
             case dustSmall:
                 GT_Values.RA.addBoxingRecipe(GT_Utility.copyAmount(4, stack), ItemList.Schematic_Dust.get(0), OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material, 1), 100, 4);
                 if (!uEntry.material.mBlastFurnaceRequired) {
-                    GT_RecipeRegistrator.registerReverseFluidSmelting(stack, uEntry.material, uEntry.orePrefix.mMaterialAmount, null);
+                    RecipeRegistrator.registerReverseFluidSmelting(stack, uEntry.material, uEntry.orePrefix.mMaterialAmount, null);
                     if (uEntry.material.mSmeltInto.mArcSmeltInto != uEntry.material) {
-                        GT_RecipeRegistrator.registerReverseArcSmelting(GT_Utility.copyAmount(1, stack), uEntry.material, uEntry.orePrefix.mMaterialAmount, null, null, null);
+                        RecipeRegistrator.registerReverseArcSmelting(GT_Utility.copyAmount(1, stack), uEntry.material, uEntry.orePrefix.mMaterialAmount, null, null, null);
                     }
                 }
                 if (uEntry.material.mBlastFurnaceRequired) {
@@ -235,9 +268,9 @@ public class ProcessingDust implements IOreRegistrationHandler {
             case dustTiny:
                 GT_Values.RA.addBoxingRecipe(GT_Utility.copyAmount(9, stack), ItemList.Schematic_Dust.get(0), OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material, 1L), 100, 4);
                 if (!uEntry.material.mBlastFurnaceRequired) {
-                    GT_RecipeRegistrator.registerReverseFluidSmelting(stack, uEntry.material, uEntry.orePrefix.mMaterialAmount, null);
+                    RecipeRegistrator.registerReverseFluidSmelting(stack, uEntry.material, uEntry.orePrefix.mMaterialAmount, null);
                     if (uEntry.material.mSmeltInto.mArcSmeltInto != uEntry.material) {
-                        GT_RecipeRegistrator.registerReverseArcSmelting(GT_Utility.copyAmount(1, stack), uEntry.material, uEntry.orePrefix.mMaterialAmount, null, null, null);
+                        RecipeRegistrator.registerReverseArcSmelting(GT_Utility.copyAmount(1, stack), uEntry.material, uEntry.orePrefix.mMaterialAmount, null, null, null);
                     }
                 }
                 if (!uEntry.material.contains(SubTag.NO_SMELTING)) {

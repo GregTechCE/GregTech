@@ -4,6 +4,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import gregtech.api.enchants.EnchantmentData;
 import gregtech.api.items.IDamagableItem;
+import gregtech.api.items.ToolDictNames;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
@@ -27,7 +28,10 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.oredict.OreDictionary;
+import org.apache.commons.lang3.Validate;
 
+import javax.xml.validation.Validator;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -261,24 +265,32 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
         return Materials.Iron;
     }
 
-    public final ItemStack addTool(int id, String english, String tooltip, IToolStats toolStats, OrePrefix orePrefix) {
-        if (tooltip == null) tooltip = "";
-        if (id >= 0 && id < 32766 && id % 2 == 0) {
-            //GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + id + ".name", english);
-            //GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + id + ".tooltip", tooltip);
-            //GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (id + 1) + ".name", english + " (Empty)");
-            //GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (id + 1) + ".tooltip", "You need to recharge it");
+    public final ItemStack getToolWithStats(int toolID, int amount, Material primaryMaterial, Material secondaryMaterial, long[] electricData) {
+        ItemStack stack = new ItemStack(this, amount, toolID);
+        MetaToolValueItem metaToolValueItem = getItem(stack);
+        if (metaToolValueItem != null) {
+            if (metaToolValueItem.toolStats != null) {
+                NBTTagCompound tMainNBT = new NBTTagCompound(), tToolNBT = new NBTTagCompound();
+                if (primaryMaterial != null && primaryMaterial instanceof SolidMaterial) {
+                    tToolNBT.setString("GT.ToolPrimaryMaterial", primaryMaterial.toString());
+                    tToolNBT.setLong("GT.MaxDamage", 100L * (long) ((((SolidMaterial) primaryMaterial).toolDurability) * metaToolValueItem.toolStats.getMaxDurabilityMultiplier(stack)));
+                }
+                if (secondaryMaterial != null)
+                    tToolNBT.setString("GT.ToolSecondaryMaterial", secondaryMaterial.toString());
 
-            ItemStack stack = new ItemStack(this, 1, id);
-            toolStats.onStatsAddedToTool(getItem(stack), id);
+                if (electricData != null) {
+                    tToolNBT.setBoolean("GT.Electric", true);
+                    tToolNBT.setLong("GT.MaxCharge", electricData[0]);
+                    tToolNBT.setLong("GT.Voltage", electricData[1]);
+                    tToolNBT.setLong("GT.Tier", electricData[2]);
+                    tToolNBT.setLong("GT.SpecialData", electricData[3]);
+                }
 
-            mToolStats.put((short) id, toolStats);
-            mToolStats.put((short) (id + 1), toolStats);
-
-            OreDictionaryUnifier.registerOre(stack, orePrefix, Materials.Air);
-            return stack;
+                tMainNBT.setTag("GT.ToolStats", tToolNBT);
+                stack.setTagCompound(tMainNBT);
+            }
         }
-        return null;
+        return stack;
     }
 
     public class MetaToolValueItem extends MetaValueItem {
@@ -287,14 +299,23 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
 
         private MetaToolValueItem(int metaValue) {
             super(metaValue);
-            setNoUnification();
         }
 
         public MetaToolValueItem setToolStats(IToolStats toolStats) {
-            if(toolStats == null) {
+            if (toolStats == null) {
                 throw new IllegalArgumentException("Cannot set Tool Stats to null.");
             }
             this.toolStats = toolStats;
+            return this;
+        }
+
+        public MetaToolValueItem addOreDict(ToolDictNames... oreDictNames) {
+            Validate.notNull(oreDictNames, "Cannot add null ToolDictName.");
+            Validate.noNullElements(oreDictNames, "Cannot add null ToolDictName.");
+
+			for (ToolDictNames oreDict : oreDictNames) {
+				OreDictionary.registerOre(oreDict.name(), getStackForm());
+			}
             return this;
         }
 

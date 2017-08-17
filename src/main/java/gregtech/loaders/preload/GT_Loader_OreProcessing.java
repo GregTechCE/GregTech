@@ -8,15 +8,11 @@ public class GT_Loader_OreProcessing
     public void run() {
         GTLog.out.println("GT_Mod: Register Ore processing.");
         new ProcessingAll();
-        new ProcessingArrows();
-        new ProcessingBeans();
         new ProcessingBlock();
         new ProcessingBolt();
         new ProcessingCell();
-        new ProcessingCrate();
         new ProcessingCircuit();
         new ProcessingCompressed();
-        new ProcessingCrafting();
         new ProcessingCrop();
         new ProcessingCrushedOre();
         new ProcessingCrystallized();
@@ -25,7 +21,6 @@ public class GT_Loader_OreProcessing
         new ProcessingDye();
         new ProcessingFoil();
         new ProcessingFineWire();
-        new ProcessingFood();
         new ProcessingLens();
         new ProcessingShaping();
         new ProcessingGem();
@@ -45,18 +40,12 @@ public class GT_Loader_OreProcessing
         new ProcessingRecycling();
         new ProcessingRound();
         new ProcessingRotor();
-        new ProcessingSand();
         new ProcessingSaplings();
         new ProcessingScrew();
-        new ProcessingSlab();
         new ProcessingStick();
-        new ProcessingStickLong();
         new ProcessingStone();
-        new ProcessingStoneCobble();
-        new ProcessingStoneVarious();
         new ProcessingToolHead();
         new ProcessingToolOther();
-        new ProcessingWax();
         new ProcessingWire();
     }
 }

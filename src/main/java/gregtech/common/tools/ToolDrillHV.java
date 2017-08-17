@@ -1,6 +1,7 @@
 package gregtech.common.tools;
 
 import gregtech.GT_Mod;
+import gregtech.api.items.toolitem.ToolMetaItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -47,14 +48,14 @@ public class ToolDrillHV extends ToolDrillLV {
     }
 
     @Override
-    public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {
-        super.onToolCrafted(aStack, aPlayer);
-        GT_Mod.achievements.issueAchievement(aPlayer, "highpowerdrill");
-        GT_Mod.achievements.issueAchievement(aPlayer, "buildDDrill");
+    public void onToolCrafted(ItemStack stack, EntityPlayer player) {
+        super.onToolCrafted(stack, player);
+        GT_Mod.achievements.issueAchievement(player, "highpowerdrill");
+        GT_Mod.achievements.issueAchievement(player, "buildDDrill");
     }
 
-//    @Override
-//    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-//        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadDrill.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_HV;
-//    }
+    @Override
+    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadDrill.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_HV;
+    }
 }

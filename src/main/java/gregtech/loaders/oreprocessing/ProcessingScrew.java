@@ -1,8 +1,9 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.GT_Values;
 import gregtech.api.recipes.ModHandler;
+import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
@@ -19,10 +20,16 @@ public class ProcessingScrew implements IOreRegistrationHandler {
     @Override
     public void registerOre(UnificationEntry uEntry, String modName, SimpleItemStack simpleStack) {
         ItemStack stack = simpleStack.asItemStack();
-        if (!uEntry.material.contains(SubTag.NO_WORKING)) {
-            GT_Values.RA.addLatheRecipe(OreDictionaryUnifier.get(OrePrefix.bolt, uEntry.material, 1L), GT_Utility.copyAmount(1L, new Object[]{stack}), null, (int) Math.max(uEntry.material.getMass() / 8L, 1L), 4);
-            if ((uEntry.material.mUnificatable) && (uEntry.material.mMaterialInto == uEntry.material))
-                ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.screw, uEntry.material, 1), GT_Proxy.tBits, new Object[]{"fX", "X ", Character.valueOf('X'), OrePrefix.bolt.get(uEntry.material)});
+        if (!uEntry.material.hasFlag(DustMaterial.MatFlags.NO_WORKING)) {
+            RecipeMap.LATHE_RECIPES.recipeBuilder()
+                    .inputs(OreDictionaryUnifier.get(OrePrefix.bolt, uEntry.material, 1))
+                    .outputs(GT_Utility.copyAmount(1, stack))
+                    .duration((int) Math.max(uEntry.material.getMass() / 8L, 1L))
+                    .EUt(4)
+                    .buildAndRegister();
+            if ((uEntry.material.mUnificatable) && (uEntry.material.mMaterialInto == uEntry.material)) {
+                ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.screw, uEntry.material, 1), GT_Proxy.tBits, "fX", "X ", Character.valueOf('X'), OreDictionaryUnifier.get(OrePrefix.bolt, uEntry.material));
+            }
         }
     }
 }
