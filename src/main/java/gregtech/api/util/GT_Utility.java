@@ -53,6 +53,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraft.world.ChunkCache;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
@@ -60,6 +62,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import java.lang.reflect.*;
 import java.text.DecimalFormat;
@@ -86,6 +89,15 @@ public class GT_Utility {
         }
 
         return (Class<T>) ((ParameterizedType) type).getActualTypeArguments()[index];
+    }
+
+    public static World getBlockAcessWorld(IBlockAccess blockAccess) {
+        if(blockAccess instanceof ChunkCache) {
+            return ObfuscationReflectionHelper.getPrivateValue(ChunkCache.class, (ChunkCache) blockAccess, 4); //worldObj
+        } else if(blockAccess instanceof World) {
+            return (World) blockAccess;
+        }
+        return null; //unknown implementation
     }
 
     public static Field getField(Object aObject, String aField) {

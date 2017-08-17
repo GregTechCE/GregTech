@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "variant={M0}": { "model": "gregtech:icon_set/block/{M0}.mat" },
+    "variant={M1}": { "model": "gregtech:icon_set/block/{M1}.mat" },
+    "variant={M2}": { "model": "gregtech:icon_set/block/{M2}.mat" },
+    "variant={M3}": { "model": "gregtech:icon_set/block/{M3}.mat" },
+    "variant={M4}": { "model": "gregtech:icon_set/block/{M4}.mat" },
+    "variant={M5}": { "model": "gregtech:icon_set/block/{M5}.mat" },
+    "variant={M6}": { "model": "gregtech:icon_set/block/{M6}.mat" },
+    "variant={M7}": { "model": "gregtech:icon_set/block/{M7}.mat" },
+    "variant={M8}": { "model": "gregtech:icon_set/block/{M8}.mat" },
+    "variant={M9}": { "model": "gregtech:icon_set/block/{M9}.mat" },
+    "variant={M10}": { "model": "gregtech:icon_set/block/{M10}.mat" },
+    "variant={M11}": { "model": "gregtech:icon_set/block/{M11}.mat" },
+    "variant={M12}": { "model": "gregtech:icon_set/block/{M12}.mat" },
+    "variant={M13}": { "model": "gregtech:icon_set/block/{M13}.mat" },
+    "variant={M14}": { "model": "gregtech:icon_set/block/{M14}.mat" },
+    "variant={M15}": { "model": "gregtech:icon_set/block/{M15}.mat" }
+  }
+}

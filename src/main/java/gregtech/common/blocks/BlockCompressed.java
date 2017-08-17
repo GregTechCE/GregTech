@@ -1,0 +1,103 @@
+package gregtech.common.blocks;
+
+import gregtech.api.GregTech_API;
+import gregtech.api.unification.material.type.DustMaterial;
+import gregtech.api.unification.material.type.GemMaterial;
+import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.material.type.MetalMaterial;
+import gregtech.common.blocks.properties.PropertyMaterial;
+import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
+import java.util.Collection;
+import java.util.List;
+
+public class BlockCompressed extends DelayedStateBlock {
+
+    public final PropertyMaterial variantProperty;
+
+    public BlockCompressed(Collection<Material> materials) {
+        super(net.minecraft.block.material.Material.IRON);
+        setHardness(5.0f);
+        setResistance(10.0f);
+        setCreativeTab(GregTech_API.TAB_GREGTECH_MATERIALS);
+        this.variantProperty = PropertyMaterial.create("variant", materials);
+        initBlockState();
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public IBlockState getStateFromMeta(int meta) {
+        Material material = variantProperty.getAllowedValues().get(meta);
+        return getDefaultState().withProperty(variantProperty, material);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        Material material = state.getValue(variantProperty);
+        return variantProperty.getAllowedValues().indexOf(material);
+    }
+
+    @Override
+    protected BlockStateContainer createStateContainer() {
+        return new BlockStateContainer(this, variantProperty);
+    }
+
+    public ItemStack getItemVariant(Material material) {
+        if(!variantProperty.getAllowedValues().contains(material)) {
+            throw new IllegalArgumentException("Invalid material");
+        }
+        return new ItemStack(this, 1, variantProperty.getAllowedValues().indexOf(material));
+    }
+
+    @Override
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+        for(Material material : variantProperty.getAllowedValues()) {
+            list.add(getItemVariant(material));
+        }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public net.minecraft.block.material.Material getMaterial(IBlockState state) {
+        Material material = state.getValue(variantProperty);
+        if(material instanceof GemMaterial) {
+            return net.minecraft.block.material.Material.ROCK;
+        } else if(material instanceof MetalMaterial) {
+            return net.minecraft.block.material.Material.IRON;
+        } else if(material instanceof DustMaterial) {
+            return net.minecraft.block.material.Material.SAND;
+        }
+        return net.minecraft.block.material.Material.ROCK;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public MapColor getMapColor(IBlockState state) {
+        return getMaterial(state).getMaterialMapColor();
+    }
+
+    @Override
+    public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) {
+        Material material =state.getValue(variantProperty);
+        if(material instanceof GemMaterial) {
+            return SoundType.STONE;
+        } else if(material instanceof MetalMaterial) {
+            return SoundType.METAL;
+        } else if(material instanceof DustMaterial) {
+            return SoundType.SAND;
+        }
+        return SoundType.STONE;
+    }
+
+}

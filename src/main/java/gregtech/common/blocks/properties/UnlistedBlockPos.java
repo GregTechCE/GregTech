@@ -5,15 +5,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.property.IUnlistedProperty;
 
 public final class UnlistedBlockPos implements IUnlistedProperty<BlockPos> {
-	public static UnlistedBlockPos POS = new UnlistedBlockPos();
+
+	public static UnlistedBlockPos BLOCK_POS = new UnlistedBlockPos();
+
+	private UnlistedBlockPos() {}
 
 	@Override
 	public String getName() {
-		return "pos";
+		return "position";
 	}
 
 	@Override
-	public boolean isValid(final BlockPos value) {
+	public boolean isValid(BlockPos value) {
 		return true;
 	}
 
@@ -23,7 +26,8 @@ public final class UnlistedBlockPos implements IUnlistedProperty<BlockPos> {
 	}
 
 	@Override
-	public String valueToString(final BlockPos value) {
-		return null;
+	public String valueToString(BlockPos value) {
+		return "";
 	}
+
 }

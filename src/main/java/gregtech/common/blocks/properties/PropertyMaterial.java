@@ -1,38 +1,37 @@
 package gregtech.common.blocks.properties;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import gregtech.api.unification.material.type.Material;
 import net.minecraft.block.properties.PropertyHelper;
+import scala.actors.threadpool.Arrays;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
+import java.util.List;
 
-/**
- * @author exidex.
- * @since 03.05.2017.
- */
 public class PropertyMaterial extends PropertyHelper<Material> {
 
-	private final ImmutableSet<Material> allowedValues;
+	private final ImmutableList<Material> allowedValues;
 
 	protected PropertyMaterial(String name, Collection<Material> allowedValues) {
 		super(name, Material.class);
-		this.allowedValues = ImmutableSet.copyOf(allowedValues);
+		this.allowedValues = ImmutableList.copyOf(allowedValues);
 	}
 
 	public static PropertyMaterial create(String name, Collection<Material> allowedValues) {
 		return new PropertyMaterial(name, allowedValues);
 	}
 
-	public static PropertyMaterial create(String name, Material... allowedValues) {
-		return new PropertyMaterial(name, Lists.newArrayList(allowedValues));
+	public static PropertyMaterial create(String name, Material[] allowedValues) {
+		return new PropertyMaterial(name, Arrays.asList(allowedValues));
 	}
 
 	@Override
-	public Collection<Material> getAllowedValues() {
-		return ImmutableSet.copyOf(this.allowedValues);
+	public ImmutableList<Material> getAllowedValues() {
+		return allowedValues;
 	}
 
 	@Override
@@ -42,11 +41,6 @@ public class PropertyMaterial extends PropertyHelper<Material> {
 			return Optional.of(material);
 		}
 		return Optional.absent();
-	}
-
-	@Nonnull
-	public Material getFirstType() {
-		return getAllowedValues().iterator().next();
 	}
 
 	@Override
@@ -72,4 +66,5 @@ public class PropertyMaterial extends PropertyHelper<Material> {
 		i = 31 * i + this.allowedValues.hashCode();
 		return i;
 	}
+
 }
