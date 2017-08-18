@@ -59,49 +59,49 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem.MetaToolValueItem> {
     public MetaTool() {
         super("metatool");
 
-        addItem(SWORD).setToolStats(new ToolSword()).addOreDict(ToolDictNames.craftingToolSword); //"Sword", "",
-        addItem(PICKAXE).setToolStats(new ToolPickaxe()).addOreDict(ToolDictNames.craftingToolPickaxe); //"Pickaxe", "",
-        addItem(SHOVEL).setToolStats(new ToolShovel()).addOreDict(ToolDictNames.craftingToolShovel); // "Shovel", "",
-        addTool(AXE, "Axe", "", new ToolAxe(), ToolDictNames.craftingToolAxe.name());
-        addTool(HOE, "Hoe", "", new ToolHoe(), ToolDictNames.craftingToolHoe.name());
-        addTool(SAW, "Saw", "Can also harvest Ice", new ToolSaw(), ToolDictNames.craftingToolSaw.name());
-        GregTech_API.registerTool(addTool(HARDHAMMER, "Hammer", "Crushes Ores instead of harvesting them", new ToolHardHammer(), ToolDictNames.craftingToolHardHammer.name()), GregTech_API.sHardHammerList);
-        GregTech_API.registerTool(addTool(SOFTHAMMER, "Soft Mallet", "", new ToolSoftHammer(), ToolDictNames.craftingToolSoftHammer.name()), GregTech_API.sSoftHammerList);
-        GregTech_API.registerTool(addTool(WRENCH, "Wrench", "Hold Leftclick to dismantle Machines", new ToolWrench(), ToolDictNames.craftingToolWrench.name()), GregTech_API.sWrenchList);
-        addTool(FILE, "File", "", new ToolFile(), ToolDictNames.craftingToolFile.name());
-        GregTech_API.registerTool(addTool(CROWBAR, "Crowbar", "Dismounts Covers and Rotates Rails", new ToolCrowbar(), ToolDictNames.craftingToolCrowbar.name()), GregTech_API.sCrowbarList);
-        GregTech_API.registerTool(addTool(SCREWDRIVER, "Screwdriver", "Adjusts Covers and Machines", new ToolScrewdriver(), ToolDictNames.craftingToolScrewdriver.name()), GregTech_API.sScrewdriverList);
-        addTool(MORTAR, "Mortar", "", new ToolMortar(), ToolDictNames.craftingToolMortar.name());
-        addTool(WIRECUTTER, "Wire Cutter", "", new ToolWireCutter(), ToolDictNames.craftingToolWireCutter.name());
-        addTool(SCOOP, "Scoop", "", new ToolScoop(), ToolDictNames.craftingToolScoop.name());
-        addTool(BRANCHCUTTER, "Branch Cutter", "", new ToolBranchCutter(), ToolDictNames.craftingToolBranchCutter.name());
-        GregTech_API.registerTool(addTool(UNIVERSALSPADE, "Universal Spade", "", new ToolUniversalSpade(), ToolDictNames.craftingToolBlade.name(), ToolDictNames.craftingToolShovel.name(), ToolDictNames.craftingToolCrowbar.name(), ToolDictNames.craftingToolSaw.name()), GregTech_API.sCrowbarList);
-        addTool(KNIFE, "Knife", "", new ToolKnife(), ToolDictNames.craftingToolBlade.name(), ToolDictNames.craftingToolKnife.name());
-        addTool(BUTCHERYKNIFE, "Butchery Knife", "Has a slow Attack Rate", new ToolButcheryKnife(), ToolDictNames.craftingToolBlade.name());
+        addItem(SWORD, "tool.sword").setToolStats(new ToolSword()).addOreDict(ToolDictNames.craftingToolSword);
+        addItem(PICKAXE, "tool.pickaxe").setToolStats(new ToolPickaxe()).addOreDict(ToolDictNames.craftingToolPickaxe);
+        addItem(SHOVEL, "tool.shovel").setToolStats(new ToolShovel()).addOreDict(ToolDictNames.craftingToolShovel);
+        addItem(AXE, "tool.axe").setToolStats(new ToolAxe()).addOreDict(ToolDictNames.craftingToolAxe);
+        addItem(HOE, "tool.hoe").setToolStats(new ToolHoe()).addOreDict(ToolDictNames.craftingToolHoe);
+        addItem(SAW, "tool.saw").setToolStats(new ToolSaw()).addOreDict(ToolDictNames.craftingToolSaw);
+        addItem(HARDHAMMER, "tool.hardhammer").setToolStats(new ToolHardHammer()).addOreDict(ToolDictNames.craftingToolHardHammer); // GregTech_API.sHardHammerList
+        addItem(SOFTHAMMER, "tool.softhammer").setToolStats(new ToolSoftHammer()).addOreDict(ToolDictNames.craftingToolSoftHammer); // GregTech_API.sSoftHammerList
+        addItem(WRENCH, "tool.wrench").setToolStats(new ToolWrench()).addOreDict(ToolDictNames.craftingToolWrench); // GregTech_API.sWrenchList
+        addItem(FILE, "tool.file").setToolStats(new ToolFile()).addOreDict(ToolDictNames.craftingToolFile);
+        addItem(CROWBAR, "tool.crowbar").setToolStats(new ToolCrowbar()).addOreDict(ToolDictNames.craftingToolCrowbar); // GregTech_API.sCrowbarList
+        addItem(SCREWDRIVER, "tool.screwdriver").setToolStats(new ToolScrewdriver()).addOreDict(ToolDictNames.craftingToolScrewdriver); // GregTech_API.sScrewdriverList
+        addItem(MORTAR, "tool.mortar").setToolStats(new ToolMortar()).addOreDict(ToolDictNames.craftingToolMortar);
+        addItem(WIRECUTTER, "tool.wirecutter").setToolStats(new ToolWireCutter()).addOreDict(ToolDictNames.craftingToolWireCutter);
+        addItem(SCOOP, "tool.scoop").setToolStats(new ToolScoop()).addOreDict(ToolDictNames.craftingToolScoop);
+        addItem(BRANCHCUTTER, "tool.branchcutter").setToolStats(new ToolBranchCutter()).addOreDict(ToolDictNames.craftingToolBranchCutter);
+        addItem(UNIVERSALSPADE, "tool.universalspade").setToolStats(new ToolUniversalSpade()).addOreDict(ToolDictNames.craftingToolBlade, ToolDictNames.craftingToolShovel, ToolDictNames.craftingToolCrowbar, ToolDictNames.craftingToolSaw); // GregTech_API.sCrowbarList
+        addItem(KNIFE, "tool.knife").setToolStats(new ToolKnife()).addOreDict(ToolDictNames.craftingToolBlade, ToolDictNames.craftingToolKnife);
+        addItem(BUTCHERYKNIFE, "tool.butcheryknife").setToolStats(new ToolButcheryKnife()).addOreDict(ToolDictNames.craftingToolBlade);
 
-        addTool(SENSE, "Sense", "Because a Scythe doesn't make Sense", new ToolSense(), ToolDictNames.craftingToolBlade.name());
-        addTool(PLOW, "Plow", "Used to get rid of Snow", new ToolPlow(), ToolDictNames.craftingToolPlow.name());
-        addTool(PLUNGER, "Plunger", "", new ToolPlunger(), ToolDictNames.craftingToolPlunger.name());
-        addTool(ROLLING_PIN, "Rolling Pin", "", new ToolRollingPin(), ToolDictNames.craftingToolRollingPin.name());
+        addItem(SENSE, "tool.sense").setToolStats(new ToolSense()).addOreDict(ToolDictNames.craftingToolBlade);
+        addItem(PLOW, "tool.plow").setToolStats(new ToolPlow()).addOreDict(ToolDictNames.craftingToolPlow);
+        addItem(PLUNGER, "tool.plunger").setToolStats(new ToolPlunger()).addOreDict(ToolDictNames.craftingToolPlunger);
+        addItem(ROLLING_PIN, "tool.rolling_pin").setToolStats(new ToolRollingPin()).addOreDict(ToolDictNames.craftingToolRollingPin);
 
-        addTool(DRILL_LV, "Drill (LV)", "", new ToolDrillLV(), ToolDictNames.craftingToolMiningDrill.name());
-        addTool(DRILL_MV, "Drill (MV)", "", new ToolDrillMV(), ToolDictNames.craftingToolMiningDrill.name());
-        addTool(DRILL_HV, "Drill (HV)", "", new ToolDrillHV(), ToolDictNames.craftingToolMiningDrill.name());
-        addTool(CHAINSAW_LV, "Chainsaw (LV)", "Can also harvest Ice", new ToolChainsawLV(), ToolDictNames.craftingToolSaw.name());
-        addTool(CHAINSAW_MV, "Chainsaw (MV)", "Can also harvest Ice", new ToolChainsawMV(), ToolDictNames.craftingToolSaw.name());
-        addTool(CHAINSAW_HV, "Chainsaw (HV)", "Can also harvest Ice", new ToolChainsawHV(), ToolDictNames.craftingToolSaw.name());
-        GregTech_API.registerTool(addTool(WRENCH_LV, "Wrench (LV)", "Hold Leftclick to dismantle Machines", new ToolWrenchLV(), ToolDictNames.craftingToolWrench.name()), GregTech_API.sWrenchList);
-        GregTech_API.registerTool(addTool(WRENCH_MV, "Wrench (MV)", "Hold Leftclick to dismantle Machines", new ToolWrenchMV(), ToolDictNames.craftingToolWrench.name()), GregTech_API.sWrenchList);
-        GregTech_API.registerTool(addTool(WRENCH_HV, "Wrench (HV)", "Hold Leftclick to dismantle Machines", new ToolWrenchHV(), ToolDictNames.craftingToolWrench.name()), GregTech_API.sWrenchList);
-        addTool(JACKHAMMER, "JackHammer (HV)", "Breaks Rocks into pieces", new ToolJackHammer(), ToolDictNames.craftingToolJackHammer.name());
-        addTool(BUZZSAW, "Buzzsaw (LV)", "Not suitable for harvesting Blocks", new ToolBuzzSaw(), ToolDictNames.craftingToolSaw.name());
-        GregTech_API.registerTool(addTool(SCREWDRIVER_LV, "Screwdriver (LV)", "Adjusts Covers and Machines", new ToolScrewdriverLV(), ToolDictNames.craftingToolScrewdriver.name()), GregTech_API.sScrewdriverList);
-        GregTech_API.registerTool(addTool(SOLDERING_IRON_LV, "Soldering Iron (LV)", "Fixes burned out Circuits. Needs soldering materials in inventory and 10kEU", new ToolSolderingIron(), ToolDictNames.craftingToolSolderingIron.name()), GregTech_API.sSolderingToolList);
+        addItem(DRILL_LV, "tool.drill.lv").setToolStats(new ToolDrillLV()).addOreDict(ToolDictNames.craftingToolMiningDrill);
+        addItem(DRILL_MV, "tool.drill.mv").setToolStats(new ToolDrillMV()).addOreDict(ToolDictNames.craftingToolMiningDrill);
+        addItem(DRILL_HV, "tool.drill.hv").setToolStats(new ToolDrillHV()).addOreDict(ToolDictNames.craftingToolMiningDrill);
+        addItem(CHAINSAW_LV, "tool.chainsaw.lv").setToolStats(new ToolChainsawLV()).addOreDict(ToolDictNames.craftingToolSaw);
+        addItem(CHAINSAW_MV, "tool.chainsaw.mv").setToolStats(new ToolChainsawMV()).addOreDict(ToolDictNames.craftingToolSaw);
+        addItem(CHAINSAW_HV, "tool.chainsaw.hv").setToolStats(new ToolChainsawHV()).addOreDict(ToolDictNames.craftingToolSaw);
+        addItem(WRENCH_LV, "tool.wrench.lv").setToolStats(new ToolWrenchLV()).addOreDict(ToolDictNames.craftingToolWrench); // GregTech_API.sWrenchList
+        addItem(WRENCH_MV, "tool.wrench.mv").setToolStats(new ToolWrenchMV()).addOreDict(ToolDictNames.craftingToolWrench); // GregTech_API.sWrenchList
+        addItem(WRENCH_HV, "tool.wrench.hv").setToolStats(new ToolWrenchHV()).addOreDict(ToolDictNames.craftingToolWrench); // GregTech_API.sWrenchList
+        addItem(JACKHAMMER, "tool.jackhammer").setToolStats(new ToolJackHammer()).addOreDict(ToolDictNames.craftingToolJackHammer);
+        addItem(BUZZSAW, "tool.buzzsaw").setToolStats(new ToolBuzzSaw()).addOreDict(ToolDictNames.craftingToolSaw);
+        addItem(SCREWDRIVER_LV, "tool.screwdriver.lv").setToolStats(new ToolScrewdriverLV()).addOreDict(ToolDictNames.craftingToolScrewdriver); // GregTech_API.sScrewdriverList
+        addItem(SOLDERING_IRON_LV, "tool.soldering.iron.lv").setToolStats(new ToolSolderingIron()).addOreDict(ToolDictNames.craftingToolSolderingIron); // GregTech_API.sSolderingToolList
 
-        addTool(TURBINE_SMALL, "Small Turbine Rotor", "Turbine Rotors for your power station", new ToolTurbineSmall());
-        addTool(TURBINE_NORMAL, "Turbine Rotor", "Turbine Rotors for your power station", new ToolTurbineNormal());
-        addTool(TURBINE_LARGE, "Large Turbine Rotor", "Turbine Rotors for your power station", new ToolTurbineLarge());
-        addTool(TURBINE_HUGE, "Huge Turbine Rotor", "Turbine Rotors for your power station", new ToolTurbineHuge());
+        addItem(TURBINE_SMALL, "tool.turbine.small").setToolStats(new ToolTurbineSmall());
+        addItem(TURBINE_NORMAL, "tool.turbine.normal").setToolStats(new ToolTurbineNormal());
+        addItem(TURBINE_LARGE, "tool.turbine.large").setToolStats(new ToolTurbineLarge());
+        addItem(TURBINE_HUGE, "tool.turbine.huge").setToolStats(new ToolTurbineHuge());
 
         ModHandler.addCraftingRecipe(INSTANCE.getToolWithStats(MORTAR, 1, Materials.Flint, Materials.Stone, null), ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{" I ", "SIS", "SSS", 'I', new ItemStack(Items.FLINT, 1), 'S', OrePrefix.stone});
         ModHandler.addCraftingRecipe(INSTANCE.getToolWithStats(MORTAR, 1, Materials.Bronze, Materials.Stone, null), ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{" I ", "SIS", "SSS", 'I', OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Bronze), 'S', OrePrefix.stone});
