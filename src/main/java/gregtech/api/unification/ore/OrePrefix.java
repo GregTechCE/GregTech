@@ -11,6 +11,8 @@ import gregtech.api.util.Condition;
 import gregtech.api.util.GTLog;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -119,7 +121,7 @@ public enum OrePrefix {
 
     lens("Lenses", (M * 3) / 4, MaterialIconType.lens, ENABLE_UNIFICATION, hasFlag(GENERATE_LENSE)), // 3/4 of a Plate or Gem used to shape a Lense. Normally only used on Transparent Materials.
 
-    cellPlasma("Cells of Plasma", M, MaterialIconType.cellPlasma, ENABLE_UNIFICATION | SELF_REFERENCING | FLUID_CONTAINER | DISALLOW_RECYCLING, hasFlag(GENERATE_PLASMA)), // Hot Cell full of Plasma, which can be used in the Plasma Generator.
+    cellPlasma("Cells of Plasma", M, MaterialIconType.cellPlasma, ENABLE_UNIFICATION | SELF_REFERENCING | FLUID_CONTAINER | DISALLOW_RECYCLING, mat -> mat instanceof FluidMaterial && ((FluidMaterial) mat).shouldGeneratePlasma()), // Hot Cell full of Plasma, which can be used in the Plasma Generator.
     cell("Cells", M, MaterialIconType.cell, ENABLE_UNIFICATION | SELF_REFERENCING | FLUID_CONTAINER, null), // Regular Gas/Fluid Cell. Introduced by Calclavia
 
     bucket("Buckets", M, null, ENABLE_UNIFICATION | SELF_REFERENCING | FLUID_CONTAINER, null), // A vanilla Iron Bucket filled with the Material.
@@ -489,10 +491,12 @@ public enum OrePrefix {
         }
     }
 
+    @SideOnly(Side.CLIENT)
     public String getDefaultLocalNameForItem(Material material) {
         String unlocalized = "item.material.oreprefix." + this.name();
-        String formatted = I18n.format(unlocalized, material.defaultLocalName);
-        return formatted.equals(unlocalized) ? material.defaultLocalName : formatted;
+        String matLocalized = material.getLocalizedName();
+        String formatted = I18n.format(unlocalized, matLocalized);
+        return formatted.equals(unlocalized) ? matLocalized : formatted;
     }
 
     public boolean isIgnored(Material material) {

@@ -34,7 +34,7 @@ public class ProcessingItem implements IOreRegistrationHandler {
                 case "itemMagnesium":
                     OreDictionaryUnifier.addItemData(stack, new ItemMaterialInfo(Materials.Magnesium, 3628800L, new MaterialStack[0]));
                 case "itemPhosphorite":
-                    OreDictionaryUnifier.addItemData(stack, new ItemMaterialInfo(Materials.Phosphorus, 3628800L, new MaterialStack[0]));
+                    OreDictionaryUnifier.addItemData(stack, new ItemMaterialInfo(Materials.Phosphor, 3628800L, new MaterialStack[0]));
                 case "itemSulfur":
                     OreDictionaryUnifier.addItemData(stack, new ItemMaterialInfo(Materials.Sulfur, 3628800L, new MaterialStack[0]));
                 case "itemAluminum":

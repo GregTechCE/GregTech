@@ -18,6 +18,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
@@ -50,6 +52,7 @@ public class MaterialMetaItem extends MetaItem<MetaItem.MetaValueItem> {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack itemStack) {
         if(itemStack.getItemDamage() < metaItemOffset) {
             if (!generatedItems.contains((short) itemStack.getItemDamage())) {

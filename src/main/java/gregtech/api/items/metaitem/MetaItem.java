@@ -394,6 +394,7 @@ public class MetaItem<T extends MetaItem.MetaValueItem> extends GenericItem impl
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack) {
         if (stack.getItemDamage() >= metaItemOffset) {
             T item = getItem(stack);

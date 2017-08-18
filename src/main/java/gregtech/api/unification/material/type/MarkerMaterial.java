@@ -10,8 +10,8 @@ import gregtech.api.unification.material.MaterialIconSet;
  */
 public final class MarkerMaterial extends Material {
 
-    public MarkerMaterial(String name, String defaultLocalName) {
-        super(-1, name, defaultLocalName,
+    public MarkerMaterial(String name) {
+        super(-1, name,
                 0xFFFFFF,
                 MaterialIconSet.NONE,
                 ImmutableList.of(),

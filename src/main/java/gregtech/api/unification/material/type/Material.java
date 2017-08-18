@@ -8,7 +8,11 @@ import gregtech.api.unification.material.IMaterialHandler;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.GTControlledRegistry;
 import gregtech.api.util.GTLog;
+import net.minecraft.client.resources.I18n;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 import static gregtech.api.GT_Values.M;
@@ -85,12 +89,6 @@ public abstract class Material implements Comparable<Material> {
 	}
 
 	/**
-	 * Default Localized Material Name
-	 * Since material amount is huge, default localization entries for them are auto generated
-	 */
-	public final String defaultLocalName;
-
-	/**
 	 * Color of material in RGB format
 	 */
 	public final int materialRGB;
@@ -141,8 +139,7 @@ public abstract class Material implements Comparable<Material> {
         return "";
     }
 
-	public Material(int metaItemSubId, String name, String defaultLocalName, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element) {
-		this.defaultLocalName = defaultLocalName;
+	public Material(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element) {
 		this.materialRGB = materialRGB;
 		this.materialIconSet = materialIconSet;
 		this.materialComponents = materialComponents;
@@ -229,6 +226,11 @@ public abstract class Material implements Comparable<Material> {
 		return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, toString());
 	}
 
+	@SideOnly(Side.CLIENT)
+	public String getLocalizedName() {
+		return I18n.format("material." + MATERIAL_REGISTRY.getNameForObject(this));
+	}
+
 	@Override
 	public String toString() {
 		return MATERIAL_REGISTRY.getNameForObject(this);
@@ -240,11 +242,7 @@ public abstract class Material implements Comparable<Material> {
 		return MATERIAL_REGISTRY.getNameForObject(this).compareTo(anotherId);
 	}
 
-	public static Material get(String matDefaultLocalName) {
-		for (String keyName : MATERIAL_REGISTRY.getKeys()) {
-			Material material = MATERIAL_REGISTRY.getObject(keyName);
-			if (material != null && material.defaultLocalName.equals(matDefaultLocalName)) return material;
-		}
-		return null;
+	public static @Nullable Material get(String matUnlocalizedName) {
+		return MATERIAL_REGISTRY.getObject(matUnlocalizedName);
 	}
 }

@@ -24,7 +24,6 @@ import ic2.core.ref.BlockName;
 import ic2.core.ref.FluidName;
 import ic2.core.ref.ItemName;
 import ic2.core.ref.TeBlock;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -374,7 +373,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addFluidSmelterRecipe(new ItemStack(Items.SNOWBALL, 1, 0), GT_Values.NI, Materials.Water.getFluid(250L), 10000, 32, 4);
         GT_Values.RA.addFluidSmelterRecipe(new ItemStack(Blocks.SNOW, 1, 0), GT_Values.NI, Materials.Water.getFluid(1000L), 10000, 128, 4);
         GT_Values.RA.addFluidSmelterRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Ice, 1), GT_Values.NI, Materials.Ice.getSolid(1000L), 10000, 128, 4);
-        GT_Values.RA.addFluidSmelterRecipe(GT_ModHandler.getModItem(aTextForestry, "phosphor", 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphor, 1), Materials.Lava.getFluid(800L), 1000, 256, 128);
+        GT_Values.RA.addFluidSmelterRecipe(GT_ModHandler.getModItem(aTextForestry, "phosphor", 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphorus, 1), Materials.Lava.getFluid(800L), 1000, 256, 128);
 
         GT_Values.RA.addAutoclaveRecipe(ItemList.IC2_Energium_Dust.get(9L), Materials.Water.getFluid(1000L), ItemList.IC2_EnergyCrystal.get(1), 10000, 500, 256);
         GT_Values.RA.addAutoclaveRecipe(GT_ModHandler.getModItem(aTextAE, "item.ItemCrystalSeed", 1, 0), Materials.Water.getFluid(200L), GT_ModHandler.getModItem(aTextAE, aTextAEMM, 1, 10), 10000, 2000, 24);
@@ -634,27 +633,27 @@ public class GT_MachineRecipeLoader implements Runnable {
             GT_Values.RA.addBrewingRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Chili, 1), tFluid, FluidRegistry.getFluid("potion.chillysauce"), false);
 
             GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Calcite, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Sulfur, 1), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(2L), 200);
-            GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Calcite, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphorus, 1), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(3L), 300);
+            GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Calcite, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphor, 1), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(3L), 300);
             GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Calcite, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphate, 1), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(2L), 200);
             GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Calcite, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Ash, 3L), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(1), 100);
             GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Calcite, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.DarkAsh, 1), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(1), 100);
             GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Calcium, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Sulfur, 1), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(3L), 300);
-            GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Calcium, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphorus, 1), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(4L), 400);
+            GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Calcium, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphor, 1), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(4L), 400);
             GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Calcium, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphate, 1), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(3L), 300);
             GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Calcium, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Ash, 3L), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(2L), 200);
             GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Calcium, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.DarkAsh, 1), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(2L), 200);
             GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Apatite, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Sulfur, 1), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(3L), 300);
-            GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Apatite, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphorus, 1), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(4L), 400);
+            GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Apatite, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphor, 1), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(4L), 400);
             GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Apatite, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphate, 1), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(3L), 300);
             GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Apatite, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Ash, 3L), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(2L), 200);
             GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Apatite, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.DarkAsh, 1), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(2L), 200);
             GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Glauconite, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Sulfur, 1), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(3L), 300);
-            GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Glauconite, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphorus, 1), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(4L), 400);
+            GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Glauconite, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphor, 1), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(4L), 400);
             GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Glauconite, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphate, 1), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(3L), 300);
             GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Glauconite, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Ash, 3L), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(2L), 200);
             GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Glauconite, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.DarkAsh, 1), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(2L), 200);
             GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.GlauconiteSand, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Sulfur, 1), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(3L), 300);
-            GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.GlauconiteSand, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphorus, 1), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(4L), 400);
+            GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.GlauconiteSand, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphor, 1), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(4L), 400);
             GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.GlauconiteSand, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphate, 1), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(3L), 300);
             GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.GlauconiteSand, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Ash, 3L), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(2L), 200);
             GT_Values.RA.addChemicalRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.GlauconiteSand, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.DarkAsh, 1), new FluidStack(tFluid, 1000), GT_Values.NF, ItemList.IC2_Fertilizer.get(2L), 200);
@@ -1266,7 +1265,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Redstone, 1), OreDictionaryUnifier.get(OrePrefix.plate, Materials.WroughtIron, 4L), new ItemStack(Items.COMPASS, 1), 400, 4);
         GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Redstone, 1), OreDictionaryUnifier.get(OrePrefix.plate, Materials.Gold, 4L), new ItemStack(Items.CLOCK, 1), 400, 4);
         GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.stick, Materials.Wood, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Sulfur, 1), new ItemStack(Blocks.TORCH, 2), 400, 1);
-        GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.stick, Materials.Wood, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphorus, 1), new ItemStack(Blocks.TORCH, 6), 400, 1);
+        GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.stick, Materials.Wood, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphor, 1), new ItemStack(Blocks.TORCH, 6), 400, 1);
         GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.stick, Materials.Wood, 1), ItemList.IC2_Resin.get(1), new ItemStack(Blocks.TORCH, 6), 400, 1);
         GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Coal, 8L), new ItemStack(Items.FLINT, 1), ItemList.IC2_Compressed_Coal_Ball.get(1), 400, 4);
         if (!GT_Mod.gregtechproxy.mDisableIC2Cables) {

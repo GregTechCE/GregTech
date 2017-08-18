@@ -27,7 +27,7 @@ public enum Element {
     Mg(12, 12, -1, null, "Magnesium", false),
     Al(13, 13, -1, null, "Aluminium", false),
     Si(14, 14, -1, null, "Silicon", false),
-    P(15, 15, -1, null, "Phosphorus", false),
+    P(15, 15, -1, null, "Phosphor", false),
     S(16, 16, -1, null, "Sulfur", false),
     Cl(17, 18, -1, null, "Chlorine", false),
     Ar(18, 22, -1, null, "Argon", false),

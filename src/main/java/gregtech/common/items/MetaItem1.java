@@ -628,13 +628,6 @@ public class MetaItem1 extends MaterialMetaItem {
 		ItemList.Tool_MatchBox_Full.set(addItem(473, "tool.matchbox.full").addStats(behaviour));
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.bolt, Materials.Wood, 1), OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Phosphor, 1))
-				.outputs(ItemList.Tool_Matches.get(1))
-				.duration(16)
-				.EUt(16)
-				.buildAndRegister();
-
-		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
 				.inputs(OreDictionaryUnifier.get(OrePrefix.bolt, Materials.Wood, 1), OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Phosphorus, 1))
 				.outputs(ItemList.Tool_Matches.get(1))
 				.duration(16)
@@ -642,14 +635,21 @@ public class MetaItem1 extends MaterialMetaItem {
 				.buildAndRegister();
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.bolt, Materials.Wood, 4), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphor, 1))
+				.inputs(OreDictionaryUnifier.get(OrePrefix.bolt, Materials.Wood, 1), OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Phosphor, 1))
+				.outputs(ItemList.Tool_Matches.get(1))
+				.duration(16)
+				.EUt(16)
+				.buildAndRegister();
+
+		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
+				.inputs(OreDictionaryUnifier.get(OrePrefix.bolt, Materials.Wood, 4), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphorus, 1))
 				.outputs(ItemList.Tool_Matches.get(4))
 				.duration(64)
 				.EUt(16)
 				.buildAndRegister();
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.bolt, Materials.Wood, 4), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphorus, 1))
+				.inputs(OreDictionaryUnifier.get(OrePrefix.bolt, Materials.Wood, 4), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphor, 1))
 				.outputs(ItemList.Tool_Matches.get(4))
 				.duration(64)
 				.EUt(16)

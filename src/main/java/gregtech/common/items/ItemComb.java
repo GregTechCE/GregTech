@@ -107,7 +107,7 @@ public class ItemComb extends GenericItem {
 		addProcess(tComb, Materials.Talc, 100);
 		addProcess(tComb, Materials.Apatite, 100);
 		addProcess(tComb, Materials.Phosphate, 100);
-		addProcess(tComb, Materials.Phosphorus, 100);
+		addProcess(tComb, Materials.Phosphor, 100);
 		tComb = getStackForType(CombType.CERTUS);
 		addProcess(tComb, Materials.CertusQuartz, 100);
 		addProcess(tComb, Materials.Quartzite, 100);

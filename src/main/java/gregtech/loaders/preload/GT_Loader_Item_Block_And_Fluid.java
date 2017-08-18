@@ -342,7 +342,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.Opal,
                 Materials.InfusedOrder,
                 Materials.InfusedEntropy,
-                Materials.Phosphorus,
+                Materials.Phosphor,
                 Materials.Quartzite,
                 Materials.GarnetRed,
                 Materials.Ruby,

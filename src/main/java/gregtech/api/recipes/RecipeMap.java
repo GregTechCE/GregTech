@@ -363,7 +363,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *
 	 * 		RecipeMap.FLUID_EXTRACTION_RECIPES.recipeBuilder()
 	 * 				.inputs(GT_ModHandler.getModItem("Forestry", "phosphor", 1))
-	 * 				.chancedOutput(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphor, 1), 1000)
+	 * 				.chancedOutput(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphorus, 1), 1000)
 	 * 				.fluidOutputs(Materials.Lava.getFluid(800))
 	 * 				.duration(256)
 	 * 				.EUt(128)

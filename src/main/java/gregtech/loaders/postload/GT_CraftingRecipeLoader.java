@@ -433,7 +433,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
                 GT_ModHandler.addCraftingRecipe(ItemList.IC2_Item_Casing_Steel.get(1, new Object[0]), new Object[]{"h P", 'P', OrePrefix.plate.get(Materials.Steel)});
 
                 GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.TORCH, 2), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"C", "S", 'C', OrePrefix.dust.get(Materials.Sulfur), 'S', OrePrefix.stick.get(Materials.Wood)});
-                GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.TORCH, 6), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"C", "S", 'C', OrePrefix.dust.get(Materials.Phosphorus), 'S', OrePrefix.stick.get(Materials.Wood)});
+                GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.TORCH, 6), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"C", "S", 'C', OrePrefix.dust.get(Materials.Phosphor), 'S', OrePrefix.stick.get(Materials.Wood)});
 
                 GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.PISTON, 1), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"WWW", "CBC", "CRC", 'W', OrePrefix.plank.get(Materials.Wood), 'C', OrePrefix.stoneCobble, 'R', OrePrefix.dust.get(Materials.Redstone), 'B', OrePrefix.ingot.get(Materials.AnyIron)});
                 GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.PISTON, 1), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"WWW", "CBC", "CRC", 'W', OrePrefix.plank.get(Materials.Wood), 'C', OrePrefix.stoneCobble, 'R', OrePrefix.dust.get(Materials.Redstone), 'B', OrePrefix.ingot.get(Materials.AnyBronze)});
