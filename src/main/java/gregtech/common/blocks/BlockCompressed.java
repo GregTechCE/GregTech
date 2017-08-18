@@ -1,10 +1,7 @@
 package gregtech.common.blocks;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.unification.material.type.DustMaterial;
-import gregtech.api.unification.material.type.GemMaterial;
-import gregtech.api.unification.material.type.Material;
-import gregtech.api.unification.material.type.MetalMaterial;
+import gregtech.api.unification.material.type.*;
 import gregtech.common.blocks.properties.PropertyMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -33,6 +30,26 @@ public class BlockCompressed extends DelayedStateBlock {
         setCreativeTab(GregTech_API.TAB_GREGTECH_MATERIALS);
         this.variantProperty = PropertyMaterial.create("variant", materials);
         initBlockState();
+    }
+
+    @Override
+    public String getHarvestTool(IBlockState state) {
+        Material material = state.getValue(variantProperty);
+        if(material instanceof SolidMaterial) {
+            return "pickaxe";
+        } else if(material instanceof DustMaterial) {
+            return "shovel";
+        }
+        return "pickaxe";
+    }
+
+    @Override
+    public int getHarvestLevel(IBlockState state) {
+        Material material = state.getValue(variantProperty);
+        if(material instanceof SolidMaterial) {
+            return Math.max(1, ((SolidMaterial) material).toolQuality - 1);
+        }
+        return 0;
     }
 
     @Override

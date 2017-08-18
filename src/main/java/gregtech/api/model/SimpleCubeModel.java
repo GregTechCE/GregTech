@@ -13,9 +13,7 @@ import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.client.model.ForgeBlockStateV1;
-import net.minecraftforge.client.model.IModel;
-import net.minecraftforge.client.model.IPerspectiveAwareModel;
+import net.minecraftforge.client.model.*;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 import org.apache.commons.lang3.tuple.Pair;
@@ -26,18 +24,32 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class SimpleCubeModel implements IModel {
+public class SimpleCubeModel implements IModel, IRetexturableModel, IModelCustomData {
 
     private final ResourceLocation textureLocation;
     private final int rgbColor;
-    private final int alphaColor;
     private final boolean ambientOccasion;
 
-    public SimpleCubeModel(ResourceLocation textureLocation, int rgbColor, int alphaColor, boolean ambientOccasion) {
+    public SimpleCubeModel(ResourceLocation textureLocation, int rgbColor, boolean ambientOccasion) {
         this.textureLocation = textureLocation;
         this.rgbColor = rgbColor;
-        this.alphaColor = alphaColor;
         this.ambientOccasion = ambientOccasion;
+    }
+
+    @Override
+    public IModel retexture(ImmutableMap<String, String> textures) {
+        if(textures.containsKey("all") && !textures.get("all").isEmpty()) {
+            return new SimpleCubeModel(new ResourceLocation(textures.get("all")), rgbColor, true);
+        }
+        return this;
+    }
+
+    @Override
+    public IModel process(ImmutableMap<String, String> customData) {
+        if(customData.containsKey("color")) {
+            return new SimpleCubeModel(textureLocation, Integer.parseInt(customData.get("color")), ambientOccasion);
+        }
+        return this;
     }
 
     @Override
@@ -54,7 +66,7 @@ public class SimpleCubeModel implements IModel {
     public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
         ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> map = IPerspectiveAwareModel.MapWrapper.getTransforms(state);
         TextureAtlasSprite sprite = bakedTextureGetter.apply(textureLocation);
-        return new BakedSimpleCubeModel(format, sprite, rgbColor, alphaColor, ambientOccasion, map);
+        return new BakedSimpleCubeModel(format, sprite, rgbColor, ambientOccasion, map);
     }
 
     @Override
@@ -69,7 +81,7 @@ public class SimpleCubeModel implements IModel {
         private final boolean ambientOcclusion;
         private final TextureAtlasSprite textureAtlasSprite;
 
-        public BakedSimpleCubeModel(VertexFormat vertexFormat, TextureAtlasSprite sprite, int rgbaColor, int alpha, boolean ambientOcclusion, ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> transforms) {
+        public BakedSimpleCubeModel(VertexFormat vertexFormat, TextureAtlasSprite sprite, int rgbaColor, boolean ambientOcclusion, ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> transforms) {
             super(vertexFormat);
             this.ambientOcclusion = ambientOcclusion;
             this.textureAtlasSprite = sprite;
@@ -85,7 +97,7 @@ public class SimpleCubeModel implements IModel {
                                 new Vec3d(x, 0, 1),
                                 new Vec3d(x, 1, 1),
                                 new Vec3d(x, 1, 0),
-                                sprite, side, rgbaColor, alpha));
+                                sprite, side, rgbaColor));
                         break;
                     case NORTH:
                     case SOUTH:
@@ -94,7 +106,7 @@ public class SimpleCubeModel implements IModel {
                                 new Vec3d(1, 0, z),
                                 new Vec3d(1, 1, z),
                                 new Vec3d(0, 1, z),
-                                sprite, side, rgbaColor, alpha));
+                                sprite, side, rgbaColor));
                         break;
                     case DOWN:
                     case UP:
@@ -103,7 +115,7 @@ public class SimpleCubeModel implements IModel {
                                 new Vec3d(1, y, 0),
                                 new Vec3d(1, y, 1),
                                 new Vec3d(0, y, 1),
-                                sprite, side, rgbaColor, alpha));
+                                sprite, side, rgbaColor));
                         break;
                 }
                 builder.put(side, sideQuads.build());
