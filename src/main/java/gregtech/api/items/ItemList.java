@@ -359,7 +359,6 @@ public enum ItemList implements IItemContainer {
 
     //Generic
     Duct_Tape,
-    Crate_Empty,
 
     //Writtern books
     Book_Written_00,

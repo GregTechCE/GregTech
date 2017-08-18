@@ -6,11 +6,9 @@ import gregtech.api.enchants.EnchantmentData;
 import gregtech.api.items.IDamagableItem;
 import gregtech.api.items.ToolDictNames;
 import gregtech.api.items.metaitem.MetaItem;
-import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.SolidMaterial;
-import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.GT_Utility;
 import ic2.api.item.IElectricItemManager;
 import net.minecraft.block.state.IBlockState;
@@ -31,7 +29,6 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.Validate;
 
-import javax.xml.validation.Validator;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -55,8 +52,8 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
     }
 
     @Override
-    protected T constructMetaValueItem(short metaValue) {
-        return (T) new MetaToolValueItem(metaValue);
+    protected T constructMetaValueItem(short metaValue, String unlocalizedName, String... nameParameters) {
+        return (T) new MetaToolValueItem(metaValue, unlocalizedName, nameParameters);
     }
 
     @Override
@@ -297,8 +294,8 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
 
         private IToolStats toolStats;
 
-        private MetaToolValueItem(int metaValue) {
-            super(metaValue);
+        private MetaToolValueItem(int metaValue, String unlocalizedName, String... nameParameters) {
+            super(metaValue, unlocalizedName, nameParameters);
         }
 
         public MetaToolValueItem setToolStats(IToolStats toolStats) {

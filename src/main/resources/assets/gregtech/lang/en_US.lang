@@ -1,6 +1,423 @@
 metaitem.01.tooltip.purify=Throw into Cauldron to get clean Dust
 
-# %s is localized material name
+metaitem.credit.copper.name=Copper Credit
+metaitem.credit.copper.tooltip=0.125 Credits
+metaitem.credit.cupronickel.name=Cupronickel Credit
+metaitem.credit.cupronickel.tooltip=1 Credit
+metaitem.credit.silver.name=Silver Credit
+metaitem.credit.silver.tooltip=8 Credits
+metaitem.credit.gold.name=Gold Credit
+metaitem.credit.gold.tooltip=64 Credits
+metaitem.credit.platinum.name=Platinum Credit
+metaitem.credit.platinum.tooltip=512 Credits
+metaitem.credit.osmium.name=Osmium Credit
+metaitem.credit.osmium.tooltip=4096 Credits
+metaitem.credit.naquadah.name=Naquadah Credit
+metaitem.credit.naquadah.tooltip=32768 Credits
+metaitem.credit.neutronium.name=Neutronium Credit
+metaitem.credit.neutronium.tooltip=262144 Credits
+
+metaitem.coin.gold.ancient.name=Ancient Gold Coin
+metaitem.coin.gold.ancient.tooltip=Found in ancient Ruins
+metaitem.coin.doge.name=Doge Coin
+metaitem.coin.doge.tooltip=wow much coin how money so crypto plz mine v rich very currency wow
+metaitem.coin.chocolate.name=Chocolate Coin
+metaitem.coin.chocolate.tooltip=Wrapped in Gold
+
+metaitem.component.minecart.wheels.iron.name=Iron Minecart Wheels
+metaitem.component.minecart.wheels.iron.tooltip=To get things rolling
+metaitem.component.minecart.wheels.steel.name=Steel Minecart Wheels
+metaitem.component.minecart.wheels.steel.tooltip=To get things rolling
+
+metaitem.shape.empty.name=Empty Shape Plate
+metaitem.shape.empty.tooltip=Raw Plate to make Molds and Extrude Shapes
+
+metaitem.shape.mold.plate.name=Mold (Plate)
+metaitem.shape.mold.plate.tooltip=Mold for making Plates
+metaitem.shape.mold.casing.name=Mold (Casing)
+metaitem.shape.mold.casing.tooltip=Mold for making Item Casings
+metaitem.shape.mold.gear.name=Mold (Gear)
+metaitem.shape.mold.gear.tooltip=Mold for making Gears
+metaitem.shape.mold.credit.name=Mold (Coinage)
+metaitem.shape.mold.credit.tooltip=Secure Mold for making Coins (Don't lose it!)
+metaitem.shape.mold.bottle.name=Mold (Bottle)
+metaitem.shape.mold.bottle.tooltip=Mold for making Bottles
+metaitem.shape.mold.ingot.name=Mold (Ingot)
+metaitem.shape.mold.ingot.tooltip=Mold for making Ingots
+metaitem.shape.mold.ball.name=Mold (Ball)
+metaitem.shape.mold.ball.tooltip=Mold for making Balls
+metaitem.shape.mold.block.name=Mold (Block)
+metaitem.shape.mold.block.tooltip=Mold for making Blocks
+metaitem.shape.mold.nugget.name=Mold (Nuggets)
+metaitem.shape.mold.nugget.tooltip=Mold for making Nuggets
+metaitem.shape.mold.bun.name=Mold (Buns)
+metaitem.shape.mold.bun.tooltip=Mold for shaping Buns
+metaitem.shape.mold.bread.name=Mold (Bread)
+metaitem.shape.mold.bread.tooltip=Mold for shaping Breads
+metaitem.shape.mold.baguette.name=Mold (Baguette)
+metaitem.shape.mold.baguette.tooltip=Mold for shaping Baguettes
+metaitem.shape.mold.cylinder.name=Mold (Cylinder)
+metaitem.shape.mold.cylinder.tooltip=Mold for shaping Cylinders
+metaitem.shape.mold.anvil.name=Mold (Anvil)
+metaitem.shape.mold.anvil.tooltip=Mold for shaping Anvils
+metaitem.shape.mold.name.name=Mold (Name)
+metaitem.shape.mold.name.tooltip=Mold for naming Items (rename Mold with Anvil)
+metaitem.shape.mold.gear.small.name=Mold (Small Gear)
+metaitem.shape.mold.gear.small.tooltip=Mold for making small Gears
+
+metaitem.shape.extruder.plate.name=Extruder Shape (Plate)
+metaitem.shape.extruder.plate.tooltip=Extruder Shape for making Plates
+metaitem.shape.extruder.rod.name=Extruder Shape (Rod)
+metaitem.shape.extruder.rod.tooltip=Extruder Shape for making Rods
+metaitem.shape.extruder.bolt.name=Extruder Shape (Bolt)
+metaitem.shape.extruder.bolt.tooltip=Extruder Shape for making Bolts
+metaitem.shape.extruder.ring.name=Extruder Shape (Ring)
+metaitem.shape.extruder.ring.tooltip=Extruder Shape for making Rings
+metaitem.shape.extruder.cell.name=Extruder Shape (Cell)
+metaitem.shape.extruder.cell.tooltip=Extruder Shape for making Cells
+metaitem.shape.extruder.ingot.name=Extruder Shape (Ingot)
+metaitem.shape.extruder.ingot.tooltip=Extruder Shape for, wait, can't we just use a Furnace?
+metaitem.shape.extruder.wire.name=Extruder Shape (Wire)
+metaitem.shape.extruder.wire.tooltip=Extruder Shape for making Wires
+metaitem.shape.extruder.casing.name=Extruder Shape (Casing)
+metaitem.shape.extruder.casing.tooltip=Extruder Shape for making Item Casings
+metaitem.shape.extruder.pipe.tiny.name=Extruder Shape (Tiny Pipe)
+metaitem.shape.extruder.pipe.tiny.tooltip=Extruder Shape for making tiny Pipes
+metaitem.shape.extruder.pipe.small.name=Extruder Shape (Small Pipe)
+metaitem.shape.extruder.pipe.small.tooltip=Extruder Shape for making small Pipes
+metaitem.shape.extruder.pipe.medium.name=Extruder Shape (Normal Pipe)
+metaitem.shape.extruder.pipe.medium.tooltip=Extruder Shape for making Pipes
+metaitem.shape.extruder.pipe.large.name=Extruder Shape (Large Pipe)
+metaitem.shape.extruder.pipe.large.tooltip=Extruder Shape for making large Pipes
+metaitem.shape.extruder.pipe.huge.name=Extruder Shape (Huge Pipe)
+metaitem.shape.extruder.pipe.huge.tooltip=Extruder Shape for making full Block Pipes
+metaitem.shape.extruder.block.name=Extruder Shape (Block)
+metaitem.shape.extruder.block.tooltip=Extruder Shape for making Blocks
+metaitem.shape.extruder.sword.name=Extruder Shape (Sword Blade)
+metaitem.shape.extruder.sword.tooltip=Extruder Shape for making Swords
+metaitem.shape.extruder.pickaxe.name=Extruder Shape (Pickaxe Head)
+metaitem.shape.extruder.pickaxe.tooltip=Extruder Shape for making Pickaxes
+metaitem.shape.extruder.shovel.name=Extruder Shape (Shovel Head)
+metaitem.shape.extruder.shovel.tooltip=Extruder Shape for making Shovels
+metaitem.shape.extruder.axe.name=Extruder Shape (Axe Head)
+metaitem.shape.extruder.axe.tooltip=Extruder Shape for making Axes
+metaitem.shape.extruder.hoe.name=Extruder Shape (Hoe Head)
+metaitem.shape.extruder.hoe.tooltip=Extruder Shape for making Hoes
+metaitem.shape.extruder.hammer.name=Extruder Shape (Hammer Head)
+metaitem.shape.extruder.hammer.tooltip=Extruder Shape for making Hammers
+metaitem.shape.extruder.file.name=Extruder Shape (File Head)
+metaitem.shape.extruder.file.tooltip=Extruder Shape for making Files
+metaitem.shape.extruder.saw.name=Extruder Shape (Saw Blade)
+metaitem.shape.extruder.saw.tooltip=Extruder Shape for making Saws
+metaitem.shape.extruder.gear.name=Extruder Shape (Gear)
+metaitem.shape.extruder.gear.tooltip=Extruder Shape for making Gears
+metaitem.shape.extruder.bottle.name=Extruder Shape (Bottle)
+metaitem.shape.extruder.bottle.tooltip=Extruder Shape for making Bottles
+
+metaitem.shape.slicer.flat.name=Slicer Blade (Flat)
+metaitem.shape.slicer.flat.tooltip=Slicer Blade for cutting Flat
+metaitem.shape.slicer.stripes.name=Slicer Blade (Stripes)
+metaitem.shape.slicer.stripes.tooltip=Slicer Blade for cutting Stripes
+
+metaitem.fuel.can.plastic.empty.name=Empty Plastic Fuel Can
+metaitem.fuel.can.plastic.empty.tooltip=Used to store Fuels
+metaitem.fuel.can.plastic.filled.name=Plastic Fuel Can
+metaitem.fuel.can.plastic.filled.tooltip=Burns well in Diesel Generators
+
+metaitem.spray.empty.name=Empty Spray Can
+metaitem.spray.empty.tooltip=Used for making Sprays
+
+metaitem.thermoscan.empty.name=Empty Thermos Can
+metaitem.thermoscan.empty.tooltip=Keeping hot things hot and cold things cold
+
+metaitem.large.fluid.cell.steel.name=Large Steel Fluid Cell
+
+metaitem.large.fluid.cell.tungstensteel.name=Large Tungstensteel Fluid Cell
+
+# %s is a localized dye name
+metaitem.spray.can.dyes.name=Spray Can (%s)
+metaitem.spray.can.dyes.tooltip=Full
+metaitem.spray.can.dyes.used.name=Spray Can (%s)
+metaitem.spray.can.dyes.used.tooltip=Used
+
+metaitem.tool.matches.name=Match
+metaitem.tool.matchbox.used.name=Match Box
+metaitem.tool.matchbox.used.tooltip=This is not a Car
+metaitem.tool.matchbox.full.name=Match Box (Full)
+metaitem.tool.matchbox.full.tooltip=This is not a Car
+
+metaitem.tool.lighter.invar.empty.name=Lighter (Empty)
+metaitem.tool.lighter.invar.used.name=Lighter
+metaitem.tool.lighter.invar.full.name=Lighter (Full)
+
+metaitem.tool.lighter.platinum.empty.name=Platinum Lighter (Empty)
+metaitem.tool.lighter.platinum.empty.tooltip=A known Prank Master is engraved on it
+metaitem.tool.lighter.platinum.used.name=Platinum Lighter
+metaitem.tool.lighter.platinum.used.tooltip=A known Prank Master is engraved on it
+metaitem.tool.lighter.platinum.full.name=Platinum Lighter (Full)
+metaitem.tool.lighter.platinum.full.tooltip=A known Prank Master is engraved on it
+
+metaitem.ingot.iridiumalloy.name=Iridium Alloy Ingot
+metaitem.ingot.iridiumalloy.tooltip=Used to make Iridium Plates
+
+metaitem.paper.printed.pages.name=Printed Pages
+metaitem.paper.printed.pages.tooltip=Used to make written Books
+metaitem.paper.magic.empty.name=Magic Paper
+metaitem.paper.magic.page.name=Enchanted Page
+metaitem.paper.magic.pages.name=Enchanted Pages
+metaitem.paper.punch.card.empty.name=Punch Card
+metaitem.paper.punch.card.encoded.name=Punched Card
+
+metaitem.schematic.name=Schematic
+metaitem.schematic.tooltip=EMPTY
+metaitem.schematic.crafting.name=Schematic (Crafting)
+metaitem.schematic.crafting.tooltip=Crafts the Programmed Recipe
+metaitem.schematic.1by1.name=Schematic (1x1)
+metaitem.schematic.1by1.tooltip=Crafts 1 Items as 1x1 (used in Packager)
+metaitem.schematic.2by2.name=Schematic (2x2)
+metaitem.schematic.2by2.tooltip=Crafts 4 Items as 2x2 (used in Packager)
+metaitem.schematic.3by3.name=Schematic (3x3)
+metaitem.schematic.3by3.tooltip=Crafts 9 Items as 3x3 (used in Packager)
+metaitem.schematic.dust.name=Schematic (Dusts)
+metaitem.schematic.dust.tooltip=Combines Dusts (used in Packager)
+
+metaitem.battery.hull.lv.name=Small Battery Hull
+metaitem.battery.hull.lv.tooltip=An empty LV Battery Hull
+metaitem.battery.hull.hv.name=Medium Battery Hull
+metaitem.battery.hull.hv.tooltip=An empty MV Battery Hull
+metaitem.battery.hull.mv.name=Large Battery Hull
+metaitem.battery.hull.mv.tooltip=An empty HV Battery Hull
+
+metaitem.battery.re.ulv.tantalum.name=Tantalum Capacitor
+metaitem.battery.re.ulv.tantalum.tooltip=Reusable
+
+metaitem.battery.su.lv.sulfuricacid.name=Small Acid Battery
+metaitem.battery.su.lv.sulfuricacid.tooltip=Single Use
+metaitem.battery.su.lv.mercury.name=Small Mercury Battery
+metaitem.battery.su.lv.mercury.tooltip=Single Use
+
+metaitem.battery.re.lv.cadmium.name=Small Cadmium Battery
+metaitem.battery.re.lv.cadmium.tooltip=Reusable
+metaitem.battery.re.lv.lithium.name=Small Lithium Battery
+metaitem.battery.re.lv.lithium.tooltip=Reusable
+metaitem.battery.re.lv.sodium.name=Small Sodium Battery
+metaitem.battery.re.lv.sodium.tooltip=Reusable
+
+metaitem.battery.su.mv.sulfuricacid.name=Medium Acid Battery
+metaitem.battery.su.mv.sulfuricacid.tooltip=Single Use
+metaitem.battery.su.mv.mercury.name=Medium Mercury Battery
+metaitem.battery.su.mv.mercury.tooltip=Single Use
+
+metaitem.battery.re.mv.cadmium.name=Medium Cadmium Battery
+metaitem.battery.re.mv.cadmium.tooltip=Reusable
+metaitem.battery.re.mv.lithium.name=Medium Lithium Battery
+metaitem.battery.re.mv.lithium.tooltip=Reusable
+metaitem.battery.re.mv.sodium.name=Medium Sodium Battery
+metaitem.battery.re.mv.sodium.tooltip=Reusable
+
+metaitem.battery.su.hv.sulfuricacid.name=Large Acid Battery
+metaitem.battery.su.hv.sulfuricacid.tooltip=Single Use
+metaitem.battery.su.hv.mercury.name=Large Mercury Battery
+metaitem.battery.su.hv.mercury.tooltip=Single Use
+
+metaitem.battery.re.hv.cadmium.name=Large Cadmium Battery
+metaitem.battery.re.hv.cadmium.tooltip=Reusable
+metaitem.battery.re.hv.lithium.name=Large Lithium Battery
+metaitem.battery.re.hv.lithium.tooltip=Reusable
+metaitem.battery.re.hv.sodium.name=Large Sodium Battery
+metaitem.battery.re.hv.sodium.tooltip=Reusable
+
+metaitem.energy.lapotronicorb.name=Lapotronic Energy Orb
+metaitem.energy.lapotronicorb2.name=Lapotronic Energy Orb Cluster
+metaitem.zpm.name=Zero Point Module
+metaitem.zpm2.name=Ultimate Battery
+metaitem.zpm2.tooltip=Fill this to win minecraft
+metaitem.electric.motor.lv.name=Electric Motor (LV)
+metaitem.electric.motor.mv.name=Electric Motor (MV)
+metaitem.electric.motor.hv.name=Electric Motor (HV)
+metaitem.electric.motor.ev.name=Electric Motor (EV)
+metaitem.electric.motor.iv.name=Electric Motor (IV)
+metaitem.electric.motor.luv.name=Electric Motor (LuV)
+metaitem.electric.motor.zpm.name=Electric Motor (ZPM)
+metaitem.electric.motor.uv.name=Electric Motor (UV)
+
+#TODO replace numbers with placeholders
+metaitem.electric.pump.lv.name=Electric Pump (LV)
+metaitem.electric.pump.lv.tooltip=640 L/sec (as Cover)
+metaitem.electric.pump.mv.name=Electric Pump (MV)
+metaitem.electric.pump.mv.tooltip=2560 L/sec (as Cover)
+metaitem.electric.pump.hv.name=Electric Pump (HV)
+metaitem.electric.pump.hv.tooltip=10240 L/sec (as Cover)
+metaitem.electric.pump.ev.name=Electric Pump (EV)
+metaitem.electric.pump.ev.tooltip=40.960 L/sec (as Cover)
+metaitem.electric.pump.iv.name=Electric Pump (IV)
+metaitem.electric.pump.iv.tooltip=163.840 L/sec (as Cover)
+metaitem.electric.pump.luv.name=Electric Pump (LuV)
+metaitem.electric.pump.luv.tooltip=655.360 L/sec (as Cover)
+metaitem.electric.pump.zpm.name=Electric Pump (ZPM)
+metaitem.electric.pump.zpm.tooltip=2.621.440 L/sec (as Cover)
+metaitem.electric.pump.uv.name=Electric Pump (UV)
+metaitem.electric.pump.uv.tooltip=10.485.760 L/sec (as Cover)
+
+#TODO replace numbers with placeholders
+metaitem.fluidregulator.lv.name=Fluid Regulator (LV)
+metaitem.fluidregulator.lv.tooltip=Configuable up to 640 L/sec (as Cover)
+metaitem.fluidregulator.mv.name=Fluid Regulator (MV)
+metaitem.fluidregulator.mv.tooltip=Configuable up to 2560 L/sec (as Cover)
+metaitem.fluidregulator.hv.name=Fluid Regulator (HV)
+metaitem.fluidregulator.hv.tooltip=Configuable up to 10240 L/sec (as Cover)
+metaitem.fluidregulator.ev.name=Fluid Regulator (EV)
+metaitem.fluidregulator.ev.tooltip=Configuable up to 40960 L/sec (as Cover)
+metaitem.fluidregulator.iv.name=Fluid Regulator (IV)
+metaitem.fluidregulator.iv.tooltip=Configuable up to 163840 L/sec (as Cover)
+
+metaitem.fluidfilter.name=Fluid Filter
+metaitem.fluidfilter.tooltip=Set with Fluid Container to only accept one Fluid Type
+
+metaitem.rotor.lv.name=Tin Rotor
+metaitem.rotor.mv.name=Bronze Rotor
+metaitem.rotor.hv.name=Steel Rotor
+metaitem.rotor.ev.name=Stainless Steel Rotor
+metaitem.rotor.iv.name=Tungstensteel Rotor
+
+#TODO replace numbers with placeholders
+metaitem.conveyor.module.lv.name=Conveyor Module (LV)
+metaitem.conveyor.module.lv.tooltip=1 Stack every 20 secs (as Cover)
+metaitem.conveyor.module.mv.name=Conveyor Module (MV)
+metaitem.conveyor.module.mv.tooltip=1 Stack every 5 secs (as Cover)
+metaitem.conveyor.module.hv.name=Conveyor Module (HV)
+metaitem.conveyor.module.hv.tooltip=1 Stack every 1 sec (as Cover)
+metaitem.conveyor.module.ev.name=Conveyor Module (EV)
+metaitem.conveyor.module.ev.tooltip=1 Stack every 1/5 sec (as Cover)
+metaitem.conveyor.module.iv.name=Conveyor Module (IV)
+metaitem.conveyor.module.iv.tooltip=1 Stack every 1/20 sec (as Cover)
+
+metaitem.electric.piston.lv.name=Electric Piston (LV)
+metaitem.electric.piston.mv.name=Electric Piston (MV)
+metaitem.electric.piston.hv.name=Electric Piston (HV)
+metaitem.electric.piston.ev.name=Electric Piston (EV)
+metaitem.electric.piston.iv.name=Electric Piston (IV)
+metaitem.electric.piston.luv.name=Electric Piston (LuV)
+metaitem.electric.piston.zpm.name=Electric Piston (ZPM)
+metaitem.electric.piston.uv.name=Electric Piston (UV)
+
+metaitem.robot.arm.lv.name=Robot Arm (LV)
+metaitem.robot.arm.lv.tooltip=Inserts into specific Slots (as Cover)
+metaitem.robot.arm.mv.name=Robot Arm (MV)
+metaitem.robot.arm.mv.tooltip=Inserts into specific Slots (as Cover)
+metaitem.robot.arm.hv.name=Robot Arm (HV)
+metaitem.robot.arm.hv.tooltip=Inserts into specific Slots (as Cover)
+metaitem.robot.arm.ev.name=Robot Arm (EV)
+metaitem.robot.arm.ev.tooltip=Inserts into specific Slots (as Cover)
+metaitem.robot.arm.iv.name=Robot Arm (IV)
+metaitem.robot.arm.iv.tooltip=Inserts into specific Slots (as Cover)
+metaitem.robot.arm.luv.name=Robot Arm (LuV)
+metaitem.robot.arm.luv.tooltip=Inserts into specific Slots (as Cover)
+metaitem.robot.arm.zpm.name=Robot Arm (ZPM)
+metaitem.robot.arm.zpm.tooltip=Inserts into specific Slots (as Cover)
+metaitem.robot.arm.uv.name=Robot Arm (UV)
+metaitem.robot.arm.uv.tooltip=Inserts into specific Slots (as Cover)
+
+metaitem.field.generator.lv.name=Field Generator (LV)
+metaitem.field.generator.mv.name=Field Generator (MV)
+metaitem.field.generator.hv.name=Field Generator (HV)
+metaitem.field.generator.ev.name=Field Generator (EV)
+metaitem.field.generator.iv.name=Field Generator (IV)
+metaitem.field.generator.luv.name=Field Generator (LuV)
+metaitem.field.generator.zpm.name=Field Generator (ZPM)
+metaitem.field.generator.uv.name=Field Generator (UV)
+
+metaitem.emitter.lv.name=Emitter (LV)
+metaitem.emitter.mv.name=Emitter (MV)
+metaitem.emitter.hv.name=Emitter (HV)
+metaitem.emitter.ev.name=Emitter (EV)
+metaitem.emitter.iv.name=Emitter (IV)
+metaitem.emitter.luv.name=Emitter (LuV)
+metaitem.emitter.zpm.name=Emitter (ZPM)
+metaitem.emitter.uv.name=Emitter (UV)
+
+metaitem.sensor.lv.name=Sensor (LV)
+metaitem.sensor.mv.name=Sensor (MV)
+metaitem.sensor.hv.name=Sensor (HV)
+metaitem.sensor.ev.name=Sensor (EV)
+metaitem.sensor.iv.name=Sensor (IV)
+metaitem.sensor.luv.name=Sensor (LuV)
+metaitem.sensor.zpm.name=Sensor (ZPM)
+metaitem.sensor.uv.name=Sensor (UV)
+
+metaitem.tool.datastick.name=Data Stick
+metaitem.tool.datastick.tooltip=A Low Capacity Data Storage
+metaitem.tool.dataorb.name=Data Orb
+metaitem.tool.dataorb.tooltip=A High Capacity Data Storage
+
+metaitem.circuit.primitive.name=NAND Chip
+metaitem.circuit.primitive.tooltip=A very simple Circuit
+metaitem.circuit.basic.name=Basic Electronic Circuit
+metaitem.circuit.basic.tooltip=A basic Circuit
+metaitem.circuit.good.name=Good Electronic Circuit
+metaitem.circuit.good.tooltip=A good Circuit
+metaitem.circuit.advanced.name=Advanced Circuit
+metaitem.circuit.advanced.tooltip=An advanced Circuit
+metaitem.circuit.data.name=Data Storage Circuit
+metaitem.circuit.data.tooltip=A Data Storage Chip
+metaitem.circuit.elite.name=Data Control Circuit
+metaitem.circuit.elite.tooltip=A Processor
+metaitem.circuit.master.name=Energy Flow Circuit
+metaitem.circuit.master.tooltip=A High Voltage Processor
+
+metaitem.circuit.board.basic.name=Basic Circuit Board
+metaitem.circuit.board.basic.tooltip=A basic Board
+metaitem.circuit.board.advanced.name=Advanced Circuit Board
+metaitem.circuit.board.advanced.tooltip=An advanced Board
+metaitem.circuit.board.elite.name=Processor Board
+metaitem.circuit.board.elite.tooltip=A Processor Board
+metaitem.circuit.parts.crystal.chip.elite.name=Engraved Crystal Chip
+metaitem.circuit.parts.crystal.chip.elite.tooltip=Needed for Circuits
+metaitem.circuit.parts.crystal.chip.master.name=Engraved Lapotron Chip
+metaitem.circuit.parts.crystal.chip.master.tooltip=Needed for Circuits
+metaitem.circuit.parts.advanced.name=Advanced Circuit Parts
+metaitem.circuit.parts.advanced.tooltip=Advanced Circuit Parts
+metaitem.circuit.parts.wiring.basic.name=Etched Medium Voltage Wiring
+metaitem.circuit.parts.wiring.basic.tooltip=Part of Circuit Boards
+metaitem.circuit.parts.wiring.advanced.name=Etched High Voltage Wiring
+metaitem.circuit.parts.wiring.advanced.tooltip=Part of Circuit Boards
+metaitem.circuit.parts.wiring.elite.name=Etched Extreme Voltage Wiring
+metaitem.circuit.parts.wiring.elite.tooltip=Part of Circuit Boards
+metaitem.empty.board.basic.name=Empty Circuit Board
+metaitem.empty.board.basic.tooltip=A Board Part
+metaitem.empty.board.elite.name=Empty Processor Board
+metaitem.empty.board.elite.tooltip=A Processor Board Part
+
+metaitem.component.sawblade.diamond.name=Diamond Sawblade
+metaitem.component.grinder.diamond.name=Diamond Grinding Head
+metaitem.component.grinder.tungsten.name=Tungsten Grinding Head
+
+metaitem.quantumeye.tooltip=Quantum Eye
+metaitem.quantumeye.name=Improved Ender Eye
+metaitem.quantumstar.tooltip=Quantum Star
+metaitem.quantumstar.name=Improved Nether Star
+metaitem.gravistar.name=Gravi Star
+metaitem.gravistar.tooltip=Ultimate Nether Star
+
+metaitem.upgrade.muffler.name=Muffler Upgrade
+metaitem.upgrade.muffler.tooltip=Makes Machines silent
+metaitem.upgrade.lock.name=Lock Upgrade
+metaitem.upgrade.lock.tooltip=Protects your Machines
+
+metaitem.component.filter.name=Item Filter
+
+metaitem.tool.cheat.name=Debug Scanner
+metaitem.tool.cheat.tooltip=Also an Infinite Energy Source
+metaitem.tool.scanner.name=Portable Scanner
+metaitem.tool.scanner.tooltip=Tricorder
+
+metaitem.nc.sensorkit.name=GregTech Sensor Kit
+metaitem.duct.tape.name=BrainTech Aerospace Advanced Reinforced Duct Tape FAL-84
+metaitem.duct.tape.tooltip=If you can't fix it with this, use more of it!
+metaitem.mcguffium.239.name=Mc Guffium 239
+metaitem.mcguffium.239.tooltip=42% better than Phlebotnium
+
+# %s is a localized material name
 item.material.oreprefix.oreBlackgranite=Granite %s Ore
 item.material.oreprefix.oreRedgranite=Granite %s Ore
 item.material.oreprefix.oreMarble=Marble %s Ore

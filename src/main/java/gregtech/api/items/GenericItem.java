@@ -1,13 +1,10 @@
 package gregtech.api.items;
 
 import gregtech.api.GregTech_API;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -59,13 +56,13 @@ public class GenericItem extends Item {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
+    @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack itemStack, EntityPlayer aPlayer, List<String> lines, boolean showAdditionalInfo) {
         if (!getHasSubtypes() && itemStack.getMaxDamage() > 0) {
             lines.add((itemStack.getMaxDamage() - itemStack.getItemDamage()) + " / " + itemStack.getMaxDamage());
         }
         for(String tooltipLine : tooltip) {
-            lines.add(I18n.translateToLocal(tooltipLine));
+            lines.add(I18n.format(tooltipLine));
         }
     }
 

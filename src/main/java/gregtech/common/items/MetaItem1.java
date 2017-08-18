@@ -20,14 +20,7 @@ import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.RandomPotionEffect;
-import gregtech.common.items.behaviors.Behaviour_DataOrb;
-import gregtech.common.items.behaviors.Behaviour_DataStick;
-import gregtech.common.items.behaviors.Behaviour_Lighter;
-import gregtech.common.items.behaviors.Behaviour_PrintedPages;
-import gregtech.common.items.behaviors.Behaviour_Scanner;
-import gregtech.common.items.behaviors.Behaviour_SensorKit;
-import gregtech.common.items.behaviors.Behaviour_Spray_Color;
-import gregtech.common.items.behaviors.Behaviour_WrittenBook;
+import gregtech.common.items.behaviors.*;
 import ic2.core.item.type.CraftingItemType;
 import ic2.core.ref.ItemName;
 import net.minecraft.block.BlockCauldron;
@@ -39,6 +32,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -73,7 +67,7 @@ public class MetaItem1 extends MaterialMetaItem {
 
 		//17000 -> OrePrefix.plate
 		int woodItemMeta = 17000 + Material.MATERIAL_REGISTRY.getIDForObject(Materials.Wood);
-		addItem(woodItemMeta).setBurnValue(1600);
+//		addItem(woodItemMeta, "").setBurnValue(1600);
 		ModHandler.addCompressionRecipe(OreDictionaryUnifier.getDust(Materials.Wood, 8), new ItemStack(this, 1, woodItemMeta));
 
 		ItemStack stack = new ItemStack(this, 1, woodItemMeta);
@@ -84,23 +78,18 @@ public class MetaItem1 extends MaterialMetaItem {
 				'X', OreDictionaryUnifier.getGem(Materials.NetherStar, 1),
 				'D', new ItemStack(Blocks.DRAGON_EGG, 1, OreDictionary.WILDCARD_VALUE));
 
-		ItemList.Credit_Greg_Copper.set(addItem(0)); //"Copper GT Credit", "0.125 Credits"
-		ItemList.Credit_Greg_Cupronickel.set(addItem(1).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Cupronickel, 907200L)))); //"Cupronickel GT Credit", "1 Credit"
-		ItemList.Credit_Greg_Silver.set(addItem(2)); //"Silver GT Credit", "8 Credits"
-		ItemList.Credit_Greg_Gold.set(addItem(3)); //"Gold GT Credit", "64 Credits"
-		ItemList.Credit_Greg_Platinum.set(addItem(4)); //"Platinum GT Credit", "512 Credits"
-		ItemList.Credit_Greg_Osmium.set(addItem(5)); //"Osmium GT Credit", "4096 Credits"
-		ItemList.Credit_Greg_Naquadah.set(addItem(6)); //"Naquadah GT Credit", "32768 Credits"
-		ItemList.Credit_Greg_Neutronium.set(addItem(7)); //"Neutronium GT Credit", "262144 Credits"
-		ItemList.Coin_Gold_Ancient.set(addItem(8).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Gold, 907200L)))); //"Ancient Gold Coin", "Found in ancient Ruins"
-		ItemList.Coin_Doge.set(addItem(9).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Brass, 907200L)))); //"Doge Coin", "wow much coin how money so crypto plz mine v rich very currency wow",
-		ItemList.Coin_Chocolate.set(addItem(10).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Gold, OrePrefix.foil.materialAmount))).addStats(new FoodStats(1, 0.1F, false, true, OreDictionaryUnifier.get(OrePrefix.foil, Materials.Gold, 1), new RandomPotionEffect(MobEffects.SPEED, 200, 1, 10)))); //"Chocolate Coin", "Wrapped in Gold",
-		ItemList.Credit_Copper.set(addItem(11)); //"Industrial Copper Credit", "0.125 Credits"
+		ItemList.Credit_Greg_Copper.set(addItem(0, "credit.copper"));
+		ItemList.Credit_Greg_Cupronickel.set(addItem(1, "credit.cupronickel").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Cupronickel, 907200L))));
+		ItemList.Credit_Greg_Silver.set(addItem(2, "credit.silver"));
+		ItemList.Credit_Greg_Gold.set(addItem(3, "credit.gold"));
+		ItemList.Credit_Greg_Platinum.set(addItem(4, "credit.platinum"));
+		ItemList.Credit_Greg_Osmium.set(addItem(5, "credit.osmium"));
+		ItemList.Credit_Greg_Naquadah.set(addItem(6, "credit.naquadah"));
+		ItemList.Credit_Greg_Neutronium.set(addItem(7, "credit.neutronium"));
 
-		ItemList.Credit_Silver.set(addItem(13)); //"Industrial Silver Credit", "8 Credits"
-		ItemList.Credit_Gold.set(addItem(14)); //"Industrial Gold Credit", "64 Credits"
-		ItemList.Credit_Platinum.set(addItem(15)); //"Industrial Platinum Credit", "512 Credits"
-		ItemList.Credit_Osmium.set(addItem(16)); //"Industrial Osmium Credit", "4096 Credits"
+		ItemList.Coin_Gold_Ancient.set(addItem(8, "coin.gold.ancient").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Gold, 907200L))));
+		ItemList.Coin_Doge.set(addItem(9, "coin.doge").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Brass, 907200L))));
+		ItemList.Coin_Chocolate.set(addItem(10, "coin.chocolate").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Gold, OrePrefix.foil.materialAmount))).addStats(new FoodStats(1, 0.1F, false, true, OreDictionaryUnifier.get(OrePrefix.foil, Materials.Gold, 1), new RandomPotionEffect(MobEffects.SPEED, 200, 1, 10))));
 
 		ModHandler.addShapelessCraftingRecipe(ItemList.Coin_Chocolate.get(1),
 				new UnificationEntry(OrePrefix.dust, Materials.Cocoa),
@@ -292,8 +281,8 @@ public class MetaItem1 extends MaterialMetaItem {
 				ItemList.Credit_Greg_Naquadah);
 
 
-		ItemList.Component_Minecart_Wheels_Iron.set(addItem(100)); // "Iron Minecart Wheels", "To get things rolling"
-		ItemList.Component_Minecart_Wheels_Steel.set(addItem(101)); //"Steel Minecart Wheels", "To get things rolling"
+		ItemList.Component_Minecart_Wheels_Iron.set(addItem(100, "component.minecart.wheels.iron"));
+		ItemList.Component_Minecart_Wheels_Steel.set(addItem(101, "component.minecart.wheels.steel"));
 
 		ModHandler.addCraftingRecipe(ItemList.Component_Minecart_Wheels_Iron.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
@@ -308,29 +297,29 @@ public class MetaItem1 extends MaterialMetaItem {
 				'S', new UnificationEntry(OrePrefix.stick, Materials.Steel));
 
 
-		ItemList.Shape_Empty.set(addItem(300)); // "Empty Shape Plate", "Raw Plate to make Molds and Extruder Shapes"
+		ItemList.Shape_Empty.set(addItem(300, "shape.empty"));
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Empty.get(1),
 				ModHandler.RecipeBits.MIRRORED | ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
 				"hf", "PP", "PP",
 				'P', new UnificationEntry(OrePrefix.plate, Materials.Steel));
 
-		ItemList.Shape_Mold_Plate.set(addItem(301)); //"Mold (Plate)", "Mold for making Plates"
-		ItemList.Shape_Mold_Casing.set(addItem(302)); //"Mold (Casing)", "Mold for making Item Casings"
-		ItemList.Shape_Mold_Gear.set(addItem(303)); //"Mold (Gear)", "Mold for making Gears"
-		ItemList.Shape_Mold_Credit.set(addItem(304)); //"Mold (Coinage)", "Secure Mold for making Coins (Don't lose it!)"
-		ItemList.Shape_Mold_Bottle.set(addItem(305)); //"Mold (Bottle)", "Mold for making Bottles"
-		ItemList.Shape_Mold_Ingot.set(addItem(306)); //"Mold (Ingot)", "Mold for making Ingots"
-		ItemList.Shape_Mold_Ball.set(addItem(307)); //"Mold (Ball)", "Mold for making Balls"
-		ItemList.Shape_Mold_Block.set(addItem(308)); //"Mold (Block)", "Mold for making Blocks"
-		ItemList.Shape_Mold_Nugget.set(addItem(309)); //"Mold (Nuggets)", "Mold for making Nuggets"
-		ItemList.Shape_Mold_Bun.set(addItem(310)); //"Mold (Buns)", "Mold for shaping Buns"
-		ItemList.Shape_Mold_Bread.set(addItem(311)); //"Mold (Bread)", "Mold for shaping Breads"
-		ItemList.Shape_Mold_Baguette.set(addItem(312)); //"Mold (Baguette)", "Mold for shaping Baguettes"
-		ItemList.Shape_Mold_Cylinder.set(addItem(313)); //"Mold (Cylinder)", "Mold for shaping Cylinders"
-		ItemList.Shape_Mold_Anvil.set(addItem(314)); //"Mold (Anvil)", "Mold for shaping Anvils"
-		ItemList.Shape_Mold_Name.set(addItem(315)); //"Mold (Name)", "Mold for naming Items (rename Mold with Anvil)"
-		ItemList.Shape_Mold_Gear_Small.set(addItem(317)); //"Mold (Small Gear)", "Mold for making small Gears"
+		ItemList.Shape_Mold_Plate.set(addItem(301, "shape.mold.plate"));
+		ItemList.Shape_Mold_Casing.set(addItem(302, "shape.mold.casing"));
+		ItemList.Shape_Mold_Gear.set(addItem(303, "shape.mold.gear"));
+		ItemList.Shape_Mold_Credit.set(addItem(304, "shape.mold.credit"));
+		ItemList.Shape_Mold_Bottle.set(addItem(305, "shape.mold.bottle"));
+		ItemList.Shape_Mold_Ingot.set(addItem(306, "shape.mold.ingot"));
+		ItemList.Shape_Mold_Ball.set(addItem(307, "shape.mold.ball"));
+		ItemList.Shape_Mold_Block.set(addItem(308, "shape.mold.block"));
+		ItemList.Shape_Mold_Nugget.set(addItem(309, "shape.mold.nugget"));
+		ItemList.Shape_Mold_Bun.set(addItem(310, "shape.mold.bun"));
+		ItemList.Shape_Mold_Bread.set(addItem(311, "shape.mold.bread"));
+		ItemList.Shape_Mold_Baguette.set(addItem(312, "shape.mold.baguette"));
+		ItemList.Shape_Mold_Cylinder.set(addItem(313, "shape.mold.cylinder"));
+		ItemList.Shape_Mold_Anvil.set(addItem(314, "shape.mold.anvil"));
+		ItemList.Shape_Mold_Name.set(addItem(315, "shape.mold.name"));
+		ItemList.Shape_Mold_Gear_Small.set(addItem(317, "shape.mold.gear.small"));
 
 		ModHandler.removeRecipe(new ItemStack(Blocks.GLASS), null, new ItemStack(Blocks.GLASS), null, new ItemStack(Blocks.GLASS));
 
@@ -416,30 +405,30 @@ public class MetaItem1 extends MaterialMetaItem {
 				'P', ItemList.Shape_Empty);
 
 
-		ItemList.Shape_Extruder_Plate.set(addItem(350)); //"Extruder Shape (Plate)", "Extruder Shape for making Plates"
-		ItemList.Shape_Extruder_Rod.set(addItem(351)); //"Extruder Shape (Rod)", "Extruder Shape for making Rods"
-		ItemList.Shape_Extruder_Bolt.set(addItem(352)); //"Extruder Shape (Bolt)", "Extruder Shape for making Bolts"
-		ItemList.Shape_Extruder_Ring.set(addItem(353)); //"Extruder Shape (Ring)", "Extruder Shape for making Rings"
-		ItemList.Shape_Extruder_Cell.set(addItem(354)); //"Extruder Shape (Cell)", "Extruder Shape for making Cells"
-		ItemList.Shape_Extruder_Ingot.set(addItem(355)); //"Extruder Shape (Ingot)", "Extruder Shape for, wait, can't we just use a Furnace?"
-		ItemList.Shape_Extruder_Wire.set(addItem(356)); //"Extruder Shape (Wire)", "Extruder Shape for making Wires"
-		ItemList.Shape_Extruder_Casing.set(addItem(357)); //"Extruder Shape (Casing)", "Extruder Shape for making Item Casings"
-		ItemList.Shape_Extruder_Pipe_Tiny.set(addItem(358)); //"Extruder Shape (Tiny Pipe)", "Extruder Shape for making tiny Pipes"
-		ItemList.Shape_Extruder_Pipe_Small.set(addItem(359)); //"Extruder Shape (Small Pipe)", "Extruder Shape for making small Pipes"
-		ItemList.Shape_Extruder_Pipe_Medium.set(addItem(360)); //"Extruder Shape (Normal Pipe)", "Extruder Shape for making Pipes"
-		ItemList.Shape_Extruder_Pipe_Large.set(addItem(361)); //"Extruder Shape (Large Pipe)", "Extruder Shape for making large Pipes"
-		ItemList.Shape_Extruder_Pipe_Huge.set(addItem(362)); //"Extruder Shape (Huge Pipe)", "Extruder Shape for making full Block Pipes"
-		ItemList.Shape_Extruder_Block.set(addItem(363)); //"Extruder Shape (Block)", "Extruder Shape for making Blocks"
-		ItemList.Shape_Extruder_Sword.set(addItem(364)); //"Extruder Shape (Sword Blade)", "Extruder Shape for making Swords"
-		ItemList.Shape_Extruder_Pickaxe.set(addItem(365)); //"Extruder Shape (Pickaxe Head)", "Extruder Shape for making Pickaxes"
-		ItemList.Shape_Extruder_Shovel.set(addItem(366)); //"Extruder Shape (Shovel Head)", "Extruder Shape for making Shovels"
-		ItemList.Shape_Extruder_Axe.set(addItem(367)); //"Extruder Shape (Axe Head)", "Extruder Shape for making Axes"
-		ItemList.Shape_Extruder_Hoe.set(addItem(368)); //"Extruder Shape (Hoe Head)", "Extruder Shape for making Hoes"
-		ItemList.Shape_Extruder_Hammer.set(addItem(369)); //"Extruder Shape (Hammer Head)", "Extruder Shape for making Hammers"
-		ItemList.Shape_Extruder_File.set(addItem(370)); //"Extruder Shape (File Head)", "Extruder Shape for making Files"
-		ItemList.Shape_Extruder_Saw.set(addItem(371)); //"Extruder Shape (Saw Blade)", "Extruder Shape for making Saws"
-		ItemList.Shape_Extruder_Gear.set(addItem(372)); //"Extruder Shape (Gear)", "Extruder Shape for making Gears"
-		ItemList.Shape_Extruder_Bottle.set(addItem(373)); //"Extruder Shape (Bottle)", "Extruder Shape for making Bottles"
+		ItemList.Shape_Extruder_Plate.set(addItem(350, "shape.extruder.plate"));
+		ItemList.Shape_Extruder_Rod.set(addItem(351, "shape.extruder.rod"));
+		ItemList.Shape_Extruder_Bolt.set(addItem(352, "shape.extruder.bolt"));
+		ItemList.Shape_Extruder_Ring.set(addItem(353, "shape.extruder.ring"));
+		ItemList.Shape_Extruder_Cell.set(addItem(354, "shape.extruder.cell"));
+		ItemList.Shape_Extruder_Ingot.set(addItem(355, "shape.extruder.ingot"));
+		ItemList.Shape_Extruder_Wire.set(addItem(356, "shape.extruder.wire"));
+		ItemList.Shape_Extruder_Casing.set(addItem(357, "shape.extruder.casing"));
+		ItemList.Shape_Extruder_Pipe_Tiny.set(addItem(358, "shape.extruder.pipe.tiny"));
+		ItemList.Shape_Extruder_Pipe_Small.set(addItem(359, "shape.extruder.pipe.small"));
+		ItemList.Shape_Extruder_Pipe_Medium.set(addItem(360, "shape.extruder.pipe.medium"));
+		ItemList.Shape_Extruder_Pipe_Large.set(addItem(361, "shape.extruder.pipe.large"));
+		ItemList.Shape_Extruder_Pipe_Huge.set(addItem(362, "shape.extruder.pipe.huge"));
+		ItemList.Shape_Extruder_Block.set(addItem(363, "shape.extruder.block"));
+		ItemList.Shape_Extruder_Sword.set(addItem(364, "shape.extruder.sword"));
+		ItemList.Shape_Extruder_Pickaxe.set(addItem(365, "shape.extruder.pickaxe"));
+		ItemList.Shape_Extruder_Shovel.set(addItem(366, "shape.extruder.shovel"));
+		ItemList.Shape_Extruder_Axe.set(addItem(367, "shape.extruder.axe"));
+		ItemList.Shape_Extruder_Hoe.set(addItem(368, "shape.extruder.hoe"));
+		ItemList.Shape_Extruder_Hammer.set(addItem(369, "shape.extruder.hammer"));
+		ItemList.Shape_Extruder_File.set(addItem(370, "shape.extruder.file"));
+		ItemList.Shape_Extruder_Saw.set(addItem(371, "shape.extruder.saw"));
+		ItemList.Shape_Extruder_Gear.set(addItem(372, "shape.extruder.gear"));
+		ItemList.Shape_Extruder_Bottle.set(addItem(373, "shape.extruder.bottle"));
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Extruder_Bolt.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
@@ -563,8 +552,8 @@ public class MetaItem1 extends MaterialMetaItem {
 				'P', ItemList.Shape_Empty);
 
 
-		ItemList.Shape_Slicer_Flat.set(addItem(398)); //"Slicer Blade (Flat)", "Slicer Blade for cutting Flat"
-		ItemList.Shape_Slicer_Stripes.set(addItem(399)); //"Slicer Blade (Stripes)", "Slicer Blade for cutting Stripes"
+		ItemList.Shape_Slicer_Flat.set(addItem(398, "shape.slicer.flat"));
+		ItemList.Shape_Slicer_Stripes.set(addItem(399, "shape.slicer.stripes"));
 
 		ModHandler.addCraftingRecipe(ItemList.Shape_Slicer_Flat.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
@@ -581,15 +570,15 @@ public class MetaItem1 extends MaterialMetaItem {
 				'S', new UnificationEntry(OrePrefix.screw, Materials.StainlessSteel));
 
 
-		ItemList.Fuel_Can_Plastic_Empty.set(addItem(400).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Plastic, OrePrefix.plate.materialAmount)))); // "Empty Plastic Fuel Can", "Used to store Fuels"
-		ItemList.Fuel_Can_Plastic_Filled.set(addItem(401).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Plastic, OrePrefix.plate.materialAmount)))); // "Plastic Fuel Can", "Burns well in Diesel Generators"
+		ItemList.Fuel_Can_Plastic_Empty.set(addItem(400, "fuel.can.plastic.empty").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Plastic, OrePrefix.plate.materialAmount))));
+		ItemList.Fuel_Can_Plastic_Filled.set(addItem(401, "fuel.can.plastic.filled").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Plastic, OrePrefix.plate.materialAmount))));
 
 		ModHandler.addCraftingRecipe(ItemList.Fuel_Can_Plastic_Empty.get(7),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE,
 				" PP", "P P", "PPP",
 				'P', new UnificationEntry(OrePrefix.plate, Materials.Plastic));
 
-		ItemList.Spray_Empty.set(addItem(402).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Tin, OrePrefix.plate.materialAmount * 2L), new MaterialStack(Materials.Redstone, OrePrefix.dust.materialAmount)))); //"Empty Spray Can", "Used for making Sprays",
+		ItemList.Spray_Empty.set(addItem(402, "spray.empty").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Tin, OrePrefix.plate.materialAmount * 2L), new MaterialStack(Materials.Redstone, OrePrefix.dust.materialAmount))));
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
 				.inputs(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Redstone, 1), OreDictionaryUnifier.get(OrePrefix.cell, null, 1))
@@ -598,22 +587,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				.EUt(1)
 				.buildAndRegister();
 
-		ItemList.Crate_Empty.set(addItem(403).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Wood, 3628800L), new MaterialStack(Materials.Iron, OrePrefix.screw.materialAmount)))); //"Empty Crate", "To Package lots of Material",
-
-		ModHandler.addCraftingRecipe(ItemList.Crate_Empty.get(4),
-				ModHandler.RecipeBits.NOT_REMOVABLE,
-				"SWS", "WdW", "SWS",
-				'W', new UnificationEntry(OrePrefix.plank, Materials.Wood),
-				'S', new UnificationEntry(OrePrefix.screw, Materials.AnyIron));
-
-		ModHandler.addCraftingRecipe(ItemList.Crate_Empty.get(4),
-				ModHandler.RecipeBits.NOT_REMOVABLE,
-				"SWS", "WdW", "SWS",
-				'W', new UnificationEntry(OrePrefix.plank, Materials.Wood),
-				'S', new UnificationEntry(OrePrefix.screw, Materials.Steel));
-
-
-		ItemList.ThermosCan_Empty.set(addItem(404).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Aluminium, OrePrefix.plate.materialAmount + 2L * OrePrefix.ring.materialAmount)))); //"Empty Thermos Can", "Keeping hot things hot and cold things cold",
+		ItemList.ThermosCan_Empty.set(addItem(404, "thermoscan.empty").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Aluminium, OrePrefix.plate.materialAmount + 2L * OrePrefix.ring.materialAmount))));
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
 				.inputs(OreDictionaryUnifier.get(OrePrefix.plateDouble, Materials.Aluminium, 1), OreDictionaryUnifier.get(OrePrefix.ring, Materials.Aluminium, 2))
@@ -622,7 +596,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				.EUt(1)
 				.buildAndRegister();
 
-		ItemList.Large_Fluid_Cell_Steel.set(addItem(405).addStats(new FluidStats(16000, Integer.MAX_VALUE, Integer.MAX_VALUE)).setMaxStackSize(16).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, OrePrefix.plate.materialAmount * 2L + 2L * OrePrefix.ring.materialAmount)))); //"Large Steel Fluid Cell", "",
+		ItemList.Large_Fluid_Cell_Steel.set(addItem(405, "large.fluid.cell.steel").addStats(new FluidStats(16000, Integer.MAX_VALUE, Integer.MAX_VALUE)).setMaxStackSize(16).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, OrePrefix.plate.materialAmount * 2L + 2L * OrePrefix.ring.materialAmount))));
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
 				.inputs(OreDictionaryUnifier.get(OrePrefix.plateDouble, Materials.Steel, 1), OreDictionaryUnifier.get(OrePrefix.ring, Materials.Steel, 2))
@@ -631,7 +605,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				.EUt(64)
 				.buildAndRegister();
 
-		ItemList.Large_Fluid_Cell_TungstenSteel.set(addItem(406).addStats(new FluidStats(64000, Integer.MAX_VALUE, Integer.MAX_VALUE)).setMaxStackSize(16).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.TungstenSteel, OrePrefix.plate.materialAmount * 2L + 2L * OrePrefix.ring.materialAmount)))); //"Large Tungstensteel Fluid Cell", "",
+		ItemList.Large_Fluid_Cell_TungstenSteel.set(addItem(406, "large.fluid.cell.tungstensteel").addStats(new FluidStats(64000, Integer.MAX_VALUE, Integer.MAX_VALUE)).setMaxStackSize(16).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.TungstenSteel, OrePrefix.plate.materialAmount * 2L + 2L * OrePrefix.ring.materialAmount))));
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
 				.inputs(OreDictionaryUnifier.get(OrePrefix.plateDouble, Materials.TungstenSteel, 1), OreDictionaryUnifier.get(OrePrefix.ring, Materials.TungstenSteel, 2))
@@ -642,18 +616,16 @@ public class MetaItem1 extends MaterialMetaItem {
 
 		for (byte i = 0; i < 16; i = (byte) (i + 1)) {
 			IItemBehaviour behaviour = new Behaviour_Spray_Color(ItemList.Spray_Empty.get(1), ItemList.SPRAY_CAN_DYES_USED[i].get(1), ItemList.SPRAY_CAN_DYES[i].get(1), 512L, i);
-			ItemList.SPRAY_CAN_DYES[i].set(addItem(430 + 2 * i).addStats(behaviour)); //, "Spray Can (" + Dyes.get(i).mName + ")", "Full"
-			ItemList.SPRAY_CAN_DYES_USED[i].set(addItem(431 + 2 * i).addStats(behaviour)); //"Spray Can (" + Dyes.get(i).mName + ")", "Used"
+			ItemList.SPRAY_CAN_DYES[i].set(addItem(430 + 2 * i, "spray.can.dyes", EnumDyeColor.byDyeDamage(i).getUnlocalizedName()).addStats(behaviour));
+			ItemList.SPRAY_CAN_DYES_USED[i].set(addItem(431 + 2 * i, "spray.can.dyes.used", EnumDyeColor.byDyeDamage(i).getUnlocalizedName()).addStats(behaviour));
 		}
-		ItemList.Tool_Matches.set(addItem(471)); // "Match", ""
-		ItemList.Tool_MatchBox_Used.set(addItem(472)); // "Match Box", "This is not a Car"
-		ItemList.Tool_MatchBox_Full.set(addItem(473)); //"Match Box (Full)", "This is not a Car"
 
 		IItemBehaviour behaviour = new Behaviour_Lighter(null, ItemList.Tool_Matches.get(1), ItemList.Tool_Matches.get(1), 1L);
-		addItem(32471).addStats(behaviour);
+		ItemList.Tool_Matches.set(addItem(471, "tool.matches").addStats(behaviour));
+
 		behaviour = new Behaviour_Lighter(null, ItemList.Tool_MatchBox_Used.get(1), ItemList.Tool_MatchBox_Full.get(1), 16L);
-		addItem(32472).addStats(behaviour);
-		addItem(32473).addStats(behaviour);
+		ItemList.Tool_MatchBox_Used.set(addItem(472, "tool.matchbox.used").addStats(behaviour));
+		ItemList.Tool_MatchBox_Full.set(addItem(473, "tool.matchbox.full").addStats(behaviour));
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
 				.inputs(OreDictionaryUnifier.get(OrePrefix.bolt, Materials.Wood, 1), OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Phosphor, 1))
@@ -696,13 +668,11 @@ public class MetaItem1 extends MaterialMetaItem {
 				.EUt(16)
 				.buildAndRegister();
 
-		ItemList.Tool_Lighter_Invar_Empty.set(addItem(474).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Invar, OrePrefix.plate.materialAmount * 2L)))); //"Lighter (Empty)", "",
-		ItemList.Tool_Lighter_Invar_Used.set(addItem(475).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Invar, OrePrefix.plate.materialAmount * 2L)))); //"Lighter", "",
-		ItemList.Tool_Lighter_Invar_Full.set(addItem(476).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Invar, OrePrefix.plate.materialAmount * 2L)))); //"Lighter (Full)", ""
+		ItemList.Tool_Lighter_Invar_Empty.set(addItem(474, "tool.lighter.invar.empty").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Invar, OrePrefix.plate.materialAmount * 2L))));
 
 		behaviour = new Behaviour_Lighter(ItemList.Tool_Lighter_Invar_Empty.get(1), ItemList.Tool_Lighter_Invar_Used.get(1), ItemList.Tool_Lighter_Invar_Full.get(1), 100L);
-		addItem(32475).addStats(behaviour);
-		addItem(32476).addStats(behaviour);
+		ItemList.Tool_Lighter_Invar_Used.set(addItem(475, "tool.lighter.invar.used").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Invar, OrePrefix.plate.materialAmount * 2L))).addStats(behaviour));
+		ItemList.Tool_Lighter_Invar_Full.set(addItem(476, "tool.lighter.invar.full").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Invar, OrePrefix.plate.materialAmount * 2L))).addStats(behaviour));
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
 				.inputs(OreDictionaryUnifier.get(OrePrefix.plate, Materials.Invar, 2), new ItemStack(Items.FLINT, 1))
@@ -711,13 +681,11 @@ public class MetaItem1 extends MaterialMetaItem {
 				.EUt(16)
 				.buildAndRegister();
 
-		ItemList.Tool_Lighter_Platinum_Empty.set(addItem(477).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Platinum, OrePrefix.plate.materialAmount * 2L)))); //"Platinum Lighter (Empty)", "A known Prank Master is engraved on it"
-		ItemList.Tool_Lighter_Platinum_Used.set(addItem(478).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Platinum, OrePrefix.plate.materialAmount * 2L)))); //"Platinum Lighter", "A known Prank Master is engraved on it",
-		ItemList.Tool_Lighter_Platinum_Full.set(addItem(479).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Platinum, OrePrefix.plate.materialAmount * 2L)))); //"Platinum Lighter (Full)", "A known Prank Master is engraved on it"
+		ItemList.Tool_Lighter_Platinum_Empty.set(addItem(477, "tool.lighter.platinum.empty").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Platinum, OrePrefix.plate.materialAmount * 2L))));
 
 		behaviour = new Behaviour_Lighter(ItemList.Tool_Lighter_Platinum_Empty.get(1), ItemList.Tool_Lighter_Platinum_Used.get(1), ItemList.Tool_Lighter_Platinum_Full.get(1), 1000L);
-		addItem(this.metaItemOffset + 478).addStats(behaviour);
-		addItem(this.metaItemOffset + 479).addStats(behaviour);
+		ItemList.Tool_Lighter_Platinum_Used.set(addItem(478, "tool.lighter.platinum.used").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Platinum, OrePrefix.plate.materialAmount * 2L))).addStats(behaviour));
+		ItemList.Tool_Lighter_Platinum_Full.set(addItem(479, "tool.lighter.platinum.full").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Platinum, OrePrefix.plate.materialAmount * 2L))).addStats(behaviour));
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
 				.inputs(OreDictionaryUnifier.get(OrePrefix.plate, Materials.Platinum, 2), new ItemStack(Items.FLINT, 1))
@@ -726,7 +694,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				.EUt(256)
 				.buildAndRegister();
 
-		ItemList.Ingot_IridiumAlloy.set(addItem(480)); //"Iridium Alloy Ingot", "Used to make Iridium Plates"
+		ItemList.Ingot_IridiumAlloy.set(addItem(480, "ingot.iridiumalloy"));
 
 		ModHandler.addRollingMachineRecipe(ItemList.Ingot_IridiumAlloy.get(1),
 				new Object[]{"IAI", "ADA", "IAI",
@@ -741,22 +709,19 @@ public class MetaItem1 extends MaterialMetaItem {
 				'A', OrePrefix.plateAlloy.name() + "Advanced",
 				'I', new UnificationEntry(OrePrefix.plate, Materials.Iridium));
 
-		ItemList.Paper_Printed_Pages.set(addItem(481).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Paper, 10886400L))).addStats(new Behaviour_PrintedPages())); // "Printed Pages", "Used to make written Books",
-		ItemList.Paper_Magic_Empty.set(addItem(482).setInvisible().setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Paper, 3628800L)))); //"Magic Paper", "",
-		ItemList.Paper_Magic_Page.set(addItem(483).setInvisible().setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Paper, 3628800L)))); //"Enchanted Page", "",
-		ItemList.Paper_Magic_Pages.set(addItem(484).setInvisible().setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Paper, 10886400L)))); //"Enchanted Pages", "",
-		ItemList.Paper_Punch_Card_Empty.set(addItem(485).setInvisible().setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Paper, 7257600L)))); //"Punch Card", "",
-		ItemList.Paper_Punch_Card_Encoded.set(addItem(486).setInvisible().setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Paper, 7257600L)))); //"Punched Card", "",
-		ItemList.Book_Written_01.set(addItem(487).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Paper, 10886400L))).addStats(new Behaviour_WrittenBook()).addOreDict("bookWritten").addOreDict(OreDictNames.craftingBook)); //"Book", "",
-		ItemList.Book_Written_02.set(addItem(488).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Paper, 10886400L))).addStats(new Behaviour_WrittenBook()).addOreDict("bookWritten").addOreDict(OreDictNames.craftingBook)); //"Book", "",
-		ItemList.Book_Written_03.set(addItem(489).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Paper, 10886400L))).addStats(new Behaviour_WrittenBook()).addOreDict("bookWritten").addOreDict(OreDictNames.craftingBook)); //"Book", "",
+		ItemList.Paper_Printed_Pages.set(addItem(481, "paper.printed.pages").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Paper, 10886400L))).addStats(new Behaviour_PrintedPages()));
+		ItemList.Paper_Magic_Empty.set(addItem(482, "paper.magic.empty").setInvisible().setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Paper, 3628800L))));
+		ItemList.Paper_Magic_Page.set(addItem(483, "paper.magic.page").setInvisible().setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Paper, 3628800L))));
+		ItemList.Paper_Magic_Pages.set(addItem(484, "paper.magic.pages").setInvisible().setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Paper, 10886400L))));
+		ItemList.Paper_Punch_Card_Empty.set(addItem(485, "paper.punch.card.empty").setInvisible().setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Paper, 7257600L))));
+		ItemList.Paper_Punch_Card_Encoded.set(addItem(486, "paper.punch.card.encoded").setInvisible().setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Paper, 7257600L))));
 
-		ItemList.Schematic.set(addItem(490).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)))); //"Schematic", "EMPTY"
-		ItemList.Schematic_Crafting.set(addItem(491).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)))); //"Schematic (Crafting)", "Crafts the Programmed Recipe",
-		ItemList.Schematic_1by1.set(addItem(495).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)))); //"Schematic (1x1)", "Crafts 1 Items as 1x1 (use in Packager)"
-		ItemList.Schematic_2by2.set(addItem(496).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)))); //"Schematic (2x2)", "Crafts 4 Items as 2x2 (use in Packager)"
-		ItemList.Schematic_3by3.set(addItem(497).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)))); //"Schematic (3x3)", "Crafts 9 Items as 3x3 (use in Packager)"
-		ItemList.Schematic_Dust.set(addItem(498).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)))); //"Schematic (Dusts)", "Combines Dusts (use in Packager)"
+		ItemList.Schematic.set(addItem(490, "schematic").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L))));
+		ItemList.Schematic_Crafting.set(addItem(491, "schematic.crafting").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L))));
+		ItemList.Schematic_1by1.set(addItem(495, "schematic.1by1").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L))));
+		ItemList.Schematic_2by2.set(addItem(496, "schematic.2by2").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L))));
+		ItemList.Schematic_3by3.set(addItem(497, "schematic.3by3").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L))));
+		ItemList.Schematic_Dust.set(addItem(498, "schematic.dust").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L))));
 
 		ModHandler.addCraftingRecipe(ItemList.Schematic_1by1.get(1),
 				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE,
@@ -800,35 +765,35 @@ public class MetaItem1 extends MaterialMetaItem {
 				ItemList.Schematic_Dust);
 
 
-		ItemList.Battery_Hull_LV.set(addItem(500).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount)))); //"Small Battery Hull", "An empty LV Battery Hull",
-		ItemList.Battery_Hull_MV.set(addItem(501).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount * 3L)))); //"Medium Battery Hull", "An empty MV Battery Hull",
-		ItemList.Battery_Hull_HV.set(addItem(502).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount * 9L)))); //"Large Battery Hull", "An empty HV Battery Hull",
+		ItemList.Battery_Hull_LV.set(addItem(500, "battery.hull.lv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount))));
+		ItemList.Battery_Hull_MV.set(addItem(501, "battery.hull.hv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount * 3L))));
+		ItemList.Battery_Hull_HV.set(addItem(502, "battery.hull.mv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount * 9L))));
 
 		ModHandler.addCraftingRecipe(ItemList.Battery_Hull_LV.get(1), ModHandler.RecipeBits.NOT_REMOVABLE, "C", "P", "P", 'P', new UnificationEntry(OrePrefix.plate, Materials.BatteryAlloy), 'C', OreDictNames.craftingWireTin);
 		ModHandler.addCraftingRecipe(ItemList.Battery_Hull_MV.get(1), ModHandler.RecipeBits.NOT_REMOVABLE, "C C", "PPP", "PPP", 'P', new UnificationEntry(OrePrefix.plate, Materials.BatteryAlloy), 'C', OreDictNames.craftingWireCopper);
 
-		ItemList.Battery_RE_ULV_Tantalum.set(addItem(499).addStats(new ElectricStats(1000, 0))); // "Tantalum Capacitor", "Reusable"
+		ItemList.Battery_RE_ULV_Tantalum.set(addItem(499, "battery.re.ulv.tantalum").addStats(new ElectricStats(1000, 0)));
 
-		ItemList.Battery_SU_LV_SulfuricAcid.set(addItem(510).addStats(new ElectricStats(18000, 1, false))); //"Small Acid Battery", "Single Use"
-		ItemList.Battery_SU_LV_Mercury.set(addItem(511).addStats(new ElectricStats(32000, 1, false))); // "Small Mercury Battery", "Single Use"
+		ItemList.Battery_SU_LV_SulfuricAcid.set(addItem(510, "battery.su.lv.sulfuricacid").addStats(new ElectricStats(18000, 1, false)));
+		ItemList.Battery_SU_LV_Mercury.set(addItem(511, "battery.su.lv.mercury").addStats(new ElectricStats(32000, 1, false)));
 
-		ItemList.Battery_RE_LV_Cadmium.set(addItem(517).addStats(new ElectricStats(75000, 1))); //"Small Cadmium Battery", "Reusable"
-		ItemList.Battery_RE_LV_Lithium.set(addItem(518).addStats(new ElectricStats(100000, 1))); //"Small Lithium Battery", "Reusable"
-		ItemList.Battery_RE_LV_Sodium.set(addItem(519).addStats(new ElectricStats(50000, 1))); //"Small Sodium Battery", "Reusable"
+		ItemList.Battery_RE_LV_Cadmium.set(addItem(517, "battery.re.lv.cadmium").addStats(new ElectricStats(75000, 1)));
+		ItemList.Battery_RE_LV_Lithium.set(addItem(518, "battery.re.lv.lithium").addStats(new ElectricStats(100000, 1)));
+		ItemList.Battery_RE_LV_Sodium.set(addItem(519, "battery.re.lv.sodium").addStats(new ElectricStats(50000, 1)));
 
-		ItemList.Battery_SU_MV_SulfuricAcid.set(addItem(520).addStats(new ElectricStats(72000, 2, false))); //"Medium Acid Battery", "Single Use"
-		ItemList.Battery_SU_MV_Mercury.set(addItem(521).addStats(new ElectricStats(128000, 2, false))); //"Medium Mercury Battery", "Single Use"
+		ItemList.Battery_SU_MV_SulfuricAcid.set(addItem(520, "battery.su.mv.sulfuricacid").addStats(new ElectricStats(72000, 2, false)));
+		ItemList.Battery_SU_MV_Mercury.set(addItem(521, "battery.su.mv.mercury").addStats(new ElectricStats(128000, 2, false)));
 
-		ItemList.Battery_RE_MV_Cadmium.set(addItem(527).addStats(new ElectricStats(300000, 2))); // "Medium Cadmium Battery", "Reusable",
-		ItemList.Battery_RE_MV_Lithium.set(addItem(528).addStats(new ElectricStats(400000, 2))); //"Medium Lithium Battery", "Reusable",
-		ItemList.Battery_RE_MV_Sodium.set(addItem(529).addStats(new ElectricStats(200000, 2))); //"Medium Sodium Battery", "Reusable",
+		ItemList.Battery_RE_MV_Cadmium.set(addItem(527, "battery.re.mv.cadmium").addStats(new ElectricStats(300000, 2)));
+		ItemList.Battery_RE_MV_Lithium.set(addItem(528, "battery.re.mv.lithium").addStats(new ElectricStats(400000, 2)));
+		ItemList.Battery_RE_MV_Sodium.set(addItem(529, "battery.re.mv.sodium").addStats(new ElectricStats(200000, 2)));
 
-		ItemList.Battery_SU_HV_SulfuricAcid.set(addItem(530).addStats(new ElectricStats(288000, 3, false))); //"Large Acid Battery", "Single Use",
-		ItemList.Battery_SU_HV_Mercury.set(addItem(531).addStats(new ElectricStats(512000, 3, false))); //"Large Mercury Battery", "Single Use",
+		ItemList.Battery_SU_HV_SulfuricAcid.set(addItem(530, "battery.su.hv.sulfuricacid").addStats(new ElectricStats(288000, 3, false)));
+		ItemList.Battery_SU_HV_Mercury.set(addItem(531, "battery.su.hv.mercury").addStats(new ElectricStats(512000, 3, false)));
 
-		ItemList.Battery_RE_HV_Cadmium.set(addItem(537).addStats(new ElectricStats(1200000, 3))); //"Large Cadmium Battery", "Reusable",
-		ItemList.Battery_RE_HV_Lithium.set(addItem(538).addStats(new ElectricStats(1600000, 3))); //"Large Lithium Battery", "Reusable",
-		ItemList.Battery_RE_HV_Sodium.set(addItem(539).addStats(new ElectricStats(800000, 3))); //"Large Sodium Battery", "Reusable",
+		ItemList.Battery_RE_HV_Cadmium.set(addItem(537, "battery.re.hv.cadmium").addStats(new ElectricStats(1200000, 3)));
+		ItemList.Battery_RE_HV_Lithium.set(addItem(538, "battery.re.hv.lithium").addStats(new ElectricStats(1600000, 3)));
+		ItemList.Battery_RE_HV_Sodium.set(addItem(539, "battery.re.hv.sodium").addStats(new ElectricStats(800000, 3)));
 
 		ModHandler.addExtractionRecipe(ItemList.Battery_SU_LV_SulfuricAcid.get(1), ItemList.Battery_Hull_LV.get(1));
 		ModHandler.addExtractionRecipe(ItemList.Battery_SU_LV_Mercury.get(1), ItemList.Battery_Hull_LV.get(1));
@@ -901,22 +866,20 @@ public class MetaItem1 extends MaterialMetaItem {
 				.EUt(2)
 				.buildAndRegister();
 
-		ItemList.Energy_LapotronicOrb.set(addItem(597).addStats(new ElectricStats(100000000, 5)).setUnificationData(OrePrefix.battery, Materials.Ultimate)); //"Lapotronic Energy Orb", ""
+		ItemList.Energy_LapotronicOrb.set(addItem(597, "energy.lapotronicorb").addStats(new ElectricStats(100000000, 5)).setUnificationData(OrePrefix.battery, Materials.Ultimate));
+		ItemList.Energy_LapotronicOrb2.set(addItem(598, "energy.lapotronicorb2").addStats(new ElectricStats(1000000000, 6)).setUnificationData(OrePrefix.battery, Materials.Ultimate));
 
-		ItemList.ZPM.set(addItem(598).addStats(new ElectricStats(2000000000000L, 7, false))); // "Zero Point Module", ""
+		ItemList.ZPM.set(addItem(599, "zpm").addStats(new ElectricStats(2000000000000L, 7, false)));
+		ItemList.ZPM2.set(addItem(605, "zpm2").addStats(new ElectricStats(Long.MAX_VALUE, 8)));
 
-		ItemList.Energy_LapotronicOrb2.set(addItem(599).addStats(new ElectricStats(1000000000, 6)).setUnificationData(OrePrefix.battery, Materials.Ultimate)); //"Lapotronic Energy Orb Cluster", "",
-
-		ItemList.ZPM2.set(addItem(605).addStats(new ElectricStats(Long.MAX_VALUE, 8))); //"Ultimate Battery", "Fill this to win minecraft"
-
-		ItemList.Electric_Motor_LV.set(addItem(600)); // "Electric Motor (LV)", ""
-		ItemList.Electric_Motor_MV.set(addItem(601)); // "Electric Motor (MV)", ""
-		ItemList.Electric_Motor_HV.set(addItem(602)); // "Electric Motor (HV)", ""
-		ItemList.Electric_Motor_EV.set(addItem(603)); // "Electric Motor (EV)", ""
-		ItemList.Electric_Motor_IV.set(addItem(604)); // "Electric Motor (IV)", ""
-		ItemList.Electric_Motor_LuV.set(addItem(606)); // "Electric Motor (LuV)", ""
-		ItemList.Electric_Motor_ZPM.set(addItem(607)); // "Electric Motor (ZPM)", ""
-		ItemList.Electric_Motor_UV.set(addItem(608)); // "Electric Motor (UV)", ""
+		ItemList.Electric_Motor_LV.set(addItem(600, "electric.motor.lv"));
+		ItemList.Electric_Motor_MV.set(addItem(601, "electric.motor.mv"));
+		ItemList.Electric_Motor_HV.set(addItem(602, "electric.motor.hv"));
+		ItemList.Electric_Motor_EV.set(addItem(603, "electric.motor.ev"));
+		ItemList.Electric_Motor_IV.set(addItem(604, "electric.motor.iv"));
+		ItemList.Electric_Motor_LuV.set(addItem(606, "electric.motor.luv"));
+		ItemList.Electric_Motor_ZPM.set(addItem(607, "electric.motor.zpm"));
+		ItemList.Electric_Motor_UV.set(addItem(608, "electric.motor.uv"));
 
 		ModHandler.addCraftingRecipe(ItemList.Electric_Motor_LV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
@@ -967,31 +930,28 @@ public class MetaItem1 extends MaterialMetaItem {
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tungsten));
 
 
-		ItemList.Electric_Pump_LV.set(addItem(610)); //"Electric Pump (LV)", "640 L/sec (as Cover)"
-		ItemList.Electric_Pump_MV.set(addItem(611)); //"Electric Pump (MV)", "2560 L/sec (as Cover)"
-		ItemList.Electric_Pump_HV.set(addItem(612)); //"Electric Pump (HV)", "10240 L/sec (as Cover)"
-		ItemList.Electric_Pump_EV.set(addItem(613)); //"Electric Pump (EV)", "40.960 L/sec (as Cover)"
-		ItemList.Electric_Pump_IV.set(addItem(614)); //"Electric Pump (IV)", "163.840 L/sec (as Cover)"
-		ItemList.Electric_Pump_LuV.set(addItem(620)); // "Electric Pump (LuV)", "655.360 L/sec (as Cover)"
-		ItemList.Electric_Pump_ZPM.set(addItem(621)); // "Electric Pump (ZPM)", "2.621.440 L/sec (as Cover)"
-		ItemList.Electric_Pump_UV.set(addItem(622)); //"Electric Pump (UV)", "10.485.760 L/sec (as Cover)"
+		ItemList.Electric_Pump_LV.set(addItem(610, "electric.pump.lv"));
+		ItemList.Electric_Pump_MV.set(addItem(611, "electric.pump.mv"));
+		ItemList.Electric_Pump_HV.set(addItem(612, "electric.pump.hv"));
+		ItemList.Electric_Pump_EV.set(addItem(613, "electric.pump.ev"));
+		ItemList.Electric_Pump_IV.set(addItem(614, "electric.pump.iv"));
+		ItemList.Electric_Pump_LuV.set(addItem(620, "electric.pump.luv"));
+		ItemList.Electric_Pump_ZPM.set(addItem(621, "electric.pump.zpm"));
+		ItemList.Electric_Pump_UV.set(addItem(622, "electric.pump.uv"));
 
-		ItemList.FluidRegulator_LV.set(addItem(615)); // "Fluid Regulator (LV)", "Configuable up to 640 L/sec (as Cover)"
-		ItemList.FluidRegulator_MV.set(addItem(616)); // "Fluid Regulator (MV)", "Configuable up to 2560 L/sec (as Cover)"
-		ItemList.FluidRegulator_HV.set(addItem(617)); // "Fluid Regulator (HV)", "Configuable up to 10240 L/sec (as Cover)"
-		ItemList.FluidRegulator_EV.set(addItem(618)); // "Fluid Regulator (EV)", "Configuable up to 40960 L/sec (as Cover)"
-		ItemList.FluidRegulator_IV.set(addItem(619)); // "Fluid Regulator (IV)", "Configuable up to 163840 L/sec (as Cover)"
+		ItemList.FluidRegulator_LV.set(addItem(615, "fluidregulator.lv"));
+		ItemList.FluidRegulator_MV.set(addItem(616, "fluidregulator.mv"));
+		ItemList.FluidRegulator_HV.set(addItem(617, "fluidregulator.hv"));
+		ItemList.FluidRegulator_EV.set(addItem(618, "fluidregulator.ev"));
+		ItemList.FluidRegulator_IV.set(addItem(619, "fluidregulator.iv"));
 
-		ItemList.FluidFilter.set(addItem(635)); // "Fluid Filter", "Set with Fluid Container to only accept one Fluid Type"
+		ItemList.FluidFilter.set(addItem(635, "fluidfilter"));
 
-		ItemList.Rotor_LV.set(addItem(620).setUnificationData(OrePrefix.rotor, Materials.Tin)); //"Tin Rotor", ""
-		ItemList.Rotor_MV.set(addItem(621).setUnificationData(OrePrefix.rotor, Materials.Bronze)); //"Bronze Rotor", ""
-		ItemList.Rotor_HV.set(addItem(622).setUnificationData(OrePrefix.rotor, Materials.Steel)); //"Steel Rotor", ""
-		ItemList.Rotor_EV.set(addItem(623).setUnificationData(OrePrefix.rotor, Materials.StainlessSteel)); //"Stainless Steel Rotor",
-		ItemList.Rotor_IV.set(addItem(624).setUnificationData(OrePrefix.rotor, Materials.TungstenSteel)); //"Tungstensteel Rotor", ""
-		ItemList.Rotor_LuV.set(ItemList.Rotor_IV.get(1));
-		ItemList.Rotor_ZPM.set(ItemList.Rotor_LuV.get(1));
-		ItemList.Rotor_UV.set(ItemList.Rotor_ZPM.get(1));
+		ItemList.Rotor_LV.set(addItem(620, "rotor.lv").setUnificationData(OrePrefix.rotor, Materials.Tin));
+		ItemList.Rotor_MV.set(addItem(621, "rotor.mv").setUnificationData(OrePrefix.rotor, Materials.Bronze));
+		ItemList.Rotor_HV.set(addItem(622, "rotor.hv").setUnificationData(OrePrefix.rotor, Materials.Steel));
+		ItemList.Rotor_EV.set(addItem(623, "rotor.ev").setUnificationData(OrePrefix.rotor, Materials.StainlessSteel));
+		ItemList.Rotor_IV.set(addItem(624, "rotor.iv").setUnificationData(OrePrefix.rotor, Materials.TungstenSteel));
 
 		ModHandler.addCraftingRecipe(ItemList.Electric_Pump_LV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
@@ -1043,15 +1003,11 @@ public class MetaItem1 extends MaterialMetaItem {
 				'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Tungsten),
 				'P', new UnificationEntry(OrePrefix.pipeMedium, Materials.TungstenSteel));
 
-
-		ItemList.Conveyor_Module_LV.set(addItem(630)); //"Conveyor Module (LV)", "1 Stack every 20 secs (as Cover)"
-		ItemList.Conveyor_Module_MV.set(addItem(631)); //"Conveyor Module (MV)", "1 Stack every 5 secs (as Cover)"
-		ItemList.Conveyor_Module_HV.set(addItem(632)); //"Conveyor Module (HV)", "1 Stack every 1 sec (as Cover)"
-		ItemList.Conveyor_Module_EV.set(addItem(633)); //"Conveyor Module (EV)", "1 Stack every 1/5 sec (as Cover)"
-		ItemList.Conveyor_Module_IV.set(addItem(634)); //"Conveyor Module (IV)", "1 Stack every 1/20 sec (as Cover)"
-		ItemList.Conveyor_Module_LuV.set(addItem(636)); //"Conveyor Module (LuV)", "1 Stack every 1/20 sec (as Cover)"
-		ItemList.Conveyor_Module_ZPM.set(addItem(637)); //"Conveyor Module (ZPM)", "1 Stack every 1/20 sec (as Cover)"
-		ItemList.Conveyor_Module_UV.set(addItem(638)); //"Conveyor Module (UV)", "1 Stack every 1/20 sec (as Cover)"
+		ItemList.Conveyor_Module_LV.set(addItem(630, "conveyor.module.lv"));
+		ItemList.Conveyor_Module_MV.set(addItem(631, "conveyor.module.mv"));
+		ItemList.Conveyor_Module_HV.set(addItem(632, "conveyor.module.hv"));
+		ItemList.Conveyor_Module_EV.set(addItem(633, "conveyor.module.ev"));
+		ItemList.Conveyor_Module_IV.set(addItem(634, "conveyor.module.iv"));
 
 		ModHandler.addCraftingRecipe(ItemList.Conveyor_Module_LV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
@@ -1089,14 +1045,14 @@ public class MetaItem1 extends MaterialMetaItem {
 				'R', new UnificationEntry(OrePrefix.plate, Materials.Rubber));
 
 
-		ItemList.Electric_Piston_LV.set(addItem(640)); //"Electric Piston (LV)", ""
-		ItemList.Electric_Piston_MV.set(addItem(641)); //"Electric Piston (MV)", ""
-		ItemList.Electric_Piston_HV.set(addItem(642)); //"Electric Piston (HV)", ""
-		ItemList.Electric_Piston_EV.set(addItem(643)); //"Electric Piston (EV)", ""
-		ItemList.Electric_Piston_IV.set(addItem(644)); //"Electric Piston (IV)", ""
-		ItemList.Electric_Piston_LuV.set(addItem(645)); //"Electric Piston (LuV)", ""
-		ItemList.Electric_Piston_ZPM.set(addItem(646)); //"Electric Piston (ZPM)", ""
-		ItemList.Electric_Piston_UV.set(addItem(647)); //"Electric Piston (UV)", ""
+		ItemList.Electric_Piston_LV.set(addItem(640, "electric.piston.lv"));
+		ItemList.Electric_Piston_MV.set(addItem(641, "electric.piston.mv"));
+		ItemList.Electric_Piston_HV.set(addItem(642, "electric.piston.hv"));
+		ItemList.Electric_Piston_EV.set(addItem(643, "electric.piston.ev"));
+		ItemList.Electric_Piston_IV.set(addItem(644, "electric.piston.iv"));
+		ItemList.Electric_Piston_LuV.set(addItem(645, "electric.piston.luv"));
+		ItemList.Electric_Piston_ZPM.set(addItem(646, "electric.piston.zpm"));
+		ItemList.Electric_Piston_UV.set(addItem(647, "electric.piston.uv"));
 
 		ModHandler.addCraftingRecipe(ItemList.Electric_Piston_LV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
@@ -1144,14 +1100,14 @@ public class MetaItem1 extends MaterialMetaItem {
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tungsten));
 
 
-		ItemList.Robot_Arm_LV.set(addItem(650)); //"Robot Arm (LV)", "Inserts into specific Slots (as Cover)"
-		ItemList.Robot_Arm_MV.set(addItem(651)); //"Robot Arm (MV)", "Inserts into specific Slots (as Cover)"
-		ItemList.Robot_Arm_HV.set(addItem(652)); //"Robot Arm (HV)", "Inserts into specific Slots (as Cover)"
-		ItemList.Robot_Arm_EV.set(addItem(653)); //"Robot Arm (EV)", "Inserts into specific Slots (as Cover)"
-		ItemList.Robot_Arm_IV.set(addItem(654)); //"Robot Arm (IV)", "Inserts into specific Slots (as Cover)"
-		ItemList.Robot_Arm_LuV.set(addItem(655)); //"Robot Arm (LuV)", "Inserts into specific Slots (as Cover)"
-		ItemList.Robot_Arm_ZPM.set(addItem(656)); //"Robot Arm (ZPM)", "Inserts into specific Slots (as Cover)"
-		ItemList.Robot_Arm_UV.set(addItem(657)); //"Robot Arm (UV)", "Inserts into specific Slots (as Cover)"
+		ItemList.Robot_Arm_LV.set(addItem(650, "robot.arm.lv"));
+		ItemList.Robot_Arm_MV.set(addItem(651, "robot.arm.mv"));
+		ItemList.Robot_Arm_HV.set(addItem(652, "robot.arm.hv"));
+		ItemList.Robot_Arm_EV.set(addItem(653, "robot.arm.ev"));
+		ItemList.Robot_Arm_IV.set(addItem(654, "robot.arm.iv"));
+		ItemList.Robot_Arm_LuV.set(addItem(655, "robot.arm.luv"));
+		ItemList.Robot_Arm_ZPM.set(addItem(656, "robot.arm.zpm"));
+		ItemList.Robot_Arm_UV.set(addItem(657, "robot.arm.uv"));
 
 		ModHandler.addCraftingRecipe(ItemList.Robot_Arm_LV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
@@ -1193,14 +1149,14 @@ public class MetaItem1 extends MaterialMetaItem {
 				'E', new UnificationEntry(OrePrefix.circuit, Materials.Master),
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tungsten));
 
-		ItemList.Field_Generator_LV.set(addItem(670)); //"Field Generator (LV)", ""
-		ItemList.Field_Generator_MV.set(addItem(671)); //"Field Generator (MV)", ""
-		ItemList.Field_Generator_HV.set(addItem(672)); //"Field Generator (HV)", ""
-		ItemList.Field_Generator_EV.set(addItem(673)); //"Field Generator (EV)", ""
-		ItemList.Field_Generator_IV.set(addItem(674)); //"Field Generator (IV)", ""
-		ItemList.Field_Generator_LuV.set(addItem(675)); //"Field Generator (LuV)", ""
-		ItemList.Field_Generator_ZPM.set(addItem(676)); //"Field Generator (ZPM)", ""
-		ItemList.Field_Generator_UV.set(addItem(677)); //"Field Generator (UV)", ""
+		ItemList.Field_Generator_LV.set(addItem(670, "field.generator.lv"));
+		ItemList.Field_Generator_MV.set(addItem(671, "field.generator.mv"));
+		ItemList.Field_Generator_HV.set(addItem(672, "field.generator.hv"));
+		ItemList.Field_Generator_EV.set(addItem(673, "field.generator.ev"));
+		ItemList.Field_Generator_IV.set(addItem(674, "field.generator.iv"));
+		ItemList.Field_Generator_LuV.set(addItem(675, "field.generator.luv"));
+		ItemList.Field_Generator_ZPM.set(addItem(676, "field.generator.zpm"));
+		ItemList.Field_Generator_UV.set(addItem(677, "field.generator.uv"));
 
 		ModHandler.addCraftingRecipe(ItemList.Field_Generator_LV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
@@ -1216,14 +1172,14 @@ public class MetaItem1 extends MaterialMetaItem {
 				'C', new UnificationEntry(OrePrefix.circuit, Materials.Good),
 				'W', new UnificationEntry(OrePrefix.wireGt02, Materials.Osmium));
 
-		ItemList.Emitter_LV.set(addItem(680)); //"Emitter (LV)", ""
-		ItemList.Emitter_MV.set(addItem(681)); //"Emitter (MV)", ""
-		ItemList.Emitter_HV.set(addItem(682)); //"Emitter (HV)", ""
-		ItemList.Emitter_EV.set(addItem(683)); //"Emitter (EV)", ""
-		ItemList.Emitter_IV.set(addItem(684)); //"Emitter (IV)", ""
-		ItemList.Emitter_LuV.set(addItem(685)); //"Emitter (LuV)", ""
-		ItemList.Emitter_ZPM.set(addItem(686)); //"Emitter (ZPM)", ""
-		ItemList.Emitter_UV.set(addItem(687)); //"Emitter (UV)", ""
+		ItemList.Emitter_LV.set(addItem(680, "emitter.lv"));
+		ItemList.Emitter_MV.set(addItem(681, "emitter.mv"));
+		ItemList.Emitter_HV.set(addItem(682, "emitter.hv"));
+		ItemList.Emitter_EV.set(addItem(683, "emitter.ev"));
+		ItemList.Emitter_IV.set(addItem(684, "emitter.iv"));
+		ItemList.Emitter_LuV.set(addItem(685, "emitter.luv"));
+		ItemList.Emitter_ZPM.set(addItem(686, "emitter.zpm"));
+		ItemList.Emitter_UV.set(addItem(687, "emitter.uv"));
 
 		ModHandler.addCraftingRecipe(ItemList.Emitter_LV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
@@ -1266,14 +1222,14 @@ public class MetaItem1 extends MaterialMetaItem {
 				'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Tungsten));
 
 
-		ItemList.Sensor_LV.set(addItem(690)); //"Sensor (LV)", ""
-		ItemList.Sensor_MV.set(addItem(691)); //"Sensor (MV)", ""
-		ItemList.Sensor_HV.set(addItem(692)); //"Sensor (HV)", ""
-		ItemList.Sensor_EV.set(addItem(693)); //"Sensor (EV)", ""
-		ItemList.Sensor_IV.set(addItem(694)); //"Sensor (IV)", ""
-		ItemList.Sensor_LuV.set(addItem(695)); //"Sensor (LuV)", ""
-		ItemList.Sensor_ZPM.set(addItem(696)); //"Sensor (ZPM)", ""
-		ItemList.Sensor_UV.set(addItem(697)); //"Sensor (UV)", ""
+		ItemList.Sensor_LV.set(addItem(690, "sensor.lv"));
+		ItemList.Sensor_MV.set(addItem(691, "sensor.mv"));
+		ItemList.Sensor_HV.set(addItem(692, "sensor.hv"));
+		ItemList.Sensor_EV.set(addItem(693, "sensor.ev"));
+		ItemList.Sensor_IV.set(addItem(694, "sensor.iv"));
+		ItemList.Sensor_LuV.set(addItem(695, "sensor.luv"));
+		ItemList.Sensor_ZPM.set(addItem(696, "sensor.zpm"));
+		ItemList.Sensor_UV.set(addItem(697, "sensor.uv"));
 
 		ModHandler.addCraftingRecipe(ItemList.Sensor_LV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
@@ -1316,40 +1272,42 @@ public class MetaItem1 extends MaterialMetaItem {
 				'C', new UnificationEntry(OrePrefix.circuit, Materials.Master));
 
 
-		ItemList.Circuit_Primitive.set(addItem(700).setUnificationData(OrePrefix.circuit, Materials.Primitive)); // "NAND Chip", "A very simple Circuit",
-		ItemList.Circuit_Basic.set(addItem(701).setUnificationData(OrePrefix.circuit, Materials.Basic)); //"Basic Electronic Circuit", "A basic Circuit",
-		ItemList.Circuit_Good.set(addItem(702).setUnificationData(OrePrefix.circuit, Materials.Good)); //"Good Electronic Circuit", "A good Circuit",
-		ItemList.Circuit_Advanced.set(addItem(703).setUnificationData(OrePrefix.circuit, Materials.Advanced)); //"Advanced Circuit", "An advanced Circuit"
-		ItemList.Circuit_Data.set(addItem(704).setUnificationData(OrePrefix.circuit, Materials.Data)); //"Data Storage Circuit", "A Data Storage Chip"
-		ItemList.Circuit_Elite.set(addItem(705).setUnificationData(OrePrefix.circuit, Materials.Elite)); //"Data Control Circuit", "A Processor",
-		ItemList.Circuit_Master.set(addItem(706).setUnificationData(OrePrefix.circuit, Materials.Master)); //"Energy Flow Circuit", "A High Voltage Processor"
-		ItemList.Tool_DataOrb.set(addItem(707).setUnificationData(OrePrefix.circuit, Materials.Ultimate).addStats(new Behaviour_DataOrb())); //"Data Orb", "A High Capacity Data Storage"
+		ItemList.Tool_DataStick.set(addItem(708, "tool.datastick").setUnificationData(OrePrefix.circuit, Materials.Data).addStats(new Behaviour_DataStick()));
+		ItemList.Tool_DataOrb.set(addItem(707, "tool.dataorb").setUnificationData(OrePrefix.circuit, Materials.Ultimate).addStats(new Behaviour_DataOrb()));
+
+		ItemList.Circuit_Primitive.set(addItem(700, "circuit.primitive").setUnificationData(OrePrefix.circuit, Materials.Primitive));
+		ItemList.Circuit_Basic.set(addItem(701, "circuit.basic").setUnificationData(OrePrefix.circuit, Materials.Basic));
+		ItemList.Circuit_Good.set(addItem(702, "circuit.good").setUnificationData(OrePrefix.circuit, Materials.Good));
+		ItemList.Circuit_Advanced.set(addItem(703, "circuit.advanced").setUnificationData(OrePrefix.circuit, Materials.Advanced));
+		ItemList.Circuit_Data.set(addItem(704, "circuit.data").setUnificationData(OrePrefix.circuit, Materials.Data));
+		ItemList.Circuit_Elite.set(addItem(705, "circuit.elite").setUnificationData(OrePrefix.circuit, Materials.Elite));
+		ItemList.Circuit_Master.set(addItem(706, "circuit.master").setUnificationData(OrePrefix.circuit, Materials.Master));
 		ItemList.Circuit_Ultimate.set(ItemList.Tool_DataOrb.get(1));
+
 		ModHandler.addShapelessCraftingRecipe(ItemList.Tool_DataOrb.get(1), ModHandler.RecipeBits.NOT_REMOVABLE, ItemList.Tool_DataOrb.get(1));
-		ItemList.Tool_DataStick.set(addItem(708).setUnificationData(OrePrefix.circuit, Materials.Data).addStats(new Behaviour_DataStick())); //"Data Stick", "A Low Capacity Data Storage",
 		ModHandler.addShapelessCraftingRecipe(ItemList.Tool_DataStick.get(1), ModHandler.RecipeBits.NOT_REMOVABLE, ItemList.Tool_DataStick.get(1));
 
 
-		ItemList.Circuit_Board_Basic.set(addItem(710)); //"Basic Circuit Board", "A basic Board"
-		ItemList.Circuit_Board_Advanced.set(addItem(711)); //"Advanced Circuit Board", "An advanced Board"
-		ItemList.Circuit_Board_Elite.set(addItem(712)); //"Processor Board", "A Processor Board"
-		ItemList.Circuit_Parts_Crystal_Chip_Elite.set(addItem(713)); //"Engraved Crystal Chip", "Needed for Circuits"
-		ItemList.Circuit_Parts_Crystal_Chip_Master.set(addItem(714)); //"Engraved Lapotron Chip", "Needed for Circuits"
-		ItemList.Circuit_Parts_Advanced.set(addItem(715)); //"Advanced Circuit Parts", "Advanced Circuit Parts"
-		ItemList.Circuit_Parts_Wiring_Basic.set(addItem(716)); //"Etched Medium Voltage Wiring", "Part of Circuit Boards"
-		ItemList.Circuit_Parts_Wiring_Advanced.set(addItem(717)); //"Etched High Voltage Wiring", "Part of Circuit Boards"
-		ItemList.Circuit_Parts_Wiring_Elite.set(addItem(718)); //"Etched Extreme Voltage Wiring", "Part of Circuit Boards"
-		ItemList.Empty_Board_Basic.set(addItem(719)); //"Empty Circuit Board", "A Board Part"
-		ItemList.Empty_Board_Elite.set(addItem(720)); //"Empty Processor Board", "A Processor Board Part"
+		ItemList.Circuit_Board_Basic.set(addItem(710, "circuit.board.basic"));
+		ItemList.Circuit_Board_Advanced.set(addItem(711, "circuit.board.advanced"));
+		ItemList.Circuit_Board_Elite.set(addItem(712, "circuit.board.elite"));
+		ItemList.Circuit_Parts_Crystal_Chip_Elite.set(addItem(713, "circuit.parts.crystal.chip.elite"));
+		ItemList.Circuit_Parts_Crystal_Chip_Master.set(addItem(714, "circuit.parts.crystal.chip.master"));
+		ItemList.Circuit_Parts_Advanced.set(addItem(715, "circuit.parts.advanced"));
+		ItemList.Circuit_Parts_Wiring_Basic.set(addItem(716, "circuit.parts.wiring.basic"));
+		ItemList.Circuit_Parts_Wiring_Advanced.set(addItem(717, "circuit.parts.wiring.advanced"));
+		ItemList.Circuit_Parts_Wiring_Elite.set(addItem(718, "circuit.parts.wiring.elite"));
+		ItemList.Empty_Board_Basic.set(addItem(719, "empty.board.basic"));
+		ItemList.Empty_Board_Elite.set(addItem(720, "empty.board.elite"));
 
 
-		ItemList.Component_Sawblade_Diamond.set(addItem(721).addOreDict(OreDictNames.craftingDiamondBlade)); //"Diamond Sawblade", "",
-		ItemList.Component_Grinder_Diamond.set(addItem(722).addOreDict(OreDictNames.craftingGrinder)); //"Diamond Grinding Head", ""
-		ItemList.Component_Grinder_Tungsten.set(addItem(723).addOreDict(OreDictNames.craftingGrinder)); //"Tungsten Grinding Head", ""
+		ItemList.Component_Sawblade_Diamond.set(addItem(721, "component.sawblade.diamond").addOreDict(OreDictNames.craftingDiamondBlade));
+		ItemList.Component_Grinder_Diamond.set(addItem(722, "component.grinder.diamond").addOreDict(OreDictNames.craftingGrinder));
+		ItemList.Component_Grinder_Tungsten.set(addItem(723, "component.grinder.tungsten").addOreDict(OreDictNames.craftingGrinder));
 
-		ItemList.QuantumEye.set(addItem(724)); //"Quantum Eye", "Improved Ender Eye"
-		ItemList.QuantumStar.set(addItem(725)); //"Quantum Star", "Improved Nether Star"
-		ItemList.Gravistar.set(addItem(726)); //"Gravi Star", "Ultimate Nether Star"
+		ItemList.QuantumEye.set(addItem(724, "quantumeye"));
+		ItemList.QuantumStar.set(addItem(725, "quantumstar"));
+		ItemList.Gravistar.set(addItem(726, "gravistar"));
 
 		ModHandler.addCraftingRecipe(ItemList.Field_Generator_HV.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
@@ -1393,8 +1351,8 @@ public class MetaItem1 extends MaterialMetaItem {
 				'T', new UnificationEntry(OrePrefix.plate, Materials.Tungsten),
 				'S', new UnificationEntry(OrePrefix.plate, Materials.Steel));
 
-		ItemList.Upgrade_Muffler.set(addItem(727)); //"Muffler Upgrade", "Makes Machines silent"
-		ItemList.Upgrade_Lock.set(addItem(728)); //"Lock Upgrade", "Protects your Machines"
+		ItemList.Upgrade_Muffler.set(addItem(727, "upgrade.muffler"));
+		ItemList.Upgrade_Lock.set(addItem(728, "upgrade.lock"));
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
 				.inputs(OreDictionaryUnifier.get(OrePrefix.plate, Materials.Aluminium, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Plastic, 2))
@@ -1451,7 +1409,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				.EUt(16)
 				.buildAndRegister();
 
-		ItemList.Component_Filter.set(addItem(729).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Zinc, OrePrefix.foil.materialAmount * 16L))).addOreDict(OreDictNames.craftingFilter)); // "Item Filter", "",
+		ItemList.Component_Filter.set(addItem(729, "component.filter").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Zinc, OrePrefix.foil.materialAmount * 16L))).addOreDict(OreDictNames.craftingFilter));
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
 				.inputs(ModHandler.getIC2Item(ItemName.crafting, CraftingItemType.carbon_mesh, 4), OreDictionaryUnifier.get(OrePrefix.foil, Materials.Zinc, 16))
@@ -1461,8 +1419,8 @@ public class MetaItem1 extends MaterialMetaItem {
 				.EUt(32)
 				.buildAndRegister();
 
-		ItemList.Tool_Cheat.set(addItem(761).addStats(new Behaviour_Scanner(), new ElectricStats(-2000000000, -1))); //"Debug Scanner", "Also an Infinite Energy Source"
-		ItemList.Tool_Scanner.set(addItem(762).addStats(new Behaviour_Scanner(), new ElectricStats(400000, 2, true, false))); // "Portable Scanner", "Tricorder",
+		ItemList.Tool_Cheat.set(addItem(761, "tool.cheat").addStats(new Behaviour_Scanner(), new ElectricStats(-2000000000, -1)));
+		ItemList.Tool_Scanner.set(addItem(762, "tool.scanner").addStats(new Behaviour_Scanner(), new ElectricStats(400000, 2, true, false)));
 		ModHandler.addCraftingRecipe(ItemList.Tool_Scanner.get(1),
 				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
 				"EPR", "CSC", "PBP",
@@ -1473,9 +1431,9 @@ public class MetaItem1 extends MaterialMetaItem {
 				'S', Items.DIAMOND,
 				'B', ItemList.Battery_RE_MV_Lithium);
 
-		ItemList.NC_SensorKit.set(addItem(763).addStats(new Behaviour_SensorKit())); //"GregTech Sensor Kit", "",
-		ItemList.Duct_Tape.set(addItem(764).addOreDict(OreDictNames.craftingDuctTape)); //"BrainTech Aerospace Advanced Reinforced Duct Tape FAL-84", "If you can't fix it with this, use more of it!",
-		ItemList.McGuffium_239.set(addItem(765)); //"Mc Guffium 239", "42% better than Phlebotnium"
+		ItemList.NC_SensorKit.set(addItem(763, "nc.sensorkit").addStats(new Behaviour_SensorKit()));
+		ItemList.Duct_Tape.set(addItem(764, "duct.tape").addOreDict(OreDictNames.craftingDuctTape));
+		ItemList.McGuffium_239.set(addItem(765, "mcguffium.239"));
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
 				.inputs(OreDictionaryUnifier.get(OrePrefix.circuit, Materials.Good, 4), OreDictionaryUnifier.get(OrePrefix.plate, Materials.StainlessSteel, 2))

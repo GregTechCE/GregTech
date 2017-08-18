@@ -53,7 +53,7 @@ public final class SimpleItemStack {
 
     @Override
     public String toString() {
-        return this.item.getItemStackDisplayName(asItemStack());
+        return this.stackSize + "x" + this.item.getUnlocalizedName(asItemStack());
     }
 
 }

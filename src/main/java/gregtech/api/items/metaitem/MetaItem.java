@@ -12,11 +12,11 @@ import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
-import gregtech.api.unification.stack.UnificationEntry;
 import ic2.api.item.IBoxable;
 import ic2.api.item.ISpecialElectricItem;
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -27,7 +27,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.Fluid;
@@ -36,6 +35,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.capability.wrappers.FluidContainerItemWrapper;
 import net.minecraftforge.fml.common.IFuelHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.Validate;
 
@@ -51,11 +52,11 @@ import java.util.List;
  *
  * You can also extend this class and occupy some of it's MetaData, and just pass an meta offset in constructor, and everything will work properly.
  *
- * Items are added in MetaItem via {@link #addItem(int)}. You will get {@link MetaValueItem} instance, which you can configure in builder-alike pattern:
+ * Items are added in MetaItem via {@link #addItem(int, String, String...)}. You will get {@link MetaValueItem} instance, which you can configure in builder-alike pattern:
  * {@code addItem(0).setHandheld().addStats(new ElectricStats(10000, 1,  false)) }
  * This will add single-use handheld-rendered (unchargeable) LV battery with initial capacity 10000 EU
  */
-@SuppressWarnings({"deprecation", "unchecked"})
+@SuppressWarnings("unchecked")
 public class MetaItem<T extends MetaItem.MetaValueItem> extends GenericItem implements ISpecialElectricItem, IFluidContainerItem, IFuelHandler, IReactorComponent, IBoxable {
 
     private TShortObjectMap<T> metaItems = new TShortObjectHashMap<>();
@@ -69,13 +70,13 @@ public class MetaItem<T extends MetaItem.MetaValueItem> extends GenericItem impl
         this.metaItemOffset = metaItemOffset;
     }
 
-    protected T constructMetaValueItem(short metaValue) {
-        return (T) new MetaValueItem(metaValue);
+    protected T constructMetaValueItem(short metaValue, String unlocalizedName, String... nameParameters) {
+        return (T) new MetaValueItem(metaValue, unlocalizedName, nameParameters);
     }
 
-    public final T addItem(int metaValue) {
+    public final T addItem(int metaValue, String unlocalizedName, String... nameParameters) {
         Validate.inclusiveBetween(0, Short.MAX_VALUE - 1, metaValue, "MetaItem ID should be in range from 0 to Short.MAX_VALUE-1");
-        T metaValueItem = constructMetaValueItem((short) metaValue);
+        T metaValueItem = constructMetaValueItem((short) metaValue, unlocalizedName, nameParameters);
         metaItems.put((short) metaValue, metaValueItem);
         return metaValueItem;
     }
@@ -393,11 +394,36 @@ public class MetaItem<T extends MetaItem.MetaValueItem> extends GenericItem impl
     }
 
     @Override
+    public String getItemStackDisplayName(ItemStack stack) {
+        if (stack.getItemDamage() >= metaItemOffset) {
+            T item = getItem(stack);
+
+            if (item.nameParameters.length != 0) {
+                String[] localizedParams = new String[item.nameParameters.length];
+                for (int i = 0; i < item.nameParameters.length; i++) {
+                    localizedParams[i] = I18n.format(item.nameParameters[i]);
+                }
+
+                return I18n.format("metaitem." + item.unlocalizedName + ".name", (Object[]) localizedParams);
+            }
+            return I18n.format("metaitem." + item.unlocalizedName + ".name");
+        }
+        return super.getItemStackDisplayName(stack);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> lines, boolean showAdditionalInfo) {
         super.addInformation(itemStack, player, lines, showAdditionalInfo);
+
+        String unlocalizedTooltip = "metaitem." + getItem(itemStack).unlocalizedName + ".tooltip";
+        if (I18n.hasKey(unlocalizedTooltip)) {
+            lines.add(I18n.format(unlocalizedTooltip));
+        }
+
         IElectricStats electricStats = getManager(itemStack);
         if(electricStats.getMaxCharge(itemStack) > 0) {
-            lines.add(I18n.translateToLocalFormatted("item.gt.meta_item.electric_info",
+            lines.add(I18n.format("item.gt.meta_item.electric_info",
                     electricStats.getCharge(itemStack),
                     electricStats.getMaxCharge(itemStack),
                     GT_Values.V[electricStats.getTier(itemStack)]));
@@ -405,11 +431,11 @@ public class MetaItem<T extends MetaItem.MetaValueItem> extends GenericItem impl
         if(getCapacity(itemStack) > 0) {
             FluidStack fluid = getFluid(itemStack);
             if(fluid != null) {
-                lines.add(I18n.translateToLocalFormatted("item.gt.meta_item.fluid_info",
+                lines.add(I18n.format("item.gt.meta_item.fluid_info",
                         fluid.amount,
                         getCapacity(itemStack),
                         fluid.getLocalizedName()));
-            } else lines.add(I18n.translateToLocal("item.gt.meta_item.fluid_info_empty"));
+            } else lines.add(I18n.format("item.gt.meta_item.fluid_info_empty"));
         }
         for(IItemBehaviour behaviour : getBehaviours(itemStack)) {
             behaviour.addInformation(itemStack, lines);
@@ -417,6 +443,7 @@ public class MetaItem<T extends MetaItem.MetaValueItem> extends GenericItem impl
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
         for(MetaValueItem enabledItem : metaItems.valueCollection()) {
             if(enabledItem.isVisible()) {
@@ -454,6 +481,11 @@ public class MetaItem<T extends MetaItem.MetaValueItem> extends GenericItem impl
 
         public final int metaValue;
 
+        public final String unlocalizedName;
+
+        //Parameters can be either localized or not
+        protected final String[] nameParameters;
+
         private IElectricStats electricStats;
         private IFluidStats fluidStats;
         private INuclearStats nuclearStats;
@@ -464,8 +496,10 @@ public class MetaItem<T extends MetaItem.MetaValueItem> extends GenericItem impl
         private boolean visible = true;
         private int maxStackSize = 64;
 
-        protected MetaValueItem(int metaValue) {
+        protected MetaValueItem(int metaValue, String unlocalizedName, String... nameParameters) {
             this.metaValue = metaValue;
+            this.unlocalizedName = unlocalizedName;
+            this.nameParameters = nameParameters;
         }
 
         public MetaValueItem setMaterialInfo(ItemMaterialInfo materialInfo) {
