@@ -8,10 +8,6 @@
     "uvlock": true
   },
   "variants": {
-      "Iron": {
-        "textures": {
-          "all": "blocks/cobblestone"
-        }
-      }
+      $VARIANTS$
   }
 }
