@@ -8,9 +8,9 @@ import net.minecraft.util.text.TextFormatting;
 
 public class DamageSources {
 
-    private static DamageSource EXPLOSION = new DamageSource("explosion");
-    private static DamageSource HEAT = new DamageSource("heat");
-    private static DamageSource FROST = new DamageSource("frost");
+    private static DamageSource EXPLOSION = new DamageSource("explosion").setExplosion();
+    private static DamageSource HEAT = new DamageSource("heat").setDamageBypassesArmor();
+    private static DamageSource FROST = new DamageSource("frost").setDamageBypassesArmor();
 
     public static DamageSource getElectricDamage() {
         return ic2.api.info.Info.DMG_ELECTRIC;
@@ -32,8 +32,8 @@ public class DamageSources {
         return FROST;
     }
 
-    public static DamageSource causeCombatDamage(String aType, EntityLivingBase aDamager) {
-        return new EntityDamageSource(aType, aDamager);
+    public static DamageSource causeCombatDamage(String type, EntityLivingBase damager) {
+        return new EntityDamageSource(type, damager);
     }
 
 }

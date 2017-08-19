@@ -110,16 +110,7 @@ public interface IMetaTileEntity extends ITurnable, IRedstoneReceiver, IRedstone
      */
     void onRemoval();
 
-    /**
-     * @return the Server Side Container
-     */
     Container getServerGUI(int ID, InventoryPlayer playerInventory);
-
-    /**
-     * @return the Client Side GUI Container
-     */
-    @SideOnly(Side.CLIENT)
-    GuiContainer getClientGUI(int ID, InventoryPlayer playerInventory);
 
     int getSlotsCount();
 

@@ -3,11 +3,10 @@ package gregtech.api.items.metaitem;
 import com.google.common.collect.ImmutableList;
 import gnu.trove.map.TShortObjectMap;
 import gnu.trove.map.hash.TShortObjectHashMap;
-import gregtech.api.GregTech_API;
 import gregtech.api.GT_Values;
+import gregtech.api.GregTech_API;
 import gregtech.api.items.OreDictNames;
 import gregtech.api.items.metaitem.stats.*;
-import gregtech.api.items.GenericItem;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
@@ -25,7 +24,10 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -35,6 +37,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.capability.wrappers.FluidContainerItemWrapper;
 import net.minecraftforge.fml.common.IFuelHandler;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
@@ -53,26 +56,29 @@ import java.util.List;
  * You can also extend this class and occupy some of it's MetaData, and just pass an meta offset in constructor, and everything will work properly.
  *
  * Items are added in MetaItem via {@link #addItem(int, String, String...)}. You will get {@link MetaValueItem} instance, which you can configure in builder-alike pattern:
- * {@code addItem(0).setHandheld().addStats(new ElectricStats(10000, 1,  false)) }
- * This will add single-use handheld-rendered (unchargeable) LV battery with initial capacity 10000 EU
+ * {@code addItem(0, "test_item").addStats(new ElectricStats(10000, 1,  false)) }
+ * This will add single-use (unchargeable) LV battery with initial capacity 10000 EU
  */
-@SuppressWarnings("unchecked")
-public class MetaItem<T extends MetaItem.MetaValueItem> extends GenericItem implements ISpecialElectricItem, IFluidContainerItem, IFuelHandler, IReactorComponent, IBoxable {
+@SuppressWarnings({"unchecked", "deprecation"})
+public abstract class MetaItem<T extends MetaItem.MetaValueItem> extends Item implements ISpecialElectricItem, IFluidContainerItem, IFuelHandler, IReactorComponent, IBoxable {
 
     private TShortObjectMap<T> metaItems = new TShortObjectHashMap<>();
 
     protected final short metaItemOffset;
 
-    public MetaItem(String unlocalizedName, short metaItemOffset) {
-        super(unlocalizedName);
+    public MetaItem(short metaItemOffset) {
+        setUnlocalizedName("invalid"); //default unlocalized name is invalid
         setHasSubtypes(true);
-        setCreativeTab(GregTech_API.TAB_GREGTECH_MATERIALS);
+        setCreativeTab(GregTech_API.TAB_GREGTECH);
         this.metaItemOffset = metaItemOffset;
     }
 
-    protected T constructMetaValueItem(short metaValue, String unlocalizedName, String... nameParameters) {
-        return (T) new MetaValueItem(metaValue, unlocalizedName, nameParameters);
+    public void registerItem(String registryName) {
+        setRegistryName(registryName);
+        GameRegistry.register(this);
     }
+
+    protected abstract T constructMetaValueItem(short metaValue, String unlocalizedName, String... nameParameters);
 
     public final T addItem(int metaValue, String unlocalizedName, String... nameParameters) {
         Validate.inclusiveBetween(0, Short.MAX_VALUE - 1, metaValue, "MetaItem ID should be in range from 0 to Short.MAX_VALUE-1");
@@ -119,6 +125,7 @@ public class MetaItem<T extends MetaItem.MetaValueItem> extends GenericItem impl
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
         return new FluidContainerItemWrapper(this, stack);
     }
@@ -424,19 +431,19 @@ public class MetaItem<T extends MetaItem.MetaValueItem> extends GenericItem impl
 
         IElectricStats electricStats = getManager(itemStack);
         if(electricStats.getMaxCharge(itemStack) > 0) {
-            lines.add(I18n.format("item.gt.meta_item.electric_info",
-                    electricStats.getCharge(itemStack),
-                    electricStats.getMaxCharge(itemStack),
+            lines.add(I18n.format("metaitem.generic.electric_item.tooltip",
+                    (long) electricStats.getCharge(itemStack),
+                    (long) electricStats.getMaxCharge(itemStack),
                     GT_Values.V[electricStats.getTier(itemStack)]));
         }
         if(getCapacity(itemStack) > 0) {
             FluidStack fluid = getFluid(itemStack);
             if(fluid != null) {
-                lines.add(I18n.format("item.gt.meta_item.fluid_info",
+                lines.add(I18n.format("metaitem.generic.fluid_container.tooltip",
                         fluid.amount,
                         getCapacity(itemStack),
                         fluid.getLocalizedName()));
-            } else lines.add(I18n.format("item.gt.meta_item.fluid_info_empty"));
+            } else lines.add(I18n.format("metaitem.generic.fluid_container.tooltip_empty"));
         }
         for(IItemBehaviour behaviour : getBehaviours(itemStack)) {
             behaviour.addInformation(itemStack, lines);

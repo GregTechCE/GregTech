@@ -39,7 +39,7 @@ import java.util.Optional;
  * Tool behaviours are implemented by {@link IToolStats} objects
  *
  * As example, with this code you can add LV electric drill tool:
- * {@code addItem(0).addStats(new ElectricStats(10000, 1, true, false)).setToolStats(new ToolStatsExampleDrill()) }
+ * {@code addItem(0, "test_item").addStats(new ElectricStats(10000, 1, true, false)).setToolStats(new ToolStatsExampleDrill()) }
  *
  * @see IToolStats
  * @see MetaItem
@@ -47,8 +47,8 @@ import java.util.Optional;
 @SuppressWarnings("unchecked")
 public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends MetaItem<T> implements IDamagableItem {
 
-    public ToolMetaItem(String unlocalizedName) {
-        super(unlocalizedName, (short) 0);
+    public ToolMetaItem() {
+        super((short) 0);
     }
 
     @Override

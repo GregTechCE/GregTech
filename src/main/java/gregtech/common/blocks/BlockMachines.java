@@ -18,6 +18,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.itemblocks.ItemMachines;
 import gregtech.common.blocks.materials.MaterialMachines;
 import gregtech.common.render.GT_Renderer_Block;
+import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
@@ -52,7 +53,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class BlockMachines extends GenericBlock implements IDebugableBlock, ITileEntityProvider {
+public class BlockMachines extends Block implements IDebugableBlock, ITileEntityProvider {
 
     public BlockMachines() {
         super("blockmachines", ItemMachines.class, MaterialMachines.INSTANCE);

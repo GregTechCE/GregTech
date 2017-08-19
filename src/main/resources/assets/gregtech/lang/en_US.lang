@@ -1,4 +1,8 @@
 metaitem.01.tooltip.purify=Throw into Cauldron to get clean Dust
+metaitem.generic.fluid_container.tooltip=%d/%dL %s
+metaitem.generic.fluid_container.tooltip_empty=Empty
+metaitem.generic.electric_item.tooltip=%d/%d EU - Tier %d
+item.invalid.name=Invalid item.
 
 metaitem.credit.copper.name=Copper Credit
 metaitem.credit.copper.tooltip=0.125 Credits

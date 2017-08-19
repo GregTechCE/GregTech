@@ -492,7 +492,7 @@ public enum OrePrefix {
     }
 
     @SideOnly(Side.CLIENT)
-    public String getDefaultLocalNameForItem(Material material) {
+    public String getLocalNameForItem(Material material) {
         String unlocalized = "item.material.oreprefix." + this.name();
         String matLocalized = material.getLocalizedName();
         String formatted = I18n.format(unlocalized, matLocalized);

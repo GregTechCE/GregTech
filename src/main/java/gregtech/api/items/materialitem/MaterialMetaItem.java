@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import gnu.trove.list.array.TShortArrayList;
 import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.DamageSources;
+import gregtech.api.items.metaitem.StandardMetaItem;
 import gregtech.api.unification.material.type.MarkerMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
@@ -23,13 +24,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class MaterialMetaItem extends MetaItem<MetaItem.MetaValueItem> {
+public class MaterialMetaItem extends StandardMetaItem {
 
     protected OrePrefix[] orePrefixes;
     private TShortArrayList generatedItems = new TShortArrayList();
 
-    public MaterialMetaItem(String unlocalizedName, OrePrefix... orePrefixes) {
-        super(unlocalizedName, (short) (1000 * orePrefixes.length));
+    public MaterialMetaItem(OrePrefix... orePrefixes) {
+        super((short) (1000 * orePrefixes.length));
         Preconditions.checkArgument(orePrefixes.length <= 32, "Max allowed OrePrefix count on MaterialMetaItem is 32.");
         this.orePrefixes = orePrefixes;
         for(Material material : Material.MATERIAL_REGISTRY) {
@@ -60,7 +61,7 @@ public class MaterialMetaItem extends MetaItem<MetaItem.MetaValueItem> {
             }
             Material material = Material.MATERIAL_REGISTRY.getObjectById(itemStack.getItemDamage() % 1000);
             OrePrefix prefix = orePrefixes[itemStack.getItemDamage() / 1000];
-            return prefix.getDefaultLocalNameForItem(material);
+            return prefix.getLocalNameForItem(material);
         }
         return super.getItemStackDisplayName(itemStack);
     }

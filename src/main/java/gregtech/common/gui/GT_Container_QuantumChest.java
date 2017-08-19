@@ -4,7 +4,7 @@ import net.minecraft.inventory.IContainerListener;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import gregtech.api.gui.ContainerMetaTileEntity;
-import gregtech.api.gui.SlotOutput;
+import gregtech.api.gui.slot.SlotOutput;
 import gregtech.api.gui.GT_Slot_Render;
 import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumChest;

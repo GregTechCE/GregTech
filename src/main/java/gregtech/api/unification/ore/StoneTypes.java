@@ -1,9 +1,9 @@
 package gregtech.api.unification.ore;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
-import net.minecraft.block.Block;
+import gregtech.common.blocks.BlockGranite;
+import gregtech.common.blocks.BlockMineral;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IStringSerializable;
@@ -39,26 +39,26 @@ public enum StoneTypes implements IStringSerializable {
     }
 
     public static StoneTypes computeStoneType(IBlockState blockState) {
-        Block block = blockState.getBlock();
-        int metadata = block.getMetaFromState(blockState);
-
         StoneTypes variantId = StoneTypes.STONE;
-
-        if (block == Blocks.STONE) {
+        if (blockState.getBlock() == Blocks.STONE) {
             variantId = StoneTypes.STONE;
-        } else if (block == GregTech_API.sBlockGranites) {
-            if (metadata == 0)
+        } else if (blockState.getBlock() instanceof BlockGranite) {
+            BlockGranite block = (BlockGranite) blockState.getBlock();
+            BlockGranite.GraniteVariant variant = block.getVariant(blockState);
+            if (variant == BlockGranite.GraniteVariant.BLACK_GRANITE)
                 variantId = StoneTypes.BLACK_GRANITE;
-            else if (metadata == 8)
+            else if (variant == BlockGranite.GraniteVariant.RED_GRANITE)
                 variantId = StoneTypes.RED_GRANITE;
-        } else if (block == GregTech_API.sBlockStones) {
-            if (metadata == 0)
+        } else if (blockState.getBlock() instanceof BlockMineral) {
+            BlockMineral block = (BlockMineral) blockState.getBlock();
+            BlockMineral.MineralVariant variant = block.getVariant(blockState);
+            if (variant == BlockMineral.MineralVariant.MARBLE)
                 variantId = StoneTypes.MARBLE;
-            else if (metadata == 8)
+            else if (variant == BlockMineral.MineralVariant.BASALT)
                 variantId = StoneTypes.BASALT;
-        } else if (block == Blocks.NETHERRACK) {
+        } else if (blockState.getBlock() == Blocks.NETHERRACK) {
             variantId = StoneTypes.NETHERRACK;
-        } else if (block == Blocks.END_STONE) {
+        } else if (blockState.getBlock() == Blocks.END_STONE) {
             variantId = StoneTypes.ENDSTONE;
         }
         return variantId;
@@ -68,4 +68,5 @@ public enum StoneTypes implements IStringSerializable {
     public String getName() {
         return name;
     }
+
 }

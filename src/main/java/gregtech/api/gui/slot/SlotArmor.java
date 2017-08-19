@@ -1,4 +1,4 @@
-package gregtech.api.gui;
+package gregtech.api.gui.slot;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;

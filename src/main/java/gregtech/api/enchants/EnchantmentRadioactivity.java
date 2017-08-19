@@ -13,27 +13,27 @@ import net.minecraft.util.ResourceLocation;
 
 public class EnchantmentRadioactivity extends EnchantmentDamage {
 
-    public static EnchantmentRadioactivity INSTANCE;
+    public static final EnchantmentRadioactivity INSTANCE = new EnchantmentRadioactivity();
 
-    public EnchantmentRadioactivity() {
+    private EnchantmentRadioactivity() {
         super(Rarity.VERY_RARE, 0);
-        Materials.Plutonium.setEnchantmentForTools(this, 1).setEnchantmentForArmors(this, 1);
-        Materials.Uranium235.setEnchantmentForTools(this, 2).setEnchantmentForArmors(this, 2);
-        Materials.Plutonium241.setEnchantmentForTools(this, 3).setEnchantmentForArmors(this, 3);
-        Materials.NaquadahEnriched.setEnchantmentForTools(this, 4).setEnchantmentForArmors(this, 4);
-        Materials.Naquadria.setEnchantmentForTools(this, 5).setEnchantmentForArmors(this, 5);
-        REGISTRY.register(GT_Config.addIDConfig(ConfigCategories.IDs.enchantments, "Radioactivity", 14),
-                new ResourceLocation(GT_Values.MOD_ID, "radioactivity"), this);
-        INSTANCE = this;
+    }
+
+    public void registerEnchantment() {
+        REGISTRY.register(
+                GT_Config.addIDConfig(ConfigCategories.IDs.enchantments, "Disjunction", 15),
+                new ResourceLocation(GT_Values.MODID, "disjunction"),
+                this
+        );
     }
 
     @Override
-    public int getMinEnchantability(int aLevel) {
-        return Integer.MAX_VALUE;
+    public int getMinEnchantability(int level) {
+        return 0;
     }
 
     @Override
-    public int getMaxEnchantability(int aLevel) {
+    public int getMaxEnchantability(int level) {
         return 0;
     }
 
@@ -43,7 +43,7 @@ public class EnchantmentRadioactivity extends EnchantmentDamage {
     }
 
     @Override
-    public boolean canApply(ItemStack par1ItemStack) {
+    public boolean canApply(ItemStack itemStack) {
         return false;
     }
 
@@ -55,11 +55,6 @@ public class EnchantmentRadioactivity extends EnchantmentDamage {
     @Override
     public void onEntityDamaged(EntityLivingBase hurtEntity, Entity damagingEntity, int level) {
         GT_Utility.applyRadioactivity(hurtEntity, level, 1);
-    }
-
-    @Override
-    public String getName() {
-        return "enchantment.damage.radioactivity";
     }
 
 }

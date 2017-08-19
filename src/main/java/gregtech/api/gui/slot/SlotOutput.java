@@ -1,4 +1,4 @@
-package gregtech.api.gui;
+package gregtech.api.gui.slot;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;

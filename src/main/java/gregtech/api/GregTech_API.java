@@ -139,26 +139,8 @@ public class GregTech_API {
             sClientDataFile, sOPStuff = null;
 
     public static int TICKS_FOR_LAG_AVERAGING = 25, MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = 100;
-    /**
-     * Initialized by the Block creation.
-     */
-    public static BlockMachines sBlockMachines;
 
-    public static Block sBlockOres1;
-    public static Block sBlockMetal1;
-    public static Block sBlockMetal2;
-    public static Block sBlockMetal3;
-    public static Block sBlockMetal4;
-    public static Block sBlockMetal5;
-    public static Block sBlockMetal6;
-    public static Block sBlockMetal7;
-    public static Block sBlockMetal8;
-    public static Block sBlockGem1;
-    public static Block sBlockGem2;
-    public static Block sBlockGem3;
-    public static Block sBlockReinforced;
-    public static BlockStonesAbstract sBlockGranites, sBlockConcretes, sBlockStones;
-    public static Block sBlockCasings1, sBlockCasings2, sBlockCasings3, sBlockCasings4, sBlockCasings5;
+
     /**
      * Getting assigned by the Config
      */

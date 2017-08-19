@@ -1,7 +1,7 @@
 package gregtech.common.gui;
 
 import gregtech.api.gui.ContainerMetaTileEntity;
-import gregtech.api.gui.SlotOutput;
+import gregtech.api.gui.slot.SlotOutput;
 import gregtech.api.capability.internal.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;

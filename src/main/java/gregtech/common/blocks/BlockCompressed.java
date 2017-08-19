@@ -32,6 +32,8 @@ public class BlockCompressed extends DelayedStateBlock {
         initBlockState();
     }
 
+
+
     @Override
     public String getHarvestTool(IBlockState state) {
         Material material = state.getValue(variantProperty);

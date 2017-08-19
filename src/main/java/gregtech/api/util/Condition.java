@@ -5,8 +5,6 @@ public interface Condition<T> {
 
     boolean isTrue(T object);
 
-    // Utility Classes for adding relations between Conditions.
-
     class Not<T> implements Condition<T> {
 
         private final Condition<T> condition;

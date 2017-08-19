@@ -3,60 +3,11 @@ package gregtech.api;
 public enum ConfigCategories {
 
     general,
-    machineconfig,
-    specialunificationtargets;
+    machine_config;
 
     public enum IDs {
         crops,
         enchantments;
-    }
-
-    public enum Materials {
-        heatdamage,
-        oreprocessingoutputmultiplier,
-        blastfurnacerequirements,
-        blastinductionsmelter,;
-    }
-
-    public enum Recipes {
-        researches,
-        harderrecipes,
-        gregtechrecipes,
-        disabledrecipes,
-        recipereplacements,
-        storageblockcrafting,
-        storageblockdecrafting, 
-        crops;
-    }
-
-    public enum Machines {
-        smelting,
-        squeezer,
-        liquidtransposer,
-        liquidtransposerfilling,
-        liquidtransposeremptying,
-        extractor,
-        sawmill,
-        compression,
-        thermalcentrifuge,
-        orewashing,
-        inductionsmelter,
-        rcblastfurnace,
-        scrapboxdrops,
-        massfabamplifier,
-        maceration,
-        rockcrushing,
-        pulverization;
-    }
-
-    public enum Tools {
-        mortar,
-        hammerplating,
-        hammermultiingot,
-        hammerdoubleplate,
-        hammertripleplate,
-        hammerquadrupleplate,
-        hammerquintupleplate;
     }
 
 }
