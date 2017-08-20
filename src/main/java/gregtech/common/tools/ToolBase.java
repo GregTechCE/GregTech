@@ -164,7 +164,7 @@ public abstract class ToolBase implements IToolStats {
 
     @Override
     public int getColor(boolean isToolHead, ItemStack stack) {
-        return isToolHead ? ToolMetaItem.getPrimaryMaterial(stack).materialRGB : ToolMetaItem.getSecondaryMaterial(stack).materialRGB;
+        return isToolHead ? ToolMetaItem.getPrimaryMaterial(stack).materialRGB : ToolMetaItem.getHandleMaterial(stack).materialRGB;
     }
 
     @Override

@@ -38,6 +38,7 @@ public class UnificationEntry {
         return result;
     }
 
+    @Override
     public String toString() {
         return orePrefix.name() + (material == null ? "" : material.toCamelCaseString());
     }

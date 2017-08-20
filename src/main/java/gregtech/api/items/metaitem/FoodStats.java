@@ -33,7 +33,7 @@ public class FoodStats implements IFoodStats {
         this.saturation = saturation;
         this.isDrink = isDrink;
         this.alwaysEdible = alwaysEdible;
-        this.containerItem = containerItem;
+        this.containerItem = containerItem.copy();
         this.potionEffects = potionEffects;
     }
 

@@ -29,6 +29,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.Validate;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -218,7 +219,6 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
         return electricItemManager.canUse(stack, damage) && getInternalDamage(stack) + (damage / 10) < getMaxInternalDamage(stack);
     }
 
-
     private int getMaxInternalDamage(ItemStack itemStack) {
         MetaToolValueItem metaToolValueItem = getItem(itemStack);
         if (metaToolValueItem != null) {
@@ -242,52 +242,26 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
         tagCompound.setInteger("GT.ToolDamage", damage);
     }
 
+    @Nullable
     public static SolidMaterial getPrimaryMaterial(ItemStack itemStack) {
         if(!itemStack.hasTagCompound() || !itemStack.getTagCompound().hasKey("GT.ToolPrimaryMaterial", Constants.NBT.TAG_STRING))
-            return Materials.Iron;
+            return null;
         Material material = Material.MATERIAL_REGISTRY.getObject(itemStack.getTagCompound().getString("GT.ToolPrimaryMaterial"));
         if(material instanceof SolidMaterial) {
             return (SolidMaterial) material;
         }
-        return Materials.Iron;
+        return null;
     }
 
-    public static SolidMaterial getSecondaryMaterial(ItemStack itemStack) {
-        if(!itemStack.hasTagCompound() || !itemStack.getTagCompound().hasKey("GT.ToolSecondaryMaterial", Constants.NBT.TAG_STRING))
-            return Materials.Iron;
-        Material material = Material.MATERIAL_REGISTRY.getObject(itemStack.getTagCompound().getString("GT.ToolSecondaryMaterial"));
+    @Nullable
+    public static SolidMaterial getHandleMaterial(ItemStack itemStack) {
+        if(!itemStack.hasTagCompound() || !itemStack.getTagCompound().hasKey("GT.ToolHandleMaterial", Constants.NBT.TAG_STRING))
+            return null;
+        Material material = Material.MATERIAL_REGISTRY.getObject(itemStack.getTagCompound().getString("GT.ToolHandleMaterial"));
         if(material instanceof SolidMaterial) {
             return (SolidMaterial) material;
         }
-        return Materials.Iron;
-    }
-
-    public final ItemStack getToolWithStats(int toolID, int amount, Material primaryMaterial, Material secondaryMaterial, long[] electricData) {
-        ItemStack stack = new ItemStack(this, amount, toolID);
-        MetaToolValueItem metaToolValueItem = getItem(stack);
-        if (metaToolValueItem != null) {
-            if (metaToolValueItem.toolStats != null) {
-                NBTTagCompound tMainNBT = new NBTTagCompound(), tToolNBT = new NBTTagCompound();
-                if (primaryMaterial != null && primaryMaterial instanceof SolidMaterial) {
-                    tToolNBT.setString("GT.ToolPrimaryMaterial", primaryMaterial.toString());
-                    tToolNBT.setLong("GT.MaxDamage", 100L * (long) ((((SolidMaterial) primaryMaterial).toolDurability) * metaToolValueItem.toolStats.getMaxDurabilityMultiplier(stack)));
-                }
-                if (secondaryMaterial != null)
-                    tToolNBT.setString("GT.ToolSecondaryMaterial", secondaryMaterial.toString());
-
-                if (electricData != null) {
-                    tToolNBT.setBoolean("GT.Electric", true);
-                    tToolNBT.setLong("GT.MaxCharge", electricData[0]);
-                    tToolNBT.setLong("GT.Voltage", electricData[1]);
-                    tToolNBT.setLong("GT.Tier", electricData[2]);
-                    tToolNBT.setLong("GT.SpecialData", electricData[3]);
-                }
-
-                tMainNBT.setTag("GT.ToolStats", tToolNBT);
-                stack.setTagCompound(tMainNBT);
-            }
-        }
-        return stack;
+        return null;
     }
 
     public class MetaToolValueItem extends MetaValueItem {
@@ -318,6 +292,37 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
 
         public IToolStats getToolStats() {
             return toolStats;
+        }
+
+        public final ItemStack getToolWithStats(int amount, Material primaryMaterial, Material handleMaterial, long[] electricData) {
+            ItemStack stack = getStackForm(amount);
+
+            MetaToolValueItem metaToolValueItem = getItem(stack);
+            if (metaToolValueItem != null) {
+                if (metaToolValueItem.toolStats != null) {
+
+                    NBTTagCompound toolNBT = new NBTTagCompound();
+                    if (primaryMaterial != null && primaryMaterial instanceof SolidMaterial) {
+                        toolNBT.setString("GT.ToolPrimaryMaterial", primaryMaterial.toString());
+                        toolNBT.setLong("GT.MaxDamage", 100L * (long) ((((SolidMaterial) primaryMaterial).toolDurability) * metaToolValueItem.toolStats.getMaxDurabilityMultiplier(stack)));
+                    }
+                    if (handleMaterial != null)
+                        toolNBT.setString("GT.ToolHandleMaterial", handleMaterial.toString());
+
+                    if (electricData != null) {
+                        toolNBT.setBoolean("GT.Electric", true);
+                        toolNBT.setLong("GT.MaxCharge", electricData[0]);
+                        toolNBT.setLong("GT.Voltage", electricData[1]);
+                        toolNBT.setLong("GT.Tier", electricData[2]);
+                        toolNBT.setLong("GT.SpecialData", electricData[3]);
+                    }
+
+                    NBTTagCompound nbtTag = new NBTTagCompound();
+                    nbtTag.setTag("GT.ToolStats", toolNBT);
+                    stack.setTagCompound(nbtTag);
+                }
+            }
+            return stack;
         }
 
     }

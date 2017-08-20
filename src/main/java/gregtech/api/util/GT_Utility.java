@@ -447,20 +447,6 @@ public class GT_Utility {
         return getFluidName(aFluid.getFluid(), aLocalized);
     }
 
-    public static void reInit() {
-        sFilledContainerToData.clear();
-        sEmptyContainerToFluidToData.clear();
-        for (FluidContainerData tData : sFluidContainerList) {
-            sFilledContainerToData.put(new SimpleItemStack(tData.filledContainer), tData);
-            Map<Fluid, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData.get(new SimpleItemStack(tData.emptyContainer));
-            if (tFluidToContainer == null) {
-                sEmptyContainerToFluidToData.put(new SimpleItemStack(tData.emptyContainer), tFluidToContainer = new HashMap<Fluid, FluidContainerData>());
-                GregTech_API.sFluidMappings.add(tFluidToContainer);
-            }
-            tFluidToContainer.put(tData.fluid.getFluid(), tData);
-        }
-    }
-
     public static void addFluidContainerData(FluidContainerData aData) {
         sFluidContainerList.add(aData);
         sFilledContainerToData.put(new SimpleItemStack(aData.filledContainer), aData);

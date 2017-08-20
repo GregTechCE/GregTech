@@ -13,6 +13,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.capability.ICoverable;
 import gregtech.api.capability.ITurnable;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.entities.GT_Entity_Arrow;
@@ -40,12 +41,8 @@ import org.lwjgl.opengl.GL11;
 import java.net.URL;
 import java.util.*;
 
-// Referenced classes of package gregtech.common:
-//            GT_Proxy
-
 @SideOnly(Side.CLIENT)
-public class GT_Client extends GT_Proxy
-        implements Runnable {
+public class GT_Client extends GT_Proxy implements Runnable {
 
     private static List<Block> ROTATABLE_VANILLA_BLOCKS;
 
@@ -144,14 +141,6 @@ public class GT_Client extends GT_Proxy
         return true;
     }
 
-    public boolean isBukkitSide() {
-        return false;
-    }
-
-    public EntityPlayer getThePlayer() {
-        return Minecraft.getMinecraft().thePlayer;
-    }
-
     public void onPreLoad() {
         super.onPreLoad();
 
@@ -179,36 +168,14 @@ public class GT_Client extends GT_Proxy
         new Thread(this).start();
     }
 
+    @Override
     public void onLoad() {
         super.onLoad();
-
-        RenderingRegistry.registerEntityRenderingHandler(GT_Entity_Arrow.class, manager -> {
-            return new GT_Renderer_Entity_Arrow(manager, GT_Entity_Arrow.class, "arrow");
-        });
-
-        RenderingRegistry.registerEntityRenderingHandler(GT_Entity_Arrow.class, manager -> {
-            return new GT_Renderer_Entity_Arrow(manager, GT_Entity_Arrow_Potion.class, "arrow_potions");
-        });
     }
 
-
-    //Models init
+    @Override
     public void onPostLoad() {
         super.onPostLoad();
-
-        Textures.BlockIcons.BASALT_BRICKS.getClass();
-        Textures.ItemIcons.BUTCHERYKNIFE.getClass();
-        TextureSet.SET_DIAMOND.getClass();
-
-        RenderBlocks.INSTANCE.init();
-        RenderGeneratedOres.INSTANCE.init();
-        GT_Renderer_Block.INSTANCE.init();
-        ItemRenderer.INSTANCE.init();
-
-        RenderManager manager = Minecraft.getMinecraft().getRenderManager();
-        Map<String, RenderPlayer> map = manager.getSkinMap();
-        map.get("default").addLayer(new GT_CapeRendererLayer(mCapeList, map.get("default")));
-        map.get("slim").addLayer(new GT_CapeRendererLayer(mCapeList, map.get("slim")));
     }
 
     public void run() {
@@ -321,86 +288,5 @@ public class GT_Client extends GT_Proxy
             }
 
         }
-    }
-
-    public void doSonictronSound(ItemStack aStack, World aWorld, double aX, double aY, double aZ) {
-        if (GT_Utility.isStackInvalid(aStack))
-            return;
-        String tString = "note.harp";
-        int i = 0;
-        int j = mSoundItems.size();
-        do {
-            if (i >= j)
-                break;
-            if (GT_Utility.areStacksEqual(mSoundItems.get(i), aStack)) {
-                tString = mSoundNames.get(i);
-                break;
-            }
-            i++;
-        } while (true);
-        if (tString.startsWith("random.explode"))
-            if (aStack.stackSize == 3)
-                tString = "random.fuse";
-            else if (aStack.stackSize == 2)
-                tString = "random.old_explode";
-        if (tString.startsWith("streaming."))
-            switch (aStack.stackSize) {
-                case 1: // '\001'
-                    tString = (new StringBuilder()).append(tString).append("13").toString();
-                    break;
-
-                case 2: // '\002'
-                    tString = (new StringBuilder()).append(tString).append("cat").toString();
-                    break;
-
-                case 3: // '\003'
-                    tString = (new StringBuilder()).append(tString).append("blocks").toString();
-                    break;
-
-                case 4: // '\004'
-                    tString = (new StringBuilder()).append(tString).append("chirp").toString();
-                    break;
-
-                case 5: // '\005'
-                    tString = (new StringBuilder()).append(tString).append("far").toString();
-                    break;
-
-                case 6: // '\006'
-                    tString = (new StringBuilder()).append(tString).append("mall").toString();
-                    break;
-
-                case 7: // '\007'
-                    tString = (new StringBuilder()).append(tString).append("mellohi").toString();
-                    break;
-
-                case 8: // '\b'
-                    tString = (new StringBuilder()).append(tString).append("stal").toString();
-                    break;
-
-                case 9: // '\t'
-                    tString = (new StringBuilder()).append(tString).append("strad").toString();
-                    break;
-
-                case 10: // '\n'
-                    tString = (new StringBuilder()).append(tString).append("ward").toString();
-                    break;
-
-                case 11: // '\013'
-                    tString = (new StringBuilder()).append(tString).append("11").toString();
-                    break;
-
-                case 12: // '\f'
-                    tString = (new StringBuilder()).append(tString).append("wait").toString();
-                    break;
-
-                default:
-                    tString = (new StringBuilder()).append(tString).append("wherearewenow").toString();
-                    break;
-            }
-        //TODO FIXME
-        //if (tString.startsWith("streaming."))
-        //aWorld.playRecord(tString.substring(10, tString.length()), (int) aX, (int) aY, (int) aZ);
-        //else
-        //aWorld.playSound(aX, aY, aZ, tString, 3F, tString.startsWith("note.") ? (float) Math.pow(2D, (double) (aStack.stackSize - 13) / 12D) : 1.0F, false);
     }
 }
