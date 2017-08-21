@@ -3,16 +3,19 @@ package gregtech.api.gui.impl;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.Widget;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.inventory.Container;
 
 import java.io.IOException;
 
-public class McGuiContainer extends GuiContainer {
+public class ModularUIGui extends GuiContainer {
 
     private final ModularUI<?> modularUI;
 
-    public McGuiContainer(Container inventorySlotsIn, ModularUI modularUI) {
-        super(inventorySlotsIn);
+    public ModularUI<?> getModularUI() {
+        return modularUI;
+    }
+
+    public ModularUIGui(ModularUI modularUI) {
+        super(new ModularUIContainer(modularUI));
         this.modularUI = modularUI;
     }
 
@@ -33,9 +36,8 @@ public class McGuiContainer extends GuiContainer {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-
-
-
+        mc.renderEngine.bindTexture(modularUI.backgroundPath);
+        drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
         modularUI.guiWidgets.values().stream()
                 .filter(widget -> widget.drawPriority < Widget.SLOT_DRAW_PRIORITY)
                 .sorted()

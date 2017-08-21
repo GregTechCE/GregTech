@@ -2,8 +2,12 @@ package gregtech.api.net;
 
 import gregtech.api.GT_Values;
 import gregtech.api.capability.internal.ICustomDataTile;
+import gregtech.api.gui.ModularUI;
+import gregtech.api.gui.UIFactory;
+import gregtech.api.gui.impl.ModularUIGui;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
@@ -79,9 +83,39 @@ public class NetworkHandler {
         ));
         MinecraftForge.EVENT_BUS.register(new ChunkWatchListener());
 
+        registerPacket(1, PacketUIOpen.class, new PacketCodec<>(
+                (packet, buf) -> {
+                    buf.writeInt(packet.uiFactoryId);
+                    buf.writeInt(packet.serializedHolder.maxCapacity());
+                    buf.writeBytes(packet.serializedHolder);
+                    buf.writeInt(packet.widgetsInitData.maxCapacity());
+                    buf.writeBytes(packet.widgetsInitData);
+                    buf.writeInt(packet.windowId);
+                },
+                (buf) -> new PacketUIOpen(
+                        buf.readInt(),
+                        new PacketBuffer(buf.readBytes(buf.readInt())),
+                        new PacketBuffer(buf.readBytes(buf.readInt())),
+                        buf.readInt()
+                )
+        ));
+
+        registerPacket(2, PacketUIWidgetUpdate.class, new PacketCodec<>(
+                (packet, buf) -> {
+                    buf.writeInt(packet.widgetId);
+                    buf.writeInt(packet.updateData.maxCapacity());
+                    buf.writeBytes(packet.updateData);
+                },
+                (buf) -> new PacketUIWidgetUpdate(
+                        buf.readInt(),
+                        new PacketBuffer(buf.readBytes(buf.readInt()))
+                )
+        ));
+
         if(FMLCommonHandler.instance().getSide().isClient()) {
             initClient();
         }
+
     }
 
     @SideOnly(Side.CLIENT)
@@ -90,6 +124,18 @@ public class NetworkHandler {
             TileEntity tileEntity = Minecraft.getMinecraft().theWorld.getTileEntity(packet.tileEntityPos);
             if(tileEntity instanceof ICustomDataTile) {
                 ((ICustomDataTile) tileEntity).receiveCustomData(packet.payload);
+            }
+        });
+        registerClientExecutor(PacketUIOpen.class, (packet, handler) -> {
+            UIFactory<?> uiFactory = UIFactory.FACTORY_REGISTRY.getObjectById(packet.uiFactoryId);
+            uiFactory.initClientUI(packet.serializedHolder, packet.widgetsInitData, packet.windowId);
+
+        });
+        registerClientExecutor(PacketUIWidgetUpdate.class, (packet, handler) -> {
+            GuiScreen activeGui = Minecraft.getMinecraft().currentScreen;
+            if(activeGui instanceof ModularUIGui) {
+                ModularUI<?> uiOpen = ((ModularUIGui) activeGui).getModularUI();
+                uiOpen.guiWidgets.get(packet.widgetId).readUpdateInfo(packet.updateData);
             }
         });
     }
