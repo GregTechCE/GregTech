@@ -14,6 +14,11 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+/**
+ * Implement and register to {@link #FACTORY_REGISTRY} to be able to create and open ModularUI's
+ * createUITemplate should return equal gui both on server and client side, or sync will break!
+ * @param <E> UI holder type
+ */
 public abstract class UIFactory<E extends IUIHolder> {
 
     public static final GTControlledRegistry<UIFactory> FACTORY_REGISTRY = new GTControlledRegistry<>(Short.MAX_VALUE);

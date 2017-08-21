@@ -9,7 +9,18 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public final class ModularUI<H> {
+/**
+ * ModularUI is user-interface implementation concrete, based on widgets system
+ * Each widget acts unique and manage different things
+ * All widget information is synced to client from server for correct rendering
+ * Widgets and UI are both-sided, so widgets should equal on both sides
+ * However widget data will sync, widgets themself, background, sizes and other important info will not
+ * To open and create ModularUI, see {@link UIFactory}
+ *
+ *
+ * @param <H> type of modular UI holder
+ */
+public final class ModularUI<H extends IUIHolder> {
 
     public final ImmutableBiMap<Integer, Widget> guiWidgets;
 
