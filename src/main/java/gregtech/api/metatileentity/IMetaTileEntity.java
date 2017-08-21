@@ -1,9 +1,11 @@
 package gregtech.api.metatileentity;
 
+import com.google.common.collect.ImmutableBiMap;
 import gregtech.api.capability.ITurnable;
 import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.capability.internal.IRedstoneEmitter;
 import gregtech.api.capability.internal.IRedstoneReceiver;
+import gregtech.api.gui.ModularUI;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
@@ -110,9 +112,15 @@ public interface IMetaTileEntity extends ITurnable, IRedstoneReceiver, IRedstone
      */
     void onRemoval();
 
-    Container getServerGUI(int ID, InventoryPlayer playerInventory);
-
     int getSlotsCount();
+
+    /**
+     * Creates instance of ModularUI to be opened for specified player
+     * Note that set of widgets in GUI returned in this method should be SAME ON BOTH SIDES
+     * @param player player who opens GUI
+     * @return instance of ModularUI for this MetaTileEntity
+     */
+    ModularUI<? extends IGregTechTileEntity> createUI(EntityPlayer player);
 
     int[] getSlotsForFace(EnumFacing face);
     //side == null - internal inventory change
