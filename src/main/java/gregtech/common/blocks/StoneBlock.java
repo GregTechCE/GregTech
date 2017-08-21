@@ -32,7 +32,7 @@ public class StoneBlock<T extends Enum<T> & IStringSerializable> extends Block {
         setUnlocalizedName(blockName);
         setRegistryName(GT_Values.MODID, blockName);
         GameRegistry.register(this);
-        StoneItemBlock itemBlock = new StoneItemBlock<>(this);
+        StoneItemBlock<?,?> itemBlock = new StoneItemBlock<>(this);
         itemBlock.setRegistryName(GT_Values.MODID, blockName);
         GameRegistry.register(itemBlock);
     }

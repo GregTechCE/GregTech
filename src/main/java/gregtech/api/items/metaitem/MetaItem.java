@@ -522,7 +522,6 @@ public abstract class MetaItem<T extends MetaItem.MetaValueItem> extends Item im
             if(prefix == null) {
                 throw new IllegalArgumentException("Cannot add null OrePrefix.");
             }
-
             OreDictionaryUnifier.registerOre(getStackForm(), prefix, material);
             return this;
         }
@@ -577,6 +576,15 @@ public abstract class MetaItem<T extends MetaItem.MetaValueItem> extends Item im
                 }
                 if (metaItemStats instanceof IItemBehaviour) {
                     addBehaviour((IItemBehaviour) metaItemStats);
+                }
+                if (metaItemStats instanceof IElectricStats) {
+                    setElectricStats((IElectricStats) metaItemStats);
+                }
+                if (metaItemStats instanceof IFluidStats) {
+                    setFluidStats((IFluidStats) metaItemStats);
+                }
+                if (metaItemStats instanceof INuclearStats) {
+                    setNuclearStats((INuclearStats) metaItemStats);
                 }
             }
             return this;

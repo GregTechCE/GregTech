@@ -1,6 +1,6 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.util.GT_ModHandler;
+import gregtech.api.items.metaitem.stats.IItemBehaviour;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.state.IBlockState;
@@ -11,8 +11,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class Behaviour_Crowbar
-        extends Behaviour_None {
+public class Behaviour_Crowbar implements IItemBehaviour {
     private final int mVanillaCosts;
     private final int mEUCosts;
 

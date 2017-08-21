@@ -66,7 +66,7 @@ public class ToolAxe extends ToolBase {
 
     @Override
     public IIconContainer getIcon(boolean isToolHead, ItemStack stack) {
-        return isToolHead ? ToolMetaItem.getPrimaryMaterial(stack).mIconSet.mTextures[OrePrefixes.toolHeadAxe.mTextureIndex] : ToolMetaItem.getSecondaryMaterial(stack).mIconSet.mTextures[OrePrefixes.stick.mTextureIndex];
+        return isToolHead ? ToolMetaItem.getPrimaryMaterial(stack).mIconSet.mTextures[OrePrefixes.toolHeadAxe.mTextureIndex] : ToolMetaItem.getHandleMaterial(stack).mIconSet.mTextures[OrePrefixes.stick.mTextureIndex];
     }
 
     @Override

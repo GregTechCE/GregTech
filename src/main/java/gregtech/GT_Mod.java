@@ -8,9 +8,11 @@ import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.enchants.EnchantmentRadioactivity;
+import gregtech.api.net.NetworkHandler;
 import gregtech.api.unification.Dyes;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.items.ItemList;
@@ -72,35 +74,43 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Mod(modid = "gregtech", name = "GregTech", version = "MC1.10.2", useMetadata = false, dependencies = "required-after:IC2; required-after:CodeChickenLib; after:Forestry; after:PFAAGeologica; after:Thaumcraft; after:Railcraft; after:appliedenergistics2; after:ThermalExpansion; after:TwilightForest; after:harvestcraft; after:magicalcrops; after:BuildCraft|Transport; after:BuildCraft|Silicon; after:BuildCraft|Factory; after:BuildCraft|Energy; after:BuildCraft|Core; after:BuildCraft|Builders; after:GalacticraftCore; after:GalacticraftMars; after:GalacticraftPlanets; after:ThermalExpansion|Transport; after:ThermalExpansion|Energy; after:ThermalExpansion|Factory; after:RedPowerCore; after:RedPowerBase; after:RedPowerMachine; after:RedPowerCompat; after:RedPowerWiring; after:RedPowerLogic; after:RedPowerLighting; after:RedPowerWorld; after:RedPowerControl; after:UndergroundBiomes;")
-public class GT_Mod implements IGT_Mod {
+@Mod(modid = "gregtech",
+        name = "GregTech",
+        version = "MC1.10.2",
+        useMetadata = false,
+        dependencies = "required-after:IC2; " +
+                "required-after:CodeChickenLib; " +
+                "after:Forestry; " +
+                "after:PFAAGeologica; " +
+                "after:Thaumcraft; " +
+                "after:Railcraft; " +
+                "after:appliedenergistics2; " +
+                "after:ThermalExpansion; " +
+                "after:TwilightForest; " +
+                "after:harvestcraft; " +
+                "after:magicalcrops; " +
+                "after:BuildCraft|Transport; after:BuildCraft|Silicon; after:BuildCraft|Factory; after:BuildCraft|Energy; after:BuildCraft|Core; after:BuildCraft|Builders; " +
+                "after:GalacticraftCore; after:GalacticraftMars; after:GalacticraftPlanets; " +
+                "after:ThermalExpansion|Transport; after:ThermalExpansion|Energy; after:ThermalExpansion|Factory; " +
+                "after:RedPowerCore; after:RedPowerBase; after:RedPowerMachine; after:RedPowerCompat; after:RedPowerWiring; after:RedPowerLogic; after:RedPowerLighting; after:RedPowerWorld; after:RedPowerControl; " +
+                "after:UndergroundBiomes;")
+public class GT_Mod {
 
     @Mod.Instance("gregtech")
     public static GT_Mod instance;
 
     @SidedProxy(modId = "gregtech", clientSide = "gregtech.common.GT_Client", serverSide = "gregtech.common.GT_Server")
     public static GT_Proxy gregtechproxy;
-    public static GT_Achievements achievements;
 
     private final String aTextGeneral = "general";
     private final String aTextIC2 = "ic2_";
 
     @Mod.EventHandler
     public void onPreLoad(FMLPreInitializationEvent aEvent) {
-        Locale.setDefault(Locale.ENGLISH);
-        if (GregTech_API.sPreloadStarted) {
-            return;
-        }
 
         GTLog.init(aEvent.getModLog(), aEvent.getModConfigurationDirectory().getParentFile());
 
-        GT_Values.GT = this;
-        GT_Values.DW = new GT_DummyWorld();
-        GT_Values.NW = new GT_PacketHandler();
-        GregTech_API.sRecipeAdder = GT_Values.RA = new GT_RecipeAdder();
-
-        Textures.BlockIcons.VOID.name();
-        Textures.ItemIcons.VOID.name();
+        NetworkHandler.init();
 
         GTLog.out.println("GT_Mod: Replacing IC2 recipes managers");
         try {
@@ -121,7 +131,10 @@ public class GT_Mod implements IGT_Mod {
             for (Runnable tRunnable : GregTech_API.sBeforeGTPreload) {
                 tRunnable.run();
             }
-        } catch (Throwable e) {e.printStackTrace(GTLog.err);}
+        } catch (Throwable e) {
+            e.printStackTrace(GTLog.err);
+        }
+
         File tFile = new File(new File(aEvent.getModConfigurationDirectory(), "GregTech"), "GregTech.cfg");
         Configuration tMainConfig = new Configuration(tFile);
         tMainConfig.load();
@@ -140,29 +153,15 @@ public class GT_Mod implements IGT_Mod {
         GregTech_API.sModularArmor = new GT_Config(new Configuration(new File(new File(aEvent.getModConfigurationDirectory(), "GregTech"), "ModularArmor.cfg")));
 
         GregTech_API.sClientDataFile = new GT_Config(new Configuration(new File(aEvent.getModConfigurationDirectory().getParentFile(), "GregTech.cfg")));
-        GregTech_API.mIC2Classic = Loader.isModLoaded("IC2-Classic-Spmod");
-        GregTech_API.mMagneticraft = Loader.isModLoaded("Magneticraft");
-        GregTech_API.mImmersiveEngineering = Loader.isModLoaded("ImmersiveEngineering");
-        GregTech_API.mGTPlusPlus = Loader.isModLoaded("miscutils");
-
-        if(tMainConfig.get(aTextGeneral, "ActivityLogger", false).getBoolean(false)) {
-            GTLog.enablePlayerActivityLogger();
-        }
 
         gregtechproxy.onPreLoad();
 
         GTLog.out.println("GT_Mod: Setting Configs");
         GT_Values.D1 = tMainConfig.get(aTextGeneral, "Debug", false).getBoolean(false);
-        GT_Values.D2 = tMainConfig.get(aTextGeneral, "Debug2", false).getBoolean(false);
 
         GregTech_API.TICKS_FOR_LAG_AVERAGING = tMainConfig.get(aTextGeneral, "TicksForLagAveragingWithScanner", 25).getInt(25);
         GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = tMainConfig.get(aTextGeneral, "MillisecondsPassedInGTTileEntityUntilLagWarning", 100).getInt(100);
-        if (tMainConfig.get(aTextGeneral, "disable_STDOUT", false).getBoolean(false)) {
-            System.out.close();
-        }
-        if (tMainConfig.get(aTextGeneral, "disable_STDERR", false).getBoolean(false)) {
-            System.err.close();
-        }
+
         GregTech_API.sMachineExplosions = tMainConfig.get("machines", "machines_explosion_damage", true).getBoolean(false);
         GregTech_API.sMachineFlammable = tMainConfig.get("machines", "machines_flammable", true).getBoolean(false);
         GregTech_API.sMachineNonWrenchExplosions = tMainConfig.get("machines", "explosions_on_nonwrenching", true).getBoolean(false);
@@ -236,26 +235,12 @@ public class GT_Mod implements IGT_Mod {
         gregtechproxy.mOnline = tMainConfig.get(aTextGeneral, "online", true).getBoolean(false);
 
         gregtechproxy.mUpgradeCount = Math.min(64, Math.max(1, tMainConfig.get("features", "UpgradeStacksize", 4).getInt()));
-        for (OrePrefix tPrefix : OrePrefix.values()) {
-            if (tPrefix.mIsUsedForOreProcessing) {
-                tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(1, tMainConfig.get("features", "MaxOreStackSize", 64).getInt())));
-            } else if (tPrefix == OrePrefix.plank) {
-                tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, tMainConfig.get("features", "MaxPlankStackSize", 64).getInt())));
-            } else if ((tPrefix == OrePrefix.wood) || (tPrefix == OrePrefix.treeLeaves) || (tPrefix == OrePrefix.treeSapling) || (tPrefix == OrePrefix.log)) {
-                tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, tMainConfig.get("features", "MaxLogStackSize", 64).getInt())));
-            } else if (tPrefix.mIsUsedForBlocks) {
-                tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, tMainConfig.get("features", "MaxOtherBlockStackSize", 64).getInt())));
-            }
-        }
+
         //GT_Config.troll = (Calendar.getInstance().get(2) + 1 == 4) && (Calendar.getInstance().get(5) >= 1) && (Calendar.getInstance().get(5) <= 2);
-        Materials.init();
+        Material.init();
 
         GTLog.out.println("GT_Mod: Saving Main Config");
         tMainConfig.save();
-
-        GTLog.out.println("GT_Mod: Generating Lang-File");
-        GT_LanguageManager.sEnglishFile = new Configuration(new File(aEvent.getModConfigurationDirectory().getParentFile(), "GregTech.lang"));
-        GT_LanguageManager.sEnglishFile.load();
 
         GTLog.out.println("GT_Mod: Removing all original Scrapbox Drops.");
         try {
@@ -269,123 +254,11 @@ public class GT_Mod implements IGT_Mod {
         GTLog.out.println("GT_Mod: Adding Scrap with a Weight of 200.0F to the Scrapbox Drops.");
         GT_ModHandler.addScrapboxDrop(200.0F, GT_ModHandler.getIC2Item(ItemName.crafting, CraftingItemType.scrap, 1));
 
-        EntityRegistry.registerModEntity(GT_Entity_Arrow.class, "GT_Entity_Arrow", 1, GT_Values.GT, 160, 1, true);
-        EntityRegistry.registerModEntity(GT_Entity_Arrow_Potion.class, "GT_Entity_Arrow_Potion", 2, GT_Values.GT, 160, 1, true);
-
         System.out.println("preReader");
-        List<String> oreTags = new ArrayList<String>();
-        if(Loader.isModLoaded("MineTweaker3")){
-            File globalDir = new File("scripts");
-            if (globalDir.exists()){
-                List<String> scripts = new ArrayList<String>();
-                for (File file : globalDir.listFiles()) {
-                    if (file.getName().endsWith(".zs")) {
-                        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-                            String line;
-                            while ((line = br.readLine()) != null) {
-                                scripts.add(line);
-                            }
-                        } catch (Exception e) {e.printStackTrace();}
-                    }
-                }
-                String pattern1 = "<";
-                String pattern2 = ">";
 
-                Pattern p = Pattern.compile(Pattern.quote(pattern1) + "(.*?)" + Pattern.quote(pattern2));
-                for(String text : scripts){
-                    Matcher m = p.matcher(text);
-                    while (m.find()) {
-                        String hit = m.group(1);
-                        if(hit.startsWith("ore:")){
-                            hit = hit.substring(4);
-                            if(!oreTags.contains(hit)) oreTags.add(hit);
-                        }else if(hit.startsWith("gregtech:gt.metaitem.0")){
-                            hit = hit.substring(22);
-                            int mIt = Integer.parseInt(hit.substring(0, 1));
-                            if(mIt>0){
-                                int meta = 0;
-                                try{
-                                    hit = hit.substring(2);
-                                    meta = Integer.parseInt(hit);
-                                }catch(Exception e){System.out.println("parseError: "+hit);}
-                                if(meta>0&&meta<32000){
-                                    int prefix = meta/1000;
-                                    int material = meta % 1000;
-                                    String tag = "";
-                                    String[] tags = new String[]{};
-                                    if(mIt==1)tags = new String[]{"dustTiny","dustSmall","dust","dustImpure","dustPure","crushed","crushedPurified","crushedCentrifuged","gem","nugget",null,"ingot","ingotHot","ingotDouble","ingotTriple","ingotQuadruple","ingotQuintuple","plate","plateDouble","plateTriple","plateQuadruple","plateQuintuple","plateDense","stick","lens","round","bolt","screw","ring","foil","cell","cellPlasma"};
-                                    if(mIt==2)tags = new String[]{"toolHeadSword", "toolHeadPickaxe", "toolHeadShovel", "toolHeadAxe", "toolHeadHoe", "toolHeadHammer", "toolHeadFile", "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw", "toolHeadWrench", "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow", "toolHeadBuzzSaw", "turbineBlade", null, null, "wireFine", "gearGtSmall", "rotor", "stickLong", "springSmall", "spring", "arrowGtWood", "arrowGtPlastic", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gearGt"};
-                                    if(mIt==3)tags = new String[]{"crateGtDust", "crateGtIngot", "crateGtGem", "crateGtPlate"};
-                                    if(tags.length>prefix) tag = tags[prefix];
-                                    if(GregTech_API.sGeneratedMaterials[material]!=null){
-                                        tag += GregTech_API.sGeneratedMaterials[material].mName;
-                                        if(!oreTags.contains(tag)) oreTags.add(tag);
-                                    }else if(material>0){System.out.println("MaterialDisabled: "+material+" "+m.group(1));}
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        String[] preS = new String[]{"dustTiny","dustSmall","dust","dustImpure","dustPure","crushed","crushedPurified","crushedCentrifuged","gem","nugget","ingot","ingotHot","ingotDouble","ingotTriple","ingotQuadruple","ingotQuintuple","plate","plateDouble","plateTriple","plateQuadruple","plateQuintuple","plateDense","stick","lens","round","bolt","screw","ring","foil","cell","cellPlasma","toolHeadSword", "toolHeadPickaxe", "toolHeadShovel", "toolHeadAxe", "toolHeadHoe", "toolHeadHammer", "toolHeadFile", "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw", "toolHeadWrench", "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow", "toolHeadBuzzSaw", "turbineBlade", "wireFine", "gearGtSmall", "rotor", "stickLong", "springSmall", "spring", "arrowGtWood", "arrowGtPlastic", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gearGt","crateGtDust", "crateGtIngot", "crateGtGem", "crateGtPlate"};
-
-        List<String> mMTTags = new ArrayList<String>();
-        for(String test : oreTags){
-            if(StringUtils.startsWithAny(test, preS)){
-                mMTTags.add(test);
-                if(GT_Values.D1)
-                    System.out.println("oretag: "+test);
-            }}
-
-        System.out.println("reenableMetaItems");
-        for(String reEnable : mMTTags){
-            OrePrefix tPrefix = OrePrefix.getOrePrefix(reEnable);
-            if(tPrefix!=null){
-                Materials tName = Materials.get(reEnable.replaceFirst(tPrefix.toString(), ""));
-                if(tName!=null){
-                    tPrefix.mDisabledItems.remove(tName);
-                    tPrefix.mGeneratedItems.add(tName);
-                    if(tPrefix == OrePrefix.screw){
-                        OrePrefix.bolt.mDisabledItems.remove(tName);
-                        OrePrefix.bolt.mGeneratedItems.add(tName);
-                        OrePrefix.stick.mDisabledItems.remove(tName);
-                        OrePrefix.stick.mGeneratedItems.add(tName);
-                    }
-                    if(tPrefix == OrePrefix.round){
-                        OrePrefix.nugget.mDisabledItems.remove(tName);
-                        OrePrefix.nugget.mGeneratedItems.add(tName);
-                    }
-                    if(tPrefix == OrePrefix.spring){
-                        OrePrefix.stickLong.mDisabledItems.remove(tName);
-                        OrePrefix.stickLong.mGeneratedItems.add(tName);
-                        OrePrefix.stick.mDisabledItems.remove(tName);
-                        OrePrefix.stick.mGeneratedItems.add(tName);
-                    }
-                    if(tPrefix == OrePrefix.springSmall){
-                        OrePrefix.stick.mDisabledItems.remove(tName);
-                        OrePrefix.stick.mGeneratedItems.add(tName);
-                    }
-                    if(tPrefix == OrePrefix.stickLong){
-                        OrePrefix.stick.mDisabledItems.remove(tName);
-                        OrePrefix.stick.mGeneratedItems.add(tName);
-                    }
-                }else{System.out.println("noMaterial "+reEnable);}
-            }else{System.out.println("noPrefix "+reEnable);}}
-
-        new EnchantmentEnderDamage();
-        new EnchantmentRadioactivity();
-
-        //new GT_Loader_OreProcessing().run();
-        //new GT_Loader_OreDictionary().run();
-        //new GT_Loader_ItemData().run();
         new GT_Loader_Item_Block_And_Fluid().run();
         new GT_Loader_MetaTileEntities().run();
 
-        new GT_Loader_CircuitBehaviors().run();
-        new GT_CoverBehaviorLoader().run();
-        new GT_SonictronLoader().run();
-        new GT_SpawnEventHandler();
         if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.gregtechrecipes, "SolarPanel", true)) {
             GT_ModHandler.addCraftingRecipe(ItemList.Cover_SolarPanel.get(1L, new Object[0]),    GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"SGS", "CPC", 'C', OrePrefix.circuit.get(Materials.Basic), 'G', new ItemStack(Blocks.GLASS_PANE, 1), 'P', OrePrefix.plateAlloy.get(Materials.Carbon), 'S', OrePrefix.plate.get(Materials.Silicon)});
             GT_ModHandler.addCraftingRecipe(ItemList.Cover_SolarPanel_8V.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"SGS", "CPC", 'C', OrePrefix.circuit.get(Materials.Advanced), 'G', new ItemStack(Blocks.GLASS_PANE, 1), 'P', OrePrefix.wireGt01.get(Materials.Graphene), 'S', OrePrefix.plate.get(Materials.Silicon)});
@@ -456,9 +329,6 @@ public class GT_Mod implements IGT_Mod {
 
     @Mod.EventHandler
     public void onLoad(FMLInitializationEvent aEvent) {
-        if (GregTech_API.sLoadStarted) {
-            return;
-        }
         try {
             for (Runnable tRunnable : GregTech_API.sBeforeGTLoad) {
                 tRunnable.run();
@@ -485,9 +355,6 @@ public class GT_Mod implements IGT_Mod {
 
     @Mod.EventHandler
     public void onPostLoad(FMLPostInitializationEvent aEvent) {
-        if (GregTech_API.sPostloadStarted) {
-            return;
-        }
         try {
             for (Runnable tRunnable : GregTech_API.sBeforeGTPostload) {
                 tRunnable.run();
@@ -502,15 +369,11 @@ public class GT_Mod implements IGT_Mod {
             new FuelLoader().run();
         }
         new GT_BookAndLootLoader().run();
-        new GT_ItemMaxStacksizeLoader().run();
         new GT_BlockResistanceLoader().run();
-        new GT_RecyclerBlacklistLoader().run();
-        new GT_MinableRegistrator().run();
         new GT_MachineRecipeLoader().run();
         new ScrapboxRecipeLoader().run();
         new GT_CropLoader().run();
         new GT_Worldgenloader().run();
-        new GT_CoverLoader().run();
 
         GT_RecipeRegistrator.registerUsagesForMaterials(new ItemStack(Blocks.PLANKS, 1), null, false);
         GT_RecipeRegistrator.registerUsagesForMaterials(new ItemStack(Blocks.COBBLESTONE, 1), null, false);
@@ -675,8 +538,6 @@ public class GT_Mod implements IGT_Mod {
         GTLog.out.println("GT_Mod: Adding buffered Recipes.");
         GT_ModHandler.stopBufferingCraftingRecipes();
 
-        GTLog.out.println("GT_Mod: Saving Lang File.");
-        GT_LanguageManager.sEnglishFile.save();
         GregTech_API.sPostloadFinished = true;
         GTLog.out.println("GT_Mod: PostLoad-Phase finished!");
         GTLog.ore.println("GT_Mod: PostLoad-Phase finished!");
@@ -764,7 +625,6 @@ public class GT_Mod implements IGT_Mod {
                 GregTech_API.mInputRF = false;
             }
         }
-        achievements = new GT_Achievements();
         GTLog.out.println("GT_Mod: Loading finished, deallocating temporary Init Variables.");
         GregTech_API.sBeforeGTPreload = null;
         GregTech_API.sAfterGTPreload = null;
@@ -927,29 +787,6 @@ public class GT_Mod implements IGT_Mod {
     }
 
     @Mod.EventHandler
-    public void onIDChangingEvent(FMLModIdMappingEvent aEvent) {
-        GT_Utility.reInit();
-        GT_Recipe.reInit();
-        for (Map<SimpleItemStack, ?> sItemStackMapping : GregTech_API.sItemStackMappings) {
-            try {
-                GT_Utility.reMap(sItemStackMapping);
-            } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
-            }
-        }
-
-    }
-//  public void onIDChangingEvent(FMLModIdMappingEvent aEvent)
-//  {
-//    GT_Utility.reInit();
-//    GT_Recipe.reInit();
-//    Map<SimpleItemStack, ?> tMap;
-//    for (Iterator i$ = GregTech_API.sItemStackMappings.iterator(); i$.hasNext(); ) {
-//      tMap = (Map)i$.next();
-//    }
-//  }
-
-    @Mod.EventHandler
     public void onServerStopping(FMLServerStoppingEvent aEvent) {
         try {
             for (Runnable tRunnable : GregTech_API.sBeforeGTServerstop) {
@@ -1033,25 +870,5 @@ public class GT_Mod implements IGT_Mod {
         for(IMachineRecipeManager.RecipeIoContainer container : recipeManager.getRecipes())
             outputs.add(container.output);
         return outputs;
-    }
-
-    public boolean isServerSide() {
-        return gregtechproxy.isServerSide();
-    }
-
-    public boolean isClientSide() {
-        return gregtechproxy.isClientSide();
-    }
-
-    public boolean isBukkitSide() {
-        return gregtechproxy.isBukkitSide();
-    }
-
-    public EntityPlayer getThePlayer() {
-        return gregtechproxy.getThePlayer();
-    }
-
-    public void doSonictronSound(ItemStack aStack, World aWorld, double aX, double aY, double aZ) {
-        gregtechproxy.doSonictronSound(aStack, aWorld, aX, aY, aZ);
     }
 }

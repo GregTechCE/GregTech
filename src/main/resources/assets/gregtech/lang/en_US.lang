@@ -1,4 +1,4 @@
-metaitem.01.tooltip.purify=Throw into Cauldron to get clean Dust
+metaitem.dust.tooltip.purify=Throw into Cauldron to get clean Dust
 metaitem.generic.fluid_container.tooltip=%d/%dL %s
 metaitem.generic.fluid_container.tooltip_empty=Empty
 metaitem.generic.electric_item.tooltip=%d/%d EU - Tier %d
@@ -18,8 +18,8 @@ metaitem.credit.osmium.name=Osmium Credit
 metaitem.credit.osmium.tooltip=4096 Credits
 metaitem.credit.naquadah.name=Naquadah Credit
 metaitem.credit.naquadah.tooltip=32768 Credits
-metaitem.credit.neutronium.name=Neutronium Credit
-metaitem.credit.neutronium.tooltip=262144 Credits
+metaitem.credit.darmstadtium.name=Darmstadtium Credit
+metaitem.credit.darmstadtium.tooltip=262144 Credits
 
 metaitem.coin.gold.ancient.name=Ancient Gold Coin
 metaitem.coin.gold.ancient.tooltip=Found in ancient Ruins
@@ -28,10 +28,10 @@ metaitem.coin.doge.tooltip=wow much coin how money so crypto plz mine v rich ver
 metaitem.coin.chocolate.name=Chocolate Coin
 metaitem.coin.chocolate.tooltip=Wrapped in Gold
 
-metaitem.component.minecart.wheels.iron.name=Iron Minecart Wheels
-metaitem.component.minecart.wheels.iron.tooltip=To get things rolling
-metaitem.component.minecart.wheels.steel.name=Steel Minecart Wheels
-metaitem.component.minecart.wheels.steel.tooltip=To get things rolling
+metaitem.minecart.wheels.iron.name=Iron Minecart Wheels
+metaitem.minecart.wheels.iron.tooltip=To get things rolling
+metaitem.minecart.wheels.steel.name=Steel Minecart Wheels
+metaitem.minecart.wheels.steel.tooltip=To get things rolling
 
 metaitem.shape.empty.name=Empty Shape Plate
 metaitem.shape.empty.tooltip=Raw Plate to make Molds and Extrude Shapes
@@ -131,8 +131,8 @@ metaitem.fuel.can.plastic.filled.tooltip=Burns well in Diesel Generators
 metaitem.spray.empty.name=Empty Spray Can
 metaitem.spray.empty.tooltip=Used for making Sprays
 
-metaitem.thermoscan.empty.name=Empty Thermos Can
-metaitem.thermoscan.empty.tooltip=Keeping hot things hot and cold things cold
+metaitem.thermos_can.empty.name=Empty Thermos Can
+metaitem.thermos_can.empty.tooltip=Keeping hot things hot and cold things cold
 
 metaitem.large.fluid.cell.steel.name=Large Steel Fluid Cell
 
@@ -443,8 +443,8 @@ metaitem.thermoscan.sweet.tea.tooltip=How about a Tea Party? In Boston?
 metaitem.thermoscan.ice.tea.name=Ice Tea
 metaitem.thermoscan.ice.tea.tooltip=Better than this purple Junk Drink from failed Potions
         
-metaitem.gelledtoluene.name=Gelled Toluene
-metaitem.gelledtoluene.tooltip=Raw Explosive
+metaitem.gelled_toluene.name=Gelled Toluene
+metaitem.gelled_toluene.tooltip=Raw Explosive
 
 metaitem.bottle.purple.drink.name=Purple Drink
 metaitem.bottle.purple.drink.tooltip=How about Lemonade. Or some Ice Tea? I got Purple Drink!
@@ -652,17 +652,17 @@ metaitem.crop.drop.aurelia.tooltip=Source of Gold
 metaitem.crop.drop.tealeaf.name=Tea Leaf
 metaitem.crop.drop.tealeaf.tooltip=Source of Tea
 
-metaitem.crop.drop.oilberry.name=Oil Berry
-metaitem.crop.drop.oilberry.tooltip=Oil in Berry form
-metaitem.crop.drop.bobsyeruncleranks.name=Bobs-Yer-Uncle-Berry
-metaitem.crop.drop.bobsyeruncleranks.tooltip=Source of Emeralds
-metaitem.crop.drop.uumberry.name=UUM Berry
-metaitem.crop.drop.uumberry.tooltip=UUM in Berry form
-metaitem.crop.drop.uuaberry.name=UUA Berry
-metaitem.crop.drop.uuaberry.tooltip=UUA in Berry form
+metaitem.crop.drop.oil_berry.name=Oil Berry
+metaitem.crop.drop.oil_berry.tooltip=Oil in Berry form
+metaitem.crop.drop.bobs_yer_uncle_ranks.name=Bobs-Yer-Uncle-Berry
+metaitem.crop.drop.bobs_yer_uncle_ranks.tooltip=Source of Emeralds
+metaitem.crop.drop.uum_berry.name=UUM Berry
+metaitem.crop.drop.uum_berry.tooltip=UUM in Berry form
+metaitem.crop.drop.uua_berry.name=UUA Berry
+metaitem.crop.drop.uua_berry.tooltip=UUA in Berry form
 
-metaitem.crop.drop.milkwart.name=Milk Wart
-metaitem.crop.drop.milkwart.tooltip=Source of Milk
+metaitem.crop.drop.milk_wart.name=Milk Wart
+metaitem.crop.drop.milk_wart.tooltip=Source of Milk
 
 metaitem.crop.drop.coppon.name=Coppon Fiber
 metaitem.crop.drop.coppon.tooltip=ORANGE WOOOOOOOL!!!

@@ -778,7 +778,7 @@ public class ModHandler {
     /**
      * Rolling Machine Crafting Recipe
      */
-    public static void addRollingMachineRecipe(ItemStack result, Object[] recipe) {
+    public static void addRollingMachineRecipe(ItemStack result, Object... recipe) {
         result = OreDictionaryUnifier.get(true, result);
         Validate.notNull(result, "Output cannot be null");
         Validate.notNull(recipe, "Recipe cannot be null");
