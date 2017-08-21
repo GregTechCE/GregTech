@@ -1,11 +1,10 @@
 package gregtech.api.gui;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableBiMap;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -44,7 +43,10 @@ public final class ModularUI<H extends IUIHolder> {
     }
 
     public void initWidgets() {
-        guiWidgets.values().forEach(Widget::initWidget);
+        guiWidgets.values().forEach(widget -> {
+            widget.gui = this;
+            widget.initWidget();
+        });
     }
 
     public void writeWidgetData(PacketBuffer dataBuffer) {
@@ -59,6 +61,39 @@ public final class ModularUI<H extends IUIHolder> {
         for(int i = 0; i < guiWidgets.size(); i++) {
             guiWidgets.get(dataBuffer.readInt()).readInitialSyncInfo(dataBuffer);
         }
+    }
+
+    public static <T extends IUIHolder> Builder<T> builder(ResourceLocation background, int width, int height) {
+        return new Builder<>(background, width, height);
+    }
+
+    /**
+     * Simple builder for  ModularUI objects
+     * @param <T> UI holder type
+     */
+    public static class Builder<T extends IUIHolder> {
+
+        private ImmutableBiMap.Builder<Integer, Widget> widgets = ImmutableBiMap.builder();
+        private ResourceLocation background;
+        private int width, height;
+
+        public Builder(ResourceLocation background, int width, int height) {
+            Preconditions.checkNotNull(background);
+            this.background = background;
+            this.width = width;
+            this.height = height;
+        }
+
+        public <H extends T> Builder<T> widget(int id, Widget<H> widget) {
+            Preconditions.checkNotNull(widget);
+            widgets.put(id, widget);
+            return this;
+        }
+
+        public ModularUI<T> build(T holder, EntityPlayer player) {
+            return new ModularUI<>(widgets.build(), background, width, height, holder, player);
+        }
+
     }
 
 }

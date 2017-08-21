@@ -9,15 +9,20 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class Widget implements Comparable<Widget> {
+/**
+ * Widget is functional element of ModularUI
+ * It can draw, perform actions, react to key press and mouse
+ * It's information is also synced to client
+ * @param <T> type of UIHolder this widget requires
+ */
+public abstract class Widget<T extends IUIHolder> implements Comparable<Widget> {
 
     public static final int SLOT_DRAW_PRIORITY = 1000;
 
-    protected final ModularUI<?> gui;
+    protected ModularUI<T> gui;
     public final int drawPriority;
 
-    public Widget(ModularUI<?> gui, int drawPriority) {
-        this.gui = gui;
+    public Widget(int drawPriority) {
         this.drawPriority = drawPriority;
     }
 
