@@ -425,6 +425,11 @@ public final class MetaItems {
 
 	public static MetaItem<?>.MetaValueItem FOOD_SLICED_CHEESE;
 
+	public static MetaItem<?>.MetaValueItem[] DYE_ONLY_ITEMS = new MetaItem.MetaValueItem[16];
+
+	public static MetaItem<?>.MetaValueItem[] SPRAY_CAN_DYES = new MetaItem.MetaValueItem[16];
+	public static MetaItem<?>.MetaValueItem[] SPRAY_CAN_DYES_USED = new MetaItem.MetaValueItem[16];
+
 	public static ToolMetaItem<?>.MetaToolValueItem SWORD;
 	public static ToolMetaItem<?>.MetaToolValueItem PICKAXE;
 	public static ToolMetaItem<?>.MetaToolValueItem SHOVEL;

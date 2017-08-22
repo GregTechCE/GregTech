@@ -24,7 +24,7 @@ public class BlockScanningEvent extends WorldEvent {
     public final IBlockState blockState;
 
     /**
-     * used to determine the amount of energy this scan is costs.
+     * used to determine the amount of energy this scan costs.
      */
     public int EUCost;
 

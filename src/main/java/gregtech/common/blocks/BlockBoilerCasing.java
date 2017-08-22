@@ -13,7 +13,6 @@ public class BlockBoilerCasing extends VariantBlock<BlockBoilerCasing.BoilerCasi
         setResistance(4.0f);
         setSoundType(SoundType.METAL);
         setHarvestLevel("wrench", 2);
-        StoneTypes
     }
 
     public enum BoilerCasingType implements IStringSerializable {

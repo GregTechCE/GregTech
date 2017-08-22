@@ -1,9 +1,9 @@
 package gregtech.api.recipes;
 
-import gregtech.api.items.ItemList;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.items.MetaItems;
 import ic2.core.ref.BlockName;
 import ic2.core.ref.ItemName;
 import ic2.core.ref.TeBlock;
@@ -371,7 +371,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		@Override
 		protected void finalizeAndValidate() {
 			if (circuitMeta >= 0) {
-				inputs.add(ItemList.Circuit_Integrated.getWithDamage(0, circuitMeta));
+//				inputs.add(ItemList.Circuit_Integrated.getWithDamage(0, circuitMeta));
 			}
 			super.finalizeAndValidate();
 		}
@@ -479,11 +479,11 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 				throw new IllegalArgumentException("Recipe cannot contain both cells and Fuel Cans inputs at the time");
 			}
 
-			if (cellAmount > 0) {
-				inputs.add(ItemList.Cell_Empty.get(cellAmount));
-			} else if (fuelCanAmount > 0) {
-				inputs.add(ItemList.IC2_Fuel_Can_Empty.get(fuelCanAmount));
-			}
+//			if (cellAmount > 0) {
+//				inputs.add(ItemList.Cell_Empty.get(cellAmount));
+//			} else if (fuelCanAmount > 0) {
+//				inputs.add(ItemList.IC2_Fuel_Can_Empty.get(fuelCanAmount));
+//			}
 			super.finalizeAndValidate();
 		}
 
@@ -633,13 +633,13 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 
 			ItemStack input = inputs.get(0);
 			if (gunpowder < 65) {
-				recipeMap.addRecipe(this.copy().inputs(input, ItemList.Block_Powderbarrel.get(gunpowder)).build());
+//				recipeMap.addRecipe(this.copy().inputs(input, ItemList.Block_Powderbarrel.get(gunpowder)).build());
 			}
 			if (dynamite < 17) {
-				recipeMap.addRecipe(this.copy().inputs(input, ModHandler.getIC2Item(ItemName.dynamite, dynamite)).build());
+				recipeMap.addRecipe(this.copy().inputs(input, ModHandler.IC2.getIC2Item(ItemName.dynamite, dynamite)).build());
 			}
 			recipeMap.addRecipe(this.copy().inputs(input, new ItemStack(Blocks.TNT, TNT)).build());
-			recipeMap.addRecipe(this.copy().inputs(input, ModHandler.getIC2Item(BlockName.te, TeBlock.itnt, ITNT)).build());
+			recipeMap.addRecipe(this.copy().inputs(input, ModHandler.IC2.getIC2Item(BlockName.te, TeBlock.itnt, ITNT)).build());
 		}
 
 		public Recipe build() {

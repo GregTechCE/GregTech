@@ -69,7 +69,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		//17000 -> OrePrefix.plate
 		int woodItemMeta = 17000 + Material.MATERIAL_REGISTRY.getIDForObject(Materials.Wood);
 //		addItem(woodItemMeta, "").setBurnValue(1600);
-		ModHandler.addCompressionRecipe(OreDictionaryUnifier.getDust(Materials.Wood, 8), new ItemStack(this, 1, woodItemMeta));
+		ModHandler.IC2.addCompressionRecipe(OreDictionaryUnifier.getDust(Materials.Wood, 8), new ItemStack(this, 1, woodItemMeta));
 
 		ItemStack stack = new ItemStack(this, 1, woodItemMeta);
 		stack.setStackDisplayName("The holy Planks of Sengir");
@@ -711,7 +711,7 @@ public class MetaItem1 extends MaterialMetaItem {
 
 		INGOT_IRIDIUM_ALLOY = addItem(480, "ingot.iridiumalloy");
 
-		ModHandler.addRollingMachineRecipe(INGOT_IRIDIUM_ALLOY.getStackForm(),
+		ModHandler.addCraftingRecipe(INGOT_IRIDIUM_ALLOY.getStackForm(),
 				"IAI",
 				"ADA",
 				"IAI",
@@ -1531,7 +1531,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		COMPONENT_FILTER = addItem(729, "component.filter").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Zinc, OrePrefix.foil.materialAmount * 16L))).addOreDict(OreDictNames.craftingFilter);
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(ModHandler.getIC2Item(ItemName.crafting, CraftingItemType.carbon_mesh, 4), OreDictionaryUnifier.get(OrePrefix.foil, Materials.Zinc, 16))
+				.inputs(ModHandler.IC2.getIC2Item(ItemName.crafting, CraftingItemType.carbon_mesh, 4), OreDictionaryUnifier.get(OrePrefix.foil, Materials.Zinc, 16))
 				.fluidInputs(Materials.Plastic.getFluid(144))
 				.outputs(COMPONENT_FILTER.getStackForm())
 				.duration(1600)

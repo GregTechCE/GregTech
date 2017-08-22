@@ -270,7 +270,7 @@ public class MataItem2 extends MaterialMetaItem {
         ModHandler.addCompressionRecipe(new ItemStack(Blocks.YELLOW_FLOWER, 8, 32767), IC2_PlantballCompressed.getStackForm());
 
         ModHandler.addPulverisationRecipe(FOOD_SLICED_CHEESE.getStackForm(), OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Cheese, 1));
-        ModHandler.addPulverisationRecipe(DYE_COCOA.getStackForm(), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Cocoa, 1));
+        ModHandler.addPulverisationRecipe(new ItemStack(Items.DYE, 1, EnumDyeColor.BROWN.getDyeDamage()), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Cocoa, 1));
         ModHandler.addPulverisationRecipe(CROP_DROP_TINE.getStackForm(), OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Wood, 2));
         ModHandler.addPulverisationRecipe(new ItemStack(Items.REEDS, 1), new ItemStack(Items.SUGAR, 1), null, 0, false);
         ModHandler.addPulverisationRecipe(new ItemStack(Blocks.MELON_BLOCK, 1, 0), new ItemStack(Items.MELON, 8, 0), new ItemStack(Items.MELON_SEEDS, 1), 80, false);
