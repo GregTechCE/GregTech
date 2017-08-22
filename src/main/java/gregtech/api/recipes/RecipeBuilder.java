@@ -1,6 +1,7 @@
 package gregtech.api.recipes;
 
 import gregtech.api.items.ItemList;
+import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.util.GT_Utility;
 import ic2.core.ref.BlockName;
@@ -406,19 +407,21 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		public NotConsumableInputRecipeBuilder notConsumable(Item item) {
-			return notConsumable(item, 0);
-		}
-
-		public NotConsumableInputRecipeBuilder notConsumable(Item item, int metadata) {
-			Validate.notNull(item, "Not consumable Item cannot be null");
-			Validate.exclusiveBetween(0, Short.MAX_VALUE + 1, metadata);
-			inputs.add(new ItemStack(item, 0, metadata));
+			inputs.add(new ItemStack(item, 0));
 			return this;
 		}
 
-		public NotConsumableInputRecipeBuilder notConsumable(ItemList item) {
+		public NotConsumableInputRecipeBuilder notConsumable(ItemStack itemStack) {
+			Validate.notNull(itemStack, "Not consumable ItemStack cannot be null");
+			ItemStack stack = itemStack.copy();
+			stack.stackSize = 0;
+			inputs.add(stack);
+			return this;
+		}
+
+		public NotConsumableInputRecipeBuilder notConsumable(MetaItem.MetaValueItem item) {
 			Validate.notNull(item, "Not consumable Item cannot be null");
-			inputs.add(item.get(0));
+			inputs.add(item.getStackForm(0));
 			return this;
 		}
 
