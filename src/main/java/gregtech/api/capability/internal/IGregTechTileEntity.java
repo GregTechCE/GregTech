@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
  * Also delivers most of the Informations about my TileEntities.
  * <p/>
  */
-public interface IGregTechTileEntity extends IHasWorldObjectAndCoords {
+public interface IGregTechTileEntity extends IHasWorldObjectAndCoords, IUIHolder {
 
     @Nullable IMetaTileEntity getMetaTileEntity();
 

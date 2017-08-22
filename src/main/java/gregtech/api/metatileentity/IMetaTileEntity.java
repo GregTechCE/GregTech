@@ -2,9 +2,7 @@ package gregtech.api.metatileentity;
 
 import com.google.common.collect.ImmutableBiMap;
 import gregtech.api.capability.ITurnable;
-import gregtech.api.capability.internal.IGregTechTileEntity;
-import gregtech.api.capability.internal.IRedstoneEmitter;
-import gregtech.api.capability.internal.IRedstoneReceiver;
+import gregtech.api.capability.internal.*;
 import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.ModularUI;
 import net.minecraft.block.state.IBlockState;
@@ -25,7 +23,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public interface IMetaTileEntity extends ITurnable, IRedstoneReceiver, IRedstoneEmitter, IUIHolder {
+public interface IMetaTileEntity extends ITurnable, IRedstoneReceiver, IRedstoneEmitter, IUIHolder, ISimpleFluidInventory, ISimpleSlotInventory {
 
     IMetaTileEntityFactory getFactory();
 
@@ -121,7 +119,7 @@ public interface IMetaTileEntity extends ITurnable, IRedstoneReceiver, IRedstone
      * @param player player who opens GUI
      * @return instance of ModularUI for this MetaTileEntity
      */
-    ModularUI<? extends IMetaTileEntity> createUI(EntityPlayer player);
+    ModularUI<? extends IGregTechTileEntity> createUI(EntityPlayer player);
 
     int[] getSlotsForFace(EnumFacing face);
     //side == null - internal inventory change
