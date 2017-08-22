@@ -39,11 +39,11 @@ public abstract class SlotWidget extends Widget<ISimpleSlotInventory> implements
     public void onPickupFromSlot(EntityPlayer player, ItemStack stack) {}
 
     public boolean canPutStack(ItemStack stack) {
-        return true;
+        return canPutItems;
     }
 
     public boolean canTakeStack(EntityPlayer player) {
-        return true;
+        return canTakeItems;
     }
 
     public boolean canBeHovered() {
