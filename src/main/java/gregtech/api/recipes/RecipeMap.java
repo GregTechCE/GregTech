@@ -120,9 +120,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *	   			.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> MACERATOR_RECIPES = new RecipeMapMacerator(new HashSet<>(10000), "gt.recipe.macerator", "Pulverization", null, "basicmachines/Macerator4", 1, 1, 1, 4, 0, 0, 0, 0, 1, "", 1, "", true, true, new RecipeBuilder.DefaultRecipeBuilder() {
-
-	});
+	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> MACERATOR_RECIPES = new RecipeMapMacerator(new HashSet<>(10000), "gt.recipe.macerator", "Pulverization", null, "basicmachines/Macerator4", 1, 1, 1, 4, 0, 0, 0, 0, 1, "", 1, "", true, true, new RecipeBuilder.DefaultRecipeBuilder() {});
 
 	/**
 	 * Input full box, output item and empty box.
@@ -941,7 +939,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 		// Some Recipe Classes require a certain amount of Inputs of certain kinds. Like "at least 1 Fluid + 1 Stack" or "at least 2 Stacks" before they start searching for Recipes.
 		// This improves Performance massively, especially if people leave things like Circuits, Molds or Shapes in their Machines to select Sub Recipes.
-		if (GregTechAPI.sPostloadFinished) {
+//		if (GregTechAPI.sPostloadFinished) {
 			if (minFluidInputs > 0) {
 				if (fluidInputs == null) {
 					return null;
@@ -971,7 +969,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 					return null;
 				}
 			}
-		}
+//		}
 
 		// Unification happens here in case the Input isn't already unificated.
 		if (notUnificated) {
@@ -1331,7 +1329,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		@Override
 		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack[] inputs) {
 			Recipe recipe = super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, fluidInputs, inputs);
-			if (inputs == null || inputs.length <= 0 || inputs[0] == null || recipe != null || !GregTechAPI.sPostloadFinished)
+			if (inputs == null || inputs.length <= 0 || inputs[0] == null || recipe != null /*|| !GregTechAPI.sPostloadFinished*/)
 				return recipe;
 			if (fluidInputs != null && fluidInputs.length > 0 && fluidInputs[0] != null) {
 				ItemStack output = GT_Utility.fillFluidContainer(fluidInputs[0], inputs[0], false, true);
@@ -1428,7 +1426,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 			if (inputs == null || inputs.length <= 0 || inputs[0] == null) return null;
 			if (inputRecipe != null && inputRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) return inputRecipe;
 			ItemStack comparedInput = GT_Utility.copy(inputs[0]);
-			ItemStack[] outputItems = ModHandler.getMachineOutput(comparedInput, ic2.api.recipe.Recipes.compressor.getRecipes(), true, new NBTTagCompound(), null, null, null);
+			ItemStack[] outputItems = ModHandler.IC2.getMachineOutput(comparedInput, ic2.api.recipe.Recipes.compressor.getRecipes(), true, new NBTTagCompound(), null, null, null);
 			if (GT_Utility.arrayContainsNonNull(outputItems)) {
 				return this.recipeBuilder()
 						.nonOptimized()
@@ -1443,7 +1441,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 		@Override
 		public boolean containsInput(ItemStack stack) {
-			return GT_Utility.arrayContainsNonNull(ModHandler.getMachineOutput(GT_Utility.copyAmount(64, stack), ic2.api.recipe.Recipes.compressor.getRecipes(), false, new NBTTagCompound(), null, null, null));
+			return GT_Utility.arrayContainsNonNull(ModHandler.IC2.getMachineOutput(GT_Utility.copyAmount(64, stack), ic2.api.recipe.Recipes.compressor.getRecipes(), false, new NBTTagCompound(), null, null, null));
 		}
 	}
 
@@ -1461,7 +1459,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 			if (inputs == null || inputs.length <= 0 || inputs[0] == null) return null;
 			if (inputRecipe != null && inputRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) return inputRecipe;
 			ItemStack comparedInput = GT_Utility.copy(inputs[0]);
-			ItemStack[] outputItems = ModHandler.getMachineOutput(comparedInput, ic2.api.recipe.Recipes.extractor.getRecipes(), true, new NBTTagCompound(), null, null, null);
+			ItemStack[] outputItems = ModHandler.IC2.getMachineOutput(comparedInput, ic2.api.recipe.Recipes.extractor.getRecipes(), true, new NBTTagCompound(), null, null, null);
 
 			if (GT_Utility.arrayContainsNonNull(outputItems)) {
 				return this.recipeBuilder()
@@ -1477,7 +1475,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 		@Override
 		public boolean containsInput(ItemStack stack) {
-			return GT_Utility.arrayContainsNonNull(ModHandler.getMachineOutput(GT_Utility.copyAmount(64, stack), ic2.api.recipe.Recipes.extractor.getRecipes(), false, new NBTTagCompound(), null, null, null));
+			return GT_Utility.arrayContainsNonNull(ModHandler.IC2.getMachineOutput(GT_Utility.copyAmount(64, stack), ic2.api.recipe.Recipes.extractor.getRecipes(), false, new NBTTagCompound(), null, null, null));
 		}
 	}
 
@@ -1495,7 +1493,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 			if (inputs == null || inputs.length <= 0 || inputs[0] == null) return null;
 			if (inputRecipe != null && inputRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) return inputRecipe;
 			ItemStack comparedInput = GT_Utility.copy(inputs[0]);
-			ItemStack[] outputItems = ModHandler.getMachineOutput(comparedInput, ic2.api.recipe.Recipes.centrifuge.getRecipes(), true, new NBTTagCompound(), null, null, null);
+			ItemStack[] outputItems = ModHandler.IC2.getMachineOutput(comparedInput, ic2.api.recipe.Recipes.centrifuge.getRecipes(), true, new NBTTagCompound(), null, null, null);
 
 			if (GT_Utility.arrayContainsNonNull(outputItems)) {
 				return this.recipeBuilder()
@@ -1511,7 +1509,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 		@Override
 		public boolean containsInput(ItemStack stack) {
-			return GT_Utility.arrayContainsNonNull(ModHandler.getMachineOutput(GT_Utility.copyAmount(64, stack), ic2.api.recipe.Recipes.centrifuge.getRecipes(), false, new NBTTagCompound(), null, null, null));
+			return GT_Utility.arrayContainsNonNull(ModHandler.IC2.getMachineOutput(GT_Utility.copyAmount(64, stack), ic2.api.recipe.Recipes.centrifuge.getRecipes(), false, new NBTTagCompound(), null, null, null));
 		}
 	}
 
@@ -1531,7 +1529,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 			if (inputRecipe != null && inputRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) return inputRecipe;
 			ItemStack comparedInput = GT_Utility.copy(inputs[0]);
 			NBTTagCompound recipeMetaData = new NBTTagCompound();
-			ItemStack[] outputItems = ModHandler.getMachineOutput(comparedInput, ic2.api.recipe.Recipes.oreWashing.getRecipes(), true, recipeMetaData, null, null, null);
+			ItemStack[] outputItems = ModHandler.IC2.getMachineOutput(comparedInput, ic2.api.recipe.Recipes.oreWashing.getRecipes(), true, recipeMetaData, null, null, null);
 
 			if (GT_Utility.arrayContainsNonNull(outputItems)) {
 				return this.recipeBuilder()
@@ -1548,7 +1546,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 		@Override
 		public boolean containsInput(ItemStack stack) {
-			return GT_Utility.arrayContainsNonNull(ModHandler.getMachineOutput(GT_Utility.copyAmount(64, stack), ic2.api.recipe.Recipes.oreWashing.getRecipes(), false, new NBTTagCompound(), null, null, null));
+			return GT_Utility.arrayContainsNonNull(ModHandler.IC2.getMachineOutput(GT_Utility.copyAmount(64, stack), ic2.api.recipe.Recipes.oreWashing.getRecipes(), false, new NBTTagCompound(), null, null, null));
 		}
 
 		@Override
@@ -1573,13 +1571,13 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 		@Override
 		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack[] inputs) {
-			if (inputs == null || inputs.length <= 0 || inputs[0] == null || !GregTechAPI.sPostloadFinished)
+			if (inputs == null || inputs.length <= 0 || inputs[0] == null/* || !GregTechAPI.sPostloadFinished*/)
 				return super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, fluidInputs, inputs);
 			inputRecipe = super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, fluidInputs, inputs);
 			if (inputRecipe != null) return inputRecipe;
 
 			ItemStack comparedInput = GT_Utility.copy(inputs[0]);
-			ItemStack[] outputItems = ModHandler.getMachineOutput(comparedInput, ic2.api.recipe.Recipes.macerator.getRecipes(), true, new NBTTagCompound(), null, null, null);
+			ItemStack[] outputItems = ModHandler.IC2.getMachineOutput(comparedInput, ic2.api.recipe.Recipes.macerator.getRecipes(), true, new NBTTagCompound(), null, null, null);
 
 			if (GT_Utility.arrayContainsNonNull(outputItems)) {
 				return this.recipeBuilder()
@@ -1595,7 +1593,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 		@Override
 		public boolean containsInput(ItemStack stack) {
-			return super.containsInput(stack) || GT_Utility.arrayContainsNonNull(ModHandler.getMachineOutput(GT_Utility.copyAmount(64, stack), ic2.api.recipe.Recipes.macerator.getRecipes(), false, new NBTTagCompound(), null, null, null));
+			return super.containsInput(stack) || GT_Utility.arrayContainsNonNull(ModHandler.IC2.getMachineOutput(GT_Utility.copyAmount(64, stack), ic2.api.recipe.Recipes.macerator.getRecipes(), false, new NBTTagCompound(), null, null, null));
 		}
 	}
 
@@ -1611,7 +1609,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		@Override
 		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack[] inputs) {
 			Recipe recipe = super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, fluidInputs, inputs);
-			if (inputs == null || inputs.length <= 0 || inputs[0] == null || recipe == null || !GregTechAPI.sPostloadFinished)
+			if (inputs == null || inputs.length <= 0 || inputs[0] == null || recipe == null /*|| !GregTechAPI.sPostloadFinished*/)
 				return recipe;
 //			for (ItemStack stack : inputs) {
 //				if (ItemList.Paper_Printed_Pages.isStackEqual(stack, false, true)) {
@@ -1643,7 +1641,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		@Override
 		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack[] inputs) {
 			Recipe recipe = super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, fluidInputs, inputs);
-			if (inputs == null || inputs.length < 2 || inputs[0] == null || inputs[1] == null || !GregTechAPI.sPostloadFinished)
+			if (inputs == null || inputs.length < 2 || inputs[0] == null || inputs[1] == null /*|| !GregTechAPI.sPostloadFinished*/)
 				return recipe;
 			if (recipe == null) {
 				if (MetaItems.SHAPE_MOLD_NAME.getStackForm().isItemEqual(inputs[0])) {
@@ -1683,7 +1681,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 					if (!tag.hasKey("credit_security_id")) tag.setLong("credit_security_id", System.nanoTime());
 					mold.setTagCompound(tag);
 
-					RecipeBuilder builder = this.recipeBuilder()
+					RecipeBuilder<?,?> builder = this.recipeBuilder()
 							.fromRecipe(recipe)
 							.cannotBeBuffered();
 
@@ -1711,14 +1709,14 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		@Override
 		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack[] inputs) {
 			Recipe recipe = super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, fluidInputs, inputs);
-			if (inputs == null || inputs.length <= 0 || inputs[0] == null || fluidInputs == null || fluidInputs.length <= 0 || fluidInputs[0] == null || !GregTechAPI.sPostloadFinished)
+			if (inputs == null || inputs.length <= 0 || inputs[0] == null || fluidInputs == null || fluidInputs.length <= 0 || fluidInputs[0] == null/*|| !GregTechAPI.sPostloadFinished*/)
 				return recipe;
 
-			EnumDyeColor color = GregTechAPI.LIQUIDDYE_MAP.inverse().get(fluidInputs[0]);
+			EnumDyeColor color = GregTechAPI.LIQUID_DYE_MAP.inverse().get(fluidInputs[0].getFluid());
 			if (color != null) return recipe;
 
 			if (recipe == null) {
-				ItemStack output = ModHandler.getAllRecipeOutput(tileEntity == null ? null : tileEntity.getWorld(), inputs[0], inputs[0], inputs[0], inputs[0], MetaItems.DYE_ONLY_ITEMS[color.getMetadata()].getStackForm(), inputs[0], inputs[0], inputs[0], inputs[0]);
+				ItemStack output = ModHandler.getRecipeOutput(tileEntity == null ? null : tileEntity.getWorld(), inputs[0], inputs[0], inputs[0], inputs[0], MetaItems.DYE_ONLY_ITEMS[color.getMetadata()].getStackForm(), inputs[0], inputs[0], inputs[0], inputs[0]);
 				if (output != null) {
 					Recipe outputRecipe = this.recipeBuilder()
 							.inputs(GT_Utility.copyAmount(8, inputs[0]))
@@ -1731,7 +1729,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 				return this.addRecipe(outputRecipe);
 			}
 
-				output = ModHandler.getAllRecipeOutput(tileEntity == null ? null : tileEntity.getWorld(), inputs[0], MetaItems.DYE_ONLY_ITEMS[color.getMetadata()].getStackForm());
+				output = ModHandler.getRecipeOutput(tileEntity == null ? null : tileEntity.getWorld(), inputs[0], MetaItems.DYE_ONLY_ITEMS[color.getMetadata()].getStackForm());
 				if (output != null) {
 					Recipe outputRecipe = this.recipeBuilder()
 							.inputs(GT_Utility.copyAmount(1, inputs[0]))
@@ -1740,7 +1738,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 							.duration(32)
 							.EUt(2)
 							.build();
-					return this.addRecipe(recipe);
+					return this.addRecipe(outputRecipe);
 
 				}
 			} else {
@@ -1750,7 +1748,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 					if (tag == null || !GT_Utility.isStringValid(tag.getString("title")) || !GT_Utility.isStringValid(tag.getString("author")))
 						return null;
 
-					RecipeBuilder builder = this.recipeBuilder()
+					RecipeBuilder<?,?> builder = this.recipeBuilder()
 							.fromRecipe(recipe)
 							.cannotBeBuffered();
 
@@ -1767,7 +1765,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 					NBTTagCompound tag = inputs[0].getTagCompound();
 					if (tag == null || !tag.hasKey("map_id")) return null;
 
-					RecipeBuilder builder = this.recipeBuilder()
+					RecipeBuilder<?,?> builder = this.recipeBuilder()
 							.fromRecipe(recipe)
 							.cannotBeBuffered();
 
@@ -1783,7 +1781,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 					NBTTagCompound tag = inputs[0].getTagCompound();
 					if (tag == null || !tag.hasKey("GT.PunchCardData")) return null;
 
-					RecipeBuilder builder = this.recipeBuilder()
+					RecipeBuilder<?,?> builder = this.recipeBuilder()
 							.fromRecipe(recipe)
 							.cannotBeBuffered();
 
@@ -1808,12 +1806,12 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 		@Override
 		public boolean containsInput(FluidStack fluid) {
-			return super.containsInput(fluid) || GregTechAPI.LIQUIDDYE_MAP.containsValue(fluid);
+			return super.containsInput(fluid) || GregTechAPI.LIQUID_DYE_MAP.containsValue(fluid.getFluid());
 		}
 
 		@Override
 		public boolean containsInput(Fluid fluid) {
-			return super.containsInput(fluid) || GregTechAPI.LIQUIDDYE_MAP.containsValue(fluid);
+			return super.containsInput(fluid) || GregTechAPI.LIQUID_DYE_MAP.containsValue(fluid);
 		}
 	}
 }

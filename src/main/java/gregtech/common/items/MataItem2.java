@@ -1,16 +1,21 @@
 package gregtech.common.items;
 
 import com.google.common.base.CaseFormat;
+import crazypants.enderio.config.recipes.xml.Item;
+import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.items.materialitem.MaterialMetaItem;
 import gregtech.api.items.metaitem.FoodStats;
 import gregtech.api.recipes.ModHandler;
+import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.RandomPotionEffect;
+import ic2.core.item.type.CraftingItemType;
+import ic2.core.ref.ItemName;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
@@ -30,59 +35,61 @@ public class MataItem2 extends MaterialMetaItem {
                 OrePrefix.gemChipped, OrePrefix.gemFlawed, OrePrefix.gemFlawless, OrePrefix.gemExquisite, OrePrefix.gearGt, 
                 null, null, null, null, null);
 
-        THERMOS_CAN_DARK_COFFEE = addItem(0, "thermos_can.dark.coffee").addStats(new FoodStats(2, 0.2F, true, GregTechAPI.sDrinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.SPEED, 400, 1, 70), new RandomPotionEffect(MobEffects.HASTE, 400, 1, 70)));
-        THERMOS_CAN_DARK_CAFE_AU_LAIT = addItem(1, "thermos_can.dark.cafe.au.lait").setInvisible().addStats(new FoodStats(2, 0.2F, true, GregTechAPI.sDrinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.SPEED, 400, 2, 90), new RandomPotionEffect(MobEffects.HASTE, 400, 2, 90)));
-        THERMOS_CAN_COFFEE = addItem(2, "thermos_can.coffee").addStats(new FoodStats(3, 0.4F, true, GregTechAPI.sDrinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.SPEED, 400, 0, 50), new RandomPotionEffect(MobEffects.HASTE, 400, 0, 50)));
-        THERMOS_CAN_CAFE_AU_LAIT = addItem(3, "thermos_can.cafe.au.lait").addStats(new FoodStats(3, 0.4F, true, GregTechAPI.sDrinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.SPEED, 400, 1, 70), new RandomPotionEffect(MobEffects.HASTE, 400, 1, 70)));
-        THERMOS_CAN_LAIT_AU_CAFE = addItem(4, "thermos_can.lait.au.cafe").setInvisible().addStats(new FoodStats(3, 0.4F, true, GregTechAPI.sDrinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.SPEED, 400, 2, 90), new RandomPotionEffect(MobEffects.HASTE, 400, 2, 90)));
-        THERMOS_CAN_DARK_CHOCOLATE_MILK = addItem(5, "thermos_can.dark.chocolate.milk").addStats(new FoodStats(3, 0.4F, true, GregTechAPI.sDrinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.REGENERATION, 50, 1, 60)));
-        THERMOS_CAN_CHOCOLATE_MILK = addItem(6, "thermos_can.chocolate.milk").addStats(new FoodStats(3, 0.4F, true, GregTechAPI.sDrinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.REGENERATION, 50, 1, 90)));
-        THERMOS_CAN_TEA = addItem(7, "thermos_can.tea").addStats(new FoodStats(2, 0.2F, true, GregTechAPI.sDrinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.SLOWNESS, 300, 0, 50)));
-        THERMOS_CAN_SWEET_TEA = addItem(8, "thermos_can.sweet.tea").setInvisible().addStats(new FoodStats(2, 0.2F, true, GregTechAPI.sDrinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm()));
-        THERMOS_CAN_ICE_TEA = addItem(9, "thermos_can.ice.tea").addStats(new FoodStats(2, 0.2F, true, GregTechAPI.sDrinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.SLOWNESS, 300, 0, 50)));
+        boolean drinksAlwaysDrinkable = false;
+        
+        THERMOS_CAN_DARK_COFFEE = addItem(0, "thermos_can.dark.coffee").addStats(new FoodStats(2, 0.2F, true, drinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.SPEED, 400, 1, 70), new RandomPotionEffect(MobEffects.HASTE, 400, 1, 70)));
+        THERMOS_CAN_DARK_CAFE_AU_LAIT = addItem(1, "thermos_can.dark.cafe.au.lait").setInvisible().addStats(new FoodStats(2, 0.2F, true, drinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.SPEED, 400, 2, 90), new RandomPotionEffect(MobEffects.HASTE, 400, 2, 90)));
+        THERMOS_CAN_COFFEE = addItem(2, "thermos_can.coffee").addStats(new FoodStats(3, 0.4F, true, drinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.SPEED, 400, 0, 50), new RandomPotionEffect(MobEffects.HASTE, 400, 0, 50)));
+        THERMOS_CAN_CAFE_AU_LAIT = addItem(3, "thermos_can.cafe.au.lait").addStats(new FoodStats(3, 0.4F, true, drinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.SPEED, 400, 1, 70), new RandomPotionEffect(MobEffects.HASTE, 400, 1, 70)));
+        THERMOS_CAN_LAIT_AU_CAFE = addItem(4, "thermos_can.lait.au.cafe").setInvisible().addStats(new FoodStats(3, 0.4F, true, drinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.SPEED, 400, 2, 90), new RandomPotionEffect(MobEffects.HASTE, 400, 2, 90)));
+        THERMOS_CAN_DARK_CHOCOLATE_MILK = addItem(5, "thermos_can.dark.chocolate.milk").addStats(new FoodStats(3, 0.4F, true, drinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.REGENERATION, 50, 1, 60)));
+        THERMOS_CAN_CHOCOLATE_MILK = addItem(6, "thermos_can.chocolate.milk").addStats(new FoodStats(3, 0.4F, true, drinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.REGENERATION, 50, 1, 90)));
+        THERMOS_CAN_TEA = addItem(7, "thermos_can.tea").addStats(new FoodStats(2, 0.2F, true, drinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.SLOWNESS, 300, 0, 50)));
+        THERMOS_CAN_SWEET_TEA = addItem(8, "thermos_can.sweet.tea").setInvisible().addStats(new FoodStats(2, 0.2F, true, drinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm()));
+        THERMOS_CAN_ICE_TEA = addItem(9, "thermos_can.ice.tea").addStats(new FoodStats(2, 0.2F, true, drinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.SLOWNESS, 300, 0, 50)));
 
         GELLED_TOLUENE = addItem(10, "gelled_toluene");
 
         ItemStack emptyBottle = new ItemStack(Items.GLASS_BOTTLE);
         
-        BOTTLE_PURPLE_DRINK = addItem(100, "bottle.purple.drink").addStats(new FoodStats(8, 0.2F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.SLOWNESS, 400, 1, 90)));
-        BOTTLE_GRAPE_JUICE = addItem(101, "bottle.grape.juice").addStats(new FoodStats(4, 0.2F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HUNGER, 400, 1, 60)));
-        BOTTLE_WINE = addItem(102, "bottle.wine").addStats(new FoodStats(2, 0.2F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 400, 1, 60), new RandomPotionEffect(MobEffects.INSTANT_HEALTH, 0, 0, 60), new RandomPotionEffect(MobEffects.POISON, 200, 1, 5)));
-        BOTTLE_VINEGAR = addItem(103, "bottle.vinegar").setInvisible().addStats(new FoodStats(2, 0.2F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 400, 1, 90), new RandomPotionEffect(MobEffects.INSTANT_HEALTH, 0, 1, 90), new RandomPotionEffect(MobEffects.POISON, 200, 2, 10), new RandomPotionEffect(MobEffects.INSTANT_DAMAGE, 0, 2, 5)));
-        BOTTLE_POTATO_JUICE = addItem(104, "bottle.potato.juice").setInvisible().addStats(new FoodStats(3, 0.3F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle));
-        BOTTLE_VODKA = addItem(105, "bottle.vodka").setInvisible().addStats(new FoodStats(2, 0.2F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 500, 0, 60), new RandomPotionEffect(MobEffects.STRENGTH, 500, 1, 60), new RandomPotionEffect(MobEffects.POISON, 200, 1, 5)));
-        BOTTLE_LENINADE = addItem(106, "bottle.leninade").setInvisible().addStats(new FoodStats(2, 0.2F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 500, 1, 90), new RandomPotionEffect(MobEffects.STRENGTH, 500, 2, 90), new RandomPotionEffect(MobEffects.POISON, 200, 2, 10), new RandomPotionEffect(MobEffects.INSTANT_DAMAGE, 0, 2, 5)));
-        BOTTLE_MINERAL_WATER = addItem(107, "bottle.mineral.water").addStats(new FoodStats(1, 0.1F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.REGENERATION, 100, 1, 10)));
-        BOTTLE_SALTY_WATER = addItem(108, "bottle.salty.water").setInvisible().addStats(new FoodStats(1, 0.0F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HUNGER, 400, 2, 95)));
-        BOTTLE_REED_WATER = addItem(109, "bottle.reed.water").addStats(new FoodStats(1, 0.1F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle));
-        BOTTLE_RUM = addItem(110, "bottle.rum").setInvisible().addStats(new FoodStats(4, 0.4F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 300, 0, 60), new RandomPotionEffect(MobEffects.STRENGTH, 300, 1, 60), new RandomPotionEffect(MobEffects.POISON, 200, 1, 5)));
-        BOTTLE_PIRATE_BREW = addItem(111, "bottle.pirate.brew").setInvisible().addStats(new FoodStats(4, 0.4F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 300, 1, 90), new RandomPotionEffect(MobEffects.STRENGTH, 300, 2, 90), new RandomPotionEffect(MobEffects.POISON, 200, 2, 10), new RandomPotionEffect(MobEffects.INSTANT_DAMAGE, 0, 2, 5)));
-        BOTTLE_HOPS_JUICE = addItem(112, "bottle.hops.juice").addStats(new FoodStats(1, 0.1F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle));
-        BOTTLE_DARK_BEER = addItem(113, "bottle.dark.beer").addStats(new FoodStats(4, 0.4F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 300, 1, 60), new RandomPotionEffect(MobEffects.STRENGTH, 300, 1, 60), new RandomPotionEffect(MobEffects.POISON, 200, 1, 5)));
-        BOTTLE_DRAGON_BLOOD = addItem(114, "bottle.dragon.blood").setInvisible().addStats(new FoodStats(4, 0.4F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 300, 2, 90), new RandomPotionEffect(MobEffects.STRENGTH, 300, 2, 90), new RandomPotionEffect(MobEffects.POISON, 200, 2, 10), new RandomPotionEffect(MobEffects.INSTANT_DAMAGE, 0, 2, 5)));
-        BOTTLE_WHEATY_JUICE = addItem(115, "bottle.wheaty.juice").addStats(new FoodStats(2, 0.1F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle));
-        BOTTLE_SCOTCH = addItem(116, "bottle.scotch").setInvisible().addStats(new FoodStats(2, 0.1F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 400, 0, 60), new RandomPotionEffect(MobEffects.RESISTANCE, 400, 1, 60), new RandomPotionEffect(MobEffects.POISON, 200, 1, 5)));
-        BOTTLE_GLEN_MCKENNER = addItem(117, "bottle.glen.mckenner").setInvisible().addStats(new FoodStats(2, 0.1F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 400, 1, 90), new RandomPotionEffect(MobEffects.RESISTANCE, 400, 2, 90), new RandomPotionEffect(MobEffects.POISON, 200, 2, 10), new RandomPotionEffect(MobEffects.INSTANT_DAMAGE, 0, 2, 5)));
-        BOTTLE_WHEATY_HOPS_JUICE = addItem(118, "bottle.wheaty.hops.juice").addStats(new FoodStats(1, 0.1F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle));
-        BOTTLE_BEER = addItem(119, "bottle.beer").addStats(new FoodStats(6, 0.4F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 400, 0, 60), new RandomPotionEffect(MobEffects.HASTE, 400, 2, 60), new RandomPotionEffect(MobEffects.POISON, 100, 0, 5)));
-        BOTTLE_CHILLY_SAUCE = addItem(120, "bottle.chilly.sauce").addStats(new FoodStats(2, 0.1F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 1000, 0, 10), new RandomPotionEffect(MobEffects.FIRE_RESISTANCE, 1000, 0, 60)));
-        BOTTLE_HOT_SAUCE = addItem(121, "bottle.hot.sauce").addStats(new FoodStats(2, 0.1F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 2000, 0, 30), new RandomPotionEffect(MobEffects.FIRE_RESISTANCE, 2000, 0, 70)));
-        BOTTLE_DIABOLO_SAUCE = addItem(122, "bottle.diabolo.sauce").setInvisible().addStats(new FoodStats(2, 0.1F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 3000, 1, 50), new RandomPotionEffect(MobEffects.FIRE_RESISTANCE, 3000, 0, 80)));
-        BOTTLE_DIABLO_SAUCE = addItem(123, "bottle.diablo.sauce").setInvisible().addStats(new FoodStats(2, 0.1F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 4000, 1, 70), new RandomPotionEffect(MobEffects.FIRE_RESISTANCE, 4000, 0, 90)));
-        BOTTLE_SNITCHES_GLITCH_SAUCE = addItem(124, "bottle.snitches.glitch.sauce").setInvisible().addStats(new FoodStats(2, 0.1F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 9999, 2, 999), new RandomPotionEffect(MobEffects.FIRE_RESISTANCE, 9999, 9, 999)));
-        BOTTLE_APPLE_JUICE = addItem(125, "bottle.apple.juice").addStats(new FoodStats(4, 0.2F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HUNGER, 400, 0, 20)));
-        BOTTLE_CIDER = addItem(126, "bottle.cider").addStats(new FoodStats(4, 0.2F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 400, 0, 60), new RandomPotionEffect(MobEffects.RESISTANCE, 400, 1, 60), new RandomPotionEffect(MobEffects.POISON, 200, 1, 5)));
-        BOTTLE_GOLDEN_APPLE_JUICE = addItem(127, "bottle.golden.apple.juice").setInvisible().addStats(new FoodStats(4, 0.2F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HUNGER, 400, 0, 20), new RandomPotionEffect(MobEffects.ABSORPTION, 2400, 0, 100), new RandomPotionEffect(MobEffects.REGENERATION, 100, 1, 100)));
-        BOTTLE_GOLDEN_CIDER = addItem(128, "bottle.golden.cider").setInvisible().addStats(new FoodStats(4, 0.2F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HUNGER, 400, 0, 60), new RandomPotionEffect(MobEffects.ABSORPTION, 2400, 1, 95), new RandomPotionEffect(MobEffects.POISON, 200, 1, 5)));
-        BOTTLE_IDUNS_APPLE_JUICE = addItem(129, "bottle.iduns.apple.juice").setInvisible().addStats(new FoodStats(4, 0.2F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.REGENERATION, 600, 4, 100), new RandomPotionEffect(MobEffects.ABSORPTION, 2400, 0, 100), new RandomPotionEffect(MobEffects.RESISTANCE, 6000, 0, 100), new RandomPotionEffect(MobEffects.FIRE_RESISTANCE, 6000, 0, 100)));
-        BOTTLE_NOTCHES_BREW = addItem(130, "bottle.notches.brew").setInvisible().addStats(new FoodStats(4, 0.2F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.REGENERATION, 700, 4, 95), new RandomPotionEffect(MobEffects.ABSORPTION, 3000, 1, 95), new RandomPotionEffect(MobEffects.RESISTANCE, 7000, 1, 95), new RandomPotionEffect(MobEffects.FIRE_RESISTANCE, 7000, 0, 95), new RandomPotionEffect(MobEffects.INSTANT_DAMAGE, 0, 2, 20)));
-        BOTTLE_LEMON_JUICE = addItem(131, "bottle.lemon.juice").addStats(new FoodStats(2, 0.4F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HASTE, 1200, 0, 60)));
-        BOTTLE_LIMONCELLO = addItem(132, "bottle.limoncello").setInvisible().addStats(new FoodStats(2, 0.4F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HASTE, 1200, 0, 90), new RandomPotionEffect(MobEffects.POISON, 200, 1, 5)));
-        BOTTLE_LEMONADE = addItem(133, "bottle.lemonade").addStats(new FoodStats(4, 0.3F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HASTE, 900, 1, 90)));
-        BOTTLE_ALCOPOPS = addItem(134, "bottle.alcopops").setInvisible().addStats(new FoodStats(2, 0.2F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HASTE, 900, 1, 90), new RandomPotionEffect(MobEffects.POISON, 300, 2, 20)));
-        BOTTLE_CAVE_JOHNSONS_GRENADE_JUICE = addItem(135, "bottle.cave.johnsons.grenade.juice").setInvisible().addStats(new FoodStats(0, 0.0F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle));
-        BOTTLE_MILK = addItem(136, "bottle.milk").setUnificationData(OrePrefix.bottle, Materials.Milk).addStats(new FoodStats(0, 0.0F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle));
-        BOTTLE_HOLY_WATER = addItem(137, "bottle.holy.water").setUnificationData(OrePrefix.bottle, Materials.HolyWater).addStats(new FoodStats(0, 0.0F, true, GregTechAPI.sDrinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.POISON, 100, 1, 100)));
+        BOTTLE_PURPLE_DRINK = addItem(100, "bottle.purple.drink").addStats(new FoodStats(8, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.SLOWNESS, 400, 1, 90)));
+        BOTTLE_GRAPE_JUICE = addItem(101, "bottle.grape.juice").addStats(new FoodStats(4, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HUNGER, 400, 1, 60)));
+        BOTTLE_WINE = addItem(102, "bottle.wine").addStats(new FoodStats(2, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 400, 1, 60), new RandomPotionEffect(MobEffects.INSTANT_HEALTH, 0, 0, 60), new RandomPotionEffect(MobEffects.POISON, 200, 1, 5)));
+        BOTTLE_VINEGAR = addItem(103, "bottle.vinegar").setInvisible().addStats(new FoodStats(2, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 400, 1, 90), new RandomPotionEffect(MobEffects.INSTANT_HEALTH, 0, 1, 90), new RandomPotionEffect(MobEffects.POISON, 200, 2, 10), new RandomPotionEffect(MobEffects.INSTANT_DAMAGE, 0, 2, 5)));
+        BOTTLE_POTATO_JUICE = addItem(104, "bottle.potato.juice").setInvisible().addStats(new FoodStats(3, 0.3F, true, drinksAlwaysDrinkable, emptyBottle));
+        BOTTLE_VODKA = addItem(105, "bottle.vodka").setInvisible().addStats(new FoodStats(2, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 500, 0, 60), new RandomPotionEffect(MobEffects.STRENGTH, 500, 1, 60), new RandomPotionEffect(MobEffects.POISON, 200, 1, 5)));
+        BOTTLE_LENINADE = addItem(106, "bottle.leninade").setInvisible().addStats(new FoodStats(2, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 500, 1, 90), new RandomPotionEffect(MobEffects.STRENGTH, 500, 2, 90), new RandomPotionEffect(MobEffects.POISON, 200, 2, 10), new RandomPotionEffect(MobEffects.INSTANT_DAMAGE, 0, 2, 5)));
+        BOTTLE_MINERAL_WATER = addItem(107, "bottle.mineral.water").addStats(new FoodStats(1, 0.1F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.REGENERATION, 100, 1, 10)));
+        BOTTLE_SALTY_WATER = addItem(108, "bottle.salty.water").setInvisible().addStats(new FoodStats(1, 0.0F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HUNGER, 400, 2, 95)));
+        BOTTLE_REED_WATER = addItem(109, "bottle.reed.water").addStats(new FoodStats(1, 0.1F, true, drinksAlwaysDrinkable, emptyBottle));
+        BOTTLE_RUM = addItem(110, "bottle.rum").setInvisible().addStats(new FoodStats(4, 0.4F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 300, 0, 60), new RandomPotionEffect(MobEffects.STRENGTH, 300, 1, 60), new RandomPotionEffect(MobEffects.POISON, 200, 1, 5)));
+        BOTTLE_PIRATE_BREW = addItem(111, "bottle.pirate.brew").setInvisible().addStats(new FoodStats(4, 0.4F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 300, 1, 90), new RandomPotionEffect(MobEffects.STRENGTH, 300, 2, 90), new RandomPotionEffect(MobEffects.POISON, 200, 2, 10), new RandomPotionEffect(MobEffects.INSTANT_DAMAGE, 0, 2, 5)));
+        BOTTLE_HOPS_JUICE = addItem(112, "bottle.hops.juice").addStats(new FoodStats(1, 0.1F, true, drinksAlwaysDrinkable, emptyBottle));
+        BOTTLE_DARK_BEER = addItem(113, "bottle.dark.beer").addStats(new FoodStats(4, 0.4F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 300, 1, 60), new RandomPotionEffect(MobEffects.STRENGTH, 300, 1, 60), new RandomPotionEffect(MobEffects.POISON, 200, 1, 5)));
+        BOTTLE_DRAGON_BLOOD = addItem(114, "bottle.dragon.blood").setInvisible().addStats(new FoodStats(4, 0.4F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 300, 2, 90), new RandomPotionEffect(MobEffects.STRENGTH, 300, 2, 90), new RandomPotionEffect(MobEffects.POISON, 200, 2, 10), new RandomPotionEffect(MobEffects.INSTANT_DAMAGE, 0, 2, 5)));
+        BOTTLE_WHEATY_JUICE = addItem(115, "bottle.wheaty.juice").addStats(new FoodStats(2, 0.1F, true, drinksAlwaysDrinkable, emptyBottle));
+        BOTTLE_SCOTCH = addItem(116, "bottle.scotch").setInvisible().addStats(new FoodStats(2, 0.1F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 400, 0, 60), new RandomPotionEffect(MobEffects.RESISTANCE, 400, 1, 60), new RandomPotionEffect(MobEffects.POISON, 200, 1, 5)));
+        BOTTLE_GLEN_MCKENNER = addItem(117, "bottle.glen.mckenner").setInvisible().addStats(new FoodStats(2, 0.1F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 400, 1, 90), new RandomPotionEffect(MobEffects.RESISTANCE, 400, 2, 90), new RandomPotionEffect(MobEffects.POISON, 200, 2, 10), new RandomPotionEffect(MobEffects.INSTANT_DAMAGE, 0, 2, 5)));
+        BOTTLE_WHEATY_HOPS_JUICE = addItem(118, "bottle.wheaty.hops.juice").addStats(new FoodStats(1, 0.1F, true, drinksAlwaysDrinkable, emptyBottle));
+        BOTTLE_BEER = addItem(119, "bottle.beer").addStats(new FoodStats(6, 0.4F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 400, 0, 60), new RandomPotionEffect(MobEffects.HASTE, 400, 2, 60), new RandomPotionEffect(MobEffects.POISON, 100, 0, 5)));
+        BOTTLE_CHILLY_SAUCE = addItem(120, "bottle.chilly.sauce").addStats(new FoodStats(2, 0.1F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 1000, 0, 10), new RandomPotionEffect(MobEffects.FIRE_RESISTANCE, 1000, 0, 60)));
+        BOTTLE_HOT_SAUCE = addItem(121, "bottle.hot.sauce").addStats(new FoodStats(2, 0.1F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 2000, 0, 30), new RandomPotionEffect(MobEffects.FIRE_RESISTANCE, 2000, 0, 70)));
+        BOTTLE_DIABOLO_SAUCE = addItem(122, "bottle.diabolo.sauce").setInvisible().addStats(new FoodStats(2, 0.1F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 3000, 1, 50), new RandomPotionEffect(MobEffects.FIRE_RESISTANCE, 3000, 0, 80)));
+        BOTTLE_DIABLO_SAUCE = addItem(123, "bottle.diablo.sauce").setInvisible().addStats(new FoodStats(2, 0.1F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 4000, 1, 70), new RandomPotionEffect(MobEffects.FIRE_RESISTANCE, 4000, 0, 90)));
+        BOTTLE_SNITCHES_GLITCH_SAUCE = addItem(124, "bottle.snitches.glitch.sauce").setInvisible().addStats(new FoodStats(2, 0.1F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 9999, 2, 999), new RandomPotionEffect(MobEffects.FIRE_RESISTANCE, 9999, 9, 999)));
+        BOTTLE_APPLE_JUICE = addItem(125, "bottle.apple.juice").addStats(new FoodStats(4, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HUNGER, 400, 0, 20)));
+        BOTTLE_CIDER = addItem(126, "bottle.cider").addStats(new FoodStats(4, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 400, 0, 60), new RandomPotionEffect(MobEffects.RESISTANCE, 400, 1, 60), new RandomPotionEffect(MobEffects.POISON, 200, 1, 5)));
+        BOTTLE_GOLDEN_APPLE_JUICE = addItem(127, "bottle.golden.apple.juice").setInvisible().addStats(new FoodStats(4, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HUNGER, 400, 0, 20), new RandomPotionEffect(MobEffects.ABSORPTION, 2400, 0, 100), new RandomPotionEffect(MobEffects.REGENERATION, 100, 1, 100)));
+        BOTTLE_GOLDEN_CIDER = addItem(128, "bottle.golden.cider").setInvisible().addStats(new FoodStats(4, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HUNGER, 400, 0, 60), new RandomPotionEffect(MobEffects.ABSORPTION, 2400, 1, 95), new RandomPotionEffect(MobEffects.POISON, 200, 1, 5)));
+        BOTTLE_IDUNS_APPLE_JUICE = addItem(129, "bottle.iduns.apple.juice").setInvisible().addStats(new FoodStats(4, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.REGENERATION, 600, 4, 100), new RandomPotionEffect(MobEffects.ABSORPTION, 2400, 0, 100), new RandomPotionEffect(MobEffects.RESISTANCE, 6000, 0, 100), new RandomPotionEffect(MobEffects.FIRE_RESISTANCE, 6000, 0, 100)));
+        BOTTLE_NOTCHES_BREW = addItem(130, "bottle.notches.brew").setInvisible().addStats(new FoodStats(4, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.REGENERATION, 700, 4, 95), new RandomPotionEffect(MobEffects.ABSORPTION, 3000, 1, 95), new RandomPotionEffect(MobEffects.RESISTANCE, 7000, 1, 95), new RandomPotionEffect(MobEffects.FIRE_RESISTANCE, 7000, 0, 95), new RandomPotionEffect(MobEffects.INSTANT_DAMAGE, 0, 2, 20)));
+        BOTTLE_LEMON_JUICE = addItem(131, "bottle.lemon.juice").addStats(new FoodStats(2, 0.4F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HASTE, 1200, 0, 60)));
+        BOTTLE_LIMONCELLO = addItem(132, "bottle.limoncello").setInvisible().addStats(new FoodStats(2, 0.4F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HASTE, 1200, 0, 90), new RandomPotionEffect(MobEffects.POISON, 200, 1, 5)));
+        BOTTLE_LEMONADE = addItem(133, "bottle.lemonade").addStats(new FoodStats(4, 0.3F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HASTE, 900, 1, 90)));
+        BOTTLE_ALCOPOPS = addItem(134, "bottle.alcopops").setInvisible().addStats(new FoodStats(2, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HASTE, 900, 1, 90), new RandomPotionEffect(MobEffects.POISON, 300, 2, 20)));
+        BOTTLE_CAVE_JOHNSONS_GRENADE_JUICE = addItem(135, "bottle.cave.johnsons.grenade.juice").setInvisible().addStats(new FoodStats(0, 0.0F, true, drinksAlwaysDrinkable, emptyBottle));
+        BOTTLE_MILK = addItem(136, "bottle.milk").setUnificationData(OrePrefix.bottle, Materials.Milk).addStats(new FoodStats(0, 0.0F, true, drinksAlwaysDrinkable, emptyBottle));
+        BOTTLE_HOLY_WATER = addItem(137, "bottle.holy.water").setUnificationData(OrePrefix.bottle, Materials.HolyWater).addStats(new FoodStats(0, 0.0F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.POISON, 100, 1, 100)));
 
         FOOD_POTATO_ON_STICK = addItem(200, "food.potato.on.stick").addStats(new FoodStats(1, 0.3F, false, false, new ItemStack(Items.STICK, 1)));
         FOOD_POTATO_ON_STICK_ROASTED = addItem(201, "food.potato.on.stick.roasted").addStats(new FoodStats(6, 0.6F, false, false, new ItemStack(Items.STICK, 1)));
@@ -141,38 +148,32 @@ public class MataItem2 extends MaterialMetaItem {
         SFMIXTURE = addItem(270, "sfmixture");
         MSFMIXTURE = addItem(271, "msfmixture");
 
-        ModHandler.addCraftingRecipe(PLANK_OAK.getStackForm(2),
-                ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+        ModHandler.addShapedRecipe(PLANK_OAK.getStackForm(2),
                 "s ",
                 " P",
                 'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 0));
         
-        ModHandler.addCraftingRecipe(PLANK_SPRUCE.getStackForm(2),
-                ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+        ModHandler.addShapedRecipe(PLANK_SPRUCE.getStackForm(2),
                 "s ",
                 " P",
                 'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 1));
         
-        ModHandler.addCraftingRecipe(PLANK_BIRCH.getStackForm(2),
-                ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+        ModHandler.addShapedRecipe(PLANK_BIRCH.getStackForm(2),
                 "s ",
                 " P",
                 'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 2));
         
-        ModHandler.addCraftingRecipe(PLANK_JUNGLE.getStackForm(2),
-                ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+        ModHandler.addShapedRecipe(PLANK_JUNGLE.getStackForm(2),
                 "s ",
                 " P",
                 'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 3));
         
-        ModHandler.addCraftingRecipe(PLANK_ACACIA.getStackForm(2),
-                ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+        ModHandler.addShapedRecipe(PLANK_ACACIA.getStackForm(2),
                 "s ",
                 " P",
                 'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 4));
         
-        ModHandler.addCraftingRecipe(PLANK_DARKOAK.getStackForm(2),
-                ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+        ModHandler.addShapedRecipe(PLANK_DARKOAK.getStackForm(2),
                 "s ",
                 " P",
                 'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 5));
@@ -257,28 +258,91 @@ public class MataItem2 extends MaterialMetaItem {
         ModHandler.addExtractionRecipe(CROP_DROP_COPPON.getStackForm(), OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.Copper, 1));
         ModHandler.addExtractionRecipe(CROP_DROP_TINE.getStackForm(), OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.Tin, 1));
 
-        ModHandler.addCompressionRecipe(CROP_DROP_COPPON.getStackForm(4), new ItemStack(Blocks.WOOL, 1, 1));
-        ModHandler.addCompressionRecipe(CROP_DROP_PLUMBILIA.getStackForm(8), IC2_PlantballCompressed.getStackForm());
-        ModHandler.addCompressionRecipe(CROP_DROP_ARGENTIA.getStackForm(8), IC2_PlantballCompressed.getStackForm());
-        ModHandler.addCompressionRecipe(CROP_DROP_INDIGO.getStackForm(8), IC2_PlantballCompressed.getStackForm());
-        ModHandler.addCompressionRecipe(CROP_DROP_FERRU.getStackForm(8), IC2_PlantballCompressed.getStackForm());
-        ModHandler.addCompressionRecipe(CROP_DROP_AURELIA.getStackForm(8), IC2_PlantballCompressed.getStackForm());
-        ModHandler.addCompressionRecipe(CROP_DROP_OIL_BERRY.getStackForm(8), IC2_PlantballCompressed.getStackForm());
-        ModHandler.addCompressionRecipe(CROP_DROP_BOBS_YER_UNCLE_RANKS.getStackForm(8), IC2_PlantballCompressed.getStackForm());
-        ModHandler.addCompressionRecipe(CROP_DROP_TINE.getStackForm(4), IC2_PlantballCompressed.getStackForm());
-        ModHandler.addCompressionRecipe(new ItemStack(Blocks.RED_FLOWER, 8, 32767), IC2_PlantballCompressed.getStackForm());
-        ModHandler.addCompressionRecipe(new ItemStack(Blocks.YELLOW_FLOWER, 8, 32767), IC2_PlantballCompressed.getStackForm());
+        ItemStack plantBall = ModHandler.IC2.getIC2Item(ItemName.crafting, CraftingItemType.plant_ball, 1);
 
-        ModHandler.addPulverisationRecipe(FOOD_SLICED_CHEESE.getStackForm(), OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Cheese, 1));
-        ModHandler.addPulverisationRecipe(new ItemStack(Items.DYE, 1, EnumDyeColor.BROWN.getDyeDamage()), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Cocoa, 1));
-        ModHandler.addPulverisationRecipe(CROP_DROP_TINE.getStackForm(), OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Wood, 2));
-        ModHandler.addPulverisationRecipe(new ItemStack(Items.REEDS, 1), new ItemStack(Items.SUGAR, 1), null, 0, false);
-        ModHandler.addPulverisationRecipe(new ItemStack(Blocks.MELON_BLOCK, 1, 0), new ItemStack(Items.MELON, 8, 0), new ItemStack(Items.MELON_SEEDS, 1), 80, false);
-        ModHandler.addPulverisationRecipe(new ItemStack(Blocks.PUMPKIN, 1, 0), new ItemStack(Items.PUMPKIN_SEEDS, 4, 0), null, 0, false);
-        ModHandler.addPulverisationRecipe(new ItemStack(Items.MELON, 1, 0), new ItemStack(Items.MELON_SEEDS, 1, 0), null, 0, false);
-        ModHandler.addPulverisationRecipe(new ItemStack(Items.WHEAT, 1, 0), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Wheat, 1), null, 0, false);
-        ModHandler.addPulverisationRecipe(new ItemStack(Items.STICK, 1), OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Wood, 2), null, 0, false);
-        ModHandler.addPulverisationRecipe(new ItemStack(Blocks.WOOL, 1, 32767), new ItemStack(Items.STRING, 2), new ItemStack(Items.STRING, 1), 50, false);
+        ModHandler.IC2.addCompressionRecipe(CROP_DROP_COPPON.getStackForm(4), new ItemStack(Blocks.WOOL, 1, 1));
+        ModHandler.IC2.addCompressionRecipe(CROP_DROP_PLUMBILIA.getStackForm(8), plantBall.copy());
+        ModHandler.IC2.addCompressionRecipe(CROP_DROP_ARGENTIA.getStackForm(8), plantBall.copy());
+        ModHandler.IC2.addCompressionRecipe(CROP_DROP_INDIGO.getStackForm(8), plantBall.copy());
+        ModHandler.IC2.addCompressionRecipe(CROP_DROP_FERRU.getStackForm(8), plantBall.copy());
+        ModHandler.IC2.addCompressionRecipe(CROP_DROP_AURELIA.getStackForm(8), plantBall.copy());
+        ModHandler.IC2.addCompressionRecipe(CROP_DROP_OIL_BERRY.getStackForm(8), plantBall.copy());
+        ModHandler.IC2.addCompressionRecipe(CROP_DROP_BOBS_YER_UNCLE_RANKS.getStackForm(8), plantBall.copy());
+        ModHandler.IC2.addCompressionRecipe(CROP_DROP_TINE.getStackForm(4), plantBall.copy());
+        ModHandler.IC2.addCompressionRecipe(new ItemStack(Blocks.RED_FLOWER, 8, 32767), plantBall.copy());
+        ModHandler.IC2.addCompressionRecipe(new ItemStack(Blocks.YELLOW_FLOWER, 8, 32767), plantBall.copy());
+
+        RecipeMap.MACERATOR_RECIPES.recipeBuilder()
+                .inputs(FOOD_SLICED_CHEESE.getStackForm())
+                .outputs(OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Cheese, 1))
+                .duration(400)
+                .EUt(2)
+                .buildAndRegister();
+        
+        RecipeMap.MACERATOR_RECIPES.recipeBuilder()
+                .inputs(new ItemStack(Items.DYE, 1, EnumDyeColor.BROWN.getDyeDamage()))
+                .outputs(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Cocoa, 1))
+                .duration(400)
+                .EUt(2)
+                .buildAndRegister();
+        
+        RecipeMap.MACERATOR_RECIPES.recipeBuilder()
+                .inputs(CROP_DROP_TINE.getStackForm())
+                .outputs(OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Wood, 2))
+                .duration(400)
+                .EUt(2)
+                .buildAndRegister();
+        
+        RecipeMap.MACERATOR_RECIPES.recipeBuilder()
+                .inputs(new ItemStack(Items.REEDS, 1))
+                .outputs(new ItemStack(Items.SUGAR, 1))
+                .duration(400)
+                .EUt(2)
+                .buildAndRegister();    
+        
+        RecipeMap.MACERATOR_RECIPES.recipeBuilder()
+                .inputs(new ItemStack(Blocks.MELON_BLOCK, 1, 0))
+                .outputs(new ItemStack(Items.MELON, 8, 0))
+                .chancedOutput(new ItemStack(Items.MELON_SEEDS, 1), 8000)
+                .duration(400)
+                .EUt(2)
+                .buildAndRegister();  
+        
+        RecipeMap.MACERATOR_RECIPES.recipeBuilder()
+                .inputs(new ItemStack(Blocks.PUMPKIN, 1, 0))
+                .outputs(new ItemStack(Items.PUMPKIN_SEEDS, 4, 0))
+                .duration(400)
+                .EUt(2)
+                .buildAndRegister();  
+        
+        RecipeMap.MACERATOR_RECIPES.recipeBuilder()
+                .inputs(new ItemStack(Items.MELON, 1, 0))
+                .outputs(new ItemStack(Items.MELON_SEEDS, 1, 0))
+                .duration(400)
+                .EUt(2)
+                .buildAndRegister();  
+        
+        RecipeMap.MACERATOR_RECIPES.recipeBuilder()
+                .inputs(new ItemStack(Items.WHEAT, 1, 0))
+                .outputs(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Wheat, 1))
+                .duration(400)
+                .EUt(2)
+                .buildAndRegister();  
+        
+        RecipeMap.MACERATOR_RECIPES.recipeBuilder()
+                .inputs(new ItemStack(Items.STICK, 1))
+                .outputs(OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Wood, 2))
+                .duration(400)
+                .EUt(2)
+                .buildAndRegister();   
+        
+        RecipeMap.MACERATOR_RECIPES.recipeBuilder()
+                .inputs(new ItemStack(Blocks.WOOL, 1, GTValues.W))
+                .outputs(new ItemStack(Items.STRING, 2))
+                .chancedOutput(new ItemStack(Items.STRING, 1), 5000)
+                .duration(400)
+                .EUt(2)
+                .buildAndRegister();        
     }
 
     @Override

@@ -3,7 +3,6 @@ package gregtech.loaders.oreprocessing;
 import gregtech.api.GTValues;
 import gregtech.api.items.ItemList;
 import gregtech.api.recipes.ModHandler;
-import gregtech.api.recipes.RecipeRegistrator;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;

@@ -6,7 +6,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.items.ItemList;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.recipes.RecipeRegistrator;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.FluidMaterial;

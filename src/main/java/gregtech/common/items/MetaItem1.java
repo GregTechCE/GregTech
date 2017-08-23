@@ -1,8 +1,5 @@
 package gregtech.common.items;
 
-import gregtech.api.ConfigCategories;
-import gregtech.api.GregTechAPI;
-import gregtech.api.items.ItemList;
 import gregtech.api.items.OreDictNames;
 import gregtech.api.items.materialitem.MaterialMetaItem;
 import gregtech.api.items.metaitem.ElectricStats;
@@ -58,13 +55,13 @@ public class MetaItem1 extends MaterialMetaItem {
 				OrePrefix.cell, OrePrefix.cellPlasma, null);
 
 		//it's here because OrePrefix.cell is handled by gt.metaitem.01
-		Cell_Empty = OreDictionaryUnifier.get(OrePrefix.cell, null);
-		Cell_Air = OreDictionaryUnifier.get(OrePrefix.cell, Materials.Air);
-		Cell_Water = OreDictionaryUnifier.get(OrePrefix.cell, Materials.Water);
-		Cell_Lava = OreDictionaryUnifier.get(OrePrefix.cell, Materials.Lava);
-
-		OrePrefix.cellPlasma.containerItem = Cell_Empty.getStackForm();
-		OrePrefix.cell.containerItem = Cell_Empty.getStackForm();
+//		Cell_Empty = OreDictionaryUnifier.get(OrePrefix.cell, null);
+//		Cell_Air = OreDictionaryUnifier.get(OrePrefix.cell, Materials.Air);
+//		Cell_Water = OreDictionaryUnifier.get(OrePrefix.cell, Materials.Water);
+//		Cell_Lava = OreDictionaryUnifier.get(OrePrefix.cell, Materials.Lava);
+//
+//		OrePrefix.cellPlasma.containerItem = Cell_Empty.getStackForm();
+//		OrePrefix.cell.containerItem = Cell_Empty.getStackForm();
 
 		//17000 -> OrePrefix.plate
 		int woodItemMeta = 17000 + Material.MATERIAL_REGISTRY.getIDForObject(Materials.Wood);
@@ -74,7 +71,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		ItemStack stack = new ItemStack(this, 1, woodItemMeta);
 		stack.setStackDisplayName("The holy Planks of Sengir");
 		GT_Utility.ItemNBT.addEnchantment(stack, Enchantments.SMITE, 10);
-		ModHandler.addCraftingRecipe(stack, ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapedRecipe(stack,
 				"XXX", "XDX", "XXX",
 				'X', OreDictionaryUnifier.getGem(Materials.NetherStar, 1),
 				'D', new ItemStack(Blocks.DRAGON_EGG, 1, OreDictionary.WILDCARD_VALUE));
@@ -92,43 +89,35 @@ public class MetaItem1 extends MaterialMetaItem {
 		COIN_DOGE = addItem(9, "coin.doge").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Brass, 907200L)));
 		COIN_CHOCOLATE = addItem(10, "coin.chocolate").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Gold, OrePrefix.foil.materialAmount))).addStats(new FoodStats(1, 0.1F, false, true, OreDictionaryUnifier.get(OrePrefix.foil, Materials.Gold, 1), new RandomPotionEffect(MobEffects.SPEED, 200, 1, 10)));
 
-		ModHandler.addShapelessCraftingRecipe(COIN_CHOCOLATE.getStackForm(),
+		ModHandler.addShapelessRecipe(COIN_CHOCOLATE.getStackForm(),
 				new UnificationEntry(OrePrefix.dust, Materials.Cocoa),
 				new UnificationEntry(OrePrefix.dust, Materials.Milk),
 				new UnificationEntry(OrePrefix.dust, Materials.Sugar),
 				new UnificationEntry(OrePrefix.foil, Materials.Gold));
 
-		ModHandler.addShapelessCraftingRecipe(CREDIT_COPPER.getStackForm(8),
-				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapelessRecipe(CREDIT_COPPER.getStackForm(8),
 				CREDIT_CUPRONICKEL);
 
-		ModHandler.addShapelessCraftingRecipe(CREDIT_CUPRONICKEL.getStackForm(8),
-				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapelessRecipe(CREDIT_CUPRONICKEL.getStackForm(8),
 				CREDIT_SILVER);
 
-		ModHandler.addShapelessCraftingRecipe(CREDIT_SILVER.getStackForm(8),
-				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapelessRecipe(CREDIT_SILVER.getStackForm(8),
 				CREDIT_GOLD);
 
-		ModHandler.addShapelessCraftingRecipe(CREDIT_GOLD.getStackForm(8),
-				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapelessRecipe(CREDIT_GOLD.getStackForm(8),
 				CREDIT_PLATINUM);
 
-		ModHandler.addShapelessCraftingRecipe(CREDIT_PLATINUM.getStackForm(8),
-				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapelessRecipe(CREDIT_PLATINUM.getStackForm(8),
 				CREDIT_OSMIUM);
 
-		ModHandler.addShapelessCraftingRecipe(CREDIT_OSMIUM.getStackForm(8),
-				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapelessRecipe(CREDIT_OSMIUM.getStackForm(8),
 				CREDIT_NAQUADAH);
 
-		ModHandler.addShapelessCraftingRecipe(CREDIT_NAQUADAH.getStackForm(8),
-				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapelessRecipe(CREDIT_NAQUADAH.getStackForm(8),
 				CREDIT_DARMSTADTIUM);
 
 
-		ModHandler.addShapelessCraftingRecipe(CREDIT_CUPRONICKEL.getStackForm(),
-				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapelessRecipe(CREDIT_CUPRONICKEL.getStackForm(),
 				CREDIT_COPPER,
 				CREDIT_COPPER,
 				CREDIT_COPPER,
@@ -138,8 +127,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				CREDIT_COPPER,
 				CREDIT_COPPER);
 
-		ModHandler.addShapelessCraftingRecipe(CREDIT_SILVER.getStackForm(),
-				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapelessRecipe(CREDIT_SILVER.getStackForm(),
 				CREDIT_CUPRONICKEL,
 				CREDIT_CUPRONICKEL,
 				CREDIT_CUPRONICKEL,
@@ -149,8 +137,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				CREDIT_CUPRONICKEL,
 				CREDIT_CUPRONICKEL);
 
-		ModHandler.addShapelessCraftingRecipe(CREDIT_GOLD.getStackForm(),
-				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapelessRecipe(CREDIT_GOLD.getStackForm(),
 				CREDIT_SILVER,
 				CREDIT_SILVER,
 				CREDIT_SILVER,
@@ -160,8 +147,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				CREDIT_SILVER,
 				CREDIT_SILVER);
 
-		ModHandler.addShapelessCraftingRecipe(CREDIT_PLATINUM.getStackForm(),
-				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapelessRecipe(CREDIT_PLATINUM.getStackForm(),
 				CREDIT_GOLD,
 				CREDIT_GOLD,
 				CREDIT_GOLD,
@@ -171,8 +157,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				CREDIT_GOLD,
 				CREDIT_GOLD);
 
-		ModHandler.addShapelessCraftingRecipe(CREDIT_OSMIUM.getStackForm(),
-				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapelessRecipe(CREDIT_OSMIUM.getStackForm(),
 				CREDIT_PLATINUM,
 				CREDIT_PLATINUM,
 				CREDIT_PLATINUM,
@@ -182,8 +167,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				CREDIT_PLATINUM,
 				CREDIT_PLATINUM);
 
-		ModHandler.addShapelessCraftingRecipe(CREDIT_NAQUADAH.getStackForm(),
-				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapelessRecipe(CREDIT_NAQUADAH.getStackForm(),
 				CREDIT_OSMIUM,
 				CREDIT_OSMIUM,
 				CREDIT_OSMIUM,
@@ -193,8 +177,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				CREDIT_OSMIUM,
 				CREDIT_OSMIUM);
 
-		ModHandler.addShapelessCraftingRecipe(CREDIT_DARMSTADTIUM.getStackForm(),
-				ModHandler.RecipeBits.KEEPNBT | ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapelessRecipe(CREDIT_DARMSTADTIUM.getStackForm(),
 				CREDIT_NAQUADAH,
 				CREDIT_NAQUADAH,
 				CREDIT_NAQUADAH,
@@ -208,16 +191,14 @@ public class MetaItem1 extends MaterialMetaItem {
 		MINECART_WHEELS_IRON = addItem(100, "minecart.wheels.iron");
 		MINECART_WHEELS_STEEL = addItem(101, "minecart.wheels.steel");
 
-		ModHandler.addCraftingRecipe(MINECART_WHEELS_IRON.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(MINECART_WHEELS_IRON.getStackForm(),
 				" h ",
 				"RSR",
 				" w ",
 				'R', new UnificationEntry(OrePrefix.ring, Materials.AnyIron),
 				'S', new UnificationEntry(OrePrefix.stick, Materials.AnyIron));
 
-		ModHandler.addCraftingRecipe(MINECART_WHEELS_STEEL.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(MINECART_WHEELS_STEEL.getStackForm(),
 				" h ",
 				"RSR",
 				" w ",
@@ -226,8 +207,7 @@ public class MetaItem1 extends MaterialMetaItem {
 
 		SHAPE_EMPTY = addItem(300, "shape.empty");
 
-		ModHandler.addCraftingRecipe(SHAPE_EMPTY.getStackForm(),
-				ModHandler.RecipeBits.MIRRORED | ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_EMPTY.getStackForm(), true,
 				"hf",
 				"PP",
 				"PP",
@@ -252,114 +232,98 @@ public class MetaItem1 extends MaterialMetaItem {
 
 		ModHandler.removeRecipe(new ItemStack(Blocks.GLASS), null, new ItemStack(Blocks.GLASS), null, new ItemStack(Blocks.GLASS));
 
-		ModHandler.addCraftingRecipe(SHAPE_MOLD_CREDIT.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_MOLD_CREDIT.getStackForm(),
 				"h  ",
 				textShape,
 				emptyRow,
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_MOLD_PLATE.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_MOLD_PLATE.getStackForm(),
 				" h ",
 				textShape,
 				emptyRow,
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_MOLD_CASING.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_MOLD_CASING.getStackForm(),
 				"  h",
 				textShape,
 				emptyRow,
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_MOLD_GEAR.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_MOLD_GEAR.getStackForm(),
 				emptyRow,
 				" Ph",
 				emptyRow,
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_MOLD_BOTTLE.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_MOLD_BOTTLE.getStackForm(),
 				emptyRow,
 				textShape,
 				"  h",
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_MOLD_INGOT.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_MOLD_INGOT.getStackForm(),
 				emptyRow,
 				textShape,
 				" h ",
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_MOLD_BALL.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_MOLD_BALL.getStackForm(),
 				emptyRow,
 				textShape,
 				"h  ",
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_MOLD_BLOCK.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_MOLD_BLOCK.getStackForm(),
 				emptyRow,
 				"hP ",
 				emptyRow,
 				'P', SHAPE_EMPTY);
 
 
-		ModHandler.addCraftingRecipe(SHAPE_MOLD_NUGGET.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_MOLD_NUGGET.getStackForm(),
 				"P h",
 				emptyRow,
 				emptyRow,
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_MOLD_BUN.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_MOLD_BUN.getStackForm(),
 				"P  ",
 				"  h",
 				emptyRow,
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_MOLD_BREAD.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_MOLD_BREAD.getStackForm(),
 				"P  ",
 				emptyRow,
 				"  h",
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_MOLD_BAGUETTE.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_MOLD_BAGUETTE.getStackForm(),
 				"P  ",
 				emptyRow,
 				" h ",
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_MOLD_CYLINDER.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_MOLD_CYLINDER.getStackForm(),
 				"  P",
 				emptyRow,
 				"  h",
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_MOLD_ANVIL.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_MOLD_ANVIL.getStackForm(),
 				"  P",
 				emptyRow,
 				" h ",
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_MOLD_NAME.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_MOLD_NAME.getStackForm(),
 				"  P",
 				emptyRow,
 				"h  ",
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_MOLD_GEAR_SMALL.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_MOLD_GEAR_SMALL.getStackForm(),
 				emptyRow,
 				emptyRow,
 				"h P",
@@ -391,170 +355,146 @@ public class MetaItem1 extends MaterialMetaItem {
 		SHAPE_EXTRUDER_GEAR = addItem(372, "shape.extruder.gear");
 		SHAPE_EXTRUDER_BOTTLE = addItem(373, "shape.extruder.bottle");
 
-		ModHandler.addCraftingRecipe(SHAPE_EXTRUDER_BOLT.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_EXTRUDER_BOLT.getStackForm(),
 				"x  ",
 				textShape,
 				emptyRow,
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_EXTRUDER_CELL.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_EXTRUDER_CELL.getStackForm(),
 				" x ",
 				textShape,
 				emptyRow,
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_EXTRUDER_INGOT.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_EXTRUDER_INGOT.getStackForm(),
 				"  x",
 				textShape,
 				emptyRow,
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_EXTRUDER_RING.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_EXTRUDER_RING.getStackForm(),
 				emptyRow,
 				" Px",
 				emptyRow,
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_EXTRUDER_ROD.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_EXTRUDER_ROD.getStackForm(),
 				emptyRow,
 				textShape,
 				"  x",
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_EXTRUDER_WIRE.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_EXTRUDER_WIRE.getStackForm(),
 				emptyRow,
 				textShape,
 				" x ",
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_EXTRUDER_CASING.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_EXTRUDER_CASING.getStackForm(),
 				emptyRow,
 				textShape,
 				"x  ",
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_EXTRUDER_PLATE.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_EXTRUDER_PLATE.getStackForm(),
 				emptyRow,
 				"xP ",
 				emptyRow,
 				'P', SHAPE_EMPTY);
 
 
-		ModHandler.addCraftingRecipe(SHAPE_EXTRUDER_BLOCK.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_EXTRUDER_BLOCK.getStackForm(),
 				"P x",
 				emptyRow,
 				emptyRow,
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_EXTRUDER_PIPE_SMALL.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_EXTRUDER_PIPE_SMALL.getStackForm(),
 				"P  ",
 				"  x",
 				emptyRow,
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_EXTRUDER_PIPE_LARGE.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_EXTRUDER_PIPE_LARGE.getStackForm(),
 				"P  ",
 				emptyRow,
 				"  x",
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_EXTRUDER_PIPE_MEDIUM.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_EXTRUDER_PIPE_MEDIUM.getStackForm(),
 				"P  ",
 				emptyRow,
 				" x ",
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_EXTRUDER_SWORD.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_EXTRUDER_SWORD.getStackForm(),
 				"  P",
 				emptyRow,
 				"  x",
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_EXTRUDER_PICKAXE.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_EXTRUDER_PICKAXE.getStackForm(),
 				"  P",
 				emptyRow,
 				" x ",
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_EXTRUDER_SHOVEL.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_EXTRUDER_SHOVEL.getStackForm(),
 				"  P",
 				emptyRow,
 				"x  ",
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_EXTRUDER_AXE.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_EXTRUDER_AXE.getStackForm(),
 				"  P",
 				"x  ",
 				emptyRow,
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_EXTRUDER_HOE.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_EXTRUDER_HOE.getStackForm(),
 				emptyRow,
 				emptyRow,
 				"x P",
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_EXTRUDER_HAMMER.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_EXTRUDER_HAMMER.getStackForm(),
 				emptyRow,
 				"x  ",
 				"  P",
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_EXTRUDER_FILE.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_EXTRUDER_FILE.getStackForm(),
 				"x  ",
 				emptyRow,
 				"  P",
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_EXTRUDER_SAW.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_EXTRUDER_SAW.getStackForm(),
 				" x ",
 				emptyRow,
 				"  P",
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_EXTRUDER_GEAR.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_EXTRUDER_GEAR.getStackForm(),
 				"x  ",
 				emptyRow,
 				"P  ",
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_EXTRUDER_PIPE_TINY.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_EXTRUDER_PIPE_TINY.getStackForm(),
 				" x ",
 				emptyRow,
 				"P  ",
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_EXTRUDER_PIPE_HUGE.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_EXTRUDER_PIPE_HUGE.getStackForm(),
 				"  x",
 				emptyRow,
 				"P  ",
 				'P', SHAPE_EMPTY);
 
-		ModHandler.addCraftingRecipe(SHAPE_EXTRUDER_BOTTLE.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_EXTRUDER_BOTTLE.getStackForm(),
 				emptyRow,
 				"  x",
 				"P  ",
@@ -564,8 +504,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		SHAPE_SLICER_FLAT = addItem(398, "shape.slicer.flat");
 		SHAPE_SLICER_STRIPES = addItem(399, "shape.slicer.stripes");
 
-		ModHandler.addCraftingRecipe(SHAPE_SLICER_FLAT.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_SLICER_FLAT.getStackForm(),
 				"hXS",
 				textShape,
 				"fXd",
@@ -573,8 +512,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'X', new UnificationEntry(OrePrefix.plate, Materials.StainlessSteel),
 				'S', new UnificationEntry(OrePrefix.screw, Materials.StainlessSteel));
 
-		ModHandler.addCraftingRecipe(SHAPE_SLICER_STRIPES.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SHAPE_SLICER_STRIPES.getStackForm(),
 				"hXS",
 				"XPX",
 				"fXd",
@@ -586,8 +524,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		FUEL_CAN_PLASTIC_EMPTY = addItem(400, "fuel.can.plastic.empty").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Plastic, OrePrefix.plate.materialAmount)));
 		FUEL_CAN_PLASTIC_FILLED = addItem(401, "fuel.can.plastic.filled").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Plastic, OrePrefix.plate.materialAmount)));
 
-		ModHandler.addCraftingRecipe(FUEL_CAN_PLASTIC_EMPTY.getStackForm(7),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapedRecipe(FUEL_CAN_PLASTIC_EMPTY.getStackForm(7),
 				" PP",
 				"P P",
 				"PPP",
@@ -620,7 +557,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				.EUt(64)
 				.buildAndRegister();
 
-		LARGE_FLUID_CELL_TUNGSTENSTEEL = addItem(406, "large.fluid.cell.tungstensteel").addStats(new FluidStats(64000, Integer.MAX_VALUE, Integer.MAX_VALUE)).setMaxStackSize(16).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.TungstenSteel, OrePrefix.plate.materialAmount * 2L + 2L * OrePrefix.ring.materialAmount))));
+		LARGE_FLUID_CELL_TUNGSTENSTEEL = addItem(406, "large.fluid.cell.tungstensteel").addStats(new FluidStats(64000, Integer.MAX_VALUE, Integer.MAX_VALUE)).setMaxStackSize(16).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.TungstenSteel, OrePrefix.plate.materialAmount * 2L + 2L * OrePrefix.ring.materialAmount)));
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
 				.inputs(OreDictionaryUnifier.get(OrePrefix.plateDouble, Materials.TungstenSteel, 1), OreDictionaryUnifier.get(OrePrefix.ring, Materials.TungstenSteel, 2))
@@ -696,11 +633,11 @@ public class MetaItem1 extends MaterialMetaItem {
 				.EUt(16)
 				.buildAndRegister();
 
-		TOOL_LIGHTER_PLATINUM_EMPTY = addItem(477, "tool.lighter.platinum.empty").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Platinum, OrePrefix.plate.materialAmount * 2L))));
+		TOOL_LIGHTER_PLATINUM_EMPTY = addItem(477, "tool.lighter.platinum.empty").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Platinum, OrePrefix.plate.materialAmount * 2L)));
 
 		behaviour = new Behaviour_Lighter(TOOL_LIGHTER_PLATINUM_EMPTY.getStackForm(), TOOL_LIGHTER_PLATINUM_USED.getStackForm(), TOOL_LIGHTER_PLATINUM_FULL.getStackForm(), 1000L);
-		TOOL_LIGHTER_PLATINUM_USED = addItem(478, "tool.lighter.platinum.used").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Platinum, OrePrefix.plate.materialAmount * 2L))).addStats(behaviour));
-		TOOL_LIGHTER_PLATINUM_FULL = addItem(479, "tool.lighter.platinum.full").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Platinum, OrePrefix.plate.materialAmount * 2L))).addStats(behaviour));
+		TOOL_LIGHTER_PLATINUM_USED = addItem(478, "tool.lighter.platinum.used").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Platinum, OrePrefix.plate.materialAmount * 2L))).addStats(behaviour);
+		TOOL_LIGHTER_PLATINUM_FULL = addItem(479, "tool.lighter.platinum.full").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Platinum, OrePrefix.plate.materialAmount * 2L))).addStats(behaviour);
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
 				.inputs(OreDictionaryUnifier.get(OrePrefix.plate, Materials.Platinum, 2), new ItemStack(Items.FLINT, 1))
@@ -711,20 +648,12 @@ public class MetaItem1 extends MaterialMetaItem {
 
 		INGOT_IRIDIUM_ALLOY = addItem(480, "ingot.iridiumalloy");
 
-		ModHandler.addCraftingRecipe(INGOT_IRIDIUM_ALLOY.getStackForm(),
+		ModHandler.addShapedRecipe(INGOT_IRIDIUM_ALLOY.getStackForm(),
 				"IAI",
 				"ADA",
 				"IAI",
-				'D', GregTechAPI.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "iridiumplate", true) ? OreDictNames.craftingIndustrialDiamond : new UnificationEntry(OrePrefix.dust, Materials.Diamond),
-				'A', OrePrefix.plateAlloy.name() + "Advanced",
-				'I', new UnificationEntry(OrePrefix.plate, Materials.Iridium));
-
-		ModHandler.addCraftingRecipe(INGOT_IRIDIUM_ALLOY.getStackForm(),
-				ModHandler.RecipeBits.NOT_REMOVABLE,
-				"IAI",
-				"ADA",
-				"IAI",
-				'D', GregTechAPI.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "iridiumplate", true) ? OreDictNames.craftingIndustrialDiamond : new UnificationEntry(OrePrefix.dust, Materials.Diamond),
+//				'D', GregTechAPI.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "iridiumplate", true) ? OreDictNames.craftingIndustrialDiamond : new UnificationEntry(OrePrefix.dust, Materials.Diamond),
+				'D', new UnificationEntry(OrePrefix.dust, Materials.Diamond),
 				'A', OrePrefix.plateAlloy.name() + "Advanced",
 				'I', new UnificationEntry(OrePrefix.plate, Materials.Iridium));
 
@@ -742,45 +671,36 @@ public class MetaItem1 extends MaterialMetaItem {
 		SCHEMATIC_3X3 = addItem(497, "schematic.3by3").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)));
 		SCHEMATIC_DUST = addItem(498, "schematic.dust").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)));
 
-		ModHandler.addCraftingRecipe(SCHEMATIC_1X1.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapedRecipe(SCHEMATIC_1X1.getStackForm(),
 				"d  ", textShape, emptyRow,
 				'P', SCHEMATIC);
 
-		ModHandler.addCraftingRecipe(SCHEMATIC_2X2.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapedRecipe(SCHEMATIC_2X2.getStackForm(),
 				" d ", textShape, emptyRow,
 				'P', SCHEMATIC);
 
-		ModHandler.addCraftingRecipe(SCHEMATIC_3X3.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapedRecipe(SCHEMATIC_3X3.getStackForm(),
 				"  d", textShape, emptyRow,
 				'P', SCHEMATIC);
 
-		ModHandler.addCraftingRecipe(SCHEMATIC_DUST.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapedRecipe(SCHEMATIC_DUST.getStackForm(),
 				emptyRow, textShape, "  d",
 				'P', SCHEMATIC);
 
 
-		ModHandler.addShapelessCraftingRecipe(SCHEMATIC.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapelessRecipe(SCHEMATIC.getStackForm(),
 				SCHEMATIC_CRAFTING);
 
-		ModHandler.addShapelessCraftingRecipe(SCHEMATIC.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapelessRecipe(SCHEMATIC.getStackForm(),
 				SCHEMATIC_1X1);
 
-		ModHandler.addShapelessCraftingRecipe(SCHEMATIC.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapelessRecipe(SCHEMATIC.getStackForm(),
 				SCHEMATIC_2X2);
 
-		ModHandler.addShapelessCraftingRecipe(SCHEMATIC.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapelessRecipe(SCHEMATIC.getStackForm(),
 				SCHEMATIC_3X3);
 
-		ModHandler.addShapelessCraftingRecipe(SCHEMATIC.getStackForm(),
-				ModHandler.RecipeBits.BUFFERED | ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapelessRecipe(SCHEMATIC.getStackForm(),
 				SCHEMATIC_DUST);
 
 
@@ -788,14 +708,12 @@ public class MetaItem1 extends MaterialMetaItem {
 		BATTERY_HULL_MV = addItem(501, "battery.hull.hv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount * 3L)));
 		BATTERY_HULL_HV = addItem(502, "battery.hull.mv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount * 9L)));
 
-		ModHandler.addCraftingRecipe(BATTERY_HULL_LV.getStackForm(),
-				ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapedRecipe(BATTERY_HULL_LV.getStackForm(),
 				"C",
 				"P",
 				"P",
 				'P', new UnificationEntry(OrePrefix.plate, Materials.BatteryAlloy), 'C', OreDictNames.craftingWireTin);
-		ModHandler.addCraftingRecipe(BATTERY_HULL_MV.getStackForm(),
-				ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapedRecipe(BATTERY_HULL_MV.getStackForm(),
 				"C C",
 				"PPP",
 				"PPP",
@@ -910,8 +828,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		ELECTRIC_MOTOR_ZPM = addItem(607, "electric.motor.zpm");
 		ELECTRIC_MOTOR_UV = addItem(608, "electric.motor.uv");
 
-		ModHandler.addCraftingRecipe(ELECTRIC_MOTOR_LV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(ELECTRIC_MOTOR_LV.getStackForm(),
 				"CWR",
 				"WIW",
 				"RWC",
@@ -920,8 +837,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'W', new UnificationEntry(OrePrefix.wireGt01, Materials.AnyCopper),
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin));
 
-		ModHandler.addCraftingRecipe(ELECTRIC_MOTOR_LV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE,
+		ModHandler.addShapedRecipe(ELECTRIC_MOTOR_LV.getStackForm(),
 				"CWR",
 				"WIW",
 				"RWC",
@@ -930,8 +846,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'W', new UnificationEntry(OrePrefix.wireGt01, Materials.AnyCopper),
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin));
 
-		ModHandler.addCraftingRecipe(ELECTRIC_MOTOR_MV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(ELECTRIC_MOTOR_MV.getStackForm(),
 				"CWR",
 				"WIW",
 				"RWC",
@@ -940,8 +855,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'W', new UnificationEntry(OrePrefix.wireGt02, Materials.AnyCopper),
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.AnyCopper));
 
-		ModHandler.addCraftingRecipe(ELECTRIC_MOTOR_HV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(ELECTRIC_MOTOR_HV.getStackForm(),
 				"CWR",
 				"WIW",
 				"RWC",
@@ -950,8 +864,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'W', new UnificationEntry(OrePrefix.wireGt04, Materials.AnyCopper),
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold));
 
-		ModHandler.addCraftingRecipe(ELECTRIC_MOTOR_EV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(ELECTRIC_MOTOR_EV.getStackForm(),
 				"CWR",
 				"WIW",
 				"RWC",
@@ -960,8 +873,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'W', new UnificationEntry(OrePrefix.wireGt08, Materials.AnnealedCopper),
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Aluminium));
 
-		ModHandler.addCraftingRecipe(ELECTRIC_MOTOR_IV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(ELECTRIC_MOTOR_IV.getStackForm(),
 				"CWR",
 				"WIW",
 				"RWC",
@@ -994,8 +906,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		ROTOR_EV = addItem(623, "rotor.ev").setUnificationData(OrePrefix.rotor, Materials.StainlessSteel);
 		ROTOR_IV = addItem(624, "rotor.iv").setUnificationData(OrePrefix.rotor, Materials.TungstenSteel);
 
-		ModHandler.addCraftingRecipe(ELECTRIC_PUMP_LV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(ELECTRIC_PUMP_LV.getStackForm(),
 				"SXO",
 				"dPw",
 				"OMW",
@@ -1006,8 +917,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin),
 				'P', new UnificationEntry(OrePrefix.pipeMedium, Materials.Bronze));
 
-		ModHandler.addCraftingRecipe(ELECTRIC_PUMP_MV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(ELECTRIC_PUMP_MV.getStackForm(),
 				"SXO",
 				"dPw",
 				"OMW",
@@ -1018,8 +928,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'W', new UnificationEntry(OrePrefix.cableGt01, Materials.AnyCopper),
 				'P', new UnificationEntry(OrePrefix.pipeMedium, Materials.Steel));
 
-		ModHandler.addCraftingRecipe(ELECTRIC_PUMP_HV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(ELECTRIC_PUMP_HV.getStackForm(),
 				"SXO",
 				"dPw",
 				"OMW",
@@ -1030,8 +939,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold),
 				'P', new UnificationEntry(OrePrefix.pipeMedium, Materials.StainlessSteel));
 
-		ModHandler.addCraftingRecipe(ELECTRIC_PUMP_EV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(ELECTRIC_PUMP_EV.getStackForm(),
 				"SXO",
 				"dPw",
 				"OMW",
@@ -1042,8 +950,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Aluminium),
 				'P', new UnificationEntry(OrePrefix.pipeMedium, Materials.Titanium));
 
-		ModHandler.addCraftingRecipe(ELECTRIC_PUMP_IV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(ELECTRIC_PUMP_IV.getStackForm(),
 				"SXO",
 				"dPw",
 				"OMW",
@@ -1060,8 +967,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		CONVEYOR_MODULE_EV = addItem(633, "conveyor.module.ev");
 		CONVEYOR_MODULE_IV = addItem(634, "conveyor.module.iv");
 
-		ModHandler.addCraftingRecipe(CONVEYOR_MODULE_LV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(CONVEYOR_MODULE_LV.getStackForm(),
 				"RRR",
 				"MCM",
 				"RRR",
@@ -1069,8 +975,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin),
 				'R', new UnificationEntry(OrePrefix.plate, Materials.Rubber));
 
-		ModHandler.addCraftingRecipe(CONVEYOR_MODULE_MV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(CONVEYOR_MODULE_MV.getStackForm(),
 				"RRR",
 				"MCM",
 				"RRR",
@@ -1078,8 +983,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.AnyCopper),
 				'R', new UnificationEntry(OrePrefix.plate, Materials.Rubber));
 
-		ModHandler.addCraftingRecipe(CONVEYOR_MODULE_HV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(CONVEYOR_MODULE_HV.getStackForm(),
 				"RRR",
 				"MCM",
 				"RRR",
@@ -1087,8 +991,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold),
 				'R', new UnificationEntry(OrePrefix.plate, Materials.Rubber));
 
-		ModHandler.addCraftingRecipe(CONVEYOR_MODULE_EV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(CONVEYOR_MODULE_EV.getStackForm(),
 				"RRR",
 				"MCM",
 				"RRR",
@@ -1096,8 +999,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Aluminium),
 				'R', new UnificationEntry(OrePrefix.plate, Materials.Rubber));
 
-		ModHandler.addCraftingRecipe(CONVEYOR_MODULE_IV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(CONVEYOR_MODULE_IV.getStackForm(),
 				"RRR",
 				"MCM",
 				"RRR",
@@ -1115,8 +1017,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		ELECTRIC_PISTON_ZPM = addItem(646, "electric.piston.zpm");
 		ELECTRIC_PISTON_UV = addItem(647, "electric.piston.uv");
 
-		ModHandler.addCraftingRecipe(ELECTRIC_PISTON_LV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(ELECTRIC_PISTON_LV.getStackForm(),
 				"PPP",
 				"CSS",
 				"CMG",
@@ -1126,8 +1027,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'M', ELECTRIC_MOTOR_LV,
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin));
 
-		ModHandler.addCraftingRecipe(ELECTRIC_PISTON_MV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(ELECTRIC_PISTON_MV.getStackForm(),
 				"PPP",
 				"CSS",
 				"CMG",
@@ -1137,8 +1037,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'M', ELECTRIC_MOTOR_MV,
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.AnyCopper));
 
-		ModHandler.addCraftingRecipe(ELECTRIC_PISTON_HV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(ELECTRIC_PISTON_HV.getStackForm(),
 				"PPP",
 				"CSS",
 				"CMG",
@@ -1148,8 +1047,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'M', ELECTRIC_MOTOR_HV,
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold));
 
-		ModHandler.addCraftingRecipe(ELECTRIC_PISTON_EV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(ELECTRIC_PISTON_EV.getStackForm(),
 				"PPP",
 				"CSS",
 				"CMG",
@@ -1159,8 +1057,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'M', ELECTRIC_MOTOR_EV,
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Aluminium));
 
-		ModHandler.addCraftingRecipe(ELECTRIC_PISTON_IV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(ELECTRIC_PISTON_IV.getStackForm(),
 				"PPP",
 				"CSS",
 				"CMG",
@@ -1180,8 +1077,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		ROBOT_ARM_ZPM = addItem(656, "robot.arm.zpm");
 		ROBOT_ARM_UV = addItem(657, "robot.arm.uv");
 
-		ModHandler.addCraftingRecipe(ROBOT_ARM_LV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(ROBOT_ARM_LV.getStackForm(),
 				"CCC",
 				"MSM",
 				"PES",
@@ -1191,8 +1087,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'E', new UnificationEntry(OrePrefix.circuit, Materials.Basic),
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin));
 
-		ModHandler.addCraftingRecipe(ROBOT_ARM_MV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(ROBOT_ARM_MV.getStackForm(),
 				"CCC",
 				"MSM",
 				"PES",
@@ -1202,8 +1097,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'E', new UnificationEntry(OrePrefix.circuit, Materials.Good),
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.AnyCopper));
 
-		ModHandler.addCraftingRecipe(ROBOT_ARM_HV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(ROBOT_ARM_HV.getStackForm(),
 				"CCC",
 				"MSM",
 				"PES",
@@ -1213,8 +1107,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'E', new UnificationEntry(OrePrefix.circuit, Materials.Advanced),
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold));
 
-		ModHandler.addCraftingRecipe(ROBOT_ARM_EV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(ROBOT_ARM_EV.getStackForm(),
 				"CCC",
 				"MSM",
 				"PES",
@@ -1224,8 +1117,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'E', new UnificationEntry(OrePrefix.circuit, Materials.Elite),
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Aluminium));
 
-		ModHandler.addCraftingRecipe(ROBOT_ARM_IV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(ROBOT_ARM_IV.getStackForm(),
 				"CCC",
 				"MSM",
 				"PES",
@@ -1244,8 +1136,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		FIELD_GENERATOR_ZPM = addItem(676, "field.generator.zpm");
 		FIELD_GENERATOR_UV = addItem(677, "field.generator.uv");
 
-		ModHandler.addCraftingRecipe(FIELD_GENERATOR_LV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(FIELD_GENERATOR_LV.getStackForm(),
 				"WCW",
 				"CGC",
 				"WCW",
@@ -1253,8 +1144,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'C', new UnificationEntry(OrePrefix.circuit, Materials.Basic),
 				'W', new UnificationEntry(OrePrefix.wireGt01, Materials.Osmium));
 
-		ModHandler.addCraftingRecipe(FIELD_GENERATOR_MV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(FIELD_GENERATOR_MV.getStackForm(),
 				"WCW",
 				"CGC",
 				"WCW",
@@ -1271,8 +1161,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		EMITTER_ZPM = addItem(686, "emitter.zpm");
 		EMITTER_UV = addItem(687, "emitter.uv");
 
-		ModHandler.addCraftingRecipe(EMITTER_LV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(EMITTER_LV.getStackForm(),
 				"SSC",
 				"WQS",
 				"CWS",
@@ -1281,8 +1170,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'C', new UnificationEntry(OrePrefix.circuit, Materials.Basic),
 				'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin));
 
-		ModHandler.addCraftingRecipe(EMITTER_MV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(EMITTER_MV.getStackForm(),
 				"SSC",
 				"WQS",
 				"CWS",
@@ -1291,8 +1179,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'C', new UnificationEntry(OrePrefix.circuit, Materials.Good),
 				'W', new UnificationEntry(OrePrefix.cableGt01, Materials.AnyCopper));
 
-		ModHandler.addCraftingRecipe(EMITTER_HV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(EMITTER_HV.getStackForm(),
 				"SSC",
 				"WQS",
 				"CWS",
@@ -1301,8 +1188,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'C', new UnificationEntry(OrePrefix.circuit, Materials.Advanced),
 				'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold));
 
-		ModHandler.addCraftingRecipe(EMITTER_EV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(EMITTER_EV.getStackForm(),
 				"SSC",
 				"WQS",
 				"CWS",
@@ -1311,8 +1197,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'C', new UnificationEntry(OrePrefix.circuit, Materials.Elite),
 				'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Aluminium));
 
-		ModHandler.addCraftingRecipe(EMITTER_IV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(EMITTER_IV.getStackForm(),
 				"SSC",
 				"WQS",
 				"CWS",
@@ -1330,8 +1215,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		SENSOR_ZPM = addItem(696, "sensor.zpm");
 		SENSOR_UV = addItem(697, "sensor.uv");
 
-		ModHandler.addCraftingRecipe(SENSOR_LV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SENSOR_LV.getStackForm(),
 				"P Q",
 				"PS ",
 				"CPP",
@@ -1340,8 +1224,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'P', new UnificationEntry(OrePrefix.plate, Materials.Steel),
 				'C', new UnificationEntry(OrePrefix.circuit, Materials.Basic));
 
-		ModHandler.addCraftingRecipe(SENSOR_MV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SENSOR_MV.getStackForm(),
 				"P Q",
 				"PS ",
 				"CPP",
@@ -1350,8 +1233,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'P', new UnificationEntry(OrePrefix.plate, Materials.Aluminium),
 				'C', new UnificationEntry(OrePrefix.circuit, Materials.Good));
 
-		ModHandler.addCraftingRecipe(SENSOR_HV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SENSOR_HV.getStackForm(),
 				"P Q",
 				"PS ",
 				"CPP",
@@ -1360,8 +1242,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'P', new UnificationEntry(OrePrefix.plate, Materials.StainlessSteel),
 				'C', new UnificationEntry(OrePrefix.circuit, Materials.Advanced));
 
-		ModHandler.addCraftingRecipe(SENSOR_EV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SENSOR_EV.getStackForm(),
 				"P Q",
 				"PS ",
 				"CPP",
@@ -1370,8 +1251,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'P', new UnificationEntry(OrePrefix.plate, Materials.Titanium),
 				'C', new UnificationEntry(OrePrefix.circuit, Materials.Elite));
 
-		ModHandler.addCraftingRecipe(SENSOR_IV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(SENSOR_IV.getStackForm(),
 				"P Q",
 				"PS ",
 				"CPP",
@@ -1392,8 +1272,8 @@ public class MetaItem1 extends MaterialMetaItem {
 		CIRCUIT_MASTER = addItem(706, "circuit.master").setUnificationData(OrePrefix.circuit, Materials.Master);
 		CIRCUIT_ULTIMATE = TOOL_DATAORB;
 
-		ModHandler.addShapelessCraftingRecipe(TOOL_DATAORB.getStackForm(), ModHandler.RecipeBits.NOT_REMOVABLE, TOOL_DATAORB);
-		ModHandler.addShapelessCraftingRecipe(TOOL_DATASTICK.getStackForm(), ModHandler.RecipeBits.NOT_REMOVABLE, TOOL_DATASTICK);
+		ModHandler.addShapelessRecipe(TOOL_DATAORB.getStackForm(), TOOL_DATAORB);
+		ModHandler.addShapelessRecipe(TOOL_DATASTICK.getStackForm(), TOOL_DATASTICK);
 
 		CIRCUIT_BOARD_BASIC = addItem(710, "circuit.board.basic");
 		CIRCUIT_BOARD_ADVANCED = addItem(711, "circuit.board.advanced");
@@ -1416,8 +1296,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		QUANTUMSTAR = addItem(725, "quantumstar");
 		GRAVISTAR = addItem(726, "gravistar");
 
-		ModHandler.addCraftingRecipe(FIELD_GENERATOR_HV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(FIELD_GENERATOR_HV.getStackForm(),
 				"WCW",
 				"CGC",
 				"WCW",
@@ -1425,8 +1304,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'C', new UnificationEntry(OrePrefix.circuit, Materials.Advanced),
 				'W', new UnificationEntry(OrePrefix.wireGt04, Materials.Osmium));
 
-		ModHandler.addCraftingRecipe(FIELD_GENERATOR_EV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(FIELD_GENERATOR_EV.getStackForm(),
 				"WCW",
 				"CGC",
 				"WCW",
@@ -1434,8 +1312,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'C', new UnificationEntry(OrePrefix.circuit, Materials.Elite),
 				'W', new UnificationEntry(OrePrefix.wireGt08, Materials.Osmium));
 
-		ModHandler.addCraftingRecipe(FIELD_GENERATOR_IV.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(FIELD_GENERATOR_IV.getStackForm(),
 				"WCW",
 				"CGC",
 				"WCW",
@@ -1444,16 +1321,14 @@ public class MetaItem1 extends MaterialMetaItem {
 				'W', new UnificationEntry(OrePrefix.wireGt16, Materials.Osmium));
 
 
-		ModHandler.addCraftingRecipe(COMPONENT_SAWBLADE_DIAMOND.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(COMPONENT_SAWBLADE_DIAMOND.getStackForm(),
 				" D ",
 				"DGD",
 				" D ",
 				'D', new UnificationEntry(OrePrefix.dustSmall, Materials.Diamond),
 				'G', new UnificationEntry(OrePrefix.gearGt, Materials.CobaltBrass));
 
-		ModHandler.addCraftingRecipe(COMPONENT_GRINDER_DIAMOND.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(COMPONENT_GRINDER_DIAMOND.getStackForm(),
 				"DSD",
 				"SIS",
 				"DSD",
@@ -1461,8 +1336,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'D', new UnificationEntry(OrePrefix.dust, Materials.Diamond),
 				'S', new UnificationEntry(OrePrefix.plate, Materials.Steel));
 
-		ModHandler.addCraftingRecipe(COMPONENT_GRINDER_TUNGSTEN.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(COMPONENT_GRINDER_TUNGSTEN.getStackForm(),
 				"TST",
 				"SIS",
 				"TST",
@@ -1541,8 +1415,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		TOOL_CHEAT = addItem(761, "tool.cheat").addStats(new Behaviour_Scanner(), new ElectricStats(-2000000000, -1));
 		TOOL_SCANNER = addItem(762, "tool.scanner").addStats(new Behaviour_Scanner(), new ElectricStats(400000, 2, true, false));
 
-		ModHandler.addCraftingRecipe(TOOL_SCANNER.getStackForm(),
-				ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.NOT_REMOVABLE | ModHandler.RecipeBits.REVERSIBLE,
+		ModHandler.addShapedRecipe(TOOL_SCANNER.getStackForm(),
 				"EPR",
 				"CSC",
 				"PBP",

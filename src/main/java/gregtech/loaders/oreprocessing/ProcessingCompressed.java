@@ -2,7 +2,6 @@ package gregtech.loaders.oreprocessing;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.recipes.ModHandler;
-import gregtech.api.recipes.RecipeRegistrator;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;

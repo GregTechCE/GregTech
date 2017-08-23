@@ -395,7 +395,7 @@ public class GT_Utility {
         return aInvertFilter;
     }
 
-    //TODO delete after ModHandler rewite
+    //TODO delete after ModHandler.IC2#getMachineOutput rewrite/deletion
     public static <T> boolean arrayContainsNonNull(T... aArray) {
         if (aArray != null) for (Object tObject : aArray) if (tObject != null) return true;
         return false;
