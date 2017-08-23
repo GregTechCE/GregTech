@@ -1,6 +1,6 @@
 package gregtech.common;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.blocks.BlockGeneratedOres;
@@ -28,18 +28,18 @@ public class GT_Worldgen_GT_Ore_SmallPieces
     private BlockPos.MutableBlockPos temp = new BlockPos.MutableBlockPos();
 
     public GT_Worldgen_GT_Ore_SmallPieces(String aName, boolean aDefault, int aMinY, int aMaxY, int aAmount, boolean aOverworld, boolean aNether, boolean aEnd, boolean aMoon, boolean aMars, boolean aAsteroid, Material aPrimary) {
-        super(aName, GregTech_API.sWorldgenList, aDefault);
-        this.mOverworld = GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Overworld", aOverworld);
-        this.mNether = GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Nether", aNether);
-        this.mEnd = GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "TheEnd", aEnd);
-        this.mMoon = GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Moon", aMoon);
-        this.mMars = GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Mars", aMars);
-        this.mAsteroid = GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Asteroid", aAsteroid);
-        this.mMinY = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MinHeight", aMinY));
-        this.mMaxY = ((short) Math.max(this.mMinY + 1, GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MaxHeight", aMaxY)));
-        this.mAmount = ((short) Math.max(1, GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Amount", aAmount)));
-        this.mMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Ore", aPrimary.mMetaItemSubID));
-        this.mBiome = GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "BiomeName", "None");
+        super(aName, GregTechAPI.sWorldgenList, aDefault);
+        this.mOverworld = GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Overworld", aOverworld);
+        this.mNether = GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Nether", aNether);
+        this.mEnd = GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "TheEnd", aEnd);
+        this.mMoon = GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Moon", aMoon);
+        this.mMars = GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Mars", aMars);
+        this.mAsteroid = GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Asteroid", aAsteroid);
+        this.mMinY = ((short) GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MinHeight", aMinY));
+        this.mMaxY = ((short) Math.max(this.mMinY + 1, GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MaxHeight", aMaxY)));
+        this.mAmount = ((short) Math.max(1, GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Amount", aAmount)));
+        this.mMeta = ((short) GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Ore", aPrimary.mMetaItemSubID));
+        this.mBiome = GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "BiomeName", "None");
     }
 
     @Override

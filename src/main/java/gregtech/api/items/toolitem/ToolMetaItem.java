@@ -294,7 +294,16 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             return toolStats;
         }
 
-        public final ItemStack getToolWithStats(int amount, Material primaryMaterial, Material handleMaterial, long[] electricData) {
+        @Override
+        public ItemStack getStackForm(int amount) {
+            return getStackForm(Materials.Darmstadtium, Materials.Darmstadtium);
+        }
+
+        public ItemStack getStackForm(Material primaryMaterial, Material handleMaterial) {
+            return getStackForm(primaryMaterial, handleMaterial, 1);
+        }
+
+        public final ItemStack getStackForm(Material primaryMaterial, Material handleMaterial, int amount) {
             ItemStack stack = getStackForm(amount);
 
             T metaToolValueItem = getItem(stack);
@@ -308,14 +317,6 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
                     }
                     if (handleMaterial != null)
                         toolNBT.setString("GT.ToolHandleMaterial", handleMaterial.toString());
-
-                    if (electricData != null) {
-                        toolNBT.setBoolean("GT.Electric", true);
-                        toolNBT.setLong("GT.MaxCharge", electricData[0]);
-                        toolNBT.setLong("GT.Voltage", electricData[1]);
-                        toolNBT.setLong("GT.Tier", electricData[2]);
-                        toolNBT.setLong("GT.SpecialData", electricData[3]);
-                    }
 
                     NBTTagCompound nbtTag = new NBTTagCompound();
                     nbtTag.setTag("GT.ToolStats", toolNBT);

@@ -1,7 +1,7 @@
 package gregtech.api.util;
 
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.capability.*;
 import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.damagesources.DamageSources;
@@ -70,7 +70,7 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.*;
 
-import static gregtech.api.GT_Values.*;
+import static gregtech.api.GTValues.*;
 
 public class GT_Utility {
 
@@ -453,7 +453,7 @@ public class GT_Utility {
         Map<Fluid, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData.get(new SimpleItemStack(aData.emptyContainer));
         if (tFluidToContainer == null) {
             sEmptyContainerToFluidToData.put(new SimpleItemStack(aData.emptyContainer), tFluidToContainer = new HashMap<>());
-            GregTech_API.sFluidMappings.add(tFluidToContainer);
+            GregTechAPI.sFluidMappings.add(tFluidToContainer);
         }
         tFluidToContainer.put(aData.fluid.getFluid(), aData);
     }
@@ -637,7 +637,7 @@ public class GT_Utility {
 
     public static ItemStack getWrittenBook(String aMapping, ItemStack aStackToPutNBT) {
         if (!isStringValid(aMapping)) return null;
-        ItemStack rStack = GregTech_API.sBookList.get(aMapping);
+        ItemStack rStack = GregTechAPI.sBookList.get(aMapping);
         if (rStack == null) return aStackToPutNBT;
         if (aStackToPutNBT != null) {
             aStackToPutNBT.setTagCompound(rStack.getTagCompound());
@@ -648,7 +648,7 @@ public class GT_Utility {
 
     public static ItemStack getWrittenBook(String aMapping, String aTitle, String aAuthor, String... aPages) {
         if (!isStringValid(aMapping)) return null;
-        ItemStack rStack = GregTech_API.sBookList.get(aMapping);
+        ItemStack rStack = GregTechAPI.sBookList.get(aMapping);
         if (rStack != null) return copyAmount(1, rStack);
         if (!isStringValid(aTitle) || !isStringValid(aAuthor) || aPages.length <= 0) return null;
         sBookCount++;
@@ -673,7 +673,7 @@ public class GT_Utility {
         tNBT.setTag("pages", tNBTList);
         rStack.setTagCompound(tNBT);
         GTLog.out.println("GT_Mod: Added Book to Book List  -  Mapping: '" + aMapping + "'  -  Name: '" + aTitle + "'  -  Author: '" + aAuthor + "'");
-        GregTech_API.sBookList.put(aMapping, rStack);
+        GregTechAPI.sBookList.put(aMapping, rStack);
         return copy(rStack);
     }
 
@@ -772,38 +772,38 @@ public class GT_Utility {
 
     public static boolean isWearingFullFrostHazmat(EntityLivingBase aEntity) {
         for (EntityEquipmentSlot i : EntityEquipmentSlot.values())
-            if (!isStackInList(aEntity.getItemStackFromSlot(i), GregTech_API.sFrostHazmatList)) return false;
+            if (!isStackInList(aEntity.getItemStackFromSlot(i), GregTechAPI.sFrostHazmatList)) return false;
         return true;
     }
 
     public static boolean isWearingFullHeatHazmat(EntityLivingBase aEntity) {
         for (EntityEquipmentSlot i : EntityEquipmentSlot.values())
-            if (!isStackInList(aEntity.getItemStackFromSlot(i), GregTech_API.sHeatHazmatList)) return false;
+            if (!isStackInList(aEntity.getItemStackFromSlot(i), GregTechAPI.sHeatHazmatList)) return false;
         return true;
     }
 
     @SuppressWarnings("unused")
     public static boolean isWearingFullBioHazmat(EntityLivingBase aEntity) {
         for (EntityEquipmentSlot i : EntityEquipmentSlot.values())
-            if (!isStackInList(aEntity.getItemStackFromSlot(i), GregTech_API.sBioHazmatList)) return false;
+            if (!isStackInList(aEntity.getItemStackFromSlot(i), GregTechAPI.sBioHazmatList)) return false;
         return true;
     }
 
     public static boolean isWearingFullRadioHazmat(EntityLivingBase aEntity) {
         for (EntityEquipmentSlot i : EntityEquipmentSlot.values())
-            if (!isStackInList(aEntity.getItemStackFromSlot(i), GregTech_API.sRadioHazmatList)) return false;
+            if (!isStackInList(aEntity.getItemStackFromSlot(i), GregTechAPI.sRadioHazmatList)) return false;
         return true;
     }
 
     public static boolean isWearingFullElectroHazmat(EntityLivingBase aEntity) {
         for (EntityEquipmentSlot i : EntityEquipmentSlot.values())
-            if (!isStackInList(aEntity.getItemStackFromSlot(i), GregTech_API.sElectroHazmatList)) return false;
+            if (!isStackInList(aEntity.getItemStackFromSlot(i), GregTechAPI.sElectroHazmatList)) return false;
         return true;
     }
 
     public static boolean isWearingFullGasHazmat(EntityLivingBase aEntity) {
         for (EntityEquipmentSlot i : EntityEquipmentSlot.values())
-            if (!isStackInList(aEntity.getItemStackFromSlot(i), GregTech_API.sGasHazmatList)) return false;
+            if (!isStackInList(aEntity.getItemStackFromSlot(i), GregTechAPI.sGasHazmatList)) return false;
         return true;
     }
 
@@ -1027,7 +1027,7 @@ public class GT_Utility {
         String clazzName = DimensionManager.getProvider(aDimensionID).getClass().getName().toLowerCase();
         if (clazzName.contains("mystcraft") || clazzName.contains("twilightforest") || clazzName.contains("rftools"))
             return true;
-        return GregTech_API.sDimensionalList.contains(aDimensionID);
+        return GregTechAPI.sDimensionalList.contains(aDimensionID);
     }
 
     public static boolean moveEntityToDimensionAtCoords(Entity aEntity, int aDimension, double aX, double aY, double aZ) {

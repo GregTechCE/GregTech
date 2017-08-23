@@ -1,7 +1,7 @@
 package gregtech.common.items;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.GT_Values;
+import gregtech.api.GTValues;
+import gregtech.api.GregTechAPI;
 import gregtech.api.items.ItemList;
 import gregtech.api.items.GenericItem;
 import gregtech.api.util.GT_Utility;
@@ -24,13 +24,13 @@ public class GT_FluidDisplayItem extends GenericItem {
     public GT_FluidDisplayItem() {
         super("GregTech_FluidDisplay", "Fluid Display", null);
         ItemList.Display_Fluid.set(this);
-        setCreativeTab(GregTech_API.TAB_GREGTECH_MATERIALS);
+        setCreativeTab(GregTechAPI.TAB_GREGTECH_MATERIALS);
     }
 
     @Override
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         NBTTagCompound aNBT = aStack.getTagCompound();
-        if (GT_Values.D1) {
+        if (GTValues.D1) {
             Fluid tFluid = FluidRegistry.getFluid(aStack.getItemDamage());
             if (tFluid != null) {
                 aList.add("Registry: " + tFluid.getName());
@@ -81,7 +81,7 @@ public class GT_FluidDisplayItem extends GenericItem {
 
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item aItem, CreativeTabs aTab, List<ItemStack> aList) {
-        if (GT_Values.D1) {
+        if (GTValues.D1) {
             int i = 0;
             for (int j = FluidRegistry.getMaxID(); i < j; i++) {
                 ItemStack tStack = GT_Utility.getFluidDisplayStack(FluidRegistry.getFluid(i));

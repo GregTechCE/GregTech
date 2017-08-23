@@ -1,7 +1,6 @@
 package gregtech.common.blocks;
 
-import gregtech.api.GT_Values;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -25,7 +24,7 @@ public class StoneBlock<T extends Enum<T> & IStringSerializable> extends Block {
 
     public StoneBlock(Material materialIn) {
         super(materialIn);
-        setCreativeTab(GregTech_API.TAB_GREGTECH);
+        setCreativeTab(GregTechAPI.TAB_GREGTECH);
     }
 
     public void registerBlock(String blockName) {

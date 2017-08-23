@@ -6,14 +6,13 @@
 package gregtech.common;
 
 import codechicken.lib.vec.Rotation;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.capability.ICoverable;
 import gregtech.api.capability.ITurnable;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.entities.GT_Entity_Arrow;
@@ -21,18 +20,13 @@ import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.render.*;
 import ic2.api.tile.IWrenchable;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -205,10 +199,10 @@ public class GT_Client extends GT_Proxy implements Runnable {
             Block block = aPlayer.worldObj.getBlockState(aPos).getBlock();
             if (GT_Utility.isStackValid(currentItem)) {
                 TileEntity aTileEntity = aPlayer.worldObj.getTileEntity(aPos);
-                if (((aTileEntity instanceof BaseMetaPipeEntity)) && (((ICoverable) aTileEntity).getCoverIDAtSide((byte) aEvent.getTarget().sideHit.getIndex()) == 0) && ((GT_Utility.isStackInList(currentItem, GregTech_API.sCoverItems.keySet())) || (GT_Utility.isStackInList(currentItem, GregTech_API.sCrowbarList)) || (GT_Utility.isStackInList(currentItem, GregTech_API.sScrewdriverList)))) {
+                if (((aTileEntity instanceof BaseMetaPipeEntity)) && (((ICoverable) aTileEntity).getCoverIDAtSide((byte) aEvent.getTarget().sideHit.getIndex()) == 0) && ((GT_Utility.isStackInList(currentItem, GregTechAPI.sCoverItems.keySet())) || (GT_Utility.isStackInList(currentItem, GregTechAPI.sCrowbarList)) || (GT_Utility.isStackInList(currentItem, GregTechAPI.sScrewdriverList)))) {
                     drawGrid(aEvent);
                 }
-                else if ((aTileEntity instanceof ITurnable || aTileEntity instanceof IWrenchable || ROTATABLE_VANILLA_BLOCKS.contains(block)) && GT_Utility.isStackInList(currentItem, GregTech_API.sWrenchList)) {
+                else if ((aTileEntity instanceof ITurnable || aTileEntity instanceof IWrenchable || ROTATABLE_VANILLA_BLOCKS.contains(block)) && GT_Utility.isStackInList(currentItem, GregTechAPI.sWrenchList)) {
                     drawGrid(aEvent);
                 }
             }

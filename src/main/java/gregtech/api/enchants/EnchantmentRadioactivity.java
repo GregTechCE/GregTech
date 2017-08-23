@@ -1,8 +1,7 @@
 package gregtech.api.enchants;
 
 import gregtech.api.ConfigCategories;
-import gregtech.api.GT_Values;
-import gregtech.api.unification.material.Materials;
+import gregtech.api.GTValues;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.enchantment.EnchantmentDamage;
@@ -22,7 +21,7 @@ public class EnchantmentRadioactivity extends EnchantmentDamage {
     public void registerEnchantment() {
         REGISTRY.register(
                 GT_Config.addIDConfig(ConfigCategories.IDs.enchantments, "Disjunction", 15),
-                new ResourceLocation(GT_Values.MODID, "disjunction"),
+                new ResourceLocation(GTValues.MODID, "disjunction"),
                 this
         );
     }

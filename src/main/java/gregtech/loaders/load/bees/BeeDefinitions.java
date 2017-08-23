@@ -11,7 +11,7 @@ import forestry.apiculture.genetics.Bee;
 import forestry.apiculture.genetics.IBeeDefinition;
 import forestry.apiculture.items.EnumHoneyComb;
 import forestry.core.genetics.alleles.AlleleHelper;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.items.ItemList;
 import gregtech.common.items.CombType;
 import net.minecraft.init.Items;
@@ -518,7 +518,7 @@ public enum BeeDefinitions implements IBeeDefinition, ISpeciesType {
         @Override
         protected void registerMutations() {
         	IBeeMutationBuilder tMutation = registerMutation(TITANIUM.species, RUBY.species, 5);
-            BeeManager.beeRoot.registerMutation(tMutation.requireResource(GregTech_API.sBlockMetal2.getStateFromMeta(3)).build());
+            BeeManager.beeRoot.registerMutation(tMutation.requireResource(GregTechAPI.sBlockMetal2.getStateFromMeta(3)).build());
         }
     },
     MANGANESE(BranchDefinitions.RAREMETAL, "Manganese", true, 0xD5D5D5, 0xAAAAAA) {
@@ -537,7 +537,7 @@ public enum BeeDefinitions implements IBeeDefinition, ISpeciesType {
         @Override
         protected void registerMutations() {
         	IBeeMutationBuilder tMutation = registerMutation(TITANIUM.species, ALUMINIUM.species, 5);
-            BeeManager.beeRoot.registerMutation(tMutation.requireResource(GregTech_API.sBlockMetal4.getStateFromMeta(6)).build());
+            BeeManager.beeRoot.registerMutation(tMutation.requireResource(GregTechAPI.sBlockMetal4.getStateFromMeta(6)).build());
         }
     },
     TUNGSTEN(BranchDefinitions.RAREMETAL, "Tungsten", true, 0x5C5C8A, 0x7D7DA1) {
@@ -556,7 +556,7 @@ public enum BeeDefinitions implements IBeeDefinition, ISpeciesType {
         @Override
         protected void registerMutations() {
         	IBeeMutationBuilder tMutation = registerMutation(getSpecies("Heroic"), MANGANESE.species, 5);
-            BeeManager.beeRoot.registerMutation(tMutation.requireResource(GregTech_API.sBlockMetal7.getStateFromMeta(11)).build());
+            BeeManager.beeRoot.registerMutation(tMutation.requireResource(GregTechAPI.sBlockMetal7.getStateFromMeta(11)).build());
         }
     },
     PLATINUM(BranchDefinitions.RAREMETAL, "Platinum", true, 0xE6E6E6, 0xFFFFCC) {
@@ -575,7 +575,7 @@ public enum BeeDefinitions implements IBeeDefinition, ISpeciesType {
         @Override
         protected void registerMutations() {
         	IBeeMutationBuilder tMutation = registerMutation(DIAMOND.species, CHROME.species, 5);
-            BeeManager.beeRoot.registerMutation(tMutation.requireResource(GregTech_API.sBlockMetal5.getStateFromMeta(12)).build());
+            BeeManager.beeRoot.registerMutation(tMutation.requireResource(GregTechAPI.sBlockMetal5.getStateFromMeta(12)).build());
         }
     },
     IRIDIUM(BranchDefinitions.RAREMETAL, "Iridium", true, 0xDADADA, 0xD1D1E0) {
@@ -595,7 +595,7 @@ public enum BeeDefinitions implements IBeeDefinition, ISpeciesType {
         @Override
         protected void registerMutations() {
         	IBeeMutationBuilder tMutation = registerMutation(TUNGSTEN.species, PLATINUM.species, 5);
-            BeeManager.beeRoot.registerMutation(tMutation.requireResource(GregTech_API.sBlockMetal3.getStateFromMeta(12)).build());
+            BeeManager.beeRoot.registerMutation(tMutation.requireResource(GregTechAPI.sBlockMetal3.getStateFromMeta(12)).build());
         }
     },
     URANIUM(BranchDefinitions.RADIOACTIVE, "Uranium", true, 0x19AF19, 0x169E16) {
@@ -614,7 +614,7 @@ public enum BeeDefinitions implements IBeeDefinition, ISpeciesType {
         @Override
         protected void registerMutations() {
         	IBeeMutationBuilder tMutation = registerMutation(getSpecies("Avenging"), PLATINUM.species, 5);
-            BeeManager.beeRoot.registerMutation(tMutation.requireResource(GregTech_API.sBlockMetal7.getStateFromMeta(14)).build());
+            BeeManager.beeRoot.registerMutation(tMutation.requireResource(GregTechAPI.sBlockMetal7.getStateFromMeta(14)).build());
         }
     },
     PLUTONIUM(BranchDefinitions.RADIOACTIVE, "Plutonium", true, 0x335C33, 0x6B8F00) {
@@ -634,7 +634,7 @@ public enum BeeDefinitions implements IBeeDefinition, ISpeciesType {
         @Override
         protected void registerMutations() {
         	IBeeMutationBuilder tMutation = registerMutation(URANIUM.species, EMERALD.species, 5);
-            //BeeManager.beeRoot.registerMutation(tMutation.requireResource(GregTech_API.sBlockMetal4.getStateFromMeta(13)).build());
+            //BeeManager.beeRoot.registerMutation(tMutation.requireResource(GregTechAPI.sBlockMetal4.getStateFromMeta(13)).build());
         }
     },
     NAQUADAH(BranchDefinitions.RADIOACTIVE, "Naquadah", true, 0x003300, 0x002400) {
@@ -654,7 +654,7 @@ public enum BeeDefinitions implements IBeeDefinition, ISpeciesType {
         @Override
         protected void registerMutations() {
         	IBeeMutationBuilder tMutation = registerMutation(PLUTONIUM.species, IRIDIUM.species, 3);
-            //BeeManager.beeRoot.registerMutation(tMutation.requireResource(GregTech_API.sBlockMetal4.getStateFromMeta(12)).build());
+            //BeeManager.beeRoot.registerMutation(tMutation.requireResource(GregTechAPI.sBlockMetal4.getStateFromMeta(12)).build());
         }
     };
 

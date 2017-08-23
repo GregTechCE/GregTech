@@ -13,6 +13,7 @@ public class CompressedItemBlock extends ItemBlock {
     public CompressedItemBlock(BlockCompressed block) {
         super(block);
         this.block = block;
+        setHasSubtypes(true);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package gregtech.common;
 
-import gregtech.api.GT_Values;
-import gregtech.api.GregTech_API;
+import gregtech.api.GTValues;
+import gregtech.api.GregTechAPI;
 import gregtech.api.items.OreDictNames;
 import gregtech.api.items.ToolDictNames;
 import gregtech.api.metatileentity.IMetaTileEntity;
@@ -215,7 +215,7 @@ public class EventHandlers {
 			if (this.mIgnoreTcon || aEvent.getOre().getUnlocalizedName().startsWith("item.oreberry")) {
 				if ((aOriginalMod.toLowerCase(Locale.ENGLISH).contains("xycraft")) || (aOriginalMod.toLowerCase(Locale.ENGLISH).contains("tconstruct"))
 						|| ((aOriginalMod.toLowerCase(Locale.ENGLISH).contains("natura")) && (!aOriginalMod.toLowerCase(Locale.ENGLISH).contains("natural")))) {
-					if (GT_Values.D1) {
+					if (GTValues.D1) {
 						GTLog.ore.println(aMod + " -> " + aEvent.getName() + " is getting ignored, because of racism. :P");
 					}
 					return;
@@ -227,7 +227,7 @@ public class EventHandlers {
 				return;
 			}
 			String tModToName = aMod + " -> " + aEvent.getName();
-			if ((this.mOreDictActivated) || (GregTech_API.sPostloadStarted) || ((this.mSortToTheEnd) && (GregTech_API.sLoadFinished))) {
+			if ((this.mOreDictActivated) || (GregTechAPI.sPostloadStarted) || ((this.mSortToTheEnd) && (GregTechAPI.sLoadFinished))) {
 				tModToName = aOriginalMod + " --Late--> " + aEvent.getName();
 			}
 			if (((aEvent.getOre().getItem() instanceof ItemBlock)) || (GT_Utility.getBlockFromStack(aEvent.getOre()) != null)) {
@@ -362,11 +362,11 @@ public class EventHandlers {
 								}
 								aMaterial.add(GT_Utility.copyAmount(1, new Object[]{aEvent.getOre()}));
 
-								if (GregTech_API.sThaumcraftCompat != null && aPrefix.doGenerateItem(aMaterial) && !aPrefix.isIgnored(aMaterial)) {
+								if (GregTechAPI.sThaumcraftCompat != null && aPrefix.doGenerateItem(aMaterial) && !aPrefix.isIgnored(aMaterial)) {
 									List<TC_AspectStack> tAspects = new ArrayList<TC_AspectStack>();
 									for (TC_AspectStack tAspect : aPrefix.mAspects) tAspect.addToAspectList(tAspects);
 									if (aPrefix.mMaterialAmount >= 3628800 || aPrefix.mMaterialAmount < 0) for (TC_AspectStack tAspect : aMaterial.mAspects) tAspect.addToAspectList(tAspects);
-									GregTech_API.sThaumcraftCompat.registerThaumcraftAspectsToItem(GT_Utility.copyAmount(1, aEvent.getOre()), tAspects, aEvent.getName());
+									GregTechAPI.sThaumcraftCompat.registerThaumcraftAspectsToItem(GT_Utility.copyAmount(1, aEvent.getOre()), tAspects, aEvent.getName());
 								}
 
 								switch (aPrefix) {
@@ -478,15 +478,15 @@ public class EventHandlers {
 											OreDictionaryUnifier.set(OrePrefix.ingot, Materials.BlueAlloy, new ItemStack(aEvent.getOre().getItem(), 1, 1));
 											OreDictionaryUnifier.set(OrePrefix.ingot, Materials.Brass, new ItemStack(aEvent.getOre().getItem(), 1, 2));
 											if (!mDisableIC2Cables) {
-												GT_Values.RA.addWiremillRecipe(
+												GTValues.RA.addWiremillRecipe(
 														GT_ModHandler.getIC2Item(ItemName.cable, CableType.copper, 3),
 														new ItemStack(aEvent.getOre().getItem(), 1,
 																8), 400, 1);
-												GT_Values.RA.addWiremillRecipe(
+												GTValues.RA.addWiremillRecipe(
 														GT_ModHandler.getIC2Item(ItemName.cable, CableType.iron, 6),
 														new ItemStack(aEvent.getOre().getItem(), 1, 9), 400, 2);
 											}
-											GT_Values.RA.addCutterRecipe(new ItemStack(aEvent.getOre().getItem(), 1, 3), new ItemStack(aEvent.getOre().getItem(), 16, 4),
+											GTValues.RA.addCutterRecipe(new ItemStack(aEvent.getOre().getItem(), 1, 3), new ItemStack(aEvent.getOre().getItem(), 16, 4),
 													null, 400, 8);
 										}
 										break;
@@ -550,7 +550,7 @@ public class EventHandlers {
 						break;
 					case crafting:
 						if (tName.equals("ToolSolderingMetal")) {
-							GregTech_API.registerSolderingMetal(aEvent.getOre());
+							GregTechAPI.registerSolderingMetal(aEvent.getOre());
 						} else if (tName.equals("IndustrialDiamond")) {
 							OreDictionaryUnifier.addToBlacklist(aEvent.getOre());
 						} else if (tName.equals("WireCopper")) {
@@ -574,7 +574,7 @@ public class EventHandlers {
 			GTLog.ore.println(tModToName);
 
 			GT_Proxy.OreDictEventContainer tOre = new GT_Proxy.OreDictEventContainer(aEvent, aPrefix, aMaterial, aMod);
-			if ((!this.mOreDictActivated) || (!GregTech_API.sUnificationEntriesRegistered)) {
+			if ((!this.mOreDictActivated) || (!GregTechAPI.sUnificationEntriesRegistered)) {
 				this.mEvents.add(tOre);
 			} else {
 				this.mEvents.clear();
@@ -614,7 +614,7 @@ public class EventHandlers {
 				if (tSaveDiretory != null) {
 					this.isFirstServerWorldTick = false;
 					try {
-						for (IMetaTileEntity tMetaTileEntity : GregTech_API.METATILEENTITIES) {
+						for (IMetaTileEntity tMetaTileEntity : GregTechAPI.METATILEENTITIES) {
 							if (tMetaTileEntity != null) {
 								tMetaTileEntity.onWorldLoad(tSaveDiretory);
 							}

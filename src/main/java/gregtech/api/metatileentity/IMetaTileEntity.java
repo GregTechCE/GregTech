@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.capabilities.Capability;
@@ -23,15 +24,13 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
+
 public interface IMetaTileEntity extends ITurnable, IRedstoneReceiver, IRedstoneEmitter, IUIHolder, ISimpleFluidInventory, ISimpleSlotInventory {
 
     IMetaTileEntityFactory getFactory();
 
     String getMetaName();
-
-    String getUnlocalizedName();
-
-    ITextComponent getLocalizedName();
 
     IGregTechTileEntity getHolder();
 
@@ -68,19 +67,14 @@ public interface IMetaTileEntity extends ITurnable, IRedstoneReceiver, IRedstone
     <T> T getCapability(Capability<T> capability, EnumFacing side);
 
     /**
-     * When a Player rightclicks the Facing with a Screwdriver.
+     * Called when a player right clicks the facing with a screwdriver.
      */
-    void onScrewdriverRightClick(EnumFacing side, EntityPlayer player, float clickX, float clickY, float clickZ);
+    boolean onScrewdriverRightClick(EnumFacing side, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, float clickX, float clickY, float clickZ);
 
     /**
-     * When a Player rightclicks the Facing with a Wrench.
+     * Called when a player right clicks the facing with a wrench.
      */
-    boolean onWrenchRightClick(EnumFacing side, EnumFacing wrenchingSide, EntityPlayer player, float clickX, float clickY, float clickZ);
-
-    /**
-     * Called right before this Machine explodes
-     */
-    void onExplosion();
+    boolean onWrenchRightClick(EnumFacing side, EnumFacing wrenchingSide, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, float clickX, float clickY, float clickZ);
 
     /**
      * The First processed Tick which was passed to this MetaTileEntity
@@ -159,7 +153,7 @@ public interface IMetaTileEntity extends ITurnable, IRedstoneReceiver, IRedstone
      * Called when a player rightclicks the machine
      * Sneaky rightclicks are not getting passed to this!
      */
-    boolean onRightClick(EntityPlayer player, EnumFacing side, float clickX, float clickY, float clickZ);
+    boolean onRightClick(EnumFacing side, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, float clickX, float clickY, float clickZ);
 
     /**
      * Called when a player leftclicks the machine
@@ -171,13 +165,6 @@ public interface IMetaTileEntity extends ITurnable, IRedstoneReceiver, IRedstone
      * Called when the Machine explodes, override Explosion Code here.
      */
     void doExplosion(long explosionPower);
-
-    /**
-     * Gets the Output for the comparator on the given Side
-     */
-    int getComparatorValue(EnumFacing side);
-
-    float getExplosionResistance(EnumFacing side);
 
     void onEntityCollidedWithBlock(Entity collider);
 

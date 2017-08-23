@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -28,17 +28,17 @@ public class ToolBuzzSaw extends ToolSaw {
 
     @Override
     public ResourceLocation getCraftingSound(ItemStack stack) {
-        return GregTech_API.sSoundList.get(104);
+        return GregTechAPI.sSoundList.get(104);
     }
 
     @Override
     public ResourceLocation getEntityHitSound(ItemStack stack) {
-        return GregTech_API.sSoundList.get(105);
+        return GregTechAPI.sSoundList.get(105);
     }
 
     @Override
     public ResourceLocation getMiningSound(ItemStack stack) {
-        return GregTech_API.sSoundList.get(104);
+        return GregTechAPI.sSoundList.get(104);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package gregtech.api.net;
 
-import gregtech.api.GT_Values;
+import gregtech.api.GTValues;
 import gregtech.api.capability.internal.ICustomDataTile;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.UIFactory;
@@ -66,7 +66,7 @@ public class NetworkHandler {
     private NetworkHandler() {}
 
     public static void init() {
-        channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(GT_Values.MODID);
+        channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(GTValues.MODID);
         channel.register(new NetworkHandler());
 
         registerPacket(0, PacketCustomTileData.class, new PacketCodec<>(
@@ -159,7 +159,7 @@ public class NetworkHandler {
         PacketBuffer buf = new PacketBuffer(Unpooled.buffer());
         buf.writeInt(packetMap.getId(packet.getClass()));
         codec.encoder.encode(packet, buf);
-        return new FMLProxyPacket(buf, GT_Values.MODID);
+        return new FMLProxyPacket(buf, GTValues.MODID);
     }
 
     public static Packet proxy2packet(FMLProxyPacket packet) {

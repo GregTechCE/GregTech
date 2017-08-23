@@ -1,7 +1,6 @@
 package gregtech.common;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.unification.material.Materials;
+import gregtech.api.GregTechAPI;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.blocks.BlockGeneratedOres;
@@ -41,31 +40,31 @@ public class GT_Worldgen_GT_Ore_Layer
 
     public GT_Worldgen_GT_Ore_Layer(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity, int aSize, boolean aOverworld, boolean aNether, boolean aEnd, boolean aMoon, boolean aMars, boolean aAsteroid, Material aPrimary, Material aSecondary, Material aBetween, Material aSporadic) {
         super(aName, sList, aDefault);
-        this.mOverworld = GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Overworld", aOverworld);
-        this.mNether = GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Nether", aNether);
-        this.mEnd = GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "TheEnd", aEnd);
-        this.mEndAsteroid = GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "EndAsteroid", aEnd);
-        this.mMoon = GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Moon", aMoon);
-        this.mMars = GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Mars", aMars);
-        this.mAsteroid = GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Asteroid", aAsteroid);
-        this.mMinY = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MinHeight", aMinY));
-        this.mMaxY = ((short) Math.max(this.mMinY + 5, GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MaxHeight", aMaxY)));
-        this.mWeight = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "RandomWeight", aWeight));
-        this.mDensity = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Density", aDensity));
-        this.mSize = ((short) Math.max(1, GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Size", aSize)));
-        this.mPrimaryMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "OrePrimaryLayer", aPrimary.mMetaItemSubID));
-        this.mSecondaryMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "OreSecondaryLayer", aSecondary.mMetaItemSubID));
-        this.mBetweenMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "OreSporadiclyInbetween", aBetween.mMetaItemSubID));
-        this.mSporadicMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "OreSporaticlyAround", aSporadic.mMetaItemSubID));
-        this.mBiome = GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "BiomeName", "None");
+        this.mOverworld = GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Overworld", aOverworld);
+        this.mNether = GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Nether", aNether);
+        this.mEnd = GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "TheEnd", aEnd);
+        this.mEndAsteroid = GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "EndAsteroid", aEnd);
+        this.mMoon = GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Moon", aMoon);
+        this.mMars = GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Mars", aMars);
+        this.mAsteroid = GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Asteroid", aAsteroid);
+        this.mMinY = ((short) GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MinHeight", aMinY));
+        this.mMaxY = ((short) Math.max(this.mMinY + 5, GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MaxHeight", aMaxY)));
+        this.mWeight = ((short) GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "RandomWeight", aWeight));
+        this.mDensity = ((short) GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Density", aDensity));
+        this.mSize = ((short) Math.max(1, GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Size", aSize)));
+        this.mPrimaryMeta = ((short) GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "OrePrimaryLayer", aPrimary.mMetaItemSubID));
+        this.mSecondaryMeta = ((short) GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "OreSecondaryLayer", aSecondary.mMetaItemSubID));
+        this.mBetweenMeta = ((short) GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "OreSporadiclyInbetween", aBetween.mMetaItemSubID));
+        this.mSporadicMeta = ((short) GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "OreSporaticlyAround", aSporadic.mMetaItemSubID));
+        this.mBiome = GregTechAPI.sWorldgenFile.get("worldgen." + this.mWorldGenName, "BiomeName", "None");
         if (this.mEnabled) {
-            GT_Achievements.registerOre(GregTech_API.sGeneratedMaterials[(mPrimaryMeta % 1000)], aMinY, aMaxY, aWeight, aOverworld, aNether, aEnd);
-            GT_Achievements.registerOre(GregTech_API.sGeneratedMaterials[(mSecondaryMeta % 1000)], aMinY, aMaxY, aWeight, aOverworld, aNether, aEnd);
-            GT_Achievements.registerOre(GregTech_API.sGeneratedMaterials[(mBetweenMeta % 1000)], aMinY, aMaxY, aWeight, aOverworld, aNether, aEnd);
-            GT_Achievements.registerOre(GregTech_API.sGeneratedMaterials[(mSporadicMeta % 1000)], aMinY, aMaxY, aWeight, aOverworld, aNether, aEnd);
+            GT_Achievements.registerOre(GregTechAPI.sGeneratedMaterials[(mPrimaryMeta % 1000)], aMinY, aMaxY, aWeight, aOverworld, aNether, aEnd);
+            GT_Achievements.registerOre(GregTechAPI.sGeneratedMaterials[(mSecondaryMeta % 1000)], aMinY, aMaxY, aWeight, aOverworld, aNether, aEnd);
+            GT_Achievements.registerOre(GregTechAPI.sGeneratedMaterials[(mBetweenMeta % 1000)], aMinY, aMaxY, aWeight, aOverworld, aNether, aEnd);
+            GT_Achievements.registerOre(GregTechAPI.sGeneratedMaterials[(mSporadicMeta % 1000)], aMinY, aMaxY, aWeight, aOverworld, aNether, aEnd);
             sWeight += this.mWeight;
             /* TODO
-            if(GregTech_API.mImmersiveEngineering && GT_Mod.gregtechproxy.mImmersiveEngineeringRecipes){
+            if(GregTechAPI.mImmersiveEngineering && GT_Mod.gregtechproxy.mImmersiveEngineeringRecipes){
                 blusunrize.immersiveengineering.api.tool.ExcavatorHandler.addMineral(aName.substring(8, 9).toUpperCase()+aName.substring(9), aWeight, 0.2f, new String[]{"ore"+aPrimary.mName,"ore"+aSecondary.mName,"ore"+aBetween.mName,"ore"+aSporadic.mName}, new float[]{.4f,.4f,.15f,.05f});
             }*/
         }
@@ -115,7 +114,7 @@ public class GT_Worldgen_GT_Ore_Layer
             }
         }
         //watch.stop();
-        //if (GT_Values.D1) {
+        //if (GTValues.D1) {
         //    System.out.println("Generated Orevein: " + watch.getTime() + " ms " + this.mWorldGenName + " X: " + (aChunkX * 16) + " Z: " + (aChunkZ * 16));
         //}
         return true;

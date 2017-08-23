@@ -1,7 +1,7 @@
 package gregtech.api.world;
 
 import com.google.common.base.Predicate;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.common.blocks.BlockGranites;
 import gregtech.common.blocks.BlockStones;
 import net.minecraft.block.state.IBlockState;
@@ -23,7 +23,7 @@ public abstract class GT_Worldgen {
 
     public GT_Worldgen(String aName, List<GT_Worldgen> aList, boolean aDefault) {
         mWorldGenName = aName;
-        mEnabled = GregTech_API.sWorldgenFile.get("worldgen", mWorldGenName, aDefault);
+        mEnabled = GregTechAPI.sWorldgenFile.get("worldgen", mWorldGenName, aDefault);
         if (mEnabled) aList.add(this);
     }
 
@@ -44,7 +44,7 @@ public abstract class GT_Worldgen {
         String aDimName = aWorld.getProviderName();
         Boolean tAllowed = mDimensionMap.get(aDimName);
         if (tAllowed == null) {
-            boolean tValue = GregTech_API.sWorldgenFile.get("worldgen.dimensions." + mWorldGenName, aDimName, ((aDimensionType == -1) && nether) || ((aDimensionType == 0) && overworld) || ((aDimensionType == 1) && end));
+            boolean tValue = GregTechAPI.sWorldgenFile.get("worldgen.dimensions." + mWorldGenName, aDimName, ((aDimensionType == -1) && nether) || ((aDimensionType == 0) && overworld) || ((aDimensionType == 1) && end));
             mDimensionMap.put(aDimName, tValue);
             return tValue;
         }
@@ -55,7 +55,7 @@ public abstract class GT_Worldgen {
         String aDimName = aWorld.getProviderName();
         Boolean tAllowed = mDimensionMap.get(aDimName);
         if (tAllowed == null) {
-            boolean tValue = GregTech_API.sWorldgenFile.get("worldgen.dimensions." + mWorldGenName, aDimName, aDimensionType == exceptedDimension);
+            boolean tValue = GregTechAPI.sWorldgenFile.get("worldgen.dimensions." + mWorldGenName, aDimName, aDimensionType == exceptedDimension);
             mDimensionMap.put(aDimName, tValue);
             return tValue;
         }

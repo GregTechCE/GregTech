@@ -1,22 +1,14 @@
 package gregtech.api;
 
-import gregtech.api.interfaces.internal.IGT_Mod;
-import gregtech.api.net.GT_PacketHandler;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * Made for static imports, this Class is just a Helper.
  */
-public class GT_Values {
+public class GTValues {
 
     /**
-     * The first 32 Bits
-     */
-    public static final int[] B = new int[]{1, 1 << 1, 1 << 2, 1 << 3, 1 << 4, 1 << 5, 1 << 6, 1 << 7, 1 << 8, 1 << 9, 1 << 10, 1 << 11, 1 << 12, 1 << 13, 1 << 14, 1 << 15, 1 << 16, 1 << 17, 1 << 18, 1 << 19, 1 << 20, 1 << 21, 1 << 22, 1 << 23, 1 << 24, 1 << 25, 1 << 26, 1 << 27, 1 << 28, 1 << 29, 1 << 30, 1 << 31};
-
-    /**
-     * Renamed from "MATERIAL_UNIT" to just "M"
      * <p/>
      * This is worth exactly one normal Item.
      * This Constant can be divided by many commonly used Numbers such as
@@ -66,17 +58,10 @@ public class GT_Values {
             MODID_FR = "Forestry";
 
     /**
-     * The Mod Object itself. That is the GT_Mod-Object. It's needed to open GUI's and similar.
-     */
-    public static IGT_Mod GT;
-    /**
-     * For Internal Usage (Network)
-     */
-    public static GT_PacketHandler NW;
-    /**
      * Not really Constant, but it set using the Config and therefore should be constant (this is for the Debug Mode)
      */
     public static boolean D1 = false;
+
     /**
      * If you have to give something a World Parameter but there is no World... (Dummy World)
      */

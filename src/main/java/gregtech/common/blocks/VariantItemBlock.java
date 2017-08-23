@@ -12,6 +12,7 @@ public class VariantItemBlock<R extends Enum<R> & IStringSerializable, T extends
     public VariantItemBlock(T block) {
         super(block);
         this.genericBlock = block;
+        setHasSubtypes(true);
     }
 
     @Override

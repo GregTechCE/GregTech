@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.GT_Values;
+import gregtech.api.GTValues;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictionaryUnifier;
@@ -37,14 +37,14 @@ public class ProcessingDirty implements IOreRegistrationHandler {
             ModHandler.addThermalCentrifugeRecipe(GT_Utility.copyAmount(1, stack), (int) Math.min(5000, Math.abs(uEntry.material.getMass() * 20)), OreDictionaryUnifier.get(uEntry.orePrefix == OrePrefix.crushed ? OrePrefix.crushedCentrifuged : OrePrefix.dust, uEntry.material, 1), OreDictionaryUnifier.get(OrePrefix.dustTiny, GT_Utility.selectItemInList(1, macerateInto, macerateInto), 1L), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Stone, 1));
 
             if (uEntry.material.contains(SubTag.WASHING_MERCURY))
-                GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1, stack), Materials.Mercury.getFluid(1000), OreDictionaryUnifier.get(uEntry.orePrefix == OrePrefix.crushed ? OrePrefix.crushedPurified : OrePrefix.dustPure, uEntry.material, 1), OreDictionaryUnifier.get(OrePrefix.dust, macerateInto, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Stone, 1), new int[]{10000, 7000, 4000}, 800, 8);
+                GTValues.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1, stack), Materials.Mercury.getFluid(1000), OreDictionaryUnifier.get(uEntry.orePrefix == OrePrefix.crushed ? OrePrefix.crushedPurified : OrePrefix.dustPure, uEntry.material, 1), OreDictionaryUnifier.get(OrePrefix.dust, macerateInto, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Stone, 1), new int[]{10000, 7000, 4000}, 800, 8);
             if (uEntry.material.contains(SubTag.WASHING_SODIUMPERSULFATE))
-                GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1, stack), Materials.SodiumPersulfate.getFluid(1000), OreDictionaryUnifier.get(uEntry.orePrefix == OrePrefix.crushed ? OrePrefix.crushedPurified : OrePrefix.dustPure, uEntry.material, 1), OreDictionaryUnifier.get(OrePrefix.dust, macerateInto, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Stone, 1), new int[]{10000, 7000, 4000}, 800, 8);
+                GTValues.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1, stack), Materials.SodiumPersulfate.getFluid(1000), OreDictionaryUnifier.get(uEntry.orePrefix == OrePrefix.crushed ? OrePrefix.crushedPurified : OrePrefix.dustPure, uEntry.material, 1), OreDictionaryUnifier.get(OrePrefix.dust, macerateInto, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Stone, 1), new int[]{10000, 7000, 4000}, 800, 8);
             for (Materials tMaterial : uEntry.material.mOreByProducts) {
                 if (tMaterial.contains(SubTag.WASHING_MERCURY))
-                    GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1, stack), Materials.Mercury.getFluid(1000), OreDictionaryUnifier.get(uEntry.orePrefix == OrePrefix.crushed ? OrePrefix.crushedPurified : OrePrefix.dustPure, uEntry.material, 1), OreDictionaryUnifier.get(OrePrefix.dust, tMaterial.mMacerateInto, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Stone, 1), new int[]{10000, 7000, 4000}, 800, 8);
+                    GTValues.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1, stack), Materials.Mercury.getFluid(1000), OreDictionaryUnifier.get(uEntry.orePrefix == OrePrefix.crushed ? OrePrefix.crushedPurified : OrePrefix.dustPure, uEntry.material, 1), OreDictionaryUnifier.get(OrePrefix.dust, tMaterial.mMacerateInto, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Stone, 1), new int[]{10000, 7000, 4000}, 800, 8);
                 if (tMaterial.contains(SubTag.WASHING_SODIUMPERSULFATE))
-                    GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1, stack), Materials.SodiumPersulfate.getFluid(1000), OreDictionaryUnifier.get(uEntry.orePrefix == OrePrefix.crushed ? OrePrefix.crushedPurified : OrePrefix.dustPure, uEntry.material, 1), OreDictionaryUnifier.get(OrePrefix.dust, tMaterial.mMacerateInto, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Stone, 1), new int[]{10000, 7000, 4000}, 800, 8);
+                    GTValues.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1, stack), Materials.SodiumPersulfate.getFluid(1000), OreDictionaryUnifier.get(uEntry.orePrefix == OrePrefix.crushed ? OrePrefix.crushedPurified : OrePrefix.dustPure, uEntry.material, 1), OreDictionaryUnifier.get(OrePrefix.dust, tMaterial.mMacerateInto, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Stone, 1), new int[]{10000, 7000, 4000}, 800, 8);
             }
         }
     }

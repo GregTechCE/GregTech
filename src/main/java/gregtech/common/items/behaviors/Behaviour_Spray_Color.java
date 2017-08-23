@@ -1,6 +1,6 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
@@ -59,7 +59,7 @@ public class Behaviour_Spray_Color
             tUses = this.mUses;
         }
         if ((GT_Utility.areStacksEqual(aStack, this.mUsed, true)) && (colorize(aWorld, pos, side))) {
-            GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(102), 1.0F, 1.0F, pos);
+            GT_Utility.sendSoundToPlayers(aWorld, GregTechAPI.sSoundList.get(102), 1.0F, 1.0F, pos);
             if (!aPlayer.capabilities.isCreativeMode) {
                 tUses -= 1L;
             }

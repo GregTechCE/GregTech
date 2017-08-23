@@ -1,7 +1,6 @@
 package gregtech.api.world;
 
-import gregtech.api.GregTech_API;
-import net.minecraft.block.Block;
+import gregtech.api.GregTechAPI;
 import net.minecraft.block.state.IBlockState;
 
 import java.util.ArrayList;
@@ -17,14 +16,14 @@ public abstract class GT_Worldgen_Ore extends GT_Worldgen {
     public final boolean mAllowToGenerateinVoid;
 
     public GT_Worldgen_Ore(String aName, boolean aDefault, IBlockState blockState, int aDimensionType, int aAmount, int aSize, int aProbability, int aMinY, int aMaxY, Collection<String> aBiomeList, boolean aAllowToGenerateinVoid) {
-        super(aName, GregTech_API.sWorldgenList, aDefault);
+        super(aName, GregTechAPI.sWorldgenList, aDefault);
         mDimensionType = aDimensionType;
         mBlockState = blockState;
-        mProbability = GregTech_API.sWorldgenFile.get("worldgen." + mWorldGenName, "Probability", aProbability);
-        mAmount = GregTech_API.sWorldgenFile.get("worldgen." + mWorldGenName, "Amount", aAmount);
-        mSize = GregTech_API.sWorldgenFile.get("worldgen." + mWorldGenName, "Size", aSize);
-        mMinY = GregTech_API.sWorldgenFile.get("worldgen." + mWorldGenName, "MinHeight", aMinY);
-        mMaxY = GregTech_API.sWorldgenFile.get("worldgen." + mWorldGenName, "MaxHeight", aMaxY);
+        mProbability = GregTechAPI.sWorldgenFile.get("worldgen." + mWorldGenName, "Probability", aProbability);
+        mAmount = GregTechAPI.sWorldgenFile.get("worldgen." + mWorldGenName, "Amount", aAmount);
+        mSize = GregTechAPI.sWorldgenFile.get("worldgen." + mWorldGenName, "Size", aSize);
+        mMinY = GregTechAPI.sWorldgenFile.get("worldgen." + mWorldGenName, "MinHeight", aMinY);
+        mMaxY = GregTechAPI.sWorldgenFile.get("worldgen." + mWorldGenName, "MaxHeight", aMaxY);
         if (aBiomeList == null) mBiomeList = new ArrayList<>();
         else mBiomeList = aBiomeList;
         mAllowToGenerateinVoid = aAllowToGenerateinVoid;

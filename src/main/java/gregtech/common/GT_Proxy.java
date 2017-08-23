@@ -1,12 +1,9 @@
 package gregtech.common;
 
 import gregtech.api.ConfigCategories;
-import gregtech.api.GT_Values;
-import gregtech.api.GregTech_API;
+import gregtech.api.GTValues;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
-import gregtech.api.items.OreDictNames;
-import gregtech.api.items.ToolDictNames;
-import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.Dyes;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
@@ -21,56 +18,23 @@ import gregtech.api.util.GT_Fluid;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.*;
 import gregtech.common.entities.GT_Entity_Arrow;
-import gregtech.common.items.MetaTool;
 import gregtech.common.items.armor.*;
-import ic2.core.block.wiring.CableType;
-import ic2.core.item.ItemIC2FluidContainer;
-import ic2.core.item.type.*;
 import ic2.core.ref.ItemName;
 import ic2.core.util.Ic2Color;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.*;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.GameType;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.EnderTeleportEvent;
-import net.minecraftforge.event.entity.player.ArrowLooseEvent;
-import net.minecraftforge.event.entity.player.ArrowNockEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.terraingen.OreGenEvent;
-import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.event.world.ChunkDataEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.*;
-import net.minecraftforge.fml.common.eventhandler.Event.Result;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -80,7 +44,6 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.io.File;
-import java.text.DateFormat;
 import java.util.*;
 
 public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
@@ -167,7 +130,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         GTLog.out.println("GT_Mod: Preload-Phase started!");
         GTLog.ore.println("GT_Mod: Preload-Phase started!");
 
-        GregTech_API.sPreloadStarted = true;
+        GregTechAPI.sPreloadStarted = true;
 
         GameRegistry.registerFuelHandler(this);
         MinecraftForge.EVENT_BUS.register(this);
@@ -186,9 +149,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             }
         } catch (Throwable e) {e.printStackTrace(GTLog.err);}
 
-        this.mIgnoreTcon = GregTech_API.sOPStuff.get(ConfigCategories.general, "ignoreTConstruct", true);
-        this.mWireHeatingTicks = GregTech_API.sOPStuff.get(ConfigCategories.general, "WireHeatingTicks", 4);
-        NetworkRegistry.INSTANCE.registerGuiHandler(GT_Values.GT, this);
+        this.mIgnoreTcon = GregTechAPI.sOPStuff.get(ConfigCategories.general, "ignoreTConstruct", true);
+        this.mWireHeatingTicks = GregTechAPI.sOPStuff.get(ConfigCategories.general, "WireHeatingTicks", 4);
+        NetworkRegistry.INSTANCE.registerGuiHandler(GTValues.GT, this);
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.POTIONITEM) && (tData.filledContainer.getItemDamage() == 0)) {
                 tData.fluid.amount = 0;
@@ -205,39 +168,39 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         OrePrefix.bottle.containerItem = new ItemStack(Items.GLASS_BOTTLE);
         OrePrefix.bucket.containerItem = new ItemStack(Items.BUCKET);
 
-        GregTech_API.sFrostHazmatList.add(ItemName.hazmat_helmet.getItemStack());
-        GregTech_API.sFrostHazmatList.add(ItemName.hazmat_chestplate.getItemStack());
-        GregTech_API.sFrostHazmatList.add(ItemName.hazmat_leggings.getItemStack());
-        GregTech_API.sFrostHazmatList.add(ItemName.rubber_boots.getItemStack());
+        GregTechAPI.sFrostHazmatList.add(ItemName.hazmat_helmet.getItemStack());
+        GregTechAPI.sFrostHazmatList.add(ItemName.hazmat_chestplate.getItemStack());
+        GregTechAPI.sFrostHazmatList.add(ItemName.hazmat_leggings.getItemStack());
+        GregTechAPI.sFrostHazmatList.add(ItemName.rubber_boots.getItemStack());
 
-        GregTech_API.sHeatHazmatList.add(ItemName.hazmat_helmet.getItemStack());
-        GregTech_API.sHeatHazmatList.add(ItemName.hazmat_chestplate.getItemStack());
-        GregTech_API.sHeatHazmatList.add(ItemName.hazmat_leggings.getItemStack());
-        GregTech_API.sHeatHazmatList.add(ItemName.rubber_boots.getItemStack());
+        GregTechAPI.sHeatHazmatList.add(ItemName.hazmat_helmet.getItemStack());
+        GregTechAPI.sHeatHazmatList.add(ItemName.hazmat_chestplate.getItemStack());
+        GregTechAPI.sHeatHazmatList.add(ItemName.hazmat_leggings.getItemStack());
+        GregTechAPI.sHeatHazmatList.add(ItemName.rubber_boots.getItemStack());
 
-        GregTech_API.sBioHazmatList.add(ItemName.hazmat_helmet.getItemStack());
-        GregTech_API.sBioHazmatList.add(ItemName.hazmat_chestplate.getItemStack());
-        GregTech_API.sBioHazmatList.add(ItemName.hazmat_leggings.getItemStack());
-        GregTech_API.sBioHazmatList.add(ItemName.rubber_boots.getItemStack());
+        GregTechAPI.sBioHazmatList.add(ItemName.hazmat_helmet.getItemStack());
+        GregTechAPI.sBioHazmatList.add(ItemName.hazmat_chestplate.getItemStack());
+        GregTechAPI.sBioHazmatList.add(ItemName.hazmat_leggings.getItemStack());
+        GregTechAPI.sBioHazmatList.add(ItemName.rubber_boots.getItemStack());
 
-        GregTech_API.sGasHazmatList.add(ItemName.hazmat_helmet.getItemStack());
-        GregTech_API.sGasHazmatList.add(ItemName.hazmat_chestplate.getItemStack());
-        GregTech_API.sGasHazmatList.add(ItemName.hazmat_leggings.getItemStack());
-        GregTech_API.sGasHazmatList.add(ItemName.rubber_boots.getItemStack());
+        GregTechAPI.sGasHazmatList.add(ItemName.hazmat_helmet.getItemStack());
+        GregTechAPI.sGasHazmatList.add(ItemName.hazmat_chestplate.getItemStack());
+        GregTechAPI.sGasHazmatList.add(ItemName.hazmat_leggings.getItemStack());
+        GregTechAPI.sGasHazmatList.add(ItemName.rubber_boots.getItemStack());
 
-        GregTech_API.sRadioHazmatList.add(ItemName.hazmat_helmet.getItemStack());
-        GregTech_API.sRadioHazmatList.add(ItemName.hazmat_chestplate.getItemStack());
-        GregTech_API.sRadioHazmatList.add(ItemName.hazmat_leggings.getItemStack());
-        GregTech_API.sRadioHazmatList.add(ItemName.rubber_boots.getItemStack());
+        GregTechAPI.sRadioHazmatList.add(ItemName.hazmat_helmet.getItemStack());
+        GregTechAPI.sRadioHazmatList.add(ItemName.hazmat_chestplate.getItemStack());
+        GregTechAPI.sRadioHazmatList.add(ItemName.hazmat_leggings.getItemStack());
+        GregTechAPI.sRadioHazmatList.add(ItemName.rubber_boots.getItemStack());
 
-        GregTech_API.sElectroHazmatList.add(ItemName.hazmat_helmet.getItemStack());
-        GregTech_API.sElectroHazmatList.add(ItemName.hazmat_chestplate.getItemStack());
-        GregTech_API.sElectroHazmatList.add(ItemName.hazmat_leggings.getItemStack());
-        GregTech_API.sElectroHazmatList.add(ItemName.rubber_boots.getItemStack());
-        GregTech_API.sElectroHazmatList.add(new ItemStack(Items.CHAINMAIL_HELMET, 1, 32767));
-        GregTech_API.sElectroHazmatList.add(new ItemStack(Items.CHAINMAIL_CHESTPLATE, 1, 32767));
-        GregTech_API.sElectroHazmatList.add(new ItemStack(Items.CHAINMAIL_LEGGINGS, 1, 32767));
-        GregTech_API.sElectroHazmatList.add(new ItemStack(Items.CHAINMAIL_BOOTS, 1, 32767));
+        GregTechAPI.sElectroHazmatList.add(ItemName.hazmat_helmet.getItemStack());
+        GregTechAPI.sElectroHazmatList.add(ItemName.hazmat_chestplate.getItemStack());
+        GregTechAPI.sElectroHazmatList.add(ItemName.hazmat_leggings.getItemStack());
+        GregTechAPI.sElectroHazmatList.add(ItemName.rubber_boots.getItemStack());
+        GregTechAPI.sElectroHazmatList.add(new ItemStack(Items.CHAINMAIL_HELMET, 1, 32767));
+        GregTechAPI.sElectroHazmatList.add(new ItemStack(Items.CHAINMAIL_CHESTPLATE, 1, 32767));
+        GregTechAPI.sElectroHazmatList.add(new ItemStack(Items.CHAINMAIL_LEGGINGS, 1, 32767));
+        GregTechAPI.sElectroHazmatList.add(new ItemStack(Items.CHAINMAIL_BOOTS, 1, 32767));
 
         GT_ModHandler.sNonReplaceableItems.add(new ItemStack(Items.BOW, 1, 32767));
         GT_ModHandler.sNonReplaceableItems.add(new ItemStack(Items.FISHING_ROD, 1, 32767));
@@ -295,7 +258,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         OreDictionaryUnifier.registerOre("cropGrape", GT_ModHandler.getModItem("magicalcrops", "magicalcrops_CropProduce", 1, 4));
         OreDictionaryUnifier.registerOre("cropTea", GT_ModHandler.getModItem("ganyssurface", "teaLeaves", 1, 0));
 
-        GregTech_API.sLoadStarted = true;
+        GregTechAPI.sLoadStarted = true;
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.POTIONITEM) && (tData.filledContainer.getItemDamage() == 0)) {
                 tData.fluid.amount = 0;
@@ -309,7 +272,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         GTLog.out.println("GT_Mod: Beginning PostLoad-Phase.");
         GTLog.ore.println("GT_Mod: Beginning PostLoad-Phase.");
 
-        GregTech_API.sPostloadStarted = true;
+        GregTechAPI.sPostloadStarted = true;
         OreDictionaryUnifier.addItemData(new ItemStack(Items.IRON_DOOR, 1), new ItemMaterialInfo(Materials.Iron, 21772800L, new MaterialStack[0]));
         OreDictionaryUnifier.addItemData(new ItemStack(Items.ACACIA_DOOR, 1, 32767), new ItemMaterialInfo(Materials.Wood, 21772800L, new MaterialStack[0]));
         OreDictionaryUnifier.addItemData(new ItemStack(Items.BIRCH_DOOR, 1, 32767), new ItemMaterialInfo(Materials.Wood, 21772800L, new MaterialStack[0]));
@@ -325,10 +288,10 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         }
         GTLog.out.println("GT_Mod: Adding Configs specific for MetaTileEntities");
         try {
-            for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
-                for (; i < GregTech_API.METATILEENTITIES.length; i++) {
-                    if (GregTech_API.METATILEENTITIES[i] != null) {
-                        GregTech_API.METATILEENTITIES[i].onConfigLoad(GregTech_API.sMachineFile);
+            for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
+                for (; i < GregTechAPI.METATILEENTITIES.length; i++) {
+                    if (GregTechAPI.METATILEENTITIES[i] != null) {
+                        GregTechAPI.METATILEENTITIES[i].onConfigLoad(GregTechAPI.sMachineFile);
                     }
                 }
             }
@@ -339,7 +302,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         for (Materials aMaterial : Materials.values()) {
             if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial)) {
                 /*if (!aMaterial.contains(SubTag.NO_SMASHING)) {
-                    if (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.hammerplating, aMaterial.toString(), true)) {
+                    if (GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.hammerplating, aMaterial.toString(), true)) {
                         GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, aMaterial, 1), tBits, new Object[]{"h", "X", "X",
                                 Character.valueOf('X'), OrePrefix.ingot.get(aMaterial)});
                         GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, aMaterial, 1), tBits,
@@ -358,7 +321,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                                 new Object[]{"H", "X", Character.valueOf('H'), ToolDictNames.craftingToolForgeHammer, Character.valueOf('X'),
                                         OrePrefix.ingotDouble.get(aMaterial)});
                     }
-                    if (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.hammermultiingot, aMaterial.toString(), true)) {
+                    if (GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.hammermultiingot, aMaterial.toString(), true)) {
                         GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.ingotDouble, aMaterial, 1), tBits, new Object[]{"I", "I", "h",
                                 Character.valueOf('I'), OrePrefix.ingot.get(aMaterial)});
                         GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.ingotTriple, aMaterial, 1), tBits, new Object[]{"I", "B", "h",
@@ -411,9 +374,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                     GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.rotor, aMaterial, 1), tBits, new Object[]{"PhP", "SRf", "PdP",
                             Character.valueOf('P'), aMaterial == Materials.Wood ? OrePrefix.plank.get(aMaterial) : OrePrefix.plate.get(aMaterial),
                             Character.valueOf('R'), OrePrefix.ring.get(aMaterial), Character.valueOf('S'), OrePrefix.screw.get(aMaterial)});
-                    GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.plate, aMaterial, 4L), OreDictionaryUnifier.get(OrePrefix.ring, aMaterial, 1), Materials.Tin.getMolten(32), OreDictionaryUnifier.get(OrePrefix.rotor, aMaterial, 1), 240, 24);
-                    GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.plate, aMaterial, 4L), OreDictionaryUnifier.get(OrePrefix.ring, aMaterial, 1), Materials.Lead.getMolten(48), OreDictionaryUnifier.get(OrePrefix.rotor, aMaterial, 1), 240, 24);
-                    GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.plate, aMaterial, 4L), OreDictionaryUnifier.get(OrePrefix.ring, aMaterial, 1), Materials.SolderingAlloy.getMolten(16), OreDictionaryUnifier.get(OrePrefix.rotor, aMaterial, 1), 240, 24);
+                    GTValues.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.plate, aMaterial, 4L), OreDictionaryUnifier.get(OrePrefix.ring, aMaterial, 1), Materials.Tin.getMolten(32), OreDictionaryUnifier.get(OrePrefix.rotor, aMaterial, 1), 240, 24);
+                    GTValues.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.plate, aMaterial, 4L), OreDictionaryUnifier.get(OrePrefix.ring, aMaterial, 1), Materials.Lead.getMolten(48), OreDictionaryUnifier.get(OrePrefix.rotor, aMaterial, 1), 240, 24);
+                    GTValues.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.plate, aMaterial, 4L), OreDictionaryUnifier.get(OrePrefix.ring, aMaterial, 1), Materials.SolderingAlloy.getMolten(16), OreDictionaryUnifier.get(OrePrefix.rotor, aMaterial, 1), 240, 24);
                     GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.stickLong, aMaterial, 1), tBits,
                             new Object[]{"sf", "G ", Character.valueOf('G'), OrePrefix.gemFlawless.get(aMaterial)});
                     GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.stickLong, aMaterial, 2L), tBits,
@@ -547,7 +510,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 //                        new Object[]{"h", "X", Character.valueOf('X'), OrePrefix.gemFlawless.get(aMaterial)});
 //                GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gemFlawless, aMaterial, 2L), tBits,
 //                        new Object[]{"h", "X", Character.valueOf('X'), OrePrefix.gemExquisite.get(aMaterial)});
-//                if ((aMaterial.contains(SubTag.MORTAR_GRINDABLE)) && (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, aMaterial.mName, true))) {
+//                if ((aMaterial.contains(SubTag.MORTAR_GRINDABLE)) && (GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.mortar, aMaterial.mName, true))) {
 //                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dustSmall, aMaterial, 1), tBits,
 //                            new Object[]{"X", "m", Character.valueOf('X'), OrePrefix.gemChipped.get(aMaterial)});
 //                    GT_ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dustSmall, aMaterial, 2L), tBits,
@@ -580,10 +543,10 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             }
         }
         try {
-            for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
-                for (; i < GregTech_API.METATILEENTITIES.length; i++) {
-                    if (GregTech_API.METATILEENTITIES[i] != null) {
-                        GregTech_API.METATILEENTITIES[i].onServerStart();
+            for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
+                for (; i < GregTechAPI.METATILEENTITIES.length; i++) {
+                    if (GregTechAPI.METATILEENTITIES[i] != null) {
+                        GregTechAPI.METATILEENTITIES[i].onServerStart();
                     }
                 }
             }
@@ -619,13 +582,13 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     public void onServerStopping() {
         File tSaveDirectory = getSaveDirectory();
-        GregTech_API.sWirelessRedstone.clear();
+        GregTechAPI.sWirelessRedstone.clear();
         if (tSaveDirectory != null) {
             try {
-                for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
-                    for (; i < GregTech_API.METATILEENTITIES.length; i++) {
-                        if (GregTech_API.METATILEENTITIES[i] != null) {
-                            GregTech_API.METATILEENTITIES[i].onWorldSave(tSaveDirectory);
+                for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
+                    for (; i < GregTechAPI.METATILEENTITIES.length; i++) {
+                        if (GregTechAPI.METATILEENTITIES[i] != null) {
+                            GregTechAPI.METATILEENTITIES[i].onWorldSave(tSaveDirectory);
                         }
                     }
                 }
@@ -904,7 +867,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public void registerFluidContainer(ItemStack aFullContainer, ItemStack aEmptyContainer, Fluid rFluid, int aFluidAmount) {
         if ((aFullContainer != null) && (aEmptyContainer != null)
                 && (!FluidContainerRegistry.registerFluidContainer(new FluidStack(rFluid, aFluidAmount), aFullContainer, aEmptyContainer))) {
-            GT_Values.RA.addFluidCannerRecipe(aFullContainer, GT_Utility.getContainerItem(aFullContainer, false), null, new FluidStack(rFluid, aFluidAmount));
+            GTValues.RA.addFluidCannerRecipe(aFullContainer, GT_Utility.getContainerItem(aFullContainer, false), null, new FluidStack(rFluid, aFluidAmount));
         }
     }
 
@@ -913,8 +876,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     }
 
     public void registerUnificationEntries() {
-        GregTech_API.sUnification.mConfig.save();
-        GregTech_API.sUnification.mConfig.load();
+        GregTechAPI.sUnification.mConfig.save();
+        GregTechAPI.sUnification.mConfig.load();
         OreDictionaryUnifier.resetUnificationEntries();
         for (OreDictEventContainer tOre : this.mEvents) {
             if ((!(tOre.mEvent.getOre().getItem() instanceof GT_MetaGenerated_Item)) && (tOre.mPrefix != null) && (tOre.mPrefix.mIsUnificatable) && (tOre.mMaterial != null)) {
@@ -923,29 +886,29 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                     IRecipe
                     if (tOre.mModID.equalsIgnoreCase("enderio") && tOre.mPrefix == OrePrefix.ingot && tOre.mMaterial == Materials.DarkSteel) {
                         OreDictionaryUnifier.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
-                        OreDictionaryUnifier.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTech_API.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
+                        OreDictionaryUnifier.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTechAPI.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
                     } else if (tOre.mModID.equalsIgnoreCase("thermalfoundation") && tOre.mPrefix == OrePrefix.dust && tOre.mMaterial == Materials.Blizz) {
                         OreDictionaryUnifier.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
-                        OreDictionaryUnifier.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTech_API.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
+                        OreDictionaryUnifier.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTechAPI.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
                     } else if (tOre.mModID.equalsIgnoreCase("thermalfoundation") && tOre.mPrefix == OrePrefix.dust && tOre.mMaterial == Materials.Pyrotheum) {
                         OreDictionaryUnifier.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
-                        OreDictionaryUnifier.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTech_API.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
+                        OreDictionaryUnifier.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTechAPI.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
                     } else if (tOre.mModID.equalsIgnoreCase("rotarycraft") && tOre.mPrefix == OrePrefix.ingot && tOre.mMaterial == Materials.HSLA) {
                         OreDictionaryUnifier.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
-                        OreDictionaryUnifier.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTech_API.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
+                        OreDictionaryUnifier.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTechAPI.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
                     } else if (tOre.mModID.equalsIgnoreCase("appliedenergistics2") && tOre.mPrefix == OrePrefix.gem && tOre.mMaterial == Materials.CertusQuartz) {
                         OreDictionaryUnifier.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
-                        OreDictionaryUnifier.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTech_API.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
+                        OreDictionaryUnifier.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTechAPI.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
                     } else if (tOre.mModID.equalsIgnoreCase("appliedenergistics2") && tOre.mPrefix == OrePrefix.dust && tOre.mMaterial == Materials.CertusQuartz) {
                         OreDictionaryUnifier.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
-                        OreDictionaryUnifier.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTech_API.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
+                        OreDictionaryUnifier.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (GregTechAPI.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), true)), true);continue;
                     }
                 }
                 if (OreDictionaryUnifier.isBlacklisted(tOre.mEvent.getOre())) {
                     OreDictionaryUnifier.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), true);
                 } else {
                     OreDictionaryUnifier.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
-                    OreDictionaryUnifier.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (chkmi) && (GregTech_API.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), false)), true);
+                    OreDictionaryUnifier.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (chkmi) && (GregTechAPI.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID).toString(), tOre.mEvent.getName(), false)), true);
                 }
             }
         }
@@ -957,12 +920,12 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 } else {
                     OreDictionaryUnifier.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), false);
                     OreDictionaryUnifier.set(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.getOre(), (tOre.mModID != null) &&
-                            (GregTech_API.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID), tOre.mEvent.getName(), false)), true);
+                            (GregTechAPI.sUnification.get(new StringBuilder().append(ConfigCategories.specialunificationtargets).append(".").append(tOre.mModID), tOre.mEvent.getName(), false)), true);
                 }
             }
         }
-        GregTech_API.sUnificationEntriesRegistered = true;
-        GregTech_API.sUnification.mConfig.save();
+        GregTechAPI.sUnificationEntriesRegistered = true;
+        GregTechAPI.sUnification.mConfig.save();
         GT_Recipe.reInit();
     }
 

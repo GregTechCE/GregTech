@@ -3,8 +3,8 @@ package gregtech.api.items.metaitem;
 import com.google.common.collect.ImmutableList;
 import gnu.trove.map.TShortObjectMap;
 import gnu.trove.map.hash.TShortObjectHashMap;
-import gregtech.api.GT_Values;
-import gregtech.api.GregTech_API;
+import gregtech.api.GTValues;
+import gregtech.api.GregTechAPI;
 import gregtech.api.items.OreDictNames;
 import gregtech.api.items.metaitem.stats.*;
 import gregtech.api.unification.OreDictionaryUnifier;
@@ -69,7 +69,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     public MetaItem(short metaItemOffset) {
         setUnlocalizedName("invalid"); //default unlocalized name is invalid
         setHasSubtypes(true);
-        setCreativeTab(GregTech_API.TAB_GREGTECH);
+        setCreativeTab(GregTechAPI.TAB_GREGTECH);
         this.metaItemOffset = metaItemOffset;
     }
 
@@ -434,7 +434,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             lines.add(I18n.format("metaitem.generic.electric_item.tooltip",
                     (long) electricStats.getCharge(itemStack),
                     (long) electricStats.getMaxCharge(itemStack),
-                    GT_Values.V[electricStats.getTier(itemStack)]));
+                    GTValues.V[electricStats.getTier(itemStack)]));
         }
         if(getCapacity(itemStack) > 0) {
             FluidStack fluid = getFluid(itemStack);

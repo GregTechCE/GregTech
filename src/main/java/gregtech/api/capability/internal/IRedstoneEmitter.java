@@ -11,9 +11,6 @@ public interface IRedstoneEmitter extends IHasWorldObjectAndCoords, IRedstoneTil
 
     void setOutputRedstoneSignal(EnumFacing side, int strength);
 
-    /**
-     * Gets the Output for the comparator on the given Side
-     */
-    int getComparatorValue(EnumFacing side);
+    int getComparatorValue();
 
 }

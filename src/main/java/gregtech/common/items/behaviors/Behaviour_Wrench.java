@@ -1,6 +1,6 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import ic2.api.tile.IWrenchable;
@@ -44,14 +44,14 @@ public class Behaviour_Wrench
                         aWorld.setBlockToAir(blockPos);
                         aWorld.removeTileEntity(blockPos);
                         ((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts);
-                        GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(100), 1.0F, -1.0F, blockPos);
+                        GT_Utility.sendSoundToPlayers(aWorld, GregTechAPI.sSoundList.get(100), 1.0F, -1.0F, blockPos);
                         return true;
                     }
                 } else {
                     if (wrenchable.getFacing(aWorld, blockPos) != aSide) {
                         if (wrenchable.setFacing(aWorld, blockPos, aSide, aPlayer)) {
                             ((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts);
-                            GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(100), 1.0F, -1.0F, blockPos);
+                            GT_Utility.sendSoundToPlayers(aWorld, GregTechAPI.sSoundList.get(100), 1.0F, -1.0F, blockPos);
                             return true;
                         }
                     }

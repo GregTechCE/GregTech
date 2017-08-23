@@ -1,6 +1,6 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.util.GT_LanguageManager;
@@ -48,7 +48,7 @@ public class Behaviour_Plunger_Item
                                     tEntity.motionY = 0.0D;
                                     tEntity.motionZ = 0.0D;
                                     aWorld.spawnEntityInWorld(tEntity);
-                                    GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(101), 1.0F, -1.0F, blockPos);
+                                    GT_Utility.sendSoundToPlayers(aWorld, GregTechAPI.sSoundList.get(101), 1.0F, -1.0F, blockPos);
                                 }
                                 return true;
                             }

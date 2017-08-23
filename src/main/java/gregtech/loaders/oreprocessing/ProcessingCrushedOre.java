@@ -54,7 +54,7 @@ public class ProcessingCrushedOre implements IOreRegistrationHandler {
 									.EUt(16)
 									.buildAndRegister();
 							//TODO Magneticraft
-							//if(GT_Mod.gregtechproxy.mMagneticraftRecipes && GregTech_API.mMagneticraft){
+							//if(GT_Mod.gregtechproxy.mMagneticraftRecipes && GregTechAPI.mMagneticraft){
 								//com.cout970.magneticraft.api.access.MgRecipeRegister.registerSifterRecipe(OreDictionaryUnifier.get(OrePrefixes.crushedPurified, uEntry.material, tGem, 1), OreDictionaryUnifier.get(OrePrefixes.gem, uEntry.material, tGem, 1), OreDictionaryUnifier.get(OrePrefixes.dust, uEntry.material, tGem, 1), 0.2f);
 							//}
 							break;
@@ -70,7 +70,7 @@ public class ProcessingCrushedOre implements IOreRegistrationHandler {
 									.EUt(16)
 									.buildAndRegister();
 							//TODO Magneticraft
-							//if(GT_Mod.gregtechproxy.mMagneticraftRecipes && GregTech_API.mMagneticraft){
+							//if(GT_Mod.gregtechproxy.mMagneticraftRecipes && GregTechAPI.mMagneticraft){
 								//com.cout970.magneticraft.api.access.MgRecipeRegister.registerSifterRecipe(OreDictionaryUnifier.get(OrePrefixes.crushedPurified, uEntry.material, tGem, 1), OreDictionaryUnifier.get(OrePrefixes.gem, uEntry.material, tGem, 1), OreDictionaryUnifier.get(OrePrefixes.dust, uEntry.material, tGem, 1), 0.2f);
 							//}
 					}

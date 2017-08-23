@@ -2,13 +2,12 @@ package gregtech.api.items.materialitem;
 
 import com.google.common.base.Preconditions;
 import gnu.trove.list.array.TShortArrayList;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.damagesources.DamageSources;
 import gregtech.api.items.metaitem.StandardMetaItem;
 import gregtech.api.unification.material.type.MarkerMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
-import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.creativetab.CreativeTabs;
@@ -69,18 +68,18 @@ public class MaterialMetaItem extends StandardMetaItem {
     @Override
     public CreativeTabs[] getCreativeTabs() {
         return new CreativeTabs[] {
-                GregTech_API.TAB_GREGTECH,
-                GregTech_API.TAB_GREGTECH_MATERIALS
+                GregTechAPI.TAB_GREGTECH,
+                GregTechAPI.TAB_GREGTECH_MATERIALS
         };
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
-        if(tab == GregTech_API.TAB_GREGTECH) {
+        if(tab == GregTechAPI.TAB_GREGTECH) {
             super.getSubItems(itemIn, tab, subItems);
         }
-        if(tab == GregTech_API.TAB_GREGTECH_MATERIALS) {
+        if(tab == GregTechAPI.TAB_GREGTECH_MATERIALS) {
             for(short metadata : generatedItems.toArray()) {
                 subItems.add(new ItemStack(this, 1, metadata));
             }

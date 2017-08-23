@@ -1,9 +1,8 @@
 package gregtech.common.blocks;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.unification.material.type.*;
 import gregtech.common.blocks.properties.PropertyMaterial;
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.state.BlockStateContainer;
@@ -28,7 +27,7 @@ public final class BlockCompressed extends DelayedStateBlock {
         super(net.minecraft.block.material.Material.IRON);
         setHardness(5.0f);
         setResistance(10.0f);
-        setCreativeTab(GregTech_API.TAB_GREGTECH_MATERIALS);
+        setCreativeTab(GregTechAPI.TAB_GREGTECH_MATERIALS);
         this.variantProperty = PropertyMaterial.create("variant", materials);
         initBlockState();
     }

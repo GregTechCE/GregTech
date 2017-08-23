@@ -1,6 +1,6 @@
 package gregtech.api.metatileentity;
 
-import gregtech.api.GT_Values;
+import gregtech.api.GTValues;
 
 public abstract class TieredMetaTileEntity extends EnergyMetaTileEntity {
 
@@ -13,12 +13,12 @@ public abstract class TieredMetaTileEntity extends EnergyMetaTileEntity {
 
     @Override
     public long getOutputVoltage() {
-        return GT_Values.V[this.tier];
+        return GTValues.V[this.tier];
     }
 
     @Override
     public long getInputVoltage() {
-        return GT_Values.V[this.tier];
+        return GTValues.V[this.tier];
     }
 
 }

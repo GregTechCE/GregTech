@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.unification.ore.OrePrefix;
 import net.minecraft.block.material.Material;
@@ -52,7 +52,7 @@ public class ToolAxe extends ToolBase {
     @Override
     public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops) {
         int rAmount = 0;
-        if (GregTech_API.sTimber && !harvester.isSneaking() && OrePrefix.log.contains(getBlockStack(blockState))) {
+        if (GregTechAPI.sTimber && !harvester.isSneaking() && OrePrefix.log.contains(getBlockStack(blockState))) {
             int tY = blockPos.getY() + 1;
             for (int tH = harvester.worldObj.getHeight(); tY < tH; tY++) {
                 BlockPos block = new BlockPos(blockPos.getX(), tY, blockPos.getZ());

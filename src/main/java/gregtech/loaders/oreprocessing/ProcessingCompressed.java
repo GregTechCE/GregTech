@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeRegistrator;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
@@ -18,7 +18,7 @@ public class ProcessingCompressed implements IOreRegistrationHandler {
     public void registerOre(UnificationEntry uEntry, String modName, SimpleItemStack simpleStack) {
         ItemStack stack = simpleStack.asItemStack();
         ModHandler.removeRecipeByOutput(stack);
-        GregTech_API.registerCover(stack, new GT_RenderedTexture(uEntry.material.mIconSet.mTextures[72], uEntry.material.materialRGB), null);
+        GregTechAPI.registerCover(stack, new GT_RenderedTexture(uEntry.material.mIconSet.mTextures[72], uEntry.material.materialRGB), null);
         RecipeRegistrator.registerUsagesForMaterials(GT_Utility.copyAmount(1, stack), null, false);
     }
 }

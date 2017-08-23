@@ -1,6 +1,6 @@
 package gregtech.common.blocks;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.StoneType;
 import net.minecraft.block.Block;
@@ -27,7 +27,7 @@ public class BlockOre extends Block {
         setSoundType(SoundType.STONE);
         setHardness(3.0f);
         setResistance(5.0f);
-        setCreativeTab(GregTech_API.TAB_GREGTECH_MATERIALS);
+        setCreativeTab(GregTechAPI.TAB_GREGTECH_MATERIALS);
         this.material = material;
     }
 

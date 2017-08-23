@@ -1,7 +1,7 @@
 package gregtech.common.items;
 
 import gregtech.api.ConfigCategories;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.items.ItemList;
 import gregtech.api.items.OreDictNames;
 import gregtech.api.items.materialitem.MaterialMetaItem;
@@ -715,7 +715,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				"IAI",
 				"ADA",
 				"IAI",
-				'D', GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "iridiumplate", true) ? OreDictNames.craftingIndustrialDiamond : new UnificationEntry(OrePrefix.dust, Materials.Diamond),
+				'D', GregTechAPI.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "iridiumplate", true) ? OreDictNames.craftingIndustrialDiamond : new UnificationEntry(OrePrefix.dust, Materials.Diamond),
 				'A', OrePrefix.plateAlloy.name() + "Advanced",
 				'I', new UnificationEntry(OrePrefix.plate, Materials.Iridium));
 
@@ -724,7 +724,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				"IAI",
 				"ADA",
 				"IAI",
-				'D', GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "iridiumplate", true) ? OreDictNames.craftingIndustrialDiamond : new UnificationEntry(OrePrefix.dust, Materials.Diamond),
+				'D', GregTechAPI.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "iridiumplate", true) ? OreDictNames.craftingIndustrialDiamond : new UnificationEntry(OrePrefix.dust, Materials.Diamond),
 				'A', OrePrefix.plateAlloy.name() + "Advanced",
 				'I', new UnificationEntry(OrePrefix.plate, Materials.Iridium));
 

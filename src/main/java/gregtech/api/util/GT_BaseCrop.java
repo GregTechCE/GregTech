@@ -1,6 +1,6 @@
 package gregtech.api.util;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.ConfigCategories;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
@@ -18,7 +18,7 @@ import net.minecraft.util.ResourceLocation;
 import java.util.ArrayList;
 import java.util.List;
 
-import static gregtech.api.GT_Values.E;
+import static gregtech.api.GTValues.E;
 
 public class GT_BaseCrop extends CropCard {
 
@@ -79,7 +79,7 @@ public class GT_BaseCrop extends CropCard {
             mGrowthSpeed = aGrowthSpeed;
             mAttributes = aAttributes;
             mBlock = aBlock;
-            if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.crops, aCropName, true)) {
+            if (GregTechAPI.sRecipeFile.get(ConfigCategories.Recipes.crops, aCropName, true)) {
                 GT_LanguageManager.addStringLocalization(getUnlocalizedName(), aCropName);
                 Crops.instance.registerCrop(this);
                 if (aBaseSeed != null) Crops.instance.registerBaseSeed(aBaseSeed, this, 1, 1, 1, 1);

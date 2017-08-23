@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.common.items.behaviors.Behaviour_Screwdriver;
@@ -56,12 +56,12 @@ public class ToolSolderingIron extends ToolBase {
 
     @Override
     public ResourceLocation getCraftingSound(ItemStack stack) {
-        return GregTech_API.sSoundList.get(100);
+        return GregTechAPI.sSoundList.get(100);
     }
 
     @Override
     public ResourceLocation getBreakingSound(ItemStack stack) {
-        return GregTech_API.sSoundList.get(0);
+        return GregTechAPI.sSoundList.get(0);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package gregtech.loaders.preload;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.items.ItemList;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
@@ -152,12 +152,12 @@ public class GT_Loader_OreDictionary
         OreDictionaryUnifier.registerOre(OreDictNames.craftingRedstoneTorch, new ItemStack(Blocks.UNLIT_REDSTONE_TORCH, 1, 32767));
 
         OreDictionaryUnifier.registerOre(OreDictNames.craftingWorkBench, new ItemStack(Blocks.CRAFTING_TABLE, 1));
-        OreDictionaryUnifier.registerOre(OreDictNames.craftingWorkBench, new ItemStack(GregTech_API.sBlockMachines, 1, 16));
+        OreDictionaryUnifier.registerOre(OreDictNames.craftingWorkBench, new ItemStack(GregTechAPI.sBlockMachines, 1, 16));
 
         OreDictionaryUnifier.registerOre(OreDictNames.craftingPiston, new ItemStack(Blocks.PISTON, 1, 32767));
         OreDictionaryUnifier.registerOre(OreDictNames.craftingPiston, new ItemStack(Blocks.STICKY_PISTON, 1, 32767));
 
-        OreDictionaryUnifier.registerOre(OreDictNames.craftingSafe, new ItemStack(GregTech_API.sBlockMachines, 1, 45));
+        OreDictionaryUnifier.registerOre(OreDictNames.craftingSafe, new ItemStack(GregTechAPI.sBlockMachines, 1, 45));
         OreDictionaryUnifier.registerOre(OreDictNames.craftingSafe, GT_ModHandler.getIC2TEItem(TeBlock.personal_chest, 1));
 
         OreDictionaryUnifier.registerOre(OreDictNames.craftingChest, new ItemStack(Blocks.CHEST, 1, 32767));
@@ -171,27 +171,27 @@ public class GT_Loader_OreDictionary
         OreDictionaryUnifier.registerOre(OreDictNames.craftingTeleporter, GT_ModHandler.getIC2TEItem(TeBlock.teleporter, 1));
 
         OreDictionaryUnifier.registerOre(OreDictNames.craftingMacerator, GT_ModHandler.getIC2TEItem(TeBlock.macerator, 1));
-        OreDictionaryUnifier.registerOre(OreDictNames.craftingMacerator, new ItemStack(GregTech_API.sBlockMachines, 1, 50));
+        OreDictionaryUnifier.registerOre(OreDictNames.craftingMacerator, new ItemStack(GregTechAPI.sBlockMachines, 1, 50));
 
 
         OreDictionaryUnifier.registerOre(OreDictNames.craftingExtractor, GT_ModHandler.getIC2TEItem(TeBlock.extractor, 1));
-        OreDictionaryUnifier.registerOre(OreDictNames.craftingExtractor, new ItemStack(GregTech_API.sBlockMachines, 1, 51));
+        OreDictionaryUnifier.registerOre(OreDictNames.craftingExtractor, new ItemStack(GregTechAPI.sBlockMachines, 1, 51));
 
         OreDictionaryUnifier.registerOre(OreDictNames.craftingCompressor, GT_ModHandler.getIC2TEItem(TeBlock.compressor, 1));
-        OreDictionaryUnifier.registerOre(OreDictNames.craftingCompressor, new ItemStack(GregTech_API.sBlockMachines, 1, 52));
+        OreDictionaryUnifier.registerOre(OreDictNames.craftingCompressor, new ItemStack(GregTechAPI.sBlockMachines, 1, 52));
 
         OreDictionaryUnifier.registerOre(OreDictNames.craftingRecycler, GT_ModHandler.getIC2TEItem(TeBlock.recycler, 1));
-        OreDictionaryUnifier.registerOre(OreDictNames.craftingRecycler, new ItemStack(GregTech_API.sBlockMachines, 1, 53));
+        OreDictionaryUnifier.registerOre(OreDictNames.craftingRecycler, new ItemStack(GregTechAPI.sBlockMachines, 1, 53));
 
         OreDictionaryUnifier.registerOre(OreDictNames.craftingIronFurnace, GT_ModHandler.getIC2TEItem(TeBlock.iron_furnace, 1));
 
-        OreDictionaryUnifier.registerOre(OreDictNames.craftingCentrifuge, new ItemStack(GregTech_API.sBlockMachines, 1, 62));
+        OreDictionaryUnifier.registerOre(OreDictNames.craftingCentrifuge, new ItemStack(GregTechAPI.sBlockMachines, 1, 62));
 
         OreDictionaryUnifier.registerOre(OreDictNames.craftingInductionFurnace, GT_ModHandler.getIC2TEItem(TeBlock.induction_furnace, 1));
 
 
         OreDictionaryUnifier.registerOre(OreDictNames.craftingElectricFurnace, GT_ModHandler.getIC2TEItem(TeBlock.electric_furnace, 1));
-        OreDictionaryUnifier.registerOre(OreDictNames.craftingElectricFurnace, new ItemStack(GregTech_API.sBlockMachines, 1, 54));
+        OreDictionaryUnifier.registerOre(OreDictNames.craftingElectricFurnace, new ItemStack(GregTechAPI.sBlockMachines, 1, 54));
 
         OreDictionaryUnifier.registerOre(OreDictNames.craftingGenerator, GT_ModHandler.getIC2TEItem(TeBlock.generator, 1));
 

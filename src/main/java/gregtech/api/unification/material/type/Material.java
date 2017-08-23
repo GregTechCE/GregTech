@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 
-import static gregtech.api.GT_Values.M;
+import static gregtech.api.GTValues.M;
 
 public abstract class Material implements Comparable<Material> {
 

@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.type.DustMaterial;
@@ -26,6 +26,6 @@ public class ProcessingFoil implements IOreRegistrationHandler {
                     .EUt(24)
                     .buildAndRegister();
         }
-        GregTech_API.registerCover(stack, new GT_RenderedTexture(uEntry.material.mIconSet.mTextures[70], uEntry.material.materialRGB), null);
+        GregTechAPI.registerCover(stack, new GT_RenderedTexture(uEntry.material.mIconSet.mTextures[70], uEntry.material.materialRGB), null);
     }
 }

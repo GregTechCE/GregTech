@@ -1,7 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
 import gregtech.api.ConfigCategories;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.items.ItemList;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
@@ -50,7 +50,7 @@ public class ProcessingBlock implements IOreRegistrationHandler {
                     .EUt(8)
                     .buildAndRegister();
         }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.storageblockcrafting, OreDictionaryUnifier.get(OrePrefix.block, uEntry.material).toString(), false)) {
+        if (GregTechAPI.sRecipeFile.get(ConfigCategories.Recipes.storageblockcrafting, OreDictionaryUnifier.get(OrePrefix.block, uEntry.material).toString(), false)) {
             if ((ingotStack == null) && (gemStack == null) && (dustStack != null))
                 ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.block, uEntry.material, 1), "XXX", "XXX", "XXX", 'X', OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material));
             if (gemStack != null)
@@ -70,7 +70,7 @@ public class ProcessingBlock implements IOreRegistrationHandler {
                 .EUt(24)
                 .buildAndRegister();
 
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.storageblockdecrafting, OreDictionaryUnifier.get(OrePrefix.block, uEntry.material).toString(), gemStack != null)) {
+        if (GregTechAPI.sRecipeFile.get(ConfigCategories.Recipes.storageblockdecrafting, OreDictionaryUnifier.get(OrePrefix.block, uEntry.material).toString(), gemStack != null)) {
             if (dustStack != null)
                 ModHandler.addShapelessCraftingRecipe(dustStack, OreDictionaryUnifier.get(OrePrefix.block, uEntry.material));
             if (gemStack != null)

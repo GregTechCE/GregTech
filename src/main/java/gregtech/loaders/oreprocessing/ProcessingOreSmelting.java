@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.GT_Values;
+import gregtech.api.GTValues;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.type.DustMaterial;
@@ -27,7 +27,7 @@ public class ProcessingOreSmelting implements IOreRegistrationHandler {
         ModHandler.removeFurnaceSmelting(stack);
         if (!uEntry.material.hasFlag(DustMaterial.MatFlags.NO_SMELTING)) {
             if ((uEntry.material.mBlastFurnaceRequired) || (uEntry.material.mDirectSmelting.mBlastFurnaceRequired)) {
-                GT_Values.RA.addBlastRecipe(GT_Utility.copyAmount(1, stack), null, null, null, uEntry.material.mBlastFurnaceTemp > 1750 ? OreDictionaryUnifier.get(OrePrefix.ingotHot, uEntry.material, OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material, 1), 1) : OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material, 1), null, (int) Math.max(uEntry.material.getMass() / 4L, 1L) * uEntry.material.mBlastFurnaceTemp, 120, uEntry.material.mBlastFurnaceTemp);
+                GTValues.RA.addBlastRecipe(GT_Utility.copyAmount(1, stack), null, null, null, uEntry.material.mBlastFurnaceTemp > 1750 ? OreDictionaryUnifier.get(OrePrefix.ingotHot, uEntry.material, OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material, 1), 1) : OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material, 1), null, (int) Math.max(uEntry.material.getMass() / 4L, 1L) * uEntry.material.mBlastFurnaceTemp, 120, uEntry.material.mBlastFurnaceTemp);
                 if (uEntry.material.mBlastFurnaceTemp <= 1000)
                     ModHandler.addRCBlastFurnaceRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material, 1), uEntry.material.mBlastFurnaceTemp * 2);
             } else {

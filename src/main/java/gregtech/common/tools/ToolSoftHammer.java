@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.common.items.behaviors.Behaviour_SoftHammer;
@@ -41,17 +41,17 @@ public class ToolSoftHammer extends ToolBase {
 
     @Override
     public ResourceLocation getCraftingSound(ItemStack stack) {
-        return GregTech_API.sSoundList.get(101);
+        return GregTechAPI.sSoundList.get(101);
     }
 
     @Override
     public ResourceLocation getEntityHitSound(ItemStack stack) {
-        return GregTech_API.sSoundList.get(101);
+        return GregTechAPI.sSoundList.get(101);
     }
 
     @Override
     public ResourceLocation getMiningSound(ItemStack stack) {
-        return GregTech_API.sSoundList.get(101);
+        return GregTechAPI.sSoundList.get(101);
     }
 
     @Override

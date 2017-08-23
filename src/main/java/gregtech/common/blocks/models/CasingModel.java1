@@ -2,7 +2,7 @@ package gregtech.common.blocks.models;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableSet;
-import gregtech.api.GT_Values;
+import gregtech.api.GTValues;
 import gregtech.api.model.AbstractBakedModel;
 import gregtech.common.blocks.BlockCasings4;
 import gregtech.common.blocks.properties.UnlistedBlockAccess;
@@ -35,8 +35,8 @@ import java.util.List;
 
 public class CasingModel implements IModel {
 
-	public static final ModelResourceLocation BAKED_CASING_MODEL = new ModelResourceLocation(new ResourceLocation(GT_Values.MODID, "fusion_casing"), "normal");
-	public static final ModelResourceLocation BAKED_CASING_MK2_MODEL = new ModelResourceLocation(new ResourceLocation(GT_Values.MODID, "fusion_casing_mk2"), "normal");
+	public static final ModelResourceLocation BAKED_CASING_MODEL = new ModelResourceLocation(new ResourceLocation(GTValues.MODID, "fusion_casing"), "normal");
+	public static final ModelResourceLocation BAKED_CASING_MK2_MODEL = new ModelResourceLocation(new ResourceLocation(GTValues.MODID, "fusion_casing_mk2"), "normal");
 
 	public static final IModel CASING_MODEL = create("blocks/iconsets/FUSIONI_", 12);
 	public static final IModel CASING_MK2_MODEL = create("blocks/iconsets/FUSIONII_", 12);
@@ -44,7 +44,7 @@ public class CasingModel implements IModel {
 	private static IModel create(String prefix, int amount) {
 		List<ResourceLocation> textures = new ArrayList<>(amount);
 		for (int i = 0; i < amount; i++) {
-			textures.add(i, new ResourceLocation(GT_Values.MODID, prefix + (i + 1)));
+			textures.add(i, new ResourceLocation(GTValues.MODID, prefix + (i + 1)));
 		}
 		return new CasingModel(textures);
 	}
@@ -84,7 +84,7 @@ public class CasingModel implements IModel {
 
 		@Override
 		public boolean accepts(ResourceLocation modelLocation) {
-			return modelLocation.getResourceDomain().equals(GT_Values.MODID)
+			return modelLocation.getResourceDomain().equals(GTValues.MODID)
 					&& ("fusion_casing".equals(modelLocation.getResourcePath())
 					|| "fusion_casing_mk2".equals(modelLocation.getResourcePath()));
 		}

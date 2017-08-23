@@ -1,7 +1,7 @@
 package gregtech.common.tools;
 
 import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.unification.ore.OrePrefix;
 import net.minecraft.block.Block;
@@ -48,17 +48,17 @@ public class ToolChainsawLV extends ToolSaw {
 
     @Override
     public ResourceLocation getCraftingSound(ItemStack stack) {
-        return GregTech_API.sSoundList.get(104);
+        return GregTechAPI.sSoundList.get(104);
     }
 
     @Override
     public ResourceLocation getEntityHitSound(ItemStack stack) {
-        return GregTech_API.sSoundList.get(105);
+        return GregTechAPI.sSoundList.get(105);
     }
 
     @Override
     public ResourceLocation getMiningSound(ItemStack stack) {
-        return GregTech_API.sSoundList.get(104);
+        return GregTechAPI.sSoundList.get(104);
     }
 
     @Override
@@ -109,7 +109,7 @@ public class ToolChainsawLV extends ToolSaw {
             aEvent.setDropChance(1.0F);
             return 1;
         }
-        if (GregTech_API.sTimber && !harvester.isSneaking() &&
+        if (GregTechAPI.sTimber && !harvester.isSneaking() &&
                 OrePrefix.log.contains(getBlockStack(blockState))) {
             for (int y = 0; y < harvester.worldObj.getHeight() - blockPos.up().getY(); y++) {
                 BlockPos block = blockPos.up(y);

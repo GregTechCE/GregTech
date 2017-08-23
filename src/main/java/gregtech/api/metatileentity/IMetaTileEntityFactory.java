@@ -1,6 +1,7 @@
 package gregtech.api.metatileentity;
 
 import gregtech.api.util.GT_Config;
+import gregtech.common.blocks.BlockMachine;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -11,15 +12,11 @@ import java.io.File;
 
 public interface IMetaTileEntityFactory {
 
-    /**
-     * This determines the BaseMetaTileEntity belonging to this MetaTileEntity by using the Meta ID of the Block itself.
-     *
-     * 0 = BaseMetaTileEntity, Wrench lvl 0 to dismantle
-     * 1 = BaseMetaTileEntity, Wrench lvl 1 to dismantle
-     * 2 = BaseMetaTileEntity, Wrench lvl 2 to dismantle
-     * 3 = BaseMetaTileEntity, Wrench lvl 3 to dismantle
-     */
-    byte getTileEntityBaseType();
+    BlockMachine.ToolClass getHarvestTool();
+    int getHarvestLevel();
+
+    String getMetaName();
+    String getUnlocalizedName();
 
     ResourceLocation getModelLocation();
 

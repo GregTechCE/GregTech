@@ -3,7 +3,6 @@ package gregtech.api.unification;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
-import gregtech.api.items.OreDictNames;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.GemMaterial;
 import gregtech.api.unification.material.type.Material;
@@ -25,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 
-import static gregtech.api.GT_Values.M;
+import static gregtech.api.GTValues.M;
 
 public class OreDictionaryUnifier {
 

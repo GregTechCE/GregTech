@@ -2,7 +2,7 @@ package gregtech.loaders.preload;
 
 import gregtech.GT_Mod;
 import gregtech.api.ConfigCategories;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.unification.Dyes;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
@@ -14,7 +14,6 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.*;
 import gregtech.common.blocks.BlockGeneratedOres;
 import gregtech.common.items.*;
 import gregtech.common.items.armor.ElectricModularArmor1;
@@ -95,25 +94,25 @@ public class GT_Loader_Item_Block_And_Fluid
         GT_ModHandler.addCraftingRecipe(ItemList.Neutron_Reflector.get(1), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"RRR", "RPR", "RRR", 'R', GT_ModHandler.getIC2Item(ItemName.thick_neutron_reflector, 1), 'P', OrePrefix.plateAlloy.get(Materials.Iridium)});
         GT_ModHandler.addCraftingRecipe(ItemList.Neutron_Reflector.get(1), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"RBR", "RPR", "RBR", 'R', GT_ModHandler.getIC2Item(ItemName.thick_neutron_reflector, 1), 'P', OrePrefix.plateAlloy.get(Materials.Iridium),'B', OrePrefix.plate.get(Materials.TungstenCarbide)});
 
-        ItemList.Reactor_Coolant_He_1.set(GregTech_API.constructCoolantCellItem("60k_Helium_Coolantcell", "60k He Coolant Cell", 60000));
+        ItemList.Reactor_Coolant_He_1.set(GregTechAPI.constructCoolantCellItem("60k_Helium_Coolantcell", "60k He Coolant Cell", 60000));
         GT_ModHandler.addCraftingRecipe(ItemList.Reactor_Coolant_He_1.get(1), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{" P ", "PCP", " P ", 'C', OrePrefix.cell.get(Materials.Helium), 'P', OrePrefix.plate.get(Materials.Tin)});
 
-        ItemList.Reactor_Coolant_He_3.set(GregTech_API.constructCoolantCellItem("180k_Helium_Coolantcell", "180k He Coolant Cell", 180000));
+        ItemList.Reactor_Coolant_He_3.set(GregTechAPI.constructCoolantCellItem("180k_Helium_Coolantcell", "180k He Coolant Cell", 180000));
         GT_ModHandler.addCraftingRecipe(ItemList.Reactor_Coolant_He_3.get(1), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"PCP", "PCP", "PCP", 'C', ItemList.Reactor_Coolant_He_1, 'P', OrePrefix.plate.get(Materials.Tin)});
 
-        ItemList.Reactor_Coolant_He_6.set(GregTech_API.constructCoolantCellItem("360k_Helium_Coolantcell", "360k He Coolant Cell", 360000));
+        ItemList.Reactor_Coolant_He_6.set(GregTechAPI.constructCoolantCellItem("360k_Helium_Coolantcell", "360k He Coolant Cell", 360000));
         GT_ModHandler.addCraftingRecipe(ItemList.Reactor_Coolant_He_6.get(1), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"PCP", "PDP", "PCP", 'C', ItemList.Reactor_Coolant_He_3, 'P', OrePrefix.plate.get(Materials.Tin), 'D', OrePrefix.plateDense.get(Materials.Copper)});
 
-        ItemList.Reactor_Coolant_NaK_1.set(GregTech_API.constructCoolantCellItem("60k_NaK_Coolantcell", "60k NaK Coolantcell", 60000));
+        ItemList.Reactor_Coolant_NaK_1.set(GregTechAPI.constructCoolantCellItem("60k_NaK_Coolantcell", "60k NaK Coolantcell", 60000));
         GT_ModHandler.addCraftingRecipe(ItemList.Reactor_Coolant_NaK_1.get(1), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"TST", "PCP", "TST", 'C', GT_ModHandler.getIC2Item(ItemName.heat_vent, 1), 'T', OrePrefix.plate.get(Materials.Tin), 'S', OrePrefix.dust.get(Materials.Sodium), 'P', OrePrefix.dust.get(Materials.Potassium)});
 
-        ItemList.Reactor_Coolant_NaK_3.set(GregTech_API.constructCoolantCellItem("180k_NaK_Coolantcell", "180k NaK Coolantcell", 180000));
+        ItemList.Reactor_Coolant_NaK_3.set(GregTechAPI.constructCoolantCellItem("180k_NaK_Coolantcell", "180k NaK Coolantcell", 180000));
         GT_ModHandler.addCraftingRecipe(ItemList.Reactor_Coolant_NaK_3.get(1), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"PCP", "PCP", "PCP", 'C', ItemList.Reactor_Coolant_NaK_1, 'P', OrePrefix.plate.get(Materials.Tin)});
 
-        ItemList.Reactor_Coolant_NaK_6.set(GregTech_API.constructCoolantCellItem("360k_NaK_Coolantcell", "360k NaK Coolantcell", 360000));
+        ItemList.Reactor_Coolant_NaK_6.set(GregTechAPI.constructCoolantCellItem("360k_NaK_Coolantcell", "360k NaK Coolantcell", 360000));
         GT_ModHandler.addCraftingRecipe(ItemList.Reactor_Coolant_NaK_6.get(1), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"PCP", "PDP", "PCP", 'C', ItemList.Reactor_Coolant_NaK_3, 'P', OrePrefix.plate.get(Materials.Tin), 'D', OrePrefix.plateDense.get(Materials.Copper)});
 
-        if (!GregTech_API.mIC2Classic) {
+        if (!GregTechAPI.mIC2Classic) {
             ItemList.Depleted_Thorium_1.set(new GT_DepletetCell_Item("ThoriumcellDep", "Fuel Rod (Depleted Thorium)", 1));
             ItemList.Depleted_Thorium_2.set(new GT_DepletetCell_Item("Double_ThoriumcellDep", "Dual Fuel Rod (Depleted Thorium)", 1));
             ItemList.Depleted_Thorium_4.set(new GT_DepletetCell_Item("Quad_ThoriumcellDep", "Quad Fuel Rod (Depleted Thorium)", 1));
@@ -155,19 +154,19 @@ public class GT_Loader_Item_Block_And_Fluid
         }
 
         GTLog.out.println("GT_Mod: Adding Blocks.");
-        GregTech_API.sBlockMachines = new BlockMachines();
-        GregTech_API.sBlockCasings1 = new BlockCasings1();
-        GregTech_API.sBlockCasings2 = new BlockCasings2();
-        GregTech_API.sBlockCasings3 = new BlockCasings3();
-        GregTech_API.sBlockCasings4 = new BlockCasings4();
-        GregTech_API.sBlockCasings5 = new BlockCasings5();
-        GregTech_API.sBlockGranites = new BlockGranites();
-        GregTech_API.sBlockConcretes = new BlockConcretes();
-        GregTech_API.sBlockStones = new BlockStones();
-        GregTech_API.sBlockReinforced = new BlockReinforced();
+        GregTechAPI.sBlockMachines = new BlockMachines();
+        GregTechAPI.sBlockCasings1 = new BlockCasings1();
+        GregTechAPI.sBlockCasings2 = new BlockCasings2();
+        GregTechAPI.sBlockCasings3 = new BlockCasings3();
+        GregTechAPI.sBlockCasings4 = new BlockCasings4();
+        GregTechAPI.sBlockCasings5 = new BlockCasings5();
+        GregTechAPI.sBlockGranites = new BlockGranites();
+        GregTechAPI.sBlockConcretes = new BlockConcretes();
+        GregTechAPI.sBlockStones = new BlockStones();
+        GregTechAPI.sBlockReinforced = new BlockReinforced();
         BlockGeneratedOres.registerOreBlocks();
 
-        GregTech_API.sBlockMetal1 = BlockStorage.createStorageBlock("blockmetal1", new Materials[]{
+        GregTechAPI.sBlockMetal1 = BlockStorage.createStorageBlock("blockmetal1", new Materials[]{
                 Materials.Adamantium,
                 Materials.Aluminium,
                 Materials.Americium,
@@ -185,7 +184,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.BlueSteel,
                 Materials.Brass}, OrePrefix.block);
 
-        GregTech_API.sBlockMetal2 = BlockStorage.createStorageBlock("blockmetal2", new Materials[]{
+        GregTechAPI.sBlockMetal2 = BlockStorage.createStorageBlock("blockmetal2", new Materials[]{
                 Materials.Bronze,
                 Materials.Caesium,
                 Materials.Cerium,
@@ -204,7 +203,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.Electrum
         }, OrePrefix.block);
 
-        GregTech_API.sBlockMetal3 = BlockStorage.createStorageBlock("blockmetal3", new Materials[]{
+        GregTechAPI.sBlockMetal3 = BlockStorage.createStorageBlock("blockmetal3", new Materials[]{
                 Materials.ElectrumFlux,
                 Materials.Enderium,
                 Materials.Erbium,
@@ -223,7 +222,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.Kanthal
         }, OrePrefix.block);
 
-        GregTech_API.sBlockMetal4 = BlockStorage.createStorageBlock("blockmetal4", new Materials[]{
+        GregTechAPI.sBlockMetal4 = BlockStorage.createStorageBlock("blockmetal4", new Materials[]{
                 Materials.Knightmetal,
                 Materials.Lanthanum,
                 Materials.Lead,
@@ -242,7 +241,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.Naquadria
         }, OrePrefix.block);
 
-        GregTech_API.sBlockMetal5 = BlockStorage.createStorageBlock("blockmetal5", new Materials[]{
+        GregTechAPI.sBlockMetal5 = BlockStorage.createStorageBlock("blockmetal5", new Materials[]{
                 Materials.Neodymium,
                 Materials.NeodymiumMagnetic,
                 Materials.Neutronium,
@@ -261,7 +260,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.Praseodymium
         }, OrePrefix.block);
 
-        GregTech_API.sBlockMetal6 = BlockStorage.createStorageBlock("blockmetal6", new Materials[]{
+        GregTechAPI.sBlockMetal6 = BlockStorage.createStorageBlock("blockmetal6", new Materials[]{
                 Materials.Promethium,
                 Materials.RedAlloy,
                 Materials.RedSteel,
@@ -280,7 +279,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.SterlingSilver
         }, OrePrefix.block);
 
-        GregTech_API.sBlockMetal7 = BlockStorage.createStorageBlock("blockmetal7", new Materials[]{
+        GregTechAPI.sBlockMetal7 = BlockStorage.createStorageBlock("blockmetal7", new Materials[]{
                 Materials.Sunnarium,
                 Materials.Tantalum,
                 Materials.Tellurium,
@@ -299,7 +298,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.Uranium235
         }, OrePrefix.block);
 
-        GregTech_API.sBlockMetal8 = BlockStorage.createStorageBlock("blockmetal8", new Materials[]{
+        GregTechAPI.sBlockMetal8 = BlockStorage.createStorageBlock("blockmetal8", new Materials[]{
                 Materials.Vanadium,
                 Materials.VanadiumGallium,
                 Materials.WroughtIron,
@@ -314,7 +313,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.HSSS
         }, OrePrefix.block);
 
-        GregTech_API.sBlockGem1 = BlockStorage.createStorageBlock("blockgem1", new Materials[]{
+        GregTechAPI.sBlockGem1 = BlockStorage.createStorageBlock("blockgem1", new Materials[]{
                 Materials.InfusedAir,
                 Materials.Amber,
                 Materials.Amethyst,
@@ -333,7 +332,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.Jasper
         }, OrePrefix.block);
 
-        GregTech_API.sBlockGem2 = BlockStorage.createStorageBlock("blockgem2", new Materials[]{
+        GregTechAPI.sBlockGem2 = BlockStorage.createStorageBlock("blockgem2", new Materials[]{
                 Materials.Lazurite,
                 Materials.Lignite,
                 Materials.Monazite,
@@ -352,7 +351,7 @@ public class GT_Loader_Item_Block_And_Fluid
                 Materials.InfusedEarth
         }, OrePrefix.block);
 
-        GregTech_API.sBlockGem3 = BlockStorage.createStorageBlock("blockgem3", new Materials[]{
+        GregTechAPI.sBlockGem3 = BlockStorage.createStorageBlock("blockgem3", new Materials[]{
                 Materials.Topaz,
                 Materials.Vinteum,
                 Materials.GarnetYellow,
@@ -363,7 +362,7 @@ public class GT_Loader_Item_Block_And_Fluid
         GTLog.out.println("GT_Mod: Register TileEntities.");
 
 
-        BaseMetaTileEntity tBaseMetaTileEntity = GregTech_API.constructBaseMetaTileEntity();
+        BaseMetaTileEntity tBaseMetaTileEntity = GregTechAPI.constructBaseMetaTileEntity();
 
         GTLog.out.println("GT_Mod: Testing BaseMetaTileEntity.");
         if (tBaseMetaTileEntity == null) {
@@ -380,7 +379,7 @@ public class GT_Loader_Item_Block_And_Fluid
 
         GTLog.out.println("GT_Mod: Registering the Ore TileEntity.");
 
-        if (!GregTech_API.mIC2Classic) {
+        if (!GregTechAPI.mIC2Classic) {
             GTLog.out.println("GT_Mod: Registering Fluids.");
             Materials.ConstructionFoam.mFluid = FluidName.construction_foam.getInstance();
             Materials.UUMatter.mFluid = FluidName.uu_matter.getInstance();
@@ -668,25 +667,25 @@ public class GT_Loader_Item_Block_And_Fluid
         ItemList.ModularElectric2Leggings.set(new ElectricModularArmor1(EntityEquipmentSlot.LEGS, "modularelectric2_leggings",2, "Modular Electric Leggings (Tier 2)"));
         ItemList.ModularElectric2Boots.set(new ElectricModularArmor1(EntityEquipmentSlot.FEET, "modularelectric2_boots",2, "Modular Electric Boots (Tier 2)"));
 
-        if (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateIron", true)) {
+        if (GregTechAPI.sUnification.get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateIron", true)) {
             OreDictionaryUnifier.set(OrePrefix.plate, Materials.Iron, GT_ModHandler.getModItem("Railcraft", "part.plate", 1, 0));
         } else {
             OreDictionaryUnifier.set(OrePrefix.plate, Materials.Iron, GT_ModHandler.getModItem("Railcraft", "part.plate", 1, 0), false, false);
         }
 
-        if (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateSteel", true)) {
+        if (GregTechAPI.sUnification.get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateSteel", true)) {
             OreDictionaryUnifier.set(OrePrefix.plate, Materials.Steel, GT_ModHandler.getModItem("Railcraft", "part.plate", 1, 1));
         } else {
             OreDictionaryUnifier.set(OrePrefix.plate, Materials.Steel, GT_ModHandler.getModItem("Railcraft", "part.plate", 1, 1), false, false);
         }
 
-        if (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateTinAlloy", true)) {
+        if (GregTechAPI.sUnification.get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateTinAlloy", true)) {
             OreDictionaryUnifier.set(OrePrefix.plate, Materials.TinAlloy, GT_ModHandler.getModItem("Railcraft", "part.plate", 1, 2));
         } else {
             OreDictionaryUnifier.set(OrePrefix.plate, Materials.TinAlloy, GT_ModHandler.getModItem("Railcraft", "part.plate", 1, 2), false, false);
         }
 
-        if (GregTech_API.sUnification.get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateCopper", true)) {
+        if (GregTechAPI.sUnification.get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateCopper", true)) {
             OreDictionaryUnifier.set(OrePrefix.plate, Materials.Copper, GT_ModHandler.getModItem("Railcraft", "part.plate", 1, 3));
         } else {
             OreDictionaryUnifier.set(OrePrefix.plate, Materials.Copper, GT_ModHandler.getModItem("Railcraft", "part.plate", 1, 3), false, false);

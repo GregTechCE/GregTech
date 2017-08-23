@@ -1,6 +1,6 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.util.GT_LanguageManager;
@@ -42,7 +42,7 @@ public class Behaviour_Prospecting extends Behaviour_None {
         ItemMaterialInfo tAssotiation = OreDictionaryUnifier.getAssociation(new ItemStack(block, 1, blockMeta));
         if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {
             GT_Utility.sendChatToPlayer(aPlayer, "This is " + tAssotiation.mMaterial.mMaterial.mDefaultLocalName + " Ore.");
-            GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(1), 1.0F, -1.0F, blockPos);
+            GT_Utility.sendSoundToPlayers(aWorld, GregTechAPI.sSoundList.get(1), 1.0F, -1.0F, blockPos);
             return true;
         }
         if ((block.isReplaceableOreGen(blockState, aWorld, blockPos, state ->
@@ -50,7 +50,7 @@ public class Behaviour_Prospecting extends Behaviour_None {
                 state.getBlock() == Blocks.END_STONE ||
                 state.getBlock() == Blocks.NETHERRACK))) {
             if (GT_ModHandler.damageOrDechargeItem(aStack, this.mVanillaCosts, this.mEUCosts, aPlayer)) {
-                GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(1), 1.0F, -1.0F, blockPos);
+                GT_Utility.sendSoundToPlayers(aWorld, GregTechAPI.sSoundList.get(1), 1.0F, -1.0F, blockPos);
                 int tMetaID = 0;
                 int tQuality = (aItem instanceof GT_MetaGenerated_Tool) ? aItem.getHarvestLevel(aStack, "") : 0;
                 int scanRadius = 6 + tQuality;

@@ -2,7 +2,7 @@ package gregtech.api.metatileentity;
 
 import com.google.common.base.Preconditions;
 import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.capability.internal.ICustomDataTile;
 import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.net.NetworkHandler;
@@ -60,7 +60,7 @@ public class GregtechTileEntity extends TickableTileEntityBase implements IGregT
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         if(metaTileEntity != null) {
-            compound.setString("MetaTileEntityId", GregTech_API.METATILEENTITY_REGISTRY.getNameForObject(metaTileEntity.factory));
+            compound.setString("MetaTileEntityId", GregTechAPI.METATILEENTITY_REGISTRY.getNameForObject(metaTileEntity.factory));
             NBTTagCompound metaTileEntityTag = new NBTTagCompound();
             metaTileEntity.saveNBTData(metaTileEntityTag);
             compound.setTag("MetaTileEntity", metaTileEntityTag);
@@ -71,7 +71,7 @@ public class GregtechTileEntity extends TickableTileEntityBase implements IGregT
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         if(compound.hasKey("MetaTileEntityId", Constants.NBT.TAG_STRING)) {
-            IMetaTileEntityFactory factory = GregTech_API.METATILEENTITY_REGISTRY.getObject(compound.getString("MetaTileEntityId"));
+            IMetaTileEntityFactory factory = GregTechAPI.METATILEENTITY_REGISTRY.getObject(compound.getString("MetaTileEntityId"));
             this.metaTileEntity = (MetaTileEntity) factory.constructMetaTileEntity();
             NBTTagCompound metaTileEntityTag = compound.getCompoundTag("MetaTileEntity");
             metaTileEntity.loadNBTData(metaTileEntityTag);
@@ -84,7 +84,7 @@ public class GregtechTileEntity extends TickableTileEntityBase implements IGregT
         int dataId = buf.readInt();
         switch (dataId) {
             case 0:
-                IMetaTileEntityFactory factory = GregTech_API.METATILEENTITY_REGISTRY.getObjectById(buf.readShort());
+                IMetaTileEntityFactory factory = GregTechAPI.METATILEENTITY_REGISTRY.getObjectById(buf.readShort());
                 this.metaTileEntity = (MetaTileEntity) factory.constructMetaTileEntity();
                 this.metaTileEntity.receiveInitialData(buf);
                 break;
@@ -125,7 +125,7 @@ public class GregtechTileEntity extends TickableTileEntityBase implements IGregT
 
     private void writeInitialSyncData(PacketBuffer packetBuffer) {
         if(metaTileEntity != null) {
-            packetBuffer.writeShort(GregTech_API.METATILEENTITY_REGISTRY.getIDForObject(metaTileEntity.factory));
+            packetBuffer.writeShort(GregTechAPI.METATILEENTITY_REGISTRY.getIDForObject(metaTileEntity.factory));
             metaTileEntity.writeInitialData(packetBuffer);
         }
     }
@@ -379,8 +379,8 @@ public class GregtechTileEntity extends TickableTileEntityBase implements IGregT
     public void doExplosion(long strength) {
         if (metaTileEntity != null) {
             // This is only for Electric Machines
-//            if (GregTech_API.sMachineWireFire && metaTileEntity instanceof EnergyMetaTileEntity) {
-//                IEnergyConnected.Util.emitEnergyToNetwork(GT_Values.V[5], Math.max(1, ((EnergyMetaTileEntity) metaTileEntity).getEnergyStored() / GT_Values.V[5]), this);
+//            if (GregTechAPI.sMachineWireFire && metaTileEntity instanceof EnergyMetaTileEntity) {
+//                IEnergyConnected.Util.emitEnergyToNetwork(GTValues.V[5], Math.max(1, ((EnergyMetaTileEntity) metaTileEntity).getEnergyStored() / GTValues.V[5]), this);
 //            }
             // Normal Explosion Code
             metaTileEntity.onExplosion();

@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.IToolStats;
 import gregtech.common.items.MetaTool;
@@ -35,22 +35,22 @@ public class ToolCrowbar extends ToolBase {
 
     @Override
     public ResourceLocation getCraftingSound(ItemStack stack) {
-        return GregTech_API.sSoundList.get(0);
+        return GregTechAPI.sSoundList.get(0);
     }
 
     @Override
     public ResourceLocation getEntityHitSound(ItemStack stack) {
-        return GregTech_API.sSoundList.get(0);
+        return GregTechAPI.sSoundList.get(0);
     }
 
     @Override
     public ResourceLocation getBreakingSound(ItemStack stack) {
-        return GregTech_API.sSoundList.get(0);
+        return GregTechAPI.sSoundList.get(0);
     }
 
     @Override
     public ResourceLocation getMiningSound(ItemStack stack) {
-        return GregTech_API.sSoundList.get(0);
+        return GregTechAPI.sSoundList.get(0);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
@@ -22,6 +22,6 @@ public class ProcessingLens implements IOreRegistrationHandler {
                 .duration((int) Math.max(uEntry.material.getMass() / 2L, 1L))
                 .EUt(16)
                 .buildAndRegister();
-        GregTech_API.registerCover(stack, new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_LENS, uEntry.material.materialRGB)), new gregtech.common.covers.GT_Cover_Lens(uEntry.material.mColor.mIndex));
+        GregTechAPI.registerCover(stack, new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_LENS, uEntry.material.materialRGB)), new gregtech.common.covers.GT_Cover_Lens(uEntry.material.mColor.mIndex));
     }
 }

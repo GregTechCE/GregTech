@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.damagesources.DamageSources;
 import gregtech.api.enchants.EnchantmentData;
 import gregtech.api.items.metaitem.MetaItem;
@@ -83,7 +83,7 @@ public abstract class ToolBase implements IToolStats {
     }
 
     public ResourceLocation getBreakingSound(ItemStack stack) {
-        return GregTech_API.sSoundList.get(0);
+        return GregTechAPI.sSoundList.get(0);
     }
 
     public int getBaseQuality(ItemStack stack) {

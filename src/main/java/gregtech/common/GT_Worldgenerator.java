@@ -1,6 +1,6 @@
 package gregtech.common;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.util.XSTR;
 import gregtech.api.util.GTLog;
 import gregtech.api.world.GT_Worldgen;
@@ -35,14 +35,14 @@ public class GT_Worldgenerator implements IWorldGenerator {
     private static Random mRandom;
 
     public GT_Worldgenerator() {
-        endAsteroids = GregTech_API.sWorldgenFile.get("endasteroids", "GenerateAsteroids", true);
-        endMinSize = GregTech_API.sWorldgenFile.get("endasteroids", "AsteroidMinSize", 50);
-        endMaxSize = GregTech_API.sWorldgenFile.get("endasteroids", "AsteroidMaxSize", 200);
-        mEndAsteroidProbability = GregTech_API.sWorldgenFile.get("endasteroids", "AsteroidProbability", 300);
-        gcAsteroids = GregTech_API.sWorldgenFile.get("gcasteroids", "GenerateGCAsteroids", true);
-        gcMinSize = GregTech_API.sWorldgenFile.get("gcasteroids", "GCAsteroidMinSize", 100);
-        gcMaxSize = GregTech_API.sWorldgenFile.get("gcasteroids", "GCAsteroidMaxSize", 400);
-        mGCAsteroidProbability = GregTech_API.sWorldgenFile.get("gcasteroids", "GCAsteroidProbability", 300);
+        endAsteroids = GregTechAPI.sWorldgenFile.get("endasteroids", "GenerateAsteroids", true);
+        endMinSize = GregTechAPI.sWorldgenFile.get("endasteroids", "AsteroidMinSize", 50);
+        endMaxSize = GregTechAPI.sWorldgenFile.get("endasteroids", "AsteroidMaxSize", 200);
+        mEndAsteroidProbability = GregTechAPI.sWorldgenFile.get("endasteroids", "AsteroidProbability", 300);
+        gcAsteroids = GregTechAPI.sWorldgenFile.get("gcasteroids", "GenerateGCAsteroids", true);
+        gcMinSize = GregTechAPI.sWorldgenFile.get("gcasteroids", "GCAsteroidMinSize", 100);
+        gcMaxSize = GregTechAPI.sWorldgenFile.get("gcasteroids", "GCAsteroidMaxSize", 400);
+        mGCAsteroidProbability = GregTechAPI.sWorldgenFile.get("gcasteroids", "GCAsteroidProbability", 300);
         GameRegistry.registerWorldGenerator(this, 1073741823);
     }
 
@@ -92,7 +92,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                 for (int tZ = mZ - 16; j < 3; tZ += 16) {
                     String tBiome = mWorld.getBiome(new BlockPos(tX + 8, 0, tZ + 8)).getBiomeName();
                     try {
-                        for (GT_Worldgen tWorldGen : GregTech_API.sWorldgenList) {
+                        for (GT_Worldgen tWorldGen : GregTechAPI.sWorldgenList) {
                             tWorldGen.executeWorldgen(mWorld, mRandom, mBiome, mDimensionType, tX, tZ, mChunkGenerator, mChunkProvider);
                         }
                     } catch (Throwable e) {
@@ -188,7 +188,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                                                 if (tDimensionType == -1) {
                                                     mWorld.setBlockState(randPos, Blocks.END_STONE.getDefaultState());
                                                 } else if (tDimensionName.equals("Asteroids")) {
-                                                    mWorld.setBlockState(randPos, GregTech_API.sBlockGranites.getDefaultState());
+                                                    mWorld.setBlockState(randPos, GregTechAPI.sBlockGranites.getDefaultState());
                                                 }
                                             }
                                         }

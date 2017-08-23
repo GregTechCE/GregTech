@@ -1,12 +1,12 @@
 package gregtech.api.util;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.unification.OreDictionaryUnifier;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 
-import static gregtech.api.GT_Values.E;
+import static gregtech.api.GTValues.E;
 
 public class GT_Config implements Runnable {
     public static boolean troll = false;
@@ -18,16 +18,16 @@ public class GT_Config implements Runnable {
         mConfig = aConfig;
         mConfig.load();
         mConfig.save();
-        GregTech_API.sAfterGTPreload.add(this); // in case of crash on startup
-        GregTech_API.sAfterGTLoad.add(this); // in case of crash on startup
-        GregTech_API.sAfterGTPostload.add(this);
+        GregTechAPI.sAfterGTPreload.add(this); // in case of crash on startup
+        GregTechAPI.sAfterGTLoad.add(this); // in case of crash on startup
+        GregTechAPI.sAfterGTPostload.add(this);
     }
 
     public static int addIDConfig(Object aCategory, String aName, int aDefault) {
         if (GT_Utility.isStringInvalid(aName)) return aDefault;
         Property tProperty = sConfigFileIDs.get(aCategory.toString().replaceAll("\\|", "."), aName.replaceAll("\\|", "."), aDefault);
         int rResult = tProperty.getInt(aDefault);
-        if (!tProperty.wasRead() && GregTech_API.sPostloadFinished) sConfigFileIDs.save();
+        if (!tProperty.wasRead() && GregTechAPI.sPostloadFinished) sConfigFileIDs.save();
         return rResult;
     }
 
@@ -53,7 +53,7 @@ public class GT_Config implements Runnable {
         if (GT_Utility.isStringInvalid(aName)) return aDefault;
         Property tProperty = mConfig.get(aCategory.toString().replaceAll("\\|", "_"), (aName + "_" + aDefault).replaceAll("\\|", "_"), aDefault);
         boolean rResult = tProperty.getBoolean(aDefault);
-        if (!tProperty.wasRead() && GregTech_API.sPostloadFinished) mConfig.save();
+        if (!tProperty.wasRead() && GregTechAPI.sPostloadFinished) mConfig.save();
         return rResult;
     }
 
@@ -65,7 +65,7 @@ public class GT_Config implements Runnable {
         if (GT_Utility.isStringInvalid(aName)) return aDefault;
         Property tProperty = mConfig.get(aCategory.toString().replaceAll("\\|", "_"), (aName + "_" + aDefault).replaceAll("\\|", "_"), aDefault);
         int rResult = tProperty.getInt(aDefault);
-        if (!tProperty.wasRead() && GregTech_API.sPostloadFinished) mConfig.save();
+        if (!tProperty.wasRead() && GregTechAPI.sPostloadFinished) mConfig.save();
         return rResult;
     }
 
@@ -77,7 +77,7 @@ public class GT_Config implements Runnable {
         if (GT_Utility.isStringInvalid(aName)) return aDefault;
         Property tProperty = mConfig.get(aCategory.toString().replaceAll("\\|", "_"), (aName + "_" + aDefault).replaceAll("\\|", "_"), aDefault);
         double rResult = tProperty.getDouble(aDefault);
-        if (!tProperty.wasRead() && GregTech_API.sPostloadFinished) mConfig.save();
+        if (!tProperty.wasRead() && GregTechAPI.sPostloadFinished) mConfig.save();
         return rResult;
     }
 
@@ -89,7 +89,7 @@ public class GT_Config implements Runnable {
         if (GT_Utility.isStringInvalid(aName)) return aDefault;
         Property tProperty = mConfig.get(aCategory.toString().replaceAll("\\|", "_"), (aName + "_" + aDefault).replaceAll("\\|", "_"), aDefault);
         String rResult = tProperty.getString();
-        if (!tProperty.wasRead() && GregTech_API.sPostloadFinished) mConfig.save();
+        if (!tProperty.wasRead() && GregTechAPI.sPostloadFinished) mConfig.save();
         return rResult;
     }
 

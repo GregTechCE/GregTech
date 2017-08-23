@@ -1,6 +1,6 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.items.metaitem.stats.IItemBehaviour;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
@@ -29,7 +29,7 @@ public class Behaviour_Scanner extends Behaviour_None {
                     GT_Utility.sendChatToPlayer(aPlayer, aTList);
                 }
             }
-            GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(108), 1, 1.0F, pos);
+            GT_Utility.doSoundAtClient(GregTechAPI.sSoundList.get(108), 1, 1.0F, pos);
             return true;
         }
         return false;

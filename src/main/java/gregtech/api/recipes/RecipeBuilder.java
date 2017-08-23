@@ -3,7 +3,6 @@ package gregtech.api.recipes;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.items.MetaItems;
 import ic2.core.ref.BlockName;
 import ic2.core.ref.ItemName;
 import ic2.core.ref.TeBlock;
@@ -22,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static gregtech.api.GT_Values.W;
+import static gregtech.api.GTValues.W;
 
 /**
  * @see Recipe

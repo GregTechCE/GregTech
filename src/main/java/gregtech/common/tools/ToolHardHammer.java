@@ -1,7 +1,7 @@
 package gregtech.common.tools;
 
 import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.recipes.Recipe;
@@ -68,12 +68,12 @@ public class ToolHardHammer extends ToolBase {
 
     @Override
     public ResourceLocation getCraftingSound(ItemStack stack) {
-        return GregTech_API.sSoundList.get(1);
+        return GregTechAPI.sSoundList.get(1);
     }
 
     @Override
     public ResourceLocation getBreakingSound(ItemStack stack) {
-        return GregTech_API.sSoundList.get(2);
+        return GregTechAPI.sSoundList.get(2);
     }
 
     @Override

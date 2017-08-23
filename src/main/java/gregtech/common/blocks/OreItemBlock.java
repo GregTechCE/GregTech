@@ -13,6 +13,7 @@ public class OreItemBlock extends ItemBlock {
     public OreItemBlock(BlockOre block) {
         super(block);
         this.block = block;
+        setHasSubtypes(true);
     }
 
     @Override

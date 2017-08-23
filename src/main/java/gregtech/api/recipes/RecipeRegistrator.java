@@ -1,7 +1,7 @@
 package gregtech.api.recipes;
 
 import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.ConfigCategories;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.ore.OrePrefix;
@@ -21,8 +21,8 @@ import net.minecraft.item.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-import static gregtech.api.GT_Values.L;
-import static gregtech.api.GT_Values.M;
+import static gregtech.api.GTValues.L;
+import static gregtech.api.GTValues.M;
 
 /**
  * Class for Automatic Recipe registering.
@@ -376,7 +376,7 @@ public class RecipeRegistrator {
 
                         if (recipeReplacing && plate != null && SHAPES_A[i] != null && SHAPES_A[i].length > 1) {
                             assert data != null;
-                            if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.recipereplacements, data.mMaterial.mMaterial + "." + SHAPES_A[i][0], true)) {
+                            if (GregTechAPI.sRecipeFile.get(ConfigCategories.Recipes.recipereplacements, data.mMaterial.mMaterial + "." + SHAPES_A[i][0], true)) {
                                 if (null != (itemStack = ModHandler.removeRecipe(recipe))) {
                                     switch (SHAPES_A[i].length) {
                                         case 2:

@@ -1,6 +1,6 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.GT_Values;
+import gregtech.api.GTValues;
 import gregtech.api.items.metaitem.stats.IItemBehaviour;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.Entity;
@@ -116,7 +116,7 @@ public class Behaviour_Sonictron
         int tCurrentIndex = getCurrentIndex(aStack);
         if ((tTickTimer++ % 2 == 0) && (tCurrentIndex > -1)) {
             ItemStack[] tInventory = getNBTInventory(aStack);
-            GT_Values.GT.doSonictronSound(tInventory[tCurrentIndex], aPlayer.worldObj, aPlayer.posX, aPlayer.posY, aPlayer.posZ);
+            GTValues.GT.doSonictronSound(tInventory[tCurrentIndex], aPlayer.worldObj, aPlayer.posX, aPlayer.posY, aPlayer.posZ);
             tCurrentIndex++;
             if (tCurrentIndex > 63) {
                 tCurrentIndex = -1;

@@ -12,6 +12,7 @@ public class StoneItemBlock<R extends Enum<R> & IStringSerializable, T extends S
     public StoneItemBlock(T block) {
         super(block);
         this.genericBlock = block;
+        setHasSubtypes(true);
     }
 
     @Override

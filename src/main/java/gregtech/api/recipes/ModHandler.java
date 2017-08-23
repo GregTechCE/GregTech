@@ -2,7 +2,7 @@ package gregtech.api.recipes;
 
 import gregtech.GT_Mod;
 import gregtech.api.ConfigCategories;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enchants.EnchantmentData;
 import gregtech.api.items.IDamagableItem;
 import gregtech.api.items.OreDictNames;
@@ -12,7 +12,6 @@ import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
-import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GT_Utility;
@@ -56,7 +55,7 @@ import org.apache.commons.lang3.Validate;
 import javax.annotation.Nullable;
 import java.util.*;
 
-import static gregtech.api.GT_Values.*;
+import static gregtech.api.GTValues.*;
 
 public class ModHandler {
     public static final List<IRecipe> SINGLE_NON_BLOCK_DAMAGABLE_RECIPE_LIST = new ArrayList<>(1000);
@@ -230,7 +229,7 @@ public class ModHandler {
         Validate.notNull(output, "Output cannot be null");
         Validate.isTrue(GT_Utility.getContainerItem(input, false) != null, "Input item cannot have container item");
 
-//        if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.smelting, input, true)) return;
+//        if (!GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.smelting, input, true)) return;
 
         GameRegistry.addSmelting(input, output.copy(), 0.0F);
     }
@@ -288,7 +287,7 @@ public class ModHandler {
         Validate.notNull(output, "Output cannot be null");
 
         GT_Utility.removeSimpleIC2MachineRecipe(input, Recipes.extractor.getRecipes(), null);
-//        if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.extractor, input, true)) return;
+//        if (!GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.extractor, input, true)) return;
         GT_Utility.addSimpleIC2MachineRecipe(input, Recipes.extractor, null, output);
     }
 
@@ -921,7 +920,7 @@ public class ModHandler {
                 ItemStack output = uncopiedStack ? recipe1.getRecipeOutput() : recipe1.getCraftingResult(craftingGrid);
                 if (output == null || output.stackSize <= 0) {
                     // Seriously, who would ever do that shit?
-                    if (!GregTech_API.sPostloadFinished)
+                    if (!GregTechAPI.sPostloadFinished)
                         throw new GT_ItsNotMyFaultException("Seems another Mod added a Crafting Recipe with null Output. Tell the Developer of said Mod to fix that.");
                 } else {
                     if (uncopiedStack) return output;
@@ -938,7 +937,7 @@ public class ModHandler {
      * This also removes old Recipes from the List.
      */
     public static List<ItemStack> getVanillyToolRecipeOutputs(ItemStack... recipeIn) {
-        if (!GregTech_API.sPostloadStarted || GregTech_API.sPostloadFinished)
+        if (!GregTechAPI.sPostloadStarted || GregTechAPI.sPostloadFinished)
             SINGLE_NON_BLOCK_DAMAGABLE_RECIPE_LIST.clear();
 
         if (SINGLE_NON_BLOCK_DAMAGABLE_RECIPE_LIST.isEmpty()) {
@@ -999,7 +998,7 @@ public class ModHandler {
         }
 
         List<ItemStack> outputs = getRecipeOutputs(SINGLE_NON_BLOCK_DAMAGABLE_RECIPE_LIST, true, recipeIn);
-        if (!GregTech_API.sPostloadStarted || GregTech_API.sPostloadFinished)
+        if (!GregTechAPI.sPostloadStarted || GregTechAPI.sPostloadFinished)
             SINGLE_NON_BLOCK_DAMAGABLE_RECIPE_LIST.clear();
         return outputs;
     }
@@ -1046,7 +1045,7 @@ public class ModHandler {
                 ItemStack craftingResult = recipes.get(i).getCraftingResult(craftingGrid);
                 if (craftingResult == null || craftingResult.stackSize <= 0) {
                     // Seriously, who would ever do that shit?
-                    if (!GregTech_API.sPostloadFinished)
+                    if (!GregTechAPI.sPostloadFinished)
                         throw new GT_ItsNotMyFaultException("Seems another Mod added a Crafting Recipe with null Output. Tell the Developer of said Mod to fix that.");
                 } else {
                     stacks.add(GT_Utility.copy(craftingResult));
@@ -1245,7 +1244,7 @@ public class ModHandler {
     public static boolean useSolderingIron(ItemStack stack, EntityLivingBase playerIn) {
         if (playerIn == null || stack == null) return false;
 
-        if (GT_Utility.isStackInList(stack, GregTech_API.sSolderingToolList)) {
+        if (GT_Utility.isStackInList(stack, GregTechAPI.sSolderingToolList)) {
             if (playerIn instanceof EntityPlayer) {
                 EntityPlayer player = (EntityPlayer) playerIn;
                 if (player.capabilities.isCreativeMode) return true;
@@ -1253,7 +1252,7 @@ public class ModHandler {
                 if (isElectricItem(stack) && ElectricItem.manager.getCharge(stack) > 1000.0D) {
 
                     for (int i = 0; i < player.inventory.mainInventory.length; i++) {
-                        if (GT_Utility.isStackInList(player.inventory.mainInventory[i], GregTech_API.sSolderingMetalList)) {
+                        if (GT_Utility.isStackInList(player.inventory.mainInventory[i], GregTechAPI.sSolderingMetalList)) {
                             if (player.inventory.mainInventory[i].stackSize < 1) return false;
 
                             if (player.inventory.mainInventory[i].stackSize == 1) {
@@ -1439,7 +1438,7 @@ public class ModHandler {
             Validate.notNull(output[0], "Output cannot be null");
 
             GT_Utility.removeSimpleIC2MachineRecipe(input, Recipes.centrifuge.getRecipes(), null);
-            if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.thermalcentrifuge, input, true))
+            if (!GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.thermalcentrifuge, input, true))
                 return;
 
             NBTTagCompound tag = new NBTTagCompound();
@@ -1457,7 +1456,7 @@ public class ModHandler {
             Validate.notNull(output[0], "Output cannot be null");
 
             GT_Utility.removeSimpleIC2MachineRecipe(input, Recipes.oreWashing.getRecipes(), null);
-            if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.orewashing, input, true))
+            if (!GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.orewashing, input, true))
                 return;
 
             NBTTagCompound tag = new NBTTagCompound();
@@ -1474,7 +1473,7 @@ public class ModHandler {
             Validate.notNull(output, "Output cannot be null");
 
             GT_Utility.removeSimpleIC2MachineRecipe(input, Recipes.compressor.getRecipes(), null);
-            if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.compression, input, true))
+            if (!GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.compression, input, true))
                 return;
 
             GT_Utility.addSimpleIC2MachineRecipe(input, Recipes.compressor, null, output);
@@ -1487,7 +1486,7 @@ public class ModHandler {
             Validate.notNull(amplifier, "Amplifier cannot be null");
             Validate.isTrue(value > 0, "Amplifier value cannot be less or equal to zero");
 
-            if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.massfabamplifier, amplifier, true))
+            if (!GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.massfabamplifier, amplifier, true))
                 return;
 
             try {
@@ -1514,7 +1513,7 @@ public class ModHandler {
             Validate.notNull(fluid, "Fluid Container cannot be null");
 
             if (!GT_Mod.gregtechproxy.mTEMachineRecipes &&
-                    !GregTech_API.sRecipeFile.get(ConfigCategories.Machines.liquidtransposer, fullContainer, true))
+                    !GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.liquidtransposer, fullContainer, true))
                 return;
 
             try {
@@ -1532,7 +1531,7 @@ public class ModHandler {
             Validate.notNull(fluid, "Fluid Container cannot be null");
 
             if (!GT_Mod.gregtechproxy.mTEMachineRecipes &&
-                    !GregTech_API.sRecipeFile.get(ConfigCategories.Machines.liquidtransposerfilling, fullContainer, true))
+                    !GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.liquidtransposerfilling, fullContainer, true))
                 return;
 
             try {
@@ -1550,7 +1549,7 @@ public class ModHandler {
             Validate.notNull(fluid, "Fluid Container cannot be null");
 
             if (!GT_Mod.gregtechproxy.mTEMachineRecipes &&
-                    !GregTech_API.sRecipeFile.get(ConfigCategories.Machines.liquidtransposeremptying, fullContainer, true))
+                    !GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.liquidtransposeremptying, fullContainer, true))
                 return;
 
             try {
@@ -1567,7 +1566,7 @@ public class ModHandler {
             Validate.notNull(output1, "Output cannot be null");
 
             if (!GT_Mod.gregtechproxy.mTEMachineRecipes &&
-                    !GregTech_API.sRecipeFile.get(ConfigCategories.Machines.sawmill, input1, true))
+                    !GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.sawmill, input1, true))
                 return;
 
             try {
@@ -1586,7 +1585,7 @@ public class ModHandler {
             Validate.isTrue(GT_Utility.getContainerItem(input1, false) != null, "Input item cannot have container item");
 
             if (!GT_Mod.gregtechproxy.mTEMachineRecipes &&
-                    !GregTech_API.sRecipeFile.get(ConfigCategories.Machines.inductionsmelter, input2 == null ? input1 : output1, true))
+                    !GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.inductionsmelter, input2 == null ? input1 : output1, true))
                 return;
 
             try {

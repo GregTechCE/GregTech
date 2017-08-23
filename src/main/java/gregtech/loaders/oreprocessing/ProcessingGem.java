@@ -1,8 +1,8 @@
 package gregtech.loaders.oreprocessing;
 
 import gregtech.api.ConfigCategories;
-import gregtech.api.GT_Values;
-import gregtech.api.GregTech_API;
+import gregtech.api.GTValues;
+import gregtech.api.GregTechAPI;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.recipes.RecipeRegistrator;
@@ -33,13 +33,13 @@ public class ProcessingGem implements IOreRegistrationHandler {
         boolean aNoSmashing = uEntry.material.hasFlag(DustMaterial.MatFlags.NO_SMASHING);
         boolean aNoWorking = uEntry.material.hasFlag(DustMaterial.MatFlags.NO_WORKING);
         boolean aNoSmelting = uEntry.material.hasFlag(DustMaterial.MatFlags.NO_SMELTING);
-        boolean aSpecialRecipeReq = uEntry.material.hasFlag(SolidMaterial.MatFlags.MORTAR_GRINDABLE) && GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, uEntry.material.defaultLocalName, true);
+        boolean aSpecialRecipeReq = uEntry.material.hasFlag(SolidMaterial.MatFlags.MORTAR_GRINDABLE) && GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.mortar, uEntry.material.defaultLocalName, true);
         boolean aFuelPower = uEntry.material.mFuelPower > 0;
 
         switch (uEntry.orePrefix) {
             case gem:
                 if (aFuelPower) {
-                    GT_Values.RA.addFuel(GT_Utility.copyAmount(1, stack), null, uEntry.material.mFuelPower * 2, uEntry.material.mFuelType);
+                    GTValues.RA.addFuel(GT_Utility.copyAmount(1, stack), null, uEntry.material.mFuelPower * 2, uEntry.material.mFuelType);
                 }
                 if (!OrePrefix.block.isIgnored(uEntry.material)) {
                     ModHandler.addCompressionRecipe(GT_Utility.copyAmount(9, stack), OreDictionaryUnifier.get(OrePrefix.block, uEntry.material));
@@ -100,7 +100,7 @@ public class ProcessingGem implements IOreRegistrationHandler {
                 }
 
                 if (aNoWorking) {
-                    GT_Values.RA.addLatheRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.stick, uEntry.material, 1), OreDictionaryUnifier.get(OrePrefix.dustSmall, uEntry.material, 2), (int) Math.max(materialMass, 1L), 16);
+                    GTValues.RA.addLatheRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.stick, uEntry.material, 1), OreDictionaryUnifier.get(OrePrefix.dustSmall, uEntry.material, 2), (int) Math.max(materialMass, 1L), 16);
                 } else {
                     if (uEntry.material.mUnificatable && (uEntry.material.mMaterialInto == uEntry.material)) {
                         ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gem, uEntry.material, 2), GT_Proxy.tBits, "h", "X", Character.valueOf('X'), OreDictionaryUnifier.get(OrePrefix.gemFlawless, uEntry.material));
@@ -113,19 +113,19 @@ public class ProcessingGem implements IOreRegistrationHandler {
                 switch (uEntry.material.defaultLocalName) {
                     case "Coal":
                     case "Charcoal":
-                        if (gregtech.api.GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "torchesFromCoal", false)) {
+                        if (GregTechAPI.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "torchesFromCoal", false)) {
                             ModHandler.removeRecipe(GT_Utility.copyAmount(1, stack), null, null, new ItemStack(net.minecraft.init.Items.STICK, 1, 0));}
                         break;
                     case "Certus Quartz":
-                        GT_Values.RA.addElectrolyzerRecipe(stack, 0, ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1, 1), null, null, null, null, null, 2000, 30);
+                        GTValues.RA.addElectrolyzerRecipe(stack, 0, ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1, 1), null, null, null, null, null, 2000, 30);
                 }
 
                 break;
             case gemChipped:
                 if (aFuelPower)
-                    GT_Values.RA.addFuel(GT_Utility.copyAmount(1, stack), null, uEntry.material.mFuelPower / 2, uEntry.material.mFuelType);
+                    GTValues.RA.addFuel(GT_Utility.copyAmount(1, stack), null, uEntry.material.mFuelPower / 2, uEntry.material.mFuelType);
                 if (!aNoWorking) {
-                    GT_Values.RA.addLatheRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.bolt, uEntry.material, 1), OreDictionaryUnifier.get(OrePrefix.dustTiny, uEntry.material, 1), (int) Math.max(materialMass, 1L), 8);
+                    GTValues.RA.addLatheRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.bolt, uEntry.material, 1), OreDictionaryUnifier.get(OrePrefix.dustTiny, uEntry.material, 1), (int) Math.max(materialMass, 1L), 8);
                     if (uEntry.material.mUnificatable && (uEntry.material.mMaterialInto == uEntry.material)) {
                         ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gemChipped, uEntry.material, 2), GT_Proxy.tBits, "h", "X", Character.valueOf('X'), OreDictionaryUnifier.get(OrePrefix.gemFlawed, uEntry.material));
                         if (aSpecialRecipeReq)
@@ -135,32 +135,32 @@ public class ProcessingGem implements IOreRegistrationHandler {
                 break;
             case gemExquisite:
                 if (aFuelPower)
-                    GT_Values.RA.addFuel(GT_Utility.copyAmount(1, stack), null, uEntry.material.mFuelPower * 8, uEntry.material.mFuelType);
+                    GTValues.RA.addFuel(GT_Utility.copyAmount(1, stack), null, uEntry.material.mFuelPower * 8, uEntry.material.mFuelType);
                 if (!aNoWorking) {
-                    GT_Values.RA.addLatheRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.stickLong, uEntry.material, 3), OreDictionaryUnifier.getDust(uEntry.material, uEntry.orePrefix.mMaterialAmount - OrePrefix.stickLong.mMaterialAmount * 3L), (int) Math.max(materialMass * 10L, 1L), 16);
+                    GTValues.RA.addLatheRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.stickLong, uEntry.material, 3), OreDictionaryUnifier.getDust(uEntry.material, uEntry.orePrefix.mMaterialAmount - OrePrefix.stickLong.mMaterialAmount * 3L), (int) Math.max(materialMass * 10L, 1L), 16);
                     if (uEntry.material.mUnificatable && (uEntry.material.mMaterialInto == uEntry.material))
                         if (aSpecialRecipeReq) ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material, 4), GT_Proxy.tBits, "X", "m", Character.valueOf('X'), OreDictionaryUnifier.get(OrePrefix.gemExquisite, uEntry.material));
                 }
-                GT_Values.RA.addForgeHammerRecipe(stack, OreDictionaryUnifier.get(OrePrefix.gemFlawless, uEntry.material, 2), 64, 16);
+                GTValues.RA.addForgeHammerRecipe(stack, OreDictionaryUnifier.get(OrePrefix.gemFlawless, uEntry.material, 2), 64, 16);
                 break;
             case gemFlawed:
                 if (aFuelPower)
-                    GT_Values.RA.addFuel(GT_Utility.copyAmount(1, stack), null, uEntry.material.mFuelPower, uEntry.material.mFuelType);
+                    GTValues.RA.addFuel(GT_Utility.copyAmount(1, stack), null, uEntry.material.mFuelPower, uEntry.material.mFuelType);
                 if (!aNoWorking) {
-                    GT_Values.RA.addLatheRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.bolt, uEntry.material, 2), OreDictionaryUnifier.get(OrePrefix.dustSmall, uEntry.material, 1), (int) Math.max(materialMass, 1L), 12);
+                    GTValues.RA.addLatheRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.bolt, uEntry.material, 2), OreDictionaryUnifier.get(OrePrefix.dustSmall, uEntry.material, 1), (int) Math.max(materialMass, 1L), 12);
                     if (uEntry.material.mUnificatable && (uEntry.material.mMaterialInto == uEntry.material)) {
                         ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gemFlawed, uEntry.material, 2), GT_Proxy.tBits, "h", "X", Character.valueOf('X'), OreDictionaryUnifier.get(OrePrefix.gem, uEntry.material));
                         if (aSpecialRecipeReq)
                             ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dustSmall, uEntry.material, 2), GT_Proxy.tBits, "X", "m", Character.valueOf('X'), OreDictionaryUnifier.get(OrePrefix.gemFlawed, uEntry.material));
                     }
                 }
-                GT_Values.RA.addForgeHammerRecipe(stack, OreDictionaryUnifier.get(OrePrefix.gemChipped, uEntry.material, 2), 64, 16);
+                GTValues.RA.addForgeHammerRecipe(stack, OreDictionaryUnifier.get(OrePrefix.gemChipped, uEntry.material, 2), 64, 16);
                 break;
             case gemFlawless:
                 if (aFuelPower)
-                    GT_Values.RA.addFuel(GT_Utility.copyAmount(1, stack), null, uEntry.material.mFuelPower * 4, uEntry.material.mFuelType);
+                    GTValues.RA.addFuel(GT_Utility.copyAmount(1, stack), null, uEntry.material.mFuelPower * 4, uEntry.material.mFuelType);
                 if (!aNoWorking) {
-                    GT_Values.RA.addLatheRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.stickLong, uEntry.material, 1), OreDictionaryUnifier.getDust(uEntry.material, uEntry.orePrefix.mMaterialAmount - OrePrefix.stickLong.mMaterialAmount), (int) Math.max(materialMass * 5L, 1L), 16);
+                    GTValues.RA.addLatheRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.stickLong, uEntry.material, 1), OreDictionaryUnifier.getDust(uEntry.material, uEntry.orePrefix.mMaterialAmount - OrePrefix.stickLong.mMaterialAmount), (int) Math.max(materialMass * 5L, 1L), 16);
                     if (uEntry.material.mUnificatable && (uEntry.material.mMaterialInto == uEntry.material)) {
                         ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gemFlawless, uEntry.material, 2), GT_Proxy.tBits, "h", "X", Character.valueOf('X'), OreDictionaryUnifier.get(OrePrefix.gemExquisite, uEntry.material));
                         if (aSpecialRecipeReq)

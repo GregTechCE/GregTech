@@ -17,9 +17,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 
-import static gregtech.api.GT_Values.M;
+import static gregtech.api.GTValues.M;
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.*;
-import static gregtech.api.unification.material.type.FluidMaterial.MatFlags.GENERATE_PLASMA;
 import static gregtech.api.unification.material.type.GemMaterial.MatFlags.GENERATE_LENSE;
 import static gregtech.api.unification.material.type.MetalMaterial.MatFlags.*;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_GEAR;

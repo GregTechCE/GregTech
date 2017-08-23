@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.GT_Values;
+import gregtech.api.GTValues;
 import gregtech.api.items.ToolDictNames;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.OreDictionaryUnifier;
@@ -47,7 +47,7 @@ public class ProcessingPipe implements IOreRegistrationHandler {
             case pipeRestrictiveMedium:
             case pipeRestrictiveSmall:
             case pipeRestrictiveTiny:
-                GT_Values.RA.addAssemblerRecipe(OreDictionaryUnifier.get(aOreDictName.replaceFirst("Restrictive", ""), null, 1L, false, true), OreDictionaryUnifier.get(OrePrefix.ring, Materials.Steel, uEntry.orePrefix.mSecondaryMaterial.mAmount / OrePrefix.ring.mMaterialAmount), GT_Utility.copyAmount(1, stack), (int) (uEntry.orePrefix.mSecondaryMaterial.mAmount * 400L / OrePrefix.ring.mMaterialAmount), 4);
+                GTValues.RA.addAssemblerRecipe(OreDictionaryUnifier.get(aOreDictName.replaceFirst("Restrictive", ""), null, 1L, false, true), OreDictionaryUnifier.get(OrePrefix.ring, Materials.Steel, uEntry.orePrefix.mSecondaryMaterial.mAmount / OrePrefix.ring.mMaterialAmount), GT_Utility.copyAmount(1, stack), (int) (uEntry.orePrefix.mSecondaryMaterial.mAmount * 400L / OrePrefix.ring.mMaterialAmount), 4);
                 break;
         }
     }

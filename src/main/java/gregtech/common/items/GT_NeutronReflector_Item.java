@@ -1,6 +1,6 @@
 package gregtech.common.items;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.items.GenericItem;
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
@@ -18,7 +18,7 @@ public class GT_NeutronReflector_Item
     @Override
     public boolean acceptUraniumPulse(ItemStack yourStack, IReactor reactor, ItemStack pulsingStack, int youX, int youY, int pulseX, int pulseY, boolean heatrun) {
         if (!heatrun) {
-            if (!GregTech_API.mIC2Classic&&(pulsingStack.getItem() instanceof ic2.core.item.reactor.ItemReactorMOX)) {
+            if (!GregTechAPI.mIC2Classic&&(pulsingStack.getItem() instanceof ic2.core.item.reactor.ItemReactorMOX)) {
                 float breedereffectiveness = reactor.getHeat() / reactor.getMaxHeat();
                 float ReaktorOutput = 4.0F * breedereffectiveness + 1.0F;
                 reactor.addOutput(ReaktorOutput);

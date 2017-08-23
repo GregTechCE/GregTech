@@ -1,6 +1,6 @@
 package gregtech.api.items.metaitem;
 
-import gregtech.api.GT_Values;
+import gregtech.api.GTValues;
 import gregtech.api.items.metaitem.stats.IElectricStats;
 import gregtech.api.recipes.ModHandler;
 import ic2.api.item.ElectricItem;
@@ -41,7 +41,7 @@ public class ElectricStats implements IElectricStats {
             double energyStored = getCharge(stack);
             double canReceive = maxCharge - energyStored;
             if(!ignoreTransferLimit) {
-                amount = Math.min(amount, GT_Values.V[myTier]);
+                amount = Math.min(amount, GTValues.V[myTier]);
             }
             double charged = amount > canReceive ? canReceive : amount;
             if(!simulate) {
@@ -58,7 +58,7 @@ public class ElectricStats implements IElectricStats {
         if((dischargeable || !externally || amount == Integer.MAX_VALUE) && (tier == Integer.MAX_VALUE || tier >= myTier) && maxCharge > 0) {
             double energyStored = getCharge(stack);
             if(!ignoreTransferLimit) {
-                amount = Math.min(amount, GT_Values.V[myTier]);
+                amount = Math.min(amount, GTValues.V[myTier]);
             }
             double discharged = amount > energyStored ? energyStored : amount;
             if(!simulate) {

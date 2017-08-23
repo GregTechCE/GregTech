@@ -1,9 +1,8 @@
 package gregtech.common.items;
 
 import gregtech.api.ConfigCategories;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.items.ToolDictNames;
-import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.OreDictionaryUnifier;
@@ -27,17 +26,17 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
         AXE = addItem(3, "tool.axe").setToolStats(new ToolAxe()).addOreDict(ToolDictNames.craftingToolAxe);
         HOE = addItem(4, "tool.hoe").setToolStats(new ToolHoe()).addOreDict(ToolDictNames.craftingToolHoe);
         SAW = addItem(5, "tool.saw").setToolStats(new ToolSaw()).addOreDict(ToolDictNames.craftingToolSaw);
-        HARDHAMMER = addItem(6, "tool.hardhammer").setToolStats(new ToolHardHammer()).addOreDict(ToolDictNames.craftingToolHardHammer); // GregTech_API.sHardHammerList
-        SOFTHAMMER = addItem(7, "tool.softhammer").setToolStats(new ToolSoftHammer()).addOreDict(ToolDictNames.craftingToolSoftHammer); // GregTech_API.sSoftHammerList
-        WRENCH = addItem(8, "tool.wrench").setToolStats(new ToolWrench()).addOreDict(ToolDictNames.craftingToolWrench); // GregTech_API.sWrenchList
+        HARDHAMMER = addItem(6, "tool.hardhammer").setToolStats(new ToolHardHammer()).addOreDict(ToolDictNames.craftingToolHardHammer); // GregTechAPI.sHardHammerList
+        SOFTHAMMER = addItem(7, "tool.softhammer").setToolStats(new ToolSoftHammer()).addOreDict(ToolDictNames.craftingToolSoftHammer); // GregTechAPI.sSoftHammerList
+        WRENCH = addItem(8, "tool.wrench").setToolStats(new ToolWrench()).addOreDict(ToolDictNames.craftingToolWrench); // GregTechAPI.sWrenchList
         FILE = addItem(9, "tool.file").setToolStats(new ToolFile()).addOreDict(ToolDictNames.craftingToolFile);
-        CROWBAR = addItem(10, "tool.crowbar").setToolStats(new ToolCrowbar()).addOreDict(ToolDictNames.craftingToolCrowbar); // GregTech_API.sCrowbarList
-        SCREWDRIVER = addItem(11, "tool.screwdriver").setToolStats(new ToolScrewdriver()).addOreDict(ToolDictNames.craftingToolScrewdriver); // GregTech_API.sScrewdriverList
+        CROWBAR = addItem(10, "tool.crowbar").setToolStats(new ToolCrowbar()).addOreDict(ToolDictNames.craftingToolCrowbar); // GregTechAPI.sCrowbarList
+        SCREWDRIVER = addItem(11, "tool.screwdriver").setToolStats(new ToolScrewdriver()).addOreDict(ToolDictNames.craftingToolScrewdriver); // GregTechAPI.sScrewdriverList
         MORTAR = addItem(12, "tool.mortar").setToolStats(new ToolMortar()).addOreDict(ToolDictNames.craftingToolMortar);
         WIRECUTTER = addItem(13, "tool.wirecutter").setToolStats(new ToolWireCutter()).addOreDict(ToolDictNames.craftingToolWireCutter);
         SCOOP = addItem(14, "tool.scoop").setToolStats(new ToolScoop()).addOreDict(ToolDictNames.craftingToolScoop);
         BRANCHCUTTER = addItem(15, "tool.branchcutter").setToolStats(new ToolBranchCutter()).addOreDict(ToolDictNames.craftingToolBranchCutter);
-        UNIVERSALSPADE = addItem(16, "tool.universalspade").setToolStats(new ToolUniversalSpade()).addOreDict(ToolDictNames.craftingToolBlade, ToolDictNames.craftingToolShovel, ToolDictNames.craftingToolCrowbar, ToolDictNames.craftingToolSaw); // GregTech_API.sCrowbarList
+        UNIVERSALSPADE = addItem(16, "tool.universalspade").setToolStats(new ToolUniversalSpade()).addOreDict(ToolDictNames.craftingToolBlade, ToolDictNames.craftingToolShovel, ToolDictNames.craftingToolCrowbar, ToolDictNames.craftingToolSaw); // GregTechAPI.sCrowbarList
         KNIFE = addItem(17, "tool.knife").setToolStats(new ToolKnife()).addOreDict(ToolDictNames.craftingToolBlade, ToolDictNames.craftingToolKnife);
         BUTCHERYKNIFE = addItem(18, "tool.butcheryknife").setToolStats(new ToolButcheryKnife()).addOreDict(ToolDictNames.craftingToolBlade);
 
@@ -52,13 +51,13 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
         CHAINSAW_LV = addItem(26, "tool.chainsaw.lv").setToolStats(new ToolChainsawLV()).addOreDict(ToolDictNames.craftingToolSaw);
         CHAINSAW_MV = addItem(27, "tool.chainsaw.mv").setToolStats(new ToolChainsawMV()).addOreDict(ToolDictNames.craftingToolSaw);
         CHAINSAW_HV = addItem(28, "tool.chainsaw.hv").setToolStats(new ToolChainsawHV()).addOreDict(ToolDictNames.craftingToolSaw);
-        WRENCH_LV = addItem(29, "tool.wrench.lv").setToolStats(new ToolWrenchLV()).addOreDict(ToolDictNames.craftingToolWrench); // GregTech_API.sWrenchList
-        WRENCH_MV = addItem(30, "tool.wrench.mv").setToolStats(new ToolWrenchMV()).addOreDict(ToolDictNames.craftingToolWrench); // GregTech_API.sWrenchList
-        WRENCH_HV = addItem(31, "tool.wrench.hv").setToolStats(new ToolWrenchHV()).addOreDict(ToolDictNames.craftingToolWrench); // GregTech_API.sWrenchList
+        WRENCH_LV = addItem(29, "tool.wrench.lv").setToolStats(new ToolWrenchLV()).addOreDict(ToolDictNames.craftingToolWrench); // GregTechAPI.sWrenchList
+        WRENCH_MV = addItem(30, "tool.wrench.mv").setToolStats(new ToolWrenchMV()).addOreDict(ToolDictNames.craftingToolWrench); // GregTechAPI.sWrenchList
+        WRENCH_HV = addItem(31, "tool.wrench.hv").setToolStats(new ToolWrenchHV()).addOreDict(ToolDictNames.craftingToolWrench); // GregTechAPI.sWrenchList
         JACKHAMMER = addItem(32, "tool.jackhammer").setToolStats(new ToolJackHammer()).addOreDict(ToolDictNames.craftingToolJackHammer);
         BUZZSAW = addItem(33, "tool.buzzsaw").setToolStats(new ToolBuzzSaw()).addOreDict(ToolDictNames.craftingToolSaw);
-        SCREWDRIVER_LV = addItem(34, "tool.screwdriver.lv").setToolStats(new ToolScrewdriverLV()).addOreDict(ToolDictNames.craftingToolScrewdriver); // GregTech_API.sScrewdriverList
-        SOLDERING_IRON_LV = addItem(35, "tool.soldering.iron.lv").setToolStats(new ToolSolderingIron()).addOreDict(ToolDictNames.craftingToolSolderingIron); // GregTech_API.sSolderingToolList
+        SCREWDRIVER_LV = addItem(34, "tool.screwdriver.lv").setToolStats(new ToolScrewdriverLV()).addOreDict(ToolDictNames.craftingToolScrewdriver); // GregTechAPI.sScrewdriverList
+        SOLDERING_IRON_LV = addItem(35, "tool.soldering.iron.lv").setToolStats(new ToolSolderingIron()).addOreDict(ToolDictNames.craftingToolSolderingIron); // GregTechAPI.sSolderingToolList
 
         TURBINE_SMALL = addItem(36, "tool.turbine.small").setToolStats(new ToolTurbineSmall());
         TURBINE_NORMAL = addItem(37, "tool.turbine.normal").setToolStats(new ToolTurbineNormal());
@@ -171,7 +170,7 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
                 'S', OreDictionaryUnifier.get(OrePrefix.stick, Materials.StainlessSteel));
 
 
-        if (!GregTech_API.sSpecialFile.get(ConfigCategories.general, "DisableFlintTools", false)) {
+        if (!GregTechAPI.sSpecialFile.get(ConfigCategories.general, "DisableFlintTools", false)) {
             ModHandler.addCraftingRecipe(SWORD.getToolWithStats(1, Materials.Flint, Materials.Wood, null),
                     ModHandler.RecipeBits.NOT_REMOVABLE,
                     "F",
@@ -323,7 +322,7 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
                     'I', OreDictionaryUnifier.get(OrePrefix.ingot, Materials.StainlessSteel),
                     'S', OreDictionaryUnifier.get(OrePrefix.stick, Materials.StainlessSteel));
 
-            if (!GregTech_API.sSpecialFile.get(ConfigCategories.general, "DisableFlintTools", false)) {
+            if (!GregTechAPI.sSpecialFile.get(ConfigCategories.general, "DisableFlintTools", false)) {
                 ModHandler.addCraftingRecipe(SWORD.getToolWithStats(1, Materials.Flint, Materials.Wood, null),
                         ModHandler.RecipeBits.NOT_REMOVABLE,
                         "F",
@@ -372,31 +371,31 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
                         'F', new ItemStack(Items.FLINT, 1));
 
             }
-            if (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, "Coal", true)) {
+            if (GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.mortar, "Coal", true)) {
                 ModHandler.addShapelessCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Coal, 1),
                         ModHandler.RecipeBits.NOT_REMOVABLE,
                         ToolDictNames.craftingToolMortar,
                         new ItemStack(Items.COAL, 1));
             }
-            if (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, "Clay", true)) {
+            if (GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.mortar, "Clay", true)) {
                 ModHandler.addShapelessCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Clay, 1),
                         ModHandler.RecipeBits.NOT_REMOVABLE,
                         ToolDictNames.craftingToolMortar,
                         new ItemStack(Blocks.CLAY, 1));
             }
-            if (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, "Wheat", true)) {
+            if (GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.mortar, "Wheat", true)) {
                 ModHandler.addShapelessCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Wheat, 1),
                         ModHandler.RecipeBits.NOT_REMOVABLE,
                         ToolDictNames.craftingToolMortar,
                         new ItemStack(Items.WHEAT, 1));
             }
-            if (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, "Flint", true)) {
+            if (GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.mortar, "Flint", true)) {
                 ModHandler.addShapelessCraftingRecipe(new ItemStack(Items.FLINT, 1),
                         ModHandler.RecipeBits.NOT_REMOVABLE,
                         ToolDictNames.craftingToolMortar,
                         new ItemStack(Blocks.GRAVEL, 1));
             }
-            if (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, "Blaze", true)) {
+            if (GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.mortar, "Blaze", true)) {
                 ModHandler.addShapelessCraftingRecipe(new ItemStack(Items.BLAZE_POWDER, 2),
                         ModHandler.RecipeBits.NOT_REMOVABLE,
                         ToolDictNames.craftingToolMortar,

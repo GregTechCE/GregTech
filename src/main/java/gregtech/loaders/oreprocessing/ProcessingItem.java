@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.GT_Values;
+import gregtech.api.GTValues;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
@@ -24,7 +24,7 @@ public class ProcessingItem implements IOreRegistrationHandler {
             switch (aOreDictName) {
                 case "itemSilicon":
                     OreDictionaryUnifier.addItemData(stack, new ItemMaterialInfo(Materials.Silicon, 3628800L, new MaterialStack[0]));
-                    GT_Values.RA.addFormingPressRecipe(GT_Utility.copyAmount(1, stack), ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 0, 19), ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1, 20), 200, 16);
+                    GTValues.RA.addFormingPressRecipe(GT_Utility.copyAmount(1, stack), ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 0, 19), ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1, 20), 200, 16);
                 case "itemWheat":
                     OreDictionaryUnifier.addItemData(stack, new ItemMaterialInfo(Materials.Wheat, 3628800L, new MaterialStack[0]));
                 case "itemManganese":

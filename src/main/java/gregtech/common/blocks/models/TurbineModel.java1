@@ -2,7 +2,7 @@ package gregtech.common.blocks.models;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableSet;
-import gregtech.api.GT_Values;
+import gregtech.api.GTValues;
 import gregtech.common.blocks.properties.UnlistedBlockAccess;
 import gregtech.common.blocks.properties.UnlistedBlockPos;
 import net.minecraft.block.state.IBlockState;
@@ -33,10 +33,10 @@ import java.util.List;
 
 public class TurbineModel implements IModel {
 
-	public static final ModelResourceLocation BAKED_TURBINE_MODEL = new ModelResourceLocation(new ResourceLocation(GT_Values.MODID, "turbine"), "normal");
-	public static final ModelResourceLocation BAKED_SSTEEL_TURBINE_MODEL = new ModelResourceLocation(new ResourceLocation(GT_Values.MODID, "ssteel_turbine"), "normal");
-	public static final ModelResourceLocation BAKED_TITANIUM_TURBINE_MODEL = new ModelResourceLocation(new ResourceLocation(GT_Values.MODID, "titanium_turbine"), "normal");
-	public static final ModelResourceLocation BAKED_TSTEEL_TURBINE_MODEL = new ModelResourceLocation(new ResourceLocation(GT_Values.MODID, "tsteel_turbine"), "normal");
+	public static final ModelResourceLocation BAKED_TURBINE_MODEL = new ModelResourceLocation(new ResourceLocation(GTValues.MODID, "turbine"), "normal");
+	public static final ModelResourceLocation BAKED_SSTEEL_TURBINE_MODEL = new ModelResourceLocation(new ResourceLocation(GTValues.MODID, "ssteel_turbine"), "normal");
+	public static final ModelResourceLocation BAKED_TITANIUM_TURBINE_MODEL = new ModelResourceLocation(new ResourceLocation(GTValues.MODID, "titanium_turbine"), "normal");
+	public static final ModelResourceLocation BAKED_TSTEEL_TURBINE_MODEL = new ModelResourceLocation(new ResourceLocation(GTValues.MODID, "tsteel_turbine"), "normal");
 
 	public static final IModel TURBINE_MODEL = create("LARGETURBINE_ST_ACTIVE", "LARGETURBINE_ST", "MACHINE_CASING_TURBINE", 9);
 	public static final IModel SSTEEL_TURBINE_MODEL = create("LARGETURBINE_SS_ACTIVE", "LARGETURBINE_SS", "MACHINE_CASING_CLEAN_STAINLESSSTEEL", 9);
@@ -46,14 +46,14 @@ public class TurbineModel implements IModel {
 	private static IModel create(String textureNamePrefixActive, String textureNamePrefixInactive, String defaultTexture, int amount) {
 		List<ResourceLocation> texturesActive = new ArrayList<>(amount);
 		for (int i = 0; i < amount; i++) {
-			texturesActive.add(i, new ResourceLocation(GT_Values.MODID, "blocks/iconsets/" + textureNamePrefixActive + (i + 1)));
+			texturesActive.add(i, new ResourceLocation(GTValues.MODID, "blocks/iconsets/" + textureNamePrefixActive + (i + 1)));
 		}
 
 		List<ResourceLocation> texturesInactive = new ArrayList<>(amount);
 		for (int i = 0; i < amount; i++) {
-			texturesInactive.add(i, new ResourceLocation(GT_Values.MODID, "blocks/iconsets/" + textureNamePrefixInactive + (i + 1)));
+			texturesInactive.add(i, new ResourceLocation(GTValues.MODID, "blocks/iconsets/" + textureNamePrefixInactive + (i + 1)));
 		}
-		return new TurbineModel(texturesActive, texturesInactive, new ResourceLocation(GT_Values.MODID, "blocks/iconsets/" + defaultTexture));
+		return new TurbineModel(texturesActive, texturesInactive, new ResourceLocation(GTValues.MODID, "blocks/iconsets/" + defaultTexture));
 	}
 
 	private final List<ResourceLocation> active;
@@ -99,7 +99,7 @@ public class TurbineModel implements IModel {
 
 		@Override
 		public boolean accepts(ResourceLocation modelLocation) {
-			return modelLocation.getResourceDomain().equals(GT_Values.MODID)
+			return modelLocation.getResourceDomain().equals(GTValues.MODID)
 					&& ("turbine".equals(modelLocation.getResourcePath())
 					|| "ssteel_turbine".equals(modelLocation.getResourcePath())
 					|| "titanium_turbine".equals(modelLocation.getResourcePath())

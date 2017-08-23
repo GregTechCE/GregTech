@@ -1,9 +1,8 @@
 package gregtech.api.metatileentity;
 
 import com.google.common.base.Preconditions;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.capability.ITurnable;
-import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -85,7 +84,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     @Override
     public String getMetaName() {
-        return GregTech_API.METATILEENTITY_REGISTRY.getNameForObject(factory);
+        return GregTechAPI.METATILEENTITY_REGISTRY.getNameForObject(factory);
     }
 
     @Override
@@ -488,8 +487,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     public void doExplosion(long strength) {
         BlockPos pos = holder.getWorldPos();
         World world = holder.getWorldObj();
-        GT_Utility.playSound(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, GregTech_API.sSoundList.get(209), SoundCategory.BLOCKS, 1.0f, 1.0f);
-        if (GregTech_API.sMachineExplosions) {
+        GT_Utility.playSound(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, GregTechAPI.sSoundList.get(209), SoundCategory.BLOCKS, 1.0f, 1.0f);
+        if (GregTechAPI.sMachineExplosions) {
             world.createExplosion(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, strength, true);
         }
     }

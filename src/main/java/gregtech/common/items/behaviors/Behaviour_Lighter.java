@@ -1,6 +1,6 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.Entity;
@@ -45,7 +45,7 @@ public class Behaviour_Lighter
             prepare(aStack);
             long tFuelAmount = GT_Utility.ItemNBT.getLighterFuel(aStack);
             if (GT_Utility.areStacksEqual(aStack, this.mUsedLighter, true)) {
-                GT_Utility.sendSoundToPlayers(aPlayer.worldObj, GregTech_API.sSoundList.get(6), 1.0F, 1.0F, MathHelper.floor_double(aEntity.posX), MathHelper.floor_double(aEntity.posY), MathHelper.floor_double(aEntity.posZ));
+                GT_Utility.sendSoundToPlayers(aPlayer.worldObj, GregTechAPI.sSoundList.get(6), 1.0F, 1.0F, MathHelper.floor_double(aEntity.posX), MathHelper.floor_double(aEntity.posY), MathHelper.floor_double(aEntity.posZ));
                 ((EntityCreeper) aEntity).ignite();
                 if (!aPlayer.capabilities.isCreativeMode) {
                     tFuelAmount -= 1L;
@@ -81,7 +81,7 @@ public class Behaviour_Lighter
             prepare(aStack);
             long tFuelAmount = GT_Utility.ItemNBT.getLighterFuel(aStack);
 
-            GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(6), 1.0F, 1.0F, clickedBlock.getX(), clickedBlock.getY(), clickedBlock.getZ());
+            GT_Utility.sendSoundToPlayers(aWorld, GregTechAPI.sSoundList.get(6), 1.0F, 1.0F, clickedBlock.getX(), clickedBlock.getY(), clickedBlock.getZ());
             aWorld.setBlockState(clickedBlock, Blocks.FIRE.getDefaultState(), 11);
 
             if (!aPlayer.capabilities.isCreativeMode) {

@@ -1,8 +1,8 @@
 package gregtech.api.recipes;
 
 import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
-import gregtech.api.GT_Values;
+import gregtech.api.GTValues;
+import gregtech.api.GregTechAPI;
 import gregtech.api.metatileentity.GregtechTileEntity;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.type.Material;
@@ -13,7 +13,6 @@ import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.MetaItems;
-import ic2.api.item.IC2Items;
 import ic2.api.recipe.Recipes;
 import ic2.core.item.type.CraftingItemType;
 import ic2.core.ref.ItemName;
@@ -25,7 +24,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import org.apache.commons.lang3.Validate;
@@ -38,8 +36,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import static gregtech.api.GT_Values.L;
-import static gregtech.api.GT_Values.W;
+import static gregtech.api.GTValues.L;
+import static gregtech.api.GTValues.W;
 
 //todo update examples after materials/oredictunificator/itemlist update
 public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
@@ -67,7 +65,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * Examples:
 	 * <pre>
 	 * 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-	 *			.inputs(OreDictionaryUnifier.get(OrePrefix.stick, Materials.Wood, 1L), new ItemStack(Items.coal, 1, GT_Values.W))
+	 *			.inputs(OreDictionaryUnifier.get(OrePrefix.stick, Materials.Wood, 1L), new ItemStack(Items.coal, 1, GTValues.W))
 	 *			.outputs(new ItemStack(Blocks.torch, 4))
 	 *			.duration(400)
 	 *			.EUt(1)
@@ -221,7 +219,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * Example:
 	 * <pre>
 	 * 		RecipeMap.MIXER_RECIPES.recipeBuilder()
-	 * 				.inputs(new ItemStack(Blocks.SAND, 1, GT_Values.W), new ItemStack(Blocks.DIRT, 1, GT_Values.W))
+	 * 				.inputs(new ItemStack(Blocks.SAND, 1, GTValues.W), new ItemStack(Blocks.DIRT, 1, GTValues.W))
 	 * 				.fluidInputs(Materials.Water.getFluid(250))
 	 * 				.outputs(GT_ModHandler.getModItem("Forestry", "soil", 2, 1))
 	 * 				.duration(16)
@@ -283,7 +281,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * Example:
 	 * <pre>
 	 * 		RecipeMap.CHEMICAL_BATH_RECIPES.recipeBuilder()
-	 * 				.inputs(new ItemStack(Items.reeds, 1, GT_Values.W))
+	 * 				.inputs(new ItemStack(Items.reeds, 1, GTValues.W))
 	 * 				.fluidInputs(Materials.Water.getFluid(100))
 	 * 				.outputs(new ItemStack(Items.paper, 1, 0))
 	 * 				.duration(100)
@@ -654,7 +652,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * Example:
 	 * <pre>
 	 *       RecipeMap.CANNER_RECIPES.recipeBuilder()
-	 * 				.inputs(new ItemStack(Items.cake, 1, GT_Values.W), ItemList.IC2_Food_Can_Empty.get(12))
+	 * 				.inputs(new ItemStack(Items.cake, 1, GTValues.W), ItemList.IC2_Food_Can_Empty.get(12))
 	 * 				.outputs(ItemList.IC2_Food_Can_Filled.get(12))
 	 * 				.duration(600)
 	 * 				.EUt(1)
@@ -865,7 +863,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		this.showVoltageAmperageInJEI = showVoltageAmperageInJEI;
 		this.recipeList = recipeList;
 		this.JEIName = JEIName == null ? unlocalizedName : JEIName;
-		this.JEIGUIPath = GT_Values.MODID + ":textures/gui/" + (JEIGUIPath.endsWith(".png") ? JEIGUIPath : JEIGUIPath + ".png");
+		this.JEIGUIPath = GTValues.MODID + ":textures/gui/" + (JEIGUIPath.endsWith(".png") ? JEIGUIPath : JEIGUIPath + ".png");
 		this.JEISpecialValuePre = JEISpecialValuePre;
 		this.JEISpecialValueMultiplier = JEISpecialValueMultiplier;
 		this.JEISpecialValuePost = JEISpecialValuePost;
@@ -943,7 +941,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 		// Some Recipe Classes require a certain amount of Inputs of certain kinds. Like "at least 1 Fluid + 1 Stack" or "at least 2 Stacks" before they start searching for Recipes.
 		// This improves Performance massively, especially if people leave things like Circuits, Molds or Shapes in their Machines to select Sub Recipes.
-		if (GregTech_API.sPostloadFinished) {
+		if (GregTechAPI.sPostloadFinished) {
 			if (minFluidInputs > 0) {
 				if (fluidInputs == null) {
 					return null;
@@ -1333,7 +1331,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		@Override
 		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack[] inputs) {
 			Recipe recipe = super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, fluidInputs, inputs);
-			if (inputs == null || inputs.length <= 0 || inputs[0] == null || recipe != null || !GregTech_API.sPostloadFinished)
+			if (inputs == null || inputs.length <= 0 || inputs[0] == null || recipe != null || !GregTechAPI.sPostloadFinished)
 				return recipe;
 			if (fluidInputs != null && fluidInputs.length > 0 && fluidInputs[0] != null) {
 				ItemStack output = GT_Utility.fillFluidContainer(fluidInputs[0], inputs[0], false, true);
@@ -1575,7 +1573,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 		@Override
 		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack[] inputs) {
-			if (inputs == null || inputs.length <= 0 || inputs[0] == null || !GregTech_API.sPostloadFinished)
+			if (inputs == null || inputs.length <= 0 || inputs[0] == null || !GregTechAPI.sPostloadFinished)
 				return super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, fluidInputs, inputs);
 			inputRecipe = super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, fluidInputs, inputs);
 			if (inputRecipe != null) return inputRecipe;
@@ -1613,7 +1611,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		@Override
 		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack[] inputs) {
 			Recipe recipe = super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, fluidInputs, inputs);
-			if (inputs == null || inputs.length <= 0 || inputs[0] == null || recipe == null || !GregTech_API.sPostloadFinished)
+			if (inputs == null || inputs.length <= 0 || inputs[0] == null || recipe == null || !GregTechAPI.sPostloadFinished)
 				return recipe;
 //			for (ItemStack stack : inputs) {
 //				if (ItemList.Paper_Printed_Pages.isStackEqual(stack, false, true)) {
@@ -1645,7 +1643,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		@Override
 		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack[] inputs) {
 			Recipe recipe = super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, fluidInputs, inputs);
-			if (inputs == null || inputs.length < 2 || inputs[0] == null || inputs[1] == null || !GregTech_API.sPostloadFinished)
+			if (inputs == null || inputs.length < 2 || inputs[0] == null || inputs[1] == null || !GregTechAPI.sPostloadFinished)
 				return recipe;
 			if (recipe == null) {
 				if (MetaItems.SHAPE_MOLD_NAME.getStackForm().isItemEqual(inputs[0])) {
@@ -1713,10 +1711,10 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		@Override
 		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack[] inputs) {
 			Recipe recipe = super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, fluidInputs, inputs);
-			if (inputs == null || inputs.length <= 0 || inputs[0] == null || fluidInputs == null || fluidInputs.length <= 0 || fluidInputs[0] == null || !GregTech_API.sPostloadFinished)
+			if (inputs == null || inputs.length <= 0 || inputs[0] == null || fluidInputs == null || fluidInputs.length <= 0 || fluidInputs[0] == null || !GregTechAPI.sPostloadFinished)
 				return recipe;
 
-			EnumDyeColor color = GregTech_API.LIQUIDDYE_MAP.inverse().get(fluidInputs[0]);
+			EnumDyeColor color = GregTechAPI.LIQUIDDYE_MAP.inverse().get(fluidInputs[0]);
 			if (color != null) return recipe;
 
 			if (recipe == null) {
@@ -1810,12 +1808,12 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 		@Override
 		public boolean containsInput(FluidStack fluid) {
-			return super.containsInput(fluid) || GregTech_API.LIQUIDDYE_MAP.containsValue(fluid);
+			return super.containsInput(fluid) || GregTechAPI.LIQUIDDYE_MAP.containsValue(fluid);
 		}
 
 		@Override
 		public boolean containsInput(Fluid fluid) {
-			return super.containsInput(fluid) || GregTech_API.LIQUIDDYE_MAP.containsValue(fluid);
+			return super.containsInput(fluid) || GregTechAPI.LIQUIDDYE_MAP.containsValue(fluid);
 		}
 	}
 }

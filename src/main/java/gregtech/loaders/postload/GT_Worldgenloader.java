@@ -1,6 +1,6 @@
 package gregtech.loaders.postload;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.ConfigCategories;
 import gregtech.api.unification.material.Materials;
 import gregtech.common.GT_Worldgen_GT_Ore_Layer;
@@ -14,58 +14,58 @@ import net.minecraftforge.fml.common.Loader;
 public class GT_Worldgenloader
         implements Runnable {
     public void run() {
-        boolean tPFAA = (GregTech_API.sWorldgenFile.get(ConfigCategories.general, "AutoDetectPFAA", true)) && (Loader.isModLoaded("PFAAGeologica"));
+        boolean tPFAA = (GregTechAPI.sWorldgenFile.get(ConfigCategories.general, "AutoDetectPFAA", true)) && (Loader.isModLoaded("PFAAGeologica"));
 
         new GT_Worldgenerator();
 
-        IBlockState blockState = GregTech_API.sBlockGranites.getDefaultState()
+        IBlockState blockState = GregTechAPI.sBlockGranites.getDefaultState()
                 .withProperty(BlockStonesAbstract.STONE_VARIANT, BlockStonesAbstract.EnumStoneVariant.NORMAL)
-                .withProperty(GregTech_API.sBlockGranites.getMaterialProperty(), Materials.GraniteBlack);
+                .withProperty(GregTechAPI.sBlockGranites.getMaterialProperty(), Materials.GraniteBlack);
         new GT_Worldgen_Stone("overworld.stone.blackgranite.tiny", true, blockState, 0, 1, 50, 48, 0, 120, null, false);
         new GT_Worldgen_Stone("overworld.stone.blackgranite.small", true, blockState, 0, 1, 100, 96, 0, 120, null, false);
         new GT_Worldgen_Stone("overworld.stone.blackgranite.medium", true, blockState, 0, 1, 200, 144, 0, 120, null, false);
         new GT_Worldgen_Stone("overworld.stone.blackgranite.large", true, blockState, 0, 1, 300, 192, 0, 120, null, false);
         new GT_Worldgen_Stone("overworld.stone.blackgranite.huge", true, blockState, 0, 1, 400, 240, 0, 120, null, false);
-		blockState = blockState.withProperty(GregTech_API.sBlockGranites.getMaterialProperty(), Materials.GraniteRed);
+		blockState = blockState.withProperty(GregTechAPI.sBlockGranites.getMaterialProperty(), Materials.GraniteRed);
         new GT_Worldgen_Stone("overworld.stone.redgranite.tiny", true, blockState, 0, 1, 50, 48, 0, 120, null, false);
         new GT_Worldgen_Stone("overworld.stone.redgranite.small", true, blockState, 0, 1, 100, 96, 0, 120, null, false);
         new GT_Worldgen_Stone("overworld.stone.redgranite.medium", true, blockState, 0, 1, 200, 144, 0, 120, null, false);
         new GT_Worldgen_Stone("overworld.stone.redgranite.large", true, blockState, 0, 1, 300, 192, 0, 120, null, false);
         new GT_Worldgen_Stone("overworld.stone.redgranite.huge", true, blockState, 0, 1, 400, 240, 0, 120, null, false);
 
-		blockState = blockState.withProperty(GregTech_API.sBlockGranites.getMaterialProperty(), Materials.GraniteBlack);
+		blockState = blockState.withProperty(GregTechAPI.sBlockGranites.getMaterialProperty(), Materials.GraniteBlack);
 		new GT_Worldgen_Stone("nether.stone.blackgranite.tiny", false, blockState, -1, 1, 50, 48, 0, 120, null, false);
         new GT_Worldgen_Stone("nether.stone.blackgranite.small", false, blockState, -1, 1, 100, 96, 0, 120, null, false);
         new GT_Worldgen_Stone("nether.stone.blackgranite.medium", false, blockState, -1, 1, 200, 144, 0, 120, null, false);
         new GT_Worldgen_Stone("nether.stone.blackgranite.large", false, blockState, -1, 1, 300, 192, 0, 120, null, false);
         new GT_Worldgen_Stone("nether.stone.blackgranite.huge", false, blockState, -1, 1, 400, 240, 0, 120, null, false);
-		blockState = blockState.withProperty(GregTech_API.sBlockGranites.getMaterialProperty(), Materials.GraniteRed);
+		blockState = blockState.withProperty(GregTechAPI.sBlockGranites.getMaterialProperty(), Materials.GraniteRed);
 		new GT_Worldgen_Stone("nether.stone.redgranite.tiny", false, blockState, -1, 1, 50, 48, 0, 120, null, false);
         new GT_Worldgen_Stone("nether.stone.redgranite.small", false, blockState, -1, 1, 100, 96, 0, 120, null, false);
         new GT_Worldgen_Stone("nether.stone.redgranite.medium", false, blockState, -1, 1, 200, 144, 0, 120, null, false);
         new GT_Worldgen_Stone("nether.stone.redgranite.large", false, blockState, -1, 1, 300, 192, 0, 120, null, false);
         new GT_Worldgen_Stone("nether.stone.redgranite.huge", false, blockState, -1, 1, 400, 240, 0, 120, null, false);
 
-		blockState = GregTech_API.sBlockStones.getDefaultState();
+		blockState = GregTechAPI.sBlockStones.getDefaultState();
         new GT_Worldgen_Stone("overworld.stone.marble.tiny", true, blockState, 0, 1, 50, 48, 0, 120, null, false);
         new GT_Worldgen_Stone("overworld.stone.marble.small", true, blockState, 0, 1, 100, 96, 0, 120, null, false);
         new GT_Worldgen_Stone("overworld.stone.marble.medium", true, blockState, 0, 1, 200, 144, 0, 120, null, false);
         new GT_Worldgen_Stone("overworld.stone.marble.large", true, blockState, 0, 1, 300, 192, 0, 120, null, false);
         new GT_Worldgen_Stone("overworld.stone.marble.huge", true, blockState, 0, 1, 400, 240, 0, 120, null, false);
-		blockState = blockState.withProperty(GregTech_API.sBlockStones.getMaterialProperty(), Materials.Basalt);
+		blockState = blockState.withProperty(GregTechAPI.sBlockStones.getMaterialProperty(), Materials.Basalt);
         new GT_Worldgen_Stone("overworld.stone.basalt.tiny", true, blockState, 0, 1, 50, 48, 0, 120, null, false);
         new GT_Worldgen_Stone("overworld.stone.basalt.small", true, blockState, 0, 1, 100, 96, 0, 120, null, false);
         new GT_Worldgen_Stone("overworld.stone.basalt.medium", true, blockState, 0, 1, 200, 144, 0, 120, null, false);
         new GT_Worldgen_Stone("overworld.stone.basalt.large", true, blockState, 0, 1, 300, 192, 0, 120, null, false);
         new GT_Worldgen_Stone("overworld.stone.basalt.huge", true, blockState, 0, 1, 400, 240, 0, 120, null, false);
 
-		blockState = blockState.withProperty(GregTech_API.sBlockStones.getMaterialProperty(), Materials.Marble);
+		blockState = blockState.withProperty(GregTechAPI.sBlockStones.getMaterialProperty(), Materials.Marble);
         new GT_Worldgen_Stone("nether.stone.marble.tiny", false, blockState, -1, 1, 50, 48, 0, 120, null, false);
         new GT_Worldgen_Stone("nether.stone.marble.small", false, blockState, -1, 1, 100, 96, 0, 120, null, false);
         new GT_Worldgen_Stone("nether.stone.marble.medium", false, blockState, -1, 1, 200, 144, 0, 120, null, false);
         new GT_Worldgen_Stone("nether.stone.marble.large", false, blockState, -1, 1, 300, 192, 0, 120, null, false);
         new GT_Worldgen_Stone("nether.stone.marble.huge", false, blockState, -1, 1, 400, 240, 0, 120, null, false);
-		blockState = blockState.withProperty(GregTech_API.sBlockStones.getMaterialProperty(), Materials.Basalt);
+		blockState = blockState.withProperty(GregTechAPI.sBlockStones.getMaterialProperty(), Materials.Basalt);
         new GT_Worldgen_Stone("nether.stone.basalt.tiny", false,blockState, -1, 1, 50, 48, 0, 120, null, false);
         new GT_Worldgen_Stone("nether.stone.basalt.small", false, blockState, -1, 1, 100, 96, 0, 120, null, false);
         new GT_Worldgen_Stone("nether.stone.basalt.medium", false, blockState, -1, 1, 200, 144, 0, 120, null, false);
@@ -108,10 +108,10 @@ public class GT_Worldgenloader
         new GT_Worldgen_GT_Ore_SmallPieces("ore.small.sulfur_o", true, 5, 15, 8, !tPFAA, false, false, false, false, false, Materials.Sulfur);
 
         /*int i = 0;
-        for (int j = GregTech_API.sWorldgenFile.get("worldgen", "AmountOfCustomSmallOreSlots", 16); i < j; i++) {
+        for (int j = GregTechAPI.sWorldgenFile.get("worldgen", "AmountOfCustomSmallOreSlots", 16); i < j; i++) {
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.custom." + (i < 10 ? "0" : "") + i, false, 0, 0, 0, false, false, false, Materials._NULL);
         }*/
-        /* TODO if(GregTech_API.mImmersiveEngineering && GT_Mod.gregtechproxy.mImmersiveEngineeringRecipes){
+        /* TODO if(GregTechAPI.mImmersiveEngineering && GT_Mod.gregtechproxy.mImmersiveEngineeringRecipes){
             blusunrize.immersiveengineering.api.tool.ExcavatorHandler.mineralList.clear();
             blusunrize.immersiveengineering.api.tool.ExcavatorHandler.mineralCache.clear();
         }*/
@@ -149,7 +149,7 @@ public class GT_Worldgenloader
         new GT_Worldgen_GT_Ore_Layer("ore.mix.oilsand", true, 50, 80, 80, 6, 32, !tPFAA, false, false, false, false, false, Materials.Oilsands, Materials.Oilsands, Materials.Oilsands, Materials.Oilsands);
 
         /*i = 0;
-        for (int j = GregTech_API.sWorldgenFile.get("worldgen", "AmountOfCustomLargeVeinSlots", 16); i < j; i++) {
+        for (int j = GregTechAPI.sWorldgenFile.get("worldgen", "AmountOfCustomLargeVeinSlots", 16); i < j; i++) {
             new GT_Worldgen_GT_Ore_Layer("ore.mix.custom." + (i < 10 ? "0" : "") + i, false, 0, 0, 0, 0, 0, false, false, false, Materials._NULL, Materials._NULL, Materials._NULL, Materials._NULL);
         }
         new GT_Worldgen_GT_Ore_Layer("ore.mix.custom.00", false, 0, 0, 0, 0, 0, false, false, false, Materials._NULL, Materials._NULL, Materials._NULL, Materials._NULL);
@@ -170,7 +170,7 @@ public class GT_Worldgenloader
         new GT_Worldgen_GT_Ore_Layer("ore.mix.custom.15", false, 0, 0, 0, 0, 0, false, false, false, Materials._NULL, Materials._NULL, Materials._NULL, Materials._NULL);*/
 
         /* TODO
-        if(GregTech_API.mImmersiveEngineering && GT_Mod.gregtechproxy.mImmersiveEngineeringRecipes){
+        if(GregTechAPI.mImmersiveEngineering && GT_Mod.gregtechproxy.mImmersiveEngineeringRecipes){
             blusunrize.immersiveengineering.api.tool.ExcavatorHandler.recalculateChances(true);
         }*/
     }
