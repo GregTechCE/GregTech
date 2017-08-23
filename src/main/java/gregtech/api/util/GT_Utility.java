@@ -309,17 +309,6 @@ public class GT_Utility {
         return i;
     }
 
-    public static void checkAvailabilities() {
-        if (CHECK_ALL) {
-            try {
-                Class tClass = cofh.api.energy.IEnergyReceiver.class;
-                tClass.getCanonicalName();
-                RF_CHECK = true;
-            } catch (Throwable exception) {}
-            CHECK_ALL = false;
-        }
-    }
-
     /**
      * Moves Stack from Inv-Slot to Inv-Slot, without checking if its even allowed. (useful for internal Inventory Operations)
      *
@@ -445,17 +434,6 @@ public class GT_Utility {
     public static String getFluidName(FluidStack aFluid, boolean aLocalized) {
         if (aFluid == null) return E;
         return getFluidName(aFluid.getFluid(), aLocalized);
-    }
-
-    public static void addFluidContainerData(FluidContainerData aData) {
-        sFluidContainerList.add(aData);
-        sFilledContainerToData.put(new SimpleItemStack(aData.filledContainer), aData);
-        Map<Fluid, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData.get(new SimpleItemStack(aData.emptyContainer));
-        if (tFluidToContainer == null) {
-            sEmptyContainerToFluidToData.put(new SimpleItemStack(aData.emptyContainer), tFluidToContainer = new HashMap<>());
-            GregTechAPI.sFluidMappings.add(tFluidToContainer);
-        }
-        tFluidToContainer.put(aData.fluid.getFluid(), aData);
     }
 
     public static ItemStack fillFluidContainer(FluidStack aFluid, ItemStack aStack, boolean aRemoveFluidDirectly, boolean aCheckIFluidContainerItems) {

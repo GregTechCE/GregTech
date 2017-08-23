@@ -9,8 +9,6 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 
 /**
- * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
- * <p/>
  * Just a simple Logging Function.
  */
 public class GTLog {
