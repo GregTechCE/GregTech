@@ -6,15 +6,14 @@ import gregtech.api.capability.*;
 import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.damagesources.DamageSources;
 import gregtech.api.enchants.EnchantmentRadioactivity;
-import gregtech.api.items.ItemList;
+import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.enums.SubTag;
 import gregtech.api.events.BlockScanningEvent;
 import gregtech.api.items.IDebugableBlock;
-import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.SimpleItemStack;
+import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.common.GT_Proxy;
 import ic2.api.crops.CropProperties;
 import ic2.api.crops.ICropTile;
@@ -100,111 +99,115 @@ public class GT_Utility {
         return null; //unknown implementation
     }
 
-    public static Field getField(Object aObject, String aField) {
-        Field rField = null;
+    public static Field getField(Object object, String fieldName) {
+        Field field = null;
         try {
-            rField = aObject.getClass().getDeclaredField(aField);
-            rField.setAccessible(true);
+            field = object.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
         } catch (Throwable throwable) {}
-        return rField;
+        return field;
     }
 
-    public static Field getField(Class aObject, String aField) {
-        Field rField = null;
+    public static Field getField(Class object, String fieldName) {
+        Field field = null;
         try {
-            rField = aObject.getDeclaredField(aField);
-            rField.setAccessible(true);
+            field = object.getDeclaredField(fieldName);
+            field.setAccessible(true);
         } catch (Throwable throwable) {}
-        return rField;
+        return field;
     }
 
-    public static Method getMethod(Class<?> aObject, String aMethod, Class<?>... aParameterTypes) {
-        Method rMethod = null;
+    public static Method getMethod(Class<?> clazz, String methodName, Class<?>... parameterTypes) {
+        Method method = null;
         try {
-            rMethod = aObject.getMethod(aMethod, aParameterTypes);
-            rMethod.setAccessible(true);
+            method = clazz.getMethod(methodName, parameterTypes);
+            method.setAccessible(true);
         } catch (Throwable throwable) {}
-        return rMethod;
+        return method;
     }
 
-    public static Field getField(Object aObject, String aField, boolean aPrivate, boolean aLogErrors) {
+    public static Field getField(Object object, String fieldName, boolean isPrivate, boolean logErrors) {
         try {
-            Field tField = (aObject instanceof Class) ? ((Class) aObject).getDeclaredField(aField) : (aObject instanceof String) ? Class.forName((String) aObject).getDeclaredField(aField) : aObject.getClass().getDeclaredField(aField);
-            if (aPrivate) tField.setAccessible(true);
-            return tField;
-        } catch (Throwable throwable) {
-            if (aLogErrors) {
-                throwable.printStackTrace(GTLog.err);
-            }
-        }
-        return null;
-    }
-
-    public static Object getFieldContent(Object aObject, String aField, boolean aPrivate, boolean aLogErrors) {
-        try {
-            Field tField = (aObject instanceof Class) ? ((Class) aObject).getDeclaredField(aField) : (aObject instanceof String) ? Class.forName((String) aObject).getDeclaredField(aField) : aObject.getClass().getDeclaredField(aField);
-            if (aPrivate) tField.setAccessible(true);
-            return tField.get(aObject instanceof Class || aObject instanceof String ? null : aObject);
+            Field field = (object instanceof Class) ? ((Class) object).getDeclaredField(fieldName) : (object instanceof String) ? Class.forName((String) object).getDeclaredField(fieldName) : object.getClass().getDeclaredField(fieldName);
+            if (isPrivate) field.setAccessible(true);
+            return field;
         } catch (Throwable e) {
-            if (aLogErrors) e.printStackTrace(GTLog.err);
+            if (logErrors) {
+                GTLog.logger.error(e);
+            }
         }
         return null;
     }
 
-    public static Object callMethod(Object aObject, String aMethod, boolean aPrivate, boolean aUseUpperCasedDataTypes, boolean aLogErrors, Object... aParameters) {
+    public static Object getFieldContent(Object object, String fieldName, boolean isPrivate, boolean logErrors) {
         try {
-            Class<?>[] tParameterTypes = new Class<?>[aParameters.length];
-            for (byte i = 0; i < aParameters.length; i++) {
-                if (aParameters[i] instanceof Class) {
-                    tParameterTypes[i] = (Class) aParameters[i];
-                    aParameters[i] = null;
-                } else {
-                    tParameterTypes[i] = aParameters[i].getClass();
-                }
-                if (!aUseUpperCasedDataTypes) {
-                    if (tParameterTypes[i] == Boolean.class) tParameterTypes[i] = boolean.class;
-                    else if (tParameterTypes[i] == Byte.class) tParameterTypes[i] = byte.class;
-                    else if (tParameterTypes[i] == Short.class) tParameterTypes[i] = short.class;
-                    else if (tParameterTypes[i] == Integer.class) tParameterTypes[i] = int.class;
-                    else if (tParameterTypes[i] == Long.class) tParameterTypes[i] = long.class;
-                    else if (tParameterTypes[i] == Float.class) tParameterTypes[i] = float.class;
-                    else if (tParameterTypes[i] == Double.class) tParameterTypes[i] = double.class;
-                }
-            }
-
-            Method tMethod = (aObject instanceof Class) ? ((Class<?>) aObject).getMethod(aMethod, tParameterTypes) :
-                    aObject.getClass().getMethod(aMethod, tParameterTypes);
-            if (aPrivate) tMethod.setAccessible(true);
-            return tMethod.invoke(aObject, aParameters);
-        } catch (Throwable throwable) {
-            if (aLogErrors) {
-                throwable.printStackTrace(GTLog.err);
+            Field field = (object instanceof Class) ? ((Class) object).getDeclaredField(fieldName) : (object instanceof String) ? Class.forName((String) object).getDeclaredField(fieldName) : object.getClass().getDeclaredField(fieldName);
+            if (isPrivate) field.setAccessible(true);
+            return field.get(object instanceof Class || object instanceof String ? null : object);
+        } catch (Throwable e) {
+            if (logErrors) {
+                GTLog.logger.error(e);
             }
         }
         return null;
     }
 
-    public static Object callConstructor(String aClass, int aConstructorIndex, Object aReplacementObject, boolean aLogErrors, Object... aParameters) {
-        if (aConstructorIndex < 0) {
+    public static Object callMethod(Object object, String methodName, boolean isPrivate, boolean useUpperCasedDataTypes, boolean logErrors, Object... parameters) {
+        try {
+            Class<?>[] parameterTypes = new Class<?>[parameters.length];
+            for (byte i = 0; i < parameters.length; i++) {
+                if (parameters[i] instanceof Class) {
+                    parameterTypes[i] = (Class) parameters[i];
+                    parameters[i] = null;
+                } else {
+                    parameterTypes[i] = parameters[i].getClass();
+                }
+                if (!useUpperCasedDataTypes) {
+                    if (parameterTypes[i] == Boolean.class) parameterTypes[i] = boolean.class;
+                    else if (parameterTypes[i] == Byte.class) parameterTypes[i] = byte.class;
+                    else if (parameterTypes[i] == Short.class) parameterTypes[i] = short.class;
+                    else if (parameterTypes[i] == Integer.class) parameterTypes[i] = int.class;
+                    else if (parameterTypes[i] == Long.class) parameterTypes[i] = long.class;
+                    else if (parameterTypes[i] == Float.class) parameterTypes[i] = float.class;
+                    else if (parameterTypes[i] == Double.class) parameterTypes[i] = double.class;
+                }
+            }
+
+            Method method = (object instanceof Class) ? ((Class<?>) object).getMethod(methodName, parameterTypes) :
+                    object.getClass().getMethod(methodName, parameterTypes);
+            if (isPrivate) method.setAccessible(true);
+            return method.invoke(object, parameters);
+        } catch (Throwable throwable) {
+            if (logErrors) {
+                GTLog.logger.error(throwable);
+            }
+        }
+        return null;
+    }
+
+    public static Object callConstructor(String clazz, int constructorIndex, Object replacementObject, boolean logErrors, Object... parameters) {
+        if (constructorIndex < 0) {
             try {
-                for (Constructor tConstructor : Class.forName(aClass).getConstructors()) {
+                for (Constructor constructor : Class.forName(clazz).getConstructors()) {
                     try {
-                        return tConstructor.newInstance(aParameters);
+                        return constructor.newInstance(parameters);
                     } catch (Throwable throwable) {}
                 }
             } catch (Throwable e) {
-                if (aLogErrors) e.printStackTrace(GTLog.err);
+                if (logErrors) {
+                    GTLog.logger.error(e);
+                }
             }
         } else {
             try {
-                return Class.forName(aClass).getConstructors()[aConstructorIndex].newInstance(aParameters);
+                return Class.forName(clazz).getConstructors()[constructorIndex].newInstance(parameters);
             } catch (Throwable throwable) {
-                if(aLogErrors) {
-                    throwable.printStackTrace(GTLog.err);
+                if(logErrors) {
+                    GTLog.logger.error(throwable);
                 }
             }
         }
-        return aReplacementObject;
+        return replacementObject;
     }
 
     public static PotionEffect copyPotionEffect(PotionEffect sample) {
@@ -269,9 +272,9 @@ public class GT_Utility {
         }
     }
 
-    public static String capitalizeString(String aString) {
-        if (aString != null && aString.length() > 0)
-            return aString.substring(0, 1).toUpperCase() + aString.substring(1);
+    public static String capitalizeString(String string) {
+        if (string != null && string.length() > 0)
+            return string.substring(0, 1).toUpperCase() + string.substring(1);
         return "";
     }
 
@@ -314,29 +317,29 @@ public class GT_Utility {
      *
      * @return the Amount of moved Items
      */
-    public static byte moveStackFromSlotAToSlotB(IInventory aTileEntity1, IInventory aTileEntity2, int aGrabFrom, int aPutTo, byte aMaxTargetStackSize, byte aMinTargetStackSize, byte aMaxMoveAtOnce, byte aMinMoveAtOnce) {
-        if (aTileEntity1 == null || aTileEntity2 == null || aMaxTargetStackSize <= 0 || aMinTargetStackSize <= 0 || aMinTargetStackSize > aMaxTargetStackSize || aMaxMoveAtOnce <= 0 || aMinMoveAtOnce > aMaxMoveAtOnce)
+    public static byte moveStackFromSlotAToSlotB(IInventory tileEntity1, IInventory tileEntity2, int grabFrom, int putTo, byte maxTargetStackSize, byte minTargetStackSize, byte maxMoveAtOnce, byte minMoveAtOnce) {
+        if (tileEntity1 == null || tileEntity2 == null || maxTargetStackSize <= 0 || minTargetStackSize <= 0 || minTargetStackSize > maxTargetStackSize || maxMoveAtOnce <= 0 || minMoveAtOnce > maxMoveAtOnce)
             return 0;
 
-        ItemStack tStack1 = aTileEntity1.getStackInSlot(aGrabFrom), tStack2 = aTileEntity2.getStackInSlot(aPutTo), tStack3;
-        if (tStack1 != null) {
-            if (tStack2 != null && !areStacksEqual(tStack1, tStack2)) return 0;
-            tStack3 = copy(tStack1);
-            aMaxTargetStackSize = (byte) Math.min(aMaxTargetStackSize, Math.min(tStack3.getMaxStackSize(), Math.min(tStack2 == null ? Integer.MAX_VALUE : tStack2.getMaxStackSize(), aTileEntity2.getInventoryStackLimit())));
-            tStack3.stackSize = Math.min(tStack3.stackSize, aMaxTargetStackSize - (tStack2 == null ? 0 : tStack2.stackSize));
-            if (tStack3.stackSize > aMaxMoveAtOnce) tStack3.stackSize = aMaxMoveAtOnce;
-            if (tStack3.stackSize + (tStack2 == null ? 0 : tStack2.stackSize) >= Math.min(tStack3.getMaxStackSize(), aMinTargetStackSize) && tStack3.stackSize >= aMinMoveAtOnce) {
-                tStack3 = aTileEntity1.decrStackSize(aGrabFrom, tStack3.stackSize);
-                aTileEntity1.markDirty();
-                if (tStack3 != null) {
-                    if (tStack2 == null) {
-                        aTileEntity2.setInventorySlotContents(aPutTo, copy(tStack3));
-                        aTileEntity2.markDirty();
+        ItemStack stack1 = tileEntity1.getStackInSlot(grabFrom), stack2 = tileEntity2.getStackInSlot(putTo), stack3;
+        if (stack1 != null) {
+            if (stack2 != null && !areStacksEqual(stack1, stack2)) return 0;
+            stack3 = copy(stack1);
+            maxTargetStackSize = (byte) Math.min(maxTargetStackSize, Math.min(stack3.getMaxStackSize(), Math.min(stack2 == null ? Integer.MAX_VALUE : stack2.getMaxStackSize(), tileEntity2.getInventoryStackLimit())));
+            stack3.stackSize = Math.min(stack3.stackSize, maxTargetStackSize - (stack2 == null ? 0 : stack2.stackSize));
+            if (stack3.stackSize > maxMoveAtOnce) stack3.stackSize = maxMoveAtOnce;
+            if (stack3.stackSize + (stack2 == null ? 0 : stack2.stackSize) >= Math.min(stack3.getMaxStackSize(), minTargetStackSize) && stack3.stackSize >= minMoveAtOnce) {
+                stack3 = tileEntity1.decrStackSize(grabFrom, stack3.stackSize);
+                tileEntity1.markDirty();
+                if (stack3 != null) {
+                    if (stack2 == null) {
+                        tileEntity2.setInventorySlotContents(putTo, copy(stack3));
+                        tileEntity2.markDirty();
                     } else {
-                        tStack2.stackSize += tStack3.stackSize;
-                        aTileEntity2.markDirty();
+                        stack2.stackSize += stack3.stackSize;
+                        tileEntity2.markDirty();
                     }
-                    return (byte) tStack3.stackSize;
+                    return (byte) stack3.stackSize;
                 }
             }
         }
@@ -344,244 +347,227 @@ public class GT_Utility {
     }
 
     @SuppressWarnings("unused")
-    public static boolean isAllowedToTakeFromSlot(IInventory aTileEntity, int aSlot, EnumFacing aSide, ItemStack aStack) {
-        if (aSide == null) {
+    public static boolean isAllowedToTakeFromSlot(IInventory tileEntity, int slot, EnumFacing facing, ItemStack stack) {
+        if (facing == null) {
             for(EnumFacing side : EnumFacing.VALUES) {
-                if(isAllowedToTakeFromSlot(aTileEntity, aSlot, side, aStack))
+                if(isAllowedToTakeFromSlot(tileEntity, slot, side, stack))
                     return true;
             }
         }
-        return !(aTileEntity instanceof ISidedInventory) ||
-                ((ISidedInventory) aTileEntity).canExtractItem(aSlot, aStack, aSide);
+        return !(tileEntity instanceof ISidedInventory) ||
+                ((ISidedInventory) tileEntity).canExtractItem(slot, stack, facing);
     }
 
     @SuppressWarnings("unused")
-    public static boolean isAllowedToPutIntoSlot(IInventory aTileEntity, int aSlot, EnumFacing aSide, ItemStack aStack, byte aMaxStackSize) {
-        ItemStack tStack = aTileEntity.getStackInSlot(aSlot);
-        if (tStack != null && (!areStacksEqual(tStack, aStack) || tStack.stackSize >= tStack.getMaxStackSize()))
+    public static boolean isAllowedToPutIntoSlot(IInventory tileEntity, int slot, EnumFacing facing, ItemStack stack, byte maxStackSize) {
+        ItemStack itemStack = tileEntity.getStackInSlot(slot);
+        if (itemStack != null && (!areStacksEqual(itemStack, stack) || itemStack.stackSize >= itemStack.getMaxStackSize()))
             return false;
-        if (aSide == null) {
+        if (facing == null) {
             for(EnumFacing side : EnumFacing.VALUES) {
-                if(isAllowedToPutIntoSlot(aTileEntity, aSlot, side, aStack, aMaxStackSize))
+                if(isAllowedToPutIntoSlot(tileEntity, slot, side, stack, maxStackSize))
                     return true;
             }
         }
-        aStack = copyAmount(aMaxStackSize, aStack);
-        return !(aTileEntity instanceof ISidedInventory &&
-                !((ISidedInventory) aTileEntity).canInsertItem(aSlot, aStack, aSide)) &&
-                aTileEntity.isItemValidForSlot(aSlot, aStack);
+        stack = copyAmount(maxStackSize, stack);
+        return !(tileEntity instanceof ISidedInventory &&
+                !((ISidedInventory) tileEntity).canInsertItem(slot, stack, facing)) &&
+                tileEntity.isItemValidForSlot(slot, stack);
     }
 
-    public static boolean listContainsItem(Collection<ItemStack> aList, ItemStack aStack, boolean aTIfListEmpty, boolean aInvertFilter) {
-        if (aStack == null || aStack.stackSize < 1) return false;
-        if (aList == null) return aTIfListEmpty;
-        while (aList.contains(null)) aList.remove(null);
-        if (aList.size() < 1) return aTIfListEmpty;
-        Iterator<ItemStack> tIterator = aList.iterator();
+    public static boolean listContainsItem(Collection<ItemStack> stacks, ItemStack stack, boolean IfListEmpty, boolean invertFilter) {
+        if (stack == null || stack.stackSize < 1) return false;
+        if (stacks == null) return IfListEmpty;
+        while (stacks.contains(null)) stacks.remove(null);
+        if (stacks.size() < 1) return IfListEmpty;
+        Iterator<ItemStack> tIterator = stacks.iterator();
         ItemStack tStack = null;
         while (tIterator.hasNext())
-            if ((tStack = tIterator.next()) != null && areStacksEqual(aStack, tStack)) return !aInvertFilter;
-        return aInvertFilter;
+            if ((tStack = tIterator.next()) != null && areStacksEqual(stack, tStack)) return !invertFilter;
+        return invertFilter;
     }
 
     //TODO delete after ModHandler.IC2#getMachineOutput rewrite/deletion
-    public static <T> boolean arrayContainsNonNull(T... aArray) {
-        if (aArray != null) for (Object tObject : aArray) if (tObject != null) return true;
+    public static <T> boolean arrayContainsNonNull(T... array) {
+        if (array != null) for (Object tObject : array) if (tObject != null) return true;
         return false;
     }
 
     @SuppressWarnings("unused")
-    public static boolean areStacksOrToolsEqual(ItemStack aStack1, ItemStack aStack2) {
-        if (aStack1 != null && aStack2 != null && aStack1.getItem() == aStack2.getItem()) {
-            if (aStack1.getItem().isDamageable()) return true;
-            return ((aStack1.getTagCompound() == null) == (aStack2.getTagCompound() == null)) && (aStack1.getTagCompound() == null || aStack1.getTagCompound().equals(aStack2.getTagCompound())) && (Items.FEATHER.getDamage(aStack1) == Items.FEATHER.getDamage(aStack2) || Items.FEATHER.getDamage(aStack1) == W || Items.FEATHER.getDamage(aStack2) == W);
+    public static boolean areStacksOrToolsEqual(ItemStack stack1, ItemStack stack2) {
+        if (stack1 != null && stack2 != null && stack1.getItem() == stack2.getItem()) {
+            if (stack1.getItem().isDamageable()) return true;
+            return ((stack1.getTagCompound() == null) == (stack2.getTagCompound() == null)) && (stack1.getTagCompound() == null || stack1.getTagCompound().equals(stack2.getTagCompound())) && (Items.FEATHER.getDamage(stack1) == Items.FEATHER.getDamage(stack2) || Items.FEATHER.getDamage(stack1) == W || Items.FEATHER.getDamage(stack2) == W);
         }
         return false;
     }
 
-    public static boolean areFluidsEqual(FluidStack aFluid1, FluidStack aFluid2) {
-        return areFluidsEqual(aFluid1, aFluid2, false);
+    public static boolean areFluidsEqual(FluidStack fluid1, FluidStack fluid2) {
+        return areFluidsEqual(fluid1, fluid2, false);
     }
 
-    public static boolean areFluidsEqual(FluidStack aFluid1, FluidStack aFluid2, boolean aIgnoreNBT) {
-        return aFluid1 != null && aFluid2 != null && aFluid1.getFluid() == aFluid2.getFluid() && (aIgnoreNBT || ((aFluid1.tag == null) == (aFluid2.tag == null)) && (aFluid1.tag == null || aFluid1.tag.equals(aFluid2.tag)));
+    public static boolean areFluidsEqual(FluidStack fluid1, FluidStack fluid2, boolean ignoreNBT) {
+        return fluid1 != null && fluid2 != null && fluid1.getFluid() == fluid2.getFluid() && (ignoreNBT || ((fluid1.tag == null) == (fluid2.tag == null)) && (fluid1.tag == null || fluid1.tag.equals(fluid2.tag)));
     }
 
-    public static boolean areStacksEqual(ItemStack aStack1, ItemStack aStack2) {
-        return areStacksEqual(aStack1, aStack2, false);
+    public static boolean areStacksEqual(ItemStack stack1, ItemStack stack2) {
+        return areStacksEqual(stack1, stack2, false);
     }
 
-    public static boolean areStacksEqual(ItemStack aStack1, ItemStack aStack2, boolean aIgnoreNBT) {
-        return aStack1 != null && aStack2 != null && aStack1.getItem() == aStack2.getItem() && (aIgnoreNBT || ((aStack1.getTagCompound() == null) == (aStack2.getTagCompound() == null)) && (aStack1.getTagCompound() == null || aStack1.getTagCompound().equals(aStack2.getTagCompound()))) && (Items.FEATHER.getDamage(aStack1) == Items.FEATHER.getDamage(aStack2) || Items.FEATHER.getDamage(aStack1) == W || Items.FEATHER.getDamage(aStack2) == W);
+    public static boolean areStacksEqual(ItemStack stack1, ItemStack stack2, boolean ignoreNBT) {
+        return stack1 != null && stack2 != null && stack1.getItem() == stack2.getItem() && (ignoreNBT || ((stack1.getTagCompound() == null) == (stack2.getTagCompound() == null)) && (stack1.getTagCompound() == null || stack1.getTagCompound().equals(stack2.getTagCompound()))) && (Items.FEATHER.getDamage(stack1) == Items.FEATHER.getDamage(stack2) || Items.FEATHER.getDamage(stack1) == W || Items.FEATHER.getDamage(stack2) == W);
     }
 
-    public static boolean areUnificationsEqual(ItemStack aStack1, ItemStack aStack2) {
-        return areUnificationsEqual(aStack1, aStack2, false);
+    public static boolean areUnificationsEqual(ItemStack stack1, ItemStack stack2) {
+        return areUnificationsEqual(stack1, stack2, false);
     }
 
-    public static boolean areUnificationsEqual(ItemStack aStack1, ItemStack aStack2, boolean aIgnoreNBT) {
-        return areStacksEqual(OreDictionaryUnifier.get(aStack1), OreDictionaryUnifier.get(aStack2), aIgnoreNBT);
+    public static boolean areUnificationsEqual(ItemStack stack, ItemStack stack2, boolean ignoreNBT) {
+        return areStacksEqual(OreDictionaryUnifier.getUnificated(stack), OreDictionaryUnifier.getUnificated(stack2), ignoreNBT);
     }
 
-    public static String getFluidName(Fluid aFluid, boolean aLocalized) {
-        if (aFluid == null) return E;
-        String rName = aLocalized ? aFluid.getLocalizedName(new FluidStack(aFluid, 0)) : aFluid.getUnlocalizedName();
-        if (rName.contains("fluid.") || rName.contains("tile."))
-            return capitalizeString(rName.replaceAll("fluid.", E).replaceAll("tile.", E));
-        return rName;
+    public static String getFluidName(Fluid fluid, boolean localized) {
+        if (fluid == null) return "";
+        String name = localized ? fluid.getLocalizedName(new FluidStack(fluid, 0)) : fluid.getUnlocalizedName();
+        if (name.contains("fluid.") || name.contains("tile."))
+            return capitalizeString(name.replaceAll("fluid.", "").replaceAll("tile.", ""));
+        return name;
     }
 
-    public static String getFluidName(FluidStack aFluid, boolean aLocalized) {
-        if (aFluid == null) return E;
-        return getFluidName(aFluid.getFluid(), aLocalized);
+    public static String getFluidName(FluidStack fluid, boolean localized) {
+        if (fluid == null) return "";
+        return getFluidName(fluid.getFluid(), localized);
     }
 
-    public static ItemStack fillFluidContainer(FluidStack aFluid, ItemStack aStack, boolean aRemoveFluidDirectly, boolean aCheckIFluidContainerItems) {
-        if (!isStackValid(aStack) || aFluid == null) return null;
-        if (GT_ModHandler.isWater(aFluid) && ItemList.Bottle_Empty.isStackEqual(aStack)) {
-            if (aFluid.amount >= 250) {
-                if (aRemoveFluidDirectly) aFluid.amount -= 250;
-                return new ItemStack(Items.POTIONITEM, 1, 0);
-            }
-            return null;
-        }
-        Map<Fluid, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData.get(new SimpleItemStack(aStack));
-        if(tFluidToContainer != null) {
-            FluidContainerData tData = tFluidToContainer.get(aFluid.getFluid());
-            if(tData != null && tData.fluid.amount <= aFluid.amount) {
-                if(aRemoveFluidDirectly) aFluid.amount -= tData.fluid.amount;
-                return copyAmount(1, tData.filledContainer);
-            }
-        }
+//    public static ItemStack fillFluidContainer(FluidStack fluid, ItemStack stack, boolean removeFluidDirectly, boolean checkIFluidContainerItems) {
+//        if (!isStackValid(stack) || fluid == null) return null;
+//        if (ModHandler.isWater(fluid) && stack.isItemEqual(new ItemStack(Items.GLASS_BOTTLE))) {
+//            if (fluid.amount >= 250) {
+//                if (removeFluidDirectly) fluid.amount -= 250;
+//                return new ItemStack(Items.POTIONITEM, 1, 0);
+//            }
+//            return null;
+//        }
+//        Map<Fluid, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData.get(new SimpleItemStack(stack));
+//        if(tFluidToContainer != null) {
+//            FluidContainerData tData = tFluidToContainer.get(fluid.getFluid());
+//            if(tData != null && tData.fluid.amount <= fluid.amount) {
+//                if(removeFluidDirectly) fluid.amount -= tData.fluid.amount;
+//                return copyAmount(1, tData.filledContainer);
+//            }
+//        }
+//
+//        if (checkIFluidContainerItems && stack.getItem() instanceof IFluidContainerItem &&
+//                ((IFluidContainerItem) stack.getItem()).getFluid(stack) != null &&
+//                ((IFluidContainerItem) stack.getItem()).getCapacity(stack) <= fluid.amount) {
+//            stack = copyAmount(1, stack);
+//            int filled = ((IFluidContainerItem) stack.getItem()).fill(stack, fluid, true);
+//            if (filled > 0 && !areStacksEqual(stack, stack)) return stack;
+//            if(removeFluidDirectly) fluid.amount -= filled;
+//            return null;
+//        }
+//
+//        if(checkIFluidContainerItems && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+//            stack = copyAmount(1, stack);
+//            int filled = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).fill(fluid, true);
+//            if (filled > 0 && !areStacksEqual(stack, stack)) return stack;
+//            if(removeFluidDirectly) fluid.amount -= filled;
+//            return null;
+//        }
+//
+//        return null;
+//    }
 
-        if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem &&
-                ((IFluidContainerItem) aStack.getItem()).getFluid(aStack) != null &&
-                ((IFluidContainerItem) aStack.getItem()).getCapacity(aStack) <= aFluid.amount) {
-            aStack = copyAmount(1, aStack);
-            int filled = ((IFluidContainerItem) aStack.getItem()).fill(aStack, aFluid, true);
-            if (filled > 0 && !areStacksEqual(aStack, aStack)) return aStack;
-            if(aRemoveFluidDirectly) aFluid.amount -= filled;
-            return null;
-        }
+//    public static boolean containsFluid(ItemStack aStack, Fluid fluid, boolean aCheckIFluidContainerItems) {
+//        if (!isStackValid(aStack) || fluid == null) return false;
+//        FluidStack contents = getFluidForFilledItem(aStack, aCheckIFluidContainerItems);
+//        if(contents != null) return contents.getFluid() == fluid;
+//        return false;
+//    }
 
-        if(aCheckIFluidContainerItems && aStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
-            aStack = copyAmount(1, aStack);
-            int filled = aStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).fill(aFluid, true);
-            if (filled > 0 && !areStacksEqual(aStack, aStack)) return aStack;
-            if(aRemoveFluidDirectly) aFluid.amount -= filled;
-            return null;
-        }
+//    public static FluidStack getFluidForFilledItem(ItemStack aStack, boolean aCheckIFluidContainerItems) {
+//        if (!isStackValid(aStack)) return null;
+//        FluidContainerData tData = sFilledContainerToData.get(new SimpleItemStack(aStack));
+//        if(tData != null) return tData.fluid.copy();
+//        if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem &&
+//                ((IFluidContainerItem) aStack.getItem()).getFluid(aStack) != null &&
+//                ((IFluidContainerItem) aStack.getItem()).getCapacity(aStack) > 0) {
+//            aStack = copyAmount(1, aStack);
+//            return ((IFluidContainerItem) aStack.getItem()).drain(aStack, Integer.MAX_VALUE, true);
+//        }
+//        if(aCheckIFluidContainerItems && aStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+//            aStack = copyAmount(1, aStack);
+//            return aStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).drain(Integer.MAX_VALUE, true);
+//        }
+//        return null;
+//    }
 
-        return null;
-    }
+//    public static ItemStack getContainerForFilledItem(ItemStack aStack, boolean aCheckIFluidContainerItems) {
+//        if (!isStackValid(aStack)) return null;
+//        FluidContainerData tData = sFilledContainerToData.get(new SimpleItemStack(aStack));
+//        if (tData != null) return copyAmount(1, tData.emptyContainer);
+//        if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem &&
+//                ((IFluidContainerItem) aStack.getItem()).getFluid(aStack) != null &&
+//                ((IFluidContainerItem) aStack.getItem()).getCapacity(aStack) > 0) {
+//            aStack = copyAmount(1, aStack);
+//            FluidStack drained = ((IFluidContainerItem) aStack.getItem()).drain(aStack, Integer.MAX_VALUE, true);
+//            if (drained != null && drained.amount > 0 && !areStacksEqual(aStack, aStack)) return aStack;
+//            return null;
+//        }
+//
+//        if(aCheckIFluidContainerItems && aStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+//            aStack = copyAmount(1, aStack);
+//            FluidStack drained = aStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).drain(Integer.MAX_VALUE, true);
+//            if (drained != null && drained.amount > 0 && !areStacksEqual(aStack, aStack)) return aStack;
+//            return null;
+//        }
+//        return null;
+//    }
 
-    public static ItemStack getFluidDisplayStack(Fluid aFluid) {
-        return aFluid == null ? null : getFluidDisplayStack(new FluidStack(aFluid, 0), false);
-    }
-
-    public static ItemStack getFluidDisplayStack(FluidStack aFluid, boolean aUseStackSize) {
-        if (aFluid == null || aFluid.getFluid() == null) return null;
-        int tmp = FluidRegistry.getFluidID(aFluid.getFluid());
-
-        ItemStack rStack = ItemList.Display_Fluid.getWithDamage(aUseStackSize ? aFluid.amount / 1000 : 1, tmp);
-        NBTTagCompound tNBT = new NBTTagCompound();
-        tNBT.setLong("mFluidDisplayAmount", aFluid.amount);
-        tNBT.setLong("mFluidDisplayHeat", aFluid.getFluid().getTemperature(aFluid));
-        tNBT.setBoolean("mFluidState", aFluid.getFluid().isGaseous(aFluid));
-        rStack.setTagCompound(tNBT);
-        return rStack;
-    }
-
-    public static boolean containsFluid(ItemStack aStack, Fluid fluid, boolean aCheckIFluidContainerItems) {
-        if (!isStackValid(aStack) || fluid == null) return false;
-        FluidStack contents = getFluidForFilledItem(aStack, aCheckIFluidContainerItems);
-        if(contents != null) return contents.getFluid() == fluid;
-        return false;
-    }
-
-    public static FluidStack getFluidForFilledItem(ItemStack aStack, boolean aCheckIFluidContainerItems) {
-        if (!isStackValid(aStack)) return null;
-        FluidContainerData tData = sFilledContainerToData.get(new SimpleItemStack(aStack));
-        if(tData != null) return tData.fluid.copy();
-        if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem &&
-                ((IFluidContainerItem) aStack.getItem()).getFluid(aStack) != null &&
-                ((IFluidContainerItem) aStack.getItem()).getCapacity(aStack) > 0) {
-            aStack = copyAmount(1, aStack);
-            return ((IFluidContainerItem) aStack.getItem()).drain(aStack, Integer.MAX_VALUE, true);
-        }
-        if(aCheckIFluidContainerItems && aStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
-            aStack = copyAmount(1, aStack);
-            return aStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).drain(Integer.MAX_VALUE, true);
-        }
-        return null;
-    }
-
-    public static ItemStack getContainerForFilledItem(ItemStack aStack, boolean aCheckIFluidContainerItems) {
-        if (!isStackValid(aStack)) return null;
-        FluidContainerData tData = sFilledContainerToData.get(new SimpleItemStack(aStack));
-        if (tData != null) return copyAmount(1, tData.emptyContainer);
-        if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem &&
-                ((IFluidContainerItem) aStack.getItem()).getFluid(aStack) != null &&
-                ((IFluidContainerItem) aStack.getItem()).getCapacity(aStack) > 0) {
-            aStack = copyAmount(1, aStack);
-            FluidStack drained = ((IFluidContainerItem) aStack.getItem()).drain(aStack, Integer.MAX_VALUE, true);
-            if (drained != null && drained.amount > 0 && !areStacksEqual(aStack, aStack)) return aStack;
-            return null;
-        }
-
-        if(aCheckIFluidContainerItems && aStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
-            aStack = copyAmount(1, aStack);
-            FluidStack drained = aStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).drain(Integer.MAX_VALUE, true);
-            if (drained != null && drained.amount > 0 && !areStacksEqual(aStack, aStack)) return aStack;
-            return null;
-        }
-        return null;
-    }
-
-    public static ItemStack getContainerItem(ItemStack aStack, boolean aCheckIFluidContainerItems) {
-        if (isStackValid(aStack)) return null;
-        if (aStack.getItem().hasContainerItem(aStack)) return aStack.getItem().getContainerItem(aStack);
-        /* These are all special Cases, in which it is intended to have only GT Blocks outputting those Container Items */
-        if (ItemList.Cell_Empty.isStackEqual(aStack, false, true)) return null;
-        if (ItemList.IC2_Fuel_Can_Filled.isStackEqual(aStack, false, true)) return ItemList.IC2_Fuel_Can_Empty.get(1);
-        if (aStack.getItem() == Items.POTIONITEM || aStack.getItem() == Items.EXPERIENCE_BOTTLE || ItemList.TF_Vial_FieryBlood.isStackEqual(aStack) || ItemList.TF_Vial_FieryTears.isStackEqual(aStack))
-            return ItemList.Bottle_Empty.get(1);
-
-        if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem &&
-                ((IFluidContainerItem) aStack.getItem()).getFluid(aStack) != null &&
-                ((IFluidContainerItem) aStack.getItem()).getCapacity(aStack) > 0) {
-            aStack = copyAmount(1, aStack);
-            FluidStack drained = ((IFluidContainerItem) aStack.getItem()).drain(aStack, Integer.MAX_VALUE, true);
-            if (drained != null && drained.amount > 0 && !areStacksEqual(aStack, aStack)) return aStack;
-            return null;
-        }
-
-        if(aCheckIFluidContainerItems && aStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
-            aStack = copyAmount(1, aStack);
-            FluidStack drained = aStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).drain(Integer.MAX_VALUE, true);
-            if (drained != null && drained.amount > 0 && !areStacksEqual(aStack, aStack)) return aStack;
-            return null;
-        }
-
-        int tCapsuleCount = GT_ModHandler.getCapsuleCellContainerCount(aStack);
-        if (tCapsuleCount > 0) return ItemList.Cell_Empty.get(tCapsuleCount);
-
-        if (ItemList.IC2_ForgeHammer.isStackEqual(aStack) || ItemList.IC2_WireCutter.isStackEqual(aStack))
-            return copyMetaData(Items.FEATHER.getDamage(aStack) + 1, aStack);
-        return null;
-    }
+//    public static ItemStack getContainerItem(ItemStack aStack, boolean aCheckIFluidContainerItems) {
+//        if (isStackValid(aStack)) return null;
+//        if (aStack.getItem().hasContainerItem(aStack)) return aStack.getItem().getContainerItem(aStack);
+//        /* These are all special Cases, in which it is intended to have only GT Blocks outputting those Container Items */
+//        if (ItemList.Cell_Empty.isStackEqual(aStack, false, true)) return null;
+//        if (ItemList.IC2_Fuel_Can_Filled.isStackEqual(aStack, false, true)) return ItemList.IC2_Fuel_Can_Empty.get(1);
+//        if (aStack.getItem() == Items.POTIONITEM || aStack.getItem() == Items.EXPERIENCE_BOTTLE || ItemList.TF_Vial_FieryBlood.isStackEqual(aStack) || ItemList.TF_Vial_FieryTears.isStackEqual(aStack))
+//            return ItemList.Bottle_Empty.get(1);
+//
+//        if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem &&
+//                ((IFluidContainerItem) aStack.getItem()).getFluid(aStack) != null &&
+//                ((IFluidContainerItem) aStack.getItem()).getCapacity(aStack) > 0) {
+//            aStack = copyAmount(1, aStack);
+//            FluidStack drained = ((IFluidContainerItem) aStack.getItem()).drain(aStack, Integer.MAX_VALUE, true);
+//            if (drained != null && drained.amount > 0 && !areStacksEqual(aStack, aStack)) return aStack;
+//            return null;
+//        }
+//
+//        if(aCheckIFluidContainerItems && aStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+//            aStack = copyAmount(1, aStack);
+//            FluidStack drained = aStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).drain(Integer.MAX_VALUE, true);
+//            if (drained != null && drained.amount > 0 && !areStacksEqual(aStack, aStack)) return aStack;
+//            return null;
+//        }
+//
+//        int tCapsuleCount = GT_ModHandler.getCapsuleCellContainerCount(aStack);
+//        if (tCapsuleCount > 0) return ItemList.Cell_Empty.get(tCapsuleCount);
+//
+//        if (ItemList.IC2_ForgeHammer.isStackEqual(aStack) || ItemList.IC2_WireCutter.isStackEqual(aStack))
+//            return copyMetaData(Items.FEATHER.getDamage(aStack) + 1, aStack);
+//        return null;
+//    }
 
     public static synchronized boolean removeSimpleIC2MachineRecipe(ItemStack aInput, Iterable<IMachineRecipeManager.RecipeIoContainer> aRecipeList, ItemStack aOutput) {
         if ((!isStackValid(aInput) && !isStackValid(aOutput)) || aRecipeList == null) return false;
         boolean rReturn = false;
         Iterator<IMachineRecipeManager.RecipeIoContainer> tIterator = aRecipeList.iterator();
-        aOutput = OreDictionaryUnifier.get(aOutput);
+        aOutput = OreDictionaryUnifier.getUnificated(aOutput);
         while (tIterator.hasNext()) {
             IMachineRecipeManager.RecipeIoContainer tEntry = tIterator.next();
             if (aInput == null || tEntry.input.matches(aInput)) {
                 List<ItemStack> tList = tEntry.output.items;
                 if (tList != null) for (ItemStack tOutput : tList)
-                    if (aOutput == null || areStacksEqual(OreDictionaryUnifier.get(tOutput), aOutput)) {
+                    if (aOutput == null || areStacksEqual(OreDictionaryUnifier.getUnificated(tOutput), aOutput)) {
                         tIterator.remove();
                         rReturn = true;
                         break;
@@ -591,16 +577,20 @@ public class GT_Utility {
         return rReturn;
     }
 
-    public static boolean addSimpleIC2MachineRecipe(ItemStack aInput, IMachineRecipeManager aRecipeList, NBTTagCompound aNBT, Object... aOutput) {
+    public static boolean addSimpleIC2MachineRecipe(ItemStack aInput, IMachineRecipeManager aRecipeList, NBTTagCompound aNBT, ItemStack... aOutput) {
         if (!isStackValid(aInput) || aOutput.length == 0 || aRecipeList == null) return false;
-        ItemMaterialInfo tOreName = OreDictionaryUnifier.getAssociation(aInput);
+        UnificationEntry tOreName = OreDictionaryUnifier.getUnificationEntry(aInput);
         for (int i = 0; i < aOutput.length; i++) {
             if (aOutput[i] == null) {
-                GTLog.err.println("EmptyIC2Output!" + aInput.getUnlocalizedName());
+                GTLog.logger.error("EmptyIC2Output!" + aInput.getUnlocalizedName());
                 return false;
             }
         }
-        ItemStack[] tStack = OreDictionaryUnifier.getStackArray(true, aOutput);
+        ItemStack[] tStack = new ItemStack[aOutput.length];
+
+        for (int i = 0; i < aOutput.length; i++) {
+            tStack[i] = OreDictionaryUnifier.getUnificated(aOutput[i]);
+        }
         if (tStack == null || (tStack.length > 0 && GT_Utility.areStacksEqual(aInput, tStack[0]))) return false;
         if (tOreName != null) {
             //Catch Fossils Archeology Revival crash
@@ -611,48 +601,6 @@ public class GT_Utility {
             aRecipeList.addRecipe(new RecipeInputItemStack(copy(aInput), aInput.stackSize), aNBT, true, tStack);
         }
         return true;
-    }
-
-    public static ItemStack getWrittenBook(String aMapping, ItemStack aStackToPutNBT) {
-        if (!isStringValid(aMapping)) return null;
-        ItemStack rStack = GregTechAPI.sBookList.get(aMapping);
-        if (rStack == null) return aStackToPutNBT;
-        if (aStackToPutNBT != null) {
-            aStackToPutNBT.setTagCompound(rStack.getTagCompound());
-            return aStackToPutNBT;
-        }
-        return copyAmount(1, rStack);
-    }
-
-    public static ItemStack getWrittenBook(String aMapping, String aTitle, String aAuthor, String... aPages) {
-        if (!isStringValid(aMapping)) return null;
-        ItemStack rStack = GregTechAPI.sBookList.get(aMapping);
-        if (rStack != null) return copyAmount(1, rStack);
-        if (!isStringValid(aTitle) || !isStringValid(aAuthor) || aPages.length <= 0) return null;
-        sBookCount++;
-        rStack = new ItemStack(Items.WRITTEN_BOOK, 1);
-        NBTTagCompound tNBT = new NBTTagCompound();
-        tNBT.setString("title", GT_LanguageManager.addStringLocalization("Book." + aTitle + ".Name", aTitle));
-        tNBT.setString("author", aAuthor);
-        NBTTagList tNBTList = new NBTTagList();
-        for (byte i = 0; i < aPages.length; i++) {
-            aPages[i] = GT_LanguageManager.addStringLocalization("Book." + aTitle + ".Page" + ((i < 10) ? "0" + i : i), aPages[i]);
-            if (i < 48) {
-                if (aPages[i].length() < 256)
-                    tNBTList.appendTag(new NBTTagString(aPages[i]));
-                else
-                    GTLog.err.println("WARNING: String for written Book too long! -> " + aPages[i]);
-            } else {
-                GTLog.err.println("WARNING: Too much Pages for written Book! -> " + aTitle);
-                break;
-            }
-        }
-        tNBTList.appendTag(new NBTTagString("Credits to " + aAuthor + " for writing this Book. This was Book Nr. " + sBookCount + " at its creation. Gotta get 'em all!"));
-        tNBT.setTag("pages", tNBTList);
-        rStack.setTagCompound(tNBT);
-        GTLog.out.println("GT_Mod: Added Book to Book List  -  Mapping: '" + aMapping + "'  -  Name: '" + aTitle + "'  -  Author: '" + aAuthor + "'");
-        GregTechAPI.sBookList.put(aMapping, rStack);
-        return copy(rStack);
     }
 
     public static void playSound(World world, double x, double y, double z, ResourceLocation soundName, SoundCategory category, float strength, float modulation) {
@@ -676,15 +624,6 @@ public class GT_Utility {
         return aStack.getItem() != null && aStack.stackSize >= 0;
     }
 
-    public static boolean isDebugItem(ItemStack aStack) {
-        return areStacksEqual(GT_ModHandler.getIC2Item(ItemName.debug_item, 1), aStack, true);
-    }
-
-    public static boolean hasBlockHitBox(World aWorld, BlockPos blockPos) {
-        AxisAlignedBB box = aWorld.getBlockState(blockPos).getCollisionBoundingBox(aWorld, blockPos);
-        return box != null && (box.maxX != box.minX && box.maxZ != box.minZ && box.maxY != box.minY);
-    }
-
     public static void setCoordsOnFire(World aWorld, BlockPos blockPos, boolean aReplaceCenter) {
         IBlockState fire = Blocks.FIRE.getDefaultState();
         if (aReplaceCenter)
@@ -702,23 +641,6 @@ public class GT_Utility {
             aWorld.setBlockState(blockPos.up(), fire);
         if (aWorld.getBlockState(blockPos.down()).getCollisionBoundingBox(aWorld, blockPos.down()) == null)
             aWorld.setBlockState(blockPos.down(), fire);
-    }
-
-    public static ItemStack getProjectile(SubTag aProjectileType, IInventory aInventory) {
-        if (aInventory != null) for (int i = 0, j = aInventory.getSizeInventory(); i < j; i++) {
-            ItemStack rStack = aInventory.getStackInSlot(i);
-            if (isStackValid(rStack) && rStack.getItem() instanceof IProjectileItem && ((IProjectileItem) rStack.getItem()).hasProjectile(aProjectileType, rStack))
-                return updateItemStack(rStack);
-        }
-        return null;
-    }
-
-    public static void removeNullStacksFromInventory(IInventory aInventory) {
-        if (aInventory != null) for (int i = 0, j = aInventory.getSizeInventory(); i < j; i++) {
-            ItemStack tStack = aInventory.getStackInSlot(i);
-            if (tStack != null && (tStack.stackSize == 0 || tStack.getItem() == null))
-                aInventory.setInventorySlotContents(i, null);
-        }
     }
 
     /**
@@ -785,21 +707,21 @@ public class GT_Utility {
         return true;
     }
 
-    public static float getHeatDamageFromItem(ItemStack aStack) {
-        ItemMaterialInfo tData = OreDictionaryUnifier.getItemData(aStack);
-        return tData == null ? 0 : (tData.mPrefix == null ? 0 : tData.mPrefix.mHeatDamage) + (tData.hasValidMaterialData() ? tData.mMaterial.mMaterial.mHeatDamage : 0);
+    public static float getHeatDamageFromItem(ItemStack stack) {
+        UnificationEntry data = OreDictionaryUnifier.getUnificationEntry(stack);
+        return data == null ? 0 : data.orePrefix.heatDamage;
     }
 
-    public static int getRadioactivityLevel(ItemStack aStack) {
-        ItemMaterialInfo tData = OreDictionaryUnifier.getItemData(aStack);
-        if (tData != null && tData.hasValidMaterialData()) {
-            if (tData.mMaterial.mMaterial.mEnchantmentArmors instanceof EnchantmentRadioactivity)
-                return tData.mMaterial.mMaterial.mEnchantmentArmorsLevel;
-            if (tData.mMaterial.mMaterial.mEnchantmentTools instanceof EnchantmentRadioactivity)
-                return tData.mMaterial.mMaterial.mEnchantmentToolsLevel;
-        }
-        return EnchantmentHelper.getEnchantmentLevel(EnchantmentRadioactivity.INSTANCE, aStack);
-    }
+//    public static int getRadioactivityLevel(ItemStack aStack) {
+//        ItemMaterialInfo tData = OreDictionaryUnifier.getItemData(aStack);
+//        if (tData != null && tData.hasValidMaterialData()) {
+//            if (tData.mMaterial.mMaterial.mEnchantmentArmors instanceof EnchantmentRadioactivity)
+//                return tData.mMaterial.mMaterial.mEnchantmentArmorsLevel;
+//            if (tData.mMaterial.mMaterial.mEnchantmentTools instanceof EnchantmentRadioactivity)
+//                return tData.mMaterial.mMaterial.mEnchantmentToolsLevel;
+//        }
+//        return EnchantmentHelper.getEnchantmentLevel(EnchantmentRadioactivity.INSTANCE, aStack);
+//    }
 
     @SuppressWarnings("unused")
     public static boolean isImmuneToBreathingGasses(EntityLivingBase aEntity) {
@@ -889,24 +811,24 @@ public class GT_Utility {
         return rStack;
     }
 
-    public static ItemStack copyMetaData(long aMetaData, ItemStack... aStacks) {
+    public static ItemStack copyMetaData(int aMetaData, ItemStack... aStacks) {
         ItemStack rStack = copy(aStacks);
         if (!isStackValid(rStack)) return null;
-        Items.FEATHER.setDamage(rStack, (short) aMetaData);
+        Items.FEATHER.setDamage(rStack, aMetaData);
         return rStack;
     }
 
-    public static ItemStack copyAmountAndMetaData(long aAmount, long aMetaData, ItemStack... aStacks) {
+    public static ItemStack copyAmountAndMetaData(int aAmount, int aMetaData, ItemStack... aStacks) {
         ItemStack rStack = copyAmount(aAmount, aStacks);
         if (isStackValid(rStack)) return null;
-        Items.FEATHER.setDamage(rStack, (short) aMetaData);
+        Items.FEATHER.setDamage(rStack, aMetaData);
         return rStack;
     }
 
     /**
      * returns a copy of an ItemStack with its Stacksize being multiplied by aMultiplier
      */
-    public static ItemStack mul(long aMultiplier, ItemStack... aStacks) {
+    public static ItemStack mul(int aMultiplier, ItemStack... aStacks) {
         ItemStack rStack = copy(aStacks);
         if (rStack == null) return null;
         rStack.stackSize *= aMultiplier;
@@ -926,7 +848,7 @@ public class GT_Utility {
     public static ItemStack loadItem(NBTTagCompound aNBT) {
         if (aNBT == null) return null;
         ItemStack rStack = ItemStack.loadItemStackFromNBT(aNBT);
-        return OreDictionaryUnifier.get(true, rStack);
+        return OreDictionaryUnifier.getUnificated(rStack);
     }
 
     public static <E> E selectItemInList(int aIndex, E aReplacement, List<E> aList) {
@@ -944,18 +866,7 @@ public class GT_Utility {
     }
 
     public static boolean isStackInList(SimpleItemStack aStack, Collection<SimpleItemStack> aList) {
-        return aStack != null && (aList.contains(aStack) || aList.contains(new SimpleItemStack(aStack.mItem, aStack.mStackSize, W)));
-    }
-
-    /**
-     * re-maps all Keys of a Map after the Keys were weakened.
-     */
-    public static <X, Y> Map<X, Y> reMap(Map<X, Y> aMap) {
-        Map<X, Y> tMap = new HashMap<>();
-        tMap.putAll(aMap);
-        aMap.clear();
-        aMap.putAll(tMap);
-        return aMap;
+        return aStack != null && (aList.contains(aStack) || aList.contains(new SimpleItemStack(aStack.item, aStack.stackSize, W)));
     }
 
     /**
@@ -997,16 +908,16 @@ public class GT_Utility {
         return Math.max(0, ((aMaterialAmount * aAmountPerUnit) / M) + (aRoundUp && (aMaterialAmount * aAmountPerUnit) % M > 0 ? 1 : 0));
     }
 
-    /**
-     * This checks if the Dimension is really a Dimension and not another Planet or something.
-     * Used for my Teleporter.
-     */
-    public static boolean isRealDimension(int aDimensionID) {
-        String clazzName = DimensionManager.getProvider(aDimensionID).getClass().getName().toLowerCase();
-        if (clazzName.contains("mystcraft") || clazzName.contains("twilightforest") || clazzName.contains("rftools"))
-            return true;
-        return GregTechAPI.sDimensionalList.contains(aDimensionID);
-    }
+//    /**
+//     * This checks if the Dimension is really a Dimension and not another Planet or something.
+//     * Used for my Teleporter.
+//     */
+//    public static boolean isRealDimension(int aDimensionID) {
+//        String clazzName = DimensionManager.getProvider(aDimensionID).getClass().getName().toLowerCase();
+//        if (clazzName.contains("mystcraft") || clazzName.contains("twilightforest") || clazzName.contains("rftools"))
+//            return true;
+//        return GregTechAPI.sDimensionalList.contains(aDimensionID);
+//    }
 
     public static boolean moveEntityToDimensionAtCoords(Entity aEntity, int aDimension, double aX, double aY, double aZ) {
         WorldServer tTargetWorld = DimensionManager.getWorld(aDimension), tOriginalWorld = DimensionManager.getWorld(aEntity.worldObj.provider.getDimension());
@@ -1053,43 +964,43 @@ public class GT_Utility {
         return false;
     }
 
-    public static FluidStack getUndergroundOil(World aWorld, int aX, int aZ) {
-        Random tRandom = new Random((aWorld.getSeed() + (aX / 96) + (7 * (aZ / 96))));
-        double amount = tRandom.nextInt(50) + tRandom.nextDouble();
-        Fluid tFluid;
-        switch (tRandom.nextInt(4)) {
-            case 0:
-                tFluid = Materials.NatruralGas.mGas;
-                break;
-            case 1:
-                tFluid = Materials.OilLight.mFluid;
-                break;
-            case 2:
-                tFluid = Materials.OilMedium.mFluid;
-                break;
-            case 3:
-                tFluid = Materials.OilHeavy.mFluid;
-                break;
-            default:
-                tFluid = Materials.Oil.mFluid;
-        }
-        int tAmount = (int) (Math.pow(amount, 5) / 100);
-        ChunkPos tPos = new ChunkPos(aX / 16, aZ / 16);
-        int[] tInts = new int[2];
-        if (GT_Proxy.chunkData.containsKey(tPos)) {
-            tInts = GT_Proxy.chunkData.get(tPos);
-            if (tInts.length > 0) {
-                if (tInts[0] > 0) {
-                    tAmount = tInts[0];
-                }
-            }
-            GT_Proxy.chunkData.remove(tPos);
-        }
-        tAmount = tAmount - 5;
-        tInts[0] = tAmount;
-        GT_Proxy.chunkData.put(tPos, tInts);
-        return new FluidStack(tFluid, tAmount);
-    }
+//    public static FluidStack getUndergroundOil(World aWorld, int aX, int aZ) {
+//        Random tRandom = new Random((aWorld.getSeed() + (aX / 96) + (7 * (aZ / 96))));
+//        double amount = tRandom.nextInt(50) + tRandom.nextDouble();
+//        Fluid tFluid;
+//        switch (tRandom.nextInt(4)) {
+//            case 0:
+//                tFluid = Materials.NaturalGas.mGas;
+//                break;
+//            case 1:
+//                tFluid = Materials.OilLight.mFluid;
+//                break;
+//            case 2:
+//                tFluid = Materials.OilMedium.mFluid;
+//                break;
+//            case 3:
+//                tFluid = Materials.OilHeavy.mFluid;
+//                break;
+//            default:
+//                tFluid = Materials.Oil.mFluid;
+//        }
+//        int tAmount = (int) (Math.pow(amount, 5) / 100);
+//        ChunkPos tPos = new ChunkPos(aX / 16, aZ / 16);
+//        int[] tInts = new int[2];
+//        if (GT_Proxy.chunkData.containsKey(tPos)) {
+//            tInts = GT_Proxy.chunkData.get(tPos);
+//            if (tInts.length > 0) {
+//                if (tInts[0] > 0) {
+//                    tAmount = tInts[0];
+//                }
+//            }
+//            GT_Proxy.chunkData.remove(tPos);
+//        }
+//        tAmount = tAmount - 5;
+//        tInts[0] = tAmount;
+//        GT_Proxy.chunkData.put(tPos, tInts);
+//        return new FluidStack(tFluid, tAmount);
+//    }
 
     @SuppressWarnings("deprecation")
     public static int getCoordinateScan(ArrayList<String> aList, EntityPlayer aPlayer, World aWorld, int aScanLevel, BlockPos blockPos, EnumFacing aSide, float aClickX, float aClickY, float aClickZ) {
@@ -1160,10 +1071,10 @@ public class GT_Utility {
                 aList.add(((ic2.api.tile.IEnergyStorage) tTileEntity).isTeleporterCompatible(EnumFacing.UP) ? "Teleporter Compatible" : "Not Teleporter Compatible");
             }
 
-            if (tTileEntity instanceof IUpgradable) {
-                rEUAmount += 500;
-                if (((IUpgradable) tTileEntity).hasMufflerUpgrade()) tList.add("Has Muffler Upgrade");
-            }
+//            if (tTileEntity instanceof IUpgradable) {
+//                rEUAmount += 500;
+//                if (((IUpgradable) tTileEntity).hasMufflerUpgrade()) tList.add("Has Muffler Upgrade");
+//            }
 
             if (tTileEntity instanceof IWorkable) {
                 rEUAmount += 400;
@@ -1172,25 +1083,25 @@ public class GT_Utility {
                     tList.add("Progress: " + GT_Utility.formatNumbers(tValue) + " / " + GT_Utility.formatNumbers(((IWorkable) tTileEntity).getProgress()));
             }
 
-            if (tTileEntity instanceof ICoverable) {
-                rEUAmount += 300;
-                String tString = ((ICoverable) tTileEntity).getCoverBehaviorAtSide(aSide).getDescription(aSide, ((ICoverable) tTileEntity).getCoverIDAtSide(aSide), ((ICoverable) tTileEntity).getCoverDataAtSide(aSide), (ICoverable) tTileEntity);
-                if (tString != null && !tString.equals(E)) tList.add(tString);
-            }
+//            if (tTileEntity instanceof ICoverable) {
+//                rEUAmount += 300;
+//                String tString = ((ICoverable) tTileEntity).getCoverBehaviorAtSide(aSide).getDescription(aSide, ((ICoverable) tTileEntity).getCoverIDAtSide(aSide), ((ICoverable) tTileEntity).getCoverDataAtSide(aSide), (ICoverable) tTileEntity);
+//                if (tString != null && !tString.equals(E)) tList.add(tString);
+//            }
 
-            if (tTileEntity instanceof IEnergyContainer && ((IEnergyContainer) tTileEntity).getEUCapacity() > 0) {
+            if (tTileEntity instanceof IEnergyContainer && ((IEnergyContainer) tTileEntity).getEnergyCapacity() > 0) {
                 tList.add("Max IN: " + ((IEnergyContainer) tTileEntity).getInputVoltage() + " EU");
                 tList.add("Max OUT: " + ((IEnergyContainer) tTileEntity).getOutputVoltage() + " EU at " + ((IEnergyContainer) tTileEntity).getOutputAmperage() + " Amperes");
-                tList.add("Energy: " + GT_Utility.formatNumbers(((IEnergyContainer) tTileEntity).getStoredEU()) + " / " + GT_Utility.formatNumbers(((IEnergyContainer) tTileEntity).getEUCapacity()) + "EU");
+                tList.add("Energy: " + GT_Utility.formatNumbers(((IEnergyContainer) tTileEntity).getEnergyStored()) + " / " + GT_Utility.formatNumbers(((IEnergyContainer) tTileEntity).getEnergyCapacity()) + "EU");
             }
 
-            if (tTileEntity instanceof IGregTechTileEntity) {
-                tList.add("Owned by: " + ((IGregTechTileEntity) tTileEntity).getOwnerId());
-            }
+//            if (tTileEntity instanceof IGregTechTileEntity) {
+//                tList.add("Owned by: " + ((IGregTechTileEntity) tTileEntity).getOwnerId());
+//            }
 
-            if (tTileEntity instanceof IDescribable && ((IDescribable) tTileEntity).isGivingInformation()) {
-                tList.addAll(Arrays.asList(((IDescribable) tTileEntity).getInfoData()));
-            }
+//            if (tTileEntity instanceof IDescribable && ((IDescribable) tTileEntity).isGivingInformation()) {
+//                tList.addAll(Arrays.asList(((IDescribable) tTileEntity).getInfoData()));
+//            }
 
             if (tTileEntity instanceof ic2.api.crops.ICropTile) {
                 ICropTile cropTile = (ICropTile) tTileEntity;
@@ -1221,20 +1132,20 @@ public class GT_Utility {
 
         }
 
-        if (aPlayer.capabilities.isCreativeMode) {
-            FluidStack tFluid = getUndergroundOil(aWorld, blockPos.getX(), blockPos.getY());
-            tList.add("Oil in Chunk: " + tFluid.amount + " " + tFluid.getLocalizedName());
-        }
+//        if (aPlayer.capabilities.isCreativeMode) {
+//            FluidStack tFluid = getUndergroundOil(aWorld, blockPos.getX(), blockPos.getY());
+//            tList.add("Oil in Chunk: " + tFluid.amount + " " + tFluid.getLocalizedName());
+//        }
 
-        ChunkPos pos = new ChunkPos(blockPos.getX() / 16, blockPos.getZ() / 16);
-        if (GT_Proxy.chunkData.containsKey(pos)) {
-            int[] tPollution = GT_Proxy.chunkData.get(pos);
-            if (tPollution.length > 1) {
-                tList.add("Pollution in Chunk: " + tPollution[1]);
-            } else {
-                tList.add("No Pollution in Chunk");
-            }
-        }
+//        ChunkPos pos = new ChunkPos(blockPos.getX() / 16, blockPos.getZ() / 16);
+//        if (GT_Proxy.chunkData.containsKey(pos)) {
+//            int[] tPollution = GT_Proxy.chunkData.get(pos);
+//            if (tPollution.length > 1) {
+//                tList.add("Pollution in Chunk: " + tPollution[1]);
+//            } else {
+//                tList.add("No Pollution in Chunk");
+//            }
+//        }
 
         if (tBlock instanceof IDebugableBlock) {
             rEUAmount += 500;
@@ -1242,11 +1153,11 @@ public class GT_Utility {
             if (temp != null) tList.addAll(temp);
         }
 
-        BlockScanningEvent tEvent = new BlockScanningEvent(aWorld, aPlayer, blockPos, aSide, aScanLevel, tBlock, tTileEntity, tList, aClickX, aClickY, aClickZ);
-        tEvent.mEUCost = rEUAmount;
+        BlockScanningEvent tEvent = new BlockScanningEvent(aWorld, aPlayer, aScanLevel, blockPos, tList, aSide, aClickX, aClickY, aClickZ, tTileEntity, tBlock);
+        tEvent.EUCost = rEUAmount;
         MinecraftForge.EVENT_BUS.post(tEvent);
         if (!tEvent.isCanceled()) aList.addAll(tList);
-        return tEvent.mEUCost;
+        return tEvent.EUCost;
     }
 
     /**

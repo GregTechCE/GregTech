@@ -1,7 +1,6 @@
 package gregtech.common.items;
 
 import com.google.common.base.CaseFormat;
-import crazypants.enderio.config.recipes.xml.Item;
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.items.materialitem.MaterialMetaItem;

@@ -2,7 +2,6 @@ package gregtech.api.enchants;
 
 import gregtech.api.ConfigCategories;
 import gregtech.api.GTValues;
-import gregtech.api.util.GT_Config;
 import net.minecraft.enchantment.EnchantmentDamage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -23,7 +22,8 @@ public class EnchantmentEnderDamage extends EnchantmentDamage {
 
     public void registerEnchantment() {
         REGISTRY.register(
-                GT_Config.addIDConfig(ConfigCategories.IDs.enchantments, "Disjunction", 15),
+//                GT_Config.addIDConfig(ConfigCategories.IDs.enchantments, "Disjunction", 15),
+                15,
                 new ResourceLocation(GTValues.MODID, "disjunction"),
                 this
         );

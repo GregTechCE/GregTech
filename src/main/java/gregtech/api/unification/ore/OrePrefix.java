@@ -10,6 +10,7 @@ import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.Condition;
 import gregtech.api.util.GTLog;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -258,6 +259,9 @@ public enum OrePrefix {
     }
 
     static {
+        OrePrefix.bottle.containerItem = new ItemStack(Items.GLASS_BOTTLE);
+        OrePrefix.bucket.containerItem = new ItemStack(Items.BUCKET);
+
         ingotHot.heatDamage = 3.0F;
         cellPlasma.heatDamage = 6.0F;
 

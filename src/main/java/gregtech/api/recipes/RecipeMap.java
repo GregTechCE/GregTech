@@ -639,9 +639,9 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 		@Override
 		public void buildAndRegister() {
-			if (GT_Mod.gregtechproxy.mTEMachineRecipes) {
-				ModHandler.ThermalExpansion.addInductionSmelterRecipe(getInputs().get(0), getInputs().get(1), getOutputs().get(0), null, duration * EUt * 2, 0);
-			}
+//			if (GT_Mod.gregtechproxy.mTEMachineRecipes) {
+//				ModHandler.ThermalExpansion.addInductionSmelterRecipe(getInputs().get(0), getInputs().get(1), getOutputs().get(0), null, duration * EUt * 2, 0);
+//			}
 			super.buildAndRegister();
 		}
 	});
@@ -1219,7 +1219,8 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 //			}
 
 			// Check Container Item of Input since it is around the Input, then the Input itself, then Container Item of Output and last check the Output itself
-			for (ItemStack stack : new ItemStack[]{GT_Utility.getContainerItem(inputs[0], true), inputs[0], GT_Utility.getContainerItem(output, true), output}) {
+//			for (ItemStack stack : new ItemStack[]{GT_Utility.getContainerItem(inputs[0], true), inputs[0], GT_Utility.getContainerItem(output, true), output}) {
+			for (ItemStack stack : new ItemStack[]{inputs[0], output}) {
 				if (stack != null) {
 					if (GT_Utility.areStacksEqual(stack, new ItemStack(Blocks.NETHERRACK, 1, W), true)
 							|| GT_Utility.areStacksEqual(stack, new ItemStack(Blocks.TNT, 1, W), true)
@@ -1332,34 +1333,34 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 			if (inputs == null || inputs.length <= 0 || inputs[0] == null || recipe != null /*|| !GregTechAPI.sPostloadFinished*/)
 				return recipe;
 			if (fluidInputs != null && fluidInputs.length > 0 && fluidInputs[0] != null) {
-				ItemStack output = GT_Utility.fillFluidContainer(fluidInputs[0], inputs[0], false, true);
-				FluidStack fluid = GT_Utility.getFluidForFilledItem(output, true);
-				if (fluid != null) {
-					recipe = this.recipeBuilder()
-							.cannotBeBuffered()
-							.nonOptimized()
-							.inputs(GT_Utility.copyAmount(1, inputs[0]))
-							.outputs(output)
-							.fluidInputs(fluidInputs)
-							.duration(Math.max(fluid.amount / 64, 16))
-							.EUt(1)
-							.build();
-				}
+//				ItemStack output = GT_Utility.fillFluidContainer(fluidInputs[0], inputs[0], false, true);
+//				FluidStack fluid = GT_Utility.getFluidForFilledItem(output, true);
+//				if (fluid != null) {
+//					recipe = this.recipeBuilder()
+//							.cannotBeBuffered()
+//							.nonOptimized()
+//							.inputs(GT_Utility.copyAmount(1, inputs[0]))
+//							.outputs(output)
+//							.fluidInputs(fluidInputs)
+//							.duration(Math.max(fluid.amount / 64, 16))
+//							.EUt(1)
+//							.build();
+//				}
 			}
-			if (recipe == null) {
-				FluidStack fluid = GT_Utility.getFluidForFilledItem(inputs[0], true);
-				if (fluid != null) {
-					recipe = this.recipeBuilder()
-							.cannotBeBuffered()
-							.nonOptimized()
-							.inputs(GT_Utility.copyAmount(1, inputs[0]))
-							.outputs(GT_Utility.getContainerItem(inputs[0], true))
-							.fluidOutputs(fluidInputs)
-							.duration(Math.max(fluid.amount / 64, 16))
-							.EUt(1)
-							.build();
-				}
-			}
+//			if (recipe == null) {
+//				FluidStack fluid = GT_Utility.getFluidForFilledItem(inputs[0], true);
+//				if (fluid != null) {
+//					recipe = this.recipeBuilder()
+//							.cannotBeBuffered()
+//							.nonOptimized()
+//							.inputs(GT_Utility.copyAmount(1, inputs[0]))
+//							.outputs(GT_Utility.getContainerItem(inputs[0], true))
+//							.fluidOutputs(fluidInputs)
+//							.duration(Math.max(fluid.amount / 64, 16))
+//							.EUt(1)
+//							.build();
+//				}
+//			}
 			return recipe;
 		}
 

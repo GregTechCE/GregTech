@@ -1,12 +1,12 @@
 package gregtech.api.metatileentity;
 
-import gregtech.api.util.GT_Config;
 import gregtech.common.blocks.BlockMachine;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
 
@@ -55,7 +55,7 @@ public interface IMetaTileEntityFactory {
     /**
      * Called to set configuration values for this factory
      */
-    void onConfigLoad(GT_Config config);
+    void onConfigLoad(Configuration config);
 
     /**
      * The onCreated function of the item class redirects here

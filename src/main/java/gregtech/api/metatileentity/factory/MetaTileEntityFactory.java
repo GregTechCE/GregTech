@@ -4,12 +4,12 @@ import com.google.common.base.Throwables;
 import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.IMetaTileEntityFactory;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.util.GT_Config;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
 
@@ -77,7 +77,7 @@ public class MetaTileEntityFactory<T extends MetaTileEntity> implements IMetaTil
     }
 
     @Override
-    public void onConfigLoad(GT_Config config) {
+    public void onConfigLoad(Configuration config) {
     }
 
     @Override

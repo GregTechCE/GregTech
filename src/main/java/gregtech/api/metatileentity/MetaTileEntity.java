@@ -87,14 +87,9 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
         return GregTechAPI.METATILEENTITY_REGISTRY.getNameForObject(factory);
     }
 
-    @Override
+//    @Override
     public String getUnlocalizedName() {
         return "gt.machine." + getMetaName();
-    }
-
-    @Override
-    public ITextComponent getLocalizedName() {
-        return new TextComponentTranslation(getUnlocalizedName());
     }
 
     @Override
@@ -340,29 +335,29 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
         holder.markDirty();
     }
 
-    @Override
-    public boolean onRightClick(EntityPlayer player, EnumFacing side, float clickX, float clickY, float clickZ) {
-        return false;
-    }
+//    @Override
+//    public boolean onRightClick(EntityPlayer player, EnumFacing side, float clickX, float clickY, float clickZ) {
+//        return false;
+//    }
 
     @Override
     public void onLeftClick(EntityPlayer player) {
 
     }
 
-    @Override
-    public void onScrewdriverRightClick(EnumFacing side, EntityPlayer player, float clickX, float clickY, float clickZ) {
+//    @Override
+//    public void onScrewdriverRightClick(EnumFacing side, EntityPlayer player, float clickX, float clickY, float clickZ) {
+//
+//    }
 
-    }
-
-    @Override
-    public boolean onWrenchRightClick(EnumFacing side, EnumFacing wrenchingSide, EntityPlayer player, float clickX, float clickY, float clickZ) {
-        if(isValidFacing(wrenchingSide)) {
-            setFrontFacing(wrenchingSide);
-            return true;
-        }
-        return false;
-    }
+//    @Override
+//    public boolean onWrenchRightClick(EnumFacing side, EnumFacing wrenchingSide, EntityPlayer player, float clickX, float clickY, float clickZ) {
+//        if(isValidFacing(wrenchingSide)) {
+//            setFrontFacing(wrenchingSide);
+//            return true;
+//        }
+//        return false;
+//    }
 
     @Override
     public void onFirstTick() {
@@ -384,30 +379,30 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     public void onRemoval() {
     }
 
-    @Override
-    public Container getServerGUI(int ID, InventoryPlayer playerInventory) {
-        return null;
-    }
-
-    @Override
-    public GuiContainer getClientGUI(int ID, InventoryPlayer playerInventory) {
-        return null;
-    }
+//    @Override
+//    public Container getServerGUI(int ID, InventoryPlayer playerInventory) {
+//        return null;
+//    }
+//
+//    @Override
+//    public GuiContainer getClientGUI(int ID, InventoryPlayer playerInventory) {
+//        return null;
+//    }
 
     @Override
     public boolean isAccessAllowed(EntityPlayer player) {
         return true; //default - to be overridden
     }
 
-    @Override
-    public int getComparatorValue(EnumFacing side) {
-        return 0;
-    }
-
-    @Override
-    public float getExplosionResistance(EnumFacing side) {
-        return 2.0f;
-    }
+//    @Override
+//    public int getComparatorValue(EnumFacing side) {
+//        return 0;
+//    }
+//
+//    @Override
+//    public float getExplosionResistance(EnumFacing side) {
+//        return 2.0f;
+//    }
 
     @Override
     public void onEntityCollidedWithBlock(Entity collider) {
@@ -478,19 +473,19 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
         }
     }
 
-    @Override
-    public void onExplosion() {
-        //NO OP
-    }
+//    @Override
+//    public void onExplosion() {
+//        NO OP
+//    }
 
     @Override
     public void doExplosion(long strength) {
         BlockPos pos = holder.getWorldPos();
         World world = holder.getWorldObj();
-        GT_Utility.playSound(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, GregTechAPI.sSoundList.get(209), SoundCategory.BLOCKS, 1.0f, 1.0f);
-        if (GregTechAPI.sMachineExplosions) {
+        GT_Utility.playSound(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, GregTechAPI.soundList.get(209), SoundCategory.BLOCKS, 1.0f, 1.0f);
+//        if (GregTechAPI.sMachineExplosions) {
             world.createExplosion(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, strength, true);
-        }
+//        }
     }
 
 }

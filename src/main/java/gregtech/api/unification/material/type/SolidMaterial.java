@@ -73,12 +73,8 @@ public class SolidMaterial extends DustMaterial {
         this.directSmelting = this;
     }
 
-    public SolidMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element) {
-        this(metaItemSubId, name, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, element, 0, 0, 0);
-    }
-
-    public SolidMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags) {
-        this(metaItemSubId, name, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, null, 0, 0, 0);
+    public SolidMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, int toolQuality) {
+        this(metaItemSubId, name, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, null, 0, toolQuality, 0);
     }
 
     @Override

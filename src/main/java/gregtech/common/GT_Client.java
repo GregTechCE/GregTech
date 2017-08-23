@@ -6,99 +6,15 @@
 package gregtech.common;
 
 import codechicken.lib.vec.Rotation;
-import gregtech.api.GregTechAPI;
-import gregtech.api.unification.material.Materials;
-import gregtech.api.enums.TextureSet;
-import gregtech.api.enums.Textures;
-import gregtech.api.capability.ICoverable;
-import gregtech.api.capability.ITurnable;
-import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.util.GTLog;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.entities.GT_Entity_Arrow;
-import gregtech.common.entities.GT_Entity_Arrow_Potion;
-import gregtech.common.render.*;
-import ic2.api.tile.IWrenchable;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
-import java.net.URL;
-import java.util.*;
-
 @SideOnly(Side.CLIENT)
-public class GT_Client extends GT_Proxy implements Runnable {
-
-    private static List<Block> ROTATABLE_VANILLA_BLOCKS;
-
-    static {
-        ROTATABLE_VANILLA_BLOCKS = Arrays.asList(Blocks.PISTON, Blocks.STICKY_PISTON, Blocks.FURNACE, Blocks.LIT_FURNACE,
-                Blocks.DROPPER, Blocks.DISPENSER, Blocks.CHEST, Blocks.TRAPPED_CHEST, Blocks.ENDER_CHEST, Blocks.HOPPER,
-                Blocks.PUMPKIN, Blocks.LIT_PUMPKIN);
-    }
-
-    private final HashSet<String> mCapeList = new HashSet<>();
-    private final List<Materials> mPosR;
-    private final List<Materials> mPosG;
-    private final List<Materials> mPosB;
-    private final List<Materials> mPosA = new ArrayList<>();
-    private final List<Materials> mNegR;
-    private final List<Materials> mNegG;
-    private final List<Materials> mNegB;
-    private final List<Materials> mNegA = new ArrayList<>();
-    private final List<Materials> mMoltenPosR;
-    private final List<Materials> mMoltenPosG;
-    private final List<Materials> mMoltenPosB;
-    private final List<Materials> mMoltenPosA = new ArrayList<>();
-    private final List<Materials> mMoltenNegR;
-    private final List<Materials> mMoltenNegG;
-    private final List<Materials> mMoltenNegB;
-    private final List<Materials> mMoltenNegA = new ArrayList<>();
-    private long mAnimationTick;
-    private boolean mAnimationDirection;
-
-    public GT_Client() {
-        mAnimationTick = 0L;
-        mAnimationDirection = false;
-
-        mPosR = Arrays.asList( /**Materials.ChargedCertusQuartz, **/Materials.Enderium, Materials.Vinteum, Materials.Uranium235, Materials.InfusedGold, Materials.Plutonium241, Materials.NaquadahEnriched, Materials.Naquadria, Materials.InfusedOrder, Materials.Force,
-                Materials.Pyrotheum, Materials.Sunnarium, Materials.Glowstone, Materials.Thaumium, Materials.InfusedVis, Materials.InfusedAir, Materials.InfusedFire, Materials.FierySteel, Materials.Firestone);
-
-        mPosG = Arrays.asList( /**Materials.ChargedCertusQuartz, **/Materials.Enderium, Materials.Vinteum, Materials.Uranium235, Materials.InfusedGold, Materials.Plutonium241, Materials.NaquadahEnriched, Materials.Naquadria, Materials.InfusedOrder, Materials.Force,
-                Materials.Pyrotheum, Materials.Sunnarium, Materials.Glowstone, Materials.InfusedAir, Materials.InfusedEarth);
-
-        mPosB = Arrays.asList( /**Materials.ChargedCertusQuartz, **/Materials.Enderium, Materials.Vinteum, Materials.Uranium235, Materials.InfusedGold, Materials.Plutonium241, Materials.NaquadahEnriched, Materials.Naquadria, Materials.InfusedOrder, Materials.InfusedVis,
-                Materials.InfusedWater, Materials.Thaumium);
-
-        mNegR = Arrays.asList(Materials.InfusedEntropy, Materials.NetherStar);
-
-        mNegG = Arrays.asList(Materials.InfusedEntropy, Materials.NetherStar);
-
-        mNegB = Arrays.asList(Materials.InfusedEntropy, Materials.NetherStar);
-
-        mMoltenPosR = Arrays.asList(Materials.Enderium, Materials.NetherStar, Materials.Vinteum, Materials.Uranium235, Materials.InfusedGold, Materials.Plutonium241, Materials.NaquadahEnriched, Materials.Naquadria, Materials.InfusedOrder, Materials.Force,
-                Materials.Pyrotheum, Materials.Sunnarium, Materials.Glowstone, Materials.Thaumium, Materials.InfusedVis, Materials.InfusedAir, Materials.InfusedFire, Materials.FierySteel, Materials.Firestone);
-
-        mMoltenPosG = Arrays.asList(Materials.Enderium, Materials.NetherStar, Materials.Vinteum, Materials.Uranium235, Materials.InfusedGold, Materials.Plutonium241, Materials.NaquadahEnriched, Materials.Naquadria, Materials.InfusedOrder, Materials.Force,
-                Materials.Pyrotheum, Materials.Sunnarium, Materials.Glowstone, Materials.InfusedAir, Materials.InfusedEarth);
-
-        mMoltenPosB = Arrays.asList(Materials.Enderium, Materials.NetherStar, Materials.Vinteum, Materials.Uranium235, Materials.InfusedGold, Materials.Plutonium241, Materials.NaquadahEnriched, Materials.Naquadria, Materials.InfusedOrder, Materials.InfusedVis,
-                Materials.InfusedWater, Materials.Thaumium);
-
-        mMoltenNegR = Arrays.asList(Materials.InfusedEntropy);
-        mMoltenNegG = Arrays.asList(Materials.InfusedEntropy);
-        mMoltenNegB = Arrays.asList(Materials.InfusedEntropy);
-
-    }
+public class GT_Client extends GT_Proxy {
 
     private static void drawGrid(DrawBlockHighlightEvent aEvent) {
         GL11.glPushMatrix();
@@ -138,28 +54,6 @@ public class GT_Client extends GT_Proxy implements Runnable {
     public void onPreLoad() {
         super.onPreLoad();
 
-        ModelLoaderRegistry.registerLoader(CasingModel.CasingBakedModelLoader.INSTANCE);
-        ModelLoaderRegistry.registerLoader(TurbineModel.TurbineBakedModelLoader.INSTANCE);
-
-        String arr$[] = {
-                "renadi", "hanakocz", "MysteryDump", "Flaver4", "x_Fame", "Peluche321", "Goshen_Ithilien", "manf", "Bimgo", "leagris",
-                "IAmMinecrafter02", "Cerous", "Devilin_Pixy", "Bkarlsson87", "BadAlchemy", "CaballoCraft", "melanclock", "Resursator", "demanzke", "AndrewAmmerlaan",
-                "Deathlycraft", "Jirajha", "Axlegear", "kei_kouma", "Dracion", "dungi", "Dorfschwein", "Zero Tw0", "mattiagraz85", "sebastiank30",
-                "Plem", "invultri", "grillo126", "malcanteth", "Malevolence_", "Nicholas_Manuel", "Sirbab", "kehaan", "bpgames123", "semig0d",
-                "9000bowser", "Sovereignty89", "Kris1432", "xander_cage_", "samuraijp", "bsaa", "SpwnX", "tworf", "Kadah", "kanni",
-                "Stute", "Hegik", "Onlyme", "t3hero", "Hotchi", "jagoly", "Nullav", "BH5432", "Sibmer", "inceee",
-                "foxxx0", "Hartok", "TMSama", "Shlnen", "Carsso", "zessirb", "meep310", "Seldron", "yttr1um", "hohounk",
-                "freebug", "Sylphio", "jmarler", "Saberawr", "r00teniy", "Neonbeta", "yinscape", "voooon24", "Quintine", "peach774",
-                "lepthymo", "bildeman", "Kremnari", "Aerosalo", "OndraSter", "oscares91", "mr10movie", "Daxx367x2", "EGERTRONx", "aka13_404",
-                "Abouttabs", "Johnstaal", "djshiny99", "megatronp", "DZCreeper", "Kane_Hart", "Truculent", "vidplace7", "simon6689", "MomoNasty",
-                "UnknownXLV", "goreacraft", "Fluttermine", "Daddy_Cecil", "MrMaleficus", "TigersFangs", "cublikefoot", "chainman564", "NikitaBuker", "Misha999777",
-                "25FiveDetail", "AntiCivilBoy", "michaelbrady", "xXxIceFirexXx", "Speedynutty68", "GarretSidzaka", "HallowCharm977", "mastermind1919", "The_Hypersonic", "diamondguy2798",
-                "zF4ll3nPr3d4t0r", "CrafterOfMines57", "XxELIT3xSNIP3RxX", "SuterusuKusanagi", "xavier0014", "adamros", "alexbegt", "Archengius"
-        };
-        for (String tName : arr$) {
-            mCapeList.add(tName.toLowerCase());
-        }
-        new Thread(this).start();
     }
 
     @Override
@@ -172,115 +66,22 @@ public class GT_Client extends GT_Proxy implements Runnable {
         super.onPostLoad();
     }
 
-    public void run() {
-        downloadStuff();
-    }
-
-    public void downloadStuff() {
-        try {
-            GTLog.out.println("GT_Mod: Downloading Cape List.");
-            Scanner tScanner = new Scanner(new URL("http://gregtech.overminddl1.com/com/gregoriust/gregtech/supporterlist.txt").openStream());
-            while (tScanner.hasNextLine()) {
-                String tName = tScanner.nextLine();
-                if (!this.mCapeList.contains(tName.toLowerCase())) {
-                    this.mCapeList.add(tName.toLowerCase());
-                }
-            }
-        } catch (Throwable e) {}
-    }
-
-    @SubscribeEvent
-    public void onDrawBlockHighlight(DrawBlockHighlightEvent aEvent) {
-        if(aEvent.getPlayer() != null && aEvent.getTarget().typeOfHit == RayTraceResult.Type.BLOCK &&
-                aEvent.getTarget().getBlockPos() != null) {
-            EntityPlayer aPlayer = aEvent.getPlayer();
-            ItemStack currentItem = aPlayer.getHeldItemMainhand();
-            BlockPos aPos = aEvent.getTarget().getBlockPos();
-            Block block = aPlayer.worldObj.getBlockState(aPos).getBlock();
-            if (GT_Utility.isStackValid(currentItem)) {
-                TileEntity aTileEntity = aPlayer.worldObj.getTileEntity(aPos);
-                if (((aTileEntity instanceof BaseMetaPipeEntity)) && (((ICoverable) aTileEntity).getCoverIDAtSide((byte) aEvent.getTarget().sideHit.getIndex()) == 0) && ((GT_Utility.isStackInList(currentItem, GregTechAPI.sCoverItems.keySet())) || (GT_Utility.isStackInList(currentItem, GregTechAPI.sCrowbarList)) || (GT_Utility.isStackInList(currentItem, GregTechAPI.sScrewdriverList)))) {
-                    drawGrid(aEvent);
-                }
-                else if ((aTileEntity instanceof ITurnable || aTileEntity instanceof IWrenchable || ROTATABLE_VANILLA_BLOCKS.contains(block)) && GT_Utility.isStackInList(currentItem, GregTechAPI.sWrenchList)) {
-                    drawGrid(aEvent);
-                }
-            }
-        }
-    }
-
-
-    @SubscribeEvent
-    public void onClientTickEvent(net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent aEvent) {
-        if (aEvent.phase == net.minecraftforge.fml.common.gameevent.TickEvent.Phase.END) {
-            mAnimationTick++;
-            if (mAnimationTick % 50L == 0L)
-                mAnimationDirection = !mAnimationDirection;
-            int tDirection = mAnimationDirection ? 1 : -1;
-            for (Materials tMaterial : mPosR) {
-                tMaterial.mRGBa[0] += tDirection;
-            }
-
-            for (Materials tMaterial : mPosG) {
-                tMaterial.mRGBa[1] += tDirection;
-            }
-
-            for (Materials tMaterial : mPosB) {
-                tMaterial.mRGBa[2] += tDirection;
-            }
-
-            for (Materials tMaterial : mPosA) {
-                tMaterial.mRGBa[3] += tDirection;
-            }
-
-            for (Materials tMaterial : mNegR) {
-                tMaterial.mRGBa[0] -= tDirection;
-            }
-
-            for (Materials tMaterial : mNegG) {
-                tMaterial.mRGBa[1] -= tDirection;
-            }
-
-            for (Materials tMaterial : mNegB) {
-                tMaterial.mRGBa[2] -= tDirection;
-            }
-
-            for (Materials tMaterial : mNegA) {
-                tMaterial.mRGBa[3] -= tDirection;
-            }
-
-            for (Materials tMaterial : mMoltenPosR) {
-                tMaterial.mMoltenRGBa[0] += tDirection;
-            }
-
-            for (Materials tMaterial : mMoltenPosG) {
-                tMaterial.mMoltenRGBa[1] += tDirection;
-            }
-
-            for (Materials tMaterial : mMoltenPosB) {
-                tMaterial.mMoltenRGBa[2] += tDirection;
-            }
-
-            for (Materials tMaterial : mMoltenPosA) {
-                tMaterial.mMoltenRGBa[3] += tDirection;
-            }
-
-            for (Materials tMaterial : mMoltenNegR) {
-                tMaterial.mMoltenRGBa[0] -= tDirection;
-            }
-
-            for (Materials tMaterial : mMoltenNegG) {
-                tMaterial.mMoltenRGBa[1] -= tDirection;
-            }
-
-            for (Materials tMaterial : mMoltenNegB) {
-                tMaterial.mMoltenRGBa[2] -= tDirection;
-            }
-
-            for (Materials tMaterial : mMoltenNegA) {
-                tMaterial.mMoltenRGBa[3] -= tDirection;
-            }
-
-        }
-    }
+//    @SubscribeEvent
+//    public void onDrawBlockHighlight(DrawBlockHighlightEvent event) {
+//        if(event.getPlayer() != null && event.getTarget().typeOfHit == RayTraceResult.Type.BLOCK && event.getTarget().getBlockPos() != null) {
+//            EntityPlayer player = event.getPlayer();
+//            ItemStack currentItem = player.getHeldItemMainhand();
+//            BlockPos pos = event.getTarget().getBlockPos();
+//            Block block = player.worldObj.getBlockState(pos).getBlock();
+//            if (GT_Utility.isStackValid(currentItem)) {
+//                TileEntity aTileEntity = player.worldObj.getTileEntity(pos);
+//                if (((aTileEntity instanceof BaseMetaPipeEntity)) && (((ICoverable) aTileEntity).getCoverIDAtSide((byte) event.getTarget().sideHit.getIndex()) == 0) && ((GT_Utility.isStackInList(currentItem, GregTechAPI.sCoverItems.keySet())) || (GT_Utility.isStackInList(currentItem, GregTechAPI.sCrowbarList)) || (GT_Utility.isStackInList(currentItem, GregTechAPI.sScrewdriverList)))) {
+//                    drawGrid(event);
+//                }
+//                else if ((aTileEntity instanceof ITurnable || aTileEntity instanceof IWrenchable || ROTATABLE_VANILLA_BLOCKS.contains(block)) && GT_Utility.isStackInList(currentItem, GregTechAPI.sWrenchList)) {
+//                    drawGrid(event);
+//                }
+//            }
+//        }
+//    }
 }

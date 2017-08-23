@@ -148,7 +148,7 @@ public class ModHandler {
 
         Validate.notNull(input, "Input cannot be null");
         Validate.notNull(output, "Output cannot be null");
-        Validate.isTrue(GT_Utility.getContainerItem(input, false) != null, "Input item cannot have container item");
+//        Validate.isTrue(GT_Utility.getContainerItem(input, false) != null, "Input item cannot have container item");
 
 //        if (!GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.smelting, input, true)) return;
 
@@ -193,9 +193,9 @@ public class ModHandler {
             recipeBuilder.buildAndRegister();
         }
 
-        if (GT_Mod.gregtechproxy.mTEMachineRecipes) {
-            ThermalExpansion.addInductionSmelterRecipe(input, null, output, null, output.stackSize * 1600, 0);
-        }
+//        if (GT_Mod.gregtechproxy.mTEMachineRecipes) {
+//            ThermalExpansion.addInductionSmelterRecipe(input, null, output, null, output.stackSize * 1600, 0);
+//        }
     }
 
     /**
@@ -641,10 +641,10 @@ public class ModHandler {
 
             if (stack.getItemDamage() >= stack.getMaxDamage()) {
                 stack.setItemDamage(stack.getMaxDamage() + 1);
-                ItemStack containerItem = GT_Utility.getContainerItem(stack, true);
-                if (containerItem != null) {
-                    stack = containerItem.copy();
-                }
+//                ItemStack containerItem = GT_Utility.getContainerItem(stack, true);
+//                if (containerItem != null) {
+//                    stack = containerItem.copy();
+//                }
             }
             return true;
         }
@@ -785,7 +785,7 @@ public class ModHandler {
         /**
          * IC2-ThermalCentrifuge Recipe. Overloads old Recipes automatically
          */
-        public static void addThermalCentrifugeRecipe(ItemStack input, int heat, Object... output) {
+        public static void addThermalCentrifugeRecipe(ItemStack input, int heat, ItemStack... output) {
             Validate.notNull(input, "Input cannot be null");
             Validate.notNull(output, "Output cannot be null");
             Validate.isTrue(output.length > 0, "Output cannot be empty");
@@ -803,7 +803,7 @@ public class ModHandler {
         /**
          * IC2-OreWasher Recipe. Overloads old Recipes automatically
          */
-        public static void addOreWasherRecipe(ItemStack input, int waterAmount, Object... output) {
+        public static void addOreWasherRecipe(ItemStack input, int waterAmount, ItemStack... output) {
             Validate.notNull(input, "Input cannot be null");
             Validate.notNull(output, "Output cannot be null");
             Validate.isTrue(output.length > 0, "Output cannot be empty");
@@ -976,7 +976,7 @@ public class ModHandler {
             output2 = OreDictionaryUnifier.getUnificated(output2);
             Validate.notNull(input1, "Input cannot be null");
             Validate.notNull(output1, "Output cannot be null");
-            Validate.isTrue(GT_Utility.getContainerItem(input1, false) != null, "Input item cannot have container item");
+//            Validate.isTrue(GT_Utility.getContainerItem(input1, false) != null, "Input item cannot have container item");
 
 //            if (!GT_Mod.gregtechproxy.mTEMachineRecipes &&
 //                    !GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.inductionsmelter, input2 == null ? input1 : output1, true))
