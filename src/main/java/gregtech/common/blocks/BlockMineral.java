@@ -9,7 +9,7 @@ public class BlockMineral extends StoneBlock<BlockMineral.MineralVariant> {
     public BlockMineral() {
         super(Material.ROCK);
         setHardness(3.0f);
-        setResistance(2.0f);
+        setResistance(6.0f);
         setSoundType(SoundType.STONE);
         setHarvestLevel("pickaxe", 1);
     }

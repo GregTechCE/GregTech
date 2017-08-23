@@ -4,6 +4,7 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import gregtech.api.model.AbstractBlockModelFactory;
 import gregtech.api.model.ResourcePackHook;
+import gregtech.api.unification.material.MaterialIconType;
 import gregtech.api.unification.material.type.Material;
 import gregtech.common.blocks.BlockCompressed;
 import net.minecraft.block.Block;
@@ -27,7 +28,7 @@ public class BlockCompressedFactory extends AbstractBlockModelFactory {
     }
 
     private BlockCompressedFactory() {
-        super("compressed_block", "block_compressed_");
+        super("compressed_block", "compressed_");
     }
 
     @Override
@@ -37,7 +38,7 @@ public class BlockCompressedFactory extends AbstractBlockModelFactory {
         for(Material material : allowedValues) {
             variants.add(VARIANT_DEFINITION
                     .replace("$MATERIAL$", material.toString())
-                    .replace("$TEXTURE$", "gregtech:models/icon_set/block/" + material.toCamelCaseString() + ".gtmat")
+                    .replace("$TEXTURE$", MaterialIconType.block.getBlockPath(material.materialIconSet).toString())
             );
         }
         return blockStateSample.replace("$VARIANTS$", COMMA_JOINER.join(variants));

@@ -3,6 +3,7 @@ package gregtech.common.blocks.models;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableSet;
 import gregtech.api.GT_Values;
+import gregtech.api.model.AbstractBakedModel;
 import gregtech.common.blocks.BlockCasings4;
 import gregtech.common.blocks.properties.UnlistedBlockAccess;
 import gregtech.common.blocks.properties.UnlistedBlockPos;

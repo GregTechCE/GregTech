@@ -8,8 +8,8 @@ public class BlockMachineCasing extends VariantBlock<BlockMachineCasing.MachineC
 
     public BlockMachineCasing() {
         super(Material.IRON);
-        setHardness(5.0f);
-        setResistance(4.0f);
+        setHardness(4.0f);
+        setResistance(8.0f);
         setSoundType(SoundType.METAL);
         setHarvestLevel("wrench", 2);
     }

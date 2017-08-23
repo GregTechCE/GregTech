@@ -1,6 +1,5 @@
 package gregtech.common.blocks;
 
-import gregtech.api.unification.ore.StoneTypes;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.IStringSerializable;
@@ -10,10 +9,9 @@ public class BlockBoilerCasing extends VariantBlock<BlockBoilerCasing.BoilerCasi
     public BlockBoilerCasing() {
         super(Material.IRON);
         setHardness(5.0f);
-        setResistance(4.0f);
+        setResistance(10.0f);
         setSoundType(SoundType.METAL);
         setHarvestLevel("wrench", 2);
-        StoneTypes
     }
 
     public enum BoilerCasingType implements IStringSerializable {

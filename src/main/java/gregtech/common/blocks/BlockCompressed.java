@@ -14,12 +14,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.List;
 
-public class BlockCompressed extends DelayedStateBlock {
+public final class BlockCompressed extends DelayedStateBlock {
 
     public final PropertyMaterial variantProperty;
 
@@ -32,7 +33,14 @@ public class BlockCompressed extends DelayedStateBlock {
         initBlockState();
     }
 
-
+    public void registerBlock(String blockName) {
+        setUnlocalizedName("unnamed");
+        setRegistryName(blockName);
+        GameRegistry.register(this);
+        CompressedItemBlock itemBlock = new CompressedItemBlock(this);
+        itemBlock.setRegistryName(blockName);
+        GameRegistry.register(itemBlock);
+    }
 
     @Override
     public String getHarvestTool(IBlockState state) {
@@ -49,7 +57,7 @@ public class BlockCompressed extends DelayedStateBlock {
     public int getHarvestLevel(IBlockState state) {
         Material material = state.getValue(variantProperty);
         if(material instanceof SolidMaterial) {
-            return Math.max(1, ((SolidMaterial) material).toolQuality - 1);
+            return ((SolidMaterial) material).toolQuality;
         }
         return 0;
     }
@@ -72,17 +80,15 @@ public class BlockCompressed extends DelayedStateBlock {
         return new BlockStateContainer(this, variantProperty);
     }
 
-    public ItemStack getItemVariant(Material material) {
-        if(!variantProperty.getAllowedValues().contains(material)) {
-            throw new IllegalArgumentException("Invalid material");
-        }
-        return new ItemStack(this, 1, variantProperty.getAllowedValues().indexOf(material));
+    @SuppressWarnings("deprecation")
+    public ItemStack getItem(IBlockState blockState) {
+        return new ItemStack(this, 1, getMetaFromState(blockState));
     }
 
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-        for(Material material : variantProperty.getAllowedValues()) {
-            list.add(getItemVariant(material));
+        for(IBlockState blockState : blockState.getValidStates()) {
+            list.add(getItem(blockState));
         }
     }
 

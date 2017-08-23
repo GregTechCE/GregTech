@@ -9,7 +9,7 @@ public class BlockTurbineCasing extends VariantBlock<BlockTurbineCasing.TurbineC
     public BlockTurbineCasing() {
         super(Material.IRON);
         setHardness(5.0f);
-        setResistance(4.0f);
+        setResistance(10.0f);
         setSoundType(SoundType.METAL);
         setHarvestLevel("wrench", 2);
     }

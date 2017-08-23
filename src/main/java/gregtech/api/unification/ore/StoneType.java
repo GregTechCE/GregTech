@@ -2,6 +2,7 @@ package gregtech.api.unification.ore;
 
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.common.blocks.BlockGranite;
 import gregtech.common.blocks.BlockMineral;
 import net.minecraft.block.state.IBlockState;
@@ -11,12 +12,13 @@ import net.minecraft.util.IStringSerializable;
 /**
  * For ore generation
  */
-public enum StoneTypes implements IStringSerializable {
+public enum StoneType implements IStringSerializable {
 
     //vanilla ones
     STONE("stone", OrePrefix.ore, Materials.Stone),
     NETHERRACK("netherrack", OrePrefix.oreNetherrack, Materials.Netherrack),
     ENDSTONE("endstone", OrePrefix.oreEndstone, Materials.Endstone),
+    SANDSTONE("sandstone", OrePrefix.oreSand, Materials.SiliconDioxide),
 
     //gt ones
     BLACK_GRANITE("black_granite", OrePrefix.oreBlackgranite, Materials.GraniteBlack),
@@ -28,38 +30,38 @@ public enum StoneTypes implements IStringSerializable {
     public final int id = ordinal();
     public final String name;
     public final OrePrefix processingPrefix;
-    public final Material stoneMaterial;
+    public final SolidMaterial stoneMaterial;
 
-    public static final StoneTypes[] TYPES = values();
+    public static final StoneType[] TYPES = values();
 
-    StoneTypes(String name, OrePrefix processingPrefix, Material stoneMaterial) {
+    StoneType(String name, OrePrefix processingPrefix, SolidMaterial stoneMaterial) {
         this.name = name;
         this.processingPrefix = processingPrefix;
         this.stoneMaterial = stoneMaterial;
     }
 
-    public static StoneTypes computeStoneType(IBlockState blockState) {
-        StoneTypes variantId = StoneTypes.STONE;
+    public static StoneType computeStoneType(IBlockState blockState) {
+        StoneType variantId = StoneType.STONE;
         if (blockState.getBlock() == Blocks.STONE) {
-            variantId = StoneTypes.STONE;
+            variantId = StoneType.STONE;
         } else if (blockState.getBlock() instanceof BlockGranite) {
             BlockGranite block = (BlockGranite) blockState.getBlock();
             BlockGranite.GraniteVariant variant = block.getVariant(blockState);
             if (variant == BlockGranite.GraniteVariant.BLACK_GRANITE)
-                variantId = StoneTypes.BLACK_GRANITE;
+                variantId = StoneType.BLACK_GRANITE;
             else if (variant == BlockGranite.GraniteVariant.RED_GRANITE)
-                variantId = StoneTypes.RED_GRANITE;
+                variantId = StoneType.RED_GRANITE;
         } else if (blockState.getBlock() instanceof BlockMineral) {
             BlockMineral block = (BlockMineral) blockState.getBlock();
             BlockMineral.MineralVariant variant = block.getVariant(blockState);
             if (variant == BlockMineral.MineralVariant.MARBLE)
-                variantId = StoneTypes.MARBLE;
+                variantId = StoneType.MARBLE;
             else if (variant == BlockMineral.MineralVariant.BASALT)
-                variantId = StoneTypes.BASALT;
+                variantId = StoneType.BASALT;
         } else if (blockState.getBlock() == Blocks.NETHERRACK) {
-            variantId = StoneTypes.NETHERRACK;
+            variantId = StoneType.NETHERRACK;
         } else if (blockState.getBlock() == Blocks.END_STONE) {
-            variantId = StoneTypes.ENDSTONE;
+            variantId = StoneType.ENDSTONE;
         }
         return variantId;
     }

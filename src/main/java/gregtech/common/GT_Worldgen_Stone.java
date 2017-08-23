@@ -1,6 +1,6 @@
 package gregtech.common;
 
-import gregtech.api.unification.ore.StoneTypes;
+import gregtech.api.unification.ore.StoneType;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.api.world.GT_Worldgen_Ore;
 import gregtech.common.blocks.BlockGeneratedOres;
@@ -71,7 +71,7 @@ public class GT_Worldgen_Stone
                                                 IBlockState tTargetedBlock = aWorld.getBlockState(temp);
                                                 if (tTargetedBlock.getBlock() instanceof BlockGeneratedOres) {
                                                     BlockGeneratedOres block = (BlockGeneratedOres) tTargetedBlock.getBlock();
-                                                    StoneTypes stoneTypes = StoneTypes.computeStoneType(mBlockState);
+                                                    StoneType stoneTypes = StoneType.computeStoneType(mBlockState);
                                                     aWorld.setBlockState(temp, block.overrideStoneType(tTargetedBlock, stoneTypes));
                                                 } else if ((this.mAllowToGenerateinVoid && aWorld.isAirBlock(temp)) ||
                                                         (tTargetedBlock != null && tTargetedBlock.getBlock().isReplaceableOreGen(tTargetedBlock, aWorld, temp, GT_Worldgen.ANY))) {

@@ -8,8 +8,8 @@ public class BlockMetalCasing extends VariantBlock<BlockMetalCasing.MetalCasingT
 
     public BlockMetalCasing() {
         super(Material.IRON);
-        setHardness(7.0f);
-        setResistance(6.0f);
+        setHardness(5.0f);
+        setResistance(10.0f);
         setSoundType(SoundType.METAL);
         setHarvestLevel("wrench", 2);
     }

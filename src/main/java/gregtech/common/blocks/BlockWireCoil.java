@@ -8,8 +8,8 @@ public class BlockWireCoil extends VariantBlock<BlockWireCoil.CoilType> {
 
     public BlockWireCoil() {
         super(Material.IRON);
-        setHardness(6.0f);
-        setResistance(5.0f);
+        setHardness(5.0f);
+        setResistance(10.0f);
         setSoundType(SoundType.METAL);
         setHarvestLevel("wrench", 2);
     }

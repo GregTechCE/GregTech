@@ -10,7 +10,6 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
  * This class allows lazy initialization of block state of block
  * Useful when you need some parameters from constructor to construct a BlockStateContainer
  * All child classes must call initBlockState() in their constructors
- * Extending child of this class is safe, call will work only if caller is current class
  */
 public abstract class DelayedStateBlock extends Block {
 

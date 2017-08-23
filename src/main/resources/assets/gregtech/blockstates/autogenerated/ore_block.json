@@ -1,0 +1,48 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "uvlock": true
+  },
+  "variants": {
+    "small": {
+      "true": {
+        "textures": {
+          "texture": "$MATERIAL_TEXTURE_SMALL$"
+        },
+        "submodel": "cube_all"
+      },
+      "false": {
+        "textures": {
+          "texture": "$MATERIAL_TEXTURE_NORMAL$"
+        },
+        "submodel": "cube_all"
+      }
+    },
+    "stone_type": {
+      "stone": {
+        "model": "stone"
+      },
+      "netherrack": {
+        "model": "netherrack"
+      },
+      "endstone": {
+        "model": "end_stone"
+      },
+      "sandstone": {
+        "model": "sandstone_normal"
+      },
+      "black_granite": {
+        "model": "gregtech:black_granite"
+      },
+      "red_granite": {
+        "model": "gregtech:red_granite"
+      },
+      "marble": {
+        "model": "gregtech:marble"
+      },
+      "basalt": {
+        "model": "gregtech:basalt"
+      }
+    }
+  }
+}

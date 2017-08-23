@@ -9,7 +9,7 @@ public class BlockWarningSign extends VariantBlock<BlockWarningSign.SignType> {
     public BlockWarningSign() {
         super(Material.IRON);
         setHardness(2.0f);
-        setResistance(1.0f);
+        setResistance(3.0f);
         setSoundType(SoundType.METAL);
         setHarvestLevel("pickaxe", 1);
     }

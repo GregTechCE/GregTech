@@ -42,7 +42,7 @@ public enum OrePrefix {
 
     oreDense("Dense Ores", -1, MaterialIconType.ore, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null), // Prefix of the Dense-Ores Mod. Causes Ores to double. Ore -> Material is a Oneway Operation!
     oreRich("Rich Ores", -1, MaterialIconType.ore, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null), // Prefix of TFC
-    oreNormal("Normal Ores", -1, MaterialIconType.ore, ENABLE_UNIFICATION | DISALLOW_RECYCLING, hasFlag(GENERATE_ORE)), // Prefix of TFC
+    oreNormal("Normal Ores", -1, MaterialIconType.ore, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null), // Prefix of TFC
     oreSmall("Small Ores", -1, MaterialIconType.oreSmall, ENABLE_UNIFICATION | DISALLOW_RECYCLING, hasFlag(GENERATE_ORE)), // Prefix of Railcraft.
     orePoor("Poor Ores", -1, MaterialIconType.oreSmall, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null), // Prefix of Railcraft.
 

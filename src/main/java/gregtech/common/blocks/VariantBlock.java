@@ -1,6 +1,5 @@
 package gregtech.common.blocks;
 
-import gregtech.api.GT_Values;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
@@ -28,10 +27,10 @@ public class VariantBlock<T extends Enum<T> & IStringSerializable> extends Block
 
     public void registerBlock(String blockName) {
         setUnlocalizedName(blockName);
-        setRegistryName(GT_Values.MODID, blockName);
+        setRegistryName(blockName);
         GameRegistry.register(this);
         VariantItemBlock itemBlock = new VariantItemBlock<>(this);
-        itemBlock.setRegistryName(GT_Values.MODID, blockName);
+        itemBlock.setRegistryName(blockName);
         GameRegistry.register(itemBlock);
     }
 
