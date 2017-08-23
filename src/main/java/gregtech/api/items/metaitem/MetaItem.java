@@ -59,8 +59,8 @@ import java.util.List;
  * {@code addItem(0, "test_item").addStats(new ElectricStats(10000, 1,  false)) }
  * This will add single-use (unchargeable) LV battery with initial capacity 10000 EU
  */
-@SuppressWarnings({"unchecked", "deprecation"})
-public abstract class MetaItem<T extends MetaItem.MetaValueItem> extends Item implements ISpecialElectricItem, IFluidContainerItem, IFuelHandler, IReactorComponent, IBoxable {
+@SuppressWarnings("deprecation")
+public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item implements ISpecialElectricItem, IFluidContainerItem, IFuelHandler, IReactorComponent, IBoxable {
 
     private TShortObjectMap<T> metaItems = new TShortObjectHashMap<>();
 
@@ -100,7 +100,7 @@ public abstract class MetaItem<T extends MetaItem.MetaValueItem> extends Item im
     //////////////////////////////////////////////////////////////////
 
     private IElectricStats getElectricStats(ItemStack itemStack) {
-        MetaValueItem metaValueItem = getItem(itemStack);
+        T metaValueItem = getItem(itemStack);
         if(metaValueItem == null) {
             return ElectricStats.EMPTY;
         }
@@ -117,7 +117,7 @@ public abstract class MetaItem<T extends MetaItem.MetaValueItem> extends Item im
     //////////////////////////////////////////////////////////////////
 
     private IFluidStats getFluidStats(ItemStack itemStack) {
-        MetaValueItem metaValueItem = getItem(itemStack);
+        T metaValueItem = getItem(itemStack);
         if(metaValueItem == null) {
             return FluidStats.EMPTY;
         }
@@ -155,7 +155,7 @@ public abstract class MetaItem<T extends MetaItem.MetaValueItem> extends Item im
     //////////////////////////////////////////////////////////////////
     
     private INuclearStats getNuclearStats(ItemStack itemStack) {
-        MetaValueItem metaValueItem = getItem(itemStack);
+        T metaValueItem = getItem(itemStack);
         if(metaValueItem == null) {
             return null;
         }
@@ -164,7 +164,7 @@ public abstract class MetaItem<T extends MetaItem.MetaValueItem> extends Item im
 
     @Override
     public boolean canBeStoredInToolbox(ItemStack stack) {
-        MetaValueItem metaValueItem = getItem(stack);
+        T metaValueItem = getItem(stack);
         INuclearStats nuclearStats = metaValueItem.getNuclearStats();
         return metaValueItem != null && nuclearStats != null;
     }
@@ -242,7 +242,7 @@ public abstract class MetaItem<T extends MetaItem.MetaValueItem> extends Item im
     //////////////////////////////////////////////////////////////////
 
     private int getBurnValue(ItemStack itemStack) {
-        MetaValueItem metaValueItem = getItem(itemStack);
+        T metaValueItem = getItem(itemStack);
         if(metaValueItem == null) {
             return 0;
         }
@@ -259,7 +259,7 @@ public abstract class MetaItem<T extends MetaItem.MetaValueItem> extends Item im
     //////////////////////////////////////////////////////////////////
 
     private IItemUseManager getUseManager(ItemStack itemStack) {
-        MetaValueItem metaValueItem = getItem(itemStack);
+        T metaValueItem = getItem(itemStack);
         if(metaValueItem == null) {
             return null;
         }
@@ -267,7 +267,7 @@ public abstract class MetaItem<T extends MetaItem.MetaValueItem> extends Item im
     }
 
     private IItemDurabilityManager getDurabilityManager(ItemStack itemStack) {
-        MetaValueItem metaValueItem = getItem(itemStack);
+        T metaValueItem = getItem(itemStack);
         if(metaValueItem == null) {
             return null;
         }
@@ -275,7 +275,7 @@ public abstract class MetaItem<T extends MetaItem.MetaValueItem> extends Item im
     }
 
     public List<IItemBehaviour> getBehaviours(ItemStack itemStack) {
-        MetaValueItem metaValueItem = getItem(itemStack);
+        T metaValueItem = getItem(itemStack);
         if(metaValueItem == null) {
             return ImmutableList.of();
         }
@@ -284,7 +284,7 @@ public abstract class MetaItem<T extends MetaItem.MetaValueItem> extends Item im
 
     @Override
     public int getItemStackLimit(ItemStack stack) {
-        MetaValueItem metaValueItem = getItem(stack);
+        T metaValueItem = getItem(stack);
         if(metaValueItem == null) {
             return 64;
         }
@@ -453,7 +453,7 @@ public abstract class MetaItem<T extends MetaItem.MetaValueItem> extends Item im
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
-        for(MetaValueItem enabledItem : metaItems.valueCollection()) {
+        for(T enabledItem : metaItems.valueCollection()) {
             if(enabledItem.isVisible()) {
                 ItemStack itemStack = enabledItem.getStackForm();
                 IElectricStats electricStats = getManager(itemStack);

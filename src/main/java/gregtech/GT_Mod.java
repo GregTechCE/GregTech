@@ -9,6 +9,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.net.NetworkHandler;
+import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.Dyes;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
@@ -252,7 +253,7 @@ public class GT_Mod {
             }
         }
         GTLog.out.println("GT_Mod: Adding Scrap with a Weight of 200.0F to the Scrapbox Drops.");
-        GT_ModHandler.addScrapboxDrop(200.0F, GT_ModHandler.getIC2Item(ItemName.crafting, CraftingItemType.scrap, 1));
+        GT_ModHandler.addScrapboxDrop(200.0F, ModHandler.IC2.getIC2Item(ItemName.crafting, CraftingItemType.scrap, 1));
 
         System.out.println("preReader");
 

@@ -1,6 +1,6 @@
 package gregtech.api.items.metaitem;
 
-public class StandardMetaItem extends MetaItem<MetaItem.MetaValueItem> {
+public class StandardMetaItem extends MetaItem<MetaItem<?>.MetaValueItem> {
 
     public StandardMetaItem(short metaItemOffset) {
         super(metaItemOffset);

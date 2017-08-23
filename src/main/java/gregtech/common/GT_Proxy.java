@@ -39,6 +39,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.*;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
@@ -195,12 +196,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             }
         }
         GTLog.out.println("GT_Mod: Getting required Items of other Mods.");
-
-        ItemList.Dye_Bonemeal.set(new ItemStack(Items.DYE, 1, 15));
-        ItemList.Dye_SquidInk.set(new ItemStack(Items.DYE, 1, 0));
-        ItemList.Dye_Cocoa.set(new ItemStack(Items.DYE, 1, 3));
-
-        ItemList.Book_Written_00.set(new ItemStack(Items.WRITTEN_BOOK, 1, 0));
 
         ItemList.Food_Baked_Bread.set(new ItemStack(Items.BREAD, 1, 0));
         ItemList.Food_Raw_Potato.set(new ItemStack(Items.POTATO, 1, 0));

@@ -16,7 +16,7 @@ import net.minecraft.item.ItemStack;
 
 import static gregtech.common.items.MetaItems.*;
 
-public class MetaTool extends ToolMetaItem<ToolMetaItem.MetaToolValueItem> {
+public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
 
     public MetaTool() {
         super();

@@ -1,43 +1,36 @@
 package gregtech.api.recipes;
 
 import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
 import gregtech.api.ConfigCategories;
-import gregtech.api.items.ItemList;
-import gregtech.api.items.OreDictNames;
-import gregtech.api.unification.OreDictionaryUnifier;
-import gregtech.api.unification.ore.OrePrefix;
-import gregtech.api.items.ToolDictNames;
-import gregtech.api.unification.Material;
-import gregtech.api.unification.material.Materials;
+import gregtech.api.GregTech_API;
+import gregtech.api.enchants.EnchantmentData;
 import gregtech.api.items.IDamagableItem;
-import gregtech.api.items.IItemContainer;
-import gregtech.api.interfaces.internal.IRemovableRecipe;
-import gregtech.api.objects.GT_HashSet;
+import gregtech.api.items.OreDictNames;
+import gregtech.api.items.ToolDictNames;
+import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
-import gregtech.api.unification.stack.SimpleItemStack;
-import gregtech.api.util.GT_Config;
-import gregtech.api.util.GT_IBoxableWrapper;
-import gregtech.api.util.GT_ItsNotMyFaultException;
+import gregtech.api.unification.stack.MaterialStack;
+import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.items.MetaItems;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.ISpecialElectricItem;
-import ic2.api.item.ItemWrapper;
 import ic2.api.reactor.IReactorComponent;
 import ic2.api.recipe.IMachineRecipeManager;
-import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.Recipes;
 import ic2.core.block.state.IIdProvider;
-import ic2.core.init.OreValues;
+import ic2.core.item.type.CraftingItemType;
 import ic2.core.ref.BlockName;
 import ic2.core.ref.FluidName;
 import ic2.core.ref.ItemName;
 import ic2.core.ref.TeBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -47,15 +40,10 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
@@ -65,20 +53,10 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import org.apache.commons.lang3.Validate;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import javax.annotation.Nullable;
+import java.util.*;
 
-import static gregtech.api.GT_Values.B;
-import static gregtech.api.GT_Values.D1;
-import static gregtech.api.GT_Values.DW;
-import static gregtech.api.GT_Values.M;
-import static gregtech.api.GT_Values.V;
-import static gregtech.api.GT_Values.W;
+import static gregtech.api.GT_Values.*;
 
 public class ModHandler {
     public static final List<IRecipe> SINGLE_NON_BLOCK_DAMAGABLE_RECIPE_LIST = new ArrayList<>(1000);
@@ -86,11 +64,6 @@ public class ModHandler {
     private static final List<IRecipe> ALL_RECIPE_LIST = /*Collections.synchronizedList(*/new ArrayList<>(5000)/*)*/;
 
     public static Collection<String> nativeRecipeClasses = new HashSet<>(), specialRecipeClasses = new HashSet<>();
-
-    public static GT_HashSet<SimpleItemStack> nonReplaceableItems = new GT_HashSet<>();
-
-    private static boolean bufferCraftingRecipes = true;
-    private static final List<IRecipe> bufferRecipeList = new ArrayList<>(1000);
 
     static {
         nativeRecipeClasses.add(ShapedRecipes.class.getName());
@@ -132,66 +105,12 @@ public class ModHandler {
         specialRecipeClasses.add("shedar.mods.ic2.nuclearcontrol.StorageArrayRecipe");
     }
 
-    public static <T extends IIdProvider> IBlockState getIC2BlockState(BlockName blockName, T type) {
-        return blockName.getBlockState(type);
-    }
-
-    public static ItemStack getIC2Item(ItemName itemName, int amount) {
-        ItemStack stack = itemName.getItemStack();
-        stack.stackSize = amount;
-        return stack;
-    }
-
-    public static ItemStack getIC2Item(ItemName itemName, int amount, boolean wildcard) {
-        ItemStack stack = itemName.getItemStack();
-        if(wildcard) stack.setItemDamage(OreDictionary.WILDCARD_VALUE);
-        stack.stackSize = amount;
-        return stack;
-    }
-
-    public static ItemStack getIC2Item(ItemName itemName, int amount, int explicitDamage) {
-        ItemStack stack = itemName.getItemStack();
-        stack.setItemDamage(explicitDamage);
-        stack.stackSize = amount;
-        return stack;
-    }
-
-    public static ItemStack getIC2Item(BlockName itemName, int amount) {
-        ItemStack stack = itemName.getItemStack();
-        stack.stackSize = amount;
-        return stack;
-    }
-
-    public static <T extends Enum<T> & IIdProvider> ItemStack getIC2Item(BlockName itemName, T variant, int amount) {
-        ItemStack stack = itemName.getItemStack(variant);
-        stack.stackSize = amount;
-        return stack;
-    }
-
-    public static ItemStack getIC2TEItem(TeBlock variant, int amount) {
-        ItemStack stack = BlockName.te.getItemStack(variant);
-        stack.stackSize = amount;
-        return stack;
-    }
-
-    public static ItemStack getIC2Item(ItemName itemName, String variant, int amount) {
-        ItemStack stack = itemName.getItemStack(variant);
-        stack.stackSize = amount;
-        return stack;
-    }
-
-    public static <T extends Enum<T> & IIdProvider> ItemStack getIC2Item(ItemName itemName, T type, int amount) {
-        ItemStack stack = itemName.getItemStack(type);
-        stack.stackSize = amount;
-        return stack;
-    }
-
     /**
      * Returns if that Liquid is Water or Distilled Water
      */
     public static boolean isWater(FluidStack fluid) {
-        if (fluid == null) return false;
-        return fluid.isFluidEqual(getWater(1)) || fluid.isFluidEqual(getDistilledWater(1));
+        return new FluidStack(FluidRegistry.WATER, 1).isFluidEqual(fluid)
+                || new FluidStack(FluidName.distilled_water.getInstance(), 1).isFluidEqual(fluid);
     }
 
     /**
@@ -205,17 +124,14 @@ public class ModHandler {
      * Returns a Liquid Stack with given amount of distilled Water.
      */
     public static FluidStack getDistilledWater(int amount) {
-        FluidStack fluid = new FluidStack(FluidName.distilled_water.getInstance(), amount);
-        if (fluid == null) fluid = getWater(amount);
-        return fluid;
+        return new FluidStack(FluidName.distilled_water.getInstance(), amount);
     }
 
     /**
      * Returns if that Liquid is Lava
      */
     public static boolean isLava(FluidStack fluid) {
-        if (fluid == null) return false;
-        return fluid.isFluidEqual(getLava(1));
+        return new FluidStack(FluidRegistry.LAVA, 0).isFluidEqual(fluid);
     }
 
     /**
@@ -229,23 +145,21 @@ public class ModHandler {
      * Returns if that Liquid is Steam
      */
     public static boolean isSteam(FluidStack fluid) {
-        if (fluid == null) return false;
-        return fluid.isFluidEqual(getSteam(1));
+        return getSteam(1).isFluidEqual(fluid);
     }
 
     /**
      * Returns a Liquid Stack with given amount of Steam.
      */
     public static FluidStack getSteam(int amount) {
-        return Materials.Water.getGas(amount);
+        return Materials.Steam.getFluid(amount);
     }
 
     /**
      * Returns if that Liquid is Milk
      */
-    public static boolean isMilk(FluidStack fluid) {
-        if (fluid == null) return false;
-        return fluid.isFluidEqual(getMilk(1));
+    public static boolean isMilk(Fluid fluid) {
+        return getMilk(1).getFluid() == fluid;
     }
 
     /**
@@ -255,161 +169,70 @@ public class ModHandler {
         return FluidRegistry.getFluidStack("milk", amount);
     }
 
-    public static ItemStack getEmptyFuelCan(int amount) {
-        return ItemList.IC2_Fuel_Can_Empty.get(amount);
-    }
-
-    public static ItemStack getEmptyCell(int amount) {
-        return ItemList.Cell_Empty.get(amount);
-    }
-
-    public static ItemStack getAirCell(int amount) {
-        return ItemList.Cell_Air.get(amount);
-    }
-
-    public static ItemStack getWaterCell(int amount) {
-        return ItemList.Cell_Water.get(amount);
-    }
-
-    public static ItemStack getLavaCell(int amount) {
-        return ItemList.Cell_Lava.get(amount);
-    }
-
-
-    /**
-     * @return the Value of this Stack, when burning inside a Furnace (200 = 1 Burn Process = 500 EU, max = 32767 (that is 81917.5 EU)), limited to Short because the vanilla Furnace otherwise can't handle it properly, stupid Mojang...
-     */
-    public static int getFuelValue(ItemStack stack) {
-        return TileEntityFurnace.getItemBurnTime(stack);
-    }
-
-    /**
-     * @param value Fuel value in EU
-     */
-    public static ItemStack getFuelCan(int value) {
-        if (value < 5) return ItemList.IC2_Fuel_Can_Empty.get(1);
-        ItemStack fuelCanStack = ItemList.IC2_Fuel_Can_Filled.get(1);
-        if (fuelCanStack == null) return null;
-        NBTTagCompound tagCompound = new NBTTagCompound();
-        tagCompound.setInteger("value", value / 5);
-        fuelCanStack.setTagCompound(tagCompound);
-        return fuelCanStack;
-    }
-
-    /**
-     * @param fuelCan the Item you want to check
-     * @return the exact Value in EU the Fuel Can is worth if its even a Fuel Can.
-     */
-    public static int getFuelCanValue(ItemStack fuelCan) {
-        if (!GT_Utility.isStackValid(fuelCan) || !ItemList.IC2_Fuel_Can_Filled.isStackEqual(fuelCan, false, true))
-            return 0;
-        NBTTagCompound tag = fuelCan.getTagCompound();
-        return tag == null ? 0 : tag.getInteger("value") * 5;
-    }
-
-    /**
-     * Gets an Item from mods, and returns a Replacement Item if not possible
-     */
-    public static ItemStack getModItem(String modID, String itemName, int amount, ItemStack replacement) {
-        if (!GT_Utility.isStringValid(itemName) || !GregTech_API.sPreloadStarted) return null;
-
-        Item item = Item.REGISTRY.getObject(new ResourceLocation(modID, itemName));
-
-        if (item != null) {
-            return new ItemStack(item, amount);
-        }
-
-        if (replacement != null) {
-            ItemStack stack = replacement.copy();
-            stack.stackSize = amount;
-            return stack;
-        }
-        return null;
-    }
+//    /**
+//     * @return the Value of this Stack, when burning inside a Furnace (200 = 1 Burn Process = 500 EU, max = 32767 (that is 81917.5 EU)).
+//     */
+//    public static int getFuelValue(ItemStack stack) {
+//        return TileEntityFurnace.getItemBurnTime(stack);
+//    }
+//
+//    /**
+//     * @param value Fuel value in EU
+//     */
+//    public static ItemStack getFuelCan(int value) {
+//        if (value < 5) return ItemList.IC2_Fuel_Can_Empty.get(1);
+//        ItemStack fuelCanStack = ItemList.IC2_Fuel_Can_Filled.get(1);
+//        if (fuelCanStack == null) return null;
+//        NBTTagCompound tagCompound = new NBTTagCompound();
+//        tagCompound.setInteger("value", value / 5);
+//        fuelCanStack.setTagCompound(tagCompound);
+//        return fuelCanStack;
+//    }
+//
+//    /**
+//     * @param fuelCan the Item you want to check
+//     * @return the exact Value in EU the Fuel Can is worth if its even a Fuel Can.
+//     */
+//    public static int getFuelCanValue(ItemStack fuelCan) {
+//        if (!GT_Utility.isStackValid(fuelCan) || !ItemList.IC2_Fuel_Can_Filled.isStackEqual(fuelCan, false, true))
+//            return 0;
+//        NBTTagCompound tag = fuelCan.getTagCompound();
+//        return tag == null ? 0 : tag.getInteger("value") * 5;
+//    }
 
     /**
      * Gets an Item from mods
      */
+    @Nullable
     public static ItemStack getModItem(String modID, String itemName, int amount) {
-        return getModItem(modID, itemName, amount, null);
+        return getModItem(modID, itemName, amount, 0);
     }
 
     /**
-     * Gets an Item from mods, but the Damage Value can be specified
+     * Gets an Item from mods, with metadata specified
      */
+    @Nullable
     public static ItemStack getModItem(String modID, String itemName, int amount, int meta) {
-        ItemStack stack = getModItem(modID, itemName, amount);
-        if (stack == null) return null;
-        Items.FEATHER.setDamage(stack, meta);
-        return stack;
+        return GameRegistry.makeItemStack(modID + ":" + itemName, meta, amount, null);
     }
 
-    /**
-     * Gets an Item from mods, but the Damage Value can be specified, and returns a Replacement Item with the same Damage if not possible
-     */
-    public static ItemStack getModItem(String modID, String itemName, int amount, int meta, ItemStack replacement) {
-        ItemStack stack = getModItem(modID, itemName, amount, replacement);
-        if (stack == null) return null;
-        Items.FEATHER.setDamage(stack, meta);
-        return stack;
-    }
+    ///////////////////////////////////////////////////
+    //        Furnace Smelting Recipe Helpers        //
+    ///////////////////////////////////////////////////
 
     /**
-     * Adds a Valuable Ore to the Miner
-     */
-    public static void addValuableOre(Block block, int meta, int value) {
-        Validate.notNull(block, "Block cannot be null");
-        Validate.isTrue(value > 0, "Value cannot be less or equal to zero");
-
-        try {
-            OreValues.add(new ItemStack(block, 1, meta), value);
-        } catch (Throwable e) {/*Do nothing*/}
-    }
-
-    /**
-     * Adds a Scrapbox Drop. Fails at April first for the "suddenly Hoes"-Feature of IC2
-     */
-    public static void addScrapboxDrop(float chance, ItemStack output) {
-        output = OreDictionaryUnifier.get(true, output);
-        Validate.notNull(output, "Output cannot be null");
-        Validate.isTrue(chance > 0, "Chance cannot be less or equal to zero");
-
-        output.stackSize = 1;
-        if (GT_Config.troll && !GT_Utility.areStacksEqual(output, new ItemStack(Items.WOODEN_HOE, 1, 0))) return;
-
-        chance = (float) GregTech_API.sRecipeFile.get(ConfigCategories.Machines.scrapboxdrops, output, chance);
-        Validate.isTrue(chance > 0, "Chance cannot be less or equal to zero");
-
-        try {
-            Recipes.scrapboxDrops.addDrop(GT_Utility.copy(output), chance);
-        } catch (Throwable e) {/*Do nothing*/}
-    }
-
-    /**
-     * Adds an Item to the Recycler Blacklist
-     */
-    public static boolean addToRecyclerBlackList(ItemStack recycledStack) {
-        Validate.notNull(recycledStack, "Recycled stack cannot be null");
-
-        try {
-            Recipes.recyclerBlacklist.add(new RecipeInputItemStack(recycledStack));
-        } catch (Throwable e) {/*Do nothing*/}
-        return true;
-    }
-
-    /**
-     * Just simple Furnace smelting. Unbelievable how Minecraft fails at making a simple ItemStack->ItemStack mapping...
+     * Just simple Furnace smelting
      */
     public static void addSmeltingRecipe(ItemStack input, ItemStack output) {
-        output = OreDictionaryUnifier.get(true, output);
+        output = OreDictionaryUnifier.getUnificated(output);
 
         Validate.notNull(input, "Input cannot be null");
         Validate.notNull(output, "Output cannot be null");
         Validate.isTrue(GT_Utility.getContainerItem(input, false) != null, "Input item cannot have container item");
 
-        if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.smelting, input, true)) return;
+//        if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.smelting, input, true)) return;
 
-        FurnaceRecipes.instance().addSmeltingRecipe(input, GT_Utility.copy(output), 0.0F);
+        GameRegistry.addSmelting(input, output.copy(), 0.0F);
     }
 
     /**
@@ -425,384 +248,59 @@ public class ModHandler {
 
         RecipeBuilder.NotConsumableInputRecipeBuilder recipeBuilder =
                 RecipeMap.ALLOY_SMELTER_RECIPES.recipeBuilder()
-                .inputs(input)
-                .outputs(output)
-                .duration(130)
-                .EUt(3);
-        if (OrePrefix.ingot.contains(output)) {
-            recipeBuilder.notConsumable(ItemList.Shape_Mold_Ingot);
-        } else if (OrePrefix.block.contains(output)) {
-            recipeBuilder.notConsumable(ItemList.Shape_Mold_Block);
-        } else if (OrePrefix.nugget.contains(output)) {
-            recipeBuilder.notConsumable(ItemList.Shape_Mold_Nugget);
+                        .inputs(input)
+                        .outputs(output)
+                        .duration(130)
+                        .EUt(3);
+
+        OrePrefix prefix = OreDictionaryUnifier.getPrefix(output);
+        if (prefix != null) {
+            switch (prefix) {
+                case ingot:
+                    recipeBuilder.notConsumable(MetaItems.SHAPE_MOLD_INGOT);
+                    break;
+                case block:
+                    recipeBuilder.notConsumable(MetaItems.SHAPE_MOLD_BLOCK);
+                    break;
+                case nugget:
+                    recipeBuilder.notConsumable(MetaItems.SHAPE_MOLD_NUGGET);
+                    break;
+            }
+
+            if (hidden) {
+                recipeBuilder.hidden();
+            }
+            recipeBuilder.buildAndRegister();
         }
-        if (hidden) {
-            recipeBuilder.hidden();
-        }
-        recipeBuilder.buildAndRegister();
 
         if (GT_Mod.gregtechproxy.mTEMachineRecipes) {
-            addInductionSmelterRecipe(input, null, output, null, output.stackSize * 1600, 0);
+            ThermalExpansion.addInductionSmelterRecipe(input, null, output, null, output.stackSize * 1600, 0);
         }
-    }
-
-    /**
-     * LiquidTransposer Recipe for both directions
-     */
-    public static void addLiquidTransposerRecipe(ItemStack emptyContainer, FluidStack fluid, ItemStack fullContainer, int RF) {
-        fullContainer = OreDictionaryUnifier.get(true, fullContainer);
-        Validate.notNull(emptyContainer, "Empty Container cannot be null");
-        Validate.notNull(fullContainer, "Full Container cannot be null");
-        Validate.notNull(fluid, "Fluid Container cannot be null");
-
-        if (!GT_Mod.gregtechproxy.mTEMachineRecipes &&
-                !GregTech_API.sRecipeFile.get(ConfigCategories.Machines.liquidtransposer, fullContainer, true))
-            return;
-
-        try {
-            ThermalExpansion.addTransposerFill(RF * 10, emptyContainer, fullContainer, fluid, true);
-        } catch (Throwable e) {/*Do nothing*/}
-    }
-
-    /**
-     * LiquidTransposer Recipe for filling Containers
-     */
-    public static void addLiquidTransposerFillRecipe(ItemStack emptyContainer, FluidStack fluid, ItemStack fullContainer, int MJ) {
-        fullContainer = OreDictionaryUnifier.get(true, fullContainer);
-        Validate.notNull(emptyContainer, "Empty Container cannot be null");
-        Validate.notNull(fullContainer, "Full Container cannot be null");
-        Validate.notNull(fluid, "Fluid Container cannot be null");
-
-        if (!GT_Mod.gregtechproxy.mTEMachineRecipes &&
-                !GregTech_API.sRecipeFile.get(ConfigCategories.Machines.liquidtransposerfilling, fullContainer, true))
-            return;
-
-        try {
-            ThermalExpansion.addTransposerFill(MJ * 10, emptyContainer, fullContainer, fluid, false);
-        } catch (Throwable e) {/*Do nothing*/}
-    }
-
-    /**
-     * LiquidTransposer Recipe for emptying Containers
-     */
-    public static void addLiquidTransposerEmptyRecipe(ItemStack fullContainer, FluidStack fluid, ItemStack emptyContainer, int RF) {
-        emptyContainer = OreDictionaryUnifier.get(true, emptyContainer);
-        Validate.notNull(emptyContainer, "Empty Container cannot be null");
-        Validate.notNull(fullContainer, "Full Container cannot be null");
-        Validate.notNull(fluid, "Fluid Container cannot be null");
-
-        if (!GT_Mod.gregtechproxy.mTEMachineRecipes &&
-                !GregTech_API.sRecipeFile.get(ConfigCategories.Machines.liquidtransposeremptying, fullContainer, true))
-            return;
-
-        try {
-            ThermalExpansion.addTransposerExtract(RF * 10, fullContainer, emptyContainer, fluid, 100, false);
-        } catch (Throwable e) {/*Do nothing*/}
     }
 
     /**
      * IC2-Extractor Recipe. Overrides old Recipe
      */
     public static void addExtractionRecipe(ItemStack input, ItemStack output) {
-        output = OreDictionaryUnifier.get(true, output);
+        output = OreDictionaryUnifier.getUnificated(output);
 
         Validate.notNull(input, "Input cannot be null");
         Validate.notNull(output, "Output cannot be null");
 
         GT_Utility.removeSimpleIC2MachineRecipe(input, Recipes.extractor.getRecipes(), null);
-        if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.extractor, input, true)) return;
+//        if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.extractor, input, true)) return;
         GT_Utility.addSimpleIC2MachineRecipe(input, Recipes.extractor, null, output);
     }
 
-    /**
-     * RC-BlastFurnace Recipes
-     */
-    public static boolean addRCBlastFurnaceRecipe(ItemStack input, ItemStack output, int time) {
-        output = OreDictionaryUnifier.get(true, output);
-        Validate.notNull(input, "Input cannot be null");
-        Validate.notNull(output, "Output cannot be null");
-        Validate.isTrue(time > 0, "Time cannot be less or equal to zero");
-
-        if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.rcblastfurnace, input, true)) return false;
-        //input = GT_Utility.copy(input);
-        //output = GT_Utility.copy(output);
-        try {
-            //TODO railcraft on 1.9
-            //mods.railcraft.api.crafting.RailcraftCraftingManager.blastFurnace.addRecipe(input, true, false, time, output);
-        } catch (Throwable e) {
-            return false;
-        }
-        return true;
-    }
-
-    public static void addPulverisationRecipe(ItemStack input, ItemStack output1) {
-        addPulverisationRecipe(input, output1, null, 0, false);
-    }
-
-    public static void addPulverisationRecipe(ItemStack input, ItemStack output1, ItemStack output2) {
-        addPulverisationRecipe(input, output1, output2, 100, false);
-    }
-
-    public static void addPulverisationRecipe(ItemStack input, ItemStack output1, ItemStack output2, int chance) {
-        addPulverisationRecipe(input, output1, output2, chance, false);
-    }
-
-    public static void addPulverisationRecipe(ItemStack input, ItemStack output1, boolean overwrite) {
-        addPulverisationRecipe(input, output1, null, 0, overwrite);
-    }
-
-    public static void addPulverisationRecipe(ItemStack input, ItemStack output1, ItemStack output2, boolean overwrite) {
-        addPulverisationRecipe(input, output1, output2, 100, overwrite);
-    }
-
-    public static void addPulverisationRecipe(ItemStack input, ItemStack output1, ItemStack output2, int chance, boolean overwrite) {
-        addPulverisationRecipe(input, output1, output2, chance, null, 0, overwrite);
-    }
-
-    /**
-     * Adds Several Pulverizer-Type Recipes.
-     */
-    public static void addPulverisationRecipe(ItemStack input, ItemStack output1, ItemStack output2, int chance2, ItemStack output3, int chance3, boolean overwrite) {
-        output1 = OreDictionaryUnifier.get(true, output1);
-        output2 = OreDictionaryUnifier.get(true, output2);
-        Validate.isTrue(GT_Utility.isStackValid(input), "Input item stack is invalid");
-        Validate.isTrue(GT_Utility.isStackValid(output1), "First output item stack is invalid");
-
-        GT_Utility.removeSimpleIC2MachineRecipe(input, Recipes.macerator.getRecipes(), null);
-
-        Validate.isTrue(GT_Utility.getContainerItem(input, false) != null, "Input item cannot have container item");
-
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Machines.maceration, input, true)) {
-                GT_Utility.addSimpleIC2MachineRecipe(input, Recipes.macerator, null, output1);
-        }
-        addMagneticraftRecipe(input, output1, output2, chance2, output3, chance3);
-        addImmersiveEngineeringRecipe(input, output1, output2, chance2, output3, chance3);
-
-        RecipeMap.MACERATOR_RECIPES.recipeBuilder()
-                .inputs(input)
-                .chancedOutput(output1, 10000)
-                .chancedOutput(output2, chance2 <= 0 ? 1000 : 100 * chance2)
-                .chancedOutput(output3, chance3 <= 0 ? 1000 : 100 * chance3)
-                .duration(400)
-                .EUt(2)
-                .buildAndRegister();
-
-        if (!OrePrefix.log.contains(input)) {
-            boolean enableTEMachineRecipes = GT_Mod.gregtechproxy.mTEMachineRecipes;
-            if (OreDictionaryUnifier.getItemData(output1).mMaterial == Materials.Wood) {
-                if (enableTEMachineRecipes && GregTech_API.sRecipeFile.get(ConfigCategories.Machines.pulverization, input, true)) {
-                    if (output2 == null)
-                        ThermalExpansion.addSawmillRecipe(32000, GT_Utility.copy(input), GT_Utility.copy(output1));
-                    else
-                        ThermalExpansion.addSawmillRecipe(32000, GT_Utility.copy(input), GT_Utility.copy(output1), GT_Utility.copy(output2), chance2 <= 0 ? 10 : chance2);
-                }
-            } else {
-                if (GregTech_API.sRecipeFile.get(ConfigCategories.Machines.rockcrushing, input, true)) {
-                    try {
-//                        TODO railcraft on 1.9
-//                        if (GT_Utility.getBlockFromStack(input) != Blocks.obsidian && GT_Utility.getBlockFromStack(input) != Blocks.gravel) {
-//                            mods.railcraft.api.crafting.IRockCrusherRecipe tRecipe = mods.railcraft.api.crafting.RailcraftCraftingManager.rockCrusher.createNewRecipe(GT_Utility.copyAmount(1, input), input.getItemDamage() != W, false);
-//                            tRecipe.addOutput(GT_Utility.copy(output1), 1.0F / input.stackSize);
-//                            if (output2 != null)
-//                                tRecipe.addOutput(GT_Utility.copy(output2), (0.01F * (chance2 <= 0 ? 10 : chance2)) / input.stackSize);
-//                            if (output3 != null)
-//                                tRecipe.addOutput(GT_Utility.copy(output3), (0.01F * (chance3 <= 0 ? 10 : chance3)) / input.stackSize);
-//                        }
-                    } catch (Throwable e) {/*Do nothing*/}
-                }
-                if (enableTEMachineRecipes && GregTech_API.sRecipeFile.get(ConfigCategories.Machines.pulverization, input, true)) {
-                    if (output2 == null)
-                        ThermalExpansion.addPulverizerRecipe(32000, GT_Utility.copy(input), GT_Utility.copy(output1));
-                    else
-                        ThermalExpansion.addPulverizerRecipe(32000, GT_Utility.copy(input), GT_Utility.copy(output1), GT_Utility.copy(output2), chance2 <= 0 ? 10 : chance2);
-                }
-            }
-        }
-    }
-
-    public static void addImmersiveEngineeringRecipe(ItemStack input, ItemStack output1, ItemStack output2, int chance2, ItemStack output3, int chance3){
-        if(GregTech_API.mImmersiveEngineering && GT_Mod.gregtechproxy.mImmersiveEngineeringRecipes){
-            //TODO blusunrize.immersiveengineering.common.IERecipes.addCrusherRecipe(output1, input, 6000, output2, 0.15f);
-        }
-    }
-
-    public static void addMagneticraftRecipe(ItemStack input, ItemStack output1, ItemStack output2, int chance2, ItemStack output3, int chance3){
-        if (GregTech_API.mMagneticraft && GT_Mod.gregtechproxy.mMagneticraftRecipes) {
-            ItemMaterialInfo data = OreDictionaryUnifier.getAssociation(input);
-            if (data != null && data.mPrefix != null) {
-                if (data.mPrefix == OrePrefix.ore || data.mPrefix == OrePrefix.oreBlackgranite || data.mPrefix == OrePrefix.oreEndstone || data.mPrefix == OrePrefix.oreNetherrack || data.mPrefix == OrePrefix.oreRedgranite) {
-                    //TODO com.cout970.magneticraft.api.access.MgRecipeRegister.registerCrusherRecipe(input, output1, output2,(float)((float)chance2/GT_Mod.gregtechproxy.mMagneticraftBonusOutputPercent), output3,(float)((float)chance3/GT_Mod.gregtechproxy.mMagneticraftBonusOutputPercent));
-                } else if (data.mPrefix == OrePrefix.crushed || data.mPrefix == OrePrefix.crushedCentrifuged || data.mPrefix == OrePrefix.crushedPurified) {
-                    //TODO com.cout970.magneticraft.api.access.MgRecipeRegister.registerGrinderRecipe(input, output1, output2,(float)((float)chance2/GT_Mod.gregtechproxy.mMagneticraftBonusOutputPercent), output3,(float)((float)chance3/GT_Mod.gregtechproxy.mMagneticraftBonusOutputPercent));
-                }
-            }
-        }
-    }
-
-    /**
-     * Adds a Recipe to the Sawmills of GregTech and ThermalCraft
-     */
-    public static void addSawmillRecipe(ItemStack input1, ItemStack output1, ItemStack output2) {
-        output2 = OreDictionaryUnifier.get(true, output2);
-        Validate.notNull(input1, "Input cannot be null");
-        Validate.notNull(output1, "Output cannot be null");
-
-        if (!GT_Mod.gregtechproxy.mTEMachineRecipes &&
-                !GregTech_API.sRecipeFile.get(ConfigCategories.Machines.sawmill, input1, true))
-            return;
-
-        try {
-            ThermalExpansion.addSawmillRecipe(1600, input1, output1, output2, 100);
-        } catch (Throwable e) {/*Do nothing*/}
-    }
-
-    /**
-     * Induction Smelter Recipes and Alloy Smelter Recipes
-     */
-    public static void addAlloySmelterRecipe(ItemStack input1, ItemStack input2, ItemStack output1, int duration, int EUt, boolean allowSecondaryInputEmpty) {
-        output1 = OreDictionaryUnifier.get(true, output1);
-        Validate.notNull(input1, "First input cannot be null");
-        Validate.isTrue(input2 != null && allowSecondaryInputEmpty, "Second input cannot be null");
-        Validate.notNull(output1, "Output cannot be null");
-
-        RecipeMap.ALLOY_SMELTER_RECIPES.recipeBuilder()
-                .inputs(input1, input2)
-                .outputs(output1)
-                .duration(duration)
-                .EUt(EUt)
-                .buildAndRegister();
-
-        if (GT_Mod.gregtechproxy.mTEMachineRecipes) {
-            addInductionSmelterRecipe(input1, input2, output1, null, duration * EUt * 2, 0);
-        }
-    }
-
-    /**
-     * Induction Smelter Recipes for TE
-     */
-    public static void addInductionSmelterRecipe(ItemStack input1, ItemStack input2, ItemStack output1, ItemStack output2, int energy, int chance) {
-        output1 = OreDictionaryUnifier.get(true, output1);
-        output2 = OreDictionaryUnifier.get(true, output2);
-        Validate.notNull(input1, "Input cannot be null");
-        Validate.notNull(output1, "Output cannot be null");
-        Validate.isTrue(GT_Utility.getContainerItem(input1, false) != null, "Input item cannot have container item");
-
-        if (!GT_Mod.gregtechproxy.mTEMachineRecipes &&
-                !GregTech_API.sRecipeFile.get(ConfigCategories.Machines.inductionsmelter, input2 == null ? input1 : output1, true))
-            return;
-
-        try {
-            ThermalExpansion.addSmelterRecipe(energy * 10, GT_Utility.copy(input1), input2 == null ? new ItemStack(Blocks.SAND, 1, 0) : input2, output1, output2, chance);
-        } catch (Throwable e) {/*Do nothing*/}
-    }
-
-    /**
-     * Smelts Ores to Ingots
-     */
-    public static void addOreToIngotSmeltingRecipe(ItemStack input, ItemStack output) {
-        output = OreDictionaryUnifier.get(true, output);
-        Validate.notNull(input, "Input cannot be null");
-        Validate.notNull(output, "Output cannot be null");
-
-        FurnaceRecipes.instance().addSmeltingRecipe(input, GT_Utility.copy(output), 0.0F);
-    }
-
-    /**
-     * IC2-ThermalCentrifuge Recipe. Overloads old Recipes automatically
-     */
-    public static void addThermalCentrifugeRecipe(ItemStack input, int heat, Object... output) {
-        Validate.notNull(input, "Input cannot be null");
-        Validate.notNull(output, "Output cannot be null");
-        Validate.isTrue(output.length > 0, "Output cannot be empty");
-        Validate.notNull(output[0], "Output cannot be null");
-
-        GT_Utility.removeSimpleIC2MachineRecipe(input, Recipes.centrifuge.getRecipes(), null);
-        if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.thermalcentrifuge, input, true))
-            return;
-
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger("minHeat", heat);
-        GT_Utility.addSimpleIC2MachineRecipe(input, Recipes.centrifuge, tag, output);
-    }
-
-    /**
-     * IC2-OreWasher Recipe. Overloads old Recipes automatically
-     */
-    public static void addOreWasherRecipe(ItemStack input, int waterAmount, Object... output) {
-        Validate.notNull(input, "Input cannot be null");
-        Validate.notNull(output, "Output cannot be null");
-        Validate.isTrue(output.length > 0, "Output cannot be empty");
-        Validate.notNull(output[0], "Output cannot be null");
-
-        GT_Utility.removeSimpleIC2MachineRecipe(input, Recipes.oreWashing.getRecipes(), null);
-        if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.orewashing, input, true))
-            return;
-
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger("amount", waterAmount);
-        GT_Utility.addSimpleIC2MachineRecipe(input, Recipes.oreWashing, tag, output);
-    }
-
-    /**
-     * IC2-Compressor Recipe. Overloads old Recipes automatically
-     */
-    public static void addCompressionRecipe(ItemStack input, ItemStack output) {
-        output = OreDictionaryUnifier.get(true, output);
-        Validate.notNull(input, "Input cannot be null");
-        Validate.notNull(output, "Output cannot be null");
-
-        GT_Utility.removeSimpleIC2MachineRecipe(input, Recipes.compressor.getRecipes(), null);
-        if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.compression, input, true))
-            return;
-
-        GT_Utility.addSimpleIC2MachineRecipe(input, Recipes.compressor, null, output);
-    }
-
-    /**
-     * @param value Scrap = 5000, Scrapbox = 45000, Diamond Dust 125000
-     */
-    public static void addIC2MatterAmplifier(ItemStack amplifier, int value) {
-        Validate.notNull(amplifier, "Amplifier cannot be null");
-        Validate.isTrue(value > 0, "Amplifier value cannot be less or equal to zero");
-
-        if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.massfabamplifier, amplifier, true))
-            return;
-
-        try {
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setInteger("amplification", value);
-            GT_Utility.callMethod(Recipes.matterAmplifier, "addRecipe", false, false, false, amplifier, tag);
-        } catch (Throwable e) {/*Do nothing*/}
-    }
-
-    /**
-     * Rolling Machine Crafting Recipe
-     */
-    public static void addRollingMachineRecipe(ItemStack result, Object... recipe) {
-        result = OreDictionaryUnifier.get(true, result);
-        Validate.notNull(result, "Output cannot be null");
-        Validate.notNull(recipe, "Recipe cannot be null");
-        Validate.isTrue(recipe.length > 0, "Recipe cannot be empty");
-
-        try {
-            //TODO railcraft for 1.9
-            //mods.railcraft.api.crafting.RailcraftCraftingManager.rollingMachine.getRecipeList().add(new ShapedOreRecipe(GT_Utility.copy(result), recipe));
-        } catch (Throwable e) {
-            addCraftingRecipe(GT_Utility.copy(result), recipe);
-        }
-    }
-
-    public static void stopBufferingCraftingRecipes() {
-        bufferCraftingRecipes = false;
-        for (IRecipe recipe : bufferRecipeList) {GameRegistry.addRecipe(recipe);}
-        bufferRecipeList.clear();
-    }
+    ///////////////////////////////////////////////////
+    //              Crafting Recipe Helpers          //
+    ///////////////////////////////////////////////////
 
     /**
      * Shapeless Crafting Recipes. Deletes conflicting Recipes too.
      */
-    public static void addCraftingRecipe(ItemStack result, Enchantment[] enchantmentsAdded, int[] enchantmentLevelsAdded, Object... recipe) {
-        addCraftingRecipe(result, enchantmentsAdded, enchantmentLevelsAdded, false, true, false, false, false, false, false, false, false, false, false, false, recipe);
+    public static void addCraftingRecipe(ItemStack result, EnchantmentData[] enchantmentsAdded, Object... recipe) {
+        addCraftingRecipe(result, enchantmentsAdded, false, true, false, false, false, false, false, false, false, false, false, false, recipe);
     }
 
     /**
@@ -859,56 +357,54 @@ public class ModHandler {
      */
     public static void addCraftingRecipe(ItemStack result, long bitMask, Object... recipe) {
         addCraftingRecipe(result,
-            new Enchantment[0],
-            new int[0],
-            (bitMask & RecipeBits.MIRRORED) != 0,
-            (bitMask & RecipeBits.BUFFERED) != 0,
-            (bitMask & RecipeBits.KEEPNBT) != 0,
-            (bitMask & RecipeBits.DISMANTLEABLE) != 0,
-            (bitMask & RecipeBits.NOT_REMOVABLE) == 0,
-            (bitMask & RecipeBits.REVERSIBLE) != 0,
-            (bitMask & RecipeBits.DELETE_ALL_OTHER_RECIPES) != 0,
-            (bitMask & RecipeBits.DELETE_ALL_OTHER_RECIPES_IF_SAME_NBT) != 0,
-            (bitMask & RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES) != 0,
-            (bitMask & RecipeBits.DELETE_ALL_OTHER_NATIVE_RECIPES) != 0,
-            (bitMask & RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS) == 0,
-            (bitMask & RecipeBits.ONLY_ADD_IF_THERE_IS_ANOTHER_RECIPE_FOR_IT) != 0,
-            recipe);
+                new EnchantmentData[0],
+                (bitMask & RecipeBits.MIRRORED) != 0,
+                (bitMask & RecipeBits.BUFFERED) != 0,
+                (bitMask & RecipeBits.KEEPNBT) != 0,
+                (bitMask & RecipeBits.DISMANTLEABLE) != 0,
+                (bitMask & RecipeBits.NOT_REMOVABLE) == 0,
+                (bitMask & RecipeBits.REVERSIBLE) != 0,
+                (bitMask & RecipeBits.DELETE_ALL_OTHER_RECIPES) != 0,
+                (bitMask & RecipeBits.DELETE_ALL_OTHER_RECIPES_IF_SAME_NBT) != 0,
+                (bitMask & RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES) != 0,
+                (bitMask & RecipeBits.DELETE_ALL_OTHER_NATIVE_RECIPES) != 0,
+                (bitMask & RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS) == 0,
+                (bitMask & RecipeBits.ONLY_ADD_IF_THERE_IS_ANOTHER_RECIPE_FOR_IT) != 0,
+                recipe);
     }
 
     /**
      * Internal realisation of the Crafting Recipe adding Process.
      */
-    private static void addCraftingRecipe(ItemStack result, Enchantment[] enchantmentsAdded, int[] enchantmentLevelsAdded,
-                                             boolean mirrored, boolean buffered, boolean keepNBT, boolean dismantleable,
-                                             boolean removable, boolean reversible, boolean removeAllOthersWithSameOutput,
-                                             boolean removeAllOthersWithSameOutputIfTheyHaveSameNBT, boolean removeAllOtherShapedsWithSameOutput,
-                                             boolean removeAllOtherNativeRecipes, boolean checkForCollisions,
-                                             boolean onlyAddIfThereIsAnyRecipeOutputtingThis,
-                                             Object[] recipe) {
-        result = OreDictionaryUnifier.get(true, result);
+    private static void addCraftingRecipe(ItemStack result, EnchantmentData[] enchantmentsAdded,
+                                          boolean mirrored, boolean buffered, boolean keepNBT, boolean dismantleable,
+                                          boolean removable, boolean reversible, boolean removeAllOthersWithSameOutput,
+                                          boolean removeAllOthersWithSameOutputIfTheyHaveSameNBT, boolean removeAllOtherShapedsWithSameOutput,
+                                          boolean removeAllOtherNativeRecipes, boolean checkForCollisions,
+                                          boolean onlyAddIfThereIsAnyRecipeOutputtingThis,
+                                          Object[] recipe) {
+        result = OreDictionaryUnifier.getUnificated(result);
         Validate.notNull(result, "Result cannot be null");
         Validate.notNull(recipe, "Recipe cannot be null");
         Validate.isTrue(recipe.length > 0, "Recipe cannot be empty");
+        Validate.noNullElements(recipe, "Recipe cannot contain null elements");
 
         if (Items.FEATHER.getDamage(result) == W) Items.FEATHER.setDamage(result, 0);
 
         boolean thereWasARecipe = false;
 
         for (byte i = 0; i < recipe.length; i++) {
-            if (recipe[i] instanceof IItemContainer) {
-                recipe[i] = ((IItemContainer) recipe[i]).get(1);
+            if (recipe[i] instanceof MetaItem.MetaValueItem) {
+                recipe[i] = ((MetaItem<?>.MetaValueItem) recipe[i]).getStackForm();
             } else if (recipe[i] instanceof Enum) {
                 recipe[i] = ((Enum<?>) recipe[i]).name();
-            } else if (!(recipe[i] == null ||
-                    recipe[i] instanceof ItemStack ||
-                    recipe[i] instanceof ItemMaterialInfo ||
-                    recipe[i] instanceof String ||
-                    recipe[i] instanceof Character)) {
+            } else if (recipe[i] instanceof UnificationEntry ) {
+                recipe[i] = recipe[i].toString();
+            } else if (!(recipe[i] instanceof ItemStack || recipe[i] instanceof Item || recipe[i] instanceof Block
+                    || recipe[i] instanceof String || recipe[i] instanceof Character)) {
                 recipe[i] = recipe[i].toString();
             }
         }
-
 
         StringBuilder shape = new StringBuilder();
         int idx = 0;
@@ -991,8 +487,10 @@ public class ModHandler {
         if (recipe[idx] instanceof Boolean) {
             idx++;
         }
-        /*ConcurrentHash*/Map<Character, ItemStack> itemStackMap = new /*ConcurrentHash*/HashMap<>();
-        /*ConcurrentHash*/Map<Character, ItemMaterialInfo> itemDataMap = new /*ConcurrentHash*/HashMap<>();
+        /*ConcurrentHash*/
+        Map<Character, ItemStack> itemStackMap = new /*ConcurrentHash*/HashMap<>();
+        /*ConcurrentHash*/
+        Map<Character, ItemMaterialInfo> itemDataMap = new /*ConcurrentHash*/HashMap<>();
         itemStackMap.put(' ', null);
 
         boolean removeRecipe = true;
@@ -1001,8 +499,8 @@ public class ModHandler {
 
             if (recipe[idx] == null || recipe[idx + 1] == null) {
                 if (D1) {
-                    GTLog.err.println("WARNING: Missing Item for shaped Recipe: " + result.getDisplayName());
-                    for (Object content : recipe) GTLog.err.println(content);
+                    GTLog.logger.error("WARNING: Missing Item for shaped Recipe: " + result.getDisplayName());
+                    for (Object content : recipe) GTLog.logger.error(content);
                 }
                 return;
             }
@@ -1117,25 +615,22 @@ public class ModHandler {
             Items.FEATHER.setDamage(result, 0);
 
         if (thereWasARecipe || !onlyAddIfThereIsAnyRecipeOutputtingThis) {
-            if (bufferCraftingRecipes && buffered)
-                bufferRecipeList.add(new GTShapedRecipe(GT_Utility.copy(result), dismantleable, removable, keepNBT, enchantmentsAdded, enchantmentLevelsAdded, recipe).setMirrored(mirrored));
-            else
-                GameRegistry.addRecipe(new GTShapedRecipe(GT_Utility.copy(result), dismantleable, removable, keepNBT, enchantmentsAdded, enchantmentLevelsAdded, recipe).setMirrored(mirrored));
+            GameRegistry.addRecipe(new GTShapedRecipe(GT_Utility.copy(result), dismantleable, removable, keepNBT, enchantmentsAdded, enchantmentLevelsAdded, recipe).setMirrored(mirrored));
         }
     }
 
     /**
      * Shapeless Crafting Recipes. Deletes conflicting Recipes too.
      */
-    public static void addShapelessEnchantingRecipe(ItemStack result, Enchantment[] enchantmentsAdded, int[] enchantmentLevelsAdded, Object[] recipe) {
-        addShapelessCraftingRecipe(result, enchantmentsAdded, enchantmentLevelsAdded, true, false, false, false, recipe);
+    public static void addShapelessEnchantingRecipe(ItemStack result, EnchantmentData[] enchantmentsAdded, Object[] recipe) {
+        addShapelessCraftingRecipe(result, enchantmentsAdded, true, false, false, false, recipe);
     }
 
     /**
      * Shapeless Crafting Recipes. Deletes conflicting Recipes too.
      */
     public static void addShapelessCraftingRecipe(ItemStack result, Object... recipe) {
-        addShapelessCraftingRecipe(result, RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | RecipeBits.BUFFERED, recipe);
+        addShapelessCraftingRecipe(result, RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS, recipe);
     }
 
     /**
@@ -1143,9 +638,7 @@ public class ModHandler {
      */
     public static void addShapelessCraftingRecipe(ItemStack result, long bitMask, Object... recipe) {
         addShapelessCraftingRecipe(result,
-                new Enchantment[0],
-                new int[0],
-                (bitMask & RecipeBits.BUFFERED) != 0,
+                new EnchantmentData[0],
                 (bitMask & RecipeBits.KEEPNBT) != 0,
                 (bitMask & RecipeBits.DISMANTLEABLE) != 0,
                 (bitMask & RecipeBits.NOT_REMOVABLE) == 0,
@@ -1155,10 +648,10 @@ public class ModHandler {
     /**
      * Shapeless Crafting Recipes. Deletes conflicting Recipes too.
      */
-    private static void addShapelessCraftingRecipe(ItemStack result, Enchantment[] enchantmentsAdded, int[] enchantmentLevelsAdded,
-                                                   boolean buffered, boolean keepNBT, boolean dismantleable, boolean removable,
+    private static void addShapelessCraftingRecipe(ItemStack result, EnchantmentData[] enchantmentsAdded,
+                                                   boolean keepNBT, boolean dismantleable, boolean removable,
                                                    Object[] recipe) {
-        result = OreDictionaryUnifier.get(true, result);
+        result = OreDictionaryUnifier.getUnificated(result);
         Validate.notNull(result, "Result cannot be null");
         Validate.notNull(recipe, "Recipe cannot be null");
         Validate.isTrue(recipe.length > 0, "Recipe cannot be empty");
@@ -1182,8 +675,8 @@ public class ModHandler {
         for (Object object : recipe) {
             if (object == null) {
                 if (D1)
-                    GTLog.err.println("WARNING: Missing Item for shapeless Recipe: " + result.getDisplayName()));
-                for (Object content : recipe) GTLog.err.println(content);
+                    GTLog.logger.error("WARNING: Missing Item for shapeless Recipe: " + result.getDisplayName()););
+                for (Object content : recipe) GTLog.logger.error((content);
                 return;
             }
 
@@ -1205,11 +698,12 @@ public class ModHandler {
         if (Items.FEATHER.getDamage(result) == W || Items.FEATHER.getDamage(result) < 0)
             Items.FEATHER.setDamage(result, 0);
 
-        if (bufferCraftingRecipes && buffered)
-            bufferRecipeList.add(new GTShapelessRecipe(GT_Utility.copy(result), dismantleable, removable, keepNBT, enchantmentsAdded, enchantmentLevelsAdded, recipe));
-        else
-            GameRegistry.addRecipe(new GTShapelessRecipe(GT_Utility.copy(result), dismantleable, removable, keepNBT, enchantmentsAdded, enchantmentLevelsAdded, recipe));
+        GameRegistry.addRecipe(new GTShapelessRecipe(GT_Utility.copy(result), dismantleable, removable, keepNBT, enchantmentsAdded, enchantmentLevelsAdded, recipe));
     }
+
+    ///////////////////////////////////////////////////
+    //              Recipe Remove Helpers            //
+    ///////////////////////////////////////////////////
 
     /**
      * Removes a Smelting Recipe
@@ -1217,7 +711,7 @@ public class ModHandler {
     public static boolean removeFurnaceSmelting(ItemStack input) {
         if (input != null) {
             for (ItemStack stack : FurnaceRecipes.instance().getSmeltingList().keySet()) {
-                if (GT_Utility.isStackValid(stack) && GT_Utility.areStacksEqual(input, (ItemStack) stack, true)) {
+                if (GT_Utility.isStackValid(stack) && GT_Utility.areStacksEqual(input, stack, true)) {
                     FurnaceRecipes.instance().getSmeltingList().remove(stack);
                     return true;
                 }
@@ -1261,7 +755,8 @@ public class ModHandler {
             for (; i < listSize; i++) {
                 if ((!(list.get(i) instanceof IRemovableRecipe) || ((IRemovableRecipe) list.get(i)).isRemovable()) && list.get(i).matches(craftingGrid, DW)) {
                     returnStack = list.get(i).getCraftingResult(craftingGrid);
-                    if (returnStack != null) list.remove(i--); listSize=list.size();
+                    if (returnStack != null) list.remove(i--);
+                    listSize = list.size();
                 }
             }
         }
@@ -1303,12 +798,16 @@ public class ModHandler {
             if ((!(recipe instanceof IRemovableRecipe) || ((IRemovableRecipe) recipe).isRemovable()) &&
                     GT_Utility.areStacksEqual(OreDictionaryUnifier.get(stack), output, ignoreNBT)) {
                 list.remove(i--);
-                listSize=list.size();
+                listSize = list.size();
                 removed = true;
             }
         }
         return removed;
     }
+
+    ///////////////////////////////////////////////////
+    //            Get Recipe Output Helpers          //
+    ///////////////////////////////////////////////////
 
     /**
      * Checks all Crafting Handlers for Recipe Output
@@ -1559,27 +1058,6 @@ public class ModHandler {
     }
 
     /**
-     * Used in my own Macerator. Decreases StackSize of the Input if wanted.
-     */
-    public static ItemStack getMaceratorOutput(ItemStack input, boolean removeInput, ItemStack outputSlot) {
-        return GT_Utility.copy(getMachineOutput(input, Recipes.macerator.getRecipes(), removeInput, new NBTTagCompound(), outputSlot)[0]);
-    }
-
-    /**
-     * Used in my own Extractor. Decreases StackSize of the Input if wanted.
-     */
-    public static ItemStack getExtractorOutput(ItemStack input, boolean removeInput, ItemStack outputSlot) {
-        return GT_Utility.copy(getMachineOutput(input, Recipes.extractor.getRecipes(), removeInput, new NBTTagCompound(), outputSlot)[0]);
-    }
-
-    /**
-     * Used in my own Compressor. Decreases StackSize of the Input if wanted.
-     */
-    public static ItemStack getCompressorOutput(ItemStack input, boolean removeInput, ItemStack outputSlot) {
-        return GT_Utility.copy(getMachineOutput(input, Recipes.compressor.getRecipes(), removeInput, new NBTTagCompound(), outputSlot)[0]);
-    }
-
-    /**
      * Used in my own Furnace.
      */
     public static ItemStack getSmeltingOutput(ItemStack input, boolean removeInput, ItemStack outputSlot) {
@@ -1610,7 +1088,7 @@ public class ModHandler {
                     if (stackList.length == 0) break;
 
                     ItemStack[] slotList = new ItemStack[outputSlots.length];
-                    if(entry.output.metadata != null) {
+                    if (entry.output.metadata != null) {
                         recipeMetaData.setTag("return", entry.output.metadata);
                     }
 
@@ -1643,16 +1121,13 @@ public class ModHandler {
         if (input == null || scrapChance != 0) return null;
 
         if (Recipes.recyclerWhitelist.isEmpty())
-            return Recipes.recyclerBlacklist.contains(input) ? null : ItemList.IC2_Scrap.get(1);
-        return Recipes.recyclerWhitelist.contains(input) ? ItemList.IC2_Scrap.get(1) : null;
+            return Recipes.recyclerBlacklist.contains(input) ? null : IC2.getScrap(1);
+        return Recipes.recyclerWhitelist.contains(input) ? IC2.getScrap(1) : null;
     }
 
-    /**
-     * For the Scrapboxinator
-     */
-    public static ItemStack getRandomScrapboxDrop() {
-        return Recipes.scrapboxDrops.getDrop(ItemList.IC2_Scrapbox.get(1), false);
-    }
+    ///////////////////////////////////////////////////
+    //             Electric Items Helpers            //
+    ///////////////////////////////////////////////////
 
     /**
      * Charges an Electric Item. Only if it's a valid Electric Item of course.
@@ -1687,19 +1162,19 @@ public class ModHandler {
      *
      * @return the Energy got from the Item.
      */
-    public static int dischargeElectricItem(ItemStack stack, int charge, int tier, boolean ignoreLimit, boolean simulate, boolean ignoreDischargability) {
+    public static double dischargeElectricItem(ItemStack stack, double charge, int tier, boolean ignoreLimit, boolean simulate, boolean ignoreDischargability) {
 
         if (isElectricItem(stack)) {
             int tmpTier = ElectricItem.manager.getTier(stack);
             if (tmpTier < 0 || tmpTier == tier || tier == Integer.MAX_VALUE) {
 
                 if (!ignoreLimit && tmpTier >= 0) {
-                    charge = (int) Math.min(charge, V[Math.max(0, Math.min(V.length - 1, tmpTier))]);
+                    charge = Math.min(charge, V[Math.max(0, Math.min(V.length - 1, tmpTier))]);
                 }
 
                 if (charge > 0) {
-                    int charge = (int) Math.max(0, ElectricItem.manager.discharge(stack, charge + (charge * 4 > tier ? tier : 0), tmpTier, true, !ignoreDischargability, simulate));
-                    return charge - (charge * 4 > tier ? tier : 0);
+                    double chargeTmp = Math.max(0, ElectricItem.manager.discharge(stack, charge + (charge * 4 > tier ? tier : 0), tmpTier, true, !ignoreDischargability, simulate));
+                    return chargeTmp - (chargeTmp * 4 > tier ? tier : 0);
                 }
             }
         }
@@ -1831,33 +1306,23 @@ public class ModHandler {
         return stack != null && isElectricItem(stack) && ElectricItem.manager.getTier(stack) == tier;
     }
 
-    public static void registerBoxableItemToToolBox(Item item) {
-        if (item != null) {
-            ItemWrapper.registerBoxable(item, new GT_IBoxableWrapper());
-        }
-    }
-
-    public static int getCapsuleCellContainerCountMultipliedWithStackSize(ItemStack... stacks) {
-        int amount = 0;
-        for (ItemStack stack : stacks)
-            if (stack != null) amount += getCapsuleCellContainerCount(stack) * stack.stackSize;
-        return amount;
-    }
-
-    public static int getCapsuleCellContainerCount(ItemStack stack) {
-        if (stack == null) return 0;
-        return GT_Utility.areStacksEqual(GT_Utility.getContainerForFilledItem(stack, true), ItemList.Cell_Empty.get(1)) || OrePrefix.cell.contains(stack) || OrePrefix.cellPlasma.contains(stack) ? 1 : 0;
-    }
+//    public static int getCapsuleCellContainerCountMultipliedWithStackSize(ItemStack... stacks) {
+//        int amount = 0;
+//        for (ItemStack stack : stacks)
+//            if (stack != null) amount += getCapsuleCellContainerCount(stack) * stack.stackSize;
+//        return amount;
+//    }
+//
+//    public static int getCapsuleCellContainerCount(ItemStack stack) {
+//        if (stack == null) return 0;
+//        return GT_Utility.areStacksEqual(GT_Utility.getContainerForFilledItem(stack, true), ItemList.Cell_Empty.get(1)) || OrePrefix.cell.contains(stack) || OrePrefix.cellPlasma.contains(stack) ? 1 : 0;
+//    }
 
     public static class RecipeBits {
         /**
          * Mirrors the Recipe
          */
         public static long MIRRORED = B[0];
-        /**
-         * Buffers the Recipe for later addition. This makes things more efficient.
-         */
-        public static long BUFFERED = B[1];
         /**
          * This is a special Tag I used for crafting Coins up and down.
          */
@@ -1898,16 +1363,236 @@ public class ModHandler {
          * Only adds the Recipe if there is another Recipe having that Output
          */
         public static long ONLY_ADD_IF_THERE_IS_ANOTHER_RECIPE_FOR_IT = B[11];
+    }
+
+    public static class IC2 {
+
+        public static <T extends IIdProvider> IBlockState getIC2BlockState(BlockName blockName, T type) {
+            return blockName.getBlockState(type);
+        }
+
+        public static ItemStack getIC2Item(ItemName itemName, int amount) {
+            ItemStack stack = itemName.getItemStack();
+            stack.stackSize = amount;
+            return stack;
+        }
+
+        public static ItemStack getIC2Item(ItemName itemName, int amount, boolean wildcard) {
+            ItemStack stack = itemName.getItemStack();
+            if (wildcard) stack.setItemDamage(OreDictionary.WILDCARD_VALUE);
+            stack.stackSize = amount;
+            return stack;
+        }
+
+        public static ItemStack getIC2Item(ItemName itemName, int amount, int explicitDamage) {
+            ItemStack stack = itemName.getItemStack();
+            stack.setItemDamage(explicitDamage);
+            stack.stackSize = amount;
+            return stack;
+        }
+
+        public static ItemStack getIC2Item(BlockName itemName, int amount) {
+            ItemStack stack = itemName.getItemStack();
+            stack.stackSize = amount;
+            return stack;
+        }
+
+        public static <T extends Enum<T> & IIdProvider> ItemStack getIC2Item(BlockName itemName, T variant, int amount) {
+            ItemStack stack = itemName.getItemStack(variant);
+            stack.stackSize = amount;
+            return stack;
+        }
+
+        public static ItemStack getIC2TEItem(TeBlock variant, int amount) {
+            ItemStack stack = BlockName.te.getItemStack(variant);
+            stack.stackSize = amount;
+            return stack;
+        }
+
+        public static ItemStack getIC2Item(ItemName itemName, String variant, int amount) {
+            ItemStack stack = itemName.getItemStack(variant);
+            stack.stackSize = amount;
+            return stack;
+        }
+
+        public static <T extends Enum<T> & IIdProvider> ItemStack getIC2Item(ItemName itemName, T type, int amount) {
+            ItemStack stack = itemName.getItemStack(type);
+            stack.stackSize = amount;
+            return stack;
+        }
+
+        public static ItemStack getScrapBox(int amount) {
+            return ModHandler.IC2.getIC2Item(ItemName.crafting, CraftingItemType.scrap_box, amount);
+        }
+
+        public static ItemStack getScrap(int amount) {
+            return ModHandler.IC2.getIC2Item(ItemName.crafting, CraftingItemType.scrap, amount);
+        }
+
         /**
-         * Only adds the Recipe if it has an Output
+         * IC2-ThermalCentrifuge Recipe. Overloads old Recipes automatically
          */
-        public static long ONLY_ADD_IF_RESULT_IS_NOT_NULL = B[12];
+        public static void addThermalCentrifugeRecipe(ItemStack input, int heat, Object... output) {
+            Validate.notNull(input, "Input cannot be null");
+            Validate.notNull(output, "Output cannot be null");
+            Validate.isTrue(output.length > 0, "Output cannot be empty");
+            Validate.notNull(output[0], "Output cannot be null");
+
+            GT_Utility.removeSimpleIC2MachineRecipe(input, Recipes.centrifuge.getRecipes(), null);
+            if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.thermalcentrifuge, input, true))
+                return;
+
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setInteger("minHeat", heat);
+            GT_Utility.addSimpleIC2MachineRecipe(input, Recipes.centrifuge, tag, output);
+        }
+
+        /**
+         * IC2-OreWasher Recipe. Overloads old Recipes automatically
+         */
+        public static void addOreWasherRecipe(ItemStack input, int waterAmount, Object... output) {
+            Validate.notNull(input, "Input cannot be null");
+            Validate.notNull(output, "Output cannot be null");
+            Validate.isTrue(output.length > 0, "Output cannot be empty");
+            Validate.notNull(output[0], "Output cannot be null");
+
+            GT_Utility.removeSimpleIC2MachineRecipe(input, Recipes.oreWashing.getRecipes(), null);
+            if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.orewashing, input, true))
+                return;
+
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setInteger("amount", waterAmount);
+            GT_Utility.addSimpleIC2MachineRecipe(input, Recipes.oreWashing, tag, output);
+        }
+
+        /**
+         * IC2-Compressor Recipe. Overloads old Recipes automatically
+         */
+        public static void addCompressionRecipe(ItemStack input, ItemStack output) {
+            output = OreDictionaryUnifier.get(true, output);
+            Validate.notNull(input, "Input cannot be null");
+            Validate.notNull(output, "Output cannot be null");
+
+            GT_Utility.removeSimpleIC2MachineRecipe(input, Recipes.compressor.getRecipes(), null);
+            if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.compression, input, true))
+                return;
+
+            GT_Utility.addSimpleIC2MachineRecipe(input, Recipes.compressor, null, output);
+        }
+
+        /**
+         * @param value Scrap = 5000, Scrapbox = 45000, Diamond Dust 125000
+         */
+        public static void addIC2MatterAmplifier(ItemStack amplifier, int value) {
+            Validate.notNull(amplifier, "Amplifier cannot be null");
+            Validate.isTrue(value > 0, "Amplifier value cannot be less or equal to zero");
+
+            if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.massfabamplifier, amplifier, true))
+                return;
+
+            try {
+                NBTTagCompound tag = new NBTTagCompound();
+                tag.setInteger("amplification", value);
+                GT_Utility.callMethod(Recipes.matterAmplifier, "addRecipe", false, false, false, amplifier, tag);
+            } catch (Throwable e) {/*Do nothing*/}
+        }
+
     }
 
     /**
      * Copy of the original Helper Class of Thermal Expansion, just to make sure it works even when other Mods include TE-APIs
      */
     public static class ThermalExpansion {
+
+        /**
+         * LiquidTransposer Recipe for both directions
+         */
+        public static void addLiquidTransposerRecipe(ItemStack emptyContainer, FluidStack fluid, ItemStack fullContainer, int RF) {
+            fullContainer = OreDictionaryUnifier.getUnificated(fullContainer);
+            Validate.notNull(emptyContainer, "Empty Container cannot be null");
+            Validate.notNull(fullContainer, "Full Container cannot be null");
+            Validate.notNull(fluid, "Fluid Container cannot be null");
+
+            if (!GT_Mod.gregtechproxy.mTEMachineRecipes &&
+                    !GregTech_API.sRecipeFile.get(ConfigCategories.Machines.liquidtransposer, fullContainer, true))
+                return;
+
+            try {
+                ThermalExpansion.addTransposerFill(RF * 10, emptyContainer, fullContainer, fluid, true);
+            } catch (Throwable e) {/*Do nothing*/}
+        }
+
+        /**
+         * LiquidTransposer Recipe for filling Containers
+         */
+        public static void addLiquidTransposerFillRecipe(ItemStack emptyContainer, FluidStack fluid, ItemStack fullContainer, int MJ) {
+            fullContainer = OreDictionaryUnifier.getUnificated(fullContainer);
+            Validate.notNull(emptyContainer, "Empty Container cannot be null");
+            Validate.notNull(fullContainer, "Full Container cannot be null");
+            Validate.notNull(fluid, "Fluid Container cannot be null");
+
+            if (!GT_Mod.gregtechproxy.mTEMachineRecipes &&
+                    !GregTech_API.sRecipeFile.get(ConfigCategories.Machines.liquidtransposerfilling, fullContainer, true))
+                return;
+
+            try {
+                ThermalExpansion.addTransposerFill(MJ * 10, emptyContainer, fullContainer, fluid, false);
+            } catch (Throwable e) {/*Do nothing*/}
+        }
+
+        /**
+         * LiquidTransposer Recipe for emptying Containers
+         */
+        public static void addLiquidTransposerEmptyRecipe(ItemStack fullContainer, FluidStack fluid, ItemStack emptyContainer, int RF) {
+            emptyContainer = OreDictionaryUnifier.getUnificated(emptyContainer);
+            Validate.notNull(emptyContainer, "Empty Container cannot be null");
+            Validate.notNull(fullContainer, "Full Container cannot be null");
+            Validate.notNull(fluid, "Fluid Container cannot be null");
+
+            if (!GT_Mod.gregtechproxy.mTEMachineRecipes &&
+                    !GregTech_API.sRecipeFile.get(ConfigCategories.Machines.liquidtransposeremptying, fullContainer, true))
+                return;
+
+            try {
+                ThermalExpansion.addTransposerExtract(RF * 10, fullContainer, emptyContainer, fluid, 100, false);
+            } catch (Throwable e) {/*Do nothing*/}
+        }
+
+        /**
+         * Adds a Recipe to the Sawmills of GregTech and ThermalCraft
+         */
+        public static void addSawmillRecipe(ItemStack input1, ItemStack output1, ItemStack output2) {
+            output2 = OreDictionaryUnifier.getUnificated(output2);
+            Validate.notNull(input1, "Input cannot be null");
+            Validate.notNull(output1, "Output cannot be null");
+
+            if (!GT_Mod.gregtechproxy.mTEMachineRecipes &&
+                    !GregTech_API.sRecipeFile.get(ConfigCategories.Machines.sawmill, input1, true))
+                return;
+
+            try {
+                ThermalExpansion.addSawmillRecipe(1600, input1, output1, output2, 100);
+            } catch (Throwable e) {/*Do nothing*/}
+        }
+
+        /**
+         * Induction Smelter Recipes for TE
+         */
+        public static void addInductionSmelterRecipe(ItemStack input1, ItemStack input2, ItemStack output1, ItemStack output2, int energy, int chance) {
+            output1 = OreDictionaryUnifier.getUnificated(output1);
+            output2 = OreDictionaryUnifier.getUnificated(output2);
+            Validate.notNull(input1, "Input cannot be null");
+            Validate.notNull(output1, "Output cannot be null");
+            Validate.isTrue(GT_Utility.getContainerItem(input1, false) != null, "Input item cannot have container item");
+
+            if (!GT_Mod.gregtechproxy.mTEMachineRecipes &&
+                    !GregTech_API.sRecipeFile.get(ConfigCategories.Machines.inductionsmelter, input2 == null ? input1 : output1, true))
+                return;
+
+            try {
+                ThermalExpansion.addSmelterRecipe(energy * 10, GT_Utility.copy(input1), input2 == null ? new ItemStack(Blocks.SAND, 1, 0) : input2, output1, output2, chance);
+            } catch (Throwable e) {/*Do nothing*/}
+        }
 
         public static void addFurnaceRecipe(int energy, ItemStack input, ItemStack output) {
             NBTTagCompound toSend = new NBTTagCompound();

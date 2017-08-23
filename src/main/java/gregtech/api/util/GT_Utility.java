@@ -726,21 +726,6 @@ public class GT_Utility {
             aWorld.setBlockState(blockPos.down(), fire);
     }
 
-    public static void dropItemStackAsEntity(ItemStack items, World world, BlockPos pos) {
-        if (items == null || items.stackSize <= 0 || world.isRemote) {
-            return;
-        }
-
-        float f1 = 0.7F;
-        double d = world.rand.nextFloat() * f1 + (1.0F - f1) * 0.5D;
-        double d1 = world.rand.nextFloat() * f1 + (1.0F - f1) * 0.5D;
-        double d2 = world.rand.nextFloat() * f1 + (1.0F - f1) * 0.5D;
-        EntityItem entityitem = new EntityItem(world, pos.getX() + d, pos.getY() + d1, pos.getZ() + d2, items);
-        entityitem.setDefaultPickupDelay();
-
-        world.spawnEntityInWorld(entityitem);
-    }
-
     public static ItemStack getProjectile(SubTag aProjectileType, IInventory aInventory) {
         if (aInventory != null) for (int i = 0, j = aInventory.getSizeInventory(); i < j; i++) {
             ItemStack rStack = aInventory.getStackInSlot(i);

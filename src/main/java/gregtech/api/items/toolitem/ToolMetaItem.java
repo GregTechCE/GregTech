@@ -45,21 +45,21 @@ import java.util.Optional;
  * @see IToolStats
  * @see MetaItem
  */
-@SuppressWarnings("unchecked")
-public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends MetaItem<T> implements IDamagableItem {
+public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends MetaItem<T> implements IDamagableItem {
 
     public ToolMetaItem() {
         super((short) 0);
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected T constructMetaValueItem(short metaValue, String unlocalizedName, String... nameParameters) {
         return (T) new MetaToolValueItem(metaValue, unlocalizedName, nameParameters);
     }
 
     @Override
     public void onCreated(ItemStack stack, World world, EntityPlayer player) {
-        MetaToolValueItem metaToolValueItem = getItem(stack);
+        T metaToolValueItem = getItem(stack);
         if(metaToolValueItem != null) {
             IToolStats toolStats = metaToolValueItem.getToolStats();
             toolStats.onToolCrafted(stack, player);
@@ -83,7 +83,7 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
 
     @Override
     public ItemStack getContainerItem(ItemStack stack) {
-        MetaToolValueItem metaToolValueItem = getItem(stack);
+        T metaToolValueItem = getItem(stack);
         if(metaToolValueItem != null) {
             IToolStats toolStats = metaToolValueItem.getToolStats();
             if(!doDamageToItem(stack, toolStats.getToolDamagePerContainerCraft(stack)) && getManager(stack).getMaxCharge(stack) == 0) {
@@ -95,7 +95,7 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
 
     @Override
     public boolean onBlockDestroyed(ItemStack stack, World world, IBlockState state, BlockPos pos, EntityLivingBase entity) {
-        MetaToolValueItem metaToolValueItem = getItem(stack);
+        T metaToolValueItem = getItem(stack);
         if(metaToolValueItem != null) {
             IToolStats toolStats = metaToolValueItem.getToolStats();
             if(toolStats.isMinableBlock(state, stack)) {
@@ -117,7 +117,7 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
 
     @Override
     public float getStrVsBlock(ItemStack stack, IBlockState state) {
-        MetaToolValueItem metaToolValueItem = getItem(stack);
+        T metaToolValueItem = getItem(stack);
         if(metaToolValueItem != null) {
             IToolStats toolStats = metaToolValueItem.getToolStats();
             if(isUsable(stack, toolStats.getToolDamagePerBlockBreak(stack)) && toolStats.isMinableBlock(state, stack)) {
@@ -129,7 +129,7 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
 
     @Override
     public int getHarvestLevel(ItemStack stack, String toolClass, EntityPlayer player, IBlockState blockState) {
-        MetaToolValueItem metaToolValueItem = getItem(stack);
+        T metaToolValueItem = getItem(stack);
         if(metaToolValueItem != null) {
             IToolStats toolStats = metaToolValueItem.getToolStats();
             if(isUsable(stack, toolStats.getToolDamagePerBlockBreak(stack)) && toolStats.isMinableBlock(blockState, stack)) {
@@ -141,7 +141,7 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
 
     @Override
     public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
-        MetaToolValueItem metaValueItem = getItem(stack);
+        T metaValueItem = getItem(stack);
         if(metaValueItem != null && slot == EntityEquipmentSlot.MAINHAND) {
             IToolStats toolStats = metaValueItem.getToolStats();
             float attackDamage = toolStats.getBaseDamage(stack);
@@ -158,7 +158,7 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
     @Override
     public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
         //cancel attack if broken or out of charge
-        MetaToolValueItem metaToolValueItem = getItem(stack);
+        T metaToolValueItem = getItem(stack);
         if(metaToolValueItem != null) {
             int damagePerAttack = metaToolValueItem.getToolStats().getToolDamagePerEntityAttack(stack);
             if(!isUsable(stack, damagePerAttack)) return true;
@@ -168,7 +168,7 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
 
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
-        MetaToolValueItem metaValueItem = getItem(stack);
+        T metaValueItem = getItem(stack);
         if(metaValueItem != null) {
             IToolStats toolStats = metaValueItem.getToolStats();
             doDamageToItem(stack, toolStats.getToolDamagePerEntityAttack(stack));
@@ -199,7 +199,7 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
         if(!isUsable(stack, vanillaDamage)) {
             return false;
         }
-        MetaToolValueItem metaToolValueItem = getItem(stack);
+        T metaToolValueItem = getItem(stack);
         IElectricItemManager electricItemManager = getManager(stack);
         if(electricItemManager.getMaxCharge(stack) == 0) {
             setInternalDamage(stack, getInternalDamage(stack) + vanillaDamage);
@@ -211,7 +211,7 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
     }
 
     public boolean isUsable(ItemStack stack, int damage) {
-        MetaToolValueItem metaToolValueItem = getItem(stack);
+        T metaToolValueItem = getItem(stack);
         IElectricItemManager electricItemManager = getManager(stack);
         if(electricItemManager.getMaxCharge(stack) == 0) {
             return getInternalDamage(stack) + damage < getMaxInternalDamage(stack);
@@ -220,7 +220,7 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
     }
 
     private int getMaxInternalDamage(ItemStack itemStack) {
-        MetaToolValueItem metaToolValueItem = getItem(itemStack);
+        T metaToolValueItem = getItem(itemStack);
         if (metaToolValueItem != null) {
             SolidMaterial toolMaterial = getPrimaryMaterial(itemStack);
             return (int) (toolMaterial.toolDurability * metaToolValueItem.getToolStats().getMaxDurabilityMultiplier(itemStack));
@@ -266,7 +266,7 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
 
     public class MetaToolValueItem extends MetaValueItem {
 
-        private IToolStats toolStats;
+        protected IToolStats toolStats;
 
         private MetaToolValueItem(int metaValue, String unlocalizedName, String... nameParameters) {
             super(metaValue, unlocalizedName, nameParameters);
@@ -297,7 +297,7 @@ public class ToolMetaItem<T extends ToolMetaItem.MetaToolValueItem> extends Meta
         public final ItemStack getToolWithStats(int amount, Material primaryMaterial, Material handleMaterial, long[] electricData) {
             ItemStack stack = getStackForm(amount);
 
-            MetaToolValueItem metaToolValueItem = getItem(stack);
+            T metaToolValueItem = getItem(stack);
             if (metaToolValueItem != null) {
                 if (metaToolValueItem.toolStats != null) {
 

@@ -75,6 +75,7 @@ public class MaterialMetaItem extends StandardMetaItem {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
         if(tab == GregTech_API.TAB_GREGTECH) {
             super.getSubItems(itemIn, tab, subItems);

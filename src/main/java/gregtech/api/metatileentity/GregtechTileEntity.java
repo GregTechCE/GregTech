@@ -11,6 +11,7 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
 import io.netty.buffer.Unpooled;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.ISidedInventory;
@@ -387,7 +388,7 @@ public class GregtechTileEntity extends TickableTileEntityBase implements IGregT
                 for (int i = 0; i < this.getSizeInventory(); i++) {
                     ItemStack stack = this.getStackInSlot(i);
                     if (GT_Utility.isStackValid(stack)) {
-                        GT_Utility.dropItemStackAsEntity(stack, this.worldObj, this.pos);
+                        Block.spawnAsEntity(this.worldObj, this.pos, stack);
                         this.setInventorySlotContents(i, null);
                     }
                 }
