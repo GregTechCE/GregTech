@@ -6,6 +6,7 @@ import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.IMetaTileEntityFactory;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.common.blocks.BlockMachine;
+import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -79,24 +80,7 @@ public class MetaTileEntityFactory<T extends MetaTileEntity> implements IMetaTil
 
     @Override
     public ItemStack getStackForm(int amount) {
-        return null; //TODO fixme
-    }
-
-    @Override
-    public void onServerStart() {
-
-    }
-
-    @Override
-    public void onWorldLoad(File saveDirectory) {
-    }
-
-    @Override
-    public void onWorldSave(File saveDirectory) {
-    }
-
-    @Override
-    public void onConfigLoad(Configuration config) {
+        return new ItemStack(MetaBlocks.MACHINE, amount, GregTechAPI.METATILEENTITY_REGISTRY.getIDForObject(this));
     }
 
     @Override

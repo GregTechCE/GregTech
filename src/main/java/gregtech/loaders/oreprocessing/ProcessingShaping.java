@@ -10,7 +10,7 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
-import gregtech.common.GT_Proxy;
+import gregtech.common.CommonProxy;
 import ic2.core.item.type.CasingResourceType;
 import ic2.core.item.type.CraftingItemType;
 import ic2.core.ref.ItemName;
@@ -63,7 +63,7 @@ public class ProcessingShaping implements IOreRegistrationHandler {
                 if (tAmount * 4 <= 64) {
                     GTValues.RA.addExtruderRecipe(GTUtility.copyAmount(1L, stack), ItemList.Shape_Extruder_Ring.get(0L), OreDictionaryUnifier.get(OrePrefix.ring, uEntry.material.mSmeltInto, tAmount * 4), (int) Math.max(materialMass * 2L * tAmount, tAmount), 6 * tVoltageMultiplier);
                     if ((uEntry.material.mUnificatable) && (uEntry.material.mMaterialInto == uEntry.material) && !uEntry.material.contains(SubTag.NO_SMASHING))
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.ring, uEntry.material, 1L), GT_Proxy.tBits, new Object[]{"h ", " X", Character.valueOf('X'), OrePrefix.stick.get(uEntry.material)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.ring, uEntry.material, 1L), CommonProxy.tBits, new Object[]{"h ", " X", Character.valueOf('X'), OrePrefix.stick.get(uEntry.material)});
                 }
                 GTValues.RA.addExtruderRecipe(GTUtility.copyAmount(2L, stack), ItemList.Shape_Extruder_Sword.get(0L), OreDictionaryUnifier.get(OrePrefix.toolHeadSword, uEntry.material.mSmeltInto, tAmount), (int) Math.max(materialMass * 2L * tAmount, tAmount), 8 * tVoltageMultiplier);
                 GTValues.RA.addExtruderRecipe(GTUtility.copyAmount(3L, stack), ItemList.Shape_Extruder_Pickaxe.get(0L), OreDictionaryUnifier.get(OrePrefix.toolHeadPickaxe, uEntry.material.mSmeltInto, tAmount), (int) Math.max(materialMass * 3L * tAmount, tAmount), 8 * tVoltageMultiplier);

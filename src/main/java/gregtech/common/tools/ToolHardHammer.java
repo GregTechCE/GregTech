@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import gregtech.GT_Mod;
+import gregtech.GregTechMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
@@ -139,6 +139,6 @@ public class ToolHardHammer extends ToolBase {
     @Override
     public void onToolCrafted(ItemStack stack, EntityPlayer player) {
         super.onToolCrafted(stack, player);
-        GT_Mod.achievements.issueAchievement(player, "tools");
+        GregTechMod.achievements.issueAchievement(player, "tools");
     }
 }

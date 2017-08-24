@@ -11,7 +11,7 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
-import gregtech.common.GT_Proxy;
+import gregtech.common.CommonProxy;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
@@ -37,13 +37,13 @@ public class ProcessingGear implements IOreRegistrationHandler {
                 if (uEntry.material.mUnificatable && (uEntry.material.mMaterialInto == uEntry.material) && !uEntry.material.hasFlag(DustMaterial.MatFlags.NO_WORKING)) {
                     switch (uEntry.material.defaultLocalName) {
                         case "Wood":
-                            ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gearGt, uEntry.material, 1), GT_Proxy.tBits, "SPS", "PsP", "SPS", Character.valueOf('P'), OreDictionaryUnifier.get(OrePrefix.plank, uEntry.material, 2), Character.valueOf('S'), OreDictionaryUnifier.get(OrePrefix.stick, uEntry.material, 2));
+                            ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gearGt, uEntry.material, 1), CommonProxy.tBits, "SPS", "PsP", "SPS", Character.valueOf('P'), OreDictionaryUnifier.get(OrePrefix.plank, uEntry.material, 2), Character.valueOf('S'), OreDictionaryUnifier.get(OrePrefix.stick, uEntry.material, 2));
                             break;
                         case "Stone":
-                            ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gearGt, uEntry.material, 1), GT_Proxy.tBits, "SPS", "PfP", "SPS", Character.valueOf('P'), OrePrefix.stoneSmooth, Character.valueOf('S'), new ItemStack(Blocks.STONE_BUTTON, 1, 32767));
+                            ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gearGt, uEntry.material, 1), CommonProxy.tBits, "SPS", "PfP", "SPS", Character.valueOf('P'), OrePrefix.stoneSmooth, Character.valueOf('S'), new ItemStack(Blocks.STONE_BUTTON, 1, 32767));
                             break;
                         default:
-                            ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gearGt, uEntry.material, 1), GT_Proxy.tBits, "SPS", "PwP", "SPS", Character.valueOf('P'), OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 2), Character.valueOf('S'), OreDictionaryUnifier.get(OrePrefix.stick, uEntry.material, 2));
+                            ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gearGt, uEntry.material, 1), CommonProxy.tBits, "SPS", "PwP", "SPS", Character.valueOf('P'), OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 2), Character.valueOf('S'), OreDictionaryUnifier.get(OrePrefix.stick, uEntry.material, 2));
                     }
                 }
                 break;
@@ -59,13 +59,13 @@ public class ProcessingGear implements IOreRegistrationHandler {
                 if (uEntry.material.mUnificatable && (uEntry.material.mMaterialInto == uEntry.material) && !uEntry.material.hasFlag(DustMaterial.MatFlags.NO_WORKING)) {
                     switch (uEntry.material.defaultLocalName) {
                         case "Wood":
-                            ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gearGtSmall, uEntry.material, 1), GT_Proxy.tBits, "P ", " s", Character.valueOf('P'), OreDictionaryUnifier.get(OrePrefix.plank, uEntry.material, 2));
+                            ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gearGtSmall, uEntry.material, 1), CommonProxy.tBits, "P ", " s", Character.valueOf('P'), OreDictionaryUnifier.get(OrePrefix.plank, uEntry.material, 2));
                             break;
                         case "Stone":
-                            ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gearGtSmall, uEntry.material, 1), GT_Proxy.tBits, "P ", " f", Character.valueOf('P'), OrePrefix.stoneSmooth);
+                            ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gearGtSmall, uEntry.material, 1), CommonProxy.tBits, "P ", " f", Character.valueOf('P'), OrePrefix.stoneSmooth);
                             break;
                         default:
-                            ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gearGtSmall, uEntry.material, 1), GT_Proxy.tBits, "P ", uEntry.material.contains(SubTag.WOOD) ? " s" : " h", Character.valueOf('P'), OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 2));
+                            ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gearGtSmall, uEntry.material, 1), CommonProxy.tBits, "P ", uEntry.material.contains(SubTag.WOOD) ? " s" : " h", Character.valueOf('P'), OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 2));
                     }
                 }
                 break;

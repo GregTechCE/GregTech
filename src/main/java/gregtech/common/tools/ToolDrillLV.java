@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import gregtech.GT_Mod;
+import gregtech.GregTechMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import net.minecraft.block.material.Material;
@@ -18,7 +18,7 @@ public class ToolDrillLV extends ToolBase {
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
-        return GT_Mod.gregtechproxy.mHardRock ? 25 : 50;
+        return GregTechMod.gregtechproxy.mHardRock ? 25 : 50;
     }
 
     @Override
@@ -86,8 +86,8 @@ public class ToolDrillLV extends ToolBase {
         super.onToolCrafted(stack, player);
         player.addStat(AchievementList.BUILD_PICKAXE);
         player.addStat(AchievementList.BUILD_BETTER_PICKAXE);
-        GT_Mod.achievements.issueAchievement(player, "driltime");
-        GT_Mod.achievements.issueAchievement(player, "buildDrill");
+        GregTechMod.achievements.issueAchievement(player, "driltime");
+        GregTechMod.achievements.issueAchievement(player, "buildDrill");
     }
 
     @Override

@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import gregtech.GT_Mod;
+import gregtech.GregTechMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.unification.ore.OrePrefix;
@@ -69,8 +69,8 @@ public class ToolChainsawLV extends ToolSaw {
     @Override
     public void onToolCrafted(ItemStack stack, EntityPlayer player) {
         super.onToolCrafted(stack, player);
-        GT_Mod.achievements.issueAchievement(player, "brrrr");
-        GT_Mod.achievements.issueAchievement(player, "buildChainsaw");
+        GregTechMod.achievements.issueAchievement(player, "brrrr");
+        GregTechMod.achievements.issueAchievement(player, "buildChainsaw");
     }
     
     @Override

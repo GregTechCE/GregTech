@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 public class GT_CropLoader implements Runnable {
 
     public void run() {
-        GTLog.out.println("GT_Mod: Register Crops to IC2.");
+        GTLog.out.println("GregTechMod: Register Crops to IC2.");
         try {
         	ItemStack[] tI = new ItemStack[]{ItemList.Crop_Drop_Indigo.get(4L),ItemList.Crop_Drop_MilkWart.get(4L),new ItemStack(Blocks.BROWN_MUSHROOM, 4),new ItemStack(Blocks.RED_MUSHROOM, 4)};
             new GT_BaseCrop(124, "Indigo", "Eloraam", 				tI[0], 2, 4,    0, 1, 4, 1, 1, 0, 4, 0, new String[]{"Flower", "Color", "Ingredient"}, 									ItemList.Crop_Drop_Indigo.get(1L), null);
@@ -72,7 +72,7 @@ public class GT_CropLoader implements Runnable {
             new GT_BaseCrop(177, "Tea", "unknown",	 				null,  4, 4,    0, 1, 4, 1, 1, 0, 2, 0, new String[]{"Food"}, 							 									ItemList.Crop_Drop_TeaLeaf.get(1, new Object[0]), null);
             } catch (Throwable e) {
 
-            GTLog.err.println("GT_Mod: Failed to register Crops to IC2.");
+            GTLog.err.println("GregTechMod: Failed to register Crops to IC2.");
             e.printStackTrace(GTLog.err);
         }
     }

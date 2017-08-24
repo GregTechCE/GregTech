@@ -12,7 +12,7 @@ import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
-import gregtech.common.GT_Proxy;
+import gregtech.common.CommonProxy;
 import gregtech.common.items.MetaTool;
 
 public class ProcessingToolHead implements IOreRegistrationHandler {
@@ -47,16 +47,16 @@ public class ProcessingToolHead implements IOreRegistrationHandler {
                 case toolHeadAxe:
                     ModHandler.addShapelessCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.AXE, 1, solidMaterial, solidMaterial.handleMaterial, null), new Object[]{aOreDictName, OreDictionaryUnifier.get(OrePrefix.stick, solidMaterial.handleMaterial)});
                     if (aSpecialRecipeReq1)
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadAxe, solidMaterial, 1), GT_Proxy.tBits, new Object[]{"PIh", "P  ", "f  ", 'P', OreDictionaryUnifier.get(OrePrefix.plate, solidMaterial), 'I', OreDictionaryUnifier.get(OrePrefix.ingot, solidMaterial)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadAxe, solidMaterial, 1), CommonProxy.tBits, new Object[]{"PIh", "P  ", "f  ", 'P', OreDictionaryUnifier.get(OrePrefix.plate, solidMaterial), 'I', OreDictionaryUnifier.get(OrePrefix.ingot, solidMaterial)});
                     if (!aNoWorking)
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadAxe, solidMaterial, 1), GT_Proxy.tBits, new Object[]{"GG ", "G  ", "f  ", 'G', OreDictionaryUnifier.get(OrePrefix.gem, solidMaterial)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadAxe, solidMaterial, 1), CommonProxy.tBits, new Object[]{"GG ", "G  ", "f  ", 'G', OreDictionaryUnifier.get(OrePrefix.gem, solidMaterial)});
                     break;
                 case toolHeadBuzzSaw:
                     ModHandler.addCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.BUZZSAW, 1, solidMaterial, Materials.StainlessSteel, new long[]{100000L, 32L, 1L, -1L}), ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{"PBM", "dXG", "SGP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1), 'S', OreDictionaryUnifier.get(OrePrefix.screw, Materials.StainlessSteel), 'P', OreDictionaryUnifier.get(OrePrefix.plate, Materials.StainlessSteel), 'G', OreDictionaryUnifier.get(OrePrefix.gearGtSmall, Materials.StainlessSteel), 'B', ItemList.Battery_RE_LV_Lithium.get(1)});
                     ModHandler.addCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.BUZZSAW, 1, solidMaterial, Materials.StainlessSteel, new long[]{75000L, 32L, 1L, -1L}), ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{"PBM", "dXG", "SGP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1), 'S', OreDictionaryUnifier.get(OrePrefix.screw, Materials.StainlessSteel), 'P', OreDictionaryUnifier.get(OrePrefix.plate, Materials.StainlessSteel), 'G', OreDictionaryUnifier.get(OrePrefix.gearGtSmall, Materials.StainlessSteel), 'B', ItemList.Battery_RE_LV_Cadmium.get(1)});
                     ModHandler.addCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.BUZZSAW, 1, solidMaterial, Materials.StainlessSteel, new long[]{50000L, 32L, 1L, -1L}), ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{"PBM", "dXG", "SGP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1), 'S', OreDictionaryUnifier.get(OrePrefix.screw, Materials.StainlessSteel), 'P', OreDictionaryUnifier.get(OrePrefix.plate, Materials.StainlessSteel), 'G', OreDictionaryUnifier.get(OrePrefix.gearGtSmall, Materials.StainlessSteel), 'B', ItemList.Battery_RE_LV_Sodium.get(1)});
                     if (aSpecialRecipeReq2)
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadBuzzSaw, solidMaterial, 1), GT_Proxy.tBits, new Object[]{"wXh", "X X", "fXx", 'X', OreDictionaryUnifier.get(OrePrefix.plate, solidMaterial)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadBuzzSaw, solidMaterial, 1), CommonProxy.tBits, new Object[]{"wXh", "X X", "fXx", 'X', OreDictionaryUnifier.get(OrePrefix.plate, solidMaterial)});
                     break;
                 case toolHeadChainsaw:
                     ModHandler.addCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.CHAINSAW_LV, 1, solidMaterial, Materials.StainlessSteel, new long[]{100000L, 32L, 1L, -1L}), ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{"SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1), 'S', OreDictionaryUnifier.get(OrePrefix.screw, Materials.StainlessSteel), 'P', OreDictionaryUnifier.get(OrePrefix.plate, Materials.StainlessSteel), 'G', OreDictionaryUnifier.get(OrePrefix.gearGtSmall, Materials.StainlessSteel), 'B', ItemList.Battery_RE_LV_Lithium.get(1)});
@@ -69,7 +69,7 @@ public class ProcessingToolHead implements IOreRegistrationHandler {
                     ModHandler.addCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.CHAINSAW_MV, 1, solidMaterial, Materials.Titanium, new long[]{200000L, 128L, 2L, -1L}), ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{"SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_MV.get(1), 'S', OreDictionaryUnifier.get(OrePrefix.screw, Materials.Titanium), 'P', OreDictionaryUnifier.get(OrePrefix.plate, Materials.Titanium), 'G', OreDictionaryUnifier.get(OrePrefix.plate, Materials.Titanium), 'B', ItemList.Battery_RE_MV_Sodium.get(1)});
                     ModHandler.addCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.CHAINSAW_HV, 1, solidMaterial, Materials.TungstenSteel, new long[]{800000L, 512L, 3L, -1L}), ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{"SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_HV.get(1), 'S', OreDictionaryUnifier.get(OrePrefix.screw, Materials.TungstenSteel), 'P', OreDictionaryUnifier.get(OrePrefix.plate, Materials.TungstenSteel), 'G', OreDictionaryUnifier.get(OrePrefix.gearGtSmall, Materials.TungstenSteel), 'B', ItemList.Battery_RE_HV_Sodium.get(1)});
                     if (aSpecialRecipeReq2)
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadChainsaw, solidMaterial, 1), GT_Proxy.tBits, new Object[]{"SRS", "XhX", "SRS", 'X', OreDictionaryUnifier.get(OrePrefix.plate, solidMaterial), 'S', OreDictionaryUnifier.get(OrePrefix.plate, Materials.Steel), 'R', OreDictionaryUnifier.get(OrePrefix.ring, Materials.Steel)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadChainsaw, solidMaterial, 1), CommonProxy.tBits, new Object[]{"SRS", "XhX", "SRS", 'X', OreDictionaryUnifier.get(OrePrefix.plate, solidMaterial), 'S', OreDictionaryUnifier.get(OrePrefix.plate, Materials.Steel), 'R', OreDictionaryUnifier.get(OrePrefix.ring, Materials.Steel)});
                     break;
                 case toolHeadDrill:
                     ModHandler.addCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.DRILL_LV, 1, solidMaterial, Materials.StainlessSteel, new long[]{100000L, 32L, 1L, -1L}), ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{"SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1), 'S', OreDictionaryUnifier.get(OrePrefix.screw, Materials.StainlessSteel), 'P', OreDictionaryUnifier.get(OrePrefix.plate, Materials.StainlessSteel), 'G', OreDictionaryUnifier.get(OrePrefix.gearGtSmall, Materials.StainlessSteel), 'B', ItemList.Battery_RE_LV_Lithium.get(1)});
@@ -85,7 +85,7 @@ public class ProcessingToolHead implements IOreRegistrationHandler {
                     ModHandler.addCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.JACKHAMMER, 1, solidMaterial, Materials.Titanium, new long[]{1200000L, 512L, 3L, -1L}), ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{"SXd", "PRP", "MPB", 'X', OreDictionaryUnifier.get(OrePrefix.stickLong, solidMaterial), 'M', ItemList.Electric_Piston_HV.get(1), 'S', OreDictionaryUnifier.get(OrePrefix.screw, Materials.Titanium), 'P', OreDictionaryUnifier.get(OrePrefix.plate, Materials.Titanium), 'R', OreDictionaryUnifier.get(OrePrefix.spring, Materials.Titanium), 'B', ItemList.Battery_RE_HV_Cadmium.get(1)});
                     ModHandler.addCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.JACKHAMMER, 1, solidMaterial, Materials.Titanium, new long[]{800000L, 512L, 3L, -1L}), ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{"SXd", "PRP", "MPB", 'X', OreDictionaryUnifier.get(OrePrefix.stickLong, solidMaterial), 'M', ItemList.Electric_Piston_HV.get(1), 'S', OreDictionaryUnifier.get(OrePrefix.screw, Materials.Titanium), 'P', OreDictionaryUnifier.get(OrePrefix.plate, Materials.Titanium), 'R', OreDictionaryUnifier.get(OrePrefix.spring, Materials.Titanium), 'B', ItemList.Battery_RE_HV_Sodium.get(1)});
                     if (aSpecialRecipeReq2)
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadDrill, solidMaterial, 1), GT_Proxy.tBits, new Object[]{"XSX", "XSX", "ShS", 'X', OreDictionaryUnifier.get(OrePrefix.plate, solidMaterial), 'S', OreDictionaryUnifier.get(OrePrefix.plate, Materials.Steel)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadDrill, solidMaterial, 1), CommonProxy.tBits, new Object[]{"XSX", "XSX", "ShS", 'X', OreDictionaryUnifier.get(OrePrefix.plate, solidMaterial), 'S', OreDictionaryUnifier.get(OrePrefix.plate, Materials.Steel)});
                     break;
                 case toolHeadFile:
                     ModHandler.addShapelessCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.FILE, 1, solidMaterial, solidMaterial.handleMaterial, null), new Object[]{aOreDictName, OreDictionaryUnifier.get(OrePrefix.stick, solidMaterial.handleMaterial)});
@@ -96,56 +96,56 @@ public class ProcessingToolHead implements IOreRegistrationHandler {
                 case toolHeadHoe:
                     ModHandler.addShapelessCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.HOE, 1, solidMaterial, solidMaterial.handleMaterial, null), new Object[]{aOreDictName, OreDictionaryUnifier.get(OrePrefix.stick, solidMaterial.handleMaterial)});
                     if (aSpecialRecipeReq1)
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadHoe, solidMaterial, 1), GT_Proxy.tBits, new Object[]{"PIh", "f  ", 'P', OreDictionaryUnifier.get(OrePrefix.plate, solidMaterial), 'I', OreDictionaryUnifier.get(OrePrefix.ingot, solidMaterial)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadHoe, solidMaterial, 1), CommonProxy.tBits, new Object[]{"PIh", "f  ", 'P', OreDictionaryUnifier.get(OrePrefix.plate, solidMaterial), 'I', OreDictionaryUnifier.get(OrePrefix.ingot, solidMaterial)});
                     if (!aNoWorking)
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadHoe, solidMaterial, 1), GT_Proxy.tBits, new Object[]{"GG ", "f  ", "   ", 'G', OreDictionaryUnifier.get(OrePrefix.gem, solidMaterial)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadHoe, solidMaterial, 1), CommonProxy.tBits, new Object[]{"GG ", "f  ", "   ", 'G', OreDictionaryUnifier.get(OrePrefix.gem, solidMaterial)});
                     break;
                 case toolHeadPickaxe:
                     ModHandler.addShapelessCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.PICKAXE, 1, solidMaterial, solidMaterial.handleMaterial, null), new Object[]{aOreDictName, OreDictionaryUnifier.get(OrePrefix.stick, solidMaterial.handleMaterial)});
                     if (aSpecialRecipeReq1)
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadPickaxe, solidMaterial, 1), GT_Proxy.tBits, new Object[]{"PII", "f h", 'P', OreDictionaryUnifier.get(OrePrefix.plate, solidMaterial), 'I', OreDictionaryUnifier.get(OrePrefix.ingot, solidMaterial)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadPickaxe, solidMaterial, 1), CommonProxy.tBits, new Object[]{"PII", "f h", 'P', OreDictionaryUnifier.get(OrePrefix.plate, solidMaterial), 'I', OreDictionaryUnifier.get(OrePrefix.ingot, solidMaterial)});
                     if (!aNoWorking)
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadPickaxe, solidMaterial, 1), GT_Proxy.tBits, new Object[]{"GGG", "f  ", 'G', OreDictionaryUnifier.get(OrePrefix.gem, solidMaterial)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadPickaxe, solidMaterial, 1), CommonProxy.tBits, new Object[]{"GGG", "f  ", 'G', OreDictionaryUnifier.get(OrePrefix.gem, solidMaterial)});
                     break;
                 case toolHeadPlow:
                     ModHandler.addShapelessCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.PLOW, 1, solidMaterial, solidMaterial.handleMaterial, null), new Object[]{aOreDictName, OreDictionaryUnifier.get(OrePrefix.stick, solidMaterial.handleMaterial)});
                     if (aSpecialRecipeReq1)
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadPlow, solidMaterial, 1), GT_Proxy.tBits, new Object[]{"PP", "PP", "hf", 'P', OreDictionaryUnifier.get(OrePrefix.plate, solidMaterial)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadPlow, solidMaterial, 1), CommonProxy.tBits, new Object[]{"PP", "PP", "hf", 'P', OreDictionaryUnifier.get(OrePrefix.plate, solidMaterial)});
                     if (!aNoWorking)
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadPlow, solidMaterial, 1), GT_Proxy.tBits, new Object[]{"GG", "GG", " f", 'G', OreDictionaryUnifier.get(OrePrefix.gem, solidMaterial)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadPlow, solidMaterial, 1), CommonProxy.tBits, new Object[]{"GG", "GG", " f", 'G', OreDictionaryUnifier.get(OrePrefix.gem, solidMaterial)});
                     break;
                 case toolHeadSaw:
                     ModHandler.addShapelessCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.SAW, 1, solidMaterial, solidMaterial.handleMaterial, null), new Object[]{aOreDictName, OreDictionaryUnifier.get(OrePrefix.stick, solidMaterial.handleMaterial)});
                     if (aSpecialRecipeReq1)
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadSaw, solidMaterial, 1), GT_Proxy.tBits, new Object[]{"PP ", "fh ", 'P', OreDictionaryUnifier.get(OrePrefix.plate, solidMaterial), 'I', OreDictionaryUnifier.get(OrePrefix.ingot, solidMaterial)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadSaw, solidMaterial, 1), CommonProxy.tBits, new Object[]{"PP ", "fh ", 'P', OreDictionaryUnifier.get(OrePrefix.plate, solidMaterial), 'I', OreDictionaryUnifier.get(OrePrefix.ingot, solidMaterial)});
                     if (!aNoWorking)
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadSaw, solidMaterial, 1), GT_Proxy.tBits, new Object[]{"GGf", 'G', OreDictionaryUnifier.get(OrePrefix.gem, solidMaterial)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadSaw, solidMaterial, 1), CommonProxy.tBits, new Object[]{"GGf", 'G', OreDictionaryUnifier.get(OrePrefix.gem, solidMaterial)});
                     break;
                 case toolHeadSense:
                     ModHandler.addShapelessCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.SENSE, 1, solidMaterial, solidMaterial.handleMaterial, null), new Object[]{aOreDictName, OreDictionaryUnifier.get(OrePrefix.stick, solidMaterial.handleMaterial)});
                     if (aSpecialRecipeReq1)
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadSense, solidMaterial, 1), GT_Proxy.tBits, new Object[]{"PPI", "hf ", 'P', OreDictionaryUnifier.get(OrePrefix.plate, solidMaterial), 'I', OreDictionaryUnifier.get(OrePrefix.ingot, solidMaterial)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadSense, solidMaterial, 1), CommonProxy.tBits, new Object[]{"PPI", "hf ", 'P', OreDictionaryUnifier.get(OrePrefix.plate, solidMaterial), 'I', OreDictionaryUnifier.get(OrePrefix.ingot, solidMaterial)});
                     if (!aNoWorking)
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadSense, solidMaterial, 1), GT_Proxy.tBits, new Object[]{"GGG", " f ", "   ", 'G', OreDictionaryUnifier.get(OrePrefix.gem, solidMaterial)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadSense, solidMaterial, 1), CommonProxy.tBits, new Object[]{"GGG", " f ", "   ", 'G', OreDictionaryUnifier.get(OrePrefix.gem, solidMaterial)});
                     break;
                 case toolHeadShovel:
                     ModHandler.addShapelessCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.SHOVEL, 1, solidMaterial, solidMaterial.handleMaterial, null), new Object[]{aOreDictName, OreDictionaryUnifier.get(OrePrefix.stick, solidMaterial.handleMaterial)});
                     if (aSpecialRecipeReq1)
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadShovel, solidMaterial, 1), GT_Proxy.tBits, new Object[]{"fPh", 'P', OreDictionaryUnifier.get(OrePrefix.plate, solidMaterial), 'I', OreDictionaryUnifier.get(OrePrefix.ingot, solidMaterial)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadShovel, solidMaterial, 1), CommonProxy.tBits, new Object[]{"fPh", 'P', OreDictionaryUnifier.get(OrePrefix.plate, solidMaterial), 'I', OreDictionaryUnifier.get(OrePrefix.ingot, solidMaterial)});
                     if (!aNoWorking)
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadShovel, solidMaterial, 1), GT_Proxy.tBits, new Object[]{"fG", 'G', OreDictionaryUnifier.get(OrePrefix.gem, solidMaterial)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadShovel, solidMaterial, 1), CommonProxy.tBits, new Object[]{"fG", 'G', OreDictionaryUnifier.get(OrePrefix.gem, solidMaterial)});
                     break;
                 case toolHeadSword:
                     ModHandler.addShapelessCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.SWORD, 1, solidMaterial, solidMaterial.handleMaterial, null), new Object[]{aOreDictName, OreDictionaryUnifier.get(OrePrefix.stick, solidMaterial.handleMaterial)});
                     if (aSpecialRecipeReq1)
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadSword, solidMaterial, 1), GT_Proxy.tBits, new Object[]{" P ", "fPh", 'P', OreDictionaryUnifier.get(OrePrefix.plate, solidMaterial), 'I', OreDictionaryUnifier.get(OrePrefix.ingot, solidMaterial)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadSword, solidMaterial, 1), CommonProxy.tBits, new Object[]{" P ", "fPh", 'P', OreDictionaryUnifier.get(OrePrefix.plate, solidMaterial), 'I', OreDictionaryUnifier.get(OrePrefix.ingot, solidMaterial)});
                     if (!aNoWorking)
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadSword, solidMaterial, 1), GT_Proxy.tBits, new Object[]{" G", "fG", 'G', OreDictionaryUnifier.get(OrePrefix.gem, solidMaterial)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadSword, solidMaterial, 1), CommonProxy.tBits, new Object[]{" G", "fG", 'G', OreDictionaryUnifier.get(OrePrefix.gem, solidMaterial)});
                     break;
                 case toolHeadUniversalSpade:
                     ModHandler.addShapelessCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.UNIVERSALSPADE, 1, solidMaterial, solidMaterial, null), new Object[]{aOreDictName, OreDictionaryUnifier.get(OrePrefix.stick, solidMaterial), OrePrefix.screw.get(solidMaterial), ToolDictNames.craftingToolScrewdriver});
                     if (aSpecialRecipeReq2)
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadUniversalSpade, solidMaterial, 1), GT_Proxy.tBits, new Object[]{"fX", 'X', OreDictionaryUnifier.get(OrePrefix.toolHeadShovel, solidMaterial)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadUniversalSpade, solidMaterial, 1), CommonProxy.tBits, new Object[]{"fX", 'X', OreDictionaryUnifier.get(OrePrefix.toolHeadShovel, solidMaterial)});
                     break;
                 case toolHeadWrench:
                     ModHandler.addCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.WRENCH_LV, 1, solidMaterial, Materials.StainlessSteel, new long[]{100000L, 32L, 1L, -1L}), ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{"SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1), 'S', OreDictionaryUnifier.get(OrePrefix.screw, Materials.StainlessSteel), 'P', OreDictionaryUnifier.get(OrePrefix.plate, Materials.StainlessSteel), 'G', OreDictionaryUnifier.get(OrePrefix.gearGtSmall, Materials.StainlessSteel), 'B', ItemList.Battery_RE_LV_Lithium.get(1)});
@@ -161,7 +161,7 @@ public class ProcessingToolHead implements IOreRegistrationHandler {
                     ModHandler.addCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.SCREWDRIVER_LV, 1, solidMaterial, Materials.StainlessSteel, new long[]{75000L, 32L, 1L, -1L}), ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{"PdX", "MGS", "GBP", 'X', OreDictionaryUnifier.get(OrePrefix.stickLong, solidMaterial), 'M', ItemList.Electric_Motor_LV.get(1), 'S', OreDictionaryUnifier.get(OrePrefix.screw, Materials.StainlessSteel), 'P', OreDictionaryUnifier.get(OrePrefix.plate, Materials.StainlessSteel), 'G', OreDictionaryUnifier.get(OrePrefix.gearGtSmall, Materials.StainlessSteel), 'B', ItemList.Battery_RE_LV_Cadmium.get(1)});
                     ModHandler.addCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.SCREWDRIVER_LV, 1, solidMaterial, Materials.StainlessSteel, new long[]{50000L, 32L, 1L, -1L}), ModHandler.RecipeBits.DISMANTLEABLE | ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{"PdX", "MGS", "GBP", 'X', OreDictionaryUnifier.get(OrePrefix.stickLong, solidMaterial), 'M', ItemList.Electric_Motor_LV.get(1), 'S', OreDictionaryUnifier.get(OrePrefix.screw, Materials.StainlessSteel), 'P', OreDictionaryUnifier.get(OrePrefix.plate, Materials.StainlessSteel), 'G', OreDictionaryUnifier.get(OrePrefix.gearGtSmall, Materials.StainlessSteel), 'B', ItemList.Battery_RE_LV_Sodium.get(1)});
                     if (aSpecialRecipeReq2)
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadWrench, solidMaterial, 1), GT_Proxy.tBits, new Object[]{"hXW", "XRX", "WXd", 'X', OreDictionaryUnifier.get(OrePrefix.plate, solidMaterial), 'S', OreDictionaryUnifier.get(OrePrefix.plate, Materials.Steel), 'R', OreDictionaryUnifier.get(OrePrefix.ring, Materials.Steel), 'W', OreDictionaryUnifier.get(OrePrefix.screw, Materials.Steel)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadWrench, solidMaterial, 1), CommonProxy.tBits, new Object[]{"hXW", "XRX", "WXd", 'X', OreDictionaryUnifier.get(OrePrefix.plate, solidMaterial), 'S', OreDictionaryUnifier.get(OrePrefix.plate, Materials.Steel), 'R', OreDictionaryUnifier.get(OrePrefix.ring, Materials.Steel), 'W', OreDictionaryUnifier.get(OrePrefix.screw, Materials.Steel)});
                     break;
                 case toolHeadHammer:
                     if ((solidMaterial != Materials.Stone) && (solidMaterial != Materials.Flint)) {
@@ -171,7 +171,7 @@ public class ProcessingToolHead implements IOreRegistrationHandler {
                     }
                     if (uEntry.orePrefix == OrePrefix.toolHeadHammer)
                         if (aSpecialRecipeReq1)
-                            ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadHammer, solidMaterial, 1), GT_Proxy.tBits, new Object[]{"II ", "IIh", "II ", 'P', OreDictionaryUnifier.get(OrePrefix.plate, solidMaterial), 'I', OreDictionaryUnifier.get(OrePrefix.ingot, solidMaterial)});
+                            ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.toolHeadHammer, solidMaterial, 1), CommonProxy.tBits, new Object[]{"II ", "IIh", "II ", 'P', OreDictionaryUnifier.get(OrePrefix.plate, solidMaterial), 'I', OreDictionaryUnifier.get(OrePrefix.ingot, solidMaterial)});
                     break;
                 case turbineBlade:
                     RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
@@ -199,7 +199,7 @@ public class ProcessingToolHead implements IOreRegistrationHandler {
                             .EUt(6400)
                             .buildAndRegister();
                     if (aSpecialRecipeReq2) {
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.turbineBlade, solidMaterial, 1), GT_Proxy.tBits, new Object[]{"fPd", "SPS", " P ", 'P', solidMaterial == Materials.Wood ? OreDictionaryUnifier.get(OrePrefix.plank, solidMaterial) : OreDictionaryUnifier.get(OrePrefix.ingotDouble, solidMaterial), 'R', OreDictionaryUnifier.get(OrePrefix.ring, solidMaterial), 'S', OreDictionaryUnifier.get(OrePrefix.screw, solidMaterial)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.turbineBlade, solidMaterial, 1), CommonProxy.tBits, new Object[]{"fPd", "SPS", " P ", 'P', solidMaterial == Materials.Wood ? OreDictionaryUnifier.get(OrePrefix.plank, solidMaterial) : OreDictionaryUnifier.get(OrePrefix.ingotDouble, solidMaterial), 'R', OreDictionaryUnifier.get(OrePrefix.ring, solidMaterial), 'S', OreDictionaryUnifier.get(OrePrefix.screw, solidMaterial)});
                     }
                     break;
             }

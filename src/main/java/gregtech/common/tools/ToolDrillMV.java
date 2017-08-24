@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import gregtech.GT_Mod;
+import gregtech.GregTechMod;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import net.minecraft.item.ItemStack;
 
@@ -8,7 +8,7 @@ public class ToolDrillMV extends ToolDrillLV {
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
-        return GT_Mod.gregtechproxy.mHardRock ? 100 : 200;
+        return GregTechMod.gregtechproxy.mHardRock ? 100 : 200;
     }
 
     @Override

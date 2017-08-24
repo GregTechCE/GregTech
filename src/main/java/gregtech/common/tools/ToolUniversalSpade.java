@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import gregtech.GT_Mod;
+import gregtech.GregTechMod;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.common.items.behaviors.Behaviour_Crowbar;
@@ -85,7 +85,7 @@ public class ToolUniversalSpade extends ToolBase {
     public void onToolCrafted(ItemStack stack, EntityPlayer player) {
         super.onToolCrafted(stack, player);
         player.addStat(AchievementList.BUILD_SWORD);
-        GT_Mod.achievements.issueAchievement(player, "unitool");
+        GregTechMod.achievements.issueAchievement(player, "unitool");
     }
 
     @Override

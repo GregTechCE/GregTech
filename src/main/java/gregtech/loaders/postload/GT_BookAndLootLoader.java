@@ -1,11 +1,10 @@
 package gregtech.loaders.postload;
 
-import gregtech.GT_Mod;
+import gregtech.GregTechMod;
 import gregtech.api.items.ItemList;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
-import gregtech.api.util.GTLog;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.storage.loot.LootTableList;
@@ -15,7 +14,7 @@ public class GT_BookAndLootLoader implements Runnable {
     public void run() {
         new ChestGenHooks();
 
-        if (GT_Mod.gregtechproxy.mIncreaseDungeonLoot) {
+        if (GregTechMod.gregtechproxy.mIncreaseDungeonLoot) {
             ChestGenHooks.addRolls(LootTableList.CHESTS_SPAWN_BONUS_CHEST, 2, 4);
             ChestGenHooks.addRolls(LootTableList.CHESTS_SIMPLE_DUNGEON, 1, 3);
             ChestGenHooks.addRolls(LootTableList.CHESTS_DESERT_PYRAMID, 2, 4);

@@ -1,11 +1,14 @@
 package gregtech.common;
 
+import gregtech.api.GregTechAPI;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
+import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.util.GTLog;
+import ic2.core.ref.ItemName;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -21,128 +24,61 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-public abstract class GT_Proxy implements IFuelHandler, IGuiHandler {
+public abstract class CommonProxy implements IFuelHandler, IGuiHandler {
 
-    private static List<Block> ROTATABLE_VANILLA_BLOCKS;
-
-    static {
-        ROTATABLE_VANILLA_BLOCKS = Arrays.asList(Blocks.PISTON, Blocks.STICKY_PISTON, Blocks.FURNACE, Blocks.LIT_FURNACE,
-                Blocks.DROPPER, Blocks.DISPENSER, Blocks.CHEST, Blocks.TRAPPED_CHEST, Blocks.ENDER_CHEST, Blocks.HOPPER,
-                Blocks.PUMPKIN, Blocks.LIT_PUMPKIN);
-    }
-
-    public final HashSet<ItemStack> mRegisteredOres = new HashSet<ItemStack>(10000);
-
-//    public boolean mHardcoreCables = false;
 //    public boolean mDisableVanillaOres = true;
 //    public boolean mDisableModdedOres = true;
-//    public boolean mNerfDustCrafting = true;
-//    public boolean mSortToTheEnd = true;
+
 //    public boolean mCraftingUnification = true;
 //    public boolean mInventoryUnification = true;
+
 //    public boolean mIncreaseDungeonLoot = true;
-//    public boolean mAxeWhenAdventure = true;
-//    public boolean mSurvivalIntoAdventure = false;
 //    public boolean mNerfedWoodPlank = true;
 //    public boolean mNerfedVanillaTools = true;
-//    public boolean mHardRock = false;
-//    public boolean mHungerEffect = true;
-//    public boolean mOnline = true;
-//    public boolean mIgnoreTcon = true;
-//    public boolean mDisableIC2Cables = false;
-//    public boolean mAchievements = true;
-//    public boolean mAE2Integration = true;
-//    public boolean mArcSmeltIntoAnnealed = true;
-//    public boolean mMagneticraftRecipes = true;
-//    public boolean mImmersiveEngineeringRecipes = true;
-//    private boolean isFirstServerWorldTick = true;
-//    private boolean mOreDictActivated = false;
-//    public boolean mChangeHarvestLevels=false;
+
 //    public boolean mNerfedCombs = true;
 //    public boolean mNerfedCrops = true;
 //    public boolean mGTBees = true;
-//    public boolean mHideUnusedOres = true;
-//    public boolean mHideRecyclingRecipes = true;
+
 //    public boolean mPollution = true;
-//    public boolean mExplosionItemDrop = false;
-//    public int mSkeletonsShootGTArrows = 16;
-//    public int mMaxEqualEntitiesAtOneSpot = 3;
-//    public int mFlintChance = 30;
-//    public int mItemDespawnTime = 6000;
-//    public int mUpgradeCount = 4;
-//    public int[] mHarvestLevel= new int[1000];
-//    public int mGraniteHavestLevel=3;
-//    public int mMaxHarvestLevel=7;
-//    public int mWireHeatingTicks = 4;
 //    public int mPollutionSmogLimit = 500000;
 //    public int mPollutionPoisonLimit = 750000;
 //    public int mPollutionVegetationLimit = 1000000;
 //    public int mPollutionSourRainLimit = 2000000;
-//    public int mTicksUntilNextCraftSound = 0;
-//    public double mMagneticraftBonusOutputPercent = 100.0d;
-//    private final String aTextThermalExpansion = "ThermalExpansion";
-//    private final String aTextRailcraft = "Railcraft";
-//    private final String aTextTwilightForest = "TwilightForest";
-//    private final String aTextForestry = "Forestry";
-//    private final String aTextArsmagica2 = "arsmagica2";
-//    public boolean mTEMachineRecipes = false;
-//    public boolean mEnableAllMaterials = false;
-//    public boolean mEnableAllComponents = false;
+
 
     public void onPreLoad() {
-        GTLog.logger.info("GT_Mod: Preload-Phase started!");
-
-//        GregTechAPI.sPreloadStarted = true;
+        GTLog.logger.info("GregTechMod: Preload-Phase started!");
 
         GameRegistry.registerFuelHandler(this);
         MinecraftForge.EVENT_BUS.register(this);
-//        MinecraftForge.ORE_GEN_BUS.register(this);
+        MinecraftForge.ORE_GEN_BUS.register(this);
 
-//        GTLog.out.println("GT_Mod: Getting required Items of other Mods.");
+        GregTechAPI.bioHazmatList.add(new SimpleItemStack(ItemName.hazmat_helmet.getItemStack()));
+        GregTechAPI.bioHazmatList.add(new SimpleItemStack(ItemName.hazmat_chestplate.getItemStack()));
+        GregTechAPI.bioHazmatList.add(new SimpleItemStack(ItemName.hazmat_leggings.getItemStack()));
+        GregTechAPI.bioHazmatList.add(new SimpleItemStack(ItemName.rubber_boots.getItemStack()));
 
-//        GregTechAPI.sFrostHazmatList.add(ItemName.hazmat_helmet.getItemStack());
-//        GregTechAPI.sFrostHazmatList.add(ItemName.hazmat_chestplate.getItemStack());
-//        GregTechAPI.sFrostHazmatList.add(ItemName.hazmat_leggings.getItemStack());
-//        GregTechAPI.sFrostHazmatList.add(ItemName.rubber_boots.getItemStack());
-//
-//        GregTechAPI.sHeatHazmatList.add(ItemName.hazmat_helmet.getItemStack());
-//        GregTechAPI.sHeatHazmatList.add(ItemName.hazmat_chestplate.getItemStack());
-//        GregTechAPI.sHeatHazmatList.add(ItemName.hazmat_leggings.getItemStack());
-//        GregTechAPI.sHeatHazmatList.add(ItemName.rubber_boots.getItemStack());
-//
-//        GregTechAPI.sBioHazmatList.add(ItemName.hazmat_helmet.getItemStack());
-//        GregTechAPI.sBioHazmatList.add(ItemName.hazmat_chestplate.getItemStack());
-//        GregTechAPI.sBioHazmatList.add(ItemName.hazmat_leggings.getItemStack());
-//        GregTechAPI.sBioHazmatList.add(ItemName.rubber_boots.getItemStack());
-//
-//        GregTechAPI.sGasHazmatList.add(ItemName.hazmat_helmet.getItemStack());
-//        GregTechAPI.sGasHazmatList.add(ItemName.hazmat_chestplate.getItemStack());
-//        GregTechAPI.sGasHazmatList.add(ItemName.hazmat_leggings.getItemStack());
-//        GregTechAPI.sGasHazmatList.add(ItemName.rubber_boots.getItemStack());
-//
-//        GregTechAPI.sRadioHazmatList.add(ItemName.hazmat_helmet.getItemStack());
-//        GregTechAPI.sRadioHazmatList.add(ItemName.hazmat_chestplate.getItemStack());
-//        GregTechAPI.sRadioHazmatList.add(ItemName.hazmat_leggings.getItemStack());
-//        GregTechAPI.sRadioHazmatList.add(ItemName.rubber_boots.getItemStack());
-//
-//        GregTechAPI.sElectroHazmatList.add(ItemName.hazmat_helmet.getItemStack());
-//        GregTechAPI.sElectroHazmatList.add(ItemName.hazmat_chestplate.getItemStack());
-//        GregTechAPI.sElectroHazmatList.add(ItemName.hazmat_leggings.getItemStack());
-//        GregTechAPI.sElectroHazmatList.add(ItemName.rubber_boots.getItemStack());
-//        GregTechAPI.sElectroHazmatList.add(new ItemStack(Items.CHAINMAIL_HELMET, 1, 32767));
-//        GregTechAPI.sElectroHazmatList.add(new ItemStack(Items.CHAINMAIL_CHESTPLATE, 1, 32767));
-//        GregTechAPI.sElectroHazmatList.add(new ItemStack(Items.CHAINMAIL_LEGGINGS, 1, 32767));
-//        GregTechAPI.sElectroHazmatList.add(new ItemStack(Items.CHAINMAIL_BOOTS, 1, 32767));
+        GregTechAPI.gasHazmatList.add(new SimpleItemStack(ItemName.hazmat_helmet.getItemStack()));
+        GregTechAPI.gasHazmatList.add(new SimpleItemStack(ItemName.hazmat_chestplate.getItemStack()));
+        GregTechAPI.gasHazmatList.add(new SimpleItemStack(ItemName.hazmat_leggings.getItemStack()));
+        GregTechAPI.gasHazmatList.add(new SimpleItemStack(ItemName.rubber_boots.getItemStack()));
+
+        GregTechAPI.radioHazmatList.add(new SimpleItemStack(ItemName.hazmat_helmet.getItemStack()));
+        GregTechAPI.radioHazmatList.add(new SimpleItemStack(ItemName.hazmat_chestplate.getItemStack()));
+        GregTechAPI.radioHazmatList.add(new SimpleItemStack(ItemName.hazmat_leggings.getItemStack()));
+        GregTechAPI.radioHazmatList.add(new SimpleItemStack(ItemName.rubber_boots.getItemStack()));
+
     }
 
     public void onLoad() {
-        GTLog.logger.info("GT_Mod: Beginning Load-Phase.");
+        GTLog.logger.info("GregTechMod: Beginning Load-Phase.");
 
 
     }
 
     public void onPostLoad() {
-        GTLog.logger.info("GT_Mod: Beginning PostLoad-Phase.");
+        GTLog.logger.info("GregTechMod: Beginning PostLoad-Phase.");
 
 //        GregTechAPI.sPostloadStarted = true;
         OreDictionaryUnifier.registerOre(new ItemStack(Items.IRON_DOOR, 1), new ItemMaterialInfo(new MaterialStack(Materials.Iron, 21772800L)));
@@ -153,7 +89,7 @@ public abstract class GT_Proxy implements IFuelHandler, IGuiHandler {
         OreDictionaryUnifier.registerOre(new ItemStack(Items.SPRUCE_DOOR, 1, 32767), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 21772800L)));
         OreDictionaryUnifier.registerOre(new ItemStack(Items.DARK_OAK_DOOR, 1, 32767), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 21772800L)));
 
-        GTLog.logger.info("GT_Mod: Adding Configs specific for MetaTileEntities");
+        GTLog.logger.info("GregTechMod: Adding Configs specific for MetaTileEntities");
 
 
 //        try {
@@ -169,7 +105,7 @@ public abstract class GT_Proxy implements IFuelHandler, IGuiHandler {
 //        }
 
 /*
-        GTLog.out.println("GT_Mod: Adding Tool Usage Crafting Recipes for OreDict Items.");
+        GTLog.out.println("GregTechMod: Adding Tool Usage Crafting Recipes for OreDict Items.");
         for (Materials aMaterial : Materials.values()) {
             if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial)) {
                 if (!aMaterial.contains(SubTag.NO_SMASHING)) {
@@ -402,7 +338,7 @@ public abstract class GT_Proxy implements IFuelHandler, IGuiHandler {
     }
 
     public void onServerStarting() {
-        GTLog.logger.info("GT_Mod: ServerStarting-Phase started!");
+        GTLog.logger.info("GregTechMod: ServerStarting-Phase started!");
 
 //        try {
 //            for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {

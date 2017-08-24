@@ -639,7 +639,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 		@Override
 		public void buildAndRegister() {
-//			if (GT_Mod.gregtechproxy.mTEMachineRecipes) {
+//			if (GregTechMod.gregtechproxy.mTEMachineRecipes) {
 //				ModHandler.ThermalExpansion.addInductionSmelterRecipe(getInputs().get(0), getInputs().get(1), getOutputs().get(0), null, duration * EUt * 2, 0);
 //			}
 			super.buildAndRegister();

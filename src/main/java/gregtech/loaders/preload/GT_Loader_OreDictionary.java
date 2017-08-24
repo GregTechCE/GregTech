@@ -25,7 +25,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 public class GT_Loader_OreDictionary
         implements Runnable {
     public void run() {
-        GTLog.out.println("GT_Mod: Register OreDict Entries of Non-GT-Items.");
+        GTLog.out.println("GregTechMod: Register OreDict Entries of Non-GT-Items.");
         OreDictionaryUnifier.set(OrePrefix.cell, Materials.Empty, ItemList.Cell_Empty.get(1));
         OreDictionaryUnifier.set(OrePrefix.cell, Materials.Lava, ItemList.Cell_Lava.get(1));
         OreDictionaryUnifier.set(OrePrefix.cell, Materials.Lava, GT_ModHandler.getIC2Item(ItemName.fluid_cell, FluidRegistry.LAVA.getName(), 1));

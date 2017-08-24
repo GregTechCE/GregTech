@@ -14,7 +14,7 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
-import gregtech.common.GT_Proxy;
+import gregtech.common.CommonProxy;
 import net.minecraft.item.ItemStack;
 
 public class ProcessingIngot implements IOreRegistrationHandler {
@@ -60,9 +60,9 @@ public class ProcessingIngot implements IOreRegistrationHandler {
 
                 if (uEntry.material.mUnificatable && (uEntry.material.mMaterialInto == uEntry.material) && !uEntry.material.hasFlag(DustMaterial.MatFlags.NO_WORKING)) {
                     if (!uEntry.material.contains(SubTag.SMELTING_TO_GEM))
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material, 1), GT_Proxy.tBits, "XXX", "XXX", "XXX", Character.valueOf('X'), OreDictionaryUnifier.get(OrePrefix.nugget, uEntry.material));
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material, 1), CommonProxy.tBits, "XXX", "XXX", "XXX", Character.valueOf('X'), OreDictionaryUnifier.get(OrePrefix.nugget, uEntry.material));
                     if ((uEntry.material.contains(SubTag.MORTAR_GRINDABLE)) && (GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.mortar, uEntry.material.toString(), true)))
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material, 1), GT_Proxy.tBits, "X", "m", Character.valueOf('X'), OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material));
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material, 1), CommonProxy.tBits, "X", "m", Character.valueOf('X'), OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material));
                 }
 
                 if (!aNoSmashing) {
@@ -126,7 +126,7 @@ public class ProcessingIngot implements IOreRegistrationHandler {
                             .duration((int) Math.max(materialMass * 2L, 1L)).EUt(96)
                             .buildAndRegister();
                     if (aSpecialRecipeReq && GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.hammermultiingot, uEntry.material.toString(), true)) {
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.ingotDouble, uEntry.material, 1), GT_Proxy.tBits, "I", "I", "h", Character.valueOf('I'), OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material));
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.ingotDouble, uEntry.material, 1), CommonProxy.tBits, "I", "I", "h", Character.valueOf('I'), OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material));
                     }
                 }
                 break;
@@ -145,7 +145,7 @@ public class ProcessingIngot implements IOreRegistrationHandler {
                             .EUt(96)
                             .buildAndRegister();
                     if (aSpecialRecipeReq && GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.hammermultiingot, uEntry.material.toString(), true)) {
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.ingotTriple, uEntry.material, 1), GT_Proxy.tBits, "I", "B", "h", Character.valueOf('I'), OreDictionaryUnifier.get(OrePrefix.ingotDouble, uEntry.material), Character.valueOf('B'), OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material));
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.ingotTriple, uEntry.material, 1), CommonProxy.tBits, "I", "B", "h", Character.valueOf('I'), OreDictionaryUnifier.get(OrePrefix.ingotDouble, uEntry.material), Character.valueOf('B'), OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material));
                     }
                 }
                 break;
@@ -158,7 +158,7 @@ public class ProcessingIngot implements IOreRegistrationHandler {
                             .EUt(96)
                             .buildAndRegister();
                     if (aSpecialRecipeReq && GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.hammermultiingot, uEntry.material.toString(), true)) {
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.ingotQuadruple, uEntry.material, 1), GT_Proxy.tBits, "I", "B", "h", Character.valueOf('I'), OreDictionaryUnifier.get(OrePrefix.ingotTriple, uEntry.material), Character.valueOf('B'), OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material));
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.ingotQuadruple, uEntry.material, 1), CommonProxy.tBits, "I", "B", "h", Character.valueOf('I'), OreDictionaryUnifier.get(OrePrefix.ingotTriple, uEntry.material), Character.valueOf('B'), OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material));
                     }
                 }
                 break;
@@ -171,7 +171,7 @@ public class ProcessingIngot implements IOreRegistrationHandler {
                             .EUt(96)
                             .buildAndRegister();
                     if (aSpecialRecipeReq && GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.hammermultiingot, uEntry.material.toString(), true)) {
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.ingotQuintuple, uEntry.material, 1), GT_Proxy.tBits, "I", "B", "h", Character.valueOf('I'), OreDictionaryUnifier.get(OrePrefix.ingotQuadruple, uEntry.material), Character.valueOf('B'), OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material));
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.ingotQuintuple, uEntry.material, 1), CommonProxy.tBits, "I", "B", "h", Character.valueOf('I'), OreDictionaryUnifier.get(OrePrefix.ingotQuadruple, uEntry.material), Character.valueOf('B'), OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material));
                     }
                 }
                 break;

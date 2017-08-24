@@ -38,26 +38,6 @@ public interface IMetaTileEntityFactory {
     ItemStack getStackForm(int amount);
 
     /**
-     * Called when server starts
-     */
-    void onServerStart();
-
-    /**
-     * Called when world is loaded
-     */
-    void onWorldLoad(File saveDirectory);
-
-    /**
-     * Called when world is saved
-     */
-    void onWorldSave(File saveDirectory);
-
-    /**
-     * Called to set configuration values for this factory
-     */
-    void onConfigLoad(Configuration config);
-
-    /**
      * The onCreated function of the item class redirects here
      */
     void onCreated(ItemStack stack, World world, EntityPlayer player);

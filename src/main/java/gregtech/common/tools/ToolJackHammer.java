@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import gregtech.GT_Mod;
+import gregtech.GregTechMod;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.util.GTUtility;
@@ -21,7 +21,7 @@ public class ToolJackHammer extends ToolDrillLV {
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
-        return GT_Mod.gregtechproxy.mHardRock ? 200 : 400;
+        return GregTechMod.gregtechproxy.mHardRock ? 200 : 400;
     }
 
     @Override
@@ -97,7 +97,7 @@ public class ToolJackHammer extends ToolDrillLV {
     @Override
     public void onToolCrafted(ItemStack stack, EntityPlayer player) {
         super.onToolCrafted(stack, player);
-        GT_Mod.achievements.issueAchievement(player, "hammertime");
+        GregTechMod.achievements.issueAchievement(player, "hammertime");
 
     }
 

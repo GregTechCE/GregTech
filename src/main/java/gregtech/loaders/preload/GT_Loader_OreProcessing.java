@@ -6,7 +6,7 @@ import gregtech.loaders.oreprocessing.*;
 public class GT_Loader_OreProcessing
         implements Runnable {
     public void run() {
-        GTLog.out.println("GT_Mod: Register Ore processing.");
+        GTLog.out.println("GregTechMod: Register Ore processing.");
         new ProcessingAll();
         new ProcessingBlock();
         new ProcessingBolt();

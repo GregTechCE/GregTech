@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.GT_Mod;
+import gregtech.GregTechMod;
 import gregtech.api.ConfigCategories;
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
@@ -72,11 +72,11 @@ public class ProcessingLog implements IOreRegistrationHandler {
                     ItemStack tPlanks = GTUtility.copy(tStack);
                     tPlanks.stackSize = (tPlanks.stackSize * 3 / 2);
                     GTValues.RA.addCutterRecipe(new ItemStack(stack.getItem(), 1, i), Materials.Lubricant.getFluid(1L), GTUtility.copy(tPlanks), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Wood, 1L), 200, 8);
-                    GTValues.RA.addCutterRecipe(new ItemStack(stack.getItem(), 1, i), GTUtility.copyAmount(GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4, tStack), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Wood, 2L), 200, 8);
+                    GTValues.RA.addCutterRecipe(new ItemStack(stack.getItem(), 1, i), GTUtility.copyAmount(GregTechMod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4, tStack), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Wood, 2L), 200, 8);
                     ModHandler.addSawmillRecipe(new ItemStack(stack.getItem(), 1, i), tPlanks, OreDictionaryUnifier.get(OrePrefix.dust, Materials.Wood, 1L));
                     ModHandler.removeRecipe(new ItemStack(stack.getItem(), 1, i));
-                    ModHandler.addCraftingRecipe(GTUtility.copyAmount(GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4, tStack), new Object[]{"s", "L", Character.valueOf('L'), new ItemStack(stack.getItem(), 1, i)});
-                    ModHandler.addShapelessCraftingRecipe(GTUtility.copyAmount(tStack.stackSize / (GT_Mod.gregtechproxy.mNerfedWoodPlank ? 2 : 1), tStack), new Object[]{new ItemStack(stack.getItem(), 1, i)});
+                    ModHandler.addCraftingRecipe(GTUtility.copyAmount(GregTechMod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4, tStack), new Object[]{"s", "L", Character.valueOf('L'), new ItemStack(stack.getItem(), 1, i)});
+                    ModHandler.addShapelessCraftingRecipe(GTUtility.copyAmount(tStack.stackSize / (GregTechMod.gregtechproxy.mNerfedWoodPlank ? 2 : 1), tStack), new Object[]{new ItemStack(stack.getItem(), 1, i)});
                 }
             }
         } else {
@@ -93,11 +93,11 @@ public class ProcessingLog implements IOreRegistrationHandler {
                 ItemStack tPlanks = GTUtility.copy(tStack);
                 tPlanks.stackSize = (tPlanks.stackSize * 3 / 2);
                 GTValues.RA.addCutterRecipe(GTUtility.copyAmount(1L, stack), Materials.Lubricant.getFluid(1L), GTUtility.copy(tPlanks), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Wood, 1L), 200, 8);
-                GTValues.RA.addCutterRecipe(GTUtility.copyAmount(1L, stack), GTUtility.copyAmount(GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4, tStack), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Wood, 2L), 200, 8);
+                GTValues.RA.addCutterRecipe(GTUtility.copyAmount(1L, stack), GTUtility.copyAmount(GregTechMod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4, tStack), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Wood, 2L), 200, 8);
                 ModHandler.addSawmillRecipe(GTUtility.copyAmount(1, stack), tPlanks, OreDictionaryUnifier.get(OrePrefix.dust, Materials.Wood, 1L));
                 ModHandler.removeRecipe(GTUtility.copyAmount(1, stack));
-                ModHandler.addCraftingRecipe(GTUtility.copyAmount(GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4, tStack), "s", "L", 'L', GTUtility.copyAmount(1, stack));
-                ModHandler.addShapelessCraftingRecipe(GTUtility.copyAmount(tStack.stackSize / (GT_Mod.gregtechproxy.mNerfedWoodPlank ? 2 : 1), tStack), GTUtility.copyAmount(1, stack));
+                ModHandler.addCraftingRecipe(GTUtility.copyAmount(GregTechMod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4, tStack), "s", "L", 'L', GTUtility.copyAmount(1, stack));
+                ModHandler.addShapelessCraftingRecipe(GTUtility.copyAmount(tStack.stackSize / (GregTechMod.gregtechproxy.mNerfedWoodPlank ? 2 : 1), tStack), GTUtility.copyAmount(1, stack));
             }
         }
 

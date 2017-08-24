@@ -192,7 +192,7 @@ public class ModHandler {
             recipeBuilder.buildAndRegister();
         }
 
-//        if (GT_Mod.gregtechproxy.mTEMachineRecipes) {
+//        if (GregTechMod.gregtechproxy.mTEMachineRecipes) {
 //            ThermalExpansion.addInductionSmelterRecipe(input, null, output, null, output.stackSize * 1600, 0);
 //        }
     }
@@ -780,7 +780,7 @@ public class ModHandler {
             Validate.notNull(fullContainer, "Full Container cannot be null");
             Validate.notNull(fluid, "Fluid Container cannot be null");
 
-//            if (!GT_Mod.gregtechproxy.mTEMachineRecipes &&
+//            if (!GregTechMod.gregtechproxy.mTEMachineRecipes &&
 //                    !GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.liquidtransposer, fullContainer, true))
 //                return;
 
@@ -798,7 +798,7 @@ public class ModHandler {
             Validate.notNull(fullContainer, "Full Container cannot be null");
             Validate.notNull(fluid, "Fluid Container cannot be null");
 
-//            if (!GT_Mod.gregtechproxy.mTEMachineRecipes &&
+//            if (!GregTechMod.gregtechproxy.mTEMachineRecipes &&
 //                    !GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.liquidtransposerfilling, fullContainer, true))
 //                return;
 
@@ -816,7 +816,7 @@ public class ModHandler {
             Validate.notNull(fullContainer, "Full Container cannot be null");
             Validate.notNull(fluid, "Fluid Container cannot be null");
 
-//            if (!GT_Mod.gregtechproxy.mTEMachineRecipes &&
+//            if (!GregTechMod.gregtechproxy.mTEMachineRecipes &&
 //                    !GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.liquidtransposeremptying, fullContainer, true))
 //                return;
 
@@ -833,7 +833,7 @@ public class ModHandler {
             Validate.notNull(input1, "Input cannot be null");
             Validate.notNull(output1, "Output cannot be null");
 
-//            if (!GT_Mod.gregtechproxy.mTEMachineRecipes &&
+//            if (!GregTechMod.gregtechproxy.mTEMachineRecipes &&
 //                    !GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.sawmill, input1, true))
 //                return;
 
@@ -852,7 +852,7 @@ public class ModHandler {
             Validate.notNull(output1, "Output cannot be null");
 //            Validate.isTrue(GTUtility.getContainerItem(input1, false) != null, "Input item cannot have container item");
 
-//            if (!GT_Mod.gregtechproxy.mTEMachineRecipes &&
+//            if (!GregTechMod.gregtechproxy.mTEMachineRecipes &&
 //                    !GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.inductionsmelter, input2 == null ? input1 : output1, true))
 //                return;
 

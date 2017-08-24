@@ -20,7 +20,7 @@ import net.minecraftforge.oredict.OreDictionary;
 public class GT_Loader_ItemData
         implements Runnable {
     public void run() {
-        GTLog.out.println("GT_Mod: Loading Item Data Tags");
+        GTLog.out.println("GregTechMod: Loading Item Data Tags");
         OreDictionaryUnifier.addItemData(GT_ModHandler.getModItem("TwilightForest", "item.giantPick", 1, 0), new ItemMaterialInfo(Materials.Stone, 696729600L, new MaterialStack(Materials.Wood, 464486400L)));
         OreDictionaryUnifier.addItemData(GT_ModHandler.getModItem("TwilightForest", "item.giantSword", 1, 0), new ItemMaterialInfo(Materials.Stone, 464486400L, new MaterialStack(Materials.Wood, 232243200L)));
         OreDictionaryUnifier.addItemData(GT_ModHandler.getModItem("TwilightForest", "tile.GiantLog", 1, 32767), new ItemMaterialInfo(Materials.Wood, 232243200L));

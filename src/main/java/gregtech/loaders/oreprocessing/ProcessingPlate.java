@@ -13,7 +13,7 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
-import gregtech.common.GT_Proxy;
+import gregtech.common.CommonProxy;
 import ic2.api.recipe.Recipes;
 import ic2.core.block.BlockTexGlass;
 import ic2.core.ref.BlockName;
@@ -108,15 +108,15 @@ public class ProcessingPlate implements IOreRegistrationHandler {
 
                 if ((uEntry.material.mUnificatable) && (uEntry.material.mMaterialInto == uEntry.material)) {
                     if (!aNoSmashing && GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.hammerplating, uEntry.material.toString(), true)) {
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 1), GT_Proxy.tBits, new Object[]{"h", "X", "X", 'X', OrePrefix.ingot.get(uEntry.material)});
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 1), GT_Proxy.tBits, new Object[]{"H", "X", 'H', ToolDictNames.craftingToolForgeHammer, 'X', OrePrefix.ingot.get(uEntry.material)});
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 1), GT_Proxy.tBits, new Object[]{"h", "X", 'X', OrePrefix.gem.get(uEntry.material)});
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 1), GT_Proxy.tBits, new Object[]{"H", "X", 'H', ToolDictNames.craftingToolForgeHammer, 'X', OrePrefix.gem.get(uEntry.material)});
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 1), GT_Proxy.tBits, new Object[]{"h", "X", 'X', OrePrefix.ingotDouble.get(uEntry.material)});
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 2), GT_Proxy.tBits, new Object[]{"H", "X", 'H', ToolDictNames.craftingToolForgeHammer, 'X', OrePrefix.ingotDouble.get(uEntry.material)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 1), CommonProxy.tBits, new Object[]{"h", "X", "X", 'X', OrePrefix.ingot.get(uEntry.material)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 1), CommonProxy.tBits, new Object[]{"H", "X", 'H', ToolDictNames.craftingToolForgeHammer, 'X', OrePrefix.ingot.get(uEntry.material)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 1), CommonProxy.tBits, new Object[]{"h", "X", 'X', OrePrefix.gem.get(uEntry.material)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 1), CommonProxy.tBits, new Object[]{"H", "X", 'H', ToolDictNames.craftingToolForgeHammer, 'X', OrePrefix.gem.get(uEntry.material)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 1), CommonProxy.tBits, new Object[]{"h", "X", 'X', OrePrefix.ingotDouble.get(uEntry.material)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 2), CommonProxy.tBits, new Object[]{"H", "X", 'H', ToolDictNames.craftingToolForgeHammer, 'X', OrePrefix.ingotDouble.get(uEntry.material)});
                     }
                     if ((uEntry.material.contains(SubTag.MORTAR_GRINDABLE)) && (GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.mortar, uEntry.material.toString(), true)))
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material, 1), GT_Proxy.tBits, new Object[]{"X", "m", 'X', OrePrefix.plate.get(uEntry.material)});
+                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material, 1), CommonProxy.tBits, new Object[]{"X", "m", 'X', OrePrefix.plate.get(uEntry.material)});
                 }
                 break;
             case plateDouble:

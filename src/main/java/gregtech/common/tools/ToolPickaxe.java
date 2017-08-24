@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import gregtech.GT_Mod;
+import gregtech.GregTechMod;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -16,7 +16,7 @@ public class ToolPickaxe extends ToolBase {
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
-        return GT_Mod.gregtechproxy.mHardRock ? 25 : 50;
+        return GregTechMod.gregtechproxy.mHardRock ? 25 : 50;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class ToolPickaxe extends ToolBase {
         super.onToolCrafted(stack, player);
         player.addStat(AchievementList.BUILD_PICKAXE);
         player.addStat(AchievementList.BUILD_BETTER_PICKAXE);
-        GT_Mod.achievements.issueAchievement(player, "flintpick");
+        GregTechMod.achievements.issueAchievement(player, "flintpick");
     }
 
     @Override

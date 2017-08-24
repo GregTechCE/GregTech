@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.GT_Mod;
+import gregtech.GregTechMod;
 import gregtech.api.ConfigCategories;
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
@@ -176,11 +176,11 @@ public class ProcessingDust implements IOreRegistrationHandler {
                         ModHandler.addSmeltingRecipe(GTUtility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Iron, 1));
                         break;
                     case "Coal":
-                        if (GT_Mod.gregtechproxy.mTEMachineRecipes)
+                        if (GregTechMod.gregtechproxy.mTEMachineRecipes)
                             ModHandler.addLiquidTransposerFillRecipe(GTUtility.copyAmount(1, stack), Materials.Water.getFluid(125), OreDictionaryUnifier.get(OrePrefix.dust, Materials.HydratedCoal, 1), 125);
                         break;
                     case "HydratedCoal":
-                        if (GT_Mod.gregtechproxy.mTEMachineRecipes)
+                        if (GregTechMod.gregtechproxy.mTEMachineRecipes)
                             ModHandler.addLiquidTransposerEmptyRecipe(GTUtility.copyAmount(1, stack), Materials.Water.getFluid(125), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Coal, 1), 125);
                         ModHandler.addSmeltingRecipe(GTUtility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Coal, 1));
                         break;

@@ -1,6 +1,6 @@
 package gregtech.loaders.postload;
 
-import gregtech.GT_Mod;
+import gregtech.GregTechMod;
 import gregtech.api.ConfigCategories;
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
@@ -42,7 +42,7 @@ public class GT_MachineRecipeLoader implements Runnable {
     private final static String aTextEBXL = "ExtrabiomesXL"; private final static String aTextTCGTPage = "gt.research.page.1.";
 
     public void run() {
-        GTLog.out.println("GT_Mod: Adding non-OreDict Machine Recipes.");
+        GTLog.out.println("GregTechMod: Adding non-OreDict Machine Recipes.");
         try {
             GTUtility.removeSimpleIC2MachineRecipe(GTValues.NI, ic2.api.recipe.Recipes.metalformerExtruding.getRecipes(), ItemList.Cell_Empty.get(3L));
             GTUtility.removeSimpleIC2MachineRecipe(ItemList.IC2_Energium_Dust.get(1), ic2.api.recipe.Recipes.compressor.getRecipes(), GTValues.NI);
@@ -1126,7 +1126,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GTValues.RA.addFormingPressRecipe(OreDictionaryUnifier.get(OrePrefix.plate, Materials.Iron, 1), ItemList.Shape_Mold_Credit.get(0L), ItemList.Credit_Iron.get(4L), 100, 16);
         GTValues.RA.addFormingPressRecipe(OreDictionaryUnifier.get(OrePrefix.plate, Materials.WroughtIron, 1), ItemList.Shape_Mold_Credit.get(0L), ItemList.Credit_Iron.get(4L), 100, 16);
 
-        if (!GT_Mod.gregtechproxy.mDisableIC2Cables) {
+        if (!GregTechMod.gregtechproxy.mDisableIC2Cables) {
             GTValues.RA.addWiremillRecipe(OreDictionaryUnifier.get(OrePrefix.plate, Materials.Copper, 1), GT_ModHandler.getIC2Item(ItemName.cable, CableType.copper, 3), 100, 2);
             GTValues.RA.addWiremillRecipe(OreDictionaryUnifier.get(OrePrefix.plate, Materials.AnnealedCopper, 1), GT_ModHandler.getIC2Item(ItemName.cable, CableType.copper, 3), 100, 2);
             GTValues.RA.addWiremillRecipe(OreDictionaryUnifier.get(OrePrefix.plate, Materials.Tin, 1), GT_ModHandler.getIC2Item(ItemName.cable, CableType.tin, 4), 150, 1);
@@ -1268,7 +1268,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GTValues.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.stick, Materials.Wood, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphor, 1), new ItemStack(Blocks.TORCH, 6), 400, 1);
         GTValues.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.stick, Materials.Wood, 1), ItemList.IC2_Resin.get(1), new ItemStack(Blocks.TORCH, 6), 400, 1);
         GTValues.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Coal, 8L), new ItemStack(Items.FLINT, 1), ItemList.IC2_Compressed_Coal_Ball.get(1), 400, 4);
-        if (!GT_Mod.gregtechproxy.mDisableIC2Cables) {
+        if (!GregTechMod.gregtechproxy.mDisableIC2Cables) {
             GTValues.RA.addAssemblerRecipe(ItemCable.getCable(CableType.tin, 0), OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Rubber, 1), ItemCable.getCable(CableType.tin, 1), 100, 2);
             GTValues.RA.addAssemblerRecipe(ItemCable.getCable(CableType.copper, 0), OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Rubber, 1), ItemCable.getCable(CableType.copper, 1), 100, 2);
             GTValues.RA.addAssemblerRecipe(ItemCable.getCable(CableType.gold, 0), OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Rubber, 2L), ItemCable.getCable(CableType.gold, 1), 200, 2);
@@ -1395,7 +1395,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GTUtility.removeSimpleIC2MachineRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Redstone, 1), Recipes.macerator.getRecipes(), ItemList.IC2_Plantball.get(1));
         GTUtility.removeSimpleIC2MachineRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Glowstone, 1), Recipes.macerator.getRecipes(), ItemList.IC2_Plantball.get(1));
 
-        if(GregTechAPI.mMagneticraft && GT_Mod.gregtechproxy.mMagneticraftRecipes){
+        if(GregTechAPI.mMagneticraft && GregTechMod.gregtechproxy.mMagneticraftRecipes){
             GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getModItem("Magneticraft", "item.ingotCarbide", 8));
             GTValues.RA.addAlloySmelterRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Coal, 8), OreDictionaryUnifier.get(OrePrefix.ingot, Materials.WroughtIron, 1), GT_ModHandler.getModItem("Magneticraft", "item.ingotCarbide", 1), 600, 24);
             GTValues.RA.addBlastRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Coal, 8), OreDictionaryUnifier.get(OrePrefix.ingot, Materials.TungstenCarbide, 1), null, null, GT_ModHandler.getModItem("Magneticraft", "item.ingotCarbide", 8), null, 100, 120, 2600);
@@ -1555,7 +1555,7 @@ public class GT_MachineRecipeLoader implements Runnable {
 
     public void addProcess(ItemStack tCrop, Materials aMaterial, int chance, boolean aMainOutput) {
         if(tCrop==null||aMaterial==null|| OreDictionaryUnifier.get(OrePrefix.crushed, aMaterial,1)==null)return;
-        if (GT_Mod.gregtechproxy.mNerfedCrops) {
+        if (GregTechMod.gregtechproxy.mNerfedCrops) {
             GTValues.RA.addChemicalRecipe(GTUtility.copyAmount(9, tCrop), OreDictionaryUnifier.get(OrePrefix.crushed, aMaterial, 1), Materials.Water.getFluid(1000), aMaterial.mOreByProducts.isEmpty() ? null : aMaterial.mOreByProducts.get(0).getMolten(144), OreDictionaryUnifier.get(OrePrefix.crushedPurified, aMaterial, 4), 96, 24);
             GTValues.RA.addAutoclaveRecipe(GTUtility.copyAmount(16, tCrop), Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass()+9)/10))), OreDictionaryUnifier.get(OrePrefix.crushedPurified, aMaterial, 1), 10000, (int) (aMaterial.getMass() * 128), 384);
         } else {
@@ -1565,7 +1565,7 @@ public class GT_MachineRecipeLoader implements Runnable {
 
     public void addProcess(ItemStack tCrop, Materials aMaterial, int chance){
         if(tCrop==null||aMaterial==null|| OreDictionaryUnifier.get(OrePrefix.crushed, aMaterial,1)==null)return;
-        if (GT_Mod.gregtechproxy.mNerfedCrops) {
+        if (GregTechMod.gregtechproxy.mNerfedCrops) {
             GTValues.RA.addChemicalRecipe(GTUtility.copyAmount(9, tCrop), OreDictionaryUnifier.get(OrePrefix.crushed, aMaterial, 1), Materials.Water.getFluid(1000), aMaterial.mOreByProducts.isEmpty() ? null : aMaterial.mOreByProducts.get(0).getMolten(144), OreDictionaryUnifier.get(OrePrefix.crushedPurified, aMaterial, 4), 96, 24);
             GTValues.RA.addAutoclaveRecipe(GTUtility.copyAmount(16, tCrop), Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass()+9)/10))), OreDictionaryUnifier.get(OrePrefix.crushedPurified, aMaterial, 1), 10000, (int) (aMaterial.getMass() * 128), 384);
         } else {
@@ -1575,7 +1575,7 @@ public class GT_MachineRecipeLoader implements Runnable {
 
     public void addProcess(ItemStack tCrop, Materials aMaterial, Materials aMaterialOut, int chance, boolean aMainOutput){
         if(tCrop==null||aMaterial==null|| OreDictionaryUnifier.get(OrePrefix.crushed, aMaterial,1)==null)return;
-        if (GT_Mod.gregtechproxy.mNerfedCrops) {
+        if (GregTechMod.gregtechproxy.mNerfedCrops) {
             GTValues.RA.addChemicalRecipe(GTUtility.copyAmount(9, tCrop), OreDictionaryUnifier.get(OrePrefix.crushed, aMaterial, 1), Materials.Water.getFluid(1000), aMaterialOut.mOreByProducts.isEmpty() ? null : aMaterialOut.mOreByProducts.get(0).getMolten(144), OreDictionaryUnifier.get(OrePrefix.crushedPurified, aMaterialOut, 4), 96, 24);
             GTValues.RA.addAutoclaveRecipe(GTUtility.copyAmount(16, tCrop), Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass()+9)/10))), OreDictionaryUnifier.get(OrePrefix.crushedPurified, aMaterial, 1), 10000, (int) (aMaterial.getMass() * 128), 384);
         } else {
@@ -1585,7 +1585,7 @@ public class GT_MachineRecipeLoader implements Runnable {
 
     public void addProcess(ItemStack tCrop, Materials aMaterial, Materials aMaterialOut, int chance){
         if(tCrop==null||aMaterial==null|| OreDictionaryUnifier.get(OrePrefix.crushed, aMaterial,1)==null)return;
-        if (GT_Mod.gregtechproxy.mNerfedCrops) {
+        if (GregTechMod.gregtechproxy.mNerfedCrops) {
             GTValues.RA.addChemicalRecipe(GTUtility.copyAmount(9, tCrop), OreDictionaryUnifier.get(OrePrefix.crushed, aMaterial, 1), Materials.Water.getFluid(1000), aMaterialOut.mOreByProducts.isEmpty() ? null : aMaterialOut.mOreByProducts.get(0).getMolten(144), OreDictionaryUnifier.get(OrePrefix.crushedPurified, aMaterialOut, 4), 96, 24);
             GTValues.RA.addAutoclaveRecipe(GTUtility.copyAmount(16, tCrop), Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass()+9)/10))), OreDictionaryUnifier.get(OrePrefix.crushedPurified, aMaterial, 1), 10000, (int) (aMaterial.getMass() * 128), 384);
         } else {

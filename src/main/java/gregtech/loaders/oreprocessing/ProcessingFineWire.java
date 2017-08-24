@@ -9,7 +9,7 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
-import gregtech.common.GT_Proxy;
+import gregtech.common.CommonProxy;
 import net.minecraft.item.ItemStack;
 
 public class ProcessingFineWire implements IOreRegistrationHandler {
@@ -34,7 +34,7 @@ public class ProcessingFineWire implements IOreRegistrationHandler {
                     .buildAndRegister();
         }
         if ((uEntry.material.mUnificatable) && (uEntry.material.mMaterialInto == uEntry.material) && !uEntry.material.hasFlag(DustMaterial.MatFlags.NO_WORKING)) {
-            ModHandler.addCraftingRecipe(GTUtility.copyAmount(1, stack), GT_Proxy.tBits, "Xx", Character.valueOf('X'), OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material));
+            ModHandler.addCraftingRecipe(GTUtility.copyAmount(1, stack), CommonProxy.tBits, "Xx", Character.valueOf('X'), OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material));
         }
     }
 }

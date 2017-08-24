@@ -1,7 +1,7 @@
 // Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
 // Jad home page: http://www.kpdus.com/jad.html
 // Decompiler options: packimports(3) 
-// Source File Name:   GT_Client.java
+// Source File Name:   ClientProxy.java
 
 package gregtech.common;
 
@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class GT_Client extends GT_Proxy {
+public class ClientProxy extends CommonProxy {
 
     private static void drawGrid(DrawBlockHighlightEvent aEvent) {
         GL11.glPushMatrix();

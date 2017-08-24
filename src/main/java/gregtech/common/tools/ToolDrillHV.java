@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import gregtech.GT_Mod;
+import gregtech.GregTechMod;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -9,7 +9,7 @@ public class ToolDrillHV extends ToolDrillLV {
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
-        return GT_Mod.gregtechproxy.mHardRock ? 400 : 800;
+        return GregTechMod.gregtechproxy.mHardRock ? 400 : 800;
     }
 
     @Override
@@ -50,8 +50,8 @@ public class ToolDrillHV extends ToolDrillLV {
     @Override
     public void onToolCrafted(ItemStack stack, EntityPlayer player) {
         super.onToolCrafted(stack, player);
-        GT_Mod.achievements.issueAchievement(player, "highpowerdrill");
-        GT_Mod.achievements.issueAchievement(player, "buildDDrill");
+        GregTechMod.achievements.issueAchievement(player, "highpowerdrill");
+        GregTechMod.achievements.issueAchievement(player, "buildDDrill");
     }
 
     @Override

@@ -1,7 +1,6 @@
 package gregtech.api.metatileentity;
 
 import com.google.common.base.Preconditions;
-import gregtech.GT_Mod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.internal.ICustomDataTile;
 import gregtech.api.capability.internal.IGregTechTileEntity;
@@ -381,7 +380,7 @@ public class GregtechTileEntity extends TickableTileEntityBase implements IGregT
 //            }
             // Normal Explosion Code
 //            metaTileEntity.onExplosion();
-//            if (GT_Mod.gregtechproxy.mExplosionItemDrop) {
+//            if (GregTechMod.gregtechproxy.mExplosionItemDrop) {
 //                for (int i = 0; i < this.getSizeInventory(); i++) {
 //                    ItemStack stack = this.getStackInSlot(i);
 //                    if (GTUtility.isStackValid(stack)) {

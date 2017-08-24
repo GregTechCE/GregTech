@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.GT_Mod;
+import gregtech.GregTechMod;
 import gregtech.api.ConfigCategories;
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
@@ -91,7 +91,7 @@ public class ProcessingOre implements IOreRegistrationHandler {
             if ((material.mBlastFurnaceRequired) || (material.mDirectSmelting.mBlastFurnaceRequired)) {
                 ModHandler.removeFurnaceSmelting(aOreStack);
             } else {
-                if (GT_Mod.gregtechproxy.mTEMachineRecipes) {
+                if (GregTechMod.gregtechproxy.mTEMachineRecipes) {
                     ModHandler.addInductionSmelterRecipe(aOreStack, new ItemStack(net.minecraft.init.Blocks.SAND, 1), GTUtility.mul(multiplier * (material.contains(SubTag.INDUCTIONSMELTING_LOW_OUTPUT) ? 1 : 2) * material.mSmeltingMultiplier, tSmeltInto), ItemList.TE_Slag_Rich.get(1L), 300 * multiplier, 10 * multiplier);
                     ModHandler.addInductionSmelterRecipe(aOreStack, ItemList.TE_Slag_Rich.get(multiplier), GTUtility.mul(multiplier * (material.contains(SubTag.INDUCTIONSMELTING_LOW_OUTPUT) ? 2 : 3) * material.mSmeltingMultiplier, tSmeltInto), ItemList.TE_Slag.get(multiplier), 300 * multiplier, 95);
                 }

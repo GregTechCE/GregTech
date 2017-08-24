@@ -1,6 +1,6 @@
 package gregtech.loaders.postload;
 
-import gregtech.GT_Mod;
+import gregtech.GregTechMod;
 import net.minecraft.init.Blocks;
 
 public class GT_BlockResistanceLoader
@@ -13,7 +13,7 @@ public class GT_BlockResistanceLoader
         Blocks.HARDENED_CLAY.setResistance(15.0F);
         Blocks.STAINED_HARDENED_CLAY.setResistance(15.0F);
 
-        if (GT_Mod.gregtechproxy.mHardRock) {
+        if (GregTechMod.gregtechproxy.mHardRock) {
             Blocks.STONE.setHardness(16.0F);
             Blocks.BRICK_BLOCK.setHardness(32.0F);
             Blocks.HARDENED_CLAY.setHardness(32.0F);

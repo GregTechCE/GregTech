@@ -1,6 +1,6 @@
 package gregtech.loaders.preload;
 
-import gregtech.GT_Mod;
+import gregtech.GregTechMod;
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.items.OreDictNames;
@@ -1248,7 +1248,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
                                 new GT_MetaPipeEntity_Frame(4096 + i, "GT_Frame_" + GregTechAPI.sGeneratedMaterials[i], GregTechAPI.sGeneratedMaterials[i].mDefaultLocalName + " Frame Box", GregTechAPI.sGeneratedMaterials[i]);
                         }
                 }
-                boolean bEC = !GT_Mod.gregtechproxy.mHardcoreCables;
+                boolean bEC = !GregTechMod.gregtechproxy.mHardcoreCables;
 
                 makeWires(Materials.RedAlloy, 2000, 0L, 1L, 1L, GTValues.V[0], true, aBoolConst_0);
 
@@ -1293,7 +1293,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
                 makeWires(Materials.Duranium, 1820, bEC ? 8L : 64L, bEC ? 16L : 128L, 1L, GTValues.V[8], true, aBoolConst_0);
 
                 makeWires(Materials.Superconductor, 2020, 1L, 1L, 4L, GTValues.V[9], aBoolConst_0, true);
-                if (!GT_Mod.gregtechproxy.mDisableIC2Cables) {
+                if (!GregTechMod.gregtechproxy.mDisableIC2Cables) {
                         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item(ItemName.cable, CableType.copper, 2), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"xP", 'P', OrePrefix.plate.get(Materials.AnyCopper)});
                         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item(ItemName.cable, CableType.gold, 4), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"xP", 'P', OrePrefix.plate.get(Materials.Gold)});
                         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item(ItemName.cable, CableType.iron, 3), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"xP", 'P', OrePrefix.plate.get(Materials.AnyIron)});
@@ -1506,7 +1506,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         }
 
         public void run() {
-                GTLog.out.println("GT_Mod: Registering MetaTileEntities.");
+                GTLog.out.println("GregTechMod: Registering MetaTileEntities.");
                 run1();
                 run2();
                 run3();
