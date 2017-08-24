@@ -2,8 +2,8 @@ package gregtech.common.items.behaviors;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.items.metaitem.stats.IItemBehaviour;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -24,12 +24,12 @@ public class Behaviour_Scanner extends Behaviour_None {
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
         if (((aPlayer instanceof EntityPlayerMP)) && (aItem.canUse(aStack, 20000.0D))) {
             ArrayList<String> tList = new ArrayList<>();
-            if (aItem.use(aStack, GT_Utility.getCoordinateScan(tList, aPlayer, aWorld, 1, pos, side, hitX, hitY, hitZ), aPlayer)) {
+            if (aItem.use(aStack, GTUtility.getCoordinateScan(tList, aPlayer, aWorld, 1, pos, side, hitX, hitY, hitZ), aPlayer)) {
                 for (String aTList : tList) {
-                    GT_Utility.sendChatToPlayer(aPlayer, aTList);
+                    GTUtility.sendChatToPlayer(aPlayer, aTList);
                 }
             }
-            GT_Utility.doSoundAtClient(GregTechAPI.sSoundList.get(108), 1, 1.0F, pos);
+            GTUtility.doSoundAtClient(GregTechAPI.sSoundList.get(108), 1, 1.0F, pos);
             return true;
         }
         return false;

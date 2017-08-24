@@ -1,9 +1,8 @@
 package gregtech.api.enchants;
 
-import gregtech.api.ConfigCategories;
 import gregtech.api.GTValues;
 //import gregtech.api.util.GT_Config;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import net.minecraft.enchantment.EnchantmentDamage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -54,7 +53,7 @@ public class EnchantmentRadioactivity extends EnchantmentDamage {
 
     @Override
     public void onEntityDamaged(EntityLivingBase hurtEntity, Entity damagingEntity, int level) {
-        GT_Utility.applyRadioactivity(hurtEntity, level, 1);
+        GTUtility.applyRadioactivity(hurtEntity, level, 1);
     }
 
 }

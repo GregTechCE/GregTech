@@ -9,7 +9,7 @@ import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.SolidMaterial;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import ic2.api.item.IElectricItemManager;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -102,12 +102,12 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
                 doDamageToItem(stack, toolStats.getToolDamagePerBlockBreak(stack));
                 ResourceLocation mineSound = toolStats.getMiningSound(stack);
                 if(mineSound != null) {
-                    GT_Utility.playSound(world, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, mineSound, SoundCategory.PLAYERS, 0.27f, 1.0f);
+                    GTUtility.playSound(world, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, mineSound, SoundCategory.PLAYERS, 0.27f, 1.0f);
                 }
                 if(!isUsable(stack, toolStats.getToolDamagePerBlockBreak(stack))) {
                     ResourceLocation breakSound = toolStats.getBreakingSound(stack);
                     if(breakSound != null) {
-                        GT_Utility.playSound(world, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, breakSound, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                        GTUtility.playSound(world, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, breakSound, SoundCategory.PLAYERS, 1.0f, 1.0f);
                     }
                 }
             }
@@ -174,12 +174,12 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             doDamageToItem(stack, toolStats.getToolDamagePerEntityAttack(stack));
             ResourceLocation hitSound = toolStats.getEntityHitSound(stack);
             if(hitSound != null) {
-                GT_Utility.playSound(target.worldObj, target.posX, target.posY, target.posZ, hitSound, SoundCategory.PLAYERS, 0.27f, 1.0f);
+                GTUtility.playSound(target.worldObj, target.posX, target.posY, target.posZ, hitSound, SoundCategory.PLAYERS, 0.27f, 1.0f);
             }
             if(!isUsable(stack, toolStats.getToolDamagePerEntityAttack(stack))) {
                 ResourceLocation breakSound = toolStats.getBreakingSound(stack);
                 if(breakSound != null) {
-                    GT_Utility.playSound(target.worldObj, target.posX, target.posY, target.posZ, breakSound, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                    GTUtility.playSound(target.worldObj, target.posX, target.posY, target.posZ, breakSound, SoundCategory.PLAYERS, 1.0f, 1.0f);
                 }
             }
             float additionalDamage = toolStats.getNormalDamageBonus(target, stack, attacker);

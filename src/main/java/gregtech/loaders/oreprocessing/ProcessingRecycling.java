@@ -6,7 +6,7 @@ import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 
 public class ProcessingRecycling implements IOreRegistrationHandler {
@@ -18,7 +18,7 @@ public class ProcessingRecycling implements IOreRegistrationHandler {
     
     public void registerOre(UnificationEntry uEntry, String modName, SimpleItemStack simpleStack) {
         ItemStack stack = simpleStack.asItemStack();
-        if ((uEntry.material != null) && (GT_Utility.getFluidForFilledItem(stack, true) == null))
-            GTValues.RA.addCannerRecipe(stack, null, GT_Utility.getContainerItem(stack, true), OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material, uEntry.orePrefix.mMaterialAmount / 3628800L), (int) Math.max(uEntry.material.getMass() / 2L, 1L), 2);
+        if ((uEntry.material != null) && (GTUtility.getFluidForFilledItem(stack, true) == null))
+            GTValues.RA.addCannerRecipe(stack, null, GTUtility.getContainerItem(stack, true), OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material, uEntry.orePrefix.mMaterialAmount / 3628800L), (int) Math.max(uEntry.material.getMass() / 2L, 1L), 2);
     }
 }

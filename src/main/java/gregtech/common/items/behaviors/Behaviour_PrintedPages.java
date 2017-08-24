@@ -1,6 +1,6 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -26,10 +26,10 @@ public class Behaviour_PrintedPages extends Behaviour_None {
 
     @Override
     public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
-        if (GT_Utility.isStringValid(getTitle(aStack))) {
+        if (GTUtility.isStringValid(getTitle(aStack))) {
             aList.add(getTitle(aStack));
         }
-        if (GT_Utility.isStringValid(getAuthor(aStack))) {
+        if (GTUtility.isStringValid(getAuthor(aStack))) {
             aList.add("by " + getAuthor(aStack));
         }
         return aList;

@@ -1,32 +1,23 @@
 package gregtech.common;
 
-import gregtech.api.GregTechAPI;
-import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.items.metaitem.MetaItem;
-import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.GTLog;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.IFuelHandler;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
 
-import java.io.File;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
@@ -564,17 +555,17 @@ public abstract class GT_Proxy implements IFuelHandler, IGuiHandler {
 //            fuelValue = Math.max(fuelValue, 12000);
 //        } else if (OreDictionaryUnifier.isItemStackInstanceOf(fuel, "blockCharcoal")) {
 //            fuelValue = Math.max(fuelValue, 16000);
-//        } else if (GT_Utility.areStacksEqual(fuel, new ItemStack(Blocks.WOODEN_BUTTON, 1))) {
+//        } else if (GTUtility.areStacksEqual(fuel, new ItemStack(Blocks.WOODEN_BUTTON, 1))) {
 //            fuelValue = Math.max(fuelValue, 150);
-//        } else if (GT_Utility.areStacksEqual(fuel, new ItemStack(Blocks.LADDER, 1))) {
+//        } else if (GTUtility.areStacksEqual(fuel, new ItemStack(Blocks.LADDER, 1))) {
 //            fuelValue = Math.max(fuelValue, 100);
-//        } else if (GT_Utility.areStacksEqual(fuel, new ItemStack(Items.SIGN, 1))) {
+//        } else if (GTUtility.areStacksEqual(fuel, new ItemStack(Items.SIGN, 1))) {
 //            fuelValue = Math.max(fuelValue, 600);
-//        } else if (GT_Utility.areStacksEqual(fuel, new ItemStack(Items.OAK_DOOR, 1))) {
+//        } else if (GTUtility.areStacksEqual(fuel, new ItemStack(Items.OAK_DOOR, 1))) {
 //            fuelValue = Math.max(fuelValue, 600);
-//        } else if (GT_Utility.areStacksEqual(fuel, ItemList.Block_MSSFUEL.get(1))) {
+//        } else if (GTUtility.areStacksEqual(fuel, ItemList.Block_MSSFUEL.get(1))) {
 //            fuelValue = Math.max(fuelValue, 150000);
-//        } else if (GT_Utility.areStacksEqual(fuel, ItemList.Block_SSFUEL.get(1))) {
+//        } else if (GTUtility.areStacksEqual(fuel, ItemList.Block_SSFUEL.get(1))) {
 //            fuelValue = Math.max(fuelValue, 100000);
 //        }
         return fuelValue;
@@ -655,7 +646,7 @@ public abstract class GT_Proxy implements IFuelHandler, IGuiHandler {
 //    public void registerFluidContainer(ItemStack aFullContainer, ItemStack aEmptyContainer, Fluid rFluid, int aFluidAmount) {
 //        if ((aFullContainer != null) && (aEmptyContainer != null)
 //                && (!FluidContainerRegistry.registerFluidContainer(new FluidStack(rFluid, aFluidAmount), aFullContainer, aEmptyContainer))) {
-//            GTValues.RA.addFluidCannerRecipe(aFullContainer, GT_Utility.getContainerItem(aFullContainer, false), null, new FluidStack(rFluid, aFluidAmount));
+//            GTValues.RA.addFluidCannerRecipe(aFullContainer, GTUtility.getContainerItem(aFullContainer, false), null, new FluidStack(rFluid, aFluidAmount));
 //        }
 //    }
 

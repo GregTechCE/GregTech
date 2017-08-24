@@ -8,7 +8,7 @@ import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 
 public class ProcessingOreSmelting implements IOreRegistrationHandler {
@@ -27,9 +27,9 @@ public class ProcessingOreSmelting implements IOreRegistrationHandler {
         ModHandler.removeFurnaceSmelting(stack);
         if (!uEntry.material.hasFlag(DustMaterial.MatFlags.NO_SMELTING)) {
             if ((uEntry.material.mBlastFurnaceRequired) || (uEntry.material.mDirectSmelting.mBlastFurnaceRequired)) {
-                GTValues.RA.addBlastRecipe(GT_Utility.copyAmount(1, stack), null, null, null, uEntry.material.mBlastFurnaceTemp > 1750 ? OreDictionaryUnifier.get(OrePrefix.ingotHot, uEntry.material, OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material, 1), 1) : OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material, 1), null, (int) Math.max(uEntry.material.getMass() / 4L, 1L) * uEntry.material.mBlastFurnaceTemp, 120, uEntry.material.mBlastFurnaceTemp);
+                GTValues.RA.addBlastRecipe(GTUtility.copyAmount(1, stack), null, null, null, uEntry.material.mBlastFurnaceTemp > 1750 ? OreDictionaryUnifier.get(OrePrefix.ingotHot, uEntry.material, OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material, 1), 1) : OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material, 1), null, (int) Math.max(uEntry.material.getMass() / 4L, 1L) * uEntry.material.mBlastFurnaceTemp, 120, uEntry.material.mBlastFurnaceTemp);
                 if (uEntry.material.mBlastFurnaceTemp <= 1000)
-                    ModHandler.addRCBlastFurnaceRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material, 1), uEntry.material.mBlastFurnaceTemp * 2);
+                    ModHandler.addRCBlastFurnaceRecipe(GTUtility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material, 1), uEntry.material.mBlastFurnaceTemp * 2);
             } else {
                 switch (uEntry.orePrefix) {
                     case crushed:

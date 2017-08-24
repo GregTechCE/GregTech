@@ -1,7 +1,7 @@
 package gregtech.common.tools;
 
 import gregtech.api.recipes.ModHandler;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import ic2.core.ref.BlockName;
 import net.minecraft.block.BlockNewLeaf;
 import net.minecraft.block.BlockOldLeaf;
@@ -62,7 +62,7 @@ public class ToolBranchCutter extends ToolBase {
                 drops.clear();
                 drops.add(new ItemStack(Blocks.SAPLING, 1, blockState
                         .getValue(BlockNewLeaf.VARIANT).getMetadata()));
-            } else if (blockState == GT_Utility.getBlockFromStack(ModHandler.getIC2Item(BlockName.leaves, 1))) {
+            } else if (blockState == GTUtility.getBlockFromStack(ModHandler.getIC2Item(BlockName.leaves, 1))) {
                 drops.clear();
                 drops.add(ModHandler.getIC2Item(BlockName.sapling, 1));
             }

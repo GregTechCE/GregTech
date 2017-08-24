@@ -1,11 +1,11 @@
 package gregtech.common.items.behaviors;
 
+import gregtech.api.util.GTUtility;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiScreenBook;
@@ -21,7 +21,7 @@ public class Behaviour_WrittenBook
     @SideOnly(Side.CLIENT)
     @Override
     public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, BlockPos blockPos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
-        if ((GT_Utility.isStringValid(GT_Utility.ItemNBT.getBookTitle(aStack))) && ((aPlayer instanceof EntityPlayerSP))) {
+        if ((GTUtility.isStringValid(GTUtility.ItemNBT.getBookTitle(aStack))) && ((aPlayer instanceof EntityPlayerSP))) {
             Minecraft.getMinecraft().displayGuiScreen(new GuiScreenBook(aPlayer, aStack, false));
         }
         return true;
@@ -29,10 +29,10 @@ public class Behaviour_WrittenBook
 
     @Override
     public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
-        String tTitle = GT_Utility.ItemNBT.getBookTitle(aStack);
-        if (GT_Utility.isStringValid(tTitle)) {
+        String tTitle = GTUtility.ItemNBT.getBookTitle(aStack);
+        if (GTUtility.isStringValid(tTitle)) {
             aList.add(tTitle);
-            aList.add("by " + GT_Utility.ItemNBT.getBookAuthor(aStack));
+            aList.add("by " + GTUtility.ItemNBT.getBookAuthor(aStack));
         }
         return aList;
     }

@@ -13,7 +13,7 @@ import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gregtech.common.GT_Proxy;
 import net.minecraft.item.ItemStack;
 
@@ -37,7 +37,7 @@ public class ProcessingIngot implements IOreRegistrationHandler {
         switch (uEntry.orePrefix) {
             case ingot:
                 if (uEntry.material.mFuelPower > 0) {
-                    GTValues.RA.addFuel(GT_Utility.copyAmount(1, stack), null, uEntry.material.mFuelPower, uEntry.material.mFuelType);
+                    GTValues.RA.addFuel(GTUtility.copyAmount(1, stack), null, uEntry.material.mFuelPower, uEntry.material.mFuelType);
                 }
                 if (uEntry.material instanceof FluidMaterial) {
                     RecipeMap.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
@@ -51,7 +51,7 @@ public class ProcessingIngot implements IOreRegistrationHandler {
                 RecipeRegistrator.registerReverseFluidSmelting(stack, uEntry.material, uEntry.orePrefix.mMaterialAmount, null);
                 RecipeRegistrator.registerReverseMacerating(stack, uEntry.material, uEntry.orePrefix.mMaterialAmount, null, null, null, false);
                 if (uEntry.material.mSmeltInto.mArcSmeltInto != uEntry.material) {
-                    RecipeRegistrator.registerReverseArcSmelting(GT_Utility.copyAmount(1, stack), uEntry.material, uEntry.orePrefix.mMaterialAmount, null, null, null);
+                    RecipeRegistrator.registerReverseArcSmelting(GTUtility.copyAmount(1, stack), uEntry.material, uEntry.orePrefix.mMaterialAmount, null, null, null);
                 }
                 ItemStack tempDustStack;
                 if ((null != (tempDustStack = OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material.mMacerateInto, 1L))) && ((uEntry.material.mBlastFurnaceRequired) || aNoSmelting)) {
@@ -67,61 +67,61 @@ public class ProcessingIngot implements IOreRegistrationHandler {
 
                 if (!aNoSmashing) {
                     RecipeMap.HAMMER_RECIPES.recipeBuilder()
-                            .inputs(GT_Utility.copyAmount(2, stack))
+                            .inputs(GTUtility.copyAmount(2, stack))
                             .outputs(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material))
                             .duration((int) Math.max(materialMass, 1L))
                             .EUt(16)
                             .buildAndRegister();
                     RecipeMap.BENDER_RECIPES.recipeBuilder()
-                            .inputs(GT_Utility.copyAmount(1, stack))
+                            .inputs(GTUtility.copyAmount(1, stack))
                             .outputs(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material))
                             .duration((int) Math.max(materialMass, 1L))
                             .EUt(24)
                             .buildAndRegister();
                     RecipeMap.BENDER_RECIPES.recipeBuilder()
-                            .inputs(GT_Utility.copyAmount(2, stack))
+                            .inputs(GTUtility.copyAmount(2, stack))
                             .outputs(OreDictionaryUnifier.get(OrePrefix.plateDouble, uEntry.material))
                             .duration((int) Math.max(materialMass * 2L, 1L))
                             .EUt(96)
                             .buildAndRegister();
                     RecipeMap.BENDER_RECIPES.recipeBuilder()
-                            .inputs(GT_Utility.copyAmount(3, stack))
+                            .inputs(GTUtility.copyAmount(3, stack))
                             .outputs(OreDictionaryUnifier.get(OrePrefix.plateTriple, uEntry.material))
                             .duration((int) Math.max(materialMass * 3L, 1L))
                             .EUt(96)
                             .buildAndRegister();
                     RecipeMap.BENDER_RECIPES.recipeBuilder()
-                            .inputs(GT_Utility.copyAmount(4, stack))
+                            .inputs(GTUtility.copyAmount(4, stack))
                             .outputs(OreDictionaryUnifier.get(OrePrefix.plateQuadruple, uEntry.material))
                             .duration((int) Math.max(materialMass * 4L, 1L))
                             .EUt(96)
                             .buildAndRegister();
                     RecipeMap.BENDER_RECIPES.recipeBuilder()
-                            .inputs(GT_Utility.copyAmount(5, stack))
+                            .inputs(GTUtility.copyAmount(5, stack))
                             .outputs(OreDictionaryUnifier.get(OrePrefix.plateQuintuple, uEntry.material))
                             .duration((int) Math.max(materialMass * 5L, 1L))
                             .EUt(96)
                             .buildAndRegister();
                     RecipeMap.BENDER_RECIPES.recipeBuilder()
-                            .inputs(GT_Utility.copyAmount(9, stack))
+                            .inputs(GTUtility.copyAmount(9, stack))
                             .outputs(OreDictionaryUnifier.get(OrePrefix.plateDense, uEntry.material))
                             .duration((int) Math.max(materialMass * 9L, 1L))
                             .EUt(96)
                             .buildAndRegister();
                 }
 
-                RecipeRegistrator.registerUsagesForMaterials(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material).toString(), !aNoSmashing);
+                RecipeRegistrator.registerUsagesForMaterials(GTUtility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material).toString(), !aNoSmashing);
                 break;
             case ingotDouble:
                 if (!aNoSmashing) {
                     RecipeMap.BENDER_RECIPES.recipeBuilder()
-                            .inputs(GT_Utility.copyAmount(1, stack))
+                            .inputs(GTUtility.copyAmount(1, stack))
                             .outputs(OreDictionaryUnifier.get(OrePrefix.plateDouble, uEntry.material))
                             .duration((int) Math.max(materialMass * 2L, 1L))
                             .EUt(96)
                             .buildAndRegister();
                     RecipeMap.BENDER_RECIPES.recipeBuilder()
-                            .inputs(GT_Utility.copyAmount(2, stack))
+                            .inputs(GTUtility.copyAmount(2, stack))
                             .outputs(OreDictionaryUnifier.get(OrePrefix.plateQuadruple, uEntry.material))
                             .duration((int) Math.max(materialMass * 2L, 1L)).EUt(96)
                             .buildAndRegister();
@@ -133,13 +133,13 @@ public class ProcessingIngot implements IOreRegistrationHandler {
             case ingotTriple:
                 if (!aNoSmashing) {
                     RecipeMap.BENDER_RECIPES.recipeBuilder()
-                            .inputs(GT_Utility.copyAmount(1, stack))
+                            .inputs(GTUtility.copyAmount(1, stack))
                             .outputs(OreDictionaryUnifier.get(OrePrefix.plateTriple, uEntry.material, 1))
                             .duration((int) Math.max(materialMass, 1L))
                             .EUt(96)
                             .buildAndRegister();
                     RecipeMap.BENDER_RECIPES.recipeBuilder()
-                            .inputs(GT_Utility.copyAmount(3, stack))
+                            .inputs(GTUtility.copyAmount(3, stack))
                             .outputs(OreDictionaryUnifier.get(OrePrefix.plateDense, uEntry.material, 1))
                             .duration((int) Math.max(materialMass * 3L, 1L))
                             .EUt(96)
@@ -152,7 +152,7 @@ public class ProcessingIngot implements IOreRegistrationHandler {
             case ingotQuadruple:
                 if (!aNoSmashing) {
                     RecipeMap.BENDER_RECIPES.recipeBuilder()
-                            .inputs(GT_Utility.copyAmount(1, stack))
+                            .inputs(GTUtility.copyAmount(1, stack))
                             .outputs(OreDictionaryUnifier.get(OrePrefix.plateQuadruple, uEntry.material, 1))
                             .duration((int) Math.max(materialMass, 1L))
                             .EUt(96)
@@ -165,7 +165,7 @@ public class ProcessingIngot implements IOreRegistrationHandler {
             case ingotQuintuple:
                 if (!aNoSmashing) {
                     RecipeMap.BENDER_RECIPES.recipeBuilder()
-                            .inputs(GT_Utility.copyAmount(1, stack))
+                            .inputs(GTUtility.copyAmount(1, stack))
                             .outputs(OreDictionaryUnifier.get(OrePrefix.plateQuintuple, uEntry.material, 1))
                             .duration((int) Math.max(materialMass, 1L))
                             .EUt(96)
@@ -177,7 +177,7 @@ public class ProcessingIngot implements IOreRegistrationHandler {
                 break;
             case ingotHot:
                 RecipeMap.VACUUM_RECIPES.recipeBuilder()
-                        .inputs(GT_Utility.copyAmount(1, stack))
+                        .inputs(GTUtility.copyAmount(1, stack))
                         .outputs(OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material, 1))
                         .duration((int) Math.max(materialMass * 3L, 1L))
                         .buildAndRegister();

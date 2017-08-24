@@ -9,6 +9,7 @@ import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
+import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -19,7 +20,7 @@ public class ProcessingCrop implements IOreRegistrationHandler {
 
     public void registerOre(UnificationEntry uEntry, String modName, SimpleItemStack simpleStack) {
         ItemStack stack = simpleStack.asItemStack();
-        ModHandler.addCompressionRecipe(gregtech.api.util.GT_Utility.copyAmount(8, stack), ItemList.IC2_PlantballCompressed.get(1));
+        ModHandler.addCompressionRecipe(GTUtility.copyAmount(8, stack), ItemList.IC2_PlantballCompressed.get(1));
         if (aOreDictName.equals("cropTea")) {
             GTValues.RA.addBrewingRecipe(stack, FluidRegistry.WATER, FluidRegistry.getFluid("potion.tea"), false);
             GTValues.RA.addBrewingRecipe(stack, ModHandler.getDistilledWater(1).getFluid(), FluidRegistry.getFluid("potion.tea"), false);

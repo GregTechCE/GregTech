@@ -5,7 +5,6 @@ import gregtech.api.items.materialitem.MaterialMetaItem;
 import gregtech.api.items.metaitem.ElectricStats;
 import gregtech.api.items.metaitem.FluidStats;
 import gregtech.api.items.metaitem.FoodStats;
-import gregtech.api.items.metaitem.stats.IItemBehaviour;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictionaryUnifier;
@@ -15,7 +14,7 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.UnificationEntry;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.RandomPotionEffect;
 //import gregtech.common.items.behaviors.*;
 import ic2.core.item.type.CraftingItemType;
@@ -70,7 +69,7 @@ public class MetaItem1 extends MaterialMetaItem {
 
 		ItemStack stack = new ItemStack(this, 1, woodItemMeta);
 		stack.setStackDisplayName("The holy Planks of Sengir");
-		GT_Utility.ItemNBT.addEnchantment(stack, Enchantments.SMITE, 10);
+		GTUtility.ItemNBT.addEnchantment(stack, Enchantments.SMITE, 10);
 		ModHandler.addShapedRecipe(stack,
 				"XXX", "XDX", "XXX",
 				'X', OreDictionaryUnifier.getGem(Materials.NetherStar, 1),

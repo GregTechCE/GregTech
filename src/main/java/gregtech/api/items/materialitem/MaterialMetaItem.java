@@ -9,7 +9,7 @@ import gregtech.api.unification.material.type.MarkerMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.OreDictionaryUnifier;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -92,9 +92,9 @@ public class MaterialMetaItem extends StandardMetaItem {
             EntityLivingBase entity = (EntityLivingBase) entityIn;
             Material material = Material.MATERIAL_REGISTRY.getObjectById(itemStack.getItemDamage() % 1000);
             OrePrefix prefix = orePrefixes[itemStack.getItemDamage() / 1000];
-            if(prefix.heatDamage > 0.0 && GT_Utility.isWearingFullHeatHazmat(entity) && worldIn.getTotalWorldTime() % 20 == 0) {
+            if(prefix.heatDamage > 0.0 && GTUtility.isWearingFullHeatHazmat(entity) && worldIn.getTotalWorldTime() % 20 == 0) {
                 entity.attackEntityFrom(DamageSources.getHeatDamage(), prefix.heatDamage);
-            } else if(prefix.heatDamage < 0.0 && GT_Utility.isWearingFullFrostHazmat(entity) && worldIn.getTotalWorldTime() % 20 == 0) {
+            } else if(prefix.heatDamage < 0.0 && GTUtility.isWearingFullFrostHazmat(entity) && worldIn.getTotalWorldTime() % 20 == 0) {
                 entity.attackEntityFrom(DamageSources.getFrostDamage(), -prefix.heatDamage);
             }
             if(prefix.name().contains("Quintuple") || prefix.name().contains("Quadruple")) {

@@ -1,6 +1,6 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
@@ -9,20 +9,20 @@ public class Behaviour_DataStick extends Behaviour_None {
 
     @Override
     public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
-        String tString = GT_Utility.ItemNBT.getBookTitle(aStack);
-        if (GT_Utility.isStringValid(tString)) {
+        String tString = GTUtility.ItemNBT.getBookTitle(aStack);
+        if (GTUtility.isStringValid(tString)) {
             aList.add(tString);
         }
-        tString = GT_Utility.ItemNBT.getBookAuthor(aStack);
-        if (GT_Utility.isStringValid(tString)) {
+        tString = GTUtility.ItemNBT.getBookAuthor(aStack);
+        if (GTUtility.isStringValid(tString)) {
             aList.add("by " + tString);
         }
-        short tMapID = GT_Utility.ItemNBT.getMapID(aStack);
+        short tMapID = GTUtility.ItemNBT.getMapID(aStack);
         if (tMapID >= 0) {
             aList.add("Map ID: " + tMapID);
         }
-        tString = GT_Utility.ItemNBT.getPunchCardData(aStack);
-        if (GT_Utility.isStringValid(tString)) {
+        tString = GTUtility.ItemNBT.getPunchCardData(aStack);
+        if (GTUtility.isStringValid(tString)) {
             aList.add("Punch Card Data");
             int i = 0;int j = tString.length();
             for (; i < j; i += 64) {

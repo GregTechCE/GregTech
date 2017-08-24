@@ -6,7 +6,7 @@ import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gregtech.common.items.behaviors.Behaviour_Prospecting;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -94,14 +94,14 @@ public class ToolHardHammer extends ToolBase {
         Recipe tRecipe = RecipeMap.HAMMER_RECIPES.findRecipe(null, true, 2147483647L, null, new ItemStack[]{getBlockStack(blockState)});
         if ((tRecipe == null) || blockState.getBlock().hasTileEntity(blockState)) {
             for (ItemStack tDrop : drops) {
-                tRecipe = RecipeMap.HAMMER_RECIPES.findRecipe(null, true, 2147483647L, null, new ItemStack[]{GT_Utility.copyAmount(1, tDrop)});
+                tRecipe = RecipeMap.HAMMER_RECIPES.findRecipe(null, true, 2147483647L, null, new ItemStack[]{GTUtility.copyAmount(1, tDrop)});
                 if (tRecipe != null) {
                     ItemStack tHammeringOutput = tRecipe.getOutputs().get(0);
                     if (tHammeringOutput != null) {
                         rConversions += tDrop.stackSize;
                         tDrop.stackSize *= tHammeringOutput.stackSize;
                         tHammeringOutput.stackSize = tDrop.stackSize;
-                        GT_Utility.setStack(tDrop, tHammeringOutput);
+                        GTUtility.setStack(tDrop, tHammeringOutput);
                     }
                 }
             }

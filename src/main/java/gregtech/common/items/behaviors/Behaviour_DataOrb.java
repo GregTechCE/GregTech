@@ -1,6 +1,6 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -14,7 +14,7 @@ public class Behaviour_DataOrb
             if (aNewContent[i] == null) {
                 aInventory[i] = null;
             } else {
-                aInventory[i] = GT_Utility.copy(aNewContent[i]);
+                aInventory[i] = GTUtility.copy(aNewContent[i]);
             }
         }
     }
@@ -66,7 +66,7 @@ public class Behaviour_DataOrb
             NBTTagCompound tag = tNBT_ItemList.getCompoundTagAt(i);
             byte slot = tag.getByte("Slot");
             if ((slot >= 0) && (slot < tInventory.length)) {
-                tInventory[slot] = GT_Utility.loadItem(tag);
+                tInventory[slot] = GTUtility.loadItem(tag);
             }
         }
         return tInventory;

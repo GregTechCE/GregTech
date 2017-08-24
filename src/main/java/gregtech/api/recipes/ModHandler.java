@@ -1,6 +1,5 @@
 package gregtech.api.recipes;
 
-import gregtech.GT_Mod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.items.IDamagableItem;
 import gregtech.api.items.ToolDictNames;
@@ -10,7 +9,7 @@ import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.UnificationEntry;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaItems;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
@@ -148,7 +147,7 @@ public class ModHandler {
 
         Validate.notNull(input, "Input cannot be null");
         Validate.notNull(output, "Output cannot be null");
-//        Validate.isTrue(GT_Utility.getContainerItem(input, false) != null, "Input item cannot have container item");
+//        Validate.isTrue(GTUtility.getContainerItem(input, false) != null, "Input item cannot have container item");
 
 //        if (!GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.smelting, input, true)) return;
 
@@ -207,9 +206,9 @@ public class ModHandler {
         Validate.notNull(input, "Input cannot be null");
         Validate.notNull(output, "Output cannot be null");
 
-        GT_Utility.removeSimpleIC2MachineRecipe(input, Recipes.extractor.getRecipes(), null);
+        GTUtility.removeSimpleIC2MachineRecipe(input, Recipes.extractor.getRecipes(), null);
 //        if (!GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.extractor, input, true)) return;
-        GT_Utility.addSimpleIC2MachineRecipe(input, Recipes.extractor, null, output);
+        GTUtility.addSimpleIC2MachineRecipe(input, Recipes.extractor, null, output);
     }
 
     ///////////////////////////////////////////////////
@@ -615,7 +614,7 @@ public class ModHandler {
      * Uses an Item. Tries to discharge in case of Electric Items
      */
     public static boolean damageOrDechargeItem(ItemStack stack, int damage, int decharge, EntityLivingBase player) {
-        if (!GT_Utility.isStackValid(stack) || (stack.getMaxStackSize() <= 1 && stack.stackSize > 1)) return false;
+        if (!GTUtility.isStackValid(stack) || (stack.getMaxStackSize() <= 1 && stack.stackSize > 1)) return false;
 
         if (player != null && player instanceof EntityPlayer && ((EntityPlayer) player).capabilities.isCreativeMode) {
             return true;
@@ -641,7 +640,7 @@ public class ModHandler {
 
             if (stack.getItemDamage() >= stack.getMaxDamage()) {
                 stack.setItemDamage(stack.getMaxDamage() + 1);
-//                ItemStack containerItem = GT_Utility.getContainerItem(stack, true);
+//                ItemStack containerItem = GTUtility.getContainerItem(stack, true);
 //                if (containerItem != null) {
 //                    stack = containerItem.copy();
 //                }
@@ -657,7 +656,7 @@ public class ModHandler {
     public static boolean useSolderingIron(ItemStack stack, EntityLivingBase playerIn) {
         if (playerIn == null || stack == null) return false;
 
-        if (GT_Utility.isStackInList(stack, GregTechAPI.solderingToolList)) {
+        if (GTUtility.isStackInList(stack, GregTechAPI.solderingToolList)) {
             if (playerIn instanceof EntityPlayer) {
                 EntityPlayer player = (EntityPlayer) playerIn;
                 if (player.capabilities.isCreativeMode) return true;
@@ -665,7 +664,7 @@ public class ModHandler {
                 if (isElectricItem(stack) && ElectricItem.manager.getCharge(stack) > 1000.0D) {
 
                     for (int i = 0; i < player.inventory.mainInventory.length; i++) {
-                        if (GT_Utility.isStackInList(player.inventory.mainInventory[i], GregTechAPI.solderingMetalList)) {
+                        if (GTUtility.isStackInList(player.inventory.mainInventory[i], GregTechAPI.solderingMetalList)) {
                             if (player.inventory.mainInventory[i].stackSize < 1) return false;
 
                             if (player.inventory.mainInventory[i].stackSize == 1) {
@@ -791,13 +790,13 @@ public class ModHandler {
             Validate.isTrue(output.length > 0, "Output cannot be empty");
             Validate.notNull(output[0], "Output cannot be null");
 
-            GT_Utility.removeSimpleIC2MachineRecipe(input, Recipes.centrifuge.getRecipes(), null);
+            GTUtility.removeSimpleIC2MachineRecipe(input, Recipes.centrifuge.getRecipes(), null);
 //            if (!GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.thermalcentrifuge, input, true))
 //                return;
 
             NBTTagCompound tag = new NBTTagCompound();
             tag.setInteger("minHeat", heat);
-            GT_Utility.addSimpleIC2MachineRecipe(input, Recipes.centrifuge, tag, output);
+            GTUtility.addSimpleIC2MachineRecipe(input, Recipes.centrifuge, tag, output);
         }
 
         /**
@@ -809,13 +808,13 @@ public class ModHandler {
             Validate.isTrue(output.length > 0, "Output cannot be empty");
             Validate.notNull(output[0], "Output cannot be null");
 
-            GT_Utility.removeSimpleIC2MachineRecipe(input, Recipes.oreWashing.getRecipes(), null);
+            GTUtility.removeSimpleIC2MachineRecipe(input, Recipes.oreWashing.getRecipes(), null);
 //            if (!GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.orewashing, input, true))
 //                return;
 
             NBTTagCompound tag = new NBTTagCompound();
             tag.setInteger("amount", waterAmount);
-            GT_Utility.addSimpleIC2MachineRecipe(input, Recipes.oreWashing, tag, output);
+            GTUtility.addSimpleIC2MachineRecipe(input, Recipes.oreWashing, tag, output);
         }
 
         /**
@@ -826,11 +825,11 @@ public class ModHandler {
             Validate.notNull(input, "Input cannot be null");
             Validate.notNull(output, "Output cannot be null");
 
-            GT_Utility.removeSimpleIC2MachineRecipe(input, Recipes.compressor.getRecipes(), null);
+            GTUtility.removeSimpleIC2MachineRecipe(input, Recipes.compressor.getRecipes(), null);
 //            if (!GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.compression, input, true))
 //                return;
 
-            GT_Utility.addSimpleIC2MachineRecipe(input, Recipes.compressor, null, output);
+            GTUtility.addSimpleIC2MachineRecipe(input, Recipes.compressor, null, output);
         }
 
         /**
@@ -846,7 +845,7 @@ public class ModHandler {
             try {
                 NBTTagCompound tag = new NBTTagCompound();
                 tag.setInteger("amplification", value);
-                GT_Utility.callMethod(Recipes.matterAmplifier, "addRecipe", false, false, false, amplifier, tag);
+                GTUtility.callMethod(Recipes.matterAmplifier, "addRecipe", false, false, false, amplifier, tag);
             } catch (Throwable e) {/*Do nothing*/}
         }
 
@@ -873,8 +872,8 @@ public class ModHandler {
 
                         for (byte i = 0; i < outputSlots.length && i < stackList.length; i++) {
                             if (stackList[i] != null) {
-                                if (outputSlots[i] == null || (GT_Utility.areStacksEqual(stackList[i], outputSlots[i]) && stackList[i].stackSize + outputSlots[i].stackSize <= outputSlots[i].getMaxStackSize())) {
-                                    slotList[i] = GT_Utility.copy(stackList[i]);
+                                if (outputSlots[i] == null || (GTUtility.areStacksEqual(stackList[i], outputSlots[i]) && stackList[i].stackSize + outputSlots[i].stackSize <= outputSlots[i].getMaxStackSize())) {
+                                    slotList[i] = GTUtility.copy(stackList[i]);
                                 } else {
                                     return new ItemStack[outputSlots.length];
                                 }
@@ -976,14 +975,14 @@ public class ModHandler {
             output2 = OreDictionaryUnifier.getUnificated(output2);
             Validate.notNull(input1, "Input cannot be null");
             Validate.notNull(output1, "Output cannot be null");
-//            Validate.isTrue(GT_Utility.getContainerItem(input1, false) != null, "Input item cannot have container item");
+//            Validate.isTrue(GTUtility.getContainerItem(input1, false) != null, "Input item cannot have container item");
 
 //            if (!GT_Mod.gregtechproxy.mTEMachineRecipes &&
 //                    !GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.inductionsmelter, input2 == null ? input1 : output1, true))
 //                return;
 
             try {
-                ThermalExpansion.addSmelterRecipe(energy * 10, GT_Utility.copy(input1), input2 == null ? new ItemStack(Blocks.SAND, 1, 0) : input2, output1, output2, chance);
+                ThermalExpansion.addSmelterRecipe(energy * 10, GTUtility.copy(input1), input2 == null ? new ItemStack(Blocks.SAND, 1, 0) : input2, output1, output2, chance);
             } catch (Throwable e) {/*Do nothing*/}
         }
 

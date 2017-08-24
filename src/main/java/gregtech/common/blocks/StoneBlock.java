@@ -1,7 +1,7 @@
 package gregtech.common.blocks;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -63,7 +63,7 @@ public class StoneBlock<T extends Enum<T> & IStringSerializable> extends Block {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        Class<T> enumClass = GT_Utility.getActualTypeParameter(getClass(), StoneBlock.class, 0);
+        Class<T> enumClass = GTUtility.getActualTypeParameter(getClass(), StoneBlock.class, 0);
         this.VARIANT = PropertyEnum.create("variant", enumClass);
         this.VALUES = enumClass.getEnumConstants();
         return new BlockStateContainer(this, VARIANT);

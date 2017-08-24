@@ -44,10 +44,10 @@ public class GT_MachineRecipeLoader implements Runnable {
     public void run() {
         GTLog.out.println("GT_Mod: Adding non-OreDict Machine Recipes.");
         try {
-            GT_Utility.removeSimpleIC2MachineRecipe(GTValues.NI, ic2.api.recipe.Recipes.metalformerExtruding.getRecipes(), ItemList.Cell_Empty.get(3L));
-            GT_Utility.removeSimpleIC2MachineRecipe(ItemList.IC2_Energium_Dust.get(1), ic2.api.recipe.Recipes.compressor.getRecipes(), GTValues.NI);
-            GT_Utility.removeSimpleIC2MachineRecipe(new ItemStack(Items.GUNPOWDER), ic2.api.recipe.Recipes.extractor.getRecipes(), GTValues.NI);
-            GT_Utility.removeSimpleIC2MachineRecipe(new ItemStack(Blocks.WOOL, 1, 32767), ic2.api.recipe.Recipes.extractor.getRecipes(), GTValues.NI);
+            GTUtility.removeSimpleIC2MachineRecipe(GTValues.NI, ic2.api.recipe.Recipes.metalformerExtruding.getRecipes(), ItemList.Cell_Empty.get(3L));
+            GTUtility.removeSimpleIC2MachineRecipe(ItemList.IC2_Energium_Dust.get(1), ic2.api.recipe.Recipes.compressor.getRecipes(), GTValues.NI);
+            GTUtility.removeSimpleIC2MachineRecipe(new ItemStack(Items.GUNPOWDER), ic2.api.recipe.Recipes.extractor.getRecipes(), GTValues.NI);
+            GTUtility.removeSimpleIC2MachineRecipe(new ItemStack(Blocks.WOOL, 1, 32767), ic2.api.recipe.Recipes.extractor.getRecipes(), GTValues.NI);
         } catch (Throwable e) {
         }
 
@@ -66,7 +66,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GTValues.RA.addPrinterRecipe(ItemList.Paper_Punch_Card_Empty.get(1), FluidRegistry.getFluidStack("squidink", 36), ItemList.Tool_DataStick.getWithName(0L, "With Punch Card Data"), ItemList.Paper_Punch_Card_Encoded.get(1), 100, 2);
         GTValues.RA.addPrinterRecipe(OreDictionaryUnifier.get(OrePrefix.plate, Materials.Paper, 3L), FluidRegistry.getFluidStack("squidink", 144), ItemList.Tool_DataStick.getWithName(0L, "With Scanned Book Data"), ItemList.Paper_Printed_Pages.get(1), 400, 2);
         GTValues.RA.addPrinterRecipe(new ItemStack(Items.MAP, 1, 32767), FluidRegistry.getFluidStack("squidink", 144), ItemList.Tool_DataStick.getWithName(0L, "With Scanned Map Data"), new ItemStack(Items.FILLED_MAP, 1, 0), 400, 2);
-        GTValues.RA.addPrinterRecipe(new ItemStack(Items.BOOK, 1, 32767), FluidRegistry.getFluidStack("squidink", 144), GTValues.NI, GT_Utility.getWrittenBook("Manual_Printer", ItemList.Book_Written_01.get(1)), 400, 2);
+        GTValues.RA.addPrinterRecipe(new ItemStack(Items.BOOK, 1, 32767), FluidRegistry.getFluidStack("squidink", 144), GTValues.NI, GTUtility.getWrittenBook("Manual_Printer", ItemList.Book_Written_01.get(1)), 400, 2);
         for (OrePrefix tPrefix : Arrays.asList(new OrePrefix[]{OrePrefix.dust, OrePrefix.dustSmall, OrePrefix.dustTiny})) {
             GTValues.RA.addMixerRecipe(OreDictionaryUnifier.get(tPrefix, Materials.EnderPearl, 1), OreDictionaryUnifier.get(tPrefix, Materials.Blaze, 1), GTValues.NI, GTValues.NI, GTValues.NF, GTValues.NF, OreDictionaryUnifier.getDust(Materials.EnderEye, 1 * tPrefix.mMaterialAmount), (int) (100L * tPrefix.mMaterialAmount / 3628800L), 8);
             GTValues.RA.addMixerRecipe(OreDictionaryUnifier.get(tPrefix, Materials.Gold, 1), OreDictionaryUnifier.get(tPrefix, Materials.Silver, 1), GTValues.NI, GTValues.NI, GTValues.NF, GTValues.NF, OreDictionaryUnifier.getDust(Materials.Electrum, 2L * tPrefix.mMaterialAmount), (int) (200L * tPrefix.mMaterialAmount / 3628800L), 8);
@@ -954,7 +954,7 @@ public class GT_MachineRecipeLoader implements Runnable {
             GTValues.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("GalacticraftMars", "tile.asteroidsBlock", 1L, 0), null, null, Materials.Nitrogen.getGas(33), new ItemStack(Blocks.SAND,1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Aluminium, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Nickel, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Iron, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Gallium, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Platinum, 1), new int[]{5000,400,400,100,100,100}, 400, 8);
         }
 
-        GTValues.RA.addFluidExtractionRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Quartzite, 1), null, Materials.Glass.getMolten(72), 10000, 600, 28);//(OreDictionaryUnifier.get(OrePrefix.cell, Materials.SiliconDioxide,1), OreDictionaryUnifier.get(OrePrefix.dust,Materials.SiliconDioxide,2L),OreDictionaryUnifier.get(OrePrefix.cell, Materials.Glass,1)/** GT_Utility.fillFluidContainer(Materials.Glass.getMolten(1000), ItemList.Cell_Empty.get(1, new Object[0]), true, true)**/, 600, 16);
+        GTValues.RA.addFluidExtractionRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Quartzite, 1), null, Materials.Glass.getMolten(72), 10000, 600, 28);//(OreDictionaryUnifier.get(OrePrefix.cell, Materials.SiliconDioxide,1), OreDictionaryUnifier.get(OrePrefix.dust,Materials.SiliconDioxide,2L),OreDictionaryUnifier.get(OrePrefix.cell, Materials.Glass,1)/** GTUtility.fillFluidContainer(Materials.Glass.getMolten(1000), ItemList.Cell_Empty.get(1, new Object[0]), true, true)**/, 600, 16);
 
         GTValues.RA.addDistillationTowerRecipe(Materials.Creosote.getFluid(24L), new FluidStack[]{Materials.Lubricant.getFluid(12L)}, null, 16, 96);
         GTValues.RA.addDistillationTowerRecipe(Materials.SeedOil.getFluid(32L), new FluidStack[]{Materials.Lubricant.getFluid(12L)}, null, 16, 96);
@@ -1390,10 +1390,10 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         run2();
 
-        GT_Utility.removeSimpleIC2MachineRecipe(new ItemStack(Blocks.COBBLESTONE), Recipes.macerator.getRecipes(), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Stone, 1));
-        GT_Utility.removeSimpleIC2MachineRecipe(OreDictionaryUnifier.get(OrePrefix.gem, Materials.Lapis, 1), Recipes.macerator.getRecipes(), ItemList.IC2_Plantball.get(1));
-        GT_Utility.removeSimpleIC2MachineRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Redstone, 1), Recipes.macerator.getRecipes(), ItemList.IC2_Plantball.get(1));
-        GT_Utility.removeSimpleIC2MachineRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Glowstone, 1), Recipes.macerator.getRecipes(), ItemList.IC2_Plantball.get(1));
+        GTUtility.removeSimpleIC2MachineRecipe(new ItemStack(Blocks.COBBLESTONE), Recipes.macerator.getRecipes(), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Stone, 1));
+        GTUtility.removeSimpleIC2MachineRecipe(OreDictionaryUnifier.get(OrePrefix.gem, Materials.Lapis, 1), Recipes.macerator.getRecipes(), ItemList.IC2_Plantball.get(1));
+        GTUtility.removeSimpleIC2MachineRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Redstone, 1), Recipes.macerator.getRecipes(), ItemList.IC2_Plantball.get(1));
+        GTUtility.removeSimpleIC2MachineRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Glowstone, 1), Recipes.macerator.getRecipes(), ItemList.IC2_Plantball.get(1));
 
         if(GregTechAPI.mMagneticraft && GT_Mod.gregtechproxy.mMagneticraftRecipes){
             GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getModItem("Magneticraft", "item.ingotCarbide", 8));
@@ -1456,9 +1456,9 @@ public class GT_MachineRecipeLoader implements Runnable {
             } catch (Throwable e) {/*Do nothing*/}
         }
 
-        GT_Utility.removeSimpleIC2MachineRecipe(ItemList.Crop_Drop_BobsYerUncleRanks.get(1), Recipes.extractor.getRecipes(), null);
-        GT_Utility.removeSimpleIC2MachineRecipe(ItemList.Crop_Drop_Ferru.get(1), Recipes.extractor.getRecipes(), null);
-        GT_Utility.removeSimpleIC2MachineRecipe(ItemList.Crop_Drop_Aurelia.get(1), Recipes.extractor.getRecipes(), null);
+        GTUtility.removeSimpleIC2MachineRecipe(ItemList.Crop_Drop_BobsYerUncleRanks.get(1), Recipes.extractor.getRecipes(), null);
+        GTUtility.removeSimpleIC2MachineRecipe(ItemList.Crop_Drop_Ferru.get(1), Recipes.extractor.getRecipes(), null);
+        GTUtility.removeSimpleIC2MachineRecipe(ItemList.Crop_Drop_Aurelia.get(1), Recipes.extractor.getRecipes(), null);
 
         ItemStack tCrop;
         // Metals Line
@@ -1556,8 +1556,8 @@ public class GT_MachineRecipeLoader implements Runnable {
     public void addProcess(ItemStack tCrop, Materials aMaterial, int chance, boolean aMainOutput) {
         if(tCrop==null||aMaterial==null|| OreDictionaryUnifier.get(OrePrefix.crushed, aMaterial,1)==null)return;
         if (GT_Mod.gregtechproxy.mNerfedCrops) {
-            GTValues.RA.addChemicalRecipe(GT_Utility.copyAmount(9, tCrop), OreDictionaryUnifier.get(OrePrefix.crushed, aMaterial, 1), Materials.Water.getFluid(1000), aMaterial.mOreByProducts.isEmpty() ? null : aMaterial.mOreByProducts.get(0).getMolten(144), OreDictionaryUnifier.get(OrePrefix.crushedPurified, aMaterial, 4), 96, 24);
-            GTValues.RA.addAutoclaveRecipe(GT_Utility.copyAmount(16, tCrop), Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass()+9)/10))), OreDictionaryUnifier.get(OrePrefix.crushedPurified, aMaterial, 1), 10000, (int) (aMaterial.getMass() * 128), 384);
+            GTValues.RA.addChemicalRecipe(GTUtility.copyAmount(9, tCrop), OreDictionaryUnifier.get(OrePrefix.crushed, aMaterial, 1), Materials.Water.getFluid(1000), aMaterial.mOreByProducts.isEmpty() ? null : aMaterial.mOreByProducts.get(0).getMolten(144), OreDictionaryUnifier.get(OrePrefix.crushedPurified, aMaterial, 4), 96, 24);
+            GTValues.RA.addAutoclaveRecipe(GTUtility.copyAmount(16, tCrop), Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass()+9)/10))), OreDictionaryUnifier.get(OrePrefix.crushedPurified, aMaterial, 1), 10000, (int) (aMaterial.getMass() * 128), 384);
         } else {
             if (aMainOutput) GT_ModHandler.addExtractionRecipe(tCrop, OreDictionaryUnifier.get(OrePrefix.dustTiny, aMaterial, 1));
         }
@@ -1566,8 +1566,8 @@ public class GT_MachineRecipeLoader implements Runnable {
     public void addProcess(ItemStack tCrop, Materials aMaterial, int chance){
         if(tCrop==null||aMaterial==null|| OreDictionaryUnifier.get(OrePrefix.crushed, aMaterial,1)==null)return;
         if (GT_Mod.gregtechproxy.mNerfedCrops) {
-            GTValues.RA.addChemicalRecipe(GT_Utility.copyAmount(9, tCrop), OreDictionaryUnifier.get(OrePrefix.crushed, aMaterial, 1), Materials.Water.getFluid(1000), aMaterial.mOreByProducts.isEmpty() ? null : aMaterial.mOreByProducts.get(0).getMolten(144), OreDictionaryUnifier.get(OrePrefix.crushedPurified, aMaterial, 4), 96, 24);
-            GTValues.RA.addAutoclaveRecipe(GT_Utility.copyAmount(16, tCrop), Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass()+9)/10))), OreDictionaryUnifier.get(OrePrefix.crushedPurified, aMaterial, 1), 10000, (int) (aMaterial.getMass() * 128), 384);
+            GTValues.RA.addChemicalRecipe(GTUtility.copyAmount(9, tCrop), OreDictionaryUnifier.get(OrePrefix.crushed, aMaterial, 1), Materials.Water.getFluid(1000), aMaterial.mOreByProducts.isEmpty() ? null : aMaterial.mOreByProducts.get(0).getMolten(144), OreDictionaryUnifier.get(OrePrefix.crushedPurified, aMaterial, 4), 96, 24);
+            GTValues.RA.addAutoclaveRecipe(GTUtility.copyAmount(16, tCrop), Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass()+9)/10))), OreDictionaryUnifier.get(OrePrefix.crushedPurified, aMaterial, 1), 10000, (int) (aMaterial.getMass() * 128), 384);
         } else {
             GT_ModHandler.addExtractionRecipe(tCrop, OreDictionaryUnifier.get(OrePrefix.dustTiny, aMaterial, 1));
         }
@@ -1576,8 +1576,8 @@ public class GT_MachineRecipeLoader implements Runnable {
     public void addProcess(ItemStack tCrop, Materials aMaterial, Materials aMaterialOut, int chance, boolean aMainOutput){
         if(tCrop==null||aMaterial==null|| OreDictionaryUnifier.get(OrePrefix.crushed, aMaterial,1)==null)return;
         if (GT_Mod.gregtechproxy.mNerfedCrops) {
-            GTValues.RA.addChemicalRecipe(GT_Utility.copyAmount(9, tCrop), OreDictionaryUnifier.get(OrePrefix.crushed, aMaterial, 1), Materials.Water.getFluid(1000), aMaterialOut.mOreByProducts.isEmpty() ? null : aMaterialOut.mOreByProducts.get(0).getMolten(144), OreDictionaryUnifier.get(OrePrefix.crushedPurified, aMaterialOut, 4), 96, 24);
-            GTValues.RA.addAutoclaveRecipe(GT_Utility.copyAmount(16, tCrop), Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass()+9)/10))), OreDictionaryUnifier.get(OrePrefix.crushedPurified, aMaterial, 1), 10000, (int) (aMaterial.getMass() * 128), 384);
+            GTValues.RA.addChemicalRecipe(GTUtility.copyAmount(9, tCrop), OreDictionaryUnifier.get(OrePrefix.crushed, aMaterial, 1), Materials.Water.getFluid(1000), aMaterialOut.mOreByProducts.isEmpty() ? null : aMaterialOut.mOreByProducts.get(0).getMolten(144), OreDictionaryUnifier.get(OrePrefix.crushedPurified, aMaterialOut, 4), 96, 24);
+            GTValues.RA.addAutoclaveRecipe(GTUtility.copyAmount(16, tCrop), Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass()+9)/10))), OreDictionaryUnifier.get(OrePrefix.crushedPurified, aMaterial, 1), 10000, (int) (aMaterial.getMass() * 128), 384);
         } else {
             if (aMainOutput) GT_ModHandler.addExtractionRecipe(tCrop, OreDictionaryUnifier.get(OrePrefix.dustTiny, aMaterial, 1));
         }
@@ -1586,8 +1586,8 @@ public class GT_MachineRecipeLoader implements Runnable {
     public void addProcess(ItemStack tCrop, Materials aMaterial, Materials aMaterialOut, int chance){
         if(tCrop==null||aMaterial==null|| OreDictionaryUnifier.get(OrePrefix.crushed, aMaterial,1)==null)return;
         if (GT_Mod.gregtechproxy.mNerfedCrops) {
-            GTValues.RA.addChemicalRecipe(GT_Utility.copyAmount(9, tCrop), OreDictionaryUnifier.get(OrePrefix.crushed, aMaterial, 1), Materials.Water.getFluid(1000), aMaterialOut.mOreByProducts.isEmpty() ? null : aMaterialOut.mOreByProducts.get(0).getMolten(144), OreDictionaryUnifier.get(OrePrefix.crushedPurified, aMaterialOut, 4), 96, 24);
-            GTValues.RA.addAutoclaveRecipe(GT_Utility.copyAmount(16, tCrop), Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass()+9)/10))), OreDictionaryUnifier.get(OrePrefix.crushedPurified, aMaterial, 1), 10000, (int) (aMaterial.getMass() * 128), 384);
+            GTValues.RA.addChemicalRecipe(GTUtility.copyAmount(9, tCrop), OreDictionaryUnifier.get(OrePrefix.crushed, aMaterial, 1), Materials.Water.getFluid(1000), aMaterialOut.mOreByProducts.isEmpty() ? null : aMaterialOut.mOreByProducts.get(0).getMolten(144), OreDictionaryUnifier.get(OrePrefix.crushedPurified, aMaterialOut, 4), 96, 24);
+            GTValues.RA.addAutoclaveRecipe(GTUtility.copyAmount(16, tCrop), Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass()+9)/10))), OreDictionaryUnifier.get(OrePrefix.crushedPurified, aMaterial, 1), 10000, (int) (aMaterial.getMass() * 128), 384);
         } else {
             GT_ModHandler.addExtractionRecipe(tCrop, OreDictionaryUnifier.get(OrePrefix.dustTiny, aMaterial, 1));
         }

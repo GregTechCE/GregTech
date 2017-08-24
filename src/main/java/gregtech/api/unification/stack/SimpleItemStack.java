@@ -1,5 +1,6 @@
 package gregtech.api.unification.stack;
 
+import gregtech.api.GTValues;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -40,7 +41,7 @@ public final class SimpleItemStack {
 
         SimpleItemStack that = (SimpleItemStack) o;
 
-        if (itemDamage != that.itemDamage) return false;
+        if (itemDamage != that.itemDamage && itemDamage != GTValues.W && that.itemDamage != GTValues.W) return false;
         return item.equals(that.item);
     }
 

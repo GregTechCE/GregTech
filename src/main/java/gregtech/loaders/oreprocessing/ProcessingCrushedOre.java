@@ -8,7 +8,7 @@ import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 
 public class ProcessingCrushedOre implements IOreRegistrationHandler {
@@ -24,18 +24,18 @@ public class ProcessingCrushedOre implements IOreRegistrationHandler {
 				if (uEntry.material instanceof SolidMaterial) {
 					SolidMaterial solidMaterial = (SolidMaterial) uEntry.material;
 					RecipeMap.HAMMER_RECIPES.recipeBuilder()
-							.inputs(GT_Utility.copyAmount(1, stack))
+							.inputs(GTUtility.copyAmount(1, stack))
 							.outputs(OreDictionaryUnifier.get(OrePrefix.dust, solidMaterial.macerateInto))
 							.duration(10)
 							.EUt(16)
 							.buildAndRegister();
-					ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.dust, solidMaterial.macerateInto, 1), OreDictionaryUnifier.get(OrePrefix.dust, GT_Utility.selectItemInList(2, solidMaterial.macerateInto, solidMaterial.oreByProducts), 1), 10, false);
+					ModHandler.addPulverisationRecipe(GTUtility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.dust, solidMaterial.macerateInto, 1), OreDictionaryUnifier.get(OrePrefix.dust, GTUtility.selectItemInList(2, solidMaterial.macerateInto, solidMaterial.oreByProducts), 1), 10, false);
 				}
 				break;
 			case crushedPurified:
 				if (uEntry.material instanceof SolidMaterial) {
 					SolidMaterial solidMaterial = (SolidMaterial) uEntry.material;
-					ModHandler.addThermalCentrifugeRecipe(GT_Utility.copyAmount(1, stack), (int) Math.min(5000L, Math.abs(uEntry.material.getMass() * 20L)), OreDictionaryUnifier.get(OrePrefix.crushedCentrifuged, solidMaterial.macerateInto, OreDictionaryUnifier.get(OrePrefix.dust, solidMaterial.macerateInto, 1), 1), OreDictionaryUnifier.get(OrePrefix.dustTiny, GT_Utility.selectItemInList(1, solidMaterial.macerateInto, solidMaterial.oreByProducts), 1));
+					ModHandler.addThermalCentrifugeRecipe(GTUtility.copyAmount(1, stack), (int) Math.min(5000L, Math.abs(uEntry.material.getMass() * 20L)), OreDictionaryUnifier.get(OrePrefix.crushedCentrifuged, solidMaterial.macerateInto, OreDictionaryUnifier.get(OrePrefix.dust, solidMaterial.macerateInto, 1), 1), OreDictionaryUnifier.get(OrePrefix.dustTiny, GTUtility.selectItemInList(1, solidMaterial.macerateInto, solidMaterial.oreByProducts), 1));
 				}
 
 				ItemStack tGem = OreDictionaryUnifier.get(OrePrefix.gem, uEntry.material, 1);
@@ -44,7 +44,7 @@ public class ProcessingCrushedOre implements IOreRegistrationHandler {
 						case "Tanzanite": case "Sapphire": case "Olivine": case "GreenSapphire": case "Opal": case "Amethyst": case "Emerald": case "Ruby":
 						case "Amber": case "Diamond": case "FoolsRuby": case "BlueTopaz": case "GarnetRed": case "Topaz": case "Jasper": case "GarnetYellow":
 							RecipeMap.SIFTER_RECIPES.recipeBuilder()
-									.inputs(GT_Utility.copyAmount(1, stack))
+									.inputs(GTUtility.copyAmount(1, stack))
 									.chancedOutput(OreDictionaryUnifier.get(OrePrefix.gemExquisite, uEntry.material), 300)
 									.chancedOutput(OreDictionaryUnifier.get(OrePrefix.gemFlawless, uEntry.material), 1200)
 									.chancedOutput(tGem, 4500).chancedOutput(OreDictionaryUnifier.get(OrePrefix.gemFlawed, uEntry.material), 1400)
@@ -60,7 +60,7 @@ public class ProcessingCrushedOre implements IOreRegistrationHandler {
 							break;
 						default:
 							RecipeMap.SIFTER_RECIPES.recipeBuilder()
-									.inputs(GT_Utility.copyAmount(1, stack))
+									.inputs(GTUtility.copyAmount(1, stack))
 									.chancedOutput(OreDictionaryUnifier.get(OrePrefix.gemExquisite, uEntry.material), 100)
 									.chancedOutput(OreDictionaryUnifier.get(OrePrefix.gemFlawless, uEntry.material), 400)
 									.chancedOutput(tGem, 1500).chancedOutput(OreDictionaryUnifier.get(OrePrefix.gemFlawed, uEntry.material), 2000)

@@ -1,6 +1,5 @@
 package gregtech.common.blocks;
 
-import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;

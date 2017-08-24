@@ -4,8 +4,8 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -37,7 +37,7 @@ public class Behaviour_Plunger_Fluid
                 if (((IFluidHandler) aTileEntity).drain(tDirection, 1000, false) != null) {
                     if ((aPlayer.capabilities.isCreativeMode) || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
                         ((IFluidHandler) aTileEntity).drain(tDirection, 1000, true);
-                        GT_Utility.sendSoundToPlayers(aWorld, GregTechAPI.sSoundList.get(101), 1.0F, -1.0F, blockPos);
+                        GTUtility.sendSoundToPlayers(aWorld, GregTechAPI.sSoundList.get(101), 1.0F, -1.0F, blockPos);
                         return true;
                     }
                 }
@@ -51,7 +51,7 @@ public class Behaviour_Plunger_Fluid
           	GT_MetaTileEntity_BasicTank machine = (GT_MetaTileEntity_BasicTank) mTileEntity;
            	if(machine.mFluid!=null&&machine.mFluid.amount>0)
            	machine.mFluid.amount = machine.mFluid.amount - Math.min(machine.mFluid.amount, 1000);
-            GT_Utility.sendSoundToPlayers(aWorld, (String) GregTechAPI.sSoundList.get(Integer.valueOf(101)), 1.0F, -1.0F, blockPos.getX(), blockPos.getY(), blockPos.getZ());
+            GTUtility.sendSoundToPlayers(aWorld, (String) GregTechAPI.sSoundList.get(Integer.valueOf(101)), 1.0F, -1.0F, blockPos.getX(), blockPos.getY(), blockPos.getZ());
            	return true;
                 }
             }

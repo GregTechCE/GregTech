@@ -8,7 +8,7 @@ import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 
 public class ProcessingFoil implements IOreRegistrationHandler {
@@ -20,7 +20,7 @@ public class ProcessingFoil implements IOreRegistrationHandler {
         ItemStack stack = simpleStack.asItemStack();
         if (!uEntry.material.hasFlag(DustMaterial.MatFlags.NO_SMASHING)) {
             RecipeMap.BENDER_RECIPES.recipeBuilder()
-                    .inputs(GT_Utility.copyAmount(1, OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 4)))
+                    .inputs(GTUtility.copyAmount(1, OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 4)))
                     .outputs(OreDictionaryUnifier.get(OrePrefix.foil, uEntry.material, 4))
                     .duration((int) Math.max(uEntry.material.getMass(), 1L))
                     .EUt(24)

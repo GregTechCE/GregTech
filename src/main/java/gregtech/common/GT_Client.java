@@ -73,12 +73,12 @@ public class GT_Client extends GT_Proxy {
 //            ItemStack currentItem = player.getHeldItemMainhand();
 //            BlockPos pos = event.getTarget().getBlockPos();
 //            Block block = player.worldObj.getBlockState(pos).getBlock();
-//            if (GT_Utility.isStackValid(currentItem)) {
+//            if (GTUtility.isStackValid(currentItem)) {
 //                TileEntity aTileEntity = player.worldObj.getTileEntity(pos);
-//                if (((aTileEntity instanceof BaseMetaPipeEntity)) && (((ICoverable) aTileEntity).getCoverIDAtSide((byte) event.getTarget().sideHit.getIndex()) == 0) && ((GT_Utility.isStackInList(currentItem, GregTechAPI.sCoverItems.keySet())) || (GT_Utility.isStackInList(currentItem, GregTechAPI.sCrowbarList)) || (GT_Utility.isStackInList(currentItem, GregTechAPI.sScrewdriverList)))) {
+//                if (((aTileEntity instanceof BaseMetaPipeEntity)) && (((ICoverable) aTileEntity).getCoverIDAtSide((byte) event.getTarget().sideHit.getIndex()) == 0) && ((GTUtility.isStackInList(currentItem, GregTechAPI.sCoverItems.keySet())) || (GTUtility.isStackInList(currentItem, GregTechAPI.sCrowbarList)) || (GTUtility.isStackInList(currentItem, GregTechAPI.sScrewdriverList)))) {
 //                    drawGrid(event);
 //                }
-//                else if ((aTileEntity instanceof ITurnable || aTileEntity instanceof IWrenchable || ROTATABLE_VANILLA_BLOCKS.contains(block)) && GT_Utility.isStackInList(currentItem, GregTechAPI.sWrenchList)) {
+//                else if ((aTileEntity instanceof ITurnable || aTileEntity instanceof IWrenchable || ROTATABLE_VANILLA_BLOCKS.contains(block)) && GTUtility.isStackInList(currentItem, GregTechAPI.sWrenchList)) {
 //                    drawGrid(event);
 //                }
 //            }

@@ -6,7 +6,7 @@ import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 
 public class ProcessingCompressed implements IOreRegistrationHandler {
@@ -18,6 +18,6 @@ public class ProcessingCompressed implements IOreRegistrationHandler {
         ItemStack stack = simpleStack.asItemStack();
         ModHandler.removeRecipeByOutput(stack);
         GregTechAPI.registerCover(stack, new GT_RenderedTexture(uEntry.material.mIconSet.mTextures[72], uEntry.material.materialRGB), null);
-        RecipeRegistrator.registerUsagesForMaterials(GT_Utility.copyAmount(1, stack), null, false);
+        RecipeRegistrator.registerUsagesForMaterials(GTUtility.copyAmount(1, stack), null, false);
     }
 }

@@ -3,13 +3,10 @@ package gregtech.api.metatileentity;
 import com.google.common.base.Preconditions;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.ITurnable;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -17,8 +14,6 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
@@ -482,7 +477,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     public void doExplosion(long strength) {
         BlockPos pos = holder.getWorldPos();
         World world = holder.getWorldObj();
-        GT_Utility.playSound(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, GregTechAPI.soundList.get(209), SoundCategory.BLOCKS, 1.0f, 1.0f);
+        GTUtility.playSound(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, GregTechAPI.soundList.get(209), SoundCategory.BLOCKS, 1.0f, 1.0f);
 //        if (GregTechAPI.sMachineExplosions) {
             world.createExplosion(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, strength, true);
 //        }

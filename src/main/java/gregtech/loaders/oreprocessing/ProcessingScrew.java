@@ -8,7 +8,7 @@ import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gregtech.common.GT_Proxy;
 import net.minecraft.item.ItemStack;
 
@@ -23,7 +23,7 @@ public class ProcessingScrew implements IOreRegistrationHandler {
         if (!uEntry.material.hasFlag(DustMaterial.MatFlags.NO_WORKING)) {
             RecipeMap.LATHE_RECIPES.recipeBuilder()
                     .inputs(OreDictionaryUnifier.get(OrePrefix.bolt, uEntry.material, 1))
-                    .outputs(GT_Utility.copyAmount(1, stack))
+                    .outputs(GTUtility.copyAmount(1, stack))
                     .duration((int) Math.max(uEntry.material.getMass() / 8L, 1L))
                     .EUt(4)
                     .buildAndRegister();

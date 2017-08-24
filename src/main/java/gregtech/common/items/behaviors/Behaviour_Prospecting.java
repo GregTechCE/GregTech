@@ -3,9 +3,9 @@ package gregtech.common.items.behaviors;
 import gregtech.api.GregTechAPI;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.stack.ItemMaterialInfo;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,8 +41,8 @@ public class Behaviour_Prospecting extends Behaviour_None {
 
         ItemMaterialInfo tAssotiation = OreDictionaryUnifier.getAssociation(new ItemStack(block, 1, blockMeta));
         if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {
-            GT_Utility.sendChatToPlayer(aPlayer, "This is " + tAssotiation.mMaterial.mMaterial.mDefaultLocalName + " Ore.");
-            GT_Utility.sendSoundToPlayers(aWorld, GregTechAPI.sSoundList.get(1), 1.0F, -1.0F, blockPos);
+            GTUtility.sendChatToPlayer(aPlayer, "This is " + tAssotiation.mMaterial.mMaterial.mDefaultLocalName + " Ore.");
+            GTUtility.sendSoundToPlayers(aWorld, GregTechAPI.sSoundList.get(1), 1.0F, -1.0F, blockPos);
             return true;
         }
         if ((block.isReplaceableOreGen(blockState, aWorld, blockPos, state ->
@@ -50,7 +50,7 @@ public class Behaviour_Prospecting extends Behaviour_None {
                 state.getBlock() == Blocks.END_STONE ||
                 state.getBlock() == Blocks.NETHERRACK))) {
             if (GT_ModHandler.damageOrDechargeItem(aStack, this.mVanillaCosts, this.mEUCosts, aPlayer)) {
-                GT_Utility.sendSoundToPlayers(aWorld, GregTechAPI.sSoundList.get(1), 1.0F, -1.0F, blockPos);
+                GTUtility.sendSoundToPlayers(aWorld, GregTechAPI.sSoundList.get(1), 1.0F, -1.0F, blockPos);
                 int tMetaID = 0;
                 int tQuality = (aItem instanceof GT_MetaGenerated_Tool) ? aItem.getHarvestLevel(aStack, "") : 0;
                 int scanRadius = 6 + tQuality;
@@ -64,28 +64,28 @@ public class Behaviour_Prospecting extends Behaviour_None {
                             BlockPos scanPos = blockPos.add(x, -(y + 1), z);
                             IBlockState scanState = aWorld.getBlockState(scanPos);
                             if(scanState.getBlock() == Blocks.LAVA || scanState.getBlock() == Blocks.FLOWING_LAVA) {
-                                GT_Utility.sendChatToPlayer(aPlayer, "There is Lava behind this Rock");
+                                GTUtility.sendChatToPlayer(aPlayer, "There is Lava behind this Rock");
                                 breakIt = true;
                             } else if(scanState.getBlock() == Blocks.WATER || scanState.getBlock() == Blocks.FLOWING_WATER) {
-                                GT_Utility.sendChatToPlayer(aPlayer, "There is Water behind this Rock");
+                                GTUtility.sendChatToPlayer(aPlayer, "There is Water behind this Rock");
                                 breakIt = true;
                             } else if(scanState.getBlock() instanceof IFluidBlock) {
-                                GT_Utility.sendChatToPlayer(aPlayer, "There is Fluid behind this Rock");
+                                GTUtility.sendChatToPlayer(aPlayer, "There is Fluid behind this Rock");
                                 breakIt = true;
                             } else if(scanState.getBlock() == Blocks.AIR ||
                                     scanState.getBlock() == Blocks.MONSTER_EGG ||
-                                    !GT_Utility.hasBlockHitBox(aWorld, scanPos)) {
-                                GT_Utility.sendChatToPlayer(aPlayer, "There is an Air Pocket behind this Rock.");
+                                    !GTUtility.hasBlockHitBox(aWorld, scanPos)) {
+                                GTUtility.sendChatToPlayer(aPlayer, "There is an Air Pocket behind this Rock.");
                                 breakIt = true;
                             } else if(scanState.getBlock() != block) {
-                                GT_Utility.sendChatToPlayer(aPlayer, "Material is changing behind this Rock.");
+                                GTUtility.sendChatToPlayer(aPlayer, "Material is changing behind this Rock.");
                                 breakIt = true;
                             }
                         }
                     }
                 }
 
-                GT_Utility.sendChatToPlayer(aPlayer, "No Ores found.");
+                GTUtility.sendChatToPlayer(aPlayer, "No Ores found.");
             }
             return true;
         }

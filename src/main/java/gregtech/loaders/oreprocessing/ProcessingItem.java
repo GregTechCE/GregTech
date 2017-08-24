@@ -10,7 +10,7 @@ import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 
 public class ProcessingItem implements IOreRegistrationHandler {
@@ -24,7 +24,7 @@ public class ProcessingItem implements IOreRegistrationHandler {
             switch (aOreDictName) {
                 case "itemSilicon":
                     OreDictionaryUnifier.addItemData(stack, new ItemMaterialInfo(Materials.Silicon, 3628800L, new MaterialStack[0]));
-                    GTValues.RA.addFormingPressRecipe(GT_Utility.copyAmount(1, stack), ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 0, 19), ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1, 20), 200, 16);
+                    GTValues.RA.addFormingPressRecipe(GTUtility.copyAmount(1, stack), ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 0, 19), ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1, 20), 200, 16);
                 case "itemWheat":
                     OreDictionaryUnifier.addItemData(stack, new ItemMaterialInfo(Materials.Wheat, 3628800L, new MaterialStack[0]));
                 case "itemManganese":

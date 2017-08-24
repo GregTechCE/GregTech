@@ -11,7 +11,7 @@ import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 
 public class ProcessingBlock implements IOreRegistrationHandler {
@@ -22,7 +22,7 @@ public class ProcessingBlock implements IOreRegistrationHandler {
     public void registerOre(UnificationEntry uEntry, String modName, SimpleItemStack simpleStack) {
         ItemStack stack = simpleStack.asItemStack();
         RecipeMap.CUTTER_RECIPES.recipeBuilder()
-                .inputs(GT_Utility.copyAmount(1, stack))
+                .inputs(GTUtility.copyAmount(1, stack))
                 .outputs(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 9))
                 .duration((int) Math.max(uEntry.material.getMass() * 10L, 1L))
                 .EUt(30)
@@ -31,7 +31,7 @@ public class ProcessingBlock implements IOreRegistrationHandler {
         ItemStack ingotStack = OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material, 1);
         ItemStack gemStack = OreDictionaryUnifier.get(OrePrefix.gem, uEntry.material, 1);
         ItemStack dustStack = OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material, 1);
-        ModHandler.removeRecipe(GT_Utility.copyAmount(1, stack));
+        ModHandler.removeRecipe(GTUtility.copyAmount(1, stack));
 
         if (ingotStack != null)
             ModHandler.removeRecipe(ingotStack, ingotStack, ingotStack, ingotStack, ingotStack, ingotStack, ingotStack, ingotStack, ingotStack);
@@ -89,13 +89,13 @@ public class ProcessingBlock implements IOreRegistrationHandler {
             case "Iron":
             case "WroughtIron":
                 RecipeMap.EXTRUDER_RECIPES.recipeBuilder()
-                        .inputs(GT_Utility.copyAmount(1, stack), ItemList.Shape_Extruder_Rod.get(0))
+                        .inputs(GTUtility.copyAmount(1, stack), ItemList.Shape_Extruder_Rod.get(0))
                         .outputs(ItemList.IC2_ShaftIron.get(1))
                         .duration(640)
                         .EUt(120)
                         .buildAndRegister();
                 RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-                        .inputs(ItemList.IC2_Compressed_Coal_Ball.get(8), GT_Utility.copyAmount(1, stack))
+                        .inputs(ItemList.IC2_Compressed_Coal_Ball.get(8), GTUtility.copyAmount(1, stack))
                         .outputs(ItemList.IC2_Compressed_Coal_Chunk.get(1))
                         .duration(400)
                         .EUt(4)
@@ -103,13 +103,13 @@ public class ProcessingBlock implements IOreRegistrationHandler {
                 break;
             case "Steel":
                 RecipeMap.EXTRUDER_RECIPES.recipeBuilder()
-                        .inputs(GT_Utility.copyAmount(1, stack), ItemList.Shape_Extruder_Rod.get(0))
+                        .inputs(GTUtility.copyAmount(1, stack), ItemList.Shape_Extruder_Rod.get(0))
                         .outputs(ItemList.IC2_ShaftSteel.get(1))
                         .duration(1280)
                         .EUt(120)
                         .buildAndRegister();
                 RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-                        .inputs(ItemList.IC2_Compressed_Coal_Ball.get(8), GT_Utility.copyAmount(1, stack))
+                        .inputs(ItemList.IC2_Compressed_Coal_Ball.get(8), GTUtility.copyAmount(1, stack))
                         .outputs(ItemList.IC2_Compressed_Coal_Chunk.get(1))
                         .duration(400)
                         .EUt(4)

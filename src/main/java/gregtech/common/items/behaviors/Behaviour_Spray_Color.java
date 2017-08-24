@@ -1,8 +1,8 @@
 package gregtech.common.items.behaviors;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.state.IBlockState;
@@ -53,13 +53,13 @@ public class Behaviour_Spray_Color
             tNBT = new NBTTagCompound();
         }
         long tUses = tNBT.getLong("GT.RemainingPaint");
-        if (GT_Utility.areStacksEqual(aStack, this.mFull, true)) {
+        if (GTUtility.areStacksEqual(aStack, this.mFull, true)) {
             aStack.setItem(this.mUsed.getItem());
             Items.FEATHER.setDamage(aStack, Items.FEATHER.getDamage(this.mUsed));
             tUses = this.mUses;
         }
-        if ((GT_Utility.areStacksEqual(aStack, this.mUsed, true)) && (colorize(aWorld, pos, side))) {
-            GT_Utility.sendSoundToPlayers(aWorld, GregTechAPI.sSoundList.get(102), 1.0F, 1.0F, pos);
+        if ((GTUtility.areStacksEqual(aStack, this.mUsed, true)) && (colorize(aWorld, pos, side))) {
+            GTUtility.sendSoundToPlayers(aWorld, GregTechAPI.sSoundList.get(102), 1.0F, 1.0F, pos);
             if (!aPlayer.capabilities.isCreativeMode) {
                 tUses -= 1L;
             }
@@ -99,7 +99,7 @@ public class Behaviour_Spray_Color
     public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
         aList.add(this.mTooltip);
         NBTTagCompound tNBT = aStack.getTagCompound();
-        long tRemainingPaint = tNBT == null ? 0L : GT_Utility.areStacksEqual(aStack, this.mFull, true) ? this.mUses : tNBT.getLong("GT.RemainingPaint");
+        long tRemainingPaint = tNBT == null ? 0L : GTUtility.areStacksEqual(aStack, this.mFull, true) ? this.mUses : tNBT.getLong("GT.RemainingPaint");
         aList.add(this.mTooltipUses + " " + tRemainingPaint);
         aList.add(this.mTooltipUnstackable);
         return aList;

@@ -131,10 +131,12 @@ public class OreDictionaryUnifier {
 
     @Nullable
     public static UnificationEntry getUnificationEntry(ItemStack itemStack) {
+        if(itemStack == null) return null;
         return stackUnificationInfo.get(new SimpleItemStack(itemStack));
     }
 
     public static ItemStack getUnificated(ItemStack itemStack) {
+        if(itemStack == null) return null;
         UnificationEntry unificationEntry = getUnificationEntry(itemStack);
         if(unificationEntry == null || !stackUnificationItems.containsKey(unificationEntry) || !unificationEntry.orePrefix.isUnificationEnabled)
             return itemStack;

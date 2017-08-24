@@ -8,7 +8,7 @@ import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 
 public class ProcessingSaplings implements IOreRegistrationHandler {
@@ -18,9 +18,9 @@ public class ProcessingSaplings implements IOreRegistrationHandler {
 
     public void registerOre(UnificationEntry uEntry, String modName, SimpleItemStack simpleStack) {
         ItemStack stack = simpleStack.asItemStack();
-        ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Wood, 2), null, 0, false);
+        ModHandler.addPulverisationRecipe(GTUtility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Wood, 2), null, 0, false);
         RecipeMap.LATHE_RECIPES.recipeBuilder()
-                .inputs(GT_Utility.copyAmount(1, stack))
+                .inputs(GTUtility.copyAmount(1, stack))
                 .outputs(OreDictionaryUnifier.get(OrePrefix.stick, Materials.Wood, 1), OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.Wood, 1))
                 .duration(16)
                 .EUt(8)

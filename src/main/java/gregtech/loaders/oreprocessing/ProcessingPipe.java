@@ -10,7 +10,7 @@ import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 
 public class ProcessingPipe implements IOreRegistrationHandler {
@@ -38,7 +38,7 @@ public class ProcessingPipe implements IOreRegistrationHandler {
                         String aRecipeString1 = uEntry.orePrefix == OrePrefix.pipeLarge ? "PHP" : uEntry.orePrefix == OrePrefix.pipeMedium ? "PPP" : "PWP";
                         String aRecipeString2 = uEntry.orePrefix == OrePrefix.pipeLarge || uEntry.orePrefix == OrePrefix.pipeSmall ? "P P" : "W H";
                         String aRecipeString3 = uEntry.orePrefix == OrePrefix.pipeLarge ? "PWP" : uEntry.orePrefix == OrePrefix.pipeMedium ? "PPP" : "PHP";
-                        ModHandler.addCraftingRecipe(GT_Utility.copyAmount(aAmount, stack), ModHandler.RecipeBits.MIRRORED | ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{aRecipeString1, aRecipeString2, aRecipeString3, 'P', uEntry.material == Materials.Wood ? OrePrefix.plank.get(uEntry.material) : OrePrefix.plate.get(uEntry.material), 'H', uEntry.material.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftHammer : ToolDictNames.craftingToolHardHammer, 'W', uEntry.material.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw : ToolDictNames.craftingToolWrench});
+                        ModHandler.addCraftingRecipe(GTUtility.copyAmount(aAmount, stack), ModHandler.RecipeBits.MIRRORED | ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{aRecipeString1, aRecipeString2, aRecipeString3, 'P', uEntry.material == Materials.Wood ? OrePrefix.plank.get(uEntry.material) : OrePrefix.plate.get(uEntry.material), 'H', uEntry.material.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftHammer : ToolDictNames.craftingToolHardHammer, 'W', uEntry.material.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw : ToolDictNames.craftingToolWrench});
                     }
                 }
                 break;
@@ -47,7 +47,7 @@ public class ProcessingPipe implements IOreRegistrationHandler {
             case pipeRestrictiveMedium:
             case pipeRestrictiveSmall:
             case pipeRestrictiveTiny:
-                GTValues.RA.addAssemblerRecipe(OreDictionaryUnifier.get(aOreDictName.replaceFirst("Restrictive", ""), null, 1L, false, true), OreDictionaryUnifier.get(OrePrefix.ring, Materials.Steel, uEntry.orePrefix.mSecondaryMaterial.mAmount / OrePrefix.ring.mMaterialAmount), GT_Utility.copyAmount(1, stack), (int) (uEntry.orePrefix.mSecondaryMaterial.mAmount * 400L / OrePrefix.ring.mMaterialAmount), 4);
+                GTValues.RA.addAssemblerRecipe(OreDictionaryUnifier.get(aOreDictName.replaceFirst("Restrictive", ""), null, 1L, false, true), OreDictionaryUnifier.get(OrePrefix.ring, Materials.Steel, uEntry.orePrefix.mSecondaryMaterial.mAmount / OrePrefix.ring.mMaterialAmount), GTUtility.copyAmount(1, stack), (int) (uEntry.orePrefix.mSecondaryMaterial.mAmount * 400L / OrePrefix.ring.mMaterialAmount), 4);
                 break;
         }
     }

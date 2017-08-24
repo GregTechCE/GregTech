@@ -2,7 +2,7 @@ package gregtech.api.items.metaitem;
 
 import com.google.common.collect.Iterables;
 import gregtech.api.items.metaitem.stats.IFoodStats;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.RandomPotionEffect;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
@@ -69,7 +69,7 @@ public class FoodStats implements IFoodStats {
     public void onEaten(ItemStack itemStack, EntityPlayer player) {
         for(RandomPotionEffect potionEffect : potionEffects) {
             if (Math.random() * 100 > potionEffect.chance) {
-                player.addPotionEffect(GT_Utility.copyPotionEffect(potionEffect.effect));
+                player.addPotionEffect(GTUtility.copyPotionEffect(potionEffect.effect));
             }
         }
     }
@@ -81,7 +81,7 @@ public class FoodStats implements IFoodStats {
             for (int i = 0; i < potionEffects.length; i++) {
                 effects[i] = potionEffects[i].effect;
             }
-            GT_Utility.addPotionTooltip(Iterables.cycle(effects), lines);
+            GTUtility.addPotionTooltip(Iterables.cycle(effects), lines);
         }
     }
 

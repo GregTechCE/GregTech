@@ -2,7 +2,7 @@ package gregtech.common.items.behaviors;
 
 import gregtech.api.GTValues;
 import gregtech.api.items.metaitem.stats.IItemBehaviour;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -62,7 +62,7 @@ public class Behaviour_Sonictron
             NBTTagCompound tag = tNBT_ItemList.getCompoundTagAt(i);
             byte slot = tag.getByte("Slot");
             if ((slot >= 0) && (slot < tInventory.length)) {
-                tInventory[slot] = GT_Utility.loadItem(tag);
+                tInventory[slot] = GTUtility.loadItem(tag);
             }
         }
         return tInventory;
@@ -93,7 +93,7 @@ public class Behaviour_Sonictron
             if (aNewContent[i] == null) {
                 aInventory[i] = null;
             } else {
-                aInventory[i] = GT_Utility.copy(aNewContent[i]);
+                aInventory[i] = GTUtility.copy(aNewContent[i]);
             }
         }
     }

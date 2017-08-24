@@ -7,8 +7,8 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
 import ic2.core.item.type.NuclearResourceType;
 import ic2.core.ref.ItemName;
 import ic2.core.ref.TeBlock;
@@ -181,7 +181,7 @@ public class GT_Loader_ItemData
                 new ItemStack(Items.CHICKEN),
                 new ItemStack(Items.FISH)}) {
             if (tItem != null) {
-                OreDictionaryUnifier.addItemData(GT_Utility.copyMetaData(OreDictionary.WILDCARD_VALUE, tItem),
+                OreDictionaryUnifier.addItemData(GTUtility.copyMetaData(OreDictionary.WILDCARD_VALUE, tItem),
                         new ItemMaterialInfo(Materials.MeatRaw, 3628800L,
                                 new MaterialStack(Materials.Bone, 403200L)));
             }
@@ -195,7 +195,7 @@ public class GT_Loader_ItemData
                 new ItemStack(Items.COOKED_FISH)}) {
             if (tItem != null) {
                 OreDictionaryUnifier.addItemData(
-                        GT_Utility.copyMetaData(OreDictionary.WILDCARD_VALUE, tItem),
+                        GTUtility.copyMetaData(OreDictionary.WILDCARD_VALUE, tItem),
                         new ItemMaterialInfo(Materials.MeatCooked, 3628800L, new MaterialStack(Materials.Bone, 403200L)));
             }
         }

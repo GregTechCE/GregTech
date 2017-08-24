@@ -10,7 +10,7 @@ import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import gregtech.common.GT_Proxy;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -30,7 +30,7 @@ public class ProcessingGear implements IOreRegistrationHandler {
                     RecipeMap.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
                             .inputs(ItemList.Shape_Mold_Gear.get(0))
                             .fluidInputs(((FluidMaterial) uEntry.material).getFluid(576))
-                            .outputs(GT_Utility.copyAmount(1, stack))
+                            .outputs(GTUtility.copyAmount(1, stack))
                             .duration(128)
                             .EUt(8)
                             .buildAndRegister();
@@ -52,7 +52,7 @@ public class ProcessingGear implements IOreRegistrationHandler {
                     RecipeMap.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
                             .inputs(ItemList.Shape_Mold_Gear_Small.get(0))
                             .fluidInputs(((FluidMaterial) uEntry.material).getFluid(144))
-                            .outputs(GT_Utility.copyAmount(1, stack))
+                            .outputs(GTUtility.copyAmount(1, stack))
                             .duration(16)
                             .EUt(8)
                             .buildAndRegister();

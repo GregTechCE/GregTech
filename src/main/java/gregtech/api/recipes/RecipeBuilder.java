@@ -2,7 +2,7 @@ package gregtech.api.recipes;
 
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import ic2.core.ref.BlockName;
 import ic2.core.ref.ItemName;
 import ic2.core.ref.TeBlock;
@@ -59,16 +59,16 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 
 	protected RecipeBuilder(T recipe, RecipeMap<T, R> recipeMap) {
 		this.recipeMap = recipeMap;
-		this.inputs = GT_Utility.copyStackList(recipe.getInputs());
-		this.outputs = GT_Utility.copyStackList(recipe.getOutputs());
+		this.inputs = GTUtility.copyStackList(recipe.getInputs());
+		this.outputs = GTUtility.copyStackList(recipe.getOutputs());
 
 		this.chancedOutputs = new HashMap<>();
 		for (Map.Entry<ItemStack, Integer> entry : recipe.getChancedOutputs().entrySet()) {
 			chancedOutputs.put(entry.getKey().copy(), entry.getValue());
 		}
 
-		this.fluidInputs = GT_Utility.copyFluidList(recipe.getFluidInputs());
-		this.fluidOutputs = GT_Utility.copyFluidList(recipe.getFluidOutputs());
+		this.fluidInputs = GTUtility.copyFluidList(recipe.getFluidInputs());
+		this.fluidOutputs = GTUtility.copyFluidList(recipe.getFluidOutputs());
 
 		this.duration = recipe.getDuration();
 		this.EUt = recipe.getEUt();
@@ -79,16 +79,16 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 
 	protected RecipeBuilder(RecipeBuilder<T, R> recipeBuilder) {
 		this.recipeMap = recipeBuilder.recipeMap;
-		this.inputs = GT_Utility.copyStackList(recipeBuilder.getInputs());
-		this.outputs = GT_Utility.copyStackList(recipeBuilder.getOutputs());
+		this.inputs = GTUtility.copyStackList(recipeBuilder.getInputs());
+		this.outputs = GTUtility.copyStackList(recipeBuilder.getOutputs());
 
 		this.chancedOutputs = new HashMap<>();
 		for (Map.Entry<ItemStack, Integer> entry : recipeBuilder.getChancedOutputs().entrySet()) {
 			chancedOutputs.put(entry.getKey().copy(), entry.getValue());
 		}
 
-		this.fluidInputs = GT_Utility.copyFluidList(recipeBuilder.getFluidInputs());
-		this.fluidOutputs = GT_Utility.copyFluidList(recipeBuilder.getFluidOutputs());
+		this.fluidInputs = GTUtility.copyFluidList(recipeBuilder.getFluidInputs());
+		this.fluidOutputs = GTUtility.copyFluidList(recipeBuilder.getFluidOutputs());
 		this.duration = recipeBuilder.duration;
 		this.EUt = recipeBuilder.EUt;
 		this.hidden = recipeBuilder.hidden;
@@ -216,7 +216,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		for (ItemStack stack : inputs) {
 			if (Items.FEATHER.getDamage(stack) != W) {
 				for (int j = 0; j < outputs.size(); j++) {
-					if (GT_Utility.areStacksEqual(stack, outputs.get(j))) {
+					if (GTUtility.areStacksEqual(stack, outputs.get(j))) {
 						if (stack.stackSize >= outputs.get(j).stackSize) {
 							stack.stackSize -= outputs.get(j).stackSize;
 							outputs.remove(j);

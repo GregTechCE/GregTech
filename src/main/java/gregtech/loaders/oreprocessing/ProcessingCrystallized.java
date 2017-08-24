@@ -9,7 +9,7 @@ import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 
 public class ProcessingCrystallized implements IOreRegistrationHandler {
@@ -23,12 +23,12 @@ public class ProcessingCrystallized implements IOreRegistrationHandler {
         if (uEntry.material instanceof SolidMaterial) {
             Material macerateInto = ((SolidMaterial) uEntry.material).macerateInto;
             RecipeMap.HAMMER_RECIPES.recipeBuilder()
-                    .inputs(GT_Utility.copyAmount(1, stack))
+                    .inputs(GTUtility.copyAmount(1, stack))
                     .outputs(OreDictionaryUnifier.get(OrePrefix.dust, macerateInto))
                     .duration(10)
                     .EUt(16)
                     .buildAndRegister();
-            ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.dust, macerateInto, 1), null, 10, false);
+            ModHandler.addPulverisationRecipe(GTUtility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.dust, macerateInto, 1), null, 10, false);
         }
     }
 }

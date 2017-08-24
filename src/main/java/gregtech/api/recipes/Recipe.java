@@ -3,7 +3,7 @@ package gregtech.api.recipes;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import gregtech.api.unification.OreDictionaryUnifier;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -110,8 +110,8 @@ public class Recipe {
 			amount = stackInput.stackSize;
 			boolean temp = true;
 			for (ItemStack stack : inputs) {
-				if ((GT_Utility.areUnificationsEqual(stack, stackInput, true)
-						|| GT_Utility.areUnificationsEqual(OreDictionaryUnifier.getUnificated(stack), stackInput, true))) {
+				if ((GTUtility.areUnificationsEqual(stack, stackInput, true)
+						|| GTUtility.areUnificationsEqual(OreDictionaryUnifier.getUnificated(stack), stackInput, true))) {
 					if (dontCheckStackSizes) {
 						temp = false;
 						break;
@@ -154,8 +154,8 @@ public class Recipe {
 				for (ItemStack stack : this.inputs) {
 					amount = stack.stackSize;
 					for (ItemStack tmpStack : inputs) {
-						if ((GT_Utility.areUnificationsEqual(tmpStack, stack, true)
-								|| GT_Utility.areUnificationsEqual(OreDictionaryUnifier.getUnificated(tmpStack), stack, true))) {
+						if ((GTUtility.areUnificationsEqual(tmpStack, stack, true)
+								|| GTUtility.areUnificationsEqual(OreDictionaryUnifier.getUnificated(tmpStack), stack, true))) {
 							if (dontCheckStackSizes) {
 								tmpStack.stackSize -= amount;
 								break;
@@ -278,8 +278,8 @@ public class Recipe {
 		public AssemblyLineRecipe(ItemStack researchItem, int researchTime, List<ItemStack> inputs, List<FluidStack> fluidInputs, ItemStack output, int duration, int EUt) {
 			this.researchItem = researchItem.copy();
 			this.researchTime = researchTime;
-			this.inputs = ImmutableList.copyOf(GT_Utility.copyStackList(inputs));
-			this.fluidInputs = ImmutableList.copyOf(GT_Utility.copyFluidList(fluidInputs));
+			this.inputs = ImmutableList.copyOf(GTUtility.copyStackList(inputs));
+			this.fluidInputs = ImmutableList.copyOf(GTUtility.copyFluidList(fluidInputs));
 			this.output = output;
 			this.duration = duration;
 			this.EUt = EUt;

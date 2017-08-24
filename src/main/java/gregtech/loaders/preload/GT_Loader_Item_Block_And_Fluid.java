@@ -28,7 +28,7 @@ public class GT_Loader_Item_Block_And_Fluid
 //        ItemList.Rotor_EV.set(OreDictionaryUnifier.get(OrePrefix.rotor, Materials.StainlessSteel, 1));
 //        ItemList.Rotor_IV.set(OreDictionaryUnifier.get(OrePrefix.rotor, Materials.TungstenSteel, 1));
 //
-//        Item tItem = (Item) GT_Utility.callConstructor("gregtech.common.items.GT_SensorCard_Item", 0, null, false, "sensorcard", "GregTech Sensor Card");
+//        Item tItem = (Item) GTUtility.callConstructor("gregtech.common.items.GT_SensorCard_Item", 0, null, false, "sensorcard", "GregTech Sensor Card");
 //        ItemList.NC_SensorCard.set(tItem == null ? new GenericItem("sensorcard", "GregTech Sensor Card", "Nuclear Control not installed", false) : tItem);
 //
 //        ItemList.Neutron_Reflector.set(new GT_NeutronReflector_Item("neutronreflector", "Iridium Neutron Reflector", 0));

@@ -1,7 +1,6 @@
 package gregtech.api.unification;
 
 import gregtech.api.unification.material.Materials;
-import gregtech.api.util.GT_Utility;
 
 import java.util.ArrayList;
 
@@ -284,9 +283,11 @@ public enum Element {
     }
 
     public static Element get(String materialName) {
-        Object tObject = GT_Utility.getFieldContent(Element.class, materialName, false, false);
-        if (tObject != null && tObject instanceof Element) return (Element) tObject;
-        return H;
+        try {
+            return Element.valueOf(materialName);
+        } catch (IllegalArgumentException notFound) {
+            return H;
+        }
     }
 
     public long getProtons() {

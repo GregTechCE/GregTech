@@ -384,7 +384,7 @@ public class GregtechTileEntity extends TickableTileEntityBase implements IGregT
 //            if (GT_Mod.gregtechproxy.mExplosionItemDrop) {
 //                for (int i = 0; i < this.getSizeInventory(); i++) {
 //                    ItemStack stack = this.getStackInSlot(i);
-//                    if (GT_Utility.isStackValid(stack)) {
+//                    if (GTUtility.isStackValid(stack)) {
 //                        Block.spawnAsEntity(this.worldObj, this.pos, stack);
 //                        this.setInventorySlotContents(i, null);
 //                    }

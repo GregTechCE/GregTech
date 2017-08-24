@@ -12,8 +12,8 @@ import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.items.ItemList;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
 import ic2.core.block.BlockIC2Fence;
 import ic2.core.block.BlockScaffold;
 import ic2.core.block.machine.BlockMiningPipe;
@@ -98,8 +98,8 @@ public class GT_CraftingRecipeLoader implements Runnable {
 
                 ItemStack tStack = GT_ModHandler.removeRecipe(new ItemStack[]{new ItemStack(Blocks.PLANKS, 1, 0), null, null, new ItemStack(Blocks.PLANKS, 1, 0)});
                 if (tStack != null) {
-                        GT_ModHandler.addCraftingRecipe(GT_Utility.copyAmount(GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4, new Object[]{tStack}), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"s", "P", "P", 'P', OrePrefix.plank.get(Materials.Wood)});
-                        GT_ModHandler.addCraftingRecipe(GT_Utility.copyAmount(GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize / 2 : tStack.stackSize, new Object[]{tStack}), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"P", "P", 'P', OrePrefix.plank.get(Materials.Wood)});
+                        GT_ModHandler.addCraftingRecipe(GTUtility.copyAmount(GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4, new Object[]{tStack}), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"s", "P", "P", 'P', OrePrefix.plank.get(Materials.Wood)});
+                        GT_ModHandler.addCraftingRecipe(GTUtility.copyAmount(GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize / 2 : tStack.stackSize, new Object[]{tStack}), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"P", "P", 'P', OrePrefix.plank.get(Materials.Wood)});
                 }
                 GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.WOODEN_PRESSURE_PLATE, 1, 0), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"PP", 'P', OrePrefix.plank.get(Materials.Wood)});
                 GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.STONE_BUTTON, 2, 0), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"S", "S", 'S', OrePrefix.stone});
@@ -247,7 +247,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
                 GT_ModHandler.removeRecipeByOutput(ItemList.Food_Baked_Bread.get(1, new Object[0]));
                 GT_ModHandler.removeRecipeByOutput(new ItemStack(Items.COOKIE, 1));
                 GT_ModHandler.removeRecipe(new ItemStack[]{OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Copper, 1), OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Tin, 1), OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Copper, 1)});
-                if (null != GT_Utility.setStack(GT_ModHandler.getRecipeOutput(true, new ItemStack[]{OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Copper, 1), OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Copper, 1), null, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Copper, 1), OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Tin, 1)}), OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Bronze, GregTechAPI.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "bronzeingotcrafting", true) ? 1 : 2L))) {
+                if (null != GTUtility.setStack(GT_ModHandler.getRecipeOutput(true, new ItemStack[]{OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Copper, 1), OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Copper, 1), null, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Copper, 1), OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Tin, 1)}), OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Bronze, GregTechAPI.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "bronzeingotcrafting", true) ? 1 : 2L))) {
                         GTLog.out.println("GT_Mod: Changed Forestrys Bronze Recipe");
                 }
                 if (GregTechAPI.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "enchantmenttable", false)) {

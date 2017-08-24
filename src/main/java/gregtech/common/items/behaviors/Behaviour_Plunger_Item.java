@@ -4,7 +4,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -34,7 +34,7 @@ public class Behaviour_Plunger_Item
         if ((aTileEntity instanceof IGregTechTileEntity)) {
             IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) aTileEntity).getMetaTileEntity();
             if ((tMetaTileEntity instanceof IMetaTileEntityItemPipe)) {
-                for (Object tTileEntity : GT_Utility.sortMapByValuesAcending(IMetaTileEntityItemPipe.Util.scanPipes((IMetaTileEntityItemPipe) tMetaTileEntity, new HashMap<>(), 0L, false, true)).keySet()) {
+                for (Object tTileEntity : GTUtility.sortMapByValuesAcending(IMetaTileEntityItemPipe.Util.scanPipes((IMetaTileEntityItemPipe) tMetaTileEntity, new HashMap<>(), 0L, false, true)).keySet()) {
                     int i = 0;
                     for (int j = ((IMetaTileEntityItemPipe) tTileEntity).getSizeInventory(); i < j; i++) {
                         if (((IMetaTileEntityItemPipe) tTileEntity).isValidSlot(i)) {
@@ -48,7 +48,7 @@ public class Behaviour_Plunger_Item
                                     tEntity.motionY = 0.0D;
                                     tEntity.motionZ = 0.0D;
                                     aWorld.spawnEntityInWorld(tEntity);
-                                    GT_Utility.sendSoundToPlayers(aWorld, GregTechAPI.sSoundList.get(101), 1.0F, -1.0F, blockPos);
+                                    GTUtility.sendSoundToPlayers(aWorld, GregTechAPI.sSoundList.get(101), 1.0F, -1.0F, blockPos);
                                 }
                                 return true;
                             }

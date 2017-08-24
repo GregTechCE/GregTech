@@ -1,8 +1,8 @@
 package gregtech.common.items.behaviors;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,16 +43,16 @@ public class Behaviour_Lighter
         boolean rOutput = false;
         if (aEntity instanceof EntityCreeper) {
             prepare(aStack);
-            long tFuelAmount = GT_Utility.ItemNBT.getLighterFuel(aStack);
-            if (GT_Utility.areStacksEqual(aStack, this.mUsedLighter, true)) {
-                GT_Utility.sendSoundToPlayers(aPlayer.worldObj, GregTechAPI.sSoundList.get(6), 1.0F, 1.0F, MathHelper.floor_double(aEntity.posX), MathHelper.floor_double(aEntity.posY), MathHelper.floor_double(aEntity.posZ));
+            long tFuelAmount = GTUtility.ItemNBT.getLighterFuel(aStack);
+            if (GTUtility.areStacksEqual(aStack, this.mUsedLighter, true)) {
+                GTUtility.sendSoundToPlayers(aPlayer.worldObj, GregTechAPI.sSoundList.get(6), 1.0F, 1.0F, MathHelper.floor_double(aEntity.posX), MathHelper.floor_double(aEntity.posY), MathHelper.floor_double(aEntity.posZ));
                 ((EntityCreeper) aEntity).ignite();
                 if (!aPlayer.capabilities.isCreativeMode) {
                     tFuelAmount -= 1L;
                 }
                 rOutput = true;
             }
-            GT_Utility.ItemNBT.setLighterFuel(aStack, tFuelAmount);
+            GTUtility.ItemNBT.setLighterFuel(aStack, tFuelAmount);
             if (tFuelAmount <= 0L) {
                 useUp(aStack);
             }
@@ -79,15 +79,15 @@ public class Behaviour_Lighter
         if (aWorld.isAirBlock(clickedBlock))
         {
             prepare(aStack);
-            long tFuelAmount = GT_Utility.ItemNBT.getLighterFuel(aStack);
+            long tFuelAmount = GTUtility.ItemNBT.getLighterFuel(aStack);
 
-            GT_Utility.sendSoundToPlayers(aWorld, GregTechAPI.sSoundList.get(6), 1.0F, 1.0F, clickedBlock.getX(), clickedBlock.getY(), clickedBlock.getZ());
+            GTUtility.sendSoundToPlayers(aWorld, GregTechAPI.sSoundList.get(6), 1.0F, 1.0F, clickedBlock.getX(), clickedBlock.getY(), clickedBlock.getZ());
             aWorld.setBlockState(clickedBlock, Blocks.FIRE.getDefaultState(), 11);
 
             if (!aPlayer.capabilities.isCreativeMode) {
                 tFuelAmount -= 1L;
             }
-            GT_Utility.ItemNBT.setLighterFuel(aStack, tFuelAmount);
+            GTUtility.ItemNBT.setLighterFuel(aStack, tFuelAmount);
             if(tFuelAmount <= 0L) {
                 useUp(aStack);
             }
@@ -97,10 +97,10 @@ public class Behaviour_Lighter
     }
 
     private void prepare(ItemStack aStack) {
-        if (GT_Utility.areStacksEqual(aStack, this.mFullLighter, true)) {
+        if (GTUtility.areStacksEqual(aStack, this.mFullLighter, true)) {
             aStack.setItem(this.mUsedLighter.getItem());
             Items.FEATHER.setDamage(aStack, Items.FEATHER.getDamage(this.mUsedLighter));
-            GT_Utility.ItemNBT.setLighterFuel(aStack, this.mFuelAmount);
+            GTUtility.ItemNBT.setLighterFuel(aStack, this.mFuelAmount);
         }
     }
 

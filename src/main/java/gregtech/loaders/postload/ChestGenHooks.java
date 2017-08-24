@@ -1,7 +1,7 @@
 package gregtech.loaders.postload;
 
 import com.google.common.collect.Lists;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootContext;
@@ -60,7 +60,7 @@ public class ChestGenHooks {
                         return stack;
                     }
                 }
-        }, NO_CONDITIONS, "#loot_" + GT_Utility.stackToIntHash(item));
+        }, NO_CONDITIONS, "#loot_" + GTUtility.stackToIntHash(item));
         if(lootEntryItems.containsKey(loottable)) {
             lootEntryItems.get(loottable).add(itemEntry);
         } else {

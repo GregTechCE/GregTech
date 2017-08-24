@@ -1,63 +1,5 @@
 package gregtech.common;
 
-import gregtech.api.GTValues;
-import gregtech.api.GregTechAPI;
-import gregtech.api.items.OreDictNames;
-import gregtech.api.items.ToolDictNames;
-import gregtech.api.metatileentity.IMetaTileEntity;
-import gregtech.api.unification.OreDictionaryUnifier;
-import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefix;
-import gregtech.api.unification.stack.ItemMaterialInfo;
-import gregtech.api.util.GTLog;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.items.MetaTool;
-import ic2.core.block.wiring.CableType;
-import ic2.core.item.ItemIC2FluidContainer;
-import ic2.core.ref.ItemName;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Enchantments;
-import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.GameType;
-import net.minecraft.world.gen.feature.WorldGenMinable;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.EnderTeleportEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.terraingen.OreGenEvent;
-import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.event.world.ChunkDataEvent;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.ModContainer;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import net.minecraftforge.fml.common.eventhandler.Event;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.oredict.OreDictionary;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-
 public class EventHandlers {
 
 //	private final Collection<String> mIgnoredItems = new HashSet<String>(Arrays.asList("itemGhastTear", "itemFlint", "itemClay", "itemBucketSaltWater",
@@ -180,7 +122,7 @@ public class EventHandlers {
 //						if (tSmeltingOutput != null) {
 //							tDrop.stackSize *= tSmeltingOutput.stackSize;
 //							tSmeltingOutput.stackSize = tDrop.stackSize;
-//							GT_Utility.setStack(tDrop, tSmeltingOutput);
+//							GTUtility.setStack(tDrop, tSmeltingOutput);
 //						}
 //					}
 //				}
@@ -195,7 +137,7 @@ public class EventHandlers {
 //		}
 //		OreDictionaryUnifier.addToBlacklist(aFluidEvent.getData().emptyContainer);
 //		OreDictionaryUnifier.addToBlacklist(aFluidEvent.getData().filledContainer);
-//		GT_Utility.addFluidContainerData(aFluidEvent.getData());
+//		GTUtility.addFluidContainerData(aFluidEvent.getData());
 //	}
 //
 //	@SubscribeEvent
@@ -266,7 +208,7 @@ public class EventHandlers {
 //				aEvent.player.setGameType(GameType.ADVENTURE);
 //				aEvent.player.capabilities.allowEdit = false;
 //				if (this.mAxeWhenAdventure) {
-//					GT_Utility.sendChatToPlayer(aEvent.player, "It's dangerous to go alone! Take this.");
+//					GTUtility.sendChatToPlayer(aEvent.player, "It's dangerous to go alone! Take this.");
 //					aEvent.player.worldObj.spawnEntityInWorld(new EntityItem(aEvent.player.worldObj, aEvent.player.posX, aEvent.player.posY,
 //							aEvent.player.posZ, MetaTool.INSTANCE.getToolWithStats(MetaTool.AXE, 1, Materials.Flint, Materials.Wood, null)));
 //				}
@@ -278,13 +220,13 @@ public class EventHandlers {
 //					ItemStack tStack;
 //					if ((tStack = aEvent.player.inventory.getStackInSlot(i)) != null) {
 //						if (!aEvent.player.capabilities.isCreativeMode) {
-//							GT_Utility.applyRadioactivity(aEvent.player, GT_Utility.getRadioactivityLevel(tStack), tStack.stackSize);
-//							float tHeat = GT_Utility.getHeatDamageFromItem(tStack);
+//							GTUtility.applyRadioactivity(aEvent.player, GTUtility.getRadioactivityLevel(tStack), tStack.stackSize);
+//							float tHeat = GTUtility.getHeatDamageFromItem(tStack);
 //							if (tHeat != 0.0F) {
 //								if (tHeat > 0.0F) {
-//									GT_Utility.applyHeatDamage(aEvent.player, tHeat);
+//									GTUtility.applyHeatDamage(aEvent.player, tHeat);
 //								} else {
-//									GT_Utility.applyFrostDamage(aEvent.player, -tHeat);
+//									GTUtility.applyFrostDamage(aEvent.player, -tHeat);
 //								}
 //							}
 //						}
@@ -300,13 +242,13 @@ public class EventHandlers {
 //					ItemStack tStack;
 //					if ((tStack = aEvent.player.inventory.armorInventory[i]) != null) {
 //						if (!aEvent.player.capabilities.isCreativeMode) {
-//							GT_Utility.applyRadioactivity(aEvent.player, GT_Utility.getRadioactivityLevel(tStack), tStack.stackSize);
-//							float tHeat = GT_Utility.getHeatDamageFromItem(tStack);
+//							GTUtility.applyRadioactivity(aEvent.player, GTUtility.getRadioactivityLevel(tStack), tStack.stackSize);
+//							float tHeat = GTUtility.getHeatDamageFromItem(tStack);
 //							if (tHeat != 0.0F) {
 //								if (tHeat > 0.0F) {
-//									GT_Utility.applyHeatDamage(aEvent.player, tHeat);
+//									GTUtility.applyHeatDamage(aEvent.player, tHeat);
 //								} else {
-//									GT_Utility.applyFrostDamage(aEvent.player, -tHeat);
+//									GTUtility.applyFrostDamage(aEvent.player, -tHeat);
 //								}
 //							}
 //						}

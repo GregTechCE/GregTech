@@ -3,7 +3,7 @@ package gregtech.api.items.metaitem.nuclear;
 import gregtech.api.items.metaitem.stats.IItemBehaviour;
 import gregtech.api.items.metaitem.stats.IItemDurabilityManager;
 import gregtech.api.items.metaitem.stats.INuclearStats;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
 import net.minecraft.entity.Entity;
@@ -185,7 +185,7 @@ public class FuelCellStats implements INuclearStats, IItemDurabilityManager, IIt
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int slotIndex, boolean isCurrentItem) {
         if(entity instanceof EntityLivingBase) {
-            GT_Utility.applyRadioactivity((EntityLivingBase) entity, (int) (1 + (breederMultiplier != -1.0f ? breederMultiplier : 0)), numberOfCells);
+            GTUtility.applyRadioactivity((EntityLivingBase) entity, (int) (1 + (breederMultiplier != -1.0f ? breederMultiplier : 0)), numberOfCells);
         }
     }
 

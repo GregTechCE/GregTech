@@ -29,7 +29,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * XSTR - Xorshift ThermiteRandom
- * Modified by Bogdan-G
  * 03.06.2016
  * version 0.0.4
  */

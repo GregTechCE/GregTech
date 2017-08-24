@@ -23,7 +23,7 @@ public class Behaviour_Plunger_Essentia
         /*TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (((aTileEntity instanceof IEssentiaTransport)) && (
                 (aPlayer.capabilities.isCreativeMode) || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts)))) {
-            GT_Utility.sendSoundToPlayers(aWorld, (String) GregTechAPI.sSoundList.get(Integer.valueOf(101)), 1.0F, -1.0F, aX, aY, aZ);
+            GTUtility.sendSoundToPlayers(aWorld, (String) GregTechAPI.sSoundList.get(Integer.valueOf(101)), 1.0F, -1.0F, aX, aY, aZ);
             for (ForgeDirection tDirection : ForgeDirection.VALID_DIRECTIONS) {
                 ((IEssentiaTransport) aTileEntity).takeEssentia(((IEssentiaTransport) aTileEntity).getEssentiaType(tDirection), ((IEssentiaTransport) aTileEntity).getEssentiaAmount(tDirection), tDirection);
             }

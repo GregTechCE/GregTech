@@ -1,9 +1,8 @@
 package gregtech.api.metatileentity;
 
 import gregtech.api.capability.IEnergyContainer;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -72,7 +71,7 @@ public abstract class EnergyMetaTileEntity extends PaintableMetaTileEntity imple
         long canAccept = getEnergyCapacity() - getEnergyStored();
         if(inputsEnergy(side) || side == null) {
             if(voltage > getInputVoltage()) {
-                doExplosion(GT_Utility.getTier(voltage));
+                doExplosion(GTUtility.getTier(voltage));
                 return Math.min(amperage, getInputAmperage());
             }
             if(canAccept >= voltage) {

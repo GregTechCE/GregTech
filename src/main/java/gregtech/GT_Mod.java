@@ -200,8 +200,8 @@ public class GT_Mod {
 
 //        GTLog.out.println("GT_Mod: Removing all original Scrapbox Drops.");
 //        try {
-//            GT_Utility.getField("ic2.core.item.ItemScrapbox$Drop", "topChance", true, true).set(null, Integer.valueOf(0));
-//            ((List) GT_Utility.getFieldContent(GT_Utility.getFieldContent("ic2.api.recipe.Recipes", "scrapboxDrops", true, true), "drops", true, true)).clear();
+//            GTUtility.getField("ic2.core.item.ItemScrapbox$Drop", "topChance", true, true).set(null, Integer.valueOf(0));
+//            ((List) GTUtility.getFieldContent(GTUtility.getFieldContent("ic2.api.recipe.Recipes", "scrapboxDrops", true, true), "drops", true, true)).clear();
 //        } catch (Throwable e) {
 //            if (GTValues.D1) {
 //                e.printStackTrace(GTLog.err);
@@ -250,7 +250,7 @@ public class GT_Mod {
 //        if (gregtechproxy.mSortToTheEnd) {
 //            try {
 //                GTLog.out.println("GT_Mod: Sorting GregTech to the end of the Mod List for further processing.");
-//                LoadController tLoadController = (LoadController) GT_Utility.getFieldContent(Loader.instance(), "modController", true, true);
+//                LoadController tLoadController = (LoadController) GTUtility.getFieldContent(Loader.instance(), "modController", true, true);
 //                List<ModContainer> tModList = tLoadController.getActiveModList();
 //                List<ModContainer> tNewModsList = new ArrayList();
 //                ModContainer tGregTech = null;
@@ -266,7 +266,7 @@ public class GT_Mod {
 //                if (tGregTech != null) {
 //                    tNewModsList.add(tGregTech);
 //                }
-//                GT_Utility.getField(tLoadController, "activeModList", true, true).set(tLoadController, tNewModsList);
+//                GTUtility.getField(tLoadController, "activeModList", true, true).set(tLoadController, tNewModsList);
 //            } catch (Throwable e) {
 //                if (GTValues.D1) {
 //                    e.printStackTrace(GTLog.err);
@@ -371,7 +371,7 @@ public class GT_Mod {
 //                GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes.addRecipe(true, new ItemStack[]{ISdata0}, new ItemStack[]{ILdata0}, null, null, null, 4, 1, 0);
 //            } else {
 //                GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes.addRecipe(true, new ItemStack[]{tData.emptyContainer}, new ItemStack[]{tData.filledContainer}, null, new FluidStack[]{tData.fluid}, null, tData.fluid.amount / 62, 1, 0);
-//                GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes.addRecipe(true, new ItemStack[]{tData.filledContainer}, new ItemStack[]{GT_Utility.getContainerItem(tData.filledContainer, true)}, null, null, new FluidStack[]{tData.fluid}, tData.fluid.amount / 62, 1, 0);
+//                GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes.addRecipe(true, new ItemStack[]{tData.filledContainer}, new ItemStack[]{GTUtility.getContainerItem(tData.filledContainer, true)}, null, null, new FluidStack[]{tData.fluid}, tData.fluid.amount / 62, 1, 0);
 //            }
 //        }
 //        try {
@@ -562,9 +562,9 @@ public class GT_Mod {
 //        for (IMachineRecipeManager.RecipeIoContainer recipeIoContainer : Recipes.macerator.getRecipes()) {
 //            if (recipeIoContainer.output.items.size() > 0) {
 //                for (ItemStack tStack : recipeIoContainer.input.getInputs()) {
-//                    if (GT_Utility.isStackValid(tStack)) {
+//                    if (GTUtility.isStackValid(tStack)) {
 //                        GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.addFakeRecipe(true,
-//                                new ItemStack[]{GT_Utility.copyAmount(recipeIoContainer.input.getAmount(), tStack)},
+//                                new ItemStack[]{GTUtility.copyAmount(recipeIoContainer.input.getAmount(), tStack)},
 //                                new ItemStack[]{recipeIoContainer.output.items.get(0)}, null, null, null, null, 400, 2, 0);
 //                    }
 //                }
@@ -572,8 +572,8 @@ public class GT_Mod {
 //        }
 //
 //        if(GregTechAPI.mOutputRF|| GregTechAPI.mInputRF){
-//            GT_Utility.checkAvailabilities();
-//            if(!GT_Utility.RF_CHECK){
+//            GTUtility.checkAvailabilities();
+//            if(!GTUtility.RF_CHECK){
 //                GregTechAPI.mOutputRF = false;
 //                GregTechAPI.mInputRF = false;
 //            }

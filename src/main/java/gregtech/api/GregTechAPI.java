@@ -64,8 +64,7 @@ public class GregTechAPI {
      * Registered tool items list
      * Damageable and electric items are accepted.
      */
-    public static final HashSet<SimpleItemStack> sToolList = new HashSet<>(),
-            crowbarList = new HashSet<>(),
+    public static final HashSet<SimpleItemStack> crowbarList = new HashSet<>(),
             screwdriverList = new HashSet<>(),
             wrenchList = new HashSet<>(),
             softHammerList = new HashSet<>(),
@@ -76,12 +75,12 @@ public class GregTechAPI {
     /**
      * The List of Hazmat Armors
      */
-    public static final HashSet<SimpleItemStack> sGasHazmatList = new HashSet<>(),
-            sBioHazmatList = new HashSet<>(),
-            sFrostHazmatList = new HashSet<>(),
-            sHeatHazmatList = new HashSet<>(),
-            sRadioHazmatList = new HashSet<>(),
-            sElectroHazmatList = new HashSet<>();
+    public static final HashSet<SimpleItemStack> gasHazmatList = new HashSet<>(),
+            bioHazmatList = new HashSet<>(),
+            frostHazmatList = new HashSet<>(),
+            heatHazmatList = new HashSet<>(),
+            radioHazmatList = new HashSet<>(),
+            electroHazmatList = new HashSet<>();
 
     /**
      * The List of Dimensions, which are Whitelisted for the Teleporter. This list should not contain other Planets.
