@@ -110,8 +110,8 @@ public class Recipe {
 			amount = stackInput.stackSize;
 			boolean temp = true;
 			for (ItemStack stack : inputs) {
-				if ((GTUtility.areUnificationsEqual(stack, stackInput, true)
-						|| GTUtility.areUnificationsEqual(OreDictionaryUnifier.getUnificated(stack), stackInput, true))) {
+				if ((GTUtility.areUnificationEqual(stack, stackInput)
+						|| GTUtility.areUnificationEqual(OreDictionaryUnifier.getUnificated(stack), stackInput))) {
 					if (dontCheckStackSizes) {
 						temp = false;
 						break;
@@ -154,8 +154,8 @@ public class Recipe {
 				for (ItemStack stack : this.inputs) {
 					amount = stack.stackSize;
 					for (ItemStack tmpStack : inputs) {
-						if ((GTUtility.areUnificationsEqual(tmpStack, stack, true)
-								|| GTUtility.areUnificationsEqual(OreDictionaryUnifier.getUnificated(tmpStack), stack, true))) {
+						if ((GTUtility.areUnificationEqual(tmpStack, stack)
+								|| GTUtility.areUnificationEqual(OreDictionaryUnifier.getUnificated(tmpStack), stack))) {
 							if (dontCheckStackSizes) {
 								tmpStack.stackSize -= amount;
 								break;

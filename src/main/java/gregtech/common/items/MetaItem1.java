@@ -53,28 +53,6 @@ public class MetaItem1 extends MaterialMetaItem {
 				OrePrefix.stick, OrePrefix.lens, OrePrefix.round, OrePrefix.bolt, OrePrefix.screw, OrePrefix.ring, OrePrefix.foil,
 				OrePrefix.cell, OrePrefix.cellPlasma, null);
 
-		//it's here because OrePrefix.cell is handled by gt.metaitem.01
-//		Cell_Empty = OreDictionaryUnifier.get(OrePrefix.cell, null);
-//		Cell_Air = OreDictionaryUnifier.get(OrePrefix.cell, Materials.Air);
-//		Cell_Water = OreDictionaryUnifier.get(OrePrefix.cell, Materials.Water);
-//		Cell_Lava = OreDictionaryUnifier.get(OrePrefix.cell, Materials.Lava);
-//
-//		OrePrefix.cellPlasma.containerItem = Cell_Empty.getStackForm();
-//		OrePrefix.cell.containerItem = Cell_Empty.getStackForm();
-
-		//17000 -> OrePrefix.plate
-		int woodItemMeta = 17000 + Material.MATERIAL_REGISTRY.getIDForObject(Materials.Wood);
-//		addItem(woodItemMeta, "").setBurnValue(1600);
-		ModHandler.IC2.addCompressionRecipe(OreDictionaryUnifier.getDust(Materials.Wood, 8), new ItemStack(this, 1, woodItemMeta));
-
-		ItemStack stack = new ItemStack(this, 1, woodItemMeta);
-		stack.setStackDisplayName("The holy Planks of Sengir");
-		GTUtility.ItemNBT.addEnchantment(stack, Enchantments.SMITE, 10);
-		ModHandler.addShapedRecipe(stack,
-				"XXX", "XDX", "XXX",
-				'X', OreDictionaryUnifier.getGem(Materials.NetherStar, 1),
-				'D', new ItemStack(Blocks.DRAGON_EGG, 1, OreDictionary.WILDCARD_VALUE));
-
 		CREDIT_COPPER = addItem(0, "credit.copper");
 		CREDIT_CUPRONICKEL = addItem(1, "credit.cupronickel").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Cupronickel, 907200L)));
 		CREDIT_SILVER = addItem(2, "credit.silver");

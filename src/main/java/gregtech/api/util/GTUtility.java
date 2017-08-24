@@ -13,12 +13,14 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
@@ -161,6 +163,15 @@ public class GTUtility {
 
     public static void playSound(EntityPlayer player, World world, double x, double y, double z, ResourceLocation soundName, SoundCategory category, float strength, float modulation) {
         world.playSound(player, x, y, z, SoundEvent.REGISTRY.getObject(soundName), category, strength, modulation);
+    }
+
+    public static void setCoordsOnFire(World world, BlockPos pos) {
+        for(EnumFacing side : EnumFacing.VALUES) {
+            BlockPos offset = pos.offset(side);
+            if(world.getBlockState(offset).getBlock().isReplaceable(world, offset)) {
+                world.setBlockState(offset, Blocks.FIRE.getDefaultState());
+            }
+        }
     }
 
     public static boolean isWearingFullSuit(EntityLivingBase entity, Set<SimpleItemStack> suitParts) {

@@ -18,6 +18,7 @@ import ic2.core.ref.ItemName;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -900,7 +901,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * @return if this Item is a valid Input for any for the Recipes
 	 */
 	public boolean containsInput(ItemStack stack) {
-		return stack != null && (recipeItemMap.containsKey(new SimpleItemStack(stack)) || recipeItemMap.containsKey(new SimpleItemStack(GTUtility.copyMetaData(W, stack))));
+		return stack != null && (recipeItemMap.containsKey(new SimpleItemStack(stack)) || recipeItemMap.containsKey(new SimpleItemStack(stack.getItem(), W)));
 	}
 
 	/**
@@ -998,7 +999,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 							}
 						}
 					}
-					recipes = recipeItemMap.get(new SimpleItemStack(GTUtility.copyMetaData(W, stack)));
+					recipes = recipeItemMap.get(new SimpleItemStack(stack.getItem(), W));
 					if (recipes != null) {
 						for (T tmpRecipe : recipes) {
 							if (tmpRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) {
@@ -1217,16 +1218,14 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 //						.build();
 //			}
 
-			// Check Container Item of Input since it is around the Input, then the Input itself, then Container Item of Output and last check the Output itself
-//			for (ItemStack stack : new ItemStack[]{GTUtility.getContainerItem(inputs[0], true), inputs[0], GTUtility.getContainerItem(output, true), output}) {
 			for (ItemStack stack : new ItemStack[]{inputs[0], output}) {
 				if (stack != null) {
-					if (GTUtility.areStacksEqual(stack, new ItemStack(Blocks.NETHERRACK, 1, W), true)
-							|| GTUtility.areStacksEqual(stack, new ItemStack(Blocks.TNT, 1, W), true)
-							|| GTUtility.areStacksEqual(stack, new ItemStack(Items.EGG, 1, W), true)
-							|| GTUtility.areStacksEqual(stack, new ItemStack(Items.FIREWORK_CHARGE, 1, W), true)
-							|| GTUtility.areStacksEqual(stack, new ItemStack(Items.FIREWORKS, 1, W), true)
-							|| GTUtility.areStacksEqual(stack, new ItemStack(Items.FIRE_CHARGE, 1, W), true)
+					if (stack.getItem() == Item.getItemFromBlock(Blocks.NETHERRACK)
+							|| stack.getItem() == Item.getItemFromBlock(Blocks.TNT)
+							|| stack.getItem() == Items.EGG
+							|| stack.getItem() == Items.FIREWORK_CHARGE
+							|| stack.getItem() == Items.FIRE_CHARGE
+							|| stack.getItem() == Items.FIREWORKS
 							) {
 						if (tileEntity instanceof GregtechTileEntity)
 							((GregtechTileEntity) tileEntity).doExplosion(voltage * 4);
@@ -1243,7 +1242,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 								return null;
 							}
 							if (materialStack.material.hasFlag(Material.MatFlags.FLAMMABLE)) {
-								GTUtility.setCoordsOnFire(tileEntity.getWorld(), tileEntity.getPos(), false);
+								GTUtility.setCoordsOnFire(tileEntity.getWorld(), tileEntity.getPos());
 								return null;
 							}
 						}
@@ -1255,13 +1254,13 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 									return null;
 								}
 								if (material.material.hasFlag(Material.MatFlags.FLAMMABLE)) {
-									GTUtility.setCoordsOnFire(tileEntity.getWorld(), tileEntity.getPos(), false);
+									GTUtility.setCoordsOnFire(tileEntity.getWorld(), tileEntity.getPos());
 									return null;
 								}
 							}
 					}
 					if (TileEntityFurnace.getItemBurnTime(stack) > 0) {
-						GTUtility.setCoordsOnFire(tileEntity.getWorld(), tileEntity.getPos(), false);
+						GTUtility.setCoordsOnFire(tileEntity.getWorld(), tileEntity.getPos());
 						return null;
 					}
 

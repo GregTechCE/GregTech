@@ -71,7 +71,7 @@ public abstract class EnergyMetaTileEntity extends PaintableMetaTileEntity imple
         long canAccept = getEnergyCapacity() - getEnergyStored();
         if(inputsEnergy(side) || side == null) {
             if(voltage > getInputVoltage()) {
-                doExplosion(GTUtility.getTier(voltage));
+                doExplosion(GTUtility.getTierByVoltage(voltage));
                 return Math.min(amperage, getInputAmperage());
             }
             if(canAccept >= voltage) {

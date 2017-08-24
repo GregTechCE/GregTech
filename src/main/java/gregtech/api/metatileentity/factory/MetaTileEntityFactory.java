@@ -1,9 +1,11 @@
 package gregtech.api.metatileentity.factory;
 
 import com.google.common.base.Throwables;
+import gregtech.api.GregTechAPI;
 import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.IMetaTileEntityFactory;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.common.blocks.BlockMachine;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -15,14 +17,16 @@ import java.io.File;
 
 public class MetaTileEntityFactory<T extends MetaTileEntity> implements IMetaTileEntityFactory {
 
-    private byte baseTileEntityType;
+    private BlockMachine.ToolClass toolClass;
+    private int harvestLevel;
     private String[] description;
     protected Class<T> metaTileEntityClass;
     protected ResourceLocation modelLocation;
     protected IBlockState defaultState;
 
-    public MetaTileEntityFactory(byte baseTileEntityType, Class<T> metaTileEntityClass, ResourceLocation modelLocation, IBlockState defaultState, String... description) {
-        this.baseTileEntityType = baseTileEntityType;
+    public MetaTileEntityFactory(BlockMachine.ToolClass toolClass, int harvestLevel, String[] description, Class<T> metaTileEntityClass, ResourceLocation modelLocation, IBlockState defaultState) {
+        this.toolClass = toolClass;
+        this.harvestLevel = harvestLevel;
         this.description = description;
         this.metaTileEntityClass = metaTileEntityClass;
         this.modelLocation = modelLocation;
@@ -30,8 +34,23 @@ public class MetaTileEntityFactory<T extends MetaTileEntity> implements IMetaTil
     }
 
     @Override
-    public byte getTileEntityBaseType() {
-        return baseTileEntityType;
+    public BlockMachine.ToolClass getHarvestTool() {
+        return toolClass;
+    }
+
+    @Override
+    public int getHarvestLevel() {
+        return harvestLevel;
+    }
+
+    @Override
+    public String getMetaName() {
+        return GregTechAPI.METATILEENTITY_REGISTRY.getNameForObject(this);
+    }
+
+    @Override
+    public String getUnlocalizedName() {
+        return "machine." + getMetaName();
     }
 
     @Override

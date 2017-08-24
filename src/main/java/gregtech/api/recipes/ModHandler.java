@@ -197,20 +197,6 @@ public class ModHandler {
 //        }
     }
 
-    /**
-     * IC2-Extractor Recipe. Overrides old Recipe
-     */
-    public static void addExtractionRecipe(ItemStack input, ItemStack output) {
-        output = OreDictionaryUnifier.getUnificated(output);
-
-        Validate.notNull(input, "Input cannot be null");
-        Validate.notNull(output, "Output cannot be null");
-
-        GTUtility.removeSimpleIC2MachineRecipe(input, Recipes.extractor.getRecipes(), null);
-//        if (!GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.extractor, input, true)) return;
-        GTUtility.addSimpleIC2MachineRecipe(input, Recipes.extractor, null, output);
-    }
-
     ///////////////////////////////////////////////////
     //              Crafting Recipe Helpers          //
     ///////////////////////////////////////////////////
@@ -614,7 +600,7 @@ public class ModHandler {
      * Uses an Item. Tries to discharge in case of Electric Items
      */
     public static boolean damageOrDechargeItem(ItemStack stack, int damage, int decharge, EntityLivingBase player) {
-        if (!GTUtility.isStackValid(stack) || (stack.getMaxStackSize() <= 1 && stack.stackSize > 1)) return false;
+        if (stack == null || (stack.getMaxStackSize() <= 1 && stack.stackSize > 1)) return false;
 
         if (player != null && player instanceof EntityPlayer && ((EntityPlayer) player).capabilities.isCreativeMode) {
             return true;
@@ -781,119 +767,8 @@ public class ModHandler {
             return ModHandler.IC2.getIC2Item(ItemName.crafting, CraftingItemType.scrap, amount);
         }
 
-        /**
-         * IC2-ThermalCentrifuge Recipe. Overloads old Recipes automatically
-         */
-        public static void addThermalCentrifugeRecipe(ItemStack input, int heat, ItemStack... output) {
-            Validate.notNull(input, "Input cannot be null");
-            Validate.notNull(output, "Output cannot be null");
-            Validate.isTrue(output.length > 0, "Output cannot be empty");
-            Validate.notNull(output[0], "Output cannot be null");
-
-            GTUtility.removeSimpleIC2MachineRecipe(input, Recipes.centrifuge.getRecipes(), null);
-//            if (!GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.thermalcentrifuge, input, true))
-//                return;
-
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setInteger("minHeat", heat);
-            GTUtility.addSimpleIC2MachineRecipe(input, Recipes.centrifuge, tag, output);
-        }
-
-        /**
-         * IC2-OreWasher Recipe. Overloads old Recipes automatically
-         */
-        public static void addOreWasherRecipe(ItemStack input, int waterAmount, ItemStack... output) {
-            Validate.notNull(input, "Input cannot be null");
-            Validate.notNull(output, "Output cannot be null");
-            Validate.isTrue(output.length > 0, "Output cannot be empty");
-            Validate.notNull(output[0], "Output cannot be null");
-
-            GTUtility.removeSimpleIC2MachineRecipe(input, Recipes.oreWashing.getRecipes(), null);
-//            if (!GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.orewashing, input, true))
-//                return;
-
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setInteger("amount", waterAmount);
-            GTUtility.addSimpleIC2MachineRecipe(input, Recipes.oreWashing, tag, output);
-        }
-
-        /**
-         * IC2-Compressor Recipe. Overloads old Recipes automatically
-         */
-        public static void addCompressionRecipe(ItemStack input, ItemStack output) {
-            output = OreDictionaryUnifier.getUnificated(output);
-            Validate.notNull(input, "Input cannot be null");
-            Validate.notNull(output, "Output cannot be null");
-
-            GTUtility.removeSimpleIC2MachineRecipe(input, Recipes.compressor.getRecipes(), null);
-//            if (!GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.compression, input, true))
-//                return;
-
-            GTUtility.addSimpleIC2MachineRecipe(input, Recipes.compressor, null, output);
-        }
-
-        /**
-         * @param value Scrap = 5000, Scrapbox = 45000, Diamond Dust 125000
-         */
-        public static void addIC2MatterAmplifier(ItemStack amplifier, int value) {
-            Validate.notNull(amplifier, "Amplifier cannot be null");
-            Validate.isTrue(value > 0, "Amplifier value cannot be less or equal to zero");
-
-//            if (!GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.massfabamplifier, amplifier, true))
-//                return;
-
-            try {
-                NBTTagCompound tag = new NBTTagCompound();
-                tag.setInteger("amplification", value);
-                GTUtility.callMethod(Recipes.matterAmplifier, "addRecipe", false, false, false, amplifier, tag);
-            } catch (Throwable e) {/*Do nothing*/}
-        }
-
-        /**
-         * Used in my own Machines. Decreases StackSize of the Input if wanted.
-         * <p/>
-         * Checks also if there is enough Space in the Output Slots.
-         */
-        public static ItemStack[] getMachineOutput(ItemStack input, Iterable<IMachineRecipeManager.RecipeIoContainer> recipeList, boolean removeInput, NBTTagCompound recipeMetaData, ItemStack... outputSlots) {
-            if (outputSlots == null || outputSlots.length <= 0) return new ItemStack[0];
-            if (input == null) return new ItemStack[outputSlots.length];
-
-            for (IMachineRecipeManager.RecipeIoContainer entry : recipeList) {
-                if (entry.input.matches(input)) {
-                    if (entry.input.getAmount() <= input.stackSize) {
-
-                        ItemStack[] stackList = entry.output.items.toArray(new ItemStack[entry.output.items.size()]);
-                        if (stackList.length == 0) break;
-
-                        ItemStack[] slotList = new ItemStack[outputSlots.length];
-                        if (entry.output.metadata != null) {
-                            recipeMetaData.setTag("return", entry.output.metadata);
-                        }
-
-                        for (byte i = 0; i < outputSlots.length && i < stackList.length; i++) {
-                            if (stackList[i] != null) {
-                                if (outputSlots[i] == null || (GTUtility.areStacksEqual(stackList[i], outputSlots[i]) && stackList[i].stackSize + outputSlots[i].stackSize <= outputSlots[i].getMaxStackSize())) {
-                                    slotList[i] = GTUtility.copy(stackList[i]);
-                                } else {
-                                    return new ItemStack[outputSlots.length];
-                                }
-                            }
-                        }
-
-                        if (removeInput) input.stackSize -= entry.input.getAmount();
-                        return slotList;
-                    }
-                    break;
-                }
-            }
-            return new ItemStack[outputSlots.length];
-        }
-
     }
 
-    /**
-     * Copy of the original Helper Class of Thermal Expansion, just to make sure it works even when other Mods include TE-APIs
-     */
     public static class ThermalExpansion {
 
         /**
@@ -1131,4 +1006,5 @@ public class ModHandler {
             FMLInterModComms.sendMessage("ThermalExpansion", "Coolant", toSend);
         }
     }
+
 }
