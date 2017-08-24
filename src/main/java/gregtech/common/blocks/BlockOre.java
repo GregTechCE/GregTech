@@ -1,6 +1,7 @@
 package gregtech.common.blocks;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.StoneType;
 import net.minecraft.block.Block;
@@ -20,9 +21,9 @@ public class BlockOre extends Block {
     public static final PropertyBool SMALL = PropertyBool.create("small");
     public static final PropertyEnum<StoneType> STONE_TYPE = PropertyEnum.create("stone_type", StoneType.class);
 
-    public final SolidMaterial material;
+    public final DustMaterial material;
 
-    public BlockOre(SolidMaterial material) {
+    public BlockOre(DustMaterial material) {
         super(net.minecraft.block.material.Material.ROCK);
         setSoundType(SoundType.STONE);
         setHardness(3.0f);
@@ -54,10 +55,10 @@ public class BlockOre extends Block {
         StoneType stoneType = state.getValue(STONE_TYPE);
         boolean small = state.getValue(SMALL);
         if(material instanceof SolidMaterial) {
-            int toolQuality = material.toolQuality;
+            int toolQuality = ((SolidMaterial) material).toolQuality;
             return Math.max(stoneType.stoneMaterial.toolQuality, toolQuality > 1 ? toolQuality - 1 : toolQuality);
         }
-        return 0;
+        return 1;
     }
 
     @Override

@@ -16,12 +16,12 @@ public class PropertyMaterial extends PropertyHelper<Material> {
 
 	private final ImmutableList<Material> allowedValues;
 
-	protected PropertyMaterial(String name, Collection<Material> allowedValues) {
+	protected PropertyMaterial(String name, Collection<? extends Material> allowedValues) {
 		super(name, Material.class);
 		this.allowedValues = ImmutableList.copyOf(allowedValues);
 	}
 
-	public static PropertyMaterial create(String name, Collection<Material> allowedValues) {
+	public static PropertyMaterial create(String name, Collection<? extends Material> allowedValues) {
 		return new PropertyMaterial(name, allowedValues);
 	}
 

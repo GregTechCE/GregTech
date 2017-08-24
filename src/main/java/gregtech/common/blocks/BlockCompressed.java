@@ -23,7 +23,7 @@ public final class BlockCompressed extends DelayedStateBlock {
 
     public final PropertyMaterial variantProperty;
 
-    public BlockCompressed(Collection<Material> materials) {
+    public BlockCompressed(Collection<? extends Material> materials) {
         super(net.minecraft.block.material.Material.IRON);
         setHardness(5.0f);
         setResistance(10.0f);
