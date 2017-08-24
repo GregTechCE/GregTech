@@ -23,9 +23,9 @@ import net.minecraft.item.ItemStack;
 
 import static gregtech.common.items.MetaItems.*;
 
-public class MataItem2 extends MaterialMetaItem {
+public class MetaItem2 extends MaterialMetaItem {
 
-    public MataItem2() {
+    public MetaItem2() {
         super(OrePrefix.toolHeadSword, OrePrefix.toolHeadPickaxe, OrePrefix.toolHeadShovel, OrePrefix.toolHeadAxe,
                 OrePrefix.toolHeadHoe, OrePrefix.toolHeadHammer, OrePrefix.toolHeadFile, OrePrefix.toolHeadSaw,
                 OrePrefix.toolHeadDrill, OrePrefix.toolHeadChainsaw, OrePrefix.toolHeadWrench, OrePrefix.toolHeadUniversalSpade,

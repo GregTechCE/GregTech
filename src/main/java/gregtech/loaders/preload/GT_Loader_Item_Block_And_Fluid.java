@@ -1,7 +1,7 @@
 package gregtech.loaders.preload;
 
 import gregtech.api.util.GTLog;
-import gregtech.common.items.MataItem2;
+import gregtech.common.items.MetaItem2;
 import gregtech.common.items.MetaItem1;
 import gregtech.common.items.MetaTool;
 
@@ -15,7 +15,7 @@ public class GT_Loader_Item_Block_And_Fluid
 
 //        new GT_IntegratedCircuit_Item();
         new MetaItem1();
-        new MataItem2();
+        new MetaItem2();
         new MetaTool();
 
 //        new GT_Loader_OreDictionary().run();

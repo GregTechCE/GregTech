@@ -7,6 +7,10 @@ public final class MetaItems {
 
 	private MetaItems() {}
 
+	public static MetaItem1 META_ITEM_FIRST;
+	public static MetaItem2 META_ITEM_SECOND;
+	public static MetaTool META_TOOL;
+
 	public static MetaItem<?>.MetaValueItem CREDIT_COPPER;
 	public static MetaItem<?>.MetaValueItem CREDIT_CUPRONICKEL;
 	public static MetaItem<?>.MetaValueItem CREDIT_SILVER;
@@ -470,4 +474,14 @@ public final class MetaItems {
 	public static ToolMetaItem<?>.MetaToolValueItem TURBINE_NORMAL;
 	public static ToolMetaItem<?>.MetaToolValueItem TURBINE_LARGE;
 	public static ToolMetaItem<?>.MetaToolValueItem TURBINE_HUGE;
+
+	public static void init() {
+        META_ITEM_FIRST = new MetaItem1();
+        META_ITEM_FIRST.registerItem("meta_item_1");
+        META_ITEM_SECOND = new MetaItem2();
+        META_ITEM_SECOND.registerItem("meta_item_2");
+        META_TOOL = new MetaTool();
+        META_TOOL.registerItem("meta_tool");
+	}
+
 }
