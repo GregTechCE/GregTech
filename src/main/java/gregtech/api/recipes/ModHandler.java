@@ -229,8 +229,14 @@ public class ModHandler {
      * <li>'x' -  ToolDictNames.craftingToolWireCutter</li>
      * </ul>
      */
-    public static void addShapedRecipe(ItemStack result, Object... recipe) {
-        addShapedRecipe(result, false, recipe);
+    public static void addMirroredShapedRecipe(ItemStack result, Object... recipe) {
+        result = OreDictionaryUnifier.getUnificated(result);
+        Validate.notNull(result, "Result cannot be null");
+        Validate.notNull(recipe, "Recipe cannot be null");
+        Validate.isTrue(recipe.length > 0, "Recipe cannot be empty");
+        Validate.noNullElements(recipe, "Recipe cannot contain null elements");
+
+        GameRegistry.addRecipe(new ShapedOreRecipe(result, finalizeRecipeInput(recipe)).setMirrored(true));
     }
 
     /**
@@ -261,13 +267,17 @@ public class ModHandler {
      * <li>'x' -  ToolDictNames.craftingToolWireCutter</li>
      * </ul>
      */
-    public static void addShapedRecipe(ItemStack result, boolean mirrored, Object... recipe) {
+    public static void addShapedRecipe(ItemStack result, Object... recipe) {
         result = OreDictionaryUnifier.getUnificated(result);
         Validate.notNull(result, "Result cannot be null");
         Validate.notNull(recipe, "Recipe cannot be null");
         Validate.isTrue(recipe.length > 0, "Recipe cannot be empty");
         Validate.noNullElements(recipe, "Recipe cannot contain null elements");
 
+        GameRegistry.addRecipe(new ShapedOreRecipe(result, finalizeRecipeInput(recipe)));
+    }
+
+    private static Object[] finalizeRecipeInput(Object... recipe) {
         for (byte i = 0; i < recipe.length; i++) {
             if (recipe[i] instanceof MetaItem.MetaValueItem) {
                 recipe[i] = ((MetaItem<?>.MetaValueItem) recipe[i]).getStackForm();
@@ -357,8 +367,7 @@ public class ModHandler {
                 }
             }
         }
-
-        GameRegistry.addRecipe(new ShapedOreRecipe(result, recipeList.toArray()).setMirrored(mirrored));
+        return recipe;
     }
 
     /**
@@ -416,6 +425,10 @@ public class ModHandler {
      */
     public static ItemStack removeRecipe(ItemStack... recipe) {
         Validate.notNull(recipe, "Cannot remove null recipe.");
+
+        //TODO CONFIG to not remove recipes
+
+        recipe = GTUtility.copyStackArray(recipe);
 
         //At least one not null
         boolean temp = false;

@@ -1,74 +1,98 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.items.ItemList;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictionaryUnifier;
-import gregtech.api.unification.material.type.DustMaterial;
+import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.FluidMaterial;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
-import gregtech.common.CommonProxy;
+import gregtech.common.items.MetaItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
-public class ProcessingGear implements IOreRegistrationHandler {
-    public ProcessingGear() {
-        OrePrefix.gearGt.addProcessingHandler(this);
-        OrePrefix.gearGtSmall.addProcessingHandler(this);
-    }
+import static gregtech.api.GTValues.L;
+import static gregtech.api.GTValues.W;
+import static gregtech.api.unification.material.type.DustMaterial.MatFlags.NO_WORKING;
+import static gregtech.api.unification.material.type.Material.MatFlags.NO_UNIFICATION;
 
-    public void registerOre(UnificationEntry uEntry, String modName, SimpleItemStack simpleStack) {
-        ItemStack stack = simpleStack.asItemStack();
-        switch (uEntry.orePrefix) {
-            case gearGt:
-                ModHandler.removeRecipeByOutput(stack);
-                if (uEntry.material instanceof FluidMaterial)
-                    RecipeMap.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
-                            .inputs(ItemList.Shape_Mold_Gear.get(0))
-                            .fluidInputs(((FluidMaterial) uEntry.material).getFluid(576))
-                            .outputs(GTUtility.copyAmount(1, stack))
-                            .duration(128)
-                            .EUt(8)
-                            .buildAndRegister();
-                if (uEntry.material.mUnificatable && (uEntry.material.mMaterialInto == uEntry.material) && !uEntry.material.hasFlag(DustMaterial.MatFlags.NO_WORKING)) {
-                    switch (uEntry.material.defaultLocalName) {
-                        case "Wood":
-                            ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gearGt, uEntry.material, 1), CommonProxy.tBits, "SPS", "PsP", "SPS", Character.valueOf('P'), OreDictionaryUnifier.get(OrePrefix.plank, uEntry.material, 2), Character.valueOf('S'), OreDictionaryUnifier.get(OrePrefix.stick, uEntry.material, 2));
-                            break;
-                        case "Stone":
-                            ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gearGt, uEntry.material, 1), CommonProxy.tBits, "SPS", "PfP", "SPS", Character.valueOf('P'), OrePrefix.stoneSmooth, Character.valueOf('S'), new ItemStack(Blocks.STONE_BUTTON, 1, 32767));
-                            break;
-                        default:
-                            ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gearGt, uEntry.material, 1), CommonProxy.tBits, "SPS", "PwP", "SPS", Character.valueOf('P'), OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 2), Character.valueOf('S'), OreDictionaryUnifier.get(OrePrefix.stick, uEntry.material, 2));
-                    }
-                }
-                break;
-            case gearGtSmall:
-                if (uEntry.material instanceof FluidMaterial)
-                    RecipeMap.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
-                            .inputs(ItemList.Shape_Mold_Gear_Small.get(0))
-                            .fluidInputs(((FluidMaterial) uEntry.material).getFluid(144))
-                            .outputs(GTUtility.copyAmount(1, stack))
-                            .duration(16)
-                            .EUt(8)
-                            .buildAndRegister();
-                if (uEntry.material.mUnificatable && (uEntry.material.mMaterialInto == uEntry.material) && !uEntry.material.hasFlag(DustMaterial.MatFlags.NO_WORKING)) {
-                    switch (uEntry.material.defaultLocalName) {
-                        case "Wood":
-                            ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gearGtSmall, uEntry.material, 1), CommonProxy.tBits, "P ", " s", Character.valueOf('P'), OreDictionaryUnifier.get(OrePrefix.plank, uEntry.material, 2));
-                            break;
-                        case "Stone":
-                            ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gearGtSmall, uEntry.material, 1), CommonProxy.tBits, "P ", " f", Character.valueOf('P'), OrePrefix.stoneSmooth);
-                            break;
-                        default:
-                            ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.gearGtSmall, uEntry.material, 1), CommonProxy.tBits, "P ", uEntry.material.contains(SubTag.WOOD) ? " s" : " h", Character.valueOf('P'), OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 2));
-                    }
-                }
-                break;
-        }
-    }
+public class ProcessingGear implements IOreRegistrationHandler {
+	public ProcessingGear() {
+		OrePrefix.gearGt.addProcessingHandler(this);
+		OrePrefix.gearGtSmall.addProcessingHandler(this);
+	}
+
+	public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {
+		ItemStack stack = simpleStack.asItemStack();
+		switch (entry.orePrefix) {
+			case gearGt:
+				if (entry.material instanceof FluidMaterial)
+					RecipeMap.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
+							.notConsumable(MetaItems.SHAPE_MOLD_GEAR)
+							.fluidInputs(((FluidMaterial) entry.material).getFluid(L * 4))
+							.outputs(GTUtility.copyAmount(1, stack))
+							.duration(128)
+							.EUt(8)
+							.buildAndRegister();
+
+				if (!entry.material.hasFlag(NO_WORKING | NO_UNIFICATION)) {
+					if (entry.material == Materials.Wood) {
+						ModHandler.addShapedRecipe(OreDictionaryUnifier.get(OrePrefix.gearGt, entry.material),
+								"SPS",
+								"PsP",
+								"SPS",
+								'P', OreDictionaryUnifier.get(OrePrefix.plank, entry.material, 2),
+								'S', OreDictionaryUnifier.get(OrePrefix.stick, entry.material, 2));
+
+					} else if (entry.material == Materials.Stone) {
+						ModHandler.addShapedRecipe(OreDictionaryUnifier.get(OrePrefix.gearGt, entry.material),
+								"SPS",
+								"PfP",
+								"SPS",
+								'P', OrePrefix.stoneSmooth,
+								'S', new ItemStack(Blocks.STONE_BUTTON, 1, W));
+					} else {
+						ModHandler.addShapedRecipe(OreDictionaryUnifier.get(OrePrefix.gearGt, entry.material),
+								"SPS",
+								"PwP",
+								"SPS",
+								'P', OreDictionaryUnifier.get(OrePrefix.plate, entry.material, 2),
+								'S', OreDictionaryUnifier.get(OrePrefix.stick, entry.material, 2));
+					}
+				}
+				break;
+			case gearGtSmall:
+				if (entry.material instanceof FluidMaterial)
+					RecipeMap.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
+							.notConsumable(MetaItems.SHAPE_MOLD_GEAR_SMALL)
+							.fluidInputs(((FluidMaterial) entry.material).getFluid(L))
+							.outputs(GTUtility.copyAmount(1, stack))
+							.duration(16)
+							.EUt(8)
+							.buildAndRegister();
+				if (!entry.material.hasFlag(NO_WORKING | NO_UNIFICATION)) {
+
+					if (entry.material == Materials.Wood || entry.material == Materials.WoodSealed) {
+						ModHandler.addShapedRecipe(OreDictionaryUnifier.get(OrePrefix.gearGtSmall, entry.material),
+								"P ",
+								" s",
+								'P', OreDictionaryUnifier.get(OrePrefix.plank, entry.material, 2));
+					} else if (entry.material == Materials.Stone) {
+						ModHandler.addShapedRecipe(OreDictionaryUnifier.get(OrePrefix.gearGtSmall, entry.material),
+								"P ",
+								" f",
+								'P', OrePrefix.stoneSmooth);
+					} else {
+						ModHandler.addShapedRecipe(OreDictionaryUnifier.get(OrePrefix.gearGtSmall, entry.material),
+								"P ",
+								" h",
+								'P', OreDictionaryUnifier.get(OrePrefix.plate, entry.material, 2));
+					}
+				}
+				break;
+		}
+	}
 }

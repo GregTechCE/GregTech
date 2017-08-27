@@ -7,16 +7,21 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
-import gregtech.common.CommonProxy;
+
+import static gregtech.api.unification.material.type.DustMaterial.MatFlags.NO_WORKING;
+import static gregtech.api.unification.material.type.Material.MatFlags.NO_UNIFICATION;
 
 public class ProcessingBolt implements IOreRegistrationHandler {
-    public ProcessingBolt() {
-        OrePrefix.bolt.addProcessingHandler(this);
-    }
+	public ProcessingBolt() {
+		OrePrefix.bolt.addProcessingHandler(this);
+	}
 
-    public void registerOre(UnificationEntry uEntry, String modName, SimpleItemStack simpleStack) {
-        if ((uEntry.material.mUnificatable) && (uEntry.material.mMaterialInto == uEntry.material) && !uEntry.material.contains(SubTag.NO_WORKING)) {
-            ModHandler.addCraftingRecipe(GTUtility.copyAmount(2, simpleStack.asItemStack()), CommonProxy.tBits, "s ", " X", Character.valueOf('X'), OreDictionaryUnifier.get(OrePrefix.stick, uEntry.material));
-        }
-    }
+	public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {
+		if (!entry.material.hasFlag(NO_UNIFICATION | NO_WORKING)) {
+			ModHandler.addShapedRecipe(GTUtility.copyAmount(2, simpleStack.asItemStack()),
+					"s ",
+					" X",
+					'X', OreDictionaryUnifier.get(OrePrefix.stick, entry.material));
+		}
+	}
 }

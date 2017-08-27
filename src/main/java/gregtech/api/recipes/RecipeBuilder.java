@@ -1,6 +1,7 @@
 package gregtech.api.recipes;
 
 import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.util.GTUtility;
 import ic2.core.ref.BlockName;
@@ -18,8 +19,10 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static gregtech.api.GTValues.W;
 
@@ -209,14 +212,22 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 	protected abstract R getThis();
 
 	protected void finalizeAndValidate() {
-//			OreDictionaryUnifier.setStackArray(true, inputs);
-//			OreDictionaryUnifier.setStackArray(true, outputs);
-//			OreDictionaryUnifier.setStackArray(true, chancedOutputs);
+		inputs.replaceAll(OreDictionaryUnifier::getUnificated);
+		outputs.replaceAll(OreDictionaryUnifier::getUnificated);
+
+		Map<ItemStack, Integer> newMap = new HashMap<>();
+		Iterator<Map.Entry<ItemStack, Integer>> iterator = chancedOutputs.entrySet().iterator();
+		while (iterator.hasNext()) {
+			Map.Entry<ItemStack, Integer> entry = iterator.next();
+			iterator.remove();
+			newMap.put(OreDictionaryUnifier.getUnificated(entry.getKey()), entry.getValue());
+		}
+		chancedOutputs = newMap;
 
 		for (ItemStack stack : inputs) {
 			if (Items.FEATHER.getDamage(stack) != W) {
 				for (int j = 0; j < outputs.size(); j++) {
-					if (GTUtility.areStacksEqual(stack, outputs.get(j))) {
+					if (ItemStack.areItemStacksEqual(stack, outputs.get(j))) {
 						if (stack.stackSize >= outputs.get(j).stackSize) {
 							stack.stackSize -= outputs.get(j).stackSize;
 							outputs.remove(j);
@@ -418,7 +429,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 			return this;
 		}
 
-		public NotConsumableInputRecipeBuilder notConsumable(MetaItem.MetaValueItem item) {
+		public NotConsumableInputRecipeBuilder notConsumable(MetaItem<?>.MetaValueItem item) {
 			Validate.notNull(item, "Not consumable Item cannot be null");
 			inputs.add(item.getStackForm(0));
 			return this;
@@ -860,7 +871,11 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		private int duration;
 		private int EUt;
 
-		public AssemblyLineRecipeBuilder() {
+		private AssemblyLineRecipeBuilder() {
+		}
+
+		public AssemblyLineRecipeBuilder start() {
+			return new AssemblyLineRecipeBuilder();
 		}
 
 		public AssemblyLineRecipeBuilder researchItem(ItemStack researchItem) {

@@ -26,7 +26,7 @@ public class GTValues {
      * <p/>
      * Fluid per Material Unit (Prime Factors: 3 * 3 * 2 * 2 * 2 * 2)
      */
-    public static final long L = 144;
+    public static final int L = 144;
 
     /**
      * The Item WildCard Tag. Even shorter than the "-1" of the past

@@ -1,8 +1,6 @@
 package gregtech.common.items;
 
 import com.google.common.base.CaseFormat;
-import gregtech.api.GTValues;
-import gregtech.api.GregTechAPI;
 import gregtech.api.items.materialitem.MaterialMetaItem;
 import gregtech.api.items.metaitem.FoodStats;
 import gregtech.api.recipes.ModHandler;
@@ -21,6 +19,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 
+import static gregtech.api.GTValues.W;
 import static gregtech.common.items.MetaItems.*;
 
 public class MetaItem2 extends MaterialMetaItem {
@@ -236,40 +235,155 @@ public class MetaItem2 extends MaterialMetaItem {
 
         FOOD_SLICED_CHEESE = addItem(576, "food.sliced.cheese").addStats(new FoodStats(1, 0.1F));
 
-        ModHandler.addExtractionRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 0), new ItemStack(Items.DYE, 2, 1));
-        ModHandler.addExtractionRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 1), new ItemStack(Items.DYE, 2, 12));
-        ModHandler.addExtractionRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 2), new ItemStack(Items.DYE, 2, 13));
-        ModHandler.addExtractionRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 3), new ItemStack(Items.DYE, 2, 7));
-        ModHandler.addExtractionRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 4), new ItemStack(Items.DYE, 2, 1));
-        ModHandler.addExtractionRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 5), new ItemStack(Items.DYE, 2, 14));
-        ModHandler.addExtractionRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 6), new ItemStack(Items.DYE, 2, 7));
-        ModHandler.addExtractionRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 7), new ItemStack(Items.DYE, 2, 9));
-        ModHandler.addExtractionRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 8), new ItemStack(Items.DYE, 2, 7));
-        ModHandler.addExtractionRecipe(new ItemStack(Blocks.YELLOW_FLOWER, 1, 0), new ItemStack(Items.DYE, 2, 11));
-        ModHandler.addExtractionRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 0), new ItemStack(Items.DYE, 3, 11));
-        ModHandler.addExtractionRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 1), new ItemStack(Items.DYE, 3, 13));
-        ModHandler.addExtractionRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 4), new ItemStack(Items.DYE, 3, 1));
-        ModHandler.addExtractionRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 5), new ItemStack(Items.DYE, 3, 9));
-        ModHandler.addExtractionRecipe(CROP_DROP_PLUMBILIA.getStackForm(), OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.Lead, 1));
-        ModHandler.addExtractionRecipe(CROP_DROP_ARGENTIA.getStackForm(), OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.Silver, 1));
-        ModHandler.addExtractionRecipe(CROP_DROP_INDIGO.getStackForm(), DYE_INDIGO.getStackForm());
-        ModHandler.addExtractionRecipe(CROP_DROP_MILK_WART.getStackForm(), OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Milk, 1));
-        ModHandler.addExtractionRecipe(CROP_DROP_COPPON.getStackForm(), OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.Copper, 1));
-        ModHandler.addExtractionRecipe(CROP_DROP_TINE.getStackForm(), OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.Tin, 1));
+        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(new ItemStack(Blocks.RED_FLOWER, 1, 0))
+				.outputs(new ItemStack(Items.DYE, 2, 1))
+				.buildAndRegister();
+
+        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(new ItemStack(Blocks.RED_FLOWER, 1, 1))
+				.outputs(new ItemStack(Items.DYE, 2, 12))
+				.buildAndRegister();
+
+        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(new ItemStack(Blocks.RED_FLOWER, 1, 2))
+				.outputs(new ItemStack(Items.DYE, 2, 13))
+				.buildAndRegister();
+
+        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(new ItemStack(Blocks.RED_FLOWER, 1, 3))
+				.outputs(new ItemStack(Items.DYE, 2, 7))
+				.buildAndRegister();
+
+        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(new ItemStack(Blocks.RED_FLOWER, 1, 4))
+				.outputs(new ItemStack(Items.DYE, 2, 1))
+				.buildAndRegister();
+
+        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(new ItemStack(Blocks.RED_FLOWER, 1, 5))
+				.outputs(new ItemStack(Items.DYE, 2, 14))
+				.buildAndRegister();
+
+        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(new ItemStack(Blocks.RED_FLOWER, 1, 6))
+				.outputs(new ItemStack(Items.DYE, 2, 7))
+				.buildAndRegister();
+
+        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(new ItemStack(Blocks.RED_FLOWER, 1, 7))
+				.outputs(new ItemStack(Items.DYE, 2, 9))
+				.buildAndRegister();
+
+        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(new ItemStack(Blocks.RED_FLOWER, 1, 8))
+				.outputs(new ItemStack(Items.DYE, 2, 7))
+				.buildAndRegister();
+
+        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(new ItemStack(Blocks.YELLOW_FLOWER, 1, 0))
+				.outputs(new ItemStack(Items.DYE, 2, 11))
+				.buildAndRegister();
+
+        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(new ItemStack(Blocks.DOUBLE_PLANT, 1, 0))
+				.outputs(new ItemStack(Items.DYE, 3, 11))
+				.buildAndRegister();
+
+        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(new ItemStack(Blocks.DOUBLE_PLANT, 1, 1))
+				.outputs(new ItemStack(Items.DYE, 3, 13))
+				.buildAndRegister();
+
+        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(new ItemStack(Blocks.DOUBLE_PLANT, 1, 4))
+				.outputs(new ItemStack(Items.DYE, 3, 1))
+				.buildAndRegister();
+
+        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(new ItemStack(Blocks.DOUBLE_PLANT, 1, 5))
+				.outputs(new ItemStack(Items.DYE, 3, 9))
+				.buildAndRegister();
+
+        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(CROP_DROP_PLUMBILIA.getStackForm())
+				.outputs(OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.Lead, 1))
+				.buildAndRegister();
+
+        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(CROP_DROP_ARGENTIA.getStackForm())
+				.outputs(OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.Silver, 1))
+				.buildAndRegister();
+
+        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(CROP_DROP_INDIGO.getStackForm())
+				.outputs(DYE_INDIGO.getStackForm())
+				.buildAndRegister();
+
+        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(CROP_DROP_MILK_WART.getStackForm())
+				.outputs(OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Milk, 1))
+				.buildAndRegister();
+
+        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(CROP_DROP_COPPON.getStackForm())
+				.outputs(OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.Copper, 1))
+				.buildAndRegister();
+
+        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(CROP_DROP_TINE.getStackForm())
+				.outputs(OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.Tin, 1))
+				.buildAndRegister();
 
         ItemStack plantBall = ModHandler.IC2.getIC2Item(ItemName.crafting, CraftingItemType.plant_ball, 1);
 
-        ModHandler.IC2.addCompressionRecipe(CROP_DROP_COPPON.getStackForm(4), new ItemStack(Blocks.WOOL, 1, 1));
-        ModHandler.IC2.addCompressionRecipe(CROP_DROP_PLUMBILIA.getStackForm(8), plantBall.copy());
-        ModHandler.IC2.addCompressionRecipe(CROP_DROP_ARGENTIA.getStackForm(8), plantBall.copy());
-        ModHandler.IC2.addCompressionRecipe(CROP_DROP_INDIGO.getStackForm(8), plantBall.copy());
-        ModHandler.IC2.addCompressionRecipe(CROP_DROP_FERRU.getStackForm(8), plantBall.copy());
-        ModHandler.IC2.addCompressionRecipe(CROP_DROP_AURELIA.getStackForm(8), plantBall.copy());
-        ModHandler.IC2.addCompressionRecipe(CROP_DROP_OIL_BERRY.getStackForm(8), plantBall.copy());
-        ModHandler.IC2.addCompressionRecipe(CROP_DROP_BOBS_YER_UNCLE_RANKS.getStackForm(8), plantBall.copy());
-        ModHandler.IC2.addCompressionRecipe(CROP_DROP_TINE.getStackForm(4), plantBall.copy());
-        ModHandler.IC2.addCompressionRecipe(new ItemStack(Blocks.RED_FLOWER, 8, 32767), plantBall.copy());
-        ModHandler.IC2.addCompressionRecipe(new ItemStack(Blocks.YELLOW_FLOWER, 8, 32767), plantBall.copy());
+        RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
+                .inputs(CROP_DROP_COPPON.getStackForm(4))
+                .outputs(new ItemStack(Blocks.WOOL, 1, 1))
+                .buildAndRegister();
+
+        RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
+                .inputs(CROP_DROP_PLUMBILIA.getStackForm(8))
+                .outputs(plantBall.copy())
+                .buildAndRegister();
+
+        RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
+                .inputs(CROP_DROP_ARGENTIA.getStackForm(8))
+                .outputs(plantBall.copy())
+                .buildAndRegister();
+
+        RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
+                .inputs(CROP_DROP_INDIGO.getStackForm(8))
+                .outputs(plantBall.copy())
+                .buildAndRegister();
+        RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
+                .inputs(CROP_DROP_FERRU.getStackForm(8))
+                .outputs(plantBall.copy())
+                .buildAndRegister();
+        RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
+                .inputs(CROP_DROP_AURELIA.getStackForm(8))
+                .outputs(plantBall.copy())
+                .buildAndRegister();
+        RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
+                .inputs(CROP_DROP_OIL_BERRY.getStackForm(8))
+                .outputs(plantBall.copy())
+                .buildAndRegister();
+        RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
+                .inputs(CROP_DROP_BOBS_YER_UNCLE_RANKS.getStackForm(8))
+                .outputs(plantBall.copy())
+                .buildAndRegister();
+        RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
+                .inputs(CROP_DROP_TINE.getStackForm(4))
+                .outputs(plantBall.copy())
+                .buildAndRegister();
+        RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
+                .inputs(new ItemStack(Blocks.RED_FLOWER, 8, W))
+                .outputs(plantBall.copy())
+                .buildAndRegister();
+        RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
+                .inputs(new ItemStack(Blocks.RED_FLOWER, 8, W))
+                .outputs(plantBall.copy())
+                .buildAndRegister();
 
         RecipeMap.MACERATOR_RECIPES.recipeBuilder()
                 .inputs(FOOD_SLICED_CHEESE.getStackForm())
@@ -336,7 +450,7 @@ public class MetaItem2 extends MaterialMetaItem {
                 .buildAndRegister();   
         
         RecipeMap.MACERATOR_RECIPES.recipeBuilder()
-                .inputs(new ItemStack(Blocks.WOOL, 1, GTValues.W))
+                .inputs(new ItemStack(Blocks.WOOL, 1, W))
                 .outputs(new ItemStack(Items.STRING, 2))
                 .chancedOutput(new ItemStack(Items.STRING, 1), 5000)
                 .duration(400)

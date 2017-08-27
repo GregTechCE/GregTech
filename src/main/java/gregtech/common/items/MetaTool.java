@@ -154,7 +154,7 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
                 'S', OreDictionaryUnifier.get(OrePrefix.stick, Materials.StainlessSteel));
 
 
-//        if (!GregTechAPI.sSpecialFile.get(ConfigCategories.general, "DisableFlintTools", false)) {
+        if (false) { //TODO CONFIG !GregTechAPI.sSpecialFile.get(ConfigCategories.general, "DisableFlintTools", false)
             ModHandler.addShapedRecipe(SWORD.getStackForm(Materials.Flint, Materials.Wood),
                     "F",
                     "F",
@@ -287,7 +287,7 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
                     'I', OreDictionaryUnifier.get(OrePrefix.ingot, Materials.StainlessSteel),
                     'S', OreDictionaryUnifier.get(OrePrefix.stick, Materials.StainlessSteel));
 
-//            if (!GregTechAPI.sSpecialFile.get(ConfigCategories.general, "DisableFlintTools", false)) {
+            if (false) { // //TODO CONFIG !GregTechAPI.sSpecialFile.get(ConfigCategories.general, "DisableFlintTools", false)
                 ModHandler.addShapedRecipe(SWORD.getStackForm(Materials.Flint, Materials.Wood),
                         "F",
                         "F",
@@ -329,32 +329,32 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
                         'S', OreDictionaryUnifier.get(OrePrefix.stick, Materials.Wood),
                         'F', new ItemStack(Items.FLINT, 1));
 
-//            }
-//            if (GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.mortar, "Coal", true)) {
+            }
+            if (true) {  //TODO CONFIG GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.mortar, "Coal", true)
                 ModHandler.addShapelessRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Coal, 1),
                         ToolDictNames.craftingToolMortar,
                         new ItemStack(Items.COAL, 1));
-//            }
-//            if (GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.mortar, "Clay", true)) {
+            }
+            if (true) {  //TODO CONFIG GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.mortar, "Clay", true)
                 ModHandler.addShapelessRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Clay, 1),
                         ToolDictNames.craftingToolMortar,
                         new ItemStack(Blocks.CLAY, 1));
-//            }
-//            if (GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.mortar, "Wheat", true)) {
+            }
+            if (true) { // TODO CONFIG GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.mortar, "Wheat", true)
                 ModHandler.addShapelessRecipe(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Wheat, 1),
                         ToolDictNames.craftingToolMortar,
                         new ItemStack(Items.WHEAT, 1));
-//            }
-//            if (GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.mortar, "Flint", true)) {
+            }
+            if (true) {  //TODO CONFIG GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.mortar, "Clay", true)
                 ModHandler.addShapelessRecipe(new ItemStack(Items.FLINT, 1),
                         ToolDictNames.craftingToolMortar,
                         new ItemStack(Blocks.GRAVEL, 1));
-//            }
-//            if (GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.mortar, "Blaze", true)) {
+            }
+            if (true) {  //TODO CONFIG GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.mortar, "Blaze", true)
                 ModHandler.addShapelessRecipe(new ItemStack(Items.BLAZE_POWDER, 2),
                         ToolDictNames.craftingToolMortar,
                         new ItemStack(Items.BLAZE_ROD, 1));
-//            }
-//        }
+            }
+        }
     }
 }

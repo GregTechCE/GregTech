@@ -47,10 +47,31 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 */
 	public static final Collection<RecipeMap<?, ?>> RECIPE_MAPS = new ArrayList<>();
 
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> ORE_WASHER_RECIPES = new RecipeMapOreWasher(new HashSet<>(0), "ic.recipe.orewasher", "Ore Washer", "ic2.blockOreWashingPlant", "basicmachines/OreWasher", 1, 1, 3, 3, 0, 1, 0, 0, 1, "", 1, "", true, false, new RecipeBuilder.DefaultRecipeBuilder());
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> THERMAL_CENTRIFUGE_RECIPES = new RecipeMapThermalCentrifuge(new HashSet<>(0), "ic.recipe.thermalcentrifuge", "Thermal Centrifuge", "ic2.blockCentrifuge", "basicmachines/ThermalCentrifuge", 1, 1, 1, 3, 0, 0, 0, 0, 2, "", 1, "", true, false, new RecipeBuilder.DefaultRecipeBuilder());
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> COMPRESSOR_RECIPES = new RecipeMapCompressor(new HashSet<>(0), "ic.recipe.compressor", "Compressor", "ic2.compressor", "basicmachines/Compressor", 1, 1, 1, 1, 0, 0, 0, 0, 1, "", 1, "", true, false, new RecipeBuilder.DefaultRecipeBuilder());
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> EXTRACTOR_RECIPES = new RecipeMapExtractor(new HashSet<>(0), "ic.recipe.extractor", "Extractor", "ic2.extractor", "basicmachines/Extractor", 1, 1, 1, 1, 0, 0, 0, 0, 1, "", 1, "", true, false, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> ORE_WASHER_RECIPES = new RecipeMap<>(new HashSet<>(0), "gt.recipe.orewasher", "Ore Washer", null, "basicmachines/OreWasher", 1, 1, 3, 3, 0, 1, 0, 0, 1, "", 1, "", true, false, new RecipeBuilder.DefaultRecipeBuilder().duration(400).EUt(16));
+	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> THERMAL_CENTRIFUGE_RECIPES = new RecipeMap<>(new HashSet<>(0), "gt.recipe.thermalcentrifuge", "Thermal Centrifuge", null, "basicmachines/ThermalCentrifuge", 1, 1, 1, 3, 0, 0, 0, 0, 2, "", 1, "", true, false, new RecipeBuilder.DefaultRecipeBuilder().duration(400).EUt(48));
+
+	/**
+	 * Example:
+	 * <pre>
+	 *		RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
+	 *			.inputs(OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Steel, 9))
+	 *			.outputs(OreDictionaryUnifier.get(OrePrefix.block, Materials.Steel))
+	 *			.buildAndRegister();
+	 * </pre>
+	 */
+	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> COMPRESSOR_RECIPES = new RecipeMap<>(new HashSet<>(0), "gt.recipe.compressor", "Compressor", null, "basicmachines/Compressor", 1, 1, 1, 1, 0, 0, 0, 0, 1, "", 1, "", true, false, new RecipeBuilder.DefaultRecipeBuilder().duration(400).EUt(2));
+
+	/**
+	 * Example:
+	 * <pre>
+	 *	    RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+	 * 			.inputs(new ItemStack(Blocks.RED_FLOWER, 1, 3))
+	 * 			.outputs(new ItemStack(Items.DYE, 2, 7))
+	 * 			.buildAndRegister();
+	 * </pre>
+	 */
+	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> EXTRACTOR_RECIPES = new RecipeMap<>(new HashSet<>(0), "gt.recipe.extractor", "Extractor", null, "basicmachines/Extractor", 1, 1, 1, 1, 0, 0, 0, 0, 1, "", 1, "", true, false, new RecipeBuilder.DefaultRecipeBuilder().duration(400).EUt(2));
+
 	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> RECYCLER_RECIPES = new RecipeMapRecycler(new HashSet<>(0), "ic.recipe.recycler", "Recycler", "ic2.recycler", "basicmachines/Recycler", 1, 1, 1, 1, 0, 0, 0, 0, 1, "", 1, "", true, false, new RecipeBuilder.DefaultRecipeBuilder());
 	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> FURNACE_RECIPES = new RecipeMapFurnace(new HashSet<>(0), "mc.recipe.furnace", "Furnace", "smelting", "basicmachines/E_Furnace", 1, 1, 1, 1, 0, 0, 0, 0, 1, "", 1, "", true, false, new RecipeBuilder.DefaultRecipeBuilder());
 	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> MICROWAVE_RECIPES = new RecipeMapMicrowave(new HashSet<>(0), "gt.recipe.microwave", "Microwave", "smelting", "basicmachines/E_Furnace", 1, 1, 1, 1, 0, 0, 0, 0, 1, "", 1, "", true, false, new RecipeBuilder.DefaultRecipeBuilder());
@@ -72,7 +93,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *			.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> ASSEMBLER_RECIPES = new RecipeMapAssembler(new HashSet<>(300), "gt.recipe.assembler", "Assembler", null, "basicmachines/Assembler", 1, 2, 1, 1, 0, 1, 0, 0, 1, "", 1, "", true, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<Recipe, RecipeBuilder.IntCircuitRecipeBuilder> ASSEMBLER_RECIPES = new RecipeMapAssembler(new HashSet<>(300), "gt.recipe.assembler", "Assembler", null, "basicmachines/Assembler", 1, 2, 1, 1, 0, 1, 0, 0, 1, "", 1, "", true, true, new RecipeBuilder.IntCircuitRecipeBuilder());
 
 	/**
 	 * Example:
@@ -120,7 +141,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *	   			.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> MACERATOR_RECIPES = new RecipeMapMacerator(new HashSet<>(10000), "gt.recipe.macerator", "Pulverization", null, "basicmachines/Macerator4", 1, 1, 1, 4, 0, 0, 0, 0, 1, "", 1, "", true, true, new RecipeBuilder.DefaultRecipeBuilder() {});
+	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> MACERATOR_RECIPES = new RecipeMap<>(new HashSet<>(10000), "gt.recipe.macerator", "Pulverization", null, "basicmachines/Macerator4", 1, 1, 1, 4, 0, 0, 0, 0, 1, "", 1, "", true, true, new RecipeBuilder.DefaultRecipeBuilder().duration(400).EUt(2));
 
 	/**
 	 * Input full box, output item and empty box.
@@ -1399,7 +1420,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 					.EUt(1);
 
 			if (ModHandler.getRecyclerOutput(GTUtility.copyAmount(64, inputs[0]), 0) != null) {
-				builder.chancedOutput(ModHandler.IC2.getIC2Item(ItemName.crafting, CraftingItemType.scrap, 1), 1250);
+				builder.chancedOutput(ModHandler.IC2.getScrap(1), 1250);
 			}
 
 			return builder.build();
@@ -1412,196 +1433,11 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	}
 
 	/**
-	 * Special Class for Compressor Recipe handling.
-	 */
-	public static class RecipeMapCompressor extends RecipeMapNonGTRecipes<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
-
-		public RecipeMapCompressor(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder.DefaultRecipeBuilder defaultRecipe) {
-			super(recipeList, unlocalizedName, localName, JEIName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, amperage, JEISpecialValuePre, JEISpecialValueMultiplier, JEISpecialValuePost, showVoltageAmperageInJEI, JEIAllowed, defaultRecipe);
-		}
-
-		@Override
-		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack[] inputs) {
-			if (inputs == null || inputs.length <= 0 || inputs[0] == null) return null;
-			if (inputRecipe != null && inputRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) return inputRecipe;
-			ItemStack comparedInput = GTUtility.copy(inputs[0]);
-			ItemStack[] outputItems = ModHandler.IC2.getMachineOutput(comparedInput, ic2.api.recipe.Recipes.compressor.getRecipes(), true, new NBTTagCompound(), null, null, null);
-			if (GTUtility.arrayContainsNonNull(outputItems)) {
-				return this.recipeBuilder()
-						.nonOptimized()
-						.inputs(GTUtility.copyAmount(inputs[0].stackSize - comparedInput.stackSize, inputs[0]))
-						.outputs(outputItems)
-						.duration(400)
-						.EUt(2)
-						.build();
-			}
-			return null;
-		}
-
-		@Override
-		public boolean containsInput(ItemStack stack) {
-			return GTUtility.arrayContainsNonNull(ModHandler.IC2.getMachineOutput(GTUtility.copyAmount(64, stack), ic2.api.recipe.Recipes.compressor.getRecipes(), false, new NBTTagCompound(), null, null, null));
-		}
-	}
-
-	/**
-	 * Special Class for Extractor Recipe handling.
-	 */
-	public static class RecipeMapExtractor extends RecipeMapNonGTRecipes<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
-
-		public RecipeMapExtractor(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder.DefaultRecipeBuilder defaultRecipe) {
-			super(recipeList, unlocalizedName, localName, JEIName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, amperage, JEISpecialValuePre, JEISpecialValueMultiplier, JEISpecialValuePost, showVoltageAmperageInJEI, JEIAllowed, defaultRecipe);
-		}
-
-		@Override
-		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack[] inputs) {
-			if (inputs == null || inputs.length <= 0 || inputs[0] == null) return null;
-			if (inputRecipe != null && inputRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) return inputRecipe;
-			ItemStack comparedInput = GTUtility.copy(inputs[0]);
-			ItemStack[] outputItems = ModHandler.IC2.getMachineOutput(comparedInput, ic2.api.recipe.Recipes.extractor.getRecipes(), true, new NBTTagCompound(), null, null, null);
-
-			if (GTUtility.arrayContainsNonNull(outputItems)) {
-				return this.recipeBuilder()
-						.nonOptimized()
-						.inputs(GTUtility.copyAmount(inputs[0].stackSize - comparedInput.stackSize, inputs[0]))
-						.outputs(outputItems)
-						.duration(400)
-						.EUt(2)
-						.build();
-			}
-			return null;
-		}
-
-		@Override
-		public boolean containsInput(ItemStack stack) {
-			return GTUtility.arrayContainsNonNull(ModHandler.IC2.getMachineOutput(GTUtility.copyAmount(64, stack), ic2.api.recipe.Recipes.extractor.getRecipes(), false, new NBTTagCompound(), null, null, null));
-		}
-	}
-
-	/**
-	 * Special Class for Thermal Centrifuge Recipe handling.
-	 */
-	public static class RecipeMapThermalCentrifuge extends RecipeMapNonGTRecipes<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
-
-		public RecipeMapThermalCentrifuge(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder.DefaultRecipeBuilder defaultRecipe) {
-			super(recipeList, unlocalizedName, localName, JEIName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, amperage, JEISpecialValuePre, JEISpecialValueMultiplier, JEISpecialValuePost, showVoltageAmperageInJEI, JEIAllowed, defaultRecipe);
-		}
-
-		@Override
-		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack[] inputs) {
-			if (inputs == null || inputs.length <= 0 || inputs[0] == null) return null;
-			if (inputRecipe != null && inputRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) return inputRecipe;
-			ItemStack comparedInput = GTUtility.copy(inputs[0]);
-			ItemStack[] outputItems = ModHandler.IC2.getMachineOutput(comparedInput, ic2.api.recipe.Recipes.centrifuge.getRecipes(), true, new NBTTagCompound(), null, null, null);
-
-			if (GTUtility.arrayContainsNonNull(outputItems)) {
-				return this.recipeBuilder()
-						.nonOptimized()
-						.inputs(GTUtility.copyAmount(inputs[0].stackSize - comparedInput.stackSize, inputs[0]))
-						.outputs(outputItems)
-						.duration(400)
-						.EUt(48)
-						.build();
-			}
-			return null;
-		}
-
-		@Override
-		public boolean containsInput(ItemStack stack) {
-			return GTUtility.arrayContainsNonNull(ModHandler.IC2.getMachineOutput(GTUtility.copyAmount(64, stack), ic2.api.recipe.Recipes.centrifuge.getRecipes(), false, new NBTTagCompound(), null, null, null));
-		}
-	}
-
-	/**
-	 * Special Class for Ore Washer Recipe handling.
-	 */
-	public static class RecipeMapOreWasher extends RecipeMapNonGTRecipes<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
-
-		public RecipeMapOreWasher(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder.DefaultRecipeBuilder defaultRecipe) {
-			super(recipeList, unlocalizedName, localName, JEIName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, amperage, JEISpecialValuePre, JEISpecialValueMultiplier, JEISpecialValuePost, showVoltageAmperageInJEI, JEIAllowed, defaultRecipe);
-		}
-
-		@Override
-		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack[] inputs) {
-			if (inputs == null || inputs.length <= 0 || inputs[0] == null || fluidInputs == null || fluidInputs.length < 1 || !ModHandler.isWater(fluidInputs[0]))
-				return null;
-			if (inputRecipe != null && inputRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) return inputRecipe;
-			ItemStack comparedInput = GTUtility.copy(inputs[0]);
-			NBTTagCompound recipeMetaData = new NBTTagCompound();
-			ItemStack[] outputItems = ModHandler.IC2.getMachineOutput(comparedInput, ic2.api.recipe.Recipes.oreWashing.getRecipes(), true, recipeMetaData, null, null, null);
-
-			if (GTUtility.arrayContainsNonNull(outputItems)) {
-				return this.recipeBuilder()
-						.nonOptimized()
-						.inputs(GTUtility.copyAmount(inputs[0].stackSize - comparedInput.stackSize, inputs[0]))
-						.outputs(outputItems)
-						.fluidInputs(new FluidStack(fluidInputs[0].getFluid(), ((NBTTagCompound) recipeMetaData.getTag("return")).getInteger("amount")))
-						.duration(400)
-						.EUt(16)
-						.build();
-			}
-			return null;
-		}
-
-		@Override
-		public boolean containsInput(ItemStack stack) {
-			return GTUtility.arrayContainsNonNull(ModHandler.IC2.getMachineOutput(GTUtility.copyAmount(64, stack), ic2.api.recipe.Recipes.oreWashing.getRecipes(), false, new NBTTagCompound(), null, null, null));
-		}
-
-		@Override
-		public boolean containsInput(FluidStack fluid) {
-			return ModHandler.isWater(fluid);
-		}
-
-		@Override
-		public boolean containsInput(Fluid fluid) {
-			return ModHandler.isWater(new FluidStack(fluid, 1));
-		}
-	}
-
-	/**
-	 * Special Class for Macerator/RockCrusher Recipe handling.
-	 */
-	public static class RecipeMapMacerator extends RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
-
-		public RecipeMapMacerator(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder.DefaultRecipeBuilder defaultRecipe) {
-			super(recipeList, unlocalizedName, localName, JEIName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, amperage, JEISpecialValuePre, JEISpecialValueMultiplier, JEISpecialValuePost, showVoltageAmperageInJEI, JEIAllowed, defaultRecipe);
-		}
-
-		@Override
-		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack[] inputs) {
-			if (inputs == null || inputs.length <= 0 || inputs[0] == null/* || !GregTechAPI.sPostloadFinished*/)
-				return super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, fluidInputs, inputs);
-			inputRecipe = super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, fluidInputs, inputs);
-			if (inputRecipe != null) return inputRecipe;
-
-			ItemStack comparedInput = GTUtility.copy(inputs[0]);
-			ItemStack[] outputItems = ModHandler.IC2.getMachineOutput(comparedInput, ic2.api.recipe.Recipes.macerator.getRecipes(), true, new NBTTagCompound(), null, null, null);
-
-			if (GTUtility.arrayContainsNonNull(outputItems)) {
-				return this.recipeBuilder()
-						.nonOptimized()
-						.inputs(GTUtility.copyAmount(inputs[0].stackSize - comparedInput.stackSize, inputs[0]))
-						.outputs(outputItems)
-						.duration(400)
-						.EUt(2)
-						.build();
-			}
-			return null;
-		}
-
-		@Override
-		public boolean containsInput(ItemStack stack) {
-			return super.containsInput(stack) || GTUtility.arrayContainsNonNull(ModHandler.IC2.getMachineOutput(GTUtility.copyAmount(64, stack), ic2.api.recipe.Recipes.macerator.getRecipes(), false, new NBTTagCompound(), null, null, null));
-		}
-	}
-
-	/**
 	 * Special Class for Assembler handling.
 	 */
-	public static class RecipeMapAssembler extends RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
+	public static class RecipeMapAssembler extends RecipeMap<Recipe, RecipeBuilder.IntCircuitRecipeBuilder> {
 
-		public RecipeMapAssembler(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder.DefaultRecipeBuilder defaultRecipe) {
+		public RecipeMapAssembler(Collection<Recipe> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder.IntCircuitRecipeBuilder defaultRecipe) {
 			super(recipeList, unlocalizedName, localName, JEIName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, amperage, JEISpecialValuePre, JEISpecialValueMultiplier, JEISpecialValuePost, showVoltageAmperageInJEI, JEIAllowed, defaultRecipe);
 		}
 

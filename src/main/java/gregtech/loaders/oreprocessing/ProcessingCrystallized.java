@@ -1,6 +1,5 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.type.Material;
@@ -13,22 +12,26 @@ import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 
 public class ProcessingCrystallized implements IOreRegistrationHandler {
-    public ProcessingCrystallized() {
-        OrePrefix.crystal.addProcessingHandler(this);
-        OrePrefix.crystalline.addProcessingHandler(this);
-    }
-    
-    public void registerOre(UnificationEntry uEntry, String modName, SimpleItemStack simpleStack) {
-        ItemStack stack = simpleStack.asItemStack();
-        if (uEntry.material instanceof SolidMaterial) {
-            Material macerateInto = ((SolidMaterial) uEntry.material).macerateInto;
-            RecipeMap.HAMMER_RECIPES.recipeBuilder()
-                    .inputs(GTUtility.copyAmount(1, stack))
-                    .outputs(OreDictionaryUnifier.get(OrePrefix.dust, macerateInto))
-                    .duration(10)
-                    .EUt(16)
-                    .buildAndRegister();
-            ModHandler.addPulverisationRecipe(GTUtility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.dust, macerateInto, 1), null, 10, false);
-        }
-    }
+	public ProcessingCrystallized() {
+		OrePrefix.crystal.addProcessingHandler(this);
+		OrePrefix.crystalline.addProcessingHandler(this);
+	}
+
+	public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {
+		ItemStack stack = simpleStack.asItemStack();
+		if (entry.material instanceof SolidMaterial) {
+			Material macerateInto = ((SolidMaterial) entry.material).macerateInto;
+			RecipeMap.HAMMER_RECIPES.recipeBuilder()
+					.inputs(GTUtility.copyAmount(1, stack))
+					.outputs(OreDictionaryUnifier.get(OrePrefix.dust, macerateInto))
+					.duration(10)
+					.EUt(16)
+					.buildAndRegister();
+
+			RecipeMap.MACERATOR_RECIPES.recipeBuilder()
+					.inputs(GTUtility.copyAmount(1, stack))
+					.outputs(OreDictionaryUnifier.get(OrePrefix.dust, macerateInto, 1))
+					.buildAndRegister();
+		}
+	}
 }

@@ -8,6 +8,7 @@ import gregtech.api.net.NetworkHandler;
 import gregtech.api.net.PacketCustomTileData;
 import gregtech.api.util.GTLog;
 import io.netty.buffer.Unpooled;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.ISidedInventory;
@@ -380,15 +381,12 @@ public class GregtechTileEntity extends TickableTileEntityBase implements IGregT
 //            }
             // Normal Explosion Code
 //            metaTileEntity.onExplosion();
-//            if (GregTechMod.gregtechproxy.mExplosionItemDrop) {
-//                for (int i = 0; i < this.getSizeInventory(); i++) {
-//                    ItemStack stack = this.getStackInSlot(i);
-//                    if (GTUtility.isStackValid(stack)) {
-//                        Block.spawnAsEntity(this.worldObj, this.pos, stack);
-//                        this.setInventorySlotContents(i, null);
-//                    }
-//                }
-//            }
+			if (true) { //TODO CONFIG GregTechMod.gregtechproxy.mExplosionItemDrop
+				for (int i = 0; i < this.getSizeInventory(); i++) {
+					Block.spawnAsEntity(this.worldObj, this.pos, this.getStackInSlot(i));
+					this.setInventorySlotContents(i, null);
+				}
+			}
 //            GT_Pollution.addPollution(this.pos, 100000);
             metaTileEntity.doExplosion(strength);
         }

@@ -719,21 +719,80 @@ public class MetaItem1 extends MaterialMetaItem {
 		BATTERY_RE_HV_LITHIUM = addItem(538, "battery.re.hv.lithium").addStats(new ElectricStats(1600000, 3));
 		BATTERY_RE_HV_SODIUM = addItem(539, "battery.re.hv.sodium").addStats(new ElectricStats(800000, 3));
 
-		ModHandler.addExtractionRecipe(BATTERY_SU_LV_SULFURICACID.getStackForm(), BATTERY_HULL_LV.getStackForm());
-		ModHandler.addExtractionRecipe(BATTERY_SU_LV_MERCURY.getStackForm(), BATTERY_HULL_LV.getStackForm());
-		ModHandler.addExtractionRecipe(BATTERY_SU_MV_SULFURICACID.getStackForm(), BATTERY_HULL_MV.getStackForm());
-		ModHandler.addExtractionRecipe(BATTERY_SU_MV_MERCURY.getStackForm(), BATTERY_HULL_MV.getStackForm());
-		ModHandler.addExtractionRecipe(BATTERY_SU_HV_SULFURICACID.getStackForm(), BATTERY_HULL_HV.getStackForm());
-		ModHandler.addExtractionRecipe(BATTERY_SU_HV_MERCURY.getStackForm(), BATTERY_HULL_HV.getStackForm());
-		ModHandler.addExtractionRecipe(BATTERY_RE_LV_CADMIUM.getStackForm(), BATTERY_HULL_LV.getStackForm());
-		ModHandler.addExtractionRecipe(BATTERY_RE_LV_LITHIUM.getStackForm(), BATTERY_HULL_LV.getStackForm());
-		ModHandler.addExtractionRecipe(BATTERY_RE_LV_SODIUM.getStackForm(), BATTERY_HULL_LV.getStackForm());
-		ModHandler.addExtractionRecipe(BATTERY_RE_MV_CADMIUM.getStackForm(), BATTERY_HULL_MV.getStackForm());
-		ModHandler.addExtractionRecipe(BATTERY_RE_MV_LITHIUM.getStackForm(), BATTERY_HULL_MV.getStackForm());
-		ModHandler.addExtractionRecipe(BATTERY_RE_MV_SODIUM.getStackForm(), BATTERY_HULL_MV.getStackForm());
-		ModHandler.addExtractionRecipe(BATTERY_RE_HV_CADMIUM.getStackForm(), BATTERY_HULL_HV.getStackForm());
-		ModHandler.addExtractionRecipe(BATTERY_RE_HV_LITHIUM.getStackForm(), BATTERY_HULL_HV.getStackForm());
-		ModHandler.addExtractionRecipe(BATTERY_RE_HV_SODIUM.getStackForm(), BATTERY_HULL_HV.getStackForm());
+		RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(BATTERY_SU_LV_SULFURICACID.getStackForm())
+				.outputs(BATTERY_HULL_LV.getStackForm())
+				.buildAndRegister();
+
+		RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(BATTERY_SU_LV_MERCURY.getStackForm())
+				.outputs(BATTERY_HULL_LV.getStackForm())
+				.buildAndRegister();
+
+		RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(BATTERY_SU_MV_SULFURICACID.getStackForm())
+				.outputs(BATTERY_HULL_MV.getStackForm())
+				.buildAndRegister();
+
+		RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(BATTERY_SU_MV_MERCURY.getStackForm())
+				.outputs(BATTERY_HULL_MV.getStackForm())
+				.buildAndRegister();
+
+		RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(BATTERY_SU_HV_SULFURICACID.getStackForm())
+				.outputs(BATTERY_HULL_HV.getStackForm())
+				.buildAndRegister();
+
+		RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(BATTERY_SU_HV_MERCURY.getStackForm())
+				.outputs(BATTERY_HULL_HV.getStackForm())
+				.buildAndRegister();
+
+		RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(BATTERY_RE_LV_CADMIUM.getStackForm())
+				.outputs(BATTERY_HULL_LV.getStackForm())
+				.buildAndRegister();
+
+		RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(BATTERY_RE_LV_LITHIUM.getStackForm())
+				.outputs(BATTERY_HULL_LV.getStackForm())
+				.buildAndRegister();
+
+		RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(BATTERY_RE_LV_SODIUM.getStackForm())
+				.outputs(BATTERY_HULL_LV.getStackForm())
+				.buildAndRegister();
+
+		RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(BATTERY_RE_MV_CADMIUM.getStackForm())
+				.outputs(BATTERY_HULL_MV.getStackForm())
+				.buildAndRegister();
+
+		RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(BATTERY_RE_MV_LITHIUM.getStackForm())
+				.outputs(BATTERY_HULL_MV.getStackForm())
+				.buildAndRegister();
+
+		RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(BATTERY_RE_MV_SODIUM.getStackForm())
+				.outputs(BATTERY_HULL_MV.getStackForm())
+				.buildAndRegister();
+
+		RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(BATTERY_RE_HV_CADMIUM.getStackForm())
+				.outputs(BATTERY_HULL_HV.getStackForm())
+				.buildAndRegister();
+
+		RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(BATTERY_RE_HV_LITHIUM.getStackForm())
+				.outputs(BATTERY_HULL_HV.getStackForm())
+				.buildAndRegister();
+
+		RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+				.inputs(BATTERY_RE_HV_SODIUM.getStackForm())
+				.outputs(BATTERY_HULL_HV.getStackForm())
+				.buildAndRegister();
 
 		RecipeMap.FLUID_CANNER_RECIPES.recipeBuilder()
 				.inputs(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Cadmium, 2), BATTERY_HULL_LV.getStackForm())

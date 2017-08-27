@@ -330,29 +330,28 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
         holder.markDirty();
     }
 
-//    @Override
-//    public boolean onRightClick(EntityPlayer player, EnumFacing side, float clickX, float clickY, float clickZ) {
-//        return false;
-//    }
+    @Override
+    public boolean onRightClick(EntityPlayer player, EnumFacing side, float clickX, float clickY, float clickZ) {
+        return false;
+    }
 
     @Override
     public void onLeftClick(EntityPlayer player) {
 
     }
 
-//    @Override
-//    public void onScrewdriverRightClick(EnumFacing side, EntityPlayer player, float clickX, float clickY, float clickZ) {
-//
-//    }
+    @Override
+    public void onScrewdriverRightClick(EnumFacing side, EntityPlayer player, float clickX, float clickY, float clickZ) {
+    }
 
-//    @Override
-//    public boolean onWrenchRightClick(EnumFacing side, EnumFacing wrenchingSide, EntityPlayer player, float clickX, float clickY, float clickZ) {
-//        if(isValidFacing(wrenchingSide)) {
-//            setFrontFacing(wrenchingSide);
-//            return true;
-//        }
-//        return false;
-//    }
+    @Override
+    public boolean onWrenchRightClick(EnumFacing side, EnumFacing wrenchingSide, EntityPlayer player, float clickX, float clickY, float clickZ) {
+        if(isValidFacing(wrenchingSide)) {
+            setFrontFacing(wrenchingSide);
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public void onFirstTick() {
@@ -374,30 +373,30 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     public void onRemoval() {
     }
 
-//    @Override
-//    public Container getServerGUI(int ID, InventoryPlayer playerInventory) {
-//        return null;
-//    }
-//
-//    @Override
-//    public GuiContainer getClientGUI(int ID, InventoryPlayer playerInventory) {
-//        return null;
-//    }
+    @Override
+    public Container getServerGUI(int ID, InventoryPlayer playerInventory) {
+        return null;
+    }
+
+    @Override
+    public GuiContainer getClientGUI(int ID, InventoryPlayer playerInventory) {
+        return null;
+    }
 
     @Override
     public boolean isAccessAllowed(EntityPlayer player) {
         return true; //default - to be overridden
     }
 
-//    @Override
-//    public int getComparatorValue(EnumFacing side) {
-//        return 0;
-//    }
-//
-//    @Override
-//    public float getExplosionResistance(EnumFacing side) {
-//        return 2.0f;
-//    }
+    @Override
+    public int getComparatorValue(EnumFacing side) {
+        return 0;
+    }
+
+    @Override
+    public float getExplosionResistance(EnumFacing side) {
+        return 2.0f;
+    }
 
     @Override
     public void onEntityCollidedWithBlock(Entity collider) {
@@ -468,10 +467,10 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
         }
     }
 
-//    @Override
-//    public void onExplosion() {
+    @Override
+    public void onExplosion() {
 //        NO OP
-//    }
+    }
 
     @Override
     public void doExplosion(long strength) {

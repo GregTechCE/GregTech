@@ -1,44 +1,98 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.items.ItemList;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
-import gregtech.common.items.MetaTool;
+import gregtech.common.items.MetaItems;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 
-public class ProcessingToolOther implements IOreRegistrationHandler {
-    public ProcessingToolOther() {
-        OrePrefix.toolHeadHammer.addProcessingHandler(this);
-    }
+import static gregtech.api.unification.material.type.DustMaterial.MatFlags.NO_SMASHING;
 
-    @Override
-    public void registerOre(UnificationEntry uEntry, String modName, SimpleItemStack simpleStack) {
-        if ((uEntry.material != Materials.Stone) && (uEntry.material != Materials.Flint)) {
-            if (uEntry.material != Materials.Rubber) {
-                ModHandler.addCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.PLUNGER, 1, uEntry.material, uEntry.material, null), ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{"xRR", " SR", "S f", 'S', OreDictionaryUnifier.get(OrePrefix.stick, uEntry.material), 'R', OreDictionaryUnifier.get(OrePrefix.plate, Materials.Rubber)});
-            }
-            if ((!uEntry.material.contains(SubTag.WOOD)) && (!uEntry.material.contains(SubTag.BOUNCY)) && (!uEntry.material.hasFlag(DustMaterial.MatFlags.NO_SMASHING))) {
-                if (uEntry.material instanceof SolidMaterial) {
-                    SolidMaterial solidMaterial = (SolidMaterial) uEntry.material;
-                    ModHandler.addCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.SCREWDRIVER, 1, solidMaterial, solidMaterial.handleMaterial, null), ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{" fS", " Sh", "W  ", 'S', OreDictionaryUnifier.get(OrePrefix.stick, solidMaterial), 'W', OreDictionaryUnifier.get(OrePrefix.stick, solidMaterial)});
-                }
-                ModHandler.addCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.WRENCH, 1, uEntry.material, uEntry.material, null), ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{"IhI", "III", " I ", 'I', OreDictionaryUnifier.get(OrePrefix.ingot, uEntry.material)});
-                ModHandler.addCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.CROWBAR, 1, uEntry.material, uEntry.material, null), ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{"hDS", "DSD", "SDf", 'S', OreDictionaryUnifier.get(OrePrefix.stick, uEntry.material), 'D', Dyes.dyeBlue});
-                ModHandler.addCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.WIRECUTTER, 1, uEntry.material, uEntry.material, null), ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{"PfP", "hPd", "STS", 'S', OreDictionaryUnifier.get(OrePrefix.stick, uEntry.material), 'P', OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material), 'T', OreDictionaryUnifier.get(OrePrefix.screw, uEntry.material)});
-                ModHandler.addCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.SCOOP, 1, uEntry.material, uEntry.material, null), ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{"SWS", "SSS", "xSh", 'S', OreDictionaryUnifier.get(OrePrefix.stick, uEntry.material), 'W', new ItemStack(Blocks.WOOL, 1, 32767)});
-                ModHandler.addCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.BRANCHCUTTER, 1, uEntry.material, uEntry.material, null), ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{"PfP", "PdP", "STS", 'S', OreDictionaryUnifier.get(OrePrefix.stick, uEntry.material), 'P', OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material), 'T', OreDictionaryUnifier.get(OrePrefix.screw, uEntry.material)});
-                ModHandler.addCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.KNIFE, 1, uEntry.material, uEntry.material, null), ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{"fPh", " S ", 'S', OreDictionaryUnifier.get(OrePrefix.stick, uEntry.material), 'P', OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material)});
-                ModHandler.addCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.BUTCHERYKNIFE, 1, uEntry.material, uEntry.material, null), ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{"PPf", "PP ", "Sh ", 'S', OreDictionaryUnifier.get(OrePrefix.stick, uEntry.material), 'P', OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material)});
-                ModHandler.addCraftingRecipe(MetaTool.INSTANCE.getToolWithStats(MetaTool.SOLDERING_IRON_LV, 1, uEntry.material, Materials.Rubber, new long[]{100000L, 32L, 1L, -1L}), ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{"LBf", "Sd ", "P  ", 'B', OreDictionaryUnifier.get(OrePrefix.bolt, uEntry.material), 'P', OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material), 'S', OreDictionaryUnifier.get(OrePrefix.stick, Materials.Iron), 'L', ItemList.Battery_RE_LV_Lithium.get(1)});
-            }
-        }
-    }
+public class ProcessingToolOther implements IOreRegistrationHandler {
+
+	public ProcessingToolOther() {
+		OrePrefix.toolHeadHammer.addProcessingHandler(this);
+	}
+
+	@Override
+	public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {
+		if (entry.material != Materials.Stone && entry.material != Materials.Flint) {
+			if (entry.material != Materials.Rubber) {
+				ModHandler.addShapedRecipe(MetaItems.PLUNGER.getStackForm(entry.material, entry.material),
+						"xRR",
+						" SR",
+						"S f",
+						'S', new UnificationEntry(OrePrefix.stick, entry.material),
+						'R', new UnificationEntry(OrePrefix.plate, Materials.Rubber));
+			}
+			if (!entry.material.contains(SubTag.WOOD)
+					&& !entry.material.contains(SubTag.BOUNCY)
+					&& !entry.material.hasFlag(NO_SMASHING)) {
+
+				if (entry.material instanceof SolidMaterial) {
+					SolidMaterial solidMaterial = (SolidMaterial) entry.material;
+					ModHandler.addShapedRecipe(MetaItems.SCREWDRIVER.getStackForm(solidMaterial, solidMaterial.handleMaterial),
+							" fS",
+							" Sh",
+							"W  ",
+							'S', OreDictionaryUnifier.get(OrePrefix.stick, solidMaterial),
+							'W', OreDictionaryUnifier.get(OrePrefix.stick, solidMaterial));
+				}
+				ModHandler.addShapedRecipe(MetaItems.WRENCH.getStackForm(entry.material, entry.material),
+						"IhI",
+						"III",
+						" I ",
+						'I', OreDictionaryUnifier.get(OrePrefix.ingot, entry.material));
+				ModHandler.addShapedRecipe(MetaItems.CROWBAR.getStackForm(entry.material, entry.material),
+						"hDS",
+						"DSD",
+						"SDf",
+						'S', OreDictionaryUnifier.get(OrePrefix.stick, entry.material),
+						'D', EnumDyeColor.BLUE);
+				ModHandler.addShapedRecipe(MetaItems.WIRECUTTER.getStackForm(entry.material, entry.material),
+						"PfP",
+						"hPd",
+						"STS",
+						'S', OreDictionaryUnifier.get(OrePrefix.stick, entry.material),
+						'P', OreDictionaryUnifier.get(OrePrefix.plate, entry.material),
+						'T', OreDictionaryUnifier.get(OrePrefix.screw, entry.material));
+				ModHandler.addShapedRecipe(MetaItems.SCOOP.getStackForm(entry.material, entry.material),
+						"SWS",
+						"SSS",
+						"xSh",
+						'S', OreDictionaryUnifier.get(OrePrefix.stick, entry.material),
+						'W', new ItemStack(Blocks.WOOL, 1, 32767));
+				ModHandler.addShapedRecipe(MetaItems.BRANCHCUTTER.getStackForm(entry.material, entry.material),
+						"PfP",
+						"PdP",
+						"STS",
+						'S', OreDictionaryUnifier.get(OrePrefix.stick, entry.material),
+						'P', OreDictionaryUnifier.get(OrePrefix.plate, entry.material),
+						'T', OreDictionaryUnifier.get(OrePrefix.screw, entry.material));
+				ModHandler.addShapedRecipe(MetaItems.KNIFE.getStackForm(entry.material, entry.material),
+						"fPh", " S ",
+						'S', OreDictionaryUnifier.get(OrePrefix.stick, entry.material),
+						'P', OreDictionaryUnifier.get(OrePrefix.plate, entry.material));
+				ModHandler.addShapedRecipe(MetaItems.BUTCHERYKNIFE.getStackForm(entry.material, entry.material),
+						"PPf", "PP ", "Sh ",
+						'S', OreDictionaryUnifier.get(OrePrefix.stick, entry.material),
+						'P', OreDictionaryUnifier.get(OrePrefix.plate, entry.material));
+				ModHandler.addShapedRecipe(MetaItems.SOLDERING_IRON_LV.getStackForm(entry.material, Materials.Rubber/*, long[]{100000L, 32L, 1L, -1L}*/), // TODO electric tools
+						"LBf",
+						"Sd ",
+						"P  ",
+						'B', OreDictionaryUnifier.get(OrePrefix.bolt, entry.material),
+						'P', OreDictionaryUnifier.get(OrePrefix.plate, entry.material),
+						'S', OreDictionaryUnifier.get(OrePrefix.stick, Materials.Iron),
+						'L', MetaItems.BATTERY_RE_LV_LITHIUM.getStackForm());
+			}
+		}
+	}
 }

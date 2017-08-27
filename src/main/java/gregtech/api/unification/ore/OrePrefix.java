@@ -208,6 +208,7 @@ public enum OrePrefix {
     armorBoots("Boots", M * 4, null, 0, null), // vanilly Boots
     armor("Armor Parts", -1, null, DISALLOW_RECYCLING, null),
     frameGt("Frame Boxes", M * 2, null, ENABLE_UNIFICATION, null),
+
     pipeTiny("Tiny Pipes", M / 2, MaterialIconType.pipeTiny, ENABLE_UNIFICATION, null),
     pipeSmall("Small Pipes", M, MaterialIconType.pipeSmall, ENABLE_UNIFICATION, null),
     pipeMedium("Medium Pipes", M * 3, MaterialIconType.pipeMedium, ENABLE_UNIFICATION, null),
@@ -259,8 +260,8 @@ public enum OrePrefix {
     }
 
     static {
-        OrePrefix.bottle.containerItem = new ItemStack(Items.GLASS_BOTTLE);
-        OrePrefix.bucket.containerItem = new ItemStack(Items.BUCKET);
+        bottle.containerItem = new ItemStack(Items.GLASS_BOTTLE);
+        bucket.containerItem = new ItemStack(Items.BUCKET);
 
         ingotHot.heatDamage = 3.0F;
         cellPlasma.heatDamage = 6.0F;

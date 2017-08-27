@@ -54,7 +54,7 @@ public class GregTechMod {
     @Mod.Instance("gregtech")
     public static GregTechMod instance;
 
-    @SidedProxy(modId = "gregtech", clientSide = "gregtech.common.ClientProxy", serverSide = "gregtech.common.GT_Server")
+    @SidedProxy(modId = "gregtech", clientSide = "gregtech.common.ClientProxy", serverSide = "gregtech.common.CommonProxy")
     public static CommonProxy gregtechproxy;
 
     private final String aTextGeneral = "general";

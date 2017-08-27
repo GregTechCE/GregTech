@@ -24,10 +24,11 @@ public class ProcessingAll implements IOreRegistrationHandler {
         }
     }
 
-    public void registerOre(UnificationEntry uEntry, String modName, SimpleItemStack simpleStack) {
+    public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {
         ItemStack stack = simpleStack.asItemStack();
-        if (((stack.getItem() instanceof net.minecraft.item.ItemBlock)) && (uEntry.orePrefix.defaultStackSize < stack.getItem().getItemStackLimit(stack))) {
-            stack.getItem().setMaxStackSize(uEntry.orePrefix.defaultStackSize);
+        if (stack.getItem() instanceof net.minecraft.item.ItemBlock
+                && entry.orePrefix.defaultStackSize < stack.getItem().getItemStackLimit(stack)) {
+            stack.getItem().setMaxStackSize(entry.orePrefix.defaultStackSize);
         }
 
         //TODO -----------------

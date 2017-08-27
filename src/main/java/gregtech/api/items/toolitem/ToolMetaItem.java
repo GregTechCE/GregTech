@@ -6,6 +6,7 @@ import gregtech.api.enchants.EnchantmentData;
 import gregtech.api.items.IDamagableItem;
 import gregtech.api.items.ToolDictNames;
 import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.items.metaitem.stats.IMetaItemStats;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.SolidMaterial;
@@ -270,6 +271,16 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
         private MetaToolValueItem(int metaValue, String unlocalizedName, String... nameParameters) {
             super(metaValue, unlocalizedName, nameParameters);
+        }
+
+        @Override
+        public MetaValueItem addStats(IMetaItemStats... stats) {
+            for(IMetaItemStats metaItemStats : stats) {
+                if(metaItemStats instanceof IToolStats) {
+                    setToolStats((IToolStats) metaItemStats);
+                }
+            }
+            return super.addStats(stats);
         }
 
         public MetaToolValueItem setToolStats(IToolStats toolStats) {
