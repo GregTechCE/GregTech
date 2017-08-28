@@ -1,7 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
 import gregtech.api.GTValues;
-import gregtech.api.items.metaitem.FluidStats;
+import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeBuilder;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictionaryUnifier;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class ProcessingDecomposition implements IOreRegistrationHandler {
 
-    public void init() {
+    public void register() {
         OrePrefix.cell.addProcessingHandler(this);
         OrePrefix.dust.addProcessingHandler(this);
     }
@@ -29,8 +29,8 @@ public class ProcessingDecomposition implements IOreRegistrationHandler {
     public void registerOre(UnificationEntry entry, String modName, SimpleItemStack itemStack) {
         if(entry.material instanceof FluidMaterial) {
             FluidMaterial material = (FluidMaterial) entry.material;
-            if(!material.materialComponents.isEmpty() && (
-                    material.hasFlag(Material.MatFlags.DECOMPOSITION_BY_ELECTROLYZING) ||
+            if(!material.materialComponents.isEmpty() &&
+                    (material.hasFlag(Material.MatFlags.DECOMPOSITION_BY_ELECTROLYZING) ||
                     material.hasFlag(Material.MatFlags.DECOMPOSITION_BY_CENTRIFUGING))) {
 
                 //compute inputs
@@ -48,7 +48,7 @@ public class ProcessingDecomposition implements IOreRegistrationHandler {
                 }
 
                 //generate builder
-                RecipeBuilder builder;
+                RecipeBuilder<Recipe, RecipeBuilder.DefaultRecipeBuilder> builder;
                 if(material.hasFlag(Material.MatFlags.DECOMPOSITION_BY_ELECTROLYZING)) {
                     builder = RecipeMap.ELECTROLYZER_RECIPES.recipeBuilder()
                             .duration((int) material.getProtons() * totalInputAmount * 8)

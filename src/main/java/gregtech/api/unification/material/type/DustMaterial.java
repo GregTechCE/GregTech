@@ -72,6 +72,11 @@ public class DustMaterial extends FluidMaterial {
     public int smeltingMultiplier;
 
     /**
+     * Tool level needed to harvest block of this material
+     */
+    public int harvestLevel;
+
+    /**
      * Material to which smelting of this material ore will result
      */
     public SolidMaterial directSmelting;
@@ -123,4 +128,8 @@ public class DustMaterial extends FluidMaterial {
         return this;
     }
 
+    public DustMaterial setHarvestLevel(int harvestLevel) {
+        this.harvestLevel = harvestLevel;
+        return this;
+    }
 }

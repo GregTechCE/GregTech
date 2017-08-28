@@ -22,8 +22,8 @@ public class ProcessingCrushedCentrifuged implements IOreRegistrationHandler {
             ItemStack stack = itemStack.asItemStack();
             SolidMaterial solidMaterial = (SolidMaterial) entry.material;
             ItemStack dustStack = OreDictionaryUnifier.get(OrePrefix.dust, solidMaterial.macerateInto);
-            ItemStack byproductStack = OreDictionaryUnifier.get(OrePrefix.dust, GTUtility.selectItemInList(2,
-                    solidMaterial.macerateInto, solidMaterial.oreByProducts), 1);
+            ItemStack byproductStack = OreDictionaryUnifier.get(OrePrefix.dust,
+                    GTUtility.selectItemInList(2, solidMaterial.macerateInto, solidMaterial.oreByProducts), 1);
 
             RecipeMap.HAMMER_RECIPES.recipeBuilder()
                     .inputs(stack)

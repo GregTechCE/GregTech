@@ -15,7 +15,7 @@ import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENE
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_LONG_ROD;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_ROD;
 
-public class SolidMaterial extends DustMaterial {
+public abstract class SolidMaterial extends DustMaterial {
 
     public static final class MatFlags {
 
@@ -71,10 +71,6 @@ public class SolidMaterial extends DustMaterial {
         this.toolQuality = toolQuality;
         this.toolDurability = toolDurability;
         this.directSmelting = this;
-    }
-
-    public SolidMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, int toolQuality) {
-        this(metaItemSubId, name, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, null, 0, toolQuality, 0);
     }
 
     @Override

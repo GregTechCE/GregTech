@@ -873,7 +873,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * @param JEISpecialValuePost       the String after the Special Value. Usually for a Unit or something.
 	 * @param JEIAllowed                if JEI is allowed to display this Recipe Handler in general.
 	 */
-	public RecipeMap(Collection<T> recipeList, String unlocalizedName, String localName, String JEIName, String JEIGUIPath,
+	public RecipeMap(Collection<T> recipeList, String unlocalizedName, String localName, @Nullable String JEIName, String JEIGUIPath,
 					 int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs,
 					 int amperage, String JEISpecialValuePre, int JEISpecialValueMultiplier, String JEISpecialValuePost,
 					 boolean showVoltageAmperageInJEI, boolean JEIAllowed, R defaultRecipe) {

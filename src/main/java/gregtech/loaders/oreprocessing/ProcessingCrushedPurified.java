@@ -1,6 +1,5 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.unification.material.type.GemMaterial;
@@ -76,10 +75,7 @@ public class ProcessingCrushedPurified implements IOreRegistrationHandler {
                             .EUt(16)
                             .buildAndRegister();
                 }
-
             }
-
         }
     }
-
 }

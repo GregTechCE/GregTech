@@ -13,7 +13,6 @@ import gregtech.common.items.MetaItems;
 import net.minecraft.item.ItemStack;
 
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.NO_WORKING;
-import static gregtech.api.unification.material.type.Material.MatFlags.NO_UNIFICATION;
 
 public class ProcessingBolt implements IOreRegistrationHandler {
 
@@ -27,7 +26,10 @@ public class ProcessingBolt implements IOreRegistrationHandler {
 			ItemStack screwStack = OreDictionaryUnifier.get(OrePrefix.screw, entry.material);
 			ItemStack ingotStack = OreDictionaryUnifier.get(OrePrefix.ingot, entry.material);
 
-			ModHandler.addShapedRecipe(boltStack, "fS ", "S  ", 'S', screwStack);
+			ModHandler.addShapedRecipe(boltStack,
+					"fS ",
+					"S  ",
+					'S', screwStack);
 
 			RecipeMap.CUTTER_RECIPES.recipeBuilder()
 					.inputs(screwStack)
