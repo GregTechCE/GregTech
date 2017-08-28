@@ -442,68 +442,6 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 	}
 
-
-	public static class CellInputRecipeBuilder extends RecipeBuilder<Recipe, CellInputRecipeBuilder> {
-
-		protected int cellAmount;
-		protected int fuelCanAmount;
-
-		public CellInputRecipeBuilder() {
-		}
-
-		public CellInputRecipeBuilder(Recipe recipe, RecipeMap<Recipe, CellInputRecipeBuilder> recipeMap) {
-			super(recipe, recipeMap);
-		}
-
-		public CellInputRecipeBuilder(RecipeBuilder<Recipe, CellInputRecipeBuilder> recipeBuilder) {
-			super(recipeBuilder);
-		}
-
-		@Override
-		protected CellInputRecipeBuilder getThis() {
-			return this;
-		}
-
-		@Override
-		public CellInputRecipeBuilder copy() {
-			return new CellInputRecipeBuilder(this);
-		}
-
-		public CellInputRecipeBuilder cellAmount(int emptyCellCount) {
-			Validate.isTrue(emptyCellCount > 0, "Cell amount cannot be less than or equal to 0");
-
-			this.cellAmount = emptyCellCount;
-			return this;
-		}
-
-		public CellInputRecipeBuilder fuelCanAmount(int emptyCanCount) {
-			Validate.isTrue(emptyCanCount > 0, "Fuel Can amount cannot be less than or equal to 0");
-
-			this.fuelCanAmount = emptyCanCount;
-			return this;
-		}
-
-		@Override
-		protected void finalizeAndValidate() {
-			if (fuelCanAmount > 0 && cellAmount > 0) {
-				throw new IllegalArgumentException("Recipe cannot contain both cells and Fuel Cans inputs at the time");
-			}
-
-//			if (cellAmount > 0) {
-//				inputs.add(ItemList.Cell_Empty.get(cellAmount));
-//			} else if (fuelCanAmount > 0) {
-//				inputs.add(ItemList.IC2_Fuel_Can_Empty.get(fuelCanAmount));
-//			}
-			super.finalizeAndValidate();
-		}
-
-		public Recipe build() {
-			finalizeAndValidate();
-			return new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
-					duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
-		}
-	}
-
 	public static class BlastRecipeBuilder extends RecipeBuilder<Recipe.BlastRecipe, BlastRecipeBuilder> {
 
 		private int blastFurnaceTemp;

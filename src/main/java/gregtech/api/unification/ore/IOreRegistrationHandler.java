@@ -8,6 +8,6 @@ public interface IOreRegistrationHandler {
     /**
      * Contains a code fragment, used in the recipe registration
      */
-    void registerOre(UnificationEntry unificationEntry, String modName, SimpleItemStack itemStack);
+    void registerOre(UnificationEntry entry, String modName, SimpleItemStack itemStack);
 
 }
