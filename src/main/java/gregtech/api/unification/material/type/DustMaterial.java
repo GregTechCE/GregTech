@@ -8,7 +8,7 @@ import gregtech.api.unification.stack.MaterialStack;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static gregtech.api.unification.material.type.Material.MatFlags.createFlag;
+import static gregtech.api.util.GTUtility.createFlag;
 
 public class DustMaterial extends FluidMaterial {
 

@@ -6,6 +6,8 @@ public class MachineRecipeLoader implements Runnable {
 
     }
 
-    private void register
+    private void registerRecipes() {
+
+    }
 
 }

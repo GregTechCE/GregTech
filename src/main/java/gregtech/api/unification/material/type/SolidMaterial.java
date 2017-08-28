@@ -10,7 +10,7 @@ import net.minecraft.enchantment.Enchantment;
 import java.util.ArrayList;
 
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.GENERATE_PLATE;
-import static gregtech.api.unification.material.type.Material.MatFlags.createFlag;
+import static gregtech.api.util.GTUtility.createFlag;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_GEAR;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_LONG_ROD;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_ROD;

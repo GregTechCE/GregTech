@@ -8,6 +8,7 @@ import gregtech.api.unification.material.IMaterialHandler;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.GTControlledRegistry;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.GTUtility;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -16,6 +17,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 import static gregtech.api.GTValues.M;
+import static gregtech.api.util.GTUtility.*;
 
 public abstract class Material implements Comparable<Material> {
 
@@ -80,12 +82,6 @@ public abstract class Material implements Comparable<Material> {
 		 * Add to material if any of it's items cannot be recycled to get scrap
 		 */
 		public static final long NO_RECYCLING = createFlag(6);
-
-
-		public static long createFlag(int id) {
-			return (long) Math.pow(2, id);
-		}
-
 	}
 
 	/**

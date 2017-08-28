@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableList;
 import gregtech.api.unification.Element;
 import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.stack.MaterialStack;
+import gregtech.api.util.GTUtility;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -18,13 +19,13 @@ public class FluidMaterial extends Material {
         /**
          * Add this flag to enable plasma generation for this material
          */
-        public static final long GENERATE_PLASMA = Material.MatFlags.createFlag(10);
+        public static final long GENERATE_PLASMA = GTUtility.createFlag(10);
 
         /**
          * Marks material state as gas
          * Examples: Air, Argon, Refinery Gas, Oxygen, Hydrogen
          */
-        public static final long STATE_GAS = Material.MatFlags.createFlag(11);
+        public static final long STATE_GAS = GTUtility.createFlag(11);
 
     }
 

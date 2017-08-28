@@ -5,7 +5,7 @@ import gregtech.api.unification.Element;
 import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.stack.MaterialStack;
 
-import static gregtech.api.unification.material.type.Material.MatFlags.createFlag;
+import static gregtech.api.util.GTUtility.createFlag;
 
 public class GemMaterial extends SolidMaterial {
 

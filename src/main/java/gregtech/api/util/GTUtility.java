@@ -388,4 +388,7 @@ public class GTUtility {
         return side;
     }
 
+	public static long createFlag(int id) {
+		return (long) Math.pow(2, id);
+	}
 }
