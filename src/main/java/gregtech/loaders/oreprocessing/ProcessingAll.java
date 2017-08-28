@@ -25,22 +25,9 @@ public class ProcessingAll implements IOreRegistrationHandler {
     }
 
     public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {
-        ItemStack stack = simpleStack.asItemStack();
-        if (stack.getItem() instanceof net.minecraft.item.ItemBlock
-                && entry.orePrefix.defaultStackSize < stack.getItem().getItemStackLimit(stack)) {
-            stack.getItem().setMaxStackSize(entry.orePrefix.defaultStackSize);
-        }
 
         //TODO -----------------
-        if (aOreDictName.equals("sandCracked")) {
-            GTValues.RA.addCentrifugeRecipe(GTUtility.copyAmount(16L, stack), -1, ModHandler.getFuelCan(25000), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Saltpeter, 8), null, null, null, new ItemStack(Blocks.SAND, 10, 1), 2500);
-            GTValues.RA.addCentrifugeRecipe(GTUtility.copyAmount(16L, stack), -1, ModHandler.getFuelCan(25000), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Saltpeter, 8), null, null, null, new ItemStack(Blocks.SAND, 10), 2500);
-        } else if (aOreDictName.equals("sandOil")) {
-            GTValues.RA.addCentrifugeRecipe(GTUtility.copyAmount(2L, stack), 1, OreDictionaryUnifier.get(OrePrefix.cell, Materials.Oil, 1), new ItemStack(Blocks.SAND, 1, 1), null, null, null, null, 1000);
-            GTValues.RA.addCentrifugeRecipe(GTUtility.copyAmount(2L, stack), 1, OreDictionaryUnifier.get(OrePrefix.cell, Materials.Oil, 1), new ItemStack(Blocks.SAND, 1, 0), null, null, null, null, 1000);
-        } else if (aOreDictName.equals("waxMagical")) {
-            GTValues.RA.addFuel(GTUtility.copyAmount(1, stack), null, 6, 5);
-        } else if (aOreDictName.startsWith("slabWood")) {
+        if (aOreDictName.startsWith("slabWood")) {
             GTValues.RA.addChemicalBathRecipe(GTUtility.copyAmount(3L, new Object[]{stack}), Materials.Creosote.getFluid(1000L), ItemList.RC_Tie_Wood.get(1L, new Object[0]), null, null, null, 200, 4);
         } else if (aOreDictName.equals("foodCheese")) {
             GTValues.RA.addSlicerRecipe(stack, ItemList.Shape_Slicer_Flat.get(0), ItemList.Food_Sliced_Cheese.get(4), 64, 4);
@@ -56,12 +43,6 @@ public class ProcessingAll implements IOreRegistrationHandler {
             GTValues.RA.addFormingPressRecipe(GTUtility.copyAmount(1, stack), ItemList.Shape_Mold_Bun.get(0), ItemList.Food_Raw_Bun.get(1), 128, 4);
             GTValues.RA.addFormingPressRecipe(GTUtility.copyAmount(2, stack), ItemList.Shape_Mold_Bread.get(0), ItemList.Food_Raw_Bread.get(1), 256, 4);
             GTValues.RA.addFormingPressRecipe(GTUtility.copyAmount(3, stack), ItemList.Shape_Mold_Baguette.get(0), ItemList.Food_Raw_Baguette.get(1), 384, 4);
-        } else if (aOreDictName.equals("craftingQuartz")) {
-            GTValues.RA.addAssemblerRecipe(new ItemStack(Blocks.REDSTONE_TORCH, 3, 32767), GTUtility.copyAmount(1, stack), Materials.Concrete.getMolten(144), new ItemStack(Items.COMPARATOR, 1, 0), 800, 1);
-        } else if (aOreDictName.equals("craftingWireCopper")) {
-            GTValues.RA.addAssemblerRecipe(ItemList.Circuit_Basic.get(1), GTUtility.copyAmount(1, stack), ModHandler.getIC2Item(ItemName.frequency_transmitter, 1), 800, 1);
-        } else if (aOreDictName.equals("craftingWireTin")) {
-            GTValues.RA.addAssemblerRecipe(ItemList.Circuit_Basic.get(1), GTUtility.copyAmount(1, stack), ModHandler.getIC2Item(ItemName.frequency_transmitter, 1), 800, 1);
         } else if (aOreDictName.equals("craftingLensBlue")) {
             GTValues.RA.addLaserEngraverRecipe(OreDictionaryUnifier.get(OrePrefix.block, Materials.Iron, 1), GTUtility.copyAmount(0, stack), ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1, 13), 2000, 1920);
             GTValues.RA.addLaserEngraverRecipe(OreDictionaryUnifier.get(OrePrefix.block, Materials.WroughtIron, 1), GTUtility.copyAmount(0, stack), ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1, 13), 2000, 1920);

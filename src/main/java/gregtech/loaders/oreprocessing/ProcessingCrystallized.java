@@ -18,20 +18,24 @@ public class ProcessingCrystallized implements IOreRegistrationHandler {
 	}
 
 	public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {
-		ItemStack stack = simpleStack.asItemStack();
 		if (entry.material instanceof SolidMaterial) {
-			Material macerateInto = ((SolidMaterial) entry.material).macerateInto;
+			ItemStack stack = simpleStack.asItemStack();
+			ItemStack dustStack = OreDictionaryUnifier.get(OrePrefix.dust, ((SolidMaterial) entry.material).macerateInto);
+
 			RecipeMap.HAMMER_RECIPES.recipeBuilder()
 					.inputs(GTUtility.copyAmount(1, stack))
-					.outputs(OreDictionaryUnifier.get(OrePrefix.dust, macerateInto))
+					.outputs(dustStack)
 					.duration(10)
-					.EUt(16)
+					.EUt(10)
 					.buildAndRegister();
 
 			RecipeMap.MACERATOR_RECIPES.recipeBuilder()
 					.inputs(GTUtility.copyAmount(1, stack))
-					.outputs(OreDictionaryUnifier.get(OrePrefix.dust, macerateInto, 1))
+					.outputs(dustStack)
+					.duration(20)
+					.EUt(16)
 					.buildAndRegister();
 		}
 	}
+
 }

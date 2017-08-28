@@ -37,6 +37,13 @@ public class ProcessingPlate implements IOreRegistrationHandler {
         boolean aNoSmashing = uEntry.material.contains(SubTag.NO_SMASHING);
         boolean aNoWorking = uEntry.material.contains(SubTag.NO_WORKING);
         long materialMass = uEntry.material.getMass();
+
+        RecipeMap.CUTTER_RECIPES.recipeBuilder()
+                .inputs(GTUtility.copyAmount(1, blockStack))
+                .outputs(OreDictionaryUnifier.get(OrePrefix.plate, entry.material, 9))
+                .duration((int) Math.max(entry.material.getMass() * 10L, 1L))
+                .EUt(30)
+                .buildAndRegister();
         
         switch (uEntry.orePrefix) {
             case plate:

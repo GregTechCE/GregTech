@@ -18,6 +18,8 @@ public class GemMaterial extends SolidMaterial {
 
         public static final long GENERATE_LENSE = createFlag(37);
 
+        public static final long HIGH_SIFTER_OUTPUT = createFlag(38);
+
     }
 
     public GemMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element, float toolSpeed, int toolQuality, int toolDurability) {

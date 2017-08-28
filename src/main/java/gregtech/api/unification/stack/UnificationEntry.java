@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 public class UnificationEntry {
 
     public final OrePrefix orePrefix;
-    public final @Nullable Material material;
+    public final Material material;
 
     public UnificationEntry(OrePrefix orePrefix, Material material) {
         this.orePrefix = orePrefix;
