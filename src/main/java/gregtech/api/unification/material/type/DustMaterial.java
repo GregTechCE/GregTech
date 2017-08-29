@@ -8,7 +8,7 @@ import gregtech.api.unification.stack.MaterialStack;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static gregtech.api.unification.material.type.Material.MatFlags.createFlag;
+import static gregtech.api.util.GTUtility.createFlag;
 
 public class DustMaterial extends FluidMaterial {
 
@@ -72,6 +72,11 @@ public class DustMaterial extends FluidMaterial {
     public int smeltingMultiplier;
 
     /**
+     * Tool level needed to harvest block of this material
+     */
+    public int harvestLevel;
+
+    /**
      * Material to which smelting of this material ore will result
      */
     public SolidMaterial directSmelting;
@@ -123,4 +128,8 @@ public class DustMaterial extends FluidMaterial {
         return this;
     }
 
+    public DustMaterial setHarvestLevel(int harvestLevel) {
+        this.harvestLevel = harvestLevel;
+        return this;
+    }
 }

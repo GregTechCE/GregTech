@@ -12,7 +12,7 @@ public class ProcessingCircuit implements IOreRegistrationHandler {
         OrePrefix.circuit.addProcessingHandler(this);
     }
 
-    public void registerOre(UnificationEntry uEntry, String modName, SimpleItemStack simpleStack) {
+    public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {
         ModHandler.removeRecipe(simpleStack.asItemStack());
     }
 

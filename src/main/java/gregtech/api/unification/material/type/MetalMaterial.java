@@ -7,7 +7,7 @@ import gregtech.api.unification.stack.MaterialStack;
 
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.GENERATE_PLATE;
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.SMELT_INTO_FLUID;
-import static gregtech.api.unification.material.type.Material.MatFlags.createFlag;
+import static gregtech.api.util.GTUtility.createFlag;
 import static gregtech.api.unification.material.type.MetalMaterial.MatFlags.*;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_ROD;
 

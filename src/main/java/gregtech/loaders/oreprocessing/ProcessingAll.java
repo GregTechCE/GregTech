@@ -16,9 +16,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 public class ProcessingAll implements IOreRegistrationHandler {
-    public ProcessingAll() {
-        for (OrePrefix tPrefix : OrePrefix.values()) {
-            tPrefix.addProcessingHandler(this);
+
+    public void register() {
+        for (OrePrefix prefix : OrePrefix.values()) {
+            prefix.addProcessingHandler(this);
         }
     }
 

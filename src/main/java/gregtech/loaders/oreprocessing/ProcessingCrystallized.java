@@ -11,7 +11,8 @@ import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 
 public class ProcessingCrystallized implements IOreRegistrationHandler {
-	public ProcessingCrystallized() {
+
+	public void register() {
 		OrePrefix.crystal.addProcessingHandler(this);
 		OrePrefix.crystalline.addProcessingHandler(this);
 	}

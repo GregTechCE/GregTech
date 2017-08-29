@@ -1,6 +1,7 @@
 package gregtech.api.unification.ore;
 
 import com.google.common.base.Preconditions;
+import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.material.MaterialIconType;
 import gregtech.api.unification.material.Materials;
@@ -9,6 +10,8 @@ import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.Condition;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.GTUtility;
+import ic2.core.ref.ItemName;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -253,15 +256,16 @@ public enum OrePrefix {
     computer("Computers", -1, null, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null); // A whole Computer. "computerMaster" = ComputerCube
 
     public static class Flags {
-        public static final long ENABLE_UNIFICATION = Material.MatFlags.createFlag(0);
-        public static final long SELF_REFERENCING = Material.MatFlags.createFlag(1);
-        public static final long FLUID_CONTAINER = Material.MatFlags.createFlag(2);
-        public static final long DISALLOW_RECYCLING = Material.MatFlags.createFlag(3);
+        public static final long ENABLE_UNIFICATION = GTUtility.createFlag(0);
+        public static final long SELF_REFERENCING = GTUtility.createFlag(1);
+        public static final long FLUID_CONTAINER = GTUtility.createFlag(2);
+        public static final long DISALLOW_RECYCLING = GTUtility.createFlag(3);
     }
 
     static {
         bottle.containerItem = new ItemStack(Items.GLASS_BOTTLE);
         bucket.containerItem = new ItemStack(Items.BUCKET);
+        cell.containerItem = ModHandler.IC2.getIC2Item(ItemName.fluid_cell, 1);
 
         ingotHot.heatDamage = 3.0F;
         cellPlasma.heatDamage = 6.0F;

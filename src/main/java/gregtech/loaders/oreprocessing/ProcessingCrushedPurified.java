@@ -75,10 +75,7 @@ public class ProcessingCrushedPurified implements IOreRegistrationHandler {
                             .EUt(16)
                             .buildAndRegister();
                 }
-
             }
-
         }
     }
-
 }

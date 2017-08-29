@@ -26,7 +26,10 @@ public class ProcessingBolt implements IOreRegistrationHandler {
 			ItemStack screwStack = OreDictUnifier.get(OrePrefix.screw, entry.material);
 			ItemStack ingotStack = OreDictUnifier.get(OrePrefix.ingot, entry.material);
 
-			ModHandler.addShapedRecipe(boltStack, "fS ", "S  ", 'S', screwStack);
+			ModHandler.addShapedRecipe(boltStack,
+					"fS ",
+					"S  ",
+					'S', screwStack);
 
 			RecipeMap.CUTTER_RECIPES.recipeBuilder()
 					.inputs(screwStack)
