@@ -2,6 +2,7 @@ package gregtech.loaders.oreprocessing;
 
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictUnifier;
+import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.GemMaterial;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
@@ -22,9 +23,9 @@ public class ProcessingCrushedPurified implements IOreRegistrationHandler {
         if (entry.material instanceof SolidMaterial) {
             ItemStack crushedPurifiedStack = itemStack.asItemStack();
             SolidMaterial solidMaterial = (SolidMaterial) entry.material;
-            ItemStack crushedCentrifugedStack = OreDictUnifier.get(OrePrefix.crushedCentrifuged, solidMaterial.macerateInto);
-            ItemStack dustStack = OreDictUnifier.get(OrePrefix.dust, solidMaterial.macerateInto);
-            ItemStack byproductStack = OreDictUnifier.get(OrePrefix.dustTiny, GTUtility.selectItemInList(1, solidMaterial.macerateInto, solidMaterial.oreByProducts));
+            ItemStack crushedCentrifugedStack = OreDictUnifier.get(OrePrefix.crushedCentrifuged, solidMaterial);
+            ItemStack dustStack = OreDictUnifier.get(OrePrefix.dust, solidMaterial);
+            ItemStack byproductStack = OreDictUnifier.get(OrePrefix.dustTiny, GTUtility.selectItemInList(1, solidMaterial, solidMaterial.oreByProducts, DustMaterial.class));
 
             if (crushedCentrifugedStack != null) {
                 RecipeMap.THERMAL_CENTRIFUGE_RECIPES.recipeBuilder()

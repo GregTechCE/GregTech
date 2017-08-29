@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class ProcessingDecomposition implements IOreRegistrationHandler {
 
-    public void init() {
+    public void register() {
         OrePrefix.cell.addProcessingHandler(this);
         OrePrefix.dust.addProcessingHandler(this);
     }
@@ -32,17 +32,17 @@ public class ProcessingDecomposition implements IOreRegistrationHandler {
                     material.hasFlag(Material.MatFlags.DECOMPOSITION_BY_ELECTROLYZING) ||
                     material.hasFlag(Material.MatFlags.DECOMPOSITION_BY_CENTRIFUGING))) {
 
-                //compute inputs
-                ArrayList<ItemStack> inputs = new ArrayList<>();
-                ArrayList<FluidStack> fluidInputs = new ArrayList<>();
+                //compute outputs
+                ArrayList<ItemStack> outputs = new ArrayList<>();
+                ArrayList<FluidStack> fluidOutputs = new ArrayList<>();
                 int totalInputAmount = 0;
                 for(MaterialStack component : material.materialComponents) {
                     totalInputAmount += component.amount;
                     if(component.material instanceof DustMaterial) {
-                        inputs.add(OreDictUnifier.get(OrePrefix.dust, component.material, (int) component.amount));
+                        outputs.add(OreDictUnifier.get(OrePrefix.dust, component.material, (int) component.amount));
                     } else if(component.material instanceof FluidMaterial) {
                         FluidMaterial componentMaterial = (FluidMaterial) component.material;
-                        fluidInputs.add(componentMaterial.getFluid((int) (GTValues.L * component.amount)));
+                        fluidOutputs.add(componentMaterial.getFluid((int) (GTValues.L * component.amount)));
                     }
                 }
 
@@ -57,6 +57,8 @@ public class ProcessingDecomposition implements IOreRegistrationHandler {
                             .duration((int) material.getMass() * totalInputAmount * 2)
                             .EUt(30);
                 }
+                builder.outputs(outputs);
+                builder.fluidOutputs(fluidOutputs);
 
                 //finish builder
                 if(entry.orePrefix == OrePrefix.dust) {

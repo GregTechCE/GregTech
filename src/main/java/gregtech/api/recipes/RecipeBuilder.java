@@ -16,12 +16,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.Validate;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static gregtech.api.GTValues.W;
 
@@ -109,6 +104,16 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		return getThis();
 	}
 
+	public R inputs(@Nonnull Collection<ItemStack> inputs) {
+        Validate.notNull(inputs, "Input collection cannot be null");
+        if (inputs.size() != 0) {
+            Validate.noNullElements(inputs, "Input cannot contain null ItemStacks");
+
+            this.inputs.addAll(inputs);
+        }
+        return getThis();
+    }
+
 	public R outputs(@Nonnull ItemStack... outputs) {
 		Validate.notNull(outputs, "Output array cannot be null");
 		if (outputs.length != 0) {
@@ -118,6 +123,16 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 		return getThis();
 	}
+
+    public R outputs(@Nonnull Collection<ItemStack> outputs) {
+        Validate.notNull(outputs, "Output collection cannot be null");
+        if (outputs.size() != 0) {
+            Validate.noNullElements(outputs, "Output cannot contain null ItemStacks");
+
+            this.outputs.addAll(outputs);
+        }
+        return getThis();
+    }
 
 	public R fluidInputs(@Nonnull FluidStack... inputs) {
 		Validate.notNull(inputs, "Fluid input array cannot be null");
@@ -129,6 +144,16 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		return getThis();
 	}
 
+    public R fluidInputs(@Nonnull Collection<FluidStack> inputs) {
+        Validate.notNull(inputs, "Fluid input collection cannot be null");
+        if (inputs.size() != 0) {
+            Validate.noNullElements(inputs, "Input cannot contain null FluidStacks");
+
+            this.fluidInputs.addAll(inputs);
+        }
+        return getThis();
+    }
+
 	public R fluidOutputs(@Nonnull FluidStack... outputs) {
 		Validate.notNull(outputs, "Fluid output array cannot be null");
 		if (outputs.length != 0) {
@@ -138,6 +163,16 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 		return getThis();
 	}
+
+    public R fluidOutputs(@Nonnull Collection<FluidStack> outputs) {
+        Validate.notNull(outputs, "Fluid output collection cannot be null");
+        if (outputs.size() != 0) {
+            Validate.noNullElements(outputs, "Fluid output cannot contain null FluidStacks");
+
+            this.fluidOutputs.addAll(outputs);
+        }
+        return getThis();
+    }
 
 	public R chancedOutput(@Nonnull ItemStack stack, int chance) {
 		Validate.notNull(stack, "Chanced output ItemStack cannot be null");

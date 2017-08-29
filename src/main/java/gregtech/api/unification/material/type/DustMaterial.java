@@ -54,7 +54,7 @@ public class DustMaterial extends FluidMaterial {
     /**
      * List of ore by products
      */
-    public final ArrayList<DustMaterial> oreByProducts = new ArrayList<>();
+    public final ArrayList<FluidMaterial> oreByProducts = new ArrayList<>();
 
     /**
      * Crushed ore output amount multiplier during maceration
@@ -104,7 +104,7 @@ public class DustMaterial extends FluidMaterial {
         return hasFlag(MatFlags.SMELT_INTO_FLUID);
     }
 
-    public void addOreByProducts(DustMaterial... byProducts) {
+    public void addOreByProducts(FluidMaterial... byProducts) {
         this.oreByProducts.addAll(Arrays.asList(byProducts));
     }
 

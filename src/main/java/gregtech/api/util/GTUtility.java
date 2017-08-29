@@ -295,11 +295,21 @@ public class GTUtility {
         return stack;
     }
 
-    public static <E> E selectItemInList(int index, E replacement, List<E> list) {
-        if (list == null || list.isEmpty()) return replacement;
-        if (list.size() <= index) return list.get(list.size() - 1);
-        if (index < 0) return list.get(0);
-        return list.get(index);
+    public static <M, E extends M> E selectItemInList(int index, E replacement, List<? extends M> list, Class<E> minClass) {
+        if (list.isEmpty())
+            return replacement;
+
+        M maybeResult;
+        if (list.size() <= index) {
+            maybeResult = list.get(list.size() - 1);
+        } else if (index < 0) {
+            maybeResult = list.get(0);
+        } else maybeResult = list.get(index);
+
+        if(minClass.isAssignableFrom(maybeResult.getClass())) {
+            return minClass.cast(maybeResult);
+        }
+        return replacement;
     }
 
     public static boolean isStackInList(ItemStack stack, Collection<SimpleItemStack> list) {
@@ -314,15 +324,15 @@ public class GTUtility {
     /**
      * Translates a material amount into an amount of fluid in fluid material units.
      */
-    public static int translateMaterialToFluidAmount(long materialAmount, boolean roundUp) {
-        return (int) translateMaterialToAmount(materialAmount, L, roundUp);
+    public static int mat2FlAmount(long materialAmount) {
+        return (int) translateMaterialToAmount(materialAmount, L);
     }
 
     /**
      * Translates a material amount into an amount of fluid.
      */
-    public static long translateMaterialToAmount(long materialAmount, long amountPerUnit, boolean roundUp) {
-        return Math.max(0, ((materialAmount * amountPerUnit) / M) + (roundUp && (materialAmount * amountPerUnit) % M > 0 ? 1 : 0));
+    public static long translateMaterialToAmount(long materialAmount, long amountPerUnit) {
+        return (materialAmount * amountPerUnit) / M;
     }
 
     /**

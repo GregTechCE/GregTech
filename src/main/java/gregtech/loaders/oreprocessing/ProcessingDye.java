@@ -35,4 +35,5 @@ public class ProcessingDye implements IOreRegistrationHandler {
             GTValues.RA.addChemicalRecipe(GTUtility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Salt, 2), Materials.SulfuricAcid.getFluid(432), FluidRegistry.getFluidStack("dye.chemical." + color.name().toLowerCase(Locale.ENGLISH), 288), GTValues.NI, 600, 48);
         }
     }
+
 }

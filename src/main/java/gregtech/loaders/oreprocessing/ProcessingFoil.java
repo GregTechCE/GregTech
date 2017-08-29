@@ -10,12 +10,13 @@ import gregtech.api.unification.stack.UnificationEntry;
 
 public class ProcessingFoil implements IOreRegistrationHandler {
 
-	public void init() {
+	public void register() {
 		OrePrefix.foil.addProcessingHandler(this);
 	}
 
 	public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {
 		if (!entry.material.hasFlag(DustMaterial.MatFlags.NO_SMASHING)) {
+
 			RecipeMap.BENDER_RECIPES.recipeBuilder()
 					.inputs(OreDictUnifier.get(OrePrefix.plate, entry.material, 4))
 					.outputs(OreDictUnifier.get(OrePrefix.foil, entry.material, 4))

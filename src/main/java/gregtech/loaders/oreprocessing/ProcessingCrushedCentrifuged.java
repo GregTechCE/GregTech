@@ -2,6 +2,7 @@ package gregtech.loaders.oreprocessing;
 
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictUnifier;
+import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
@@ -21,9 +22,9 @@ public class ProcessingCrushedCentrifuged implements IOreRegistrationHandler {
         if (entry.material instanceof SolidMaterial) {
             ItemStack stack = itemStack.asItemStack();
             SolidMaterial solidMaterial = (SolidMaterial) entry.material;
-            ItemStack dustStack = OreDictUnifier.get(OrePrefix.dust, solidMaterial.macerateInto);
+            ItemStack dustStack = OreDictUnifier.get(OrePrefix.dust, solidMaterial);
             ItemStack byproductStack = OreDictUnifier.get(OrePrefix.dust, GTUtility.selectItemInList(2,
-                    solidMaterial.macerateInto, solidMaterial.oreByProducts), 1);
+                    solidMaterial, solidMaterial.oreByProducts, DustMaterial.class), 1);
 
             RecipeMap.HAMMER_RECIPES.recipeBuilder()
                     .inputs(stack)

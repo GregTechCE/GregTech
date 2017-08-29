@@ -27,9 +27,9 @@ public class ProcessingCrushed implements IOreRegistrationHandler {
 		ItemStack stack = simpleStack.asItemStack();
 		if (entry.material instanceof SolidMaterial) {
             SolidMaterial material = (SolidMaterial) entry.material;
-            ItemStack impureDustStack = OreDictUnifier.get(OrePrefix.dustImpure, material.macerateInto);
-            ItemStack dustStack = OreDictUnifier.get(OrePrefix.dust, material.macerateInto);
-            DustMaterial byproductMaterial = GTUtility.selectItemInList(0, material.macerateInto, material.oreByProducts);
+            ItemStack impureDustStack = OreDictUnifier.get(OrePrefix.dustImpure, material);
+            ItemStack dustStack = OreDictUnifier.get(OrePrefix.dust, material);
+            DustMaterial byproductMaterial = GTUtility.selectItemInList(0, material, material.oreByProducts, DustMaterial.class);
 
             //fallback for dirtyGravel, shard & clump
             if (impureDustStack == null) {
@@ -67,7 +67,7 @@ public class ProcessingCrushed implements IOreRegistrationHandler {
                     .buildAndRegister();
 
             if(material.washedIn != null) {
-                DustMaterial washingByproduct = GTUtility.selectItemInList(3, material.macerateInto, material.oreByProducts);
+                DustMaterial washingByproduct = GTUtility.selectItemInList(3, material, material.oreByProducts, DustMaterial.class);
 
                 RecipeMap.CHEMICAL_BATH_RECIPES.recipeBuilder()
                         .inputs(stack)

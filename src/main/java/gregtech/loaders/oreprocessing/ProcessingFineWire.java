@@ -16,7 +16,7 @@ import static gregtech.api.unification.material.type.Material.MatFlags.NO_UNIFIC
 
 public class ProcessingFineWire implements IOreRegistrationHandler {
 
-	public void init() {
+	public void register() {
 		OrePrefix.wireFine.addProcessingHandler(this);
 	}
 
@@ -43,6 +43,7 @@ public class ProcessingFineWire implements IOreRegistrationHandler {
 		if (!entry.material.hasFlag(NO_WORKING | NO_UNIFICATION)) {
 			ModHandler.addShapelessRecipe(stack, 'x', OreDictUnifier.get(OrePrefix.ingot, entry.material));
 		}
+
 	}
 
 }
