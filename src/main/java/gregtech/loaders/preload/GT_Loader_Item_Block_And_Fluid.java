@@ -78,9 +78,9 @@ public class GT_Loader_Item_Block_And_Fluid
 //            ItemList.NaquadahCell_4.set(new GT_RadioactiveCellIC_Item("Quad_Naquadahcell", "Quad Fuel Rod (Naquadah)", 4, 100000, 2F, 1, 1F, ItemList.Depleted_Naquadah_4.get(1, new Object[0]),true));
 //            GT_ModHandler.addCraftingRecipe(ItemList.NaquadahCell_4.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"RPR", "CPC", "RPR", 'R', ItemList.NaquadahCell_1, 'P', OrePrefix.plate.get(Materials.Iron), 'C', OrePrefix.plate.get(Materials.Copper)});
 //
-//            GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Naquadah_1.get(1, new Object[0]), 5000, new Object[]{OreDictionaryUnifier.get(OrePrefix.dust, Materials.Naquadah, 1L), OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Naquadria, 2L), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Iron, 1L)});
-//            GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Naquadah_2.get(1, new Object[0]), 5000, new Object[]{OreDictionaryUnifier.get(OrePrefix.dust, Materials.Naquadah, 2L), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Naquadria, 1L), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Iron, 3L)});
-//            GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Naquadah_4.get(1, new Object[0]), 5000, new Object[]{OreDictionaryUnifier.get(OrePrefix.dust, Materials.Naquadah, 4L), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Naquadria, 2L), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Iron, 6L)});
+//            GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Naquadah_1.get(1, new Object[0]), 5000, new Object[]{OreDictUnifier.get(OrePrefix.dust, Materials.Naquadah, 1L), OreDictUnifier.get(OrePrefix.dustSmall, Materials.Naquadria, 2L), OreDictUnifier.get(OrePrefix.dust, Materials.Iron, 1L)});
+//            GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Naquadah_2.get(1, new Object[0]), 5000, new Object[]{OreDictUnifier.get(OrePrefix.dust, Materials.Naquadah, 2L), OreDictUnifier.get(OrePrefix.dust, Materials.Naquadria, 1L), OreDictUnifier.get(OrePrefix.dust, Materials.Iron, 3L)});
+//            GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Naquadah_4.get(1, new Object[0]), 5000, new Object[]{OreDictUnifier.get(OrePrefix.dust, Materials.Naquadah, 4L), OreDictUnifier.get(OrePrefix.dust, Materials.Naquadria, 2L), OreDictUnifier.get(OrePrefix.dust, Materials.Iron, 6L)});
 //
 //            ItemList.Uraniumcell_1.set(new GT_RadioactiveCellIC_Item("reactorUraniumSimple", "Fuel Rod (Uranium)", 1, 20000, 2F, 1, 1F, GT_ModHandler.getIC2Item(ItemName.uranium_fuel_rod, 1), false));
 //            ItemList.Uraniumcell_2.set(new GT_RadioactiveCellIC_Item("reactorUraniumDual", "Dual Fuel Rod (Uranium)", 2, 20000, 2F, 1, 1F, GT_ModHandler.getIC2Item(ItemName.dual_uranium_fuel_rod, 1), false));
@@ -89,9 +89,9 @@ public class GT_Loader_Item_Block_And_Fluid
 //            ItemList.Moxcell_2.set(new GT_RadioactiveCellIC_Item("reactorMOXDual", "Dual Fuel Rod (Mox)", 2, 10000, 2F, 1, 1F, GT_ModHandler.getIC2Item(ItemName.dual_mox_fuel_rod, 1), true));
 //            ItemList.Moxcell_4.set(new GT_RadioactiveCellIC_Item("reactorMOXQuad", "Quad Fuel Rod (Mox)", 4, 10000, 2F, 1, 1F, GT_ModHandler.getIC2Item(ItemName.quad_mox_fuel_rod, 1), true));
 //
-//            GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_1.get(1), 5000, OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Lutetium, 2L), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Thorium, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Iron, 1));
-//            GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_2.get(1), 5000, OreDictionaryUnifier.get(OrePrefix.dust, Materials.Lutetium, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Thorium, 2L), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Iron, 3L));
-//            GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_4.get(1), 5000, OreDictionaryUnifier.get(OrePrefix.dust, Materials.Lutetium, 2L), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Thorium, 4L), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Iron, 6L));
+//            GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_1.get(1), 5000, OreDictUnifier.get(OrePrefix.dustSmall, Materials.Lutetium, 2L), OreDictUnifier.get(OrePrefix.dust, Materials.Thorium, 1), OreDictUnifier.get(OrePrefix.dust, Materials.Iron, 1));
+//            GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_2.get(1), 5000, OreDictUnifier.get(OrePrefix.dust, Materials.Lutetium, 1), OreDictUnifier.get(OrePrefix.dust, Materials.Thorium, 2L), OreDictUnifier.get(OrePrefix.dust, Materials.Iron, 3L));
+//            GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_4.get(1), 5000, OreDictUnifier.get(OrePrefix.dust, Materials.Lutetium, 2L), OreDictUnifier.get(OrePrefix.dust, Materials.Thorium, 4L), OreDictUnifier.get(OrePrefix.dust, Materials.Iron, 6L));
 //        }
 //
 //        GTLog.logger.info("GregTechMod: Adding Blocks.");
@@ -400,7 +400,7 @@ public class GT_Loader_Item_Block_And_Fluid
 //            FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(Materials.FierySteel.getFluid(250L), ItemList.TF_Vial_FieryBlood.get(1), ItemList.Bottle_Empty.get(1)));
 //        }
 //
-//        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(Materials.Milk.getFluid(1000L), OreDictionaryUnifier.get(OrePrefix.bucket, Materials.Milk, 1), OreDictionaryUnifier.get(OrePrefix.bucket, Materials.Empty, 1)));
+//        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(Materials.Milk.getFluid(1000L), OreDictUnifier.get(OrePrefix.bucket, Materials.Milk, 1), OreDictUnifier.get(OrePrefix.bucket, Materials.Empty, 1)));
 //        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(Materials.Milk.getFluid(250L), ItemList.Bottle_Milk.get(1), ItemList.Bottle_Empty.get(1)));
 //        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(Materials.HolyWater.getFluid(250L), ItemList.Bottle_Holy_Water.get(1), ItemList.Bottle_Empty.get(1)));
 //        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(Materials.McGuffium239.getFluid(250L), ItemList.McGuffium_239.get(1), ItemList.Bottle_Empty.get(1)));
@@ -635,8 +635,8 @@ public class GT_Loader_Item_Block_And_Fluid
 //        OreDictionaryUnifier.set(OrePrefix.dust, Materials.Cocoa, GT_ModHandler.getModItem("harvestcraft", "cocoapowderItem", 1, 0));
 //        OreDictionaryUnifier.set(OrePrefix.dust, Materials.Coffee, ItemList.IC2_CoffeePowder.get(1));
 //
-//        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(Materials.Naquadah.getMolten(1000L), OreDictionaryUnifier.get(OrePrefix.cell, Materials.Naquadah, 1L), OreDictionaryUnifier.get(OrePrefix.cell, Materials.Empty, 1L)));
-//        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(Materials.NaquadahEnriched.getMolten(1000L), OreDictionaryUnifier.get(OrePrefix.cell, Materials.NaquadahEnriched, 1L), OreDictionaryUnifier.get(OrePrefix.cell, Materials.Empty, 1L)));
-//        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(Materials.Naquadria.getMolten(1000L), OreDictionaryUnifier.get(OrePrefix.cell, Materials.Naquadria, 1L), OreDictionaryUnifier.get(OrePrefix.cell, Materials.Empty, 1L)));
+//        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(Materials.Naquadah.getMolten(1000L), OreDictUnifier.get(OrePrefix.cell, Materials.Naquadah, 1L), OreDictUnifier.get(OrePrefix.cell, Materials.Empty, 1L)));
+//        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(Materials.NaquadahEnriched.getMolten(1000L), OreDictUnifier.get(OrePrefix.cell, Materials.NaquadahEnriched, 1L), OreDictUnifier.get(OrePrefix.cell, Materials.Empty, 1L)));
+//        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(Materials.Naquadria.getMolten(1000L), OreDictUnifier.get(OrePrefix.cell, Materials.Naquadria, 1L), OreDictUnifier.get(OrePrefix.cell, Materials.Empty, 1L)));
     }
 }

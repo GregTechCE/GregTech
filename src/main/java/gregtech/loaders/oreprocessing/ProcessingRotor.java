@@ -3,7 +3,7 @@ package gregtech.loaders.oreprocessing;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeBuilder;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
@@ -22,7 +22,7 @@ public class ProcessingRotor implements IOreRegistrationHandler {
 	public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {
 		if (!entry.material.hasFlag(NO_UNIFICATION | NO_WORKING)) {
 
-			ModHandler.addShapedRecipe(OreDictionaryUnifier.get(OrePrefix.rotor, entry.material, 1),
+			ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.rotor, entry.material, 1),
 					"PhP",
 					"SRf",
 					"PdP",
@@ -31,9 +31,9 @@ public class ProcessingRotor implements IOreRegistrationHandler {
 					'S', new UnificationEntry(OrePrefix.screw, entry.material));
 
 			RecipeBuilder.IntCircuitRecipeBuilder builder = RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-					.inputs(OreDictionaryUnifier.get(OrePrefix.plate, entry.material, 4),
-							OreDictionaryUnifier.get(OrePrefix.ring, entry.material))
-					.outputs(OreDictionaryUnifier.get(OrePrefix.rotor, entry.material))
+					.inputs(OreDictUnifier.get(OrePrefix.plate, entry.material, 4),
+							OreDictUnifier.get(OrePrefix.ring, entry.material))
+					.outputs(OreDictUnifier.get(OrePrefix.rotor, entry.material))
 					.duration(240)
 					.EUt(24);
 

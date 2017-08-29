@@ -2,7 +2,7 @@ package gregtech.loaders.oreprocessing;
 
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
@@ -26,17 +26,17 @@ public class ProcessingScrew implements IOreRegistrationHandler {
         if (!entry.material.hasFlag(NO_WORKING)) {
 
             RecipeMap.LATHE_RECIPES.recipeBuilder()
-                    .inputs(OreDictionaryUnifier.get(OrePrefix.bolt, entry.material, 1))
+                    .inputs(OreDictUnifier.get(OrePrefix.bolt, entry.material, 1))
                     .outputs(GTUtility.copyAmount(1, stack))
                     .duration((int) Math.max(entry.material.getMass() / 8L, 1L))
                     .EUt(4)
                     .buildAndRegister();
 
             if (!entry.material.hasFlag(NO_UNIFICATION)) {
-                ModHandler.addShapedRecipe(OreDictionaryUnifier.get(OrePrefix.screw, entry.material),
+                ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.screw, entry.material),
                         "fX",
                         "X ",
-                        'X', OreDictionaryUnifier.get(OrePrefix.bolt, entry.material));
+                        'X', OreDictUnifier.get(OrePrefix.bolt, entry.material));
             }
         }
     }

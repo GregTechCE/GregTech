@@ -2,7 +2,7 @@ package gregtech.loaders.oreprocessing;
 
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
@@ -31,7 +31,7 @@ public class ProcessingStone implements IOreRegistrationHandler {
         switch (entry.orePrefix) {
             case stoneCobble:
                 RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-                        .inputs(GTUtility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.stick, Materials.Wood))
+                        .inputs(GTUtility.copyAmount(1, stack), OreDictUnifier.get(OrePrefix.stick, Materials.Wood))
                         .outputs(new ItemStack(Blocks.LEVER, 1))
                         .duration(400)
                         .EUt(1)
@@ -44,7 +44,7 @@ public class ProcessingStone implements IOreRegistrationHandler {
                         .EUt(4)
                         .buildAndRegister();
                 RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-                        .inputs(GTUtility.copyAmount(7, stack), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Redstone))
+                        .inputs(GTUtility.copyAmount(7, stack), OreDictUnifier.get(OrePrefix.dust, Materials.Redstone))
                         .outputs(new ItemStack(Blocks.DROPPER, 1))
                         .duration(400)
                         .EUt(4)
@@ -85,18 +85,18 @@ public class ProcessingStone implements IOreRegistrationHandler {
                 }  else if (entry.material == Materials.Endstone) {
                     RecipeMap.MACERATOR_RECIPES.recipeBuilder()
                             .inputs(GTUtility.copyAmount(1, stack))
-                            .outputs(OreDictionaryUnifier.get(OrePrefix.dustImpure, Materials.Endstone, 1))
-                            .chancedOutput(OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.Tungsten, 1), 500)
+                            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.Endstone, 1))
+                            .chancedOutput(OreDictUnifier.get(OrePrefix.dustTiny, Materials.Tungsten, 1), 500)
                             .buildAndRegister();
                 } else if (entry.material == Materials.Netherrack) {
                     RecipeMap.MACERATOR_RECIPES.recipeBuilder()
                             .inputs(GTUtility.copyAmount(1, stack))
-                            .outputs(OreDictionaryUnifier.get(OrePrefix.dustImpure, Materials.Netherrack, 1))
-                            .chancedOutput(OreDictionaryUnifier.get(OrePrefix.nugget, Materials.Gold, 1), 500)
+                            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.Netherrack, 1))
+                            .chancedOutput(OreDictUnifier.get(OrePrefix.nugget, Materials.Gold, 1), 500)
                             .buildAndRegister();
                 } else if (entry.material == Materials.Obsidian) {
                     RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-                            .inputs(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Redstone), GTUtility.copyAmount(5, stack))
+                            .inputs(OreDictUnifier.get(OrePrefix.dust, Materials.Redstone), GTUtility.copyAmount(5, stack))
                             .fluidInputs(Materials.Glass.getFluid(L / 2))
                             .outputs(ModHandler.getModItem("Forestry", "thermionicTubes", 4, 6))
                             .duration(64)
@@ -104,7 +104,7 @@ public class ProcessingStone implements IOreRegistrationHandler {
                             .buildAndRegister();
 
                     RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-                            .inputs(OreDictionaryUnifier.get(OrePrefix.gem, Materials.NetherStar), GTUtility.copyAmount(3, stack))
+                            .inputs(OreDictUnifier.get(OrePrefix.gem, Materials.NetherStar), GTUtility.copyAmount(3, stack))
                             .fluidInputs(Materials.Glass.getFluid(720)).outputs(new ItemStack(Blocks.BEACON, 1, 0))
                             .duration(32)
                             .EUt(16)
@@ -118,7 +118,7 @@ public class ProcessingStone implements IOreRegistrationHandler {
                             .buildAndRegister();
 
                     RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-                            .inputs(GTUtility.copyAmount(8, stack), OreDictionaryUnifier.get(OrePrefix.gem, Materials.EnderEye))
+                            .inputs(GTUtility.copyAmount(8, stack), OreDictUnifier.get(OrePrefix.gem, Materials.EnderEye))
                             .outputs(new ItemStack(Blocks.ENDER_CHEST, 1))
                             .duration(400)
                             .EUt(4)
@@ -126,7 +126,7 @@ public class ProcessingStone implements IOreRegistrationHandler {
 
                     RecipeMap.CUTTER_RECIPES.recipeBuilder()
                             .inputs(GTUtility.copyAmount(1, stack))
-                            .outputs(OreDictionaryUnifier.get(OrePrefix.plate, entry.material, 1))
+                            .outputs(OreDictUnifier.get(OrePrefix.plate, entry.material, 1))
                             .duration(200)
                             .EUt(32)
                             .buildAndRegister();
@@ -134,19 +134,19 @@ public class ProcessingStone implements IOreRegistrationHandler {
                 } else if (entry.material == Materials.Concrete) {
                     RecipeMap.MACERATOR_RECIPES.recipeBuilder()
                             .inputs(GTUtility.copyAmount(1, stack))
-                            .outputs(OreDictionaryUnifier.get(OrePrefix.dust, entry.material))
+                            .outputs(OreDictUnifier.get(OrePrefix.dust, entry.material))
                             .buildAndRegister();
                     RecipeMap.CUTTER_RECIPES.recipeBuilder()
                             .inputs(GTUtility.copyAmount(1, stack))
-                            .outputs(OreDictionaryUnifier.get(OrePrefix.plate, entry.material, 1))
+                            .outputs(OreDictUnifier.get(OrePrefix.plate, entry.material, 1))
                             .duration(200)
                             .EUt(32)
                             .buildAndRegister();
                 } else if (entry.material == Materials.Soapstone) {
                     RecipeMap.MACERATOR_RECIPES.recipeBuilder()
                             .inputs(GTUtility.copyAmount(1, stack))
-                            .outputs(OreDictionaryUnifier.get(OrePrefix.dustImpure, Materials.Talc, 1))
-                            .chancedOutput(OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.Chromite, 1), 1000)
+                            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.Talc, 1))
+                            .chancedOutput(OreDictUnifier.get(OrePrefix.dustTiny, Materials.Chromite, 1), 1000)
                             .buildAndRegister();
                 } else if (entry.material == Materials.Redrock
                         || entry.material == Materials.Marble
@@ -154,61 +154,61 @@ public class ProcessingStone implements IOreRegistrationHandler {
                         || entry.material == Materials.Quartzite) {
                     RecipeMap.MACERATOR_RECIPES.recipeBuilder()
                             .inputs(GTUtility.copyAmount(1, stack))
-                            .outputs(OreDictionaryUnifier.get(OrePrefix.dustImpure, entry.material, 1))
-                            .chancedOutput(OreDictionaryUnifier.get(OrePrefix.dust, entry.material, 1), 1000)
+                            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, entry.material, 1))
+                            .chancedOutput(OreDictUnifier.get(OrePrefix.dust, entry.material, 1), 1000)
                             .buildAndRegister();
                 } else if (entry.material == Materials.Flint) {
                     RecipeMap.MACERATOR_RECIPES.recipeBuilder()
                             .inputs(GTUtility.copyAmount(1, stack))
-                            .outputs(OreDictionaryUnifier.get(OrePrefix.dustImpure, entry.material, 2))
+                            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, entry.material, 2))
                             .chancedOutput(new ItemStack(Items.FLINT, 1), 5000)
                             .buildAndRegister();
                 } else if (entry.material == Materials.GraniteBlack) {
                     RecipeMap.CUTTER_RECIPES.recipeBuilder()
                             .inputs(GTUtility.copyAmount(1, stack))
-                            .outputs(OreDictionaryUnifier.get(OrePrefix.plate, entry.material, 1))
+                            .outputs(OreDictUnifier.get(OrePrefix.plate, entry.material, 1))
                             .duration(200)
                             .EUt(32)
                             .buildAndRegister();
                     RecipeMap.MACERATOR_RECIPES.recipeBuilder()
                             .inputs(GTUtility.copyAmount(1, stack))
-                            .outputs(OreDictionaryUnifier.get(OrePrefix.dustImpure, entry.material, 1))
-                            .chancedOutput(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Thorium, 1), 100)
+                            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, entry.material, 1))
+                            .chancedOutput(OreDictUnifier.get(OrePrefix.dust, Materials.Thorium, 1), 100)
                             .buildAndRegister();
                 } else if (entry.material == Materials.GraniteRed) {
                     RecipeMap.CUTTER_RECIPES.recipeBuilder()
                             .inputs(GTUtility.copyAmount(1, stack))
-                            .outputs(OreDictionaryUnifier.get(OrePrefix.plate, entry.material, 1))
+                            .outputs(OreDictUnifier.get(OrePrefix.plate, entry.material, 1))
                             .duration(200)
                             .EUt(32)
                             .buildAndRegister();
                     RecipeMap.MACERATOR_RECIPES.recipeBuilder()
                             .inputs(GTUtility.copyAmount(1, stack))
-                            .outputs(OreDictionaryUnifier.get(OrePrefix.dustImpure, entry.material, 1))
-                            .chancedOutput(OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Uranium, 1), 100)
+                            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, entry.material, 1))
+                            .chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Uranium, 1), 100)
                             .buildAndRegister();
                     RecipeMap.CUTTER_RECIPES.recipeBuilder()
                             .inputs(GTUtility.copyAmount(1, stack))
-                            .outputs(OreDictionaryUnifier.get(OrePrefix.plate, entry.material, 1))
+                            .outputs(OreDictUnifier.get(OrePrefix.plate, entry.material, 1))
                             .duration(200)
                             .EUt(32)
                             .buildAndRegister();
                     RecipeMap.MACERATOR_RECIPES.recipeBuilder()
                             .inputs(GTUtility.copyAmount(1, stack))
-                            .outputs(OreDictionaryUnifier.get(OrePrefix.dustImpure, entry.material, 1))
-                            .chancedOutput(OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Stone, 1), 100)
+                            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, entry.material, 1))
+                            .chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Stone, 1), 100)
                             .buildAndRegister();
                 } else if (entry.material == Materials.Andesite || entry.material == Materials.Diorite) {
                     RecipeMap.CUTTER_RECIPES.recipeBuilder()
                             .inputs(GTUtility.copyAmount(1, stack))
-                            .outputs(OreDictionaryUnifier.get(OrePrefix.plate, entry.material, 1))
+                            .outputs(OreDictUnifier.get(OrePrefix.plate, entry.material, 1))
                             .duration(200)
                             .EUt(32)
                             .buildAndRegister();
                     RecipeMap.MACERATOR_RECIPES.recipeBuilder()
                             .inputs(GTUtility.copyAmount(1, stack))
-                            .outputs(OreDictionaryUnifier.get(OrePrefix.dustImpure, entry.material, 1))
-                            .chancedOutput(OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Stone, 1), 100)
+                            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, entry.material, 1))
+                            .chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Stone, 1), 100)
                             .buildAndRegister();
                 }
                 break;

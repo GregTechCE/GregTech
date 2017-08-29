@@ -5,7 +5,7 @@ import gregtech.api.items.materialitem.MaterialMetaItem;
 import gregtech.api.items.metaitem.FoodStats;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
@@ -93,12 +93,12 @@ public class MetaItem2 extends MaterialMetaItem {
         FOOD_POTATO_ON_STICK_ROASTED = addItem(201, "food.potato.on.stick.roasted").addStats(new FoodStats(6, 0.6F, false, false, new ItemStack(Items.STICK, 1)));
         FOOD_RAW_FRIES = addItem(202, "food.raw.fries").setMaxStackSize(16).addStats(new FoodStats(1, 0.3F));
         FOOD_FRIES = addItem(203, "food.fries").setMaxStackSize(16).addStats(new FoodStats(7, 0.5F));
-        FOOD_PACKAGED_FRIES = addItem(204, "food.packaged.fries").addStats(new FoodStats(7, 0.5F, false, false, OreDictionaryUnifier.get(OrePrefix.plate, Materials.Paper, 1)));
+        FOOD_PACKAGED_FRIES = addItem(204, "food.packaged.fries").addStats(new FoodStats(7, 0.5F, false, false, OreDictUnifier.get(OrePrefix.plate, Materials.Paper, 1)));
         FOOD_RAW_POTATOCHIPS = addItem(205, "food.raw.potatochips").setMaxStackSize(16).addStats(new FoodStats(1, 0.3F));
         FOOD_POTATOCHIPS = addItem(206, "food.potatochips").setMaxStackSize(16).addStats(new FoodStats(7, 0.5F));
         FOOD_CHILICHIPS = addItem(207, "food.chilichips").setMaxStackSize(16).addStats(new FoodStats(7, 0.6F));
-        FOOD_PACKAGED_POTATOCHIPS = addItem(208, "food.packaged.potatochips").addStats(new FoodStats(7, 0.5F, false, false, OreDictionaryUnifier.get(OrePrefix.foil, Materials.Aluminium, 1)));
-        FOOD_PACKAGED_CHILICHIPS = addItem(209, "food.packaged.chilichips").addStats(new FoodStats(7, 0.6F, false, false, OreDictionaryUnifier.get(OrePrefix.foil, Materials.Aluminium, 1)));
+        FOOD_PACKAGED_POTATOCHIPS = addItem(208, "food.packaged.potatochips").addStats(new FoodStats(7, 0.5F, false, false, OreDictUnifier.get(OrePrefix.foil, Materials.Aluminium, 1)));
+        FOOD_PACKAGED_CHILICHIPS = addItem(209, "food.packaged.chilichips").addStats(new FoodStats(7, 0.6F, false, false, OreDictUnifier.get(OrePrefix.foil, Materials.Aluminium, 1)));
         FOOD_CHUM = addItem(210, "food.chum").addStats(new FoodStats(5, 0.2F, false, true, null, new RandomPotionEffect(MobEffects.HUNGER, 1000, 4, 100), new RandomPotionEffect(MobEffects.NAUSEA, 300, 1, 80)));
         FOOD_CHUM_ON_STICK = addItem(211, "food.chum.on.stick").addStats(new FoodStats(5, 0.2F, false, true, new ItemStack(Items.STICK, 1), new RandomPotionEffect(MobEffects.HUNGER, 1000, 4, 100), new RandomPotionEffect(MobEffects.NAUSEA, 300, 1, 80)));
         FOOD_DOUGH_SUGAR = addItem(212, "food.dough.sugar").addStats(new FoodStats(1, 0.1F));
@@ -307,12 +307,12 @@ public class MetaItem2 extends MaterialMetaItem {
 
         RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
 				.inputs(CROP_DROP_PLUMBILIA.getStackForm())
-				.outputs(OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.Lead, 1))
+				.outputs(OreDictUnifier.get(OrePrefix.dustTiny, Materials.Lead, 1))
 				.buildAndRegister();
 
         RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
 				.inputs(CROP_DROP_ARGENTIA.getStackForm())
-				.outputs(OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.Silver, 1))
+				.outputs(OreDictUnifier.get(OrePrefix.dustTiny, Materials.Silver, 1))
 				.buildAndRegister();
 
         RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
@@ -322,17 +322,17 @@ public class MetaItem2 extends MaterialMetaItem {
 
         RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
 				.inputs(CROP_DROP_MILK_WART.getStackForm())
-				.outputs(OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Milk, 1))
+				.outputs(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Milk, 1))
 				.buildAndRegister();
 
         RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
 				.inputs(CROP_DROP_COPPON.getStackForm())
-				.outputs(OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.Copper, 1))
+				.outputs(OreDictUnifier.get(OrePrefix.dustTiny, Materials.Copper, 1))
 				.buildAndRegister();
 
         RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
 				.inputs(CROP_DROP_TINE.getStackForm())
-				.outputs(OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.Tin, 1))
+				.outputs(OreDictUnifier.get(OrePrefix.dustTiny, Materials.Tin, 1))
 				.buildAndRegister();
 
         ItemStack plantBall = ModHandler.IC2.getIC2Item(ItemName.crafting, CraftingItemType.plant_ball, 1);
@@ -387,21 +387,21 @@ public class MetaItem2 extends MaterialMetaItem {
 
         RecipeMap.MACERATOR_RECIPES.recipeBuilder()
                 .inputs(FOOD_SLICED_CHEESE.getStackForm())
-                .outputs(OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Cheese, 1))
+                .outputs(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Cheese, 1))
                 .duration(400)
                 .EUt(2)
                 .buildAndRegister();
         
         RecipeMap.MACERATOR_RECIPES.recipeBuilder()
                 .inputs(new ItemStack(Items.DYE, 1, EnumDyeColor.BROWN.getDyeDamage()))
-                .outputs(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Cocoa, 1))
+                .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Cocoa, 1))
                 .duration(400)
                 .EUt(2)
                 .buildAndRegister();
         
         RecipeMap.MACERATOR_RECIPES.recipeBuilder()
                 .inputs(CROP_DROP_TINE.getStackForm())
-                .outputs(OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Wood, 2))
+                .outputs(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Wood, 2))
                 .duration(400)
                 .EUt(2)
                 .buildAndRegister();
@@ -437,14 +437,14 @@ public class MetaItem2 extends MaterialMetaItem {
         
         RecipeMap.MACERATOR_RECIPES.recipeBuilder()
                 .inputs(new ItemStack(Items.WHEAT, 1, 0))
-                .outputs(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Wheat, 1))
+                .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Wheat, 1))
                 .duration(400)
                 .EUt(2)
                 .buildAndRegister();  
         
         RecipeMap.MACERATOR_RECIPES.recipeBuilder()
                 .inputs(new ItemStack(Items.STICK, 1))
-                .outputs(OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Wood, 2))
+                .outputs(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Wood, 2))
                 .duration(400)
                 .EUt(2)
                 .buildAndRegister();   

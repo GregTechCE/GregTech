@@ -1,10 +1,9 @@
 package gregtech.loaders.oreprocessing;
 
 import gregtech.api.GTValues;
-import gregtech.api.items.metaitem.FluidStats;
 import gregtech.api.recipes.RecipeBuilder;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.FluidMaterial;
 import gregtech.api.unification.material.type.Material;
@@ -40,7 +39,7 @@ public class ProcessingDecomposition implements IOreRegistrationHandler {
                 for(MaterialStack component : material.materialComponents) {
                     totalInputAmount += component.amount;
                     if(component.material instanceof DustMaterial) {
-                        inputs.add(OreDictionaryUnifier.get(OrePrefix.dust, component.material, (int) component.amount));
+                        inputs.add(OreDictUnifier.get(OrePrefix.dust, component.material, (int) component.amount));
                     } else if(component.material instanceof FluidMaterial) {
                         FluidMaterial componentMaterial = (FluidMaterial) component.material;
                         fluidInputs.add(componentMaterial.getFluid((int) (GTValues.L * component.amount)));

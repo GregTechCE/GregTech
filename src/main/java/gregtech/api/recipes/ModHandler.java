@@ -4,7 +4,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.items.IDamagableItem;
 import gregtech.api.items.ToolDictNames;
 import gregtech.api.items.metaitem.MetaItem;
-import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
@@ -14,7 +14,6 @@ import gregtech.common.items.MetaItems;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.ISpecialElectricItem;
-import ic2.api.recipe.IMachineRecipeManager;
 import ic2.api.recipe.Recipes;
 import ic2.core.block.state.IIdProvider;
 import ic2.core.item.type.CraftingItemType;
@@ -143,7 +142,7 @@ public class ModHandler {
      * Just simple Furnace smelting
      */
     public static void addSmeltingRecipe(ItemStack input, ItemStack output) {
-        output = OreDictionaryUnifier.getUnificated(output);
+        output = OreDictUnifier.getUnificated(output);
 
         Validate.notNull(input, "Input cannot be null");
         Validate.notNull(output, "Output cannot be null");
@@ -172,7 +171,7 @@ public class ModHandler {
                         .duration(130)
                         .EUt(3);
 
-        OrePrefix prefix = OreDictionaryUnifier.getPrefix(output);
+        OrePrefix prefix = OreDictUnifier.getPrefix(output);
         if (prefix != null) {
             switch (prefix) {
                 case ingot:
@@ -230,7 +229,7 @@ public class ModHandler {
      * </ul>
      */
     public static void addMirroredShapedRecipe(ItemStack result, Object... recipe) {
-        result = OreDictionaryUnifier.getUnificated(result);
+        result = OreDictUnifier.getUnificated(result);
         Validate.notNull(result, "Result cannot be null");
         Validate.notNull(recipe, "Recipe cannot be null");
         Validate.isTrue(recipe.length > 0, "Recipe cannot be empty");
@@ -268,7 +267,7 @@ public class ModHandler {
      * </ul>
      */
     public static void addShapedRecipe(ItemStack result, Object... recipe) {
-        result = OreDictionaryUnifier.getUnificated(result);
+        result = OreDictUnifier.getUnificated(result);
         Validate.notNull(result, "Result cannot be null");
         Validate.notNull(recipe, "Recipe cannot be null");
         Validate.isTrue(recipe.length > 0, "Recipe cannot be empty");
@@ -374,7 +373,7 @@ public class ModHandler {
      * Add Shapeless Crafting Recipes
      */
     public static void addShapelessRecipe(ItemStack result, Object... recipe) {
-        result = OreDictionaryUnifier.getUnificated(result);
+        result = OreDictUnifier.getUnificated(result);
         Validate.notNull(result, "Result cannot be null");
         Validate.notNull(recipe, "Recipe cannot be null");
         Validate.isTrue(recipe.length > 0, "Recipe cannot be empty");
@@ -513,7 +512,7 @@ public class ModHandler {
     public static ItemStack getSmeltingOutput(ItemStack input, boolean removeInput, ItemStack outputSlot) {
         if (input == null || input.stackSize < 1) return null;
 
-        ItemStack stack = OreDictionaryUnifier.getUnificated(FurnaceRecipes.instance().getSmeltingResult(input));
+        ItemStack stack = OreDictUnifier.getUnificated(FurnaceRecipes.instance().getSmeltingResult(input));
         if (outputSlot == null || ItemStack.areItemStackTagsEqual(stack, outputSlot) && stack.stackSize + outputSlot.stackSize <= outputSlot.getMaxStackSize()) {
             if (removeInput) input.stackSize--;
             return stack;
@@ -788,7 +787,7 @@ public class ModHandler {
          * LiquidTransposer Recipe for both directions
          */
         public static void addLiquidTransposerRecipe(ItemStack emptyContainer, FluidStack fluid, ItemStack fullContainer, int RF) {
-            fullContainer = OreDictionaryUnifier.getUnificated(fullContainer);
+            fullContainer = OreDictUnifier.getUnificated(fullContainer);
             Validate.notNull(emptyContainer, "Empty Container cannot be null");
             Validate.notNull(fullContainer, "Full Container cannot be null");
             Validate.notNull(fluid, "Fluid Container cannot be null");
@@ -806,7 +805,7 @@ public class ModHandler {
          * LiquidTransposer Recipe for filling Containers
          */
         public static void addLiquidTransposerFillRecipe(ItemStack emptyContainer, FluidStack fluid, ItemStack fullContainer, int MJ) {
-            fullContainer = OreDictionaryUnifier.getUnificated(fullContainer);
+            fullContainer = OreDictUnifier.getUnificated(fullContainer);
             Validate.notNull(emptyContainer, "Empty Container cannot be null");
             Validate.notNull(fullContainer, "Full Container cannot be null");
             Validate.notNull(fluid, "Fluid Container cannot be null");
@@ -824,7 +823,7 @@ public class ModHandler {
          * LiquidTransposer Recipe for emptying Containers
          */
         public static void addLiquidTransposerEmptyRecipe(ItemStack fullContainer, FluidStack fluid, ItemStack emptyContainer, int RF) {
-            emptyContainer = OreDictionaryUnifier.getUnificated(emptyContainer);
+            emptyContainer = OreDictUnifier.getUnificated(emptyContainer);
             Validate.notNull(emptyContainer, "Empty Container cannot be null");
             Validate.notNull(fullContainer, "Full Container cannot be null");
             Validate.notNull(fluid, "Fluid Container cannot be null");
@@ -842,7 +841,7 @@ public class ModHandler {
          * Adds a Recipe to the Sawmills of GregTech and ThermalCraft
          */
         public static void addSawmillRecipe(ItemStack input1, ItemStack output1, ItemStack output2) {
-            output2 = OreDictionaryUnifier.getUnificated(output2);
+            output2 = OreDictUnifier.getUnificated(output2);
             Validate.notNull(input1, "Input cannot be null");
             Validate.notNull(output1, "Output cannot be null");
 
@@ -859,8 +858,8 @@ public class ModHandler {
          * Induction Smelter Recipes for TE
          */
         public static void addInductionSmelterRecipe(ItemStack input1, ItemStack input2, ItemStack output1, ItemStack output2, int energy, int chance) {
-            output1 = OreDictionaryUnifier.getUnificated(output1);
-            output2 = OreDictionaryUnifier.getUnificated(output2);
+            output1 = OreDictUnifier.getUnificated(output1);
+            output2 = OreDictUnifier.getUnificated(output2);
             Validate.notNull(input1, "Input cannot be null");
             Validate.notNull(output1, "Output cannot be null");
 //            Validate.isTrue(GTUtility.getContainerItem(input1, false) != null, "Input item cannot have container item");

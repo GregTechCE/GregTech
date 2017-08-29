@@ -2,7 +2,7 @@ package gregtech.loaders.oreprocessing;
 
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
@@ -24,17 +24,17 @@ public class ProcessingRound implements IOreRegistrationHandler {
         if (!entry.material.hasFlag(DustMaterial.MatFlags.NO_WORKING)) {
 
             RecipeMap.LATHE_RECIPES.recipeBuilder()
-                    .inputs(OreDictionaryUnifier.get(OrePrefix.nugget, entry.material, 1))
+                    .inputs(OreDictUnifier.get(OrePrefix.nugget, entry.material, 1))
                     .outputs(GTUtility.copyAmount(1, stack))
                     .duration((int) Math.max(entry.material.getMass() / 4L, 1L))
                     .EUt(8)
                     .buildAndRegister();
 
             if (!entry.material.hasFlag(NO_UNIFICATION)) {
-                ModHandler.addShapedRecipe(OreDictionaryUnifier.get(OrePrefix.round, entry.material),
+                ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.round, entry.material),
                         "fX",
                         "X ",
-                        'X', OreDictionaryUnifier.get(OrePrefix.nugget, entry.material));
+                        'X', OreDictUnifier.get(OrePrefix.nugget, entry.material));
             }
         }
     }

@@ -16,7 +16,7 @@ public class GT_Loader_OreProcessing
         new ProcessingCrop();
         new ProcessingCrushedOre();
         new ProcessingCrystallized();
-        new ProcessingDirty();
+        new ProcessingCrushed();
         new ProcessingDust();
         new ProcessingDye();
         new ProcessingFoil();
@@ -28,7 +28,7 @@ public class GT_Loader_OreProcessing
         new ProcessingIngot();
         new ProcessingItem();
         new ProcessingLog();
-        new ProcessingTransforming();
+        new ProcessingPolarizing();
         new ProcessingNugget();
         new ProcessingOre();
         new ProcessingOrePoor();

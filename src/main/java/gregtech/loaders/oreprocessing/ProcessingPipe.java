@@ -3,7 +3,7 @@ package gregtech.loaders.oreprocessing;
 import gregtech.api.items.ToolDictNames;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
@@ -67,8 +67,8 @@ public class ProcessingPipe implements IOreRegistrationHandler {
 			case pipeRestrictiveTiny:
 
 				RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-						.inputs(OreDictionaryUnifier.get(OrePrefix.getPrefix(entry.orePrefix.name().replaceFirst("Restrictive", "")), entry.material),
-								OreDictionaryUnifier.get(OrePrefix.ring, Materials.Steel, (int) (entry.orePrefix.secondaryMaterial.amount / OrePrefix.ring.materialAmount)))
+						.inputs(OreDictUnifier.get(OrePrefix.getPrefix(entry.orePrefix.name().replaceFirst("Restrictive", "")), entry.material),
+								OreDictUnifier.get(OrePrefix.ring, Materials.Steel, (int) (entry.orePrefix.secondaryMaterial.amount / OrePrefix.ring.materialAmount)))
 						.outputs(GTUtility.copyAmount(1, stack))
 						.duration((int) (entry.orePrefix.secondaryMaterial.amount * 400L / OrePrefix.ring.materialAmount))
 						.EUt(4)

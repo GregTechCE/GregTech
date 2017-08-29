@@ -2,7 +2,7 @@ package gregtech.loaders.load;
 
 import gregtech.api.GTValues;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 
@@ -10,25 +10,25 @@ public class FuelLoader implements Runnable {
 
     public void run() {
         RecipeMap.SMALL_NAQUADAH_REACTOR_FUELS.recipeBuilder()
-                .inputs(OreDictionaryUnifier.get(OrePrefix.bolt, Materials.Naquadah))
+                .inputs(OreDictUnifier.get(OrePrefix.bolt, Materials.Naquadah))
                 .EUt((int) GTValues.V[4])
                 .duration(12)
                 .buildAndRegister();
 
         RecipeMap.SMALL_NAQUADAH_REACTOR_FUELS.recipeBuilder()
-                .inputs(OreDictionaryUnifier.get(OrePrefix.bolt, Materials.NaquadahEnriched))
+                .inputs(OreDictUnifier.get(OrePrefix.bolt, Materials.NaquadahEnriched))
                 .EUt((int) GTValues.V[4])
                 .duration(18)
                 .buildAndRegister();
 
         RecipeMap.LARGE_NAQUADAH_REACTOR_FUELS.recipeBuilder()
-                .inputs(OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Naquadah))
+                .inputs(OreDictUnifier.get(OrePrefix.ingot, Materials.Naquadah))
                 .EUt((int) GTValues.V[5])
                 .duration(24)
                 .buildAndRegister();
 
         RecipeMap.LARGE_NAQUADAH_REACTOR_FUELS.recipeBuilder()
-                .inputs(OreDictionaryUnifier.get(OrePrefix.ingot, Materials.NaquadahEnriched))
+                .inputs(OreDictUnifier.get(OrePrefix.ingot, Materials.NaquadahEnriched))
                 .EUt((int) GTValues.V[5])
                 .duration(30)
                 .buildAndRegister();

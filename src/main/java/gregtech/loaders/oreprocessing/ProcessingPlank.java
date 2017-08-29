@@ -2,7 +2,7 @@ package gregtech.loaders.oreprocessing;
 
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
@@ -27,20 +27,20 @@ public class ProcessingPlank implements IOreRegistrationHandler {
         if (entry.material == Materials.Wood) {
 			RecipeMap.LATHE_RECIPES.recipeBuilder()
 					.inputs(GTUtility.copyAmount(1, stack))
-					.outputs(OreDictionaryUnifier.get(OrePrefix.stick, Materials.Wood, 2))
+					.outputs(OreDictUnifier.get(OrePrefix.stick, Materials.Wood, 2))
 					.duration(10)
 					.EUt(8)
 					.buildAndRegister();
 
 			RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-					.inputs(GTUtility.copyAmount(8, stack), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Redstone, 1))
+					.inputs(GTUtility.copyAmount(8, stack), OreDictUnifier.get(OrePrefix.dust, Materials.Redstone, 1))
 					.outputs(new ItemStack(Blocks.NOTEBLOCK, 1))
 					.duration(200)
 					.EUt(4)
 					.buildAndRegister();
 
 			RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-					.inputs(GTUtility.copyAmount(8, stack), OreDictionaryUnifier.get(OrePrefix.gem, Materials.Diamond, 1))
+					.inputs(GTUtility.copyAmount(8, stack), OreDictUnifier.get(OrePrefix.gem, Materials.Diamond, 1))
 					.outputs(new ItemStack(Blocks.JUKEBOX, 1))
 					.duration(400)
 					.EUt(4)

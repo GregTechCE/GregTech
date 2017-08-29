@@ -1,8 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.unification.OreDictionaryUnifier;
-import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
@@ -20,7 +19,7 @@ public class ProcessingCrystallized implements IOreRegistrationHandler {
 	public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {
 		if (entry.material instanceof SolidMaterial) {
 			ItemStack stack = simpleStack.asItemStack();
-			ItemStack dustStack = OreDictionaryUnifier.get(OrePrefix.dust, ((SolidMaterial) entry.material).macerateInto);
+			ItemStack dustStack = OreDictUnifier.get(OrePrefix.dust, ((SolidMaterial) entry.material).macerateInto);
 
 			RecipeMap.HAMMER_RECIPES.recipeBuilder()
 					.inputs(GTUtility.copyAmount(1, stack))

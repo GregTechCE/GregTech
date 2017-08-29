@@ -2,7 +2,7 @@ package gregtech.loaders.oreprocessing;
 
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.MetalMaterial;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
@@ -13,7 +13,6 @@ import gregtech.common.items.MetaItems;
 import net.minecraft.item.ItemStack;
 
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.NO_WORKING;
-import static gregtech.api.unification.material.type.Material.MatFlags.NO_UNIFICATION;
 
 public class ProcessingBolt implements IOreRegistrationHandler {
 
@@ -24,8 +23,8 @@ public class ProcessingBolt implements IOreRegistrationHandler {
 	public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {
 		if (entry.material instanceof MetalMaterial && !entry.material.hasFlag(NO_WORKING)) {
 			ItemStack boltStack = simpleStack.asItemStack();
-			ItemStack screwStack = OreDictionaryUnifier.get(OrePrefix.screw, entry.material);
-			ItemStack ingotStack = OreDictionaryUnifier.get(OrePrefix.ingot, entry.material);
+			ItemStack screwStack = OreDictUnifier.get(OrePrefix.screw, entry.material);
+			ItemStack ingotStack = OreDictUnifier.get(OrePrefix.ingot, entry.material);
 
 			ModHandler.addShapedRecipe(boltStack, "fS ", "S  ", 'S', screwStack);
 

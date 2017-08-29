@@ -6,7 +6,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.items.ItemList;
 import gregtech.api.items.ToolDictNames;
 import gregtech.api.recipes.ModHandler;
-import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
@@ -40,7 +40,7 @@ public class ProcessingPlate implements IOreRegistrationHandler {
 
         RecipeMap.CUTTER_RECIPES.recipeBuilder()
                 .inputs(GTUtility.copyAmount(1, blockStack))
-                .outputs(OreDictionaryUnifier.get(OrePrefix.plate, entry.material, 9))
+                .outputs(OreDictUnifier.get(OrePrefix.plate, entry.material, 9))
                 .duration((int) Math.max(entry.material.getMass() * 10L, 1L))
                 .EUt(30)
                 .buildAndRegister();
@@ -51,7 +51,7 @@ public class ProcessingPlate implements IOreRegistrationHandler {
                 ModHandler.removeRecipe(stack);
 
                 if (uEntry.material.mStandardMoltenFluid != null) {
-                    GTValues.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Plate.get(0L), uEntry.material.getMolten(144L), OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 1L), 32, 8);
+                    GTValues.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Plate.get(0L), uEntry.material.getMolten(144L), OreDictUnifier.get(OrePrefix.plate, uEntry.material, 1L), 32, 8);
                 }
                 switch (uEntry.material.toString()) {
                     case "Iron":
@@ -108,68 +108,68 @@ public class ProcessingPlate implements IOreRegistrationHandler {
 
                 if (uEntry.material.mFuelPower > 0)
                     GTValues.RA.addFuel(GTUtility.copyAmount(1, stack), null, uEntry.material.mFuelPower, uEntry.material.mFuelType);
-                GTUtility.removeSimpleIC2MachineRecipe(GTUtility.copyAmount(9, stack), Recipes.compressor.getRecipes(), OreDictionaryUnifier.get(OrePrefix.plateDense, uEntry.material, 1L));
-                GTValues.RA.addImplosionRecipe(GTUtility.copyAmount(2, stack), 2, OreDictionaryUnifier.get(OrePrefix.compressed, uEntry.material, 1L), OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh, 1L));
+                GTUtility.removeSimpleIC2MachineRecipe(GTUtility.copyAmount(9, stack), Recipes.compressor.getRecipes(), OreDictUnifier.get(OrePrefix.plateDense, uEntry.material, 1L));
+                GTValues.RA.addImplosionRecipe(GTUtility.copyAmount(2, stack), 2, OreDictUnifier.get(OrePrefix.compressed, uEntry.material, 1L), OreDictUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh, 1L));
                 if (uEntry.material == Materials.Paper)
                     ModHandler.addCraftingRecipe(GTUtility.copyAmount(GregTechAPI.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, stack, true) ? 2 : 3, stack), "XXX", 'X', new ItemStack(net.minecraft.init.Items.REEDS, 1, 32767));
 
                 if ((uEntry.material.mUnificatable) && (uEntry.material.mMaterialInto == uEntry.material)) {
                     if (!aNoSmashing && GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.hammerplating, uEntry.material.toString(), true)) {
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 1), CommonProxy.tBits, new Object[]{"h", "X", "X", 'X', OrePrefix.ingot.get(uEntry.material)});
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 1), CommonProxy.tBits, new Object[]{"H", "X", 'H', ToolDictNames.craftingToolForgeHammer, 'X', OrePrefix.ingot.get(uEntry.material)});
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 1), CommonProxy.tBits, new Object[]{"h", "X", 'X', OrePrefix.gem.get(uEntry.material)});
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 1), CommonProxy.tBits, new Object[]{"H", "X", 'H', ToolDictNames.craftingToolForgeHammer, 'X', OrePrefix.gem.get(uEntry.material)});
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 1), CommonProxy.tBits, new Object[]{"h", "X", 'X', OrePrefix.ingotDouble.get(uEntry.material)});
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 2), CommonProxy.tBits, new Object[]{"H", "X", 'H', ToolDictNames.craftingToolForgeHammer, 'X', OrePrefix.ingotDouble.get(uEntry.material)});
+                        ModHandler.addCraftingRecipe(OreDictUnifier.get(OrePrefix.plate, uEntry.material, 1), CommonProxy.tBits, new Object[]{"h", "X", "X", 'X', OrePrefix.ingot.get(uEntry.material)});
+                        ModHandler.addCraftingRecipe(OreDictUnifier.get(OrePrefix.plate, uEntry.material, 1), CommonProxy.tBits, new Object[]{"H", "X", 'H', ToolDictNames.craftingToolForgeHammer, 'X', OrePrefix.ingot.get(uEntry.material)});
+                        ModHandler.addCraftingRecipe(OreDictUnifier.get(OrePrefix.plate, uEntry.material, 1), CommonProxy.tBits, new Object[]{"h", "X", 'X', OrePrefix.gem.get(uEntry.material)});
+                        ModHandler.addCraftingRecipe(OreDictUnifier.get(OrePrefix.plate, uEntry.material, 1), CommonProxy.tBits, new Object[]{"H", "X", 'H', ToolDictNames.craftingToolForgeHammer, 'X', OrePrefix.gem.get(uEntry.material)});
+                        ModHandler.addCraftingRecipe(OreDictUnifier.get(OrePrefix.plate, uEntry.material, 1), CommonProxy.tBits, new Object[]{"h", "X", 'X', OrePrefix.ingotDouble.get(uEntry.material)});
+                        ModHandler.addCraftingRecipe(OreDictUnifier.get(OrePrefix.plate, uEntry.material, 2), CommonProxy.tBits, new Object[]{"H", "X", 'H', ToolDictNames.craftingToolForgeHammer, 'X', OrePrefix.ingotDouble.get(uEntry.material)});
                     }
                     if ((uEntry.material.contains(SubTag.MORTAR_GRINDABLE)) && (GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.mortar, uEntry.material.toString(), true)))
-                        ModHandler.addCraftingRecipe(OreDictionaryUnifier.get(OrePrefix.dust, uEntry.material, 1), CommonProxy.tBits, new Object[]{"X", "m", 'X', OrePrefix.plate.get(uEntry.material)});
+                        ModHandler.addCraftingRecipe(OreDictUnifier.get(OrePrefix.dust, uEntry.material, 1), CommonProxy.tBits, new Object[]{"X", "m", 'X', OrePrefix.plate.get(uEntry.material)});
                 }
                 break;
             case plateDouble:
                 ModHandler.removeRecipeByOutput(stack);
                 GregTechAPI.registerCover(stack, new GT_RenderedTexture(uEntry.material.mIconSet.mTextures[72], uEntry.material.materialRGB), null);
                 if (!aNoSmashing) {
-                    GTValues.RA.addBenderRecipe(GTUtility.copyAmount(2, stack), OreDictionaryUnifier.get(OrePrefix.plateQuadruple, uEntry.material, 1L), (int) Math.max(materialMass * 2L, 1L), 96);
+                    GTValues.RA.addBenderRecipe(GTUtility.copyAmount(2, stack), OreDictUnifier.get(OrePrefix.plateQuadruple, uEntry.material, 1L), (int) Math.max(materialMass * 2L, 1L), 96);
                     if (GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.hammerdoubleplate, OrePrefix.plate.get(uEntry.material).toString(), true)) {
                         Object aPlateStack = OrePrefix.plate.get(uEntry.material);
                         ModHandler.addCraftingRecipe(GTUtility.copyAmount(1, stack), ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{"I", "B", "h", 'I', aPlateStack, 'B', aPlateStack});
                         ModHandler.addShapelessCraftingRecipe(GTUtility.copyAmount(1, stack), ToolDictNames.craftingToolForgeHammer, aPlateStack, aPlateStack);
                     }
-                    GTValues.RA.addBenderRecipe(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 2L), GTUtility.copyAmount(1L, stack), (int) Math.max(materialMass * 2L, 1L), 96);
+                    GTValues.RA.addBenderRecipe(OreDictUnifier.get(OrePrefix.plate, uEntry.material, 2L), GTUtility.copyAmount(1L, stack), (int) Math.max(materialMass * 2L, 1L), 96);
                 } else {
-                        GTValues.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 2L), ItemList.Circuit_Integrated.getWithDamage(0L, 2L), Materials.Glue.getFluid(10L), GTUtility.copyAmount(1L, stack), 64, 8);
+                        GTValues.RA.addAssemblerRecipe(OreDictUnifier.get(OrePrefix.plate, uEntry.material, 2L), ItemList.Circuit_Integrated.getWithDamage(0L, 2L), Materials.Glue.getFluid(10L), GTUtility.copyAmount(1L, stack), 64, 8);
                     }
                 break;
             case plateTriple:
                 ModHandler.removeRecipeByOutput(stack);
                 GregTechAPI.registerCover(stack, new GT_RenderedTexture(uEntry.material.mIconSet.mTextures[73], uEntry.material.materialRGB), null);
                 if (!aNoSmashing) {
-                    GTValues.RA.addBenderRecipe(GTUtility.copyAmount(3L, stack), OreDictionaryUnifier.get(OrePrefix.plateDense, uEntry.material, 1L), (int) Math.max(uEntry.materialMass * 3L, 1L), 96);
+                    GTValues.RA.addBenderRecipe(GTUtility.copyAmount(3L, stack), OreDictUnifier.get(OrePrefix.plateDense, uEntry.material, 1L), (int) Math.max(uEntry.materialMass * 3L, 1L), 96);
                     if (GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.hammertripleplate, OrePrefix.plate.get(uEntry.material).toString(), true)) {
                         Object aPlateStack = OrePrefix.plate.get(uEntry.material);
                         ModHandler.addCraftingRecipe(GTUtility.copyAmount(1L, stack), ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | gregtech.api.util.ModHandler.RecipeBits.BUFFERED, new Object[]{"I", "B", "h", 'I', OrePrefix.plateDouble.get(uEntry.material), 'B', aPlateStack});
                         ModHandler.addShapelessCraftingRecipe(GTUtility.copyAmount(1L, stack), ToolDictNames.craftingToolForgeHammer, aPlateStack, aPlateStack, aPlateStack);
                     } 
-                    GTValues.RA.addBenderRecipe(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 3L), GTUtility.copyAmount(1L, stack), (int) Math.max(uEntry.materialMass * 3L, 1L), 96);
+                    GTValues.RA.addBenderRecipe(OreDictUnifier.get(OrePrefix.plate, uEntry.material, 3L), GTUtility.copyAmount(1L, stack), (int) Math.max(uEntry.materialMass * 3L, 1L), 96);
                 }else {
-                        GTValues.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 3L), ItemList.Circuit_Integrated.getWithDamage(0L, 3L), Materials.Glue.getFluid(20L), GTUtility.copyAmount(1L, stack), 96, 8);
+                        GTValues.RA.addAssemblerRecipe(OreDictUnifier.get(OrePrefix.plate, uEntry.material, 3L), ItemList.Circuit_Integrated.getWithDamage(0L, 3L), Materials.Glue.getFluid(20L), GTUtility.copyAmount(1L, stack), 96, 8);
                     }
                 break;
             case plateQuadruple:
                 ModHandler.removeRecipeByOutput(stack);
                 GregTechAPI.registerCover(stack, new GT_RenderedTexture(uEntry.material.mIconSet.mTextures[74], uEntry.material.mRGBa), null);
                 if (!aNoWorking)
-                    GTValues.RA.addCNCRecipe(GTUtility.copyAmount(1L, stack), OreDictionaryUnifier.get(OrePrefix.gearGt, uEntry.material, 1L), (int) Math.max(materialMass * 2L, 1L), 32);
+                    GTValues.RA.addCNCRecipe(GTUtility.copyAmount(1L, stack), OreDictUnifier.get(OrePrefix.gearGt, uEntry.material, 1L), (int) Math.max(materialMass * 2L, 1L), 32);
                 if (!aNoSmashing) {
                     if (GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.hammerquadrupleplate, OrePrefix.plate.get(uEntry.material).toString(), true)) {
                         Object aPlateStack = OrePrefix.plate.get(uEntry.material);
                         ModHandler.addCraftingRecipe(GTUtility.copyAmount(1L, stack), ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{"I", "B", "h", 'I', OrePrefix.plateTriple.get(uEntry.material), 'B', aPlateStack});
                         ModHandler.addShapelessCraftingRecipe(GTUtility.copyAmount(1L, stack), ToolDictNames.craftingToolForgeHammer, aPlateStack, aPlateStack, aPlateStack, aPlateStack);
                     }
-                    GTValues.RA.addBenderRecipe(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 4L), GTUtility.copyAmount(1L, stack), (int) Math.max(materialMass * 4L, 1L), 96);
+                    GTValues.RA.addBenderRecipe(OreDictUnifier.get(OrePrefix.plate, uEntry.material, 4L), GTUtility.copyAmount(1L, stack), (int) Math.max(materialMass * 4L, 1L), 96);
                 } else {
-                        GTValues.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 4L), ItemList.Circuit_Integrated.getWithDamage(0L, 4L), Materials.Glue.getFluid(30L), GTUtility.copyAmount(1L, stack), 128, 8);
+                        GTValues.RA.addAssemblerRecipe(OreDictUnifier.get(OrePrefix.plate, uEntry.material, 4L), ItemList.Circuit_Integrated.getWithDamage(0L, 4L), Materials.Glue.getFluid(30L), GTUtility.copyAmount(1L, stack), 128, 8);
                     }
                 break;
             case plateQuintuple:
@@ -181,16 +181,16 @@ public class ProcessingPlate implements IOreRegistrationHandler {
                         ModHandler.addCraftingRecipe(GTUtility.copyAmount(1L, stack), ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | ModHandler.RecipeBits.BUFFERED, new Object[]{"I", "B", "h", 'I', OrePrefix.plateQuadruple.get(uEntry.material), 'B', aPlateStack});
                         ModHandler.addShapelessCraftingRecipe(GTUtility.copyAmount(1L, stack), ToolDictNames.craftingToolForgeHammer, aPlateStack, aPlateStack, aPlateStack, aPlateStack, aPlateStack);
                     }
-                    GTValues.RA.addBenderRecipe(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 5L), GTUtility.copyAmount(1L, stack), (int) Math.max(materialMass * 5L, 1L), 96);
+                    GTValues.RA.addBenderRecipe(OreDictUnifier.get(OrePrefix.plate, uEntry.material, 5L), GTUtility.copyAmount(1L, stack), (int) Math.max(materialMass * 5L, 1L), 96);
                 } else {
-                        GTValues.RA.addAssemblerRecipe(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 5L), ItemList.Circuit_Integrated.getWithDamage(0L, 5L), Materials.Glue.getFluid(40L), GTUtility.copyAmount(1L, stack), 160, 8);
+                        GTValues.RA.addAssemblerRecipe(OreDictUnifier.get(OrePrefix.plate, uEntry.material, 5L), ItemList.Circuit_Integrated.getWithDamage(0L, 5L), Materials.Glue.getFluid(40L), GTUtility.copyAmount(1L, stack), 160, 8);
                     }
                 break;
             case plateDense:
                 ModHandler.removeRecipeByOutput(stack);
                 GregTechAPI.registerCover(stack, new GT_RenderedTexture(uEntry.material.mIconSet.mTextures[76], uEntry.material.materialRGB), null);
                 if (!aNoSmashing) {
-                    GTValues.RA.addBenderRecipe(OreDictionaryUnifier.get(OrePrefix.plate, uEntry.material, 9L), GTUtility.copyAmount(1, stack), (int) Math.max(materialMass * 9L, 1L), 96);
+                    GTValues.RA.addBenderRecipe(OreDictUnifier.get(OrePrefix.plate, uEntry.material, 9L), GTUtility.copyAmount(1, stack), (int) Math.max(materialMass * 9L, 1L), 96);
                 }
                 break;
             case plateAlloy:
@@ -199,7 +199,7 @@ public class ProcessingPlate implements IOreRegistrationHandler {
                         GTValues.RA.addAssemblerRecipe(ModHandler.getIC2TEItem(TeBlock.generator, 1), GTUtility.copyAmount(4, stack), ModHandler.getIC2TEItem(TeBlock.wind_generator, 1), 6400, 8);
                     case "plateAlloyAdvanced":
                         ModHandler.addAlloySmelterRecipe(GTUtility.copyAmount(1, stack), new ItemStack(Blocks.GLASS, 3, 32767), ModHandler.getIC2Item(BlockName.glass, BlockTexGlass.GlassType.reinforced, 4), 400, 4, false);
-                        ModHandler.addAlloySmelterRecipe(GTUtility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Glass, 3L), ModHandler.getIC2Item(BlockName.glass, BlockTexGlass.GlassType.reinforced, 4), 400, 4, false);
+                        ModHandler.addAlloySmelterRecipe(GTUtility.copyAmount(1, stack), OreDictUnifier.get(OrePrefix.dust, Materials.Glass, 3L), ModHandler.getIC2Item(BlockName.glass, BlockTexGlass.GlassType.reinforced, 4), 400, 4, false);
                     case "plateAlloyIridium":
                         ModHandler.removeRecipeByOutput(stack);
                 }

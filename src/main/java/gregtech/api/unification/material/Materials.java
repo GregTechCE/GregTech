@@ -466,6 +466,10 @@ public class Materials {
 
         WoodSealed.macerateInto = Wood;
 
+        Neodymium.magneticMaterial = NeodymiumMagnetic;
+        Steel.magneticMaterial = SteelMagnetic;
+        Iron.magneticMaterial = IronMagnetic;
+
         NeodymiumMagnetic.setSmeltingInto(Neodymium).setArcSmeltingInto(Neodymium).setMaceratingInto(Neodymium);
         SteelMagnetic.setSmeltingInto(Steel).setArcSmeltingInto(Steel).setMaceratingInto(Steel);
         Iron.setSmeltingInto(Iron).setArcSmeltingInto(WroughtIron).setMaceratingInto(Iron);
@@ -656,7 +660,7 @@ public class Materials {
         Cobalt.addOreByProducts(Cobaltite);
         Sulfur.addOreByProducts(Sulfur);
         Saltpeter.addOreByProducts(Saltpeter);
-        Endstone.addOreByProducts(Helium3);
+        //Endstone.addOreByProducts(Helium3); //FIXME
         Osmium.addOreByProducts(Iridium);
         Magnesium.addOreByProducts(Olivine);
         Aluminium.addOreByProducts(Bauxite);

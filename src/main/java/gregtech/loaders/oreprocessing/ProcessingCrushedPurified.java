@@ -1,8 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.GemMaterial;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
@@ -23,9 +22,9 @@ public class ProcessingCrushedPurified implements IOreRegistrationHandler {
         if (entry.material instanceof SolidMaterial) {
             ItemStack crushedPurifiedStack = itemStack.asItemStack();
             SolidMaterial solidMaterial = (SolidMaterial) entry.material;
-            ItemStack crushedCentrifugedStack = OreDictionaryUnifier.get(OrePrefix.crushedCentrifuged, solidMaterial.macerateInto);
-            ItemStack dustStack = OreDictionaryUnifier.get(OrePrefix.dust, solidMaterial.macerateInto);
-            ItemStack byproductStack = OreDictionaryUnifier.get(OrePrefix.dustTiny, GTUtility.selectItemInList(1, solidMaterial.macerateInto, solidMaterial.oreByProducts));
+            ItemStack crushedCentrifugedStack = OreDictUnifier.get(OrePrefix.crushedCentrifuged, solidMaterial.macerateInto);
+            ItemStack dustStack = OreDictUnifier.get(OrePrefix.dust, solidMaterial.macerateInto);
+            ItemStack byproductStack = OreDictUnifier.get(OrePrefix.dustTiny, GTUtility.selectItemInList(1, solidMaterial.macerateInto, solidMaterial.oreByProducts));
 
             if (crushedCentrifugedStack != null) {
                 RecipeMap.THERMAL_CENTRIFUGE_RECIPES.recipeBuilder()
@@ -45,11 +44,11 @@ public class ProcessingCrushedPurified implements IOreRegistrationHandler {
 
 
             if (entry.material instanceof GemMaterial) {
-                ItemStack exquisiteStack = OreDictionaryUnifier.get(OrePrefix.gemExquisite, entry.material);
-                ItemStack flawlessStack = OreDictionaryUnifier.get(OrePrefix.gemFlawless, entry.material);
-                ItemStack gemStack = OreDictionaryUnifier.get(OrePrefix.gem, entry.material);
-                ItemStack flawedStack = OreDictionaryUnifier.get(OrePrefix.gemFlawed, entry.material);
-                ItemStack chippedStack = OreDictionaryUnifier.get(OrePrefix.gemChipped, entry.material);
+                ItemStack exquisiteStack = OreDictUnifier.get(OrePrefix.gemExquisite, entry.material);
+                ItemStack flawlessStack = OreDictUnifier.get(OrePrefix.gemFlawless, entry.material);
+                ItemStack gemStack = OreDictUnifier.get(OrePrefix.gem, entry.material);
+                ItemStack flawedStack = OreDictUnifier.get(OrePrefix.gemFlawed, entry.material);
+                ItemStack chippedStack = OreDictUnifier.get(OrePrefix.gemChipped, entry.material);
 
                 if (entry.material.hasFlag(GemMaterial.MatFlags.HIGH_SIFTER_OUTPUT)) {
                     RecipeMap.SIFTER_RECIPES.recipeBuilder()

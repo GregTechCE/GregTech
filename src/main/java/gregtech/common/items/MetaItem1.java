@@ -7,14 +7,13 @@ import gregtech.api.items.metaitem.FluidStats;
 import gregtech.api.items.metaitem.FoodStats;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.UnificationEntry;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.RandomPotionEffect;
 //import gregtech.common.items.behaviors.*;
 import ic2.core.item.type.CraftingItemType;
@@ -25,7 +24,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumDyeColor;
@@ -34,7 +32,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
 
@@ -64,7 +61,7 @@ public class MetaItem1 extends MaterialMetaItem {
 
 		COIN_GOLD_ANCIENT = addItem(8, "coin.gold.ancient").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Gold, 907200L)));
 		COIN_DOGE = addItem(9, "coin.doge").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Brass, 907200L)));
-		COIN_CHOCOLATE = addItem(10, "coin.chocolate").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Gold, OrePrefix.foil.materialAmount))).addStats(new FoodStats(1, 0.1F, false, true, OreDictionaryUnifier.get(OrePrefix.foil, Materials.Gold, 1), new RandomPotionEffect(MobEffects.SPEED, 200, 1, 10)));
+		COIN_CHOCOLATE = addItem(10, "coin.chocolate").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Gold, OrePrefix.foil.materialAmount))).addStats(new FoodStats(1, 0.1F, false, true, OreDictUnifier.get(OrePrefix.foil, Materials.Gold, 1), new RandomPotionEffect(MobEffects.SPEED, 200, 1, 10)));
 
 		ModHandler.addShapelessRecipe(COIN_CHOCOLATE.getStackForm(),
 				new UnificationEntry(OrePrefix.dust, Materials.Cocoa),
@@ -510,7 +507,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		SPRAY_EMPTY = addItem(402, "spray.empty").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Tin, OrePrefix.plate.materialAmount * 2L), new MaterialStack(Materials.Redstone, OrePrefix.dust.materialAmount)));
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Redstone, 1), OreDictionaryUnifier.get(OrePrefix.cell, null, 1))
+				.inputs(OreDictUnifier.get(OrePrefix.dust, Materials.Redstone, 1), OreDictUnifier.get(OrePrefix.cell, null, 1))
 				.outputs(SPRAY_EMPTY.getStackForm())
 				.duration(800)
 				.EUt(1)
@@ -519,7 +516,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		THERMOS_CAN_EMPTY = addItem(404, "thermos_can.empty").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Aluminium, OrePrefix.plate.materialAmount + 2L * OrePrefix.ring.materialAmount)));
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.plateDouble, Materials.Aluminium, 1), OreDictionaryUnifier.get(OrePrefix.ring, Materials.Aluminium, 2))
+				.inputs(OreDictUnifier.get(OrePrefix.plateDouble, Materials.Aluminium, 1), OreDictUnifier.get(OrePrefix.ring, Materials.Aluminium, 2))
 				.outputs(THERMOS_CAN_EMPTY.getStackForm())
 				.duration(800)
 				.EUt(1)
@@ -528,7 +525,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		LARGE_FLUID_CELL_STEEL = addItem(405, "large.fluid.cell.steel").addStats(new FluidStats(16000, Integer.MAX_VALUE, Integer.MAX_VALUE)).setMaxStackSize(16).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, OrePrefix.plate.materialAmount * 2L + 2L * OrePrefix.ring.materialAmount)));
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.plateDouble, Materials.Steel, 1), OreDictionaryUnifier.get(OrePrefix.ring, Materials.Steel, 2))
+				.inputs(OreDictUnifier.get(OrePrefix.plateDouble, Materials.Steel, 1), OreDictUnifier.get(OrePrefix.ring, Materials.Steel, 2))
 				.outputs(LARGE_FLUID_CELL_STEEL.getStackForm())
 				.duration(100)
 				.EUt(64)
@@ -537,7 +534,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		LARGE_FLUID_CELL_TUNGSTENSTEEL = addItem(406, "large.fluid.cell.tungstensteel").addStats(new FluidStats(64000, Integer.MAX_VALUE, Integer.MAX_VALUE)).setMaxStackSize(16).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.TungstenSteel, OrePrefix.plate.materialAmount * 2L + 2L * OrePrefix.ring.materialAmount)));
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.plateDouble, Materials.TungstenSteel, 1), OreDictionaryUnifier.get(OrePrefix.ring, Materials.TungstenSteel, 2))
+				.inputs(OreDictUnifier.get(OrePrefix.plateDouble, Materials.TungstenSteel, 1), OreDictUnifier.get(OrePrefix.ring, Materials.TungstenSteel, 2))
 				.outputs(LARGE_FLUID_CELL_TUNGSTENSTEEL.getStackForm())
 				.duration(200)
 				.EUt(256)
@@ -557,35 +554,35 @@ public class MetaItem1 extends MaterialMetaItem {
 		TOOL_MATCHBOX_FULL = addItem(473, "tool.matchbox.full");//.addStats(behaviour);
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.bolt, Materials.Wood, 1), OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Phosphorus, 1))
+				.inputs(OreDictUnifier.get(OrePrefix.bolt, Materials.Wood, 1), OreDictUnifier.get(OrePrefix.dustSmall, Materials.Phosphorus, 1))
 				.outputs(TOOL_MATCHES.getStackForm())
 				.duration(16)
 				.EUt(16)
 				.buildAndRegister();
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.bolt, Materials.Wood, 1), OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Phosphor, 1))
+				.inputs(OreDictUnifier.get(OrePrefix.bolt, Materials.Wood, 1), OreDictUnifier.get(OrePrefix.dustSmall, Materials.Phosphor, 1))
 				.outputs(TOOL_MATCHES.getStackForm())
 				.duration(16)
 				.EUt(16)
 				.buildAndRegister();
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.bolt, Materials.Wood, 4), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphorus, 1))
+				.inputs(OreDictUnifier.get(OrePrefix.bolt, Materials.Wood, 4), OreDictUnifier.get(OrePrefix.dust, Materials.Phosphorus, 1))
 				.outputs(TOOL_MATCHES.getStackForm(4))
 				.duration(64)
 				.EUt(16)
 				.buildAndRegister();
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.bolt, Materials.Wood, 4), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Phosphor, 1))
+				.inputs(OreDictUnifier.get(OrePrefix.bolt, Materials.Wood, 4), OreDictUnifier.get(OrePrefix.dust, Materials.Phosphor, 1))
 				.outputs(TOOL_MATCHES.getStackForm(4))
 				.duration(64)
 				.EUt(16)
 				.buildAndRegister();
 
 		RecipeMap.BOXINATOR_RECIPES.recipeBuilder()
-				.inputs(TOOL_MATCHES.getStackForm(16), OreDictionaryUnifier.get(OrePrefix.plateDouble, Materials.Paper, 1))
+				.inputs(TOOL_MATCHES.getStackForm(16), OreDictUnifier.get(OrePrefix.plateDouble, Materials.Paper, 1))
 				.outputs(TOOL_MATCHBOX_FULL.getStackForm())
 				.duration(64)
 				.EUt(16)
@@ -604,7 +601,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		TOOL_LIGHTER_INVAR_FULL = addItem(476, "tool.lighter.invar.full").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Invar, OrePrefix.plate.materialAmount * 2L)));//.addStats(behaviour);
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.plate, Materials.Invar, 2), new ItemStack(Items.FLINT, 1))
+				.inputs(OreDictUnifier.get(OrePrefix.plate, Materials.Invar, 2), new ItemStack(Items.FLINT, 1))
 				.outputs(TOOL_LIGHTER_INVAR_EMPTY.getStackForm())
 				.duration(256)
 				.EUt(16)
@@ -617,7 +614,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		TOOL_LIGHTER_PLATINUM_FULL = addItem(479, "tool.lighter.platinum.full").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Platinum, OrePrefix.plate.materialAmount * 2L)));//.addStats(behaviour);
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.plate, Materials.Platinum, 2), new ItemStack(Items.FLINT, 1))
+				.inputs(OreDictUnifier.get(OrePrefix.plate, Materials.Platinum, 2), new ItemStack(Items.FLINT, 1))
 				.outputs(TOOL_LIGHTER_PLATINUM_EMPTY.getStackForm())
 				.duration(256)
 				.EUt(256)
@@ -795,55 +792,55 @@ public class MetaItem1 extends MaterialMetaItem {
 				.buildAndRegister();
 
 		RecipeMap.FLUID_CANNER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Cadmium, 2), BATTERY_HULL_LV.getStackForm())
+				.inputs(OreDictUnifier.get(OrePrefix.dust, Materials.Cadmium, 2), BATTERY_HULL_LV.getStackForm())
 				.outputs(BATTERY_RE_LV_CADMIUM.getStackForm())
 				.duration(100)
 				.EUt(2)
 				.buildAndRegister();
 		RecipeMap.FLUID_CANNER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Lithium, 2), BATTERY_HULL_LV.getStackForm())
+				.inputs(OreDictUnifier.get(OrePrefix.dust, Materials.Lithium, 2), BATTERY_HULL_LV.getStackForm())
 				.outputs(BATTERY_RE_LV_LITHIUM.getStackForm())
 				.duration(100)
 				.EUt(2)
 				.buildAndRegister();
 		RecipeMap.FLUID_CANNER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Sodium, 2), BATTERY_HULL_LV.getStackForm())
+				.inputs(OreDictUnifier.get(OrePrefix.dust, Materials.Sodium, 2), BATTERY_HULL_LV.getStackForm())
 				.outputs(BATTERY_RE_LV_SODIUM.getStackForm())
 				.duration(100)
 				.EUt(2)
 				.buildAndRegister();
 		RecipeMap.FLUID_CANNER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Cadmium, 8), BATTERY_HULL_MV.getStackForm())
+				.inputs(OreDictUnifier.get(OrePrefix.dust, Materials.Cadmium, 8), BATTERY_HULL_MV.getStackForm())
 				.outputs(BATTERY_RE_MV_CADMIUM.getStackForm())
 				.duration(400)
 				.EUt(2)
 				.buildAndRegister();
 		RecipeMap.FLUID_CANNER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Lithium, 8), BATTERY_HULL_MV.getStackForm())
+				.inputs(OreDictUnifier.get(OrePrefix.dust, Materials.Lithium, 8), BATTERY_HULL_MV.getStackForm())
 				.outputs(BATTERY_RE_MV_LITHIUM.getStackForm())
 				.duration(400)
 				.EUt(2)
 				.buildAndRegister();
 		RecipeMap.FLUID_CANNER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Sodium, 8), BATTERY_HULL_MV.getStackForm())
+				.inputs(OreDictUnifier.get(OrePrefix.dust, Materials.Sodium, 8), BATTERY_HULL_MV.getStackForm())
 				.outputs(BATTERY_RE_MV_SODIUM.getStackForm())
 				.duration(400)
 				.EUt(2)
 				.buildAndRegister();
 		RecipeMap.FLUID_CANNER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Cadmium, 32), BATTERY_HULL_HV.getStackForm())
+				.inputs(OreDictUnifier.get(OrePrefix.dust, Materials.Cadmium, 32), BATTERY_HULL_HV.getStackForm())
 				.outputs(BATTERY_RE_HV_CADMIUM.getStackForm())
 				.duration(1600)
 				.EUt(2)
 				.buildAndRegister();
 		RecipeMap.FLUID_CANNER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Lithium, 32), BATTERY_HULL_HV.getStackForm())
+				.inputs(OreDictUnifier.get(OrePrefix.dust, Materials.Lithium, 32), BATTERY_HULL_HV.getStackForm())
 				.outputs(BATTERY_RE_HV_LITHIUM.getStackForm())
 				.duration(1600)
 				.EUt(2)
 				.buildAndRegister();
 		RecipeMap.FLUID_CANNER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.dust, Materials.Sodium, 32), BATTERY_HULL_HV.getStackForm())
+				.inputs(OreDictUnifier.get(OrePrefix.dust, Materials.Sodium, 32), BATTERY_HULL_HV.getStackForm())
 				.outputs(BATTERY_RE_HV_SODIUM.getStackForm())
 				.duration(1600)
 				.EUt(2)
@@ -1384,55 +1381,55 @@ public class MetaItem1 extends MaterialMetaItem {
 		UPGRADE_LOCK = addItem(728, "upgrade.lock");
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.plate, Materials.Aluminium, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Plastic, 2))
+				.inputs(OreDictUnifier.get(OrePrefix.plate, Materials.Aluminium, 1), OreDictUnifier.get(OrePrefix.dust, Materials.Plastic, 2))
 				.outputs(UPGRADE_MUFFLER.getStackForm())
 				.duration(1600)
 				.EUt(2)
 				.buildAndRegister();
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.plate, Materials.Aluminium, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Wood, 2))
+				.inputs(OreDictUnifier.get(OrePrefix.plate, Materials.Aluminium, 1), OreDictUnifier.get(OrePrefix.dust, Materials.Wood, 2))
 				.outputs(UPGRADE_MUFFLER.getStackForm())
 				.duration(1600)
 				.EUt(2)
 				.buildAndRegister();
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.plate, Materials.Iron, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Plastic, 2))
+				.inputs(OreDictUnifier.get(OrePrefix.plate, Materials.Iron, 1), OreDictUnifier.get(OrePrefix.dust, Materials.Plastic, 2))
 				.outputs(UPGRADE_MUFFLER.getStackForm())
 				.duration(1600)
 				.EUt(2)
 				.buildAndRegister();
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.plate, Materials.Iron, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Wood, 2))
+				.inputs(OreDictUnifier.get(OrePrefix.plate, Materials.Iron, 1), OreDictUnifier.get(OrePrefix.dust, Materials.Wood, 2))
 				.outputs(UPGRADE_MUFFLER.getStackForm())
 				.duration(1600)
 				.EUt(2)
 				.buildAndRegister();
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.plate, Materials.WroughtIron, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Plastic, 2))
+				.inputs(OreDictUnifier.get(OrePrefix.plate, Materials.WroughtIron, 1), OreDictUnifier.get(OrePrefix.dust, Materials.Plastic, 2))
 				.outputs(UPGRADE_MUFFLER.getStackForm())
 				.duration(1600)
 				.EUt(2)
 				.buildAndRegister();
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.plate, Materials.WroughtIron, 1), OreDictionaryUnifier.get(OrePrefix.dust, Materials.Wood, 2))
+				.inputs(OreDictUnifier.get(OrePrefix.plate, Materials.WroughtIron, 1), OreDictUnifier.get(OrePrefix.dust, Materials.Wood, 2))
 				.outputs(UPGRADE_MUFFLER.getStackForm())
 				.duration(1600)
 				.EUt(2)
 				.buildAndRegister();
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.plate, Materials.Aluminium, 1), OreDictionaryUnifier.get(OrePrefix.plate, Materials.Iridium, 1))
+				.inputs(OreDictUnifier.get(OrePrefix.plate, Materials.Aluminium, 1), OreDictUnifier.get(OrePrefix.plate, Materials.Iridium, 1))
 				.outputs(UPGRADE_LOCK.getStackForm())
 				.duration(6400)
 				.EUt(16)
 				.buildAndRegister();
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.plate, Materials.Iron, 1), OreDictionaryUnifier.get(OrePrefix.plate, Materials.Iridium, 1))
+				.inputs(OreDictUnifier.get(OrePrefix.plate, Materials.Iron, 1), OreDictUnifier.get(OrePrefix.plate, Materials.Iridium, 1))
 				.outputs(UPGRADE_LOCK.getStackForm())
 				.duration(6400)
 				.EUt(16)
 				.buildAndRegister();
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.plate, Materials.WroughtIron, 1), OreDictionaryUnifier.get(OrePrefix.plate, Materials.Iridium, 1))
+				.inputs(OreDictUnifier.get(OrePrefix.plate, Materials.WroughtIron, 1), OreDictUnifier.get(OrePrefix.plate, Materials.Iridium, 1))
 				.outputs(UPGRADE_LOCK.getStackForm())
 				.duration(6400)
 				.EUt(16)
@@ -1441,7 +1438,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		COMPONENT_FILTER = addItem(729, "component.filter").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Zinc, OrePrefix.foil.materialAmount * 16L))).addOreDict(OreDictNames.craftingFilter);
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(ModHandler.IC2.getIC2Item(ItemName.crafting, CraftingItemType.carbon_mesh, 4), OreDictionaryUnifier.get(OrePrefix.foil, Materials.Zinc, 16))
+				.inputs(ModHandler.IC2.getIC2Item(ItemName.crafting, CraftingItemType.carbon_mesh, 4), OreDictUnifier.get(OrePrefix.foil, Materials.Zinc, 16))
 				.fluidInputs(Materials.Plastic.getFluid(144))
 				.outputs(COMPONENT_FILTER.getStackForm())
 				.duration(1600)
@@ -1467,7 +1464,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		MCGUFFIUM_239 = addItem(765, "mcguffium.239");
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(OreDictionaryUnifier.get(OrePrefix.circuit, Materials.Good, 4), OreDictionaryUnifier.get(OrePrefix.plate, Materials.StainlessSteel, 2))
+				.inputs(OreDictUnifier.get(OrePrefix.circuit, Materials.Good, 4), OreDictUnifier.get(OrePrefix.plate, Materials.StainlessSteel, 2))
 				.outputs(SCHEMATIC.getStackForm())
 				.duration(3200)
 				.EUt(4)
@@ -1480,31 +1477,31 @@ public class MetaItem1 extends MaterialMetaItem {
 				.buildAndRegister();
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(ELECTRIC_PUMP_LV.getStackForm(), OreDictionaryUnifier.get(OrePrefix.circuit, Materials.Basic, 2))
+				.inputs(ELECTRIC_PUMP_LV.getStackForm(), OreDictUnifier.get(OrePrefix.circuit, Materials.Basic, 2))
 				.outputs(FLUID_REGULATOR_LV.getStackForm())
 				.duration(800)
 				.EUt(4)
 				.buildAndRegister();
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(ELECTRIC_PUMP_MV.getStackForm(), OreDictionaryUnifier.get(OrePrefix.circuit, Materials.Good, 2))
+				.inputs(ELECTRIC_PUMP_MV.getStackForm(), OreDictUnifier.get(OrePrefix.circuit, Materials.Good, 2))
 				.outputs(FLUID_REGULATOR_MV.getStackForm())
 				.duration(800)
 				.EUt(8)
 				.buildAndRegister();
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(ELECTRIC_PUMP_HV.getStackForm(), OreDictionaryUnifier.get(OrePrefix.circuit, Materials.Advanced, 2))
+				.inputs(ELECTRIC_PUMP_HV.getStackForm(), OreDictUnifier.get(OrePrefix.circuit, Materials.Advanced, 2))
 				.outputs(FLUID_REGULATOR_HV.getStackForm())
 				.duration(800)
 				.EUt(16)
 				.buildAndRegister();
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(ELECTRIC_PUMP_EV.getStackForm(), OreDictionaryUnifier.get(OrePrefix.circuit, Materials.Elite, 2))
+				.inputs(ELECTRIC_PUMP_EV.getStackForm(), OreDictUnifier.get(OrePrefix.circuit, Materials.Elite, 2))
 				.outputs(FLUID_REGULATOR_EV.getStackForm())
 				.duration(800)
 				.EUt(32)
 				.buildAndRegister();
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(ELECTRIC_PUMP_IV.getStackForm(), OreDictionaryUnifier.get(OrePrefix.circuit, Materials.Master, 2))
+				.inputs(ELECTRIC_PUMP_IV.getStackForm(), OreDictUnifier.get(OrePrefix.circuit, Materials.Master, 2))
 				.outputs(FLUID_REGULATOR_IV.getStackForm())
 				.duration(800)
 				.EUt(64)
@@ -1529,11 +1526,11 @@ public class MetaItem1 extends MaterialMetaItem {
 						int waterLevel = blockState.getValue(BlockCauldron.LEVEL);
 						if (waterLevel > 0) {
 							if (prefix == OrePrefix.crushed) {
-								itemEntity.setEntityItemStack(OreDictionaryUnifier.get(OrePrefix.crushedPurified, material, itemEntity.getEntityItem().stackSize));
+								itemEntity.setEntityItemStack(OreDictUnifier.get(OrePrefix.crushedPurified, material, itemEntity.getEntityItem().stackSize));
 							} else if (prefix == OrePrefix.dust && material == Materials.Wheat) {
 								itemEntity.setEntityItemStack(FOOD_DOUGH.getStackForm(itemEntity.getEntityItem().stackSize));
 							} else {
-								itemEntity.setEntityItemStack(OreDictionaryUnifier.get(OrePrefix.dust, material, itemEntity.getEntityItem().stackSize));
+								itemEntity.setEntityItemStack(OreDictUnifier.get(OrePrefix.dust, material, itemEntity.getEntityItem().stackSize));
 							}
 							itemEntity.worldObj.setBlockState(new BlockPos(posX, posY, posZ), blockState.withProperty(BlockCauldron.LEVEL, waterLevel - 1));
 							return true;

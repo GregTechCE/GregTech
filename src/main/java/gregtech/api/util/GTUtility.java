@@ -3,7 +3,7 @@ package gregtech.api.util;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.damagesources.DamageSources;
-import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import ic2.core.IC2Potion;
@@ -154,7 +154,7 @@ public class GTUtility {
     }
 
     public static boolean areUnificationEqual(ItemStack stackA, ItemStack stackB) {
-        return ItemStack.areItemsEqual(OreDictionaryUnifier.getUnificated(stackA), OreDictionaryUnifier.getUnificated(stackB));
+        return ItemStack.areItemsEqual(OreDictUnifier.getUnificated(stackA), OreDictUnifier.getUnificated(stackB));
     }
 
     public static void playSound(World world, double x, double y, double z, ResourceLocation soundName, SoundCategory category, float strength, float modulation) {
@@ -212,7 +212,7 @@ public class GTUtility {
     }
 
     public static float getHeatDamageFromItem(ItemStack stack) {
-        UnificationEntry data = OreDictionaryUnifier.getUnificationEntry(stack);
+        UnificationEntry data = OreDictUnifier.getUnificationEntry(stack);
         return data == null ? 0 : data.orePrefix.heatDamage;
     }
 
@@ -314,8 +314,8 @@ public class GTUtility {
     /**
      * Translates a material amount into an amount of fluid in fluid material units.
      */
-    public static long translateMaterialToFluidAmount(long materialAmount, boolean roundUp) {
-        return translateMaterialToAmount(materialAmount, L, roundUp);
+    public static int translateMaterialToFluidAmount(long materialAmount, boolean roundUp) {
+        return (int) translateMaterialToAmount(materialAmount, L, roundUp);
     }
 
     /**

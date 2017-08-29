@@ -3,7 +3,7 @@ package gregtech.loaders.oreprocessing;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeBuilder;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.FluidMaterial;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
@@ -41,7 +41,7 @@ public class ProcessingOrePoor implements IOreRegistrationHandler {
         if (entry.material != null) {
             RecipeMap.HAMMER_RECIPES.recipeBuilder()
                     .inputs(GTUtility.copyAmount(1, stack))
-                    .outputs(OreDictionaryUnifier.get(OrePrefix.dustTiny, entry.material, multiplier))
+                    .outputs(OreDictUnifier.get(OrePrefix.dustTiny, entry.material, multiplier))
                     .duration(16)
                     .EUt(10)
                     .buildAndRegister();
@@ -49,16 +49,16 @@ public class ProcessingOrePoor implements IOreRegistrationHandler {
             if (entry.material instanceof DustMaterial) {
                 RecipeBuilder.DefaultRecipeBuilder builder = RecipeMap.MACERATOR_RECIPES.recipeBuilder()
                         .inputs(GTUtility.copyAmount(1, stack))
-                        .outputs(OreDictionaryUnifier.get(OrePrefix.dustTiny, entry.material, 2 * multiplier))
-                        .chancedOutput(OreDictionaryUnifier.get(OrePrefix.dustTiny, GTUtility.selectItemInList(0, (FluidMaterial) entry.material, ((DustMaterial) entry.material).oreByProducts), 1), 5 * multiplier);
+                        .outputs(OreDictUnifier.get(OrePrefix.dustTiny, entry.material, 2 * multiplier))
+                        .chancedOutput(OreDictUnifier.get(OrePrefix.dustTiny, GTUtility.selectItemInList(0, (FluidMaterial) entry.material, ((DustMaterial) entry.material).oreByProducts), 1), 5 * multiplier);
 
                 if (entry.orePrefix.secondaryMaterial.material instanceof DustMaterial) {
-                    builder.chancedOutput(OreDictionaryUnifier.getDust((DustMaterial) entry.orePrefix.secondaryMaterial.material, entry.orePrefix.secondaryMaterial.amount), 100);
+                    builder.chancedOutput(OreDictUnifier.getDust((DustMaterial) entry.orePrefix.secondaryMaterial.material, entry.orePrefix.secondaryMaterial.amount), 100);
                 }
                 builder.buildAndRegister();
 
                 if (entry.material.hasFlag(DustMaterial.MatFlags.NO_SMELTING)) {
-                    ModHandler.addSmeltingRecipe(GTUtility.copyAmount(1, stack), OreDictionaryUnifier.get(OrePrefix.nugget, ((DustMaterial) entry.material).directSmelting, multiplier));
+                    ModHandler.addSmeltingRecipe(GTUtility.copyAmount(1, stack), OreDictUnifier.get(OrePrefix.nugget, ((DustMaterial) entry.material).directSmelting, multiplier));
                 }
             }
 

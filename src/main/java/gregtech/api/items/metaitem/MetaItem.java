@@ -7,7 +7,7 @@ import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.items.OreDictNames;
 import gregtech.api.items.metaitem.stats.*;
-import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
@@ -514,7 +514,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             if(materialInfo == null) {
                 throw new IllegalArgumentException("Cannot add null ItemMaterialInfo.");
             }
-            OreDictionaryUnifier.registerOre(getStackForm(), materialInfo);
+            OreDictUnifier.registerOre(getStackForm(), materialInfo);
             return this;
         }
 
@@ -522,7 +522,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             if(prefix == null) {
                 throw new IllegalArgumentException("Cannot add null OrePrefix.");
             }
-            OreDictionaryUnifier.registerOre(getStackForm(), prefix, material);
+            OreDictUnifier.registerOre(getStackForm(), prefix, material);
             return this;
         }
 

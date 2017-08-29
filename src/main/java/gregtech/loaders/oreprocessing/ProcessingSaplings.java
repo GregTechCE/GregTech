@@ -1,7 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 
 public class ProcessingSaplings implements IOreRegistrationHandler {
 
-    public ProcessingSaplings() {
+    public void register() {
         OrePrefix.treeSapling.addProcessingHandler(this);
     }
 
@@ -21,14 +21,15 @@ public class ProcessingSaplings implements IOreRegistrationHandler {
 
         RecipeMap.MACERATOR_RECIPES.recipeBuilder()
                 .inputs(GTUtility.copyAmount(1, stack))
-                .outputs(OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Wood, 2))
+                .outputs(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Wood, 2))
                 .buildAndRegister();
 
         RecipeMap.LATHE_RECIPES.recipeBuilder()
                 .inputs(GTUtility.copyAmount(1, stack))
-                .outputs(OreDictionaryUnifier.get(OrePrefix.stick, Materials.Wood, 1), OreDictionaryUnifier.get(OrePrefix.dustTiny, Materials.Wood, 1))
+                .outputs(OreDictUnifier.get(OrePrefix.stick, Materials.Wood), OreDictUnifier.get(OrePrefix.dustTiny, Materials.Wood))
                 .duration(16)
                 .EUt(8)
                 .buildAndRegister();
     }
+
 }

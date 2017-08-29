@@ -1,7 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
@@ -26,7 +26,7 @@ public class ProcessingRecycling implements IOreRegistrationHandler {
 			RecipeMap.CANNER_RECIPES.recipeBuilder()
 					.inputs(stack)
 					.outputs(stack.getItem().getContainerItem(stack)
-						OreDictionaryUnifier.get(OrePrefix.dust, entry.material, (int) (entry.orePrefix.materialAmount / M)))
+						OreDictUnifier.get(OrePrefix.dust, entry.material, (int) (entry.orePrefix.materialAmount / M)))
 					.duration((int) Math.max(entry.material.getMass() / 2L, 1L))
 					.EUt(2)
 					.buildAndRegister();

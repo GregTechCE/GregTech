@@ -1,7 +1,7 @@
 package gregtech.api.recipes;
 
 import gregtech.api.items.metaitem.MetaItem;
-import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.util.GTUtility;
 import ic2.core.ref.BlockName;
@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static gregtech.api.GTValues.W;
 
@@ -212,15 +211,15 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 	protected abstract R getThis();
 
 	protected void finalizeAndValidate() {
-		inputs.replaceAll(OreDictionaryUnifier::getUnificated);
-		outputs.replaceAll(OreDictionaryUnifier::getUnificated);
+		inputs.replaceAll(OreDictUnifier::getUnificated);
+		outputs.replaceAll(OreDictUnifier::getUnificated);
 
 		Map<ItemStack, Integer> newMap = new HashMap<>();
 		Iterator<Map.Entry<ItemStack, Integer>> iterator = chancedOutputs.entrySet().iterator();
 		while (iterator.hasNext()) {
 			Map.Entry<ItemStack, Integer> entry = iterator.next();
 			iterator.remove();
-			newMap.put(OreDictionaryUnifier.getUnificated(entry.getKey()), entry.getValue());
+			newMap.put(OreDictUnifier.getUnificated(entry.getKey()), entry.getValue());
 		}
 		chancedOutputs = newMap;
 

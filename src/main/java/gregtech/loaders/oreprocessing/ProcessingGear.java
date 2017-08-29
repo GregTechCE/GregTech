@@ -2,7 +2,7 @@ package gregtech.loaders.oreprocessing;
 
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.FluidMaterial;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
@@ -40,27 +40,27 @@ public class ProcessingGear implements IOreRegistrationHandler {
 
 				if (!entry.material.hasFlag(NO_WORKING | NO_UNIFICATION)) {
 					if (entry.material == Materials.Wood) {
-						ModHandler.addShapedRecipe(OreDictionaryUnifier.get(OrePrefix.gearGt, entry.material),
+						ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.gearGt, entry.material),
 								"SPS",
 								"PsP",
 								"SPS",
-								'P', OreDictionaryUnifier.get(OrePrefix.plank, entry.material, 2),
-								'S', OreDictionaryUnifier.get(OrePrefix.stick, entry.material, 2));
+								'P', OreDictUnifier.get(OrePrefix.plank, entry.material, 2),
+								'S', OreDictUnifier.get(OrePrefix.stick, entry.material, 2));
 
 					} else if (entry.material == Materials.Stone) {
-						ModHandler.addShapedRecipe(OreDictionaryUnifier.get(OrePrefix.gearGt, entry.material),
+						ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.gearGt, entry.material),
 								"SPS",
 								"PfP",
 								"SPS",
 								'P', OrePrefix.stoneSmooth,
 								'S', new ItemStack(Blocks.STONE_BUTTON, 1, W));
 					} else {
-						ModHandler.addShapedRecipe(OreDictionaryUnifier.get(OrePrefix.gearGt, entry.material),
+						ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.gearGt, entry.material),
 								"SPS",
 								"PwP",
 								"SPS",
-								'P', OreDictionaryUnifier.get(OrePrefix.plate, entry.material, 2),
-								'S', OreDictionaryUnifier.get(OrePrefix.stick, entry.material, 2));
+								'P', OreDictUnifier.get(OrePrefix.plate, entry.material, 2),
+								'S', OreDictUnifier.get(OrePrefix.stick, entry.material, 2));
 					}
 				}
 				break;
@@ -76,20 +76,20 @@ public class ProcessingGear implements IOreRegistrationHandler {
 				if (!entry.material.hasFlag(NO_WORKING | NO_UNIFICATION)) {
 
 					if (entry.material == Materials.Wood || entry.material == Materials.WoodSealed) {
-						ModHandler.addShapedRecipe(OreDictionaryUnifier.get(OrePrefix.gearGtSmall, entry.material),
+						ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.gearGtSmall, entry.material),
 								"P ",
 								" s",
-								'P', OreDictionaryUnifier.get(OrePrefix.plank, entry.material, 2));
+								'P', OreDictUnifier.get(OrePrefix.plank, entry.material, 2));
 					} else if (entry.material == Materials.Stone) {
-						ModHandler.addShapedRecipe(OreDictionaryUnifier.get(OrePrefix.gearGtSmall, entry.material),
+						ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.gearGtSmall, entry.material),
 								"P ",
 								" f",
 								'P', OrePrefix.stoneSmooth);
 					} else {
-						ModHandler.addShapedRecipe(OreDictionaryUnifier.get(OrePrefix.gearGtSmall, entry.material),
+						ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.gearGtSmall, entry.material),
 								"P ",
 								" h",
-								'P', OreDictionaryUnifier.get(OrePrefix.plate, entry.material, 2));
+								'P', OreDictUnifier.get(OrePrefix.plate, entry.material, 2));
 					}
 				}
 				break;

@@ -50,6 +50,11 @@ public class MetalMaterial extends SolidMaterial {
     public MetalMaterial arcSmeltInto;
 
     /**
+     * Material which obtained when this material is polarized
+     */
+    public MetalMaterial magneticMaterial;
+
+    /**
      * Blast furnace temperature of this material
      * Equal to zero if material doesn't use blast furnace
      * If below 1000C, primitive blast furnace recipes will be also added

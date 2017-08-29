@@ -1,7 +1,7 @@
 package gregtech;
 
 import gregtech.api.net.NetworkHandler;
-import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.GTLog;
 import gregtech.common.CommonProxy;
@@ -193,7 +193,7 @@ public class GregTechMod {
 
         //GT_Config.troll = (Calendar.getInstance().get(2) + 1 == 4) && (Calendar.getInstance().get(5) >= 1) && (Calendar.getInstance().get(5) <= 2);
         Material.init();
-        OreDictionaryUnifier.init();
+        OreDictUnifier.init();
 
 //        GTLog.out.println("GregTechMod: Saving Main Config");
 //        tMainConfig.save();
@@ -336,7 +336,7 @@ public class GregTechMod {
 //        GT_RecipeRegistrator.registerUsagesForMaterials(new ItemStack(Blocks.STONE, 1), null, false);
 //        GT_RecipeRegistrator.registerUsagesForMaterials(new ItemStack(Items.LEATHER, 1), null, false);
 
-//        OreDictionaryUnifier.addItemData(GT_ModHandler.getRecipeOutput(new ItemStack[]{null, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Tin, 1L), null, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Tin, 1L), null, OreDictionaryUnifier.get(OrePrefix.ingot, Materials.Tin, 1L), null, null, null}), new ItemMaterialInfo(Materials.Tin, 10886400L, new MaterialStack[0]));
+//        OreDictUnifier.addItemData(GT_ModHandler.getRecipeOutput(new ItemStack[]{null, OreDictUnifier.get(OrePrefix.ingot, Materials.Tin, 1L), null, OreDictUnifier.get(OrePrefix.ingot, Materials.Tin, 1L), null, OreDictUnifier.get(OrePrefix.ingot, Materials.Tin, 1L), null, null, null}), new ItemMaterialInfo(Materials.Tin, 10886400L, new MaterialStack[0]));
 //        if (!GregTechAPI.sRecipeFile.get(ConfigCategories.Recipes.storageblockcrafting, "tile.glowstone", false)) {
 //            GT_ModHandler.removeRecipe(new ItemStack[]{new ItemStack(Items.GLOWSTONE_DUST, 1), new ItemStack(Items.GLOWSTONE_DUST, 1), null, new ItemStack(Items.GLOWSTONE_DUST, 1), new ItemStack(Items.GLOWSTONE_DUST, 1)});
 //        }
@@ -540,7 +540,7 @@ public class GregTechMod {
 //                ItemStack tOutput = ItemList.Tool_DataOrb.get(1);
 //                Behaviour_DataOrb.setDataTitle(tOutput, "Elemental-Scan");
 //                Behaviour_DataOrb.setDataName(tOutput, tMaterial.mElement.name());
-//                ItemStack tInput = OreDictionaryUnifier.get(OrePrefix.dust, tMaterial, 1);
+//                ItemStack tInput = OreDictUnifier.get(OrePrefix.dust, tMaterial, 1);
 //                ItemStack[] ISmat0 = new ItemStack[]{tInput};
 //                ItemStack[] ISmat1 = new ItemStack[]{tOutput};
 //                if (tInput != null) {
@@ -548,7 +548,7 @@ public class GregTechMod {
 //                    GT_Recipe.GT_Recipe_Map.sRepicatorFakeRecipes.addFakeRecipe(false, null, ISmat0, ISmat1, new FluidStack[]{Materials.UUMatter.getFluid(tMaterial.getMass())}, null, (int) (tMaterial.getMass() * 512L), 32, 0);
 //
 //                }
-//                tInput = OreDictionaryUnifier.get(OrePrefix.cell, tMaterial, 1L);
+//                tInput = OreDictUnifier.get(OrePrefix.cell, tMaterial, 1L);
 //                ISmat0 = new ItemStack[]{tInput};
 //                if (tInput != null) {
 //                    GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, ISmat0, ISmat1, ItemList.Tool_DataOrb.get(1), null, null, (int) (tMaterial.getMass() * 8192L), 32, 0);
@@ -558,7 +558,7 @@ public class GregTechMod {
 //        }
 //        GT_Recipe.GT_Recipe_Map.sRockBreakerFakeRecipes.addFakeRecipe(false, new ItemStack[]{ItemList.Display_ITS_FREE.getWithName(0L, "Place Lava on Side")}, new ItemStack[]{new ItemStack(Blocks.COBBLESTONE, 1)}, null, null, null, 16, 32, 0);
 //        GT_Recipe.GT_Recipe_Map.sRockBreakerFakeRecipes.addFakeRecipe(false, new ItemStack[]{ItemList.Display_ITS_FREE.getWithName(0L, "Place Lava on Top")}, new ItemStack[]{new ItemStack(Blocks.STONE, 1)}, null, null, null, 16, 32, 0);
-//        GT_Recipe.GT_Recipe_Map.sRockBreakerFakeRecipes.addFakeRecipe(false, new ItemStack[]{OreDictionaryUnifier.get(OrePrefix.dust, Materials.Redstone, 1)}, new ItemStack[]{new ItemStack(Blocks.OBSIDIAN, 1)}, null, null, null, 128, 32, 0);
+//        GT_Recipe.GT_Recipe_Map.sRockBreakerFakeRecipes.addFakeRecipe(false, new ItemStack[]{OreDictUnifier.get(OrePrefix.dust, Materials.Redstone, 1)}, new ItemStack[]{new ItemStack(Blocks.OBSIDIAN, 1)}, null, null, null, 128, 32, 0);
 //        for (IMachineRecipeManager.RecipeIoContainer recipeIoContainer : Recipes.macerator.getRecipes()) {
 //            if (recipeIoContainer.output.items.size() > 0) {
 //                for (ItemStack tStack : recipeIoContainer.input.getInputs()) {
@@ -721,7 +721,7 @@ public class GregTechMod {
 //                FMLLog.severe("Also it is a Ban Reason on the IC2-Forums to post this seriously.");
 //                tOutput.setStackDisplayName("ERROR! PLEASE CHECK YOUR LOG FOR 'GT-ERR-01'!");
 //            } else {
-//                OreDictionaryUnifier.setStack(tOutput);
+//                OreDictUnifier.setStack(tOutput);
 //
 //            }
 //        }

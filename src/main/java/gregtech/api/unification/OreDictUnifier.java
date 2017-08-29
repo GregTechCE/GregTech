@@ -26,9 +26,9 @@ import java.util.HashMap;
 
 import static gregtech.api.GTValues.M;
 
-public class OreDictionaryUnifier {
+public class OreDictUnifier {
 
-    private OreDictionaryUnifier() {}
+    private OreDictUnifier() {}
 
     private static final HashMap<SimpleItemStack, ItemMaterialInfo> materialUnificationInfo = new HashMap<>();
     private static final HashMap<SimpleItemStack, UnificationEntry> stackUnificationInfo = new HashMap<>();
@@ -47,7 +47,7 @@ public class OreDictionaryUnifier {
     }
 
     public static void init() {
-        MinecraftForge.EVENT_BUS.register(new OreDictionaryUnifier());
+        MinecraftForge.EVENT_BUS.register(new OreDictUnifier());
     }
 
     @SubscribeEvent

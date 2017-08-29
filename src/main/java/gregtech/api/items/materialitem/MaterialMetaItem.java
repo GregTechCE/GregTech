@@ -5,10 +5,10 @@ import gnu.trove.list.array.TShortArrayList;
 import gregtech.api.GregTechAPI;
 import gregtech.api.damagesources.DamageSources;
 import gregtech.api.items.metaitem.StandardMetaItem;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.MarkerMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
-import gregtech.api.unification.OreDictionaryUnifier;
 import gregtech.api.util.GTUtility;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -40,7 +40,7 @@ public class MaterialMetaItem extends StandardMetaItem {
                     if(orePrefix != null && canGenerate(orePrefix, material)) {
                         short metadata = (short) (j * 1000 + i);
                         generatedItems.add(metadata);
-                        OreDictionaryUnifier.registerOre(new ItemStack(this, 1, metadata), orePrefix, material);
+                        OreDictUnifier.registerOre(new ItemStack(this, 1, metadata), orePrefix, material);
                     }
                 }
             }

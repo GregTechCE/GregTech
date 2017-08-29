@@ -1,7 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
 import gregtech.api.recipes.ModHandler;
-import gregtech.api.unification.OreDictionaryUnifier;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
@@ -42,55 +42,55 @@ public class ProcessingToolOther implements IOreRegistrationHandler {
 							" fS",
 							" Sh",
 							"W  ",
-							'S', OreDictionaryUnifier.get(OrePrefix.stick, solidMaterial),
-							'W', OreDictionaryUnifier.get(OrePrefix.stick, solidMaterial));
+							'S', OreDictUnifier.get(OrePrefix.stick, solidMaterial),
+							'W', OreDictUnifier.get(OrePrefix.stick, solidMaterial));
 				}
 				ModHandler.addShapedRecipe(MetaItems.WRENCH.getStackForm(entry.material, entry.material),
 						"IhI",
 						"III",
 						" I ",
-						'I', OreDictionaryUnifier.get(OrePrefix.ingot, entry.material));
+						'I', OreDictUnifier.get(OrePrefix.ingot, entry.material));
 				ModHandler.addShapedRecipe(MetaItems.CROWBAR.getStackForm(entry.material, entry.material),
 						"hDS",
 						"DSD",
 						"SDf",
-						'S', OreDictionaryUnifier.get(OrePrefix.stick, entry.material),
+						'S', OreDictUnifier.get(OrePrefix.stick, entry.material),
 						'D', EnumDyeColor.BLUE);
 				ModHandler.addShapedRecipe(MetaItems.WIRECUTTER.getStackForm(entry.material, entry.material),
 						"PfP",
 						"hPd",
 						"STS",
-						'S', OreDictionaryUnifier.get(OrePrefix.stick, entry.material),
-						'P', OreDictionaryUnifier.get(OrePrefix.plate, entry.material),
-						'T', OreDictionaryUnifier.get(OrePrefix.screw, entry.material));
+						'S', OreDictUnifier.get(OrePrefix.stick, entry.material),
+						'P', OreDictUnifier.get(OrePrefix.plate, entry.material),
+						'T', OreDictUnifier.get(OrePrefix.screw, entry.material));
 				ModHandler.addShapedRecipe(MetaItems.SCOOP.getStackForm(entry.material, entry.material),
 						"SWS",
 						"SSS",
 						"xSh",
-						'S', OreDictionaryUnifier.get(OrePrefix.stick, entry.material),
+						'S', OreDictUnifier.get(OrePrefix.stick, entry.material),
 						'W', new ItemStack(Blocks.WOOL, 1, 32767));
 				ModHandler.addShapedRecipe(MetaItems.BRANCHCUTTER.getStackForm(entry.material, entry.material),
 						"PfP",
 						"PdP",
 						"STS",
-						'S', OreDictionaryUnifier.get(OrePrefix.stick, entry.material),
-						'P', OreDictionaryUnifier.get(OrePrefix.plate, entry.material),
-						'T', OreDictionaryUnifier.get(OrePrefix.screw, entry.material));
+						'S', OreDictUnifier.get(OrePrefix.stick, entry.material),
+						'P', OreDictUnifier.get(OrePrefix.plate, entry.material),
+						'T', OreDictUnifier.get(OrePrefix.screw, entry.material));
 				ModHandler.addShapedRecipe(MetaItems.KNIFE.getStackForm(entry.material, entry.material),
 						"fPh", " S ",
-						'S', OreDictionaryUnifier.get(OrePrefix.stick, entry.material),
-						'P', OreDictionaryUnifier.get(OrePrefix.plate, entry.material));
+						'S', OreDictUnifier.get(OrePrefix.stick, entry.material),
+						'P', OreDictUnifier.get(OrePrefix.plate, entry.material));
 				ModHandler.addShapedRecipe(MetaItems.BUTCHERYKNIFE.getStackForm(entry.material, entry.material),
 						"PPf", "PP ", "Sh ",
-						'S', OreDictionaryUnifier.get(OrePrefix.stick, entry.material),
-						'P', OreDictionaryUnifier.get(OrePrefix.plate, entry.material));
+						'S', OreDictUnifier.get(OrePrefix.stick, entry.material),
+						'P', OreDictUnifier.get(OrePrefix.plate, entry.material));
 				ModHandler.addShapedRecipe(MetaItems.SOLDERING_IRON_LV.getStackForm(entry.material, Materials.Rubber/*, long[]{100000L, 32L, 1L, -1L}*/), // TODO electric tools
 						"LBf",
 						"Sd ",
 						"P  ",
-						'B', OreDictionaryUnifier.get(OrePrefix.bolt, entry.material),
-						'P', OreDictionaryUnifier.get(OrePrefix.plate, entry.material),
-						'S', OreDictionaryUnifier.get(OrePrefix.stick, Materials.Iron),
+						'B', OreDictUnifier.get(OrePrefix.bolt, entry.material),
+						'P', OreDictUnifier.get(OrePrefix.plate, entry.material),
+						'S', OreDictUnifier.get(OrePrefix.stick, Materials.Iron),
 						'L', MetaItems.BATTERY_RE_LV_LITHIUM.getStackForm());
 			}
 		}
