@@ -38,13 +38,6 @@ public class ProcessingPlate implements IOreRegistrationHandler {
         boolean aNoWorking = uEntry.material.contains(SubTag.NO_WORKING);
         long materialMass = uEntry.material.getMass();
 
-        RecipeMap.CUTTER_RECIPES.recipeBuilder()
-                .inputs(GTUtility.copyAmount(1, blockStack))
-                .outputs(OreDictUnifier.get(OrePrefix.plate, entry.material, 9))
-                .duration((int) Math.max(entry.material.getMass() * 10L, 1L))
-                .EUt(30)
-                .buildAndRegister();
-        
         switch (uEntry.orePrefix) {
             case plate:
                 ModHandler.removeRecipeByOutput(stack);
@@ -53,63 +46,11 @@ public class ProcessingPlate implements IOreRegistrationHandler {
                 if (uEntry.material.mStandardMoltenFluid != null) {
                     GTValues.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Plate.get(0L), uEntry.material.getMolten(144L), OreDictUnifier.get(OrePrefix.plate, uEntry.material, 1L), 32, 8);
                 }
-                switch (uEntry.material.toString()) {
-                    case "Iron":
-                        GregTechAPI.registerCover(stack, new GT_RenderedTexture(new RegIconContainer("blocks/iron_block")), null);
-                        break;
-                    case "Gold":
-                        GregTechAPI.registerCover(stack, new GT_RenderedTexture(new RegIconContainer("blocks/gold_block")), null);
-                        break;
-                    case "Diamond":
-                        GregTechAPI.registerCover(stack, new GT_RenderedTexture(new RegIconContainer("blocks/diamond_block")), null);
-                        break;
-                    case "Emerald":
-                        GregTechAPI.registerCover(stack, new GT_RenderedTexture(new RegIconContainer("blocks/emerald_block")), null);
-                        break;
-                    case "Lapis":
-                        GregTechAPI.registerCover(stack, new GT_RenderedTexture(new RegIconContainer("blocks/lapis_block")), null);
-                        break;
-                    case "Coal":
-                        GregTechAPI.registerCover(stack, new GT_RenderedTexture(new RegIconContainer("blocks/coal_block")), null);
-                        break;
-                    case "Redstone":
-                        GregTechAPI.registerCover(stack, new GT_RenderedTexture(new RegIconContainer("blocks/redstone_block")), null);
-                        break;
-                    case "Glowstone":
-                        GregTechAPI.registerCover(stack, new GT_RenderedTexture(new RegIconContainer("blocks/glowstone")), null);
-                        break;
-                    case "NetherQuartz":
-                        GregTechAPI.registerCover(stack, new GT_RenderedTexture(new RegIconContainer("blocks/quartz_block_side")), null);
-                        break;
-                    case "Obsidian":
-                        GregTechAPI.registerCover(stack, new GT_RenderedTexture(new RegIconContainer("blocks/obsidian")), null);
-                        break;
-                    case "Stone":
-                        GregTechAPI.registerCover(stack, new GT_RenderedTexture(new RegIconContainer("blocks/stone")), null);
-                        break;
-                    case "GraniteBlack":
-                        GregTechAPI.registerCover(stack, new GT_RenderedTexture(Textures.GRANITE_BLACK_SMOOTH), null);
-                        break;
-                    case "GraniteRed":
-                        GregTechAPI.registerCover(stack, new GT_RenderedTexture(Textures.BlockIcons.GRANITE_RED_SMOOTH), null);
-                        break;
-                    case "Andesite":
-                        GregTechAPI.registerCover(stack, new GT_RenderedTexture(new RegIconContainer("blocks/stone_andesite")), null);
-                        break;
-                    case "Diorite":
-                        GregTechAPI.registerCover(stack, new GT_RenderedTexture(new RegIconContainer("blocks/stone_diorite")), null);
-                        break;
-                    case "Concrete":
-                        GregTechAPI.registerCover(stack, new GT_RenderedTexture(Textures.BlockIcons.CONCRETE_LIGHT_SMOOTH), null);
-                        break;
-                    default:
-                        GregTechAPI.registerCover(stack, new GT_RenderedTexture(uEntry.material.mIconSet.mTextures[71], uEntry.material.materialRGB), null);
-                }
 
-                if (uEntry.material.mFuelPower > 0)
-                    GTValues.RA.addFuel(GTUtility.copyAmount(1, stack), null, uEntry.material.mFuelPower, uEntry.material.mFuelType);
-                GTUtility.removeSimpleIC2MachineRecipe(GTUtility.copyAmount(9, stack), Recipes.compressor.getRecipes(), OreDictUnifier.get(OrePrefix.plateDense, uEntry.material, 1L));
+
+
                 GTValues.RA.addImplosionRecipe(GTUtility.copyAmount(2, stack), 2, OreDictUnifier.get(OrePrefix.compressed, uEntry.material, 1L), OreDictUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh, 1L));
+
                 if (uEntry.material == Materials.Paper)
                     ModHandler.addCraftingRecipe(GTUtility.copyAmount(GregTechAPI.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, stack, true) ? 2 : 3, stack), "XXX", 'X', new ItemStack(net.minecraft.init.Items.REEDS, 1, 32767));
 

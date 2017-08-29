@@ -18,6 +18,7 @@ public class ProcessingBlock implements IOreRegistrationHandler {
 
 	public void register() {
 		OrePrefix.block.addProcessingHandler(this);
+		OrePrefix.stone.addProcessingHandler(this);
 	}
 
 	public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {
@@ -34,6 +35,16 @@ public class ProcessingBlock implements IOreRegistrationHandler {
 						.EUt(8)
 						.buildAndRegister();
 			}
+
+			if(entry.material.hasFlag(DustMaterial.MatFlags.GENERATE_PLATE)) {
+			    ItemStack plateStack = OreDictUnifier.get(OrePrefix.plate, entry.material);
+			    RecipeMap.CUTTER_RECIPES.recipeBuilder()
+                        .inputs(blockStack)
+                        .outputs(GTUtility.copyAmount(9, plateStack))
+                        .duration((int) (entry.material.getMass() * 10))
+                        .EUt(30)
+                        .buildAndRegister();
+            }
 
 			ItemStack blockComponent;
 			if(entry.material instanceof GemMaterial) {

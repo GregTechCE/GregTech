@@ -443,6 +443,14 @@ public enum OrePrefix {
 
     public final long materialAmount;
 
+    /**
+     * Contains a default material type for self-referencing OrePrefix
+     * For self-referencing prefixes, it is always guaranteed for it to be not null
+     *
+     * NOTE: Ore registrations with self-referencing OrePrefix still can occur with other materials
+     */
+    public @Nullable Material materialType;
+
     private final ArrayList<IOreRegistrationHandler> oreProcessingHandlers = new ArrayList<>();
     private final ArrayList<Material> ignoredMaterials = new ArrayList<>();
 
@@ -451,7 +459,7 @@ public enum OrePrefix {
     public @Nullable MaterialStack secondaryMaterial = null;
     public float heatDamage = 0.0F; // Negative for Frost Damage
 
-    OrePrefix(String categoryName, long materialAmount, MaterialIconType materialIconType, long flags, Condition<Material> condition) {
+    OrePrefix(String categoryName, long materialAmount, Material material, MaterialIconType materialIconType, long flags, Condition<Material> condition) {
         this.categoryName = categoryName;
         this.materialAmount = materialAmount;
         this.isSelfReferencing = (flags & SELF_REFERENCING) != 0;
@@ -460,6 +468,10 @@ public enum OrePrefix {
         this.isFluidContainer = (flags & FLUID_CONTAINER) != 0;
         this.materialIconType = materialIconType;
         this.generationCondition = condition;
+        if(isSelfReferencing) {
+            Preconditions.checkArgument(material != null, "Material is null for self-referencing OrePrefix");
+            this.materialType = material;
+        }
     }
 
     public static OrePrefix getPrefix(String prefixName) {
@@ -484,15 +496,17 @@ public enum OrePrefix {
     }
 
     public void processOreRegistration(Material material, String modName, SimpleItemStack itemStack) {
-        //tracking bad oredict registrations
-        if(isSelfReferencing && material != null) {
-            GTLog.logger.warn("Mod %s attempted to register %s with prefix %s and material %s, but prefix is self resolving!", modName, itemStack, this, material.toString());
-            material = null; //truncate material
+        if(isSelfReferencing) {
+            if(material == null) {
+                material = materialType; //append default material for self-referencing OrePrefix
+            }
+        } else if(material == null) {
+            GTLog.logger.warn(
+                    "Mod %s attempted to register %s with ore prefix %s without material, but OrePrefix is not self resolving!",
+                    modName, itemStack, this);
+            return;
         }
-        if(!isSelfReferencing && material == null) {
-            GTLog.logger.warn("Mod %s attempted to register %s with prefix %s, but prefix is not self resolving!", modName, itemStack, this);
-            return; //there is nothing we can do -- return to avoid further problems with invalid registration
-        }
+        
         UnificationEntry unificationEntry = new UnificationEntry(this, material);
         for(IOreRegistrationHandler handler : oreProcessingHandlers) {
             handler.registerOre(unificationEntry, modName, itemStack);
