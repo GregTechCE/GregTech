@@ -1,7 +1,9 @@
 package gregtech.api.unification.material;
 
+import com.google.common.collect.HashBiMap;
 import gregtech.api.unification.material.type.MarkerMaterial;
 import gregtech.api.unification.material.type.Material;
+import net.minecraft.item.EnumDyeColor;
 
 public class MarkerMaterials {
 
@@ -14,7 +16,14 @@ public class MarkerMaterials {
      * Color materials
      */
     public static class Color {
+
+        /**
+         * Can be used only by direct specifying
+         * Means absence of color on OrePrefix
+         * Often a default value for color prefixes
+         */
         public static MarkerMaterial Colorless = new MarkerMaterial("colorless");
+
         public static MarkerMaterial Black = new MarkerMaterial("black");
         public static MarkerMaterial Red = new MarkerMaterial("red");
         public static MarkerMaterial Green = new MarkerMaterial("green");
@@ -31,6 +40,38 @@ public class MarkerMaterials {
         public static MarkerMaterial Magenta = new MarkerMaterial("magenta");
         public static MarkerMaterial Orange = new MarkerMaterial("orange");
         public static MarkerMaterial White = new MarkerMaterial("white");
+
+        /**
+         * Arrays containing all possible color values (without Colorless!)
+         */
+        public static final MarkerMaterial[] VALUES = new MarkerMaterial[] {
+                Black, Red, Green, Brown, Blue, Purple, Cyan, LightGray, Gray, Pink, Lime, Yellow, LightBlue, Magenta, Orange, White
+        };
+
+        /**
+         * Gets color by it's name
+         * Name format is equal to EnumDyeColor
+         */
+        public static MarkerMaterial valueOf(String string) {
+            for(MarkerMaterial color : VALUES) {
+                if(color.toString().equals(string)) {
+                    return color;
+                }
+            }
+            return null;
+        }
+
+        /**
+         * Contains associations between MC EnumDyeColor and Color MarkerMaterial
+         */
+        public static final HashBiMap<EnumDyeColor, MarkerMaterial> COLORS = HashBiMap.create();
+
+        static {
+            for(EnumDyeColor color : EnumDyeColor.values()) {
+                COLORS.put(color, Color.valueOf(color.getName()));
+            }
+        }
+
     }
 
 

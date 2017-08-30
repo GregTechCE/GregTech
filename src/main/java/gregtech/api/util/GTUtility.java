@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 
+import com.google.common.collect.Lists;
 import gregtech.api.GregTechAPI;
 import gregtech.api.damagesources.DamageSources;
 import gregtech.api.unification.OreDictUnifier;
@@ -16,6 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -55,6 +57,27 @@ public class GTUtility {
         PotionEffect potionEffect = new PotionEffect(sample.getPotion(), sample.getDuration(), sample.getAmplifier(), sample.getIsAmbient(), sample.doesShowParticles());
         potionEffect.setCurativeItems(sample.getCurativeItems());
         return potionEffect;
+    }
+
+    /**
+     * Determines dye color nearest to specified RGB color
+     */
+    public static EnumDyeColor determineDyeColor(int rgbColor) {
+        ArrayList<EnumDyeColor> colors = Lists.newArrayList(EnumDyeColor.values());
+        colors.sort((a, b) -> {
+            int colorA = a.getMapColor().colorValue;
+            int colorB = b.getMapColor().colorValue;
+            int diffRedA = Math.abs(((colorA >> 16) & 0xFF) - ((rgbColor >> 16) & 0xFF));
+            int diffGreenA = Math.abs(((colorA >> 8) & 0xFF) - ((rgbColor >> 8) & 0xFF));
+            int diffBlueA = Math.abs((colorA & 0xFF) - (rgbColor & 0xFF));
+            int diffRedB = Math.abs(((colorB >> 16) & 0xFF) - ((rgbColor >> 16) & 0xFF));
+            int diffGreenB = Math.abs(((colorB >> 8) & 0xFF) - ((rgbColor >> 8) & 0xFF));
+            int diffBlueB = Math.abs((colorB & 0xFF) - (rgbColor & 0xFF));
+            int totalDiffA = diffRedA + diffGreenA + diffBlueA;
+            int totalDiffB = diffRedB + diffGreenB + diffBlueB;
+            return Integer.compare(totalDiffB, totalDiffA);
+        });
+        return colors.get(0);
     }
 
     /**

@@ -170,14 +170,15 @@ public enum OrePrefix {
     compressed("Compressed Materials", M * 2, null, null, ENABLE_UNIFICATION, null), // Compressed Material, worth 1 Unit. Introduced by Galacticraft
 
     glass("Glasses", -1, Materials.Glass, null, SELF_REFERENCING | DISALLOW_RECYCLING, null),
-    paneGlass("Glass Panes", -1, Materials.Glass, null, SELF_REFERENCING | DISALLOW_RECYCLING, null),
-    blockGlass("Glass Blocks", -1, Materials.Glass, null, SELF_REFERENCING | DISALLOW_RECYCLING, null),
+    paneGlass("Glass Panes", -1, MarkerMaterials.Color.Colorless, null, SELF_REFERENCING | DISALLOW_RECYCLING, null),
+    blockGlass("Glass Blocks", -1, MarkerMaterials.Color.Colorless, null, SELF_REFERENCING | DISALLOW_RECYCLING, null),
 
     blockWool("Wool Blocks", -1, MarkerMaterials.Color.Colorless, null, SELF_REFERENCING | DISALLOW_RECYCLING, null),
 
     block("Storage Blocks", M * 9, null, MaterialIconType.block, ENABLE_UNIFICATION, null), // Storage Block consisting out of 9 Ingots/Gems/Dusts. Introduced by CovertJaguar
 
     craftingTool("Crafting Tools", -1, null, null, DISALLOW_RECYCLING, null), // Special Prefix used mainly for the Crafting Handler.
+    craftingLens("Crafting Ingredients", -1, null, null, DISALLOW_RECYCLING, null), // Special Prefix used mainly for the Crafting Handler.
     crafting("Crafting Ingredients", -1, null, null, DISALLOW_RECYCLING, null), // Special Prefix used mainly for the Crafting Handler.
 
     log("Logs", -1, null, null, DISALLOW_RECYCLING, null), // Prefix used for Logs. Usually as "logWood". Introduced by Eloraam
@@ -206,7 +207,7 @@ public enum OrePrefix {
     book("Books", -1, null, null, DISALLOW_RECYCLING, null), // Used for Books of any kind.
     paper("Papers", -1, null, null, DISALLOW_RECYCLING, null), // Used for Papers of any kind.
     dye("Dyes", -1, null, null, DISALLOW_RECYCLING, null), // Used for the 16 dyes. Introduced by Eloraam
-    stainedClay("Stained Clays", -1, Materials.Clay, null, SELF_REFERENCING | DISALLOW_RECYCLING, null), // Used for the 16 colors of Stained Clay. Introduced by Forge
+    stainedClay("Stained Clays", -1, MarkerMaterials.Color.Colorless, null, SELF_REFERENCING | DISALLOW_RECYCLING, null), // Used for the 16 colors of Stained Clay. Introduced by Forge
     armorHelmet("Helmets", M * 5, null, null, 0, null), // vanilly Helmet
     armorChestplate("Chestplates", M * 8, null, null, 0, null), // vanilly Chestplate
     armorLeggings("Leggings", M * 7, null, null, 0, null), // vanilly Pants
