@@ -37,12 +37,6 @@ public abstract class SolidMaterial extends DustMaterial {
     public final float toolSpeed;
 
     /**
-     * Quality (tier) of tools made from this material
-     * Equal to 0 for materials that can't be used for tools
-     */
-    public final int toolQuality;
-
-    /**
      * Durability of tools made from this material
      * Equal to 0 for materials that can't be used for tools
      */
@@ -65,10 +59,9 @@ public abstract class SolidMaterial extends DustMaterial {
      */
     public DustMaterial macerateInto = this;
 
-    public SolidMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element, float toolSpeed, int toolQuality, int toolDurability) {
-        super(metaItemSubId, name, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, element);
+    public SolidMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element, float toolSpeed, int toolDurability) {
+        super(metaItemSubId, name, materialRGB, materialIconSet, harvestLevel, materialComponents, materialGenerationFlags, element);
         this.toolSpeed = toolSpeed;
-        this.toolQuality = toolQuality;
         this.toolDurability = toolDurability;
         this.directSmelting = this;
     }

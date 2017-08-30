@@ -91,12 +91,14 @@ public class DustMaterial extends FluidMaterial {
      */
     public DustMaterial separatedOnto;
 
-    public DustMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element) {
+    public DustMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element) {
         super(metaItemSubId, name, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, element);
+        this.harvestLevel = harvestLevel;
     }
 
-    public DustMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags) {
+    public DustMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags) {
         super(metaItemSubId, name, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, null);
+        this.harvestLevel = harvestLevel;
     }
 
     @Override
@@ -125,11 +127,6 @@ public class DustMaterial extends FluidMaterial {
 
     public DustMaterial setByProductMultiplier(int byProductMultiplier) {
         this.byProductMultiplier = byProductMultiplier;
-        return this;
-    }
-
-    public DustMaterial setHarvestLevel(int harvestLevel) {
-        this.harvestLevel = harvestLevel;
         return this;
     }
 }

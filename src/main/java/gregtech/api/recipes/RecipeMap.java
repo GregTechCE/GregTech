@@ -649,9 +649,9 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 			ItemStack input = inputs.get(0);
 //			Validate.isTrue(Materials.Graphite.contains(input));
 			Validate.isTrue((inputs.size() == 1)
-					&& OreDictUnifier.getPrefix(input) == OrePrefix.ingot
-					|| OreDictUnifier.getPrefix(input) == OrePrefix.dust
-					|| OreDictUnifier.getPrefix(input) == OrePrefix.gem);
+					&& (OreDictUnifier.getPrefix(input) == OrePrefix.ingot
+						|| OreDictUnifier.getPrefix(input) == OrePrefix.dust
+						|| OreDictUnifier.getPrefix(input) == OrePrefix.gem));
 			super.validate();
 			return getThis();
 		}
