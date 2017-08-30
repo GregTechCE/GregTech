@@ -1,8 +1,7 @@
 package gregtech.api.unification.ore;
 
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.material.type.Material;
-import gregtech.api.unification.material.type.SolidMaterial;
+import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.common.blocks.BlockGranite;
 import gregtech.common.blocks.BlockMineral;
 import net.minecraft.block.state.IBlockState;
@@ -30,11 +29,11 @@ public enum StoneType implements IStringSerializable {
     public final int id = ordinal();
     public final String name;
     public final OrePrefix processingPrefix;
-    public final SolidMaterial stoneMaterial;
+    public final DustMaterial stoneMaterial;
 
     public static final StoneType[] TYPES = values();
 
-    StoneType(String name, OrePrefix processingPrefix, SolidMaterial stoneMaterial) {
+    StoneType(String name, OrePrefix processingPrefix, DustMaterial stoneMaterial) {
         this.name = name;
         this.processingPrefix = processingPrefix;
         this.stoneMaterial = stoneMaterial;

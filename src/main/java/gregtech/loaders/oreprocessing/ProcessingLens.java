@@ -1,6 +1,5 @@
 package gregtech.loaders.oreprocessing;
 
-import com.google.common.collect.Lists;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.MarkerMaterials;
@@ -13,10 +12,6 @@ import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
-import scala.actors.threadpool.Arrays;
-
-import java.awt.*;
-import java.util.ArrayList;
 
 public class ProcessingLens implements IOreRegistrationHandler {
 
