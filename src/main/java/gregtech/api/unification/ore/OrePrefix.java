@@ -2,6 +2,7 @@ package gregtech.api.unification.ore;
 
 import com.google.common.base.Preconditions;
 import gregtech.api.recipes.ModHandler;
+import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.material.MaterialIconType;
 import gregtech.api.unification.material.Materials;
@@ -17,6 +18,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -73,11 +75,11 @@ public enum OrePrefix {
     ingotHot("Hot Ingots", M, null, MaterialIconType.ingotHot, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> (mat instanceof MetalMaterial) && ((MetalMaterial) mat).blastFurnaceTemperature > 1750), // A hot Ingot, which has to be cooled down by a Vacuum Freezer.
     ingot("Ingots", M, null, MaterialIconType.ingot, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> mat instanceof MetalMaterial), // A regular Ingot. Introduced by Eloraam
 
-    gem("Gemstones", M, , MaterialIconType.gem, ENABLE_UNIFICATION | SELF_REFERENCING, mat -> mat instanceof GemMaterial), // A regular Gem worth one Dust. Introduced by Eloraam
-    gemChipped("Chipped Gemstones", M / 4, , MaterialIconType.gemChipped, ENABLE_UNIFICATION | SELF_REFERENCING, mat -> mat instanceof GemMaterial && gem.doGenerateItem(mat)), // A regular Gem worth one small Dust. Introduced by TerraFirmaCraft
-    gemFlawed("Flawed Gemstones", M / 2, , MaterialIconType.gemFlawed, ENABLE_UNIFICATION | SELF_REFERENCING, mat -> mat instanceof GemMaterial && gem.doGenerateItem(mat)), // A regular Gem worth two small Dusts. Introduced by TerraFirmaCraft
-    gemFlawless("Flawless Gemstones", M * 2, , MaterialIconType.gemFlawless, ENABLE_UNIFICATION | SELF_REFERENCING, mat -> mat instanceof GemMaterial && gem.doGenerateItem(mat)), // A regular Gem worth two Dusts. Introduced by TerraFirmaCraft
-    gemExquisite("Exquisite Gemstones", M * 4, , MaterialIconType.gemExquisite, ENABLE_UNIFICATION | SELF_REFERENCING, mat -> mat instanceof GemMaterial && gem.doGenerateItem(mat)), // A regular Gem worth four Dusts. Introduced by TerraFirmaCraft
+    gem("Gemstones", M, null, MaterialIconType.gem, ENABLE_UNIFICATION, mat -> mat instanceof GemMaterial), // A regular Gem worth one Dust. Introduced by Eloraam
+    gemChipped("Chipped Gemstones", M / 4, null, MaterialIconType.gemChipped, ENABLE_UNIFICATION, mat -> mat instanceof GemMaterial && gem.doGenerateItem(mat)), // A regular Gem worth one small Dust. Introduced by TerraFirmaCraft
+    gemFlawed("Flawed Gemstones", M / 2, null, MaterialIconType.gemFlawed, ENABLE_UNIFICATION, mat -> mat instanceof GemMaterial && gem.doGenerateItem(mat)), // A regular Gem worth two small Dusts. Introduced by TerraFirmaCraft
+    gemFlawless("Flawless Gemstones", M * 2, null, MaterialIconType.gemFlawless, ENABLE_UNIFICATION, mat -> mat instanceof GemMaterial && gem.doGenerateItem(mat)), // A regular Gem worth two Dusts. Introduced by TerraFirmaCraft
+    gemExquisite("Exquisite Gemstones", M * 4, null, MaterialIconType.gemExquisite, ENABLE_UNIFICATION, mat -> mat instanceof GemMaterial && gem.doGenerateItem(mat)), // A regular Gem worth four Dusts. Introduced by TerraFirmaCraft
 
     dustTiny("Tiny Dusts", M / 9, null, MaterialIconType.dustTiny, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> mat instanceof DustMaterial), // 1/9th of a Dust.
     dustSmall("Small Dusts", M / 4, null, MaterialIconType.dustSmall, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> mat instanceof DustMaterial), // 1/4th of a Dust.
@@ -124,12 +126,12 @@ public enum OrePrefix {
 
     lens("Lenses", (M * 3) / 4, null, MaterialIconType.lens, ENABLE_UNIFICATION, hasFlag(GENERATE_LENSE)), // 3/4 of a Plate or Gem used to shape a Lense. Normally only used on Transparent Materials.
 
-    cellPlasma("Cells of Plasma", M, , MaterialIconType.cellPlasma, ENABLE_UNIFICATION | SELF_REFERENCING | FLUID_CONTAINER | DISALLOW_RECYCLING, mat -> mat instanceof FluidMaterial && ((FluidMaterial) mat).shouldGeneratePlasma()), // Hot Cell full of Plasma, which can be used in the Plasma Generator.
-    cell("Cells", M, , MaterialIconType.cell, ENABLE_UNIFICATION | SELF_REFERENCING | FLUID_CONTAINER, null), // Regular Gas/Fluid Cell. Introduced by Calclavia
+    cellPlasma("Cells of Plasma", M, MarkerMaterials.Empty, MaterialIconType.cellPlasma, ENABLE_UNIFICATION | SELF_REFERENCING | FLUID_CONTAINER | DISALLOW_RECYCLING, mat -> mat instanceof FluidMaterial && ((FluidMaterial) mat).shouldGeneratePlasma()), // Hot Cell full of Plasma, which can be used in the Plasma Generator.
+    cell("Cells", M, MarkerMaterials.Empty, MaterialIconType.cell, ENABLE_UNIFICATION | SELF_REFERENCING | FLUID_CONTAINER, null), // Regular Gas/Fluid Cell. Introduced by Calclavia
 
-    bucket("Buckets", M, , null, ENABLE_UNIFICATION | SELF_REFERENCING | FLUID_CONTAINER, null), // A vanilla Iron Bucket filled with the Material.
-    bottle("Bottles", -1, , null, ENABLE_UNIFICATION | SELF_REFERENCING | FLUID_CONTAINER | DISALLOW_RECYCLING, null), // Glass Bottle containing a Fluid.
-    capsule("Capsules", M, , null, SELF_REFERENCING | FLUID_CONTAINER | DISALLOW_RECYCLING, null),
+    bucket("Buckets", M, MarkerMaterials.Empty, null, ENABLE_UNIFICATION | SELF_REFERENCING | FLUID_CONTAINER, null), // A vanilla Iron Bucket filled with the Material.
+    bottle("Bottles", -1, MarkerMaterials.Empty, null, ENABLE_UNIFICATION | SELF_REFERENCING | FLUID_CONTAINER | DISALLOW_RECYCLING, null), // Glass Bottle containing a Fluid.
+    capsule("Capsules", M, MarkerMaterials.Empty, null, SELF_REFERENCING | FLUID_CONTAINER | DISALLOW_RECYCLING, null),
 
     crystal("Crystals", M, null, null, 0, null),
 
@@ -171,7 +173,7 @@ public enum OrePrefix {
     paneGlass("Glass Panes", -1, Materials.Glass, null, SELF_REFERENCING | DISALLOW_RECYCLING, null),
     blockGlass("Glass Blocks", -1, Materials.Glass, null, SELF_REFERENCING | DISALLOW_RECYCLING, null),
 
-    blockWool("Wool Blocks", -1, , null, SELF_REFERENCING | DISALLOW_RECYCLING, null),
+    blockWool("Wool Blocks", -1, MarkerMaterials.Color.Colorless, null, SELF_REFERENCING | DISALLOW_RECYCLING, null),
 
     block("Storage Blocks", M * 9, null, MaterialIconType.block, ENABLE_UNIFICATION, null), // Storage Block consisting out of 9 Ingots/Gems/Dusts. Introduced by CovertJaguar
 
@@ -196,14 +198,14 @@ public enum OrePrefix {
     stone("Stones", -1, Materials.Stone, null, SELF_REFERENCING | DISALLOW_RECYCLING, null), // Prefix to determine which kind of Rock this is.
     cobblestone("Cobblestones", -1, Materials.Stone, null, SELF_REFERENCING | DISALLOW_RECYCLING, null),
     rock("Rocks", -1, Materials.Stone, null, SELF_REFERENCING | DISALLOW_RECYCLING, null), // Prefix to determine which kind of Rock this is.
-    record("Records", -1, , null, SELF_REFERENCING | DISALLOW_RECYCLING, null),
+    record("Records", -1, MarkerMaterials.Empty, null, SELF_REFERENCING | DISALLOW_RECYCLING, null),
     rubble("Rubbles", -1, Materials.Stone, null, ENABLE_UNIFICATION | SELF_REFERENCING | DISALLOW_RECYCLING, null),
     scraps("Scraps", -1, null, null, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null),
     scrap("Scraps", -1, null, null, DISALLOW_RECYCLING, null),
 
     book("Books", -1, null, null, DISALLOW_RECYCLING, null), // Used for Books of any kind.
     paper("Papers", -1, null, null, DISALLOW_RECYCLING, null), // Used for Papers of any kind.
-    dye("Dyes", -1, , null, SELF_REFERENCING | DISALLOW_RECYCLING, null), // Used for the 16 dyes. Introduced by Eloraam
+    dye("Dyes", -1, null, null, DISALLOW_RECYCLING, null), // Used for the 16 dyes. Introduced by Eloraam
     stainedClay("Stained Clays", -1, Materials.Clay, null, SELF_REFERENCING | DISALLOW_RECYCLING, null), // Used for the 16 colors of Stained Clay. Introduced by Forge
     armorHelmet("Helmets", M * 5, null, null, 0, null), // vanilly Helmet
     armorChestplate("Chestplates", M * 8, null, null, 0, null), // vanilly Chestplate

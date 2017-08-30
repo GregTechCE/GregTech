@@ -382,27 +382,6 @@ public class Materials {
     public static MetalMaterial HSSS = new MetalMaterial(304, "hsss", 0x660033, MaterialIconSet.METALLIC, of(new MaterialStack(HSSG, 6), new MaterialStack(Iridium, 2), new MaterialStack(Osmium, 1)), EXT2_METAL, null, 14.0F, 4, 3000, 5400);
 
     /**
-     * Marker materials
-     */
-    public static MarkerMaterial AnyCopper = new MarkerMaterial("any_copper");
-    public static MarkerMaterial AnyBronze = new MarkerMaterial("any_bronze");
-    public static MarkerMaterial AnyIron = new MarkerMaterial("any_iron");
-    /**
-     * Circuitry, Batteries and other Technical things
-     * OrePrefix is type of thing, Material is tier of it
-     */
-    public static Material Primitive = new MarkerMaterial("primitive");
-    public static Material Basic = new MarkerMaterial("basic");
-    public static Material Good = new MarkerMaterial("good");
-    public static Material Advanced = new MarkerMaterial("advanced");
-    public static Material Data = new MarkerMaterial("data");
-    public static Material Elite = new MarkerMaterial("elite");
-    public static Material Master = new MarkerMaterial("master");
-    public static Material Ultimate = new MarkerMaterial("ultimate");
-    public static Material Superconductor = new MarkerMaterial("superconductor");
-    public static Material Infinite = new MarkerMaterial("infinite");
-
-    /**
      * Clear matter materials
      */
     public static FluidMaterial UUAmplifier = new FluidMaterial(305, "uuamplifier", 0xAA00AA, MaterialIconSet.FLUID, of(), 0);
@@ -458,11 +437,12 @@ public class Materials {
             dustMaterial.washedIn = SodiumPersulfate;
         }
         for (Material material : new DustMaterial[]{Iron, PigIron, WroughtIron}) {
-            material.oreReRegistrations.add(AnyIron);
+            material.oreReRegistrations.add(MarkerMaterials.GenericMaterial.AnyIron);
         }
-        for (Material material : new DustMaterial[]{Copper, AnnealedCopper, Bronze}) {
-            material.oreReRegistrations.add(AnyBronze);
+        for (Material material : new DustMaterial[]{Copper, AnnealedCopper}) {
+            material.oreReRegistrations.add(MarkerMaterials.GenericMaterial.AnyCopper);
         }
+        Bronze.oreReRegistrations.add(MarkerMaterials.GenericMaterial.AnyBronze);
 
         Stone.setHarvestLevel(1);
         Endstone.setHarvestLevel(1);
