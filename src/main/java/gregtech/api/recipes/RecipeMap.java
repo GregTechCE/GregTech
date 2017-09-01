@@ -248,12 +248,12 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 */
 	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> MIXER_RECIPES = new RecipeMap<>(new HashSet<>(100), "mixer", "basicmachines/Mixer", 1, 4, 0, 0, 0, 1, 0, 1, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder() {
 		@Override
-		protected EnumValidationResult validate(EnumValidationResult result) {
+		protected EnumValidationResult validate() {
 			if (!((inputs.isEmpty() && fluidInputs.isEmpty()) || (outputs.isEmpty() && fluidOutputs.isEmpty()))){
 				GTLog.logger.error("Recipe should have at least one input and one output", new IllegalArgumentException());
-				result = EnumValidationResult.INVALID;
+				recipeStatus = EnumValidationResult.INVALID;
 			}
-			return super.validate(result);
+			return super.validate();
 		}
 	});
 
@@ -447,12 +447,12 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 */
 	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> CENTRIFUGE_RECIPES = new RecipeMap<>(new HashSet<>(1000), "centrifuge", "basicmachines/Centrifuge", 0, 2, 0, 6, 0, 1, 0, 1, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder() {
 		@Override
-		protected EnumValidationResult validate(EnumValidationResult result) {
+		protected EnumValidationResult validate() {
 			if (!((inputs.isEmpty() && fluidInputs.isEmpty()) || (outputs.isEmpty() && fluidOutputs.isEmpty()))){
 				GTLog.logger.error("Recipe should have at least one input and one output", new IllegalArgumentException());
-				result = EnumValidationResult.INVALID;
+				recipeStatus = EnumValidationResult.INVALID;
 			}
-			return super.validate(result);
+			return super.validate();
 		}
 	}.EUt(5));
 
@@ -480,12 +480,12 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 */
 	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> ELECTROLYZER_RECIPES = new RecipeMap<>(new HashSet<>(200), "electrolyzer", "basicmachines/Electrolyzer", 0, 2, 0, 6, 0, 1, 0, 1, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder() {
 		@Override
-		protected EnumValidationResult validate(EnumValidationResult result) {
+		protected EnumValidationResult validate() {
 			if (!((inputs.isEmpty() && fluidInputs.isEmpty()) || (outputs.isEmpty() && fluidOutputs.isEmpty()))){
 				GTLog.logger.error("Recipe should have at least one input and one output", new IllegalArgumentException());
-				result = EnumValidationResult.INVALID;
+				recipeStatus = EnumValidationResult.INVALID;
 			}
-			return super.validate(result);
+			return super.validate();
 		}
 	});
 
@@ -543,12 +543,12 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 */
 	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> CHEMICAL_RECIPES = new RecipeMap<>(new HashSet<>(100), "chemicalreactor", "basicmachines/ChemicalReactor", 0, 2, 0, 1, 0, 1, 0, 1, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder() {
 		@Override
-		protected EnumValidationResult validate(EnumValidationResult result) {
+		protected EnumValidationResult validate() {
 			if (!((inputs.isEmpty() && fluidInputs.isEmpty()) || (outputs.isEmpty() && fluidOutputs.isEmpty()))){
 				GTLog.logger.error("Recipe should have at least one input and one output", new IllegalArgumentException());
-				result = EnumValidationResult.INVALID;
+				recipeStatus = EnumValidationResult.INVALID;
 			}
-			return super.validate(result);
+			return super.validate();
 		}
 	}.duration(30));
 
@@ -659,16 +659,16 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 */
 	public static final RecipeMap<Recipe, RecipeBuilder.NotConsumableInputRecipeBuilder> ALLOY_SMELTER_RECIPES = new RecipeMap<>(new HashSet<>(3000), "alloysmelter", "basicmachines/AlloySmelter", 1, 2, 1, 1, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.NotConsumableInputRecipeBuilder() {
 		@Override
-		protected EnumValidationResult validate(EnumValidationResult result) {
+		protected EnumValidationResult validate() {
 			ItemStack input = inputs.get(0);
 			if (!(inputs.size() == 1
 					&& (OreDictUnifier.getPrefix(input) == OrePrefix.ingot
 					|| OreDictUnifier.getPrefix(input) == OrePrefix.dust
 					|| OreDictUnifier.getPrefix(input) == OrePrefix.gem))){
 				GTLog.logger.error("Recipe should have ingot, dust or gem as input", new IllegalArgumentException());
-				result = EnumValidationResult.INVALID;
+				recipeStatus = EnumValidationResult.INVALID;
 			}
-			return super.validate(result);
+			return super.validate();
 		}
 
 		@Override

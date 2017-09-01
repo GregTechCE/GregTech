@@ -22,10 +22,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static gregtech.api.GTValues.W;
 
@@ -53,6 +50,8 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 	protected boolean needsEmptyOutput = false;
 
 	protected boolean optimized = true;
+
+	protected EnumValidationResult recipeStatus = EnumValidationResult.VALID;
 
 	protected RecipeBuilder() {
 		this.inputs = new ArrayList<>(0);
@@ -106,47 +105,95 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 	}
 
 	public R inputs(ItemStack... inputs) {
+		if (Arrays.asList(inputs).contains(null)) {
+			GTLog.logger.error("Input cannot contain null ItemStacks", new IllegalArgumentException());
+			recipeStatus = EnumValidationResult.INVALID;
+			return getThis();
+		}
 		Collections.addAll(this.inputs, inputs);
 		return getThis();
 	}
 
 	public R inputs(Collection<ItemStack> inputs) {
+		if (inputs.contains(null)) {
+			GTLog.logger.error("Input cannot contain null ItemStacks", new IllegalArgumentException());
+			recipeStatus = EnumValidationResult.INVALID;
+			return getThis();
+		}
+
         this.inputs.addAll(inputs);
         return getThis();
     }
 
 	public R outputs(ItemStack... outputs) {
+		if (Arrays.asList(outputs).contains(null)) {
+			GTLog.logger.error("Output cannot contain null ItemStacks", new IllegalArgumentException());
+			recipeStatus = EnumValidationResult.INVALID;
+			return getThis();
+		}
 		Collections.addAll(this.outputs, outputs);
 		return getThis();
 	}
 
     public R outputs(Collection<ItemStack> outputs) {
+		if (outputs.contains(null)) {
+			GTLog.logger.error("Output cannot contain null ItemStacks", new IllegalArgumentException());
+			recipeStatus = EnumValidationResult.INVALID;
+			return getThis();
+		}
+
 		this.outputs.addAll(outputs);
         return getThis();
     }
 
 	public R fluidInputs(FluidStack... inputs) {
+		if (Arrays.asList(inputs).contains(null)) {
+			GTLog.logger.error("Fluid input cannot contain null FluidStacks", new IllegalArgumentException());
+			recipeStatus = EnumValidationResult.INVALID;
+			return getThis();
+		}
 		Collections.addAll(this.fluidInputs, inputs);
 		return getThis();
 	}
 
     public R fluidInputs(Collection<FluidStack> inputs) {
+		if (inputs.contains(null)) {
+			GTLog.logger.error("Fluid input cannot contain null FluidStacks", new IllegalArgumentException());
+			recipeStatus = EnumValidationResult.INVALID;
+			return getThis();
+		}
 		this.fluidInputs.addAll(inputs);
         return getThis();
     }
 
 	public R fluidOutputs(FluidStack... outputs) {
+		if (Arrays.asList(outputs).contains(null)) {
+			GTLog.logger.error("Fluid output cannot contain null FluidStacks", new IllegalArgumentException());
+			recipeStatus = EnumValidationResult.INVALID;
+			return getThis();
+		}
 		Collections.addAll(this.fluidOutputs, outputs);
 		return getThis();
 	}
 
     public R fluidOutputs(Collection<FluidStack> outputs) {
+		if (outputs.contains(null)) {
+			GTLog.logger.error("Fluid output cannot contain null FluidStacks", new IllegalArgumentException());
+			recipeStatus = EnumValidationResult.INVALID;
+			return getThis();
+		}
 		this.fluidOutputs.addAll(outputs);
         return getThis();
     }
 
 	public R chancedOutput(ItemStack stack, int chance) {
 		if (stack == null) {
+			return getThis();
+		}
+
+		if (0 >= chance || chance > 10000){
+			GTLog.logger.error("Chance cannot be less or equal to 0 or more than 10000", new IllegalArgumentException());
+			recipeStatus = EnumValidationResult.INVALID;
 			return getThis();
 		}
 
@@ -263,63 +310,35 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 
 	public abstract ValidationResult<T> build();
 
-    private EnumValidationResult validate() {
-        return validate(EnumValidationResult.VALID);
-    }
-
-	protected EnumValidationResult validate(EnumValidationResult result) {
+	protected EnumValidationResult validate() {
 
 		if (recipeMap == null) {
 			GTLog.logger.error("RecipeMap cannot be null", new IllegalArgumentException());
-			result = EnumValidationResult.INVALID;
-		}
-
-		if (inputs.contains(null)) {
-			GTLog.logger.error("Input cannot contain null ItemStacks", new IllegalArgumentException());
-			result = EnumValidationResult.INVALID;
-		}
-		if (outputs.contains(null)) {
-			GTLog.logger.error("Output cannot contain null ItemStacks", new IllegalArgumentException());
-			result = EnumValidationResult.INVALID;
-		}
-		if (fluidInputs.contains(null)) {
-			GTLog.logger.error("Fluid input cannot contain null FluidStacks", new IllegalArgumentException());
-			result = EnumValidationResult.INVALID;
-		}
-		if (fluidOutputs.contains(null)) {
-			GTLog.logger.error("Fluid output cannot contain null FluidStacks", new IllegalArgumentException());
-			result = EnumValidationResult.INVALID;
-		}
-
-		for (int chance : chancedOutputs.values()) {
-            if (0 >= chance || chance > 10000){
-                GTLog.logger.error("Chance cannot be less or equal to 0 or more than 10000", new IllegalArgumentException());
-                result = EnumValidationResult.INVALID;
-            }
+			recipeStatus = EnumValidationResult.INVALID;
 		}
 
         if (!GTUtility.isBetweenExclusive(recipeMap.getMinInputs(), recipeMap.getMaxInputs(), inputs.size())){
             GTLog.logger.error("Invalid amount of recipe inputs", new IllegalArgumentException());
-            result = EnumValidationResult.INVALID;
+			recipeStatus = EnumValidationResult.INVALID;
 		}
 		if (!GTUtility.isBetweenExclusive(recipeMap.getMinOutputs(), recipeMap.getMaxOutputs(), outputs.size() + chancedOutputs.size())){
             GTLog.logger.error("Invalid amount of recipe outputs", new IllegalArgumentException());
-            result = EnumValidationResult.INVALID;
+			recipeStatus = EnumValidationResult.INVALID;
 		}
 		if (!GTUtility.isBetweenExclusive(recipeMap.getMinFluidInputs(), recipeMap.getMaxFluidInputs(), fluidInputs.size())){
             GTLog.logger.error("Invalid amount of recipe fluid inputs", new IllegalArgumentException());
-            result = EnumValidationResult.INVALID;
+			recipeStatus = EnumValidationResult.INVALID;
 		}
 		if (!GTUtility.isBetweenExclusive(recipeMap.getMinFluidOutputs(), recipeMap.getMaxFluidOutputs(), fluidOutputs.size())){
             GTLog.logger.error("Invalid amount of recipe fluid outputs", new IllegalArgumentException());
-            result = EnumValidationResult.INVALID;
+			recipeStatus = EnumValidationResult.INVALID;
 		}
 
 //			Validate.isTrue(EUt > 0, "EU/t cannot be less of equal to 0");
 
         if (duration <= 0){
             GTLog.logger.error("Duration cannot be less or equal to 0", new IllegalArgumentException());
-            result = EnumValidationResult.INVALID;
+			recipeStatus = EnumValidationResult.INVALID;
         }
 
 		//For fakeRecipes don't do check for collisions, regular recipes do check, do not check for recipes that are not registered(i.e. created after postinit stage)
@@ -328,7 +347,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 			return EnumValidationResult.SKIP;
 		}
 
-		return result;
+		return recipeStatus;
 	}
 
 	public void buildAndRegister() {
@@ -415,6 +434,10 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		public IntCircuitRecipeBuilder circuitMeta(int circuitMeta) {
+			if (circuitMeta < 0) {
+				GTLog.logger.error("Integrated Circuit Metadata cannot be less than 0", new IllegalArgumentException()); // TODO cannot be more than what?
+				recipeStatus = EnumValidationResult.INVALID;
+			}
 			this.circuitMeta = circuitMeta;
 			return this;
 		}
@@ -425,15 +448,6 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 //				inputs.add(ItemList.Circuit_Integrated.getWithDamage(0, circuitMeta));
 			}
 			return super.finalizeAndValidate();
-		}
-
-		@Override
-		protected EnumValidationResult validate(EnumValidationResult result) {
-			if (circuitMeta < 0) {
-			    GTLog.logger.error("Integrated Circuit Metadata cannot be less than 0", new IllegalArgumentException()); // TODO cannot be more than what?
-                result = EnumValidationResult.INVALID;
-			}
-			return super.validate(result);
 		}
 
 		public ValidationResult<Recipe> build() {
@@ -517,17 +531,12 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		public BlastRecipeBuilder blastFurnaceTemp(int blastFurnaceTemp) {
+			if (blastFurnaceTemp <= 0) {
+				GTLog.logger.error("Blast Furnace Temperature cannot be less than or equal to 0", new IllegalArgumentException());
+				recipeStatus = EnumValidationResult.INVALID;
+			}
 			this.blastFurnaceTemp = blastFurnaceTemp;
 			return getThis();
-		}
-
-		@Override
-		protected EnumValidationResult validate(EnumValidationResult result) {
-			if (blastFurnaceTemp <= 0) {
-                GTLog.logger.error("Blast Furnace Temperature cannot be less than or equal to 0", new IllegalArgumentException());
-                result = EnumValidationResult.INVALID;
-            }
-			return super.validate(result);
 		}
 
 		public ValidationResult<Recipe.BlastRecipe> build() {
@@ -625,6 +634,10 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		public ImplosionRecipeBuilder explosivesAmount(int explosivesAmount) {
+			if (!GTUtility.isBetweenInclusive(1, 64, explosivesAmount)) {
+				GTLog.logger.error("Amount of explosives should be from 1 to 64 inclusive", new IllegalArgumentException());
+				recipeStatus = EnumValidationResult.INVALID;
+			}
 			this.explosivesAmount = explosivesAmount;
 			return this;
 		}
@@ -645,15 +658,6 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 			}
 			recipeMap.addRecipe(this.copy().inputs(input, new ItemStack(Blocks.TNT, TNT)).build());
 			recipeMap.addRecipe(this.copy().inputs(input, ModHandler.IC2.getIC2Item(BlockName.te, TeBlock.itnt, ITNT)).build());
-		}
-
-		@Override
-		protected EnumValidationResult validate(EnumValidationResult result) {
-            if (!GTUtility.isBetweenInclusive(1, 64, explosivesAmount)) {
-                GTLog.logger.error("Amount of explosives should be from 1 to 64 inclusive", new IllegalArgumentException());
-                result = EnumValidationResult.INVALID;
-            }
-			return super.validate(result);
 		}
 
 		public ValidationResult<Recipe> build() {
@@ -741,6 +745,10 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		public AmplifierRecipeBuilder amplifierAmountOutputted(int amplifierAmountOutputted) {
+			if (amplifierAmountOutputted <= 0) {
+				GTLog.logger.error("Outputted Amplifier Amount cannot be less than or equal to 0", new IllegalArgumentException());
+				recipeStatus = EnumValidationResult.INVALID;
+			}
 			this.amplifierAmountOutputted = amplifierAmountOutputted;
 			return getThis();
 		}
@@ -751,15 +759,6 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 				this.fluidOutputs(Materials.UUAmplifier.getFluid(amplifierAmountOutputted));
 			}
 			return super.finalizeAndValidate();
-		}
-
-		@Override
-		protected EnumValidationResult validate(EnumValidationResult result) {
-            if (amplifierAmountOutputted <= 0) {
-                GTLog.logger.error("Outputted Amplifier Amount cannot be less than or equal to 0", new IllegalArgumentException());
-                result = EnumValidationResult.INVALID;
-            }
-			return super.validate(result);
 		}
 
 		public ValidationResult<Recipe.AmplifierRecipe> build() {
@@ -847,17 +846,12 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		public FusionRecipeBuilder EUToStart(int EUToStart) {
+			if (EUToStart <= 0) {
+				GTLog.logger.error("EU to start cannot be less than or equal to 0", new IllegalArgumentException());
+				recipeStatus = EnumValidationResult.INVALID;
+			}
 			this.EUToStart = EUToStart;
 			return getThis();
-		}
-
-		@Override
-		protected EnumValidationResult validate(EnumValidationResult result) {
-            if (EUToStart <= 0) {
-                GTLog.logger.error("EU to start cannot be less than or equal to 0", new IllegalArgumentException());
-                result = EnumValidationResult.INVALID;
-            }
-            return super.validate(result);
 		}
 
 		public ValidationResult<Recipe.FusionRecipe> build() {
