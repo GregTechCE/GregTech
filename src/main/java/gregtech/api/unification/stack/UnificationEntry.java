@@ -3,8 +3,6 @@ package gregtech.api.unification.stack;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.material.type.Material;
 
-import javax.annotation.Nullable;
-
 public class UnificationEntry {
 
     public final OrePrefix orePrefix;

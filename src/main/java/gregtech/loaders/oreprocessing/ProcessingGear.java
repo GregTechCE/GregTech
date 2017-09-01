@@ -20,7 +20,8 @@ import static gregtech.api.unification.material.type.DustMaterial.MatFlags.NO_WO
 import static gregtech.api.unification.material.type.Material.MatFlags.NO_UNIFICATION;
 
 public class ProcessingGear implements IOreRegistrationHandler {
-	public ProcessingGear() {
+
+	public void register() {
 		OrePrefix.gearGt.addProcessingHandler(this);
 		OrePrefix.gearGtSmall.addProcessingHandler(this);
 	}

@@ -5,6 +5,8 @@ import gregtech.api.unification.Element;
 import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.stack.MaterialStack;
 
+import javax.annotation.Nullable;
+
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.GENERATE_PLATE;
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.SMELT_INTO_FLUID;
 import static gregtech.api.util.GTUtility.createFlag;
@@ -52,6 +54,7 @@ public class MetalMaterial extends SolidMaterial {
     /**
      * Material which obtained when this material is polarized
      */
+    @Nullable
     public MetalMaterial magneticMaterial;
 
     /**
