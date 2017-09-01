@@ -54,7 +54,11 @@ public class ProcessingBlock implements IOreRegistrationHandler {
 			} else {
 				blockComponent = OreDictUnifier.get(OrePrefix.dust, entry.material);
 			}
-			ModHandler.addShapedRecipe(blockStack, "XXX", "XXX", "XXX", 'X', blockComponent);
+			ModHandler.addShapedRecipe(blockStack,
+					"XXX",
+					"XXX",
+					"XXX",
+					'X', blockComponent);
 			ModHandler.addShapelessRecipe(GTUtility.copyAmount(9, blockComponent), blockStack);
 		}
 	}

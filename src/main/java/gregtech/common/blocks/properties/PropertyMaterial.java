@@ -2,15 +2,11 @@ package gregtech.common.blocks.properties;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
 import gregtech.api.unification.material.type.Material;
 import net.minecraft.block.properties.PropertyHelper;
-import scala.actors.threadpool.Arrays;
 
-import javax.annotation.Nonnull;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 public class PropertyMaterial extends PropertyHelper<Material> {
 

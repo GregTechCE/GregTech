@@ -1,14 +1,14 @@
 package gregtech.api.recipes;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
+import gnu.trove.impl.unmodifiable.TUnmodifiableObjectIntMap;
+import gnu.trove.map.TObjectIntMap;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Class that represent machine recipe.<p>
@@ -31,7 +31,7 @@ public class Recipe {
 	/**
 	 * A chance of 10000 equals 100%
 	 */
-	private final Map<ItemStack, Integer> chancedOutputs;
+	private final TObjectIntMap<ItemStack> chancedOutputs;
 
 	private final List<FluidStack> fluidInputs;
 	private final List<FluidStack> fluidOutputs;
@@ -59,12 +59,12 @@ public class Recipe {
 	 */
 	private final boolean needsEmptyOutput;
 
-	protected Recipe(List<ItemStack> inputs, List<ItemStack> outputs, Map<ItemStack, Integer> chancedOutputs,
+	protected Recipe(List<ItemStack> inputs, List<ItemStack> outputs, TObjectIntMap<ItemStack> chancedOutputs,
 				   List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs,
 				   int duration, int EUt, boolean hidden, boolean canBeBuffered, boolean needsEmptyOutput) {
 		this.inputs = ImmutableList.copyOf(inputs);
 		this.outputs = ImmutableList.copyOf(outputs);
-		this.chancedOutputs = ImmutableMap.copyOf(chancedOutputs);
+		this.chancedOutputs = new TUnmodifiableObjectIntMap<>(chancedOutputs);
 		this.fluidInputs = ImmutableList.copyOf(fluidInputs);
 		this.fluidOutputs = ImmutableList.copyOf(fluidOutputs);
 		this.duration = duration;
@@ -189,7 +189,7 @@ public class Recipe {
 		return outputs;
 	}
 
-	public Map<ItemStack, Integer> getChancedOutputs() {
+	public TObjectIntMap<ItemStack> getChancedOutputs() {
 		return chancedOutputs;
 	}
 
@@ -224,7 +224,7 @@ public class Recipe {
 	public static class BlastRecipe extends Recipe {
 		private final int blastFurnaceTemp;
 
-		protected BlastRecipe(List<ItemStack> inputs, List<ItemStack> outputs, Map<ItemStack, Integer> chancedOutputs, List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs, int duration, int EUt, boolean hidden, boolean canBeBuffered, boolean needsEmptyOutput, int blastFurnaceTemp) {
+		protected BlastRecipe(List<ItemStack> inputs, List<ItemStack> outputs, TObjectIntMap<ItemStack> chancedOutputs, List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs, int duration, int EUt, boolean hidden, boolean canBeBuffered, boolean needsEmptyOutput, int blastFurnaceTemp) {
 			super(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
 
 			this.blastFurnaceTemp = blastFurnaceTemp;
@@ -238,7 +238,7 @@ public class Recipe {
 	public static class AmplifierRecipe extends Recipe {
 		private final int amplifierAmountOutputted;
 
-		protected AmplifierRecipe(List<ItemStack> inputs, List<ItemStack> outputs, Map<ItemStack, Integer> chancedOutputs, List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs, int duration, int EUt, boolean hidden, boolean canBeBuffered, boolean needsEmptyOutput, int amplifierAmountOutputted) {
+		protected AmplifierRecipe(List<ItemStack> inputs, List<ItemStack> outputs, TObjectIntMap<ItemStack> chancedOutputs, List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs, int duration, int EUt, boolean hidden, boolean canBeBuffered, boolean needsEmptyOutput, int amplifierAmountOutputted) {
 			super(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
 
 			this.amplifierAmountOutputted = amplifierAmountOutputted;
@@ -252,7 +252,7 @@ public class Recipe {
 	public static class FusionRecipe extends Recipe {
 		private final int EUToStart;
 
-		protected FusionRecipe(List<ItemStack> inputs, List<ItemStack> outputs, Map<ItemStack, Integer> chancedOutputs, List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs, int duration, int EUt, boolean hidden, boolean canBeBuffered, boolean needsEmptyOutput, int EUToStart) {
+		protected FusionRecipe(List<ItemStack> inputs, List<ItemStack> outputs, TObjectIntMap<ItemStack> chancedOutputs, List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs, int duration, int EUt, boolean hidden, boolean canBeBuffered, boolean needsEmptyOutput, int EUToStart) {
 			super(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
 
 			this.EUToStart = EUToStart;

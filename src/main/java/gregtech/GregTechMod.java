@@ -1,6 +1,7 @@
 package gregtech;
 
 import gregtech.api.net.NetworkHandler;
+import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.GTLog;
@@ -18,6 +19,7 @@ import gregtech.loaders.preload.GT_Loader_Item_Block_And_Fluid;
 import ic2.api.recipe.IMachineRecipeManager;
 import ic2.api.recipe.RecipeOutput;
 import net.minecraft.init.Items;
+import net.minecraftforge.fml.common.LoaderException;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -273,6 +275,11 @@ public class GregTechMod {
 //                }
 //            }
 //        }
+
+        if (RecipeMap.foundInvalidRecipe) {
+            throw new LoaderException("Found at least one invalid recipe. Please read the log above for more details.");
+        }
+
 //        GregTechAPI.sPreloadFinished = true;
 //        GTLog.out.println("GregTechMod: Preload-Phase finished!");
 //        GTLog.ore.println("GregTechMod: Preload-Phase finished!");
