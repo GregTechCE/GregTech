@@ -143,6 +143,13 @@ public class GTUtility {
         return aString != null && !aString.isEmpty();
     }
 
+    public static boolean isBetweenExclusive(long start, long end, long value) {
+        return start < value && value < end;
+    }
+
+    public static boolean isBetweenInclusive(long start, long end, long value) {
+        return start <= value && value <= end;
+    }
 
     /**
      * Capitalizes string, making first letter upper case

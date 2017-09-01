@@ -1,9 +1,16 @@
 package gregtech.api.recipes;
 
+import gnu.trove.iterator.TObjectIntIterator;
+import gnu.trove.map.TObjectIntMap;
+import gnu.trove.map.hash.TObjectIntHashMap;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.FluidMaterial;
+import gregtech.api.util.EnumValidationResult;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.ValidationResult;
 import ic2.core.ref.BlockName;
 import ic2.core.ref.ItemName;
 import ic2.core.ref.TeBlock;
@@ -13,10 +20,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import org.apache.commons.lang3.Validate;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import static gregtech.api.GTValues.W;
 
@@ -30,7 +39,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 
 	protected List<ItemStack> inputs = new ArrayList<>(0);
 	protected List<ItemStack> outputs = new ArrayList<>(0);
-	protected Map<ItemStack, Integer> chancedOutputs = new HashMap<>(0);
+	protected TObjectIntMap<ItemStack> chancedOutputs = new TObjectIntHashMap<>(0);
 
 	protected List<FluidStack> fluidInputs = new ArrayList<>(0);
 	protected List<FluidStack> fluidOutputs = new ArrayList<>(0);
@@ -48,7 +57,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 	protected RecipeBuilder() {
 		this.inputs = new ArrayList<>(0);
 		this.outputs = new ArrayList<>(0);
-		this.chancedOutputs = new HashMap<>(0);
+		this.chancedOutputs = new TObjectIntHashMap<>(0);
 
 		this.fluidInputs = new ArrayList<>(0);
 		this.fluidOutputs = new ArrayList<>(0);
@@ -59,10 +68,11 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		this.inputs = GTUtility.copyStackList(recipe.getInputs());
 		this.outputs = GTUtility.copyStackList(recipe.getOutputs());
 
-		this.chancedOutputs = new HashMap<>();
-		for (Map.Entry<ItemStack, Integer> entry : recipe.getChancedOutputs().entrySet()) {
-			chancedOutputs.put(entry.getKey().copy(), entry.getValue());
-		}
+		this.chancedOutputs = new TObjectIntHashMap<>();
+		recipe.getChancedOutputs().forEachEntry((key, value) -> {
+			chancedOutputs.put(key.copy(), value);
+			return true;
+		});
 
 		this.fluidInputs = GTUtility.copyFluidList(recipe.getFluidInputs());
 		this.fluidOutputs = GTUtility.copyFluidList(recipe.getFluidOutputs());
@@ -79,10 +89,11 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		this.inputs = GTUtility.copyStackList(recipeBuilder.getInputs());
 		this.outputs = GTUtility.copyStackList(recipeBuilder.getOutputs());
 
-		this.chancedOutputs = new HashMap<>();
-		for (Map.Entry<ItemStack, Integer> entry : recipeBuilder.getChancedOutputs().entrySet()) {
-			chancedOutputs.put(entry.getKey().copy(), entry.getValue());
-		}
+		this.chancedOutputs = new TObjectIntHashMap<>();
+		recipeBuilder.getChancedOutputs().forEachEntry((key, value) -> {
+			chancedOutputs.put(key.copy(), value);
+			return true;
+		});
 
 		this.fluidInputs = GTUtility.copyFluidList(recipeBuilder.getFluidInputs());
 		this.fluidOutputs = GTUtility.copyFluidList(recipeBuilder.getFluidOutputs());
@@ -94,92 +105,49 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		this.optimized = recipeBuilder.optimized;
 	}
 
-	public R inputs(@Nonnull ItemStack... inputs) {
-		Validate.notNull(inputs, "Input array cannot be null");
-		if (inputs.length != 0) {
-			Validate.noNullElements(inputs, "Input cannot contain null ItemStacks");
-
-			Collections.addAll(this.inputs, inputs);
-		}
+	public R inputs(ItemStack... inputs) {
+		Collections.addAll(this.inputs, inputs);
 		return getThis();
 	}
 
-	public R inputs(@Nonnull Collection<ItemStack> inputs) {
-        Validate.notNull(inputs, "Input collection cannot be null");
-        if (inputs.size() != 0) {
-            Validate.noNullElements(inputs, "Input cannot contain null ItemStacks");
-
-            this.inputs.addAll(inputs);
-        }
+	public R inputs(Collection<ItemStack> inputs) {
+        this.inputs.addAll(inputs);
         return getThis();
     }
 
-	public R outputs(@Nonnull ItemStack... outputs) {
-		Validate.notNull(outputs, "Output array cannot be null");
-		if (outputs.length != 0) {
-			Validate.noNullElements(outputs, "Output cannot contain null ItemStacks");
-
-			Collections.addAll(this.outputs, outputs);
-		}
+	public R outputs(ItemStack... outputs) {
+		Collections.addAll(this.outputs, outputs);
 		return getThis();
 	}
 
-    public R outputs(@Nonnull Collection<ItemStack> outputs) {
-        Validate.notNull(outputs, "Output collection cannot be null");
-        if (outputs.size() != 0) {
-            Validate.noNullElements(outputs, "Output cannot contain null ItemStacks");
-
-            this.outputs.addAll(outputs);
-        }
+    public R outputs(Collection<ItemStack> outputs) {
+		this.outputs.addAll(outputs);
         return getThis();
     }
 
-	public R fluidInputs(@Nonnull FluidStack... inputs) {
-		Validate.notNull(inputs, "Fluid input array cannot be null");
-		if (inputs.length != 0) {
-			Validate.noNullElements(inputs, "Fluid input cannot contain null FluidStacks");
-
-			Collections.addAll(this.fluidInputs, inputs);
-		}
+	public R fluidInputs(FluidStack... inputs) {
+		Collections.addAll(this.fluidInputs, inputs);
 		return getThis();
 	}
 
-    public R fluidInputs(@Nonnull Collection<FluidStack> inputs) {
-        Validate.notNull(inputs, "Fluid input collection cannot be null");
-        if (inputs.size() != 0) {
-            Validate.noNullElements(inputs, "Input cannot contain null FluidStacks");
-
-            this.fluidInputs.addAll(inputs);
-        }
+    public R fluidInputs(Collection<FluidStack> inputs) {
+		this.fluidInputs.addAll(inputs);
         return getThis();
     }
 
-	public R fluidOutputs(@Nonnull FluidStack... outputs) {
-		Validate.notNull(outputs, "Fluid output array cannot be null");
-		if (outputs.length != 0) {
-			Validate.noNullElements(outputs, "Fluid output cannot contain null FluidStacks");
-
-			Collections.addAll(this.fluidOutputs, outputs);
-		}
+	public R fluidOutputs(FluidStack... outputs) {
+		Collections.addAll(this.fluidOutputs, outputs);
 		return getThis();
 	}
 
-    public R fluidOutputs(@Nonnull Collection<FluidStack> outputs) {
-        Validate.notNull(outputs, "Fluid output collection cannot be null");
-        if (outputs.size() != 0) {
-            Validate.noNullElements(outputs, "Fluid output cannot contain null FluidStacks");
-
-            this.fluidOutputs.addAll(outputs);
-        }
+    public R fluidOutputs(Collection<FluidStack> outputs) {
+		this.fluidOutputs.addAll(outputs);
         return getThis();
     }
 
-	public R chancedOutput(@Nonnull ItemStack stack, int chance) {
-		Validate.notNull(stack, "Chanced output ItemStack cannot be null");
-		Validate.exclusiveBetween(0, 10001, chance, "Chance cannot be less or equal to 0 or more than 10000");
-
-		if (this.chancedOutputs.containsKey(stack)) {
-			throw new IllegalArgumentException("Chanced output map already contains " + stack);
+	public R chancedOutput(ItemStack stack, int chance) {
+		if (stack == null) {
+			return getThis();
 		}
 
 		this.chancedOutputs.put(stack, chance);
@@ -187,15 +155,11 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 	}
 
 	public R duration(int duration) {
-		Validate.isTrue(duration > 0, "Duration cannot be less or equal to 0");
-
 		this.duration = duration;
 		return getThis();
 	}
 
 	public R EUt(int EUt) {
-		Validate.isTrue(EUt > 0, "EUt cannot be less or equal to 0");
-
 		this.EUt = EUt;
 		return getThis();
 	}
@@ -228,7 +192,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 	public R fromRecipe(T recipe) {
 		this.inputs = new ArrayList<>(recipe.getInputs());
 		this.outputs = new ArrayList<>(recipe.getOutputs());
-		this.chancedOutputs = new HashMap<>(recipe.getChancedOutputs());
+		this.chancedOutputs = new TObjectIntHashMap<>(recipe.getChancedOutputs());
 		this.fluidInputs = new ArrayList<>(recipe.getFluidInputs());
 		this.fluidOutputs = new ArrayList<>(recipe.getFluidOutputs());
 
@@ -245,16 +209,14 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 	// To get rid of "unchecked cast" warning
 	protected abstract R getThis();
 
-	protected void finalizeAndValidate() {
+	protected EnumValidationResult finalizeAndValidate() {
 		inputs.replaceAll(OreDictUnifier::getUnificated);
 		outputs.replaceAll(OreDictUnifier::getUnificated);
 
-		Map<ItemStack, Integer> newMap = new HashMap<>();
-		Iterator<Map.Entry<ItemStack, Integer>> iterator = chancedOutputs.entrySet().iterator();
+		TObjectIntMap<ItemStack> newMap = new TObjectIntHashMap<>();
+		TObjectIntIterator<ItemStack> iterator = chancedOutputs.iterator();
 		while (iterator.hasNext()) {
-			Map.Entry<ItemStack, Integer> entry = iterator.next();
-			iterator.remove();
-			newMap.put(OreDictUnifier.getUnificated(entry.getKey()), entry.getValue());
+			newMap.put(OreDictUnifier.getUnificated(iterator.key()), iterator.value());
 		}
 		chancedOutputs = newMap;
 
@@ -296,28 +258,77 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 				}
 		}
 
-		validate();
+		return validate();
 	}
 
-	public abstract T build();
+	public abstract ValidationResult<T> build();
 
-	protected R validate() {
-		Validate.notNull(recipeMap);
-		Validate.exclusiveBetween(recipeMap.getMinInputs(), recipeMap.getMaxInputs(), inputs.size());
-		Validate.exclusiveBetween(recipeMap.getMinOutputs(), recipeMap.getMaxOutputs(), outputs.size() + chancedOutputs.size());
-		Validate.exclusiveBetween(recipeMap.getMinFluidInputs(), recipeMap.getMaxFluidInputs(), fluidInputs.size());
-		Validate.exclusiveBetween(recipeMap.getMinFluidOutputs(), recipeMap.getMaxFluidOutputs(), fluidOutputs.size());
+    private EnumValidationResult validate() {
+        return validate(EnumValidationResult.VALID);
+    }
+
+	protected EnumValidationResult validate(EnumValidationResult result) {
+
+		if (recipeMap == null) {
+			GTLog.logger.error("RecipeMap cannot be null", new IllegalArgumentException());
+			result = EnumValidationResult.INVALID;
+		}
+
+		if (inputs.contains(null)) {
+			GTLog.logger.error("Input cannot contain null ItemStacks", new IllegalArgumentException());
+			result = EnumValidationResult.INVALID;
+		}
+		if (outputs.contains(null)) {
+			GTLog.logger.error("Output cannot contain null ItemStacks", new IllegalArgumentException());
+			result = EnumValidationResult.INVALID;
+		}
+		if (fluidInputs.contains(null)) {
+			GTLog.logger.error("Fluid input cannot contain null FluidStacks", new IllegalArgumentException());
+			result = EnumValidationResult.INVALID;
+		}
+		if (fluidOutputs.contains(null)) {
+			GTLog.logger.error("Fluid output cannot contain null FluidStacks", new IllegalArgumentException());
+			result = EnumValidationResult.INVALID;
+		}
+
+		for (int chance : chancedOutputs.values()) {
+            if (0 >= chance || chance > 10000){
+                GTLog.logger.error("Chance cannot be less or equal to 0 or more than 10000", new IllegalArgumentException());
+                result = EnumValidationResult.INVALID;
+            }
+		}
+
+        if (!GTUtility.isBetweenExclusive(recipeMap.getMinInputs(), recipeMap.getMaxInputs(), inputs.size())){
+            GTLog.logger.error("Invalid amount of recipe inputs", new IllegalArgumentException());
+            result = EnumValidationResult.INVALID;
+		}
+		if (!GTUtility.isBetweenExclusive(recipeMap.getMinOutputs(), recipeMap.getMaxOutputs(), outputs.size() + chancedOutputs.size())){
+            GTLog.logger.error("Invalid amount of recipe outputs", new IllegalArgumentException());
+            result = EnumValidationResult.INVALID;
+		}
+		if (!GTUtility.isBetweenExclusive(recipeMap.getMinFluidInputs(), recipeMap.getMaxFluidInputs(), fluidInputs.size())){
+            GTLog.logger.error("Invalid amount of recipe fluid inputs", new IllegalArgumentException());
+            result = EnumValidationResult.INVALID;
+		}
+		if (!GTUtility.isBetweenExclusive(recipeMap.getMinFluidOutputs(), recipeMap.getMaxFluidOutputs(), fluidOutputs.size())){
+            GTLog.logger.error("Invalid amount of recipe fluid outputs", new IllegalArgumentException());
+            result = EnumValidationResult.INVALID;
+		}
 
 //			Validate.isTrue(EUt > 0, "EU/t cannot be less of equal to 0");
-		Validate.isTrue(duration > 0, "Duration cannot be less or equal to 0");
+
+        if (duration <= 0){
+            GTLog.logger.error("Duration cannot be less or equal to 0", new IllegalArgumentException());
+            result = EnumValidationResult.INVALID;
+        }
 
 		//For fakeRecipes don't do check for collisions, regular recipes do check, do not check for recipes that are not registered(i.e. created after postinit stage)
-		Validate.isTrue(!(recipeMap instanceof RecipeMap.FakeRecipeMap) &&
-						recipeMap.findRecipe(null, false, Long.MAX_VALUE, this.fluidInputs.toArray(new FluidStack[0]), this.inputs.toArray(new ItemStack[0])) != null,
-				"Found recipe with same input (inputs: {}, fluid inputs: {}, recipe map: {}) as another one.",
-				this.inputs, this.fluidInputs, recipeMap.unlocalizedName);
+		if (!(recipeMap instanceof RecipeMap.FakeRecipeMap) &&
+				recipeMap.findRecipe(null, true, Long.MAX_VALUE, this.fluidInputs.toArray(new FluidStack[0]), this.inputs.toArray(new ItemStack[0])) != null) {
+			return EnumValidationResult.SKIP;
+		}
 
-		return getThis();
+		return result;
 	}
 
 	public void buildAndRegister() {
@@ -336,7 +347,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		return outputs;
 	}
 
-	public Map<ItemStack, Integer> getChancedOutputs() {
+	public TObjectIntMap<ItemStack> getChancedOutputs() {
 		return chancedOutputs;
 	}
 
@@ -371,10 +382,10 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 			return new DefaultRecipeBuilder(this);
 		}
 
-		public Recipe build() {
-			finalizeAndValidate();
-			return new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
-					duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
+		public ValidationResult<Recipe> build() {
+			return ValidationResult.newResult(finalizeAndValidate(),
+						new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
+									duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
 		}
 	}
 
@@ -403,27 +414,32 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 			return new IntCircuitRecipeBuilder(this);
 		}
 
-		public IntCircuitRecipeBuilder circuitMeta(int meta) {
-			if (meta < 0) {
-				throw new IllegalArgumentException("Integrated Circuit Metadata cannot be less than 0"); // TODO cannot be more than what?
-			}
-
-			this.circuitMeta = meta;
+		public IntCircuitRecipeBuilder circuitMeta(int circuitMeta) {
+			this.circuitMeta = circuitMeta;
 			return this;
 		}
 
 		@Override
-		protected void finalizeAndValidate() {
+		protected EnumValidationResult finalizeAndValidate() {
 			if (circuitMeta >= 0) {
 //				inputs.add(ItemList.Circuit_Integrated.getWithDamage(0, circuitMeta));
 			}
-			super.finalizeAndValidate();
+			return super.finalizeAndValidate();
 		}
 
-		public Recipe build() {
-			finalizeAndValidate();
-			return new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
-					duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
+		@Override
+		protected EnumValidationResult validate(EnumValidationResult result) {
+			if (circuitMeta < 0) {
+			    GTLog.logger.error("Integrated Circuit Metadata cannot be less than 0", new IllegalArgumentException()); // TODO cannot be more than what?
+                result = EnumValidationResult.INVALID;
+			}
+			return super.validate(result);
+		}
+
+		public ValidationResult<Recipe> build() {
+			return ValidationResult.newResult(finalizeAndValidate(),
+					new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
+							duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
 		}
 	}
 
@@ -456,7 +472,6 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		public NotConsumableInputRecipeBuilder notConsumable(ItemStack itemStack) {
-			Validate.notNull(itemStack, "Not consumable ItemStack cannot be null");
 			ItemStack stack = itemStack.copy();
 			stack.stackSize = 0;
 			inputs.add(stack);
@@ -464,15 +479,14 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		public NotConsumableInputRecipeBuilder notConsumable(MetaItem<?>.MetaValueItem item) {
-			Validate.notNull(item, "Not consumable Item cannot be null");
 			inputs.add(item.getStackForm(0));
 			return this;
 		}
 
-		public Recipe build() {
-			finalizeAndValidate();
-			return new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
-					duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
+		public ValidationResult<Recipe> build() {
+			return ValidationResult.newResult(finalizeAndValidate(),
+					new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
+							duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
 		}
 	}
 
@@ -503,16 +517,23 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		public BlastRecipeBuilder blastFurnaceTemp(int blastFurnaceTemp) {
-			Validate.isTrue(blastFurnaceTemp > 0, "Blast Furnace Temperature cannot be less than or equal to 0");
-
 			this.blastFurnaceTemp = blastFurnaceTemp;
 			return getThis();
 		}
 
-		public Recipe.BlastRecipe build() {
-			finalizeAndValidate();
-			return new Recipe.BlastRecipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
-					duration, EUt, hidden, canBeBuffered, needsEmptyOutput, blastFurnaceTemp);
+		@Override
+		protected EnumValidationResult validate(EnumValidationResult result) {
+			if (blastFurnaceTemp <= 0) {
+                GTLog.logger.error("Blast Furnace Temperature cannot be less than or equal to 0", new IllegalArgumentException());
+                result = EnumValidationResult.INVALID;
+            }
+			return super.validate(result);
+		}
+
+		public ValidationResult<Recipe.BlastRecipe> build() {
+			return ValidationResult.newResult(finalizeAndValidate(),
+					new Recipe.BlastRecipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
+							duration, EUt, hidden, canBeBuffered, needsEmptyOutput, blastFurnaceTemp));
 		}
 	}
 
@@ -548,29 +569,33 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 
 		@Override
 		public void buildAndRegister() {
-			if (simple) { //addSimpleArcFurnaceRecipe
-//				RecipeMap.ARC_FURNACE_RECIPES.addRecipe(true, new ItemStack[]{aInput}, aOutputs, null, aChances, new FluidStack[]{aFluidInput}, null, Math.max(1, aDuration), Math.max(1, aEUt), 0);
-			} else { //addArcFurnaceRecipe
-//				Recipe sRecipe = RecipeMap.ARC_FURNACE_RECIPES.addRecipe(true, new ItemStack[]{aInput}, aOutputs, null, aChances, new FluidStack[]{Materials.Oxygen.getGas(aDuration)}, null, Math.max(1, aDuration), Math.max(1, aEUt), 0);
-//				if ((hidden) && (sRecipe != null)) {
-//					sRecipe.hidden = true;
-//				}
-//				for (Materials tMaterial : new Materials[]{Materials.Argon, Materials.Nitrogen}) {
-//					if (tMaterial. != null) {
-//						int tPlasmaAmount = (int) Math.max(1L, aDuration / (tMaterial.getMass() * 16L));
-//						Recipe tRecipe = RecipeMap.PLASMA_ARC_FURNACE_RECIPES.addRecipe(true, new ItemStack[]{aInput}, aOutputs, null, aChances, new FluidStack[]{tMaterial.getPlasma(tPlasmaAmount)}, new FluidStack[]{tMaterial.getGas(tPlasmaAmount)}, Math.max(1, aDuration / 16), Math.max(1, aEUt / 3), 0);
-//						if ((hidden) && (tRecipe != null)) {
-//							tRecipe.hidden = true;
-//						}
-//					}
-//				}
+			if (simple) {
+				this.copy().buildAndRegister();
+			} else {
+				this.copy().fluidInputs(Materials.Oxygen.getFluid(this.duration)).buildAndRegister();
+
+				for (FluidMaterial material : new FluidMaterial[]{Materials.Argon, Materials.Nitrogen}) {
+					int plasmaAmount = (int) Math.max(1L, this.duration / (material.getMass() * 16L));
+
+					DefaultRecipeBuilder builder = RecipeMap.PLASMA_ARC_FURNACE_RECIPES.recipeBuilder()
+							.inputs(this.inputs)
+							.outputs(this.outputs)
+							.duration(this.duration / 16)
+							.EUt(this.EUt / 3)
+							.fluidInputs(material.getPlasma(plasmaAmount))
+							.fluidOutputs(material.getFluid(plasmaAmount));
+
+					builder.chancedOutputs = new TObjectIntHashMap<>(this.getChancedOutputs());
+
+					builder.buildAndRegister();
+				}
 			}
 		}
 
-		public Recipe build() {
-			finalizeAndValidate();
-			return new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
-					duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
+		public ValidationResult<Recipe> build() {
+			return ValidationResult.newResult(finalizeAndValidate(),
+					new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
+							duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
 		}
 	}
 
@@ -600,8 +625,6 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		public ImplosionRecipeBuilder explosivesAmount(int explosivesAmount) {
-			Validate.inclusiveBetween(1, 64, explosivesAmount);
-
 			this.explosivesAmount = explosivesAmount;
 			return this;
 		}
@@ -624,10 +647,19 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 			recipeMap.addRecipe(this.copy().inputs(input, ModHandler.IC2.getIC2Item(BlockName.te, TeBlock.itnt, ITNT)).build());
 		}
 
-		public Recipe build() {
-			finalizeAndValidate();
-			return new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
-					duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
+		@Override
+		protected EnumValidationResult validate(EnumValidationResult result) {
+            if (!GTUtility.isBetweenInclusive(1, 64, explosivesAmount)) {
+                GTLog.logger.error("Amount of explosives should be from 1 to 64 inclusive", new IllegalArgumentException());
+                result = EnumValidationResult.INVALID;
+            }
+			return super.validate(result);
+		}
+
+		public ValidationResult<Recipe> build() {
+			return ValidationResult.newResult(finalizeAndValidate(),
+					new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
+							duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
 		}
 	}
 
@@ -677,10 +709,10 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 			super.buildAndRegister();
 		}
 
-		public Recipe build() {
-			finalizeAndValidate();
-			return new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
-					duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
+		public ValidationResult<Recipe> build() {
+			return ValidationResult.newResult(finalizeAndValidate(),
+					new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
+							duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
 		}
 	}
 
@@ -709,26 +741,31 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		public AmplifierRecipeBuilder amplifierAmountOutputted(int amplifierAmountOutputted) {
-			if (amplifierAmountOutputted <= 0) {
-				throw new IllegalArgumentException("Outputted Amplifier Amount cannot be less than or equal to 0");
-			}
-
 			this.amplifierAmountOutputted = amplifierAmountOutputted;
 			return getThis();
 		}
 
 		@Override
-		protected void finalizeAndValidate() {
-			if (amplifierAmountOutputted >= 0) {
+		protected EnumValidationResult finalizeAndValidate() {
+			if (amplifierAmountOutputted > 0) {
 				this.fluidOutputs(Materials.UUAmplifier.getFluid(amplifierAmountOutputted));
 			}
-			super.finalizeAndValidate();
+			return super.finalizeAndValidate();
 		}
 
-		public Recipe.AmplifierRecipe build() {
-			finalizeAndValidate();
-			return new Recipe.AmplifierRecipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
-					duration, EUt, hidden, canBeBuffered, needsEmptyOutput, amplifierAmountOutputted);
+		@Override
+		protected EnumValidationResult validate(EnumValidationResult result) {
+            if (amplifierAmountOutputted <= 0) {
+                GTLog.logger.error("Outputted Amplifier Amount cannot be less than or equal to 0", new IllegalArgumentException());
+                result = EnumValidationResult.INVALID;
+            }
+			return super.validate(result);
+		}
+
+		public ValidationResult<Recipe.AmplifierRecipe> build() {
+			return ValidationResult.newResult(finalizeAndValidate(),
+					new Recipe.AmplifierRecipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
+							duration, EUt, hidden, canBeBuffered, needsEmptyOutput, amplifierAmountOutputted));
 		}
 	}
 
@@ -767,25 +804,19 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		public BrewingRecipeBuilder fluidInput(@Nonnull Fluid input) {
-			Validate.notNull(inputs, "Fluid input cannot be null");
-
 			this.fluidInputs.add(new FluidStack(input, 750));
-
 			return getThis();
 		}
 
 		public BrewingRecipeBuilder fluidOutput(@Nonnull Fluid output) {
-			Validate.notNull(inputs, "Fluid output cannot be null");
-
 			this.fluidOutputs.add(new FluidStack(output, 750));
-
 			return getThis();
 		}
 
-		public Recipe build() {
-			finalizeAndValidate();
-			return new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
-					duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
+		public ValidationResult<Recipe> build() {
+			return ValidationResult.newResult(finalizeAndValidate(),
+					new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
+							duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
 		}
 	}
 
@@ -816,18 +847,23 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		public FusionRecipeBuilder EUToStart(int EUToStart) {
-			if (EUToStart <= 0) {
-				throw new IllegalArgumentException("EU to start cannot be less than or equal to 0");
-			}
-
 			this.EUToStart = EUToStart;
 			return getThis();
 		}
 
-		public Recipe.FusionRecipe build() {
-			finalizeAndValidate();
-			return new Recipe.FusionRecipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
-					duration, EUt, hidden, canBeBuffered, needsEmptyOutput, EUToStart);
+		@Override
+		protected EnumValidationResult validate(EnumValidationResult result) {
+            if (EUToStart <= 0) {
+                GTLog.logger.error("EU to start cannot be less than or equal to 0", new IllegalArgumentException());
+                result = EnumValidationResult.INVALID;
+            }
+            return super.validate(result);
+		}
+
+		public ValidationResult<Recipe.FusionRecipe> build() {
+			return ValidationResult.newResult(finalizeAndValidate(),
+					new Recipe.FusionRecipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
+							duration, EUt, hidden, canBeBuffered, needsEmptyOutput, EUToStart));
 		}
 	}
 
@@ -851,77 +887,99 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		public AssemblyLineRecipeBuilder researchItem(ItemStack researchItem) {
-			Validate.notNull(researchItem, "Research Item array cannot be null");
 			this.researchItem = researchItem;
 			return this;
 		}
 
 		public AssemblyLineRecipeBuilder researchTime(int researchTime) {
-			Validate.isTrue(researchTime > 0, "Research Time cannot be less or equal to 0");
-
 			this.researchTime = researchTime;
 			return this;
 		}
 
 		public AssemblyLineRecipeBuilder inputs(@Nonnull ItemStack... inputs) {
-			Validate.notNull(inputs, "Input array cannot be null");
-			if (inputs.length != 0) {
-				Validate.noNullElements(inputs, "Input cannot contain null ItemStacks");
-
-				Collections.addAll(this.inputs, inputs);
-			}
+			Collections.addAll(this.inputs, inputs);
 			return this;
 		}
 
 		public AssemblyLineRecipeBuilder fluidInputs(@Nonnull FluidStack... inputs) {
-			Validate.notNull(inputs, "Input array cannot be null");
-			if (inputs.length != 0) {
-				Validate.noNullElements(inputs, "Fluid input cannot contain null FluidStacks");
-
-				Collections.addAll(this.fluidInputs, inputs);
-			}
+			Collections.addAll(this.fluidInputs, inputs);
 			return this;
 		}
 
 		public AssemblyLineRecipeBuilder output(ItemStack output) {
-			Validate.notNull(output, "Output ItemStack cannot be null");
 			this.output = output;
 			return this;
 		}
 
 		public AssemblyLineRecipeBuilder duration(int duration) {
-			Validate.isTrue(duration > 0, "Duration cannot be less or equal to 0");
-
 			this.duration = duration;
 			return this;
 		}
 
 		public AssemblyLineRecipeBuilder EUt(int EUt) {
-			Validate.isTrue(EUt > 0, "EUt cannot be less or equal to 0");
-
 			this.EUt = EUt;
 			return this;
 		}
 
-		public Recipe.AssemblyLineRecipe build() {
-			validate();
-			return new Recipe.AssemblyLineRecipe(researchItem, researchTime, inputs, fluidInputs, output, duration, EUt);
+		public ValidationResult<Recipe.AssemblyLineRecipe> build() {
+			return ValidationResult.newResult(validate(),
+					new Recipe.AssemblyLineRecipe(researchItem, researchTime, inputs, fluidInputs, output, duration, EUt));
 		}
 
-		protected void validate() {
-			Validate.isTrue(researchTime > 0, "Research Time cannot be less or equal to 0");
-			Validate.isTrue(duration > 0, "Duration cannot be less or equal to 0");
-			Validate.isTrue(EUt > 0, "EUt cannot be less or equal to 0");
+		protected EnumValidationResult validate() {
+		    EnumValidationResult result = EnumValidationResult.VALID;
 
-			Validate.notNull(researchItem, "Research Item array cannot be null");
+            if (inputs.contains(null)) {
+                GTLog.logger.error("Input cannot contain null ItemStacks", new IllegalArgumentException());
+                result = EnumValidationResult.INVALID;
+            }
+            if (fluidInputs.contains(null)) {
+                GTLog.logger.error("Fluid input cannot contain null FluidStacks", new IllegalArgumentException());
+                result = EnumValidationResult.INVALID;
+            }
 
-			Validate.inclusiveBetween(4, 16, inputs.size());
-			Validate.inclusiveBetween(0, 4, fluidInputs.size());
-			Validate.notNull(output, "Output ItemStack cannot be null");
+            if (output == null) {
+                GTLog.logger.error("Output ItemStack cannot be null", new IllegalArgumentException());
+                result = EnumValidationResult.INVALID;
+            }
+            if (researchItem == null) {
+                GTLog.logger.error("Research ItemStack cannot be null", new IllegalArgumentException());
+                result = EnumValidationResult.INVALID;
+            }
+
+            if (researchTime <= 0) {
+                GTLog.logger.error("Research Time cannot be less or equal to 0", new IllegalArgumentException());
+                result = EnumValidationResult.INVALID;
+            }
+            if (duration <= 0) {
+                GTLog.logger.error("Duration cannot be less or equal to 0", new IllegalArgumentException());
+                result = EnumValidationResult.INVALID;
+            }
+            if (EUt <= 0) {
+                GTLog.logger.error("EUt cannot be less or equal to 0", new IllegalArgumentException());
+                result = EnumValidationResult.INVALID;
+            }
+
+            if (!GTUtility.isBetweenInclusive(4, 16, inputs.size())) {
+                GTLog.logger.error("Invalid amount of recipe inputs. Should be between {} and {} inclusive", 4, 16);
+                GTLog.logger.error("", new IllegalArgumentException());
+                result = EnumValidationResult.INVALID;
+            }
+            if (!GTUtility.isBetweenInclusive(0, 4, fluidInputs.size())) {
+                GTLog.logger.error("Invalid amount of recipe fluid inputs. Should be between {} and {} inclusive", 0, 4);
+                GTLog.logger.error("", new IllegalArgumentException());
+                result = EnumValidationResult.INVALID;
+            }
+
+			return result;
 		}
 
 		public void buildAndRegister() {
-			RecipeMap.ASSEMBLYLINE_RECIPES.add(build());
+			ValidationResult<Recipe.AssemblyLineRecipe> result = build();
+
+			if (result.getType() == EnumValidationResult.VALID) {
+				RecipeMap.ASSEMBLYLINE_RECIPES.add(result.getResult());
+			}
 		}
 	}
 }
