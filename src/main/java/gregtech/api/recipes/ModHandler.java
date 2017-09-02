@@ -118,6 +118,10 @@ public class ModHandler {
         return FluidRegistry.getFluidStack("milk", amount);
     }
 
+    public static boolean isMaterialWood(Material material) {
+        return material == Materials.Wood || material == Materials.Wood;
+    }
+
     /**
      * Gets an Item from mods
      */
@@ -146,9 +150,6 @@ public class ModHandler {
 
         Validate.notNull(input, "Input cannot be null");
         Validate.notNull(output, "Output cannot be null");
-//        Validate.isTrue(GTUtility.getContainerItem(input, false) != null, "Input item cannot have container item");
-
-//        if (!GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.smelting, input, true)) return;
 
         GameRegistry.addSmelting(input, output.copy(), 0.0F);
     }
@@ -422,6 +423,7 @@ public class ModHandler {
      * @param recipe The content of the Crafting Grid as ItemStackArray with length 9
      * @return the output of the old Recipe or null if there was nothing.
      */
+    @Nullable
     public static ItemStack removeRecipe(ItemStack... recipe) {
         Validate.notNull(recipe, "Cannot remove null recipe.");
 
@@ -467,10 +469,6 @@ public class ModHandler {
     //            Get Recipe Output Helpers          //
     ///////////////////////////////////////////////////
 
-    /**
-     * Checks all Crafting Handlers for Recipe Output
-     * Used for the Autocrafting Table
-     */
     @Nullable
     public static ItemStack getRecipeOutput(World world, ItemStack... recipe) {
         if (recipe == null || recipe.length == 0) return null;
@@ -506,18 +504,10 @@ public class ModHandler {
         return null;
     }
 
-    /**
-     * Used in my own Furnace.
-     */
-    public static ItemStack getSmeltingOutput(ItemStack input, boolean removeInput, ItemStack outputSlot) {
-        if (input == null || input.stackSize < 1) return null;
-
-        ItemStack stack = OreDictUnifier.getUnificated(FurnaceRecipes.instance().getSmeltingResult(input));
-        if (outputSlot == null || ItemStack.areItemStackTagsEqual(stack, outputSlot) && stack.stackSize + outputSlot.stackSize <= outputSlot.getMaxStackSize()) {
-            if (removeInput) input.stackSize--;
-            return stack;
-        }
-        return null;
+    @Nullable
+    public static ItemStack getSmeltingOutput(ItemStack input) {
+        if (input == null) return null;
+        return OreDictUnifier.getUnificated(FurnaceRecipes.instance().getSmeltingResult(input));
     }
 
     /**
