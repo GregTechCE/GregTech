@@ -17,7 +17,7 @@ import static gregtech.api.GTValues.W;
 
 public class ProcessingPlank implements IOreRegistrationHandler {
 
-    public ProcessingPlank() {
+    public void register() {
         OrePrefix.plank.addProcessingHandler(this);
     }
 
@@ -102,7 +102,7 @@ public class ProcessingPlank implements IOreRegistrationHandler {
 					.buildAndRegister();
 
             if (stack.getItemDamage() == W) {
-                for (byte i = 0; i < 64; i++) { // this is weird and probably will break something
+                for (byte i = 0; i < 64; i++) { // FIXME
                     ItemStack itemStack = stack.copy();
                     itemStack.setItemDamage(i);
 

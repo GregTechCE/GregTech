@@ -1,9 +1,11 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.GTValues;
 import gregtech.api.recipes.ModHandler;
+import gregtech.api.recipes.RecipeBuilder;
+import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.DustMaterial;
+import gregtech.api.unification.material.type.MetalMaterial;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
@@ -13,7 +15,7 @@ import net.minecraft.item.ItemStack;
 
 public class ProcessingOreSmelting implements IOreRegistrationHandler {
 
-    public ProcessingOreSmelting() {
+    public void register() {
         OrePrefix.crushed.addProcessingHandler(this);
         OrePrefix.crushedPurified.addProcessingHandler(this);
         OrePrefix.crushedCentrifuged.addProcessingHandler(this);
@@ -22,30 +24,44 @@ public class ProcessingOreSmelting implements IOreRegistrationHandler {
         OrePrefix.dustRefined.addProcessingHandler(this);
     }
     
-    public void registerOre(UnificationEntry uEntry, String modName, SimpleItemStack simpleStack) {
+    public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {
         ItemStack stack = simpleStack.asItemStack();
         ModHandler.removeFurnaceSmelting(stack);
-        if (!uEntry.material.hasFlag(DustMaterial.MatFlags.NO_SMELTING)) {
-            if ((uEntry.material.mBlastFurnaceRequired) || (uEntry.material.mDirectSmelting.mBlastFurnaceRequired)) {
-                GTValues.RA.addBlastRecipe(GTUtility.copyAmount(1, stack), null, null, null, uEntry.material.mBlastFurnaceTemp > 1750 ? OreDictUnifier.get(OrePrefix.ingotHot, uEntry.material, OreDictUnifier.get(OrePrefix.ingot, uEntry.material, 1), 1) : OreDictUnifier.get(OrePrefix.ingot, uEntry.material, 1), null, (int) Math.max(uEntry.material.getMass() / 4L, 1L) * uEntry.material.mBlastFurnaceTemp, 120, uEntry.material.mBlastFurnaceTemp);
-                if (uEntry.material.mBlastFurnaceTemp <= 1000)
-                    ModHandler.addRCBlastFurnaceRecipe(GTUtility.copyAmount(1, stack), OreDictUnifier.get(OrePrefix.ingot, uEntry.material, 1), uEntry.material.mBlastFurnaceTemp * 2);
-            } else {
-                switch (uEntry.orePrefix) {
+
+        if (entry.material instanceof MetalMaterial && !entry.material.hasFlag(DustMaterial.MatFlags.NO_SMELTING)) {
+            if (((MetalMaterial) entry.material).blastFurnaceTemperature > 0) {
+                RecipeBuilder.BlastRecipeBuilder builder = RecipeMap.BLAST_RECIPES.recipeBuilder()
+                        .inputs(GTUtility.copyAmount(1, stack))
+                        .duration((int) Math.max(entry.material.getMass() / 4L, 1L) * ((MetalMaterial) entry.material).blastFurnaceTemperature)
+                        .EUt(120)
+                        .blastFurnaceTemp(((MetalMaterial) entry.material).blastFurnaceTemperature);
+
+                if (((MetalMaterial) entry.material).blastFurnaceTemperature > 1750) {
+                    ItemStack ingotHot = OreDictUnifier.get(OrePrefix.ingotHot, entry.material);
+                     if (ingotHot != null) {
+                         builder.outputs(ingotHot);
+                     } else {
+                         builder.outputs(OreDictUnifier.get(OrePrefix.ingot, entry.material));
+                     }
+                } else {
+                    builder.outputs(OreDictUnifier.get(OrePrefix.ingot, entry.material));
+                }
+
+                switch (entry.orePrefix) {
                     case crushed:
                     case crushedPurified:
                     case crushedCentrifuged:
-                        ItemStack tStack = OreDictUnifier.get(OrePrefix.nugget, uEntry.material.mDirectSmelting, uEntry.material.mDirectSmelting == uEntry.material ? 10L : 3L);
-                        if (tStack == null) {
-                            tStack = OreDictUnifier.get(uEntry.material.contains(SubTag.SMELTING_TO_GEM) ? OrePrefix.gem : OrePrefix.ingot, uEntry.material.mDirectSmelting, 1L);
+                        ItemStack itemStack = OreDictUnifier.get(OrePrefix.nugget, ((DustMaterial) entry.material).directSmelting, ((DustMaterial) entry.material).directSmelting == entry.material ? 10 : 3);
+                        if (itemStack == null) {
+                            itemStack = OreDictUnifier.get(entry.material.hasFlag(SMELTING_TO_GEM) ? OrePrefix.gem : OrePrefix.ingot, ((DustMaterial) entry.material).directSmelting);
                         }
-                        if ((tStack == null) && (!uEntry.material.contains(SubTag.SMELTING_TO_GEM))) {
-                            tStack = OreDictUnifier.get(OrePrefix.ingot, uEntry.material.mDirectSmelting, 1L);
+                        if (itemStack == null && !entry.material.hasFlag(SMELTING_TO_GEM)) {
+                            itemStack = OreDictUnifier.get(OrePrefix.ingot, ((DustMaterial) entry.material).directSmelting);
                         }
-                        ModHandler.addSmeltingRecipe(stack, tStack);
+                        ModHandler.addSmeltingRecipe(stack, itemStack);
                         break;
                     default:
-                        ModHandler.addSmeltingRecipe(stack, OreDictUnifier.get(OrePrefix.ingot, uEntry.material.mDirectSmelting, 1L));
+                        ModHandler.addSmeltingRecipe(stack, OreDictUnifier.get(OrePrefix.ingot, ((DustMaterial) entry.material).directSmelting));
                 }
             }
         }

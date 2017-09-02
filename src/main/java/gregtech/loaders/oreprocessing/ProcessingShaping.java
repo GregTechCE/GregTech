@@ -18,6 +18,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import static gregtech.api.unification.material.type.DustMaterial.MatFlags.NO_SMASHING;
+
 public class ProcessingShaping implements IOreRegistrationHandler {
     public ProcessingShaping() {
         OrePrefix.ingot.addProcessingHandler(this);
@@ -32,7 +34,7 @@ public class ProcessingShaping implements IOreRegistrationHandler {
             if ((tAmount > 0) && (tAmount <= 64) && (uEntry.orePrefix.mMaterialAmount % 3628800L == 0L)) {
                 int tVoltageMultiplier = uEntry.material.mBlastFurnaceTemp >= 2800 ? 64 : 16;
 
-                if (uEntry.material.contains(SubTag.NO_SMASHING)) {
+                if (uEntry.material.hasFlag(NO_SMASHING)) {
                     tVoltageMultiplier /= 4;
                 } else if (uEntry.orePrefix.name().startsWith(OrePrefix.dust.name())) {
                     return;

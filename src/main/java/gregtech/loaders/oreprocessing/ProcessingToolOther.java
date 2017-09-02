@@ -32,8 +32,7 @@ public class ProcessingToolOther implements IOreRegistrationHandler {
 						'S', new UnificationEntry(OrePrefix.stick, entry.material),
 						'R', new UnificationEntry(OrePrefix.plate, Materials.Rubber));
 			}
-			if (!entry.material.contains(SubTag.WOOD)
-					&& !entry.material.contains(SubTag.BOUNCY)
+			if (!ModHandler.isMaterialWood(entry.material)
 					&& !entry.material.hasFlag(NO_SMASHING)) {
 
 				if (entry.material instanceof SolidMaterial) {

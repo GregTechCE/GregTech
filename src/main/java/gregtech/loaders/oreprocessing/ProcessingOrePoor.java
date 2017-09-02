@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 
 public class ProcessingOrePoor implements IOreRegistrationHandler {
 
-    public ProcessingOrePoor() {
+    public void register() {
         OrePrefix.orePoor.addProcessingHandler(this);
         OrePrefix.oreSmall.addProcessingHandler(this);
         OrePrefix.oreNormal.addProcessingHandler(this);
@@ -50,7 +50,7 @@ public class ProcessingOrePoor implements IOreRegistrationHandler {
                 RecipeBuilder.DefaultRecipeBuilder builder = RecipeMap.MACERATOR_RECIPES.recipeBuilder()
                         .inputs(GTUtility.copyAmount(1, stack))
                         .outputs(OreDictUnifier.get(OrePrefix.dustTiny, entry.material, 2 * multiplier))
-                        .chancedOutput(OreDictUnifier.get(OrePrefix.dustTiny, GTUtility.selectItemInList(0, (FluidMaterial) entry.material, ((DustMaterial) entry.material).oreByProducts), 1), 5 * multiplier);
+                        .chancedOutput(OreDictUnifier.get(OrePrefix.dustTiny, GTUtility.selectItemInList(0, (FluidMaterial) entry.material, ((DustMaterial) entry.material).oreByProducts, FluidMaterial.class), 1), 5 * multiplier);
 
                 if (entry.orePrefix.secondaryMaterial.material instanceof DustMaterial) {
                     builder.chancedOutput(OreDictUnifier.getDust((DustMaterial) entry.orePrefix.secondaryMaterial.material, entry.orePrefix.secondaryMaterial.amount), 100);

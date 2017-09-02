@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 
 public class ProcessingPipe implements IOreRegistrationHandler {
 
-	public ProcessingPipe() {
+	public void register() {
 		OrePrefix.pipeLarge.addProcessingHandler(this);
 		OrePrefix.pipeMedium.addProcessingHandler(this);
 		OrePrefix.pipeSmall.addProcessingHandler(this);
@@ -33,7 +33,7 @@ public class ProcessingPipe implements IOreRegistrationHandler {
 			case pipeLarge:
 			case pipeMedium:
 			case pipeSmall:
-				if ((!entry.material.hasFlag(DustMaterial.MatFlags.NO_WORKING)) && ((entry.material.contains(SubTag.WOOD)) || (!entry.material.hasFlag(DustMaterial.MatFlags.NO_SMASHING)))) {
+				if (!entry.material.hasFlag(DustMaterial.MatFlags.NO_WORKING) && (ModHandler.isMaterialWood(entry.material) || !entry.material.hasFlag(DustMaterial.MatFlags.NO_SMASHING))) {
 
 					int amount = 6;
 					if (entry.orePrefix == OrePrefix.pipeLarge) amount = 1;
@@ -56,8 +56,8 @@ public class ProcessingPipe implements IOreRegistrationHandler {
 							row2,
 							row3,
 							'P', entry.material == Materials.Wood ? new UnificationEntry(OrePrefix.plank, entry.material) : new UnificationEntry(OrePrefix.plate, entry.material),
-							'H', entry.material.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftHammer : ToolDictNames.craftingToolHardHammer,
-							'W', entry.material.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw : ToolDictNames.craftingToolWrench);
+							'H', ModHandler.isMaterialWood(entry.material) ? ToolDictNames.craftingToolSoftHammer : ToolDictNames.craftingToolHardHammer,
+							'W', ModHandler.isMaterialWood(entry.material) ? ToolDictNames.craftingToolSaw : ToolDictNames.craftingToolWrench);
 				}
 				break;
 			case pipeRestrictiveHuge:

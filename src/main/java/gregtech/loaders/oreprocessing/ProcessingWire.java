@@ -11,7 +11,6 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
-import gregtech.common.CommonProxy;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
