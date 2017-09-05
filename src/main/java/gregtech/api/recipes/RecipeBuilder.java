@@ -11,6 +11,7 @@ import gregtech.api.util.EnumValidationResult;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ValidationResult;
+import gregtech.common.items.MetaItems;
 import ic2.core.ref.BlockName;
 import ic2.core.ref.ItemName;
 import ic2.core.ref.TeBlock;
@@ -172,6 +173,11 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 
 	public R duration(int duration) {
 		this.duration = duration;
+		return getThis();
+	}
+
+	public R noUnification() {
+		//@Exidex TO-DO
 		return getThis();
 	}
 
@@ -414,7 +420,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		@Override
 		protected EnumValidationResult finalizeAndValidate() {
 			if (circuitMeta >= 0) {
-//				inputs.add(ItemList.Circuit_Integrated.getWithDamage(0, circuitMeta));
+				inputs.add(MetaItems.getIntegratedCircuit(circuitMeta));
 			}
 			return super.finalizeAndValidate();
 		}

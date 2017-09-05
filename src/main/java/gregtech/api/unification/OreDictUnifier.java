@@ -105,6 +105,7 @@ public class OreDictUnifier {
 
     @Nullable
     public static MaterialStack getMaterial(ItemStack itemStack) {
+        if(itemStack == null) return null;
         SimpleItemStack simpleItemStack = new SimpleItemStack(itemStack);
         UnificationEntry entry = stackUnificationInfo.get(simpleItemStack);
         if(entry != null && entry.material != null) return new MaterialStack(entry.material, entry.orePrefix.materialAmount);
@@ -114,6 +115,7 @@ public class OreDictUnifier {
 
     @Nullable
     public static ImmutableList<MaterialStack> getByProducts(ItemStack itemStack) {
+        if(itemStack == null) return null;
         SimpleItemStack simpleItemStack = new SimpleItemStack(itemStack);
         UnificationEntry entry = stackUnificationInfo.get(simpleItemStack);
         if(entry != null && entry.material != null) return ImmutableList.of(new MaterialStack(entry.material, entry.orePrefix.materialAmount), entry.orePrefix.secondaryMaterial);
@@ -123,6 +125,7 @@ public class OreDictUnifier {
 
     @Nullable
     public static OrePrefix getPrefix(ItemStack itemStack) {
+        if(itemStack == null) return null;
         SimpleItemStack simpleItemStack = new SimpleItemStack(itemStack);
         UnificationEntry entry = stackUnificationInfo.get(simpleItemStack);
         if(entry != null) return entry.orePrefix;

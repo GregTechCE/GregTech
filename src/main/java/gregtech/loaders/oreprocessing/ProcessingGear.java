@@ -43,7 +43,7 @@ public class ProcessingGear implements IOreRegistrationHandler {
             }
 
             if(isSmall) {
-			    if(material instanceof MetalMaterial && !material.hasFlag(DustMaterial.MatFlags.NO_WORKING)) {
+			    if(material instanceof MetalMaterial && !material.hasFlag(DustMaterial.MatFlags.NO_SMASHING)) {
                     ModHandler.addShapedRecipe(stack,
 							"h##",
 							"#P#",

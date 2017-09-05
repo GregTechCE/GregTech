@@ -31,7 +31,7 @@ public class ProcessingBlock implements IOreRegistrationHandler {
 						.notConsumable(MetaItems.SHAPE_MOLD_BLOCK)
 						.fluidInputs(fluidMaterial.getFluid(L * 9))
 						.outputs(blockStack)
-						.duration(60)
+						.duration(180)
 						.EUt(8)
 						.buildAndRegister();
 			}
@@ -41,7 +41,7 @@ public class ProcessingBlock implements IOreRegistrationHandler {
 			    RecipeMap.CUTTER_RECIPES.recipeBuilder()
                         .inputs(blockStack)
                         .outputs(GTUtility.copyAmount(9, plateStack))
-                        .duration((int) (entry.material.getMass() * 10))
+                        .duration((int) (entry.material.getMass() * 10L))
                         .EUt(30)
                         .buildAndRegister();
             }

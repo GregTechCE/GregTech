@@ -23,14 +23,10 @@ public class MetalMaterial extends SolidMaterial {
         public static final long GENERATE_SPRING = createFlag(28);
         public static final long GENERATE_FINE_WIRE = createFlag(29);
         public static final long GENERATE_ROTOR = createFlag(30);
-        public static final long GENERATE_DOUBLE = createFlag(31);
-        public static final long GENERATE_TRIPLE = createFlag(32);
-        public static final long GENERATE_QUADRUPLE = createFlag(33);
-        public static final long GENERATE_SMALL_GEAR = createFlag(34);
-        public static final long GENERATE_QUINTUPLE = createFlag(38);
-        public static final long GENERATE_DENSE = createFlag(39);
-        public static final long GENERATE_SPRING_SMALL = createFlag(40);
-        public static final long GENERATE_ROUNDS = createFlag(41);
+        public static final long GENERATE_SMALL_GEAR = createFlag(31);
+        public static final long GENERATE_DENSE = createFlag(32);
+        public static final long GENERATE_SPRING_SMALL = createFlag(33);
+        public static final long GENERATE_ROUNDS = createFlag(34);
 
         /**
          * Add this to your Material if you want to have its Ore Calcite heated in a Blast Furnace for more output. Already listed are:
@@ -94,13 +90,7 @@ public class MetalMaterial extends SolidMaterial {
 
     @Override
     protected long verifyMaterialBits(long generationBits) {
-        if((generationBits & GENERATE_QUADRUPLE) > 0) {
-            generationBits |= GENERATE_TRIPLE;
-        }
-        if((generationBits & GENERATE_TRIPLE) > 0) {
-            generationBits |= GENERATE_DOUBLE;
-        }
-        if((generationBits & GENERATE_DOUBLE) > 0) {
+        if((generationBits & GENERATE_DENSE) > 0) {
             generationBits |= GENERATE_PLATE;
         }
         if((generationBits & GENERATE_ROTOR) > 0) {
