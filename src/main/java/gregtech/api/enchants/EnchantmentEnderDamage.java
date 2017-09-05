@@ -1,6 +1,5 @@
 package gregtech.api.enchants;
 
-import gregtech.api.ConfigCategories;
 import gregtech.api.GTValues;
 import net.minecraft.enchantment.EnchantmentDamage;
 import net.minecraft.entity.Entity;
@@ -11,6 +10,7 @@ import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class EnchantmentEnderDamage extends EnchantmentDamage {
 
@@ -20,13 +20,8 @@ public class EnchantmentEnderDamage extends EnchantmentDamage {
         super(Rarity.UNCOMMON, 2);
     }
 
-    public void registerEnchantment() {
-        REGISTRY.register(
-//                GT_Config.addIDConfig(ConfigCategories.IDs.enchantments, "Disjunction", 15),
-                15,
-                new ResourceLocation(GTValues.MODID, "disjunction"),
-                this
-        );
+    public void register() {
+        GameRegistry.register(this, new ResourceLocation(GTValues.MODID, "disjunction"));
     }
 
     @Override

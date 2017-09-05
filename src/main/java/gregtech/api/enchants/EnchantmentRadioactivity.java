@@ -1,13 +1,13 @@
 package gregtech.api.enchants;
 
 import gregtech.api.GTValues;
-//import gregtech.api.util.GT_Config;
 import gregtech.api.util.GTUtility;
 import net.minecraft.enchantment.EnchantmentDamage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class EnchantmentRadioactivity extends EnchantmentDamage {
 
@@ -17,13 +17,8 @@ public class EnchantmentRadioactivity extends EnchantmentDamage {
         super(Rarity.VERY_RARE, 0);
     }
 
-    public void registerEnchantment() {
-        REGISTRY.register(
-//                GT_Config.addIDConfig(ConfigCategories.IDs.enchantments, "Disjunction", 15),
-                15,
-                new ResourceLocation(GTValues.MODID, "disjunction"),
-                this
-        );
+    public void register() {
+        GameRegistry.register(this, new ResourceLocation(GTValues.MODID, "disjunction"));
     }
 
     @Override

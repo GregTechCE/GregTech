@@ -323,7 +323,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *         		.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.BrewingRecipeBuilder> BREWING_RECIPES = new RecipeMap<>(new HashSet<>(100), "brewer", "basicmachines/PotionBrewer", 1, 1, 0, 0, 1, 1, 1, 1, true, 1, 1, true, new RecipeBuilder.BrewingRecipeBuilder().nonOptimized().duration(128).EUt(4));
+	public static final RecipeMap<Recipe, RecipeBuilder.BrewingRecipeBuilder> BREWING_RECIPES = new RecipeMap<>(new HashSet<>(100), "brewer", "basicmachines/PotionBrewer", 1, 1, 0, 0, 1, 1, 1, 1, true, 1, 1, true, new RecipeBuilder.BrewingRecipeBuilder().notOptimized().duration(128).EUt(4));
 
 	/**
 	 * Example:
@@ -363,7 +363,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> FERMENTING_RECIPES = new RecipeMap<>(new HashSet<>(100), "fermenter", "basicmachines/Fermenter", 0, 0, 0, 0, 1, 1, 1, 1, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder().nonOptimized().EUt(2));
+	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> FERMENTING_RECIPES = new RecipeMap<>(new HashSet<>(100), "fermenter", "basicmachines/Fermenter", 0, 0, 0, 0, 1, 1, 1, 1, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder().notOptimized().EUt(2));
 
 	/**
 	 * Example:
@@ -574,7 +574,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.UniversalDistillationRecipeBuilder> DISTILLATION_RECIPES = new RecipeMap<>(new HashSet<>(50), "distillationtower", "basicmachines/Default", 0, 0, 0, 1, 1, 1, 1, 5, true, 1, 1, true, new RecipeBuilder.UniversalDistillationRecipeBuilder().nonOptimized());
+	public static final RecipeMap<Recipe, RecipeBuilder.UniversalDistillationRecipeBuilder> DISTILLATION_RECIPES = new RecipeMap<>(new HashSet<>(50), "distillationtower", "basicmachines/Default", 0, 0, 0, 1, 1, 1, 1, 5, true, 1, 1, true, new RecipeBuilder.UniversalDistillationRecipeBuilder().notOptimized());
 
 	/**
 	 * Example:
@@ -596,7 +596,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 			recipeMap.addRecipe(this.copy().fluidInputs(fluidInput, ModHandler.getSteam(fluidInput.amount)).fluidOutputs(fluidOutput, Materials.Hydrogen.getFluid(fluidInput.amount)).build());
 			recipeMap.addRecipe(this.copy().fluidInputs(fluidInput, Materials.Hydrogen.getFluid(fluidInput.amount)).fluidOutputs(new FluidStack(fluidOutput.getFluid(), (int) (fluidOutput.amount * 1.3))).build());
 		}
-	}.nonOptimized());
+	}.notOptimized());
 
 	/**
 	 * Example:
@@ -612,7 +612,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *     			.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.IntCircuitRecipeBuilder> PYROLYSE_RECIPES = new RecipeMap<>(new HashSet<>(50), "pyro", "basicmachines/Default", 2, 2, 0, 1, 0, 1, 1, 1, true, 1, 1, true, new RecipeBuilder.IntCircuitRecipeBuilder().nonOptimized());
+	public static final RecipeMap<Recipe, RecipeBuilder.IntCircuitRecipeBuilder> PYROLYSE_RECIPES = new RecipeMap<>(new HashSet<>(50), "pyro", "basicmachines/Default", 2, 2, 0, 1, 0, 1, 1, 1, true, 1, 1, true, new RecipeBuilder.IntCircuitRecipeBuilder().notOptimized());
 
 	/**
 	 * Example:
@@ -950,6 +950,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		return fluid != null && recipeFluidMap.containsKey(fluid);
 	}
 
+	@Nullable
 	public T findRecipe(TileEntity tileEntity, boolean notUnificated, long voltage, FluidStack[] fluids, ItemStack[] inputs) {
 		return findRecipe(tileEntity, null, notUnificated, voltage, fluids, inputs);
 	}
@@ -965,6 +966,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * @param inputs        the Item Inputs
 	 * @return the Recipe it has found or null for no matching Recipe
 	 */
+	@Nullable
 	public T findRecipe(@Nullable TileEntity tileEntity, @Nullable T inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack[] inputs) {
 		// No Recipes? Well, nothing to be found then.
 		if (recipeList.isEmpty()) return null;
@@ -1003,15 +1005,6 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 			}
 //		}
 
-		// Unification happens here in case the Input isn't already unificated.
-		if (notUnificated) {
-			for (int i = 0; i < inputs.length; i++) {
-				if (inputs[i] != null) {
-					inputs[i] = OreDictUnifier.getUnificated(inputs[i]);
-				}
-			}
-		}
-
 		// Check the Recipe which has been used last time in order to not have to search for it again, if possible.
 		if (inputRecipe != null) {
 			if (inputRecipe.canBeBuffered() && inputRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) {
@@ -1020,25 +1013,32 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		}
 
 		// Now look for the Recipes inside the Item HashMaps, but only when the Recipes usually have Items.
-		if (maxInputs > 0 && inputs != null) {
-			for (ItemStack stack : inputs) {
-				if (stack != null) {
-					Collection<T> recipes = recipeItemMap.get(new SimpleItemStack(stack));
-					if (recipes != null) {
-						for (T tmpRecipe : recipes) {
-							if (tmpRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) {
-								return voltage * amperage >= tmpRecipe.getEUt() ? tmpRecipe : null;
-							}
-						}
-					}
-					recipes = recipeItemMap.get(new SimpleItemStack(stack.getItem(), W));
-					if (recipes != null) {
-						for (T tmpRecipe : recipes) {
-							if (tmpRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) {
-								return voltage * amperage >= tmpRecipe.getEUt() ? tmpRecipe : null;
-							}
-						}
-					}
+		if (maxInputs > 0) {
+			T recipe = findByItemInput(inputs, fluidInputs);
+			if (recipe != null) {
+				return voltage * amperage >= recipe.getEUt() ? inputRecipe : null;
+			}
+		}
+
+		// Unification happens here in case the Input isn't already unificated.
+		if (notUnificated) {
+			for (int i = 0; i < inputs.length; i++) {
+				if (inputs[i] != null) {
+					inputs[i] = OreDictUnifier.getUnificated(inputs[i]);
+				}
+			}
+
+			// Same as above but with unificated inputs
+			if (inputRecipe != null) {
+				if (inputRecipe.canBeBuffered() && inputRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) {
+					return voltage * amperage >= inputRecipe.getEUt() ? inputRecipe : null;
+				}
+			}
+
+			if (maxInputs > 0) {
+				T recipe = findByItemInput(inputs, fluidInputs);
+				if (recipe != null) {
+					return voltage * amperage >= recipe.getEUt() ? recipe : null;
 				}
 			}
 		}
@@ -1060,6 +1060,31 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		}
 
 		// And nothing has been found.
+		return null;
+	}
+
+	@Nullable
+	private T findByItemInput(ItemStack[] inputs, FluidStack[] fluidInputs) {
+		for (ItemStack stack : inputs) {
+			if (stack != null) {
+				Collection<T> recipes = recipeItemMap.get(new SimpleItemStack(stack));
+				if (recipes != null) {
+					for (T tmpRecipe : recipes) {
+						if (tmpRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) {
+							return tmpRecipe;
+						}
+					}
+				}
+				recipes = recipeItemMap.get(new SimpleItemStack(stack.getItem(), W));
+				if (recipes != null) {
+					for (T tmpRecipe : recipes) {
+						if (tmpRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) {
+							return tmpRecipe;
+						}
+					}
+				}
+			}
+		}
 		return null;
 	}
 
@@ -1193,12 +1218,13 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		}
 
 		@Override
+		@Nullable
 		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack[] inputs) {
 			if (inputs == null || inputs.length <= 0 || inputs[0] == null) return null;
 			if (inputRecipe != null && inputRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) return inputRecipe;
-			ItemStack output = ModHandler.getSmeltingOutput(inputs[0], false, null);
+			ItemStack output = ModHandler.getSmeltingOutput(inputs[0]);
 			return output == null ? null : this.recipeBuilder()
-					.nonOptimized()
+					.notOptimized()
 					.inputs(GTUtility.copyAmount(1, inputs[0]))
 					.outputs(output)
 					.duration(128)
@@ -1209,7 +1235,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 		@Override
 		public boolean containsInput(ItemStack stack) {
-			return ModHandler.getSmeltingOutput(stack, false, null) != null;
+			return ModHandler.getSmeltingOutput(stack) != null;
 		}
 	}
 
@@ -1223,14 +1249,15 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		}
 
 		@Override
+		@Nullable
 		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack[] inputs) {
 			if (inputs == null || inputs.length <= 0 || inputs[0] == null) return null;
 			if (inputRecipe != null && inputRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) return inputRecipe;
-			ItemStack output = ModHandler.getSmeltingOutput(inputs[0], false, null);
+			ItemStack output = ModHandler.getSmeltingOutput(inputs[0]);
 
 //			if (GTUtility.areStacksEqual(inputs[0], new ItemStack(Items.BOOK, 1, W))) {
 //				return this.recipeBuilder()
-//						.nonOptimized()
+//						.notOptimized()
 //						.inputs(GTUtility.copyAmount(1, inputs[0]))
 //						.outputs(GTUtility.getWrittenBook("Manual_Microwave", ItemList.Book_Written_03.get(1)))
 //						.duration(32)
@@ -1288,7 +1315,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 			}
 
 			return output == null ? null : new RecipeBuilder.DefaultRecipeBuilder(this.defaultRecipe)
-					.nonOptimized()
+					.notOptimized()
 					.inputs(GTUtility.copyAmount(1, inputs[0]))
 					.outputs(output)
 					.duration(32)
@@ -1299,7 +1326,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 		@Override
 		public boolean containsInput(ItemStack stack) {
-			return ModHandler.getSmeltingOutput(stack, false, null) != null;
+			return ModHandler.getSmeltingOutput(stack) != null;
 		}
 	}
 
@@ -1313,6 +1340,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		}
 
 		@Override
+		@Nullable
 		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack[] inputs) {
 			if (inputs == null || inputs.length <= 0 || !ModHandler.IC2.getScrapBox(1).isItemEqual(inputs[0]))
 				return super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, fluidInputs, inputs);
@@ -1321,7 +1349,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 				return super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, fluidInputs, inputs);
 			}
 			return this.recipeBuilder()
-					.nonOptimized()
+					.notOptimized()
 					.cannotBeBuffered() // It is not allowed to be buffered due to the random Output
 					.needsEmptyOutput() // Due to its randomness it is not good if there are Items in the Output Slot, because those Items could manipulate the outcome.
 					.inputs(ModHandler.IC2.getScrapBox(1))
@@ -1348,6 +1376,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		}
 
 		@Override
+		@Nullable
 		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack[] inputs) {
 			Recipe recipe = super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, fluidInputs, inputs);
 			if (inputs == null || inputs.length <= 0 || inputs[0] == null || recipe != null /*|| !GregTechAPI.sPostloadFinished*/)
@@ -1358,7 +1387,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 //				if (fluid != null) {
 //					recipe = this.recipeBuilder()
 //							.cannotBeBuffered()
-//							.nonOptimized()
+//							.notOptimized()
 //							.inputs(GTUtility.copyAmount(1, inputs[0]))
 //							.outputs(output)
 //							.fluidInputs(fluidInputs)
@@ -1372,7 +1401,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 //				if (fluid != null) {
 //					recipe = this.recipeBuilder()
 //							.cannotBeBuffered()
-//							.nonOptimized()
+//							.notOptimized()
 //							.inputs(GTUtility.copyAmount(1, inputs[0]))
 //							.outputs(GTUtility.getContainerItem(inputs[0], true))
 //							.fluidOutputs(fluidInputs)
@@ -1410,12 +1439,13 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		}
 
 		@Override
+		@Nullable
 		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack[] inputs) {
 			if (inputs == null || inputs.length <= 0 || inputs[0] == null) return null;
 			if (inputRecipe != null && inputRecipe.isRecipeInputEqual(false, true, fluidInputs, inputs)) return inputRecipe;
 
 			RecipeBuilder<Recipe, RecipeBuilder.DefaultRecipeBuilder> builder = this.recipeBuilder()
-					.nonOptimized()
+					.notOptimized()
 					.inputs(GTUtility.copyAmount(1, inputs[0]))
 					.duration(45)
 					.EUt(1);
@@ -1442,6 +1472,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		}
 
 		@Override
+		@Nullable
 		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack[] inputs) {
 			Recipe recipe = super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, fluidInputs, inputs);
 			if (inputs == null || inputs.length < 2 || inputs[0] == null || inputs[1] == null /*|| !GregTechAPI.sPostloadFinished*/)
@@ -1453,7 +1484,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 					return this.recipeBuilder()
 							.cannotBeBuffered()
-							.nonOptimized()
+							.notOptimized()
 							.notConsumable(MetaItems.SHAPE_MOLD_NAME)
 							.inputs(GTUtility.copyAmount(1, inputs[1]))
 							.outputs(output)
@@ -1468,7 +1499,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 					return this.recipeBuilder()
 							.cannotBeBuffered()
-							.nonOptimized()
+							.notOptimized()
 							.notConsumable(MetaItems.SHAPE_MOLD_NAME)
 							.inputs(GTUtility.copyAmount(1, inputs[0]))
 							.outputs(output)
@@ -1512,6 +1543,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		}
 
 		@Override
+		@Nullable
 		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, FluidStack[] fluidInputs, ItemStack[] inputs) {
 			Recipe recipe = super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, fluidInputs, inputs);
 			if (inputs == null || inputs.length <= 0 || inputs[0] == null || fluidInputs == null || fluidInputs.length <= 0 || fluidInputs[0] == null/*|| !GregTechAPI.sPostloadFinished*/)

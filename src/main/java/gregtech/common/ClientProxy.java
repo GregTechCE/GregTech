@@ -6,6 +6,7 @@
 package gregtech.common;
 
 import codechicken.lib.vec.Rotation;
+import gregtech.api.unification.material.model.MaterialModelLoader;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
@@ -59,6 +60,8 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void onLoad() {
         super.onLoad();
+
+        MaterialModelLoader.register();
     }
 
     @Override
