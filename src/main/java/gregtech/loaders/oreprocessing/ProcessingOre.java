@@ -19,7 +19,7 @@ import net.minecraft.item.ItemStack;
 import java.util.ArrayList;
 
 public class ProcessingOre implements IOreRegistrationHandler {
-    private ArrayList<Materials> mAlreadyListedOres = new ArrayList(1000);
+    private ArrayList<Materials> mAlreadyListedOres = new ArrayList<>(1000);
 
     public ProcessingOre() {
         for (OrePrefix tPrefix : OrePrefix.values()) {

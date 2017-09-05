@@ -14,6 +14,9 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaItems;
 import net.minecraft.item.ItemStack;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static gregtech.api.GTValues.L;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.MORTAR_GRINDABLE;
 
@@ -21,14 +24,21 @@ public class ProcessingIngot implements IOreRegistrationHandler {
 
     public void register() {
         OrePrefix.ingot.addProcessingHandler(this);
-        OrePrefix.ingotDouble.addProcessingHandler(this);
-        OrePrefix.ingotTriple.addProcessingHandler(this);
-        OrePrefix.ingotQuadruple.addProcessingHandler(this);
-        OrePrefix.ingotQuintuple.addProcessingHandler(this);
-        OrePrefix.ingotHot.addProcessingHandler(this);
     }
 
     public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {
+        if(entry.material instanceof MetalMaterial) {
+            MetalMaterial material = (MetalMaterial) entry.material;
+            ItemStack stack = simpleStack.asItemStack();
+
+            OrePrefix prevPrefix = GTUtility.getItem(ORDER, ORDER.indexOf(entry.orePrefix) - 1, null);
+            if(prevPrefix != null) {
+
+            }
+
+        }
+
+
         ItemStack stack = simpleStack.asItemStack();
         long materialMass = entry.material.getMass();
         boolean noSmashing = entry.material.hasFlag(DustMaterial.MatFlags.NO_SMASHING);

@@ -105,13 +105,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 	}
 
 	public R inputs(ItemStack... inputs) {
-		if (Arrays.asList(inputs).contains(null)) {
-			GTLog.logger.error("Input cannot contain null ItemStacks", new IllegalArgumentException());
-			recipeStatus = EnumValidationResult.INVALID;
-			return getThis();
-		}
-		Collections.addAll(this.inputs, inputs);
-		return getThis();
+		return inputs(Arrays.asList(inputs));
 	}
 
 	public R inputs(Collection<ItemStack> inputs) {
@@ -126,34 +120,18 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
     }
 
 	public R outputs(ItemStack... outputs) {
-		if (Arrays.asList(outputs).contains(null)) {
-			GTLog.logger.error("Output cannot contain null ItemStacks", new IllegalArgumentException());
-			recipeStatus = EnumValidationResult.INVALID;
-			return getThis();
-		}
-		Collections.addAll(this.outputs, outputs);
-		return getThis();
+		return outputs(Arrays.asList(outputs));
 	}
 
     public R outputs(Collection<ItemStack> outputs) {
-		if (outputs.contains(null)) {
-			GTLog.logger.error("Output cannot contain null ItemStacks", new IllegalArgumentException());
-			recipeStatus = EnumValidationResult.INVALID;
-			return getThis();
-		}
-
+		outputs = new ArrayList<>(outputs);
+		if(outputs.contains(null)) outputs.remove(null);
 		this.outputs.addAll(outputs);
         return getThis();
     }
 
 	public R fluidInputs(FluidStack... inputs) {
-		if (Arrays.asList(inputs).contains(null)) {
-			GTLog.logger.error("Fluid input cannot contain null FluidStacks", new IllegalArgumentException());
-			recipeStatus = EnumValidationResult.INVALID;
-			return getThis();
-		}
-		Collections.addAll(this.fluidInputs, inputs);
-		return getThis();
+		return fluidInputs(Arrays.asList(inputs));
 	}
 
     public R fluidInputs(Collection<FluidStack> inputs) {
@@ -167,21 +145,12 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
     }
 
 	public R fluidOutputs(FluidStack... outputs) {
-		if (Arrays.asList(outputs).contains(null)) {
-			GTLog.logger.error("Fluid output cannot contain null FluidStacks", new IllegalArgumentException());
-			recipeStatus = EnumValidationResult.INVALID;
-			return getThis();
-		}
-		Collections.addAll(this.fluidOutputs, outputs);
-		return getThis();
+		return fluidOutputs(Arrays.asList(outputs));
 	}
 
     public R fluidOutputs(Collection<FluidStack> outputs) {
-		if (outputs.contains(null)) {
-			GTLog.logger.error("Fluid output cannot contain null FluidStacks", new IllegalArgumentException());
-			recipeStatus = EnumValidationResult.INVALID;
-			return getThis();
-		}
+		outputs = new ArrayList<>(outputs);
+		if(outputs.contains(null)) outputs.remove(null);
 		this.fluidOutputs.addAll(outputs);
         return getThis();
     }

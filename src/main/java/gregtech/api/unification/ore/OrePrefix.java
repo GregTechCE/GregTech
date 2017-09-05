@@ -68,10 +68,6 @@ public enum OrePrefix {
     cleanGravel("Clean Gravels", -1, null, null, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null),
     dirtyGravel("Dirty Gravels", -1, null, null, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null),
 
-    ingotQuintuple("5x Ingots", M * 5, null, MaterialIconType.ingotQuintuple, ENABLE_UNIFICATION, and(mat -> mat instanceof MetalMaterial, hasFlag(GENERATE_QUINTUPLE), noFlag(NO_SMASHING))), // A quintuple Ingot.
-    ingotQuadruple("4x Ingots", M * 4, null, MaterialIconType.ingotQuadruple, ENABLE_UNIFICATION, and(mat -> mat instanceof MetalMaterial, hasFlag(GENERATE_QUADRUPLE), noFlag(NO_SMASHING))), // A quadruple Ingot.
-    ingotTriple("3x Ingots", M * 3, null, MaterialIconType.ingotTriple, ENABLE_UNIFICATION, and(mat -> mat instanceof MetalMaterial, hasFlag(GENERATE_TRIPLE), noFlag(NO_SMASHING))), // A triple Ingot.
-    ingotDouble("2x Ingots", M * 2, null, MaterialIconType.ingotDouble, ENABLE_UNIFICATION, and(mat -> mat instanceof MetalMaterial, hasFlag(GENERATE_DOUBLE), noFlag(NO_SMASHING))), // A double Ingot. Introduced by TerraFirmaCraft
     ingotHot("Hot Ingots", M, null, MaterialIconType.ingotHot, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> (mat instanceof MetalMaterial) && ((MetalMaterial) mat).blastFurnaceTemperature > 1750), // A hot Ingot, which has to be cooled down by a Vacuum Freezer.
     ingot("Ingots", M, null, MaterialIconType.ingot, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> mat instanceof MetalMaterial), // A regular Ingot. Introduced by Eloraam
 
@@ -90,12 +86,7 @@ public enum OrePrefix {
 
     nugget("Nuggets", M / 9, null, MaterialIconType.nugget, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> mat instanceof MetalMaterial), // A Nugget. Introduced by Eloraam
 
-    plateAlloy("Alloy Plates", -1, null, MaterialIconType.plate, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null), // Special Alloys have this prefix.
     plateDense("Dense Plates", M * 9, null, MaterialIconType.plateDense, ENABLE_UNIFICATION, and(mat -> mat instanceof DustMaterial, hasFlag(GENERATE_PLATE | GENERATE_DENSE), noFlag(NO_SMASHING))), // 9 Plates combined in one Item.
-    plateQuintuple("5x Plates", M * 5, null, MaterialIconType.plateQuintuple, ENABLE_UNIFICATION, mat -> mat instanceof MetalMaterial && mat.hasFlag(GENERATE_PLATE | GENERATE_QUINTUPLE)),
-    plateQuadruple("4x Plates", M * 4, null, MaterialIconType.plateQuadruple, ENABLE_UNIFICATION, mat -> mat instanceof MetalMaterial && mat.hasFlag(GENERATE_PLATE | GENERATE_QUADRUPLE)),
-    plateTriple("3x Plates", M * 3, null, MaterialIconType.plateTriple, ENABLE_UNIFICATION, mat -> mat instanceof MetalMaterial && mat.hasFlag(GENERATE_PLATE | GENERATE_TRIPLE)),
-    plateDouble("2x Plates", M * 2, null, MaterialIconType.plateDouble, ENABLE_UNIFICATION, mat -> mat instanceof MetalMaterial && mat.hasFlag(GENERATE_PLATE | GENERATE_DOUBLE)),
     plate("Plates", M, null, MaterialIconType.plate, ENABLE_UNIFICATION, mat -> mat instanceof DustMaterial && mat.hasFlag(GENERATE_PLATE)), // Regular Plate made of one Ingot/Dust. Introduced by Calclavia
 
     foil("Foils", M / 4, null, MaterialIconType.foil, ENABLE_UNIFICATION, mat -> mat instanceof MetalMaterial && mat.hasFlag(GENERATE_FOIL)), // Foil made of 1/4 Ingot/Dust.
@@ -273,23 +264,15 @@ public enum OrePrefix {
         ingotHot.heatDamage = 3.0F;
         cellPlasma.heatDamage = 6.0F;
 
-        ingotQuintuple.defaultStackSize = 12;
-        ingotQuadruple.defaultStackSize = 16;
-        ingotTriple.defaultStackSize = 21;
-        ingotDouble.defaultStackSize = 32;
         ingotHot.defaultStackSize = 16;
 
         gemFlawless.defaultStackSize = 32;
         gemExquisite.defaultStackSize = 16;
 
         plateDense.defaultStackSize = 8;
-        plateQuintuple.defaultStackSize = 12;
-        plateQuadruple.defaultStackSize = 16;
-        plateTriple.defaultStackSize = 21;
-        plateDouble.defaultStackSize = 32;
 
         rotor.defaultStackSize = 16;
-        gearGt.defaultStackSize = 16;
+        gear.defaultStackSize = 16;
 
         bucket.defaultStackSize = 16;
         bottle.defaultStackSize = 16;

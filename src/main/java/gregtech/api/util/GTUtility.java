@@ -342,6 +342,12 @@ public class GTUtility {
         return replacement;
     }
 
+    public static <M> M getItem(List<? extends M> list, int index, M replacement) {
+        if(index >= 0 && index < list.size())
+            return list.get(index);
+        return replacement;
+    }
+
     public static boolean isStackInList(ItemStack stack, Collection<SimpleItemStack> list) {
         if (stack == null) return false;
         return isStackInList(new SimpleItemStack(stack), list);

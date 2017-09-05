@@ -1,5 +1,6 @@
 package gregtech.api.recipes;
 
+import com.google.common.base.Preconditions;
 import gregtech.api.GregTechAPI;
 import gregtech.api.items.IDamagableItem;
 import gregtech.api.items.ToolDictNames;
@@ -21,6 +22,7 @@ import ic2.core.ref.BlockName;
 import ic2.core.ref.FluidName;
 import ic2.core.ref.ItemName;
 import ic2.core.ref.TeBlock;
+import mods.railcraft.api.crafting.RailcraftCraftingManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -38,6 +40,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
@@ -119,7 +123,7 @@ public class ModHandler {
     }
 
     public static boolean isMaterialWood(Material material) {
-        return material == Materials.Wood || material == Materials.Wood;
+        return material == Materials.Wood || material == Materials.WoodSealed;
     }
 
     /**
@@ -141,7 +145,6 @@ public class ModHandler {
     ///////////////////////////////////////////////////
     //        Furnace Smelting Recipe Helpers        //
     ///////////////////////////////////////////////////
-
     /**
      * Just simple Furnace smelting
      */
@@ -522,6 +525,20 @@ public class ModHandler {
         if (Recipes.recyclerWhitelist.isEmpty())
             return Recipes.recyclerBlacklist.contains(input) ? null : IC2.getScrap(1);
         return Recipes.recyclerWhitelist.contains(input) ? IC2.getScrap(1) : null;
+    }
+
+    public static void addRCFurnaceRecipe(ItemStack input, ItemStack output, int duration) {
+        Preconditions.checkNotNull(input);
+        Preconditions.checkNotNull(output);
+        Preconditions.checkArgument(duration > 0, "Duration should be positive!");
+        if(Loader.isModLoaded("railcraft")) {
+            addRCFurnaceRecipeInternal(input, output, duration);
+        }
+    }
+
+    @Optional.Method(modid = "railcraft")
+    private static void addRCFurnaceRecipeInternal(ItemStack input, ItemStack output, int duration) {
+        RailcraftCraftingManager.blastFurnace.addRecipe(input, true, false, duration, output);
     }
 
     ///////////////////////////////////////////////////

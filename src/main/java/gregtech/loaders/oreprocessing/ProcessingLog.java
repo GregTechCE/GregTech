@@ -24,7 +24,9 @@ public class ProcessingLog implements IOreRegistrationHandler {
     
     public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {
         ItemStack stack = simpleStack.asItemStack();
+
         if (entry.material == Materials.Rubber) {
+
 			RecipeMap.CENTRIFUGE_RECIPES.recipeBuilder()
 					.inputs(GTUtility.copyAmount(1, stack))
 					.chancedOutput(ModHandler.IC2.getIC2Item(ItemName.misc_resource, MiscResourceType.resin, 1), 5000)

@@ -56,14 +56,18 @@ public class ProcessingClearDust implements IOreRegistrationHandler {
                 MetalMaterial metalMaterial = (MetalMaterial) material;
                 ItemStack ingotStack = OreDictUnifier.get(OrePrefix.ingot, metalMaterial);
                 if(metalMaterial.blastFurnaceTemperature > 0) {
+                    int duration = (int) (entry.material.getMass() * metalMaterial.blastFurnaceTemperature / 40L);
                     ModHandler.removeFurnaceSmelting(ingotStack);
                     RecipeMap.BLAST_RECIPES.recipeBuilder()
                             .inputs(stack)
                             .outputs(ingotStack)
-                            .duration((int) (entry.material.getMass() * metalMaterial.blastFurnaceTemperature / 40L))
+                            .duration(duration)
                             .EUt(120)
                             .blastFurnaceTemp(metalMaterial.blastFurnaceTemperature)
                             .buildAndRegister();
+                    if(metalMaterial.blastFurnaceTemperature <= 1000) {
+                        ModHandler.addRCFurnaceRecipe(stack, ingotStack, duration);
+                    }
                 } else {
                     ModHandler.addSmeltingRecipe(stack, ingotStack);
                 }
