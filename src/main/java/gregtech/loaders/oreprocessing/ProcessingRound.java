@@ -15,7 +15,7 @@ import static gregtech.api.unification.material.type.Material.MatFlags.NO_UNIFIC
 
 public class ProcessingRound implements IOreRegistrationHandler {
 
-    public ProcessingRound() {
+    public void register() {
         OrePrefix.round.addProcessingHandler(this);
     }
     
@@ -30,12 +30,11 @@ public class ProcessingRound implements IOreRegistrationHandler {
                     .EUt(8)
                     .buildAndRegister();
 
-            if (!entry.material.hasFlag(NO_UNIFICATION)) {
-                ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.round, entry.material),
-                        "fX",
-                        "X ",
-                        'X', OreDictUnifier.get(OrePrefix.nugget, entry.material));
-            }
+            ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.round, entry.material),
+                    "fX#",
+                    "X##",
+                    'X', OreDictUnifier.get(OrePrefix.nugget, entry.material));
         }
     }
+
 }

@@ -15,7 +15,7 @@ import static gregtech.api.unification.material.type.Material.MatFlags.NO_UNIFIC
 
 public class ProcessingScrew implements IOreRegistrationHandler {
 
-    public ProcessingScrew() {
+    public void register() {
         OrePrefix.screw.addProcessingHandler(this);
     }
 
@@ -24,11 +24,10 @@ public class ProcessingScrew implements IOreRegistrationHandler {
         ItemStack stack = simpleStack.asItemStack();
 
         if (!entry.material.hasFlag(NO_WORKING)) {
-
             RecipeMap.LATHE_RECIPES.recipeBuilder()
                     .inputs(OreDictUnifier.get(OrePrefix.bolt, entry.material, 1))
                     .outputs(GTUtility.copyAmount(1, stack))
-                    .duration((int) Math.max(entry.material.getMass() / 8L, 1L))
+                    .duration((int) ((int) entry.material.getMass() / 8L))
                     .EUt(4)
                     .buildAndRegister();
 

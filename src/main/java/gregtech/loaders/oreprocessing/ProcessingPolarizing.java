@@ -16,7 +16,7 @@ import static gregtech.api.GTValues.M;
 
 public class ProcessingPolarizing implements IOreRegistrationHandler {
 
-    public void init() {
+    public void register() {
         for (OrePrefix prefix : OrePrefix.values()) {
             if (prefix.materialAmount > 0L && prefix.generationCondition != null) {
                 prefix.addProcessingHandler(this);

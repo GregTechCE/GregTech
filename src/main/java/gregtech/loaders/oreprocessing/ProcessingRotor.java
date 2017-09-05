@@ -15,7 +15,7 @@ import static gregtech.api.unification.material.type.Material.MatFlags.NO_UNIFIC
 
 public class ProcessingRotor implements IOreRegistrationHandler {
 
-	public ProcessingRotor() {
+	public void register() {
 		OrePrefix.rotor.addProcessingHandler(this);
 	}
 
@@ -42,4 +42,5 @@ public class ProcessingRotor implements IOreRegistrationHandler {
 			builder.copy().fluidInputs(Materials.SolderingAlloy.getFluid(32)).buildAndRegister();
 		}
 	}
+
 }

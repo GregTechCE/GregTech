@@ -23,16 +23,16 @@ public class ProcessingPure implements IOreRegistrationHandler {
         if (entry.material instanceof SolidMaterial) {
             SolidMaterial material = (SolidMaterial) entry.material;
             ItemStack stack = simpleStack.asItemStack();
-            DustMaterial byproductMaterial = GTUtility.selectItemInList(1, material.macerateInto, material.oreByProducts);
-            ItemStack pureDustStack = OreDictUnifier.get(OrePrefix.dustPure, material.macerateInto);
+            DustMaterial byproductMaterial = GTUtility.selectItemInList(1, material, material.oreByProducts, DustMaterial.class);
+            ItemStack pureDustStack = OreDictUnifier.get(OrePrefix.dustPure, material);
 
             if(pureDustStack == null) { //fallback for reduced & cleanGravel
-                pureDustStack = OreDictUnifier.get(OrePrefix.dust, material.macerateInto);
+                pureDustStack = OreDictUnifier.get(OrePrefix.dust, material);
             }
 
             RecipeMap.HAMMER_RECIPES.recipeBuilder()
                     .inputs(stack)
-                    .outputs(OreDictUnifier.get(OrePrefix.dustPure, material.macerateInto))
+                    .outputs(OreDictUnifier.get(OrePrefix.dustPure, material))
                     .duration(10)
                     .EUt(16)
                     .buildAndRegister();
