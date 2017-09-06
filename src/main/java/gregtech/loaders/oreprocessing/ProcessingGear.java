@@ -21,9 +21,12 @@ import static gregtech.api.unification.material.type.Material.MatFlags.NO_UNIFIC
 
 public class ProcessingGear implements IOreRegistrationHandler {
 
-	public void register() {
-		OrePrefix.gear.addProcessingHandler(this);
-		OrePrefix.gearSmall.addProcessingHandler(this);
+    private ProcessingGear() {}
+
+	public static void register() {
+        ProcessingGear processing = new ProcessingGear();
+		OrePrefix.gear.addProcessingHandler(processing);
+		OrePrefix.gearSmall.addProcessingHandler(processing);
 	}
 
 	public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {

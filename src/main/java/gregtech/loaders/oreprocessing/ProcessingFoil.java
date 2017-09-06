@@ -10,8 +10,10 @@ import gregtech.api.unification.stack.UnificationEntry;
 
 public class ProcessingFoil implements IOreRegistrationHandler {
 
-	public void register() {
-		OrePrefix.foil.addProcessingHandler(this);
+	private ProcessingFoil() {}
+
+	public static void register() {
+		OrePrefix.foil.addProcessingHandler(new ProcessingFoil());
 	}
 
 	public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {

@@ -29,8 +29,11 @@ public class ProcessingGem implements IOreRegistrationHandler {
             OrePrefix.gemChipped, OrePrefix.gemFlawed, OrePrefix.gem, OrePrefix.gemFlawless, OrePrefix.gemExquisite
     );
 
-    public void register() {
-        ORDER.forEach(p -> p.addProcessingHandler(this));
+    private ProcessingGem() {}
+
+    public static void register() {
+        ProcessingGem processing = new ProcessingGem();
+        ORDER.forEach(p -> p.addProcessingHandler(processing));
     }
 
     public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {

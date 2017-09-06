@@ -16,19 +16,21 @@ import static gregtech.api.GTValues.M;
 
 public class ProcessingPolarizing implements IOreRegistrationHandler {
 
-    public void register() {
+    private ProcessingPolarizing() {}
+
+    public static void register() {
+        ProcessingPolarizing processing = new ProcessingPolarizing();
         for (OrePrefix prefix : OrePrefix.values()) {
             if (prefix.materialAmount > 0L && prefix.generationCondition != null) {
-                prefix.addProcessingHandler(this);
+                prefix.addProcessingHandler(processing);
             }
         }
     }
 
     public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {
-        ItemStack stack = simpleStack.asItemStack();
-
         if(entry.material instanceof MetalMaterial) {
             MetalMaterial material = (MetalMaterial) entry.material;
+            ItemStack stack = simpleStack.asItemStack();
 
             if(material.magneticMaterial != null) {
                 ItemStack magneticStack = OreDictUnifier.get(entry.orePrefix, material.magneticMaterial);

@@ -15,8 +15,10 @@ import net.minecraft.item.ItemStack;
 
 public class ProcessingLens implements IOreRegistrationHandler {
 
-    public void register() {
-        OrePrefix.lens.addProcessingHandler(this);
+    private ProcessingLens() {}
+
+    public static void register() {
+        OrePrefix.lens.addProcessingHandler(new ProcessingLens());
     }
     
     public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {

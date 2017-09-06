@@ -23,8 +23,10 @@ import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.MORT
 
 public class ProcessingIngot implements IOreRegistrationHandler {
 
-    public void register() {
-        OrePrefix.ingot.addProcessingHandler(this);
+    private ProcessingIngot() {}
+
+    public static void register() {
+        OrePrefix.ingot.addProcessingHandler(new ProcessingIngot());
 
         //simple ingotHot processing
         OrePrefix.ingotHot.addProcessingHandler((entry, modName, stack) -> {

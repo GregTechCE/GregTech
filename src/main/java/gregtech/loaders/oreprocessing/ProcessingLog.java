@@ -18,8 +18,10 @@ import net.minecraft.item.ItemStack;
 
 public class ProcessingLog implements IOreRegistrationHandler {
 
-    public void register() {
-        OrePrefix.log.addProcessingHandler(this);
+    private ProcessingLog() {}
+
+    public static void register() {
+        OrePrefix.log.addProcessingHandler(new ProcessingLog());
     }
     
     public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {

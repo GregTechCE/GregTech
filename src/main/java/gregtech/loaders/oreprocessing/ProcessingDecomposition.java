@@ -19,9 +19,12 @@ import java.util.ArrayList;
 
 public class ProcessingDecomposition implements IOreRegistrationHandler {
 
-    public void register() {
-        OrePrefix.cell.addProcessingHandler(this);
-        OrePrefix.dust.addProcessingHandler(this);
+    private ProcessingDecomposition() {}
+
+    public static void register() {
+        ProcessingDecomposition processing = new ProcessingDecomposition();
+        OrePrefix.cell.addProcessingHandler(processing);
+        OrePrefix.dust.addProcessingHandler(processing);
     }
 
     @Override

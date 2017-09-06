@@ -16,8 +16,10 @@ import static gregtech.api.unification.material.type.DustMaterial.MatFlags.NO_WO
 
 public class ProcessingBolt implements IOreRegistrationHandler {
 
-	public void register() {
-		OrePrefix.bolt.addProcessingHandler(this);
+	private ProcessingBolt() {}
+
+	public static void register() {
+		OrePrefix.bolt.addProcessingHandler(new ProcessingBolt());
 	}
 
 	public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {

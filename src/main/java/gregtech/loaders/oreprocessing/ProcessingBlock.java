@@ -16,9 +16,12 @@ import static gregtech.api.GTValues.L;
 
 public class ProcessingBlock implements IOreRegistrationHandler {
 
-	public void register() {
-		OrePrefix.block.addProcessingHandler(this);
-		OrePrefix.stone.addProcessingHandler(this);
+	private ProcessingBlock() {}
+
+	public static void register() {
+		ProcessingBlock processing = new ProcessingBlock();
+		OrePrefix.block.addProcessingHandler(processing);
+		OrePrefix.stone.addProcessingHandler(processing);
 	}
 
 	public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {

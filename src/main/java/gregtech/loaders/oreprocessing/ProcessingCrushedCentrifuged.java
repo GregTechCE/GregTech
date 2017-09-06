@@ -13,8 +13,10 @@ import net.minecraft.item.ItemStack;
 
 public class ProcessingCrushedCentrifuged implements IOreRegistrationHandler {
 
-    public void register() {
-        OrePrefix.crushedCentrifuged.addProcessingHandler(this);
+    private ProcessingCrushedCentrifuged() {}
+
+    public static void register() {
+        OrePrefix.crushedCentrifuged.addProcessingHandler(new ProcessingCrushedCentrifuged());
     }
 
     @Override

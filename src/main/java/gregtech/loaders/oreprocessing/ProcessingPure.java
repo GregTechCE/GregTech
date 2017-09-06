@@ -13,10 +13,13 @@ import net.minecraft.item.ItemStack;
 
 public class ProcessingPure implements IOreRegistrationHandler {
 
-    public void register() {
-        OrePrefix.crushedPurified.addProcessingHandler(this);
-        OrePrefix.cleanGravel.addProcessingHandler(this);
-        OrePrefix.reduced.addProcessingHandler(this);
+    private ProcessingPure() {}
+
+    public static void register() {
+        ProcessingPure processing = new ProcessingPure();
+        OrePrefix.crushedPurified.addProcessingHandler(processing);
+        OrePrefix.cleanGravel.addProcessingHandler(processing);
+        OrePrefix.reduced.addProcessingHandler(processing);
     }
     
     public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {

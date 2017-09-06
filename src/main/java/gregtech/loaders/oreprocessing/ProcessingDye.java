@@ -17,8 +17,10 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class ProcessingDye implements IOreRegistrationHandler {
 
-    public void register() {
-        OrePrefix.dye.addProcessingHandler(this);
+    private ProcessingDye() {}
+
+    public static void register() {
+        OrePrefix.dye.addProcessingHandler(new ProcessingDye());
     }
 
     public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {

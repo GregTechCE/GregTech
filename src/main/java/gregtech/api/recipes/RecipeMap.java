@@ -93,7 +93,22 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *			.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.IntCircuitRecipeBuilder> ASSEMBLER_RECIPES = new RecipeMap<>(new HashSet<>(300), "assembler", "basicmachines/Assembler", 1, 2, 1, 1, 0, 1, 0, 0, true, 1, 1, true, new RecipeBuilder.IntCircuitRecipeBuilder());
+	public static final RecipeMap<Recipe, RecipeBuilder.IntCircuitRecipeBuilder> ASSEMBLER_RECIPES = new RecipeMap<>(new HashSet<>(300), "assembler", "basicmachines/Assembler", 1, 2, 1, 1, 0, 1, 0, 0, true, 1, 1, true, new RecipeBuilder.IntCircuitRecipeBuilder() {
+
+        @Override
+        public void buildAndRegister() {
+            if(fluidInputs.size() == 1 && fluidInputs.get(0).getFluid() == Materials.SolderingAlloy.getMaterialFluid()) {
+                int amount = fluidInputs.get(0).amount;
+                fluidInputs.clear();
+                recipeMap.addRecipe(this.copy().fluidInputs(Materials.SolderingAlloy.getFluid(amount)).build());
+                recipeMap.addRecipe(this.copy().fluidInputs(Materials.Tin.getFluid((int) (amount * 1.5))).build());
+                recipeMap.addRecipe(this.copy().fluidInputs(Materials.Lead.getFluid(amount * 2)).build());
+            } else {
+                recipeMap.addRecipe(build());
+            }
+        }
+
+    });
 
 	/**
 	 * Example:

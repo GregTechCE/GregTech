@@ -3,6 +3,7 @@ package gregtech.loaders.oreprocessing;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictUnifier;
+import gregtech.api.unification.material.type.MetalMaterial;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
@@ -15,28 +16,27 @@ import static gregtech.api.unification.material.type.Material.MatFlags.NO_UNIFIC
 
 public class ProcessingScrew implements IOreRegistrationHandler {
 
-    public void register() {
-        OrePrefix.screw.addProcessingHandler(this);
+    private ProcessingScrew() {}
+
+    public static void register() {
+        OrePrefix.screw.addProcessingHandler(new ProcessingScrew());
     }
 
     @Override
     public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {
-        ItemStack stack = simpleStack.asItemStack();
+        if (entry.material instanceof MetalMaterial && !entry.material.hasFlag(NO_WORKING)) {
+            MetalMaterial material = (MetalMaterial) entry.material;
+            ItemStack stack = simpleStack.asItemStack();
+            ItemStack boltStack = OreDictUnifier.get(OrePrefix.bolt, material);
 
-        if (!entry.material.hasFlag(NO_WORKING)) {
             RecipeMap.LATHE_RECIPES.recipeBuilder()
-                    .inputs(OreDictUnifier.get(OrePrefix.bolt, entry.material, 1))
-                    .outputs(GTUtility.copyAmount(1, stack))
-                    .duration((int) ((int) entry.material.getMass() / 8L))
-                    .EUt(4)
-                    .buildAndRegister();
+                .inputs(boltStack)
+                .outputs(stack)
+                .duration((int) (entry.material.getMass() / 8L))
+                .EUt(4)
+                .buildAndRegister();
 
-            if (!entry.material.hasFlag(NO_UNIFICATION)) {
-                ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.screw, entry.material),
-                        "fX",
-                        "X ",
-                        'X', OreDictUnifier.get(OrePrefix.bolt, entry.material));
-            }
+            ModHandler.addShapedRecipe(stack, "fX", "X#", 'X', boltStack);
         }
     }
 }

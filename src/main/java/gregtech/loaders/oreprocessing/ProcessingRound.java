@@ -4,6 +4,7 @@ import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.DustMaterial;
+import gregtech.api.unification.material.type.MetalMaterial;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
@@ -15,25 +16,25 @@ import static gregtech.api.unification.material.type.Material.MatFlags.NO_UNIFIC
 
 public class ProcessingRound implements IOreRegistrationHandler {
 
-    public void register() {
-        OrePrefix.round.addProcessingHandler(this);
+    private ProcessingRound() {}
+
+    public static void register() {
+        OrePrefix.round.addProcessingHandler(new ProcessingRound());
     }
     
     public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {
-        ItemStack stack = simpleStack.asItemStack();
-        if (!entry.material.hasFlag(DustMaterial.MatFlags.NO_WORKING)) {
+        if (entry.material instanceof MetalMaterial && !entry.material.hasFlag(DustMaterial.MatFlags.NO_WORKING)) {
+            ItemStack stack = simpleStack.asItemStack();
+            ItemStack nuggetStack = OreDictUnifier.get(OrePrefix.nugget, entry.material);
 
             RecipeMap.LATHE_RECIPES.recipeBuilder()
-                    .inputs(OreDictUnifier.get(OrePrefix.nugget, entry.material, 1))
-                    .outputs(GTUtility.copyAmount(1, stack))
-                    .duration((int) Math.max(entry.material.getMass() / 4L, 1L))
+                    .inputs(nuggetStack)
+                    .outputs(stack)
+                    .duration((int) (entry.material.getMass() / 4L))
                     .EUt(8)
                     .buildAndRegister();
 
-            ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.round, entry.material),
-                    "fX#",
-                    "X##",
-                    'X', OreDictUnifier.get(OrePrefix.nugget, entry.material));
+            ModHandler.addShapedRecipe(stack, "fX#", "X##", 'X', nuggetStack);
         }
     }
 

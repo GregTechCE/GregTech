@@ -16,10 +16,13 @@ import net.minecraft.item.ItemStack;
 
 public class ProcessingDirtyDust implements IOreRegistrationHandler {
 
+    private ProcessingDirtyDust() {}
+
     public void register() {
-        OrePrefix.dustImpure.addProcessingHandler(this);
-        OrePrefix.dustPure.addProcessingHandler(this);
-        OrePrefix.dustRefined.addProcessingHandler(this);
+        ProcessingDirtyDust processing = new ProcessingDirtyDust();
+        OrePrefix.dustImpure.addProcessingHandler(processing);
+        OrePrefix.dustPure.addProcessingHandler(processing);
+        OrePrefix.dustRefined.addProcessingHandler(processing);
     }
 
     @Override

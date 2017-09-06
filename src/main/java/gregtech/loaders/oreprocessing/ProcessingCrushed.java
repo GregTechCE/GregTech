@@ -16,11 +16,14 @@ import net.minecraft.item.ItemStack;
 
 public class ProcessingCrushed implements IOreRegistrationHandler {
 
-	public void register() {
-		OrePrefix.clump.addProcessingHandler(this);
-		OrePrefix.shard.addProcessingHandler(this);
-		OrePrefix.crushed.addProcessingHandler(this);
-		OrePrefix.dirtyGravel.addProcessingHandler(this);
+    private ProcessingCrushed() {}
+
+	public static void register() {
+	    ProcessingCrushed processing = new ProcessingCrushed();
+		OrePrefix.clump.addProcessingHandler(processing);
+		OrePrefix.shard.addProcessingHandler(processing);
+		OrePrefix.crushed.addProcessingHandler(processing);
+		OrePrefix.dirtyGravel.addProcessingHandler(processing);
 	}
 
 	public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {

@@ -17,8 +17,10 @@ import net.minecraft.item.ItemStack;
 
 public class ProcessingClearDust implements IOreRegistrationHandler {
 
-    public void register() {
-        OrePrefix.dust.addProcessingHandler(this);
+    private ProcessingClearDust() {}
+
+    public static void register() {
+        OrePrefix.dust.addProcessingHandler(new ProcessingClearDust());
     }
 
     @Override
@@ -54,7 +56,9 @@ public class ProcessingClearDust implements IOreRegistrationHandler {
             } else if(material instanceof MetalMaterial &&
                     !material.hasFlag(Material.MatFlags.FLAMMABLE | DustMaterial.MatFlags.NO_SMELTING)) {
                 MetalMaterial metalMaterial = (MetalMaterial) material;
+                ItemStack tinyDustStack = OreDictUnifier.get(OrePrefix.dustTiny, metalMaterial);
                 ItemStack ingotStack = OreDictUnifier.get(OrePrefix.ingot, metalMaterial);
+                ItemStack nuggetStack = OreDictUnifier.get(OrePrefix.nugget, metalMaterial);
                 if(metalMaterial.blastFurnaceTemperature > 0) {
                     int duration = (int) (entry.material.getMass() * metalMaterial.blastFurnaceTemperature / 40L);
                     ModHandler.removeFurnaceSmelting(ingotStack);
@@ -65,11 +69,20 @@ public class ProcessingClearDust implements IOreRegistrationHandler {
                             .EUt(120)
                             .blastFurnaceTemp(metalMaterial.blastFurnaceTemperature)
                             .buildAndRegister();
+                    RecipeMap.BLAST_RECIPES.recipeBuilder()
+                            .inputs(tinyDustStack)
+                            .outputs(nuggetStack)
+                            .duration(duration / 9)
+                            .EUt(120)
+                            .blastFurnaceTemp(metalMaterial.blastFurnaceTemperature)
+                            .buildAndRegister();
                     if(metalMaterial.blastFurnaceTemperature <= 1000) {
                         ModHandler.addRCFurnaceRecipe(stack, ingotStack, duration);
+                        ModHandler.addRCFurnaceRecipe(tinyDustStack, nuggetStack, duration / 9);
                     }
                 } else {
                     ModHandler.addSmeltingRecipe(stack, ingotStack);
+                    ModHandler.addSmeltingRecipe(tinyDustStack, nuggetStack);
                 }
             } else { //solid or dust material without known solid item form
                 if(material.hasFlag(DustMaterial.MatFlags.GENERATE_PLATE) &&

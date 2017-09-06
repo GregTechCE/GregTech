@@ -16,8 +16,10 @@ import static gregtech.api.unification.material.type.Material.MatFlags.NO_UNIFIC
 
 public class ProcessingFineWire implements IOreRegistrationHandler {
 
-	public void register() {
-		OrePrefix.wireFine.addProcessingHandler(this);
+	private ProcessingFineWire() {}
+
+	public static void register() {
+		OrePrefix.wireFine.addProcessingHandler(new ProcessingFineWire());
 	}
 
 	public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {

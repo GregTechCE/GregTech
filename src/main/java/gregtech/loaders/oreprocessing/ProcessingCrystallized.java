@@ -12,9 +12,12 @@ import net.minecraft.item.ItemStack;
 
 public class ProcessingCrystallized implements IOreRegistrationHandler {
 
-	public void register() {
-		OrePrefix.crystal.addProcessingHandler(this);
-		OrePrefix.crystalline.addProcessingHandler(this);
+	private ProcessingCrystallized() {}
+
+	public static void register() {
+	    ProcessingCrystallized processing = new ProcessingCrystallized();
+		OrePrefix.crystal.addProcessingHandler(processing);
+		OrePrefix.crystalline.addProcessingHandler(processing);
 	}
 
 	public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {

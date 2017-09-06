@@ -14,8 +14,10 @@ import net.minecraft.item.ItemStack;
 
 public class ProcessingCrushedPurified implements IOreRegistrationHandler {
 
-    public void register() {
-        OrePrefix.crushedPurified.addProcessingHandler(this);
+    private ProcessingCrushedPurified() {}
+
+    public static void register() {
+        OrePrefix.crushedPurified.addProcessingHandler(new ProcessingCrushedPurified());
     }
 
     @Override
