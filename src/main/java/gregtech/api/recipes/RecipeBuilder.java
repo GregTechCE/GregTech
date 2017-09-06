@@ -52,6 +52,8 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 
 	protected boolean optimized = true;
 
+	protected boolean unificate = true;
+
 	protected EnumValidationResult recipeStatus = EnumValidationResult.VALID;
 
 	protected RecipeBuilder() {
@@ -177,7 +179,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 	}
 
 	public R noUnification() {
-		//@Exidex TO-DO
+		this.unificate = false;
 		return getThis();
 	}
 
@@ -196,7 +198,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		return getThis();
 	}
 
-	public R nonOptimized() {
+	public R notOptimized() {
 		this.optimized = false;
 		return getThis();
 	}
@@ -232,15 +234,18 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 	protected abstract R getThis();
 
 	protected EnumValidationResult finalizeAndValidate() {
-		inputs.replaceAll(OreDictUnifier::getUnificated);
-		outputs.replaceAll(OreDictUnifier::getUnificated);
 
-		TObjectIntMap<ItemStack> newMap = new TObjectIntHashMap<>();
-		TObjectIntIterator<ItemStack> iterator = chancedOutputs.iterator();
-		while (iterator.hasNext()) {
-			newMap.put(OreDictUnifier.getUnificated(iterator.key()), iterator.value());
+		if (unificate) {
+			inputs.replaceAll(OreDictUnifier::getUnificated);
+			outputs.replaceAll(OreDictUnifier::getUnificated);
+
+			TObjectIntMap<ItemStack> newMap = new TObjectIntHashMap<>();
+			TObjectIntIterator<ItemStack> iterator = chancedOutputs.iterator();
+			while (iterator.hasNext()) {
+				newMap.put(OreDictUnifier.getUnificated(iterator.key()), iterator.value());
+			}
+			chancedOutputs = newMap;
 		}
-		chancedOutputs = newMap;
 
 		for (ItemStack stack : inputs) {
 			if (Items.FEATHER.getDamage(stack) != W) {

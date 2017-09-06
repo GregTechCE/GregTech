@@ -13,11 +13,6 @@ public class UnificationEntry {
         this.material = material;
     }
 
-    public UnificationEntry(OrePrefix orePrefix) {
-        this.orePrefix = orePrefix;
-        this.material = null;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -26,19 +21,19 @@ public class UnificationEntry {
         UnificationEntry that = (UnificationEntry) o;
 
         if (orePrefix != that.orePrefix) return false;
-        return material != null ? material.equals(that.material) : that.material == null;
+        return material.equals(that.material);
     }
 
     @Override
     public int hashCode() {
         int result = orePrefix.hashCode();
-        result = 31 * result + (material != null ? material.hashCode() : 0);
+        result = 31 * result + material.hashCode();
         return result;
     }
 
     @Override
     public String toString() {
-        return orePrefix.name() + (material == null ? "" : material.toCamelCaseString());
+        return orePrefix.name() + material.toCamelCaseString();
     }
 
 }

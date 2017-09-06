@@ -519,6 +519,7 @@ public class ModHandler {
      * Only produces Scrap if scrapChance == 0. scrapChance is usually the random Number I give to the Function
      * If you directly insert 0 as scrapChance then you can check if its Recycler-Blacklisted or similar
      */
+    @Nullable
     public static ItemStack getRecyclerOutput(ItemStack input, int scrapChance) {
         if (input == null || scrapChance != 0) return null;
 

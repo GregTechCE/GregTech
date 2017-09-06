@@ -18,7 +18,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -29,6 +28,7 @@ import static gregtech.api.unification.material.type.GemMaterial.MatFlags.GENERA
 import static gregtech.api.unification.material.type.MetalMaterial.MatFlags.*;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_GEAR;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_ROD;
+import static gregtech.api.unification.ore.OrePrefix.Conditions.*;
 import static gregtech.api.unification.ore.OrePrefix.Flags.*;
 
 public enum OrePrefix {
@@ -126,24 +126,24 @@ public enum OrePrefix {
 
     crystal("Crystals", M, null, null, 0, null),
 
-    toolHeadSword("Sword Blades", M * 2, null, MaterialIconType.toolHeadSword, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 2 Ingots.
-    toolHeadPickaxe("Pickaxe Heads", M * 3, null, MaterialIconType.toolHeadPickaxe, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 3 Ingots.
-    toolHeadShovel("Shovel Heads", M, null, MaterialIconType.toolHeadShovel, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 1 Ingots.
-    toolHeadUniversalSpade("Universal Spade Heads", M, null, MaterialIconType.toolHeadUniversalSpade, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 1 Ingots.
-    toolHeadAxe("Axe Heads", M * 3, null, MaterialIconType.toolHeadAxe, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 3 Ingots.
-    toolHeadHoe("Hoe Heads", M * 2, null, MaterialIconType.toolHeadHoe, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 2 Ingots.
-    toolHeadSense("Sense Blades", M * 3, null, MaterialIconType.toolHeadSense, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 3 Ingots.
-    toolHeadFile("File Heads", M * 2, null, MaterialIconType.toolHeadFile, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 2 Ingots.
-    toolHeadHammer("Hammer Heads", M * 6, null, MaterialIconType.toolHeadHammer, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 6 Ingots.
-    toolHeadPlow("Plow Heads", M * 4, null, MaterialIconType.toolHeadPlow, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 4 Ingots.
-    toolHeadSaw("Saw Blades", M * 2, null, MaterialIconType.toolHeadSaw, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 2 Ingots.
-    toolHeadBuzzSaw("Buzzsaw Blades", M * 4, null, MaterialIconType.toolHeadBuzzSaw, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 4 Ingots.
-    toolHeadScrewdriver("Screwdriver Tips", M, null, MaterialIconType.toolHeadScrewdriver, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 1 Ingots.
-    toolHeadDrill("Drill Tips", M * 4, null, MaterialIconType.toolHeadDrill, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 4 Ingots.
-    toolHeadChainsaw("Chainsaw Tips", M * 2, null, MaterialIconType.toolHeadChainsaw, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 2 Ingots.
-    toolHeadWrench("Wrench Tips", M * 4, null, MaterialIconType.toolHeadWrench, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 4 Ingots.
+    toolHeadSword("Sword Blades", M * 2, null, MaterialIconType.toolHeadSword, ENABLE_UNIFICATION, and(isToolMaterial, noFlag(NO_SMASHING))), // consisting out of 2 Ingots.
+    toolHeadPickaxe("Pickaxe Heads", M * 3, null, MaterialIconType.toolHeadPickaxe, ENABLE_UNIFICATION, and(isToolMaterial, noFlag(NO_SMASHING))), // consisting out of 3 Ingots.
+    toolHeadShovel("Shovel Heads", M, null, MaterialIconType.toolHeadShovel, ENABLE_UNIFICATION, and(isToolMaterial, noFlag(NO_SMASHING))), // consisting out of 1 Ingots.
+    toolHeadUniversalSpade("Universal Spade Heads", M, null, MaterialIconType.toolHeadUniversalSpade, ENABLE_UNIFICATION, and(isToolMaterial, noFlag(NO_SMASHING))), // consisting out of 1 Ingots.
+    toolHeadAxe("Axe Heads", M * 3, null, MaterialIconType.toolHeadAxe, ENABLE_UNIFICATION, and(isToolMaterial, noFlag(NO_SMASHING))), // consisting out of 3 Ingots.
+    toolHeadHoe("Hoe Heads", M * 2, null, MaterialIconType.toolHeadHoe, ENABLE_UNIFICATION, and(isToolMaterial, noFlag(NO_SMASHING))), // consisting out of 2 Ingots.
+    toolHeadSense("Sense Blades", M * 3, null, MaterialIconType.toolHeadSense, ENABLE_UNIFICATION, and(isToolMaterial, noFlag(NO_SMASHING))), // consisting out of 3 Ingots.
+    toolHeadFile("File Heads", M * 2, null, MaterialIconType.toolHeadFile, ENABLE_UNIFICATION, and(isToolMaterial, noFlag(NO_SMASHING))), // consisting out of 2 Ingots.
+    toolHeadHammer("Hammer Heads", M * 6, null, MaterialIconType.toolHeadHammer, ENABLE_UNIFICATION, and(isToolMaterial, noFlag(NO_SMASHING))), // consisting out of 6 Ingots.
+    toolHeadPlow("Plow Heads", M * 4, null, MaterialIconType.toolHeadPlow, ENABLE_UNIFICATION, and(isToolMaterial, noFlag(NO_SMASHING))), // consisting out of 4 Ingots.
+    toolHeadSaw("Saw Blades", M * 2, null, MaterialIconType.toolHeadSaw, ENABLE_UNIFICATION, and(isToolMaterial, noFlag(NO_SMASHING))), // consisting out of 2 Ingots.
+    toolHeadBuzzSaw("Buzzsaw Blades", M * 4, null, MaterialIconType.toolHeadBuzzSaw, ENABLE_UNIFICATION, and(isToolMaterial, noFlag(NO_SMASHING))), // consisting out of 4 Ingots.
+    toolHeadScrewdriver("Screwdriver Tips", M, null, MaterialIconType.toolHeadScrewdriver, ENABLE_UNIFICATION, and(isToolMaterial, noFlag(NO_SMASHING))), // consisting out of 1 Ingots.
+    toolHeadDrill("Drill Tips", M * 4, null, MaterialIconType.toolHeadDrill, ENABLE_UNIFICATION, and(isToolMaterial, noFlag(NO_SMASHING))), // consisting out of 4 Ingots.
+    toolHeadChainsaw("Chainsaw Tips", M * 2, null, MaterialIconType.toolHeadChainsaw, ENABLE_UNIFICATION, and(isToolMaterial, noFlag(NO_SMASHING))), // consisting out of 2 Ingots.
+    toolHeadWrench("Wrench Tips", M * 4, null, MaterialIconType.toolHeadWrench, ENABLE_UNIFICATION, and(isToolMaterial, noFlag(NO_SMASHING))), // consisting out of 4 Ingots.
 
-    turbineBlade("Turbine Blades", M * 6, null, MaterialIconType.turbineBlade, ENABLE_UNIFICATION, and(isToolMaterial(), noFlag(NO_SMASHING))), // consisting out of 6 Ingots.
+    turbineBlade("Turbine Blades", M * 6, null, MaterialIconType.turbineBlade, ENABLE_UNIFICATION, and(isToolMaterial, noFlag(NO_SMASHING))), // consisting out of 6 Ingots.
 
     toolSword("Swords", M * 2, null, null, 0, null), // vanilly Sword
     toolPickaxe("Pickaxes", M * 3, null, null, 0, null), // vanilly Pickaxe
@@ -255,6 +255,10 @@ public enum OrePrefix {
         public static final long FLUID_CONTAINER = GTUtility.createFlag(2);
         public static final long DISALLOW_RECYCLING = GTUtility.createFlag(3);
     }
+
+	static class Conditions {
+		static Condition<Material> isToolMaterial = mat -> mat instanceof SolidMaterial && ((SolidMaterial) mat).toolDurability > 0;
+	}
 
     static {
         bottle.containerItem = new ItemStack(Items.GLASS_BOTTLE);
@@ -411,10 +415,6 @@ public enum OrePrefix {
 
     private static Condition<Material> noFlag(long generationFlags) {
         return (material) -> !material.hasFlag(generationFlags);
-    }
-
-    private static Condition<Material> isToolMaterial() {
-        return mat -> mat instanceof SolidMaterial && ((SolidMaterial) mat).toolDurability > 0;
     }
 
     public final String categoryName;

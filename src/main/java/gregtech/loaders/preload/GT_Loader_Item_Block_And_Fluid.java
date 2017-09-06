@@ -20,7 +20,7 @@ public class GT_Loader_Item_Block_And_Fluid
 
 //        new GT_Loader_OreDictionary().run();
 //        new GT_Loader_ItemData().run();
-//        new GT_Loader_OreProcessing().run();
+        new OreProcessingLoader().run();
 
 //        ItemList.Rotor_LV.set(OreDictionaryUnifier.get(OrePrefix.rotor, Materials.Tin, 1));
 //        ItemList.Rotor_MV.set(OreDictionaryUnifier.get(OrePrefix.rotor, Materials.Bronze, 1));

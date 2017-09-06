@@ -1,9 +1,9 @@
 package gregtech.loaders.postload;
 
-import gregtech.api.items.ItemList;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
+import gregtech.common.items.MetaItems;
 import ic2.api.recipe.Recipes;
 import ic2.core.item.type.CraftingItemType;
 import ic2.core.ref.ItemName;
@@ -31,11 +31,11 @@ public class ScrapboxRecipeLoader implements Runnable {
         addScrapboxDrop(0.5F, new ItemStack(Items.APPLE));
         addScrapboxDrop(0.5F, new ItemStack(Items.BREAD));
         addScrapboxDrop(0.1F, new ItemStack(Items.CAKE));
-        addScrapboxDrop(1.0F, ItemList.IC2_Food_Can_Filled.get(1));
-        addScrapboxDrop(2.0F, ItemList.IC2_Food_Can_Spoiled.get(1));
+        addScrapboxDrop(1.0F, MetaItems.IC2_Food_Can_Filled.get(1));
+        addScrapboxDrop(2.0F, MetaItems.IC2_Food_Can_Spoiled.get(1));
         addScrapboxDrop(0.2F, OreDictUnifier.get(OrePrefix.dust, Materials.Silicon));
         addScrapboxDrop(1.0F, OreDictUnifier.get(OrePrefix.cell, Materials.Water));
-        addScrapboxDrop(2.0F, ItemList.Cell_Empty.get(1));
+        addScrapboxDrop(2.0F, MetaItems.CELL_EMPTY.get(1));
         addScrapboxDrop(5.0F, OreDictUnifier.get(OrePrefix.plate, Materials.Paper));
         addScrapboxDrop(1.0F, new ItemStack(Items.LEATHER));
         addScrapboxDrop(1.0F, new ItemStack(Items.FEATHER));
@@ -44,11 +44,11 @@ public class ScrapboxRecipeLoader implements Runnable {
         addScrapboxDrop(0.6F, new ItemStack(Items.SLIME_BALL));
         addScrapboxDrop(0.8F, OreDictUnifier.get(OrePrefix.dust, Materials.Rubber));
         addScrapboxDrop(2.7F, ItemName.single_use_battery.getItemStack());
-        addScrapboxDrop(3.6F, ItemList.Circuit_Primitive.get(1));
-        addScrapboxDrop(0.8F, ItemList.Circuit_Parts_Advanced.get(1));
-        addScrapboxDrop(1.8F, ItemList.Circuit_Board_Basic.get(1));
-        addScrapboxDrop(0.4F, ItemList.Circuit_Board_Advanced.get(1));
-        addScrapboxDrop(0.2F, ItemList.Circuit_Board_Elite.get(1));
+        addScrapboxDrop(3.6F, MetaItems.CIRCUIT_PRIMITIVE.getStackForm());
+        addScrapboxDrop(0.8F, MetaItems.CIRCUIT_PARTS_ADVANCED.getStackForm());
+        addScrapboxDrop(1.8F, MetaItems.CIRCUIT_BOARD_BASIC.getStackForm());
+        addScrapboxDrop(0.4F, MetaItems.CIRCUIT_BOARD_ADVANCED.getStackForm());
+        addScrapboxDrop(0.2F, MetaItems.CIRCUIT_BOARD_ELITE.getStackForm());
         addScrapboxDrop(0.9F, OreDictUnifier.get(OrePrefix.dust, Materials.Redstone));
         addScrapboxDrop(0.8F, OreDictUnifier.get(OrePrefix.dust, Materials.Glowstone));
         addScrapboxDrop(0.8F, OreDictUnifier.get(OrePrefix.dust, Materials.Coal));

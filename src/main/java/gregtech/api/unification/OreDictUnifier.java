@@ -138,6 +138,7 @@ public class OreDictUnifier {
         return stackUnificationInfo.get(new SimpleItemStack(itemStack));
     }
 
+    @Nullable
     public static ItemStack getUnificated(ItemStack itemStack) {
         if(itemStack == null) return null;
         UnificationEntry unificationEntry = getUnificationEntry(itemStack);
