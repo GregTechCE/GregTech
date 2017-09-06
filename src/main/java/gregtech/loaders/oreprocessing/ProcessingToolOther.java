@@ -17,8 +17,10 @@ import static gregtech.api.unification.material.type.DustMaterial.MatFlags.NO_SM
 
 public class ProcessingToolOther implements IOreRegistrationHandler {
 
-	public ProcessingToolOther() {
-		OrePrefix.toolHeadHammer.addProcessingHandler(this);
+    private ProcessingToolOther() { }
+
+    public static void register() {
+		OrePrefix.toolHeadHammer.addProcessingHandler(new ProcessingToolOther());
 	}
 
 	@Override

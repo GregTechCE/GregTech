@@ -1,14 +1,10 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.GTValues;
-import gregtech.api.GregTechAPI;
 import gregtech.api.recipes.ModHandler;
-import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.GemMaterial;
-import gregtech.api.unification.material.type.MetalMaterial;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
@@ -17,7 +13,6 @@ import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

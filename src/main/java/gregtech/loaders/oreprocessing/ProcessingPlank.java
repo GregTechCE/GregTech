@@ -17,8 +17,10 @@ import static gregtech.api.GTValues.W;
 
 public class ProcessingPlank implements IOreRegistrationHandler {
 
-    public void register() {
-        OrePrefix.plank.addProcessingHandler(this);
+    private ProcessingPlank() { }
+
+    public static void register() {
+        OrePrefix.plank.addProcessingHandler(new ProcessingPlank());
     }
 
     public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {

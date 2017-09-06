@@ -1,52 +1,105 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.GTValues;
 import gregtech.api.recipes.ModHandler;
+import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.GemMaterial;
+import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
-import gregtech.common.CommonProxy;
 import net.minecraft.item.ItemStack;
 
 public class ProcessingStick implements IOreRegistrationHandler {
-    public ProcessingStick() {
-        OrePrefix.stick.addProcessingHandler(this);
-        OrePrefix.stickLong.addProcessingHandler(this);
+
+    private ProcessingStick() {}
+
+    public static void register() {
+        ProcessingStick processing = new ProcessingStick();
+        OrePrefix.stick.addProcessingHandler(processing);
+        OrePrefix.stickLong.addProcessingHandler(processing);
     }
-    
-    public void registerOre(UnificationEntry uEntry, String modName, SimpleItemStack simpleStack) {
+
+    public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {
         ItemStack stack = simpleStack.asItemStack();
-        if (uEntry.orePrefix == OrePrefix.stick) {
-            if (!uEntry.material.hasFlag(DustMaterial.MatFlags.NO_WORKING)) {
-                GTValues.RA.addLatheRecipe(uEntry.material.hasFlag(GemMaterial.MatFlags.CRYSTALLISABLE) ? OreDictUnifier.get(OrePrefix.gem, uEntry.material, 1) : OreDictUnifier.get(OrePrefix.ingot, uEntry.material, 1L), OreDictUnifier.get(OrePrefix.stick, uEntry.material, 1L), OreDictUnifier.get(OrePrefix.dustSmall, uEntry.material.mMacerateInto, 2L), (int) Math.max(uEntry.material.getMass() * 5L, 1L), 16);
-                GTValues.RA.addCutterRecipe(GTUtility.copyAmount(1L, new Object[]{stack}), OreDictUnifier.get(OrePrefix.bolt, uEntry.material, 4L), null, (int) Math.max(uEntry.material.getMass() * 2L, 1L), 4);
-                if ((uEntry.material.mUnificatable) && (uEntry.material.mMaterialInto == uEntry.material)) {
-                    ModHandler.addCraftingRecipe(OreDictUnifier.get(OrePrefix.stick, uEntry.material, 2), CommonProxy.tBits, new Object[]{"s", "X", Character.valueOf('X'), OrePrefix.stickLong.get(uEntry.material)});
-                    ModHandler.addCraftingRecipe(OreDictUnifier.get(OrePrefix.stick, uEntry.material, 1), CommonProxy.tBits, new Object[]{"f ", " X", Character.valueOf('X'), OrePrefix.ingot.get(uEntry.material)});
+
+        switch (entry.orePrefix) {
+            case stick:
+                if (!entry.material.hasFlag(DustMaterial.MatFlags.NO_WORKING)) {
+
+                    if (entry.material instanceof SolidMaterial) {
+                        RecipeMap.LATHE_RECIPES.recipeBuilder()
+                            .inputs(entry.material.hasFlag(GemMaterial.MatFlags.CRYSTALLISABLE)
+                                ? OreDictUnifier.get(OrePrefix.gem, entry.material)
+                                : OreDictUnifier.get(OrePrefix.ingot, entry.material))
+                            .outputs(OreDictUnifier.get(OrePrefix.stick, entry.material), OreDictUnifier.get(OrePrefix.dustSmall, ((SolidMaterial) entry.material).macerateInto, 2))
+                            .duration((int) Math.max(entry.material.getMass() * 5L, 1L))
+                            .EUt(16)
+                            .buildAndRegister();
+                    }
+
+                    RecipeMap.CUTTER_RECIPES.recipeBuilder()
+                        .inputs(GTUtility.copyAmount(1, stack))
+                        .outputs(OreDictUnifier.get(OrePrefix.bolt, entry.material, 4))
+                        .duration((int) Math.max(entry.material.getMass() * 2L, 1L))
+                        .EUt(4)
+                        .buildAndRegister();
+
+                    ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.stick, entry.material, 2),
+                        "s",
+                        "X",
+                        'X', new UnificationEntry(OrePrefix.stickLong, entry.material));
+
+                    ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.stick, entry.material, 1),
+                        "f ",
+                        " X",
+                        'X', new UnificationEntry(OrePrefix.ingot, entry.material));
+
                 }
-            }
-            if (!uEntry.material.hasFlag(DustMaterial.MatFlags.NO_SMASHING)) {
-                GTValues.RA.addForgeHammerRecipe(GTUtility.copyAmount(2L, new Object[]{stack}), OreDictUnifier.get(OrePrefix.stickLong, uEntry.material, 1L), (int) Math.max(uEntry.material.getMass(), 1L), 16);
-            }
-        } else if (uEntry.orePrefix == OrePrefix.stickLong) {
-            if (!uEntry.material.hasFlag(DustMaterial.MatFlags.NO_WORKING)) {
-                GTValues.RA.addCutterRecipe(GTUtility.copyAmount(1L, new Object[]{stack}), OreDictUnifier.get(OrePrefix.stick, uEntry.material, 2), null, (int) Math.max(uEntry.material.getMass(), 1L), 4);
-                if (uEntry.material.mUnificatable && (uEntry.material.mMaterialInto == uEntry.material)) {
-                    ModHandler.addCraftingRecipe(OreDictUnifier.get(OrePrefix.stickLong, uEntry.material, 1), CommonProxy.tBits, new Object[]{"sf", "G ", Character.valueOf('G'), OrePrefix.gemFlawless.get(uEntry.material)});
-                    ModHandler.addCraftingRecipe(OreDictUnifier.get(OrePrefix.stickLong, uEntry.material, 2), CommonProxy.tBits, new Object[]{"sf", "G ", Character.valueOf('G'), OrePrefix.gemExquisite.get(uEntry.material)});
+                if (!entry.material.hasFlag(DustMaterial.MatFlags.NO_SMASHING)) {
+                    RecipeMap.HAMMER_RECIPES.recipeBuilder()
+                        .inputs(GTUtility.copyAmount(2, stack))
+                        .outputs(OreDictUnifier.get(OrePrefix.stickLong, entry.material))
+                        .duration((int) Math.max(entry.material.getMass(), 1L))
+                        .EUt(16)
+                        .buildAndRegister();
                 }
-            }
-            if (!uEntry.material.hasFlag(DustMaterial.MatFlags.NO_SMASHING)) {
-                GTValues.RA.addBenderRecipe(GTUtility.copyAmount(1L, new Object[]{stack}), OreDictUnifier.get(OrePrefix.spring, uEntry.material, 1), 200, 16);
-                if (uEntry.material.mUnificatable && (uEntry.material.mMaterialInto == uEntry.material)) {
-                    ModHandler.addCraftingRecipe(OreDictUnifier.get(OrePrefix.stickLong, uEntry.material, 1), CommonProxy.tBits, new Object[]{"ShS", Character.valueOf('S'), OrePrefix.stick.get(uEntry.material)});
+                break;
+            case stickLong:
+                if (!entry.material.hasFlag(DustMaterial.MatFlags.NO_WORKING)) {
+                    RecipeMap.CUTTER_RECIPES.recipeBuilder()
+                        .inputs(GTUtility.copyAmount(1, stack))
+                        .outputs(OreDictUnifier.get(OrePrefix.stick, entry.material, 2))
+                        .duration((int) Math.max(entry.material.getMass(), 1L))
+                        .EUt(4)
+                        .buildAndRegister();
+
+                    ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.stickLong, entry.material, 1),
+                        "sf",
+                        "G ",
+                        'G', new UnificationEntry(OrePrefix.gemFlawless, entry.material));
+
+                    ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.stickLong, entry.material, 2),
+                        "sf",
+                        "G ",
+                        'G', new UnificationEntry(OrePrefix.gemExquisite, entry.material));
                 }
-            }
+                if (!entry.material.hasFlag(DustMaterial.MatFlags.NO_SMASHING)) {
+                    RecipeMap.BENDER_RECIPES.recipeBuilder()
+                        .inputs(GTUtility.copyAmount(1, stack))
+                        .outputs(OreDictUnifier.get(OrePrefix.spring, entry.material))
+                        .duration(200)
+                        .EUt(16)
+                        .buildAndRegister();
+
+                    ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.stickLong, entry.material),
+                        "ShS",
+                        'S', new UnificationEntry(OrePrefix.stick, entry.material));
+                }
+                break;
         }
     }
 }

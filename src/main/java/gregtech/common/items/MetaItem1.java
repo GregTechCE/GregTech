@@ -8,7 +8,9 @@ import gregtech.api.items.metaitem.FoodStats;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictUnifier;
+import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.MarkerMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
@@ -45,10 +47,9 @@ public class MetaItem1 extends MaterialMetaItem {
 	public MetaItem1() {
 		super(OrePrefix.dustTiny, OrePrefix.dustSmall, OrePrefix.dust, OrePrefix.dustImpure, OrePrefix.dustPure,
 				OrePrefix.crushed, OrePrefix.crushedPurified, OrePrefix.crushedCentrifuged, OrePrefix.gem, OrePrefix.nugget,
-				OrePrefix.ingot, OrePrefix.ingotHot, OrePrefix.ingotDouble, OrePrefix.ingotTriple, OrePrefix.ingotQuadruple, OrePrefix.ingotQuintuple,
-				OrePrefix.plate, OrePrefix.plateDouble, OrePrefix.plateTriple, OrePrefix.plateQuadruple, OrePrefix.plateQuintuple, OrePrefix.plateDense,
-				OrePrefix.stick, OrePrefix.lens, OrePrefix.round, OrePrefix.bolt, OrePrefix.screw, OrePrefix.ring, OrePrefix.foil,
-				OrePrefix.cell, OrePrefix.cellPlasma, null);
+				OrePrefix.ingot, OrePrefix.ingotHot, OrePrefix.plate, OrePrefix.plateDense, OrePrefix.stick, OrePrefix.lens,
+				OrePrefix.round, OrePrefix.bolt, OrePrefix.screw, OrePrefix.ring, OrePrefix.foil, OrePrefix.cell,
+				OrePrefix.cellPlasma, null, null, null, null, null, null, null, null, null);
 
 		CREDIT_COPPER = addItem(0, "credit.copper");
 		CREDIT_CUPRONICKEL = addItem(1, "credit.cupronickel").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Cupronickel, 907200L)));
@@ -169,8 +170,8 @@ public class MetaItem1 extends MaterialMetaItem {
 				" h ",
 				"RSR",
 				" w ",
-				'R', new UnificationEntry(OrePrefix.ring, Materials.AnyIron),
-				'S', new UnificationEntry(OrePrefix.stick, Materials.AnyIron));
+				'R', new UnificationEntry(OrePrefix.ring, MarkerMaterials.GenericMaterial.AnyIron),
+				'S', new UnificationEntry(OrePrefix.stick, MarkerMaterials.GenericMaterial.AnyIron));
 
 		ModHandler.addShapedRecipe(MINECART_WHEELS_STEEL.getStackForm(),
 				" h ",

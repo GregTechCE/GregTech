@@ -18,7 +18,7 @@ public class ProcessingDirtyDust implements IOreRegistrationHandler {
 
     private ProcessingDirtyDust() {}
 
-    public void register() {
+    public static void register() {
         ProcessingDirtyDust processing = new ProcessingDirtyDust();
         OrePrefix.dustImpure.addProcessingHandler(processing);
         OrePrefix.dustPure.addProcessingHandler(processing);

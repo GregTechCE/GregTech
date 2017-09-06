@@ -481,7 +481,7 @@ public enum OrePrefix {
         return oreProcessingHandlers.add(processingHandler);
     }
 
-    public void processOreRegistration(Material material, String modName, SimpleItemStack itemStack) {
+    public void processOreRegistration(@Nullable Material material, String modName, SimpleItemStack itemStack) {
         if(isSelfReferencing) {
             if(material == null) {
                 material = materialType; //append default material for self-referencing OrePrefix

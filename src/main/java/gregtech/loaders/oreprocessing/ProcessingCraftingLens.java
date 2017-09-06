@@ -14,8 +14,10 @@ import net.minecraft.item.ItemStack;
 
 public class ProcessingCraftingLens implements IOreRegistrationHandler {
 
-	public void register() {
-		OrePrefix.craftingLens.addProcessingHandler(this);
+    private ProcessingCraftingLens() { }
+
+    public static void register() {
+		OrePrefix.craftingLens.addProcessingHandler(new ProcessingCraftingLens());
 	}
 
 	@Override
