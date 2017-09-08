@@ -56,7 +56,7 @@ public final class BlockCompressed extends DelayedStateBlock {
     public int getHarvestLevel(IBlockState state) {
         Material material = state.getValue(variantProperty);
         if(material instanceof SolidMaterial) {
-            return ((SolidMaterial) material).toolQuality;
+            return ((SolidMaterial) material).harvestLevel;
         }
         return 0;
     }

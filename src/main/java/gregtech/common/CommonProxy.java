@@ -347,27 +347,6 @@ public abstract class CommonProxy implements IFuelHandler, IGuiHandler {
 //        }
     }
 
-    public void onServerStarted() {
-
-    }
-
-    public void onServerStopping() {
-//        File tSaveDirectory = getSaveDirectory();
-//        if (tSaveDirectory != null) {
-//            try {
-//                for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
-//                    for (; i < GregTechAPI.METATILEENTITIES.length; i++) {
-//                        if (GregTechAPI.METATILEENTITIES[i] != null) {
-//                            GregTechAPI.METATILEENTITIES[i].onWorldSave(tSaveDirectory);
-//                        }
-//                    }
-//                }
-//            } catch (Throwable e) {
-//                e.printStackTrace(GTLog.err);
-//            }
-//        }
-    }
-
     @Override
     public Object getServerGuiElement(int aID, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
 //        TileEntity tTileEntity = aWorld.getTileEntity(new BlockPos(aX, aY, aZ));

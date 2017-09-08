@@ -55,8 +55,8 @@ public class BlockOre extends Block {
         StoneType stoneType = state.getValue(STONE_TYPE);
         boolean small = state.getValue(SMALL);
         if(material instanceof SolidMaterial) {
-            int toolQuality = ((SolidMaterial) material).toolQuality;
-            return Math.max(stoneType.stoneMaterial.toolQuality, toolQuality > 1 ? toolQuality - 1 : toolQuality);
+            int toolQuality = ((SolidMaterial) material).harvestLevel;
+            return Math.max(stoneType.stoneMaterial.harvestLevel, toolQuality > 1 ? toolQuality - 1 : toolQuality);
         }
         return 1;
     }

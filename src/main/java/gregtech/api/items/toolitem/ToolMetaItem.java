@@ -134,7 +134,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         if(metaToolValueItem != null) {
             IToolStats toolStats = metaToolValueItem.getToolStats();
             if(isUsable(stack, toolStats.getToolDamagePerBlockBreak(stack)) && toolStats.isMinableBlock(blockState, stack)) {
-                return toolStats.getBaseQuality(stack) + getPrimaryMaterial(stack).toolQuality;
+                return toolStats.getBaseQuality(stack) + getPrimaryMaterial(stack).harvestLevel;
             }
         }
         return 0;

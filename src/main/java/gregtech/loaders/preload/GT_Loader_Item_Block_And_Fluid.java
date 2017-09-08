@@ -11,15 +11,15 @@ public class GT_Loader_Item_Block_And_Fluid
 //        Materials.Water.mFluid = (Materials.Ice.mFluid = GT_ModHandler.getWater(1000L).getFluid());
 //        Materials.Lava.mFluid = GT_ModHandler.getLava(1000L).getFluid();
 
-        GTLog.logger.info("GregTechMod: Register Items.");
+        GTLog.logger.info("Registering Items.");
 
 //        new GT_IntegratedCircuit_Item();
         new MetaItem1();
         new MetaItem2();
         new MetaTool();
 
-//        new GT_Loader_OreDictionary().run();
-//        new GT_Loader_ItemData().run();
+        new OreDictionaryLoader().run();
+        new UnificationDataLoader().run();
         new OreProcessingLoader().run();
 
 //        ItemList.Rotor_LV.set(OreDictionaryUnifier.get(OrePrefix.rotor, Materials.Tin, 1));

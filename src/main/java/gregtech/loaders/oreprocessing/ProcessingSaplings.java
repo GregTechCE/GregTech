@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 
 public class ProcessingSaplings implements IOreRegistrationHandler {
 
-    private ProcessingSaplings() { }
+    private ProcessingSaplings() {}
 
     public static void register() {
         OrePrefix.treeSapling.addProcessingHandler(new ProcessingSaplings());

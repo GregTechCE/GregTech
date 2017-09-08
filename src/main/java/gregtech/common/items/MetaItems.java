@@ -321,6 +321,7 @@ public final class MetaItems {
 
 	public static MetaItem<?>.MetaValueItem FOOD_POTATO_ON_STICK;
 	public static MetaItem<?>.MetaValueItem FOOD_POTATO_ON_STICK_ROASTED;
+	public static MetaItem<?>.MetaValueItem FOOD_RAW_POTATO;
 	public static MetaItem<?>.MetaValueItem FOOD_RAW_FRIES;
 	public static MetaItem<?>.MetaValueItem FOOD_FRIES;
 	public static MetaItem<?>.MetaValueItem FOOD_PACKAGED_FRIES;

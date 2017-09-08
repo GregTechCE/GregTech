@@ -8,11 +8,12 @@ import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.GTLog;
 import gregtech.common.CommonProxy;
-import gregtech.loaders.postload.BlockResistanceLoader;
-import gregtech.loaders.postload.CraftingRecipeLoader;
-import gregtech.loaders.postload.DungeonLootLoader;
-import gregtech.loaders.postload.MachineRecipeLoader;
-import gregtech.loaders.postload.ScrapboxRecipeLoader;
+import gregtech.loaders.load.FuelLoader;
+//import gregtech.loaders.postload.BlockResistanceLoader;
+//import gregtech.loaders.postload.CraftingRecipeLoader;
+//import gregtech.loaders.postload.DungeonLootLoader;
+//import gregtech.loaders.postload.MachineRecipeLoader;
+//import gregtech.loaders.postload.ScrapboxRecipeLoader;
 import gregtech.loaders.preload.GT_Loader_Item_Block_And_Fluid;
 import gregtech.loaders.preload.GT_Loader_MetaTileEntities;
 import ic2.api.recipe.IMachineRecipeManager;
@@ -24,9 +25,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 
 import java.util.ArrayList;
 
@@ -58,7 +57,7 @@ public class GregTechMod {
     public static CommonProxy gregtechproxy;
 
     @Mod.EventHandler
-    public void onPreLoad(FMLPreInitializationEvent event) {
+    public void onPreInit(FMLPreInitializationEvent event) {
         GTLog.logger.info("PreInit-Phase started!");
 
         GTLog.init(event.getModLog(), event.getModConfigurationDirectory().getParentFile());
@@ -126,7 +125,7 @@ public class GregTechMod {
     }
 
     @Mod.EventHandler
-    public void onLoad(FMLInitializationEvent event) {
+    public void onInit(FMLInitializationEvent event) {
         GTLog.logger.info("Init-Phase started!");
 //        try {
 //            for (Runnable tRunnable : GregTechAPI.sBeforeGTLoad) {
@@ -138,7 +137,6 @@ public class GregTechMod {
 
         gregtechproxy.onLoad();
 //        if (gregtechproxy.mSortToTheEnd) {
-//            new ItemRegistryIterator().run();
 //            gregtechproxy.registerUnificationEntries();
 //            new FuelLoader().run();
 //        }
@@ -152,7 +150,7 @@ public class GregTechMod {
     }
 
     @Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent event) {
+    public void onPostInit(FMLPostInitializationEvent event) {
         GTLog.logger.info("PostInit-Phase started!");
 //        try {
 //            for (Runnable tRunnable : GregTechAPI.sBeforeGTPostload) {
@@ -163,15 +161,14 @@ public class GregTechMod {
 //        if (gregtechproxy.mSortToTheEnd) {
 //            gregtechproxy.registerUnificationEntries();
 //        } else {
-//            new ItemRegistryIterator().run();
 //            gregtechproxy.registerUnificationEntries();
-//            new FuelLoader().run();
+            new FuelLoader().run();
 //        }
 
-        new DungeonLootLoader().run();
-        new BlockResistanceLoader().run();
-        new MachineRecipeLoader().run();
-        new ScrapboxRecipeLoader().run();
+//        new DungeonLootLoader().run();
+//        new BlockResistanceLoader().run();
+//        new MachineRecipeLoader().run();
+//        new ScrapboxRecipeLoader().run();
 //        new GT_CropLoader().run();
 //        new GT_Worldgenloader().run();
 
@@ -195,11 +192,7 @@ public class GregTechMod {
 //        GTLog.out.println("GregTechMod: Vanilla Recipe List -> Outputs null or stackSize <=0: " + GT_ModHandler.sVanillaRecipeList_warntOutput.toString());
 //        GTLog.out.println("GregTechMod: Single Non Block Damagable Recipe List -> Outputs null or stackSize <=0: " + GT_ModHandler.sSingleNonBlockDamagableRecipeList_warntOutput.toString());
 //
-        new CraftingRecipeLoader().run();
-//        if (GregTechAPI.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2forgehammer", true)) {
-//            GT_ModHandler.removeRecipeByOutput(ItemList.IC2_ForgeHammer.getWildcard(1));
-//        }
-//        GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item(BlockName.resource, ResourceBlock.machine, 1));
+//        new CraftingRecipeLoader().run();
 //        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item(BlockName.resource, ResourceBlock.machine, 1), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"RRR", "RwR", "RRR", Character.valueOf('R'), OrePrefix.plate.get(Materials.Iron)});
 //        ItemStack ISdata0 = new ItemStack(Items.POTIONITEM, 1, 0);
 //        ItemStack ILdata0 = ItemList.Bottle_Empty.get(1L, new Object[0]);
@@ -513,91 +506,6 @@ public class GregTechMod {
 //        GTLog.out.println("GregTechMod: ServerStarting-Phase finished!");
 //        try {
 //            for (Runnable tRunnable : GregTechAPI.sAfterGTServerstart) {
-//                tRunnable.run();
-//            }
-//        } catch (Throwable e) {e.printStackTrace(GTLog.err);}
-    }
-
-    @Mod.EventHandler
-    public void onServerStarted(FMLServerStartedEvent aEvent) {
-        gregtechproxy.onServerStarted();
-    }
-
-    @Mod.EventHandler
-    public void onServerStopping(FMLServerStoppingEvent aEvent) {
-//        try {
-//            for (Runnable tRunnable : GregTechAPI.sBeforeGTServerstop) {
-//                tRunnable.run();
-//            }
-		gregtechproxy.onServerStopping();
-
-//        } catch (Throwable e) {e.printStackTrace(GTLog.err);}
-//        try {
-//            if ((GTValues.D1) || (GTLog.out != System.out)) {
-//                GTLog.out.println("*");
-//                GTLog.out.println("Printing List of all registered Objects inside the OreDictionary, now with free extra Sorting:");
-//                GTLog.out.println("*");
-//                GTLog.out.println("*");
-//                GTLog.out.println("*");
-//
-//                String[] tList = OreDictionary.getOreNames();
-//                Arrays.sort(tList);
-//                for (String tOreName : tList) {
-//                    int tAmount = OreDictionary.getOres(tOreName).size();
-//                    if (tAmount > 0) {
-//                        GTLog.out.println((tAmount < 10 ? " " : "") + tAmount + "x " + tOreName);
-//                    }
-//                }
-//                GTLog.out.println("*");
-//                GTLog.out.println("Printing List of all registered Objects inside the Fluid Registry, now with free extra Sorting:");
-//                GTLog.out.println("*");
-//                GTLog.out.println("*");
-//                GTLog.out.println("*");
-//
-//                tList = FluidRegistry.getRegisteredFluids().keySet().toArray(new String[FluidRegistry.getRegisteredFluids().keySet().size()]);
-//                Arrays.sort(tList);
-//                for (String tFluidName : tList) {
-//                    GTLog.out.println(tFluidName);
-//                }
-//                GTLog.out.println("*");
-//                GTLog.out.println("*");
-//                GTLog.out.println("*");
-//                GTLog.out.println("Outputting all the Names inside the Biomeslist");
-//                GTLog.out.println("*");
-//                GTLog.out.println("*");
-//                GTLog.out.println("*");
-//                for (Biome biome : Biome.REGISTRY) {
-//                    GTLog.out.println(Biome.getIdForBiome(biome) + " = " + biome.getBiomeName());
-//                }
-//                GTLog.out.println("*");
-//                GTLog.out.println("*");
-//                GTLog.out.println("*");
-//                GTLog.out.println("Printing List of generatable Materials");
-//                GTLog.out.println("*");
-//                GTLog.out.println("*");
-//                GTLog.out.println("*");
-//                for (int i = 0; i < GregTechAPI.sGeneratedMaterials.length; i++) {
-//                    if (GregTechAPI.sGeneratedMaterials[i] == null) {
-//                        GTLog.out.println("Index " + i + ":" + null);
-//                    } else {
-//                        GTLog.out.println("Index " + i + ":" + GregTechAPI.sGeneratedMaterials[i]);
-//                    }
-//                }
-//                GTLog.out.println("*");
-//                GTLog.out.println("*");
-//                GTLog.out.println("*");
-//                GTLog.out.println("END GregTech-Debug");
-//                GTLog.out.println("*");
-//                GTLog.out.println("*");
-//                GTLog.out.println("*");
-//            }
-//        } catch (Throwable e) {
-//            if (GTValues.D1) {
-//                e.printStackTrace(GTLog.err);
-//            }
-//        }
-//        try {
-//            for (Runnable tRunnable : GregTechAPI.sAfterGTServerstop) {
 //                tRunnable.run();
 //            }
 //        } catch (Throwable e) {e.printStackTrace(GTLog.err);}

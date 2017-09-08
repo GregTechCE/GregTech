@@ -517,7 +517,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		THERMOS_CAN_EMPTY = addItem(404, "thermos_can.empty").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Aluminium, OrePrefix.plate.materialAmount + 2L * OrePrefix.ring.materialAmount)));
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(OreDictUnifier.get(OrePrefix.plateDouble, Materials.Aluminium, 1), OreDictUnifier.get(OrePrefix.ring, Materials.Aluminium, 2))
+				.inputs(OreDictUnifier.get(OrePrefix.plate, Materials.Aluminium, 1), OreDictUnifier.get(OrePrefix.ring, Materials.Aluminium, 2))
 				.outputs(THERMOS_CAN_EMPTY.getStackForm())
 				.duration(800)
 				.EUt(1)
@@ -526,7 +526,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		LARGE_FLUID_CELL_STEEL = addItem(405, "large.fluid.cell.steel").addStats(new FluidStats(16000, Integer.MAX_VALUE, Integer.MAX_VALUE)).setMaxStackSize(16).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, OrePrefix.plate.materialAmount * 2L + 2L * OrePrefix.ring.materialAmount)));
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(OreDictUnifier.get(OrePrefix.plateDouble, Materials.Steel, 1), OreDictUnifier.get(OrePrefix.ring, Materials.Steel, 2))
+				.inputs(OreDictUnifier.get(OrePrefix.plate, Materials.Steel, 1), OreDictUnifier.get(OrePrefix.ring, Materials.Steel, 2))
 				.outputs(LARGE_FLUID_CELL_STEEL.getStackForm())
 				.duration(100)
 				.EUt(64)
@@ -535,7 +535,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		LARGE_FLUID_CELL_TUNGSTENSTEEL = addItem(406, "large.fluid.cell.tungstensteel").addStats(new FluidStats(64000, Integer.MAX_VALUE, Integer.MAX_VALUE)).setMaxStackSize(16).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.TungstenSteel, OrePrefix.plate.materialAmount * 2L + 2L * OrePrefix.ring.materialAmount)));
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(OreDictUnifier.get(OrePrefix.plateDouble, Materials.TungstenSteel, 1), OreDictUnifier.get(OrePrefix.ring, Materials.TungstenSteel, 2))
+				.inputs(OreDictUnifier.get(OrePrefix.plate, Materials.TungstenSteel, 1), OreDictUnifier.get(OrePrefix.ring, Materials.TungstenSteel, 2))
 				.outputs(LARGE_FLUID_CELL_TUNGSTENSTEEL.getStackForm())
 				.duration(200)
 				.EUt(256)
@@ -583,7 +583,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				.buildAndRegister();
 
 		RecipeMap.BOXINATOR_RECIPES.recipeBuilder()
-				.inputs(TOOL_MATCHES.getStackForm(16), OreDictUnifier.get(OrePrefix.plateDouble, Materials.Paper, 1))
+				.inputs(TOOL_MATCHES.getStackForm(16), OreDictUnifier.get(OrePrefix.plate, Materials.Paper, 1))
 				.outputs(TOOL_MATCHBOX_FULL.getStackForm())
 				.duration(64)
 				.EUt(16)
@@ -629,7 +629,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				"IAI",
 //				'D', GregTechAPI.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "iridiumplate", true) ? OreDictNames.craftingIndustrialDiamond : new UnificationEntry(OrePrefix.dust, Materials.Diamond),
 				'D', new UnificationEntry(OrePrefix.dust, Materials.Diamond),
-				'A', OrePrefix.plateAlloy.name() + "Advanced",
+				'A', "plateAlloyAdvanced",
 				'I', new UnificationEntry(OrePrefix.plate, Materials.Iridium));
 
 		PAPER_PRINTED_PAGES = addItem(481, "paper.printed.pages").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Paper, 10886400L)));//.addStats(new Behaviour_PrintedPages());
@@ -847,8 +847,8 @@ public class MetaItem1 extends MaterialMetaItem {
 				.EUt(2)
 				.buildAndRegister();
 
-		ENERGY_LAPOTRONICORB = addItem(597, "energy.lapotronicorb").addStats(new ElectricStats(100000000, 5)).setUnificationData(OrePrefix.battery, Materials.Ultimate);
-		ENERGY_LAPOTRONICORB2 = addItem(598, "energy.lapotronicorb2").addStats(new ElectricStats(1000000000, 6)).setUnificationData(OrePrefix.battery, Materials.Ultimate);
+		ENERGY_LAPOTRONICORB = addItem(597, "energy.lapotronicorb").addStats(new ElectricStats(100000000, 5)).setUnificationData(OrePrefix.battery, MarkerMaterials.Tier.Ultimate);
+		ENERGY_LAPOTRONICORB2 = addItem(598, "energy.lapotronicorb2").addStats(new ElectricStats(1000000000, 6)).setUnificationData(OrePrefix.battery, MarkerMaterials.Tier.Ultimate);
 
 		ZPM = addItem(599, "zpm").addStats(new ElectricStats(2000000000000L, 7, false));
 		ZPM2 = addItem(605, "zpm2").addStats(new ElectricStats(Long.MAX_VALUE, 8));
@@ -867,8 +867,8 @@ public class MetaItem1 extends MaterialMetaItem {
 				"WIW",
 				"RWC",
 				'I', new UnificationEntry(OrePrefix.stick, Materials.IronMagnetic),
-				'R', new UnificationEntry(OrePrefix.stick, Materials.AnyIron),
-				'W', new UnificationEntry(OrePrefix.wireGt01, Materials.AnyCopper),
+				'R', new UnificationEntry(OrePrefix.stick, MarkerMaterials.GenericMaterial.AnyIron),
+				'W', new UnificationEntry(OrePrefix.wireGt01, MarkerMaterials.GenericMaterial.AnyCopper),
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin));
 
 		ModHandler.addShapedRecipe(ELECTRIC_MOTOR_LV.getStackForm(),
@@ -877,7 +877,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				"RWC",
 				'I', new UnificationEntry(OrePrefix.stick, Materials.SteelMagnetic),
 				'R', new UnificationEntry(OrePrefix.stick, Materials.Steel),
-				'W', new UnificationEntry(OrePrefix.wireGt01, Materials.AnyCopper),
+				'W', new UnificationEntry(OrePrefix.wireGt01, MarkerMaterials.GenericMaterial.AnyCopper),
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin));
 
 		ModHandler.addShapedRecipe(ELECTRIC_MOTOR_MV.getStackForm(),
@@ -886,8 +886,8 @@ public class MetaItem1 extends MaterialMetaItem {
 				"RWC",
 				'I', new UnificationEntry(OrePrefix.stick, Materials.SteelMagnetic),
 				'R', new UnificationEntry(OrePrefix.stick, Materials.Aluminium),
-				'W', new UnificationEntry(OrePrefix.wireGt02, Materials.AnyCopper),
-				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.AnyCopper));
+				'W', new UnificationEntry(OrePrefix.wireGt02, MarkerMaterials.GenericMaterial.AnyCopper),
+				'C', new UnificationEntry(OrePrefix.cableGt01, MarkerMaterials.GenericMaterial.AnyCopper));
 
 		ModHandler.addShapedRecipe(ELECTRIC_MOTOR_HV.getStackForm(),
 				"CWR",
@@ -895,7 +895,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				"RWC",
 				'I', new UnificationEntry(OrePrefix.stick, Materials.SteelMagnetic),
 				'R', new UnificationEntry(OrePrefix.stick, Materials.StainlessSteel),
-				'W', new UnificationEntry(OrePrefix.wireGt04, Materials.AnyCopper),
+				'W', new UnificationEntry(OrePrefix.wireGt04, MarkerMaterials.GenericMaterial.AnyCopper),
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold));
 
 		ModHandler.addShapedRecipe(ELECTRIC_MOTOR_EV.getStackForm(),
@@ -959,7 +959,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'O', new UnificationEntry(OrePrefix.ring, Materials.Rubber),
 				'X', new UnificationEntry(OrePrefix.rotor, Materials.Bronze),
 				'S', new UnificationEntry(OrePrefix.screw, Materials.Bronze),
-				'W', new UnificationEntry(OrePrefix.cableGt01, Materials.AnyCopper),
+				'W', new UnificationEntry(OrePrefix.cableGt01, MarkerMaterials.GenericMaterial.AnyCopper),
 				'P', new UnificationEntry(OrePrefix.pipeMedium, Materials.Steel));
 
 		ModHandler.addShapedRecipe(ELECTRIC_PUMP_HV.getStackForm(),
@@ -1014,7 +1014,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				"MCM",
 				"RRR",
 				'M', ELECTRIC_MOTOR_MV,
-				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.AnyCopper),
+				'C', new UnificationEntry(OrePrefix.cableGt01, MarkerMaterials.GenericMaterial.AnyCopper),
 				'R', new UnificationEntry(OrePrefix.plate, Materials.Rubber));
 
 		ModHandler.addShapedRecipe(CONVEYOR_MODULE_HV.getStackForm(),
@@ -1057,7 +1057,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				"CMG",
 				'P', new UnificationEntry(OrePrefix.plate, Materials.Steel),
 				'S', new UnificationEntry(OrePrefix.stick, Materials.Steel),
-				'G', new UnificationEntry(OrePrefix.gearGtSmall, Materials.Steel),
+				'G', new UnificationEntry(OrePrefix.gearSmall, Materials.Steel),
 				'M', ELECTRIC_MOTOR_LV,
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin));
 
@@ -1067,9 +1067,9 @@ public class MetaItem1 extends MaterialMetaItem {
 				"CMG",
 				'P', new UnificationEntry(OrePrefix.plate, Materials.Aluminium),
 				'S', new UnificationEntry(OrePrefix.stick, Materials.Aluminium),
-				'G', new UnificationEntry(OrePrefix.gearGtSmall, Materials.Aluminium),
+				'G', new UnificationEntry(OrePrefix.gearSmall, Materials.Aluminium),
 				'M', ELECTRIC_MOTOR_MV,
-				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.AnyCopper));
+				'C', new UnificationEntry(OrePrefix.cableGt01, MarkerMaterials.GenericMaterial.AnyCopper));
 
 		ModHandler.addShapedRecipe(ELECTRIC_PISTON_HV.getStackForm(),
 				"PPP",
@@ -1077,7 +1077,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				"CMG",
 				'P', new UnificationEntry(OrePrefix.plate, Materials.StainlessSteel),
 				'S', new UnificationEntry(OrePrefix.stick, Materials.StainlessSteel),
-				'G', new UnificationEntry(OrePrefix.gearGtSmall, Materials.StainlessSteel),
+				'G', new UnificationEntry(OrePrefix.gearSmall, Materials.StainlessSteel),
 				'M', ELECTRIC_MOTOR_HV,
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold));
 
@@ -1087,7 +1087,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				"CMG",
 				'P', new UnificationEntry(OrePrefix.plate, Materials.Titanium),
 				'S', new UnificationEntry(OrePrefix.stick, Materials.Titanium),
-				'G', new UnificationEntry(OrePrefix.gearGtSmall, Materials.Titanium),
+				'G', new UnificationEntry(OrePrefix.gearSmall, Materials.Titanium),
 				'M', ELECTRIC_MOTOR_EV,
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Aluminium));
 
@@ -1097,7 +1097,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				"CMG",
 				'P', new UnificationEntry(OrePrefix.plate, Materials.TungstenSteel),
 				'S', new UnificationEntry(OrePrefix.stick, Materials.TungstenSteel),
-				'G', new UnificationEntry(OrePrefix.gearGtSmall, Materials.TungstenSteel),
+				'G', new UnificationEntry(OrePrefix.gearSmall, Materials.TungstenSteel),
 				'M', ELECTRIC_MOTOR_IV,
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tungsten));
 
@@ -1118,7 +1118,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'S', new UnificationEntry(OrePrefix.stick, Materials.Steel),
 				'M', ELECTRIC_MOTOR_LV,
 				'P', ELECTRIC_PISTON_LV,
-				'E', new UnificationEntry(OrePrefix.circuit, Materials.Basic),
+				'E', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Basic),
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin));
 
 		ModHandler.addShapedRecipe(ROBOT_ARM_MV.getStackForm(),
@@ -1128,8 +1128,8 @@ public class MetaItem1 extends MaterialMetaItem {
 				'S', new UnificationEntry(OrePrefix.stick, Materials.Aluminium),
 				'M', ELECTRIC_MOTOR_MV,
 				'P', ELECTRIC_PISTON_MV,
-				'E', new UnificationEntry(OrePrefix.circuit, Materials.Good),
-				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.AnyCopper));
+				'E', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Good),
+				'C', new UnificationEntry(OrePrefix.cableGt01, MarkerMaterials.GenericMaterial.AnyCopper));
 
 		ModHandler.addShapedRecipe(ROBOT_ARM_HV.getStackForm(),
 				"CCC",
@@ -1138,7 +1138,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'S', new UnificationEntry(OrePrefix.stick, Materials.StainlessSteel),
 				'M', ELECTRIC_MOTOR_HV,
 				'P', ELECTRIC_PISTON_HV,
-				'E', new UnificationEntry(OrePrefix.circuit, Materials.Advanced),
+				'E', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Advanced),
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold));
 
 		ModHandler.addShapedRecipe(ROBOT_ARM_EV.getStackForm(),
@@ -1148,7 +1148,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'S', new UnificationEntry(OrePrefix.stick, Materials.Titanium),
 				'M', ELECTRIC_MOTOR_EV,
 				'P', ELECTRIC_PISTON_EV,
-				'E', new UnificationEntry(OrePrefix.circuit, Materials.Elite),
+				'E', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Elite),
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Aluminium));
 
 		ModHandler.addShapedRecipe(ROBOT_ARM_IV.getStackForm(),
@@ -1158,7 +1158,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'S', new UnificationEntry(OrePrefix.stick, Materials.TungstenSteel),
 				'M', ELECTRIC_MOTOR_IV,
 				'P', ELECTRIC_PISTON_IV,
-				'E', new UnificationEntry(OrePrefix.circuit, Materials.Master),
+				'E', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Master),
 				'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tungsten));
 
 		FIELD_GENERATOR_LV = addItem(670, "field.generator.lv");
@@ -1175,7 +1175,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				"CGC",
 				"WCW",
 				'G', new UnificationEntry(OrePrefix.gem, Materials.EnderPearl),
-				'C', new UnificationEntry(OrePrefix.circuit, Materials.Basic),
+				'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Basic),
 				'W', new UnificationEntry(OrePrefix.wireGt01, Materials.Osmium));
 
 		ModHandler.addShapedRecipe(FIELD_GENERATOR_MV.getStackForm(),
@@ -1183,7 +1183,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				"CGC",
 				"WCW",
 				'G', new UnificationEntry(OrePrefix.gem, Materials.EnderEye),
-				'C', new UnificationEntry(OrePrefix.circuit, Materials.Good),
+				'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Good),
 				'W', new UnificationEntry(OrePrefix.wireGt02, Materials.Osmium));
 
 		EMITTER_LV = addItem(680, "emitter.lv");
@@ -1201,7 +1201,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				"CWS",
 				'Q', new UnificationEntry(OrePrefix.gem, Materials.Quartzite),
 				'S', new UnificationEntry(OrePrefix.stick, Materials.Brass),
-				'C', new UnificationEntry(OrePrefix.circuit, Materials.Basic),
+				'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Basic),
 				'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin));
 
 		ModHandler.addShapedRecipe(EMITTER_MV.getStackForm(),
@@ -1210,8 +1210,8 @@ public class MetaItem1 extends MaterialMetaItem {
 				"CWS",
 				'Q', new UnificationEntry(OrePrefix.gem, Materials.NetherQuartz),
 				'S', new UnificationEntry(OrePrefix.stick, Materials.Electrum),
-				'C', new UnificationEntry(OrePrefix.circuit, Materials.Good),
-				'W', new UnificationEntry(OrePrefix.cableGt01, Materials.AnyCopper));
+				'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Good),
+				'W', new UnificationEntry(OrePrefix.cableGt01, MarkerMaterials.GenericMaterial.AnyCopper));
 
 		ModHandler.addShapedRecipe(EMITTER_HV.getStackForm(),
 				"SSC",
@@ -1219,7 +1219,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				"CWS",
 				'Q', new UnificationEntry(OrePrefix.gem, Materials.Emerald),
 				'S', new UnificationEntry(OrePrefix.stick, Materials.Chrome),
-				'C', new UnificationEntry(OrePrefix.circuit, Materials.Advanced),
+				'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Advanced),
 				'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold));
 
 		ModHandler.addShapedRecipe(EMITTER_EV.getStackForm(),
@@ -1228,7 +1228,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				"CWS",
 				'Q', new UnificationEntry(OrePrefix.gem, Materials.EnderPearl),
 				'S', new UnificationEntry(OrePrefix.stick, Materials.Platinum),
-				'C', new UnificationEntry(OrePrefix.circuit, Materials.Elite),
+				'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Elite),
 				'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Aluminium));
 
 		ModHandler.addShapedRecipe(EMITTER_IV.getStackForm(),
@@ -1237,7 +1237,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				"CWS",
 				'Q', new UnificationEntry(OrePrefix.gem, Materials.EnderEye),
 				'S', new UnificationEntry(OrePrefix.stick, Materials.Osmium),
-				'C', new UnificationEntry(OrePrefix.circuit, Materials.Master),
+				'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Master),
 				'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Tungsten));
 
 		SENSOR_LV = addItem(690, "sensor.lv");
@@ -1256,7 +1256,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'Q', new UnificationEntry(OrePrefix.gem, Materials.Quartzite),
 				'S', new UnificationEntry(OrePrefix.stick, Materials.Brass),
 				'P', new UnificationEntry(OrePrefix.plate, Materials.Steel),
-				'C', new UnificationEntry(OrePrefix.circuit, Materials.Basic));
+				'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Basic));
 
 		ModHandler.addShapedRecipe(SENSOR_MV.getStackForm(),
 				"P Q",
@@ -1265,7 +1265,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'Q', new UnificationEntry(OrePrefix.gem, Materials.NetherQuartz),
 				'S', new UnificationEntry(OrePrefix.stick, Materials.Electrum),
 				'P', new UnificationEntry(OrePrefix.plate, Materials.Aluminium),
-				'C', new UnificationEntry(OrePrefix.circuit, Materials.Good));
+				'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Good));
 
 		ModHandler.addShapedRecipe(SENSOR_HV.getStackForm(),
 				"P Q",
@@ -1274,7 +1274,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'Q', new UnificationEntry(OrePrefix.gem, Materials.Emerald),
 				'S', new UnificationEntry(OrePrefix.stick, Materials.Chrome),
 				'P', new UnificationEntry(OrePrefix.plate, Materials.StainlessSteel),
-				'C', new UnificationEntry(OrePrefix.circuit, Materials.Advanced));
+				'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Advanced));
 
 		ModHandler.addShapedRecipe(SENSOR_EV.getStackForm(),
 				"P Q",
@@ -1283,7 +1283,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				'Q', new UnificationEntry(OrePrefix.gem, Materials.EnderPearl),
 				'S', new UnificationEntry(OrePrefix.stick, Materials.Platinum),
 				'P', new UnificationEntry(OrePrefix.plate, Materials.Titanium),
-				'C', new UnificationEntry(OrePrefix.circuit, Materials.Elite));
+				'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Elite));
 
 		ModHandler.addShapedRecipe(SENSOR_IV.getStackForm(),
 				"P Q",
@@ -1292,18 +1292,18 @@ public class MetaItem1 extends MaterialMetaItem {
 				'Q', new UnificationEntry(OrePrefix.gem, Materials.EnderEye),
 				'S', new UnificationEntry(OrePrefix.stick, Materials.Osmium),
 				'P', new UnificationEntry(OrePrefix.plate, Materials.TungstenSteel),
-				'C', new UnificationEntry(OrePrefix.circuit, Materials.Master));
+				'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Master));
 
-		TOOL_DATASTICK = addItem(708, "tool.datastick").setUnificationData(OrePrefix.circuit, Materials.Data);//.addStats(new Behaviour_DataStick());
-		TOOL_DATAORB = addItem(707, "tool.dataorb").setUnificationData(OrePrefix.circuit, Materials.Ultimate);//.addStats(new Behaviour_DataOrb());
+		TOOL_DATASTICK = addItem(708, "tool.datastick").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Data);//.addStats(new Behaviour_DataStick());
+		TOOL_DATAORB = addItem(707, "tool.dataorb").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Ultimate);//.addStats(new Behaviour_DataOrb());
 
-		CIRCUIT_PRIMITIVE = addItem(700, "circuit.primitive").setUnificationData(OrePrefix.circuit, Materials.Primitive);
-		CIRCUIT_BASIC = addItem(701, "circuit.basic").setUnificationData(OrePrefix.circuit, Materials.Basic);
-		CIRCUIT_GOOD = addItem(702, "circuit.good").setUnificationData(OrePrefix.circuit, Materials.Good);
-		CIRCUIT_ADVANCED = addItem(703, "circuit.advanced").setUnificationData(OrePrefix.circuit, Materials.Advanced);
-		CIRCUIT_DATA = addItem(704, "circuit.data").setUnificationData(OrePrefix.circuit, Materials.Data);
-		CIRCUIT_ELITE = addItem(705, "circuit.elite").setUnificationData(OrePrefix.circuit, Materials.Elite);
-		CIRCUIT_MASTER = addItem(706, "circuit.master").setUnificationData(OrePrefix.circuit, Materials.Master);
+		CIRCUIT_PRIMITIVE = addItem(700, "circuit.primitive").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Primitive);
+		CIRCUIT_BASIC = addItem(701, "circuit.basic").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Basic);
+		CIRCUIT_GOOD = addItem(702, "circuit.good").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Good);
+		CIRCUIT_ADVANCED = addItem(703, "circuit.advanced").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Advanced);
+		CIRCUIT_DATA = addItem(704, "circuit.data").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Data);
+		CIRCUIT_ELITE = addItem(705, "circuit.elite").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Elite);
+		CIRCUIT_MASTER = addItem(706, "circuit.master").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Master);
 		CIRCUIT_ULTIMATE = TOOL_DATAORB;
 
 		ModHandler.addShapelessRecipe(TOOL_DATAORB.getStackForm(), TOOL_DATAORB);
@@ -1335,7 +1335,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				"CGC",
 				"WCW",
 				'G', QUANTUMEYE.getStackForm(),
-				'C', new UnificationEntry(OrePrefix.circuit, Materials.Advanced),
+				'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Advanced),
 				'W', new UnificationEntry(OrePrefix.wireGt04, Materials.Osmium));
 
 		ModHandler.addShapedRecipe(FIELD_GENERATOR_EV.getStackForm(),
@@ -1343,7 +1343,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				"CGC",
 				"WCW",
 				'G', new UnificationEntry(OrePrefix.gem, Materials.NetherStar),
-				'C', new UnificationEntry(OrePrefix.circuit, Materials.Elite),
+				'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Elite),
 				'W', new UnificationEntry(OrePrefix.wireGt08, Materials.Osmium));
 
 		ModHandler.addShapedRecipe(FIELD_GENERATOR_IV.getStackForm(),
@@ -1351,7 +1351,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				"CGC",
 				"WCW",
 				'G', QUANTUMSTAR.getStackForm(),
-				'C', new UnificationEntry(OrePrefix.circuit, Materials.Master),
+				'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Master),
 				'W', new UnificationEntry(OrePrefix.wireGt16, Materials.Osmium));
 
 
@@ -1360,7 +1360,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				"DGD",
 				" D ",
 				'D', new UnificationEntry(OrePrefix.dustSmall, Materials.Diamond),
-				'G', new UnificationEntry(OrePrefix.gearGt, Materials.CobaltBrass));
+				'G', new UnificationEntry(OrePrefix.gear, Materials.CobaltBrass));
 
 		ModHandler.addShapedRecipe(COMPONENT_GRINDER_DIAMOND.getStackForm(),
 				"DSD",
@@ -1453,7 +1453,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				"EPR",
 				"CSC",
 				"PBP",
-				'C', new UnificationEntry(OrePrefix.circuit, Materials.Advanced),
+				'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Advanced),
 				'P', new UnificationEntry(OrePrefix.plate, Materials.Aluminium),
 				'E', EMITTER_MV,
 				'R', SENSOR_MV,
@@ -1465,7 +1465,7 @@ public class MetaItem1 extends MaterialMetaItem {
 		MCGUFFIUM_239 = addItem(765, "mcguffium.239");
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(OreDictUnifier.get(OrePrefix.circuit, Materials.Good, 4), OreDictUnifier.get(OrePrefix.plate, Materials.StainlessSteel, 2))
+				.inputs(OreDictUnifier.get(OrePrefix.circuit, MarkerMaterials.Tier.Good, 4), OreDictUnifier.get(OrePrefix.plate, Materials.StainlessSteel, 2))
 				.outputs(SCHEMATIC.getStackForm())
 				.duration(3200)
 				.EUt(4)
@@ -1478,31 +1478,31 @@ public class MetaItem1 extends MaterialMetaItem {
 				.buildAndRegister();
 
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(ELECTRIC_PUMP_LV.getStackForm(), OreDictUnifier.get(OrePrefix.circuit, Materials.Basic, 2))
+				.inputs(ELECTRIC_PUMP_LV.getStackForm(), OreDictUnifier.get(OrePrefix.circuit, MarkerMaterials.Tier.Basic, 2))
 				.outputs(FLUID_REGULATOR_LV.getStackForm())
 				.duration(800)
 				.EUt(4)
 				.buildAndRegister();
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(ELECTRIC_PUMP_MV.getStackForm(), OreDictUnifier.get(OrePrefix.circuit, Materials.Good, 2))
+				.inputs(ELECTRIC_PUMP_MV.getStackForm(), OreDictUnifier.get(OrePrefix.circuit, MarkerMaterials.Tier.Good, 2))
 				.outputs(FLUID_REGULATOR_MV.getStackForm())
 				.duration(800)
 				.EUt(8)
 				.buildAndRegister();
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(ELECTRIC_PUMP_HV.getStackForm(), OreDictUnifier.get(OrePrefix.circuit, Materials.Advanced, 2))
+				.inputs(ELECTRIC_PUMP_HV.getStackForm(), OreDictUnifier.get(OrePrefix.circuit, MarkerMaterials.Tier.Advanced, 2))
 				.outputs(FLUID_REGULATOR_HV.getStackForm())
 				.duration(800)
 				.EUt(16)
 				.buildAndRegister();
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(ELECTRIC_PUMP_EV.getStackForm(), OreDictUnifier.get(OrePrefix.circuit, Materials.Elite, 2))
+				.inputs(ELECTRIC_PUMP_EV.getStackForm(), OreDictUnifier.get(OrePrefix.circuit, MarkerMaterials.Tier.Elite, 2))
 				.outputs(FLUID_REGULATOR_EV.getStackForm())
 				.duration(800)
 				.EUt(32)
 				.buildAndRegister();
 		RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-				.inputs(ELECTRIC_PUMP_IV.getStackForm(), OreDictUnifier.get(OrePrefix.circuit, Materials.Master, 2))
+				.inputs(ELECTRIC_PUMP_IV.getStackForm(), OreDictUnifier.get(OrePrefix.circuit, MarkerMaterials.Tier.Master, 2))
 				.outputs(FLUID_REGULATOR_IV.getStackForm())
 				.duration(800)
 				.EUt(64)

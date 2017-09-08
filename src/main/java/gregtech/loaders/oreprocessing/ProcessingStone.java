@@ -19,9 +19,9 @@ import static gregtech.api.GTValues.L;
 
 public class ProcessingStone implements IOreRegistrationHandler {
 
-    private ProcessingStone() { }
+    private ProcessingStone() {}
 
-    private static void register() {
+    public static void register() {
         ProcessingStone processing = new ProcessingStone();
         OrePrefix.stone.addProcessingHandler(processing);
         OrePrefix.stoneCobble.addProcessingHandler(processing);
