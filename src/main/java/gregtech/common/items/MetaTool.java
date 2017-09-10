@@ -6,6 +6,7 @@ import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
+import gregtech.api.unification.stack.UnificationEntry;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -16,6 +17,11 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
 
     public MetaTool() {
         super();
+    }
+
+    @Override
+    public void registerItem(String registryName) {
+        super.registerItem(registryName);
 
         SWORD = addItem(0, "tool.sword")/*.setToolStats(new ToolSword())*/.addOreDict(ToolDictNames.craftingToolSword);
         PICKAXE = addItem(1, "tool.pickaxe")/*.setToolStats(new ToolPickaxe())*/.addOreDict(ToolDictNames.craftingToolPickaxe);
@@ -60,300 +66,302 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
         TURBINE_NORMAL = addItem(37, "tool.turbine.normal")/*.setToolStats(new ToolTurbineNormal())*/;
         TURBINE_LARGE = addItem(38, "tool.turbine.large")/*.setToolStats(new ToolTurbineLarge())*/;
         TURBINE_HUGE = addItem(39, "tool.turbine.huge")/*.setToolStats(new ToolTurbineHuge())*/;
+    }
 
+    public void registerRecipes() {
         ModHandler.addShapedRecipe(MORTAR.getStackForm(Materials.Flint, Materials.Stone),
+            " I ",
+            "SIS",
+            "SSS",
+            'I', new ItemStack(Items.FLINT, 1),
+            'S', OrePrefix.stone);
+
+        ModHandler.addShapedRecipe(MORTAR.getStackForm(Materials.Bronze, Materials.Stone),
+            " I ",
+            "SIS",
+            "SSS",
+            'I', new UnificationEntry(OrePrefix.ingot, Materials.Bronze),
+            'S', OrePrefix.stone);
+
+        ModHandler.addShapedRecipe(MORTAR.getStackForm(Materials.Iron, Materials.Stone),
+            " I ",
+            "SIS",
+            "SSS",
+            'I', new UnificationEntry(OrePrefix.ingot, Materials.Iron),
+            'S', OrePrefix.stone);
+
+        ModHandler.addShapedRecipe(MORTAR.getStackForm(Materials.Steel, Materials.Stone),
+
+            " I ",
+            "SIS",
+            "SSS",
+            'I', new UnificationEntry(OrePrefix.ingot, Materials.Steel),
+            'S', OrePrefix.stone);
+
+        ModHandler.addShapedRecipe(MORTAR.getStackForm(Materials.WroughtIron, Materials.Stone),
+            " I ",
+            "SIS",
+            "SSS",
+            'I', new UnificationEntry(OrePrefix.ingot, Materials.WroughtIron),
+            'S', OrePrefix.stone);
+
+        ModHandler.addShapedRecipe(MORTAR.getStackForm(Materials.RedSteel, Materials.Stone),
+            " I ",
+            "SIS",
+            "SSS",
+            'I', new UnificationEntry(OrePrefix.ingot, Materials.RedSteel),
+            'S', OrePrefix.stone);
+
+        ModHandler.addShapedRecipe(MORTAR.getStackForm(Materials.BlueSteel, Materials.Stone),
+            " I ",
+            "SIS",
+            "SSS",
+            'I', new UnificationEntry(OrePrefix.ingot, Materials.BlueSteel),
+            'S', OrePrefix.stone);
+
+        ModHandler.addShapedRecipe(MORTAR.getStackForm(Materials.BlackSteel, Materials.Stone),
+            " I ",
+            "SIS",
+            "SSS",
+            'I', new UnificationEntry(OrePrefix.ingot, Materials.BlackSteel),
+            'S', OrePrefix.stone);
+
+        ModHandler.addShapedRecipe(MORTAR.getStackForm(Materials.DamascusSteel, Materials.Stone),
+            " I ",
+            "SIS",
+            "SSS",
+            'I', new UnificationEntry(OrePrefix.ingot, Materials.DamascusSteel),
+            'S', OrePrefix.stone);
+
+        ModHandler.addShapedRecipe(ROLLING_PIN.getStackForm(Materials.Wood, Materials.Wood),
+            "  S",
+            " I ",
+            "S f",
+            'I', new UnificationEntry(OrePrefix.ingot, Materials.Wood),
+            'S', new UnificationEntry(OrePrefix.stick, Materials.Wood));
+
+        ModHandler.addShapedRecipe(ROLLING_PIN.getStackForm(Materials.Plastic, Materials.Plastic),
+            "  S",
+            " I ",
+            "S f",
+            'I', new UnificationEntry(OrePrefix.ingot, Materials.Plastic),
+            'S', new UnificationEntry(OrePrefix.stick, Materials.Plastic));
+
+        ModHandler.addShapedRecipe(ROLLING_PIN.getStackForm(Materials.Aluminium, Materials.Aluminium),
+            "  S",
+            " I ",
+            "S f",
+            'I', new UnificationEntry(OrePrefix.ingot, Materials.Aluminium),
+            'S', new UnificationEntry(OrePrefix.stick, Materials.Aluminium));
+
+        ModHandler.addShapedRecipe(ROLLING_PIN.getStackForm(Materials.StainlessSteel, Materials.StainlessSteel),
+            "  S",
+            " I ",
+            "S f",
+            'I', new UnificationEntry(OrePrefix.ingot, Materials.StainlessSteel),
+            'S', new UnificationEntry(OrePrefix.stick, Materials.StainlessSteel));
+
+
+        if (false) { //TODO CONFIG !GregTechAPI.sSpecialFile.get(ConfigCategories.general, "DisableFlintTools", false)
+            ModHandler.addShapedRecipe(SWORD.getStackForm(Materials.Flint, Materials.Wood),
+                "F",
+                "F",
+                "S",
+                'S', new UnificationEntry(OrePrefix.stick, Materials.Wood),
+                'F', new ItemStack(Items.FLINT, 1));
+
+            ModHandler.addShapedRecipe(PICKAXE.getStackForm(Materials.Flint, Materials.Wood),
+                "FFF",
+                " S ",
+                " S ",
+                'S', new UnificationEntry(OrePrefix.stick, Materials.Wood),
+                'F', new ItemStack(Items.FLINT, 1));
+
+            ModHandler.addShapedRecipe(SHOVEL.getStackForm(Materials.Flint, Materials.Wood),
+                "F",
+                "S",
+                "S",
+                'S', new UnificationEntry(OrePrefix.stick, Materials.Wood),
+                'F', new ItemStack(Items.FLINT, 1));
+
+            ModHandler.addShapedRecipe(AXE.getStackForm(Materials.Flint, Materials.Wood),// true,
+                "FF",
+                "FS",
+                " S",
+                'S', new UnificationEntry(OrePrefix.stick, Materials.Wood),
+                'F', new ItemStack(Items.FLINT, 1));
+
+            ModHandler.addShapedRecipe(HOE.getStackForm(Materials.Flint, Materials.Wood),// true,
+                "FF",
+                " S",
+                " S",
+                'S', new UnificationEntry(OrePrefix.stick, Materials.Wood),
+                'F', new ItemStack(Items.FLINT, 1));
+
+            ModHandler.addShapedRecipe(KNIFE.getStackForm(Materials.Flint, Materials.Wood),
+                "F",
+                "S",
+                'S', new UnificationEntry(OrePrefix.stick, Materials.Wood),
+                'F', new ItemStack(Items.FLINT, 1));
+
+            ModHandler.addShapedRecipe(MORTAR.getStackForm(Materials.Flint, Materials.Stone),
                 " I ",
                 "SIS",
                 "SSS",
                 'I', new ItemStack(Items.FLINT, 1),
                 'S', OrePrefix.stone);
 
-        ModHandler.addShapedRecipe(MORTAR.getStackForm(Materials.Bronze, Materials.Stone),
-                " I ",
-                "SIS",
-                "SSS",
-                'I', OreDictUnifier.get(OrePrefix.ingot, Materials.Bronze),
-                'S', OrePrefix.stone);
-
-        ModHandler.addShapedRecipe(MORTAR.getStackForm(Materials.Iron, Materials.Stone),
-                " I ",
-                "SIS",
-                "SSS",
-                'I', OreDictUnifier.get(OrePrefix.ingot, Materials.Iron),
-                'S', OrePrefix.stone);
-
-        ModHandler.addShapedRecipe(MORTAR.getStackForm(Materials.Steel, Materials.Stone),
-
-                " I ",
-                "SIS",
-                "SSS",
-                'I', OreDictUnifier.get(OrePrefix.ingot, Materials.Steel),
-                'S', OrePrefix.stone);
-
-        ModHandler.addShapedRecipe(MORTAR.getStackForm(Materials.WroughtIron, Materials.Stone),
-                " I ",
-                "SIS",
-                "SSS",
-                'I', OreDictUnifier.get(OrePrefix.ingot, Materials.WroughtIron),
-                'S', OrePrefix.stone);
-
-        ModHandler.addShapedRecipe(MORTAR.getStackForm(Materials.RedSteel, Materials.Stone),
-                " I ",
-                "SIS",
-                "SSS",
-                'I', OreDictUnifier.get(OrePrefix.ingot, Materials.RedSteel),
-                'S', OrePrefix.stone);
-
-        ModHandler.addShapedRecipe(MORTAR.getStackForm(Materials.BlueSteel, Materials.Stone),
-                " I ",
-                "SIS",
-                "SSS",
-                'I', OreDictUnifier.get(OrePrefix.ingot, Materials.BlueSteel),
-                'S', OrePrefix.stone);
-
-        ModHandler.addShapedRecipe(MORTAR.getStackForm(Materials.BlackSteel, Materials.Stone),
-                " I ",
-                "SIS",
-                "SSS",
-                'I', OreDictUnifier.get(OrePrefix.ingot, Materials.BlackSteel),
-                'S', OrePrefix.stone);
-
-        ModHandler.addShapedRecipe(MORTAR.getStackForm(Materials.DamascusSteel, Materials.Stone),
-                " I ",
-                "SIS",
-                "SSS",
-                'I', OreDictUnifier.get(OrePrefix.ingot, Materials.DamascusSteel),
-                'S', OrePrefix.stone);
-
-        ModHandler.addShapedRecipe(ROLLING_PIN.getStackForm(Materials.Wood, Materials.Wood),
-                "  S",
-                " I ",
-                "S f",
-                'I', OreDictUnifier.get(OrePrefix.ingot, Materials.Wood),
-                'S', OreDictUnifier.get(OrePrefix.stick, Materials.Wood));
-
-        ModHandler.addShapedRecipe(ROLLING_PIN.getStackForm(Materials.Plastic, Materials.Plastic),
-                "  S",
-                " I ",
-                "S f",
-                'I', OreDictUnifier.get(OrePrefix.ingot, Materials.Plastic),
-                'S', OreDictUnifier.get(OrePrefix.stick, Materials.Plastic));
-
-        ModHandler.addShapedRecipe(ROLLING_PIN.getStackForm(Materials.Aluminium, Materials.Aluminium),
-                "  S",
-                " I ",
-                "S f",
-                'I', OreDictUnifier.get(OrePrefix.ingot, Materials.Aluminium),
-                'S', OreDictUnifier.get(OrePrefix.stick, Materials.Aluminium));
-
-        ModHandler.addShapedRecipe(ROLLING_PIN.getStackForm(Materials.StainlessSteel, Materials.StainlessSteel),
-                "  S",
-                " I ",
-                "S f",
-                'I', OreDictUnifier.get(OrePrefix.ingot, Materials.StainlessSteel),
-                'S', OreDictUnifier.get(OrePrefix.stick, Materials.StainlessSteel));
-
-
-        if (false) { //TODO CONFIG !GregTechAPI.sSpecialFile.get(ConfigCategories.general, "DisableFlintTools", false)
-            ModHandler.addShapedRecipe(SWORD.getStackForm(Materials.Flint, Materials.Wood),
-                    "F",
-                    "F",
-                    "S",
-                    'S', OreDictUnifier.get(OrePrefix.stick, Materials.Wood),
-                    'F', new ItemStack(Items.FLINT, 1));
-
-            ModHandler.addShapedRecipe(PICKAXE.getStackForm(Materials.Flint, Materials.Wood),
-                    "FFF",
-                    " S ",
-                    " S ",
-                    'S', OreDictUnifier.get(OrePrefix.stick, Materials.Wood),
-                    'F', new ItemStack(Items.FLINT, 1));
-
-            ModHandler.addShapedRecipe(SHOVEL.getStackForm(Materials.Flint, Materials.Wood),
-                    "F",
-                    "S",
-                    "S",
-                    'S', OreDictUnifier.get(OrePrefix.stick, Materials.Wood),
-                    'F', new ItemStack(Items.FLINT, 1));
-
-            ModHandler.addShapedRecipe(AXE.getStackForm(Materials.Flint, Materials.Wood),// true,
-                    "FF",
-                    "FS",
-                    " S",
-                    'S', OreDictUnifier.get(OrePrefix.stick, Materials.Wood),
-                    'F', new ItemStack(Items.FLINT, 1));
-
-            ModHandler.addShapedRecipe(HOE.getStackForm(Materials.Flint, Materials.Wood),// true,
-                    "FF",
-                    " S",
-                    " S",
-                    'S', OreDictUnifier.get(OrePrefix.stick, Materials.Wood),
-                    'F', new ItemStack(Items.FLINT, 1));
-
-            ModHandler.addShapedRecipe(KNIFE.getStackForm(Materials.Flint, Materials.Wood),
-                    "F",
-                    "S",
-                    'S', OreDictUnifier.get(OrePrefix.stick, Materials.Wood),
-                    'F', new ItemStack(Items.FLINT, 1));
-
-            ModHandler.addShapedRecipe(MORTAR.getStackForm(Materials.Flint, Materials.Stone),
-                    " I ",
-                    "SIS",
-                    "SSS",
-                    'I', new ItemStack(Items.FLINT, 1),
-                    'S', OrePrefix.stone);
-
             ModHandler.addShapedRecipe(MORTAR.getStackForm(Materials.Bronze, Materials.Stone),
-                    " I ",
-                    "SIS",
-                    "SSS",
-                    'I', OreDictUnifier.get(OrePrefix.ingot, Materials.Bronze),
-                    'S', OrePrefix.stone);
+                " I ",
+                "SIS",
+                "SSS",
+                'I', new UnificationEntry(OrePrefix.ingot, Materials.Bronze),
+                'S', OrePrefix.stone);
 
             ModHandler.addShapedRecipe(MORTAR.getStackForm(Materials.Iron, Materials.Stone),
-                    " I ",
-                    "SIS",
-                    "SSS",
-                    'I', OreDictUnifier.get(OrePrefix.ingot, Materials.Iron),
-                    'S', OrePrefix.stone);
+                " I ",
+                "SIS",
+                "SSS",
+                'I', new UnificationEntry(OrePrefix.ingot, Materials.Iron),
+                'S', OrePrefix.stone);
 
             ModHandler.addShapedRecipe(MORTAR.getStackForm(Materials.Steel, Materials.Stone),
-                    " I ",
-                    "SIS",
-                    "SSS",
-                    'I', OreDictUnifier.get(OrePrefix.ingot, Materials.Steel),
-                    'S', OrePrefix.stone);
+                " I ",
+                "SIS",
+                "SSS",
+                'I', new UnificationEntry(OrePrefix.ingot, Materials.Steel),
+                'S', OrePrefix.stone);
 
             ModHandler.addShapedRecipe(MORTAR.getStackForm(Materials.WroughtIron, Materials.Stone),
-                    " I ",
-                    "SIS",
-                    "SSS",
-                    'I', OreDictUnifier.get(OrePrefix.ingot, Materials.WroughtIron),
-                    'S', OrePrefix.stone);
+                " I ",
+                "SIS",
+                "SSS",
+                'I', new UnificationEntry(OrePrefix.ingot, Materials.WroughtIron),
+                'S', OrePrefix.stone);
 
             ModHandler.addShapedRecipe(MORTAR.getStackForm(Materials.RedSteel, Materials.Stone),
-                    " I ",
-                    "SIS",
-                    "SSS",
-                    'I', OreDictUnifier.get(OrePrefix.ingot, Materials.RedSteel),
-                    'S', OrePrefix.stone);
+                " I ",
+                "SIS",
+                "SSS",
+                'I', new UnificationEntry(OrePrefix.ingot, Materials.RedSteel),
+                'S', OrePrefix.stone);
 
             ModHandler.addShapedRecipe(MORTAR.getStackForm(Materials.BlueSteel, Materials.Stone),
-                    " I ",
-                    "SIS",
-                    "SSS",
-                    'I', OreDictUnifier.get(OrePrefix.ingot, Materials.BlueSteel),
-                    'S', OrePrefix.stone);
+                " I ",
+                "SIS",
+                "SSS",
+                'I', new UnificationEntry(OrePrefix.ingot, Materials.BlueSteel),
+                'S', OrePrefix.stone);
 
             ModHandler.addShapedRecipe(MORTAR.getStackForm(Materials.BlackSteel, Materials.Stone),
-                    " I ",
-                    "SIS",
-                    "SSS",
-                    'I', OreDictUnifier.get(OrePrefix.ingot, Materials.BlackSteel),
-                    'S', OrePrefix.stone);
+                " I ",
+                "SIS",
+                "SSS",
+                'I', new UnificationEntry(OrePrefix.ingot, Materials.BlackSteel),
+                'S', OrePrefix.stone);
 
             ModHandler.addShapedRecipe(MORTAR.getStackForm(Materials.DamascusSteel, Materials.Stone),
-                    " I ",
-                    "SIS",
-                    "SSS",
-                    'I', OreDictUnifier.get(OrePrefix.ingot, Materials.DamascusSteel),
-                    'S', OrePrefix.stone);
+                " I ",
+                "SIS",
+                "SSS",
+                'I', new UnificationEntry(OrePrefix.ingot, Materials.DamascusSteel),
+                'S', OrePrefix.stone);
 
             ModHandler.addShapedRecipe(ROLLING_PIN.getStackForm(Materials.Wood, Materials.Wood),
-                    "  S",
-                    " I ",
-                    "S f",
-                    'I', OreDictUnifier.get(OrePrefix.plank, Materials.Wood),
-                    'S', OreDictUnifier.get(OrePrefix.stick, Materials.Wood));
+                "  S",
+                " I ",
+                "S f",
+                'I', new UnificationEntry(OrePrefix.plank, Materials.Wood),
+                'S', new UnificationEntry(OrePrefix.stick, Materials.Wood));
 
             ModHandler.addShapedRecipe(ROLLING_PIN.getStackForm(Materials.Plastic, Materials.Plastic),
-                    "  S",
-                    " I ",
-                    "S f",
-                    'I', OreDictUnifier.get(OrePrefix.ingot, Materials.Plastic),
-                    'S', OreDictUnifier.get(OrePrefix.stick, Materials.Plastic));
+                "  S",
+                " I ",
+                "S f",
+                'I', new UnificationEntry(OrePrefix.ingot, Materials.Plastic),
+                'S', new UnificationEntry(OrePrefix.stick, Materials.Plastic));
 
             ModHandler.addShapedRecipe(ROLLING_PIN.getStackForm(Materials.Aluminium, Materials.Aluminium),
-                    "  S",
-                    " I ",
-                    "S f",
-                    'I', OreDictUnifier.get(OrePrefix.ingot, Materials.Aluminium),
-                    'S', OreDictUnifier.get(OrePrefix.stick, Materials.Aluminium));
+                "  S",
+                " I ",
+                "S f",
+                'I', new UnificationEntry(OrePrefix.ingot, Materials.Aluminium),
+                'S', new UnificationEntry(OrePrefix.stick, Materials.Aluminium));
 
             ModHandler.addShapedRecipe(ROLLING_PIN.getStackForm(Materials.StainlessSteel, Materials.StainlessSteel),
-                    "  S",
-                    " I ",
-                    "S f",
-                    'I', OreDictUnifier.get(OrePrefix.ingot, Materials.StainlessSteel),
-                    'S', OreDictUnifier.get(OrePrefix.stick, Materials.StainlessSteel));
+                "  S",
+                " I ",
+                "S f",
+                'I', new UnificationEntry(OrePrefix.ingot, Materials.StainlessSteel),
+                'S', new UnificationEntry(OrePrefix.stick, Materials.StainlessSteel));
 
             if (false) { // //TODO CONFIG !GregTechAPI.sSpecialFile.get(ConfigCategories.general, "DisableFlintTools", false)
                 ModHandler.addShapedRecipe(SWORD.getStackForm(Materials.Flint, Materials.Wood),
-                        "F",
-                        "F",
-                        "S",
-                        'S', OreDictUnifier.get(OrePrefix.stick, Materials.Wood),
-                        'F', new ItemStack(Items.FLINT, 1));
+                    "F",
+                    "F",
+                    "S",
+                    'S', new UnificationEntry(OrePrefix.stick, Materials.Wood),
+                    'F', new ItemStack(Items.FLINT, 1));
 
                 ModHandler.addShapedRecipe(PICKAXE.getStackForm(Materials.Flint, Materials.Wood),
-                        "FFF",
-                        " S ",
-                        " S ",
-                        'S', OreDictUnifier.get(OrePrefix.stick, Materials.Wood),
-                        'F', new ItemStack(Items.FLINT, 1));
+                    "FFF",
+                    " S ",
+                    " S ",
+                    'S', new UnificationEntry(OrePrefix.stick, Materials.Wood),
+                    'F', new ItemStack(Items.FLINT, 1));
 
                 ModHandler.addShapedRecipe(SHOVEL.getStackForm(Materials.Flint, Materials.Wood),
-                        "F",
-                        "S",
-                        "S",
-                        'S', OreDictUnifier.get(OrePrefix.stick, Materials.Wood),
-                        'F', new ItemStack(Items.FLINT, 1));
+                    "F",
+                    "S",
+                    "S",
+                    'S', new UnificationEntry(OrePrefix.stick, Materials.Wood),
+                    'F', new ItemStack(Items.FLINT, 1));
 
                 ModHandler.addShapedRecipe(AXE.getStackForm(Materials.Flint, Materials.Wood),// true,
-                        "FF",
-                        "FS",
-                        " S",
-                        'S', OreDictUnifier.get(OrePrefix.stick, Materials.Wood),
-                        'F', new ItemStack(Items.FLINT, 1));
+                    "FF",
+                    "FS",
+                    " S",
+                    'S', new UnificationEntry(OrePrefix.stick, Materials.Wood),
+                    'F', new ItemStack(Items.FLINT, 1));
 
                 ModHandler.addShapedRecipe(HOE.getStackForm(Materials.Flint, Materials.Wood),// true,
-                        "FF",
-                        " S",
-                        " S",
-                        'S', OreDictUnifier.get(OrePrefix.stick, Materials.Wood),
-                        'F', new ItemStack(Items.FLINT, 1));
+                    "FF",
+                    " S",
+                    " S",
+                    'S', new UnificationEntry(OrePrefix.stick, Materials.Wood),
+                    'F', new ItemStack(Items.FLINT, 1));
 
                 ModHandler.addShapedRecipe(KNIFE.getStackForm(Materials.Flint, Materials.Wood),
-                        "F",
-                        "S",
-                        'S', OreDictUnifier.get(OrePrefix.stick, Materials.Wood),
-                        'F', new ItemStack(Items.FLINT, 1));
+                    "F",
+                    "S",
+                    'S', new UnificationEntry(OrePrefix.stick, Materials.Wood),
+                    'F', new ItemStack(Items.FLINT, 1));
 
             }
             if (true) {  //TODO CONFIG GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.mortar, "Coal", true)
                 ModHandler.addShapelessRecipe(OreDictUnifier.get(OrePrefix.dust, Materials.Coal, 1),
-                        ToolDictNames.craftingToolMortar,
-                        new ItemStack(Items.COAL, 1));
+                    ToolDictNames.craftingToolMortar,
+                    new ItemStack(Items.COAL, 1));
             }
             if (true) {  //TODO CONFIG GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.mortar, "Clay", true)
                 ModHandler.addShapelessRecipe(OreDictUnifier.get(OrePrefix.dust, Materials.Clay, 1),
-                        ToolDictNames.craftingToolMortar,
-                        new ItemStack(Blocks.CLAY, 1));
+                    ToolDictNames.craftingToolMortar,
+                    new ItemStack(Blocks.CLAY, 1));
             }
             if (true) { // TODO CONFIG GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.mortar, "Wheat", true)
                 ModHandler.addShapelessRecipe(OreDictUnifier.get(OrePrefix.dust, Materials.Wheat, 1),
-                        ToolDictNames.craftingToolMortar,
-                        new ItemStack(Items.WHEAT, 1));
+                    ToolDictNames.craftingToolMortar,
+                    new ItemStack(Items.WHEAT, 1));
             }
             if (true) {  //TODO CONFIG GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.mortar, "Clay", true)
                 ModHandler.addShapelessRecipe(new ItemStack(Items.FLINT, 1),
-                        ToolDictNames.craftingToolMortar,
-                        new ItemStack(Blocks.GRAVEL, 1));
+                    ToolDictNames.craftingToolMortar,
+                    new ItemStack(Blocks.GRAVEL, 1));
             }
             if (true) {  //TODO CONFIG GregTechAPI.sRecipeFile.get(ConfigCategories.Tools.mortar, "Blaze", true)
                 ModHandler.addShapelessRecipe(new ItemStack(Items.BLAZE_POWDER, 2),
-                        ToolDictNames.craftingToolMortar,
-                        new ItemStack(Items.BLAZE_ROD, 1));
+                    ToolDictNames.craftingToolMortar,
+                    new ItemStack(Items.BLAZE_ROD, 1));
             }
         }
     }

@@ -104,7 +104,11 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         if(metaValueItem == null) {
             return ElectricStats.EMPTY;
         }
-        return metaValueItem.getElectricStats();
+        IElectricStats electricStats = metaValueItem.getElectricStats();
+        if (electricStats == null) {
+            return ElectricStats.EMPTY;
+        }
+        return electricStats;
     }
 
     @Override
@@ -121,7 +125,11 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         if(metaValueItem == null) {
             return FluidStats.EMPTY;
         }
-        return metaValueItem.getFluidStats();
+        IFluidStats fluidStats = metaValueItem.getFluidStats();
+        if (fluidStats == null) {
+            return FluidStats.EMPTY;
+        }
+        return fluidStats;
     }
 
     @Override
@@ -424,29 +432,32 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> lines, boolean showAdditionalInfo) {
         super.addInformation(itemStack, player, lines, showAdditionalInfo);
 
-        String unlocalizedTooltip = "metaitem." + getItem(itemStack).unlocalizedName + ".tooltip";
-        if (I18n.hasKey(unlocalizedTooltip)) {
-            lines.add(I18n.format(unlocalizedTooltip));
-        }
+        T item = getItem(itemStack);
+        if (item != null) {
+            String unlocalizedTooltip = "metaitem." + item.unlocalizedName + ".tooltip";
+            if (I18n.hasKey(unlocalizedTooltip)) {
+                lines.add(I18n.format(unlocalizedTooltip));
+            }
 
-        IElectricStats electricStats = getManager(itemStack);
-        if(electricStats.getMaxCharge(itemStack) > 0) {
-            lines.add(I18n.format("metaitem.generic.electric_item.tooltip",
+            IElectricStats electricStats = getManager(itemStack);
+            if (electricStats.getMaxCharge(itemStack) > 0) {
+                lines.add(I18n.format("metaitem.generic.electric_item.tooltip",
                     (long) electricStats.getCharge(itemStack),
                     (long) electricStats.getMaxCharge(itemStack),
                     GTValues.V[electricStats.getTier(itemStack)]));
-        }
-        if(getCapacity(itemStack) > 0) {
-            FluidStack fluid = getFluid(itemStack);
-            if(fluid != null) {
-                lines.add(I18n.format("metaitem.generic.fluid_container.tooltip",
+            }
+            if (getCapacity(itemStack) > 0) {
+                FluidStack fluid = getFluid(itemStack);
+                if (fluid != null) {
+                    lines.add(I18n.format("metaitem.generic.fluid_container.tooltip",
                         fluid.amount,
                         getCapacity(itemStack),
                         fluid.getLocalizedName()));
-            } else lines.add(I18n.format("metaitem.generic.fluid_container.tooltip_empty"));
-        }
-        for(IItemBehaviour behaviour : getBehaviours(itemStack)) {
-            behaviour.addInformation(itemStack, lines);
+                } else lines.add(I18n.format("metaitem.generic.fluid_container.tooltip_empty"));
+            }
+            for (IItemBehaviour behaviour : getBehaviours(itemStack)) {
+                behaviour.addInformation(itemStack, lines);
+            }
         }
     }
 
@@ -494,11 +505,16 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         //Parameters can be either localized or not
         protected final String[] nameParameters;
 
+        @Nullable
         private IElectricStats electricStats;
+        @Nullable
         private IFluidStats fluidStats;
+        @Nullable
         private INuclearStats nuclearStats;
         private List<IItemBehaviour> behaviours = new ArrayList<>();
+        @Nullable
         private IItemUseManager useManager;
+        @Nullable
         private IItemDurabilityManager durabilityManager;
         private int burnValue = 0;
         private boolean visible = true;

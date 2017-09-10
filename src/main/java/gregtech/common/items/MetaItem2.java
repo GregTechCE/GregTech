@@ -32,9 +32,14 @@ public class MetaItem2 extends MaterialMetaItem {
                 OrePrefix.wireFine, OrePrefix.gearSmall, OrePrefix.rotor, OrePrefix.stickLong, OrePrefix.springSmall, OrePrefix.spring,
                 OrePrefix.gemChipped, OrePrefix.gemFlawed, OrePrefix.gemFlawless, OrePrefix.gemExquisite, OrePrefix.gear,
                 null, null, null, null, null);
+    }
+
+    @Override
+    public void registerItem(String registryName) {
+        super.registerItem(registryName);
 
         boolean drinksAlwaysDrinkable = false;
-        
+
         THERMOS_CAN_DARK_COFFEE = addItem(0, "thermos_can.dark.coffee").addStats(new FoodStats(2, 0.2F, true, drinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.SPEED, 400, 1, 70), new RandomPotionEffect(MobEffects.HASTE, 400, 1, 70)));
         THERMOS_CAN_DARK_CAFE_AU_LAIT = addItem(1, "thermos_can.dark.cafe.au.lait").setInvisible().addStats(new FoodStats(2, 0.2F, true, drinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.SPEED, 400, 2, 90), new RandomPotionEffect(MobEffects.HASTE, 400, 2, 90)));
         THERMOS_CAN_COFFEE = addItem(2, "thermos_can.coffee").addStats(new FoodStats(3, 0.4F, true, drinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.SPEED, 400, 0, 50), new RandomPotionEffect(MobEffects.HASTE, 400, 0, 50)));
@@ -49,7 +54,7 @@ public class MetaItem2 extends MaterialMetaItem {
         GELLED_TOLUENE = addItem(10, "gelled_toluene");
 
         ItemStack emptyBottle = new ItemStack(Items.GLASS_BOTTLE);
-        
+
         BOTTLE_PURPLE_DRINK = addItem(100, "bottle.purple.drink").addStats(new FoodStats(8, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.SLOWNESS, 400, 1, 90)));
         BOTTLE_GRAPE_JUICE = addItem(101, "bottle.grape.juice").addStats(new FoodStats(4, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HUNGER, 400, 1, 60)));
         BOTTLE_WINE = addItem(102, "bottle.wine").addStats(new FoodStats(2, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 400, 1, 60), new RandomPotionEffect(MobEffects.INSTANT_HEALTH, 0, 0, 60), new RandomPotionEffect(MobEffects.POISON, 200, 1, 5)));
@@ -146,37 +151,6 @@ public class MetaItem2 extends MaterialMetaItem {
         SFMIXTURE = addItem(270, "sfmixture");
         MSFMIXTURE = addItem(271, "msfmixture");
 
-        ModHandler.addShapedRecipe(PLANK_OAK.getStackForm(2),
-                "s ",
-                " P",
-                'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 0));
-        
-        ModHandler.addShapedRecipe(PLANK_SPRUCE.getStackForm(2),
-                "s ",
-                " P",
-                'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 1));
-        
-        ModHandler.addShapedRecipe(PLANK_BIRCH.getStackForm(2),
-                "s ",
-                " P",
-                'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 2));
-        
-        ModHandler.addShapedRecipe(PLANK_JUNGLE.getStackForm(2),
-                "s ",
-                " P",
-                'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 3));
-        
-        ModHandler.addShapedRecipe(PLANK_ACACIA.getStackForm(2),
-                "s ",
-                " P",
-                'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 4));
-        
-        ModHandler.addShapedRecipe(PLANK_DARKOAK.getStackForm(2),
-                "s ",
-                " P",
-                'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 5));
-        
-
         CROP_DROP_PLUMBILIA = addItem(500, "crop.drop.plumbilia");
         CROP_DROP_ARGENTIA = addItem(501, "crop.drop.argentia");
         CROP_DROP_INDIGO = addItem(502, "crop.drop.indigo");
@@ -234,228 +208,265 @@ public class MetaItem2 extends MaterialMetaItem {
         FOOD_SLICED_CUCUMBER = addItem(574, "food.sliced.cucumber").addStats(new FoodStats(1, 0.05F));
 
         FOOD_SLICED_CHEESE = addItem(576, "food.sliced.cheese").addStats(new FoodStats(1, 0.1F));
+    }
+
+    public void registerRecipes() {
+
+        // Plank recipes
+        ModHandler.addShapedRecipe(PLANK_OAK.getStackForm(2),
+            "s ",
+            " P",
+            'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 0));
+
+        ModHandler.addShapedRecipe(PLANK_SPRUCE.getStackForm(2),
+            "s ",
+            " P",
+            'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 1));
+
+        ModHandler.addShapedRecipe(PLANK_BIRCH.getStackForm(2),
+            "s ",
+            " P",
+            'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 2));
+
+        ModHandler.addShapedRecipe(PLANK_JUNGLE.getStackForm(2),
+            "s ",
+            " P",
+            'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 3));
+
+        ModHandler.addShapedRecipe(PLANK_ACACIA.getStackForm(2),
+            "s ",
+            " P",
+            'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 4));
+
+        ModHandler.addShapedRecipe(PLANK_DARKOAK.getStackForm(2),
+            "s ",
+            " P",
+            'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 5));
+
+        // Dyes recipes
+        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+            .inputs(new ItemStack(Blocks.RED_FLOWER, 1, 0))
+            .outputs(new ItemStack(Items.DYE, 2, 1))
+            .buildAndRegister();
 
         RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
-				.inputs(new ItemStack(Blocks.RED_FLOWER, 1, 0))
-				.outputs(new ItemStack(Items.DYE, 2, 1))
-				.buildAndRegister();
+            .inputs(new ItemStack(Blocks.RED_FLOWER, 1, 1))
+            .outputs(new ItemStack(Items.DYE, 2, 12))
+            .buildAndRegister();
 
         RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
-				.inputs(new ItemStack(Blocks.RED_FLOWER, 1, 1))
-				.outputs(new ItemStack(Items.DYE, 2, 12))
-				.buildAndRegister();
+            .inputs(new ItemStack(Blocks.RED_FLOWER, 1, 2))
+            .outputs(new ItemStack(Items.DYE, 2, 13))
+            .buildAndRegister();
 
         RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
-				.inputs(new ItemStack(Blocks.RED_FLOWER, 1, 2))
-				.outputs(new ItemStack(Items.DYE, 2, 13))
-				.buildAndRegister();
+            .inputs(new ItemStack(Blocks.RED_FLOWER, 1, 3))
+            .outputs(new ItemStack(Items.DYE, 2, 7))
+            .buildAndRegister();
 
         RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
-				.inputs(new ItemStack(Blocks.RED_FLOWER, 1, 3))
-				.outputs(new ItemStack(Items.DYE, 2, 7))
-				.buildAndRegister();
+            .inputs(new ItemStack(Blocks.RED_FLOWER, 1, 4))
+            .outputs(new ItemStack(Items.DYE, 2, 1))
+            .buildAndRegister();
 
         RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
-				.inputs(new ItemStack(Blocks.RED_FLOWER, 1, 4))
-				.outputs(new ItemStack(Items.DYE, 2, 1))
-				.buildAndRegister();
+            .inputs(new ItemStack(Blocks.RED_FLOWER, 1, 5))
+            .outputs(new ItemStack(Items.DYE, 2, 14))
+            .buildAndRegister();
 
         RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
-				.inputs(new ItemStack(Blocks.RED_FLOWER, 1, 5))
-				.outputs(new ItemStack(Items.DYE, 2, 14))
-				.buildAndRegister();
+            .inputs(new ItemStack(Blocks.RED_FLOWER, 1, 6))
+            .outputs(new ItemStack(Items.DYE, 2, 7))
+            .buildAndRegister();
 
         RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
-				.inputs(new ItemStack(Blocks.RED_FLOWER, 1, 6))
-				.outputs(new ItemStack(Items.DYE, 2, 7))
-				.buildAndRegister();
+            .inputs(new ItemStack(Blocks.RED_FLOWER, 1, 7))
+            .outputs(new ItemStack(Items.DYE, 2, 9))
+            .buildAndRegister();
 
         RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
-				.inputs(new ItemStack(Blocks.RED_FLOWER, 1, 7))
-				.outputs(new ItemStack(Items.DYE, 2, 9))
-				.buildAndRegister();
+            .inputs(new ItemStack(Blocks.RED_FLOWER, 1, 8))
+            .outputs(new ItemStack(Items.DYE, 2, 7))
+            .buildAndRegister();
 
         RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
-				.inputs(new ItemStack(Blocks.RED_FLOWER, 1, 8))
-				.outputs(new ItemStack(Items.DYE, 2, 7))
-				.buildAndRegister();
+            .inputs(new ItemStack(Blocks.YELLOW_FLOWER, 1, 0))
+            .outputs(new ItemStack(Items.DYE, 2, 11))
+            .buildAndRegister();
 
         RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
-				.inputs(new ItemStack(Blocks.YELLOW_FLOWER, 1, 0))
-				.outputs(new ItemStack(Items.DYE, 2, 11))
-				.buildAndRegister();
+            .inputs(new ItemStack(Blocks.DOUBLE_PLANT, 1, 0))
+            .outputs(new ItemStack(Items.DYE, 3, 11))
+            .buildAndRegister();
 
         RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
-				.inputs(new ItemStack(Blocks.DOUBLE_PLANT, 1, 0))
-				.outputs(new ItemStack(Items.DYE, 3, 11))
-				.buildAndRegister();
+            .inputs(new ItemStack(Blocks.DOUBLE_PLANT, 1, 1))
+            .outputs(new ItemStack(Items.DYE, 3, 13))
+            .buildAndRegister();
 
         RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
-				.inputs(new ItemStack(Blocks.DOUBLE_PLANT, 1, 1))
-				.outputs(new ItemStack(Items.DYE, 3, 13))
-				.buildAndRegister();
+            .inputs(new ItemStack(Blocks.DOUBLE_PLANT, 1, 4))
+            .outputs(new ItemStack(Items.DYE, 3, 1))
+            .buildAndRegister();
 
         RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
-				.inputs(new ItemStack(Blocks.DOUBLE_PLANT, 1, 4))
-				.outputs(new ItemStack(Items.DYE, 3, 1))
-				.buildAndRegister();
+            .inputs(new ItemStack(Blocks.DOUBLE_PLANT, 1, 5))
+            .outputs(new ItemStack(Items.DYE, 3, 9))
+            .buildAndRegister();
+
+        // Crops recipes
+        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+            .inputs(CROP_DROP_PLUMBILIA.getStackForm())
+            .outputs(OreDictUnifier.get(OrePrefix.dustTiny, Materials.Lead, 1))
+            .buildAndRegister();
 
         RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
-				.inputs(new ItemStack(Blocks.DOUBLE_PLANT, 1, 5))
-				.outputs(new ItemStack(Items.DYE, 3, 9))
-				.buildAndRegister();
+            .inputs(CROP_DROP_ARGENTIA.getStackForm())
+            .outputs(OreDictUnifier.get(OrePrefix.dustTiny, Materials.Silver, 1))
+            .buildAndRegister();
 
         RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
-				.inputs(CROP_DROP_PLUMBILIA.getStackForm())
-				.outputs(OreDictUnifier.get(OrePrefix.dustTiny, Materials.Lead, 1))
-				.buildAndRegister();
+            .inputs(CROP_DROP_INDIGO.getStackForm())
+            .outputs(DYE_INDIGO.getStackForm())
+            .buildAndRegister();
 
         RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
-				.inputs(CROP_DROP_ARGENTIA.getStackForm())
-				.outputs(OreDictUnifier.get(OrePrefix.dustTiny, Materials.Silver, 1))
-				.buildAndRegister();
+            .inputs(CROP_DROP_MILK_WART.getStackForm())
+            .outputs(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Milk))
+            .buildAndRegister();
 
         RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
-				.inputs(CROP_DROP_INDIGO.getStackForm())
-				.outputs(DYE_INDIGO.getStackForm())
-				.buildAndRegister();
+            .inputs(CROP_DROP_COPPON.getStackForm())
+            .outputs(OreDictUnifier.get(OrePrefix.dustTiny, Materials.Copper))
+            .buildAndRegister();
 
         RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
-				.inputs(CROP_DROP_MILK_WART.getStackForm())
-				.outputs(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Milk, 1))
-				.buildAndRegister();
-
-        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
-				.inputs(CROP_DROP_COPPON.getStackForm())
-				.outputs(OreDictUnifier.get(OrePrefix.dustTiny, Materials.Copper, 1))
-				.buildAndRegister();
-
-        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
-				.inputs(CROP_DROP_TINE.getStackForm())
-				.outputs(OreDictUnifier.get(OrePrefix.dustTiny, Materials.Tin, 1))
-				.buildAndRegister();
+            .inputs(CROP_DROP_TINE.getStackForm())
+            .outputs(OreDictUnifier.get(OrePrefix.dustTiny, Materials.Tin))
+            .buildAndRegister();
 
         ItemStack plantBall = ModHandler.IC2.getIC2Item(ItemName.crafting, CraftingItemType.plant_ball, 1);
 
         RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
-                .inputs(CROP_DROP_COPPON.getStackForm(4))
-                .outputs(new ItemStack(Blocks.WOOL, 1, 1))
-                .buildAndRegister();
+            .inputs(CROP_DROP_COPPON.getStackForm(4))
+            .outputs(new ItemStack(Blocks.WOOL, 1, 1))
+            .buildAndRegister();
 
         RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
-                .inputs(CROP_DROP_PLUMBILIA.getStackForm(8))
-                .outputs(plantBall.copy())
-                .buildAndRegister();
+            .inputs(CROP_DROP_PLUMBILIA.getStackForm(8))
+            .outputs(plantBall.copy())
+            .buildAndRegister();
 
         RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
-                .inputs(CROP_DROP_ARGENTIA.getStackForm(8))
-                .outputs(plantBall.copy())
-                .buildAndRegister();
+            .inputs(CROP_DROP_ARGENTIA.getStackForm(8))
+            .outputs(plantBall.copy())
+            .buildAndRegister();
 
         RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
-                .inputs(CROP_DROP_INDIGO.getStackForm(8))
-                .outputs(plantBall.copy())
-                .buildAndRegister();
+            .inputs(CROP_DROP_INDIGO.getStackForm(8))
+            .outputs(plantBall.copy())
+            .buildAndRegister();
         RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
-                .inputs(CROP_DROP_FERRU.getStackForm(8))
-                .outputs(plantBall.copy())
-                .buildAndRegister();
+            .inputs(CROP_DROP_FERRU.getStackForm(8))
+            .outputs(plantBall.copy())
+            .buildAndRegister();
         RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
-                .inputs(CROP_DROP_AURELIA.getStackForm(8))
-                .outputs(plantBall.copy())
-                .buildAndRegister();
+            .inputs(CROP_DROP_AURELIA.getStackForm(8))
+            .outputs(plantBall.copy())
+            .buildAndRegister();
         RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
-                .inputs(CROP_DROP_OIL_BERRY.getStackForm(8))
-                .outputs(plantBall.copy())
-                .buildAndRegister();
+            .inputs(CROP_DROP_OIL_BERRY.getStackForm(8))
+            .outputs(plantBall.copy())
+            .buildAndRegister();
         RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
-                .inputs(CROP_DROP_BOBS_YER_UNCLE_RANKS.getStackForm(8))
-                .outputs(plantBall.copy())
-                .buildAndRegister();
+            .inputs(CROP_DROP_BOBS_YER_UNCLE_RANKS.getStackForm(8))
+            .outputs(plantBall.copy())
+            .buildAndRegister();
         RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
-                .inputs(CROP_DROP_TINE.getStackForm(4))
-                .outputs(plantBall.copy())
-                .buildAndRegister();
+            .inputs(CROP_DROP_TINE.getStackForm(4))
+            .outputs(plantBall.copy())
+            .buildAndRegister();
         RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
-                .inputs(new ItemStack(Blocks.RED_FLOWER, 8, W))
-                .outputs(plantBall.copy())
-                .buildAndRegister();
+            .inputs(new ItemStack(Blocks.RED_FLOWER, 8, W))
+            .outputs(plantBall.copy())
+            .buildAndRegister();
         RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
-                .inputs(new ItemStack(Blocks.RED_FLOWER, 8, W))
-                .outputs(plantBall.copy())
-                .buildAndRegister();
+            .inputs(new ItemStack(Blocks.RED_FLOWER, 8, W))
+            .outputs(plantBall.copy())
+            .buildAndRegister();
+
+        // Misc
+        RecipeMap.MACERATOR_RECIPES.recipeBuilder()
+            .inputs(FOOD_SLICED_CHEESE.getStackForm())
+            .outputs(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Cheese, 1))
+            .duration(400)
+            .EUt(2)
+            .buildAndRegister();
 
         RecipeMap.MACERATOR_RECIPES.recipeBuilder()
-                .inputs(FOOD_SLICED_CHEESE.getStackForm())
-                .outputs(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Cheese, 1))
-                .duration(400)
-                .EUt(2)
-                .buildAndRegister();
-        
+            .inputs(new ItemStack(Items.DYE, 1, EnumDyeColor.BROWN.getDyeDamage()))
+            .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Cocoa, 1))
+            .duration(400)
+            .EUt(2)
+            .buildAndRegister();
+
         RecipeMap.MACERATOR_RECIPES.recipeBuilder()
-                .inputs(new ItemStack(Items.DYE, 1, EnumDyeColor.BROWN.getDyeDamage()))
-                .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Cocoa, 1))
-                .duration(400)
-                .EUt(2)
-                .buildAndRegister();
-        
+            .inputs(CROP_DROP_TINE.getStackForm())
+            .outputs(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Wood, 2))
+            .duration(400)
+            .EUt(2)
+            .buildAndRegister();
+
         RecipeMap.MACERATOR_RECIPES.recipeBuilder()
-                .inputs(CROP_DROP_TINE.getStackForm())
-                .outputs(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Wood, 2))
-                .duration(400)
-                .EUt(2)
-                .buildAndRegister();
-        
+            .inputs(new ItemStack(Items.REEDS, 1))
+            .outputs(new ItemStack(Items.SUGAR, 1))
+            .duration(400)
+            .EUt(2)
+            .buildAndRegister();
+
         RecipeMap.MACERATOR_RECIPES.recipeBuilder()
-                .inputs(new ItemStack(Items.REEDS, 1))
-                .outputs(new ItemStack(Items.SUGAR, 1))
-                .duration(400)
-                .EUt(2)
-                .buildAndRegister();    
-        
+            .inputs(new ItemStack(Blocks.MELON_BLOCK, 1, 0))
+            .outputs(new ItemStack(Items.MELON, 8, 0))
+            .chancedOutput(new ItemStack(Items.MELON_SEEDS, 1), 8000)
+            .duration(400)
+            .EUt(2)
+            .buildAndRegister();
+
         RecipeMap.MACERATOR_RECIPES.recipeBuilder()
-                .inputs(new ItemStack(Blocks.MELON_BLOCK, 1, 0))
-                .outputs(new ItemStack(Items.MELON, 8, 0))
-                .chancedOutput(new ItemStack(Items.MELON_SEEDS, 1), 8000)
-                .duration(400)
-                .EUt(2)
-                .buildAndRegister();  
-        
+            .inputs(new ItemStack(Blocks.PUMPKIN, 1, 0))
+            .outputs(new ItemStack(Items.PUMPKIN_SEEDS, 4, 0))
+            .duration(400)
+            .EUt(2)
+            .buildAndRegister();
+
         RecipeMap.MACERATOR_RECIPES.recipeBuilder()
-                .inputs(new ItemStack(Blocks.PUMPKIN, 1, 0))
-                .outputs(new ItemStack(Items.PUMPKIN_SEEDS, 4, 0))
-                .duration(400)
-                .EUt(2)
-                .buildAndRegister();  
-        
+            .inputs(new ItemStack(Items.MELON, 1, 0))
+            .outputs(new ItemStack(Items.MELON_SEEDS, 1, 0))
+            .duration(400)
+            .EUt(2)
+            .buildAndRegister();
+
         RecipeMap.MACERATOR_RECIPES.recipeBuilder()
-                .inputs(new ItemStack(Items.MELON, 1, 0))
-                .outputs(new ItemStack(Items.MELON_SEEDS, 1, 0))
-                .duration(400)
-                .EUt(2)
-                .buildAndRegister();  
-        
+            .inputs(new ItemStack(Items.WHEAT, 1, 0))
+            .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Wheat, 1))
+            .duration(400)
+            .EUt(2)
+            .buildAndRegister();
+
         RecipeMap.MACERATOR_RECIPES.recipeBuilder()
-                .inputs(new ItemStack(Items.WHEAT, 1, 0))
-                .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Wheat, 1))
-                .duration(400)
-                .EUt(2)
-                .buildAndRegister();  
-        
+            .inputs(new ItemStack(Items.STICK, 1))
+            .outputs(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Wood, 2))
+            .duration(400)
+            .EUt(2)
+            .buildAndRegister();
+
         RecipeMap.MACERATOR_RECIPES.recipeBuilder()
-                .inputs(new ItemStack(Items.STICK, 1))
-                .outputs(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Wood, 2))
-                .duration(400)
-                .EUt(2)
-                .buildAndRegister();   
-        
-        RecipeMap.MACERATOR_RECIPES.recipeBuilder()
-                .inputs(new ItemStack(Blocks.WOOL, 1, W))
-                .outputs(new ItemStack(Items.STRING, 2))
-                .chancedOutput(new ItemStack(Items.STRING, 1), 5000)
-                .duration(400)
-                .EUt(2)
-                .buildAndRegister();        
+            .inputs(new ItemStack(Blocks.WOOL, 1, W))
+            .outputs(new ItemStack(Items.STRING, 2))
+            .chancedOutput(new ItemStack(Items.STRING, 1), 5000)
+            .duration(400)
+            .EUt(2)
+            .buildAndRegister();
     }
 
     @Override

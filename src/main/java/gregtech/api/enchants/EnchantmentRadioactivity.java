@@ -18,7 +18,7 @@ public class EnchantmentRadioactivity extends EnchantmentDamage {
     }
 
     public void register() {
-        GameRegistry.register(this, new ResourceLocation(GTValues.MODID, "disjunction"));
+        GameRegistry.register(this, new ResourceLocation(GTValues.MODID, "radioactivity"));
     }
 
     @Override

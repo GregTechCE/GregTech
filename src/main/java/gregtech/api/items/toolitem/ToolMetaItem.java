@@ -145,6 +145,9 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         T metaValueItem = getItem(stack);
         if(metaValueItem != null && slot == EntityEquipmentSlot.MAINHAND) {
             IToolStats toolStats = metaValueItem.getToolStats();
+            if (toolStats == null) {
+                return HashMultimap.create();
+            }
             float attackDamage = toolStats.getBaseDamage(stack);
             float attackSpeed = toolStats.getAttackSpeed(stack);
 
@@ -315,7 +318,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         }
 
         public final ItemStack getStackForm(Material primaryMaterial, Material handleMaterial, int amount) {
-            ItemStack stack = getStackForm(amount);
+            ItemStack stack = new ItemStack(ToolMetaItem.this, amount, metaItemOffset + metaValue);
 
             T metaToolValueItem = getItem(stack);
             if (metaToolValueItem != null) {

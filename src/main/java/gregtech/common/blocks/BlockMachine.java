@@ -12,6 +12,7 @@ import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -121,6 +122,11 @@ public class BlockMachine extends Block implements ITileEntityProvider {
     @Override
     public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
         return false;
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, HARVEST_LEVEL, HARVEST_TOOL);
     }
 
     @Override

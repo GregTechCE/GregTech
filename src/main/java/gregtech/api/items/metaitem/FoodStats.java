@@ -26,14 +26,16 @@ public class FoodStats implements IFoodStats {
     public final RandomPotionEffect[] potionEffects;
 
     @Nullable
-    public final ItemStack containerItem;
+    public ItemStack containerItem;
 
     public FoodStats(int foodLevel, float saturation, boolean isDrink, boolean alwaysEdible, ItemStack containerItem, RandomPotionEffect... potionEffects) {
         this.foodLevel = foodLevel;
         this.saturation = saturation;
         this.isDrink = isDrink;
         this.alwaysEdible = alwaysEdible;
-        this.containerItem = containerItem.copy();
+        if (containerItem != null) {
+            this.containerItem = containerItem.copy();
+        }
         this.potionEffects = potionEffects;
     }
 
@@ -81,7 +83,7 @@ public class FoodStats implements IFoodStats {
             for (int i = 0; i < potionEffects.length; i++) {
                 effects[i] = potionEffects[i].effect;
             }
-            GTUtility.addPotionTooltip(Iterables.cycle(effects), lines);
+//            GTUtility.addPotionTooltip(Iterables.cycle(effects), lines);
         }
     }
 

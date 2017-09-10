@@ -128,7 +128,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 
     public R outputs(Collection<ItemStack> outputs) {
 		outputs = new ArrayList<>(outputs);
-		if(outputs.contains(null)) outputs.remove(null);
+		if(outputs.contains(null)) outputs.removeIf(Objects::isNull);
 		this.outputs.addAll(outputs);
         return getThis();
     }
@@ -153,7 +153,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 
     public R fluidOutputs(Collection<FluidStack> outputs) {
 		outputs = new ArrayList<>(outputs);
-		if(outputs.contains(null)) outputs.remove(null);
+		if(outputs.contains(null)) outputs.removeIf(Objects::isNull);
 		this.fluidOutputs.addAll(outputs);
         return getThis();
     }
@@ -239,12 +239,17 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 			inputs.replaceAll(OreDictUnifier::getUnificated);
 			outputs.replaceAll(OreDictUnifier::getUnificated);
 
-			TObjectIntMap<ItemStack> newMap = new TObjectIntHashMap<>();
-			TObjectIntIterator<ItemStack> iterator = chancedOutputs.iterator();
-			while (iterator.hasNext()) {
-				newMap.put(OreDictUnifier.getUnificated(iterator.key()), iterator.value());
-			}
-			chancedOutputs = newMap;
+			ItemStack[] keys = chancedOutputs.keys(new ItemStack[0]);
+			int[] values = chancedOutputs.values();
+
+            for (int i = 0; i < keys.length; i++) {
+                keys[i] = OreDictUnifier.getUnificated(keys[i]);
+            }
+
+            chancedOutputs = new TObjectIntHashMap<>();
+            for (int i = 0; i < keys.length; i++) {
+                chancedOutputs.put(keys[i], values[i]);
+            }
 		}
 
 		for (ItemStack stack : inputs) {
@@ -297,21 +302,25 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 			recipeStatus = EnumValidationResult.INVALID;
 		}
 
-        if (!GTUtility.isBetweenExclusive(recipeMap.getMinInputs(), recipeMap.getMaxInputs(), inputs.size())){
-            GTLog.logger.error("Invalid amount of recipe inputs", new IllegalArgumentException());
+        if (!GTUtility.isBetweenInclusive(recipeMap.getMinInputs(), recipeMap.getMaxInputs(), inputs.size())){
+            GTLog.logger.error("Invalid amount of recipe inputs. Actual: {}, Should be between {} and {} inclusive", inputs.size(), recipeMap.getMinInputs(), recipeMap.getMaxInputs());
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
 			recipeStatus = EnumValidationResult.INVALID;
 		}
-		if (!GTUtility.isBetweenExclusive(recipeMap.getMinOutputs(), recipeMap.getMaxOutputs(), outputs.size() + chancedOutputs.size())){
-            GTLog.logger.error("Invalid amount of recipe outputs", new IllegalArgumentException());
-			recipeStatus = EnumValidationResult.INVALID;
+		if (!GTUtility.isBetweenInclusive(recipeMap.getMinOutputs(), recipeMap.getMaxOutputs(), outputs.size() + chancedOutputs.size())){
+            GTLog.logger.error("Invalid amount of recipe outputs. Actual: {}, Should be between {} and {} inclusive", outputs.size() + chancedOutputs.size(), recipeMap.getMinOutputs(), recipeMap.getMaxOutputs());
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+            recipeStatus = EnumValidationResult.INVALID;
 		}
-		if (!GTUtility.isBetweenExclusive(recipeMap.getMinFluidInputs(), recipeMap.getMaxFluidInputs(), fluidInputs.size())){
-            GTLog.logger.error("Invalid amount of recipe fluid inputs", new IllegalArgumentException());
-			recipeStatus = EnumValidationResult.INVALID;
+		if (!GTUtility.isBetweenInclusive(recipeMap.getMinFluidInputs(), recipeMap.getMaxFluidInputs(), fluidInputs.size())){
+            GTLog.logger.error("Invalid amount of recipe fluid inputs. Actual: {}, Should be between {} and {} inclusive", fluidInputs.size(), recipeMap.getMinFluidInputs(), recipeMap.getMaxFluidInputs());
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+            recipeStatus = EnumValidationResult.INVALID;
 		}
-		if (!GTUtility.isBetweenExclusive(recipeMap.getMinFluidOutputs(), recipeMap.getMaxFluidOutputs(), fluidOutputs.size())){
-            GTLog.logger.error("Invalid amount of recipe fluid outputs", new IllegalArgumentException());
-			recipeStatus = EnumValidationResult.INVALID;
+		if (!GTUtility.isBetweenInclusive(recipeMap.getMinFluidOutputs(), recipeMap.getMaxFluidOutputs(), fluidOutputs.size())){
+            GTLog.logger.error("Invalid amount of recipe fluid outputs. Actual: {}, Should be between {} and {} inclusive", fluidOutputs.size(), recipeMap.getMinFluidOutputs(), recipeMap.getMaxFluidOutputs());
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+            recipeStatus = EnumValidationResult.INVALID;
 		}
 
 //			Validate.isTrue(EUt > 0, "EU/t cannot be less of equal to 0");

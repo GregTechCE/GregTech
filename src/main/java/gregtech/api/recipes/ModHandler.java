@@ -46,6 +46,7 @@ import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 import org.apache.commons.lang3.Validate;
 
 import javax.annotation.Nullable;
@@ -378,7 +379,7 @@ public class ModHandler {
      */
     public static void addShapelessRecipe(ItemStack result, Object... recipe) {
         result = OreDictUnifier.getUnificated(result);
-        Validate.notNull(result, "Result cannot be null");
+        if (result == null) return;
         Validate.notNull(recipe, "Recipe cannot be null");
         Validate.isTrue(recipe.length > 0, "Recipe cannot be empty");
         Validate.noNullElements(recipe, "Recipe cannot contain null elements");
@@ -399,7 +400,7 @@ public class ModHandler {
             }
         }
 
-        GameRegistry.addRecipe(new ShapedOreRecipe(result.copy(), recipe));
+        GameRegistry.addRecipe(new ShapelessOreRecipe(result.copy(), recipe));
     }
 
     ///////////////////////////////////////////////////

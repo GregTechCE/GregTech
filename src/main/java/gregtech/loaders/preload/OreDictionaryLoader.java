@@ -45,7 +45,6 @@ public class OreDictionaryLoader implements Runnable {
         OreDictUnifier.registerOre(new ItemStack(Blocks.IRON_ORE, 1), OrePrefix.ore, Materials.Iron);
         OreDictUnifier.registerOre(new ItemStack(Blocks.LAPIS_ORE, 1), OrePrefix.ore, Materials.Lapis);
         OreDictUnifier.registerOre(new ItemStack(Blocks.REDSTONE_ORE, 1), OrePrefix.ore, Materials.Redstone);
-        OreDictUnifier.registerOre(new ItemStack(Blocks.LIT_REDSTONE_ORE, 1), OrePrefix.ore, Materials.Redstone);
         OreDictUnifier.registerOre(new ItemStack(Blocks.GOLD_ORE, 1), OrePrefix.ore, Materials.Gold);
         OreDictUnifier.registerOre(new ItemStack(Blocks.DIAMOND_ORE, 1), OrePrefix.ore, Materials.Diamond);
         OreDictUnifier.registerOre(new ItemStack(Blocks.EMERALD_ORE, 1), OrePrefix.ore, Materials.Emerald);
@@ -120,49 +119,47 @@ public class OreDictionaryLoader implements Runnable {
         OreDictUnifier.registerOre(ItemCable.getCable(CableType.tin, 1), "craftingWireTin");
 
         OreDictUnifier.registerOre(new ItemStack(Blocks.REDSTONE_TORCH, 1, W), "craftingRedstoneTorch");
-        OreDictUnifier.registerOre(new ItemStack(Blocks.UNLIT_REDSTONE_TORCH, 1, W), "craftingRedstoneTorch");
 
-        OreDictUnifier.registerOre(new ItemStack(MetaBlocks.MACHINE, 1), "craftingWorkBench");
-        OreDictUnifier.registerOre(new ItemStack(MetaBlocks.MACHINE, 1, 16), "craftingWorkBench");
+//        OreDictUnifier.registerOre(new ItemStack(MetaBlocks.MACHINE, 1), "craftingWorkBench");
+//        OreDictUnifier.registerOre(new ItemStack(MetaBlocks.MACHINE, 1, 16), "craftingWorkBench");
 
         OreDictUnifier.registerOre(new ItemStack(Blocks.PISTON, 1, W), "craftingPiston");
         OreDictUnifier.registerOre(new ItemStack(Blocks.STICKY_PISTON, 1, W), "craftingPiston");
 
-        OreDictUnifier.registerOre(new ItemStack(MetaBlocks.MACHINE, 1, 45), "craftingSafe");
+//        OreDictUnifier.registerOre(new ItemStack(MetaBlocks.MACHINE, 1, 45), "craftingSafe");
         OreDictUnifier.registerOre(ModHandler.IC2.getIC2TEItem(TeBlock.personal_chest, 1), "craftingSafe");
 
         OreDictUnifier.registerOre(new ItemStack(Blocks.CHEST, 1, W), "craftingChest");
         OreDictUnifier.registerOre(new ItemStack(Blocks.TRAPPED_CHEST, 1, W), "craftingChest");
 
         OreDictUnifier.registerOre(new ItemStack(Blocks.FURNACE, 1, W), "craftingFurnace");
-        OreDictUnifier.registerOre(new ItemStack(Blocks.LIT_FURNACE, 1, W), "craftingFurnace");
 
         OreDictUnifier.registerOre(ModHandler.IC2.getIC2TEItem(TeBlock.pump, 1), "craftingPump");
         OreDictUnifier.registerOre(ModHandler.IC2.getIC2TEItem(TeBlock.magnetizer, 1), "craftingElectromagnet");
         OreDictUnifier.registerOre(ModHandler.IC2.getIC2TEItem(TeBlock.teleporter, 1), "craftingTeleporter");
 
         OreDictUnifier.registerOre(ModHandler.IC2.getIC2TEItem(TeBlock.macerator, 1), "craftingMacerator");
-        OreDictUnifier.registerOre(new ItemStack(MetaBlocks.MACHINE, 1, 50), "craftingMacerator");
+//        OreDictUnifier.registerOre(new ItemStack(MetaBlocks.MACHINE, 1, 50), "craftingMacerator");
 
 
         OreDictUnifier.registerOre(ModHandler.IC2.getIC2TEItem(TeBlock.extractor, 1), "craftingExtractor");
-        OreDictUnifier.registerOre(new ItemStack(MetaBlocks.MACHINE, 1, 51), "craftingExtractor");
+//        OreDictUnifier.registerOre(new ItemStack(MetaBlocks.MACHINE, 1, 51), "craftingExtractor");
 
         OreDictUnifier.registerOre(ModHandler.IC2.getIC2TEItem(TeBlock.compressor, 1), "craftingCompressor");
-        OreDictUnifier.registerOre(new ItemStack(MetaBlocks.MACHINE, 1, 52), "craftingCompressor");
+//        OreDictUnifier.registerOre(new ItemStack(MetaBlocks.MACHINE, 1, 52), "craftingCompressor");
 
         OreDictUnifier.registerOre(ModHandler.IC2.getIC2TEItem(TeBlock.recycler, 1), "craftingRecycler");
-        OreDictUnifier.registerOre(new ItemStack(MetaBlocks.MACHINE, 1, 53), "craftingRecycler");
+//        OreDictUnifier.registerOre(new ItemStack(MetaBlocks.MACHINE, 1, 53), "craftingRecycler");
 
         OreDictUnifier.registerOre(ModHandler.IC2.getIC2TEItem(TeBlock.iron_furnace, 1), "craftingIronFurnace");
 
-        OreDictUnifier.registerOre(new ItemStack(MetaBlocks.MACHINE, 1, 62), "craftingCentrifuge");
+//        OreDictUnifier.registerOre(new ItemStack(MetaBlocks.MACHINE, 1, 62), "craftingCentrifuge");
 
         OreDictUnifier.registerOre(ModHandler.IC2.getIC2TEItem(TeBlock.induction_furnace, 1), "craftingInductionFurnace");
 
 
         OreDictUnifier.registerOre(ModHandler.IC2.getIC2TEItem(TeBlock.electric_furnace, 1), "craftingElectricFurnace");
-        OreDictUnifier.registerOre(new ItemStack(MetaBlocks.MACHINE, 1, 54), "craftingElectricFurnace");
+//        OreDictUnifier.registerOre(new ItemStack(MetaBlocks.MACHINE, 1, 54), "craftingElectricFurnace");
 
         OreDictUnifier.registerOre(ModHandler.IC2.getIC2TEItem(TeBlock.generator, 1), "craftingGenerator");
 

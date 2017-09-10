@@ -40,6 +40,23 @@ public class MaterialMetaItem extends StandardMetaItem {
                     if(orePrefix != null && canGenerate(orePrefix, material)) {
                         short metadata = (short) (j * 1000 + i);
                         generatedItems.add(metadata);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void registerItem(String registryName) {
+        super.registerItem(registryName);
+
+        for(Material material : Material.MATERIAL_REGISTRY.getObjectsWithIds()) {
+            if(!(material instanceof MarkerMaterial)) {
+                int i = Material.MATERIAL_REGISTRY.getIDForObject(material);
+                for(int j = 0; j < orePrefixes.length; j++) {
+                    OrePrefix orePrefix = orePrefixes[j];
+                    if(orePrefix != null && canGenerate(orePrefix, material)) {
+                        short metadata = (short) (j * 1000 + i);
                         OreDictUnifier.registerOre(new ItemStack(this, 1, metadata), orePrefix, material);
                     }
                 }

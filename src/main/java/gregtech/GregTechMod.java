@@ -8,14 +8,16 @@ import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.GTLog;
 import gregtech.common.CommonProxy;
+import gregtech.common.items.MetaItems;
 import gregtech.loaders.load.FuelLoader;
 //import gregtech.loaders.postload.BlockResistanceLoader;
 //import gregtech.loaders.postload.CraftingRecipeLoader;
 //import gregtech.loaders.postload.DungeonLootLoader;
 //import gregtech.loaders.postload.MachineRecipeLoader;
 //import gregtech.loaders.postload.ScrapboxRecipeLoader;
-import gregtech.loaders.preload.GT_Loader_Item_Block_And_Fluid;
-import gregtech.loaders.preload.GT_Loader_MetaTileEntities;
+import gregtech.loaders.preload.ItemBlockFluidLoader;
+import gregtech.loaders.preload.MTELoader;
+import gregtech.loaders.preload.OreProcessingLoader;
 import ic2.api.recipe.IMachineRecipeManager;
 import ic2.api.recipe.RecipeOutput;
 import net.minecraft.init.Items;
@@ -58,9 +60,9 @@ public class GregTechMod {
 
     @Mod.EventHandler
     public void onPreInit(FMLPreInitializationEvent event) {
-        GTLog.logger.info("PreInit-Phase started!");
-
         GTLog.init(event.getModLog(), event.getModConfigurationDirectory().getParentFile());
+
+        GTLog.logger.info("PreInit-Phase started!");
 
         NetworkHandler.init();
 
@@ -79,11 +81,10 @@ public class GregTechMod {
 
         gregtechproxy.onPreLoad();
 
-        Material.init();
         OreDictUnifier.init();
 
-        new GT_Loader_Item_Block_And_Fluid().run();
-        new GT_Loader_MetaTileEntities().run();
+        new ItemBlockFluidLoader().run();
+        new MTELoader().run();
 
 //        if (gregtechproxy.mSortToTheEnd) {
 //            try {
@@ -112,9 +113,7 @@ public class GregTechMod {
 //            }
 //        }
 
-        if (RecipeMap.foundInvalidRecipe) {
-            throw new LoaderException("Found at least one invalid recipe. Please read the log above for more details.");
-        }
+        Material.init();
 
 //        try {
 //            for (Runnable tRunnable : GregTechAPI.sAfterGTPreload) {
@@ -135,7 +134,18 @@ public class GregTechMod {
 
 //        new BeeLoader();
 
+//        MetaItems.META_ITEM_FIRST.registerRecipes();
+//        MetaItems.META_ITEM_SECOND.registerRecipes();
+//        MetaItems.META_TOOL.registerRecipes();
+
+//        new OreProcessingLoader().run();
+
         gregtechproxy.onLoad();
+
+        if (RecipeMap.foundInvalidRecipe) {
+            throw new LoaderException("Found at least one invalid recipe. Please read the log above for more details.");
+        }
+
 //        if (gregtechproxy.mSortToTheEnd) {
 //            gregtechproxy.registerUnificationEntries();
 //            new FuelLoader().run();
@@ -162,7 +172,7 @@ public class GregTechMod {
 //            gregtechproxy.registerUnificationEntries();
 //        } else {
 //            gregtechproxy.registerUnificationEntries();
-            new FuelLoader().run();
+//            new FuelLoader().run();
 //        }
 
 //        new DungeonLootLoader().run();

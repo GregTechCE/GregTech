@@ -36,18 +36,22 @@ public class OreDictUnifier {
     private static final HashMap<UnificationEntry, ArrayList<SimpleItemStack>> stackUnificationItems = new HashMap<>();
 
     public static void registerOre(ItemStack itemStack, MaterialStack component, MaterialStack... byproducts) {
+        if (itemStack == null) return;
         materialUnificationInfo.put(new SimpleItemStack(itemStack), new ItemMaterialInfo(component, byproducts));
     }
 
     public static void registerOre(ItemStack itemStack, ItemMaterialInfo materialInfo) {
+        if (itemStack == null) return;
         materialUnificationInfo.put(new SimpleItemStack(itemStack), materialInfo);
     }
 
     public static void registerOre(ItemStack itemStack, OrePrefix orePrefix, @Nullable Material material) {
+        if (itemStack == null) return;
         OreDictionary.registerOre(orePrefix.name() + (material == null ? "" : material.toCamelCaseString()), itemStack);
     }
 
     public static void registerOre(ItemStack itemStack, String oreDict) {
+        if (itemStack == null) return;
         OreDictionary.registerOre(oreDict, itemStack);
     }
 

@@ -19,7 +19,7 @@ file "build.properties" withReader {
 }
 
 version = "${config.gt.version}"
-group= "gregtech"
+group = "gregtech"
 archivesBaseName = "gregtech"
 
 minecraft {
@@ -50,25 +50,9 @@ repositories {
     maven { //JEI
         url "http://dvs1.progwml6.com/files/maven/"
     }
-    ivy {
-        name 'WorldControl'
-        artifactPattern "http://addons-origin.cursecdn.com/files/${config.worldcontrol.cf}/[module]-[revision].[ext]"
-    }
-    ivy {
-        name 'Railcraft'
-        artifactPattern "http://addons-origin.cursecdn.com/files/${config.railcraft.cf}/[module]_[revision].[ext]"
-    }
-    ivy {
-        name 'CoFHCore'
-        artifactPattern "http://addons-origin.cursecdn.com/files/${config.cofh.cf}/[module]-[revision].[ext]"
-    }
-    ivy {
-        name "EnderCore"
-        artifactPattern "https://addons-origin.cursecdn.com/files/${config.endercore.cf}/[module]-[revision].[ext]"
-    }
-    ivy {
-        name "EnderIO"
-        artifactPattern "https://addons-origin.cursecdn.com/files/${config.enderio.cf}/[module]-[revision].[ext]"
+    maven {
+        name = "CurseForge"
+        url = "https://minecraft.curseforge.com/api/maven/"
     }
 }
 
@@ -76,9 +60,9 @@ dependencies {
     compile "codechicken:CodeChickenLib:${config.minecraft.version}-${config.codechickenlib.version}:deobf"
     deobfCompile "net.industrial-craft:industrialcraft-2:${config.ic2.version}"
     deobfCompile "net.sengir.forestry:forestry_${config.minecraft.version}:${config.forestry.version}"
-    deobfCompile "mezz.jei:jei_${config.minecraft.version}:+"
+    deobfCompile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}"
+    compile files('libs/Railcraft_1.10.2-10.2.0-dev.jar')
 //    deobfCompile name: 'worldcontrol', version: config.worldcontrol.version, ext: 'jar'
-    deobfCompile name: 'Railcraft', version: "${config.minecraft.version}-${config.railcraft.version}", ext: 'jar'
 //    deobfCompile name: 'CoFHCore', version: "${config.minecraft.version}-${config.cofh.version}", ext: 'jar'
 //    deobfCompile name: 'EnderCore', version: "${config.minecraft.version}-${config.endercore.version}", ext: 'jar'
 //    deobfCompile name: 'EnderIO', version: "${config.minecraft.version}-${config.enderio.version}", ext: 'jar'
