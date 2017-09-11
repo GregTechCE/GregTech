@@ -1,5 +1,6 @@
 package gregtech.loaders.preload;
 
+import gregtech.api.unification.material.Materials;
 import gregtech.api.util.GTLog;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.items.MetaItem2;
@@ -14,18 +15,10 @@ public class ItemBlockFluidLoader implements Runnable {
 //        Materials.Lava.mFluid = GT_ModHandler.getLava(1000L).getFluid();
 
         GTLog.logger.info("Registering Items.");
-
-        new OreDictionaryLoader().run();
-        new MaterialInfoLoader().run();
-
         MetaItems.init();
-//        MetaBlocks.init();
 
-//        ItemList.Rotor_LV.set(OreDictionaryUnifier.get(OrePrefix.rotor, Materials.Tin, 1));
-//        ItemList.Rotor_MV.set(OreDictionaryUnifier.get(OrePrefix.rotor, Materials.Bronze, 1));
-//        ItemList.Rotor_HV.set(OreDictionaryUnifier.get(OrePrefix.rotor, Materials.Steel, 1));
-//        ItemList.Rotor_EV.set(OreDictionaryUnifier.get(OrePrefix.rotor, Materials.StainlessSteel, 1));
-//        ItemList.Rotor_IV.set(OreDictionaryUnifier.get(OrePrefix.rotor, Materials.TungstenSteel, 1));
+        GTLog.logger.info("GregTechMod: Adding Blocks.");
+        MetaBlocks.init();
 //
 //        Item tItem = (Item) GTUtility.callConstructor("gregtech.common.items.GT_SensorCard_Item", 0, null, false, "sensorcard", "GregTech Sensor Card");
 //        ItemList.NC_SensorCard.set(tItem == null ? new GenericItem("sensorcard", "GregTech Sensor Card", "Nuclear Control not installed", false) : tItem);
@@ -93,231 +86,9 @@ public class ItemBlockFluidLoader implements Runnable {
 //            GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_4.get(1), 5000, OreDictUnifier.get(OrePrefix.dust, Materials.Lutetium, 2L), OreDictUnifier.get(OrePrefix.dust, Materials.Thorium, 4L), OreDictUnifier.get(OrePrefix.dust, Materials.Iron, 6L));
 //        }
 //
-//        GTLog.logger.info("GregTechMod: Adding Blocks.");
-//        GregTechAPI.sBlockMachines = new BlockMachines();
-//        GregTechAPI.sBlockCasings1 = new BlockCasings1();
-//        GregTechAPI.sBlockCasings2 = new BlockCasings2();
-//        GregTechAPI.sBlockCasings3 = new BlockCasings3();
-//        GregTechAPI.sBlockCasings4 = new BlockCasings4();
-//        GregTechAPI.sBlockCasings5 = new BlockCasings5();
-//        GregTechAPI.sBlockGranites = new BlockGranites();
-//        GregTechAPI.sBlockConcretes = new BlockConcretes();
-//        GregTechAPI.sBlockStones = new BlockStones();
-//        GregTechAPI.sBlockReinforced = new BlockReinforced();
-//        BlockGeneratedOres.registerOreBlocks();
 //
-//        GregTechAPI.sBlockMetal1 = BlockStorage.createStorageBlock("blockmetal1", new Materials[]{
-//                Materials.Adamantium,
-//                Materials.Aluminium,
-//                Materials.Americium,
-//                Materials.AnnealedCopper,
-//                Materials.Antimony,
-//                Materials.Arsenic,
-//                Materials.AstralSilver,
-//                Materials.BatteryAlloy,
-//                Materials.Beryllium,
-//                Materials.Bismuth,
-//                Materials.BismuthBronze,
-//                Materials.BlackBronze,
-//                Materials.BlackSteel,
-//                Materials.BlueAlloy,
-//                Materials.BlueSteel,
-//                Materials.Brass}, OrePrefix.block);
-//
-//        GregTechAPI.sBlockMetal2 = BlockStorage.createStorageBlock("blockmetal2", new Materials[]{
-//                Materials.Bronze,
-//                Materials.Caesium,
-//                Materials.Cerium,
-//                Materials.Chrome,
-//                Materials.ChromiumDioxide,
-//                Materials.Cobalt,
-//                Materials.CobaltBrass,
-//                Materials.Copper,
-//                Materials.Cupronickel,
-//                Materials.DamascusSteel,
-//                Materials.DarkIron,
-//                Materials.DeepIron,
-//                Materials.Desh,
-//                Materials.Duranium,
-//                Materials.Dysprosium,
-//                Materials.Electrum
-//        }, OrePrefix.block);
-//
-//        GregTechAPI.sBlockMetal3 = BlockStorage.createStorageBlock("blockmetal3", new Materials[]{
-//                Materials.ElectrumFlux,
-//                Materials.Enderium,
-//                Materials.Erbium,
-//                Materials.Europium,
-//                Materials.FierySteel,
-//                Materials.Gadolinium,
-//                Materials.Gallium,
-//                Materials.Holmium,
-//                Materials.HSLA,
-//                Materials.Indium,
-//                Materials.InfusedGold,
-//                Materials.Invar,
-//                Materials.Iridium,
-//                Materials.IronMagnetic,
-//                Materials.IronWood,
-//                Materials.Kanthal
-//        }, OrePrefix.block);
-//
-//        GregTechAPI.sBlockMetal4 = BlockStorage.createStorageBlock("blockmetal4", new Materials[]{
-//                Materials.Knightmetal,
-//                Materials.Lanthanum,
-//                Materials.Lead,
-//                Materials.Lutetium,
-//                Materials.Magnalium,
-//                Materials.Magnesium,
-//                Materials.Manganese,
-//                Materials.MeteoricIron,
-//                Materials.MeteoricSteel,
-//                Materials.Midasium,
-//                Materials.Mithril,
-//                Materials.Molybdenum,
-//                Materials.Naquadah,
-//                Materials.NaquadahAlloy,
-//                Materials.NaquadahEnriched,
-//                Materials.Naquadria
-//        }, OrePrefix.block);
-//
-//        GregTechAPI.sBlockMetal5 = BlockStorage.createStorageBlock("blockmetal5", new Materials[]{
-//                Materials.Neodymium,
-//                Materials.NeodymiumMagnetic,
-//                Materials.Neutronium,
-//                Materials.Nichrome,
-//                Materials.Nickel,
-//                Materials.Niobium,
-//                Materials.NiobiumNitride,
-//                Materials.NiobiumTitanium,
-//                Materials.Osmiridium,
-//                Materials.Osmium,
-//                Materials.Palladium,
-//                Materials.PigIron,
-//                Materials.Platinum,
-//                Materials.Plutonium,
-//                Materials.Plutonium241,
-//                Materials.Praseodymium
-//        }, OrePrefix.block);
-//
-//        GregTechAPI.sBlockMetal6 = BlockStorage.createStorageBlock("blockmetal6", new Materials[]{
-//                Materials.Promethium,
-//                Materials.RedAlloy,
-//                Materials.RedSteel,
-//                Materials.RoseGold,
-//                Materials.Rubidium,
-//                Materials.Samarium,
-//                Materials.Scandium,
-//                Materials.ShadowIron,
-//                Materials.ShadowSteel,
-//                Materials.Silicon,
-//                Materials.Silver,
-//                Materials.SolderingAlloy,
-//                Materials.StainlessSteel,
-//                Materials.Steel,
-//                Materials.SteelMagnetic,
-//                Materials.SterlingSilver
-//        }, OrePrefix.block);
-//
-//        GregTechAPI.sBlockMetal7 = BlockStorage.createStorageBlock("blockmetal7", new Materials[]{
-//                Materials.Sunnarium,
-//                Materials.Tantalum,
-//                Materials.Tellurium,
-//                Materials.Terbium,
-//                Materials.Thaumium,
-//                Materials.Thorium,
-//                Materials.Thulium,
-//                Materials.Tin,
-//                Materials.TinAlloy,
-//                Materials.Titanium,
-//                Materials.Tritanium,
-//                Materials.Tungsten,
-//                Materials.TungstenSteel,
-//                Materials.Ultimet,
-//                Materials.Uranium,
-//                Materials.Uranium235
-//        }, OrePrefix.block);
-//
-//        GregTechAPI.sBlockMetal8 = BlockStorage.createStorageBlock("blockmetal8", new Materials[]{
-//                Materials.Vanadium,
-//                Materials.VanadiumGallium,
-//                Materials.WroughtIron,
-//                Materials.Ytterbium,
-//                Materials.Yttrium,
-//                Materials.YttriumBariumCuprate,
-//                Materials.Zinc,
-//                Materials.TungstenCarbide,
-//                Materials.VanadiumSteel,
-//                Materials.HSSG,
-//                Materials.HSSE,
-//                Materials.HSSS
-//        }, OrePrefix.block);
-//
-//        GregTechAPI.sBlockGem1 = BlockStorage.createStorageBlock("blockgem1", new Materials[]{
-//                Materials.InfusedAir,
-//                Materials.Amber,
-//                Materials.Amethyst,
-//                Materials.InfusedWater,
-//                Materials.BlueTopaz,
-//                Materials.CertusQuartz,
-//                Materials.Dilithium,
-//                Materials.EnderEye,
-//                Materials.EnderPearl,
-//                Materials.FoolsRuby,
-//                Materials.Force,
-//                Materials.Forcicium,
-//                Materials.Forcillium,
-//                Materials.GreenSapphire,
-//                Materials.InfusedFire,
-//                Materials.Jasper
-//        }, OrePrefix.block);
-//
-//        GregTechAPI.sBlockGem2 = BlockStorage.createStorageBlock("blockgem2", new Materials[]{
-//                Materials.Lazurite,
-//                Materials.Lignite,
-//                Materials.Monazite,
-//                Materials.Niter,
-//                Materials.Olivine,
-//                Materials.Opal,
-//                Materials.InfusedOrder,
-//                Materials.InfusedEntropy,
-//                Materials.Phosphor,
-//                Materials.Quartzite,
-//                Materials.GarnetRed,
-//                Materials.Ruby,
-//                Materials.Sapphire,
-//                Materials.Sodalite,
-//                Materials.Tanzanite,
-//                Materials.InfusedEarth
-//        }, OrePrefix.block);
-//
-//        GregTechAPI.sBlockGem3 = BlockStorage.createStorageBlock("blockgem3", new Materials[]{
-//                Materials.Topaz,
-//                Materials.Vinteum,
-//                Materials.GarnetYellow,
-//                Materials.NetherStar,
-//                Materials.Charcoal
-//        }, OrePrefix.block);
-//
-//        GTLog.logger.info("GregTechMod: Register TileEntities.");
-//
-//
-//        BaseMetaTileEntity tBaseMetaTileEntity = GregTechAPI.constructBaseMetaTileEntity();
-//
-//        GTLog.logger.info("GregTechMod: Testing BaseMetaTileEntity.");
-//        if (tBaseMetaTileEntity == null) {
-//            GTLog.logger.info("GregTechMod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
-//            throw new RuntimeException("");
-//        }
-//        GTLog.logger.info("GregTechMod: Registering the BaseMetaTileEntity.");
-//        GameRegistry.registerTileEntity(tBaseMetaTileEntity.getClass(), "BaseMetaTileEntity");
-//        FMLInterModComms.sendMessage("appliedenergistics2", "whitelist-spatial", tBaseMetaTileEntity.getClass().getName());
-//
-//        GTLog.logger.info("GregTechMod: Registering the BaseMetaPipeEntity.");
-//        GameRegistry.registerTileEntity(BaseMetaPipeEntity.class, "BaseMetaPipeEntity");
-//        FMLInterModComms.sendMessage("appliedenergistics2", "whitelist-spatial", BaseMetaPipeEntity.class.getName());
-//
-//        GTLog.logger.info("GregTechMod: Registering the Ore TileEntity.");
+        GTLog.logger.info("GregTechMod: Register TileEntities.");
+
 //
 //        if (!GregTechAPI.mIC2Classic) {
 //            GTLog.logger.info("GregTechMod: Registering Fluids.");
@@ -577,35 +348,6 @@ public class ItemBlockFluidLoader implements Runnable {
 //        GT_ModHandler.addPulverisationRecipe(new ItemStack(Blocks.GRAVEL, 1, 32767), new ItemStack(Items.FLINT, 1), OreDictionaryUnifier.get(OrePrefix.dustSmall, Materials.Flint, 1), 10, false);
 //        GT_ModHandler.addPulverisationRecipe(new ItemStack(Blocks.FURNACE, 1, 32767), new ItemStack(Blocks.SAND, 6), null, 0, false);
 //
-//        OreDictionaryUnifier.set(OrePrefix.ingot, Materials.FierySteel, GT_ModHandler.getModItem("TwilightForest", "item.fieryIngot", 1, 0));
-//        OreDictionaryUnifier.set(OrePrefix.ingot, Materials.Knightmetal, GT_ModHandler.getModItem("TwilightForest", "item.knightMetal", 1, 0));
-//        OreDictionaryUnifier.set(OrePrefix.ingot, Materials.Steeleaf, GT_ModHandler.getModItem("TwilightForest", "item.steeleafIngot", 1, 0));
-//        OreDictionaryUnifier.set(OrePrefix.ingot, Materials.IronWood, GT_ModHandler.getModItem("TwilightForest", "item.ironwoodIngot", 1, 0));
-//        OreDictionaryUnifier.set(OrePrefix.gem, Materials.InfusedAir, GT_ModHandler.getModItem("Thaumcraft", "ItemShard", 1, 0));
-//        OreDictionaryUnifier.set(OrePrefix.gem, Materials.InfusedFire, GT_ModHandler.getModItem("Thaumcraft", "ItemShard", 1, 1));
-//        OreDictionaryUnifier.set(OrePrefix.gem, Materials.InfusedWater, GT_ModHandler.getModItem("Thaumcraft", "ItemShard", 1, 2));
-//        OreDictionaryUnifier.set(OrePrefix.gem, Materials.InfusedEarth, GT_ModHandler.getModItem("Thaumcraft", "ItemShard", 1, 3));
-//        OreDictionaryUnifier.set(OrePrefix.gem, Materials.InfusedOrder, GT_ModHandler.getModItem("Thaumcraft", "ItemShard", 1, 4));
-//        OreDictionaryUnifier.set(OrePrefix.gem, Materials.InfusedEntropy, GT_ModHandler.getModItem("Thaumcraft", "ItemShard", 1, 5));
-//        OreDictionaryUnifier.set(OrePrefix.nugget, Materials.Mercury, GT_ModHandler.getModItem("Thaumcraft", "ItemNugget", 1, 5));
-//        OreDictionaryUnifier.set(OrePrefix.nugget, Materials.Thaumium, GT_ModHandler.getModItem("Thaumcraft", "ItemNugget", 1, 6));
-//        OreDictionaryUnifier.set(OrePrefix.ingot, Materials.Thaumium, GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 1, 2));
-//        OreDictionaryUnifier.set(OrePrefix.gem, Materials.Mercury, GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 1, 3));
-//        OreDictionaryUnifier.set(OrePrefix.gem, Materials.Amber, GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 1, 6));
-//        OreDictionaryUnifier.set(OrePrefix.gem, Materials.Firestone, GT_ModHandler.getModItem("Railcraft", "firestone.raw", 1));
-//
-//        ItemList.ModularBasicHelmet.set(new ModularArmor_Item(EntityEquipmentSlot.HEAD, "modulararmor_helmet",0, "Modular Helmet"));
-//        ItemList.ModularBasicChestplate.set(new ModularArmor_Item(EntityEquipmentSlot.CHEST, "modulararmor_chestplate",0, "Modular Chestplate"));
-//        ItemList.ModularBasicLeggings.set(new ModularArmor_Item(EntityEquipmentSlot.LEGS, "modulararmor_leggings",0, "Modular Leggins"));
-//        ItemList.ModularBasicBoots.set(new ModularArmor_Item(EntityEquipmentSlot.FEET, "modulararmor_boots", 0, "Modular Boots"));
-//        ItemList.ModularElectric1Helmet.set(new ElectricModularArmor1(EntityEquipmentSlot.HEAD, "modularelectric1_helmet",1, "Modular Electric Helmet"));
-//        ItemList.ModularElectric1Chestplate.set(new ElectricModularArmor1(EntityEquipmentSlot.CHEST, "modularelectric1_chestplate",1, "Modular Electric Chestplate"));
-//        ItemList.ModularElectric1Leggings.set(new ElectricModularArmor1(EntityEquipmentSlot.LEGS, "modularelectric1_leggings",1, "Modular Electric Leggings"));
-//        ItemList.ModularElectric1Boots.set(new ElectricModularArmor1(EntityEquipmentSlot.FEET, "modularelectric1_boots",1, "Modular Electric Boots"));
-//        ItemList.ModularElectric2Helmet.set(new ElectricModularArmor1(EntityEquipmentSlot.HEAD, "modularelectric2_helmet",2, "Modular Electric Helmet (Tier 2)"));
-//        ItemList.ModularElectric2Chestplate.set(new ElectricModularArmor1(EntityEquipmentSlot.CHEST, "modularelectric2_chestplate",2, "Modular Electric Chestplate (Tier 2)"));
-//        ItemList.ModularElectric2Leggings.set(new ElectricModularArmor1(EntityEquipmentSlot.LEGS, "modularelectric2_leggings",2, "Modular Electric Leggings (Tier 2)"));
-//        ItemList.ModularElectric2Boots.set(new ElectricModularArmor1(EntityEquipmentSlot.FEET, "modularelectric2_boots",2, "Modular Electric Boots (Tier 2)"));
 //
 //        if (GregTechAPI.sUnification.get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateIron", true)) {
 //            OreDictionaryUnifier.set(OrePrefix.plate, Materials.Iron, GT_ModHandler.getModItem("Railcraft", "part.plate", 1, 0));

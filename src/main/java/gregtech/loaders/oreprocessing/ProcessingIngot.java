@@ -50,13 +50,13 @@ public class ProcessingIngot implements IOreRegistrationHandler {
                 ModHandler.addShapelessRecipe(OreDictUnifier.get(OrePrefix.dust, material), "m", stack);
             }
 
-            RecipeMap.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
-                    .notConsumable(MetaItems.SHAPE_MOLD_INGOT)
-                    .fluidInputs(((FluidMaterial) entry.material).getFluid(L))
-                    .outputs(OreDictUnifier.get(OrePrefix.ingot, entry.material))
-                    .duration(20)
-                    .EUt(8)
-                    .buildAndRegister();
+//            RecipeMap.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
+//                    .notConsumable(MetaItems.SHAPE_MOLD_INGOT)
+//                    .fluidInputs(((FluidMaterial) entry.material).getFluid(L)) // TODO MATERIAL FLUIDS
+//                    .outputs(OreDictUnifier.get(OrePrefix.ingot, entry.material))
+//                    .duration(20)
+//                    .EUt(8)
+//                    .buildAndRegister();
 
             if(material.hasFlag(DustMaterial.MatFlags.GENERATE_PLATE)) {
                 if(!material.hasFlag(DustMaterial.MatFlags.NO_SMASHING)) {

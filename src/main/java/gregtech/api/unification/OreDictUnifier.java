@@ -56,11 +56,11 @@ public class OreDictUnifier {
     }
 
     public static void init() {
-        MinecraftForge.EVENT_BUS.register(new OreDictUnifier());
+        MinecraftForge.EVENT_BUS.register(OreDictUnifier.class);
     }
 
     @SubscribeEvent
-    public void onItemRegistration(OreDictionary.OreRegisterEvent event) {
+    public static void onItemRegistration(OreDictionary.OreRegisterEvent event) {
         if(event.getOre().getItem() instanceof ItemIC2FluidContainer) {
             //IC2 tries to register NBT-dependent items in ore dictionary
             //ignore further registration

@@ -137,7 +137,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
                 return toolStats.getBaseQuality(stack) + getPrimaryMaterial(stack).harvestLevel;
             }
         }
-        return 0;
+        return -1;
     }
 
     @Override
@@ -305,6 +305,9 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         }
 
         public IToolStats getToolStats() {
+            if (toolStats == null) {
+                throw new IllegalStateException("Someone forgot to assign toolStats to MetaToolValueItem.");
+            }
             return toolStats;
         }
 

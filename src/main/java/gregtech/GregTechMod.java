@@ -17,6 +17,8 @@ import gregtech.loaders.load.FuelLoader;
 //import gregtech.loaders.postload.ScrapboxRecipeLoader;
 import gregtech.loaders.preload.ItemBlockFluidLoader;
 import gregtech.loaders.preload.MTELoader;
+import gregtech.loaders.preload.MaterialInfoLoader;
+import gregtech.loaders.preload.OreDictionaryLoader;
 import gregtech.loaders.preload.OreProcessingLoader;
 import ic2.api.recipe.IMachineRecipeManager;
 import ic2.api.recipe.RecipeOutput;
@@ -69,76 +71,32 @@ public class GregTechMod {
         EnchantmentEnderDamage.INSTANCE.register();
         EnchantmentRadioactivity.INSTANCE.register();
 
-//
-//        try {
-//            for (Runnable tRunnable : GregTechAPI.sBeforeGTPreload) {
-//                tRunnable.run();
-//            }
-//        } catch (Throwable e) {
-//            e.printStackTrace(GTLog.err);
-//        }
-//
-
         gregtechproxy.onPreLoad();
 
         OreDictUnifier.init();
+//        new OreProcessingLoader().run();
+        new MaterialInfoLoader().run();
 
         new ItemBlockFluidLoader().run();
-        new MTELoader().run();
 
-//        if (gregtechproxy.mSortToTheEnd) {
-//            try {
-//                GTLog.out.println("GregTechMod: Sorting GregTech to the end of the Mod List for further processing.");
-//                LoadController tLoadController = (LoadController) GTUtility.getFieldContent(Loader.instance(), "modController", true, true);
-//                List<ModContainer> tModList = tLoadController.getActiveModList();
-//                List<ModContainer> tNewModsList = new ArrayList();
-//                ModContainer tGregTech = null;
-//                short tModList_sS= (short) tModList.size();
-//                for (short i = 0; i < tModList_sS; i = (short) (i + 1)) {
-//                    ModContainer tMod = tModList.get(i);
-//                    if (tMod.getModId().equalsIgnoreCase("gregtech")) {
-//                        tGregTech = tMod;
-//                    } else {
-//                        tNewModsList.add(tMod);
-//                    }
-//                }
-//                if (tGregTech != null) {
-//                    tNewModsList.add(tGregTech);
-//                }
-//                GTUtility.getField(tLoadController, "activeModList", true, true).set(tLoadController, tNewModsList);
-//            } catch (Throwable e) {
-//                if (GTValues.D1) {
-//                    e.printStackTrace(GTLog.err);
-//                }
-//            }
-//        }
+//        new MTELoader().run();
 
         Material.init();
 
-//        try {
-//            for (Runnable tRunnable : GregTechAPI.sAfterGTPreload) {
-//                tRunnable.run();
-//            }
-//        } catch (Throwable e) {e.printStackTrace(GTLog.err);}
         GTLog.logger.info("PreInit-Phase finished!");
     }
 
     @Mod.EventHandler
     public void onInit(FMLInitializationEvent event) {
         GTLog.logger.info("Init-Phase started!");
-//        try {
-//            for (Runnable tRunnable : GregTechAPI.sBeforeGTLoad) {
-//                tRunnable.run();
-//            }
-//        } catch (Throwable e) {e.printStackTrace(GTLog.err);}
 
 //        new BeeLoader();
 
-//        MetaItems.META_ITEM_FIRST.registerRecipes();
-//        MetaItems.META_ITEM_SECOND.registerRecipes();
-//        MetaItems.META_TOOL.registerRecipes();
+        new OreDictionaryLoader().run();
 
-//        new OreProcessingLoader().run();
+        MetaItems.META_ITEM_FIRST.registerRecipes();
+        MetaItems.META_ITEM_SECOND.registerRecipes();
+        MetaItems.META_TOOL.registerRecipes();
 
         gregtechproxy.onLoad();
 
@@ -146,34 +104,15 @@ public class GregTechMod {
             throw new LoaderException("Found at least one invalid recipe. Please read the log above for more details.");
         }
 
-//        if (gregtechproxy.mSortToTheEnd) {
-//            gregtechproxy.registerUnificationEntries();
-//            new FuelLoader().run();
-//        }
-//        GregTechAPI.sLoadFinished = true;
-//        try {
-//            for (Runnable tRunnable : GregTechAPI.sAfterGTLoad) {
-//                tRunnable.run();
-//            }
-//        } catch (Throwable e) {e.printStackTrace(GTLog.err);}
+//        new FuelLoader().run();
         GTLog.logger.info("Init-Phase finished!");
     }
 
     @Mod.EventHandler
     public void onPostInit(FMLPostInitializationEvent event) {
         GTLog.logger.info("PostInit-Phase started!");
-//        try {
-//            for (Runnable tRunnable : GregTechAPI.sBeforeGTPostload) {
-//                tRunnable.run();
-//            }
-//        } catch (Throwable e) {e.printStackTrace(GTLog.err);}
+
         gregtechproxy.onPostLoad();
-//        if (gregtechproxy.mSortToTheEnd) {
-//            gregtechproxy.registerUnificationEntries();
-//        } else {
-//            gregtechproxy.registerUnificationEntries();
-//            new FuelLoader().run();
-//        }
 
 //        new DungeonLootLoader().run();
 //        new BlockResistanceLoader().run();
@@ -278,13 +217,6 @@ public class GregTechMod {
             Items.DIAMOND_HOE.setMaxDamage(768);
 //        }
 
-//        GregTechAPI.sPostloadFinished = true;
-//        GTLog.out.println("GregTechMod: PostLoad-Phase finished!");
-//        try {
-//            for (Runnable tRunnable : GregTechAPI.sAfterGTPostload) {
-//                tRunnable.run();
-//            }
-//        } catch (Throwable e) {e.printStackTrace(GTLog.err);}
 //        GTLog.out.println("GregTechMod: Adding Fake Recipes for NEI");
 //        if (ItemList.FR_Bee_Drone.get(1) != null) {
 //            GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[]{ItemList.FR_Bee_Drone.getWildcard(1)}, new ItemStack[]{ItemList.FR_Bee_Drone.getWithName(1, "Scanned Drone")}, null, new FluidStack[]{Materials.Honey.getFluid(100L)}, null, 500, 2, 0);
@@ -365,13 +297,6 @@ public class GregTechMod {
 //            }
 //        }
         GTLog.logger.info("PostInit-Phase finished!");
-
-//        GregTechAPI.sBeforeGTPreload = null;
-//        GregTechAPI.sAfterGTPreload = null;
-//        GregTechAPI.sBeforeGTLoad = null;
-//        GregTechAPI.sAfterGTLoad = null;
-//        GregTechAPI.sBeforeGTPostload = null;
-//        GregTechAPI.sAfterGTPostload = null;
     }
 
     @Mod.EventHandler

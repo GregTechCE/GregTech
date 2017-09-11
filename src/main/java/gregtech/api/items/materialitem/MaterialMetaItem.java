@@ -46,10 +46,7 @@ public class MaterialMetaItem extends StandardMetaItem {
         }
     }
 
-    @Override
-    public void registerItem(String registryName) {
-        super.registerItem(registryName);
-
+    public void registerOres() {
         for(Material material : Material.MATERIAL_REGISTRY.getObjectsWithIds()) {
             if(!(material instanceof MarkerMaterial)) {
                 int i = Material.MATERIAL_REGISTRY.getIDForObject(material);

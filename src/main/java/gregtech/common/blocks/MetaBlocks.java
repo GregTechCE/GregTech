@@ -29,8 +29,8 @@ public class MetaBlocks {
     public static HashMap<DustMaterial, BlockOre> ORES;
 
     public static void init() {
-        MACHINE = new BlockMachine();
-        MACHINE.registerBlock("machine");
+//        MACHINE = new BlockMachine(); // TODO by @AntiquiAvium
+//        MACHINE.registerBlock("machine");
         BOILER_CASING = new BlockBoilerCasing();
         BOILER_CASING.registerBlock("boiler_casing");
         METAL_CASING = new BlockMetalCasing();

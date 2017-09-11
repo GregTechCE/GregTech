@@ -3,16 +3,12 @@ package gregtech.loaders.oreprocessing;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictUnifier;
-import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.MetalMaterial;
 import gregtech.api.unification.ore.IOreRegistrationHandler;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
-import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
-
-import static gregtech.api.GTValues.M;
 
 public class ProcessingPolarizing implements IOreRegistrationHandler {
 

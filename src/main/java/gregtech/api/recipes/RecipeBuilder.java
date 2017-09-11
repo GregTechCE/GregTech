@@ -113,12 +113,12 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 
 	public R inputs(Collection<ItemStack> inputs) {
 		if (inputs.contains(null)) {
-			GTLog.logger.error("Input cannot contain null ItemStacks", new IllegalArgumentException());
-			recipeStatus = EnumValidationResult.INVALID;
-			return getThis();
+			GTLog.logger.error("Input cannot contain null ItemStacks. Inputs: {}", inputs);
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+            recipeStatus = EnumValidationResult.INVALID;
 		}
-
         this.inputs.addAll(inputs);
+        this.inputs.removeIf(Objects::isNull);
         return getThis();
     }
 
@@ -139,11 +139,12 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 
     public R fluidInputs(Collection<FluidStack> inputs) {
 		if (inputs.contains(null)) {
-			GTLog.logger.error("Fluid input cannot contain null FluidStacks", new IllegalArgumentException());
-			recipeStatus = EnumValidationResult.INVALID;
-			return getThis();
+			GTLog.logger.error("Fluid input cannot contain null FluidStacks. Inputs: {}", inputs);
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+            recipeStatus = EnumValidationResult.INVALID;
 		}
 		this.fluidInputs.addAll(inputs);
+        this.fluidInputs.removeIf(Objects::isNull);
         return getThis();
     }
 
@@ -164,8 +165,9 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		if (0 >= chance || chance > 10000){
-			GTLog.logger.error("Chance cannot be less or equal to 0 or more than 10000", new IllegalArgumentException());
-			recipeStatus = EnumValidationResult.INVALID;
+			GTLog.logger.error("Chance cannot be less or equal to 0 or more than 10000. Actual: {}.", chance);
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+            recipeStatus = EnumValidationResult.INVALID;
 			return getThis();
 		}
 
@@ -303,22 +305,22 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
         if (!GTUtility.isBetweenInclusive(recipeMap.getMinInputs(), recipeMap.getMaxInputs(), inputs.size())){
-            GTLog.logger.error("Invalid amount of recipe inputs. Actual: {}, Should be between {} and {} inclusive", inputs.size(), recipeMap.getMinInputs(), recipeMap.getMaxInputs());
+            GTLog.logger.error("Invalid amount of recipe inputs. Actual: {}. Should be between {} and {} inclusive.", inputs.size(), recipeMap.getMinInputs(), recipeMap.getMaxInputs());
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
 			recipeStatus = EnumValidationResult.INVALID;
 		}
 		if (!GTUtility.isBetweenInclusive(recipeMap.getMinOutputs(), recipeMap.getMaxOutputs(), outputs.size() + chancedOutputs.size())){
-            GTLog.logger.error("Invalid amount of recipe outputs. Actual: {}, Should be between {} and {} inclusive", outputs.size() + chancedOutputs.size(), recipeMap.getMinOutputs(), recipeMap.getMaxOutputs());
+            GTLog.logger.error("Invalid amount of recipe outputs. Actual: {}. Should be between {} and {} inclusive.", outputs.size() + chancedOutputs.size(), recipeMap.getMinOutputs(), recipeMap.getMaxOutputs());
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             recipeStatus = EnumValidationResult.INVALID;
 		}
 		if (!GTUtility.isBetweenInclusive(recipeMap.getMinFluidInputs(), recipeMap.getMaxFluidInputs(), fluidInputs.size())){
-            GTLog.logger.error("Invalid amount of recipe fluid inputs. Actual: {}, Should be between {} and {} inclusive", fluidInputs.size(), recipeMap.getMinFluidInputs(), recipeMap.getMaxFluidInputs());
+            GTLog.logger.error("Invalid amount of recipe fluid inputs. Actual: {}. Should be between {} and {} inclusive.", fluidInputs.size(), recipeMap.getMinFluidInputs(), recipeMap.getMaxFluidInputs());
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             recipeStatus = EnumValidationResult.INVALID;
 		}
 		if (!GTUtility.isBetweenInclusive(recipeMap.getMinFluidOutputs(), recipeMap.getMaxFluidOutputs(), fluidOutputs.size())){
-            GTLog.logger.error("Invalid amount of recipe fluid outputs. Actual: {}, Should be between {} and {} inclusive", fluidOutputs.size(), recipeMap.getMinFluidOutputs(), recipeMap.getMaxFluidOutputs());
+            GTLog.logger.error("Invalid amount of recipe fluid outputs. Actual: {}. Should be between {} and {} inclusive.", fluidOutputs.size(), recipeMap.getMinFluidOutputs(), recipeMap.getMaxFluidOutputs());
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             recipeStatus = EnumValidationResult.INVALID;
 		}
@@ -470,19 +472,37 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		public NotConsumableInputRecipeBuilder notConsumable(Item item) {
-			inputs.add(new ItemStack(item, 0));
+            if (item == null) {
+                GTLog.logger.error("Not consumable input cannot be null.", inputs);
+                GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+                recipeStatus = EnumValidationResult.INVALID;
+            } else {
+                inputs.add(new ItemStack(item, 0));
+            }
 			return this;
 		}
 
 		public NotConsumableInputRecipeBuilder notConsumable(ItemStack itemStack) {
-			ItemStack stack = itemStack.copy();
-			stack.stackSize = 0;
-			inputs.add(stack);
+            if (itemStack == null) {
+                GTLog.logger.error("Not consumable input cannot be null.", inputs);
+                GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+                recipeStatus = EnumValidationResult.INVALID;
+            } else {
+                ItemStack stack = itemStack.copy();
+                stack.stackSize = 0;
+                inputs.add(stack);
+            }
 			return this;
 		}
 
 		public NotConsumableInputRecipeBuilder notConsumable(MetaItem<?>.MetaValueItem item) {
-			inputs.add(item.getStackForm(0));
+            if (item == null) {
+                GTLog.logger.error("Not consumable input cannot be null.", inputs);
+                GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+                recipeStatus = EnumValidationResult.INVALID;
+            } else {
+                inputs.add(item.getStackForm(0));
+            }
 			return this;
 		}
 

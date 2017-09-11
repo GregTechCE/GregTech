@@ -7,6 +7,7 @@ import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.GTLog;
 import gregtech.common.blocks.MetaBlocks;
+import gregtech.common.items.MetaItems;
 import ic2.core.block.wiring.CableType;
 import ic2.core.item.block.ItemCable;
 import ic2.core.item.type.CraftingItemType;
@@ -14,17 +15,209 @@ import ic2.core.item.type.IngotResourceType;
 import ic2.core.ref.FluidName;
 import ic2.core.ref.ItemName;
 import ic2.core.ref.TeBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockPrismarine;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static gregtech.api.GTValues.W;
+import static net.minecraftforge.oredict.OreDictionary.WILDCARD_VALUE;
 
 public class OreDictionaryLoader implements Runnable {
     
     public void run() {
         GTLog.logger.info("Register OreDict Entries of Non-GT-Items.");
+
+        //Simulating oredict registration for vanilla items.
+        //Because forge registers event handlers after registering oredicts for vanilla items
+        Map<String, Object> oreDicts = new HashMap<>();
+
+        // tree- and wood-related things
+        oreDicts.put("logWood",     new ItemStack(Blocks.LOG, 1, WILDCARD_VALUE));
+        oreDicts.put("logWood",     new ItemStack(Blocks.LOG2, 1, WILDCARD_VALUE));
+        oreDicts.put("plankWood",   new ItemStack(Blocks.PLANKS, 1, WILDCARD_VALUE));
+        oreDicts.put("slabWood",    new ItemStack(Blocks.WOODEN_SLAB, 1, WILDCARD_VALUE));
+        oreDicts.put("stairWood",   Blocks.OAK_STAIRS);
+        oreDicts.put("stairWood",   Blocks.SPRUCE_STAIRS);
+        oreDicts.put("stairWood",   Blocks.BIRCH_STAIRS);
+        oreDicts.put("stairWood",   Blocks.JUNGLE_STAIRS);
+        oreDicts.put("stairWood",   Blocks.ACACIA_STAIRS);
+        oreDicts.put("stairWood",   Blocks.DARK_OAK_STAIRS);
+        oreDicts.put("stickWood",   Items.STICK);
+        oreDicts.put("treeSapling", new ItemStack(Blocks.SAPLING, 1, WILDCARD_VALUE));
+        oreDicts.put("treeLeaves",  new ItemStack(Blocks.LEAVES, 1, WILDCARD_VALUE));
+        oreDicts.put("treeLeaves",  new ItemStack(Blocks.LEAVES2, 1, WILDCARD_VALUE));
+        oreDicts.put("vine",        Blocks.VINE);
+
+        // Ores
+        oreDicts.put("oreGold",     Blocks.GOLD_ORE);
+        oreDicts.put("oreIron",     Blocks.IRON_ORE);
+        oreDicts.put("oreLapis",    Blocks.LAPIS_ORE);
+        oreDicts.put("oreDiamond",  Blocks.DIAMOND_ORE);
+        oreDicts.put("oreRedstone", Blocks.REDSTONE_ORE);
+        oreDicts.put("oreEmerald",  Blocks.EMERALD_ORE);
+        oreDicts.put("oreQuartz",   Blocks.QUARTZ_ORE);
+        oreDicts.put("oreCoal",     Blocks.COAL_ORE);
+
+        // ingots/nuggets
+        oreDicts.put("ingotIron",     Items.IRON_INGOT);
+        oreDicts.put("ingotGold",     Items.GOLD_INGOT);
+        oreDicts.put("ingotBrick",    Items.BRICK);
+        oreDicts.put("ingotBrickNether", Items.NETHERBRICK);
+        oreDicts.put("nuggetGold",  Items.GOLD_NUGGET);
+
+        // gems and dusts
+        oreDicts.put("gemDiamond",  Items.DIAMOND);
+        oreDicts.put("gemEmerald",  Items.EMERALD);
+        oreDicts.put("gemQuartz",   Items.QUARTZ);
+        oreDicts.put("gemPrismarine", Items.PRISMARINE_SHARD);
+        oreDicts.put("dustPrismarine", Items.PRISMARINE_CRYSTALS);
+        oreDicts.put("dustRedstone",  Items.REDSTONE);
+        oreDicts.put("dustGlowstone", Items.GLOWSTONE_DUST);
+        oreDicts.put("gemLapis",    new ItemStack(Items.DYE, 1, 4));
+
+        // storage blocks
+        oreDicts.put("blockGold",     Blocks.GOLD_BLOCK);
+        oreDicts.put("blockIron",     Blocks.IRON_BLOCK);
+        oreDicts.put("blockLapis",    Blocks.LAPIS_BLOCK);
+        oreDicts.put("blockDiamond",  Blocks.DIAMOND_BLOCK);
+        oreDicts.put("blockRedstone", Blocks.REDSTONE_BLOCK);
+        oreDicts.put("blockEmerald",  Blocks.EMERALD_BLOCK);
+        oreDicts.put("blockQuartz",   Blocks.QUARTZ_BLOCK);
+        oreDicts.put("blockCoal",     Blocks.COAL_BLOCK);
+
+        // crops
+        oreDicts.put("cropWheat",   Items.WHEAT);
+        oreDicts.put("cropPotato",  Items.POTATO);
+        oreDicts.put("cropCarrot",  Items.CARROT);
+        oreDicts.put("cropNetherWart", Items.NETHER_WART);
+        oreDicts.put("sugarcane",   Items.REEDS);
+        oreDicts.put("blockCactus", Blocks.CACTUS);
+
+        // misc materials
+        oreDicts.put("dye",         new ItemStack(Items.DYE, 1, WILDCARD_VALUE));
+        oreDicts.put("paper",       new ItemStack(Items.PAPER));
+
+        // mob drops
+        oreDicts.put("slimeball",   Items.SLIME_BALL);
+        oreDicts.put("enderpearl",  Items.ENDER_PEARL);
+        oreDicts.put("bone",        Items.BONE);
+        oreDicts.put("gunpowder",   Items.GUNPOWDER);
+        oreDicts.put("string",      Items.STRING);
+        oreDicts.put("netherStar",  Items.NETHER_STAR);
+        oreDicts.put("leather",     Items.LEATHER);
+        oreDicts.put("feather",     Items.FEATHER);
+        oreDicts.put("egg",         Items.EGG);
+
+        // records
+        oreDicts.put("record",      Items.RECORD_13);
+        oreDicts.put("record",      Items.RECORD_CAT);
+        oreDicts.put("record",      Items.RECORD_BLOCKS);
+        oreDicts.put("record",      Items.RECORD_CHIRP);
+        oreDicts.put("record",      Items.RECORD_FAR);
+        oreDicts.put("record",      Items.RECORD_MALL);
+        oreDicts.put("record",      Items.RECORD_MELLOHI);
+        oreDicts.put("record",      Items.RECORD_STAL);
+        oreDicts.put("record",      Items.RECORD_STRAD);
+        oreDicts.put("record",      Items.RECORD_WARD);
+        oreDicts.put("record",      Items.RECORD_11);
+        oreDicts.put("record",      Items.RECORD_WAIT);
+
+        // blocks
+        oreDicts.put("dirt",        Blocks.DIRT);
+        oreDicts.put("grass",       Blocks.GRASS);
+        oreDicts.put("stone",       Blocks.STONE);
+        oreDicts.put("cobblestone", Blocks.COBBLESTONE);
+        oreDicts.put("gravel",      Blocks.GRAVEL);
+        oreDicts.put("sand",        new ItemStack(Blocks.SAND, 1, WILDCARD_VALUE));
+        oreDicts.put("sandstone",   new ItemStack(Blocks.SANDSTONE, 1, WILDCARD_VALUE));
+        oreDicts.put("sandstone",   new ItemStack(Blocks.RED_SANDSTONE, 1, WILDCARD_VALUE));
+        oreDicts.put("netherrack",  Blocks.NETHERRACK);
+        oreDicts.put("obsidian",    Blocks.OBSIDIAN);
+        oreDicts.put("glowstone",   Blocks.GLOWSTONE);
+        oreDicts.put("endstone",    Blocks.END_STONE);
+        oreDicts.put("torch",       Blocks.TORCH);
+        oreDicts.put("workbench",   Blocks.CRAFTING_TABLE);
+        oreDicts.put("blockSlime",    Blocks.SLIME_BLOCK);
+        oreDicts.put("blockPrismarine", new ItemStack(Blocks.PRISMARINE, 1, BlockPrismarine.EnumType.ROUGH.getMetadata()));
+        oreDicts.put("blockPrismarineBrick", new ItemStack(Blocks.PRISMARINE, 1, BlockPrismarine.EnumType.BRICKS.getMetadata()));
+        oreDicts.put("blockPrismarineDark", new ItemStack(Blocks.PRISMARINE, 1, BlockPrismarine.EnumType.DARK.getMetadata()));
+        oreDicts.put("stoneGranite",          new ItemStack(Blocks.STONE, 1, 1));
+        oreDicts.put("stoneGranitePolished",  new ItemStack(Blocks.STONE, 1, 2));
+        oreDicts.put("stoneDiorite",          new ItemStack(Blocks.STONE, 1, 3));
+        oreDicts.put("stoneDioritePolished",  new ItemStack(Blocks.STONE, 1, 4));
+        oreDicts.put("stoneAndesite",         new ItemStack(Blocks.STONE, 1, 5));
+        oreDicts.put("stoneAndesitePolished", new ItemStack(Blocks.STONE, 1, 6));
+        oreDicts.put("blockGlassColorless", Blocks.GLASS);
+        oreDicts.put("blockGlass",    Blocks.GLASS);
+        oreDicts.put("blockGlass",    new ItemStack(Blocks.STAINED_GLASS, 1, WILDCARD_VALUE));
+        //blockGlass{Color} is added below with dyes
+        oreDicts.put("paneGlassColorless", Blocks.GLASS_PANE);
+        oreDicts.put("paneGlass",     Blocks.GLASS_PANE);
+        oreDicts.put("paneGlass",     new ItemStack(Blocks.STAINED_GLASS_PANE, 1, WILDCARD_VALUE));
+        //paneGlass{Color} is added below with dyes
+
+        // chests
+        oreDicts.put("chest",        Blocks.CHEST);
+        oreDicts.put("chest",        Blocks.ENDER_CHEST);
+        oreDicts.put("chest",        Blocks.TRAPPED_CHEST);
+        oreDicts.put("chestWood",    Blocks.CHEST);
+        oreDicts.put("chestEnder",   Blocks.ENDER_CHEST);
+        oreDicts.put("chestTrapped", Blocks.TRAPPED_CHEST);
+
+        // Register dyes
+        String[] dyes =
+            {
+                "Black",
+                "Red",
+                "Green",
+                "Brown",
+                "Blue",
+                "Purple",
+                "Cyan",
+                "LightGray",
+                "Gray",
+                "Pink",
+                "Lime",
+                "Yellow",
+                "LightBlue",
+                "Magenta",
+                "Orange",
+                "White"
+            };
+
+        for(int i = 0; i < 16; i++)
+        {
+            ItemStack dye = new ItemStack(Items.DYE, 1, i);
+            ItemStack block = new ItemStack(Blocks.STAINED_GLASS, 1, 15 - i);
+            ItemStack pane = new ItemStack(Blocks.STAINED_GLASS_PANE, 1, 15 - i);
+
+            oreDicts.put("dye" + dyes[i], dye);
+            oreDicts.put("blockGlass" + dyes[i], block);
+            oreDicts.put("paneGlass"  + dyes[i], pane);
+        }
+
+        oreDicts.forEach((ore, itemStack) -> {
+            if (itemStack instanceof ItemStack) {
+                OreDictUnifier.onItemRegistration(new OreDictionary.OreRegisterEvent(ore, (ItemStack) itemStack));
+            } else if (itemStack instanceof Item) {
+                OreDictUnifier.onItemRegistration(new OreDictionary.OreRegisterEvent(ore, new ItemStack((Item) itemStack)));
+            } else if (itemStack instanceof Block) {
+                OreDictUnifier.onItemRegistration(new OreDictionary.OreRegisterEvent(ore, new ItemStack((Block) itemStack)));
+            }
+        });
+
+        MetaItems.META_ITEM_FIRST.registerOres();
+        MetaItems.META_ITEM_SECOND.registerOres();
+
+
         OreDictUnifier.registerOre(ModHandler.IC2.getIC2Item(ItemName.fluid_cell, 1), OrePrefix.cell, MarkerMaterials.Empty);
         OreDictUnifier.registerOre(ModHandler.IC2.getIC2Item(ItemName.fluid_cell, FluidRegistry.LAVA.getName(), 1), OrePrefix.cell, Materials.Lava);
         OreDictUnifier.registerOre(ModHandler.IC2.getIC2Item(ItemName.fluid_cell, FluidRegistry.WATER.getName(), 1), OrePrefix.cell, Materials.Water);

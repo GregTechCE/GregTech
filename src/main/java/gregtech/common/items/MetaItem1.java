@@ -740,29 +740,29 @@ public class MetaItem1 extends MaterialMetaItem {
             "PPP",
             'P', new UnificationEntry(OrePrefix.plate, Materials.Plastic));
 
-        RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-            .inputs(OreDictUnifier.get(OrePrefix.dust, Materials.Redstone), OreDictUnifier.get(OrePrefix.cell, MarkerMaterials.Empty))
-            .outputs(SPRAY_EMPTY.getStackForm())
-            .duration(800)
-            .EUt(1)
-            .buildAndRegister();
+//        RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
+//            .inputs(OreDictUnifier.get(OrePrefix.dust, Materials.Redstone), OreDictUnifier.get(OrePrefix.cell, MarkerMaterials.Empty)) // TODO FLUID CONTAINERS
+//            .outputs(SPRAY_EMPTY.getStackForm())
+//            .duration(800)
+//            .EUt(1)
+//            .buildAndRegister();
 
         RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-            .inputs(OreDictUnifier.get(OrePrefix.plate, Materials.Aluminium, 1), OreDictUnifier.get(OrePrefix.ring, Materials.Aluminium, 2))
+            .inputs(OreDictUnifier.get(OrePrefix.plate, Materials.Aluminium), OreDictUnifier.get(OrePrefix.ring, Materials.Aluminium, 2))
             .outputs(THERMOS_CAN_EMPTY.getStackForm())
             .duration(800)
             .EUt(1)
             .buildAndRegister();
 
         RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-            .inputs(OreDictUnifier.get(OrePrefix.plate, Materials.Steel, 1), OreDictUnifier.get(OrePrefix.ring, Materials.Steel, 2))
+            .inputs(OreDictUnifier.get(OrePrefix.plate, Materials.Steel), OreDictUnifier.get(OrePrefix.ring, Materials.Steel, 2))
             .outputs(LARGE_FLUID_CELL_STEEL.getStackForm())
             .duration(100)
             .EUt(64)
             .buildAndRegister();
 
         RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-            .inputs(OreDictUnifier.get(OrePrefix.plate, Materials.TungstenSteel, 1), OreDictUnifier.get(OrePrefix.ring, Materials.TungstenSteel, 2))
+            .inputs(OreDictUnifier.get(OrePrefix.plate, Materials.TungstenSteel), OreDictUnifier.get(OrePrefix.ring, Materials.TungstenSteel, 2))
             .outputs(LARGE_FLUID_CELL_TUNGSTENSTEEL.getStackForm())
             .duration(200)
             .EUt(256)
@@ -770,35 +770,35 @@ public class MetaItem1 extends MaterialMetaItem {
 
         // Matches/lighters recipes
         RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-            .inputs(OreDictUnifier.get(OrePrefix.bolt, Materials.Wood, 1), OreDictUnifier.get(OrePrefix.dustSmall, Materials.Phosphorus, 1))
+            .inputs(OreDictUnifier.get(OrePrefix.stick, Materials.Wood), OreDictUnifier.get(OrePrefix.dustSmall, Materials.Phosphorus))
             .outputs(TOOL_MATCHES.getStackForm())
             .duration(16)
             .EUt(16)
             .buildAndRegister();
 
         RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-            .inputs(OreDictUnifier.get(OrePrefix.bolt, Materials.Wood, 1), OreDictUnifier.get(OrePrefix.dustSmall, Materials.Phosphor, 1))
+            .inputs(OreDictUnifier.get(OrePrefix.stick, Materials.Wood), OreDictUnifier.get(OrePrefix.dustSmall, Materials.Phosphor))
             .outputs(TOOL_MATCHES.getStackForm())
             .duration(16)
             .EUt(16)
             .buildAndRegister();
 
         RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-            .inputs(OreDictUnifier.get(OrePrefix.bolt, Materials.Wood, 4), OreDictUnifier.get(OrePrefix.dust, Materials.Phosphorus, 1))
+            .inputs(OreDictUnifier.get(OrePrefix.stick, Materials.Wood, 4), OreDictUnifier.get(OrePrefix.dust, Materials.Phosphorus))
             .outputs(TOOL_MATCHES.getStackForm(4))
             .duration(64)
             .EUt(16)
             .buildAndRegister();
 
         RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-            .inputs(OreDictUnifier.get(OrePrefix.bolt, Materials.Wood, 4), OreDictUnifier.get(OrePrefix.dust, Materials.Phosphor, 1))
+            .inputs(OreDictUnifier.get(OrePrefix.stick, Materials.Wood, 4), OreDictUnifier.get(OrePrefix.dust, Materials.Phosphor))
             .outputs(TOOL_MATCHES.getStackForm(4))
             .duration(64)
             .EUt(16)
             .buildAndRegister();
 
         RecipeMap.BOXINATOR_RECIPES.recipeBuilder()
-            .inputs(TOOL_MATCHES.getStackForm(16), OreDictUnifier.get(OrePrefix.plate, Materials.Paper, 1))
+            .inputs(TOOL_MATCHES.getStackForm(16), OreDictUnifier.get(OrePrefix.plate, Materials.Paper))
             .outputs(TOOL_MATCHBOX_FULL.getStackForm())
             .duration(64)
             .EUt(16)
@@ -954,6 +954,7 @@ public class MetaItem1 extends MaterialMetaItem {
             .outputs(BATTERY_HULL_HV.getStackForm())
             .buildAndRegister();
 
+/*
         RecipeMap.FLUID_CANNER_RECIPES.recipeBuilder()
             .inputs(OreDictUnifier.get(OrePrefix.dust, Materials.Cadmium, 2), BATTERY_HULL_LV.getStackForm())
             .outputs(BATTERY_RE_LV_CADMIUM.getStackForm())
@@ -1008,7 +1009,7 @@ public class MetaItem1 extends MaterialMetaItem {
             .duration(1600)
             .EUt(2)
             .buildAndRegister();
-
+*/
         // Electric motor recipes
         ModHandler.addShapedRecipe(ELECTRIC_MOTOR_LV.getStackForm(),
             "CWR",
@@ -1493,13 +1494,13 @@ public class MetaItem1 extends MaterialMetaItem {
             .buildAndRegister();
 
         // Misc
-        RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-            .inputs(ModHandler.IC2.getIC2Item(ItemName.crafting, CraftingItemType.carbon_mesh, 4), OreDictUnifier.get(OrePrefix.foil, Materials.Zinc, 16))
-            .fluidInputs(Materials.Plastic.getFluid(144))
-            .outputs(COMPONENT_FILTER.getStackForm())
-            .duration(1600)
-            .EUt(32)
-            .buildAndRegister();
+//        RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
+//            .inputs(ModHandler.IC2.getIC2Item(ItemName.crafting, CraftingItemType.carbon_mesh, 4), OreDictUnifier.get(OrePrefix.foil, Materials.Zinc, 16))
+//            .fluidInputs(Materials.Plastic.getFluid(144)) // TODO FLUIDS
+//            .outputs(COMPONENT_FILTER.getStackForm())
+//            .duration(1600)
+//            .EUt(32)
+//            .buildAndRegister();
 
         RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
             .inputs(OreDictUnifier.get(OrePrefix.circuit, MarkerMaterials.Tier.Good, 4), OreDictUnifier.get(OrePrefix.plate, Materials.StainlessSteel, 2))

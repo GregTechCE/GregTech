@@ -31,16 +31,21 @@ public class ProcessingRotor implements IOreRegistrationHandler {
 		    ItemStack plateStack = OreDictUnifier.get(OrePrefix.plate, material);
 		    ItemStack ringStack = OreDictUnifier.get(OrePrefix.ring, material);
 
-            ModHandler.addShapedRecipe(stack, "PhP", "SRf", "PdP",
-                'P', plateStack, 'R', ringStack, 'S', OreDictUnifier.get(OrePrefix.screw, material));
+            ModHandler.addShapedRecipe(stack,
+                "PhP",
+                "SRf",
+                "PdP",
+                'P', plateStack,
+                'R', ringStack,
+                'S', OreDictUnifier.get(OrePrefix.screw, material));
 
-            RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-                .inputs(GTUtility.copyAmount(4, plateStack), ringStack)
-                .outputs(stack)
-                .fluidInputs(Materials.SolderingAlloy.getFluid(32))
-                .duration(240)
-                .EUt(24)
-                .buildAndRegister();
+//            RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
+//                .inputs(GTUtility.copyAmount(4, plateStack), ringStack)
+//                .outputs(stack)
+//                .fluidInputs(Materials.SolderingAlloy.getFluid(32)) // TODO MATERIAL FLUIDS
+//                .duration(240)
+//                .EUt(24)
+//                .buildAndRegister();
         }
 	}
 

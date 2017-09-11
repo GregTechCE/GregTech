@@ -40,7 +40,6 @@ public class MaterialInfoLoader implements Runnable {
         OreDictUnifier.registerOre(new ItemStack(Blocks.SNOW, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Snow, M)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.GLOWSTONE, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Glowstone, 14515200L)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.REDSTONE_LAMP, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Glowstone, 14515200L), new MaterialStack(Materials.Redstone, OrePrefix.dust.materialAmount * 4L)));
-//        OreDictUnifier.registerOre(new ItemStack(Blocks.LIT_REDSTONE_LAMP, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Glowstone, 14515200L), new MaterialStack(Materials.Redstone, OrePrefix.dust.materialAmount * 4L)));
         OreDictUnifier.registerOre(ModHandler.getModItem("Forestry", "craftingMaterial", 1, 5), new ItemMaterialInfo(new MaterialStack(Materials.Ice, M)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.ICE, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Ice, M)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.PACKED_ICE, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Ice, 7257600L)));
@@ -104,32 +103,22 @@ public class MaterialInfoLoader implements Runnable {
         OreDictUnifier.registerOre(new ItemStack(Blocks.SNOW_LAYER, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Snow, -1)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.STONE_SLAB, 1, 0), new ItemMaterialInfo(new MaterialStack(Materials.Stone, 1814400L)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.STONE_SLAB, 1, 8), new ItemMaterialInfo(new MaterialStack(Materials.Stone, 1814400L)));
-//        OreDictUnifier.registerOre(new ItemStack(Blocks.DOUBLE_STONE_SLAB, 1, 0), new ItemMaterialInfo(new MaterialStack(Materials.Stone, M)));
-//        OreDictUnifier.registerOre(new ItemStack(Blocks.DOUBLE_STONE_SLAB, 1, 8), new ItemMaterialInfo(new MaterialStack(Materials.Stone, M)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.STONE_SLAB, 1, 2), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 1814400L)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.STONE_SLAB, 1, 10), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 1814400L)));
-//        OreDictUnifier.registerOre(new ItemStack(Blocks.DOUBLE_STONE_SLAB, 1, 2), new ItemMaterialInfo(new MaterialStack(Materials.Wood, M)));
-//        OreDictUnifier.registerOre(new ItemStack(Blocks.DOUBLE_STONE_SLAB, 1, 10), new ItemMaterialInfo(new MaterialStack(Materials.Wood, M)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.STONE_SLAB, 1, 3), new ItemMaterialInfo(new MaterialStack(Materials.Stone, 1814400L)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.STONE_SLAB, 1, 11), new ItemMaterialInfo(new MaterialStack(Materials.Stone, 1814400L)));
-//        OreDictUnifier.registerOre(new ItemStack(Blocks.DOUBLE_STONE_SLAB, 1, 3), new ItemMaterialInfo(new MaterialStack(Materials.Stone, M)));
-//        OreDictUnifier.registerOre(new ItemStack(Blocks.DOUBLE_STONE_SLAB, 1, 11), new ItemMaterialInfo(new MaterialStack(Materials.Stone, M)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.STONE_SLAB, 1, 5), new ItemMaterialInfo(new MaterialStack(Materials.Stone, 1814400L)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.STONE_SLAB, 1, 13), new ItemMaterialInfo(new MaterialStack(Materials.Stone, 1814400L)));
-//        OreDictUnifier.registerOre(new ItemStack(Blocks.DOUBLE_STONE_SLAB, 1, 5), new ItemMaterialInfo(new MaterialStack(Materials.Stone, M)));
-//        OreDictUnifier.registerOre(new ItemStack(Blocks.DOUBLE_STONE_SLAB, 1, 13), new ItemMaterialInfo(new MaterialStack(Materials.Stone, M)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.FURNACE, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Stone, 29030400L)));
-//        OreDictUnifier.registerOre(new ItemStack(Blocks.LIT_FURNACE, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Stone, 29030400L)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.STONEBRICK, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Stone, M)));
 
         OreDictUnifier.registerOre(new ItemStack(Blocks.STONE, 1, 0), new ItemMaterialInfo(new MaterialStack(Materials.Stone, M)));
-        //added automatically in Loader_OreDictionary
-        //OreDictUnifier.registerOre(new ItemStack(Blocks.STONE, 1, 1), new ItemMaterialInfo(Materials.GraniteBlack, M));
-        //OreDictUnifier.registerOre(new ItemStack(Blocks.STONE, 1, 2), new ItemMaterialInfo(Materials.GraniteBlack, M));
-        //OreDictUnifier.registerOre(new ItemStack(Blocks.STONE, 1, 5), new ItemMaterialInfo(Materials.Diorite, M));
-        //OreDictUnifier.registerOre(new ItemStack(Blocks.STONE, 1, 6), new ItemMaterialInfo(Materials.Diorite, M));
-        //OreDictUnifier.registerOre(new ItemStack(Blocks.STONE, 1, 3), new ItemMaterialInfo(Materials.Andesite, M));
-        //OreDictUnifier.registerOre(new ItemStack(Blocks.STONE, 1, 4), new ItemMaterialInfo(Materials.Andesite, M));
+        OreDictUnifier.registerOre(new ItemStack(Blocks.STONE, 1, 1), new ItemMaterialInfo(new MaterialStack(Materials.GraniteBlack, M)));
+        OreDictUnifier.registerOre(new ItemStack(Blocks.STONE, 1, 2), new ItemMaterialInfo(new MaterialStack(Materials.GraniteBlack, M)));
+        OreDictUnifier.registerOre(new ItemStack(Blocks.STONE, 1, 5), new ItemMaterialInfo(new MaterialStack(Materials.Diorite, M)));
+        OreDictUnifier.registerOre(new ItemStack(Blocks.STONE, 1, 6), new ItemMaterialInfo(new MaterialStack(Materials.Diorite, M)));
+        OreDictUnifier.registerOre(new ItemStack(Blocks.STONE, 1, 3), new ItemMaterialInfo(new MaterialStack(Materials.Andesite, M)));
+        OreDictUnifier.registerOre(new ItemStack(Blocks.STONE, 1, 4), new ItemMaterialInfo(new MaterialStack(Materials.Andesite, M)));
 
         OreDictUnifier.registerOre(new ItemStack(Blocks.COBBLESTONE, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Stone, M)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.MOSSY_COBBLESTONE, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Stone, M)));
@@ -144,7 +133,6 @@ public class MaterialInfoLoader implements Runnable {
         OreDictUnifier.registerOre(new ItemStack(Blocks.CHEST, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 29030400L)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.TRAPPED_CHEST, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 32659200L), new MaterialStack(Materials.Iron, OrePrefix.ring.materialAmount * 2L)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.REDSTONE_TORCH, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 1814400L), new MaterialStack(Materials.Redstone, M)));
-//        OreDictUnifier.registerOre(new ItemStack(Blocks.UNLIT_REDSTONE_TORCH, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 1814400L), new MaterialStack(Materials.Redstone, M)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.NOTEBLOCK, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 29030400L), new MaterialStack(Materials.Redstone, M)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.JUKEBOX, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 29030400L), new MaterialStack(Materials.Diamond, M)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.CRAFTING_TABLE, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 14515200L)));

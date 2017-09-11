@@ -16,6 +16,11 @@ public class UnificationEntry {
         this.material = material;
     }
 
+    public UnificationEntry(OrePrefix orePrefix) {
+        this.orePrefix = orePrefix;
+        this.material = null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

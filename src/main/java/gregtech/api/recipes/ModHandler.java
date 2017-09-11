@@ -10,6 +10,7 @@ import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.UnificationEntry;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaItems;
 import ic2.api.item.ElectricItem;
@@ -152,8 +153,17 @@ public class ModHandler {
     public static void addSmeltingRecipe(ItemStack input, ItemStack output) {
         output = OreDictUnifier.getUnificated(output);
 
-        Validate.notNull(input, "Input cannot be null");
-        Validate.notNull(output, "Output cannot be null");
+        boolean skip = false;
+        if (input == null) {
+            GTLog.logger.error("Input cannot be null", new IllegalArgumentException());
+            skip = true;
+        }
+        if (output == null) {
+            GTLog.logger.error("Output cannot be null", new IllegalArgumentException());
+            skip = true;
+        }
+        if (skip) return;
+
 
         GameRegistry.addSmelting(input, output.copy(), 0.0F);
     }
@@ -162,8 +172,16 @@ public class ModHandler {
      * Adds to Furnace AND Alloysmelter AND Induction Smelter
      */
     public static void addSmeltingAndAlloySmeltingRecipe(ItemStack input, ItemStack output, boolean hidden) {
-        Validate.notNull(input, "Input cannot be null");
-        Validate.notNull(output, "Output cannot be null");
+        boolean skip = false;
+        if (input == null) {
+            GTLog.logger.error("Input cannot be null", new IllegalArgumentException());
+            skip = true;
+        }
+        if (output == null) {
+            GTLog.logger.error("Output cannot be null", new IllegalArgumentException());
+            skip = true;
+        }
+        if (skip) return;
 
         if (input.stackSize == 1) {
             addSmeltingRecipe(input, output);
@@ -235,10 +253,13 @@ public class ModHandler {
      */
     public static void addMirroredShapedRecipe(ItemStack result, Object... recipe) {
         result = OreDictUnifier.getUnificated(result);
-        Validate.notNull(result, "Result cannot be null");
-        Validate.notNull(recipe, "Recipe cannot be null");
-        Validate.isTrue(recipe.length > 0, "Recipe cannot be empty");
-        Validate.noNullElements(recipe, "Recipe cannot contain null elements");
+        boolean skip = false;
+        if (result == null) {
+            GTLog.logger.error("Result cannot be null", new IllegalArgumentException());
+            skip = true;
+        }
+        skip |= validateRecipe(recipe);
+        if (skip) return;
 
         GameRegistry.addRecipe(new ShapedOreRecipe(result, finalizeRecipeInput(recipe)).setMirrored(true));
     }
@@ -273,12 +294,31 @@ public class ModHandler {
      */
     public static void addShapedRecipe(ItemStack result, Object... recipe) {
         result = OreDictUnifier.getUnificated(result);
-        Validate.notNull(result, "Result cannot be null");
-        Validate.notNull(recipe, "Recipe cannot be null");
-        Validate.isTrue(recipe.length > 0, "Recipe cannot be empty");
-        Validate.noNullElements(recipe, "Recipe cannot contain null elements");
+        boolean skip = false;
+        if (result == null) {
+            GTLog.logger.error("Result cannot be null", new IllegalArgumentException());
+            skip = true;
+        }
+        skip |= validateRecipe(recipe);
+        if (skip) return;
 
         GameRegistry.addRecipe(new ShapedOreRecipe(result, finalizeRecipeInput(recipe)));
+    }
+
+    private static boolean validateRecipe(Object... recipe) {
+        boolean skip = false;
+        if (recipe == null) {
+            GTLog.logger.error("Recipe cannot be null", new IllegalArgumentException());
+            skip = true;
+        } else if (recipe.length == 0) {
+            GTLog.logger.error("Recipe cannot be empty", new IllegalArgumentException());
+            skip = true;
+        } else if (Arrays.asList(recipe).contains(null)) {
+            GTLog.logger.error("Recipe cannot contain null elements. Recipe: {}", recipe);
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+            skip = true;
+        }
+        return skip;
     }
 
     private static Object[] finalizeRecipeInput(Object... recipe) {
@@ -379,10 +419,13 @@ public class ModHandler {
      */
     public static void addShapelessRecipe(ItemStack result, Object... recipe) {
         result = OreDictUnifier.getUnificated(result);
-        if (result == null) return;
-        Validate.notNull(recipe, "Recipe cannot be null");
-        Validate.isTrue(recipe.length > 0, "Recipe cannot be empty");
-        Validate.noNullElements(recipe, "Recipe cannot contain null elements");
+        boolean skip = false;
+        if (result == null) {
+            GTLog.logger.error("Result cannot be null", new IllegalArgumentException());
+            skip = true;
+        }
+        skip |= validateRecipe(recipe);
+        if (skip) return;
 
         for (byte i = 0; i < recipe.length; i++) {
             if (recipe[i] instanceof MetaItem.MetaValueItem) {

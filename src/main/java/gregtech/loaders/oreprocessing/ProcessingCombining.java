@@ -19,12 +19,16 @@ public class ProcessingCombining {
             ItemStack stack = itemStack.asItemStack();
             if(entry.material instanceof MetalMaterial) {
                 ItemStack ingotStack = OreDictUnifier.get(OrePrefix.ingot, entry.material);
-                ModHandler.addShapelessRecipe(GTUtility.copyAmount(9, stack), ingotStack);
-                ModHandler.addShapedRecipe(ingotStack, "XXX", "XXX", "XXX", 'X', stack);
+                if (ingotStack != null) {
+                    ModHandler.addShapelessRecipe(GTUtility.copyAmount(9, stack), ingotStack);
+                    ModHandler.addShapedRecipe(ingotStack, "XXX", "XXX", "XXX", 'X', stack);
+                }
             } else if(entry.material instanceof GemMaterial) { //sometimes happens because of other mods
                 ItemStack gemStack = OreDictUnifier.get(OrePrefix.gem, entry.material);
-                ModHandler.addShapelessRecipe(GTUtility.copyAmount(9, stack), gemStack);
-                ModHandler.addShapedRecipe(gemStack, "XXX", "XXX", "XXX", stack);
+                if (gemStack != null) {
+                    ModHandler.addShapelessRecipe(GTUtility.copyAmount(9, stack), gemStack);
+                    ModHandler.addShapedRecipe(gemStack, "XXX", "XXX", "XXX", stack);
+                }
             }
         });
 

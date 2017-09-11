@@ -53,29 +53,29 @@ public class ProcessingDye implements IOreRegistrationHandler {
                 .EUt(8)
                 .buildAndRegister();
 
-        RecipeMap.MIXER_RECIPES.recipeBuilder()
-                .inputs(stack)
-                .fluidInputs(ModHandler.getWater(216))
-                .fluidOutputs(new FluidStack(waterMixedDye, 192))
-                .duration(16)
-                .EUt(4)
-                .buildAndRegister();
-
-        RecipeMap.MIXER_RECIPES.recipeBuilder()
-                .inputs(stack)
-                .fluidInputs(ModHandler.getWater(288))
-                .fluidOutputs(new FluidStack(waterMixedDye, 216))
-                .duration(16)
-                .EUt(4)
-                .buildAndRegister();
-
-        RecipeMap.MIXER_RECIPES.recipeBuilder()
-                .inputs(stack, OreDictUnifier.get(OrePrefix.dust, Materials.Salt, 2))
-                .fluidInputs(Materials.SulfuricAcid.getFluid(432))
-                .fluidOutputs(new FluidStack(chemicalDye, 216))
-                .duration(32)
-                .EUt(48)
-                .buildAndRegister();
+//        RecipeMap.MIXER_RECIPES.recipeBuilder()
+//                .inputs(stack)
+//                .fluidInputs(ModHandler.getWater(216))
+//                .fluidOutputs(new FluidStack(waterMixedDye, 192))  // TODO MATERIAL FLUIDS
+//                .duration(16)
+//                .EUt(4)
+//                .buildAndRegister();
+//
+//        RecipeMap.MIXER_RECIPES.recipeBuilder()
+//                .inputs(stack)
+//                .fluidInputs(ModHandler.getWater(288))
+//                .fluidOutputs(new FluidStack(waterMixedDye, 216)) // TODO MATERIAL FLUIDS
+//                .duration(16)
+//                .EUt(4)
+//                .buildAndRegister();
+//
+//        RecipeMap.MIXER_RECIPES.recipeBuilder()
+//                .inputs(stack, OreDictUnifier.get(OrePrefix.dust, Materials.Salt, 2))
+//                .fluidInputs(Materials.SulfuricAcid.getFluid(432)) // TODO MATERIAL FLUIDS
+//                .fluidOutputs(new FluidStack(chemicalDye, 216))
+//                .duration(32)
+//                .EUt(48)
+//                .buildAndRegister();
     }
 
 }

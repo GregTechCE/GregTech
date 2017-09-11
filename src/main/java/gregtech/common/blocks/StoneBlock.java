@@ -66,7 +66,7 @@ public class StoneBlock<T extends Enum<T> & IStringSerializable> extends Block {
         Class<T> enumClass = GTUtility.getActualTypeParameter(getClass(), StoneBlock.class, 0);
         this.VARIANT = PropertyEnum.create("variant", enumClass);
         this.VALUES = enumClass.getEnumConstants();
-        return new BlockStateContainer(this, VARIANT);
+        return new BlockStateContainer(this, VARIANT, CHISELING_VARIANT);
     }
 
     @Override
