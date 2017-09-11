@@ -306,7 +306,6 @@ public class GregTechMod {
 //                tRunnable.run();
 //            }
 //        } catch (Throwable e) {e.printStackTrace(GTLog.err);}
-        gregtechproxy.onServerStarting();
 //        GTLog.out.println("GregTechMod: Unificating outputs of all known Recipe Types.");
 //        ArrayList<ItemStack> tStacks = new ArrayList(10000);
 //        GTLog.out.println("GregTechMod: IC2 Machines");
