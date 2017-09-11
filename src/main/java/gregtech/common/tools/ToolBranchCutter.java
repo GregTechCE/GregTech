@@ -2,6 +2,7 @@ package gregtech.common.tools;
 
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.util.GTUtility;
+import ic2.core.block.Ic2Leaves;
 import ic2.core.ref.BlockName;
 import net.minecraft.block.BlockNewLeaf;
 import net.minecraft.block.BlockOldLeaf;
@@ -48,23 +49,21 @@ public class ToolBranchCutter extends ToolBase {
     public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops) {
         ItemStack stack = harvester.getHeldItem(EnumHand.MAIN_HAND);
         if (blockState.getMaterial() == Material.LEAVES) {
-            aEvent.setDropChance(Math.min(1.0F, Math.max(aEvent.getDropChance(), (stack.getItem().getHarvestLevel(stack, "") + 1) * 0.2F)));
+//            aEvent.setDropChance(Math.min(1.0F, Math.max(aEvent.getDropChance(), (stack.getItem().getHarvestLevel(stack, "", harvester, blockState) + 1) * 0.2F)));
             if (blockState.getBlock() == Blocks.LEAVES) {
                 drops.clear();
-                if ((blockState.getValue(BlockOldLeaf.VARIANT) == BlockPlanks.EnumType.OAK &&
-                        harvester.worldObj.rand.nextInt(9) <= aFortune * 2)) {
+                if (blockState.getValue(BlockOldLeaf.VARIANT) == BlockPlanks.EnumType.OAK) {
+//                        && harvester.worldObj.rand.nextInt(9) <= aFortune * 2) {
                     drops.add(new ItemStack(Items.APPLE, 1, 0));
                 } else {
-                    drops.add(new ItemStack(Blocks.SAPLING, 1, blockState
-                            .getValue(BlockOldLeaf.VARIANT).getMetadata()));
+                    drops.add(new ItemStack(Blocks.SAPLING, 1, blockState.getValue(BlockOldLeaf.VARIANT).getMetadata()));
                 }
             } else if (blockState == Blocks.LEAVES2) {
                 drops.clear();
-                drops.add(new ItemStack(Blocks.SAPLING, 1, blockState
-                        .getValue(BlockNewLeaf.VARIANT).getMetadata()));
-            } else if (blockState == GTUtility.getBlockFromStack(ModHandler.getIC2Item(BlockName.leaves, 1))) {
+                drops.add(new ItemStack(Blocks.SAPLING, 1, blockState.getValue(BlockNewLeaf.VARIANT).getMetadata()));
+            } else if (blockState == ModHandler.IC2.getIC2BlockState(BlockName.leaves, null)) {
                 drops.clear();
-                drops.add(ModHandler.getIC2Item(BlockName.sapling, 1));
+                drops.add(ModHandler.IC2.getIC2Item(BlockName.sapling, 1));
             }
         }
         return 0;
@@ -72,20 +71,15 @@ public class ToolBranchCutter extends ToolBase {
 
     @Override
     public boolean isMinableBlock(IBlockState block, ItemStack stack) {
-        String tTool = block.getBlock().getHarvestTool(block);
-        return ((tTool != null) && (tTool.equals("grafter"))) || (block.getMaterial() == Material.LEAVES);
+        String tool = block.getBlock().getHarvestTool(block);
+        return tool != null && tool.equals("grafter") || block.getMaterial() == Material.LEAVES;
     }
 
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? Textures.ItemIcons.GRAFTER : null;
-    }
-
-    @Override
-    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
-        return new TextComponentString(TextFormatting.RED + "")
-                .appendSibling(entity.getDisplayName())
-                .appendText(TextFormatting.WHITE + " has been trimmed by " + TextFormatting.GREEN)
-                .appendSibling(player.getDisplayName());
-    }
+//    @Override
+//    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
+//        return new TextComponentString(TextFormatting.RED + "")
+//                .appendSibling(entity.getDisplayName())
+//                .appendText(TextFormatting.WHITE + " has been trimmed by " + TextFormatting.GREEN)
+//                .appendSibling(player.getDisplayName());
+//    }
 }

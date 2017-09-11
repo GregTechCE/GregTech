@@ -118,8 +118,8 @@ public class GregTechMod {
 //        new BlockResistanceLoader().run();
 //        new MachineRecipeLoader().run();
 //        new ScrapboxRecipeLoader().run();
-//        new GT_CropLoader().run();
-//        new GT_Worldgenloader().run();
+//        new CropLoader().run();
+//        new WorldgenLoader().run();
 
 //        GT_RecipeRegistrator.registerUsagesForMaterials(new ItemStack(Blocks.PLANKS, 1), null, false);
 //        GT_RecipeRegistrator.registerUsagesForMaterials(new ItemStack(Blocks.COBBLESTONE, 1), null, false);

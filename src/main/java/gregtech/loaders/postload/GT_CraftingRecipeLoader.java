@@ -31,6 +31,12 @@ import net.minecraftforge.fml.common.Loader;
 
 @SuppressWarnings("ALL")
 public class GT_CraftingRecipeLoader implements Runnable {
+
+    @Override
+    public void run() {
+    }
+
+/*
         private final static String aTextIron1 = "X X" ;
         private final static String aTextIron2 = "XXX" ;
         private final static String aTextRailcraft = "Railcraft";
@@ -748,4 +754,5 @@ public class GT_CraftingRecipeLoader implements Runnable {
                         ModHandler.addShapedRecipe(ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, GTValues.W), new Object[]{"CJC","CNC","WPW",'C', OrePrefix.plateAlloy.get(Materials.Carbon),'J',ModHandler.getModItem("GraviSuite", "advJetpack", 1, GTValues.W),'N',ModHandler.getIC2Item(ItemName.nano_chestplate, 1),'W', OrePrefix.wireGt04.get(Materials.Platinum),'P', OrePrefix.circuit.get(Materials.Elite)});
                 }
         }
+        */
 }

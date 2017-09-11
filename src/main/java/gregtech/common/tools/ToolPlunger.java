@@ -1,15 +1,8 @@
 package gregtech.common.tools;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.items.metaitem.MetaItem;
-import gregtech.common.items.behaviors.Behaviour_Plunger_Fluid;
-import gregtech.common.items.behaviors.Behaviour_Plunger_Item;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
 
 public class ToolPlunger extends ToolBase {
 
@@ -25,35 +18,30 @@ public class ToolPlunger extends ToolBase {
 
     @Override
     public ResourceLocation getCraftingSound(ItemStack stack) {
-        return GregTechAPI.sSoundList.get(101);
+        return GregTechAPI.soundList.get(101);
     }
 
     @Override
     public ResourceLocation getEntityHitSound(ItemStack stack) {
-        return GregTechAPI.sSoundList.get(101);
+        return GregTechAPI.soundList.get(101);
     }
 
     @Override
     public ResourceLocation getMiningSound(ItemStack stack) {
-        return GregTechAPI.sSoundList.get(101);
+        return GregTechAPI.soundList.get(101);
     }
 
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? Textures.ItemIcons.PLUNGER : null;
-    }
+//    @Override
+//    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
+//        item.addStats(new Behaviour_Plunger_Item(getToolDamagePerDropConversion(item.getStackForm())));
+//        item.addStats(new Behaviour_Plunger_Fluid(getToolDamagePerDropConversion(item.getStackForm())));
+//    }
 
-    @Override
-    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
-        item.addStats(new Behaviour_Plunger_Item(getToolDamagePerDropConversion(item.getStackForm())));
-        item.addStats(new Behaviour_Plunger_Fluid(getToolDamagePerDropConversion(item.getStackForm())));
-    }
-
-    @Override
-    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
-        return new TextComponentString(TextFormatting.RED + "")
-                .appendSibling(entity.getDisplayName())
-                .appendText(TextFormatting.WHITE + " got stuck trying to escape through a Pipe while fighting " + TextFormatting.GREEN)
-                .appendSibling(player.getDisplayName());
-    }
+//    @Override
+//    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
+//        return new TextComponentString(TextFormatting.RED + "")
+//                .appendSibling(entity.getDisplayName())
+//                .appendText(TextFormatting.WHITE + " got stuck trying to escape through a Pipe while fighting " + TextFormatting.GREEN)
+//                .appendSibling(player.getDisplayName());
+//    }
 }

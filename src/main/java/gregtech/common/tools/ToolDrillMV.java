@@ -1,14 +1,12 @@
 package gregtech.common.tools;
 
-import gregtech.GregTechMod;
-import gregtech.api.items.toolitem.ToolMetaItem;
 import net.minecraft.item.ItemStack;
 
 public class ToolDrillMV extends ToolDrillLV {
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
-        return GregTechMod.gregtechproxy.mHardRock ? 100 : 200;
+        return 200;
     }
 
     @Override
@@ -44,10 +42,5 @@ public class ToolDrillMV extends ToolDrillLV {
     @Override
     public float getMaxDurabilityMultiplier(ItemStack stack) {
         return 2.0F;
-    }
-
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadDrill.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_MV;
     }
 }

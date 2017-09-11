@@ -33,9 +33,9 @@ import static net.minecraftforge.oredict.OreDictionary.WILDCARD_VALUE;
 public class OreDictionaryLoader implements Runnable {
     
     public void run() {
-        GTLog.logger.info("Register OreDict Entries of Non-GT-Items.");
+        GTLog.logger.info("Registering OreDict entries.");
 
-        //Simulating oredict registration for vanilla items.
+        //Simulating oredict registration for vanilla items. TODO UPDATE IN 1.12
         //Because forge registers event handlers after registering oredicts for vanilla items
         Map<String, Object> oreDicts = new HashMap<>();
 

@@ -1,6 +1,5 @@
 package gregtech.common.tools;
 
-import gregtech.api.items.toolitem.ToolMetaItem;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,24 +30,19 @@ public class ToolSword extends ToolBase {
 
     @Override
     public boolean isMinableBlock(IBlockState block, ItemStack stack) {
-        String tTool = block.getBlock().getHarvestTool(block);
-        return ((tTool != null) && (tTool.equals("sword"))) ||
-                (block.getMaterial() == Material.LEAVES) ||
-                (block.getMaterial() == Material.GOURD) ||
-                (block.getMaterial() == Material.VINE) ||
-                (block.getMaterial() == Material.WEB) ||
-                (block.getMaterial() == Material.CLOTH) ||
-                (block.getMaterial() == Material.CARPET) ||
-                (block.getMaterial() == Material.PLANTS) ||
-                (block.getMaterial() == Material.CACTUS) ||
-                (block.getMaterial() == Material.CAKE) ||
-                (block.getMaterial() == Material.TNT) ||
-                (block.getMaterial() == Material.SPONGE);
-    }
-
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadSword.mTextureIndex] : Textures.ItemIcons.HANDLE_SWORD;
+        String tool = block.getBlock().getHarvestTool(block);
+        return tool != null && tool.equals("sword") ||
+            block.getMaterial() == Material.LEAVES ||
+            block.getMaterial() == Material.GOURD ||
+            block.getMaterial() == Material.VINE ||
+            block.getMaterial() == Material.WEB ||
+            block.getMaterial() == Material.CLOTH ||
+            block.getMaterial() == Material.CARPET ||
+            block.getMaterial() == Material.PLANTS ||
+            block.getMaterial() == Material.CACTUS ||
+            block.getMaterial() == Material.CAKE ||
+            block.getMaterial() == Material.TNT ||
+            block.getMaterial() == Material.SPONGE;
     }
 
     @Override

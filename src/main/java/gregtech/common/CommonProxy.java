@@ -42,7 +42,6 @@ public abstract class CommonProxy implements IFuelHandler, IGuiHandler {
 
 
     public void onPreLoad() {
-        GTLog.logger.info("GregTechMod: Preload-Phase started!");
 
         GameRegistry.registerFuelHandler(this);
         MinecraftForge.EVENT_BUS.register(this);
@@ -66,15 +65,11 @@ public abstract class CommonProxy implements IFuelHandler, IGuiHandler {
     }
 
     public void onLoad() {
-        GTLog.logger.info("GregTechMod: Beginning Load-Phase.");
-
 
     }
 
     public void onPostLoad() {
-        GTLog.logger.info("GregTechMod: Beginning PostLoad-Phase.");
 
-//        GregTechAPI.sPostloadStarted = true;
         OreDictUnifier.registerOre(new ItemStack(Items.IRON_DOOR, 1), new ItemMaterialInfo(new MaterialStack(Materials.Iron, 21772800L)));
         OreDictUnifier.registerOre(new ItemStack(Items.ACACIA_DOOR, 1, 32767), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 21772800L)));
         OreDictUnifier.registerOre(new ItemStack(Items.BIRCH_DOOR, 1, 32767), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 21772800L)));
@@ -84,19 +79,6 @@ public abstract class CommonProxy implements IFuelHandler, IGuiHandler {
         OreDictUnifier.registerOre(new ItemStack(Items.DARK_OAK_DOOR, 1, 32767), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 21772800L)));
 
         GTLog.logger.info("GregTechMod: Adding Configs specific for MetaTileEntities");
-
-
-//        try {
-//            for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
-//                for (; i < GregTechAPI.METATILEENTITIES.length; i++) {
-//                    if (GregTechAPI.METATILEENTITIES[i] != null) {
-//                        GregTechAPI.METATILEENTITIES[i].onConfigLoad(GregTechAPI.sMachineFile);
-//                    }
-//                }
-//            }
-//        } catch (Throwable e) {
-//            e.printStackTrace(GTLog.err);
-//        }
 
 /*
         GTLog.out.println("GregTechMod: Adding Tool Usage Crafting Recipes for OreDict Items.");
@@ -329,46 +311,6 @@ public abstract class CommonProxy implements IFuelHandler, IGuiHandler {
 //                }
             }
         }*/
-    }
-
-    public void onServerStarting() {
-        GTLog.logger.info("GregTechMod: ServerStarting-Phase started!");
-
-//        try {
-//            for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
-//                for (; i < GregTechAPI.METATILEENTITIES.length; i++) {
-//                    if (GregTechAPI.METATILEENTITIES[i] != null) {
-//                        GregTechAPI.METATILEENTITIES[i].onServerStart();
-//                    }
-//                }
-//            }
-//        } catch (Throwable e) {
-//            e.printStackTrace(GTLog.err);
-//        }
-    }
-
-    @Override
-    public Object getServerGuiElement(int aID, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
-//        TileEntity tTileEntity = aWorld.getTileEntity(new BlockPos(aX, aY, aZ));
-//        if ((tTileEntity instanceof IGregTechTileEntity)) {
-//            IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-//            if (tMetaTileEntity != null) {
-//                return tMetaTileEntity.getServerGUI(aID, aPlayer.inventory, (IGregTechTileEntity) tTileEntity);
-//            }
-//        }
-        return null;
-    }
-
-    @Override
-    public Object getClientGuiElement(int aID, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
-//        TileEntity tTileEntity = aWorld.getTileEntity(new BlockPos(aX, aY, aZ));
-//        if ((tTileEntity instanceof IGregTechTileEntity)) {
-//            IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-//            if (tMetaTileEntity != null) {
-//                return tMetaTileEntity.getClientGUI(aID, aPlayer.inventory, (IGregTechTileEntity) tTileEntity);
-//            }
-//        }
-        return null;
     }
 
     public int getBurnTime(ItemStack fuel) {

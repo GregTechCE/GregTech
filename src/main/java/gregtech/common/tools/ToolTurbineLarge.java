@@ -18,9 +18,4 @@ public class ToolTurbineLarge extends ToolTurbine {
     public float getBaseDamage(ItemStack stack) {
         return 5.0F;
     }
-
-    @Override
-    public IIconContainer getTurbineIcon() {
-        return Textures.ItemIcons.TURBINE_LARGE;
-    }
 }

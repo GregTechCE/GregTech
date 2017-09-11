@@ -1,8 +1,6 @@
 package gregtech.common.tools;
 
-import gregtech.GregTechMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.items.toolitem.ToolMetaItem;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -18,7 +16,7 @@ public class ToolDrillLV extends ToolBase {
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
-        return GregTechMod.gregtechproxy.mHardRock ? 25 : 50;
+        return 50;
     }
 
     @Override
@@ -38,37 +36,37 @@ public class ToolDrillLV extends ToolBase {
 
     @Override
     public ResourceLocation getCraftingSound(ItemStack stack) {
-        return GregTechAPI.sSoundList.get(106);
+        return GregTechAPI.soundList.get(106);
     }
 
     @Override
     public ResourceLocation getEntityHitSound(ItemStack stack) {
-        return GregTechAPI.sSoundList.get(106);
+        return GregTechAPI.soundList.get(106);
     }
 
     @Override
     public ResourceLocation getBreakingSound(ItemStack stack) {
-        return GregTechAPI.sSoundList.get(106);
+        return GregTechAPI.soundList.get(106);
     }
 
     @Override
     public ResourceLocation getMiningSound(ItemStack stack) {
-        return GregTechAPI.sSoundList.get(106);
+        return GregTechAPI.soundList.get(106);
     }
 
     @Override
     public boolean isMinableBlock(IBlockState block, ItemStack stack) {
-        String tTool = block.getBlock().getHarvestTool(block);
-        return ((tTool != null) && ((tTool.equals("pickaxe")) || (tTool.equals("shovel")))) ||
-                (block.getMaterial() == Material.ROCK) ||
-                (block.getMaterial() == Material.IRON) ||
-                (block.getMaterial() == Material.ANVIL) ||
-                (block.getMaterial() == Material.SAND) ||
-                (block.getMaterial() == Material.GRASS) ||
-                (block.getMaterial() == Material.GROUND) ||
-                (block.getMaterial() == Material.SNOW) ||
-                (block.getMaterial() == Material.CLAY) ||
-                (block.getMaterial() == Material.GLASS);
+        String tool = block.getBlock().getHarvestTool(block);
+        return tool != null && (tool.equals("pickaxe") || tool.equals("shovel")) ||
+            block.getMaterial() == Material.ROCK ||
+            block.getMaterial() == Material.IRON ||
+            block.getMaterial() == Material.ANVIL ||
+            block.getMaterial() == Material.SAND ||
+            block.getMaterial() == Material.GRASS ||
+            block.getMaterial() == Material.GROUND ||
+            block.getMaterial() == Material.SNOW ||
+            block.getMaterial() == Material.CLAY ||
+            block.getMaterial() == Material.GLASS;
     }
 
     @Override
@@ -77,24 +75,19 @@ public class ToolDrillLV extends ToolBase {
     }
 
     @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadDrill.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_LV;
-    }
-
-    @Override
     public void onToolCrafted(ItemStack stack, EntityPlayer player) {
         super.onToolCrafted(stack, player);
         player.addStat(AchievementList.BUILD_PICKAXE);
         player.addStat(AchievementList.BUILD_BETTER_PICKAXE);
-        GregTechMod.achievements.issueAchievement(player, "driltime");
-        GregTechMod.achievements.issueAchievement(player, "buildDrill");
+//        GregTechMod.achievements.issueAchievement(player, "driltime"); // TODO ACHIEVEMENTS/ADVANCEMENTS
+//        GregTechMod.achievements.issueAchievement(player, "buildDrill");
     }
 
-    @Override
-    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
-        return new TextComponentString(TextFormatting.RED + "")
-                .appendSibling(entity.getDisplayName())
-                .appendText(TextFormatting.WHITE + " got the Drill by " + TextFormatting.GREEN)
-                .appendSibling(player.getDisplayName());
-    }
+//    @Override
+//    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
+//        return new TextComponentString(TextFormatting.RED + "")
+//                .appendSibling(entity.getDisplayName())
+//                .appendText(TextFormatting.WHITE + " got the Drill by " + TextFormatting.GREEN)
+//                .appendSibling(player.getDisplayName());
+//    }
 }

@@ -28,29 +28,24 @@ public class ToolBuzzSaw extends ToolSaw {
 
     @Override
     public ResourceLocation getCraftingSound(ItemStack stack) {
-        return GregTechAPI.sSoundList.get(104);
+        return GregTechAPI.soundList.get(104);
     }
 
     @Override
     public ResourceLocation getEntityHitSound(ItemStack stack) {
-        return GregTechAPI.sSoundList.get(105);
+        return GregTechAPI.soundList.get(105);
     }
 
     @Override
     public ResourceLocation getMiningSound(ItemStack stack) {
-        return GregTechAPI.sSoundList.get(104);
+        return GregTechAPI.soundList.get(104);
     }
 
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadBuzzSaw.mTextureIndex] : Textures.ItemIcons.HANDLE_BUZZSAW;
-    }
-
-    @Override
-    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
-        return new TextComponentString(TextFormatting.GREEN + "")
-                .appendSibling(player.getDisplayName())
-                .appendText(TextFormatting.WHITE + " got buzzed " + TextFormatting.RED)
-                .appendSibling(entity.getDisplayName());
-    }
+//    @Override
+//    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
+//        return new TextComponentString(TextFormatting.GREEN + "")
+//                .appendSibling(player.getDisplayName())
+//                .appendText(TextFormatting.WHITE + " got buzzed " + TextFormatting.RED)
+//                .appendSibling(entity.getDisplayName());
+//    }
 }

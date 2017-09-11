@@ -55,7 +55,7 @@ public class DungeonLootLoader implements Runnable {
         ChestGenHooks.addItem(LootTableList.CHESTS_DESERT_PYRAMID, OreDictUnifier.get(OrePrefix.gem, Materials.GarnetYellow, 1), 2, 8, 3);
 
         ChestGenHooks.addItem(LootTableList.CHESTS_JUNGLE_TEMPLE, MetaItems.COIN_GOLD_ANCIENT.getStackForm(), 16, 64, 5);
-        ChestGenHooks.addItem(LootTableList.CHESTS_JUNGLE_TEMPLE, MetaItems.ZPM.getWithCharge(1, Long.MAX_VALUE), 1, 1, 1);
+//        ChestGenHooks.addItem(LootTableList.CHESTS_JUNGLE_TEMPLE, MetaItems.ZPM.getWithCharge(1, Long.MAX_VALUE), 1, 1, 1);
         ChestGenHooks.addItem(LootTableList.CHESTS_JUNGLE_TEMPLE, OreDictUnifier.get(OrePrefix.ingot, Materials.Bronze, 1), 4, 16, 12);
         ChestGenHooks.addItem(LootTableList.CHESTS_JUNGLE_TEMPLE, OreDictUnifier.get(OrePrefix.gem, Materials.Ruby, 1), 2, 8, 2);
         ChestGenHooks.addItem(LootTableList.CHESTS_JUNGLE_TEMPLE, OreDictUnifier.get(OrePrefix.gem, Materials.Sapphire, 1), 2, 8, 2);

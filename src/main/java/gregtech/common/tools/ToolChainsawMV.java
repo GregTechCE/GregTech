@@ -1,6 +1,5 @@
 package gregtech.common.tools;
 
-import gregtech.api.items.toolitem.ToolMetaItem;
 import net.minecraft.item.ItemStack;
 
 public class ToolChainsawMV extends ToolChainsawLV {
@@ -43,10 +42,5 @@ public class ToolChainsawMV extends ToolChainsawLV {
     @Override
     public float getMaxDurabilityMultiplier(ItemStack stack) {
         return 2.0F;
-    }
-
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadChainsaw.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_MV;
     }
 }

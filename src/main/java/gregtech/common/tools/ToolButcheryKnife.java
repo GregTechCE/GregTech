@@ -26,42 +26,27 @@ public class ToolButcheryKnife extends ToolBase {
     }
 
     @Override
-    public int getHurtResistanceTime(int originalHurtResistance, Entity entity) {
-        return originalHurtResistance * 2;
-    }
-
-    @Override
     public float getSpeedMultiplier(ItemStack stack) {
         return 0.1F;
     }
 
-    @Override
-    public boolean isMiningTool(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public int[] getEnchantmentLevels(ItemStack stack) {
-        return new int[]{(2 + ToolMetaItem.getPrimaryMaterial(stack).toolQuality) / 2};
-    }
-
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? Textures.ItemIcons.BUTCHERYKNIFE : null;
-    }
+//    @Override
+//    public int[] getEnchantmentLevels(ItemStack stack) {
+//        return new int[]{(2 + ToolMetaItem.getPrimaryMaterial(stack).harvestLevel) / 2};
+//    }
 
     @Override
     public int getColor(boolean isToolHead, ItemStack stack) {
         return isToolHead ? ToolMetaItem.getPrimaryMaterial(stack).materialRGB : ToolMetaItem.getHandleMaterial(stack).materialRGB;
     }
 
-    @Override
-    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
-        return new TextComponentString(TextFormatting.GREEN + "")
-                .appendSibling(player.getDisplayName())
-                .appendText(TextFormatting.WHITE + " has butchered " + TextFormatting.RED)
-                .appendSibling(entity.getDisplayName());
-    }
+//    @Override
+//    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
+//        return new TextComponentString(TextFormatting.GREEN + "")
+//                .appendSibling(player.getDisplayName())
+//                .appendText(TextFormatting.WHITE + " has butchered " + TextFormatting.RED)
+//                .appendSibling(entity.getDisplayName());
+//    }
 
     @Override
     public float getNormalDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase attacker) {

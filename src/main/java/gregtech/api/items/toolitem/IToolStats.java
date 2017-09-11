@@ -14,8 +14,6 @@ import java.util.List;
 
 /**
  * The Stats for GT Tools. Not including any Material Modifiers.
- * <p/>
- * And this is supposed to not have any ItemStack Parameters as these are generic Stats.
  */
 public interface IToolStats {
 
@@ -90,7 +88,7 @@ public interface IToolStats {
     boolean isGrafter(ItemStack stack);
 
     /**
-     * aBlock.getHarvestTool(aMetaData) can return the following Values for example.
+     * block.getHarvestTool(metaData) can return the following Values for example.
      * "axe", "pickaxe", "sword", "shovel", "hoe", "grafter", "saw", "wrench", "crowbar", "file", "hammer", "plow", "plunger", "scoop", "screwdriver", "sense", "scythe", "softhammer", "cutter", "plasmatorch"
      *
      * @return If this is a minable Block. Tool Quality checks (like Diamond Tier or something) are separate from this check.
@@ -124,5 +122,4 @@ public interface IToolStats {
     float getAttackSpeed(ItemStack stack);
 
     int getColor(boolean isToolHead, ItemStack stack);
-
 }

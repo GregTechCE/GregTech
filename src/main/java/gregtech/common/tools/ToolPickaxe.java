@@ -1,22 +1,16 @@
 package gregtech.common.tools;
 
-import gregtech.GregTechMod;
-import gregtech.api.items.toolitem.ToolMetaItem;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.AchievementList;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
 
 public class ToolPickaxe extends ToolBase {
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
-        return GregTechMod.gregtechproxy.mHardRock ? 25 : 50;
+        return 50;
     }
 
     @Override
@@ -26,17 +20,12 @@ public class ToolPickaxe extends ToolBase {
 
     @Override
     public boolean isMinableBlock(IBlockState block, ItemStack stack) {
-        String tTool = block.getBlock().getHarvestTool(block);
-        return ((tTool != null) && (tTool.equals("pickaxe"))) ||
-                (block.getMaterial() == Material.ROCK) ||
-                (block.getMaterial() == Material.IRON) ||
-                (block.getMaterial() == Material.ANVIL) ||
-                (block.getMaterial() == Material.GLASS);
-    }
-
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? ToolMetaItem.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadPickaxe.mTextureIndex] : ToolMetaItem.getHandleMaterial(aStack).mIconSet.mTextures[OrePrefixes.stick.mTextureIndex];
+        String tool = block.getBlock().getHarvestTool(block);
+        return tool != null && tool.equals("pickaxe") ||
+            block.getMaterial() == Material.ROCK ||
+            block.getMaterial() == Material.IRON ||
+            block.getMaterial() == Material.ANVIL ||
+            block.getMaterial() == Material.GLASS;
     }
 
     @Override
@@ -44,14 +33,14 @@ public class ToolPickaxe extends ToolBase {
         super.onToolCrafted(stack, player);
         player.addStat(AchievementList.BUILD_PICKAXE);
         player.addStat(AchievementList.BUILD_BETTER_PICKAXE);
-        GregTechMod.achievements.issueAchievement(player, "flintpick");
+//        GregTechMod.achievements.issueAchievement(player, "flintpick"); // TODO ACHIEVEMENTS/ADVANCEMENTS
     }
 
-    @Override
-    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
-        return new TextComponentString(TextFormatting.RED + "")
-                .appendSibling(entity.getDisplayName())
-                .appendText(TextFormatting.WHITE + " got mined by " + TextFormatting.GREEN)
-                .appendSibling(player.getDisplayName());
-    }
+//    @Override
+//    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
+//        return new TextComponentString(TextFormatting.RED + "")
+//                .appendSibling(entity.getDisplayName())
+//                .appendText(TextFormatting.WHITE + " got mined by " + TextFormatting.GREEN)
+//                .appendSibling(player.getDisplayName());
+//    }
 }

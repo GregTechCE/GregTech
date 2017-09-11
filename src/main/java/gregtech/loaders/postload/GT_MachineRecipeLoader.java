@@ -1,14 +1,11 @@
 package gregtech.loaders.postload;
 
 import gregtech.GregTechMod;
-import gregtech.api.ConfigCategories;
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
-import gregtech.api.unification.Dyes;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
-import gregtech.api.items.ItemList;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.*;
 import ic2.api.recipe.ILiquidHeatExchangerManager.HeatExchangeProperty;
@@ -39,7 +36,13 @@ import java.util.Map;
 import static gregtech.api.GTValues.W;
 
 public class GT_MachineRecipeLoader implements Runnable {
-    private final MaterialStack[][] mAlloySmelterList = {
+
+    @Override
+    public void run() {
+    }
+
+/*
+        private final MaterialStack[][] mAlloySmelterList = {
             {new MaterialStack(Materials.Tetrahedrite, 3L), new MaterialStack(Materials.Tin, 1), new MaterialStack(Materials.Bronze, 3L)},
             {new MaterialStack(Materials.Tetrahedrite, 3L), new MaterialStack(Materials.Zinc, 1), new MaterialStack(Materials.Brass, 3L)},
             {new MaterialStack(Materials.Copper, 3L), new MaterialStack(Materials.Tin, 1), new MaterialStack(Materials.Bronze, 4L)},
@@ -63,7 +66,7 @@ public class GT_MachineRecipeLoader implements Runnable {
     private final static String aTextEBXL = "ExtrabiomesXL"; private final static String aTextTCGTPage = "gt.research.page.1.";
 
     public void run() {
-        GTLog.out.println("GregTechMod: Adding non-OreDict Machine Recipes.");
+        GTLog.logger.info("Adding non-OreDict Machine Recipes.");
 
         GTValues.RA.addFluidExtractionRecipe(new ItemStack(Items.WHEAT_SEEDS, 1, W), GTValues.NI, Materials.SeedOil.getFluid(5L), 10000, 32, 2);
         GTValues.RA.addFluidExtractionRecipe(new ItemStack(Items.MELON_SEEDS, 1, W), GTValues.NI, Materials.SeedOil.getFluid(3L), 10000, 32, 2);
@@ -165,15 +168,15 @@ public class GT_MachineRecipeLoader implements Runnable {
         GTValues.RA.addMixerRecipe(OreDictUnifier.get(OrePrefix.block,Materials.Charcoal,1), ItemList.SFMixture.get(4), null, null, Materials.LPG.getFluid(1200), null, ItemList.Block_SSFUEL.get(1), 120, 96);
         GTValues.RA.addMixerRecipe(OreDictUnifier.get(OrePrefix.block,Materials.Coal,1), ItemList.SFMixture.get(2), null, null, Materials.LPG.getFluid(750), null, ItemList.Block_SSFUEL.get(1), 120, 96);
 
-        if(Loader.isModLoaded("Railcraft")){/*
-        GTValues.RA.addMixerRecipe(EnumCube.COKE_BLOCK.getItem(), ItemList.SFMixture.get(1), null, null, Materials.NitroFuel.getFluid(250), null, ItemList.Block_SSFUEL.get(1), 120, 96);
-        GTValues.RA.addMixerRecipe(EnumCube.COKE_BLOCK.getItem(), ItemList.SFMixture.get(1), null, null, Materials.HeavyFuel.getFluid(375), null, ItemList.Block_SSFUEL.get(1), 120, 96);
-        GTValues.RA.addMixerRecipe(EnumCube.COKE_BLOCK.getItem(), ItemList.SFMixture.get(1), null, null, Materials.LPG.getFluid(375), null, ItemList.Block_SSFUEL.get(1), 120, 96);
-        if(Loader.isModLoaded("Thaumcraft")){
-        GTValues.RA.addMixerRecipe(EnumCube.COKE_BLOCK.getItem(), ItemList.MSFMixture.get(1), GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 4), null, Materials.NitroFuel.getFluid(250), null, ItemList.Block_MSSFUEL.get(1), 120, 96);
-        GTValues.RA.addMixerRecipe(EnumCube.COKE_BLOCK.getItem(), ItemList.MSFMixture.get(1), GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 4), null, Materials.HeavyFuel.getFluid(375), null, ItemList.Block_MSSFUEL.get(1), 120, 96);
-        GTValues.RA.addMixerRecipe(EnumCube.COKE_BLOCK.getItem(), ItemList.MSFMixture.get(1), GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 4), null, Materials.LPG.getFluid(375), null, ItemList.Block_MSSFUEL.get(1), 120, 96);
-        }*/}
+//        if(Loader.isModLoaded("Railcraft")){
+//        GTValues.RA.addMixerRecipe(EnumCube.COKE_BLOCK.getItem(), ItemList.SFMixture.get(1), null, null, Materials.NitroFuel.getFluid(250), null, ItemList.Block_SSFUEL.get(1), 120, 96);
+//        GTValues.RA.addMixerRecipe(EnumCube.COKE_BLOCK.getItem(), ItemList.SFMixture.get(1), null, null, Materials.HeavyFuel.getFluid(375), null, ItemList.Block_SSFUEL.get(1), 120, 96);
+//        GTValues.RA.addMixerRecipe(EnumCube.COKE_BLOCK.getItem(), ItemList.SFMixture.get(1), null, null, Materials.LPG.getFluid(375), null, ItemList.Block_SSFUEL.get(1), 120, 96);
+//        if(Loader.isModLoaded("Thaumcraft")){
+//        GTValues.RA.addMixerRecipe(EnumCube.COKE_BLOCK.getItem(), ItemList.MSFMixture.get(1), GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 4), null, Materials.NitroFuel.getFluid(250), null, ItemList.Block_MSSFUEL.get(1), 120, 96);
+//        GTValues.RA.addMixerRecipe(EnumCube.COKE_BLOCK.getItem(), ItemList.MSFMixture.get(1), GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 4), null, Materials.HeavyFuel.getFluid(375), null, ItemList.Block_MSSFUEL.get(1), 120, 96);
+//        GTValues.RA.addMixerRecipe(EnumCube.COKE_BLOCK.getItem(), ItemList.MSFMixture.get(1), GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 4), null, Materials.LPG.getFluid(375), null, ItemList.Block_MSSFUEL.get(1), 120, 96);
+//        }}
         GTValues.RA.addExtruderRecipe(ItemList.FR_Wax.get(1), ItemList.Shape_Extruder_Cell.get(0L), ItemList.FR_WaxCapsule.get(1), 64, 16);
         GTValues.RA.addExtruderRecipe(ItemList.FR_RefractoryWax.get(1), ItemList.Shape_Extruder_Cell.get(0L), ItemList.FR_RefractoryCapsule.get(1), 128, 16);
 
@@ -929,7 +932,7 @@ public class GT_MachineRecipeLoader implements Runnable {
             GTValues.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("GalacticraftMars", "tile.asteroidsBlock", 1L, 0), null, null, Materials.Nitrogen.getGas(33), new ItemStack(Blocks.SAND,1), OreDictUnifier.get(OrePrefix.dust, Materials.Aluminium, 1), OreDictUnifier.get(OrePrefix.dust, Materials.Nickel, 1), OreDictUnifier.get(OrePrefix.dust, Materials.Iron, 1), OreDictUnifier.get(OrePrefix.dust, Materials.Gallium, 1), OreDictUnifier.get(OrePrefix.dust, Materials.Platinum, 1), new int[]{5000,400,400,100,100,100}, 400, 8);
         }
 
-        GTValues.RA.addFluidExtractionRecipe(OreDictUnifier.get(OrePrefix.dust, Materials.Quartzite, 1), null, Materials.Glass.getMolten(72), 10000, 600, 28);//(OreDictUnifier.get(OrePrefix.cell, Materials.SiliconDioxide,1), OreDictUnifier.get(OrePrefix.dust,Materials.SiliconDioxide,2L),OreDictUnifier.get(OrePrefix.cell, Materials.Glass,1)/** GTUtility.fillFluidContainer(Materials.Glass.getMolten(1000), ItemList.Cell_Empty.get(1, new Object[0]), true, true)**/, 600, 16);
+        GTValues.RA.addFluidExtractionRecipe(OreDictUnifier.get(OrePrefix.dust, Materials.Quartzite, 1), null, Materials.Glass.getMolten(72), 10000, 600, 28);//(OreDictUnifier.get(OrePrefix.cell, Materials.SiliconDioxide,1), OreDictUnifier.get(OrePrefix.dust,Materials.SiliconDioxide,2L),OreDictUnifier.get(OrePrefix.cell, Materials.Glass,1)/** GTUtility.fillFluidContainer(Materials.Glass.getMolten(1000), ItemList.Cell_Empty.get(1, new Object[0]), true, true)**//*, 600, 16);
 
         GTValues.RA.addDistillationTowerRecipe(Materials.Creosote.getFluid(24L), new FluidStack[]{Materials.Lubricant.getFluid(12L)}, null, 16, 96);
         GTValues.RA.addDistillationTowerRecipe(Materials.SeedOil.getFluid(32L), new FluidStack[]{Materials.Lubricant.getFluid(12L)}, null, 16, 96);
@@ -1087,10 +1090,10 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         //TODO FORESTRY PLANK COVERS
 
-                /*TODO FIX ITEM HIDING?
-                for(int g=0;g<16;g++){
-                        API.hideItem(new ItemStack(GT_MetaGenerated_Item_03.INSTANCE,1,g));
-                }*/
+//                TODO FIX ITEM HIDING?
+//                for(int g=0;g<16;g++){
+//                        API.hideItem(new ItemStack(GT_MetaGenerated_Item_03.INSTANCE,1,g));
+//                }
 
         GTValues.RA.addLatheRecipe(new ItemStack(Blocks.WOODEN_SLAB, 1, W), new ItemStack(Items.BOWL,1), OreDictUnifier.get(OrePrefix.dustSmall, Materials.Wood, 1), 50, 8);
         GTValues.RA.addLatheRecipe(GT_ModHandler.getModItem(aTextForestry, "slabs", 1, W), new ItemStack(Items.BOWL,1), OreDictUnifier.get(OrePrefix.dustSmall, Materials.Wood, 1), 50, 8);
@@ -1296,12 +1299,12 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         if (!GregTechAPI.mIC2Classic)
             GTValues.RA.addPyrolyseRecipe(GT_ModHandler.getIC2Item(ItemName.crafting, CraftingItemType.bio_chaff, 4), Materials.Water.getFluid(4000), 1, null, new FluidStack(FluidRegistry.getFluid("ic2biomass"), 5000), 900, 10);
-        /*if (Loader.isModLoaded("Railcraft")) { TODO
-            GTValues.RA.addPyrolyseRecipe(OreDictUnifier.get(OrePrefix.gem, Materials.Coal, 16), null, 1, RailcraftToolItems.getCoalCoke(16), Materials.Creosote.getFluid(8000), 640, 64);
-            GTValues.RA.addPyrolyseRecipe(OreDictUnifier.get(OrePrefix.gem, Materials.Coal, 16), Materials.Nitrogen.getGas(1000), 2, RailcraftToolItems.getCoalCoke(16), Materials.Creosote.getFluid(8000), 320, 96);
-            GTValues.RA.addPyrolyseRecipe(OreDictUnifier.get(OrePrefix.block, Materials.Coal, 8), null, 1, EnumCube.COKE_BLOCK.getItem(8), Materials.Creosote.getFluid(32000), 2560, 64);
-            GTValues.RA.addPyrolyseRecipe(OreDictUnifier.get(OrePrefix.block, Materials.Coal, 8), Materials.Nitrogen.getGas(1000), 2, EnumCube.COKE_BLOCK.getItem(8), Materials.Creosote.getFluid(32000), 1280, 96);
-        }*/
+//        if (Loader.isModLoaded("Railcraft")) { TODO
+//            GTValues.RA.addPyrolyseRecipe(OreDictUnifier.get(OrePrefix.gem, Materials.Coal, 16), null, 1, RailcraftToolItems.getCoalCoke(16), Materials.Creosote.getFluid(8000), 640, 64);
+//            GTValues.RA.addPyrolyseRecipe(OreDictUnifier.get(OrePrefix.gem, Materials.Coal, 16), Materials.Nitrogen.getGas(1000), 2, RailcraftToolItems.getCoalCoke(16), Materials.Creosote.getFluid(8000), 320, 96);
+//            GTValues.RA.addPyrolyseRecipe(OreDictUnifier.get(OrePrefix.block, Materials.Coal, 8), null, 1, EnumCube.COKE_BLOCK.getItem(8), Materials.Creosote.getFluid(32000), 2560, 64);
+//            GTValues.RA.addPyrolyseRecipe(OreDictUnifier.get(OrePrefix.block, Materials.Coal, 8), Materials.Nitrogen.getGas(1000), 2, EnumCube.COKE_BLOCK.getItem(8), Materials.Creosote.getFluid(32000), 1280, 96);
+//        }
 
         GTValues.RA.addCentrifugeRecipe(new ItemStack(Items.GOLDEN_APPLE, 1, 1), GTValues.NI, GTValues.NF, Materials.Methane.getGas(9216L), new ItemStack(Items.GOLD_INGOT, 64), GTValues.NI, GTValues.NI, GTValues.NI, GTValues.NI, GTValues.NI, null, 9216, 5);
         GTValues.RA.addCentrifugeRecipe(new ItemStack(Items.GOLDEN_APPLE, 1, 0), GTValues.NI, GTValues.NF, Materials.Methane.getGas(1152L), new ItemStack(Items.GOLD_INGOT, 7), GTValues.NI, GTValues.NI, GTValues.NI, GTValues.NI, GTValues.NI, null, 9216, 5);
@@ -1416,7 +1419,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                         Recipes.liquidCooldownManager.addFluid("ic2hotcoolant", "ic2coolant", 100);
                     }
                 }
-            } catch (Throwable e) {/*Do nothing*/}
+            } catch (Throwable e) {}
 
             try {
                 Map<String, HeatExchangeProperty> tLiqExchange = ic2.api.recipe.Recipes.liquidHeatupManager.getHeatExchangeProperties();
@@ -1428,7 +1431,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                         Recipes.liquidHeatupManager.addFluid("ic2coolant", "ic2hotcoolant", 100);
                     }
                 }
-            } catch (Throwable e) {/*Do nothing*/}
+            } catch (Throwable e) {}
         }
 
         GTUtility.removeSimpleIC2MachineRecipe(ItemList.Crop_Drop_BobsYerUncleRanks.get(1), Recipes.extractor.getRecipes(), null);
@@ -1977,4 +1980,5 @@ public class GT_MachineRecipeLoader implements Runnable {
         if(!(FluidRegistry.getFluid("potion."+aName+".long")==null||FluidRegistry.getFluid("potion."+aName+".long.splash")==null))
             GTValues.RA.addMixerRecipe(OreDictUnifier.get(OrePrefix.dust, Materials.Gunpowder, 1L), null, null, null, new FluidStack(FluidRegistry.getFluid("potion."+aName+".long"),750), new FluidStack(FluidRegistry.getFluid("potion."+aName+".long.splash"),750), null, 200, 24);
     }
+    */
 }

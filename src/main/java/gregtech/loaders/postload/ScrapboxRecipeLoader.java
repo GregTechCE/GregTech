@@ -31,11 +31,11 @@ public class ScrapboxRecipeLoader implements Runnable {
         addScrapboxDrop(0.5F, new ItemStack(Items.APPLE));
         addScrapboxDrop(0.5F, new ItemStack(Items.BREAD));
         addScrapboxDrop(0.1F, new ItemStack(Items.CAKE));
-        addScrapboxDrop(1.0F, MetaItems.IC2_Food_Can_Filled.get(1));
-        addScrapboxDrop(2.0F, MetaItems.IC2_Food_Can_Spoiled.get(1));
+//        addScrapboxDrop(1.0F, MetaItems.IC2_Food_Can_Filled.get(1));
+//        addScrapboxDrop(2.0F, MetaItems.IC2_Food_Can_Spoiled.get(1));
         addScrapboxDrop(0.2F, OreDictUnifier.get(OrePrefix.dust, Materials.Silicon));
         addScrapboxDrop(1.0F, OreDictUnifier.get(OrePrefix.cell, Materials.Water));
-        addScrapboxDrop(2.0F, MetaItems.CELL_EMPTY.get(1));
+//        addScrapboxDrop(2.0F, MetaItems.CELL_EMPTY.get(1));
         addScrapboxDrop(5.0F, OreDictUnifier.get(OrePrefix.plate, Materials.Paper));
         addScrapboxDrop(1.0F, new ItemStack(Items.LEATHER));
         addScrapboxDrop(1.0F, new ItemStack(Items.FEATHER));

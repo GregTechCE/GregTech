@@ -25,125 +25,100 @@ import java.util.Arrays;
 import java.util.List;
 
 public abstract class ToolBase implements IToolStats {
-    public static final Enchantment[] FORTUNE_ENCHANTMENT = {Enchantment.getEnchantmentByLocation("fortune")};
-    public static final Enchantment[] LOOTING_ENCHANTMENT = {Enchantment.getEnchantmentByLocation("looting")};
-    public static final Enchantment[] ZERO_ENCHANTMENTS = new Enchantment[0];
-    public static final int[] ZERO_ENCHANTMENT_LEVELS = new int[0];
 
-    public static ItemStack getBlockStack(IBlockState blockState) {
-        return new ItemStack(blockState.getBlock(), 1, blockState.getBlock().getMetaFromState(blockState));
-    }
+    public static final EnchantmentData[] ZERO_ENCHANTMENTS = new EnchantmentData[0];
 
-    protected static boolean isStateEqual(IBlockState state1, IBlockState state2) {
-        if(state1.getBlock() != state2.getBlock())
-            return false;
-        if(!state1.getProperties().equals(state2.getProperties()))
-            return false;
-        return true;
-    }
-
+    @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
         return 100;
     }
 
+    @Override
     public int getToolDamagePerDropConversion(ItemStack stack) {
         return 100;
     }
 
+    @Override
     public int getToolDamagePerContainerCraft(ItemStack stack) {
         return 800;
     }
 
+    @Override
     public int getToolDamagePerEntityAttack(ItemStack stack) {
         return 200;
     }
 
+    @Override
     public float getSpeedMultiplier(ItemStack stack) {
         return 1.0F;
     }
 
+    @Override
     public float getMaxDurabilityMultiplier(ItemStack stack) {
         return 1.0F;
     }
 
-    public int getHurtResistanceTime(int originalHurtResistance, Entity entity) {
-        return originalHurtResistance;
-    }
-
+    @Override
     public ResourceLocation getMiningSound(ItemStack stack) {
         return null;
     }
 
+    @Override
     public ResourceLocation getCraftingSound(ItemStack stack) {
         return null;
     }
 
+    @Override
     public ResourceLocation getEntityHitSound(ItemStack stack) {
         return null;
     }
 
+    @Override
     public ResourceLocation getBreakingSound(ItemStack stack) {
-        return GregTechAPI.sSoundList.get(0);
+        return GregTechAPI.soundList.get(0);
     }
 
+    @Override
     public int getBaseQuality(ItemStack stack) {
         return 0;
     }
 
+    @Override
     public boolean isCrowbar(ItemStack stack) {
         return false;
     }
 
+    @Override
     public boolean isGrafter(ItemStack stack) {
         return false;
     }
-    
-    public boolean isChainsaw(ItemStack stack){
-    	return false;
-    }
-    
-    public boolean isWrench(ItemStack stack) {
-        return false;
-    }
 
-    public boolean isWeapon(ItemStack stack) {
-        return true;
-    }
+//    public DamageSource getDamageSource(EntityLivingBase player, Entity entity) {
+//        return DamageSources.getCombatDamage((player instanceof EntityPlayer) ? "player" : "mob", player, (entity instanceof EntityLivingBase) ? getDeathMessage(player, (EntityLivingBase) entity) : null);
+//    }
+//
+//    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
+//        return new EntityDamageSource((player instanceof EntityPlayer) ? "player" : "mob", player).getDeathMessage(entity);
+//    }
 
-    public boolean isRangedWeapon(ItemStack stack) {
-        return false;
-    }
-
-    public boolean isMiningTool(ItemStack stack) {
-        return true;
-    }
-
-    public DamageSource getDamageSource(EntityLivingBase player, Entity entity) {
-        return DamageSources.getCombatDamage((player instanceof EntityPlayer) ? "player" : "mob", player, (entity instanceof EntityLivingBase) ? getDeathMessage(player, (EntityLivingBase) entity) : null);
-    }
-
-    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
-        return new EntityDamageSource((player instanceof EntityPlayer) ? "player" : "mob", player).getDeathMessage(entity);
-    }
-
+    @Override
     public ItemStack getBrokenItem(ItemStack stack) {
         return null;
     }
 
+    @Override
     public List<EnchantmentData> getEnchantments(ItemStack stack) {
-        return new ArrayList<EnchantmentData>(Arrays.asList(ZERO_ENCHANTMENTS));
+        return new ArrayList<>(Arrays.asList(ZERO_ENCHANTMENTS));
     }
 
-    public int[] getEnchantmentLevels(ItemStack stack) {
-        return ZERO_ENCHANTMENT_LEVELS;
-    }
-
+    @Override
     public void onToolCrafted(ItemStack stack, EntityPlayer player) {
         player.addStat(AchievementList.OPEN_INVENTORY);
         player.addStat(AchievementList.MINE_WOOD);
         player.addStat(AchievementList.BUILD_WORK_BENCH);
     }
 
+    @Override
     public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
     }
 
