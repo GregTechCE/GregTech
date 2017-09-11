@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.IFuelHandler;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public abstract class CommonProxy implements IFuelHandler, IGuiHandler {
+public class CommonProxy implements IFuelHandler {
 
 //    public boolean mDisableVanillaOres = true;
 //    public boolean mDisableModdedOres = true;

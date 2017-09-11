@@ -51,7 +51,7 @@ public class ChestGenHooks {
     }
 
     public static void addItem(ResourceLocation loottable, ItemStack item, int minChance, int maxChance, int weight) {
-        LootEntryItem itemEntry = new LootEntryItem(item.getItem(), weight, 1, new LootFunction[] {
+        /*LootEntryItem itemEntry = new LootEntryItem(item.getItem(), weight, 1, new LootFunction[] {
                 new LootFunction(NO_CONDITIONS) {
                     @Override
                     public ItemStack apply(ItemStack stack, Random rand, LootContext context) {
@@ -65,7 +65,7 @@ public class ChestGenHooks {
             lootEntryItems.get(loottable).add(itemEntry);
         } else {
             lootEntryItems.put(loottable, Lists.newArrayList(itemEntry));
-        }
+        }*/
     }
 
     public static void addRolls(ResourceLocation tableLocation, int minAdd, int maxAdd) {
