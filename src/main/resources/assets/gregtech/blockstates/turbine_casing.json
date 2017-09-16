@@ -1,0 +1,46 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cube_all"
+  },
+  "variants": {
+    "variant": {
+      "bronze_gearbox": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_GEARBOX_BRONZE"
+        }
+      },
+      "steel_gearbox": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_GEARBOX_STEEL"
+        }
+      },
+      "titanium_gearbox": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_GEARBOX_TITANIUM"
+        }
+      },
+
+      "steel_turbine_casing": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_TURBINE"
+        }
+      },
+      "titanium_turbine_casing": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_STABLE_TITANIUM"
+        }
+      },
+      "stainless_turbine_casing": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_CLEAN_STAINLESSSTEEL"
+        }
+      },
+      "tungstensteel_turbine_casing": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/FUSIONII_8"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cube_all",
+    "textures": {
+      "all": "gregtech:blocks/iconsets/RENDERING_ERROR"
+    }
+  },
+  "variants": {
+    "casing_variant": {
+      "engine_intake": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_ENGINE_INTAKE"
+        }
+      },
+      "grate": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_GRATE"
+        }
+      },
+      "assembler": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_ASSEMBLER"
+        }
+      },
+      "assembling_machine": {
+      },
+      "fusion": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/FUSIONI_8"
+        }
+      },
+      "fusion_mk2": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/FUSIONII_8"
+        }
+      }
+    }
+  }
+}

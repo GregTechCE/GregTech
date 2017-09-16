@@ -1,0 +1,45 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cube_all"
+  },
+  "variants": {
+    "variant": {
+      "bronze_bricks": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_BRONZEPLATEDBRICKS"
+        }
+      },
+      "invar_heatproof": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_HEATPROOFCASING"
+        }
+      },
+      "aluminium_frostproof": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_FROST_PROOF"
+        }
+      },
+      "steel_solid": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_SOLID_STEEL"
+        }
+      },
+      "stainless_clean": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_CLEAN_STAINLESSSTEEL"
+        }
+      },
+      "titanium_stable": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_STABLE_TITANIUM"
+        }
+      },
+      "tungstensteel_robust": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_ROBUST_TUNGSTENSTEEL"
+        }
+      }
+    }
+  }
+}

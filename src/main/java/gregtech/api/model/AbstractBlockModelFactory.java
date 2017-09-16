@@ -4,6 +4,7 @@ import gregtech.api.GTValues;
 import gregtech.api.util.FileUtility;
 import net.minecraft.block.Block;
 import net.minecraft.client.resources.SimpleReloadableResourceManager;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 
 import java.io.FileNotFoundException;
@@ -37,17 +38,19 @@ public abstract class AbstractBlockModelFactory implements ResourcePackHook.IRes
 
     @Override
     public boolean resourceExists(ResourceLocation location) {
-        return location.getResourceDomain().equals(GTValues.MODID) && location.getResourcePath().startsWith("blockstates/" + blockNamePrefix);
+        return location.getResourceDomain().equals(GTValues.MODID)
+            && location.getResourcePath().startsWith("blockstates/" + blockNamePrefix)
+            && !location.getResourcePath().contains(".mcmeta");
     }
 
     @Override
     public InputStream getInputStream(ResourceLocation location) throws IOException {
-        String resourcePath = location.getResourcePath(); // blockstates/compressed_block_01.json
+        String resourcePath = location.getResourcePath(); // blockstates/compressed_1.json
         resourcePath = resourcePath.substring(0, resourcePath.length() - 5); //remove .json
         resourcePath = resourcePath.substring(12); //remove blockstates/
         if(resourcePath.startsWith(blockNamePrefix)) {
             Block block = Block.REGISTRY.getObject(new ResourceLocation(location.getResourceDomain(), resourcePath));
-            if(block != null) {
+            if(block != null && block != Blocks.AIR) {
                 return FileUtility.writeInputStream(fillSample(block, blockStateSample));
             }
             throw new IllegalArgumentException("Block not found: " + resourcePath);

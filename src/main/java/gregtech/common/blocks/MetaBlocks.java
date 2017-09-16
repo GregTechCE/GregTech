@@ -2,10 +2,19 @@ package gregtech.common.blocks;
 
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
+import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.item.Item;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 public class MetaBlocks {
 
@@ -83,8 +92,73 @@ public class MetaBlocks {
 
     private static void createOreBlock(DustMaterial material) {
         BlockOre block = new BlockOre(material);
-        block.registerBlock("ore_" + material.toCamelCaseString());
+        block.registerBlock("ore_" + material.toString());
         ORES.put(material, block);
     }
 
+    @SideOnly(Side.CLIENT)
+    public static void registerItemModels() {
+        registerItemModel(BOILER_CASING);
+        registerItemModel(BOILER_CASING);
+        registerItemModel(METAL_CASING);
+        registerItemModel(METAL_CASING);
+        registerItemModel(TURBINE_CASING);
+        registerItemModel(TURBINE_CASING);
+        registerItemModel(MACHINE_CASING);
+        registerItemModel(MACHINE_CASING);
+        registerItemModel(MUTLIBLOCK_CASING);
+        registerItemModel(MUTLIBLOCK_CASING);
+        registerItemModel(WIRE_COIL);
+        registerItemModel(WIRE_COIL);
+        registerItemModel(WARNING_SIGN);
+        registerItemModel(WARNING_SIGN);
+        registerItemModel(GRANITE);
+        registerItemModel(GRANITE);
+        registerItemModel(MINERAL);
+        registerItemModel(MINERAL);
+        registerItemModel(CONCRETE);
+        registerItemModel(CONCRETE);
+
+        for (BlockCompressed block : COMPRESSED.values()) {
+            registerItemModel(block);
+        }
+        for (BlockOre block : ORES.values()) {
+            registerItemModel(block);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    private static void registerItemModel(Block block) {
+        for (IBlockState state : block.getBlockState().getValidStates()) {
+            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block),
+                block.getMetaFromState(state),
+                new ModelResourceLocation(block.getRegistryName(), statePropertiesToString(state.getProperties())));
+        }
+    }
+
+    private static String statePropertiesToString(Map<IProperty<?>, Comparable<?>> properties) {
+        StringBuilder stringbuilder = new StringBuilder();
+
+        for (Map.Entry<IProperty<?>, Comparable<?>> entry : properties.entrySet()) {
+            if (stringbuilder.length() != 0) {
+                stringbuilder.append(",");
+            }
+
+            IProperty<?> property = entry.getKey();
+            stringbuilder.append(property.getName());
+            stringbuilder.append("=");
+            stringbuilder.append(getPropertyName(property, entry.getValue()));
+        }
+
+        if (stringbuilder.length() == 0) {
+            stringbuilder.append("normal");
+        }
+
+        return stringbuilder.toString();
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T extends Comparable<T>> String getPropertyName(IProperty<T> property, Comparable<?> value) {
+        return property.getName((T) value);
+    }
 }

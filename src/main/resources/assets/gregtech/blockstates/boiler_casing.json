@@ -1,0 +1,66 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cube_bottom_top",
+    "textures": {
+      "bottom": "gregtech:blocks/iconsets/RENDERING_ERROR",
+      "top": "gregtech:blocks/iconsets/RENDERING_ERROR",
+      "side": "gregtech:blocks/iconsets/RENDERING_ERROR"
+    }
+  },
+  "variants": {
+    "variant": {
+      "bronze_pipe": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_PIPE_BRONZE"
+        }
+      },
+      "steel_pipe": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_PIPE_STEEL"
+        }
+      },
+      "titanium_pipe": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_PIPE_TITANIUM"
+        }
+      },
+      "tungstensteel_pipe": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_PIPE_TUNGSTENSTEEL"
+        }
+      },
+      "bronze_firebox": {
+        "model": "minecraft:cube_bottom_top",
+        "textures": {
+          "bottom": "gregtech:blocks/iconsets/MACHINE_BRONZEPLATEDBRICKS",
+          "top": "gregtech:blocks/iconsets/MACHINE_CASING_FIREBOX_BRONZE",
+          "side": "gregtech:blocks/iconsets/MACHINE_CASING_FIREBOX_BRONZE"
+        }
+      },
+      "steel_firebox": {
+        "model": "minecraft:cube_bottom_top",
+        "textures": {
+          "bottom": "gregtech:blocks/iconsets/MACHINE_CASING_SOLID_STEEL",
+          "top": "gregtech:blocks/iconsets/MACHINE_CASING_FIREBOX_STEEL",
+          "side": "gregtech:blocks/iconsets/MACHINE_CASING_FIREBOX_STEEL"
+        }
+      },
+      "titanium_firebox": {
+        "model": "minecraft:cube_column",
+        "textures": {
+          "end": "gregtech:blocks/iconsets/MACHINE_CASING_STABLE_TITANIUM",
+          "side": "gregtech:blocks/iconsets/MACHINE_CASING_FIREBOX_TITANIUM"
+        }
+      },
+      "tungstensteel_firebox": {
+        "model": "minecraft:cube_bottom_top",
+        "textures": {
+          "bottom": "gregtech:blocks/iconsets/MACHINE_CASING_ROBUST_TUNGSTENSTEEL",
+          "top": "gregtech:blocks/iconsets/MACHINE_CASING_FIREBOX_TUNGSTENSTEEL",
+          "side": "gregtech:blocks/iconsets/MACHINE_CASING_FIREBOX_TUNGSTENSTEEL"
+        }
+      }
+    }
+  }
+}

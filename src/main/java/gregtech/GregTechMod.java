@@ -71,8 +71,6 @@ public class GregTechMod {
         EnchantmentEnderDamage.INSTANCE.register();
         EnchantmentRadioactivity.INSTANCE.register();
 
-        gregtechproxy.onPreLoad();
-
         OreDictUnifier.init();
 //        new OreProcessingLoader().run();
         new MaterialInfoLoader().run();
@@ -81,6 +79,7 @@ public class GregTechMod {
 
 //        new MTELoader().run();
 
+        gregtechproxy.onPreLoad();
         Material.init();
 
         GTLog.logger.info("PreInit-Phase finished!");

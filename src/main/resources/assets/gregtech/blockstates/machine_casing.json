@@ -1,0 +1,85 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cube_bottom_top",
+    "textures": {
+      "bottom": "gregtech:blocks/iconsets/RENDERING_ERROR",
+      "top": "gregtech:blocks/iconsets/RENDERING_ERROR",
+      "side": "gregtech:blocks/iconsets/RENDERING_ERROR"
+    }
+  },
+  "variants": {
+    "variant": {
+      "ultra_low_voltage": {
+        "textures": {
+          "bottom": "gregtech:blocks/iconsets/MACHINE_8V_BOTTOM",
+          "top": "gregtech:blocks/iconsets/MACHINE_8V_TOP",
+          "side": "gregtech:blocks/iconsets/MACHINE_8V_SIDE"
+        }
+      },
+      "low_voltage": {
+        "textures": {
+          "bottom": "gregtech:blocks/iconsets/MACHINE_LV_BOTTOM",
+          "top": "gregtech:blocks/iconsets/MACHINE_LV_TOP",
+          "side": "gregtech:blocks/iconsets/MACHINE_LV_SIDE"
+        }
+      },
+      "medium_voltage": {
+        "textures": {
+          "bottom": "gregtech:blocks/iconsets/MACHINE_MV_BOTTOM",
+          "top": "gregtech:blocks/iconsets/MACHINE_MV_TOP",
+          "side": "gregtech:blocks/iconsets/MACHINE_MV_SIDE"
+        }
+      },
+      "high_voltage": {
+        "textures": {
+          "bottom": "gregtech:blocks/iconsets/MACHINE_HV_BOTTOM",
+          "top": "gregtech:blocks/iconsets/MACHINE_HV_TOP",
+          "side": "gregtech:blocks/iconsets/MACHINE_HV_SIDE"
+        }
+      },
+      "extreme_voltage": {
+        "textures": {
+          "bottom": "gregtech:blocks/iconsets/MACHINE_EV_BOTTOM",
+          "top": "gregtech:blocks/iconsets/MACHINE_EV_TOP",
+          "side": "gregtech:blocks/iconsets/MACHINE_EV_SIDE"
+        }
+      },
+      "insane_voltage": {
+        "textures": {
+          "bottom": "gregtech:blocks/iconsets/MACHINE_IV_BOTTOM",
+          "top": "gregtech:blocks/iconsets/MACHINE_IV_TOP",
+          "side": "gregtech:blocks/iconsets/MACHINE_IV_SIDE"
+        }
+      },
+      "ludicrous_voltage": {
+        "textures": {
+          "bottom": "gregtech:blocks/iconsets/MACHINE_LuV_BOTTOM",
+          "top": "gregtech:blocks/iconsets/MACHINE_LuV_TOP",
+          "side": "gregtech:blocks/iconsets/MACHINE_LuV_SIDE"
+        }
+      },
+      "zero_point_module": {
+        "textures": {
+          "bottom": "gregtech:blocks/iconsets/MACHINE_ZPM_BOTTOM",
+          "top": "gregtech:blocks/iconsets/MACHINE_ZPM_TOP",
+          "side": "gregtech:blocks/iconsets/MACHINE_ZPM_SIDE"
+        }
+      },
+      "ultra_voltage": {
+        "textures": {
+          "bottom": "gregtech:blocks/iconsets/MACHINE_UV_BOTTOM",
+          "top": "gregtech:blocks/iconsets/MACHINE_UV_TOP",
+          "side": "gregtech:blocks/iconsets/MACHINE_UV_SIDE"
+        }
+      },
+      "maximum_voltage": {
+        "textures": {
+          "bottom": "gregtech:blocks/iconsets/MACHINE_MAX_BOTTOM",
+          "top": "gregtech:blocks/iconsets/MACHINE_MAX_TOP",
+          "side": "gregtech:blocks/iconsets/MACHINE_MAX_SIDE"
+        }
+      }
+    }
+  }
+}

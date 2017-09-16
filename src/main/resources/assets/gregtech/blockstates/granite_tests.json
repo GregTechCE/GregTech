@@ -1,0 +1,143 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cube_all"
+  },
+  "variants": {
+    "chiseling=normal,variant=black_granite": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/GRANITE_BLACK_SMOOTH"
+      }
+    }],
+    "chiseling=cracked,variant=black_granite": [{
+
+    }],
+    "chiseling=mossy,variant=black_granite": [{
+
+    }],
+    "chiseling=chiseled,variant=black_granite": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/GRANITE_BLACK_BRICKS_CHISELED"
+      }
+    }],
+    "chiseling=normal,variant=red_granite": [{
+
+    }],
+    "chiseling=cracked,variant=red_granite": [{
+
+    }],
+    "chiseling=mossy,variant=red_granite": [{
+
+    }],
+    "chiseling=chiseled,variant=red_granite": [{
+
+    }],
+    "chiseling=normal,variant=black_granite_bricks": [{
+
+    }],
+    "chiseling=cracked,variant=black_granite_bricks": [{
+
+    }],
+    "chiseling=mossy,variant=black_granite_bricks": [{
+
+    }],
+    "chiseling=chiseled,variant=black_granite_bricks": [{
+
+    }],
+    "chiseling=normal,variant=red_granite_bricks": [{
+
+    }],
+    "chiseling=cracked,variant=red_granite_bricks": [{
+
+    }],
+    "chiseling=mossy,variant=red_granite_bricks": [{
+
+    }],
+    "chiseling=chiseled,variant=red_granite_bricks": [{
+
+    }],
+
+
+
+
+
+
+    "variant=black_granite,chiseling=normal": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/GRANITE_BLACK_STONE"
+      }
+    }],
+    "variant=black_granite,chiseling=cobblestone": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/GRANITE_BLACK_COBBLE"
+      }
+    }],
+    "variant=black_granite,chiseling=mossy_cobblestone": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/GRANITE_BLACK_COBBLE_MOSSY"
+      }
+    }],
+    "variant=black_granite,chiseling=bricks": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/GRANITE_BLACK_BRICKS"
+      }
+    }],
+    "variant=black_granite,chiseling=cracked_bricks": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/GRANITE_BLACK_BRICKS_CRACKED"
+      }
+    }],
+    "variant=black_granite,chiseling=mossy_bricks": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/GRANITE_BLACK_BRICKS_MOSSY"
+      }
+    }],
+    "variant=black_granite,chiseling=chiseled": [{
+
+    }],
+    "variant=black_granite,chiseling=smooth": [{
+
+    }],
+
+    "variant=granitered,chiseling=normal": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/GRANITE_RED_STONE"
+      }
+    }],
+    "variant=granitered,chiseling=cobblestone": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/GRANITE_RED_COBBLE"
+      }
+    }],
+    "variant=granitered,chiseling=mossy_cobblestone": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/GRANITE_RED_COBBLE_MOSSY"
+      }
+    }],
+    "variant=granitered,chiseling=bricks": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/GRANITE_RED_BRICKS"
+      }
+    }],
+    "variant=granitered,chiseling=cracked_bricks": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/GRANITE_RED_BRICKS_CRACKED"
+      }
+    }],
+    "variant=granitered,chiseling=mossy_bricks": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/GRANITE_RED_BRICKS_MOSSY"
+      }
+    }],
+    "variant=granitered,chiseling=chiseled": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/GRANITE_RED_BRICKS_CHISELED"
+      }
+    }],
+    "variant=granitered,chiseling=smooth": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/GRANITE_RED_SMOOTH"
+      }
+    }]
+  }
+}

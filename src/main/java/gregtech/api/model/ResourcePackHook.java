@@ -11,6 +11,8 @@ import net.minecraft.client.resources.data.MetadataSerializer;
 import net.minecraft.client.resources.data.PackMetadataSection;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -20,11 +22,20 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Set;
 
+@SideOnly(Side.CLIENT)
 public class ResourcePackHook implements IResourceManagerReloadListener, IResourcePack {
 
     public static final ResourcePackHook instance = new ResourcePackHook();
 
     private ResourcePackHook() {}
+
+    public static void init() {
+        IResourceManager resourceManager = Minecraft.getMinecraft().getResourceManager();
+        Minecraft.getMinecraft().defaultResourcePacks.add(instance); // TODO MAY BREAK IN 1.12
+        if (resourceManager instanceof SimpleReloadableResourceManager) {
+            ((SimpleReloadableResourceManager) resourceManager).registerReloadListener(instance);
+        }
+    }
 
     public interface IResourcePackFileHook {
 

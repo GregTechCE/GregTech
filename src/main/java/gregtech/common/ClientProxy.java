@@ -6,7 +6,11 @@
 package gregtech.common;
 
 import codechicken.lib.vec.Rotation;
+import gregtech.api.model.ResourcePackHook;
 import gregtech.api.unification.material.model.MaterialModelLoader;
+import gregtech.common.blocks.MetaBlocks;
+import gregtech.common.blocks.models.BlockCompressedFactory;
+import gregtech.common.blocks.models.BlockOreFactory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
@@ -54,6 +58,10 @@ public class ClientProxy extends CommonProxy {
 
     public void onPreLoad() {
         super.onPreLoad();
+        MetaBlocks.registerItemModels();
+        BlockOreFactory.init();
+        BlockCompressedFactory.init();
+        ResourcePackHook.init();
 
     }
 

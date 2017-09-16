@@ -39,7 +39,7 @@ public class BlockOre extends Block {
         GameRegistry.register(this);
         OreItemBlock itemBlock = new OreItemBlock(this);
         itemBlock.setRegistryName(blockName);
-        GameRegistry.register(this);
+        GameRegistry.register(itemBlock);
     }
 
     @Override

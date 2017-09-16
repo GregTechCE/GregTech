@@ -1,0 +1,60 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cube_all"
+  },
+  "variants": {
+    "variant": {
+      "yellow_stripes": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_STRIPES_A"
+        }
+      },
+      "small_yellow_stripes": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_STRIPES_B"
+        }
+      },
+      "radioactive_hazard": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_RADIOACTIVEHAZARD"
+        }
+      },
+      "bio_hazard": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_BIOHAZARD"
+        }
+      },
+      "explosion_hazard": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_EXPLOSIONHAZARD"
+        }
+      },
+      "fire_hazard": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_FIREHAZARD"
+        }
+      },
+      "acid_hazard": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_ACIDHAZARD"
+        }
+      },
+      "magic_hazard": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_MAGICHAZARD"
+        }
+      },
+      "frost_hazard": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_FROSTHAZARD"
+        }
+      },
+      "noise_hazard": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_NOISEHAZARD"
+        }
+      }
+    }
+  }
+}

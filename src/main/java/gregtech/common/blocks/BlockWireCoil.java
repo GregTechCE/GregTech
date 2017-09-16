@@ -24,7 +24,7 @@ public class BlockWireCoil extends VariantBlock<BlockWireCoil.CoilType> {
         NAQUADAH("naquadah"),
         NAQUADAH_ALLOY("naquadah_alloy"),
         SUPERCONDUCTOR("superconductor"),
-        FUSION("fusion");
+        FUSION_COIL("fusion_coil");
 
         private final String name;
 
