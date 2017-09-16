@@ -69,7 +69,7 @@ local.properties
 
 .idea/
 .idea_modules/
-
+/classes/
 /out/
 /build/
 gradle/wrapper/gradle-wrapper.properties
