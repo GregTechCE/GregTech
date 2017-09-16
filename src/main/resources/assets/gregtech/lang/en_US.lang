@@ -138,11 +138,71 @@ metaitem.large.fluid.cell.steel.name=Large Steel Fluid Cell
 
 metaitem.large.fluid.cell.tungstensteel.name=Large Tungstensteel Fluid Cell
 
-# %s is a localized dye name
-metaitem.spray.can.dyes.name=Spray Can (%s)
-metaitem.spray.can.dyes.tooltip=Full
-metaitem.spray.can.dyes.used.name=Spray Can (%s)
-metaitem.spray.can.dyes.used.tooltip=Used
+metaitem.spray.can.dyes.white.name=Spray Can (White)
+metaitem.spray.can.dyes.white.tooltip=Full
+metaitem.spray.can.dyes.orange.name=Spray Can (Orange)
+metaitem.spray.can.dyes.orange.tooltip=Full
+metaitem.spray.can.dyes.magenta.name=Spray Can (Magenta)
+metaitem.spray.can.dyes.magenta.tooltip=Full
+metaitem.spray.can.dyes.light_blue.name=Spray Can (Light Blue)
+metaitem.spray.can.dyes.light_blue.tooltip=Full
+metaitem.spray.can.dyes.yellow.name=Spray Can (Yellow)
+metaitem.spray.can.dyes.yellow.tooltip=Full
+metaitem.spray.can.dyes.lime.name=Spray Can (Lime)
+metaitem.spray.can.dyes.lime.tooltip=Full
+metaitem.spray.can.dyes.pink.name=Spray Can (Pink)
+metaitem.spray.can.dyes.pink.tooltip=Full
+metaitem.spray.can.dyes.gray.name=Spray Can (Gray)
+metaitem.spray.can.dyes.gray.tooltip=Full
+metaitem.spray.can.dyes.silver.name=Spray Can (Light Gray)
+metaitem.spray.can.dyes.silver.tooltip=Full
+metaitem.spray.can.dyes.cyan.name=Spray Can (Cyan)
+metaitem.spray.can.dyes.cyan.tooltip=Full
+metaitem.spray.can.dyes.purple.name=Spray Can (Purple)
+metaitem.spray.can.dyes.purple.tooltip=Full
+metaitem.spray.can.dyes.blue.name=Spray Can (Blue)
+metaitem.spray.can.dyes.blue.tooltip=Full
+metaitem.spray.can.dyes.brown.name=Spray Can (Brown)
+metaitem.spray.can.dyes.brown.tooltip=Full
+metaitem.spray.can.dyes.green.name=Spray Can (Green)
+metaitem.spray.can.dyes.green.tooltip=Full
+metaitem.spray.can.dyes.red.name=Spray Can (Red)
+metaitem.spray.can.dyes.red.tooltip=Full
+metaitem.spray.can.dyes.black.name=Spray Can (Black)
+metaitem.spray.can.dyes.black.tooltip=Full
+
+metaitem.spray.can.dyes.used.white.name=Spray Can (White)
+metaitem.spray.can.dyes.used.white.tooltip=Used
+metaitem.spray.can.dyes.used.orange.name=Spray Can (Orange)
+metaitem.spray.can.dyes.used.orange.tooltip=Used
+metaitem.spray.can.dyes.used.magenta.name=Spray Can (Magenta)
+metaitem.spray.can.dyes.used.magenta.tooltip=Used
+metaitem.spray.can.dyes.used.light_blue.name=Spray Can (Light Blue)
+metaitem.spray.can.dyes.used.light_blue.tooltip=Used
+metaitem.spray.can.dyes.used.yellow.name=Spray Can (Yellow)
+metaitem.spray.can.dyes.used.yellow.tooltip=Used
+metaitem.spray.can.dyes.used.lime.name=Spray Can (Lime)
+metaitem.spray.can.dyes.used.lime.tooltip=Used
+metaitem.spray.can.dyes.used.pink.name=Spray Can (Pink)
+metaitem.spray.can.dyes.used.pink.tooltip=Used
+metaitem.spray.can.dyes.used.gray.name=Spray Can (Gray)
+metaitem.spray.can.dyes.used.gray.tooltip=Used
+metaitem.spray.can.dyes.used.silver.name=Spray Can (Light Gray)
+metaitem.spray.can.dyes.used.silver.tooltip=Used
+metaitem.spray.can.dyes.used.cyan.name=Spray Can (Cyan)
+metaitem.spray.can.dyes.used.cyan.tooltip=Used
+metaitem.spray.can.dyes.used.purple.name=Spray Can (Purple)
+metaitem.spray.can.dyes.used.purple.tooltip=Used
+metaitem.spray.can.dyes.used.blue.name=Spray Can (Blue)
+metaitem.spray.can.dyes.used.blue.tooltip=Used
+metaitem.spray.can.dyes.used.brown.name=Spray Can (Brown)
+metaitem.spray.can.dyes.used.brown.tooltip=Used
+metaitem.spray.can.dyes.used.green.name=Spray Can (Green)
+metaitem.spray.can.dyes.used.green.tooltip=Used
+metaitem.spray.can.dyes.used.red.name=Spray Can (Red)
+metaitem.spray.can.dyes.used.red.tooltip=Used
+metaitem.spray.can.dyes.used.black.name=Spray Can (Black)
+metaitem.spray.can.dyes.used.black.tooltip=Used
 
 metaitem.tool.matches.name=Match
 metaitem.tool.matchbox.used.name=Match Box
@@ -410,6 +470,49 @@ metaitem.upgrade.lock.tooltip=Protects your Machines
 
 metaitem.component.filter.name=Item Filter
 
+metaitem.cover.controller.name=Machine Controller
+metaitem.cover.controller.tooltip=Turns Machines ON/OFF
+metaitem.cover.activity.detector.name=Activity Detector
+metaitem.cover.activity.detector.tooltip=Gives out Activity as Redstone
+metaitem.cover.fluid.detector.name=Fluid Detector
+metaitem.cover.fluid.detector.tooltip=Gives out Fluid Amount as Redstone
+metaitem.cover.item.detector.name=Item Detector
+metaitem.cover.item.detector.tooltip=Gives out Item Amount as Redstone
+metaitem.cover.energy.detector.name=Energy Detector
+metaitem.cover.energy.detector.tooltip=Gives out Energy Amount as Redstone
+metaitem.cover.player.detector.name=Player Detector
+metaitem.cover.player.detector.tooltip=Gives out close Players as Redstone
+
+metaitem.cover.screen.name=Computer Monitor
+metaitem.cover.screen.tooltip=Displays Data
+metaitem.cover.crafting.name=Crafting Table Cover
+metaitem.cover.crafting.tooltip=Better than a wooden Workbench
+metaitem.cover.drain.name=Drain
+metaitem.cover.drain.tooltip=Absorbs Fluids and collects Rain
+metaitem.cover.shutter.name=Shutter Module
+metaitem.cover.shutter.tooltip=Blocks Inventory/Tank Side. Usage together with Machine Controller.
+
+metaitem.cover.solar.panel.name=Solar Panel
+metaitem.cover.solar.panel.tooltip=May the Sun be with you
+metaitem.cover.solar.panel.8v.name=Solar Panel (8V)
+metaitem.cover.solar.panel.8v.tooltip=8 Volt Solar Panel
+metaitem.cover.solar.panel.lv.name=Solar Panel (LV)
+metaitem.cover.solar.panel.lv.tooltip=Low Voltage Solar Panel
+metaitem.cover.solar.panel.mv.name=Solar Panel (MV)
+metaitem.cover.solar.panel.mv.tooltip=Medium Voltage Solar Panel
+metaitem.cover.solar.panel.hv.name=Solar Panel (HV)
+metaitem.cover.solar.panel.hv.tooltip=High Voltage Solar Panel
+metaitem.cover.solar.panel.ev.name=Solar Panel (EV)
+metaitem.cover.solar.panel.ev.tooltip=Extreme Solar Panel
+metaitem.cover.solar.panel.iv.name=Solar Panel (IV)
+metaitem.cover.solar.panel.iv.tooltip=Insane Solar Panel
+metaitem.cover.solar.panel.luv.name=Solar Panel (LuV)
+metaitem.cover.solar.panel.luv.tooltip=Ludicrous Solar Panel
+metaitem.cover.solar.panel.zpm.name=Solar Panel (ZPM)
+metaitem.cover.solar.panel.zpm.tooltip=ZPM Voltage Solar Panel
+metaitem.cover.solar.panel.uv.name=Solar Panel (UV)
+metaitem.cover.solar.panel.uv.tooltip=Ultimate Solar Panel
+
 metaitem.tool.cheat.name=Debug Scanner
 metaitem.tool.cheat.tooltip=Also an Infinite Energy Source
 metaitem.tool.scanner.name=Portable Scanner
@@ -442,7 +545,7 @@ metaitem.thermos_can.sweet.tea.name=Sweet Tea
 metaitem.thermos_can.sweet.tea.tooltip=How about a Tea Party? In Boston?
 metaitem.thermos_can.ice.tea.name=Ice Tea
 metaitem.thermos_can.ice.tea.tooltip=Better than this purple Junk Drink from failed Potions
-        
+
 metaitem.gelled_toluene.name=Gelled Toluene
 metaitem.gelled_toluene.tooltip=Raw Explosive
 
@@ -575,7 +678,7 @@ metaitem.food.sandwich.bacon.name=Bacon Sandwich
 metaitem.food.sandwich.bacon.tooltip=The best Sandwich ever!
 metaitem.food.sandwich.steak.name=Steak Sandwich
 metaitem.food.sandwich.steak.tooltip=Not a 'Steam Sandwich'
-        
+
 metaitem.food.sliced.baguettes.name=Baguettes
 metaitem.food.sliced.baguettes.tooltip=Pre Sliced
 metaitem.food.large.sandwich.veggie.name=Large Veggie Sandwich
@@ -586,7 +689,7 @@ metaitem.food.large.sandwich.bacon.name=Large Bacon Sandwich
 metaitem.food.large.sandwich.bacon.tooltip=For Men! (and manly Women)
 metaitem.food.large.sandwich.steak.name=Large Steak Sandwich
 metaitem.food.large.sandwich.steak.tooltip=YesI once accidentally called it 'Steam Sandwich'
-        
+
 metaitem.food.raw.pizza.veggie.name=Raw Veggie Pizza
 metaitem.food.raw.pizza.veggie.tooltip=Into the Oven with it!
 metaitem.food.raw.pizza.cheese.name=Raw Cheese Pizza

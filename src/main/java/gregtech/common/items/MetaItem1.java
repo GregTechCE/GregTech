@@ -10,7 +10,6 @@ import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.material.type.MarkerMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
@@ -18,8 +17,6 @@ import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.RandomPotionEffect;
 //import gregtech.common.items.behaviors.*;
-import ic2.core.item.type.CraftingItemType;
-import ic2.core.ref.ItemName;
 import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
@@ -146,8 +143,8 @@ public class MetaItem1 extends MaterialMetaItem {
 
         for (byte i = 0; i < 16; i = (byte) (i + 1)) {
 //			IItemBehaviour behaviour = new Behaviour_Spray_Color(SPRAY_EMPTY.getStackForm(), SPRAY_CAN_DYES_USED[i].getStackForm(), SPRAY_CAN_DYES[i].getStackForm(), 512L, i);
-            SPRAY_CAN_DYES[i] = addItem(430 + 2 * i, "spray.can.dyes", EnumDyeColor.byDyeDamage(i).getUnlocalizedName());//.addStats(behaviour);
-            SPRAY_CAN_DYES_USED[i] = addItem(431 + 2 * i, "spray.can.dyes.used", EnumDyeColor.byDyeDamage(i).getUnlocalizedName());//.addStats(behaviour);
+            SPRAY_CAN_DYES[i] = addItem(430 + 2 * i, "spray.can.dyes." + EnumDyeColor.byDyeDamage(i).getName());//.addStats(behaviour);
+            SPRAY_CAN_DYES_USED[i] = addItem(431 + 2 * i, "spray.can.dyes.used." + EnumDyeColor.byDyeDamage(i).getName());//.addStats(behaviour);
         }
 
 //		IItemBehaviour behaviour = new Behaviour_Lighter(null, TOOL_MATCHES.getStackForm(), TOOL_MATCHES.getStackForm(), 1L);
@@ -338,6 +335,30 @@ public class MetaItem1 extends MaterialMetaItem {
         UPGRADE_LOCK = addItem(728, "upgrade.lock");
 
         COMPONENT_FILTER = addItem(729, "component.filter").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Zinc, OrePrefix.foil.materialAmount * 16L))).addOreDict(OreDictNames.craftingFilter);
+
+        COVER_CONTROLLER = addItem(730, "cover.controller");
+        COVER_ACTIVITY_DETECTOR = addItem(731, "cover.activity.detector");
+        COVER_FLUID_DETECTOR = addItem(732, "cover.fluid.detector");
+        COVER_ITEM_DETECTOR = addItem(733, "cover.item.detector");
+        COVER_ENERGY_DETECTOR = addItem(734, "cover.energy.detector");
+        COVER_PLAYER_DETECTOR = addItem(735, "cover.player.detector");
+
+        COVER_SCREEN = addItem(740, "cover.screen");
+        COVER_CRAFTING = addItem(744, "cover.crafting");
+        COVER_DRAIN = addItem(745, "cover.drain");
+
+        COVER_SHUTTER = addItem(749, "cover.shutter");
+
+        COVER_SOLARPANEL = addItem(750, "cover.solarpanel");
+        COVER_SOLARPANEL_8V = addItem(751, "cover.solarpanel.8v");
+        COVER_SOLARPANEL_LV = addItem(752, "cover.solarpanel.lv");
+        COVER_SOLARPANEL_MV = addItem(753, "cover.solarpanel.mv");
+        COVER_SOLARPANEL_HV = addItem(754, "cover.solarpanel.hv");
+        COVER_SOLARPANEL_EV = addItem(755, "cover.solarpanel.ev");
+        COVER_SOLARPANEL_IV = addItem(756, "cover.solarpanel.iv");
+        COVER_SOLARPANEL_LUV = addItem(757, "cover.solarpanel.luv");
+        COVER_SOLARPANEL_ZPM = addItem(758, "cover.solarpanel.zpm");
+        COVER_SOLARPANEL_UV = addItem(759, "cover.solarpanel.uv");
 
         TOOL_CHEAT = addItem(761, "tool.cheat").addStats(/*new Behaviour_Scanner(), */new ElectricStats(-2000000000, -1));
         TOOL_SCANNER = addItem(762, "tool.scanner").addStats(/*new Behaviour_Scanner(),*/ new ElectricStats(400000, 2, true, false));

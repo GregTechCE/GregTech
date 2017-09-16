@@ -1,47 +1,66 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "uvlock": true
+    "uvlock": true,
+    "model": "gregtech:overlay_model_all",
+    "textures": {
+      "base": "builtin/missing",
+      "overlay": "builtin/missing"
+    }
   },
   "variants": {
     "small": {
       "true": {
         "textures": {
-          "texture": "$MATERIAL_TEXTURE_SMALL$"
-        },
-        "submodel": "cube_all"
+          "overlay": "$MATERIAL_TEXTURE_SMALL$"
+        }
       },
       "false": {
         "textures": {
-          "texture": "$MATERIAL_TEXTURE_NORMAL$"
-        },
-        "submodel": "cube_all"
+          "overlay": "$MATERIAL_TEXTURE_NORMAL$"
+        }
       }
     },
     "stone_type": {
       "stone": {
-        "model": "stone"
+        "textures": {
+          "base": "blocks/stone"
+        }
       },
       "netherrack": {
-        "model": "netherrack"
+        "textures": {
+          "base": "blocks/netherrack"
+        }
       },
       "endstone": {
-        "model": "end_stone"
+        "textures": {
+          "base": "blocks/end_stone"
+        }
       },
       "sandstone": {
-        "model": "sandstone_normal"
+        "textures": {
+          "base": "blocks/sandstone_top"
+        }
       },
       "black_granite": {
-        "model": "gregtech:black_granite"
+        "textures": {
+          "base": "gregtech:blocks/iconsets/GRANITE_BLACK_STONE"
+        }
       },
       "red_granite": {
-        "model": "gregtech:red_granite"
+        "textures": {
+          "base": "gregtech:blocks/iconsets/GRANITE_RED_STONE"
+        }
       },
       "marble": {
-        "model": "gregtech:marble"
+        "textures": {
+          "base": "gregtech:blocks/iconsets/MARBLE_STONE"
+        }
       },
       "basalt": {
-        "model": "gregtech:basalt"
+        "textures": {
+          "base": "gregtech:blocks/iconsets/BASALT_STONE"
+        }
       }
     }
   }

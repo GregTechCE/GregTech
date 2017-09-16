@@ -260,6 +260,30 @@ public final class MetaItems {
 
 	public static MetaItem<?>.MetaValueItem COMPONENT_FILTER;
 
+    public static MetaItem<?>.MetaValueItem COVER_CONTROLLER;
+    public static MetaItem<?>.MetaValueItem COVER_ACTIVITY_DETECTOR;
+    public static MetaItem<?>.MetaValueItem COVER_FLUID_DETECTOR;
+    public static MetaItem<?>.MetaValueItem COVER_ITEM_DETECTOR;
+    public static MetaItem<?>.MetaValueItem COVER_ENERGY_DETECTOR;
+    public static MetaItem<?>.MetaValueItem COVER_PLAYER_DETECTOR;
+
+    public static MetaItem<?>.MetaValueItem COVER_SCREEN;
+    public static MetaItem<?>.MetaValueItem COVER_CRAFTING;
+    public static MetaItem<?>.MetaValueItem COVER_DRAIN;
+
+    public static MetaItem<?>.MetaValueItem COVER_SHUTTER;
+
+    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL;
+    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_8V;
+    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_LV;
+    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_MV;
+    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_HV;
+    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_EV;
+    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_IV;
+    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_LUV;
+    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_ZPM;
+    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_UV;
+
 	public static MetaItem<?>.MetaValueItem TOOL_CHEAT;
 	public static MetaItem<?>.MetaValueItem TOOL_SCANNER;
 
