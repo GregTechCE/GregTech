@@ -78,13 +78,10 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     public void registerItem(String registryName) {
         setRegistryName(registryName);
         GameRegistry.register(this);
-        if(FMLCommonHandler.instance().getSide().isClient()) {
-            registerClient();
-        }
     }
 
     @SideOnly(Side.CLIENT)
-    protected void registerClient() {
+    public void registerClient() {
         Minecraft.getMinecraft().getItemColors().registerItemColorHandler(this::getColorForItemStack, this);
     }
 
