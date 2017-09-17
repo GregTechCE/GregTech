@@ -6,8 +6,6 @@ import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.GTLog;
-import gregtech.common.blocks.MetaBlocks;
-import gregtech.common.items.MetaItems;
 import ic2.core.block.wiring.CableType;
 import ic2.core.item.block.ItemCable;
 import ic2.core.item.type.CraftingItemType;
@@ -213,9 +211,6 @@ public class OreDictionaryLoader implements Runnable {
                 OreDictUnifier.onItemRegistration(new OreDictionary.OreRegisterEvent(ore, new ItemStack((Block) itemStack)));
             }
         });
-
-        MetaItems.META_ITEM_FIRST.registerOres();
-        MetaItems.META_ITEM_SECOND.registerOres();
 
 
         OreDictUnifier.registerOre(ModHandler.IC2.getIC2Item(ItemName.fluid_cell, 1), OrePrefix.cell, MarkerMaterials.Empty);

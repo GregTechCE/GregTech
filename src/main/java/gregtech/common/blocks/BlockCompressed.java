@@ -42,6 +42,11 @@ public final class BlockCompressed extends DelayedStateBlock {
     }
 
     @Override
+    public int damageDropped(IBlockState state) {
+        return getMetaFromState(state);
+    }
+
+    @Override
     public String getHarvestTool(IBlockState state) {
         Material material = state.getValue(variantProperty);
         if(material instanceof SolidMaterial) {

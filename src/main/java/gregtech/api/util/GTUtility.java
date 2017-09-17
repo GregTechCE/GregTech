@@ -33,10 +33,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
+import java.util.function.Supplier;
 
 import static gregtech.api.GTValues.*;
 
 public class GTUtility {
+
+    public static <T> Iterable<T> wrapIterable(Supplier<Iterator<T>> iteratorSupplier) {
+        return iteratorSupplier::get;
+    }
 
     //magic is here
     public static <T, R> Class<T> getActualTypeParameter(Class<? extends R> thisClass, Class<R> declaringClass, int index) {
@@ -437,4 +442,5 @@ public class GTUtility {
 	public static long createFlag(int id) {
 		return (long) Math.pow(2, id);
 	}
+
 }

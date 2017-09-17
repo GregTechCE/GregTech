@@ -7,7 +7,6 @@ package gregtech.common;
 
 import codechicken.lib.vec.Rotation;
 import gregtech.api.model.ResourcePackHook;
-import gregtech.api.unification.material.model.MaterialModelLoader;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.models.BlockCompressedFactory;
 import gregtech.common.blocks.models.BlockOreFactory;
@@ -68,8 +67,6 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void onLoad() {
         super.onLoad();
-
-        MaterialModelLoader.register();
     }
 
     @Override

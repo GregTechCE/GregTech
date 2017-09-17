@@ -15,6 +15,7 @@ import ic2.api.item.IBoxable;
 import ic2.api.item.ISpecialElectricItem;
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -36,6 +37,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.capability.wrappers.FluidContainerItemWrapper;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.IFuelHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -76,6 +78,19 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     public void registerItem(String registryName) {
         setRegistryName(registryName);
         GameRegistry.register(this);
+        if(FMLCommonHandler.instance().getSide().isClient()) {
+            registerClient();
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected void registerClient() {
+        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(this::getColorForItemStack, this);
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected int getColorForItemStack(ItemStack stack, int tintIndex) {
+        return 0xFFFFFF;
     }
 
     protected abstract T constructMetaValueItem(short metaValue, String unlocalizedName, String... nameParameters);

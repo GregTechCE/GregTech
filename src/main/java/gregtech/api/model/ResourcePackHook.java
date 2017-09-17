@@ -53,7 +53,6 @@ public class ResourcePackHook implements IResourceManagerReloadListener, IResour
 
     @Override
     public void onResourceManagerReload(IResourceManager resourceManager) {
-        ((SimpleReloadableResourceManager) resourceManager).reloadResourcePack(this);
         for(IResourcePackFileHook hook : hooks) {
             hook.onResourceManagerReload((SimpleReloadableResourceManager) resourceManager);
         }

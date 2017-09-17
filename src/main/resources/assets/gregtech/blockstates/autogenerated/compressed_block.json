@@ -1,13 +1,15 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "cube_all",
+    "uvlock": true,
+    "model": "gregtech:tinted_cube_all",
     "textures": {
-      "all": "blocks/stone"
-    },
-    "uvlock": true
+      "all": "builtin/missing"
+    }
   },
   "variants": {
-      $VARIANTS$
+      "variant": {
+        $VARIANTS$
+      }
   }
 }

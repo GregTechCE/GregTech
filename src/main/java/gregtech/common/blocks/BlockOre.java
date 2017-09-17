@@ -44,6 +44,11 @@ public class BlockOre extends Block {
     }
 
     @Override
+    public int damageDropped(IBlockState state) {
+        return getMetaFromState(state);
+    }
+
+    @Override
     public String getHarvestTool(IBlockState state) {
         StoneType stoneType = state.getValue(STONE_TYPE);
         if(stoneType == StoneType.SANDSTONE) {
