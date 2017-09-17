@@ -3,6 +3,8 @@ package gregtech.common.items;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.NotImplementedException;
 
 public final class MetaItems {
@@ -510,6 +512,12 @@ public final class MetaItems {
         META_TOOL = new MetaTool();
         META_TOOL.registerItem("meta_tool");
 	}
+
+	@SideOnly(Side.CLIENT)
+	public static void initClient() {
+        META_ITEM_FIRST.registerClient();
+        META_ITEM_SECOND.registerClient();
+    }
 
 	public static ItemStack getIntegratedCircuit(int configuration) {
 		throw new NotImplementedException("TODO"); //TODO by @Exidex

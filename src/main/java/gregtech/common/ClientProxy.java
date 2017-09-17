@@ -10,6 +10,7 @@ import gregtech.api.model.ResourcePackHook;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.models.BlockCompressedFactory;
 import gregtech.common.blocks.models.BlockOreFactory;
+import gregtech.common.items.MetaItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
@@ -67,6 +68,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void onLoad() {
         super.onLoad();
+        MetaItems.initClient();
     }
 
     @Override

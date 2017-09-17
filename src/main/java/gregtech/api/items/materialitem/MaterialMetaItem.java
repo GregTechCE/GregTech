@@ -55,7 +55,7 @@ public class MaterialMetaItem extends StandardMetaItem {
 
     @Override
     @SideOnly(Side.CLIENT)
-    protected void registerClient() {
+    public void registerClient() {
         super.registerClient();
         registerModels();
     }
