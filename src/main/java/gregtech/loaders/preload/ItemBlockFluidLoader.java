@@ -1,12 +1,22 @@
 package gregtech.loaders.preload;
 
+import gregtech.api.GregTechAPI;
+import gregtech.api.metatileentity.GregtechTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.factory.MetaTileEntityFactory;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.util.GTLog;
+import gregtech.common.blocks.BlockMachine;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.items.MetaItem2;
 import gregtech.common.items.MetaItem1;
 import gregtech.common.items.MetaItems;
 import gregtech.common.items.MetaTool;
+import gregtech.common.metatileentities.TestMTE;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import java.util.Arrays;
 
 public class ItemBlockFluidLoader implements Runnable {
 
@@ -17,8 +27,15 @@ public class ItemBlockFluidLoader implements Runnable {
         GTLog.logger.info("Registering Items.");
         MetaItems.init();
 
-        GTLog.logger.info("GregTechMod: Adding Blocks.");
+        GTLog.logger.info("Registering Blocks.");
         MetaBlocks.init();
+
+        GTLog.logger.info("Registering TileEntities.");
+
+        GameRegistry.registerTileEntity(GregtechTileEntity.class, "gregtech.TE");
+        MetaTileEntityFactory<TestMTE> mteFactory = new MetaTileEntityFactory<>(BlockMachine.ToolClass.AXE, 1, new String[]{"test_desc"}, TestMTE.class, null, null);
+        GregTechAPI.METATILEENTITY_REGISTRY.register(0, "mte_test", mteFactory);
+
 //
 //        Item tItem = (Item) GTUtility.callConstructor("gregtech.common.items.GT_SensorCard_Item", 0, null, false, "sensorcard", "GregTech Sensor Card");
 //        ItemList.NC_SensorCard.set(tItem == null ? new GenericItem("sensorcard", "GregTech Sensor Card", "Nuclear Control not installed", false) : tItem);
@@ -86,9 +103,6 @@ public class ItemBlockFluidLoader implements Runnable {
 //            GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_4.get(1), 5000, OreDictUnifier.get(OrePrefix.dust, Materials.Lutetium, 2L), OreDictUnifier.get(OrePrefix.dust, Materials.Thorium, 4L), OreDictUnifier.get(OrePrefix.dust, Materials.Iron, 6L));
 //        }
 //
-//
-        GTLog.logger.info("GregTechMod: Register TileEntities.");
-
 //
 //        if (!GregTechAPI.mIC2Classic) {
 //            GTLog.logger.info("GregTechMod: Registering Fluids.");

@@ -2,6 +2,7 @@ package gregtech.common.blocks;
 
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.ore.OrePrefix;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
@@ -38,8 +39,8 @@ public class MetaBlocks {
     public static HashMap<DustMaterial, BlockOre> ORES;
 
     public static void init() {
-//        MACHINE = new BlockMachine(); // TODO by @AntiquiAvium
-//        MACHINE.registerBlock("machine");
+        MACHINE = new BlockMachine();
+        MACHINE.registerBlock("machine");
         BOILER_CASING = new BlockBoilerCasing();
         BOILER_CASING.registerBlock("boiler_casing");
         METAL_CASING = new BlockMetalCasing();
@@ -85,6 +86,7 @@ public class MetaBlocks {
     }
 
     private static void createCompressedBlock(Collection<DustMaterial> materials, int index) {
+        materials.removeIf(OrePrefix.block::isIgnored);
         BlockCompressed block = new BlockCompressed(materials);
         block.registerBlock("compressed_" + index);
         materials.forEach(material -> COMPRESSED.put(material, block));
@@ -99,24 +101,14 @@ public class MetaBlocks {
     @SideOnly(Side.CLIENT)
     public static void registerItemModels() {
         registerItemModel(BOILER_CASING);
-        registerItemModel(BOILER_CASING);
-        registerItemModel(METAL_CASING);
         registerItemModel(METAL_CASING);
         registerItemModel(TURBINE_CASING);
-        registerItemModel(TURBINE_CASING);
-        registerItemModel(MACHINE_CASING);
         registerItemModel(MACHINE_CASING);
         registerItemModel(MUTLIBLOCK_CASING);
-        registerItemModel(MUTLIBLOCK_CASING);
-        registerItemModel(WIRE_COIL);
         registerItemModel(WIRE_COIL);
         registerItemModel(WARNING_SIGN);
-        registerItemModel(WARNING_SIGN);
-        registerItemModel(GRANITE);
         registerItemModel(GRANITE);
         registerItemModel(MINERAL);
-        registerItemModel(MINERAL);
-        registerItemModel(CONCRETE);
         registerItemModel(CONCRETE);
 
         for (BlockCompressed block : COMPRESSED.values()) {

@@ -38,7 +38,7 @@
       },
       "tungstensteel_turbine_casing": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/FUSIONII_8"
+          "all": "gregtech:blocks/iconsets/MACHINE_CASING_ROBUST_TUNGSTENSTEEL"
         }
       }
     }

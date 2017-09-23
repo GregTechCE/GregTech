@@ -29,7 +29,7 @@ public class VariantBlock<T extends Enum<T> & IStringSerializable> extends Block
         setUnlocalizedName(blockName);
         setRegistryName(blockName);
         GameRegistry.register(this);
-        VariantItemBlock itemBlock = new VariantItemBlock<>(this);
+        VariantItemBlock<?,?> itemBlock = new VariantItemBlock<>(this);
         itemBlock.setRegistryName(blockName);
         GameRegistry.register(itemBlock);
     }
@@ -59,6 +59,11 @@ public class VariantBlock<T extends Enum<T> & IStringSerializable> extends Block
         this.VARIANT = PropertyEnum.create("variant", enumClass);
         this.VALUES = enumClass.getEnumConstants();
         return new BlockStateContainer(this, VARIANT);
+    }
+
+    @Override
+    public int damageDropped(IBlockState state) {
+        return getMetaFromState(state);
     }
 
     @Override

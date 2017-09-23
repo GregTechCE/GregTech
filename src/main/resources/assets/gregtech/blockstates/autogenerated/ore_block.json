@@ -41,12 +41,7 @@
           "particle": "blocks/end_stone"
         }
       },
-      "sandstone": {
-        "textures": {
-          "base": "blocks/sandstone_top",
-          "particle": "blocks/sandstone_top"
-        }
-      },
+      "sandstone": {},
       "black_granite": {
         "textures": {
           "base": "gregtech:blocks/iconsets/GRANITE_BLACK_STONE",
@@ -71,6 +66,42 @@
           "particle": "gregtech:blocks/iconsets/BASALT_STONE"
         }
       }
-    }
+    },
+    "small=false,stone_type=sandstone": [{
+      "model": "gregtech:overlay_model",
+      "textures": {
+        "base_down": "blocks/sandstone_bottom",
+        "base_up": "blocks/sandstone_top",
+        "base_north": "blocks/sandstone_normal",
+        "base_south": "blocks/sandstone_normal",
+        "base_west": "blocks/sandstone_normal",
+        "base_east": "blocks/sandstone_normal",
+        "overlay_down": "$MATERIAL_TEXTURE_NORMAL$",
+        "overlay_up": "$MATERIAL_TEXTURE_NORMAL$",
+        "overlay_north": "$MATERIAL_TEXTURE_NORMAL$",
+        "overlay_south": "$MATERIAL_TEXTURE_NORMAL$",
+        "overlay_west": "$MATERIAL_TEXTURE_NORMAL$",
+        "overlay_east": "$MATERIAL_TEXTURE_NORMAL$",
+        "particle": "blocks/sandstone_normal"
+      }
+    }],
+    "small=true,stone_type=sandstone": [{
+      "model": "gregtech:overlay_model",
+      "textures": {
+        "base_down": "blocks/sandstone_bottom",
+        "base_up": "blocks/sandstone_top",
+        "base_north": "blocks/sandstone_normal",
+        "base_south": "blocks/sandstone_normal",
+        "base_west": "blocks/sandstone_normal",
+        "base_east": "blocks/sandstone_normal",
+        "overlay_down": "$MATERIAL_TEXTURE_SMALL$",
+        "overlay_up": "$MATERIAL_TEXTURE_SMALL$",
+        "overlay_north": "$MATERIAL_TEXTURE_SMALL$",
+        "overlay_south": "$MATERIAL_TEXTURE_SMALL$",
+        "overlay_west": "$MATERIAL_TEXTURE_SMALL$",
+        "overlay_east": "$MATERIAL_TEXTURE_SMALL$",
+        "particle": "blocks/sandstone_normal"
+      }
+    }]
   }
 }

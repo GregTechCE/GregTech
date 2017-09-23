@@ -5,6 +5,8 @@ import gregtech.api.unification.ore.OrePrefix;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class CompressedItemBlock extends ItemBlock {
 
@@ -27,6 +29,7 @@ public class CompressedItemBlock extends ItemBlock {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack) {
         Material material = getBlockState(stack).getValue(block.variantProperty);
         return OrePrefix.block.getLocalNameForItem(material);

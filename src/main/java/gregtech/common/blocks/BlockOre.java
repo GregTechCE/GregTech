@@ -30,7 +30,7 @@ public class BlockOre extends Block {
         setSoundType(SoundType.STONE);
         setHardness(3.0f);
         setResistance(5.0f);
-        setCreativeTab(GregTechAPI.TAB_GREGTECH_MATERIALS);
+        setCreativeTab(GregTechAPI.TAB_GREGTECH_ORES);
         this.material = material;
     }
 

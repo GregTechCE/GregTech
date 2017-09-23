@@ -47,7 +47,7 @@ public class GregtechTileEntity extends TickableTileEntityBase implements IGregT
         Preconditions.checkArgument(metaTileEntity instanceof MetaTileEntity, "GregtechTileEntity supports only MetaTileEntity child!");
         this.metaTileEntity = (MetaTileEntity) metaTileEntity;
         this.metaTileEntity.holder = this;
-        if(!worldObj.isRemote) {
+        if(worldObj != null && !worldObj.isRemote) {
             writeCustomData(0, this::writeInitialSyncData);
             markDirty();
         }

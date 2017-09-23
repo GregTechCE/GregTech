@@ -131,14 +131,30 @@ public class BlockMachine extends Block implements ITileEntityProvider {
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
+        int harvestLevel;
+        int tool;
+        if ((meta & 0b1100) == 0b1100) {
+            harvestLevel = 4;
+            tool = meta & 0b0011;
+        } else {
+            harvestLevel = meta & 0b0011;
+            tool = meta & 0b1100;
+        }
         return getDefaultState()
-                .withProperty(HARVEST_LEVEL, meta % 4)
-                .withProperty(HARVEST_TOOL, ToolClass.values()[meta / 4]);
+                .withProperty(HARVEST_LEVEL, harvestLevel)
+                .withProperty(HARVEST_TOOL, ToolClass.values()[tool]);
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(HARVEST_TOOL).ordinal() * 4 + state.getValue(HARVEST_LEVEL);
+        int harvestLevel = state.getValue(HARVEST_LEVEL);
+        int tool = state.getValue(HARVEST_TOOL).ordinal();
+        if (harvestLevel < 4) {
+            tool <<= 2;
+        } else {
+            harvestLevel |= 1 << 4;
+        }
+        return harvestLevel & tool;
     }
 
     @Override

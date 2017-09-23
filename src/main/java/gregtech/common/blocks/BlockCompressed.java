@@ -118,7 +118,7 @@ public final class BlockCompressed extends DelayedStateBlock {
 
     @Override
     public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) {
-        Material material =state.getValue(variantProperty);
+        Material material = state.getValue(variantProperty);
         if(material instanceof GemMaterial) {
             return SoundType.STONE;
         } else if(material instanceof MetalMaterial) {

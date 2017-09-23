@@ -354,6 +354,14 @@ public enum OrePrefix {
         block.ignoredMaterials.add(Materials.Redstone);
         block.ignoredMaterials.add(Materials.Diamond);
         block.ignoredMaterials.add(Materials.Coal);
+        block.ignoredMaterials.add(Materials.Glass);
+        block.ignoredMaterials.add(Materials.Marble);
+        block.ignoredMaterials.add(Materials.GraniteRed);
+        block.ignoredMaterials.add(Materials.Stone);
+        block.ignoredMaterials.add(Materials.Glowstone);
+        block.ignoredMaterials.add(Materials.Endstone);
+        block.ignoredMaterials.add(Materials.Wheat);
+        block.ignoredMaterials.add(Materials.Oilsands);
 
         pipeRestrictiveTiny.secondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount);
         pipeRestrictiveSmall.secondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 2);

@@ -9,7 +9,7 @@ import gregtech.common.blocks.BlockMachine;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.ResourceLocation;
 
-public class WorkableMetaTileEntityFactory<T extends WorkableMetaTileEntity> extends TieredMetaTileEntityFactory<T> {
+public class WorkableMetaTileEntityFactory<T extends WorkableMetaTileEntity<?>> extends TieredMetaTileEntityFactory<T> {
 
     protected RecipeMap<?, ?> recipeMap;
 
