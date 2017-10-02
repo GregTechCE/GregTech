@@ -14,6 +14,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.List;
@@ -27,20 +29,12 @@ public class BlockOre extends Block {
 
     public BlockOre(DustMaterial material) {
         super(net.minecraft.block.material.Material.ROCK);
+        setUnlocalizedName("ore_block");
         setSoundType(SoundType.STONE);
         setHardness(3.0f);
         setResistance(5.0f);
         setCreativeTab(GregTechAPI.TAB_GREGTECH_ORES);
         this.material = material;
-    }
-
-    public void registerBlock(String blockName) {
-        setUnlocalizedName("unnamed");
-        setRegistryName(blockName);
-        GameRegistry.register(this);
-        OreItemBlock itemBlock = new OreItemBlock(this);
-        itemBlock.setRegistryName(blockName);
-        GameRegistry.register(itemBlock);
     }
 
     @Override
@@ -90,7 +84,7 @@ public class BlockOre extends Block {
     }
 
     @Override
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
         for(IBlockState blockState : blockState.getValidStates()) {
             list.add(getItem(blockState));
         }

@@ -6,6 +6,6 @@ import net.minecraft.network.PacketBuffer;
 public interface ICustomDataTile {
 
     void writeInitialSyncData(EntityPlayerMP player);
-    void receiveCustomData(PacketBuffer buf);
 
+    void receiveCustomData(PacketBuffer buf);
 }

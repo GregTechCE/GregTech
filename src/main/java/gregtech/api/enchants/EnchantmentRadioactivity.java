@@ -2,11 +2,13 @@ package gregtech.api.enchants;
 
 import gregtech.api.GTValues;
 import gregtech.api.util.GTUtility;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentDamage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class EnchantmentRadioactivity extends EnchantmentDamage {
@@ -17,8 +19,9 @@ public class EnchantmentRadioactivity extends EnchantmentDamage {
         super(Rarity.VERY_RARE, 0);
     }
 
-    public void register() {
-        GameRegistry.register(this, new ResourceLocation(GTValues.MODID, "radioactivity"));
+    public void register(RegistryEvent.Register<Enchantment> event) {
+        this.setRegistryName(new ResourceLocation(GTValues.MODID, "radioactivity"));
+        event.getRegistry().register(this);
     }
 
     @Override

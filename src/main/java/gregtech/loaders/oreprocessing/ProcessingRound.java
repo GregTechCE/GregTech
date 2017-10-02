@@ -34,7 +34,7 @@ public class ProcessingRound implements IOreRegistrationHandler {
                     .EUt(8)
                     .buildAndRegister();
 
-            ModHandler.addShapedRecipe(stack, "fX#", "X##", 'X', nuggetStack);
+            ModHandler.addShapedRecipe("round_" + entry.material, stack, "fX#", "X##", 'X', nuggetStack);
         }
     }
 

@@ -14,7 +14,7 @@ class ChunkWatchListener {
     public void onChunkWatch(ChunkWatchEvent.Watch event) {
         ChunkPos chunkPos = event.getChunk();
         EntityPlayerMP player = event.getPlayer();
-        Chunk chunk = player.worldObj.getChunkFromChunkCoords(chunkPos.chunkXPos, chunkPos.chunkZPos);
+        Chunk chunk = player.world.getChunkFromChunkCoords(chunkPos.x, chunkPos.z);
         for (TileEntity tileEntity : chunk.getTileEntityMap().values()) {
             if(tileEntity instanceof ICustomDataTile) {
                 ((ICustomDataTile) tileEntity).writeInitialSyncData(player);

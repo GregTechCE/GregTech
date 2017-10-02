@@ -30,12 +30,12 @@ public class MetaTileEntityUIFactory extends UIFactory<IMetaTileEntity> {
     @Override
     @SideOnly(Side.CLIENT)
     protected IMetaTileEntity readHolderFromSyncData(PacketBuffer syncData) {
-        return ((IGregTechTileEntity) Minecraft.getMinecraft().theWorld.getTileEntity(syncData.readBlockPos())).getMetaTileEntity();
+        return ((IGregTechTileEntity) Minecraft.getMinecraft().world.getTileEntity(syncData.readBlockPos())).getMetaTileEntity();
     }
 
     @Override
     protected void writeHolderToSyncData(PacketBuffer syncData, IMetaTileEntity holder) {
-        syncData.writeBlockPos(holder.getHolder().getWorldPos());
+        syncData.writeBlockPos(holder.getHolder().getPos());
     }
 
 }

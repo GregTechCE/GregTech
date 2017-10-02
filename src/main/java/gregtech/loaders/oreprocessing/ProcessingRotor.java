@@ -31,7 +31,7 @@ public class ProcessingRotor implements IOreRegistrationHandler {
 		    ItemStack plateStack = OreDictUnifier.get(OrePrefix.plate, material);
 		    ItemStack ringStack = OreDictUnifier.get(OrePrefix.ring, material);
 
-            ModHandler.addShapedRecipe(stack,
+            ModHandler.addShapedRecipe("rotor_" + entry.material, stack,
                 "PhP",
                 "SRf",
                 "PdP",

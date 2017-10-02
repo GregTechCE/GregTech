@@ -18,7 +18,6 @@ public interface IEnergyContainer {
 
     boolean outputsEnergy(EnumFacing side);
 
-
     /**
      * Gets if that amount of electric energy is stored inside the machine.
      * It is used for checking the contained energy before consuming it.

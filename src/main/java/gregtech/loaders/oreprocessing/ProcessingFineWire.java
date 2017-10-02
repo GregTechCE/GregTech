@@ -43,7 +43,7 @@ public class ProcessingFineWire implements IOreRegistrationHandler {
 		}
 
 		if (!entry.material.hasFlag(NO_WORKING | NO_UNIFICATION)) {
-			ModHandler.addShapelessRecipe(stack, 'x', OreDictUnifier.get(OrePrefix.ingot, entry.material));
+			ModHandler.addShapelessRecipe("finewire_" + entry.material, stack, 'x', OreDictUnifier.get(OrePrefix.ingot, entry.material));
 		}
 
 	}

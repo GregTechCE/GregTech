@@ -1,6 +1,5 @@
 package gregtech.api.items.metaitem;
 
-import com.google.common.collect.Iterables;
 import gregtech.api.items.metaitem.stats.IFoodStats;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.RandomPotionEffect;

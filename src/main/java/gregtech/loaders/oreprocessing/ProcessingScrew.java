@@ -36,7 +36,7 @@ public class ProcessingScrew implements IOreRegistrationHandler {
                 .EUt(4)
                 .buildAndRegister();
 
-            ModHandler.addShapedRecipe(stack, "fX", "X#", 'X', boltStack);
+            ModHandler.addShapedRecipe("screw_" + material, stack, "fX", "X#", 'X', boltStack);
         }
     }
 }

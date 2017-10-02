@@ -49,7 +49,7 @@ public abstract class EnergyMetaTileEntity extends PaintableMetaTileEntity imple
             long amperesUsed = 0;
             for(EnumFacing side : EnumFacing.VALUES) {
                 if(outputsEnergy(side)) {
-                    TileEntity tileEntity = getWorldObj().getTileEntity(getWorldPos().offset(side));
+                    TileEntity tileEntity = getWorld().getTileEntity(getPos().offset(side));
                     EnumFacing oppositeSide = side.getOpposite();
                     if(tileEntity != null && tileEntity.hasCapability(IEnergyContainer.CAPABILITY_ENERGY_CONTAINER, oppositeSide)) {
                         IEnergyContainer energyContainer = tileEntity.getCapability(IEnergyContainer.CAPABILITY_ENERGY_CONTAINER, oppositeSide);
@@ -93,7 +93,7 @@ public abstract class EnergyMetaTileEntity extends PaintableMetaTileEntity imple
     @Override
     public void setEnergyStored(long energyStored) {
         this.energyStored = energyStored;
-        if(!getWorldObj().isRemote) {
+        if(!getWorld().isRemote) {
             markDirty();
             holder.writeCustomData(4, buf -> buf.writeLong(energyStored));
         }

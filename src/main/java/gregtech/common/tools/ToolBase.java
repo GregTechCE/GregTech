@@ -12,7 +12,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.AchievementList;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -113,9 +112,9 @@ public abstract class ToolBase implements IToolStats {
 
     @Override
     public void onToolCrafted(ItemStack stack, EntityPlayer player) {
-        player.addStat(AchievementList.OPEN_INVENTORY);
-        player.addStat(AchievementList.MINE_WOOD);
-        player.addStat(AchievementList.BUILD_WORK_BENCH);
+//        player.addStat(AchievementList.OPEN_INVENTORY);
+//        player.addStat(AchievementList.MINE_WOOD);
+//        player.addStat(AchievementList.BUILD_WORK_BENCH);
     }
 
     @Override

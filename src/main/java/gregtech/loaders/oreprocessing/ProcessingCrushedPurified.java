@@ -29,7 +29,7 @@ public class ProcessingCrushedPurified implements IOreRegistrationHandler {
             ItemStack dustStack = OreDictUnifier.get(OrePrefix.dust, solidMaterial);
             ItemStack byproductStack = OreDictUnifier.get(OrePrefix.dustTiny, GTUtility.selectItemInList(1, solidMaterial, solidMaterial.oreByProducts, DustMaterial.class));
 
-            if (crushedCentrifugedStack != null) {
+            if (!crushedCentrifugedStack.isEmpty()) {
                 RecipeMap.THERMAL_CENTRIFUGE_RECIPES.recipeBuilder()
                         .inputs(crushedPurifiedStack)
                         .outputs(crushedCentrifugedStack, byproductStack)

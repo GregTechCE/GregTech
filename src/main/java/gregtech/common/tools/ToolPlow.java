@@ -40,9 +40,9 @@ public class ToolPlow extends ToolBase {
                 for (int j = -1; j < 2; j++) {
                     for (int k = -1; k < 2; k++) {
                         BlockPos block = blockPos.add(i, j, k);
-                        IBlockState state = harvester.worldObj.getBlockState(block);
+                        IBlockState state = harvester.getEntityWorld().getBlockState(block);
                         if ((i != 0 || j != 0 || k != 0) &&
-                                stack.getStrVsBlock(state) > 0.0F &&
+                                stack.getDestroySpeed(state) > 0.0F &&
                                 ((EntityPlayerMP) harvester).interactionManager.tryHarvestBlock(block)) {
                               conversions++;
                         }

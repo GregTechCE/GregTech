@@ -48,12 +48,14 @@ public class ProcessingStick implements IOreRegistrationHandler {
                         .EUt(4)
                         .buildAndRegister();
 
-                    ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.stick, entry.material, 2),
+                    ModHandler.addShapedRecipe("stick_fls_" + entry.material,
+                        OreDictUnifier.get(OrePrefix.stick, entry.material, 2),
                         "s",
                         "X",
                         'X', new UnificationEntry(OrePrefix.stickLong, entry.material));
 
-                    ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.stick, entry.material, 1),
+                    ModHandler.addShapedRecipe("stick_" + entry.material,
+                        OreDictUnifier.get(OrePrefix.stick, entry.material, 1),
                         "f ",
                         " X",
                         'X', new UnificationEntry(OrePrefix.ingot, entry.material));
@@ -77,12 +79,14 @@ public class ProcessingStick implements IOreRegistrationHandler {
                         .EUt(4)
                         .buildAndRegister();
 
-                    ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.stickLong, entry.material, 1),
+                    ModHandler.addShapedRecipe("lstick_ffg_" + entry.material,
+                        OreDictUnifier.get(OrePrefix.stickLong, entry.material, 1),
                         "sf",
                         "G ",
                         'G', new UnificationEntry(OrePrefix.gemFlawless, entry.material));
 
-                    ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.stickLong, entry.material, 2),
+                    ModHandler.addShapedRecipe("lstick_feg_" + entry.material,
+                        OreDictUnifier.get(OrePrefix.stickLong, entry.material, 2),
                         "sf",
                         "G ",
                         'G', new UnificationEntry(OrePrefix.gemExquisite, entry.material));
@@ -95,7 +99,8 @@ public class ProcessingStick implements IOreRegistrationHandler {
                         .EUt(16)
                         .buildAndRegister();
 
-                    ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.stickLong, entry.material),
+                    ModHandler.addShapedRecipe("lstick_fs_",
+                        OreDictUnifier.get(OrePrefix.stickLong, entry.material),
                         "ShS",
                         'S', new UnificationEntry(OrePrefix.stick, entry.material));
                 }

@@ -23,33 +23,21 @@ public class GregTechAPI {
 
     public static final CreativeTabs TAB_GREGTECH = new CreativeTabs("gregtech.main") {
         @Override
-        public Item getTabIconItem() {
-            return Items.REDSTONE;
-        }
-        @Override
-        public ItemStack getIconItemStack() {
+        public ItemStack getTabIconItem() {
             return MetaItems.BATTERY_HULL_HV.getStackForm();
         }
     };
 
     public static final CreativeTabs TAB_GREGTECH_MATERIALS = new CreativeTabs("gregtech.materials") {
         @Override
-        public Item getTabIconItem() {
-            return Items.REDSTONE;
-        }
-        @Override
-        public ItemStack getIconItemStack() {
+        public ItemStack getTabIconItem() {
             return MetaItems.THERMOS_CAN_CHOCOLATE_MILK.getStackForm();
         }
     };
 
     public static final CreativeTabs TAB_GREGTECH_ORES = new CreativeTabs("gregtech.ores") {
         @Override
-        public Item getTabIconItem() {
-            return Items.REDSTONE;
-        }
-        @Override
-        public ItemStack getIconItemStack() {
+        public ItemStack getTabIconItem() {
             return MetaItems.JACKHAMMER.getStackForm();
         }
     };
@@ -90,6 +78,7 @@ public class GregTechAPI {
     public static final Collection<Integer> dimensionalList = new HashSet<>();
 
     private static int size = 0; /* Used to assign Minecraft IDs to our SoundEvents. We don't use them. */
+    /* TODO SOUNDS
     static {
         size = SoundEvent.REGISTRY.getKeys().size();
 
@@ -137,5 +126,5 @@ public class GregTechAPI {
         }
         soundList.put(id, loc);
     }
-
+    */
 }

@@ -5,16 +5,16 @@ import net.minecraft.world.World;
 
 public interface IHasWorldObjectAndCoords {
 
-    World getWorldObj();
+    World getWorld();
 
-    BlockPos getWorldPos();
+    BlockPos getPos();
 
     default boolean isServerSide() {
-        return !getWorldObj().isRemote;
+        return !getWorld().isRemote;
     }
 
     default boolean isClientSide() {
-        return getWorldObj().isRemote;
+        return getWorld().isRemote;
     }
 
     /**
@@ -23,9 +23,8 @@ public interface IHasWorldObjectAndCoords {
     long getTimer();
 
     default int getRandomNumber(int range) {
-        return getWorldObj().rand.nextInt(range);
+        return getWorld().rand.nextInt(range);
     }
 
     void markDirty();
-
 }

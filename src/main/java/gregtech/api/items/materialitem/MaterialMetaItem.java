@@ -16,8 +16,10 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -48,19 +50,13 @@ public class MaterialMetaItem extends StandardMetaItem {
     }
 
     @Override
-    public void registerItem(String registryName) {
-        super.registerItem(registryName);
-        registerOres();
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     public void registerClient() {
         super.registerClient();
         registerModels();
     }
 
-    protected void registerOres() {
+    public void registerOreDict() {
         for(short metaItem : generatedItems) {
             OrePrefix prefix = this.orePrefixes[metaItem / 1000];
             Material material = Material.MATERIAL_REGISTRY.getObjectById(metaItem % 1000);
@@ -106,9 +102,9 @@ public class MaterialMetaItem extends StandardMetaItem {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
         if(tab == GregTechAPI.TAB_GREGTECH) {
-            super.getSubItems(itemIn, tab, subItems);
+            super.getSubItems(tab, subItems);
         }
         if(tab == GregTechAPI.TAB_GREGTECH_MATERIALS) {
             for(short metadata : generatedItems) {
@@ -128,9 +124,7 @@ public class MaterialMetaItem extends StandardMetaItem {
             } else if(prefix.heatDamage < 0.0 && GTUtility.isWearingFullFrostHazmat(entity) && worldIn.getTotalWorldTime() % 20 == 0) {
                 entity.attackEntityFrom(DamageSources.getFrostDamage(), -prefix.heatDamage);
             }
-            if(prefix.name().contains("Quintuple") || prefix.name().contains("Quadruple")) {
-                entity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 0));
-            } else if(prefix.name().contains("Dense")) {
+            if(prefix.name().contains("Dense")) {
                 entity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 1));
             }
         }

@@ -7,6 +7,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.NotImplementedException;
 
+@SuppressWarnings("WeakerAccess")
 public final class MetaItems {
 
 	private MetaItems() {}
@@ -506,11 +507,11 @@ public final class MetaItems {
 
 	public static void init() {
         META_ITEM_FIRST = new MetaItem1();
-        META_ITEM_FIRST.registerItem("meta_item_1");
+        META_ITEM_FIRST.setRegistryName("meta_item_1");
         META_ITEM_SECOND = new MetaItem2();
-        META_ITEM_SECOND.registerItem("meta_item_2");
+        META_ITEM_SECOND.setRegistryName("meta_item_2");
         META_TOOL = new MetaTool();
-        META_TOOL.registerItem("meta_tool");
+        META_TOOL.setRegistryName("meta_tool");
 	}
 
 	@SideOnly(Side.CLIENT)

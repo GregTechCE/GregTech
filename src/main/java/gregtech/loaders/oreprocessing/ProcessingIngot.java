@@ -47,7 +47,7 @@ public class ProcessingIngot implements IOreRegistrationHandler {
             ItemStack stack = simpleStack.asItemStack();
 
             if (material.hasFlag(SolidMaterial.MatFlags.MORTAR_GRINDABLE)) {
-                ModHandler.addShapelessRecipe(OreDictUnifier.get(OrePrefix.dust, material), "m", stack);
+                ModHandler.addShapelessRecipe("dust_f_ingot_" + material, OreDictUnifier.get(OrePrefix.dust, material), "m", stack);
             }
 
 //            RecipeMap.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
@@ -75,7 +75,7 @@ public class ProcessingIngot implements IOreRegistrationHandler {
                             .duration((int) (material.getMass() / 2L))
                             .buildAndRegister();
 
-                    ModHandler.addShapedRecipe(plateStack, "h##", "I##", "I##", 'I', stack);
+                    ModHandler.addShapedRecipe("plate_" + entry.material, plateStack, "h##", "I##", "I##", 'I', stack);
 
                     if(material.hasFlag(MetalMaterial.MatFlags.GENERATE_DENSE)) {
                         RecipeMap.BENDER_RECIPES.recipeBuilder()

@@ -1,6 +1,7 @@
 package gregtech.api.recipes;
 
 import com.google.common.base.Preconditions;
+import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.items.IDamagableItem;
 import gregtech.api.items.ToolDictNames;
@@ -23,7 +24,6 @@ import ic2.core.ref.BlockName;
 import ic2.core.ref.FluidName;
 import ic2.core.ref.ItemName;
 import ic2.core.ref.TeBlock;
-import mods.railcraft.api.crafting.RailcraftCraftingManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -37,23 +37,24 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+import net.minecraftforge.registries.GameData;
+import net.minecraftforge.registries.RegistryManager;
 import org.apache.commons.lang3.Validate;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Iterator;
 
 import static gregtech.api.GTValues.DW;
 import static gregtech.api.GTValues.V;
@@ -131,7 +132,6 @@ public class ModHandler {
     /**
      * Gets an Item from mods
      */
-    @Nullable
     public static ItemStack getModItem(String modID, String itemName, int amount) {
         return getModItem(modID, itemName, amount, 0);
     }
@@ -139,7 +139,6 @@ public class ModHandler {
     /**
      * Gets an Item from mods, with metadata specified
      */
-    @Nullable
     public static ItemStack getModItem(String modID, String itemName, int amount, int meta) {
         return GameRegistry.makeItemStack(modID + ":" + itemName, meta, amount, null);
     }
@@ -154,12 +153,12 @@ public class ModHandler {
         output = OreDictUnifier.getUnificated(output);
 
         boolean skip = false;
-        if (input == null) {
-            GTLog.logger.error("Input cannot be null", new IllegalArgumentException());
+        if (input.isEmpty()) {
+            GTLog.logger.error("Input cannot be an empty ItemStack", new IllegalArgumentException());
             skip = true;
         }
-        if (output == null) {
-            GTLog.logger.error("Output cannot be null", new IllegalArgumentException());
+        if (output.isEmpty()) {
+            GTLog.logger.error("Output cannot be an empty ItemStack", new IllegalArgumentException());
             skip = true;
         }
         if (skip) return;
@@ -173,17 +172,17 @@ public class ModHandler {
      */
     public static void addSmeltingAndAlloySmeltingRecipe(ItemStack input, ItemStack output, boolean hidden) {
         boolean skip = false;
-        if (input == null) {
-            GTLog.logger.error("Input cannot be null", new IllegalArgumentException());
+        if (input.isEmpty()) {
+            GTLog.logger.error("Input cannot be an empty ItemStack", new IllegalArgumentException());
             skip = true;
         }
-        if (output == null) {
-            GTLog.logger.error("Output cannot be null", new IllegalArgumentException());
+        if (output.isEmpty()) {
+            GTLog.logger.error("Output cannot be an empty ItemStack", new IllegalArgumentException());
             skip = true;
         }
         if (skip) return;
 
-        if (input.stackSize == 1) {
+        if (input.getCount() == 1) {
             addSmeltingRecipe(input, output);
         }
 
@@ -251,17 +250,20 @@ public class ModHandler {
      * <li>'x' -  ToolDictNames.craftingToolWireCutter</li>
      * </ul>
      */
-    public static void addMirroredShapedRecipe(ItemStack result, Object... recipe) {
+    public static void addMirroredShapedRecipe(String regName, ItemStack result, Object... recipe) {
         result = OreDictUnifier.getUnificated(result);
         boolean skip = false;
-        if (result == null) {
-            GTLog.logger.error("Result cannot be null", new IllegalArgumentException());
+        if (result.isEmpty()) {
+            GTLog.logger.error("Result cannot be an empty ItemStack", new IllegalArgumentException());
             skip = true;
         }
         skip |= validateRecipe(recipe);
         if (skip) return;
 
-        GameRegistry.addRecipe(new ShapedOreRecipe(result, finalizeRecipeInput(recipe)).setMirrored(true));
+        IRecipe shapedOreRecipe = new ShapedOreRecipe(new ResourceLocation(GTValues.MODID, "general"), result.copy(), finalizeRecipeInput(recipe))
+            .setMirrored(true)
+            .setRegistryName(regName);
+        ForgeRegistries.RECIPES.register(shapedOreRecipe);
     }
 
     /**
@@ -292,17 +294,19 @@ public class ModHandler {
      * <li>'x' -  ToolDictNames.craftingToolWireCutter</li>
      * </ul>
      */
-    public static void addShapedRecipe(ItemStack result, Object... recipe) {
+    public static void addShapedRecipe(String regName, ItemStack result, Object... recipe) {
         result = OreDictUnifier.getUnificated(result);
         boolean skip = false;
-        if (result == null) {
-            GTLog.logger.error("Result cannot be null", new IllegalArgumentException());
+        if (result.isEmpty()) {
+            GTLog.logger.error("Result cannot be an empty ItemStack", new IllegalArgumentException());
             skip = true;
         }
         skip |= validateRecipe(recipe);
         if (skip) return;
 
-        GameRegistry.addRecipe(new ShapedOreRecipe(result, finalizeRecipeInput(recipe)));
+        IRecipe shapedOreRecipe = new ShapedOreRecipe(null, result.copy(), finalizeRecipeInput(recipe))
+            .setRegistryName(regName);
+        ForgeRegistries.RECIPES.register(shapedOreRecipe);
     }
 
     private static boolean validateRecipe(Object... recipe) {
@@ -313,8 +317,8 @@ public class ModHandler {
         } else if (recipe.length == 0) {
             GTLog.logger.error("Recipe cannot be empty", new IllegalArgumentException());
             skip = true;
-        } else if (Arrays.asList(recipe).contains(null)) {
-            GTLog.logger.error("Recipe cannot contain null elements. Recipe: {}", recipe);
+        } else if (Arrays.asList(recipe).contains(null) || Arrays.asList(recipe).contains(ItemStack.EMPTY)) {
+            GTLog.logger.error("Recipe cannot contain null elements or Empty ItemStacks. Recipe: {}", recipe);
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             skip = true;
         }
@@ -411,17 +415,17 @@ public class ModHandler {
                 }
             }
         }
-        return recipe;
+        return recipeList.toArray();
     }
 
     /**
      * Add Shapeless Crafting Recipes
      */
-    public static void addShapelessRecipe(ItemStack result, Object... recipe) {
+    public static void addShapelessRecipe(String regName, ItemStack result, Object... recipe) {
         result = OreDictUnifier.getUnificated(result);
         boolean skip = false;
-        if (result == null) {
-            GTLog.logger.error("Result cannot be null", new IllegalArgumentException());
+        if (result.isEmpty()) {
+            GTLog.logger.error("Result ItemStack cannot be empty", new IllegalArgumentException());
             skip = true;
         }
         skip |= validateRecipe(recipe);
@@ -443,7 +447,9 @@ public class ModHandler {
             }
         }
 
-        GameRegistry.addRecipe(new ShapelessOreRecipe(result.copy(), recipe));
+        IRecipe shapelessRecipe = new ShapelessOreRecipe(null, result.copy(), recipe)
+            .setRegistryName(regName);
+        ForgeRegistries.RECIPES.register(shapelessRecipe);
     }
 
     ///////////////////////////////////////////////////
@@ -454,7 +460,7 @@ public class ModHandler {
      * Removes a Smelting Recipe
      */
     public static boolean removeFurnaceSmelting(ItemStack input) {
-        Validate.notNull(input, "Cannot remove furnace recipe with null input.");
+        Validate.isTrue(!input.isEmpty(), "Cannot remove furnace recipe with empty input.");
         for (ItemStack stack : FurnaceRecipes.instance().getSmeltingList().keySet()) {
             if (ItemStack.areItemStacksEqual(input, stack)) {
                 FurnaceRecipes.instance().getSmeltingList().remove(stack);
@@ -468,27 +474,28 @@ public class ModHandler {
      * Removes a Crafting Recipe and gives you the former output of it.
      *
      * @param recipe The content of the Crafting Grid as ItemStackArray with length 9
-     * @return the output of the old Recipe or null if there was nothing.
+     * @return the output of the old Recipe or ItemStack.EMPTY if there was nothing.
      */
-    @Nullable
     public static ItemStack removeRecipe(ItemStack... recipe) {
         Validate.notNull(recipe, "Cannot remove null recipe.");
+        Validate.isTrue(!Arrays.asList(recipe).contains(null),
+            "Recipe to be removed cannot contain null elements. Recipe: %s", (Object[]) recipe);
 
         //TODO CONFIG to not remove recipes
 
         recipe = GTUtility.copyStackArray(recipe);
 
-        //At least one not null
+        //At least one not empty
         boolean temp = false;
         for (ItemStack stack : recipe) {
-            if (stack != null) {
+            if (!stack.isEmpty()) {
                 temp = true;
                 break;
             }
         }
-        if (!temp) return null;
+        if (!temp) return ItemStack.EMPTY;
 
-        ItemStack returnStack = null;
+        ItemStack returnStack = ItemStack.EMPTY;
         InventoryCrafting craftingGrid = new InventoryCrafting(new Container() {
             @Override
             public boolean canInteractWith(EntityPlayer player) {
@@ -497,18 +504,15 @@ public class ModHandler {
         }, 3, 3);
         for (int i = 0; i < recipe.length && i < 9; i++) craftingGrid.setInventorySlotContents(i, recipe[i]);
 
-        List<IRecipe> list = CraftingManager.getInstance().getRecipeList();
-        int listSize = list.size();
-
-        for (int i = 0; i < listSize; i++) {
-            for (; i < listSize; i++) {
-                if (list.get(i).matches(craftingGrid, DW)) {
-                    returnStack = list.get(i).getCraftingResult(craftingGrid);
-                    if (returnStack != null) list.remove(i--);
-                    listSize = list.size();
-                }
+        Iterator<IRecipe> iterator = CraftingManager.REGISTRY.iterator();
+        while (iterator.hasNext()) {
+            IRecipe next = iterator.next();
+            if (next.matches(craftingGrid, DW)) {
+                returnStack = next.getCraftingResult(craftingGrid);
+                RegistryManager.ACTIVE.getRegistry(GameData.RECIPES).remove(next.getRegistryName());
             }
         }
+
         return returnStack;
     }
 
@@ -516,20 +520,19 @@ public class ModHandler {
     //            Get Recipe Output Helpers          //
     ///////////////////////////////////////////////////
 
-    @Nullable
     public static ItemStack getRecipeOutput(World world, ItemStack... recipe) {
-        if (recipe == null || recipe.length == 0) return null;
+        if (recipe == null || recipe.length == 0) return ItemStack.EMPTY;
 
         if (world == null) world = DW;
 
         boolean temp = false;
         for (ItemStack stack : recipe) {
-            if (stack != null) {
+            if (!stack.isEmpty()) {
                 temp = true;
                 break;
             }
         }
-        if (!temp) return null;
+        if (!temp) return ItemStack.EMPTY;
 
         InventoryCrafting craftingGrid = new InventoryCrafting(new Container() {
             @Override
@@ -540,20 +543,17 @@ public class ModHandler {
 
         for (int i = 0; i < 9 && i < recipe.length; i++) craftingGrid.setInventorySlotContents(i, recipe[i]);
 
-        List<IRecipe> list = CraftingManager.getInstance().getRecipeList();
-
-        for (IRecipe tmpRecipe : list) {
+        for (IRecipe tmpRecipe : CraftingManager.REGISTRY) {
             if (tmpRecipe.matches(craftingGrid, world)) {
                 return tmpRecipe.getCraftingResult(craftingGrid);
             }
         }
 
-        return null;
+        return ItemStack.EMPTY;
     }
 
-    @Nullable
     public static ItemStack getSmeltingOutput(ItemStack input) {
-        if (input == null) return null;
+        if (input.isEmpty()) return ItemStack.EMPTY;
         return OreDictUnifier.getUnificated(FurnaceRecipes.instance().getSmeltingResult(input));
     }
 
@@ -563,28 +563,27 @@ public class ModHandler {
      * Only produces Scrap if scrapChance == 0. scrapChance is usually the random Number I give to the Function
      * If you directly insert 0 as scrapChance then you can check if its Recycler-Blacklisted or similar
      */
-    @Nullable
     public static ItemStack getRecyclerOutput(ItemStack input, int scrapChance) {
-        if (input == null || scrapChance != 0) return null;
+        if (input.isEmpty() || scrapChance != 0) return ItemStack.EMPTY;
 
         if (Recipes.recyclerWhitelist.isEmpty())
-            return Recipes.recyclerBlacklist.contains(input) ? null : IC2.getScrap(1);
-        return Recipes.recyclerWhitelist.contains(input) ? IC2.getScrap(1) : null;
+            return Recipes.recyclerBlacklist.contains(input) ? ItemStack.EMPTY : IC2.getScrap(1);
+        return Recipes.recyclerWhitelist.contains(input) ? IC2.getScrap(1) : ItemStack.EMPTY;
     }
 
     public static void addRCFurnaceRecipe(ItemStack input, ItemStack output, int duration) {
         Preconditions.checkNotNull(input);
         Preconditions.checkNotNull(output);
         Preconditions.checkArgument(duration > 0, "Duration should be positive!");
-        if(Loader.isModLoaded("railcraft")) {
-            addRCFurnaceRecipeInternal(input, output, duration);
-        }
+//        if(Loader.isModLoaded("railcraft")) {
+//            addRCFurnaceRecipeInternal(input, output, duration);
+//        }
     }
 
-    @Optional.Method(modid = "railcraft")
-    private static void addRCFurnaceRecipeInternal(ItemStack input, ItemStack output, int duration) {
-        RailcraftCraftingManager.blastFurnace.addRecipe(input, true, false, duration, output);
-    }
+//    @Optional.Method(modid = "railcraft")
+//    private static void addRCFurnaceRecipeInternal(ItemStack input, ItemStack output, int duration) {
+//        RailcraftCraftingManager.blastFurnace.addRecipe(input, true, false, duration, output);
+//    }
 
     ///////////////////////////////////////////////////
     //             Electric Items Helpers            //
@@ -664,7 +663,7 @@ public class ModHandler {
      * Uses an Item. Tries to discharge in case of Electric Items
      */
     public static boolean damageOrDechargeItem(ItemStack stack, int damage, int decharge, EntityLivingBase player) {
-        if (stack == null || (stack.getMaxStackSize() <= 1 && stack.stackSize > 1)) return false;
+        if (stack.isEmpty() || (stack.getMaxStackSize() <= 1 && stack.getCount() > 1)) return false;
 
         if (player != null && player instanceof EntityPlayer && ((EntityPlayer) player).capabilities.isCreativeMode) {
             return true;
@@ -691,7 +690,7 @@ public class ModHandler {
             if (stack.getItemDamage() >= stack.getMaxDamage()) {
                 stack.setItemDamage(stack.getMaxDamage() + 1);
 //                ItemStack containerItem = GTUtility.getContainerItem(stack, true);
-//                if (containerItem != null) {
+//                if (!containerItem.isEmpty()) {
 //                    stack = containerItem.copy();
 //                }
             }
@@ -713,14 +712,14 @@ public class ModHandler {
 
                 if (isElectricItem(stack) && ElectricItem.manager.getCharge(stack) > 1000.0D) {
 
-                    for (int i = 0; i < player.inventory.mainInventory.length; i++) {
-                        if (GTUtility.isStackInList(player.inventory.mainInventory[i], GregTechAPI.solderingMetalList)) {
-                            if (player.inventory.mainInventory[i].stackSize < 1) return false;
+                    for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
+                        if (GTUtility.isStackInList(player.inventory.mainInventory.get(i), GregTechAPI.solderingMetalList)) {
+                            if (player.inventory.mainInventory.get(i).getCount() < 1) return false;
 
-                            if (player.inventory.mainInventory[i].stackSize == 1) {
-                                player.inventory.mainInventory[i] = null;
+                            if (player.inventory.mainInventory.get(i).getCount() == 1) {
+                                player.inventory.mainInventory.set(i, ItemStack.EMPTY);
                             } else {
-                                player.inventory.mainInventory[i].stackSize--;
+                                player.inventory.mainInventory.get(i).shrink(1);
                             }
 
                             if (player.inventoryContainer != null) player.inventoryContainer.detectAndSendChanges();
@@ -746,7 +745,7 @@ public class ModHandler {
      * Is this an electric Item, which can charge other Items?
      */
     public static boolean isChargerItem(ItemStack stack) {
-        if (stack != null && isElectricItem(stack)) {
+        if (!stack.isEmpty() && isElectricItem(stack)) {
             if (stack.getItem() instanceof ISpecialElectricItem) {
                 return true;
             } else if (stack.getItem() instanceof IElectricItem) {
@@ -760,11 +759,11 @@ public class ModHandler {
      * Is this an electric Item?
      */
     public static boolean isElectricItem(ItemStack stack) {
-        return stack != null && (stack.getItem() instanceof IElectricItem || stack.getItem() instanceof ISpecialElectricItem);
+        return !stack.isEmpty() && (stack.getItem() instanceof IElectricItem || stack.getItem() instanceof ISpecialElectricItem);
     }
 
     public static boolean isElectricItem(ItemStack stack, int tier) {
-        return stack != null && isElectricItem(stack) && ElectricItem.manager.getTier(stack) == tier;
+        return !stack.isEmpty() && isElectricItem(stack) && ElectricItem.manager.getTier(stack) == tier;
     }
 
     public static class IC2 {
@@ -775,51 +774,58 @@ public class ModHandler {
 
         public static ItemStack getIC2Item(ItemName itemName, int amount) {
             ItemStack stack = itemName.getItemStack();
-            stack.stackSize = amount;
+            if (stack == null || stack.isEmpty()) return ItemStack.EMPTY;
+            stack.setCount(amount);
             return stack;
         }
 
         public static ItemStack getIC2Item(ItemName itemName, int amount, boolean wildcard) {
             ItemStack stack = itemName.getItemStack();
             if (wildcard) stack.setItemDamage(OreDictionary.WILDCARD_VALUE);
-            stack.stackSize = amount;
+            stack.setCount(amount);
             return stack;
         }
 
         public static ItemStack getIC2Item(ItemName itemName, int amount, int explicitDamage) {
             ItemStack stack = itemName.getItemStack();
+            if (stack == null || stack.isEmpty()) return ItemStack.EMPTY;
             stack.setItemDamage(explicitDamage);
-            stack.stackSize = amount;
+            stack.setCount(amount);
             return stack;
         }
 
         public static ItemStack getIC2Item(BlockName itemName, int amount) {
             ItemStack stack = itemName.getItemStack();
-            stack.stackSize = amount;
+            if (stack == null || stack.isEmpty()) return ItemStack.EMPTY;
+            stack.setCount(amount);
             return stack;
         }
 
         public static <T extends Enum<T> & IIdProvider> ItemStack getIC2Item(BlockName itemName, T variant, int amount) {
             ItemStack stack = itemName.getItemStack(variant);
-            stack.stackSize = amount;
+            if (stack == null || stack.isEmpty()) return ItemStack.EMPTY;
+            stack.setCount(amount);
             return stack;
         }
 
         public static ItemStack getIC2TEItem(TeBlock variant, int amount) {
             ItemStack stack = BlockName.te.getItemStack(variant);
-            stack.stackSize = amount;
+            if (stack == null || stack.isEmpty()) return ItemStack.EMPTY;
+            stack.setCount(amount);
             return stack;
         }
 
         public static ItemStack getIC2Item(ItemName itemName, String variant, int amount) {
             ItemStack stack = itemName.getItemStack(variant);
-            stack.stackSize = amount;
+            if (stack == null || stack.isEmpty()) return ItemStack.EMPTY;
+            stack.setCount(amount);
             return stack;
         }
 
         public static <T extends Enum<T> & IIdProvider> ItemStack getIC2Item(ItemName itemName, T type, int amount) {
             ItemStack stack = itemName.getItemStack(type);
-            stack.stackSize = amount;
+            if (stack == null || stack.isEmpty()) return ItemStack.EMPTY;
+            stack.setCount(amount);
             return stack;
         }
 

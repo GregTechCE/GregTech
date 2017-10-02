@@ -1,14 +1,7 @@
 package gregtech.loaders.preload;
 
-import gregtech.api.recipes.RecipeMap;
-import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.GTLog;
-import gregtech.api.util.GTUtility;
 import gregtech.loaders.oreprocessing.*;
-import mods.railcraft.common.items.ItemTie;
-import mods.railcraft.common.items.RailcraftItems;
-import net.minecraftforge.fml.common.Loader;
 
 public class OreProcessingLoader implements Runnable {
 
@@ -48,18 +41,18 @@ public class OreProcessingLoader implements Runnable {
         ProcessingToolOther.register();
         ProcessingWire.register();
 
-        if (Loader.isModLoaded("railcraft")) {
-            OrePrefix.slab.addProcessingHandler((entry, modName, itemStack) -> {
-                if (entry.material == Materials.Wood) {
-                    RecipeMap.CHEMICAL_BATH_RECIPES.recipeBuilder()
-                            .inputs(GTUtility.copyAmount(3, itemStack.asItemStack()))
-                            .fluidInputs(Materials.Creosote.getFluid(1000))
-                            .outputs(RailcraftItems.TIE.getStack(1, ItemTie.EnumTie.WOOD))
-                            .duration(200)
-                            .EUt(4)
-                            .buildAndRegister();
-                }
-            });
-        }
+//        if (Loader.isModLoaded("railcraft")) {
+//            OrePrefix.slab.addProcessingHandler((entry, modName, itemStack) -> {
+//                if (entry.material == Materials.Wood) {
+//                    RecipeMap.CHEMICAL_BATH_RECIPES.recipeBuilder()
+//                            .inputs(GTUtility.copyAmount(3, itemStack.asItemStack()))
+//                            .fluidInputs(Materials.Creosote.getFluid(1000))
+//                            .outputs(RailcraftItems.TIE.getStack(1, ItemTie.EnumTie.WOOD))
+//                            .duration(200)
+//                            .EUt(4)
+//                            .buildAndRegister();
+//                }
+//            });
+//        }
     }
 }

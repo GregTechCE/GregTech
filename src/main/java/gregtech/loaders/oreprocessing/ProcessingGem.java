@@ -39,14 +39,14 @@ public class ProcessingGem implements IOreRegistrationHandler {
             ItemStack crushedStack = OreDictUnifier.getDust(material, materialAmount);
 
             if (material.hasFlag(SolidMaterial.MatFlags.MORTAR_GRINDABLE)) {
-                ModHandler.addShapelessRecipe(crushedStack, "m", stack);
+                ModHandler.addShapelessRecipe("gem_t_dust_" + material, crushedStack, "m", stack);
             }
 
             if (!material.hasFlag(DustMaterial.MatFlags.NO_SMASHING)) {
                 OrePrefix prevPrefix = GTUtility.getItem(ORDER, ORDER.indexOf(entry.orePrefix) - 1, null);
                 if(prevPrefix != null) {
                     ItemStack prevStack = OreDictUnifier.get(prevPrefix, material, 2);
-                    ModHandler.addShapelessRecipe(prevStack, "h", stack);
+                    ModHandler.addShapelessRecipe("gem_t_gem_" + material, prevStack, "h", stack);
                     RecipeMap.HAMMER_RECIPES.recipeBuilder()
                             .inputs(stack)
                             .outputs(prevStack)

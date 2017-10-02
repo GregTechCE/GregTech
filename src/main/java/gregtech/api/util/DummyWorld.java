@@ -72,8 +72,13 @@ public class DummyWorld extends World {
                          }
 
                          @Override
-                         public void saveExtraData() {
+                         public void flush() {
 
+                         }
+
+                         @Override
+                         public boolean isChunkGeneratedAt(int x, int z) {
+                             return false;
                          }
                      };
                  }
@@ -136,13 +141,18 @@ public class DummyWorld extends World {
             }
 
             @Override
-            public boolean unloadQueuedChunks() {
+            public boolean tick() {
                 return false;
             }
 
             @Override
             public String makeString() {
                 return "Dummy";
+            }
+
+            @Override
+            public boolean isChunkGeneratedAt(int x, int z) {
+                return false;
             }
         };
     }

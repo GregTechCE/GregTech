@@ -4,7 +4,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.AchievementList;
 
 public class ToolSword extends ToolBase {
 
@@ -48,6 +47,6 @@ public class ToolSword extends ToolBase {
     @Override
     public void onToolCrafted(ItemStack stack, EntityPlayer player) {
         super.onToolCrafted(stack, player);
-        player.addStat(AchievementList.BUILD_SWORD);
+//        player.addStat(AchievementList.BUILD_SWORD);
     }
 }

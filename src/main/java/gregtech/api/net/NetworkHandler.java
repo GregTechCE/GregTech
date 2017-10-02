@@ -121,7 +121,7 @@ public class NetworkHandler {
     @SideOnly(Side.CLIENT)
     private static void initClient() {
         registerClientExecutor(PacketCustomTileData.class, (packet, handler) -> {
-            TileEntity tileEntity = Minecraft.getMinecraft().theWorld.getTileEntity(packet.tileEntityPos);
+            TileEntity tileEntity = Minecraft.getMinecraft().world.getTileEntity(packet.tileEntityPos);
             if(tileEntity instanceof ICustomDataTile) {
                 ((ICustomDataTile) tileEntity).receiveCustomData(packet.payload);
             }

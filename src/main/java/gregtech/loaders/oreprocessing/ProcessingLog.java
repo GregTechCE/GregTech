@@ -33,7 +33,10 @@ public class ProcessingLog implements IOreRegistrationHandler {
                 .chancedOutput(OreDictUnifier.get(OrePrefix.dust, Materials.Wood), 8000)
                 .buildAndRegister();
 
-        ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.stickLong, Materials.Wood, 2), "sLf", 'L', stack);
+        ModHandler.addShapedRecipe("stick_long_" + entry.material,
+            OreDictUnifier.get(OrePrefix.stickLong, Materials.Wood, 2),
+            "sLf",
+            'L', entry);
 
         RecipeMap.LATHE_RECIPES.recipeBuilder()
                 .inputs(stack)
@@ -43,8 +46,8 @@ public class ProcessingLog implements IOreRegistrationHandler {
                 .buildAndRegister();
 
         ItemStack smeltingOutput = ModHandler.getSmeltingOutput(stack);
-        if (smeltingOutput != null && smeltingOutput.getItem() == Items.COAL && smeltingOutput.getMetadata() == 1) {
-            int coalAmount = smeltingOutput.stackSize;
+        if (!smeltingOutput.isEmpty() && smeltingOutput.getItem() == Items.COAL && smeltingOutput.getMetadata() == 1) {
+            int coalAmount = smeltingOutput.getCount();
 
             RecipeMap.PYROLYSE_RECIPES.recipeBuilder()
                     .inputs(GTUtility.copyAmount(16, stack))
@@ -75,12 +78,12 @@ public class ProcessingLog implements IOreRegistrationHandler {
         }
 
         ItemStack itemStack = ModHandler.getRecipeOutput(GTValues.DW, stack);
-        if (itemStack != null && OreDictUnifier.getPrefix(itemStack) == OrePrefix.plank) {
+        if (itemStack.isEmpty() && OreDictUnifier.getPrefix(itemStack) == OrePrefix.plank) {
 
             RecipeMap.CUTTER_RECIPES.recipeBuilder()
                     .inputs(stack)
                     .fluidInputs(Materials.Lubricant.getFluid(1))
-                    .outputs(GTUtility.copyAmount(itemStack.stackSize * 2, stack),
+                    .outputs(GTUtility.copyAmount(itemStack.getCount() * 2, stack),
                             OreDictUnifier.get(OrePrefix.dust, Materials.Wood))
                     .duration(200)
                     .EUt(8)
@@ -95,8 +98,11 @@ public class ProcessingLog implements IOreRegistrationHandler {
                     .buildAndRegister();
 
             ModHandler.removeRecipe(stack);
-            ModHandler.addShapedRecipe(GTUtility.copyAmount(itemStack.stackSize, itemStack), "s##", "L##", 'L', stack);
-            ModHandler.addShapelessRecipe(GTUtility.copyAmount(itemStack.stackSize / 2), stack);
+            ModHandler.addShapedRecipe("log_t_wood",
+                GTUtility.copyAmount(itemStack.getCount(), itemStack),
+                "s##",
+                "L##",
+                'L', stack);
         }
 
     }

@@ -19,7 +19,7 @@ public final class SimpleItemStack {
     public SimpleItemStack(ItemStack itemStack) {
         this.item = itemStack.getItem();
         this.itemDamage = itemStack.getItemDamage();
-        this.stackSize = itemStack.stackSize;
+        this.stackSize = itemStack.getCount();
     }
 
     public SimpleItemStack(Item item, int itemDamage) {

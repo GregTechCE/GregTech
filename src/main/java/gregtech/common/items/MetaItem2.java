@@ -17,7 +17,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.RegistryEvent;
 
 import static gregtech.api.GTValues.W;
 import static gregtech.common.items.MetaItems.*;
@@ -32,12 +34,10 @@ public class MetaItem2 extends MaterialMetaItem {
                 OrePrefix.wireFine, OrePrefix.gearSmall, OrePrefix.rotor, OrePrefix.stickLong, OrePrefix.springSmall, OrePrefix.spring,
                 OrePrefix.gemChipped, OrePrefix.gemFlawed, OrePrefix.gemFlawless, OrePrefix.gemExquisite, OrePrefix.gear,
                 null, null, null, null, null);
+        registerSubItems();
     }
 
-    @Override
-    public void registerItem(String registryName) {
-        super.registerItem(registryName);
-
+    public void registerSubItems() {
         boolean drinksAlwaysDrinkable = false;
 
         THERMOS_CAN_DARK_COFFEE = addItem(0, "thermos_can.dark.coffee").addStats(new FoodStats(2, 0.2F, true, drinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.SPEED, 400, 1, 70), new RandomPotionEffect(MobEffects.HASTE, 400, 1, 70)));
@@ -213,32 +213,32 @@ public class MetaItem2 extends MaterialMetaItem {
     public void registerRecipes() {
 
         // Plank recipes
-        ModHandler.addShapedRecipe(PLANK_OAK.getStackForm(2),
+        ModHandler.addShapedRecipe("plank_oak", PLANK_OAK.getStackForm(2),
             "s ",
             " P",
             'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 0));
 
-        ModHandler.addShapedRecipe(PLANK_SPRUCE.getStackForm(2),
+        ModHandler.addShapedRecipe("plank_spruce", PLANK_SPRUCE.getStackForm(2),
             "s ",
             " P",
             'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 1));
 
-        ModHandler.addShapedRecipe(PLANK_BIRCH.getStackForm(2),
+        ModHandler.addShapedRecipe("plank_birch", PLANK_BIRCH.getStackForm(2),
             "s ",
             " P",
             'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 2));
 
-        ModHandler.addShapedRecipe(PLANK_JUNGLE.getStackForm(2),
+        ModHandler.addShapedRecipe("plank_jungle", PLANK_JUNGLE.getStackForm(2),
             "s ",
             " P",
             'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 3));
 
-        ModHandler.addShapedRecipe(PLANK_ACACIA.getStackForm(2),
+        ModHandler.addShapedRecipe("plank_acacia", PLANK_ACACIA.getStackForm(2),
             "s ",
             " P",
             'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 4));
 
-        ModHandler.addShapedRecipe(PLANK_DARKOAK.getStackForm(2),
+        ModHandler.addShapedRecipe("plank_darkoak", PLANK_DARKOAK.getStackForm(2),
             "s ",
             " P",
             'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 5));
@@ -473,7 +473,7 @@ public class MetaItem2 extends MaterialMetaItem {
     public final ItemStack getContainerItem(ItemStack stack) {
         int damage = stack.getItemDamage();
         if (damage < metaItemOffset) {
-            return null;
+            return ItemStack.EMPTY;
         }
         if (damage < metaItemOffset + 100) {
             return THERMOS_CAN_EMPTY.getStackForm();
@@ -481,6 +481,6 @@ public class MetaItem2 extends MaterialMetaItem {
         if (damage < metaItemOffset + 200) {
             return new ItemStack(Items.GLASS_BOTTLE);
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 }

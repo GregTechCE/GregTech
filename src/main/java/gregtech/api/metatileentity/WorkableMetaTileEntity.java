@@ -1,14 +1,13 @@
 package gregtech.api.metatileentity;
 
-import gregtech.api.capability.IWorkable;
+import gregtech.api.capability.internal.IWorkable;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.capabilities.Capability;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -24,7 +23,7 @@ public abstract class WorkableMetaTileEntity<T extends Recipe> extends TieredMet
     protected int maxProgressTime;
     protected int recipeEUt;
     protected List<FluidStack> fluidOutputs;
-    protected List<ItemStack> itemOutputs;
+    protected NonNullList<ItemStack> itemOutputs;
 
     private boolean isActive;
     private boolean workingEnabled;
@@ -35,24 +34,11 @@ public abstract class WorkableMetaTileEntity<T extends Recipe> extends TieredMet
     }
 
     @Override
-    public <R> boolean hasCapability(Capability<R> capability, EnumFacing side) {
-        return super.hasCapability(capability, side) || capability == IWorkable.CAPABILITY_WORKABLE;
-    }
-
-    @Override
-    public <R> R getCapability(Capability<R> capability, EnumFacing side) {
-        if(capability == IWorkable.CAPABILITY_WORKABLE) {
-            return IWorkable.CAPABILITY_WORKABLE.cast(this);
-        }
-        return super.getCapability(capability, side);
-    }
-
-    @Override
     public void onPostTick(long tickTimer) {
         super.onPostTick(tickTimer);
         if(progressTime == 0) {
             long maxVoltage = Math.max(getInputVoltage(), getOutputVoltage());
-            T pickedRecipe = recipeMap.findRecipe(holder, previousRecipe, true, maxVoltage, fluidInventory, itemInventory);
+            T pickedRecipe = recipeMap.findRecipe(holder, previousRecipe, true, maxVoltage, importItems, importFluids);
             if(pickedRecipe != null && setupAndConsumeRecipeInputs(pickedRecipe)) {
                 if(pickedRecipe.canBeBuffered()) {
                     this.previousRecipe = pickedRecipe;
@@ -72,9 +58,9 @@ public abstract class WorkableMetaTileEntity<T extends Recipe> extends TieredMet
     protected boolean setupAndConsumeRecipeInputs(T recipe) {
         int totalEUt = recipe.getEUt() * recipe.getDuration();
         return (totalEUt >= 0 ? getEnergyStored() >= totalEUt : getEnergyStored() - totalEUt <= getEnergyCapacity()) &&
-                recipe.isRecipeInputEqual(true, fluidInventory, itemInventory) &&
-                addItemsToMachine(true, recipe.getOutputs()) &&
-                addFluidsToMachine(true, recipe.getFluidOutputs());
+                recipe.isRecipeInputEqual(true, false, importItems, importFluids) &&
+                addItemsToItemHandler(exportItems, true, recipe.getOutputs()) &&
+                addFluidsToFluidHandler(exportFluids, true, recipe.getFluidOutputs());
     }
 
     protected void setupRecipe(T recipe) {
@@ -87,8 +73,8 @@ public abstract class WorkableMetaTileEntity<T extends Recipe> extends TieredMet
     }
 
     protected void completeRecipe() {
-        addItemsToMachine(false, itemOutputs);
-        addFluidsToMachine(false, fluidOutputs);
+        addItemsToItemHandler(exportItems, false, itemOutputs);
+        addFluidsToFluidHandler(exportFluids, false, fluidOutputs);
         this.progressTime = 0;
         this.maxProgressTime = 0;
         this.recipeEUt = 0;
@@ -200,9 +186,9 @@ public abstract class WorkableMetaTileEntity<T extends Recipe> extends TieredMet
             this.maxProgressTime = data.getInteger("MaxProgress");
             this.recipeEUt = data.getInteger("RecipeEUt");
             NBTTagList itemOutputsList = data.getTagList("ItemOutputs", Constants.NBT.TAG_COMPOUND);
-            this.itemOutputs = new ArrayList<>();
+            this.itemOutputs = NonNullList.create();
             for(int i = 0; i < itemOutputsList.tagCount(); i++) {
-                this.itemOutputs.add(ItemStack.loadItemStackFromNBT(itemOutputsList.getCompoundTagAt(i)));
+                this.itemOutputs.add(new ItemStack(itemOutputsList.getCompoundTagAt(i)));
             }
             NBTTagList fluidOutputsList = data.getTagList("FluidOutputs", Constants.NBT.TAG_COMPOUND);
             this.fluidOutputs = new ArrayList<>();

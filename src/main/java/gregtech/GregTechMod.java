@@ -1,7 +1,5 @@
 package gregtech;
 
-import gregtech.api.enchants.EnchantmentEnderDamage;
-import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.net.NetworkHandler;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictUnifier;
@@ -9,20 +7,11 @@ import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.GTLog;
 import gregtech.common.CommonProxy;
 import gregtech.common.items.MetaItems;
-import gregtech.loaders.load.FuelLoader;
-//import gregtech.loaders.postload.BlockResistanceLoader;
-//import gregtech.loaders.postload.CraftingRecipeLoader;
-//import gregtech.loaders.postload.DungeonLootLoader;
-//import gregtech.loaders.postload.MachineRecipeLoader;
-//import gregtech.loaders.postload.ScrapboxRecipeLoader;
 import gregtech.loaders.preload.ItemBlockFluidLoader;
-import gregtech.loaders.preload.MTELoader;
 import gregtech.loaders.preload.MaterialInfoLoader;
 import gregtech.loaders.preload.OreDictionaryLoader;
-import gregtech.loaders.preload.OreProcessingLoader;
-import ic2.api.recipe.IMachineRecipeManager;
-import ic2.api.recipe.RecipeOutput;
 import net.minecraft.init.Items;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.LoaderException;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -31,27 +20,16 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
-import java.util.ArrayList;
-
 @Mod(modid = "gregtech",
      name = "GregTech",
-     version = "MC1.10.2",
+     version = "[1.12,1.13)",
      useMetadata = false,
-     dependencies = "required-after:IC2; " +
-             "required-after:CodeChickenLib; " +
-             "after:Forestry; " +
-             "after:PFAAGeologica; " +
-             "after:Railcraft; " +
+     dependencies = "required-after:ic2; " +
+             "after:forestry; " +
+             "after:railcraft; " +
              "after:appliedenergistics2; " +
-             "after:ThermalExpansion; " +
-             "after:TwilightForest; " +
-             "after:harvestcraft; " +
-             "after:magicalcrops; " +
-             "after:BuildCraft|Transport; after:BuildCraft|Silicon; after:BuildCraft|Factory; after:BuildCraft|Energy; after:BuildCraft|Core; after:BuildCraft|Builders; " +
-             "after:GalacticraftCore; after:GalacticraftMars; after:GalacticraftPlanets; " +
-             "after:ThermalExpansion|Transport; after:ThermalExpansion|Energy; after:ThermalExpansion|Factory; " +
-             "after:RedPowerCore; after:RedPowerBase; after:RedPowerMachine; after:RedPowerCompat; after:RedPowerWiring; after:RedPowerLogic; after:RedPowerLighting; after:RedPowerWorld; after:RedPowerControl; " +
-             "after:UndergroundBiomes;")
+             "after:twilightForest; " +
+             "after:undergroundbiomes;")
 public class GregTechMod {
 
     @Mod.Instance("gregtech")
@@ -66,10 +44,9 @@ public class GregTechMod {
 
         GTLog.logger.info("PreInit-Phase started!");
 
-        NetworkHandler.init();
+        MinecraftForge.EVENT_BUS.register(CommonProxy.class);
 
-        EnchantmentEnderDamage.INSTANCE.register();
-        EnchantmentRadioactivity.INSTANCE.register();
+        NetworkHandler.init();
 
         OreDictUnifier.init();
 //        new OreProcessingLoader().run();
@@ -92,6 +69,8 @@ public class GregTechMod {
 //        new BeeLoader();
 
         new OreDictionaryLoader().run();
+        MetaItems.META_ITEM_FIRST.registerOreDict();
+        MetaItems.META_ITEM_SECOND.registerOreDict();
 
         MetaItems.META_ITEM_FIRST.registerRecipes();
         MetaItems.META_ITEM_SECOND.registerRecipes();
@@ -443,11 +422,11 @@ public class GregTechMod {
 //            }
 //        } catch (Throwable e) {e.printStackTrace(GTLog.err);}
     }
-
-    public ArrayList<RecipeOutput> getOutputs(IMachineRecipeManager recipeManager) {
-        ArrayList<RecipeOutput> outputs = new ArrayList<>();
-        for(IMachineRecipeManager.RecipeIoContainer container : recipeManager.getRecipes())
-            outputs.add(container.output);
-        return outputs;
-    }
+//
+//    public ArrayList<RecipeOutput> getOutputs(IMachineRecipeManager recipeManager) {
+//        ArrayList<RecipeOutput> outputs = new ArrayList<>();
+//        for(IMachineRecipeManager.RecipeIoContainer container : recipeManager.getRecipes())
+//            outputs.add(container.output);
+//        return outputs;
+//    }
 }

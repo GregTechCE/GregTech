@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * It's information is also synced to client
  * @param <T> type of UIHolder this widget requires
  */
-public abstract class Widget<T extends IUIHolder> implements Comparable<Widget> {
+public abstract class Widget<T extends IUIHolder> implements Comparable<Widget<T>> {
 
     public static final int SLOT_DRAW_PRIORITY = 1000;
 
@@ -96,7 +96,7 @@ public abstract class Widget<T extends IUIHolder> implements Comparable<Widget> 
     }
 
     @Override
-    public int compareTo(Widget widget) {
+    public int compareTo(Widget<T> widget) {
         return Integer.compare(drawPriority, widget.drawPriority);
     }
 

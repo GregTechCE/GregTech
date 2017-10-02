@@ -109,35 +109,37 @@ public class ProcessingPlank implements IOreRegistrationHandler {
                     itemStack.setItemDamage(i);
 
                     ItemStack output = ModHandler.getRecipeOutput(null, itemStack, itemStack, itemStack);
-                    if (output != null && output.stackSize >= 3) {
+                    if (!output.isEmpty() && output.getCount() >= 3) {
 
                         RecipeMap.CUTTER_RECIPES.recipeBuilder()
 								.inputs(GTUtility.copyAmount(1, itemStack))
-								.outputs(GTUtility.copyAmount(output.stackSize / 3, output))
+								.outputs(GTUtility.copyAmount(output.getCount() / 3, output))
 								.duration(25)
 								.EUt(4)
 								.buildAndRegister();
 
                         ModHandler.removeRecipe(itemStack, itemStack, itemStack);
-                        ModHandler.addShapedRecipe(GTUtility.copyAmount(output.stackSize / 3, output),
+                        ModHandler.addShapedRecipe("slab?_" + entry.material,
+                                GTUtility.copyAmount(output.getCount() / 3, output),
 								"sP",
 								'P', itemStack);
                     }
-                    if(itemStack == null && i >= 16) break;
+                    if(itemStack.isEmpty() && i >= 16) break;
                 }
             } else {
                 ItemStack output = ModHandler.getRecipeOutput(null, stack, stack, stack);
-                if (output != null && output.stackSize >= 3) {
+                if (!output.isEmpty() && output.getCount() >= 3) {
 
 					RecipeMap.CUTTER_RECIPES.recipeBuilder()
 							.inputs(GTUtility.copyAmount(1, stack))
-							.outputs(GTUtility.copyAmount(output.stackSize / 3, output))
+							.outputs(GTUtility.copyAmount(output.getCount() / 3, output))
 							.duration(25)
 							.EUt(4)
 							.buildAndRegister();
 
                     ModHandler.removeRecipe(stack, stack, stack);
-                    ModHandler.addShapedRecipe(GTUtility.copyAmount(output.stackSize / 3, output),
+                    ModHandler.addShapedRecipe("slab?_" + entry.material,
+                        GTUtility.copyAmount(output.getCount() / 3, output),
 							"sP",
 							'P', stack);
                 }

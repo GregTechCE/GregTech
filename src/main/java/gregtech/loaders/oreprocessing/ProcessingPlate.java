@@ -56,29 +56,34 @@ public class ProcessingPlate implements IOreRegistrationHandler {
                     .buildAndRegister();
 
                 if (entry.material == Materials.Paper)
-                    ModHandler.addShapedRecipe(GTUtility.copyAmount(3, stack),
+                    ModHandler.addShapedRecipe("papar_f_scane_" + entry.material,
+                        GTUtility.copyAmount(3, stack),
                         "XXX",
                         'X', new ItemStack(Items.REEDS, 1, W));
 
                 if (!noSmashing) {
-                    ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.plate, entry.material),
+                    ModHandler.addShapedRecipe("ingot_t_plate_" + entry.material,
+                        OreDictUnifier.get(OrePrefix.plate, entry.material),
                         "h",
                         "X",
                         "X",
                         'X', new UnificationEntry(OrePrefix.ingot, entry.material));
 
-                    ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.plate, entry.material),
+                    ModHandler.addShapedRecipe("ingot_t_plate_od_" + entry.material,
+                        OreDictUnifier.get(OrePrefix.plate, entry.material),
                         "H",
                         "X",
                         'H', ToolDictNames.craftingToolForgeHammer,
                         'X', new UnificationEntry(OrePrefix.ingot, entry.material));
 
-                    ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.plate, entry.material),
+                    ModHandler.addShapedRecipe("gem_t_plate_" + entry.material,
+                        OreDictUnifier.get(OrePrefix.plate, entry.material),
                         "h",
                         "X",
                         'X', new UnificationEntry(OrePrefix.gem, entry.material));
 
-                    ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.plate, entry.material),
+                    ModHandler.addShapedRecipe("gem_t_plate_od_" + entry.material,
+                        OreDictUnifier.get(OrePrefix.plate, entry.material),
                         "H",
                         "X",
                         'H', ToolDictNames.craftingToolForgeHammer,
@@ -86,7 +91,8 @@ public class ProcessingPlate implements IOreRegistrationHandler {
                 }
 
                 if (entry.material.hasFlag(MORTAR_GRINDABLE))
-                    ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.dust, entry.material),
+                    ModHandler.addShapedRecipe("plate_t_dust_" + entry.material,
+                        OreDictUnifier.get(OrePrefix.dust, entry.material),
                         "X",
                         "m",
                         'X', new UnificationEntry(OrePrefix.plate, entry.material));

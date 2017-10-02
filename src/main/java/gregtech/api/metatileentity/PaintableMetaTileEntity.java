@@ -1,6 +1,6 @@
 package gregtech.api.metatileentity;
 
-import gregtech.api.capability.IPaintable;
+import gregtech.api.capability.internal.IPaintable;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
@@ -16,19 +16,6 @@ public abstract class PaintableMetaTileEntity extends MetaTileEntity implements 
 
     public PaintableMetaTileEntity(IMetaTileEntityFactory factory) {
         super(factory);
-    }
-
-    @Override
-    public <T> boolean hasCapability(Capability<T> capability, EnumFacing side) {
-        return super.hasCapability(capability, side) || capability == IPaintable.CAPABILITY_PAINTABLE;
-    }
-
-    @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing side) {
-        if(capability == IPaintable.CAPABILITY_PAINTABLE) {
-            return IPaintable.CAPABILITY_PAINTABLE.cast(this);
-        }
-        return super.getCapability(capability, side);
     }
 
     @Override
@@ -56,7 +43,7 @@ public abstract class PaintableMetaTileEntity extends MetaTileEntity implements 
     @Override
     public void setColor(@Nullable EnumDyeColor color) {
         this.dyeColor = color;
-        if(!getWorldObj().isRemote) {
+        if(!getWorld().isRemote) {
             markDirty();
             holder.writeCustomData(3, buf -> buf.writeByte(color == null ? -1 : color.ordinal()));
         }

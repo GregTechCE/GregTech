@@ -46,7 +46,7 @@ public abstract class UIFactory<E extends IUIHolder> {
     @SideOnly(Side.CLIENT)
     public final void initClientUI(PacketBuffer serializedHolder, PacketBuffer widgetsInitData, int windowId) {
         E holder = readHolderFromSyncData(serializedHolder);
-        EntityPlayerSP entityPlayer = Minecraft.getMinecraft().thePlayer;
+        EntityPlayerSP entityPlayer = Minecraft.getMinecraft().player;
         ModularUI<E> uiTemplate = createUITemplate(holder, entityPlayer);
         uiTemplate.readWidgetData(widgetsInitData);
         uiTemplate.initWidgets();

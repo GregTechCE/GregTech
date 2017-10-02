@@ -20,7 +20,7 @@ public class BlockOreFactory extends AbstractBlockModelFactory {
         tintIndex == 1 ? ((BlockOre) state.getBlock()).material.materialRGB : 0xFFFFFF;
 
     private static final IItemColor ITEM_COLOR = (stack, tintIndex) ->
-        tintIndex == 1 ? ((BlockOre) ((ItemBlock) stack.getItem()).block).material.materialRGB : 0xFFFFFF;
+        tintIndex == 1 ? ((BlockOre) ((ItemBlock) stack.getItem()).getBlock()).material.materialRGB : 0xFFFFFF;
 
     public static void init() {
         BlockOreFactory factory = new BlockOreFactory();

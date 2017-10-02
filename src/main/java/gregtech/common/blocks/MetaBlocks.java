@@ -9,6 +9,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -39,28 +40,29 @@ public class MetaBlocks {
     public static HashMap<DustMaterial, BlockOre> ORES;
 
     public static void init() {
-        MACHINE = new BlockMachine();
-        MACHINE.registerBlock("machine");
+        MACHINE = new BlockMachine("machine");
+        MACHINE.setRegistryName("machine");
+
         BOILER_CASING = new BlockBoilerCasing();
-        BOILER_CASING.registerBlock("boiler_casing");
+        BOILER_CASING.setRegistryName("boiler_casing");
         METAL_CASING = new BlockMetalCasing();
-        METAL_CASING.registerBlock("metal_casing");
+        METAL_CASING.setRegistryName("metal_casing");
         TURBINE_CASING = new BlockTurbineCasing();
-        TURBINE_CASING.registerBlock("turbine_casing");
+        TURBINE_CASING.setRegistryName("turbine_casing");
         MACHINE_CASING = new BlockMachineCasing();
-        MACHINE_CASING.registerBlock("machine_casing");
+        MACHINE_CASING.setRegistryName("machine_casing");
         MUTLIBLOCK_CASING = new BlockMultiblockCasing();
-        MUTLIBLOCK_CASING.registerBlock("multiblock_casing");
+        MUTLIBLOCK_CASING.setRegistryName("multiblock_casing");
         WIRE_COIL = new BlockWireCoil();
-        WIRE_COIL.registerBlock("wire_coil");
+        WIRE_COIL.setRegistryName("wire_coil");
         WARNING_SIGN = new BlockWarningSign();
-        WARNING_SIGN.registerBlock("warning_sign");
+        WARNING_SIGN.setRegistryName("warning_sign");
         GRANITE = new BlockGranite();
-        GRANITE.registerBlock("granite");
+        GRANITE.setRegistryName("granite");
         MINERAL = new BlockMineral();
-        MINERAL.registerBlock("mineral");
+        MINERAL.setRegistryName("mineral");
         CONCRETE = new BlockConcrete();
-        CONCRETE.registerBlock("concrete");
+        CONCRETE.setRegistryName("concrete");
 
         COMPRESSED = new HashMap<>();
         ORES = new HashMap<>();
@@ -88,13 +90,13 @@ public class MetaBlocks {
     private static void createCompressedBlock(Collection<DustMaterial> materials, int index) {
         materials.removeIf(OrePrefix.block::isIgnored);
         BlockCompressed block = new BlockCompressed(materials);
-        block.registerBlock("compressed_" + index);
+        block.setRegistryName("compressed_" + index);
         materials.forEach(material -> COMPRESSED.put(material, block));
     }
 
     private static void createOreBlock(DustMaterial material) {
         BlockOre block = new BlockOre(material);
-        block.registerBlock("ore_" + material.toString());
+        block.setRegistryName("ore_" + material);
         ORES.put(material, block);
     }
 

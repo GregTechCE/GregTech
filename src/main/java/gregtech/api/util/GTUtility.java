@@ -19,6 +19,8 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.*;
@@ -26,9 +28,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -44,6 +49,7 @@ public class GTUtility {
     }
 
     //magic is here
+    @SuppressWarnings("unchecked")
     public static <T, R> Class<T> getActualTypeParameter(Class<? extends R> thisClass, Class<R> declaringClass, int index) {
         Type type = thisClass.getGenericSuperclass();
 
@@ -67,11 +73,12 @@ public class GTUtility {
     /**
      * Determines dye color nearest to specified RGB color
      */
+    @SideOnly(Side.CLIENT)
     public static EnumDyeColor determineDyeColor(int rgbColor) {
         ArrayList<EnumDyeColor> colors = Lists.newArrayList(EnumDyeColor.values());
         colors.sort((a, b) -> {
-            int colorA = a.getMapColor().colorValue;
-            int colorB = b.getMapColor().colorValue;
+            int colorA = a.getColorValue();
+            int colorB = b.getColorValue();
             int diffRedA = Math.abs(((colorA >> 16) & 0xFF) - ((rgbColor >> 16) & 0xFF));
             int diffGreenA = Math.abs(((colorA >> 8) & 0xFF) - ((rgbColor >> 8) & 0xFF));
             int diffBlueA = Math.abs((colorA & 0xFF) - (rgbColor & 0xFF));
@@ -102,7 +109,7 @@ public class GTUtility {
             if (!attributes.isEmpty()) {
                 for (Map.Entry<IAttribute, AttributeModifier> entry : attributes.entrySet()) {
                     AttributeModifier modifier = entry.getValue();
-                    attributeLines.add(new Tuple<>(entry.getKey().getAttributeUnlocalizedName(),
+                    attributeLines.add(new Tuple<>(entry.getKey().getName(),
                             new AttributeModifier(modifier.getName(),
                                     potion.getAttributeModifierAmount(potionEffect.getAmplifier(), modifier),
                                     modifier.getOperation())));
@@ -141,6 +148,38 @@ public class GTUtility {
                 }
             }
 
+        }
+    }
+
+    public static void writeItems(IItemHandler handler, String tagName, NBTTagCompound tag) {
+        NBTTagList tagList = new NBTTagList();
+
+        for (int i = 0; i < handler.getSlots(); i++) {
+            if (!handler.getStackInSlot(i).isEmpty()) {
+                NBTTagCompound stackTag = new NBTTagCompound();
+
+                stackTag.setInteger("Slot", i);
+
+                handler.getStackInSlot(i).writeToNBT(stackTag);
+
+                tagList.appendTag(stackTag);
+            }
+        }
+
+        tag.setTag(tagName, tagList);
+    }
+
+    public static void readItems(IItemHandlerModifiable handler, String tagName, NBTTagCompound tag) {
+        if (tag.hasKey(tagName)) {
+            NBTTagList tagList = tag.getTagList(tagName, Constants.NBT.TAG_COMPOUND);
+
+            for (int i = 0; i < tagList.tagCount(); i++) {
+                int slot = tagList.getCompoundTagAt(i).getInteger("Slot");
+
+                if (slot >= 0 && slot < handler.getSlots()) {
+                    handler.setStackInSlot(slot, new ItemStack(tagList.getCompoundTagAt(i)));
+                }
+            }
         }
     }
 
@@ -298,7 +337,7 @@ public class GTUtility {
 
     public static ItemStack[] copyStackArray(ItemStack... stacks) {
         ItemStack[] itemStacks = new ItemStack[stacks.length];
-        for (int i = 0; i < stacks.length; i++) if (stacks[i] != null) itemStacks[i] = stacks[i].copy();
+        for (int i = 0; i < stacks.length; i++) itemStacks[i] = stacks[i].copy();
         return itemStacks;
     }
 
@@ -316,17 +355,17 @@ public class GTUtility {
 
     public static ItemStack copy(ItemStack... stacks) {
         for (ItemStack stack : stacks)
-            if (stack != null) return stack.copy();
-        return null;
+            if (!stack.isEmpty()) return stack.copy();
+        return ItemStack.EMPTY;
     }
 
     public static ItemStack copyAmount(int amount, ItemStack... stacks) {
         ItemStack stack = copy(stacks);
-        if (stack == null) return null;
+        if (stack.isEmpty()) return ItemStack.EMPTY;
         if (amount > 64) amount = 64;
         else if (amount == -1) amount = 111;
         else if (amount < 0) amount = 0;
-        stack.stackSize = (byte) amount;
+        stack.setCount(amount);
         return stack;
     }
 
@@ -354,7 +393,7 @@ public class GTUtility {
     }
 
     public static boolean isStackInList(ItemStack stack, Collection<SimpleItemStack> list) {
-        if (stack == null) return false;
+        if (stack.isEmpty()) return false;
         return isStackInList(new SimpleItemStack(stack), list);
     }
 

@@ -37,7 +37,7 @@ public abstract class AbstractBakedModel implements IBakedModel {
 						break;
 					}
 				case NORMAL:
-					builder.put(e, (float) normal.xCoord, (float) normal.yCoord, (float) normal.zCoord, 0f);
+					builder.put(e, (float) normal.x, (float) normal.y, (float) normal.z, 0f);
 					break;
 				default:
 					builder.put(e);
@@ -51,10 +51,10 @@ public abstract class AbstractBakedModel implements IBakedModel {
 
 		UnpackedBakedQuad.Builder builder = new UnpackedBakedQuad.Builder(format);
 		builder.setTexture(sprite);
-		putVertex(builder, normal, sprite, v1.xCoord, v1.yCoord, v1.zCoord, 0, 0, rgbaColor);
-		putVertex(builder, normal, sprite, v2.xCoord, v2.yCoord, v2.zCoord, 0, 16, rgbaColor);
-		putVertex(builder, normal, sprite, v3.xCoord, v3.yCoord, v3.zCoord, 16, 16, rgbaColor);
-		putVertex(builder, normal, sprite, v4.xCoord, v4.yCoord, v4.zCoord, 16, 0, rgbaColor);
+		putVertex(builder, normal, sprite, v1.x, v1.y, v1.z, 0, 0, rgbaColor);
+		putVertex(builder, normal, sprite, v2.x, v2.y, v2.z, 0, 16, rgbaColor);
+		putVertex(builder, normal, sprite, v3.x, v3.y, v3.z, 16, 16, rgbaColor);
+		putVertex(builder, normal, sprite, v4.x, v4.y, v4.z, 16, 0, rgbaColor);
 		builder.setQuadOrientation(orientation);
 		return builder.build();
 	}

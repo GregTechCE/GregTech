@@ -36,8 +36,6 @@ public abstract class SlotWidget extends Widget<ISimpleSlotInventory> implements
         this(slotIndex, xPosition, yPosition, true, true);
     }
 
-    public void onPickupFromSlot(EntityPlayer player, ItemStack stack) {}
-
     public boolean canPutStack(ItemStack stack) {
         return canPutItems;
     }
@@ -46,7 +44,7 @@ public abstract class SlotWidget extends Widget<ISimpleSlotInventory> implements
         return canTakeItems;
     }
 
-    public boolean canBeHovered() {
+    public boolean isEnabled() {
         return true;
     }
 
@@ -70,11 +68,6 @@ public abstract class SlotWidget extends Widget<ISimpleSlotInventory> implements
     @Override
     public void initWidget() {
         this.slotReference = new Slot(new IInventoryWrapper(gui.holder), slotIndex, xPosition, yPosition) {
-            @Override
-            public void onPickupFromSlot(EntityPlayer playerIn, ItemStack stack) {
-                super.onPickupFromSlot(playerIn, stack);
-                SlotWidget.this.onPickupFromSlot(playerIn, stack);
-            }
 
             @Override
             public boolean isItemValid(@Nullable ItemStack stack) {
@@ -92,8 +85,8 @@ public abstract class SlotWidget extends Widget<ISimpleSlotInventory> implements
             }
 
             @Override
-            public boolean canBeHovered() {
-                return SlotWidget.this.canBeHovered();
+            public boolean isEnabled() {
+                return SlotWidget.this.isEnabled();
             }
 
             @Override

@@ -47,13 +47,15 @@ public class ProcessingGear implements IOreRegistrationHandler {
 
             if(isSmall) {
 			    if(material instanceof MetalMaterial && !material.hasFlag(DustMaterial.MatFlags.NO_SMASHING)) {
-                    ModHandler.addShapedRecipe(stack,
+                    ModHandler.addShapedRecipe("sgear_" + material,
+                            stack,
 							"h##",
 							"#P#",
                             'P', OreDictUnifier.get(OrePrefix.plate, material));
                 }
             } else {
-			    ModHandler.addShapedRecipe(stack,
+			    ModHandler.addShapedRecipe("gear_" + material,
+                        stack,
 						"RPR",
 						"PdP",
 						"RPR",

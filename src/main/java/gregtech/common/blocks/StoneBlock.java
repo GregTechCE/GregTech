@@ -11,6 +11,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.List;
@@ -27,17 +29,8 @@ public class StoneBlock<T extends Enum<T> & IStringSerializable> extends Block {
         setCreativeTab(GregTechAPI.TAB_GREGTECH);
     }
 
-    public void registerBlock(String blockName) {
-        setUnlocalizedName(blockName);
-        setRegistryName(blockName);
-        GameRegistry.register(this);
-        StoneItemBlock<?,?> itemBlock = new StoneItemBlock<>(this);
-        itemBlock.setRegistryName(blockName);
-        GameRegistry.register(itemBlock);
-    }
-
     @Override
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
         for(T variant : VALUES) {
             for(ChiselingVariant chiselingVariant : ChiselingVariant.values()) {
                 list.add(getItemVariant(variant, chiselingVariant));

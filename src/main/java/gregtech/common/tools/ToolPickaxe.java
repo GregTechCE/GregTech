@@ -4,7 +4,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.AchievementList;
 
 public class ToolPickaxe extends ToolBase {
 
@@ -31,8 +30,8 @@ public class ToolPickaxe extends ToolBase {
     @Override
     public void onToolCrafted(ItemStack stack, EntityPlayer player) {
         super.onToolCrafted(stack, player);
-        player.addStat(AchievementList.BUILD_PICKAXE);
-        player.addStat(AchievementList.BUILD_BETTER_PICKAXE);
+//        player.addStat(AchievementList.BUILD_PICKAXE);
+//        player.addStat(AchievementList.BUILD_BETTER_PICKAXE);
 //        GregTechMod.achievements.issueAchievement(player, "flintpick"); // TODO ACHIEVEMENTS/ADVANCEMENTS
     }
 

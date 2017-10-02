@@ -11,16 +11,6 @@ public abstract class TickableTileEntityBase extends TileEntity implements IHasW
     private long timer = 0L;
 
     @Override
-    public World getWorldObj() {
-        return worldObj;
-    }
-
-    @Override
-    public BlockPos getWorldPos() {
-        return pos;
-    }
-
-    @Override
     public long getTimer() {
         return timer;
     }

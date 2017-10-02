@@ -36,22 +36,22 @@ public class OreDictUnifier {
     private static final HashMap<UnificationEntry, ArrayList<SimpleItemStack>> stackUnificationItems = new HashMap<>();
 
     public static void registerOre(ItemStack itemStack, MaterialStack component, MaterialStack... byproducts) {
-        if (itemStack == null) return;
+        if (itemStack.isEmpty()) return;
         materialUnificationInfo.put(new SimpleItemStack(itemStack), new ItemMaterialInfo(component, byproducts));
     }
 
     public static void registerOre(ItemStack itemStack, ItemMaterialInfo materialInfo) {
-        if (itemStack == null) return;
+        if (itemStack.isEmpty()) return;
         materialUnificationInfo.put(new SimpleItemStack(itemStack), materialInfo);
     }
 
     public static void registerOre(ItemStack itemStack, OrePrefix orePrefix, @Nullable Material material) {
-        if (itemStack == null) return;
+        if (itemStack.isEmpty()) return;
         OreDictionary.registerOre(orePrefix.name() + (material == null ? "" : material.toCamelCaseString()), itemStack);
     }
 
     public static void registerOre(ItemStack itemStack, String oreDict) {
-        if (itemStack == null) return;
+        if (itemStack.isEmpty()) return;
         OreDictionary.registerOre(oreDict, itemStack);
     }
 
@@ -114,7 +114,7 @@ public class OreDictUnifier {
 
     @Nullable
     public static MaterialStack getMaterial(ItemStack itemStack) {
-        if(itemStack == null) return null;
+        if(itemStack.isEmpty()) return null;
         SimpleItemStack simpleItemStack = new SimpleItemStack(itemStack);
         UnificationEntry entry = stackUnificationInfo.get(simpleItemStack);
         if(entry != null && entry.material != null) return new MaterialStack(entry.material, entry.orePrefix.materialAmount);
@@ -124,7 +124,7 @@ public class OreDictUnifier {
 
     @Nullable
     public static ImmutableList<MaterialStack> getByProducts(ItemStack itemStack) {
-        if(itemStack == null) return null;
+        if(itemStack.isEmpty()) return null;
         SimpleItemStack simpleItemStack = new SimpleItemStack(itemStack);
         UnificationEntry entry = stackUnificationInfo.get(simpleItemStack);
         if(entry != null && entry.material != null) return ImmutableList.of(new MaterialStack(entry.material, entry.orePrefix.materialAmount), entry.orePrefix.secondaryMaterial);
@@ -134,7 +134,7 @@ public class OreDictUnifier {
 
     @Nullable
     public static OrePrefix getPrefix(ItemStack itemStack) {
-        if(itemStack == null) return null;
+        if(itemStack.isEmpty()) return null;
         SimpleItemStack simpleItemStack = new SimpleItemStack(itemStack);
         UnificationEntry entry = stackUnificationInfo.get(simpleItemStack);
         if(entry != null) return entry.orePrefix;
@@ -143,13 +143,12 @@ public class OreDictUnifier {
 
     @Nullable
     public static UnificationEntry getUnificationEntry(ItemStack itemStack) {
-        if(itemStack == null) return null;
+        if(itemStack.isEmpty()) return null;
         return stackUnificationInfo.get(new SimpleItemStack(itemStack));
     }
 
-    @Nullable
     public static ItemStack getUnificated(ItemStack itemStack) {
-        if(itemStack == null) return null;
+        if(itemStack.isEmpty()) return ItemStack.EMPTY;
         UnificationEntry unificationEntry = getUnificationEntry(itemStack);
         if(unificationEntry == null || !stackUnificationItems.containsKey(unificationEntry) || !unificationEntry.orePrefix.isUnificationEnabled)
             return itemStack;
@@ -158,27 +157,24 @@ public class OreDictUnifier {
         return keys.size() > 0 ? keys.get(0).asItemStack() : itemStack;
     }
 
-    @Nullable
     public static ItemStack get(OrePrefix orePrefix, Material material) {
         return get(orePrefix, material, 1);
     }
 
-    @Nullable
     public static ItemStack get(OrePrefix orePrefix, Material material, int stackSize) {
         UnificationEntry unificationEntry = new UnificationEntry(orePrefix, material);
         if(!stackUnificationItems.containsKey(unificationEntry) || !unificationEntry.orePrefix.isUnificationEnabled)
-            return null;
+            return ItemStack.EMPTY;
         ArrayList<SimpleItemStack> keys = stackUnificationItems.get(unificationEntry);
         keys.sort(Comparator.comparing(a -> a.item.delegate.name().getResourceDomain()));
-        return keys.size() > 0 ? keys.get(0).asItemStack(stackSize) : null;
+        return keys.size() > 0 ? keys.get(0).asItemStack(stackSize) : ItemStack.EMPTY;
     }
 
-    @Nullable
     public static ItemStack getGem(GemMaterial material, long materialAmount) {
-        ItemStack stack = null;
+        ItemStack stack = ItemStack.EMPTY;
         if (materialAmount >= M)
             stack = get(OrePrefix.gem, material, (int) (materialAmount / M));
-        if (stack == null) {
+        if (stack.isEmpty()) {
             if ((materialAmount * 2) % M == 0 || materialAmount >= M * 16)
                 stack = get(OrePrefix.gemFlawed, material, (int) ((materialAmount * 2) / M));
             if (materialAmount * 4 >= M)
@@ -187,37 +183,34 @@ public class OreDictUnifier {
         return stack;
     }
 
-    @Nullable
     public static ItemStack getDust(DustMaterial material, long materialAmount) {
-        if (materialAmount <= 0) return null;
-        ItemStack stack = null;
+        if (materialAmount <= 0) return ItemStack.EMPTY;
+        ItemStack stack = ItemStack.EMPTY;
         if (materialAmount % M == 0 || materialAmount >= M * 16)
             stack = get(OrePrefix.dust, material, (int) (materialAmount / M));
-        if (stack == null && (materialAmount * 4) % M == 0 || materialAmount >= M * 8)
+        if (stack.isEmpty() && (materialAmount * 4) % M == 0 || materialAmount >= M * 8)
             stack = get(OrePrefix.dustSmall, material, (int) ((materialAmount * 4) / M));
-        if (stack == null && (materialAmount * 9) >= M)
+        if (stack.isEmpty() && (materialAmount * 9) >= M)
             stack = get(OrePrefix.dustTiny, material, (int) ((materialAmount * 9) / M));
         return stack;
     }
 
-    @Nullable
     public static ItemStack getIngot(MetalMaterial material, long materialAmount) {
-        if (materialAmount <= 0) return null;
-        ItemStack stack = null;
+        if (materialAmount <= 0) return ItemStack.EMPTY;
+        ItemStack stack = ItemStack.EMPTY;
         if (((materialAmount % (M * 9) == 0 && materialAmount / (M * 9) > 1) || materialAmount >= M * 72))
             stack = get(OrePrefix.block, material, (int) (materialAmount / (M * 9)));
-        if (stack == null && ((materialAmount % M == 0) || materialAmount >= M * 8))
+        if (stack.isEmpty() && ((materialAmount % M == 0) || materialAmount >= M * 8))
             stack = get(OrePrefix.ingot, material, (int) (materialAmount / M));
-        if (stack == null && (materialAmount * 9) >= M)
+        if (stack.isEmpty() && (materialAmount * 9) >= M)
             stack = get(OrePrefix.nugget, material, (int) ((materialAmount * 9) / M));
         return stack;
     }
 
-    @Nullable
     public static ItemStack getDustOrIngot(DustMaterial material, long materialAmount) {
-        if (materialAmount <= 0) return null;
+        if (materialAmount <= 0) return ItemStack.EMPTY;
         ItemStack stack = getDust(material, materialAmount);
-        if (stack == null) stack = getIngot((MetalMaterial) material, materialAmount);
+        if (stack.isEmpty()) stack = getIngot((MetalMaterial) material, materialAmount);
         return stack;
     }
 }

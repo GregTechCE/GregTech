@@ -29,7 +29,7 @@ public class ProcessingPure implements IOreRegistrationHandler {
             DustMaterial byproductMaterial = GTUtility.selectItemInList(1, material, material.oreByProducts, DustMaterial.class);
             ItemStack pureDustStack = OreDictUnifier.get(OrePrefix.dustPure, material);
 
-            if(pureDustStack == null) { //fallback for reduced & cleanGravel
+            if(pureDustStack.isEmpty()) { //fallback for reduced & cleanGravel
                 pureDustStack = OreDictUnifier.get(OrePrefix.dust, material);
             }
 

@@ -6,7 +6,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.AchievementList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
@@ -77,8 +76,8 @@ public class ToolDrillLV extends ToolBase {
     @Override
     public void onToolCrafted(ItemStack stack, EntityPlayer player) {
         super.onToolCrafted(stack, player);
-        player.addStat(AchievementList.BUILD_PICKAXE);
-        player.addStat(AchievementList.BUILD_BETTER_PICKAXE);
+//        player.addStat(AchievementList.BUILD_PICKAXE);
+//        player.addStat(AchievementList.BUILD_BETTER_PICKAXE);
 //        GregTechMod.achievements.issueAchievement(player, "driltime"); // TODO ACHIEVEMENTS/ADVANCEMENTS
 //        GregTechMod.achievements.issueAchievement(player, "buildDrill");
     }

@@ -5,7 +5,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.AchievementList;
 
 public class ToolHoe extends ToolBase {
 
@@ -44,7 +43,7 @@ public class ToolHoe extends ToolBase {
     @Override
     public void onToolCrafted(ItemStack stack, EntityPlayer player) {
         super.onToolCrafted(stack, player);
-        player.addStat(AchievementList.BUILD_HOE);
+//        player.addStat(AchievementList.BUILD_HOE);
     }
 
 //    @Override

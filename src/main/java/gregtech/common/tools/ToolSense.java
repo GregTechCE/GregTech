@@ -35,23 +35,23 @@ public class ToolSense extends ToolBase {
 
     @Override
     public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops) {
-        int rConversions = 0;
-        ItemStack aStack = harvester.getHeldItem(EnumHand.MAIN_HAND);
-        if (this.isHarvestingRightNow.get() == null && !harvester.worldObj.isRemote) {
+        int conversions = 0;
+        ItemStack stack = harvester.getHeldItem(EnumHand.MAIN_HAND);
+        if (this.isHarvestingRightNow.get() == null && !harvester.getEntityWorld().isRemote) {
             this.isHarvestingRightNow.set(this);
             for (int i = -2; i < 3; i++) {
                 for (int j = -2; j < 3; j++) {
                     for (int k = -2; k < 3; k++) {
                         BlockPos block = blockPos.add(i, j, k);
-                        IBlockState state = harvester.worldObj.getBlockState(block);
-                        if ((i != 0 || j != 0 || k != 0) && aStack.getStrVsBlock(state) > 0.0F &&
+                        IBlockState state = harvester.getEntityWorld().getBlockState(block);
+                        if ((i != 0 || j != 0 || k != 0) && stack.getDestroySpeed(state) > 0.0F &&
                                 ((EntityPlayerMP) harvester).interactionManager.tryHarvestBlock(block))
-                            rConversions++;
+                            conversions++;
                     }
                 }
             }
         }
-        return rConversions;
+        return conversions;
     }
 
 //    @Override

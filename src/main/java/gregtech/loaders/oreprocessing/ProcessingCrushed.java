@@ -35,7 +35,7 @@ public class ProcessingCrushed implements IOreRegistrationHandler {
             DustMaterial byproductMaterial = GTUtility.selectItemInList(0, material, material.oreByProducts, DustMaterial.class);
 
             //fallback for dirtyGravel, shard & clump
-            if (impureDustStack == null) {
+            if (impureDustStack.isEmpty()) {
                 impureDustStack = dustStack;
             }
 

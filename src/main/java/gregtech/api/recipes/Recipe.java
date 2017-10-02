@@ -3,11 +3,15 @@ package gregtech.api.recipes;
 import com.google.common.collect.ImmutableList;
 import gnu.trove.impl.unmodifiable.TUnmodifiableObjectIntMap;
 import gnu.trove.map.TObjectIntMap;
+import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,8 +29,8 @@ import java.util.List;
 //TODO CraftTweaker support
 public class Recipe {
 
-	private final List<ItemStack> inputs;
-	private final List<ItemStack> outputs;
+	private final NonNullList<ItemStack> inputs;
+	private final NonNullList<ItemStack> outputs;
 
 	/**
 	 * A chance of 10000 equals 100%
@@ -62,8 +66,10 @@ public class Recipe {
 	protected Recipe(List<ItemStack> inputs, List<ItemStack> outputs, TObjectIntMap<ItemStack> chancedOutputs,
 				   List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs,
 				   int duration, int EUt, boolean hidden, boolean canBeBuffered, boolean needsEmptyOutput) {
-		this.inputs = ImmutableList.copyOf(inputs);
-		this.outputs = ImmutableList.copyOf(outputs);
+		this.inputs = NonNullList.create();
+		this.inputs.addAll(inputs);
+		this.outputs = NonNullList.create();
+		this.outputs.addAll(outputs);
 		this.chancedOutputs = new TUnmodifiableObjectIntMap<>(chancedOutputs);
 		this.fluidInputs = ImmutableList.copyOf(fluidInputs);
 		this.fluidOutputs = ImmutableList.copyOf(fluidOutputs);
@@ -74,11 +80,23 @@ public class Recipe {
 		this.needsEmptyOutput = needsEmptyOutput;
 	}
 
-	public boolean isRecipeInputEqual(boolean decreaseStacksizeBySuccess, FluidStack[] fluidInputs, ItemStack[] inputs) {
-		return isRecipeInputEqual(decreaseStacksizeBySuccess, false, fluidInputs, inputs);
+	public boolean isRecipeInputEqual(boolean decreaseStacksizeBySuccess, boolean dontCheckStackSizes, IItemHandlerModifiable inputs, IMultipleTankHandler fluidInputs) {
+        List<FluidStack> fluidStacks = new ArrayList<>(fluidInputs.getTanks());
+        for (int i = 0; i < fluidInputs.getTanks(); i++) {
+            fluidStacks.add(fluidInputs.getFluidInTank(i));
+        }
+        NonNullList<ItemStack> stacks = NonNullList.withSize(inputs.getSlots(), ItemStack.EMPTY);
+        for (int i = 0; i < inputs.getSlots(); i++) {
+            stacks.add(inputs.getStackInSlot(i));
+        }
+		return isRecipeInputEqual(decreaseStacksizeBySuccess, dontCheckStackSizes, stacks, fluidStacks);
 	}
 
-	public boolean isRecipeInputEqual(boolean decreaseStacksizeBySuccess, boolean dontCheckStackSizes, FluidStack[] fluidInputs, ItemStack[] inputs) {
+	public boolean isRecipeInputEqual(boolean decreaseStacksizeBySuccess, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
+		return isRecipeInputEqual(decreaseStacksizeBySuccess, false, inputs, fluidInputs);
+	}
+
+	public boolean isRecipeInputEqual(boolean decreaseStacksizeBySuccess, boolean dontCheckStackSizes, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
 		if (this.fluidInputs.size() > 0 && fluidInputs == null) return false;
 		int amount;
 		for (FluidStack fluidInput : this.fluidInputs) {
@@ -107,7 +125,7 @@ public class Recipe {
 		}
 
 		for (ItemStack stackInput : this.inputs) {
-			amount = stackInput.stackSize;
+			amount = stackInput.getCount();
 			boolean temp = true;
 			for (ItemStack stack : inputs) {
 				if ((GTUtility.areUnificationEqual(stack, stackInput)
@@ -116,7 +134,7 @@ public class Recipe {
 						temp = false;
 						break;
 					}
-					amount -= stack.stackSize;
+					amount -= stack.getCount();
 					if (amount < 1) {
 						temp = false;
 						break;
@@ -152,19 +170,19 @@ public class Recipe {
 
 			if (inputs != null) {
 				for (ItemStack stack : this.inputs) {
-					amount = stack.stackSize;
+					amount = stack.getCount();
 					for (ItemStack tmpStack : inputs) {
 						if ((GTUtility.areUnificationEqual(tmpStack, stack)
 								|| GTUtility.areUnificationEqual(OreDictUnifier.getUnificated(tmpStack), stack))) {
 							if (dontCheckStackSizes) {
-								tmpStack.stackSize -= amount;
+								tmpStack.shrink(amount);
 								break;
 							}
-							if (tmpStack.stackSize < amount) {
-								amount -= tmpStack.stackSize;
-								tmpStack.stackSize = 0;
+							if (tmpStack.getCount() < amount) {
+								amount -= tmpStack.getCount();
+								tmpStack.setCount(0);
 							} else {
-								tmpStack.stackSize -= amount;
+								tmpStack.shrink(amount);
 								amount = 0;
 								break;
 							}
@@ -181,11 +199,11 @@ public class Recipe {
 	//    Getters    //
 	///////////////////
 
-	public List<ItemStack> getInputs() {
+	public NonNullList<ItemStack> getInputs() {
 		return inputs;
 	}
 
-	public List<ItemStack> getOutputs() {
+	public NonNullList<ItemStack> getOutputs() {
 		return outputs;
 	}
 

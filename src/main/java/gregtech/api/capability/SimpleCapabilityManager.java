@@ -1,5 +1,7 @@
 package gregtech.api.capability;
 
+import gregtech.api.capability.internal.ITurnable;
+import gregtech.api.capability.internal.IWorkable;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -28,11 +30,8 @@ public class SimpleCapabilityManager {
     }
 
     public static void init() {
-        registerCapability(ITurnable.class);
-        registerCapability(IPaintable.class);
         registerCapability(IDescribable.class);
         registerCapability(IEnergyContainer.class);
-        registerCapability(IWorkable.class);
         registerCapability(IUpgradable.class);
     }
 

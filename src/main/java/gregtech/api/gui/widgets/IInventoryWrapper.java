@@ -75,8 +75,13 @@ public class IInventoryWrapper implements IInventory {
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
+    public boolean isUsableByPlayer(EntityPlayer player) {
         return true; //Handled by ModularUI implementation
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return false;
     }
 
     @Override

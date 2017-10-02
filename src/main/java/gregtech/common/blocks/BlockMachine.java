@@ -25,9 +25,6 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
-import javax.annotation.Nullable;
 
 @SuppressWarnings("deprecation")
 public class BlockMachine extends Block implements ITileEntityProvider {
@@ -35,26 +32,19 @@ public class BlockMachine extends Block implements ITileEntityProvider {
     public static final PropertyInteger HARVEST_LEVEL = PropertyInteger.create("harvest_level", 0, 4);
     public static final PropertyEnum<ToolClass> HARVEST_TOOL = PropertyEnum.create("harvest_tool", ToolClass.class);
 
-    protected BlockMachine() {
+    protected BlockMachine(String name) {
         super(Material.IRON);
+        setUnlocalizedName(name);
         setHardness(6.0f);
         setResistance(8.0f);
         setSoundType(SoundType.METAL);
         setCreativeTab(GregTechAPI.TAB_GREGTECH);
     }
 
-    public void registerBlock(String blockName) {
-        setUnlocalizedName("unnamed");
-        setRegistryName(blockName);
-        GameRegistry.register(this);
-        MachineItemBlock itemBlock = new MachineItemBlock(this);
-        itemBlock.setRegistryName(blockName);
-        GameRegistry.register(itemBlock);
-    }
-
     @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, ItemStack stack) {
-        IMetaTileEntityFactory factory = ((MachineItemBlock) stack.getItem()).getFactory(stack);
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+        ItemStack itemStack = placer.getHeldItem(hand);
+        IMetaTileEntityFactory factory = ((MachineItemBlock) (itemStack).getItem()).getFactory(itemStack);
         return getDefaultState().withProperty(HARVEST_LEVEL, factory.getHarvestLevel()).withProperty(HARVEST_TOOL, factory.getHarvestTool());
     }
 
@@ -64,18 +54,19 @@ public class BlockMachine extends Block implements ITileEntityProvider {
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+        ItemStack heldItem = playerIn.getHeldItem(hand);
         IMetaTileEntity tileEntity = ((IGregTechTileEntity) worldIn.getTileEntity(pos)).getMetaTileEntity();
         if(tileEntity.isAccessAllowed(playerIn)) {
-            if(heldItem == null) {
-                return tileEntity.onRightClick(side, playerIn, hand, null, hitX, hitY, hitZ);
+            if(heldItem.isEmpty()) {
+                return tileEntity.onRightClick(side, playerIn, hand, hitX, hitY, hitZ);
             } else {
                 SimpleItemStack stack = new SimpleItemStack(heldItem);
                 if(GregTechAPI.screwdriverList.contains(stack)) {
-                    return tileEntity.onScrewdriverRightClick(side, playerIn, hand, heldItem, hitX, hitY, hitZ);
+                    return tileEntity.onScrewdriverRightClick(side, playerIn, hand, hitX, hitY, hitZ);
                 } else if(GregTechAPI.wrenchList.contains(stack)) {
-                    return tileEntity.onWrenchRightClick(side, side, playerIn, hand, heldItem, hitX, hitY, hitZ);
-                } else return tileEntity.onRightClick(side, playerIn, hand, heldItem, hitX, hitY, hitZ);
+                    return tileEntity.onWrenchRightClick(side, side, playerIn, hand, hitX, hitY, hitZ);
+                } else return tileEntity.onRightClick(side, playerIn, hand, hitX, hitY, hitZ);
             }
         }
         return false;
@@ -90,8 +81,8 @@ public class BlockMachine extends Block implements ITileEntityProvider {
     }
 
     @Override
-    protected ItemStack createStackedBlock(IBlockState state) {
-        return null; //prevent wrong ItemStack from creation
+    protected ItemStack getSilkTouchDrop(IBlockState state) {
+        return ItemStack.EMPTY;
     }
 
     @Override

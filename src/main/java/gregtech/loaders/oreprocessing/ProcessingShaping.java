@@ -48,7 +48,7 @@ public class ProcessingShaping implements IOreRegistrationHandler {
             return;
         }
 
-        if ((entry.material instanceof MetalMaterial) && !entry.material.hasFlag(NO_SMELTING)) {
+        if (entry.material instanceof MetalMaterial && !entry.material.hasFlag(NO_SMELTING)) {
 
             if (entry.material.hasFlag(NO_SMASHING)) {
                 voltageMultiplier /= 4;
@@ -130,7 +130,8 @@ public class ProcessingShaping implements IOreRegistrationHandler {
                     .buildAndRegister();
 
                 if (!entry.material.hasFlag(NO_SMASHING)) {
-                    ModHandler.addShapedRecipe(OreDictUnifier.get(OrePrefix.ring, entry.material),
+                    ModHandler.addShapedRecipe("ring_" + entry.material,
+                        OreDictUnifier.get(OrePrefix.ring, entry.material),
                         "h ",
                         " X",
                         'X', new UnificationEntry(OrePrefix.stick, entry.material));

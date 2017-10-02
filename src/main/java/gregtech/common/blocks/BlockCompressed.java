@@ -3,6 +3,7 @@ package gregtech.common.blocks;
 import gregtech.api.GregTechAPI;
 import gregtech.api.unification.material.type.*;
 import gregtech.common.blocks.properties.PropertyMaterial;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.state.BlockStateContainer;
@@ -11,8 +12,11 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
@@ -25,20 +29,12 @@ public final class BlockCompressed extends DelayedStateBlock {
 
     public BlockCompressed(Collection<? extends Material> materials) {
         super(net.minecraft.block.material.Material.IRON);
+        setUnlocalizedName("compressed_block");
         setHardness(5.0f);
         setResistance(10.0f);
         setCreativeTab(GregTechAPI.TAB_GREGTECH_MATERIALS);
         this.variantProperty = PropertyMaterial.create("variant", materials);
         initBlockState();
-    }
-
-    public void registerBlock(String blockName) {
-        setUnlocalizedName("unnamed");
-        setRegistryName(blockName);
-        GameRegistry.register(this);
-        CompressedItemBlock itemBlock = new CompressedItemBlock(this);
-        itemBlock.setRegistryName(blockName);
-        GameRegistry.register(itemBlock);
     }
 
     @Override
@@ -90,7 +86,7 @@ public final class BlockCompressed extends DelayedStateBlock {
     }
 
     @Override
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
         for(IBlockState blockState : blockState.getValidStates()) {
             list.add(getItem(blockState));
         }
@@ -112,7 +108,7 @@ public final class BlockCompressed extends DelayedStateBlock {
 
     @Override
     @SuppressWarnings("deprecation")
-    public MapColor getMapColor(IBlockState state) {
+    public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
         return getMaterial(state).getMaterialMapColor();
     }
 

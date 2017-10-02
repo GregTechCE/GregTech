@@ -6,7 +6,14 @@ import gnu.trove.map.hash.TShortObjectHashMap;
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.items.OreDictNames;
-import gregtech.api.items.metaitem.stats.*;
+import gregtech.api.items.metaitem.stats.IElectricStats;
+import gregtech.api.items.metaitem.stats.IFluidStats;
+import gregtech.api.items.metaitem.stats.IFoodStats;
+import gregtech.api.items.metaitem.stats.IItemBehaviour;
+import gregtech.api.items.metaitem.stats.IItemDurabilityManager;
+import gregtech.api.items.metaitem.stats.IItemUseManager;
+import gregtech.api.items.metaitem.stats.IMetaItemStats;
+import gregtech.api.items.metaitem.stats.INuclearStats;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
@@ -17,6 +24,7 @@ import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -29,17 +37,15 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidContainerItem;
-import net.minecraftforge.fluids.capability.wrappers.FluidContainerItemWrapper;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.IFuelHandler;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
@@ -62,22 +68,17 @@ import java.util.List;
  * This will add single-use (unchargeable) LV battery with initial capacity 10000 EU
  */
 @SuppressWarnings("deprecation")
-public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item implements ISpecialElectricItem, IFluidContainerItem, IFuelHandler, IReactorComponent, IBoxable {
+public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item implements ISpecialElectricItem, IReactorComponent, IBoxable {
 
     private TShortObjectMap<T> metaItems = new TShortObjectHashMap<>();
 
     protected final short metaItemOffset;
 
     public MetaItem(short metaItemOffset) {
-        setUnlocalizedName("invalid"); //default unlocalized name is invalid
+        setUnlocalizedName("meta_item");
         setHasSubtypes(true);
         setCreativeTab(GregTechAPI.TAB_GREGTECH);
         this.metaItemOffset = metaItemOffset;
-    }
-
-    public void registerItem(String registryName) {
-        setRegistryName(registryName);
-        GameRegistry.register(this);
     }
 
     @SideOnly(Side.CLIENT)
@@ -144,10 +145,10 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         return fluidStats;
     }
 
+    /* TODO FLUID CONTAINERS
     @Override
-    @SuppressWarnings("deprecation")
     public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-        return new FluidContainerItemWrapper(this, stack);
+        return new FluidHandlerItemStack(stack, 16000);
     }
 
     @Override
@@ -169,6 +170,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
         return getFluidStats(container).drain(container, maxDrain, doDrain);
     }
+    */
 
     //////////////////////////////////////////////////////////////////
     //                 INuclearStats  Implementation            //
@@ -258,20 +260,14 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     }
 
     //////////////////////////////////////////////////////////////////
-    //                 IFuelHandler   Implementation                //
-    //////////////////////////////////////////////////////////////////
-
-    private int getBurnValue(ItemStack itemStack) {
-        T metaValueItem = getItem(itemStack);
-        if(metaValueItem == null) {
-            return 0;
-        }
-        return metaValueItem.getBurnValue();
-    }
 
     @Override
-    public int getBurnTime(ItemStack fuel) {
-        return getBurnValue(fuel);
+    public int getItemBurnTime(ItemStack itemStack) {
+        T metaValueItem = getItem(itemStack);
+        if(metaValueItem == null) {
+            return super.getItemBurnTime(itemStack);
+        }
+        return metaValueItem.getBurnValue();
     }
 
     //////////////////////////////////////////////////////////////////
@@ -374,15 +370,15 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        ItemStack itemStack = player.getHeldItem(hand);
         for(IItemBehaviour behaviour : getBehaviours(itemStack)) {
-            ActionResult<ItemStack> behaviourResult = behaviour.onItemRightClick(itemStack, world, player, hand);
+            ActionResult<ItemStack> behaviourResult = behaviour.onItemRightClick(world, player, hand);
             itemStack = behaviourResult.getResult();
-            if (itemStack.stackSize == 0) itemStack = null;
             if (behaviourResult.getType() != EnumActionResult.PASS) {
                 return ActionResult.newResult(behaviourResult.getType(), itemStack);
-            } else if (itemStack == null) {
-                return ActionResult.newResult(EnumActionResult.PASS, null);
+            } else if (itemStack.isEmpty()) {
+                return ActionResult.newResult(EnumActionResult.PASS, ItemStack.EMPTY);
             }
         }
         IItemUseManager useManager = getUseManager(itemStack);
@@ -395,18 +391,18 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     }
 
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        ItemStack stack = player.getHeldItem(hand);
         ItemStack originalStack = stack.copy();
         for(IItemBehaviour behaviour : getBehaviours(stack)) {
-            ActionResult<ItemStack> behaviourResult = behaviour.onItemUse(stack, player, world, pos, hand, facing, hitX, hitY, hitZ);
+            ActionResult<ItemStack> behaviourResult = behaviour.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
             stack = behaviourResult.getResult();
-            if(stack.stackSize == 0) stack = null;
             if(behaviourResult.getType() != EnumActionResult.PASS) {
                 if(!ItemStack.areItemStacksEqual(originalStack, stack))
                     player.setHeldItem(hand, stack);
                 return behaviourResult.getType();
-            } else if(stack == null) {
-                player.setHeldItem(hand, null);
+            } else if(stack.isEmpty()) {
+                player.setHeldItem(hand, ItemStack.EMPTY);
                 return EnumActionResult.PASS;
             }
         }
@@ -441,8 +437,8 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> lines, boolean showAdditionalInfo) {
-        super.addInformation(itemStack, player, lines, showAdditionalInfo);
+    public void addInformation(ItemStack itemStack, @Nullable World worldIn, List<String> lines, ITooltipFlag tooltipFlag) {
+        super.addInformation(itemStack, worldIn, lines, tooltipFlag);
 
         T item = getItem(itemStack);
         if (item != null) {
@@ -458,7 +454,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                     (long) electricStats.getMaxCharge(itemStack),
                     GTValues.V[electricStats.getTier(itemStack)]));
             }
-            if (getCapacity(itemStack) > 0) {
+            /*if (getCapacity(itemStack) > 0) {
                 FluidStack fluid = getFluid(itemStack);
                 if (fluid != null) {
                     lines.add(I18n.format("metaitem.generic.fluid_container.tooltip",
@@ -466,7 +462,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                         getCapacity(itemStack),
                         fluid.getLocalizedName()));
                 } else lines.add(I18n.format("metaitem.generic.fluid_container.tooltip_empty"));
-            }
+            }*/
             for (IItemBehaviour behaviour : getBehaviours(itemStack)) {
                 behaviour.addInformation(itemStack, lines);
             }
@@ -475,12 +471,12 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
         for(T enabledItem : metaItems.valueCollection()) {
             if(enabledItem.isVisible()) {
                 ItemStack itemStack = enabledItem.getStackForm();
                 IElectricStats electricStats = getManager(itemStack);
-                if(getCapacity(itemStack) > 0) {
+                /*if(getCapacity(itemStack) > 0) {
                     for(Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
                         if(electricStats.getMaxCharge(itemStack) > 0) {
                             ItemStack chargedFilledStack = itemStack.copy();
@@ -493,7 +489,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                             subItems.add(filledStack);
                         }
                     }
-                }
+                }*/
                 if(electricStats.getMaxCharge(itemStack) > 0) {
                     ItemStack chargedStack = itemStack.copy();
                     electricStats.charge(chargedStack, Integer.MAX_VALUE, Integer.MAX_VALUE, true, false);

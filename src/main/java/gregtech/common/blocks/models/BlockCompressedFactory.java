@@ -32,7 +32,7 @@ public class BlockCompressedFactory extends AbstractBlockModelFactory {
         state.getValue(((BlockCompressed) state.getBlock()).variantProperty).materialRGB;
 
     private static final IItemColor ITEM_COLOR = (stack, tintIndex) -> {
-        BlockCompressed block = (BlockCompressed) ((ItemBlock) stack.getItem()).block;
+        BlockCompressed block = (BlockCompressed) ((ItemBlock) stack.getItem()).getBlock();
         IBlockState state = block.getStateFromMeta(stack.getItemDamage());
         return state.getValue(block.variantProperty).materialRGB;
     };

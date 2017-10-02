@@ -1,32 +1,32 @@
 package gregtech.api.metatileentity;
 
-import com.google.common.collect.ImmutableBiMap;
-import gregtech.api.capability.ITurnable;
-import gregtech.api.capability.internal.*;
+import gregtech.api.capability.impl.FluidHandlerProxy;
+import gregtech.api.capability.impl.FluidTankHandler;
+import gregtech.api.capability.impl.ItemHandlerProxy;
+import gregtech.api.capability.internal.IGregTechTileEntity;
+import gregtech.api.capability.internal.IRedstoneEmitter;
+import gregtech.api.capability.internal.IRedstoneReceiver;
+import gregtech.api.capability.internal.ITurnable;
 import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.ModularUI;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
-import javax.annotation.Nullable;
+import java.util.List;
 
-public interface IMetaTileEntity extends ITurnable, IRedstoneReceiver, IRedstoneEmitter, IUIHolder, ISimpleFluidInventory, ISimpleSlotInventory {
+public interface IMetaTileEntity extends ITurnable, IRedstoneReceiver, IRedstoneEmitter, IUIHolder {
 
     IMetaTileEntityFactory getFactory();
 
@@ -69,12 +69,12 @@ public interface IMetaTileEntity extends ITurnable, IRedstoneReceiver, IRedstone
     /**
      * Called when a player right clicks the facing with a screwdriver.
      */
-    boolean onScrewdriverRightClick(EnumFacing side, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, float clickX, float clickY, float clickZ);
+    boolean onScrewdriverRightClick(EnumFacing side, EntityPlayer player, EnumHand hand, float clickX, float clickY, float clickZ);
 
     /**
      * Called when a player right clicks the facing with a wrench.
      */
-    boolean onWrenchRightClick(EnumFacing side, EnumFacing wrenchingSide, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, float clickX, float clickY, float clickZ);
+    boolean onWrenchRightClick(EnumFacing side, EnumFacing wrenchingSide, EntityPlayer player, EnumHand hand, float clickX, float clickY, float clickZ);
 
     /**
      * The First processed Tick which was passed to this MetaTileEntity
@@ -105,8 +105,6 @@ public interface IMetaTileEntity extends ITurnable, IRedstoneReceiver, IRedstone
      */
     void onRemoval();
 
-    int getSlotsCount();
-
     /**
      * Creates instance of ModularUI to be opened for specified player
      * Note that set of widgets in GUI returned in this method should be SAME ON BOTH SIDES
@@ -115,34 +113,20 @@ public interface IMetaTileEntity extends ITurnable, IRedstoneReceiver, IRedstone
      */
     ModularUI<? extends IMetaTileEntity> createUI(EntityPlayer player);
 
-    int[] getSlotsForFace(EnumFacing face);
-    //side == null - internal inventory change
-    boolean allowPullStack(int index, EnumFacing side, ItemStack stack);
-    boolean allowPutStack(int index, EnumFacing side, ItemStack stack);
+    IItemHandlerModifiable getImportItemHandler();
+    IItemHandlerModifiable getExportItemHandler();
 
-    /**
-     * @return a COPY of stack in slot. Actual stack won't change.
-     */
-    ItemStack getStackInSlot(int index);
-    int getMaxStackSize(int index);
+    default IItemHandler getItemHandler() {
+        return new ItemHandlerProxy(getImportItemHandler(), getExportItemHandler());
+    }
 
-    void setStackInSlot(int index, ItemStack stack);
-    boolean isValidSlot(int index);
+    FluidTankHandler getImportFluidHandler();
+    FluidTankHandler getExportFluidHandler();
 
-    int getTanksCount();
-    int getTankCapacity(int tankIndex);
+    default IFluidHandler getFluidHandler() {
+        return new FluidHandlerProxy(getImportFluidHandler(), getExportFluidHandler());
+    }
 
-    int[] getTanksForFace(EnumFacing face);
-    //side == null - internal tank change
-    boolean allowPullFluid(int tankIndex, EnumFacing side, Fluid fluid);
-    boolean allowPutFluid(int tankIndex, EnumFacing side, Fluid fluid);
-
-    /**
-     * @return a COPY of stack in slot. Actual stack won't change.
-     */
-    FluidStack getFluidInTank(int tankIndex);
-    void setFluidInTank(int index, FluidStack fluidStack);
-    boolean isValidFluidTank(int tankIndex);
 
     /**
      * @return true if the Machine can be accessed
@@ -153,7 +137,7 @@ public interface IMetaTileEntity extends ITurnable, IRedstoneReceiver, IRedstone
      * Called when a player rightclicks the machine
      * Sneaky rightclicks are not getting passed to this!
      */
-    boolean onRightClick(EnumFacing side, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, float clickX, float clickY, float clickZ);
+    boolean onRightClick(EnumFacing side, EntityPlayer player, EnumHand hand, float clickX, float clickY, float clickZ);
 
     /**
      * Called when a player leftclicks the machine

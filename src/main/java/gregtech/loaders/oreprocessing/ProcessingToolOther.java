@@ -27,7 +27,8 @@ public class ProcessingToolOther implements IOreRegistrationHandler {
 	public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {
 		if (entry.material != Materials.Stone && entry.material != Materials.Flint) {
 			if (entry.material != Materials.Rubber) {
-				ModHandler.addShapedRecipe(MetaItems.PLUNGER.getStackForm(entry.material, entry.material),
+				ModHandler.addShapedRecipe("plunger_" + entry.material + "_" + entry.material,
+                    MetaItems.PLUNGER.getStackForm(entry.material, entry.material),
 						"xRR",
 						" SR",
 						"S f",
@@ -39,53 +40,62 @@ public class ProcessingToolOther implements IOreRegistrationHandler {
 
 				if (entry.material instanceof SolidMaterial) {
 					SolidMaterial solidMaterial = (SolidMaterial) entry.material;
-					ModHandler.addShapedRecipe(MetaItems.SCREWDRIVER.getStackForm(solidMaterial, solidMaterial.handleMaterial),
+					ModHandler.addShapedRecipe("screwdriver_" + solidMaterial + "_" + solidMaterial.handleMaterial,
+                        MetaItems.SCREWDRIVER.getStackForm(solidMaterial, solidMaterial.handleMaterial),
 							" fS",
 							" Sh",
 							"W  ",
 							'S', OreDictUnifier.get(OrePrefix.stick, solidMaterial),
 							'W', OreDictUnifier.get(OrePrefix.stick, solidMaterial));
 				}
-				ModHandler.addShapedRecipe(MetaItems.WRENCH.getStackForm(entry.material, entry.material),
+				ModHandler.addShapedRecipe("wrench_" + entry.material + "_" + entry.material,
+                    MetaItems.WRENCH.getStackForm(entry.material, entry.material),
 						"IhI",
 						"III",
 						" I ",
 						'I', OreDictUnifier.get(OrePrefix.ingot, entry.material));
-				ModHandler.addShapedRecipe(MetaItems.CROWBAR.getStackForm(entry.material, entry.material),
+				ModHandler.addShapedRecipe("crowbar_" + entry.material + "_" + entry.material,
+                    MetaItems.CROWBAR.getStackForm(entry.material, entry.material),
 						"hDS",
 						"DSD",
 						"SDf",
 						'S', OreDictUnifier.get(OrePrefix.stick, entry.material),
 						'D', EnumDyeColor.BLUE);
-				ModHandler.addShapedRecipe(MetaItems.WIRECUTTER.getStackForm(entry.material, entry.material),
+				ModHandler.addShapedRecipe("wirecutter_" + entry.material + "_" + entry.material,
+                    MetaItems.WIRECUTTER.getStackForm(entry.material, entry.material),
 						"PfP",
 						"hPd",
 						"STS",
 						'S', OreDictUnifier.get(OrePrefix.stick, entry.material),
 						'P', OreDictUnifier.get(OrePrefix.plate, entry.material),
 						'T', OreDictUnifier.get(OrePrefix.screw, entry.material));
-				ModHandler.addShapedRecipe(MetaItems.SCOOP.getStackForm(entry.material, entry.material),
+				ModHandler.addShapedRecipe("scoop_" + entry.material + "_" + entry.material,
+                    MetaItems.SCOOP.getStackForm(entry.material, entry.material),
 						"SWS",
 						"SSS",
 						"xSh",
 						'S', OreDictUnifier.get(OrePrefix.stick, entry.material),
 						'W', new ItemStack(Blocks.WOOL, 1, 32767));
-				ModHandler.addShapedRecipe(MetaItems.BRANCHCUTTER.getStackForm(entry.material, entry.material),
+				ModHandler.addShapedRecipe("branchcutter_" + entry.material + "_" + entry.material,
+                    MetaItems.BRANCHCUTTER.getStackForm(entry.material, entry.material),
 						"PfP",
 						"PdP",
 						"STS",
 						'S', OreDictUnifier.get(OrePrefix.stick, entry.material),
 						'P', OreDictUnifier.get(OrePrefix.plate, entry.material),
 						'T', OreDictUnifier.get(OrePrefix.screw, entry.material));
-				ModHandler.addShapedRecipe(MetaItems.KNIFE.getStackForm(entry.material, entry.material),
+				ModHandler.addShapedRecipe("knife_" + entry.material + "_" + entry.material,
+                    MetaItems.KNIFE.getStackForm(entry.material, entry.material),
 						"fPh", " S ",
 						'S', OreDictUnifier.get(OrePrefix.stick, entry.material),
 						'P', OreDictUnifier.get(OrePrefix.plate, entry.material));
-				ModHandler.addShapedRecipe(MetaItems.BUTCHERYKNIFE.getStackForm(entry.material, entry.material),
+				ModHandler.addShapedRecipe("butchknife_" + entry.material + "_" + entry.material,
+                    MetaItems.BUTCHERYKNIFE.getStackForm(entry.material, entry.material),
 						"PPf", "PP ", "Sh ",
 						'S', OreDictUnifier.get(OrePrefix.stick, entry.material),
 						'P', OreDictUnifier.get(OrePrefix.plate, entry.material));
-				ModHandler.addShapedRecipe(MetaItems.SOLDERING_IRON_LV.getStackForm(entry.material, Materials.Rubber/*, long[]{100000L, 32L, 1L, -1L}*/), // TODO electric tools
+				ModHandler.addShapedRecipe("soldiron_lv_" + entry.material + "_" + Materials.Rubber,
+                    MetaItems.SOLDERING_IRON_LV.getStackForm(entry.material, Materials.Rubber/*, long[]{100000L, 32L, 1L, -1L}*/), // TODO electric tools
 						"LBf",
 						"Sd ",
 						"P  ",

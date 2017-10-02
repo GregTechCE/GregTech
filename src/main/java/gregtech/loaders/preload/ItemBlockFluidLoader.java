@@ -24,11 +24,8 @@ public class ItemBlockFluidLoader implements Runnable {
 //        Materials.Water.mFluid = (Materials.Ice.mFluid = GT_ModHandler.getWater(1000L).getFluid());
 //        Materials.Lava.mFluid = GT_ModHandler.getLava(1000L).getFluid();
 
-        GTLog.logger.info("Registering Items.");
-        MetaItems.init();
-
-        GTLog.logger.info("Registering Blocks.");
         MetaBlocks.init();
+        MetaItems.init();
 
         GTLog.logger.info("Registering TileEntities.");
 

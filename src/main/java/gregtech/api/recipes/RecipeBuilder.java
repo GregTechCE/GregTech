@@ -1,6 +1,5 @@
 package gregtech.api.recipes;
 
-import gnu.trove.iterator.TObjectIntIterator;
 import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import gregtech.api.items.metaitem.MetaItem;
@@ -19,6 +18,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -35,8 +35,8 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 
 	protected RecipeMap<T, R> recipeMap;
 
-	protected List<ItemStack> inputs = new ArrayList<>(0);
-	protected List<ItemStack> outputs = new ArrayList<>(0);
+	protected NonNullList<ItemStack> inputs = NonNullList.create();
+	protected NonNullList<ItemStack> outputs = NonNullList.create();
 	protected TObjectIntMap<ItemStack> chancedOutputs = new TObjectIntHashMap<>(0);
 
 	protected List<FluidStack> fluidInputs = new ArrayList<>(0);
@@ -57,8 +57,8 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 	protected EnumValidationResult recipeStatus = EnumValidationResult.VALID;
 
 	protected RecipeBuilder() {
-		this.inputs = new ArrayList<>(0);
-		this.outputs = new ArrayList<>(0);
+		this.inputs = NonNullList.create();
+		this.outputs = NonNullList.create();
 		this.chancedOutputs = new TObjectIntHashMap<>(0);
 
 		this.fluidInputs = new ArrayList<>(0);
@@ -67,8 +67,10 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 
 	protected RecipeBuilder(T recipe, RecipeMap<T, R> recipeMap) {
 		this.recipeMap = recipeMap;
-		this.inputs = GTUtility.copyStackList(recipe.getInputs());
-		this.outputs = GTUtility.copyStackList(recipe.getOutputs());
+		this.inputs = NonNullList.create();
+		this.inputs.addAll(GTUtility.copyStackList(recipe.getInputs()));
+		this.outputs = NonNullList.create();
+		this.outputs.addAll(GTUtility.copyStackList(recipe.getOutputs()));
 
 		this.chancedOutputs = new TObjectIntHashMap<>();
 		recipe.getChancedOutputs().forEachEntry((key, value) -> {
@@ -88,8 +90,10 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 
 	protected RecipeBuilder(RecipeBuilder<T, R> recipeBuilder) {
 		this.recipeMap = recipeBuilder.recipeMap;
-		this.inputs = GTUtility.copyStackList(recipeBuilder.getInputs());
-		this.outputs = GTUtility.copyStackList(recipeBuilder.getOutputs());
+        this.inputs = NonNullList.create();
+        this.inputs.addAll(GTUtility.copyStackList(recipeBuilder.getInputs()));
+        this.outputs = NonNullList.create();
+        this.outputs.addAll(GTUtility.copyStackList(recipeBuilder.getOutputs()));
 
 		this.chancedOutputs = new TObjectIntHashMap<>();
 		recipeBuilder.getChancedOutputs().forEachEntry((key, value) -> {
@@ -216,8 +220,8 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 	}
 
 	public R fromRecipe(T recipe) {
-		this.inputs = new ArrayList<>(recipe.getInputs());
-		this.outputs = new ArrayList<>(recipe.getOutputs());
+		this.inputs = NonNullList.from(ItemStack.EMPTY, recipe.getInputs().toArray(new ItemStack[0]));
+		this.outputs = NonNullList.from(ItemStack.EMPTY, recipe.getOutputs().toArray(new ItemStack[0]));
 		this.chancedOutputs = new TObjectIntHashMap<>(recipe.getChancedOutputs());
 		this.fluidInputs = new ArrayList<>(recipe.getFluidInputs());
 		this.fluidOutputs = new ArrayList<>(recipe.getFluidOutputs());
@@ -258,11 +262,11 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 			if (Items.FEATHER.getDamage(stack) != W) {
 				for (int j = 0; j < outputs.size(); j++) {
 					if (ItemStack.areItemStacksEqual(stack, outputs.get(j))) {
-						if (stack.stackSize >= outputs.get(j).stackSize) {
-							stack.stackSize -= outputs.get(j).stackSize;
+						if (stack.getCount() >= outputs.get(j).getCount()) {
+							stack.shrink(outputs.get(j).getCount());
 							outputs.remove(j);
 						} else {
-							outputs.get(j).stackSize -= stack.stackSize;
+							outputs.get(j).shrink(stack.getCount());
 						}
 					}
 				}
@@ -278,13 +282,13 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 				if (duration / i >= 16) {
 					boolean temp = true;
 					for (int j = 0, k = itemStacks.size(); temp && j < k; j++)
-						if (itemStacks.get(j).stackSize % i != 0) temp = false;
+						if (itemStacks.get(j).getCount() % i != 0) temp = false;
 					for (int j = 0; temp && j < fluidInputs.size(); j++)
 						if (fluidInputs.get(j).amount % i != 0) temp = false;
 					for (int j = 0; temp && j < fluidOutputs.size(); j++)
 						if (fluidOutputs.get(j).amount % i != 0) temp = false;
 					if (temp) {
-						for (ItemStack stack : itemStacks) stack.stackSize /= i;
+						for (ItemStack stack : itemStacks) stack.setCount(stack.getCount() / i);
 						for (FluidStack fluidInput : fluidInputs) fluidInput.amount /= i;
 						for (FluidStack fluidOutput : fluidOutputs) fluidOutput.amount /= i;
 						duration /= i;
@@ -334,7 +338,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 
 		//For fakeRecipes don't do check for collisions, regular recipes do check, do not check for recipes that are not registered(i.e. created after postinit stage)
 		if (!(recipeMap instanceof RecipeMap.FakeRecipeMap) &&
-				recipeMap.findRecipe(null, true, Long.MAX_VALUE, this.fluidInputs.toArray(new FluidStack[0]), this.inputs.toArray(new ItemStack[0])) != null) {
+				recipeMap.findRecipe(null, true, Long.MAX_VALUE, this.inputs, this.fluidInputs) != null) {
 			return EnumValidationResult.SKIP;
 		}
 
@@ -489,7 +493,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
                 recipeStatus = EnumValidationResult.INVALID;
             } else {
                 ItemStack stack = itemStack.copy();
-                stack.stackSize = 0;
+                stack.setCount(0);
                 inputs.add(stack);
             }
 			return this;

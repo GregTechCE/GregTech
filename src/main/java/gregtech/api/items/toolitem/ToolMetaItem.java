@@ -117,7 +117,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     @Override
-    public float getStrVsBlock(ItemStack stack, IBlockState state) {
+    public float getDestroySpeed(ItemStack stack, IBlockState state) {
         T metaToolValueItem = getItem(stack);
         if(metaToolValueItem != null) {
             IToolStats toolStats = metaToolValueItem.getToolStats();
@@ -152,8 +152,8 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             float attackSpeed = toolStats.getAttackSpeed(stack);
 
             HashMultimap<String, AttributeModifier> modifiers = HashMultimap.create();
-            modifiers.put(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName(), new AttributeModifier("Weapon modifier", attackDamage, 0));
-            modifiers.put(SharedMonsterAttributes.ATTACK_SPEED.getAttributeUnlocalizedName(), new AttributeModifier("Weapon modifier", attackSpeed, 0));
+            modifiers.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier("Weapon modifier", attackDamage, 0));
+            modifiers.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier("Weapon modifier", attackSpeed, 0));
             return modifiers;
         }
         return HashMultimap.create();
@@ -178,12 +178,12 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             doDamageToItem(stack, toolStats.getToolDamagePerEntityAttack(stack));
             ResourceLocation hitSound = toolStats.getEntityHitSound(stack);
             if(hitSound != null) {
-                GTUtility.playSound(target.worldObj, target.posX, target.posY, target.posZ, hitSound, SoundCategory.PLAYERS, 0.27f, 1.0f);
+                GTUtility.playSound(target.getEntityWorld(), target.posX, target.posY, target.posZ, hitSound, SoundCategory.PLAYERS, 0.27f, 1.0f);
             }
             if(!isUsable(stack, toolStats.getToolDamagePerEntityAttack(stack))) {
                 ResourceLocation breakSound = toolStats.getBreakingSound(stack);
                 if(breakSound != null) {
-                    GTUtility.playSound(target.worldObj, target.posX, target.posY, target.posZ, breakSound, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                    GTUtility.playSound(target.getEntityWorld(), target.posX, target.posY, target.posZ, breakSound, SoundCategory.PLAYERS, 1.0f, 1.0f);
                 }
             }
             float additionalDamage = toolStats.getNormalDamageBonus(target, stack, attacker);

@@ -54,7 +54,7 @@ public class FoodUseManager implements IItemBehaviour, IItemUseManager {
 
     @Override
     public ItemStack onItemUseFinish(ItemStack stack, EntityPlayer player) {
-        --stack.stackSize;
+        stack.shrink(1);
         player.getFoodStats().addStats(foodStats.getFoodLevel(stack, player), foodStats.getSaturation(stack, player));
         foodStats.onEaten(stack, player);
         return stack;
@@ -66,8 +66,8 @@ public class FoodUseManager implements IItemBehaviour, IItemUseManager {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        return ActionResult.newResult(EnumActionResult.PASS, stack);
+    public ActionResult<ItemStack> onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        return ActionResult.newResult(EnumActionResult.PASS, player.getHeldItem(hand));
     }
 
     @Override
@@ -79,8 +79,8 @@ public class FoodUseManager implements IItemBehaviour, IItemUseManager {
     public void onUpdate(ItemStack itemStack, World world, Entity player, int timer, boolean isInHand) {}
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
-        return ActionResult.newResult(EnumActionResult.PASS, itemStack);
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        return ActionResult.newResult(EnumActionResult.PASS, player.getHeldItem(hand));
     }
 
 }
