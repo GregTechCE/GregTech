@@ -10,8 +10,10 @@ import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.util.GTLog;
+import gregtech.common.blocks.CompressedItemBlock;
 import gregtech.common.blocks.MachineItemBlock;
 import gregtech.common.blocks.MetaBlocks;
+import gregtech.common.blocks.OreItemBlock;
 import gregtech.common.blocks.StoneItemBlock;
 import gregtech.common.blocks.VariantItemBlock;
 import gregtech.common.items.MetaItems;
@@ -27,9 +29,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.IFuelHandler;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.LinkedList;
@@ -39,6 +43,7 @@ import java.util.function.Supplier;
 
 import static gregtech.common.blocks.MetaBlocks.*;
 
+@Mod.EventBusSubscriber
 public class CommonProxy {
 
 //    public boolean mDisableVanillaOres = true;
@@ -62,7 +67,7 @@ public class CommonProxy {
 //    public int mPollutionSourRainLimit = 2000000;
 
     @SubscribeEvent
-    public void registerBlocks(RegistryEvent.Register<Block> event) {
+    public static void registerBlocks(RegistryEvent.Register<Block> event) {
         GTLog.logger.info("Registering Blocks...");
         IForgeRegistry<Block> registry = event.getRegistry();
         registry.register(MetaBlocks.MACHINE);
@@ -77,18 +82,21 @@ public class CommonProxy {
         registry.register(MetaBlocks.MINERAL);
         registry.register(MetaBlocks.CONCRETE);
 
-        MetaBlocks.COMPRESSED.values().forEach(registry::register);
-        MetaBlocks.ORES.values().forEach(registry::register);
+        MetaBlocks.COMPRESSED.values().stream().distinct().forEach(registry::register);
+        MetaBlocks.ORES.values().stream().distinct().forEach(registry::register);
     }
 
     @SubscribeEvent
-    public void registerItems(RegistryEvent.Register<Item> event) {
+    public static void registerItems(RegistryEvent.Register<Item> event) {
         GTLog.logger.info("Registering Items...");
         IForgeRegistry<Item> registry = event.getRegistry();
 
         registry.register(MetaItems.META_ITEM_FIRST);
+        MetaItems.META_ITEM_FIRST.registerSubItems();
         registry.register(MetaItems.META_ITEM_SECOND);
+        MetaItems.META_ITEM_SECOND.registerSubItems();
         registry.register(MetaItems.META_TOOL);
+        MetaItems.META_TOOL.registerSubItems();
 
         registry.register(createItemBlock(MACHINE, () -> new MachineItemBlock(MACHINE)));
         registry.register(createItemBlock(BOILER_CASING, () -> new VariantItemBlock<>(BOILER_CASING)));
@@ -101,9 +109,20 @@ public class CommonProxy {
         registry.register(createItemBlock(GRANITE, () -> new StoneItemBlock<>(GRANITE)));
         registry.register(createItemBlock(MINERAL, () -> new StoneItemBlock<>(MINERAL)));
         registry.register(createItemBlock(CONCRETE, () -> new StoneItemBlock<>(CONCRETE)));
+
+        MetaBlocks.COMPRESSED.values()
+            .stream()
+            .distinct()
+            .map(block -> createItemBlock(block, () -> new CompressedItemBlock(block)))
+            .forEach(registry::register);
+        MetaBlocks.ORES.values()
+            .stream()
+            .distinct()
+            .map(block -> createItemBlock(block, () -> new OreItemBlock(block)))
+            .forEach(registry::register);
     }
 
-    public ItemBlock createItemBlock(Block block, Supplier<ItemBlock> producer) {
+    public static ItemBlock createItemBlock(Block block, Supplier<ItemBlock> producer) {
         ItemBlock itemBlock = producer.get();
         itemBlock.setRegistryName(block.getRegistryName());
         return itemBlock;
@@ -116,9 +135,6 @@ public class CommonProxy {
     }
 
     public void onPreLoad() {
-
-        MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.ORE_GEN_BUS.register(this);
 
         GregTechAPI.bioHazmatList.add(new SimpleItemStack(ItemName.hazmat_helmet.getItemStack()));
         GregTechAPI.bioHazmatList.add(new SimpleItemStack(ItemName.hazmat_chestplate.getItemStack()));

@@ -1,11 +1,14 @@
 package gregtech;
 
+import gregtech.api.model.ResourcePackHook;
 import gregtech.api.net.NetworkHandler;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.GTLog;
 import gregtech.common.CommonProxy;
+import gregtech.common.blocks.models.BlockCompressedFactory;
+import gregtech.common.blocks.models.BlockOreFactory;
 import gregtech.common.items.MetaItems;
 import gregtech.loaders.preload.ItemBlockFluidLoader;
 import gregtech.loaders.preload.MaterialInfoLoader;
@@ -22,7 +25,8 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 @Mod(modid = "gregtech",
      name = "GregTech",
-     version = "[1.12,1.13)",
+     version = "5.10.90",
+     acceptedMinecraftVersions = "[1.12,1.13)",
      useMetadata = false,
      dependencies = "required-after:ic2; " +
              "after:forestry; " +
@@ -31,6 +35,12 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
              "after:twilightForest; " +
              "after:undergroundbiomes;")
 public class GregTechMod {
+
+    static {
+        ResourcePackHook.init();
+        BlockOreFactory.init();
+        BlockCompressedFactory.init();
+    }
 
     @Mod.Instance("gregtech")
     public static GregTechMod instance;
@@ -44,8 +54,6 @@ public class GregTechMod {
 
         GTLog.logger.info("PreInit-Phase started!");
 
-        MinecraftForge.EVENT_BUS.register(CommonProxy.class);
-
         NetworkHandler.init();
 
         OreDictUnifier.init();
@@ -57,7 +65,6 @@ public class GregTechMod {
 //        new MTELoader().run();
 
         gregtechproxy.onPreLoad();
-        Material.init();
 
         GTLog.logger.info("PreInit-Phase finished!");
     }
@@ -69,12 +76,8 @@ public class GregTechMod {
 //        new BeeLoader();
 
         new OreDictionaryLoader().run();
-        MetaItems.META_ITEM_FIRST.registerOreDict();
-        MetaItems.META_ITEM_SECOND.registerOreDict();
-
-        MetaItems.META_ITEM_FIRST.registerRecipes();
-        MetaItems.META_ITEM_SECOND.registerRecipes();
-        MetaItems.META_TOOL.registerRecipes();
+        MetaItems.registerOreDict();
+        MetaItems.registerRecipes();
 
         gregtechproxy.onLoad();
 
@@ -83,6 +86,7 @@ public class GregTechMod {
         }
 
 //        new FuelLoader().run();
+        Material.init();
         GTLog.logger.info("Init-Phase finished!");
     }
 

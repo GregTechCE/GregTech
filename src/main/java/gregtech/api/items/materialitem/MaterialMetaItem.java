@@ -49,13 +49,6 @@ public class MaterialMetaItem extends StandardMetaItem {
         }
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerClient() {
-        super.registerClient();
-        registerModels();
-    }
-
     public void registerOreDict() {
         for(short metaItem : generatedItems) {
             OrePrefix prefix = this.orePrefixes[metaItem / 1000];
@@ -65,7 +58,7 @@ public class MaterialMetaItem extends StandardMetaItem {
     }
 
     @SideOnly(Side.CLIENT)
-    protected void registerModels() {
+    public void registerModels() {
         ArrayList<ResourceLocation> models = new ArrayList<>();
         for(short metaItem : generatedItems) {
             OrePrefix prefix = this.orePrefixes[metaItem / 1000];

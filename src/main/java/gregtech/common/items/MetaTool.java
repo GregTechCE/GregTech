@@ -20,7 +20,6 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
 
     public MetaTool() {
         super();
-        registerSubItems();
     }
 
     public void registerSubItems() {

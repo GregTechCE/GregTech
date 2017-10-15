@@ -6,8 +6,14 @@ import gregtech.api.unification.ore.OrePrefix;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.color.IBlockColor;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -39,8 +45,23 @@ public class MetaBlocks {
     public static HashMap<DustMaterial, BlockCompressed> COMPRESSED;
     public static HashMap<DustMaterial, BlockOre> ORES;
 
+    private static final IBlockColor COMPRESSED_BLOCK_COLOR = (IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) ->
+        state.getValue(((BlockCompressed) state.getBlock()).variantProperty).materialRGB;
+
+    private static final IItemColor COMPRESSED_ITEM_COLOR = (stack, tintIndex) -> {
+        BlockCompressed block = (BlockCompressed) ((ItemBlock) stack.getItem()).getBlock();
+        IBlockState state = block.getStateFromMeta(stack.getItemDamage());
+        return state.getValue(block.variantProperty).materialRGB;
+    };
+
+    private static final IBlockColor ORE_BLOCK_COLOR = (IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) ->
+        tintIndex == 1 ? ((BlockOre) state.getBlock()).material.materialRGB : 0xFFFFFF;
+
+    private static final IItemColor ORE_ITEM_COLOR = (stack, tintIndex) ->
+        tintIndex == 1 ? ((BlockOre) ((ItemBlock) stack.getItem()).getBlock()).material.materialRGB : 0xFFFFFF;
+
     public static void init() {
-        MACHINE = new BlockMachine("machine");
+        MACHINE = new BlockMachine();
         MACHINE.setRegistryName("machine");
 
         BOILER_CASING = new BlockBoilerCasing();
@@ -113,12 +134,8 @@ public class MetaBlocks {
         registerItemModel(MINERAL);
         registerItemModel(CONCRETE);
 
-        for (BlockCompressed block : COMPRESSED.values()) {
-            registerItemModel(block);
-        }
-        for (BlockOre block : ORES.values()) {
-            registerItemModel(block);
-        }
+        COMPRESSED.values().stream().distinct().forEach(block -> registerItemModel(block));
+        ORES.values().stream().distinct().forEach(block -> registerItemModel(block));
     }
 
     @SideOnly(Side.CLIENT)
@@ -128,6 +145,19 @@ public class MetaBlocks {
                 block.getMetaFromState(state),
                 new ModelResourceLocation(block.getRegistryName(), statePropertiesToString(state.getProperties())));
         }
+    }
+
+    public static void registerColors() {
+        MetaBlocks.COMPRESSED.values().stream().distinct().forEach(block -> {
+            Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(COMPRESSED_BLOCK_COLOR, block);
+            Minecraft.getMinecraft().getItemColors().registerItemColorHandler(COMPRESSED_ITEM_COLOR, block);
+        });
+
+        MetaBlocks.ORES.values().stream().distinct().forEach(block -> {
+            Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(ORE_BLOCK_COLOR, block);
+            Minecraft.getMinecraft().getItemColors().registerItemColorHandler(ORE_ITEM_COLOR, block);
+        });
+
     }
 
     private static String statePropertiesToString(Map<IProperty<?>, Comparable<?>> properties) {

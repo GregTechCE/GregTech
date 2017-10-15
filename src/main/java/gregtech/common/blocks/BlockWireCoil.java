@@ -8,6 +8,7 @@ public class BlockWireCoil extends VariantBlock<BlockWireCoil.CoilType> {
 
     public BlockWireCoil() {
         super(Material.IRON);
+        setUnlocalizedName("wire_coil");
         setHardness(5.0f);
         setResistance(10.0f);
         setSoundType(SoundType.METAL);

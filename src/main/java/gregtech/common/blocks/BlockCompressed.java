@@ -29,7 +29,7 @@ public final class BlockCompressed extends DelayedStateBlock {
 
     public BlockCompressed(Collection<? extends Material> materials) {
         super(net.minecraft.block.material.Material.IRON);
-        setUnlocalizedName("compressed_block");
+        setUnlocalizedName("compressed");
         setHardness(5.0f);
         setResistance(10.0f);
         setCreativeTab(GregTechAPI.TAB_GREGTECH_MATERIALS);

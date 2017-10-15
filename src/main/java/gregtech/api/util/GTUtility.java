@@ -38,6 +38,7 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import static gregtech.api.GTValues.*;
@@ -323,6 +324,15 @@ public class GTUtility {
             entity.addPotionEffect(new PotionEffect(MobEffects.HUNGER, level * 130 * amountOfItems));
             entity.addPotionEffect(new PotionEffect(IC2Potion.radiation, level * 180 * amountOfItems));
             return true;
+        }
+        return false;
+    }
+
+    public static <T> boolean iterableContains(Iterable<T> list, Predicate<T> predicate) {
+        for (T t : list) {
+            if (predicate.test(t)) {
+                return true;
+            }
         }
         return false;
     }

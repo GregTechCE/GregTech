@@ -6,14 +6,27 @@
 package gregtech.common;
 
 import gregtech.api.model.ResourcePackHook;
+import gregtech.common.blocks.BlockCompressed;
+import gregtech.common.blocks.BlockOre;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.models.BlockCompressedFactory;
 import gregtech.common.blocks.models.BlockOreFactory;
 import gregtech.common.items.MetaItems;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.color.IBlockColor;
+import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
+@Mod.EventBusSubscriber(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
 
 //    private static void drawGrid(DrawBlockHighlightEvent aEvent) {
@@ -53,22 +66,28 @@ public class ClientProxy extends CommonProxy {
 
     public void onPreLoad() {
         super.onPreLoad();
-        MetaBlocks.registerItemModels();
-        BlockOreFactory.init();
-        BlockCompressedFactory.init();
-        ResourcePackHook.init();
-
     }
 
     @Override
     public void onLoad() {
         super.onLoad();
-        MetaItems.initClient();
+        registerColors();
     }
 
     @Override
     public void onPostLoad() {
         super.onPostLoad();
+    }
+
+    public void registerColors() {
+        MetaBlocks.registerColors();
+        MetaItems.registerColors();
+    }
+
+    @SubscribeEvent
+    public static void registerModels(ModelRegistryEvent event) {
+        MetaBlocks.registerItemModels();
+        MetaItems.registerModels();
     }
 
 //    @SubscribeEvent

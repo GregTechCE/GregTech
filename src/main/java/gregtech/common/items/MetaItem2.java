@@ -34,7 +34,6 @@ public class MetaItem2 extends MaterialMetaItem {
                 OrePrefix.wireFine, OrePrefix.gearSmall, OrePrefix.rotor, OrePrefix.stickLong, OrePrefix.springSmall, OrePrefix.spring,
                 OrePrefix.gemChipped, OrePrefix.gemFlawed, OrePrefix.gemFlawless, OrePrefix.gemExquisite, OrePrefix.gear,
                 null, null, null, null, null);
-        registerSubItems();
     }
 
     public void registerSubItems() {

@@ -16,12 +16,6 @@ import net.minecraft.world.IBlockAccess;
 
 public class BlockOreFactory extends AbstractBlockModelFactory {
 
-    private static final IBlockColor BLOCK_COLOR = (IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) ->
-        tintIndex == 1 ? ((BlockOre) state.getBlock()).material.materialRGB : 0xFFFFFF;
-
-    private static final IItemColor ITEM_COLOR = (stack, tintIndex) ->
-        tintIndex == 1 ? ((BlockOre) ((ItemBlock) stack.getItem()).getBlock()).material.materialRGB : 0xFFFFFF;
-
     public static void init() {
         BlockOreFactory factory = new BlockOreFactory();
         ResourcePackHook.addResourcePackFileHook(factory);
@@ -33,9 +27,6 @@ public class BlockOreFactory extends AbstractBlockModelFactory {
 
     @Override
     protected String fillSample(Block block, String blockStateSample) {
-        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(BLOCK_COLOR, block);
-        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(ITEM_COLOR, block);
-
         MaterialIconSet iconSet = ((BlockOre) block).material.materialIconSet;
         return blockStateSample
                 .replace("$MATERIAL_TEXTURE_NORMAL$", MaterialIconType.ore.getBlockPath(iconSet).toString())

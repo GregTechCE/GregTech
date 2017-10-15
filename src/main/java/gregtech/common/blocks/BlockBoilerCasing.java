@@ -8,6 +8,7 @@ public class BlockBoilerCasing extends VariantBlock<BlockBoilerCasing.BoilerCasi
 
     public BlockBoilerCasing() {
         super(Material.IRON);
+        setUnlocalizedName("boiler_casing");
         setHardness(5.0f);
         setResistance(10.0f);
         setSoundType(SoundType.METAL);

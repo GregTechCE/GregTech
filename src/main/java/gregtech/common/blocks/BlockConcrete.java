@@ -8,6 +8,7 @@ public class BlockConcrete extends StoneBlock<BlockConcrete.ConcreteVariant> {
 
     public BlockConcrete() {
         super(Material.ROCK);
+        setUnlocalizedName("concrete");
         setHardness(2.0f);
         setResistance(3.0f);
         setSoundType(SoundType.STONE);

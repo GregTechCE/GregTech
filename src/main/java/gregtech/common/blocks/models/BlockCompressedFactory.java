@@ -28,15 +28,6 @@ public class BlockCompressedFactory extends AbstractBlockModelFactory {
                 "        }\n" +
                 "      }";
 
-    private static final IBlockColor BLOCK_COLOR = (IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) ->
-        state.getValue(((BlockCompressed) state.getBlock()).variantProperty).materialRGB;
-
-    private static final IItemColor ITEM_COLOR = (stack, tintIndex) -> {
-        BlockCompressed block = (BlockCompressed) ((ItemBlock) stack.getItem()).getBlock();
-        IBlockState state = block.getStateFromMeta(stack.getItemDamage());
-        return state.getValue(block.variantProperty).materialRGB;
-    };
-
     private static final Joiner COMMA_JOINER = Joiner.on(',');
 
     public static void init() {
@@ -50,9 +41,6 @@ public class BlockCompressedFactory extends AbstractBlockModelFactory {
 
     @Override
     protected String fillSample(Block block, String blockStateSample) {
-        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(BLOCK_COLOR, block);
-        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(ITEM_COLOR, block);
-
         ImmutableList<Material> allowedValues = ((BlockCompressed) block).variantProperty.getAllowedValues();
         ArrayList<String> variants = new ArrayList<>();
         for(Material material : allowedValues) {

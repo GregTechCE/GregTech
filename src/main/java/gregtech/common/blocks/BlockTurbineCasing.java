@@ -8,6 +8,7 @@ public class BlockTurbineCasing extends VariantBlock<BlockTurbineCasing.TurbineC
 
     public BlockTurbineCasing() {
         super(Material.IRON);
+        setUnlocalizedName("turbine_casing");
         setHardness(5.0f);
         setResistance(10.0f);
         setSoundType(SoundType.METAL);

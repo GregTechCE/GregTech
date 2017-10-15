@@ -31,7 +31,7 @@ public class ResourcePackHook implements IResourceManagerReloadListener, IResour
 
     public static void init() {
         IResourceManager resourceManager = Minecraft.getMinecraft().getResourceManager();
-        Minecraft.getMinecraft().defaultResourcePacks.add(instance); // TODO MAY BREAK IN 1.12
+        Minecraft.getMinecraft().defaultResourcePacks.add(instance);
         if (resourceManager instanceof SimpleReloadableResourceManager) {
             ((SimpleReloadableResourceManager) resourceManager).registerReloadListener(instance);
         }

@@ -514,10 +514,26 @@ public final class MetaItems {
         META_TOOL.setRegistryName("meta_tool");
 	}
 
-	@SideOnly(Side.CLIENT)
-	public static void initClient() {
-        META_ITEM_FIRST.registerClient();
-        META_ITEM_SECOND.registerClient();
+	public static void registerOreDict() {
+        MetaItems.META_ITEM_FIRST.registerOreDict();
+        MetaItems.META_ITEM_SECOND.registerOreDict();
+    }
+
+    public static void registerRecipes() {
+        MetaItems.META_ITEM_FIRST.registerRecipes();
+        MetaItems.META_ITEM_SECOND.registerRecipes();
+        MetaItems.META_TOOL.registerRecipes();
+    }
+
+    public static void registerModels() {
+        META_ITEM_FIRST.registerModels();
+        META_ITEM_SECOND.registerModels();
+    }
+
+    public static void registerColors() {
+        MetaItems.META_ITEM_FIRST.registerColor();
+        MetaItems.META_ITEM_SECOND.registerColor();
+        MetaItems.META_TOOL.registerColor();
     }
 
 	public static ItemStack getIntegratedCircuit(int configuration) {

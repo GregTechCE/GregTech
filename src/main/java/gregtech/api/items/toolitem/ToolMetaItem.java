@@ -2,6 +2,7 @@ package gregtech.api.items.toolitem;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enchants.EnchantmentData;
 import gregtech.api.items.IDamagableItem;
 import gregtech.api.items.ToolDictNames;
@@ -13,6 +14,7 @@ import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.util.GTUtility;
 import ic2.api.item.IElectricItemManager;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -22,11 +24,14 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EntityDamageSource;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.Validate;
 
@@ -266,6 +271,21 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             return (SolidMaterial) material;
         }
         return null;
+    }
+
+    @Override
+    public CreativeTabs[] getCreativeTabs() {
+        return new CreativeTabs[] {
+            GregTechAPI.TAB_GREGTECH
+        };
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
+        if(tab == GregTechAPI.TAB_GREGTECH) {
+            super.getSubItems(tab, subItems);
+        }
     }
 
     public class MetaToolValueItem extends MetaValueItem {

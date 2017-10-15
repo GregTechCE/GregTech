@@ -32,9 +32,9 @@ public class BlockMachine extends Block implements ITileEntityProvider {
     public static final PropertyInteger HARVEST_LEVEL = PropertyInteger.create("harvest_level", 0, 4);
     public static final PropertyEnum<ToolClass> HARVEST_TOOL = PropertyEnum.create("harvest_tool", ToolClass.class);
 
-    protected BlockMachine(String name) {
+    protected BlockMachine() {
         super(Material.IRON);
-        setUnlocalizedName(name);
+        setUnlocalizedName("machine");
         setHardness(6.0f);
         setResistance(8.0f);
         setSoundType(SoundType.METAL);

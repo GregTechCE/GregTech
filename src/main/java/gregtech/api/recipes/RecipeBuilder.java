@@ -1,5 +1,6 @@
 package gregtech.api.recipes;
 
+import com.google.common.base.Predicates;
 import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import gregtech.api.items.metaitem.MetaItem;
@@ -116,13 +117,13 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 	}
 
 	public R inputs(Collection<ItemStack> inputs) {
-		if (inputs.contains(null)) {
-			GTLog.logger.error("Input cannot contain null ItemStacks. Inputs: {}", inputs);
+		if (GTUtility.iterableContains(inputs, Predicates.or(Objects::isNull, ItemStack::isEmpty))) {
+			GTLog.logger.error("Input cannot contain null or empty ItemStacks. Inputs: {}", inputs);
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             recipeStatus = EnumValidationResult.INVALID;
 		}
         this.inputs.addAll(inputs);
-        this.inputs.removeIf(Objects::isNull);
+        this.inputs.removeIf(Predicates.or(Objects::isNull, ItemStack::isEmpty));
         return getThis();
     }
 
@@ -132,7 +133,9 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 
     public R outputs(Collection<ItemStack> outputs) {
 		outputs = new ArrayList<>(outputs);
-		if(outputs.contains(null)) outputs.removeIf(Objects::isNull);
+		if(GTUtility.iterableContains(inputs, Predicates.or(Objects::isNull, ItemStack::isEmpty))) {
+            outputs.removeIf(Predicates.or(Objects::isNull, ItemStack::isEmpty));
+        }
 		this.outputs.addAll(outputs);
         return getThis();
     }
@@ -164,7 +167,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
     }
 
 	public R chancedOutput(ItemStack stack, int chance) {
-		if (stack == null) {
+		if (stack == null || stack.isEmpty()) {
 			return getThis();
 		}
 

@@ -52,7 +52,6 @@ public class MetaItem1 extends MaterialMetaItem {
 				OrePrefix.ingot, OrePrefix.ingotHot, OrePrefix.plate, OrePrefix.plateDense, OrePrefix.stick, OrePrefix.lens,
 				OrePrefix.round, OrePrefix.bolt, OrePrefix.screw, OrePrefix.ring, OrePrefix.foil, OrePrefix.cell,
 				OrePrefix.cellPlasma, null, null, null, null, null, null, null, null, null);
-        registerSubItems();
 	}
 
     public void registerSubItems() {

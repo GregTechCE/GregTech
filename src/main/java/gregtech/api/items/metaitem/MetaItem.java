@@ -82,7 +82,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerClient() {
+    public void registerColor() {
         Minecraft.getMinecraft().getItemColors().registerItemColorHandler(this::getColorForItemStack, this);
     }
 
