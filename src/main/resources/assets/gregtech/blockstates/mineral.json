@@ -1,8 +1,91 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "minecraft:cube_all"
+    "model": "minecraft:cube_all",
+    "textures": {
+      "all": "gregtech:blocks/iconsets/RENDERING_ERROR"
+    }
   },
   "variants": {
+    "chiseling=normal,variant=marble": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/RENDERING_ERROR"
+      }
+    }],
+    "chiseling=normal,variant=marble_bricks": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/RENDERING_ERROR"
+      }
+    }],
+    "chiseling=normal,variant=basalt": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/RENDERING_ERROR"
+      }
+    }],
+    "chiseling=normal,variant=basalt_bricks": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/RENDERING_ERROR"
+      }
+    }],
+    "chiseling=cracked,variant=marble": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/RENDERING_ERROR"
+      }
+    }],
+    "chiseling=cracked,variant=marble_bricks": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/RENDERING_ERROR"
+      }
+    }],
+    "chiseling=cracked,variant=basalt": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/RENDERING_ERROR"
+      }
+    }],
+    "chiseling=cracked,variant=basalt_bricks": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/RENDERING_ERROR"
+      }
+    }],
+    "chiseling=mossy,variant=marble": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/RENDERING_ERROR"
+      }
+    }],
+    "chiseling=mossy,variant=marble_bricks": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/RENDERING_ERROR"
+      }
+    }],
+    "chiseling=mossy,variant=basalt": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/RENDERING_ERROR"
+      }
+    }],
+    "chiseling=mossy,variant=basalt_bricks": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/RENDERING_ERROR"
+      }
+    }],
+    "chiseling=chiseled,variant=marble": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/RENDERING_ERROR"
+      }
+    }],
+    "chiseling=chiseled,variant=marble_bricks": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/RENDERING_ERROR"
+      }
+    }],
+    "chiseling=chiseled,variant=basalt": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/RENDERING_ERROR"
+      }
+    }],
+    "chiseling=chiseled,variant=basalt_bricks": [{
+      "textures": {
+        "all": "gregtech:blocks/iconsets/RENDERING_ERROR"
+      }
+    }]
   }
 }

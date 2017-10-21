@@ -1,12 +1,9 @@
-package gregtech.api.capability;
+package gregtech.api.capability.internal;
 
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 
 public interface IUpgradable {
-
-    @CapabilityInject(IUpgradable.class)
-    public static final Capability<IUpgradable> CAPABILITY_UPGRADEABLE = null;
 
     enum UpgradeType {
         MUFFLER,

@@ -5,9 +5,6 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.ArrayList;
 
-/**
- * You are allowed to include this File in your Download, as i will not change it.
- */
 public interface IDebugableBlock {
 
     /**

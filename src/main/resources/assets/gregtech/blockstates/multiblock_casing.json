@@ -8,6 +8,11 @@
   },
   "variants": {
     "casing_variant": {
+      "bronze_bricks": {
+        "textures": {
+          "all": "gregtech:blocks/iconsets/RENDERING_ERROR"
+        }
+      },
       "engine_intake": {
         "textures": {
           "all": "gregtech:blocks/iconsets/MACHINE_CASING_ENGINE_INTAKE"
@@ -24,7 +29,9 @@
         }
       },
       "assembling_machine": {
-      },
+        "textures": {
+          "all": "gregtech:blocks/iconsets/RENDERING_ERROR"
+        }},
       "fusion": {
         "textures": {
           "all": "gregtech:blocks/iconsets/FUSIONI_8"
