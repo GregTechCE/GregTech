@@ -63,8 +63,8 @@ public class ClientProxy extends CommonProxy {
 
     public void onPreLoad() {
         super.onPreLoad();
-        ModelLoaderRegistry.registerLoader(MTEModelLoader.INSTANCE);
-        MTEModelLoader.INSTANCE.addMTE2ModelMapping(new GTResourceLocation("block/basic_mte"), new MetaTileEntityModel(MetaTileEntityBakedModel::new));
+//        ModelLoaderRegistry.registerLoader(MTEModelLoader.INSTANCE);
+//        MTEModelLoader.INSTANCE.addMTE2ModelMapping(new GTResourceLocation("block/basic_mte"), new MetaTileEntityModel(MetaTileEntityBakedModel::new));
     }
 
     @Override

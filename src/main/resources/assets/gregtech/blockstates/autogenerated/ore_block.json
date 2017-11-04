@@ -4,9 +4,9 @@
     "uvlock": true,
     "model": "gregtech:overlay_model_all",
     "textures": {
-      "base": "builtin/missing",
-      "overlay": "builtin/missing",
-      "particle": "builtin/missing"
+      "base": "missingno",
+      "overlay": "missingno",
+      "particle": "missingno"
     }
   },
   "variants": {

@@ -1,17 +1,35 @@
 {
   "forge_marker": 1,
+  "defaults": {
+    "model": "gregtech:overlay_model_orientable",
+    "textures": {
+      "particle": "gregtech:blocks/iconsets/machine_bronzebricks_side",
+      "top": "gregtech:blocks/iconsets/machine_bronzebricks_top",
+      "bottom": "gregtech:blocks/iconsets/machine_bronzebricks_bottom",
+      "front": "gregtech:blocks/iconsets/machine_bronzebricks_bottom",
+      "side": "gregtech:blocks/iconsets/machine_bronzebricks_side",
+      "overlay_front": "gregtech:blocks/iconsets/overlay_front_steam_furnace",
+      "overlay_bottom": "gregtech:blocks/iconsets/void",
+      "overlay_top": "gregtech:blocks/iconsets/void",
+      "overlay_side": "gregtech:blocks/iconsets/void"
+    },
+    "transform": "forge:default-block"
+  },
   "variants": {
-    "normal": {
-      "model": "gregtech:basic_mte",
-      "textures": {
-        "down": "gregtech:blocks/iconsets/vent_normal",
-        "up": "gregtech:blocks/iconsets/vent_normal",
-        "east": "gregtech:blocks/iconsets/vent_normal",
-        "west": "gregtech:blocks/iconsets/vent_normal",
-        "north": "gregtech:blocks/iconsets/vent_normal",
-        "south": "gregtech:blocks/iconsets/vent_normal"
+    "facing": {
+      "north": { },
+      "south": { "y": 180 },
+      "west": { "y": 270 },
+      "east": { "y": 90 }
+    },
+    "active": {
+      "true": {
+        "textures": {
+          "overlay_front": "gregtech:blocks/iconsets/overlay_front_steam_furnace_active"
+        }
       },
-      "transform": "forge:default-block"
-    }
+      "false": {}
+    },
+    "inventory": [{}]
   }
 }

@@ -1,5 +1,6 @@
 package gregtech;
 
+import gregtech.api.metatileentity.MetaTileEntityUIFactory;
 import gregtech.api.model.ResourcePackHook;
 import gregtech.api.net.NetworkHandler;
 import gregtech.api.recipes.RecipeMap;
@@ -51,6 +52,7 @@ public class GregTechMod {
         GTLog.logger.info("PreInit-Phase started!");
 
         NetworkHandler.init();
+        MetaTileEntityUIFactory.INSTANCE.init();
 
         OreDictUnifier.init();
 //        new OreProcessingLoader().run();

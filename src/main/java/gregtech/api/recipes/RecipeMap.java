@@ -971,7 +971,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
         for (int i = 0; i < fluidInputs.getTanks(); i++) {
             fluidStacks.add(fluidInputs.getFluidInTank(i));
         }
-        NonNullList<ItemStack> stacks = NonNullList.withSize(inputs.getSlots(), ItemStack.EMPTY);
+        NonNullList<ItemStack> stacks = NonNullList.create();
         for (int i = 0; i < inputs.getSlots(); i++) {
             stacks.add(inputs.getStackInSlot(i));
         }

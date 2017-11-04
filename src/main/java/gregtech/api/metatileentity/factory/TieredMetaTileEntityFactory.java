@@ -5,15 +5,14 @@ import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.IMetaTileEntityFactory;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
 import gregtech.common.blocks.BlockMachine;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.ResourceLocation;
 
 public class TieredMetaTileEntityFactory<T extends TieredMetaTileEntity> extends MetaTileEntityFactory<T> {
 
     protected int tier;
 
-    public TieredMetaTileEntityFactory(BlockMachine.ToolClass toolClass, int harvestLevel, String[] description, Class<T> metaTileEntityClass, ResourceLocation modelLocation, IBlockState defaultState, int tier) {
-        super(toolClass, harvestLevel, description, metaTileEntityClass, modelLocation, defaultState);
+    public TieredMetaTileEntityFactory(BlockMachine.ToolClass toolClass, int harvestLevel, String[] description, Class<T> metaTileEntityClass, ResourceLocation modelLocation, int tier) {
+        super(toolClass, harvestLevel, description, metaTileEntityClass, modelLocation);
         this.tier = tier;
     }
 

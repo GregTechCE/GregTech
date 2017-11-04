@@ -14,7 +14,7 @@ public class ModularUIGui extends GuiContainer {
         return modularUI;
     }
 
-    public ModularUIGui(ModularUI modularUI) {
+    public ModularUIGui(ModularUI<?> modularUI) {
         super(new ModularUIContainer(modularUI));
         this.modularUI = modularUI;
     }

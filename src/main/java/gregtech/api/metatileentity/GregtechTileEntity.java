@@ -47,7 +47,7 @@ public class GregtechTileEntity extends TickableTileEntityBase implements IGregT
         super.readFromNBT(compound);
         if (compound.hasKey("MetaTileEntityId", Constants.NBT.TAG_STRING)) {
             IMetaTileEntityFactory factory = GregTechAPI.METATILEENTITY_REGISTRY.getObject(compound.getString("MetaTileEntityId"));
-            this.metaTileEntity = (MetaTileEntity) factory.constructMetaTileEntity();
+            this.setMetaTileEntity(factory.constructMetaTileEntity());
             NBTTagCompound metaTileEntityTag = compound.getCompoundTag("MetaTileEntity");
             metaTileEntity.loadNBTData(metaTileEntityTag);
         }
@@ -71,7 +71,7 @@ public class GregtechTileEntity extends TickableTileEntityBase implements IGregT
         switch (dataId) {
             case 0:
                 IMetaTileEntityFactory factory = GregTechAPI.METATILEENTITY_REGISTRY.getObjectById(buf.readShort());
-                this.metaTileEntity = (MetaTileEntity) factory.constructMetaTileEntity();
+                this.setMetaTileEntity(factory.constructMetaTileEntity());
                 this.metaTileEntity.receiveInitialData(buf);
                 break;
             default:

@@ -34,9 +34,6 @@ public interface IMetaTileEntity extends ITurnable, IRedstoneReceiver, IRedstone
 
     IGregTechTileEntity getHolder();
 
-    @SideOnly(Side.CLIENT)
-    IBlockState getModelState();
-
     /**
      * when placing a Machine in World, to initialize default Modes. data can be null!
      */

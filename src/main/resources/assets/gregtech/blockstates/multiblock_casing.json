@@ -3,14 +3,14 @@
   "defaults": {
     "model": "minecraft:cube_all",
     "textures": {
-      "all": "gregtech:blocks/iconsets/RENDERING_ERROR"
+      "all": "missingno"
     }
   },
   "variants": {
     "variant": {
       "bronze_bricks": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/RENDERING_ERROR"
+          "all": "missingno"
         }
       },
       "engine_intake": {
@@ -30,7 +30,7 @@
       },
       "assembling_machine": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/RENDERING_ERROR"
+          "all": "missingno"
         }
       },
       "fusion": {

@@ -15,9 +15,7 @@ public interface IMetaTileEntityFactory {
     String getMetaName();
     String getUnlocalizedName();
 
-    ResourceLocation getModelLocation();
-
-    IBlockState getDefaultRenderState();
+    ResourceLocation getStateLocation();
 
     /**
      * @return a short description of tile entity stack

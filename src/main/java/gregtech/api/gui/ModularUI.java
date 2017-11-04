@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public final class ModularUI<H extends IUIHolder> {
 
-    public final ImmutableBiMap<Integer, Widget> guiWidgets;
+    public final ImmutableBiMap<Integer, Widget<H>> guiWidgets;
 
     public final ResourceLocation backgroundPath;
     public final int width, height;
@@ -33,7 +33,7 @@ public final class ModularUI<H extends IUIHolder> {
     public final H holder;
     public final EntityPlayer entityPlayer;
 
-    public ModularUI(ImmutableBiMap<Integer, Widget> guiWidgets, ResourceLocation backgroundPath, int width, int height, H holder, EntityPlayer entityPlayer) {
+    public ModularUI(ImmutableBiMap<Integer, Widget<H>> guiWidgets, ResourceLocation backgroundPath, int width, int height, H holder, EntityPlayer entityPlayer) {
         this.guiWidgets = guiWidgets;
         this.backgroundPath = backgroundPath;
         this.width = width;
@@ -73,7 +73,7 @@ public final class ModularUI<H extends IUIHolder> {
      */
     public static class Builder<T extends IUIHolder> {
 
-        private ImmutableBiMap.Builder<Integer, Widget> widgets = ImmutableBiMap.builder();
+        private ImmutableBiMap.Builder<Integer, Widget<T>> widgets = ImmutableBiMap.builder();
         private ResourceLocation background;
         private int width, height;
 
@@ -84,7 +84,7 @@ public final class ModularUI<H extends IUIHolder> {
             this.height = height;
         }
 
-        public <H extends T> Builder<T> widget(int id, Widget<H> widget) {
+        public Builder<T> widget(int id, Widget<T> widget) {
             Preconditions.checkNotNull(widget);
             widgets.put(id, widget);
             return this;

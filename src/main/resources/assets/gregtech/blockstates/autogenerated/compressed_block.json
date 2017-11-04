@@ -4,7 +4,7 @@
     "uvlock": true,
     "model": "gregtech:tinted_cube_all",
     "textures": {
-      "all": "builtin/missing"
+      "all": "missingno"
     }
   },
   "variants": {

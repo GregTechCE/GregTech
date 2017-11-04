@@ -134,6 +134,7 @@ public class MetaBlocks {
         registerItemModel(GRANITE);
         registerItemModel(MINERAL);
         registerItemModel(CONCRETE);
+        MACHINE.registerItemModel();
 
         COMPRESSED.values().stream().distinct().forEach(MetaBlocks::registerItemModel);
         ORES.values().stream().distinct().forEach(MetaBlocks::registerItemModel);
@@ -166,7 +167,7 @@ public class MetaBlocks {
         });
     }
 
-    private static String statePropertiesToString(Map<IProperty<?>, Comparable<?>> properties) {
+    public static String statePropertiesToString(Map<IProperty<?>, Comparable<?>> properties) {
         StringBuilder stringbuilder = new StringBuilder();
 
         for (Map.Entry<IProperty<?>, Comparable<?>> entry : properties.entrySet()) {

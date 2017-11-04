@@ -1,10 +1,13 @@
 package gregtech.common.blocks;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.metatileentity.GregtechTileEntity;
 import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.IMetaTileEntityFactory;
+import gregtech.api.metatileentity.WorkableMetaTileEntity;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.util.GTResourceLocation;
 import gregtech.common.blocks.properties.PropertyString;
@@ -14,8 +17,8 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -23,8 +26,10 @@ import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
@@ -35,26 +40,26 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.property.ExtendedBlockState;
-import net.minecraftforge.common.property.IExtendedBlockState;
-import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static gregtech.common.blocks.properties.UnlistedBlockAccess.BLOCK_ACCESS;
-import static gregtech.common.blocks.properties.UnlistedBlockPos.BLOCK_POS;
+import java.util.HashMap;
+import java.util.Map;
+
+import static gregtech.common.blocks.MetaBlocks.statePropertiesToString;
 
 @SuppressWarnings("deprecation")
 public class BlockMachine extends Block implements ITileEntityProvider {
 
-    public static final PropertyInteger HARVEST_LEVEL = PropertyInteger.create("harvest_level", 0, 4);
-    public static final PropertyEnum<ToolClass> HARVEST_TOOL = PropertyEnum.create("harvest_tool", ToolClass.class);
+    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
     public static PropertyString META_TYPE;
 
     // Instantiated after all MTEs are registered
     protected BlockMachine() {
         super(Material.IRON);
+        setDefaultState(this.getBlockState().getBaseState().withProperty(ACTIVE, false));
         setUnlocalizedName("machine");
         setHardness(6.0f);
         setResistance(8.0f);
@@ -67,38 +72,54 @@ public class BlockMachine extends Block implements ITileEntityProvider {
         ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
             @Override
             protected ModelResourceLocation getModelResourceLocation(IBlockState blockState) {
-                ResourceLocation modelLocation = GregTechAPI.METATILEENTITY_REGISTRY.getObject(blockState.getValue(META_TYPE)).getModelLocation();
-                return new ModelResourceLocation(new GTResourceLocation(modelLocation.getResourcePath()), null);
+                ResourceLocation location = GregTechAPI.METATILEENTITY_REGISTRY.getObject(blockState.getValue(META_TYPE)).getStateLocation();
+                Map<IProperty<?>, Comparable<?>> map = Maps.newLinkedHashMap(blockState.getProperties());
+                map.remove(META_TYPE);
+                return new ModelResourceLocation(new GTResourceLocation("machines/" + location.getResourcePath()), getPropertyString(map));
             }
         });
     }
 
+    @SideOnly(Side.CLIENT)
+    public void registerItemModel() {
+        for (IMetaTileEntityFactory factory : GregTechAPI.METATILEENTITY_REGISTRY.getObjectsWithIds()) {
+            ResourceLocation location = GregTechAPI.METATILEENTITY_REGISTRY.getObject(factory.getMetaName()).getStateLocation();
+            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this),
+                GregTechAPI.METATILEENTITY_REGISTRY.getIDForObject(factory),
+                new ModelResourceLocation(new GTResourceLocation("machines/" + location.getResourcePath()), "inventory"));
+        }
+    }
+
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-        ItemStack itemStack = placer.getHeldItem(hand);
-        IMetaTileEntityFactory factory = ((MachineItemBlock) (itemStack).getItem()).getFactory(itemStack);
-        return getDefaultState().withProperty(HARVEST_LEVEL, factory.getHarvestLevel()).withProperty(HARVEST_TOOL, factory.getHarvestTool());
+        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
     }
 
     @Override
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
-        ((IGregTechTileEntity) worldIn.getTileEntity(pos)).getMetaTileEntity().onEntityCollidedWithBlock(entityIn);
+        IGregTechTileEntity tileEntity = (IGregTechTileEntity) worldIn.getTileEntity(pos);
+        if (tileEntity != null) {
+            tileEntity.getMetaTileEntity().onEntityCollidedWithBlock(entityIn);
+        }
     }
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         ItemStack heldItem = playerIn.getHeldItem(hand);
-        IMetaTileEntity tileEntity = ((IGregTechTileEntity) worldIn.getTileEntity(pos)).getMetaTileEntity();
-        if(tileEntity.isAccessAllowed(playerIn)) {
-            if(heldItem.isEmpty()) {
-                return tileEntity.onRightClick(side, playerIn, hand, hitX, hitY, hitZ);
+        IGregTechTileEntity tileEntity = (IGregTechTileEntity) worldIn.getTileEntity(pos);
+        if (tileEntity == null) return false;
+
+        IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
+        if (metaTileEntity.isAccessAllowed(playerIn)) {
+            if (heldItem.isEmpty()) {
+                return metaTileEntity.onRightClick(side, playerIn, hand, hitX, hitY, hitZ);
             } else {
                 SimpleItemStack stack = new SimpleItemStack(heldItem);
-                if(GregTechAPI.screwdriverList.contains(stack)) {
-                    return tileEntity.onScrewdriverRightClick(side, playerIn, hand, hitX, hitY, hitZ);
-                } else if(GregTechAPI.wrenchList.contains(stack)) {
-                    return tileEntity.onWrenchRightClick(side, side, playerIn, hand, hitX, hitY, hitZ);
-                } else return tileEntity.onRightClick(side, playerIn, hand, hitX, hitY, hitZ);
+                if (GregTechAPI.screwdriverList.contains(stack)) {
+                    return metaTileEntity.onScrewdriverRightClick(side, playerIn, hand, hitX, hitY, hitZ);
+                } else if (GregTechAPI.wrenchList.contains(stack)) {
+                    return metaTileEntity.onWrenchRightClick(side, side, playerIn, hand, hitX, hitY, hitZ);
+                } else return metaTileEntity.onRightClick(side, playerIn, hand, hitX, hitY, hitZ);
             }
         }
         return false;
@@ -106,9 +127,11 @@ public class BlockMachine extends Block implements ITileEntityProvider {
 
     @Override
     public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn) {
-        IMetaTileEntity tileEntity = ((IGregTechTileEntity) worldIn.getTileEntity(pos)).getMetaTileEntity();
-        if(tileEntity.isAccessAllowed(playerIn)) {
-            tileEntity.onLeftClick(playerIn);
+        IGregTechTileEntity tileEntity = (IGregTechTileEntity) worldIn.getTileEntity(pos);
+        if (tileEntity == null) return;
+        IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
+        if (metaTileEntity.isAccessAllowed(playerIn)) {
+            metaTileEntity.onLeftClick(playerIn);
         }
     }
 
@@ -124,12 +147,16 @@ public class BlockMachine extends Block implements ITileEntityProvider {
 
     @Override
     public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-        return ((IGregTechTileEntity) world.getTileEntity(pos)).getMetaTileEntity().canConnectRedstone(side);
+        IGregTechTileEntity tileEntity = (IGregTechTileEntity) world.getTileEntity(pos);
+        if (tileEntity == null) return false;
+        return tileEntity.getMetaTileEntity().canConnectRedstone(side);
     }
 
     @Override
     public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-        return ((IGregTechTileEntity) blockAccess.getTileEntity(pos)).getMetaTileEntity().getOutputRedstoneSignal(side);
+        IGregTechTileEntity tileEntity = (IGregTechTileEntity) blockAccess.getTileEntity(pos);
+        if (tileEntity == null) return 0;
+        return tileEntity.getMetaTileEntity().getOutputRedstoneSignal(side);
     }
 
     @Override
@@ -139,7 +166,9 @@ public class BlockMachine extends Block implements ITileEntityProvider {
 
     @Override
     public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
-        return ((IGregTechTileEntity) worldIn.getTileEntity(pos)).getMetaTileEntity().getComparatorValue();
+        IGregTechTileEntity tileEntity = (IGregTechTileEntity) worldIn.getTileEntity(pos);
+        if (tileEntity == null) return 0;
+        return tileEntity.getMetaTileEntity().getComparatorValue();
     }
 
     @Override
@@ -149,66 +178,50 @@ public class BlockMachine extends Block implements ITileEntityProvider {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        IProperty<?>[] properties = {HARVEST_LEVEL, HARVEST_TOOL, META_TYPE};
-        IUnlistedProperty<?>[] unlistedProperties = {BLOCK_ACCESS, BLOCK_POS};
-        return new ExtendedBlockState(this, properties, unlistedProperties);
-    }
-
-    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        IExtendedBlockState extendedBlockState = (IExtendedBlockState) state;
-        return extendedBlockState.withProperty(BLOCK_ACCESS, world).withProperty(BLOCK_POS, pos);
+        return new BlockStateContainer(this, ACTIVE, FACING, META_TYPE);
     }
 
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
         TileEntity tileentity = worldIn instanceof ChunkCache ? ((ChunkCache) worldIn).getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) : worldIn.getTileEntity(pos);
 
-        if (!(tileentity instanceof GregtechTileEntity)) return state;
-
+        if (tileentity == null) return state;
         IMetaTileEntity mte = ((GregtechTileEntity) tileentity).getMetaTileEntity();
-        if (mte == null) return state;
 
         state = state.withProperty(META_TYPE, GregTechAPI.METATILEENTITY_REGISTRY.getNameForObject(mte.getFactory()));
+
+        if (mte instanceof WorkableMetaTileEntity) {
+            state = state.withProperty(ACTIVE, ((WorkableMetaTileEntity<?>) mte).isActive());
+        }
 
         return state;
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        int harvestLevel;
-        int tool;
-        if ((meta & 0b1100) == 0b1100) {
-            harvestLevel = 4;
-            tool = meta & 0b0011;
-        } else {
-            harvestLevel = meta & 0b0011;
-            tool = meta & 0b1100;
-        }
+        int facing = meta & 0b0011;
         return getDefaultState()
-                .withProperty(HARVEST_LEVEL, harvestLevel)
-                .withProperty(HARVEST_TOOL, ToolClass.values()[tool]);
+            .withProperty(FACING, EnumFacing.getHorizontal(facing));
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        int harvestLevel = state.getValue(HARVEST_LEVEL);
-        int tool = state.getValue(HARVEST_TOOL).ordinal();
-        if (harvestLevel < 4) {
-            tool <<= 2;
-        } else {
-            harvestLevel |= 1 << 4;
-        }
-        return harvestLevel & tool;
+        return state.getValue(FACING).ordinal();
     }
 
     @Override
     public String getHarvestTool(IBlockState state) {
-        return state.getValue(HARVEST_TOOL).getName();
+        return GregTechAPI.METATILEENTITY_REGISTRY.getObject(state.getValue(META_TYPE)).getHarvestTool().getName();
     }
 
     @Override
     public int getHarvestLevel(IBlockState state) {
-        return state.getValue(HARVEST_LEVEL);
+        return GregTechAPI.METATILEENTITY_REGISTRY.getObject(state.getValue(META_TYPE)).getHarvestLevel();
+    }
+
+    @Override
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT_MIPPED;
     }
 
     @Override

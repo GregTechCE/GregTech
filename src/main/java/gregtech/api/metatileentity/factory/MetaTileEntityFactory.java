@@ -8,14 +8,10 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.common.blocks.BlockMachine;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-
-import java.io.File;
 
 public class MetaTileEntityFactory<T extends MetaTileEntity> implements IMetaTileEntityFactory {
 
@@ -24,15 +20,13 @@ public class MetaTileEntityFactory<T extends MetaTileEntity> implements IMetaTil
     private String[] description;
     protected Class<T> metaTileEntityClass;
     protected ResourceLocation modelLocation;
-    protected IBlockState defaultState;
 
-    public MetaTileEntityFactory(BlockMachine.ToolClass toolClass, int harvestLevel, String[] description, Class<T> metaTileEntityClass, ResourceLocation modelLocation, IBlockState defaultState) {
+    public MetaTileEntityFactory(BlockMachine.ToolClass toolClass, int harvestLevel, String[] description, Class<T> metaTileEntityClass, ResourceLocation modelLocation) {
         this.toolClass = toolClass;
         this.harvestLevel = harvestLevel;
         this.description = description;
         this.metaTileEntityClass = metaTileEntityClass;
         this.modelLocation = modelLocation;
-        this.defaultState = defaultState;
     }
 
     @Override
@@ -56,13 +50,8 @@ public class MetaTileEntityFactory<T extends MetaTileEntity> implements IMetaTil
     }
 
     @Override
-    public ResourceLocation getModelLocation() {
+    public ResourceLocation getStateLocation() {
         return modelLocation;
-    }
-
-    @Override
-    public IBlockState getDefaultRenderState() {
-        return defaultState;
     }
 
     @Override

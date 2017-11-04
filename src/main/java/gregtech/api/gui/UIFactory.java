@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public abstract class UIFactory<E extends IUIHolder> {
 
-    public static final GTControlledRegistry<UIFactory> FACTORY_REGISTRY = new GTControlledRegistry<>(Short.MAX_VALUE);
+    public static final GTControlledRegistry<UIFactory<?>> FACTORY_REGISTRY = new GTControlledRegistry<>(Short.MAX_VALUE);
 
     public final void openUI(E holder, EntityPlayerMP player) {
         ModularUI<E> uiTemplate = createUITemplate(holder, player);
@@ -41,6 +41,7 @@ public abstract class UIFactory<E extends IUIHolder> {
         player.openContainer = new ModularUIContainer(uiTemplate);
         player.openContainer.windowId = player.currentWindowId;
         player.openContainer.addListener(player);
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.entity.player.PlayerContainerEvent.Open(player, player.openContainer));
     }
 
     @SideOnly(Side.CLIENT)

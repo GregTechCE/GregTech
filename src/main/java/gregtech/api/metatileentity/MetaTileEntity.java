@@ -82,10 +82,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
         return null;
     }
 
-    @Override
-    public IBlockState getModelState() {
-        return factory.getDefaultRenderState();
-    }
 
     @Override
     public String getMetaName() {
