@@ -6,11 +6,14 @@ import net.minecraft.block.Block;
 import net.minecraft.client.resources.SimpleReloadableResourceManager;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+@SideOnly(Side.CLIENT)
 public abstract class AbstractBlockModelFactory implements ResourcePackHook.IResourcePackFileHook {
 
     private final ResourceLocation sampleResourceLocation;

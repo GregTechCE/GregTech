@@ -1,4 +1,4 @@
-package gregtech.common.blocks.models;
+package gregtech.common.blocks.modelfactories;
 
 import gregtech.api.model.AbstractBlockModelFactory;
 import gregtech.api.model.ResourcePackHook;
@@ -6,14 +6,10 @@ import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.material.MaterialIconType;
 import gregtech.common.blocks.BlockOre;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.color.IBlockColor;
-import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class BlockOreFactory extends AbstractBlockModelFactory {
 
     public static void init() {

@@ -2,18 +2,24 @@ package gregtech.common.blocks;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.internal.IGregTechTileEntity;
+import gregtech.api.metatileentity.GregtechTileEntity;
 import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.IMetaTileEntityFactory;
 import gregtech.api.unification.stack.SimpleItemStack;
+import gregtech.api.util.GTResourceLocation;
+import gregtech.common.blocks.properties.PropertyString;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,9 +28,21 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ChunkCache;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static gregtech.common.blocks.properties.UnlistedBlockAccess.BLOCK_ACCESS;
+import static gregtech.common.blocks.properties.UnlistedBlockPos.BLOCK_POS;
 
 @SuppressWarnings("deprecation")
 public class BlockMachine extends Block implements ITileEntityProvider {
@@ -32,6 +50,9 @@ public class BlockMachine extends Block implements ITileEntityProvider {
     public static final PropertyInteger HARVEST_LEVEL = PropertyInteger.create("harvest_level", 0, 4);
     public static final PropertyEnum<ToolClass> HARVEST_TOOL = PropertyEnum.create("harvest_tool", ToolClass.class);
 
+    public static PropertyString META_TYPE;
+
+    // Instantiated after all MTEs are registered
     protected BlockMachine() {
         super(Material.IRON);
         setUnlocalizedName("machine");
@@ -39,6 +60,17 @@ public class BlockMachine extends Block implements ITileEntityProvider {
         setResistance(8.0f);
         setSoundType(SoundType.METAL);
         setCreativeTab(GregTechAPI.TAB_GREGTECH);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void registerStateMapper() {
+        ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
+            @Override
+            protected ModelResourceLocation getModelResourceLocation(IBlockState blockState) {
+                ResourceLocation modelLocation = GregTechAPI.METATILEENTITY_REGISTRY.getObject(blockState.getValue(META_TYPE)).getModelLocation();
+                return new ModelResourceLocation(new GTResourceLocation(modelLocation.getResourcePath()), null);
+            }
+        });
     }
 
     @Override
@@ -117,7 +149,28 @@ public class BlockMachine extends Block implements ITileEntityProvider {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, HARVEST_LEVEL, HARVEST_TOOL);
+        IProperty<?>[] properties = {HARVEST_LEVEL, HARVEST_TOOL, META_TYPE};
+        IUnlistedProperty<?>[] unlistedProperties = {BLOCK_ACCESS, BLOCK_POS};
+        return new ExtendedBlockState(this, properties, unlistedProperties);
+    }
+
+    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        IExtendedBlockState extendedBlockState = (IExtendedBlockState) state;
+        return extendedBlockState.withProperty(BLOCK_ACCESS, world).withProperty(BLOCK_POS, pos);
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+        TileEntity tileentity = worldIn instanceof ChunkCache ? ((ChunkCache) worldIn).getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) : worldIn.getTileEntity(pos);
+
+        if (!(tileentity instanceof GregtechTileEntity)) return state;
+
+        IMetaTileEntity mte = ((GregtechTileEntity) tileentity).getMetaTileEntity();
+        if (mte == null) return state;
+
+        state = state.withProperty(META_TYPE, GregTechAPI.METATILEENTITY_REGISTRY.getNameForObject(mte.getFactory()));
+
+        return state;
     }
 
     @Override

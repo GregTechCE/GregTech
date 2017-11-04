@@ -1,4 +1,4 @@
-package gregtech.common.blocks.models;
+package gregtech.common.blocks.modelfactories;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
@@ -8,16 +8,12 @@ import gregtech.api.unification.material.MaterialIconType;
 import gregtech.api.unification.material.type.Material;
 import gregtech.common.blocks.BlockCompressed;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.color.IBlockColor;
-import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 
+@SideOnly(Side.CLIENT)
 public class BlockCompressedFactory extends AbstractBlockModelFactory {
 
     private static final String VARIANT_DEFINITION =

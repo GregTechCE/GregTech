@@ -1,6 +1,6 @@
 package gregtech.api.model;
 
-
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -8,7 +8,12 @@ import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Optional;
+
+@SideOnly(Side.CLIENT)
 public abstract class AbstractBakedModel implements IBakedModel {
 
 	private VertexFormat format;
@@ -48,6 +53,9 @@ public abstract class AbstractBakedModel implements IBakedModel {
 
 	protected BakedQuad createQuad(Vec3d v1, Vec3d v2, Vec3d v3, Vec3d v4, TextureAtlasSprite sprite, EnumFacing orientation, int rgbaColor) {
 		Vec3d normal = v3.subtract(v2).crossProduct(v1.subtract(v2)).normalize();
+        if (sprite == null) {
+            sprite = Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
+        }
 
 		UnpackedBakedQuad.Builder builder = new UnpackedBakedQuad.Builder(format);
 		builder.setTexture(sprite);

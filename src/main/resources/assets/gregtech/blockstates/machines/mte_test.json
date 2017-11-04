@@ -1,0 +1,17 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "normal": {
+      "model": "gregtech:basic_mte",
+      "textures": {
+        "down": "gregtech:blocks/iconsets/vent_normal",
+        "up": "gregtech:blocks/iconsets/vent_normal",
+        "east": "gregtech:blocks/iconsets/vent_normal",
+        "west": "gregtech:blocks/iconsets/vent_normal",
+        "north": "gregtech:blocks/iconsets/vent_normal",
+        "south": "gregtech:blocks/iconsets/vent_normal"
+      },
+      "transform": "forge:default-block"
+    }
+  }
+}

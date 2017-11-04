@@ -7,14 +7,13 @@ import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.GTLog;
 import gregtech.common.CommonProxy;
-import gregtech.common.blocks.models.BlockCompressedFactory;
-import gregtech.common.blocks.models.BlockOreFactory;
+import gregtech.common.blocks.modelfactories.BlockCompressedFactory;
+import gregtech.common.blocks.modelfactories.BlockOreFactory;
 import gregtech.common.items.MetaItems;
 import gregtech.loaders.preload.ItemBlockFluidLoader;
 import gregtech.loaders.preload.MaterialInfoLoader;
 import gregtech.loaders.preload.OreDictionaryLoader;
 import net.minecraft.init.Items;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.LoaderException;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -30,10 +29,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
      useMetadata = false,
      dependencies = "required-after:ic2; " +
              "after:forestry; " +
-             "after:railcraft; " +
-             "after:appliedenergistics2; " +
-             "after:twilightForest; " +
-             "after:undergroundbiomes;")
+             "after:railcraft;")
 public class GregTechMod {
 
     static {

@@ -17,7 +17,7 @@ public abstract class SlotWidget<T extends IUIHolder> extends Widget<T> implemen
 
     protected Slot slotReference;
 
-    private IItemHandler itemHandler;
+    protected IItemHandler itemHandler;
 
     private final int slotIndex;
     private final int xPosition;

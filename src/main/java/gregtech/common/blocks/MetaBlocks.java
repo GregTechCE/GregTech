@@ -3,6 +3,7 @@ package gregtech.common.blocks;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
+import gregtech.common.metatileentities.MetaTileEntities;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
@@ -15,7 +16,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -61,9 +61,6 @@ public class MetaBlocks {
         tintIndex == 1 ? ((BlockOre) ((ItemBlock) stack.getItem()).getBlock()).material.materialRGB : 0xFFFFFF;
 
     public static void init() {
-        MACHINE = new BlockMachine();
-        MACHINE.setRegistryName("machine");
-
         BOILER_CASING = new BlockBoilerCasing();
         BOILER_CASING.setRegistryName("boiler_casing");
         METAL_CASING = new BlockMetalCasing();
@@ -106,6 +103,10 @@ public class MetaBlocks {
             createCompressedBlock(materialBuffer, generationIndex);
         }
 
+        MetaTileEntities.init();
+
+        MACHINE = new BlockMachine();
+        MACHINE.setRegistryName("machine");
     }
 
     private static void createCompressedBlock(Collection<DustMaterial> materials, int index) {
@@ -134,8 +135,8 @@ public class MetaBlocks {
         registerItemModel(MINERAL);
         registerItemModel(CONCRETE);
 
-        COMPRESSED.values().stream().distinct().forEach(block -> registerItemModel(block));
-        ORES.values().stream().distinct().forEach(block -> registerItemModel(block));
+        COMPRESSED.values().stream().distinct().forEach(MetaBlocks::registerItemModel);
+        ORES.values().stream().distinct().forEach(MetaBlocks::registerItemModel);
     }
 
     @SideOnly(Side.CLIENT)
@@ -147,6 +148,12 @@ public class MetaBlocks {
         }
     }
 
+    @SideOnly(Side.CLIENT)
+    public static void registerStateMappers() {
+        MetaBlocks.MACHINE.registerStateMapper();
+    }
+
+    @SideOnly(Side.CLIENT)
     public static void registerColors() {
         MetaBlocks.COMPRESSED.values().stream().distinct().forEach(block -> {
             Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(COMPRESSED_BLOCK_COLOR, block);
@@ -157,7 +164,6 @@ public class MetaBlocks {
             Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(ORE_BLOCK_COLOR, block);
             Minecraft.getMinecraft().getItemColors().registerItemColorHandler(ORE_ITEM_COLOR, block);
         });
-
     }
 
     private static String statePropertiesToString(Map<IProperty<?>, Comparable<?>> properties) {
