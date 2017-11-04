@@ -5,22 +5,13 @@
 
 package gregtech.common;
 
-import gregtech.api.GTValues;
-import gregtech.api.util.GTResourceLocation;
 import gregtech.common.blocks.MetaBlocks;
-import gregtech.common.blocks.models.MTEModelLoader;
-import gregtech.common.blocks.models.MetaTileEntityModel;
-import gregtech.common.blocks.models.bakedmodels.MetaTileEntityBakedModel;
 import gregtech.common.items.MetaItems;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.LinkedHashMap;
 
 @SideOnly(Side.CLIENT)
 @Mod.EventBusSubscriber(Side.CLIENT)
