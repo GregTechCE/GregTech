@@ -434,13 +434,6 @@ public class Materials {
         for (DustMaterial dustMaterial : new DustMaterial[]{Zinc, Nickel, Copper, Cobalt, Cobaltite, Tetrahedrite}) {
             dustMaterial.washedIn = SodiumPersulfate;
         }
-        for (Material material : new DustMaterial[]{Iron, PigIron, WroughtIron}) {
-            material.oreReRegistrations.add(MarkerMaterials.GenericMaterial.AnyIron);
-        }
-        for (Material material : new DustMaterial[]{Copper, AnnealedCopper}) {
-            material.oreReRegistrations.add(MarkerMaterials.GenericMaterial.AnyCopper);
-        }
-        Bronze.oreReRegistrations.add(MarkerMaterials.GenericMaterial.AnyBronze);
 
         Neodymium.magneticMaterial = NeodymiumMagnetic;
         Steel.magneticMaterial = SteelMagnetic;

@@ -105,12 +105,6 @@ public abstract class Material implements Comparable<Material> {
 	public final ImmutableList<MaterialStack> materialComponents;
 
 	/**
-	 * List of materials to re-register this material into
-	 * As example, all Iron materials are re-registered into generic material AnyIron
-	 */
-	public final ArrayList<MarkerMaterial> oreReRegistrations = new ArrayList<>();
-
-	/**
 	 * Generation flags of this material
 	 * @see MatFlags
 	 * @see DustMaterial.MatFlags

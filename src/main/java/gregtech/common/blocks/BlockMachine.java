@@ -1,6 +1,5 @@
 package gregtech.common.blocks;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.internal.IGregTechTileEntity;
@@ -43,10 +42,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.HashMap;
 import java.util.Map;
-
-import static gregtech.common.blocks.MetaBlocks.statePropertiesToString;
 
 @SuppressWarnings("deprecation")
 public class BlockMachine extends Block implements ITileEntityProvider {

@@ -1,5 +1,8 @@
 package gregtech.common.blocks;
 
+import gregtech.api.capability.internal.IGregTechTileEntity;
+import gregtech.api.metatileentity.IMetaTileEntity;
+import gregtech.api.metatileentity.PaintableMetaTileEntity;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
@@ -11,6 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.math.BlockPos;
@@ -59,6 +63,24 @@ public class MetaBlocks {
 
     private static final IItemColor ORE_ITEM_COLOR = (stack, tintIndex) ->
         tintIndex == 1 ? ((BlockOre) ((ItemBlock) stack.getItem()).getBlock()).material.materialRGB : 0xFFFFFF;
+
+    private static final IBlockColor MACHINE_BLOCK_COLOR = (IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) -> {
+        IGregTechTileEntity tileEntity = (IGregTechTileEntity) worldIn.getTileEntity(pos);
+        if (tileEntity != null) {
+            IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
+            if (metaTileEntity instanceof PaintableMetaTileEntity) {
+                return ((PaintableMetaTileEntity) metaTileEntity).getColor().getColorValue();
+            }
+        }
+        return 0xFFFFFF;
+    };
+
+    private static final IItemColor MACHINE_ITEM_COLOR = (stack, tintIndex) -> {
+        if (stack.hasTagCompound() && stack.getTagCompound().hasKey("Color")) {
+            return EnumDyeColor.byMetadata(stack.getTagCompound().getInteger("Color")).getColorValue();
+        }
+        return 0xFFFFFF;
+    };
 
     public static void init() {
         BOILER_CASING = new BlockBoilerCasing();
@@ -165,9 +187,12 @@ public class MetaBlocks {
             Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(ORE_BLOCK_COLOR, block);
             Minecraft.getMinecraft().getItemColors().registerItemColorHandler(ORE_ITEM_COLOR, block);
         });
+
+        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(MACHINE_BLOCK_COLOR, MetaBlocks.MACHINE);
+        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(MACHINE_ITEM_COLOR, MetaBlocks.MACHINE);
     }
 
-    public static String statePropertiesToString(Map<IProperty<?>, Comparable<?>> properties) {
+    private static String statePropertiesToString(Map<IProperty<?>, Comparable<?>> properties) {
         StringBuilder stringbuilder = new StringBuilder();
 
         for (Map.Entry<IProperty<?>, Comparable<?>> entry : properties.entrySet()) {

@@ -74,16 +74,6 @@ public class MarkerMaterials {
 
     }
 
-
-    /**
-     * Generic kinds of materials
-     */
-    public static class GenericMaterial {
-        public static MarkerMaterial AnyCopper = new MarkerMaterial("any_copper");
-        public static MarkerMaterial AnyBronze = new MarkerMaterial("any_bronze");
-        public static MarkerMaterial AnyIron = new MarkerMaterial("any_iron");
-    }
-
     /**
      * Circuitry, batteries and other technical things
      */

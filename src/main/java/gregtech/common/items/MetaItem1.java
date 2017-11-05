@@ -477,8 +477,8 @@ public class MetaItem1 extends MaterialMetaItem {
             " h ",
             "RSR",
             " w ",
-            'R', new UnificationEntry(OrePrefix.ring, MarkerMaterials.GenericMaterial.AnyIron),
-            'S', new UnificationEntry(OrePrefix.stick, MarkerMaterials.GenericMaterial.AnyIron));
+            'R', new UnificationEntry(OrePrefix.ring, Materials.Iron),
+            'S', new UnificationEntry(OrePrefix.stick, Materials.Iron));
 
         ModHandler.addShapedRecipe("minecart_wheels_steel", MINECART_WHEELS_STEEL.getStackForm(),
             " h ",
@@ -1041,8 +1041,8 @@ public class MetaItem1 extends MaterialMetaItem {
             "WIW",
             "RWC",
             'I', new UnificationEntry(OrePrefix.stick, Materials.IronMagnetic),
-            'R', new UnificationEntry(OrePrefix.stick, MarkerMaterials.GenericMaterial.AnyIron),
-            'W', new UnificationEntry(OrePrefix.wireGt01, MarkerMaterials.GenericMaterial.AnyCopper),
+            'R', new UnificationEntry(OrePrefix.stick, Materials.Iron),
+            'W', new UnificationEntry(OrePrefix.wireGt01, Materials.Copper),
             'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin));
 
         ModHandler.addShapedRecipe("electric_motor_lv_s", ELECTRIC_MOTOR_LV.getStackForm(),
@@ -1051,7 +1051,7 @@ public class MetaItem1 extends MaterialMetaItem {
             "RWC",
             'I', new UnificationEntry(OrePrefix.stick, Materials.SteelMagnetic),
             'R', new UnificationEntry(OrePrefix.stick, Materials.Steel),
-            'W', new UnificationEntry(OrePrefix.wireGt01, MarkerMaterials.GenericMaterial.AnyCopper),
+            'W', new UnificationEntry(OrePrefix.wireGt01, Materials.Copper),
             'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin));
 
         ModHandler.addShapedRecipe("electric_motor_mv", ELECTRIC_MOTOR_MV.getStackForm(),
@@ -1060,8 +1060,8 @@ public class MetaItem1 extends MaterialMetaItem {
             "RWC",
             'I', new UnificationEntry(OrePrefix.stick, Materials.SteelMagnetic),
             'R', new UnificationEntry(OrePrefix.stick, Materials.Aluminium),
-            'W', new UnificationEntry(OrePrefix.wireGt02, MarkerMaterials.GenericMaterial.AnyCopper),
-            'C', new UnificationEntry(OrePrefix.cableGt01, MarkerMaterials.GenericMaterial.AnyCopper));
+            'W', new UnificationEntry(OrePrefix.wireGt02, Materials.Copper),
+            'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Copper));
 
         ModHandler.addShapedRecipe("electric_motor_hv", ELECTRIC_MOTOR_HV.getStackForm(),
             "CWR",
@@ -1069,7 +1069,7 @@ public class MetaItem1 extends MaterialMetaItem {
             "RWC",
             'I', new UnificationEntry(OrePrefix.stick, Materials.SteelMagnetic),
             'R', new UnificationEntry(OrePrefix.stick, Materials.StainlessSteel),
-            'W', new UnificationEntry(OrePrefix.wireGt04, MarkerMaterials.GenericMaterial.AnyCopper),
+            'W', new UnificationEntry(OrePrefix.wireGt04, Materials.Copper),
             'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold));
 
         ModHandler.addShapedRecipe("electric_motor_ev", ELECTRIC_MOTOR_EV.getStackForm(),
@@ -1110,7 +1110,7 @@ public class MetaItem1 extends MaterialMetaItem {
             'O', new UnificationEntry(OrePrefix.ring, Materials.Rubber),
             'X', new UnificationEntry(OrePrefix.rotor, Materials.Bronze),
             'S', new UnificationEntry(OrePrefix.screw, Materials.Bronze),
-            'W', new UnificationEntry(OrePrefix.cableGt01, MarkerMaterials.GenericMaterial.AnyCopper),
+            'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Copper),
             'P', new UnificationEntry(OrePrefix.pipeMedium, Materials.Steel));
 
         ModHandler.addShapedRecipe("electric_pump_hv", ELECTRIC_PUMP_HV.getStackForm(),
@@ -1160,7 +1160,7 @@ public class MetaItem1 extends MaterialMetaItem {
             "MCM",
             "RRR",
             'M', ELECTRIC_MOTOR_MV,
-            'C', new UnificationEntry(OrePrefix.cableGt01, MarkerMaterials.GenericMaterial.AnyCopper),
+            'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Copper),
             'R', new UnificationEntry(OrePrefix.plate, Materials.Rubber));
 
         ModHandler.addShapedRecipe("conveyor_module_hv", CONVEYOR_MODULE_HV.getStackForm(),
@@ -1206,7 +1206,7 @@ public class MetaItem1 extends MaterialMetaItem {
             'S', new UnificationEntry(OrePrefix.stick, Materials.Aluminium),
             'G', new UnificationEntry(OrePrefix.gearSmall, Materials.Aluminium),
             'M', ELECTRIC_MOTOR_MV,
-            'C', new UnificationEntry(OrePrefix.cableGt01, MarkerMaterials.GenericMaterial.AnyCopper));
+            'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Copper));
 
         ModHandler.addShapedRecipe("electric_piston_hv", ELECTRIC_PISTON_HV.getStackForm(),
             "PPP",
@@ -1257,7 +1257,7 @@ public class MetaItem1 extends MaterialMetaItem {
             'M', ELECTRIC_MOTOR_MV,
             'P', ELECTRIC_PISTON_MV,
             'E', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Good),
-            'C', new UnificationEntry(OrePrefix.cableGt01, MarkerMaterials.GenericMaterial.AnyCopper));
+            'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Copper));
 
         ModHandler.addShapedRecipe("robot_arm_hv", ROBOT_ARM_HV.getStackForm(),
             "CCC",
@@ -1323,7 +1323,7 @@ public class MetaItem1 extends MaterialMetaItem {
             'Q', new UnificationEntry(OrePrefix.gem, Materials.NetherQuartz),
             'S', new UnificationEntry(OrePrefix.stick, Materials.Electrum),
             'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Good),
-            'W', new UnificationEntry(OrePrefix.cableGt01, MarkerMaterials.GenericMaterial.AnyCopper));
+            'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Copper));
 
         ModHandler.addShapedRecipe("emitter_hv", EMITTER_HV.getStackForm(),
             "SSC",
