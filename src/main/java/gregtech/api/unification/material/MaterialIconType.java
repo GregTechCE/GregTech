@@ -3,6 +3,7 @@ package gregtech.api.unification.material;
 import com.google.common.base.CaseFormat;
 import com.google.common.collect.ImmutableMap;
 import gregtech.api.GTValues;
+import gregtech.api.util.GTResourceLocation;
 import net.minecraft.util.ResourceLocation;
 
 public enum MaterialIconType {
@@ -58,7 +59,7 @@ public enum MaterialIconType {
     toolHeadWrench,
     toolHeadUniversalSpade,
     wireFine,
-    gearGtSmall,
+    gearSmall,
     rotor,
     stickLong,
     springSmall,
@@ -68,7 +69,7 @@ public enum MaterialIconType {
     gemFlawed,
     gemFlawless,
     gemExquisite,
-    gearGt,
+    gear,
     foil,
     crateGtDust,
     crateGtIngot,
@@ -119,19 +120,19 @@ public enum MaterialIconType {
     public ResourceLocation getBlockPath(MaterialIconSet materialIconSet) {
         String iconSet = materialIconSet.name().toLowerCase();
         String iconType = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, name());
-        return new ResourceLocation(GTValues.MODID, "blocks/material_sets/" + iconSet + "/" + iconType);
+        return new GTResourceLocation("blocks/material_sets/" + iconSet + "/" + iconType);
     }
 
-    public ResourceLocation getItemPath(MaterialIconSet materialIconSet) {
+    public ResourceLocation getItemModelPath(MaterialIconSet materialIconSet) {
         String iconSet = materialIconSet.name().toLowerCase();
         String iconType = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, name());
-        return new ResourceLocation(GTValues.MODID, "blocks/material_sets/" + iconSet + "/" + iconType);
+        return new GTResourceLocation("material_sets/" + iconSet + "/" + iconType);
     }
 
     public ResourceLocation getItemOverlayPath(MaterialIconSet materialIconSet) {
         String iconSet = materialIconSet.name().toLowerCase();
         String iconType = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, name());
-        return new ResourceLocation(GTValues.MODID, "blocks/material_sets/" + iconSet + "/" + iconType + "_overlay");
+        return new GTResourceLocation("blocks/material_sets/" + iconSet + "/" + iconType + "_overlay");
     }
 
 }

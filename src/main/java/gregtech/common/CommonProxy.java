@@ -304,28 +304,28 @@ public class CommonProxy {
                             "ShS", Character.valueOf('X'), OrePrefix.plate.get(aMaterial), Character.valueOf('S'), OrePrefix.plate.get(Materials.Steel)});
                     switch (aMaterial.mName) {
                         case "Wood":
-                            GT_ModHandler.addCraftingRecipe(OreDictUnifier.get(OrePrefix.gearGtSmall, aMaterial, 1), tBits, new Object[]{"P ", " s",
+                            GT_ModHandler.addCraftingRecipe(OreDictUnifier.get(OrePrefix.gearSmall, aMaterial, 1), tBits, new Object[]{"P ", " s",
                                     Character.valueOf('P'), OrePrefix.plank.get(aMaterial)});
                             break;
                         case "Stone":
-                            GT_ModHandler.addCraftingRecipe(OreDictUnifier.get(OrePrefix.gearGtSmall, aMaterial, 1), tBits, new Object[]{"P ", " f",
+                            GT_ModHandler.addCraftingRecipe(OreDictUnifier.get(OrePrefix.gearSmall, aMaterial, 1), tBits, new Object[]{"P ", " f",
                                     Character.valueOf('P'), OrePrefix.stoneSmooth});
                             break;
                         default:
-                            GT_ModHandler.addCraftingRecipe(OreDictUnifier.get(OrePrefix.gearGtSmall, aMaterial, 1), tBits,
+                            GT_ModHandler.addCraftingRecipe(OreDictUnifier.get(OrePrefix.gearSmall, aMaterial, 1), tBits,
                                     new Object[]{"P ", aMaterial.contains(SubTag.WOOD) ? " s" : " h", Character.valueOf('P'), OrePrefix.plate.get(aMaterial)});
                     }
                     switch (aMaterial.mName) {
                         case "Wood":
-                            GT_ModHandler.addCraftingRecipe(OreDictUnifier.get(OrePrefix.gearGt, aMaterial, 1), tBits, new Object[]{"SPS", "PsP", "SPS",
+                            GT_ModHandler.addCraftingRecipe(OreDictUnifier.get(OrePrefix.gear, aMaterial, 1), tBits, new Object[]{"SPS", "PsP", "SPS",
                                     Character.valueOf('P'), OrePrefix.plank.get(aMaterial), Character.valueOf('S'), OrePrefix.stick.get(aMaterial)});
                             break;
                         case "Stone":
-                            GT_ModHandler.addCraftingRecipe(OreDictUnifier.get(OrePrefix.gearGt, aMaterial, 1), tBits, new Object[]{"SPS", "PfP", "SPS",
+                            GT_ModHandler.addCraftingRecipe(OreDictUnifier.get(OrePrefix.gear, aMaterial, 1), tBits, new Object[]{"SPS", "PfP", "SPS",
                                     Character.valueOf('P'), OrePrefix.stoneSmooth, Character.valueOf('S'), new ItemStack(Blocks.STONE_BUTTON, 1, 32767)});
                             break;
                         default:
-                            GT_ModHandler.addCraftingRecipe(OreDictUnifier.get(OrePrefix.gearGt, aMaterial, 1), tBits, new Object[]{"SPS", "PwP", "SPS",
+                            GT_ModHandler.addCraftingRecipe(OreDictUnifier.get(OrePrefix.gear, aMaterial, 1), tBits, new Object[]{"SPS", "PwP", "SPS",
                                     Character.valueOf('P'), OrePrefix.plate.get(aMaterial), Character.valueOf('S'), OrePrefix.stick.get(aMaterial)});
                     }
                 }

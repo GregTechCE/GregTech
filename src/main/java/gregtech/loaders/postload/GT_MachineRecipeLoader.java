@@ -1680,7 +1680,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 OreDictUnifier.get(OrePrefix.round, Materials.HSSG, 32L),
                 OreDictUnifier.get(OrePrefix.stick, Materials.HSSG, 4L),
                 OreDictUnifier.get(OrePrefix.gear, Materials.HSSG, 1),
-                OreDictUnifier.get(OrePrefix.gearGtSmall, Materials.HSSG, 2L),
+                OreDictUnifier.get(OrePrefix.gearSmall, Materials.HSSG, 2L),
                 OreDictUnifier.get(OrePrefix.cableGt01, Materials.YttriumBariumCuprate, 4L)}, new FluidStack[]{
                 Materials.SolderingAlloy.getMolten(144),
                 Materials.Lubricant.getFluid(250)}, ItemList.Electric_Piston_LuV.get(1), 600, 6000);
@@ -1693,7 +1693,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 OreDictUnifier.get(OrePrefix.round, Materials.HSSE, 32L),
                 OreDictUnifier.get(OrePrefix.stick, Materials.HSSE, 4L),
                 OreDictUnifier.get(OrePrefix.gear, Materials.HSSE, 1),
-                OreDictUnifier.get(OrePrefix.gearGtSmall, Materials.HSSE, 2L),
+                OreDictUnifier.get(OrePrefix.gearSmall, Materials.HSSE, 2L),
                 OreDictUnifier.get(OrePrefix.cableGt04, Materials.VanadiumGallium, 4L)}, new FluidStack[]{
                 Materials.SolderingAlloy.getMolten(288),
                 Materials.Lubricant.getFluid(750)}, ItemList.Electric_Piston_ZPM.get(1), 600, 24000);
@@ -1705,7 +1705,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 OreDictUnifier.get(OrePrefix.round, Materials.Neutronium, 32L),
                 OreDictUnifier.get(OrePrefix.stick, Materials.Neutronium, 4L),
                 OreDictUnifier.get(OrePrefix.gear, Materials.Neutronium, 1),
-                OreDictUnifier.get(OrePrefix.gearGtSmall, Materials.Neutronium, 2L),
+                OreDictUnifier.get(OrePrefix.gearSmall, Materials.Neutronium, 2L),
                 OreDictUnifier.get(OrePrefix.cableGt04, Materials.NiobiumTitanium, 4L)}, new FluidStack[]{
                 Materials.SolderingAlloy.getMolten(1296),
                 Materials.Lubricant.getFluid(2000)}, ItemList.Electric_Piston_UV.get(1), 600, 100000);
@@ -1716,7 +1716,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GTValues.RA.addAssemblylineRecipe(ItemList.Robot_Arm_IV.get(1, new Object(){}),144000,new ItemStack[]{
                 OreDictUnifier.get(OrePrefix.stickLong, Materials.HSSG, 4L),
                 OreDictUnifier.get(OrePrefix.gear, Materials.HSSG, 1),
-                OreDictUnifier.get(OrePrefix.gearGtSmall, Materials.HSSG, 3L),
+                OreDictUnifier.get(OrePrefix.gearSmall, Materials.HSSG, 3L),
                 ItemList.Electric_Motor_LuV.get(2, new Object(){}),
                 ItemList.Electric_Piston_LuV.get(1, new Object(){}),
                 OreDictUnifier.get(OrePrefix.circuit, Materials.Master, 2L),
@@ -1729,7 +1729,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GTValues.RA.addAssemblylineRecipe(ItemList.Robot_Arm_LuV.get(1, new Object(){}),144000,new ItemStack[]{
                 OreDictUnifier.get(OrePrefix.stickLong, Materials.HSSE, 4L),
                 OreDictUnifier.get(OrePrefix.gear, Materials.HSSE, 1),
-                OreDictUnifier.get(OrePrefix.gearGtSmall, Materials.HSSE, 3L),
+                OreDictUnifier.get(OrePrefix.gearSmall, Materials.HSSE, 3L),
                 ItemList.Electric_Motor_ZPM.get(2, new Object(){}),
                 ItemList.Electric_Piston_ZPM.get(1, new Object(){}),
                 OreDictUnifier.get(OrePrefix.circuit, Materials.Master, 4L),
@@ -1742,7 +1742,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GTValues.RA.addAssemblylineRecipe(ItemList.Robot_Arm_ZPM.get(1, new Object(){}),288000,new ItemStack[]{
                 OreDictUnifier.get(OrePrefix.stickLong, Materials.Neutronium, 4L),
                 OreDictUnifier.get(OrePrefix.gear, Materials.Neutronium, 1),
-                OreDictUnifier.get(OrePrefix.gearGtSmall, Materials.Neutronium, 3L),
+                OreDictUnifier.get(OrePrefix.gearSmall, Materials.Neutronium, 3L),
                 ItemList.Electric_Motor_UV.get(2, new Object(){}),
                 ItemList.Electric_Piston_UV.get(1, new Object(){}),
                 OreDictUnifier.get(OrePrefix.circuit, Materials.Master, 8L),

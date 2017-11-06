@@ -525,11 +525,13 @@ public final class MetaItems {
         MetaItems.META_TOOL.registerRecipes();
     }
 
+    @SideOnly(Side.CLIENT)
     public static void registerModels() {
         META_ITEM_FIRST.registerModels();
         META_ITEM_SECOND.registerModels();
     }
 
+    @SideOnly(Side.CLIENT)
     public static void registerColors() {
         MetaItems.META_ITEM_FIRST.registerColor();
         MetaItems.META_ITEM_SECOND.registerColor();
