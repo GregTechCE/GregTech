@@ -69,7 +69,7 @@ public class MaterialMetaItem extends StandardMetaItem {
         int orePrefixAmount = (int) Arrays.stream(this.orePrefixes).filter(Objects::nonNull).count();
 
         ModelLoader.setCustomMeshDefinition(this, stack -> {
-            if (stack.getMetadata() < orePrefixAmount) {
+            if (stack.getMetadata() < orePrefixAmount * 1000) {
                 OrePrefix prefix = this.orePrefixes[stack.getMetadata() / 1000];
                 Material material = Material.MATERIAL_REGISTRY.getObjectById(stack.getMetadata() % 1000);
                 return new ModelResourceLocation(prefix.materialIconType.getItemModelPath(material.materialIconSet), "inventory");
