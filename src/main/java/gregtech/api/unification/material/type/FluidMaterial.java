@@ -79,6 +79,7 @@ public class FluidMaterial extends Material {
      */
     @Deprecated
     public final void setMaterialPlasma(@Nonnull Fluid materialPlasma) {
+        Preconditions.checkNotNull(materialPlasma);
         this.materialPlasma = materialPlasma;
     }
 

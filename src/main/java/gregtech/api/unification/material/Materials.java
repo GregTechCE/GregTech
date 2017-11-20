@@ -33,6 +33,7 @@ import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENE
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_ROD;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.MORTAR_GRINDABLE;
 
+@SuppressWarnings("WeakerAccess")
 public class Materials {
 
     private static final long STD_SOLID = GENERATE_PLATE | GENERATE_ROD | GENERATE_BOLT_SCREW;

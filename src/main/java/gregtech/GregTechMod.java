@@ -1,5 +1,6 @@
 package gregtech;
 
+import gregtech.api.capability.SimpleCapabilityManager;
 import gregtech.api.metatileentity.MetaTileEntityUIFactory;
 import gregtech.api.model.ResourcePackHook;
 import gregtech.api.net.NetworkHandler;
@@ -8,6 +9,8 @@ import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.GTLog;
 import gregtech.common.CommonProxy;
+import gregtech.common.MetaFluids;
+import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.modelfactories.BlockCompressedFactory;
 import gregtech.common.blocks.modelfactories.BlockOreFactory;
 import gregtech.common.items.MetaItems;
@@ -15,6 +18,7 @@ import gregtech.loaders.preload.ItemBlockFluidLoader;
 import gregtech.loaders.preload.MaterialInfoLoader;
 import gregtech.loaders.preload.OreDictionaryLoader;
 import net.minecraft.init.Items;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.LoaderException;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -34,6 +38,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 public class GregTechMod {
 
     static {
+        FluidRegistry.enableUniversalBucket();
         ResourcePackHook.init();
         BlockOreFactory.init();
         BlockCompressedFactory.init();
@@ -53,12 +58,15 @@ public class GregTechMod {
 
         NetworkHandler.init();
         MetaTileEntityUIFactory.INSTANCE.init();
+        SimpleCapabilityManager.init();
 
         OreDictUnifier.init();
 //        new OreProcessingLoader().run();
         new MaterialInfoLoader().run();
 
-        new ItemBlockFluidLoader().run();
+        MetaBlocks.init();
+        MetaItems.init();
+        MetaFluids.init();
 
 //        new MTELoader().run();
 
@@ -113,10 +121,6 @@ public class GregTechMod {
 //        GT_ModHandler.removeRecipe(new ItemStack[]{new ItemStack(Blocks.WOODEN_SLAB, 1, 0), new ItemStack(Blocks.WOODEN_SLAB, 1, 1), new ItemStack(Blocks.WOODEN_SLAB, 1, 2)});
 //        GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.WOODEN_SLAB, 6, 0), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"WWW", 'W', new ItemStack(Blocks.PLANKS, 1, 0)});
 //
-//        GTLog.out.println("GregTechMod: Activating OreDictionary Handler, this can take some time, as it scans the whole OreDictionary");
-//        FMLLog.info("If your Log stops here, you were too impatient. Wait a bit more next time, before killing Minecraft with the Task Manager.");
-//        gregtechproxy.activateOreDictHandler();
-//        FMLLog.info("Congratulations, you have been waiting long enough. Have a Cake.");
 //        GTLog.out.println("GregTechMod: List of Lists of Tool Recipes: "+GT_ModHandler.sSingleNonBlockDamagableRecipeList_list.toString());
 //        GTLog.out.println("GregTechMod: Vanilla Recipe List -> Outputs null or stackSize <=0: " + GT_ModHandler.sVanillaRecipeList_warntOutput.toString());
 //        GTLog.out.println("GregTechMod: Single Non Block Damagable Recipe List -> Outputs null or stackSize <=0: " + GT_ModHandler.sSingleNonBlockDamagableRecipeList_warntOutput.toString());

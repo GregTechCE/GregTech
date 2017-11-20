@@ -11,6 +11,7 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -23,8 +24,10 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public class MaterialMetaItem extends StandardMetaItem {
@@ -134,4 +137,16 @@ public class MaterialMetaItem extends StandardMetaItem {
         }
     }
 
+    //TODO DELETE ON RELEASE
+    @Override
+    public void addInformation(ItemStack itemStack, @Nullable World worldIn, List<String> lines, ITooltipFlag tooltipFlag) {
+        OrePrefix prefix = this.orePrefixes[itemStack.getMetadata() / 1000];
+        Material material = Material.MATERIAL_REGISTRY.getObjectById(itemStack.getMetadata() % 1000);
+        if (prefix != null) {
+            lines.add("IconType: " + prefix.materialIconType);
+        }
+        if (material != null) {
+            lines.add("IconSet: " + material.materialIconSet);
+        }
+    }
 }
