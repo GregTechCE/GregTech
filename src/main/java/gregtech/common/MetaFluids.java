@@ -1,6 +1,7 @@
 package gregtech.common;
 
 
+import com.google.common.base.CaseFormat;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.FluidMaterial;
@@ -22,7 +23,8 @@ public class MetaFluids {
     @SuppressWarnings("deprecation")
     public static Fluid registerFluid(FluidMaterial material, FluidType type, int temp) {
         String materialName = material.toString();
-        Fluid fluid = new Fluid(materialName,
+        String typeName = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_UNDERSCORE, type.name());
+        Fluid fluid = new Fluid(typeName + "." + materialName,
             new GTResourceLocation("blocks/fluids/" + materialName + "_still"),
             new GTResourceLocation("blocks/fluids/" + materialName + "_flow"));
         fluid.setTemperature(temp);

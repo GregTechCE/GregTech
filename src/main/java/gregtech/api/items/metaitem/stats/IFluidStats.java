@@ -9,14 +9,6 @@ public interface IFluidStats extends IMetaItemStats {
      *
      * @param container
      *            ItemStack which is the fluid container.
-     * @return FluidStack representing the fluid in the container, null if the container is empty.
-     */
-    FluidStack getFluid(ItemStack container);
-
-    /**
-     *
-     * @param container
-     *            ItemStack which is the fluid container.
      * @return Capacity of this fluid container.
      */
     int getCapacity(ItemStack container);
@@ -25,26 +17,15 @@ public interface IFluidStats extends IMetaItemStats {
      *
      * @param container
      *            ItemStack which is the fluid container.
-     * @param resource
-     *            FluidStack attempting to fill the container.
-     * @param doFill
-     *            If false, the fill will only be simulated.
-     * @return Amount of fluid that was (or would have been, if simulated) filled into the
-     *         container.
+     * @return Min temperature this container can accept.
      */
-    int fill(ItemStack container, FluidStack resource, boolean doFill);
+    int getMinFluidTemperature(ItemStack container);
 
     /**
      *
      * @param container
      *            ItemStack which is the fluid container.
-     * @param maxDrain
-     *            Maximum amount of fluid to be removed from the container.
-     * @param doDrain
-     *            If false, the drain will only be simulated.
-     * @return Amount of fluid that was (or would have been, if simulated) drained from the
-     *         container.
+     * @return Max temperature this container can accept.
      */
-    FluidStack drain(ItemStack container, int maxDrain, boolean doDrain);
-
+    int getMaxFluidTemperature(ItemStack container);
 }

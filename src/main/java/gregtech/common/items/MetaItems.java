@@ -3,6 +3,7 @@ package gregtech.common.items;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.NotImplementedException;
@@ -294,6 +295,10 @@ public final class MetaItems {
 	public static MetaItem<?>.MetaValueItem DUCT_TAPE;
 	public static MetaItem<?>.MetaValueItem MCGUFFIUM_239;
 
+	public static MetaItem<?>.MetaValueItem INTEGRATED_CIRCUIT;
+
+	public static MetaItem<?>.MetaValueItem FLUID_CELL;
+
 	public static MetaItem<?>.MetaValueItem THERMOS_CAN_DARK_COFFEE;
 	public static MetaItem<?>.MetaValueItem THERMOS_CAN_DARK_CAFE_AU_LAIT;
 	public static MetaItem<?>.MetaValueItem THERMOS_CAN_COFFEE;
@@ -539,7 +544,11 @@ public final class MetaItems {
     }
 
 	public static ItemStack getIntegratedCircuit(int configuration) {
-		throw new NotImplementedException("TODO"); //TODO by @Exidex
-	}
+        ItemStack stack = INTEGRATED_CIRCUIT.getStackForm();
+        NBTTagCompound tagCompound = new NBTTagCompound();
+        tagCompound.setInteger("Configuration", configuration);
+        stack.setTagCompound(tagCompound);
+        return stack;
+    }
 
 }

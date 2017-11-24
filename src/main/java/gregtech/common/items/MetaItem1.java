@@ -369,6 +369,10 @@ public class MetaItem1 extends MaterialMetaItem {
         NC_SENSORKIT = addItem(763, "nc.sensorkit");//.addStats(new Behaviour_SensorKit());
         DUCT_TAPE = addItem(764, "duct.tape").addOreDict(OreDictNames.craftingDuctTape);
         MCGUFFIUM_239 = addItem(765, "mcguffium.239");
+
+        INTEGRATED_CIRCUIT = addItem(766, "circuit.integrated");
+
+        FLUID_CELL = addItem(767, "cell.fluid").addStats(new FluidStats(16000, Integer.MIN_VALUE, Integer.MAX_VALUE));
     }
 
     public void registerRecipes() {

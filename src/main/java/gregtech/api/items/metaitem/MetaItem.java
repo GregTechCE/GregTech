@@ -46,6 +46,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
+import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStackSimple;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
@@ -130,47 +131,25 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     }
 
     //////////////////////////////////////////////////////////////////
-    //                 IFluidContainer Implementation               //
+    //                     FluidContainer Stuff                     //
     //////////////////////////////////////////////////////////////////
 
-    private IFluidStats getFluidStats(ItemStack itemStack) {
-        T metaValueItem = getItem(itemStack);
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
+        T metaValueItem = getItem(stack);
         if(metaValueItem == null) {
-            return FluidStats.EMPTY;
+            return null;
         }
         IFluidStats fluidStats = metaValueItem.getFluidStats();
         if (fluidStats == null) {
-            return FluidStats.EMPTY;
+            return null;
         }
-        return fluidStats;
+        return new ThermalFluidHandlerItemStack(stack,
+            fluidStats.getCapacity(stack),
+            fluidStats.getMinFluidTemperature(stack),
+            fluidStats.getMaxFluidTemperature(stack));
     }
-
-    /* TODO FLUID CONTAINERS
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-        return new FluidHandlerItemStack(stack, 16000);
-    }
-
-    @Override
-    public FluidStack getFluid(ItemStack container) {
-        return getFluidStats(container).getFluid(container);
-    }
-
-    @Override
-    public int getCapacity(ItemStack container) {
-        return getFluidStats(container).getCapacity(container);
-    }
-
-    @Override
-    public int fill(ItemStack container, FluidStack resource, boolean doFill) {
-        return getFluidStats(container).fill(container, resource, doFill);
-    }
-
-    @Override
-    public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
-        return getFluidStats(container).drain(container, maxDrain, doDrain);
-    }
-    */
 
     //////////////////////////////////////////////////////////////////
     //                 INuclearStats  Implementation            //

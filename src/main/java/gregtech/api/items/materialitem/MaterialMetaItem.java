@@ -140,6 +140,7 @@ public class MaterialMetaItem extends StandardMetaItem {
     //TODO DELETE ON RELEASE
     @Override
     public void addInformation(ItemStack itemStack, @Nullable World worldIn, List<String> lines, ITooltipFlag tooltipFlag) {
+        if (itemStack.getMetadata() > 32000) return;
         OrePrefix prefix = this.orePrefixes[itemStack.getMetadata() / 1000];
         Material material = Material.MATERIAL_REGISTRY.getObjectById(itemStack.getMetadata() % 1000);
         if (prefix != null) {
