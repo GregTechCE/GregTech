@@ -1,4 +1,4 @@
-package gregtech.api.items.metaitem;
+package gregtech.api.capability.impl;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;

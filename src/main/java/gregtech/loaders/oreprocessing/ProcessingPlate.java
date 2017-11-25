@@ -37,8 +37,6 @@ public class ProcessingPlate implements IOreRegistrationHandler {
 
         switch (entry.orePrefix) {
             case plate:
-                ModHandler.removeRecipe(stack);
-
                 if (entry.material instanceof FluidMaterial) {
                     RecipeMap.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
                         .notConsumable(MetaItems.SHAPE_MOLD_PLATE)

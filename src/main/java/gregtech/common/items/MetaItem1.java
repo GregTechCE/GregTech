@@ -499,8 +499,7 @@ public class MetaItem1 extends MaterialMetaItem {
             'P', new UnificationEntry(OrePrefix.plate, Materials.Steel));
 
         // Shape mold recipes
-        ModHandler.removeRecipe(new ItemStack(Blocks.GLASS), ItemStack.EMPTY, new ItemStack(Blocks.GLASS),
-            ItemStack.EMPTY, new ItemStack(Blocks.GLASS));
+        ModHandler.removeRecipes(Items.GLASS_BOTTLE);
 
         ModHandler.addShapedRecipe("shape_mold_credit", SHAPE_MOLD_CREDIT.getStackForm(),
             "h  ",

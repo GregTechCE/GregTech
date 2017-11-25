@@ -49,12 +49,15 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.minecraftforge.registries.GameData;
+import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryManager;
 import org.apache.commons.lang3.Validate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
+import java.util.function.Predicate;
 
 import static gregtech.api.GTValues.DW;
 import static gregtech.api.GTValues.V;
@@ -470,50 +473,41 @@ public class ModHandler {
         return false;
     }
 
-    /**
-     * Removes a Crafting Recipe and gives you the former output of it.
-     *
-     * @param recipe The content of the Crafting Grid as ItemStackArray with length 9
-     * @return the output of the old Recipe or ItemStack.EMPTY if there was nothing.
-     */
-    public static ItemStack removeRecipe(ItemStack... recipe) {
-        Validate.notNull(recipe, "Cannot remove null recipe.");
-        Validate.isTrue(!Arrays.asList(recipe).contains(null),
-            "Recipe to be removed cannot contain null elements. Recipe: %s", (Object[]) recipe);
+    public static int removeRecipes(Item output) {
+        return removeRecipes(recipe -> {
+            ItemStack recipeOutput = recipe.getRecipeOutput();
+            return !recipeOutput.isEmpty() && recipeOutput.getItem() == output;
+        });
+    }
 
-        //TODO CONFIG to not remove recipes
+    public static int removeRecipes(ItemStack output) {
+        return removeRecipes(recipe -> ItemStack.areItemStacksEqual(recipe.getRecipeOutput(), output));
+    }
 
-        recipe = GTUtility.copyStackArray(recipe);
+    public static <R extends IRecipe> int removeRecipes(Class<R> recipeClass) {
+        return removeRecipes(recipeClass::isInstance);
+    }
 
-        //At least one not empty
-        boolean temp = false;
-        for (ItemStack stack : recipe) {
-            if (!stack.isEmpty()) {
-                temp = true;
-                break;
-            }
-        }
-        if (!temp) return ItemStack.EMPTY;
+    public static int removeRecipes(Predicate<IRecipe> predicate) {
+        int recipesRemoved = 0;
 
-        ItemStack returnStack = ItemStack.EMPTY;
-        InventoryCrafting craftingGrid = new InventoryCrafting(new Container() {
-            @Override
-            public boolean canInteractWith(EntityPlayer player) {
-                return false;
-            }
-        }, 3, 3);
-        for (int i = 0; i < recipe.length && i < 9; i++) craftingGrid.setInventorySlotContents(i, recipe[i]);
+        IForgeRegistry<IRecipe> registry = ForgeRegistries.RECIPES;
+        List<IRecipe> toRemove = new ArrayList<>();
 
-        Iterator<IRecipe> iterator = CraftingManager.REGISTRY.iterator();
-        while (iterator.hasNext()) {
-            IRecipe next = iterator.next();
-            if (next.matches(craftingGrid, DW)) {
-                returnStack = next.getCraftingResult(craftingGrid);
-                RegistryManager.ACTIVE.getRegistry(GameData.RECIPES).remove(next.getRegistryName());
+        for (IRecipe recipe : registry) {
+            if (predicate.test(recipe)) {
+                toRemove.add(recipe);
+                recipesRemoved++;
             }
         }
 
-        return returnStack;
+        toRemove.forEach(recipe -> registry.register(new DummyRecipe().setRegistryName(recipe.getRegistryName())));
+
+        return recipesRemoved;
+    }
+
+    public static void removeRecipeByName(ResourceLocation location) {
+        ForgeRegistries.RECIPES.register(new DummyRecipe().setRegistryName(location));
     }
 
     ///////////////////////////////////////////////////

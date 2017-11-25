@@ -118,7 +118,7 @@ public class ProcessingPlank implements IOreRegistrationHandler {
 								.EUt(4)
 								.buildAndRegister();
 
-                        ModHandler.removeRecipe(itemStack, itemStack, itemStack);
+//                        ModHandler.removeRecipe(itemStack, itemStack, itemStack);
                         ModHandler.addShapedRecipe("slab?_" + entry.material,
                                 GTUtility.copyAmount(output.getCount() / 3, output),
 								"sP",
@@ -137,7 +137,7 @@ public class ProcessingPlank implements IOreRegistrationHandler {
 							.EUt(4)
 							.buildAndRegister();
 
-                    ModHandler.removeRecipe(stack, stack, stack);
+//                    ModHandler.removeRecipe(stack, stack, stack);
                     ModHandler.addShapedRecipe("slab?_" + entry.material,
                         GTUtility.copyAmount(output.getCount() / 3, output),
 							"sP",

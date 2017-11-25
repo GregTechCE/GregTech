@@ -77,13 +77,13 @@ public class ProcessingLog implements IOreRegistrationHandler {
 
         }
 
-        ItemStack itemStack = ModHandler.getRecipeOutput(GTValues.DW, stack);
-        if (itemStack.isEmpty() && OreDictUnifier.getPrefix(itemStack) == OrePrefix.plank) {
+        ItemStack output = ModHandler.getRecipeOutput(GTValues.DW, stack);
+        if (!output.isEmpty() && OreDictUnifier.getPrefix(output) == OrePrefix.plank) {
 
             RecipeMap.CUTTER_RECIPES.recipeBuilder()
                     .inputs(stack)
                     .fluidInputs(Materials.Lubricant.getFluid(1))
-                    .outputs(GTUtility.copyAmount(itemStack.getCount() * 2, stack),
+                    .outputs(GTUtility.copyAmount(output.getCount() * 2, stack),
                             OreDictUnifier.get(OrePrefix.dust, Materials.Wood))
                     .duration(200)
                     .EUt(8)
@@ -91,15 +91,15 @@ public class ProcessingLog implements IOreRegistrationHandler {
 
             RecipeMap.CUTTER_RECIPES.recipeBuilder()
                     .inputs(stack)
-                    .outputs(itemStack,
+                    .outputs(output,
                             OreDictUnifier.get(OrePrefix.dust, Materials.Wood, 2))
                     .duration(200)
                     .EUt(8)
                     .buildAndRegister();
 
-            ModHandler.removeRecipe(stack);
-            ModHandler.addShapedRecipe("log_t_wood",
-                GTUtility.copyAmount(itemStack.getCount(), itemStack),
+            ModHandler.removeRecipes(output);
+            ModHandler.addShapedRecipe("log_t_wood_" + entry.material ,
+                GTUtility.copyAmount(output.getCount(), output),
                 "s##",
                 "L##",
                 'L', stack);
