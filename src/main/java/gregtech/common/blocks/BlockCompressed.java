@@ -1,6 +1,7 @@
 package gregtech.common.blocks;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.*;
 import gregtech.common.blocks.properties.PropertyMaterial;
 import net.minecraft.block.Block;
@@ -27,7 +28,7 @@ public final class BlockCompressed extends DelayedStateBlock {
 
     public final PropertyMaterial variantProperty;
 
-    public BlockCompressed(Collection<? extends Material> materials) {
+    public BlockCompressed(Material[] materials) {
         super(net.minecraft.block.material.Material.IRON);
         setUnlocalizedName("compressed");
         setHardness(5.0f);
@@ -87,9 +88,9 @@ public final class BlockCompressed extends DelayedStateBlock {
 
     @Override
     public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
-        for(IBlockState blockState : blockState.getValidStates()) {
-            list.add(getItem(blockState));
-        }
+    	blockState.getValidStates().stream()
+    		.filter(blockState -> blockState.getValue(variantProperty) != Materials._NULL)
+    		.forEach(blockState -> list.add(getItem(blockState)));
     }
 
     @Override

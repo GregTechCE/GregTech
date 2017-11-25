@@ -3,6 +3,7 @@ package gregtech.common.blocks;
 import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.PaintableMetaTileEntity;
+import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
@@ -23,7 +24,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -106,24 +107,27 @@ public class MetaBlocks {
 
         COMPRESSED = new HashMap<>();
         ORES = new HashMap<>();
-        ArrayList<DustMaterial> materialBuffer = new ArrayList<>();
+        Material[] materialBuffer = new Material[16];
+        Arrays.fill(materialBuffer, Materials._NULL);
         int generationIndex = 0;
         for(Material material : Material.MATERIAL_REGISTRY.getObjectsWithIds()) {
             if(material instanceof DustMaterial) {
-                materialBuffer.add((DustMaterial) material);
-                if(materialBuffer.size() == 16) {
-                    createCompressedBlock(materialBuffer, generationIndex);
-                    materialBuffer.clear();
-                    generationIndex++;
-                }
+            	int id = Material.MATERIAL_REGISTRY.getIDForObject(material);
+            	int index = id / 16;
+            	if (index > generationIndex) {
+            		createCompressedBlock(materialBuffer, generationIndex);
+            		Arrays.fill(materialBuffer, Materials._NULL);
+            	}
+            	if (!OrePrefix.block.isIgnored(material)) {
+            		materialBuffer[id % 16] = material;
+            		generationIndex = index;
+            	}
                 if(material.hasFlag(DustMaterial.MatFlags.GENERATE_ORE)) {
                     createOreBlock((DustMaterial) material);
                 }
             }
         }
-        if(!materialBuffer.isEmpty()) {
-            createCompressedBlock(materialBuffer, generationIndex);
-        }
+        createCompressedBlock(materialBuffer, generationIndex);
 
         MetaTileEntities.init();
 
@@ -131,11 +135,13 @@ public class MetaBlocks {
         MACHINE.setRegistryName("machine");
     }
 
-    private static void createCompressedBlock(Collection<DustMaterial> materials, int index) {
-        materials.removeIf(OrePrefix.block::isIgnored);
+    private static void createCompressedBlock(Material[] materials, int index) {
         BlockCompressed block = new BlockCompressed(materials);
         block.setRegistryName("compressed_" + index);
-        materials.forEach(material -> COMPRESSED.put(material, block));
+        for (Material material : materials) {
+        	if (material instanceof DustMaterial)
+        		COMPRESSED.put((DustMaterial) material, block);
+        }
     }
 
     private static void createOreBlock(DustMaterial material) {
