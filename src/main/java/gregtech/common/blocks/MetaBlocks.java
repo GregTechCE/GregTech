@@ -70,7 +70,10 @@ public class MetaBlocks {
         if (tileEntity != null) {
             IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
             if (metaTileEntity instanceof PaintableMetaTileEntity) {
-                return ((PaintableMetaTileEntity) metaTileEntity).getColor().getColorValue();
+                EnumDyeColor color = ((PaintableMetaTileEntity) metaTileEntity).getColor();
+                if (color != null) {
+                    return color.getColorValue();
+                }
             }
         }
         return 0xFFFFFF;

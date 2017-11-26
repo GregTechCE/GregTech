@@ -11,7 +11,6 @@ import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.util.GTResourceLocation;
 import gregtech.common.blocks.properties.PropertyString;
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
@@ -42,10 +41,11 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 
 @SuppressWarnings("deprecation")
-public class BlockMachine extends Block implements ITileEntityProvider {
+public class BlockMachine extends Block {
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
@@ -221,8 +221,17 @@ public class BlockMachine extends Block implements ITileEntityProvider {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return null; //handled by ItemBlock
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        IMetaTileEntity tileEntity = GregTechAPI.METATILEENTITY_REGISTRY.getObject(state.getValue(META_TYPE)).constructMetaTileEntity();
+        GregtechTileEntity realTileEntity = new GregtechTileEntity();
+        realTileEntity.setMetaTileEntity(tileEntity);
+        return realTileEntity;
     }
 
     public enum ToolClass implements IStringSerializable {

@@ -86,9 +86,9 @@ public class NetworkHandler {
         registerPacket(1, PacketUIOpen.class, new PacketCodec<>(
                 (packet, buf) -> {
                     buf.writeInt(packet.uiFactoryId);
-                    buf.writeInt(packet.serializedHolder.maxCapacity());
+                    buf.writeInt(packet.serializedHolder.readableBytes());
                     buf.writeBytes(packet.serializedHolder);
-                    buf.writeInt(packet.widgetsInitData.maxCapacity());
+                    buf.writeInt(packet.widgetsInitData.readableBytes());
                     buf.writeBytes(packet.widgetsInitData);
                     buf.writeInt(packet.windowId);
                 },
@@ -103,7 +103,7 @@ public class NetworkHandler {
         registerPacket(2, PacketUIWidgetUpdate.class, new PacketCodec<>(
                 (packet, buf) -> {
                     buf.writeInt(packet.widgetId);
-                    buf.writeInt(packet.updateData.maxCapacity());
+                    buf.writeInt(packet.updateData.readableBytes());
                     buf.writeBytes(packet.updateData);
                 },
                 (buf) -> new PacketUIWidgetUpdate(

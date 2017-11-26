@@ -41,24 +41,4 @@ public class MachineItemBlock extends ItemBlock {
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag tooltipFlag) {
         tooltip.addAll(Arrays.asList(getFactory(stack).getDescription(stack)));
     }
-
-    @Override
-    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
-        if (!world.setBlockState(pos, newState, 3))
-            return false;
-
-        IBlockState state = world.getBlockState(pos);
-        if (state.getBlock() == this.block) {
-            IMetaTileEntity tileEntity = getFactory(stack).constructMetaTileEntity();
-            GregtechTileEntity realTileEntity = new GregtechTileEntity();
-            realTileEntity.setMetaTileEntity(tileEntity);
-            world.setTileEntity(pos, realTileEntity);
-            if(stack.hasTagCompound()) {
-                tileEntity.initFromItemStackData(stack.getTagCompound());
-            }
-            this.block.onBlockPlacedBy(world, pos, state, player, stack);
-        }
-        return true;
-    }
-
 }
