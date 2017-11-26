@@ -30,6 +30,9 @@ public class ModularUIContainer extends Container {
     @Nullable
     @Override
     public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
+        if (slotId == -999) {
+            return super.slotClick(slotId, dragType, clickTypeIn, player);
+        }
         Slot slot = getSlot(slotId);
         ItemStack result = slotMap.get(slot).slotClick(dragType, clickTypeIn, player);
         if(result == INativeWidget.VANILLA_LOGIC) {

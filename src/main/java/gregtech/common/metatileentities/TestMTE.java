@@ -56,7 +56,7 @@ public class TestMTE extends WorkableMetaTileEntity<Recipe> {
 
     @Override
     public ModularUI<? extends IMetaTileEntity> createUI(EntityPlayer player) {
-        return ModularUI.<IMetaTileEntity>builder(new GTResourceLocation("textures/gui/basicmachines/bronse_furnace"), 176, 166)
+        return ModularUI.<IMetaTileEntity>builder(new GTResourceLocation("textures/gui/basicmachines/bronze_furnace.png"), 176, 166)
 //            .widget(0, )
             .build(this, player);
     }
