@@ -47,11 +47,12 @@ public abstract class UIFactory<E extends IUIHolder> {
     @SideOnly(Side.CLIENT)
     public final void initClientUI(PacketBuffer serializedHolder, PacketBuffer widgetsInitData, int windowId) {
         E holder = readHolderFromSyncData(serializedHolder);
-        EntityPlayerSP entityPlayer = Minecraft.getMinecraft().player;
+        Minecraft minecraft = Minecraft.getMinecraft();
+        EntityPlayerSP entityPlayer = minecraft.player;
         ModularUI<E> uiTemplate = createUITemplate(holder, entityPlayer);
         uiTemplate.readWidgetData(widgetsInitData);
         uiTemplate.initWidgets();
-        Minecraft.getMinecraft().displayGuiScreen(new ModularUIGui(uiTemplate));
+        minecraft.addScheduledTask(() -> minecraft.displayGuiScreen(new ModularUIGui(uiTemplate)));
         entityPlayer.openContainer.windowId = windowId;
     }
 
