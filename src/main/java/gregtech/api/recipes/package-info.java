@@ -2,5 +2,5 @@
 @MethodsReturnNonnullByDefault
 package gregtech.api.recipes;
 
+import gregtech.api.util.FieldsAreNonnullByDefault;
 import mcp.MethodsReturnNonnullByDefault;
-import mezz.jei.util.FieldsAreNonnullByDefault;

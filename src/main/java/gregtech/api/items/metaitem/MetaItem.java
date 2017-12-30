@@ -446,30 +446,32 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
-        for(T enabledItem : metaItems.valueCollection()) {
-            if(enabledItem.isVisible()) {
-                ItemStack itemStack = enabledItem.getStackForm();
-                IElectricStats electricStats = getManager(itemStack);
-                /*if(getCapacity(itemStack) > 0) {
-                    for(Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
-                        if(electricStats.getMaxCharge(itemStack) > 0) {
-                            ItemStack chargedFilledStack = itemStack.copy();
-                            fill(chargedFilledStack, new FluidStack(fluid, Integer.MAX_VALUE), true);
-                            electricStats.charge(chargedFilledStack, Integer.MAX_VALUE, Integer.MAX_VALUE, true, false);
-                            subItems.add(chargedFilledStack);
-                        } else {
-                            ItemStack filledStack = itemStack.copy();
-                            fill(filledStack, new FluidStack(fluid, Integer.MAX_VALUE), true);
-                            subItems.add(filledStack);
+        if (this.isInCreativeTab(tab)) {
+            for (T enabledItem : metaItems.valueCollection()) {
+                if (enabledItem.isVisible()) {
+                    ItemStack itemStack = enabledItem.getStackForm();
+                    /*if(getCapacity(itemStack) > 0) {
+                        for(Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
+                            if(electricStats.getMaxCharge(itemStack) > 0) {
+                                ItemStack chargedFilledStack = itemStack.copy();
+                                fill(chargedFilledStack, new FluidStack(fluid, Integer.MAX_VALUE), true);
+                                electricStats.charge(chargedFilledStack, Integer.MAX_VALUE, Integer.MAX_VALUE, true, false);
+                                subItems.add(chargedFilledStack);
+                            } else {
+                                ItemStack filledStack = itemStack.copy();
+                                fill(filledStack, new FluidStack(fluid, Integer.MAX_VALUE), true);
+                                subItems.add(filledStack);
+                            }
                         }
+                    }*/
+                    IElectricStats electricStats = getManager(itemStack);
+                    if (electricStats.getMaxCharge(itemStack) > 0) {
+                        ItemStack chargedStack = itemStack.copy();
+                        electricStats.charge(chargedStack, Integer.MAX_VALUE, Integer.MAX_VALUE, true, false);
+                        subItems.add(chargedStack);
                     }
-                }*/
-                if(electricStats.getMaxCharge(itemStack) > 0) {
-                    ItemStack chargedStack = itemStack.copy();
-                    electricStats.charge(chargedStack, Integer.MAX_VALUE, Integer.MAX_VALUE, true, false);
-                    subItems.add(chargedStack);
+                    subItems.add(itemStack);
                 }
-                subItems.add(itemStack);
             }
         }
     }

@@ -7,38 +7,38 @@
     "variant": {
       "bronze_gearbox": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_CASING_GEARBOX_BRONZE"
+          "all": "gregtech:blocks/casings/machine_casing_gearbox_bronze"
         }
       },
       "steel_gearbox": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_CASING_GEARBOX_STEEL"
+          "all": "gregtech:blocks/casings/machine_casing_gearbox_steel"
         }
       },
       "titanium_gearbox": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_CASING_GEARBOX_TITANIUM"
+          "all": "gregtech:blocks/casings/machine_casing_gearbox_titanium"
         }
       },
 
       "steel_turbine_casing": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_CASING_TURBINE"
+          "all": "gregtech:blocks/casings/machine_casing_turbine"
         }
       },
       "titanium_turbine_casing": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_CASING_STABLE_TITANIUM"
+          "all": "gregtech:blocks/casings/machine_casing_stable_titanium"
         }
       },
       "stainless_turbine_casing": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_CASING_CLEAN_STAINLESSSTEEL"
+          "all": "gregtech:blocks/casings/machine_casing_clean_stainlesssteel"
         }
       },
       "tungstensteel_turbine_casing": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_CASING_ROBUST_TUNGSTENSTEEL"
+          "all": "gregtech:blocks/casings/machine_casing_robust_tungstensteel"
         }
       }
     }

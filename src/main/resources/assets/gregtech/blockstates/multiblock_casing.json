@@ -15,17 +15,17 @@
       },
       "engine_intake": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_CASING_ENGINE_INTAKE"
+          "all": "gregtech:blocks/iconsets/machine_casing_engine_intake"
         }
       },
       "grate": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_CASING_GRATE"
+          "all": "gregtech:blocks/iconsets/machine_casing_grate"
         }
       },
       "assembler": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_CASING_ASSEMBLER"
+          "all": "gregtech:blocks/iconsets/machine_casing_assembler"
         }
       },
       "assembling_machine": {
@@ -35,12 +35,12 @@
       },
       "fusion": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/FUSIONI_8"
+          "all": "gregtech:blocks/iconsets/fusioni_8"
         }
       },
       "fusion_mk2": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/FUSIONII_8"
+          "all": "gregtech:blocks/iconsets/fusionii_8"
         }
       }
     }

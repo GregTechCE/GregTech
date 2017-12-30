@@ -26,6 +26,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -254,11 +255,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
         boolean notAllInserted = false;
         List<ItemStack> stacks = new ArrayList<>(items); //copy collection
         for (ItemStack stack : stacks) {
-            for (int i = 0; i < handler.getSlots(); i++) {
-                stack = handler.insertItem(i, stack, simulate);
-                if (stack.isEmpty()) break;
-            }
-            notAllInserted |= !stack.isEmpty();
+            notAllInserted |= !ItemHandlerHelper.insertItemStacked(handler, stack, simulate).isEmpty();
             if (notAllInserted && simulate) return false;
         }
         return !notAllInserted;

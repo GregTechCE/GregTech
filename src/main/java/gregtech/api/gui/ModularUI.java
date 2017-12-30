@@ -93,30 +93,21 @@ public final class ModularUI<H extends IUIHolder> {
             return this;
         }
 
-        public void bindPlayerInventory(InventoryPlayer inventoryPlayer, Runnable onSlotChangedRunnable) {
-            bindPlayerInventory(inventoryPlayer, 8, 84, onSlotChangedRunnable);
+        public Builder<T> bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId) {
+            return bindPlayerInventory(inventoryPlayer, startWidgetId, 8, 84);
         }
 
-        public void bindPlayerInventory(InventoryPlayer inventoryPlayer, int x, int y, Runnable onSlotChangedRunnable) {
+        public Builder<T> bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId, int x, int y) {
             for (int row = 0; row < 3; row++) {
                 for (int col = 0; col < 9; col++) {
-                    this.widget(col + (row + 1) * 9,
-                        new SlotWidget<T>(new PlayerMainInvWrapper(inventoryPlayer), col + (row + 1) * 9, x + col * 18, y + row * 18) {
-                            @Override
-                            public void onSlotChanged() {
-                                onSlotChangedRunnable.run();
-                            }
-                        });
+                    this.widget(startWidgetId + col + (row + 1) * 9,
+                        new SlotWidget<>(new PlayerMainInvWrapper(inventoryPlayer), col + (row + 1) * 9, x + col * 18, y + row * 18));
                 }
             }
             for (int slot = 0; slot < 9; slot++) {
-                this.widget(slot, new SlotWidget<T>(new PlayerMainInvWrapper(inventoryPlayer), slot, x + slot * 18, y + 58) {
-                    @Override
-                    public void onSlotChanged() {
-                        onSlotChangedRunnable.run();
-                    }
-                });
+                this.widget(startWidgetId + slot, new SlotWidget<>(new PlayerMainInvWrapper(inventoryPlayer), slot, x + slot * 18, y + 58));
             }
+            return this;
         }
 
         public ModularUI<T> build(T holder, EntityPlayer player) {

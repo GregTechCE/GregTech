@@ -187,9 +187,9 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 */
 	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> FLUID_CANNER_RECIPES = new RecipeMapFluidCanner(new HashSet<>(100), "fluidcanner", "basicmachines/FluidCannerJEI", 1, 1, 1, 1, 0, 1, 0, 1, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder() {
 		@Override
-		protected EnumValidationResult finalizeAndValidate() {
+		protected EnumValidationResult finalizeAndValidate(boolean checkForCollisions) {
 			duration(fluidOutputs.isEmpty() ? fluidInputs.get(0).amount / 62 : fluidOutputs.get(0).amount / 62);
-			return super.finalizeAndValidate();
+			return super.finalizeAndValidate(checkForCollisions);
 		}
 	}.EUt(1));
 
@@ -266,12 +266,12 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 */
 	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> MIXER_RECIPES = new RecipeMap<>(new HashSet<>(100), "mixer", "basicmachines/Mixer", 1, 4, 0, 0, 0, 1, 0, 1, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder() {
 		@Override
-		protected EnumValidationResult validate() {
+		protected EnumValidationResult validate(boolean checkForCollisions) {
 			if (!((inputs.isEmpty() && fluidInputs.isEmpty()) || (outputs.isEmpty() && fluidOutputs.isEmpty()))){
 				GTLog.logger.error("Recipe should have at least one input and one output", new IllegalArgumentException());
 				recipeStatus = EnumValidationResult.INVALID;
 			}
-			return super.validate();
+			return super.validate(checkForCollisions);
 		}
 	});
 
@@ -465,12 +465,12 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 */
 	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> CENTRIFUGE_RECIPES = new RecipeMap<>(new HashSet<>(1000), "centrifuge", "basicmachines/Centrifuge", 0, 2, 0, 6, 0, 1, 0, 1, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder() {
 		@Override
-		protected EnumValidationResult validate() {
+		protected EnumValidationResult validate(boolean checkForCollisions) {
 			if (!((inputs.isEmpty() && fluidInputs.isEmpty()) || (outputs.isEmpty() && fluidOutputs.isEmpty()))){
 				GTLog.logger.error("Recipe should have at least one input and one output", new IllegalArgumentException());
 				recipeStatus = EnumValidationResult.INVALID;
 			}
-			return super.validate();
+			return super.validate(checkForCollisions);
 		}
 	}.EUt(5));
 
@@ -498,12 +498,12 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 */
 	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> ELECTROLYZER_RECIPES = new RecipeMap<>(new HashSet<>(200), "electrolyzer", "basicmachines/Electrolyzer", 0, 2, 0, 6, 0, 1, 0, 1, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder() {
 		@Override
-		protected EnumValidationResult validate() {
+		protected EnumValidationResult validate(boolean checkForCollisions) {
 			if (!((inputs.isEmpty() && fluidInputs.isEmpty()) || (outputs.isEmpty() && fluidOutputs.isEmpty()))){
 				GTLog.logger.error("Recipe should have at least one input and one output", new IllegalArgumentException());
 				recipeStatus = EnumValidationResult.INVALID;
 			}
-			return super.validate();
+			return super.validate(checkForCollisions);
 		}
 	});
 
@@ -561,12 +561,12 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 */
 	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> CHEMICAL_RECIPES = new RecipeMap<>(new HashSet<>(100), "chemicalreactor", "basicmachines/ChemicalReactor", 0, 2, 0, 1, 0, 1, 0, 1, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder() {
 		@Override
-		protected EnumValidationResult validate() {
+		protected EnumValidationResult validate(boolean checkForCollisions) {
 			if (!((inputs.isEmpty() && fluidInputs.isEmpty()) || (outputs.isEmpty() && fluidOutputs.isEmpty()))){
 				GTLog.logger.error("Recipe should have at least one input and one output", new IllegalArgumentException());
 				recipeStatus = EnumValidationResult.INVALID;
 			}
-			return super.validate();
+			return super.validate(checkForCollisions);
 		}
 	}.duration(30));
 
@@ -658,9 +658,9 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 */
 	public static final RecipeMap<Recipe, RecipeBuilder.IntCircuitRecipeBuilder> BENDER_RECIPES = new RecipeMap<>(new HashSet<>(400), "metalbender", "basicmachines/Bender", 2, 2, 1, 1, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.IntCircuitRecipeBuilder() {
 		@Override
-		protected EnumValidationResult finalizeAndValidate() {
+		protected EnumValidationResult finalizeAndValidate(boolean checkForCollisions) {
 			this.circuitMeta(this.inputs.get(0).getCount());
-			return super.finalizeAndValidate();
+			return super.finalizeAndValidate(checkForCollisions);
 		}
 	});
 
@@ -677,7 +677,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 */
 	public static final RecipeMap<Recipe, RecipeBuilder.NotConsumableInputRecipeBuilder> ALLOY_SMELTER_RECIPES = new RecipeMap<>(new HashSet<>(3000), "alloysmelter", "basicmachines/AlloySmelter", 1, 2, 1, 1, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.NotConsumableInputRecipeBuilder() {
 		@Override
-		protected EnumValidationResult validate() {
+		protected EnumValidationResult validate(boolean checkForCollisions) {
 			ItemStack input = inputs.get(0);
 			if (!(inputs.size() == 1
 					&& (OreDictUnifier.getPrefix(input) == OrePrefix.ingot
@@ -686,7 +686,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 				GTLog.logger.error("Recipe should have ingot, dust or gem as input", new IllegalArgumentException());
 				recipeStatus = EnumValidationResult.INVALID;
 			}
-			return super.validate();
+			return super.validate(checkForCollisions);
 		}
 
 		@Override
@@ -813,9 +813,9 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 */
 	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> MAGIC_FUELS = new RecipeMap<>(new HashSet<>(10), "magicfuels", "basicmachines/Default", 1, 1, 0, 1, 0, 0, 0, 0, true, 1, 1000, true, new RecipeBuilder.DefaultRecipeBuilder() {
 		@Override
-		protected EnumValidationResult finalizeAndValidate() {
+		protected EnumValidationResult finalizeAndValidate(boolean checkForCollisions) {
 			this.EUt = -Math.abs(EUt);
-			return super.finalizeAndValidate();
+			return super.finalizeAndValidate(checkForCollisions);
 		}
 	});
 
@@ -966,6 +966,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		return fluid != null && recipeFluidMap.containsKey(fluid);
 	}
 
+    @Nullable
     public T findRecipe(@Nullable TileEntity tileEntity, @Nullable T inputRecipe, boolean notUnificated, long voltage, IItemHandlerModifiable inputs, IMultipleTankHandler fluidInputs) {
         List<FluidStack> fluidStacks = new ArrayList<>(fluidInputs.getTanks());
         for (int i = 0; i < fluidInputs.getTanks(); i++) {
@@ -1249,21 +1250,21 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		@Nullable
 		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
 			if (inputs == null || inputs.size() <= 0 || inputs.get(0).isEmpty()) return null;
-			if (inputRecipe != null && inputRecipe.isRecipeInputEqual(false, true, inputs, fluidInputs)) return inputRecipe;
+//			if (inputRecipe != null && inputRecipe.isRecipeInputEqual(false, true, inputs, fluidInputs)) return inputRecipe; // TODO this is doubling output stack size
 			ItemStack output = ModHandler.getSmeltingOutput(inputs.get(0));
-			return output == null ? null : this.recipeBuilder()
+			return output.isEmpty() ? null : this.recipeBuilder()
 					.notOptimized()
 					.inputs(GTUtility.copyAmount(1, inputs.get(0)))
 					.outputs(output)
 					.duration(128)
 					.EUt(4)
-					.build()
+					.build(false)
 					.getResult();
 		}
 
 		@Override
 		public boolean containsInput(ItemStack stack) {
-			return ModHandler.getSmeltingOutput(stack) != null;
+			return !ModHandler.getSmeltingOutput(stack).isEmpty();
 		}
 	}
 
@@ -1294,7 +1295,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 //			}
 
 			for (ItemStack stack : new ItemStack[]{inputs.get(0), output}) {
-				if (stack != null) {
+				if (!output.isEmpty()) {
 					if (stack.getItem() == Item.getItemFromBlock(Blocks.NETHERRACK)
 							|| stack.getItem() == Item.getItemFromBlock(Blocks.TNT)
 							|| stack.getItem() == Items.EGG
@@ -1342,7 +1343,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 				}
 			}
 
-			return output == null ? null : new RecipeBuilder.DefaultRecipeBuilder(this.defaultRecipe)
+			return output.isEmpty() ? null : new RecipeBuilder.DefaultRecipeBuilder(this.defaultRecipe)
 					.notOptimized()
 					.inputs(GTUtility.copyAmount(1, inputs.get(0)))
 					.outputs(output)
@@ -1354,7 +1355,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 		@Override
 		public boolean containsInput(ItemStack stack) {
-			return ModHandler.getSmeltingOutput(stack) != null;
+			return !ModHandler.getSmeltingOutput(stack).isEmpty();
 		}
 	}
 
@@ -1373,7 +1374,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 			if (inputs == null || inputs.size() <= 0 || !ModHandler.IC2.getScrapBox(1).isItemEqual(inputs.get(0)))
 				return super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, inputs, fluidInputs);
 			ItemStack output = Recipes.scrapboxDrops.getDrop(ModHandler.IC2.getScrapBox(1), false);
-			if (output == null) {
+			if (output.isEmpty()) {
 				return super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, inputs, fluidInputs);
 			}
 			return this.recipeBuilder()
@@ -1481,7 +1482,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 					.duration(45)
 					.EUt(1);
 
-			if (ModHandler.getRecyclerOutput(GTUtility.copyAmount(64, inputs.get(0)), 0) != null) {
+			if (!ModHandler.getRecyclerOutput(GTUtility.copyAmount(64, inputs.get(0)), 0).isEmpty()) {
 				builder.chancedOutput(ModHandler.IC2.getScrap(1), 1250);
 			}
 
@@ -1489,7 +1490,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		}
 		@Override
 		public boolean containsInput(ItemStack stack) {
-			return ModHandler.getRecyclerOutput(GTUtility.copyAmount(64, stack), 0) != null;
+			return !ModHandler.getRecyclerOutput(GTUtility.copyAmount(64, stack), 0).isEmpty();
 		}
 	}
 
@@ -1589,7 +1590,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
                     inputs.get(0), inputs.get(0), inputs.get(0),
                     inputs.get(0), MetaItems.DYE_ONLY_ITEMS[color.getMetadata()].getStackForm(), inputs.get(0),
                     inputs.get(0), inputs.get(0), inputs.get(0));
-				if (output != null) {
+				if (!output.isEmpty()) {
 					ValidationResult<Recipe> outputRecipe = this.recipeBuilder()
 							.inputs(GTUtility.copyAmount(8, inputs.get(0)))
 							.outputs(output)
@@ -1603,7 +1604,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 				}
 
 				output = ModHandler.getRecipeOutput(tileEntity == null ? null : tileEntity.getWorld(), inputs.get(0), MetaItems.DYE_ONLY_ITEMS[color.getMetadata()].getStackForm());
-				if (output != null) {
+				if (!output.isEmpty()) {
 					ValidationResult<Recipe> outputRecipe = this.recipeBuilder()
 							.inputs(GTUtility.copyAmount(1, inputs.get(0)))
 							.outputs(output)

@@ -1,7 +1,9 @@
 package gregtech.common.metatileentities;
 
 import gregtech.api.capability.impl.FluidTankHandler;
+import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.ModularUI;
+import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.IMetaTileEntityFactory;
 import gregtech.api.metatileentity.MetaTileEntityUIFactory;
@@ -34,12 +36,12 @@ public class TestMTE extends WorkableMetaTileEntity<Recipe> {
 
     @Override
     public IItemHandlerModifiable getImportItemHandler() {
-        return new ItemStackHandler(2);
+        return new ItemStackHandler(1);
     }
 
     @Override
     public IItemHandlerModifiable getExportItemHandler() {
-        return new ItemStackHandler(2);
+        return new ItemStackHandler(1);
     }
 
     @Override
@@ -54,12 +56,11 @@ public class TestMTE extends WorkableMetaTileEntity<Recipe> {
 
     @Override
     public ModularUI<? extends IMetaTileEntity> createUI(EntityPlayer player) {
-
-        ModularUI.Builder<IMetaTileEntity> builder = ModularUI.builder(new GTResourceLocation("textures/gui/basicmachines/bronze_furnace.png"), 176, 166);
-
-        builder.bindPlayerInventory(player.inventory, this::markDirty);
-
-        return builder.build(this, player);
+        return ModularUI.<IMetaTileEntity>builder(new GTResourceLocation("textures/gui/basicmachines/bronze_furnace.png"), 176, 166)
+            .widget(0, new SlotWidget<IMetaTileEntity>(this.importItems, 0, 53, 25).setOnSlotChanged(this::markDirty))
+            .widget(1, new SlotWidget<IMetaTileEntity>(this.exportItems, 0, 107, 25, true, false).setOnSlotChanged(this::markDirty))
+            .bindPlayerInventory(player.inventory, 2)
+            .build(this, player);
     }
 
     @Override
@@ -77,7 +78,7 @@ public class TestMTE extends WorkableMetaTileEntity<Recipe> {
 
     @Override
     public boolean inputsEnergy(EnumFacing side) {
-        return false;
+        return true;
     }
 
     @Override
@@ -87,7 +88,7 @@ public class TestMTE extends WorkableMetaTileEntity<Recipe> {
 
     @Override
     public long getEnergyCapacity() {
-        return 0;
+        return 16000;
     }
 
     @Override
@@ -97,6 +98,6 @@ public class TestMTE extends WorkableMetaTileEntity<Recipe> {
 
     @Override
     public long getInputAmperage() {
-        return 0;
+        return 1;
     }
 }

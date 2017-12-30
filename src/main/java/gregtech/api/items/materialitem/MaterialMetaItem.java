@@ -110,12 +110,12 @@ public class MaterialMetaItem extends StandardMetaItem {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
-        if(tab == GregTechAPI.TAB_GREGTECH) {
+        if(this.isInCreativeTab(tab)) {
             super.getSubItems(tab, subItems);
-        }
-        if(tab == GregTechAPI.TAB_GREGTECH_MATERIALS) {
-            for(short metadata : generatedItems) {
-                subItems.add(new ItemStack(this, 1, metadata));
+            if(tab == GregTechAPI.TAB_GREGTECH_MATERIALS || tab == CreativeTabs.SEARCH) {
+                for(short metadata : generatedItems) {
+                    subItems.add(new ItemStack(this, 1, metadata));
+                }
             }
         }
     }

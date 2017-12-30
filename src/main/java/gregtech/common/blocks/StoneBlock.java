@@ -10,6 +10,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.event.RegistryEvent;
@@ -36,6 +37,11 @@ public class StoneBlock<T extends Enum<T> & IStringSerializable> extends Block {
                 list.add(getItemVariant(variant, chiselingVariant));
             }
         }
+    }
+
+    @Override
+    public int damageDropped(IBlockState state) {
+        return getMetaFromState(state);
     }
 
     public T getVariant(IBlockState blockState) {

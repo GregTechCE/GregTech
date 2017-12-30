@@ -7,52 +7,52 @@
     "variant": {
       "yellow_stripes": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_CASING_STRIPES_A"
+          "all": "gregtech:blocks/casings/signs/machine_casing_stripes_a"
         }
       },
       "small_yellow_stripes": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_CASING_STRIPES_B"
+          "all": "gregtech:blocks/casings/signs/machine_casing_stripes_b"
         }
       },
       "radioactive_hazard": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_CASING_RADIOACTIVEHAZARD"
+          "all": "gregtech:blocks/casings/signs/machine_casing_radioactivehazard"
         }
       },
       "bio_hazard": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_CASING_BIOHAZARD"
+          "all": "gregtech:blocks/casings/signs/machine_casing_biohazard"
         }
       },
       "explosion_hazard": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_CASING_EXPLOSIONHAZARD"
+          "all": "gregtech:blocks/casings/signs/machine_casing_explosionhazard"
         }
       },
       "fire_hazard": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_CASING_FIREHAZARD"
+          "all": "gregtech:blocks/casings/signs/machine_casing_firehazard"
         }
       },
       "acid_hazard": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_CASING_ACIDHAZARD"
+          "all": "gregtech:blocks/casings/signs/machine_casing_acidhazard"
         }
       },
       "magic_hazard": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_CASING_MAGICHAZARD"
+          "all": "gregtech:blocks/casings/signs/machine_casing_magichazard"
         }
       },
       "frost_hazard": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_CASING_FROSTHAZARD"
+          "all": "gregtech:blocks/casings/signs/machine_casing_frosthazard"
         }
       },
       "noise_hazard": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_CASING_NOISEHAZARD"
+          "all": "gregtech:blocks/casings/signs/machine_casing_noisehazard"
         }
       }
     }

@@ -7,47 +7,47 @@
     "variant": {
       "cupronickel": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_COIL_CUPRONICKEL"
+          "all": "gregtech:blocks/casings/coils/machine_coil_cupronickel"
         }
       },
       "kanthal": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_COIL_KANTHAL"
+          "all": "gregtech:blocks/casings/coils/machine_coil_kanthal"
         }
       },
       "nichrome": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_COIL_NICHROME"
+          "all": "gregtech:blocks/casings/coils/machine_coil_nichrome"
         }
       },
       "tungstensteel": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_COIL_TUNGSTENSTEEL"
+          "all": "gregtech:blocks/casings/coils/machine_coil_tungstensteel"
         }
       },
       "hss_g": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_COIL_HSSG"
+          "all": "gregtech:blocks/casings/coils/machine_coil_hssg"
         }
       },
       "naquadah": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_COIL_NAQUADAH"
+          "all": "gregtech:blocks/casings/coils/machine_coil_naquadah"
         }
       },
       "naquadah_alloy": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_COIL_NAQUADAHALLOY"
+          "all": "gregtech:blocks/casings/coils/machine_coil_naquadahalloy"
         }
       },
       "superconductor": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_COIL_SUPERCONDUCTOR"
+          "all": "gregtech:blocks/casings/coils/machine_coil_superconductor"
         }
       },
       "fusion_coil": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_CASING_FUSION_COIL"
+          "all": "gregtech:blocks/casings/coils/machine_casing_fusion_coil"
         }
       }
     }

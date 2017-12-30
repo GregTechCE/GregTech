@@ -195,32 +195,4 @@ public class NetworkHandler {
             executor.execute(packet, (NetHandlerPlayServer) event.getHandler());
         }
     }
-//
-//    @SideOnly(Side.CLIENT)
-//    private static void checkThreadAndEnqueue(final IForestryPacketHandlerClient packet, final PacketBufferForestry data, IThreadListener threadListener) {
-//        if (!threadListener.isCallingFromMinecraftThread()) {
-//            threadListener.addScheduledTask(() -> {
-//                try {
-//                    EntityPlayer player = Minecraft.getMinecraft().player;
-//                    Preconditions.checkNotNull(player, "Tried to send data to client before the player exists.");
-//                    packet.onPacketData(data, player);
-//                } catch (IOException e) {
-//                    Log.error("Network Error", e);
-//                }
-//            });
-//        }
-//    }
-//
-//    private static void checkThreadAndEnqueue(final IForestryPacketHandlerServer packet, final PacketBufferForestry data, final EntityPlayerMP player, IThreadListener threadListener) {
-//        if (!threadListener.isCallingFromMinecraftThread()) {
-//            threadListener.addScheduledTask(() -> {
-//                try {
-//                    packet.onPacketData(data, player);
-//                } catch (IOException e) {
-//                    Log.error("Network Error", e);
-//                }
-//            });
-//        }
-//    }
-
 }

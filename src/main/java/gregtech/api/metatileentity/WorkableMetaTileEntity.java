@@ -26,7 +26,7 @@ public abstract class WorkableMetaTileEntity<T extends Recipe> extends TieredMet
     protected NonNullList<ItemStack> itemOutputs;
 
     private boolean isActive;
-    private boolean workingEnabled;
+    private boolean workingEnabled = true;
 
     public WorkableMetaTileEntity(IMetaTileEntityFactory factory, int tier, RecipeMap<T, ?> recipeMap) {
         super(factory, tier);
@@ -58,9 +58,9 @@ public abstract class WorkableMetaTileEntity<T extends Recipe> extends TieredMet
     protected boolean setupAndConsumeRecipeInputs(T recipe) {
         int totalEUt = recipe.getEUt() * recipe.getDuration();
         return (totalEUt >= 0 ? getEnergyStored() >= totalEUt : getEnergyStored() - totalEUt <= getEnergyCapacity()) &&
-                recipe.isRecipeInputEqual(true, false, importItems, importFluids) &&
                 addItemsToItemHandler(exportItems, true, recipe.getOutputs()) &&
-                addFluidsToFluidHandler(exportFluids, true, recipe.getFluidOutputs());
+                addFluidsToFluidHandler(exportFluids, true, recipe.getFluidOutputs()) &&
+                recipe.isRecipeInputEqual(true, false, importItems, importFluids);
     }
 
     protected void setupRecipe(T recipe) {
@@ -128,7 +128,7 @@ public abstract class WorkableMetaTileEntity<T extends Recipe> extends TieredMet
     @Override
     public void setActive(boolean active) {
         this.isActive = active;
-
+        markBlockForRenderUpdate(); // FIXME this rerenders chank everytime when recipe is completed
     }
 
     @Override

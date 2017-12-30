@@ -1,5 +1,6 @@
 package gregtech;
 
+import gregtech.api.GTValues;
 import gregtech.api.capability.SimpleCapabilityManager;
 import gregtech.api.metatileentity.MetaTileEntityUIFactory;
 import gregtech.api.model.ResourcePackHook;
@@ -27,11 +28,10 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
-@Mod(modid = "gregtech",
+@Mod(modid = GTValues.MODID,
      name = "GregTech",
      version = "5.10.90",
      acceptedMinecraftVersions = "[1.12,1.13)",
-     useMetadata = false,
      dependencies = "required-after:ic2; " +
              "after:forestry; " +
              "after:railcraft;")
@@ -44,10 +44,10 @@ public class GregTechMod {
         BlockCompressedFactory.init();
     }
 
-    @Mod.Instance("gregtech")
+    @Mod.Instance(GTValues.MODID)
     public static GregTechMod instance;
 
-    @SidedProxy(modId = "gregtech", clientSide = "gregtech.common.ClientProxy", serverSide = "gregtech.common.CommonProxy")
+    @SidedProxy(modId = GTValues.MODID, clientSide = "gregtech.common.ClientProxy", serverSide = "gregtech.common.CommonProxy")
     public static CommonProxy gregtechproxy;
 
     @Mod.EventHandler

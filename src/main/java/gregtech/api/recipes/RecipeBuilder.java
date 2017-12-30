@@ -242,7 +242,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 	// To get rid of "unchecked cast" warning
 	protected abstract R getThis();
 
-	protected EnumValidationResult finalizeAndValidate() {
+	protected EnumValidationResult finalizeAndValidate(boolean checkForCollisions) {
 
 		if (unificate) {
 			inputs.replaceAll(OreDictUnifier::getUnificated);
@@ -299,12 +299,16 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 				}
 		}
 
-		return validate();
+		return validate(checkForCollisions);
 	}
 
-	public abstract ValidationResult<T> build();
+	public abstract ValidationResult<T> build(boolean checkForCollisions);
 
-	protected EnumValidationResult validate() {
+	public ValidationResult<T> build() {
+	    return build(true);
+    }
+
+	protected EnumValidationResult validate(boolean checkForCollisions) {
 
 		if (recipeMap == null) {
 			GTLog.logger.error("RecipeMap cannot be null", new IllegalArgumentException());
@@ -340,7 +344,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
         }
 
 		//For fakeRecipes don't do check for collisions, regular recipes do check, do not check for recipes that are not registered(i.e. created after postinit stage)
-		if (!(recipeMap instanceof RecipeMap.FakeRecipeMap) &&
+		if (checkForCollisions && !(recipeMap instanceof RecipeMap.FakeRecipeMap) &&
 				recipeMap.findRecipe(null, true, Long.MAX_VALUE, this.inputs, this.fluidInputs) != null) {
 			return EnumValidationResult.SKIP;
 		}
@@ -399,8 +403,8 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 			return new DefaultRecipeBuilder(this);
 		}
 
-		public ValidationResult<Recipe> build() {
-			return ValidationResult.newResult(finalizeAndValidate(),
+		public ValidationResult<Recipe> build(boolean checkForCollisions) {
+			return ValidationResult.newResult(finalizeAndValidate(checkForCollisions),
 						new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
 									duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
 		}
@@ -441,15 +445,15 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		@Override
-		protected EnumValidationResult finalizeAndValidate() {
+		protected EnumValidationResult finalizeAndValidate(boolean checkForCollisions) {
 			if (circuitMeta >= 0) {
 				inputs.add(MetaItems.getIntegratedCircuit(circuitMeta));
 			}
-			return super.finalizeAndValidate();
+			return super.finalizeAndValidate(checkForCollisions);
 		}
 
-		public ValidationResult<Recipe> build() {
-			return ValidationResult.newResult(finalizeAndValidate(),
+		public ValidationResult<Recipe> build(boolean checkForCollisions) {
+			return ValidationResult.newResult(finalizeAndValidate(checkForCollisions),
 					new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
 							duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
 		}
@@ -513,8 +517,8 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 			return this;
 		}
 
-		public ValidationResult<Recipe> build() {
-			return ValidationResult.newResult(finalizeAndValidate(),
+		public ValidationResult<Recipe> build(boolean checkForCollisions) {
+			return ValidationResult.newResult(finalizeAndValidate(checkForCollisions),
 					new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
 							duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
 		}
@@ -555,8 +559,8 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 			return getThis();
 		}
 
-		public ValidationResult<Recipe.BlastRecipe> build() {
-			return ValidationResult.newResult(finalizeAndValidate(),
+		public ValidationResult<Recipe.BlastRecipe> build(boolean checkForCollisions) {
+			return ValidationResult.newResult(finalizeAndValidate(checkForCollisions),
 					new Recipe.BlastRecipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
 							duration, EUt, hidden, canBeBuffered, needsEmptyOutput, blastFurnaceTemp));
 		}
@@ -617,8 +621,8 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 			}
 		}
 
-		public ValidationResult<Recipe> build() {
-			return ValidationResult.newResult(finalizeAndValidate(),
+		public ValidationResult<Recipe> build(boolean checkForCollisions) {
+			return ValidationResult.newResult(finalizeAndValidate(checkForCollisions),
 					new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
 							duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
 		}
@@ -676,8 +680,8 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 			recipeMap.addRecipe(this.copy().inputs(input, ModHandler.IC2.getIC2Item(BlockName.te, TeBlock.itnt, ITNT)).build());
 		}
 
-		public ValidationResult<Recipe> build() {
-			return ValidationResult.newResult(finalizeAndValidate(),
+		public ValidationResult<Recipe> build(boolean checkForCollisions) {
+			return ValidationResult.newResult(finalizeAndValidate(checkForCollisions),
 					new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
 							duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
 		}
@@ -729,8 +733,8 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 			super.buildAndRegister();
 		}
 
-		public ValidationResult<Recipe> build() {
-			return ValidationResult.newResult(finalizeAndValidate(),
+		public ValidationResult<Recipe> build(boolean checkForCollisions) {
+			return ValidationResult.newResult(finalizeAndValidate(checkForCollisions),
 					new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
 							duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
 		}
@@ -770,15 +774,15 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		@Override
-		protected EnumValidationResult finalizeAndValidate() {
+		protected EnumValidationResult finalizeAndValidate(boolean checkForCollisions) {
 			if (amplifierAmountOutputted > 0) {
 				this.fluidOutputs(Materials.UUAmplifier.getFluid(amplifierAmountOutputted));
 			}
-			return super.finalizeAndValidate();
+			return super.finalizeAndValidate(checkForCollisions);
 		}
 
-		public ValidationResult<Recipe.AmplifierRecipe> build() {
-			return ValidationResult.newResult(finalizeAndValidate(),
+		public ValidationResult<Recipe.AmplifierRecipe> build(boolean checkForCollisions) {
+			return ValidationResult.newResult(finalizeAndValidate(checkForCollisions),
 					new Recipe.AmplifierRecipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
 							duration, EUt, hidden, canBeBuffered, needsEmptyOutput, amplifierAmountOutputted));
 		}
@@ -828,8 +832,8 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 			return getThis();
 		}
 
-		public ValidationResult<Recipe> build() {
-			return ValidationResult.newResult(finalizeAndValidate(),
+		public ValidationResult<Recipe> build(boolean checkForCollisions) {
+			return ValidationResult.newResult(finalizeAndValidate(checkForCollisions),
 					new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
 							duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
 		}
@@ -870,8 +874,8 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 			return getThis();
 		}
 
-		public ValidationResult<Recipe.FusionRecipe> build() {
-			return ValidationResult.newResult(finalizeAndValidate(),
+		public ValidationResult<Recipe.FusionRecipe> build(boolean checkForCollisions) {
+			return ValidationResult.newResult(finalizeAndValidate(checkForCollisions),
 					new Recipe.FusionRecipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
 							duration, EUt, hidden, canBeBuffered, needsEmptyOutput, EUToStart));
 		}

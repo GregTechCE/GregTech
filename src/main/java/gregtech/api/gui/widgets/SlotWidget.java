@@ -13,7 +13,7 @@ import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
 
-public abstract class SlotWidget<T extends IUIHolder> extends Widget<T> implements INativeWidget {
+public class SlotWidget<T extends IUIHolder> extends Widget<T> implements INativeWidget {
 
     protected Slot slotReference;
 
@@ -25,6 +25,8 @@ public abstract class SlotWidget<T extends IUIHolder> extends Widget<T> implemen
 
     protected boolean canTakeItems;
     protected boolean canPutItems;
+
+    protected Runnable onSlotChanged;
 
     public SlotWidget(IItemHandlerModifiable itemHandler, int slotIndex, int xPosition, int yPosition, boolean canTakeItems, boolean canPutItems) {
         super(Widget.SLOT_DRAW_PRIORITY);
@@ -40,6 +42,11 @@ public abstract class SlotWidget<T extends IUIHolder> extends Widget<T> implemen
         this(itemHandler, slotIndex, xPosition, yPosition, true, true);
     }
 
+    public SlotWidget<T> setOnSlotChanged(Runnable onSlotChanged) {
+        this.onSlotChanged = onSlotChanged;
+        return this;
+    }
+
     public boolean canPutStack(ItemStack stack) {
         return canPutItems;
     }
@@ -52,7 +59,11 @@ public abstract class SlotWidget<T extends IUIHolder> extends Widget<T> implemen
         return true;
     }
 
-    public abstract void onSlotChanged();
+    public void onSlotChanged() {
+        if (this.onSlotChanged != null) {
+            this.onSlotChanged.run();
+        }
+    }
 
     @Override
     public boolean canMergeSlot(ItemStack stack) {

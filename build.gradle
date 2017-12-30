@@ -60,14 +60,16 @@ repositories {
 dependencies {
     compile "codechicken:CodeChickenLib:1.12-${config.codechickenlib.version}:deobf"
     deobfCompile "net.industrial-craft:industrialcraft-2:${config.ic2.version}"
-    deobfCompile "net.sengir.forestry:forestry_${config.minecraft.version}:${config.forestry.version}"
+    deobfCompile("net.sengir.forestry:forestry_${config.minecraft.version}:${config.forestry.version}") {
+        transitive = false
+    }
 //    deobfCompile "com.enderio.core:EnderCore:${config.minecraft.version}-${config.endercore.version}:dev"
 //    deobfCompile "com.enderio:EnderIO:${config.minecraft.version}-${config.enderio.version}:dev"
 
     // compile against the JEI API but do not include it at runtime
-//    deobfCompile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}:api"
+    deobfCompile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}:api"
     // at runtime, use the full JEI jar
-//    runtime "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}"
+    runtime "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}"
 
 //    deobfCompile name: 'worldcontrol', version: config.worldcontrol.version, ext: 'jar'
 //    deobfCompile name: 'CoFHCore', version: "${config.minecraft.version}-${config.cofh.version}", ext: 'jar'

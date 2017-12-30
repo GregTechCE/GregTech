@@ -280,14 +280,6 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         };
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
-        if(tab == GregTechAPI.TAB_GREGTECH) {
-            super.getSubItems(tab, subItems);
-        }
-    }
-
     public class MetaToolValueItem extends MetaValueItem {
 
         protected IToolStats toolStats;

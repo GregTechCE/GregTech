@@ -3,62 +3,62 @@
   "defaults": {
     "model": "minecraft:cube_bottom_top",
     "textures": {
-      "bottom": "gregtech:blocks/iconsets/RENDERING_ERROR",
-      "top": "gregtech:blocks/iconsets/RENDERING_ERROR",
-      "side": "gregtech:blocks/iconsets/RENDERING_ERROR"
+      "bottom": "gregtech:blocks/rendering_error",
+      "top": "gregtech:blocks/rendering_error",
+      "side": "gregtech:blocks/rendering_error"
     }
   },
   "variants": {
     "variant": {
       "bronze_pipe": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_CASING_PIPE_BRONZE"
+          "all": "gregtech:blocks/casings/machine_casing_pipe_bronze"
         }
       },
       "steel_pipe": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_CASING_PIPE_STEEL"
+          "all": "gregtech:blocks/casings/machine_casing_pipe_steel"
         }
       },
       "titanium_pipe": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_CASING_PIPE_TITANIUM"
+          "all": "gregtech:blocks/casings/machine_casing_pipe_titanium"
         }
       },
       "tungstensteel_pipe": {
         "textures": {
-          "all": "gregtech:blocks/iconsets/MACHINE_CASING_PIPE_TUNGSTENSTEEL"
+          "all": "gregtech:blocks/casings/machine_casing_pipe_tungstensteel"
         }
       },
       "bronze_firebox": {
         "model": "minecraft:cube_bottom_top",
         "textures": {
-          "bottom": "gregtech:blocks/iconsets/MACHINE_BRONZEPLATEDBRICKS",
-          "top": "gregtech:blocks/iconsets/MACHINE_CASING_FIREBOX_BRONZE",
-          "side": "gregtech:blocks/iconsets/MACHINE_CASING_FIREBOX_BRONZE"
+          "bottom": "gregtech:blocks/misc/machine_bronzeplatedbricks",
+          "top": "gregtech:blocks/casings/machine_casing_firebox_bronze",
+          "side": "gregtech:blocks/casings/machine_casing_firebox_bronze"
         }
       },
       "steel_firebox": {
         "model": "minecraft:cube_bottom_top",
         "textures": {
-          "bottom": "gregtech:blocks/iconsets/MACHINE_CASING_SOLID_STEEL",
-          "top": "gregtech:blocks/iconsets/MACHINE_CASING_FIREBOX_STEEL",
-          "side": "gregtech:blocks/iconsets/MACHINE_CASING_FIREBOX_STEEL"
+          "bottom": "gregtech:blocks/casings/machine_casing_solid_ steel",
+          "top": "gregtech:blocks/casings/machine_casing_firebox_steel",
+          "side": "gregtech:blocks/casings/machine_casing_firebox_steel"
         }
       },
       "titanium_firebox": {
         "model": "minecraft:cube_column",
         "textures": {
-          "end": "gregtech:blocks/iconsets/MACHINE_CASING_STABLE_TITANIUM",
-          "side": "gregtech:blocks/iconsets/MACHINE_CASING_FIREBOX_TITANIUM"
+          "end": "gregtech:blocks/casings/machine_casing_stable_titanium",
+          "side": "gregtech:blocks/casings/machine_casing_firebox_titanium"
         }
       },
       "tungstensteel_firebox": {
         "model": "minecraft:cube_bottom_top",
         "textures": {
-          "bottom": "gregtech:blocks/iconsets/MACHINE_CASING_ROBUST_TUNGSTENSTEEL",
-          "top": "gregtech:blocks/iconsets/MACHINE_CASING_FIREBOX_TUNGSTENSTEEL",
-          "side": "gregtech:blocks/iconsets/MACHINE_CASING_FIREBOX_TUNGSTENSTEEL"
+          "bottom": "gregtech:blocks/casings/machine_casing_robust_tungstensteel",
+          "top": "gregtech:blocks/casings/machine_casing_firebox_tungstensteel",
+          "side": "gregtech:blocks/casings/machine_casing_firebox_tungstensteel"
         }
       }
     }
