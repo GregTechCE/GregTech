@@ -44,26 +44,26 @@
       "sandstone": {},
       "black_granite": {
         "textures": {
-          "base": "gregtech:blocks/iconsets/granite_black_stone",
-          "particle": "gregtech:blocks/iconsets/granite_black_stone"
+          "base": "gregtech:blocks/stones/granite/granite_black_stone",
+          "particle": "gregtech:blocks/stones/granite/granite_black_stone"
         }
       },
       "red_granite": {
         "textures": {
-          "base": "gregtech:blocks/iconsets/granite_red_stone",
-          "particle": "gregtech:blocks/iconsets/granite_red_stone"
+          "base": "gregtech:blocks/stones/granite/granite_red_stone",
+          "particle": "gregtech:blocks/stones/granite/granite_red_stone"
         }
       },
       "marble": {
         "textures": {
-          "base": "gregtech:blocks/iconsets/marble_stone",
-          "particle": "gregtech:blocks/iconsets/marble_stone"
+          "base": "gregtech:blocks/stones/marble/marble_stone",
+          "particle": "gregtech:blocks/stones/marble/marble_stone"
         }
       },
       "basalt": {
         "textures": {
-          "base": "gregtech:blocks/iconsets/basalt_stone",
-          "particle": "gregtech:blocks/iconsets/basalt_stone"
+          "base": "gregtech:blocks/stones/basalt/basalt_stone",
+          "particle": "gregtech:blocks/stones/basalt/basalt_stone"
         }
       }
     },

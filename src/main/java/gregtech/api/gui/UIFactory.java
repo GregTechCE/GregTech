@@ -11,6 +11,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -24,6 +25,10 @@ public abstract class UIFactory<E extends IUIHolder> {
     public static final GTControlledRegistry<UIFactory<?>> FACTORY_REGISTRY = new GTControlledRegistry<>(Short.MAX_VALUE);
 
     public final void openUI(E holder, EntityPlayerMP player) {
+        if (player instanceof FakePlayer) {
+            return;
+        }
+
         ModularUI<E> uiTemplate = createUITemplate(holder, player);
         uiTemplate.initWidgets();
         if (player.openContainer != player.inventoryContainer) {
@@ -52,8 +57,10 @@ public abstract class UIFactory<E extends IUIHolder> {
         ModularUI<E> uiTemplate = createUITemplate(holder, entityPlayer);
         uiTemplate.readWidgetData(widgetsInitData);
         uiTemplate.initWidgets();
-        minecraft.addScheduledTask(() -> minecraft.displayGuiScreen(new ModularUIGui(uiTemplate)));
-        entityPlayer.openContainer.windowId = windowId;
+        minecraft.addScheduledTask(() -> {
+            minecraft.displayGuiScreen(new ModularUIGui(uiTemplate));
+            entityPlayer.openContainer.windowId = windowId;
+        });
     }
 
     protected abstract ModularUI<E> createUITemplate(E holder, EntityPlayer entityPlayer);

@@ -3,21 +3,21 @@ package gregtech.api.gui.widgets;
 import gregtech.api.gui.INativeWidget;
 import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.Widget;
-import gregtech.api.metatileentity.IMetaTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.SlotItemHandler;
+
+import javax.annotation.Nonnull;
 
 public abstract class SlotWidget<T extends IUIHolder> extends Widget<T> implements INativeWidget {
 
     protected Slot slotReference;
 
-    protected IItemHandler itemHandler;
+    protected IItemHandlerModifiable itemHandler;
 
     private final int slotIndex;
     private final int xPosition;
@@ -26,7 +26,7 @@ public abstract class SlotWidget<T extends IUIHolder> extends Widget<T> implemen
     protected boolean canTakeItems;
     protected boolean canPutItems;
 
-    public SlotWidget(IItemHandler itemHandler, int slotIndex, int xPosition, int yPosition, boolean canTakeItems, boolean canPutItems) {
+    public SlotWidget(IItemHandlerModifiable itemHandler, int slotIndex, int xPosition, int yPosition, boolean canTakeItems, boolean canPutItems) {
         super(Widget.SLOT_DRAW_PRIORITY);
         this.itemHandler = itemHandler;
         this.slotIndex = slotIndex;
@@ -36,7 +36,7 @@ public abstract class SlotWidget<T extends IUIHolder> extends Widget<T> implemen
         this.canPutItems = canPutItems;
     }
 
-    public SlotWidget(IItemHandler itemHandler, int slotIndex, int xPosition, int yPosition) {
+    public SlotWidget(IItemHandlerModifiable itemHandler, int slotIndex, int xPosition, int yPosition) {
         this(itemHandler, slotIndex, xPosition, yPosition, true, true);
     }
 
@@ -52,7 +52,7 @@ public abstract class SlotWidget<T extends IUIHolder> extends Widget<T> implemen
         return true;
     }
 
-    public void onSlotChanged() {}
+    public abstract void onSlotChanged();
 
     @Override
     public boolean canMergeSlot(ItemStack stack) {
@@ -74,7 +74,7 @@ public abstract class SlotWidget<T extends IUIHolder> extends Widget<T> implemen
         this.slotReference = new SlotItemHandler(itemHandler, slotIndex, xPosition, yPosition) {
 
             @Override
-            public boolean isItemValid(ItemStack stack) {
+            public boolean isItemValid(@Nonnull ItemStack stack) {
                 return SlotWidget.this.canPutStack(stack) && super.isItemValid(stack);
             }
 

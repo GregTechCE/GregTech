@@ -1,11 +1,9 @@
 package gregtech.common.metatileentities;
 
 import gregtech.api.capability.impl.FluidTankHandler;
-import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.IMetaTileEntityFactory;
-import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityUIFactory;
 import gregtech.api.metatileentity.WorkableMetaTileEntity;
 import gregtech.api.recipes.Recipe;
@@ -56,18 +54,20 @@ public class TestMTE extends WorkableMetaTileEntity<Recipe> {
 
     @Override
     public ModularUI<? extends IMetaTileEntity> createUI(EntityPlayer player) {
-        return ModularUI.<IMetaTileEntity>builder(new GTResourceLocation("textures/gui/basicmachines/bronze_furnace.png"), 176, 166)
-//            .widget(0, )
-            .build(this, player);
+
+        ModularUI.Builder<IMetaTileEntity> builder = ModularUI.builder(new GTResourceLocation("textures/gui/basicmachines/bronze_furnace.png"), 176, 166);
+
+        builder.bindPlayerInventory(player.inventory, this::markDirty);
+
+        return builder.build(this, player);
     }
 
     @Override
     public boolean onRightClick(EnumFacing side, EntityPlayer player, EnumHand hand, float clickX, float clickY, float clickZ) {
         if (player instanceof EntityPlayerMP) {
             MetaTileEntityUIFactory.INSTANCE.openUI(this, (EntityPlayerMP) player);
-            return true;
         }
-        return false;
+        return true;
     }
 
     @Override

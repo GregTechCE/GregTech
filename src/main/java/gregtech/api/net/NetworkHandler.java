@@ -8,6 +8,7 @@ import gregtech.api.gui.impl.ModularUIGui;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
@@ -121,7 +122,11 @@ public class NetworkHandler {
     @SideOnly(Side.CLIENT)
     private static void initClient() {
         registerClientExecutor(PacketCustomTileData.class, (packet, handler) -> {
-            TileEntity tileEntity = Minecraft.getMinecraft().world.getTileEntity(packet.tileEntityPos);
+            WorldClient world = Minecraft.getMinecraft().world;
+            if (world == null) {
+                return;
+            }
+            TileEntity tileEntity = world.getTileEntity(packet.tileEntityPos);
             if(tileEntity instanceof ICustomDataTile) {
                 ((ICustomDataTile) tileEntity).receiveCustomData(packet.payload);
             }
@@ -129,7 +134,6 @@ public class NetworkHandler {
         registerClientExecutor(PacketUIOpen.class, (packet, handler) -> {
             UIFactory<?> uiFactory = UIFactory.FACTORY_REGISTRY.getObjectById(packet.uiFactoryId);
             uiFactory.initClientUI(packet.serializedHolder, packet.widgetsInitData, packet.windowId);
-
         });
         registerClientExecutor(PacketUIWidgetUpdate.class, (packet, handler) -> {
             GuiScreen activeGui = Minecraft.getMinecraft().currentScreen;
@@ -154,6 +158,7 @@ public class NetworkHandler {
         serverExecutors.put(packet, executor);
     }
 
+    @SuppressWarnings("unchecked")
     public static FMLProxyPacket packet2proxy(Packet packet) {
         PacketCodec<Packet> codec = (PacketCodec<Packet>) codecMap.get(packet.getClass());
         PacketBuffer buf = new PacketBuffer(Unpooled.buffer());
@@ -162,6 +167,7 @@ public class NetworkHandler {
         return new FMLProxyPacket(buf, GTValues.MODID);
     }
 
+    @SuppressWarnings("unchecked")
     public static Packet proxy2packet(FMLProxyPacket packet) {
         PacketBuffer payload = (PacketBuffer) packet.payload();
         Class<Packet> packetClass = (Class<Packet>) packetMap.get(payload.readInt());
@@ -171,6 +177,7 @@ public class NetworkHandler {
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
+    @SuppressWarnings("unchecked")
     public void onClientPacket(FMLNetworkEvent.ClientCustomPacketEvent event) {
         Packet packet = proxy2packet(event.getPacket());
         if(clientExecutors.containsKey(packet.getClass())) {
@@ -180,6 +187,7 @@ public class NetworkHandler {
     }
 
     @SubscribeEvent
+    @SuppressWarnings("unchecked")
     public void onServerPacket(FMLNetworkEvent.ServerCustomPacketEvent event) {
         Packet packet = proxy2packet(event.getPacket());
         if(serverExecutors.containsKey(packet.getClass())) {
@@ -187,5 +195,32 @@ public class NetworkHandler {
             executor.execute(packet, (NetHandlerPlayServer) event.getHandler());
         }
     }
+//
+//    @SideOnly(Side.CLIENT)
+//    private static void checkThreadAndEnqueue(final IForestryPacketHandlerClient packet, final PacketBufferForestry data, IThreadListener threadListener) {
+//        if (!threadListener.isCallingFromMinecraftThread()) {
+//            threadListener.addScheduledTask(() -> {
+//                try {
+//                    EntityPlayer player = Minecraft.getMinecraft().player;
+//                    Preconditions.checkNotNull(player, "Tried to send data to client before the player exists.");
+//                    packet.onPacketData(data, player);
+//                } catch (IOException e) {
+//                    Log.error("Network Error", e);
+//                }
+//            });
+//        }
+//    }
+//
+//    private static void checkThreadAndEnqueue(final IForestryPacketHandlerServer packet, final PacketBufferForestry data, final EntityPlayerMP player, IThreadListener threadListener) {
+//        if (!threadListener.isCallingFromMinecraftThread()) {
+//            threadListener.addScheduledTask(() -> {
+//                try {
+//                    packet.onPacketData(data, player);
+//                } catch (IOException e) {
+//                    Log.error("Network Error", e);
+//                }
+//            });
+//        }
+//    }
 
 }

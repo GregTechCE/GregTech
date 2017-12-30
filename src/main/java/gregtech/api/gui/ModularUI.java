@@ -2,11 +2,14 @@ package gregtech.api.gui;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableBiMap;
+import gregtech.api.gui.widgets.SlotWidget;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
 
 /**
  * ModularUI is user-interface implementation concrete, based on widgets system
@@ -88,6 +91,32 @@ public final class ModularUI<H extends IUIHolder> {
             Preconditions.checkNotNull(widget);
             widgets.put(id, widget);
             return this;
+        }
+
+        public void bindPlayerInventory(InventoryPlayer inventoryPlayer, Runnable onSlotChangedRunnable) {
+            bindPlayerInventory(inventoryPlayer, 8, 84, onSlotChangedRunnable);
+        }
+
+        public void bindPlayerInventory(InventoryPlayer inventoryPlayer, int x, int y, Runnable onSlotChangedRunnable) {
+            for (int row = 0; row < 3; row++) {
+                for (int col = 0; col < 9; col++) {
+                    this.widget(col + (row + 1) * 9,
+                        new SlotWidget<T>(new PlayerMainInvWrapper(inventoryPlayer), col + (row + 1) * 9, x + col * 18, y + row * 18) {
+                            @Override
+                            public void onSlotChanged() {
+                                onSlotChangedRunnable.run();
+                            }
+                        });
+                }
+            }
+            for (int slot = 0; slot < 9; slot++) {
+                this.widget(slot, new SlotWidget<T>(new PlayerMainInvWrapper(inventoryPlayer), slot, x + slot * 18, y + 58) {
+                    @Override
+                    public void onSlotChanged() {
+                        onSlotChangedRunnable.run();
+                    }
+                });
+            }
         }
 
         public ModularUI<T> build(T holder, EntityPlayer player) {
