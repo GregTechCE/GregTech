@@ -31,10 +31,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 @Mod(modid = GTValues.MODID,
      name = "GregTech",
      version = "5.10.90",
-     acceptedMinecraftVersions = "[1.12,1.13)",
-     dependencies = "required-after:ic2; " +
-             "after:forestry; " +
-             "after:railcraft;")
+     acceptedMinecraftVersions = "[1.12,1.13)")
 public class GregTechMod {
 
     static {
