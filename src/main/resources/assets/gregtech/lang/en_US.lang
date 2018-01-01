@@ -1523,7 +1523,7 @@ recipemap.largenaquadahreactor.value=Fuel Value: %s EU
 recipemap.fluidnaquadahreactor.name=Fluid Naquadah Reactor
 recipemap.fluidnaquadahreactor.value=Fuel Value: %s EU
 
-machine.mte_test.name=Test MetaTileEntity
+machine.mte_test=Test MetaTileEntity
 
 death.attack.explosion=%s exploded.
 death.attack.explosion.player=%s exploded with help of %s.

@@ -107,14 +107,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
         return GregTechAPI.METATILEENTITY_REGISTRY.getNameForObject(factory);
     }
 
-    public String getUnlocalizedName() {
-        return "machine." + getMetaName() + ".name";
-    }
-
-    public String getLocalizedName() {
-        return I18n.format(getUnlocalizedName());
-    }
-
     @Override
     public boolean canConnectRedstone(@Nullable EnumFacing side) {
         return true;

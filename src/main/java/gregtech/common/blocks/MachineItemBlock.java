@@ -5,6 +5,7 @@ import gregtech.api.metatileentity.GregtechTileEntity;
 import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.IMetaTileEntityFactory;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -34,6 +35,11 @@ public class MachineItemBlock extends ItemBlock {
     @Override
     public String getUnlocalizedName(ItemStack stack) {
         return getFactory(stack).getUnlocalizedName();
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack stack) {
+        return I18n.format(getUnlocalizedName(stack));
     }
 
     @Override

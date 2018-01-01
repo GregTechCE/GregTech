@@ -116,21 +116,6 @@ public class CommonProxy {
 
     public void onPreLoad() {
 
-        GregTechAPI.bioHazmatList.add(new SimpleItemStack(ItemName.hazmat_helmet.getItemStack()));
-        GregTechAPI.bioHazmatList.add(new SimpleItemStack(ItemName.hazmat_chestplate.getItemStack()));
-        GregTechAPI.bioHazmatList.add(new SimpleItemStack(ItemName.hazmat_leggings.getItemStack()));
-        GregTechAPI.bioHazmatList.add(new SimpleItemStack(ItemName.rubber_boots.getItemStack()));
-
-        GregTechAPI.gasHazmatList.add(new SimpleItemStack(ItemName.hazmat_helmet.getItemStack()));
-        GregTechAPI.gasHazmatList.add(new SimpleItemStack(ItemName.hazmat_chestplate.getItemStack()));
-        GregTechAPI.gasHazmatList.add(new SimpleItemStack(ItemName.hazmat_leggings.getItemStack()));
-        GregTechAPI.gasHazmatList.add(new SimpleItemStack(ItemName.rubber_boots.getItemStack()));
-
-        GregTechAPI.radioHazmatList.add(new SimpleItemStack(ItemName.hazmat_helmet.getItemStack()));
-        GregTechAPI.radioHazmatList.add(new SimpleItemStack(ItemName.hazmat_chestplate.getItemStack()));
-        GregTechAPI.radioHazmatList.add(new SimpleItemStack(ItemName.hazmat_leggings.getItemStack()));
-        GregTechAPI.radioHazmatList.add(new SimpleItemStack(ItemName.rubber_boots.getItemStack()));
-
     }
 
     public void onLoad() {

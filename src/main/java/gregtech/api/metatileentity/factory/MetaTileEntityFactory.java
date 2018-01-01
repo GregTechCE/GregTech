@@ -7,7 +7,6 @@ import gregtech.api.metatileentity.IMetaTileEntityFactory;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.common.blocks.BlockMachine;
 import gregtech.common.blocks.MetaBlocks;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
