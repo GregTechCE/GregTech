@@ -7,7 +7,7 @@ import gregtech.api.capability.impl.FluidTankHandler;
 import gregtech.api.capability.impl.ItemHandlerProxy;
 import gregtech.api.util.GTUtility;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -31,7 +31,6 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 public abstract class MetaTileEntity implements IMetaTileEntity {
@@ -40,15 +39,15 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     GregtechTileEntity holder;
 
-    protected IItemHandlerModifiable importItems = getImportItemHandler();
-    protected IItemHandlerModifiable exportItems = getExportItemHandler();
+    protected IItemHandlerModifiable importItems;
+    protected IItemHandlerModifiable exportItems;
 
-    protected IItemHandler itemInventory = getItemHandler();
+    protected IItemHandler itemInventory;
 
-    protected FluidTankHandler importFluids = getImportFluidHandler();
-    protected FluidTankHandler exportFluids = getExportFluidHandler();
+    protected FluidTankHandler importFluids;
+    protected FluidTankHandler exportFluids;
 
-    protected IFluidHandler fluidInventory = getFluidHandler();
+    protected IFluidHandler fluidInventory;
 
     protected EnumFacing frontFacing = EnumFacing.NORTH;
 
@@ -56,6 +55,16 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     public MetaTileEntity(IMetaTileEntityFactory factory) {
         this.factory = factory;
+
+        this.importItems = createImportItemHandler();
+        this.exportItems = createExportItemHandler();
+
+        this.itemInventory = createItemHandler();
+
+        this.importFluids = createImportFluidHandler();
+        this.exportFluids = createExportFluidHandler();
+
+        this.fluidInventory = createFluidHandler();
     }
 
     @Override
@@ -83,15 +92,27 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
         return null;
     }
 
+    @Override
+    public IItemHandler createItemHandler() {
+        return new ItemHandlerProxy(importItems, exportItems);
+    }
+
+    @Override
+    public IFluidHandler createFluidHandler() {
+        return new FluidHandlerProxy(importFluids, exportFluids);
+    }
 
     @Override
     public String getMetaName() {
         return GregTechAPI.METATILEENTITY_REGISTRY.getNameForObject(factory);
     }
 
-//    @Override
     public String getUnlocalizedName() {
-        return "gt.machine." + getMetaName();
+        return "machine." + getMetaName() + ".name";
+    }
+
+    public String getLocalizedName() {
+        return I18n.format(getUnlocalizedName());
     }
 
     @Override

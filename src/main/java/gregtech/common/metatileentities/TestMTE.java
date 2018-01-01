@@ -1,8 +1,9 @@
 package gregtech.common.metatileentities;
 
 import gregtech.api.capability.impl.FluidTankHandler;
-import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.ModularUI;
+import gregtech.api.gui.widgets.LabelWidget;
+import gregtech.api.gui.widgets.ProgressWidget;
 import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.IMetaTileEntityFactory;
@@ -35,31 +36,42 @@ public class TestMTE extends WorkableMetaTileEntity<Recipe> {
     }
 
     @Override
-    public IItemHandlerModifiable getImportItemHandler() {
+    public IItemHandlerModifiable createImportItemHandler() {
         return new ItemStackHandler(1);
     }
 
     @Override
-    public IItemHandlerModifiable getExportItemHandler() {
+    public IItemHandlerModifiable createExportItemHandler() {
         return new ItemStackHandler(1);
     }
 
     @Override
-    public FluidTankHandler getImportFluidHandler() {
+    public FluidTankHandler createImportFluidHandler() {
         return new FluidTankHandler(0);
     }
 
     @Override
-    public FluidTankHandler getExportFluidHandler() {
+    public FluidTankHandler createExportFluidHandler() {
         return new FluidTankHandler(0);
     }
 
     @Override
     public ModularUI<? extends IMetaTileEntity> createUI(EntityPlayer player) {
-        return ModularUI.<IMetaTileEntity>builder(new GTResourceLocation("textures/gui/basicmachines/bronze_furnace.png"), 176, 166)
-            .widget(0, new SlotWidget<IMetaTileEntity>(this.importItems, 0, 53, 25).setOnSlotChanged(this::markDirty))
-            .widget(1, new SlotWidget<IMetaTileEntity>(this.exportItems, 0, 107, 25, true, false).setOnSlotChanged(this::markDirty))
-            .bindPlayerInventory(player.inventory, 2)
+        GTResourceLocation slotImageLocation = new GTResourceLocation("textures/gui/bronze/slot_bronze.png");
+        return ModularUI.<TestMTE>builder(new GTResourceLocation("textures/gui/bronze/bronze_gui.png"), 176, 166)
+            .widget(0, new LabelWidget<>(6, 6, getLocalizedName()))
+            .widget(1, new SlotWidget<TestMTE>(this.importItems, 0, 53, 25)
+                .setImageLocation(slotImageLocation)
+                .setBackgroundLocation(new GTResourceLocation("textures/gui/bronze/slot_bronze_furnace_background.png"))
+                .setOnSlotChanged(this::markDirty))
+            .widget(2, new ProgressWidget<TestMTE>(78, 25)
+                .setOnImageLocation(new GTResourceLocation("textures/gui/bronze/progress_bar_bronze_on.png"))
+                .setOffImageLocation(new GTResourceLocation("textures/gui/bronze/progress_bar_bronze_off.png")))
+            .widget(3, new SlotWidget<TestMTE>(this.exportItems, 0, 107, 25, true, false)
+                .setImageLocation(slotImageLocation)
+                .setOnSlotChanged(this::markDirty))
+            .widget(4, new LabelWidget<>(8, 166 - 96 + 2, player.inventory.getDisplayName().getUnformattedText())) // 166 - gui height, 96 + 2 - from vanilla code
+            .bindPlayerInventory(player.inventory, 5, slotImageLocation)
             .build(this, player);
     }
 

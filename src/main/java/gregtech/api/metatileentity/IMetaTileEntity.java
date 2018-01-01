@@ -1,15 +1,12 @@
 package gregtech.api.metatileentity;
 
-import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankHandler;
-import gregtech.api.capability.impl.ItemHandlerProxy;
 import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.capability.internal.IRedstoneEmitter;
 import gregtech.api.capability.internal.IRedstoneReceiver;
 import gregtech.api.capability.internal.ITurnable;
 import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.ModularUI;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,14 +14,9 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
-
-import java.util.List;
 
 public interface IMetaTileEntity extends ITurnable, IRedstoneReceiver, IRedstoneEmitter, IUIHolder {
 
@@ -110,20 +102,15 @@ public interface IMetaTileEntity extends ITurnable, IRedstoneReceiver, IRedstone
      */
     ModularUI<? extends IMetaTileEntity> createUI(EntityPlayer player);
 
-    IItemHandlerModifiable getImportItemHandler();
-    IItemHandlerModifiable getExportItemHandler();
+    IItemHandlerModifiable createImportItemHandler();
+    IItemHandlerModifiable createExportItemHandler();
 
-    default IItemHandler getItemHandler() {
-        return new ItemHandlerProxy(getImportItemHandler(), getExportItemHandler());
-    }
+    IItemHandler createItemHandler();
 
-    FluidTankHandler getImportFluidHandler();
-    FluidTankHandler getExportFluidHandler();
+    FluidTankHandler createImportFluidHandler();
+    FluidTankHandler createExportFluidHandler();
 
-    default IFluidHandler getFluidHandler() {
-        return new FluidHandlerProxy(getImportFluidHandler(), getExportFluidHandler());
-    }
-
+    IFluidHandler createFluidHandler();
 
     /**
      * @return true if the Machine can be accessed

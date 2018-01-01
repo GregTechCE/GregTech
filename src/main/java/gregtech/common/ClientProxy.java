@@ -82,6 +82,12 @@ public class ClientProxy extends CommonProxy {
     }
 
 //    @SubscribeEvent
+//    public void onTextureStitchPre(TextureStitchEvent.Pre event) {
+//        TextureMap map = event.getMap();
+//        map.registerSprite(new GTResourceLocation("textures/gui/slot_bronze_furnace_background.png"));
+//    }
+
+//    @SubscribeEvent
 //    public void onDrawBlockHighlight(DrawBlockHighlightEvent event) {
 //        if(event.getPlayer() != null && event.getTarget().typeOfHit == RayTraceResult.Type.BLOCK && event.getTarget().getBlockPos() != null) {
 //            EntityPlayer player = event.getPlayer();

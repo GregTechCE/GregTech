@@ -3,6 +3,7 @@ package gregtech.api.gui;
 import gregtech.api.net.NetworkHandler;
 import gregtech.api.net.PacketUIWidgetUpdate;
 import gregtech.api.util.GTLog;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -32,10 +33,30 @@ public abstract class Widget<T extends IUIHolder> implements Comparable<Widget<T
     public abstract void initWidget();
 
     /**
-     * Called each draw tick to draw this widget in GUI
+     * Called each draw tick if drawPriority > Widget.SLOT_DRAW_PRIORITY to draw this widget in GUI
      */
     @SideOnly(Side.CLIENT)
-    public abstract void draw(int mouseX, int mouseY);
+    public void drawInForeground(int mouseX, int mouseY) {
+    }
+
+    /**
+     * Called each draw tick if drawPriority <= Widget.SLOT_DRAW_PRIORITY to draw this widget in GUI
+     */
+    @SideOnly(Side.CLIENT)
+    public void drawInBackground(int guiLeft, int guiTop, float partialTicks, int mouseX, int mouseY) {
+    }
+
+    protected void drawInBackgroundInternal(int guiLeft, int guiTop, Runnable runnable){
+//        RenderHelper.enableGUIStandardItemLighting();
+//        GlStateManager.disableLighting();
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.pushMatrix();
+        {
+            GlStateManager.translate(guiLeft, guiTop, 0.0F);
+            runnable.run();
+        }
+        GlStateManager.popMatrix();
+    }
 
     /**
      * Called when mouse is clicked in GUI

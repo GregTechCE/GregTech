@@ -3,11 +3,16 @@ package gregtech.api.gui.widgets;
 import gregtech.api.gui.INativeWidget;
 import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.Widget;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.SlotItemHandler;
 
@@ -19,14 +24,17 @@ public class SlotWidget<T extends IUIHolder> extends Widget<T> implements INativ
 
     protected IItemHandlerModifiable itemHandler;
 
-    private final int slotIndex;
-    private final int xPosition;
-    private final int yPosition;
+    protected final int slotIndex;
+    protected final int xPosition;
+    protected final int yPosition;
 
     protected boolean canTakeItems;
     protected boolean canPutItems;
 
     protected Runnable onSlotChanged;
+
+    protected ResourceLocation imageLocation;
+    protected ResourceLocation backgroundLocation;
 
     public SlotWidget(IItemHandlerModifiable itemHandler, int slotIndex, int xPosition, int yPosition, boolean canTakeItems, boolean canPutItems) {
         super(Widget.SLOT_DRAW_PRIORITY);
@@ -44,6 +52,16 @@ public class SlotWidget<T extends IUIHolder> extends Widget<T> implements INativ
 
     public SlotWidget<T> setOnSlotChanged(Runnable onSlotChanged) {
         this.onSlotChanged = onSlotChanged;
+        return this;
+    }
+
+    public SlotWidget<T> setBackgroundLocation(ResourceLocation backgroundLocation) {
+        this.backgroundLocation = backgroundLocation;
+        return this;
+    }
+
+    public SlotWidget<T> setImageLocation(ResourceLocation imageLocation) {
+        this.imageLocation = imageLocation;
         return this;
     }
 
@@ -104,10 +122,18 @@ public class SlotWidget<T extends IUIHolder> extends Widget<T> implements INativ
                 return SlotWidget.this.isEnabled();
             }
         };
+//        if (FMLCommonHandler.instance().getSide() == Side.CLIENT && this.backgroundLocation != null) {
+//            this.slotReference.setBackgroundName(this.backgroundLocation.toString());
+//        }
     }
 
     @Override
-    public void draw(int mouseX, int mouseY) {
+    @SideOnly(Side.CLIENT)
+    public void drawInBackground(int guiLeft, int guiTop, float partialTicks, int mouseX, int mouseY) {
+        drawInBackgroundInternal(guiLeft, guiTop, () -> {
+            Minecraft.getMinecraft().getTextureManager().bindTexture(imageLocation);
+            Gui.drawModalRectWithCustomSizedTexture(this.xPosition - 1, this.yPosition - 1, 0, 0, 18, 18, 18, 18);
+        });
     }
 
     @Override
@@ -115,10 +141,12 @@ public class SlotWidget<T extends IUIHolder> extends Widget<T> implements INativ
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void readInitialSyncInfo(PacketBuffer buffer) {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void readUpdateInfo(PacketBuffer buffer) {
     }
 

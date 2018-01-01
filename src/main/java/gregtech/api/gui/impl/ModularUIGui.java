@@ -36,9 +36,9 @@ public class ModularUIGui extends GuiContainer {
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         modularUI.guiWidgets.values().stream()
-                .filter(widget -> widget.drawPriority >= Widget.SLOT_DRAW_PRIORITY)
+                .filter(widget -> widget.drawPriority > Widget.SLOT_DRAW_PRIORITY)
                 .sorted()
-                .forEach(widget -> widget.draw(mouseX, mouseY));
+                .forEach(widget -> widget.drawInForeground(mouseX, mouseY));
     }
 
     @Override
@@ -46,9 +46,9 @@ public class ModularUIGui extends GuiContainer {
         mc.renderEngine.bindTexture(modularUI.backgroundPath);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
         modularUI.guiWidgets.values().stream()
-                .filter(widget -> widget.drawPriority < Widget.SLOT_DRAW_PRIORITY)
+                .filter(widget -> widget.drawPriority <= Widget.SLOT_DRAW_PRIORITY)
                 .sorted()
-                .forEach(widget -> widget.draw(mouseX, mouseY));
+                .forEach(widget -> widget.drawInBackground(guiLeft, guiTop, partialTicks,  mouseX, mouseY));
     }
 
     @Override

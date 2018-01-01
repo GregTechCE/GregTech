@@ -93,19 +93,26 @@ public final class ModularUI<H extends IUIHolder> {
             return this;
         }
 
-        public Builder<T> bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId) {
-            return bindPlayerInventory(inventoryPlayer, startWidgetId, 8, 84);
+        public Builder<T> bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId, ResourceLocation imageLocation) {
+            return bindPlayerInventory(inventoryPlayer, startWidgetId, imageLocation, 8, 84);
         }
 
-        public Builder<T> bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId, int x, int y) {
+        public Builder<T> bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId, ResourceLocation imageLocation, int x, int y) {
             for (int row = 0; row < 3; row++) {
                 for (int col = 0; col < 9; col++) {
                     this.widget(startWidgetId + col + (row + 1) * 9,
-                        new SlotWidget<>(new PlayerMainInvWrapper(inventoryPlayer), col + (row + 1) * 9, x + col * 18, y + row * 18));
+                        new SlotWidget<T>(new PlayerMainInvWrapper(inventoryPlayer), col + (row + 1) * 9, x + col * 18, y + row * 18)
+                            .setImageLocation(imageLocation));
                 }
             }
+            return bindPlayerHotbar(inventoryPlayer, startWidgetId, imageLocation, x, y + 58);
+        }
+
+        public Builder<T> bindPlayerHotbar(InventoryPlayer inventoryPlayer, int startWidgetId, ResourceLocation imageLocation, int x, int y) {
             for (int slot = 0; slot < 9; slot++) {
-                this.widget(startWidgetId + slot, new SlotWidget<>(new PlayerMainInvWrapper(inventoryPlayer), slot, x + slot * 18, y + 58));
+                this.widget(startWidgetId + slot,
+                    new SlotWidget<T>(new PlayerMainInvWrapper(inventoryPlayer), slot, x + slot * 18, y)
+                        .setImageLocation(imageLocation));
             }
             return this;
         }
