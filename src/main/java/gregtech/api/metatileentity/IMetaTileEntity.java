@@ -87,10 +87,10 @@ public interface IMetaTileEntity extends ITurnable, IRedstoneReceiver, IRedstone
      * Called when this MetaTileEntity gets (intentionally) disconnected from the BaseMetaTileEntity.
      * Doesn't get called when this thing is moved by Frames or similar hacks.
      */
-    void inValidate();
+    void invalidate();
 
     /**
-     * Called when the BaseMetaTileEntity gets invalidated, what happens right before the @inValidate above gets called
+     * Called when the BaseMetaTileEntity gets invalidated, what happens right before the @invalidate above gets called
      */
     void onRemoval();
 

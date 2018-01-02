@@ -12,6 +12,7 @@ import gregtech.api.metatileentity.WorkableMetaTileEntity;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.util.GTResourceLocation;
+import gregtech.api.util.GTUtility;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -60,7 +61,7 @@ public class TestMTE extends WorkableMetaTileEntity<Recipe> {
     public ModularUI<? extends IMetaTileEntity> createUI(EntityPlayer player) {
         GTResourceLocation slotImageLocation = new GTResourceLocation("textures/gui/bronze/slot_bronze.png");
         return ModularUI.<TestMTE>builder(new GTResourceLocation("textures/gui/bronze/bronze_gui.png"), 176, 166)
-            .widget(0, new LabelWidget<>(6, 6, I18n.format(this.factory.getUnlocalizedName())))
+            .widget(0, new LabelWidget<>(6, 6, GTUtility.sided(() -> I18n.format(this.factory.getUnlocalizedName()), this.factory::getUnlocalizedName)))
             .widget(1, new SlotWidget<TestMTE>(this.importItems, 0, 53, 25)
                 .setImageLocation(slotImageLocation)
                 .setBackgroundLocation(new GTResourceLocation("textures/gui/bronze/slot_bronze_furnace_background.png"))

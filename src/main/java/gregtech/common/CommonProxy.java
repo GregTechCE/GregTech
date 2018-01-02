@@ -1,44 +1,29 @@
 package gregtech.common;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.enchants.EnchantmentRadioactivity;
-import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
-import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.util.GTLog;
 import gregtech.common.blocks.CompressedItemBlock;
 import gregtech.common.blocks.MachineItemBlock;
-import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.OreItemBlock;
 import gregtech.common.blocks.StoneItemBlock;
 import gregtech.common.blocks.VariantItemBlock;
 import gregtech.common.items.MetaItems;
-import ic2.core.ref.ItemName;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.IFuelHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.network.IGuiHandler;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.registries.IForgeRegistry;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static gregtech.common.blocks.MetaBlocks.*;
@@ -50,20 +35,20 @@ public class CommonProxy {
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
         GTLog.logger.info("Registering Blocks...");
         IForgeRegistry<Block> registry = event.getRegistry();
-        registry.register(MetaBlocks.MACHINE);
-        registry.register(MetaBlocks.BOILER_CASING);
-        registry.register(MetaBlocks.METAL_CASING);
-        registry.register(MetaBlocks.TURBINE_CASING);
-        registry.register(MetaBlocks.MACHINE_CASING);
-        registry.register(MetaBlocks.MUTLIBLOCK_CASING);
-        registry.register(MetaBlocks.WIRE_COIL);
-        registry.register(MetaBlocks.WARNING_SIGN);
-        registry.register(MetaBlocks.GRANITE);
-        registry.register(MetaBlocks.MINERAL);
-        registry.register(MetaBlocks.CONCRETE);
+        registry.register(MACHINE);
+        registry.register(BOILER_CASING);
+        registry.register(METAL_CASING);
+        registry.register(TURBINE_CASING);
+        registry.register(MACHINE_CASING);
+        registry.register(MUTLIBLOCK_CASING);
+        registry.register(WIRE_COIL);
+        registry.register(WARNING_SIGN);
+        registry.register(GRANITE);
+        registry.register(MINERAL);
+        registry.register(CONCRETE);
 
-        MetaBlocks.COMPRESSED.values().stream().distinct().forEach(registry::register);
-        MetaBlocks.ORES.values().stream().distinct().forEach(registry::register);
+        COMPRESSED.values().stream().distinct().forEach(registry::register);
+        ORES.values().stream().distinct().forEach(registry::register);
     }
 
     @SubscribeEvent
@@ -90,12 +75,12 @@ public class CommonProxy {
         registry.register(createItemBlock(MINERAL, () -> new StoneItemBlock<>(MINERAL)));
         registry.register(createItemBlock(CONCRETE, () -> new StoneItemBlock<>(CONCRETE)));
 
-        MetaBlocks.COMPRESSED.values()
+        COMPRESSED.values()
             .stream()
             .distinct()
             .map(block -> createItemBlock(block, () -> new CompressedItemBlock(block)))
             .forEach(registry::register);
-        MetaBlocks.ORES.values()
+        ORES.values()
             .stream()
             .distinct()
             .map(block -> createItemBlock(block, () -> new OreItemBlock(block)))

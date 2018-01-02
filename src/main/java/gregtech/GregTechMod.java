@@ -15,11 +15,11 @@ import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.modelfactories.BlockCompressedFactory;
 import gregtech.common.blocks.modelfactories.BlockOreFactory;
 import gregtech.common.items.MetaItems;
-import gregtech.loaders.preload.ItemBlockFluidLoader;
 import gregtech.loaders.preload.MaterialInfoLoader;
 import gregtech.loaders.preload.OreDictionaryLoader;
 import net.minecraft.init.Items;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.LoaderException;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -36,9 +36,11 @@ public class GregTechMod {
 
     static {
         FluidRegistry.enableUniversalBucket();
-        ResourcePackHook.init();
-        BlockOreFactory.init();
-        BlockCompressedFactory.init();
+        if(FMLCommonHandler.instance().getSide().isClient()) {
+            ResourcePackHook.init();
+            BlockOreFactory.init();
+            BlockCompressedFactory.init();
+        }
     }
 
     @Mod.Instance(GTValues.MODID)
