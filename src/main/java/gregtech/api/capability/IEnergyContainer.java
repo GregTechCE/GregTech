@@ -16,14 +16,8 @@ public interface IEnergyContainer {
 
     boolean inputsEnergy(EnumFacing side);
 
-    boolean outputsEnergy(EnumFacing side);
-
-    /**
-     * Gets if that amount of electric energy is stored inside the machine.
-     * It is used for checking the contained energy before consuming it.
-     */
-    default boolean isEnergyStored(long amount) {
-        return getEnergyStored() >= amount;
+    default boolean outputsEnergy(EnumFacing side) {
+        return false;
     }
 
     /**
@@ -41,12 +35,16 @@ public interface IEnergyContainer {
     /**
      * Gets the amount of energy packets per tick.
      */
-    long getOutputAmperage();
+    default long getOutputAmperage() {
+        return 0L;
+    }
 
     /**
      * Gets the output in energy units per energy packet.
      */
-    long getOutputVoltage();
+    default long getOutputVoltage() {
+        return 0L;
+    }
 
     /**
      * Gets the amount of energy packets this machine can receive

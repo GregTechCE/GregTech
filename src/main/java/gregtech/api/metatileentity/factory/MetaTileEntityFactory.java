@@ -63,7 +63,7 @@ public class MetaTileEntityFactory<T extends MetaTileEntity> implements IMetaTil
         try {
             return metaTileEntityClass.getConstructor(IMetaTileEntityFactory.class).newInstance(this);
         } catch (Throwable exception) {
-            throw Throwables.propagate(exception);
+            throw new RuntimeException(exception);
         }
     }
 

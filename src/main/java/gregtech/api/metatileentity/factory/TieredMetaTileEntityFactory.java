@@ -21,7 +21,7 @@ public class TieredMetaTileEntityFactory<T extends TieredMetaTileEntity> extends
         try {
             return metaTileEntityClass.getConstructor(IMetaTileEntityFactory.class, int.class).newInstance(this, tier);
         } catch (Throwable exception) {
-            throw Throwables.propagate(exception);
+            throw new RuntimeException(exception);
         }
     }
 
