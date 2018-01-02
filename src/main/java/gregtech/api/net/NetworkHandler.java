@@ -58,9 +58,15 @@ public class NetworkHandler {
     }
 
     private static final HashMap<Class<? extends Packet>, PacketCodec<? extends Packet>> codecMap = new HashMap<>();
-    @SideOnly(Side.CLIENT) private static final HashMap<Class<? extends Packet>, PacketExecutor<? extends Packet, NetHandlerPlayClient>> clientExecutors = new HashMap<>();
+    @SideOnly(Side.CLIENT) private static HashMap<Class<? extends Packet>, PacketExecutor<? extends Packet, NetHandlerPlayClient>> clientExecutors;
     private static final HashMap<Class<? extends Packet>, PacketExecutor<? extends Packet, NetHandlerPlayServer>> serverExecutors = new HashMap<>();
     private static final IntIdentityHashBiMap<Class<? extends Packet>> packetMap = new IntIdentityHashBiMap<>(10);
+
+    static {
+        if(FMLCommonHandler.instance().getSide().isClient()) {
+            clientExecutors = new HashMap<>();
+        }
+    }
 
     public static FMLEventChannel channel;
 

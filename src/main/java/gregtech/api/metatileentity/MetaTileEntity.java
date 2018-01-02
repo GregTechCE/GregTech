@@ -240,7 +240,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     }
 
     @Override
-    public void inValidate() {
+    public void invalidate() {
     }
 
     @Override

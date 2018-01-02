@@ -30,6 +30,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
@@ -217,6 +218,13 @@ public class GTUtility {
                 return tier;
         }
         return tier;
+    }
+
+    public static <T> T sided(Supplier<T> client, Supplier<T> server) {
+        if (FMLCommonHandler.instance().getSide().isClient()) {
+            return client.get();
+        }
+        return server.get();
     }
 
     @SafeVarargs

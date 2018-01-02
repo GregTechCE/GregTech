@@ -1,8 +1,5 @@
 package gregtech.common.blocks;
 
-import gregtech.api.capability.internal.IGregTechTileEntity;
-import gregtech.api.metatileentity.IMetaTileEntity;
-import gregtech.api.metatileentity.PaintableMetaTileEntity;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
@@ -13,21 +10,16 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.color.IBlockColor;
-import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
+import static gregtech.common.ClientProxy.*;
 
 public class MetaBlocks {
 
@@ -49,42 +41,6 @@ public class MetaBlocks {
 
     public static HashMap<DustMaterial, BlockCompressed> COMPRESSED;
     public static HashMap<DustMaterial, BlockOre> ORES;
-
-    private static final IBlockColor COMPRESSED_BLOCK_COLOR = (IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) ->
-        state.getValue(((BlockCompressed) state.getBlock()).variantProperty).materialRGB;
-
-    private static final IItemColor COMPRESSED_ITEM_COLOR = (stack, tintIndex) -> {
-        BlockCompressed block = (BlockCompressed) ((ItemBlock) stack.getItem()).getBlock();
-        IBlockState state = block.getStateFromMeta(stack.getItemDamage());
-        return state.getValue(block.variantProperty).materialRGB;
-    };
-
-    private static final IBlockColor ORE_BLOCK_COLOR = (IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) ->
-        tintIndex == 1 ? ((BlockOre) state.getBlock()).material.materialRGB : 0xFFFFFF;
-
-    private static final IItemColor ORE_ITEM_COLOR = (stack, tintIndex) ->
-        tintIndex == 1 ? ((BlockOre) ((ItemBlock) stack.getItem()).getBlock()).material.materialRGB : 0xFFFFFF;
-
-    private static final IBlockColor MACHINE_BLOCK_COLOR = (IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) -> {
-        IGregTechTileEntity tileEntity = (IGregTechTileEntity) worldIn.getTileEntity(pos);
-        if (tileEntity != null) {
-            IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
-            if (metaTileEntity instanceof PaintableMetaTileEntity) {
-                EnumDyeColor color = ((PaintableMetaTileEntity) metaTileEntity).getColor();
-                if (color != null) {
-                    return color.getColorValue();
-                }
-            }
-        }
-        return 0xFFFFFF;
-    };
-
-    private static final IItemColor MACHINE_ITEM_COLOR = (stack, tintIndex) -> {
-        if (stack.hasTagCompound() && stack.getTagCompound().hasKey("Color")) {
-            return EnumDyeColor.byMetadata(stack.getTagCompound().getInteger("Color")).getColorValue();
-        }
-        return 0xFFFFFF;
-    };
 
     public static void init() {
         BOILER_CASING = new BlockBoilerCasing();

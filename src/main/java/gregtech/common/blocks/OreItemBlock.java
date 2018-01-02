@@ -5,6 +5,8 @@ import gregtech.api.unification.ore.StoneType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class OreItemBlock extends ItemBlock {
 
@@ -27,6 +29,7 @@ public class OreItemBlock extends ItemBlock {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack) {
         IBlockState blockState = getBlockState(stack);
         boolean small = blockState.getValue(BlockOre.SMALL);
