@@ -47,7 +47,7 @@
       },
       "fusion_coil": {
         "textures": {
-          "all": "gregtech:blocks/casings/coils/machine_casing_fusion_coil"
+          "all": "gregtech:blocks/casings/machine_casing_fusion_coil"
         }
       }
     }

@@ -96,18 +96,8 @@ public class TestMTE extends WorkableMetaTileEntity<Recipe> {
     }
 
     @Override
-    public boolean outputsEnergy(EnumFacing side) {
-        return false;
-    }
-
-    @Override
     public long getEnergyCapacity() {
         return 16000;
-    }
-
-    @Override
-    public long getOutputAmperage() {
-        return 0;
     }
 
     @Override

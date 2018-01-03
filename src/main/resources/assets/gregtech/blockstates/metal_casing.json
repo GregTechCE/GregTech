@@ -7,12 +7,12 @@
     "variant": {
       "bronze_bricks": {
         "textures": {
-          "all": "gregtech:blocks/casings/machine_bronzeplatedbricks"
+          "all": "gregtech:blocks/misc/machine_bronzeplatedbricks"
         }
       },
       "invar_heatproof": {
         "textures": {
-          "all": "gregtech:blocks/casings/machine_heatproofcasing"
+          "all": "gregtech:blocks/casings/machine_casing_heatproof"
         }
       },
       "aluminium_frostproof": {

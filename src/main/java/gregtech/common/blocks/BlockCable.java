@@ -62,8 +62,8 @@ public class BlockCable extends Block implements ITileEntityProvider {
             IBlockState blockState = world.getBlockState(mutableBlockPos);
             if(blockState.getBlock().hasTileEntity(blockState)) {
                 TileEntity tileEntity = world.getTileEntity(mutableBlockPos);
-                IEnergyContainer container = tileEntity.getCapability(
-                    IEnergyContainer.CAPABILITY_ENERGY_CONTAINER, opposite);
+                IEnergyContainer container = tileEntity == null ? null :
+                    tileEntity.getCapability(IEnergyContainer.CAPABILITY_ENERGY_CONTAINER, opposite);
                 if(container != null && container.outputsEnergy(opposite)) {
                     shouldPlaceEmitter = true;
                     break;
@@ -88,7 +88,7 @@ public class BlockCable extends Block implements ITileEntityProvider {
         Stack<EnumFacing> moveStack = new Stack<>();
         while(true) {
             for(EnumFacing facing : EnumFacing.VALUES) {
-                currentPos.offset(facing);
+                currentPos.move(facing);
                 EnumFacing opposite = facing.getOpposite();
                 if(world.getBlockState(currentPos).getBlock() instanceof BlockCable) {
                     //if we are cable, move forward, and update emitter, if we has one

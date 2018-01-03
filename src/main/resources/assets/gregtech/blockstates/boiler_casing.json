@@ -41,7 +41,7 @@
       "steel_firebox": {
         "model": "minecraft:cube_bottom_top",
         "textures": {
-          "bottom": "gregtech:blocks/casings/machine_casing_solid_ steel",
+          "bottom": "gregtech:blocks/casings/machine_casing_solid_steel",
           "top": "gregtech:blocks/casings/machine_casing_firebox_steel",
           "side": "gregtech:blocks/casings/machine_casing_firebox_steel"
         }
