@@ -27,6 +27,11 @@ public class MachineItemBlock extends ItemBlock {
     }
 
     @Override
+    public int getMetadata(int damage) {
+        return damage;
+    }
+
+    @Override
     public String getUnlocalizedName(ItemStack stack) {
         return getFactory(stack).getUnlocalizedName();
     }

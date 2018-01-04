@@ -96,8 +96,8 @@ public class TileEntityCableEmitter extends TileEntity implements IEnergyContain
     }
 
     protected void burnCable(CachedCableEntry cableEntry, Predicate<CachedCableEntry> burnPredicate) {
-        // burn baby, burn
         if (burnPredicate.test(cableEntry)) {
+            // burn baby, burn
             this.getWorld().setBlockState(new BlockPos(cableEntry.posX, cableEntry.posY, cableEntry.posZ), Blocks.FIRE.getDefaultState());
         }
     }
@@ -105,11 +105,17 @@ public class TileEntityCableEmitter extends TileEntity implements IEnergyContain
     public void refreshConnections() {
         this.outgoingConnections.clear();
         PooledMutableBlockPos currentPos = PooledMutableBlockPos.retain(getPos());
+        List<BlockPos> visited = new ArrayList<>();
         Stack<EnumFacing> moveStack = new Stack<>();
         Stack<CachedCableEntry> pathStack = new Stack<>();
         while(true) {
             for(EnumFacing facing : EnumFacing.VALUES) {
                 currentPos.move(facing);
+                if (!visited.contains(currentPos)) {
+                    visited.add(currentPos);
+                } else {
+                    break;
+                }
                 EnumFacing opposite = facing.getOpposite();
                 IBlockState blockStateAt = world.getBlockState(currentPos);
                 if(blockStateAt.getBlock() instanceof BlockCable) {

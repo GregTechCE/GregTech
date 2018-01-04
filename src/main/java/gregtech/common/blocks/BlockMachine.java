@@ -91,7 +91,9 @@ public class BlockMachine extends Block {
 
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+        return getDefaultState()
+            .withProperty(FACING, placer.getHorizontalFacing().getOpposite())
+            .withProperty(META_TYPE, GregTechAPI.METATILEENTITY_REGISTRY.getObjectById(meta).getMetaName());
     }
 
     @Override
