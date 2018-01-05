@@ -3,7 +3,6 @@ package gregtech.api.unification;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
-import gregtech.api.items.OreDictNames;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.GemMaterial;
 import gregtech.api.unification.material.type.Material;
@@ -13,7 +12,6 @@ import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
-import ic2.core.item.ItemIC2FluidContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
@@ -61,11 +59,6 @@ public class OreDictUnifier {
 
     @SubscribeEvent
     public static void onItemRegistration(OreDictionary.OreRegisterEvent event) {
-        if(event.getOre().getItem() instanceof ItemIC2FluidContainer) {
-            //IC2 tries to register NBT-dependent items in ore dictionary
-            //ignore further registration
-            return;
-        }
         String oreName = event.getName();
         OrePrefix orePrefix = OrePrefix.getPrefix(oreName);
         Material material = null;

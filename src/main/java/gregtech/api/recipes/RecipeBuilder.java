@@ -12,9 +12,6 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ValidationResult;
 import gregtech.common.items.MetaItems;
-import ic2.core.ref.BlockName;
-import ic2.core.ref.ItemName;
-import ic2.core.ref.TeBlock;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -674,10 +671,10 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 //				recipeMap.addRecipe(this.copy().inputs(input, ItemList.Block_Powderbarrel.get(gunpowder)).build());
 			}
 			if (dynamite < 17) {
-				recipeMap.addRecipe(this.copy().inputs(input, ModHandler.IC2.getIC2Item(ItemName.dynamite, dynamite)).build());
+//				recipeMap.addRecipe(this.copy().inputs(input, ModHandler.IC2.getIC2Item(ItemName.dynamite, dynamite)).build());
 			}
 			recipeMap.addRecipe(this.copy().inputs(input, new ItemStack(Blocks.TNT, TNT)).build());
-			recipeMap.addRecipe(this.copy().inputs(input, ModHandler.IC2.getIC2Item(BlockName.te, TeBlock.itnt, ITNT)).build());
+//			recipeMap.addRecipe(this.copy().inputs(input, ModHandler.IC2.getIC2Item(BlockName.te, TeBlock.itnt, ITNT)).build());
 		}
 
 		public ValidationResult<Recipe> build(boolean checkForCollisions) {

@@ -1,6 +1,5 @@
 package gregtech.common;
 
-
 import com.google.common.base.CaseFormat;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;
@@ -8,11 +7,23 @@ import gregtech.api.unification.material.type.FluidMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.MetalMaterial;
 import gregtech.api.util.GTResourceLocation;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 @SuppressWarnings("WeakerAccess")
 public class MetaFluids {
+
+    public static final Fluid DISTILLED_WATER = new Fluid("distilled_water", new ResourceLocation("blocks/water_still"), new ResourceLocation("blocks/water_flow")) {
+        @Override
+        public String getLocalizedName(FluidStack fs) {
+            return I18n.translateToLocal("tile.distilled_water.name");
+        }
+    }.setBlock(Blocks.WATER).setUnlocalizedName("distilled_water");
+
 
     public enum FluidType {
         LIQUID,
@@ -61,6 +72,8 @@ public class MetaFluids {
         Materials.Water.setMaterialFluid(FluidRegistry.WATER);
         Materials.Ice.setMaterialFluid(FluidRegistry.WATER);
         Materials.Lava.setMaterialFluid(FluidRegistry.LAVA);
+
+        FluidRegistry.registerFluid(DISTILLED_WATER);
 
         //TODO TWEAK VALUES
         registerFluid(Materials.Air, FluidType.GAS, 295);

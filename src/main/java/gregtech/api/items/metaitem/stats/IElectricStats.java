@@ -1,10 +1,9 @@
 package gregtech.api.items.metaitem.stats;
 
-import ic2.api.item.IElectricItemManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 
-public interface IElectricStats extends IMetaItemStats, IElectricItemManager {
+public interface IElectricStats extends IMetaItemStats {
 
     /**
      * Charge an item with a specified amount of energy.
@@ -16,7 +15,7 @@ public interface IElectricStats extends IMetaItemStats, IElectricItemManager {
      * @param simulate don't actually change the item, just determine the return value
      * @return Energy transferred into the electric item
      */
-    double charge(ItemStack stack, double amount, int tier, boolean ignoreTransferLimit, boolean simulate);
+    long charge(ItemStack stack, long amount, int tier, boolean ignoreTransferLimit, boolean simulate);
 
     /**
      * Discharge an item by a specified amount of energy
@@ -33,7 +32,7 @@ public interface IElectricStats extends IMetaItemStats, IElectricItemManager {
      * @param simulate don't actually discharge the item, just determine the return value
      * @return Energy retrieved from the electric item
      */
-    double discharge(ItemStack stack, double amount, int tier, boolean ignoreTransferLimit, boolean externally, boolean simulate);
+    long discharge(ItemStack stack, long amount, int tier, boolean ignoreTransferLimit, boolean externally, boolean simulate);
 
     /**
      * Determine the charge level for the specified item.
@@ -41,7 +40,7 @@ public interface IElectricStats extends IMetaItemStats, IElectricItemManager {
      * @param stack ItemStack containing the electric item
      * @return charge level in EU
      */
-    double getCharge(ItemStack stack);
+    long getCharge(ItemStack stack);
 
     /**
      * Determine the charge level for the specified item.
@@ -52,7 +51,7 @@ public interface IElectricStats extends IMetaItemStats, IElectricItemManager {
      * @param stack ItemStack containing the electric item
      * @return maximum charge level in EU
      */
-    double getMaxCharge(ItemStack stack);
+    long getMaxCharge(ItemStack stack);
 
     /**
      * Determine if the specified electric item has at least a specific amount of EU.
@@ -63,7 +62,7 @@ public interface IElectricStats extends IMetaItemStats, IElectricItemManager {
      * @param amount minimum amount of energy required
      * @return true if there's enough energy
      */
-    boolean canUse(ItemStack stack, double amount);
+    boolean canUse(ItemStack stack, long amount);
 
     /**
      * Try to retrieve a specific amount of energy from an Item, and if applicable, a BatPack.
@@ -74,7 +73,7 @@ public interface IElectricStats extends IMetaItemStats, IElectricItemManager {
      * @param entity entity holding the item
      * @return true if the operation succeeded
      */
-    boolean use(ItemStack stack, double amount, EntityLivingBase entity);
+    boolean use(ItemStack stack, long amount, EntityLivingBase entity);
 
     /**
      * Charge an item from the BatPack a player is wearing.

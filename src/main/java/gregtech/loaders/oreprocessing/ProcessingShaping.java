@@ -11,9 +11,6 @@ import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaItems;
-import ic2.core.item.type.CasingResourceType;
-import ic2.core.item.type.CraftingItemType;
-import ic2.core.ref.ItemName;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -226,53 +223,53 @@ public class ProcessingShaping implements IOreRegistrationHandler {
                 .buildAndRegister();
 
             if (entry.material == Materials.Steel) {
-                if (amount * 2 <= 64) {
-                    RecipeMap.EXTRUDER_RECIPES.recipeBuilder()
-                        .inputs(GTUtility.copyAmount(1, stack))
-                        .notConsumable(MetaItems.SHAPE_EXTRUDER_CASING)
-                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.steel, amount * 2))
-                        .duration(amount * 32)
-                        .EUt(3 * voltageMultiplier)
-                        .buildAndRegister();
-                }
-                if (amount * 2 <= 64) {
-                    RecipeMap.ALLOY_SMELTER_RECIPES.recipeBuilder()
-                        .inputs(GTUtility.copyAmount(2, stack))
-                        .notConsumable(MetaItems.SHAPE_MOLD_CASING)
-                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.steel, amount * 3))
-                        .duration(amount * 128)
-                        .EUt(voltageMultiplier)
-                        .buildAndRegister();
-                }
+//                if (amount * 2 <= 64) {
+//                    RecipeMap.EXTRUDER_RECIPES.recipeBuilder()
+//                        .inputs(GTUtility.copyAmount(1, stack))
+//                        .notConsumable(MetaItems.SHAPE_EXTRUDER_CASING)
+//                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.steel, amount * 2))
+//                        .duration(amount * 32)
+//                        .EUt(3 * voltageMultiplier)
+//                        .buildAndRegister();
+//                }
+//                if (amount * 2 <= 64) {
+//                    RecipeMap.ALLOY_SMELTER_RECIPES.recipeBuilder()
+//                        .inputs(GTUtility.copyAmount(2, stack))
+//                        .notConsumable(MetaItems.SHAPE_MOLD_CASING)
+//                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.steel, amount * 3))
+//                        .duration(amount * 128)
+//                        .EUt(voltageMultiplier)
+//                        .buildAndRegister();
+//                }
 
             } else if (entry.material == Materials.Iron || entry.material == Materials.WroughtIron) {
 
-                RecipeMap.EXTRUDER_RECIPES.recipeBuilder()
-                    .inputs(GTUtility.copyAmount(1, stack))
-                    .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
-                    .outputs(ModHandler.IC2.getIC2Item(ItemName.crafting, CraftingItemType.fuel_rod, amount))
-                    .duration(amount * 128)
-                    .EUt(32)
-                    .buildAndRegister();
-
-                if (amount * 2 <= 64) {
-                    RecipeMap.EXTRUDER_RECIPES.recipeBuilder()
-                        .inputs(GTUtility.copyAmount(1, stack))
-                        .notConsumable(MetaItems.SHAPE_EXTRUDER_CASING)
-                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.iron, amount * 2))
-                        .duration(amount * 32)
-                        .EUt(3 * voltageMultiplier)
-                        .buildAndRegister();
-                }
-                if (amount * 2 <= 64) {
-                    RecipeMap.ALLOY_SMELTER_RECIPES.recipeBuilder()
-                        .inputs(GTUtility.copyAmount(2, stack))
-                        .notConsumable(MetaItems.SHAPE_MOLD_CASING)
-                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.iron, amount * 3))
-                        .duration(amount * 128)
-                        .EUt(voltageMultiplier)
-                        .buildAndRegister();
-                }
+//                RecipeMap.EXTRUDER_RECIPES.recipeBuilder()
+//                    .inputs(GTUtility.copyAmount(1, stack))
+//                    .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
+//                    .outputs(ModHandler.IC2.getIC2Item(ItemName.crafting, CraftingItemType.fuel_rod, amount))
+//                    .duration(amount * 128)
+//                    .EUt(32)
+//                    .buildAndRegister();
+//
+//                if (amount * 2 <= 64) {
+//                    RecipeMap.EXTRUDER_RECIPES.recipeBuilder()
+//                        .inputs(GTUtility.copyAmount(1, stack))
+//                        .notConsumable(MetaItems.SHAPE_EXTRUDER_CASING)
+//                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.iron, amount * 2))
+//                        .duration(amount * 32)
+//                        .EUt(3 * voltageMultiplier)
+//                        .buildAndRegister();
+//                }
+//                if (amount * 2 <= 64) {
+//                    RecipeMap.ALLOY_SMELTER_RECIPES.recipeBuilder()
+//                        .inputs(GTUtility.copyAmount(2, stack))
+//                        .notConsumable(MetaItems.SHAPE_MOLD_CASING)
+//                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.iron, amount * 3))
+//                        .duration(amount * 128)
+//                        .EUt(voltageMultiplier)
+//                        .buildAndRegister();
+//                }
                 if (amount * 31 <= 64) {
                     RecipeMap.ALLOY_SMELTER_RECIPES.recipeBuilder()
                         .inputs(GTUtility.copyAmount(31, stack))
@@ -285,117 +282,117 @@ public class ProcessingShaping implements IOreRegistrationHandler {
 
             } else if (entry.material == Materials.Tin) {
 
-                RecipeMap.EXTRUDER_RECIPES.recipeBuilder()
-                    .inputs(GTUtility.copyAmount(2, stack))
-                    .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
-                    .outputs(ModHandler.IC2.getIC2Item(ItemName.fluid_cell, amount))
-                    .duration(amount * 128)
-                    .EUt(32)
-                    .buildAndRegister();
-
-                if (amount * 2 <= 64) {
-                    RecipeMap.EXTRUDER_RECIPES.recipeBuilder()
-                        .inputs(GTUtility.copyAmount(1, stack))
-                        .notConsumable(MetaItems.SHAPE_EXTRUDER_CASING)
-                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.tin, amount * 2))
-                        .duration(amount * 32)
-                        .EUt(3 * voltageMultiplier)
-                        .buildAndRegister();
-
-                }
-                if (amount * 2 <= 64) {
-                    RecipeMap.ALLOY_SMELTER_RECIPES.recipeBuilder()
-                        .inputs(GTUtility.copyAmount(2, stack))
-                        .notConsumable(MetaItems.SHAPE_MOLD_CASING)
-                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.tin, amount * 3))
-                        .duration(amount * 128)
-                        .EUt(voltageMultiplier)
-                        .buildAndRegister();
-                }
+//                RecipeMap.EXTRUDER_RECIPES.recipeBuilder()
+//                    .inputs(GTUtility.copyAmount(2, stack))
+//                    .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
+//                    .outputs(ModHandler.IC2.getIC2Item(ItemName.fluid_cell, amount))
+//                    .duration(amount * 128)
+//                    .EUt(32)
+//                    .buildAndRegister();
+//
+//                if (amount * 2 <= 64) {
+//                    RecipeMap.EXTRUDER_RECIPES.recipeBuilder()
+//                        .inputs(GTUtility.copyAmount(1, stack))
+//                        .notConsumable(MetaItems.SHAPE_EXTRUDER_CASING)
+//                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.tin, amount * 2))
+//                        .duration(amount * 32)
+//                        .EUt(3 * voltageMultiplier)
+//                        .buildAndRegister();
+//
+//                }
+//                if (amount * 2 <= 64) {
+//                    RecipeMap.ALLOY_SMELTER_RECIPES.recipeBuilder()
+//                        .inputs(GTUtility.copyAmount(2, stack))
+//                        .notConsumable(MetaItems.SHAPE_MOLD_CASING)
+//                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.tin, amount * 3))
+//                        .duration(amount * 128)
+//                        .EUt(voltageMultiplier)
+//                        .buildAndRegister();
+//                }
 
             } else if (entry.material == Materials.Lead) {
 
-                if (amount * 2 <= 64) {
-                    RecipeMap.EXTRUDER_RECIPES.recipeBuilder()
-                        .inputs(GTUtility.copyAmount(1, stack))
-                        .notConsumable(MetaItems.SHAPE_EXTRUDER_CASING)
-                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.lead, amount * 2))
-                        .duration(amount * 32)
-                        .EUt(3 * voltageMultiplier)
-                        .buildAndRegister();
-                }
-                if (amount * 2 <= 64) {
-                    RecipeMap.ALLOY_SMELTER_RECIPES.recipeBuilder()
-                        .inputs(GTUtility.copyAmount(2, stack))
-                        .notConsumable(MetaItems.SHAPE_MOLD_CASING)
-                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.lead, amount * 3))
-                        .duration(amount * 128)
-                        .EUt(voltageMultiplier)
-                        .buildAndRegister();
-                }
+//                if (amount * 2 <= 64) {
+//                    RecipeMap.EXTRUDER_RECIPES.recipeBuilder()
+//                        .inputs(GTUtility.copyAmount(1, stack))
+//                        .notConsumable(MetaItems.SHAPE_EXTRUDER_CASING)
+//                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.lead, amount * 2))
+//                        .duration(amount * 32)
+//                        .EUt(3 * voltageMultiplier)
+//                        .buildAndRegister();
+//                }
+//                if (amount * 2 <= 64) {
+//                    RecipeMap.ALLOY_SMELTER_RECIPES.recipeBuilder()
+//                        .inputs(GTUtility.copyAmount(2, stack))
+//                        .notConsumable(MetaItems.SHAPE_MOLD_CASING)
+//                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.lead, amount * 3))
+//                        .duration(amount * 128)
+//                        .EUt(voltageMultiplier)
+//                        .buildAndRegister();
+//                }
 
             } else if (entry.material == Materials.Copper || entry.material == Materials.AnnealedCopper) {
 
-                if (amount * 2 <= 64) {
-                    RecipeMap.EXTRUDER_RECIPES.recipeBuilder()
-                        .inputs(GTUtility.copyAmount(1, stack))
-                        .notConsumable(MetaItems.SHAPE_EXTRUDER_CASING)
-                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.copper, amount * 2))
-                        .duration(amount * 32)
-                        .EUt(3 * voltageMultiplier)
-                        .buildAndRegister();
-                }
-                if (amount * 2 <= 64) {
-                    RecipeMap.ALLOY_SMELTER_RECIPES.recipeBuilder()
-                        .inputs(GTUtility.copyAmount(2, stack))
-                        .notConsumable(MetaItems.SHAPE_MOLD_CASING)
-                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.copper, amount * 3))
-                        .duration(amount * 128)
-                        .EUt(voltageMultiplier)
-                        .buildAndRegister();
-                }
+//                if (amount * 2 <= 64) {
+//                    RecipeMap.EXTRUDER_RECIPES.recipeBuilder()
+//                        .inputs(GTUtility.copyAmount(1, stack))
+//                        .notConsumable(MetaItems.SHAPE_EXTRUDER_CASING)
+//                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.copper, amount * 2))
+//                        .duration(amount * 32)
+//                        .EUt(3 * voltageMultiplier)
+//                        .buildAndRegister();
+//                }
+//                if (amount * 2 <= 64) {
+//                    RecipeMap.ALLOY_SMELTER_RECIPES.recipeBuilder()
+//                        .inputs(GTUtility.copyAmount(2, stack))
+//                        .notConsumable(MetaItems.SHAPE_MOLD_CASING)
+//                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.copper, amount * 3))
+//                        .duration(amount * 128)
+//                        .EUt(voltageMultiplier)
+//                        .buildAndRegister();
+//                }
 
             } else if (entry.material == Materials.Bronze) {
 
-                if (amount * 2 <= 64) {
-                    RecipeMap.EXTRUDER_RECIPES.recipeBuilder()
-                        .inputs(GTUtility.copyAmount(1, stack))
-                        .notConsumable(MetaItems.SHAPE_EXTRUDER_CASING)
-                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.bronze, amount * 2))
-                        .duration(amount * 32)
-                        .EUt(3 * voltageMultiplier)
-                        .buildAndRegister();
-                }
-                if (amount * 2 <= 64) {
-                    RecipeMap.ALLOY_SMELTER_RECIPES.recipeBuilder()
-                        .inputs(GTUtility.copyAmount(2, stack))
-                        .notConsumable(MetaItems.SHAPE_MOLD_CASING)
-                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.bronze, amount * 3))
-                        .duration(amount * 128)
-                        .EUt(voltageMultiplier)
-                        .buildAndRegister();
-                }
+//                if (amount * 2 <= 64) {
+//                    RecipeMap.EXTRUDER_RECIPES.recipeBuilder()
+//                        .inputs(GTUtility.copyAmount(1, stack))
+//                        .notConsumable(MetaItems.SHAPE_EXTRUDER_CASING)
+//                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.bronze, amount * 2))
+//                        .duration(amount * 32)
+//                        .EUt(3 * voltageMultiplier)
+//                        .buildAndRegister();
+//                }
+//                if (amount * 2 <= 64) {
+//                    RecipeMap.ALLOY_SMELTER_RECIPES.recipeBuilder()
+//                        .inputs(GTUtility.copyAmount(2, stack))
+//                        .notConsumable(MetaItems.SHAPE_MOLD_CASING)
+//                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.bronze, amount * 3))
+//                        .duration(amount * 128)
+//                        .EUt(voltageMultiplier)
+//                        .buildAndRegister();
+//                }
 
             } else if (entry.material == Materials.Gold) {
 
-                if (amount * 2 <= 64) {
-                    RecipeMap.EXTRUDER_RECIPES.recipeBuilder()
-                        .inputs(GTUtility.copyAmount(1, stack))
-                        .notConsumable(MetaItems.SHAPE_EXTRUDER_CASING)
-                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.gold, amount * 2))
-                        .duration(amount * 32)
-                        .EUt(3 * voltageMultiplier)
-                        .buildAndRegister();
-                }
-                if (amount * 2 <= 64) {
-                    RecipeMap.ALLOY_SMELTER_RECIPES.recipeBuilder()
-                        .inputs(GTUtility.copyAmount(2, stack))
-                        .notConsumable(MetaItems.SHAPE_MOLD_CASING)
-                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.gold, amount * 3))
-                        .duration(amount * 128)
-                        .EUt(voltageMultiplier)
-                        .buildAndRegister();
-                }
+//                if (amount * 2 <= 64) {
+//                    RecipeMap.EXTRUDER_RECIPES.recipeBuilder()
+//                        .inputs(GTUtility.copyAmount(1, stack))
+//                        .notConsumable(MetaItems.SHAPE_EXTRUDER_CASING)
+//                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.gold, amount * 2))
+//                        .duration(amount * 32)
+//                        .EUt(3 * voltageMultiplier)
+//                        .buildAndRegister();
+//                }
+//                if (amount * 2 <= 64) {
+//                    RecipeMap.ALLOY_SMELTER_RECIPES.recipeBuilder()
+//                        .inputs(GTUtility.copyAmount(2, stack))
+//                        .notConsumable(MetaItems.SHAPE_MOLD_CASING)
+//                        .outputs(ModHandler.IC2.getIC2Item(ItemName.casing, CasingResourceType.gold, amount * 3))
+//                        .duration(amount * 128)
+//                        .EUt(voltageMultiplier)
+//                        .buildAndRegister();
+//                }
             }
         } else if (entry.material == Materials.Glass) {
 

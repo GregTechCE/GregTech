@@ -4,9 +4,6 @@ import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.common.items.MetaItems;
-import ic2.api.recipe.Recipes;
-import ic2.core.item.type.CraftingItemType;
-import ic2.core.ref.ItemName;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -39,11 +36,9 @@ public class ScrapboxRecipeLoader implements Runnable {
         addScrapboxDrop(5.0F, OreDictUnifier.get(OrePrefix.plate, Materials.Paper));
         addScrapboxDrop(1.0F, new ItemStack(Items.LEATHER));
         addScrapboxDrop(1.0F, new ItemStack(Items.FEATHER));
-        addScrapboxDrop(0.7F, ItemName.crafting.getItemStack(CraftingItemType.plant_ball));
         addScrapboxDrop(3.8F, OreDictUnifier.get(OrePrefix.dust, Materials.Wood));
         addScrapboxDrop(0.6F, new ItemStack(Items.SLIME_BALL));
         addScrapboxDrop(0.8F, OreDictUnifier.get(OrePrefix.dust, Materials.Rubber));
-        addScrapboxDrop(2.7F, ItemName.single_use_battery.getItemStack());
         addScrapboxDrop(3.6F, MetaItems.CIRCUIT_PRIMITIVE.getStackForm());
         addScrapboxDrop(0.8F, MetaItems.CIRCUIT_PARTS_ADVANCED.getStackForm());
         addScrapboxDrop(1.8F, MetaItems.CIRCUIT_BOARD_BASIC.getStackForm());
@@ -92,7 +87,7 @@ public class ScrapboxRecipeLoader implements Runnable {
     }
     
     private static void addScrapboxDrop(float chance, ItemStack itemStack) {
-        Recipes.scrapboxDrops.addDrop(itemStack, chance);
+//        Recipes.scrapboxDrops.addDrop(itemStack, chance);
     }
     
 }

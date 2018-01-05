@@ -3,7 +3,6 @@ package gregtech.api.items.metaitem;
 import gregtech.api.GTValues;
 import gregtech.api.items.metaitem.stats.IElectricStats;
 import gregtech.api.recipes.ModHandler;
-import ic2.api.item.ElectricItem;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -35,15 +34,15 @@ public class ElectricStats implements IElectricStats {
     }
 
     @Override
-    public double charge(ItemStack stack, double amount, int tier, boolean ignoreTransferLimit, boolean simulate) {
+    public long charge(ItemStack stack, long amount, int tier, boolean ignoreTransferLimit, boolean simulate) {
         int myTier = getTier(stack);
         if((chargeable || amount == Integer.MAX_VALUE) && (tier == Integer.MAX_VALUE || myTier >= tier) && maxCharge > 0) {
-            double energyStored = getCharge(stack);
-            double canReceive = maxCharge - energyStored;
+            long energyStored = getCharge(stack);
+            long canReceive = maxCharge - energyStored;
             if(!ignoreTransferLimit) {
                 amount = Math.min(amount, GTValues.V[myTier]);
             }
-            double charged = amount > canReceive ? canReceive : amount;
+            long charged = amount > canReceive ? canReceive : amount;
             if(!simulate) {
                 setCharge(stack, energyStored + charged);
             }
@@ -53,14 +52,14 @@ public class ElectricStats implements IElectricStats {
     }
 
     @Override
-    public double discharge(ItemStack stack, double amount, int tier, boolean ignoreTransferLimit, boolean externally, boolean simulate) {
+    public long discharge(ItemStack stack, long amount, int tier, boolean ignoreTransferLimit, boolean externally, boolean simulate) {
         int myTier = getTier(stack);
         if((dischargeable || !externally || amount == Integer.MAX_VALUE) && (tier == Integer.MAX_VALUE || tier >= myTier) && maxCharge > 0) {
-            double energyStored = getCharge(stack);
+            long energyStored = getCharge(stack);
             if(!ignoreTransferLimit) {
                 amount = Math.min(amount, GTValues.V[myTier]);
             }
-            double discharged = amount > energyStored ? energyStored : amount;
+            long discharged = amount > energyStored ? energyStored : amount;
             if(!simulate) {
                 setCharge(stack, energyStored - discharged);
             }
@@ -69,33 +68,33 @@ public class ElectricStats implements IElectricStats {
         return 0;
     }
 
-    private void setCharge(ItemStack stack, double charge) {
+    private void setCharge(ItemStack stack, long charge) {
         if(!stack.hasTagCompound()) {
             stack.setTagCompound(new NBTTagCompound());
         }
         NBTTagCompound tagCompound = stack.getTagCompound();
-        tagCompound.setInteger("GT.Charge", (int) charge);
+        tagCompound.setLong("GT.Charge", charge);
     }
 
     @Override
-    public double getCharge(ItemStack stack) {
+    public long getCharge(ItemStack stack) {
         if(!stack.hasTagCompound() || !stack.getTagCompound().hasKey("GT.Charge", Constants.NBT.TAG_INT))
             return 0;
         return stack.getTagCompound().getInteger("GT.Charge");
     }
 
     @Override
-    public double getMaxCharge(ItemStack stack) {
+    public long getMaxCharge(ItemStack stack) {
         return maxCharge;
     }
 
     @Override
-    public boolean canUse(ItemStack stack, double amount) {
+    public boolean canUse(ItemStack stack, long amount) {
         return maxCharge > 0 && getCharge(stack) >= amount;
     }
 
     @Override
-    public boolean use(ItemStack stack, double amount, EntityLivingBase entity) {
+    public boolean use(ItemStack stack, long amount, EntityLivingBase entity) {
         if(canUse(stack, amount)) {
             discharge(stack, amount, getTier(stack), true, false, false);
             return true;
@@ -108,12 +107,10 @@ public class ElectricStats implements IElectricStats {
         if(maxCharge > 0 && chargeable && getCharge(stack) != maxCharge) {
             int myTier = getTier(stack);
             entity.getEquipmentAndArmor().forEach(otherStack -> {
-                if(ModHandler.isElectricItem(stack, myTier)) {
-                    double currentCharge = getCharge(stack);
-                    setCharge(stack, currentCharge + ElectricItem.manager.discharge(stack,
-                            maxCharge - currentCharge, myTier,
-                            false, true, false));
-                }
+//                if(ModHandler.isElectricItem(stack, myTier)) { // TODO ELECTRIC ITEMS
+//                    long currentCharge = getCharge(stack);
+//                    setCharge(stack, currentCharge + ElectricItem.manager.discharge(stack, maxCharge - currentCharge, myTier, false, true, false));
+//                }
             });
         }
     }

@@ -13,17 +13,8 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
+import gregtech.common.MetaFluids;
 import gregtech.common.items.MetaItems;
-import ic2.api.item.ElectricItem;
-import ic2.api.item.IElectricItem;
-import ic2.api.item.ISpecialElectricItem;
-import ic2.api.recipe.Recipes;
-import ic2.core.block.state.IIdProvider;
-import ic2.core.item.type.CraftingItemType;
-import ic2.core.ref.BlockName;
-import ic2.core.ref.FluidName;
-import ic2.core.ref.ItemName;
-import ic2.core.ref.TeBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -69,7 +60,7 @@ public class ModHandler {
      */
     public static boolean isWater(FluidStack fluid) {
         return new FluidStack(FluidRegistry.WATER, 1).isFluidEqual(fluid)
-                || new FluidStack(FluidName.distilled_water.getInstance(), 1).isFluidEqual(fluid);
+                || new FluidStack(MetaFluids.DISTILLED_WATER, 1).isFluidEqual(fluid);
     }
 
     /**
@@ -83,7 +74,7 @@ public class ModHandler {
      * Returns a Liquid Stack with given amount of distilled Water.
      */
     public static FluidStack getDistilledWater(int amount) {
-        return new FluidStack(FluidName.distilled_water.getInstance(), amount);
+        return new FluidStack(MetaFluids.DISTILLED_WATER, amount);
     }
 
     /**
@@ -551,20 +542,6 @@ public class ModHandler {
         return OreDictUnifier.getUnificated(FurnaceRecipes.instance().getSmeltingResult(input));
     }
 
-    /**
-     * Used in my own Recycler.
-     * <p/>
-     * Only produces Scrap if scrapChance == 0. scrapChance is usually the random Number I give to the Function
-     * If you directly insert 0 as scrapChance then you can check if its Recycler-Blacklisted or similar
-     */
-    public static ItemStack getRecyclerOutput(ItemStack input, int scrapChance) {
-        if (input.isEmpty() || scrapChance != 0) return ItemStack.EMPTY;
-
-        if (Recipes.recyclerWhitelist.isEmpty())
-            return Recipes.recyclerBlacklist.contains(input) ? ItemStack.EMPTY : IC2.getScrap(1);
-        return Recipes.recyclerWhitelist.contains(input) ? IC2.getScrap(1) : ItemStack.EMPTY;
-    }
-
     public static void addRCFurnaceRecipe(ItemStack input, ItemStack output, int duration) {
         Preconditions.checkNotNull(input);
         Preconditions.checkNotNull(output);
@@ -583,255 +560,184 @@ public class ModHandler {
     //             Electric Items Helpers            //
     ///////////////////////////////////////////////////
 
-    /**
-     * Charges an Electric Item. Only if it's a valid Electric Item of course.
-     * This forces the Usage of proper Voltages (so not the transfer limits defined by the Items) unless you ignore the Transfer Limit.
-     * If tier is Integer.MAX_VALUE it will ignore Tier based Limitations.
-     *
-     * @return the actually used Energy.
-     */
-    public static int chargeElectricItem(ItemStack stack, int charge, int tier, boolean ignoreLimit, boolean simulate) {
-
-        if (isElectricItem(stack)) {
-            int tmpTier = ElectricItem.manager.getTier(stack);
-            if (tmpTier < 0 || tmpTier == tier || tier == Integer.MAX_VALUE) {
-
-                if (!ignoreLimit && tmpTier >= 0) {
-                    charge = (int) Math.min(charge, V[Math.max(0, Math.min(V.length - 1, tmpTier))]);
-                }
-
-                if (charge > 0) {
-                    int chargeTmp = (int) Math.max(0.0, ElectricItem.manager.charge(stack, charge, tmpTier, true, simulate));
-                    return chargeTmp + (chargeTmp * 4 > tier ? tier : 0);
-                }
-            }
-        }
-        return 0;
-    }
-
-    /**
-     * Discharges an Electric Item. Only if it's a valid Electric Item for that of course.
-     * This forces the Usage of proper Voltages (so not the transfer limits defined by the Items) unless you ignore the Transfer Limit.
-     * If tier is Integer.MAX_VALUE it will ignore Tier based Limitations.
-     *
-     * @return the Energy got from the Item.
-     */
-    public static double dischargeElectricItem(ItemStack stack, double charge, int tier, boolean ignoreLimit, boolean simulate, boolean ignoreDischargability) {
-
-        if (isElectricItem(stack)) {
-            int tmpTier = ElectricItem.manager.getTier(stack);
-            if (tmpTier < 0 || tmpTier == tier || tier == Integer.MAX_VALUE) {
-
-                if (!ignoreLimit && tmpTier >= 0) {
-                    charge = Math.min(charge, V[Math.max(0, Math.min(V.length - 1, tmpTier))]);
-                }
-
-                if (charge > 0) {
-                    double chargeTmp = Math.max(0, ElectricItem.manager.discharge(stack, charge + (charge * 4 > tier ? tier : 0), tmpTier, true, !ignoreDischargability, simulate));
-                    return chargeTmp - (chargeTmp * 4 > tier ? tier : 0);
-                }
-            }
-        }
-        return 0;
-    }
-
-    /**
-     * Uses an Electric Item. Only if it's a valid Electric Item for that of course.
-     *
-     * @return if the action was successful
-     */
-    public static boolean canUseElectricItem(ItemStack stack, int charge) {
-        return isElectricItem(stack) && ElectricItem.manager.canUse(stack, charge);
-    }
-
-    /**
-     * Uses an Electric Item. Only if it's a valid Electric Item for that of course.
-     *
-     * @return if the action was successful
-     */
-    public static boolean useElectricItem(ItemStack stack, int charge, EntityPlayer player) {
-        return isElectricItem(stack) && ElectricItem.manager.use(stack, charge, player);
-    }
-
-    /**
-     * Uses an Item. Tries to discharge in case of Electric Items
-     */
-    public static boolean damageOrDechargeItem(ItemStack stack, int damage, int decharge, EntityLivingBase player) {
-        if (stack.isEmpty() || (stack.getMaxStackSize() <= 1 && stack.getCount() > 1)) return false;
-
-        if (player != null && player instanceof EntityPlayer && ((EntityPlayer) player).capabilities.isCreativeMode) {
-            return true;
-        }
-
-        if (stack.getItem() instanceof IDamagableItem) {
-            return ((IDamagableItem) stack.getItem()).doDamageToItem(stack, damage);
-        } else if (ModHandler.isElectricItem(stack)) {
-
-            if (canUseElectricItem(stack, decharge)) {
-                if (player != null && player instanceof EntityPlayer) {
-                    return ModHandler.useElectricItem(stack, decharge, (EntityPlayer) player);
-                }
-                return ModHandler.dischargeElectricItem(stack, decharge, Integer.MAX_VALUE, true, false, true) >= decharge;
-            }
-        } else if (stack.getItem().isDamageable()) {
-
-            if (player == null) {
-                stack.setItemDamage(stack.getItemDamage() + damage);
-            } else {
-                stack.damageItem(damage, player);
-            }
-
-            if (stack.getItemDamage() >= stack.getMaxDamage()) {
-                stack.setItemDamage(stack.getMaxDamage() + 1);
-//                ItemStack containerItem = GTUtility.getContainerItem(stack, true);
-//                if (!containerItem.isEmpty()) {
-//                    stack = containerItem.copy();
+//    /**
+//     * Charges an Electric Item. Only if it's a valid Electric Item of course.
+//     * This forces the Usage of proper Voltages (so not the transfer limits defined by the Items) unless you ignore the Transfer Limit.
+//     * If tier is Integer.MAX_VALUE it will ignore Tier based Limitations.
+//     *
+//     * @return the actually used Energy.
+//     */
+//    public static int chargeElectricItem(ItemStack stack, int charge, int tier, boolean ignoreLimit, boolean simulate) {
+//
+//        if (isElectricItem(stack)) {
+//            int tmpTier = ElectricItem.manager.getTier(stack);
+//            if (tmpTier < 0 || tmpTier == tier || tier == Integer.MAX_VALUE) {
+//
+//                if (!ignoreLimit && tmpTier >= 0) {
+//                    charge = (int) Math.min(charge, V[Math.max(0, Math.min(V.length - 1, tmpTier))]);
 //                }
-            }
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Uses a Soldering Iron
-     */
-    public static boolean useSolderingIron(ItemStack stack, EntityLivingBase playerIn) {
-        if (playerIn == null || stack == null) return false;
-
-        if (GTUtility.isStackInList(stack, GregTechAPI.solderingToolList)) {
-            if (playerIn instanceof EntityPlayer) {
-                EntityPlayer player = (EntityPlayer) playerIn;
-                if (player.capabilities.isCreativeMode) return true;
-
-                if (isElectricItem(stack) && ElectricItem.manager.getCharge(stack) > 1000.0D) {
-
-                    for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
-                        if (GTUtility.isStackInList(player.inventory.mainInventory.get(i), GregTechAPI.solderingMetalList)) {
-                            if (player.inventory.mainInventory.get(i).getCount() < 1) return false;
-
-                            if (player.inventory.mainInventory.get(i).getCount() == 1) {
-                                player.inventory.mainInventory.set(i, ItemStack.EMPTY);
-                            } else {
-                                player.inventory.mainInventory.get(i).shrink(1);
-                            }
-
-                            if (player.inventoryContainer != null) player.inventoryContainer.detectAndSendChanges();
-
-                            if (canUseElectricItem(stack, 10000)) {
-                                return ModHandler.useElectricItem(stack, 10000, (EntityPlayer) playerIn);
-                            }
-
-                            ModHandler.useElectricItem(stack, (int) ElectricItem.manager.getCharge(stack), (EntityPlayer) playerIn);
-                            return false;
-                        }
-                    }
-                }
-            } else {
-                damageOrDechargeItem(stack, 1, 1000, playerIn);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Is this an electric Item, which can charge other Items?
-     */
-    public static boolean isChargerItem(ItemStack stack) {
-        if (!stack.isEmpty() && isElectricItem(stack)) {
-            if (stack.getItem() instanceof ISpecialElectricItem) {
-                return true;
-            } else if (stack.getItem() instanceof IElectricItem) {
-                return ((IElectricItem) stack.getItem()).canProvideEnergy(stack);
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Is this an electric Item?
-     */
-    public static boolean isElectricItem(ItemStack stack) {
-        return !stack.isEmpty() && (stack.getItem() instanceof IElectricItem || stack.getItem() instanceof ISpecialElectricItem);
-    }
-
-    public static boolean isElectricItem(ItemStack stack, int tier) {
-        return !stack.isEmpty() && isElectricItem(stack) && ElectricItem.manager.getTier(stack) == tier;
-    }
-
-    public static class IC2 {
-
-        public static <T extends IIdProvider> IBlockState getIC2BlockState(BlockName blockName, T type) {
-            return blockName.getBlockState(type);
-        }
-
-        public static ItemStack getIC2Item(ItemName itemName, int amount) {
-            ItemStack stack = itemName.getItemStack();
-            if (stack == null || stack.isEmpty()) return ItemStack.EMPTY;
-            stack.setCount(amount);
-            return stack;
-        }
-
-        public static ItemStack getIC2Item(ItemName itemName, int amount, boolean wildcard) {
-            ItemStack stack = itemName.getItemStack();
-            if (wildcard) stack.setItemDamage(OreDictionary.WILDCARD_VALUE);
-            stack.setCount(amount);
-            return stack;
-        }
-
-        public static ItemStack getIC2Item(ItemName itemName, int amount, int explicitDamage) {
-            ItemStack stack = itemName.getItemStack();
-            if (stack == null || stack.isEmpty()) return ItemStack.EMPTY;
-            stack.setItemDamage(explicitDamage);
-            stack.setCount(amount);
-            return stack;
-        }
-
-        public static ItemStack getIC2Item(BlockName itemName, int amount) {
-            ItemStack stack = itemName.getItemStack();
-            if (stack == null || stack.isEmpty()) return ItemStack.EMPTY;
-            stack.setCount(amount);
-            return stack;
-        }
-
-        public static <T extends Enum<T> & IIdProvider> ItemStack getIC2Item(BlockName itemName, T variant, int amount) {
-            ItemStack stack = itemName.getItemStack(variant);
-            if (stack == null || stack.isEmpty()) return ItemStack.EMPTY;
-            stack.setCount(amount);
-            return stack;
-        }
-
-        public static ItemStack getIC2TEItem(TeBlock variant, int amount) {
-            ItemStack stack = BlockName.te.getItemStack(variant);
-            if (stack == null || stack.isEmpty()) return ItemStack.EMPTY;
-            stack.setCount(amount);
-            return stack;
-        }
-
-        public static ItemStack getIC2Item(ItemName itemName, String variant, int amount) {
-            ItemStack stack = itemName.getItemStack(variant);
-            if (stack == null || stack.isEmpty()) return ItemStack.EMPTY;
-            stack.setCount(amount);
-            return stack;
-        }
-
-        public static <T extends Enum<T> & IIdProvider> ItemStack getIC2Item(ItemName itemName, T type, int amount) {
-            ItemStack stack = itemName.getItemStack(type);
-            if (stack == null || stack.isEmpty()) return ItemStack.EMPTY;
-            stack.setCount(amount);
-            return stack;
-        }
-
-        public static ItemStack getScrapBox(int amount) {
-            return ModHandler.IC2.getIC2Item(ItemName.crafting, CraftingItemType.scrap_box, amount);
-        }
-
-        public static ItemStack getScrap(int amount) {
-            return ModHandler.IC2.getIC2Item(ItemName.crafting, CraftingItemType.scrap, amount);
-        }
-
-    }
+//
+//                if (charge > 0) {
+//                    int chargeTmp = (int) Math.max(0.0, ElectricItem.manager.charge(stack, charge, tmpTier, true, simulate));
+//                    return chargeTmp + (chargeTmp * 4 > tier ? tier : 0);
+//                }
+//            }
+//        }
+//        return 0;
+//    }
+//
+//    /**
+//     * Discharges an Electric Item. Only if it's a valid Electric Item for that of course.
+//     * This forces the Usage of proper Voltages (so not the transfer limits defined by the Items) unless you ignore the Transfer Limit.
+//     * If tier is Integer.MAX_VALUE it will ignore Tier based Limitations.
+//     *
+//     * @return the Energy got from the Item.
+//     */
+//    public static double dischargeElectricItem(ItemStack stack, double charge, int tier, boolean ignoreLimit, boolean simulate, boolean ignoreDischargability) {
+//
+//        if (isElectricItem(stack)) {
+//            int tmpTier = ElectricItem.manager.getTier(stack);
+//            if (tmpTier < 0 || tmpTier == tier || tier == Integer.MAX_VALUE) {
+//
+//                if (!ignoreLimit && tmpTier >= 0) {
+//                    charge = Math.min(charge, V[Math.max(0, Math.min(V.length - 1, tmpTier))]);
+//                }
+//
+//                if (charge > 0) {
+//                    double chargeTmp = Math.max(0, ElectricItem.manager.discharge(stack, charge + (charge * 4 > tier ? tier : 0), tmpTier, true, !ignoreDischargability, simulate));
+//                    return chargeTmp - (chargeTmp * 4 > tier ? tier : 0);
+//                }
+//            }
+//        }
+//        return 0;
+//    }
+//
+//    /**
+//     * Uses an Electric Item. Only if it's a valid Electric Item for that of course.
+//     *
+//     * @return if the action was successful
+//     */
+//    public static boolean canUseElectricItem(ItemStack stack, int charge) {
+//        return isElectricItem(stack) && ElectricItem.manager.canUse(stack, charge);
+//    }
+//
+//    /**
+//     * Uses an Electric Item. Only if it's a valid Electric Item for that of course.
+//     *
+//     * @return if the action was successful
+//     */
+//    public static boolean useElectricItem(ItemStack stack, int charge, EntityPlayer player) {
+//        return isElectricItem(stack) && ElectricItem.manager.use(stack, charge, player);
+//    }
+//
+//    /**
+//     * Uses an Item. Tries to discharge in case of Electric Items
+//     */
+//    public static boolean damageOrDechargeItem(ItemStack stack, int damage, int decharge, EntityLivingBase player) {
+//        if (stack.isEmpty() || (stack.getMaxStackSize() <= 1 && stack.getCount() > 1)) return false;
+//
+//        if (player != null && player instanceof EntityPlayer && ((EntityPlayer) player).capabilities.isCreativeMode) {
+//            return true;
+//        }
+//
+//        if (stack.getItem() instanceof IDamagableItem) {
+//            return ((IDamagableItem) stack.getItem()).doDamageToItem(stack, damage);
+//        } else if (ModHandler.isElectricItem(stack)) {
+//
+//            if (canUseElectricItem(stack, decharge)) {
+//                if (player != null && player instanceof EntityPlayer) {
+//                    return ModHandler.useElectricItem(stack, decharge, (EntityPlayer) player);
+//                }
+//                return ModHandler.dischargeElectricItem(stack, decharge, Integer.MAX_VALUE, true, false, true) >= decharge;
+//            }
+//        } else if (stack.getItem().isDamageable()) {
+//
+//            if (player == null) {
+//                stack.setItemDamage(stack.getItemDamage() + damage);
+//            } else {
+//                stack.damageItem(damage, player);
+//            }
+//
+//            if (stack.getItemDamage() >= stack.getMaxDamage()) {
+//                stack.setItemDamage(stack.getMaxDamage() + 1);
+////                ItemStack containerItem = GTUtility.getContainerItem(stack, true);
+////                if (!containerItem.isEmpty()) {
+////                    stack = containerItem.copy();
+////                }
+//            }
+//            return true;
+//        }
+//        return false;
+//    }
+//
+//    /**
+//     * Uses a Soldering Iron
+//     */
+//    public static boolean useSolderingIron(ItemStack stack, EntityLivingBase playerIn) {
+//        if (playerIn == null || stack == null) return false;
+//
+//        if (GTUtility.isStackInList(stack, GregTechAPI.solderingToolList)) {
+//            if (playerIn instanceof EntityPlayer) {
+//                EntityPlayer player = (EntityPlayer) playerIn;
+//                if (player.capabilities.isCreativeMode) return true;
+//
+//                if (isElectricItem(stack) && ElectricItem.manager.getCharge(stack) > 1000.0D) {
+//
+//                    for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
+//                        if (GTUtility.isStackInList(player.inventory.mainInventory.get(i), GregTechAPI.solderingMetalList)) {
+//                            if (player.inventory.mainInventory.get(i).getCount() < 1) return false;
+//
+//                            if (player.inventory.mainInventory.get(i).getCount() == 1) {
+//                                player.inventory.mainInventory.set(i, ItemStack.EMPTY);
+//                            } else {
+//                                player.inventory.mainInventory.get(i).shrink(1);
+//                            }
+//
+//                            if (player.inventoryContainer != null) player.inventoryContainer.detectAndSendChanges();
+//
+//                            if (canUseElectricItem(stack, 10000)) {
+//                                return ModHandler.useElectricItem(stack, 10000, (EntityPlayer) playerIn);
+//                            }
+//
+//                            ModHandler.useElectricItem(stack, (int) ElectricItem.manager.getCharge(stack), (EntityPlayer) playerIn);
+//                            return false;
+//                        }
+//                    }
+//                }
+//            } else {
+//                damageOrDechargeItem(stack, 1, 1000, playerIn);
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+//
+//    /**
+//     * Is this an electric Item, which can charge other Items?
+//     */
+//    public static boolean isChargerItem(ItemStack stack) {
+//        if (!stack.isEmpty() && isElectricItem(stack)) {
+//            if (stack.getItem() instanceof ISpecialElectricItem) {
+//                return true;
+//            } else if (stack.getItem() instanceof IElectricItem) {
+//                return ((IElectricItem) stack.getItem()).canProvideEnergy(stack);
+//            }
+//        }
+//        return false;
+//    }
+//
+//    /**
+//     * Is this an electric Item?
+//     */
+//    public static boolean isElectricItem(ItemStack stack) {
+////        return !stack.isEmpty() && (stack.getItem() instanceof IElectricItem || stack.getItem() instanceof ISpecialElectricItem);
+//        return false; // TODO ELECTRIC ITEMS
+//    }
+//
+//    public static boolean isElectricItem(ItemStack stack, int tier) {
+////        return !stack.isEmpty() && isElectricItem(stack) && ElectricItem.manager.getTier(stack) == tier;
+//        return false; // TODO ELECTRIC ITEMS
+//    }
 
     public static class ThermalExpansion {
 

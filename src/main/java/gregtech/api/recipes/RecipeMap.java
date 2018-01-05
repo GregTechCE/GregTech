@@ -16,7 +16,6 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ValidationResult;
 import gregtech.common.items.MetaItems;
-import ic2.api.recipe.Recipes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
@@ -1371,27 +1370,29 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		@Override
 		@Nullable
 		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
-			if (inputs == null || inputs.size() <= 0 || !ModHandler.IC2.getScrapBox(1).isItemEqual(inputs.get(0)))
-				return super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, inputs, fluidInputs);
-			ItemStack output = Recipes.scrapboxDrops.getDrop(ModHandler.IC2.getScrapBox(1), false);
-			if (output.isEmpty()) {
-				return super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, inputs, fluidInputs);
-			}
-			return this.recipeBuilder()
-					.notOptimized()
-					.cannotBeBuffered() // It is not allowed to be buffered due to the random Output
-					.needsEmptyOutput() // Due to its randomness it is not good if there are Items in the Output Slot, because those Items could manipulate the outcome.
-					.inputs(ModHandler.IC2.getScrapBox(1))
-					.outputs(output)
-					.duration(16)
-					.EUt(1)
-					.build()
-					.getResult();
+//			if (inputs == null || inputs.size() <= 0 || !ModHandler.IC2.getScrapBox(1).isItemEqual(inputs.get(0)))
+//				return super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, inputs, fluidInputs);
+//			ItemStack output = Recipes.scrapboxDrops.getDrop(ModHandler.IC2.getScrapBox(1), false);
+//			if (output.isEmpty()) {
+//				return super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, inputs, fluidInputs);
+//			}
+//			return this.recipeBuilder()
+//					.notOptimized()
+//					.cannotBeBuffered() // It is not allowed to be buffered due to the random Output
+//					.needsEmptyOutput() // Due to its randomness it is not good if there are Items in the Output Slot, because those Items could manipulate the outcome.
+//					.inputs(ModHandler.IC2.getScrapBox(1))
+//					.outputs(output)
+//					.duration(16)
+//					.EUt(1)
+//					.build()
+//					.getResult();
+            return null;
 		}
 
 		@Override
 		public boolean containsInput(ItemStack stack) {
-			return ModHandler.IC2.getScrapBox(1).isItemEqual(stack) || super.containsInput(stack);
+//			return ModHandler.IC2.getScrapBox(1).isItemEqual(stack) || super.containsInput(stack);
+            return false;
 		}
 	}
 
@@ -1473,24 +1474,26 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		@Override
 		@Nullable
 		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
-			if (inputs == null || inputs.size() <= 0 || inputs.get(0).isEmpty()) return null;
-			if (inputRecipe != null && inputRecipe.isRecipeInputEqual(false, true, inputs, fluidInputs)) return inputRecipe;
+//			if (inputs == null || inputs.size() <= 0 || inputs.get(0).isEmpty()) return null;
+//			if (inputRecipe != null && inputRecipe.isRecipeInputEqual(false, true, inputs, fluidInputs)) return inputRecipe;
 
-			RecipeBuilder<Recipe, RecipeBuilder.DefaultRecipeBuilder> builder = this.recipeBuilder()
-					.notOptimized()
-					.inputs(GTUtility.copyAmount(1, inputs.get(0)))
-					.duration(45)
-					.EUt(1);
-
-			if (!ModHandler.getRecyclerOutput(GTUtility.copyAmount(64, inputs.get(0)), 0).isEmpty()) {
-				builder.chancedOutput(ModHandler.IC2.getScrap(1), 1250);
-			}
-
-			return builder.build().getResult();
+//			RecipeBuilder<Recipe, RecipeBuilder.DefaultRecipeBuilder> builder = this.recipeBuilder()
+//					.notOptimized()
+//					.inputs(GTUtility.copyAmount(1, inputs.get(0)))
+//					.duration(45)
+//					.EUt(1);
+//
+//			if (!ModHandler.getRecyclerOutput(GTUtility.copyAmount(64, inputs.get(0)), 0).isEmpty()) {
+//				builder.chancedOutput(ModHandler.IC2.getScrap(1), 1250);
+//			}
+//
+//			return builder.build().getResult();
+            return null;
 		}
 		@Override
 		public boolean containsInput(ItemStack stack) {
-			return !ModHandler.getRecyclerOutput(GTUtility.copyAmount(64, stack), 0).isEmpty();
+//			return !ModHandler.getRecyclerOutput(GTUtility.copyAmount(64, stack), 0).isEmpty();
+            return false;
 		}
 	}
 

@@ -36,10 +36,6 @@ configurations {
 
 repositories {
     maven {
-        name = "chickenbones"
-        url = "http://chickenbones.net/maven/"
-    }
-    maven {
         name = "ic2, forestry"
         url = "http://maven.ic2.player.to/"
     }
@@ -58,8 +54,6 @@ repositories {
 }
 
 dependencies {
-    compile "codechicken:CodeChickenLib:1.12-${config.codechickenlib.version}:deobf"
-    deobfCompile "net.industrial-craft:industrialcraft-2:${config.ic2.version}"
     deobfCompile("net.sengir.forestry:forestry_${config.minecraft.version}:${config.forestry.version}") {
         transitive = false
     }

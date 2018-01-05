@@ -7,7 +7,6 @@ import gregtech.api.damagesources.DamageSources;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
-import ic2.core.IC2Potion;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -330,7 +329,7 @@ public class GTUtility {
             entity.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, level * 130 * amountOfItems));
             entity.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, level * 150 * amountOfItems));
             entity.addPotionEffect(new PotionEffect(MobEffects.HUNGER, level * 130 * amountOfItems));
-            entity.addPotionEffect(new PotionEffect(IC2Potion.radiation, level * 180 * amountOfItems));
+//            entity.addPotionEffect(new PotionEffect(IC2Potion.radiation, level * 180 * amountOfItems)); // TODO radiation
             return true;
         }
         return false;

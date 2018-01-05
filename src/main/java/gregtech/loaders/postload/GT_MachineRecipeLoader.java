@@ -1,40 +1,5 @@
 package gregtech.loaders.postload;
 
-import gregtech.GregTechMod;
-import gregtech.api.GTValues;
-import gregtech.api.GregTechAPI;
-import gregtech.api.unification.OreDictUnifier;
-import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefix;
-import gregtech.api.unification.stack.MaterialStack;
-import gregtech.api.util.*;
-import ic2.api.recipe.ILiquidHeatExchangerManager.HeatExchangeProperty;
-import ic2.api.recipe.Recipes;
-import ic2.core.block.BlockIC2Fence;
-import ic2.core.block.type.ResourceBlock;
-import ic2.core.block.wiring.CableType;
-import ic2.core.item.block.ItemCable;
-import ic2.core.item.type.CraftingItemType;
-import ic2.core.item.type.CropResItemType;
-import ic2.core.item.type.NuclearResourceType;
-import ic2.core.ref.BlockName;
-import ic2.core.ref.FluidName;
-import ic2.core.ref.ItemName;
-import ic2.core.ref.TeBlock;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.Loader;
-
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Map;
-
-import static gregtech.api.GTValues.W;
-
 public class GT_MachineRecipeLoader implements Runnable {
 
     @Override

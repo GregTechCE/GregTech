@@ -1,34 +1,5 @@
 package gregtech.loaders.postload;
 
-import gregtech.GregTechMod;
-import gregtech.api.GTValues;
-import gregtech.api.GregTechAPI;
-import gregtech.api.items.OreDictNames;
-import gregtech.api.items.ToolDictNames;
-import gregtech.api.recipes.ModHandler;
-import gregtech.api.unification.OreDictUnifier;
-import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefix;
-import gregtech.api.util.GTLog;
-import gregtech.api.util.GTUtility;
-import gregtech.common.items.MetaItems;
-import ic2.core.block.BlockIC2Fence;
-import ic2.core.block.BlockScaffold;
-import ic2.core.block.machine.BlockMiningPipe;
-import ic2.core.block.type.ResourceBlock;
-import ic2.core.block.wiring.CableType;
-import ic2.core.item.ItemIC2Boat;
-import ic2.core.item.block.ItemCable;
-import ic2.core.item.type.CasingResourceType;
-import ic2.core.item.type.CraftingItemType;
-import ic2.core.ref.BlockName;
-import ic2.core.ref.ItemName;
-import ic2.core.ref.TeBlock;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.Loader;
-
 @SuppressWarnings("ALL")
 public class GT_CraftingRecipeLoader implements Runnable {
 

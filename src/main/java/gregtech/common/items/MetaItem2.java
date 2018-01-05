@@ -11,8 +11,6 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.RandomPotionEffect;
-import ic2.core.item.type.CraftingItemType;
-import ic2.core.ref.ItemName;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
@@ -342,54 +340,9 @@ public class MetaItem2 extends MaterialMetaItem {
             .outputs(OreDictUnifier.get(OrePrefix.dustTiny, Materials.Tin))
             .buildAndRegister();
 
-        ItemStack plantBall = ModHandler.IC2.getIC2Item(ItemName.crafting, CraftingItemType.plant_ball, 1);
-
         RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
             .inputs(CROP_DROP_COPPON.getStackForm(4))
             .outputs(new ItemStack(Blocks.WOOL, 1, 1))
-            .buildAndRegister();
-
-        RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
-            .inputs(CROP_DROP_PLUMBILIA.getStackForm(8))
-            .outputs(plantBall.copy())
-            .buildAndRegister();
-
-        RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
-            .inputs(CROP_DROP_ARGENTIA.getStackForm(8))
-            .outputs(plantBall.copy())
-            .buildAndRegister();
-
-        RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
-            .inputs(CROP_DROP_INDIGO.getStackForm(8))
-            .outputs(plantBall.copy())
-            .buildAndRegister();
-        RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
-            .inputs(CROP_DROP_FERRU.getStackForm(8))
-            .outputs(plantBall.copy())
-            .buildAndRegister();
-        RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
-            .inputs(CROP_DROP_AURELIA.getStackForm(8))
-            .outputs(plantBall.copy())
-            .buildAndRegister();
-        RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
-            .inputs(CROP_DROP_OIL_BERRY.getStackForm(8))
-            .outputs(plantBall.copy())
-            .buildAndRegister();
-        RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
-            .inputs(CROP_DROP_BOBS_YER_UNCLE_RANKS.getStackForm(8))
-            .outputs(plantBall.copy())
-            .buildAndRegister();
-        RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
-            .inputs(CROP_DROP_TINE.getStackForm(4))
-            .outputs(plantBall.copy())
-            .buildAndRegister();
-        RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
-            .inputs(new ItemStack(Blocks.RED_FLOWER, 8, W))
-            .outputs(plantBall.copy())
-            .buildAndRegister();
-        RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
-            .inputs(new ItemStack(Blocks.RED_FLOWER, 8, W))
-            .outputs(plantBall.copy())
             .buildAndRegister();
 
         // Misc

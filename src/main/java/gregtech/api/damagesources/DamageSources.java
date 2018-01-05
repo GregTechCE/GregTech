@@ -11,13 +11,15 @@ public class DamageSources {
     private static DamageSource EXPLOSION = new DamageSource("explosion").setExplosion();
     private static DamageSource HEAT = new DamageSource("heat").setDamageBypassesArmor();
     private static DamageSource FROST = new DamageSource("frost").setDamageBypassesArmor();
+    private static DamageSource ELECTRIC = new DamageSource("electric").setDamageBypassesArmor();
+    private static DamageSource RADIATION = new DamageSource("radiation").setDamageBypassesArmor();
 
     public static DamageSource getElectricDamage() {
-        return ic2.api.info.Info.DMG_ELECTRIC;
+        return ELECTRIC;
     }
 
     public static DamageSource getRadioactiveDamage() {
-        return ic2.api.info.Info.DMG_RADIATION;
+        return RADIATION;
     }
 
     public static DamageSource getExplodingDamage() {

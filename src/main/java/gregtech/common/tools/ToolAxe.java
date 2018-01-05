@@ -4,6 +4,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -43,7 +44,7 @@ public class ToolAxe extends ToolBase {
     }
 
     @Override
-    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops) {
+    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, NonNullList<ItemStack> drops) {
         int amount = 0;
 //        if (GregTechAPI.sTimber && !harvester.isSneaking() && OrePrefix.log.contains(getBlockStack(blockState))) {
 //            int tY = blockPos.getY() + 1;

@@ -1,23 +1,5 @@
 package gregtech.loaders.preload;
 
-import gregtech.GregTechMod;
-import gregtech.api.GTValues;
-import gregtech.api.GregTechAPI;
-import gregtech.api.items.OreDictNames;
-import gregtech.api.recipes.ModHandler;
-import gregtech.api.unification.OreDictUnifier;
-import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefix;
-import gregtech.api.util.GTLog;
-import gregtech.common.items.MetaItems;
-import ic2.core.block.wiring.CableType;
-import ic2.core.ref.ItemName;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.common.Loader;
-
 public class MTELoader implements Runnable {
         private static final String aTextWire1 = "wire."; 
         private static final String aTextCable1 = "cable.";

@@ -1,24 +1,16 @@
 package gregtech.common.tools;
 
-import gregtech.api.recipes.ModHandler;
-import gregtech.api.util.GTUtility;
-import ic2.core.block.Ic2Leaves;
-import ic2.core.ref.BlockName;
-import net.minecraft.block.BlockNewLeaf;
 import net.minecraft.block.BlockOldLeaf;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -46,24 +38,12 @@ public class ToolBranchCutter extends ToolBase {
     }
 
     @Override
-    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops) {
+    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, NonNullList<ItemStack> drops) {
         ItemStack stack = harvester.getHeldItem(EnumHand.MAIN_HAND);
         if (blockState.getMaterial() == Material.LEAVES) {
 //            aEvent.setDropChance(Math.min(1.0F, Math.max(aEvent.getDropChance(), (stack.getItem().getHarvestLevel(stack, "", harvester, blockState) + 1) * 0.2F)));
-            if (blockState.getBlock() == Blocks.LEAVES) {
-                drops.clear();
-                if (blockState.getValue(BlockOldLeaf.VARIANT) == BlockPlanks.EnumType.OAK) {
-//                        && harvester.worldObj.rand.nextInt(9) <= aFortune * 2) {
-                    drops.add(new ItemStack(Items.APPLE, 1, 0));
-                } else {
-                    drops.add(new ItemStack(Blocks.SAPLING, 1, blockState.getValue(BlockOldLeaf.VARIANT).getMetadata()));
-                }
-            } else if (blockState == Blocks.LEAVES2) {
-                drops.clear();
-                drops.add(new ItemStack(Blocks.SAPLING, 1, blockState.getValue(BlockNewLeaf.VARIANT).getMetadata()));
-            } else if (blockState == ModHandler.IC2.getIC2BlockState(BlockName.leaves, null)) {
-                drops.clear();
-                drops.add(ModHandler.IC2.getIC2Item(BlockName.sapling, 1));
+            if (blockState.getBlock().isLeaves(blockState, world, blockPos)) {
+                blockState.getBlock().getDrops(drops, world, blockPos, blockState, 1);
             }
         }
         return 0;

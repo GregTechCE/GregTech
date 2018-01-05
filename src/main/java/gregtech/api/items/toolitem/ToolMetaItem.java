@@ -4,15 +4,16 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enchants.EnchantmentData;
+import gregtech.api.items.IBoxable;
 import gregtech.api.items.IDamagableItem;
 import gregtech.api.items.ToolDictNames;
 import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.items.metaitem.stats.IElectricStats;
 import gregtech.api.items.metaitem.stats.IMetaItemStats;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.util.GTUtility;
-import ic2.api.item.IElectricItemManager;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -24,14 +25,11 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.Validate;
 
@@ -51,7 +49,7 @@ import java.util.Optional;
  * @see IToolStats
  * @see MetaItem
  */
-public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends MetaItem<T> implements IDamagableItem {
+public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends MetaItem<T> implements IDamagableItem/*, IBoxable*/ {
 
     public ToolMetaItem() {
         super((short) 0);
@@ -92,7 +90,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         T metaToolValueItem = getItem(stack);
         if(metaToolValueItem != null) {
             IToolStats toolStats = metaToolValueItem.getToolStats();
-            if(!doDamageToItem(stack, toolStats.getToolDamagePerContainerCraft(stack)) && getManager(stack).getMaxCharge(stack) == 0) {
+            if(!doDamageToItem(stack, toolStats.getToolDamagePerContainerCraft(stack)) && getElectricStats(stack).getMaxCharge(stack) == 0) {
                 return null;
             }
         }
@@ -209,7 +207,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             return false;
         }
         T metaToolValueItem = getItem(stack);
-        IElectricItemManager electricItemManager = getManager(stack);
+        IElectricStats electricItemManager = getElectricStats(stack);
         if(electricItemManager.getMaxCharge(stack) == 0) {
             setInternalDamage(stack, getInternalDamage(stack) + vanillaDamage);
         } else {
@@ -221,7 +219,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
     public boolean isUsable(ItemStack stack, int damage) {
         T metaToolValueItem = getItem(stack);
-        IElectricItemManager electricItemManager = getManager(stack);
+        IElectricStats electricItemManager = getElectricStats(stack);
         if(electricItemManager.getMaxCharge(stack) == 0) {
             return getInternalDamage(stack) + damage < getMaxInternalDamage(stack);
         }

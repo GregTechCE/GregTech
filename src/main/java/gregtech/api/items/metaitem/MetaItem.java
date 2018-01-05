@@ -14,15 +14,10 @@ import gregtech.api.items.metaitem.stats.IItemBehaviour;
 import gregtech.api.items.metaitem.stats.IItemDurabilityManager;
 import gregtech.api.items.metaitem.stats.IItemUseManager;
 import gregtech.api.items.metaitem.stats.IMetaItemStats;
-import gregtech.api.items.metaitem.stats.INuclearStats;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
-import ic2.api.item.IBoxable;
-import ic2.api.item.ISpecialElectricItem;
-import ic2.api.reactor.IReactor;
-import ic2.api.reactor.IReactorComponent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -64,7 +59,7 @@ import java.util.List;
  * This will add single-use (unchargeable) LV battery with initial capacity 10000 EU
  */
 @SuppressWarnings("deprecation")
-public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item implements ISpecialElectricItem, IReactorComponent, IBoxable {
+public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item {
 
     private TShortObjectMap<T> metaItems = new TShortObjectHashMap<>();
 
@@ -108,7 +103,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     //                 ISpecialElectricItem Implementation          //
     //////////////////////////////////////////////////////////////////
 
-    private IElectricStats getElectricStats(ItemStack itemStack) {
+    protected IElectricStats getElectricStats(ItemStack itemStack) {
         T metaValueItem = getItem(itemStack);
         if(metaValueItem == null) {
             return ElectricStats.EMPTY;
@@ -118,11 +113,6 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             return ElectricStats.EMPTY;
         }
         return electricStats;
-    }
-
-    @Override
-    public IElectricStats getManager(ItemStack itemStack) {
-        return getElectricStats(itemStack);
     }
 
     //////////////////////////////////////////////////////////////////
@@ -144,93 +134,6 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             fluidStats.getCapacity(stack),
             fluidStats.getMinFluidTemperature(stack),
             fluidStats.getMaxFluidTemperature(stack));
-    }
-
-    //////////////////////////////////////////////////////////////////
-    //                 INuclearStats  Implementation            //
-    //////////////////////////////////////////////////////////////////
-    
-    private INuclearStats getNuclearStats(ItemStack itemStack) {
-        T metaValueItem = getItem(itemStack);
-        if(metaValueItem == null) {
-            return null;
-        }
-        return metaValueItem.getNuclearStats();
-    }
-
-    @Override
-    public boolean canBeStoredInToolbox(ItemStack stack) {
-        T metaValueItem = getItem(stack);
-        INuclearStats nuclearStats = metaValueItem.getNuclearStats();
-        return metaValueItem != null && nuclearStats != null;
-    }
-
-    @Override
-    public void processChamber(ItemStack stack, IReactor reactor, int x, int y, boolean heatrun) {
-        INuclearStats nuclearStats = getNuclearStats(stack);
-        if(nuclearStats != null) {
-            nuclearStats.processChamber(stack, reactor, x, y, heatrun);
-        }
-    }
-
-    @Override
-    public boolean acceptUraniumPulse(ItemStack stack, IReactor reactor, ItemStack pulsingStack, int youX, int youY, int pulseX, int pulseY, boolean heatrun) {
-        INuclearStats nuclearStats = getNuclearStats(stack);
-        if(nuclearStats != null) {
-            return nuclearStats.acceptUraniumPulse(stack, reactor, pulsingStack, youX, youY, pulseX, pulseY, heatrun);
-        }
-        return false;
-    }
-
-    @Override
-    public boolean canStoreHeat(ItemStack stack, IReactor reactor, int x, int y) {
-        INuclearStats nuclearStats = getNuclearStats(stack);
-        if(nuclearStats != null) {
-            return nuclearStats.canStoreHeat(stack, reactor, x, y);
-        }
-        return false;
-    }
-
-    @Override
-    public int getMaxHeat(ItemStack stack, IReactor reactor, int x, int y) {
-        INuclearStats nuclearStats = getNuclearStats(stack);
-        if(nuclearStats != null) {
-            return nuclearStats.getMaxHeat(stack, reactor, x, y);
-        }
-        return 0;
-    }
-
-    @Override
-    public int getCurrentHeat(ItemStack stack, IReactor reactor, int x, int y) {
-        INuclearStats nuclearStats = getNuclearStats(stack);
-        if(nuclearStats != null) {
-            return nuclearStats.getCurrentHeat(stack, reactor, x, y);
-        }
-        return 0;
-    }
-
-    @Override
-    public int alterHeat(ItemStack stack, IReactor reactor, int x, int y, int heat) {
-        INuclearStats nuclearStats = getNuclearStats(stack);
-        if(nuclearStats != null) {
-            return nuclearStats.alterHeat(stack, reactor, x, y, heat);
-        }
-        return heat;
-    }
-
-    @Override
-    public float influenceExplosion(ItemStack stack, IReactor reactor) {
-        INuclearStats nuclearStats = getNuclearStats(stack);
-        if(nuclearStats != null) {
-            return nuclearStats.influenceExplosion(stack, reactor);
-        }
-        return 1.0f;
-    }
-
-    @Override
-    public boolean canBePlacedIn(ItemStack stack, IReactor reactor) {
-        INuclearStats nuclearStats = getNuclearStats(stack);
-        return nuclearStats != null && nuclearStats.canBePlacedIn(stack, reactor);
     }
 
     //////////////////////////////////////////////////////////////////
@@ -421,11 +324,11 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                 lines.add(I18n.format(unlocalizedTooltip));
             }
 
-            IElectricStats electricStats = getManager(itemStack);
+            IElectricStats electricStats = getElectricStats(itemStack);
             if (electricStats.getMaxCharge(itemStack) > 0) {
                 lines.add(I18n.format("metaitem.generic.electric_item.tooltip",
-                    (long) electricStats.getCharge(itemStack),
-                    (long) electricStats.getMaxCharge(itemStack),
+                    electricStats.getCharge(itemStack),
+                    electricStats.getMaxCharge(itemStack),
                     GTValues.V[electricStats.getTier(itemStack)]));
             }
             /*if (getCapacity(itemStack) > 0) {
@@ -464,7 +367,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                             }
                         }
                     }*/
-                    IElectricStats electricStats = getManager(itemStack);
+                    IElectricStats electricStats = getElectricStats(itemStack);
                     if (electricStats.getMaxCharge(itemStack) > 0) {
                         ItemStack chargedStack = itemStack.copy();
                         electricStats.charge(chargedStack, Integer.MAX_VALUE, Integer.MAX_VALUE, true, false);
@@ -493,8 +396,6 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         private IElectricStats electricStats;
         @Nullable
         private IFluidStats fluidStats;
-        @Nullable
-        private INuclearStats nuclearStats;
         private List<IItemBehaviour> behaviours = new ArrayList<>();
         @Nullable
         private IItemUseManager useManager;
@@ -583,9 +484,6 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                 if (metaItemStats instanceof IFluidStats) {
                     setFluidStats((IFluidStats) metaItemStats);
                 }
-                if (metaItemStats instanceof INuclearStats) {
-                    setNuclearStats((INuclearStats) metaItemStats);
-                }
             }
             return this;
         }
@@ -625,14 +523,6 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             return this;
         }
         
-        protected void setNuclearStats(INuclearStats nuclearStats) {
-            if(nuclearStats == null) {
-                throw new IllegalArgumentException("Cannot set Nuclear Stats to null.");
-            }
-            this.nuclearStats = nuclearStats;
-            setMaxStackSize(1);
-        }
-
         protected void setUseManager(IItemUseManager useManager) {
             if(this.useManager != null) {
                 throw new IllegalStateException("Tried to set Use Manager to " + useManager + ", but it's already set to " + this.useManager);
@@ -657,10 +547,6 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
 
         public IFluidStats getFluidStats() {
             return fluidStats;
-        }
-
-        public INuclearStats getNuclearStats() {
-            return nuclearStats;
         }
 
         public IItemDurabilityManager getDurabilityManager() {

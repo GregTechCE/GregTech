@@ -81,17 +81,16 @@ public class MaterialMetaItem extends StandardMetaItem {
             }
             return new ModelResourceLocation("builtin/missing", "missing");
         });
+    }
 
-        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
-            @Override
-            public int colorMultiplier(ItemStack stack, int tintIndex) {
-                if (tintIndex == 0 && stack.getMetadata() < orePrefixAmount * 1000) {
-                    Material material = Material.MATERIAL_REGISTRY.getObjectById(stack.getMetadata() % 1000);
-                    return material.materialRGB;
-                }
-                return 0xFFFFFF;
-            }
-        }, this);
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected int getColorForItemStack(ItemStack stack, int tintIndex) {
+        if (tintIndex == 0 && stack.getMetadata() < metaItemOffset) {
+            Material material = Material.MATERIAL_REGISTRY.getObjectById(stack.getMetadata() % 1000);
+            return material.materialRGB;
+        }
+        return 0xFFFFFF;
     }
 
     protected boolean canGenerate(OrePrefix orePrefix, Material material) {

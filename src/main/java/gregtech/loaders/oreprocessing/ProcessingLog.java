@@ -10,9 +10,6 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
-import ic2.core.item.type.CraftingItemType;
-import ic2.core.item.type.MiscResourceType;
-import ic2.core.ref.ItemName;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 

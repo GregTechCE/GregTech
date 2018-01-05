@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -34,7 +35,7 @@ public class ToolSense extends ToolBase {
     }
 
     @Override
-    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops) {
+    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, NonNullList<ItemStack> drops) {
         int conversions = 0;
         ItemStack stack = harvester.getHeldItem(EnumHand.MAIN_HAND);
         if (this.isHarvestingRightNow.get() == null && !harvester.getEntityWorld().isRemote) {

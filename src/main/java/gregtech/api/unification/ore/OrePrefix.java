@@ -12,7 +12,6 @@ import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.Condition;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
-import ic2.core.ref.ItemName;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -263,7 +262,7 @@ public enum OrePrefix {
     static {
         bottle.containerItem = new ItemStack(Items.GLASS_BOTTLE);
         bucket.containerItem = new ItemStack(Items.BUCKET);
-        cell.containerItem = ModHandler.IC2.getIC2Item(ItemName.fluid_cell, 1);
+//        cell.containerItem = ModHandler.IC2.getIC2Item(ItemName.fluid_cell, 1);
 
         ingotHot.heatDamage = 3.0F;
         cellPlasma.heatDamage = 6.0F;

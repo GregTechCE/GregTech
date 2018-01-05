@@ -9,8 +9,6 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
-import ic2.core.item.type.CraftingItemType;
-import ic2.core.ref.ItemName;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -111,13 +109,6 @@ public class ProcessingStone implements IOreRegistrationHandler {
                             .fluidInputs(Materials.Glass.getFluid(720)).outputs(new ItemStack(Blocks.BEACON, 1, 0))
                             .duration(32)
                             .EUt(16)
-                            .buildAndRegister();
-
-                    RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
-                            .inputs(GTUtility.copyAmount(1, stack), ModHandler.IC2.getIC2Item(ItemName.crafting, CraftingItemType.coal_ball, 8))
-                            .outputs(ModHandler.IC2.getIC2Item(ItemName.crafting, CraftingItemType.coal_chunk, 1))
-                            .duration(400)
-                            .EUt(4)
                             .buildAndRegister();
 
                     RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()

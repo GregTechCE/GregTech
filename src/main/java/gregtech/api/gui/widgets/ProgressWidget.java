@@ -34,12 +34,12 @@ public class ProgressWidget<T extends IWorkable & IUIHolder> extends Widget<T> {
         this.vertical = vertical; //TODO vertical ProgressWidgets
     }
 
-    public ProgressWidget<T> setOnImageLocation(ResourceLocation onImageLocation) {
+    public ProgressWidget<T> setFilledImageLocation(ResourceLocation onImageLocation) {
         this.onImageLocation = onImageLocation;
         return this;
     }
 
-    public ProgressWidget<T> setOffImageLocation(ResourceLocation offImageLocation) {
+    public ProgressWidget<T> setImageLocation(ResourceLocation offImageLocation) {
         this.offImageLocation = offImageLocation;
         return this;
     }
