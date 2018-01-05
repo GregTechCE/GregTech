@@ -7,7 +7,7 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
 public interface IEnergyContainer {
 
     @CapabilityInject(IEnergyContainer.class)
-    public static final Capability<IEnergyContainer> CAPABILITY_ENERGY_CONTAINER = null;
+    Capability<IEnergyContainer> CAPABILITY_ENERGY_CONTAINER = null;
 
     /**
      * @return amount of used amperes. 0 if not accepted anything.

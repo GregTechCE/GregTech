@@ -1,22 +1,23 @@
 package gregtech.common.blocks.tileentity;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.common.blocks.BlockCable;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.PooledMutableBlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
+import java.util.function.Predicate;
 
 public class TileEntityCableEmitter extends TileEntity implements IEnergyContainer {
 
@@ -71,18 +72,50 @@ public class TileEntityCableEmitter extends TileEntity implements IEnergyContain
 
     @Override
     public long acceptEnergyFromNetwork(EnumFacing side, long voltage, long amperage) {
-        //TODO @Exidex implement energy transfer logic
-        return 0;
+        List<IEnergyContainer> containers = new ArrayList<>();
+        outgoingConnections.forEach(connectionInfo -> {
+            if (voltage > connectionInfo.getCableVoltage() && amperage > connectionInfo.getCableAmperage()) {
+                connectionInfo.path.forEach(cableEntry -> burnCable(cableEntry, entry -> entry.maxVoltage < voltage && entry.maxAmperage < amperage));
+            } else if (voltage > connectionInfo.getCableVoltage()) {
+                connectionInfo.path.forEach(cableEntry -> burnCable(cableEntry, entry -> entry.maxVoltage < voltage));
+            } else if (amperage > connectionInfo.getCableAmperage()) {
+                connectionInfo.path.forEach(cableEntry -> burnCable(cableEntry, entry -> entry.maxAmperage < amperage));
+            } else {
+                IEnergyContainer container = connectionInfo.receiverContainer.getCapability(IEnergyContainer.CAPABILITY_ENERGY_CONTAINER, side);
+                if (container != null) {
+                    containers.add(container);
+                }
+            }
+        });
+        // TODO transfer loss???
+        long amperesUsed = 0;
+        for (IEnergyContainer container : containers) {
+            amperesUsed += container.acceptEnergyFromNetwork(null, voltage, amperage);
+        }
+        return amperesUsed;
+    }
+
+    protected void burnCable(CachedCableEntry cableEntry, Predicate<CachedCableEntry> burnPredicate) {
+        if (burnPredicate.test(cableEntry)) {
+            // burn baby, burn
+            this.getWorld().setBlockState(new BlockPos(cableEntry.posX, cableEntry.posY, cableEntry.posZ), Blocks.FIRE.getDefaultState());
+        }
     }
 
     public void refreshConnections() {
         this.outgoingConnections.clear();
         PooledMutableBlockPos currentPos = PooledMutableBlockPos.retain(getPos());
+        List<BlockPos> visited = new ArrayList<>();
         Stack<EnumFacing> moveStack = new Stack<>();
         Stack<CachedCableEntry> pathStack = new Stack<>();
         while(true) {
             for(EnumFacing facing : EnumFacing.VALUES) {
                 currentPos.move(facing);
+                if (!visited.contains(currentPos)) {
+                    visited.add(currentPos);
+                } else {
+                    break;
+                }
                 EnumFacing opposite = facing.getOpposite();
                 IBlockState blockStateAt = world.getBlockState(currentPos);
                 if(blockStateAt.getBlock() instanceof BlockCable) {

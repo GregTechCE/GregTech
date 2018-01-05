@@ -3,6 +3,7 @@ package gregtech.common.blocks;
 import com.google.common.collect.Maps;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.internal.IGregTechTileEntity;
+import gregtech.api.capability.internal.IWorkable;
 import gregtech.api.metatileentity.GregtechTileEntity;
 import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.IMetaTileEntityFactory;
@@ -21,6 +22,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,6 +33,7 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkCache;
@@ -88,7 +91,9 @@ public class BlockMachine extends Block {
 
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+        return getDefaultState()
+            .withProperty(FACING, placer.getHorizontalFacing().getOpposite())
+            .withProperty(META_TYPE, GregTechAPI.METATILEENTITY_REGISTRY.getObjectById(meta).getMetaName());
     }
 
     @Override
@@ -186,8 +191,8 @@ public class BlockMachine extends Block {
 
         state = state.withProperty(META_TYPE, GregTechAPI.METATILEENTITY_REGISTRY.getNameForObject(mte.getFactory()));
 
-        if (mte instanceof WorkableMetaTileEntity) {
-            state = state.withProperty(ACTIVE, ((WorkableMetaTileEntity<?>) mte).isActive());
+        if (mte instanceof IWorkable) {
+            state = state.withProperty(ACTIVE, ((IWorkable) mte).isActive());
         }
 
         return state;
@@ -232,6 +237,14 @@ public class BlockMachine extends Block {
         GregtechTileEntity realTileEntity = new GregtechTileEntity();
         realTileEntity.setMetaTileEntity(tileEntity);
         return realTileEntity;
+    }
+
+    @Override
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
+        for (IMetaTileEntityFactory tileEntityFactory : GregTechAPI.METATILEENTITY_REGISTRY) {
+            items.add(new ItemStack(this, 1, GregTechAPI.METATILEENTITY_REGISTRY.getIDForObject(tileEntityFactory)));
+        }
+
     }
 
     public enum ToolClass implements IStringSerializable {

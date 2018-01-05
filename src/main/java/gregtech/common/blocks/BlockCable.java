@@ -13,6 +13,8 @@ import net.minecraft.util.math.BlockPos.PooledMutableBlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class BlockCable extends Block implements ITileEntityProvider {
@@ -26,6 +28,9 @@ public class BlockCable extends Block implements ITileEntityProvider {
         this.maxVoltage = maxVoltage;
         this.maxAmperage = maxAmperage;
         this.cableLoss = cableLoss;
+        setHardness(6.0f);
+        setResistance(8.0f);
+        setUnlocalizedName("cable");
     }
 
     @Override
@@ -62,8 +67,8 @@ public class BlockCable extends Block implements ITileEntityProvider {
             IBlockState blockState = world.getBlockState(mutableBlockPos);
             if(blockState.getBlock().hasTileEntity(blockState)) {
                 TileEntity tileEntity = world.getTileEntity(mutableBlockPos);
-                IEnergyContainer container = tileEntity.getCapability(
-                    IEnergyContainer.CAPABILITY_ENERGY_CONTAINER, opposite);
+                IEnergyContainer container = tileEntity == null ? null :
+                    tileEntity.getCapability(IEnergyContainer.CAPABILITY_ENERGY_CONTAINER, opposite);
                 if(container != null && container.outputsEnergy(opposite)) {
                     shouldPlaceEmitter = true;
                     break;
@@ -85,10 +90,16 @@ public class BlockCable extends Block implements ITileEntityProvider {
 
     private void notifyNetworkAboutRefresh(World world, BlockPos initialPos) {
         PooledMutableBlockPos currentPos = PooledMutableBlockPos.retain(initialPos);
+        List<BlockPos> visited = new ArrayList<>();
         Stack<EnumFacing> moveStack = new Stack<>();
         while(true) {
             for(EnumFacing facing : EnumFacing.VALUES) {
-                currentPos.offset(facing);
+                currentPos.move(facing);
+                if (!visited.contains(currentPos)) {
+                    visited.add(currentPos);
+                } else {
+                    break;
+                }
                 EnumFacing opposite = facing.getOpposite();
                 if(world.getBlockState(currentPos).getBlock() instanceof BlockCable) {
                     //if we are cable, move forward, and update emitter, if we has one

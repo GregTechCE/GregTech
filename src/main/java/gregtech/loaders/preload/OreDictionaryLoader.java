@@ -1,5 +1,8 @@
 package gregtech.loaders.preload;
 
+import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.MarkerMaterials;
@@ -22,9 +25,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static gregtech.api.GTValues.W;
 import static net.minecraftforge.oredict.OreDictionary.WILDCARD_VALUE;
 
@@ -33,9 +33,9 @@ public class OreDictionaryLoader implements Runnable {
     public void run() {
         GTLog.logger.info("Registering OreDict entries.");
 
-        //Simulating oredict registration for vanilla items. TODO UPDATE IN 1.12
+        //Simulating oredict registration for vanilla items.
         //Because forge registers event handlers after registering oredicts for vanilla items
-        Map<String, Object> oreDicts = new HashMap<>();
+        Multimap<String, Object> oreDicts = LinkedListMultimap.create();
 
         // tree- and wood-related things
         oreDicts.put("logWood",     new ItemStack(Blocks.LOG, 1, WILDCARD_VALUE));
@@ -70,6 +70,7 @@ public class OreDictionaryLoader implements Runnable {
         oreDicts.put("ingotBrick",    Items.BRICK);
         oreDicts.put("ingotBrickNether", Items.NETHERBRICK);
         oreDicts.put("nuggetGold",  Items.GOLD_NUGGET);
+		oreDicts.put("nuggetIron",  Items.IRON_NUGGET);
 
         // gems and dusts
         oreDicts.put("gemDiamond",  Items.DIAMOND);
@@ -202,16 +203,15 @@ public class OreDictionaryLoader implements Runnable {
             oreDicts.put("paneGlass"  + dyes[i], pane);
         }
 
-        oreDicts.forEach((ore, itemStack) -> {
-            if (itemStack instanceof ItemStack) {
-                OreDictUnifier.onItemRegistration(new OreDictionary.OreRegisterEvent(ore, (ItemStack) itemStack));
-            } else if (itemStack instanceof Item) {
-                OreDictUnifier.onItemRegistration(new OreDictionary.OreRegisterEvent(ore, new ItemStack((Item) itemStack)));
-            } else if (itemStack instanceof Block) {
-                OreDictUnifier.onItemRegistration(new OreDictionary.OreRegisterEvent(ore, new ItemStack((Block) itemStack)));
-            }
-        });
-
+        Multimaps.asMap(oreDicts).forEach((ore, list) -> list.forEach(o -> {
+			if (o instanceof ItemStack) {
+				OreDictUnifier.onItemRegistration(new OreDictionary.OreRegisterEvent(ore, (ItemStack) o));
+			} else if (o instanceof Item) {
+				OreDictUnifier.onItemRegistration(new OreDictionary.OreRegisterEvent(ore, new ItemStack((Item) o)));
+			} else if (o instanceof Block) {
+				OreDictUnifier.onItemRegistration(new OreDictionary.OreRegisterEvent(ore, new ItemStack((Block) o)));
+			}
+		}));
 
         OreDictUnifier.registerOre(ModHandler.IC2.getIC2Item(ItemName.fluid_cell, 1), OrePrefix.cell, MarkerMaterials.Empty);
         OreDictUnifier.registerOre(ModHandler.IC2.getIC2Item(ItemName.fluid_cell, FluidRegistry.LAVA.getName(), 1), OrePrefix.cell, Materials.Lava);

@@ -24,7 +24,6 @@ public enum MaterialIconSet {
     OPAL,
     GLASS,
     WOOD,
-    FIERY,
     LEAF,
     GEM_HORIZONTAL,
     GEM_VERTICAL,

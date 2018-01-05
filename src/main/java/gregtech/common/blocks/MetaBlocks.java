@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+import gregtech.api.GregTechAPI;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
@@ -26,6 +27,7 @@ public class MetaBlocks {
     private MetaBlocks() {}
 
     public static BlockMachine MACHINE;
+    public static BlockCable CABLE;
 
     public static BlockBoilerCasing BOILER_CASING;
     public static BlockMetalCasing METAL_CASING;
@@ -92,6 +94,10 @@ public class MetaBlocks {
 
         MACHINE = new BlockMachine();
         MACHINE.setRegistryName("machine");
+
+        CABLE = new BlockCable(64, 2, 0);
+        CABLE.setRegistryName("cable");
+        CABLE.setCreativeTab(GregTechAPI.TAB_GREGTECH);
     }
 
     private static void createCompressedBlock(Material[] materials, int index) {

@@ -64,6 +64,8 @@ public class CommonProxy {
         MetaItems.META_TOOL.registerSubItems();
 
         registry.register(createItemBlock(MACHINE, () -> new MachineItemBlock(MACHINE)));
+        registry.register(createItemBlock(CABLE, () -> new ItemBlock(CABLE)));
+
         registry.register(createItemBlock(BOILER_CASING, () -> new VariantItemBlock<>(BOILER_CASING)));
         registry.register(createItemBlock(METAL_CASING, () -> new VariantItemBlock<>(METAL_CASING)));
         registry.register(createItemBlock(TURBINE_CASING, () -> new VariantItemBlock<>(TURBINE_CASING)));
