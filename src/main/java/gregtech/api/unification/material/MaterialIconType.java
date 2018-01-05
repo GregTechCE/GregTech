@@ -2,7 +2,6 @@ package gregtech.api.unification.material;
 
 import com.google.common.base.CaseFormat;
 import com.google.common.collect.ImmutableMap;
-import gregtech.api.GTValues;
 import gregtech.api.util.GTResourceLocation;
 import net.minecraft.util.ResourceLocation;
 
@@ -100,7 +99,7 @@ public enum MaterialIconType {
 
     static {
         ImmutableMap.Builder<String, MaterialIconType> builder = ImmutableMap.builder();
-        for(MaterialIconType value : values()) {
+        for (MaterialIconType value : values()) {
             builder.put(CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, value.name()), value);
         }
         values = builder.build();
@@ -132,7 +131,7 @@ public enum MaterialIconType {
     public ResourceLocation getItemOverlayPath(MaterialIconSet materialIconSet) {
         String iconSet = materialIconSet.name().toLowerCase();
         String iconType = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, name());
-        return new GTResourceLocation("blocks/material_sets/" + iconSet + "/" + iconType + "_overlay");
+        return new GTResourceLocation("material_sets/" + iconSet + "/" + iconType + "_overlay");
     }
 
 }
