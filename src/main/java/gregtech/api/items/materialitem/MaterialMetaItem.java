@@ -9,8 +9,10 @@ import gregtech.api.unification.material.type.MarkerMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.GTUtility;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -79,6 +81,17 @@ public class MaterialMetaItem extends StandardMetaItem {
             }
             return new ModelResourceLocation("builtin/missing", "missing");
         });
+
+        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
+            @Override
+            public int colorMultiplier(ItemStack stack, int tintIndex) {
+                if (tintIndex == 0 && stack.getMetadata() < orePrefixAmount * 1000) {
+                    Material material = Material.MATERIAL_REGISTRY.getObjectById(stack.getMetadata() % 1000);
+                    return material.materialRGB;
+                }
+                return 0xFFFFFF;
+            }
+        }, this);
     }
 
     protected boolean canGenerate(OrePrefix orePrefix, Material material) {
