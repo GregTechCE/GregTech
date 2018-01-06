@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity.factory;
 
-import com.google.common.base.Throwables;
 import gregtech.api.GregTechAPI;
 import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.IMetaTileEntityFactory;

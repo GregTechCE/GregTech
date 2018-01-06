@@ -36,6 +36,7 @@ public class CommonProxy {
         GTLog.logger.info("Registering Blocks...");
         IForgeRegistry<Block> registry = event.getRegistry();
         registry.register(MACHINE);
+        registry.register(CABLE);
         registry.register(BOILER_CASING);
         registry.register(METAL_CASING);
         registry.register(TURBINE_CASING);

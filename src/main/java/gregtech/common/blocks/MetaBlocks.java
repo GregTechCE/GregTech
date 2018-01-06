@@ -97,6 +97,7 @@ public class MetaBlocks {
 
         CABLE = new BlockCable(64, 2, 0);
         CABLE.setRegistryName("cable");
+        CABLE.setUnlocalizedName("cable");
         CABLE.setCreativeTab(GregTechAPI.TAB_GREGTECH);
     }
 

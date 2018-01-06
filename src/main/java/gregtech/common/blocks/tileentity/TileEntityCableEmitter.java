@@ -7,6 +7,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.PooledMutableBlockPos;
 import net.minecraftforge.common.capabilities.Capability;
@@ -52,7 +54,7 @@ public class TileEntityCableEmitter extends TileEntity implements IEnergyContain
         }
     }
 
-    private static class CachedCableEntry {
+    public static class CachedCableEntry {
         public final long maxVoltage;
         public final long maxAmperage;
         public final long cableLoss;
@@ -104,19 +106,20 @@ public class TileEntityCableEmitter extends TileEntity implements IEnergyContain
 
     public void refreshConnections() {
         this.outgoingConnections.clear();
-        PooledMutableBlockPos currentPos = PooledMutableBlockPos.retain(getPos());
+        PooledMutableBlockPos currentPos = PooledMutableBlockPos.retain(getPos().getX(), getPos().getY(), getPos().getZ());
         List<BlockPos> visited = new ArrayList<>();
         Stack<EnumFacing> moveStack = new Stack<>();
         Stack<CachedCableEntry> pathStack = new Stack<>();
         while(true) {
             for(EnumFacing facing : EnumFacing.VALUES) {
                 currentPos.move(facing);
-                if (!visited.contains(currentPos)) {
-                    visited.add(currentPos);
-                } else {
-                    break;
-                }
                 EnumFacing opposite = facing.getOpposite();
+                if (!visited.contains(currentPos)) {
+                    visited.add(currentPos.toImmutable());
+                } else {
+                    currentPos.move(opposite);
+                    continue;
+                }
                 IBlockState blockStateAt = world.getBlockState(currentPos);
                 if(blockStateAt.getBlock() instanceof BlockCable) {
                     //if it is cable, move forward and add opposite direction to move stack
@@ -153,7 +156,7 @@ public class TileEntityCableEmitter extends TileEntity implements IEnergyContain
     @Override
     public void validate() {
         super.validate();
-        this.refreshConnections();
+//        this.refreshConnections(); // FIXME StackOverflowError
     }
 
     @Override

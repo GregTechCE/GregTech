@@ -1,0 +1,31 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "gregtech:overlay_model_orientable",
+    "textures": {
+      "particle": "gregtech:blocks/casings/machine_casing_fusion_2",
+      "top": "gregtech:blocks/casings/machine_casing_fusion_2",
+      "bottom": "gregtech:blocks/casings/machine_casing_fusion_2",
+      "front": "gregtech:blocks/casings/machine_casing_fusion",
+      "side": "gregtech:blocks/casings/machine_casing_fusion_2",
+      "overlay_front": "gregtech:blocks/void",
+      "overlay_bottom": "gregtech:blocks/void",
+      "overlay_top": "gregtech:blocks/void",
+      "overlay_side": "gregtech:blocks/void"
+    },
+    "transform": "forge:default-block"
+  },
+  "variants": {
+    "facing": {
+      "north": {},
+      "south": { "y": 180 },
+      "west": { "y": 270 },
+      "east": { "y": 90 }
+    },
+    "active": {
+      "true": {},
+      "false": {}
+    },
+    "inventory": [{}]
+  }
+}

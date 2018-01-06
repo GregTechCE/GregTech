@@ -1,6 +1,9 @@
 package gregtech.common.blocks;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import gregtech.api.capability.IEnergyContainer;
+import gregtech.api.util.DebugRenderer;
 import gregtech.common.blocks.tileentity.TileEntityCableEmitter;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -30,7 +33,6 @@ public class BlockCable extends Block implements ITileEntityProvider {
         this.cableLoss = cableLoss;
         setHardness(6.0f);
         setResistance(8.0f);
-        setUnlocalizedName("cable");
     }
 
     @Override
@@ -89,18 +91,19 @@ public class BlockCable extends Block implements ITileEntityProvider {
     }
 
     private void notifyNetworkAboutRefresh(World world, BlockPos initialPos) {
-        PooledMutableBlockPos currentPos = PooledMutableBlockPos.retain(initialPos);
+        PooledMutableBlockPos currentPos = PooledMutableBlockPos.retain(initialPos.getX(), initialPos.getY(), initialPos.getZ());
         List<BlockPos> visited = new ArrayList<>();
         Stack<EnumFacing> moveStack = new Stack<>();
         while(true) {
             for(EnumFacing facing : EnumFacing.VALUES) {
                 currentPos.move(facing);
-                if (!visited.contains(currentPos)) {
-                    visited.add(currentPos);
-                } else {
-                    break;
-                }
                 EnumFacing opposite = facing.getOpposite();
+                if (!visited.contains(currentPos)) {
+                    visited.add(currentPos.toImmutable());
+                } else {
+                    currentPos.move(opposite);
+                    continue;
+                }
                 if(world.getBlockState(currentPos).getBlock() instanceof BlockCable) {
                     //if we are cable, move forward, and update emitter, if we has one
                     TileEntityCableEmitter emitter = (TileEntityCableEmitter) world.getTileEntity(currentPos);
@@ -116,6 +119,7 @@ public class BlockCable extends Block implements ITileEntityProvider {
                 currentPos.move(moveStack.pop());
             } else break;
         }
+        DebugRenderer.blockPosSet = ImmutableSet.copyOf(visited);
         currentPos.release();
     }
 

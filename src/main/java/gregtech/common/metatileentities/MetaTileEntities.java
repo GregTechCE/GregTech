@@ -21,7 +21,7 @@ public class MetaTileEntities {
         GameRegistry.registerTileEntity(TileEntityCableEmitter.class, "gregtech_cable_emitter");
 
         GregTechAPI.METATILEENTITY_REGISTRY.register(0, "mte_test", new WorkableMetaTileEntityFactory<>(BlockMachine.ToolClass.WRENCH, 1, new String[]{"test_desc"}, TestMTE.class, new GTResourceLocation("mte_test"), 1, RecipeMap.FURNACE_RECIPES));
-        GregTechAPI.METATILEENTITY_REGISTRY.register(1, "mte_test_generator", new TieredMetaTileEntityFactory<>(BlockMachine.ToolClass.WRENCH, 1, new String[]{"test_desc_generator"}, TestGeneratorMTE.class, new GTResourceLocation("test_desc_generator"), 1));
+        GregTechAPI.METATILEENTITY_REGISTRY.register(1, "mte_test_generator", new TieredMetaTileEntityFactory<>(BlockMachine.ToolClass.WRENCH, 1, new String[]{"test_desc_generator"}, TestGeneratorMTE.class, new GTResourceLocation("mte_test_generator"), 1));
 
         BlockMachine.META_TYPE = PropertyString.create("meta_type", GregTechAPI.METATILEENTITY_REGISTRY.getKeys());
     }
