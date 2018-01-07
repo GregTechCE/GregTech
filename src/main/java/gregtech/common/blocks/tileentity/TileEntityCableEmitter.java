@@ -7,18 +7,12 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.PooledMutableBlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 import java.util.function.Predicate;
 
 public class TileEntityCableEmitter extends TileEntity implements IEnergyContainer {
@@ -135,9 +129,10 @@ public class TileEntityCableEmitter extends TileEntity implements IEnergyContain
                         ConnectionInfo connectionInfo = new ConnectionInfo(tileEntity, pathStack);
                         this.outgoingConnections.add(connectionInfo);
                     }
+                } else {
+                    //move back if we aren't cable and didn't continue
+                    currentPos.move(opposite);
                 }
-                //move back if we aren't cable and din't continue
-                currentPos.move(opposite);
             }
             //if we didn't found any cable, go back, or return
             if(!moveStack.isEmpty()) {
