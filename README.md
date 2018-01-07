@@ -14,7 +14,7 @@ Place the .jar file in your mods folder as you would with any other mod.
 
 ## Installation
 
-GTCE requires JEI for it's recipes and will not load without it.
+GTCE requires JEI for its recipes and will not load without it.
 
 ## Issues
 
