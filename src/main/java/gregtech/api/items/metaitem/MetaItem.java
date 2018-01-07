@@ -5,6 +5,7 @@ import gnu.trove.map.TShortObjectMap;
 import gnu.trove.map.hash.TShortObjectHashMap;
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
+import gregtech.api.capability.impl.ElectricItem;
 import gregtech.api.capability.impl.ThermalFluidHandlerItemStack;
 import gregtech.api.items.OreDictNames;
 import gregtech.api.items.metaitem.stats.IElectricStats;
@@ -41,6 +42,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -127,13 +129,25 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             return null;
         }
         IFluidStats fluidStats = metaValueItem.getFluidStats();
-        if (fluidStats == null) {
-            return null;
+        IElectricStats electricStats = metaValueItem.getElectricStats();
+        if (electricStats != null && fluidStats != null) {
+            throw new IllegalStateException("ItemStack cannot be both fluid and energy container");
         }
-        return new ThermalFluidHandlerItemStack(stack,
-            fluidStats.getCapacity(stack),
-            fluidStats.getMinFluidTemperature(stack),
-            fluidStats.getMaxFluidTemperature(stack));
+
+        if (fluidStats != null) {
+            return new ThermalFluidHandlerItemStack(stack,
+                fluidStats.getCapacity(stack),
+                fluidStats.getMinFluidTemperature(stack),
+                fluidStats.getMaxFluidTemperature(stack));
+        }
+
+        if (electricStats != null) {
+            return new ElectricItem(electricStats.getMaxCharge(),
+                electricStats.getTier(),
+                electricStats.isChargeable(),
+                electricStats.isDischargeable());
+        }
+        return null;
     }
 
     //////////////////////////////////////////////////////////////////
@@ -324,13 +338,13 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                 lines.add(I18n.format(unlocalizedTooltip));
             }
 
-            IElectricStats electricStats = getElectricStats(itemStack);
+/*            IElectricStats electricStats = getElectricStats(itemStack);
             if (electricStats.getMaxCharge(itemStack) > 0) {
                 lines.add(I18n.format("metaitem.generic.electric_item.tooltip",
                     electricStats.getCharge(itemStack),
                     electricStats.getMaxCharge(itemStack),
                     GTValues.V[electricStats.getTier(itemStack)]));
-            }
+            }*/
             /*if (getCapacity(itemStack) > 0) {
                 FluidStack fluid = getFluid(itemStack);
                 if (fluid != null) {
@@ -367,12 +381,12 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                             }
                         }
                     }*/
-                    IElectricStats electricStats = getElectricStats(itemStack);
+/*                    IElectricStats electricStats = getElectricStats(itemStack);
                     if (electricStats.getMaxCharge(itemStack) > 0) {
                         ItemStack chargedStack = itemStack.copy();
                         electricStats.charge(chargedStack, Integer.MAX_VALUE, Integer.MAX_VALUE, true, false);
                         subItems.add(chargedStack);
-                    }
+                    }*/
                     subItems.add(itemStack);
                 }
             }
@@ -581,6 +595,13 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             return getStackForm(1);
         }
 
+        @Override
+        public String toString() {
+            return new ToStringBuilder(this)
+                .append("metaValue", metaValue)
+                .append("unlocalizedName", unlocalizedName)
+                .toString();
+        }
     }
 
 }

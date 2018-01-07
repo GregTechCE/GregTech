@@ -3,6 +3,7 @@ package gregtech.api.recipes;
 import com.google.common.base.Preconditions;
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
+import gregtech.api.capability.IElectricItem;
 import gregtech.api.items.IDamagableItem;
 import gregtech.api.items.ToolDictNames;
 import gregtech.api.items.metaitem.MetaItem;
@@ -726,18 +727,20 @@ public class ModHandler {
 //        return false;
 //    }
 //
-//    /**
-//     * Is this an electric Item?
-//     */
-//    public static boolean isElectricItem(ItemStack stack) {
-////        return !stack.isEmpty() && (stack.getItem() instanceof IElectricItem || stack.getItem() instanceof ISpecialElectricItem);
-//        return false; // TODO ELECTRIC ITEMS
-//    }
-//
-//    public static boolean isElectricItem(ItemStack stack, int tier) {
-////        return !stack.isEmpty() && isElectricItem(stack) && ElectricItem.manager.getTier(stack) == tier;
-//        return false; // TODO ELECTRIC ITEMS
-//    }
+    /**
+     * Is this an electric Item?
+     */
+    public static boolean isElectricItem(ItemStack stack) {
+        return !stack.isEmpty() && stack.hasCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+    }
+
+    public static boolean isElectricItem(ItemStack stack, int tier) {
+        if (isElectricItem(stack)) {
+            IElectricItem capability = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+            return capability.getTier() == tier;
+        }
+        return false;
+    }
 
     public static class ThermalExpansion {
 

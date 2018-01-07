@@ -3,6 +3,7 @@ package gregtech.api.items.toolitem;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import gregtech.api.GregTechAPI;
+import gregtech.api.capability.IElectricItem;
 import gregtech.api.enchants.EnchantmentData;
 import gregtech.api.items.IBoxable;
 import gregtech.api.items.IDamagableItem;
@@ -69,6 +70,9 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             toolStats.onToolCrafted(stack, player);
             ArrayList<EnchantmentData> enchantments = new ArrayList<>(toolStats.getEnchantments(stack));
             SolidMaterial material = getPrimaryMaterial(stack);
+            if (material == null) {
+                return;
+            }
             for(EnchantmentData enchantmentData : material.toolEnchantments) {
                 Optional<EnchantmentData> sameEnchantment = enchantments.stream().filter(it -> it.enchantment == enchantmentData.enchantment).findAny();
                 if(sameEnchantment.isPresent()) {
@@ -90,7 +94,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         T metaToolValueItem = getItem(stack);
         if(metaToolValueItem != null) {
             IToolStats toolStats = metaToolValueItem.getToolStats();
-            if(!doDamageToItem(stack, toolStats.getToolDamagePerContainerCraft(stack)) && getElectricStats(stack).getMaxCharge(stack) == 0) {
+            if(!doDamageToItem(stack, toolStats.getToolDamagePerContainerCraft(stack)) && getElectricStats(stack).getMaxCharge() == 0) {
                 return null;
             }
         }
@@ -125,7 +129,10 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         if(metaToolValueItem != null) {
             IToolStats toolStats = metaToolValueItem.getToolStats();
             if(isUsable(stack, toolStats.getToolDamagePerBlockBreak(stack)) && toolStats.isMinableBlock(state, stack)) {
-                return getPrimaryMaterial(stack).toolSpeed * toolStats.getSpeedMultiplier(stack);
+                SolidMaterial material = getPrimaryMaterial(stack);
+                if (material != null) {
+                    return material.toolSpeed * toolStats.getSpeedMultiplier(stack);
+                }
             }
         }
         return 1.0f;
@@ -137,7 +144,10 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         if(metaToolValueItem != null) {
             IToolStats toolStats = metaToolValueItem.getToolStats();
             if(isUsable(stack, toolStats.getToolDamagePerBlockBreak(stack)) && toolStats.isMinableBlock(blockState, stack)) {
-                return toolStats.getBaseQuality(stack) + getPrimaryMaterial(stack).harvestLevel;
+                SolidMaterial material = getPrimaryMaterial(stack);
+                if (material != null) {
+                    return toolStats.getBaseQuality(stack) + material.harvestLevel;
+                }
             }
         }
         return -1;
@@ -206,31 +216,31 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         if(!isUsable(stack, vanillaDamage)) {
             return false;
         }
-        T metaToolValueItem = getItem(stack);
-        IElectricStats electricItemManager = getElectricStats(stack);
-        if(electricItemManager.getMaxCharge(stack) == 0) {
+        IElectricItem capability = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+        if(capability == null || capability.getMaxCharge() == 0) {
             setInternalDamage(stack, getInternalDamage(stack) + vanillaDamage);
         } else {
-            electricItemManager.discharge(stack, vanillaDamage, electricItemManager.getTier(stack), true, false, false);
+            capability.discharge(vanillaDamage, capability.getTier(), true, false, false);
             setInternalDamage(stack, getInternalDamage(stack) + (vanillaDamage / 10));
         }
         return true;
     }
 
     public boolean isUsable(ItemStack stack, int damage) {
-        T metaToolValueItem = getItem(stack);
-        IElectricStats electricItemManager = getElectricStats(stack);
-        if(electricItemManager.getMaxCharge(stack) == 0) {
+        IElectricItem capability = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+        if(capability == null || capability.getMaxCharge() == 0) {
             return getInternalDamage(stack) + damage < getMaxInternalDamage(stack);
         }
-        return electricItemManager.canUse(stack, damage) && getInternalDamage(stack) + (damage / 10) < getMaxInternalDamage(stack);
+        return capability.canUse(damage) && getInternalDamage(stack) + (damage / 10) < getMaxInternalDamage(stack);
     }
 
     private int getMaxInternalDamage(ItemStack itemStack) {
         T metaToolValueItem = getItem(itemStack);
         if (metaToolValueItem != null) {
             SolidMaterial toolMaterial = getPrimaryMaterial(itemStack);
-            return (int) (toolMaterial.toolDurability * metaToolValueItem.getToolStats().getMaxDurabilityMultiplier(itemStack));
+            if (toolMaterial != null) {
+                return (int) (toolMaterial.toolDurability * metaToolValueItem.getToolStats().getMaxDurabilityMultiplier(itemStack));
+            }
         }
         return 0;
     }

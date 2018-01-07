@@ -160,6 +160,6 @@ public class FluidTankHandler implements IFluidHandler, IMultipleTankHandler, IN
 
     protected void validateTankIndex(int tank) {
         if (tank < 0 || tank >= fluidTanks.size())
-            throw new RuntimeException("Tank " + tank + " not in valid range - [0," + fluidTanks.size() + ")");
+            throw new RuntimeException("Tank " + tank + " not in valid range - (0," + fluidTanks.size() + "]");
     }
 }
