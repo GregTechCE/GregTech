@@ -1,24 +1,26 @@
-GT5-Unofficial
+GTCE
 ===
 
 ## About
 
-GT5-Unofficial is a decompiled and modified version of GT5.07.07. The goal of the mod is to maintain and extend the end game of GT5.
+GregTech Community Edition is a total re-write of GregTech for newer Minecraft versions. It is mostly based off of GregTech 5 but with GregTech 6 and GregTech 4 elements thrown in.
+
+### GTCE is not created by nor is it maintained by GregoriusT.
 
 ## Downloads
 
-Builds can be found on the [IC2 Forums](http://forum.industrial-craft.net/index.php?page=Thread&threadID=11488).
+Downloads can be found on the curseforge site {here} //TODO: add curseforge site when it's made 
+Place the .jar file in your mods folder as you would with any other mod.
 
 ## Installation
 
-GT5U requires IndustrialCraft2-experimental. Version 2.2.780-experimental or newer is recommended.
-Forge versions 1428-1480 are known to break multiplayer. 1481 or newer are recommended.
-Place the downloaded jar file into your mods/ folder.
+GTCE requires JEI for it's recipes and will not load without it.
 
 ## Issues
 
-Please report any issues you to find the issue tracker on this repository. Include as much information as possible including as version and steps to reproduce.
+Please report any issues you to find the issue tracker on this repository. Include as much information as possible including GTCE version, Forge version, and steps to reproduce.
 
 ## Contribution
 
-Please do! However, please take a note of current issues and what is currently being worked on.
+Please do! However, please take a note of current issues and what is currently being worked on. Please see CONTRIBUTING.md for more details.
+
