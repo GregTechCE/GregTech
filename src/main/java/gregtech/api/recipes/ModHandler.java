@@ -1,6 +1,7 @@
 package gregtech.api.recipes;
 
 import com.google.common.base.Preconditions;
+
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.IElectricItem;
@@ -11,6 +12,7 @@ import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
+import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
@@ -43,6 +45,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.minecraftforge.registries.GameData;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryManager;
+
 import org.apache.commons.lang3.Validate;
 
 import java.util.ArrayList;
@@ -50,6 +53,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static gregtech.api.GTValues.DW;
 import static gregtech.api.GTValues.V;
@@ -313,7 +317,9 @@ public class ModHandler {
             GTLog.logger.error("Recipe cannot be empty", new IllegalArgumentException());
             skip = true;
         } else if (Arrays.asList(recipe).contains(null) || Arrays.asList(recipe).contains(ItemStack.EMPTY)) {
-            GTLog.logger.error("Recipe cannot contain null elements or Empty ItemStacks. Recipe: {}", recipe);
+            GTLog.logger.error("Recipe cannot contain null elements or Empty ItemStacks. Recipe: " + 
+                Arrays.stream(recipe).map(o -> o == null ? "NULL" : o).map(o -> o == ItemStack.EMPTY ? "EMPTY STACK" : o)
+                .map(Object::toString).map(s -> "\"" + s + "\"").collect(Collectors.joining(", ")));
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             skip = true;
         }
