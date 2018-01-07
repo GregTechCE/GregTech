@@ -23,7 +23,9 @@ public class MachineItemBlock extends ItemBlock {
     }
 
     public IMetaTileEntityFactory getFactory(ItemStack stack) {
-        return GregTechAPI.METATILEENTITY_REGISTRY.getObjectById(stack.getItemDamage());
+        IMetaTileEntityFactory factory = GregTechAPI.METATILEENTITY_REGISTRY.getObjectById(stack.getItemDamage());
+        if(factory == null) factory = GregTechAPI.METATILEENTITY_REGISTRY.iterator().next();
+        return factory;
     }
 
     @Override

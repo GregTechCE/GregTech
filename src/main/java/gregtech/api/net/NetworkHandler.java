@@ -29,7 +29,11 @@ import java.util.HashMap;
 
 public class NetworkHandler {
 
-    public interface Packet {}
+    public interface Packet {
+        default FMLProxyPacket toFMLPacket() {
+            return packet2proxy(this);
+        }
+    }
 
     @FunctionalInterface
     public interface PacketEncoder<T extends Packet> {
@@ -129,12 +133,10 @@ public class NetworkHandler {
     private static void initClient() {
         registerClientExecutor(PacketCustomTileData.class, (packet, handler) -> {
             WorldClient world = Minecraft.getMinecraft().world;
-            if (world == null) {
-                return;
-            }
             TileEntity tileEntity = world.getTileEntity(packet.tileEntityPos);
+            System.out.println("Received custom tile data for tile " + tileEntity);
             if(tileEntity instanceof ICustomDataTile) {
-                ((ICustomDataTile) tileEntity).receiveCustomData(packet.payload);
+                ((ICustomDataTile) tileEntity).handleDataPacket(packet);
             }
         });
         registerClientExecutor(PacketUIOpen.class, (packet, handler) -> {
