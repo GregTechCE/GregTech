@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -82,8 +83,11 @@ public class BlockCable extends Block implements ITileEntityProvider {
         //remove emitter if we don't have inputs, or add if we have inputs and it doesn't exist
         TileEntity currentTileEntity = world.getTileEntity(selfPos);
         if(shouldPlaceEmitter) {
-            if(!(currentTileEntity instanceof TileEntityCableEmitter))
-                world.setTileEntity(selfPos, new TileEntityCableEmitter());
+            if(!(currentTileEntity instanceof TileEntityCableEmitter)) {
+                TileEntityCableEmitter tileEntityCableEmitter = new TileEntityCableEmitter();
+                world.setTileEntity(selfPos, tileEntityCableEmitter);
+                tileEntityCableEmitter.refreshConnections();
+            }
         } else if(currentTileEntity instanceof TileEntityCableEmitter) {
             world.removeTileEntity(selfPos);
         }
@@ -105,6 +109,7 @@ public class BlockCable extends Block implements ITileEntityProvider {
                     continue;
                 }
                 if(world.getBlockState(currentPos).getBlock() instanceof BlockCable) {
+                    world.setBlockState(currentPos.up(), Blocks.LOG.getDefaultState());
                     //if we are cable, move forward, and update emitter, if we has one
                     TileEntityCableEmitter emitter = (TileEntityCableEmitter) world.getTileEntity(currentPos);
                     if(emitter != null) emitter.refreshConnections();
@@ -119,7 +124,7 @@ public class BlockCable extends Block implements ITileEntityProvider {
                 currentPos.move(moveStack.pop());
             } else break;
         }
-        DebugRenderer.blockPosSet = ImmutableSet.copyOf(visited);
+        //DebugRenderer.blockPosSet = ImmutableSet.copyOf(visited);
         currentPos.release();
     }
 

@@ -37,10 +37,9 @@ public interface ICustomDataTile {
 
     void receiveInitialSyncData(PacketBuffer buf);
 
-    default void handleDataPacket(PacketCustomTileData packet) {
-        PacketBuffer payload = packet.payload;
+    default void handleDataPacket(PacketBuffer payload) {
         boolean initialSync = payload.readBoolean();
-        if(initialSync) {
+        if(!initialSync) {
             int discriminator = payload.readInt();
             receiveCustomData(discriminator, payload);
         } else receiveInitialSyncData(payload);

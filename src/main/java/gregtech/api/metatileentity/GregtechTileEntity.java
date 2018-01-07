@@ -52,7 +52,6 @@ public class GregtechTileEntity extends TickableTileEntityBase implements IGregT
             NBTTagCompound metaTileEntityTag = compound.getCompoundTag("MetaTileEntity");
             metaTileEntity.loadNBTData(metaTileEntityTag);
         }
-        System.out.println("loaded mte " + compound + " " + metaTileEntity + " " + FMLCommonHandler.instance().getEffectiveSide());
     }
 
     @Override
@@ -77,9 +76,9 @@ public class GregtechTileEntity extends TickableTileEntityBase implements IGregT
     @Override
     public void receiveInitialSyncData(PacketBuffer buf) {
         IMetaTileEntityFactory factory = GregTechAPI.METATILEENTITY_REGISTRY.getObjectById(buf.readShort());
-        System.out.println("Receive custom data " + factory);
         this.setMetaTileEntity(factory.constructMetaTileEntity());
         this.metaTileEntity.receiveInitialData(buf);
+        this.world.markBlockRangeForRenderUpdate(getPos(), getPos());
     }
 
     @Override
