@@ -51,7 +51,7 @@ public class GregTechMod {
 
     @Mod.EventHandler
     public void onPreInit(FMLPreInitializationEvent event) {
-        GTLog.init(event.getModLog(), event.getModConfigurationDirectory().getParentFile());
+        GTLog.init(event.getModLog());
 
         GTLog.logger.info("PreInit-Phase started!");
 

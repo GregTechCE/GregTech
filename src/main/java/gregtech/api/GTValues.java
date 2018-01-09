@@ -61,6 +61,11 @@ public class GTValues {
      * Not really Constant, but it set using the Config and therefore should be constant (this is for the Debug Mode)
      */
     public static boolean D1 = false;
+    
+    /**
+     * Use [GregTech] prefix in logger. Will move to config once that exists.
+     */
+    public static boolean useLoggerPrefix = false;
 
     /**
      * If you have to give something a World Parameter but there is no World... (Dummy World)
