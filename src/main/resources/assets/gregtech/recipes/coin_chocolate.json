@@ -22,7 +22,6 @@
     }
   ],
   "result": {
-    "item": "gregtech:meta_item_1",
-    "data": 32002 // Chocolate coin id
+    "type": "forge:ore_dict",
   }
 }
