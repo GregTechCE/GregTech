@@ -69,7 +69,7 @@ public class TestMTE extends WorkableMetaTileEntity<Recipe> {
             .widget(2, new ProgressWidget<TestMTE>(78, 25)
                 .setImageLocation(new GTResourceLocation("textures/gui/bronze/progress_bar_bronze_furnace.png"))
                 .setFilledImageLocation(new GTResourceLocation("textures/gui/bronze/progress_bar_bronze_furnace_filled.png"))
-                .setImageWidthHeight(20,16)
+                .setImageWidthHeight(20,16)//optional
                 .setImageUV(0,0))//optional but included anyway as a good example for new widgets
             .widget(3, new SlotWidget<TestMTE>(this.exportItems, 0, 107, 25, true, false)
                 .setImageLocation(slotImageLocation)

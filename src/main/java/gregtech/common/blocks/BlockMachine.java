@@ -214,7 +214,7 @@ public class BlockMachine extends Block {
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(FACING).ordinal();
+        return state.getValue(FACING).getHorizontalIndex();
     }
 
     @Override

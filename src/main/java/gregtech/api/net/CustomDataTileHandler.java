@@ -17,10 +17,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 class CustomDataTileHandler {
 
-    static final Map<BlockPos, PacketBuffer> pendingInitialSyncData = new HashMap<>();
+    static final Map<BlockPos, PacketBuffer> pendingInitialSyncData = new ConcurrentHashMap<>();
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
