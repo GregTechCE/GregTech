@@ -1,27 +1,22 @@
 {
   "type": "forge:ore_shapeless",
   "ingredients": [{
-      "item": "gregtech:meta_item_1",
-      "data": ? // I can't determine these values because they're handled by MATERIAL_REGISTRY
+      "type": "forge:ore_dict",
+      "data": "dustCocoa"
     },
     {
-      "item": "gregtech:meta_item_1",
-      "data": ?
+      "type": "forge:ore_dict",
+      "data": "foilGold"
     },
     {
-      "item": "gregtech:meta_item_1",
-      "data": ?
+      "item": "minecraft:milk_bucket"
     },
     {
-      "item": "gregtech:meta_item_1",
-      "data": ?
-    },
-    {
-      "item": "gregtech:meta_item_1",
-      "data": ?
+      "item": "minecraft:sugar"
     }
   ],
   "result": {
-    "type": "forge:ore_dict",
+    "type": "gregtech:metaitem",
+    "item": "coin.chocolate",
   }
 }
