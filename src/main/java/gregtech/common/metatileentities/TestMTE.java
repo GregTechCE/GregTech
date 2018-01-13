@@ -66,7 +66,7 @@ public class TestMTE extends WorkableMetaTileEntity<Recipe> {
                 .setImageLocation(slotImageLocation)
                 .setBackgroundLocation(new GTResourceLocation("textures/gui/bronze/slot_bronze_furnace_background.png"))
                 .setOnSlotChanged(this::markDirty))
-            .widget(2, new ProgressWidget<TestMTE>(78, 25, false,false)
+            .widget(2, new ProgressWidget<TestMTE>(78, 25)
                 .setImageLocation(new GTResourceLocation("textures/gui/bronze/progress_bar_bronze_furnace.png"))
                 .setFilledImageLocation(new GTResourceLocation("textures/gui/bronze/progress_bar_bronze_furnace_filled.png"))
                 .setImageWidthHeight(20,16)

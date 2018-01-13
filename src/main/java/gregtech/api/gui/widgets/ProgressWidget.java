@@ -11,35 +11,34 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+// this implementation requires maxProgress to be sent to client every time its value is updated
 public class ProgressWidget<T extends IWorkable & IUIHolder> extends Widget<T> {
 
     protected final int xPosition;
     protected final int yPosition;
 
     protected final boolean vertical;
-    protected final boolean direction; //false = down to up , true = up to down
+    protected final boolean direction; //false = down to up , true = up to down, not applied to horizontal
 
     protected float progress;
 
-    private ResourceLocation onImageLocation;
-    private ResourceLocation offImageLocation;
+    private ResourceLocation filledImageLocation;
+    private ResourceLocation imageLocation;
 
-    private int width;
-    private int height;
+    private int width = 20;
+    private int height = 16;
 
     private int u = 0;
     private int v = 0;
 
-    @Deprecated
-    //For people who want to quickly setup ProcessWidgets, don't use this for actual build
     public ProgressWidget(int xPosition, int yPosition) {
+
         this(xPosition, yPosition, false, false);
     }
-    //This is okay but the next constructor is preferred
     public ProgressWidget(int xPosition, int yPosition, boolean vertical) {
         this(xPosition, yPosition, vertical, false);
     }
-    // This constructor allows the user to have full control over the ProcessWidget
+
     public ProgressWidget(int xPosition, int yPosition, boolean vertical, boolean direction) {
         super(SLOT_DRAW_PRIORITY - 200);
         this.xPosition = xPosition;
@@ -49,21 +48,21 @@ public class ProgressWidget<T extends IWorkable & IUIHolder> extends Widget<T> {
     }
 
     public ProgressWidget<T> setFilledImageLocation(ResourceLocation onImageLocation) {//Filled progress bar texture location
-        this.onImageLocation = onImageLocation;
+        this.filledImageLocation = onImageLocation;
         return this;
     }
 
     public ProgressWidget<T> setImageLocation(ResourceLocation offImageLocation) {//Empty progress bar texture location
-        this.offImageLocation = offImageLocation;
+        this.imageLocation = offImageLocation;
         return this;
     }
-    //This is required and minecraft will crash without it
+
     public ProgressWidget<T> setImageWidthHeight(int width, int height) {
         this.width = width;
         this.height = height;
         return this;
     }
-    //This is optional as u and v are initialized to 0
+
     public ProgressWidget<T> setImageUV(int u, int v) {
         this.u = u;
         this.v = v;
@@ -74,7 +73,8 @@ public class ProgressWidget<T extends IWorkable & IUIHolder> extends Widget<T> {
     public void initWidget() {
     }
 
-    protected int getProgressScaled(int pixels) { //Find the amount of pixels to increment the filled texture by
+    //Find the amount of pixels to increment the filled texture by
+    protected int getProgressScaled(int pixels) {
         int maxProgress = this.gui.holder.getMaxProgress();
         return maxProgress != 0 && progress != 0 ? ((int) progress) * pixels / maxProgress : 0;
     }
@@ -85,16 +85,16 @@ public class ProgressWidget<T extends IWorkable & IUIHolder> extends Widget<T> {
         drawInBackgroundInternal(guiLeft, guiTop, () -> {
             TextureManager textureManager = Minecraft.getMinecraft().getTextureManager();
             if (this.vertical){ //if it is vertical then reverse textures
-                textureManager.bindTexture(onImageLocation);
+                textureManager.bindTexture(filledImageLocation);
             } else {
-                textureManager.bindTexture(offImageLocation);
+                textureManager.bindTexture(imageLocation);
             }
             Gui.drawModalRectWithCustomSizedTexture(xPosition, yPosition, u, v, width, height, width, height);
 
             if (this.vertical){//if it is vertical then reverse textures
-                textureManager.bindTexture(offImageLocation);
+                textureManager.bindTexture(imageLocation);
             } else {
-                textureManager.bindTexture(onImageLocation);
+                textureManager.bindTexture(filledImageLocation);
             }
 
             if (progress >= this.gui.holder.getMaxProgress()) {
@@ -129,5 +129,4 @@ public class ProgressWidget<T extends IWorkable & IUIHolder> extends Widget<T> {
     public void readUpdateInfo(PacketBuffer buffer) {
     }
 }
-
 

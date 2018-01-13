@@ -36,6 +36,7 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.ChunkCache;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -134,6 +135,12 @@ public class BlockMachine extends Block {
         if (metaTileEntity.isAccessAllowed(playerIn)) {
             metaTileEntity.onLeftClick(playerIn);
         }
+    }
+
+    @Override
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+        state = this.getActualState(state, world, pos);
+        return new ItemStack(MetaBlocks.MACHINE, 1, GregTechAPI.METATILEENTITY_REGISTRY.getIDForObject(GregTechAPI.METATILEENTITY_REGISTRY.getObject(state.getValue(META_TYPE))));
     }
 
     @Override

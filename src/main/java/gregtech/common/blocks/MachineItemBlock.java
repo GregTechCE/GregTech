@@ -20,6 +20,7 @@ public class MachineItemBlock extends ItemBlock {
     public MachineItemBlock(BlockMachine block) {
         super(block);
         this.block = block;
+        this.setHasSubtypes(true);
     }
 
     public IMetaTileEntityFactory getFactory(ItemStack stack) {

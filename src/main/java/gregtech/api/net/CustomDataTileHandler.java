@@ -33,8 +33,7 @@ class CustomDataTileHandler {
             BlockPos blockPos = keyIterator.next();
             TileEntity tileEntity = clientWorld.getTileEntity(blockPos);
             if(tileEntity instanceof ICustomDataTile) {
-                ((ICustomDataTile) tileEntity).handleDataPacket(
-                    pendingInitialSyncData.get(blockPos));
+                ((ICustomDataTile) tileEntity).handleDataPacket(pendingInitialSyncData.get(blockPos));
                 keyIterator.remove();
             }
         }
