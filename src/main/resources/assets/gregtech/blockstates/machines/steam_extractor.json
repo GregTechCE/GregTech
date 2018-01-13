@@ -1,0 +1,37 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "gregtech:overlay_model_orientable",
+    "textures": {
+      "particle": "gregtech:blocks/machines/machine_bronze_all",
+      "top": "gregtech:blocks/machines/machine_bronze_all",
+      "bottom": "gregtech:blocks/machines/machine_bronze_all",
+      "front": "gregtech:blocks/machines/machine_bronze_all",
+      "side": "gregtech:blocks/machines/machine_bronze_all",
+      "overlay_front": "gregtech:blocks/machines/extractor/overlay_front",
+      "overlay_bottom": "gregtech:blocks/void",
+      "overlay_top": "gregtech:blocks/machines/extractor/overlay_top",
+      "overlay_side": "gregtech:blocks/machines/extractor/overlay_side"
+    },
+    "transform": "forge:default-block"
+  },
+  "variants": {
+    "facing": {
+      "north": { },
+      "south": { "y": 180 },
+      "west": { "y": 270 },
+      "east": { "y": 90 }
+    },
+    "active": {
+      "true": {
+        "textures": {
+          "overlay_front": "gregtech:blocks/machines/extractor/overlay_front_active",
+		  "overlay_top": "gregtech:blocks/machines/extractor/overlay_top_active",
+		  "overlay_side": "gregtech:blocks/machines/extractor/overlay_side_active"
+        }
+      },
+      "false": {}
+    },
+    "inventory": [{}]
+  }
+}
