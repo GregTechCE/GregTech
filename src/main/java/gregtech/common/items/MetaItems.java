@@ -532,10 +532,6 @@ public final class MetaItems {
         }
     }
     
-    public static void register() {
-        
-    }
-
     //TODO JSON!
     @Deprecated
     public static void registerRecipes() {
