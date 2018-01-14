@@ -1524,6 +1524,11 @@ recipemap.fluidnaquadahreactor.name=Fluid Naquadah Reactor
 recipemap.fluidnaquadahreactor.value=Fuel Value: %s EU
 
 machine.mte_test=Test MetaTileEntity
+machine.steam_extractor=Steam Extractor
+machine.steam_macerator=Steam Macerator
+machine.steam_compressor=Steam Compressor
+machine.steam_alloy_smelter=Steam Alloy Smelter
+machine.steam_hammer=Steam Hammer
 
 death.attack.explosion=%s exploded.
 death.attack.explosion.player=%s exploded with help of %s.
