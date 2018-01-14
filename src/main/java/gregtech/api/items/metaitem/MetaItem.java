@@ -109,6 +109,8 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     public final T getItem(ItemStack itemStack) {
         return getItem((short) (itemStack.getItemDamage() - metaItemOffset));
     }
+    
+    public void registerSubItems() {}
 
     //////////////////////////////////////////////////////////////////
     //                 ISpecialElectricItem Implementation          //

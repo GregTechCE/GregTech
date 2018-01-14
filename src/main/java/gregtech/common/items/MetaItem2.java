@@ -32,6 +32,7 @@ public class MetaItem2 extends MaterialMetaItem {
                 null, null, null, null, null);
     }
 
+    @Override
     public void registerSubItems() {
         boolean drinksAlwaysDrinkable = false;
 

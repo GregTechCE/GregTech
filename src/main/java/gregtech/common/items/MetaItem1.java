@@ -54,6 +54,7 @@ public class MetaItem1 extends MaterialMetaItem {
 				OrePrefix.cellPlasma, null, null, null, null, null, null, null, null, null);
 	}
 
+	@Override
     public void registerSubItems() {
 
         CREDIT_COPPER = addItem(0, "credit.copper");
@@ -378,12 +379,6 @@ public class MetaItem1 extends MaterialMetaItem {
     public void registerRecipes() {
 
 	    // Coin recipes
-        ModHandler.addShapelessRecipe("coin_chocolate", COIN_CHOCOLATE.getStackForm(),
-            new UnificationEntry(OrePrefix.dust, Materials.Cocoa),
-            new UnificationEntry(OrePrefix.dust, Materials.Milk),
-            new UnificationEntry(OrePrefix.dust, Materials.Sugar),
-            new UnificationEntry(OrePrefix.foil, Materials.Gold));
-
         ModHandler.addShapelessRecipe("credit_copper", CREDIT_COPPER.getStackForm(8),
             CREDIT_CUPRONICKEL);
 

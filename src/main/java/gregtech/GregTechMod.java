@@ -14,13 +14,10 @@ import gregtech.common.MetaFluids;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.modelfactories.BlockCompressedFactory;
 import gregtech.common.blocks.modelfactories.BlockOreFactory;
-import gregtech.common.items.MetaItemCraftingHelper;
 import gregtech.common.items.MetaItems;
 import gregtech.loaders.preload.MaterialInfoLoader;
 import gregtech.loaders.preload.OreDictionaryLoader;
 import net.minecraft.init.Items;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.LoaderException;
@@ -58,7 +55,6 @@ public class GregTechMod {
 
         GTLog.logger.info("PreInit-Phase started!");
 
-        MetaItemCraftingHelper.init();
         NetworkHandler.init();
         MetaTileEntityUIFactory.INSTANCE.init();
         SimpleCapabilityManager.init();

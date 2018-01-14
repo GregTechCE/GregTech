@@ -1,0 +1,8 @@
+{
+  "ingredients": {
+    "metaitem": "gregtech.common.crafting.MetaItemIngredientFactory"
+  },
+  "recipes": {
+    "metaitem_shapeless": "gregtech.common.crafting.MetaItemShapelessRecipeFactory"
+  }
+}
