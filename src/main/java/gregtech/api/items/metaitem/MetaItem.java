@@ -71,7 +71,7 @@ import com.google.common.collect.ImmutableList;
 @SuppressWarnings("deprecation")
 public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item {
     private TShortObjectMap<T> metaItems = new TShortObjectHashMap<>();
-    private TObjectShortMap<String> names = new TObjectShortCustomHashMap<>();
+    private Map<String, T> names = new HashMap<String, T>();
 
     protected final short metaItemOffset;
 
@@ -98,7 +98,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         Validate.inclusiveBetween(0, Short.MAX_VALUE - 1, metaValue, "MetaItem ID should be in range from 0 to Short.MAX_VALUE-1");
         T metaValueItem = constructMetaValueItem((short) metaValue, unlocalizedName, nameParameters);
         metaItems.put((short) metaValue, metaValueItem);
-        names.put(unlocalizedName, (short) metaValue);
+        names.put(unlocalizedName, metaValueItem);
         return metaValueItem;
     }
 
@@ -107,7 +107,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     }
 
     public final T getItem(String valueName) {
-        return metaItems.get(names.get(valueName));
+        return names.get(valueName);
     }
 
     public final T getItem(ItemStack itemStack) {
