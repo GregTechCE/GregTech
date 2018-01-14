@@ -2,6 +2,7 @@ package gregtech.common.metatileentities.steam;
 
 import gregtech.api.capability.impl.FluidTankHandler;
 import gregtech.api.gui.ModularUI;
+import gregtech.api.gui.widgets.ImageWidget;
 import gregtech.api.gui.widgets.LabelWidget;
 import gregtech.api.gui.widgets.ProgressWidget;
 import gregtech.api.gui.widgets.SlotWidget;
@@ -21,9 +22,9 @@ import net.minecraft.util.EnumHand;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class SteamCompressor extends WorkableMetaTileEntity<Recipe> {
+public class SteamHammer extends WorkableMetaTileEntity<Recipe> {
 
-    public SteamCompressor(IMetaTileEntityFactory factory, int tier, RecipeMap<Recipe, ?> recipeMap) {
+    public SteamHammer(IMetaTileEntityFactory factory, int tier, RecipeMap<Recipe, ?> recipeMap) {
         super(factory, tier, recipeMap);
     }
 
@@ -60,22 +61,25 @@ public class SteamCompressor extends WorkableMetaTileEntity<Recipe> {
     @Override
     public ModularUI<? extends IMetaTileEntity> createUI(EntityPlayer player) {
         GTResourceLocation slotImageLocation = new GTResourceLocation("textures/gui/bronze/slot_bronze.png");
-        return ModularUI.<SteamCompressor>builder(new GTResourceLocation("textures/gui/bronze/bronze_gui.png"), 176, 166)
+        return ModularUI.<SteamHammer>builder(new GTResourceLocation("textures/gui/bronze/bronze_gui.png"), 176, 166)
             .widget(0, new LabelWidget<>(6, 6, GTUtility.sided(() -> I18n.format(this.factory.getUnlocalizedName()), this.factory::getUnlocalizedName)))
-            .widget(1, new SlotWidget<SteamCompressor>(this.importItems, 0, 53, 25)
+            .widget(1, new SlotWidget<SteamHammer>(this.importItems, 0, 53, 25)
                 .setImageLocation(slotImageLocation)
-                .setBackgroundLocation(new GTResourceLocation("textures/gui/bronze/slot_bronze_compressor_background.png"))
+                .setBackgroundLocation(new GTResourceLocation("textures/gui/bronze/slot_bronze_furnace_background.png"))
                 .setOnSlotChanged(this::markDirty))
-            .widget(2, new ProgressWidget<SteamCompressor>(78, 23, false,false)
-                .setImageLocation(new GTResourceLocation("textures/gui/bronze/progress_bar_bronze_compressor.png"))
-                .setFilledImageLocation(new GTResourceLocation("textures/gui/bronze/progress_bar_bronze_compressor_filled.png"))
+            .widget(2, new ProgressWidget<SteamHammer>(78, 25,true,true)
+                .setImageLocation(new GTResourceLocation("textures/gui/bronze/progress_bar_bronze_hammer.png"))
+                .setFilledImageLocation(new GTResourceLocation("textures/gui/bronze/progress_bar_bronze_hammer_filled.png"))
                 .setImageWidthHeight(20,18)
-                .setImageUV(0,0))
-            .widget(3, new SlotWidget<SteamCompressor>(this.exportItems, 0, 107, 25, true, false)
+                .setImageUV(0,0))//optional but included anyway as a good example for new widgets
+            .widget(3, new ImageWidget<SteamHammer>(78,41)
+                .setImageLocation(new GTResourceLocation("textures/gui/bronze/overlay_bronze_hammer_base.png"))
+                .setImageWidthHeight(21,18))
+            .widget(4, new SlotWidget<SteamHammer>(this.exportItems, 0, 107, 25, true, false)
                 .setImageLocation(slotImageLocation)
                 .setOnSlotChanged(this::markDirty))
-            .widget(4, new LabelWidget<>(8, 166 - 96 + 2, player.inventory.getDisplayName().getUnformattedText())) // 166 - gui height, 96 + 2 - from vanilla code
-            .bindPlayerInventory(player.inventory, 5, slotImageLocation)
+            .widget(5, new LabelWidget<>(8, 166 - 96 + 2, player.inventory.getDisplayName().getUnformattedText())) // 166 - gui height, 96 + 2 - from vanilla code
+            .bindPlayerInventory(player.inventory, 6, slotImageLocation)
             .build(this, player);
     }
 

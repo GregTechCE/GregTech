@@ -85,14 +85,24 @@ public class ProgressWidget<T extends IWorkable & IUIHolder> extends Widget<T> {
         drawInBackgroundInternal(guiLeft, guiTop, () -> {
             TextureManager textureManager = Minecraft.getMinecraft().getTextureManager();
             if (this.vertical){ //if it is vertical then reverse textures
-                textureManager.bindTexture(filledImageLocation);
+                if (!direction) {
+                    textureManager.bindTexture(filledImageLocation);
+                }
+                else {
+                    textureManager.bindTexture(imageLocation);
+                }
             } else {
                 textureManager.bindTexture(imageLocation);
             }
             Gui.drawModalRectWithCustomSizedTexture(xPosition, yPosition, u, v, width, height, width, height);
 
             if (this.vertical){//if it is vertical then reverse textures
-                textureManager.bindTexture(imageLocation);
+                if (!direction) {
+                    textureManager.bindTexture(imageLocation);
+                }
+                else {
+                    textureManager.bindTexture(filledImageLocation);
+                }
             } else {
                 textureManager.bindTexture(filledImageLocation);
             }
