@@ -23,7 +23,7 @@ public class ImageWidget<T extends IUIHolder> extends Widget<T> {
     private int v = 0;
 
     public ImageWidget(int xPosition, int yPosition) {
-        super(SLOT_DRAW_PRIORITY + 200);
+        super(SLOT_DRAW_PRIORITY - 100);
         this.xPosition = xPosition;
         this.yPosition = yPosition;
     }
@@ -52,9 +52,11 @@ public class ImageWidget<T extends IUIHolder> extends Widget<T> {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void drawInForeground(int mouseX, int mouseY) {
+    public void drawInBackground(int guiLeft, int guiTop, float partialTicks, int mouseX, int mouseY) {
+        drawInBackgroundInternal(guiLeft, guiTop, () -> {
             Minecraft.getMinecraft().getTextureManager().bindTexture(imageLocation);
             Gui.drawModalRectWithCustomSizedTexture(xPosition, yPosition, u, v, width, height, width, height);
+        });
     }
 
     @Override
