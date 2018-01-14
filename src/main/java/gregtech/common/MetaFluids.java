@@ -19,6 +19,7 @@ public class MetaFluids {
 
     public static final Fluid DISTILLED_WATER = new Fluid("distilled_water", new ResourceLocation("blocks/water_still"), new ResourceLocation("blocks/water_flow")) {
         @Override
+        @SuppressWarnings("deprecation")
         public String getLocalizedName(FluidStack fs) {
             return I18n.translateToLocal("tile.distilled_water.name");
         }
@@ -74,6 +75,7 @@ public class MetaFluids {
         Materials.Lava.setMaterialFluid(FluidRegistry.LAVA);
 
         FluidRegistry.registerFluid(DISTILLED_WATER);
+        FluidRegistry.addBucketForFluid(DISTILLED_WATER);
 
         //TODO TWEAK VALUES
         registerFluid(Materials.Air, FluidType.GAS, 295);

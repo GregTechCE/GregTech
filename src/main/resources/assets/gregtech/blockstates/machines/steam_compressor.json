@@ -26,8 +26,8 @@
       "true": {
         "textures": {
           "overlay_front": "gregtech:blocks/machines/compressor/overlay_front_active",
-		  "overlay_top": "gregtech:blocks/machines/compressor/overlay_top_active",
-		  "overlay_side": "gregtech:blocks/machines/compressor/overlay_side_active"
+          "overlay_top": "gregtech:blocks/machines/compressor/overlay_top_active",
+          "overlay_side": "gregtech:blocks/machines/compressor/overlay_side_active"
         }
       },
       "false": {}

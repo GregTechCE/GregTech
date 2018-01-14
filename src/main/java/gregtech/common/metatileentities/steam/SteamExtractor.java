@@ -1,14 +1,10 @@
 package gregtech.common.metatileentities.steam;
 
-import gregtech.api.capability.impl.FluidTankHandler;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.LabelWidget;
 import gregtech.api.gui.widgets.ProgressWidget;
 import gregtech.api.gui.widgets.SlotWidget;
-import gregtech.api.metatileentity.IMetaTileEntity;
-import gregtech.api.metatileentity.IMetaTileEntityFactory;
-import gregtech.api.metatileentity.MetaTileEntityUIFactory;
-import gregtech.api.metatileentity.WorkableMetaTileEntity;
+import gregtech.api.metatileentity.*;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.util.GTResourceLocation;
@@ -21,10 +17,10 @@ import net.minecraft.util.EnumHand;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class SteamExtractor extends WorkableMetaTileEntity<Recipe> {
+public class SteamExtractor extends WorkableSteamMetaTileEntity<Recipe> {
 
-    public SteamExtractor(IMetaTileEntityFactory factory, int tier, RecipeMap<Recipe, ?> recipeMap) {
-        super(factory, tier, recipeMap);
+    public SteamExtractor(IMetaTileEntityFactory factory, RecipeMap<Recipe, ?> recipeMap) {
+        super(factory, recipeMap);
     }
 
     @Override
@@ -45,16 +41,6 @@ public class SteamExtractor extends WorkableMetaTileEntity<Recipe> {
     @Override
     public IItemHandlerModifiable createExportItemHandler() {
         return new ItemStackHandler(1);
-    }
-
-    @Override
-    public FluidTankHandler createImportFluidHandler() {
-        return new FluidTankHandler(0);
-    }
-
-    @Override
-    public FluidTankHandler createExportFluidHandler() {
-        return new FluidTankHandler(0);
     }
 
     @Override
@@ -85,25 +71,5 @@ public class SteamExtractor extends WorkableMetaTileEntity<Recipe> {
             MetaTileEntityUIFactory.INSTANCE.openUI(this, (EntityPlayerMP) player);
         }
         return true;
-    }
-
-    @Override
-    public int getComparatorValue() {
-        return 0;
-    }
-
-    @Override
-    public boolean inputsEnergy(EnumFacing side) {
-        return true;
-    }
-
-    @Override
-    public long getEnergyCapacity() {
-        return 16000;
-    }
-
-    @Override
-    public long getInputAmperage() {
-        return 1;
     }
 }

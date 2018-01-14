@@ -1,6 +1,7 @@
 package gregtech.api.items.metaitem;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.capability.impl.CombinedCapabilityProvider;
 import gregtech.api.capability.impl.ElectricItem;
 import gregtech.api.capability.impl.ThermalFluidHandlerItemStack;
 import gregtech.api.items.OreDictNames;
@@ -142,7 +143,17 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         IFluidStats fluidStats = metaValueItem.getFluidStats();
         IElectricStats electricStats = metaValueItem.getElectricStats();
         if (electricStats != null && fluidStats != null) {
-            throw new IllegalStateException("ItemStack cannot be both fluid and energy container");
+            ThermalFluidHandlerItemStack handlerItemStack = new ThermalFluidHandlerItemStack(stack,
+                fluidStats.getCapacity(stack),
+                fluidStats.getMinFluidTemperature(stack),
+                fluidStats.getMaxFluidTemperature(stack));
+
+            ElectricItem electricItem = new ElectricItem(electricStats.getMaxCharge(),
+                electricStats.getTier(),
+                electricStats.isChargeable(),
+                electricStats.isDischargeable());
+
+            return new CombinedCapabilityProvider(handlerItemStack, electricItem);
         }
 
         if (fluidStats != null) {

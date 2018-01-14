@@ -49,12 +49,12 @@ public class SteamCompressor extends WorkableMetaTileEntity<Recipe> {
 
     @Override
     public FluidTankHandler createImportFluidHandler() {
-        return new FluidTankHandler(0);
+        return new FluidTankHandler();
     }
 
     @Override
     public FluidTankHandler createExportFluidHandler() {
-        return new FluidTankHandler(0);
+        return new FluidTankHandler();
     }
 
     @Override

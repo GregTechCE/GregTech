@@ -1034,17 +1034,18 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 //		}
 
 		// Check the Recipe which has been used last time in order to not have to search for it again, if possible.
-		if (inputRecipe != null) {
-			if (inputRecipe.canBeBuffered() && inputRecipe.isRecipeInputEqual(false, true, inputs, fluidInputs)) {
-				return voltage * amperage >= inputRecipe.getEUt() ? inputRecipe : null;
-			}
-		}
+        // TODO this is doubling output stack size
+//		if (inputRecipe != null) {
+//			if (inputRecipe.canBeBuffered() && inputRecipe.isRecipeInputEqual(false, true, inputs, fluidInputs)) {
+//				return voltage * amperage >= inputRecipe.getEUt() ? inputRecipe : null;
+//			}
+//		}
 
 		// Now look for the Recipes inside the Item HashMaps, but only when the Recipes usually have Items.
 		if (maxInputs > 0) {
 			T recipe = findByItemInput(inputs, fluidInputs);
 			if (recipe != null) {
-				return voltage * amperage >= recipe.getEUt() ? inputRecipe : null;
+				return voltage * amperage >= recipe.getEUt() ? recipe : null;
 			}
 		}
 
@@ -1057,11 +1058,12 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 			}
 
 			// Same as above but with unificated inputs
-			if (inputRecipe != null) {
-				if (inputRecipe.canBeBuffered() && inputRecipe.isRecipeInputEqual(false, true, inputs, fluidInputs)) {
-					return voltage * amperage >= inputRecipe.getEUt() ? inputRecipe : null;
-				}
-			}
+            // TODO this is doubling output stack size... w8 does it?
+//			if (inputRecipe != null) {
+//				if (inputRecipe.canBeBuffered() && inputRecipe.isRecipeInputEqual(false, true, inputs, fluidInputs)) {
+//					return voltage * amperage >= inputRecipe.getEUt() ? inputRecipe : null;
+//				}
+//			}
 
 			if (maxInputs > 0) {
 				T recipe = findByItemInput(inputs, fluidInputs);
@@ -1094,7 +1096,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	@Nullable
 	private T findByItemInput(NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
 		for (ItemStack stack : inputs) {
-			if (stack != null) {
+			if (!stack.isEmpty()) {
 				Collection<T> recipes = recipeItemMap.get(new SimpleItemStack(stack));
 				if (recipes != null) {
 					for (T tmpRecipe : recipes) {
@@ -1255,8 +1257,8 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 					.notOptimized()
 					.inputs(GTUtility.copyAmount(1, inputs.get(0)))
 					.outputs(output)
-					.duration(128)
-					.EUt(4)
+					.duration(20)
+					.EUt(1)
 					.build(false)
 					.getResult();
 		}
