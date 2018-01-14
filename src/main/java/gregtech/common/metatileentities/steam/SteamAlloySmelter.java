@@ -1,5 +1,6 @@
 package gregtech.common.metatileentities.steam;
 
+import gregtech.api.capability.impl.FilteredFluidHandler;
 import gregtech.api.capability.impl.FluidTankHandler;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.LabelWidget;
@@ -9,6 +10,7 @@ import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.IMetaTileEntityFactory;
 import gregtech.api.metatileentity.MetaTileEntityUIFactory;
 import gregtech.api.metatileentity.WorkableMetaTileEntity;
+import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.util.GTResourceLocation;
@@ -49,12 +51,13 @@ public class SteamAlloySmelter extends WorkableMetaTileEntity<Recipe> {
 
     @Override
     public FluidTankHandler createImportFluidHandler() {
-        return new FluidTankHandler(0);
+        return new FluidTankHandler(new FilteredFluidHandler(16000)
+            .setFillPredicate(ModHandler::isSteam));
     }
 
     @Override
     public FluidTankHandler createExportFluidHandler() {
-        return new FluidTankHandler(0);
+        return new FluidTankHandler();
     }
 
     @Override

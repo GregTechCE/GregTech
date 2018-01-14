@@ -9,6 +9,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.function.Predicate;
+
 public class ImageWidget<T extends IUIHolder> extends Widget<T> {
 
     protected final int xPosition;
@@ -21,6 +23,8 @@ public class ImageWidget<T extends IUIHolder> extends Widget<T> {
 
     private int u = 0;
     private int v = 0;
+
+    private Predicate<T> predicate;
 
     public ImageWidget(int xPosition, int yPosition) {
         super(SLOT_DRAW_PRIORITY - 100);
@@ -46,6 +50,11 @@ public class ImageWidget<T extends IUIHolder> extends Widget<T> {
         return this;
     }
 
+    public ImageWidget<T> setPredicate(Predicate<T> predicate) {
+        this.predicate = predicate;
+        return this;
+    }
+
     @Override
     public void initWidget() {
     }
@@ -53,6 +62,9 @@ public class ImageWidget<T extends IUIHolder> extends Widget<T> {
     @Override
     @SideOnly(Side.CLIENT)
     public void drawInBackground(int guiLeft, int guiTop, float partialTicks, int mouseX, int mouseY) {
+        if (predicate != null && !predicate.test(this.gui.holder)) {
+            return;
+        }
         drawInBackgroundInternal(guiLeft, guiTop, () -> {
             Minecraft.getMinecraft().getTextureManager().bindTexture(imageLocation);
             Gui.drawModalRectWithCustomSizedTexture(xPosition, yPosition, u, v, width, height, width, height);

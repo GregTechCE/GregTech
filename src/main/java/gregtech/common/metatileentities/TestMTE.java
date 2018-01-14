@@ -5,10 +5,7 @@ import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.LabelWidget;
 import gregtech.api.gui.widgets.ProgressWidget;
 import gregtech.api.gui.widgets.SlotWidget;
-import gregtech.api.metatileentity.IMetaTileEntity;
-import gregtech.api.metatileentity.IMetaTileEntityFactory;
-import gregtech.api.metatileentity.MetaTileEntityUIFactory;
-import gregtech.api.metatileentity.WorkableMetaTileEntity;
+import gregtech.api.metatileentity.*;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.util.GTResourceLocation;
@@ -21,10 +18,10 @@ import net.minecraft.util.EnumHand;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TestMTE extends WorkableMetaTileEntity<Recipe> {
+public class TestMTE extends WorkableSteamMetaTileEntity<Recipe> {
 
-    public TestMTE(IMetaTileEntityFactory factory, int tier, RecipeMap<Recipe, ?> recipeMap) {
-        super(factory, tier, recipeMap);
+    public TestMTE(IMetaTileEntityFactory factory, RecipeMap<Recipe, ?> recipeMap) {
+        super(factory, recipeMap);
     }
 
     @Override
@@ -49,12 +46,12 @@ public class TestMTE extends WorkableMetaTileEntity<Recipe> {
 
     @Override
     public FluidTankHandler createImportFluidHandler() {
-        return new FluidTankHandler(0);
+        return new FluidTankHandler();
     }
 
     @Override
     public FluidTankHandler createExportFluidHandler() {
-        return new FluidTankHandler(0);
+        return new FluidTankHandler();
     }
 
     @Override
@@ -90,20 +87,5 @@ public class TestMTE extends WorkableMetaTileEntity<Recipe> {
     @Override
     public int getComparatorValue() {
         return 0;
-    }
-
-    @Override
-    public boolean inputsEnergy(EnumFacing side) {
-        return true;
-    }
-
-    @Override
-    public long getEnergyCapacity() {
-        return 16000;
-    }
-
-    @Override
-    public long getInputAmperage() {
-        return 1;
     }
 }

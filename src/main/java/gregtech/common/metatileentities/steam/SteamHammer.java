@@ -50,12 +50,12 @@ public class SteamHammer extends WorkableMetaTileEntity<Recipe> {
 
     @Override
     public FluidTankHandler createImportFluidHandler() {
-        return new FluidTankHandler(0);
+        return new FluidTankHandler();
     }
 
     @Override
     public FluidTankHandler createExportFluidHandler() {
-        return new FluidTankHandler(0);
+        return new FluidTankHandler();
     }
 
     @Override
@@ -74,6 +74,7 @@ public class SteamHammer extends WorkableMetaTileEntity<Recipe> {
                 .setImageUV(0,0))//optional but included anyway as a good example for new widgets
             .widget(3, new ImageWidget<SteamHammer>(78,41)
                 .setImageLocation(new GTResourceLocation("textures/gui/bronze/overlay_bronze_hammer_base.png"))
+//                .setFillPredicate(holder -> holder.importItems.getStackInSlot(0).getCount() > 0) // test
                 .setImageWidthHeight(21,18))
             .widget(4, new SlotWidget<SteamHammer>(this.exportItems, 0, 107, 25, true, false)
                 .setImageLocation(slotImageLocation)

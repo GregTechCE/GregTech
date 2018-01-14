@@ -3,11 +3,11 @@ package gregtech.common.blocks;
 import com.google.common.collect.Maps;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.internal.IGregTechTileEntity;
+import gregtech.api.capability.internal.ITurnable;
 import gregtech.api.capability.internal.IWorkable;
 import gregtech.api.metatileentity.GregtechTileEntity;
 import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.IMetaTileEntityFactory;
-import gregtech.api.metatileentity.WorkableMetaTileEntity;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.util.GTResourceLocation;
 import gregtech.common.blocks.properties.PropertyString;
@@ -46,12 +46,15 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("deprecation")
 public class BlockMachine extends Block {
 
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    public static final PropertyDirection FACING = PropertyDirection.create("facing", Arrays.asList(EnumFacing.VALUES));
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
     public static PropertyString META_TYPE;
@@ -59,7 +62,9 @@ public class BlockMachine extends Block {
     // Instantiated after all MTEs are registered
     protected BlockMachine() {
         super(Material.IRON);
-        setDefaultState(this.getBlockState().getBaseState().withProperty(ACTIVE, false));
+        setDefaultState(this.getBlockState().getBaseState()
+            .withProperty(ACTIVE, false)
+            .withProperty(FACING, EnumFacing.NORTH));
         setUnlocalizedName("machine");
         setHardness(6.0f);
         setResistance(8.0f);
@@ -93,7 +98,6 @@ public class BlockMachine extends Block {
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
         return getDefaultState()
-            .withProperty(FACING, placer.getHorizontalFacing().getOpposite())
             .withProperty(META_TYPE, GregTechAPI.METATILEENTITY_REGISTRY.getObjectById(meta).getMetaName());
     }
 
@@ -202,19 +206,59 @@ public class BlockMachine extends Block {
             state = state.withProperty(ACTIVE, ((IWorkable) mte).isActive());
         }
 
+        state = state.withProperty(FACING, mte.getFrontFacing());
+
         return state;
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        int facing = meta & 0b0011;
-        return getDefaultState()
-            .withProperty(FACING, EnumFacing.getHorizontal(facing));
+        return getDefaultState();
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(FACING).getHorizontalIndex();
+        return 0;
+    }
+
+    @Override
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing facing) {
+        IGregTechTileEntity tileEntity = (IGregTechTileEntity) world.getTileEntity(pos);
+        if (tileEntity == null) {
+            return false;
+        }
+        ITurnable turnable = tileEntity.getMetaTileEntity();
+        if (turnable == null) {
+            return false;
+        }
+
+        if (turnable.isValidFacing(facing)) {
+            turnable.setFrontFacing(facing);
+            return true;
+        }
+        return false;
+    }
+
+    @Nullable
+    @Override
+    public EnumFacing[] getValidRotations(World world, BlockPos pos) {
+        IGregTechTileEntity tileEntity = (IGregTechTileEntity) world.getTileEntity(pos);
+        if (tileEntity == null) {
+            return null;
+        }
+        ITurnable turnable = tileEntity.getMetaTileEntity();
+        if (turnable == null) {
+            return null;
+        }
+
+        List<EnumFacing> facingList = new ArrayList<>();
+        for (EnumFacing facing : EnumFacing.VALUES) {
+            if (turnable.isValidFacing(facing)) {
+                facingList.add(facing);
+            }
+        }
+
+        return facingList.toArray(new EnumFacing[facingList.size()]);
     }
 
     @Override

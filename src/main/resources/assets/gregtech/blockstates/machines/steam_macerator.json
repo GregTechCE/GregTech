@@ -26,7 +26,7 @@
       "true": {
         "textures": {
           "overlay_front": "gregtech:blocks/machines/macerator/overlay_front_active",
-		  "overlay_top": "gregtech:blocks/machines/macerator/overlay_top_active"
+          "overlay_top": "gregtech:blocks/machines/macerator/overlay_top_active"
         }
       },
       "false": {}

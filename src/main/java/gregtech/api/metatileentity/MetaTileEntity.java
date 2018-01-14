@@ -1,6 +1,7 @@
 package gregtech.api.metatileentity;
 
 import com.google.common.base.Preconditions;
+import com.sun.org.apache.regexp.internal.RE;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankHandler;
@@ -203,7 +204,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     @Override
     public boolean isValidFacing(EnumFacing side) {
-        return true;
+        return side.getHorizontalIndex() != -1;
     }
 
     @Override

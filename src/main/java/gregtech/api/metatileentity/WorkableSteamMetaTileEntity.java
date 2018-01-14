@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity;
 
+import gregtech.api.GTValues;
 import gregtech.api.capability.internal.IWorkable;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
@@ -9,12 +10,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fluids.FluidStack;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public abstract class WorkableMetaTileEntity<T extends Recipe> extends TieredMetaTileEntity implements IWorkable {
+public abstract class WorkableSteamMetaTileEntity<T extends Recipe> extends SteamMetaTileEntity implements IWorkable {
 
     public final RecipeMap<T, ?> recipeMap;
     protected T previousRecipe;
@@ -22,14 +19,14 @@ public abstract class WorkableMetaTileEntity<T extends Recipe> extends TieredMet
     protected int progressTime;
     protected int maxProgressTime;
     protected int recipeEUt;
-    protected List<FluidStack> fluidOutputs;
+
     protected NonNullList<ItemStack> itemOutputs;
 
     private boolean isActive;
     private boolean workingEnabled = true;
 
-    public WorkableMetaTileEntity(IMetaTileEntityFactory factory, int tier, RecipeMap<T, ?> recipeMap) {
-        super(factory, tier);
+    public WorkableSteamMetaTileEntity(IMetaTileEntityFactory factory, RecipeMap<T, ?> recipeMap) {
+        super(factory);
         this.recipeMap = recipeMap;
     }
 
@@ -40,8 +37,7 @@ public abstract class WorkableMetaTileEntity<T extends Recipe> extends TieredMet
             return;
         }
         if(progressTime == 0) {
-            long maxVoltage = Math.max(getInputVoltage(), getOutputVoltage());
-            T pickedRecipe = recipeMap.findRecipe(holder, previousRecipe, true, maxVoltage, importItems, importFluids);
+            T pickedRecipe = recipeMap.findRecipe(holder, previousRecipe, true, GTValues.V[1], importItems, importFluids);
             if(pickedRecipe != null && setupAndConsumeRecipeInputs(pickedRecipe)) {
                 if(pickedRecipe.canBeBuffered()) {
                     this.previousRecipe = pickedRecipe;
@@ -49,8 +45,8 @@ public abstract class WorkableMetaTileEntity<T extends Recipe> extends TieredMet
                 setupRecipe(pickedRecipe);
             }
         } else if(workingEnabled) {
-            if(getEnergyStored() >= recipeEUt) {
-                setEnergyStored(getEnergyStored() - recipeEUt);
+            if(this.steamFluidTank.drain(this.recipeEUt, false) != null) {
+                this.steamFluidTank.drain(this.recipeEUt, true);
                 if(++progressTime >= maxProgressTime) {
                     completeRecipe();
                 }
@@ -60,28 +56,26 @@ public abstract class WorkableMetaTileEntity<T extends Recipe> extends TieredMet
 
     protected boolean setupAndConsumeRecipeInputs(T recipe) {
         int totalEUt = recipe.getEUt() * recipe.getDuration();
-        return (totalEUt >= 0 ? getEnergyStored() >= totalEUt : getEnergyStored() - totalEUt <= getEnergyCapacity()) &&
-                addItemsToItemHandler(exportItems, true, recipe.getOutputs()) &&
-                addFluidsToFluidHandler(exportFluids, true, recipe.getFluidOutputs()) &&
-                recipe.isRecipeInputEqual(true, false, importItems, importFluids);
+        return totalEUt >= 0 &&
+            this.steamFluidTank.drain(totalEUt, false) != null &&
+            addItemsToItemHandler(exportItems, true, recipe.getOutputs()) &&
+            addFluidsToFluidHandler(exportFluids, true, recipe.getFluidOutputs()) &&
+            recipe.isRecipeInputEqual(true, false, importItems, importFluids);
     }
 
     protected void setupRecipe(T recipe) {
         this.progressTime = 1;
         setMaxProgress(recipe.getDuration());
         this.recipeEUt = recipe.getEUt();
-        this.fluidOutputs = recipe.getFluidOutputs();
         this.itemOutputs = recipe.getOutputs();
         setActive(true);
     }
 
     protected void completeRecipe() {
         addItemsToItemHandler(exportItems, false, itemOutputs);
-        addFluidsToFluidHandler(exportFluids, false, fluidOutputs);
         this.progressTime = 0;
         setMaxProgress(0);
         this.recipeEUt = 0;
-        this.fluidOutputs = null;
         this.itemOutputs = null;
         setActive(false);
     }
@@ -185,12 +179,7 @@ public abstract class WorkableMetaTileEntity<T extends Recipe> extends TieredMet
             for(ItemStack itemOutput : itemOutputs) {
                 itemOutputsList.appendTag(itemOutput.writeToNBT(new NBTTagCompound()));
             }
-            NBTTagList fluidOutputsList = new NBTTagList();
-            for(FluidStack fluidOutput : fluidOutputs) {
-                fluidOutputsList.appendTag(fluidOutput.writeToNBT(new NBTTagCompound()));
-            }
             data.setTag("ItemOutputs", itemOutputsList);
-            data.setTag("FluidOutputs", fluidOutputsList);
         }
     }
 
@@ -208,12 +197,6 @@ public abstract class WorkableMetaTileEntity<T extends Recipe> extends TieredMet
             for(int i = 0; i < itemOutputsList.tagCount(); i++) {
                 this.itemOutputs.add(new ItemStack(itemOutputsList.getCompoundTagAt(i)));
             }
-            NBTTagList fluidOutputsList = data.getTagList("FluidOutputs", Constants.NBT.TAG_COMPOUND);
-            this.fluidOutputs = new ArrayList<>();
-            for(int i = 0; i < fluidOutputsList.tagCount(); i++) {
-                this.fluidOutputs.add(FluidStack.loadFluidStackFromNBT(fluidOutputsList.getCompoundTagAt(i)));
-            }
         }
     }
-
 }
