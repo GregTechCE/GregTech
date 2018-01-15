@@ -1,9 +1,5 @@
 package gregtech.api.items.metaitem;
 
-import com.google.common.collect.ImmutableList;
-import gnu.trove.map.TShortObjectMap;
-import gnu.trove.map.hash.TShortObjectHashMap;
-import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.impl.CombinedCapabilityProvider;
 import gregtech.api.capability.impl.ElectricItem;
@@ -20,6 +16,14 @@ import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -42,12 +46,11 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
+
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
+import com.google.common.collect.ImmutableList;
 
 /**
  * MetaItem is item that can have up to Short.MAX_VALUE items inside one id.
@@ -64,7 +67,7 @@ import java.util.List;
 @SuppressWarnings("deprecation")
 public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item {
 
-    private TShortObjectMap<T> metaItems = new TShortObjectHashMap<>();
+    private Map<Object, T> metaItems = new HashMap<>();
 
     protected final short metaItemOffset;
 
@@ -91,11 +94,16 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         Validate.inclusiveBetween(0, Short.MAX_VALUE - 1, metaValue, "MetaItem ID should be in range from 0 to Short.MAX_VALUE-1");
         T metaValueItem = constructMetaValueItem((short) metaValue, unlocalizedName, nameParameters);
         metaItems.put((short) metaValue, metaValueItem);
+        metaItems.put(unlocalizedName, metaValueItem);
         return metaValueItem;
     }
 
     public final T getItem(short metaValue) {
         return metaItems.get(metaValue);
+    }
+    
+    public final T getItem(String valueName) {
+        return metaItems.get(valueName);
     }
 
     public final T getItem(ItemStack itemStack) {
@@ -375,7 +383,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     @SideOnly(Side.CLIENT)
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
         if (this.isInCreativeTab(tab)) {
-            for (T enabledItem : metaItems.valueCollection()) {
+            for (T enabledItem : metaItems.values()) {
                 if (enabledItem.isVisible()) {
                     ItemStack itemStack = enabledItem.getStackForm();
                     /*if(getCapacity(itemStack) > 0) {
