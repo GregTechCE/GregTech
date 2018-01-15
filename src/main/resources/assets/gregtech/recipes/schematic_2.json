@@ -1,0 +1,12 @@
+{
+  "type": "gregtech:metaitem_shapeless",
+  "ingredients": [
+    {
+      "type": "gregtech:metaitem",
+      "name": "schematic.2by2"
+    }
+  ],
+  "result": {
+    "name": "schematic"
+  }
+}

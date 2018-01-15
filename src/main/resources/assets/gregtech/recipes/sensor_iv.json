@@ -1,0 +1,29 @@
+{
+  "type": "gregtech:metaitem_shaped",
+  "pattern": [
+    "P Q",
+    "PS ",
+    "CPP"
+  ],
+  "key": {
+    "Q": {
+      "type": "forge:ore_dict",
+      "ore": "gemEnderEye"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stickOsmium"
+    },
+    "P": {
+      "type": "forge:ore_dict",
+      "ore": "plateTungstenSteel"
+    },
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "circuitMaster"
+    }
+  },
+  "result": {
+    "name": "sensor.iv"
+  }
+}

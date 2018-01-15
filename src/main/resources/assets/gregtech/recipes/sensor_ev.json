@@ -1,0 +1,29 @@
+{
+  "type": "gregtech:metaitem_shaped",
+  "pattern": [
+    "P Q",
+    "PS ",
+    "CPP"
+  ],
+  "key": {
+    "Q": {
+      "type": "forge:ore_dict",
+      "ore": "gemEnderPearl"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stickPlatinum"
+    },
+    "P": {
+      "type": "forge:ore_dict",
+      "ore": "plateTitanium"
+    },
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "circuitElite"
+    }
+  },
+  "result": {
+    "name": "sensor.ev"
+  }
+}
