@@ -208,37 +208,6 @@ public class MetaItem2 extends MaterialMetaItem {
 
     public void registerRecipes() {
 
-        // Plank recipes
-        ModHandler.addShapedRecipe("plank_oak", PLANK_OAK.getStackForm(2),
-            "s ",
-            " P",
-            'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 0));
-
-        ModHandler.addShapedRecipe("plank_spruce", PLANK_SPRUCE.getStackForm(2),
-            "s ",
-            " P",
-            'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 1));
-
-        ModHandler.addShapedRecipe("plank_birch", PLANK_BIRCH.getStackForm(2),
-            "s ",
-            " P",
-            'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 2));
-
-        ModHandler.addShapedRecipe("plank_jungle", PLANK_JUNGLE.getStackForm(2),
-            "s ",
-            " P",
-            'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 3));
-
-        ModHandler.addShapedRecipe("plank_acacia", PLANK_ACACIA.getStackForm(2),
-            "s ",
-            " P",
-            'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 4));
-
-        ModHandler.addShapedRecipe("plank_darkoak", PLANK_DARKOAK.getStackForm(2),
-            "s ",
-            " P",
-            'P', new ItemStack(Blocks.WOODEN_SLAB, 1, 5));
-
         // Dyes recipes
         RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Blocks.RED_FLOWER, 1, 0))

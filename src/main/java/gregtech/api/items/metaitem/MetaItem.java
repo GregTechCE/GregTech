@@ -388,7 +388,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     @SideOnly(Side.CLIENT)
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
         if (this.isInCreativeTab(tab)) {
-            for (T enabledItem : metaItems.values()) {
+            for (T enabledItem : metaItems.valueCollection()) {
                 if (enabledItem.isVisible()) {
                     ItemStack itemStack = enabledItem.getStackForm();
                     /*if(getCapacity(itemStack) > 0) {

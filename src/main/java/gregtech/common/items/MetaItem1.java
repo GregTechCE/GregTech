@@ -43,18 +43,18 @@ import static gregtech.common.items.MetaItems.*;
 
 public class MetaItem1 extends MaterialMetaItem {
 
-	private final static String emptyRow = "   ";
-	private final static String textShape = " P ";
+    private final static String emptyRow = "   ";
+    private final static String textShape = " P ";
 
-	public MetaItem1() {
-		super(OrePrefix.dustTiny, OrePrefix.dustSmall, OrePrefix.dust, OrePrefix.dustImpure, OrePrefix.dustPure,
-				OrePrefix.crushed, OrePrefix.crushedPurified, OrePrefix.crushedCentrifuged, OrePrefix.gem, OrePrefix.nugget,
-				OrePrefix.ingot, OrePrefix.ingotHot, OrePrefix.plate, OrePrefix.plateDense, OrePrefix.stick, OrePrefix.lens,
-				OrePrefix.round, OrePrefix.bolt, OrePrefix.screw, OrePrefix.ring, OrePrefix.foil, OrePrefix.cell,
-				OrePrefix.cellPlasma, null, null, null, null, null, null, null, null, null);
-	}
+    public MetaItem1() {
+        super(OrePrefix.dustTiny, OrePrefix.dustSmall, OrePrefix.dust, OrePrefix.dustImpure, OrePrefix.dustPure,
+            OrePrefix.crushed, OrePrefix.crushedPurified, OrePrefix.crushedCentrifuged, OrePrefix.gem, OrePrefix.nugget,
+            OrePrefix.ingot, OrePrefix.ingotHot, OrePrefix.plate, OrePrefix.plateDense, OrePrefix.stick, OrePrefix.lens,
+            OrePrefix.round, OrePrefix.bolt, OrePrefix.screw, OrePrefix.ring, OrePrefix.foil, OrePrefix.cell,
+            OrePrefix.cellPlasma, null, null, null, null, null, null, null, null, null);
+    }
 
-	@Override
+    @Override
     public void registerSubItems() {
 
         CREDIT_COPPER = addItem(0, "credit.copper");
@@ -326,7 +326,6 @@ public class MetaItem1 extends MaterialMetaItem {
         EMPTY_BOARD_BASIC = addItem(719, "empty.board.basic");
         EMPTY_BOARD_ELITE = addItem(720, "empty.board.elite");
 
-
         COMPONENT_SAWBLADE_DIAMOND = addItem(721, "component.sawblade.diamond").addOreDict(OreDictNames.craftingDiamondBlade);
         COMPONENT_GRINDER_DIAMOND = addItem(722, "component.grinder.diamond").addOreDict(OreDictNames.craftingGrinder);
         COMPONENT_GRINDER_TUNGSTEN = addItem(723, "component.grinder.tungsten").addOreDict(OreDictNames.craftingGrinder);
@@ -365,7 +364,7 @@ public class MetaItem1 extends MaterialMetaItem {
         COVER_SOLARPANEL_UV = addItem(759, "cover.solarpanel.uv");
 
         TOOL_CHEAT = addItem(761, "tool.cheat").addStats(/*new Behaviour_Scanner(), */new ElectricStats(-2000000000, -1));
-        TOOL_SCANNER = addItem(762, "tool.scanner").addStats(/*new Behaviour_Scanner(),*/ new ElectricStats(400000, 2, true, false));
+        TOOL_SCANNER = addItem(762, "tool.scanner").addStats(/*new Behaviour_Scanner(),*/new ElectricStats(400000, 2, true, false));
 
         NC_SENSORKIT = addItem(763, "nc.sensorkit");//.addStats(new Behaviour_SensorKit());
         DUCT_TAPE = addItem(764, "duct.tape").addOreDict(OreDictNames.craftingDuctTape);
@@ -377,392 +376,6 @@ public class MetaItem1 extends MaterialMetaItem {
     }
 
     public void registerRecipes() {
-
-	    // Coin recipes
-        ModHandler.addShapelessRecipe("credit_copper", CREDIT_COPPER.getStackForm(8),
-            CREDIT_CUPRONICKEL);
-
-        ModHandler.addShapelessRecipe("credit_cupronickel", CREDIT_CUPRONICKEL.getStackForm(8),
-            CREDIT_SILVER);
-
-        ModHandler.addShapelessRecipe("credit_silver", CREDIT_SILVER.getStackForm(8),
-            CREDIT_GOLD);
-
-        ModHandler.addShapelessRecipe("credit_gold", CREDIT_GOLD.getStackForm(8),
-            CREDIT_PLATINUM);
-
-        ModHandler.addShapelessRecipe("credit_platinum", CREDIT_PLATINUM.getStackForm(8),
-            CREDIT_OSMIUM);
-
-        ModHandler.addShapelessRecipe("credit_osmium", CREDIT_OSMIUM.getStackForm(8),
-            CREDIT_NAQUADAH);
-
-        ModHandler.addShapelessRecipe("credit_naquadah", CREDIT_NAQUADAH.getStackForm(8),
-            CREDIT_DARMSTADTIUM);
-
-
-        ModHandler.addShapelessRecipe("credit_cupronickel", CREDIT_CUPRONICKEL.getStackForm(),
-            CREDIT_COPPER,
-            CREDIT_COPPER,
-            CREDIT_COPPER,
-            CREDIT_COPPER,
-            CREDIT_COPPER,
-            CREDIT_COPPER,
-            CREDIT_COPPER,
-            CREDIT_COPPER);
-
-        ModHandler.addShapelessRecipe("credit_silver", CREDIT_SILVER.getStackForm(),
-            CREDIT_CUPRONICKEL,
-            CREDIT_CUPRONICKEL,
-            CREDIT_CUPRONICKEL,
-            CREDIT_CUPRONICKEL,
-            CREDIT_CUPRONICKEL,
-            CREDIT_CUPRONICKEL,
-            CREDIT_CUPRONICKEL,
-            CREDIT_CUPRONICKEL);
-
-        ModHandler.addShapelessRecipe("credit_gold", CREDIT_GOLD.getStackForm(),
-            CREDIT_SILVER,
-            CREDIT_SILVER,
-            CREDIT_SILVER,
-            CREDIT_SILVER,
-            CREDIT_SILVER,
-            CREDIT_SILVER,
-            CREDIT_SILVER,
-            CREDIT_SILVER);
-
-        ModHandler.addShapelessRecipe("credit_platinum", CREDIT_PLATINUM.getStackForm(),
-            CREDIT_GOLD,
-            CREDIT_GOLD,
-            CREDIT_GOLD,
-            CREDIT_GOLD,
-            CREDIT_GOLD,
-            CREDIT_GOLD,
-            CREDIT_GOLD,
-            CREDIT_GOLD);
-
-        ModHandler.addShapelessRecipe("credit_osmium", CREDIT_OSMIUM.getStackForm(),
-            CREDIT_PLATINUM,
-            CREDIT_PLATINUM,
-            CREDIT_PLATINUM,
-            CREDIT_PLATINUM,
-            CREDIT_PLATINUM,
-            CREDIT_PLATINUM,
-            CREDIT_PLATINUM,
-            CREDIT_PLATINUM);
-
-        ModHandler.addShapelessRecipe("credit_naquadah", CREDIT_NAQUADAH.getStackForm(),
-            CREDIT_OSMIUM,
-            CREDIT_OSMIUM,
-            CREDIT_OSMIUM,
-            CREDIT_OSMIUM,
-            CREDIT_OSMIUM,
-            CREDIT_OSMIUM,
-            CREDIT_OSMIUM,
-            CREDIT_OSMIUM);
-
-        ModHandler.addShapelessRecipe("credit_darmstadtium", CREDIT_DARMSTADTIUM.getStackForm(),
-            CREDIT_NAQUADAH,
-            CREDIT_NAQUADAH,
-            CREDIT_NAQUADAH,
-            CREDIT_NAQUADAH,
-            CREDIT_NAQUADAH,
-            CREDIT_NAQUADAH,
-            CREDIT_NAQUADAH,
-            CREDIT_NAQUADAH);
-
-        // Minecart wheels recipes
-        ModHandler.addShapedRecipe("minecart_wheels_iron", MINECART_WHEELS_IRON.getStackForm(),
-            " h ",
-            "RSR",
-            " w ",
-            'R', new UnificationEntry(OrePrefix.ring, Materials.Iron),
-            'S', new UnificationEntry(OrePrefix.stick, Materials.Iron));
-
-        ModHandler.addShapedRecipe("minecart_wheels_steel", MINECART_WHEELS_STEEL.getStackForm(),
-            " h ",
-            "RSR",
-            " w ",
-            'R', new UnificationEntry(OrePrefix.ring, Materials.Steel),
-            'S', new UnificationEntry(OrePrefix.stick, Materials.Steel));
-
-        // Shape recipes
-        ModHandler.addShapedRecipe("shape_empty", SHAPE_EMPTY.getStackForm(),// true,
-            "hf",
-            "PP",
-            "PP",
-            'P', new UnificationEntry(OrePrefix.plate, Materials.Steel));
-
-        // Shape mold recipes
-        ModHandler.removeRecipes(Items.GLASS_BOTTLE);
-
-        ModHandler.addShapedRecipe("shape_mold_credit", SHAPE_MOLD_CREDIT.getStackForm(),
-            "h  ",
-            textShape,
-            emptyRow,
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_mold_plate", SHAPE_MOLD_PLATE.getStackForm(),
-            " h ",
-            textShape,
-            emptyRow,
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_mold_casing", SHAPE_MOLD_CASING.getStackForm(),
-            "  h",
-            textShape,
-            emptyRow,
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_mold_gear", SHAPE_MOLD_GEAR.getStackForm(),
-            emptyRow,
-            " Ph",
-            emptyRow,
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_mold_bottle", SHAPE_MOLD_BOTTLE.getStackForm(),
-            emptyRow,
-            textShape,
-            "  h",
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_mold_ingot", SHAPE_MOLD_INGOT.getStackForm(),
-            emptyRow,
-            textShape,
-            " h ",
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_mold_ball", SHAPE_MOLD_BALL.getStackForm(),
-            emptyRow,
-            textShape,
-            "h  ",
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_mold_block", SHAPE_MOLD_BLOCK.getStackForm(),
-            emptyRow,
-            "hP ",
-            emptyRow,
-            'P', SHAPE_EMPTY);
-
-
-        ModHandler.addShapedRecipe("shape_mold_nugget", SHAPE_MOLD_NUGGET.getStackForm(),
-            "P h",
-            emptyRow,
-            emptyRow,
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_mold_bun", SHAPE_MOLD_BUN.getStackForm(),
-            "P  ",
-            "  h",
-            emptyRow,
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_mold_bread", SHAPE_MOLD_BREAD.getStackForm(),
-            "P  ",
-            emptyRow,
-            "  h",
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_mold_baguette", SHAPE_MOLD_BAGUETTE.getStackForm(),
-            "P  ",
-            emptyRow,
-            " h ",
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_mold_cylinder", SHAPE_MOLD_CYLINDER.getStackForm(),
-            "  P",
-            emptyRow,
-            "  h",
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_mold_anvil", SHAPE_MOLD_ANVIL.getStackForm(),
-            "  P",
-            emptyRow,
-            " h ",
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_mold_name", SHAPE_MOLD_NAME.getStackForm(),
-            "  P",
-            emptyRow,
-            "h  ",
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_mold_gear_small", SHAPE_MOLD_GEAR_SMALL.getStackForm(),
-            emptyRow,
-            emptyRow,
-            "h P",
-            'P', SHAPE_EMPTY);
-
-        // Shape extruder recipes
-        ModHandler.addShapedRecipe("shape_extruder_bolt", SHAPE_EXTRUDER_BOLT.getStackForm(),
-            "x  ",
-            textShape,
-            emptyRow,
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_extruder_cell", SHAPE_EXTRUDER_CELL.getStackForm(),
-            " x ",
-            textShape,
-            emptyRow,
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_extruder_ingot", SHAPE_EXTRUDER_INGOT.getStackForm(),
-            "  x",
-            textShape,
-            emptyRow,
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_extruder_ring", SHAPE_EXTRUDER_RING.getStackForm(),
-            emptyRow,
-            " Px",
-            emptyRow,
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_extruder_rod", SHAPE_EXTRUDER_ROD.getStackForm(),
-            emptyRow,
-            textShape,
-            "  x",
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_extruder_wire", SHAPE_EXTRUDER_WIRE.getStackForm(),
-            emptyRow,
-            textShape,
-            " x ",
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_extruder_casing", SHAPE_EXTRUDER_CASING.getStackForm(),
-            emptyRow,
-            textShape,
-            "x  ",
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_extruder_plate", SHAPE_EXTRUDER_PLATE.getStackForm(),
-            emptyRow,
-            "xP ",
-            emptyRow,
-            'P', SHAPE_EMPTY);
-
-
-        ModHandler.addShapedRecipe("shape_extruder_block", SHAPE_EXTRUDER_BLOCK.getStackForm(),
-            "P x",
-            emptyRow,
-            emptyRow,
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_extruder_pipe_small", SHAPE_EXTRUDER_PIPE_SMALL.getStackForm(),
-            "P  ",
-            "  x",
-            emptyRow,
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_extruder_pipe_large", SHAPE_EXTRUDER_PIPE_LARGE.getStackForm(),
-            "P  ",
-            emptyRow,
-            "  x",
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_extruder_pipe_medium", SHAPE_EXTRUDER_PIPE_MEDIUM.getStackForm(),
-            "P  ",
-            emptyRow,
-            " x ",
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_extruder_sword", SHAPE_EXTRUDER_SWORD.getStackForm(),
-            "  P",
-            emptyRow,
-            "  x",
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_extruder_pickaxe", SHAPE_EXTRUDER_PICKAXE.getStackForm(),
-            "  P",
-            emptyRow,
-            " x ",
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_extruder_shovel", SHAPE_EXTRUDER_SHOVEL.getStackForm(),
-            "  P",
-            emptyRow,
-            "x  ",
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_extruder_axe", SHAPE_EXTRUDER_AXE.getStackForm(),
-            "  P",
-            "x  ",
-            emptyRow,
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_extruder_hoe", SHAPE_EXTRUDER_HOE.getStackForm(),
-            emptyRow,
-            emptyRow,
-            "x P",
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_extruder_hammer", SHAPE_EXTRUDER_HAMMER.getStackForm(),
-            emptyRow,
-            "x  ",
-            "  P",
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_extruder_file", SHAPE_EXTRUDER_FILE.getStackForm(),
-            "x  ",
-            emptyRow,
-            "  P",
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_extruder_saw", SHAPE_EXTRUDER_SAW.getStackForm(),
-            " x ",
-            emptyRow,
-            "  P",
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_extruder_gear", SHAPE_EXTRUDER_GEAR.getStackForm(),
-            "x  ",
-            emptyRow,
-            "P  ",
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_extruder_pipe_tiny", SHAPE_EXTRUDER_PIPE_TINY.getStackForm(),
-            " x ",
-            emptyRow,
-            "P  ",
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_extruder_pipe_huge", SHAPE_EXTRUDER_PIPE_HUGE.getStackForm(),
-            "  x",
-            emptyRow,
-            "P  ",
-            'P', SHAPE_EMPTY);
-
-        ModHandler.addShapedRecipe("shape_extruder_bottle", SHAPE_EXTRUDER_BOTTLE.getStackForm(),
-            emptyRow,
-            "  x",
-            "P  ",
-            'P', SHAPE_EMPTY);
-
-        // Shape slicer recipes
-        ModHandler.addShapedRecipe("shape_slicer_flat", SHAPE_SLICER_FLAT.getStackForm(),
-            "hXS",
-            textShape,
-            "fXd",
-            'P', SHAPE_EXTRUDER_BLOCK,
-            'X', new UnificationEntry(OrePrefix.plate, Materials.StainlessSteel),
-            'S', new UnificationEntry(OrePrefix.screw, Materials.StainlessSteel));
-
-        ModHandler.addShapedRecipe("shape_slicer_stripes", SHAPE_SLICER_STRIPES.getStackForm(),
-            "hXS",
-            "XPX",
-            "fXd",
-            'P', SHAPE_EXTRUDER_BLOCK,
-            'X', new UnificationEntry(OrePrefix.plate, Materials.StainlessSteel),
-            'S', new UnificationEntry(OrePrefix.screw, Materials.StainlessSteel));
-
-        // Fluid container recipes
-        ModHandler.addShapedRecipe("fuel_can_plastic_empty", FUEL_CAN_PLASTIC_EMPTY.getStackForm(7),
-            " PP",
-            "P P",
-            "PPP",
-            'P', new UnificationEntry(OrePrefix.plate, Materials.Plastic));
-
 //        RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
 //            .inputs(OreDictUnifier.get(OrePrefix.dust, Materials.Redstone), OreDictUnifier.get(OrePrefix.cell, MarkerMaterials.Empty)) // TODO FLUID CONTAINERS
 //            .outputs(SPRAY_EMPTY.getStackForm())
@@ -846,61 +459,6 @@ public class MetaItem1 extends MaterialMetaItem {
             .duration(256)
             .EUt(256)
             .buildAndRegister();
-
-        // Iridium alloy recipes
-        ModHandler.addShapedRecipe("ingot_iridium_alloy", INGOT_IRIDIUM_ALLOY.getStackForm(),
-            "IAI",
-            "ADA",
-            "IAI",
-//				'D', GregTechAPI.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "iridiumplate", true) ? OreDictNames.craftingIndustrialDiamond : new UnificationEntry(OrePrefix.dust, Materials.Diamond),
-            'D', new UnificationEntry(OrePrefix.dust, Materials.Diamond),
-            'A', "plateAlloyAdvanced",
-            'I', new UnificationEntry(OrePrefix.plate, Materials.Iridium));
-
-        // Schematics recipes
-        ModHandler.addShapedRecipe("schematic_1x1", SCHEMATIC_1X1.getStackForm(),
-            "d  ", textShape, emptyRow,
-            'P', SCHEMATIC);
-
-        ModHandler.addShapedRecipe("schematic_2x2", SCHEMATIC_2X2.getStackForm(),
-            " d ", textShape, emptyRow,
-            'P', SCHEMATIC);
-
-        ModHandler.addShapedRecipe("schematic_3x3", SCHEMATIC_3X3.getStackForm(),
-            "  d", textShape, emptyRow,
-            'P', SCHEMATIC);
-
-        ModHandler.addShapedRecipe("schematic_dust", SCHEMATIC_DUST.getStackForm(),
-            emptyRow, textShape, "  d",
-            'P', SCHEMATIC);
-
-
-        ModHandler.addShapelessRecipe("schematic_c", SCHEMATIC.getStackForm(),
-            SCHEMATIC_CRAFTING);
-
-        ModHandler.addShapelessRecipe("schematic_1", SCHEMATIC.getStackForm(),
-            SCHEMATIC_1X1);
-
-        ModHandler.addShapelessRecipe("schematic_2", SCHEMATIC.getStackForm(),
-            SCHEMATIC_2X2);
-
-        ModHandler.addShapelessRecipe("schematic_3", SCHEMATIC.getStackForm(),
-            SCHEMATIC_3X3);
-
-        ModHandler.addShapelessRecipe("schematic_d", SCHEMATIC.getStackForm(),
-            SCHEMATIC_DUST);
-
-        // Battery recipes
-        ModHandler.addShapedRecipe("battery_hull_lv", BATTERY_HULL_LV.getStackForm(),
-            "C",
-            "P",
-            "P",
-            'P', new UnificationEntry(OrePrefix.plate, Materials.BatteryAlloy), 'C', OreDictNames.craftingWireTin);
-        ModHandler.addShapedRecipe("battery_hull_mv", BATTERY_HULL_MV.getStackForm(),
-            "C C",
-            "PPP",
-            "PPP",
-            'P', new UnificationEntry(OrePrefix.plate, Materials.BatteryAlloy), 'C', OreDictNames.craftingWireCopper);
 
         RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(BATTERY_SU_LV_SULFURICACID.getStackForm())
@@ -1033,432 +591,6 @@ public class MetaItem1 extends MaterialMetaItem {
             .EUt(2)
             .buildAndRegister();
 */
-        // Electric motor recipes
-        ModHandler.addShapedRecipe("electric_motor_lv_i", ELECTRIC_MOTOR_LV.getStackForm(),
-            "CWR",
-            "WIW",
-            "RWC",
-            'I', new UnificationEntry(OrePrefix.stick, Materials.IronMagnetic),
-            'R', new UnificationEntry(OrePrefix.stick, Materials.Iron),
-            'W', new UnificationEntry(OrePrefix.wireGt01, Materials.Copper),
-            'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin));
-
-        ModHandler.addShapedRecipe("electric_motor_lv_s", ELECTRIC_MOTOR_LV.getStackForm(),
-            "CWR",
-            "WIW",
-            "RWC",
-            'I', new UnificationEntry(OrePrefix.stick, Materials.SteelMagnetic),
-            'R', new UnificationEntry(OrePrefix.stick, Materials.Steel),
-            'W', new UnificationEntry(OrePrefix.wireGt01, Materials.Copper),
-            'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin));
-
-        ModHandler.addShapedRecipe("electric_motor_mv", ELECTRIC_MOTOR_MV.getStackForm(),
-            "CWR",
-            "WIW",
-            "RWC",
-            'I', new UnificationEntry(OrePrefix.stick, Materials.SteelMagnetic),
-            'R', new UnificationEntry(OrePrefix.stick, Materials.Aluminium),
-            'W', new UnificationEntry(OrePrefix.wireGt02, Materials.Copper),
-            'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Copper));
-
-        ModHandler.addShapedRecipe("electric_motor_hv", ELECTRIC_MOTOR_HV.getStackForm(),
-            "CWR",
-            "WIW",
-            "RWC",
-            'I', new UnificationEntry(OrePrefix.stick, Materials.SteelMagnetic),
-            'R', new UnificationEntry(OrePrefix.stick, Materials.StainlessSteel),
-            'W', new UnificationEntry(OrePrefix.wireGt04, Materials.Copper),
-            'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold));
-
-        ModHandler.addShapedRecipe("electric_motor_ev", ELECTRIC_MOTOR_EV.getStackForm(),
-            "CWR",
-            "WIW",
-            "RWC",
-            'I', new UnificationEntry(OrePrefix.stick, Materials.NeodymiumMagnetic),
-            'R', new UnificationEntry(OrePrefix.stick, Materials.Titanium),
-            'W', new UnificationEntry(OrePrefix.wireGt08, Materials.AnnealedCopper),
-            'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Aluminium));
-
-        ModHandler.addShapedRecipe("electric_motor_iv", ELECTRIC_MOTOR_IV.getStackForm(),
-            "CWR",
-            "WIW",
-            "RWC",
-            'I', new UnificationEntry(OrePrefix.stick, Materials.NeodymiumMagnetic),
-            'R', new UnificationEntry(OrePrefix.stick, Materials.TungstenSteel),
-            'W', new UnificationEntry(OrePrefix.wireGt16, Materials.AnnealedCopper),
-            'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tungsten));
-
-        // Electric pump recipes
-        ModHandler.addShapedRecipe("electric_pump_lv", ELECTRIC_PUMP_LV.getStackForm(),
-            "SXO",
-            "dPw",
-            "OMW",
-            'M', ELECTRIC_MOTOR_LV,
-            'O', new UnificationEntry(OrePrefix.ring, Materials.Rubber),
-            'X', new UnificationEntry(OrePrefix.rotor, Materials.Tin),
-            'S', new UnificationEntry(OrePrefix.screw, Materials.Tin),
-            'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin),
-            'P', new UnificationEntry(OrePrefix.pipeMedium, Materials.Bronze));
-
-        ModHandler.addShapedRecipe("electric_pump_mv", ELECTRIC_PUMP_MV.getStackForm(),
-            "SXO",
-            "dPw",
-            "OMW",
-            'M', ELECTRIC_MOTOR_MV,
-            'O', new UnificationEntry(OrePrefix.ring, Materials.Rubber),
-            'X', new UnificationEntry(OrePrefix.rotor, Materials.Bronze),
-            'S', new UnificationEntry(OrePrefix.screw, Materials.Bronze),
-            'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Copper),
-            'P', new UnificationEntry(OrePrefix.pipeMedium, Materials.Steel));
-
-        ModHandler.addShapedRecipe("electric_pump_hv", ELECTRIC_PUMP_HV.getStackForm(),
-            "SXO",
-            "dPw",
-            "OMW",
-            'M', ELECTRIC_MOTOR_HV,
-            'O', new UnificationEntry(OrePrefix.ring, Materials.Rubber),
-            'X', new UnificationEntry(OrePrefix.rotor, Materials.Steel),
-            'S', new UnificationEntry(OrePrefix.screw, Materials.Steel),
-            'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold),
-            'P', new UnificationEntry(OrePrefix.pipeMedium, Materials.StainlessSteel));
-
-        ModHandler.addShapedRecipe("electric_pump_ev", ELECTRIC_PUMP_EV.getStackForm(),
-            "SXO",
-            "dPw",
-            "OMW",
-            'M', ELECTRIC_MOTOR_EV,
-            'O', new UnificationEntry(OrePrefix.ring, Materials.Rubber),
-            'X', new UnificationEntry(OrePrefix.rotor, Materials.StainlessSteel),
-            'S', new UnificationEntry(OrePrefix.screw, Materials.StainlessSteel),
-            'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Aluminium),
-            'P', new UnificationEntry(OrePrefix.pipeMedium, Materials.Titanium));
-
-        ModHandler.addShapedRecipe("electric_pump_iv", ELECTRIC_PUMP_IV.getStackForm(),
-            "SXO",
-            "dPw",
-            "OMW",
-            'M', ELECTRIC_MOTOR_IV,
-            'O', new UnificationEntry(OrePrefix.ring, Materials.Rubber),
-            'X', new UnificationEntry(OrePrefix.rotor, Materials.TungstenSteel),
-            'S', new UnificationEntry(OrePrefix.screw, Materials.TungstenSteel),
-            'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Tungsten),
-            'P', new UnificationEntry(OrePrefix.pipeMedium, Materials.TungstenSteel));
-
-        // Conveyor module recipes
-        ModHandler.addShapedRecipe("conveyor_module_lv", CONVEYOR_MODULE_LV.getStackForm(),
-            "RRR",
-            "MCM",
-            "RRR",
-            'M', ELECTRIC_MOTOR_LV,
-            'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin),
-            'R', new UnificationEntry(OrePrefix.plate, Materials.Rubber));
-
-        ModHandler.addShapedRecipe("conveyor_module_mv", CONVEYOR_MODULE_MV.getStackForm(),
-            "RRR",
-            "MCM",
-            "RRR",
-            'M', ELECTRIC_MOTOR_MV,
-            'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Copper),
-            'R', new UnificationEntry(OrePrefix.plate, Materials.Rubber));
-
-        ModHandler.addShapedRecipe("conveyor_module_hv", CONVEYOR_MODULE_HV.getStackForm(),
-            "RRR",
-            "MCM",
-            "RRR",
-            'M', ELECTRIC_MOTOR_HV,
-            'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold),
-            'R', new UnificationEntry(OrePrefix.plate, Materials.Rubber));
-
-        ModHandler.addShapedRecipe("conveyor_module_ev", CONVEYOR_MODULE_EV.getStackForm(),
-            "RRR",
-            "MCM",
-            "RRR",
-            'M', ELECTRIC_MOTOR_EV,
-            'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Aluminium),
-            'R', new UnificationEntry(OrePrefix.plate, Materials.Rubber));
-
-        ModHandler.addShapedRecipe("conveyor_module_iv", CONVEYOR_MODULE_IV.getStackForm(),
-            "RRR",
-            "MCM",
-            "RRR",
-            'M', ELECTRIC_MOTOR_IV,
-            'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tungsten),
-            'R', new UnificationEntry(OrePrefix.plate, Materials.Rubber));
-
-        // Electric piston recipes
-        ModHandler.addShapedRecipe("electric_piston_lv", ELECTRIC_PISTON_LV.getStackForm(),
-            "PPP",
-            "CSS",
-            "CMG",
-            'P', new UnificationEntry(OrePrefix.plate, Materials.Steel),
-            'S', new UnificationEntry(OrePrefix.stick, Materials.Steel),
-            'G', new UnificationEntry(OrePrefix.gearSmall, Materials.Steel),
-            'M', ELECTRIC_MOTOR_LV,
-            'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin));
-
-        ModHandler.addShapedRecipe("electric_piston_mv", ELECTRIC_PISTON_MV.getStackForm(),
-            "PPP",
-            "CSS",
-            "CMG",
-            'P', new UnificationEntry(OrePrefix.plate, Materials.Aluminium),
-            'S', new UnificationEntry(OrePrefix.stick, Materials.Aluminium),
-            'G', new UnificationEntry(OrePrefix.gearSmall, Materials.Aluminium),
-            'M', ELECTRIC_MOTOR_MV,
-            'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Copper));
-
-        ModHandler.addShapedRecipe("electric_piston_hv", ELECTRIC_PISTON_HV.getStackForm(),
-            "PPP",
-            "CSS",
-            "CMG",
-            'P', new UnificationEntry(OrePrefix.plate, Materials.StainlessSteel),
-            'S', new UnificationEntry(OrePrefix.stick, Materials.StainlessSteel),
-            'G', new UnificationEntry(OrePrefix.gearSmall, Materials.StainlessSteel),
-            'M', ELECTRIC_MOTOR_HV,
-            'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold));
-
-        ModHandler.addShapedRecipe("electric_piston_ev", ELECTRIC_PISTON_EV.getStackForm(),
-            "PPP",
-            "CSS",
-            "CMG",
-            'P', new UnificationEntry(OrePrefix.plate, Materials.Titanium),
-            'S', new UnificationEntry(OrePrefix.stick, Materials.Titanium),
-            'G', new UnificationEntry(OrePrefix.gearSmall, Materials.Titanium),
-            'M', ELECTRIC_MOTOR_EV,
-            'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Aluminium));
-
-        ModHandler.addShapedRecipe("electric_piston_iv", ELECTRIC_PISTON_IV.getStackForm(),
-            "PPP",
-            "CSS",
-            "CMG",
-            'P', new UnificationEntry(OrePrefix.plate, Materials.TungstenSteel),
-            'S', new UnificationEntry(OrePrefix.stick, Materials.TungstenSteel),
-            'G', new UnificationEntry(OrePrefix.gearSmall, Materials.TungstenSteel),
-            'M', ELECTRIC_MOTOR_IV,
-            'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tungsten));
-
-        // Robot arm recipes
-        ModHandler.addShapedRecipe("robot_arm_lv", ROBOT_ARM_LV.getStackForm(),
-            "CCC",
-            "MSM",
-            "PES",
-            'S', new UnificationEntry(OrePrefix.stick, Materials.Steel),
-            'M', ELECTRIC_MOTOR_LV,
-            'P', ELECTRIC_PISTON_LV,
-            'E', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Basic),
-            'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin));
-
-        ModHandler.addShapedRecipe("robot_arm_mv", ROBOT_ARM_MV.getStackForm(),
-            "CCC",
-            "MSM",
-            "PES",
-            'S', new UnificationEntry(OrePrefix.stick, Materials.Aluminium),
-            'M', ELECTRIC_MOTOR_MV,
-            'P', ELECTRIC_PISTON_MV,
-            'E', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Good),
-            'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Copper));
-
-        ModHandler.addShapedRecipe("robot_arm_hv", ROBOT_ARM_HV.getStackForm(),
-            "CCC",
-            "MSM",
-            "PES",
-            'S', new UnificationEntry(OrePrefix.stick, Materials.StainlessSteel),
-            'M', ELECTRIC_MOTOR_HV,
-            'P', ELECTRIC_PISTON_HV,
-            'E', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Advanced),
-            'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold));
-
-        ModHandler.addShapedRecipe("robot_arm_ev", ROBOT_ARM_EV.getStackForm(),
-            "CCC",
-            "MSM",
-            "PES",
-            'S', new UnificationEntry(OrePrefix.stick, Materials.Titanium),
-            'M', ELECTRIC_MOTOR_EV,
-            'P', ELECTRIC_PISTON_EV,
-            'E', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Elite),
-            'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Aluminium));
-
-        ModHandler.addShapedRecipe("robot_arm_iv", ROBOT_ARM_IV.getStackForm(),
-            "CCC",
-            "MSM",
-            "PES",
-            'S', new UnificationEntry(OrePrefix.stick, Materials.TungstenSteel),
-            'M', ELECTRIC_MOTOR_IV,
-            'P', ELECTRIC_PISTON_IV,
-            'E', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Master),
-            'C', new UnificationEntry(OrePrefix.cableGt01, Materials.Tungsten));
-
-        // Field generator recipes
-        ModHandler.addShapedRecipe("field_generator_lv", FIELD_GENERATOR_LV.getStackForm(),
-            "WCW",
-            "CGC",
-            "WCW",
-            'G', new UnificationEntry(OrePrefix.gem, Materials.EnderPearl),
-            'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Basic),
-            'W', new UnificationEntry(OrePrefix.wireGt01, Materials.Osmium));
-
-        ModHandler.addShapedRecipe("field_generator_mv", FIELD_GENERATOR_MV.getStackForm(),
-            "WCW",
-            "CGC",
-            "WCW",
-            'G', new UnificationEntry(OrePrefix.gem, Materials.EnderEye),
-            'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Good),
-            'W', new UnificationEntry(OrePrefix.wireGt02, Materials.Osmium));
-
-        // Emitter recipes
-        ModHandler.addShapedRecipe("emitter_lv", EMITTER_LV.getStackForm(),
-            "SSC",
-            "WQS",
-            "CWS",
-            'Q', new UnificationEntry(OrePrefix.gem, Materials.Quartzite),
-            'S', new UnificationEntry(OrePrefix.stick, Materials.Brass),
-            'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Basic),
-            'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Tin));
-
-        ModHandler.addShapedRecipe("emitter_mv", EMITTER_MV.getStackForm(),
-            "SSC",
-            "WQS",
-            "CWS",
-            'Q', new UnificationEntry(OrePrefix.gem, Materials.NetherQuartz),
-            'S', new UnificationEntry(OrePrefix.stick, Materials.Electrum),
-            'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Good),
-            'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Copper));
-
-        ModHandler.addShapedRecipe("emitter_hv", EMITTER_HV.getStackForm(),
-            "SSC",
-            "WQS",
-            "CWS",
-            'Q', new UnificationEntry(OrePrefix.gem, Materials.Emerald),
-            'S', new UnificationEntry(OrePrefix.stick, Materials.Chrome),
-            'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Advanced),
-            'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Gold));
-
-        ModHandler.addShapedRecipe("emitter_ev", EMITTER_EV.getStackForm(),
-            "SSC",
-            "WQS",
-            "CWS",
-            'Q', new UnificationEntry(OrePrefix.gem, Materials.EnderPearl),
-            'S', new UnificationEntry(OrePrefix.stick, Materials.Platinum),
-            'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Elite),
-            'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Aluminium));
-
-        ModHandler.addShapedRecipe("emitter_iv", EMITTER_IV.getStackForm(),
-            "SSC",
-            "WQS",
-            "CWS",
-            'Q', new UnificationEntry(OrePrefix.gem, Materials.EnderEye),
-            'S', new UnificationEntry(OrePrefix.stick, Materials.Osmium),
-            'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Master),
-            'W', new UnificationEntry(OrePrefix.cableGt01, Materials.Tungsten));
-
-        // Sensor recipes
-        ModHandler.addShapedRecipe("sensor_lv", SENSOR_LV.getStackForm(),
-            "P Q",
-            "PS ",
-            "CPP",
-            'Q', new UnificationEntry(OrePrefix.gem, Materials.Quartzite),
-            'S', new UnificationEntry(OrePrefix.stick, Materials.Brass),
-            'P', new UnificationEntry(OrePrefix.plate, Materials.Steel),
-            'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Basic));
-
-        ModHandler.addShapedRecipe("sensor_mv", SENSOR_MV.getStackForm(),
-            "P Q",
-            "PS ",
-            "CPP",
-            'Q', new UnificationEntry(OrePrefix.gem, Materials.NetherQuartz),
-            'S', new UnificationEntry(OrePrefix.stick, Materials.Electrum),
-            'P', new UnificationEntry(OrePrefix.plate, Materials.Aluminium),
-            'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Good));
-
-        ModHandler.addShapedRecipe("sensor_hv", SENSOR_HV.getStackForm(),
-            "P Q",
-            "PS ",
-            "CPP",
-            'Q', new UnificationEntry(OrePrefix.gem, Materials.Emerald),
-            'S', new UnificationEntry(OrePrefix.stick, Materials.Chrome),
-            'P', new UnificationEntry(OrePrefix.plate, Materials.StainlessSteel),
-            'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Advanced));
-
-        ModHandler.addShapedRecipe("sensor_ev", SENSOR_EV.getStackForm(),
-            "P Q",
-            "PS ",
-            "CPP",
-            'Q', new UnificationEntry(OrePrefix.gem, Materials.EnderPearl),
-            'S', new UnificationEntry(OrePrefix.stick, Materials.Platinum),
-            'P', new UnificationEntry(OrePrefix.plate, Materials.Titanium),
-            'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Elite));
-
-        ModHandler.addShapedRecipe("sensor_iv", SENSOR_IV.getStackForm(),
-            "P Q",
-            "PS ",
-            "CPP",
-            'Q', new UnificationEntry(OrePrefix.gem, Materials.EnderEye),
-            'S', new UnificationEntry(OrePrefix.stick, Materials.Osmium),
-            'P', new UnificationEntry(OrePrefix.plate, Materials.TungstenSteel),
-            'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Master));
-
-        // Special tools recipes
-        ModHandler.addShapelessRecipe("tool_dataorb", TOOL_DATAORB.getStackForm(), TOOL_DATAORB);
-        ModHandler.addShapelessRecipe("tool_datastick", TOOL_DATASTICK.getStackForm(), TOOL_DATASTICK);
-
-        ModHandler.addShapedRecipe("tool_scanner", TOOL_SCANNER.getStackForm(),
-            "EPR",
-            "CSC",
-            "PBP",
-            'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Advanced),
-            'P', new UnificationEntry(OrePrefix.plate, Materials.Aluminium),
-            'E', EMITTER_MV,
-            'R', SENSOR_MV,
-            'S', Items.DIAMOND,
-            'B', BATTERY_RE_MV_LITHIUM);
-
-        // Field generator recipes
-        ModHandler.addShapedRecipe("field_generator_hv", FIELD_GENERATOR_HV.getStackForm(),
-            "WCW",
-            "CGC",
-            "WCW",
-            'G', QUANTUMEYE.getStackForm(),
-            'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Advanced),
-            'W', new UnificationEntry(OrePrefix.wireGt04, Materials.Osmium));
-
-        ModHandler.addShapedRecipe("field_generator_ev", FIELD_GENERATOR_EV.getStackForm(),
-            "WCW",
-            "CGC",
-            "WCW",
-            'G', new UnificationEntry(OrePrefix.gem, Materials.NetherStar),
-            'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Elite),
-            'W', new UnificationEntry(OrePrefix.wireGt08, Materials.Osmium));
-
-        ModHandler.addShapedRecipe("field_generator_iv", FIELD_GENERATOR_IV.getStackForm(),
-            "WCW",
-            "CGC",
-            "WCW",
-            'G', QUANTUMSTAR.getStackForm(),
-            'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Master),
-            'W', new UnificationEntry(OrePrefix.wireGt16, Materials.Osmium));
-
-
-        ModHandler.addShapedRecipe("component_sawblade_diamond", COMPONENT_SAWBLADE_DIAMOND.getStackForm(),
-            " D ",
-            "DGD",
-            " D ",
-            'D', new UnificationEntry(OrePrefix.dustSmall, Materials.Diamond),
-            'G', new UnificationEntry(OrePrefix.gear, Materials.CobaltBrass));
-
-        ModHandler.addShapedRecipe("component_grinder_diamond", COMPONENT_GRINDER_DIAMOND.getStackForm(),
-            "DSD",
-            "SIS",
-            "DSD",
-            'I', OreDictNames.craftingIndustrialDiamond,
-            'D', new UnificationEntry(OrePrefix.dust, Materials.Diamond),
-            'S', new UnificationEntry(OrePrefix.plate, Materials.Steel));
-
-        ModHandler.addShapedRecipe("component_grinder_tungsten", COMPONENT_GRINDER_TUNGSTEN.getStackForm(),
-            "TST",
-            "SIS",
-            "TST",
-            'I', OreDictNames.craftingIndustrialDiamond,
-            'T', new UnificationEntry(OrePrefix.plate, Materials.Tungsten),
-            'S', new UnificationEntry(OrePrefix.plate, Materials.Steel));
 
         // Upgrades recipes
         RecipeMap.ASSEMBLER_RECIPES.recipeBuilder()
@@ -1570,68 +702,68 @@ public class MetaItem1 extends MaterialMetaItem {
             .buildAndRegister();
     }
 
-	@Override
-	public boolean onEntityItemUpdate(EntityItem itemEntity) {
-		int damage = itemEntity.getItem().getMetadata();
-		if (damage < this.metaItemOffset && damage >= 0 && !itemEntity.getEntityWorld().isRemote) {
+    @Override
+    public boolean onEntityItemUpdate(EntityItem itemEntity) {
+        int damage = itemEntity.getItem().getMetadata();
+        if (damage < this.metaItemOffset && damage >= 0 && !itemEntity.getEntityWorld().isRemote) {
 
-			Material material = Material.MATERIAL_REGISTRY.getObjectById(damage % 1000);
-			if (material != null) {
-				int posX = MathHelper.floor(itemEntity.posX);
-				int posY = MathHelper.floor(itemEntity.posY);
-				int posZ = MathHelper.floor(itemEntity.posZ);
-				OrePrefix prefix = this.orePrefixes[(damage / 1000)];
-				if (prefix == OrePrefix.dustImpure || prefix == OrePrefix.dustPure || prefix == OrePrefix.crushed || prefix == OrePrefix.dust) {
+            Material material = Material.MATERIAL_REGISTRY.getObjectById(damage % 1000);
+            if (material != null) {
+                int posX = MathHelper.floor(itemEntity.posX);
+                int posY = MathHelper.floor(itemEntity.posY);
+                int posZ = MathHelper.floor(itemEntity.posZ);
+                OrePrefix prefix = this.orePrefixes[(damage / 1000)];
+                if (prefix == OrePrefix.dustImpure || prefix == OrePrefix.dustPure || prefix == OrePrefix.crushed || prefix == OrePrefix.dust) {
 
-					IBlockState blockState = itemEntity.getEntityWorld().getBlockState(new BlockPos(posX, posY, posZ));
-					if (blockState.getBlock() == Blocks.CAULDRON) {
-						int waterLevel = blockState.getValue(BlockCauldron.LEVEL);
-						if (waterLevel > 0) {
-							if (prefix == OrePrefix.crushed) {
-								itemEntity.setItem(OreDictUnifier.get(OrePrefix.crushedPurified, material, itemEntity.getItem().getCount()));
-							} else if (prefix == OrePrefix.dust && material == Materials.Wheat) {
-								itemEntity.setItem(FOOD_DOUGH.getStackForm(itemEntity.getItem().getCount()));
-							} else {
-								itemEntity.setItem(OreDictUnifier.get(OrePrefix.dust, material, itemEntity.getItem().getCount()));
-							}
-							itemEntity.getEntityWorld().setBlockState(new BlockPos(posX, posY, posZ), blockState.withProperty(BlockCauldron.LEVEL, waterLevel - 1));
-							return true;
-						}
-					}
-				}
-			}
-		}
-		return false;
-	}
+                    IBlockState blockState = itemEntity.getEntityWorld().getBlockState(new BlockPos(posX, posY, posZ));
+                    if (blockState.getBlock() == Blocks.CAULDRON) {
+                        int waterLevel = blockState.getValue(BlockCauldron.LEVEL);
+                        if (waterLevel > 0) {
+                            if (prefix == OrePrefix.crushed) {
+                                itemEntity.setItem(OreDictUnifier.get(OrePrefix.crushedPurified, material, itemEntity.getItem().getCount()));
+                            } else if (prefix == OrePrefix.dust && material == Materials.Wheat) {
+                                itemEntity.setItem(FOOD_DOUGH.getStackForm(itemEntity.getItem().getCount()));
+                            } else {
+                                itemEntity.setItem(OreDictUnifier.get(OrePrefix.dust, material, itemEntity.getItem().getCount()));
+                            }
+                            itemEntity.getEntityWorld().setBlockState(new BlockPos(posX, posY, posZ), blockState.withProperty(BlockCauldron.LEVEL, waterLevel - 1));
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack itemStack, @Nullable World world, List<String> lines, ITooltipFlag tooltipFlag) {
-		super.addInformation(itemStack, world, lines, tooltipFlag);
-		int damage = itemStack.getItemDamage();
-		if (damage < this.metaItemOffset && damage >= 0) {
-			Material material = Material.MATERIAL_REGISTRY.getObjectById(damage % 1000);
-			if (material != null) {
-				OrePrefix prefix = this.orePrefixes[(damage / 1000)];
-				if (prefix == OrePrefix.dustImpure || prefix == OrePrefix.dustPure) {
-					lines.add(I18n.format("metaitem.dust.tooltip.purify"));
-				}
-			}
-		}
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack itemStack, @Nullable World world, List<String> lines, ITooltipFlag tooltipFlag) {
+        super.addInformation(itemStack, world, lines, tooltipFlag);
+        int damage = itemStack.getItemDamage();
+        if (damage < this.metaItemOffset && damage >= 0) {
+            Material material = Material.MATERIAL_REGISTRY.getObjectById(damage % 1000);
+            if (material != null) {
+                OrePrefix prefix = this.orePrefixes[(damage / 1000)];
+                if (prefix == OrePrefix.dustImpure || prefix == OrePrefix.dustPure) {
+                    lines.add(I18n.format("metaitem.dust.tooltip.purify"));
+                }
+            }
+        }
+    }
 
-	@Override
-	public ItemStack getContainerItem(ItemStack stack) {
-		int damage = stack.getItemDamage();
-		if (damage >= this.metaItemOffset + 430 && damage <= this.metaItemOffset + 461) {
-			return SPRAY_EMPTY.getStackForm();
-		}
-		if (damage == this.metaItemOffset + 479 || damage == this.metaItemOffset + 476) {
-			return new ItemStack(this, 1, damage - 2);
-		}
-		if (damage == this.metaItemOffset + 401) {
-			return new ItemStack(this, 1, damage - 1);
-		}
-		return super.getContainerItem(stack);
-	}
+    @Override
+    public ItemStack getContainerItem(ItemStack stack) {
+        int damage = stack.getItemDamage();
+        if (damage >= this.metaItemOffset + 430 && damage <= this.metaItemOffset + 461) {
+            return SPRAY_EMPTY.getStackForm();
+        }
+        if (damage == this.metaItemOffset + 479 || damage == this.metaItemOffset + 476) {
+            return new ItemStack(this, 1, damage - 2);
+        }
+        if (damage == this.metaItemOffset + 401) {
+            return new ItemStack(this, 1, damage - 1);
+        }
+        return super.getContainerItem(stack);
+    }
 }

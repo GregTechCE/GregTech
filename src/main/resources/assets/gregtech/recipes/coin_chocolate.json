@@ -1,20 +1,16 @@
 {
   "type": "gregtech:metaitem_shapeless",
   "ingredients": [{
-      "type": "forge:ore_dict",
-      "ore": "dustCocoa"
-    },
-    {
-      "type": "forge:ore_dict",
-      "ore": "foilGold"
-    },
-    {
-      "item": "minecraft:milk_bucket"
-    },
-    {
-      "item": "minecraft:sugar"
-    }
-  ],
+    "type": "forge:ore_dict",
+    "ore": "dustCocoa"
+  }, {
+    "type": "forge:ore_dict",
+    "ore": "foilGold"
+  }, {
+    "item": "minecraft:milk_bucket"
+  }, {
+    "item": "minecraft:sugar"
+  }],
   "result": {
     "type": "gregtech:metaitem",
     "name": "coin.chocolate"
