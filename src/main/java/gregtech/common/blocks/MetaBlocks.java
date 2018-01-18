@@ -1,10 +1,25 @@
 package gregtech.common.blocks;
 
+import static gregtech.common.ClientProxy.COMPRESSED_BLOCK_COLOR;
+import static gregtech.common.ClientProxy.COMPRESSED_ITEM_COLOR;
+import static gregtech.common.ClientProxy.MACHINE_BLOCK_COLOR;
+import static gregtech.common.ClientProxy.MACHINE_ITEM_COLOR;
+import static gregtech.common.ClientProxy.ORE_BLOCK_COLOR;
+import static gregtech.common.ClientProxy.ORE_ITEM_COLOR;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 import gregtech.api.GregTechAPI;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
+import gregtech.api.unification.ore.StoneType;
+import gregtech.api.unification.ore.StoneTypes;
 import gregtech.common.metatileentities.MetaTileEntities;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
@@ -15,12 +30,6 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
-import static gregtech.common.ClientProxy.*;
 
 public class MetaBlocks {
 
@@ -42,7 +51,8 @@ public class MetaBlocks {
     public static BlockConcrete CONCRETE;
 
     public static HashMap<DustMaterial, BlockCompressed> COMPRESSED;
-    public static HashMap<DustMaterial, BlockOre> ORES;
+    public static HashMap<DustMaterial, HashMap<StoneType, BlockOre>> OREMAP;
+    public static Collection<BlockOre> ORES;
 
     public static void init() {
         BOILER_CASING = new BlockBoilerCasing();
@@ -67,7 +77,9 @@ public class MetaBlocks {
         CONCRETE.setRegistryName("concrete");
 
         COMPRESSED = new HashMap<>();
-        ORES = new HashMap<>();
+        OREMAP = new HashMap<>();
+        ORES = new ArrayList<>();
+        StoneType.init();
         Material[] materialBuffer = new Material[16];
         Arrays.fill(materialBuffer, Materials._NULL);
         int generationIndex = 0;
@@ -111,9 +123,28 @@ public class MetaBlocks {
     }
 
     private static void createOreBlock(DustMaterial material) {
-        BlockOre block = new BlockOre(material);
-        block.setRegistryName("ore_" + material);
-        ORES.put(material, block);
+        StoneType[] stoneTypeBuffer = new StoneType[8];
+        Arrays.fill(stoneTypeBuffer, StoneTypes._NULL);
+        int generationIndex = 0;
+        for (StoneType stoneType : StoneType.STONE_TYPE_REGISTRY) {
+            int id = StoneType.STONE_TYPE_REGISTRY.getIDForObject(stoneType), index = id / 8;
+            if (index > generationIndex) {
+                createOreBlock(material, stoneTypeBuffer, generationIndex);
+                Arrays.fill(stoneTypeBuffer, StoneTypes._NULL);
+            }
+            stoneTypeBuffer[id % 8] = stoneType;
+            generationIndex = index;
+        }
+        createOreBlock(material, stoneTypeBuffer, generationIndex);
+    }
+
+    private static void createOreBlock(DustMaterial material, StoneType[] stoneTypes, int index) {
+        BlockOre block = new BlockOre(material, stoneTypes);
+        block.setRegistryName("ore_" + material + "_" + index);
+        for (StoneType stoneType : stoneTypes) {
+            OREMAP.computeIfAbsent(material, m -> new HashMap<>()).put(stoneType, block);
+        }
+        ORES.add(block);
     }
 
     @SideOnly(Side.CLIENT)
@@ -131,7 +162,7 @@ public class MetaBlocks {
         MACHINE.registerItemModel();
 
         COMPRESSED.values().stream().distinct().forEach(MetaBlocks::registerItemModel);
-        ORES.values().stream().distinct().forEach(MetaBlocks::registerItemModel);
+        ORES.stream().distinct().forEach(MetaBlocks::registerItemModel);
     }
 
     @SideOnly(Side.CLIENT)
@@ -155,7 +186,7 @@ public class MetaBlocks {
             Minecraft.getMinecraft().getItemColors().registerItemColorHandler(COMPRESSED_ITEM_COLOR, block);
         });
 
-        MetaBlocks.ORES.values().stream().distinct().forEach(block -> {
+        MetaBlocks.ORES.stream().distinct().forEach(block -> {
             Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(ORE_BLOCK_COLOR, block);
             Minecraft.getMinecraft().getItemColors().registerItemColorHandler(ORE_ITEM_COLOR, block);
         });

@@ -13,6 +13,7 @@ import gregtech.common.blocks.OreItemBlock;
 import gregtech.common.blocks.StoneItemBlock;
 import gregtech.common.blocks.VariantItemBlock;
 import gregtech.common.items.MetaItems;
+import gregtech.loaders.postload.WorldgenLoader;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Items;
@@ -49,7 +50,7 @@ public class CommonProxy {
         registry.register(CONCRETE);
 
         COMPRESSED.values().stream().distinct().forEach(registry::register);
-        ORES.values().stream().distinct().forEach(registry::register);
+        ORES.stream().distinct().forEach(registry::register);
     }
 
     @SubscribeEvent
@@ -83,8 +84,7 @@ public class CommonProxy {
             .distinct()
             .map(block -> createItemBlock(block, () -> new CompressedItemBlock(block)))
             .forEach(registry::register);
-        ORES.values()
-            .stream()
+        ORES.stream()
             .distinct()
             .map(block -> createItemBlock(block, () -> new OreItemBlock(block)))
             .forEach(registry::register);
@@ -121,6 +121,8 @@ public class CommonProxy {
         OreDictUnifier.registerOre(new ItemStack(Items.DARK_OAK_DOOR, 1, 32767), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 21772800L)));
 
         GTLog.logger.info("GregTechMod: Adding Configs specific for MetaTileEntities");
+
+        new WorldgenLoader().run();
 
 /*
         GTLog.out.println("GregTechMod: Adding Tool Usage Crafting Recipes for OreDict Items.");

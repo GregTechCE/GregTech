@@ -36,7 +36,7 @@ public class OreItemBlock extends ItemBlock {
         if (small) {
             return OrePrefix.oreSmall.getLocalNameForItem(block.material);
         } else {
-            StoneType stoneType = blockState.getValue(BlockOre.STONE_TYPE);
+            StoneType stoneType = blockState.getValue(block.STONE_TYPE);
             return stoneType.processingPrefix.getLocalNameForItem(block.material);
         }
     }

@@ -29,7 +29,7 @@
     }],
     "chiseling=cracked,variant=light_concrete": [{
       "textures": {
-        "all": "gregtech:blocks/rendering_error"
+        "all": "gregtech:blocks/stones/concrete/concrete_light_cobble"
       }
     }],
     "chiseling=cracked,variant=light_bricks": [{
@@ -39,7 +39,7 @@
     }],
     "chiseling=cracked,variant=dark_concrete": [{
       "textures": {
-        "all": "gregtech:blocks/stones/concrete/concrete_dark_bricks_cracked"
+        "all": "gregtech:blocks/stones/concrete/concrete_dark_cobble"
       }
     }],
     "chiseling=cracked,variant=dark_bricks": [{
@@ -49,7 +49,7 @@
     }],
     "chiseling=mossy,variant=light_concrete": [{
       "textures": {
-        "all": "gregtech:blocks/rendering_error"
+        "all": "gregtech:blocks/stones/concrete/concrete_light_cobble_mossy"
       }
     }],
     "chiseling=mossy,variant=light_bricks": [{
@@ -59,7 +59,7 @@
     }],
     "chiseling=mossy,variant=dark_concrete": [{
       "textures": {
-        "all": "gregtech:blocks/rendering_error"
+        "all": "gregtech:blocks/stones/concrete/concrete_dark_cobble_mossy"
       }
     }],
     "chiseling=mossy,variant=dark_bricks": [{
@@ -69,7 +69,7 @@
     }],
     "chiseling=chiseled,variant=light_concrete": [{
       "textures": {
-        "all": "gregtech:blocks/rendering_error"
+        "all": "gregtech:blocks/stones/concrete/concrete_light_smooth"
       }
     }],
     "chiseling=chiseled,variant=light_bricks": [{
@@ -79,7 +79,7 @@
     }],
     "chiseling=chiseled,variant=dark_concrete": [{
       "textures": {
-        "all": "gregtech:blocks/rendering_error"
+        "all": "gregtech:blocks/stones/concrete/concrete_dark_smooth"
       }
     }],
     "chiseling=chiseled,variant=dark_bricks": [{
