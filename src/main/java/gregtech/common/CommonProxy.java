@@ -17,6 +17,7 @@ import gregtech.common.blocks.OreItemBlock;
 import gregtech.common.blocks.StoneItemBlock;
 import gregtech.common.blocks.VariantItemBlock;
 import gregtech.common.items.MetaItems;
+import gregtech.loaders.postload.WorldgenLoader;
 import ic2.core.ref.ItemName;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
@@ -83,7 +84,7 @@ public class CommonProxy {
         registry.register(MetaBlocks.CONCRETE);
 
         MetaBlocks.COMPRESSED.values().stream().distinct().forEach(registry::register);
-        MetaBlocks.ORES.values().stream().distinct().forEach(registry::register);
+        MetaBlocks.ORES.stream().distinct().forEach(registry::register);
     }
 
     @SubscribeEvent
@@ -115,7 +116,7 @@ public class CommonProxy {
             .distinct()
             .map(block -> createItemBlock(block, () -> new CompressedItemBlock(block)))
             .forEach(registry::register);
-        MetaBlocks.ORES.values()
+        MetaBlocks.ORES
             .stream()
             .distinct()
             .map(block -> createItemBlock(block, () -> new OreItemBlock(block)))
@@ -169,6 +170,7 @@ public class CommonProxy {
 
         GTLog.logger.info("GregTechMod: Adding Configs specific for MetaTileEntities");
 
+        new WorldgenLoader().run();
 /*
         GTLog.out.println("GregTechMod: Adding Tool Usage Crafting Recipes for OreDict Items.");
         for (Materials aMaterial : Materials.values()) {

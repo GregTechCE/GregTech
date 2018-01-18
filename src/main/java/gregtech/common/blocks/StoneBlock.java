@@ -30,6 +30,11 @@ public class StoneBlock<T extends Enum<T> & IStringSerializable> extends Block {
     }
 
     @Override
+    public int damageDropped(IBlockState state) {
+        return getMetaFromState(state);
+    }
+
+    @Override
     public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
         for(T variant : VALUES) {
             for(ChiselingVariant chiselingVariant : ChiselingVariant.values()) {
