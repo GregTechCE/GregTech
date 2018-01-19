@@ -60,7 +60,6 @@ public abstract class PaintableMetaTileEntity extends MetaTileEntity implements 
             default:
                 super.receiveCustomData(dataId, buf);
         }
-
     }
 
     @Override

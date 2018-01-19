@@ -1,0 +1,36 @@
+{
+  "type": "gregtech:metaitem_shaped",
+  "pattern": [
+    "EPR",
+    "CSC",
+    "PBP"
+  ],
+  "key": {
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "circuitAdvanced"
+    },
+    "P": {
+      "type": "forge:ore_dict",
+      "ore": "plateAluminium"
+    },
+    "E": {
+      "type": "gregtech:metaitem",
+      "name": "emitter.mv"
+    },
+    "R": {
+      "type": "gregtech:metaitem",
+      "name": "sensor.mv"
+    },
+    "S": {
+      "item": "minecraft:diamond"
+    },
+    "B": {
+      "type": "gregtech:metaitem",
+      "name": "battery.re.mv.lithium"
+    }
+  },
+  "result": {
+    "name": "tool.scanner"
+  }
+}

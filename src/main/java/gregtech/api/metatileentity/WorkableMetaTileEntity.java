@@ -36,6 +36,9 @@ public abstract class WorkableMetaTileEntity<T extends Recipe> extends TieredMet
     @Override
     public void onPostTick(long tickTimer) {
         super.onPostTick(tickTimer);
+        if (getWorld().isRemote) {
+            return;
+        }
         if(progressTime == 0) {
             long maxVoltage = Math.max(getInputVoltage(), getOutputVoltage());
             T pickedRecipe = recipeMap.findRecipe(holder, previousRecipe, true, maxVoltage, importItems, importFluids);
@@ -97,7 +100,7 @@ public abstract class WorkableMetaTileEntity<T extends Recipe> extends TieredMet
         this.maxProgressTime = maxProgress;
         if(!getWorld().isRemote) {
             markDirty();
-            holder.writeCustomData(6, buf -> buf.writeInt(maxProgress));
+            holder.writeCustomData(5, buf -> buf.writeInt(maxProgress));
         }
     }
 
@@ -138,18 +141,18 @@ public abstract class WorkableMetaTileEntity<T extends Recipe> extends TieredMet
         this.isActive = active;
         if(!getWorld().isRemote) {
             markDirty();
-            holder.writeCustomData(5, buf -> buf.writeBoolean(active));
+            holder.writeCustomData(4, buf -> buf.writeBoolean(active));
         }
     }
 
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         switch (dataId) {
-            case 5:
+            case 4:
                 this.isActive = buf.readBoolean();
-                markBlockForRenderUpdate(); // FIXME this rerenders chank everytime when recipe is completed
+                markBlockForRenderUpdate(); // FIXME this rerenders chunk every time recipe is completed
                 break;
-            case 6:
+            case 5:
                 this.maxProgressTime = buf.readInt();
                 break;
             default:

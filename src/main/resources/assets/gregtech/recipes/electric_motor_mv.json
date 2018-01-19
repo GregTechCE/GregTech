@@ -1,0 +1,29 @@
+{
+  "type": "gregtech:metaitem_shaped",
+  "pattern": [
+    "CWR",
+    "WIW",
+    "RWC"
+  ],
+  "key": {
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "stickSteelMagnetic"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "stickAluminium"
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "wireGt02Copper"
+    },
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "cableGt01Copper"
+    }
+  },
+  "result": {
+    "name": "electric.motor.mv"
+  }
+}

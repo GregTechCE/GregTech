@@ -1,0 +1,29 @@
+{
+  "type": "gregtech:metaitem_shaped",
+  "pattern": [
+    "CWR",
+    "WIW",
+    "RWC"
+  ],
+  "key": {
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "stickNeodymiumMagnetic"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "stickTungstenSteel"
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "wireGt16AnnealedCopper"
+    },
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "cableGt01Tungsten"
+    }
+  },
+  "result": {
+    "name": "electric.motor.iv"
+  }
+}

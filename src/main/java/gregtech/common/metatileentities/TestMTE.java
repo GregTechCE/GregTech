@@ -5,10 +5,7 @@ import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.LabelWidget;
 import gregtech.api.gui.widgets.ProgressWidget;
 import gregtech.api.gui.widgets.SlotWidget;
-import gregtech.api.metatileentity.IMetaTileEntity;
-import gregtech.api.metatileentity.IMetaTileEntityFactory;
-import gregtech.api.metatileentity.MetaTileEntityUIFactory;
-import gregtech.api.metatileentity.WorkableMetaTileEntity;
+import gregtech.api.metatileentity.*;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.util.GTResourceLocation;
@@ -21,10 +18,10 @@ import net.minecraft.util.EnumHand;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TestMTE extends WorkableMetaTileEntity<Recipe> {
+public class TestMTE extends WorkableSteamMetaTileEntity<Recipe> {
 
-    public TestMTE(IMetaTileEntityFactory factory, int tier, RecipeMap<Recipe, ?> recipeMap) {
-        super(factory, tier, recipeMap);
+    public TestMTE(IMetaTileEntityFactory factory, RecipeMap<Recipe, ?> recipeMap) {
+        super(factory, recipeMap);
     }
 
     @Override
@@ -49,12 +46,12 @@ public class TestMTE extends WorkableMetaTileEntity<Recipe> {
 
     @Override
     public FluidTankHandler createImportFluidHandler() {
-        return new FluidTankHandler(0);
+        return new FluidTankHandler();
     }
 
     @Override
     public FluidTankHandler createExportFluidHandler() {
-        return new FluidTankHandler(0);
+        return new FluidTankHandler();
     }
 
     @Override
@@ -67,8 +64,10 @@ public class TestMTE extends WorkableMetaTileEntity<Recipe> {
                 .setBackgroundLocation(new GTResourceLocation("textures/gui/bronze/slot_bronze_furnace_background.png"))
                 .setOnSlotChanged(this::markDirty))
             .widget(2, new ProgressWidget<TestMTE>(78, 25)
-                .setImageLocation(new GTResourceLocation("textures/gui/bronze/progress_bar_bronze.png"))
-                .setFilledImageLocation(new GTResourceLocation("textures/gui/bronze/progress_bar_bronze_filled.png")))
+                .setImageLocation(new GTResourceLocation("textures/gui/bronze/progress_bar_bronze_furnace.png"))
+                .setFilledImageLocation(new GTResourceLocation("textures/gui/bronze/progress_bar_bronze_furnace_filled.png"))
+                .setImageWidthHeight(20,16)//optional
+                .setImageUV(0,0))//optional but included anyway as a good example for new widgets
             .widget(3, new SlotWidget<TestMTE>(this.exportItems, 0, 107, 25, true, false)
                 .setImageLocation(slotImageLocation)
                 .setOnSlotChanged(this::markDirty))
@@ -88,20 +87,5 @@ public class TestMTE extends WorkableMetaTileEntity<Recipe> {
     @Override
     public int getComparatorValue() {
         return 0;
-    }
-
-    @Override
-    public boolean inputsEnergy(EnumFacing side) {
-        return true;
-    }
-
-    @Override
-    public long getEnergyCapacity() {
-        return 16000;
-    }
-
-    @Override
-    public long getInputAmperage() {
-        return 1;
     }
 }

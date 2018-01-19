@@ -345,11 +345,11 @@ public class GTUtility {
     }
 
     public static List<ItemStack> copyStackList(List<ItemStack> itemStacks) {
-        List<ItemStack> stacks = new ArrayList<>(itemStacks.size());
+        ItemStack[] stacks = new ItemStack[itemStacks.size()];
         for (int i = 0; i < itemStacks.size(); i++) {
-            stacks.set(i, copy(itemStacks.get(i)));
+            stacks[i] = copy(itemStacks.get(i));
         }
-        return stacks;
+        return Arrays.asList(stacks);
     }
 
     public static ItemStack[] copyStackArray(ItemStack... stacks) {

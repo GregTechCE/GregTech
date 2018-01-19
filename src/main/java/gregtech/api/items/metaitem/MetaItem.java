@@ -1,10 +1,12 @@
 package gregtech.api.items.metaitem;
 
-import com.google.common.collect.ImmutableList;
+import gnu.trove.map.TObjectShortMap;
 import gnu.trove.map.TShortObjectMap;
+import gnu.trove.map.custom_hash.TObjectShortCustomHashMap;
 import gnu.trove.map.hash.TShortObjectHashMap;
-import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
+import gregtech.api.capability.impl.CombinedCapabilityProvider;
+import gregtech.api.capability.impl.ElectricItem;
 import gregtech.api.capability.impl.ThermalFluidHandlerItemStack;
 import gregtech.api.items.OreDictNames;
 import gregtech.api.items.metaitem.stats.IElectricStats;
@@ -18,6 +20,14 @@ import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -40,11 +50,11 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-import org.apache.commons.lang3.Validate;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * MetaItem is item that can have up to Short.MAX_VALUE items inside one id.
@@ -60,8 +70,8 @@ import java.util.List;
  */
 @SuppressWarnings("deprecation")
 public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item {
-
     private TShortObjectMap<T> metaItems = new TShortObjectHashMap<>();
+    private Map<String, T> names = new HashMap<String, T>();
 
     protected final short metaItemOffset;
 
@@ -88,6 +98,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         Validate.inclusiveBetween(0, Short.MAX_VALUE - 1, metaValue, "MetaItem ID should be in range from 0 to Short.MAX_VALUE-1");
         T metaValueItem = constructMetaValueItem((short) metaValue, unlocalizedName, nameParameters);
         metaItems.put((short) metaValue, metaValueItem);
+        names.put(unlocalizedName, metaValueItem);
         return metaValueItem;
     }
 
@@ -95,9 +106,15 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         return metaItems.get(metaValue);
     }
 
+    public final T getItem(String valueName) {
+        return names.get(valueName);
+    }
+
     public final T getItem(ItemStack itemStack) {
         return getItem((short) (itemStack.getItemDamage() - metaItemOffset));
     }
+
+    public void registerSubItems() {}
 
     //////////////////////////////////////////////////////////////////
     //                 ISpecialElectricItem Implementation          //
@@ -105,7 +122,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
 
     protected IElectricStats getElectricStats(ItemStack itemStack) {
         T metaValueItem = getItem(itemStack);
-        if(metaValueItem == null) {
+        if (metaValueItem == null) {
             return ElectricStats.EMPTY;
         }
         IElectricStats electricStats = metaValueItem.getElectricStats();
@@ -123,17 +140,39 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
         T metaValueItem = getItem(stack);
-        if(metaValueItem == null) {
+        if (metaValueItem == null) {
             return null;
         }
         IFluidStats fluidStats = metaValueItem.getFluidStats();
-        if (fluidStats == null) {
-            return null;
+        IElectricStats electricStats = metaValueItem.getElectricStats();
+        if (electricStats != null && fluidStats != null) {
+            ThermalFluidHandlerItemStack handlerItemStack = new ThermalFluidHandlerItemStack(stack,
+                fluidStats.getCapacity(stack),
+                fluidStats.getMinFluidTemperature(stack),
+                fluidStats.getMaxFluidTemperature(stack));
+
+            ElectricItem electricItem = new ElectricItem(electricStats.getMaxCharge(),
+                electricStats.getTier(),
+                electricStats.isChargeable(),
+                electricStats.isDischargeable());
+
+            return new CombinedCapabilityProvider(handlerItemStack, electricItem);
         }
-        return new ThermalFluidHandlerItemStack(stack,
-            fluidStats.getCapacity(stack),
-            fluidStats.getMinFluidTemperature(stack),
-            fluidStats.getMaxFluidTemperature(stack));
+
+        if (fluidStats != null) {
+            return new ThermalFluidHandlerItemStack(stack,
+                fluidStats.getCapacity(stack),
+                fluidStats.getMinFluidTemperature(stack),
+                fluidStats.getMaxFluidTemperature(stack));
+        }
+
+        if (electricStats != null) {
+            return new ElectricItem(electricStats.getMaxCharge(),
+                electricStats.getTier(),
+                electricStats.isChargeable(),
+                electricStats.isDischargeable());
+        }
+        return null;
     }
 
     //////////////////////////////////////////////////////////////////
@@ -141,7 +180,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     @Override
     public int getItemBurnTime(ItemStack itemStack) {
         T metaValueItem = getItem(itemStack);
-        if(metaValueItem == null) {
+        if (metaValueItem == null) {
             return super.getItemBurnTime(itemStack);
         }
         return metaValueItem.getBurnValue();
@@ -153,7 +192,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
 
     private IItemUseManager getUseManager(ItemStack itemStack) {
         T metaValueItem = getItem(itemStack);
-        if(metaValueItem == null) {
+        if (metaValueItem == null) {
             return null;
         }
         return metaValueItem.getUseManager();
@@ -161,7 +200,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
 
     private IItemDurabilityManager getDurabilityManager(ItemStack itemStack) {
         T metaValueItem = getItem(itemStack);
-        if(metaValueItem == null) {
+        if (metaValueItem == null) {
             return null;
         }
         return metaValueItem.getDurabilityManager();
@@ -169,7 +208,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
 
     public List<IItemBehaviour> getBehaviours(ItemStack itemStack) {
         T metaValueItem = getItem(itemStack);
-        if(metaValueItem == null) {
+        if (metaValueItem == null) {
             return ImmutableList.of();
         }
         return metaValueItem.getBehaviours();
@@ -178,7 +217,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     @Override
     public int getItemStackLimit(ItemStack stack) {
         T metaValueItem = getItem(stack);
-        if(metaValueItem == null) {
+        if (metaValueItem == null) {
             return 64;
         }
         return metaValueItem.getMaxStackSize();
@@ -187,7 +226,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     @Override
     public EnumAction getItemUseAction(ItemStack stack) {
         IItemUseManager useManager = getUseManager(stack);
-        if(useManager != null) {
+        if (useManager != null) {
             return useManager.getUseAction(stack);
         }
         return EnumAction.NONE;
@@ -196,18 +235,17 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     @Override
     public int getMaxItemUseDuration(ItemStack stack) {
         IItemUseManager useManager = getUseManager(stack);
-        if(useManager != null) {
+        if (useManager != null) {
             return useManager.getMaxItemUseDuration(stack);
         }
         return 0;
     }
 
-
     @Override
     public void onUsingTick(ItemStack stack, EntityLivingBase player, int count) {
-        if(player instanceof EntityPlayer) {
+        if (player instanceof EntityPlayer) {
             IItemUseManager useManager = getUseManager(stack);
-            if(useManager != null) {
+            if (useManager != null) {
                 useManager.onItemUsingTick(stack, (EntityPlayer) player, count);
             }
         }
@@ -215,9 +253,9 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
 
     @Override
     public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase player, int timeLeft) {
-        if(player instanceof EntityPlayer) {
+        if (player instanceof EntityPlayer) {
             IItemUseManager useManager = getUseManager(stack);
-            if(useManager != null) {
+            if (useManager != null) {
                 useManager.onPlayerStoppedItemUsing(stack, (EntityPlayer) player, timeLeft);
             }
         }
@@ -226,9 +264,9 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     @Nullable
     @Override
     public ItemStack onItemUseFinish(ItemStack stack, World world, EntityLivingBase player) {
-        if(player instanceof EntityPlayer) {
+        if (player instanceof EntityPlayer) {
             IItemUseManager useManager = getUseManager(stack);
-            if(useManager != null) {
+            if (useManager != null) {
                 return useManager.onItemUseFinish(stack, (EntityPlayer) player);
             }
         }
@@ -238,8 +276,8 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     @Override
     public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
         boolean returnValue = false;
-        for(IItemBehaviour behaviour : getBehaviours(stack)) {
-            if(behaviour.onLeftClickEntity(stack, player, entity)) {
+        for (IItemBehaviour behaviour : getBehaviours(stack)) {
+            if (behaviour.onLeftClickEntity(stack, player, entity)) {
                 returnValue = true;
             }
         }
@@ -249,7 +287,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         ItemStack itemStack = player.getHeldItem(hand);
-        for(IItemBehaviour behaviour : getBehaviours(itemStack)) {
+        for (IItemBehaviour behaviour : getBehaviours(itemStack)) {
             ActionResult<ItemStack> behaviourResult = behaviour.onItemRightClick(world, player, hand);
             itemStack = behaviourResult.getResult();
             if (behaviourResult.getType() != EnumActionResult.PASS) {
@@ -259,7 +297,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             }
         }
         IItemUseManager useManager = getUseManager(itemStack);
-        if(useManager != null && useManager.canStartUsing(itemStack, player)) {
+        if (useManager != null && useManager.canStartUsing(itemStack, player)) {
             useManager.onItemUseStart(itemStack, player);
             player.setActiveHand(hand);
             return ActionResult.newResult(EnumActionResult.SUCCESS, itemStack);
@@ -271,24 +309,24 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack stack = player.getHeldItem(hand);
         ItemStack originalStack = stack.copy();
-        for(IItemBehaviour behaviour : getBehaviours(stack)) {
+        for (IItemBehaviour behaviour : getBehaviours(stack)) {
             ActionResult<ItemStack> behaviourResult = behaviour.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
             stack = behaviourResult.getResult();
-            if(behaviourResult.getType() != EnumActionResult.PASS) {
-                if(!ItemStack.areItemStacksEqual(originalStack, stack))
+            if (behaviourResult.getType() != EnumActionResult.PASS) {
+                if (!ItemStack.areItemStacksEqual(originalStack, stack))
                     player.setHeldItem(hand, stack);
                 return behaviourResult.getType();
-            } else if(stack.isEmpty()) {
+            } else if (stack.isEmpty()) {
                 player.setHeldItem(hand, ItemStack.EMPTY);
                 return EnumActionResult.PASS;
             }
         }
         EnumAction useAction = getItemUseAction(stack);
-        if(useAction != EnumAction.NONE) {
+        if (useAction != EnumAction.NONE) {
             player.setActiveHand(hand);
             return EnumActionResult.SUCCESS;
         }
-        if(!ItemStack.areItemStacksEqual(originalStack, stack))
+        if (!ItemStack.areItemStacksEqual(originalStack, stack))
             player.setHeldItem(hand, stack);
         return EnumActionResult.PASS;
     }
@@ -324,13 +362,13 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                 lines.add(I18n.format(unlocalizedTooltip));
             }
 
-            IElectricStats electricStats = getElectricStats(itemStack);
+/*            IElectricStats electricStats = getElectricStats(itemStack);
             if (electricStats.getMaxCharge(itemStack) > 0) {
                 lines.add(I18n.format("metaitem.generic.electric_item.tooltip",
                     electricStats.getCharge(itemStack),
                     electricStats.getMaxCharge(itemStack),
                     GTValues.V[electricStats.getTier(itemStack)]));
-            }
+            }*/
             /*if (getCapacity(itemStack) > 0) {
                 FluidStack fluid = getFluid(itemStack);
                 if (fluid != null) {
@@ -367,12 +405,12 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                             }
                         }
                     }*/
-                    IElectricStats electricStats = getElectricStats(itemStack);
+/*                    IElectricStats electricStats = getElectricStats(itemStack);
                     if (electricStats.getMaxCharge(itemStack) > 0) {
                         ItemStack chargedStack = itemStack.copy();
                         electricStats.charge(chargedStack, Integer.MAX_VALUE, Integer.MAX_VALUE, true, false);
                         subItems.add(chargedStack);
-                    }
+                    }*/
                     subItems.add(itemStack);
                 }
             }
@@ -412,7 +450,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         }
 
         public MetaValueItem setMaterialInfo(ItemMaterialInfo materialInfo) {
-            if(materialInfo == null) {
+            if (materialInfo == null) {
                 throw new IllegalArgumentException("Cannot add null ItemMaterialInfo.");
             }
             OreDictUnifier.registerOre(getStackForm(), materialInfo);
@@ -420,7 +458,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         }
 
         public MetaValueItem setUnificationData(OrePrefix prefix, @Nullable Material material) {
-            if(prefix == null) {
+            if (prefix == null) {
                 throw new IllegalArgumentException("Cannot add null OrePrefix.");
             }
             OreDictUnifier.registerOre(getStackForm(), prefix, material);
@@ -428,7 +466,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         }
 
         public MetaValueItem addOreDict(String oreDictName) {
-            if(oreDictName == null) {
+            if (oreDictName == null) {
                 throw new IllegalArgumentException("Cannot add null OreDictName.");
             }
             OreDictionary.registerOre(oreDictName, getStackForm());
@@ -436,7 +474,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         }
 
         public MetaValueItem addOreDict(OreDictNames oreDictName) {
-            if(oreDictName == null) {
+            if (oreDictName == null) {
                 throw new IllegalArgumentException("Cannot add null OreDictName.");
             }
             OreDictionary.registerOre(oreDictName.name(), getStackForm());
@@ -449,7 +487,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         }
 
         public MetaValueItem setMaxStackSize(int maxStackSize) {
-            if(maxStackSize <= 0) {
+            if (maxStackSize <= 0) {
                 throw new IllegalArgumentException("Cannot set Max Stack Size to negative or zero value.");
             }
             this.maxStackSize = maxStackSize;
@@ -457,7 +495,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         }
 
         public MetaValueItem setBurnValue(int burnValue) {
-            if(burnValue <= 0) {
+            if (burnValue <= 0) {
                 throw new IllegalArgumentException("Cannot set Burn Value to negative or zero number.");
             }
             this.burnValue = burnValue;
@@ -465,14 +503,14 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         }
 
         public MetaValueItem addStats(IMetaItemStats... stats) {
-            for(IMetaItemStats metaItemStats : stats) {
-                if(metaItemStats instanceof IItemDurabilityManager) {
+            for (IMetaItemStats metaItemStats : stats) {
+                if (metaItemStats instanceof IItemDurabilityManager) {
                     setDurabilityManager((IItemDurabilityManager) metaItemStats);
                 }
-                if(metaItemStats instanceof IItemUseManager) {
+                if (metaItemStats instanceof IItemUseManager) {
                     setUseManager((IItemUseManager) metaItemStats);
                 }
-                if(metaItemStats instanceof IFoodStats) {
+                if (metaItemStats instanceof IFoodStats) {
                     setFoodStats((IFoodStats) metaItemStats);
                 }
                 if (metaItemStats instanceof IItemBehaviour) {
@@ -493,38 +531,38 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         }
 
         protected void setDurabilityManager(IItemDurabilityManager durabilityManager) {
-            if(durabilityManager == null) {
+            if (durabilityManager == null) {
                 throw new IllegalArgumentException("Cannot set Durability Manager to null.");
             }
-            if(this.durabilityManager != null) {
+            if (this.durabilityManager != null) {
                 throw new IllegalStateException("Tried to set Durability Manager to " + durabilityManager + ", but they're already set to " + this.durabilityManager);
             }
             this.durabilityManager = durabilityManager;
         }
 
         protected void setElectricStats(IElectricStats electricStats) {
-            if(electricStats == null) {
+            if (electricStats == null) {
                 throw new IllegalArgumentException("Cannot set Electric Stats to null.");
             }
-            if(this.electricStats != null) {
+            if (this.electricStats != null) {
                 throw new IllegalStateException("Tried to set Electric Stats to " + electricStats + ", but they're already set to " + this.electricStats);
             }
             this.electricStats = electricStats;
         }
 
         protected MetaValueItem setFluidStats(IFluidStats fluidStats) {
-            if(fluidStats == null) {
+            if (fluidStats == null) {
                 throw new IllegalArgumentException("Cannot set Fluid Stats to null.");
             }
-            if(this.fluidStats != null) {
+            if (this.fluidStats != null) {
                 throw new IllegalStateException("Tried to set Fluid Stats to " + fluidStats + ", but they're already set to " + this.fluidStats);
             }
             this.fluidStats = fluidStats;
             return this;
         }
-        
+
         protected void setUseManager(IItemUseManager useManager) {
-            if(this.useManager != null) {
+            if (this.useManager != null) {
                 throw new IllegalStateException("Tried to set Use Manager to " + useManager + ", but it's already set to " + this.useManager);
             }
             this.useManager = useManager;
@@ -581,6 +619,13 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             return getStackForm(1);
         }
 
+        @Override
+        public String toString() {
+            return new ToStringBuilder(this)
+                .append("metaValue", metaValue)
+                .append("unlocalizedName", unlocalizedName)
+                .toString();
+        }
     }
 
 }

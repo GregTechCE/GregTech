@@ -3,25 +3,18 @@ package gregtech.common.blocks.tileentity;
 import com.google.common.collect.ImmutableList;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.common.blocks.BlockCable;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockPos.PooledMutableBlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.Stack;
-import java.util.function.Predicate;
 
-public class TileEntityCableEmitter extends TileEntity implements IEnergyContainer {
+public class TileEntityCableEmitter extends TileEntity implements IEnergyContainer, ITickable {
 
     private static class ConnectionInfo {
         public final TileEntity receiverContainer;
@@ -74,89 +67,37 @@ public class TileEntityCableEmitter extends TileEntity implements IEnergyContain
 
     @Override
     public long acceptEnergyFromNetwork(EnumFacing side, long voltage, long amperage) {
-        List<IEnergyContainer> containers = new ArrayList<>();
-        outgoingConnections.forEach(connectionInfo -> {
-            if (voltage > connectionInfo.getCableVoltage() && amperage > connectionInfo.getCableAmperage()) {
-                connectionInfo.path.forEach(cableEntry -> burnCable(cableEntry, entry -> entry.maxVoltage < voltage && entry.maxAmperage < amperage));
-            } else if (voltage > connectionInfo.getCableVoltage()) {
-                connectionInfo.path.forEach(cableEntry -> burnCable(cableEntry, entry -> entry.maxVoltage < voltage));
-            } else if (amperage > connectionInfo.getCableAmperage()) {
-                connectionInfo.path.forEach(cableEntry -> burnCable(cableEntry, entry -> entry.maxAmperage < amperage));
-            } else {
-                IEnergyContainer container = connectionInfo.receiverContainer.getCapability(IEnergyContainer.CAPABILITY_ENERGY_CONTAINER, side);
-                if (container != null) {
-                    containers.add(container);
-                }
-            }
-        });
-        // TODO transfer loss???
-        long amperesUsed = 0;
-        for (IEnergyContainer container : containers) {
-            amperesUsed += container.acceptEnergyFromNetwork(null, voltage, amperage);
-        }
-        return amperesUsed;
+
+        return 0L;
     }
 
-    protected void burnCable(CachedCableEntry cableEntry, Predicate<CachedCableEntry> burnPredicate) {
-        if (burnPredicate.test(cableEntry)) {
-            // burn baby, burn
-            this.getWorld().setBlockState(new BlockPos(cableEntry.posX, cableEntry.posY, cableEntry.posZ), Blocks.FIRE.getDefaultState());
-        }
-    }
+
+    private boolean shouldRefreshConnections;
 
     public void refreshConnections() {
-        this.outgoingConnections.clear();
-        PooledMutableBlockPos currentPos = PooledMutableBlockPos.retain(getPos().getX(), getPos().getY(), getPos().getZ());
-        List<BlockPos> visited = new ArrayList<>();
-        Stack<EnumFacing> moveStack = new Stack<>();
-        Stack<CachedCableEntry> pathStack = new Stack<>();
-        while(true) {
-            for(EnumFacing facing : EnumFacing.VALUES) {
-                currentPos.move(facing);
-                EnumFacing opposite = facing.getOpposite();
-                if (!visited.contains(currentPos)) {
-                    visited.add(currentPos.toImmutable());
-                } else {
-                    currentPos.move(opposite);
-                    continue;
-                }
-                IBlockState blockStateAt = world.getBlockState(currentPos);
-                if(blockStateAt.getBlock() instanceof BlockCable) {
-                    //if it is cable, move forward and add opposite direction to move stack
-                    moveStack.push(opposite);
-                    pathStack.push(new CachedCableEntry((BlockCable) blockStateAt.getBlock(), currentPos));
-                    continue;
-                } else if(blockStateAt.getBlock().hasTileEntity(blockStateAt)) {
-                    //if it is tile entity container, check if tile entity has IEnergyContainer and then add it to connections
-                    TileEntity tileEntity = world.getTileEntity(currentPos);
-                    IEnergyContainer container = tileEntity == null ? null : tileEntity.getCapability(
-                        IEnergyContainer.CAPABILITY_ENERGY_CONTAINER, opposite);
-                    if(container != null && container.inputsEnergy(opposite)) {
-                        ConnectionInfo connectionInfo = new ConnectionInfo(tileEntity, pathStack);
-                        this.outgoingConnections.add(connectionInfo);
-                    }
-                }
-                //move back if we aren't cable and din't continue
-                currentPos.move(opposite);
-            }
-            //if we didn't found any cable, go back, or return
-            if(!moveStack.isEmpty()) {
-                currentPos.move(moveStack.pop());
-            } else break;
+        this.shouldRefreshConnections = true;
+    }
+
+    @Override
+    public void update() {
+        if(this.shouldRefreshConnections) {
+            this.shouldRefreshConnections = false;
+            this.outgoingConnections.clear();
+
         }
-        currentPos.release();
     }
 
     @Override
     public void invalidate() {
         super.invalidate();
         this.outgoingConnections.clear();
+        this.shouldRefreshConnections = false;
     }
 
     @Override
     public void validate() {
         super.validate();
-//        this.refreshConnections(); // FIXME StackOverflowError
+        this.shouldRefreshConnections = true;
     }
 
     @Override

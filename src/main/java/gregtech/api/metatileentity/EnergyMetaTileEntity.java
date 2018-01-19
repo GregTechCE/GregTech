@@ -3,6 +3,7 @@ package gregtech.api.metatileentity;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.util.GTUtility;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -43,6 +44,9 @@ public abstract class EnergyMetaTileEntity extends PaintableMetaTileEntity imple
     @Override
     public void onPreTick(long tickTimer) {
         super.onPreTick(tickTimer);
+        if (getWorld().isRemote) {
+            return;
+        }
         if(getEnergyStored() >= getOutputVoltage() && getOutputVoltage() > 0 && getOutputAmperage() > 0) {
             long outputVoltage = getOutputVoltage();
             long outputAmperes = Math.min(getEnergyStored() / outputVoltage, getOutputAmperage());
@@ -95,8 +99,6 @@ public abstract class EnergyMetaTileEntity extends PaintableMetaTileEntity imple
         this.energyStored = energyStored;
         if(!getWorld().isRemote) {
             markDirty();
-            holder.writeCustomData(4, buf -> buf.writeLong(energyStored));
         }
     }
-
 }

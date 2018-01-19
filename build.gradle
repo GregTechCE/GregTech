@@ -96,6 +96,15 @@ processResources
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
+	
+	// access transformer
+	rename '(.+_at.cfg)', 'META-INF/$1'
+}
+
+jar {
+	manifest {
+	    attributes 'FMLAT': 'gregtech_at.cfg'
+	}
 }
 
 task source(type: Jar) {

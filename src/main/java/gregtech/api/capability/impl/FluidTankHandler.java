@@ -13,7 +13,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,12 +22,8 @@ public class FluidTankHandler implements IFluidHandler, IMultipleTankHandler, IN
     protected final List<FluidTank> fluidTanks;
     protected IFluidTankProperties[] properties;
 
-    public FluidTankHandler(int size) {
-        fluidTanks = new ArrayList<>(size);
-    }
-
-    public FluidTankHandler(List<FluidTank> fluidTanks) {
-        this.fluidTanks = fluidTanks;
+    public FluidTankHandler(FluidTank... fluidTanks) {
+        this.fluidTanks = Arrays.asList(fluidTanks);
     }
 
     @Override
@@ -160,6 +156,6 @@ public class FluidTankHandler implements IFluidHandler, IMultipleTankHandler, IN
 
     protected void validateTankIndex(int tank) {
         if (tank < 0 || tank >= fluidTanks.size())
-            throw new RuntimeException("Tank " + tank + " not in valid range - [0," + fluidTanks.size() + ")");
+            throw new RuntimeException("Tank " + tank + " not in valid range - (0," + fluidTanks.size() + "]");
     }
 }

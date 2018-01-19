@@ -1,0 +1,25 @@
+{
+  "type": "gregtech:metaitem_shaped",
+  "pattern": [
+    "IAI",
+    "ADA",
+    "IAI"
+  ],
+  "key": {
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "dustDiamond"
+    },
+    "A": {
+      "type": "forge:ore_dict",
+      "ore": "plateAlloyAdvanced"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "plateIridium"
+    }
+  },
+  "result": {
+    "name": "ingot.iridiumalloy"
+  }
+}

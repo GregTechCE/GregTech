@@ -17,6 +17,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
@@ -66,54 +67,24 @@ public class GregtechTileEntity extends TickableTileEntityBase implements IGregT
     }
 
     @Override
-    public void receiveCustomData(PacketBuffer buf) {
-        int dataId = buf.readInt();
-        switch (dataId) {
-            case 0:
-                IMetaTileEntityFactory factory = GregTechAPI.METATILEENTITY_REGISTRY.getObjectById(buf.readShort());
-                this.setMetaTileEntity(factory.constructMetaTileEntity());
-                this.metaTileEntity.receiveInitialData(buf);
-                break;
-            default:
-                if (metaTileEntity != null) {
-                    metaTileEntity.receiveCustomData(dataId, buf);
-                }
-        }
-    }
-
-    public void writeCustomData(int dataId, Consumer<PacketBuffer> dataWriter) {
-        PacketBuffer packetBuffer = new PacketBuffer(Unpooled.buffer());
-        packetBuffer.writeInt(dataId);
-        dataWriter.accept(packetBuffer);
-        if (!world.isRemote) {
-            WorldServer worldServer = (WorldServer) world;
-            PlayerChunkMapEntry entry = worldServer.getPlayerChunkMap().getEntry(pos.getX() >> 4, pos.getZ() >> 4);
-            if (entry != null) {
-                for (EntityPlayerMP player : entry.players) {
-                    NetworkHandler.channel.sendTo(NetworkHandler.packet2proxy(new PacketCustomTileData(pos, packetBuffer)), player);
-                }
-            }
-        } else {
-            //it is error
-            GTLog.logger.warn("Attempted to call writeCustomData on client side!", new IllegalArgumentException());
+    public void receiveCustomData(int discriminator, PacketBuffer buffer) {
+        if(this.metaTileEntity != null) {
+            this.metaTileEntity.receiveCustomData(discriminator, buffer);
         }
     }
 
     @Override
-    public void writeInitialSyncData(EntityPlayerMP player) {
-        if (metaTileEntity != null) {
-            PacketBuffer packetBuffer = new PacketBuffer(Unpooled.buffer());
-            packetBuffer.writeInt(0);
-            writeInitialSyncData(packetBuffer);
-            NetworkHandler.channel.sendTo(NetworkHandler.packet2proxy(new PacketCustomTileData(pos, packetBuffer)), player);
-        }
+    public void receiveInitialSyncData(PacketBuffer buf) {
+        IMetaTileEntityFactory factory = GregTechAPI.METATILEENTITY_REGISTRY.getObjectById(buf.readShort());
+        this.setMetaTileEntity(factory.constructMetaTileEntity());
+        this.metaTileEntity.receiveInitialData(buf);
+        this.world.markBlockRangeForRenderUpdate(getPos(), getPos());
     }
 
-    private void writeInitialSyncData(PacketBuffer packetBuffer) {
-        if (metaTileEntity != null) {
-            packetBuffer.writeShort(GregTechAPI.METATILEENTITY_REGISTRY.getIDForObject(metaTileEntity.factory));
-            metaTileEntity.writeInitialData(packetBuffer);
-        }
+    @Override
+    public void writeInitialSyncData(PacketBuffer packetBuffer) {
+        packetBuffer.writeShort(GregTechAPI.METATILEENTITY_REGISTRY.getIDForObject(metaTileEntity.factory));
+        metaTileEntity.writeInitialData(packetBuffer);
     }
 
     @Override

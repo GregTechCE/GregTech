@@ -1,0 +1,40 @@
+{
+  "type": "gregtech:metaitem_shapeless",
+  "ingredients": [
+    {
+      "type": "gregtech:metaitem",
+      "name": "credit.silver"
+    },
+    {
+      "type": "gregtech:metaitem",
+      "name": "credit.silver"
+    },
+    {
+      "type": "gregtech:metaitem",
+      "name": "credit.silver"
+    },
+    {
+      "type": "gregtech:metaitem",
+      "name": "credit.silver"
+    },
+    {
+      "type": "gregtech:metaitem",
+      "name": "credit.silver"
+    },
+    {
+      "type": "gregtech:metaitem",
+      "name": "credit.silver"
+    },
+    {
+      "type": "gregtech:metaitem",
+      "name": "credit.silver"
+    },
+    {
+      "type": "gregtech:metaitem",
+      "name": "credit.silver"
+    }
+  ],
+  "result": {
+    "name": "credit.gold"
+  }
+}

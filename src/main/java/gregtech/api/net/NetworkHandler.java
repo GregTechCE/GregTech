@@ -1,19 +1,16 @@
 package gregtech.api.net;
 
 import gregtech.api.GTValues;
-import gregtech.api.capability.internal.ICustomDataTile;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.UIFactory;
 import gregtech.api.gui.impl.ModularUIGui;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IntIdentityHashBiMap;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -29,7 +26,11 @@ import java.util.HashMap;
 
 public class NetworkHandler {
 
-    public interface Packet {}
+    public interface Packet {
+        default FMLProxyPacket toFMLPacket() {
+            return packet2proxy(this);
+        }
+    }
 
     @FunctionalInterface
     public interface PacketEncoder<T extends Packet> {
@@ -88,7 +89,7 @@ public class NetworkHandler {
                         new PacketBuffer(buf.readBytes(buf.readInt()))
                 )
         ));
-        MinecraftForge.EVENT_BUS.register(new ChunkWatchListener());
+        MinecraftForge.EVENT_BUS.register(new CustomDataTileHandler());
 
         registerPacket(1, PacketUIOpen.class, new PacketCodec<>(
                 (packet, buf) -> {
@@ -128,14 +129,7 @@ public class NetworkHandler {
     @SideOnly(Side.CLIENT)
     private static void initClient() {
         registerClientExecutor(PacketCustomTileData.class, (packet, handler) -> {
-            WorldClient world = Minecraft.getMinecraft().world;
-            if (world == null) {
-                return;
-            }
-            TileEntity tileEntity = world.getTileEntity(packet.tileEntityPos);
-            if(tileEntity instanceof ICustomDataTile) {
-                ((ICustomDataTile) tileEntity).receiveCustomData(packet.payload);
-            }
+            CustomDataTileHandler.pendingInitialSyncData.put(packet.tileEntityPos, packet.payload);
         });
         registerClientExecutor(PacketUIOpen.class, (packet, handler) -> {
             UIFactory<?> uiFactory = UIFactory.FACTORY_REGISTRY.getObjectById(packet.uiFactoryId);
