@@ -1,24 +1,30 @@
 package gregtech.api;
 
+import com.google.common.collect.EnumHashBiMap;
+
+import gregtech.api.metatileentity.IMetaTileEntityFactory;
+import gregtech.api.unification.material.type.DustMaterial;
+import gregtech.api.unification.ore.StoneType;
+import gregtech.api.unification.stack.SimpleItemStack;
+import gregtech.api.util.GTControlledRegistry;
+import gregtech.api.util.GTWorldGen;
+import gregtech.api.util.IBlockOre;
+import gregtech.common.items.MetaItems;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraftforge.fluids.Fluid;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
-import com.google.common.collect.EnumHashBiMap;
-
-import gregtech.api.metatileentity.IMetaTileEntityFactory;
-import gregtech.api.unification.stack.SimpleItemStack;
-import gregtech.api.util.GTControlledRegistry;
-import gregtech.api.util.GTWorldGen;
-import gregtech.common.items.MetaItems;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.Fluid;
 
 public class GregTechAPI {
 
@@ -82,6 +88,11 @@ public class GregTechAPI {
      * The List of all GT worldgens, except for ore veins.
      */
     public static final List<GTWorldGen> worldgenList = new ArrayList<>();
+
+    /**
+     * Table of all ore blocks
+     */
+    public static final Map<DustMaterial, Map<StoneType, IBlockOre>> oreBlockTable = new HashMap<>(); 
 
     private static int size = 0; /* Used to assign Minecraft IDs to our SoundEvents. We don't use them. */
     /* TODO SOUNDS

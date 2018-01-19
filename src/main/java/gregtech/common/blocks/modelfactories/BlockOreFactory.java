@@ -63,13 +63,13 @@ public class BlockOreFactory extends AbstractBlockModelFactory {
                         .replace("$BASE_TEXTURE_SOUTH$", stoneType.baseTexture[3])
                         .replace("$BASE_TEXTURE_WEST$", stoneType.baseTexture[4])
                         .replace("$BASE_TEXTURE_EAST$", stoneType.baseTexture[5])
-                        .replace("$PARTICLE$", stoneType.particalTexture));
+                        .replace("$PARTICLE$", stoneType.particleTexture));
                 break;
             default:
                 variants.add(VARIANT_DEFINITION_NORMAL
                         .replace("$STONE_TYPE$", stoneType.name)
                         .replace("$BASE_TEXTURE$", stoneType.baseTexture[0])
-                        .replace("$PARTICLE$", stoneType.particalTexture));
+                        .replace("$PARTICLE$", stoneType.particleTexture));
                 break;
             }
         }

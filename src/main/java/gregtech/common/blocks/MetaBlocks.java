@@ -1,17 +1,6 @@
 package gregtech.common.blocks;
 
-import static gregtech.common.ClientProxy.COMPRESSED_BLOCK_COLOR;
-import static gregtech.common.ClientProxy.COMPRESSED_ITEM_COLOR;
-import static gregtech.common.ClientProxy.MACHINE_BLOCK_COLOR;
-import static gregtech.common.ClientProxy.MACHINE_ITEM_COLOR;
-import static gregtech.common.ClientProxy.ORE_BLOCK_COLOR;
-import static gregtech.common.ClientProxy.ORE_ITEM_COLOR;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.unification.material.Materials;
@@ -20,6 +9,9 @@ import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.ore.StoneType;
 import gregtech.api.unification.ore.StoneTypes;
+import gregtech.common.blocks.BlockGranite.GraniteVariant;
+import gregtech.common.blocks.BlockMineral.MineralVariant;
+import gregtech.common.blocks.StoneBlock.ChiselingVariant;
 import gregtech.common.metatileentities.MetaTileEntities;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
@@ -30,6 +22,8 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static gregtech.common.ClientProxy.*;
 
 public class MetaBlocks {
 
@@ -51,8 +45,12 @@ public class MetaBlocks {
     public static BlockConcrete CONCRETE;
 
     public static HashMap<DustMaterial, BlockCompressed> COMPRESSED;
-    public static HashMap<DustMaterial, HashMap<StoneType, BlockOre>> OREMAP;
     public static Collection<BlockOre> ORES;
+
+    public static StoneType BLACK_GRANITE;
+    public static StoneType RED_GRANITE;
+    public static StoneType MARBLE;
+    public static StoneType BASALT;
 
     public static void init() {
         BOILER_CASING = new BlockBoilerCasing();
@@ -71,13 +69,16 @@ public class MetaBlocks {
         WARNING_SIGN.setRegistryName("warning_sign");
         GRANITE = new BlockGranite();
         GRANITE.setRegistryName("granite");
+        BLACK_GRANITE = new StoneType(12, "black_granite", OrePrefix.oreBlackgranite, Materials.GraniteBlack, "gregtech:blocks/stones/granite/granite_black_stone", () -> GRANITE.withVariant(GraniteVariant.BLACK_GRANITE, ChiselingVariant.NORMAL), state -> state.getBlock() instanceof BlockGranite && ((BlockGranite) state.getBlock()).getVariant(state) == GraniteVariant.BLACK_GRANITE);
+        RED_GRANITE = new StoneType(13, "red_granite", OrePrefix.oreRedgranite, Materials.GraniteRed, "gregtech:blocks/stones/granite/granite_red_stone", () -> GRANITE.withVariant(GraniteVariant.RED_GRANITE, ChiselingVariant.NORMAL), state -> state.getBlock() instanceof BlockGranite && ((BlockGranite) state.getBlock()).getVariant(state) == GraniteVariant.RED_GRANITE);
         MINERAL = new BlockMineral();
         MINERAL.setRegistryName("mineral");
+        MARBLE = new StoneType(14, "marble", OrePrefix.oreMarble, Materials.Marble, "gregtech:blocks/stones/marble/marble_stone", () -> MINERAL.withVariant(MineralVariant.MARBLE, ChiselingVariant.NORMAL), state -> state.getBlock() instanceof BlockMineral && ((BlockMineral) state.getBlock()).getVariant(state) == BlockMineral.MineralVariant.MARBLE);
+        BASALT = new StoneType(15, "basalt", OrePrefix.oreBasalt, Materials.Basalt, "gregtech:blocks/stones/basalt/basalt_stone", () -> MINERAL.withVariant(MineralVariant.BASALT, ChiselingVariant.NORMAL),state -> state.getBlock() instanceof BlockMineral && ((BlockMineral) state.getBlock()).getVariant(state) == BlockMineral.MineralVariant.BASALT);
         CONCRETE = new BlockConcrete();
         CONCRETE.setRegistryName("concrete");
 
         COMPRESSED = new HashMap<>();
-        OREMAP = new HashMap<>();
         ORES = new ArrayList<>();
         StoneType.init();
         Material[] materialBuffer = new Material[16];
@@ -85,16 +86,16 @@ public class MetaBlocks {
         int generationIndex = 0;
         for(Material material : Material.MATERIAL_REGISTRY.getObjectsWithIds()) {
             if(material instanceof DustMaterial) {
-            	int id = Material.MATERIAL_REGISTRY.getIDForObject(material);
-            	int index = id / 16;
-            	if (index > generationIndex) {
-            		createCompressedBlock(materialBuffer, generationIndex);
-            		Arrays.fill(materialBuffer, Materials._NULL);
-            	}
-            	if (!OrePrefix.block.isIgnored(material)) {
-            		materialBuffer[id % 16] = material;
-            		generationIndex = index;
-            	}
+                int id = Material.MATERIAL_REGISTRY.getIDForObject(material);
+                int index = id / 16;
+                if (index > generationIndex) {
+                    createCompressedBlock(materialBuffer, generationIndex);
+                    Arrays.fill(materialBuffer, Materials._NULL);
+                }
+                if (!OrePrefix.block.isIgnored(material)) {
+                    materialBuffer[id % 16] = material;
+                    generationIndex = index;
+                }
                 if(material.hasFlag(DustMaterial.MatFlags.GENERATE_ORE)) {
                     createOreBlock((DustMaterial) material);
                 }
@@ -117,8 +118,8 @@ public class MetaBlocks {
         BlockCompressed block = new BlockCompressed(materials);
         block.setRegistryName("compressed_" + index);
         for (Material material : materials) {
-        	if (material instanceof DustMaterial)
-        		COMPRESSED.put((DustMaterial) material, block);
+            if (material instanceof DustMaterial)
+                COMPRESSED.put((DustMaterial) material, block);
         }
     }
 
@@ -142,7 +143,7 @@ public class MetaBlocks {
         BlockOre block = new BlockOre(material, stoneTypes);
         block.setRegistryName("ore_" + material + "_" + index);
         for (StoneType stoneType : stoneTypes) {
-            OREMAP.computeIfAbsent(material, m -> new HashMap<>()).put(stoneType, block);
+            GregTechAPI.oreBlockTable.computeIfAbsent(material, m -> new HashMap<>()).put(stoneType, block);
         }
         ORES.add(block);
     }

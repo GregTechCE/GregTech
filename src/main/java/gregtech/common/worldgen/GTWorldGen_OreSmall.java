@@ -3,7 +3,7 @@ package gregtech.common.worldgen;
 import java.util.Random;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.util.GTWorldGen;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -14,9 +14,17 @@ import net.minecraft.world.gen.IChunkGenerator;
 public class GTWorldGen_OreSmall extends GTWorldGen {
 
     private final int minY, maxY, amount;
-    private final Material material;
+    private final DustMaterial material;
 
-    public GTWorldGen_OreSmall(String name, boolean enabled, int minY, int maxY, int amount, Material material, String[] dimWhiteList, String[] biomeWhiteList) {
+    /**
+     * @param name      Name of the small ore generator
+     * @param enabled   Set true to enable this generator
+     * @param minY      Minimum height the small ore will generate
+     * @param maxY      Maximum height the small ore will generate; Must > minY
+     * @param amount    Maximum amount the small ore will generate per chunk; Must > 0
+     * @param material  Material of the small ore
+     */
+    public GTWorldGen_OreSmall(String name, boolean enabled, int minY, int maxY, int amount, DustMaterial material, String[] dimWhiteList, String[] biomeWhiteList) {
         super(name, enabled, 0, GregTechAPI.worldgenList, dimWhiteList, biomeWhiteList);
         this.minY = minY;
         this.maxY = maxY;

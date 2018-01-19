@@ -1,6 +1,7 @@
 package gregtech.common.worldgen;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -10,7 +11,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import gregtech.api.GTValues;
-import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.util.GTWorldGen;
 import gregtech.api.util.IWeighted;
 import gregtech.api.util.WeightedList;
@@ -20,7 +21,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
-import scala.actors.threadpool.Arrays;
 
 public class GTWorldGen_OreVein extends GTWorldGen implements IWeighted {
 
@@ -30,16 +30,16 @@ public class GTWorldGen_OreVein extends GTWorldGen implements IWeighted {
 
     private final List<String> asteroidWhiteList = new ArrayList<>();
     public final int weight, minY, maxY, size, thickness, density;
-    public final WeightedWrapperList<Material> orePrimaries, oreSecondaries, oreBetweens, oreSporadics;
+    public final WeightedWrapperList<DustMaterial> orePrimaries, oreSecondaries, oreBetweens, oreSporadics;
 
     public static Optional<GTWorldGen_OreVein> getRandomOreVein(Random random, World world, Biome biome) {
         WeightedList<GTWorldGen_OreVein> list = new WeightedList<>();
         getOreGenList(world, dimWiseOreVeinList, o -> o.isGenerationAllowed(world)).stream().filter(o -> o.isGenerationAllowed(biome)).forEach(list::add);
-        return Optional.ofNullable(list.getObject(random));
+        return Optional.ofNullable(list.getRandomObject(random));
     }
 
     public static Optional<GTWorldGen_OreVein> getRandomOreVein(Random random, World world, GTWorldGen_Asteroid asteroid) {
-        return Optional.ofNullable(new WeightedList<GTWorldGen_OreVein>(getOreGenList(world, asteroid.dimWiseOreVeinList, o -> o.asteroidWhiteList.contains(asteroid.name))).getObject(random));
+        return Optional.ofNullable(new WeightedList<GTWorldGen_OreVein>(getOreGenList(world, asteroid.dimWiseOreVeinList, o -> o.asteroidWhiteList.contains(asteroid.name))).getRandomObject(random));
     }
 
     public static int getMaxOreVeinSize(World world) {
@@ -54,7 +54,12 @@ public class GTWorldGen_OreVein extends GTWorldGen implements IWeighted {
                 .collect(Collectors.toList()));
     }
 
+    /**
+     * Use {@linkplain GTWorldGen_OreVein#generate(Random, int, int, int, int, World, Biome, IChunkGenerator, IChunkProvider) the optimized algorithm}
+     * to avoid cascading worldgen
+     */
     @Override
+    @Deprecated
     public void generate(Random random, int chunkX, int chunkZ, World world, Biome biome, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {}
 
 
@@ -62,47 +67,49 @@ public class GTWorldGen_OreVein extends GTWorldGen implements IWeighted {
     /**
      * @param name              Name of the ore vein
      * @param enabled           Set true to enable this ore vein
-     * @param weight            Random weight of the ore vein
+     * @param weight            Random weight of the ore vein; Must >= 0
      * @param minY              Minimum height the ore vein will generate
-     * @param maxY              Maximum height the ore vein will generate
-     * @param size              Size of the ore vein
-     * @param thickness         Thickness of the ore vein
-     * @param density           Density of the ores in the ore vein
+     * @param maxY              Maximum height the ore vein will generate; Must > minY
+     * @param size              Size of the ore vein; Must > -8
+     * @param thickness         Thickness of the ore vein; Must >= 5
+     * @param density           Density of the ores in the ore vein; Must > 0
      * @param orePrimary        Ores generated in the upper layer
      * @param oreSecondary      Ores generated in the lower layer
      * @param oreBetween        Ores generated between the upper and lower layer
      * @param oreSporadic       Ores generated sporadically
+     * @param asteroidWhiteList Name of the asteroid generators
      */
     public GTWorldGen_OreVein(String name, boolean enabled, int weight, int minY, int maxY, int size, int thickness, int density,
-            Material orePrimary, Material oreSecondary, Material oreBetween, Material oreSporadic,
+            DustMaterial orePrimary, DustMaterial oreSecondary, DustMaterial oreBetween, DustMaterial oreSporadic,
             String[] dimWhiteList, String[] biomeWhiteList, String[] asteroidWhiteList) {
         this(name, enabled, weight, minY, maxY, size, thickness, density,
-                new WeightedWrapperList<Material>().add(orePrimary, 100),
-                new WeightedWrapperList<Material>().add(oreSecondary, 100),
-                new WeightedWrapperList<Material>().add(oreBetween, 100),
-                new WeightedWrapperList<Material>().add(oreSporadic, 100),
+                new WeightedWrapperList<DustMaterial>().add(orePrimary, 100),
+                new WeightedWrapperList<DustMaterial>().add(oreSecondary, 100),
+                new WeightedWrapperList<DustMaterial>().add(oreBetween, 100),
+                new WeightedWrapperList<DustMaterial>().add(oreSporadic, 100),
                 dimWhiteList, biomeWhiteList, asteroidWhiteList);
     }
 
     /**
      * @param name              Name of the ore vein
      * @param enabled           Set true to enable this ore vein
-     * @param weight            Random weight of the ore vein
+     * @param weight            Random weight of the ore vein; Must >= 0
      * @param minY              Minimum height the ore vein will generate
-     * @param maxY              Maximum height the ore vein will generate
-     * @param size              Size of the ore vein
-     * @param thickness         Thickness of the ore vein
-     * @param density           Density of the ores in the ore vein
+     * @param maxY              Maximum height the ore vein will generate; Must > minY
+     * @param size              Size of the ore vein; Must > -8
+     * @param thickness         Thickness of the ore vein; Must >= 5
+     * @param density           Density of the ores in the ore vein; Must > 0
      * @param orePrimaries      Ores generated in the upper layer
      * @param oreSecondaries    Ores generated in the lower layer
      * @param oreBetweens       Ores generated between the upper and lower layer
      * @param oreSporadics      Ores generated sporadically
+     * @param asteroidWhiteList Name of the asteroid generators
      */
     public GTWorldGen_OreVein(String name, boolean enabled, int weight, int minY, int maxY, int size, int thickness, int density,
-            WeightedWrapperList<Material> orePrimaries,
-            WeightedWrapperList<Material> oreSecondaries,
-            WeightedWrapperList<Material> oreBetweens,
-            WeightedWrapperList<Material> oreSporadics,
+            WeightedWrapperList<DustMaterial> orePrimaries,
+            WeightedWrapperList<DustMaterial> oreSecondaries,
+            WeightedWrapperList<DustMaterial> oreBetweens,
+            WeightedWrapperList<DustMaterial> oreSporadics,
             String[] dimWhiteList, String[] biomeWhiteList, String[] asteroidWhiteList) {
         super(name, enabled, 0, OREVEINS, dimWhiteList, biomeWhiteList);
         this.weight = weight;
@@ -118,18 +125,18 @@ public class GTWorldGen_OreVein extends GTWorldGen implements IWeighted {
         this.asteroidWhiteList.addAll(Arrays.asList(asteroidWhiteList));
     }
 
-    private int getDense(int a, int b, int x) {
+    private int getDensity(int a, int b, int x) {
         return Math.max(1, Math.max(Math.abs(a - x), Math.abs(b - x)) / this.density);
     }
 
     private int getRandomSize(Random random) {
-        return Math.max(0, (int) ((random.nextGaussian() / 10 + 0.5) * this.size));
+        return Math.max(-8, (int) ((random.nextGaussian() / 10 + 0.5) * this.size));
     }
 
-    private void generateOre(World world, BlockPos pos, int x0, int x1, int z0, int z1, WeightedWrapperList<Material> ores, Random random) {
+    private void generateOre(World world, BlockPos pos, int x0, int x1, int z0, int z1, WeightedWrapperList<DustMaterial> ores, Random random) {
         if (pos.getY() <= 0) return;
-        if (random.nextInt(getDense(x0, x1, pos.getX())) == 0 || random.nextInt(getDense(z0, z1, pos.getZ())) == 0)
-            generateOreBlock(world, pos, ores.getRandomObject(random), false, false);
+        if (random.nextInt(getDensity(x0, x1, pos.getX())) == 0 || random.nextInt(getDensity(z0, z1, pos.getZ())) == 0)
+            generateOreBlock(world, pos, ores.fetchRandomObject(random), false, false);
     }
 
     public void generate(Random random, int chunkX, int chunkZ, int centerX, int centerZ, World world, Biome biome, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {

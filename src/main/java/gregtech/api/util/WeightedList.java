@@ -2,8 +2,11 @@ package gregtech.api.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class WeightedList<T extends IWeighted> {
 
@@ -26,7 +29,11 @@ public class WeightedList<T extends IWeighted> {
         return list.isEmpty();
     }
 
-    public T getObject(Random random) {
+    public List<T> getAllObjects() {
+        return (List<T>) list.clone();
+    }
+
+    public T getRandomObject(Random random) {
         if (this.totalWeight == 0) return null;
         if (this.list.size() == 1) return this.list.get(0);
         int n = random.nextInt(this.totalWeight);
@@ -41,17 +48,21 @@ public class WeightedList<T extends IWeighted> {
 
         public WeightedWrapperList() {};
 
-        public WeightedWrapperList(Map<T, Integer> map) {
+        public WeightedWrapperList(Map<? extends T, Integer> map) {
             map.forEach(this::add);
         }
 
-        public WeightedWrapperList<T> add(T object, int weight) {
+        public WeightedWrapperList add(T object, int weight) {
             super.add(new IWeighted.Wrapper(object, weight));
             return this;
         }
 
-        public T getRandomObject(Random random) {
-            return super.getObject(random).getObject();
+        public List<T> fetchAllObjects() {
+            return list.stream().map(w -> w.getObject()).collect(Collectors.toList());
+        }
+
+        public T fetchRandomObject(Random random) {
+            return getRandomObject(random).getObject();
         }
 
         public static <T> WeightedWrapperList<T> mergeWeightedList(WeightedWrapperList<WeightedWrapperList<T>> list) {

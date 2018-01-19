@@ -2,15 +2,13 @@ package gregtech.api.util;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
-import gregtech.api.unification.material.type.Material;
+import gregtech.api.GregTechAPI;
+import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.ore.StoneType;
 import gregtech.api.unification.ore.StoneTypes;
-import gregtech.common.blocks.BlockOre;
-import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -84,7 +82,7 @@ public abstract class GTWorldGen implements Comparable<GTWorldGen> {
         return this.sortingWeight - o.sortingWeight;
     }
 
-    public static void generateOreBlock(World world, BlockPos pos, Material material, boolean small, boolean force) {
+    public static void generateOreBlock(World world, BlockPos pos, DustMaterial material, boolean small, boolean force) {
         IBlockState target = world.getBlockState(pos);
         if (target.getBlock() == Blocks.AIR && !force) return;
         StoneType stoneType = StoneType.computeStoneType(target);
@@ -95,10 +93,9 @@ public abstract class GTWorldGen implements Comparable<GTWorldGen> {
         getOreBlock(material, stoneType, small).ifPresent(ore -> world.setBlockState(pos, ore, 18));
     }
 
-    public static Optional<IBlockState> getOreBlock(Material material, StoneType stoneType, boolean small) {
-        Map<StoneType, BlockOre> oreBlocks = MetaBlocks.OREMAP.get(material);
-        if (oreBlocks == null) return Optional.empty();
-        BlockOre oreBlock = oreBlocks.get(stoneType);
-        return Optional.of(oreBlock.getDefaultState().withProperty(oreBlock.STONE_TYPE, stoneType).withProperty(oreBlock.SMALL, small));
+    public static Optional<IBlockState> getOreBlock(DustMaterial material, StoneType stoneType, boolean small) {
+        return Optional.ofNullable(GregTechAPI.oreBlockTable.get(material))
+                .map(oreBlocks -> oreBlocks.get(stoneType))
+                .map(oreBlock -> oreBlock.getOreBlock(stoneType, small));
     }
 }

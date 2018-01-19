@@ -1,6 +1,6 @@
 package gregtech.api.unification.ore;
 
-import java.util.ArrayList;
+import java.util.function.Supplier;
 
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.util.Condition;
@@ -16,29 +16,66 @@ public class StoneType implements Comparable<StoneType> {
         NORMAL, SIDED;
     }
 
-    public final String name, particalTexture, harvestTool;
+    public final String name, particleTexture, harvestTool;
     public final String[] baseTexture;
     public final OrePrefix processingPrefix;
     public final DustMaterial stoneMaterial;
     public final ModelType modelType;
     public final boolean unbreakable, falling;
+    public final Supplier<IBlockState> stone;
     public Condition<IBlockState> conditioin;
 
     public static final GTControlledRegistry<StoneType> STONE_TYPE_REGISTRY = new GTControlledRegistry<>(128);
 
-    StoneType(int id, String name, OrePrefix processingPrefix, DustMaterial stoneMaterial, String baseTexture, Condition<IBlockState>... conditions) {
-        this(id, name, processingPrefix, stoneMaterial, "pickaxe", baseTexture, conditions);
+    /**
+     * @param processingPrefix  Prefix of the ores with this stone type
+     * @param stoneMaterial     Material of this type of stone
+     * @param baseTexture       Base texture of the ore block. Must have 6 entries with bitmask 0x1.
+     * @param stone             Basic block of this stone type
+     * @param conditions        Whether the ores with this stone type can generate with such BlockState
+     */
+    public StoneType(int id, String name, OrePrefix processingPrefix, DustMaterial stoneMaterial, String baseTexture, Supplier<IBlockState> stone, Condition<IBlockState>... conditions) {
+        this(id, name, processingPrefix, stoneMaterial, "pickaxe", baseTexture, stone, conditions);
     }
 
-    StoneType(int id, String name, OrePrefix processingPrefix, DustMaterial stoneMaterial, String harvestTool, String baseTexture, Condition<IBlockState>... conditions) {
-        this(id, name, processingPrefix, stoneMaterial, harvestTool, 0, baseTexture, new String[]{baseTexture}, conditions);
+    /**
+     * @param processingPrefix  Prefix of the ores with this stone type
+     * @param stoneMaterial     Material of this type of stone
+     * @param baseTexture       Base texture of the ore block.
+     * @param stone             Basic block of this stone type
+     * @param conditions        Whether the ores with this stone type can generate with such BlockState
+     */
+    public StoneType(int id, String name, OrePrefix processingPrefix, DustMaterial stoneMaterial, String harvestTool, String baseTexture, Supplier<IBlockState> stone, Condition<IBlockState>... conditions) {
+        this(id, name, processingPrefix, stoneMaterial, harvestTool, 0, baseTexture, new String[]{baseTexture}, stone, conditions);
     }
 
-    StoneType(int id, String name, OrePrefix processingPrefix, DustMaterial stoneMaterial, int special, String particalTexture, String[] baseTextures, Condition<IBlockState>... conditions) {
-        this(id, name, processingPrefix, stoneMaterial, "pickaxe", special, particalTexture, baseTextures, conditions);
+    /**
+     * @param processingPrefix  Prefix of the ores with this stone type
+     * @param stoneMaterial     Material of this type of stone
+     * @param special           Bitmask. 0x1 if each side of the ore block has different base texture;
+     *                                   0x2 if the ore block is unbreakable;
+     *                                   0x4 if the ore block can fall like a sand block.
+     * @param particleTexture   Texture of the particle
+     * @param baseTextures      Base textures of the ore block. Must have 6 entries with bitmask 0x1.
+     * @param stone             Basic block of this stone type
+     * @param conditions        Whether the ores with this stone type can generate with such BlockState
+     */
+    public StoneType(int id, String name, OrePrefix processingPrefix, DustMaterial stoneMaterial, int special, String particleTexture, String[] baseTextures, Supplier<IBlockState> stone, Condition<IBlockState>... conditions) {
+        this(id, name, processingPrefix, stoneMaterial, "pickaxe", special, particleTexture, baseTextures, stone, conditions);
     }
 
-    StoneType(int id, String name, OrePrefix processingPrefix, DustMaterial stoneMaterial, String harvestTool, int special, String particalTexture, String[] baseTextures, Condition<IBlockState>... conditions) {
+    /**
+     * @param processingPrefix  Prefix of the ores with this stone type
+     * @param stoneMaterial     Material of this type of stone
+     * @param special           Bitmask. 0x1 if each side of the ore block has different base texture;
+     *                                   0x2 if the ore block is unbreakable;
+     *                                   0x4 if the ore block can fall like a sand block.
+     * @param particleTexture   Texture of the particle
+     * @param baseTextures      Base textures of the ore block. Must have 6 entries with bitmask 0x1.
+     * @param stone             Basic block of this stone type
+     * @param conditions        Whether the ores with this stone type can generate with such BlockState
+     */
+    public StoneType(int id, String name, OrePrefix processingPrefix, DustMaterial stoneMaterial, String harvestTool, int special, String particleTexture, String[] baseTextures, Supplier<IBlockState> stone, Condition<IBlockState>... conditions) {
         this.name = name;
         this.processingPrefix = processingPrefix;
         this.stoneMaterial = stoneMaterial;
@@ -47,7 +84,8 @@ public class StoneType implements Comparable<StoneType> {
         this.modelType = (special & 0x1) != 0 ? ModelType.SIDED : ModelType.NORMAL;
         this.unbreakable = (special & 0x2) != 0;
         this.falling = (special & 0x4) != 0;
-        this.particalTexture = particalTexture;
+        this.particleTexture = particleTexture;
+        this.stone = stone;
         if (id > -1) {
             STONE_TYPE_REGISTRY.register(id, name, this);
             this.conditioin = new Condition.Or<IBlockState>(conditions);

@@ -9,6 +9,7 @@ import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.StoneType;
 import gregtech.api.unification.ore.StoneTypes;
+import gregtech.api.util.IBlockOre;
 import gregtech.common.blocks.properties.PropertyStoneType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
@@ -20,7 +21,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
@@ -29,7 +29,7 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockOre extends BlockFalling {
+public class BlockOre extends BlockFalling implements IBlockOre {
 
     public static final PropertyBool SMALL = PropertyBool.create("small");
     public final PropertyStoneType STONE_TYPE;
@@ -155,5 +155,10 @@ public class BlockOre extends BlockFalling {
     @Override
     public int getDustColor(IBlockState state) {
         return this.material.materialRGB;
+    }
+
+    @Override
+    public IBlockState getOreBlock(StoneType stoneType, boolean small) {
+        return this.getDefaultState().withProperty(this.STONE_TYPE, stoneType).withProperty(SMALL, small);
     }
 }
