@@ -36,7 +36,7 @@ public class WorldGenerator implements IWorldGenerator {
     public static void generateOreLayerAt(int chunkX, int chunkZ, int centerX, int centerZ, World world, Biome biome, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
         Random rnd = new XSTR(getRandomSeed(world, centerX, centerZ));
         try {
-            GTWorldGen_OreVein.getRandomOreVein(rnd, world, biome).ifPresent(oregen -> oregen.generate(rnd, chunkX, chunkZ, centerX, centerZ, world, biome, chunkGenerator, chunkProvider));
+            GTWorldGenOreVein.getRandomOreVein(rnd, world, biome).ifPresent(oregen -> oregen.generate(rnd, chunkX, chunkZ, centerX, centerZ, world, biome, chunkGenerator, chunkProvider));
         } catch (Exception e) {
             GTLog.logger.catching(e);
         }
@@ -59,7 +59,7 @@ public class WorldGenerator implements IWorldGenerator {
         Random rnd = new XSTR();
         Biome biome = world.getBiome(new BlockPos(chunkX << 4, 64, chunkZ << 4));
         HashSet<ChunkPos> centers = new HashSet<>();
-        int maxRange = (GTWorldGen_OreVein.getMaxOreVeinSize(world) + 15) >> 4;
+        int maxRange = (GTWorldGenOreVein.getMaxOreVeinSize(world) + 15) >> 4;
         if (maxRange > 0) {
             for (int i = -maxRange; i <= maxRange; i++) {
                 for (int j = -maxRange; j <= maxRange; j++) {

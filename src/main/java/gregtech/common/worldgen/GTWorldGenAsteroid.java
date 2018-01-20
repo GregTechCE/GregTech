@@ -1,21 +1,23 @@
 package gregtech.common.worldgen;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.ore.StoneType;
 import gregtech.api.unification.ore.StoneTypes;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.WeightedList.WeightedWrapperList;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 
-public class GTWorldGen_Asteroid extends GTWorldGen_Stone {
+public class GTWorldGenAsteroid extends GTWorldGenStone {
 
-    public final ConcurrentHashMap<World, List<GTWorldGen_OreVein>> dimWiseOreVeinList = new ConcurrentHashMap<>();
+    public final List<String> oreVeins;
 
     /**
      * @param name          Name of this asteroid generator
@@ -28,8 +30,9 @@ public class GTWorldGen_Asteroid extends GTWorldGen_Stone {
      * @param amount        Maximum amount that the asteroid will generate in each chunk
      * @param stoneType     Type of the asteroid block
      */
-    public GTWorldGen_Asteroid(String name, boolean enabled, int minY, int maxY, int minSize, int maxSize, int probability, int amount, StoneType stoneType, String[] dimWhiteList, String[] biomeWhiteList) {
+    public GTWorldGenAsteroid(String name, boolean enabled, int minY, int maxY, int minSize, int maxSize, int probability, int amount, StoneType stoneType, String[] dimWhiteList, String[] biomeWhiteList, String[] oreVeinList) {
         super(name, enabled, 2048, minY, maxY, minSize, maxSize, probability, amount, stoneType, true, dimWhiteList, biomeWhiteList);
+        oreVeins = Arrays.stream(oreVeinList).filter(GTUtility::isStringValid).collect(Collectors.toList());
     }
 
     @Override
@@ -38,7 +41,7 @@ public class GTWorldGen_Asteroid extends GTWorldGen_Stone {
             return;
         for (int i = 0; i < this.amount; i++) {
             if (random.nextInt(this.probability) == 0) {
-                GTWorldGen_OreVein.getRandomOreVein(random, world, this)
+                GTWorldGenOreVein.getRandomOreVein(random, this.oreVeins)
                 .ifPresent(oreVein -> {
                     WeightedWrapperList<WeightedWrapperList<DustMaterial>> oreLists = new WeightedWrapperList<>();
                     oreLists.add(oreVein.orePrimaries, 6);
@@ -50,13 +53,11 @@ public class GTWorldGen_Asteroid extends GTWorldGen_Stone {
                     boolean generateOre = this.stoneType != StoneTypes._NULL;
                     this.generate(random, chunkX, chunkZ, world, false,
                             pos -> world.isAirBlock(pos),
-                            (pos, r, rnd) -> {
-                        if (generateOre && rnd.nextInt(Math.max(2, (int) (80.0f * r / density))) == 0) {
-                            world.setBlockState(pos, getOreBlock(ores.fetchRandomObject(rnd), this.stoneType, false).orElse(this.stone), 18);
-                        } else {
-                            world.setBlockState(pos, this.stone, 18);
-                        }
-                    });
+                            (pos, r, rnd) -> world.setBlockState(pos, 
+                                    (generateOre && rnd.nextInt(Math.max(2, (int) (80.0f * r / density))) == 0) ?
+                                            getOreBlock(ores.fetchRandomObject(rnd), this.stoneType, false).orElse(this.stone)
+                                            : this.stone,
+                                            18));
                 });
             }
         }

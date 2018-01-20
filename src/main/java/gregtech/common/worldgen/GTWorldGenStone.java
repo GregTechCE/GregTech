@@ -20,7 +20,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 
-public class GTWorldGen_Stone extends GTWorldGen {
+public class GTWorldGenStone extends GTWorldGen {
 
     public final int minY, maxY, minSize, maxSize, probability, amount;
     public final IBlockState stone;
@@ -39,11 +39,11 @@ public class GTWorldGen_Stone extends GTWorldGen {
      * @param stoneType     Type of the stone block
      * @param air           Whether the stone block can be generated in the air
      */
-    public GTWorldGen_Stone(String name, boolean enabled, int minY, int maxY, int minSize, int maxSize, int probability, int amount, StoneType stoneType, boolean air, String[] dimWhiteList, String[] biomeWhiteList) {
+    public GTWorldGenStone(String name, boolean enabled, int minY, int maxY, int minSize, int maxSize, int probability, int amount, StoneType stoneType, boolean air, String[] dimWhiteList, String[] biomeWhiteList) {
         this(name, enabled, 1024, minY, maxY, minSize, maxSize, probability, amount, stoneType, air, dimWhiteList, biomeWhiteList);
     }
 
-    protected GTWorldGen_Stone(String name, boolean enabled, int sortingWeight, int minY, int maxY, int minSize, int maxSize, int probability, int amount, StoneType stoneType, boolean air, String[] dimWhiteList, String[] biomeWhiteList) {
+    protected GTWorldGenStone(String name, boolean enabled, int sortingWeight, int minY, int maxY, int minSize, int maxSize, int probability, int amount, StoneType stoneType, boolean air, String[] dimWhiteList, String[] biomeWhiteList) {
         super(name, enabled, sortingWeight, GregTechAPI.worldgenList, dimWhiteList, biomeWhiteList);
         this.minY = minY;
         this.maxY = maxY;
@@ -195,5 +195,4 @@ public class GTWorldGen_Stone extends GTWorldGen {
     public String toString() {
         return "stone." + this.name;
     }
-
 }

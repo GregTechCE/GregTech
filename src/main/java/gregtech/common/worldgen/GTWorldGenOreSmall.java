@@ -11,7 +11,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 
-public class GTWorldGen_OreSmall extends GTWorldGen {
+public class GTWorldGenOreSmall extends GTWorldGen {
 
     private final int minY, maxY, amount;
     private final DustMaterial material;
@@ -24,7 +24,7 @@ public class GTWorldGen_OreSmall extends GTWorldGen {
      * @param amount    Maximum amount the small ore will generate per chunk; Must > 0
      * @param material  Material of the small ore
      */
-    public GTWorldGen_OreSmall(String name, boolean enabled, int minY, int maxY, int amount, DustMaterial material, String[] dimWhiteList, String[] biomeWhiteList) {
+    public GTWorldGenOreSmall(String name, boolean enabled, int minY, int maxY, int amount, DustMaterial material, String[] dimWhiteList, String[] biomeWhiteList) {
         super(name, enabled, 0, GregTechAPI.worldgenList, dimWhiteList, biomeWhiteList);
         this.minY = minY;
         this.maxY = maxY;
@@ -50,5 +50,4 @@ public class GTWorldGen_OreSmall extends GTWorldGen {
     public String toString() {
         return "ore.small." + this.name;
     }
-
 }
