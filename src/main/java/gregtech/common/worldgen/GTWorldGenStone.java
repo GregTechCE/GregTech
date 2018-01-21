@@ -158,20 +158,6 @@ public class GTWorldGenStone extends GTWorldGen {
                 }
             }
         }
-        
-        HashSet<ChunkPos> chunkCoords = new HashSet<>();
-        for (int i = (minX & ~0xF); i <= maxX; i += 16) {
-            for (int j = (minZ & ~0xF); j <= maxZ; j += 16) {
-                chunkCoords.add(new ChunkPos(i, j));
-            }
-        }
-        chunkCoords/*.parallelStream()*/.forEach(chunkCoord -> {
-            int x0 = Math.max(chunkCoord.x, minX);
-            int x1 = Math.min(chunkCoord.x + 16, maxX);
-            int y0 = Math.max(chunkCoord.z, minZ);
-            int y1 = Math.min(chunkCoord.z + 16, maxZ);
-            
-        });
     }
 
     @FunctionalInterface
@@ -182,7 +168,7 @@ public class GTWorldGenStone extends GTWorldGen {
          *                  Ranged between 0.0f to 1.0f
          * @param random A local {@link Random}}
          */
-        public void generate(BlockPos pos, float r, Random random);
+        void generate(BlockPos pos, float r, Random random);
     }
 
     public static float normSquare(float... x) {

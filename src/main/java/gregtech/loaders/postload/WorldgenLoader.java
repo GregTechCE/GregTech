@@ -19,7 +19,7 @@ public class WorldgenLoader implements Runnable {
         //TODO Custom worldgen from configs
         //boolean pfaa = (GregTechAPI.sWorldgenFile.get(ConfigCategories.general, "AutoDetectPFAA", true)) && (Loader.isModLoaded("PFAAGeologica"));
         
-        new WorldGenerator();
+        WorldGenerator.init();
         
         //new GTWorldGen_Stone("debug_stone", true, 20, 80, 4, 24, 30, 1, MetaBlocks.GRANITE.withVariant(BlockGranite.GraniteVariant.BLACK_GRANITE, StoneBlock.ChiselingVariant.NORMAL) , false, new String[]{"overworld"}, new String[]{"all"});
         //new GTWorldGen_Asteroid("debug_asteroid", true, 180, 240, 4, 24, 30, 1, MetaBlocks.MINERAL.withVariant(BlockMineral.MineralVariant.MARBLE, StoneBlock.ChiselingVariant.NORMAL), new String[]{"overworld"}, new String[]{"all"});

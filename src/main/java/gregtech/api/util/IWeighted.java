@@ -2,7 +2,7 @@ package gregtech.api.util;
 
 public interface IWeighted {
 
-    public int getWeight();
+    int getWeight();
 
     public static class Wrapper<T> implements IWeighted {
         private final T object;

@@ -42,11 +42,15 @@ public class WorldGenerator implements IWorldGenerator {
         }
     }
 
-    private Boolean sorted = false;
+    public static void init() {
+        new WorldGenerator();
+    }
 
-    public WorldGenerator() {
+    private WorldGenerator() {
         GameRegistry.registerWorldGenerator(this, 1073741823);
     }
+
+    private Boolean sorted = false;
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
