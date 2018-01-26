@@ -1,5 +1,8 @@
 package gregtech.api.net;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
 import gregtech.api.capability.internal.ICustomDataTile;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -17,11 +20,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 class CustomDataTileHandler {
 
-    static final Map<BlockPos, PacketBuffer> pendingInitialSyncData = new ConcurrentHashMap<>();
+    static final Multimap<BlockPos, PacketBuffer> pendingInitialSyncData = Multimaps.synchronizedListMultimap(ArrayListMultimap.create());
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
@@ -34,7 +36,7 @@ class CustomDataTileHandler {
             BlockPos blockPos = keyIterator.next();
             TileEntity tileEntity = clientWorld.getTileEntity(blockPos);
             if(tileEntity instanceof ICustomDataTile) {
-                ((ICustomDataTile) tileEntity).handleDataPacket(pendingInitialSyncData.get(blockPos));
+                pendingInitialSyncData.get(blockPos).forEach(((ICustomDataTile) tileEntity)::handleDataPacket);
                 keyIterator.remove();
             }
         }

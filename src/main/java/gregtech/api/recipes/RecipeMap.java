@@ -1257,8 +1257,8 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 					.notOptimized()
 					.inputs(GTUtility.copyAmount(1, inputs.get(0)))
 					.outputs(output)
-					.duration(20)
-					.EUt(1)
+					.duration(128)
+					.EUt(4)
 					.build(false)
 					.getResult();
 		}

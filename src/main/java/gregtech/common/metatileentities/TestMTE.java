@@ -18,10 +18,10 @@ import net.minecraft.util.EnumHand;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TestMTE extends WorkableSteamMetaTileEntity<Recipe> {
+public class TestMTE extends WorkableMetaTileEntity<Recipe> {
 
-    public TestMTE(IMetaTileEntityFactory factory, RecipeMap<Recipe, ?> recipeMap) {
-        super(factory, recipeMap);
+    public TestMTE(IMetaTileEntityFactory factory, int tier, RecipeMap<Recipe, ?> recipeMap) {
+        super(factory, tier, recipeMap);
     }
 
     @Override
@@ -86,6 +86,21 @@ public class TestMTE extends WorkableSteamMetaTileEntity<Recipe> {
 
     @Override
     public int getComparatorValue() {
+        return 0;
+    }
+
+    @Override
+    public boolean inputsEnergy(EnumFacing side) {
+        return true;
+    }
+
+    @Override
+    public long getEnergyCapacity() {
+        return 100;
+    }
+
+    @Override
+    public long getInputAmperage() {
         return 0;
     }
 }
