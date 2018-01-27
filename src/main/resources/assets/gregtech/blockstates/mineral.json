@@ -29,7 +29,7 @@
     }],
     "chiseling=cracked,variant=marble": [{
       "textures": {
-        "all": "gregtech:blocks/rendering_error"
+        "all": "gregtech:blocks/stones/marble/marble_cobble"
       }
     }],
     "chiseling=cracked,variant=marble_bricks": [{
@@ -39,7 +39,7 @@
     }],
     "chiseling=cracked,variant=basalt": [{
       "textures": {
-        "all": "gregtech:blocks/rendering_error"
+        "all": "gregtech:blocks/stones/basalt/basalt_cobble"
       }
     }],
     "chiseling=cracked,variant=basalt_bricks": [{
@@ -49,7 +49,7 @@
     }],
     "chiseling=mossy,variant=marble": [{
       "textures": {
-        "all": "gregtech:blocks/rendering_error"
+        "all": "gregtech:blocks/stones/marble/marble_cobble_mossy"
       }
     }],
     "chiseling=mossy,variant=marble_bricks": [{
@@ -59,7 +59,7 @@
     }],
     "chiseling=mossy,variant=basalt": [{
       "textures": {
-        "all": "gregtech:blocks/rendering_error"
+        "all": "gregtech:blocks/stones/basalt/basalt_cobble_mossy"
       }
     }],
     "chiseling=mossy,variant=basalt_bricks": [{
@@ -69,7 +69,7 @@
     }],
     "chiseling=chiseled,variant=marble": [{
       "textures": {
-        "all": "gregtech:blocks/rendering_error"
+        "all": "gregtech:blocks/stones/marble/marble_smooth"
       }
     }],
     "chiseling=chiseled,variant=marble_bricks": [{
@@ -79,7 +79,7 @@
     }],
     "chiseling=chiseled,variant=basalt": [{
       "textures": {
-        "all": "gregtech:blocks/rendering_error"
+        "all": "gregtech:blocks/stones/basalt/basalt_smooth"
       }
     }],
     "chiseling=chiseled,variant=basalt_bricks": [{

@@ -1,17 +1,11 @@
 {
-  "parent": "gregtech:block/overlay_model",
+  "parent": "gregtech:block/overlay_model_all_overlay",
   "textures": {
     "base_down": "#base",
     "base_up": "#base",
     "base_north": "#base",
     "base_south": "#base",
     "base_west": "#base",
-    "base_east": "#base",
-    "overlay_down": "#overlay",
-    "overlay_up": "#overlay",
-    "overlay_north": "#overlay",
-    "overlay_south": "#overlay",
-    "overlay_west": "#overlay",
-    "overlay_east": "#overlay"
+    "base_east": "#base"
   }
 }
