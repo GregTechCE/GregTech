@@ -715,14 +715,18 @@ public class MetaItem1 extends MaterialMetaItem {
                     if (blockState.getBlock() == Blocks.CAULDRON) {
                         int waterLevel = blockState.getValue(BlockCauldron.LEVEL);
                         if (waterLevel > 0) {
+                            boolean waterConsumed = false;
                             if (prefix == OrePrefix.crushed) {
                                 itemEntity.setItem(OreDictUnifier.get(OrePrefix.crushedPurified, material, itemEntity.getItem().getCount()));
-                                itemEntity.getEntityWorld().setBlockState(new BlockPos(posX, posY, posZ), blockState.withProperty(BlockCauldron.LEVEL, waterLevel - 1));
+                                waterConsumed = true;
                             } else if (prefix == OrePrefix.dust && material == Materials.Wheat) {
                                 itemEntity.setItem(FOOD_DOUGH.getStackForm(itemEntity.getItem().getCount()));
-                                itemEntity.getEntityWorld().setBlockState(new BlockPos(posX, posY, posZ), blockState.withProperty(BlockCauldron.LEVEL, waterLevel - 1));
-                            } else if (prefix == OrePrefix.dustImpure || prefix == prefix.dustPure){
+                                waterConsumed = true;
+                            } else if (prefix == OrePrefix.dustImpure || prefix == OrePrefix.dustPure){
                                 itemEntity.setItem(OreDictUnifier.get(OrePrefix.dust, material, itemEntity.getItem().getCount()));
+                                waterConsumed = true;
+                            }
+                            if (waterConsumed){
                                 itemEntity.getEntityWorld().setBlockState(new BlockPos(posX, posY, posZ), blockState.withProperty(BlockCauldron.LEVEL, waterLevel - 1));
                             }
                             return true;
