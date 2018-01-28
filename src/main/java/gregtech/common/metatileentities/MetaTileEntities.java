@@ -2,6 +2,7 @@ package gregtech.common.metatileentities;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.metatileentity.GregtechTileEntity;
+import gregtech.api.metatileentity.factory.MetaTileEntityFactory;
 import gregtech.api.metatileentity.factory.TieredMetaTileEntityFactory;
 import gregtech.api.metatileentity.factory.WorkableMetaTileEntityFactory;
 import gregtech.api.metatileentity.factory.WorkableSteamMetaTileEntityFactory;
@@ -29,6 +30,7 @@ public class MetaTileEntities {
         GregTechAPI.METATILEENTITY_REGISTRY.register(5, "steam_compressor", new WorkableMetaTileEntityFactory<>(BlockMachine.ToolClass.WRENCH, 1, new String[]{"Squeeze it together"}, SteamCompressor.class, new GTResourceLocation("steam_compressor"), 1, RecipeMap.COMPRESSOR_RECIPES));
         GregTechAPI.METATILEENTITY_REGISTRY.register(6, "steam_alloy_smelter", new WorkableMetaTileEntityFactory<>(BlockMachine.ToolClass.WRENCH, 1, new String[0], SteamAlloySmelter.class, new GTResourceLocation("steam_alloy_smelter"), 1, RecipeMap.ALLOY_SMELTER_RECIPES));
         GregTechAPI.METATILEENTITY_REGISTRY.register(7, "steam_hammer", new WorkableMetaTileEntityFactory<>(BlockMachine.ToolClass.WRENCH, 1, new String[]{"Imaginary hammer"}, SteamHammer.class, new GTResourceLocation("steam_hammer"), 1, RecipeMap.HAMMER_RECIPES));
+        GregTechAPI.METATILEENTITY_REGISTRY.register(8, "steam_boiler", new MetaTileEntityFactory<>(BlockMachine.ToolClass.WRENCH, 1, new String[]{"Boily Boily Water Water"}, SteamBoiler.class, new GTResourceLocation("steam_boiler")));
 //        GregTechAPI.METATILEENTITY_REGISTRY.register(8, "steam_furnace", new WorkableSteamMetaTileEntityFactory<TestMTE>(BlockMachine.ToolClass.WRENCH, 1, new String[0], TestMTE.class, new GTResourceLocation("mte_test"), RecipeMap.FURNACE_RECIPES));
 
         BlockMachine.META_TYPE = PropertyString.create("meta_type", GregTechAPI.METATILEENTITY_REGISTRY.getKeys());

@@ -1529,6 +1529,7 @@ machine.steam_macerator=Steam Macerator
 machine.steam_compressor=Steam Compressor
 machine.steam_alloy_smelter=Steam Alloy Smelter
 machine.steam_hammer=Steam Hammer
+machine.steam_boiler=Steam Boiler
 
 death.attack.explosion=%s exploded.
 death.attack.explosion.player=%s exploded with help of %s.
