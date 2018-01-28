@@ -28,16 +28,16 @@ public class GTWorldGenStone extends GTWorldGen {
     public final boolean air;
 
     /**
-     * @param name          Name of this stone generator
-     * @param enabled       Set true to enable this generator
-     * @param minY          Minimum height where the center of the stone will occurs 
-     * @param maxY          Maximum height where the center of the stone will occurs; Must > minY
-     * @param minSize       Minimum radius of the stone
-     * @param maxSize       Maximum radius of the stone; Must > minSize
-     * @param probability   Inverse of the probability that the stone will be generated in each chunk
-     * @param amount        Maximum amount that the stone will generate in each chunk
-     * @param stoneType     Type of the stone block
-     * @param air           Whether the stone block can be generated in the air
+     * @param name        Name of this stone generator
+     * @param enabled     Set true to enable this generator
+     * @param minY        Minimum height where the center of the stone will occurs
+     * @param maxY        Maximum height where the center of the stone will occurs; Must > minY
+     * @param minSize     Minimum radius of the stone
+     * @param maxSize     Maximum radius of the stone; Must > minSize
+     * @param probability Inverse of the probability that the stone will be generated in each chunk
+     * @param amount      Maximum amount that the stone will generate in each chunk
+     * @param stoneType   Type of the stone block
+     * @param air         Whether the stone block can be generated in the air
      */
     public GTWorldGenStone(String name, boolean enabled, int minY, int maxY, int minSize, int maxSize, int probability, int amount, StoneType stoneType, boolean air, String[] dimWhiteList, String[] biomeWhiteList) {
         this(name, enabled, 1024, minY, maxY, minSize, maxSize, probability, amount, stoneType, air, dimWhiteList, biomeWhiteList);
@@ -63,23 +63,23 @@ public class GTWorldGenStone extends GTWorldGen {
         for (int i = 0; i < this.amount; i++) {
             if (random.nextInt(this.probability) == 0) {
                 this.generate(random, chunkX, chunkZ, world, true,
-                        pos -> this.air || !world.isAirBlock(pos),
-                        (pos, r, rnd) -> {
-                    IBlockState blockState = world.getBlockState(pos);
-                    Block block = blockState.getBlock();
-                    if (this.stoneType != StoneTypes._NULL && block instanceof BlockOre) {
-                        if (blockState.getValue(((BlockOre) block).STONE_TYPE) != this.stoneType) {
-                            getOreBlock(((BlockOre) block).material, this.stoneType, blockState.getValue((BlockOre.SMALL)))
-                            .ifPresent(ore -> world.setBlockState(pos, ore, 18));
+                    pos -> this.air || !world.isAirBlock(pos),
+                    (pos, r, rnd) -> {
+                        IBlockState blockState = world.getBlockState(pos);
+                        Block block = blockState.getBlock();
+                        if (this.stoneType != StoneTypes._NULL && block instanceof BlockOre) {
+                            if (blockState.getValue(((BlockOre) block).STONE_TYPE) != this.stoneType) {
+                                getOreBlock(((BlockOre) block).material, this.stoneType, blockState.getValue((BlockOre.SMALL)))
+                                    .ifPresent(ore -> world.setBlockState(pos, ore, 18));
+                            }
+                            return;
                         }
-                        return;
-                    }
-                    StoneType stoneType;
-                    if ((this.air && blockState.getBlock().isAir(blockState, world, pos))
+                        StoneType stoneType;
+                        if ((this.air && blockState.getBlock().isAir(blockState, world, pos))
                             || ((stoneType = StoneType.computeStoneType(blockState)) != StoneTypes._NULL && stoneType.harvestTool.equals("pickaxe"))) {
-                        world.setBlockState(pos, this.stone);
-                    }
-                });
+                            world.setBlockState(pos, this.stone);
+                        }
+                    });
             }
         }
     }
@@ -127,10 +127,10 @@ public class GTWorldGenStone extends GTWorldGen {
             vals1[6][i] = vals1[1][i] * vals1[2][i];
             vals1[7][i] = vals1[1][i] * vals1[3][i];
         }
-        
+
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         Random rnd = new XSTR(WorldGenerator.getRandomSeed(world, centerX, centerZ));
-        for (int x =minX; x < maxX; x++) {
+        for (int x = minX; x < maxX; x++) {
             for (int z = minZ; z < maxZ; z++) {
                 for (int y = minY; y < maxY; y++) {
                     float var03 = x - centerX;
@@ -163,9 +163,9 @@ public class GTWorldGenStone extends GTWorldGen {
     @FunctionalInterface
     protected interface ActionAtPos {
         /**
-         * @param pos       Position of the block
-         * @param r         Square of the relative "distance" metric of the block to the center area of the stone.
-         *                  Ranged between 0.0f to 1.0f
+         * @param pos    Position of the block
+         * @param r      Square of the relative "distance" metric of the block to the center area of the stone.
+         *               Ranged between 0.0f to 1.0f
          * @param random A local {@link Random}}
          */
         void generate(BlockPos pos, float r, Random random);

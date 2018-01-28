@@ -24,11 +24,9 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class SteamAlloySmelter extends WorkableMetaTileEntity<Recipe> {
-    protected IItemHandlerModifiable importItems2;
 
     public SteamAlloySmelter(IMetaTileEntityFactory factory, int tier, RecipeMap<Recipe, ?> recipeMap) {
         super(factory, tier, recipeMap);
-        this.importItems2 = createImportItemHandler();
     }
 
     @Override
@@ -43,7 +41,7 @@ public class SteamAlloySmelter extends WorkableMetaTileEntity<Recipe> {
 
     @Override
     public IItemHandlerModifiable createImportItemHandler() {
-        return new ItemStackHandler(1);
+        return new ItemStackHandler(2);
     }
 
     @Override
@@ -71,15 +69,15 @@ public class SteamAlloySmelter extends WorkableMetaTileEntity<Recipe> {
                 .setImageLocation(slotImageLocation)
                 .setBackgroundLocation(new GTResourceLocation("textures/gui/bronze/slot_bronze_furnace_background.png"))
                 .setOnSlotChanged(this::markDirty))
-            .widget(2, new SlotWidget<SteamAlloySmelter>(this.importItems2,0,42,25)
+            .widget(2, new SlotWidget<SteamAlloySmelter>(this.importItems, 1, 42, 25)
                 .setImageLocation(slotImageLocation)
                 .setBackgroundLocation(new GTResourceLocation("textures/gui/bronze/slot_bronze_furnace_background.png"))
                 .setOnSlotChanged(this::markDirty))
             .widget(3, new ProgressWidget<SteamAlloySmelter>(82, 25)
                 .setImageLocation(new GTResourceLocation("textures/gui/bronze/progress_bar_bronze_furnace.png"))
                 .setFilledImageLocation(new GTResourceLocation("textures/gui/bronze/progress_bar_bronze_furnace_filled.png"))
-                .setImageWidthHeight(20,16)//optional
-                .setImageUV(0,0))//optional but included anyway as a good example for new widgets
+                .setImageWidthHeight(20, 16)//optional
+                .setImageUV(0, 0))//optional but included anyway as a good example for new widgets
             .widget(4, new SlotWidget<SteamAlloySmelter>(this.exportItems, 0, 107, 25, true, false)
                 .setImageLocation(slotImageLocation)
                 .setOnSlotChanged(this::markDirty))

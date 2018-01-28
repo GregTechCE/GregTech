@@ -43,18 +43,17 @@ public class WorldGenerator implements IWorldGenerator {
     }
 
     public static void init() {
-        new WorldGenerator();
+        GameRegistry.registerWorldGenerator(new WorldGenerator(), 1073741823);
     }
 
     private WorldGenerator() {
-        GameRegistry.registerWorldGenerator(this, 1073741823);
     }
 
     private Boolean sorted = false;
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
-        synchronized (sorted) {
+        synchronized (this) {
             if (!sorted) {
                 GregTechAPI.worldgenList.sort(GTWorldGen::compareTo);
                 sorted = true;

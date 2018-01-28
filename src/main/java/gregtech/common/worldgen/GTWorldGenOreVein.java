@@ -32,11 +32,11 @@ public class GTWorldGenOreVein extends GTWorldGen implements IWeighted {
     public final WeightedWrapperList<DustMaterial> orePrimaries, oreSecondaries, oreBetweens, oreSporadics;
 
     public static Optional<GTWorldGenOreVein> getRandomOreVein(Random random, World world, Biome biome) {
-        return Optional.ofNullable(new WeightedList<GTWorldGenOreVein>(getOreGenList(world, dimWiseOreVeinList, o -> o.isGenerationAllowed(world)).stream().filter(o -> o.isGenerationAllowed(biome)).collect(Collectors.toList())).getRandomObject(random));
+        return Optional.ofNullable(new WeightedList<>(getOreGenList(world, dimWiseOreVeinList, o -> o.isGenerationAllowed(world)).stream().filter(o -> o.isGenerationAllowed(biome)).collect(Collectors.toList())).getRandomObject(random));
     }
 
     public static Optional<GTWorldGenOreVein> getRandomOreVein(Random random, List<String> names) {
-        return Optional.ofNullable(new WeightedList<GTWorldGenOreVein>(OREVEINS.stream().filter(o -> names.contains(o.name)).collect(Collectors.toList())).getRandomObject(random));
+        return Optional.ofNullable(new WeightedList<>(OREVEINS.stream().filter(o -> names.contains(o.name)).collect(Collectors.toList())).getRandomObject(random));
     }
 
     public static int getMaxOreVeinSize(World world) {
@@ -45,8 +45,8 @@ public class GTWorldGenOreVein extends GTWorldGen implements IWeighted {
 
     public static List<GTWorldGenOreVein> getOreGenList(World world, Map<World, List<GTWorldGenOreVein>> mapping, Predicate<GTWorldGenOreVein> filter) {
         return mapping.computeIfAbsent(world,
-                s -> OREVEINS.stream()
-                .filter(filter::test)
+            s -> OREVEINS.stream()
+                .filter(filter)
                 .collect(Collectors.toList()));
     }
 
@@ -56,55 +56,55 @@ public class GTWorldGenOreVein extends GTWorldGen implements IWeighted {
      */
     @Override
     @Deprecated
-    public void generate(Random random, int chunkX, int chunkZ, World world, Biome biome, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {}
-
+    public void generate(Random random, int chunkX, int chunkZ, World world, Biome biome, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
+    }
 
 
     /**
-     * @param name              Name of the ore vein
-     * @param enabled           Set true to enable this ore vein
-     * @param weight            Random weight of the ore vein; Must >= 0
-     * @param minY              Minimum height the ore vein will generate
-     * @param maxY              Maximum height the ore vein will generate; Must > minY
-     * @param size              Size of the ore vein; Must > -8
-     * @param thickness         Thickness of the ore vein; Must >= 5
-     * @param density           Density of the ores in the ore vein; Must > 0
-     * @param orePrimary        Ores generated in the upper layer
-     * @param oreSecondary      Ores generated in the lower layer
-     * @param oreBetween        Ores generated between the upper and lower layer
-     * @param oreSporadic       Ores generated sporadically
+     * @param name         Name of the ore vein
+     * @param enabled      Set true to enable this ore vein
+     * @param weight       Random weight of the ore vein; Must >= 0
+     * @param minY         Minimum height the ore vein will generate
+     * @param maxY         Maximum height the ore vein will generate; Must > minY
+     * @param size         Size of the ore vein; Must > -8
+     * @param thickness    Thickness of the ore vein; Must >= 5
+     * @param density      Density of the ores in the ore vein; Must > 0
+     * @param orePrimary   Ores generated in the upper layer
+     * @param oreSecondary Ores generated in the lower layer
+     * @param oreBetween   Ores generated between the upper and lower layer
+     * @param oreSporadic  Ores generated sporadically
      */
     public GTWorldGenOreVein(String name, boolean enabled, int weight, int minY, int maxY, int size, int thickness, int density,
-            DustMaterial orePrimary, DustMaterial oreSecondary, DustMaterial oreBetween, DustMaterial oreSporadic,
-            String[] dimWhiteList, String[] biomeWhiteList) {
+                             DustMaterial orePrimary, DustMaterial oreSecondary, DustMaterial oreBetween, DustMaterial oreSporadic,
+                             String[] dimWhiteList, String[] biomeWhiteList) {
         this(name, enabled, weight, minY, maxY, size, thickness, density,
-                new WeightedWrapperList<DustMaterial>().add(orePrimary, 100),
-                new WeightedWrapperList<DustMaterial>().add(oreSecondary, 100),
-                new WeightedWrapperList<DustMaterial>().add(oreBetween, 100),
-                new WeightedWrapperList<DustMaterial>().add(oreSporadic, 100),
-                dimWhiteList, biomeWhiteList);
+            new WeightedWrapperList<DustMaterial>().add(orePrimary, 100),
+            new WeightedWrapperList<DustMaterial>().add(oreSecondary, 100),
+            new WeightedWrapperList<DustMaterial>().add(oreBetween, 100),
+            new WeightedWrapperList<DustMaterial>().add(oreSporadic, 100),
+            dimWhiteList, biomeWhiteList);
     }
 
     /**
-     * @param name              Name of the ore vein
-     * @param enabled           Set true to enable this ore vein
-     * @param weight            Random weight of the ore vein; Must >= 0
-     * @param minY              Minimum height the ore vein will generate
-     * @param maxY              Maximum height the ore vein will generate; Must > minY
-     * @param size              Size of the ore vein; Must > -8
-     * @param thickness         Thickness of the ore vein; Must >= 5
-     * @param density           Density of the ores in the ore vein; Must > 0
-     * @param orePrimaries      Ores generated in the upper layer
-     * @param oreSecondaries    Ores generated in the lower layer
-     * @param oreBetweens       Ores generated between the upper and lower layer
-     * @param oreSporadics      Ores generated sporadically
+     * @param name           Name of the ore vein
+     * @param enabled        Set true to enable this ore vein
+     * @param weight         Random weight of the ore vein; Must >= 0
+     * @param minY           Minimum height the ore vein will generate
+     * @param maxY           Maximum height the ore vein will generate; Must > minY
+     * @param size           Size of the ore vein; Must > -8
+     * @param thickness      Thickness of the ore vein; Must >= 5
+     * @param density        Density of the ores in the ore vein; Must > 0
+     * @param orePrimaries   Ores generated in the upper layer
+     * @param oreSecondaries Ores generated in the lower layer
+     * @param oreBetweens    Ores generated between the upper and lower layer
+     * @param oreSporadics   Ores generated sporadically
      */
     public GTWorldGenOreVein(String name, boolean enabled, int weight, int minY, int maxY, int size, int thickness, int density,
-            WeightedWrapperList<DustMaterial> orePrimaries,
-            WeightedWrapperList<DustMaterial> oreSecondaries,
-            WeightedWrapperList<DustMaterial> oreBetweens,
-            WeightedWrapperList<DustMaterial> oreSporadics,
-            String[] dimWhiteList, String[] biomeWhiteList) {
+                             WeightedWrapperList<DustMaterial> orePrimaries,
+                             WeightedWrapperList<DustMaterial> oreSecondaries,
+                             WeightedWrapperList<DustMaterial> oreBetweens,
+                             WeightedWrapperList<DustMaterial> oreSporadics,
+                             String[] dimWhiteList, String[] biomeWhiteList) {
         super(name, enabled, 0, OREVEINS, dimWhiteList, biomeWhiteList);
         this.weight = weight;
         this.minY = minY;
@@ -167,32 +167,33 @@ public class GTWorldGenOreVein extends GTWorldGen implements IWeighted {
                     for (int i = 3; i >= 0; i--) {
                         int j = random.nextInt(i + 1);
                         switch (val21[j]) {
-                        case 0:
-                            if (!this.oreSecondaries.isEmpty())
-                                for (int ya = 0, yb = y0; ya < d1 + val18[0]; ya++)
-                                    generateOre(world, pos.setPos(x, yb + ya, z), minX, maxX, minZ, maxZ, this.oreSecondaries, random);
-                            break;
-                        case 1:
-                            if (!this.orePrimaries.isEmpty())
-                                for (int ya = 0, yb = val15 + val18[0]; ya < d1 + val18[1]; ya++)
-                                    generateOre(world, pos.setPos(x, yb + ya, z), minX, maxX, minZ, maxZ, this.orePrimaries, random);
-                            break;
-                        case 2:
-                            if (!this.oreBetweens.isEmpty())
-                                for (int ya = 0, yb = val16 + ((val14 + random.nextInt(val17)) >> 1); ya < d2; ya ++)
-                                    generateOre(world, pos.setPos(x, yb + ya, z), minX, maxX, minZ, maxZ, this.oreBetweens, random);
-                            break;
-                        case 3:
-                            if (!this.oreSporadics.isEmpty())
-                                for (int ya = 0, yb = y0 + random.nextInt(height); ya < d2; ya++)
-                                    generateOre(world, pos.setPos(x, yb + ya + ya, z), minX, maxX, minZ, maxZ, this.oreSporadics, random);
-                            break;
+                            case 0:
+                                if (!this.oreSecondaries.isEmpty())
+                                    for (int ya = 0, yb = y0; ya < d1 + val18[0]; ya++)
+                                        generateOre(world, pos.setPos(x, yb + ya, z), minX, maxX, minZ, maxZ, this.oreSecondaries, random);
+                                break;
+                            case 1:
+                                if (!this.orePrimaries.isEmpty())
+                                    for (int ya = 0, yb = val15 + val18[0]; ya < d1 + val18[1]; ya++)
+                                        generateOre(world, pos.setPos(x, yb + ya, z), minX, maxX, minZ, maxZ, this.orePrimaries, random);
+                                break;
+                            case 2:
+                                if (!this.oreBetweens.isEmpty())
+                                    for (int ya = 0, yb = val16 + ((val14 + random.nextInt(val17)) >> 1); ya < d2; ya++)
+                                        generateOre(world, pos.setPos(x, yb + ya, z), minX, maxX, minZ, maxZ, this.oreBetweens, random);
+                                break;
+                            case 3:
+                                if (!this.oreSporadics.isEmpty())
+                                    for (int ya = 0, yb = y0 + random.nextInt(height); ya < d2; ya++)
+                                        generateOre(world, pos.setPos(x, yb + ya + ya, z), minX, maxX, minZ, maxZ, this.oreSporadics, random);
+                                break;
                         }
                         val21[j] = val21[i];
                     }
                 }
             }
-            if (GTValues.D1) System.out.println("Generated Orevein: " + this.name + " " + (chunkX << 4) + " " + (chunkZ << 4));
+            if (GTValues.D1)
+                System.out.println("Generated Orevein: " + this.name + " " + (chunkX << 4) + " " + (chunkZ << 4));
         }
     }
 

@@ -13,7 +13,7 @@ public class WeightedList<T extends IWeighted> {
     protected ArrayList<T> list = new ArrayList<>();
     private int totalWeight = 0;
 
-    public WeightedList() {};
+    public WeightedList() {}
 
     public WeightedList(Collection<? extends T> objects) {
         objects.forEach(this::add);
@@ -29,6 +29,7 @@ public class WeightedList<T extends IWeighted> {
         return list.isEmpty();
     }
 
+    @SuppressWarnings("unchecked")
     public List<T> getAllObjects() {
         return (List<T>) list.clone();
     }
@@ -46,19 +47,19 @@ public class WeightedList<T extends IWeighted> {
 
     public static class WeightedWrapperList<T> extends WeightedList<IWeighted.Wrapper<T>> {
 
-        public WeightedWrapperList() {};
+        public WeightedWrapperList() {}
 
         public WeightedWrapperList(Map<? extends T, Integer> map) {
             map.forEach(this::add);
         }
 
-        public WeightedWrapperList add(T object, int weight) {
-            super.add(new IWeighted.Wrapper(object, weight));
+        public WeightedWrapperList<T> add(T object, int weight) {
+            super.add(new IWeighted.Wrapper<>(object, weight));
             return this;
         }
 
         public List<T> fetchAllObjects() {
-            return list.stream().map(w -> w.getObject()).collect(Collectors.toList());
+            return list.stream().map(IWeighted.Wrapper::getObject).collect(Collectors.toList());
         }
 
         public T fetchRandomObject(Random random) {
