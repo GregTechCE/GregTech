@@ -2,19 +2,24 @@ package gregtech.api.metatileentity;
 
 import gregtech.api.GTValues;
 import gregtech.api.capability.internal.IWorkable;
+import gregtech.api.metatileentity.factory.WorkableSteamMetaTileEntityFactory;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.Constants;
 
-public abstract class WorkableSteamMetaTileEntity<T extends Recipe> extends SteamMetaTileEntity implements IWorkable {
+public abstract class WorkableSteamMetaTileEntity extends SteamMetaTileEntity implements IWorkable {
 
-    public final RecipeMap<T, ?> recipeMap;
-    protected T previousRecipe;
+    public final RecipeMap<Recipe, ?> recipeMap;
+    protected Recipe previousRecipe;
 
     protected int progressTime;
     protected int maxProgressTime;
@@ -25,9 +30,9 @@ public abstract class WorkableSteamMetaTileEntity<T extends Recipe> extends Stea
     private boolean isActive;
     private boolean workingEnabled = true;
 
-    public WorkableSteamMetaTileEntity(IMetaTileEntityFactory factory, RecipeMap<T, ?> recipeMap) {
+    public WorkableSteamMetaTileEntity(WorkableSteamMetaTileEntityFactory<? extends WorkableSteamMetaTileEntity> factory) {
         super(factory);
-        this.recipeMap = recipeMap;
+        this.recipeMap = factory.getRecipeMap();
     }
 
     @Override
@@ -37,7 +42,7 @@ public abstract class WorkableSteamMetaTileEntity<T extends Recipe> extends Stea
             return;
         }
         if(progressTime == 0) {
-            T pickedRecipe = recipeMap.findRecipe(holder, previousRecipe, true, GTValues.V[1], importItems, importFluids);
+            Recipe pickedRecipe = recipeMap.findRecipe(holder, previousRecipe, true, GTValues.V[1], importItems, importFluids);
             if(pickedRecipe != null && setupAndConsumeRecipeInputs(pickedRecipe)) {
                 if(pickedRecipe.canBeBuffered()) {
                     this.previousRecipe = pickedRecipe;
@@ -54,7 +59,7 @@ public abstract class WorkableSteamMetaTileEntity<T extends Recipe> extends Stea
         }
     }
 
-    protected boolean setupAndConsumeRecipeInputs(T recipe) {
+    protected boolean setupAndConsumeRecipeInputs(Recipe recipe) {
         int totalEUt = recipe.getEUt() * recipe.getDuration();
         return totalEUt >= 0 &&
             this.steamFluidTank.drain(totalEUt, false) != null &&
@@ -63,7 +68,7 @@ public abstract class WorkableSteamMetaTileEntity<T extends Recipe> extends Stea
             recipe.isRecipeInputEqual(true, false, importItems, importFluids);
     }
 
-    protected void setupRecipe(T recipe) {
+    protected void setupRecipe(Recipe recipe) {
         this.progressTime = 1;
         setMaxProgress(recipe.getDuration());
         this.recipeEUt = recipe.getEUt();
@@ -78,6 +83,24 @@ public abstract class WorkableSteamMetaTileEntity<T extends Recipe> extends Stea
         this.recipeEUt = 0;
         this.itemOutputs = null;
         setActive(false);
+    }
+
+    @Override
+    public boolean onScrewdriverRightClick(EnumFacing side, EntityPlayer player, EnumHand hand, float clickX, float clickY, float clickZ) {
+        return false;
+    }
+
+    @Override
+    public boolean onWrenchRightClick(EnumFacing side, EnumFacing wrenchingSide, EntityPlayer player, EnumHand hand, float clickX, float clickY, float clickZ) {
+        return false;
+    }
+
+    @Override
+    public boolean onRightClick(EnumFacing side, EntityPlayer player, EnumHand hand, float clickX, float clickY, float clickZ) {
+        if (player instanceof EntityPlayerMP) {
+            MetaTileEntityUIFactory.INSTANCE.openUI(this, (EntityPlayerMP) player);
+        }
+        return true;
     }
 
     @Override

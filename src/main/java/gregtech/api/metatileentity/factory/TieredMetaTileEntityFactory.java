@@ -18,10 +18,13 @@ public class TieredMetaTileEntityFactory<T extends TieredMetaTileEntity> extends
     @Override
     public IMetaTileEntity constructMetaTileEntity() {
         try {
-            return metaTileEntityClass.getConstructor(IMetaTileEntityFactory.class, int.class).newInstance(this, tier);
+            return metaTileEntityClass.getConstructor(TieredMetaTileEntityFactory.class).newInstance(this);
         } catch (Throwable exception) {
             throw new RuntimeException(exception);
         }
     }
 
+    public int getTier() {
+        return tier;
+    }
 }

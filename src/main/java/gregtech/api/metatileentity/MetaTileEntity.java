@@ -194,6 +194,11 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     }
 
     @Override
+    public int getComparatorValue() {
+        return 0;
+    }
+
+    @Override
     public GregtechTileEntity getHolder() {
         return holder;
     }

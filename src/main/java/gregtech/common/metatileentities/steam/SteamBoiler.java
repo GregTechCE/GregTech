@@ -1,6 +1,7 @@
 package gregtech.common.metatileentities.steam;
 
-import gregtech.api.capability.impl.FluidTankHandler;
+import gregtech.api.capability.impl.FilteredFluidHandler;
+import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.internal.IWorkable;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.ImageWidget;
@@ -18,11 +19,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class SteamBoiler extends SteamMetaTileEntity implements IWorkable {
-
 
     public SteamBoiler(IMetaTileEntityFactory factory) {
         super(factory);
@@ -49,13 +50,9 @@ public class SteamBoiler extends SteamMetaTileEntity implements IWorkable {
     }
 
     @Override
-    public FluidTankHandler createImportFluidHandler() {
-        return new FluidTankHandler();
-    }
-
-    @Override
-    public FluidTankHandler createExportFluidHandler() {
-        return new FluidTankHandler();
+    public IFluidHandler createFluidHandler() {
+        this.steamFluidTank = new FilteredFluidHandler(16000).setFillPredicate(fluidStack -> false);
+        return new FluidHandlerProxy(this.steamFluidTank, this.exportFluids);
     }
 
     @Override
@@ -97,7 +94,7 @@ public class SteamBoiler extends SteamMetaTileEntity implements IWorkable {
                 .setImageLocation(slotImageLocation)
                 .setBackgroundLocation(new GTResourceLocation("textures/gui/bronze/overlay_bronze_out.png"))
                 .setOnSlotChanged(this::markDirty))
-            .widget(9, new ImageWidget<SteamBoiler>(42,35)
+            .widget(9, new ImageWidget<SteamBoiler>(42, 35)
                 .setImageLocation(new GTResourceLocation("textures/gui/bronze/overlay_bronze_fluid_container.png"))
 //                .setFillPredicate(holder -> holder.importItems.getStackInSlot(0).getCount() > 0) // test
                 .setImageWidthHeight(18, 18))
@@ -112,11 +109,6 @@ public class SteamBoiler extends SteamMetaTileEntity implements IWorkable {
             MetaTileEntityUIFactory.INSTANCE.openUI(this, (EntityPlayerMP) player);
         }
         return true;
-    }
-
-    @Override
-    public int getComparatorValue() {
-        return 0;
     }
 
     @Override

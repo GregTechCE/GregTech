@@ -60,7 +60,7 @@ public class MetaTileEntityFactory<T extends MetaTileEntity> implements IMetaTil
     @Override
     public IMetaTileEntity constructMetaTileEntity() {
         try {
-            return metaTileEntityClass.getConstructor(IMetaTileEntityFactory.class).newInstance(this);
+            return metaTileEntityClass.getConstructor(MetaTileEntityFactory.class).newInstance(this);
         } catch (Throwable exception) {
             throw new RuntimeException(exception);
         }

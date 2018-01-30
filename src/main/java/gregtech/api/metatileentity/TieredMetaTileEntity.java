@@ -1,14 +1,15 @@
 package gregtech.api.metatileentity;
 
 import gregtech.api.GTValues;
+import gregtech.api.metatileentity.factory.TieredMetaTileEntityFactory;
 
 public abstract class TieredMetaTileEntity extends EnergyMetaTileEntity {
 
     public final int tier;
 
-    public TieredMetaTileEntity(IMetaTileEntityFactory factory, int tier) {
+    public TieredMetaTileEntity(TieredMetaTileEntityFactory<?> factory) {
         super(factory);
-        this.tier = tier;
+        this.tier = factory.getTier();
     }
 
     @Override

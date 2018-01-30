@@ -10,9 +10,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import org.apache.commons.lang3.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class that represent machine recipe.<p>
@@ -63,10 +65,13 @@ public class Recipe {
 	 */
 	private final boolean needsEmptyOutput;
 
+    private final Map<String, Object> recipeProperties;
+
 	protected Recipe(List<ItemStack> inputs, List<ItemStack> outputs, TObjectIntMap<ItemStack> chancedOutputs,
-				   List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs,
-				   int duration, int EUt, boolean hidden, boolean canBeBuffered, boolean needsEmptyOutput) {
-		this.inputs = NonNullList.create();
+                     List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs,
+                     Map<String, Object> recipeProperties, int duration, int EUt, boolean hidden, boolean canBeBuffered, boolean needsEmptyOutput) {
+        this.recipeProperties = recipeProperties;
+        this.inputs = NonNullList.create();
 		this.inputs.addAll(inputs);
 		this.outputs = NonNullList.create();
 		this.outputs.addAll(outputs);
@@ -238,48 +243,43 @@ public class Recipe {
 	public boolean needsEmptyOutput() {
 		return needsEmptyOutput;
 	}
+	
+	public boolean getBooleanProperty(String key) {
+        Validate.notNull(key);
+        Object o = this.recipeProperties.get(key);
+        if (!(o instanceof Boolean)) {
+            throw new IllegalArgumentException();
+        }
+        return (boolean) o;
+    }
 
-	public static class BlastRecipe extends Recipe {
-		private final int blastFurnaceTemp;
+    public int getIntegerProperty(String key) {
+        Validate.notNull(key);
+        Object o = this.recipeProperties.get(key);
+        if (!(o instanceof Integer)) {
+            throw new IllegalArgumentException();
+        }
+        return (int) o;
+    }
 
-		protected BlastRecipe(List<ItemStack> inputs, List<ItemStack> outputs, TObjectIntMap<ItemStack> chancedOutputs, List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs, int duration, int EUt, boolean hidden, boolean canBeBuffered, boolean needsEmptyOutput, int blastFurnaceTemp) {
-			super(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
+    @SuppressWarnings("unchecked")
+    public <T> T getProperty(String key, Class<T> targetClass) {
+        Validate.notNull(key);
+        Object o = this.recipeProperties.get(key);
+        if (o == null) {
+            throw new IllegalArgumentException();
+        }
+        return (T) o;
+    }
 
-			this.blastFurnaceTemp = blastFurnaceTemp;
-		}
-
-		public int getBlastFurnaceTemp() {
-			return blastFurnaceTemp;
-		}
-	}
-
-	public static class AmplifierRecipe extends Recipe {
-		private final int amplifierAmountOutputted;
-
-		protected AmplifierRecipe(List<ItemStack> inputs, List<ItemStack> outputs, TObjectIntMap<ItemStack> chancedOutputs, List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs, int duration, int EUt, boolean hidden, boolean canBeBuffered, boolean needsEmptyOutput, int amplifierAmountOutputted) {
-			super(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
-
-			this.amplifierAmountOutputted = amplifierAmountOutputted;
-		}
-
-		public int getAmplifierAmountOutputted() {
-			return amplifierAmountOutputted;
-		}
-	}
-
-	public static class FusionRecipe extends Recipe {
-		private final int EUToStart;
-
-		protected FusionRecipe(List<ItemStack> inputs, List<ItemStack> outputs, TObjectIntMap<ItemStack> chancedOutputs, List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs, int duration, int EUt, boolean hidden, boolean canBeBuffered, boolean needsEmptyOutput, int EUToStart) {
-			super(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, duration, EUt, hidden, canBeBuffered, needsEmptyOutput);
-
-			this.EUToStart = EUToStart;
-		}
-
-		public int getEUToStart() {
-			return EUToStart;
-		}
-	}
+	public String getStringProperty(String key) {
+        Validate.notNull(key);
+        Object o = this.recipeProperties.get(key);
+        if (!(o instanceof String)) {
+            throw new IllegalArgumentException();
+        }
+        return (String) o;
+    }
 
 	public static class AssemblyLineRecipe {
 

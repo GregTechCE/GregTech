@@ -443,7 +443,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe.FusionRecipe, RecipeBuilder.FusionRecipeBuilder> FUSION_RECIPES = new RecipeMap<>(new HashSet<>(50), "fusionreactor", "basicmachines/Default", 0, 0, 0, 0, 2, 2, 1, 1, true, 1, 1, true, new RecipeBuilder.FusionRecipeBuilder());
+	public static final RecipeMap<Recipe, RecipeBuilder.FusionRecipeBuilder> FUSION_RECIPES = new RecipeMap<>(new HashSet<>(50), "fusionreactor", "basicmachines/Default", 0, 0, 0, 0, 2, 2, 1, 1, true, 1, 1, true, new RecipeBuilder.FusionRecipeBuilder());
 
 	/**
 	 * Examples:
@@ -519,7 +519,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe.BlastRecipe, RecipeBuilder.BlastRecipeBuilder> BLAST_RECIPES = new RecipeMap<>(new HashSet<>(500), "blastfurnace", "basicmachines/Default", 1, 2, 1, 2, 0, 1, 0, 1, false, 1, 1, true, new RecipeBuilder.BlastRecipeBuilder());
+	public static final RecipeMap<Recipe, RecipeBuilder.BlastRecipeBuilder> BLAST_RECIPES = new RecipeMap<>(new HashSet<>(500), "blastfurnace", "basicmachines/Default", 1, 2, 1, 2, 0, 1, 0, 1, false, 1, 1, true, new RecipeBuilder.BlastRecipeBuilder());
 
 	/**
 	 * Example:
@@ -799,7 +799,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *      		.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe.AmplifierRecipe, RecipeBuilder.AmplifierRecipeBuilder> AMPLIFIERS = new RecipeMap<>(new HashSet<>(10), "uuamplifier", "basicmachines/Amplifabricator", 1, 1, 0, 0, 0, 0, 1, 1, true, 1, 1, true, new RecipeBuilder.AmplifierRecipeBuilder().EUt(32));
+	public static final RecipeMap<Recipe, RecipeBuilder.AmplifierRecipeBuilder> AMPLIFIERS = new RecipeMap<>(new HashSet<>(10), "uuamplifier", "basicmachines/Amplifabricator", 1, 1, 0, 0, 0, 0, 1, 1, true, 1, 1, true, new RecipeBuilder.AmplifierRecipeBuilder().EUt(32));
 
 	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> DIESEL_FUELS = new RecipeMap<>(new HashSet<>(10), "dieselgeneratorfuel", "basicmachines/Default", 1, 1, 0, 4, 0, 0, 0, 0, true, 1, 1000, true, new RecipeBuilder.DefaultRecipeBuilder());
 	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> TURBINE_FUELS = new RecipeMap<>(new HashSet<>(10), "gasturbinefuel", "basicmachines/Default", 0, 1, 0, 4, 0, 0, 0, 0, true, 1, 1000, true, new RecipeBuilder.DefaultRecipeBuilder());

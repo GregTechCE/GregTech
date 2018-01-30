@@ -6,6 +6,7 @@ import gregtech.api.gui.ModularUI;
 import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.IMetaTileEntityFactory;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
+import gregtech.api.metatileentity.factory.TieredMetaTileEntityFactory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -15,8 +16,8 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class TestGeneratorMTE extends TieredMetaTileEntity {
 
-    public TestGeneratorMTE(IMetaTileEntityFactory factory, int tier) {
-        super(factory, tier);
+    public TestGeneratorMTE(TieredMetaTileEntityFactory factory) {
+        super(factory);
     }
 
     @Override

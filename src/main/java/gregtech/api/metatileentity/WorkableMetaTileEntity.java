@@ -1,6 +1,7 @@
 package gregtech.api.metatileentity;
 
 import gregtech.api.capability.internal.IWorkable;
+import gregtech.api.metatileentity.factory.WorkableMetaTileEntityFactory;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import net.minecraft.item.ItemStack;
@@ -14,10 +15,10 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class WorkableMetaTileEntity<T extends Recipe> extends TieredMetaTileEntity implements IWorkable {
+public abstract class WorkableMetaTileEntity extends TieredMetaTileEntity implements IWorkable {
 
-    public final RecipeMap<T, ?> recipeMap;
-    protected T previousRecipe;
+    public final RecipeMap<Recipe, ?> recipeMap;
+    protected Recipe previousRecipe;
 
     protected int progressTime;
     protected int maxProgressTime;
@@ -28,9 +29,9 @@ public abstract class WorkableMetaTileEntity<T extends Recipe> extends TieredMet
     private boolean isActive;
     private boolean workingEnabled = true;
 
-    public WorkableMetaTileEntity(IMetaTileEntityFactory factory, int tier, RecipeMap<T, ?> recipeMap) {
-        super(factory, tier);
-        this.recipeMap = recipeMap;
+    public WorkableMetaTileEntity(WorkableMetaTileEntityFactory<WorkableMetaTileEntity> factory) {
+        super(factory);
+        this.recipeMap = factory.getRecipeMap();
     }
 
     @Override
@@ -41,7 +42,7 @@ public abstract class WorkableMetaTileEntity<T extends Recipe> extends TieredMet
         }
         if(progressTime == 0) {
             long maxVoltage = Math.max(getInputVoltage(), getOutputVoltage());
-            T pickedRecipe = recipeMap.findRecipe(holder, previousRecipe, true, maxVoltage, importItems, importFluids);
+            Recipe pickedRecipe = recipeMap.findRecipe(holder, previousRecipe, true, maxVoltage, importItems, importFluids);
             if(pickedRecipe != null && setupAndConsumeRecipeInputs(pickedRecipe)) {
                 if(pickedRecipe.canBeBuffered()) {
                     this.previousRecipe = pickedRecipe;
@@ -58,7 +59,7 @@ public abstract class WorkableMetaTileEntity<T extends Recipe> extends TieredMet
         }
     }
 
-    protected boolean setupAndConsumeRecipeInputs(T recipe) {
+    protected boolean setupAndConsumeRecipeInputs(Recipe recipe) {
         int totalEUt = recipe.getEUt() * recipe.getDuration();
         return (totalEUt >= 0 ? getEnergyStored() >= totalEUt : getEnergyStored() - totalEUt <= getEnergyCapacity()) &&
                 addItemsToItemHandler(exportItems, true, recipe.getOutputs()) &&
@@ -66,7 +67,7 @@ public abstract class WorkableMetaTileEntity<T extends Recipe> extends TieredMet
                 recipe.isRecipeInputEqual(true, false, importItems, importFluids);
     }
 
-    protected void setupRecipe(T recipe) {
+    protected void setupRecipe(Recipe recipe) {
         this.progressTime = 1;
         setMaxProgress(recipe.getDuration());
         this.recipeEUt = recipe.getEUt();
