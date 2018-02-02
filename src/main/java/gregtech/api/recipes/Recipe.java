@@ -1,10 +1,10 @@
 package gregtech.api.recipes;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import gnu.trove.impl.unmodifiable.TUnmodifiableObjectIntMap;
 import gnu.trove.map.TObjectIntMap;
 import gregtech.api.capability.IMultipleTankHandler;
-import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -31,7 +31,7 @@ import java.util.Map;
 //TODO CraftTweaker support
 public class Recipe {
 
-	private final NonNullList<ItemStack> inputs;
+	private final List<CountableIngredient> inputs;
 	private final NonNullList<ItemStack> outputs;
 
 	/**
@@ -67,10 +67,10 @@ public class Recipe {
 
     private final Map<String, Object> recipeProperties;
 
-	protected Recipe(List<ItemStack> inputs, List<ItemStack> outputs, TObjectIntMap<ItemStack> chancedOutputs,
+	protected Recipe(List<CountableIngredient> inputs, List<ItemStack> outputs, TObjectIntMap<ItemStack> chancedOutputs,
                      List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs,
                      Map<String, Object> recipeProperties, int duration, int EUt, boolean hidden, boolean canBeBuffered, boolean needsEmptyOutput) {
-        this.recipeProperties = recipeProperties;
+        this.recipeProperties = ImmutableMap.copyOf(recipeProperties);
         this.inputs = NonNullList.create();
 		this.inputs.addAll(inputs);
 		this.outputs = NonNullList.create();
@@ -85,72 +85,59 @@ public class Recipe {
 		this.needsEmptyOutput = needsEmptyOutput;
 	}
 
-	public boolean isRecipeInputEqual(boolean decreaseStacksizeBySuccess, boolean dontCheckStackSizes, IItemHandlerModifiable inputs, IMultipleTankHandler fluidInputs) {
-        List<FluidStack> fluidStacks = new ArrayList<>(fluidInputs.getTanks());
-        for (int i = 0; i < fluidInputs.getTanks(); i++) {
-            fluidStacks.add(fluidInputs.getFluidInTank(i));
-        }
-        NonNullList<ItemStack> stacks = NonNullList.create();
-        for (int i = 0; i < inputs.getSlots(); i++) {
-            stacks.add(inputs.getStackInSlot(i));
-        }
-		return isRecipeInputEqual(decreaseStacksizeBySuccess, dontCheckStackSizes, stacks, fluidStacks);
+	public boolean matches(boolean consumeIfSuccessful, boolean dontCheckStackSizes, IItemHandlerModifiable inputs, IMultipleTankHandler fluidInputs) {
+		return matches(consumeIfSuccessful, dontCheckStackSizes, GTUtility.itemHandlerToList(inputs), GTUtility.fluidHandlerToList(fluidInputs));
 	}
 
-	public boolean isRecipeInputEqual(boolean decreaseStacksizeBySuccess, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
-		return isRecipeInputEqual(decreaseStacksizeBySuccess, false, inputs, fluidInputs);
-	}
-
-	public boolean isRecipeInputEqual(boolean decreaseStacksizeBySuccess, boolean dontCheckStackSizes, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
-		if (this.fluidInputs.size() > 0 && fluidInputs == null) return false;
+	public boolean matches(boolean consumeIfSuccessful, boolean dontCheckStackSizes, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
+		if (this.fluidInputs.size() > 0 && fluidInputs.size() == 0) return false;
 		int amount;
 		for (FluidStack fluidInput : this.fluidInputs) {
-			boolean temp = true;
+			boolean skipRecipe = true;
 			amount = fluidInput.amount;
 			for (FluidStack fluid : fluidInputs) {
 				if (fluid != null && fluid.isFluidEqual(fluidInput)) {
 					if (dontCheckStackSizes) {
-						temp = false;
+						skipRecipe = false;
 						break;
 					}
 					amount -= fluid.amount;
 					if (amount < 1) {
-						temp = false;
+						skipRecipe = false;
 						break;
 					}
 				}
 			}
-			if (temp) {
+			if (skipRecipe) {
 				return false;
 			}
 		}
 
-		if (this.inputs.size() > 0 && inputs == null) {
+		if (this.inputs.size() > 0 && inputs.size() == 0) {
 			return false;
 		}
 
-		for (ItemStack stackInput : this.inputs) {
-			amount = stackInput.getCount();
-			boolean temp = true;
+		for (CountableIngredient ingredient : this.inputs) {
+			amount = ingredient.getCount();
+			boolean skipRecipe = true;
 			for (ItemStack stack : inputs) {
-				if ((GTUtility.areUnificationEqual(stack, stackInput)
-						|| GTUtility.areUnificationEqual(OreDictUnifier.getUnificated(stack), stackInput))) {
+				if (ingredient.getIngredient().apply(stack)) {
 					if (dontCheckStackSizes) {
-						temp = false;
+						skipRecipe = false;
 						break;
 					}
 					amount -= stack.getCount();
 					if (amount < 1) {
-						temp = false;
+						skipRecipe = false;
 						break;
 					}
 				}
 			}
-			if (temp) {
+			if (skipRecipe) {
 				return false;
 			}
 		}
-		if (decreaseStacksizeBySuccess) {
+		if (consumeIfSuccessful) {
 			if (fluidInputs != null) {
 				for (FluidStack fluid : this.fluidInputs) {
 					amount = fluid.amount;
@@ -174,20 +161,19 @@ public class Recipe {
 			}
 
 			if (inputs != null) {
-				for (ItemStack stack : this.inputs) {
-					amount = stack.getCount();
-					for (ItemStack tmpStack : inputs) {
-						if ((GTUtility.areUnificationEqual(tmpStack, stack)
-								|| GTUtility.areUnificationEqual(OreDictUnifier.getUnificated(tmpStack), stack))) {
+				for (CountableIngredient ingredient : this.inputs) {
+					amount = ingredient.getCount();
+					for (ItemStack stack : inputs) {
+						if (ingredient.getIngredient().apply(stack)) {
 							if (dontCheckStackSizes) {
-								tmpStack.shrink(amount);
+								stack.shrink(amount);
 								break;
 							}
-							if (tmpStack.getCount() < amount) {
-								amount -= tmpStack.getCount();
-								tmpStack.setCount(0);
+							if (stack.getCount() < amount) {
+								amount -= stack.getCount();
+								stack.setCount(0);
 							} else {
-								tmpStack.shrink(amount);
+								stack.shrink(amount);
 								amount = 0;
 								break;
 							}
@@ -204,7 +190,7 @@ public class Recipe {
 	//    Getters    //
 	///////////////////
 
-	public NonNullList<ItemStack> getInputs() {
+	public List<CountableIngredient> getInputs() {
 		return inputs;
 	}
 

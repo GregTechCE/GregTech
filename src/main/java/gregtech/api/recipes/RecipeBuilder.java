@@ -14,7 +14,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.ValidationResult;
 import gregtech.common.items.MetaItems;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -24,22 +23,20 @@ import net.minecraftforge.fluids.FluidStack;
 import javax.annotation.Nonnull;
 import java.util.*;
 
-import static gregtech.api.GTValues.W;
-
 /**
  * @see Recipe
  */
 @SuppressWarnings({"unused", "WeakerAccess"})
-public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T, R>> {
+public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 
-	protected RecipeMap<T, R> recipeMap;
+	protected RecipeMap<R> recipeMap;
 
-	protected NonNullList<ItemStack> inputs = NonNullList.create();
-	protected NonNullList<ItemStack> outputs = NonNullList.create();
-	protected TObjectIntMap<ItemStack> chancedOutputs = new TObjectIntHashMap<>(0);
+	protected List<CountableIngredient> inputs;
+	protected NonNullList<ItemStack> outputs;
+	protected TObjectIntMap<ItemStack> chancedOutputs;
 
-	protected List<FluidStack> fluidInputs = new ArrayList<>(0);
-	protected List<FluidStack> fluidOutputs = new ArrayList<>(0);
+	protected List<FluidStack> fluidInputs;
+	protected List<FluidStack> fluidOutputs;
 
 	protected int duration, EUt;
 
@@ -64,10 +61,10 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		this.fluidOutputs = new ArrayList<>(0);
 	}
 
-	protected RecipeBuilder(T recipe, RecipeMap<T, R> recipeMap) {
+	protected RecipeBuilder(Recipe recipe, RecipeMap<R> recipeMap) {
 		this.recipeMap = recipeMap;
 		this.inputs = NonNullList.create();
-		this.inputs.addAll(GTUtility.copyStackList(recipe.getInputs()));
+		this.inputs.addAll(recipe.getInputs());
 		this.outputs = NonNullList.create();
 		this.outputs.addAll(GTUtility.copyStackList(recipe.getOutputs()));
 
@@ -87,10 +84,10 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		this.needsEmptyOutput = recipe.needsEmptyOutput();
 	}
 
-	protected RecipeBuilder(RecipeBuilder<T, R> recipeBuilder) {
+	protected RecipeBuilder(RecipeBuilder<R> recipeBuilder) {
 		this.recipeMap = recipeBuilder.recipeMap;
         this.inputs = NonNullList.create();
-        this.inputs.addAll(GTUtility.copyStackList(recipeBuilder.getInputs()));
+        this.inputs.addAll(recipeBuilder.getInputs());
         this.outputs = NonNullList.create();
         this.outputs.addAll(GTUtility.copyStackList(recipeBuilder.getOutputs()));
 
@@ -120,8 +117,20 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             recipeStatus = EnumValidationResult.INVALID;
 		}
-        this.inputs.addAll(inputs);
-        this.inputs.removeIf(Predicates.or(Objects::isNull, ItemStack::isEmpty));
+		inputs.forEach(stack -> {
+		    if (!Predicates.or(Objects::isNull, ItemStack::isEmpty).apply(stack)) {
+                this.inputs.add(CountableIngredient.from(stack));
+            }
+        });
+        return getThis();
+    }
+
+    public R inputs(CountableIngredient... inputs) {
+        return inputsIngredients(Arrays.asList(inputs));
+    }
+
+    public R inputsIngredients(Collection<CountableIngredient> ingredients) {
+	    this.inputs.addAll(ingredients);
         return getThis();
     }
 
@@ -131,7 +140,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 
     public R outputs(Collection<ItemStack> outputs) {
 		outputs = new ArrayList<>(outputs);
-		if(GTUtility.iterableContains(inputs, Predicates.or(Objects::isNull, ItemStack::isEmpty))) {
+		if(GTUtility.iterableContains(outputs, Predicates.or(Objects::isNull, ItemStack::isEmpty))) {
             outputs.removeIf(Predicates.or(Objects::isNull, ItemStack::isEmpty));
         }
 		this.outputs.addAll(outputs);
@@ -215,13 +224,13 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		return getThis();
 	}
 
-	public R setRecipeMap(RecipeMap<T, R> recipeMap) {
+	public R setRecipeMap(RecipeMap<R> recipeMap) {
 		this.recipeMap = recipeMap;
 		return getThis();
 	}
 
-	public R fromRecipe(T recipe) {
-		this.inputs = NonNullList.from(ItemStack.EMPTY, recipe.getInputs().toArray(new ItemStack[0]));
+	public R fromRecipe(Recipe recipe) {
+		this.inputs = recipe.getInputs();
 		this.outputs = NonNullList.from(ItemStack.EMPTY, recipe.getOutputs().toArray(new ItemStack[0]));
 		this.chancedOutputs = new TObjectIntHashMap<>(recipe.getChancedOutputs());
 		this.fluidInputs = new ArrayList<>(recipe.getFluidInputs());
@@ -240,10 +249,9 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 	// To get rid of "unchecked cast" warning
 	protected abstract R getThis();
 
-	protected EnumValidationResult finalizeAndValidate(boolean checkForCollisions) {
+	protected EnumValidationResult finalizeAndValidate() {
 
 		if (unificate) {
-			inputs.replaceAll(OreDictUnifier::getUnificated);
 			outputs.replaceAll(OreDictUnifier::getUnificated);
 
 			ItemStack[] keys = chancedOutputs.keys(new ItemStack[0]);
@@ -259,15 +267,16 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
             }
 		}
 
-		for (ItemStack stack : inputs) {
-			if (Items.FEATHER.getDamage(stack) != W) {
+		/* TODO maybe some day
+		for (CountableIngredient ingredient : inputs) {
+			if (Items.FEATHER.getDamage(ingredient) != W) {
 				for (int j = 0; j < outputs.size(); j++) {
-					if (ItemStack.areItemStacksEqual(stack, outputs.get(j))) {
-						if (stack.getCount() >= outputs.get(j).getCount()) {
-							stack.shrink(outputs.get(j).getCount());
+					if (ItemStack.areItemStacksEqual(ingredient, outputs.get(j))) {
+						if (ingredient.getCount() >= outputs.get(j).getCount()) {
+							ingredient.shrink(outputs.get(j).getCount());
 							outputs.remove(j);
 						} else {
-							outputs.get(j).shrink(stack.getCount());
+							outputs.get(j).shrink(ingredient.getCount());
 						}
 					}
 				}
@@ -296,17 +305,14 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 					}
 				}
 		}
+		*/
 
-		return validate(checkForCollisions);
+		return validate();
 	}
 
-	public abstract ValidationResult<T> build(boolean checkForCollisions);
+	public abstract ValidationResult<Recipe> build();
 
-	public ValidationResult<T> build() {
-	    return build(true);
-    }
-
-	protected EnumValidationResult validate(boolean checkForCollisions) {
+	protected EnumValidationResult validate() {
 
 		if (recipeMap == null) {
 			GTLog.logger.error("RecipeMap cannot be null", new IllegalArgumentException());
@@ -341,12 +347,6 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 			recipeStatus = EnumValidationResult.INVALID;
         }
 
-		//For fakeRecipes don't do check for collisions, regular recipes do check, do not check for recipes that are not registered(i.e. created after postinit stage)
-		if (checkForCollisions && !(recipeMap instanceof RecipeMap.FakeRecipeMap) &&
-				recipeMap.findRecipe(null, true, Long.MAX_VALUE, this.inputs, this.fluidInputs) != null) {
-			return EnumValidationResult.SKIP;
-		}
-
 		return recipeStatus;
 	}
 
@@ -358,7 +358,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 	//    Getters    //
 	///////////////////
 
-	public List<ItemStack> getInputs() {
+	public List<CountableIngredient> getInputs() {
 		return inputs;
 	}
 
@@ -378,16 +378,16 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		return fluidOutputs;
 	}
 
-	public static class DefaultRecipeBuilder extends RecipeBuilder<Recipe, DefaultRecipeBuilder> {
+	public static class DefaultRecipeBuilder extends RecipeBuilder<DefaultRecipeBuilder> {
 
 		public DefaultRecipeBuilder() {
 		}
 
-		public DefaultRecipeBuilder(Recipe recipe, RecipeMap<Recipe, DefaultRecipeBuilder> recipeMap) {
+		public DefaultRecipeBuilder(Recipe recipe, RecipeMap<DefaultRecipeBuilder> recipeMap) {
 			super(recipe, recipeMap);
 		}
 
-		public DefaultRecipeBuilder(RecipeBuilder<Recipe, DefaultRecipeBuilder> recipeBuilder) {
+		public DefaultRecipeBuilder(RecipeBuilder<DefaultRecipeBuilder> recipeBuilder) {
 			super(recipeBuilder);
 		}
 
@@ -401,25 +401,25 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 			return new DefaultRecipeBuilder(this);
 		}
 
-		public ValidationResult<Recipe> build(boolean checkForCollisions) {
-			return ValidationResult.newResult(finalizeAndValidate(checkForCollisions),
+		public ValidationResult<Recipe> build() {
+			return ValidationResult.newResult(finalizeAndValidate(),
 						new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
                             ImmutableMap.of(), duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
 		}
 	}
 
-	public static class IntCircuitRecipeBuilder extends RecipeBuilder<Recipe, IntCircuitRecipeBuilder> {
+	public static class IntCircuitRecipeBuilder extends RecipeBuilder<IntCircuitRecipeBuilder> {
 
 		protected int circuitMeta = -1;
 
 		public IntCircuitRecipeBuilder() {
 		}
 
-		public IntCircuitRecipeBuilder(Recipe recipe, RecipeMap<Recipe, RecipeBuilder.IntCircuitRecipeBuilder> recipeMap) {
+		public IntCircuitRecipeBuilder(Recipe recipe, RecipeMap<IntCircuitRecipeBuilder> recipeMap) {
 			super(recipe, recipeMap);
 		}
 
-		public IntCircuitRecipeBuilder(RecipeBuilder<Recipe, RecipeBuilder.IntCircuitRecipeBuilder> recipeBuilder) {
+		public IntCircuitRecipeBuilder(RecipeBuilder<IntCircuitRecipeBuilder> recipeBuilder) {
 			super(recipeBuilder);
 		}
 
@@ -443,30 +443,30 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		@Override
-		protected EnumValidationResult finalizeAndValidate(boolean checkForCollisions) {
+		protected EnumValidationResult finalizeAndValidate() {
 			if (circuitMeta >= 0) {
-				inputs.add(MetaItems.getIntegratedCircuit(circuitMeta));
+				inputs.add(CountableIngredient.from(MetaItems.getIntegratedCircuit(circuitMeta)));
 			}
-			return super.finalizeAndValidate(checkForCollisions);
+			return super.finalizeAndValidate();
 		}
 
-		public ValidationResult<Recipe> build(boolean checkForCollisions) {
-			return ValidationResult.newResult(finalizeAndValidate(checkForCollisions),
+		public ValidationResult<Recipe> build() {
+			return ValidationResult.newResult(finalizeAndValidate(),
 					new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
                         ImmutableMap.of(), duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
 		}
 	}
 
-	public static class NotConsumableInputRecipeBuilder extends RecipeBuilder<Recipe, NotConsumableInputRecipeBuilder> {
+	public static class NotConsumableInputRecipeBuilder extends RecipeBuilder<NotConsumableInputRecipeBuilder> {
 
 		public NotConsumableInputRecipeBuilder() {
 		}
 
-		public NotConsumableInputRecipeBuilder(Recipe recipe, RecipeMap<Recipe, NotConsumableInputRecipeBuilder> recipeMap) {
+		public NotConsumableInputRecipeBuilder(Recipe recipe, RecipeMap<NotConsumableInputRecipeBuilder> recipeMap) {
 			super(recipe, recipeMap);
 		}
 
-		public NotConsumableInputRecipeBuilder(RecipeBuilder<Recipe, NotConsumableInputRecipeBuilder> recipeBuilder) {
+		public NotConsumableInputRecipeBuilder(RecipeBuilder<NotConsumableInputRecipeBuilder> recipeBuilder) {
 			super(recipeBuilder);
 		}
 
@@ -486,7 +486,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
                 GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
                 recipeStatus = EnumValidationResult.INVALID;
             } else {
-                inputs.add(new ItemStack(item, 0));
+                inputs.add(CountableIngredient.from(new ItemStack(item, 0)));
             }
 			return this;
 		}
@@ -499,7 +499,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
             } else {
                 ItemStack stack = itemStack.copy();
                 stack.setCount(0);
-                inputs.add(stack);
+                inputs.add(CountableIngredient.from(stack));
             }
 			return this;
 		}
@@ -510,31 +510,31 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
                 GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
                 recipeStatus = EnumValidationResult.INVALID;
             } else {
-                inputs.add(item.getStackForm(0));
+                inputs.add(CountableIngredient.from(item.getStackForm(0)));
             }
 			return this;
 		}
 
-		public ValidationResult<Recipe> build(boolean checkForCollisions) {
-			return ValidationResult.newResult(finalizeAndValidate(checkForCollisions),
+		public ValidationResult<Recipe> build() {
+			return ValidationResult.newResult(finalizeAndValidate(),
 					new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
                         ImmutableMap.of(), duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
 		}
 	}
 
-	public static class BlastRecipeBuilder extends RecipeBuilder<Recipe, BlastRecipeBuilder> {
+	public static class BlastRecipeBuilder extends RecipeBuilder<BlastRecipeBuilder> {
 
 		private int blastFurnaceTemp;
 
 		public BlastRecipeBuilder() {
 		}
 
-		public BlastRecipeBuilder(Recipe recipe, RecipeMap<Recipe, BlastRecipeBuilder> recipeMap) {
+		public BlastRecipeBuilder(Recipe recipe, RecipeMap<BlastRecipeBuilder> recipeMap) {
 			super(recipe, recipeMap);
 			this.blastFurnaceTemp = recipe.getIntegerProperty("blastFurnaceTemp");
 		}
 
-		public BlastRecipeBuilder(RecipeBuilder<Recipe, BlastRecipeBuilder> recipeBuilder) {
+		public BlastRecipeBuilder(RecipeBuilder<BlastRecipeBuilder> recipeBuilder) {
 			super(recipeBuilder);
 		}
 
@@ -557,26 +557,26 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 			return getThis();
 		}
 
-		public ValidationResult<Recipe> build(boolean checkForCollisions) {
-			return ValidationResult.newResult(finalizeAndValidate(checkForCollisions),
+		public ValidationResult<Recipe> build() {
+			return ValidationResult.newResult(finalizeAndValidate(),
 					new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
                         ImmutableMap.of("blastFurnaceTemp", blastFurnaceTemp),
                         duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
 		}
 	}
 
-	public static class ArcFurnaceRecipeBuilder extends RecipeBuilder<Recipe, ArcFurnaceRecipeBuilder> {
+	public static class ArcFurnaceRecipeBuilder extends RecipeBuilder<ArcFurnaceRecipeBuilder> {
 
 		protected boolean simple = false;
 
 		public ArcFurnaceRecipeBuilder() {
 		}
 
-		public ArcFurnaceRecipeBuilder(Recipe recipe, RecipeMap<Recipe, ArcFurnaceRecipeBuilder> recipeMap) {
+		public ArcFurnaceRecipeBuilder(Recipe recipe, RecipeMap<ArcFurnaceRecipeBuilder> recipeMap) {
 			super(recipe, recipeMap);
 		}
 
-		public ArcFurnaceRecipeBuilder(RecipeBuilder<Recipe, ArcFurnaceRecipeBuilder> recipeBuilder) {
+		public ArcFurnaceRecipeBuilder(RecipeBuilder<ArcFurnaceRecipeBuilder> recipeBuilder) {
 			super(recipeBuilder);
 		}
 
@@ -606,7 +606,7 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 					int plasmaAmount = (int) Math.max(1L, this.duration / (material.getMass() * 16L));
 
 					DefaultRecipeBuilder builder = RecipeMap.PLASMA_ARC_FURNACE_RECIPES.recipeBuilder()
-							.inputs(this.inputs)
+							.inputsIngredients(this.inputs)
 							.outputs(this.outputs)
 							.duration(this.duration / 16)
 							.EUt(this.EUt / 3)
@@ -620,25 +620,25 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 			}
 		}
 
-		public ValidationResult<Recipe> build(boolean checkForCollisions) {
-			return ValidationResult.newResult(finalizeAndValidate(checkForCollisions),
+		public ValidationResult<Recipe> build() {
+			return ValidationResult.newResult(finalizeAndValidate(),
 					new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
                         ImmutableMap.of(), duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
 		}
 	}
 
-	public static class ImplosionRecipeBuilder extends RecipeBuilder<Recipe, ImplosionRecipeBuilder> {
+	public static class ImplosionRecipeBuilder extends RecipeBuilder<ImplosionRecipeBuilder> {
 
 		protected int explosivesAmount;
 
 		public ImplosionRecipeBuilder() {
 		}
 
-		public ImplosionRecipeBuilder(Recipe recipe, RecipeMap<Recipe, ImplosionRecipeBuilder> recipeMap) {
+		public ImplosionRecipeBuilder(Recipe recipe, RecipeMap<ImplosionRecipeBuilder> recipeMap) {
 			super(recipe, recipeMap);
 		}
 
-		public ImplosionRecipeBuilder(RecipeBuilder<Recipe, ImplosionRecipeBuilder> recipeBuilder) {
+		public ImplosionRecipeBuilder(RecipeBuilder<ImplosionRecipeBuilder> recipeBuilder) {
 			super(recipeBuilder);
 		}
 
@@ -668,36 +668,39 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 			int TNT = Math.max(1, explosivesAmount / 2);
 			int ITNT = Math.max(1, explosivesAmount / 4);
 
-			ItemStack input = inputs.get(0);
+			CountableIngredient input = inputs.get(0);
 			if (gunpowder < 65) {
 //				recipeMap.addRecipe(this.copy().inputs(input, ItemList.Block_Powderbarrel.get(gunpowder)).build());
 			}
 			if (dynamite < 17) {
 //				recipeMap.addRecipe(this.copy().inputs(input, ModHandler.IC2.getIC2Item(ItemName.dynamite, dynamite)).build());
 			}
-			recipeMap.addRecipe(this.copy().inputs(input, new ItemStack(Blocks.TNT, TNT)).build());
+			recipeMap.addRecipe(this.copy()
+                .inputsIngredients(Collections.singleton(input))
+                .inputs(new ItemStack(Blocks.TNT, TNT))
+                .build());
 //			recipeMap.addRecipe(this.copy().inputs(input, ModHandler.IC2.getIC2Item(BlockName.te, TeBlock.itnt, ITNT)).build());
 		}
 
-		public ValidationResult<Recipe> build(boolean checkForCollisions) {
-			return ValidationResult.newResult(finalizeAndValidate(checkForCollisions),
+		public ValidationResult<Recipe> build() {
+			return ValidationResult.newResult(finalizeAndValidate(),
 					new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
                         ImmutableMap.of(), duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
 		}
 	}
 
-	public static class UniversalDistillationRecipeBuilder extends RecipeBuilder<Recipe, UniversalDistillationRecipeBuilder> {
+	public static class UniversalDistillationRecipeBuilder extends RecipeBuilder<UniversalDistillationRecipeBuilder> {
 
 		protected boolean universal = false;
 
 		public UniversalDistillationRecipeBuilder() {
 		}
 
-		public UniversalDistillationRecipeBuilder(Recipe recipe, RecipeMap<Recipe, UniversalDistillationRecipeBuilder> recipeMap) {
+		public UniversalDistillationRecipeBuilder(Recipe recipe, RecipeMap<UniversalDistillationRecipeBuilder> recipeMap) {
 			super(recipe, recipeMap);
 		}
 
-		public UniversalDistillationRecipeBuilder(RecipeBuilder<Recipe, UniversalDistillationRecipeBuilder> recipeBuilder) {
+		public UniversalDistillationRecipeBuilder(RecipeBuilder<UniversalDistillationRecipeBuilder> recipeBuilder) {
 			super(recipeBuilder);
 		}
 
@@ -732,25 +735,25 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 			super.buildAndRegister();
 		}
 
-		public ValidationResult<Recipe> build(boolean checkForCollisions) {
-			return ValidationResult.newResult(finalizeAndValidate(checkForCollisions),
+		public ValidationResult<Recipe> build() {
+			return ValidationResult.newResult(finalizeAndValidate(),
 					new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
                         ImmutableMap.of(), duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
 		}
 	}
 
-	public static class AmplifierRecipeBuilder extends RecipeBuilder<Recipe, AmplifierRecipeBuilder> {
+	public static class AmplifierRecipeBuilder extends RecipeBuilder<AmplifierRecipeBuilder> {
 
 		private int amplifierAmountOutputted = -1;
 
 		public AmplifierRecipeBuilder() {}
 
-		public AmplifierRecipeBuilder(Recipe recipe, RecipeMap<Recipe, AmplifierRecipeBuilder> recipeMap) {
+		public AmplifierRecipeBuilder(Recipe recipe, RecipeMap<AmplifierRecipeBuilder> recipeMap) {
 			super(recipe, recipeMap);
             this.amplifierAmountOutputted  = recipe.getIntegerProperty("amplifierAmountOutputted");
         }
 
-		public AmplifierRecipeBuilder(RecipeBuilder<Recipe, AmplifierRecipeBuilder> recipeBuilder) {
+		public AmplifierRecipeBuilder(RecipeBuilder<AmplifierRecipeBuilder> recipeBuilder) {
 			super(recipeBuilder);
 		}
 
@@ -774,30 +777,30 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 		}
 
 		@Override
-		protected EnumValidationResult finalizeAndValidate(boolean checkForCollisions) {
+		protected EnumValidationResult finalizeAndValidate() {
 			if (amplifierAmountOutputted > 0) {
 				this.fluidOutputs(Materials.UUAmplifier.getFluid(amplifierAmountOutputted));
 			}
-			return super.finalizeAndValidate(checkForCollisions);
+			return super.finalizeAndValidate();
 		}
 
-		public ValidationResult<Recipe> build(boolean checkForCollisions) {
-			return ValidationResult.newResult(finalizeAndValidate(checkForCollisions),
+		public ValidationResult<Recipe> build() {
+			return ValidationResult.newResult(finalizeAndValidate(),
 					new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
                         ImmutableMap.of("amplifierAmountOutputted", amplifierAmountOutputted),
 						duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
 		}
 	}
 
-	public static class BrewingRecipeBuilder extends RecipeBuilder<Recipe, BrewingRecipeBuilder> {
+	public static class BrewingRecipeBuilder extends RecipeBuilder<BrewingRecipeBuilder> {
 
 		public BrewingRecipeBuilder() {}
 
-		public BrewingRecipeBuilder(Recipe recipe, RecipeMap<Recipe, BrewingRecipeBuilder> recipeMap) {
+		public BrewingRecipeBuilder(Recipe recipe, RecipeMap<BrewingRecipeBuilder> recipeMap) {
 			super(recipe, recipeMap);
 		}
 
-		public BrewingRecipeBuilder(RecipeBuilder<Recipe, BrewingRecipeBuilder> recipeBuilder) {
+		public BrewingRecipeBuilder(RecipeBuilder<BrewingRecipeBuilder> recipeBuilder) {
 			super(recipeBuilder);
 		}
 
@@ -833,25 +836,25 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 			return getThis();
 		}
 
-		public ValidationResult<Recipe> build(boolean checkForCollisions) {
-			return ValidationResult.newResult(finalizeAndValidate(checkForCollisions),
+		public ValidationResult<Recipe> build() {
+			return ValidationResult.newResult(finalizeAndValidate(),
 					new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
                         ImmutableMap.of(), duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
 		}
 	}
 
-	public static class FusionRecipeBuilder extends RecipeBuilder<Recipe, FusionRecipeBuilder> {
+	public static class FusionRecipeBuilder extends RecipeBuilder<FusionRecipeBuilder> {
 
 		private int EUToStart;
 
 		public FusionRecipeBuilder() {}
 
-		public FusionRecipeBuilder(Recipe recipe, RecipeMap<Recipe, FusionRecipeBuilder> recipeMap) {
+		public FusionRecipeBuilder(Recipe recipe, RecipeMap<FusionRecipeBuilder> recipeMap) {
 			super(recipe, recipeMap);
 			this.EUToStart = recipe.getIntegerProperty("EUToStart");
 		}
 
-		public FusionRecipeBuilder(RecipeBuilder<Recipe, FusionRecipeBuilder> recipeBuilder) {
+		public FusionRecipeBuilder(RecipeBuilder<FusionRecipeBuilder> recipeBuilder) {
 			super(recipeBuilder);
 		}
 
@@ -874,8 +877,8 @@ public abstract class RecipeBuilder<T extends Recipe, R extends RecipeBuilder<T,
 			return getThis();
 		}
 
-		public ValidationResult<Recipe> build(boolean checkForCollisions) {
-			return ValidationResult.newResult(finalizeAndValidate(checkForCollisions),
+		public ValidationResult<Recipe> build() {
+			return ValidationResult.newResult(finalizeAndValidate(),
                 new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
                     ImmutableMap.of("EUToStart", EUToStart),
                     duration, EUt, hidden, canBeBuffered, needsEmptyOutput));

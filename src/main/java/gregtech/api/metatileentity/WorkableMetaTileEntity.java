@@ -17,7 +17,7 @@ import java.util.List;
 
 public abstract class WorkableMetaTileEntity extends TieredMetaTileEntity implements IWorkable {
 
-    public final RecipeMap<Recipe, ?> recipeMap;
+    public final RecipeMap<?> recipeMap;
     protected Recipe previousRecipe;
 
     protected int progressTime;
@@ -42,7 +42,7 @@ public abstract class WorkableMetaTileEntity extends TieredMetaTileEntity implem
         }
         if(progressTime == 0) {
             long maxVoltage = Math.max(getInputVoltage(), getOutputVoltage());
-            Recipe pickedRecipe = recipeMap.findRecipe(holder, previousRecipe, true, maxVoltage, importItems, importFluids);
+            Recipe pickedRecipe = recipeMap.findRecipe(previousRecipe, maxVoltage, importItems, importFluids);
             if(pickedRecipe != null && setupAndConsumeRecipeInputs(pickedRecipe)) {
                 if(pickedRecipe.canBeBuffered()) {
                     this.previousRecipe = pickedRecipe;
@@ -64,7 +64,7 @@ public abstract class WorkableMetaTileEntity extends TieredMetaTileEntity implem
         return (totalEUt >= 0 ? getEnergyStored() >= totalEUt : getEnergyStored() - totalEUt <= getEnergyCapacity()) &&
                 addItemsToItemHandler(exportItems, true, recipe.getOutputs()) &&
                 addFluidsToFluidHandler(exportFluids, true, recipe.getFluidOutputs()) &&
-                recipe.isRecipeInputEqual(true, false, importItems, importFluids);
+                recipe.matches(true, false, importItems, importFluids);
     }
 
     protected void setupRecipe(Recipe recipe) {

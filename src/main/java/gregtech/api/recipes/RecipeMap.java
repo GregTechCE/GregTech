@@ -3,54 +3,36 @@ package gregtech.api.recipes;
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.IMultipleTankHandler;
-import gregtech.api.metatileentity.GregtechTileEntity;
-import gregtech.api.unification.OreDictUnifier;
-import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefix;
-import gregtech.api.unification.material.type.MetalMaterial;
-import gregtech.api.unification.stack.SimpleItemStack;
-import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.EnumValidationResult;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ValidationResult;
 import gregtech.common.items.MetaItems;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static gregtech.api.GTValues.L;
-import static gregtech.api.GTValues.W;
 
 //todo update examples after materials/oredictunificator/itemlist update
-public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
+public class RecipeMap<R extends RecipeBuilder<R>> {
 
 	/**
 	 * Contains all Recipe Maps
 	 */
-	public static final Collection<RecipeMap<?, ?>> RECIPE_MAPS = new ArrayList<>();
+	public static final Collection<RecipeMap<?>> RECIPE_MAPS = new ArrayList<>();
 
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> ORE_WASHER_RECIPES = new RecipeMap<>(new HashSet<>(0), "orewasher", "basicmachines/OreWasher", 1, 1, 3, 3, 0, 1, 0, 0, true, 1, 1, false, new RecipeBuilder.DefaultRecipeBuilder().duration(400).EUt(16));
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> THERMAL_CENTRIFUGE_RECIPES = new RecipeMap<>(new HashSet<>(0), "thermalcentrifuge", "basicmachines/ThermalCentrifuge", 1, 1, 1, 3, 0, 0, 0, 0, true, 2, 1, false, new RecipeBuilder.DefaultRecipeBuilder().duration(400).EUt(48));
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> ORE_WASHER_RECIPES = new RecipeMap<>(new HashSet<>(0), "orewasher", "basicmachines/OreWasher", 1, 1, 3, 3, 0, 1, 0, 0, true, 1, 1, false, new RecipeBuilder.DefaultRecipeBuilder().duration(400).EUt(16));
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> THERMAL_CENTRIFUGE_RECIPES = new RecipeMap<>(new HashSet<>(0), "thermalcentrifuge", "basicmachines/ThermalCentrifuge", 1, 1, 1, 3, 0, 0, 0, 0, true, 2, 1, false, new RecipeBuilder.DefaultRecipeBuilder().duration(400).EUt(48));
 
 	/**
 	 * Example:
@@ -61,7 +43,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *			.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> COMPRESSOR_RECIPES = new RecipeMap<>(new HashSet<>(0), "compressor", "basicmachines/Compressor", 1, 1, 1, 1, 0, 0, 0, 0, true, 1, 1, false, new RecipeBuilder.DefaultRecipeBuilder().duration(400).EUt(2));
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> COMPRESSOR_RECIPES = new RecipeMap<>(new HashSet<>(0), "compressor", "basicmachines/Compressor", 1, 1, 1, 1, 0, 0, 0, 0, true, 1, 1, false, new RecipeBuilder.DefaultRecipeBuilder().duration(400).EUt(2));
 
 	/**
 	 * Example:
@@ -72,17 +54,17 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * 			.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> EXTRACTOR_RECIPES = new RecipeMap<>(new HashSet<>(0), "extractor", "basicmachines/Extractor", 1, 1, 1, 1, 0, 0, 0, 0, true, 1, 1, false, new RecipeBuilder.DefaultRecipeBuilder().duration(400).EUt(2));
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> EXTRACTOR_RECIPES = new RecipeMap<>(new HashSet<>(0), "extractor", "basicmachines/Extractor", 1, 1, 1, 1, 0, 0, 0, 0, true, 1, 1, false, new RecipeBuilder.DefaultRecipeBuilder().duration(400).EUt(2));
 
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> RECYCLER_RECIPES = new RecipeMapRecycler(new HashSet<>(0), "recycler", "basicmachines/Recycler", 1, 1, 1, 1, 0, 0, 0, 0, true, 1, 1, false, new RecipeBuilder.DefaultRecipeBuilder());
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> FURNACE_RECIPES = new RecipeMapFurnace(new HashSet<>(0), "furnace", "basicmachines/E_Furnace", 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, true, false, new RecipeBuilder.DefaultRecipeBuilder());
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> MICROWAVE_RECIPES = new RecipeMapMicrowave(new HashSet<>(0), "microwave", "basicmachines/E_Furnace", 1, 1, 1, 1, 0, 0, 0, 0, true, 1, 1, false, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> RECYCLER_RECIPES = new RecipeMapRecycler(new HashSet<>(0), "recycler", "basicmachines/Recycler", 1, 1, 1, 1, 0, 0, 0, 0, true, 1, 1, false, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> FURNACE_RECIPES = new RecipeMapFurnace(new HashSet<>(0), "furnace", "basicmachines/E_Furnace", 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, true, false, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> MICROWAVE_RECIPES = new RecipeMapMicrowave(new HashSet<>(0), "microwave", "basicmachines/E_Furnace", 1, 1, 1, 1, 0, 0, 0, 0, true, 1, 1, false, new RecipeBuilder.DefaultRecipeBuilder());
 
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> SCANNER_FAKE_RECIPES = new FakeRecipeMap<>(new HashSet<>(300), "scanner", "basicmachines/Scanner", 1, 0, 0, 0, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());//TODO min max amounts
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> ROCK_BREAKER_FAKE_RECIPES = new FakeRecipeMap<>(new HashSet<>(3), "rockbreaker", "basicmachines/RockBreaker", 0, 0, 0, 0, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());//TODO min max amounts
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> BY_PRODUCT_LIST = new FakeRecipeMap<>(new HashSet<>(1000), "byproductlist", "basicmachines/Default", 1, 0, 0, 0, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());//TODO min max amounts
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> REPICATOR_FAKE_RECIPES = new FakeRecipeMap<>(new HashSet<>(100), "replicator", "basicmachines/Replicator", 0, 1, 0, 0, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());//TODO min max amounts
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> ASSEMBLYLINE_FAKE_RECIPES = new FakeRecipeMap<>(new HashSet<>(30), "assemblyline", "basicmachines/Default", 1, 0, 0, 0, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());//TODO min max amounts
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> SCANNER_FAKE_RECIPES = new FakeRecipeMap<>(new HashSet<>(300), "scanner", "basicmachines/Scanner", 1, 0, 0, 0, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());//TODO min max amounts
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> ROCK_BREAKER_FAKE_RECIPES = new FakeRecipeMap<>(new HashSet<>(3), "rockbreaker", "basicmachines/RockBreaker", 0, 0, 0, 0, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());//TODO min max amounts
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> BY_PRODUCT_LIST = new FakeRecipeMap<>(new HashSet<>(1000), "byproductlist", "basicmachines/Default", 1, 0, 0, 0, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());//TODO min max amounts
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> REPICATOR_FAKE_RECIPES = new FakeRecipeMap<>(new HashSet<>(100), "replicator", "basicmachines/Replicator", 0, 1, 0, 0, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());//TODO min max amounts
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> ASSEMBLYLINE_FAKE_RECIPES = new FakeRecipeMap<>(new HashSet<>(30), "assemblyline", "basicmachines/Default", 1, 0, 0, 0, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());//TODO min max amounts
 
 	/**
 	 * Examples:
@@ -95,7 +77,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *			.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.IntCircuitRecipeBuilder> ASSEMBLER_RECIPES = new RecipeMap<>(new HashSet<>(300), "assembler", "basicmachines/Assembler", 1, 2, 1, 1, 0, 1, 0, 0, true, 1, 1, true, new RecipeBuilder.IntCircuitRecipeBuilder() {
+	public static final RecipeMap<RecipeBuilder.IntCircuitRecipeBuilder> ASSEMBLER_RECIPES = new RecipeMap<>(new HashSet<>(300), "assembler", "basicmachines/Assembler", 1, 2, 1, 1, 0, 1, 0, 0, true, 1, 1, true, new RecipeBuilder.IntCircuitRecipeBuilder() {
 
         @Override
         public void buildAndRegister() {
@@ -125,7 +107,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> PRINTER_RECIPES = new RecipeMapPrinter(new HashSet<>(100), "printer", "basicmachines/Printer", 1, 1, 1, 1, 1, 1, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> PRINTER_RECIPES = new RecipeMapPrinter(new HashSet<>(100), "printer", "basicmachines/Printer", 1, 1, 1, 1, 1, 1, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());
 
 	/**
 	 * Examples:
@@ -145,7 +127,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * 				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.NotConsumableInputRecipeBuilder> PRESS_RECIPES = new RecipeMapFormingPress(new HashSet<>(100), "press", "basicmachines/Press", 2, 2, 1, 1, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.NotConsumableInputRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.NotConsumableInputRecipeBuilder> PRESS_RECIPES = new RecipeMapFormingPress(new HashSet<>(100), "press", "basicmachines/Press", 2, 2, 1, 1, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.NotConsumableInputRecipeBuilder());
 
 	/**
 	 * Example:
@@ -158,7 +140,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *	   			.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> MACERATOR_RECIPES = new RecipeMap<>(new HashSet<>(10000), "macerator", "basicmachines/Macerator4", 1, 1, 1, 4, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder().duration(400).EUt(2));
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> MACERATOR_RECIPES = new RecipeMap<>(new HashSet<>(10000), "macerator", "basicmachines/Macerator4", 1, 1, 1, 4, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder().duration(400).EUt(2));
 
 	/**
 	 * Input full box, output item and empty box.
@@ -172,7 +154,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> UNBOXINATOR_RECIPES = new RecipeMapUnboxinator(new HashSet<>(2500), "unpackager", "basicmachines/Unpackager", 1, 1, 1, 2, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> UNBOXINATOR_RECIPES = new RecipeMapUnboxinator(new HashSet<>(2500), "unpackager", "basicmachines/Unpackager", 1, 1, 1, 2, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());
 
 	/**
 	 * Example:
@@ -184,11 +166,11 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * 				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> FLUID_CANNER_RECIPES = new RecipeMapFluidCanner(new HashSet<>(100), "fluidcanner", "basicmachines/FluidCannerJEI", 1, 1, 1, 1, 0, 1, 0, 1, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder() {
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> FLUID_CANNER_RECIPES = new RecipeMapFluidCanner(new HashSet<>(100), "fluidcanner", "basicmachines/FluidCannerJEI", 1, 1, 1, 1, 0, 1, 0, 1, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder() {
 		@Override
-		protected EnumValidationResult finalizeAndValidate(boolean checkForCollisions) {
+		protected EnumValidationResult finalizeAndValidate() {
 			duration(fluidOutputs.isEmpty() ? fluidInputs.get(0).amount / 62 : fluidOutputs.get(0).amount / 62);
-			return super.finalizeAndValidate(checkForCollisions);
+			return super.finalizeAndValidate();
 		}
 	}.EUt(1));
 
@@ -205,7 +187,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * 				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> PLASMA_ARC_FURNACE_RECIPES = new RecipeMap<>(new HashSet<>(10000), "plasmaarcfurnace", "basicmachines/PlasmaArcFurnace", 1, 1, 1, 4, 1, 1, 0, 1, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> PLASMA_ARC_FURNACE_RECIPES = new RecipeMap<>(new HashSet<>(10000), "plasmaarcfurnace", "basicmachines/PlasmaArcFurnace", 1, 1, 1, 4, 1, 1, 0, 1, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());
 
 	/**
 	 * <pre>
@@ -218,7 +200,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * 				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.ArcFurnaceRecipeBuilder> ARC_FURNACE_RECIPES = new RecipeMap<>(new HashSet<>(10000), "arcfurnace", "basicmachines/ArcFurnace", 1, 1, 1, 4, 1, 1, 0, 0, true, 3, 1, true, new RecipeBuilder.ArcFurnaceRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.ArcFurnaceRecipeBuilder> ARC_FURNACE_RECIPES = new RecipeMap<>(new HashSet<>(10000), "arcfurnace", "basicmachines/ArcFurnace", 1, 1, 1, 4, 1, 1, 0, 0, true, 3, 1, true, new RecipeBuilder.ArcFurnaceRecipeBuilder());
 
 	/**
 	 * Example:
@@ -235,7 +217,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *     			.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> SIFTER_RECIPES = new RecipeMap<>(new HashSet<>(100), "sifter", "basicmachines/Sifter", 1, 1, 0, 6, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> SIFTER_RECIPES = new RecipeMap<>(new HashSet<>(100), "sifter", "basicmachines/Sifter", 1, 1, 0, 6, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());
 
 	/**
 	 * Example:
@@ -249,7 +231,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * 				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.NotConsumableInputRecipeBuilder> LASER_ENGRAVER_RECIPES = new RecipeMap<>(new HashSet<>(100), "laserengraver", "basicmachines/LaserEngraver", 2, 2, 1, 1, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.NotConsumableInputRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.NotConsumableInputRecipeBuilder> LASER_ENGRAVER_RECIPES = new RecipeMap<>(new HashSet<>(100), "laserengraver", "basicmachines/LaserEngraver", 2, 2, 1, 1, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.NotConsumableInputRecipeBuilder());
 
 	/**
 	 * Example:
@@ -263,14 +245,14 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * 				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> MIXER_RECIPES = new RecipeMap<>(new HashSet<>(100), "mixer", "basicmachines/Mixer", 1, 4, 0, 0, 0, 1, 0, 1, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder() {
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> MIXER_RECIPES = new RecipeMap<>(new HashSet<>(100), "mixer", "basicmachines/Mixer", 1, 4, 0, 0, 0, 1, 0, 1, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder() {
 		@Override
-		protected EnumValidationResult validate(boolean checkForCollisions) {
+		protected EnumValidationResult validate() {
 			if (!((inputs.isEmpty() && fluidInputs.isEmpty()) || (outputs.isEmpty() && fluidOutputs.isEmpty()))){
 				GTLog.logger.error("Recipe should have at least one input and one output", new IllegalArgumentException());
 				recipeStatus = EnumValidationResult.INVALID;
 			}
-			return super.validate(checkForCollisions);
+			return super.validate();
 		}
 	});
 
@@ -286,7 +268,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * 				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> AUTOCLAVE_RECIPES = new RecipeMap<>(new HashSet<>(200), "autoclave", "basicmachines/Autoclave", 1, 1, 1, 1, 1, 1, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> AUTOCLAVE_RECIPES = new RecipeMap<>(new HashSet<>(200), "autoclave", "basicmachines/Autoclave", 1, 1, 1, 1, 1, 1, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());
 
 	/**
 	 * Example:
@@ -301,7 +283,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * 				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> ELECTROMAGNETIC_SEPARATOR_RECIPES = new RecipeMap<>(new HashSet<>(50), "electromagneticseparator", "basicmachines/ElectromagneticSeparator", 1, 1, 1, 3, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> ELECTROMAGNETIC_SEPARATOR_RECIPES = new RecipeMap<>(new HashSet<>(50), "electromagneticseparator", "basicmachines/ElectromagneticSeparator", 1, 1, 1, 3, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());
 
 	/**
 	 * Example:
@@ -314,7 +296,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * 				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> POLARIZER_RECIPES = new RecipeMap<>(new HashSet<>(100), "polarizer", "basicmachines/Polarizer", 1, 1, 1, 1, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> POLARIZER_RECIPES = new RecipeMap<>(new HashSet<>(100), "polarizer", "basicmachines/Polarizer", 1, 1, 1, 1, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());
 
 	/**
 	 * Example:
@@ -328,7 +310,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * 				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> CHEMICAL_BATH_RECIPES = new RecipeMap<>(new HashSet<>(200), "chemicalbath", "basicmachines/ChemicalBath", 1, 1, 1, 3, 1, 1, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> CHEMICAL_BATH_RECIPES = new RecipeMap<>(new HashSet<>(200), "chemicalbath", "basicmachines/ChemicalBath", 1, 1, 1, 3, 1, 1, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());
 
 	/**
 	 * Example:
@@ -340,7 +322,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *         		.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.BrewingRecipeBuilder> BREWING_RECIPES = new RecipeMap<>(new HashSet<>(100), "brewer", "basicmachines/PotionBrewer", 1, 1, 0, 0, 1, 1, 1, 1, true, 1, 1, true, new RecipeBuilder.BrewingRecipeBuilder().notOptimized().duration(128).EUt(4));
+	public static final RecipeMap<RecipeBuilder.BrewingRecipeBuilder> BREWING_RECIPES = new RecipeMap<>(new HashSet<>(100), "brewer", "basicmachines/PotionBrewer", 1, 1, 0, 0, 1, 1, 1, 1, true, 1, 1, true, new RecipeBuilder.BrewingRecipeBuilder().notOptimized().duration(128).EUt(4));
 
 	/**
 	 * Example:
@@ -354,7 +336,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * 				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.IntCircuitRecipeBuilder> FLUID_HEATER_RECIPES = new RecipeMap<>(new HashSet<>(100), "fluidheater", "basicmachines/FluidHeater", 1, 1, 0, 0, 1, 1, 1, 1, true, 1, 1, true, new RecipeBuilder.IntCircuitRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.IntCircuitRecipeBuilder> FLUID_HEATER_RECIPES = new RecipeMap<>(new HashSet<>(100), "fluidheater", "basicmachines/FluidHeater", 1, 1, 0, 0, 1, 1, 1, 1, true, 1, 1, true, new RecipeBuilder.IntCircuitRecipeBuilder());
 
 	/**
 	 * Example:
@@ -368,7 +350,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *	 			.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.IntCircuitRecipeBuilder> DISTILLERY_RECIPES = new RecipeMap<>(new HashSet<>(100), "distillery", "basicmachines/Distillery", 1, 1, 0, 0, 1, 1, 1, 1, true, 1, 1, true, new RecipeBuilder.IntCircuitRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.IntCircuitRecipeBuilder> DISTILLERY_RECIPES = new RecipeMap<>(new HashSet<>(100), "distillery", "basicmachines/Distillery", 1, 1, 0, 0, 1, 1, 1, 1, true, 1, 1, true, new RecipeBuilder.IntCircuitRecipeBuilder());
 
 	/**
 	 * Example:
@@ -380,7 +362,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> FERMENTING_RECIPES = new RecipeMap<>(new HashSet<>(100), "fermenter", "basicmachines/Fermenter", 0, 0, 0, 0, 1, 1, 1, 1, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder().notOptimized().EUt(2));
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> FERMENTING_RECIPES = new RecipeMap<>(new HashSet<>(100), "fermenter", "basicmachines/Fermenter", 0, 0, 0, 0, 1, 1, 1, 1, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder().notOptimized().EUt(2));
 
 	/**
 	 * Example:
@@ -394,7 +376,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.NotConsumableInputRecipeBuilder> FLUID_SOLIDFICATION_RECIPES = new RecipeMap<>(new HashSet<>(100), "fluidsolidifier", "basicmachines/FluidSolidifier", 1, 1, 1, 1, 1, 1, 0, 0, true, 1, 1, true, new RecipeBuilder.NotConsumableInputRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.NotConsumableInputRecipeBuilder> FLUID_SOLIDFICATION_RECIPES = new RecipeMap<>(new HashSet<>(100), "fluidsolidifier", "basicmachines/FluidSolidifier", 1, 1, 1, 1, 1, 1, 0, 0, true, 1, 1, true, new RecipeBuilder.NotConsumableInputRecipeBuilder());
 
 	/**
 	 * Examples:
@@ -415,7 +397,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * 				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.NotConsumableInputRecipeBuilder> FLUID_EXTRACTION_RECIPES = new RecipeMap<>(new HashSet<>(100), "fluidextractor", "basicmachines/FluidExtractor", 1, 1, 0, 1, 0, 0, 1, 1, true, 1, 1, true, new RecipeBuilder.NotConsumableInputRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.NotConsumableInputRecipeBuilder> FLUID_EXTRACTION_RECIPES = new RecipeMap<>(new HashSet<>(100), "fluidextractor", "basicmachines/FluidExtractor", 1, 1, 0, 1, 0, 0, 1, 1, true, 1, 1, true, new RecipeBuilder.NotConsumableInputRecipeBuilder());
 
 	/**
 	 * Input item and empty box, output full box
@@ -429,7 +411,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> BOXINATOR_RECIPES = new RecipeMap<>(new HashSet<>(2500), "packager", "basicmachines/Packager", 2, 2, 1, 1, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> BOXINATOR_RECIPES = new RecipeMap<>(new HashSet<>(2500), "packager", "basicmachines/Packager", 2, 2, 1, 1, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());
 
 	/**
 	 * Example:
@@ -443,7 +425,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.FusionRecipeBuilder> FUSION_RECIPES = new RecipeMap<>(new HashSet<>(50), "fusionreactor", "basicmachines/Default", 0, 0, 0, 0, 2, 2, 1, 1, true, 1, 1, true, new RecipeBuilder.FusionRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.FusionRecipeBuilder> FUSION_RECIPES = new RecipeMap<>(new HashSet<>(50), "fusionreactor", "basicmachines/Default", 0, 0, 0, 0, 2, 2, 1, 1, true, 1, 1, true, new RecipeBuilder.FusionRecipeBuilder());
 
 	/**
 	 * Examples:
@@ -462,14 +444,14 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> CENTRIFUGE_RECIPES = new RecipeMap<>(new HashSet<>(1000), "centrifuge", "basicmachines/Centrifuge", 0, 2, 0, 6, 0, 1, 0, 1, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder() {
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> CENTRIFUGE_RECIPES = new RecipeMap<>(new HashSet<>(1000), "centrifuge", "basicmachines/Centrifuge", 0, 2, 0, 6, 0, 1, 0, 1, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder() {
 		@Override
-		protected EnumValidationResult validate(boolean checkForCollisions) {
+		protected EnumValidationResult validate() {
 			if (!((inputs.isEmpty() && fluidInputs.isEmpty()) || (outputs.isEmpty() && fluidOutputs.isEmpty()))){
 				GTLog.logger.error("Recipe should have at least one input and one output", new IllegalArgumentException());
 				recipeStatus = EnumValidationResult.INVALID;
 			}
-			return super.validate(checkForCollisions);
+			return super.validate();
 		}
 	}.EUt(5));
 
@@ -495,14 +477,14 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> ELECTROLYZER_RECIPES = new RecipeMap<>(new HashSet<>(200), "electrolyzer", "basicmachines/Electrolyzer", 0, 2, 0, 6, 0, 1, 0, 1, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder() {
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> ELECTROLYZER_RECIPES = new RecipeMap<>(new HashSet<>(200), "electrolyzer", "basicmachines/Electrolyzer", 0, 2, 0, 6, 0, 1, 0, 1, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder() {
 		@Override
-		protected EnumValidationResult validate(boolean checkForCollisions) {
+		protected EnumValidationResult validate() {
 			if (!((inputs.isEmpty() && fluidInputs.isEmpty()) || (outputs.isEmpty() && fluidOutputs.isEmpty()))){
 				GTLog.logger.error("Recipe should have at least one input and one output", new IllegalArgumentException());
 				recipeStatus = EnumValidationResult.INVALID;
 			}
-			return super.validate(checkForCollisions);
+			return super.validate();
 		}
 	});
 
@@ -519,7 +501,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.BlastRecipeBuilder> BLAST_RECIPES = new RecipeMap<>(new HashSet<>(500), "blastfurnace", "basicmachines/Default", 1, 2, 1, 2, 0, 1, 0, 1, false, 1, 1, true, new RecipeBuilder.BlastRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.BlastRecipeBuilder> BLAST_RECIPES = new RecipeMap<>(new HashSet<>(500), "blastfurnace", "basicmachines/Default", 1, 2, 1, 2, 0, 1, 0, 1, false, 1, 1, true, new RecipeBuilder.BlastRecipeBuilder());
 
 	/**
 	 * Example:
@@ -531,7 +513,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *         		.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.ImplosionRecipeBuilder> IMPLOSION_RECIPES = new RecipeMap<>(new HashSet<>(50), "implosioncompressor", "basicmachines/Default", 2, 2, 2, 2, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.ImplosionRecipeBuilder().duration(20).EUt(30));
+	public static final RecipeMap<RecipeBuilder.ImplosionRecipeBuilder> IMPLOSION_RECIPES = new RecipeMap<>(new HashSet<>(50), "implosioncompressor", "basicmachines/Default", 2, 2, 2, 2, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.ImplosionRecipeBuilder().duration(20).EUt(30));
 
 	/**
 	 * Example:
@@ -543,7 +525,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> VACUUM_RECIPES = new RecipeMap<>(new HashSet<>(100), "vacuumfreezer", "basicmachines/Default", 1, 1, 1, 1, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder().EUt(120));
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> VACUUM_RECIPES = new RecipeMap<>(new HashSet<>(100), "vacuumfreezer", "basicmachines/Default", 1, 1, 1, 1, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder().EUt(120));
 
 	/**
 	 * Example:
@@ -558,14 +540,14 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> CHEMICAL_RECIPES = new RecipeMap<>(new HashSet<>(100), "chemicalreactor", "basicmachines/ChemicalReactor", 0, 2, 0, 1, 0, 1, 0, 1, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder() {
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> CHEMICAL_RECIPES = new RecipeMap<>(new HashSet<>(100), "chemicalreactor", "basicmachines/ChemicalReactor", 0, 2, 0, 1, 0, 1, 0, 1, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder() {
 		@Override
-		protected EnumValidationResult validate(boolean checkForCollisions) {
+		protected EnumValidationResult validate() {
 			if (!((inputs.isEmpty() && fluidInputs.isEmpty()) || (outputs.isEmpty() && fluidOutputs.isEmpty()))){
 				GTLog.logger.error("Recipe should have at least one input and one output", new IllegalArgumentException());
 				recipeStatus = EnumValidationResult.INVALID;
 			}
-			return super.validate(checkForCollisions);
+			return super.validate();
 		}
 	}.duration(30));
 
@@ -591,7 +573,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.UniversalDistillationRecipeBuilder> DISTILLATION_RECIPES = new RecipeMap<>(new HashSet<>(50), "distillationtower", "basicmachines/Default", 0, 0, 0, 1, 1, 1, 1, 5, true, 1, 1, true, new RecipeBuilder.UniversalDistillationRecipeBuilder().notOptimized());
+	public static final RecipeMap<RecipeBuilder.UniversalDistillationRecipeBuilder> DISTILLATION_RECIPES = new RecipeMap<>(new HashSet<>(50), "distillationtower", "basicmachines/Default", 0, 0, 0, 1, 1, 1, 1, 5, true, 1, 1, true, new RecipeBuilder.UniversalDistillationRecipeBuilder().notOptimized());
 
 	/**
 	 * Example:
@@ -604,7 +586,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *         		.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> CRACKING_RECIPES = new RecipeMap<>(new HashSet<>(50), "craker", "basicmachines/Default", 0, 0, 0, 0, 1, 2, 1, 2, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder() {
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> CRACKING_RECIPES = new RecipeMap<>(new HashSet<>(50), "craker", "basicmachines/Default", 0, 0, 0, 0, 1, 2, 1, 2, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder() {
 		@Override
 		public void buildAndRegister() {
 			super.buildAndRegister();
@@ -629,7 +611,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *     			.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.IntCircuitRecipeBuilder> PYROLYSE_RECIPES = new RecipeMap<>(new HashSet<>(50), "pyro", "basicmachines/Default", 2, 2, 0, 1, 0, 1, 1, 1, true, 1, 1, true, new RecipeBuilder.IntCircuitRecipeBuilder().notOptimized());
+	public static final RecipeMap<RecipeBuilder.IntCircuitRecipeBuilder> PYROLYSE_RECIPES = new RecipeMap<>(new HashSet<>(50), "pyro", "basicmachines/Default", 2, 2, 0, 1, 0, 1, 1, 1, true, 1, 1, true, new RecipeBuilder.IntCircuitRecipeBuilder().notOptimized());
 
 	/**
 	 * Example:
@@ -642,7 +624,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> WIREMILL_RECIPES = new RecipeMap<>(new HashSet<>(50), "wiremill", "basicmachines/Wiremill", 1, 1, 1, 1, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> WIREMILL_RECIPES = new RecipeMap<>(new HashSet<>(50), "wiremill", "basicmachines/Wiremill", 1, 1, 1, 1, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());
 
 	/**
 	 * Example:
@@ -655,11 +637,11 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.IntCircuitRecipeBuilder> BENDER_RECIPES = new RecipeMap<>(new HashSet<>(400), "metalbender", "basicmachines/Bender", 2, 2, 1, 1, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.IntCircuitRecipeBuilder() {
+	public static final RecipeMap<RecipeBuilder.IntCircuitRecipeBuilder> BENDER_RECIPES = new RecipeMap<>(new HashSet<>(400), "metalbender", "basicmachines/Bender", 2, 2, 1, 1, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.IntCircuitRecipeBuilder() {
 		@Override
-		protected EnumValidationResult finalizeAndValidate(boolean checkForCollisions) {
+		protected EnumValidationResult finalizeAndValidate() {
 			this.circuitMeta(this.inputs.get(0).getCount());
-			return super.finalizeAndValidate(checkForCollisions);
+			return super.finalizeAndValidate();
 		}
 	});
 
@@ -674,20 +656,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.NotConsumableInputRecipeBuilder> ALLOY_SMELTER_RECIPES = new RecipeMap<>(new HashSet<>(3000), "alloysmelter", "basicmachines/AlloySmelter", 1, 2, 1, 1, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.NotConsumableInputRecipeBuilder() {
-		@Override
-		protected EnumValidationResult validate(boolean checkForCollisions) {
-			ItemStack input = inputs.get(0);
-			if (!(inputs.size() == 1
-					&& (OreDictUnifier.getPrefix(input) == OrePrefix.ingot
-					|| OreDictUnifier.getPrefix(input) == OrePrefix.dust
-					|| OreDictUnifier.getPrefix(input) == OrePrefix.gem))){
-				GTLog.logger.error("Recipe should have ingot, dust or gem as input", new IllegalArgumentException());
-				recipeStatus = EnumValidationResult.INVALID;
-			}
-			return super.validate(checkForCollisions);
-		}
-
+	public static final RecipeMap<RecipeBuilder.NotConsumableInputRecipeBuilder> ALLOY_SMELTER_RECIPES = new RecipeMap<>(new HashSet<>(3000), "alloysmelter", "basicmachines/AlloySmelter", 1, 2, 1, 1, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.NotConsumableInputRecipeBuilder() {
 		@Override
 		public void buildAndRegister() {
 //			if (GregTechMod.gregtechproxy.mTEMachineRecipes) {
@@ -708,7 +677,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * 				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> CANNER_RECIPES = new RecipeMap<>(new HashSet<>(300), "canner", "basicmachines/Canner", 1, 2, 1, 2, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> CANNER_RECIPES = new RecipeMap<>(new HashSet<>(300), "canner", "basicmachines/Canner", 1, 2, 1, 2, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());
 
 	/**
 	 * Example:
@@ -721,7 +690,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 * 				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> LATHE_RECIPES = new RecipeMap<>(new HashSet<>(400), "lathe", "basicmachines/Lathe", 1, 1, 1, 2, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> LATHE_RECIPES = new RecipeMap<>(new HashSet<>(400), "lathe", "basicmachines/Lathe", 1, 1, 1, 2, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());
 
 	/**
 	 * Example:
@@ -735,7 +704,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> CUTTER_RECIPES = new RecipeMap<>(new HashSet<>(200), "cuttingsaw", "basicmachines/Cutter", 1, 1, 0, 0, 1, 1, 1, 2, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder() {
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> CUTTER_RECIPES = new RecipeMap<>(new HashSet<>(200), "cuttingsaw", "basicmachines/Cutter", 1, 1, 0, 0, 1, 1, 1, 2, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder() {
 		@Override
 		public void buildAndRegister() {
 			if (fluidInputs.isEmpty()) {
@@ -760,7 +729,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.NotConsumableInputRecipeBuilder> SLICER_RECIPES = new RecipeMap<>(new HashSet<>(200), "slicer", "basicmachines/Slicer", 2, 2, 1, 1, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.NotConsumableInputRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.NotConsumableInputRecipeBuilder> SLICER_RECIPES = new RecipeMap<>(new HashSet<>(200), "slicer", "basicmachines/Slicer", 2, 2, 1, 1, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.NotConsumableInputRecipeBuilder());
 
 	/**
 	 * Example:
@@ -774,7 +743,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.NotConsumableInputRecipeBuilder> EXTRUDER_RECIPES = new RecipeMap<>(new HashSet<>(1000), "extruder", "basicmachines/Extruder", 2, 2, 1, 1, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.NotConsumableInputRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.NotConsumableInputRecipeBuilder> EXTRUDER_RECIPES = new RecipeMap<>(new HashSet<>(1000), "extruder", "basicmachines/Extruder", 2, 2, 1, 1, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.NotConsumableInputRecipeBuilder());
 
 	/**
 	 * Example:
@@ -787,7 +756,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> HAMMER_RECIPES = new RecipeMap<>(new HashSet<>(200), "hammer", "basicmachines/Hammer", 1, 1, 1, 1, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> HAMMER_RECIPES = new RecipeMap<>(new HashSet<>(200), "hammer", "basicmachines/Hammer", 1, 1, 1, 1, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder());
 
 	/**
 	 * Example:
@@ -799,28 +768,28 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	 *      		.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.AmplifierRecipeBuilder> AMPLIFIERS = new RecipeMap<>(new HashSet<>(10), "uuamplifier", "basicmachines/Amplifabricator", 1, 1, 0, 0, 0, 0, 1, 1, true, 1, 1, true, new RecipeBuilder.AmplifierRecipeBuilder().EUt(32));
+	public static final RecipeMap<RecipeBuilder.AmplifierRecipeBuilder> AMPLIFIERS = new RecipeMap<>(new HashSet<>(10), "uuamplifier", "basicmachines/Amplifabricator", 1, 1, 0, 0, 0, 0, 1, 1, true, 1, 1, true, new RecipeBuilder.AmplifierRecipeBuilder().EUt(32));
 
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> DIESEL_FUELS = new RecipeMap<>(new HashSet<>(10), "dieselgeneratorfuel", "basicmachines/Default", 1, 1, 0, 4, 0, 0, 0, 0, true, 1, 1000, true, new RecipeBuilder.DefaultRecipeBuilder());
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> TURBINE_FUELS = new RecipeMap<>(new HashSet<>(10), "gasturbinefuel", "basicmachines/Default", 0, 1, 0, 4, 0, 0, 0, 0, true, 1, 1000, true, new RecipeBuilder.DefaultRecipeBuilder());
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> HOT_FUELS = new RecipeMap<>(new HashSet<>(10), "thermalgeneratorfuel", "basicmachines/Default", 0, 1, 0, 4, 0, 0, 0, 0, true, 1, 1000, false, new RecipeBuilder.DefaultRecipeBuilder());
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> DENSE_LIQUID_FUELS = new RecipeMap<>(new HashSet<>(10), "semifluidboilerfuels", "basicmachines/Default", 0, 1, 0, 4, 0, 0, 0, 0, true, 1, 1000, true, new RecipeBuilder.DefaultRecipeBuilder());
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> PLASMA_FUELS = new RecipeMap<>(new HashSet<>(10), "plasmageneratorfuels", "basicmachines/Default", 0, 1, 0, 4, 0, 0, 0, 0, true, 1, 1000, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> DIESEL_FUELS = new RecipeMap<>(new HashSet<>(10), "dieselgeneratorfuel", "basicmachines/Default", 1, 1, 0, 4, 0, 0, 0, 0, true, 1, 1000, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> TURBINE_FUELS = new RecipeMap<>(new HashSet<>(10), "gasturbinefuel", "basicmachines/Default", 0, 1, 0, 4, 0, 0, 0, 0, true, 1, 1000, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> HOT_FUELS = new RecipeMap<>(new HashSet<>(10), "thermalgeneratorfuel", "basicmachines/Default", 0, 1, 0, 4, 0, 0, 0, 0, true, 1, 1000, false, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> DENSE_LIQUID_FUELS = new RecipeMap<>(new HashSet<>(10), "semifluidboilerfuels", "basicmachines/Default", 0, 1, 0, 4, 0, 0, 0, 0, true, 1, 1000, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> PLASMA_FUELS = new RecipeMap<>(new HashSet<>(10), "plasmageneratorfuels", "basicmachines/Default", 0, 1, 0, 4, 0, 0, 0, 0, true, 1, 1000, true, new RecipeBuilder.DefaultRecipeBuilder());
 
 	/**
 	 * Use {@link RecipeBuilder#EUt(int)} to set EU/t produced
 	 */
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> MAGIC_FUELS = new RecipeMap<>(new HashSet<>(10), "magicfuels", "basicmachines/Default", 1, 1, 0, 1, 0, 0, 0, 0, true, 1, 1000, true, new RecipeBuilder.DefaultRecipeBuilder() {
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> MAGIC_FUELS = new RecipeMap<>(new HashSet<>(10), "magicfuels", "basicmachines/Default", 1, 1, 0, 1, 0, 0, 0, 0, true, 1, 1000, true, new RecipeBuilder.DefaultRecipeBuilder() {
 		@Override
-		protected EnumValidationResult finalizeAndValidate(boolean checkForCollisions) {
+		protected EnumValidationResult finalizeAndValidate() {
 			this.EUt = -Math.abs(EUt);
-			return super.finalizeAndValidate(checkForCollisions);
+			return super.finalizeAndValidate();
 		}
 	});
 
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> SMALL_NAQUADAH_REACTOR_FUELS = new RecipeMap<>(new HashSet<>(10), "smallnaquadahreactor", "basicmachines/Default", 1, 1, 1, 1, 0, 0, 0, 0, true, 1, 1000, true, new RecipeBuilder.DefaultRecipeBuilder());
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> LARGE_NAQUADAH_REACTOR_FUELS = new RecipeMap<>(new HashSet<>(10), "largenaquadahreactor", "basicmachines/Default", 1, 1, 1, 1, 0, 0, 0, 0, true, 1, 1000, true, new RecipeBuilder.DefaultRecipeBuilder());
-	public static final RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> FLUID_NAQUADAH_REACTOR_FUELS = new RecipeMap<>(new HashSet<>(10), "fluidnaquadahreactor", "basicmachines/Default", 1, 1, 1, 1, 0, 0, 0, 0, true, 1, 1000, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> SMALL_NAQUADAH_REACTOR_FUELS = new RecipeMap<>(new HashSet<>(10), "smallnaquadahreactor", "basicmachines/Default", 1, 1, 1, 1, 0, 0, 0, 0, true, 1, 1000, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> LARGE_NAQUADAH_REACTOR_FUELS = new RecipeMap<>(new HashSet<>(10), "largenaquadahreactor", "basicmachines/Default", 1, 1, 1, 1, 0, 0, 0, 0, true, 1, 1000, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> FLUID_NAQUADAH_REACTOR_FUELS = new RecipeMap<>(new HashSet<>(10), "fluidnaquadahreactor", "basicmachines/Default", 1, 1, 1, 1, 0, 0, 0, 0, true, 1, 1000, true, new RecipeBuilder.DefaultRecipeBuilder());
 
 	/**
 	 * Example:
@@ -847,17 +816,13 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	public static final ArrayList<Recipe.AssemblyLineRecipe> ASSEMBLYLINE_RECIPES = new ArrayList<>();
 
 	/**
-	 * HashMap of Recipes based on their Item inputs
-	 */
-	protected final Map<SimpleItemStack, Collection<T>> recipeItemMap = new HashMap<>();
-	/**
 	 * HashMap of Recipes based on their Fluid inputs
 	 */
-	protected final Map<Fluid, Collection<T>> recipeFluidMap = new HashMap<>();
+	protected final Map<Fluid, Collection<Recipe>> recipeFluidMap = new HashMap<>();
 	/**
 	 * The List of all Recipes
 	 */
-	protected final Collection<T> recipeList;
+	protected final Collection<Recipe> recipeList;
 	/**
 	 * String used as an unlocalised Name.
 	 */
@@ -884,18 +849,17 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	protected final boolean showVoltageAmperageInJEI;
 
 	/**
-	 * Initialises a new type of Recipe Handler.
 	 * @param recipeList                a List you specify as Recipe List. Usually just an ArrayList with a pre-initialised Size.
 	 * @param unlocalizedName           the unlocalised Name of this Recipe Handler, used mainly for JEI.
 	 * @param JEIGUIPath                the displayed GUI Texture, usually just a Machine GUI. Auto-Attaches ".png" if forgotten.
 	 * @param JEISpecialValueMultiplier the Value the Special Value is getting Multiplied with before displaying
 	 * @param JEIAllowed                if JEI is allowed to display this Recipe Handler in general.
 	 */
-	public RecipeMap(Collection<T> recipeList, String unlocalizedName, String JEIGUIPath,
-					 int minInputs, int maxInputs, int minOutputs, int maxOutputs,
-					 int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs,
-					 boolean showVoltageAmperageInJEI, int amperage, int JEISpecialValueMultiplier,
-					 boolean JEIAllowed, R defaultRecipe) {
+	public RecipeMap(Collection<Recipe> recipeList, String unlocalizedName, String JEIGUIPath,
+                     int minInputs, int maxInputs, int minOutputs, int maxOutputs,
+                     int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs,
+                     boolean showVoltageAmperageInJEI, int amperage, int JEISpecialValueMultiplier,
+                     boolean JEIAllowed, R defaultRecipe) {
 		RECIPE_MAPS.add(this);
 		this.JEIAllowed = JEIAllowed;
 		this.showVoltageAmperageInJEI = showVoltageAmperageInJEI;
@@ -922,7 +886,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 	public static boolean foundInvalidRecipe = false;
 
-	protected void addRecipe(ValidationResult<T> validationResult) {
+	protected void addRecipe(ValidationResult<Recipe> validationResult) {
 
 		switch (validationResult.getType()) {
 			case SKIP:
@@ -932,70 +896,30 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 				return;
 		}
 
-		T recipe = validationResult.getResult();
+		Recipe recipe = validationResult.getResult();
 		recipeList.add(recipe);
-
-		for (ItemStack stack : recipe.getInputs()) {
-			recipeItemMap.computeIfAbsent(new SimpleItemStack(stack), k -> new HashSet<>(1)).add(recipe);
-		}
 
 		for (FluidStack fluid : recipe.getFluidInputs()) {
 			recipeFluidMap.computeIfAbsent(fluid.getFluid(), k -> new HashSet<>(1)).add(recipe);
 		}
 	}
 
-	/**
-	 * @return if this Item is a valid Input for any for the Recipes
-	 */
-	public boolean containsInput(ItemStack stack) {
-		return stack != null && (recipeItemMap.containsKey(new SimpleItemStack(stack)) || recipeItemMap.containsKey(new SimpleItemStack(stack.getItem(), W)));
-	}
-
-	/**
-	 * @return if this Fluid is a valid Input for any for the Recipes
-	 */
-	public boolean containsInput(FluidStack fluid) {
-		return fluid != null && containsInput(fluid.getFluid());
-	}
-
-	/**
-	 * @return if this Fluid is a valid Input for any for the Recipes
-	 */
-	public boolean containsInput(Fluid fluid) {
-		return fluid != null && recipeFluidMap.containsKey(fluid);
-	}
-
     @Nullable
-    public T findRecipe(@Nullable TileEntity tileEntity, @Nullable T inputRecipe, boolean notUnificated, long voltage, IItemHandlerModifiable inputs, IMultipleTankHandler fluidInputs) {
-        List<FluidStack> fluidStacks = new ArrayList<>(fluidInputs.getTanks());
-        for (int i = 0; i < fluidInputs.getTanks(); i++) {
-            fluidStacks.add(fluidInputs.getFluidInTank(i));
-        }
-        NonNullList<ItemStack> stacks = NonNullList.create();
-        for (int i = 0; i < inputs.getSlots(); i++) {
-            stacks.add(inputs.getStackInSlot(i));
-        }
-        return this.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, stacks, fluidStacks);
+    public Recipe findRecipe(@Nullable Recipe inputRecipe, long voltage, IItemHandlerModifiable inputs, IMultipleTankHandler fluidInputs) {
+        return this.findRecipe(inputRecipe, voltage, GTUtility.itemHandlerToList(inputs), GTUtility.fluidHandlerToList(fluidInputs));
     }
-
-	@Nullable
-	public T findRecipe(TileEntity tileEntity, boolean notUnificated, long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluids) {
-		return findRecipe(tileEntity, null, notUnificated, voltage, inputs, fluids);
-	}
 
 	/**
 	 * Finds a Recipe matching the Fluid and ItemStack Inputs.
 	 *
-	 * @param tileEntity    an Object representing the current coordinates of the executing Block/Entity/Whatever. This may be null, especially during Startup.
 	 * @param inputRecipe        in case this is != null it will try to use this Recipe first when looking things up.
-	 * @param notUnificated if this is true the Recipe searcher will unificate the ItemStack Inputs
 	 * @param voltage       Voltage of the Machine or Long.MAX_VALUE if it has no Voltage
 	 * @param inputs        the Item Inputs
 	 * @param fluidInputs   the Fluid Inputs
 	 * @return the Recipe it has found or null for no matching Recipe
 	 */
 	@Nullable
-	public T findRecipe(@Nullable TileEntity tileEntity, @Nullable T inputRecipe, boolean notUnificated, long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
+	public Recipe findRecipe(@Nullable Recipe inputRecipe, long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
 		// No Recipes? Well, nothing to be found then.
 		if (recipeList.isEmpty()) return null;
 
@@ -1036,51 +960,27 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		// Check the Recipe which has been used last time in order to not have to search for it again, if possible.
         // TODO this is doubling output stack size
 //		if (inputRecipe != null) {
-//			if (inputRecipe.canBeBuffered() && inputRecipe.isRecipeInputEqual(false, true, inputs, fluidInputs)) {
+//			if (inputRecipe.canBeBuffered() && inputRecipe.matches(false, true, inputs, fluidInputs)) {
 //				return voltage * amperage >= inputRecipe.getEUt() ? inputRecipe : null;
 //			}
 //		}
 
 		// Now look for the Recipes inside the Item HashMaps, but only when the Recipes usually have Items.
 		if (maxInputs > 0) {
-			T recipe = findByItemInput(inputs, fluidInputs);
+			Recipe recipe = findByInput(inputs, fluidInputs);
 			if (recipe != null) {
 				return voltage * amperage >= recipe.getEUt() ? recipe : null;
 			}
 		}
 
-		// Unification happens here in case the Input isn't already unificated.
-		if (notUnificated) {
-			for (int i = 0; i < inputs.size(); i++) {
-				if (!inputs.get(i).isEmpty()) {
-					inputs.set(i, OreDictUnifier.getUnificated(inputs.get(i)));
-				}
-			}
-
-			// Same as above but with unificated inputs
-            // TODO this is doubling output stack size... w8 does it?
-//			if (inputRecipe != null) {
-//				if (inputRecipe.canBeBuffered() && inputRecipe.isRecipeInputEqual(false, true, inputs, fluidInputs)) {
-//					return voltage * amperage >= inputRecipe.getEUt() ? inputRecipe : null;
-//				}
-//			}
-
-			if (maxInputs > 0) {
-				T recipe = findByItemInput(inputs, fluidInputs);
-				if (recipe != null) {
-					return voltage * amperage >= recipe.getEUt() ? recipe : null;
-				}
-			}
-		}
-
-		// If the minimal Amount of Items for the Recipe is 0, then it could be a Fluid-Only Recipe, so check that Map too.
+		// If the minimal Amount of Items for the Recipe is 0, then it could be a Fluid-Only Recipe
 		if (maxInputs == 0 && fluidInputs != null) {
 			for (FluidStack fluid : fluidInputs) {
 				if (fluid != null) {
-					Collection<T> recipes = recipeFluidMap.get(fluid.getFluid());
+					Collection<Recipe> recipes = recipeFluidMap.get(fluid.getFluid());
 					if (recipes != null) {
-						for (T tmpRecipe : recipes) {
-							if (tmpRecipe.isRecipeInputEqual(false, true, inputs, fluidInputs)) {
+						for (Recipe tmpRecipe : recipes) {
+							if (tmpRecipe.matches(false, true, inputs, fluidInputs)) {
 								return voltage * amperage >= tmpRecipe.getEUt() ? tmpRecipe : null;
 							}
 						}
@@ -1094,27 +994,12 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	}
 
 	@Nullable
-	private T findByItemInput(NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
-		for (ItemStack stack : inputs) {
-			if (!stack.isEmpty()) {
-				Collection<T> recipes = recipeItemMap.get(new SimpleItemStack(stack));
-				if (recipes != null) {
-					for (T tmpRecipe : recipes) {
-						if (tmpRecipe.isRecipeInputEqual(false, true, inputs, fluidInputs)) {
-							return tmpRecipe;
-						}
-					}
-				}
-				recipes = recipeItemMap.get(new SimpleItemStack(stack.getItem(), W));
-				if (recipes != null) {
-					for (T tmpRecipe : recipes) {
-						if (tmpRecipe.isRecipeInputEqual(false, true, inputs, fluidInputs)) {
-							return tmpRecipe;
-						}
-					}
-				}
-			}
-		}
+	private Recipe findByInput(NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
+        for (Recipe recipe : recipeList) {
+            if (recipe.matches(false, false, inputs, fluidInputs)) {
+                return recipe;
+            }
+        }
 		return null;
 	}
 
@@ -1182,29 +1067,14 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 		return showVoltageAmperageInJEI;
 	}
 
-	public static class FakeRecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> extends RecipeMap<T, R> {
+	public static class FakeRecipeMap<R extends RecipeBuilder<R>> extends RecipeMap<R> {
 
-		public FakeRecipeMap(Collection<T> recipeList, String unlocalizedName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, boolean showVoltageAmperageInJEI, int amperage, int JEISpecialValueMultiplier, boolean JEIAllowed, R defaultRecipe) {
+		public FakeRecipeMap(Collection<Recipe> recipeList, String unlocalizedName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, boolean showVoltageAmperageInJEI, int amperage, int JEISpecialValueMultiplier, boolean JEIAllowed, R defaultRecipe) {
 			super(recipeList, unlocalizedName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, showVoltageAmperageInJEI, amperage, JEISpecialValueMultiplier, JEIAllowed, defaultRecipe);
 		}
 
 		@Override
-		public boolean containsInput(ItemStack stack) {
-			throw new UnsupportedOperationException("This should not get called on fake recipe map");
-		}
-
-		@Override
-		public boolean containsInput(FluidStack fluid) {
-			throw new UnsupportedOperationException("This should not get called on fake recipe map");
-		}
-
-		@Override
-		public boolean containsInput(Fluid fluid) {
-			throw new UnsupportedOperationException("This should not get called on fake recipe map");
-		}
-
-		@Override
-		public T findRecipe(TileEntity tileEntity, T inputRecipe, boolean notUnificated, long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
+		public Recipe findRecipe(Recipe inputRecipe, long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
 			throw new UnsupportedOperationException("This should not get called on fake recipe map");
 		}
 	}
@@ -1212,36 +1082,21 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	/**
 	 * Abstract Class for general Recipe Handling of non GT Recipes
 	 */
-	public static abstract class RecipeMapNonGTRecipes<T extends Recipe, R extends RecipeBuilder<T, R>> extends RecipeMap<T, R> {
+	public static abstract class RecipeMapNonGTRecipes<R extends RecipeBuilder<R>> extends RecipeMap<R> {
 
-		public RecipeMapNonGTRecipes(Collection<T> recipeList, String unlocalizedName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, boolean showVoltageAmperageInJEI, int amperage, int JEISpecialValueMultiplier, boolean JEIAllowed, R defaultRecipe) {
+		public RecipeMapNonGTRecipes(Collection<Recipe> recipeList, String unlocalizedName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, boolean showVoltageAmperageInJEI, int amperage, int JEISpecialValueMultiplier, boolean JEIAllowed, R defaultRecipe) {
 			super(recipeList, unlocalizedName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, showVoltageAmperageInJEI, amperage, JEISpecialValueMultiplier, JEIAllowed, defaultRecipe);
 		}
 
 		@Override
-		public boolean containsInput(ItemStack stack) {
-			return false;
-		}
-
-		@Override
-		public boolean containsInput(FluidStack fluid) {
-			return false;
-		}
-
-		@Override
-		public boolean containsInput(Fluid fluid) {
-			return false;
-		}
-
-		@Override
-		protected void addRecipe(ValidationResult<T> validationResult) {
+		protected void addRecipe(ValidationResult<Recipe> validationResult) {
 		}
 	}
 
 	/**
 	 * Special Class for Furnace Recipe handling.
 	 */
-	public static class RecipeMapFurnace extends RecipeMapNonGTRecipes<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
+	public static class RecipeMapFurnace extends RecipeMapNonGTRecipes<RecipeBuilder.DefaultRecipeBuilder> {
 
 		public RecipeMapFurnace(Collection<Recipe> recipeList, String unlocalizedName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, int JEISpecialValueMultiplier, boolean showVoltageAmperageInJEI, boolean JEIAllowed, RecipeBuilder.DefaultRecipeBuilder defaultRecipe) {
 			super(recipeList, unlocalizedName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, showVoltageAmperageInJEI, amperage, JEISpecialValueMultiplier, JEIAllowed, defaultRecipe);
@@ -1249,9 +1104,9 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 		@Override
 		@Nullable
-		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
+		public Recipe findRecipe(Recipe inputRecipe, long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
 			if (inputs == null || inputs.size() <= 0 || inputs.get(0).isEmpty()) return null;
-//			if (inputRecipe != null && inputRecipe.isRecipeInputEqual(false, true, inputs, fluidInputs)) return inputRecipe; // TODO this is doubling output stack size
+//			if (inputRecipe != null && inputRecipe.matches(false, true, inputs, fluidInputs)) return inputRecipe; // TODO this is doubling output stack size
 			ItemStack output = ModHandler.getSmeltingOutput(inputs.get(0));
 			return output.isEmpty() ? null : this.recipeBuilder()
 					.notOptimized()
@@ -1259,20 +1114,15 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 					.outputs(output)
 					.duration(128)
 					.EUt(4)
-					.build(false)
+					.build()
 					.getResult();
-		}
-
-		@Override
-		public boolean containsInput(ItemStack stack) {
-			return !ModHandler.getSmeltingOutput(stack).isEmpty();
 		}
 	}
 
 	/**
 	 * Special Class for Microwave Recipe handling.
 	 */
-	public static class RecipeMapMicrowave extends RecipeMapNonGTRecipes<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
+	public static class RecipeMapMicrowave extends RecipeMapNonGTRecipes<RecipeBuilder.DefaultRecipeBuilder> {
 
 		public RecipeMapMicrowave(Collection<Recipe> recipeList, String unlocalizedName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, boolean showVoltageAmperageInJEI, int amperage, int JEISpecialValueMultiplier, boolean JEIAllowed, RecipeBuilder.DefaultRecipeBuilder defaultRecipe) {
 			super(recipeList, unlocalizedName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, showVoltageAmperageInJEI, amperage, JEISpecialValueMultiplier, JEIAllowed, defaultRecipe);
@@ -1280,9 +1130,9 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 		@Override
 		@Nullable
-		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
+		public Recipe findRecipe(Recipe inputRecipe, long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
 			if (inputs == null || inputs.size() <= 0 || inputs.get(0).isEmpty()) return null;
-			if (inputRecipe != null && inputRecipe.isRecipeInputEqual(false, true, inputs, fluidInputs)) return inputRecipe;
+			if (inputRecipe != null && inputRecipe.matches(false, true, inputs, fluidInputs)) return inputRecipe;
 			ItemStack output = ModHandler.getSmeltingOutput(inputs.get(0));
 
 //			if (GTUtility.areStacksEqual(inputs[0], new ItemStack(Items.BOOK, 1, W))) {
@@ -1295,54 +1145,54 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 //						.build();
 //			}
 
-			for (ItemStack stack : new ItemStack[]{inputs.get(0), output}) {
-				if (!output.isEmpty()) {
-					if (stack.getItem() == Item.getItemFromBlock(Blocks.NETHERRACK)
-							|| stack.getItem() == Item.getItemFromBlock(Blocks.TNT)
-							|| stack.getItem() == Items.EGG
-							|| stack.getItem() == Items.FIREWORK_CHARGE
-							|| stack.getItem() == Items.FIRE_CHARGE
-							|| stack.getItem() == Items.FIREWORKS
-							) {
-						if (tileEntity instanceof GregtechTileEntity)
-							((GregtechTileEntity) tileEntity).getMetaTileEntity().doExplosion(voltage * 4);
-						return null;
-					}
-					MaterialStack materialStack = OreDictUnifier.getMaterial(stack);
-
-					if (materialStack != null) {
-						if (materialStack.material != null && materialStack.material != null) {
-							if (materialStack.material instanceof MetalMaterial
-									|| materialStack.material.hasFlag(Material.MatFlags.EXPLOSIVE)) {
-								if (tileEntity instanceof GregtechTileEntity)
-									((GregtechTileEntity) tileEntity).getMetaTileEntity().doExplosion(voltage * 4);
-								return null;
-							}
-							if (materialStack.material.hasFlag(Material.MatFlags.FLAMMABLE)) {
-								GTUtility.setCoordsOnFire(tileEntity.getWorld(), tileEntity.getPos());
-								return null;
-							}
-						}
-						for (MaterialStack material : OreDictUnifier.getByProducts(stack))
-							if (material != null) {
-								if (material.material instanceof MetalMaterial || material.material.hasFlag(Material.MatFlags.EXPLOSIVE)) {
-									if (tileEntity instanceof GregtechTileEntity)
-										((GregtechTileEntity) tileEntity).getMetaTileEntity().doExplosion(voltage * 4);
-									return null;
-								}
-								if (material.material.hasFlag(Material.MatFlags.FLAMMABLE)) {
-									GTUtility.setCoordsOnFire(tileEntity.getWorld(), tileEntity.getPos());
-									return null;
-								}
-							}
-					}
-					if (TileEntityFurnace.getItemBurnTime(stack) > 0) {
-						GTUtility.setCoordsOnFire(tileEntity.getWorld(), tileEntity.getPos());
-						return null;
-					}
-
-				}
-			}
+//			for (ItemStack stack : new ItemStack[]{inputs.get(0), output}) {
+//				if (!output.isEmpty()) {
+//					if (stack.getItem() == Item.getItemFromBlock(Blocks.NETHERRACK)
+//							|| stack.getItem() == Item.getItemFromBlock(Blocks.TNT)
+//							|| stack.getItem() == Items.EGG
+//							|| stack.getItem() == Items.FIREWORK_CHARGE
+//							|| stack.getItem() == Items.FIRE_CHARGE
+//							|| stack.getItem() == Items.FIREWORKS
+//							) {
+//						if (tileEntity instanceof GregtechTileEntity)
+//							((GregtechTileEntity) tileEntity).getMetaTileEntity().doExplosion(voltage * 4);
+//						return null;
+//					}
+//					MaterialStack materialStack = OreDictUnifier.getMaterial(stack);
+//
+//					if (materialStack != null) {
+//						if (materialStack.material != null && materialStack.material != null) {
+//							if (materialStack.material instanceof MetalMaterial
+//									|| materialStack.material.hasFlag(Material.MatFlags.EXPLOSIVE)) {
+//								if (tileEntity instanceof GregtechTileEntity)
+//									((GregtechTileEntity) tileEntity).getMetaTileEntity().doExplosion(voltage * 4);
+//								return null;
+//							}
+//							if (materialStack.material.hasFlag(Material.MatFlags.FLAMMABLE)) {
+//								GTUtility.setCoordsOnFire(tileEntity.getWorld(), tileEntity.getPos());
+//								return null;
+//							}
+//						}
+//						for (MaterialStack material : OreDictUnifier.getByProducts(stack))
+//							if (material != null) {
+//								if (material.material instanceof MetalMaterial || material.material.hasFlag(Material.MatFlags.EXPLOSIVE)) {
+//									if (tileEntity instanceof GregtechTileEntity)
+//										((GregtechTileEntity) tileEntity).getMetaTileEntity().doExplosion(voltage * 4);
+//									return null;
+//								}
+//								if (material.material.hasFlag(Material.MatFlags.FLAMMABLE)) {
+//									GTUtility.setCoordsOnFire(tileEntity.getWorld(), tileEntity.getPos());
+//									return null;
+//								}
+//							}
+//					}
+//					if (TileEntityFurnace.getItemBurnTime(stack) > 0) {
+//						GTUtility.setCoordsOnFire(tileEntity.getWorld(), tileEntity.getPos());
+//						return null;
+//					}
+//
+//				}
+//			}
 
 			return output.isEmpty() ? null : new RecipeBuilder.DefaultRecipeBuilder(this.defaultRecipe)
 					.notOptimized()
@@ -1353,17 +1203,12 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 					.build()
 					.getResult();
 		}
-
-		@Override
-		public boolean containsInput(ItemStack stack) {
-			return !ModHandler.getSmeltingOutput(stack).isEmpty();
-		}
 	}
 
 	/**
 	 * Special Class for Unboxinator handling.
 	 */
-	public static class RecipeMapUnboxinator extends RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
+	public static class RecipeMapUnboxinator extends RecipeMap<RecipeBuilder.DefaultRecipeBuilder> {
 
 		public RecipeMapUnboxinator(Collection<Recipe> recipeList, String unlocalizedName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, boolean showVoltageAmperageInJEI, int amperage, int JEISpecialValueMultiplier, boolean JEIAllowed, RecipeBuilder.DefaultRecipeBuilder defaultRecipe) {
 			super(recipeList, unlocalizedName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, showVoltageAmperageInJEI, amperage, JEISpecialValueMultiplier, JEIAllowed, defaultRecipe);
@@ -1371,7 +1216,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 		@Override
 		@Nullable
-		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
+		public Recipe findRecipe(Recipe inputRecipe, long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
 //			if (inputs == null || inputs.size() <= 0 || !ModHandler.IC2.getScrapBox(1).isItemEqual(inputs.get(0)))
 //				return super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, inputs, fluidInputs);
 //			ItemStack output = Recipes.scrapboxDrops.getDrop(ModHandler.IC2.getScrapBox(1), false);
@@ -1390,18 +1235,12 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 //					.getResult();
             return null;
 		}
-
-		@Override
-		public boolean containsInput(ItemStack stack) {
-//			return ModHandler.IC2.getScrapBox(1).isItemEqual(stack) || super.containsInput(stack);
-            return false;
-		}
 	}
 
 	/**
 	 * Special Class for Fluid Canner handling.
 	 */
-	public static class RecipeMapFluidCanner extends RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
+	public static class RecipeMapFluidCanner extends RecipeMap<RecipeBuilder.DefaultRecipeBuilder> {
 
 		public RecipeMapFluidCanner(Collection<Recipe> recipeList, String unlocalizedName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, boolean showVoltageAmperageInJEI, int amperage, int JEISpecialValueMultiplier, boolean JEIAllowed, RecipeBuilder.DefaultRecipeBuilder defaultRecipe) {
 			super(recipeList, unlocalizedName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, showVoltageAmperageInJEI, amperage, JEISpecialValueMultiplier, JEIAllowed, defaultRecipe);
@@ -1409,8 +1248,8 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 		@Override
 		@Nullable
-		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
-			Recipe recipe = super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, inputs, fluidInputs);
+		public Recipe findRecipe(Recipe inputRecipe, long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
+			Recipe recipe = super.findRecipe(inputRecipe, voltage, inputs, fluidInputs);
 			if (inputs == null || inputs.size() <= 0 || inputs.get(0).isEmpty() || recipe != null /*|| !GregTechAPI.sPostloadFinished*/)
 				return recipe;
 			if (fluidInputs != null && fluidInputs.size() > 0 && fluidInputs.get(0) != null) {
@@ -1444,30 +1283,12 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 //			}
 			return recipe;
 		}
-
-		@Override
-		public boolean containsInput(ItemStack stack) {
-			return stack != null &&
-                (super.containsInput(stack)
-                    || (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)
-                        && stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null).drain(Integer.MAX_VALUE, true).amount > 0));
-		}
-
-		@Override
-		public boolean containsInput(FluidStack fluid) {
-			return true;
-		}
-
-		@Override
-		public boolean containsInput(Fluid fluid) {
-			return true;
-		}
 	}
 
 	/**
 	 * Special Class for Recycler Recipe handling.
 	 */
-	public static class RecipeMapRecycler extends RecipeMapNonGTRecipes<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
+	public static class RecipeMapRecycler extends RecipeMapNonGTRecipes<RecipeBuilder.DefaultRecipeBuilder> {
 
 		public RecipeMapRecycler(Collection<Recipe> recipeList, String unlocalizedName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, boolean showVoltageAmperageInJEI, int amperage, int JEISpecialValueMultiplier, boolean JEIAllowed, RecipeBuilder.DefaultRecipeBuilder defaultRecipe) {
 			super(recipeList, unlocalizedName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, showVoltageAmperageInJEI, amperage, JEISpecialValueMultiplier, JEIAllowed, defaultRecipe);
@@ -1475,9 +1296,9 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 		@Override
 		@Nullable
-		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
+		public Recipe findRecipe(Recipe inputRecipe, long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
 //			if (inputs == null || inputs.size() <= 0 || inputs.get(0).isEmpty()) return null;
-//			if (inputRecipe != null && inputRecipe.isRecipeInputEqual(false, true, inputs, fluidInputs)) return inputRecipe;
+//			if (inputRecipe != null && inputRecipe.matches(false, true, inputs, fluidInputs)) return inputRecipe;
 
 //			RecipeBuilder<Recipe, RecipeBuilder.DefaultRecipeBuilder> builder = this.recipeBuilder()
 //					.notOptimized()
@@ -1492,17 +1313,12 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 //			return builder.build().getResult();
             return null;
 		}
-		@Override
-		public boolean containsInput(ItemStack stack) {
-//			return !ModHandler.getRecyclerOutput(GTUtility.copyAmount(64, stack), 0).isEmpty();
-            return false;
-		}
 	}
 
 	/**
 	 * Special Class for Forming Press handling.
 	 */
-	public static class RecipeMapFormingPress extends RecipeMap<Recipe, RecipeBuilder.NotConsumableInputRecipeBuilder> {
+	public static class RecipeMapFormingPress extends RecipeMap<RecipeBuilder.NotConsumableInputRecipeBuilder> {
 
 		public RecipeMapFormingPress(Collection<Recipe> recipeList, String unlocalizedName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, boolean showVoltageAmperageInJEI, int amperage, int JEISpecialValueMultiplier, boolean JEIAllowed, RecipeBuilder.NotConsumableInputRecipeBuilder defaultRecipe) {
 			super(recipeList, unlocalizedName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, showVoltageAmperageInJEI, amperage, JEISpecialValueMultiplier, JEIAllowed, defaultRecipe);
@@ -1510,8 +1326,8 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 		@Override
 		@Nullable
-		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
-			Recipe recipe = super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, inputs, fluidInputs);
+		public Recipe findRecipe(Recipe inputRecipe, long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
+			Recipe recipe = super.findRecipe(inputRecipe, voltage, inputs, fluidInputs);
 			if (inputs == null || inputs.size() < 2 || inputs.get(0).isEmpty() || inputs.get(1).isEmpty() /*|| !GregTechAPI.sPostloadFinished*/)
 				return recipe;
 			if (recipe == null) {
@@ -1554,7 +1370,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 					if (!tag.hasKey("credit_security_id")) tag.setLong("credit_security_id", System.nanoTime());
 					mold.setTagCompound(tag);
 
-					RecipeBuilder<?,?> builder = this.recipeBuilder()
+					RecipeBuilder<?> builder = this.recipeBuilder()
 							.fromRecipe(recipe)
 							.cannotBeBuffered();
 
@@ -1573,7 +1389,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 	/**
 	 * Special Class for Printer handling.
 	 */
-	public static class RecipeMapPrinter extends RecipeMap<Recipe, RecipeBuilder.DefaultRecipeBuilder> {
+	public static class RecipeMapPrinter extends RecipeMap<RecipeBuilder.DefaultRecipeBuilder> {
 
 		public RecipeMapPrinter(Collection<Recipe> recipeList, String unlocalizedName, String JEIGUIPath, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, boolean showVoltageAmperageInJEI, int amperage, int JEISpecialValueMultiplier, boolean JEIAllowed, RecipeBuilder.DefaultRecipeBuilder defaultRecipe) {
 			super(recipeList, unlocalizedName, JEIGUIPath, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, showVoltageAmperageInJEI, amperage, JEISpecialValueMultiplier, JEIAllowed, defaultRecipe);
@@ -1581,8 +1397,8 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 
 		@Override
 		@Nullable
-		public Recipe findRecipe(TileEntity tileEntity, Recipe inputRecipe, boolean notUnificated, long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
-			Recipe recipe = super.findRecipe(tileEntity, inputRecipe, notUnificated, voltage, inputs, fluidInputs);
+		public Recipe findRecipe(Recipe inputRecipe, long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
+			Recipe recipe = super.findRecipe(inputRecipe, voltage, inputs, fluidInputs);
 			if (inputs == null || inputs.size() <= 0 || inputs.get(0).isEmpty()
                     || fluidInputs == null || fluidInputs.size() <= 0 || fluidInputs.get(0) == null/*|| !GregTechAPI.sPostloadFinished*/)
 				return recipe;
@@ -1591,7 +1407,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 			if (color != null) return recipe;
 
 			if (recipe == null) {
-				ItemStack output = ModHandler.getRecipeOutput(tileEntity == null ? null : tileEntity.getWorld(),
+				ItemStack output = ModHandler.getRecipeOutput(null,
                     inputs.get(0), inputs.get(0), inputs.get(0),
                     inputs.get(0), MetaItems.DYE_ONLY_ITEMS[color.getMetadata()].getStackForm(), inputs.get(0),
                     inputs.get(0), inputs.get(0), inputs.get(0));
@@ -1608,7 +1424,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 					return outputRecipe.getResult();
 				}
 
-				output = ModHandler.getRecipeOutput(tileEntity == null ? null : tileEntity.getWorld(), inputs.get(0), MetaItems.DYE_ONLY_ITEMS[color.getMetadata()].getStackForm());
+				output = ModHandler.getRecipeOutput(null, inputs.get(0), MetaItems.DYE_ONLY_ITEMS[color.getMetadata()].getStackForm());
 				if (!output.isEmpty()) {
 					ValidationResult<Recipe> outputRecipe = this.recipeBuilder()
 							.inputs(GTUtility.copyAmount(1, inputs.get(0)))
@@ -1629,7 +1445,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 					if (tag == null || !GTUtility.isStringValid(tag.getString("title")) || !GTUtility.isStringValid(tag.getString("author")))
 						return null;
 
-					RecipeBuilder<?,?> builder = this.recipeBuilder()
+					RecipeBuilder<?> builder = this.recipeBuilder()
 							.fromRecipe(recipe)
 							.cannotBeBuffered();
 
@@ -1646,7 +1462,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 					NBTTagCompound tag = inputs.get(0).getTagCompound();
 					if (tag == null || !tag.hasKey("map_id")) return null;
 
-					RecipeBuilder<?,?> builder = this.recipeBuilder()
+					RecipeBuilder<?> builder = this.recipeBuilder()
 							.fromRecipe(recipe)
 							.cannotBeBuffered();
 
@@ -1662,7 +1478,7 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 					NBTTagCompound tag = inputs.get(0).getTagCompound();
 					if (tag == null || !tag.hasKey("GT.PunchCardData")) return null;
 
-					RecipeBuilder<?,?> builder = this.recipeBuilder()
+					RecipeBuilder<?> builder = this.recipeBuilder()
 							.fromRecipe(recipe)
 							.cannotBeBuffered();
 
@@ -1678,21 +1494,6 @@ public class RecipeMap<T extends Recipe, R extends RecipeBuilder<T, R>> {
 				}
 			}
 			return recipe;
-		}
-
-		@Override
-		public boolean containsInput(ItemStack stack) {
-			return true;
-		}
-
-		@Override
-		public boolean containsInput(FluidStack fluid) {
-			return super.containsInput(fluid) || GregTechAPI.LIQUID_DYE_MAP.containsValue(fluid.getFluid());
-		}
-
-		@Override
-		public boolean containsInput(Fluid fluid) {
-			return super.containsInput(fluid) || GregTechAPI.LIQUID_DYE_MAP.containsValue(fluid);
 		}
 	}
 }

@@ -3,6 +3,7 @@ package gregtech.api.util;
 
 import com.google.common.collect.Lists;
 import gregtech.api.GregTechAPI;
+import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.damagesources.DamageSources;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.stack.SimpleItemStack;
@@ -235,8 +236,20 @@ public class GTUtility {
         return false;
     }
 
-    public static boolean areUnificationEqual(ItemStack stackA, ItemStack stackB) {
-        return ItemStack.areItemsEqual(OreDictUnifier.getUnificated(stackA), OreDictUnifier.getUnificated(stackB));
+    public static NonNullList<ItemStack> itemHandlerToList(IItemHandlerModifiable inputs) {
+        NonNullList<ItemStack> stacks = NonNullList.create();
+        for (int i = 0; i < inputs.getSlots(); i++) {
+            stacks.add(inputs.getStackInSlot(i));
+        }
+        return stacks;
+    }
+
+    public static List<FluidStack> fluidHandlerToList(IMultipleTankHandler fluidInputs) {
+        List<FluidStack> fluidStacks = new ArrayList<>(fluidInputs.getTanks());
+        for (int i = 0; i < fluidInputs.getTanks(); i++) {
+            fluidStacks.add(fluidInputs.getFluidInTank(i));
+        }
+        return fluidStacks;
     }
 
     public static void playSound(World world, double x, double y, double z, ResourceLocation soundName, SoundCategory category, float strength, float modulation) {

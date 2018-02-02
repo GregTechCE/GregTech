@@ -1,18 +1,16 @@
 package gregtech.api.metatileentity.factory;
 
 import gregtech.api.metatileentity.IMetaTileEntity;
-import gregtech.api.metatileentity.IMetaTileEntityFactory;
 import gregtech.api.metatileentity.WorkableSteamMetaTileEntity;
-import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.common.blocks.BlockMachine;
 import net.minecraft.util.ResourceLocation;
 
 public class WorkableSteamMetaTileEntityFactory<T extends WorkableSteamMetaTileEntity> extends MetaTileEntityFactory<T>  {
 
-    protected final RecipeMap<Recipe, ?> recipeMap;
+    protected final RecipeMap<?> recipeMap;
 
-    public WorkableSteamMetaTileEntityFactory(BlockMachine.ToolClass toolClass, int harvestLevel, String[] description, Class<T> metaTileEntityClass, ResourceLocation modelLocation, RecipeMap<Recipe, ?> recipeMap) {
+    public WorkableSteamMetaTileEntityFactory(BlockMachine.ToolClass toolClass, int harvestLevel, String[] description, Class<T> metaTileEntityClass, ResourceLocation modelLocation, RecipeMap<?> recipeMap) {
         super(toolClass, harvestLevel, description, metaTileEntityClass, modelLocation);
         this.recipeMap = recipeMap;
     }
@@ -26,7 +24,7 @@ public class WorkableSteamMetaTileEntityFactory<T extends WorkableSteamMetaTileE
         }
     }
 
-    public RecipeMap<Recipe, ?> getRecipeMap() {
+    public RecipeMap<?> getRecipeMap() {
         return recipeMap;
     }
 }

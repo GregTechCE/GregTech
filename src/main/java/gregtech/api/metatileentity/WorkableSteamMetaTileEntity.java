@@ -18,7 +18,7 @@ import net.minecraftforge.common.util.Constants;
 
 public abstract class WorkableSteamMetaTileEntity extends SteamMetaTileEntity implements IWorkable {
 
-    public final RecipeMap<Recipe, ?> recipeMap;
+    public final RecipeMap<?> recipeMap;
     protected Recipe previousRecipe;
 
     protected int progressTime;
@@ -42,7 +42,7 @@ public abstract class WorkableSteamMetaTileEntity extends SteamMetaTileEntity im
             return;
         }
         if(progressTime == 0) {
-            Recipe pickedRecipe = recipeMap.findRecipe(holder, previousRecipe, true, GTValues.V[1], importItems, importFluids);
+            Recipe pickedRecipe = recipeMap.findRecipe(previousRecipe, GTValues.V[1], importItems, importFluids);
             if(pickedRecipe != null && setupAndConsumeRecipeInputs(pickedRecipe)) {
                 if(pickedRecipe.canBeBuffered()) {
                     this.previousRecipe = pickedRecipe;
@@ -65,7 +65,7 @@ public abstract class WorkableSteamMetaTileEntity extends SteamMetaTileEntity im
             this.steamFluidTank.drain(totalEUt, false) != null &&
             addItemsToItemHandler(exportItems, true, recipe.getOutputs()) &&
             addFluidsToFluidHandler(exportFluids, true, recipe.getFluidOutputs()) &&
-            recipe.isRecipeInputEqual(true, false, importItems, importFluids);
+            recipe.matches(true, false, importItems, importFluids);
     }
 
     protected void setupRecipe(Recipe recipe) {
