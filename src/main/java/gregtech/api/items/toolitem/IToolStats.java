@@ -10,6 +10,8 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
@@ -68,6 +70,7 @@ public interface IToolStats {
      */
     float getMaxDurabilityMultiplier(ItemStack stack);
 
+    @SideOnly(Side.CLIENT)
     ResourceLocation getMiningSound(ItemStack stack);
 
     ResourceLocation getCraftingSound(ItemStack stack);
@@ -77,6 +80,8 @@ public interface IToolStats {
     ResourceLocation getBreakingSound(ItemStack stack);
 
     List<EnchantmentData> getEnchantments(ItemStack stack);
+
+    boolean hasMaterialHandle();
 
     /**
      * @return If this Tool can be used as an RC Crowbar.

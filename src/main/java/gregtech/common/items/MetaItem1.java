@@ -719,9 +719,6 @@ public class MetaItem1 extends MaterialMetaItem {
                             if (prefix == OrePrefix.crushed) {
                                 itemEntity.setItem(OreDictUnifier.get(OrePrefix.crushedPurified, material, itemEntity.getItem().getCount()));
                                 waterConsumed = true;
-                            } else if (prefix == OrePrefix.dust && material == Materials.Wheat) {
-                                itemEntity.setItem(FOOD_DOUGH.getStackForm(itemEntity.getItem().getCount()));
-                                waterConsumed = true;
                             } else if (prefix == OrePrefix.dustImpure || prefix == OrePrefix.dustPure){
                                 itemEntity.setItem(OreDictUnifier.get(OrePrefix.dust, material, itemEntity.getItem().getCount()));
                                 waterConsumed = true;

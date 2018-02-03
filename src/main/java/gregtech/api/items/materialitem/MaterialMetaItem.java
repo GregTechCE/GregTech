@@ -63,6 +63,7 @@ public class MaterialMetaItem extends StandardMetaItem {
         }
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerModels() {
         for(short metaItem : generatedItems) {

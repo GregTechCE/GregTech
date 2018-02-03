@@ -51,86 +51,17 @@ public class MetaItem2 extends MaterialMetaItem {
 
         ItemStack emptyBottle = new ItemStack(Items.GLASS_BOTTLE);
 
+        BOTTLE_GLEN_MCKENNER = addItem(117, "bottle.glen_mckenner").setInvisible().addStats(new FoodStats(2, 0.1F, true, drinksAlwaysDrinkable, emptyBottle)); //, new int[]{Potion.confusion.id, 400, 1, 90, Potion.resistance.id, 400, 2, 90, Potion.poison.id, 200, 2, 10, Potion.harm.id, 0, 2, 5}));
         BOTTLE_PURPLE_DRINK = addItem(100, "bottle.purple.drink").addStats(new FoodStats(8, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.SLOWNESS, 400, 1, 90)));
-        BOTTLE_GRAPE_JUICE = addItem(101, "bottle.grape.juice").addStats(new FoodStats(4, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HUNGER, 400, 1, 60)));
-        BOTTLE_WINE = addItem(102, "bottle.wine").addStats(new FoodStats(2, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 400, 1, 60), new RandomPotionEffect(MobEffects.INSTANT_HEALTH, 0, 0, 60), new RandomPotionEffect(MobEffects.POISON, 200, 1, 5)));
-        BOTTLE_VINEGAR = addItem(103, "bottle.vinegar").setInvisible().addStats(new FoodStats(2, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 400, 1, 90), new RandomPotionEffect(MobEffects.INSTANT_HEALTH, 0, 1, 90), new RandomPotionEffect(MobEffects.POISON, 200, 2, 10), new RandomPotionEffect(MobEffects.INSTANT_DAMAGE, 0, 2, 5)));
-        BOTTLE_POTATO_JUICE = addItem(104, "bottle.potato.juice").setInvisible().addStats(new FoodStats(3, 0.3F, true, drinksAlwaysDrinkable, emptyBottle));
-        BOTTLE_VODKA = addItem(105, "bottle.vodka").setInvisible().addStats(new FoodStats(2, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 500, 0, 60), new RandomPotionEffect(MobEffects.STRENGTH, 500, 1, 60), new RandomPotionEffect(MobEffects.POISON, 200, 1, 5)));
-        BOTTLE_LENINADE = addItem(106, "bottle.leninade").setInvisible().addStats(new FoodStats(2, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 500, 1, 90), new RandomPotionEffect(MobEffects.STRENGTH, 500, 2, 90), new RandomPotionEffect(MobEffects.POISON, 200, 2, 10), new RandomPotionEffect(MobEffects.INSTANT_DAMAGE, 0, 2, 5)));
-        BOTTLE_MINERAL_WATER = addItem(107, "bottle.mineral.water").addStats(new FoodStats(1, 0.1F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.REGENERATION, 100, 1, 10)));
-        BOTTLE_SALTY_WATER = addItem(108, "bottle.salty.water").setInvisible().addStats(new FoodStats(1, 0.0F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HUNGER, 400, 2, 95)));
-        BOTTLE_REED_WATER = addItem(109, "bottle.reed.water").addStats(new FoodStats(1, 0.1F, true, drinksAlwaysDrinkable, emptyBottle));
-        BOTTLE_RUM = addItem(110, "bottle.rum").setInvisible().addStats(new FoodStats(4, 0.4F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 300, 0, 60), new RandomPotionEffect(MobEffects.STRENGTH, 300, 1, 60), new RandomPotionEffect(MobEffects.POISON, 200, 1, 5)));
-        BOTTLE_PIRATE_BREW = addItem(111, "bottle.pirate.brew").setInvisible().addStats(new FoodStats(4, 0.4F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 300, 1, 90), new RandomPotionEffect(MobEffects.STRENGTH, 300, 2, 90), new RandomPotionEffect(MobEffects.POISON, 200, 2, 10), new RandomPotionEffect(MobEffects.INSTANT_DAMAGE, 0, 2, 5)));
-        BOTTLE_HOPS_JUICE = addItem(112, "bottle.hops.juice").addStats(new FoodStats(1, 0.1F, true, drinksAlwaysDrinkable, emptyBottle));
-        BOTTLE_DARK_BEER = addItem(113, "bottle.dark.beer").addStats(new FoodStats(4, 0.4F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 300, 1, 60), new RandomPotionEffect(MobEffects.STRENGTH, 300, 1, 60), new RandomPotionEffect(MobEffects.POISON, 200, 1, 5)));
-        BOTTLE_DRAGON_BLOOD = addItem(114, "bottle.dragon.blood").setInvisible().addStats(new FoodStats(4, 0.4F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 300, 2, 90), new RandomPotionEffect(MobEffects.STRENGTH, 300, 2, 90), new RandomPotionEffect(MobEffects.POISON, 200, 2, 10), new RandomPotionEffect(MobEffects.INSTANT_DAMAGE, 0, 2, 5)));
-        BOTTLE_WHEATY_JUICE = addItem(115, "bottle.wheaty.juice").addStats(new FoodStats(2, 0.1F, true, drinksAlwaysDrinkable, emptyBottle));
-        BOTTLE_SCOTCH = addItem(116, "bottle.scotch").setInvisible().addStats(new FoodStats(2, 0.1F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 400, 0, 60), new RandomPotionEffect(MobEffects.RESISTANCE, 400, 1, 60), new RandomPotionEffect(MobEffects.POISON, 200, 1, 5)));
-        BOTTLE_GLEN_MCKENNER = addItem(117, "bottle.glen.mckenner").setInvisible().addStats(new FoodStats(2, 0.1F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 400, 1, 90), new RandomPotionEffect(MobEffects.RESISTANCE, 400, 2, 90), new RandomPotionEffect(MobEffects.POISON, 200, 2, 10), new RandomPotionEffect(MobEffects.INSTANT_DAMAGE, 0, 2, 5)));
-        BOTTLE_WHEATY_HOPS_JUICE = addItem(118, "bottle.wheaty.hops.juice").addStats(new FoodStats(1, 0.1F, true, drinksAlwaysDrinkable, emptyBottle));
-        BOTTLE_BEER = addItem(119, "bottle.beer").addStats(new FoodStats(6, 0.4F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 400, 0, 60), new RandomPotionEffect(MobEffects.HASTE, 400, 2, 60), new RandomPotionEffect(MobEffects.POISON, 100, 0, 5)));
-        BOTTLE_CHILLY_SAUCE = addItem(120, "bottle.chilly.sauce").addStats(new FoodStats(2, 0.1F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 1000, 0, 10), new RandomPotionEffect(MobEffects.FIRE_RESISTANCE, 1000, 0, 60)));
-        BOTTLE_HOT_SAUCE = addItem(121, "bottle.hot.sauce").addStats(new FoodStats(2, 0.1F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 2000, 0, 30), new RandomPotionEffect(MobEffects.FIRE_RESISTANCE, 2000, 0, 70)));
         BOTTLE_DIABOLO_SAUCE = addItem(122, "bottle.diabolo.sauce").setInvisible().addStats(new FoodStats(2, 0.1F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 3000, 1, 50), new RandomPotionEffect(MobEffects.FIRE_RESISTANCE, 3000, 0, 80)));
         BOTTLE_DIABLO_SAUCE = addItem(123, "bottle.diablo.sauce").setInvisible().addStats(new FoodStats(2, 0.1F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 4000, 1, 70), new RandomPotionEffect(MobEffects.FIRE_RESISTANCE, 4000, 0, 90)));
         BOTTLE_SNITCHES_GLITCH_SAUCE = addItem(124, "bottle.snitches.glitch.sauce").setInvisible().addStats(new FoodStats(2, 0.1F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 9999, 2, 999), new RandomPotionEffect(MobEffects.FIRE_RESISTANCE, 9999, 9, 999)));
-        BOTTLE_APPLE_JUICE = addItem(125, "bottle.apple.juice").addStats(new FoodStats(4, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HUNGER, 400, 0, 20)));
-        BOTTLE_CIDER = addItem(126, "bottle.cider").addStats(new FoodStats(4, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 400, 0, 60), new RandomPotionEffect(MobEffects.RESISTANCE, 400, 1, 60), new RandomPotionEffect(MobEffects.POISON, 200, 1, 5)));
-        BOTTLE_GOLDEN_APPLE_JUICE = addItem(127, "bottle.golden.apple.juice").setInvisible().addStats(new FoodStats(4, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HUNGER, 400, 0, 20), new RandomPotionEffect(MobEffects.ABSORPTION, 2400, 0, 100), new RandomPotionEffect(MobEffects.REGENERATION, 100, 1, 100)));
-        BOTTLE_GOLDEN_CIDER = addItem(128, "bottle.golden.cider").setInvisible().addStats(new FoodStats(4, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HUNGER, 400, 0, 60), new RandomPotionEffect(MobEffects.ABSORPTION, 2400, 1, 95), new RandomPotionEffect(MobEffects.POISON, 200, 1, 5)));
-        BOTTLE_IDUNS_APPLE_JUICE = addItem(129, "bottle.iduns.apple.juice").setInvisible().addStats(new FoodStats(4, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.REGENERATION, 600, 4, 100), new RandomPotionEffect(MobEffects.ABSORPTION, 2400, 0, 100), new RandomPotionEffect(MobEffects.RESISTANCE, 6000, 0, 100), new RandomPotionEffect(MobEffects.FIRE_RESISTANCE, 6000, 0, 100)));
         BOTTLE_NOTCHES_BREW = addItem(130, "bottle.notches.brew").setInvisible().addStats(new FoodStats(4, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.REGENERATION, 700, 4, 95), new RandomPotionEffect(MobEffects.ABSORPTION, 3000, 1, 95), new RandomPotionEffect(MobEffects.RESISTANCE, 7000, 1, 95), new RandomPotionEffect(MobEffects.FIRE_RESISTANCE, 7000, 0, 95), new RandomPotionEffect(MobEffects.INSTANT_DAMAGE, 0, 2, 20)));
-        BOTTLE_LEMON_JUICE = addItem(131, "bottle.lemon.juice").addStats(new FoodStats(2, 0.4F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HASTE, 1200, 0, 60)));
-        BOTTLE_LIMONCELLO = addItem(132, "bottle.limoncello").setInvisible().addStats(new FoodStats(2, 0.4F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HASTE, 1200, 0, 90), new RandomPotionEffect(MobEffects.POISON, 200, 1, 5)));
-        BOTTLE_LEMONADE = addItem(133, "bottle.lemonade").addStats(new FoodStats(4, 0.3F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HASTE, 900, 1, 90)));
-        BOTTLE_ALCOPOPS = addItem(134, "bottle.alcopops").setInvisible().addStats(new FoodStats(2, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.HASTE, 900, 1, 90), new RandomPotionEffect(MobEffects.POISON, 300, 2, 20)));
         BOTTLE_CAVE_JOHNSONS_GRENADE_JUICE = addItem(135, "bottle.cave.johnsons.grenade.juice").setInvisible().addStats(new FoodStats(0, 0.0F, true, drinksAlwaysDrinkable, emptyBottle));
-        BOTTLE_MILK = addItem(136, "bottle.milk").setUnificationData(OrePrefix.bottle, Materials.Milk).addStats(new FoodStats(0, 0.0F, true, drinksAlwaysDrinkable, emptyBottle));
         BOTTLE_HOLY_WATER = addItem(137, "bottle.holy.water").setUnificationData(OrePrefix.bottle, Materials.HolyWater).addStats(new FoodStats(0, 0.0F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.POISON, 100, 1, 100)));
 
-        FOOD_POTATO_ON_STICK = addItem(200, "food.potato.on.stick").addStats(new FoodStats(1, 0.3F, false, false, new ItemStack(Items.STICK, 1)));
-        FOOD_POTATO_ON_STICK_ROASTED = addItem(201, "food.potato.on.stick.roasted").addStats(new FoodStats(6, 0.6F, false, false, new ItemStack(Items.STICK, 1)));
-        FOOD_RAW_FRIES = addItem(202, "food.raw.fries").setMaxStackSize(16).addStats(new FoodStats(1, 0.3F));
-        FOOD_FRIES = addItem(203, "food.fries").setMaxStackSize(16).addStats(new FoodStats(7, 0.5F));
-        FOOD_PACKAGED_FRIES = addItem(204, "food.packaged.fries").addStats(new FoodStats(7, 0.5F, false, false, OreDictUnifier.get(OrePrefix.plate, Materials.Paper, 1)));
-        FOOD_RAW_POTATOCHIPS = addItem(205, "food.raw.potatochips").setMaxStackSize(16).addStats(new FoodStats(1, 0.3F));
-        FOOD_POTATOCHIPS = addItem(206, "food.potatochips").setMaxStackSize(16).addStats(new FoodStats(7, 0.5F));
-        FOOD_CHILICHIPS = addItem(207, "food.chilichips").setMaxStackSize(16).addStats(new FoodStats(7, 0.6F));
-        FOOD_PACKAGED_POTATOCHIPS = addItem(208, "food.packaged.potatochips").addStats(new FoodStats(7, 0.5F, false, false, OreDictUnifier.get(OrePrefix.foil, Materials.Aluminium, 1)));
-        FOOD_PACKAGED_CHILICHIPS = addItem(209, "food.packaged.chilichips").addStats(new FoodStats(7, 0.6F, false, false, OreDictUnifier.get(OrePrefix.foil, Materials.Aluminium, 1)));
         FOOD_CHUM = addItem(210, "food.chum").addStats(new FoodStats(5, 0.2F, false, true, null, new RandomPotionEffect(MobEffects.HUNGER, 1000, 4, 100), new RandomPotionEffect(MobEffects.NAUSEA, 300, 1, 80)));
         FOOD_CHUM_ON_STICK = addItem(211, "food.chum.on.stick").addStats(new FoodStats(5, 0.2F, false, true, new ItemStack(Items.STICK, 1), new RandomPotionEffect(MobEffects.HUNGER, 1000, 4, 100), new RandomPotionEffect(MobEffects.NAUSEA, 300, 1, 80)));
-        FOOD_DOUGH_SUGAR = addItem(212, "food.dough.sugar").addStats(new FoodStats(1, 0.1F));
-        FOOD_DOUGH_CHOCOLATE = addItem(213, "food.dough.chocolate").addStats(new FoodStats(1, 0.1F));
-        FOOD_RAW_COOKIE = addItem(214, "food.raw.cookie").addStats(new FoodStats(1, 0.1F));
-
-        FOOD_SLICED_BUNS = addItem(220, "food.sliced.buns").addStats(new FoodStats(3, 0.5F));
-        FOOD_BURGER_VEGGIE = addItem(221, "food.burger.veggie").addStats(new FoodStats(3, 0.5F));
-        FOOD_BURGER_CHEESE = addItem(222, "food.burger.cheese").addStats(new FoodStats(3, 0.5F)).setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Cheese, 907200)));
-        FOOD_BURGER_MEAT = addItem(223, "food.burger.meat").addStats(new FoodStats(3, 0.5F));
-        FOOD_BURGER_CHUM = addItem(224, "food.burger.chum").addStats(new FoodStats(5, 0.2F, false, true, null, new RandomPotionEffect(MobEffects.SLOWNESS, 1000, 4, 100), new RandomPotionEffect(MobEffects.NAUSEA, 300, 1, 80)));
-
-        FOOD_SLICED_BREADS = addItem(230, "food.sliced.breads").addStats(new FoodStats(5, 0.6F));
-        FOOD_SANDWICH_VEGGIE = addItem(231, "food.sandwich.veggie").setMaxStackSize(32).addStats(new FoodStats(7, 0.6F));
-        FOOD_SANDWICH_CHEESE = addItem(232, "food.sandwich.cheese").setMaxStackSize(32).addStats(new FoodStats(7, 0.6F));
-        FOOD_SANDWICH_BACON = addItem(233, "food.sandwich.bacon").setMaxStackSize(32).addStats(new FoodStats(10, 0.8F));
-        FOOD_SANDWICH_STEAK = addItem(234, "food.sandwich.steak").setMaxStackSize(32).addStats(new FoodStats(10, 0.8F));
-
-        FOOD_SLICED_BAGUETTES = addItem(240, "food.sliced.baguettes").addStats(new FoodStats(8, 0.5F));
-        FOOD_LARGE_SANDWICH_VEGGIE = addItem(241, "food.large.sandwich.veggie").setMaxStackSize(16).addStats(new FoodStats(15, 0.8F));
-        FOOD_LARGE_SANDWICH_CHEESE = addItem(242, "food.large.sandwich.cheese").setMaxStackSize(16).addStats(new FoodStats(15, 0.8F));
-        FOOD_LARGE_SANDWICH_BACON = addItem(243, "food.large.sandwich.bacon").setMaxStackSize(16).addStats(new FoodStats(20, 1.0F));
-        FOOD_LARGE_SANDWICH_STEAK = addItem(244, "food.large.sandwich.steak").setMaxStackSize(16).addStats(new FoodStats(20, 1.0F));
-
-        FOOD_RAW_PIZZA_VEGGIE = addItem(250, "food.raw.pizza.veggie").addStats(new FoodStats(1, 0.2F));
-        FOOD_RAW_PIZZA_CHEESE = addItem(251, "food.raw.pizza.cheese").addStats(new FoodStats(2, 0.2F));
-        FOOD_RAW_PIZZA_MEAT = addItem(252, "food.raw.pizza.meat").addStats(new FoodStats(2, 0.2F));
-
-        FOOD_BAKED_PIZZA_VEGGIE = addItem(260, "food.baked.pizza.veggie").addStats(new FoodStats(3, 0.3F));
-        FOOD_BAKED_PIZZA_CHEESE = addItem(261, "food.baked.pizza.cheese").addStats(new FoodStats(4, 0.4F));
-        FOOD_BAKED_PIZZA_MEAT = addItem(262, "food.baked.pizza.meat").addStats(new FoodStats(5, 0.5F));
 
         DYE_INDIGO = addItem(410, "dye.indigo").addOreDict("dyeBlue");
         for (byte i = 0; i < 16; i = (byte) (i + 1)) {
@@ -184,26 +115,6 @@ public class MetaItem2 extends MaterialMetaItem {
         CROP_DROP_GRAPES = addItem(554, "crop.drop.grapes").addOreDict("cropGrape").addStats(new FoodStats(2, 0.3F));
         CROP_DROP_ONION = addItem(555, "crop.drop.onion").addOreDict("cropOnion").addStats(new FoodStats(2, 0.2F));
         CROP_DROP_CUCUMBER = addItem(556, "crop.drop.cucumber").addOreDict("cropCucumber").addStats(new FoodStats(1, 0.2F));
-
-        FOOD_CHEESE = addItem(558, "food.cheese").addOreDict("foodCheese").addStats(new FoodStats(3, 0.6F));
-        FOOD_DOUGH = addItem(559, "food.dough").addOreDict("foodDough").addStats(new FoodStats(1, 0.1F));
-        FOOD_FLAT_DOUGH = addItem(560, "food.flat.dough").addStats(new FoodStats(1, 0.1F));
-        FOOD_RAW_BREAD = addItem(561, "food.raw.bread").addStats(new FoodStats(1, 0.2F));
-        FOOD_RAW_BUN = addItem(562, "food.raw.bun").addStats(new FoodStats(1, 0.1F));
-        FOOD_RAW_BAGUETTE = addItem(563, "food.raw.baguette").addStats(new FoodStats(1, 0.3F));
-        FOOD_BAKED_BUN = addItem(564, "food.baked.bun").addStats(new FoodStats(3, 0.5F));
-        FOOD_BAKED_BAGUETTE = addItem(565, "food.baked.baguette").addStats(new FoodStats(8, 0.5F));
-        FOOD_SLICED_BREAD = addItem(566, "food.sliced.bread").addStats(new FoodStats(2, 0.3F));
-        FOOD_SLICED_BUN = addItem(567, "food.sliced.bun").addStats(new FoodStats(1, 0.3F));
-        FOOD_SLICED_BAGUETTE = addItem(568, "food.sliced.baguette").addStats(new FoodStats(4, 0.3F));
-        FOOD_RAW_CAKE = addItem(569, "food.raw.cake").addStats(new FoodStats(2, 0.2F));
-        FOOD_BAKED_CAKE = addItem(570, "food.baked.cake").addStats(new FoodStats(3, 0.3F));
-        FOOD_SLICED_LEMON = addItem(571, "food.sliced.lemon").addStats(new FoodStats(1, 0.075F));
-        FOOD_SLICED_TOMATO = addItem(572, "food.sliced.tomato").addStats(new FoodStats(1, 0.05F));
-        FOOD_SLICED_ONION = addItem(573, "food.sliced.onion").addStats(new FoodStats(1, 0.05F));
-        FOOD_SLICED_CUCUMBER = addItem(574, "food.sliced.cucumber").addStats(new FoodStats(1, 0.05F));
-
-        FOOD_SLICED_CHEESE = addItem(576, "food.sliced.cheese").addStats(new FoodStats(1, 0.1F));
     }
 
     public void registerRecipes() {
@@ -316,13 +227,6 @@ public class MetaItem2 extends MaterialMetaItem {
             .buildAndRegister();
 
         // Misc
-        RecipeMap.MACERATOR_RECIPES.recipeBuilder()
-            .inputs(FOOD_SLICED_CHEESE.getStackForm())
-            .outputs(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Cheese, 1))
-            .duration(400)
-            .EUt(2)
-            .buildAndRegister();
-
         RecipeMap.MACERATOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Items.DYE, 1, EnumDyeColor.BROWN.getDyeDamage()))
             .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Cocoa, 1))

@@ -6,6 +6,7 @@ import gregtech.api.enchants.EnchantmentData;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.IToolStats;
 import gregtech.api.items.toolitem.ToolMetaItem;
+import gregtech.api.unification.material.type.SolidMaterial;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
@@ -112,6 +113,11 @@ public abstract class ToolBase implements IToolStats {
     }
 
     @Override
+    public boolean hasMaterialHandle() {
+        return false;
+    }
+
+    @Override
     public void onToolCrafted(ItemStack stack, EntityPlayer player) {
 //        player.addStat(AchievementList.OPEN_INVENTORY);
 //        player.addStat(AchievementList.MINE_WOOD);
@@ -139,7 +145,11 @@ public abstract class ToolBase implements IToolStats {
 
     @Override
     public int getColor(boolean isToolHead, ItemStack stack) {
-        return isToolHead ? ToolMetaItem.getPrimaryMaterial(stack).materialRGB : ToolMetaItem.getHandleMaterial(stack).materialRGB;
+        SolidMaterial primaryMaterial = ToolMetaItem.getPrimaryMaterial(stack);
+        SolidMaterial handleMaterial = ToolMetaItem.getHandleMaterial(stack);
+        return isToolHead
+            ? primaryMaterial != null ? primaryMaterial.materialRGB : 0xFFFFFF
+            : handleMaterial != null ? handleMaterial.materialRGB : 0xFFFFFF;
     }
 
     @Override

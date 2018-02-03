@@ -70,7 +70,7 @@ import com.google.common.collect.ImmutableList;
  */
 @SuppressWarnings("deprecation")
 public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item {
-    private TShortObjectMap<T> metaItems = new TShortObjectHashMap<>();
+    protected TShortObjectMap<T> metaItems = new TShortObjectHashMap<>();
     private Map<String, T> names = new HashMap<String, T>();
 
     protected final short metaItemOffset;
@@ -86,6 +86,9 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     public void registerColor() {
         Minecraft.getMinecraft().getItemColors().registerItemColorHandler(this::getColorForItemStack, this);
     }
+
+    @SideOnly(Side.CLIENT)
+    public void registerModels() {}
 
     @SideOnly(Side.CLIENT)
     protected int getColorForItemStack(ItemStack stack, int tintIndex) {

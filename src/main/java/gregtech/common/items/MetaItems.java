@@ -315,86 +315,16 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem GELLED_TOLUENE;
 
     public static MetaItem<?>.MetaValueItem BOTTLE_PURPLE_DRINK;
-    public static MetaItem<?>.MetaValueItem BOTTLE_GRAPE_JUICE;
-    public static MetaItem<?>.MetaValueItem BOTTLE_WINE;
-    public static MetaItem<?>.MetaValueItem BOTTLE_VINEGAR;
-    public static MetaItem<?>.MetaValueItem BOTTLE_POTATO_JUICE;
-    public static MetaItem<?>.MetaValueItem BOTTLE_VODKA;
-    public static MetaItem<?>.MetaValueItem BOTTLE_LENINADE;
-    public static MetaItem<?>.MetaValueItem BOTTLE_MINERAL_WATER;
-    public static MetaItem<?>.MetaValueItem BOTTLE_SALTY_WATER;
-    public static MetaItem<?>.MetaValueItem BOTTLE_REED_WATER;
-    public static MetaItem<?>.MetaValueItem BOTTLE_RUM;
-    public static MetaItem<?>.MetaValueItem BOTTLE_PIRATE_BREW;
-    public static MetaItem<?>.MetaValueItem BOTTLE_HOPS_JUICE;
-    public static MetaItem<?>.MetaValueItem BOTTLE_DARK_BEER;
-    public static MetaItem<?>.MetaValueItem BOTTLE_DRAGON_BLOOD;
-    public static MetaItem<?>.MetaValueItem BOTTLE_WHEATY_JUICE;
-    public static MetaItem<?>.MetaValueItem BOTTLE_SCOTCH;
     public static MetaItem<?>.MetaValueItem BOTTLE_GLEN_MCKENNER;
-    public static MetaItem<?>.MetaValueItem BOTTLE_WHEATY_HOPS_JUICE;
-    public static MetaItem<?>.MetaValueItem BOTTLE_BEER;
-    public static MetaItem<?>.MetaValueItem BOTTLE_CHILLY_SAUCE;
-    public static MetaItem<?>.MetaValueItem BOTTLE_HOT_SAUCE;
     public static MetaItem<?>.MetaValueItem BOTTLE_DIABOLO_SAUCE;
     public static MetaItem<?>.MetaValueItem BOTTLE_DIABLO_SAUCE;
     public static MetaItem<?>.MetaValueItem BOTTLE_SNITCHES_GLITCH_SAUCE;
-    public static MetaItem<?>.MetaValueItem BOTTLE_APPLE_JUICE;
-    public static MetaItem<?>.MetaValueItem BOTTLE_CIDER;
-    public static MetaItem<?>.MetaValueItem BOTTLE_GOLDEN_APPLE_JUICE;
-    public static MetaItem<?>.MetaValueItem BOTTLE_GOLDEN_CIDER;
-    public static MetaItem<?>.MetaValueItem BOTTLE_IDUNS_APPLE_JUICE;
     public static MetaItem<?>.MetaValueItem BOTTLE_NOTCHES_BREW;
-    public static MetaItem<?>.MetaValueItem BOTTLE_LEMON_JUICE;
-    public static MetaItem<?>.MetaValueItem BOTTLE_LIMONCELLO;
-    public static MetaItem<?>.MetaValueItem BOTTLE_LEMONADE;
-    public static MetaItem<?>.MetaValueItem BOTTLE_ALCOPOPS;
     public static MetaItem<?>.MetaValueItem BOTTLE_CAVE_JOHNSONS_GRENADE_JUICE;
-    public static MetaItem<?>.MetaValueItem BOTTLE_MILK;
     public static MetaItem<?>.MetaValueItem BOTTLE_HOLY_WATER;
 
-    public static MetaItem<?>.MetaValueItem FOOD_POTATO_ON_STICK;
-    public static MetaItem<?>.MetaValueItem FOOD_POTATO_ON_STICK_ROASTED;
-    public static MetaItem<?>.MetaValueItem FOOD_RAW_POTATO;
-    public static MetaItem<?>.MetaValueItem FOOD_RAW_FRIES;
-    public static MetaItem<?>.MetaValueItem FOOD_FRIES;
-    public static MetaItem<?>.MetaValueItem FOOD_PACKAGED_FRIES;
-    public static MetaItem<?>.MetaValueItem FOOD_RAW_POTATOCHIPS;
-    public static MetaItem<?>.MetaValueItem FOOD_POTATOCHIPS;
-    public static MetaItem<?>.MetaValueItem FOOD_CHILICHIPS;
-    public static MetaItem<?>.MetaValueItem FOOD_PACKAGED_POTATOCHIPS;
-    public static MetaItem<?>.MetaValueItem FOOD_PACKAGED_CHILICHIPS;
     public static MetaItem<?>.MetaValueItem FOOD_CHUM;
     public static MetaItem<?>.MetaValueItem FOOD_CHUM_ON_STICK;
-    public static MetaItem<?>.MetaValueItem FOOD_DOUGH_SUGAR;
-    public static MetaItem<?>.MetaValueItem FOOD_DOUGH_CHOCOLATE;
-    public static MetaItem<?>.MetaValueItem FOOD_RAW_COOKIE;
-
-    public static MetaItem<?>.MetaValueItem FOOD_SLICED_BUNS;
-    public static MetaItem<?>.MetaValueItem FOOD_BURGER_VEGGIE;
-    public static MetaItem<?>.MetaValueItem FOOD_BURGER_CHEESE;
-    public static MetaItem<?>.MetaValueItem FOOD_BURGER_MEAT;
-    public static MetaItem<?>.MetaValueItem FOOD_BURGER_CHUM;
-
-    public static MetaItem<?>.MetaValueItem FOOD_SLICED_BREADS;
-    public static MetaItem<?>.MetaValueItem FOOD_SANDWICH_VEGGIE;
-    public static MetaItem<?>.MetaValueItem FOOD_SANDWICH_CHEESE;
-    public static MetaItem<?>.MetaValueItem FOOD_SANDWICH_BACON;
-    public static MetaItem<?>.MetaValueItem FOOD_SANDWICH_STEAK;
-
-    public static MetaItem<?>.MetaValueItem FOOD_SLICED_BAGUETTES;
-    public static MetaItem<?>.MetaValueItem FOOD_LARGE_SANDWICH_VEGGIE;
-    public static MetaItem<?>.MetaValueItem FOOD_LARGE_SANDWICH_CHEESE;
-    public static MetaItem<?>.MetaValueItem FOOD_LARGE_SANDWICH_BACON;
-    public static MetaItem<?>.MetaValueItem FOOD_LARGE_SANDWICH_STEAK;
-
-    public static MetaItem<?>.MetaValueItem FOOD_RAW_PIZZA_VEGGIE;
-    public static MetaItem<?>.MetaValueItem FOOD_RAW_PIZZA_CHEESE;
-    public static MetaItem<?>.MetaValueItem FOOD_RAW_PIZZA_MEAT;
-
-    public static MetaItem<?>.MetaValueItem FOOD_BAKED_PIZZA_VEGGIE;
-    public static MetaItem<?>.MetaValueItem FOOD_BAKED_PIZZA_CHEESE;
-    public static MetaItem<?>.MetaValueItem FOOD_BAKED_PIZZA_MEAT;
 
     public static MetaItem<?>.MetaValueItem DYE_INDIGO;
 
@@ -445,26 +375,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem CROP_DROP_GRAPES;
     public static MetaItem<?>.MetaValueItem CROP_DROP_ONION;
     public static MetaItem<?>.MetaValueItem CROP_DROP_CUCUMBER;
-
-    public static MetaItem<?>.MetaValueItem FOOD_CHEESE;
-    public static MetaItem<?>.MetaValueItem FOOD_DOUGH;
-    public static MetaItem<?>.MetaValueItem FOOD_FLAT_DOUGH;
-    public static MetaItem<?>.MetaValueItem FOOD_RAW_BREAD;
-    public static MetaItem<?>.MetaValueItem FOOD_RAW_BUN;
-    public static MetaItem<?>.MetaValueItem FOOD_RAW_BAGUETTE;
-    public static MetaItem<?>.MetaValueItem FOOD_BAKED_BUN;
-    public static MetaItem<?>.MetaValueItem FOOD_BAKED_BAGUETTE;
-    public static MetaItem<?>.MetaValueItem FOOD_SLICED_BREAD;
-    public static MetaItem<?>.MetaValueItem FOOD_SLICED_BUN;
-    public static MetaItem<?>.MetaValueItem FOOD_SLICED_BAGUETTE;
-    public static MetaItem<?>.MetaValueItem FOOD_RAW_CAKE;
-    public static MetaItem<?>.MetaValueItem FOOD_BAKED_CAKE;
-    public static MetaItem<?>.MetaValueItem FOOD_SLICED_LEMON;
-    public static MetaItem<?>.MetaValueItem FOOD_SLICED_TOMATO;
-    public static MetaItem<?>.MetaValueItem FOOD_SLICED_ONION;
-    public static MetaItem<?>.MetaValueItem FOOD_SLICED_CUCUMBER;
-
-    public static MetaItem<?>.MetaValueItem FOOD_SLICED_CHEESE;
 
     public static MetaItem<?>.MetaValueItem[] DYE_ONLY_ITEMS = new MetaItem.MetaValueItem[16];
 
@@ -548,9 +458,7 @@ public final class MetaItems {
     @SideOnly(Side.CLIENT)
     public static void registerModels() {
         for (MetaItem<?> item : ITEMS) {
-            if (item instanceof MaterialMetaItem) {
-                ((MaterialMetaItem) item).registerModels();
-            }
+            item.registerModels();
         }
     }
 

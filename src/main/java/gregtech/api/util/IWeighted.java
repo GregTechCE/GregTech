@@ -4,7 +4,7 @@ public interface IWeighted {
 
     int getWeight();
 
-    public static class Wrapper<T> implements IWeighted {
+    class Wrapper<T> implements IWeighted {
         private final T object;
         private final int weight;
 

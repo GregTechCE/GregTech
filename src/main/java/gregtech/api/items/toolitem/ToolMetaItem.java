@@ -5,17 +5,19 @@ import com.google.common.collect.Multimap;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.enchants.EnchantmentData;
-import gregtech.api.items.IBoxable;
 import gregtech.api.items.IDamagableItem;
 import gregtech.api.items.ToolDictNames;
 import gregtech.api.items.metaitem.MetaItem;
-import gregtech.api.items.metaitem.stats.IElectricStats;
 import gregtech.api.items.metaitem.stats.IMetaItemStats;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.SolidMaterial;
+import gregtech.api.unification.stack.SimpleItemStack;
+import gregtech.api.util.GTResourceLocation;
 import gregtech.api.util.GTUtility;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -30,12 +32,16 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.Validate;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 
 /**
@@ -60,6 +66,42 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     @SuppressWarnings("unchecked")
     protected T constructMetaValueItem(short metaValue, String unlocalizedName, String... nameParameters) {
         return (T) new MetaToolValueItem(metaValue, unlocalizedName, nameParameters);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerModels() {
+        for(T metaItem : this.metaItems.valueCollection()) {
+            String name = metaItem.unlocalizedName;
+            ModelBakery.registerItemVariants(this, new GTResourceLocation("tools/" + name.substring(name.indexOf(".") + 1)));
+        }
+
+        ModelLoader.setCustomMeshDefinition(this, stack -> {
+            if (stack.getMetadata() < this.metaItems.size()) {
+                String name = getItem(stack).unlocalizedName;
+                return new ModelResourceLocation(new GTResourceLocation("tools/" + name.substring(name.indexOf(".") + 1)), "inventory");
+            }
+            return new ModelResourceLocation("builtin/missing", "missing");
+        });
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected int getColorForItemStack(ItemStack stack, int tintIndex) {
+        SolidMaterial primaryMaterial = getPrimaryMaterial(stack);
+        SolidMaterial handleMaterial = getHandleMaterial(stack);
+
+        switch (tintIndex) {
+            case 0:
+                return primaryMaterial != null ? primaryMaterial.materialRGB : 0xFFFFFF;
+            case 1:
+                return 0xFFFFFF;
+            case 2:
+                return handleMaterial != null ? handleMaterial.materialRGB : 0xFFFFFF;
+            case 3:
+                return 0xFFFFFF;
+        }
+        return 0xFFFFFF;
     }
 
     @Override
@@ -246,9 +288,14 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     private int getInternalDamage(ItemStack itemStack) {
-        if(!itemStack.hasTagCompound() || !itemStack.getTagCompound().hasKey("GT.ToolDamage", Constants.NBT.TAG_INT))
+        if(!itemStack.hasTagCompound() || !itemStack.getTagCompound().hasKey("GT.ToolStats", Constants.NBT.TAG_COMPOUND)) {
             return 0;
-        return itemStack.getTagCompound().getInteger("GT.ToolDamage");
+        }
+        NBTTagCompound statsTag = itemStack.getTagCompound().getCompoundTag("GT.ToolStats");
+        if (!statsTag.hasKey("GT.ToolDamage", Constants.NBT.TAG_INT)) {
+            return 0;
+        }
+        return statsTag.getInteger("GT.ToolDamage");
     }
 
     private void setInternalDamage(ItemStack itemStack, int damage) {
@@ -256,14 +303,22 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             itemStack.setTagCompound(new NBTTagCompound());
         }
         NBTTagCompound tagCompound = itemStack.getTagCompound();
-        tagCompound.setInteger("GT.ToolDamage", damage);
+        if (!tagCompound.hasKey("GT.ToolStats", Constants.NBT.TAG_COMPOUND)) {
+            tagCompound.setTag("GT.ToolStats", new NBTTagCompound());
+        }
+        NBTTagCompound statsTag = itemStack.getTagCompound().getCompoundTag("GT.ToolStats");
+        statsTag.setInteger("GT.ToolDamage", damage);
     }
 
     @Nullable
     public static SolidMaterial getPrimaryMaterial(ItemStack itemStack) {
-        if(!itemStack.hasTagCompound() || !itemStack.getTagCompound().hasKey("GT.ToolPrimaryMaterial", Constants.NBT.TAG_STRING))
+        if(!itemStack.hasTagCompound() || !itemStack.getTagCompound().hasKey("GT.ToolStats", Constants.NBT.TAG_COMPOUND)) {
             return null;
-        Material material = Material.MATERIAL_REGISTRY.getObject(itemStack.getTagCompound().getString("GT.ToolPrimaryMaterial"));
+        }
+        NBTTagCompound compoundTag = itemStack.getTagCompound().getCompoundTag("GT.ToolStats");
+        if(!compoundTag.hasKey("GT.ToolPrimaryMaterial", Constants.NBT.TAG_STRING))
+            return null;
+        Material material = Material.MATERIAL_REGISTRY.getObject(compoundTag.getString("GT.ToolPrimaryMaterial"));
         if(material instanceof SolidMaterial) {
             return (SolidMaterial) material;
         }
@@ -272,9 +327,13 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
     @Nullable
     public static SolidMaterial getHandleMaterial(ItemStack itemStack) {
-        if(!itemStack.hasTagCompound() || !itemStack.getTagCompound().hasKey("GT.ToolHandleMaterial", Constants.NBT.TAG_STRING))
+        if(!itemStack.hasTagCompound() || !itemStack.getTagCompound().hasKey("GT.ToolStats", Constants.NBT.TAG_COMPOUND)) {
             return null;
-        Material material = Material.MATERIAL_REGISTRY.getObject(itemStack.getTagCompound().getString("GT.ToolHandleMaterial"));
+        }
+        NBTTagCompound compoundTag = itemStack.getTagCompound().getCompoundTag("GT.ToolStats");
+        if(!compoundTag.hasKey("GT.ToolHandleMaterial", Constants.NBT.TAG_STRING))
+            return null;
+        Material material = Material.MATERIAL_REGISTRY.getObject(compoundTag.getString("GT.ToolHandleMaterial"));
         if(material instanceof SolidMaterial) {
             return (SolidMaterial) material;
         }
@@ -324,6 +383,12 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             return this;
         }
 
+        public MetaToolValueItem addToList(Collection<SimpleItemStack> toolList) {
+            Validate.notNull(toolList, "Cannot add toll null list.");
+            toolList.add(new SimpleItemStack(this.getStackForm(1)));
+            return this;
+        }
+
         public IToolStats getToolStats() {
             if (toolStats == null) {
                 throw new IllegalStateException("Someone forgot to assign toolStats to MetaToolValueItem.");
@@ -352,7 +417,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
                         toolNBT.setString("GT.ToolPrimaryMaterial", primaryMaterial.toString());
                         toolNBT.setLong("GT.MaxDamage", 100L * (long) ((((SolidMaterial) primaryMaterial).toolDurability) * metaToolValueItem.toolStats.getMaxDurabilityMultiplier(stack)));
                     }
-                    if (handleMaterial != null)
+                    if (this.getToolStats().hasMaterialHandle() && handleMaterial != null && handleMaterial instanceof SolidMaterial)
                         toolNBT.setString("GT.ToolHandleMaterial", handleMaterial.toString());
 
                     NBTTagCompound nbtTag = new NBTTagCompound();

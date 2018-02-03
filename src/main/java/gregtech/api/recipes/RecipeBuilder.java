@@ -16,6 +16,7 @@ import gregtech.common.items.MetaItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -125,11 +126,25 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
         return getThis();
     }
 
-    public R inputs(CountableIngredient... inputs) {
-        return inputsIngredients(Arrays.asList(inputs));
+    public R input(String oredict, int count) {
+	    return inputs(CountableIngredient.from(oredict, count));
     }
 
-    public R inputsIngredients(Collection<CountableIngredient> ingredients) {
+    public R inputs(CountableIngredient... inputs) {
+	    List<CountableIngredient> ingredients = new ArrayList<>();
+        for (CountableIngredient input : inputs) {
+            if (input.getCount() < 0){
+                GTLog.logger.error("Count cannot be less than 0. Actual: {}.", input.getCount());
+                GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+            } else {
+                ingredients.add(input);
+            }
+        }
+
+        return inputsIngredients(ingredients);
+    }
+
+    protected R inputsIngredients(Collection<CountableIngredient> ingredients) {
 	    this.inputs.addAll(ingredients);
         return getThis();
     }
@@ -482,7 +497,7 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 
 		public NotConsumableInputRecipeBuilder notConsumable(Item item) {
             if (item == null) {
-                GTLog.logger.error("Not consumable input cannot be null.", inputs);
+                GTLog.logger.error("Not consumable input cannot be null.");
                 GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
                 recipeStatus = EnumValidationResult.INVALID;
             } else {
@@ -493,13 +508,24 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 
 		public NotConsumableInputRecipeBuilder notConsumable(ItemStack itemStack) {
             if (itemStack == null) {
-                GTLog.logger.error("Not consumable input cannot be null.", inputs);
+                GTLog.logger.error("Not consumable input cannot be null.");
                 GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
                 recipeStatus = EnumValidationResult.INVALID;
             } else {
                 ItemStack stack = itemStack.copy();
                 stack.setCount(0);
                 inputs.add(CountableIngredient.from(stack));
+            }
+			return this;
+		}
+
+		public NotConsumableInputRecipeBuilder notConsumable(Ingredient ingredient) {
+            if (ingredient == null) {
+                GTLog.logger.error("Not consumable input cannot be null.");
+                GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+                recipeStatus = EnumValidationResult.INVALID;
+            } else {
+                inputs.add(new CountableIngredient(ingredient, 0));
             }
 			return this;
 		}

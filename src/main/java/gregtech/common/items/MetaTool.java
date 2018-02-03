@@ -1,5 +1,6 @@
 package gregtech.common.items;
 
+import gregtech.api.GregTechAPI;
 import gregtech.api.items.ToolDictNames;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.recipes.ModHandler;
@@ -10,9 +11,7 @@ import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.common.tools.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.event.RegistryEvent;
 
 import static gregtech.common.items.MetaItems.*;
 
@@ -31,17 +30,17 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
         AXE = addItem(3, "tool.axe").setToolStats(new ToolAxe()).addOreDict(ToolDictNames.craftingToolAxe);
         HOE = addItem(4, "tool.hoe").setToolStats(new ToolHoe()).addOreDict(ToolDictNames.craftingToolHoe);
         SAW = addItem(5, "tool.saw").setToolStats(new ToolSaw()).addOreDict(ToolDictNames.craftingToolSaw);
-        HARDHAMMER = addItem(6, "tool.hardhammer").setToolStats(new ToolHardHammer()).addOreDict(ToolDictNames.craftingToolHardHammer); // GregTechAPI.sHardHammerList
-        SOFTHAMMER = addItem(7, "tool.softhammer").setToolStats(new ToolSoftHammer()).addOreDict(ToolDictNames.craftingToolSoftHammer); // GregTechAPI.sSoftHammerList
-        WRENCH = addItem(8, "tool.wrench").setToolStats(new ToolWrench()).addOreDict(ToolDictNames.craftingToolWrench); // GregTechAPI.sWrenchList
+        HARDHAMMER = addItem(6, "tool.hardhammer").setToolStats(new ToolHardHammer()).addOreDict(ToolDictNames.craftingToolHardHammer).addToList(GregTechAPI.hardHammerList);
+        SOFTHAMMER = addItem(7, "tool.softhammer").setToolStats(new ToolSoftHammer()).addOreDict(ToolDictNames.craftingToolSoftHammer).addToList(GregTechAPI.softHammerList);
+        WRENCH = addItem(8, "tool.wrench").setToolStats(new ToolWrench()).addOreDict(ToolDictNames.craftingToolWrench).addToList(GregTechAPI.wrenchList);
         FILE = addItem(9, "tool.file").setToolStats(new ToolFile()).addOreDict(ToolDictNames.craftingToolFile);
-        CROWBAR = addItem(10, "tool.crowbar").setToolStats(new ToolCrowbar()).addOreDict(ToolDictNames.craftingToolCrowbar); // GregTechAPI.sCrowbarList
-        SCREWDRIVER = addItem(11, "tool.screwdriver").setToolStats(new ToolScrewdriver()).addOreDict(ToolDictNames.craftingToolScrewdriver); // GregTechAPI.sScrewdriverList
+        CROWBAR = addItem(10, "tool.crowbar").setToolStats(new ToolCrowbar()).addOreDict(ToolDictNames.craftingToolCrowbar).addToList(GregTechAPI.crowbarList);
+        SCREWDRIVER = addItem(11, "tool.screwdriver").setToolStats(new ToolScrewdriver()).addOreDict(ToolDictNames.craftingToolScrewdriver).addToList(GregTechAPI.screwdriverList);
         MORTAR = addItem(12, "tool.mortar").setToolStats(new ToolMortar()).addOreDict(ToolDictNames.craftingToolMortar);
         WIRECUTTER = addItem(13, "tool.wirecutter").setToolStats(new ToolWireCutter()).addOreDict(ToolDictNames.craftingToolWireCutter);
         SCOOP = addItem(14, "tool.scoop").setToolStats(new ToolScoop()).addOreDict(ToolDictNames.craftingToolScoop);
         BRANCHCUTTER = addItem(15, "tool.branchcutter").setToolStats(new ToolBranchCutter()).addOreDict(ToolDictNames.craftingToolBranchCutter);
-        UNIVERSALSPADE = addItem(16, "tool.universalspade").setToolStats(new ToolUniversalSpade()).addOreDict(ToolDictNames.craftingToolBlade, ToolDictNames.craftingToolShovel, ToolDictNames.craftingToolCrowbar, ToolDictNames.craftingToolSaw); // GregTechAPI.sCrowbarList
+        UNIVERSALSPADE = addItem(16, "tool.universalspade").setToolStats(new ToolUniversalSpade()).addOreDict(ToolDictNames.craftingToolBlade, ToolDictNames.craftingToolShovel, ToolDictNames.craftingToolCrowbar, ToolDictNames.craftingToolSaw).addToList(GregTechAPI.crowbarList);
         KNIFE = addItem(17, "tool.knife").setToolStats(new ToolKnife()).addOreDict(ToolDictNames.craftingToolBlade, ToolDictNames.craftingToolKnife);
         BUTCHERYKNIFE = addItem(18, "tool.butcheryknife").setToolStats(new ToolButcheryKnife()).addOreDict(ToolDictNames.craftingToolBlade);
 
@@ -56,13 +55,13 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
         CHAINSAW_LV = addItem(26, "tool.chainsaw.lv").setToolStats(new ToolChainsawLV()).addOreDict(ToolDictNames.craftingToolSaw);
         CHAINSAW_MV = addItem(27, "tool.chainsaw.mv").setToolStats(new ToolChainsawMV()).addOreDict(ToolDictNames.craftingToolSaw);
         CHAINSAW_HV = addItem(28, "tool.chainsaw.hv").setToolStats(new ToolChainsawHV()).addOreDict(ToolDictNames.craftingToolSaw);
-        WRENCH_LV = addItem(29, "tool.wrench.lv").setToolStats(new ToolWrenchLV()).addOreDict(ToolDictNames.craftingToolWrench); // GregTechAPI.sWrenchList
-        WRENCH_MV = addItem(30, "tool.wrench.mv").setToolStats(new ToolWrenchMV()).addOreDict(ToolDictNames.craftingToolWrench); // GregTechAPI.sWrenchList
-        WRENCH_HV = addItem(31, "tool.wrench.hv").setToolStats(new ToolWrenchHV()).addOreDict(ToolDictNames.craftingToolWrench); // GregTechAPI.sWrenchList
+        WRENCH_LV = addItem(29, "tool.wrench.lv").setToolStats(new ToolWrenchLV()).addOreDict(ToolDictNames.craftingToolWrench).addToList(GregTechAPI.wrenchList);
+        WRENCH_MV = addItem(30, "tool.wrench.mv").setToolStats(new ToolWrenchMV()).addOreDict(ToolDictNames.craftingToolWrench).addToList(GregTechAPI.wrenchList);
+        WRENCH_HV = addItem(31, "tool.wrench.hv").setToolStats(new ToolWrenchHV()).addOreDict(ToolDictNames.craftingToolWrench).addToList(GregTechAPI.wrenchList);
         JACKHAMMER = addItem(32, "tool.jackhammer").setToolStats(new ToolJackHammer()).addOreDict(ToolDictNames.craftingToolJackHammer);
         BUZZSAW = addItem(33, "tool.buzzsaw").setToolStats(new ToolBuzzSaw()).addOreDict(ToolDictNames.craftingToolSaw);
-        SCREWDRIVER_LV = addItem(34, "tool.screwdriver.lv").setToolStats(new ToolScrewdriverLV()).addOreDict(ToolDictNames.craftingToolScrewdriver); // GregTechAPI.sScrewdriverList
-        SOLDERING_IRON_LV = addItem(35, "tool.soldering.iron.lv").setToolStats(new ToolSolderingIron()).addOreDict(ToolDictNames.craftingToolSolderingIron); // GregTechAPI.sSolderingToolList
+        SCREWDRIVER_LV = addItem(34, "tool.screwdriver.lv").setToolStats(new ToolScrewdriverLV()).addOreDict(ToolDictNames.craftingToolScrewdriver).addToList(GregTechAPI.screwdriverList);
+        SOLDERING_IRON_LV = addItem(35, "tool.soldering_iron.lv").setToolStats(new ToolSolderingIron()).addOreDict(ToolDictNames.craftingToolSolderingIron).addToList(GregTechAPI.solderingToolList);
 
         TURBINE_SMALL = addItem(36, "tool.turbine.small").setToolStats(new ToolTurbineSmall());
         TURBINE_NORMAL = addItem(37, "tool.turbine.normal").setToolStats(new ToolTurbineNormal());

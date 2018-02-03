@@ -18,9 +18,9 @@ public class ToolWrench extends ToolBase {
 
     @Override
     public float getNormalDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase attacker) {
-        String tName = entity.getClass().getName();
-        tName = tName.substring(tName.lastIndexOf('.') + 1);
-        return EFFECTIVE_LIST.contains(tName) || tName.contains("Golem") ? 2.0F : 1.0F;
+        String name = entity.getClass().getName();
+        name = name.substring(name.lastIndexOf('.') + 1);
+        return EFFECTIVE_LIST.contains(name) || name.contains("Golem") ? 2.0F : 1.0F;
     }
 
     @Override

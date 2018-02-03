@@ -49,4 +49,9 @@ public class ToolSword extends ToolBase {
         super.onToolCrafted(stack, player);
 //        player.addStat(AchievementList.BUILD_SWORD);
     }
+
+    @Override
+    public boolean hasMaterialHandle() {
+        return true;
+    }
 }
