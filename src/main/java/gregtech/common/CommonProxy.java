@@ -1,20 +1,5 @@
 package gregtech.common;
 
-import static gregtech.common.blocks.MetaBlocks.BOILER_CASING;
-import static gregtech.common.blocks.MetaBlocks.CABLE;
-import static gregtech.common.blocks.MetaBlocks.COMPRESSED;
-import static gregtech.common.blocks.MetaBlocks.CONCRETE;
-import static gregtech.common.blocks.MetaBlocks.GRANITE;
-import static gregtech.common.blocks.MetaBlocks.MACHINE;
-import static gregtech.common.blocks.MetaBlocks.MACHINE_CASING;
-import static gregtech.common.blocks.MetaBlocks.METAL_CASING;
-import static gregtech.common.blocks.MetaBlocks.MINERAL;
-import static gregtech.common.blocks.MetaBlocks.MUTLIBLOCK_CASING;
-import static gregtech.common.blocks.MetaBlocks.ORES;
-import static gregtech.common.blocks.MetaBlocks.TURBINE_CASING;
-import static gregtech.common.blocks.MetaBlocks.WARNING_SIGN;
-import static gregtech.common.blocks.MetaBlocks.WIRE_COIL;
-
 import java.util.function.Supplier;
 
 import gregtech.api.enchants.EnchantmentEnderDamage;
@@ -43,6 +28,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import static gregtech.common.blocks.MetaBlocks.*;
+
 @Mod.EventBusSubscriber
 public class CommonProxy {
 
@@ -51,7 +38,10 @@ public class CommonProxy {
         GTLog.logger.info("Registering Blocks...");
         IForgeRegistry<Block> registry = event.getRegistry();
         registry.register(MACHINE);
+        registry.register(STEAM_MACHINE);
+
         registry.register(CABLE);
+
         registry.register(BOILER_CASING);
         registry.register(METAL_CASING);
         registry.register(TURBINE_CASING);
@@ -78,6 +68,8 @@ public class CommonProxy {
         }
 
         registry.register(createItemBlock(MACHINE, () -> new MachineItemBlock(MACHINE)));
+        registry.register(createItemBlock(STEAM_MACHINE, () -> new MachineItemBlock(STEAM_MACHINE)));
+
         registry.register(createItemBlock(CABLE, () -> new ItemBlock(CABLE)));
 
         registry.register(createItemBlock(BOILER_CASING, () -> new VariantItemBlock<>(BOILER_CASING)));

@@ -67,6 +67,13 @@ public class GregtechTileEntity extends TickableTileEntityBase implements IGregT
     }
 
     @Override
+    public void onLoad() {
+        if(this.metaTileEntity != null) {
+            this.metaTileEntity.onFirstTick();
+        }
+    }
+
+    @Override
     public void receiveCustomData(int discriminator, PacketBuffer buffer) {
         if(this.metaTileEntity != null) {
             this.metaTileEntity.receiveCustomData(discriminator, buffer);

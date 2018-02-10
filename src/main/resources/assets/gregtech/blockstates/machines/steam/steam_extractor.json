@@ -8,26 +8,36 @@
       "bottom": "gregtech:blocks/machines/machine_bronze_all",
       "front": "gregtech:blocks/machines/machine_bronze_all",
       "side": "gregtech:blocks/machines/machine_bronze_all",
-      "overlay_front": "gregtech:blocks/machines/compressor/overlay_front",
+      "overlay_front": "gregtech:blocks/machines/extractor/overlay_front",
       "overlay_bottom": "gregtech:blocks/void",
-      "overlay_top": "gregtech:blocks/machines/compressor/overlay_top",
-      "overlay_side": "gregtech:blocks/machines/compressor/overlay_side"
+      "overlay_top": "gregtech:blocks/machines/extractor/overlay_top",
+      "overlay_side": "gregtech:blocks/machines/extractor/overlay_side"
     },
     "transform": "forge:default-block"
   },
   "variants": {
     "facing": {
-      "north": { },
+      "up": {},
+      "down": {},
+      "north": {},
       "south": { "y": 180 },
       "west": { "y": 270 },
       "east": { "y": 90 }
     },
+    "venting_face": {
+      "up": {},
+      "down": {},
+      "north": {},
+      "south": {},
+      "west": {},
+      "east": {}
+    },
     "active": {
       "true": {
         "textures": {
-          "overlay_front": "gregtech:blocks/machines/compressor/overlay_front_active",
-          "overlay_top": "gregtech:blocks/machines/compressor/overlay_top_active",
-          "overlay_side": "gregtech:blocks/machines/compressor/overlay_side_active"
+          "overlay_front": "gregtech:blocks/machines/extractor/overlay_front_active",
+          "overlay_top": "gregtech:blocks/machines/extractor/overlay_top_active",
+          "overlay_side": "gregtech:blocks/machines/extractor/overlay_side_active"
         }
       },
       "false": {}

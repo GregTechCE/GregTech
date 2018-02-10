@@ -17,6 +17,8 @@
   },
   "variants": {
     "facing": {
+      "up": {},
+      "down": {},
       "north": {},
       "south": { "y": 180 },
       "west": { "y": 270 },

@@ -61,26 +61,7 @@ public class FoodUseManager implements IItemBehaviour, IItemUseManager {
     }
 
     @Override
-    public boolean onLeftClickEntity(ItemStack itemStack, EntityPlayer player, Entity entity) {
-        return false;
-    }
-
-    @Override
-    public ActionResult<ItemStack> onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        return ActionResult.newResult(EnumActionResult.PASS, player.getHeldItem(hand));
-    }
-
-    @Override
     public void addInformation(ItemStack itemStack, List<String> lines) {
         foodStats.addInformation(itemStack, lines);
     }
-
-    @Override
-    public void onUpdate(ItemStack itemStack, World world, Entity player, int timer, boolean isInHand) {}
-
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-        return ActionResult.newResult(EnumActionResult.PASS, player.getHeldItem(hand));
-    }
-
 }

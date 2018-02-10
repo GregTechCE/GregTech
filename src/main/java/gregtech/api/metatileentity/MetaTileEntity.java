@@ -7,7 +7,9 @@ import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankHandler;
 import gregtech.api.capability.impl.ItemHandlerProxy;
 import gregtech.api.util.GTUtility;
+import gregtech.common.blocks.machines.BlockMachine;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,6 +20,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
@@ -104,6 +107,11 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     }
 
     @Override
+    public IBlockState getActualBlockState(IMetaTileEntity metaTileEntity, IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+        return state.withProperty(BlockMachine.FACING, metaTileEntity.getFrontFacing());
+    }
+
+    @Override
     public String getMetaName() {
         return GregTechAPI.METATILEENTITY_REGISTRY.getNameForObject(factory);
     }
@@ -149,7 +157,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         switch (dataId) {
             case 1:
-                this.frontFacing = EnumFacing.VALUES[buf.readByte()];
+                this.frontFacing = EnumFacing.getFront(buf.readByte());
                 markBlockForRenderUpdate();
                 break;
             case 2:

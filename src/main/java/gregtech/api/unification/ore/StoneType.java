@@ -31,6 +31,7 @@ public class StoneType implements Comparable<StoneType> {
      * @param stone             Basic block of this stone type
      * @param conditions        Whether the ores with this stone type can generate with such BlockState
      */
+    @SafeVarargs
     public StoneType(int id, String name, OrePrefix processingPrefix, DustMaterial stoneMaterial, String baseTexture, Supplier<IBlockState> stone, Condition<IBlockState>... conditions) {
         this(id, name, processingPrefix, stoneMaterial, "pickaxe", baseTexture, stone, conditions);
     }
@@ -42,6 +43,7 @@ public class StoneType implements Comparable<StoneType> {
      * @param stone             Basic block of this stone type
      * @param conditions        Whether the ores with this stone type can generate with such BlockState
      */
+    @SafeVarargs
     public StoneType(int id, String name, OrePrefix processingPrefix, DustMaterial stoneMaterial, String harvestTool, String baseTexture, Supplier<IBlockState> stone, Condition<IBlockState>... conditions) {
         this(id, name, processingPrefix, stoneMaterial, harvestTool, 0, baseTexture, stone, conditions);
         this.setTextureForAllFacing(baseTexture);
@@ -56,6 +58,7 @@ public class StoneType implements Comparable<StoneType> {
      * @param stone             Basic block of this stone type
      * @param conditions        Whether the ores with this stone type can generate with such BlockState
      */
+    @SafeVarargs
     public StoneType(int id, String name, OrePrefix processingPrefix, DustMaterial stoneMaterial, int special, String particleTexture, Supplier<IBlockState> stone, Condition<IBlockState>... conditions) {
         this(id, name, processingPrefix, stoneMaterial, "pickaxe", special, particleTexture, stone, conditions);
     }
@@ -69,6 +72,7 @@ public class StoneType implements Comparable<StoneType> {
      * @param stone             Basic block of this stone type
      * @param conditions        Whether the ores with this stone type can generate with such BlockState
      */
+    @SafeVarargs
     public StoneType(int id, String name, OrePrefix processingPrefix, DustMaterial stoneMaterial, String harvestTool, int special, String particleTexture, Supplier<IBlockState> stone, Condition<IBlockState>... conditions) {
         this.name = name;
         this.processingPrefix = processingPrefix;

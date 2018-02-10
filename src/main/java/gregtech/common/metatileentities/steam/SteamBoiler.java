@@ -9,9 +9,9 @@ import gregtech.api.gui.widgets.LabelWidget;
 import gregtech.api.gui.widgets.ProgressWidget;
 import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.metatileentity.IMetaTileEntity;
-import gregtech.api.metatileentity.IMetaTileEntityFactory;
 import gregtech.api.metatileentity.MetaTileEntityUIFactory;
 import gregtech.api.metatileentity.SteamMetaTileEntity;
+import gregtech.api.metatileentity.factory.MetaTileEntityFactory;
 import gregtech.api.util.GTResourceLocation;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.resources.I18n;
@@ -25,7 +25,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class SteamBoiler extends SteamMetaTileEntity implements IWorkable {
 
-    public SteamBoiler(IMetaTileEntityFactory factory) {
+    public SteamBoiler(MetaTileEntityFactory factory) {
         super(factory);
     }
 
@@ -35,7 +35,7 @@ public class SteamBoiler extends SteamMetaTileEntity implements IWorkable {
     }
 
     @Override
-    public boolean onWrenchRightClick(EnumFacing side, EnumFacing wrenchingSide, EntityPlayer player, EnumHand hand, float clickX, float clickY, float clickZ) {
+    public boolean onWrenchRightClick(EnumFacing side, EntityPlayer player, EnumHand hand, float clickX, float clickY, float clickZ) {
         return false;
     }
 

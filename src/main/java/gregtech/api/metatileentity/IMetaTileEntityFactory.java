@@ -1,7 +1,7 @@
 package gregtech.api.metatileentity;
 
-import gregtech.common.blocks.BlockMachine;
-import net.minecraft.block.state.IBlockState;
+import gregtech.common.blocks.machines.BlockMachine;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -26,6 +26,12 @@ public interface IMetaTileEntityFactory {
      * @return a newly created and ready MetaTileEntity
      */
     IMetaTileEntity constructMetaTileEntity();
+
+
+    /**
+     * @return class type that this MTE will reside in
+     */
+    Class<? extends Block> getBlockClass();
 
     /**
      * @return an ItemStack representing this MetaTileEntity.

@@ -8,7 +8,7 @@
       "bottom": "gregtech:blocks/machines/machine_bronzebricks_bottom",
       "front": "gregtech:blocks/machines/machine_bronzebricks_bottom",
       "side": "gregtech:blocks/machines/machine_bronzebricks_side",
-      "overlay_front": "gregtech:blocks/machines/furnace/overlay_front",
+      "overlay_front": "gregtech:blocks/machines/alloy_smelter/overlay_front",
       "overlay_bottom": "gregtech:blocks/void",
       "overlay_top": "gregtech:blocks/void",
       "overlay_side": "gregtech:blocks/void"
@@ -17,15 +17,25 @@
   },
   "variants": {
     "facing": {
-      "north": { },
+      "up": {},
+      "down": {},
+      "north": {},
       "south": { "y": 180 },
       "west": { "y": 270 },
       "east": { "y": 90 }
     },
+    "venting_face": {
+      "up": {},
+      "down": {},
+      "north": {},
+      "south": {},
+      "west": {},
+      "east": {}
+    },
     "active": {
       "true": {
         "textures": {
-          "overlay_front": "gregtech:blocks/machines/furnace/overlay_front_active"
+          "overlay_front": "gregtech:blocks/machines/alloy_smelter/overlay_front_active"
         }
       },
       "false": {}

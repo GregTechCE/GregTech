@@ -2,18 +2,27 @@ package gregtech.api.metatileentity;
 
 import gregtech.api.GTValues;
 import gregtech.api.capability.internal.IWorkable;
+import gregtech.api.damagesources.DamageSources;
 import gregtech.api.metatileentity.factory.WorkableSteamMetaTileEntityFactory;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.XSTR;
+import gregtech.common.blocks.machines.BlockMachine;
+import gregtech.common.blocks.machines.BlockSteamMachine;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.*;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.Constants;
 
 public abstract class WorkableSteamMetaTileEntity extends SteamMetaTileEntity implements IWorkable {
@@ -30,6 +39,9 @@ public abstract class WorkableSteamMetaTileEntity extends SteamMetaTileEntity im
     private boolean isActive;
     private boolean workingEnabled = true;
 
+    private EnumFacing ventingFace = EnumFacing.NORTH;
+    private boolean needsVenting = false;
+
     public WorkableSteamMetaTileEntity(WorkableSteamMetaTileEntityFactory<? extends WorkableSteamMetaTileEntity> factory) {
         super(factory);
         this.recipeMap = factory.getRecipeMap();
@@ -41,6 +53,17 @@ public abstract class WorkableSteamMetaTileEntity extends SteamMetaTileEntity im
         if (getWorld().isRemote) {
             return;
         }
+
+        if (needsVenting) {
+            BlockPos pos = getPos().offset(this.ventingFace);
+            if (getTimer() % 10 == 0 && getWorld().getBlockState(pos).getCollisionBoundingBox(getWorld(), pos) == Block.NULL_AABB) {
+                holder.writeCustomData(7, GTUtility::noop);
+                getWorld()
+                    .getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos), EntitySelectors.CAN_AI_TARGET)
+                    .forEach(entity -> entity.attackEntityFrom(DamageSources.getHeatDamage(), 6));
+                needsVenting = false;
+            }
+        }
         if(progressTime == 0) {
             Recipe pickedRecipe = recipeMap.findRecipe(previousRecipe, GTValues.V[1], importItems, importFluids);
             if(pickedRecipe != null && setupAndConsumeRecipeInputs(pickedRecipe)) {
@@ -49,7 +72,7 @@ public abstract class WorkableSteamMetaTileEntity extends SteamMetaTileEntity im
                 } else this.previousRecipe = null;
                 setupRecipe(pickedRecipe);
             }
-        } else if(workingEnabled) {
+        } else if(workingEnabled && !needsVenting) {
             if(this.steamFluidTank.drain(this.recipeEUt, false) != null) {
                 this.steamFluidTank.drain(this.recipeEUt, true);
                 if(++progressTime >= maxProgressTime) {
@@ -83,6 +106,7 @@ public abstract class WorkableSteamMetaTileEntity extends SteamMetaTileEntity im
         this.recipeEUt = 0;
         this.itemOutputs = null;
         setActive(false);
+        this.needsVenting = true;
     }
 
     @Override
@@ -91,8 +115,11 @@ public abstract class WorkableSteamMetaTileEntity extends SteamMetaTileEntity im
     }
 
     @Override
-    public boolean onWrenchRightClick(EnumFacing side, EnumFacing wrenchingSide, EntityPlayer player, EnumHand hand, float clickX, float clickY, float clickZ) {
-        return false;
+    public boolean onWrenchRightClick(EnumFacing side, EntityPlayer player, EnumHand hand, float clickX, float clickY, float clickZ) {
+        if (this.getFrontFacing() != side) {
+            setVentingFace(side);
+        } //TODO SOUND
+        return true;
     }
 
     @Override
@@ -101,6 +128,18 @@ public abstract class WorkableSteamMetaTileEntity extends SteamMetaTileEntity im
             MetaTileEntityUIFactory.INSTANCE.openUI(this, (EntityPlayerMP) player);
         }
         return true;
+    }
+
+    public EnumFacing getVentingFace() {
+        return ventingFace;
+    }
+
+    public void setVentingFace(EnumFacing facing) {
+        this.ventingFace = facing;
+        if(!getWorld().isRemote) {
+            markDirty();
+            holder.writeCustomData(6, buf -> buf.writeByte(facing.getIndex()));
+        }
     }
 
     @Override
@@ -172,9 +211,39 @@ public abstract class WorkableSteamMetaTileEntity extends SteamMetaTileEntity im
             case 5:
                 this.maxProgressTime = buf.readInt();
                 break;
+            case 6:
+                this.ventingFace = EnumFacing.getFront(buf.readByte());
+                markBlockForRenderUpdate();
+                break;
+            case 7:
+                for (int i = 0; i < 8; i++) {
+                    // TODO SOUND
+                    getHolder().getWorld().spawnParticle(EnumParticleTypes.SMOKE_LARGE,
+                        getPos().getX() - 0.5f + (new XSTR()).nextFloat(),
+                        getPos().getY() - 0.5f + (new XSTR()).nextFloat(),
+                        getPos().getZ() - 0.5f + (new XSTR()).nextFloat(),
+                        this.ventingFace.getFrontOffsetX() / 5.0,
+                        this.ventingFace.getFrontOffsetY() / 5.0,
+                        this.ventingFace.getFrontOffsetZ() / 5.0);
+                }
+                break;
             default:
                 super.receiveCustomData(dataId, buf);
         }
+    }
+
+    @Override
+    public IBlockState getActualBlockState(IMetaTileEntity metaTileEntity, IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+        state = super.getActualBlockState(metaTileEntity, state, worldIn, pos);
+        if (metaTileEntity instanceof IWorkable) {
+            state = state.withProperty(BlockMachine.ACTIVE, ((IWorkable) metaTileEntity).isActive());
+        }
+
+        if (metaTileEntity instanceof WorkableSteamMetaTileEntity) {
+            state = state.withProperty(BlockSteamMachine.VENTING_FACE, ventingFace);
+        }
+
+        return state;
     }
 
     @Override
@@ -194,6 +263,7 @@ public abstract class WorkableSteamMetaTileEntity extends SteamMetaTileEntity im
         super.saveNBTData(data);
         data.setBoolean("Active", this.isActive);
         data.setBoolean("WorkEnabled", this.workingEnabled);
+        data.setBoolean("NeedsVenting", this.needsVenting);
         if(progressTime > 0) {
             data.setInteger("Progress", progressTime);
             data.setInteger("MaxProgress", maxProgressTime);
@@ -211,6 +281,7 @@ public abstract class WorkableSteamMetaTileEntity extends SteamMetaTileEntity im
         super.loadNBTData(data);
         this.isActive = data.getBoolean("Active");
         this.workingEnabled = data.getBoolean("WorkEnabled");
+        this.needsVenting = data.getBoolean("NeedsVenting");
         this.progressTime = data.getInteger("Progress");
         if (progressTime > 0) {
             this.maxProgressTime = data.getInteger("MaxProgress");

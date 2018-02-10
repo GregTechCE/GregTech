@@ -567,115 +567,94 @@ public class ModHandler {
     //             Electric Items Helpers            //
     ///////////////////////////////////////////////////
 
-//    /**
-//     * Charges an Electric Item. Only if it's a valid Electric Item of course.
-//     * This forces the Usage of proper Voltages (so not the transfer limits defined by the Items) unless you ignore the Transfer Limit.
-//     * If tier is Integer.MAX_VALUE it will ignore Tier based Limitations.
-//     *
-//     * @return the actually used Energy.
-//     */
-//    public static int chargeElectricItem(ItemStack stack, int charge, int tier, boolean ignoreLimit, boolean simulate) {
-//
-//        if (isElectricItem(stack)) {
-//            int tmpTier = ElectricItem.manager.getTier(stack);
-//            if (tmpTier < 0 || tmpTier == tier || tier == Integer.MAX_VALUE) {
-//
-//                if (!ignoreLimit && tmpTier >= 0) {
-//                    charge = (int) Math.min(charge, V[Math.max(0, Math.min(V.length - 1, tmpTier))]);
-//                }
-//
-//                if (charge > 0) {
-//                    int chargeTmp = (int) Math.max(0.0, ElectricItem.manager.charge(stack, charge, tmpTier, true, simulate));
-//                    return chargeTmp + (chargeTmp * 4 > tier ? tier : 0);
-//                }
-//            }
-//        }
-//        return 0;
-//    }
-//
-//    /**
-//     * Discharges an Electric Item. Only if it's a valid Electric Item for that of course.
-//     * This forces the Usage of proper Voltages (so not the transfer limits defined by the Items) unless you ignore the Transfer Limit.
-//     * If tier is Integer.MAX_VALUE it will ignore Tier based Limitations.
-//     *
-//     * @return the Energy got from the Item.
-//     */
-//    public static double dischargeElectricItem(ItemStack stack, double charge, int tier, boolean ignoreLimit, boolean simulate, boolean ignoreDischargability) {
-//
-//        if (isElectricItem(stack)) {
-//            int tmpTier = ElectricItem.manager.getTier(stack);
-//            if (tmpTier < 0 || tmpTier == tier || tier == Integer.MAX_VALUE) {
-//
-//                if (!ignoreLimit && tmpTier >= 0) {
-//                    charge = Math.min(charge, V[Math.max(0, Math.min(V.length - 1, tmpTier))]);
-//                }
-//
-//                if (charge > 0) {
-//                    double chargeTmp = Math.max(0, ElectricItem.manager.discharge(stack, charge + (charge * 4 > tier ? tier : 0), tmpTier, true, !ignoreDischargability, simulate));
-//                    return chargeTmp - (chargeTmp * 4 > tier ? tier : 0);
-//                }
-//            }
-//        }
-//        return 0;
-//    }
-//
-//    /**
-//     * Uses an Electric Item. Only if it's a valid Electric Item for that of course.
-//     *
-//     * @return if the action was successful
-//     */
-//    public static boolean canUseElectricItem(ItemStack stack, int charge) {
-//        return isElectricItem(stack) && ElectricItem.manager.canUse(stack, charge);
-//    }
-//
-//    /**
-//     * Uses an Electric Item. Only if it's a valid Electric Item for that of course.
-//     *
-//     * @return if the action was successful
-//     */
-//    public static boolean useElectricItem(ItemStack stack, int charge, EntityPlayer player) {
-//        return isElectricItem(stack) && ElectricItem.manager.use(stack, charge, player);
-//    }
-//
-//    /**
-//     * Uses an Item. Tries to discharge in case of Electric Items
-//     */
-//    public static boolean damageOrDechargeItem(ItemStack stack, int damage, int decharge, EntityLivingBase player) {
-//        if (stack.isEmpty() || (stack.getMaxStackSize() <= 1 && stack.getCount() > 1)) return false;
-//
-//        if (player != null && player instanceof EntityPlayer && ((EntityPlayer) player).capabilities.isCreativeMode) {
-//            return true;
-//        }
-//
-//        if (stack.getItem() instanceof IDamagableItem) {
-//            return ((IDamagableItem) stack.getItem()).doDamageToItem(stack, damage);
-//        } else if (ModHandler.isElectricItem(stack)) {
-//
-//            if (canUseElectricItem(stack, decharge)) {
-//                if (player != null && player instanceof EntityPlayer) {
-//                    return ModHandler.useElectricItem(stack, decharge, (EntityPlayer) player);
-//                }
-//                return ModHandler.dischargeElectricItem(stack, decharge, Integer.MAX_VALUE, true, false, true) >= decharge;
-//            }
-//        } else if (stack.getItem().isDamageable()) {
-//
-//            if (player == null) {
-//                stack.setItemDamage(stack.getItemDamage() + damage);
-//            } else {
-//                stack.damageItem(damage, player);
-//            }
-//
-//            if (stack.getItemDamage() >= stack.getMaxDamage()) {
-//                stack.setItemDamage(stack.getMaxDamage() + 1);
-////                ItemStack containerItem = GTUtility.getContainerItem(stack, true);
-////                if (!containerItem.isEmpty()) {
-////                    stack = containerItem.copy();
-////                }
-//            }
-//            return true;
-//        }
-//        return false;
-//    }
+    /**
+     * Charges an Electric Item. Only if it's a valid Electric Item of course.
+     * This forces the Usage of proper Voltages (so not the transfer limits defined by the Items) unless you ignore the Transfer Limit.
+     * If tier is Integer.MAX_VALUE it will ignore Tier based Limitations.
+     *
+     * @return the actually used Energy.
+     */
+    public static long chargeElectricItem(ItemStack stack, long charge, int tier, boolean ignoreLimit, boolean simulate) {
+        if (isElectricItem(stack)) {
+            IElectricItem electricItem = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+            return electricItem.charge(charge, tier, ignoreLimit, simulate);
+        }
+        return 0;
+    }
+
+    /**
+     * Discharges an Electric Item. Only if it's a valid Electric Item for that of course.
+     * This forces the Usage of proper Voltages (so not the transfer limits defined by the Items) unless you ignore the Transfer Limit.
+     * If tier is Integer.MAX_VALUE it will ignore Tier based Limitations.
+     *
+     * @return the Energy got from the Item.
+     */
+    public static long dischargeElectricItem(ItemStack stack, long charge, int tier, boolean ignoreLimit, boolean externally, boolean simulate) {
+        if (isElectricItem(stack)) {
+            IElectricItem electricItem = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+            return electricItem.discharge(charge, tier, ignoreLimit, externally, simulate);
+        }
+        return 0;
+    }
+
+    /**
+     * Uses an Electric Item. Only if it's a valid Electric Item for that of course.
+     *
+     * @return if the action was successful
+     */
+    public static boolean canUseElectricItem(ItemStack stack, long charge) {
+        boolean electricItem = isElectricItem(stack);
+        if (!electricItem) {
+            return false;
+        }
+        IElectricItem item = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+        return item.canUse(charge);
+    }
+
+    /**
+     * Uses an Electric Item. Only if it's a valid Electric Item for that of course.
+     *
+     * @return if the action was successful
+     */
+    public static boolean useElectricItem(ItemStack stack, long charge, EntityPlayer player) {
+        boolean electricItem = isElectricItem(stack);
+        if (!electricItem) {
+            return false;
+        }
+        IElectricItem item = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+        return item.use(charge, player);
+    }
+
+    /**
+     * Uses an Item. Tries to discharge in case of Electric Items
+     */
+    public static boolean damageOrDechargeItem(ItemStack stack, int damage, long decharge, EntityLivingBase player) {
+        if (stack.isEmpty()) return false;
+
+        if (player != null && player instanceof EntityPlayer && ((EntityPlayer) player).capabilities.isCreativeMode) {
+            return true;
+        }
+
+        if (stack.getItem() instanceof IDamagableItem) {
+            return ((IDamagableItem) stack.getItem()).doDamageToItem(stack, damage);
+        } else if (ModHandler.isElectricItem(stack)) {
+            IElectricItem electricItem = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+            if (electricItem.canUse(decharge)) {
+                if (player != null && player instanceof EntityPlayer) {
+                    return electricItem.use(decharge, player);
+                }
+                return electricItem.discharge(decharge, Integer.MAX_VALUE, true, false, true) >= decharge;
+            }
+        } else if (stack.getItem().isDamageable()) {
+            if (player == null) {
+                stack.setItemDamage(stack.getItemDamage() + damage);
+            } else {
+                stack.damageItem(damage, player);
+            }
+            return true;
+        }
+        return false;
+    }
 //
 //    /**
 //     * Uses a Soldering Iron
@@ -718,21 +697,7 @@ public class ModHandler {
 //        }
 //        return false;
 //    }
-//
-//    /**
-//     * Is this an electric Item, which can charge other Items?
-//     */
-//    public static boolean isChargerItem(ItemStack stack) {
-//        if (!stack.isEmpty() && isElectricItem(stack)) {
-//            if (stack.getItem() instanceof ISpecialElectricItem) {
-//                return true;
-//            } else if (stack.getItem() instanceof IElectricItem) {
-//                return ((IElectricItem) stack.getItem()).canProvideEnergy(stack);
-//            }
-//        }
-//        return false;
-//    }
-//
+
     /**
      * Is this an electric Item?
      */
@@ -747,243 +712,4 @@ public class ModHandler {
         }
         return false;
     }
-
-    public static class ThermalExpansion {
-
-        /**
-         * LiquidTransposer Recipe for both directions
-         */
-        public static void addLiquidTransposerRecipe(ItemStack emptyContainer, FluidStack fluid, ItemStack fullContainer, int RF) {
-            fullContainer = OreDictUnifier.getUnificated(fullContainer);
-            Validate.notNull(emptyContainer, "Empty Container cannot be null");
-            Validate.notNull(fullContainer, "Full Container cannot be null");
-            Validate.notNull(fluid, "Fluid Container cannot be null");
-
-//            if (!GregTechMod.gregtechproxy.mTEMachineRecipes &&
-//                    !GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.liquidtransposer, fullContainer, true))
-//                return;
-
-            try {
-                ThermalExpansion.addTransposerFill(RF * 10, emptyContainer, fullContainer, fluid, true);
-            } catch (Throwable e) {/*Do nothing*/}
-        }
-
-        /**
-         * LiquidTransposer Recipe for filling Containers
-         */
-        public static void addLiquidTransposerFillRecipe(ItemStack emptyContainer, FluidStack fluid, ItemStack fullContainer, int MJ) {
-            fullContainer = OreDictUnifier.getUnificated(fullContainer);
-            Validate.notNull(emptyContainer, "Empty Container cannot be null");
-            Validate.notNull(fullContainer, "Full Container cannot be null");
-            Validate.notNull(fluid, "Fluid Container cannot be null");
-
-//            if (!GregTechMod.gregtechproxy.mTEMachineRecipes &&
-//                    !GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.liquidtransposerfilling, fullContainer, true))
-//                return;
-
-            try {
-                ThermalExpansion.addTransposerFill(MJ * 10, emptyContainer, fullContainer, fluid, false);
-            } catch (Throwable e) {/*Do nothing*/}
-        }
-
-        /**
-         * LiquidTransposer Recipe for emptying Containers
-         */
-        public static void addLiquidTransposerEmptyRecipe(ItemStack fullContainer, FluidStack fluid, ItemStack emptyContainer, int RF) {
-            emptyContainer = OreDictUnifier.getUnificated(emptyContainer);
-            Validate.notNull(emptyContainer, "Empty Container cannot be null");
-            Validate.notNull(fullContainer, "Full Container cannot be null");
-            Validate.notNull(fluid, "Fluid Container cannot be null");
-
-//            if (!GregTechMod.gregtechproxy.mTEMachineRecipes &&
-//                    !GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.liquidtransposeremptying, fullContainer, true))
-//                return;
-
-            try {
-                ThermalExpansion.addTransposerExtract(RF * 10, fullContainer, emptyContainer, fluid, 100, false);
-            } catch (Throwable e) {/*Do nothing*/}
-        }
-
-        /**
-         * Adds a Recipe to the Sawmills of GregTech and ThermalCraft
-         */
-        public static void addSawmillRecipe(ItemStack input1, ItemStack output1, ItemStack output2) {
-            output2 = OreDictUnifier.getUnificated(output2);
-            Validate.notNull(input1, "Input cannot be null");
-            Validate.notNull(output1, "Output cannot be null");
-
-//            if (!GregTechMod.gregtechproxy.mTEMachineRecipes &&
-//                    !GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.sawmill, input1, true))
-//                return;
-
-            try {
-                ThermalExpansion.addSawmillRecipe(1600, input1, output1, output2, 100);
-            } catch (Throwable e) {/*Do nothing*/}
-        }
-
-        /**
-         * Induction Smelter Recipes for TE
-         */
-        public static void addInductionSmelterRecipe(ItemStack input1, ItemStack input2, ItemStack output1, ItemStack output2, int energy, int chance) {
-            output1 = OreDictUnifier.getUnificated(output1);
-            output2 = OreDictUnifier.getUnificated(output2);
-            Validate.notNull(input1, "Input cannot be null");
-            Validate.notNull(output1, "Output cannot be null");
-//            Validate.isTrue(GTUtility.getContainerItem(input1, false) != null, "Input item cannot have container item");
-
-//            if (!GregTechMod.gregtechproxy.mTEMachineRecipes &&
-//                    !GregTechAPI.sRecipeFile.get(ConfigCategories.Machines.inductionsmelter, input2 == null ? input1 : output1, true))
-//                return;
-
-            try {
-                ThermalExpansion.addSmelterRecipe(energy * 10, GTUtility.copy(input1), input2 == null ? new ItemStack(Blocks.SAND, 1, 0) : input2, output1, output2, chance);
-            } catch (Throwable e) {/*Do nothing*/}
-        }
-
-        public static void addFurnaceRecipe(int energy, ItemStack input, ItemStack output) {
-            NBTTagCompound toSend = new NBTTagCompound();
-            toSend.setInteger("energy", energy);
-            toSend.setTag("input", new NBTTagCompound());
-            toSend.setTag("output", new NBTTagCompound());
-            input.writeToNBT(toSend.getCompoundTag("input"));
-            output.writeToNBT(toSend.getCompoundTag("output"));
-            FMLInterModComms.sendMessage("ThermalExpansion", "FurnaceRecipe", toSend);
-        }
-
-        public static void addPulverizerRecipe(int energy, ItemStack input, ItemStack primaryOutput) {
-            addPulverizerRecipe(energy, input, primaryOutput, null, 0);
-        }
-
-        public static void addPulverizerRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput) {
-            addPulverizerRecipe(energy, input, primaryOutput, secondaryOutput, 100);
-        }
-
-        public static void addPulverizerRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
-            if (input == null || primaryOutput == null) return;
-            NBTTagCompound toSend = new NBTTagCompound();
-            toSend.setInteger("energy", energy);
-            toSend.setTag("input", new NBTTagCompound());
-            toSend.setTag("primaryOutput", new NBTTagCompound());
-            toSend.setTag("secondaryOutput", new NBTTagCompound());
-            input.writeToNBT(toSend.getCompoundTag("input"));
-            primaryOutput.writeToNBT(toSend.getCompoundTag("primaryOutput"));
-            if (secondaryOutput != null) secondaryOutput.writeToNBT(toSend.getCompoundTag("secondaryOutput"));
-            toSend.setInteger("secondaryChance", secondaryChance);
-            FMLInterModComms.sendMessage("ThermalExpansion", "PulverizerRecipe", toSend);
-        }
-
-        public static void addSawmillRecipe(int energy, ItemStack input, ItemStack primaryOutput) {
-            addSawmillRecipe(energy, input, primaryOutput, null, 0);
-        }
-
-        public static void addSawmillRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput) {
-            addSawmillRecipe(energy, input, primaryOutput, secondaryOutput, 100);
-        }
-
-        public static void addSawmillRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
-            if (input == null || primaryOutput == null) return;
-            NBTTagCompound toSend = new NBTTagCompound();
-            toSend.setInteger("energy", energy);
-            toSend.setTag("input", new NBTTagCompound());
-            toSend.setTag("primaryOutput", new NBTTagCompound());
-            toSend.setTag("secondaryOutput", new NBTTagCompound());
-            input.writeToNBT(toSend.getCompoundTag("input"));
-            primaryOutput.writeToNBT(toSend.getCompoundTag("primaryOutput"));
-            if (secondaryOutput != null) secondaryOutput.writeToNBT(toSend.getCompoundTag("secondaryOutput"));
-            toSend.setInteger("secondaryChance", secondaryChance);
-            FMLInterModComms.sendMessage("ThermalExpansion", "SawmillRecipe", toSend);
-        }
-
-        public static void addSmelterRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput) {
-            addSmelterRecipe(energy, primaryInput, secondaryInput, primaryOutput, null, 0);
-        }
-
-        public static void addSmelterRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput) {
-            addSmelterRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, 100);
-        }
-
-        public static void addSmelterRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
-            if (primaryInput == null || secondaryInput == null || primaryOutput == null) return;
-            NBTTagCompound toSend = new NBTTagCompound();
-            toSend.setInteger("energy", energy);
-            toSend.setTag("primaryInput", new NBTTagCompound());
-            toSend.setTag("secondaryInput", new NBTTagCompound());
-            toSend.setTag("primaryOutput", new NBTTagCompound());
-            toSend.setTag("secondaryOutput", new NBTTagCompound());
-            primaryInput.writeToNBT(toSend.getCompoundTag("primaryInput"));
-            secondaryInput.writeToNBT(toSend.getCompoundTag("secondaryInput"));
-            primaryOutput.writeToNBT(toSend.getCompoundTag("primaryOutput"));
-            if (secondaryOutput != null) secondaryOutput.writeToNBT(toSend.getCompoundTag("secondaryOutput"));
-            toSend.setInteger("secondaryChance", secondaryChance);
-            FMLInterModComms.sendMessage("ThermalExpansion", "SmelterRecipe", toSend);
-        }
-
-        public static void addSmelterBlastOre(Material material) {
-            NBTTagCompound toSend = new NBTTagCompound();
-            toSend.setString("oreType", material.toString());
-            FMLInterModComms.sendMessage("ThermalExpansion", "SmelterBlastOreType", toSend);
-        }
-
-        public static void addCrucibleRecipe(int energy, ItemStack input, FluidStack output) {
-            if (input == null || output == null) return;
-            NBTTagCompound toSend = new NBTTagCompound();
-            toSend.setInteger("energy", energy);
-            toSend.setTag("input", new NBTTagCompound());
-            toSend.setTag("output", new NBTTagCompound());
-            input.writeToNBT(toSend.getCompoundTag("input"));
-            output.writeToNBT(toSend.getCompoundTag("output"));
-            FMLInterModComms.sendMessage("ThermalExpansion", "CrucibleRecipe", toSend);
-        }
-
-        public static void addTransposerFill(int energy, ItemStack input, ItemStack output, FluidStack fluid, boolean reversible) {
-            if (input == null || output == null || fluid == null) return;
-            NBTTagCompound toSend = new NBTTagCompound();
-            toSend.setInteger("energy", energy);
-            toSend.setTag("input", new NBTTagCompound());
-            toSend.setTag("output", new NBTTagCompound());
-            toSend.setTag("fluid", new NBTTagCompound());
-            input.writeToNBT(toSend.getCompoundTag("input"));
-            output.writeToNBT(toSend.getCompoundTag("output"));
-            toSend.setBoolean("reversible", reversible);
-            fluid.writeToNBT(toSend.getCompoundTag("fluid"));
-            FMLInterModComms.sendMessage("ThermalExpansion", "TransposerFillRecipe", toSend);
-        }
-
-        public static void addTransposerExtract(int energy, ItemStack input, ItemStack output, FluidStack fluid, int chance, boolean reversible) {
-            if (input == null || output == null || fluid == null) return;
-            NBTTagCompound toSend = new NBTTagCompound();
-            toSend.setInteger("energy", energy);
-            toSend.setTag("input", new NBTTagCompound());
-            toSend.setTag("output", new NBTTagCompound());
-            toSend.setTag("fluid", new NBTTagCompound());
-            input.writeToNBT(toSend.getCompoundTag("input"));
-            output.writeToNBT(toSend.getCompoundTag("output"));
-            toSend.setBoolean("reversible", reversible);
-            toSend.setInteger("chance", chance);
-            fluid.writeToNBT(toSend.getCompoundTag("fluid"));
-            FMLInterModComms.sendMessage("ThermalExpansion", "TransposerExtractRecipe", toSend);
-        }
-
-        public static void addMagmaticFuel(String fluidName, int energy) {
-            NBTTagCompound toSend = new NBTTagCompound();
-            toSend.setString("fluidName", fluidName);
-            toSend.setInteger("energy", energy);
-            FMLInterModComms.sendMessage("ThermalExpansion", "MagmaticFuel", toSend);
-        }
-
-        public static void addCompressionFuel(String fluidName, int energy) {
-            NBTTagCompound toSend = new NBTTagCompound();
-            toSend.setString("fluidName", fluidName);
-            toSend.setInteger("energy", energy);
-            FMLInterModComms.sendMessage("ThermalExpansion", "CompressionFuel", toSend);
-        }
-
-        public static void addCoolant(String fluidName, int energy) {
-            NBTTagCompound toSend = new NBTTagCompound();
-            toSend.setString("fluidName", fluidName);
-            toSend.setInteger("energy", energy);
-            FMLInterModComms.sendMessage("ThermalExpansion", "Coolant", toSend);
-        }
-    }
-
 }

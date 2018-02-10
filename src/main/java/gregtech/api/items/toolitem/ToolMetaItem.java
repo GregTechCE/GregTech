@@ -288,37 +288,24 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     private int getInternalDamage(ItemStack itemStack) {
-        if(!itemStack.hasTagCompound() || !itemStack.getTagCompound().hasKey("GT.ToolStats", Constants.NBT.TAG_COMPOUND)) {
-            return 0;
-        }
-        NBTTagCompound statsTag = itemStack.getTagCompound().getCompoundTag("GT.ToolStats");
-        if (!statsTag.hasKey("GT.ToolDamage", Constants.NBT.TAG_INT)) {
+        NBTTagCompound statsTag = itemStack.getSubCompound("GT.ToolStats");
+        if (statsTag == null || !statsTag.hasKey("GT.ToolDamage", Constants.NBT.TAG_INT)) {
             return 0;
         }
         return statsTag.getInteger("GT.ToolDamage");
     }
 
     private void setInternalDamage(ItemStack itemStack, int damage) {
-        if(!itemStack.hasTagCompound()) {
-            itemStack.setTagCompound(new NBTTagCompound());
-        }
-        NBTTagCompound tagCompound = itemStack.getTagCompound();
-        if (!tagCompound.hasKey("GT.ToolStats", Constants.NBT.TAG_COMPOUND)) {
-            tagCompound.setTag("GT.ToolStats", new NBTTagCompound());
-        }
-        NBTTagCompound statsTag = itemStack.getTagCompound().getCompoundTag("GT.ToolStats");
+        NBTTagCompound statsTag = itemStack.getOrCreateSubCompound("GT.ToolStats");
         statsTag.setInteger("GT.ToolDamage", damage);
     }
 
     @Nullable
     public static SolidMaterial getPrimaryMaterial(ItemStack itemStack) {
-        if(!itemStack.hasTagCompound() || !itemStack.getTagCompound().hasKey("GT.ToolStats", Constants.NBT.TAG_COMPOUND)) {
+        NBTTagCompound statsTag = itemStack.getSubCompound("GT.ToolStats");
+        if(statsTag == null || !statsTag.hasKey("GT.ToolPrimaryMaterial", Constants.NBT.TAG_STRING))
             return null;
-        }
-        NBTTagCompound compoundTag = itemStack.getTagCompound().getCompoundTag("GT.ToolStats");
-        if(!compoundTag.hasKey("GT.ToolPrimaryMaterial", Constants.NBT.TAG_STRING))
-            return null;
-        Material material = Material.MATERIAL_REGISTRY.getObject(compoundTag.getString("GT.ToolPrimaryMaterial"));
+        Material material = Material.MATERIAL_REGISTRY.getObject(statsTag.getString("GT.ToolPrimaryMaterial"));
         if(material instanceof SolidMaterial) {
             return (SolidMaterial) material;
         }
@@ -327,13 +314,10 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
     @Nullable
     public static SolidMaterial getHandleMaterial(ItemStack itemStack) {
-        if(!itemStack.hasTagCompound() || !itemStack.getTagCompound().hasKey("GT.ToolStats", Constants.NBT.TAG_COMPOUND)) {
+        NBTTagCompound statsTag = itemStack.getSubCompound("GT.ToolStats");
+        if(statsTag == null || !statsTag.hasKey("GT.ToolHandleMaterial", Constants.NBT.TAG_STRING))
             return null;
-        }
-        NBTTagCompound compoundTag = itemStack.getTagCompound().getCompoundTag("GT.ToolStats");
-        if(!compoundTag.hasKey("GT.ToolHandleMaterial", Constants.NBT.TAG_STRING))
-            return null;
-        Material material = Material.MATERIAL_REGISTRY.getObject(compoundTag.getString("GT.ToolHandleMaterial"));
+        Material material = Material.MATERIAL_REGISTRY.getObject(statsTag.getString("GT.ToolHandleMaterial"));
         if(material instanceof SolidMaterial) {
             return (SolidMaterial) material;
         }

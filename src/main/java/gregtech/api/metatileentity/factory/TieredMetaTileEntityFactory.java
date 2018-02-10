@@ -1,9 +1,8 @@
 package gregtech.api.metatileentity.factory;
 
 import gregtech.api.metatileentity.IMetaTileEntity;
-import gregtech.api.metatileentity.IMetaTileEntityFactory;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
-import gregtech.common.blocks.BlockMachine;
+import gregtech.common.blocks.machines.BlockMachine;
 import net.minecraft.util.ResourceLocation;
 
 public class TieredMetaTileEntityFactory<T extends TieredMetaTileEntity> extends MetaTileEntityFactory<T> {

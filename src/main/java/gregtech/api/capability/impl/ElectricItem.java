@@ -30,7 +30,7 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
 
     @Override
     public long charge(long amount, int chargerTier, boolean ignoreTransferLimit, boolean simulate) {
-        if((chargeable || amount == Integer.MAX_VALUE) && (chargerTier == Integer.MAX_VALUE || tier >= chargerTier) && maxCharge > 0) {
+        if((chargeable || amount == Long.MAX_VALUE) && (chargerTier == Integer.MAX_VALUE || tier >= chargerTier) && maxCharge > 0) {
             long canReceive = maxCharge - charge;
             if(!ignoreTransferLimit) {
                 amount = Math.min(amount, GTValues.V[tier]);
@@ -46,7 +46,7 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
 
     @Override
     public long discharge(long amount, int dischargerTier, boolean ignoreTransferLimit, boolean externally, boolean simulate) {
-        if((dischargeable || !externally || amount == Integer.MAX_VALUE) && (dischargerTier == Integer.MAX_VALUE || dischargerTier >= tier) && maxCharge > 0) {
+        if((dischargeable || !externally || amount == Long.MAX_VALUE) && (dischargerTier == Integer.MAX_VALUE || dischargerTier >= tier) && maxCharge > 0) {
             if(!ignoreTransferLimit) {
                 amount = Math.min(amount, GTValues.V[tier]);
             }

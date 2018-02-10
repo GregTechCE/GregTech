@@ -21,6 +21,7 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.*;
@@ -39,12 +40,16 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import static gregtech.api.GTValues.*;
 
 public class GTUtility {
+
+    @SuppressWarnings("unused")
+    public static <T> void noop(T t) {}
 
     public static <T> Iterable<T> wrapIterable(Supplier<Iterator<T>> iteratorSupplier) {
         return iteratorSupplier::get;

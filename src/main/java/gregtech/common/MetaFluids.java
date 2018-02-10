@@ -180,40 +180,11 @@ public class MetaFluids {
         }
 
 //        GregTechMod.gregtechproxy.addFluid("potion.purpledrink", "Purple Drink", null, 1, 275, ItemList.Bottle_Purple_Drink.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.grapejuice", "Grape Juice", null, 1, 295, ItemList.Bottle_Grape_Juice.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.wine", "Wine", null, 1, 295, ItemList.Bottle_Wine.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.vinegar", "Vinegar", null, 1, 295, ItemList.Bottle_Vinegar.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.potatojuice", "Potato Juice", null, 1, 295, ItemList.Bottle_Potato_Juice.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.vodka", "Vodka", null, 1, 275, ItemList.Bottle_Vodka.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.leninade", "Leninade", null, 1, 275, ItemList.Bottle_Leninade.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.mineralwater", "Mineral Water", null, 1, 275, ItemList.Bottle_Mineral_Water.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.saltywater", "Salty Water", null, 1, 275, ItemList.Bottle_Salty_Water.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.reedwater", "Reed Water", null, 1, 295, ItemList.Bottle_Reed_Water.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.rum", "Rum", null, 1, 295, ItemList.Bottle_Rum.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.piratebrew", "Pirate Brew", null, 1, 295, ItemList.Bottle_Pirate_Brew.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.hopsjuice", "Hops Juice", null, 1, 295, ItemList.Bottle_Hops_Juice.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.darkbeer", "Dark Beer", null, 1, 275, ItemList.Bottle_Dark_Beer.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.dragonblood", "Dragon Blood", null, 1, 375, ItemList.Bottle_Dragon_Blood.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.wheatyjuice", "Wheaty Juice", null, 1, 295, ItemList.Bottle_Wheaty_Juice.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.scotch", "Scotch", null, 1, 275, ItemList.Bottle_Scotch.get(1), ItemList.Bottle_Empty.get(1), 250);
 //        GregTechMod.gregtechproxy.addFluid("potion.glenmckenner", "Glen McKenner", null, 1, 275, ItemList.Bottle_Glen_McKenner.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.wheatyhopsjuice", "Wheaty Hops Juice", null, 1, 295, ItemList.Bottle_Wheaty_Hops_Juice.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.beer", "Beer", null, 1, 275, ItemList.Bottle_Beer.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.chillysauce", "Chilly Sauce", null, 1, 375, ItemList.Bottle_Chilly_Sauce.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.hotsauce", "Hot Sauce", null, 1, 380, ItemList.Bottle_Hot_Sauce.get(1), ItemList.Bottle_Empty.get(1), 250);
 //        GregTechMod.gregtechproxy.addFluid("potion.diabolosauce", "Diabolo Sauce", null, 1, 385, ItemList.Bottle_Diabolo_Sauce.get(1), ItemList.Bottle_Empty.get(1), 250);
 //        GregTechMod.gregtechproxy.addFluid("potion.diablosauce", "Diablo Sauce", null, 1, 390, ItemList.Bottle_Diablo_Sauce.get(1), ItemList.Bottle_Empty.get(1), 250);
 //        GregTechMod.gregtechproxy.addFluid("potion.diablosauce.strong", "Old Man Snitches glitched Diablo Sauce", null, 1, 999, ItemList.Bottle_Snitches_Glitch_Sauce.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.applejuice", "Apple Juice", null, 1, 295, ItemList.Bottle_Apple_Juice.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.cider", "Cider", null, 1, 295, ItemList.Bottle_Cider.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.goldenapplejuice", "Golden Apple Juice", null, 1, 295, ItemList.Bottle_Golden_Apple_Juice.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.goldencider", "Golden Cider", null, 1, 295, ItemList.Bottle_Golden_Cider.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.idunsapplejuice", "Idun's Apple Juice", null, 1, 295, ItemList.Bottle_Iduns_Apple_Juice.get(1), ItemList.Bottle_Empty.get(1), 250);
 //        GregTechMod.gregtechproxy.addFluid("potion.notchesbrew", "Notches Brew", null, 1, 295, ItemList.Bottle_Notches_Brew.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.lemonjuice", "Lemon Juice", null, 1, 295, ItemList.Bottle_Lemon_Juice.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.limoncello", "Limoncello", null, 1, 295, ItemList.Bottle_Limoncello.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.lemonade", "Lemonade", null, 1, 275, ItemList.Bottle_Lemonade.get(1), ItemList.Bottle_Empty.get(1), 250);
-//        GregTechMod.gregtechproxy.addFluid("potion.alcopops", "Alcopops", null, 1, 275, ItemList.Bottle_Alcopops.get(1), ItemList.Bottle_Empty.get(1), 250);
 //        GregTechMod.gregtechproxy.addFluid("potion.cavejohnsonsgrenadejuice", "Cave Johnsons Grenade Juice", null, 1, 295, ItemList.Bottle_Cave_Johnsons_Grenade_Juice.get(1), ItemList.Bottle_Empty.get(1), 250);
 //
 //        GregTechMod.gregtechproxy.addFluid("potion.darkcoffee", "Dark Coffee", null, 1, 295, ItemList.ThermosCan_Dark_Coffee.get(1), ItemList.ThermosCan_Empty.get(1), 250);

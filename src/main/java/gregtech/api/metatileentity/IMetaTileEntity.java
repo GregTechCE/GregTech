@@ -7,12 +7,15 @@ import gregtech.api.capability.internal.IRedstoneReceiver;
 import gregtech.api.capability.internal.ITurnable;
 import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.ModularUI;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -63,16 +66,16 @@ public interface IMetaTileEntity extends ITurnable, IRedstoneReceiver, IRedstone
     /**
      * Called when a player right clicks the facing with a wrench.
      */
-    boolean onWrenchRightClick(EnumFacing side, EnumFacing wrenchingSide, EntityPlayer player, EnumHand hand, float clickX, float clickY, float clickZ);
+    boolean onWrenchRightClick(EnumFacing side, EntityPlayer player, EnumHand hand, float clickX, float clickY, float clickZ);
 
     /**
-     * The First processed Tick which was passed to this MetaTileEntity
+     * The First processed Tick which was passed to this MetaTileEntity. This will get called when block was placed as well as on world load
      */
     void onFirstTick();
 
     /**
      * The Tick before all the generic handling happens, what gives a slightly faster reaction speed.
-     * Don't use this if you really don't need to. @onPostTick is better suited for ticks.
+     * Don't use this if you really don't need to. {@link #onPostTick(long)} is better suited for ticks.
      * This happens still after the Cover handling.
      */
     void onPreTick(long tickTimer);
@@ -90,7 +93,7 @@ public interface IMetaTileEntity extends ITurnable, IRedstoneReceiver, IRedstone
     void invalidate();
 
     /**
-     * Called when the BaseMetaTileEntity gets invalidated, what happens right before the @invalidate above gets called
+     * Called when the BaseMetaTileEntity gets invalidated, what happens right before the {@link #invalidate()} above gets called
      */
     void onRemoval();
 
@@ -111,6 +114,8 @@ public interface IMetaTileEntity extends ITurnable, IRedstoneReceiver, IRedstone
     FluidTankHandler createExportFluidHandler();
 
     IFluidHandler createFluidHandler();
+
+    IBlockState getActualBlockState(IMetaTileEntity metaTileEntity, IBlockState state, IBlockAccess worldIn, BlockPos pos);
 
     /**
      * @return true if the Machine can be accessed

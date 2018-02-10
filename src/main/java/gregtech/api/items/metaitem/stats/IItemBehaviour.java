@@ -18,16 +18,21 @@ public interface IItemBehaviour extends IMetaItemStats {
         return false;
     }
 
+    default EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
+        return EnumActionResult.PASS;
+    }
+
     default ActionResult<ItemStack> onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         return ActionResult.newResult(EnumActionResult.PASS, player.getHeldItem(hand));
     }
 
-    void addInformation(ItemStack itemStack, List<String> lines);
+    default void addInformation(ItemStack itemStack, List<String> lines) {
+    }
 
-    void onUpdate(ItemStack itemStack, World world, Entity player, int timer, boolean isInHand);
+    default void onUpdate(ItemStack itemStack, World world, Entity player, int timer, boolean isInHand) {
+    }
 
     default ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         return ActionResult.newResult(EnumActionResult.PASS, player.getHeldItem(hand));
     }
-
 }

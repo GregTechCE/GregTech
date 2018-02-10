@@ -4,6 +4,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.IMetaTileEntityFactory;
+import gregtech.common.blocks.machines.BlockMachine;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -21,11 +22,8 @@ import java.util.List;
 
 public class MachineItemBlock extends ItemBlock {
 
-    private BlockMachine block;
-
     public MachineItemBlock(BlockMachine block) {
         super(block);
-        this.block = block;
         this.setHasSubtypes(true);
     }
 

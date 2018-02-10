@@ -48,7 +48,6 @@ public interface IElectricItem {
 
     /**
      * Determine if the specified electric item has at least a specific amount of EU.
-     * This is supposed to be used in the item code during operation, for example if you want to implement your own electric item.
      * BatPacks are not taken into account.
      *
      * @param amount minimum amount of energy required
@@ -58,7 +57,6 @@ public interface IElectricItem {
 
     /**
      * Try to retrieve a specific amount of energy from an Item, and if applicable, a BatPack.
-     * This is supposed to be used in the item code during operation, for example if you want to implement your own electric item.
      *
      * @param amount amount of energy to discharge in EU
      * @param entity entity holding the item
@@ -68,7 +66,6 @@ public interface IElectricItem {
 
     /**
      * Charge an item from the BatPack a player is wearing.
-     * This is supposed to be used in the item code during operation, for example if you want to implement your own electric item.
      * use() already contains this functionality.
      *
      * @param entity entity holding the item

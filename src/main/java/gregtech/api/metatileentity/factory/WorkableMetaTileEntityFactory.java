@@ -3,7 +3,7 @@ package gregtech.api.metatileentity.factory;
 import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.WorkableMetaTileEntity;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.common.blocks.BlockMachine;
+import gregtech.common.blocks.machines.BlockMachine;
 import net.minecraft.util.ResourceLocation;
 
 public class WorkableMetaTileEntityFactory<T extends WorkableMetaTileEntity> extends TieredMetaTileEntityFactory<T> {

@@ -1,8 +1,11 @@
 package gregtech.common.blocks;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
+import com.google.common.collect.Streams;
 import gregtech.api.GregTechAPI;
+import gregtech.api.metatileentity.IMetaTileEntityFactory;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
@@ -12,6 +15,8 @@ import gregtech.api.unification.ore.StoneTypes;
 import gregtech.common.blocks.BlockGranite.GraniteVariant;
 import gregtech.common.blocks.BlockMineral.MineralVariant;
 import gregtech.common.blocks.StoneBlock.ChiselingVariant;
+import gregtech.common.blocks.machines.BlockMachine;
+import gregtech.common.blocks.machines.BlockSteamMachine;
 import gregtech.common.metatileentities.MetaTileEntities;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
@@ -30,6 +35,7 @@ public class MetaBlocks {
     private MetaBlocks() {}
 
     public static BlockMachine MACHINE;
+    public static BlockMachine STEAM_MACHINE;
     public static BlockCable CABLE;
 
     public static BlockBoilerCasing BOILER_CASING;
@@ -105,8 +111,17 @@ public class MetaBlocks {
 
         MetaTileEntities.init();
 
-        MACHINE = new BlockMachine();
+        MACHINE = new BlockMachine(Streams.stream(GregTechAPI.METATILEENTITY_REGISTRY.getObjectsWithIds())
+            .filter(mte -> mte.getBlockClass() == BlockMachine.class)
+            .map(IMetaTileEntityFactory::getMetaName)
+            .collect(Collectors.toList()));
         MACHINE.setRegistryName("machine");
+
+        STEAM_MACHINE = new BlockSteamMachine(Streams.stream(GregTechAPI.METATILEENTITY_REGISTRY.getObjectsWithIds())
+            .filter(mte -> mte.getBlockClass() == BlockSteamMachine.class)
+            .map(IMetaTileEntityFactory::getMetaName)
+            .collect(Collectors.toList()));
+        STEAM_MACHINE.setRegistryName("steam_machine");
 
         CABLE = new BlockCable(64, 2, 0);
         CABLE.setRegistryName("cable");
@@ -161,6 +176,7 @@ public class MetaBlocks {
         registerItemModel(MINERAL);
         registerItemModel(CONCRETE);
         MACHINE.registerItemModel();
+        STEAM_MACHINE.registerItemModel();
 
         COMPRESSED.values().stream().distinct().forEach(MetaBlocks::registerItemModel);
         ORES.stream().distinct().forEach(MetaBlocks::registerItemModel);
@@ -178,6 +194,7 @@ public class MetaBlocks {
     @SideOnly(Side.CLIENT)
     public static void registerStateMappers() {
         MetaBlocks.MACHINE.registerStateMapper();
+        MetaBlocks.STEAM_MACHINE.registerStateMapper();
     }
 
     @SideOnly(Side.CLIENT)

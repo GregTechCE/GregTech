@@ -1,17 +1,18 @@
-package gregtech.common.blocks;
+package gregtech.common.blocks.machines;
 
 import com.google.common.collect.Maps;
+import com.google.common.collect.Streams;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.capability.internal.ITurnable;
-import gregtech.api.capability.internal.IWorkable;
 import gregtech.api.metatileentity.GregtechTileEntity;
 import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.IMetaTileEntityFactory;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.util.GTResourceLocation;
+import gregtech.common.blocks.DelayedStateBlock;
+import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.properties.PropertyString;
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
@@ -29,12 +30,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.ChunkCache;
@@ -46,25 +42,20 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @SuppressWarnings("deprecation")
-public class BlockMachine extends Block {
+public class BlockMachine extends DelayedStateBlock {
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing", Arrays.asList(EnumFacing.VALUES));
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
-    public static PropertyString META_TYPE;
+    public PropertyString META_TYPE;
 
-    // Instantiated after all MTEs are registered
-    protected BlockMachine() {
+    public BlockMachine(Collection<String> mteTypeCollection) {
         super(Material.IRON);
-        setDefaultState(this.getBlockState().getBaseState()
-            .withProperty(ACTIVE, false)
-            .withProperty(FACING, EnumFacing.NORTH));
+        META_TYPE = PropertyString.create("meta_type", mteTypeCollection);
+        initBlockState();
         setUnlocalizedName("machine");
         setHardness(6.0f);
         setResistance(8.0f);
@@ -80,19 +71,25 @@ public class BlockMachine extends Block {
                 ResourceLocation location = GregTechAPI.METATILEENTITY_REGISTRY.getObject(blockState.getValue(META_TYPE)).getStateLocation();
                 Map<IProperty<?>, Comparable<?>> map = Maps.newLinkedHashMap(blockState.getProperties());
                 map.remove(META_TYPE);
-                return new ModelResourceLocation(new GTResourceLocation("machines/" + location.getResourcePath()), getPropertyString(map));
+                return new ModelResourceLocation(new GTResourceLocation("machines/" + getBlockStateSubFolder() + location.getResourcePath()), getPropertyString(map));
             }
         });
     }
 
     @SideOnly(Side.CLIENT)
     public void registerItemModel() {
-        for (IMetaTileEntityFactory factory : GregTechAPI.METATILEENTITY_REGISTRY.getObjectsWithIds()) {
-            ResourceLocation location = GregTechAPI.METATILEENTITY_REGISTRY.getObject(factory.getMetaName()).getStateLocation();
-            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this),
-                GregTechAPI.METATILEENTITY_REGISTRY.getIDForObject(factory),
-                new ModelResourceLocation(new GTResourceLocation("machines/" + location.getResourcePath()), "inventory"));
-        }
+        Streams.stream(GregTechAPI.METATILEENTITY_REGISTRY.getObjectsWithIds())
+            .filter(factory -> factory.getBlockClass() == this.getClass())
+            .forEach(factory -> {
+                ResourceLocation location = GregTechAPI.METATILEENTITY_REGISTRY.getObject(factory.getMetaName()).getStateLocation();
+                ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this),
+                    GregTechAPI.METATILEENTITY_REGISTRY.getIDForObject(factory),
+                    new ModelResourceLocation(new GTResourceLocation("machines/" + getBlockStateSubFolder() + location.getResourcePath()), "inventory"));
+            });
+    }
+
+    protected String getBlockStateSubFolder() {
+        return "";
     }
 
     @Override
@@ -124,7 +121,7 @@ public class BlockMachine extends Block {
                 if (GregTechAPI.screwdriverList.contains(stack)) {
                     return metaTileEntity.onScrewdriverRightClick(side, playerIn, hand, hitX, hitY, hitZ);
                 } else if (GregTechAPI.wrenchList.contains(stack)) {
-                    return metaTileEntity.onWrenchRightClick(side, side, playerIn, hand, hitX, hitY, hitZ);
+                    return metaTileEntity.onWrenchRightClick(side, playerIn, hand, hitX, hitY, hitZ);
                 } else return metaTileEntity.onRightClick(side, playerIn, hand, hitX, hitY, hitZ);
             }
         }
@@ -189,7 +186,7 @@ public class BlockMachine extends Block {
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
+    protected BlockStateContainer createStateContainer() {
         return new BlockStateContainer(this, ACTIVE, FACING, META_TYPE);
     }
 
@@ -200,13 +197,10 @@ public class BlockMachine extends Block {
         if (tileentity == null) return state;
         IMetaTileEntity mte = ((GregtechTileEntity) tileentity).getMetaTileEntity();
 
-        state = state.withProperty(META_TYPE, GregTechAPI.METATILEENTITY_REGISTRY.getNameForObject(mte.getFactory()));
-
-        if (mte instanceof IWorkable) {
-            state = state.withProperty(ACTIVE, ((IWorkable) mte).isActive());
+        if (mte != null) {
+            state = state.withProperty(META_TYPE, mte.getMetaName());
+            state = mte.getActualBlockState(mte, state, worldIn, pos);
         }
-
-        state = state.withProperty(FACING, mte.getFrontFacing());
 
         return state;
     }
@@ -293,9 +287,10 @@ public class BlockMachine extends Block {
     @Override
     public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
         for (IMetaTileEntityFactory tileEntityFactory : GregTechAPI.METATILEENTITY_REGISTRY) {
-            items.add(new ItemStack(this, 1, GregTechAPI.METATILEENTITY_REGISTRY.getIDForObject(tileEntityFactory)));
+            if (tileEntityFactory.getBlockClass() == this.getClass()) {
+                items.add(new ItemStack(this, 1, GregTechAPI.METATILEENTITY_REGISTRY.getIDForObject(tileEntityFactory)));
+            }
         }
-
     }
 
     public enum ToolClass implements IStringSerializable {

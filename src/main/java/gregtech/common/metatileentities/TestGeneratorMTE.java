@@ -4,7 +4,6 @@ import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.capability.impl.FluidTankHandler;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.metatileentity.IMetaTileEntity;
-import gregtech.api.metatileentity.IMetaTileEntityFactory;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
 import gregtech.api.metatileentity.factory.TieredMetaTileEntityFactory;
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,7 +40,7 @@ public class TestGeneratorMTE extends TieredMetaTileEntity {
     }
 
     @Override
-    public boolean onWrenchRightClick(EnumFacing side, EnumFacing wrenchingSide, EntityPlayer player, EnumHand hand, float clickX, float clickY, float clickZ) {
+    public boolean onWrenchRightClick(EnumFacing side, EntityPlayer player, EnumHand hand, float clickX, float clickY, float clickZ) {
         return false;
     }
 

@@ -4,8 +4,9 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.IMetaTileEntityFactory;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.common.blocks.BlockMachine;
+import gregtech.common.blocks.machines.BlockMachine;
 import gregtech.common.blocks.MetaBlocks;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -45,6 +46,11 @@ public class MetaTileEntityFactory<T extends MetaTileEntity> implements IMetaTil
     @Override
     public String getUnlocalizedName() {
         return "machine." + getMetaName();
+    }
+
+    @Override
+    public Class<? extends Block> getBlockClass() {
+        return BlockMachine.class;
     }
 
     @Override
