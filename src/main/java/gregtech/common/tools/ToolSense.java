@@ -10,8 +10,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.List;
-
 public class ToolSense extends ToolBase {
 
     private ThreadLocal<Object> isHarvestingRightNow = new ThreadLocal();
@@ -32,6 +30,11 @@ public class ToolSense extends ToolBase {
         return tool != null && (tool.equals("sense") || tool.equals("scythe")) ||
                 block.getMaterial() == Material.PLANTS ||
                 block.getMaterial() == Material.LEAVES;
+    }
+
+    @Override
+    public boolean hasMaterialHandle() {
+        return true;
     }
 
     @Override

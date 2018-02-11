@@ -1,7 +1,8 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "gregtech:items/tools/butcheryknife",
-    "layer1": "gregtech:items/tools/butcheryknife_overlay"
+    "layer0": "gregtech:items/tools/drill",
+    "layer1": "gregtech:items/tools/power_unit_hv",
+	"layer2": "gregtech:items/tools/power_unit_hv_overlay"
   }
 }

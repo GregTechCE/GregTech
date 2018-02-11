@@ -31,6 +31,11 @@ public class ToolFile extends ToolBase {
         return 0;
     }
 
+    @Override
+    public boolean hasMaterialHandle() {
+        return true;
+    }
+
 //    @Override
 //    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
 //        return new TextComponentString(TextFormatting.RED + "")

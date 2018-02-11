@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "gregtech:items/tools/branch_cutter",
+    "layer1": "gregtech:items/tools/branch_cutter_overlay"
+  }
+}

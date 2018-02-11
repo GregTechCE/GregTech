@@ -8,8 +8,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.List;
-
 public class ToolAxe extends ToolBase {
 
     @Override
@@ -41,6 +39,11 @@ public class ToolAxe extends ToolBase {
     public boolean isMinableBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
         return "axe".equals(tool) || (block.getMaterial() == Material.WOOD);
+    }
+
+    @Override
+    public boolean hasMaterialHandle() {
+        return true;
     }
 
     @Override

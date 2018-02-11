@@ -1,7 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "gregtech:items/tools/butcheryknife",
-    "layer1": "gregtech:items/tools/butcheryknife_overlay"
-  }
-}

@@ -41,6 +41,12 @@ public class ToolSoftHammer extends ToolBase {
         return GregTechAPI.soundList.get(101);
     }
 
+    @Override
+    public boolean hasMaterialHandle() {
+        return true;
+    }
+
+
 //    @Override
 //    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
 //        item.addStats(new Behaviour_SoftHammer(100));

@@ -32,6 +32,11 @@ public class ToolShovel extends ToolBase {
             block.getMaterial() == Material.CLAY;
     }
 
+    @Override
+    public boolean hasMaterialHandle() {
+        return true;
+    }
+
 //    @Override
 //    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
 //        return new TextComponentString(TextFormatting.RED + "")
