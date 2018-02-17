@@ -28,7 +28,7 @@ public abstract class SteamMetaTileEntity extends PaintableMetaTileEntity {
 
     @Override
     public IFluidHandler createFluidHandler() {
-        this.steamFluidTank = new FilteredFluidHandler(16000).setFillPredicate(ModHandler::isSteam);
+        this.steamFluidTank = new FilteredFluidHandler(getSteamCapacity()).setFillPredicate(ModHandler::isSteam);
         return new FluidHandlerProxy(this.steamFluidTank, this.exportFluids);
     }
 
@@ -47,5 +47,9 @@ public abstract class SteamMetaTileEntity extends PaintableMetaTileEntity {
     public void loadNBTData(NBTTagCompound data) {
         super.loadNBTData(data);
         steamFluidTank.readFromNBT(data.getCompoundTag("SteamFluidTank"));
+    }
+
+    public int getSteamCapacity() {
+        return 16000;
     }
 }
