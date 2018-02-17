@@ -6,10 +6,7 @@
   "version": "0.0.1",
   "logoFile": "/assets/gregtech/textures/LogoGTILong.png",
   "url": "<insert curseforge here>",
-  "updateUrl": "",
   "authorList": ["Gregorius Techneticies","Exidex","Archengius","Techlone","Quantum64","Alkalus", "SuperCoder79"],
   "credits": "GregoriusT for making GregTech, Archengius for porting GT5U to 1.10, and the amazing members of the GT who made this possible :D",
-  "parent": "",
-  "screenshots": [],
-  "dependencies": ["IC2", "CodeChickenLib"]
+  "dependencies": []
 }]

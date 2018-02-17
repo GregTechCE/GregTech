@@ -1,7 +1,6 @@
 package gregtech.common.worldgen;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -192,7 +191,7 @@ public class GTWorldGenOreVein extends GTWorldGen implements IWeighted {
                     }
                 }
             }
-            if (GTValues.D1)
+            if (GTValues.DEBUG)
                 System.out.println("Generated Orevein: " + this.name + " " + (chunkX << 4) + " " + (chunkZ << 4));
         }
     }

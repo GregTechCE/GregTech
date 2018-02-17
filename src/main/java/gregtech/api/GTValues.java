@@ -52,19 +52,19 @@ public class GTValues {
      * MOD ID Strings, since they are very common Parameters.
      */
     public static final String MODID = "gregtech",
-            MODID_IC2 = "IC2",
-            MODID_NC = "IC2NuclearControl",
             MODID_RC = "Railcraft",
             MODID_FR = "Forestry";
 
     /**
      * Not really Constant, but it set using the Config and therefore should be constant (this is for the Debug Mode)
      */
-    public static boolean D1 = false;
-    
+    //TODO CONFIG
+    public static boolean DEBUG = false;
+
     /**
      * Use [GregTech] prefix in logger. Will move to config once that exists.
      */
+    //TODO CONFIG
     public static boolean useLoggerPrefix = false;
 
     /**

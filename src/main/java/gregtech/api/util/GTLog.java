@@ -26,7 +26,7 @@ public class GTLog extends AbstractLogger { //TODO Add static logger methods and
 
     @Override
     public void logMessage(String fqcn, Level level, Marker marker, Message message, Throwable t) {
-        if (!GTValues.D1 && level.isLessSpecificThan(Level.DEBUG)) {
+        if (!GTValues.DEBUG && level.isLessSpecificThan(Level.DEBUG)) {
             return;
         }
         if (GTValues.useLoggerPrefix) {
@@ -37,7 +37,7 @@ public class GTLog extends AbstractLogger { //TODO Add static logger methods and
 
     @Override
     public Level getLevel() {
-        return GTValues.D1 ? Level.ALL : Level.INFO;
+        return GTValues.DEBUG ? Level.ALL : Level.INFO;
     }
 
     //Internal methods

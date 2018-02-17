@@ -21,9 +21,9 @@ import net.minecraftforge.oredict.OreDictionary;
 import static gregtech.api.GTValues.W;
 import static net.minecraftforge.oredict.OreDictionary.WILDCARD_VALUE;
 
-public class OreDictionaryLoader implements Runnable {
+public class OreDictionaryLoader {
     
-    public void run() {
+    public static void init() {
         GTLog.logger.info("Registering OreDict entries.");
 
         //Simulating oredict registration for vanilla items.
@@ -257,13 +257,6 @@ public class OreDictionaryLoader implements Runnable {
         OreDictUnifier.registerOre(new ItemStack(Blocks.STONE, 1, 4), OrePrefix.stone, Materials.Diorite);
 
         OreDictUnifier.registerOre(new ItemStack(Blocks.ANVIL, 1), "craftingAnvil");
-        OreDictUnifier.registerOre(ModHandler.getModItem("Railcraft", "tile.railcraft.anvil", 1, 0), "craftingAnvil");
-        OreDictUnifier.registerOre(ModHandler.getModItem("ThermalExpansion", "sawdust", 1), OrePrefix.dust, Materials.Wood);
-
-        OreDictUnifier.registerOre(ModHandler.getModItem("Railcraft", "tile.railcraft.cube", 1, 6), OrePrefix.stone, Materials.Basalt);
-        OreDictUnifier.registerOre(ModHandler.getModItem("Railcraft", "tile.railcraft.cube", 1, 7), OrePrefix.stone, Materials.Marble);
-        OreDictUnifier.registerOre(ModHandler.getModItem("Railcraft", "tile.railcraft.brick.abyssal", 1, W), OrePrefix.stone, Materials.Basalt);
-        OreDictUnifier.registerOre(ModHandler.getModItem("Railcraft", "tile.railcraft.brick.quarried", 1, W), OrePrefix.stone, Materials.Marble);
         OreDictUnifier.registerOre(new ItemStack(Blocks.OBSIDIAN, 1, W), OrePrefix.stone, Materials.Obsidian);
         OreDictUnifier.registerOre(new ItemStack(Blocks.MOSSY_COBBLESTONE, 1, W), "stoneMossy");
         OreDictUnifier.registerOre(new ItemStack(Blocks.MOSSY_COBBLESTONE, 1, W), "stoneCobble");
@@ -278,13 +271,8 @@ public class OreDictionaryLoader implements Runnable {
 
         OreDictUnifier.registerOre(new ItemStack(Blocks.REDSTONE_TORCH, 1, W), "craftingRedstoneTorch");
 
-//        OreDictUnifier.registerOre(new ItemStack(MetaBlocks.MACHINE, 1), "craftingWorkBench");
-//        OreDictUnifier.registerOre(new ItemStack(MetaBlocks.MACHINE, 1, 16), "craftingWorkBench");
-
         OreDictUnifier.registerOre(new ItemStack(Blocks.PISTON, 1, W), "craftingPiston");
         OreDictUnifier.registerOre(new ItemStack(Blocks.STICKY_PISTON, 1, W), "craftingPiston");
-
-//        OreDictUnifier.registerOre(new ItemStack(MetaBlocks.MACHINE, 1, 45), "craftingSafe");
 
         OreDictUnifier.registerOre(new ItemStack(Blocks.CHEST, 1, W), "craftingChest");
         OreDictUnifier.registerOre(new ItemStack(Blocks.TRAPPED_CHEST, 1, W), "craftingChest");

@@ -1,11 +1,11 @@
 package gregtech.loaders.preload;
 
-import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
+import gregtech.api.util.GTLog;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -13,29 +13,24 @@ import net.minecraft.item.ItemStack;
 import static gregtech.api.GTValues.M;
 import static gregtech.api.GTValues.W;
 
-public class MaterialInfoLoader implements Runnable {
+public class MaterialInfoLoader {
     
-    public void run() {
-        //GTLog.logger.info("Loading Item Data Tags");
-        //OreDictUnifier.registerOre(ModHandler.getModItem("TwilightForest", "item.giantPick", 1, 0), new ItemMaterialInfo(new MaterialStack(Materials.Stone, 696729600L), new MaterialStack(Materials.Wood, 464486400L)));
-        //OreDictUnifier.registerOre(ModHandler.getModItem("TwilightForest", "item.giantSword", 1, 0), new ItemMaterialInfo(new MaterialStack(Materials.Stone, 464486400L), new MaterialStack(Materials.Wood, 232243200L)));
-        //OreDictUnifier.registerOre(ModHandler.getModItem("TwilightForest", "tile.GiantLog", 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 232243200L)));
-        //OreDictUnifier.registerOre(ModHandler.getModItem("TwilightForest", "tile.GiantCobble", 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Stone, 232243200L)));
-        //OreDictUnifier.registerOre(ModHandler.getModItem("TwilightForest", "tile.GiantObsidian", 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Obsidian, 232243200L)));
-        //OreDictUnifier.registerOre(ModHandler.getModItem("TwilightForest", "item.minotaurAxe", 1, 0), new ItemMaterialInfo(new MaterialStack(Materials.Diamond, 14515200L), new MaterialStack(Materials.Wood, OrePrefix.stick.materialAmount * 2L)));
-        //OreDictUnifier.registerOre(ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1, 10), new ItemMaterialInfo(new MaterialStack(Materials.CertusQuartz, 1814400L)));
-        //OreDictUnifier.registerOre(ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1, 11), new ItemMaterialInfo(new MaterialStack(Materials.NetherQuartz, 1814400L)));
+    public static void init() {
+        OreDictUnifier.registerOre(new ItemStack(Items.IRON_DOOR, 1), new ItemMaterialInfo(new MaterialStack(Materials.Iron, 21772800L)));
+        OreDictUnifier.registerOre(new ItemStack(Items.ACACIA_DOOR, 1, 32767), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 21772800L)));
+        OreDictUnifier.registerOre(new ItemStack(Items.BIRCH_DOOR, 1, 32767), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 21772800L)));
+        OreDictUnifier.registerOre(new ItemStack(Items.JUNGLE_DOOR, 1, 32767), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 21772800L)));
+        OreDictUnifier.registerOre(new ItemStack(Items.OAK_DOOR, 1, 32767), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 21772800L)));
+        OreDictUnifier.registerOre(new ItemStack(Items.SPRUCE_DOOR, 1, 32767), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 21772800L)));
+        OreDictUnifier.registerOre(new ItemStack(Items.DARK_OAK_DOOR, 1, 32767), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 21772800L)));
+
         OreDictUnifier.registerOre(new ItemStack(Blocks.QUARTZ_BLOCK, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.NetherQuartz, 14515200L)));
-        //OreDictUnifier.registerOre(ModHandler.getModItem("appliedenergistics2", "tile.BlockQuartz", 1, W), new ItemMaterialInfo(new MaterialStack(Materials.CertusQuartz, 14515200L)));
-        //OreDictUnifier.registerOre(ModHandler.getModItem("appliedenergistics2", "tile.BlockQuartzPillar", 1, W), new ItemMaterialInfo(new MaterialStack(Materials.CertusQuartz, 14515200L)));
-        //OreDictUnifier.registerOre(ModHandler.getModItem("appliedenergistics2", "tile.BlockQuartzChiseled", 1, W), new ItemMaterialInfo(new MaterialStack(Materials.CertusQuartz, 14515200L)));
         OreDictUnifier.registerOre(new ItemStack(Items.WHEAT, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Wheat, M)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.HAY_BLOCK, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Wheat, 32659200L)));
         OreDictUnifier.registerOre(new ItemStack(Items.SNOWBALL, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Snow, 907200L)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.SNOW, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Snow, M)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.GLOWSTONE, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Glowstone, 14515200L)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.REDSTONE_LAMP, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Glowstone, 14515200L), new MaterialStack(Materials.Redstone, OrePrefix.dust.materialAmount * 4L)));
-        //OreDictUnifier.registerOre(ModHandler.getModItem("Forestry", "craftingMaterial", 1, 5), new ItemMaterialInfo(new MaterialStack(Materials.Ice, M)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.ICE, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Ice, M)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.PACKED_ICE, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Ice, 7257600L)));
         OreDictUnifier.registerOre(new ItemStack(Items.CLAY_BALL, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Clay, 1814400L)));
@@ -56,9 +51,6 @@ public class MaterialInfoLoader implements Runnable {
         OreDictUnifier.registerOre(new ItemStack(Blocks.IRON_BARS, 8, W), new ItemMaterialInfo(new MaterialStack(Materials.Iron, 10886400L)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Gold, 7257600L)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Iron, 7257600L)));
-        OreDictUnifier.registerOre(ModHandler.getModItem("Railcraft", "tile.railcraft.anvil", 1, 0), new ItemMaterialInfo(new MaterialStack(Materials.Steel, 108864000L)));
-        OreDictUnifier.registerOre(ModHandler.getModItem("Railcraft", "tile.railcraft.anvil", 1, 1), new ItemMaterialInfo(new MaterialStack(Materials.Steel, 72576000L)));
-        OreDictUnifier.registerOre(ModHandler.getModItem("Railcraft", "tile.railcraft.anvil", 1, 2), new ItemMaterialInfo(new MaterialStack(Materials.Steel, 36288000L)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.ANVIL, 1, 0), new ItemMaterialInfo(new MaterialStack(Materials.Iron, 108864000L)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.ANVIL, 1, 1), new ItemMaterialInfo(new MaterialStack(Materials.Iron, 72576000L)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.ANVIL, 1, 2), new ItemMaterialInfo(new MaterialStack(Materials.Iron, 36288000L)));

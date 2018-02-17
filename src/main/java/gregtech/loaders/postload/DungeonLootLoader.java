@@ -8,9 +8,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.storage.loot.LootTableList;
 
-public class DungeonLootLoader implements Runnable {
+public class DungeonLootLoader {
 
-    public void run() {
+    public static void init() {
 //        if (GregTechMod.gregtechproxy.mIncreaseDungeonLoot) {
 //            ChestGenHooks.addRolls(LootTableList.CHESTS_SPAWN_BONUS_CHEST, 2, 4);
 //            ChestGenHooks.addRolls(LootTableList.CHESTS_SIMPLE_DUNGEON, 1, 3);

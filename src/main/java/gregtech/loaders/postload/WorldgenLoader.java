@@ -10,9 +10,9 @@ import gregtech.common.worldgen.GTWorldGenOreVein;
 import gregtech.common.worldgen.GTWorldGenStone;
 import gregtech.common.worldgen.WorldGenerator;
 
-public class WorldgenLoader implements Runnable {
+public class WorldgenLoader {
 
-    public void run() {
+    public static void init() {
         
         GTLog.logger.info("GregTechMod: Loading world generators");
         
