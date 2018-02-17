@@ -11,15 +11,15 @@ import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 
-public class ProcessingPure implements IOreRegistrationHandler {
+public class ProcessingPure  {
 
     private ProcessingPure() {}
 
     public static void register() {
         ProcessingPure processing = new ProcessingPure();
-        OrePrefix.crushedPurified.addProcessingHandler(processing);
-        OrePrefix.cleanGravel.addProcessingHandler(processing);
-        OrePrefix.reduced.addProcessingHandler(processing);
+        //OrePrefix.crushedPurified.addProcessingHandler(processing);
+        //OrePrefix.cleanGravel.addProcessingHandler(processing);
+       // OrePrefix.reduced.addProcessingHandler(processing);
     }
     
     public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {

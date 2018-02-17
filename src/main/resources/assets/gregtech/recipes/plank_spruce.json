@@ -1,8 +1,8 @@
 {
   "type": "gregtech:metaitem_shaped",
   "pattern": [
-    "s ",
-    " P",
+    "s  ",
+    " P ",
     "   "
   ],
   "key": {

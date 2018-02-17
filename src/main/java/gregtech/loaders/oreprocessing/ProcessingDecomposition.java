@@ -17,17 +17,17 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 
-public class ProcessingDecomposition implements IOreRegistrationHandler {
+public class ProcessingDecomposition  {
 
     private ProcessingDecomposition() {}
 
     public static void register() {
         ProcessingDecomposition processing = new ProcessingDecomposition();
-        OrePrefix.cell.addProcessingHandler(processing);
-        OrePrefix.dust.addProcessingHandler(processing);
+      //  OrePrefix.cell.addProcessingHandler(processing);
+      //  OrePrefix.dust.addProcessingHandler(processing);
     }
 
-    @Override
+    //@Override
     public void registerOre(UnificationEntry entry, String modName, SimpleItemStack itemStack) {
         if(entry.material instanceof FluidMaterial) {
             FluidMaterial material = (FluidMaterial) entry.material;

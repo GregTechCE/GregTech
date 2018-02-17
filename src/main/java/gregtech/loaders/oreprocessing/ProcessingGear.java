@@ -19,14 +19,14 @@ import static gregtech.api.GTValues.W;
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.NO_WORKING;
 import static gregtech.api.unification.material.type.Material.MatFlags.NO_UNIFICATION;
 
-public class ProcessingGear implements IOreRegistrationHandler {
+public class ProcessingGear  {
 
     private ProcessingGear() {}
 
 	public static void register() {
         ProcessingGear processing = new ProcessingGear();
-		OrePrefix.gear.addProcessingHandler(processing);
-		OrePrefix.gearSmall.addProcessingHandler(processing);
+		//OrePrefix.gear.addProcessingHandler(processing);
+		//OrePrefix.gearSmall.addProcessingHandler(processing);
 	}
 
 	public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {

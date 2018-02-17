@@ -702,7 +702,6 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 //				recipeMap.addRecipe(this.copy().inputs(input, ModHandler.IC2.getIC2Item(ItemName.dynamite, dynamite)).build());
 			}
 			recipeMap.addRecipe(this.copy()
-                .inputsIngredients(Collections.singleton(input))
                 .inputs(new ItemStack(Blocks.TNT, TNT))
                 .build());
 //			recipeMap.addRecipe(this.copy().inputs(input, ModHandler.IC2.getIC2Item(BlockName.te, TeBlock.itnt, ITNT)).build());

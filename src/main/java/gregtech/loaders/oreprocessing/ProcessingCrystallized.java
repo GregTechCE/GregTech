@@ -10,14 +10,14 @@ import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 
-public class ProcessingCrystallized implements IOreRegistrationHandler {
+public class ProcessingCrystallized  {
 
 	private ProcessingCrystallized() {}
 
 	public static void register() {
 	    ProcessingCrystallized processing = new ProcessingCrystallized();
-		OrePrefix.crystal.addProcessingHandler(processing);
-		OrePrefix.crystalline.addProcessingHandler(processing);
+		//OrePrefix.crystal.addProcessingHandler(processing);
+		//OrePrefix.crystalline.addProcessingHandler(processing);
 	}
 
 	public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {

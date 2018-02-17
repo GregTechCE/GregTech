@@ -16,19 +16,19 @@ import net.minecraft.item.ItemStack;
 
 import static gregtech.api.GTValues.L;
 
-public class ProcessingWire implements IOreRegistrationHandler {
+public class ProcessingWire  {
 
     private ProcessingWire() {
     }
 
     public static void register() {
         ProcessingWire processing = new ProcessingWire();
-        OrePrefix.wireGt01.addProcessingHandler(processing);
-        OrePrefix.wireGt02.addProcessingHandler(processing);
-        OrePrefix.wireGt04.addProcessingHandler(processing);
-        OrePrefix.wireGt08.addProcessingHandler(processing);
-        OrePrefix.wireGt12.addProcessingHandler(processing);
-        OrePrefix.wireGt16.addProcessingHandler(processing);
+       // OrePrefix.wireGt01.addProcessingHandler(processing);
+        //OrePrefix.wireGt02.addProcessingHandler(processing);
+       // OrePrefix.wireGt04.addProcessingHandler(processing);
+      //  OrePrefix.wireGt08.addProcessingHandler(processing);
+      //  OrePrefix.wireGt12.addProcessingHandler(processing);
+       // OrePrefix.wireGt16.addProcessingHandler(processing);
     }
 
     public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {

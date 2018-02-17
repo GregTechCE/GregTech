@@ -14,18 +14,18 @@ import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 
-public class ProcessingDirtyDust implements IOreRegistrationHandler {
+public class ProcessingDirtyDust  {
 
     private ProcessingDirtyDust() {}
 
     public static void register() {
         ProcessingDirtyDust processing = new ProcessingDirtyDust();
-        OrePrefix.dustImpure.addProcessingHandler(processing);
-        OrePrefix.dustPure.addProcessingHandler(processing);
-        OrePrefix.dustRefined.addProcessingHandler(processing);
+       // OrePrefix.dustImpure.addProcessingHandler(processing);
+        //OrePrefix.dustPure.addProcessingHandler(processing);
+       // OrePrefix.dustRefined.addProcessingHandler(processing);
     }
 
-    @Override
+   // @Override
     public void registerOre(UnificationEntry entry, String modName, SimpleItemStack itemStack) {
         if(entry.material instanceof DustMaterial) {
             DustMaterial material = (DustMaterial) entry.material;

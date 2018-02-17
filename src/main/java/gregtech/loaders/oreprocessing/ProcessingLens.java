@@ -13,13 +13,13 @@ import gregtech.api.util.GTUtility;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 
-public class ProcessingLens implements IOreRegistrationHandler {
+public class ProcessingLens  {
 
     private ProcessingLens() {}
 
-    public static void register() {
-        OrePrefix.lens.addProcessingHandler(new ProcessingLens());
-    }
+   // public static void register() {
+    //    OrePrefix.lens.addProcessingHandler(new ProcessingLens());
+   // }
     
     public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {
         if(entry.material instanceof GemMaterial) {

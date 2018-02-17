@@ -15,6 +15,7 @@ import gregtech.api.unification.stack.UnificationEntry;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -96,12 +97,11 @@ public class OreDictUnifier {
         }
         //finally register item
         if(orePrefix != null && (material != null || orePrefix.isSelfReferencing)) {
-            String registeringMod = Loader.instance().activeModContainer().getModId();
             UnificationEntry unificationEntry = new UnificationEntry(orePrefix, material);
             SimpleItemStack simpleItemStack = new SimpleItemStack(event.getOre());
             stackUnificationInfo.put(simpleItemStack, unificationEntry);
             stackUnificationItems.computeIfAbsent(unificationEntry, p -> new ArrayList<>()).add(simpleItemStack);
-            orePrefix.processOreRegistration(material, registeringMod, simpleItemStack);
+            orePrefix.processOreRegistration(material);
         }
     }
 
@@ -147,7 +147,7 @@ public class OreDictUnifier {
             return itemStack;
         ArrayList<SimpleItemStack> keys = stackUnificationItems.get(unificationEntry);
         keys.sort(Comparator.comparing(a -> a.item.delegate.name().getResourceDomain()));
-        return keys.size() > 0 ? keys.get(0).asItemStack() : itemStack;
+        return keys.size() > 0 ? keys.get(0).asItemStack(itemStack.getCount()) : itemStack;
     }
 
     public static ItemStack get(OrePrefix orePrefix, Material material) {

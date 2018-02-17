@@ -1,16 +1,13 @@
 package gregtech.api.unification.ore;
 
 import com.google.common.base.Preconditions;
-import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.material.MarkerMaterials;
-import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.material.MaterialIconType;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.*;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.Condition;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Items;
@@ -20,6 +17,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static gregtech.api.GTValues.M;
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.*;
@@ -92,8 +92,6 @@ public enum OrePrefix {
 
     stickLong("Long Sticks/Rods", M, null, MaterialIconType.stickLong, ENABLE_UNIFICATION, mat -> mat instanceof SolidMaterial && mat.hasFlag(GENERATE_ROD)), // Stick made of an Ingot.
     stick("Sticks/Rods", M / 2, null, MaterialIconType.stick, ENABLE_UNIFICATION, mat -> mat instanceof SolidMaterial && mat.hasFlag(GENERATE_ROD)), // Stick made of half an Ingot. Introduced by Eloraam
-
-    round("Rounds", M / 9, null, MaterialIconType.round, ENABLE_UNIFICATION, mat -> mat instanceof MetalMaterial && mat.hasFlag(GENERATE_ROUNDS)), // consisting out of one Nugget.
 
     bolt("Bolts", M / 8, null, MaterialIconType.bolt, ENABLE_UNIFICATION, mat -> mat instanceof MetalMaterial && mat.hasFlag(GENERATE_BOLT_SCREW)), // consisting out of 1/8 Ingot or 1/4 Stick.
 
@@ -262,7 +260,6 @@ public enum OrePrefix {
     static {
         bottle.containerItem = new ItemStack(Items.GLASS_BOTTLE);
         bucket.containerItem = new ItemStack(Items.BUCKET);
-//        cell.containerItem = ModHandler.IC2.getIC2Item(ItemName.fluid_cell, 1);
 
         ingotHot.heatDamage = 3.0F;
         cellPlasma.heatDamage = 6.0F;
@@ -324,7 +321,6 @@ public enum OrePrefix {
         gem.ignoredMaterials.add(Materials.EnderEye);
         gem.ignoredMaterials.add(Materials.Flint);
         gem.ignoredMaterials.add(Materials.Lapis);
-        dust.ignoredMaterials.add(Materials.Bone);
         dust.ignoredMaterials.add(Materials.Redstone);
         dust.ignoredMaterials.add(Materials.Glowstone);
         dust.ignoredMaterials.add(Materials.Gunpowder);
@@ -445,8 +441,9 @@ public enum OrePrefix {
      */
     public @Nullable Material materialType;
 
-    private final ArrayList<IOreRegistrationHandler> oreProcessingHandlers = new ArrayList<>();
-    private final ArrayList<Material> ignoredMaterials = new ArrayList<>();
+    private final List<IOreRegistrationHandler> oreProcessingHandlers = new ArrayList<>();
+    private final Set<Material> ignoredMaterials = new HashSet<>();
+    private final Set<Material> generatedMaterials = new HashSet<>();
 
     public @Nullable ItemStack containerItem = null;
     public byte defaultStackSize = 64;
@@ -489,21 +486,26 @@ public enum OrePrefix {
         return oreProcessingHandlers.add(processingHandler);
     }
 
-    public void processOreRegistration(@Nullable Material material, String modName, SimpleItemStack itemStack) {
-        if(isSelfReferencing) {
-            if(material == null) {
-                material = materialType; //append default material for self-referencing OrePrefix
-            }
-        } else if(material == null) {
-            GTLog.logger.warn(
-                    "Mod %s attempted to register %s with ore prefix %s without material, but OrePrefix is not self resolving!",
-                    modName, itemStack, this);
-            return;
+    public void processOreRegistration(@Nullable Material material) {
+        if(this.isSelfReferencing && material == null) {
+            material = materialType; //append default material for self-referencing OrePrefix
         }
-        
-        UnificationEntry unificationEntry = new UnificationEntry(this, material);
-        for(IOreRegistrationHandler handler : oreProcessingHandlers) {
-            handler.registerOre(unificationEntry, modName, itemStack);
+        if(material != null && !ignoredMaterials.contains(material)) {
+            generatedMaterials.add(material);
+        }
+    }
+
+    public static void runMaterialHandlers() {
+        for(OrePrefix orePrefix : values()) {
+            orePrefix.runGeneratedMaterialHandlers();
+        }
+    }
+
+    private void runGeneratedMaterialHandlers() {
+        for(Material registeredMaterial : generatedMaterials) {
+            for(IOreRegistrationHandler registrationHandler : oreProcessingHandlers) {
+                registrationHandler.processMaterial(this, registeredMaterial);
+            }
         }
     }
 

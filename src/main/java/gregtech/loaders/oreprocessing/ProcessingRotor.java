@@ -16,12 +16,12 @@ import net.minecraft.item.ItemStack;
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.NO_WORKING;
 import static gregtech.api.unification.material.type.Material.MatFlags.NO_UNIFICATION;
 
-public class ProcessingRotor implements IOreRegistrationHandler {
+public class ProcessingRotor  {
 
     private ProcessingRotor() {}
 
 	public static void register() {
-		OrePrefix.rotor.addProcessingHandler(new ProcessingRotor());
+		//OrePrefix.rotor.addProcessingHandler(new ProcessingRotor());
 	}
 
 	public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {

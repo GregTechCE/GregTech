@@ -15,14 +15,14 @@ import net.minecraft.item.ItemStack;
 
 import static gregtech.api.GTValues.W;
 
-public class ProcessingPlank implements IOreRegistrationHandler {
+public class ProcessingPlank  {
 
     private ProcessingPlank() {}
 
-    public static void register() {
-        OrePrefix.plank.addProcessingHandler(new ProcessingPlank());
-    }
-
+   // public static void register() {
+   //     OrePrefix.plank.addProcessingHandler(new ProcessingPlank());
+   // }
+//
     public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {
         ItemStack stack = simpleStack.asItemStack();
 

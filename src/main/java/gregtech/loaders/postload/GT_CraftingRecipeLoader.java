@@ -1,7 +1,7 @@
 package gregtech.loaders.postload;
 
 @SuppressWarnings("ALL")
-public class GT_CraftingRecipeLoader implements Runnable {
+public class    GT_CraftingRecipeLoader implements Runnable {
 
     @Override
     public void run() {

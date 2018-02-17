@@ -10,7 +10,7 @@ import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import net.minecraft.item.ItemStack;
 
-public class ProcessingPolarizing implements IOreRegistrationHandler {
+public class ProcessingPolarizing  {
 
     private ProcessingPolarizing() {}
 
@@ -18,7 +18,7 @@ public class ProcessingPolarizing implements IOreRegistrationHandler {
         ProcessingPolarizing processing = new ProcessingPolarizing();
         for (OrePrefix prefix : OrePrefix.values()) {
             if (prefix.materialAmount > 0L && prefix.generationCondition != null) {
-                prefix.addProcessingHandler(processing);
+               // prefix.addProcessingHandler(processing);
             }
         }
     }

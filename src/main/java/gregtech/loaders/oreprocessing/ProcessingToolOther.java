@@ -15,15 +15,15 @@ import net.minecraft.item.ItemStack;
 
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.NO_SMASHING;
 
-public class ProcessingToolOther implements IOreRegistrationHandler {
+public class ProcessingToolOther  {
 
     private ProcessingToolOther() { }
 
     public static void register() {
-		OrePrefix.toolHeadHammer.addProcessingHandler(new ProcessingToolOther());
+	//	OrePrefix.toolHeadHammer.addProcessingHandler(new ProcessingToolOther());
 	}
 
-	@Override
+	//@Override
 	public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {
 		if (entry.material != Materials.Stone && entry.material != Materials.Flint) {
 			if (entry.material != Materials.Rubber) {

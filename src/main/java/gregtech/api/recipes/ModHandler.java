@@ -48,6 +48,7 @@ import net.minecraftforge.registries.RegistryManager;
 
 import org.apache.commons.lang3.Validate;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -294,7 +295,6 @@ public class ModHandler {
      * </ul>
      */
     public static void addShapedRecipe(String regName, ItemStack result, Object... recipe) {
-        result = OreDictUnifier.getUnificated(result);
         boolean skip = false;
         if (result.isEmpty()) {
             GTLog.logger.error("Result cannot be an empty ItemStack", new IllegalArgumentException());
@@ -356,63 +356,10 @@ public class ModHandler {
             if (s.length() > 3) throw new IllegalArgumentException();
 
             for (char c : s.toString().toCharArray()) {
-                switch (c) {
-                    case 'b':
-                        recipeList.add(c);
-                        recipeList.add(ToolDictNames.craftingToolBlade.name());
-                        break;
-                    case 'c':
-                        recipeList.add(c);
-                        recipeList.add(ToolDictNames.craftingToolCrowbar.name());
-                        break;
-                    case 'd':
-                        recipeList.add(c);
-                        recipeList.add(ToolDictNames.craftingToolScrewdriver.name());
-                        break;
-                    case 'f':
-                        recipeList.add(c);
-                        recipeList.add(ToolDictNames.craftingToolFile.name());
-                        break;
-                    case 'h':
-                        recipeList.add(c);
-                        recipeList.add(ToolDictNames.craftingToolHardHammer.name());
-                        break;
-                    case 'i':
-                        recipeList.add(c);
-                        recipeList.add(ToolDictNames.craftingToolSolderingIron.name());
-                        break;
-                    case 'j':
-                        recipeList.add(c);
-                        recipeList.add(ToolDictNames.craftingToolSolderingMetal.name());
-                        break;
-                    case 'k':
-                        recipeList.add(c);
-                        recipeList.add(ToolDictNames.craftingToolKnife.name());
-                        break;
-                    case 'm':
-                        recipeList.add(c);
-                        recipeList.add(ToolDictNames.craftingToolMortar.name());
-                        break;
-                    case 'p':
-                        recipeList.add(c);
-                        recipeList.add(ToolDictNames.craftingToolDrawplate.name());
-                        break;
-                    case 'r':
-                        recipeList.add(c);
-                        recipeList.add(ToolDictNames.craftingToolSoftHammer.name());
-                        break;
-                    case 's':
-                        recipeList.add(c);
-                        recipeList.add(ToolDictNames.craftingToolSaw.name());
-                        break;
-                    case 'w':
-                        recipeList.add(c);
-                        recipeList.add(ToolDictNames.craftingToolWrench.name());
-                        break;
-                    case 'x':
-                        recipeList.add(c);
-                        recipeList.add(ToolDictNames.craftingToolWireCutter.name());
-                        break;
+                String toolName = getToolNameByCharacter(c);
+                if(toolName != null) {
+                    recipeList.add(c);
+                    recipeList.add(toolName);
                 }
             }
         }
@@ -423,7 +370,6 @@ public class ModHandler {
      * Add Shapeless Crafting Recipes
      */
     public static void addShapelessRecipe(String regName, ItemStack result, Object... recipe) {
-        result = OreDictUnifier.getUnificated(result);
         boolean skip = false;
         if (result.isEmpty()) {
             GTLog.logger.error("Result ItemStack cannot be empty", new IllegalArgumentException());
@@ -439,11 +385,16 @@ public class ModHandler {
                 recipe[i] = ((Enum<?>) recipe[i]).name();
             } else if (recipe[i] instanceof UnificationEntry) {
                 recipe[i] = recipe[i].toString();
+            } else if(recipe[i] instanceof Character) {
+                String toolName = getToolNameByCharacter((char) recipe[i]);
+                if(toolName == null) {
+                    throw new IllegalArgumentException("Tool name is not found for char " + recipe[i]);
+                }
+                recipe[i] = toolName;
             } else if (!(recipe[i] instanceof ItemStack
                     || recipe[i] instanceof Item
                     || recipe[i] instanceof Block
-                    || recipe[i] instanceof String
-                    || recipe[i] instanceof Character)) {
+                    || recipe[i] instanceof String)) {
                 throw new IllegalArgumentException(recipe.getClass().getSimpleName() + " type is not suitable for crafting input.");
             }
         }
@@ -451,6 +402,26 @@ public class ModHandler {
         IRecipe shapelessRecipe = new ShapelessOreRecipe(null, result.copy(), recipe)
             .setRegistryName(regName);
         ForgeRegistries.RECIPES.register(shapelessRecipe);
+    }
+
+    private @Nullable static String getToolNameByCharacter(char character) {
+        switch (character) {
+            case 'b': return ToolDictNames.craftingToolBlade.name();
+            case 'c': return ToolDictNames.craftingToolCrowbar.name();
+            case 'd': return ToolDictNames.craftingToolScrewdriver.name();
+            case 'f': return ToolDictNames.craftingToolFile.name();
+            case 'h': return ToolDictNames.craftingToolHardHammer.name();
+            case 'i': return ToolDictNames.craftingToolSolderingIron.name();
+            case 'j': return ToolDictNames.craftingToolSolderingMetal.name();
+            case 'k': return ToolDictNames.craftingToolKnife.name();
+            case 'm': return ToolDictNames.craftingToolMortar.name();
+            case 'p': return ToolDictNames.craftingToolDrawplate.name();
+            case 'r': return ToolDictNames.craftingToolSoftHammer.name();
+            case 's': return ToolDictNames.craftingToolSaw.name();
+            case 'w': return ToolDictNames.craftingToolWrench.name();
+            case 'x': return ToolDictNames.craftingToolWireCutter.name();
+            default: return null;
+        }
     }
 
     ///////////////////////////////////////////////////

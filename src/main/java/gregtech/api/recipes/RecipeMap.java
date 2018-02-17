@@ -513,7 +513,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 	 *         		.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<RecipeBuilder.ImplosionRecipeBuilder> IMPLOSION_RECIPES = new RecipeMap<>(new HashSet<>(50), "implosioncompressor", "basicmachines/Default", 2, 2, 2, 2, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.ImplosionRecipeBuilder().duration(20).EUt(30));
+	public static final RecipeMap<RecipeBuilder.ImplosionRecipeBuilder> IMPLOSION_RECIPES = new RecipeMap<>(new HashSet<>(50), "implosioncompressor", "basicmachines/Default", 1, 2, 1, 2, 0, 0, 0, 0, true, 1, 1, true, new RecipeBuilder.ImplosionRecipeBuilder().duration(20).EUt(30));
 
 	/**
 	 * Example:
@@ -704,7 +704,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 	 *				.buildAndRegister();
 	 * </pre>
 	 */
-	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> CUTTER_RECIPES = new RecipeMap<>(new HashSet<>(200), "cuttingsaw", "basicmachines/Cutter", 1, 1, 0, 0, 1, 1, 1, 2, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder() {
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> CUTTER_RECIPES = new RecipeMap<>(new HashSet<>(200), "cuttingsaw", "basicmachines/Cutter", 1, 1, 1, 1, 0, 1, 0, 0, true, 1, 1, true, new RecipeBuilder.DefaultRecipeBuilder() {
 		@Override
 		public void buildAndRegister() {
 			if (fluidInputs.isEmpty()) {
@@ -787,9 +787,9 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 		}
 	});
 
-	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> SMALL_NAQUADAH_REACTOR_FUELS = new RecipeMap<>(new HashSet<>(10), "smallnaquadahreactor", "basicmachines/Default", 1, 1, 1, 1, 0, 0, 0, 0, true, 1, 1000, true, new RecipeBuilder.DefaultRecipeBuilder());
-	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> LARGE_NAQUADAH_REACTOR_FUELS = new RecipeMap<>(new HashSet<>(10), "largenaquadahreactor", "basicmachines/Default", 1, 1, 1, 1, 0, 0, 0, 0, true, 1, 1000, true, new RecipeBuilder.DefaultRecipeBuilder());
-	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> FLUID_NAQUADAH_REACTOR_FUELS = new RecipeMap<>(new HashSet<>(10), "fluidnaquadahreactor", "basicmachines/Default", 1, 1, 1, 1, 0, 0, 0, 0, true, 1, 1000, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> SMALL_NAQUADAH_REACTOR_FUELS = new RecipeMap<>(new HashSet<>(10), "smallnaquadahreactor", "basicmachines/Default", 1, 1, 0, 0, 0, 1, 0, 0, true, 1, 1000, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> LARGE_NAQUADAH_REACTOR_FUELS = new RecipeMap<>(new HashSet<>(10), "largenaquadahreactor", "basicmachines/Default", 1, 1, 0, 0, 0, 1, 0, 0, true, 1, 1000, true, new RecipeBuilder.DefaultRecipeBuilder());
+	public static final RecipeMap<RecipeBuilder.DefaultRecipeBuilder> FLUID_NAQUADAH_REACTOR_FUELS = new RecipeMap<>(new HashSet<>(10), "fluidnaquadahreactor", "basicmachines/Default", 0, 0, 0, 0, 1, 1, 0, 0, true, 1, 1000, true, new RecipeBuilder.DefaultRecipeBuilder());
 
 	/**
 	 * Example:

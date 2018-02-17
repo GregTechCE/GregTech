@@ -20,14 +20,14 @@ import static gregtech.api.GTValues.W;
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.NO_SMASHING;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.MORTAR_GRINDABLE;
 
-public class ProcessingPlate implements IOreRegistrationHandler {
+public class ProcessingPlate  {
 
     private ProcessingPlate() {}
 
     public static void register() {
         ProcessingPlate processing = new ProcessingPlate();
-        OrePrefix.plate.addProcessingHandler(processing);
-        OrePrefix.plateDense.addProcessingHandler(processing);
+        //OrePrefix.plate.addProcessingHandler(processing);
+        //OrePrefix.plateDense.addProcessingHandler(processing);
     }
 
     public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {

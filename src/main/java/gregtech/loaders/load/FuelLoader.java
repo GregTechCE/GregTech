@@ -6,9 +6,9 @@ import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 
-public class FuelLoader implements Runnable {
+public class FuelLoader {
 
-    public void run() {
+    public void registerFuels() {
         RecipeMap.SMALL_NAQUADAH_REACTOR_FUELS.recipeBuilder()
                 .inputs(OreDictUnifier.get(OrePrefix.bolt, Materials.Naquadah))
                 .EUt((int) GTValues.V[4])

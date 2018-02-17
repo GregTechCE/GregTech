@@ -12,15 +12,11 @@ import gregtech.common.items.MetaItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
-public class ProcessingCraftingLens implements IOreRegistrationHandler {
+public class ProcessingCraftingLens  {
 
     private ProcessingCraftingLens() { }
 
-    public static void register() {
-		OrePrefix.craftingLens.addProcessingHandler(new ProcessingCraftingLens());
-	}
 
-	@Override
 	public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {
 		ItemStack stack = simpleStack.asItemStack();
 

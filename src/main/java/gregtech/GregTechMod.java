@@ -8,6 +8,7 @@ import gregtech.api.net.NetworkHandler;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.GTLog;
 import gregtech.common.CommonProxy;
 import gregtech.common.MetaFluids;
@@ -15,6 +16,9 @@ import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.modelfactories.BlockCompressedFactory;
 import gregtech.common.blocks.modelfactories.BlockOreFactory;
 import gregtech.common.items.MetaItems;
+import gregtech.loaders.load.FuelLoader;
+import gregtech.loaders.oreprocessing.OreProcessingHandler;
+import gregtech.loaders.postload.DungeonLootLoader;
 import gregtech.loaders.preload.MaterialInfoLoader;
 import gregtech.loaders.preload.OreDictionaryLoader;
 import net.minecraft.init.Items;
@@ -31,7 +35,8 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 @Mod(modid = GTValues.MODID,
      name = "GregTech",
      version = "5.10.90",
-     acceptedMinecraftVersions = "[1.12,1.13)")
+     acceptedMinecraftVersions = "[1.12,1.13)",
+    dependencies = "before:forestry")
 public class GregTechMod {
 
     static {
@@ -60,14 +65,11 @@ public class GregTechMod {
         SimpleCapabilityManager.init();
 
         OreDictUnifier.init();
-//        new OreProcessingLoader().run();
-        new MaterialInfoLoader().run();
+        new OreProcessingHandler().registerProcessing();
 
         MetaBlocks.init();
         MetaItems.init();
         MetaFluids.init();
-
-//        new MTELoader().run();
 
         gregtechproxy.onPreLoad();
 
@@ -78,10 +80,10 @@ public class GregTechMod {
     public void onInit(FMLInitializationEvent event) {
         GTLog.logger.info("Init-Phase started!");
 
-//        new BeeLoader();
-
         new OreDictionaryLoader().run();
         MetaItems.registerOreDict();
+        new MaterialInfoLoader().run();
+        OrePrefix.runMaterialHandlers();
         MetaItems.registerRecipes();
 
         gregtechproxy.onLoad();
@@ -90,7 +92,6 @@ public class GregTechMod {
             throw new LoaderException("Found at least one invalid recipe. Please read the log above for more details.");
         }
 
-//        new FuelLoader().run();
         Material.init();
         GTLog.logger.info("Init-Phase finished!");
     }
@@ -101,7 +102,8 @@ public class GregTechMod {
 
         gregtechproxy.onPostLoad();
 
-//        new DungeonLootLoader().run();
+        new FuelLoader().registerFuels();
+        new DungeonLootLoader().run();
 //        new BlockResistanceLoader().run();
 //        new MachineRecipeLoader().run();
 //        new ScrapboxRecipeLoader().run();

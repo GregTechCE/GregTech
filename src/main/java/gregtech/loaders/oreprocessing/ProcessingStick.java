@@ -13,14 +13,14 @@ import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 
-public class ProcessingStick implements IOreRegistrationHandler {
+public class ProcessingStick  {
 
     private ProcessingStick() {}
 
     public static void register() {
         ProcessingStick processing = new ProcessingStick();
-        OrePrefix.stick.addProcessingHandler(processing);
-        OrePrefix.stickLong.addProcessingHandler(processing);
+        //OrePrefix.stick.addProcessingHandler(processing);
+        //OrePrefix.stickLong.addProcessingHandler(processing);
     }
 
     public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {

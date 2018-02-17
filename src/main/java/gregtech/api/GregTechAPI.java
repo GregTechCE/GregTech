@@ -3,7 +3,10 @@ package gregtech.api;
 import com.google.common.collect.EnumHashBiMap;
 
 import gregtech.api.metatileentity.IMetaTileEntityFactory;
+import gregtech.api.unification.OreDictUnifier;
+import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.ore.StoneType;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.util.GTControlledRegistry;
@@ -38,7 +41,12 @@ public class GregTechAPI {
     public static final CreativeTabs TAB_GREGTECH_MATERIALS = new CreativeTabs("gregtech.materials") {
         @Override
         public ItemStack getTabIconItem() {
-            return MetaItems.THERMOS_CAN_CHOCOLATE_MILK.getStackForm();
+            return OreDictUnifier.get(OrePrefix.ingot, Materials.Aluminium);
+        }
+
+        @Override
+        public boolean hasSearchBar() {
+            return true;
         }
     };
 
@@ -46,6 +54,11 @@ public class GregTechAPI {
         @Override
         public ItemStack getTabIconItem() {
             return MetaItems.JACKHAMMER.getStackForm();
+        }
+
+        @Override
+        public boolean hasSearchBar() {
+            return true;
         }
     };
 

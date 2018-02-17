@@ -18,7 +18,7 @@ import java.util.List;
 
 import static gregtech.api.GTValues.M;
 
-public class ProcessingGem implements IOreRegistrationHandler {
+public class ProcessingGem  {
 
     private static List<OrePrefix> ORDER = Arrays.asList(
             OrePrefix.gemChipped, OrePrefix.gemFlawed, OrePrefix.gem, OrePrefix.gemFlawless, OrePrefix.gemExquisite
@@ -28,7 +28,7 @@ public class ProcessingGem implements IOreRegistrationHandler {
 
     public static void register() {
         ProcessingGem processing = new ProcessingGem();
-        ORDER.forEach(p -> p.addProcessingHandler(processing));
+       // ORDER.forEach(p -> p.addProcessingHandler(processing));
     }
 
     public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {

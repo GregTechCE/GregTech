@@ -12,15 +12,15 @@ import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 
-public class ProcessingCrushedPurified implements IOreRegistrationHandler {
+public class ProcessingCrushedPurified  {
 
     private ProcessingCrushedPurified() {}
 
-    public static void register() {
-        OrePrefix.crushedPurified.addProcessingHandler(new ProcessingCrushedPurified());
-    }
+    //public static void register() {
+       // OrePrefix.crushedPurified.addProcessingHandler(new ProcessingCrushedPurified());
+   // }
 
-    @Override
+   // @Override
     public void registerOre(UnificationEntry entry, String modName, SimpleItemStack itemStack) {
         if (entry.material instanceof SolidMaterial) {
             ItemStack crushedPurifiedStack = itemStack.asItemStack();

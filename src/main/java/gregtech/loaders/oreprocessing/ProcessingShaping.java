@@ -19,14 +19,14 @@ import static gregtech.api.GTValues.M;
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.NO_SMASHING;
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.NO_SMELTING;
 
-public class ProcessingShaping implements IOreRegistrationHandler {
+public class ProcessingShaping  {
 
     private ProcessingShaping() { }
 
     public static void register() {
         ProcessingShaping processing = new ProcessingShaping();
-        OrePrefix.ingot.addProcessingHandler(processing);
-        OrePrefix.dust.addProcessingHandler(processing);
+        //OrePrefix.ingot.addProcessingHandler(processing);
+        //OrePrefix.dust.addProcessingHandler(processing);
     }
 
     public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {

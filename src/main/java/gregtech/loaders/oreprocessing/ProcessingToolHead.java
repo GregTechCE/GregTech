@@ -15,31 +15,31 @@ import gregtech.common.items.MetaItems;
 
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.NO_SMASHING;
 
-public class ProcessingToolHead implements IOreRegistrationHandler {
+public class ProcessingToolHead  {
 
     private ProcessingToolHead() {}
 
     public static void register() {
         ProcessingToolHead processing = new ProcessingToolHead();
-        OrePrefix.toolHeadAxe.addProcessingHandler(processing);
-        OrePrefix.toolHeadBuzzSaw.addProcessingHandler(processing);
-        OrePrefix.toolHeadChainsaw.addProcessingHandler(processing);
-        OrePrefix.toolHeadDrill.addProcessingHandler(processing);
-        OrePrefix.toolHeadFile.addProcessingHandler(processing);
-        OrePrefix.toolHeadHoe.addProcessingHandler(processing);
-        OrePrefix.toolHeadPickaxe.addProcessingHandler(processing);
-        OrePrefix.toolHeadPlow.addProcessingHandler(processing);
-        OrePrefix.toolHeadSaw.addProcessingHandler(processing);
-        OrePrefix.toolHeadSense.addProcessingHandler(processing);
-        OrePrefix.toolHeadShovel.addProcessingHandler(processing);
-        OrePrefix.toolHeadSword.addProcessingHandler(processing);
-        OrePrefix.toolHeadUniversalSpade.addProcessingHandler(processing);
-        OrePrefix.toolHeadWrench.addProcessingHandler(processing);
-        OrePrefix.toolHeadHammer.addProcessingHandler(processing);
-        OrePrefix.turbineBlade.addProcessingHandler(processing);
+        //OrePrefix.toolHeadAxe.addProcessingHandler(processing);
+        //OrePrefix.toolHeadBuzzSaw.addProcessingHandler(processing);
+        //OrePrefix.toolHeadChainsaw.addProcessingHandler(processing);
+       // OrePrefix.toolHeadDrill.addProcessingHandler(processing);
+       // OrePrefix.toolHeadFile.addProcessingHandler(processing);
+       // OrePrefix.toolHeadHoe.addProcessingHandler(processing);
+       // OrePrefix.toolHeadPickaxe.addProcessingHandler(processing);
+       // OrePrefix.toolHeadPlow.addProcessingHandler(processing);
+      //  OrePrefix.toolHeadSaw.addProcessingHandler(processing);
+       // OrePrefix.toolHeadSense.addProcessingHandler(processing);
+      //  OrePrefix.toolHeadShovel.addProcessingHandler(processing);
+      //  OrePrefix.toolHeadSword.addProcessingHandler(processing);
+       // OrePrefix.toolHeadUniversalSpade.addProcessingHandler(processing);
+      //  OrePrefix.toolHeadWrench.addProcessingHandler(processing);
+       // OrePrefix.toolHeadHammer.addProcessingHandler(processing);
+      //  OrePrefix.turbineBlade.addProcessingHandler(processing);
     }
 
-    @Override
+  //  @Override
     public void registerOre(UnificationEntry entry, String modName, SimpleItemStack simpleStack) {
         boolean smashing = !entry.material.hasFlag(NO_SMASHING);
         boolean working = !entry.material.hasFlag(DustMaterial.MatFlags.NO_WORKING);
