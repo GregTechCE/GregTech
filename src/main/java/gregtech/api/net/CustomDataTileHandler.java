@@ -3,7 +3,7 @@ package gregtech.api.net;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
-import gregtech.api.capability.internal.ICustomDataTile;
+import gregtech.api.capability.ICustomDataTile;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.PacketBuffer;

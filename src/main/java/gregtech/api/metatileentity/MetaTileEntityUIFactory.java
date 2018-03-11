@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity;
 
-import gregtech.api.capability.internal.IGregTechTileEntity;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.UIFactory;
 import net.minecraft.client.Minecraft;
@@ -10,9 +9,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- * {@link UIFactory} implementation for {@link IMetaTileEntity}
+ * {@link UIFactory} implementation for {@link MetaTileEntity}
  */
-public class MetaTileEntityUIFactory extends UIFactory<IMetaTileEntity> {
+public class MetaTileEntityUIFactory extends UIFactory<MetaTileEntity> {
 
     public static final MetaTileEntityUIFactory INSTANCE = new MetaTileEntityUIFactory();
     private MetaTileEntityUIFactory() {}
@@ -23,19 +22,19 @@ public class MetaTileEntityUIFactory extends UIFactory<IMetaTileEntity> {
 
     @Override
     @SuppressWarnings("unchecked")
-    protected ModularUI<IMetaTileEntity> createUITemplate(IMetaTileEntity holder, EntityPlayer entityPlayer) {
-        return (ModularUI<IMetaTileEntity>) holder.createUI(entityPlayer);
+    protected ModularUI<MetaTileEntity> createUITemplate(MetaTileEntity holder, EntityPlayer entityPlayer) {
+        return (ModularUI<MetaTileEntity>) holder.createUI(entityPlayer);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    protected IMetaTileEntity readHolderFromSyncData(PacketBuffer syncData) {
-        return ((IGregTechTileEntity) Minecraft.getMinecraft().world.getTileEntity(syncData.readBlockPos())).getMetaTileEntity();
+    protected MetaTileEntity readHolderFromSyncData(PacketBuffer syncData) {
+        return (MetaTileEntity) Minecraft.getMinecraft().world.getTileEntity(syncData.readBlockPos());
     }
 
     @Override
-    protected void writeHolderToSyncData(PacketBuffer syncData, IMetaTileEntity holder) {
-        syncData.writeBlockPos(holder.getHolder().getPos());
+    protected void writeHolderToSyncData(PacketBuffer syncData, MetaTileEntity holder) {
+        syncData.writeBlockPos(holder.getPos());
     }
 
 }

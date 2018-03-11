@@ -298,6 +298,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     private void setInternalDamage(ItemStack itemStack, int damage) {
         NBTTagCompound statsTag = itemStack.getOrCreateSubCompound("GT.ToolStats");
         statsTag.setInteger("GT.ToolDamage", damage);
+
     }
 
     @Nullable

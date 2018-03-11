@@ -1,4 +1,4 @@
-package gregtech.api.capability.internal;
+package gregtech.api.capability;
 
 import gregtech.api.net.NetworkHandler;
 import gregtech.api.net.PacketCustomTileData;
@@ -9,7 +9,6 @@ import net.minecraft.server.management.PlayerChunkMapEntry;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.client.gui.ForgeGuiFactory.ForgeConfigGui.ChunkLoaderEntry;
 
 import java.util.function.Consumer;
 

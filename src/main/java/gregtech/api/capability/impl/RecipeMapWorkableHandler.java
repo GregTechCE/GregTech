@@ -1,25 +1,23 @@
-package gregtech.api.metatileentity;
+package gregtech.api.capability.impl;
 
-import gregtech.api.capability.internal.IWorkable;
-import gregtech.api.metatileentity.factory.WorkableMetaTileEntityFactory;
+import gregtech.api.capability.IWorkable;
+import gregtech.api.metatileentity.MTETrait;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.common.blocks.machines.BlockMachine;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class WorkableMetaTileEntity extends TieredMetaTileEntity implements IWorkable {
+public abstract class RecipeMapWorkableHandler extends MTETrait implements IWorkable {
 
     public final RecipeMap<?> recipeMap;
     protected Recipe previousRecipe;
@@ -33,20 +31,32 @@ public abstract class WorkableMetaTileEntity extends TieredMetaTileEntity implem
     private boolean isActive;
     private boolean workingEnabled = true;
 
-    public WorkableMetaTileEntity(WorkableMetaTileEntityFactory<WorkableMetaTileEntity> factory) {
-        super(factory);
-        this.recipeMap = factory.getRecipeMap();
+    public RecipeMapWorkableHandler(RecipeMap<?> recipeMap) {
+        this.recipeMap = recipeMap;
+    }
+
+    protected abstract long getEnergyStored();
+    protected abstract long getEnergyCapacity();
+    protected abstract boolean drawEnergy(int recipeEUt);
+    protected abstract long getMaxVoltage();
+
+    @Override
+    public String getName() {
+        return "RecipeMapWorkable";
     }
 
     @Override
-    public void onPostTick(long tickTimer) {
-        super.onPostTick(tickTimer);
-        if (getWorld().isRemote) {
+    public Capability<?> getImplementingCapability() {
+        return IWorkable.CAPABILITY_WORKABLE;
+    }
+
+    @Override
+    public void update() {
+        if (getMetaTileEntity().getWorld().isRemote)
             return;
-        }
         if(progressTime == 0) {
-            long maxVoltage = Math.max(getInputVoltage(), getOutputVoltage());
-            Recipe pickedRecipe = recipeMap.findRecipe(previousRecipe, maxVoltage, importItems, importFluids);
+            long maxVoltage = getMaxVoltage();
+            Recipe pickedRecipe = recipeMap.findRecipe(previousRecipe, maxVoltage, metaTileEntity.getImportItems(), metaTileEntity.getImportFluids());
             if(pickedRecipe != null && setupAndConsumeRecipeInputs(pickedRecipe)) {
                 if(pickedRecipe.canBeBuffered()) {
                     this.previousRecipe = pickedRecipe;
@@ -54,8 +64,7 @@ public abstract class WorkableMetaTileEntity extends TieredMetaTileEntity implem
                 setupRecipe(pickedRecipe);
             }
         } else if(workingEnabled) {
-            if(getEnergyStored() >= recipeEUt) {
-                setEnergyStored(getEnergyStored() - recipeEUt);
+            if(drawEnergy(recipeEUt)) {
                 if(++progressTime >= maxProgressTime) {
                     completeRecipe();
                 }
@@ -66,9 +75,9 @@ public abstract class WorkableMetaTileEntity extends TieredMetaTileEntity implem
     protected boolean setupAndConsumeRecipeInputs(Recipe recipe) {
         int totalEUt = recipe.getEUt() * recipe.getDuration();
         return (totalEUt >= 0 ? getEnergyStored() >= totalEUt : getEnergyStored() - totalEUt <= getEnergyCapacity()) &&
-                addItemsToItemHandler(exportItems, true, recipe.getOutputs()) &&
-                addFluidsToFluidHandler(exportFluids, true, recipe.getFluidOutputs()) &&
-                recipe.matches(true, false, importItems, importFluids);
+            MetaTileEntity.addItemsToItemHandler(metaTileEntity.getExportItems(), true, recipe.getOutputs()) &&
+            MetaTileEntity.addFluidsToFluidHandler(metaTileEntity.getExportFluids(), true, recipe.getFluidOutputs()) &&
+            recipe.matches(true, false, metaTileEntity.getImportItems(), metaTileEntity.getImportFluids());
     }
 
     protected void setupRecipe(Recipe recipe) {
@@ -81,8 +90,8 @@ public abstract class WorkableMetaTileEntity extends TieredMetaTileEntity implem
     }
 
     protected void completeRecipe() {
-        addItemsToItemHandler(exportItems, false, itemOutputs);
-        addFluidsToFluidHandler(exportFluids, false, fluidOutputs);
+        MetaTileEntity.addItemsToItemHandler(metaTileEntity.getExportItems(), false, itemOutputs);
+        MetaTileEntity.addFluidsToFluidHandler(metaTileEntity.getExportFluids(), false, fluidOutputs);
         this.progressTime = 0;
         setMaxProgress(0);
         this.recipeEUt = 0;
@@ -103,9 +112,18 @@ public abstract class WorkableMetaTileEntity extends TieredMetaTileEntity implem
 
     public void setMaxProgress(int maxProgress) {
         this.maxProgressTime = maxProgress;
-        if(!getWorld().isRemote) {
-            markDirty();
-            holder.writeCustomData(5, buf -> buf.writeInt(maxProgress));
+        if(!metaTileEntity.getWorld().isRemote) {
+            metaTileEntity.markDirty();
+            writeCustomData(0, buf -> buf.writeInt(maxProgress));
+        }
+    }
+
+    @Override
+    public void setActive(boolean active) {
+        this.isActive = active;
+        if(!metaTileEntity.getWorld().isRemote) {
+            metaTileEntity.markDirty();
+            writeCustomData(1, buf -> buf.writeBoolean(active));
         }
     }
 
@@ -120,19 +138,13 @@ public abstract class WorkableMetaTileEntity extends TieredMetaTileEntity implem
     }
 
     @Override
-    public void enableWorking() {
-        this.workingEnabled = true;
-        markDirty();
+    public void setWorkingEnabled(boolean workingEnabled) {
+        this.workingEnabled = workingEnabled;
+        metaTileEntity.markDirty();
     }
 
     @Override
-    public void disableWorking() {
-        this.workingEnabled = false;
-        markDirty();
-    }
-
-    @Override
-    public boolean isAllowedToWork() {
+    public boolean isWorkingEnabled() {
         return workingEnabled;
     }
 
@@ -142,59 +154,35 @@ public abstract class WorkableMetaTileEntity extends TieredMetaTileEntity implem
     }
 
     @Override
-    public void setActive(boolean active) {
-        this.isActive = active;
-        if(!getWorld().isRemote) {
-            markDirty();
-            holder.writeCustomData(4, buf -> buf.writeBoolean(active));
-        }
-    }
-
-    @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
-        switch (dataId) {
-            case 4:
-                this.isActive = buf.readBoolean();
-                markBlockForRenderUpdate(); // FIXME this rerenders chunk every time recipe is completed
-                break;
-            case 5:
-                this.maxProgressTime = buf.readInt();
-                break;
-            default:
-                super.receiveCustomData(dataId, buf);
+        if(dataId == 0) {
+            this.maxProgressTime = buf.readInt();
+        } else if(dataId == 1) {
+            this.isActive = buf.readBoolean();
         }
     }
 
     @Override
     public void writeInitialData(PacketBuffer buf) {
-        super.writeInitialData(buf);
-        buf.writeBoolean(isActive);
+        buf.writeInt(this.maxProgressTime);
+        buf.writeBoolean(this.isActive);
     }
 
     @Override
     public void receiveInitialData(PacketBuffer buf) {
-        super.receiveInitialData(buf);
+        this.maxProgressTime = buf.readInt();
         this.isActive = buf.readBoolean();
     }
 
     @Override
-    public IBlockState getActualBlockState(IMetaTileEntity metaTileEntity, IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-        state = super.getActualBlockState(metaTileEntity, state, worldIn, pos);
-        if (metaTileEntity instanceof IWorkable) {
-            state = state.withProperty(BlockMachine.ACTIVE, ((IWorkable) metaTileEntity).isActive());
-        }
-        return state;
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound data) {
-        super.saveNBTData(data);
-        data.setBoolean("Active", this.isActive);
-        data.setBoolean("WorkEnabled", this.workingEnabled);
+    public NBTTagCompound serializeNBT() {
+        NBTTagCompound compound = new NBTTagCompound();
+        compound.setBoolean("Active", this.isActive);
+        compound.setBoolean("WorkEnabled", this.workingEnabled);
         if(progressTime > 0) {
-            data.setInteger("Progress", progressTime);
-            data.setInteger("MaxProgress", maxProgressTime);
-            data.setInteger("RecipeEUt", this.recipeEUt);
+            compound.setInteger("Progress", progressTime);
+            compound.setInteger("MaxProgress", maxProgressTime);
+            compound.setInteger("RecipeEUt", this.recipeEUt);
             NBTTagList itemOutputsList = new NBTTagList();
             for(ItemStack itemOutput : itemOutputs) {
                 itemOutputsList.appendTag(itemOutput.writeToNBT(new NBTTagCompound()));
@@ -203,26 +191,26 @@ public abstract class WorkableMetaTileEntity extends TieredMetaTileEntity implem
             for(FluidStack fluidOutput : fluidOutputs) {
                 fluidOutputsList.appendTag(fluidOutput.writeToNBT(new NBTTagCompound()));
             }
-            data.setTag("ItemOutputs", itemOutputsList);
-            data.setTag("FluidOutputs", fluidOutputsList);
+            compound.setTag("ItemOutputs", itemOutputsList);
+            compound.setTag("FluidOutputs", fluidOutputsList);
         }
+        return compound;
     }
 
     @Override
-    public void loadNBTData(NBTTagCompound data) {
-        super.loadNBTData(data);
-        this.isActive = data.getBoolean("Active");
-        this.workingEnabled = data.getBoolean("WorkEnabled");
-        this.progressTime = data.getInteger("Progress");
+    public void deserializeNBT(NBTTagCompound compound) {
+        this.isActive = compound.getBoolean("Active");
+        this.workingEnabled = compound.getBoolean("WorkEnabled");
+        this.progressTime = compound.getInteger("Progress");
         if (progressTime > 0) {
-            this.maxProgressTime = data.getInteger("MaxProgress");
-            this.recipeEUt = data.getInteger("RecipeEUt");
-            NBTTagList itemOutputsList = data.getTagList("ItemOutputs", Constants.NBT.TAG_COMPOUND);
+            this.maxProgressTime = compound.getInteger("MaxProgress");
+            this.recipeEUt = compound.getInteger("RecipeEUt");
+            NBTTagList itemOutputsList = compound.getTagList("ItemOutputs", Constants.NBT.TAG_COMPOUND);
             this.itemOutputs = NonNullList.create();
             for(int i = 0; i < itemOutputsList.tagCount(); i++) {
                 this.itemOutputs.add(new ItemStack(itemOutputsList.getCompoundTagAt(i)));
             }
-            NBTTagList fluidOutputsList = data.getTagList("FluidOutputs", Constants.NBT.TAG_COMPOUND);
+            NBTTagList fluidOutputsList = compound.getTagList("FluidOutputs", Constants.NBT.TAG_COMPOUND);
             this.fluidOutputs = new ArrayList<>();
             for(int i = 0; i < fluidOutputsList.tagCount(); i++) {
                 this.fluidOutputs.add(FluidStack.loadFluidStackFromNBT(fluidOutputsList.getCompoundTagAt(i)));

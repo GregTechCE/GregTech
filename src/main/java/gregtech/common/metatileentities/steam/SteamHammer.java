@@ -5,8 +5,6 @@ import gregtech.api.gui.widgets.ImageWidget;
 import gregtech.api.gui.widgets.LabelWidget;
 import gregtech.api.gui.widgets.ProgressWidget;
 import gregtech.api.gui.widgets.SlotWidget;
-import gregtech.api.metatileentity.IMetaTileEntity;
-import gregtech.api.metatileentity.WorkableSteamMetaTileEntity;
 import gregtech.api.metatileentity.factory.WorkableSteamMetaTileEntityFactory;
 import gregtech.api.util.GTResourceLocation;
 import gregtech.api.util.GTUtility;

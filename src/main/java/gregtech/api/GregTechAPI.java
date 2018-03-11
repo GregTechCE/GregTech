@@ -1,33 +1,22 @@
 package gregtech.api;
 
 import com.google.common.collect.EnumHashBiMap;
-
-import gregtech.api.metatileentity.IMetaTileEntityFactory;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.ore.StoneType;
 import gregtech.api.unification.stack.SimpleItemStack;
-import gregtech.api.util.GTControlledRegistry;
 import gregtech.api.util.GTWorldGen;
 import gregtech.api.util.IBlockOre;
 import gregtech.common.items.MetaItems;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fluids.Fluid;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GregTechAPI {
 
@@ -61,8 +50,6 @@ public class GregTechAPI {
             return true;
         }
     };
-
-    public static final GTControlledRegistry<IMetaTileEntityFactory> METATILEENTITY_REGISTRY = new GTControlledRegistry<>(Short.MAX_VALUE);
 
     public static final EnumHashBiMap<EnumDyeColor, Fluid> LIQUID_DYE_MAP = EnumHashBiMap.create(EnumDyeColor.class);
 

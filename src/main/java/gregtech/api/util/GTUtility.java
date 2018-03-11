@@ -3,8 +3,10 @@ package gregtech.api.util;
 
 import com.google.common.collect.Lists;
 import gregtech.api.GregTechAPI;
+import gregtech.api.capability.IElectricItem;
 import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.damagesources.DamageSources;
+import gregtech.api.items.IDamagableItem;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
@@ -13,21 +15,19 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
@@ -40,20 +40,12 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import static gregtech.api.GTValues.*;
 
 public class GTUtility {
-
-    @SuppressWarnings("unused")
-    public static <T> void noop(T t) {}
-
-    public static <T> Iterable<T> wrapIterable(Supplier<Iterator<T>> iteratorSupplier) {
-        return iteratorSupplier::get;
-    }
 
     //magic is here
     @SuppressWarnings("unchecked")
@@ -158,6 +150,23 @@ public class GTUtility {
         }
     }
 
+    /**
+     * Applies specific amount of damage to item, either to durable items (which implement IDamagableItem)
+     * or to electric items, which have capability IElectricItem
+     * Damage amount is equal to EU amount used for electric items
+     * @return if damage was applied successfully
+     */
+    public static boolean doDamageItem(ItemStack itemStack, int vanillaDamage, boolean simulate) {
+        Item item = itemStack.getItem();
+        if(item instanceof IDamagableItem) {
+            return ((IDamagableItem) item).doDamageToItem(itemStack, vanillaDamage, simulate);
+        } else if(itemStack.hasCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null)) {
+            IElectricItem capability = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+            return capability != null && capability.canUse(vanillaDamage) &&
+                capability.discharge(vanillaDamage, Integer.MAX_VALUE, true, false, simulate) == vanillaDamage;
+        } else return false;
+    }
+
     public static void writeItems(IItemHandler handler, String tagName, NBTTagCompound tag) {
         NBTTagList tagList = new NBTTagList();
 
@@ -232,15 +241,6 @@ public class GTUtility {
         return server.get();
     }
 
-    @SafeVarargs
-    public static <T> boolean arrayContainsNonNull(T... array) {
-        if (array != null) {
-            for (Object object : array)
-                if (object != null) return true;
-        }
-        return false;
-    }
-
     public static NonNullList<ItemStack> itemHandlerToList(IItemHandlerModifiable inputs) {
         NonNullList<ItemStack> stacks = NonNullList.create();
         for (int i = 0; i < inputs.getSlots(); i++) {
@@ -255,23 +255,6 @@ public class GTUtility {
             fluidStacks.add(fluidInputs.getFluidInTank(i));
         }
         return fluidStacks;
-    }
-
-    public static void playSound(World world, double x, double y, double z, ResourceLocation soundName, SoundCategory category, float strength, float modulation) {
-        world.playSound(x, y, z, SoundEvent.REGISTRY.getObject(soundName), category, strength, modulation, false);
-    }
-
-    public static void playSound(EntityPlayer player, World world, double x, double y, double z, ResourceLocation soundName, SoundCategory category, float strength, float modulation) {
-        world.playSound(player, x, y, z, SoundEvent.REGISTRY.getObject(soundName), category, strength, modulation);
-    }
-
-    public static void setCoordsOnFire(World world, BlockPos pos) {
-        for(EnumFacing side : EnumFacing.VALUES) {
-            BlockPos offset = pos.offset(side);
-            if(world.getBlockState(offset).getBlock().isReplaceable(world, offset)) {
-                world.setBlockState(offset, Blocks.FIRE.getDefaultState());
-            }
-        }
     }
 
     public static boolean isWearingFullSuit(EntityLivingBase entity, Set<SimpleItemStack> suitParts) {

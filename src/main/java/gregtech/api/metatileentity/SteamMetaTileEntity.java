@@ -1,52 +1,33 @@
 package gregtech.api.metatileentity;
 
+import gregtech.api.GTValues;
 import gregtech.api.capability.impl.FilteredFluidHandler;
-import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankHandler;
+import gregtech.api.capability.impl.SteamRecipeMapWorkableHandler;
 import gregtech.api.recipes.ModHandler;
-import net.minecraft.nbt.NBTTagCompound;
+import gregtech.api.recipes.RecipeMap;
 import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 
-public abstract class SteamMetaTileEntity extends PaintableMetaTileEntity {
+public abstract class SteamMetaTileEntity extends MetaTileEntity {
 
+    protected SteamRecipeMapWorkableHandler workableHandler;
     protected FluidTank steamFluidTank;
 
-    public SteamMetaTileEntity(IMetaTileEntityFactory factory) {
-        super(factory);
+    public SteamMetaTileEntity(RecipeMap<?> recipeMap) {
+        this.workableHandler = addTrait(new SteamRecipeMapWorkableHandler(
+            recipeMap, GTValues.V[1], steamFluidTank, 1.0));
     }
 
     @Override
     public FluidTankHandler createImportFluidHandler() {
-        return new FluidTankHandler();
+        this.steamFluidTank = new FilteredFluidHandler(getSteamCapacity())
+            .setFillPredicate(ModHandler::isSteam);
+        return new FluidTankHandler(steamFluidTank);
     }
 
     @Override
     public FluidTankHandler createExportFluidHandler() {
         return new FluidTankHandler();
-    }
-
-    @Override
-    public IFluidHandler createFluidHandler() {
-        this.steamFluidTank = new FilteredFluidHandler(getSteamCapacity()).setFillPredicate(ModHandler::isSteam);
-        return new FluidHandlerProxy(this.steamFluidTank, this.exportFluids);
-    }
-
-    @Override
-    public int getComparatorValue() {
-        return 0;
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound data) {
-        super.saveNBTData(data);
-        data.setTag("SteamFluidTank", steamFluidTank.writeToNBT(new NBTTagCompound()));
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound data) {
-        super.loadNBTData(data);
-        steamFluidTank.readFromNBT(data.getCompoundTag("SteamFluidTank"));
     }
 
     public int getSteamCapacity() {

@@ -27,7 +27,7 @@ public class Materials {
     /**
      * Direct Elements
      */
-    public static MetalMaterial Aluminium = new MetalMaterial(1, "aluminium", 0x45AAAA, MaterialIconSet.DULL, 2, of(), EXT2_METAL | GENERATE_SMALL_GEAR | GENERATE_ORE | GENERATE_RING, Element.Al, 10.0F, 128, 1700);
+    public static MetalMaterial Aluminium = new MetalMaterial(1, "aluminium", 0x41CDF4, MaterialIconSet.DULL, 2, of(), EXT2_METAL | GENERATE_SMALL_GEAR | GENERATE_ORE | GENERATE_RING, Element.Al, 10.0F, 128, 1700);
     public static MetalMaterial Americium = new MetalMaterial(2, "americium", 0xDDDDDD, MaterialIconSet.METALLIC, 3, of(), STD_METAL | GENERATE_ROD | GENERATE_LONG_ROD, Element.Am);
     public static MetalMaterial Antimony = new MetalMaterial(3, "antimony", 0xCCCCDD, MaterialIconSet.SHINY, 2, of(), EXT_METAL | MORTAR_GRINDABLE, Element.Sb);
     public static FluidMaterial Argon = new FluidMaterial(4, "argon", 0xBBBB00, MaterialIconSet.FLUID, of(), STATE_GAS | GENERATE_PLASMA, Element.Ar);

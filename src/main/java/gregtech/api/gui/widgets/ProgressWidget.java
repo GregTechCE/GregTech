@@ -1,6 +1,6 @@
 package gregtech.api.gui.widgets;
 
-import gregtech.api.capability.internal.IWorkable;
+import gregtech.api.capability.IWorkable;
 import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.Widget;
 import net.minecraft.client.Minecraft;

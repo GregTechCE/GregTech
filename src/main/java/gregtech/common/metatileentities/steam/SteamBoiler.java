@@ -2,13 +2,12 @@ package gregtech.common.metatileentities.steam;
 
 import gregtech.api.capability.impl.FilteredFluidHandler;
 import gregtech.api.capability.impl.FluidHandlerProxy;
-import gregtech.api.capability.internal.IWorkable;
+import gregtech.api.capability.IWorkable;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.ImageWidget;
 import gregtech.api.gui.widgets.LabelWidget;
 import gregtech.api.gui.widgets.ProgressWidget;
 import gregtech.api.gui.widgets.SlotWidget;
-import gregtech.api.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityUIFactory;
 import gregtech.api.metatileentity.SteamMetaTileEntity;
 import gregtech.api.metatileentity.factory.MetaTileEntityFactory;

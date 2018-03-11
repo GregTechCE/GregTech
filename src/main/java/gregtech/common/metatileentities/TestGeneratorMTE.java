@@ -3,8 +3,6 @@ package gregtech.common.metatileentities;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.capability.impl.FluidTankHandler;
 import gregtech.api.gui.ModularUI;
-import gregtech.api.metatileentity.IMetaTileEntity;
-import gregtech.api.metatileentity.TieredMetaTileEntity;
 import gregtech.api.metatileentity.factory.TieredMetaTileEntityFactory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;

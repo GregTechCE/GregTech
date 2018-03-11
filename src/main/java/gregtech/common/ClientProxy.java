@@ -5,9 +5,6 @@
 
 package gregtech.common;
 
-import gregtech.api.capability.internal.IGregTechTileEntity;
-import gregtech.api.metatileentity.IMetaTileEntity;
-import gregtech.api.metatileentity.PaintableMetaTileEntity;
 import gregtech.common.blocks.BlockCompressed;
 import gregtech.common.blocks.BlockOre;
 import gregtech.common.blocks.MetaBlocks;

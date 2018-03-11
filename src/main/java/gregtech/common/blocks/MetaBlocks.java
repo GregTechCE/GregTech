@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.Streams;
 import gregtech.api.GregTechAPI;
-import gregtech.api.metatileentity.IMetaTileEntityFactory;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
@@ -15,8 +14,7 @@ import gregtech.api.unification.ore.StoneTypes;
 import gregtech.common.blocks.BlockGranite.GraniteVariant;
 import gregtech.common.blocks.BlockMineral.MineralVariant;
 import gregtech.common.blocks.StoneBlock.ChiselingVariant;
-import gregtech.common.blocks.machines.BlockMachine;
-import gregtech.common.blocks.machines.BlockSteamMachine;
+import gregtech.api.block.machines.BlockMachine;
 import gregtech.common.metatileentities.MetaTileEntities;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;

@@ -1,14 +1,13 @@
 package gregtech.common.metatileentities;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.metatileentity.GregtechTileEntity;
 import gregtech.api.metatileentity.factory.MetaTileEntityFactory;
 import gregtech.api.metatileentity.factory.TieredMetaTileEntityFactory;
 import gregtech.api.metatileentity.factory.WorkableSteamMetaTileEntityFactory;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTResourceLocation;
-import gregtech.common.blocks.machines.BlockMachine;
+import gregtech.api.block.machines.BlockMachine;
 import gregtech.common.blocks.tileentity.TileEntityCableEmitter;
 import gregtech.common.metatileentities.steam.*;
 import net.minecraftforge.fml.common.registry.GameRegistry;
