@@ -112,6 +112,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
 
     public void setMaxProgress(int maxProgress) {
         this.maxProgressTime = maxProgress;
+        metaTileEntity.markDirty();
         if(!metaTileEntity.getWorld().isRemote) {
             metaTileEntity.markDirty();
             writeCustomData(0, buf -> buf.writeInt(maxProgress));
@@ -130,6 +131,9 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     @Override
     public void increaseProgress(int progress) {
         this.progressTime = Math.min(progressTime + progress, maxProgressTime);
+        if(!metaTileEntity.getWorld().isRemote) {
+            metaTileEntity.markDirty();
+        }
     }
 
     @Override
@@ -140,7 +144,9 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     @Override
     public void setWorkingEnabled(boolean workingEnabled) {
         this.workingEnabled = workingEnabled;
-        metaTileEntity.markDirty();
+        if(!metaTileEntity.getWorld().isRemote) {
+            metaTileEntity.markDirty();
+        }
     }
 
     @Override

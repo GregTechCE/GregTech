@@ -10,7 +10,6 @@ import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.render.MetaTileEntityRenderer;
 import gregtech.api.util.GTUtility;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,8 +19,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -190,8 +187,9 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
 
     /**
      * Add special drops which this meta tile entity contains here
-     * It includes inventory contents, upgrades & so
      * Meta tile entity item is ALREADY added into this list
+     * Do NOT add inventory contents in this list - it will be dropped automatically when breakBlock is called
+     * This will only be called if meta tile entity is broken with proper tool (i.e wrench)
      *
      * @param dropsList list of meta tile entity drops
      * @param harvester harvester of this meta tile entity, or null
@@ -329,20 +327,6 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
         return !notAllInserted;
     }
 
-    public void doExplosion(float strength) {
-        World world = getWorld();
-        BlockPos pos = getPos();
-        for(int i = 0; i < itemInventory.getSlots(); i++) {
-            ItemStack stackInSlot = itemInventory.getStackInSlot(i);
-            if(!stackInSlot.isEmpty() && world.rand.nextFloat() <= 0.65) { //todo explosion drop chance in config
-                Block.spawnAsEntity(world, pos, importItems.getStackInSlot(i));
-            }
-        }
-        //TODO custom sound of explosion
-        world.setBlockToAir(pos);
-        world.createExplosion(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, strength, true);
-    }
-
     public final int getOutputRedstoneSignal(@Nullable EnumFacing side) {
         return side == null ? Arrays.stream(sidedRedstoneOutput)
             .max().orElse(0) : sidedRedstoneOutput[side.getIndex()];
@@ -383,6 +367,31 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
 
     public final int getInputRedstoneSignal(EnumFacing side) {
         return getWorld().getStrongPower(getPos().offset(side));
+    }
+
+    public void clearMachineInventory(NonNullList<ItemStack> itemBuffer) {
+        for(int i = 0; i < importItems.getSlots(); i++) {
+            ItemStack stackInSlot = importItems.getStackInSlot(i);
+            if(!stackInSlot.isEmpty()) {
+                importItems.setStackInSlot(i, ItemStack.EMPTY);
+                itemBuffer.add(stackInSlot);
+            }
+        }
+        for(int i = 0; i < exportItems.getSlots(); i++) {
+            ItemStack stackInSlot = exportItems.getStackInSlot(i);
+            if(!stackInSlot.isEmpty()) {
+                exportItems.setStackInSlot(i, ItemStack.EMPTY);
+                itemBuffer.add(stackInSlot);
+            }
+        }
+    }
+
+    /**
+     * Called from breakBlock right before meta tile entity destruction
+     * at this stage tile entity inventory is already dropped on ground, but drops aren't fetched yet
+     * tile entity will still get getDrops called after this, if player broke block
+     */
+    public void onRemoval() {
     }
 
     public EnumFacing getFrontFacing() {

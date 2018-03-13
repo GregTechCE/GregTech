@@ -4,7 +4,10 @@ import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.LabelWidget;
 import gregtech.api.gui.widgets.ProgressWidget;
 import gregtech.api.gui.widgets.SlotWidget;
+import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.SteamMetaTileEntity;
 import gregtech.api.metatileentity.factory.WorkableSteamMetaTileEntityFactory;
+import gregtech.api.recipes.RecipeMap;
 import gregtech.api.util.GTResourceLocation;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.resources.I18n;
@@ -12,10 +15,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class SteamAlloySmelter extends WorkableSteamMetaTileEntity {
+public class SteamAlloySmelter extends SteamMetaTileEntity {
 
-    public SteamAlloySmelter(WorkableSteamMetaTileEntityFactory<SteamAlloySmelter> factory) {
-        super(factory);
+    public SteamAlloySmelter(RecipeMap<?> recipeMap) {
+        super(recipeMap);
     }
 
     @Override
@@ -29,7 +32,7 @@ public class SteamAlloySmelter extends WorkableSteamMetaTileEntity {
     }
 
     @Override
-    public ModularUI<? extends IMetaTileEntity> createUI(EntityPlayer player) {
+    public ModularUI<MetaTileEntity> createUI(EntityPlayer player) {
         GTResourceLocation slotImageLocation = new GTResourceLocation("textures/gui/bronze/slot_bronze.png");
         return ModularUI.<SteamAlloySmelter>builder(new GTResourceLocation("textures/gui/bronze/bronze_gui.png"), 176, 166)
             .widget(0, new LabelWidget<>(6, 6, GTUtility.sided(() -> I18n.format(this.factory.getUnlocalizedName()), this.factory::getUnlocalizedName)))

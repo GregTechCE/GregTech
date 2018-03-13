@@ -11,6 +11,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,11 +20,11 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 
 @SuppressWarnings("deprecation")
 public class BlockMachine<T extends MetaTileEntity> extends Block implements ITileEntityProvider {
@@ -50,6 +51,37 @@ public class BlockMachine<T extends MetaTileEntity> extends Block implements ITi
     }
 
     @Override
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis) {
+        MetaTileEntity metaTileEntity = (MetaTileEntity) world.getTileEntity(pos);
+        if(metaTileEntity == null ||
+            !metaTileEntity.isValidFrontFacing(axis) ||
+            metaTileEntity.getFrontFacing() == axis)
+            return false;
+        metaTileEntity.setFrontFacing(axis);
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public EnumFacing[] getValidRotations(World world, BlockPos pos) {
+        MetaTileEntity metaTileEntity = (MetaTileEntity) world.getTileEntity(pos);
+        if(metaTileEntity == null) return null;
+        return Arrays.stream(EnumFacing.VALUES)
+            .filter(metaTileEntity::isValidFrontFacing)
+            .toArray(EnumFacing[]::new);
+    }
+
+    @Override
+    public boolean recolorBlock(World world, BlockPos pos, EnumFacing side, EnumDyeColor color) {
+        MetaTileEntity metaTileEntity = (MetaTileEntity) world.getTileEntity(pos);
+        if(metaTileEntity == null ||
+            metaTileEntity.getPaintingColor() == color.colorValue)
+            return false;
+        metaTileEntity.setPaintingColor(color.colorValue);
+        return true;
+    }
+
+    @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         MetaTileEntity metaTileEntity = (MetaTileEntity) worldIn.getTileEntity(pos);
         if(metaTileEntity == null) return;
@@ -58,13 +90,17 @@ public class BlockMachine<T extends MetaTileEntity> extends Block implements ITi
     }
 
     @Override
-    public void onBlockExploded(World world, BlockPos pos, Explosion explosion) {
-        MetaTileEntity metaTileEntity = (MetaTileEntity) world.getTileEntity(pos);
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        MetaTileEntity metaTileEntity = (MetaTileEntity) worldIn.getTileEntity(pos);
         if(metaTileEntity != null) {
-            //chaining explosions are back! TODO config option
-            metaTileEntity.doExplosion(1.0f);
+            NonNullList<ItemStack> inventoryContents = NonNullList.create();
+            metaTileEntity.clearMachineInventory(inventoryContents);
+            for(ItemStack itemStack : inventoryContents) {
+                Block.spawnAsEntity(worldIn, pos, itemStack);
+            }
+            metaTileEntity.onRemoval();
         }
-        super.onBlockExploded(world, pos, explosion);
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Override

@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
@@ -40,8 +41,44 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
         return ventingSide;
     }
 
+    public void setNeedsVenting(boolean needsVenting) {
+        this.needsVenting = needsVenting;
+        if(!metaTileEntity.getWorld().isRemote) {
+            metaTileEntity.markDirty();
+            writeCustomData(2, buf -> buf.writeBoolean(needsVenting));
+        }
+    }
+
     public void setVentingSide(EnumFacing ventingSide) {
         this.ventingSide = ventingSide;
+        if(!metaTileEntity.getWorld().isRemote) {
+            metaTileEntity.markDirty();
+            writeCustomData(3, buf -> buf.writeByte(ventingSide.getIndex()));
+        }
+    }
+
+    @Override
+    public void receiveCustomData(int dataId, PacketBuffer buf) {
+        super.receiveCustomData(dataId, buf);
+        if(dataId == 2) {
+            this.needsVenting = buf.readBoolean();
+        } else if(dataId == 3) {
+            this.ventingSide = EnumFacing.VALUES[buf.readByte()];
+        }
+    }
+
+    @Override
+    public void writeInitialData(PacketBuffer buf) {
+        super.writeInitialData(buf);
+        buf.writeByte(ventingSide.getIndex());
+        buf.writeBoolean(needsVenting);
+    }
+
+    @Override
+    public void receiveInitialData(PacketBuffer buf) {
+        super.receiveInitialData(buf);
+        this.ventingSide = EnumFacing.VALUES[buf.readByte()];
+        this.needsVenting = buf.readBoolean();
     }
 
     protected void tryDoVenting() {
@@ -60,12 +97,14 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
                 ventingSide.getFrontOffsetY() / 5.0,
                 ventingSide.getFrontOffsetZ() / 5.0);
             //TODO some good sound for venting
-            this.needsVenting = false;
+            setNeedsVenting(false);
         }
     }
 
     @Override
     public void update() {
+        if (getMetaTileEntity().getWorld().isRemote)
+            return;
         if (this.needsVenting && metaTileEntity.getTimer() % 10 == 0) {
             tryDoVenting();
         }
@@ -80,7 +119,7 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
     @Override
     protected void completeRecipe() {
         super.completeRecipe();
-        this.needsVenting = true;
+        setNeedsVenting(true);
     }
 
     @Override
