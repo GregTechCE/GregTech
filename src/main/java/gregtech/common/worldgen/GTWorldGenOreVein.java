@@ -63,8 +63,8 @@ public class GTWorldGenOreVein extends GTWorldGen implements IWeighted {
      * @param name         Name of the ore vein
      * @param enabled      Set true to enable this ore vein
      * @param weight       Random weight of the ore vein; Must >= 0
-     * @param minY         Minimum height the ore vein will generate
-     * @param maxY         Maximum height the ore vein will generate; Must > minY
+     * @param minY         Minimum imageHeight the ore vein will generate
+     * @param maxY         Maximum imageHeight the ore vein will generate; Must > minY
      * @param size         Size of the ore vein; Must > -8
      * @param thickness    Thickness of the ore vein; Must >= 5
      * @param density      Density of the ores in the ore vein; Must > 0
@@ -88,8 +88,8 @@ public class GTWorldGenOreVein extends GTWorldGen implements IWeighted {
      * @param name           Name of the ore vein
      * @param enabled        Set true to enable this ore vein
      * @param weight         Random weight of the ore vein; Must >= 0
-     * @param minY           Minimum height the ore vein will generate
-     * @param maxY           Maximum height the ore vein will generate; Must > minY
+     * @param minY           Minimum imageHeight the ore vein will generate
+     * @param maxY           Maximum imageHeight the ore vein will generate; Must > minY
      * @param size           Size of the ore vein; Must > -8
      * @param thickness      Thickness of the ore vein; Must >= 5
      * @param density        Density of the ores in the ore vein; Must > 0

@@ -3,12 +3,14 @@ package gregtech.api.gui;
 import gregtech.api.net.NetworkHandler;
 import gregtech.api.net.PacketUIWidgetUpdate;
 import gregtech.api.util.GTLog;
-import net.minecraft.client.renderer.GlStateManager;
+import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.function.Consumer;
 
 /**
  * Widget is functional element of ModularUI
@@ -30,10 +32,25 @@ public abstract class Widget<T extends IUIHolder> implements Comparable<Widget<T
     /**
      * Called on both sides to init widget data
      */
-    public abstract void initWidget();
+    public void initWidget() {
+    }
+
+    /**
+     * Called on serverside to detect changes and synchronize them with clients
+     */
+    public void detectAndSendChanges() {
+    }
+
+    /**
+     * Called clientside every tick with this modular UI open
+     */
+    public void updateScreen() {
+    }
 
     /**
      * Called each draw tick if drawPriority > Widget.SLOT_DRAW_PRIORITY to draw this widget in GUI
+     *
+     * Note that current GL state is ALREADY translated to (guiLeft, guiTop, 0.0)!
      */
     @SideOnly(Side.CLIENT)
     public void drawInForeground(int mouseX, int mouseY) {
@@ -41,21 +58,11 @@ public abstract class Widget<T extends IUIHolder> implements Comparable<Widget<T
 
     /**
      * Called each draw tick if drawPriority <= Widget.SLOT_DRAW_PRIORITY to draw this widget in GUI
+     *
+     * Note that current GL state is ALREADY translated to (guiLeft, guiTop, 0.0)!
      */
     @SideOnly(Side.CLIENT)
-    public void drawInBackground(int guiLeft, int guiTop, float partialTicks, int mouseX, int mouseY) {
-    }
-
-    protected void drawInBackgroundInternal(int guiLeft, int guiTop, Runnable runnable){
-//        RenderHelper.enableGUIStandardItemLighting();
-//        GlStateManager.disableLighting();
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        GlStateManager.pushMatrix();
-        {
-            GlStateManager.translate(guiLeft, guiTop, 0.0F);
-            runnable.run();
-        }
-        GlStateManager.popMatrix();
+    public void drawInBackground(float partialTicks, int mouseX, int mouseY) {
     }
 
     /**
@@ -85,28 +92,20 @@ public abstract class Widget<T extends IUIHolder> implements Comparable<Widget<T
     @SideOnly(Side.CLIENT)
     public void keyTyped(char charTyped, int keyCode) {
     }
-
     /**
-     * Write initial server -> client sync data in this method
-     */
-    public abstract void writeInitialSyncInfo(PacketBuffer buffer);
-
-    /**
-     * Read data received from server to client in this method
+     * Read data received from server's {@link #writeUpdateInfo}
      */
     @SideOnly(Side.CLIENT)
-    public abstract void readInitialSyncInfo(PacketBuffer buffer);
+    public void readUpdateInfo(int id, PacketBuffer buffer) {
+    }
 
     /**
-     * Read data received from server's {@link #writeUpdateInfo(PacketBuffer)}
+     * Writes data to be sent to client's {@link #readUpdateInfo}
      */
-    @SideOnly(Side.CLIENT)
-    public abstract void readUpdateInfo(PacketBuffer buffer);
-
-    /**
-     * Writes data to be sent to client's {@link #readUpdateInfo(PacketBuffer)}
-     */
-    protected final void writeUpdateInfo(PacketBuffer packetBuffer) {
+    protected final void writeUpdateInfo(int id, Consumer<PacketBuffer> packetBufferWriter) {
+        PacketBuffer packetBuffer = new PacketBuffer(Unpooled.buffer());
+        packetBuffer.writeInt(id);
+        packetBufferWriter.accept(packetBuffer);
         int widgetId = gui.guiWidgets.inverse().get(this);
         if(FMLCommonHandler.instance().getEffectiveSide().isServer()) {
             PacketUIWidgetUpdate widgetUpdate = new PacketUIWidgetUpdate(widgetId, packetBuffer);

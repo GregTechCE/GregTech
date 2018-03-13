@@ -3,6 +3,7 @@ package gregtech.api.gui.impl;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.Widget;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.GlStateManager;
 
 import java.io.IOException;
 
@@ -27,6 +28,12 @@ public class ModularUIGui extends GuiContainer {
     }
 
     @Override
+    public void updateScreen() {
+        super.updateScreen();
+        modularUI.guiWidgets.values().forEach(Widget::updateScreen);
+    }
+
+    @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         this.drawDefaultBackground();
         super.drawScreen(mouseX, mouseY, partialTicks);
@@ -38,7 +45,13 @@ public class ModularUIGui extends GuiContainer {
         modularUI.guiWidgets.values().stream()
                 .filter(widget -> widget.drawPriority > Widget.SLOT_DRAW_PRIORITY)
                 .sorted()
-                .forEach(widget -> widget.drawInForeground(mouseX, mouseY));
+            .forEach(widget -> {
+                GlStateManager.pushMatrix();
+                GlStateManager.translate(guiLeft, guiTop, 0.0);
+                GlStateManager.color(1.0f, 1.0f, 1.0f);
+                widget.drawInForeground(mouseX, mouseY);
+                GlStateManager.popMatrix();
+            });
     }
 
     @Override
@@ -48,7 +61,13 @@ public class ModularUIGui extends GuiContainer {
         modularUI.guiWidgets.values().stream()
                 .filter(widget -> widget.drawPriority <= Widget.SLOT_DRAW_PRIORITY)
                 .sorted()
-                .forEach(widget -> widget.drawInBackground(guiLeft, guiTop, partialTicks,  mouseX, mouseY));
+                .forEach(widget -> {
+                    GlStateManager.pushMatrix();
+                    GlStateManager.translate(guiLeft, guiTop, 0.0);
+                    GlStateManager.color(1.0f, 1.0f, 1.0f);
+                    widget.drawInBackground(partialTicks,  mouseX, mouseY);
+                    GlStateManager.popMatrix();
+                });
     }
 
     @Override

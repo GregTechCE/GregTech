@@ -9,14 +9,15 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 
 public class ModularUIContainer extends Container {
 
     private final HashMap<Slot, INativeWidget> slotMap = new HashMap<>();
+    private final ModularUI<?> modularUI;
 
     public ModularUIContainer(ModularUI<?> modularUI) {
+        this.modularUI = modularUI;
         modularUI.guiWidgets.values().stream()
                 .filter(widget -> widget instanceof INativeWidget)
                 .map(widget -> ((INativeWidget) widget))
@@ -25,6 +26,12 @@ public class ModularUIContainer extends Container {
                     slotMap.put(slot, nativeWidget);
                     addSlotToContainer(slot);
                 });
+    }
+
+    @Override
+    public void detectAndSendChanges() {
+        super.detectAndSendChanges();
+        modularUI.guiWidgets.values().forEach(Widget::detectAndSendChanges);
     }
 
     @Override

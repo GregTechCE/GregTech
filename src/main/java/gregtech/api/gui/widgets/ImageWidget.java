@@ -4,7 +4,6 @@ import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.Widget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -56,10 +55,6 @@ public class ImageWidget<T extends IUIHolder> extends Widget<T> {
     }
 
     @Override
-    public void initWidget() {
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     public void drawInBackground(int guiLeft, int guiTop, float partialTicks, int mouseX, int mouseY) {
         if (predicate != null && !predicate.test(this.gui.holder)) {
@@ -71,18 +66,5 @@ public class ImageWidget<T extends IUIHolder> extends Widget<T> {
         });
     }
 
-    @Override
-    public void writeInitialSyncInfo(PacketBuffer buffer) {
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void readInitialSyncInfo(PacketBuffer buffer) {
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void readUpdateInfo(PacketBuffer buffer) {
-    }
 }
 

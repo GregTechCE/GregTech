@@ -139,7 +139,8 @@ public class NetworkHandler {
             GuiScreen activeGui = Minecraft.getMinecraft().currentScreen;
             if(activeGui instanceof ModularUIGui) {
                 ModularUI<?> uiOpen = ((ModularUIGui) activeGui).getModularUI();
-                uiOpen.guiWidgets.get(packet.widgetId).readUpdateInfo(packet.updateData);
+                PacketBuffer packetBuffer = packet.updateData;
+                uiOpen.guiWidgets.get(packet.widgetId).readUpdateInfo(packetBuffer.readInt(), packetBuffer);
             }
         });
     }

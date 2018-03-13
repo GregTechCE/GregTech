@@ -3,14 +3,11 @@ package gregtech.api.gui.widgets;
 import gregtech.api.gui.INativeWidget;
 import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.Widget;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
+import gregtech.api.util.TextureArea;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -31,10 +28,7 @@ public class SlotWidget<T extends IUIHolder> extends Widget<T> implements INativ
     protected boolean canTakeItems;
     protected boolean canPutItems;
 
-    protected Runnable onSlotChanged;
-
-    protected ResourceLocation imageLocation;
-    protected ResourceLocation backgroundLocation;
+    protected TextureArea[] backgroundTexture;
 
     public SlotWidget(IItemHandlerModifiable itemHandler, int slotIndex, int xPosition, int yPosition, boolean canTakeItems, boolean canPutItems) {
         super(Widget.SLOT_DRAW_PRIORITY);
@@ -46,22 +40,20 @@ public class SlotWidget<T extends IUIHolder> extends Widget<T> implements INativ
         this.canPutItems = canPutItems;
     }
 
+    @Override
+    public void detectAndSendChanges() {
+    }
+
     public SlotWidget(IItemHandlerModifiable itemHandler, int slotIndex, int xPosition, int yPosition) {
         this(itemHandler, slotIndex, xPosition, yPosition, true, true);
     }
 
-    public SlotWidget<T> setOnSlotChanged(Runnable onSlotChanged) {
-        this.onSlotChanged = onSlotChanged;
-        return this;
-    }
-
-    public SlotWidget<T> setBackgroundLocation(ResourceLocation backgroundLocation) {
-        this.backgroundLocation = backgroundLocation;
-        return this;
-    }
-
-    public SlotWidget<T> setImageLocation(ResourceLocation imageLocation) {
-        this.imageLocation = imageLocation;
+    /**
+     * Sets array of background textures used by slot
+     * they are drawn on top of each other
+     */
+    public SlotWidget<T> setBackgroundTexture(TextureArea... backgroundTexture) {
+        this.backgroundTexture = backgroundTexture;
         return this;
     }
 
@@ -78,9 +70,7 @@ public class SlotWidget<T extends IUIHolder> extends Widget<T> implements INativ
     }
 
     public void onSlotChanged() {
-        if (this.onSlotChanged != null) {
-            this.onSlotChanged.run();
-        }
+        gui.markDirty();
     }
 
     @Override
@@ -122,32 +112,16 @@ public class SlotWidget<T extends IUIHolder> extends Widget<T> implements INativ
                 return SlotWidget.this.isEnabled();
             }
         };
-//        if (FMLCommonHandler.instance().getSide() == Side.CLIENT && this.backgroundLocation != null) {
-//            this.slotReference.setBackgroundName(this.backgroundLocation.toString());
-//        }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void drawInBackground(int guiLeft, int guiTop, float partialTicks, int mouseX, int mouseY) {
-        drawInBackgroundInternal(guiLeft, guiTop, () -> {
-            Minecraft.getMinecraft().getTextureManager().bindTexture(imageLocation);
-            Gui.drawModalRectWithCustomSizedTexture(this.xPosition - 1, this.yPosition - 1, 0, 0, 18, 18, 18, 18);
-        });
-    }
-
-    @Override
-    public void writeInitialSyncInfo(PacketBuffer buffer) {
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void readInitialSyncInfo(PacketBuffer buffer) {
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void readUpdateInfo(PacketBuffer buffer) {
+    public void drawInBackground(float partialTicks, int mouseX, int mouseY) {
+        if(backgroundTexture != null) {
+            for(TextureArea backgroundTexture : this.backgroundTexture) {
+                backgroundTexture.draw(this.xPosition - 1, this.yPosition - 1, 18, 18);
+            }
+        }
     }
 
 }

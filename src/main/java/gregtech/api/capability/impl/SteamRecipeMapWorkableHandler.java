@@ -23,6 +23,7 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
     private final long maxVoltage;
 
     private boolean needsVenting;
+    private boolean ventingStuck;
     private EnumFacing ventingSide;
 
     public SteamRecipeMapWorkableHandler(RecipeMap<?> recipeMap, long maxVoltage, IFluidTank steamFluidTank, double conversionRate) {
@@ -33,6 +34,10 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
         this.ventingSide = EnumFacing.NORTH;
     }
 
+    public boolean isVentingStuck() {
+        return needsVenting && ventingStuck;
+    }
+
     public boolean isNeedsVenting() {
         return needsVenting;
     }
@@ -41,8 +46,18 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
         return ventingSide;
     }
 
+    public void setVentingStuck(boolean ventingStuck) {
+        this.ventingStuck = ventingStuck;
+        if(!metaTileEntity.getWorld().isRemote) {
+            metaTileEntity.markDirty();
+            writeCustomData(4, buf -> buf.writeBoolean(ventingStuck));
+        }
+    }
+
     public void setNeedsVenting(boolean needsVenting) {
         this.needsVenting = needsVenting;
+        if(!needsVenting && ventingStuck)
+            setVentingStuck(false);
         if(!metaTileEntity.getWorld().isRemote) {
             metaTileEntity.markDirty();
             writeCustomData(2, buf -> buf.writeBoolean(needsVenting));
@@ -64,6 +79,8 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
             this.needsVenting = buf.readBoolean();
         } else if(dataId == 3) {
             this.ventingSide = EnumFacing.VALUES[buf.readByte()];
+        } else if(dataId == 4) {
+            this.ventingStuck = buf.readBoolean();
         }
     }
 
@@ -72,6 +89,7 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
         super.writeInitialData(buf);
         buf.writeByte(ventingSide.getIndex());
         buf.writeBoolean(needsVenting);
+        buf.writeBoolean(ventingStuck);
     }
 
     @Override
@@ -79,6 +97,7 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
         super.receiveInitialData(buf);
         this.ventingSide = EnumFacing.VALUES[buf.readByte()];
         this.needsVenting = buf.readBoolean();
+        this.ventingStuck = buf.readBoolean();
     }
 
     protected void tryDoVenting() {
@@ -98,6 +117,8 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
                 ventingSide.getFrontOffsetZ() / 5.0);
             //TODO some good sound for venting
             setNeedsVenting(false);
+        } else if(!ventingStuck) {
+            setVentingStuck(true);
         }
     }
 
@@ -149,6 +170,7 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
         NBTTagCompound compound = super.serializeNBT();
         compound.setInteger("VentingSide", ventingSide.getIndex());
         compound.setBoolean("NeedsVenting", needsVenting);
+        compound.setBoolean("VentingStuck", ventingStuck);
         return compound;
     }
 
@@ -157,5 +179,6 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
         super.deserializeNBT(compound);
         this.ventingSide = EnumFacing.VALUES[compound.getInteger("VentingSide")];
         this.needsVenting = compound.getBoolean("NeedsVenting");
+        this.ventingStuck = compound.getBoolean("VentingStuck");
     }
 }

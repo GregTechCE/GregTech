@@ -6,7 +6,6 @@ import gregtech.api.metatileentity.factory.TieredMetaTileEntityFactory;
 import gregtech.api.metatileentity.factory.WorkableSteamMetaTileEntityFactory;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.util.GTLog;
-import gregtech.api.util.GTResourceLocation;
 import gregtech.api.block.machines.BlockMachine;
 import gregtech.common.blocks.tileentity.TileEntityCableEmitter;
 import gregtech.common.metatileentities.steam.*;

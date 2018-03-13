@@ -30,8 +30,8 @@ public class GTWorldGenStone extends GTWorldGen {
     /**
      * @param name        Name of this stone generator
      * @param enabled     Set true to enable this generator
-     * @param minY        Minimum height where the center of the stone will occurs
-     * @param maxY        Maximum height where the center of the stone will occurs; Must > minY
+     * @param minY        Minimum imageHeight where the center of the stone will occurs
+     * @param maxY        Maximum imageHeight where the center of the stone will occurs; Must > minY
      * @param minSize     Minimum radius of the stone
      * @param maxSize     Maximum radius of the stone; Must > minSize
      * @param probability Inverse of the probability that the stone will be generated in each chunk

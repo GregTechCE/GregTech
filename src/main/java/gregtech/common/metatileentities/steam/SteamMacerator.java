@@ -2,10 +2,8 @@ package gregtech.common.metatileentities.steam;
 
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.LabelWidget;
-import gregtech.api.gui.widgets.ProgressWidget;
 import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.metatileentity.factory.WorkableSteamMetaTileEntityFactory;
-import gregtech.api.util.GTResourceLocation;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,7 +43,7 @@ public class SteamMacerator extends WorkableSteamMetaTileEntity {
             .widget(3, new SlotWidget<SteamMacerator>(this.exportItems, 0, 107, 25, true, false)
                 .setImageLocation(slotImageLocation)
                 .setOnSlotChanged(this::markDirty))
-            .widget(4, new LabelWidget<>(8, 166 - 96 + 2, player.inventory.getDisplayName().getUnformattedText())) // 166 - gui height, 96 + 2 - from vanilla code
+            .widget(4, new LabelWidget<>(8, 166 - 96 + 2, player.inventory.getDisplayName().getUnformattedText())) // 166 - gui imageHeight, 96 + 2 - from vanilla code
             .bindPlayerInventory(player.inventory, 5, slotImageLocation)
             .build(this, player);
     }

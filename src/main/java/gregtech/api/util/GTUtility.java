@@ -72,7 +72,6 @@ public class GTUtility {
     /**
      * Determines dye color nearest to specified RGB color
      */
-    @SideOnly(Side.CLIENT)
     public static EnumDyeColor determineDyeColor(int rgbColor) {
         ArrayList<EnumDyeColor> colors = Lists.newArrayList(EnumDyeColor.values());
         colors.sort((a, b) -> {

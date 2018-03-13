@@ -1,8 +1,6 @@
 package gregtech.common.blocks.models;
 
-import com.google.common.collect.ImmutableMap;
 import gregtech.api.GTValues;
-import gregtech.api.util.GTResourceLocation;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ICustomModelLoader;

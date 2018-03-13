@@ -19,8 +19,8 @@ public class GTWorldGenOreSmall extends GTWorldGen {
     /**
      * @param name     Name of the small ore generator
      * @param enabled  Set true to enable this generator
-     * @param minY     Minimum height the small ore will generate
-     * @param maxY     Maximum height the small ore will generate; Must > minY
+     * @param minY     Minimum imageHeight the small ore will generate
+     * @param maxY     Maximum imageHeight the small ore will generate; Must > minY
      * @param amount   Maximum amount the small ore will generate per chunk; Must > 0
      * @param material Material of the small ore
      */

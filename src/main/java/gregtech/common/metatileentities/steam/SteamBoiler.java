@@ -6,12 +6,10 @@ import gregtech.api.capability.IWorkable;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.ImageWidget;
 import gregtech.api.gui.widgets.LabelWidget;
-import gregtech.api.gui.widgets.ProgressWidget;
 import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.metatileentity.MetaTileEntityUIFactory;
 import gregtech.api.metatileentity.SteamMetaTileEntity;
 import gregtech.api.metatileentity.factory.MetaTileEntityFactory;
-import gregtech.api.util.GTResourceLocation;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -97,7 +95,7 @@ public class SteamBoiler extends SteamMetaTileEntity implements IWorkable {
                 .setImageLocation(new GTResourceLocation("textures/gui/bronze/overlay_bronze_fluid_container.png"))
 //                .setFillPredicate(holder -> holder.importItems.getStackInSlot(0).getCount() > 0) // test
                 .setImageWidthHeight(18, 18))
-            .widget(10, new LabelWidget<>(8, 166 - 96 + 2, player.inventory.getDisplayName().getUnformattedText())) // 166 - gui height, 96 + 2 - from vanilla code
+            .widget(10, new LabelWidget<>(8, 166 - 96 + 2, player.inventory.getDisplayName().getUnformattedText())) // 166 - gui imageHeight, 96 + 2 - from vanilla code
             .bindPlayerInventory(player.inventory, 11, slotImageLocation)
             .build(this, player);
     }

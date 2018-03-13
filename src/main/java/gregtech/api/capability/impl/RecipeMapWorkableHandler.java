@@ -100,6 +100,10 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         setActive(false);
     }
 
+    public double getProgressPercent() {
+        return getMaxProgress() == 0 ? 0.0 : getProgress() / (getMaxProgress() * 1.0);
+    }
+
     @Override
     public int getProgress() {
         return progressTime;
@@ -112,7 +116,6 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
 
     public void setMaxProgress(int maxProgress) {
         this.maxProgressTime = maxProgress;
-        metaTileEntity.markDirty();
         if(!metaTileEntity.getWorld().isRemote) {
             metaTileEntity.markDirty();
             writeCustomData(0, buf -> buf.writeInt(maxProgress));

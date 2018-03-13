@@ -48,7 +48,7 @@ public class MetaItemShapedRecipeFactory implements IRecipeFactory {
         for (int x = 0; x < pattern.length; ++x) {
             String line = JsonUtils.getString(patternJ.get(x), "pattern[" + x + "]");
             if (x > 0 && pattern[0].length() != line.length())
-                throw new JsonSyntaxException("Invalid pattern: each row must  be the same width");
+                throw new JsonSyntaxException("Invalid pattern: each row must  be the same imageWidth");
             pattern[x] = line;
         }
 

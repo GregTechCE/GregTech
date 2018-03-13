@@ -3,12 +3,9 @@ package gregtech.api.gui;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableBiMap;
 import gregtech.api.gui.widgets.SlotWidget;
+import gregtech.api.util.TextureArea;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
 
 /**
@@ -26,7 +23,7 @@ public final class ModularUI<H extends IUIHolder> {
 
     public final ImmutableBiMap<Integer, Widget<H>> guiWidgets;
 
-    public final ResourceLocation backgroundPath;
+    public final TextureArea backgroundPath;
     public final int width, height;
 
     /**
@@ -36,7 +33,7 @@ public final class ModularUI<H extends IUIHolder> {
     public final H holder;
     public final EntityPlayer entityPlayer;
 
-    public ModularUI(ImmutableBiMap<Integer, Widget<H>> guiWidgets, ResourceLocation backgroundPath, int width, int height, H holder, EntityPlayer entityPlayer) {
+    public ModularUI(ImmutableBiMap<Integer, Widget<H>> guiWidgets, TextureArea backgroundPath, int width, int height, H holder, EntityPlayer entityPlayer) {
         this.guiWidgets = guiWidgets;
         this.backgroundPath = backgroundPath;
         this.width = width;
@@ -52,21 +49,7 @@ public final class ModularUI<H extends IUIHolder> {
         });
     }
 
-    public void writeWidgetData(PacketBuffer dataBuffer) {
-        for(int guiWidgetId : guiWidgets.keySet()) {
-            dataBuffer.writeInt(guiWidgetId);
-            guiWidgets.get(guiWidgetId).writeInitialSyncInfo(dataBuffer);
-        }
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void readWidgetData(PacketBuffer dataBuffer) {
-        for(int i = 0; i < guiWidgets.size(); i++) {
-            guiWidgets.get(dataBuffer.readInt()).readInitialSyncInfo(dataBuffer);
-        }
-    }
-
-    public static <T extends IUIHolder> Builder<T> builder(ResourceLocation background, int width, int height) {
+    public static <T extends IUIHolder> Builder<T> builder(TextureArea background, int width, int height) {
         return new Builder<>(background, width, height);
     }
 
@@ -77,10 +60,10 @@ public final class ModularUI<H extends IUIHolder> {
     public static class Builder<T extends IUIHolder> {
 
         private ImmutableBiMap.Builder<Integer, Widget<T>> widgets = ImmutableBiMap.builder();
-        private ResourceLocation background;
+        private TextureArea background;
         private int width, height;
 
-        public Builder(ResourceLocation background, int width, int height) {
+        public Builder(TextureArea background, int width, int height) {
             Preconditions.checkNotNull(background);
             this.background = background;
             this.width = width;
@@ -93,26 +76,26 @@ public final class ModularUI<H extends IUIHolder> {
             return this;
         }
 
-        public Builder<T> bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId, ResourceLocation imageLocation) {
+        public Builder<T> bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId, TextureArea imageLocation) {
             return bindPlayerInventory(inventoryPlayer, startWidgetId, imageLocation, 8, 84);
         }
 
-        public Builder<T> bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId, ResourceLocation imageLocation, int x, int y) {
+        public Builder<T> bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId, TextureArea imageLocation, int x, int y) {
             for (int row = 0; row < 3; row++) {
                 for (int col = 0; col < 9; col++) {
                     this.widget(startWidgetId + col + (row + 1) * 9,
                         new SlotWidget<T>(new PlayerMainInvWrapper(inventoryPlayer), col + (row + 1) * 9, x + col * 18, y + row * 18)
-                            .setImageLocation(imageLocation));
+                            .setBackgroundTexture(imageLocation));
                 }
             }
             return bindPlayerHotbar(inventoryPlayer, startWidgetId, imageLocation, x, y + 58);
         }
 
-        public Builder<T> bindPlayerHotbar(InventoryPlayer inventoryPlayer, int startWidgetId, ResourceLocation imageLocation, int x, int y) {
+        public Builder<T> bindPlayerHotbar(InventoryPlayer inventoryPlayer, int startWidgetId, TextureArea imageLocation, int x, int y) {
             for (int slot = 0; slot < 9; slot++) {
                 this.widget(startWidgetId + slot,
                     new SlotWidget<T>(new PlayerMainInvWrapper(inventoryPlayer), slot, x + slot * 18, y)
-                        .setImageLocation(imageLocation));
+                        .setBackgroundTexture(imageLocation));
             }
             return this;
         }

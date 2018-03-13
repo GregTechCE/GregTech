@@ -2,7 +2,6 @@ package gregtech.api.unification.material;
 
 import com.google.common.base.CaseFormat;
 import com.google.common.collect.ImmutableMap;
-import gregtech.api.util.GTResourceLocation;
 import net.minecraft.util.ResourceLocation;
 
 public enum MaterialIconType {

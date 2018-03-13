@@ -133,7 +133,7 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
      * @param entityPlayer player opening inventory
      * @return freshly created UI instance
      */
-    protected abstract ModularUI<MetaTileEntity> createUI(EntityPlayer entityPlayer);
+    protected abstract ModularUI<IUIHolder> createUI(EntityPlayer entityPlayer);
 
     /**
      * Called when player clicks on specific side of this meta tile entity

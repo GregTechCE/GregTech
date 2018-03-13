@@ -22,8 +22,8 @@ public class GTWorldGenAsteroid extends GTWorldGenStone {
     /**
      * @param name        Name of this asteroid generator
      * @param enabled     Set true to enable this generator
-     * @param minY        Minimum height where the center of the asteroid will occurs
-     * @param maxY        Maximum height where the center of the asteroid will occurs; Must > minY
+     * @param minY        Minimum imageHeight where the center of the asteroid will occurs
+     * @param maxY        Maximum imageHeight where the center of the asteroid will occurs; Must > minY
      * @param minSize     Minimum radius of the asteroid
      * @param maxSize     Maximum radius of the asteroid; Must > minSize
      * @param probability Inverse of the probability that the asteroid will be generated in each chunk
