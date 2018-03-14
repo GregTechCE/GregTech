@@ -1,19 +1,21 @@
 package gregtech.common.metatileentities.steam;
 
+import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.LabelWidget;
+import gregtech.api.gui.widgets.ProgressWidget;
 import gregtech.api.gui.widgets.SlotWidget;
-import gregtech.api.metatileentity.factory.WorkableSteamMetaTileEntityFactory;
-import gregtech.api.util.GTUtility;
-import net.minecraft.client.resources.I18n;
+import gregtech.api.metatileentity.SteamMetaTileEntity;
+import gregtech.api.recipes.RecipeMap;
+import gregtech.api.util.TextureArea;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class SteamMacerator extends WorkableSteamMetaTileEntity {
+public class SteamMacerator extends SteamMetaTileEntity {
 
-    public SteamMacerator(WorkableSteamMetaTileEntityFactory<SteamMacerator> factory) {
-        super(factory);
+    public SteamMacerator() {
+        super(RecipeMap.MACERATOR_RECIPES);
     }
 
     @Override
@@ -27,24 +29,19 @@ public class SteamMacerator extends WorkableSteamMetaTileEntity {
     }
 
     @Override
-    public ModularUI<? extends IMetaTileEntity> createUI(EntityPlayer player) {
-        GTResourceLocation slotImageLocation = new GTResourceLocation("textures/gui/bronze/slot_bronze.png");
-        return ModularUI.<SteamMacerator>builder(new GTResourceLocation("textures/gui/bronze/bronze_gui.png"), 176, 166)
-            .widget(0, new LabelWidget<>(6, 6, GTUtility.sided(() -> I18n.format(this.factory.getUnlocalizedName()), this.factory::getUnlocalizedName)))
-            .widget(1, new SlotWidget<SteamMacerator>(this.importItems, 0, 53, 25)
-                .setImageLocation(slotImageLocation)
-                .setBackgroundLocation(new GTResourceLocation("textures/gui/bronze/slot_bronze_macerator_background.png"))
-                .setOnSlotChanged(this::markDirty))
-            .widget(2, new ProgressWidget<SteamMacerator>(78, 25, false,false)
-                .setImageLocation(new GTResourceLocation("textures/gui/bronze/progress_bar_bronze_macerator.png"))
-                .setFilledImageLocation(new GTResourceLocation("textures/gui/bronze/progress_bar_bronze_macerator_filled.png"))
-                .setImageWidthHeight(20,18)
-                .setImageUV(0,0))
-            .widget(3, new SlotWidget<SteamMacerator>(this.exportItems, 0, 107, 25, true, false)
-                .setImageLocation(slotImageLocation)
-                .setOnSlotChanged(this::markDirty))
-            .widget(4, new LabelWidget<>(8, 166 - 96 + 2, player.inventory.getDisplayName().getUnformattedText())) // 166 - gui imageHeight, 96 + 2 - from vanilla code
-            .bindPlayerInventory(player.inventory, 5, slotImageLocation)
+    public ModularUI<IUIHolder> createUI(EntityPlayer player) {
+        return ModularUI.builder(BRONZE_BACKGROUND_TEXTURE, 176, 166)
+            .widget(0, new LabelWidget<>(6, 6, getMetaName()))
+            .widget(1, new SlotWidget<>(this.importItems, 0, 53, 25)
+                .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE, SLOT_MACERATOR_BACKGROUND))
+            .widget(2, new ProgressWidget<>(workableHandler::getProgressPercent, 78, 25, 20, 18)
+                .setProgressBar(TextureArea.fullImage("textures/gui/bronze/progress_bar_bronze_macerator.png"),
+                    TextureArea.fullImage("textures/gui/bronze/progress_bar_bronze_macerator_filled.png"),
+                    ProgressWidget.MoveType.HORIZONTAL))
+            .widget(3, new SlotWidget<>(this.exportItems, 0, 107, 25, true, false)
+                .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE))
+            .widget(4, new LabelWidget<>(8, 166 - 96 + 2, player.inventory.getName())) // 166 - gui imageHeight, 96 + 2 - from vanilla code
+            .bindPlayerInventory(player.inventory, 5, BRONZE_SLOT_BACKGROUND_TEXTURE)
             .build(this, player);
     }
 }

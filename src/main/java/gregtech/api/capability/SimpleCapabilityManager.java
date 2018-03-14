@@ -30,6 +30,7 @@ public class SimpleCapabilityManager {
     public static void init() {
         registerCapability(IEnergyContainer.class);
         registerCapability(IElectricItem.class);
+        registerCapability(IWorkable.class);
     }
 
 }
