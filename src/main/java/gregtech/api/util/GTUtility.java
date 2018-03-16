@@ -251,7 +251,7 @@ public class GTUtility {
     public static List<FluidStack> fluidHandlerToList(IMultipleTankHandler fluidInputs) {
         List<FluidStack> fluidStacks = new ArrayList<>(fluidInputs.getTanks());
         for (int i = 0; i < fluidInputs.getTanks(); i++) {
-            fluidStacks.add(fluidInputs.getFluidInTank(i));
+            fluidStacks.add(fluidInputs.getTankAt(i).getFluid());
         }
         return fluidStacks;
     }
@@ -260,9 +260,8 @@ public class GTUtility {
         for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
             if (slot.getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
                 ItemStack equipment = entity.getItemStackFromSlot(slot);
-                if (equipment != null) {
-                    if (!suitParts.contains(new SimpleItemStack(equipment)))
-                        return false;
+                if (!equipment.isEmpty() && !suitParts.contains(new SimpleItemStack(equipment))) {
+                    return false;
                 }
             }
         }

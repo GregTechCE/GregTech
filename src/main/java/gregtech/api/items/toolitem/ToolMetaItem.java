@@ -2,6 +2,7 @@ package gregtech.api.items.toolitem;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.enchants.EnchantmentData;
@@ -72,13 +73,13 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     public void registerModels() {
         for(T metaItem : this.metaItems.valueCollection()) {
             String name = metaItem.unlocalizedName;
-            ModelBakery.registerItemVariants(this, new GTResourceLocation("tools/" + name.substring(name.indexOf(".") + 1)));
+            ModelBakery.registerItemVariants(this, new ResourceLocation(GTValues.MODID, "tools/" + name.substring(name.indexOf(".") + 1)));
         }
 
         ModelLoader.setCustomMeshDefinition(this, stack -> {
             if (stack.getMetadata() < this.metaItems.size()) {
                 String name = getItem(stack).unlocalizedName;
-                return new ModelResourceLocation(new GTResourceLocation("tools/" + name.substring(name.indexOf(".") + 1)), "inventory");
+                return new ModelResourceLocation(new ResourceLocation(GTValues.MODID, "tools/" + name.substring(name.indexOf(".") + 1)), "inventory");
             }
             return new ModelResourceLocation("builtin/missing", "missing");
         });
@@ -253,7 +254,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     @Override
-    public boolean doDamageToItem(ItemStack stack, int vanillaDamage) {
+    public boolean doDamageToItem(ItemStack stack, int vanillaDamage, boolean simulate) {
         if(!isUsable(stack, vanillaDamage)) {
             return false;
         }

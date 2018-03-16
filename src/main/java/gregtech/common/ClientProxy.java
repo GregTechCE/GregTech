@@ -5,6 +5,7 @@
 
 package gregtech.common;
 
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.common.blocks.BlockCompressed;
 import gregtech.common.blocks.BlockOre;
 import gregtech.common.blocks.MetaBlocks;
@@ -14,6 +15,7 @@ import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -21,6 +23,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
 
 @SideOnly(Side.CLIENT)
 @Mod.EventBusSubscriber(Side.CLIENT)
@@ -41,15 +45,11 @@ public class ClientProxy extends CommonProxy {
     public static final IItemColor ORE_ITEM_COLOR = (stack, tintIndex) ->
         tintIndex == 1 ? ((BlockOre) ((ItemBlock) stack.getItem()).getBlock()).material.materialRGB : 0xFFFFFF;
 
-    public static final IBlockColor MACHINE_BLOCK_COLOR = (IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) -> {
-        IGregTechTileEntity tileEntity = (IGregTechTileEntity) worldIn.getTileEntity(pos);
-        if (tileEntity != null) {
-            IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
-            if (metaTileEntity instanceof PaintableMetaTileEntity) {
-                EnumDyeColor color = ((PaintableMetaTileEntity) metaTileEntity).getColor();
-                if (color != null) {
-                    return color.getColorValue();
-                }
+    public static final IBlockColor MACHINE_BLOCK_COLOR = (IBlockState state, @Nullable IBlockAccess worldIn,  @Nullable BlockPos pos, int tintIndex) -> {
+        if (worldIn != null && pos != null) {
+            TileEntity tileEntity = worldIn.getTileEntity(pos);
+            if (tileEntity != null && tileEntity instanceof MetaTileEntity) {
+                return ((MetaTileEntity) tileEntity).getPaintingColor();
             }
         }
         return 0xFFFFFF;
