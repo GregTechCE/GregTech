@@ -7,15 +7,14 @@ import gregtech.api.gui.widgets.ProgressWidget;
 import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.metatileentity.SteamMetaTileEntity;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.util.TextureArea;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class SteamExtractor extends SteamMetaTileEntity {
 
-    public SteamExtractor() {
-        super(RecipeMap.EXTRACTOR_RECIPES);
+    public SteamExtractor(boolean isHighPressure) {
+        super(RecipeMap.EXTRACTOR_RECIPES, isHighPressure);
     }
 
     @Override
@@ -35,8 +34,8 @@ public class SteamExtractor extends SteamMetaTileEntity {
             .widget(1, new SlotWidget<>(this.importItems, 0, 53, 25)
                 .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE, SLOT_EXTRACTOR_BACKGROUND))
             .widget(2, new ProgressWidget<>(workableHandler::getProgressPercent, 78, 24, 20, 18)
-                .setProgressBar(TextureArea.fullImage("textures/gui/bronze/progress_bar_bronze_extractor.png"),
-                    TextureArea.fullImage("textures/gui/bronze/progress_bar_bronze_extractor_filled.png"),
+                .setProgressBar(getGuiTexture("progress_bar_%s_extractor"),
+                    getGuiTexture("progress_bar_%s_extractor_filled"),
                     ProgressWidget.MoveType.HORIZONTAL))
             .widget(3, new SlotWidget<>(this.exportItems, 0, 107, 25, true, false)
                 .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE))

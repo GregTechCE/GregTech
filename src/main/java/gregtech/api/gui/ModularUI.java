@@ -3,7 +3,7 @@ package gregtech.api.gui;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableBiMap;
 import gregtech.api.gui.widgets.SlotWidget;
-import gregtech.api.util.TextureArea;
+import gregtech.api.gui.resources.TextureArea;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;

@@ -9,6 +9,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
@@ -31,29 +32,16 @@ public class FluidTankHandler implements IFluidHandler, IMultipleTankHandler, IN
         return fluidTanks.size();
     }
 
-    @Nullable
     @Override
-    public FluidStack getFluidInTank(int tank) {
-        validateTankIndex(tank);
-        return fluidTanks.get(tank).getFluid();
-    }
-
-    @Override
-    public void setFluidInTank(int tank, @Nullable FluidStack stack) {
-        validateTankIndex(tank);
-        if (FluidStack.areFluidStackTagsEqual(this.fluidTanks.get(tank).getFluid(), stack))
-            return;
-        FluidTank fluidTank = fluidTanks.get(tank);
-        fluidTank.setFluid(stack);
+    public IFluidTank getTankAt(int index) {
+        return fluidTanks.get(index);
     }
 
     @Override
     public IFluidTankProperties[] getTankProperties() {
         if (properties == null) {
             List<IFluidTankProperties> props = Lists.newArrayList();
-            fluidTanks.forEach(tank -> {
-                Collections.addAll(props, tank.getTankProperties());
-            });
+            fluidTanks.forEach(tank -> Collections.addAll(props, tank.getTankProperties()));
             properties = props.toArray(new IFluidTankProperties[props.size()]);
         }
         return properties;

@@ -14,15 +14,11 @@ import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
+import java.util.*;
 
 import static gregtech.api.GTValues.M;
 
@@ -33,6 +29,7 @@ public class OreDictUnifier {
     private static final HashMap<SimpleItemStack, ItemMaterialInfo> materialUnificationInfo = new HashMap<>();
     private static final HashMap<SimpleItemStack, UnificationEntry> stackUnificationInfo = new HashMap<>();
     private static final HashMap<UnificationEntry, ArrayList<SimpleItemStack>> stackUnificationItems = new HashMap<>();
+    private static final HashMap<SimpleItemStack, Set<String>> stackOreDictName = new HashMap<>();
 
     public static void registerOre(ItemStack itemStack, MaterialStack component, MaterialStack... byproducts) {
         if (itemStack.isEmpty()) return;
@@ -60,7 +57,11 @@ public class OreDictUnifier {
 
     @SubscribeEvent
     public static void onItemRegistration(OreDictionary.OreRegisterEvent event) {
+        SimpleItemStack simpleItemStack = new SimpleItemStack(event.getOre());
         String oreName = event.getName();
+        //cache this registration by name
+        stackOreDictName.computeIfAbsent(simpleItemStack, k -> new HashSet<>()).add(oreName);
+        //and try to transform registration name into OrePrefix + Material pair
         OrePrefix orePrefix = OrePrefix.getPrefix(oreName);
         Material material = null;
         if(orePrefix == null) {
@@ -98,11 +99,18 @@ public class OreDictUnifier {
         //finally register item
         if(orePrefix != null && (material != null || orePrefix.isSelfReferencing)) {
             UnificationEntry unificationEntry = new UnificationEntry(orePrefix, material);
-            SimpleItemStack simpleItemStack = new SimpleItemStack(event.getOre());
             stackUnificationInfo.put(simpleItemStack, unificationEntry);
             stackUnificationItems.computeIfAbsent(unificationEntry, p -> new ArrayList<>()).add(simpleItemStack);
             orePrefix.processOreRegistration(material);
         }
+    }
+
+    public static Set<String> getOreDictionaryNames(ItemStack itemStack) {
+        if(itemStack.isEmpty()) return null;
+        SimpleItemStack simpleItemStack = new SimpleItemStack(itemStack);
+        if(stackOreDictName.containsKey(simpleItemStack))
+            return Collections.unmodifiableSet(stackOreDictName.get(simpleItemStack));
+        return Collections.emptySet();
     }
 
     @Nullable

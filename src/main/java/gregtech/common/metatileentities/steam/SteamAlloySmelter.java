@@ -8,15 +8,14 @@ import gregtech.api.gui.widgets.ProgressWidget.MoveType;
 import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.metatileentity.SteamMetaTileEntity;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.util.TextureArea;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class SteamAlloySmelter extends SteamMetaTileEntity {
 
-    public SteamAlloySmelter() {
-        super(RecipeMap.ALLOY_SMELTER_RECIPES);
+    public SteamAlloySmelter(boolean isHighPressure) {
+        super(RecipeMap.ALLOY_SMELTER_RECIPES, isHighPressure);
     }
 
     @Override
@@ -38,8 +37,8 @@ public class SteamAlloySmelter extends SteamMetaTileEntity {
             .widget(2, new SlotWidget<>(this.importItems, 1, 42, 25)
                 .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE, SLOT_FURNACE_BACKGROUND))
             .widget(3, new ProgressWidget<>(workableHandler::getProgressPercent, 82, 25, 20, 16)
-                .setProgressBar(TextureArea.fullImage("textures/gui/bronze/progress_bar_bronze_furnace.png"),
-                    TextureArea.fullImage("textures/gui/bronze/progress_bar_bronze_furnace_filled.png"),
+                .setProgressBar(getGuiTexture("progress_bar_%s_furnace"),
+                    getGuiTexture("progress_bar_%s_furnace_filled"),
                     MoveType.HORIZONTAL))
             .widget(4, new SlotWidget<>(this.exportItems, 0, 107, 25, true, false)
                 .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE))

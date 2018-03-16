@@ -1,22 +1,48 @@
 package gregtech.api.render;
 
+import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.metatileentity.MetaTileEntity;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.animation.FastTESR;
 import net.minecraftforge.client.model.pipeline.LightUtil;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class MetaTileEntityRenderer extends FastTESR<MetaTileEntity> {
-    
+@SideOnly(Side.CLIENT)
+public class MetaTileEntityRenderer extends FastTESR<TileEntity> {
+
+    public static final MetaTileEntityRenderer INSTANCE = new MetaTileEntityRenderer();
+    public static final DummyTileEntity DUMMY_TILE_ENTITY = new DummyTileEntity();
+    public static class DummyTileEntity extends TileEntity {}
+
     private final TextureAtlasSprite fullMapSprite;
+    private ItemStack renderingForItemStack;
 
-    public MetaTileEntityRenderer() {
+    private MetaTileEntityRenderer() {
         this.fullMapSprite = new TextureAtlasSprite("missingno") {};
         this.fullMapSprite.setIconHeight(1);
         this.fullMapSprite.setIconWidth(1);
         this.fullMapSprite.initSprite(1, 1, 0, 0, false);
+        ClientRegistry.bindTileEntitySpecialRenderer(DummyTileEntity.class, this);
+    }
+
+    public boolean isRenderingItemStack() {
+        return renderingForItemStack != null;
+    }
+
+    public ItemStack getRenderingItemStack() {
+        return renderingForItemStack;
+    }
+
+    public void setRenderingForItemStack(ItemStack renderingForItemStack) {
+        this.renderingForItemStack = renderingForItemStack;
     }
 
     private TextureAtlasSprite overrideSprite;
@@ -24,7 +50,7 @@ public class MetaTileEntityRenderer extends FastTESR<MetaTileEntity> {
     private int lightmap;
     
     @Override
-    public void renderTileEntityFast(MetaTileEntity te, double x, double y, double z, float partialTicks, int destroyStage, float partial, BufferBuilder buffer) {
+    public void renderTileEntityFast(TileEntity te, double x, double y, double z, float partialTicks, int destroyStage, float partial, BufferBuilder buffer) {
         this.buffer = buffer;
         if(destroyStage >= 0) {
             this.bindTexture(DESTROY_STAGES[destroyStage]);
@@ -36,7 +62,13 @@ public class MetaTileEntityRenderer extends FastTESR<MetaTileEntity> {
             this.lightmap = blockState.getPackedLightmapCoords(te.getWorld(), te.getPos());
         } else this.lightmap = 15 << 20; //max skylight and zero blocklight
         
-        te.renderMetaTileEntity(this);
+        if(te instanceof DummyTileEntity) {
+            BlockMachine<?> blockMachine = (BlockMachine<?>) ((ItemBlock) renderingForItemStack.getItem()).getBlock();
+            blockMachine.getRenderer().renderMetaTileEntity(this, null, renderingForItemStack);
+        } else if(te instanceof MetaTileEntity) {
+            BlockMachine<?> blockMachine = (BlockMachine<?>) te.getBlockType();
+            blockMachine.getRenderer().renderMetaTileEntity(this, (MetaTileEntity) te, null);
+        }
     }
 
     public void renderSide(EnumFacing side, TextureAtlasSprite sprite, double x, double y, double z, double width, double height, double depth, int color) {

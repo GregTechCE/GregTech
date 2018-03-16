@@ -1,28 +1,21 @@
 package gregtech.api.recipes;
 
 import com.google.common.base.Preconditions;
-
 import gregtech.api.GTValues;
-import gregtech.api.GregTechAPI;
 import gregtech.api.capability.IElectricItem;
-import gregtech.api.items.IDamagableItem;
 import gregtech.api.items.ToolDictNames;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
-import gregtech.api.unification.stack.SimpleItemStack;
+import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTLog;
-import gregtech.api.util.GTUtility;
 import gregtech.common.MetaFluids;
 import gregtech.common.items.MetaItems;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
@@ -30,34 +23,27 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import net.minecraftforge.registries.GameData;
 import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.RegistryManager;
-
 import org.apache.commons.lang3.Validate;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static gregtech.api.GTValues.DW;
-import static gregtech.api.GTValues.V;
 
 public class ModHandler {
 
@@ -141,6 +127,30 @@ public class ModHandler {
      */
     public static ItemStack getModItem(String modID, String itemName, int amount, int meta) {
         return GameRegistry.makeItemStack(modID + ":" + itemName, meta, amount, null);
+    }
+
+    public static ItemStack getBurningFuelRemainder(Random random, ItemStack fuelStack) {
+        float remainderChance;
+        ItemStack remainder;
+        if(OreDictUnifier.getOreDictionaryNames(fuelStack).contains("fuelCoke")) {
+            remainder = OreDictUnifier.get(OrePrefix.dust, Materials.Ash);
+            remainderChance = 0.5f;
+        } else {
+            MaterialStack materialStack = OreDictUnifier.getMaterial(fuelStack);
+            if(materialStack == null)
+                return ItemStack.EMPTY;
+            else if(materialStack.material == Materials.Charcoal) {
+                remainder = OreDictUnifier.get(OrePrefix.dust, Materials.Ash);
+                remainderChance = 0.3f;
+            } else if(materialStack.material == Materials.Coal) {
+                remainder = OreDictUnifier.get(OrePrefix.dust, Materials.DarkAsh);
+                remainderChance = 0.35f;
+            } else if(materialStack.material == Materials.Lignite) {
+                remainder = OreDictUnifier.get(OrePrefix.dust, Materials.DarkAsh);
+                remainderChance = 0.35f;
+            } else return ItemStack.EMPTY;
+        }
+        return random.nextFloat() <= remainderChance ? remainder : ItemStack.EMPTY;
     }
 
     ///////////////////////////////////////////////////
@@ -596,37 +606,7 @@ public class ModHandler {
         return item.use(charge, player);
     }
 
-    /**
-     * Uses an Item. Tries to discharge in case of Electric Items
-     */
-    public static boolean damageOrDechargeItem(ItemStack stack, int damage, long decharge, EntityLivingBase player) {
-        if (stack.isEmpty()) return false;
 
-        if (player != null && player instanceof EntityPlayer && ((EntityPlayer) player).capabilities.isCreativeMode) {
-            return true;
-        }
-
-        if (stack.getItem() instanceof IDamagableItem) {
-            return ((IDamagableItem) stack.getItem()).doDamageToItem(stack, damage);
-        } else if (ModHandler.isElectricItem(stack)) {
-            IElectricItem electricItem = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
-            if (electricItem.canUse(decharge)) {
-                if (player != null && player instanceof EntityPlayer) {
-                    return electricItem.use(decharge, player);
-                }
-                return electricItem.discharge(decharge, Integer.MAX_VALUE, true, false, true) >= decharge;
-            }
-        } else if (stack.getItem().isDamageable()) {
-            if (player == null) {
-                stack.setItemDamage(stack.getItemDamage() + damage);
-            } else {
-                stack.damageItem(damage, player);
-            }
-            return true;
-        }
-        return false;
-    }
-//
 //    /**
 //     * Uses a Soldering Iron
 //     */

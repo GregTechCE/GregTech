@@ -1,16 +1,18 @@
 package gregtech.api.metatileentity;
 
 import com.google.common.base.Preconditions;
-import gregtech.api.GTValues;
+import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.capability.ICustomDataTile;
 import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankHandler;
 import gregtech.api.capability.impl.ItemHandlerProxy;
 import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.ModularUI;
-import gregtech.api.render.MetaTileEntityRenderer;
 import gregtech.api.util.GTUtility;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
@@ -18,13 +20,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -64,8 +65,32 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
         this.fluidInventory = new FluidHandlerProxy(importFluids, exportFluids);
     }
 
+    /**
+     * Called on both sides on tile entity registration to set mte-specific hardness, sound & so
+     * @param blockMachine block of this meta tile entity
+     * @param constructorParams additional meta tile entity constructor arguments, passed to registerMetaTileEntity
+     */
+    public static void init(BlockMachine<?> blockMachine, Object[] constructorParams) {
+    }
+
+    /**
+     * Called clientside on tile entity registration to set this meta tile entity info provider and renderer
+     * This will be called on child class instead, if it provides static method similar to this
+     * @param blockMachine block of this meta tile entity
+     * @param constructorParams additional meta tile entity constructor arguments, passed to registerMetaTileEntity
+     */
+    public static void initClient(BlockMachine<?> blockMachine, Object[] constructorParams) {
+        blockMachine.setRenderer((renderer, metaTileEntity, itemStack) -> {
+            TextureAtlasSprite renderSprite = Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
+            int renderColor = metaTileEntity == null ? 0xFFFFFF : metaTileEntity.getPaintingColor();
+            for(EnumFacing metaTileEntitySide : EnumFacing.VALUES) {
+                renderer.renderSide(metaTileEntitySide, renderSprite, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, renderColor);
+            }
+        });
+    }
+
     public final String getMetaName() {
-        return "gregtech.machine." + TileEntity.getKey(getClass()).getResourcePath() + ".name";
+        return getBlockType().getUnlocalizedName();
     }
 
     /**
@@ -82,31 +107,7 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
     }
 
     /**
-     * Setups this MetaTileEntity as being used for rendering as item
-     * This usually sets default facing, texture-dependent parameters (like isActive)
-     * item-dependent parameters (like color & covers) are set in initFromItemStackData individually
-     * @return a location of item model json (to allow custom rotation, scaling and translation)
-     */
-    @SideOnly(Side.CLIENT)
-    public ResourceLocation setupForItemRendering() {
-        return new ResourceLocation(GTValues.MODID, "metatileentity/default");
-    }
-
-    /**
-     * Applies special rendering (such as miscellaneous overlays) to this meta tile entity
-     * You can use helper methods provided by instance passed here
-     * Note that this method can be called both on meta tile entity in world and on
-     * meta tile entity used to render item in inventory
-     */
-    @SideOnly(Side.CLIENT)
-    public void renderMetaTileEntity(MetaTileEntityRenderer renderer) {
-
-    }
-
-    /**
      * Called from ItemBlock to initialize this MTE with data contained in ItemStack
-     * also called by GTHooksClient to initialize this MTE with rendered itemstack data
-     *
      * @param itemStack itemstack of itemblock
      */
     public void initFromItemStackData(NBTTagCompound itemStack) {
@@ -140,6 +141,12 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
      * @return true if something happened, so animation will be played
      */
     public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if(!playerIn.isSneaking()) {
+            if(!world.isRemote) {
+                MetaTileEntityUIFactory.INSTANCE.openUI(this, (EntityPlayerMP) playerIn);
+            }
+            return true;
+        }
         return false;
     }
 
@@ -304,6 +311,62 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
                 return (T) mteTrait;
         }
         return super.getCapability(capability, side);
+    }
+
+    public boolean fillInternalTankFromFluidContainer(int inputSlot, int outputSlot) {
+        ItemStack inputContainerStack = importItems.extractItem(inputSlot, 1, true);
+        IFluidHandlerItem fluidHandler = inputContainerStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+        if(fluidHandler == null) return false; //if not fluid container, return
+        FluidStack fluidDrained = fluidHandler.drain(Integer.MAX_VALUE, false);
+        if(fluidDrained == null) return false; //if can't drain anything, return
+        int amountFilled = Math.min(fluidDrained.amount, importFluids.fill(fluidDrained, false));
+        if(amountFilled == 0) return false; //if can't put any fluid in internal tank, return
+        fluidDrained = fluidHandler.drain(amountFilled, true);
+        if(fluidDrained == null) return false; //if can't drain how much we need, return
+        ItemStack emptyStack = fluidHandler.getContainer();
+        if(!emptyStack.isEmpty()) { //if we don't have any output container, it's ok
+            ItemStack remainStack = exportItems.insertItem(outputSlot, emptyStack, false);
+            if(!remainStack.isEmpty()) return false; //if we can't insert all empty containers, return
+        }
+        importItems.extractItem(inputSlot, 1, false);
+        importFluids.fill(fluidDrained, true);
+        return true;
+    }
+
+    public boolean fillContainerFromInternalTank(int inputSlot, int outputSlot) {
+        ItemStack emptyContainer = importItems.extractItem(inputSlot, 1, true);
+        IFluidHandlerItem fluidHandler = emptyContainer.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+        if(fluidHandler == null) return false; //if not fluid container, return
+        FluidStack fluidDrained = exportFluids.drain(Integer.MAX_VALUE, false);
+        if(fluidDrained == null) return false; //if can't drain anything, return
+        int amountDrained = Math.min(fluidDrained.amount, fluidHandler.fill(fluidDrained, false));
+        if(amountDrained == 0) return false; //if can't put any fluid in container, return
+        amountDrained = fluidHandler.fill(fluidDrained, true);
+        if(amountDrained == 0) return false; //if can't drain how much we need, return
+        ItemStack filledStack = fluidHandler.getContainer();
+        if(!filledStack.isEmpty()) { //if we don't have any output container, it's ok
+            ItemStack remainStack = exportItems.insertItem(outputSlot, filledStack, false);
+            if(!remainStack.isEmpty()) return false; //if we can't insert all empty containers, return
+        }
+        importItems.extractItem(inputSlot, 1, false);
+        exportFluids.drain(amountDrained, true);
+        return true;
+    }
+
+    public void pushFluidsIntoNearbyHandlers() {
+        for(EnumFacing nearbyFacing : EnumFacing.VALUES) {
+            TileEntity tileEntity = world.getTileEntity(getPos().offset(nearbyFacing));
+            IFluidHandler fluidHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
+            if(fluidHandler == null) continue;
+            for(int tankIndex = 0; tankIndex < exportFluids.getTanks(); tankIndex++) {
+                IFluidTank tank = exportFluids.getTankAt(tankIndex);
+                FluidStack fluidStack = tank.getFluid();
+                if(fluidStack != null && fluidHandler.fill(fluidStack, false) != 0) {
+                    int filledAmount = fluidHandler.fill(fluidStack, true);
+                    tank.drain(filledAmount, true);
+                }
+            }
+        }
     }
 
     public static boolean addItemsToItemHandler(IItemHandler handler, boolean simulate, NonNullList<ItemStack> items) {

@@ -3,7 +3,7 @@ package gregtech.api.gui.widgets;
 import gregtech.api.gui.INativeWidget;
 import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.Widget;
-import gregtech.api.util.TextureArea;
+import gregtech.api.gui.resources.TextureArea;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Slot;
@@ -70,7 +70,7 @@ public class SlotWidget<T extends IUIHolder> extends Widget<T> implements INativ
     }
 
     public void onSlotChanged() {
-        gui.markDirty();
+        gui.holder.markDirty();
     }
 
     @Override

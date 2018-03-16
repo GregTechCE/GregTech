@@ -39,7 +39,6 @@ public abstract class UIFactory<E extends IUIHolder> {
         PacketBuffer serializedHolder = new PacketBuffer(Unpooled.buffer());
         writeHolderToSyncData(serializedHolder, holder);
         PacketBuffer widgetsInitData = new PacketBuffer(Unpooled.buffer());
-        uiTemplate.writeWidgetData(widgetsInitData);
         int uiFactoryId = FACTORY_REGISTRY.getIDForObject(this);
         PacketUIOpen packet = new PacketUIOpen(uiFactoryId, serializedHolder, widgetsInitData, player.currentWindowId);
         NetworkHandler.channel.sendTo(NetworkHandler.packet2proxy(packet), player);

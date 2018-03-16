@@ -2,8 +2,8 @@ package gregtech.api.gui.widgets;
 
 import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.Widget;
-import gregtech.api.util.RenderUtil;
-import gregtech.api.util.TextureArea;
+import gregtech.api.gui.resources.RenderUtil;
+import gregtech.api.gui.resources.TextureArea;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fluids.FluidStack;

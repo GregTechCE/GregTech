@@ -36,8 +36,8 @@ public class MetaFluids {
         String materialName = material.toString();
         String typeName = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_UNDERSCORE, type.name());
         Fluid fluid = new Fluid(typeName + "." + materialName,
-            new GTResourceLocation("blocks/fluids/" + materialName + "_still"),
-            new GTResourceLocation("blocks/fluids/" + materialName + "_flow"));
+            new ResourceLocation("gregtech:blocks/fluids/" + materialName + "_still"),
+            new ResourceLocation("gregtech:blocks/fluids/" + materialName + "_flow"));
         fluid.setTemperature(temp);
 
         switch(type) {

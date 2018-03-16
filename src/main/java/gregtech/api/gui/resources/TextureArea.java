@@ -1,4 +1,4 @@
-package gregtech.api.util;
+package gregtech.api.gui.resources;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
