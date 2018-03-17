@@ -13,6 +13,9 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class SteamFurnace extends SteamMetaTileEntity {
 
+    public static final class Bronze extends SteamFurnace { public Bronze() { super(false); } }
+    public static final class Steel extends SteamFurnace { public Steel() { super(true); } }
+
     public SteamFurnace(boolean isHighPressure) {
         super(RecipeMap.FURNACE_RECIPES, isHighPressure);
     }

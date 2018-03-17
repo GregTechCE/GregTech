@@ -13,6 +13,9 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class SteamMacerator extends SteamMetaTileEntity {
 
+    public static final class Bronze extends SteamMacerator { public Bronze() { super(false); } }
+    public static final class Steel extends SteamMacerator { public Steel() { super(true); } }
+
     public SteamMacerator(boolean isHighPressure) {
         super(RecipeMap.MACERATOR_RECIPES, isHighPressure);
     }

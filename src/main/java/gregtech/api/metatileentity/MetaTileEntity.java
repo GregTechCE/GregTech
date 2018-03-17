@@ -9,6 +9,7 @@ import gregtech.api.capability.impl.ItemHandlerProxy;
 import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.util.GTUtility;
+import net.minecraft.block.SoundType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
@@ -54,6 +55,7 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
     protected int paintingColor = 0xCCCCCC;
 
     protected int[] sidedRedstoneOutput = new int[6];
+    protected int[] ацкsidedRedstoneOutput = new int[6];
 
     public MetaTileEntity() {
         this.importItems = createImportItemHandler();
@@ -67,22 +69,26 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
 
     /**
      * Called on both sides on tile entity registration to set mte-specific hardness, sound & so
+     * Note that this will be called on unitialized metatileentity with world == null!
+     *
      * @param blockMachine block of this meta tile entity
-     * @param constructorParams additional meta tile entity constructor arguments, passed to registerMetaTileEntity
      */
-    public static void init(BlockMachine<?> blockMachine, Object[] constructorParams) {
+    public void init(BlockMachine<?> blockMachine) {
+        blockMachine.setHardness(6.0f);
+        blockMachine.setResistance(8.0f);
+        blockMachine.setSoundType(SoundType.METAL);
     }
 
     /**
      * Called clientside on tile entity registration to set this meta tile entity info provider and renderer
-     * This will be called on child class instead, if it provides static method similar to this
+     * Note that this will be called on unitialized metatileentity with world == null!
+     *
      * @param blockMachine block of this meta tile entity
-     * @param constructorParams additional meta tile entity constructor arguments, passed to registerMetaTileEntity
      */
-    public static void initClient(BlockMachine<?> blockMachine, Object[] constructorParams) {
+    public void initClient(BlockMachine<?> blockMachine) {
         blockMachine.setRenderer((renderer, metaTileEntity, itemStack) -> {
-            TextureAtlasSprite renderSprite = Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
-            int renderColor = metaTileEntity == null ? 0xFFFFFF : metaTileEntity.getPaintingColor();
+            TextureAtlasSprite renderSprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("minecraft:dirt");
+            int renderColor = metaTileEntity.getPaintingColor(); //safe to call
             for(EnumFacing metaTileEntitySide : EnumFacing.VALUES) {
                 renderer.renderSide(metaTileEntitySide, renderSprite, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, renderColor);
             }
@@ -489,4 +495,13 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
         return exportFluids;
     }
 
+    @Override
+    public boolean hasFastRenderer() {
+        return true;
+    }
+
+    @Override
+    public boolean canRenderBreaking() {
+        return true;
+    }
 }

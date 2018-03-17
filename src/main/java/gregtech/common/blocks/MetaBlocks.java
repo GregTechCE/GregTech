@@ -32,8 +32,6 @@ public class MetaBlocks {
 
     private MetaBlocks() {}
 
-    public static BlockMachine MACHINE;
-    public static BlockMachine STEAM_MACHINE;
     public static BlockCable CABLE;
 
     public static BlockBoilerCasing BOILER_CASING;
@@ -109,18 +107,6 @@ public class MetaBlocks {
 
         MetaTileEntities.init();
 
-        MACHINE = new BlockMachine(Streams.stream(GregTechAPI.METATILEENTITY_REGISTRY.getObjectsWithIds())
-            .filter(mte -> mte.getBlockClass() == BlockMachine.class)
-            .map(IMetaTileEntityFactory::getMetaName)
-            .collect(Collectors.toList()));
-        MACHINE.setRegistryName("machine");
-
-        STEAM_MACHINE = new BlockSteamMachine(Streams.stream(GregTechAPI.METATILEENTITY_REGISTRY.getObjectsWithIds())
-            .filter(mte -> mte.getBlockClass() == BlockSteamMachine.class)
-            .map(IMetaTileEntityFactory::getMetaName)
-            .collect(Collectors.toList()));
-        STEAM_MACHINE.setRegistryName("steam_machine");
-
         CABLE = new BlockCable(64, 2, 0);
         CABLE.setRegistryName("cable");
         CABLE.setUnlocalizedName("cable");
@@ -173,8 +159,6 @@ public class MetaBlocks {
         registerItemModel(GRANITE);
         registerItemModel(MINERAL);
         registerItemModel(CONCRETE);
-        MACHINE.registerItemModel();
-        STEAM_MACHINE.registerItemModel();
 
         COMPRESSED.values().stream().distinct().forEach(MetaBlocks::registerItemModel);
         ORES.stream().distinct().forEach(MetaBlocks::registerItemModel);
@@ -191,8 +175,6 @@ public class MetaBlocks {
 
     @SideOnly(Side.CLIENT)
     public static void registerStateMappers() {
-        MetaBlocks.MACHINE.registerStateMapper();
-        MetaBlocks.STEAM_MACHINE.registerStateMapper();
     }
 
     @SideOnly(Side.CLIENT)
@@ -206,9 +188,6 @@ public class MetaBlocks {
             Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(ORE_BLOCK_COLOR, block);
             Minecraft.getMinecraft().getItemColors().registerItemColorHandler(ORE_ITEM_COLOR, block);
         });
-
-        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(MACHINE_BLOCK_COLOR, MetaBlocks.MACHINE);
-        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(MACHINE_ITEM_COLOR, MetaBlocks.MACHINE);
     }
 
     private static String statePropertiesToString(Map<IProperty<?>, Comparable<?>> properties) {

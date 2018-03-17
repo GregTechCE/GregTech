@@ -12,7 +12,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class SteamAlloySmelter extends SteamMetaTileEntity {
+public abstract class SteamAlloySmelter extends SteamMetaTileEntity {
+
+    public static final class Bronze extends SteamAlloySmelter { public Bronze() { super(false); } }
+    public static final class Steel extends SteamAlloySmelter { public Steel() { super(true); } }
 
     public SteamAlloySmelter(boolean isHighPressure) {
         super(RecipeMap.ALLOY_SMELTER_RECIPES, isHighPressure);

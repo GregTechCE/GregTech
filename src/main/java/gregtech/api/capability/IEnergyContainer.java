@@ -20,6 +20,10 @@ public interface IEnergyContainer {
         return false;
     }
 
+    default void addEnergy(long energyToAdd) {
+        setEnergyStored(Math.min(getEnergyStored() + energyToAdd, getEnergyCapacity()));
+    }
+
     /**
      * Gets the stored electric energy
      */

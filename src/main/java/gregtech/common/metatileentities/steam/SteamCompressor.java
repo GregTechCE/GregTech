@@ -13,6 +13,9 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class SteamCompressor extends SteamMetaTileEntity {
 
+    public static final class Bronze extends SteamCompressor { public Bronze() { super(false); } }
+    public static final class Steel extends SteamCompressor { public Steel() { super(true); } }
+
     public SteamCompressor(boolean isHighPressure) {
         super(RecipeMap.COMPRESSOR_RECIPES, isHighPressure);
     }

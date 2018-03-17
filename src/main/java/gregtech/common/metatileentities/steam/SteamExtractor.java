@@ -13,6 +13,9 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class SteamExtractor extends SteamMetaTileEntity {
 
+    public static final class Bronze extends SteamExtractor { public Bronze() { super(false); } }
+    public static final class Steel extends SteamExtractor { public Steel() { super(true); } }
+
     public SteamExtractor(boolean isHighPressure) {
         super(RecipeMap.EXTRACTOR_RECIPES, isHighPressure);
     }

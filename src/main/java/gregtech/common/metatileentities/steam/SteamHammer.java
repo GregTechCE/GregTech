@@ -14,6 +14,9 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class SteamHammer extends SteamMetaTileEntity {
 
+    public static final class Bronze extends SteamHammer { public Bronze() { super(false); } }
+    public static final class Steel extends SteamHammer { public Steel() { super(true); } }
+
     public SteamHammer(boolean isHighPressure) {
         super(RecipeMap.HAMMER_RECIPES, isHighPressure);
     }

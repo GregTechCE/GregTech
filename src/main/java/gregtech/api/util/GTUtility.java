@@ -251,7 +251,7 @@ public class GTUtility {
     public static List<FluidStack> fluidHandlerToList(IMultipleTankHandler fluidInputs) {
         List<FluidStack> fluidStacks = new ArrayList<>(fluidInputs.getTanks());
         for (int i = 0; i < fluidInputs.getTanks(); i++) {
-            fluidStacks.add(fluidInputs.getFluidInTank(i));
+            fluidStacks.add(fluidInputs.getTankAt(i).getFluid());
         }
         return fluidStacks;
     }

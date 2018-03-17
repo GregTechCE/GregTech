@@ -1,6 +1,7 @@
 package gregtech.api.block.machines;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.capability.ICustomHighlightBlock;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.MetaTileEntityRenderer;
 import gregtech.api.unification.stack.SimpleItemStack;
@@ -10,9 +11,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
@@ -21,10 +24,14 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -36,28 +43,42 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @SuppressWarnings("deprecation")
-public class BlockMachine<T extends MetaTileEntity> extends Block implements ITileEntityProvider {
+public class BlockMachine<T extends MetaTileEntity> extends Block implements ITileEntityProvider, ICustomHighlightBlock {
+
+    public static final Map<BlockMachine<?>, ItemBlock> MACHINES = new HashMap<>();
 
     @FunctionalInterface
     @SideOnly(Side.CLIENT)
     public interface InformationProvider {
+        /**
+         * Called clientside to add additional information to this meta tile entity's item
+         * @param stack itemstack of metatileentity
+         * @param player current world instance (Minecraft.getMinecraft().theWorld)
+         * @param tooltip tooltip text list
+         * @param isAdvanced if advanced tooltips are shown
+         */
         void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean isAdvanced);
     }
 
     @FunctionalInterface
     @SideOnly(Side.CLIENT)
     public interface Renderer {
-        void renderMetaTileEntity(MetaTileEntityRenderer renderer, @Nullable MetaTileEntity metaTileEntity, @Nullable ItemStack itemStack);
+        /**
+         * Called on real tile entity in world to render it, or either with ItemStack != null and sample tile entity to render item
+         * @param renderer current instance of this meta tile entity renderer
+         * @param metaTileEntity tile entity being rendered (or sample meta tile entity)
+         * @param itemStack itemstack being rendered (or null for tile entity in world)
+         */
+        void renderMetaTileEntity(MetaTileEntityRenderer renderer, MetaTileEntity metaTileEntity, @Nullable ItemStack itemStack);
     }
 
     public final String name;
     public final Class<T> metaTileEntityClass;
-    private final Constructor<?> constructor;
-    private final Object[] constructorParams;
+    private final T sampleMetaTileEntity;
+    private List<AxisAlignedBB> boundingBoxes;
 
     private int damageForScrewdriverClick = 40;
     private int damageForWrenchClick = 60;
@@ -67,28 +88,26 @@ public class BlockMachine<T extends MetaTileEntity> extends Block implements ITi
     @SideOnly(Side.CLIENT)
     private Renderer renderer;
 
-    public static <T extends MetaTileEntity> BlockMachine<T> registerMetaTileEntity(String name, Class<T> metaTileEntityClass, Object... constructorParams) {
+    public static <T extends MetaTileEntity> BlockMachine<T> registerMetaTileEntity(String name, Class<T> metaTileEntityClass) {
         TileEntity.register(name, metaTileEntityClass);
-        BlockMachine<T> blockMachine = new BlockMachine<>(name, metaTileEntityClass, constructorParams);
+        BlockMachine<T> blockMachine = new BlockMachine<>(name, metaTileEntityClass);
         blockMachine.setRegistryName("machine." + name);
-        ForgeRegistries.BLOCKS.register(blockMachine);
         ItemBlock itemBlock = new ItemBlock(blockMachine);
         itemBlock.setRegistryName(blockMachine.getRegistryName());
-        ForgeRegistries.ITEMS.register(itemBlock);
+        MACHINES.put(blockMachine, itemBlock);
         try {
-            Method initMethod = metaTileEntityClass.getMethod("init", BlockMachine.class, Object[].class);
-            initMethod.invoke(null, blockMachine, constructorParams);
-        } catch (ReflectiveOperationException ignored) {
-            GTLog.logger.error("Failed to call init() on meta tile entity class {}", metaTileEntityClass, ignored);
+            Method initMethod = metaTileEntityClass.getMethod("init", BlockMachine.class);
+            initMethod.invoke(blockMachine.getSampleMetaTileEntity(), blockMachine);
+        } catch (ReflectiveOperationException exception) {
+            GTLog.logger.error("Failed to call init() on meta tile entity class {}", metaTileEntityClass, exception);
         }
-
         if(FMLCommonHandler.instance().getSide().isClient()) {
             ClientRegistry.bindTileEntitySpecialRenderer(metaTileEntityClass, MetaTileEntityRenderer.INSTANCE);
             try {
-                Method initMethod = metaTileEntityClass.getMethod("initClient", BlockMachine.class, Object[].class);
-                initMethod.invoke(null, blockMachine, constructorParams);
-            } catch (ReflectiveOperationException ignored) {
-                GTLog.logger.error("Failed to call clientInit() on meta tile entity class {}", metaTileEntityClass, ignored);
+                Method initMethod = metaTileEntityClass.getMethod("initClient", BlockMachine.class);
+                initMethod.invoke(blockMachine.getSampleMetaTileEntity(), blockMachine);
+            } catch (ReflectiveOperationException exception) {
+                GTLog.logger.error("Failed to call clientInit() on meta tile entity class {}", metaTileEntityClass, exception);
             }
         }
         return blockMachine;
@@ -98,12 +117,13 @@ public class BlockMachine<T extends MetaTileEntity> extends Block implements ITi
         super(Material.IRON);
         this.name = name;
         this.metaTileEntityClass = metaTileEntityClass;
-        this.constructor = metaTileEntityClass.getConstructors()[0];
-        this.constructorParams = constructorParams;
-        setHardness(6.0f);
-        setResistance(8.0f);
-        setSoundType(SoundType.METAL);
+        this.sampleMetaTileEntity = createNewTileEntity(null, 0);
         setCreativeTab(GregTechAPI.TAB_GREGTECH);
+        this.boundingBoxes = Collections.singletonList(FULL_BLOCK_AABB);
+    }
+
+    public T getSampleMetaTileEntity() {
+        return sampleMetaTileEntity;
     }
 
     @Override
@@ -144,6 +164,48 @@ public class BlockMachine<T extends MetaTileEntity> extends Block implements ITi
     @SideOnly(Side.CLIENT)
     public void setRenderer(Renderer renderer) {
         this.renderer = renderer;
+    }
+
+    public void setBoundingBox(AxisAlignedBB... boundingBoxes) {
+        this.boundingBoxes = Arrays.asList(boundingBoxes);
+    }
+
+    @Override
+    //just to be accessible from MetaTileEntity.init
+    public Block setSoundType(SoundType sound) {
+        return super.setSoundType(sound);
+    }
+
+    @Override
+    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
+        for(AxisAlignedBB axisAlignedBB : boundingBoxes) {
+            AxisAlignedBB offsetBox = axisAlignedBB.offset(pos);
+            if (entityBox.intersects(offsetBox)) {
+                collidingBoxes.add(offsetBox);
+            }
+        }
+    }
+
+    @Override
+    public Collection<AxisAlignedBB> getSelectedBoundingBoxes(World world, BlockPos blockPos, IBlockState blockState) {
+        ArrayList<AxisAlignedBB> selection = new ArrayList<>(boundingBoxes.size());
+        for(AxisAlignedBB axisAlignedBB : boundingBoxes) {
+            selection.add(axisAlignedBB.offset(blockPos));
+        }
+        return selection;
+    }
+
+    @Nullable
+    @Override
+    public RayTraceResult collisionRayTrace(IBlockState blockState, World worldIn, BlockPos pos, Vec3d start, Vec3d end) {
+        for(AxisAlignedBB boundingBox : boundingBoxes) {
+            Vec3d vec3d = start.subtract(pos.getX(), pos.getY(), pos.getZ());
+            Vec3d vec3d1 = end.subtract(pos.getX(), pos.getY(), pos.getZ());
+            RayTraceResult raytraceresult = boundingBox.calculateIntercept(vec3d, vec3d1);
+            RayTraceResult result = new RayTraceResult(raytraceresult.hitVec.addVector(pos.getX(), pos.getY(), pos.getZ()), raytraceresult.sideHit, pos);
+            if(result != null) return result;
+        }
+        return null;
     }
 
     @Override
@@ -297,9 +359,14 @@ public class BlockMachine<T extends MetaTileEntity> extends Block implements ITi
     @Override
     public T createNewTileEntity(World worldIn, int meta) {
         try {
-            return (T) constructor.newInstance(constructorParams);
+            return (T) metaTileEntityClass.newInstance();
         } catch (ReflectiveOperationException exception) {
             throw new RuntimeException("Failed to create meta tile entity from class " + metaTileEntityClass.getName(), exception);
         }
+    }
+
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.INVISIBLE;
     }
 }

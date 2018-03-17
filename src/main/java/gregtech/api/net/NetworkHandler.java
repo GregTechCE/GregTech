@@ -96,13 +96,10 @@ public class NetworkHandler {
                     buf.writeInt(packet.uiFactoryId);
                     buf.writeInt(packet.serializedHolder.readableBytes());
                     buf.writeBytes(packet.serializedHolder);
-                    buf.writeInt(packet.widgetsInitData.readableBytes());
-                    buf.writeBytes(packet.widgetsInitData);
                     buf.writeInt(packet.windowId);
                 },
                 (buf) -> new PacketUIOpen(
                         buf.readInt(),
-                        new PacketBuffer(buf.readBytes(buf.readInt())),
                         new PacketBuffer(buf.readBytes(buf.readInt())),
                         buf.readInt()
                 )
@@ -133,7 +130,7 @@ public class NetworkHandler {
         });
         registerClientExecutor(PacketUIOpen.class, (packet, handler) -> {
             UIFactory<?> uiFactory = UIFactory.FACTORY_REGISTRY.getObjectById(packet.uiFactoryId);
-            uiFactory.initClientUI(packet.serializedHolder, packet.widgetsInitData, packet.windowId);
+            uiFactory.initClientUI(packet.serializedHolder, packet.windowId);
         });
         registerClientExecutor(PacketUIWidgetUpdate.class, (packet, handler) -> {
             GuiScreen activeGui = Minecraft.getMinecraft().currentScreen;

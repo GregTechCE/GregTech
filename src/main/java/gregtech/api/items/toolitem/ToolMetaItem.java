@@ -29,6 +29,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -72,13 +73,13 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     public void registerModels() {
         for(T metaItem : this.metaItems.valueCollection()) {
             String name = metaItem.unlocalizedName;
-            ModelBakery.registerItemVariants(this, new GTResourceLocation("tools/" + name.substring(name.indexOf(".") + 1)));
+            ModelBakery.registerItemVariants(this, new ResourceLocation("gregtech:tools/" + name.substring(name.indexOf(".") + 1)));
         }
 
         ModelLoader.setCustomMeshDefinition(this, stack -> {
             if (stack.getMetadata() < this.metaItems.size()) {
                 String name = getItem(stack).unlocalizedName;
-                return new ModelResourceLocation(new GTResourceLocation("tools/" + name.substring(name.indexOf(".") + 1)), "inventory");
+                return new ModelResourceLocation(new ResourceLocation("gregtech:tools/" + name.substring(name.indexOf(".") + 1)), "inventory");
             }
             return new ModelResourceLocation("builtin/missing", "missing");
         });
@@ -135,7 +136,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         T metaToolValueItem = getItem(stack);
         if(metaToolValueItem != null) {
             IToolStats toolStats = metaToolValueItem.getToolStats();
-            if(!doDamageToItem(stack, toolStats.getToolDamagePerContainerCraft(stack)) && getElectricStats(stack).getMaxCharge() == 0) {
+            if(!doDamageToItem(stack, toolStats.getToolDamagePerContainerCraft(stack), false) && getElectricStats(stack).getMaxCharge() == 0) {
                 return null;
             }
         }
@@ -148,15 +149,17 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         if(metaToolValueItem != null) {
             IToolStats toolStats = metaToolValueItem.getToolStats();
             if(toolStats.isMinableBlock(state, stack)) {
-                doDamageToItem(stack, toolStats.getToolDamagePerBlockBreak(stack));
+                doDamageToItem(stack, toolStats.getToolDamagePerBlockBreak(stack), false);
                 ResourceLocation mineSound = toolStats.getMiningSound(stack);
                 if(mineSound != null) {
-                    GTUtility.playSound(world, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, mineSound, SoundCategory.PLAYERS, 0.27f, 1.0f);
+                    SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(mineSound);
+                    world.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, soundEvent, SoundCategory.PLAYERS, 0.27f, 1.0f, false);
                 }
                 if(!isUsable(stack, toolStats.getToolDamagePerBlockBreak(stack))) {
                     ResourceLocation breakSound = toolStats.getBreakingSound(stack);
                     if(breakSound != null) {
-                        GTUtility.playSound(world, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, breakSound, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                        SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(breakSound);
+                        world.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, soundEvent, SoundCategory.PLAYERS, 1.0f, 1.0f, false);
                     }
                 }
             }
@@ -229,15 +232,18 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         T metaValueItem = getItem(stack);
         if(metaValueItem != null) {
             IToolStats toolStats = metaValueItem.getToolStats();
-            doDamageToItem(stack, toolStats.getToolDamagePerEntityAttack(stack));
+            if(!doDamageToItem(stack, toolStats.getToolDamagePerEntityAttack(stack), false))
+                return true;
             ResourceLocation hitSound = toolStats.getEntityHitSound(stack);
             if(hitSound != null) {
-                GTUtility.playSound(target.getEntityWorld(), target.posX, target.posY, target.posZ, hitSound, SoundCategory.PLAYERS, 0.27f, 1.0f);
+                SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(hitSound);
+                target.getEntityWorld().playSound(target.posX, target.posY, target.posZ, soundEvent, SoundCategory.PLAYERS, 0.27f, 1.0f, false);
             }
             if(!isUsable(stack, toolStats.getToolDamagePerEntityAttack(stack))) {
                 ResourceLocation breakSound = toolStats.getBreakingSound(stack);
                 if(breakSound != null) {
-                    GTUtility.playSound(target.getEntityWorld(), target.posX, target.posY, target.posZ, breakSound, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                    SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(breakSound);
+                    target.getEntityWorld().playSound(target.posX, target.posY, target.posZ, soundEvent, SoundCategory.PLAYERS, 1.0f, 1.0f, false);
                 }
             }
             float additionalDamage = toolStats.getNormalDamageBonus(target, stack, attacker);
@@ -253,16 +259,18 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     @Override
-    public boolean doDamageToItem(ItemStack stack, int vanillaDamage) {
+    public boolean doDamageToItem(ItemStack stack, int vanillaDamage, boolean simulate) {
         if(!isUsable(stack, vanillaDamage)) {
             return false;
         }
         IElectricItem capability = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
-        if(capability == null || capability.getMaxCharge() == 0) {
-            setInternalDamage(stack, getInternalDamage(stack) + vanillaDamage);
-        } else {
-            capability.discharge(vanillaDamage, capability.getTier(), true, false, false);
-            setInternalDamage(stack, getInternalDamage(stack) + (vanillaDamage / 10));
+        if(!simulate) {
+            if(capability == null || capability.getMaxCharge() == 0) {
+                setInternalDamage(stack, getInternalDamage(stack) + vanillaDamage);
+            } else {
+                capability.discharge(vanillaDamage, capability.getTier(), true, false, false);
+                setInternalDamage(stack, getInternalDamage(stack) + (vanillaDamage / 10));
+            }
         }
         return true;
     }

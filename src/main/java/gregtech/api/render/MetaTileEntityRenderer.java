@@ -3,6 +3,7 @@ package gregtech.api.render;
 import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.metatileentity.MetaTileEntity;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemBlock;
@@ -48,11 +49,21 @@ public class MetaTileEntityRenderer extends FastTESR<TileEntity> {
     private TextureAtlasSprite overrideSprite;
     private BufferBuilder buffer;
     private int lightmap;
+    private double x, y, z;
     
     @Override
     public void renderTileEntityFast(TileEntity te, double x, double y, double z, float partialTicks, int destroyStage, float partial, BufferBuilder buffer) {
-        this.buffer = buffer;
-        if(destroyStage >= 0) {
+        //this.buffer = buffer;
+        //this.x = x;
+        //this.y = y;
+        //this.z = z;
+
+        buffer.pos(x, y, z).color(1, 1, 1, 0).tex(0, 0).lightmap(15, 15).endVertex();
+        buffer.pos(x, y + 1, z).color(1, 1, 1, 0).tex(0, 1).lightmap(15, 15).endVertex();
+        buffer.pos(x, y + 1, z + 1).color(1, 1, 1, 0).tex(1, 1).lightmap(15, 15).endVertex();
+        buffer.pos(x, y, z + 1).color(1, 1, 1, 0).tex(1, 0).lightmap(15, 15).endVertex();
+
+        /*if(destroyStage >= 0) {
             this.bindTexture(DESTROY_STAGES[destroyStage]);
             this.overrideSprite = fullMapSprite;
         } else this.overrideSprite = null;
@@ -61,14 +72,16 @@ public class MetaTileEntityRenderer extends FastTESR<TileEntity> {
             IBlockState blockState = te.getWorld().getBlockState(te.getPos());
             this.lightmap = blockState.getPackedLightmapCoords(te.getWorld(), te.getPos());
         } else this.lightmap = 15 << 20; //max skylight and zero blocklight
-        
+
+
+
         if(te instanceof DummyTileEntity) {
             BlockMachine<?> blockMachine = (BlockMachine<?>) ((ItemBlock) renderingForItemStack.getItem()).getBlock();
-            blockMachine.getRenderer().renderMetaTileEntity(this, null, renderingForItemStack);
+            blockMachine.getRenderer().renderMetaTileEntity(this, blockMachine.getSampleMetaTileEntity(), renderingForItemStack);
         } else if(te instanceof MetaTileEntity) {
             BlockMachine<?> blockMachine = (BlockMachine<?>) te.getBlockType();
             blockMachine.getRenderer().renderMetaTileEntity(this, (MetaTileEntity) te, null);
-        }
+        }*/
     }
 
     public void renderSide(EnumFacing side, TextureAtlasSprite sprite, double x, double y, double z, double width, double height, double depth, int color) {
@@ -114,6 +127,9 @@ public class MetaTileEntityRenderer extends FastTESR<TileEntity> {
     public void renderYFace(TextureAtlasSprite sprite, double x, double y, double z, double width, double depth, int color, boolean inverse) {
         if(overrideSprite != null)
             sprite = overrideSprite;
+        x += this.x;
+        y += this.y;
+        z += this.z;
         float r = ((color >> 16) & 0xFF) / 255.0f;
         float g = ((color >> 8) & 0xFF) / 255.0f;
         float b = ((color) & 0xFF) / 255.0f;
@@ -145,6 +161,9 @@ public class MetaTileEntityRenderer extends FastTESR<TileEntity> {
     public void renderZFace(TextureAtlasSprite sprite, double x, double y, double z, double width, double height, int color, boolean inverse) {
         if(overrideSprite != null)
             sprite = overrideSprite;
+        x += this.x;
+        y += this.y;
+        z += this.z;
         float r = ((color >> 16) & 0xFF) / 255.0f;
         float g = ((color >> 8) & 0xFF) / 255.0f;
         float b = ((color) & 0xFF) / 255.0f;
@@ -176,6 +195,9 @@ public class MetaTileEntityRenderer extends FastTESR<TileEntity> {
     public void renderXFace(TextureAtlasSprite sprite, double x, double y, double z, double width, double height, int color, boolean inverse) {
         if(overrideSprite != null)
             sprite = overrideSprite;
+        x += this.x;
+        y += this.y;
+        z += this.z;
         float r = ((color >> 16) & 0xFF) / 255.0f;
         float g = ((color >> 8) & 0xFF) / 255.0f;
         float b = ((color) & 0xFF) / 255.0f;
@@ -192,6 +214,7 @@ public class MetaTileEntityRenderer extends FastTESR<TileEntity> {
         double maxV = sprite.getMaxV();
 
         if(inverse) {
+
             buffer.pos(x, y, z).color(diffuse * r, diffuse * g, diffuse * b, a).tex(minU, minV).lightmap(light1, light2).endVertex();
             buffer.pos(x, y + height, z).color(diffuse * r, diffuse * g, diffuse * b, a).tex(minU, maxV).lightmap(light1, light2).endVertex();
             buffer.pos(x, y + height, z + width).color(diffuse * r, diffuse * g, diffuse * b, a).tex(maxU, maxV).lightmap(light1, light2).endVertex();

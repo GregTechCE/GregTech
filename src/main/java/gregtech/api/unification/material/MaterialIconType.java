@@ -118,19 +118,19 @@ public enum MaterialIconType {
     public ResourceLocation getBlockPath(MaterialIconSet materialIconSet) {
         String iconSet = materialIconSet.name().toLowerCase();
         String iconType = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, name());
-        return new GTResourceLocation("blocks/material_sets/" + iconSet + "/" + iconType);
+        return new ResourceLocation("gregtech:blocks/material_sets/" + iconSet + "/" + iconType);
     }
 
     public ResourceLocation getItemModelPath(MaterialIconSet materialIconSet) {
         String iconSet = materialIconSet.name().toLowerCase();
         String iconType = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, name());
-        return new GTResourceLocation("material_sets/" + iconSet + "/" + iconType);
+        return new ResourceLocation("gregtech:material_sets/" + iconSet + "/" + iconType);
     }
 
     public ResourceLocation getItemOverlayPath(MaterialIconSet materialIconSet) {
         String iconSet = materialIconSet.name().toLowerCase();
         String iconType = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, name());
-        return new GTResourceLocation("material_sets/" + iconSet + "/" + iconType + "_overlay");
+        return new ResourceLocation("gregtech:material_sets/" + iconSet + "/" + iconType + "_overlay");
     }
 
 }

@@ -5,22 +5,31 @@
 
 package gregtech.common;
 
+import gregtech.api.capability.ICustomHighlightBlock;
 import gregtech.common.blocks.BlockCompressed;
 import gregtech.common.blocks.BlockOre;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.items.MetaItems;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.item.EnumDyeColor;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Collection;
 
 @SideOnly(Side.CLIENT)
 @Mod.EventBusSubscriber(Side.CLIENT)
@@ -40,27 +49,6 @@ public class ClientProxy extends CommonProxy {
 
     public static final IItemColor ORE_ITEM_COLOR = (stack, tintIndex) ->
         tintIndex == 1 ? ((BlockOre) ((ItemBlock) stack.getItem()).getBlock()).material.materialRGB : 0xFFFFFF;
-
-    public static final IBlockColor MACHINE_BLOCK_COLOR = (IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) -> {
-        IGregTechTileEntity tileEntity = (IGregTechTileEntity) worldIn.getTileEntity(pos);
-        if (tileEntity != null) {
-            IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
-            if (metaTileEntity instanceof PaintableMetaTileEntity) {
-                EnumDyeColor color = ((PaintableMetaTileEntity) metaTileEntity).getColor();
-                if (color != null) {
-                    return color.getColorValue();
-                }
-            }
-        }
-        return 0xFFFFFF;
-    };
-
-    public static final IItemColor MACHINE_ITEM_COLOR = (stack, tintIndex) -> {
-        if (stack.hasTagCompound() && stack.getTagCompound().hasKey("Color")) {
-            return EnumDyeColor.byMetadata(stack.getTagCompound().getInteger("Color")).getColorValue();
-        }
-        return 0xFFFFFF;
-    };
 
     public boolean isServerSide() {
         return true;
@@ -91,10 +79,47 @@ public class ClientProxy extends CommonProxy {
     }
 
     @SubscribeEvent
-    public static void registerModels(ModelRegistryEvent event) {
+    public void registerModels(ModelRegistryEvent event) {
         MetaBlocks.registerStateMappers();
         MetaBlocks.registerItemModels();
         MetaItems.registerModels();
+    }
+
+    @SubscribeEvent
+    public void onBlockHighlight(DrawBlockHighlightEvent event) {
+        if(drawSelectionMultiBoundingBox(event.getPlayer(), event.getTarget(), event.getSubID(), event.getPartialTicks()))
+            event.setCanceled(true);
+    }
+
+    public boolean drawSelectionMultiBoundingBox(EntityPlayer player, RayTraceResult movingObjectPositionIn, int execute, float partialTicks) {
+        if (execute == 0 && movingObjectPositionIn.typeOfHit == RayTraceResult.Type.BLOCK) {
+            BlockPos blockpos = movingObjectPositionIn.getBlockPos();
+            IBlockState iblockstate = player.world.getBlockState(blockpos);
+            if(!(iblockstate.getBlock() instanceof ICustomHighlightBlock))
+                return false;
+            ICustomHighlightBlock highlightBlock = (ICustomHighlightBlock) iblockstate.getBlock();
+            Collection<AxisAlignedBB> bbCollection = highlightBlock.getSelectedBoundingBoxes(player.world, blockpos, iblockstate);
+            GlStateManager.enableBlend();
+            GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+            GlStateManager.glLineWidth(2.0F);
+            GlStateManager.disableTexture2D();
+            GlStateManager.depthMask(false);
+
+            if (iblockstate.getMaterial() != Material.AIR && player.world.getWorldBorder().contains(blockpos)) {
+                double d3 = player.lastTickPosX + (player.posX - player.lastTickPosX) * (double) partialTicks;
+                double d4 = player.lastTickPosY + (player.posY - player.lastTickPosY) * (double) partialTicks;
+                double d5 = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * (double) partialTicks;
+                for(AxisAlignedBB axisAlignedBB : bbCollection) {
+                    RenderGlobal.drawSelectionBoundingBox(axisAlignedBB .grow(0.0020000000949949026D)
+                        .offset(-d3, -d4, -d5), 0.0F, 0.0F, 0.0F, 0.4F);
+                }
+            }
+            GlStateManager.depthMask(true);
+            GlStateManager.enableTexture2D();
+            GlStateManager.disableBlend();
+            return true;
+        }
+        return false;
     }
 
 //    @SubscribeEvent

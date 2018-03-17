@@ -23,7 +23,7 @@ public class MetaTileEntityUIFactory extends UIFactory<MetaTileEntity> {
     @Override
     @SuppressWarnings("unchecked")
     protected ModularUI<MetaTileEntity> createUITemplate(MetaTileEntity holder, EntityPlayer entityPlayer) {
-        return holder.createUI(entityPlayer);
+        return (ModularUI<MetaTileEntity>) (Object) holder.createUI(entityPlayer); //go fuck yourself java ok?
     }
 
     @Override

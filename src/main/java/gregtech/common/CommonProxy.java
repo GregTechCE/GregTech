@@ -2,6 +2,8 @@ package gregtech.common;
 
 import java.util.function.Supplier;
 
+import gregtech.api.GTValues;
+import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.items.metaitem.MetaItem;
@@ -23,16 +25,16 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 import static gregtech.common.blocks.MetaBlocks.*;
 
-@Mod.EventBusSubscriber
+@Mod.EventBusSubscriber(modid = GTValues.MODID)
 public class CommonProxy {
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
         GTLog.logger.info("Registering Blocks...");
         IForgeRegistry<Block> registry = event.getRegistry();
-        registry.register(MACHINE);
-        registry.register(STEAM_MACHINE);
 
+        for(BlockMachine<?> blockMachine : BlockMachine.MACHINES.keySet())
+            registry.register(blockMachine);
         registry.register(CABLE);
 
         registry.register(BOILER_CASING);
@@ -60,9 +62,8 @@ public class CommonProxy {
             item.registerSubItems();
         }
 
-        registry.register(createItemBlock(MACHINE, () -> new MachineItemBlock(MACHINE)));
-        registry.register(createItemBlock(STEAM_MACHINE, () -> new MachineItemBlock(STEAM_MACHINE)));
-
+        for(ItemBlock machineItemBlock : BlockMachine.MACHINES.values())
+            registry.register(machineItemBlock);
         registry.register(createItemBlock(CABLE, () -> new ItemBlock(CABLE)));
 
         registry.register(createItemBlock(BOILER_CASING, () -> new VariantItemBlock<>(BOILER_CASING)));
@@ -109,118 +110,5 @@ public class CommonProxy {
 
     public void onPostLoad() {
         WorldgenLoader.init();
-    }
-
-//    public int getBurnTime(ItemStack fuel) {
-//        if (fuel == null || (fuel.getItem() == null)) {
-//            return 0;
-//        }
-//        int fuelValue = 0;
-//        if (OreDictUnifier.isItemStackInstanceOf(fuel, "gemSodium")) {
-//            fuelValue = Math.max(fuelValue, 4000);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "crushedSodium")) {
-//            fuelValue = Math.max(fuelValue, 4000);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "dustImpureSodium")) {
-//            fuelValue = Math.max(fuelValue, 4000);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "dustSodium")) {
-//            fuelValue = Math.max(fuelValue, 4000);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "dustSmallSodium")) {
-//            fuelValue = Math.max(fuelValue, 1000);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "dustTinySodium")) {
-//            fuelValue = Math.max(fuelValue, 444);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "gemLithium")) {
-//            fuelValue = Math.max(fuelValue, 6000);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "crushedLithium")) {
-//            fuelValue = Math.max(fuelValue, 6000);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "dustImpureLithium")) {
-//            fuelValue = Math.max(fuelValue, 6000);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "dustLithium")) {
-//            fuelValue = Math.max(fuelValue, 6000);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "dustSmallLithium")) {
-//            fuelValue = Math.max(fuelValue, 2000);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "dustTinyLithium")) {
-//            fuelValue = Math.max(fuelValue, 888);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "gemCaesium")) {
-//            fuelValue = Math.max(fuelValue, 6000);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "crushedCaesium")) {
-//            fuelValue = Math.max(fuelValue, 6000);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "dustImpureCaesium")) {
-//            fuelValue = Math.max(fuelValue, 6000);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "dustCaesium")) {
-//            fuelValue = Math.max(fuelValue, 6000);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "dustSmallCaesium")) {
-//            fuelValue = Math.max(fuelValue, 2000);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "dustTinyCaesium")) {
-//            fuelValue = Math.max(fuelValue, 888);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "gemLignite")) {
-//            fuelValue = Math.max(fuelValue, 1200);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "crushedLignite")) {
-//            fuelValue = Math.max(fuelValue, 1200);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "dustImpureLignite")) {
-//            fuelValue = Math.max(fuelValue, 1200);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "dustLignite")) {
-//            fuelValue = Math.max(fuelValue, 1200);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "dustSmallLignite")) {
-//            fuelValue = Math.max(fuelValue, 375);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "dustTinyLignite")) {
-//            fuelValue = Math.max(fuelValue, 166);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "gemCoal")) {
-//            fuelValue = Math.max(fuelValue, 1600);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "crushedCoal")) {
-//            fuelValue = Math.max(fuelValue, 1600);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "dustImpureCoal")) {
-//            fuelValue = Math.max(fuelValue, 1600);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "dustCoal")) {
-//            fuelValue = Math.max(fuelValue, 1600);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "dustSmallCoal")) {
-//            fuelValue = Math.max(fuelValue, 400);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "dustTinyCoal")) {
-//            fuelValue = Math.max(fuelValue, 177);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "gemCharcoal")) {
-//            fuelValue = Math.max(fuelValue, 1600);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "crushedCharcoal")) {
-//            fuelValue = Math.max(fuelValue, 1600);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "dustImpureCharcoal")) {
-//            fuelValue = Math.max(fuelValue, 1600);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "dustCharcoal")) {
-//            fuelValue = Math.max(fuelValue, 1600);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "dustSmallCharcoal")) {
-//            fuelValue = Math.max(fuelValue, 400);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "dustTinyCharcoal")) {
-//            fuelValue = Math.max(fuelValue, 177);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "dustWood")) {
-//            fuelValue = Math.max(fuelValue, 100);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "dustSmallWood")) {
-//            fuelValue = Math.max(fuelValue, 25);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "dustTinyWood")) {
-//            fuelValue = Math.max(fuelValue, 11);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "plateWood")) {
-//            fuelValue = Math.min(fuelValue, 300);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "blockLignite")) {
-//            fuelValue = Math.max(fuelValue, 12000);
-//        } else if (OreDictUnifier.isItemStackInstanceOf(fuel, "blockCharcoal")) {
-//            fuelValue = Math.max(fuelValue, 16000);
-//        } else if (GTUtility.areStacksEqual(fuel, new ItemStack(Blocks.WOODEN_BUTTON, 1))) {
-//            fuelValue = Math.max(fuelValue, 150);
-//        } else if (GTUtility.areStacksEqual(fuel, new ItemStack(Blocks.LADDER, 1))) {
-//            fuelValue = Math.max(fuelValue, 100);
-//        } else if (GTUtility.areStacksEqual(fuel, new ItemStack(Items.SIGN, 1))) {
-//            fuelValue = Math.max(fuelValue, 600);
-//        } else if (GTUtility.areStacksEqual(fuel, new ItemStack(Items.OAK_DOOR, 1))) {
-//            fuelValue = Math.max(fuelValue, 600);
-//        } else if (GTUtility.areStacksEqual(fuel, ItemList.Block_MSSFUEL.get(1))) {
-//            fuelValue = Math.max(fuelValue, 150000);
-//        } else if (GTUtility.areStacksEqual(fuel, ItemList.Block_SSFUEL.get(1))) {
-//            fuelValue = Math.max(fuelValue, 100000);
-//        }
-//        return fuelValue;
-//    }
-
-    public boolean isServerSide() {
-        return true;
-    }
-
-    public boolean isClientSide() {
-        return false;
     }
 }

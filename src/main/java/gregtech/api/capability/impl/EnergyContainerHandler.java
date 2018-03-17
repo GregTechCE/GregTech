@@ -31,6 +31,14 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
         this.maxOutputAmperage = maxOutputAmperage;
     }
 
+    public static EnergyContainerHandler emitterContainer(long maxCapacity, long maxOutputVoltage, long maxOutputAmperage) {
+        return new EnergyContainerHandler(maxCapacity, 0L, 0L, maxOutputVoltage, maxOutputAmperage);
+    }
+
+    public static EnergyContainerHandler receiverContainer(long maxCapacity, long maxInputVoltage, long maxInputAmperage) {
+        return new EnergyContainerHandler(maxCapacity, maxInputVoltage, maxInputAmperage, 0L, 0L);
+    }
+
     @Override
     public String getName() {
         return "EnergyContainer";

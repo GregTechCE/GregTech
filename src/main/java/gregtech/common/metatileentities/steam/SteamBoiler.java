@@ -22,6 +22,9 @@ import javax.annotation.Nonnull;
 
 public class SteamBoiler extends MetaTileEntity {
 
+    public static final class Bronze extends SteamBoiler { public Bronze() { super(false); } }
+    public static final class Steel extends SteamBoiler { public Steel() { super(true); } }
+
     public static final int DEFAULT_TEMPERATURE = 20;
 
     public final TextureArea BRONZE_BACKGROUND_TEXTURE = getGuiTexture("%s_gui");
