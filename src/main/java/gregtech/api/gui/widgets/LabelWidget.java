@@ -1,9 +1,9 @@
 package gregtech.api.gui.widgets;
 
-import com.sun.org.apache.xml.internal.security.utils.I18n;
 import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.Widget;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -30,7 +30,7 @@ public class LabelWidget<T extends IUIHolder> extends Widget<T> {
     @Override
     @SideOnly(Side.CLIENT)
     public void drawInForeground(int mouseX, int mouseY) {
-        Minecraft.getMinecraft().fontRenderer.drawString(I18n.translate(text), this.xPosition, this.yPosition, color);
+        Minecraft.getMinecraft().fontRenderer.drawString(I18n.format(text), this.xPosition, this.yPosition, color);
     }
 
 }

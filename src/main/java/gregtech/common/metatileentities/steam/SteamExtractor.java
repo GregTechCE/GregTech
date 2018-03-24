@@ -35,10 +35,10 @@ public class SteamExtractor extends SteamMetaTileEntity {
         return ModularUI.builder(BRONZE_BACKGROUND_TEXTURE, 176, 166)
             .widget(0, new LabelWidget<>(6, 6, getMetaName()))
             .widget(1, new SlotWidget<>(this.importItems, 0, 53, 25)
-                .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE, SLOT_EXTRACTOR_BACKGROUND))
+                .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE, getFullGuiTexture("slot_%s_extractor_background")))
             .widget(2, new ProgressWidget<>(workableHandler::getProgressPercent, 78, 24, 20, 18)
-                .setProgressBar(getGuiTexture("progress_bar_%s_extractor"),
-                    getGuiTexture("progress_bar_%s_extractor_filled"),
+                .setProgressBar(getFullGuiTexture("progress_bar_%s_extractor"),
+                    getFullGuiTexture("progress_bar_%s_extractor_filled"),
                     ProgressWidget.MoveType.HORIZONTAL))
             .widget(3, new SlotWidget<>(this.exportItems, 0, 107, 25, true, false)
                 .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE))

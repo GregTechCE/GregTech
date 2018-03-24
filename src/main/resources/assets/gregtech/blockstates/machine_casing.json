@@ -12,9 +12,9 @@
     "variant": {
       "ultra_low_voltage": {
         "textures": {
-          "bottom": "gregtech:blocks/casings/tiered/machine_8v_bottom",
-          "top": "gregtech:blocks/casings/tiered/machine_8v_top",
-          "side": "gregtech:blocks/casings/tiered/machine_8v_side"
+          "bottom": "gregtech:blocks/casings/tiered/machine_ulv_bottom",
+          "top": "gregtech:blocks/casings/tiered/machine_ulv_top",
+          "side": "gregtech:blocks/casings/tiered/machine_ulv_side"
         }
       },
       "low_voltage": {

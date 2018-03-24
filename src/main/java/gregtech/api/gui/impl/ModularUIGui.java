@@ -58,7 +58,7 @@ public class ModularUIGui extends GuiContainer {
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
         GlStateManager.pushMatrix();
         GlStateManager.translate(guiLeft, guiTop, 0.0);
-        modularUI.backgroundPath.draw(guiLeft, guiTop, xSize, ySize);
+        modularUI.backgroundPath.draw(0, 0, xSize, ySize);
         modularUI.guiWidgets.values().stream()
                 .filter(widget -> widget.drawPriority <= Widget.SLOT_DRAW_PRIORITY)
                 .sorted()

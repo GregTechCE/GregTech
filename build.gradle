@@ -11,6 +11,7 @@ buildscript {
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'idea'
 
 file "build.properties" withReader {
     def prop = new Properties()
@@ -41,7 +42,7 @@ repositories {
     }
     maven { //JEI
         name = "Progwml6 maven"
-        url = "http://dvs1.progwml6.com/files/maven"
+        url = "http://dvs1.progwml6.com/files/maven/"
     }
     maven {
         name = "tterrag maven"
@@ -51,12 +52,18 @@ repositories {
         name = "CurseForge"
         url = "https://minecraft.curseforge.com/api/maven/"
     }
+    maven {
+        name = "ChickenBones maven"
+        url = "http://chickenbones.net/maven/"
+    }
 }
 
 dependencies {
     deobfCompile("net.sengir.forestry:forestry_${config.minecraft.version}:${config.forestry.version}") {
         transitive = false
     }
+
+    deobfCompile "codechicken:CodeChickenLib:${config.minecraft.version}-${config.ccl.version}:deobf"
 //    deobfCompile "com.enderio.core:EnderCore:${config.minecraft.version}-${config.endercore.version}:dev"
 //    deobfCompile "com.enderio:EnderIO:${config.minecraft.version}-${config.enderio.version}:dev"
 
@@ -120,4 +127,10 @@ task dev(type: Jar) {
 artifacts {
     archives dev
 	archives source
+}
+
+idea {
+    module {
+        inheritOutputDirs = true
+    }
 }

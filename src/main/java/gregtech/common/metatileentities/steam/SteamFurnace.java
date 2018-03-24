@@ -35,10 +35,10 @@ public class SteamFurnace extends SteamMetaTileEntity {
         return ModularUI.builder(BRONZE_BACKGROUND_TEXTURE, 176, 166)
             .widget(0, new LabelWidget<>(6, 6, getMetaName()))
             .widget(1, new SlotWidget<>(this.importItems, 0, 53, 25)
-                .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE, SLOT_FURNACE_BACKGROUND))
+                .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE, getFullGuiTexture("slot_%s_furnace_background")))
             .widget(2, new ProgressWidget<>(workableHandler::getProgressPercent, 78, 25, 20, 16)
-                .setProgressBar(getGuiTexture("progress_bar_%s_furnace"),
-                    getGuiTexture("progress_bar_%s_furnace_filled"),
+                .setProgressBar(getFullGuiTexture("progress_bar_%s_furnace"),
+                    getFullGuiTexture("progress_bar_%s_furnace_filled"),
                     ProgressWidget.MoveType.VERTICAL))
             .widget(3, new SlotWidget<>(this.exportItems, 0, 107, 25, true, false)
                 .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE))

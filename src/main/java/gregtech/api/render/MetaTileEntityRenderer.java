@@ -1,230 +1,179 @@
 package gregtech.api.render;
 
+import codechicken.lib.render.BlockRenderer.BlockFace;
+import codechicken.lib.render.CCRenderState;
+import codechicken.lib.render.block.BlockRenderingRegistry;
+import codechicken.lib.render.block.ICCBlockRenderer;
+import codechicken.lib.render.item.IItemRenderer;
+import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.texture.TextureUtils;
+import codechicken.lib.texture.TextureUtils.IIconRegister;
+import codechicken.lib.vec.Cuboid6;
+import codechicken.lib.vec.Translation;
+import codechicken.lib.vec.uv.IconTransformation;
+import gregtech.api.GTValues;
 import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.util.GTLog;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
+import net.minecraft.client.renderer.block.model.ItemTransformVec3f;
+import net.minecraft.client.renderer.block.model.ModelBlock;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.IResource;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.client.model.animation.FastTESR;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.pipeline.LightUtil;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.model.IModelState;
+import net.minecraftforge.common.model.TRSRTransformation;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.apache.commons.lang3.tuple.Pair;
+import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MetaTileEntityRenderer extends FastTESR<TileEntity> {
+import javax.vecmath.Matrix4f;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-    public static final MetaTileEntityRenderer INSTANCE = new MetaTileEntityRenderer();
-    public static final DummyTileEntity DUMMY_TILE_ENTITY = new DummyTileEntity();
-    public static class DummyTileEntity extends TileEntity {}
+public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
 
-    private final TextureAtlasSprite fullMapSprite;
-    private ItemStack renderingForItemStack;
+    public static ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(new ResourceLocation(GTValues.MODID, "meta_tile_entity"), "normal");
+    public static MetaTileEntityRenderer INSTANCE = new MetaTileEntityRenderer();
+    public static EnumBlockRenderType BLOCK_RENDER_TYPE;
+    public static Map<TransformType, TRSRTransformation> BLOCK_TRANSFORMS = new HashMap<>();
 
-    private MetaTileEntityRenderer() {
-        this.fullMapSprite = new TextureAtlasSprite("missingno") {};
-        this.fullMapSprite.setIconHeight(1);
-        this.fullMapSprite.setIconWidth(1);
-        this.fullMapSprite.initSprite(1, 1, 0, 0, false);
-        ClientRegistry.bindTileEntitySpecialRenderer(DummyTileEntity.class, this);
+    public static void preInit() {
+        BLOCK_RENDER_TYPE = BlockRenderingRegistry.createRenderType("meta_tile_entity");
+        BlockRenderingRegistry.registerRenderer(BLOCK_RENDER_TYPE, INSTANCE);
+        MinecraftForge.EVENT_BUS.register(INSTANCE);
+        TextureUtils.addIconRegister(Textures::register);
     }
 
-    public boolean isRenderingItemStack() {
-        return renderingForItemStack != null;
+    public static void postInit() {
+        try {
+            IResource resource = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation("models/block/block.json"));
+            try(InputStreamReader reader = new InputStreamReader(resource.getInputStream())) {
+                ModelBlock modelBlock = ModelBlock.deserialize(reader);
+                for(TransformType transformType : TransformType.values()) {
+                    ItemTransformVec3f vec3f = modelBlock.getAllTransforms().getTransform(transformType);
+                    BLOCK_TRANSFORMS.put(transformType, new TRSRTransformation(vec3f));
+                }
+            }
+        } catch (IOException exception) {
+            GTLog.logger.error("Failed to load default block transforms", exception);
+        }
     }
 
-    public ItemStack getRenderingItemStack() {
-        return renderingForItemStack;
+    @SubscribeEvent
+    public void onModelsBake(ModelBakeEvent event) {
+        GTLog.logger.info("Injected MetaTileEntity render model");
+        event.getModelRegistry().putObject(MODEL_LOCATION, this);
     }
 
-    public void setRenderingForItemStack(ItemStack renderingForItemStack) {
-        this.renderingForItemStack = renderingForItemStack;
-    }
-
-    private TextureAtlasSprite overrideSprite;
-    private BufferBuilder buffer;
-    private int lightmap;
-    private double x, y, z;
-    
     @Override
-    public void renderTileEntityFast(TileEntity te, double x, double y, double z, float partialTicks, int destroyStage, float partial, BufferBuilder buffer) {
-        //this.buffer = buffer;
-        //this.x = x;
-        //this.y = y;
-        //this.z = z;
-
-        buffer.pos(x, y, z).color(1, 1, 1, 0).tex(0, 0).lightmap(15, 15).endVertex();
-        buffer.pos(x, y + 1, z).color(1, 1, 1, 0).tex(0, 1).lightmap(15, 15).endVertex();
-        buffer.pos(x, y + 1, z + 1).color(1, 1, 1, 0).tex(1, 1).lightmap(15, 15).endVertex();
-        buffer.pos(x, y, z + 1).color(1, 1, 1, 0).tex(1, 0).lightmap(15, 15).endVertex();
-
-        /*if(destroyStage >= 0) {
-            this.bindTexture(DESTROY_STAGES[destroyStage]);
-            this.overrideSprite = fullMapSprite;
-        } else this.overrideSprite = null;
-
-        if(te.getWorld() != null) {
-            IBlockState blockState = te.getWorld().getBlockState(te.getPos());
-            this.lightmap = blockState.getPackedLightmapCoords(te.getWorld(), te.getPos());
-        } else this.lightmap = 15 << 20; //max skylight and zero blocklight
-
-
-
-        if(te instanceof DummyTileEntity) {
-            BlockMachine<?> blockMachine = (BlockMachine<?>) ((ItemBlock) renderingForItemStack.getItem()).getBlock();
-            blockMachine.getRenderer().renderMetaTileEntity(this, blockMachine.getSampleMetaTileEntity(), renderingForItemStack);
-        } else if(te instanceof MetaTileEntity) {
-            BlockMachine<?> blockMachine = (BlockMachine<?>) te.getBlockType();
-            blockMachine.getRenderer().renderMetaTileEntity(this, (MetaTileEntity) te, null);
-        }*/
+    public void renderItem(ItemStack stack, TransformType transformType) {
+        BlockMachine<?> blockMachine = (BlockMachine<?>) ((ItemBlock) stack.getItem()).getBlock();
+        MetaTileEntity metaTileEntity = blockMachine.getSampleMetaTileEntity();
+        metaTileEntity.initFromItemStackData(stack.hasTagCompound() ? stack.getTagCompound() : new NBTTagCompound());
+        CCRenderState renderState = CCRenderState.instance();
+        renderState.reset();
+        renderState.brightness = 16 << 20;
+        renderState.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
+        metaTileEntity.renderMetaTileEntity(renderState, new IVertexOperation[0]);
+        renderState.draw();
     }
 
-    public void renderSide(EnumFacing side, TextureAtlasSprite sprite, double x, double y, double z, double width, double height, double depth, int color) {
-        if(side == EnumFacing.DOWN) {
-            renderYFaceNeg(sprite, x, y, z, width, height, color);
-        } else if(side == EnumFacing.UP) {
-            renderYFacePos(sprite, x, y + depth, z, width, height, color);
-        } else if(side == EnumFacing.WEST) {
-            renderXFaceNeg(sprite, x, y, z, width, height, color);
-        } else if(side == EnumFacing.EAST) {
-            renderXFacePos(sprite, x + depth, y, z, width, height, color);
-        } else if(side == EnumFacing.NORTH) {
-            renderZFaceNeg(sprite, x, y, z, width, height, color);
-        } else if(side == EnumFacing.SOUTH) {
-            renderZFacePos(sprite, x, y, z + depth, width, height, color);
+    @Override
+    public boolean renderBlock(IBlockAccess world, BlockPos pos, IBlockState state, BufferBuilder buffer) {
+        MetaTileEntity metaTileEntity = (MetaTileEntity) world.getTileEntity(pos);
+        if(metaTileEntity == null)
+            return false;
+        CCRenderState renderState = CCRenderState.instance();
+        renderState.reset();
+        renderState.bind(buffer);
+        renderState.lightMatrix.locate(world, pos);
+        IVertexOperation[] pipeline = new IVertexOperation[2];
+        pipeline[0] = new Translation(pos);
+        pipeline[1] = renderState.lightMatrix;
+        metaTileEntity.renderMetaTileEntity(renderState, pipeline);
+        return true;
+    }
+
+    @Override
+    public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
+        if(BLOCK_TRANSFORMS.containsKey(cameraTransformType)) {
+            return Pair.of(this, BLOCK_TRANSFORMS.get(cameraTransformType).getMatrix());
         }
-    }
-    
-    public void renderXFacePos(TextureAtlasSprite sprite, double x, double y, double z, double width, double height, int color) {
-        renderXFace(sprite, x, y, z, width, height, color, true);
+        return Pair.of(this, null);
     }
 
-    public void renderXFaceNeg(TextureAtlasSprite sprite, double x, double y, double z, double width, double height, int color) {
-        renderXFace(sprite, x, y, z, width, height, color, false);
+    @Override
+    public IModelState getTransforms() {
+        return TRSRTransformation.identity();
     }
 
-    public void renderZFacePos(TextureAtlasSprite sprite, double x, double y, double z, double width, double height, int color) {
-        renderZFace(sprite, x, y, z, width, height, color, true);
+    @Override
+    public void renderBrightness(IBlockState state, float brightness) {
+        renderItem(new ItemStack(state.getBlock()), TransformType.NONE);
     }
 
-    public void renderZFaceNeg(TextureAtlasSprite sprite, double x, double y, double z, double width, double height, int color) {
-        renderZFace(sprite, x, y, z, width, height, color, false);
-    }
+    private static ThreadLocal<BlockFace> blockFaces = ThreadLocal.withInitial(BlockFace::new);
 
-    public void renderYFacePos(TextureAtlasSprite sprite, double x, double y, double z, double width, double depth, int color) {
-        renderYFace(sprite, x, y, z, width, depth, color, true);
-    }
-
-    public void renderYFaceNeg(TextureAtlasSprite sprite, double x, double y, double z, double width, double depth, int color) {
-        renderYFace(sprite, x, y, z, width, depth, color, false);
-    }
-    
-    public void renderYFace(TextureAtlasSprite sprite, double x, double y, double z, double width, double depth, int color, boolean inverse) {
-        if(overrideSprite != null)
-            sprite = overrideSprite;
-        x += this.x;
-        y += this.y;
-        z += this.z;
-        float r = ((color >> 16) & 0xFF) / 255.0f;
-        float g = ((color >> 8) & 0xFF) / 255.0f;
-        float b = ((color) & 0xFF) / 255.0f;
-        float a = ((color >> 24) & 0xFF) / 255.0f;
-
-        float diffuse = LightUtil.diffuseLight(EnumFacing.DOWN);
-
-        int light1 = lightmap >> 16 & 65535;
-        int light2 = lightmap & 65535;
-
-        double minU = sprite.getMinU();
-        double minV = sprite.getMinV();
-        double maxU = sprite.getMaxU();
-        double maxV = sprite.getMaxV();
-
-        if(inverse) {
-            buffer.pos(x, y, z + depth).color(diffuse * r, diffuse * g, diffuse * b, a).tex(minU, maxV).lightmap(light1, light2).endVertex();
-            buffer.pos(x + width, y, z + depth).color(diffuse * r, diffuse * g, diffuse * b, a).tex(maxU, maxV).lightmap(light1, light2).endVertex();
-            buffer.pos(x + width, y, z).color(diffuse * r, diffuse * g, diffuse * b, a).tex(maxU, minV).lightmap(light1, light2).endVertex();
-            buffer.pos(x, y, z).color(diffuse * r, diffuse * g, diffuse * b, a).tex(minU, minV).lightmap(light1, light2).endVertex();
-        } else {
-            buffer.pos(x, y, z).color(diffuse * r, diffuse * g, diffuse * b, a).tex(minU, minV).lightmap(light1, light2).endVertex();
-            buffer.pos(x + width, y, z).color(diffuse * r, diffuse * g, diffuse * b, a).tex(maxU, minV).lightmap(light1, light2).endVertex();
-            buffer.pos(x + width, y, z + depth).color(diffuse * r, diffuse * g, diffuse * b, a).tex(maxU, maxV).lightmap(light1, light2).endVertex();
-            buffer.pos(x, y, z + depth).color(diffuse * r, diffuse * g, diffuse * b, a).tex(minU, maxV).lightmap(light1, light2).endVertex();
+    @Override
+    public void handleRenderBlockDamage(IBlockAccess world, BlockPos pos, IBlockState state, TextureAtlasSprite sprite, BufferBuilder buffer) {
+        BlockMachine<?> blockMachine = ((BlockMachine<?>) state.getBlock());
+        Collection<AxisAlignedBB> boxes = blockMachine.getSelectedBoundingBoxes(world, pos, state);
+        List<Cuboid6> cuboid6List = boxes.stream()
+            .map(aabb -> new Cuboid6(aabb).subtract(pos))
+            .collect(Collectors.toList());
+        CCRenderState renderState = CCRenderState.instance();
+        renderState.reset();
+        renderState.bind(buffer);
+        IVertexOperation[] pipeline = new IVertexOperation[2];
+        pipeline[0] = new Translation(pos);
+        pipeline[1] = new IconTransformation(sprite);
+        BlockFace blockFace = blockFaces.get();
+        for(Cuboid6 boundingBox : cuboid6List) {
+            for(EnumFacing face : EnumFacing.VALUES) {
+                blockFace.loadCuboidFace(boundingBox, face.getIndex());
+                renderState.setPipeline(blockFace, 0, blockFace.verts.length, pipeline);
+                renderState.render();
+            }
         }
     }
 
-    public void renderZFace(TextureAtlasSprite sprite, double x, double y, double z, double width, double height, int color, boolean inverse) {
-        if(overrideSprite != null)
-            sprite = overrideSprite;
-        x += this.x;
-        y += this.y;
-        z += this.z;
-        float r = ((color >> 16) & 0xFF) / 255.0f;
-        float g = ((color >> 8) & 0xFF) / 255.0f;
-        float b = ((color) & 0xFF) / 255.0f;
-        float a = ((color >> 24) & 0xFF) / 255.0f;
-
-        float diffuse = LightUtil.diffuseLight(EnumFacing.NORTH);
-
-        int light1 = lightmap >> 16 & 65535;
-        int light2 = lightmap & 65535;
-
-        double minU = sprite.getMinU();
-        double minV = sprite.getMinV();
-        double maxU = sprite.getMaxU();
-        double maxV = sprite.getMaxV();
-
-        if(inverse) {
-            buffer.pos(x + width, y, z).color(diffuse * r, diffuse * g, diffuse * b, a).tex(maxU, minV).lightmap(light1, light2).endVertex();
-            buffer.pos(x + width, y + height, z).color(diffuse * r, diffuse * g, diffuse * b, a).tex(maxU, maxV).lightmap(light1, light2).endVertex();
-            buffer.pos(x, y + height, z).color(diffuse * r, diffuse * g, diffuse * b, a).tex(minU, maxV).lightmap(light1, light2).endVertex();
-            buffer.pos(x, y, z).color(diffuse * r, diffuse * g, diffuse * b, a).tex(minU, minV).lightmap(light1, light2).endVertex();
-        } else {
-            buffer.pos(x, y, z).color(diffuse * r, diffuse * g, diffuse * b, a).tex(minU, minV).lightmap(light1, light2).endVertex();
-            buffer.pos(x, y + height, z).color(diffuse * r, diffuse * g, diffuse * b, a).tex(minU, maxV).lightmap(light1, light2).endVertex();
-            buffer.pos(x + width, y + height, z).color(diffuse * r, diffuse * g, diffuse * b, a).tex(maxU, maxV).lightmap(light1, light2).endVertex();
-            buffer.pos(x + width, y, z).color(diffuse * r, diffuse * g, diffuse * b, a).tex(maxU, minV).lightmap(light1, light2).endVertex();
-        }
+    @Override
+    public void registerTextures(TextureMap map) {
     }
 
-    public void renderXFace(TextureAtlasSprite sprite, double x, double y, double z, double width, double height, int color, boolean inverse) {
-        if(overrideSprite != null)
-            sprite = overrideSprite;
-        x += this.x;
-        y += this.y;
-        z += this.z;
-        float r = ((color >> 16) & 0xFF) / 255.0f;
-        float g = ((color >> 8) & 0xFF) / 255.0f;
-        float b = ((color) & 0xFF) / 255.0f;
-        float a = ((color >> 24) & 0xFF) / 255.0f;
-
-        float diffuse = LightUtil.diffuseLight(EnumFacing.WEST);
-
-        int light1 = lightmap >> 16 & 65535;
-        int light2 = lightmap & 65535;
-
-        double minU = sprite.getMinU();
-        double minV = sprite.getMinV();
-        double maxU = sprite.getMaxU();
-        double maxV = sprite.getMaxV();
-
-        if(inverse) {
-
-            buffer.pos(x, y, z).color(diffuse * r, diffuse * g, diffuse * b, a).tex(minU, minV).lightmap(light1, light2).endVertex();
-            buffer.pos(x, y + height, z).color(diffuse * r, diffuse * g, diffuse * b, a).tex(minU, maxV).lightmap(light1, light2).endVertex();
-            buffer.pos(x, y + height, z + width).color(diffuse * r, diffuse * g, diffuse * b, a).tex(maxU, maxV).lightmap(light1, light2).endVertex();
-            buffer.pos(x, y, z + width).color(diffuse * r, diffuse * g, diffuse * b, a).tex(maxU, minV).lightmap(light1, light2).endVertex();
-        } else {
-            buffer.pos(x, y, z + width).color(diffuse * r, diffuse * g, diffuse * b, a).tex(maxU, minV).lightmap(light1, light2).endVertex();
-            buffer.pos(x, y + height, z + width).color(diffuse * r, diffuse * g, diffuse * b, a).tex(maxU, maxV).lightmap(light1, light2).endVertex();
-            buffer.pos(x, y + height, z).color(diffuse * r, diffuse * g, diffuse * b, a).tex(minU, maxV).lightmap(light1, light2).endVertex();
-            buffer.pos(x, y, z).color(diffuse * r, diffuse * g, diffuse * b, a).tex(minU, minV).lightmap(light1, light2).endVertex();
-        }
+    @Override
+    public boolean isAmbientOcclusion() {
+        return true;
     }
 
+    @Override
+    public boolean isGui3d() {
+        return true;
+    }
 }

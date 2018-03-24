@@ -36,13 +36,13 @@ public class SteamHammer extends SteamMetaTileEntity {
         return ModularUI.builder(BRONZE_BACKGROUND_TEXTURE, 176, 166)
             .widget(0, new LabelWidget<>(6, 6, getMetaName()))
             .widget(1, new SlotWidget<>(this.importItems, 0, 53, 25)
-                .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE, SLOT_HAMMER_BACKGROUND))
+                .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE, getFullGuiTexture("slot_%s_hammer_background")))
             .widget(2, new ProgressWidget<>(workableHandler::getProgressPercent, 78, 25, 20, 18)
-                .setProgressBar(getGuiTexture("progress_bar_%s_hammer"),
-                    getGuiTexture("progress_bar_%s_hammer_filled"),
+                .setProgressBar(getFullGuiTexture("progress_bar_%s_hammer"),
+                    getFullGuiTexture("progress_bar_%s_hammer_filled"),
                     ProgressWidget.MoveType.VERTICAL))
             .widget(3, new ImageWidget<>(78, 41, 21, 18)
-                .setImage(getGuiTexture("overlay_%s_hammer_base")))
+                .setImage(getFullGuiTexture("overlay_%s_hammer_base")))
             .widget(4, new SlotWidget<>(this.exportItems, 0, 107, 25, true, false)
                 .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE))
             .widget(5, new LabelWidget<>(8, 166 - 96 + 2, player.inventory.getName())) // 166 - gui imageHeight, 96 + 2 - from vanilla code

@@ -1,5 +1,8 @@
 package gregtech.common.metatileentities.steam;
 
+import codechicken.lib.render.CCRenderState;
+import codechicken.lib.render.pipeline.ColourMultiplier;
+import codechicken.lib.render.pipeline.IVertexOperation;
 import gregtech.api.capability.impl.FilteredFluidHandler;
 import gregtech.api.capability.impl.FluidTankHandler;
 import gregtech.api.gui.IUIHolder;
@@ -9,6 +12,7 @@ import gregtech.api.gui.widgets.*;
 import gregtech.api.gui.widgets.ProgressWidget.MoveType;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipes.ModHandler;
+import gregtech.api.render.Textures;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,6 +21,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
+import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nonnull;
 
@@ -27,10 +32,10 @@ public class SteamBoiler extends MetaTileEntity {
 
     public static final int DEFAULT_TEMPERATURE = 20;
 
-    public final TextureArea BRONZE_BACKGROUND_TEXTURE = getGuiTexture("%s_gui");
-    public final TextureArea BRONZE_SLOT_BACKGROUND_TEXTURE = getGuiTexture("slot_%s");
+    public final TextureArea BRONZE_BACKGROUND_TEXTURE;
+    public final TextureArea BRONZE_SLOT_BACKGROUND_TEXTURE;
 
-    public final TextureArea SLOT_FURNACE_BACKGROUND = getGuiTexture("slot_%s_furnace_background");
+    public final TextureArea SLOT_FURNACE_BACKGROUND;
 
     private final boolean isHighPressure;
 
@@ -45,6 +50,17 @@ public class SteamBoiler extends MetaTileEntity {
 
     public SteamBoiler(boolean isHighPressure) {
         this.isHighPressure = isHighPressure;
+        BRONZE_BACKGROUND_TEXTURE = getGuiTexture("%s_gui");
+        BRONZE_SLOT_BACKGROUND_TEXTURE = getGuiTexture("slot_%s");
+        SLOT_FURNACE_BACKGROUND = getGuiTexture("slot_%s_furnace_background");
+    }
+
+    @Override
+    public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
+        IVertexOperation[] colouredPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(paintingColor));
+        if(isHighPressure) {
+            Textures.STEAM_CASING_STEEL.render(renderState, colouredPipeline);
+        } else Textures.STEAM_CASING_BRONZE.render(renderState, colouredPipeline);
     }
 
     @Override

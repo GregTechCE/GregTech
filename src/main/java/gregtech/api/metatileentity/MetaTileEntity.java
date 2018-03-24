@@ -1,5 +1,11 @@
 package gregtech.api.metatileentity;
 
+import codechicken.lib.render.BlockRenderer.BlockFace;
+import codechicken.lib.render.CCRenderState;
+import codechicken.lib.render.pipeline.ColourMultiplier;
+import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.vec.Cuboid6;
+import codechicken.lib.vec.uv.IconTransformation;
 import com.google.common.base.Preconditions;
 import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.capability.ICustomDataTile;
@@ -21,16 +27,21 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -38,6 +49,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public abstract class MetaTileEntity extends TickableTileEntityBase implements ICustomDataTile, IUIHolder {
+
+    private static final int DEFAULT_PAINTING_COLOR = 0xFFFFFFFF;
 
     protected IItemHandlerModifiable importItems;
     protected IItemHandlerModifiable exportItems;
@@ -52,10 +65,9 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
     protected List<MTETrait> mteTraits = new ArrayList<>();
 
     protected EnumFacing frontFacing = EnumFacing.NORTH;
-    protected int paintingColor = 0xCCCCCC;
+    protected int paintingColor = DEFAULT_PAINTING_COLOR;
 
     protected int[] sidedRedstoneOutput = new int[6];
-    protected int[] ацкsidedRedstoneOutput = new int[6];
 
     public MetaTileEntity() {
         this.importItems = createImportItemHandler();
@@ -79,20 +91,35 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
         blockMachine.setSoundType(SoundType.METAL);
     }
 
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
+    }
+
     /**
-     * Called clientside on tile entity registration to set this meta tile entity info provider and renderer
-     * Note that this will be called on unitialized metatileentity with world == null!
-     *
-     * @param blockMachine block of this meta tile entity
+     * Renders this meta tile entity
+     * Note that you shouldn't refer to world-related information in this method, because it
+     * will be called on ItemStacks too
+     * @param renderState render state (either chunk batched or item)
+     * @param pipeline default set of pipeline transformations
      */
-    public void initClient(BlockMachine<?> blockMachine) {
-        blockMachine.setRenderer((renderer, metaTileEntity, itemStack) -> {
-            TextureAtlasSprite renderSprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("minecraft:dirt");
-            int renderColor = metaTileEntity.getPaintingColor(); //safe to call
-            for(EnumFacing metaTileEntitySide : EnumFacing.VALUES) {
-                renderer.renderSide(metaTileEntitySide, renderSprite, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, renderColor);
-            }
-        });
+    @SideOnly(Side.CLIENT)
+    public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
+        TextureAtlasSprite atlasSprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("minecraft:blocks/stone");
+        IVertexOperation[] renderPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(paintingColor));
+        for(EnumFacing face : EnumFacing.VALUES) {
+            renderFace(renderState, face, Cuboid6.full, atlasSprite, renderPipeline);
+        }
+    }
+
+    private static final ThreadLocal<BlockFace> blockFaces = ThreadLocal.withInitial(BlockFace::new);
+
+    @SideOnly(Side.CLIENT)
+    public static void renderFace(CCRenderState renderState, EnumFacing face, Cuboid6 bounds, TextureAtlasSprite sprite, IVertexOperation... pipeline) {
+        BlockFace blockFace = blockFaces.get();
+        blockFace.loadCuboidFace(bounds, face.getIndex());
+        renderState.setPipeline(blockFace, 0, blockFace.verts.length,
+            ArrayUtils.add(pipeline, new IconTransformation(sprite)));
+        renderState.render();
     }
 
     public final String getMetaName() {
@@ -117,6 +144,9 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
      * @param itemStack itemstack of itemblock
      */
     public void initFromItemStackData(NBTTagCompound itemStack) {
+        if(itemStack.hasKey("PaintingColor", NBT.TAG_INT)) {
+            this.paintingColor = itemStack.getInteger("PaintingColor");
+        } else this.paintingColor = DEFAULT_PAINTING_COLOR;
     }
 
     /**
@@ -125,6 +155,9 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
      * @param itemStack itemstack from which this MTE is being placed
      */
     public void writeItemStackData(NBTTagCompound itemStack) {
+        if(this.paintingColor != DEFAULT_PAINTING_COLOR) { //for machines to stack
+            itemStack.setInteger("PaintingColor", this.paintingColor);
+        }
     }
 
     protected abstract IItemHandlerModifiable createImportItemHandler();
@@ -283,7 +316,7 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
             this.frontFacing = EnumFacing.VALUES[buf.readByte()];
         } else if(dataId == -2) {
             this.paintingColor = buf.readInt();
-        } else if(dataId == -1) {
+        } else if(dataId == -3) {
             this.sidedRedstoneOutput[buf.readByte()] = buf.readInt();
         } else {
             for(MTETrait mteTrait : this.mteTraits) {
@@ -362,6 +395,7 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
     public void pushFluidsIntoNearbyHandlers() {
         for(EnumFacing nearbyFacing : EnumFacing.VALUES) {
             TileEntity tileEntity = world.getTileEntity(getPos().offset(nearbyFacing));
+            if(tileEntity == null) continue;
             IFluidHandler fluidHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
             if(fluidHandler == null) continue;
             for(int tankIndex = 0; tankIndex < exportFluids.getTanks(); tankIndex++) {

@@ -137,7 +137,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         T metaToolValueItem = getItem(stack);
         if(metaToolValueItem != null) {
             IToolStats toolStats = metaToolValueItem.getToolStats();
-            if(!doDamageToItem(stack, toolStats.getToolDamagePerContainerCraft(stack)) && getElectricStats(stack).getMaxCharge() == 0) {
+            if(!doDamageToItem(stack, toolStats.getToolDamagePerContainerCraft(stack), false) && getElectricStats(stack).getMaxCharge() == 0) {
                 return null;
             }
         }
