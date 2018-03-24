@@ -14,8 +14,6 @@ public class MetaTileEntities {
 
         GameRegistry.registerTileEntity(TileEntityCableEmitter.class, "gregtech_cable_emitter");
 
-        TileEntityChestRenderer
-
         BlockMachine.registerMetaTileEntity("steam_boiler_bronze", SteamBoiler.Bronze.class);
         BlockMachine.registerMetaTileEntity("steam_boiler_steel", SteamBoiler.Steel.class);
 

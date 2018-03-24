@@ -50,14 +50,6 @@ public class ClientProxy extends CommonProxy {
     public static final IItemColor ORE_ITEM_COLOR = (stack, tintIndex) ->
         tintIndex == 1 ? ((BlockOre) ((ItemBlock) stack.getItem()).getBlock()).material.materialRGB : 0xFFFFFF;
 
-    public boolean isServerSide() {
-        return true;
-    }
-
-    public boolean isClientSide() {
-        return true;
-    }
-
     public void onPreLoad() {
         super.onPreLoad();
     }
@@ -79,19 +71,19 @@ public class ClientProxy extends CommonProxy {
     }
 
     @SubscribeEvent
-    public void registerModels(ModelRegistryEvent event) {
+    public static void registerModels(ModelRegistryEvent event) {
         MetaBlocks.registerStateMappers();
         MetaBlocks.registerItemModels();
         MetaItems.registerModels();
     }
 
     @SubscribeEvent
-    public void onBlockHighlight(DrawBlockHighlightEvent event) {
+    public static void onBlockHighlight(DrawBlockHighlightEvent event) {
         if(drawSelectionMultiBoundingBox(event.getPlayer(), event.getTarget(), event.getSubID(), event.getPartialTicks()))
             event.setCanceled(true);
     }
 
-    public boolean drawSelectionMultiBoundingBox(EntityPlayer player, RayTraceResult movingObjectPositionIn, int execute, float partialTicks) {
+    public static boolean drawSelectionMultiBoundingBox(EntityPlayer player, RayTraceResult movingObjectPositionIn, int execute, float partialTicks) {
         if (execute == 0 && movingObjectPositionIn.typeOfHit == RayTraceResult.Type.BLOCK) {
             BlockPos blockpos = movingObjectPositionIn.getBlockPos();
             IBlockState iblockstate = player.world.getBlockState(blockpos);
