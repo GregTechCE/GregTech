@@ -15,17 +15,17 @@
       },
       "engine_intake": {
         "textures": {
-          "all": "gregtech:blocks/casings/machine_casing_engine_intake"
+          "all": "gregtech:blocks/casings/pipe/machine_casing_pipe_titanium"
         }
       },
       "grate": {
         "textures": {
-          "all": "gregtech:blocks/casings/machine_casing_grate"
+          "all": "gregtech:blocks/casings/pipe/machine_casing_grate"
         }
       },
       "assembler": {
         "textures": {
-          "all": "gregtech:blocks/casings/machine_casing_assembler"
+          "all": "gregtech:blocks/casings/mechanic/machine_casing_assembler"
         }
       },
       "assembling_machine": {

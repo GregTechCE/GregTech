@@ -7,37 +7,37 @@
     "variant": {
       "bronze_bricks": {
         "textures": {
-          "all": "gregtech:blocks/misc/machine_bronzeplatedbricks"
+          "all": "gregtech:blocks/casings/solid/machine_bronzeplatedbricks"
         }
       },
       "invar_heatproof": {
         "textures": {
-          "all": "gregtech:blocks/casings/machine_casing_heatproof"
+          "all": "gregtech:blocks/casings/solid/machine_casing_heatproof"
         }
       },
       "aluminium_frostproof": {
         "textures": {
-          "all": "gregtech:blocks/casings/machine_casing_frost_proof"
+          "all": "gregtech:blocks/casings/solid/machine_casing_frost_proof"
         }
       },
       "steel_solid": {
         "textures": {
-          "all": "gregtech:blocks/casings/machine_casing_solid_steel"
+          "all": "gregtech:blocks/casings/solid/machine_casing_solid_steel"
         }
       },
       "stainless_clean": {
         "textures": {
-          "all": "gregtech:blocks/casings/machine_casing_clean_stainlesssteel"
+          "all": "gregtech:blocks/casings/solid/machine_casing_clean_stainlesssteel"
         }
       },
       "titanium_stable": {
         "textures": {
-          "all": "gregtech:blocks/casings/machine_casing_stable_titanium"
+          "all": "gregtech:blocks/casings/solid/machine_casing_stable_titanium"
         }
       },
       "tungstensteel_robust": {
         "textures": {
-          "all": "gregtech:blocks/casings/machine_casing_robust_tungstensteel"
+          "all": "gregtech:blocks/casings/solid/machine_casing_robust_tungstensteel"
         }
       }
     }
