@@ -88,6 +88,14 @@ public class MetalMaterial extends SolidMaterial {
     }
 
     @Override
+    protected void initMaterial(String name) {
+        super.initMaterial(name);
+        if(blastFurnaceTemperature > 0) {
+            setFluidTemperature(blastFurnaceTemperature);
+        }
+    }
+
+    @Override
     protected long verifyMaterialBits(long generationBits) {
         if((generationBits & GENERATE_DENSE) > 0) {
             generationBits |= GENERATE_PLATE;

@@ -6,6 +6,7 @@
 package gregtech.common;
 
 import codechicken.lib.render.item.CCRenderItem;
+import codechicken.lib.texture.TextureUtils;
 import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.capability.ICustomHighlightBlock;
 import gregtech.api.render.MetaTileEntityRenderer;
@@ -61,6 +62,7 @@ public class ClientProxy extends CommonProxy {
     public void onPreLoad() {
         super.onPreLoad();
         MetaTileEntityRenderer.preInit();
+        TextureUtils.addIconRegister(MetaFluids::registerSprites);
     }
 
     @Override
@@ -73,16 +75,6 @@ public class ClientProxy extends CommonProxy {
     public void onPostLoad() {
         super.onPostLoad();
         MetaTileEntityRenderer.postInit();
-        for(Entry<BlockMachine<?>, ItemBlock> machineEntry : BlockMachine.MACHINES.entrySet()) {
-            Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(machineEntry.getValue(),
-                stack -> MetaTileEntityRenderer.MODEL_LOCATION);
-            ModelLoader.setCustomStateMapper(machineEntry.getKey(), new DefaultStateMapper() {
-                @Override
-                protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                    return MetaTileEntityRenderer.MODEL_LOCATION;
-                }
-            });
-        }
     }
 
     public void registerColors() {

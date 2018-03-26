@@ -1,12 +1,14 @@
 package gregtech.api;
 
 import com.google.common.collect.EnumHashBiMap;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.ore.StoneType;
 import gregtech.api.unification.stack.SimpleItemStack;
+import gregtech.api.util.GTControlledRegistry;
 import gregtech.api.util.GTWorldGen;
 import gregtech.api.util.IBlockOre;
 import gregtech.common.items.MetaItems;
@@ -50,6 +52,12 @@ public class GregTechAPI {
             return true;
         }
     };
+
+    public static final GTControlledRegistry<MetaTileEntity> META_TILE_ENTITY_REGISTRY = new GTControlledRegistry<>(Short.MAX_VALUE);
+
+    public static void registerMetaTileEntity(int id, MetaTileEntity sampleMetaTileEntity) {
+        META_TILE_ENTITY_REGISTRY.register(id, sampleMetaTileEntity.metaTileEntityId, sampleMetaTileEntity);
+    }
 
     public static final EnumHashBiMap<EnumDyeColor, Fluid> LIQUID_DYE_MAP = EnumHashBiMap.create(EnumDyeColor.class);
 

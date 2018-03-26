@@ -108,7 +108,8 @@ public abstract class Widget<T extends IUIHolder> implements Comparable<Widget<T
         packetBufferWriter.accept(packetBuffer);
         int widgetId = gui.guiWidgets.inverse().get(this);
         if(FMLCommonHandler.instance().getEffectiveSide().isServer()) {
-            PacketUIWidgetUpdate widgetUpdate = new PacketUIWidgetUpdate(widgetId, packetBuffer);
+            int currentWindowId = gui.entityPlayer.openContainer.windowId;
+            PacketUIWidgetUpdate widgetUpdate = new PacketUIWidgetUpdate(currentWindowId, widgetId, packetBuffer);
             NetworkHandler.channel.sendTo(NetworkHandler.packet2proxy(widgetUpdate), (EntityPlayerMP) gui.entityPlayer);
         } else {
             GTLog.logger.warn("Attempt to call writeUpdateInfo on client side! WID: " + widgetId, new Error());

@@ -168,6 +168,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
             this.maxProgressTime = buf.readInt();
         } else if(dataId == 1) {
             this.isActive = buf.readBoolean();
+            getMetaTileEntity().getHolder().scheduleChunkForRenderUpdate();
         }
     }
 

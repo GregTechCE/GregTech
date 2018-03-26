@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.Streams;
 import gregtech.api.GregTechAPI;
+import gregtech.api.render.MetaTileEntityRenderer;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
@@ -21,6 +22,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
@@ -32,6 +34,7 @@ public class MetaBlocks {
 
     private MetaBlocks() {}
 
+    public static BlockMachine MACHINE;
     public static BlockCable CABLE;
 
     public static BlockBoilerCasing BOILER_CASING;
@@ -55,6 +58,11 @@ public class MetaBlocks {
     public static StoneType BASALT;
 
     public static void init() {
+        MACHINE = new BlockMachine();
+        MACHINE.setRegistryName("machine");
+        CABLE = new BlockCable(64, 2, 0);
+        CABLE.setRegistryName("cable");
+
         BOILER_CASING = new BlockBoilerCasing();
         BOILER_CASING.setRegistryName("boiler_casing");
         METAL_CASING = new BlockMetalCasing();
@@ -104,13 +112,6 @@ public class MetaBlocks {
             }
         }
         createCompressedBlock(materialBuffer, generationIndex);
-
-        MetaTileEntities.init();
-
-        CABLE = new BlockCable(64, 2, 0);
-        CABLE.setRegistryName("cable");
-        CABLE.setUnlocalizedName("cable");
-        CABLE.setCreativeTab(GregTechAPI.TAB_GREGTECH);
     }
 
     private static void createCompressedBlock(Material[] materials, int index) {
@@ -149,6 +150,7 @@ public class MetaBlocks {
 
     @SideOnly(Side.CLIENT)
     public static void registerItemModels() {
+        ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(MACHINE), stack -> MetaTileEntityRenderer.MODEL_LOCATION);
         registerItemModel(BOILER_CASING);
         registerItemModel(METAL_CASING);
         registerItemModel(TURBINE_CASING);
@@ -159,6 +161,7 @@ public class MetaBlocks {
         registerItemModel(GRANITE);
         registerItemModel(MINERAL);
         registerItemModel(CONCRETE);
+
 
         COMPRESSED.values().stream().distinct().forEach(MetaBlocks::registerItemModel);
         ORES.stream().distinct().forEach(MetaBlocks::registerItemModel);
@@ -175,6 +178,12 @@ public class MetaBlocks {
 
     @SideOnly(Side.CLIENT)
     public static void registerStateMappers() {
+        ModelLoader.setCustomStateMapper(MACHINE, new DefaultStateMapper() {
+            @Override
+            protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+                return MetaTileEntityRenderer.MODEL_LOCATION;
+            }
+        });
     }
 
     @SideOnly(Side.CLIENT)

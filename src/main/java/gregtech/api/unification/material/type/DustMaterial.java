@@ -102,6 +102,14 @@ public class DustMaterial extends FluidMaterial {
     }
 
     @Override
+    protected void initMaterial(String name) {
+        super.initMaterial(name);
+        if(shouldGenerateFluid()) {
+            setFluidTemperature(1200); //default value for dusts
+        }
+    }
+
+    @Override
     public boolean shouldGenerateFluid() {
         return hasFlag(MatFlags.SMELT_INTO_FLUID);
     }

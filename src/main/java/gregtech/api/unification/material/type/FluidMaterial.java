@@ -41,6 +41,8 @@ public class FluidMaterial extends Material {
     @Nullable
     private Fluid materialPlasma;
 
+    private int fluidTemperature = 295;
+
     public FluidMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element) {
         super(metaItemSubId, name, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, element);
     }
@@ -66,18 +68,16 @@ public class FluidMaterial extends Material {
     }
 
     /**
-     * @deprecated internal usage only
+     * internal usage only
      */
-    @Deprecated
     public final void setMaterialFluid(@Nonnull Fluid materialFluid) {
         Preconditions.checkNotNull(materialFluid);
         this.materialFluid = materialFluid;
     }
 
     /**
-     * @deprecated internal usage only
+     * internal usage only
      */
-    @Deprecated
     public final void setMaterialPlasma(@Nonnull Fluid materialPlasma) {
         Preconditions.checkNotNull(materialPlasma);
         this.materialPlasma = materialPlasma;
@@ -99,4 +99,13 @@ public class FluidMaterial extends Material {
         return materialPlasma == null ? null : new FluidStack(materialPlasma, amount);
     }
 
+    public FluidMaterial setFluidTemperature(int fluidTemperature) {
+        Preconditions.checkArgument(fluidTemperature > 0, "Invalid temperature");
+        this.fluidTemperature = fluidTemperature;
+        return this;
+    }
+
+    public int getFluidTemperature() {
+        return fluidTemperature;
+    }
 }

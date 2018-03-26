@@ -2,6 +2,7 @@ package gregtech.common.blocks;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
+import gregtech.api.GregTechAPI;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.util.DebugRenderer;
 import gregtech.common.blocks.tileentity.TileEntityCableEmitter;
@@ -32,8 +33,10 @@ public class BlockCable extends Block implements ITileEntityProvider {
         this.maxVoltage = maxVoltage;
         this.maxAmperage = maxAmperage;
         this.cableLoss = cableLoss;
+        setUnlocalizedName("cable");
         setHardness(6.0f);
         setResistance(8.0f);
+        setCreativeTab(GregTechAPI.TAB_GREGTECH);
     }
 
     @Override

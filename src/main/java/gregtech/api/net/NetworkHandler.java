@@ -107,11 +107,13 @@ public class NetworkHandler {
 
         registerPacket(2, PacketUIWidgetUpdate.class, new PacketCodec<>(
                 (packet, buf) -> {
+                    buf.writeInt(packet.windowId);
                     buf.writeInt(packet.widgetId);
                     buf.writeInt(packet.updateData.readableBytes());
                     buf.writeBytes(packet.updateData);
                 },
                 (buf) -> new PacketUIWidgetUpdate(
+                        buf.readInt(),
                         buf.readInt(),
                         new PacketBuffer(buf.readBytes(buf.readInt()))
                 )
@@ -133,12 +135,7 @@ public class NetworkHandler {
             uiFactory.initClientUI(packet.serializedHolder, packet.windowId);
         });
         registerClientExecutor(PacketUIWidgetUpdate.class, (packet, handler) -> {
-            GuiScreen activeGui = Minecraft.getMinecraft().currentScreen;
-            if(activeGui instanceof ModularUIGui) {
-                ModularUI<?> uiOpen = ((ModularUIGui) activeGui).getModularUI();
-                PacketBuffer packetBuffer = packet.updateData;
-                uiOpen.guiWidgets.get(packet.widgetId).readUpdateInfo(packetBuffer.readInt(), packetBuffer);
-            }
+           ModularUIGui.queuingWidgetUpdates.add(packet);
         });
     }
 

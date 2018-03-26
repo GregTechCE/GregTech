@@ -2,12 +2,17 @@ package gregtech.api.gui.impl;
 
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.Widget;
+import gregtech.api.net.PacketUIWidgetUpdate;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 
 import java.io.IOException;
+import java.util.ArrayDeque;
+import java.util.Queue;
 
 public class ModularUIGui extends GuiContainer {
+
+    public static Queue<PacketUIWidgetUpdate> queuingWidgetUpdates = new ArrayDeque<>();
 
     private final ModularUI<?> modularUI;
 
@@ -30,6 +35,12 @@ public class ModularUIGui extends GuiContainer {
     @Override
     public void updateScreen() {
         super.updateScreen();
+        PacketUIWidgetUpdate packet = queuingWidgetUpdates.poll();
+        if(packet != null && packet.windowId == inventorySlots.windowId) {
+            Widget<?> widget = modularUI.guiWidgets.get(packet.widgetId);
+            int discriminator = packet.updateData.readInt();
+            if(widget != null) widget.readUpdateInfo(discriminator, packet.updateData);
+        }
         modularUI.guiWidgets.values().forEach(Widget::updateScreen);
     }
 

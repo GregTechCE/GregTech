@@ -13,7 +13,8 @@ public abstract class TieredMetaTileEntity extends MetaTileEntity {
     private final int tier;
     protected final EnergyContainerHandler energyContainer;
 
-    public TieredMetaTileEntity(int tier) {
+    public TieredMetaTileEntity(String metaTileEntityId, int tier) {
+        super(metaTileEntityId);
         this.tier = tier;
         long tierVoltage = GTValues.V[tier];
         if (isEnergyEmitter()) {

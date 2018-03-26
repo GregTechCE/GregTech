@@ -16,6 +16,7 @@ import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.modelfactories.BlockCompressedFactory;
 import gregtech.common.blocks.modelfactories.BlockOreFactory;
 import gregtech.common.items.MetaItems;
+import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.oreprocessing.OreProcessingHandler;
 import gregtech.loaders.postload.DungeonLootLoader;
@@ -70,6 +71,7 @@ public class GregTechMod {
         MetaBlocks.init();
         MetaItems.init();
         MetaFluids.init();
+        MetaTileEntities.init();
 
         gregtechproxy.onPreLoad();
 

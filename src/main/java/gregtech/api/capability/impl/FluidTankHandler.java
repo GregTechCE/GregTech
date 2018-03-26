@@ -1,5 +1,6 @@
 package gregtech.api.capability.impl;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import gregtech.api.capability.IMultipleTankHandler;
 import net.minecraft.nbt.NBTBase;
@@ -14,6 +15,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +27,12 @@ public class FluidTankHandler implements IFluidHandler, IMultipleTankHandler, IN
 
     public FluidTankHandler(FluidTank... fluidTanks) {
         this.fluidTanks = Arrays.asList(fluidTanks);
+    }
+
+    public FluidTankHandler(FluidTankHandler parent, FluidTank... additionalTanks) {
+        this.fluidTanks = new ArrayList<>();
+        this.fluidTanks.addAll(parent.fluidTanks);
+        this.fluidTanks.addAll(Arrays.asList(additionalTanks));
     }
 
     @Override

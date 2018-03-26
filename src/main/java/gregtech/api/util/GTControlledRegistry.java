@@ -62,4 +62,14 @@ public class GTControlledRegistry<T> extends RegistryNamespaced<String, T> {
         return new ResourceLocation(modId, key);
     }
 
+    public int getIdByObjectName(String key) {
+        T valueWithKey = getObject(key);
+        return valueWithKey == null ? 0 : getIDForObject(valueWithKey);
+    }
+
+    public String getNameForObjectId(int id) {
+        T valueWithKey = getObjectById(id);
+        return valueWithKey == null ? null : getNameForObject(valueWithKey);
+    }
+
 }

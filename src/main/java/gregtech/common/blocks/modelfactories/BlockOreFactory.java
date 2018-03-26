@@ -42,7 +42,6 @@ public class BlockOreFactory extends AbstractBlockModelFactory {
 
     @Override
     protected String fillSample(Block block, String blockStateSample) {
-        System.out.println("fillsample " + block.getRegistryName());
         return blockStateSample
                 .replace("$STONE_TYPES$", COMMA_JOINER.join(((BlockOre) block).STONE_TYPE.getAllowedValues().stream()
                         .map(stoneType -> VARIANT_DEFINITION

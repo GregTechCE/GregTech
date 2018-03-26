@@ -1,9 +1,11 @@
 package gregtech.common;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import gregtech.api.GTValues;
 import gregtech.api.block.machines.BlockMachine;
+import gregtech.api.block.machines.MachineItemBlock;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.items.metaitem.MetaItem;
@@ -33,8 +35,7 @@ public class CommonProxy {
         GTLog.logger.info("Registering Blocks...");
         IForgeRegistry<Block> registry = event.getRegistry();
 
-        for(BlockMachine<?> blockMachine : BlockMachine.MACHINES.keySet())
-            registry.register(blockMachine);
+        registry.register(MACHINE);
         registry.register(CABLE);
 
         registry.register(BOILER_CASING);
@@ -62,34 +63,32 @@ public class CommonProxy {
             item.registerSubItems();
         }
 
-        for(ItemBlock machineItemBlock : BlockMachine.MACHINES.values())
-            registry.register(machineItemBlock);
-        registry.register(createItemBlock(CABLE, () -> new ItemBlock(CABLE)));
-
-        registry.register(createItemBlock(BOILER_CASING, () -> new VariantItemBlock<>(BOILER_CASING)));
-        registry.register(createItemBlock(METAL_CASING, () -> new VariantItemBlock<>(METAL_CASING)));
-        registry.register(createItemBlock(TURBINE_CASING, () -> new VariantItemBlock<>(TURBINE_CASING)));
-        registry.register(createItemBlock(MACHINE_CASING, () -> new VariantItemBlock<>(MACHINE_CASING)));
-        registry.register(createItemBlock(MUTLIBLOCK_CASING, () -> new VariantItemBlock<>(MUTLIBLOCK_CASING)));
-        registry.register(createItemBlock(WIRE_COIL, () -> new VariantItemBlock<>(WIRE_COIL)));
-        registry.register(createItemBlock(WARNING_SIGN, () -> new VariantItemBlock<>(WARNING_SIGN)));
-        registry.register(createItemBlock(GRANITE, () -> new StoneItemBlock<>(GRANITE)));
-        registry.register(createItemBlock(MINERAL, () -> new StoneItemBlock<>(MINERAL)));
-        registry.register(createItemBlock(CONCRETE, () -> new StoneItemBlock<>(CONCRETE)));
+        registry.register(createItemBlock(MACHINE, MachineItemBlock::new));
+        registry.register(createItemBlock(CABLE, ItemBlock::new));
+        registry.register(createItemBlock(BOILER_CASING, VariantItemBlock::new));
+        registry.register(createItemBlock(METAL_CASING, VariantItemBlock::new));
+        registry.register(createItemBlock(TURBINE_CASING, VariantItemBlock::new));
+        registry.register(createItemBlock(MACHINE_CASING, VariantItemBlock::new));
+        registry.register(createItemBlock(MUTLIBLOCK_CASING, VariantItemBlock::new));
+        registry.register(createItemBlock(WIRE_COIL, VariantItemBlock::new));
+        registry.register(createItemBlock(WARNING_SIGN, VariantItemBlock::new));
+        registry.register(createItemBlock(GRANITE, StoneItemBlock::new));
+        registry.register(createItemBlock(MINERAL, StoneItemBlock::new));
+        registry.register(createItemBlock(CONCRETE, StoneItemBlock::new));
 
         COMPRESSED.values()
             .stream()
             .distinct()
-            .map(block -> createItemBlock(block, () -> new CompressedItemBlock(block)))
+            .map(block -> createItemBlock(block, CompressedItemBlock::new))
             .forEach(registry::register);
         ORES.stream()
             .distinct()
-            .map(block -> createItemBlock(block, () -> new OreItemBlock(block)))
+            .map(block -> createItemBlock(block, OreItemBlock::new))
             .forEach(registry::register);
     }
 
-    private static ItemBlock createItemBlock(Block block, Supplier<ItemBlock> producer) {
-        ItemBlock itemBlock = producer.get();
+    private static <T extends Block> ItemBlock createItemBlock(T block, Function<T, ItemBlock> producer) {
+        ItemBlock itemBlock = producer.apply(block);
         itemBlock.setRegistryName(block.getRegistryName());
         return itemBlock;
     }

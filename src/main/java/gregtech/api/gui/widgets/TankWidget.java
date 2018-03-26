@@ -4,6 +4,9 @@ import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.resources.RenderUtil;
 import gregtech.api.gui.resources.TextureArea;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fluids.FluidStack;
@@ -54,7 +57,11 @@ public class TankWidget<T extends IUIHolder> extends Widget<T> {
         if(backgroundTexture != null) {
             backgroundTexture.draw(x - bgOffset, y - bgOffset, width + bgOffset, height + bgOffset);
         }
-        RenderUtil.drawFluidForGui(lastFluidInTank, x, y, x + width, y + height);
+        if(lastFluidInTank != null) {
+            GlStateManager.disableBlend();
+            RenderUtil.drawFluidForGui(lastFluidInTank, fluidTank.getCapacity(), x, y, width, height);
+            GlStateManager.enableBlend();
+        }
         if(overlayTexture != null) {
             overlayTexture.draw(x, y, width, height);
         }
@@ -72,7 +79,7 @@ public class TankWidget<T extends IUIHolder> extends Widget<T> {
             writeUpdateInfo(1, buffer -> {});
         } else if(fluidStack != null) {
             if(!fluidStack.isFluidEqual(lastFluidInTank)) {
-                this.lastFluidInTank = fluidStack;
+                this.lastFluidInTank = fluidStack.copy();
                 NBTTagCompound fluidStackTag = fluidStack.writeToNBT(new NBTTagCompound());
                 writeUpdateInfo(2, buffer -> buffer.writeCompoundTag(fluidStackTag));
             } else if(fluidStack.amount != lastFluidInTank.amount) {

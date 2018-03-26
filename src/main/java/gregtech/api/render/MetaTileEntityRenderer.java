@@ -13,12 +13,14 @@ import codechicken.lib.vec.Translation;
 import codechicken.lib.vec.uv.IconTransformation;
 import gregtech.api.GTValues;
 import gregtech.api.block.machines.BlockMachine;
+import gregtech.api.block.machines.MachineItemBlock;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTLog;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
@@ -93,20 +95,20 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
 
     @Override
     public void renderItem(ItemStack stack, TransformType transformType) {
-        BlockMachine<?> blockMachine = (BlockMachine<?>) ((ItemBlock) stack.getItem()).getBlock();
-        MetaTileEntity metaTileEntity = blockMachine.getSampleMetaTileEntity();
-        metaTileEntity.initFromItemStackData(stack.hasTagCompound() ? stack.getTagCompound() : new NBTTagCompound());
+        MetaTileEntity metaTileEntity = MachineItemBlock.getMetaTileEntity(stack);
+        if(metaTileEntity == null) return;
+        GlStateManager.enableBlend();
         CCRenderState renderState = CCRenderState.instance();
         renderState.reset();
-        renderState.brightness = 16 << 20;
         renderState.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
         metaTileEntity.renderMetaTileEntity(renderState, new IVertexOperation[0]);
         renderState.draw();
+        GlStateManager.disableBlend();
     }
 
     @Override
     public boolean renderBlock(IBlockAccess world, BlockPos pos, IBlockState state, BufferBuilder buffer) {
-        MetaTileEntity metaTileEntity = (MetaTileEntity) world.getTileEntity(pos);
+        MetaTileEntity metaTileEntity = BlockMachine.getMetaTileEntity(world, pos);
         if(metaTileEntity == null)
             return false;
         CCRenderState renderState = CCRenderState.instance();
@@ -142,7 +144,7 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
 
     @Override
     public void handleRenderBlockDamage(IBlockAccess world, BlockPos pos, IBlockState state, TextureAtlasSprite sprite, BufferBuilder buffer) {
-        BlockMachine<?> blockMachine = ((BlockMachine<?>) state.getBlock());
+        BlockMachine blockMachine = ((BlockMachine) state.getBlock());
         Collection<AxisAlignedBB> boxes = blockMachine.getSelectedBoundingBoxes(world, pos, state);
         List<Cuboid6> cuboid6List = boxes.stream()
             .map(aabb -> new Cuboid6(aabb).subtract(pos))

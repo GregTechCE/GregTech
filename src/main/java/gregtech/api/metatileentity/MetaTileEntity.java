@@ -15,6 +15,7 @@ import gregtech.api.capability.impl.ItemHandlerProxy;
 import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.util.GTUtility;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -27,6 +28,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants.NBT;
@@ -44,13 +47,15 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.function.Consumer;
 
-public abstract class MetaTileEntity extends TickableTileEntityBase implements ICustomDataTile, IUIHolder {
+public abstract class MetaTileEntity {
 
-    private static final int DEFAULT_PAINTING_COLOR = 0xFFFFFFFF;
+    public static final Collection<AxisAlignedBB> FULL_CUBE_COLLISION = Collections.singletonList(Block.FULL_BLOCK_AABB);
+
+    public final String metaTileEntityId;
+    MetaTileEntityHolder holder;
 
     protected IItemHandlerModifiable importItems;
     protected IItemHandlerModifiable exportItems;
@@ -65,11 +70,12 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
     protected List<MTETrait> mteTraits = new ArrayList<>();
 
     protected EnumFacing frontFacing = EnumFacing.NORTH;
-    protected int paintingColor = DEFAULT_PAINTING_COLOR;
+    protected int paintingColor = 0xFFFFFFFF;
 
     protected int[] sidedRedstoneOutput = new int[6];
 
-    public MetaTileEntity() {
+    public MetaTileEntity(String metaTileEntityId) {
+        this.metaTileEntityId = metaTileEntityId;
         this.importItems = createImportItemHandler();
         this.exportItems = createExportItemHandler();
         this.itemInventory = new ItemHandlerProxy(importItems, exportItems);
@@ -79,16 +85,33 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
         this.fluidInventory = new FluidHandlerProxy(importFluids, exportFluids);
     }
 
-    /**
-     * Called on both sides on tile entity registration to set mte-specific hardness, sound & so
-     * Note that this will be called on unitialized metatileentity with world == null!
-     *
-     * @param blockMachine block of this meta tile entity
-     */
-    public void init(BlockMachine<?> blockMachine) {
-        blockMachine.setHardness(6.0f);
-        blockMachine.setResistance(8.0f);
-        blockMachine.setSoundType(SoundType.METAL);
+    public MetaTileEntityHolder getHolder() {
+        return holder;
+    }
+
+    public abstract MetaTileEntity createMetaTileEntity(MetaTileEntityHolder holder);
+
+    public World getWorld() {
+        return holder == null ? null : holder.getWorld();
+    }
+
+    public BlockPos getPos() {
+        return holder == null ? null : holder.getPos();
+    }
+
+    public void markDirty() {
+        if(holder != null)
+            holder.markDirty();
+    }
+
+    public long getTimer() {
+        return holder == null ? 0L : holder.getTimer();
+    }
+
+    public void writeCustomData(int discriminator, Consumer<PacketBuffer> dataWriter) {
+        if(holder != null) {
+            holder.writeCustomData(discriminator, dataWriter);
+        }
     }
 
     @SideOnly(Side.CLIENT)
@@ -123,7 +146,7 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
     }
 
     public final String getMetaName() {
-        return getBlockType().getUnlocalizedName();
+        return "gregtech.machine." + metaTileEntityId;
     }
 
     /**
@@ -146,7 +169,7 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
     public void initFromItemStackData(NBTTagCompound itemStack) {
         if(itemStack.hasKey("PaintingColor", NBT.TAG_INT)) {
             this.paintingColor = itemStack.getInteger("PaintingColor");
-        } else this.paintingColor = DEFAULT_PAINTING_COLOR;
+        }
     }
 
     /**
@@ -155,7 +178,7 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
      * @param itemStack itemstack from which this MTE is being placed
      */
     public void writeItemStackData(NBTTagCompound itemStack) {
-        if(this.paintingColor != DEFAULT_PAINTING_COLOR) { //for machines to stack
+        if(this.paintingColor != 0xFFFFFFFF) { //for machines to stack
             itemStack.setInteger("PaintingColor", this.paintingColor);
         }
     }
@@ -181,8 +204,8 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
      */
     public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if(!playerIn.isSneaking()) {
-            if(!world.isRemote) {
-                MetaTileEntityUIFactory.INSTANCE.openUI(this, (EntityPlayerMP) playerIn);
+            if(!getWorld().isRemote) {
+                MetaTileEntityUIFactory.INSTANCE.openUI(getHolder(), (EntityPlayerMP) playerIn);
             }
             return true;
         }
@@ -223,9 +246,7 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
         return 0;
     }
 
-    @Override
     public void update() {
-        super.update();
         for(MTETrait mteTrait : this.mteTraits) {
             mteTrait.update();
         }
@@ -249,9 +270,16 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
         }
     }
 
-    @Override
+    /**
+     * Called to obtain list of AxisAlignedBB used for collision testing, highlight rendering
+     * and ray tracing this meta tile entity's block in world
+     * @return list of collision boxes
+     */
+    public Collection<AxisAlignedBB> getCollisionBoxes() {
+        return FULL_CUBE_COLLISION;
+    }
+
     public NBTTagCompound writeToNBT(NBTTagCompound data) {
-        super.writeToNBT(data);
         data.setInteger("FrontFacing", frontFacing.getIndex());
         data.setInteger("PaintingColor", paintingColor);
 
@@ -268,9 +296,7 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
         return data;
     }
 
-    @Override
     public void readFromNBT(NBTTagCompound data) {
-        super.readFromNBT(data);
         this.frontFacing = EnumFacing.VALUES[data.getInteger("FrontFacing")];
         this.paintingColor = data.getInteger("PaintingColor");
 
@@ -286,7 +312,6 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
         }
     }
 
-    @Override
     public void writeInitialSyncData(PacketBuffer buf) {
         buf.writeByte(this.frontFacing.getIndex());
         buf.writeInt(this.paintingColor);
@@ -298,7 +323,6 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
         }
     }
 
-    @Override
     public void receiveInitialSyncData(PacketBuffer buf) {
         this.frontFacing = EnumFacing.VALUES[buf.readByte()];
         this.paintingColor = buf.readInt();
@@ -310,7 +334,6 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
         }
     }
 
-    @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         if(dataId == -1) {
             this.frontFacing = EnumFacing.VALUES[buf.readByte()];
@@ -325,7 +348,6 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
         }
     }
 
-    @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing side) {
         if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ||
             capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
@@ -334,10 +356,9 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
             if(mteTrait.getImplementingCapability() == capability)
                 return true;
         }
-        return super.hasCapability(capability, side);
+        return false;
     }
 
-    @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing side) {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(getFluidInventory());
@@ -349,7 +370,7 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
                 //noinspection unchecked
                 return (T) mteTrait;
         }
-        return super.getCapability(capability, side);
+        return null;
     }
 
     public boolean fillInternalTankFromFluidContainer(int inputSlot, int outputSlot) {
@@ -392,9 +413,9 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
         return true;
     }
 
-    public void pushFluidsIntoNearbyHandlers() {
-        for(EnumFacing nearbyFacing : EnumFacing.VALUES) {
-            TileEntity tileEntity = world.getTileEntity(getPos().offset(nearbyFacing));
+    public void pushFluidsIntoNearbyHandlers(EnumFacing... allowedFaces) {
+        for(EnumFacing nearbyFacing : allowedFaces) {
+            TileEntity tileEntity = getWorld().getTileEntity(getPos().offset(nearbyFacing));
             if(tileEntity == null) continue;
             IFluidHandler fluidHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
             if(fluidHandler == null) continue;
@@ -529,13 +550,4 @@ public abstract class MetaTileEntity extends TickableTileEntityBase implements I
         return exportFluids;
     }
 
-    @Override
-    public boolean hasFastRenderer() {
-        return true;
-    }
-
-    @Override
-    public boolean canRenderBreaking() {
-        return true;
-    }
 }

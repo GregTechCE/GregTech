@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * {@link UIFactory} implementation for {@link MetaTileEntity}
  */
-public class MetaTileEntityUIFactory extends UIFactory<MetaTileEntity> {
+public class MetaTileEntityUIFactory extends UIFactory<MetaTileEntityHolder> {
 
     public static final MetaTileEntityUIFactory INSTANCE = new MetaTileEntityUIFactory();
     private MetaTileEntityUIFactory() {}
@@ -22,18 +22,18 @@ public class MetaTileEntityUIFactory extends UIFactory<MetaTileEntity> {
 
     @Override
     @SuppressWarnings("unchecked")
-    protected ModularUI<MetaTileEntity> createUITemplate(MetaTileEntity holder, EntityPlayer entityPlayer) {
-        return (ModularUI<MetaTileEntity>) (Object) holder.createUI(entityPlayer); //go fuck yourself java ok?
+    protected ModularUI<MetaTileEntityHolder> createUITemplate(MetaTileEntityHolder holder, EntityPlayer entityPlayer) {
+        return (ModularUI<MetaTileEntityHolder>) (Object) holder.getMetaTileEntity().createUI(entityPlayer); //go fuck yourself java ok?
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    protected MetaTileEntity readHolderFromSyncData(PacketBuffer syncData) {
-        return (MetaTileEntity) Minecraft.getMinecraft().world.getTileEntity(syncData.readBlockPos());
+    protected MetaTileEntityHolder readHolderFromSyncData(PacketBuffer syncData) {
+        return (MetaTileEntityHolder) Minecraft.getMinecraft().world.getTileEntity(syncData.readBlockPos());
     }
 
     @Override
-    protected void writeHolderToSyncData(PacketBuffer syncData, MetaTileEntity holder) {
+    protected void writeHolderToSyncData(PacketBuffer syncData, MetaTileEntityHolder holder) {
         syncData.writeBlockPos(holder.getPos());
     }
 
