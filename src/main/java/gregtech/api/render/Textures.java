@@ -1,16 +1,21 @@
 package gregtech.api.render;
 
+import codechicken.lib.texture.TextureUtils.IIconRegister;
 import gregtech.api.GTValues;
 import gregtech.api.util.GTLog;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static gregtech.api.render.OrientedOverlayRenderer.OverlayFace.*;
 
 public class Textures {
+
+    public static List<IIconRegister> iconRegisters = new ArrayList<>();
 
     public static SimpleSidedRenderer STEAM_CASING_BRONZE = new SimpleSidedRenderer("casings/steam/bronze");
     public static SimpleSidedRenderer STEAM_CASING_STEEL = new SimpleSidedRenderer("casings/steam/steel");
@@ -37,13 +42,9 @@ public class Textures {
     @SideOnly(Side.CLIENT)
     public static void register(TextureMap textureMap) {
         GTLog.logger.info("Loading meta tile entity texture sprites...");
-        STEAM_CASING_BRONZE.registerSprites(textureMap);
-        STEAM_CASING_STEEL.registerSprites(textureMap);
-        Arrays.stream(VOLTAGE_CASINGS).forEach(c -> c.registerSprites(textureMap));
-
-        COAL_BOILER_OVERLAY.registerSprites(textureMap);
-        LAVA_BOILER_OVERLAY.registerSprites(textureMap);
-        SOLAR_BOILER_OVERLAY.registerSprites(textureMap);
+        for(IIconRegister iconRegister : iconRegisters) {
+            iconRegister.registerIcons(textureMap);
+        }
     }
 
 }

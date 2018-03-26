@@ -58,6 +58,7 @@ public class OrientedOverlayRenderer {
     public OrientedOverlayRenderer(String basePath, OverlayFace... faces) {
         this.basePath = basePath;
         this.faces = faces;
+        Textures.iconRegisters.add(this::registerSprites);
     }
 
     @SideOnly(Side.CLIENT)

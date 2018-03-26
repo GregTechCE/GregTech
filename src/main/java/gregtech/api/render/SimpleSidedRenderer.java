@@ -36,6 +36,7 @@ public class SimpleSidedRenderer {
 
     public SimpleSidedRenderer(String basePath) {
         this.basePath = basePath;
+        Textures.iconRegisters.add(this::registerSprites);
     }
 
     @SideOnly(Side.CLIENT)
