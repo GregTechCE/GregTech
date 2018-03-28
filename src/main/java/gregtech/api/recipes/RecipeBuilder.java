@@ -631,7 +631,7 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 				for (FluidMaterial material : new FluidMaterial[]{Materials.Argon, Materials.Nitrogen}) {
 					int plasmaAmount = (int) Math.max(1L, this.duration / (material.getMass() * 16L));
 
-					DefaultRecipeBuilder builder = RecipeMap.PLASMA_ARC_FURNACE_RECIPES.recipeBuilder()
+					DefaultRecipeBuilder builder = RecipeMaps.PLASMA_ARC_FURNACE_RECIPES.recipeBuilder()
 							.inputsIngredients(this.inputs)
 							.outputs(this.outputs)
 							.duration(this.duration / 16)
@@ -747,7 +747,7 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 		@Override
 		public void buildAndRegister() {
 			if (universal) {
-				IntCircuitRecipeBuilder builder = RecipeMap.DISTILLERY_RECIPES.recipeBuilder()
+				IntCircuitRecipeBuilder builder = RecipeMaps.DISTILLERY_RECIPES.recipeBuilder()
 						.fluidInputs(this.fluidInputs.toArray(new FluidStack[0]))
 						.duration(this.duration * 2)
 						.EUt(this.EUt / 4);
@@ -1021,7 +1021,7 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 			ValidationResult<Recipe.AssemblyLineRecipe> result = build();
 
 			if (result.getType() == EnumValidationResult.VALID) {
-				RecipeMap.ASSEMBLYLINE_RECIPES.add(result.getResult());
+				//RecipeMap.ASSEMBLYLINE_RECIPES.add(result.getResult());
 			}
 		}
 	}

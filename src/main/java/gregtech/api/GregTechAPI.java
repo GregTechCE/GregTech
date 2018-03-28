@@ -59,7 +59,7 @@ public class GregTechAPI {
         META_TILE_ENTITY_REGISTRY.register(id, sampleMetaTileEntity.metaTileEntityId, sampleMetaTileEntity);
     }
 
-    public static final EnumHashBiMap<EnumDyeColor, Fluid> LIQUID_DYE_MAP = EnumHashBiMap.create(EnumDyeColor.class);
+    public static final Map<Fluid, EnumDyeColor> LIQUID_DYE_MAP = new HashMap<>();
 
     public static final Map<Integer, ResourceLocation> soundList = new HashMap<>();
 

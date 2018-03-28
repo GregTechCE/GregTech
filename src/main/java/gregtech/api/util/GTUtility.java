@@ -233,13 +233,6 @@ public class GTUtility {
         return tier;
     }
 
-    public static <T> T sided(Supplier<T> client, Supplier<T> server) {
-        if (FMLCommonHandler.instance().getSide().isClient()) {
-            return client.get();
-        }
-        return server.get();
-    }
-
     public static NonNullList<ItemStack> itemHandlerToList(IItemHandlerModifiable inputs) {
         NonNullList<ItemStack> stacks = NonNullList.create();
         for (int i = 0; i < inputs.getSlots(); i++) {
@@ -343,6 +336,22 @@ public class GTUtility {
         return false;
     }
 
+    public static int amountOfNonNullElements(List<?> collection) {
+        int amount = 0;
+        for(Object object : collection) {
+            if(object != null) amount++;
+        }
+        return amount;
+    }
+
+    public static int amountOfNonEmptyStacks(NonNullList<ItemStack> collection) {
+        int amount = 0;
+        for(ItemStack object : collection) {
+            if(!object.isEmpty()) amount++;
+        }
+        return amount;
+    }
+
     public static List<ItemStack> copyStackList(List<ItemStack> itemStacks) {
         ItemStack[] stacks = new ItemStack[itemStacks.size()];
         for (int i = 0; i < itemStacks.size(); i++) {
@@ -382,6 +391,12 @@ public class GTUtility {
         else if (amount == -1) amount = 111;
         else if (amount < 0) amount = 0;
         stack.setCount(amount);
+        return stack;
+    }
+
+    public static FluidStack copyAmount(int amount, FluidStack fluidStack) {
+        FluidStack stack = fluidStack.copy();
+        stack.amount = amount;
         return stack;
     }
 
