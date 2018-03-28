@@ -1274,7 +1274,7 @@ material.snow=Snow
 material.sodalite=Sodalite
 material.sodium_persulfate=Sodium Persulfate
 material.sodium_sulfide=Sodium Sulfide
-material.hydric_sulfide=Hydrogen Sulfide
+material.hydrogen_sulfide=Hydrogen Sulfide
 
 material.oil_heavy=Heavy Oil
 material.oil_medium=Raw Oil
@@ -1283,7 +1283,7 @@ material.natural_gas=Natural Gas
 material.sulfuric_gas=Sulfuric Gas
 material.gas=Refinery Gas
 material.sulfuric_naphtha=Sulfuric Naphtha
-material.sulfuric_ligh_fuel=Sulfuric Light Fuel
+material.sulfuric_light_fuel=Sulfuric Light Fuel
 material.sulfuric_heavy_fuel=Sulfuric Heavy Fuel
 material.naphtha=Naphtha
 material.light_fuel=Light Fuel

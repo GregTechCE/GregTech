@@ -70,7 +70,7 @@ public class MetaFluids {
         registerFluid(Materials.OilMedium, FluidType.LIQUID, 295, true);
         registerFluid(Materials.OilLight, FluidType.LIQUID, 295, true);
 
-        registerFluid(Materials.HydricSulfide, FluidType.GAS, 295, true);
+        registerFluid(Materials.HydrogenSulfide, FluidType.GAS, 295, true);
         registerFluid(Materials.SulfuricGas, FluidType.GAS, 295, true);
         registerFluid(Materials.Gas, FluidType.GAS, 295, true);
 
