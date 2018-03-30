@@ -56,7 +56,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
             return;
         if(progressTime == 0) {
             long maxVoltage = getMaxVoltage();
-            Recipe pickedRecipe = recipeMap.findRecipe(previousRecipe, maxVoltage, metaTileEntity.getImportItems(), metaTileEntity.getImportFluids());
+            Recipe pickedRecipe = recipeMap.findRecipe(maxVoltage, metaTileEntity.getImportItems(), metaTileEntity.getImportFluids());
             if(pickedRecipe != null && setupAndConsumeRecipeInputs(pickedRecipe)) {
                 if(pickedRecipe.canBeBuffered()) {
                     this.previousRecipe = pickedRecipe;

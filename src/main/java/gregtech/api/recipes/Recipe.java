@@ -68,7 +68,7 @@ public class Recipe {
 
     private final Map<String, Object> recipeProperties;
 
-	protected Recipe(List<CountableIngredient> inputs, List<ItemStack> outputs, TObjectIntMap<ItemStack> chancedOutputs,
+	public Recipe(List<CountableIngredient> inputs, List<ItemStack> outputs, TObjectIntMap<ItemStack> chancedOutputs,
                      List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs,
                      Map<String, Object> recipeProperties, int duration, int EUt, boolean hidden, boolean canBeBuffered, boolean needsEmptyOutput) {
         this.recipeProperties = ImmutableMap.copyOf(recipeProperties);

@@ -1,7 +1,6 @@
 package gregtech.loaders.postload;
 
-import gregtech.api.recipes.ModHandler;
-import gregtech.api.recipes.RecipeMap;
+import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
@@ -19,7 +18,7 @@ public class MachineRecipeLoader implements Runnable {
     private void registerWoodSealingRecipes() {
         for(OrePrefix prefix : OrePrefix.values()) {
             if(prefix.generationCondition != null && prefix.doGenerateItem(Materials.Wood)) {
-                RecipeMap.CHEMICAL_BATH_RECIPES.recipeBuilder()
+                RecipeMaps.CHEMICAL_BATH_RECIPES.recipeBuilder()
                         .inputs(OreDictUnifier.get(prefix, Materials.Wood))
                         .outputs(OreDictUnifier.get(prefix, Materials.WoodSealed))
                         .fluidInputs(Materials.Creosote.getFluid(GTUtility.mat2FlAmount(prefix.materialAmount)))
@@ -43,7 +42,7 @@ public class MachineRecipeLoader implements Runnable {
 //                .EUt(20)
 //                .buildAndRegister();
 
-        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
                 .inputs(rubberLog)
                 .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.RawRubber))
                 .buildAndRegister();

@@ -5,6 +5,7 @@ import gregtech.api.GTValues;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.items.ToolDictNames;
 import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.recipes.builders.NotConsumableInputRecipeBuilder;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
@@ -196,8 +197,8 @@ public class ModHandler {
             addSmeltingRecipe(input, output);
         }
 
-        RecipeBuilder.NotConsumableInputRecipeBuilder recipeBuilder =
-                RecipeMap.ALLOY_SMELTER_RECIPES.recipeBuilder()
+        NotConsumableInputRecipeBuilder recipeBuilder =
+                RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder()
                         .inputs(input)
                         .outputs(output)
                         .duration(130)

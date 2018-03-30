@@ -4,7 +4,7 @@ import com.google.common.base.CaseFormat;
 import gregtech.api.items.materialitem.MaterialMetaItem;
 import gregtech.api.items.metaitem.FoodStats;
 import gregtech.api.recipes.ModHandler;
-import gregtech.api.recipes.RecipeMap;
+import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
@@ -120,135 +120,135 @@ public class MetaItem2 extends MaterialMetaItem {
     public void registerRecipes() {
 
         // Dyes recipes
-        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Blocks.RED_FLOWER, 1, 0))
             .outputs(new ItemStack(Items.DYE, 2, 1))
             .buildAndRegister();
 
-        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Blocks.RED_FLOWER, 1, 1))
             .outputs(new ItemStack(Items.DYE, 2, 12))
             .buildAndRegister();
 
-        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Blocks.RED_FLOWER, 1, 2))
             .outputs(new ItemStack(Items.DYE, 2, 13))
             .buildAndRegister();
 
-        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Blocks.RED_FLOWER, 1, 3))
             .outputs(new ItemStack(Items.DYE, 2, 7))
             .buildAndRegister();
 
-        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Blocks.RED_FLOWER, 1, 4))
             .outputs(new ItemStack(Items.DYE, 2, 1))
             .buildAndRegister();
 
-        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Blocks.RED_FLOWER, 1, 5))
             .outputs(new ItemStack(Items.DYE, 2, 14))
             .buildAndRegister();
 
-        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Blocks.RED_FLOWER, 1, 6))
             .outputs(new ItemStack(Items.DYE, 2, 7))
             .buildAndRegister();
 
-        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Blocks.RED_FLOWER, 1, 7))
             .outputs(new ItemStack(Items.DYE, 2, 9))
             .buildAndRegister();
 
-        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Blocks.RED_FLOWER, 1, 8))
             .outputs(new ItemStack(Items.DYE, 2, 7))
             .buildAndRegister();
 
-        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Blocks.YELLOW_FLOWER, 1, 0))
             .outputs(new ItemStack(Items.DYE, 2, 11))
             .buildAndRegister();
 
-        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Blocks.DOUBLE_PLANT, 1, 0))
             .outputs(new ItemStack(Items.DYE, 3, 11))
             .buildAndRegister();
 
-        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Blocks.DOUBLE_PLANT, 1, 1))
             .outputs(new ItemStack(Items.DYE, 3, 13))
             .buildAndRegister();
 
-        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Blocks.DOUBLE_PLANT, 1, 4))
             .outputs(new ItemStack(Items.DYE, 3, 1))
             .buildAndRegister();
 
-        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Blocks.DOUBLE_PLANT, 1, 5))
             .outputs(new ItemStack(Items.DYE, 3, 9))
             .buildAndRegister();
 
         // Crops recipes
-        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(CROP_DROP_PLUMBILIA.getStackForm())
             .outputs(OreDictUnifier.get(OrePrefix.dustTiny, Materials.Lead, 1))
             .buildAndRegister();
 
-        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(CROP_DROP_ARGENTIA.getStackForm())
             .outputs(OreDictUnifier.get(OrePrefix.dustTiny, Materials.Silver, 1))
             .buildAndRegister();
 
-        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(CROP_DROP_INDIGO.getStackForm())
             .outputs(DYE_INDIGO.getStackForm())
             .buildAndRegister();
 
-//        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+//        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
 //            .inputs(CROP_DROP_MILK_WART.getStackForm())
 //            .outputs(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Milk))
 //            .buildAndRegister();
 
-        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(CROP_DROP_COPPON.getStackForm())
             .outputs(OreDictUnifier.get(OrePrefix.dustTiny, Materials.Copper))
             .buildAndRegister();
 
-        RecipeMap.EXTRACTOR_RECIPES.recipeBuilder()
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(CROP_DROP_TINE.getStackForm())
             .outputs(OreDictUnifier.get(OrePrefix.dustTiny, Materials.Tin))
             .buildAndRegister();
 
-        RecipeMap.COMPRESSOR_RECIPES.recipeBuilder()
+        RecipeMaps.COMPRESSOR_RECIPES.recipeBuilder()
             .inputs(CROP_DROP_COPPON.getStackForm(4))
             .outputs(new ItemStack(Blocks.WOOL, 1, 1))
             .buildAndRegister();
 
         // Misc
-        RecipeMap.MACERATOR_RECIPES.recipeBuilder()
+        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Items.DYE, 1, EnumDyeColor.BROWN.getDyeDamage()))
             .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Cocoa, 1))
             .duration(400)
             .EUt(2)
             .buildAndRegister();
 
-        RecipeMap.MACERATOR_RECIPES.recipeBuilder()
+        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .inputs(CROP_DROP_TINE.getStackForm())
             .outputs(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Wood, 2))
             .duration(400)
             .EUt(2)
             .buildAndRegister();
 
-        RecipeMap.MACERATOR_RECIPES.recipeBuilder()
+        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Items.REEDS, 1))
             .outputs(new ItemStack(Items.SUGAR, 1))
             .duration(400)
             .EUt(2)
             .buildAndRegister();
 
-        RecipeMap.MACERATOR_RECIPES.recipeBuilder()
+        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Blocks.MELON_BLOCK, 1, 0))
             .outputs(new ItemStack(Items.MELON, 8, 0))
             .chancedOutput(new ItemStack(Items.MELON_SEEDS, 1), 8000)
@@ -256,35 +256,35 @@ public class MetaItem2 extends MaterialMetaItem {
             .EUt(2)
             .buildAndRegister();
 
-        RecipeMap.MACERATOR_RECIPES.recipeBuilder()
+        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Blocks.PUMPKIN, 1, 0))
             .outputs(new ItemStack(Items.PUMPKIN_SEEDS, 4, 0))
             .duration(400)
             .EUt(2)
             .buildAndRegister();
 
-        RecipeMap.MACERATOR_RECIPES.recipeBuilder()
+        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Items.MELON, 1, 0))
             .outputs(new ItemStack(Items.MELON_SEEDS, 1, 0))
             .duration(400)
             .EUt(2)
             .buildAndRegister();
 
-        RecipeMap.MACERATOR_RECIPES.recipeBuilder()
+        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Items.WHEAT, 1, 0))
             .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Wheat, 1))
             .duration(400)
             .EUt(2)
             .buildAndRegister();
 
-        RecipeMap.MACERATOR_RECIPES.recipeBuilder()
+        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Items.STICK, 1))
             .outputs(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Wood, 2))
             .duration(400)
             .EUt(2)
             .buildAndRegister();
 
-        RecipeMap.MACERATOR_RECIPES.recipeBuilder()
+        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Blocks.WOOL, 1, W))
             .outputs(new ItemStack(Items.STRING, 2))
             .chancedOutput(new ItemStack(Items.STRING, 1), 5000)

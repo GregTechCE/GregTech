@@ -1,10 +1,8 @@
 package gregtech.api.recipes.machines;
 
 import gregtech.api.recipes.Recipe;
-import gregtech.api.recipes.RecipeBuilder;
-import gregtech.api.recipes.RecipeBuilder.DefaultRecipeBuilder;
+import gregtech.api.recipes.builders.DefaultRecipeBuilder;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
@@ -12,7 +10,6 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 import javax.annotation.Nullable;
-import java.util.Collection;
 import java.util.List;
 
 public class RecipeMapFluidCanner extends RecipeMap<DefaultRecipeBuilder> {

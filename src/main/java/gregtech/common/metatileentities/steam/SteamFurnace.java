@@ -2,13 +2,12 @@ package gregtech.common.metatileentities.steam;
 
 import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.ModularUI;
-import gregtech.api.gui.widgets.LabelWidget;
 import gregtech.api.gui.widgets.ProgressWidget;
 import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.SteamMetaTileEntity;
-import gregtech.api.recipes.RecipeMap;
+import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.render.Textures;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -17,7 +16,7 @@ import net.minecraftforge.items.ItemStackHandler;
 public class SteamFurnace extends SteamMetaTileEntity {
 
     public SteamFurnace(String metaTileEntityId, boolean isHighPressure) {
-        super(metaTileEntityId, RecipeMap.FURNACE_RECIPES, Textures.FURNACE_OVERLAY, isHighPressure);
+        super(metaTileEntityId, RecipeMaps.FURNACE_RECIPES, Textures.FURNACE_OVERLAY, isHighPressure);
     }
 
     @Override

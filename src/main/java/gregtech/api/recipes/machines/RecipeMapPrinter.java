@@ -4,24 +4,17 @@ import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.Recipe;
-import gregtech.api.recipes.RecipeBuilder;
-import gregtech.api.recipes.RecipeBuilder.DefaultRecipeBuilder;
+import gregtech.api.recipes.builders.DefaultRecipeBuilder;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ValidationResult;
-import gregtech.common.items.MetaItems;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
-import java.util.Collection;
 import java.util.List;
-
-import static gregtech.api.GTValues.L;
 
 public class RecipeMapPrinter extends RecipeMap<DefaultRecipeBuilder> {
 

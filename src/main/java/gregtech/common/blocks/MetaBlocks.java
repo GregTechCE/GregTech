@@ -1,9 +1,7 @@
 package gregtech.common.blocks;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-import com.google.common.collect.Streams;
 import gregtech.api.GregTechAPI;
 import gregtech.api.render.MetaTileEntityRenderer;
 import gregtech.api.unification.material.Materials;
@@ -16,7 +14,6 @@ import gregtech.common.blocks.BlockGranite.GraniteVariant;
 import gregtech.common.blocks.BlockMineral.MineralVariant;
 import gregtech.common.blocks.StoneBlock.ChiselingVariant;
 import gregtech.api.block.machines.BlockMachine;
-import gregtech.common.metatileentities.MetaTileEntities;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
@@ -24,7 +21,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -85,7 +81,7 @@ public class MetaBlocks {
         MINERAL = new BlockMineral();
         MINERAL.setRegistryName("mineral");
         MARBLE = new StoneType(14, "marble", OrePrefix.oreMarble, Materials.Marble, "gregtech:blocks/stones/marble/marble_stone", () -> MINERAL.withVariant(MineralVariant.MARBLE, ChiselingVariant.NORMAL), state -> state.getBlock() instanceof BlockMineral && ((BlockMineral) state.getBlock()).getVariant(state) == BlockMineral.MineralVariant.MARBLE);
-        BASALT = new StoneType(15, "basalt", OrePrefix.oreBasalt, Materials.Basalt, "gregtech:blocks/stones/basalt/basalt_stone", () -> MINERAL.withVariant(MineralVariant.BASALT, ChiselingVariant.NORMAL),state -> state.getBlock() instanceof BlockMineral && ((BlockMineral) state.getBlock()).getVariant(state) == BlockMineral.MineralVariant.BASALT);
+        BASALT = new StoneType(15, "basalt", OrePrefix.oreBasalt, Materials.Basalt, "gregtech:blocks/stones/basalt/basalt_stone", () -> MINERAL.withVariant(MineralVariant.BASALT, ChiselingVariant.NORMAL), state -> state.getBlock() instanceof BlockMineral && ((BlockMineral) state.getBlock()).getVariant(state) == BlockMineral.MineralVariant.BASALT);
         CONCRETE = new BlockConcrete();
         CONCRETE.setRegistryName("concrete");
 
@@ -95,8 +91,8 @@ public class MetaBlocks {
         Material[] materialBuffer = new Material[16];
         Arrays.fill(materialBuffer, Materials._NULL);
         int generationIndex = 0;
-        for(Material material : Material.MATERIAL_REGISTRY.getObjectsWithIds()) {
-            if(material instanceof DustMaterial) {
+        for (Material material : Material.MATERIAL_REGISTRY.getObjectsWithIds()) {
+            if (material instanceof DustMaterial) {
                 int id = Material.MATERIAL_REGISTRY.getIDForObject(material);
                 int index = id / 16;
                 if (index > generationIndex) {
@@ -107,7 +103,7 @@ public class MetaBlocks {
                     materialBuffer[id % 16] = material;
                     generationIndex = index;
                 }
-                if(material.hasFlag(DustMaterial.MatFlags.GENERATE_ORE)) {
+                if (material.hasFlag(DustMaterial.MatFlags.GENERATE_ORE)) {
                     createOreBlock((DustMaterial) material);
                 }
             }

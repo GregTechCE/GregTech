@@ -2,7 +2,7 @@ package gregtech.api.recipes.machines;
 
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.Recipe;
-import gregtech.api.recipes.RecipeBuilder.DefaultRecipeBuilder;
+import gregtech.api.recipes.builders.DefaultRecipeBuilder;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;

@@ -1,6 +1,5 @@
 package gregtech.api.recipes.builders;
 
-import gregtech.api.recipes.RecipeBuilder.IntCircuitRecipeBuilder;
 import gregtech.api.unification.material.Materials;
 
 public class AssemblerRecipeBuilder extends IntCircuitRecipeBuilder {
