@@ -14,12 +14,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.Validate;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static gregtech.api.GTValues.M;
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.*;
@@ -93,7 +91,7 @@ public enum OrePrefix {
     stickLong("Long Sticks/Rods", M, null, MaterialIconType.stickLong, ENABLE_UNIFICATION, mat -> mat instanceof SolidMaterial && mat.hasFlag(GENERATE_ROD)), // Stick made of an Ingot.
     stick("Sticks/Rods", M / 2, null, MaterialIconType.stick, ENABLE_UNIFICATION, mat -> mat instanceof SolidMaterial && mat.hasFlag(GENERATE_ROD)), // Stick made of half an Ingot. Introduced by Eloraam
 
-    bolt("Bolts", M / 8, null, MaterialIconType.bolt, ENABLE_UNIFICATION, mat -> mat instanceof MetalMaterial && mat.hasFlag(GENERATE_BOLT_SCREW)), // consisting out of 1/8 Ingot or 1/4 Stick.
+    bolt("Bolts", M / 8, null, MaterialIconType.bolt, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_BOLT_SCREW)), // consisting out of 1/8 Ingot or 1/4 Stick.
 
     comb("Combs", M, null, null, DISALLOW_RECYCLING, null), // contain dusts
 
@@ -406,6 +404,8 @@ public enum OrePrefix {
         toolHeadChainsaw.secondaryMaterial = new MaterialStack(Materials.Steel, plate.materialAmount * 4 + ring.materialAmount * 2);
         toolHeadWrench.secondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount + screw.materialAmount * 2);
 
+        stickLong.processOreRegistration(Materials.Wood);
+        gear.processOreRegistration(Materials.Wood);
     }
 
     @SafeVarargs
@@ -481,9 +481,10 @@ public enum OrePrefix {
         return !isSelfReferencing && generationCondition != null && materialIconType != null && !ignoredMaterials.contains(material) && generationCondition.isTrue(material);
     }
 
-    public boolean addProcessingHandler(IOreRegistrationHandler processingHandler) {
+    public boolean addProcessingHandler(IOreRegistrationHandler... processingHandler) {
         Preconditions.checkNotNull(processingHandler);
-        return oreProcessingHandlers.add(processingHandler);
+        Validate.noNullElements(processingHandler);
+        return oreProcessingHandlers.addAll(Arrays.asList(processingHandler));
     }
 
     public void processOreRegistration(@Nullable Material material) {

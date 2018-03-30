@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import com.google.common.collect.Streams;
 import gregtech.api.GregTechAPI;
 import gregtech.api.metatileentity.IMetaTileEntityFactory;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
@@ -24,6 +25,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -133,8 +135,9 @@ public class MetaBlocks {
         BlockCompressed block = new BlockCompressed(materials);
         block.setRegistryName("compressed_" + index);
         for (Material material : materials) {
-            if (material instanceof DustMaterial)
+            if (material instanceof DustMaterial) {
                 COMPRESSED.put((DustMaterial) material, block);
+            }
         }
     }
 

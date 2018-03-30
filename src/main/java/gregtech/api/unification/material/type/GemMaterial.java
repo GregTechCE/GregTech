@@ -14,7 +14,7 @@ public class GemMaterial extends SolidMaterial {
         /**
          * If this material is crystallisable
          */
-        public static final long CRYSTALLISABLE = createFlag(25);
+        public static final long CRYSTALLISABLE = createFlag(34);
 
         public static final long GENERATE_LENSE = createFlag(37);
 

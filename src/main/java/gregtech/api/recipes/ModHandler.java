@@ -254,7 +254,8 @@ public class ModHandler {
         result = OreDictUnifier.getUnificated(result);
         boolean skip = false;
         if (result.isEmpty()) {
-            GTLog.logger.error("Result cannot be an empty ItemStack", new IllegalArgumentException());
+            GTLog.logger.error("Result cannot be an empty ItemStack. Recipe: {}", regName);
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             skip = true;
         }
         skip |= validateRecipe(recipe);
@@ -297,7 +298,8 @@ public class ModHandler {
     public static void addShapedRecipe(String regName, ItemStack result, Object... recipe) {
         boolean skip = false;
         if (result.isEmpty()) {
-            GTLog.logger.error("Result cannot be an empty ItemStack", new IllegalArgumentException());
+            GTLog.logger.error("Result cannot be an empty ItemStack. Recipe: {}", regName);
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             skip = true;
         }
         skip |= validateRecipe(recipe);
@@ -317,9 +319,14 @@ public class ModHandler {
             GTLog.logger.error("Recipe cannot be empty", new IllegalArgumentException());
             skip = true;
         } else if (Arrays.asList(recipe).contains(null) || Arrays.asList(recipe).contains(ItemStack.EMPTY)) {
-            GTLog.logger.error("Recipe cannot contain null elements or Empty ItemStacks. Recipe: " + 
-                Arrays.stream(recipe).map(o -> o == null ? "NULL" : o).map(o -> o == ItemStack.EMPTY ? "EMPTY STACK" : o)
-                .map(Object::toString).map(s -> "\"" + s + "\"").collect(Collectors.joining(", ")));
+            GTLog.logger.error("Recipe cannot contain null elements or Empty ItemStacks. Recipe: {}",
+                Arrays.stream(recipe)
+                    .map(o -> o == null ? "NULL" : o)
+                    .map(o -> o == ItemStack.EMPTY ? "EMPTY STACK" : o)
+                    .map(Object::toString)
+                    .map(s -> "\"" + s + "\"")
+                    .collect(Collectors.joining(", "))
+            );
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             skip = true;
         }
@@ -372,7 +379,8 @@ public class ModHandler {
     public static void addShapelessRecipe(String regName, ItemStack result, Object... recipe) {
         boolean skip = false;
         if (result.isEmpty()) {
-            GTLog.logger.error("Result ItemStack cannot be empty", new IllegalArgumentException());
+            GTLog.logger.error("Result cannot be an empty ItemStack. Recipe: {}", regName);
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             skip = true;
         }
         skip |= validateRecipe(recipe);
