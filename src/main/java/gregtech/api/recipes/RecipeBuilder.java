@@ -119,7 +119,7 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
             recipeStatus = EnumValidationResult.INVALID;
 		}
 		inputs.forEach(stack -> {
-		    if (!Predicates.or(Objects::isNull, ItemStack::isEmpty).apply(stack)) {
+		    if (!(stack == null || stack.isEmpty())) {
                 this.inputs.add(CountableIngredient.from(stack));
             }
         });
