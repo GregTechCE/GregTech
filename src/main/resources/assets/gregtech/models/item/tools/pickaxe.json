@@ -2,7 +2,7 @@
   "parent": "item/generated",
   "textures": {
     "layer0": "gregtech:items/tools/handle",
-	"layer1": "gregtech:items/void",
+	  "layer1": "gregtech:items/void",
     "layer2": "gregtech:items/tools/pickaxe"
   }
 }

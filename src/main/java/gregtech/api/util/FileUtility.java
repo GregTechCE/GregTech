@@ -1,5 +1,7 @@
 package gregtech.api.util;
 
+import org.apache.commons.io.IOUtils;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 public class FileUtility {
 
     public static String readInputStream(InputStream inputStream) throws IOException {
-        byte[] streamData = sun.misc.IOUtils.readFully(inputStream, -1, false);
+        byte[] streamData = IOUtils.toByteArray(inputStream);
         return new String(streamData, StandardCharsets.UTF_8);
     }
 
