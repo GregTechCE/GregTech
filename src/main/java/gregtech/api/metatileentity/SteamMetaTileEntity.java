@@ -22,7 +22,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.FluidTank;
 import org.apache.commons.lang3.ArrayUtils;
 
-public abstract class SteamMetaTileEntity extends MetaTileEntity {
+public abstract class  SteamMetaTileEntity extends MetaTileEntity {
 
     public final TextureArea BRONZE_BACKGROUND_TEXTURE;
     public final TextureArea BRONZE_SLOT_BACKGROUND_TEXTURE;
@@ -76,7 +76,7 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
     public ModularUI.Builder<IUIHolder> createUITemplate(EntityPlayer player) {
         return ModularUI.builder(BRONZE_BACKGROUND_TEXTURE, 176, 166)
             .widget(0, new LabelWidget<>(6, 6, getMetaName()))
-            .widget(1, new LabelWidget<>(8, 166 - 96 + 2, player.inventory.getName())) // 166 - gui imageHeight, 96 + 2 - from vanilla code
+
             .bindPlayerInventory(player.inventory, 2, BRONZE_SLOT_BACKGROUND_TEXTURE);
     }
 }

@@ -107,7 +107,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == 100) {
+        if(dataId == -100) {
             this.fuelMaxBurnTime = buf.readInt();
             this.fuelBurnTimeLeft = fuelMaxBurnTime;
             getHolder().scheduleChunkForRenderUpdate();
@@ -118,7 +118,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
         this.fuelMaxBurnTime = fuelMaxBurnTime;
         this.fuelBurnTimeLeft = fuelMaxBurnTime;
         if(!getWorld().isRemote) {
-            writeCustomData(100, buffer -> buffer.writeInt(fuelMaxBurnTime));
+            writeCustomData(-100, buffer -> buffer.writeInt(fuelMaxBurnTime));
             markDirty();
         }
     }
@@ -225,7 +225,6 @@ public abstract class SteamBoiler extends MetaTileEntity {
             .widget(6, new ImageWidget<>(42, 35, 18, 18)
                 .setImage(getGuiTexture("overlay_%s_fluid_container")))
 
-            .widget(7, new LabelWidget<>(8, 166 - 96 + 2, player.inventory.getName())) // 166 - gui imageHeight, 96 + 2 - from vanilla code
             .bindPlayerInventory(player.inventory, 8, BRONZE_SLOT_BACKGROUND_TEXTURE);
     }
 

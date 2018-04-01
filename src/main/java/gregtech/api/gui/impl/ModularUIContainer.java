@@ -28,6 +28,10 @@ public class ModularUIContainer extends Container {
                 });
     }
 
+    public ModularUI<?> getModularUI() {
+        return modularUI;
+    }
+
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();

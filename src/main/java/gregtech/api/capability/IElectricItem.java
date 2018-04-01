@@ -10,6 +10,13 @@ public interface IElectricItem {
     Capability<IElectricItem> CAPABILITY_ELECTRIC_ITEM = null;
 
     /**
+     * Determines if item can provide external discharging capability "in general"
+     * it ensures it can be inserted into battery discharger slots & so
+     * @return true if item can be discharged externally
+     */
+    boolean canProvideChargeExternally();
+
+    /**
      * Charge an item with a specified amount of energy.
      *
      * @param amount max amount of energy to charge in EU

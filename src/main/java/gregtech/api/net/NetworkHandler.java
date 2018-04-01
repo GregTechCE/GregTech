@@ -3,11 +3,14 @@ package gregtech.api.net;
 import gregtech.api.GTValues;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.UIFactory;
+import gregtech.api.gui.impl.ModularUIContainer;
 import gregtech.api.gui.impl.ModularUIGui;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.Container;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.PacketBuffer;
@@ -78,48 +81,72 @@ public class NetworkHandler {
         channel.register(new NetworkHandler());
 
         registerPacket(0, PacketCustomTileData.class, new PacketCodec<>(
-                (packet, buf) -> {
-                    buf.writeBlockPos(packet.tileEntityPos);
-                    byte[] data = packet.payload.array();
-                    buf.writeInt(data.length);
-                    buf.writeBytes(data);
-                },
-                (buf) -> new PacketCustomTileData(
-                        buf.readBlockPos(),
-                        new PacketBuffer(buf.readBytes(buf.readInt()))
-                )
+            (packet, buf) -> {
+                buf.writeBlockPos(packet.tileEntityPos);
+                byte[] data = packet.payload.array();
+                buf.writeInt(data.length);
+                buf.writeBytes(data);
+            },
+            (buf) -> new PacketCustomTileData(
+                buf.readBlockPos(),
+                new PacketBuffer(buf.readBytes(buf.readInt()))
+            )
         ));
         MinecraftForge.EVENT_BUS.register(new CustomDataTileHandler());
 
         registerPacket(1, PacketUIOpen.class, new PacketCodec<>(
-                (packet, buf) -> {
-                    buf.writeInt(packet.uiFactoryId);
-                    buf.writeInt(packet.serializedHolder.readableBytes());
-                    buf.writeBytes(packet.serializedHolder);
-                    buf.writeInt(packet.windowId);
-                },
-                (buf) -> new PacketUIOpen(
-                        buf.readInt(),
-                        new PacketBuffer(buf.readBytes(buf.readInt())),
-                        buf.readInt()
-                )
+            (packet, buf) -> {
+                buf.writeInt(packet.uiFactoryId);
+                buf.writeInt(packet.serializedHolder.readableBytes());
+                buf.writeBytes(packet.serializedHolder);
+                buf.writeInt(packet.windowId);
+            },
+            (buf) -> new PacketUIOpen(
+                buf.readInt(),
+                new PacketBuffer(buf.readBytes(buf.readInt())),
+                buf.readInt()
+            )
         ));
 
         registerPacket(2, PacketUIWidgetUpdate.class, new PacketCodec<>(
-                (packet, buf) -> {
-                    buf.writeInt(packet.windowId);
-                    buf.writeInt(packet.widgetId);
-                    buf.writeInt(packet.updateData.readableBytes());
-                    buf.writeBytes(packet.updateData);
-                },
-                (buf) -> new PacketUIWidgetUpdate(
-                        buf.readInt(),
-                        buf.readInt(),
-                        new PacketBuffer(buf.readBytes(buf.readInt()))
-                )
+            (packet, buf) -> {
+                buf.writeInt(packet.windowId);
+                buf.writeInt(packet.widgetId);
+                buf.writeInt(packet.updateData.readableBytes());
+                buf.writeBytes(packet.updateData);
+            },
+            (buf) -> new PacketUIWidgetUpdate(
+                buf.readInt(),
+                buf.readInt(),
+                new PacketBuffer(buf.readBytes(buf.readInt()))
+            )
         ));
 
-        if(FMLCommonHandler.instance().getSide().isClient()) {
+        registerPacket(3, PacketUIClientAction.class, new PacketCodec<>(
+            (packet, buf) -> {
+                buf.writeInt(packet.windowId);
+                buf.writeInt(packet.widgetId);
+                buf.writeInt(packet.updateData.readableBytes());
+                buf.writeBytes(packet.updateData);
+            },
+            (buf) -> new PacketUIClientAction(
+                buf.readInt(),
+                buf.readInt(),
+                new PacketBuffer(buf.readBytes(buf.readInt()))
+            )
+        ));
+
+        registerServerExecutor(PacketUIClientAction.class, (packet, handler) -> {
+            Container openContainer = handler.player.openContainer;
+            if(openContainer instanceof ModularUIContainer &&
+                openContainer.windowId == packet.windowId) {
+                ModularUI<?> modularUI = ((ModularUIContainer) openContainer).getModularUI();
+                PacketBuffer buffer = packet.updateData;
+                modularUI.guiWidgets.get(packet.widgetId).handleClientAction(buffer.readInt(), buffer);
+            }
+        });
+
+        if (FMLCommonHandler.instance().getSide().isClient()) {
             initClient();
         }
 

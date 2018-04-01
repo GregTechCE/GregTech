@@ -30,6 +30,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
 
     private boolean isActive;
     private boolean workingEnabled = true;
+    private boolean hasNotEnoughEnergy;
 
     public RecipeMapWorkableHandler(RecipeMap<?> recipeMap) {
         this.recipeMap = recipeMap;
@@ -68,6 +69,8 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
                 if(++progressTime >= maxProgressTime) {
                     completeRecipe();
                 }
+            } else {
+                this.hasNotEnoughEnergy = true;
             }
         }
     }
@@ -97,6 +100,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         this.recipeEUt = 0;
         this.fluidOutputs = null;
         this.itemOutputs = null;
+        this.hasNotEnoughEnergy = false;
         setActive(false);
     }
 
@@ -150,6 +154,10 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         if(!metaTileEntity.getWorld().isRemote) {
             metaTileEntity.markDirty();
         }
+    }
+
+    public boolean isHasNotEnoughEnergy() {
+        return hasNotEnoughEnergy;
     }
 
     @Override

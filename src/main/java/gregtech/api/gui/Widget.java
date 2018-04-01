@@ -4,6 +4,7 @@ import gregtech.api.net.NetworkHandler;
 import gregtech.api.net.PacketUIWidgetUpdate;
 import gregtech.api.util.GTLog;
 import io.netty.buffer.Unpooled;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -99,6 +100,9 @@ public abstract class Widget<T extends IUIHolder> implements Comparable<Widget<T
     public void readUpdateInfo(int id, PacketBuffer buffer) {
     }
 
+    public void handleClientAction(int id, PacketBuffer buffer) {
+    }
+
     /**
      * Writes data to be sent to client's {@link #readUpdateInfo}
      */
@@ -108,6 +112,19 @@ public abstract class Widget<T extends IUIHolder> implements Comparable<Widget<T
         packetBufferWriter.accept(packetBuffer);
         int widgetId = gui.guiWidgets.inverse().get(this);
         if(gui.entityPlayer instanceof EntityPlayerMP) {
+            int currentWindowId = gui.entityPlayer.openContainer.windowId;
+            PacketUIWidgetUpdate widgetUpdate = new PacketUIWidgetUpdate(currentWindowId, widgetId, packetBuffer);
+            NetworkHandler.channel.sendTo(NetworkHandler.packet2proxy(widgetUpdate), (EntityPlayerMP) gui.entityPlayer);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected final void writeClientAction(int id, Consumer<PacketBuffer> packetBufferWriter) {
+        PacketBuffer packetBuffer = new PacketBuffer(Unpooled.buffer());
+        packetBuffer.writeInt(id);
+        packetBufferWriter.accept(packetBuffer);
+        int widgetId = gui.guiWidgets.inverse().get(this);
+        if(gui.entityPlayer instanceof EntityPlayerSP) {
             int currentWindowId = gui.entityPlayer.openContainer.windowId;
             PacketUIWidgetUpdate widgetUpdate = new PacketUIWidgetUpdate(currentWindowId, widgetId, packetBuffer);
             NetworkHandler.channel.sendTo(NetworkHandler.packet2proxy(widgetUpdate), (EntityPlayerMP) gui.entityPlayer);

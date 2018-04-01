@@ -2,6 +2,7 @@ package gregtech.api.gui;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableBiMap;
+import gregtech.api.gui.widgets.LabelWidget;
 import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.gui.resources.TextureArea;
 import net.minecraft.entity.player.EntityPlayer;
@@ -49,6 +50,10 @@ public final class ModularUI<H extends IUIHolder> {
         });
     }
 
+    public static <T extends IUIHolder> Builder<T> defaultBuilder() {
+        return new Builder<>(GuiTextures.BACKGROUND, 176, 166);
+    }
+
     public static <T extends IUIHolder> Builder<T> builder(TextureArea background, int width, int height) {
         return new Builder<>(background, width, height);
     }
@@ -76,8 +81,13 @@ public final class ModularUI<H extends IUIHolder> {
             return this;
         }
 
+        public Builder<T> bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId) {
+            return bindPlayerInventory(inventoryPlayer, startWidgetId, GuiTextures.BACKGROUND);
+        }
+
         public Builder<T> bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId, TextureArea imageLocation) {
-            return bindPlayerInventory(inventoryPlayer, startWidgetId, imageLocation, 8, 84);
+            widget(startWidgetId, new LabelWidget<T>(8, 166 - 96 + 2, "container.inventory"));
+            return bindPlayerInventory(inventoryPlayer, startWidgetId + 1, imageLocation, 8, 84);
         }
 
         public Builder<T> bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId, TextureArea imageLocation, int x, int y) {

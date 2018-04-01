@@ -29,6 +29,11 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
     }
 
     @Override
+    public boolean canProvideChargeExternally() {
+        return this.dischargeable;
+    }
+
+    @Override
     public long charge(long amount, int chargerTier, boolean ignoreTransferLimit, boolean simulate) {
         if((chargeable || amount == Long.MAX_VALUE) && (chargerTier == Integer.MAX_VALUE || tier >= chargerTier) && maxCharge > 0) {
             long canReceive = maxCharge - charge;

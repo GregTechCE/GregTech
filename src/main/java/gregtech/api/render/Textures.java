@@ -3,6 +3,7 @@ package gregtech.api.render;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
 import gregtech.api.GTValues;
 import gregtech.api.util.GTLog;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -31,6 +32,10 @@ public class Textures {
     public static OrientedOverlayRenderer COMPRESSOR_OVERLAY = new OrientedOverlayRenderer("machines/compressor", FRONT, TOP, SIDE);
     public static OrientedOverlayRenderer HAMMER_OVERLAY = new OrientedOverlayRenderer("machines/hammer", FRONT);
     public static OrientedOverlayRenderer MACERATOR_OVERLAY = new OrientedOverlayRenderer("machines/macerator", FRONT, TOP);
+
+    public static SimpleOverlayRenderer PIPE_OUT_OVERLAY = new SimpleOverlayRenderer("machine/overlay_pipe_out");
+    public static SimpleOverlayRenderer FLUID_OUTPUT_OVERLAY = new SimpleOverlayRenderer("machine/overlay_fluid_output");
+    public static SimpleOverlayRenderer ITEM_OUTPUT_OVERLAY = new SimpleOverlayRenderer("machine/overlay_item_output");
 
     static {
         for(int i = 0; i < VOLTAGE_CASINGS.length; i++) {

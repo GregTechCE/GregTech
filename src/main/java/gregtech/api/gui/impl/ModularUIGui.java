@@ -76,7 +76,7 @@ public class ModularUIGui extends GuiContainer {
                 .forEach(widget -> {
                     GlStateManager.pushMatrix();
                     GlStateManager.color(1.0f, 1.0f, 1.0f);
-                    widget.drawInBackground(partialTicks,  mouseX, mouseY);
+                    widget.drawInBackground(partialTicks,  mouseX - guiLeft, mouseY - guiTop);
                     GlStateManager.popMatrix();
                 });
         GlStateManager.popMatrix();
@@ -85,19 +85,19 @@ public class ModularUIGui extends GuiContainer {
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
-        modularUI.guiWidgets.values().forEach(widget -> widget.mouseClicked(mouseX, mouseY, mouseButton));
+        modularUI.guiWidgets.values().forEach(widget -> widget.mouseClicked(mouseX - guiLeft, mouseY - guiTop, mouseButton));
     }
 
     @Override
     protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
         super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
-        modularUI.guiWidgets.values().forEach(widget -> widget.mouseDragged(mouseX, mouseY, clickedMouseButton, timeSinceLastClick));
+        modularUI.guiWidgets.values().forEach(widget -> widget.mouseDragged(mouseX - guiLeft, mouseY - guiTop, clickedMouseButton, timeSinceLastClick));
     }
 
     @Override
     protected void mouseReleased(int mouseX, int mouseY, int state) {
         super.mouseReleased(mouseX, mouseY, state);
-        modularUI.guiWidgets.values().forEach(widget -> widget.mouseReleased(mouseX, mouseY, state));
+        modularUI.guiWidgets.values().forEach(widget -> widget.mouseReleased(mouseX - guiLeft, mouseY - guiTop, state));
     }
 
     @Override

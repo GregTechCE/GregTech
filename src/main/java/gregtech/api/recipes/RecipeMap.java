@@ -1,6 +1,11 @@
 package gregtech.api.recipes;
 
 import gregtech.api.capability.IMultipleTankHandler;
+import gregtech.api.capability.impl.FluidTankHandler;
+import gregtech.api.gui.GuiTextures;
+import gregtech.api.gui.IUIHolder;
+import gregtech.api.gui.ModularUI;
+import gregtech.api.gui.widgets.TankWidget;
 import gregtech.api.recipes.machines.RecipeMapFluidCanner;
 import gregtech.api.recipes.machines.RecipeMapFormingPress;
 import gregtech.api.recipes.machines.RecipeMapFurnace;
@@ -10,14 +15,18 @@ import gregtech.api.util.EnumValidationResult;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ValidationResult;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.function.DoubleSupplier;
 
 public class RecipeMap<R extends RecipeBuilder<R>> {
 
@@ -58,7 +67,15 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         RECIPE_MAPS.add(this);
 	}
 
-	public static boolean foundInvalidRecipe = false;
+    public Collection<Recipe> getRecipesForFluid(Fluid fluid) {
+        return recipeFluidMap.getOrDefault(fluid, Collections.emptySet());
+    }
+
+    public Collection<Recipe> getRecipeList() {
+        return Collections.unmodifiableCollection(recipeList);
+    }
+
+    public static boolean foundInvalidRecipe = false;
 
 	//internal usage only, use buildAndRegister()
 	public void addRecipe(ValidationResult<Recipe> validationResult) {
@@ -131,6 +148,11 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         }
 		return null;
 	}
+
+	//this DOES NOT add machine control widgets or binds player inventory
+	public ModularUI.Builder<IUIHolder> createUITemplate(DoubleSupplier progressSupplier, IItemHandlerModifiable importItems, IItemHandlerModifiable exportItems, FluidTankHandler importFluids, FluidTankHandler exportFluids) {
+	    return ModularUI.defaultBuilder();
+    }
 
 	public R recipeBuilder() {
 		return recipeBuilderSample.copy();

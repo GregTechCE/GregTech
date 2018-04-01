@@ -2,6 +2,7 @@ package gregtech.api.capability.impl;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.common.collect.UnmodifiableIterator;
 import gregtech.api.capability.IMultipleTankHandler;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,10 +16,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class FluidTankHandler implements IFluidHandler, IMultipleTankHandler, INBTSerializable<NBTTagCompound> {
 
@@ -33,6 +31,15 @@ public class FluidTankHandler implements IFluidHandler, IMultipleTankHandler, IN
         this.fluidTanks = new ArrayList<>();
         this.fluidTanks.addAll(parent.fluidTanks);
         this.fluidTanks.addAll(Arrays.asList(additionalTanks));
+    }
+
+    public List<IFluidTank> getFluidTanks() {
+        return Collections.unmodifiableList(fluidTanks);
+    }
+
+    @Override
+    public Iterator<IFluidTank> iterator() {
+        return getFluidTanks().iterator();
     }
 
     @Override

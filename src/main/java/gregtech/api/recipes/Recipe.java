@@ -8,6 +8,7 @@ import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -206,6 +207,15 @@ public class Recipe {
 	public List<FluidStack> getFluidInputs() {
 		return fluidInputs;
 	}
+
+	public boolean hasInputFluid(Fluid fluid) {
+	    for(FluidStack fluidStack : fluidInputs) {
+	        if(fluidStack.getFluid() == fluid) {
+	            return true;
+            }
+        }
+        return false;
+    }
 
 	public List<FluidStack> getFluidOutputs() {
 		return fluidOutputs;
