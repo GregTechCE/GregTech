@@ -100,6 +100,7 @@ public class BlockOre extends BlockFalling implements IBlockOre {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public float getExplosionResistance(World world, BlockPos pos, @Nullable Entity exploder, Explosion explosion)
     {
         return world.getBlockState(pos).getValue(STONE_TYPE).unbreakable ? 1200000.0F : getExplosionResistance(exploder);

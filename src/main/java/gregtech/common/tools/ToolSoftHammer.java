@@ -1,6 +1,8 @@
 package gregtech.common.tools;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.items.metaitem.MetaItem;
+import gregtech.common.items.behaviors.SoftHammerBehaviour;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -46,11 +48,10 @@ public class ToolSoftHammer extends ToolBase {
         return true;
     }
 
-
-//    @Override
-//    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
-//        item.addStats(new Behaviour_SoftHammer(100));
-//    }
+    @Override
+    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
+        item.addStats(new SoftHammerBehaviour(100));
+    }
 
 //    @Override
 //    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {

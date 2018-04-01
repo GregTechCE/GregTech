@@ -157,13 +157,17 @@ public class GTUtility {
      */
     public static boolean doDamageItem(ItemStack itemStack, int vanillaDamage, boolean simulate) {
         Item item = itemStack.getItem();
-        if(item instanceof IDamagableItem) {
+        if (item instanceof IDamagableItem) {
             return ((IDamagableItem) item).doDamageToItem(itemStack, vanillaDamage, simulate);
-        } else if(itemStack.hasCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null)) {
+        } else if (itemStack.hasCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null)) {
             IElectricItem capability = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
-            return capability != null && capability.canUse(vanillaDamage) &&
-                capability.discharge(vanillaDamage, Integer.MAX_VALUE, true, false, simulate) == vanillaDamage;
-        } else return false;
+            int energyNeeded = vanillaDamage * 100; // TODO CONFIG
+            return capability != null
+                && capability.canUse(energyNeeded)
+                && capability.discharge(energyNeeded, Integer.MAX_VALUE, true, false, simulate) == energyNeeded;
+        } else {
+            return false;
+        }
     }
 
     public static void writeItems(IItemHandler handler, String tagName, NBTTagCompound tag) {
@@ -350,6 +354,11 @@ public class GTUtility {
             if(!object.isEmpty()) amount++;
         }
         return amount;
+    }
+
+    public static NBTTagCompound getOrCreateNbtCompound(ItemStack stack) {
+        NBTTagCompound compound = stack.getTagCompound();
+        return compound == null ? new NBTTagCompound() : compound;
     }
 
     public static List<ItemStack> copyStackList(List<ItemStack> itemStacks) {

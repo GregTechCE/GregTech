@@ -46,7 +46,6 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
 
         SENSE = addItem(19, "tool.sense").setToolStats(new ToolSense()).addOreDict(ToolDictNames.craftingToolBlade);
         PLOW = addItem(20, "tool.plow").setToolStats(new ToolPlow()).addOreDict(ToolDictNames.craftingToolPlow);
-        PLUNGER = addItem(21, "tool.plunger").setToolStats(new ToolPlunger()).addOreDict(ToolDictNames.craftingToolPlunger);
         ROLLING_PIN = addItem(22, "tool.rolling_pin").setToolStats(new ToolRollingPin()).addOreDict(ToolDictNames.craftingToolRollingPin);
 
         DRILL_LV = addItem(23, "tool.drill.lv").setToolStats(new ToolDrillLV()).addOreDict(ToolDictNames.craftingToolMiningDrill);

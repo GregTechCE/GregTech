@@ -119,9 +119,6 @@ public abstract class ToolBase implements IToolStats {
 
     @Override
     public void onToolCrafted(ItemStack stack, EntityPlayer player) {
-//        player.addStat(AchievementList.OPEN_INVENTORY);
-//        player.addStat(AchievementList.MINE_WOOD);
-//        player.addStat(AchievementList.BUILD_WORK_BENCH);
     }
 
     @Override

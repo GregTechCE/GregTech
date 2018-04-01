@@ -1,6 +1,8 @@
 package gregtech.common.tools;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.items.metaitem.MetaItem;
+import gregtech.common.items.behaviors.WrenchBehaviour;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,13 +16,11 @@ import java.util.List;
 
 public class ToolWrench extends ToolBase {
 
-    public static final List<String> EFFECTIVE_LIST = Arrays.asList(EntityIronGolem.class.getName(), "EntityTowerGuardian");
-
     @Override
     public float getNormalDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase attacker) {
         String name = entity.getClass().getName();
         name = name.substring(name.lastIndexOf('.') + 1);
-        return EFFECTIVE_LIST.contains(name) || name.contains("Golem") ? 2.0F : 1.0F;
+        return name.toLowerCase().contains("golem") ? 2.0F : 1.0F;
     }
 
     @Override
@@ -54,10 +54,10 @@ public class ToolWrench extends ToolBase {
                 block.getMaterial() == Material.IRON;
     }
 
-//    @Override
-//    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
-//        item.addStats(new Behaviour_Wrench(100));
-//    }
+    @Override
+    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
+        item.addStats(new WrenchBehaviour(1));
+    }
 
 //    @Override
 //    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {

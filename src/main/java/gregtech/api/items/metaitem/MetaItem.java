@@ -309,6 +309,20 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     }
 
     @Override
+    public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
+        ItemStack itemStack = player.getHeldItem(hand);
+        for (IItemBehaviour behaviour : getBehaviours(itemStack)) {
+            EnumActionResult behaviourResult = behaviour.onItemUseFirst(player, world, pos, side, hitX, hitY, hitZ, hand);
+            if (behaviourResult != EnumActionResult.PASS) {
+                return behaviourResult;
+            } else if (itemStack.isEmpty()) {
+                return EnumActionResult.PASS;
+            }
+        }
+        return EnumActionResult.PASS;
+    }
+
+    @Override
     public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack stack = player.getHeldItem(hand);
         ItemStack originalStack = stack.copy();
