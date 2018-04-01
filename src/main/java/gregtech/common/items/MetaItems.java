@@ -3,14 +3,13 @@ package gregtech.common.items;
 import gregtech.api.items.materialitem.MaterialMetaItem;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("WeakerAccess")
 public final class MetaItems {
@@ -421,6 +420,7 @@ public final class MetaItems {
     public static ToolMetaItem<?>.MetaToolValueItem TURBINE_NORMAL;
     public static ToolMetaItem<?>.MetaToolValueItem TURBINE_LARGE;
     public static ToolMetaItem<?>.MetaToolValueItem TURBINE_HUGE;
+    public static ToolMetaItem<?>.MetaToolValueItem MAGNIFYING_GLASS;
 
     public static void init() {
         MetaItem1 first = new MetaItem1();

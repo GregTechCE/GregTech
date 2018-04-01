@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "gregtech:items/tools/magnifying_glass",
+    "layer1": "gregtech:items/tools/magnifying_glass_overlay"
+  }
+}
