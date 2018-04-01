@@ -1,5 +1,7 @@
 package gregtech.common.tools;
 
+import gregtech.api.items.metaitem.MetaItem;
+import gregtech.common.items.behaviors.HoeBehaviour;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -18,7 +20,6 @@ public class ToolHoe extends ToolBase {
         return 1.75F;
     }
 
-
     @Override
     public boolean isMinableBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
@@ -26,24 +27,8 @@ public class ToolHoe extends ToolBase {
     }
 
     @Override
-    public float getNormalDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase attacker) {
-        return 0;
-    }
-
-    @Override
-    public float getMagicDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase player) {
-        return 0;
-    }
-
-//    @Override
-//    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
-//        item.addStats(new Behaviour_Hoe(100));
-//    }
-
-    @Override
-    public void onToolCrafted(ItemStack stack, EntityPlayer player) {
-        super.onToolCrafted(stack, player);
-//        player.addStat(AchievementList.BUILD_HOE);
+    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
+        item.addStats(new HoeBehaviour(100));
     }
 
 //    @Override

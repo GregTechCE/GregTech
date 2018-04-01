@@ -72,7 +72,7 @@ public class ToolCrowbar extends ToolBase {
 
 //    @Override
 //    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
-//        item.addStats(new Behaviour_Crowbar(1, 1000));
+//        item.addStats(new CrowbarBehaviour(1, 1000));
 //    }
 
 //    @Override

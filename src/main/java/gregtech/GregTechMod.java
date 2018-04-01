@@ -37,7 +37,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
      name = "GregTech",
      version = "@VERSION@",
      acceptedMinecraftVersions = "[1.12,1.13)",
-     dependencies = "before:forestry")
+     dependencies = "required:codechickenlib;before:forestry")
 public class GregTechMod {
 
     static {

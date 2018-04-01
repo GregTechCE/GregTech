@@ -1,6 +1,8 @@
 package gregtech.common.tools;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.items.metaitem.MetaItem;
+import gregtech.common.items.behaviors.ProspectingBehaviour;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,13 +14,11 @@ import java.util.List;
 
 public class ToolHardHammer extends ToolBase {
 
-    public static final List<String> mEffectiveList = Arrays.asList(EntityIronGolem.class.getName(), "EntityTowerGuardian");
-
     @Override
     public float getNormalDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase attacker) {
-        String tName = entity.getClass().getName();
-        tName = tName.substring(tName.lastIndexOf('.') + 1);
-        return (mEffectiveList.contains(tName)) || (tName.contains("Golem")) ? 2.0F : 1.0F;
+        String name = entity.getClass().getName();
+        name = name.substring(name.lastIndexOf('.') + 1);
+        return name.toLowerCase().contains("golem") ? 2.0F : 1.0F;
     }
 
     @Override
@@ -98,10 +98,10 @@ public class ToolHardHammer extends ToolBase {
         return 0;
     }
 
-//    @Override
-//    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
-//        item.addStats(new Behaviour_Prospecting(1, 1000));
-//    }
+    @Override
+    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
+        item.addStats(new ProspectingBehaviour(10));
+    }
 
 //    @Override
 //    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {

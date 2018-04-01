@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 
 public class ToolSense extends ToolBase {
 
-    private ThreadLocal<Object> isHarvestingRightNow = new ThreadLocal();
+    private ThreadLocal<ToolSense> isHarvestingRightNow = new ThreadLocal<>();
 
     @Override
     public float getBaseDamage(ItemStack stack) {
@@ -57,11 +57,6 @@ public class ToolSense extends ToolBase {
         }
         return conversions;
     }
-
-//    @Override
-//    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
-//        item.addStats(new Behaviour_Sense(getToolDamagePerBlockBreak(item.getStackForm())));
-//    }
 
 //    @Override
 //    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {

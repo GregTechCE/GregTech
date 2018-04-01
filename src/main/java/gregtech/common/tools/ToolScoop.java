@@ -1,5 +1,7 @@
 package gregtech.common.tools;
 
+import gregtech.api.items.metaitem.MetaItem;
+import gregtech.common.items.behaviors.ScoopBehaviour;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -16,14 +18,13 @@ public class ToolScoop extends ToolBase {
     @Override
     public boolean isMinableBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
-        return tool != null && tool.equals("scoop") ||
-                block.getMaterial() == beeHiveMaterial;
+        return tool != null && tool.equals("scoop") || block.getMaterial() == beeHiveMaterial;
     }
 
-//    @Override
-//    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
-//        item.addStats(new Behaviour_Scoop(200));
-//    }
+    @Override
+    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
+        item.addStats(new ScoopBehaviour(200));
+    }
 
 //    @Override
 //    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {

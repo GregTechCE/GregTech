@@ -72,6 +72,7 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
         TextureUtils.addIconRegister(Textures::register);
     }
 
+    @SuppressWarnings("deprecation")
     public static void postInit() {
         try {
             IResource resource = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation("models/block/block.json"));

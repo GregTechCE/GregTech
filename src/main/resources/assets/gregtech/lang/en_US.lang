@@ -1531,6 +1531,11 @@ machine.steam_alloy_smelter=Steam Alloy Smelter
 machine.steam_hammer=Steam Hammer
 machine.steam_boiler=Steam Boiler
 
+behaviour.hoe=Can till Dirt
+behaviour.lighter.tooltip=Can light things on Fire
+behaviour.lighter.uses=Remaining Uses: %d
+behaviour.unstackable=Not usable when stacked!
+
 death.attack.explosion=%s exploded.
 death.attack.explosion.player=%s exploded with help of %s.
 
@@ -1966,3 +1971,26 @@ for.bees.species.iridium=Iridium
 for.bees.species.uranium=Uranium
 for.bees.species.plutonium=Plutonium
 for.bees.species.naquadah=Naquadah
+
+behaviour.scoop=Catches Butterflies on Leftclick
+behaviour.softhammer=Activates and Deactivates Machines
+behaviour.wrench=Rotates Blocks on Rightclick
+behaviour.boor.by=by %s
+behaviour.paintspray.white.tooltip=Can paint things in white
+behaviour.paintspray.orange.tooltip=Can paint things in orange
+behaviour.paintspray.magenta.tooltip=Can paint things in magenta
+behaviour.paintspray.lightBlue.tooltip=Can paint things in light blue
+behaviour.paintspray.yellow.tooltip=Can paint things in yellow
+behaviour.paintspray.lime.tooltip=Can paint things in lime
+behaviour.paintspray.pink.tooltip=Can paint things in pink
+behaviour.paintspray.gray.tooltip=Can paint things in gray
+behaviour.paintspray.silver.tooltip=Can paint things in gray
+behaviour.paintspray.cyan.tooltip=Can paint things in cyan
+behaviour.paintspray.purple.tooltip=Can paint things in purple
+behaviour.paintspray.blue.tooltip=Can paint things in blue
+behaviour.paintspray.brown.tooltip=Can paint things in brown
+behaviour.paintspray.green.tooltip=Can paint things in green
+behaviour.paintspray.red.tooltip=Can paint things in red
+behaviour.paintspray.black.tooltip=Can paint things in black
+behaviour.paintspray.uses=Remaining Uses: %d
+behaviour.prospecting=Usable for Prospecting

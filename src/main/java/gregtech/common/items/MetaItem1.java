@@ -14,6 +14,8 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.RandomPotionEffect;
+import gregtech.common.items.behaviors.ColorSprayBehaviour;
+import gregtech.common.items.behaviors.LighterBehaviour;
 import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
@@ -34,8 +36,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 import static gregtech.common.items.MetaItems.*;
-
-//import gregtech.common.items.behaviors.*;
 
 public class MetaItem1 extends MaterialMetaItem {
 
@@ -142,38 +142,41 @@ public class MetaItem1 extends MaterialMetaItem {
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.TungstenSteel, OrePrefix.plate.materialAmount * 2L + 2L * OrePrefix.ring.materialAmount)));
 
         for (byte i = 0; i < 16; i = (byte) (i + 1)) {
-//			IItemBehaviour behaviour = new Behaviour_Spray_Color(SPRAY_EMPTY.getStackForm(), SPRAY_CAN_DYES_USED[i].getStackForm(), SPRAY_CAN_DYES[i].getStackForm(), 512L, i);
-            SPRAY_CAN_DYES[i] = addItem(430 + 2 * i, "spray.can.dyes." + EnumDyeColor.byDyeDamage(i).getName());//.addStats(behaviour);
-            SPRAY_CAN_DYES_USED[i] = addItem(431 + 2 * i, "spray.can.dyes.used." + EnumDyeColor.byDyeDamage(i).getName());//.addStats(behaviour);
+            SPRAY_CAN_DYES[i] = addItem(430 + 2 * i, "spray.can.dyes." + EnumDyeColor.byDyeDamage(i).getName());
+            SPRAY_CAN_DYES_USED[i] = addItem(431 + 2 * i, "spray.can.dyes.used." + EnumDyeColor.byDyeDamage(i).getName());
+
+            ColorSprayBehaviour behaviour = new ColorSprayBehaviour(SPRAY_EMPTY.getStackForm(), SPRAY_CAN_DYES_USED[i].getStackForm(), SPRAY_CAN_DYES[i].getStackForm(), 512L, i);
+            SPRAY_CAN_DYES[i].addStats(behaviour);
+            SPRAY_CAN_DYES_USED[i].addStats(behaviour);
         }
 
-//		IItemBehaviour behaviour = new Behaviour_Lighter(null, TOOL_MATCHES.getStackForm(), TOOL_MATCHES.getStackForm(), 1L);
-        TOOL_MATCHES = addItem(471, "tool.matches");//.addStats(behaviour);
+        TOOL_MATCHES = addItem(471, "tool.matches");
+        LighterBehaviour behaviour = new LighterBehaviour(null, TOOL_MATCHES.getStackForm(), TOOL_MATCHES.getStackForm(), 1L);
+        TOOL_MATCHES.addStats(behaviour);
 
-//		behaviour = new Behaviour_Lighter(null, TOOL_MATCHBOX_USED.getStackForm(), TOOL_MATCHBOX_FULL.getStackForm(), 16L);
-        TOOL_MATCHBOX_USED = addItem(472, "tool.matchbox.used");//.addStats(behaviour);
-        TOOL_MATCHBOX_FULL = addItem(473, "tool.matchbox.full");//.addStats(behaviour);
+        TOOL_MATCHBOX_USED = addItem(472, "tool.matchbox.used");
+        TOOL_MATCHBOX_FULL = addItem(473, "tool.matchbox.full");
+        behaviour = new LighterBehaviour(null, TOOL_MATCHBOX_USED.getStackForm(), TOOL_MATCHBOX_FULL.getStackForm(), 16L);
+        TOOL_MATCHBOX_USED.addStats(behaviour);
+        TOOL_MATCHBOX_FULL.addStats(behaviour);
 
         TOOL_LIGHTER_INVAR_EMPTY = addItem(474, "tool.lighter.invar.empty").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Invar, OrePrefix.plate.materialAmount * 2L)));
 
-//		behaviour = new Behaviour_Lighter(TOOL_LIGHTER_INVAR_EMPTY.getStackForm(), TOOL_LIGHTER_INVAR_USED.getStackForm(), TOOL_LIGHTER_INVAR_FULL.getStackForm(), 100L);
-        TOOL_LIGHTER_INVAR_USED = addItem(475, "tool.lighter.invar.used").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Invar, OrePrefix.plate.materialAmount * 2L)));//.addStats(behaviour);
-        TOOL_LIGHTER_INVAR_FULL = addItem(476, "tool.lighter.invar.full").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Invar, OrePrefix.plate.materialAmount * 2L)));//.addStats(behaviour);
+        TOOL_LIGHTER_INVAR_USED = addItem(475, "tool.lighter.invar.used").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Invar, OrePrefix.plate.materialAmount * 2L)));
+        TOOL_LIGHTER_INVAR_FULL = addItem(476, "tool.lighter.invar.full").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Invar, OrePrefix.plate.materialAmount * 2L)));
+        behaviour = new LighterBehaviour(TOOL_LIGHTER_INVAR_EMPTY.getStackForm(), TOOL_LIGHTER_INVAR_USED.getStackForm(), TOOL_LIGHTER_INVAR_FULL.getStackForm(), 100L);
+        TOOL_LIGHTER_INVAR_USED.addStats(behaviour);
+        TOOL_LIGHTER_INVAR_FULL.addStats(behaviour);
 
         TOOL_LIGHTER_PLATINUM_EMPTY = addItem(477, "tool.lighter.platinum.empty").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Platinum, OrePrefix.plate.materialAmount * 2L)));
 
-//		behaviour = new Behaviour_Lighter(TOOL_LIGHTER_PLATINUM_EMPTY.getStackForm(), TOOL_LIGHTER_PLATINUM_USED.getStackForm(), TOOL_LIGHTER_PLATINUM_FULL.getStackForm(), 1000L);
-        TOOL_LIGHTER_PLATINUM_USED = addItem(478, "tool.lighter.platinum.used").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Platinum, OrePrefix.plate.materialAmount * 2L)));//.addStats(behaviour);
-        TOOL_LIGHTER_PLATINUM_FULL = addItem(479, "tool.lighter.platinum.full").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Platinum, OrePrefix.plate.materialAmount * 2L)));//.addStats(behaviour);
+        TOOL_LIGHTER_PLATINUM_USED = addItem(478, "tool.lighter.platinum.used").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Platinum, OrePrefix.plate.materialAmount * 2L)));
+        TOOL_LIGHTER_PLATINUM_FULL = addItem(479, "tool.lighter.platinum.full").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Platinum, OrePrefix.plate.materialAmount * 2L)));
+        behaviour = new LighterBehaviour(TOOL_LIGHTER_PLATINUM_EMPTY.getStackForm(), TOOL_LIGHTER_PLATINUM_USED.getStackForm(), TOOL_LIGHTER_PLATINUM_FULL.getStackForm(), 1000L);
+        TOOL_LIGHTER_PLATINUM_USED.addStats(behaviour);
+        TOOL_LIGHTER_PLATINUM_FULL.addStats(behaviour);
 
         INGOT_IRIDIUM_ALLOY = addItem(480, "ingot.iridiumalloy");
-
-        PAPER_PRINTED_PAGES = addItem(481, "paper.printed.pages").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Paper, 10886400L)));//.addStats(new Behaviour_PrintedPages());
-        PAPER_MAGIC_EMPTY = addItem(482, "paper.magic.empty").setInvisible().setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Paper, 3628800L)));
-        PAPER_MAGIC_PAGE = addItem(483, "paper.magic.page").setInvisible().setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Paper, 3628800L)));
-        PAPER_MAGIC_PAGES = addItem(484, "paper.magic.pages").setInvisible().setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Paper, 10886400L)));
-        PAPER_PUNCH_CARD_EMPTY = addItem(485, "paper.punch.card.empty").setInvisible().setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Paper, 7257600L)));
-        PAPER_PUNCH_CARD_ENCODED = addItem(486, "paper.punch.card.encoded").setInvisible().setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Paper, 7257600L)));
 
         SCHEMATIC = addItem(490, "schematic").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)));
         SCHEMATIC_CRAFTING = addItem(491, "schematic.crafting").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)));
@@ -298,8 +301,8 @@ public class MetaItem1 extends MaterialMetaItem {
         SENSOR_ZPM = addItem(696, "sensor.zpm");
         SENSOR_UV = addItem(697, "sensor.uv");
 
-        TOOL_DATASTICK = addItem(708, "tool.datastick").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Data);//.addStats(new Behaviour_DataStick());
-        TOOL_DATAORB = addItem(707, "tool.dataorb").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Ultimate);//.addStats(new Behaviour_DataOrb());
+        TOOL_DATASTICK = addItem(708, "tool.datastick").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Data);
+        TOOL_DATAORB = addItem(707, "tool.dataorb").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Ultimate);
 
         CIRCUIT_PRIMITIVE = addItem(700, "circuit.primitive").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Primitive);
         CIRCUIT_BASIC = addItem(701, "circuit.basic").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Basic);
@@ -359,10 +362,8 @@ public class MetaItem1 extends MaterialMetaItem {
         COVER_SOLARPANEL_ZPM = addItem(758, "cover.solarpanel.zpm");
         COVER_SOLARPANEL_UV = addItem(759, "cover.solarpanel.uv");
 
-        TOOL_CHEAT = addItem(761, "tool.cheat").addStats(/*new Behaviour_Scanner(), */new ElectricStats(-2000000000, -1));
-        TOOL_SCANNER = addItem(762, "tool.scanner").addStats(/*new Behaviour_Scanner(),*/new ElectricStats(400000, 2, true, false));
+        TOOL_CHEAT = addItem(761, "tool.cheat").addStats(new ElectricStats(-2000000000, -1));
 
-        NC_SENSORKIT = addItem(763, "nc.sensorkit");//.addStats(new Behaviour_SensorKit());
         DUCT_TAPE = addItem(764, "duct.tape").addOreDict(OreDictNames.craftingDuctTape);
         MCGUFFIUM_239 = addItem(765, "mcguffium.239");
 
@@ -652,12 +653,6 @@ public class MetaItem1 extends MaterialMetaItem {
             .outputs(SCHEMATIC.getStackForm())
             .duration(3200)
             .EUt(4)
-            .buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .inputs(SENSOR_LV.getStackForm(), EMITTER_LV.getStackForm())
-            .outputs(NC_SENSORKIT.getStackForm())
-            .duration(1600)
-            .EUt(2)
             .buildAndRegister();
 
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
