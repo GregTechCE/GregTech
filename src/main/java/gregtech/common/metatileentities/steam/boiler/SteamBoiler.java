@@ -213,10 +213,10 @@ public abstract class SteamBoiler extends MetaTileEntity {
                     getGuiTexture("bar_heat"),
                     MoveType.VERTICAL))
 
-            .widget(2, new TankWidget<>(waterFluidTank, 83, 18, 10, 54)
-                .setBackgroundTexture(getGuiTexture("bar_%s_empty"), 1))
-            .widget(3, new TankWidget<>(steamFluidTank, 70, 18, 10, 54)
-                .setBackgroundTexture(getGuiTexture("bar_%s_empty"), 1))
+            .widget(2, new TankWidget<>(waterFluidTank, 82, 17, 11, 55)
+                .setBackgroundTexture(getGuiTexture("bar_%s_empty")))
+            .widget(3, new TankWidget<>(steamFluidTank, 69, 17, 11, 55)
+                .setBackgroundTexture(getGuiTexture("bar_%s_empty")))
 
             .widget(4, new SlotWidget<>(this.importItems, 0, 43, 18)
                 .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE, getGuiTexture("overlay_%s_in")))

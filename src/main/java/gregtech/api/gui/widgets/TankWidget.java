@@ -20,9 +20,8 @@ public class TankWidget<T extends IUIHolder> extends Widget<T> {
 
     private final int x, y, width, height;
 
-    private TextureArea backgroundTexture;
+    private TextureArea[] backgroundTexture;
     private TextureArea overlayTexture;
-    private int bgOffset;
 
     private FluidStack lastFluidInTank;
     private int lastTankCapacity;
@@ -36,14 +35,8 @@ public class TankWidget<T extends IUIHolder> extends Widget<T> {
         this.height = height;
     }
 
-    /**
-     * @param backgroundSizeOffset additional offset to add to size of background texture
-     *                             so background image will be drawn from (x, y) - backGroundSizeOffset
-     *                             to (x, y) + (imageWidth, imageHeight) + bgOffset
-     */
-    public TankWidget<T> setBackgroundTexture(TextureArea backgroundTexture, int backgroundSizeOffset) {
+    public TankWidget<T> setBackgroundTexture(TextureArea... backgroundTexture) {
         this.backgroundTexture = backgroundTexture;
-        this.bgOffset = backgroundSizeOffset;
         return this;
     }
 
@@ -55,11 +48,13 @@ public class TankWidget<T extends IUIHolder> extends Widget<T> {
     @Override
     public void drawInForeground(int mouseX, int mouseY) {
         if(backgroundTexture != null) {
-            backgroundTexture.draw(x - bgOffset, y - bgOffset, width + bgOffset, height + bgOffset);
+            for(TextureArea textureArea : backgroundTexture) {
+                textureArea.draw(x, y, width, height);
+            }
         }
         if(lastFluidInTank != null) {
             GlStateManager.disableBlend();
-            RenderUtil.drawFluidForGui(lastFluidInTank, fluidTank.getCapacity(), x, y, width, height);
+            RenderUtil.drawFluidForGui(lastFluidInTank, fluidTank.getCapacity(), x + 1, y + 1, width - 1, height - 1);
             GlStateManager.enableBlend();
         }
         if(overlayTexture != null) {

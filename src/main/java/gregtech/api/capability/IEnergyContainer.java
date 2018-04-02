@@ -24,6 +24,14 @@ public interface IEnergyContainer {
         setEnergyStored(Math.min(getEnergyStored() + energyToAdd, getEnergyCapacity()));
     }
 
+    default boolean canUse(long energy) {
+        return getEnergyStored()  >= energy;
+    }
+
+    default long getEnergyCanBeInserted() {
+        return getEnergyCapacity() - getEnergyStored();
+    }
+
     /**
      * Gets the stored electric energy
      */

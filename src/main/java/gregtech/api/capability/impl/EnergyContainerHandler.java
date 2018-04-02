@@ -1,14 +1,18 @@
 package gregtech.api.capability.impl;
 
+import gregtech.api.GTValues;
+import gregtech.api.capability.IElectricItem;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.metatileentity.MTETrait;
 import gregtech.api.util.GTUtility;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nullable;
 
@@ -90,6 +94,27 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
     public void receiveCustomData(int id, PacketBuffer buffer) {
         if(id == 0) {
             this.energyStored = buffer.readLong();
+        }
+    }
+
+    public void dischargeEnergyContainers(IItemHandlerModifiable itemHandler, int slotIndex) {
+        ItemStack stackInSlot = itemHandler.getStackInSlot(slotIndex);
+        if(stackInSlot.isEmpty()) return;
+        stackInSlot = stackInSlot.copy();
+        IElectricItem electricItem = stackInSlot.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+        if(electricItem == null || !electricItem.canProvideChargeExternally()) return;
+        double chargePercent = getEnergyStored() / (getEnergyCapacity() * 1.0);
+        int machineTier = GTUtility.getTierByVoltage(Math.max(getInputVoltage(), getOutputVoltage()));
+        if(chargePercent < 0.6) {
+            long dischargedBy = electricItem.discharge(getEnergyCanBeInserted(), machineTier, false, true, false);
+            if(dischargedBy == 0L) return;
+            itemHandler.setStackInSlot(slotIndex, stackInSlot);
+            addEnergy(dischargedBy);
+        } else if(chargePercent >= 0.7) {
+            long chargedBy = electricItem.charge(getEnergyStored(), machineTier, false, false);
+            if(chargedBy == 0L) return;
+            itemHandler.setStackInSlot(slotIndex, stackInSlot);
+            addEnergy(-chargedBy);
         }
     }
 

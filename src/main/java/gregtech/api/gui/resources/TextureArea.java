@@ -43,6 +43,14 @@ public class TextureArea {
             (v + height) / (imageSizeY * 1.0));
     }
 
+    public TextureArea getSubArea(double offsetX, double offsetY, double width, double height) {
+        return new TextureArea(imageLocation,
+            this.offsetX + (imageWidth * offsetX),
+            this.offsetY + (imageHeight * offsetY),
+            this.imageWidth * width,
+            this.imageHeight * height);
+    }
+
     @SideOnly(Side.CLIENT)
     public void draw(int x, int y, int width, int height) {
         Minecraft.getMinecraft().renderEngine.bindTexture(imageLocation);
@@ -59,8 +67,8 @@ public class TextureArea {
     @SideOnly(Side.CLIENT)
     public void drawSubArea(int x, int y, int width, int height, double drawnU, double drawnV, double drawnWidth, double drawnHeight) {
         //sub area is just different width and height
-        double imageU = this.offsetX * drawnU;
-        double imageV = this.offsetY * drawnV;
+        double imageU = this.offsetX + (this.imageWidth * drawnU);
+        double imageV = this.offsetY + (this.imageHeight * drawnV);
         double imageWidth = this.imageWidth * drawnWidth;
         double imageHeight = this.imageHeight * drawnHeight;
         Minecraft.getMinecraft().renderEngine.bindTexture(imageLocation);

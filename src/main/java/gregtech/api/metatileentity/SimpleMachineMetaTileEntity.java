@@ -62,6 +62,12 @@ public class SimpleMachineMetaTileEntity extends TieredMetaTileEntity {
     }
 
     @Override
+    public void update() {
+        super.update();
+        energyContainer.dischargeEnergyContainers(chargerInventory, 0);
+    }
+
+    @Override
     public NBTTagCompound writeToNBT(NBTTagCompound data) {
         super.writeToNBT(data);
         data.setTag("ChargerInventory", chargerInventory.serializeNBT());

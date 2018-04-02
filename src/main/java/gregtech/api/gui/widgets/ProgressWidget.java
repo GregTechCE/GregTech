@@ -32,6 +32,18 @@ public class ProgressWidget<T extends IUIHolder> extends Widget<T> {
         this.height = height;
     }
 
+    public ProgressWidget(DoubleSupplier progressSupplier, int x, int y, int width, int height, TextureArea fullImage, MoveType moveType) {
+        super(SLOT_DRAW_PRIORITY + 200);
+        this.progressSupplier = progressSupplier;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.emptyBarArea = fullImage.getSubArea(0.0, 0.0, 1.0, 0.5);
+        this.filledBarArea = fullImage.getSubArea(0.0, 0.5, 1.0, 1.0);
+        this.moveType = moveType;
+    }
+
     public ProgressWidget<T> setProgressBar(TextureArea emptyBarArea, TextureArea filledBarArea, MoveType moveType) {
         this.emptyBarArea = emptyBarArea;
         this.filledBarArea = filledBarArea;
